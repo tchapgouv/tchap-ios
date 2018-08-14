@@ -121,7 +121,7 @@
 #import "EventFormatter.h"
 #import <MatrixKit/MXKSlashCommands.h>
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 @interface RoomViewController ()
 {

@@ -17,7 +17,7 @@
 #import "Analytics.h"
 
 #import "AppDelegate.h"
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 // All metrics are store under a Piwik category called "Metrics".
 // Then, there are 2 Piwik actions: "iOS.startup" and "iOS.stats" (these actions

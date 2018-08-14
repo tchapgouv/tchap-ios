@@ -76,6 +76,9 @@ abstract_target 'RiotPods' do
     pod 'cmark', :inhibit_warnings => true
     pod 'DTCoreText', :inhibit_warnings => true
 
+    target "Tchap" do
+        import_MatrixKit
+    end
 
     target "Riot" do
         import_MatrixKit
