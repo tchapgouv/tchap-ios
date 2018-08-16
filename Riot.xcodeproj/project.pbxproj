@@ -92,7 +92,6 @@
 		0250C4E72122B68000034691 /* EncryptionInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5596C20EFA85C00210D55 /* EncryptionInfoView.m */; };
 		0250C4E82122B68000034691 /* GroupParticipantsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556C120EE6C4C00210D55 /* GroupParticipantsViewController.m */; };
 		0250C4E92122B68000034691 /* GroupRoomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5583B20EF6E7F00210D55 /* GroupRoomTableViewCell.m */; };
-		0250C4EA2122B68000034691 /* RoomsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556F820EE6C4C00210D55 /* RoomsViewController.m */; };
 		0250C4EB2122B68000034691 /* RoomMessagesSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5569A20EE6C4C00210D55 /* RoomMessagesSearchViewController.m */; };
 		0250C4EC2122B68000034691 /* GroupInviteTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5578B20EF568D00210D55 /* GroupInviteTableViewCell.m */; };
 		0250C4ED2122B68000034691 /* ForgotPasswordInputsView.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5579420EF575A00210D55 /* ForgotPasswordInputsView.m */; };
@@ -296,6 +295,8 @@
 		0250C5CA2122E63900034691 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0250C5C62122E63900034691 /* main.m */; };
 		0250C5CB2122E63900034691 /* empty.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0250C5C82122E63900034691 /* empty.mm */; };
 		0250C5CE212314B300034691 /* Tchap-Defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0250C5CD212314B300034691 /* Tchap-Defaults.plist */; };
+		02BEE1552125BBF800098505 /* RoomsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 02BEE1512125BBF800098505 /* RoomsDataSource.m */; };
+		02BEE1562125BBF800098505 /* RoomsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 02BEE1542125BBF800098505 /* RoomsViewController.m */; };
 		24CBEC591F0EAD310093EABB /* RiotShareExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 24CBEC4E1F0EAD310093EABB /* RiotShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		24EEE5A21F23A8B400B3C705 /* MXRoom+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBE81E7009EC00A9B29C /* MXRoom+Riot.m */; };
 		24EEE5A31F23A8C300B3C705 /* AvatarGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC111E7009EC00A9B29C /* AvatarGenerator.m */; };
@@ -696,6 +697,10 @@
 		0250C5C72122E63900034691 /* Tchap.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Tchap.entitlements; sourceTree = "<group>"; };
 		0250C5C82122E63900034691 /* empty.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = empty.mm; sourceTree = "<group>"; };
 		0250C5CD212314B300034691 /* Tchap-Defaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Tchap-Defaults.plist"; sourceTree = "<group>"; };
+		02BEE1512125BBF800098505 /* RoomsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomsDataSource.m; sourceTree = "<group>"; };
+		02BEE1522125BBF800098505 /* RoomsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomsDataSource.h; sourceTree = "<group>"; };
+		02BEE1532125BBF800098505 /* RoomsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomsViewController.h; sourceTree = "<group>"; };
+		02BEE1542125BBF800098505 /* RoomsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomsViewController.m; sourceTree = "<group>"; };
 		0598CA8AB2933381369BED6C /* Pods-RiotPods-Tchap.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-Tchap.release.xcconfig"; path = "Pods/Target Support Files/Pods-RiotPods-Tchap/Pods-RiotPods-Tchap.release.xcconfig"; sourceTree = "<group>"; };
 		12AA0005C8B3D8D8162584C5 /* Pods-RiotShareExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotShareExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RiotShareExtension/Pods-RiotShareExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		22D76C11C202B6BC5917A049 /* Pods-RiotPods-RiotShareExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-RiotShareExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-RiotPods-RiotShareExtension/Pods-RiotPods-RiotShareExtension.release.xcconfig"; sourceTree = "<group>"; };
@@ -1294,6 +1299,7 @@
 		0250C5C12122BBA600034691 /* Tchap */ = {
 			isa = PBXGroup;
 			children = (
+				02BEE14E2125BBF800098505 /* Modules */,
 				0250C5CC2123146A00034691 /* Assets */,
 				0250C5C22122BBD200034691 /* SupportingFiles */,
 			);
@@ -1318,6 +1324,33 @@
 				0250C5CD212314B300034691 /* Tchap-Defaults.plist */,
 			);
 			path = Assets;
+			sourceTree = "<group>";
+		};
+		02BEE14E2125BBF800098505 /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				02BEE14F2125BBF800098505 /* Rooms */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+		02BEE14F2125BBF800098505 /* Rooms */ = {
+			isa = PBXGroup;
+			children = (
+				02BEE1502125BBF800098505 /* DataSources */,
+				02BEE1532125BBF800098505 /* RoomsViewController.h */,
+				02BEE1542125BBF800098505 /* RoomsViewController.m */,
+			);
+			path = Rooms;
+			sourceTree = "<group>";
+		};
+		02BEE1502125BBF800098505 /* DataSources */ = {
+			isa = PBXGroup;
+			children = (
+				02BEE1522125BBF800098505 /* RoomsDataSource.h */,
+				02BEE1512125BBF800098505 /* RoomsDataSource.m */,
+			);
+			path = DataSources;
 			sourceTree = "<group>";
 		};
 		24CBEC4F1F0EAD310093EABB /* RiotShareExtension */ = {
@@ -3612,6 +3645,7 @@
 				0250C4D72122B68000034691 /* RoomMemberTitleView.m in Sources */,
 				0250C4D82122B68000034691 /* DirectoryRecentTableViewCell.m in Sources */,
 				0250C4D92122B68000034691 /* RoomMembershipWithPaginationTitleBubbleCell.m in Sources */,
+				02BEE1552125BBF800098505 /* RoomsDataSource.m in Sources */,
 				0250C4DA2122B68000034691 /* GroupsViewController.m in Sources */,
 				0250C4DB2122B68000034691 /* RoomMemberDetailsViewController.m in Sources */,
 				0250C4DC2122B68000034691 /* RoomMembershipExpandedWithPaginationTitleBubbleCell.m in Sources */,
@@ -3624,11 +3658,11 @@
 				0250C4E32122B68000034691 /* RoomFilesViewController.m in Sources */,
 				0250C4E42122B68000034691 /* RoomOutgoingTextMsgBubbleCell.m in Sources */,
 				0250C4E52122B68000034691 /* TableViewCellWithCheckBoxes.m in Sources */,
+				02BEE1562125BBF800098505 /* RoomsViewController.m in Sources */,
 				0250C4E62122B68000034691 /* MXRoomSummary+Riot.m in Sources */,
 				0250C4E72122B68000034691 /* EncryptionInfoView.m in Sources */,
 				0250C4E82122B68000034691 /* GroupParticipantsViewController.m in Sources */,
 				0250C4E92122B68000034691 /* GroupRoomTableViewCell.m in Sources */,
-				0250C4EA2122B68000034691 /* RoomsViewController.m in Sources */,
 				0250C4EB2122B68000034691 /* RoomMessagesSearchViewController.m in Sources */,
 				0250C4EC2122B68000034691 /* GroupInviteTableViewCell.m in Sources */,
 				0250C4ED2122B68000034691 /* ForgotPasswordInputsView.m in Sources */,
