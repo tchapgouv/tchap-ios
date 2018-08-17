@@ -59,7 +59,7 @@
                           bundle:[NSBundle bundleForClass:[SegmentedViewController class]]];
 }
 
-+ (instancetype)segmentedViewController
++ (instancetype)instantiate
 {
     return [[[self class] alloc] initWithNibName:NSStringFromClass([SegmentedViewController class])
                                           bundle:[NSBundle bundleForClass:[SegmentedViewController class]]];

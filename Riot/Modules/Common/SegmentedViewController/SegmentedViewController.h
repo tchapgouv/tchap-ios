@@ -68,9 +68,9 @@ limitations under the License.
  Creates and returns a new `SegmentedViewController` object.
 
  @discussion This is the designated initializer for programmatic instantiation.
- @return An initialized `SegmentedViewController` object if successful, `nil` otherwise.
+ @return An initialized `SegmentedViewController` object.
  */
-+ (instancetype)segmentedViewController;
++ (instancetype)instantiate;
 
 /**
  init the segmentedViewController with a list of UIViewControllers.

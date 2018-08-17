@@ -40,5 +40,13 @@
 @property (weak, nonatomic) IBOutlet UIView *homeServerSeparator;
 @property (weak, nonatomic) IBOutlet UIView *identityServerSeparator;
 
+
+/**
+ Creates and returns a new `AuthenticationViewController` object.
+ 
+ @return An initialized `AuthenticationViewController` object.
+ */
++ (instancetype)instantiate;
+
 @end
 

@@ -51,7 +51,7 @@
                           bundle:[NSBundle bundleForClass:self]];
 }
 
-+ (instancetype)authenticationViewController
++ (instancetype)instantiate
 {
     return [[[self class] alloc] initWithNibName:NSStringFromClass(self)
                                           bundle:[NSBundle bundleForClass:self]];
