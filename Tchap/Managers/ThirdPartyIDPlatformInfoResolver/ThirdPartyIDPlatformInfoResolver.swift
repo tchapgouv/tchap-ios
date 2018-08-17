@@ -24,7 +24,7 @@ public enum ResolveResult {
 
 /// `ThirdPartyIDPlatformInfoResolver` is used to check whether a third-party identifier (for example: an email address) is authorized in Tchap.
 /// It is used to retrieve the information of the platform associated to an authorized 3pid.
-final public class ThirdPartyIDPlatformInfoResolver: NSObject {
+final public class ThirdPartyIDPlatformInfoResolver {
     
     // The list of the known ISes in order to run over the list until to get an answer.
     private let identityServerUrls: [String]
@@ -36,8 +36,6 @@ final public class ThirdPartyIDPlatformInfoResolver: NSObject {
     ///   - identityServerUrls: the list of the known ISes in order to run over the list until to get an answer.
     public init(identityServerUrls: [String]) {
         self.identityServerUrls = identityServerUrls
-        
-        super.init()
     }
     
     /// Check whether a third-party identifier is authorized or not.
@@ -56,12 +54,12 @@ final public class ThirdPartyIDPlatformInfoResolver: NSObject {
         
         let identityServer = identityServerUrls[currentIndex]
         
-        guard let identityHttpClient = MXHTTPClient(baseURL: "\(identityServer)\(kMXIdentityAPIPrefixPath)", andOnUnrecognizedCertificateBlock: nil) else {
+        guard let identityHttpClient = MXHTTPClient(baseURL: "\(identityServer)/\(kMXIdentityAPIPrefixPath)", andOnUnrecognizedCertificateBlock: nil) else {
                 failure?(nil)
                 return
         }
         
-        identityHttpClient.request(withMethod: "GET", path: "info", parameters: ["address": address, "medium": medium], success: { (response: [AnyHashable: Any]?) in
+        let httpOperation = identityHttpClient.request(withMethod: "GET", path: "info", parameters: ["address": address, "medium": medium], success: { (response: [AnyHashable: Any]?) in
             guard let response = response else {
                 success?(.unauthorizedThirdPartyID)
                 return
@@ -89,5 +87,8 @@ final public class ThirdPartyIDPlatformInfoResolver: NSObject {
                 failure?(error)
             }
         })
+        
+        // Do not retry on failure
+        httpOperation?.maxNumberOfTries = 0
     }
 }

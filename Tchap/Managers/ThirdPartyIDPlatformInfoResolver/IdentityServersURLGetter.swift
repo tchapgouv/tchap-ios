@@ -18,7 +18,7 @@ import Foundation
 
 
 /// `IdentityServersURLGetter` is used to retrieved all the known identity server urls.
-final public class IdentityServersURLGetter: NSObject {
+final public class IdentityServersURLGetter {
     
     // MARK: - Public
     
@@ -54,7 +54,5 @@ final public class IdentityServersURLGetter: NSObject {
                 }
             }
         }
-        
-        super.init()
     }
 }
