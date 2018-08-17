@@ -5,3 +5,10 @@
 @import MatrixSDK;
 #import "WebViewViewController.h"
 #import "MatrixSDK+Swift.h"
+#import "LegacyAppDelegate.h"
+#import "AuthenticationViewController.h"
+#import "SegmentedViewController.h"
+#import "RoomViewController.h"
+#import "PeopleViewController.h"
+#import "RecentsDataSource.h"
+#import "SettingsViewController.h"
