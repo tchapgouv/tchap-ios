@@ -1363,8 +1363,11 @@
     movingRoom = nil;
     
     lastPotentialCellPath = nil;
-    ((RecentsDataSource*)self.dataSource).droppingCellIndexPath = nil;
-    ((RecentsDataSource*)self.dataSource).hiddenCellIndexPath = nil;
+    if ([self.dataSource isKindOfClass:RecentsDataSource.class])
+    {
+        ((RecentsDataSource*)self.dataSource).droppingCellIndexPath = nil;
+        ((RecentsDataSource*)self.dataSource).hiddenCellIndexPath = nil;
+    }
     
     [self.activityIndicator stopAnimating];
 }
