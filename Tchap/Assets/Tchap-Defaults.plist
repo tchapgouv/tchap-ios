@@ -2,6 +2,15 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>serverUrlPrefix</key>
+	<string>https://matrix.</string>
+	<key>preferredIdentityServerNames</key>
+	<array>
+		<string>i.tchap.gouv.fr</string>
+		<string>a.tchap.gouv.fr</string>
+	</array>
+	<key>otherIdentityServerNames</key>
+	<array/>
 	<key>pinRoomsWithMissedNotif</key>
 	<true/>
 	<key>pinRoomsWithUnread</key>
