@@ -18,22 +18,32 @@ import UIKit
 
 final class RoomsCoordinator: RoomsCoordinatorType {
     
+    // MARK: - Properties
+    
+    // MARK: Private
+    
     private let roomsViewController: RoomsViewController
     private let session: MXSession
-    private let recentsDataSource: RecentsDataSource
+    private let roomsDataSource: RoomsDataSource
+    
+    // MARK: Public
     
     var childCoordinators: [Coordinator] = []
+    
+    // MARK: - Setup
     
     init(session: MXSession) {
         self.session = session
         
         self.roomsViewController = RoomsViewController.instantiate()
-        self.recentsDataSource = RecentsDataSource(matrixSession: self.session)
-        self.recentsDataSource.setDelegate(self.roomsViewController, andRecentsDataSourceMode: RecentsDataSourceModeRooms)
+        self.roomsDataSource = RoomsDataSource(matrixSession: self.session)
+        self.roomsDataSource.finalizeInitialization()
     }
     
+    // MARK: - Public methods
+    
     func start() {
-        self.roomsViewController.displayList(self.recentsDataSource)
+        self.roomsViewController.displayList(self.roomsDataSource)
     }
     
     func toPresentable() -> UIViewController {
