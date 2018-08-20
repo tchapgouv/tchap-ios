@@ -18,7 +18,7 @@ import Foundation
 
 
 /// Protocol use to handle the platform information related to a third-party identifier.
-public protocol ThirdPartyIDPlatformInfoType {
+protocol ThirdPartyIDPlatformInfoType {
     // The hostname of the platform.
     var hostname: String {get}
     // Tell whether the given 3pid has been invited to the platform or not.

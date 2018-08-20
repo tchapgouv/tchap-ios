@@ -17,9 +17,9 @@
 import Foundation
 
 /// Structure use to return the platform information related to a third-party identifier.
-public struct ThirdPartyIDPlatformInfo: ThirdPartyIDPlatformInfoType {
+struct ThirdPartyIDPlatformInfo: ThirdPartyIDPlatformInfoType {
     // The hostname of the platform.
-    public let hostname: String
+    let hostname: String
     // Tell whether the given 3pid has been invited to the platform or not.
-    public var isInvited: Bool
+    let isInvited: Bool
 }

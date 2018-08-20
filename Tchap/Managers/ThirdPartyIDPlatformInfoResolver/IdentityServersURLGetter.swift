@@ -18,18 +18,20 @@ import Foundation
 
 
 /// `IdentityServersURLGetter` is used to retrieved all the known identity server urls.
-final public class IdentityServersURLGetter {
+final class IdentityServersURLGetter {
     
     // MARK: - Public
     
     // The available identity servers
-    public var identityServerUrls = [String]()
+    let identityServerUrls: [String]
     
     /// Prepare the list of the known ISes
     ///
     /// - Parameters:
     ///   - currentIdentityServerURL: the current identity server if any.
-    public init(currentIdentityServerURL: String?) {
+    init(currentIdentityServerURL: String?) {
+        var identityServerUrls: [String] = []
+        
         // Consider first the current identity server if any.
         if let currentIdentityServerURL = currentIdentityServerURL {
             identityServerUrls.append(currentIdentityServerURL)
@@ -54,5 +56,7 @@ final public class IdentityServersURLGetter {
                 }
             }
         }
+        
+        self.identityServerUrls = identityServerUrls
     }
 }

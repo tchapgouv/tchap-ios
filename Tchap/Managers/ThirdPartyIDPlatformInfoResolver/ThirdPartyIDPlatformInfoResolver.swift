@@ -17,24 +17,23 @@
 import Foundation
 
 /// List the different result cases
-public enum ResolveResult {
+enum ResolveResult {
     case authorizedThirdPartyID(info: ThirdPartyIDPlatformInfoType)
     case unauthorizedThirdPartyID
 }
 
 /// `ThirdPartyIDPlatformInfoResolver` is used to check whether a third-party identifier (for example: an email address) is authorized in Tchap.
 /// It is used to retrieve the information of the platform associated to an authorized 3pid.
-final public class ThirdPartyIDPlatformInfoResolver {
+final class ThirdPartyIDPlatformInfoResolver {
     
-    // The list of the known ISes in order to run over the list until to get an answer.
+    // The list of the known identity server urls.
     private let identityServerUrls: [String]
-    private var currentIndex = 0;
     
     // MARK: - Public
     
     /// - Parameters:
     ///   - identityServerUrls: the list of the known ISes in order to run over the list until to get an answer.
-    public init(identityServerUrls: [String]) {
+    init(identityServerUrls: [String]) {
         self.identityServerUrls = identityServerUrls
     }
     
@@ -46,17 +45,25 @@ final public class ThirdPartyIDPlatformInfoResolver {
     ///   - medium: the type of the third-party id (see kMX3PIDMediumEmail, kMX3PIDMediumMSISDN).
     ///   - success: A block object called when the operation succeeds.
     ///   - failure: A block object called when the operation fails.
-    public func resolvePlatformInformationFor(address: String, medium: String, success: ((ResolveResult) -> Void)?, failure: ((Error?) -> Void)?) {
-        guard currentIndex < identityServerUrls.count else {
+    func resolvePlatformInformation(address: String, medium: String, success: ((ResolveResult) -> Void)?, failure: ((Error?) -> Void)?) {
+        
+        // Run over all the provided identity servers until we get the Tchap platform for the provided email address.
+        resolvePlatformInformation(index: 0, address: address, medium: medium, success: success, failure: failure)
+    }
+    
+    // MARK: - Private
+    
+    private func resolvePlatformInformation(index: Int, address: String, medium: String, success: ((ResolveResult) -> Void)?, failure: ((Error?) -> Void)?) {
+        guard index < identityServerUrls.count else {
             failure?(nil)
             return
         }
         
-        let identityServer = identityServerUrls[currentIndex]
+        let identityServer = identityServerUrls[index]
         
         guard let identityHttpClient = MXHTTPClient(baseURL: "\(identityServer)/\(kMXIdentityAPIPrefixPath)", andOnUnrecognizedCertificateBlock: nil) else {
-                failure?(nil)
-                return
+            failure?(nil)
+            return
         }
         
         let httpOperation = identityHttpClient.request(withMethod: "GET", path: "info", parameters: ["address": address, "medium": medium], success: { (response: [AnyHashable: Any]?) in
@@ -70,19 +77,18 @@ final public class ThirdPartyIDPlatformInfoResolver {
             let isInvited = response["invited"] as? Bool ?? false
             
             if let hostname = response["hs"] as? String {
-                let info = ThirdPartyIDPlatformInfo(hostname: hostname, isInvited: isInvited);
-                success?(.authorizedThirdPartyID(info: info));
+                let info = ThirdPartyIDPlatformInfo(hostname: hostname, isInvited: isInvited)
+                success?(.authorizedThirdPartyID(info: info))
             } else {
-                success?(.unauthorizedThirdPartyID);
+                success?(.unauthorizedThirdPartyID)
             }
         }, failure: { (error: Error?) in
             NSLog("[ThirdPartyIDPlatformInfoResolver] info resquest on \(identityServer) failed")
             
-            // Try another identity server
-            self.currentIndex += 1
-            if self.currentIndex < self.identityServerUrls.count {
-                // Try on anothezr server
-                self.resolvePlatformInformationFor(address: address, medium: medium, success: success, failure: failure)
+            // Try another identity server if any
+            let index = index + 1
+            if index < self.identityServerUrls.count {
+                self.resolvePlatformInformation(index: index, address: address, medium: medium, success: success, failure: failure)
             } else {
                 failure?(error)
             }
