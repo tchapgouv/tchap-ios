@@ -22,8 +22,6 @@ protocol AuthenticationCoordinatorDelegate: class {
 
 final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorType {
     
-    // MARK: - Constants
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -34,8 +32,6 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorType {
     // MARK: Public
     
     weak var delegate: AuthenticationCoordinatorDelegate?
-    
-    // MARK: Public
     
     var childCoordinators: [Coordinator] = []
     
@@ -49,9 +45,7 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorType {
     // MARK: - Public methods
     
     func start() {
-//        self.authenticationViewController.delegate = self
         self.router.setRootModule(self.authenticationViewController)
-        
         self.registerLogintNotification()
     }
     
@@ -72,25 +66,12 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorType {
     @objc private func userDidLogin() {
         self.unregisterLoginNotification()
         
-//        if let userId = MXKAccountManager.shared().accounts.last?.mxSession.myUser.userId {
-            self.didAuthenticate(with: "")
-//        }
+        if let userId = MXKAccountManager.shared().accounts.last?.mxCredentials.userId {
+            self.didAuthenticate(with: userId)
+        }
     }
     
     private func didAuthenticate(with userId: String) {
-//        self.router.dismissModule(animated: true, completion: nil)
         self.delegate?.authenticationCoordinator(coordinator: self, didAuthenticateWithUserId: userId)
-    }
-    
-//    deinit {
-//        self.authenticationViewController.delegate = nil
-//    }
-}
-
-// MARK: - MXKAuthenticationViewControllerDelegate
-extension AuthenticationCoordinator: MXKAuthenticationViewControllerDelegate {
-
-    func authenticationViewController(_ authenticationViewController: MXKAuthenticationViewController!, didLogWithUserId userId: String!) {
-        self.didAuthenticate(with: userId)
     }
 }
