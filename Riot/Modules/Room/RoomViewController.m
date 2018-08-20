@@ -3915,7 +3915,7 @@
         {
             // The room has an active jitsi widget
             // Show it in the banner if the user is not already in
-            AppDelegate *appDelegate = [AppDelegate theDelegate];
+            LegacyAppDelegate *appDelegate = [AppDelegate theDelegate];
             if ([appDelegate.jitsiViewController.widget.widgetId isEqualToString:jitsiWidget.widgetId])
             {
                 if ([self checkUnsentMessages] == NO)
