@@ -16,7 +16,6 @@
 
 #import "Analytics.h"
 
-#import "AppDelegate.h"
 #import "GeneratedInterface-Swift.h"
 
 // All metrics are store under a Piwik category called "Metrics".
