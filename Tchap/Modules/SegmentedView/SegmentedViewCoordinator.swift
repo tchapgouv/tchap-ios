@@ -52,6 +52,7 @@ final class SegmentedViewCoordinator: SegmentedViewCoordinatorType {
         let viewControllers = [roomsCoordinator.toPresentable(), contactsCoordinator.toPresentable()]
         
         let segmentedViewController = self.createSegmentedViewController(with: viewControllers)
+        segmentedViewController.tc_removeBackTitle()
         
         self.navigationRouter.setRootModule(segmentedViewController)
         
