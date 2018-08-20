@@ -18,19 +18,31 @@ import Foundation
 
 final class ContactsCoordinator: RoomsCoordinatorType {
     
+    // MARK: - Properties
+    
+    // MARK: Private
+    
     private let contactsViewController: PeopleViewController
     private let session: MXSession
     private let recentsDataSource: RecentsDataSource
     
+    // MARK: Public
+    
     var childCoordinators: [Coordinator] = []
+    
+    // MARK: - Setup
     
     init(session: MXSession) {
         self.session = session
         
         self.contactsViewController = PeopleViewController.instantiate()
+        
         self.recentsDataSource = RecentsDataSource(matrixSession: self.session)
+        self.recentsDataSource.finalizeInitialization()
         self.recentsDataSource.setDelegate(self.contactsViewController, andRecentsDataSourceMode: RecentsDataSourceModePeople)
     }
+    
+    // MARK: - Public methods
     
     func start() {
         self.contactsViewController.displayList(self.recentsDataSource)

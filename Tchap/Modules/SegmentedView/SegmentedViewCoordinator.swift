@@ -18,9 +18,7 @@ import Foundation
 
 import Foundation
 
-final class SegmentedViewCoordinator: SegmentedViewCoordinatorType {
-    
-    // MARK: - Constants
+final class SegmentedViewCoordinator: SegmentedViewCoordinatorType {        
     
     // MARK: - Properties
     

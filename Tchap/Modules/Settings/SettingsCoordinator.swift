@@ -18,15 +18,25 @@ import Foundation
 
 final class SettingsCoordinator: SettingsCoordinatorType {
     
+    // MARK: - Properties
+    
+    // MARK: Private
+    
     private let settingsViewController: SettingsViewController
     private let router: NavigationRouterType
     
+    // MARK: Public
+    
     var childCoordinators: [Coordinator] = []
+    
+    // MARK: - Setup
     
     init(router: NavigationRouterType) {
         self.router = router
         self.settingsViewController = SettingsViewController.instantiate()
     }
+    
+    // MARK: - Public methods
     
     func start() {
     }
