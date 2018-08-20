@@ -19,18 +19,43 @@ import UIKit
 /// Protocol describing a router that wraps a UINavigationController and add convenient completion handlers. Completions are called when a Presentable is removed.
 /// Routers are used to be passed between coordinators. They handles only `physical` navigation.
 protocol NavigationRouterType: class, Presentable {
-    
-    var navigationController: UINavigationController { get }
-    var rootViewController: UIViewController? { get }
 
+    /// Present modally a view controller on the navigation controller
+    ///
+    /// - Parameter module: The Presentable to present.
+    /// - Parameter animated: Specify true to animate the transition.
     func present(_ module: Presentable, animated: Bool)
-    func dismissModule(animated: Bool, completion: (() -> Void)?) // ! Here animation completion not the pop completion
-    func push(_ module: Presentable, animated: Bool, popCompletion: (() -> Void)?)
-    func popModule(animated: Bool)
+    
+    /// Dismiss presented view controller from navigation controller
+    ///
+    /// - Parameter animated: Specify true to animate the transition.
+    /// - Parameter completion: Animation completion (not the pop completion).
+    func dismissModule(animated: Bool, completion: (() -> Void)?)
+    
+    /// Set root view controller of navigation controller
+    ///
+    /// - Parameter module: The Presentable to set as root.
+    /// - Parameter hideNavigationBar: Specify true to hide the UINavigationBar.
     func setRootModule(_ module: Presentable, hideNavigationBar: Bool)
+    
+    /// Pop to root view controller of navigation controller and remove all others
+    ///
+    /// - Parameter animated: Animate.
     func popToRootModule(animated: Bool)
+    
+    /// Push a view controller on navigation controller stack
+    ///
+    /// - Parameter animated: Specify true to animate the transition.
+    /// - Parameter popCompletion: Completion called when `module` is removed from the navigation stack.
+    func push(_ module: Presentable, animated: Bool, popCompletion: (() -> Void)?)
+    
+    /// Pop last view controller from navigation controller stack
+    ///
+    /// - Parameter animated: Specify true to animate the transition.
+    func popModule(animated: Bool)
 }
 
+// `NavigationRouterType` default implementation
 extension NavigationRouterType {
     func setRootModule(_ module: Presentable) {
         setRootModule(module, hideNavigationBar: false)

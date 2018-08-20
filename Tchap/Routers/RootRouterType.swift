@@ -18,10 +18,7 @@ import UIKit
 
 /// Protocol describing a router that wrap the root navigation of the application.
 /// Routers are used to be passed between coordinators. They handles only `physical` navigation.
-protocol RootRouterType: class {
-    
-    /// The root view controller currently presented
-    var rootViewController: UIViewController? { get }        
+protocol RootRouterType: class {          
     
     /// Update the root view controller
     ///
@@ -31,7 +28,7 @@ protocol RootRouterType: class {
     /// Dismiss the root view controller
     ///
     /// - Parameters:
-    ///     - animated: true to animate the transition.
-    ///     - completion: the block executed after the view controller is dismissed.
+    ///     - animated: Specify true to animate the transition.
+    ///     - completion: The closure executed after the view controller is dismissed.
     func dismissModule(animated: Bool, completion: (() -> Void)?)
 }

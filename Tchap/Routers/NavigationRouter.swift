@@ -27,15 +27,7 @@ final class NavigationRouter: NSObject, NavigationRouterType {
     
     // MARK: Public
     
-    let navigationController: UINavigationController
-    
-    var rootViewController: UIViewController? {
-        return navigationController.viewControllers.first
-    }
-    
-    var hasRootController: Bool {
-        return rootViewController != nil
-    }
+    private let navigationController: UINavigationController    
     
     // MARK: - Setup
     
@@ -54,6 +46,19 @@ final class NavigationRouter: NSObject, NavigationRouterType {
     
     func dismissModule(animated: Bool = true, completion: (() -> Void)? = nil) {
         navigationController.dismiss(animated: animated, completion: completion)
+    }
+    
+    func setRootModule(_ module: Presentable, hideNavigationBar: Bool = false) {
+        // Call all completions so all coordinators can be deallocated
+        completions.forEach { $0.value() }
+        navigationController.setViewControllers([module.toPresentable()], animated: false)
+        navigationController.isNavigationBarHidden = hideNavigationBar
+    }
+    
+    func popToRootModule(animated: Bool) {
+        if let controllers = navigationController.popToRootViewController(animated: animated) {
+            controllers.forEach { runCompletion(for: $0) }
+        }
     }
     
     func push(_ module: Presentable, animated: Bool = true, popCompletion: (() -> Void)? = nil) {
@@ -77,20 +82,7 @@ final class NavigationRouter: NSObject, NavigationRouterType {
             runCompletion(for: controller)
         }
     }
-    
-    func setRootModule(_ module: Presentable, hideNavigationBar: Bool = false) {
-        // Call all completions so all coordinators can be deallocated
-        completions.forEach { $0.value() }
-        navigationController.setViewControllers([module.toPresentable()], animated: false)
-        navigationController.isNavigationBarHidden = hideNavigationBar
-    }
-    
-    func popToRootModule(animated: Bool) {
-        if let controllers = navigationController.popToRootViewController(animated: animated) {
-            controllers.forEach { runCompletion(for: $0) }
-        }
-    }
-    
+        
     // MARK: Presentable
     
     func toPresentable() -> UIViewController {

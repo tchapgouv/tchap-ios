@@ -31,6 +31,7 @@ final class RootRouter: RootRouterType {
     
     let window: UIWindow
     
+    /// The root view controller currently presented    
     var rootViewController: UIViewController? {
         return self.window.rootViewController
     }
