@@ -92,7 +92,6 @@
 		0250C4E72122B68000034691 /* EncryptionInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5596C20EFA85C00210D55 /* EncryptionInfoView.m */; };
 		0250C4E82122B68000034691 /* GroupParticipantsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556C120EE6C4C00210D55 /* GroupParticipantsViewController.m */; };
 		0250C4E92122B68000034691 /* GroupRoomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5583B20EF6E7F00210D55 /* GroupRoomTableViewCell.m */; };
-		0250C4EA2122B68000034691 /* RoomsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556F820EE6C4C00210D55 /* RoomsViewController.m */; };
 		0250C4EB2122B68000034691 /* RoomMessagesSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5569A20EE6C4C00210D55 /* RoomMessagesSearchViewController.m */; };
 		0250C4EC2122B68000034691 /* GroupInviteTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5578B20EF568D00210D55 /* GroupInviteTableViewCell.m */; };
 		0250C4ED2122B68000034691 /* ForgotPasswordInputsView.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5579420EF575A00210D55 /* ForgotPasswordInputsView.m */; };
@@ -296,10 +295,12 @@
 		0250C5CA2122E63900034691 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0250C5C62122E63900034691 /* main.m */; };
 		0250C5CB2122E63900034691 /* empty.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0250C5C82122E63900034691 /* empty.mm */; };
 		0250C5CE212314B300034691 /* Tchap-Defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0250C5CD212314B300034691 /* Tchap-Defaults.plist */; };
-		02BEE15C2125D11000098505 /* ThirdPartyIDPlatformInfoResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BEE15A2125D11000098505 /* ThirdPartyIDPlatformInfoResolver.swift */; };
-		02BEE15D2125D11000098505 /* ThirdPartyIDPlatformInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BEE15B2125D11000098505 /* ThirdPartyIDPlatformInfo.swift */; };
-		02BEE15F2125EB5900098505 /* ThirdPartyIDPlatformInfoType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BEE15E2125EB5900098505 /* ThirdPartyIDPlatformInfoType.swift */; };
-		02BEE1612125EC2200098505 /* IdentityServersURLGetter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BEE1602125EC2200098505 /* IdentityServersURLGetter.swift */; };
+		02BEE1552125BBF800098505 /* RoomsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 02BEE1512125BBF800098505 /* RoomsDataSource.m */; };
+		02BEE1562125BBF800098505 /* RoomsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 02BEE1542125BBF800098505 /* RoomsViewController.m */; };
+		02BEE18A212AB23A00098505 /* ThirdPartyIDPlatformInfoResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BEE186212AB23A00098505 /* ThirdPartyIDPlatformInfoResolver.swift */; };
+		02BEE18B212AB23A00098505 /* IdentityServersURLGetter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BEE187212AB23A00098505 /* IdentityServersURLGetter.swift */; };
+		02BEE18C212AB23A00098505 /* ThirdPartyIDPlatformInfoType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BEE188212AB23A00098505 /* ThirdPartyIDPlatformInfoType.swift */; };
+		02BEE18D212AB23A00098505 /* ThirdPartyIDPlatformInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BEE189212AB23A00098505 /* ThirdPartyIDPlatformInfo.swift */; };
 		24CBEC591F0EAD310093EABB /* RiotShareExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 24CBEC4E1F0EAD310093EABB /* RiotShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		24EEE5A21F23A8B400B3C705 /* MXRoom+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBE81E7009EC00A9B29C /* MXRoom+Riot.m */; };
 		24EEE5A31F23A8C300B3C705 /* AvatarGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC111E7009EC00A9B29C /* AvatarGenerator.m */; };
@@ -700,10 +701,14 @@
 		0250C5C72122E63900034691 /* Tchap.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Tchap.entitlements; sourceTree = "<group>"; };
 		0250C5C82122E63900034691 /* empty.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = empty.mm; sourceTree = "<group>"; };
 		0250C5CD212314B300034691 /* Tchap-Defaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Tchap-Defaults.plist"; sourceTree = "<group>"; };
-		02BEE15A2125D11000098505 /* ThirdPartyIDPlatformInfoResolver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThirdPartyIDPlatformInfoResolver.swift; sourceTree = "<group>"; };
-		02BEE15B2125D11000098505 /* ThirdPartyIDPlatformInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThirdPartyIDPlatformInfo.swift; sourceTree = "<group>"; };
-		02BEE15E2125EB5900098505 /* ThirdPartyIDPlatformInfoType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThirdPartyIDPlatformInfoType.swift; sourceTree = "<group>"; };
-		02BEE1602125EC2200098505 /* IdentityServersURLGetter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentityServersURLGetter.swift; sourceTree = "<group>"; };
+		02BEE1512125BBF800098505 /* RoomsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomsDataSource.m; sourceTree = "<group>"; };
+		02BEE1522125BBF800098505 /* RoomsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomsDataSource.h; sourceTree = "<group>"; };
+		02BEE1532125BBF800098505 /* RoomsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomsViewController.h; sourceTree = "<group>"; };
+		02BEE1542125BBF800098505 /* RoomsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomsViewController.m; sourceTree = "<group>"; };
+		02BEE186212AB23A00098505 /* ThirdPartyIDPlatformInfoResolver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThirdPartyIDPlatformInfoResolver.swift; sourceTree = "<group>"; };
+		02BEE187212AB23A00098505 /* IdentityServersURLGetter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdentityServersURLGetter.swift; sourceTree = "<group>"; };
+		02BEE188212AB23A00098505 /* ThirdPartyIDPlatformInfoType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThirdPartyIDPlatformInfoType.swift; sourceTree = "<group>"; };
+		02BEE189212AB23A00098505 /* ThirdPartyIDPlatformInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThirdPartyIDPlatformInfo.swift; sourceTree = "<group>"; };
 		0598CA8AB2933381369BED6C /* Pods-RiotPods-Tchap.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-Tchap.release.xcconfig"; path = "Pods/Target Support Files/Pods-RiotPods-Tchap/Pods-RiotPods-Tchap.release.xcconfig"; sourceTree = "<group>"; };
 		12AA0005C8B3D8D8162584C5 /* Pods-RiotShareExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotShareExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RiotShareExtension/Pods-RiotShareExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		22D76C11C202B6BC5917A049 /* Pods-RiotPods-RiotShareExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-RiotShareExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-RiotPods-RiotShareExtension/Pods-RiotPods-RiotShareExtension.release.xcconfig"; sourceTree = "<group>"; };
@@ -1302,7 +1307,8 @@
 		0250C5C12122BBA600034691 /* Tchap */ = {
 			isa = PBXGroup;
 			children = (
-				0250C5CF21233DEE00034691 /* Managers */,
+				02BEE184212AB23A00098505 /* Managers */,
+				02BEE14E2125BBF800098505 /* Modules */,
 				0250C5CC2123146A00034691 /* Assets */,
 				0250C5C22122BBD200034691 /* SupportingFiles */,
 			);
@@ -1329,21 +1335,48 @@
 			path = Assets;
 			sourceTree = "<group>";
 		};
-		0250C5CF21233DEE00034691 /* Managers */ = {
+		02BEE14E2125BBF800098505 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
-				02BEE1592125D11000098505 /* ThirdPartyIDPlatformInfoResolver */,
+				02BEE14F2125BBF800098505 /* Rooms */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+		02BEE14F2125BBF800098505 /* Rooms */ = {
+			isa = PBXGroup;
+			children = (
+				02BEE1502125BBF800098505 /* DataSources */,
+				02BEE1532125BBF800098505 /* RoomsViewController.h */,
+				02BEE1542125BBF800098505 /* RoomsViewController.m */,
+			);
+			path = Rooms;
+			sourceTree = "<group>";
+		};
+		02BEE1502125BBF800098505 /* DataSources */ = {
+			isa = PBXGroup;
+			children = (
+				02BEE1522125BBF800098505 /* RoomsDataSource.h */,
+				02BEE1512125BBF800098505 /* RoomsDataSource.m */,
+			);
+			path = DataSources;
+			sourceTree = "<group>";
+		};
+		02BEE184212AB23A00098505 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				02BEE185212AB23A00098505 /* ThirdPartyIDPlatformInfoResolver */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
 		};
-		02BEE1592125D11000098505 /* ThirdPartyIDPlatformInfoResolver */ = {
+		02BEE185212AB23A00098505 /* ThirdPartyIDPlatformInfoResolver */ = {
 			isa = PBXGroup;
 			children = (
-				02BEE15A2125D11000098505 /* ThirdPartyIDPlatformInfoResolver.swift */,
-				02BEE15B2125D11000098505 /* ThirdPartyIDPlatformInfo.swift */,
-				02BEE15E2125EB5900098505 /* ThirdPartyIDPlatformInfoType.swift */,
-				02BEE1602125EC2200098505 /* IdentityServersURLGetter.swift */,
+				02BEE186212AB23A00098505 /* ThirdPartyIDPlatformInfoResolver.swift */,
+				02BEE187212AB23A00098505 /* IdentityServersURLGetter.swift */,
+				02BEE188212AB23A00098505 /* ThirdPartyIDPlatformInfoType.swift */,
+				02BEE189212AB23A00098505 /* ThirdPartyIDPlatformInfo.swift */,
 			);
 			path = ThirdPartyIDPlatformInfoResolver;
 			sourceTree = "<group>";
@@ -3586,6 +3619,7 @@
 				0250C4A32122B68000034691 /* StartChatViewController.m in Sources */,
 				0250C4A42122B68000034691 /* HomeMessagesSearchViewController.m in Sources */,
 				0250C4A52122B68000034691 /* RoomIncomingAttachmentBubbleCell.m in Sources */,
+				02BEE18B212AB23A00098505 /* IdentityServersURLGetter.swift in Sources */,
 				0250C4A62122B68000034691 /* PeopleViewController.m in Sources */,
 				0250C4A72122B68000034691 /* Widget.m in Sources */,
 				0250C4A82122B68000034691 /* MessagesSearchResultAttachmentBubbleCell.m in Sources */,
@@ -3610,6 +3644,7 @@
 				0250C4B92122B68000034691 /* Analytics.m in Sources */,
 				0250C4BA2122B68000034691 /* RoomIncomingEncryptedTextMsgWithoutSenderNameBubbleCell.m in Sources */,
 				0250C4BB2122B68000034691 /* WidgetViewController.m in Sources */,
+				02BEE18C212AB23A00098505 /* ThirdPartyIDPlatformInfoType.swift in Sources */,
 				0250C4BC2122B68000034691 /* MediaPickerViewController.m in Sources */,
 				0250C4BD2122B68000034691 /* RageShakeManager.m in Sources */,
 				0250C4BE2122B68000034691 /* RoomOutgoingEncryptedTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
@@ -3633,7 +3668,7 @@
 				0250C4D02122B68000034691 /* RoomDataSource.m in Sources */,
 				0250C4D12122B68000034691 /* RoomIncomingTextMsgWithoutSenderNameBubbleCell.m in Sources */,
 				0250C4D22122B68000034691 /* LanguagePickerViewController.m in Sources */,
-				02BEE15F2125EB5900098505 /* ThirdPartyIDPlatformInfoType.swift in Sources */,
+				02BEE18D212AB23A00098505 /* ThirdPartyIDPlatformInfo.swift in Sources */,
 				0250C4D32122B68000034691 /* RoomIncomingTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
 				0250C4D42122B68000034691 /* RoomIncomingEncryptedTextMsgBubbleCell.m in Sources */,
 				0250C4D52122B68000034691 /* MasterTabBarController.m in Sources */,
@@ -3641,6 +3676,7 @@
 				0250C4D72122B68000034691 /* RoomMemberTitleView.m in Sources */,
 				0250C4D82122B68000034691 /* DirectoryRecentTableViewCell.m in Sources */,
 				0250C4D92122B68000034691 /* RoomMembershipWithPaginationTitleBubbleCell.m in Sources */,
+				02BEE1552125BBF800098505 /* RoomsDataSource.m in Sources */,
 				0250C4DA2122B68000034691 /* GroupsViewController.m in Sources */,
 				0250C4DB2122B68000034691 /* RoomMemberDetailsViewController.m in Sources */,
 				0250C4DC2122B68000034691 /* RoomMembershipExpandedWithPaginationTitleBubbleCell.m in Sources */,
@@ -3653,11 +3689,11 @@
 				0250C4E32122B68000034691 /* RoomFilesViewController.m in Sources */,
 				0250C4E42122B68000034691 /* RoomOutgoingTextMsgBubbleCell.m in Sources */,
 				0250C4E52122B68000034691 /* TableViewCellWithCheckBoxes.m in Sources */,
+				02BEE1562125BBF800098505 /* RoomsViewController.m in Sources */,
 				0250C4E62122B68000034691 /* MXRoomSummary+Riot.m in Sources */,
 				0250C4E72122B68000034691 /* EncryptionInfoView.m in Sources */,
 				0250C4E82122B68000034691 /* GroupParticipantsViewController.m in Sources */,
 				0250C4E92122B68000034691 /* GroupRoomTableViewCell.m in Sources */,
-				0250C4EA2122B68000034691 /* RoomsViewController.m in Sources */,
 				0250C4EB2122B68000034691 /* RoomMessagesSearchViewController.m in Sources */,
 				0250C4EC2122B68000034691 /* GroupInviteTableViewCell.m in Sources */,
 				0250C4ED2122B68000034691 /* ForgotPasswordInputsView.m in Sources */,
@@ -3674,7 +3710,6 @@
 				0250C4F82122B68000034691 /* RoomIdOrAliasTableViewCell.m in Sources */,
 				0250C4F92122B68000034691 /* RoomPreviewData.m in Sources */,
 				0250C4FA2122B68000034691 /* EventDetailsView.m in Sources */,
-				02BEE15C2125D11000098505 /* ThirdPartyIDPlatformInfoResolver.swift in Sources */,
 				0250C4FB2122B68000034691 /* IncomingCallView.m in Sources */,
 				0250C4FC2122B68000034691 /* GroupTableViewCell.m in Sources */,
 				0250C4FD2122B68000034691 /* GroupHomeViewController.m in Sources */,
@@ -3689,7 +3724,6 @@
 				0250C5062122B68000034691 /* AuthInputsView.m in Sources */,
 				0250C5072122B68000034691 /* InviteRecentTableViewCell.m in Sources */,
 				0250C5082122B68000034691 /* ContactDetailsViewController.m in Sources */,
-				02BEE15D2125D11000098505 /* ThirdPartyIDPlatformInfo.swift in Sources */,
 				0250C5092122B68000034691 /* OnBoardingManager.swift in Sources */,
 				0250C50A2122B68000034691 /* GroupDetailsViewController.m in Sources */,
 				0250C50B2122B68000034691 /* RoomKeyRequestViewController.m in Sources */,
@@ -3710,13 +3744,13 @@
 				0250C51A2122B68000034691 /* TableViewCellWithLabelAndLargeTextView.m in Sources */,
 				0250C51B2122B68000034691 /* RoomIncomingEncryptedAttachmentBubbleCell.m in Sources */,
 				0250C51C2122B68000034691 /* DirectoryServerDetailTableViewCell.m in Sources */,
+				02BEE18A212AB23A00098505 /* ThirdPartyIDPlatformInfoResolver.swift in Sources */,
 				0250C51D2122B68000034691 /* RoomEmptyBubbleCell.m in Sources */,
 				0250C51E2122B68000034691 /* UsersDevicesViewController.m in Sources */,
 				0250C51F2122B68000034691 /* RoomEncryptedDataBubbleCell.m in Sources */,
 				0250C5202122B68000034691 /* MatrixSDK+Swift.m in Sources */,
 				0250C5212122B68000034691 /* RoomMembershipBubbleCell.m in Sources */,
 				0250C5222122B68000034691 /* DisabledRoomInputToolbarView.m in Sources */,
-				02BEE1612125EC2200098505 /* IdentityServersURLGetter.swift in Sources */,
 				0250C5232122B68000034691 /* GroupTableViewCellWithSwitch.m in Sources */,
 				0250C5242122B68000034691 /* MessagesSearchResultTextMsgBubbleCell.m in Sources */,
 				0250C5252122B68000034691 /* RoomBubbleCellData.m in Sources */,

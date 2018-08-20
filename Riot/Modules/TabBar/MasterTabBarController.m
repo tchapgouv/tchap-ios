@@ -20,6 +20,7 @@
 #import "UnifiedSearchViewController.h"
 
 #import "RecentsDataSource.h"
+#import "RoomsDataSource.h"
 #import "GroupsDataSource.h"
 
 #import "AppDelegate.h"
@@ -57,6 +58,9 @@
     
     // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
     id kRiotDesignValuesDidChangeThemeNotificationObserver;
+    
+    // The rooms data source
+    RoomsDataSource *roomsDataSource;
     
     // The groups data source
     GroupsDataSource *groupsDataSource;
@@ -246,7 +250,6 @@
         [_homeViewController displayList:recentsDataSource];
         [_favouritesViewController displayList:recentsDataSource];
         [_peopleViewController displayList:recentsDataSource];
-        [_roomsViewController displayList:recentsDataSource];
         
         // Restore the right delegate of the shared recent data source.
         id<MXKDataSourceDelegate> recentsDataSourceDelegate = _homeViewController;
@@ -263,15 +266,16 @@
                 recentsDataSourceDelegate = _peopleViewController;
                 recentsDataSourceMode = RecentsDataSourceModePeople;
                 break;
-            case TABBAR_ROOMS_INDEX:
-                recentsDataSourceDelegate = _roomsViewController;
-                recentsDataSourceMode = RecentsDataSourceModeRooms;
-                break;
                 
             default:
                 break;
         }
         [recentsDataSource setDelegate:recentsDataSourceDelegate andRecentsDataSourceMode:recentsDataSourceMode];
+        
+        // Init the rooms data source
+        roomsDataSource = [[RoomsDataSource alloc] initWithMatrixSession:mainSession];
+        [roomsDataSource finalizeInitialization];
+        [_roomsViewController displayList:roomsDataSource];
         
         // Init the recents data source
         groupsDataSource = [[GroupsDataSource alloc] initWithMatrixSession:mainSession];
@@ -288,6 +292,7 @@
                 {
                     // Add the session to the recents data source
                     [recentsDataSource addMatrixSession:mxSession];
+                    [roomsDataSource addMatrixSession:mxSession];
                 }
             }
         }
@@ -314,6 +319,7 @@
         {
             // Add the session to the existing data sources
             [recentsDataSource addMatrixSession:mxSession];
+            [roomsDataSource addMatrixSession:mxSession];
         }
     }
     
@@ -332,6 +338,7 @@
 - (void)removeMatrixSession:(MXSession *)mxSession
 {
     [recentsDataSource removeMatrixSession:mxSession];
+    [roomsDataSource removeMatrixSession:mxSession];
     
     // Check whether there are others sessions
     if (!recentsDataSource.mxSessions.count)
@@ -346,6 +353,9 @@
         
         [recentsDataSource destroy];
         recentsDataSource = nil;
+        
+        [roomsDataSource destroy];
+        roomsDataSource = nil;
     }
     
     [mxSessionArray removeObject:mxSession];
@@ -780,7 +790,7 @@
     
     // Update the badge on People and Rooms tabs
     [self setMissedDiscussionsCount:recentsDataSource.missedDirectDiscussionsCount onTabBarItem:TABBAR_PEOPLE_INDEX withBadgeColor:(recentsDataSource.missedHighlightDirectDiscussionsCount ? kRiotColorPinkRed : kRiotColorGreen)];
-    [self setMissedDiscussionsCount:recentsDataSource.missedGroupDiscussionsCount onTabBarItem:TABBAR_ROOMS_INDEX withBadgeColor:(recentsDataSource.missedHighlightGroupDiscussionsCount ? kRiotColorPinkRed : kRiotColorGreen)];
+    [self setMissedDiscussionsCount:roomsDataSource.missedConversationsCount onTabBarItem:TABBAR_ROOMS_INDEX withBadgeColor:(roomsDataSource.missedHighlightConversationsCount ? kRiotColorPinkRed : kRiotColorGreen)];
 }
 
 - (void)setMissedDiscussionsCount:(NSUInteger)count onTabBarItem:(NSUInteger)index withBadgeColor:(UIColor*)badgeColor
