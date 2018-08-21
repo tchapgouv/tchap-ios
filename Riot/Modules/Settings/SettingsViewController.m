@@ -245,6 +245,12 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
 @implementation SettingsViewController
 
++ (instancetype)instantiate
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+    return [storyboard instantiateViewControllerWithIdentifier:@"SettingsViewController"];
+}
+
 - (void)finalizeInit
 {
     [super finalizeInit];

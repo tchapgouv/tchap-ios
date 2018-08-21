@@ -1,12 +1,12 @@
 /*
- Copyright 2017 Vector Creations Ltd
-
+ Copyright 2018 New Vector Ltd
+ 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
-
+ 
  http://www.apache.org/licenses/LICENSE-2.0
-
+ 
  Unless required by applicable law or agreed to in writing, software
  distributed under the License is distributed on an "AS IS" BASIS,
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,23 +14,13 @@
  limitations under the License.
  */
 
-#import "RecentsViewController.h"
+import UIKit
 
-/**
- The `RoomsViewController` screen is the view controller displayed when `Rooms` tab is selected.
- */
-@interface RoomsViewController : RecentsViewController
-
-/**
- Scroll the next room with missed notifications to the top.
- */
-- (void)scrollToNextRoomWithMissedNotifications;
-
-/**
- Creates and returns a new `RoomsViewController` object.
- 
- @return An initialized `RoomsViewController` object.
- */
-+ (instancetype)instantiate;
-
-@end
+extension UIViewController {
+    
+    /// Remove back bar button title when pushing a view controller
+    /// This method should be called on the previous controller in UINavigationController stack
+    func tc_removeBackTitle() {
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+    }
+}

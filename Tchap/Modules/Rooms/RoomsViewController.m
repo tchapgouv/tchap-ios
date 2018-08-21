@@ -34,6 +34,12 @@
 
 @implementation RoomsViewController
 
++ (instancetype)instantiate
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+    return [storyboard instantiateViewControllerWithIdentifier:@"RoomsViewController"];
+}
+
 - (void)finalizeInit
 {
     [super finalizeInit];

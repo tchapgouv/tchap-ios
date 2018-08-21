@@ -1,5 +1,5 @@
 /*
- Copyright 2015 OpenMarket Ltd
+ Copyright 2018 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -14,11 +14,8 @@
  limitations under the License.
  */
 
-#import <UIKit/UIKit.h>
-#import "AppDelegate.h"
+import Foundation
 
-int main(int argc, char * argv[]) {
-    @autoreleasepool {
-        return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
-    }
+/// `SplitViewCoordinatorType` is a protocol describing a Coordinator that handle split view navigation flow.
+protocol SplitViewCoordinatorType: Coordinator, Presentable {    
 }

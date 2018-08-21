@@ -22,5 +22,12 @@
 
 @interface SettingsViewController : MXKTableViewController<UITextFieldDelegate, MediaPickerViewControllerDelegate, MXKDeviceViewDelegate, UIDocumentInteractionControllerDelegate, MXKCountryPickerViewControllerDelegate, MXKLanguagePickerViewControllerDelegate, MXKDataSourceDelegate>
 
+/**
+ Creates and returns a new `SettingsViewController` object.
+ 
+ @return An initialized `SettingsViewController` object.
+ */
++ (instancetype)instantiate;
+
 @end
 

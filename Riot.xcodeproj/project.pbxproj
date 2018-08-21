@@ -125,7 +125,6 @@
 		0250C5092122B68000034691 /* OnBoardingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1798301211B13B3001FD722 /* OnBoardingManager.swift */; };
 		0250C50A2122B68000034691 /* GroupDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556BD20EE6C4C00210D55 /* GroupDetailsViewController.m */; };
 		0250C50B2122B68000034691 /* RoomKeyRequestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556FE20EE6C4C00210D55 /* RoomKeyRequestViewController.m */; };
-		0250C50C2122B68000034691 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BB0D1E7009EC00A9B29C /* AppDelegate.m */; };
 		0250C50D2122B68000034691 /* RoomIncomingAttachmentWithoutSenderInfoBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5588320EF768E00210D55 /* RoomIncomingAttachmentWithoutSenderInfoBubbleCell.m */; };
 		0250C50E2122B68000034691 /* RoomActivitiesView.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B557D620EF5EA900210D55 /* RoomActivitiesView.m */; };
 		0250C50F2122B68000034691 /* RoomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5596420EF9E9A00210D55 /* RoomTableViewCell.m */; };
@@ -292,7 +291,6 @@
 		0250C5B42122B68000034691 /* RoomMemberDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B556A920EE6C4C00210D55 /* RoomMemberDetailsViewController.xib */; };
 		0250C5B52122B68000034691 /* RoomIncomingEncryptedAttachmentBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5585420EF768E00210D55 /* RoomIncomingEncryptedAttachmentBubbleCell.xib */; };
 		0250C5BB2122B68000034691 /* JitsiMeet.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3233F7441F3497DA006ACA81 /* JitsiMeet.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		0250C5CA2122E63900034691 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0250C5C62122E63900034691 /* main.m */; };
 		0250C5CB2122E63900034691 /* empty.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0250C5C82122E63900034691 /* empty.mm */; };
 		0250C5CE212314B300034691 /* Tchap-Defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0250C5CD212314B300034691 /* Tchap-Defaults.plist */; };
 		02BEE1552125BBF800098505 /* RoomsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 02BEE1512125BBF800098505 /* RoomsDataSource.m */; };
@@ -596,9 +594,32 @@
 		B1B5599420EFC5E400210D55 /* DecryptionFailureTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5599120EFC5E400210D55 /* DecryptionFailureTracker.m */; };
 		B1B9194C2118984300FE25B5 /* RoomPredecessorBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B9194A2118984300FE25B5 /* RoomPredecessorBubbleCell.xib */; };
 		B1D250D82118AA0A000F4E93 /* RoomPredecessorBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1D250D72118AA0A000F4E93 /* RoomPredecessorBubbleCell.m */; };
+		B1F2AA91212AEC830077FDC0 /* SplitViewCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AA7B212AEC800077FDC0 /* SplitViewCoordinatorType.swift */; };
+		B1F2AA92212AEC830077FDC0 /* SplitViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AA7C212AEC800077FDC0 /* SplitViewCoordinator.swift */; };
+		B1F2AA93212AEC830077FDC0 /* SegmentedViewCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AA7E212AEC800077FDC0 /* SegmentedViewCoordinatorType.swift */; };
+		B1F2AA94212AEC830077FDC0 /* SegmentedViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AA7F212AEC800077FDC0 /* SegmentedViewCoordinator.swift */; };
+		B1F2AA95212AEC830077FDC0 /* SettingsCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AA81212AEC810077FDC0 /* SettingsCoordinatorType.swift */; };
+		B1F2AA96212AEC830077FDC0 /* SettingsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AA82212AEC810077FDC0 /* SettingsCoordinator.swift */; };
+		B1F2AA97212AEC830077FDC0 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AA84212AEC820077FDC0 /* AppCoordinator.swift */; };
+		B1F2AA98212AEC830077FDC0 /* AppCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AA85212AEC820077FDC0 /* AppCoordinatorType.swift */; };
+		B1F2AA99212AEC830077FDC0 /* LegacyAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AA88212AEC820077FDC0 /* LegacyAppDelegate.m */; };
+		B1F2AA9A212AEC830077FDC0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AA8A212AEC820077FDC0 /* AppDelegate.swift */; };
+		B1F2AA9B212AEC830077FDC0 /* ContactsCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AA8C212AEC820077FDC0 /* ContactsCoordinatorType.swift */; };
+		B1F2AA9C212AEC830077FDC0 /* ContactsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AA8D212AEC820077FDC0 /* ContactsCoordinator.swift */; };
+		B1F2AA9D212AEC830077FDC0 /* AuthenticationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AA8F212AEC820077FDC0 /* AuthenticationCoordinator.swift */; };
+		B1F2AA9E212AEC830077FDC0 /* AuthenticationCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AA90212AEC820077FDC0 /* AuthenticationCoordinatorType.swift */; };
+		B1F2AAA1212AED170077FDC0 /* RoomsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AA9F212AED160077FDC0 /* RoomsCoordinator.swift */; };
+		B1F2AAA2212AED170077FDC0 /* RoomsCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AAA0212AED170077FDC0 /* RoomsCoordinatorType.swift */; };
+		B1F2AAA5212AED840077FDC0 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AAA4212AED830077FDC0 /* Coordinator.swift */; };
+		B1F2AAAC212AED900077FDC0 /* NavigationRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AAA7212AED900077FDC0 /* NavigationRouter.swift */; };
+		B1F2AAAD212AED900077FDC0 /* RootRouterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AAA8212AED900077FDC0 /* RootRouterType.swift */; };
+		B1F2AAAE212AED900077FDC0 /* RootRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AAA9212AED900077FDC0 /* RootRouter.swift */; };
+		B1F2AAAF212AED900077FDC0 /* Presentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AAAA212AED900077FDC0 /* Presentable.swift */; };
+		B1F2AAB0212AED900077FDC0 /* NavigationRouterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AAAB212AED900077FDC0 /* NavigationRouterType.swift */; };
+		B1F2AAB3212AFAA90077FDC0 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AAB2212AFAA90077FDC0 /* AppDelegate.m */; };
+		B1F2AAB6212AFDBA0077FDC0 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AAB5212AFDBA0077FDC0 /* UIViewController.swift */; };
 		DDDE2AB95F865F2292B1D315 /* Pods_RiotPods_RiotShareExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23D7292481328A48B8D5D4ED /* Pods_RiotPods_RiotShareExtension.framework */; };
 		F05927C91FDED836009F2A68 /* MXGroup+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F05927C71FDED835009F2A68 /* MXGroup+Riot.m */; };
-		F083BD1E1E7009ED00A9B29C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BB0D1E7009EC00A9B29C /* AppDelegate.m */; };
 		F083BDE61E7009ED00A9B29C /* busy.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F083BBDB1E7009EC00A9B29C /* busy.mp3 */; };
 		F083BDE71E7009ED00A9B29C /* callend.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F083BBDC1E7009EC00A9B29C /* callend.mp3 */; };
 		F083BDE81E7009ED00A9B29C /* message.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F083BBDD1E7009EC00A9B29C /* message.mp3 */; };
@@ -697,7 +718,6 @@
 		0250C5BF2122B68000034691 /* Tchap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tchap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0250C5C42122E63900034691 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0250C5C52122E63900034691 /* Tchap-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tchap-Bridging-Header.h"; sourceTree = "<group>"; };
-		0250C5C62122E63900034691 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0250C5C72122E63900034691 /* Tchap.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Tchap.entitlements; sourceTree = "<group>"; };
 		0250C5C82122E63900034691 /* empty.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = empty.mm; sourceTree = "<group>"; };
 		0250C5CD212314B300034691 /* Tchap-Defaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Tchap-Defaults.plist"; sourceTree = "<group>"; };
@@ -1214,6 +1234,33 @@
 		B1B9194A2118984300FE25B5 /* RoomPredecessorBubbleCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomPredecessorBubbleCell.xib; sourceTree = "<group>"; };
 		B1D250D62118AA0A000F4E93 /* RoomPredecessorBubbleCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RoomPredecessorBubbleCell.h; sourceTree = "<group>"; };
 		B1D250D72118AA0A000F4E93 /* RoomPredecessorBubbleCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RoomPredecessorBubbleCell.m; sourceTree = "<group>"; };
+		B1F2AA7B212AEC800077FDC0 /* SplitViewCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplitViewCoordinatorType.swift; sourceTree = "<group>"; };
+		B1F2AA7C212AEC800077FDC0 /* SplitViewCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplitViewCoordinator.swift; sourceTree = "<group>"; };
+		B1F2AA7E212AEC800077FDC0 /* SegmentedViewCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentedViewCoordinatorType.swift; sourceTree = "<group>"; };
+		B1F2AA7F212AEC800077FDC0 /* SegmentedViewCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentedViewCoordinator.swift; sourceTree = "<group>"; };
+		B1F2AA81212AEC810077FDC0 /* SettingsCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsCoordinatorType.swift; sourceTree = "<group>"; };
+		B1F2AA82212AEC810077FDC0 /* SettingsCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsCoordinator.swift; sourceTree = "<group>"; };
+		B1F2AA84212AEC820077FDC0 /* AppCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
+		B1F2AA85212AEC820077FDC0 /* AppCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppCoordinatorType.swift; sourceTree = "<group>"; };
+		B1F2AA87212AEC820077FDC0 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		B1F2AA88212AEC820077FDC0 /* LegacyAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LegacyAppDelegate.m; sourceTree = "<group>"; };
+		B1F2AA89212AEC820077FDC0 /* LegacyAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LegacyAppDelegate.h; sourceTree = "<group>"; };
+		B1F2AA8A212AEC820077FDC0 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		B1F2AA8C212AEC820077FDC0 /* ContactsCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsCoordinatorType.swift; sourceTree = "<group>"; };
+		B1F2AA8D212AEC820077FDC0 /* ContactsCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsCoordinator.swift; sourceTree = "<group>"; };
+		B1F2AA8F212AEC820077FDC0 /* AuthenticationCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticationCoordinator.swift; sourceTree = "<group>"; };
+		B1F2AA90212AEC820077FDC0 /* AuthenticationCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticationCoordinatorType.swift; sourceTree = "<group>"; };
+		B1F2AA9F212AED160077FDC0 /* RoomsCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomsCoordinator.swift; sourceTree = "<group>"; };
+		B1F2AAA0212AED170077FDC0 /* RoomsCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomsCoordinatorType.swift; sourceTree = "<group>"; };
+		B1F2AAA4212AED830077FDC0 /* Coordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
+		B1F2AAA7212AED900077FDC0 /* NavigationRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationRouter.swift; sourceTree = "<group>"; };
+		B1F2AAA8212AED900077FDC0 /* RootRouterType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootRouterType.swift; sourceTree = "<group>"; };
+		B1F2AAA9212AED900077FDC0 /* RootRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootRouter.swift; sourceTree = "<group>"; };
+		B1F2AAAA212AED900077FDC0 /* Presentable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Presentable.swift; sourceTree = "<group>"; };
+		B1F2AAAB212AED900077FDC0 /* NavigationRouterType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationRouterType.swift; sourceTree = "<group>"; };
+		B1F2AAB1212AFAA80077FDC0 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		B1F2AAB2212AFAA90077FDC0 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		B1F2AAB5212AFDBA0077FDC0 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		C195C53961EA28E6900AEB68 /* Pods-Riot.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Riot.release.xcconfig"; path = "Pods/Target Support Files/Pods-Riot/Pods-Riot.release.xcconfig"; sourceTree = "<group>"; };
 		C5258DFF261AA3AB228A3F11 /* Pods-RiotPods-RiotShareExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-RiotShareExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RiotPods-RiotShareExtension/Pods-RiotPods-RiotShareExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		DB50EEBE8214352B9EBD6394 /* Pods_RiotPods_SiriIntents.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RiotPods_SiriIntents.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1221,8 +1268,6 @@
 		F05927C81FDED835009F2A68 /* MXGroup+Riot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MXGroup+Riot.h"; sourceTree = "<group>"; };
 		F083BB031E7005FD00A9B29C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F083BB041E7005FD00A9B29C /* RiotTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RiotTests.m; sourceTree = "<group>"; };
-		F083BB0C1E7009EC00A9B29C /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		F083BB0D1E7009EC00A9B29C /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		F083BBDB1E7009EC00A9B29C /* busy.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = busy.mp3; sourceTree = "<group>"; };
 		F083BBDC1E7009EC00A9B29C /* callend.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = callend.mp3; sourceTree = "<group>"; };
 		F083BBDD1E7009EC00A9B29C /* message.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = message.mp3; sourceTree = "<group>"; };
@@ -1307,7 +1352,10 @@
 		0250C5C12122BBA600034691 /* Tchap */ = {
 			isa = PBXGroup;
 			children = (
+				B1F2AAB4212AFD9D0077FDC0 /* Extensions */,
 				02BEE184212AB23A00098505 /* Managers */,
+				B1F2AAA3212AED830077FDC0 /* Coordinators */,
+				B1F2AAA6212AED900077FDC0 /* Routers */,
 				02BEE14E2125BBF800098505 /* Modules */,
 				0250C5CC2123146A00034691 /* Assets */,
 				0250C5C22122BBD200034691 /* SupportingFiles */,
@@ -1320,7 +1368,6 @@
 			children = (
 				0250C5C82122E63900034691 /* empty.mm */,
 				0250C5C42122E63900034691 /* Info.plist */,
-				0250C5C62122E63900034691 /* main.m */,
 				0250C5C52122E63900034691 /* Tchap-Bridging-Header.h */,
 				0250C5C72122E63900034691 /* Tchap.entitlements */,
 			);
@@ -1338,7 +1385,13 @@
 		02BEE14E2125BBF800098505 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				B1F2AA83212AEC820077FDC0 /* Application */,
+				B1F2AA8E212AEC820077FDC0 /* Authentication */,
+				B1F2AA7A212AEC800077FDC0 /* SplitView */,
+				B1F2AA7D212AEC800077FDC0 /* SegmentedView */,
 				02BEE14F2125BBF800098505 /* Rooms */,
+				B1F2AA8B212AEC820077FDC0 /* Contacts */,
+				B1F2AA80212AEC810077FDC0 /* Settings */,
 			);
 			path = Modules;
 			sourceTree = "<group>";
@@ -1346,6 +1399,8 @@
 		02BEE14F2125BBF800098505 /* Rooms */ = {
 			isa = PBXGroup;
 			children = (
+				B1F2AAA0212AED170077FDC0 /* RoomsCoordinatorType.swift */,
+				B1F2AA9F212AED160077FDC0 /* RoomsCoordinator.swift */,
 				02BEE1502125BBF800098505 /* DataSources */,
 				02BEE1532125BBF800098505 /* RoomsViewController.h */,
 				02BEE1542125BBF800098505 /* RoomsViewController.m */,
@@ -2808,6 +2863,100 @@
 			path = Analytics;
 			sourceTree = "<group>";
 		};
+		B1F2AA7A212AEC800077FDC0 /* SplitView */ = {
+			isa = PBXGroup;
+			children = (
+				B1F2AA7B212AEC800077FDC0 /* SplitViewCoordinatorType.swift */,
+				B1F2AA7C212AEC800077FDC0 /* SplitViewCoordinator.swift */,
+			);
+			path = SplitView;
+			sourceTree = "<group>";
+		};
+		B1F2AA7D212AEC800077FDC0 /* SegmentedView */ = {
+			isa = PBXGroup;
+			children = (
+				B1F2AA7E212AEC800077FDC0 /* SegmentedViewCoordinatorType.swift */,
+				B1F2AA7F212AEC800077FDC0 /* SegmentedViewCoordinator.swift */,
+			);
+			path = SegmentedView;
+			sourceTree = "<group>";
+		};
+		B1F2AA80212AEC810077FDC0 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				B1F2AA81212AEC810077FDC0 /* SettingsCoordinatorType.swift */,
+				B1F2AA82212AEC810077FDC0 /* SettingsCoordinator.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		B1F2AA83212AEC820077FDC0 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				B1F2AA85212AEC820077FDC0 /* AppCoordinatorType.swift */,
+				B1F2AA84212AEC820077FDC0 /* AppCoordinator.swift */,
+				B1F2AA8A212AEC820077FDC0 /* AppDelegate.swift */,
+				B1F2AA86212AEC820077FDC0 /* Legacy */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
+		B1F2AA86212AEC820077FDC0 /* Legacy */ = {
+			isa = PBXGroup;
+			children = (
+				B1F2AA87212AEC820077FDC0 /* AppDelegate.h */,
+				B1F2AA89212AEC820077FDC0 /* LegacyAppDelegate.h */,
+				B1F2AA88212AEC820077FDC0 /* LegacyAppDelegate.m */,
+			);
+			path = Legacy;
+			sourceTree = "<group>";
+		};
+		B1F2AA8B212AEC820077FDC0 /* Contacts */ = {
+			isa = PBXGroup;
+			children = (
+				B1F2AA8C212AEC820077FDC0 /* ContactsCoordinatorType.swift */,
+				B1F2AA8D212AEC820077FDC0 /* ContactsCoordinator.swift */,
+			);
+			path = Contacts;
+			sourceTree = "<group>";
+		};
+		B1F2AA8E212AEC820077FDC0 /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				B1F2AA90212AEC820077FDC0 /* AuthenticationCoordinatorType.swift */,
+				B1F2AA8F212AEC820077FDC0 /* AuthenticationCoordinator.swift */,
+			);
+			path = Authentication;
+			sourceTree = "<group>";
+		};
+		B1F2AAA3212AED830077FDC0 /* Coordinators */ = {
+			isa = PBXGroup;
+			children = (
+				B1F2AAA4212AED830077FDC0 /* Coordinator.swift */,
+			);
+			path = Coordinators;
+			sourceTree = "<group>";
+		};
+		B1F2AAA6212AED900077FDC0 /* Routers */ = {
+			isa = PBXGroup;
+			children = (
+				B1F2AAAA212AED900077FDC0 /* Presentable.swift */,
+				B1F2AAA8212AED900077FDC0 /* RootRouterType.swift */,
+				B1F2AAA9212AED900077FDC0 /* RootRouter.swift */,
+				B1F2AAAB212AED900077FDC0 /* NavigationRouterType.swift */,
+				B1F2AAA7212AED900077FDC0 /* NavigationRouter.swift */,
+			);
+			path = Routers;
+			sourceTree = "<group>";
+		};
+		B1F2AAB4212AFD9D0077FDC0 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				B1F2AAB5212AFDBA0077FDC0 /* UIViewController.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		F083BB021E7005FD00A9B29C /* RiotTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -2828,8 +2977,8 @@
 		F083BB081E7009EC00A9B29C /* Riot */ = {
 			isa = PBXGroup;
 			children = (
-				F083BB0C1E7009EC00A9B29C /* AppDelegate.h */,
-				F083BB0D1E7009EC00A9B29C /* AppDelegate.m */,
+				B1F2AAB1212AFAA80077FDC0 /* AppDelegate.h */,
+				B1F2AAB2212AFAA90077FDC0 /* AppDelegate.m */,
 				B16932A620F3A6FA00746532 /* Constants */,
 				F083BBE41E7009EC00A9B29C /* Categories */,
 				F083BBF21E7009EC00A9B29C /* Model */,
@@ -3611,12 +3760,15 @@
 				0250C4992122B68000034691 /* BugReportViewController.m in Sources */,
 				0250C49B2122B68000034691 /* RecentCellData.m in Sources */,
 				0250C49C2122B68000034691 /* GroupsDataSource.m in Sources */,
+				B1F2AAAF212AED900077FDC0 /* Presentable.swift in Sources */,
 				0250C49D2122B68000034691 /* RoomAvatarTitleView.m in Sources */,
 				0250C49E2122B68000034691 /* ContactsDataSource.m in Sources */,
 				0250C49F2122B68000034691 /* MediaAlbumContentViewController.m in Sources */,
+				B1F2AAA1212AED170077FDC0 /* RoomsCoordinator.swift in Sources */,
 				0250C4A02122B68000034691 /* WidgetManager.m in Sources */,
 				0250C4A12122B68000034691 /* RoomSearchDataSource.m in Sources */,
 				0250C4A32122B68000034691 /* StartChatViewController.m in Sources */,
+				B1F2AA9D212AEC830077FDC0 /* AuthenticationCoordinator.swift in Sources */,
 				0250C4A42122B68000034691 /* HomeMessagesSearchViewController.m in Sources */,
 				0250C4A52122B68000034691 /* RoomIncomingAttachmentBubbleCell.m in Sources */,
 				02BEE18B212AB23A00098505 /* IdentityServersURLGetter.swift in Sources */,
@@ -3626,15 +3778,16 @@
 				0250C4A92122B68000034691 /* CallViewController.m in Sources */,
 				0250C4AA2122B68000034691 /* RoomSettingsViewController.m in Sources */,
 				0250C4AB2122B68000034691 /* JitsiViewController.m in Sources */,
+				B1F2AA94212AEC830077FDC0 /* SegmentedViewCoordinator.swift in Sources */,
 				0250C4AC2122B68000034691 /* PublicRoomsDirectoryDataSource.m in Sources */,
 				0250C5CB2122E63900034691 /* empty.mm in Sources */,
-				0250C5CA2122E63900034691 /* main.m in Sources */,
 				0250C4AD2122B68000034691 /* RoomIncomingAttachmentWithPaginationTitleBubbleCell.m in Sources */,
 				0250C4AE2122B68000034691 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				0250C4AF2122B68000034691 /* KeyboardGrowingTextView.m in Sources */,
 				0250C4B02122B68000034691 /* RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
 				0250C4B12122B68000034691 /* AttachmentsViewController.m in Sources */,
 				0250C4B22122B68000034691 /* MXRoom+Riot.m in Sources */,
+				B1F2AAAD212AED900077FDC0 /* RootRouterType.swift in Sources */,
 				0250C4B32122B68000034691 /* RiotSettings.swift in Sources */,
 				0250C4B42122B68000034691 /* PreviewRoomTitleView.m in Sources */,
 				0250C4B52122B68000034691 /* RoomIncomingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
@@ -3668,12 +3821,16 @@
 				0250C4D02122B68000034691 /* RoomDataSource.m in Sources */,
 				0250C4D12122B68000034691 /* RoomIncomingTextMsgWithoutSenderNameBubbleCell.m in Sources */,
 				0250C4D22122B68000034691 /* LanguagePickerViewController.m in Sources */,
+				B1F2AA96212AEC830077FDC0 /* SettingsCoordinator.swift in Sources */,
+				B1F2AA93212AEC830077FDC0 /* SegmentedViewCoordinatorType.swift in Sources */,
 				02BEE18D212AB23A00098505 /* ThirdPartyIDPlatformInfo.swift in Sources */,
 				0250C4D32122B68000034691 /* RoomIncomingTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
 				0250C4D42122B68000034691 /* RoomIncomingEncryptedTextMsgBubbleCell.m in Sources */,
 				0250C4D52122B68000034691 /* MasterTabBarController.m in Sources */,
 				0250C4D62122B68000034691 /* TableViewCellWithButton.m in Sources */,
+				B1F2AAAC212AED900077FDC0 /* NavigationRouter.swift in Sources */,
 				0250C4D72122B68000034691 /* RoomMemberTitleView.m in Sources */,
+				B1F2AAB0212AED900077FDC0 /* NavigationRouterType.swift in Sources */,
 				0250C4D82122B68000034691 /* DirectoryRecentTableViewCell.m in Sources */,
 				0250C4D92122B68000034691 /* RoomMembershipWithPaginationTitleBubbleCell.m in Sources */,
 				02BEE1552125BBF800098505 /* RoomsDataSource.m in Sources */,
@@ -3683,7 +3840,9 @@
 				0250C4DD2122B68000034691 /* RoomIncomingEncryptedAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				0250C4DE2122B68000034691 /* DeactivateAccountViewController.m in Sources */,
 				0250C4DF2122B68000034691 /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.m in Sources */,
+				B1F2AA9A212AEC830077FDC0 /* AppDelegate.swift in Sources */,
 				0250C4E02122B68000034691 /* EventFormatter.m in Sources */,
+				B1F2AA92212AEC830077FDC0 /* SplitViewCoordinator.swift in Sources */,
 				0250C4E12122B68000034691 /* RecentsDataSource.m in Sources */,
 				0250C4E22122B68000034691 /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				0250C4E32122B68000034691 /* RoomFilesViewController.m in Sources */,
@@ -3691,6 +3850,7 @@
 				0250C4E52122B68000034691 /* TableViewCellWithCheckBoxes.m in Sources */,
 				02BEE1562125BBF800098505 /* RoomsViewController.m in Sources */,
 				0250C4E62122B68000034691 /* MXRoomSummary+Riot.m in Sources */,
+				B1F2AA95212AEC830077FDC0 /* SettingsCoordinatorType.swift in Sources */,
 				0250C4E72122B68000034691 /* EncryptionInfoView.m in Sources */,
 				0250C4E82122B68000034691 /* GroupParticipantsViewController.m in Sources */,
 				0250C4E92122B68000034691 /* GroupRoomTableViewCell.m in Sources */,
@@ -3699,8 +3859,10 @@
 				0250C4ED2122B68000034691 /* ForgotPasswordInputsView.m in Sources */,
 				0250C4EE2122B68000034691 /* RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				0250C4EF2122B68000034691 /* HomeViewController.m in Sources */,
+				B1F2AAA5212AED840077FDC0 /* Coordinator.swift in Sources */,
 				0250C4F02122B68000034691 /* UnifiedSearchRecentsDataSource.m in Sources */,
 				0250C4F12122B68000034691 /* FilesSearchTableViewCell.m in Sources */,
+				B1F2AAA2212AED170077FDC0 /* RoomsCoordinatorType.swift in Sources */,
 				0250C4F22122B68000034691 /* SegmentedViewController.m in Sources */,
 				0250C4F32122B68000034691 /* DecryptionFailure.m in Sources */,
 				0250C4F42122B68000034691 /* RoomOutgoingEncryptedAttachmentWithPaginationTitleBubbleCell.m in Sources */,
@@ -3727,7 +3889,7 @@
 				0250C5092122B68000034691 /* OnBoardingManager.swift in Sources */,
 				0250C50A2122B68000034691 /* GroupDetailsViewController.m in Sources */,
 				0250C50B2122B68000034691 /* RoomKeyRequestViewController.m in Sources */,
-				0250C50C2122B68000034691 /* AppDelegate.m in Sources */,
+				B1F2AAB6212AFDBA0077FDC0 /* UIViewController.swift in Sources */,
 				0250C50D2122B68000034691 /* RoomIncomingAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				0250C50E2122B68000034691 /* RoomActivitiesView.m in Sources */,
 				0250C50F2122B68000034691 /* RoomTableViewCell.m in Sources */,
@@ -3737,8 +3899,10 @@
 				0250C5132122B68000034691 /* CountryPickerViewController.m in Sources */,
 				0250C5142122B68000034691 /* GDPRConsentViewController.swift in Sources */,
 				0250C5152122B68000034691 /* UnifiedSearchViewController.m in Sources */,
+				B1F2AA99212AEC830077FDC0 /* LegacyAppDelegate.m in Sources */,
 				0250C5162122B68000034691 /* RoomViewController.m in Sources */,
 				0250C5172122B68000034691 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleBubbleCell.m in Sources */,
+				B1F2AA91212AEC830077FDC0 /* SplitViewCoordinatorType.swift in Sources */,
 				0250C5182122B68000034691 /* RoomOutgoingAttachmentWithPaginationTitleBubbleCell.m in Sources */,
 				0250C5192122B68000034691 /* MXSession+Riot.m in Sources */,
 				0250C51A2122B68000034691 /* TableViewCellWithLabelAndLargeTextView.m in Sources */,
@@ -3759,6 +3923,9 @@
 				0250C5282122B68000034691 /* RoomOutgoingEncryptedTextMsgWithoutSenderNameBubbleCell.m in Sources */,
 				0250C5292122B68000034691 /* WidgetPickerViewController.m in Sources */,
 				0250C52A2122B68000034691 /* RoomOutgoingEncryptedTextMsgBubbleCell.m in Sources */,
+				B1F2AA9E212AEC830077FDC0 /* AuthenticationCoordinatorType.swift in Sources */,
+				B1F2AAAE212AED900077FDC0 /* RootRouter.swift in Sources */,
+				B1F2AA9B212AEC830077FDC0 /* ContactsCoordinatorType.swift in Sources */,
 				0250C52B2122B68000034691 /* IntegrationManagerViewController.m in Sources */,
 				0250C52C2122B68000034691 /* DeviceView.m in Sources */,
 				0250C52D2122B68000034691 /* FilesSearchCellData.m in Sources */,
@@ -3766,7 +3933,9 @@
 				0250C52F2122B68000034691 /* DecryptionFailureTracker.m in Sources */,
 				0250C5302122B68000034691 /* UIViewController+RiotSearch.m in Sources */,
 				0250C5312122B68000034691 /* RoomEmailInvitation.m in Sources */,
+				B1F2AA98212AEC830077FDC0 /* AppCoordinatorType.swift in Sources */,
 				0250C5322122B68000034691 /* RoomParticipantsViewController.m in Sources */,
+				B1F2AA97212AEC830077FDC0 /* AppCoordinator.swift in Sources */,
 				0250C5332122B68000034691 /* RoomOutgoingAttachmentBubbleCell.m in Sources */,
 				0250C5342122B68000034691 /* RiotSplitViewController.m in Sources */,
 				0250C5352122B68000034691 /* DirectoryServerPickerViewController.m in Sources */,
@@ -3778,6 +3947,7 @@
 				0250C53B2122B68000034691 /* CircleButton.m in Sources */,
 				0250C53C2122B68000034691 /* RoomIncomingTextMsgBubbleCell.m in Sources */,
 				0250C53D2122B68000034691 /* TableViewCellWithPhoneNumberTextField.m in Sources */,
+				B1F2AA9C212AEC830077FDC0 /* ContactsCoordinator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3852,6 +4022,7 @@
 				B1B5572F20EE6C4D00210D55 /* ReadReceiptsViewController.m in Sources */,
 				B1B558CB20EF768F00210D55 /* RoomIncomingEncryptedTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
 				B169330B20F3CA3A00746532 /* Contact.m in Sources */,
+				B1F2AAB3212AFAA90077FDC0 /* AppDelegate.m in Sources */,
 				B1B5599220EFC5E400210D55 /* Analytics.m in Sources */,
 				B1B558C320EF768F00210D55 /* RoomIncomingEncryptedTextMsgWithoutSenderNameBubbleCell.m in Sources */,
 				B1B5577420EE702900210D55 /* WidgetViewController.m in Sources */,
@@ -3935,7 +4106,6 @@
 				B1798302211B13B3001FD722 /* OnBoardingManager.swift in Sources */,
 				B1B5573520EE6C4D00210D55 /* GroupDetailsViewController.m in Sources */,
 				B1B5575220EE6C4D00210D55 /* RoomKeyRequestViewController.m in Sources */,
-				F083BD1E1E7009ED00A9B29C /* AppDelegate.m in Sources */,
 				B1B558E620EF768F00210D55 /* RoomIncomingAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				B1B557D820EF5EA900210D55 /* RoomActivitiesView.m in Sources */,
 				B1B5596620EF9E9B00210D55 /* RoomTableViewCell.m in Sources */,

@@ -27,5 +27,12 @@
  */
 - (void)scrollToNextRoomWithMissedNotifications;
 
+/**
+ Creates and returns a new `PeopleViewController` object.
+ 
+ @return An initialized `PeopleViewController` object.
+ */
++ (instancetype)instantiate;
+
 @end
 
