@@ -190,7 +190,6 @@
 		0250C54E2122B68000034691 /* ContactDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5568A20EE6C4C00210D55 /* ContactDetailsViewController.xib */; };
 		0250C54F2122B68000034691 /* RoomIncomingTextMsgBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5587D20EF768E00210D55 /* RoomIncomingTextMsgBubbleCell.xib */; };
 		0250C5502122B68000034691 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B1664D5920F4EBEC00808783 /* Localizable.strings */; };
-		0250C5512122B68000034691 /* SharedImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B169328620F3954A00746532 /* SharedImages.xcassets */; };
 		0250C5522122B68000034691 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B1664D5720F4EBEC00808783 /* InfoPlist.strings */; };
 		0250C5532122B68000034691 /* AuthInputsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5579620EF575A00210D55 /* AuthInputsView.xib */; };
 		0250C5542122B68000034691 /* RoomCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5594120EF7BD000210D55 /* RoomCollectionViewCell.xib */; };
@@ -257,7 +256,6 @@
 		0250C5922122B68000034691 /* RoomParticipantsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B556AB20EE6C4C00210D55 /* RoomParticipantsViewController.xib */; };
 		0250C5932122B68000034691 /* JitsiViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5576B20EE702800210D55 /* JitsiViewController.xib */; };
 		0250C5942122B68000034691 /* RoomActivitiesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B557D520EF5EA900210D55 /* RoomActivitiesView.xib */; };
-		0250C5952122B68000034691 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F083BBEF1E7009EC00A9B29C /* Images.xcassets */; };
 		0250C5962122B68000034691 /* RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B558B320EF768E00210D55 /* RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib */; };
 		0250C5972122B68000034691 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B169329320F39E6200746532 /* LaunchScreen.storyboard */; };
 		0250C5982122B68000034691 /* RecentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5595120EF9A8600210D55 /* RecentTableViewCell.xib */; };
@@ -299,6 +297,8 @@
 		02BEE18B212AB23A00098505 /* IdentityServersURLGetter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BEE187212AB23A00098505 /* IdentityServersURLGetter.swift */; };
 		02BEE18C212AB23A00098505 /* ThirdPartyIDPlatformInfoType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BEE188212AB23A00098505 /* ThirdPartyIDPlatformInfoType.swift */; };
 		02BEE18D212AB23A00098505 /* ThirdPartyIDPlatformInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BEE189212AB23A00098505 /* ThirdPartyIDPlatformInfo.swift */; };
+		02BEE1A3212C717F00098505 /* SharedImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02BEE1A1212C717E00098505 /* SharedImages.xcassets */; };
+		02BEE1A4212C717F00098505 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02BEE1A2212C717F00098505 /* Images.xcassets */; };
 		24CBEC591F0EAD310093EABB /* RiotShareExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 24CBEC4E1F0EAD310093EABB /* RiotShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		24EEE5A21F23A8B400B3C705 /* MXRoom+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBE81E7009EC00A9B29C /* MXRoom+Riot.m */; };
 		24EEE5A31F23A8C300B3C705 /* AvatarGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC111E7009EC00A9B29C /* AvatarGenerator.m */; };
@@ -331,8 +331,6 @@
 		B169328320F38AE600746532 /* RiotSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B5597F20EFC3DF00210D55 /* RiotSettings.swift */; };
 		B169328420F38BE300746532 /* SegmentedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556D720EE6C4C00210D55 /* SegmentedViewController.m */; };
 		B169328520F38BE800746532 /* SegmentedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B556D620EE6C4C00210D55 /* SegmentedViewController.xib */; };
-		B169328720F3954A00746532 /* SharedImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B169328620F3954A00746532 /* SharedImages.xcassets */; };
-		B169328820F3954A00746532 /* SharedImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B169328620F3954A00746532 /* SharedImages.xcassets */; };
 		B169329920F39E6300746532 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B169329320F39E6200746532 /* LaunchScreen.storyboard */; };
 		B169329B20F39E6300746532 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B169329520F39E6300746532 /* Main.storyboard */; };
 		B16932A320F3A21C00746532 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B169329F20F3A21B00746532 /* main.m */; };
@@ -630,7 +628,6 @@
 		F083BDEF1E7009ED00A9B29C /* UINavigationController+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBEA1E7009EC00A9B29C /* UINavigationController+Riot.m */; };
 		F083BDF01E7009ED00A9B29C /* UIViewController+RiotSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBEC1E7009EC00A9B29C /* UIViewController+RiotSearch.m */; };
 		F083BDF21E7009ED00A9B29C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F083BBEE1E7009EC00A9B29C /* GoogleService-Info.plist */; };
-		F083BDF31E7009ED00A9B29C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F083BBEF1E7009EC00A9B29C /* Images.xcassets */; };
 		F083BDF91E7009ED00A9B29C /* RoomEmailInvitation.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBFC1E7009EC00A9B29C /* RoomEmailInvitation.m */; };
 		F083BDFA1E7009ED00A9B29C /* RoomPreviewData.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBFE1E7009EC00A9B29C /* RoomPreviewData.m */; };
 		F083BE011E7009ED00A9B29C /* third_party_licenses.html in Resources */ = {isa = PBXBuildFile; fileRef = F083BC0E1E7009EC00A9B29C /* third_party_licenses.html */; };
@@ -729,6 +726,8 @@
 		02BEE187212AB23A00098505 /* IdentityServersURLGetter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdentityServersURLGetter.swift; sourceTree = "<group>"; };
 		02BEE188212AB23A00098505 /* ThirdPartyIDPlatformInfoType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThirdPartyIDPlatformInfoType.swift; sourceTree = "<group>"; };
 		02BEE189212AB23A00098505 /* ThirdPartyIDPlatformInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThirdPartyIDPlatformInfo.swift; sourceTree = "<group>"; };
+		02BEE1A1212C717E00098505 /* SharedImages.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = SharedImages.xcassets; sourceTree = "<group>"; };
+		02BEE1A2212C717F00098505 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		0598CA8AB2933381369BED6C /* Pods-RiotPods-Tchap.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-Tchap.release.xcconfig"; path = "Pods/Target Support Files/Pods-RiotPods-Tchap/Pods-RiotPods-Tchap.release.xcconfig"; sourceTree = "<group>"; };
 		12AA0005C8B3D8D8162584C5 /* Pods-RiotShareExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotShareExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RiotShareExtension/Pods-RiotShareExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		22D76C11C202B6BC5917A049 /* Pods-RiotPods-RiotShareExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-RiotShareExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-RiotPods-RiotShareExtension/Pods-RiotPods-RiotShareExtension.release.xcconfig"; sourceTree = "<group>"; };
@@ -820,7 +819,6 @@
 		B1664D8C20F4EBF800808783 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B1664D8D20F4EBF800808783 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B1664D8E20F4EBF900808783 /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/Localizable.strings; sourceTree = "<group>"; };
-		B169328620F3954A00746532 /* SharedImages.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = SharedImages.xcassets; sourceTree = "<group>"; };
 		B169329420F39E6200746532 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B169329620F39E6300746532 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B169329E20F3A21B00746532 /* Riot-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Riot-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -1282,7 +1280,6 @@
 		F083BBEB1E7009EC00A9B29C /* UIViewController+RiotSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+RiotSearch.h"; sourceTree = "<group>"; };
 		F083BBEC1E7009EC00A9B29C /* UIViewController+RiotSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+RiotSearch.m"; sourceTree = "<group>"; };
 		F083BBEE1E7009EC00A9B29C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		F083BBEF1E7009EC00A9B29C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		F083BBFB1E7009EC00A9B29C /* RoomEmailInvitation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomEmailInvitation.h; sourceTree = "<group>"; };
 		F083BBFC1E7009EC00A9B29C /* RoomEmailInvitation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomEmailInvitation.m; sourceTree = "<group>"; };
 		F083BBFD1E7009EC00A9B29C /* RoomPreviewData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomPreviewData.h; sourceTree = "<group>"; };
@@ -1377,6 +1374,8 @@
 		0250C5CC2123146A00034691 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				02BEE1A2212C717F00098505 /* Images.xcassets */,
+				02BEE1A1212C717E00098505 /* SharedImages.xcassets */,
 				0250C5CD212314B300034691 /* Tchap-Defaults.plist */,
 			);
 			path = Assets;
@@ -2998,8 +2997,6 @@
 				B1664DA520F4FE1B00808783 /* Localizations */,
 				F083BBDA1E7009EC00A9B29C /* Sounds */,
 				32935CB21F628B98006888C8 /* js */,
-				F083BBEF1E7009EC00A9B29C /* Images.xcassets */,
-				B169328620F3954A00746532 /* SharedImages.xcassets */,
 				B169329320F39E6200746532 /* LaunchScreen.storyboard */,
 				B169329520F39E6300746532 /* Main.storyboard */,
 				F083BC0E1E7009EC00A9B29C /* third_party_licenses.html */,
@@ -3312,6 +3309,7 @@
 				0250C5442122B68000034691 /* ring.mp3 in Resources */,
 				0250C5452122B68000034691 /* RoomIncomingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib in Resources */,
 				0250C5462122B68000034691 /* TableViewCellWithButton.xib in Resources */,
+				02BEE1A3212C717F00098505 /* SharedImages.xcassets in Resources */,
 				0250C5472122B68000034691 /* StartChatViewController.xib in Resources */,
 				0250C5482122B68000034691 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.xib in Resources */,
 				0250C5492122B68000034691 /* TableViewCellWithCollectionView.xib in Resources */,
@@ -3322,7 +3320,6 @@
 				0250C54E2122B68000034691 /* ContactDetailsViewController.xib in Resources */,
 				0250C54F2122B68000034691 /* RoomIncomingTextMsgBubbleCell.xib in Resources */,
 				0250C5502122B68000034691 /* Localizable.strings in Resources */,
-				0250C5512122B68000034691 /* SharedImages.xcassets in Resources */,
 				0250C5522122B68000034691 /* InfoPlist.strings in Resources */,
 				0250C5532122B68000034691 /* AuthInputsView.xib in Resources */,
 				0250C5542122B68000034691 /* RoomCollectionViewCell.xib in Resources */,
@@ -3390,7 +3387,6 @@
 				0250C5922122B68000034691 /* RoomParticipantsViewController.xib in Resources */,
 				0250C5932122B68000034691 /* JitsiViewController.xib in Resources */,
 				0250C5942122B68000034691 /* RoomActivitiesView.xib in Resources */,
-				0250C5952122B68000034691 /* Images.xcassets in Resources */,
 				0250C5962122B68000034691 /* RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib in Resources */,
 				0250C5972122B68000034691 /* LaunchScreen.storyboard in Resources */,
 				0250C5982122B68000034691 /* RecentTableViewCell.xib in Resources */,
@@ -3421,6 +3417,7 @@
 				0250C5B12122B68000034691 /* RoomOutgoingEncryptedTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
 				0250C5B22122B68000034691 /* RoomIncomingAttachmentBubbleCell.xib in Resources */,
 				0250C5B32122B68000034691 /* RoomIncomingEncryptedTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
+				02BEE1A4212C717F00098505 /* Images.xcassets in Resources */,
 				0250C5B42122B68000034691 /* RoomMemberDetailsViewController.xib in Resources */,
 				0250C5B52122B68000034691 /* RoomIncomingEncryptedAttachmentBubbleCell.xib in Resources */,
 			);
@@ -3434,7 +3431,6 @@
 				B169328520F38BE800746532 /* SegmentedViewController.xib in Resources */,
 				B1664DA420F4F96300808783 /* Vector.strings in Resources */,
 				B1664BC920F4E67600808783 /* ShareViewController.xib in Resources */,
-				B169328820F3954A00746532 /* SharedImages.xcassets in Resources */,
 				B1664BC520F4E67600808783 /* FallbackViewController.xib in Resources */,
 				B1664BCE20F4E67600808783 /* RecentRoomTableViewCell.xib in Resources */,
 			);
@@ -3466,7 +3462,6 @@
 				B1B5571F20EE6C4D00210D55 /* ContactDetailsViewController.xib in Resources */,
 				B1B558E220EF768F00210D55 /* RoomIncomingTextMsgBubbleCell.xib in Resources */,
 				B1664DA220F4F95800808783 /* Localizable.strings in Resources */,
-				B169328720F3954A00746532 /* SharedImages.xcassets in Resources */,
 				B1664DA120F4F94F00808783 /* InfoPlist.strings in Resources */,
 				B1B5579B20EF575B00210D55 /* AuthInputsView.xib in Resources */,
 				B1B5594620EF7BD000210D55 /* RoomCollectionViewCell.xib in Resources */,
@@ -3534,7 +3529,6 @@
 				B1B5572D20EE6C4D00210D55 /* RoomParticipantsViewController.xib in Resources */,
 				B1B5577220EE702800210D55 /* JitsiViewController.xib in Resources */,
 				B1B557D720EF5EA900210D55 /* RoomActivitiesView.xib in Resources */,
-				F083BDF31E7009ED00A9B29C /* Images.xcassets in Resources */,
 				B1B5590720EF768F00210D55 /* RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib in Resources */,
 				B169329920F39E6300746532 /* LaunchScreen.storyboard in Resources */,
 				B1B5595320EF9A8700210D55 /* RecentTableViewCell.xib in Resources */,
