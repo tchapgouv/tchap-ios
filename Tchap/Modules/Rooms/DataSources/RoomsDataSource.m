@@ -18,7 +18,7 @@
 
 #import "RecentCellData.h"
 
-#import "RiotDesignValues.h"
+#import "DesignValues.h"
 
 #import "MXRoom+Riot.h"
 
@@ -288,7 +288,7 @@ NSString *const kRoomsDataSourceTapOnDirectoryServerChange = @"kRoomsDataSourceT
         NSString *roomCount = [NSString stringWithFormat:@"   %tu", count];
         
         NSMutableAttributedString *mutableSectionTitle = [[NSMutableAttributedString alloc] initWithString:title
-                                                                                                attributes:@{NSForegroundColorAttributeName : kRiotPrimaryTextColor,
+                                                                                                attributes:@{NSForegroundColorAttributeName : kVariant2SecondaryTextColor,
                                                                                                              NSFontAttributeName: [UIFont boldSystemFontOfSize:15.0]}];
         [mutableSectionTitle appendAttributedString:[[NSMutableAttributedString alloc] initWithString:roomCount
                                                                                            attributes:@{NSForegroundColorAttributeName : kRiotAuxiliaryColor,
@@ -299,7 +299,7 @@ NSString *const kRoomsDataSourceTapOnDirectoryServerChange = @"kRoomsDataSourceT
     else if (title)
     {
         sectionTitle = [[NSAttributedString alloc] initWithString:title
-                                                       attributes:@{NSForegroundColorAttributeName : kRiotPrimaryTextColor,
+                                                       attributes:@{NSForegroundColorAttributeName : kVariant2SecondaryTextColor,
                                                                     NSFontAttributeName: [UIFont boldSystemFontOfSize:15.0]}];
     }
     
@@ -309,7 +309,7 @@ NSString *const kRoomsDataSourceTapOnDirectoryServerChange = @"kRoomsDataSourceT
 - (UIView *)viewForHeaderInSection:(NSInteger)section withFrame:(CGRect)frame
 {
     UIView *sectionHeader = [[UIView alloc] initWithFrame:frame];
-    sectionHeader.backgroundColor = kRiotSecondaryBgColor;
+    sectionHeader.backgroundColor = kVariant2SecondaryBgColor;
     NSInteger sectionBitwise = 0;
     UIImageView *chevronView;
     UIView *accessoryView;
@@ -572,7 +572,7 @@ NSString *const kRoomsDataSourceTapOnDirectoryServerChange = @"kRoomsDataSourceT
         if (!tableViewCell)
         {
             tableViewCell = [[MXKTableViewCell alloc] init];
-            tableViewCell.textLabel.textColor = kRiotSecondaryTextColor;
+            tableViewCell.textLabel.textColor = kVariant2PlaceholderTextColor;
             tableViewCell.textLabel.font = [UIFont systemFontOfSize:15.0];
             tableViewCell.selectionStyle = UITableViewCellSelectionStyleNone;
         }

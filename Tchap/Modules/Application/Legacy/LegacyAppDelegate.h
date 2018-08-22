@@ -26,7 +26,7 @@
 #import "RageShakeManager.h"
 #import "Analytics.h"
 
-#import "RiotDesignValues.h"
+#import "DesignValues.h"
 
 #pragma mark - Notifications
 /**

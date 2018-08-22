@@ -179,7 +179,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return kRiotDesignStatusBarStyle;
+    return kVariant1StatusBarStyle;
 }
 
 - (void)destroy
@@ -256,6 +256,9 @@
         [self refreshRecentsTable];
         
     }];
+    
+    // Apply the current theme
+    [self userInterfaceThemeDidChange];
 }
 
 - (void)viewWillDisappear:(BOOL)animated

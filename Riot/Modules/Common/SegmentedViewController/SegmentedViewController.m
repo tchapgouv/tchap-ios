@@ -1,6 +1,7 @@
 /*
  Copyright 2015 OpenMarket Ltd
  Copyright 2017 Vector Creations Ltd
+ Copyright 2018 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -17,7 +18,7 @@
 
 #import "SegmentedViewController.h"
 
-#import "RiotDesignValues.h"
+#import "DesignValues.h"
 
 @interface SegmentedViewController ()
 {
@@ -130,7 +131,7 @@
     // Setup `MXKViewControllerHandling` properties
     self.enableBarTintColorStatusChange = NO;
     
-    self.sectionHeaderTintColor = kRiotColorGreen;
+    self.sectionHeaderTintColor = kVariant1PrimaryTextColor;
 }
 
 - (void)viewDidLoad
@@ -172,16 +173,19 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    self.defaultBarTintColor = kRiotSecondaryBgColor;
-    self.barTitleColor = kRiotPrimaryTextColor;
+    self.defaultBarTintColor = kVariant1PrimaryBgColor;
+    self.barTitleColor = kVariant1PrimaryTextColor;
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
     self.view.backgroundColor = kRiotPrimaryBgColor;
+    
+    // The navigation bar is opaque
+    self.navigationController.navigationBar.translucent = NO;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return kRiotDesignStatusBarStyle;
+    return kVariant1StatusBarStyle;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -195,6 +199,9 @@
     }
     
     isViewAppeared = YES;
+    
+    // Apply the current theme
+    [self userInterfaceThemeDidChange];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -247,7 +254,7 @@
         label.font = [UIFont systemFontOfSize:17];
         label.textAlignment = NSTextAlignmentCenter;
         label.textColor = _sectionHeaderTintColor;
-        label.backgroundColor = [UIColor clearColor];
+        label.backgroundColor = kVariant1PrimaryBgColor;
         label.accessibilityIdentifier = [NSString stringWithFormat:@"SegmentedVCSectionLabel%tu", index];
         
         // the constraint defines the label frame

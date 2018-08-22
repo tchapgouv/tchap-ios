@@ -339,8 +339,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
 - (void)userInterfaceThemeDidChange
 {
-    self.defaultBarTintColor = kRiotSecondaryBgColor;
-    self.barTitleColor = kRiotPrimaryTextColor;
+    self.defaultBarTintColor = kVariant1PrimaryBgColor;
+    self.barTitleColor = kVariant1PrimaryTextColor;
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
     // Check the table view style to select its bg color.
@@ -351,11 +351,14 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     {
         [self refreshSettings];
     }
+    
+    // The navigation bar is opaque
+    self.navigationController.navigationBar.translucent = NO;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return kRiotDesignStatusBarStyle;
+    return kVariant1StatusBarStyle;
 }
 
 - (void)didReceiveMemoryWarning
@@ -457,6 +460,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     }];
     
     newPhoneNumberCountryPicker = nil;
+    
+    // Apply the current theme
+    [self userInterfaceThemeDidChange];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
