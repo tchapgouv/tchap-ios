@@ -3626,8 +3626,6 @@
 				"${PODS_ROOT}/WebRTC/WebRTC.framework",
 				"${BUILT_PRODUCTS_DIR}/cmark/cmark.framework",
 				"${BUILT_PRODUCTS_DIR}/libPhoneNumber-iOS/libPhoneNumber_iOS.framework",
-				"${BUILT_PRODUCTS_DIR}/DTCoreText.default-Extension/DTCoreText.framework",
-				"${BUILT_PRODUCTS_DIR}/MatrixKit-AppExtension/MatrixKit.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (

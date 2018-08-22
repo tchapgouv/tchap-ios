@@ -23,8 +23,6 @@
 
 #import "Contact.h"
 
-#import "MXCallManager.h"
-
 #import "ContactTableViewCell.h"
 
 #import "RageShakeManager.h"

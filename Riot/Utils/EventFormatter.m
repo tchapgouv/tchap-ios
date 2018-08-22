@@ -21,7 +21,6 @@
 
 #import "WidgetManager.h"
 
-#import "MXDecryptionResult.h"
 #import "DecryptionFailureTracker.h"
 
 #pragma mark - Constants definitions

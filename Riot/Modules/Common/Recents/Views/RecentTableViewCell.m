@@ -19,8 +19,6 @@
 
 #import "AvatarGenerator.h"
 
-#import "MXEvent.h"
-
 #import "RiotDesignValues.h"
 
 #import "MXRoomSummary+Riot.h"
