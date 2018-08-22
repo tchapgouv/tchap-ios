@@ -408,6 +408,8 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     NSLog(@"MatrixSDK version: %@", MatrixSDKVersion);
     NSLog(@"Build: %@\n", build);
     NSLog(@"------------------------------\n");
+    
+    [self setupUserDefaults];
 
     // Set up runtime language and fallback by considering the userDefaults object shared within the application group.
     NSUserDefaults *sharedUserDefaults = [MXKAppSettings standardAppSettings].sharedUserDefaults;
@@ -427,10 +429,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         }
     }
     [NSBundle mxk_setLanguage:language];
-    [NSBundle mxk_setFallbackLanguage:@"en"];
-
-    // Define the navigation bar text color
-    [[UINavigationBar appearance] setTintColor:kRiotColorGreen];
+    [NSBundle mxk_setFallbackLanguage:@"fr"];
     
     // Customize the localized string table
     [NSBundle mxk_customizeLocalizedStringTableName:@"Vector"];
@@ -442,8 +441,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     incomingPushPayloads = [NSMutableDictionary dictionary];
     
     _isAppForeground = NO;
-    
-    [self setupUserDefaults];
     
     // Configure our analytics. It will indeed start if the option is enabled
     [MXSDKOptions sharedInstance].analyticsDelegate = [Analytics sharedInstance];
@@ -806,7 +803,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
             
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
             UIViewController *emptyDetailsViewController = [storyboard instantiateViewControllerWithIdentifier:@"EmptyDetailsViewControllerStoryboardId"];
-            emptyDetailsViewController.view.backgroundColor = kRiotPrimaryBgColor;
+            emptyDetailsViewController.view.backgroundColor = kVariant2PrimaryBgColor;
             
             splitViewController.viewControllers = @[mainViewController, emptyDetailsViewController];
         }
@@ -2785,7 +2782,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
             if (!launchAnimationContainerView && window)
             {
                 launchAnimationContainerView = [[UIView alloc] initWithFrame:window.bounds];
-                launchAnimationContainerView.backgroundColor = kRiotPrimaryBgColor;
+                launchAnimationContainerView.backgroundColor = kVariant2PrimaryBgColor;
                 launchAnimationContainerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
                 [window addSubview:launchAnimationContainerView];
                 
@@ -3484,7 +3481,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     
     [_callStatusBarButton setTitle:buttonTitle forState:UIControlStateNormal];
     [_callStatusBarButton setTitle:buttonTitle forState:UIControlStateHighlighted];
-    _callStatusBarButton.titleLabel.textColor = kRiotPrimaryBgColor;
+    _callStatusBarButton.titleLabel.textColor = kVariant2PrimaryTextColor;
     
     if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
     {
@@ -3495,7 +3492,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         _callStatusBarButton.titleLabel.font = [UIFont boldSystemFontOfSize:17];
     }
     
-    [_callStatusBarButton setBackgroundColor:kRiotColorGreen];
+    [_callStatusBarButton setBackgroundColor:kVariant2PrimaryBgColor];
     [_callStatusBarButton addTarget:self action:@selector(onCallStatusBarButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     
     // Place button into the new window
@@ -3644,7 +3641,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     }
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
     UIViewController *emptyDetailsViewController = [storyboard instantiateViewControllerWithIdentifier:@"EmptyDetailsViewControllerStoryboardId"];
-    emptyDetailsViewController.view.backgroundColor = kRiotPrimaryBgColor;
+    emptyDetailsViewController.view.backgroundColor = kVariant2PrimaryBgColor;
     return emptyDetailsViewController;
 }
 
@@ -4056,7 +4053,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 
 - (void)setupUserDefaults
 {
-    // Register "Riot-Defaults.plist" default values
+    // Register "Tchap-Defaults.plist" default values
     NSString* userDefaults = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"UserDefaults"];
     NSString *defaultsPathFromApp = [[NSBundle mainBundle] pathForResource:userDefaults ofType:@"plist"];
     NSDictionary *defaults = [NSDictionary dictionaryWithContentsOfFile:defaultsPathFromApp];
