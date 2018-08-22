@@ -22,8 +22,6 @@
 
 #import "MXRoomSummary+Riot.h"
 
-#import "MXTools.h"
-
 #pragma mark - Defines & Constants
 
 static const CGFloat kDirectRoomBorderColorAlpha = 0.75;

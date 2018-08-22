@@ -17,7 +17,6 @@
 
 #import "ForgotPasswordInputsView.h"
 
-#import "MXHTTPOperation.h"
 #import "RiotDesignValues.h"
 
 @interface ForgotPasswordInputsView ()
