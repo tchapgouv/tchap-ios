@@ -408,6 +408,8 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     NSLog(@"MatrixSDK version: %@", MatrixSDKVersion);
     NSLog(@"Build: %@\n", build);
     NSLog(@"------------------------------\n");
+    
+    [self setupUserDefaults];
 
     // Set up runtime language and fallback by considering the userDefaults object shared within the application group.
     NSUserDefaults *sharedUserDefaults = [MXKAppSettings standardAppSettings].sharedUserDefaults;
@@ -427,7 +429,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         }
     }
     [NSBundle mxk_setLanguage:language];
-    [NSBundle mxk_setFallbackLanguage:@"en"];
+    [NSBundle mxk_setFallbackLanguage:@"fr"];
 
     // Define the navigation bar color
     [[UINavigationBar appearance] setBarTintColor:kVariant1PrimaryBgColor];
@@ -443,8 +445,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     incomingPushPayloads = [NSMutableDictionary dictionary];
     
     _isAppForeground = NO;
-    
-    [self setupUserDefaults];
     
     // Configure our analytics. It will indeed start if the option is enabled
     [MXSDKOptions sharedInstance].analyticsDelegate = [Analytics sharedInstance];
@@ -4057,7 +4057,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 
 - (void)setupUserDefaults
 {
-    // Register "Riot-Defaults.plist" default values
+    // Register "Tchap-Defaults.plist" default values
     NSString* userDefaults = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"UserDefaults"];
     NSString *defaultsPathFromApp = [[NSBundle mainBundle] pathForResource:userDefaults ofType:@"plist"];
     NSDictionary *defaults = [NSDictionary dictionaryWithContentsOfFile:defaultsPathFromApp];
