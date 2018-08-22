@@ -56,7 +56,6 @@ enum
     SETTINGS_SECTION_USER_SETTINGS_INDEX,
     SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX,
     SETTINGS_SECTION_CALLS_INDEX,
-    //SETTINGS_SECTION_USER_INTERFACE_INDEX,
     SETTINGS_SECTION_IGNORED_USERS_INDEX,
     SETTINGS_SECTION_CONTACTS_INDEX,
     SETTINGS_SECTION_ADVANCED_INDEX,
@@ -90,13 +89,6 @@ enum
     CALLS_ENABLE_CALLKIT_INDEX = 0,
     CALLS_DESCRIPTION_INDEX,
     CALLS_COUNT
-};
-
-enum
-{
-    USER_INTERFACE_LANGUAGE_INDEX = 0,
-    USER_INTERFACE_THEME_INDEX,
-    USER_INTERFACE_COUNT
 };
 
 enum
@@ -339,21 +331,34 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
 - (void)userInterfaceThemeDidChange
 {
-    self.defaultBarTintColor = kVariant1PrimaryBgColor;
-    self.barTitleColor = kVariant1PrimaryTextColor;
+    // The navigation bar color
+    self.navigationController.navigationBar.translucent = NO;
+    self.navigationController.navigationBar.barTintColor = kVariant1PrimaryBgColor;
+    self.navigationController.navigationBar.tintColor = kVariant1ActionColor;
+    // Set navigation bar title color
+    NSDictionary<NSString *,id> *titleTextAttributes = self.navigationController.navigationBar.titleTextAttributes;
+    if (titleTextAttributes)
+    {
+        NSMutableDictionary *textAttributes = [NSMutableDictionary dictionaryWithDictionary:titleTextAttributes];
+        textAttributes[NSForegroundColorAttributeName] = kVariant1PrimaryTextColor;
+        self.navigationController.navigationBar.titleTextAttributes = textAttributes;
+    }
+    else
+    {
+        self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: kVariant1PrimaryTextColor};
+    }
+    
+    // @TODO Design the activvity indicator for Tchap
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
     // Check the table view style to select its bg color.
-    self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? kRiotPrimaryBgColor : kRiotSecondaryBgColor);
+    self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? kVariant2PrimaryBgColor : kVariant2SecondaryBgColor);
     self.view.backgroundColor = self.tableView.backgroundColor;
     
     if (self.tableView.dataSource)
     {
         [self refreshSettings];
     }
-    
-    // The navigation bar is opaque
-    self.navigationController.navigationBar.translucent = NO;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -1227,10 +1232,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             count = CALLS_COUNT;
         }
     }
-//    else if (section == SETTINGS_SECTION_USER_INTERFACE_INDEX)
-//    {
-//        count = USER_INTERFACE_COUNT;
-//    }
     else if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
     {
         if ([AppDelegate theDelegate].mxSessions.count > 0)
@@ -1760,73 +1761,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             cell = globalInfoCell;
         }
     }
-//    else if (section == SETTINGS_SECTION_USER_INTERFACE_INDEX)
-//    {
-//        if (row == USER_INTERFACE_LANGUAGE_INDEX)
-//        {
-//            cell = [tableView dequeueReusableCellWithIdentifier:kSettingsViewControllerPhoneBookCountryCellId];
-//            if (!cell)
-//            {
-//                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kSettingsViewControllerPhoneBookCountryCellId];
-//            }
-//
-//            NSString *language = [NSBundle mxk_language];
-//            if (!language)
-//            {
-//                language = [MXKLanguagePickerViewController defaultLanguage];
-//            }
-//            NSString *languageDescription = [MXKLanguagePickerViewController languageDescription:language];
-//
-//            // Capitalise the description in the language locale
-//            NSLocale *locale = [[NSLocale alloc] initWithLocaleIdentifier:language];
-//            languageDescription = [languageDescription capitalizedStringWithLocale:locale];
-//
-//            cell.textLabel.textColor = kRiotPrimaryTextColor;
-//
-//            cell.textLabel.text = NSLocalizedStringFromTable(@"settings_ui_language", @"Vector", nil);
-//            cell.detailTextLabel.text = languageDescription;
-//
-//            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-//            cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-//        }
-//        else if (row == USER_INTERFACE_THEME_INDEX)
-//        {
-//            cell = [tableView dequeueReusableCellWithIdentifier:kSettingsViewControllerPhoneBookCountryCellId];
-//            if (!cell)
-//            {
-//                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kSettingsViewControllerPhoneBookCountryCellId];
-//            }
-//
-//            NSString *theme = RiotSettings.shared.userInterfaceTheme;
-//
-//            if (!theme)
-//            {
-//                if (@available(iOS 11.0, *))
-//                {
-//                    // "auto" is used the default value from iOS 11
-//                    theme = @"auto";
-//                }
-//                else
-//                {
-//                    // Use "light" for older version
-//                    theme = @"light";
-//                }
-//            }
-//
-//            theme = [NSString stringWithFormat:@"settings_ui_theme_%@", theme];
-//            NSString *i18nTheme = NSLocalizedStringFromTable(theme,
-//                                                              @"Vector",
-//                                                             nil);
-//
-//            cell.textLabel.textColor = kRiotPrimaryTextColor;
-//
-//            cell.textLabel.text = NSLocalizedStringFromTable(@"settings_ui_theme", @"Vector", nil);
-//            cell.detailTextLabel.text = i18nTheme;
-//
-//            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-//            cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-//        }
-//    }
     else if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
     {
         MXKTableViewCell *ignoredUserCell = [self getDefaultTableViewCell:tableView];
@@ -2237,10 +2171,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             return NSLocalizedStringFromTable(@"settings_calls_settings", @"Vector", nil);
         }
     }
-//    else if (section == SETTINGS_SECTION_USER_INTERFACE_INDEX)
-//    {
-//        return NSLocalizedStringFromTable(@"settings_user_interface", @"Vector", nil);
-//    }
     else if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
     {
         // Check whether this section is visible
@@ -2468,23 +2398,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     {
         NSInteger section = indexPath.section;
         NSInteger row = indexPath.row;
-
-//        if (section == SETTINGS_SECTION_USER_INTERFACE_INDEX)
-//        {
-//            if (row == USER_INTERFACE_LANGUAGE_INDEX)
-//            {
-//                // Display the language picker
-//                LanguagePickerViewController *languagePickerViewController = [LanguagePickerViewController languagePickerViewController];
-//                languagePickerViewController.selectedLanguage = [NSBundle mxk_language];
-//                languagePickerViewController.delegate = self;
-//                [self pushViewController:languagePickerViewController];
-//            }
-//            else if (row == USER_INTERFACE_THEME_INDEX)
-//            {
-//                [self showThemePicker];
-//            }
-//        }
-//        else
+        
         if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
         {
             MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
@@ -3716,98 +3630,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         [[NSFileManager defaultManager] removeItemAtPath:keyExportsFile.path error:nil];
     }
 }
-
-//- (void)showThemePicker
-//{
-//    __weak typeof(self) weakSelf = self;
-//
-//    __block UIAlertAction *autoAction, *lightAction, *darkAction, *blackAction;
-//    NSString *themePickerMessage;
-//
-//    void (^actionBlock)(UIAlertAction *action) = ^(UIAlertAction * action) {
-//
-//        if (weakSelf)
-//        {
-//            typeof(self) self = weakSelf;
-//
-//            NSString *newTheme;
-//            if (action == autoAction)
-//            {
-//                newTheme = @"auto";
-//            }
-//            else  if (action == lightAction)
-//            {
-//                newTheme = @"light";
-//            }
-//            else if (action == darkAction)
-//            {
-//                newTheme = @"dark";
-//            }
-//            else if (action == blackAction)
-//            {
-//                newTheme = @"black";
-//            }
-//
-//            NSString *theme = RiotSettings.shared.userInterfaceTheme;
-//            if (newTheme && ![newTheme isEqualToString:theme])
-//            {
-//                // Clear fake Riot Avatars based on the previous theme.
-//                [AvatarGenerator clear];
-//
-//                // The user wants to select this theme
-//                RiotSettings.shared.userInterfaceTheme = newTheme;
-//
-//                [self.tableView reloadData];
-//            }
-//        }
-//    };
-//
-//    if (@available(iOS 11.0, *))
-//    {
-//        // Show "auto" only from iOS 11
-//        autoAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"settings_ui_theme_auto", @"Vector", nil)
-//                                              style:UIAlertActionStyleDefault
-//                                            handler:actionBlock];
-//
-//        // Explain what is "auto"
-//        themePickerMessage = NSLocalizedStringFromTable(@"settings_ui_theme_picker_message", @"Vector", nil);
-//    }
-//
-//    lightAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"settings_ui_theme_light", @"Vector", nil)
-//                                          style:UIAlertActionStyleDefault
-//                                        handler:actionBlock];
-//
-//    darkAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"settings_ui_theme_dark", @"Vector", nil)
-//                                           style:UIAlertActionStyleDefault
-//                                         handler:actionBlock];
-//    blackAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"settings_ui_theme_black", @"Vector", nil)
-//                                          style:UIAlertActionStyleDefault
-//                                        handler:actionBlock];
-//
-//
-//    UIAlertController *themePicker = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"settings_ui_theme_picker_title", @"Vector", nil)
-//                                                                         message:themePickerMessage
-//                                                                  preferredStyle:UIAlertControllerStyleActionSheet];
-//
-//    if (autoAction)
-//    {
-//        [themePicker addAction:autoAction];
-//    }
-//    [themePicker addAction:lightAction];
-//    [themePicker addAction:darkAction];
-//    [themePicker addAction:blackAction];
-//
-//    // Cancel button
-//    [themePicker addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
-//                                                        style:UIAlertActionStyleCancel
-//                                                      handler:nil]];
-//
-//    UIView *fromCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:USER_INTERFACE_THEME_INDEX inSection:SETTINGS_SECTION_USER_INTERFACE_INDEX]];
-//    [themePicker popoverPresentationController].sourceView = fromCell;
-//    [themePicker popoverPresentationController].sourceRect = fromCell.bounds;
-//
-//    [self presentViewController:themePicker animated:YES completion:nil];
-//}
 
 - (void)deactivateAccountAction
 {

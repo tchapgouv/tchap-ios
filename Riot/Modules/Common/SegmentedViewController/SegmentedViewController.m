@@ -173,14 +173,27 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    self.defaultBarTintColor = kVariant1PrimaryBgColor;
-    self.barTitleColor = kVariant1PrimaryTextColor;
-    self.activityIndicator.backgroundColor = kRiotOverlayColor;
-    
-    self.view.backgroundColor = kRiotPrimaryBgColor;
-    
-    // The navigation bar is opaque
+    // The navigation bar color
     self.navigationController.navigationBar.translucent = NO;
+    self.navigationController.navigationBar.barTintColor = kVariant1PrimaryBgColor;
+    self.navigationController.navigationBar.tintColor = kVariant1ActionColor;
+    // Set navigation bar title color
+    NSDictionary<NSString *,id> *titleTextAttributes = self.navigationController.navigationBar.titleTextAttributes;
+    if (titleTextAttributes)
+    {
+        NSMutableDictionary *textAttributes = [NSMutableDictionary dictionaryWithDictionary:titleTextAttributes];
+        textAttributes[NSForegroundColorAttributeName] = kVariant1PrimaryTextColor;
+        self.navigationController.navigationBar.titleTextAttributes = textAttributes;
+    }
+    else
+    {
+        self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: kVariant1PrimaryTextColor};
+    }
+    
+    self.view.backgroundColor = kVariant2PrimaryBgColor;
+    
+    // @TODO Design the activvity indicator for Tchap
+    self.activityIndicator.backgroundColor = kRiotOverlayColor;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle

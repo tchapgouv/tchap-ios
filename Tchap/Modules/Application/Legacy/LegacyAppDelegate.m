@@ -430,10 +430,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     }
     [NSBundle mxk_setLanguage:language];
     [NSBundle mxk_setFallbackLanguage:@"fr"];
-
-    // Define the navigation bar color
-    [[UINavigationBar appearance] setBarTintColor:kVariant1PrimaryBgColor];
-    [[UINavigationBar appearance] setTintColor:kVariant1ActionColor];
     
     // Customize the localized string table
     [NSBundle mxk_customizeLocalizedStringTableName:@"Vector"];
