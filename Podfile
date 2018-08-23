@@ -70,6 +70,7 @@ abstract_target 'RiotPods' do
     # While https://github.com/matomo-org/matomo-sdk-ios/pull/223 is not released, use the PR branch
     pod 'PiwikTracker', :git => 'https://github.com/manuroe/matomo-sdk-ios.git', :branch => 'feature/CustomVariables'
     #pod 'PiwikTracker', '~> 4.4.2'
+    pod 'Reusable', '~> 4.0'
 
     # Remove warnings from "bad" pods
     pod 'OLMKit', :inhibit_warnings => true
