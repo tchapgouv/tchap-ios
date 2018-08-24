@@ -778,6 +778,7 @@
 		9D800F82D024B4F097D2AD00 /* Pods-RiotPods-Tchap.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-Tchap.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RiotPods-Tchap/Pods-RiotPods-Tchap.debug.xcconfig"; sourceTree = "<group>"; };
 		A5030B7C3C0B6EB83A9257BD /* Pods-RiotPods-Riot.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-Riot.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RiotPods-Riot/Pods-RiotPods-Riot.debug.xcconfig"; sourceTree = "<group>"; };
 		B0FAA1A49F76B0CE15C5CBD8 /* Pods_RiotPods_Riot.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RiotPods_Riot.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B1322FDD212FF7480054A9DD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Tchap.strings; sourceTree = "<group>"; };
 		B1664BAD20F4E67500808783 /* FallbackViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FallbackViewController.xib; sourceTree = "<group>"; };
 		B1664BAE20F4E67500808783 /* FallbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FallbackViewController.m; sourceTree = "<group>"; };
 		B1664BAF20F4E67500808783 /* FallbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FallbackViewController.h; sourceTree = "<group>"; };
@@ -1405,6 +1406,7 @@
 		0250C5CC2123146A00034691 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				B1322FD9212FF4A30054A9DD /* Localizations */,
 				02BEE1A2212C717F00098505 /* Images.xcassets */,
 				02BEE1A1212C717E00098505 /* SharedImages.xcassets */,
 				0250C5CD212314B300034691 /* Tchap-Defaults.plist */,
@@ -1554,6 +1556,14 @@
 				92726A481F58737A004AD26F /* Info.plist */,
 			);
 			path = SiriIntents;
+			sourceTree = "<group>";
+		};
+		B1322FD9212FF4A30054A9DD /* Localizations */ = {
+			isa = PBXGroup;
+			children = (
+				B1322FDE212FF7480054A9DD /* Tchap.strings */,
+			);
+			path = Localizations;
 			sourceTree = "<group>";
 		};
 		B1664BAB20F4E67500808783 /* Modules */ = {
@@ -4229,6 +4239,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		B1322FDE212FF7480054A9DD /* Tchap.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B1322FDD212FF7480054A9DD /* fr */,
+			);
+			name = Tchap.strings;
+			sourceTree = "<group>";
+		};
 		B1664D5520F4EBEC00808783 /* Vector.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
