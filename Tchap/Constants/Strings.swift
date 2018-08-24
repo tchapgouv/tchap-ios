@@ -9,6 +9,8 @@ import Foundation
 internal enum TchapL10n {
   /// Connexion Tchap
   internal static let authenticationTitle = TchapL10n.tr("Tchap", "authentication_title")
+  /// An error occurred. Please try again later.
+  internal static let errorMessageDefault = TchapL10n.tr("Tchap", "error_message_default")
 }
 // swiftlint:enable identifier_name line_length type_body_length
 
