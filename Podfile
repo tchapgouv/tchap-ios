@@ -76,6 +76,9 @@ abstract_target 'RiotPods' do
     pod 'OLMKit', :inhibit_warnings => true
     pod 'cmark', :inhibit_warnings => true
     pod 'DTCoreText', :inhibit_warnings => true
+    
+    # Build tools
+    pod 'SwiftGen', '~> 5.3'
 
     target "Tchap" do
         import_MatrixKit
