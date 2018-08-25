@@ -16,15 +16,15 @@
 
 import Foundation
 
-final class ContactsCoordinator: RoomsCoordinatorType {
+final class ContactsCoordinator: ContactsCoordinatorType {
     
     // MARK: - Properties
     
     // MARK: Private
     
-    private let contactsViewController: PeopleViewController
+    private let contactsViewController: ContactsTableViewController
     private let session: MXSession
-    private let recentsDataSource: RecentsDataSource
+    private let contactsDataSource: ContactsDataSource
     
     // MARK: Public
     
@@ -35,17 +35,17 @@ final class ContactsCoordinator: RoomsCoordinatorType {
     init(session: MXSession) {
         self.session = session
         
-        self.contactsViewController = PeopleViewController.instantiate()
+        self.contactsViewController = ContactsTableViewController.instantiate()
         
-        self.recentsDataSource = RecentsDataSource(matrixSession: self.session)
-        self.recentsDataSource.finalizeInitialization()
-        self.recentsDataSource.setDelegate(self.contactsViewController, andRecentsDataSourceMode: RecentsDataSourceModePeople)
+        self.contactsDataSource = ContactsDataSource(matrixSession: self.session)
+        self.contactsDataSource.finalizeInitialization()
+        self.contactsDataSource.contactsFilter = ContactsDataSourceTchapFilterTchapOnly;
     }
     
     // MARK: - Public methods
     
     func start() {
-        self.contactsViewController.displayList(self.recentsDataSource)
+        self.contactsViewController.displayList(self.contactsDataSource)
     }
     
     func toPresentable() -> UIViewController {

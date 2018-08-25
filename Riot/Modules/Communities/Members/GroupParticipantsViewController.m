@@ -524,7 +524,7 @@
 - (void)onAddParticipantButtonPressed
 {
     // Push the contacts picker.
-    ContactsTableViewController *contactsPickerViewController = [ContactsTableViewController contactsTableViewController];
+    ContactsTableViewController *contactsPickerViewController = [ContactsTableViewController instantiate];
     
     // Set delegate to handle action on member (start chat, mention)
     contactsPickerViewController.contactsTableViewControllerDelegate = self;
@@ -533,7 +533,8 @@
     ContactsDataSource *contactsDataSource = [[ContactsDataSource alloc] initWithMatrixSession:self.mxSession];
     contactsDataSource.areSectionsShrinkable = YES;
     contactsDataSource.displaySearchInputInContactsList = YES;
-    contactsDataSource.forceMatrixIdInDisplayName = YES;
+    // Tchap: display MatrixId in display name is not allowed
+    //contactsDataSource.forceMatrixIdInDisplayName = YES;
     // Add a plus icon to the contact cell in the contacts picker, in order to make it more understandable for the end user.
     contactsDataSource.contactCellAccessoryImage = [UIImage imageNamed:@"plus_icon"];
     

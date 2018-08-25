@@ -115,7 +115,8 @@
     ContactsDataSource *dataSource = [[ContactsDataSource alloc] initWithMatrixSession:self.mainSession]; // TO TEST
     dataSource.areSectionsShrinkable = YES;
     dataSource.displaySearchInputInContactsList = YES;
-    dataSource.forceMatrixIdInDisplayName = YES;
+    // Tchap: display MatrixId in display name is not allowed
+    //dataSource.forceMatrixIdInDisplayName = YES;
     // Add a plus icon to the contact cell when a search session is in progress,
     // in order to make it more understandable for the end user.
     dataSource.contactCellAccessoryImage = [UIImage imageNamed:@"plus_icon"];
@@ -340,11 +341,12 @@
             {
                 contact = participants[index];
                 
-                // Disambiguate the display name when it appears several times.
-                if (contact.displayName)
-                {
-                    participantCell.showMatrixIdInDisplayName = [isMultiUseNameByDisplayName[contact.displayName] isEqualToNumber:@(YES)];
-                }
+                // Tchap: display MatrixId in display name is not allowed
+//                // Disambiguate the display name when it appears several times.
+//                if (contact.displayName)
+//                {
+//                    participantCell.showMatrixIdInDisplayName = [isMultiUseNameByDisplayName[contact.displayName] isEqualToNumber:@(YES)];
+//                }
             }
         }
         
