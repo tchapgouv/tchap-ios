@@ -533,8 +533,6 @@
     ContactsDataSource *contactsDataSource = [[ContactsDataSource alloc] initWithMatrixSession:self.mxSession];
     contactsDataSource.areSectionsShrinkable = YES;
     contactsDataSource.displaySearchInputInContactsList = YES;
-    // Tchap: display MatrixId in display name is not allowed
-    //contactsDataSource.forceMatrixIdInDisplayName = YES;
     // Add a plus icon to the contact cell in the contacts picker, in order to make it more understandable for the end user.
     contactsDataSource.contactCellAccessoryImage = [UIImage imageNamed:@"plus_icon"];
     
