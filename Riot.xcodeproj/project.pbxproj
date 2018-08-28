@@ -615,6 +615,11 @@
 		B1B5599320EFC5E400210D55 /* DecryptionFailure.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5598D20EFC5E400210D55 /* DecryptionFailure.m */; };
 		B1B5599420EFC5E400210D55 /* DecryptionFailureTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5599120EFC5E400210D55 /* DecryptionFailureTracker.m */; };
 		B1B9194C2118984300FE25B5 /* RoomPredecessorBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B9194A2118984300FE25B5 /* RoomPredecessorBubbleCell.xib */; };
+		B1BC6A012135E2A600D32F8E /* ActivityIndicatorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1BC69FE2135E2A600D32F8E /* ActivityIndicatorView.xib */; };
+		B1BC6A022135E2A600D32F8E /* ActivityIndicatorPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1BC69FF2135E2A600D32F8E /* ActivityIndicatorPresenter.swift */; };
+		B1BC6A032135E2A600D32F8E /* ActivityIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1BC6A002135E2A600D32F8E /* ActivityIndicatorView.swift */; };
+		B1BC6A052135E42D00D32F8E /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1BC6A042135E42D00D32F8E /* UIView.swift */; };
+		B1BC6A072135EA2800D32F8E /* ActivityIndicatorPresenterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1BC6A062135EA2800D32F8E /* ActivityIndicatorPresenterType.swift */; };
 		B1D250D82118AA0A000F4E93 /* RoomPredecessorBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1D250D72118AA0A000F4E93 /* RoomPredecessorBubbleCell.m */; };
 		B1F2AA91212AEC830077FDC0 /* SplitViewCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AA7B212AEC800077FDC0 /* SplitViewCoordinatorType.swift */; };
 		B1F2AA92212AEC830077FDC0 /* SplitViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AA7C212AEC800077FDC0 /* SplitViewCoordinator.swift */; };
@@ -1278,6 +1283,11 @@
 		B1B5599020EFC5E400210D55 /* Analytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Analytics.h; sourceTree = "<group>"; };
 		B1B5599120EFC5E400210D55 /* DecryptionFailureTracker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DecryptionFailureTracker.m; sourceTree = "<group>"; };
 		B1B9194A2118984300FE25B5 /* RoomPredecessorBubbleCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomPredecessorBubbleCell.xib; sourceTree = "<group>"; };
+		B1BC69FE2135E2A600D32F8E /* ActivityIndicatorView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActivityIndicatorView.xib; sourceTree = "<group>"; };
+		B1BC69FF2135E2A600D32F8E /* ActivityIndicatorPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorPresenter.swift; sourceTree = "<group>"; };
+		B1BC6A002135E2A600D32F8E /* ActivityIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorView.swift; sourceTree = "<group>"; };
+		B1BC6A042135E42D00D32F8E /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
+		B1BC6A062135EA2800D32F8E /* ActivityIndicatorPresenterType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorPresenterType.swift; sourceTree = "<group>"; };
 		B1D250D62118AA0A000F4E93 /* RoomPredecessorBubbleCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RoomPredecessorBubbleCell.h; sourceTree = "<group>"; };
 		B1D250D72118AA0A000F4E93 /* RoomPredecessorBubbleCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RoomPredecessorBubbleCell.m; sourceTree = "<group>"; };
 		B1F2AA7B212AEC800077FDC0 /* SplitViewCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplitViewCoordinatorType.swift; sourceTree = "<group>"; };
@@ -1592,6 +1602,7 @@
 				B1892E752130524100742348 /* ErrorPresentation */,
 				B1322FE7213002430054A9DD /* Forms */,
 				B15B867721359013002782BE /* KeyboardAvoiding */,
+				B1BC69FD2135E2A600D32F8E /* ActivityIndicator */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -2986,6 +2997,17 @@
 			path = Analytics;
 			sourceTree = "<group>";
 		};
+		B1BC69FD2135E2A600D32F8E /* ActivityIndicator */ = {
+			isa = PBXGroup;
+			children = (
+				B1BC6A002135E2A600D32F8E /* ActivityIndicatorView.swift */,
+				B1BC69FE2135E2A600D32F8E /* ActivityIndicatorView.xib */,
+				B1BC6A062135EA2800D32F8E /* ActivityIndicatorPresenterType.swift */,
+				B1BC69FF2135E2A600D32F8E /* ActivityIndicatorPresenter.swift */,
+			);
+			path = ActivityIndicator;
+			sourceTree = "<group>";
+		};
 		B1F2AA7A212AEC800077FDC0 /* SplitView */ = {
 			isa = PBXGroup;
 			children = (
@@ -3087,6 +3109,7 @@
 			isa = PBXGroup;
 			children = (
 				B1F2AAB5212AFDBA0077FDC0 /* UIViewController.swift */,
+				B1BC6A042135E42D00D32F8E /* UIView.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -3529,6 +3552,7 @@
 				0250C5872122B68000034691 /* RoomMembershipExpandedWithPaginationTitleBubbleCell.xib in Resources */,
 				0250C5882122B68000034691 /* RoomAvatarTitleView.xib in Resources */,
 				0250C5892122B68000034691 /* RoomMembershipExpandedBubbleCell.xib in Resources */,
+				B1BC6A012135E2A600D32F8E /* ActivityIndicatorView.xib in Resources */,
 				0250C58A2122B68000034691 /* RoomIncomingTextMsgWithoutSenderInfoBubbleCell.xib in Resources */,
 				0250C58B2122B68000034691 /* RoomIncomingEncryptedTextMsgWithPaginationTitleBubbleCell.xib in Resources */,
 				0250C58C2122B68000034691 /* ReadReceiptsViewController.xib in Resources */,
@@ -3917,6 +3941,7 @@
 				0250C4932122B68000034691 /* MediaAlbumTableCell.m in Sources */,
 				0250C4942122B68000034691 /* RiotDesignValues.m in Sources */,
 				0250C4962122B68000034691 /* AvatarGenerator.m in Sources */,
+				B1BC6A052135E42D00D32F8E /* UIView.swift in Sources */,
 				0250C4972122B68000034691 /* GroupRoomsViewController.m in Sources */,
 				0250C4982122B68000034691 /* RoomOutgoingTextMsgWithoutSenderNameBubbleCell.m in Sources */,
 				0250C4992122B68000034691 /* BugReportViewController.m in Sources */,
@@ -3963,6 +3988,7 @@
 				0250C4B52122B68000034691 /* RoomIncomingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
 				0250C4B62122B68000034691 /* ReadReceiptsViewController.m in Sources */,
 				0250C4B72122B68000034691 /* RoomIncomingEncryptedTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
+				B1BC6A032135E2A600D32F8E /* ActivityIndicatorView.swift in Sources */,
 				0250C4B82122B68000034691 /* Contact.m in Sources */,
 				0250C4B92122B68000034691 /* Analytics.m in Sources */,
 				0250C4BA2122B68000034691 /* RoomIncomingEncryptedTextMsgWithoutSenderNameBubbleCell.m in Sources */,
@@ -4018,6 +4044,7 @@
 				0250C4E02122B68000034691 /* EventFormatter.m in Sources */,
 				B1F2AA92212AEC830077FDC0 /* SplitViewCoordinator.swift in Sources */,
 				0250C4E12122B68000034691 /* RecentsDataSource.m in Sources */,
+				B1BC6A072135EA2800D32F8E /* ActivityIndicatorPresenterType.swift in Sources */,
 				0250C4E22122B68000034691 /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				0250C4E32122B68000034691 /* RoomFilesViewController.m in Sources */,
 				0250C4E42122B68000034691 /* RoomOutgoingTextMsgBubbleCell.m in Sources */,
@@ -4036,6 +4063,7 @@
 				0250C4EE2122B68000034691 /* RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				0250C4EF2122B68000034691 /* HomeViewController.m in Sources */,
 				B1F2AAA5212AED840077FDC0 /* Coordinator.swift in Sources */,
+				B1BC6A022135E2A600D32F8E /* ActivityIndicatorPresenter.swift in Sources */,
 				0250C4F02122B68000034691 /* UnifiedSearchRecentsDataSource.m in Sources */,
 				0250C4F12122B68000034691 /* FilesSearchTableViewCell.m in Sources */,
 				B1F2AAA2212AED170077FDC0 /* RoomsCoordinatorType.swift in Sources */,
