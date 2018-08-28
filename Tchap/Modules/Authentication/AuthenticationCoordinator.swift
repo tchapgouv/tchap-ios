@@ -30,6 +30,7 @@ final class AuthenticationCoordinator: AuthenticationCoordinatorType {
     private let authenticationViewController: AuthenticationViewController
     private let navigationRouter: NavigationRouterType
     private let authenticationService: AuthenticationServiceType
+    private let activityIndicatorPresenter: ActivityIndicatorPresenterType
     private let authenticationErrorPresenter: ErrorPresenter
     
     // MARK: Public
@@ -47,6 +48,7 @@ final class AuthenticationCoordinator: AuthenticationCoordinatorType {
         let authenticationViewModel = AuthenticationViewModel()
         let authenticationViewController = AuthenticationViewController.instantiate(viewModel: authenticationViewModel)
         self.authenticationViewController = authenticationViewController
+        self.activityIndicatorPresenter = ActivityIndicatorPresenter()
         self.authenticationErrorPresenter = AlertErrorPresenter(viewControllerPresenter: authenticationViewController)
     }
     
@@ -86,7 +88,14 @@ final class AuthenticationCoordinator: AuthenticationCoordinatorType {
     }
     
     private func authenticate(with mail: String, password: String) {
-        self.authenticationService.authenticate(with: mail, password: password) { (response) in
+        self.authenticationViewController.setUserInteraction(enabled: false)
+        self.activityIndicatorPresenter.presentActivityIndicator(on: self.authenticationViewController.view, animated: true)
+        
+        self.authenticationService.authenticate(with: mail, password: password) { (response) in                        
+            
+            self.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
+            self.authenticationViewController.setUserInteraction(enabled: true)
+            
             switch response {
             case .success(_):
                 // NOTE: Do not call delegate directly for the moment, wait for NSNotification.Name.legacyAppDelegateDidLogin
