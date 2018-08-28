@@ -85,6 +85,13 @@ final class AuthenticationViewController: UIViewController {
         return .default
     }
     
+    // MARK: - Public
+            
+    func setUserInteraction(enabled: Bool) {
+        self.view.isUserInteractionEnabled = enabled
+        self.navigationItem.rightBarButtonItem?.isEnabled = enabled
+    }
+    
     // MARK: - Private
     
     private func setupViews() {
