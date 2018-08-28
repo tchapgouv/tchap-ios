@@ -16,66 +16,12 @@
 
 import Foundation
 
-/// Used to present authentication error on a view controller
-final class AuthenticationErrorPresenter {
-    
-    // MARK: - Properties
-    
-    private weak var viewControllerPresenter: UIViewController?
-    private weak var currentAlertController: UIAlertController?
-    
-    // MARK: - Setup
-    
-    init(viewControllerPresenter: UIViewController) {
-        self.viewControllerPresenter = viewControllerPresenter
-    }
+/// Used to transform authentication error to `ErrorPresentable`
+final class AuthenticationErrorPresentableMaker {
     
     // MARK: - Public
     
-    func present(errorPresentable: ErrorPresentable, animated: Bool = true) {
-        guard let viewController = self.viewControllerPresenter else {
-            return
-        }
-        self.present(errorPresentable: errorPresentable, from: viewController, animated: animated)
-    }
-    
-    func present(error: Error, animated: Bool = true) {
-        guard let viewController = self.viewControllerPresenter else {
-            return
-        }
-        self.present(error: error, from: viewController, animated: animated)
-    }
-    
-    // MARK: - Private
-        
-    private func present(errorPresentable: ErrorPresentable,
-                         from viewController: UIViewController,
-                         animated: Bool = true) {
-        
-        if let currentAlertController = self.currentAlertController {
-            currentAlertController.dismiss(animated: false, completion: nil)
-        }
-        
-        let alert = UIAlertController(title: errorPresentable.title, message: errorPresentable.message, preferredStyle: .alert)
-        
-        let okTitle = Bundle.mxk_localizedString(forKey: "ok")
-        let okAction = UIAlertAction(title: okTitle, style: .default, handler: nil)
-        alert.addAction(okAction)
-        
-        self.currentAlertController = alert
-        
-        viewController.present(alert, animated: animated, completion: nil)
-    }
-    
-    private func present(error: Error,
-                         from viewController: UIViewController,
-                         animated: Bool = true) {
-        if let errorPresentable = self.errorPresentable(from: error) {
-            self.present(errorPresentable: errorPresentable, from: viewController, animated: animated)
-        }
-    }
-    
-    private func errorPresentable(from error: Error) -> ErrorPresentable? {
+    func errorPresentable(from error: Error) -> ErrorPresentable? {
         
         if let authenticationServiceError = error as? AuthenticationServiceError {
             return self.authenticationServerErrorPresentable(from: authenticationServiceError)
@@ -140,6 +86,8 @@ final class AuthenticationErrorPresenter {
         
         return ErrorPresentableImpl(title: title, message: message)
     }
+    
+    // MARK: - Private
     
     private func authenticationServerErrorPresentable(from authenticationServiceError: AuthenticationServiceError) -> ErrorPresentable {
         
