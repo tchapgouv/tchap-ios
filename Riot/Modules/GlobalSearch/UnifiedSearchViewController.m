@@ -82,7 +82,7 @@
 
     // Add search People tab
     [titles addObject: NSLocalizedStringFromTable(@"search_people", @"Vector", nil)];
-    peopleSearchViewController = [ContactsTableViewController contactsTableViewController];
+    peopleSearchViewController = [ContactsTableViewController instantiate];
     peopleSearchViewController.contactsTableViewControllerDelegate = self;
     [viewControllers addObject:peopleSearchViewController];
     
