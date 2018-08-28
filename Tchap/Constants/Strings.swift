@@ -7,10 +7,30 @@ import Foundation
 
 // swiftlint:disable identifier_name line_length type_body_length
 internal enum TchapL10n {
+  /// Suivant
+  internal static let actionNext = TchapL10n.tr("Tchap", "action_next")
+  /// L'adresse e-mail ne semble pas valide
+  internal static let authenticationErrorInvalidEmail = TchapL10n.tr("Tchap", "authentication_error_invalid_email")
+  /// Mot de passe trop court (min %d)
+  internal static func authenticationErrorInvalidPassword(_ p1: Int) -> String {
+    return TchapL10n.tr("Tchap", "authentication_error_invalid_password", p1)
+  }
+  /// Mot de passe manquant
+  internal static let authenticationErrorMissingPassword = TchapL10n.tr("Tchap", "authentication_error_missing_password")
+  /// Les mots de passe ne correspondent pas
+  internal static let authenticationErrorPasswordDontMatch = TchapL10n.tr("Tchap", "authentication_error_password_dont_match")
+  /// Mot de passe oublié ?
+  internal static let authenticationForgotPassword = TchapL10n.tr("Tchap", "authentication_forgot_password")
+  /// Adresse email
+  internal static let authenticationMailPlaceholder = TchapL10n.tr("Tchap", "authentication_mail_placeholder")
+  /// Mot de passe Tchap
+  internal static let authenticationPasswordPlaceholder = TchapL10n.tr("Tchap", "authentication_password_placeholder")
   /// Connexion Tchap
   internal static let authenticationTitle = TchapL10n.tr("Tchap", "authentication_title")
-  /// An error occurred. Please try again later.
+  /// Une erreur est survenue, veuillez réessayer ultérieurement
   internal static let errorMessageDefault = TchapL10n.tr("Tchap", "error_message_default")
+  /// Erreur
+  internal static let errorTitleDefault = TchapL10n.tr("Tchap", "error_title_default")
 }
 // swiftlint:enable identifier_name line_length type_body_length
 
