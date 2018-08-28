@@ -20,14 +20,17 @@ protocol AuthenticationCoordinatorDelegate: class {
     func authenticationCoordinator(coordinator: AuthenticationCoordinatorType, didAuthenticateWithUserId userId: String)
 }
 
-final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorType {
+final class AuthenticationCoordinator: AuthenticationCoordinatorType {
     
     // MARK: - Properties
     
     // MARK: Private
     
-    private let router: RootRouterType
+    private let rootRouter: RootRouterType
     private let authenticationViewController: AuthenticationViewController
+    private let navigationRouter: NavigationRouterType
+    private let authenticationService: AuthenticationServiceType
+    private let authenticationErrorPresenter: ErrorPresenter
     
     // MARK: Public
     
@@ -38,19 +41,26 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorType {
     // MARK: - Setup
     
     init(router: RootRouterType) {
-        self.router = router
-        self.authenticationViewController = AuthenticationViewController.instantiate()
+        self.rootRouter = router
+        self.navigationRouter = NavigationRouter()
+        self.authenticationService = AuthenticationService(accountManager: MXKAccountManager.shared())
+        let authenticationViewModel = AuthenticationViewModel()
+        let authenticationViewController = AuthenticationViewController.instantiate(viewModel: authenticationViewModel)
+        self.authenticationViewController = authenticationViewController
+        self.authenticationErrorPresenter = AlertErrorPresenter(viewControllerPresenter: authenticationViewController)
     }
     
     // MARK: - Public methods
     
     func start() {
-        self.router.setRootModule(self.authenticationViewController)
+        self.navigationRouter.setRootModule(self.authenticationViewController)
+        self.rootRouter.setRootModule(self.navigationRouter)
         self.registerLogintNotification()
+        self.authenticationViewController.delegate = self
     }
     
     func toPresentable() -> UIViewController {
-        return self.authenticationViewController
+        return self.navigationRouter.toPresentable()
     }
     
     // MARK: - Private methods
@@ -73,5 +83,33 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorType {
     
     private func didAuthenticate(with userId: String) {
         self.delegate?.authenticationCoordinator(coordinator: self, didAuthenticateWithUserId: userId)
+    }
+    
+    private func authenticate(with mail: String, password: String) {
+        self.authenticationService.authenticate(with: mail, password: password) { (response) in
+            switch response {
+            case .success(_):
+                // NOTE: Do not call delegate directly for the moment, wait for NSNotification.Name.legacyAppDelegateDidLogin
+                print("[AuthenticationCoordinator] User did authenticate with success")
+            case .failure(let error):
+                // Display error on AuthenticationViewController
+                let authenticationErrorPresentableMaker = AuthenticationErrorPresentableMaker()
+                if let errorPresentable = authenticationErrorPresentableMaker.errorPresentable(from: error) {
+                    self.authenticationErrorPresenter.present(errorPresentable: errorPresentable)
+                }
+            }
+        }
+    }
+}
+
+// MARK: - AuthenticationViewControllerDelegate
+extension AuthenticationCoordinator: AuthenticationViewControllerDelegate {
+    
+    func authenticationViewController(_ authenticationViewController: AuthenticationViewController, didTapNextButtonWith mail: String, password: String) {
+        self.authenticate(with: mail, password: password)
+    }
+    
+    func authenticationViewControllerDidTapForgotPasswordButton(_ authenticationViewController: AuthenticationViewController) {
+        
     }
 }
