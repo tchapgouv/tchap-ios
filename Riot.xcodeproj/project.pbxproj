@@ -624,6 +624,10 @@
 		B1BC6A1D2136C99F00D32F8E /* Variant1Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1BC6A1C2136C99F00D32F8E /* Variant1Style.swift */; };
 		B1BC6A1F2136C9A800D32F8E /* Variant2Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1BC6A1E2136C9A800D32F8E /* Variant2Style.swift */; };
 		B1BC6A212136CA7F00D32F8E /* Stylable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1BC6A202136CA7F00D32F8E /* Stylable.swift */; };
+		B1BC6A242136D75B00D32F8E /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1BC6A232136D75B00D32F8E /* WelcomeViewController.swift */; };
+		B1BC6A262136D77A00D32F8E /* WelcomeCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1BC6A252136D77A00D32F8E /* WelcomeCoordinatorType.swift */; };
+		B1BC6A282136D78500D32F8E /* WelcomeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1BC6A272136D78500D32F8E /* WelcomeCoordinator.swift */; };
+		B1BC6A2A2136DCCE00D32F8E /* WelcomeViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B1BC6A292136DCCD00D32F8E /* WelcomeViewController.storyboard */; };
 		B1D250D82118AA0A000F4E93 /* RoomPredecessorBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1D250D72118AA0A000F4E93 /* RoomPredecessorBubbleCell.m */; };
 		B1F2AA91212AEC830077FDC0 /* SplitViewCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AA7B212AEC800077FDC0 /* SplitViewCoordinatorType.swift */; };
 		B1F2AA92212AEC830077FDC0 /* SplitViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AA7C212AEC800077FDC0 /* SplitViewCoordinator.swift */; };
@@ -1296,6 +1300,10 @@
 		B1BC6A1C2136C99F00D32F8E /* Variant1Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Variant1Style.swift; sourceTree = "<group>"; };
 		B1BC6A1E2136C9A800D32F8E /* Variant2Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Variant2Style.swift; sourceTree = "<group>"; };
 		B1BC6A202136CA7F00D32F8E /* Stylable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stylable.swift; sourceTree = "<group>"; };
+		B1BC6A232136D75B00D32F8E /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
+		B1BC6A252136D77A00D32F8E /* WelcomeCoordinatorType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeCoordinatorType.swift; sourceTree = "<group>"; };
+		B1BC6A272136D78500D32F8E /* WelcomeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeCoordinator.swift; sourceTree = "<group>"; };
+		B1BC6A292136DCCD00D32F8E /* WelcomeViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = WelcomeViewController.storyboard; sourceTree = "<group>"; };
 		B1D250D62118AA0A000F4E93 /* RoomPredecessorBubbleCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RoomPredecessorBubbleCell.h; sourceTree = "<group>"; };
 		B1D250D72118AA0A000F4E93 /* RoomPredecessorBubbleCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RoomPredecessorBubbleCell.m; sourceTree = "<group>"; };
 		B1F2AA7B212AEC800077FDC0 /* SplitViewCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplitViewCoordinatorType.swift; sourceTree = "<group>"; };
@@ -1475,6 +1483,7 @@
 			isa = PBXGroup;
 			children = (
 				B1F2AA83212AEC820077FDC0 /* Application */,
+				B1BC6A222136D71500D32F8E /* Welcome */,
 				B1F2AA8E212AEC820077FDC0 /* Authentication */,
 				B1F2AA7A212AEC800077FDC0 /* SplitView */,
 				B1F2AA7D212AEC800077FDC0 /* SegmentedView */,
@@ -3028,6 +3037,17 @@
 			path = Style;
 			sourceTree = "<group>";
 		};
+		B1BC6A222136D71500D32F8E /* Welcome */ = {
+			isa = PBXGroup;
+			children = (
+				B1BC6A252136D77A00D32F8E /* WelcomeCoordinatorType.swift */,
+				B1BC6A272136D78500D32F8E /* WelcomeCoordinator.swift */,
+				B1BC6A232136D75B00D32F8E /* WelcomeViewController.swift */,
+				B1BC6A292136DCCD00D32F8E /* WelcomeViewController.storyboard */,
+			);
+			path = Welcome;
+			sourceTree = "<group>";
+		};
 		B1F2AA7A212AEC800077FDC0 /* SplitView */ = {
 			isa = PBXGroup;
 			children = (
@@ -3518,6 +3538,7 @@
 				0250C5532122B68000034691 /* AuthInputsView.xib in Resources */,
 				02098F342131FE9E00F25086 /* ContactTableViewCell.xib in Resources */,
 				0250C5542122B68000034691 /* RoomCollectionViewCell.xib in Resources */,
+				B1BC6A2A2136DCCE00D32F8E /* WelcomeViewController.storyboard in Resources */,
 				B1322FEB213002440054A9DD /* FormTextField.xib in Resources */,
 				0250C5552122B68000034691 /* callend.mp3 in Resources */,
 				0250C5562122B68000034691 /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.xib in Resources */,
@@ -4102,6 +4123,7 @@
 				0250C4FB2122B68000034691 /* IncomingCallView.m in Sources */,
 				0250C4FC2122B68000034691 /* GroupTableViewCell.m in Sources */,
 				0250C4FD2122B68000034691 /* GroupHomeViewController.m in Sources */,
+				B1BC6A262136D77A00D32F8E /* WelcomeCoordinatorType.swift in Sources */,
 				0250C4FE2122B68000034691 /* RecentTableViewCell.m in Sources */,
 				0250C4FF2122B68000034691 /* RecentsViewController.m in Sources */,
 				0250C5002122B68000034691 /* RoomPredecessorBubbleCell.m in Sources */,
@@ -4114,6 +4136,7 @@
 				0250C5072122B68000034691 /* InviteRecentTableViewCell.m in Sources */,
 				0250C5082122B68000034691 /* ContactDetailsViewController.m in Sources */,
 				0250C5092122B68000034691 /* OnBoardingManager.swift in Sources */,
+				B1BC6A282136D78500D32F8E /* WelcomeCoordinator.swift in Sources */,
 				B15B867621357514002782BE /* AlertErrorPresenter.swift in Sources */,
 				0250C50A2122B68000034691 /* GroupDetailsViewController.m in Sources */,
 				0250C50B2122B68000034691 /* RoomKeyRequestViewController.m in Sources */,
@@ -4147,6 +4170,7 @@
 				0250C5222122B68000034691 /* DisabledRoomInputToolbarView.m in Sources */,
 				0250C5232122B68000034691 /* GroupTableViewCellWithSwitch.m in Sources */,
 				0250C5242122B68000034691 /* MessagesSearchResultTextMsgBubbleCell.m in Sources */,
+				B1BC6A242136D75B00D32F8E /* WelcomeViewController.swift in Sources */,
 				0250C5252122B68000034691 /* RoomBubbleCellData.m in Sources */,
 				0250C5262122B68000034691 /* DirectoryServerTableViewCell.m in Sources */,
 				0250C5272122B68000034691 /* DirectoryViewController.m in Sources */,
