@@ -16,15 +16,11 @@
 
 import Foundation
 
-
-/// Protocol use to handle the platform information related to a third-party identifier.
-protocol ThirdPartyIDPlatformInfoType {
-    /// The hostname of the platform.
-    var hostname: String { get }
-    
-    /// The homeserver of the platform.
-    var homeServer: String { get }
-    
-    /// Tell whether the given 3pid has been invited to the platform or not.
-    var isInvited: Bool { get }
+/// `AuthenticationServiceError` represent errors reported by AuthenticationService.
+enum AuthenticationServiceError: Error {
+    case unauthorizedThirdPartyID
+    case thirdPartyIDResolveFailure(error: Error?)
+    case homeServerURLBuildFailed
+    case userAlreadyLoggedIn
+    case failToCreateAccount
 }

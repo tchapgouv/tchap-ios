@@ -16,15 +16,13 @@
 
 import Foundation
 
-
-/// Protocol use to handle the platform information related to a third-party identifier.
-protocol ThirdPartyIDPlatformInfoType {
-    /// The hostname of the platform.
-    var hostname: String { get }
+/// Describe UI component style properties and commodity method to apply it
+protocol Style: NSObjectProtocol {
     
-    /// The homeserver of the platform.
-    var homeServer: String { get }
+    var backgroundColor: UIColor { get }
+    var separatorColor: UIColor { get }
     
-    /// Tell whether the given 3pid has been invited to the platform or not.
-    var isInvited: Bool { get }
+    func applyStyle(onNavigationBar: UINavigationBar)
+    func applyStyle(onButton: UIButton)
+    func applyStyle(onTextField: UITextField)
 }

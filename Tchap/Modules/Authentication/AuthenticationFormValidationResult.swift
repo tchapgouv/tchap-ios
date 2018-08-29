@@ -16,15 +16,13 @@
 
 import Foundation
 
+struct AuthenticationFields {
+    let login: String
+    let password: String
+}
 
-/// Protocol use to handle the platform information related to a third-party identifier.
-protocol ThirdPartyIDPlatformInfoType {
-    /// The hostname of the platform.
-    var hostname: String { get }
-    
-    /// The homeserver of the platform.
-    var homeServer: String { get }
-    
-    /// Tell whether the given 3pid has been invited to the platform or not.
-    var isInvited: Bool { get }
+/// Authentication form validation result
+enum AuthenticationFormValidationResult {
+    case success(AuthenticationFields)
+    case failure(ErrorPresentable)
 }

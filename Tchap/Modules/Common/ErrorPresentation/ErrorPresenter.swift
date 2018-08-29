@@ -16,15 +16,14 @@
 
 import Foundation
 
+/// Protocol describing a presenter used to present an error on screen
+protocol ErrorPresenter {
+    func present(errorPresentable: ErrorPresentable, animated: Bool)
+}
 
-/// Protocol use to handle the platform information related to a third-party identifier.
-protocol ThirdPartyIDPlatformInfoType {
-    /// The hostname of the platform.
-    var hostname: String { get }
-    
-    /// The homeserver of the platform.
-    var homeServer: String { get }
-    
-    /// Tell whether the given 3pid has been invited to the platform or not.
-    var isInvited: Bool { get }
+// `ErrorPresenter` default implementation
+extension ErrorPresenter {
+    func present(errorPresentable: ErrorPresentable) {
+        self.present(errorPresentable: errorPresentable, animated: true)
+    }
 }

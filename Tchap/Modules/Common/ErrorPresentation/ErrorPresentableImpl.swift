@@ -16,15 +16,9 @@
 
 import Foundation
 
-
-/// Protocol use to handle the platform information related to a third-party identifier.
-protocol ThirdPartyIDPlatformInfoType {
-    /// The hostname of the platform.
-    var hostname: String { get }
+/// `ErrorPresentableImpl` is a concrete implementation of `ErrorPresentable`
+struct ErrorPresentableImpl: ErrorPresentable {
     
-    /// The homeserver of the platform.
-    var homeServer: String { get }
-    
-    /// Tell whether the given 3pid has been invited to the platform or not.
-    var isInvited: Bool { get }
+    let title: String
+    let message: String
 }

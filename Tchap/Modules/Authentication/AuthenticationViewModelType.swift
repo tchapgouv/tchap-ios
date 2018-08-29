@@ -16,15 +16,15 @@
 
 import Foundation
 
-
-/// Protocol use to handle the platform information related to a third-party identifier.
-protocol ThirdPartyIDPlatformInfoType {
-    /// The hostname of the platform.
-    var hostname: String { get }
+/// Protocol describing the view model used by AuthenticationViewController
+protocol AuthenticationViewModelType {
     
-    /// The homeserver of the platform.
-    var homeServer: String { get }
+    /// Login view model
+    var loginTextViewModel: FormTextViewModelType { get }
     
-    /// Tell whether the given 3pid has been invited to the platform or not.
-    var isInvited: Bool { get }
+    /// Password view model
+    var passwordTextViewModel: FormTextViewModelType { get }
+    
+    /// Authentication form validation
+    func validateForm() -> AuthenticationFormValidationResult
 }

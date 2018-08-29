@@ -17,36 +17,36 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-@interface AuthenticationViewController : MXKAuthenticationViewController <MXKAuthenticationViewControllerDelegate>
-
-@property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
-
-@property (weak, nonatomic) IBOutlet UINavigationItem *mainNavigationItem;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *rightBarButtonItem;
-
-@property (weak, nonatomic) IBOutlet UIView *optionsContainer;
-
-@property (weak, nonatomic) IBOutlet UIButton *skipButton;
-@property (weak, nonatomic) IBOutlet UIButton *forgotPasswordButton;
-
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *submitButtonMinLeadingConstraint;
-
-@property (weak, nonatomic) IBOutlet UIView *serverOptionsContainer;
-@property (weak, nonatomic) IBOutlet UIButton *customServersTickButton;
-@property (weak, nonatomic) IBOutlet UIView *customServersContainer;
-@property (weak, nonatomic) IBOutlet UIView *homeServerContainer;
-@property (weak, nonatomic) IBOutlet UIView *identityServerContainer;
-
-@property (weak, nonatomic) IBOutlet UIView *homeServerSeparator;
-@property (weak, nonatomic) IBOutlet UIView *identityServerSeparator;
-
-
-/**
- Creates and returns a new `AuthenticationViewController` object.
- 
- @return An initialized `AuthenticationViewController` object.
- */
-+ (instancetype)instantiate;
-
-@end
+//@interface AuthenticationViewController : MXKAuthenticationViewController <MXKAuthenticationViewControllerDelegate>
+//
+//@property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
+//
+//@property (weak, nonatomic) IBOutlet UINavigationItem *mainNavigationItem;
+//@property (weak, nonatomic) IBOutlet UIBarButtonItem *rightBarButtonItem;
+//
+//@property (weak, nonatomic) IBOutlet UIView *optionsContainer;
+//
+//@property (weak, nonatomic) IBOutlet UIButton *skipButton;
+//@property (weak, nonatomic) IBOutlet UIButton *forgotPasswordButton;
+//
+//@property (weak, nonatomic) IBOutlet NSLayoutConstraint *submitButtonMinLeadingConstraint;
+//
+//@property (weak, nonatomic) IBOutlet UIView *serverOptionsContainer;
+//@property (weak, nonatomic) IBOutlet UIButton *customServersTickButton;
+//@property (weak, nonatomic) IBOutlet UIView *customServersContainer;
+//@property (weak, nonatomic) IBOutlet UIView *homeServerContainer;
+//@property (weak, nonatomic) IBOutlet UIView *identityServerContainer;
+//
+//@property (weak, nonatomic) IBOutlet UIView *homeServerSeparator;
+//@property (weak, nonatomic) IBOutlet UIView *identityServerSeparator;
+//
+//
+///**
+// Creates and returns a new `AuthenticationViewController` object.
+// 
+// @return An initialized `AuthenticationViewController` object.
+// */
+//+ (instancetype)instantiate;
+//
+//@end
 

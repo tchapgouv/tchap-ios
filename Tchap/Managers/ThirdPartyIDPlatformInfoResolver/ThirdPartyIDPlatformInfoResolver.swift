@@ -26,15 +26,21 @@ enum ResolveResult {
 /// It is used to retrieve the information of the platform associated to an authorized 3pid.
 final class ThirdPartyIDPlatformInfoResolver {
     
-    // The list of the known identity server urls.
+    /// The list of the known identity server urls.
     private let identityServerUrls: [String]
+    
+    /// URL prefix used by identity and home servers.
+    private let serverPrefixURL: String
     
     // MARK: - Public
     
     /// - Parameters:
     ///   - identityServerUrls: the list of the known ISes in order to run over the list until to get an answer.
-    init(identityServerUrls: [String]) {
+    ///   - serverPrefixURL: URL prefix used by identity and home servers.
+    init(identityServerUrls: [String],
+         serverPrefixURL: String) {
         self.identityServerUrls = identityServerUrls
+        self.serverPrefixURL = serverPrefixURL
     }
     
     /// Check whether a third-party identifier is authorized or not.
@@ -77,7 +83,8 @@ final class ThirdPartyIDPlatformInfoResolver {
             let isInvited = response["invited"] as? Bool ?? false
             
             if let hostname = response["hs"] as? String {
-                let info = ThirdPartyIDPlatformInfo(hostname: hostname, isInvited: isInvited)
+                let homeServer = "\(self.serverPrefixURL)\(hostname)"
+                let info = ThirdPartyIDPlatformInfo(hostname: hostname, homeServer: homeServer, isInvited: isInvited)
                 success?(.authorizedThirdPartyID(info: info))
             } else {
                 success?(.unauthorizedThirdPartyID)

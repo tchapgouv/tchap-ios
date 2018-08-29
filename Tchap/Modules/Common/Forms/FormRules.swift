@@ -16,15 +16,7 @@
 
 import Foundation
 
-
-/// Protocol use to handle the platform information related to a third-party identifier.
-protocol ThirdPartyIDPlatformInfoType {
-    /// The hostname of the platform.
-    var hostname: String { get }
-    
-    /// The homeserver of the platform.
-    var homeServer: String { get }
-    
-    /// Tell whether the given 3pid has been invited to the platform or not.
-    var isInvited: Bool { get }
+/// General form validation constants
+struct FormRules {
+    static let passwordMinLength = 6
 }

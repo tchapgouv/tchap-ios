@@ -16,15 +16,14 @@
 
 import Foundation
 
-
-/// Protocol use to handle the platform information related to a third-party identifier.
-protocol ThirdPartyIDPlatformInfoType {
-    /// The hostname of the platform.
-    var hostname: String { get }
+/// Protocol describing a service to handle authentication.
+protocol AuthenticationServiceType {
     
-    /// The homeserver of the platform.
-    var homeServer: String { get }
-    
-    /// Tell whether the given 3pid has been invited to the platform or not.
-    var isInvited: Bool { get }
+    /// Authenticate user on homeserver based on user mail.
+    ///
+    /// - Parameters:
+    ///   - mail: The user mail.
+    ///   - password: The user password.
+    ///   - completion: A closure called when the operation succeeds. Provide the authenticated user id when succeed.
+    func authenticate(with mail: String, password: String, completion: @escaping (MXResponse<String>) -> Void)
 }

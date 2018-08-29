@@ -6,7 +6,6 @@
 #import "WebViewViewController.h"
 #import "MatrixSDK+Swift.h"
 #import "LegacyAppDelegate.h"
-#import "AuthenticationViewController.h"
 #import "SegmentedViewController.h"
 #import "RoomsViewController.h"
 #import "RoomsDataSource.h"

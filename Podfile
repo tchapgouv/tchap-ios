@@ -9,7 +9,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 
 # Different flavours of pods to MatrixKit
 # The current MatrixKit pod version
-$matrixKitVersion = '0.8.0'
+$matrixKitVersion = '0.8.3'
 
 # The develop branch version
 #$matrixKitVersion = 'develop'
@@ -70,11 +70,15 @@ abstract_target 'RiotPods' do
     # While https://github.com/matomo-org/matomo-sdk-ios/pull/223 is not released, use the PR branch
     pod 'PiwikTracker', :git => 'https://github.com/manuroe/matomo-sdk-ios.git', :branch => 'feature/CustomVariables'
     #pod 'PiwikTracker', '~> 4.4.2'
+    pod 'Reusable', '~> 4.0'
 
     # Remove warnings from "bad" pods
     pod 'OLMKit', :inhibit_warnings => true
     pod 'cmark', :inhibit_warnings => true
     pod 'DTCoreText', :inhibit_warnings => true
+    
+    # Build tools
+    pod 'SwiftGen', '~> 5.3'
 
     target "Tchap" do
         import_MatrixKit
