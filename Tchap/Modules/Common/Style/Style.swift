@@ -14,13 +14,17 @@
  limitations under the License.
  */
 
-import Foundation
+import UIKit
 
 /// Describe UI component style properties and commodity method to apply it
 protocol Style: NSObjectProtocol {
     
+    var statusBarStyle: UIStatusBarStyle { get }
+    
     var backgroundColor: UIColor { get }
     var separatorColor: UIColor { get }
+    
+    var primarySubTextColor: UIColor { get }
     
     func applyStyle(onNavigationBar: UINavigationBar)
     func applyStyle(onButton: UIButton)
