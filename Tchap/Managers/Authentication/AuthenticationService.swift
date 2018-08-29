@@ -115,6 +115,7 @@ final class AuthenticationService: AuthenticationServiceType {
         
         let onUnrecognizedCertificate = self.onUnrecognizedCertificateAction(homeServerURL: homeServerURL)
         let restClient = self.createRestClient(homeServerURL: homeServerURL) { (certificateData) -> Bool in
+            completion(MXResponse.failure(AuthenticationServiceError.unrecognizedCertificate))
             return onUnrecognizedCertificate(certificateData)
         }
         
