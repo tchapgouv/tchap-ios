@@ -38,6 +38,7 @@ final class AuthenticationViewController: UIViewController {
     private var viewModel: AuthenticationViewModelType!
     private var errorPresenter: ErrorPresenter?
     private var keyboardAvoider: KeyboardAvoider?
+    private var currentStyle: Style = Variant2Style.shared
     
     // MARK: Public
     
@@ -67,6 +68,7 @@ final class AuthenticationViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        self.userThemeDidChange()
         self.keyboardAvoider?.startAvoiding()
     }
     
@@ -114,6 +116,10 @@ final class AuthenticationViewController: UIViewController {
         self.passwordFormTextField.delegate = self
     }
     
+    func userThemeDidChange() {
+        self.update(style: self.currentStyle)
+    }
+    
     // MARK: - Actions
     
     private func nextButtonAction() {
@@ -134,7 +140,23 @@ final class AuthenticationViewController: UIViewController {
     }
 }
 
-// MARK: - UITextFieldDelegate
+// MARK: - Stylable
+extension AuthenticationViewController: Stylable {
+    func update(style: Style) {
+        self.currentStyle = style
+        
+        style.applyStyle(onButton: self.forgotPasswordButton)
+        
+        if let navigationBar = self.navigationController?.navigationBar {
+            style.applyStyle(onNavigationBar: navigationBar)
+        }
+        
+        self.loginFormTextField.update(style: style)
+        self.passwordFormTextField.update(style: style)
+    }
+}
+
+// MARK: - FormTextFieldDelegate
 extension AuthenticationViewController: FormTextFieldDelegate {
 
     func formTextFieldShouldReturn(_ formTextField: FormTextField) -> Bool {

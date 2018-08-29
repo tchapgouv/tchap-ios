@@ -123,6 +123,14 @@ final class FormTextField: UIView, NibOwnerLoadable {
     }
 }
 
+// MARK: - Stylable
+extension FormTextField: Stylable {
+    func update(style: Style) {
+        style.applyStyle(onTextField: self.textField)
+        self.separatorView.backgroundColor = style.separatorColor
+    }
+}
+
 // MARK: - UITextFieldDelegate
 extension FormTextField: UITextFieldDelegate {
     
