@@ -15,7 +15,6 @@
  */
 
 import UIKit
-import Reusable
 
 protocol AuthenticationViewControllerDelegate: class {
     func authenticationViewController(_ authenticationViewController: AuthenticationViewController, didTapNextButtonWith mail: String, password: String)
@@ -38,7 +37,7 @@ final class AuthenticationViewController: UIViewController {
     private var viewModel: AuthenticationViewModelType!
     private var errorPresenter: ErrorPresenter?
     private var keyboardAvoider: KeyboardAvoider?
-    private var currentStyle: Style = Variant2Style.shared
+    private var currentStyle: Style!
     
     // MARK: Public
     
@@ -46,8 +45,9 @@ final class AuthenticationViewController: UIViewController {
     
     // MARK: - Setup
     
-    class func instantiate(viewModel: AuthenticationViewModelType) -> AuthenticationViewController {
+    class func instantiate(viewModel: AuthenticationViewModelType, style: Style = Variant2Style.shared) -> AuthenticationViewController {
         let viewController = StoryboardScene.AuthenticationViewController.initialScene.instantiate()
+        viewController.currentStyle = style
         viewController.viewModel = viewModel
         return viewController
     }
@@ -79,12 +79,8 @@ final class AuthenticationViewController: UIViewController {
         self.keyboardAvoider?.stopAvoiding()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-    }
-    
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .default
+        return self.currentStyle.statusBarStyle
     }
     
     // MARK: - Public
@@ -116,7 +112,7 @@ final class AuthenticationViewController: UIViewController {
         self.passwordFormTextField.delegate = self
     }
     
-    func userThemeDidChange() {
+    private func userThemeDidChange() {
         self.update(style: self.currentStyle)
     }
     
@@ -144,6 +140,8 @@ final class AuthenticationViewController: UIViewController {
 extension AuthenticationViewController: Stylable {
     func update(style: Style) {
         self.currentStyle = style
+        
+        self.view.backgroundColor = style.backgroundColor
         
         style.applyStyle(onButton: self.forgotPasswordButton)
         
