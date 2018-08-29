@@ -8,6 +8,13 @@
 "error_message_default" = "Une erreur est survenue, veuillez réessayer ultérieurement";
 
 ////////////////////////////////////////////////////////////////////////////////
+// MARK: Welcome
+
+"welcome_title" = "Bienvenue dans Tchap";
+"welcome_login_action" = "J'ai un compte";
+"welcome_register_action" = "Je n'ai pas de compte";
+
+////////////////////////////////////////////////////////////////////////////////
 // MARK: Authentication
 "authentication_title" = "Connexion Tchap";
 "authentication_mail_placeholder" = "Adresse email";

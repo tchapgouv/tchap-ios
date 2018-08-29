@@ -31,6 +31,12 @@ internal enum TchapL10n {
   internal static let errorMessageDefault = TchapL10n.tr("Tchap", "error_message_default")
   /// Erreur
   internal static let errorTitleDefault = TchapL10n.tr("Tchap", "error_title_default")
+  /// J'ai un compte
+  internal static let welcomeLoginAction = TchapL10n.tr("Tchap", "welcome_login_action")
+  /// Je n'ai pas de compte
+  internal static let welcomeRegisterAction = TchapL10n.tr("Tchap", "welcome_register_action")
+  /// Bienvenue dans Tchap
+  internal static let welcomeTitle = TchapL10n.tr("Tchap", "welcome_title")
 }
 // swiftlint:enable identifier_name line_length type_body_length
 
