@@ -24,4 +24,5 @@ enum AuthenticationServiceError: Error {
     case userAlreadyLoggedIn
     case failToCreateAccount
     case unrecognizedCertificate
+    case deallocatedRestClient
 }

@@ -22,6 +22,7 @@ final class AuthenticationService: AuthenticationServiceType {
     // MARK: - Properties
     
     private let accountManager: MXKAccountManager
+    private var restClients: [MXRestClient] = []
     
     // MARK: - Setup
     
@@ -88,6 +89,20 @@ final class AuthenticationService: AuthenticationServiceType {
         }
     }
     
+    private func add(restClient: MXRestClient) {
+        guard restClients.contains(restClient) == false else {
+            return
+        }
+        self.restClients.append(restClient)
+    }
+    
+    private func remove(restClient: MXRestClient) {
+        guard let restClientIndex = self.restClients.index(of: restClient) else {
+            return
+        }
+        restClients.remove(at: restClientIndex)
+    }
+    
     private func onUnrecognizedCertificateAction(homeServerURL: URL) -> MXHTTPClientOnUnrecognizedCertificate {
         let onUnrecognizedCertificate: MXHTTPClientOnUnrecognizedCertificate = { (certificateData) -> Bool in
             
@@ -114,10 +129,15 @@ final class AuthenticationService: AuthenticationServiceType {
         }
         
         let onUnrecognizedCertificate = self.onUnrecognizedCertificateAction(homeServerURL: homeServerURL)
+        
         let restClient = self.createRestClient(homeServerURL: homeServerURL) { (certificateData) -> Bool in
-            completion(MXResponse.failure(AuthenticationServiceError.unrecognizedCertificate))
+            // TODO: Update MXRestClient with better unrecognized certificate error handling as MXRestClient is unusable when `onUnrecognizedCertBlock` return false.
+            // NOTE: By returning false here for invalid certicate give us an error with error code `NSURLErrorCancelled` when call `restClient.login(parameters: loginParameters)` below
             return onUnrecognizedCertificate(certificateData)
         }
+        
+        // Retain restClient
+        self.add(restClient: restClient)
         
         let loginParameters: [String: Any] = [
             "type" : MXLoginFlowType.password.identifier,
@@ -133,7 +153,12 @@ final class AuthenticationService: AuthenticationServiceType {
             "address" : mail
         ]
         
-        restClient.login(parameters: loginParameters) { (response) in
+        restClient.login(parameters: loginParameters) { [weak self, weak restClient] (response) in
+            guard let restClient = restClient else {
+                completion(MXResponse.failure(AuthenticationServiceError.deallocatedRestClient))
+                return
+            }
+            
             switch response {
             case .success(let jsonResponse):
                 
@@ -152,6 +177,9 @@ final class AuthenticationService: AuthenticationServiceType {
             case .failure(let error):
                 completion(MXResponse.failure(error))
             }
+            
+            // Release restClient
+            self?.remove(restClient: restClient)
         }
     }
     
