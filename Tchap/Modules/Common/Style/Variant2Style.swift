@@ -22,13 +22,12 @@ final class Variant2Style: NSObject, Style {
     
     static let shared = Variant2Style()
     
-    var backgroundColor: UIColor {
-        return kVariant2PrimaryBgColor
-    }
+    let statusBarStyle: UIStatusBarStyle = kVariant2StatusBarStyle
     
-    var separatorColor: UIColor {
-        return kVariant2ActionColor
-    }
+    let backgroundColor: UIColor = kVariant2PrimaryBgColor
+    let separatorColor: UIColor = kVariant2ActionColor
+    
+    let primarySubTextColor: UIColor = kVariant2PrimarySubTextColor
     
     func applyStyle(onNavigationBar navigationBar: UINavigationBar) {
         navigationBar.barTintColor = kVariant2PrimaryBgColor

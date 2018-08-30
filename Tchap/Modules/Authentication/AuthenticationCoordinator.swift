@@ -26,7 +26,6 @@ final class AuthenticationCoordinator: AuthenticationCoordinatorType {
     
     // MARK: Private
     
-    private let rootRouter: RootRouterType
     private let authenticationViewController: AuthenticationViewController
     private let navigationRouter: NavigationRouterType
     private let authenticationService: AuthenticationServiceType
@@ -41,9 +40,8 @@ final class AuthenticationCoordinator: AuthenticationCoordinatorType {
     
     // MARK: - Setup
     
-    init(router: RootRouterType) {
-        self.rootRouter = router
-        self.navigationRouter = NavigationRouter()
+    init(router: NavigationRouterType) {
+        self.navigationRouter = router
         self.authenticationService = AuthenticationService(accountManager: MXKAccountManager.shared())
         let authenticationViewModel = AuthenticationViewModel()
         let authenticationViewController = AuthenticationViewController.instantiate(viewModel: authenticationViewModel)
@@ -55,14 +53,12 @@ final class AuthenticationCoordinator: AuthenticationCoordinatorType {
     // MARK: - Public methods
     
     func start() {
-        self.navigationRouter.setRootModule(self.authenticationViewController)
-        self.rootRouter.setRootModule(self.navigationRouter)
         self.registerLogintNotification()
         self.authenticationViewController.delegate = self
     }
     
     func toPresentable() -> UIViewController {
-        return self.navigationRouter.toPresentable()
+        return self.authenticationViewController
     }
     
     // MARK: - Private methods

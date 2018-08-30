@@ -55,9 +55,9 @@ extern UIStatusBarStyle kVariant1StatusBarStyle;
 extern UIBarStyle kVariant1SearchBarStyle;
 extern UIColor *kVariant1SearchBarTintColor;
 
-extern UIStatusBarStyle kVariant1StatusBarStyle;
-extern UIBarStyle kVariant1SearchBarStyle;
-extern UIColor *kVariant1SearchBarTintColor;
+extern UIStatusBarStyle kVariant2StatusBarStyle;
+extern UIBarStyle kVariant2SearchBarStyle;
+extern UIColor *kVariant2SearchBarTintColor;
 
 /**
  `DesignValues` class manages the Tchap design parameters

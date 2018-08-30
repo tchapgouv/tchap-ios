@@ -14,19 +14,8 @@
  limitations under the License.
  */
 
-import UIKit
+import Foundation
 
-/// Describe UI component style properties and commodity method to apply it
-protocol Style: NSObjectProtocol {
-    
-    var statusBarStyle: UIStatusBarStyle { get }
-    
-    var backgroundColor: UIColor { get }
-    var separatorColor: UIColor { get }
-    
-    var primarySubTextColor: UIColor { get }
-    
-    func applyStyle(onNavigationBar: UINavigationBar)
-    func applyStyle(onButton: UIButton)
-    func applyStyle(onTextField: UITextField)
+/// `WelcomeCoordinatorType` is a protocol describing a Coordinator that handle welcome navigation flow.
+protocol WelcomeCoordinatorType: Coordinator, Presentable {    
 }

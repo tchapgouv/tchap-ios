@@ -22,13 +22,12 @@ final class Variant1Style: NSObject, Style {
     
     static let shared = Variant1Style()
     
-    var backgroundColor: UIColor {
-        return kVariant1PrimaryBgColor
-    }
+    let statusBarStyle: UIStatusBarStyle = kVariant1StatusBarStyle
     
-    var separatorColor: UIColor {
-        return kVariant1ActionColor
-    }
+    let backgroundColor: UIColor = kVariant1PrimaryBgColor
+    let separatorColor: UIColor = kVariant1ActionColor
+    
+    let primarySubTextColor: UIColor = kVariant1PrimarySubTextColor
     
     func applyStyle(onNavigationBar navigationBar: UINavigationBar) {
         navigationBar.isTranslucent = false

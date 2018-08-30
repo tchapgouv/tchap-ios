@@ -23,4 +23,5 @@ enum AuthenticationServiceError: Error {
     case homeServerURLBuildFailed
     case userAlreadyLoggedIn
     case failToCreateAccount
+    case unrecognizedCertificate
 }

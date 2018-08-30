@@ -48,17 +48,17 @@ final class AppCoordinator: AppCoordinatorType {
         if let mainSession = self.mainSession {
             self.showSplitView(session: mainSession)
         } else {
-            self.showAuthentication()
+            self.showWelcome()
         }
     }
     
     // MARK: - Private methods
     
-    private func showAuthentication() {
-        let authenticationCoordinator = AuthenticationCoordinator(router: self.rootRouter)
-        authenticationCoordinator.delegate = self
-        authenticationCoordinator.start()
-        self.add(childCoordinator: authenticationCoordinator)
+    private func showWelcome() {
+        let welcomeCoordinator = WelcomeCoordinator(router: self.rootRouter)
+        welcomeCoordinator.delegate = self
+        welcomeCoordinator.start()
+        self.add(childCoordinator: welcomeCoordinator)
     }
     
     private func showSplitView(session: MXSession) {
@@ -80,7 +80,7 @@ final class AppCoordinator: AppCoordinatorType {
     @objc private func userDidLogout() {
         self.unregisterLogoutNotification()
         
-        self.showAuthentication()                
+        self.showWelcome()
         
         if let splitViewCoordinator = self.splitViewCoordinator {
             self.remove(childCoordinator: splitViewCoordinator)
@@ -88,16 +88,19 @@ final class AppCoordinator: AppCoordinatorType {
     }
 }
 
-// MARK: - AuthenticationCoordinatorDelegate
-extension AppCoordinator: AuthenticationCoordinatorDelegate {
+// MARK: - WelcomeCoordinatorDelegate
+extension AppCoordinator: WelcomeCoordinatorDelegate {
     
-    func authenticationCoordinator(coordinator: AuthenticationCoordinatorType, didAuthenticateWithUserId userId: String) {
+    func welcomeCoordinatorUserDidRegister(_ coordinator: WelcomeCoordinatorType) {
         
+    }
+    
+    func welcomeCoordinatorUserDidAuthenticate(_ coordinator: WelcomeCoordinatorType) {
         if let mainSession = self.mainSession {
             self.showSplitView(session: mainSession)
             self.remove(childCoordinator: coordinator)
         } else {
-            NSLog("[AppCoordinator] Did not find session for userId")
+            NSLog("[AppCoordinator] Did not find session for current user")
             // TODO: Present an error on
             // coordinator.toPresentable()
         }
