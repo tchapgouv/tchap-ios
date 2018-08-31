@@ -26,4 +26,13 @@ protocol AuthenticationServiceType {
     ///   - password: The user password.
     ///   - completion: A closure called when the operation succeeds. Provide the authenticated user id when succeed.
     func authenticate(with mail: String, password: String, completion: @escaping (MXResponse<String>) -> Void)
+    
+    /// Register user on homeserver based on user mail.
+    ///
+    /// - Parameters:
+    ///   - mail: The user mail.
+    ///   - password: The user password.
+    ///   - deviceDisplayName: The current device display name.
+    ///   - completion: A closure called when the operation succeeds. Provide the authenticated user id when succeed.
+    func register(with mail: String, password: String, deviceDisplayName: String, completion: @escaping (MXResponse<String>) -> Void)
 }

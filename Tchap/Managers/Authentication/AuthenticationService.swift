@@ -56,6 +56,25 @@ final class AuthenticationService: AuthenticationServiceType {
         }
     }
     
+    func register(with mail: String, password: String, deviceDisplayName: String, completion: @escaping (MXResponse<String>) -> Void) {
+        
+        self.resolveHomeServer(with: mail) { (resolveResult) in
+            switch resolveResult {
+            case .success(let homeServer):
+                self.register(with: homeServer, mail: mail, password: password, deviceDisplayName: deviceDisplayName, completion: { (registrationResult) in
+                    switch registrationResult {
+                    case .success(let credentials):
+                        completion(MXResponse.success(credentials.userId))
+                    case .failure(let error):
+                        completion(MXResponse.failure(error))
+                    }
+                })
+            case .failure(let error):
+                completion(MXResponse.failure(error))
+            }
+        }
+    }
+    
     // MARK: - Private
     
     private func resolveHomeServer(with mail: String, completion: @escaping (MXResponse<String>) -> Void) {
@@ -86,6 +105,16 @@ final class AuthenticationService: AuthenticationServiceType {
     private func createRestClient(homeServerURL: URL, onUnrecognizedCertificate: @escaping MXHTTPClientOnUnrecognizedCertificate) -> MXRestClient {
         return MXRestClient(homeServer: homeServerURL) { (certificateData) -> Bool in
             onUnrecognizedCertificate(certificateData)
+        }
+    }
+    
+    private func createRestClient(homeServerURL: URL) -> MXRestClient {
+        let onUnrecognizedCertificate = self.onUnrecognizedCertificateAction(homeServerURL: homeServerURL)
+        
+        return self.createRestClient(homeServerURL: homeServerURL) { (certificateData) -> Bool in
+            // TODO: Update MXRestClient with better unrecognized certificate error handling as MXRestClient is unusable when `onUnrecognizedCertBlock` return false.
+            // NOTE: By returning false here for invalid certicate give us an error with error code `NSURLErrorCancelled` when call any endpoint on MXRestClient.
+            return onUnrecognizedCertificate(certificateData)
         }
     }
     
@@ -183,7 +212,7 @@ final class AuthenticationService: AuthenticationServiceType {
         }
     }
     
-    func addAccount(for credentials: MXCredentials, identityServerURL: String) throws {
+    private func addAccount(for credentials: MXCredentials, identityServerURL: String) throws {
         // Sanity check: check whether the user is not already logged in with this id
         guard self.accountManager.account(forUserId: credentials.userId) == nil else {
             throw AuthenticationServiceError.userAlreadyLoggedIn
@@ -196,5 +225,51 @@ final class AuthenticationService: AuthenticationServiceType {
         
         account.identityServerURL = identityServerURL
         self.accountManager.addAccount(account, andOpenSession: true)
+    }
+            
+    func register(with homeServer: String, mail: String, password: String, deviceDisplayName: String, completion: @escaping (MXResponse<MXCredentials>) -> Void) {
+        guard let homeServerURL = URL(string: homeServer) else {
+            completion(MXResponse.failure(AuthenticationServiceError.homeServerURLBuildFailed))
+            return
+        }
+        
+        let parameters: [String: Any] = [
+            "auth": [:],
+            "username": mail,
+            "password": password,
+            "bind_email": false,
+            "initial_device_display_name": deviceDisplayName
+        ]
+        
+        let restClient = self.createRestClient(homeServerURL: homeServerURL)
+        
+        restClient.register(parameters: parameters) { [weak self, weak restClient] (response) in
+            guard let restClient = restClient else {
+                completion(MXResponse.failure(AuthenticationServiceError.deallocatedRestClient))
+                return
+            }
+            
+            switch response {
+            case .success(let jsonResponse):
+                
+                guard let credentials = MXCredentials.model(fromJSON: jsonResponse) as? MXCredentials, credentials.userId != nil, credentials.accessToken != nil else {
+                    let error = NSError(domain: MXKAuthErrorDomain, code: 0, userInfo: [NSLocalizedDescriptionKey: Bundle.mxk_localizedString(forKey: "not_supported_yet")])
+                    completion(MXResponse.failure(error))
+                    return
+                }
+                
+                // Workaround: HS does not return the right URL. Use the one we used to make the request
+                credentials.homeServer = restClient.homeserver
+                // Report the certificate trusted by user (if any)
+                credentials.allowedCertificate = restClient.allowedCertificate
+                
+                completion(MXResponse.success(credentials))
+            case .failure(let error):
+                completion(MXResponse.failure(error))
+            }
+            
+            // Release restClient
+            self?.remove(restClient: restClient)
+        }
     }
 }
