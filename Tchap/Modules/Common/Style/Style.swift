@@ -25,6 +25,7 @@ protocol Style: NSObjectProtocol {
     var separatorColor: UIColor { get }
     
     var primarySubTextColor: UIColor { get }
+    var secondaryTextColor: UIColor { get }
     
     func applyStyle(onNavigationBar: UINavigationBar)
     func applyStyle(onButton: UIButton)

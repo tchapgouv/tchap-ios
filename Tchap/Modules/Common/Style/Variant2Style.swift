@@ -28,6 +28,7 @@ final class Variant2Style: NSObject, Style {
     let separatorColor: UIColor = kVariant2ActionColor
     
     let primarySubTextColor: UIColor = kVariant2PrimarySubTextColor
+    let secondaryTextColor: UIColor = kVariant2SecondaryTextColor
     
     func applyStyle(onNavigationBar navigationBar: UINavigationBar) {
         navigationBar.barTintColor = kVariant2PrimaryBgColor
