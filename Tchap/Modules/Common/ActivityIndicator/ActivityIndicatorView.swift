@@ -21,8 +21,20 @@ final class ActivityIndicatorView: UIView, NibOwnerLoadable {
     
     // MARK: - Properties
     
-    @IBOutlet private weak var backgroundOverlayView: UIView!
+    // MARK: Outlets
+    
     @IBOutlet private weak var activityIndicatorView: UIActivityIndicatorView!
+    
+    // MARK: Public
+    
+    var color: UIColor? {
+        get {
+            return activityIndicatorView.color
+        }
+        set {            
+            activityIndicatorView.color = newValue
+        }
+    }
     
     // MARK: - Setup
     
@@ -43,6 +55,12 @@ final class ActivityIndicatorView: UIView, NibOwnerLoadable {
         super.init(frame: frame)
         self.loadNibContent()
         self.commonInit()
+    }
+    
+    // MARK: - Overrides
+    
+    override var intrinsicContentSize: CGSize {
+        return CGSize(width: self.activityIndicatorView.intrinsicContentSize.width, height: self.activityIndicatorView.intrinsicContentSize.height)
     }
     
     // MARK: - Public
