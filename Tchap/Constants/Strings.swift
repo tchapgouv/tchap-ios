@@ -31,6 +31,12 @@ internal enum TchapL10n {
   internal static let errorTitleDefault = TchapL10n.tr("Tchap", "error_title_default")
   /// Confirmer le mot de passe
   internal static let registrationConfirmPasswordPlaceholder = TchapL10n.tr("Tchap", "registration_confirm_password_placeholder")
+  /// Je n'ai pas reçu l'email !
+  internal static let registrationEmailNotReceivedAction = TchapL10n.tr("Tchap", "registration_email_not_received_action")
+  /// Un email vous a été envoyé
+  internal static let registrationEmailSentInfo = TchapL10n.tr("Tchap", "registration_email_sent_info")
+  /// Veuillez l'ouvrir et cliquer sur le lien proposé pour valider votre inscription
+  internal static let registrationEmailSentInstructions = TchapL10n.tr("Tchap", "registration_email_sent_instructions")
   /// Les mots de passe ne correspondent pas
   internal static let registrationErrorPasswordsDontMatch = TchapL10n.tr("Tchap", "registration_error_passwords_dont_match")
   /// Utilisez votre adresse professionnelle
