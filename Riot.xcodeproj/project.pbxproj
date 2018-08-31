@@ -311,6 +311,14 @@
 		92726A4B1F58737A004AD26F /* SiriIntents.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 92726A431F58737A004AD26F /* SiriIntents.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		92726A511F587410004AD26F /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92726A501F587410004AD26F /* Intents.framework */; };
 		9972EF53599AC5CD25D6E8F0 /* Pods_RiotPods_RiotShareExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA7C5FAF411C8F14F5447193 /* Pods_RiotPods_RiotShareExtension.framework */; };
+		B11C800121393E5D00CC6F2F /* RegistrationCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11C7FFB21393E5D00CC6F2F /* RegistrationCoordinatorType.swift */; };
+		B11C800621393E5D00CC6F2F /* RegistrationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11C800021393E5D00CC6F2F /* RegistrationCoordinator.swift */; };
+		B11C80112139442700CC6F2F /* RegistrationFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11C800D2139442700CC6F2F /* RegistrationFormViewController.swift */; };
+		B11C80122139442700CC6F2F /* RegistrationFormViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11C800E2139442700CC6F2F /* RegistrationFormViewModelType.swift */; };
+		B11C80132139442700CC6F2F /* RegistrationFormViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11C800F2139442700CC6F2F /* RegistrationFormViewModel.swift */; };
+		B11C80142139442700CC6F2F /* RegistrationFormViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B11C80102139442700CC6F2F /* RegistrationFormViewController.storyboard */; };
+		B11C8017213947A400CC6F2F /* RegistrationEmailSentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11C8016213947A400CC6F2F /* RegistrationEmailSentViewController.swift */; };
+		B11C80192139484900CC6F2F /* RegistrationEmailSentViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B11C80182139484900CC6F2F /* RegistrationEmailSentViewController.storyboard */; };
 		B1322FDC212FF7480054A9DD /* Tchap.strings in Resources */ = {isa = PBXBuildFile; fileRef = B1322FDE212FF7480054A9DD /* Tchap.strings */; };
 		B1322FE3212FFCCD0054A9DD /* Storyboards.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1322FE0212FFCCB0054A9DD /* Storyboards.swift */; };
 		B1322FE4212FFCCD0054A9DD /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1322FE1212FFCCC0054A9DD /* Images.swift */; };
@@ -802,6 +810,14 @@
 		92726A501F587410004AD26F /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
 		940A45C29F3CB0D58EFBCA8B /* Pods_RiotPods_SiriIntents.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RiotPods_SiriIntents.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0230B8E031D07F2441D2F7E /* Pods-RiotPods-RiotShareExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-RiotShareExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-RiotPods-RiotShareExtension/Pods-RiotPods-RiotShareExtension.release.xcconfig"; sourceTree = "<group>"; };
+		B11C7FFB21393E5D00CC6F2F /* RegistrationCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistrationCoordinatorType.swift; sourceTree = "<group>"; };
+		B11C800021393E5D00CC6F2F /* RegistrationCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistrationCoordinator.swift; sourceTree = "<group>"; };
+		B11C800D2139442700CC6F2F /* RegistrationFormViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistrationFormViewController.swift; sourceTree = "<group>"; };
+		B11C800E2139442700CC6F2F /* RegistrationFormViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistrationFormViewModelType.swift; sourceTree = "<group>"; };
+		B11C800F2139442700CC6F2F /* RegistrationFormViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistrationFormViewModel.swift; sourceTree = "<group>"; };
+		B11C80102139442700CC6F2F /* RegistrationFormViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = RegistrationFormViewController.storyboard; sourceTree = "<group>"; };
+		B11C8016213947A400CC6F2F /* RegistrationEmailSentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationEmailSentViewController.swift; sourceTree = "<group>"; };
+		B11C80182139484900CC6F2F /* RegistrationEmailSentViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = RegistrationEmailSentViewController.storyboard; sourceTree = "<group>"; };
 		B1322FDD212FF7480054A9DD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Tchap.strings; sourceTree = "<group>"; };
 		B1322FE0212FFCCB0054A9DD /* Storyboards.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Storyboards.swift; sourceTree = "<group>"; };
 		B1322FE1212FFCCC0054A9DD /* Images.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Images.swift; sourceTree = "<group>"; };
@@ -1485,6 +1501,7 @@
 				B1F2AA83212AEC820077FDC0 /* Application */,
 				B1BC6A222136D71500D32F8E /* Welcome */,
 				B1F2AA8E212AEC820077FDC0 /* Authentication */,
+				B11C7FFA21393E5D00CC6F2F /* Registration */,
 				B1F2AA7A212AEC800077FDC0 /* SplitView */,
 				B1F2AA7D212AEC800077FDC0 /* SegmentedView */,
 				02BEE14F2125BBF800098505 /* Rooms */,
@@ -1603,6 +1620,37 @@
 				92726A481F58737A004AD26F /* Info.plist */,
 			);
 			path = SiriIntents;
+			sourceTree = "<group>";
+		};
+		B11C7FFA21393E5D00CC6F2F /* Registration */ = {
+			isa = PBXGroup;
+			children = (
+				B11C7FFB21393E5D00CC6F2F /* RegistrationCoordinatorType.swift */,
+				B11C800021393E5D00CC6F2F /* RegistrationCoordinator.swift */,
+				B11C800C2139442700CC6F2F /* Form */,
+				B11C80152139474D00CC6F2F /* EmailSent */,
+			);
+			path = Registration;
+			sourceTree = "<group>";
+		};
+		B11C800C2139442700CC6F2F /* Form */ = {
+			isa = PBXGroup;
+			children = (
+				B11C800E2139442700CC6F2F /* RegistrationFormViewModelType.swift */,
+				B11C800F2139442700CC6F2F /* RegistrationFormViewModel.swift */,
+				B11C800D2139442700CC6F2F /* RegistrationFormViewController.swift */,
+				B11C80102139442700CC6F2F /* RegistrationFormViewController.storyboard */,
+			);
+			path = Form;
+			sourceTree = "<group>";
+		};
+		B11C80152139474D00CC6F2F /* EmailSent */ = {
+			isa = PBXGroup;
+			children = (
+				B11C8016213947A400CC6F2F /* RegistrationEmailSentViewController.swift */,
+				B11C80182139484900CC6F2F /* RegistrationEmailSentViewController.storyboard */,
+			);
+			path = EmailSent;
 			sourceTree = "<group>";
 		};
 		B1322FD9212FF4A30054A9DD /* Localizations */ = {
@@ -3533,6 +3581,7 @@
 				0250C54D2122B68000034691 /* RoomMembershipBubbleCell.xib in Resources */,
 				0250C54E2122B68000034691 /* ContactDetailsViewController.xib in Resources */,
 				0250C54F2122B68000034691 /* RoomIncomingTextMsgBubbleCell.xib in Resources */,
+				B11C80142139442700CC6F2F /* RegistrationFormViewController.storyboard in Resources */,
 				0250C5502122B68000034691 /* Localizable.strings in Resources */,
 				0250C5522122B68000034691 /* InfoPlist.strings in Resources */,
 				0250C5532122B68000034691 /* AuthInputsView.xib in Resources */,
@@ -3558,6 +3607,7 @@
 				0250C5652122B68000034691 /* RoomIncomingEncryptedTextMsgBubbleCell.xib in Resources */,
 				0250C5662122B68000034691 /* RoomOutgoingTextMsgBubbleCell.xib in Resources */,
 				0250C5672122B68000034691 /* MediaPickerViewController.xib in Resources */,
+				B11C80192139484900CC6F2F /* RegistrationEmailSentViewController.storyboard in Resources */,
 				0250C5692122B68000034691 /* CallViewController.xib in Resources */,
 				0250C56A2122B68000034691 /* ringback.mp3 in Resources */,
 				0250C56B2122B68000034691 /* GoogleService-Info.plist in Resources */,
@@ -3979,6 +4029,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B11C80132139442700CC6F2F /* RegistrationFormViewModel.swift in Sources */,
 				0250C4932122B68000034691 /* MediaAlbumTableCell.m in Sources */,
 				0250C4942122B68000034691 /* RiotDesignValues.m in Sources */,
 				0250C4962122B68000034691 /* AvatarGenerator.m in Sources */,
@@ -4039,6 +4090,7 @@
 				0250C4BC2122B68000034691 /* MediaPickerViewController.m in Sources */,
 				0250C4BD2122B68000034691 /* RageShakeManager.m in Sources */,
 				0250C4BE2122B68000034691 /* RoomOutgoingEncryptedTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
+				B11C800621393E5D00CC6F2F /* RegistrationCoordinator.swift in Sources */,
 				0250C4BF2122B68000034691 /* PublicRoomTableViewCell.m in Sources */,
 				0250C4C02122B68000034691 /* RoomMembershipCollapsedBubbleCell.m in Sources */,
 				0250C4C12122B68000034691 /* SettingsViewController.m in Sources */,
@@ -4053,6 +4105,7 @@
 				0250C4CA2122B68000034691 /* WebViewViewController.m in Sources */,
 				0250C4CB2122B68000034691 /* RoomSearchViewController.m in Sources */,
 				0250C4CC2122B68000034691 /* MXGroup+Riot.m in Sources */,
+				B11C8017213947A400CC6F2F /* RegistrationEmailSentViewController.swift in Sources */,
 				B15B86792135903E002782BE /* KeyboardAvoider.swift in Sources */,
 				0250C4CD2122B68000034691 /* TableViewCellWithCollectionView.m in Sources */,
 				0250C4CE2122B68000034691 /* UINavigationController+Riot.m in Sources */,
@@ -4061,6 +4114,7 @@
 				0250C4D12122B68000034691 /* RoomIncomingTextMsgWithoutSenderNameBubbleCell.m in Sources */,
 				02098F372131FE9E00F25086 /* ContactsTableViewController.m in Sources */,
 				0250C4D22122B68000034691 /* LanguagePickerViewController.m in Sources */,
+				B11C80122139442700CC6F2F /* RegistrationFormViewModelType.swift in Sources */,
 				B1F2AA96212AEC830077FDC0 /* SettingsCoordinator.swift in Sources */,
 				B1F2AA93212AEC830077FDC0 /* SegmentedViewCoordinatorType.swift in Sources */,
 				02BEE18D212AB23A00098505 /* ThirdPartyIDPlatformInfo.swift in Sources */,
@@ -4077,6 +4131,7 @@
 				0250C4DA2122B68000034691 /* GroupsViewController.m in Sources */,
 				B1892E7B21306ADC00742348 /* FormTextViewModel.swift in Sources */,
 				B1322FEA213002440054A9DD /* FormTextField.swift in Sources */,
+				B11C800121393E5D00CC6F2F /* RegistrationCoordinatorType.swift in Sources */,
 				0250C4DB2122B68000034691 /* RoomMemberDetailsViewController.m in Sources */,
 				0250C4DC2122B68000034691 /* RoomMembershipExpandedWithPaginationTitleBubbleCell.m in Sources */,
 				0250C4DD2122B68000034691 /* RoomIncomingEncryptedAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
@@ -4205,6 +4260,7 @@
 				B15B867F2135BA96002782BE /* AuthenticationViewController.swift in Sources */,
 				0250C53A2122B68000034691 /* RoomOutgoingEncryptedAttachmentBubbleCell.m in Sources */,
 				0250C53B2122B68000034691 /* CircleButton.m in Sources */,
+				B11C80112139442700CC6F2F /* RegistrationFormViewController.swift in Sources */,
 				0250C53C2122B68000034691 /* RoomIncomingTextMsgBubbleCell.m in Sources */,
 				B1322FE4212FFCCD0054A9DD /* Images.swift in Sources */,
 				0250C53D2122B68000034691 /* TableViewCellWithPhoneNumberTextField.m in Sources */,
