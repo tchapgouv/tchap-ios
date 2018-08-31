@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Bwo-DD-cZB">
+    <device id="retina4_0" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Registration Email Sent View Controller-->
+        <scene sceneID="lzZ-5L-AKL">
+            <objects>
+                <viewController id="Bwo-DD-cZB" customClass="RegistrationEmailSentViewController" customModule="Tchap" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ZfI-Ek-NlZ">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="An email has been sent" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ivq-3X-bm0">
+                                <rect key="frame" x="20" y="60" width="280" height="26.5"/>
+                                <fontDescription key="fontDescription" type="system" weight="light" pointSize="22"/>
+                                <color key="textColor" red="0.086274509803921567" green="0.1764705882352941" blue="0.34509803921568627" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="xxx.zzz@zzz.com" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MOI-HC-vNQ">
+                                <rect key="frame" x="20" y="90.5" width="280" height="14.5"/>
+                                <fontDescription key="fontDescription" type="italicSystem" pointSize="12"/>
+                                <color key="textColor" white="0.80642671129999999" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please open and click on proposed link to validate registration" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="osW-1C-svS">
+                                <rect key="frame" x="20" y="145" width="280" height="33.5"/>
+                                <fontDescription key="fontDescription" type="system" weight="light" pointSize="14"/>
+                                <color key="textColor" red="0.086274509799999996" green="0.1764705882" blue="0.34509803919999998" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1Cs-Ip-pGu" userLabel="ActivityIndicatorContainerView">
+                                <rect key="frame" x="0.0" y="188.5" width="320" height="315.5"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NDY-ms-xaS" customClass="ActivityIndicatorView" customModule="Tchap" customModuleProvider="target">
+                                        <rect key="frame" x="134.5" y="133" width="50" height="50"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" priority="250" constant="50" placeholder="YES" id="2QI-0W-WIT"/>
+                                            <constraint firstAttribute="width" priority="250" constant="50" placeholder="YES" id="oyE-n3-wFO"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="NDY-ms-xaS" firstAttribute="centerY" secondItem="1Cs-Ip-pGu" secondAttribute="centerY" id="2GE-6c-caa"/>
+                                    <constraint firstItem="NDY-ms-xaS" firstAttribute="centerX" secondItem="1Cs-Ip-pGu" secondAttribute="centerX" id="gnM-7a-pqU"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wkv-AG-LZC">
+                                <rect key="frame" x="65.5" y="504" width="189" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="LoC-jd-foE"/>
+                                </constraints>
+                                <state key="normal" title="I did not received the email!"/>
+                                <connections>
+                                    <action selector="emailNotReceivedButtonAction:" destination="Bwo-DD-cZB" eventType="touchUpInside" id="6SI-UQ-axR"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="MOI-HC-vNQ" firstAttribute="leading" secondItem="ivq-3X-bm0" secondAttribute="leading" id="3Yk-rz-TLI"/>
+                            <constraint firstItem="1Cs-Ip-pGu" firstAttribute="leading" secondItem="9GJ-qa-Lut" secondAttribute="leading" id="5CC-jE-fgY"/>
+                            <constraint firstItem="wkv-AG-LZC" firstAttribute="centerX" secondItem="9GJ-qa-Lut" secondAttribute="centerX" id="BOa-WT-GXE"/>
+                            <constraint firstItem="9GJ-qa-Lut" firstAttribute="trailing" secondItem="1Cs-Ip-pGu" secondAttribute="trailing" id="FMI-Cy-jVd"/>
+                            <constraint firstItem="MOI-HC-vNQ" firstAttribute="trailing" secondItem="ivq-3X-bm0" secondAttribute="trailing" id="FjF-hW-9Ps"/>
+                            <constraint firstItem="ivq-3X-bm0" firstAttribute="leading" secondItem="9GJ-qa-Lut" secondAttribute="leading" constant="20" id="Hue-Wi-ySq"/>
+                            <constraint firstItem="osW-1C-svS" firstAttribute="top" secondItem="MOI-HC-vNQ" secondAttribute="bottom" constant="40" id="QiD-a8-2f3"/>
+                            <constraint firstItem="wkv-AG-LZC" firstAttribute="top" secondItem="1Cs-Ip-pGu" secondAttribute="bottom" id="SnL-5S-f1c"/>
+                            <constraint firstItem="osW-1C-svS" firstAttribute="trailing" secondItem="MOI-HC-vNQ" secondAttribute="trailing" id="YnS-2D-OOw"/>
+                            <constraint firstItem="osW-1C-svS" firstAttribute="leading" secondItem="MOI-HC-vNQ" secondAttribute="leading" id="abk-wT-F4P"/>
+                            <constraint firstItem="wkv-AG-LZC" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="9GJ-qa-Lut" secondAttribute="leading" constant="20" id="c1X-TV-j7y"/>
+                            <constraint firstItem="9GJ-qa-Lut" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="wkv-AG-LZC" secondAttribute="trailing" constant="20" id="ceJ-bc-udk"/>
+                            <constraint firstItem="1Cs-Ip-pGu" firstAttribute="top" secondItem="osW-1C-svS" secondAttribute="bottom" constant="10" id="fbl-ye-f4u"/>
+                            <constraint firstItem="MOI-HC-vNQ" firstAttribute="top" secondItem="ivq-3X-bm0" secondAttribute="bottom" constant="4" id="m41-d9-ygC"/>
+                            <constraint firstItem="9GJ-qa-Lut" firstAttribute="bottom" secondItem="wkv-AG-LZC" secondAttribute="bottom" constant="20" id="tGp-dV-H4B"/>
+                            <constraint firstItem="ivq-3X-bm0" firstAttribute="top" secondItem="9GJ-qa-Lut" secondAttribute="top" constant="40" id="uhG-wy-RYb"/>
+                            <constraint firstItem="9GJ-qa-Lut" firstAttribute="trailing" secondItem="ivq-3X-bm0" secondAttribute="trailing" constant="20" id="waN-G3-Es8"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="9GJ-qa-Lut"/>
+                    </view>
+                    <connections>
+                        <outlet property="activityIndicatorView" destination="NDY-ms-xaS" id="6By-hr-2pV"/>
+                        <outlet property="emailNotReceivedButton" destination="wkv-AG-LZC" id="WZp-AN-Y7t"/>
+                        <outlet property="emailSentInfoLabel" destination="ivq-3X-bm0" id="5L6-ZG-5Yk"/>
+                        <outlet property="userEmailLabel" destination="MOI-HC-vNQ" id="Cvv-ts-TiL"/>
+                        <outlet property="userInstructionsLabel" destination="osW-1C-svS" id="WLa-Ga-kez"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="w7e-Ga-EaH" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="56.799999999999997" y="133.5832083958021"/>
+        </scene>
+    </scenes>
+</document>
