@@ -25,6 +25,9 @@ protocol FormTextViewModelType {
     /// Placeholder attributed string, override `placeholder` if set
     var attributedPlaceholder: NSAttributedString? { get }
     
+    /// Additional info text
+    var additionalInfo: String? { get }
+    
     /// Text value
     var value: String? { get set }
     
