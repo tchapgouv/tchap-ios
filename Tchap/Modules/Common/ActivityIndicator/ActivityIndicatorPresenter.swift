@@ -24,10 +24,13 @@ final class ActivityIndicatorPresenter: ActivityIndicatorPresenterType {
     
     private enum Constants {
         static let animationDuration: TimeInterval = 0.3
+        static let backgroundOverlayColor = UIColor.black
+        static let backgroundOverlayAlpha: CGFloat = 0.3
     }
     
     // MARK: - Properties
     
+    private weak var backgroundOverlayView: UIView?
     private weak var activityIndicatorView: ActivityIndicatorView?
     private weak var presentingView: UIView?
     
@@ -38,18 +41,28 @@ final class ActivityIndicatorPresenter: ActivityIndicatorPresenterType {
         
         view.isUserInteractionEnabled = false
         
+        let backgroundOverlayView = self.createBackgroundOverlayView(with: view.frame)
+        
         let activityIndicatorView = ActivityIndicatorView()
         
+        // Add activityIndicatorView on backgroundOverlayView centered
+        backgroundOverlayView.addSubview(activityIndicatorView)
+        activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicatorView.centerXAnchor.constraint(equalTo: backgroundOverlayView.centerXAnchor).isActive = true
+        activityIndicatorView.centerYAnchor.constraint(equalTo: backgroundOverlayView.centerYAnchor).isActive = true
+        
         activityIndicatorView.startAnimating()
-        activityIndicatorView.alpha = 0
-        activityIndicatorView.isHidden = false
         
-        view.tc_addSubViewMathingParent(activityIndicatorView)
+        backgroundOverlayView.alpha = 0
+        backgroundOverlayView.isHidden = false
         
+        view.tc_addSubViewMathingParent(backgroundOverlayView)
+        
+        self.backgroundOverlayView = backgroundOverlayView
         self.activityIndicatorView = activityIndicatorView
         
         let animationInstructions = {
-            activityIndicatorView.alpha = 1
+            backgroundOverlayView.alpha = Constants.backgroundOverlayAlpha
         }
         
         if animated {
@@ -64,8 +77,17 @@ final class ActivityIndicatorPresenter: ActivityIndicatorPresenterType {
         }
     }
     
+    func createBackgroundOverlayView(with frame: CGRect = CGRect.zero) -> UIView {
+        let backgroundOverlayView = UIView(frame: frame)
+        backgroundOverlayView.backgroundColor = Constants.backgroundOverlayColor
+        backgroundOverlayView.alpha = Constants.backgroundOverlayAlpha
+        return backgroundOverlayView
+    }
+    
     func removeCurrentActivityIndicator(animated: Bool, completion: (() -> Void)? = nil) {
-        guard let presentingView = self.presentingView, let activityIndicatorView = self.activityIndicatorView else {
+        guard let presentingView = self.presentingView,
+            let backgroundOverlayView = self.backgroundOverlayView,
+            let activityIndicatorView = self.activityIndicatorView else {
             return
         }
         
@@ -77,8 +99,8 @@ final class ActivityIndicatorPresenter: ActivityIndicatorPresenterType {
         
         let animationCompletionInstructions = {
             activityIndicatorView.stopAnimating()
-            activityIndicatorView.isHidden = true
-            activityIndicatorView.removeFromSuperview()
+            backgroundOverlayView.isHidden = true
+            backgroundOverlayView.removeFromSuperview()
         }
         
         if animated {
