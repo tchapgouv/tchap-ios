@@ -27,7 +27,8 @@ final class FormTextField: UIView, NibOwnerLoadable {
     // MARK: - Constants
     
     private enum Constants {
-        static let separatorViewHeight: CGFloat = 1        
+        static let separatorViewHeight: CGFloat = 1
+        static let separatorBottomSpace: CGFloat = 6
     }
     
     // MARK: - Properties
@@ -36,6 +37,7 @@ final class FormTextField: UIView, NibOwnerLoadable {
     
     @IBOutlet private weak var textField: UITextField!
     @IBOutlet private weak var separatorView: UIView!
+    @IBOutlet weak var additionalInfoLabel: UILabel!
     
     // MARK: Private
     
@@ -47,7 +49,9 @@ final class FormTextField: UIView, NibOwnerLoadable {
     
     // MARK: - Setup
     
-    private func commonInit() {        
+    private func commonInit() {
+        self.textField.placeholder = nil
+        self.additionalInfoLabel.text = nil
     }
     
     convenience init() {
@@ -70,8 +74,10 @@ final class FormTextField: UIView, NibOwnerLoadable {
     
     override var intrinsicContentSize: CGSize {
         let textFieldSize = self.textField.intrinsicContentSize
-        return CGSize(width: textFieldSize.width,
-                      height: textFieldSize.height + Constants.separatorViewHeight)
+        let additionalInfoLabelHeight = self.additionalInfoLabel.intrinsicContentSize.height
+        
+        let height = textFieldSize.height + Constants.separatorViewHeight + Constants.separatorBottomSpace + additionalInfoLabelHeight
+        return CGSize(width: textFieldSize.width, height: height)
     }
     
     override var canBecomeFirstResponder: Bool {
@@ -100,6 +106,7 @@ final class FormTextField: UIView, NibOwnerLoadable {
             self.textField.placeholder = formTextViewModel.placeholder
         }
         
+        self.additionalInfoLabel.text = formTextViewModel.additionalInfo
         self.textField.text = formTextViewModel.value
     }
     
@@ -128,6 +135,7 @@ extension FormTextField: Stylable {
     func update(style: Style) {
         style.applyStyle(onTextField: self.textField)
         self.separatorView.backgroundColor = style.separatorColor
+        self.additionalInfoLabel.textColor = style.secondaryTextColor
     }
 }
 
