@@ -16,11 +16,11 @@
 
 import Foundation
 
-protocol RegistrationViewControllerDelegate: class {
-    func registrationViewController(_ registrationViewController: RegistrationViewController, didTapNextButtonWith mail: String, password: String)
+protocol RegistrationFormViewControllerDelegate: class {
+    func registrationFormViewController(_ registrationFormViewController: RegistrationFormViewController, didTapNextButtonWith mail: String, password: String)
 }
 
-final class RegistrationViewController: UIViewController {
+final class RegistrationFormViewController: UIViewController {
     
     // MARK: - Properties
     
@@ -35,19 +35,19 @@ final class RegistrationViewController: UIViewController {
     
     // MARK: Private
     
-    private var viewModel: RegistrationViewModelType!
+    private var viewModel: RegistrationFormViewModelType!
     private var errorPresenter: ErrorPresenter?
     private var keyboardAvoider: KeyboardAvoider?
     private var currentStyle: Style!
     
     // MARK: Public
     
-    weak var delegate: RegistrationViewControllerDelegate?
+    weak var delegate: RegistrationFormViewControllerDelegate?
     
     // MARK: - Setup
     
-    class func instantiate(viewModel: RegistrationViewModelType, style: Style = Variant2Style.shared) -> RegistrationViewController {
-        let viewController = StoryboardScene.RegistrationViewController.initialScene.instantiate()
+    class func instantiate(viewModel: RegistrationFormViewModelType, style: Style = Variant2Style.shared) -> RegistrationFormViewController {
+        let viewController = StoryboardScene.RegistrationFormViewController.initialScene.instantiate()
         viewController.currentStyle = style
         viewController.viewModel = viewModel
         return viewController
@@ -135,7 +135,7 @@ final class RegistrationViewController: UIViewController {
         
         switch formValidationResult {
         case .success(let authenticationFields):
-            self.delegate?.registrationViewController(self, didTapNextButtonWith: authenticationFields.login, password: authenticationFields.password)
+            self.delegate?.registrationFormViewController(self, didTapNextButtonWith: authenticationFields.login, password: authenticationFields.password)
         case .failure(let errorPresentable):
             self.errorPresenter?.present(errorPresentable: errorPresentable)
         }
@@ -143,7 +143,7 @@ final class RegistrationViewController: UIViewController {
 }
 
 // MARK: - Stylable
-extension RegistrationViewController: Stylable {
+extension RegistrationFormViewController: Stylable {
     func update(style: Style) {
         self.currentStyle = style
         
@@ -160,7 +160,7 @@ extension RegistrationViewController: Stylable {
 }
 
 // MARK: - FormTextFieldDelegate
-extension RegistrationViewController: FormTextFieldDelegate {
+extension RegistrationFormViewController: FormTextFieldDelegate {
     
     func formTextFieldShouldReturn(_ formTextField: FormTextField) -> Bool {
         guard let index = self.formTextFields.index(of: formTextField) else {

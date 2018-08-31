@@ -10,10 +10,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Registration View Controller-->
+        <!--Registration Form View Controller-->
         <scene sceneID="uJZ-Xy-B4t">
             <objects>
-                <viewController id="bef-oF-ghx" customClass="RegistrationViewController" customModule="Tchap" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="bef-oF-ghx" customClass="RegistrationFormViewController" customModule="Tchap" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="kgP-bv-9J2">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
