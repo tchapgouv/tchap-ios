@@ -16,8 +16,8 @@
 
 import Foundation
 
-/// Protocol describing the view model used by AuthenticationViewController
-protocol RegistrationViewModelType {
+/// Protocol describing the view model used by RegistrationFormViewController
+protocol RegistrationFormViewModelType {
     
     /// Login view model
     var loginTextViewModel: FormTextViewModelType { get }

@@ -16,8 +16,8 @@
 
 import Foundation
 
-/// The view model used by RegistrationViewController
-final class RegistrationViewModel: RegistrationViewModelType {
+/// The view model used by RegistrationFormViewController
+final class RegistrationFormViewModel: RegistrationFormViewModelType {
     
     // MARK: - Properties
     
@@ -29,9 +29,9 @@ final class RegistrationViewModel: RegistrationViewModelType {
     
     init() {
         
-        // Mail
+        // Email
         
-        let mailTextViewModel = FormTextViewModel(placeholder: TchapL10n.registrationMailPlaceholder,
+        let emailTextViewModel = FormTextViewModel(placeholder: TchapL10n.registrationMailPlaceholder,
                                                   additionalInfo: TchapL10n.registrationMailAdditionalInfo)
         
         var mailTextFieldProperties = TextInputProperties()
@@ -42,7 +42,7 @@ final class RegistrationViewModel: RegistrationViewModelType {
             mailTextFieldProperties.textContentType = .emailAddress
         }
         
-        mailTextViewModel.textInputProperties = mailTextFieldProperties
+        emailTextViewModel.textInputProperties = mailTextFieldProperties
         
         // Password
         
@@ -61,7 +61,7 @@ final class RegistrationViewModel: RegistrationViewModelType {
         confirmPasswordTextViewModel.textInputProperties = passwordTextFieldProperties
         
         let textViewModels = [
-            mailTextViewModel,
+            emailTextViewModel,
             passwordTextViewModel,
             confirmPasswordTextViewModel
         ]
@@ -79,7 +79,7 @@ final class RegistrationViewModel: RegistrationViewModelType {
             index+=1
         }
         
-        self.loginTextViewModel = mailTextViewModel
+        self.loginTextViewModel = emailTextViewModel
         self.passwordTextViewModel = passwordTextViewModel
         self.confirmPasswordTextViewModel = confirmPasswordTextViewModel
     }
