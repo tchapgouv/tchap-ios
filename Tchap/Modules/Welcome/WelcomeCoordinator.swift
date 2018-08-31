@@ -73,6 +73,18 @@ final class WelcomeCoordinator: WelcomeCoordinatorType {
         
         self.add(childCoordinator: authenticationCoordinator)
     }
+    
+    private func showRegistration() {
+        let registrationCoordinator = RegistrationCoordinator(router: self.navigationRouter)
+        registrationCoordinator.delegate = self
+        registrationCoordinator.start()
+        
+        self.navigationRouter.push(registrationCoordinator, animated: true) {
+            self.remove(childCoordinator: registrationCoordinator)
+        }
+        
+        self.add(childCoordinator: registrationCoordinator)
+    }
 }
 
 // MARK: - WelcomeViewControllerDelegate
@@ -82,7 +94,7 @@ extension WelcomeCoordinator: WelcomeViewControllerDelegate {
     }
     
     func welcomeViewControllerDidTapRegisterButton(_ welcomeViewController: WelcomeViewController) {
-        
+        self.showRegistration()
     }
 }
 
@@ -91,5 +103,17 @@ extension WelcomeCoordinator: AuthenticationCoordinatorDelegate {
 
     func authenticationCoordinator(coordinator: AuthenticationCoordinatorType, didAuthenticateWithUserId userId: String) {
         self.delegate?.welcomeCoordinatorUserDidAuthenticate(self)
+    }
+}
+
+// MARK: - AuthenticationCoordinatorDelegate
+extension WelcomeCoordinator: RegistrationCoordinatorDelegate {
+    
+    func registrationCoordinatorDidRegisterUser(_ coordinator: RegistrationCoordinatorType) {
+        
+    }
+    
+    func registrationCoordinatorDidCancelRegistration(_ coordinator: RegistrationCoordinatorType) {
+        self.navigationRouter.popToRootModule(animated: true)
     }
 }
