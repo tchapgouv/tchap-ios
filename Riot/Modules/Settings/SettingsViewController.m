@@ -150,9 +150,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     // the avatar image has been uploaded
     NSString* uploadedAvatarURL;
     
-    // new display name
-    NSString* newDisplayName;
-    
     // password update
     UITextField* currentPasswordTextField;
     UITextField* newPasswordTextField1;
@@ -1471,6 +1468,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             [displaynameCell.mxkTextField removeTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
             [displaynameCell.mxkTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
             displaynameCell.mxkTextField.accessibilityIdentifier=@"SettingsVCDisplayNameTextField";
+            displaynameCell.mxkTextField.userInteractionEnabled = NO;
             
             cell = displaynameCell;
         }
@@ -3164,37 +3162,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     __weak typeof(self) weakSelf = self;
     
     MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-    MXMyUser* myUser = account.mxSession.myUser;
-    
-    if (newDisplayName && ![myUser.displayname isEqualToString:newDisplayName])
-    {
-        // Save display name
-        [account setUserDisplayName:newDisplayName success:^{
-            
-            if (weakSelf)
-            {
-                // Update the current displayname
-                typeof(self) self = weakSelf;
-                self->newDisplayName = nil;
-                
-                // Go to the next change saving step
-                [self onSave:nil];
-            }
-            
-        } failure:^(NSError *error) {
-            
-            NSLog(@"[SettingsViewController] Failed to set displayName");
-            
-            if (weakSelf)
-            {
-                typeof(self) self = weakSelf;
-                [self handleErrorDuringProfileChangeSaving:error];
-            }
-            
-        }];
-        
-        return;
-    }
     
     if (newAvatarImage)
     {
@@ -3305,9 +3272,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
                                                                typeof(self) self = weakSelf;
                                                                
                                                                self->currentAlert = nil;
-                                                               
-                                                               // Reset the updated displayname
-                                                               self->newDisplayName = nil;
                                                                
                                                                // Discard picture change
                                                                self->uploadedAvatarURL = nil;
@@ -3545,14 +3509,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         
         BOOL saveButtonEnabled = (nil != newAvatarImage);
         
-        if (!saveButtonEnabled)
-        {
-            if (newDisplayName)
-            {
-                saveButtonEnabled = ![myUser.displayname isEqualToString:newDisplayName];
-            }
-        }
-        
         self.navigationItem.rightBarButtonItem.enabled = saveButtonEnabled;
     }
 }
@@ -3677,13 +3633,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 {
     UITextField* textField = (UITextField*)sender;
     
-    if (textField.tag == userSettingsDisplayNameIndex)
-    {
-        // Remove white space from both ends
-        newDisplayName = [textField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-        [self updateSaveButtonStatus];
-    }
-    else if (textField.tag == userSettingsNewPhoneIndex)
+    if (textField.tag == userSettingsNewPhoneIndex)
     {
         newPhoneNumber = [[NBPhoneNumberUtil sharedInstance] parse:textField.text defaultRegion:newPhoneNumberCell.isoCountryCode error:nil];
         
