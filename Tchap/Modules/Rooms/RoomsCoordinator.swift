@@ -28,6 +28,7 @@ final class RoomsCoordinator: NSObject, RoomsCoordinatorType {
     private let roomsViewController: RoomsViewController
     private let roomsDataSource: RoomsDataSource
     private let activityIndicatorPresenter: ActivityIndicatorPresenterType
+    private let roomsErrorPresenter: ErrorPresenter
     
     // MARK: Public
     
@@ -42,6 +43,7 @@ final class RoomsCoordinator: NSObject, RoomsCoordinatorType {
         self.roomsDataSource = RoomsDataSource(matrixSession: self.session)
         self.roomsDataSource.finalizeInitialization()
         self.activityIndicatorPresenter = ActivityIndicatorPresenter()
+        self.roomsErrorPresenter = AlertErrorPresenter(viewControllerPresenter: roomsViewController)
     }
     
     // MARK: - Public methods
@@ -57,7 +59,7 @@ final class RoomsCoordinator: NSObject, RoomsCoordinatorType {
     
     // MARK: - Private methods
     
-    func showRoom(with roomID: String) {
+    private func showRoom(with roomID: String) {
         let roomViewController: RoomViewController = RoomViewController.instantiate()
         
         self.router.push(roomViewController, animated: true, popCompletion: nil)
@@ -75,6 +77,47 @@ final class RoomsCoordinator: NSObject, RoomsCoordinatorType {
             }
         })
     }
+    
+    private func joinRoom(with roomID: String) {
+        self.activityIndicatorPresenter.presentActivityIndicator(on: self.roomsViewController.view, animated: true)
+        
+        self.session.joinRoom(roomID) { [weak self] (response) in
+            guard let sself = self else {
+                return
+            }
+            
+            sself.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
+            switch response {
+            case .success(_):
+                sself.showRoom(with: roomID)
+            case .failure(let error):
+                let errorPresentable = sself.joinRoomErrorPresentable(from: error)
+                sself.roomsErrorPresenter.present(errorPresentable: errorPresentable, animated: true)
+            }
+        }
+    }
+    
+    private func joinRoomErrorPresentable(from error: Error) -> ErrorPresentable {
+        let errorTitle: String = Bundle.mxk_localizedString(forKey: "room_error_join_failed_title")
+        let errorMessage: String
+        
+        let nsError = error as NSError
+        
+        if let message = nsError.userInfo[NSLocalizedDescriptionKey] as? String {
+            
+            if message == "No known servers" {
+                // minging kludge until https://matrix.org/jira/browse/SYN-678 is fixed
+                // 'Error when trying to join an empty room should be more explicit'
+                errorMessage = Bundle.mxk_localizedString(forKey: "room_error_join_failed_empty_room")
+            } else {
+                errorMessage = message
+            }
+        } else {
+            errorMessage = TchapL10n.errorMessageDefault
+        }
+        
+        return ErrorPresentableImpl(title: errorTitle, message: errorMessage)
+    }
 }
 
 // MARK: - RoomsViewControllerDelegate
@@ -85,7 +128,7 @@ extension RoomsCoordinator: RoomsViewControllerDelegate {
     }
     
     func roomsViewController(_ roomsViewController: RoomsViewController!, didAcceptRoomInviteWithRoomID roomID: String!) {
-
+        self.joinRoom(with: roomID)
     }
     
     func roomsViewController(_ roomsViewController: RoomsViewController!, didSelect publicRoom: MXPublicRoom!) {
