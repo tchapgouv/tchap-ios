@@ -444,6 +444,11 @@
     }
 }
 
+- (void)cancelEditionModeAndForceTableViewRefreshIfNeeded
+{
+    [self cancelEditionMode:isRefreshPending];
+}
+
 #pragma mark - Sticky Headers
 
 - (void)setEnableStickyHeaders:(BOOL)enableStickyHeaders

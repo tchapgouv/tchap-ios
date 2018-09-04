@@ -118,6 +118,11 @@
  */
 - (void)cancelEditionMode:(BOOL)forceRefresh;
 
+/**
+ Leave the edition mode and force table refresh if there is a pending refresh
+ */
+- (void)cancelEditionModeAndForceTableViewRefreshIfNeeded;
+
 #pragma mark - Room handling
 /**
  Add the (+) button at the right bottom corner of the view.
