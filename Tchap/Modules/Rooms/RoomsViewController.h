@@ -17,10 +17,17 @@
 
 #import "RecentsViewController.h"
 
+@protocol RoomsViewControllerDelegate;
+
 /**
  The `RoomsViewController` screen is the view controller displayed when `Rooms` tab is selected.
  */
 @interface RoomsViewController : RecentsViewController
+
+/**
+ The delegate for the view controller.
+ */
+@property (nonatomic, weak) id<RoomsViewControllerDelegate> roomsViewControllerDelegate;
 
 /**
  Scroll the next room with missed notifications to the top.
@@ -34,4 +41,12 @@
  */
 + (instancetype)instantiate;
 
+@end
+
+@protocol RoomsViewControllerDelegate <NSObject>
+
+- (void)roomsViewController:(RoomsViewController*)roomsViewController didSelectRoomWithID:(NSString*)roomID;
+- (void)roomsViewController:(RoomsViewController*)roomsViewController didSelectPublicRoom:(MXPublicRoom*)publicRoom;
+- (void)roomsViewController:(RoomsViewController*)roomsViewController didAcceptRoomInviteWithRoomID:(NSString*)roomID;
+- (void)roomsViewControllerDidSelectDirectoryServerPicker:(RoomsViewController*)roomsViewController;
 @end
