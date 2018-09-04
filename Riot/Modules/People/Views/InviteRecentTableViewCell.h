@@ -19,11 +19,11 @@
 #import "RecentTableViewCell.h"
 
 /**
- Action identifier used when the user pressed 'preview' button displayed on room invitation.
+ Action identifier used when the user pressed 'join' button displayed on room invitation.
  
  The `userInfo` dictionary contains an `MXRoom` object under the `kInviteRecentTableViewCellRoomKey` key, representing the room of the invitation.
  */
-extern NSString *const kInviteRecentTableViewCellPreviewButtonPressed;
+extern NSString *const kInviteRecentTableViewCellJoinButtonPressed;
 
 /**
  Action identifier used when the user pressed 'decline' button displayed on room invitation.
