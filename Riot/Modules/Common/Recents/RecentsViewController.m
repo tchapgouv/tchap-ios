@@ -804,45 +804,6 @@
     return nil;
 }
 
-- (void)dataSource:(MXKDataSource *)dataSource didRecognizeAction:(NSString *)actionIdentifier inCell:(id<MXKCellRendering>)cell userInfo:(NSDictionary *)userInfo
-{
-    // Handle here user actions on recents for Riot app
-    if ([actionIdentifier isEqualToString:kInviteRecentTableViewCellPreviewButtonPressed])
-    {
-        // Retrieve the invited room
-        MXRoom *invitedRoom = userInfo[kInviteRecentTableViewCellRoomKey];
-        
-        // Display the room preview
-        [self dispayRoomWithRoomId:invitedRoom.roomId inMatrixSession:invitedRoom.mxSession];
-    }
-    else if ([actionIdentifier isEqualToString:kInviteRecentTableViewCellDeclineButtonPressed])
-    {
-        // Retrieve the invited room
-        MXRoom *invitedRoom = userInfo[kInviteRecentTableViewCellRoomKey];
-        
-        [self cancelEditionMode:isRefreshPending];
-        
-        // Decline the invitation
-        [invitedRoom leave:^{
-            
-            [self.recentsTableView reloadData];
-            
-        } failure:^(NSError *error) {
-            
-            NSLog(@"[RecentsViewController] Failed to reject an invited room (%@)", invitedRoom.roomId);
-            
-        }];
-    }
-    else
-    {
-        // Keep default implementation for other actions if any
-        if ([super respondsToSelector:@selector(cell:didRecognizeAction:userInfo:)])
-        {
-            [super dataSource:dataSource didRecognizeAction:actionIdentifier inCell:cell userInfo:userInfo];
-        }
-    }
-}
-
 #pragma mark - Swipe actions
 
 - (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
