@@ -166,7 +166,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     NSInteger userSettingsDisplayNameIndex;
     NSInteger userSettingsFirstNameIndex;
     NSInteger userSettingsSurnameIndex;
-    NSInteger userSettingsEmailStartIndex;
+    NSInteger userSettingsEmailStartIndex;  // The user can have several linked emails. Hence, the dynamic section items count
     NSInteger userSettingsPhoneStartIndex;  // The user can have several linked phone numbers. Hence, the dynamic section items count
     NSInteger userSettingsNewPhoneIndex;    // This index also marks the end of the phone numbers list
     NSInteger userSettingsChangePasswordIndex;
@@ -1040,7 +1040,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         userSettingsDisplayNameIndex = 1;
         userSettingsChangePasswordIndex = 2;
         userSettingsEmailStartIndex = 3;
-        userSettingsPhoneStartIndex = userSettingsEmailStartIndex + 1;
+        userSettingsPhoneStartIndex = userSettingsEmailStartIndex + account.linkedEmails.count;
         userSettingsNewPhoneIndex = userSettingsPhoneStartIndex + account.linkedPhoneNumbers.count;
 
         // Hide some unsupported account settings
@@ -1323,7 +1323,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             
             cell = surnameCell;
         }
-        else if (userSettingsEmailStartIndex == row)
+        else if (userSettingsEmailStartIndex <= row &&  row < userSettingsPhoneStartIndex)
         {
             MXKTableViewCellWithLabelAndTextField *emailCell = [self getLabelAndTextFieldCell:tableView forIndexPath:indexPath];
             
