@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="GI0-WS-UMc">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Welcome View Controller-->
+        <scene sceneID="pkY-qk-M2a">
+            <objects>
+                <viewController id="GI0-WS-UMc" customClass="WelcomeViewController" customModule="Tchap" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Lzt-XD-X7W">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e8O-74-cvD">
+                                <rect key="frame" x="20" y="216.5" width="335" height="26.5"/>
+                                <fontDescription key="fontDescription" type="system" weight="light" pointSize="22"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dMQ-g0-JN2">
+                                <rect key="frame" x="20" y="593" width="147" height="30"/>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="registerButtonAction:" destination="GI0-WS-UMc" eventType="touchUpInside" id="d69-Gr-EPw"/>
+                                </connections>
+                            </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hTp-fL-9o8">
+                                <rect key="frame" x="187" y="582" width="1" height="52"/>
+                                <color key="backgroundColor" red="0.33836611049681253" green="0.43916532595071023" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="1" id="2T4-ZO-INs"/>
+                                    <constraint firstAttribute="height" constant="52" id="mFs-7z-Lcf"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u7L-Qx-m9o">
+                                <rect key="frame" x="207" y="593" width="148" height="30"/>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="loginButtonAction:" destination="GI0-WS-UMc" eventType="touchUpInside" id="s1a-aI-RfW"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="u7L-Qx-m9o" firstAttribute="leading" secondItem="hTp-fL-9o8" secondAttribute="leading" constant="20" id="70w-oh-ATr"/>
+                            <constraint firstItem="hTp-fL-9o8" firstAttribute="centerX" secondItem="oBJ-KQ-riZ" secondAttribute="centerX" id="C5C-IC-0hP"/>
+                            <constraint firstItem="oBJ-KQ-riZ" firstAttribute="trailing" secondItem="e8O-74-cvD" secondAttribute="trailing" constant="20" id="Jyz-WZ-hHC"/>
+                            <constraint firstItem="hTp-fL-9o8" firstAttribute="leading" secondItem="dMQ-g0-JN2" secondAttribute="trailing" constant="20" id="MdE-N7-5Fp"/>
+                            <constraint firstItem="u7L-Qx-m9o" firstAttribute="centerY" secondItem="hTp-fL-9o8" secondAttribute="centerY" id="R41-A2-HKi"/>
+                            <constraint firstItem="e8O-74-cvD" firstAttribute="leading" secondItem="oBJ-KQ-riZ" secondAttribute="leading" constant="20" id="XzH-yN-CUr"/>
+                            <constraint firstItem="e8O-74-cvD" firstAttribute="centerY" secondItem="oBJ-KQ-riZ" secondAttribute="centerY" multiplier="2:3" id="erv-6g-6fh"/>
+                            <constraint firstItem="oBJ-KQ-riZ" firstAttribute="trailing" secondItem="u7L-Qx-m9o" secondAttribute="trailing" constant="20" id="nrN-aO-3qE"/>
+                            <constraint firstItem="dMQ-g0-JN2" firstAttribute="leading" secondItem="oBJ-KQ-riZ" secondAttribute="leading" constant="20" id="umk-vL-Bs4"/>
+                            <constraint firstItem="oBJ-KQ-riZ" firstAttribute="bottom" secondItem="hTp-fL-9o8" secondAttribute="bottom" constant="33" id="wlj-7J-zOs"/>
+                            <constraint firstItem="dMQ-g0-JN2" firstAttribute="centerY" secondItem="hTp-fL-9o8" secondAttribute="centerY" id="yDL-J9-tb2"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="oBJ-KQ-riZ"/>
+                    </view>
+                    <connections>
+                        <outlet property="buttonsSeparatorView" destination="hTp-fL-9o8" id="wIx-oE-CY3"/>
+                        <outlet property="loginButton" destination="u7L-Qx-m9o" id="xHs-Sh-AwF"/>
+                        <outlet property="registerButton" destination="dMQ-g0-JN2" id="Nbu-uJ-DKf"/>
+                        <outlet property="titleLabel" destination="e8O-74-cvD" id="HpE-16-KaD"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hL3-Da-L8K" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-31.199999999999999" y="187.55622188905548"/>
+        </scene>
+    </scenes>
+</document>

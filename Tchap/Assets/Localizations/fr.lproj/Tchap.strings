@@ -1,0 +1,27 @@
+////////////////////////////////////////////////////////////////////////////////
+// MARK: Actions
+"action_next" = "Suivant";
+
+////////////////////////////////////////////////////////////////////////////////
+// MARK: Common errors
+"error_title_default" = "Erreur";
+"error_message_default" = "Une erreur est survenue, veuillez réessayer ultérieurement";
+
+////////////////////////////////////////////////////////////////////////////////
+// MARK: Welcome
+
+"welcome_title" = "Bienvenue dans Tchap";
+"welcome_login_action" = "J'ai un compte";
+"welcome_register_action" = "Je n'ai pas de compte";
+
+////////////////////////////////////////////////////////////////////////////////
+// MARK: Authentication
+"authentication_title" = "Connexion Tchap";
+"authentication_mail_placeholder" = "Adresse email";
+"authentication_password_placeholder" = "Mot de passe Tchap";
+"authentication_forgot_password" = "Mot de passe oublié ?";
+
+"authentication_error_invalid_email" = "L'adresse e-mail ne semble pas valide";
+"authentication_error_missing_password" = "Mot de passe manquant";
+"authentication_error_invalid_password" = "Mot de passe trop court (min %d)";
+"authentication_error_password_dont_match" = "Les mots de passe ne correspondent pas";
