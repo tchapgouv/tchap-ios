@@ -24,6 +24,6 @@ protocol AuthenticationServiceType {
     /// - Parameters:
     ///   - mail: The user mail.
     ///   - password: The user password.
-    ///   - completion: A closure called when the operation succeeds. Provide the authenticated user id when succeed.
+    ///   - completion: A closure called when the operation is completed. Provide the authenticated user id when succeed.
     func authenticate(with mail: String, password: String, completion: @escaping (MXResponse<String>) -> Void)
 }

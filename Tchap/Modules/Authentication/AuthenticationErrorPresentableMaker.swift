@@ -96,7 +96,7 @@ final class AuthenticationErrorPresentableMaker {
         
         switch authenticationServiceError {
         case .unauthorizedThirdPartyID:
-            message = Bundle.mxk_localizedString(forKey: "login_error_forbidden")
+            message = TchapL10n.authenticationErrorUnauthorizedEmail
         case .userAlreadyLoggedIn:
             message = Bundle.mxk_localizedString(forKey: "login_error_already_logged_in")
         default:
