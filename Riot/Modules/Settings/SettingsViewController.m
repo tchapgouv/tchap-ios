@@ -155,9 +155,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     UITextField* newPasswordTextField1;
     UITextField* newPasswordTextField2;
     UIAlertAction* savePasswordAction;
-
-    // New email address to bind
-    UITextField* newEmailTextField;
     
     // New phone number to bind
     TableViewCellWithPhoneNumberTextField * newPhoneNumberCell;
@@ -170,7 +167,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     NSInteger userSettingsFirstNameIndex;
     NSInteger userSettingsSurnameIndex;
     NSInteger userSettingsEmailStartIndex;  // The user can have several linked emails. Hence, the dynamic section items count
-    NSInteger userSettingsNewEmailIndex;    // This index also marks the end of the emails list
     NSInteger userSettingsPhoneStartIndex;  // The user can have several linked phone numbers. Hence, the dynamic section items count
     NSInteger userSettingsNewPhoneIndex;    // This index also marks the end of the phone numbers list
     NSInteger userSettingsChangePasswordIndex;
@@ -211,17 +207,11 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     NSURL *keyExportsFile;
     NSTimer *keyExportsFileDeletionTimer;
     
-    BOOL keepNewEmailEditing;
     BOOL keepNewPhoneNumberEditing;
     
     // The current pushed view controller
     UIViewController *pushedViewController;
 }
-
-/**
- Flag indicating whether the user is typing an email to bind.
- */
-@property (nonatomic) BOOL newEmailEditingEnabled;
 
 /**
  Flag indicating whether the user is typing a phone number to bind.
@@ -550,7 +540,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     [currentPasswordTextField resignFirstResponder];
     [newPasswordTextField1 resignFirstResponder];
     [newPasswordTextField2 resignFirstResponder];
-    [newEmailTextField resignFirstResponder];
     [newPhoneNumberCell.mxkTextField resignFirstResponder];
 }
 
@@ -586,32 +575,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     }
 }
 
--(void)setNewEmailEditingEnabled:(BOOL)newEmailEditingEnabled
-{
-    if (newEmailEditingEnabled != _newEmailEditingEnabled)
-    {
-        // Update the flag
-        _newEmailEditingEnabled = newEmailEditingEnabled;
-
-        if (!newEmailEditingEnabled)
-        {
-            // Dismiss the keyboard
-            [newEmailTextField resignFirstResponder];
-            newEmailTextField = nil;
-        }
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            
-            // Refresh the corresponding table view cell with animation
-            [self.tableView reloadRowsAtIndexPaths:@[
-                                                     [NSIndexPath indexPathForRow:userSettingsNewEmailIndex inSection:SETTINGS_SECTION_USER_SETTINGS_INDEX]
-                                                     ]
-                                  withRowAnimation:UITableViewRowAnimationFade];
-            
-        });
-    }
-}
-
 -(void)setNewPhoneEditingEnabled:(BOOL)newPhoneEditingEnabled
 {
     if (newPhoneEditingEnabled != _newPhoneEditingEnabled)
@@ -636,116 +599,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             
         });
     }
-}
-
-- (void)showValidationEmailDialogWithMessage:(NSString*)message for3PID:(MXK3PID*)threePID
-{
-    __weak typeof(self) weakSelf = self;
-
-    [currentAlert dismissViewControllerAnimated:NO completion:nil];
-    currentAlert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"account_email_validation_title"] message:message preferredStyle:UIAlertControllerStyleAlert];
-    
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"abort"]
-                                              style:UIAlertActionStyleDefault
-                                            handler:^(UIAlertAction * action) {
-                                                
-                                                if (weakSelf)
-                                                {
-                                                    typeof(self) self = weakSelf;
-                                                    self->currentAlert = nil;
-                                                    
-                                                    [self stopActivityIndicator];
-                                                    
-                                                    // Reset new email adding
-                                                    self.newEmailEditingEnabled = NO;
-                                                }
-                                                
-                                            }]];
-
-    __strong __typeof(threePID)strongThreePID = threePID;
-    
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"continue"]
-                                                     style:UIAlertActionStyleDefault
-                                                   handler:^(UIAlertAction * action) {
-                                                       
-                                                       if (weakSelf)
-                                                       {
-                                                           typeof(self) self = weakSelf;
-                                                           self->is3PIDBindingInProgress = YES;
-                                                           
-                                                           // We always bind emails when registering, so let's do the same here
-                                                           [threePID add3PIDToUser:YES success:^{
-                                                               
-                                                               if (weakSelf)
-                                                               {
-                                                                   typeof(self) self = weakSelf;
-                                                                   self->is3PIDBindingInProgress = NO;
-                                                                   
-                                                                   // Check whether destroy has been called during email binding
-                                                                   if (self->onReadyToDestroyHandler)
-                                                                   {
-                                                                       // Ready to destroy
-                                                                       self->onReadyToDestroyHandler();
-                                                                       self->onReadyToDestroyHandler = nil;
-                                                                   }
-                                                                   else
-                                                                   {
-                                                                       self->currentAlert = nil;
-                                                                       
-                                                                       [self stopActivityIndicator];
-                                                                       
-                                                                       // Reset new email adding
-                                                                       self.newEmailEditingEnabled = NO;
-                                                                       
-                                                                       // Update linked emails
-                                                                       [self loadAccount3PIDs];
-                                                                   }
-                                                               }
-                                                               
-                                                           } failure:^(NSError *error) {
-                                                               
-                                                               NSLog(@"[SettingsViewController] Failed to bind email");
-                                                               
-                                                               if (weakSelf)
-                                                               {
-                                                                   typeof(self) self = weakSelf;
-                                                                   self->is3PIDBindingInProgress = NO;
-                                                                   
-                                                                   // Check whether destroy has been called during email binding
-                                                                   if (self->onReadyToDestroyHandler)
-                                                                   {
-                                                                       // Ready to destroy
-                                                                       self->onReadyToDestroyHandler();
-                                                                       self->onReadyToDestroyHandler = nil;
-                                                                   }
-                                                                   else
-                                                                   {
-                                                                       self->currentAlert = nil;
-                                                                       
-                                                                       // Display the same popup again if the error is M_THREEPID_AUTH_FAILED
-                                                                       MXError *mxError = [[MXError alloc] initWithNSError:error];
-                                                                       if (mxError && [mxError.errcode isEqualToString:kMXErrCodeStringThreePIDAuthFailed])
-                                                                       {
-                                                                           [self showValidationEmailDialogWithMessage:[NSBundle mxk_localizedStringForKey:@"account_email_validation_error"] for3PID:strongThreePID];
-                                                                       }
-                                                                       else
-                                                                       {
-                                                                           [self stopActivityIndicator];
-                                                                           
-                                                                           // Notify user
-                                                                           NSString *myUserId = self.mainSession.myUser.userId; // TODO: Hanlde multi-account
-                                                                           [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error userInfo:myUserId ? @{kMXKErrorUserIdKey: myUserId} : nil];
-                                                                       }
-                                                                   }
-                                                               }
-                                                               
-                                                           }];
-                                                       }
-                                                       
-                                                   }]];
-
-    [currentAlert mxk_setAccessibilityIdentifier:@"SettingsVCEmailValidationAlert"];
-    [self presentViewController:currentAlert animated:YES completion:nil];
 }
 
 - (void)showValidationMsisdnDialogWithMessage:(NSString*)message for3PID:(MXK3PID*)threePID
@@ -1108,19 +961,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     }
 }
 
-- (void)editNewEmailTextField
-{
-    if (newEmailTextField && ![newEmailTextField becomeFirstResponder])
-    {
-        // Retry asynchronously
-        dispatch_async(dispatch_get_main_queue(), ^{
-            
-            [self editNewEmailTextField];
-            
-        });
-    }
-}
-
 - (void)editNewPhoneNumberTextField
 {
     if (newPhoneNumberCell && ![newPhoneNumberCell.mxkTextField becomeFirstResponder])
@@ -1137,19 +977,13 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 - (void)refreshSettings
 {
     // Check whether a text input is currently edited
-    keepNewEmailEditing = newEmailTextField ? newEmailTextField.isFirstResponder : NO;
     keepNewPhoneNumberEditing = newPhoneNumberCell ? newPhoneNumberCell.mxkTextField.isFirstResponder : NO;
     
     // Trigger a full table reloadData
     [self.tableView reloadData];
     
     // Restore the previous edited field
-    if (keepNewEmailEditing)
-    {
-        [self editNewEmailTextField];
-        keepNewEmailEditing = NO;
-    }
-    else if (keepNewPhoneNumberEditing)
+    if (keepNewPhoneNumberEditing)
     {
         [self editNewPhoneNumberTextField];
         keepNewPhoneNumberEditing = NO;
@@ -1206,8 +1040,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         userSettingsDisplayNameIndex = 1;
         userSettingsChangePasswordIndex = 2;
         userSettingsEmailStartIndex = 3;
-        userSettingsNewEmailIndex = userSettingsEmailStartIndex + account.linkedEmails.count;
-        userSettingsPhoneStartIndex = userSettingsNewEmailIndex + 1;
+        userSettingsPhoneStartIndex = userSettingsEmailStartIndex + account.linkedEmails.count;
         userSettingsNewPhoneIndex = userSettingsPhoneStartIndex + account.linkedPhoneNumbers.count;
 
         // Hide some unsupported account settings
@@ -1490,7 +1323,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             
             cell = surnameCell;
         }
-        else if (userSettingsEmailStartIndex <= row &&  row < userSettingsNewEmailIndex)
+        else if (userSettingsEmailStartIndex <= row &&  row < userSettingsPhoneStartIndex)
         {
             MXKTableViewCellWithLabelAndTextField *emailCell = [self getLabelAndTextFieldCell:tableView forIndexPath:indexPath];
             
@@ -1499,63 +1332,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             emailCell.mxkTextField.userInteractionEnabled = NO;
             
             cell = emailCell;
-        }
-        else if (row == userSettingsNewEmailIndex)
-        {
-            MXKTableViewCellWithLabelAndTextField *newEmailCell = [self getLabelAndTextFieldCell:tableView forIndexPath:indexPath];
-
-            // Render the cell according to the `newEmailEditingEnabled` property
-            if (!_newEmailEditingEnabled)
-            {
-                newEmailCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_add_email_address", @"Vector", nil);
-                newEmailCell.mxkTextField.text = nil;
-                newEmailCell.mxkTextField.userInteractionEnabled = NO;
-                
-                newEmailCell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"plus_icon"]];
-            }
-            else
-            {
-                newEmailCell.mxkLabel.text = nil;
-                newEmailCell.mxkTextField.placeholder = NSLocalizedStringFromTable(@"settings_email_address_placeholder", @"Vector", nil);
-                if (kRiotPlaceholderTextColor)
-                {
-                    newEmailCell.mxkTextField.attributedPlaceholder = [[NSAttributedString alloc]
-                                                                 initWithString:newEmailCell.mxkTextField.placeholder
-                                                                 attributes:@{NSForegroundColorAttributeName: kRiotPlaceholderTextColor}];
-                }
-                newEmailCell.mxkTextField.text = newEmailTextField.text;
-                newEmailCell.mxkTextField.userInteractionEnabled = YES;
-                newEmailCell.mxkTextField.keyboardType = UIKeyboardTypeEmailAddress;
-                newEmailCell.mxkTextField.autocorrectionType = UITextAutocorrectionTypeNo;
-                newEmailCell.mxkTextField.spellCheckingType = UITextSpellCheckingTypeNo;
-                newEmailCell.mxkTextField.delegate = self;
-                newEmailCell.mxkTextField.accessibilityIdentifier=@"SettingsVCAddEmailTextField";
-
-                [newEmailCell.mxkTextField removeTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-                [newEmailCell.mxkTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-
-                [newEmailCell.mxkTextField removeTarget:self action:@selector(textFieldDidEnd:) forControlEvents:UIControlEventEditingDidEnd];
-                [newEmailCell.mxkTextField addTarget:self action:@selector(textFieldDidEnd:) forControlEvents:UIControlEventEditingDidEnd];
-
-                // When displaying the textfield the 1st time, open the keyboard
-                if (!newEmailTextField)
-                {
-                    newEmailTextField = newEmailCell.mxkTextField;
-                    [self editNewEmailTextField];
-                }
-                else
-                {
-                    // Update the current text field.
-                    newEmailTextField = newEmailCell.mxkTextField;
-                }
-                
-                UIImage *accessoryViewImage = [MXKTools paintImage:[UIImage imageNamed:@"plus_icon"] withColor:kRiotColorGreen];
-                newEmailCell.accessoryView = [[UIImageView alloc] initWithImage:accessoryViewImage];
-            }
-            
-            newEmailCell.mxkTextField.tag = row;
-
-            cell = newEmailCell;
         }
         else if (userSettingsPhoneStartIndex <= row &&  row < userSettingsNewPhoneIndex)
         {
@@ -2253,8 +2029,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     if (indexPath.section == SETTINGS_SECTION_USER_SETTINGS_INDEX)
     {
         NSInteger row = indexPath.row;
-        if ((userSettingsEmailStartIndex <= row &&  row < userSettingsNewEmailIndex) ||
-            (userSettingsPhoneStartIndex <= row &&  row < userSettingsNewPhoneIndex))
+
+        if (userSettingsPhoneStartIndex <= row &&  row < userSettingsNewPhoneIndex)
         {
             return YES;
         }
@@ -2363,12 +2139,12 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 {
     NSMutableArray* actions;
     
-    // Add the swipe to delete user's email or phone number
+    // Add the swipe to delete user's phone number
     if (indexPath.section == SETTINGS_SECTION_USER_SETTINGS_INDEX)
     {
         NSInteger row = indexPath.row;
-        if ((userSettingsEmailStartIndex <= row &&  row < userSettingsNewEmailIndex) ||
-            (userSettingsPhoneStartIndex <= row &&  row < userSettingsNewPhoneIndex))
+
+        if (userSettingsPhoneStartIndex <= row &&  row < userSettingsNewPhoneIndex)
         {
             actions = [[NSMutableArray alloc] init];
             
@@ -2509,18 +2285,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
             {
                 [self displayPasswordAlert];
             }
-            else if (row == userSettingsNewEmailIndex)
-            {
-                if (!self.newEmailEditingEnabled)
-                {
-                    // Enable the new email text field
-                    self.newEmailEditingEnabled = YES;
-                }
-                else if (newEmailTextField)
-                {
-                    [self onAddNewEmail:newEmailTextField];
-                }
-            }
             else if (row == userSettingsNewPhoneIndex)
             {
                 if (!self.newPhoneEditingEnabled)
@@ -2593,18 +2357,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
         MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
         NSString *promptMsg;
         
-        if (userSettingsEmailStartIndex <= row &&  row < userSettingsNewEmailIndex)
-        {
-            medium = kMX3PIDMediumEmail;
-            row = row - userSettingsEmailStartIndex;
-            NSArray<NSString *> *linkedEmails = account.linkedEmails;
-            if (row < linkedEmails.count)
-            {
-                address = linkedEmails[row];
-                promptMsg = [NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_remove_email_prompt_msg", @"Vector", nil), address];
-            }
-        }
-        else if (userSettingsPhoneStartIndex <= row &&  row < userSettingsNewPhoneIndex)
+        if (userSettingsPhoneStartIndex <= row &&  row < userSettingsNewPhoneIndex)
         {
             medium = kMX3PIDMediumMSISDN;
             row = row - userSettingsPhoneStartIndex;
@@ -3304,99 +3057,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     }
 }
 
-- (IBAction)onAddNewEmail:(id)sender
-{
-    // Ignore empty field
-    if (!newEmailTextField.text.length)
-    {
-        // Reset new email adding
-        self.newEmailEditingEnabled = NO;
-        return;
-    }
-    
-    // Email check
-    if (![MXTools isEmailAddress:newEmailTextField.text])
-    {
-         __weak typeof(self) weakSelf = self;
-        
-        [currentAlert dismissViewControllerAnimated:NO completion:nil];
-        
-        currentAlert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"account_error_email_wrong_title"] message:[NSBundle mxk_localizedStringForKey:@"account_error_email_wrong_description"] preferredStyle:UIAlertControllerStyleAlert];
-        
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
-                                                         style:UIAlertActionStyleDefault
-                                                       handler:^(UIAlertAction * action) {
-                                                           
-                                                           if (weakSelf)
-                                                           {
-                                                               typeof(self) self = weakSelf;
-                                                               
-                                                               self->currentAlert = nil;
-                                                           }
-                                                           
-                                                       }]];
-        
-        [currentAlert mxk_setAccessibilityIdentifier: @"SettingsVCAddEmailAlert"];
-        [self presentViewController:currentAlert animated:YES completion:nil];
-
-        return;
-    }
-
-    [self startActivityIndicator];
-
-    // Dismiss the keyboard
-    [newEmailTextField resignFirstResponder];
-
-    MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
-
-    MXK3PID *new3PID = [[MXK3PID alloc] initWithMedium:kMX3PIDMediumEmail andAddress:newEmailTextField.text];
-    [new3PID requestValidationTokenWithMatrixRestClient:session.matrixRestClient isDuringRegistration:NO nextLink:nil success:^{
-
-        [self showValidationEmailDialogWithMessage:[NSBundle mxk_localizedStringForKey:@"account_email_validation_message"] for3PID:new3PID];
-
-    } failure:^(NSError *error) {
-
-        [self stopActivityIndicator];
-
-        NSLog(@"[SettingsViewController] Failed to request email token");
-        
-        // Translate the potential MX error.
-        MXError *mxError = [[MXError alloc] initWithNSError:error];
-        if (mxError && ([mxError.errcode isEqualToString:kMXErrCodeStringThreePIDInUse] || [mxError.errcode isEqualToString:kMXErrCodeStringServerNotTrusted]))
-        {
-            NSMutableDictionary *userInfo;
-            if (error.userInfo)
-            {
-                userInfo = [NSMutableDictionary dictionaryWithDictionary:error.userInfo];
-            }
-            else
-            {
-                userInfo = [NSMutableDictionary dictionary];
-            }
-            
-            userInfo[NSLocalizedFailureReasonErrorKey] = nil;
-            
-            if ([mxError.errcode isEqualToString:kMXErrCodeStringThreePIDInUse])
-            {
-                userInfo[NSLocalizedDescriptionKey] = NSLocalizedStringFromTable(@"auth_email_in_use", @"Vector", nil);
-                userInfo[@"error"] = NSLocalizedStringFromTable(@"auth_email_in_use", @"Vector", nil);
-            }
-            else
-            {
-                userInfo[NSLocalizedDescriptionKey] = NSLocalizedStringFromTable(@"auth_untrusted_id_server", @"Vector", nil);
-                userInfo[@"error"] = NSLocalizedStringFromTable(@"auth_untrusted_id_server", @"Vector", nil);
-            }
-            
-            error = [NSError errorWithDomain:error.domain code:error.code userInfo:userInfo];
-        }
-
-        // Notify user
-        NSString *myUserId = session.myUser.userId; // TODO: Hanlde multi-account
-        [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error userInfo:myUserId ? @{kMXKErrorUserIdKey: myUserId} : nil];
-
-    }];
-}
-
 - (IBAction)onAddNewPhone:(id)sender
 {
     // Ignore empty field
@@ -3644,13 +3304,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 - (IBAction)textFieldDidEnd:(id)sender
 {
     UITextField* textField = (UITextField*)sender;
-
-    // Disable the new email edition if the user leaves the text field empty
-    if (textField.tag == userSettingsNewEmailIndex && textField.text.length == 0 && !keepNewEmailEditing)
-    {
-        self.newEmailEditingEnabled = NO;
-    }
-    else if (textField.tag == userSettingsNewPhoneIndex && textField.text.length == 0 && !keepNewPhoneNumberEditing && !newPhoneNumberCountryPicker)
+    
+    if (textField.tag == userSettingsNewPhoneIndex && textField.text.length == 0 && !keepNewPhoneNumberEditing && !newPhoneNumberCountryPicker)
     {
         // Disable the new phone edition if the user leaves the text field empty
         self.newPhoneEditingEnabled = NO;
@@ -3679,10 +3334,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     if (textField.tag == userSettingsDisplayNameIndex)
     {
         [textField resignFirstResponder];
-    }
-    else if (textField.tag == userSettingsNewEmailIndex)
-    {
-        [self onAddNewEmail:textField];
     }
     
     return YES;
