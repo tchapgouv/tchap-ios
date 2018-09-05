@@ -77,5 +77,12 @@
  */
 - (IBAction)onButtonPressed:(id)sender;
 
+/**
+ Creates and returns a new `RoomViewController` object.
+ 
+ @return An initialized `RoomViewController` object.
+ */
++ (instancetype)instantiate;
+
 @end
 
