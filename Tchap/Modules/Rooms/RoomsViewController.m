@@ -137,7 +137,7 @@
             
         } failure:^(NSError *error) {
             
-            NSLog(@"[RecentsViewController] Failed to reject an invited room (%@)", invitedRoom.roomId);
+            NSLog(@"[RoomsViewController] Failed to reject an invited room (%@)", invitedRoom.roomId);
             
         }];
     }
