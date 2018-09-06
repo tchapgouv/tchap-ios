@@ -29,6 +29,18 @@ internal enum TchapL10n {
   internal static let authenticationPasswordPlaceholder = TchapL10n.tr("Tchap", "authentication_password_placeholder")
   /// Connexion Tchap
   internal static let authenticationTitle = TchapL10n.tr("Tchap", "authentication_title")
+  /// Aucun contact
+  internal static let contactsAddressBookNoContact = TchapL10n.tr("Tchap", "contacts_address_book_no_contact")
+  /// Vous n'avez pas autorisé Riot à accéder à vos contacts locaux
+  internal static let contactsAddressBookPermissionDenied = TchapL10n.tr("Tchap", "contacts_address_book_permission_denied")
+  /// Permissions requises pour accéder aux contacts locaux
+  internal static let contactsAddressBookPermissionRequired = TchapL10n.tr("Tchap", "contacts_address_book_permission_required")
+  /// Contacts Tchap
+  internal static let contactsMainSection = TchapL10n.tr("Tchap", "contacts_main_section")
+  /// RÉPERTOIRE UTILISATEURS (hors-ligne)
+  internal static let contactsUserDirectoryOfflineSection = TchapL10n.tr("Tchap", "contacts_user_directory_offline_section")
+  /// RÉPERTOIRE UTILISATEURS
+  internal static let contactsUserDirectorySection = TchapL10n.tr("Tchap", "contacts_user_directory_section")
   /// Une erreur est survenue, veuillez réessayer ultérieurement
   internal static let errorMessageDefault = TchapL10n.tr("Tchap", "error_message_default")
   /// Erreur

@@ -46,6 +46,7 @@
     MXHTTPOperation *lookup3pidsOperation;
     
     NSDictionary<NSString*, MXKContact*> *directContacts;
+    NSTimer *updateDirectTchapContactsTimer;
 }
 
 @end
@@ -120,6 +121,12 @@
     if (lookup3pidsOperation) {
         [lookup3pidsOperation cancel];
         lookup3pidsOperation = nil;
+    }
+    
+    if (updateDirectTchapContactsTimer)
+    {
+        [updateDirectTchapContactsTimer invalidate];
+        updateDirectTchapContactsTimer = nil;
     }
     
     directContacts = nil;
@@ -386,7 +393,13 @@
 
 - (void)updateDirectTchapContacts
 {
-    if (self.mxSession)
+    if (updateDirectTchapContactsTimer)
+    {
+        [updateDirectTchapContactsTimer invalidate];
+        updateDirectTchapContactsTimer = nil;
+    }
+    
+    if (self.mxSession && MXSessionStateStoreDataReady <= self.mxSession.state)
     {
         NSMutableDictionary *updatedDirectContacts = [NSMutableDictionary dictionary];
         // Prepare a lookup request if some keys are some email addresses.
@@ -411,6 +424,43 @@
                     // Build a contact from this user instance
                     MXKContact *contact = [[MXKContact alloc] initMatrixContactWithDisplayName: user.displayname matrixID: key andMatrixAvatarURL: user.avatarUrl];
                     updatedDirectContacts[key] = contact;
+                }
+                else
+                {
+                    // Retrieve the user display name from the room members information.
+                    // By this way we check that the current user has joined (or has been invited in) at least one of the direct chats for this user.
+                    // The users for whom no direct is joined by the current user are ignored for the moment.
+                    // @TODO Keep displaying these users in the contacts list, the problem is to get their displayname
+                    // @NOTE The user displayname may be known thanks to the presence event. But
+                    // it is unknown until we receive a presence event for this user.
+                    for (NSString *roomId in self.mxSession.directRooms[key]) {
+                        MXRoom *room = [self.mxSession roomWithRoomId:roomId];
+                        if (room) {
+                            // Retrieve the room members, update the direct contacts list only in case of a synchronous response.
+                            MXWeakify(self);
+                            __weak typeof(NSMutableDictionary*) weakUpdatedDirectContacts = updatedDirectContacts;
+                            [room members:^(MXRoomMembers *members) {
+                                MXStrongifyAndReturnIfNil(self);
+                                if (weakUpdatedDirectContacts)
+                                {
+                                    // The response is synchronous: add a contact for this user if the displayname is available.
+                                    NSMutableDictionary *updatedDirectContacts = weakUpdatedDirectContacts;
+                                    MXRoomMember *roomMember = [members memberWithUserId:key];
+                                    if (roomMember && roomMember.displayname) {
+                                        MXKContact *contact = [[MXKContact alloc] initMatrixContactWithDisplayName: roomMember.displayname matrixID: key andMatrixAvatarURL: roomMember.avatarUrl];
+                                        updatedDirectContacts[key] = contact;
+                                    }
+                                }
+                                else if (!self->updateDirectTchapContactsTimer)
+                                {
+                                    // The room members has been loaded asynchronously.
+                                    // arm a timer to auto refresh direct contacts list in 2s.
+                                    self->updateDirectTchapContactsTimer = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(updateDirectTchapContacts) userInfo:self repeats:NO];
+                                }
+                            } failure:nil];
+                            break;
+                        }
+                    }
                 }
             }
             else if ([MXTools isEmailAddress:key] && self.mxSession.directRooms[key].count)
@@ -510,7 +560,7 @@
             self->lookup3pidsOperation.maxRetriesTime = 0;
         }
         
-        directContacts = updatedDirectContacts.count ? updatedDirectContacts : nil;
+        directContacts = updatedDirectContacts.count ? [updatedDirectContacts copy] : nil;
         [self forceRefresh];
     }
 }
@@ -801,19 +851,19 @@
             {
                 case CNAuthorizationStatusAuthorized:
                     // Because there is no contacts on the device
-                    tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"contacts_address_book_no_contact", @"Vector", nil);
+                    tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"contacts_no_contact", @"Tchap", nil);
                     break;
 
                 case CNAuthorizationStatusNotDetermined:
                     // Because the user have not granted the permission yet
                     // (The permission request popup is displayed at the same time)
-                    tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"contacts_address_book_permission_required", @"Vector", nil);
+                    tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"contacts_address_book_permission_required", @"Tchap", nil);
                     break;
 
                 default:
                 {
                     // Because the user didn't allow the app to access local contacts
-                    tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"contacts_address_book_permission_denied", @"Vector", nil);
+                    tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"contacts_address_book_permission_denied", @"Tchap", nil);
                     break;
                 }
             }
@@ -888,7 +938,7 @@
     if (section == filteredLocalContactsSection)
     {
         count = filteredLocalContacts.count;
-        title = NSLocalizedStringFromTable(@"contacts_address_book_section", @"Vector", nil);
+        title = NSLocalizedStringFromTable(@"contacts_main_section", @"Tchap", nil);
     }
     else //if (section == filteredMatrixContactsSection)
     {
@@ -896,11 +946,11 @@
         {
             case ContactsDataSourceUserDirectoryStateOfflineLoading:
             case ContactsDataSourceUserDirectoryStateOfflineLoaded:
-                title = NSLocalizedStringFromTable(@"contacts_user_directory_offline_section", @"Vector", nil);
+                title = NSLocalizedStringFromTable(@"contacts_user_directory_offline_section", @"Tchap", nil);
                 break;
 
             default:
-                title = NSLocalizedStringFromTable(@"contacts_user_directory_section", @"Vector", nil);
+                title = NSLocalizedStringFromTable(@"contacts_user_directory_section", @"Tchap", nil);
                 break;
         }
         

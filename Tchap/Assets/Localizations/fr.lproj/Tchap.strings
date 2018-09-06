@@ -9,7 +9,6 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Welcome
-
 "welcome_title" = "Bienvenue dans Tchap";
 "welcome_login_action" = "J'ai un compte";
 "welcome_register_action" = "Je n'ai pas de compte";
@@ -26,3 +25,12 @@
 "authentication_error_missing_password" = "Mot de passe manquant";
 "authentication_error_invalid_password" = "Mot de passe trop court (min %d)";
 "authentication_error_password_dont_match" = "Les mots de passe ne correspondent pas";
+
+////////////////////////////////////////////////////////////////////////////////
+// MARK: Contacts
+"contacts_main_section" = "Contacts Tchap";
+"contacts_no_contact" = "Aucun contact";
+"contacts_address_book_permission_required" = "Permissions requises pour accéder aux contacts locaux";
+"contacts_address_book_permission_denied" = "Vous n'avez pas autorisé Tchap à accéder à vos contacts locaux";
+"contacts_user_directory_section" = "Répertoire Tchap";
+"contacts_user_directory_offline_section" = "Répertoire Tchap (hors-ligne)";
