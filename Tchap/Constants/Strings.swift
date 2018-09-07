@@ -29,10 +29,20 @@ internal enum TchapL10n {
   internal static let authenticationPasswordPlaceholder = TchapL10n.tr("Tchap", "authentication_password_placeholder")
   /// Connexion Tchap
   internal static let authenticationTitle = TchapL10n.tr("Tchap", "authentication_title")
+  /// Salons publics
+  internal static let conversationsDirectorySection = TchapL10n.tr("Tchap", "conversations_directory_section")
+  /// Invitations
+  internal static let conversationsInvitesSection = TchapL10n.tr("Tchap", "conversations_invites_section")
+  /// Conversations
+  internal static let conversationsMainSection = TchapL10n.tr("Tchap", "conversations_main_section")
+  /// Aucune conversation
+  internal static let conversationsNoConversation = TchapL10n.tr("Tchap", "conversations_no_conversation")
   /// Une erreur est survenue, veuillez réessayer ultérieurement
   internal static let errorMessageDefault = TchapL10n.tr("Tchap", "error_message_default")
   /// Erreur
   internal static let errorTitleDefault = TchapL10n.tr("Tchap", "error_title_default")
+  /// Aucun résultat
+  internal static let searchNoResult = TchapL10n.tr("Tchap", "search_no_result")
   /// J'ai un compte
   internal static let welcomeLoginAction = TchapL10n.tr("Tchap", "welcome_login_action")
   /// Je n'ai pas de compte

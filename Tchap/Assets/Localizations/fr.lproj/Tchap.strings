@@ -26,3 +26,14 @@
 "authentication_error_missing_password" = "Mot de passe manquant";
 "authentication_error_invalid_password" = "Mot de passe trop court (min %d)";
 "authentication_error_password_dont_match" = "Les mots de passe ne correspondent pas";
+
+////////////////////////////////////////////////////////////////////////////////
+// MARK: Conversations
+"conversations_invites_section" = "Invitations";
+"conversations_main_section" = "Conversations";
+"conversations_directory_section" = "Salons publics";
+"conversations_no_conversation" = "Aucune conversation";
+
+////////////////////////////////////////////////////////////////////////////////
+// MARK: Search
+"search_no_result" = "Aucun résultat";

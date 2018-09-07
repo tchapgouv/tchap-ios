@@ -270,17 +270,17 @@ NSString *const kRoomsDataSourceTapOnDirectoryServerChange = @"kRoomsDataSourceT
     {
         count = conversationCellDataArray.count;
         
-        title = NSLocalizedStringFromTable(@"room_recents_conversations_section", @"Vector", nil);
+        title = NSLocalizedStringFromTable(@"conversations_main_section", @"Tchap", nil);
     }
     else if (section == directorySection)
     {
-        title = NSLocalizedStringFromTable(@"room_recents_directory_section", @"Vector", nil);
+        title = NSLocalizedStringFromTable(@"conversations_directory_section", @"Tchap", nil);
     }
     else if (section == invitesSection)
     {
         count = invitesCellDataArray.count;
         
-        title = NSLocalizedStringFromTable(@"room_recents_invites_section", @"Vector", nil);
+        title = NSLocalizedStringFromTable(@"conversations_invites_section", @"Tchap", nil);
     }
     
     if (count)
@@ -580,11 +580,11 @@ NSString *const kRoomsDataSourceTapOnDirectoryServerChange = @"kRoomsDataSourceT
         // Check whether a search session is in progress
         if (self.searchPatternsList)
         {
-            tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"search_no_result", @"Vector", nil);
+            tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"search_no_result", @"Tchap", nil);
         }
         else
         {
-            tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"room_recents_no_conversation", @"Vector", nil);
+            tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"conversations_no_conversation", @"Tchap", nil);
         }
         
         return tableViewCell;
