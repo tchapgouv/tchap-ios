@@ -17,8 +17,7 @@
 import Foundation
 
 protocol RegistrationCoordinatorDelegate: class {
-    func registrationCoordinatorDidRegisterUser(_ coordinator: RegistrationCoordinatorType)
-    func registrationCoordinatorDidCancelRegistration(_ coordinator: RegistrationCoordinatorType)
+    func registrationCoordinatorDidRegisterUser(_ coordinator: RegistrationCoordinatorType)    
 }
 
 final class RegistrationCoordinator: RegistrationCoordinatorType {
@@ -27,11 +26,14 @@ final class RegistrationCoordinator: RegistrationCoordinatorType {
     
     // MARK: Private
     
-    private let registrationFormViewController: RegistrationFormViewController
     private let navigationRouter: NavigationRouterType
-    private let authenticationService: AuthenticationServiceType
+    
+    private let registrationFormViewController: RegistrationFormViewController
     private let activityIndicatorPresenter: ActivityIndicatorPresenterType
     private let registrationFormErrorPresenter: ErrorPresenter
+    
+    private let restClientBuilder: RestClientBuilder
+    private var registrationService: RegistrationServiceType?
     
     // MARK: Public
     
@@ -43,13 +45,15 @@ final class RegistrationCoordinator: RegistrationCoordinatorType {
     
     init(router: NavigationRouterType) {
         self.navigationRouter = router
-        self.authenticationService = AuthenticationService(accountManager: MXKAccountManager.shared())
+        
         let registrationViewModel = RegistrationFormViewModel()
         let registrationFormViewController = RegistrationFormViewController.instantiate(viewModel: registrationViewModel)
         registrationFormViewController.tc_removeBackTitle()
         self.registrationFormViewController = registrationFormViewController
+        
         self.activityIndicatorPresenter = ActivityIndicatorPresenter()
         self.registrationFormErrorPresenter = AlertErrorPresenter(viewControllerPresenter: registrationFormViewController)
+        self.restClientBuilder = RestClientBuilder()
     }
     
     // MARK: - Public methods
@@ -64,27 +68,79 @@ final class RegistrationCoordinator: RegistrationCoordinatorType {
     
     // MARK: - Private methods
     
-    private func didRegister(with userId: String) {
-        self.delegate?.registrationCoordinatorDidRegisterUser(self)
+    private func showEmailValidationSentAndPerformRegistration(with userEmail: String, password: String, threePIDCredentials: ThreePIDCredentials) {
+        
+        guard let registrationService = self.registrationService else {
+            let errorPresentable = ErrorPresentableImpl.init(title: TchapL10n.errorTitleDefault, message: TchapL10n.errorMessageDefault)
+            self.registrationFormErrorPresenter.present(errorPresentable: errorPresentable)
+            return
+        }
+        
+        self.registerLoginNotification()
+        
+        let registrationEmailSentViewController = RegistrationEmailSentViewController.instantiate(userEmail: userEmail)
+        registrationEmailSentViewController.delegate = self
+        self.navigationRouter.push(registrationEmailSentViewController, animated: true, popCompletion: {
+            // Cancel any pending registration request
+            registrationService.cancelPendingRegistration()
+        })
+        
+        let registrationEmailSentErrorPresenter = AlertErrorPresenter(viewControllerPresenter: registrationEmailSentViewController)
+        
+        let deviceDisplayName = UIDevice.current.name
+        
+        registrationService.register(with: threePIDCredentials, password: password, deviceDisplayName: deviceDisplayName) { (registrationResult) in
+            switch registrationResult {
+            case .success(_):
+                // NOTE: Do not call delegate directly for the moment, wait for NSNotification.Name.legacyAppDelegateDidLogin
+                print("[RegistrationCoordinator] User did authenticate with success")
+            case .failure(let error):
+                let authenticationErrorPresentableMaker = AuthenticationErrorPresentableMaker()
+                if let errorPresentable = authenticationErrorPresentableMaker.errorPresentable(from: error) {
+                    registrationEmailSentErrorPresenter.present(errorPresentable: errorPresentable)
+                }
+            }
+        }
     }
     
-    private func register(with mail: String, password: String) {
-        self.registrationFormViewController.setUserInteraction(enabled: false)
-        self.activityIndicatorPresenter.presentActivityIndicator(on: self.registrationFormViewController.view, animated: true)
+    private func validateRegistrationForm(with email: String, password: String) {
         
-        self.authenticationService.register(with: mail,
-                                            password: password,
-                                            deviceDisplayName: UIDevice.current.name) { (response) in
-            
+        let registrationFormViewControllerView: UIView = self.registrationFormViewController.view
+        
+        self.registrationFormViewController.setUserInteraction(enabled: false)
+        self.activityIndicatorPresenter.presentActivityIndicator(on: registrationFormViewControllerView, animated: true)
+        
+        let removeActivityIndicator: (() -> Void) = {
             self.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
             self.registrationFormViewController.setUserInteraction(enabled: true)
-            
-            switch response {
-            case .success(let email):
-                self.showEmailSent(with: email)
+        }
+        
+        // Create rest client from email address
+        self.restClientBuilder.build(from: email) { [unowned self] (restClientBuilderResult) in
+            switch restClientBuilderResult {
+            case .success(let restClient):
+                let registrationService = RegistrationService(accountManager: MXKAccountManager.shared(), restClient: restClient)
+                
+                // Validate email
+                registrationService.submitRegistrationEmailVerification(to: email) { (emailVerificationResult) in
+                    
+                    removeActivityIndicator()
+                    
+                    switch emailVerificationResult {
+                    case .success(let threePIDCredentials):
+                        self.showEmailValidationSentAndPerformRegistration(with: email, password: password, threePIDCredentials: threePIDCredentials)
+                    case .failure(let error):
+                        let authenticationErrorPresentableMaker = AuthenticationErrorPresentableMaker()
+                        if let errorPresentable = authenticationErrorPresentableMaker.errorPresentable(from: error) {
+                            self.registrationFormErrorPresenter.present(errorPresentable: errorPresentable)
+                        }
+                    }
+                }
+                
+                self.registrationService = registrationService
             case .failure(let error):
-                // Display error on RegistrationFormViewController
-                // TODO: Handle specific registration errors
+                removeActivityIndicator()
+                
                 let authenticationErrorPresentableMaker = AuthenticationErrorPresentableMaker()
                 if let errorPresentable = authenticationErrorPresentableMaker.errorPresentable(from: error) {
                     self.registrationFormErrorPresenter.present(errorPresentable: errorPresentable)
@@ -93,10 +149,24 @@ final class RegistrationCoordinator: RegistrationCoordinatorType {
         }
     }
     
-    private func showEmailSent(with userEmail: String) {
-        let registrationEmailSentViewController = RegistrationEmailSentViewController.instantiate(userEmail: userEmail)
-        registrationEmailSentViewController.delegate = self
-        self.navigationRouter.push(registrationEmailSentViewController, animated: true, popCompletion: nil)
+    private func registerLoginNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(userDidLogin), name: NSNotification.Name.legacyAppDelegateDidLogin, object: nil)
+    }
+    
+    private func unregisterLoginNotification() {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.legacyAppDelegateDidLogin, object: nil)
+    }
+    
+    @objc private func userDidLogin() {
+        self.unregisterLoginNotification()
+        
+        if let userId = MXKAccountManager.shared().accounts.last?.mxCredentials.userId {
+            self.didAuthenticate(with: userId)
+        }
+    }
+    
+    private func didAuthenticate(with userId: String) {
+        self.delegate?.registrationCoordinatorDidRegisterUser(self)
     }
 }
 
@@ -104,7 +174,8 @@ final class RegistrationCoordinator: RegistrationCoordinatorType {
 extension RegistrationCoordinator: RegistrationFormViewControllerDelegate {
     
     func registrationFormViewController(_ registrationViewController: RegistrationFormViewController, didTapNextButtonWith mail: String, password: String) {
-        self.register(with: mail, password: password)
+        // Local registration form succeed, validate email now
+        self.validateRegistrationForm(with: mail, password: password)
     }
 }
 
@@ -112,6 +183,6 @@ extension RegistrationCoordinator: RegistrationFormViewControllerDelegate {
 extension RegistrationCoordinator: RegistrationEmailSentViewControllerDelegate {
     
     func registrationEmailSentViewControllerDidTapEmailNotReceivedButton(_ registrationEmailSentViewController: RegistrationEmailSentViewController) {
-        self.delegate?.registrationCoordinatorDidCancelRegistration(self)
+        self.navigationRouter.popModule(animated: true)
     }
 }
