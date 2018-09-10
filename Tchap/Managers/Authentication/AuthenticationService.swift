@@ -17,31 +17,45 @@
 import Foundation
 
 /// `AuthenticationService` implementation of `AuthenticationServiceType` is used to authenticate a user on Tchap platforms.
-final class AuthenticationService: AuthenticationServiceType {        
+final class AuthenticationService: AuthenticationServiceType {
     
     // MARK: - Properties
     
     private let accountManager: MXKAccountManager
-    private var restClients: [MXRestClient] = []
+    private let restClientBuilder: RestClientBuilder
+    
+    private var authenticationRestClient: MXRestClient?
+    private var authenticationOperation: MXHTTPOperation?
     
     // MARK: - Setup
     
     init(accountManager: MXKAccountManager) {
         self.accountManager = accountManager
+        self.restClientBuilder = RestClientBuilder()
     }
     
     // MARK: - Public
     
-    func authenticate(with mail: String, password: String, completion: @escaping (MXResponse<String>) -> Void) {
+    // MARK: Authentication
+    
+    func authenticate(with email: String, password: String, completion: @escaping (MXResponse<String>) -> Void) {
         
-        self.resolveHomeServer(with: mail) { (resolveResult) in
-            switch resolveResult {
-            case .success(let homeServer):
-                self.authenticate(with: homeServer, mail: mail, password: password, completion: { (authenticationResult) in
+        self.cancelPendingAuthentication()
+        
+        self.restClientBuilder.build(from: email) { (restClientBuilderResult) in
+            switch restClientBuilderResult {
+            case .success(let restClient):
+                
+                guard let identityServer = restClient.identityServer else {
+                    completion(MXResponse.failure(AuthenticationServiceError.identityServerURLBuildFailed))
+                    return
+                }
+                
+                self.authenticationOperation = self.authenticate(using: restClient, email: email, password: password, completion: { (authenticationResult) in
                     switch authenticationResult {
                     case .success(let credentials):
                         do {
-                            try self.addAccount(for: credentials, identityServerURL: homeServer)
+                            try self.addAccount(for: credentials, identityServerURL: identityServer)
                             completion(MXResponse.success(credentials.userId))
                         } catch {
                             completion(MXResponse.failure(error))
@@ -50,139 +64,39 @@ final class AuthenticationService: AuthenticationServiceType {
                         completion(MXResponse.failure(error))
                     }
                 })
+                
+                self.authenticationRestClient = restClient
+                
             case .failure(let error):
                 completion(MXResponse.failure(error))
             }
         }
     }
     
-    func register(with mail: String, password: String, deviceDisplayName: String, completion: @escaping (MXResponse<String>) -> Void) {
-        
-        self.resolveHomeServer(with: mail) { (resolveResult) in
-            switch resolveResult {
-            case .success(let homeServer):
-                self.register(with: homeServer, mail: mail, password: password, deviceDisplayName: deviceDisplayName, completion: { (registrationResult) in
-                    switch registrationResult {
-                    case .success(let credentials):
-                        completion(MXResponse.success(credentials.userId))
-                    case .failure(let error):
-                        completion(MXResponse.failure(error))
-                    }
-                })
-            case .failure(let error):
-                completion(MXResponse.failure(error))
-            }
-        }
+    func cancelPendingAuthentication() {
+        self.authenticationOperation?.cancel()
+        self.authenticationRestClient = nil
     }
     
-    // MARK: - Private
+    // MARK: Authentication
     
-    private func resolveHomeServer(with mail: String, completion: @escaping (MXResponse<String>) -> Void) {
-        // Create a new resolver each time user wants to login because identityServerURLs should be shuffled.
-        let thirdPartyIDPlatformInfoResolver = self.createThirdPartyIDPlatformInfoResolver()
-        
-        thirdPartyIDPlatformInfoResolver.resolvePlatformInformation(address: mail, medium: kMX3PIDMediumEmail, success: { (resolveResult) in
-            switch resolveResult {
-            case .authorizedThirdPartyID(info: let thirdPartyIDPlatformInfo):
-                completion(MXResponse.success(thirdPartyIDPlatformInfo.homeServer))
-            case .unauthorizedThirdPartyID:
-                completion(MXResponse.failure(AuthenticationServiceError.unauthorizedThirdPartyID))
-            }
-        }, failure: { (error) in
-            completion(MXResponse.failure(AuthenticationServiceError.thirdPartyIDResolveFailure(error: error)))
-        })
-    }
-    
-    private func createThirdPartyIDPlatformInfoResolver() -> ThirdPartyIDPlatformInfoResolver {
-        guard let serverUrlPrefix = UserDefaults.standard.string(forKey: "serverUrlPrefix") else {
-            fatalError("serverUrlPrefix should be defined")
-        }
-        let identityServerURLs = IdentityServersURLGetter(currentIdentityServerURL: nil).identityServerUrls
-        let thirdPartyIDPlatformInfoResolver = ThirdPartyIDPlatformInfoResolver(identityServerUrls: identityServerURLs, serverPrefixURL: serverUrlPrefix)
-        return thirdPartyIDPlatformInfoResolver
-    }
-    
-    private func createRestClient(homeServerURL: URL, onUnrecognizedCertificate: @escaping MXHTTPClientOnUnrecognizedCertificate) -> MXRestClient {
-        return MXRestClient(homeServer: homeServerURL) { (certificateData) -> Bool in
-            onUnrecognizedCertificate(certificateData)
-        }
-    }
-    
-    private func createRestClient(homeServerURL: URL) -> MXRestClient {
-        let onUnrecognizedCertificate = self.onUnrecognizedCertificateAction(homeServerURL: homeServerURL)
-        
-        return self.createRestClient(homeServerURL: homeServerURL) { (certificateData) -> Bool in
-            // TODO: Update MXRestClient with better unrecognized certificate error handling as MXRestClient is unusable when `onUnrecognizedCertBlock` return false.
-            // NOTE: By returning false here for invalid certicate give us an error with error code `NSURLErrorCancelled` when call any endpoint on MXRestClient.
-            return onUnrecognizedCertificate(certificateData)
-        }
-    }
-    
-    private func add(restClient: MXRestClient) {
-        guard restClients.contains(restClient) == false else {
-            return
-        }
-        self.restClients.append(restClient)
-    }
-    
-    private func remove(restClient: MXRestClient) {
-        guard let restClientIndex = self.restClients.index(of: restClient) else {
-            return
-        }
-        restClients.remove(at: restClientIndex)
-    }
-    
-    private func onUnrecognizedCertificateAction(homeServerURL: URL) -> MXHTTPClientOnUnrecognizedCertificate {
-        let onUnrecognizedCertificate: MXHTTPClientOnUnrecognizedCertificate = { (certificateData) -> Bool in
-            
-            let certificateFingerprint: String
-            
-            if let certificateData = certificateData {
-                certificateFingerprint = (certificateData as NSData).mx_SHA256AsHexString()
-            } else {
-                certificateFingerprint = ""
-            }
-            
-            print("[AuthenticationService] Unrecognize certificate for homeserver: \(homeServerURL.absoluteString)\nfingerprint: \(certificateFingerprint)")
-            
-            return false
-        }
-        
-        return onUnrecognizedCertificate
-    }
-    
-    private func authenticate(with homeServer: String, mail: String, password: String, completion: @escaping (MXResponse<MXCredentials>) -> Void) {
-        guard let homeServerURL = URL(string: homeServer) else {
-            completion(MXResponse.failure(AuthenticationServiceError.homeServerURLBuildFailed))
-            return
-        }
-        
-        let onUnrecognizedCertificate = self.onUnrecognizedCertificateAction(homeServerURL: homeServerURL)
-        
-        let restClient = self.createRestClient(homeServerURL: homeServerURL) { (certificateData) -> Bool in
-            // TODO: Update MXRestClient with better unrecognized certificate error handling as MXRestClient is unusable when `onUnrecognizedCertBlock` return false.
-            // NOTE: By returning false here for invalid certicate give us an error with error code `NSURLErrorCancelled` when call `restClient.login(parameters: loginParameters)` below
-            return onUnrecognizedCertificate(certificateData)
-        }
-        
-        // Retain restClient
-        self.add(restClient: restClient)
+    private func authenticate(using restClient: MXRestClient, email: String, password: String, completion: @escaping (MXResponse<MXCredentials>) -> Void) -> MXHTTPOperation {
         
         let loginParameters: [String: Any] = [
             "type" : MXLoginFlowType.password.identifier,
             "identifier" : [
                 "type" : kMXLoginIdentifierTypeThirdParty,
                 "medium" : MX3PID.Medium.email.identifier,
-                "address" : mail
+                "address" : email
             ],
             "password" : password,
             // Patch: add the old login api parameters for an email address (medium and address),
             // to keep logging in against old HS.
             "medium" : MX3PID.Medium.email.identifier,
-            "address" : mail
+            "address" : email
         ]
         
-        restClient.login(parameters: loginParameters) { [weak self, weak restClient] (response) in
+        return restClient.login(parameters: loginParameters) { [weak restClient] (response) in
             guard let restClient = restClient else {
                 completion(MXResponse.failure(AuthenticationServiceError.deallocatedRestClient))
                 return
@@ -206,9 +120,6 @@ final class AuthenticationService: AuthenticationServiceType {
             case .failure(let error):
                 completion(MXResponse.failure(error))
             }
-            
-            // Release restClient
-            self?.remove(restClient: restClient)
         }
     }
     
@@ -225,51 +136,5 @@ final class AuthenticationService: AuthenticationServiceType {
         
         account.identityServerURL = identityServerURL
         self.accountManager.addAccount(account, andOpenSession: true)
-    }
-            
-    func register(with homeServer: String, mail: String, password: String, deviceDisplayName: String, completion: @escaping (MXResponse<MXCredentials>) -> Void) {
-        guard let homeServerURL = URL(string: homeServer) else {
-            completion(MXResponse.failure(AuthenticationServiceError.homeServerURLBuildFailed))
-            return
-        }
-        
-        let parameters: [String: Any] = [
-            "auth": [:],
-            "username": mail,
-            "password": password,
-            "bind_email": false,
-            "initial_device_display_name": deviceDisplayName
-        ]
-        
-        let restClient = self.createRestClient(homeServerURL: homeServerURL)
-        
-        restClient.register(parameters: parameters) { [weak self, weak restClient] (response) in
-            guard let restClient = restClient else {
-                completion(MXResponse.failure(AuthenticationServiceError.deallocatedRestClient))
-                return
-            }
-            
-            switch response {
-            case .success(let jsonResponse):
-                
-                guard let credentials = MXCredentials.model(fromJSON: jsonResponse) as? MXCredentials, credentials.userId != nil, credentials.accessToken != nil else {
-                    let error = NSError(domain: MXKAuthErrorDomain, code: 0, userInfo: [NSLocalizedDescriptionKey: Bundle.mxk_localizedString(forKey: "not_supported_yet")])
-                    completion(MXResponse.failure(error))
-                    return
-                }
-                
-                // Workaround: HS does not return the right URL. Use the one we used to make the request
-                credentials.homeServer = restClient.homeserver
-                // Report the certificate trusted by user (if any)
-                credentials.allowedCertificate = restClient.allowedCertificate
-                
-                completion(MXResponse.success(credentials))
-            case .failure(let error):
-                completion(MXResponse.failure(error))
-            }
-            
-            // Release restClient
-            self?.remove(restClient: restClient)
-        }
     }
 }

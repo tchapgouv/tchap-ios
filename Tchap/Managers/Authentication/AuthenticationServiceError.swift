@@ -18,11 +18,8 @@ import Foundation
 
 /// `AuthenticationServiceError` represent errors reported by AuthenticationService.
 enum AuthenticationServiceError: Error {
-    case unauthorizedThirdPartyID
-    case thirdPartyIDResolveFailure(error: Error?)
-    case homeServerURLBuildFailed
+    case identityServerURLBuildFailed
     case userAlreadyLoggedIn
     case failToCreateAccount
-    case unrecognizedCertificate
     case deallocatedRestClient
 }
