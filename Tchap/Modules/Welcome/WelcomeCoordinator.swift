@@ -18,7 +18,6 @@ import Foundation
 
 protocol WelcomeCoordinatorDelegate: class {
     func welcomeCoordinatorUserDidAuthenticate(_ coordinator: WelcomeCoordinatorType)
-    func welcomeCoordinatorUserDidRegister(_ coordinator: WelcomeCoordinatorType)
 }
 
 final class WelcomeCoordinator: WelcomeCoordinatorType {
@@ -110,10 +109,6 @@ extension WelcomeCoordinator: AuthenticationCoordinatorDelegate {
 extension WelcomeCoordinator: RegistrationCoordinatorDelegate {
     
     func registrationCoordinatorDidRegisterUser(_ coordinator: RegistrationCoordinatorType) {
-        
-    }
-    
-    func registrationCoordinatorDidCancelRegistration(_ coordinator: RegistrationCoordinatorType) {
-        self.navigationRouter.popToRootModule(animated: true)
+        self.delegate?.welcomeCoordinatorUserDidAuthenticate(self)
     }
 }

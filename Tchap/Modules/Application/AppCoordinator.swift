@@ -91,10 +91,6 @@ final class AppCoordinator: AppCoordinatorType {
 // MARK: - WelcomeCoordinatorDelegate
 extension AppCoordinator: WelcomeCoordinatorDelegate {
     
-    func welcomeCoordinatorUserDidRegister(_ coordinator: WelcomeCoordinatorType) {
-        
-    }
-    
     func welcomeCoordinatorUserDidAuthenticate(_ coordinator: WelcomeCoordinatorType) {
         if let mainSession = self.mainSession {
             self.showSplitView(session: mainSession)
