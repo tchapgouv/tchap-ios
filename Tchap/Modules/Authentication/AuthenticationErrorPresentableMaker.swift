@@ -16,22 +16,36 @@
 
 import Foundation
 
-/// Used to transform authentication error to `ErrorPresentable`
+/// Used to transform authentication or registration error to `ErrorPresentable`
 final class AuthenticationErrorPresentableMaker {
     
     // MARK: - Public
     
     func errorPresentable(from error: Error) -> ErrorPresentable? {
         
-        if let authenticationServiceError = error as? AuthenticationServiceError {
-            return self.authenticationServerErrorPresentable(from: authenticationServiceError)
+        // Error presentable specific to Tchap module
+        let tchapErrorPresentable: ErrorPresentable?
+        
+        switch error {
+        case let authenticationServiceError as AuthenticationServiceError:
+            tchapErrorPresentable = self.authenticationServiceErrorPresentable(from: authenticationServiceError)
+        case let restClientBuilderError as RestClientBuilderError:
+            tchapErrorPresentable = self.restClientBuilderErrorPresentable(from: restClientBuilderError)
+        case let registrationServiceError as RegistrationServiceError:
+            tchapErrorPresentable = self.registrationServiceErrorPresentable(from: registrationServiceError)
+        default:
+            tchapErrorPresentable = nil
+        }
+        
+        guard tchapErrorPresentable == nil else {
+            return tchapErrorPresentable
         }
         
         let nsError = error as NSError
         
         // Ignore connection cancellation error
         if nsError.domain == NSURLErrorDomain && nsError.code == NSURLErrorCancelled {
-            print("[AuthenticationErrorPresenter] Auth request cancelled")
+            print("[AuthenticationErrorPresentableMaker] Auth request cancelled")
             return nil
         }
         
@@ -89,14 +103,42 @@ final class AuthenticationErrorPresentableMaker {
     
     // MARK: - Private
     
-    private func authenticationServerErrorPresentable(from authenticationServiceError: AuthenticationServiceError) -> ErrorPresentable {
+    private func restClientBuilderErrorPresentable(from restClientBuilderError: RestClientBuilderError) -> ErrorPresentable {
+        
+        let title: String = Bundle.mxk_localizedString(forKey: "login_error_title")
+        let message: String
+        
+        switch restClientBuilderError {
+        case .unauthorizedThirdPartyID:
+            message = Bundle.mxk_localizedString(forKey: "login_error_forbidden")
+        default:
+            message = TchapL10n.errorMessageDefault
+        }
+        
+        return ErrorPresentableImpl(title: title, message: message)
+    }
+    
+    private func authenticationServiceErrorPresentable(from authenticationServiceError: AuthenticationServiceError) -> ErrorPresentable {
         
         let title: String = Bundle.mxk_localizedString(forKey: "login_error_title")
         let message: String
         
         switch authenticationServiceError {
-        case .unauthorizedThirdPartyID:
-            message = Bundle.mxk_localizedString(forKey: "login_error_forbidden")
+        case .userAlreadyLoggedIn:
+            message = Bundle.mxk_localizedString(forKey: "login_error_already_logged_in")
+        default:
+            message = TchapL10n.errorMessageDefault
+        }
+        
+        return ErrorPresentableImpl(title: title, message: message)
+    }
+    
+    private func registrationServiceErrorPresentable(from authenticationServiceError: RegistrationServiceError) -> ErrorPresentable {
+        
+        let title: String = Bundle.mxk_localizedString(forKey: "login_error_title")
+        let message: String
+        
+        switch authenticationServiceError {
         case .userAlreadyLoggedIn:
             message = Bundle.mxk_localizedString(forKey: "login_error_already_logged_in")
         default:
