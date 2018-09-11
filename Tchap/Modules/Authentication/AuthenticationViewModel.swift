@@ -35,10 +35,7 @@ final class AuthenticationViewModel: AuthenticationViewModelType {
         var mailTextFieldProperties = TextInputProperties()
         mailTextFieldProperties.keyboardType = .emailAddress
         mailTextFieldProperties.returnKeyType = .next
-        
-        if #available(iOS 10.0, *) {
-            mailTextFieldProperties.textContentType = .emailAddress
-        }
+        mailTextFieldProperties.textContentType = .emailAddress
         
         mailTextViewModel.textInputProperties = mailTextFieldProperties
         
@@ -78,7 +75,7 @@ final class AuthenticationViewModel: AuthenticationViewModelType {
         
         let validationResult: AuthenticationFormValidationResult
         
-        var errorMessage: String? = nil
+        var errorMessage: String?
         
         if !MXTools.isEmailAddress(mail) {
             print("[AuthenticationViewModel] Invalid email")

@@ -118,11 +118,8 @@ final class FormTextField: UIView, NibOwnerLoadable {
         self.textField.isSecureTextEntry = textFieldProperties.isSecureTextEntry
         self.textField.autocorrectionType = textFieldProperties.autocorrectionType
         self.textField.autocapitalizationType = textFieldProperties.autocapitalization
-        self.textField.font = textFieldProperties.font
-        
-        if #available(iOS 10.0, *) {
-            self.textField.textContentType = textFieldProperties.textContentType
-        }
+        self.textField.font = textFieldProperties.font        
+        self.textField.textContentType = textFieldProperties.textContentType
     }
     
     private func setTextFieldEditable(_ enable: Bool) {

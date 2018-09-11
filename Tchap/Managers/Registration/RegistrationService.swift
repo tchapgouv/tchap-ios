@@ -202,15 +202,9 @@ final class RegistrationService: RegistrationServiceType {
                 
                 // MXError unauthorized, retry registration until email validation is done
                 if let mxError = MXError(nsError: error), mxError.errcode == kMXErrCodeStringUnauthorized {
-                    
-                    if #available(iOS 10.0, *) {
-                        self.registrationRetryTimer = Timer.scheduledTimer(withTimeInterval: Constants.registrationRetryInterval, repeats: false, block: { [weak self] _ in
-                            self?.registerUntilEmailValidated(with: parameters, using: restClient, completion: completion)
-                        })
-                    } else {
-                        // TODO: Support iOS 10.0 min
-                    }
-                    
+                    self.registrationRetryTimer = Timer.scheduledTimer(withTimeInterval: Constants.registrationRetryInterval, repeats: false, block: { [weak self] _ in
+                        self?.registerUntilEmailValidated(with: parameters, using: restClient, completion: completion)
+                    })
                 } else {
                     completion(MXResponse.failure(error))
                 }

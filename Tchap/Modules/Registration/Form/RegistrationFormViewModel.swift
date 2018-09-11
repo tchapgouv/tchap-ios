@@ -37,10 +37,7 @@ final class RegistrationFormViewModel: RegistrationFormViewModelType {
         var mailTextFieldProperties = TextInputProperties()
         mailTextFieldProperties.keyboardType = .emailAddress
         mailTextFieldProperties.returnKeyType = .next
-        
-        if #available(iOS 10.0, *) {
-            mailTextFieldProperties.textContentType = .emailAddress
-        }
+        mailTextFieldProperties.textContentType = .emailAddress
         
         emailTextViewModel.textInputProperties = mailTextFieldProperties
         

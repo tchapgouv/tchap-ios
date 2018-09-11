@@ -24,21 +24,5 @@ struct TextInputProperties {
     var autocapitalization: UITextAutocapitalizationType = .none
     var returnKeyType: UIReturnKeyType = .default
     var font: UIFont = UIFont.systemFont(ofSize: 16.0)
-    
-    // Tips to use @available with stored properties
-    private var _textContentType: Any? = nil
-    
-    @available(iOS 10.0, *)
-    var textContentType: UITextContentType? {
-        get {
-            guard let textContentType = _textContentType as? UITextContentType else {
-                return nil
-            }
-            return textContentType
-        }
-        set {
-            _textContentType = newValue
-        }
-    }
-    
+    var textContentType: UITextContentType?
 }
