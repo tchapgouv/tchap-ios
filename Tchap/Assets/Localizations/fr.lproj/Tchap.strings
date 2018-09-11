@@ -9,7 +9,6 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Welcome
-
 "welcome_title" = "Bienvenue dans Tchap";
 "welcome_login_action" = "J'ai un compte";
 "welcome_register_action" = "Je n'ai pas de compte";
@@ -28,7 +27,6 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Registration
-
 "registration_title" = "Inscription Tchap";
 "registration_mail_placeholder" = "Adresse email";
 "registration_mail_additional_info" = "Utilisez votre adresse professionnelle";
@@ -40,3 +38,14 @@
 "registration_email_sent_info" = "Un email vous a été envoyé";
 "registration_email_sent_instructions" = "Veuillez l'ouvrir et cliquer sur le lien proposé pour valider votre inscription";
 "registration_email_not_received_action" = "Je n'ai pas reçu l'email !";
+
+////////////////////////////////////////////////////////////////////////////////
+// MARK: Conversations
+"conversations_invites_section" = "Invitations";
+"conversations_main_section" = "Conversations";
+"conversations_directory_section" = "Salons publics";
+"conversations_no_conversation" = "Aucune conversation";
+
+////////////////////////////////////////////////////////////////////////////////
+// MARK: Search
+"search_no_result" = "Aucun résultat";
