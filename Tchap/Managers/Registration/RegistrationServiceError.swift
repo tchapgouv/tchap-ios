@@ -14,20 +14,16 @@
  limitations under the License.
  */
 
-import UIKit
+import Foundation
 
-/// Describe UI component style properties and commodity method to apply it
-protocol Style: NSObjectProtocol {
-    
-    var statusBarStyle: UIStatusBarStyle { get }
-    
-    var backgroundColor: UIColor { get }
-    var separatorColor: UIColor { get }
-    
-    var primarySubTextColor: UIColor { get }
-    var secondaryTextColor: UIColor { get }
-    
-    func applyStyle(onNavigationBar: UINavigationBar)
-    func applyStyle(onButton: UIButton)
-    func applyStyle(onTextField: UITextField)
+/// `RegistrationServiceError` represent errors reported by RegistrationService.
+enum RegistrationServiceError: Error {
+    case identityServerURLBuildFailed
+    case homeServerURLBuildFailed
+    case userAlreadyLoggedIn
+    case failToCreateAccount
+    case deallocatedRestClient
+    case validationTokenFailed
+    case nextLinkBuildFailed
+    case missingClientSecret
 }

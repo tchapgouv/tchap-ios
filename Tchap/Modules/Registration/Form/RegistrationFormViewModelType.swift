@@ -14,20 +14,20 @@
  limitations under the License.
  */
 
-import UIKit
+import Foundation
 
-/// Describe UI component style properties and commodity method to apply it
-protocol Style: NSObjectProtocol {
+/// Protocol describing the view model used by RegistrationFormViewController
+protocol RegistrationFormViewModelType {
     
-    var statusBarStyle: UIStatusBarStyle { get }
+    /// Login view model
+    var loginTextViewModel: FormTextViewModelType { get }
     
-    var backgroundColor: UIColor { get }
-    var separatorColor: UIColor { get }
+    /// Password view model
+    var passwordTextViewModel: FormTextViewModelType { get }
     
-    var primarySubTextColor: UIColor { get }
-    var secondaryTextColor: UIColor { get }
+    /// Confirm password view model
+    var confirmPasswordTextViewModel: FormTextViewModelType { get }
     
-    func applyStyle(onNavigationBar: UINavigationBar)
-    func applyStyle(onButton: UIButton)
-    func applyStyle(onTextField: UITextField)
+    /// Registration form validation
+    func validateForm() -> AuthenticationFormValidationResult
 }

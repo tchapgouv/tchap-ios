@@ -58,6 +58,16 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Tchap.AuthenticationViewController>(storyboard: AuthenticationViewController.self)
   }
+  internal enum RegistrationEmailSentViewController: StoryboardType {
+    internal static let storyboardName = "RegistrationEmailSentViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.RegistrationEmailSentViewController>(storyboard: RegistrationEmailSentViewController.self)
+  }
+  internal enum RegistrationFormViewController: StoryboardType {
+    internal static let storyboardName = "RegistrationFormViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.RegistrationFormViewController>(storyboard: RegistrationFormViewController.self)
+  }
   internal enum WelcomeViewController: StoryboardType {
     internal static let storyboardName = "WelcomeViewController"
 

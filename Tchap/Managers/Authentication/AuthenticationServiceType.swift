@@ -19,11 +19,14 @@ import Foundation
 /// Protocol describing a service to handle authentication.
 protocol AuthenticationServiceType {
     
-    /// Authenticate user on homeserver based on user mail.
+    /// Authenticate user on homeserver based on user email.
     ///
     /// - Parameters:
-    ///   - mail: The user mail.
+    ///   - email: The user email.
     ///   - password: The user password.
-    ///   - completion: A closure called when the operation is completed. Provide the authenticated user id when succeed.
-    func authenticate(with mail: String, password: String, completion: @escaping (MXResponse<String>) -> Void)
+    ///   - completion: A closure called when the operation complete. Provide the authenticated user id when succeed.
+    func authenticate(with email: String, password: String, completion: @escaping (MXResponse<String>) -> Void)
+    
+    /// Cancel pending authentication request.
+    func cancelPendingAuthentication()
 }
