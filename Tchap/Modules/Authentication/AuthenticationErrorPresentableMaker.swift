@@ -110,7 +110,7 @@ final class AuthenticationErrorPresentableMaker {
         
         switch restClientBuilderError {
         case .unauthorizedThirdPartyID:
-            message = Bundle.mxk_localizedString(forKey: "login_error_forbidden")
+            message = TchapL10n.authenticationErrorUnauthorizedEmail
         default:
             message = TchapL10n.errorMessageDefault
         }
