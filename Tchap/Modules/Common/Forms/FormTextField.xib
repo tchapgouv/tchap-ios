@@ -11,16 +11,17 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FormTextField" customModule="Tchap" customModuleProvider="target">
             <connections>
+                <outlet property="additionalInfoLabel" destination="8Xi-ox-RIp" id="NtD-OV-tH6"/>
                 <outlet property="separatorView" destination="mcU-a2-vBC" id="Qb1-rp-TkW"/>
                 <outlet property="textField" destination="wTj-O6-CEA" id="Swt-zE-zg9"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="97N-ui-oVN" userLabel="LoginView">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="35"/>
+        <view contentMode="scaleToFill" id="97N-ui-oVN">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="61"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Adresse email" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="wTj-O6-CEA">
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Placeholder" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="wTj-O6-CEA">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="34"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="34" id="DWM-Ie-rnn"/>
@@ -39,21 +40,32 @@
                         <constraint firstAttribute="height" constant="1" id="v5d-9r-Y8g"/>
                     </constraints>
                 </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Additional info" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Xi-ox-RIp">
+                    <rect key="frame" x="0.0" y="41" width="375" height="20"/>
+                    <fontDescription key="fontDescription" type="italicSystem" pointSize="12"/>
+                    <color key="textColor" white="0.80642671129999999" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="mcU-a2-vBC" firstAttribute="top" secondItem="wTj-O6-CEA" secondAttribute="bottom" id="BlT-Cc-aIl"/>
+                <constraint firstItem="mcU-a2-vBC" firstAttribute="leading" secondItem="97N-ui-oVN" secondAttribute="leading" id="GYT-NX-nOz"/>
+                <constraint firstItem="8Xi-ox-RIp" firstAttribute="leading" secondItem="97N-ui-oVN" secondAttribute="leading" id="PjV-AI-H6c"/>
                 <constraint firstItem="wTj-O6-CEA" firstAttribute="top" secondItem="97N-ui-oVN" secondAttribute="top" id="QV6-LO-Ewr"/>
+                <constraint firstAttribute="trailing" secondItem="mcU-a2-vBC" secondAttribute="trailing" id="UbF-DK-KjN"/>
+                <constraint firstAttribute="trailing" secondItem="8Xi-ox-RIp" secondAttribute="trailing" id="Ujd-yu-YlC"/>
+                <constraint firstItem="8Xi-ox-RIp" firstAttribute="top" secondItem="mcU-a2-vBC" secondAttribute="bottom" constant="6" id="ViF-bt-czS"/>
                 <constraint firstItem="mcU-a2-vBC" firstAttribute="trailing" secondItem="wTj-O6-CEA" secondAttribute="trailing" id="XWA-t4-SaZ"/>
+                <constraint firstAttribute="bottom" secondItem="8Xi-ox-RIp" secondAttribute="bottom" id="b44-Ys-N4a"/>
                 <constraint firstItem="mcU-a2-vBC" firstAttribute="leading" secondItem="wTj-O6-CEA" secondAttribute="leading" id="efR-N5-BGS"/>
-                <constraint firstAttribute="bottom" secondItem="mcU-a2-vBC" secondAttribute="bottom" id="mvQ-y1-1AQ"/>
                 <constraint firstItem="wTj-O6-CEA" firstAttribute="leading" secondItem="97N-ui-oVN" secondAttribute="leading" id="oeD-zB-Bnk"/>
                 <constraint firstAttribute="trailing" secondItem="wTj-O6-CEA" secondAttribute="trailing" id="xT1-Ac-9uS"/>
             </constraints>
             <nil key="simulatedTopBarMetrics"/>
             <nil key="simulatedBottomBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="-409" y="-255"/>
+            <point key="canvasLocation" x="-409.5" y="-242.5"/>
         </view>
     </objects>
 </document>

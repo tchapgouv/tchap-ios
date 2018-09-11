@@ -24,7 +24,27 @@
 "authentication_error_invalid_email" = "L'adresse e-mail ne semble pas valide";
 "authentication_error_missing_password" = "Mot de passe manquant";
 "authentication_error_invalid_password" = "Mot de passe trop court (min %d)";
-"authentication_error_password_dont_match" = "Les mots de passe ne correspondent pas";
+
+////////////////////////////////////////////////////////////////////////////////
+// MARK: Registration
+"registration_title" = "Inscription Tchap";
+"registration_mail_placeholder" = "Adresse email";
+"registration_mail_additional_info" = "Utilisez votre adresse professionnelle";
+"registration_password_placeholder" = "Mot de passe Tchap";
+"registration_confirm_password_placeholder" = "Confirmer le mot de passe";
+
+"registration_error_passwords_dont_match" = "Les mots de passe ne correspondent pas";
+
+"registration_email_sent_info" = "Un email vous a été envoyé";
+"registration_email_sent_instructions" = "Veuillez l'ouvrir et cliquer sur le lien proposé pour valider votre inscription";
+"registration_email_not_received_action" = "Je n'ai pas reçu l'email !";
+
+////////////////////////////////////////////////////////////////////////////////
+// MARK: Conversations
+"conversations_invites_section" = "Invitations";
+"conversations_main_section" = "Conversations";
+"conversations_directory_section" = "Salons publics";
+"conversations_no_conversation" = "Aucune conversation";
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Contacts
@@ -34,3 +54,7 @@
 "contacts_address_book_permission_denied" = "Vous n'avez pas autorisé Tchap à accéder à vos contacts locaux";
 "contacts_user_directory_section" = "Répertoire Tchap";
 "contacts_user_directory_offline_section" = "Répertoire Tchap (hors-ligne)";
+
+////////////////////////////////////////////////////////////////////////////////
+// MARK: Search
+"search_no_result" = "Aucun résultat";

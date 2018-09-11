@@ -839,7 +839,7 @@
             }
             else
             {
-                tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"search_no_result", @"Vector", nil);
+                tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"search_no_result", @"Tchap", nil);
             }
         }
         else if (indexPath.section == filteredLocalContactsSection)

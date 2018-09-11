@@ -24,6 +24,7 @@ final class FormTextViewModel: FormTextViewModelType {
     
     var placeholder: String?
     var attributedPlaceholder: NSAttributedString?
+    var additionalInfo: String?
     
     var value: String? {
         didSet {
@@ -42,20 +43,24 @@ final class FormTextViewModel: FormTextViewModelType {
     // MARK: - Setup
     
     init(placeholder: String,
+         additionalInfo: String? = nil,
          value: String? = nil,
          valueMaximumCharacterLength: Int? = nil,
          isEditable: Bool = true) {
         self.placeholder = placeholder
+        self.additionalInfo = additionalInfo
         self.value = value
         self.valueMaximumCharacterLength = valueMaximumCharacterLength
         self.isEditable = isEditable
     }
     
     init(attributedPlaceholder: NSAttributedString,
+         additionalInfo: String? = nil,
          value: String? = nil,
          valueMaximumCharacterLength: Int? = nil,
          isEditable: Bool = true) {
         self.attributedPlaceholder = attributedPlaceholder
+        self.additionalInfo = additionalInfo
         self.value = value
         self.valueMaximumCharacterLength = valueMaximumCharacterLength
         self.isEditable = isEditable
