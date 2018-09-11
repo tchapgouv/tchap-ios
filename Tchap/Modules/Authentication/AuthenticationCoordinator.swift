@@ -93,7 +93,7 @@ final class AuthenticationCoordinator: AuthenticationCoordinatorType {
             self.authenticationViewController.setUserInteraction(enabled: true)
             
             switch response {
-            case .success(_):
+            case .success:
                 // NOTE: Do not call delegate directly for the moment, wait for NSNotification.Name.legacyAppDelegateDidLogin
                 print("[AuthenticationCoordinator] User did authenticate with success")
             case .failure(let error):

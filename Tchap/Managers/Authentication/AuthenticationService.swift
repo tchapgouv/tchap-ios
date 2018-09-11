@@ -83,17 +83,17 @@ final class AuthenticationService: AuthenticationServiceType {
     private func authenticate(using restClient: MXRestClient, email: String, password: String, completion: @escaping (MXResponse<MXCredentials>) -> Void) -> MXHTTPOperation {
         
         let loginParameters: [String: Any] = [
-            "type" : MXLoginFlowType.password.identifier,
-            "identifier" : [
-                "type" : kMXLoginIdentifierTypeThirdParty,
-                "medium" : MX3PID.Medium.email.identifier,
-                "address" : email
+            "type": MXLoginFlowType.password.identifier,
+            "identifier": [
+                "type": kMXLoginIdentifierTypeThirdParty,
+                "medium": MX3PID.Medium.email.identifier,
+                "address": email
             ],
-            "password" : password,
+            "password": password,
             // Patch: add the old login api parameters for an email address (medium and address),
             // to keep logging in against old HS.
-            "medium" : MX3PID.Medium.email.identifier,
-            "address" : email
+            "medium": MX3PID.Medium.email.identifier,
+            "address": email
         ]
         
         return restClient.login(parameters: loginParameters) { [weak restClient] (response) in

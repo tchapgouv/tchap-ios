@@ -88,7 +88,7 @@ final class RoomsCoordinator: NSObject, RoomsCoordinatorType {
             
             sself.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
             switch response {
-            case .success(_):
+            case .success:
                 sself.showRoom(with: roomID)
             case .failure(let error):
                 let errorPresentable = sself.joinRoomErrorPresentable(from: error)

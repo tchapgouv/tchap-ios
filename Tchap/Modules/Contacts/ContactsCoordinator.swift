@@ -39,7 +39,7 @@ final class ContactsCoordinator: ContactsCoordinatorType {
         
         self.contactsDataSource = ContactsDataSource(matrixSession: self.session)
         self.contactsDataSource.finalizeInitialization()
-        self.contactsDataSource.contactsFilter = ContactsDataSourceTchapFilterTchapOnly;
+        self.contactsDataSource.contactsFilter = ContactsDataSourceTchapFilterTchapOnly
     }
     
     // MARK: - Public methods

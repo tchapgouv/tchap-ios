@@ -158,7 +158,7 @@ final class AuthenticationErrorPresentableMaker {
         return resourceLimitExceededErrorPresentable(from: errorInfo)
     }
     
-    private func resourceLimitExceededErrorPresentable(from errorDict: [AnyHashable : Any]) -> ErrorPresentable {
+    private func resourceLimitExceededErrorPresentable(from errorDict: [AnyHashable: Any]) -> ErrorPresentable {
         
         let title: String = Bundle.mxk_localizedString(forKey: "login_error_resource_limit_exceeded_title")
         var message = ""

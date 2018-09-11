@@ -20,4 +20,3 @@ import Foundation
 protocol Stylable: NSObjectProtocol {
     func update(style: Style)
 }
-
