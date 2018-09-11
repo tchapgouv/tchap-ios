@@ -162,8 +162,9 @@ extension FormTextField: UITextFieldDelegate {
         
         if currentText.count <= maxChar {
             self.formTextViewModel?.value = currentText
+            return true
         }
         
-        return TextInputHandler.textInput(shouldChangeText: originalString, inRange: range, replacementString: string, maximumCharacterLength: maxChar)
+        return false
     }
 }
