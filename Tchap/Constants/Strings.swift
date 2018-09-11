@@ -17,6 +17,8 @@ internal enum TchapL10n {
   }
   /// Mot de passe manquant
   internal static let authenticationErrorMissingPassword = TchapL10n.tr("Tchap", "authentication_error_missing_password")
+  /// Cette adresse e-mail n'est pas autorisée
+  internal static let authenticationErrorUnauthorizedEmail = TchapL10n.tr("Tchap", "authentication_error_unauthorized_email")
   /// Mot de passe oublié ?
   internal static let authenticationForgotPassword = TchapL10n.tr("Tchap", "authentication_forgot_password")
   /// Adresse email

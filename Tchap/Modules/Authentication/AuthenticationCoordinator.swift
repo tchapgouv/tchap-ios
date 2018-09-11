@@ -53,7 +53,7 @@ final class AuthenticationCoordinator: AuthenticationCoordinatorType {
     // MARK: - Public methods
     
     func start() {
-        self.registerLogintNotification()
+        self.registerLoginNotification()
         self.authenticationViewController.delegate = self
     }
     
@@ -63,7 +63,7 @@ final class AuthenticationCoordinator: AuthenticationCoordinatorType {
     
     // MARK: - Private methods
     
-    private func registerLogintNotification() {
+    private func registerLoginNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(userDidLogin), name: NSNotification.Name.legacyAppDelegateDidLogin, object: nil)
     }
     
