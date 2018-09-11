@@ -24,7 +24,8 @@ final class AppCoordinator: AppCoordinatorType {
     
     private let rootRouter: RootRouterType
     
-    private weak var splitViewCoordinator: SplitViewCoordinatorType?
+//    private weak var splitViewCoordinator: SplitViewCoordinatorType?
+    private weak var segmentedViewCoordinator: SegmentedViewCoordinatorType?
     
     /// Main user Matrix session
     private var mainSession: MXSession? {
@@ -46,7 +47,8 @@ final class AppCoordinator: AppCoordinatorType {
     func start() {
         // If main user exist, user is logged in
         if let mainSession = self.mainSession {
-            self.showSplitView(session: mainSession)
+//            self.showSplitView(session: mainSession)
+            self.showSegmentedView(session: mainSession)
         } else {
             self.showWelcome()
         }
@@ -61,10 +63,23 @@ final class AppCoordinator: AppCoordinatorType {
         self.add(childCoordinator: welcomeCoordinator)
     }
     
-    private func showSplitView(session: MXSession) {
-        let splitViewCoordinator = SplitViewCoordinator(router: self.rootRouter, session: session)
-        splitViewCoordinator.start()
-        self.add(childCoordinator: splitViewCoordinator)
+    // Disable usage of UISplitViewController for the moment
+//    private func showSplitView(session: MXSession) {
+//        let splitViewCoordinator = SplitViewCoordinator(router: self.rootRouter, session: session)
+//        splitViewCoordinator.start()
+//        self.add(childCoordinator: splitViewCoordinator)
+//
+//        self.registerLogoutNotification()
+//    }
+    
+    func showSegmentedView(session: MXSession) {
+        let segmentedViewCoordinator = SegmentedViewCoordinator(session: session)
+        segmentedViewCoordinator.start()
+        self.add(childCoordinator: segmentedViewCoordinator)
+        
+        self.rootRouter.setRootModule(segmentedViewCoordinator)
+        
+        self.segmentedViewCoordinator = segmentedViewCoordinator
         
         self.registerLogoutNotification()
     }
@@ -82,8 +97,12 @@ final class AppCoordinator: AppCoordinatorType {
         
         self.showWelcome()
         
-        if let splitViewCoordinator = self.splitViewCoordinator {
-            self.remove(childCoordinator: splitViewCoordinator)
+//        if let splitViewCoordinator = self.splitViewCoordinator {
+//            self.remove(childCoordinator: splitViewCoordinator)
+//        }
+        
+        if let segmentedViewCoordinator = self.segmentedViewCoordinator {
+            self.remove(childCoordinator: segmentedViewCoordinator)
         }
     }
 }
@@ -93,7 +112,8 @@ extension AppCoordinator: WelcomeCoordinatorDelegate {
     
     func welcomeCoordinatorUserDidAuthenticate(_ coordinator: WelcomeCoordinatorType) {
         if let mainSession = self.mainSession {
-            self.showSplitView(session: mainSession)
+//            self.showSplitView(session: mainSession)
+            self.showSegmentedView(session: mainSession)
             self.remove(childCoordinator: coordinator)
         } else {
             NSLog("[AppCoordinator] Did not find session for current user")
