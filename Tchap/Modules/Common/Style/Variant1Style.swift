@@ -28,6 +28,7 @@ final class Variant1Style: NSObject, Style {
     let separatorColor: UIColor = kVariant1ActionColor
     
     let primarySubTextColor: UIColor = kVariant1PrimarySubTextColor
+    let secondaryTextColor: UIColor = kVariant1SecondaryTextColor
     
     func applyStyle(onNavigationBar navigationBar: UINavigationBar) {
         navigationBar.isTranslucent = false
