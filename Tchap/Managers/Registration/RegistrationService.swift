@@ -48,7 +48,7 @@ final class RegistrationService: RegistrationServiceType {
         self.submitRegistrationEmailVerification(to: email, using: self.restClient, completion: completion)
     }
     
-    func register(with threePIDCredentials: ThreePIDCredentials, password: String, deviceDisplayName: String, completion: @escaping (MXResponse<String>) -> Void) {
+    func register(withEmailCredentials threePIDCredentials: ThreePIDCredentials, password: String, deviceDisplayName: String, completion: @escaping (MXResponse<String>) -> Void) {
         
         guard let identityServer = self.restClient.identityServer else {
             completion(MXResponse.failure(RegistrationServiceError.identityServerURLBuildFailed))

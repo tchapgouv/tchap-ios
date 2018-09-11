@@ -31,8 +31,8 @@ protocol RegistrationServiceType {
     ///   - threePIDCredentials: The user three PID credentials given by email verification.
     ///   - password: The user password.
     ///   - deviceDisplayName: The current device display name.
-    ///   - completion: A closure called when the operation complete. Provide the authenticated user id when succeed.
-    func register(with threePIDCredentials: ThreePIDCredentials, password: String, deviceDisplayName: String, completion: @escaping (MXResponse<String>) -> Void)
+    ///   - completion: A closure called when the operation complete. Provide the authenticated user id when succeed.    
+    func register(withEmailCredentials threePIDCredentials: ThreePIDCredentials, password: String, deviceDisplayName: String, completion: @escaping (MXResponse<String>) -> Void)
     
     /// Cancel pending registration request.
     func cancelPendingRegistration()
