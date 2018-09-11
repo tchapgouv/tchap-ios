@@ -47,5 +47,14 @@
 "conversations_no_conversation" = "Aucune conversation";
 
 ////////////////////////////////////////////////////////////////////////////////
+// MARK: Contacts
+"contacts_main_section" = "Contacts Tchap";
+"contacts_no_contact" = "Aucun contact";
+"contacts_address_book_permission_required" = "Permissions requises pour accéder aux contacts locaux";
+"contacts_address_book_permission_denied" = "Vous n'avez pas autorisé Tchap à accéder à vos contacts locaux";
+"contacts_user_directory_section" = "Répertoire Tchap";
+"contacts_user_directory_offline_section" = "Répertoire Tchap (hors-ligne)";
+
+////////////////////////////////////////////////////////////////////////////////
 // MARK: Search
 "search_no_result" = "Aucun résultat";

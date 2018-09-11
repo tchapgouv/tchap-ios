@@ -151,7 +151,7 @@
     
     [self refreshContactDisplayName];
     
-    if (contact.isMatrixContact)
+    if (contact.matrixIdentifiers.count)
     {
         // The sub label is not used for Tchap users
         self.contactInformationLabel.hidden = YES;
