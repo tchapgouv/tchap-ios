@@ -91,7 +91,7 @@ final class RegistrationCoordinator: RegistrationCoordinatorType {
         
         registrationService.register(withEmailCredentials: threePIDCredentials, password: password, deviceDisplayName: deviceDisplayName) { (registrationResult) in
             switch registrationResult {
-            case .success(_):
+            case .success:
                 // NOTE: Do not call delegate directly for the moment, wait for NSNotification.Name.legacyAppDelegateDidLogin
                 print("[RegistrationCoordinator] User did authenticate with success")
             case .failure(let error):

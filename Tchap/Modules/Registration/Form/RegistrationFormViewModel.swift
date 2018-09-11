@@ -101,7 +101,7 @@ final class RegistrationFormViewModel: RegistrationFormViewModelType {
         
         let validationResult: AuthenticationFormValidationResult
         
-        var errorMessage: String? = nil
+        var errorMessage: String?
         
         if !MXTools.isEmailAddress(mail) {
             print("[RegistrationViewModel] Invalid email")

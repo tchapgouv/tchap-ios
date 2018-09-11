@@ -63,7 +63,7 @@ final class RootRouter: RootRouterType {
                 UIView.setAnimationsEnabled(false)
                 self.window.rootViewController = rootViewController
                 UIView.setAnimationsEnabled(oldState)
-            }, completion: { (finished: Bool) -> () in
+            }, completion: { (finished: Bool) -> Void in
                 completion?()
             })
         } else {
