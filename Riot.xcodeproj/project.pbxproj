@@ -3407,6 +3407,7 @@
 			buildConfigurationList = 0250C5BC2122B68000034691 /* Build configuration list for PBXNativeTarget "Tchap" */;
 			buildPhases = (
 				46DB7C2D02B4A436989D9102 /* [CP] Check Pods Manifest.lock */,
+				B12FD6AD2148074B001B7F28 /* ⚠️ SwiftLint */,
 				B1322FDF212FFAFE0054A9DD /* 🛠 SwiftGen */,
 				0250C4922122B68000034691 /* Sources */,
 				0250C53E2122B68000034691 /* Frameworks */,
@@ -4023,6 +4024,20 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-RiotPods-Riot/Pods-RiotPods-Riot-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		B12FD6AD2148074B001B7F28 /* ⚠️ SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "⚠️ SwiftLint";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "${PODS_ROOT}/SwiftLint/swiftlint";
 		};
 		B1322FDF212FFAFE0054A9DD /* 🛠 SwiftGen */ = {
 			isa = PBXShellScriptBuildPhase;
