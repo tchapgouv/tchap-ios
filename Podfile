@@ -79,6 +79,7 @@ abstract_target 'RiotPods' do
     
     # Build tools
     pod 'SwiftGen', '~> 5.3'
+    pod 'SwiftLint', '~> 0.27'
 
     target "Tchap" do
         import_MatrixKit

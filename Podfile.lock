@@ -92,6 +92,7 @@ PODS:
   - Reusable/Storyboard (4.0.3)
   - Reusable/View (4.0.3)
   - SwiftGen (5.3.0)
+  - SwiftLint (0.27.0)
   - WebRTC (63.11.20455)
 
 DEPENDENCIES:
@@ -106,6 +107,7 @@ DEPENDENCIES:
   - PiwikTracker (from `https://github.com/manuroe/matomo-sdk-ios.git`, branch `feature/CustomVariables`)
   - Reusable (~> 4.0)
   - SwiftGen (~> 5.3)
+  - SwiftLint (~> 0.27)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -123,6 +125,7 @@ SPEC REPOS:
     - Realm
     - Reusable
     - SwiftGen
+    - SwiftLint
     - WebRTC
 
 EXTERNAL SOURCES:
@@ -151,8 +154,9 @@ SPEC CHECKSUMS:
   Realm: 9eaecad54712d6246d08ba34c10f354e4715d7d3
   Reusable: 12b67a60e1f3e8c523cc910795dab733f58fbc7e
   SwiftGen: 4379bd3640b0a212a0f6ea3c494adba385513d10
+  SwiftLint: 3207c1faa2240bf8973b191820a116113cd11073
   WebRTC: f2a6203584745fe53532633397557876b5d71640
 
-PODFILE CHECKSUM: aab2e23be79fc10a8f9ed94b562eda5d91943eb6
+PODFILE CHECKSUM: f72d57e7621e530be1f831e68aa257b629e540dd
 
 COCOAPODS: 1.5.3
