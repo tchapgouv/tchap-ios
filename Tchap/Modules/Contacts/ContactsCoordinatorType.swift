@@ -18,4 +18,10 @@ import Foundation
 
 /// `ContactsCoordinatorType` is a protocol describing a Coordinator that handle contacts navigation flow.
 protocol ContactsCoordinatorType: Coordinator, Presentable {
+    
+    /// Update contacts search text and update contacts display list.
+    ///
+    /// - Parameters:
+    ///   - searchText: The search text used to perform contacts filtering.
+    func updateSearchText(_ searchText: String)
 }
