@@ -51,4 +51,8 @@ final class ContactsCoordinator: ContactsCoordinatorType {
     func toPresentable() -> UIViewController {
         return self.contactsViewController
     }
+    
+    func updateSearchText(_ searchText: String) {
+        self.contactsDataSource.search(withPattern: searchText, forceReset: false)
+    }
 }

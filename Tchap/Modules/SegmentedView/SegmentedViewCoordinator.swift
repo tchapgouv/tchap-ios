@@ -16,8 +16,6 @@
 
 import Foundation
 
-import Foundation
-
 final class SegmentedViewCoordinator: SegmentedViewCoordinatorType {        
     
     // MARK: - Properties
@@ -26,6 +24,9 @@ final class SegmentedViewCoordinator: SegmentedViewCoordinatorType {
     
     private let navigationRouter: NavigationRouterType
     private let session: MXSession
+    
+    private weak var roomsCoordinator: RoomsCoordinatorType?
+    private weak var contactsCoordinator: ContactsCoordinatorType?
     
     // MARK: Public
     
@@ -51,13 +52,20 @@ final class SegmentedViewCoordinator: SegmentedViewCoordinatorType {
         
         let viewControllers = [roomsCoordinator.toPresentable(), contactsCoordinator.toPresentable()]
         
-        let segmentedViewController = self.createSegmentedViewController(with: viewControllers)
+        let globalSearchBar = GlobalSearchBar.instantiate()
+        globalSearchBar.delegate = self
+        
+        let segmentedViewController = self.createSegmentedViewController(with: viewControllers, and: globalSearchBar)
         segmentedViewController.tc_removeBackTitle()
+        
         
         self.navigationRouter.setRootModule(segmentedViewController)
         
         roomsCoordinator.start()
         contactsCoordinator.start()
+        
+        self.roomsCoordinator = roomsCoordinator
+        self.contactsCoordinator = contactsCoordinator
     }
     
     func toPresentable() -> UIViewController {
@@ -76,8 +84,8 @@ final class SegmentedViewCoordinator: SegmentedViewCoordinatorType {
         })
     }
     
-    private func createSegmentedViewController(with viewControllers: [UIViewController]) -> SegmentedViewController {
-        guard let segmentedViewController = SegmentedViewController.instantiate() else {
+    private func createSegmentedViewController(with viewControllers: [UIViewController], and globalSearchBar: GlobalSearchBar) -> SegmentedViewController {
+        guard let segmentedViewController = SegmentedViewController.instantiate(with: globalSearchBar) else {
             fatalError("[SegmentedViewCoordinator] SegmentedViewController could not be loaded")
         }
         
@@ -98,5 +106,13 @@ final class SegmentedViewCoordinator: SegmentedViewCoordinatorType {
         })
         
         return segmentedViewController
+    }
+}
+
+// MARK: - GlobalSearchBarDelegate
+extension SegmentedViewCoordinator: GlobalSearchBarDelegate {
+    func globalSearchBar(_ globalSearchBar: GlobalSearchBar, textDidChange searchText: String) {
+        self.roomsCoordinator?.updateSearchText(searchText)
+        self.contactsCoordinator?.updateSearchText(searchText)
     }
 }

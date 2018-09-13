@@ -18,4 +18,10 @@ import Foundation
 
 /// `RoomsCoordinatorType` is a protocol describing a Coordinator that handle rooms navigation flow.
 protocol RoomsCoordinatorType: Coordinator, Presentable {
+    
+    /// Update rooms search text and update rooms display list.
+    ///
+    /// - Parameters:
+    ///   - searchText: The search text used to perform rooms filtering.
+    func updateSearchText(_ searchText: String)
 }

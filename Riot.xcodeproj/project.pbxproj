@@ -325,6 +325,8 @@
 		B12FD6AA2146BA45001B7F28 /* RegistrationServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12FD6A62146BA42001B7F28 /* RegistrationServiceError.swift */; };
 		B12FD6AB2146BA45001B7F28 /* ThreePIDCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12FD6A72146BA43001B7F28 /* ThreePIDCredentials.swift */; };
 		B12FD6AC2146BA45001B7F28 /* RegistrationServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12FD6A82146BA44001B7F28 /* RegistrationServiceType.swift */; };
+		B130C0DA21491C6B00F43D33 /* GlobalSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B130C0D921491C6B00F43D33 /* GlobalSearchBar.swift */; };
+		B130C0DC21491C8600F43D33 /* GlobalSearchBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = B130C0DB21491C8600F43D33 /* GlobalSearchBar.xib */; };
 		B1322FDC212FF7480054A9DD /* Tchap.strings in Resources */ = {isa = PBXBuildFile; fileRef = B1322FDE212FF7480054A9DD /* Tchap.strings */; };
 		B1322FE3212FFCCD0054A9DD /* Storyboards.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1322FE0212FFCCB0054A9DD /* Storyboards.swift */; };
 		B1322FE4212FFCCD0054A9DD /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1322FE1212FFCCC0054A9DD /* Images.swift */; };
@@ -830,6 +832,8 @@
 		B12FD6A62146BA42001B7F28 /* RegistrationServiceError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistrationServiceError.swift; sourceTree = "<group>"; };
 		B12FD6A72146BA43001B7F28 /* ThreePIDCredentials.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreePIDCredentials.swift; sourceTree = "<group>"; };
 		B12FD6A82146BA44001B7F28 /* RegistrationServiceType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistrationServiceType.swift; sourceTree = "<group>"; };
+		B130C0D921491C6B00F43D33 /* GlobalSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalSearchBar.swift; sourceTree = "<group>"; };
+		B130C0DB21491C8600F43D33 /* GlobalSearchBar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GlobalSearchBar.xib; sourceTree = "<group>"; };
 		B1322FDD212FF7480054A9DD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Tchap.strings; sourceTree = "<group>"; };
 		B1322FE0212FFCCB0054A9DD /* Storyboards.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Storyboards.swift; sourceTree = "<group>"; };
 		B1322FE1212FFCCC0054A9DD /* Images.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Images.swift; sourceTree = "<group>"; };
@@ -1516,6 +1520,7 @@
 				B11C7FFA21393E5D00CC6F2F /* Registration */,
 				B1F2AA7A212AEC800077FDC0 /* SplitView */,
 				B1F2AA7D212AEC800077FDC0 /* SegmentedView */,
+				B130C0D821491C4600F43D33 /* GlobalSearch */,
 				02BEE14F2125BBF800098505 /* Rooms */,
 				B1F2AA8B212AEC820077FDC0 /* Contacts */,
 				B1F2AA80212AEC810077FDC0 /* Settings */,
@@ -1685,6 +1690,15 @@
 				B12FD6A72146BA43001B7F28 /* ThreePIDCredentials.swift */,
 			);
 			path = Registration;
+			sourceTree = "<group>";
+		};
+		B130C0D821491C4600F43D33 /* GlobalSearch */ = {
+			isa = PBXGroup;
+			children = (
+				B130C0D921491C6B00F43D33 /* GlobalSearchBar.swift */,
+				B130C0DB21491C8600F43D33 /* GlobalSearchBar.xib */,
+			);
+			path = GlobalSearch;
 			sourceTree = "<group>";
 		};
 		B1322FD9212FF4A30054A9DD /* Localizations */ = {
@@ -3708,6 +3722,7 @@
 				0250C5A52122B68000034691 /* FilesSearchTableViewCell.xib in Resources */,
 				02098F362131FE9E00F25086 /* ContactsTableViewController.xib in Resources */,
 				0250C5A62122B68000034691 /* RoomSelectedStickerBubbleCell.xib in Resources */,
+				B130C0DC21491C8600F43D33 /* GlobalSearchBar.xib in Resources */,
 				0250C5A72122B68000034691 /* SegmentedViewController.xib in Resources */,
 				0250C5A82122B68000034691 /* RoomTitleView.xib in Resources */,
 				0250C5A92122B68000034691 /* RoomIncomingEncryptedTextMsgWithoutSenderInfoBubbleCell.xib in Resources */,
@@ -4177,6 +4192,7 @@
 				B1F2AAB0212AED900077FDC0 /* NavigationRouterType.swift in Sources */,
 				B1322FF3213002580054A9DD /* AuthenticationErrorPresentableMaker.swift in Sources */,
 				0250C4D82122B68000034691 /* DirectoryRecentTableViewCell.m in Sources */,
+				B130C0DA21491C6B00F43D33 /* GlobalSearchBar.swift in Sources */,
 				0250C4D92122B68000034691 /* RoomMembershipWithPaginationTitleBubbleCell.m in Sources */,
 				02BEE1552125BBF800098505 /* RoomsDataSource.m in Sources */,
 				0250C4DA2122B68000034691 /* GroupsViewController.m in Sources */,

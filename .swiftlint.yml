@@ -63,3 +63,6 @@ type_name:
   max_length: # warning and error
     warning: 150
     error: 1000
+
+cyclomatic_complexity:
+  ignores_case_statements: true
