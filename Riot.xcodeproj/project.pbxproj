@@ -12,6 +12,7 @@
 		02098F352131FE9E00F25086 /* ContactsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 02098F302131FE9E00F25086 /* ContactsDataSource.m */; };
 		02098F362131FE9E00F25086 /* ContactsTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02098F312131FE9E00F25086 /* ContactsTableViewController.xib */; };
 		02098F372131FE9E00F25086 /* ContactsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 02098F322131FE9E00F25086 /* ContactsTableViewController.m */; };
+		020DF6FB21480700003DFBA4 /* DiscussionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020DF6FA21480700003DFBA4 /* DiscussionService.swift */; };
 		0250C4932122B68000034691 /* MediaAlbumTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B557CE20EF5E3500210D55 /* MediaAlbumTableCell.m */; };
 		0250C4942122B68000034691 /* RiotDesignValues.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932AB20F3A7B000746532 /* RiotDesignValues.m */; };
 		0250C4962122B68000034691 /* AvatarGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC111E7009EC00A9B29C /* AvatarGenerator.m */; };
@@ -773,6 +774,7 @@
 		02098F302131FE9E00F25086 /* ContactsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactsDataSource.m; sourceTree = "<group>"; };
 		02098F312131FE9E00F25086 /* ContactsTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactsTableViewController.xib; sourceTree = "<group>"; };
 		02098F322131FE9E00F25086 /* ContactsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactsTableViewController.m; sourceTree = "<group>"; };
+		020DF6FA21480700003DFBA4 /* DiscussionService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscussionService.swift; sourceTree = "<group>"; };
 		0250C5BF2122B68000034691 /* Tchap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tchap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0250C5C42122E63900034691 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0250C5C52122E63900034691 /* Tchap-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tchap-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -1474,6 +1476,14 @@
 			path = DataSources;
 			sourceTree = "<group>";
 		};
+		020DF6F921480700003DFBA4 /* Discussions */ = {
+			isa = PBXGroup;
+			children = (
+				020DF6FA21480700003DFBA4 /* DiscussionService.swift */,
+			);
+			path = Discussions;
+			sourceTree = "<group>";
+		};
 		0250C5C12122BBA600034691 /* Tchap */ = {
 			isa = PBXGroup;
 			children = (
@@ -1553,6 +1563,7 @@
 		02BEE184212AB23A00098505 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				020DF6F921480700003DFBA4 /* Discussions */,
 				B12FD69D2146B3C3001B7F28 /* RestClientBuilder */,
 				B1322FF62130030A0054A9DD /* Authentication */,
 				B12FD6A42146BA14001B7F28 /* Registration */,
@@ -4139,6 +4150,7 @@
 				0250C4B02122B68000034691 /* RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
 				0250C4B12122B68000034691 /* AttachmentsViewController.m in Sources */,
 				B1322FE5212FFCCD0054A9DD /* Strings.swift in Sources */,
+				020DF6FB21480700003DFBA4 /* DiscussionService.swift in Sources */,
 				0250C4B22122B68000034691 /* MXRoom+Riot.m in Sources */,
 				B1F2AAAD212AED900077FDC0 /* RootRouterType.swift in Sources */,
 				0250C4B32122B68000034691 /* RiotSettings.swift in Sources */,
