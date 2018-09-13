@@ -160,38 +160,37 @@ extension ContactsCoordinator: ContactsTableViewControllerDelegate {
         self.activityIndicatorPresenter.presentActivityIndicator(on: self.contactsViewController.view, animated: true)
         
         let discussionService = DiscussionService(session: session)
-        discussionService.getDiscussionIdentifier(for: userID, success: { [weak self] roomID in
+        discussionService.getDiscussionIdentifier(for: userID) { [weak self] response in
             guard let sself = self else {
                 return
             }
             
             sself.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
             
-            if let roomID = roomID {
-                if let room = sself.session.room(withRoomId: roomID) {
-                    // Check whether this is a pending invite
-                    if room.summary.membership == .invite {
-                        // Accept this invite
-                        sself.joinRoom(with: roomID)
+            switch response {
+            case .success(let roomID):
+                if let roomID = roomID {
+                    if let room = sself.session.room(withRoomId: roomID) {
+                        // Check whether this is a pending invite
+                        if room.summary.membership == .invite {
+                            // Accept this invite
+                            sself.joinRoom(with: roomID)
+                        } else {
+                            // Open the current discussion
+                            sself.showRoom(with: roomID)
+                        }
                     } else {
-                        // Open the current discussion
-                        sself.showRoom(with: roomID)
+                        // Unexpected case where we fail to retrieve the room for the returned id
+                        let errorPresentable = ErrorPresentableImpl.init(title: TchapL10n.errorTitleDefault, message: TchapL10n.errorMessageDefault)
+                        sself.contactsErrorPresenter.present(errorPresentable: errorPresentable, animated: true)
                     }
                 } else {
-                    // Unexpected case where we fail to retrieve the room for the returned id
-                    let errorPresentable = ErrorPresentableImpl.init(title: TchapL10n.errorTitleDefault, message: TchapL10n.errorMessageDefault)
-                    sself.contactsErrorPresenter.present(errorPresentable: errorPresentable, animated: true)
+                    //TODO: Display a fake room, create the discussion only when an event is sent (#41).
                 }
-            } else {
-                //TODO: Display a fake room, create the discussion only when an event is sent (#41).
+            case .failure(let error):
+                let errorPresentable = sself.openDiscussionErrorPresentable(from: error)
+                sself.contactsErrorPresenter.present(errorPresentable: errorPresentable, animated: true)
             }
-        }, failure: { [weak self] error in
-            guard let sself = self else {
-                return
-            }
-            
-            let errorPresentable = sself.openDiscussionErrorPresentable(from: error)
-            sself.contactsErrorPresenter.present(errorPresentable: errorPresentable, animated: true)
-        })
+        }
     }
 }

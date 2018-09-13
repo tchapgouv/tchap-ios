@@ -36,12 +36,11 @@ final class DiscussionService {
     /// - Parameters:
     ///   - userID: The user identifier to search for. This identifier is a matrix id or an email address.
     ///   - includeInvite: A boolean to tell us if pending invitations have to be consider or not.
-    ///   - success: A block object called when the operation succeeds.
-    ///   - failure: A block object called when the operation fails.
-    func getDiscussionIdentifier(for userID: String, includeInvite: Bool = true, success: @escaping ((String?) -> Void), failure: ((Error) -> Void)?) {
+    ///   - completion: A closure called when the operation complete. Provide the discussion id (if any) when succeed.
+    func getDiscussionIdentifier(for userID: String, includeInvite: Bool = true, completion: @escaping (MXResponse<String?>) -> Void) {
         guard let roomIDsList = self.session.directRooms[userID] else {
             // There is no discussion for the moment with this user
-            success(nil)
+            completion(MXResponse.success(nil))
             return
         }
         
@@ -110,30 +109,30 @@ final class DiscussionService {
         
         group.notify(queue: DispatchQueue.main) {
             if let membersError = membersError {
-                failure?(membersError)
+                completion(MXResponse.failure(membersError))
                 return
             }
             
             if !joinedDiscussions.isEmpty {
                 print("[DiscussionService] user: \(userID) found join-join discussion")
-                self.getOldestRoomID(joinedDiscussions, completion: success)
+                self.getOldestRoomID(joinedDiscussions, completion: completion)
             } else if !receivedInvites.isEmpty {
                 print("[DiscussionService] user: \(userID) found invite-join discussion")
-                self.getOldestRoomID(receivedInvites, completion: success)
+                self.getOldestRoomID(receivedInvites, completion: completion)
             } else if !sentInvites.isEmpty {
                 print("[DiscussionService] user: \(userID) found join-invite discussion")
-                self.getOldestRoomID(sentInvites, completion: success)
+                self.getOldestRoomID(sentInvites, completion: completion)
             } else if !leftDiscussions.isEmpty {
                 print("[DiscussionService] user: \(userID) found join|invite-left discussion")
-                self.getOldestRoomID(leftDiscussions, completion: success)
+                self.getOldestRoomID(leftDiscussions, completion: completion)
             }
         }
     }
     
     // MARK: - Private
-    private func getOldestRoomID(_ roomIDs: [String], completion: @escaping ((String?) -> Void)) {
+    private func getOldestRoomID(_ roomIDs: [String], completion: @escaping (MXResponse<String?>) -> Void) {
         guard roomIDs.count > 1 else {
-            completion(roomIDs[0])
+            completion(MXResponse.success(roomIDs[0]))
             return
         }
         
@@ -158,7 +157,7 @@ final class DiscussionService {
         }
         
         group.notify(queue: DispatchQueue.main) {
-            completion(discussionID)
+            completion(MXResponse.success(discussionID))
         }
     }
 }
