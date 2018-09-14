@@ -45,7 +45,7 @@ final class SegmentedViewCoordinator: SegmentedViewCoordinatorType {
     
     func start() {
         let roomsCoordinator = RoomsCoordinator(router: self.navigationRouter, session: self.session)
-        let contactsCoordinator = ContactsCoordinator(session: self.session)
+        let contactsCoordinator = ContactsCoordinator(router: self.navigationRouter, session: self.session)
         
         self.add(childCoordinator: roomsCoordinator)
         self.add(childCoordinator: contactsCoordinator)

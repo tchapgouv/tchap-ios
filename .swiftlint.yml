@@ -49,8 +49,9 @@ function_parameter_count:
   error: 10
 
 cyclomatic_complexity:
-  warning: 15
-  error: 20
+  ignores_case_statements: true
+  warning: 20
+  error: 25
 
 function_body_length:
   warning: 100
@@ -63,6 +64,3 @@ type_name:
   max_length: # warning and error
     warning: 150
     error: 1000
-
-cyclomatic_complexity:
-  ignores_case_statements: true
