@@ -1085,24 +1085,115 @@
 
 - (void)sendTextMessage:(NSString*)msgTxt
 {
-    if (isInReplyMode && customizedRoomDataSource.selectedEventId)
-    {
-        [self.roomDataSource sendReplyToEventWithId:customizedRoomDataSource.selectedEventId withTextMessage:msgTxt success:nil failure:^(NSError *error) {
-            // Just log the error. The message will be displayed in red in the room history
-            NSLog(@"[MXKRoomViewController] sendTextMessage failed.");
-        }];
-    }
-    else
-    {
-        // Let the datasource send it and manage the local echo
-        [self.roomDataSource sendTextMessage:msgTxt success:nil failure:^(NSError *error)
-         {
-             // Just log the error. The message will be displayed in red in the room history
-             NSLog(@"[MXKRoomViewController] sendTextMessage failed.");
-         }];
-    }
-    
-    [self cancelEventSelection];
+    // Re-invite the left member before sending the message in case of a discussion (direct chat)
+    MXWeakify(self);
+    [self restoreDiscussionIfNeed:^(BOOL success) {
+        MXStrongifyAndReturnIfNil(self);
+        if (success)
+        {
+            if (self->isInReplyMode && self->customizedRoomDataSource.selectedEventId)
+            {
+                [self.roomDataSource sendReplyToEventWithId:self->customizedRoomDataSource.selectedEventId
+                                            withTextMessage:msgTxt
+                                                    success:nil
+                                                    failure:^(NSError *error) {
+                                                        // Just log the error. The message will be displayed in red in the room history
+                                                        NSLog(@"[RoomViewController] sendTextMessage failed.");
+                                                    }];
+            }
+            else
+            {
+                // Let the datasource send it and manage the local echo
+                [self.roomDataSource sendTextMessage:msgTxt
+                                             success:nil
+                                             failure:^(NSError *error) {
+                                                 // Just log the error. The message will be displayed in red in the room history
+                                                 NSLog(@"[RoomViewController] sendTextMessage failed.");
+                                             }];
+            }
+        }
+        
+        [self cancelEventSelection];
+    }];
+}
+
+- (void)roomInputToolbarView:(MXKRoomInputToolbarView*)toolbarView sendImage:(UIImage*)image
+{
+    // Re-invite the left member before sending the message in case of a discussion (direct chat)
+    MXWeakify(self);
+    [self restoreDiscussionIfNeed:^(BOOL success) {
+        MXStrongifyAndReturnIfNil(self);
+        if (success)
+        {
+            // Let the datasource send it and manage the local echo
+            [self.roomDataSource sendImage:image
+                                   success:nil
+                                   failure:^(NSError *error) {
+                                       // Nothing to do. The image is marked as unsent in the room history by the datasource
+                                       NSLog(@"[RoomViewController] sendImage failed.");
+                                   }];
+        }
+    }];
+}
+
+- (void)roomInputToolbarView:(MXKRoomInputToolbarView*)toolbarView sendImage:(NSData*)imageData withMimeType:(NSString*)mimetype
+{
+    // Re-invite the left member before sending the message in case of a discussion (direct chat)
+    MXWeakify(self);
+    [self restoreDiscussionIfNeed:^(BOOL success) {
+        MXStrongifyAndReturnIfNil(self);
+        if (success)
+        {
+            // Let the datasource send it and manage the local echo
+            [self.roomDataSource sendImage:imageData
+                                  mimeType:mimetype
+                                   success:nil
+                                   failure:^(NSError *error) {
+                                       // Nothing to do. The image is marked as unsent in the room history by the datasource
+                                       NSLog(@"[RoomViewController] sendImage with mimetype failed.");
+                                   }];
+        }
+    }];
+}
+
+- (void)roomInputToolbarView:(MXKRoomInputToolbarView*)toolbarView sendVideo:(NSURL*)videoLocalURL withThumbnail:(UIImage*)videoThumbnail
+{
+    // Re-invite the left member before sending the message in case of a discussion (direct chat)
+    MXWeakify(self);
+    [self restoreDiscussionIfNeed:^(BOOL success) {
+        MXStrongifyAndReturnIfNil(self);
+        if (success)
+        {
+            // Let the datasource send it and manage the local echo
+            [self.roomDataSource sendVideo:videoLocalURL
+                             withThumbnail:videoThumbnail
+                                   success:nil
+                                   failure:^(NSError *error) {
+                                       // Nothing to do. The video is marked as unsent in the room history by the datasource
+                                       NSLog(@"[RoomViewController] sendVideo failed.");
+                                   }];
+        }
+    }];
+}
+
+- (void)roomInputToolbarView:(MXKRoomInputToolbarView*)toolbarView sendFile:(NSURL *)fileLocalURL withMimeType:(NSString*)mimetype
+{
+    // Re-invite the left member before sending the message in case of a discussion (direct chat)
+    MXWeakify(self);
+    [self restoreDiscussionIfNeed:^(BOOL success) {
+        MXStrongifyAndReturnIfNil(self);
+        if (success)
+        {
+            // Let the datasource send it and manage the local echo
+            [self.roomDataSource sendFile:fileLocalURL
+                                 mimeType:mimetype
+                                  success:nil
+                                  failure:^(NSError *error) {
+                                      // Nothing to do. The file is marked as unsent in the room history by the datasource
+                                      NSLog(@"[RoomViewController] sendFile failed.");
+                                  }];
+        }
+    }];
 }
 
 - (void)destroy
@@ -1181,6 +1272,80 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXEventDidChangeSentStateNotification object:nil];
     
     [super destroy];
+}
+
+#pragma mark - Tchap
+
+/**
+ Check whether the current room is a direct chat left by the other member.
+ */
+- (void)isEmptyDirectChat:(void (^)(BOOL isEmptyDirect))onComplete
+{
+    // In the case of a direct chat, we check if the other member has left the room.
+    if (self.roomDataSource)
+    {
+        NSString *directUserId = self.roomDataSource.room.directUserId;
+        if (directUserId)
+        {
+            [self.roomDataSource.room members:^(MXRoomMembers *roomMembers) {
+                MXRoomMember *directUserMember = [roomMembers memberWithUserId:directUserId];
+                if (directUserMember)
+                {
+                    MXMembership directUserMembership = directUserMember.membership;
+                    if (directUserMembership != MXMembershipJoin && directUserMembership != MXMembershipInvite)
+                    {
+                        onComplete(YES);
+                    }
+                    else
+                    {
+                        onComplete(NO);
+                    }
+                }
+                else
+                {
+                    NSLog(@"[RoomViewController] isEmptyDirectChat: the direct user has disappeared");
+                    onComplete(YES);
+                }
+            } failure:^(NSError *error) {
+                NSLog(@"[RoomViewController] isEmptyDirectChat: cannot get all room members");
+                onComplete(NO);
+            }];
+            return;
+        }
+    }
+    
+    // This is not a direct chat
+    onComplete(NO);
+}
+
+/**
+ Check whether the current room is a direct chat left by the other member.
+ In this case, this method will invite again the left member.
+ */
+- (void)restoreDiscussionIfNeed:(void (^)(BOOL success))onComplete
+{
+    [self isEmptyDirectChat:^(BOOL isEmptyDirect) {
+        if (isEmptyDirect)
+        {
+            // Invite again the direct user
+            NSString *directUserId = self.roomDataSource.room.directUserId;
+            NSLog(@"[RoomViewController] restoreDiscussionIfNeed: invite again %@", directUserId);
+            [self.roomDataSource.room inviteUser:directUserId success:^{
+                // Delay the completion in order to display the invite before the local echo of the new message.
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    onComplete(YES);
+                });
+            } failure:^(NSError *error) {
+                NSLog(@"[RoomViewController] restoreDiscussionIfNeed: invite failed");
+                // Alert user
+                [[AppDelegate theDelegate] showErrorAsAlert:error];
+                onComplete(NO);
+            }];
+        } else {
+            // Nothing to do
+            onComplete(YES);
+        }
+    }];
 }
 
 #pragma mark -
