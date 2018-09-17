@@ -70,22 +70,14 @@ final class RoomsCoordinator: NSObject, RoomsCoordinatorType {
     // MARK: - Private methods
     
     private func showRoom(with roomID: String) {
-        let roomViewController: RoomViewController = RoomViewController.instantiate()
+        let roomCoordinator = RoomCoordinator(router: self.router, session: self.session, roomID: roomID)
+        roomCoordinator.start()
         
-        self.router.push(roomViewController, animated: true, popCompletion: nil)
+        self.router.push(roomCoordinator, animated: true) {
+            self.remove(childCoordinator: roomCoordinator)
+        }
         
-        self.activityIndicatorPresenter.presentActivityIndicator(on: roomViewController.view, animated: false)
-        
-        // Present activity indicator when retrieving roomDataSource for given room ID
-        let roomDataSourceManager: MXKRoomDataSourceManager = MXKRoomDataSourceManager.sharedManager(forMatrixSession: self.session)
-        roomDataSourceManager.roomDataSource(forRoom: roomID, create: true, onComplete: { (roomDataSource) in
-            
-            self.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
-            
-            if let roomDataSource = roomDataSource {
-                roomViewController.displayRoom(roomDataSource)
-            }
-        })
+        self.add(childCoordinator: roomCoordinator)
     }
     
     private func joinRoom(with roomID: String) {

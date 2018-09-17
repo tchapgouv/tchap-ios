@@ -289,6 +289,8 @@
 		0250C5BB2122B68000034691 /* JitsiMeet.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3233F7441F3497DA006ACA81 /* JitsiMeet.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0250C5CB2122E63900034691 /* empty.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0250C5C82122E63900034691 /* empty.mm */; };
 		0250C5CE212314B300034691 /* Tchap-Defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0250C5CD212314B300034691 /* Tchap-Defaults.plist */; };
+		02906073214FD0E1005FE3C1 /* RoomCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02906071214FD0E0005FE3C1 /* RoomCoordinatorType.swift */; };
+		02906074214FD0E1005FE3C1 /* RoomCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02906072214FD0E0005FE3C1 /* RoomCoordinator.swift */; };
 		02BEE1552125BBF800098505 /* RoomsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 02BEE1512125BBF800098505 /* RoomsDataSource.m */; };
 		02BEE1562125BBF800098505 /* RoomsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 02BEE1542125BBF800098505 /* RoomsViewController.m */; };
 		02BEE18A212AB23A00098505 /* ThirdPartyIDPlatformInfoResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BEE186212AB23A00098505 /* ThirdPartyIDPlatformInfoResolver.swift */; };
@@ -849,6 +851,8 @@
 		0250C5C72122E63900034691 /* Tchap.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Tchap.entitlements; sourceTree = "<group>"; };
 		0250C5C82122E63900034691 /* empty.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = empty.mm; sourceTree = "<group>"; };
 		0250C5CD212314B300034691 /* Tchap-Defaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Tchap-Defaults.plist"; sourceTree = "<group>"; };
+		02906071214FD0E0005FE3C1 /* RoomCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomCoordinatorType.swift; sourceTree = "<group>"; };
+		02906072214FD0E0005FE3C1 /* RoomCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomCoordinator.swift; sourceTree = "<group>"; };
 		02BEE1512125BBF800098505 /* RoomsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomsDataSource.m; sourceTree = "<group>"; };
 		02BEE1522125BBF800098505 /* RoomsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomsDataSource.h; sourceTree = "<group>"; };
 		02BEE1532125BBF800098505 /* RoomsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomsViewController.h; sourceTree = "<group>"; };
@@ -1360,6 +1364,8 @@
 		020DF858214BE467003DFBA4 /* Room */ = {
 			isa = PBXGroup;
 			children = (
+				02906071214FD0E0005FE3C1 /* RoomCoordinatorType.swift */,
+				02906072214FD0E0005FE3C1 /* RoomCoordinator.swift */,
 				020DF85F214BE467003DFBA4 /* RoomViewController.h */,
 				020DF87D214BE467003DFBA4 /* RoomViewController.m */,
 				020DF870214BE467003DFBA4 /* RoomViewController.xib */,
@@ -3932,6 +3938,7 @@
 				0250C49C2122B68000034691 /* GroupsDataSource.m in Sources */,
 				B1F2AAAF212AED900077FDC0 /* Presentable.swift in Sources */,
 				B15B867021354FF5002782BE /* AuthenticationViewModel.swift in Sources */,
+				02906074214FD0E1005FE3C1 /* RoomCoordinator.swift in Sources */,
 				0250C49F2122B68000034691 /* MediaAlbumContentViewController.m in Sources */,
 				020DF963214BE467003DFBA4 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
 				020DF987214BE467003DFBA4 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
@@ -4023,6 +4030,7 @@
 				0250C4DA2122B68000034691 /* GroupsViewController.m in Sources */,
 				B1892E7B21306ADC00742348 /* FormTextViewModel.swift in Sources */,
 				B1322FEA213002440054A9DD /* FormTextField.swift in Sources */,
+				02906073214FD0E1005FE3C1 /* RoomCoordinatorType.swift in Sources */,
 				B11C800121393E5D00CC6F2F /* RegistrationCoordinatorType.swift in Sources */,
 				0250C4DE2122B68000034691 /* DeactivateAccountViewController.m in Sources */,
 				B1F2AA9A212AEC830077FDC0 /* AppDelegate.swift in Sources */,
