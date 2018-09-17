@@ -57,8 +57,12 @@ final class RoomsCoordinator: NSObject, RoomsCoordinatorType {
         return self.roomsViewController
     }
     
-    func updateSearchText(_ searchText: String) {        
-        self.roomsDataSource.search(withPatterns: [searchText])
+    func updateSearchText(_ searchText: String?) {
+        var pattern: [String]?
+        if let searchText = searchText, !searchText.isEmpty {
+            pattern = [searchText]
+        }
+        self.roomsDataSource.search(withPatterns: pattern)
     }
     
     // MARK: - Private methods
