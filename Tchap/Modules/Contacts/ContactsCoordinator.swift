@@ -60,7 +60,7 @@ final class ContactsCoordinator: NSObject, ContactsCoordinatorType {
         return self.contactsViewController
     }
     
-    func updateSearchText(_ searchText: String) {
+    func updateSearchText(_ searchText: String?) {
         self.contactsDataSource.search(withPattern: searchText, forceReset: false)
     }
 

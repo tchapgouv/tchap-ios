@@ -18,7 +18,7 @@ import UIKit
 import Reusable
 
 protocol GlobalSearchBarDelegate: class {
-    func globalSearchBar(_ globalSearchBar: GlobalSearchBar, textDidChange searchText: String)
+    func globalSearchBar(_ globalSearchBar: GlobalSearchBar, textDidChange searchText: String?)
 }
 
 /// The search bar used to perform global search
@@ -68,10 +68,9 @@ final class GlobalSearchBar: UIView, NibLoadable {
     // MARK: - Public methods
     
     func resetSearchText() {
-        let emptyText = ""
-        self.searchBar.text = emptyText
+        self.searchBar.text = nil
         self.searchBar.showsCancelButton = false
-        self.delegate?.globalSearchBar(self, textDidChange: emptyText)
+        self.delegate?.globalSearchBar(self, textDidChange: nil)
     }
 }
 

@@ -111,7 +111,7 @@ final class SegmentedViewCoordinator: SegmentedViewCoordinatorType {
 
 // MARK: - GlobalSearchBarDelegate
 extension SegmentedViewCoordinator: GlobalSearchBarDelegate {
-    func globalSearchBar(_ globalSearchBar: GlobalSearchBar, textDidChange searchText: String) {
+    func globalSearchBar(_ globalSearchBar: GlobalSearchBar, textDidChange searchText: String?) {
         self.roomsCoordinator?.updateSearchText(searchText)
         self.contactsCoordinator?.updateSearchText(searchText)
     }
