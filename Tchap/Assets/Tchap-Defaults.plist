@@ -79,9 +79,9 @@
 	<key>bugReportApp</key>
 	<string>riot-ios</string>
 	<key>roomDirectoryServers</key>
-	<dict>
-		<key>matrix.org</key>
-		<string></string>
-	</dict>
+	<array>
+		<string>i.tchap.gouv.fr</string>
+		<string>a.tchap.gouv.fr</string>
+	</array>
 </dict>
 </plist>
