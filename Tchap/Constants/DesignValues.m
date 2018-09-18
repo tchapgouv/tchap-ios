@@ -122,7 +122,7 @@ UIColor *kVariant2SearchBarTintColor;
 //    else
     {
         // Set light theme colors by default.
-        kVariant1PrimaryBgColor = kColorDarkBlue;
+        kVariant1PrimaryBgColor = [UIColor whiteColor];
         kVariant1PrimaryTextColor = [UIColor whiteColor];
         kVariant1PrimarySubTextColor = [UIColor whiteColor];
         kVariant1PlaceholderTextColor = kColorWarmGrey;
