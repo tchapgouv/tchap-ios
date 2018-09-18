@@ -121,16 +121,8 @@
 		020DF99E214BE467003DFBA4 /* RoomEmptyBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF90C214BE467003DFBA4 /* RoomEmptyBubbleCell.m */; };
 		020DF99F214BE467003DFBA4 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 020DF90F214BE467003DFBA4 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.xib */; };
 		020DF9A0214BE467003DFBA4 /* RoomMembershipExpandedBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 020DF910214BE467003DFBA4 /* RoomMembershipExpandedBubbleCell.xib */; };
-		020DF9A1214BE467003DFBA4 /* ExpandedRoomTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF914214BE467003DFBA4 /* ExpandedRoomTitleView.m */; };
-		020DF9A2214BE467003DFBA4 /* ExpandedRoomTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 020DF915214BE467003DFBA4 /* ExpandedRoomTitleView.xib */; };
 		020DF9A3214BE467003DFBA4 /* RoomTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 020DF917214BE467003DFBA4 /* RoomTitleView.xib */; };
-		020DF9A4214BE467003DFBA4 /* SimpleRoomTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF919214BE467003DFBA4 /* SimpleRoomTitleView.m */; };
-		020DF9A5214BE467003DFBA4 /* SimpleRoomTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 020DF91A214BE467003DFBA4 /* SimpleRoomTitleView.xib */; };
 		020DF9A6214BE467003DFBA4 /* RoomTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF91C214BE467003DFBA4 /* RoomTitleView.m */; };
-		020DF9A7214BE467003DFBA4 /* RoomAvatarTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF91F214BE467003DFBA4 /* RoomAvatarTitleView.m */; };
-		020DF9A8214BE467003DFBA4 /* RoomAvatarTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 020DF920214BE467003DFBA4 /* RoomAvatarTitleView.xib */; };
-		020DF9A9214BE467003DFBA4 /* PreviewRoomTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF923214BE467003DFBA4 /* PreviewRoomTitleView.m */; };
-		020DF9AA214BE467003DFBA4 /* PreviewRoomTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 020DF924214BE467003DFBA4 /* PreviewRoomTitleView.xib */; };
 		020DF9AB214BE467003DFBA4 /* KeyboardGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF926214BE467003DFBA4 /* KeyboardGrowingTextView.m */; };
 		020DF9AC214BE467003DFBA4 /* RoomInputToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF927214BE467003DFBA4 /* RoomInputToolbarView.m */; };
 		020DF9AD214BE467003DFBA4 /* DisabledRoomInputToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF928214BE467003DFBA4 /* DisabledRoomInputToolbarView.m */; };
@@ -291,6 +283,8 @@
 		0250C5CE212314B300034691 /* Tchap-Defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0250C5CD212314B300034691 /* Tchap-Defaults.plist */; };
 		02906073214FD0E1005FE3C1 /* RoomCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02906071214FD0E0005FE3C1 /* RoomCoordinatorType.swift */; };
 		02906074214FD0E1005FE3C1 /* RoomCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02906072214FD0E0005FE3C1 /* RoomCoordinator.swift */; };
+		0290607921501D16005FE3C1 /* PreviewView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0290607621501D16005FE3C1 /* PreviewView.xib */; };
+		0290607A21501D16005FE3C1 /* PreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0290607821501D16005FE3C1 /* PreviewView.m */; };
 		02BEE1552125BBF800098505 /* RoomsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 02BEE1512125BBF800098505 /* RoomsDataSource.m */; };
 		02BEE1562125BBF800098505 /* RoomsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 02BEE1542125BBF800098505 /* RoomsViewController.m */; };
 		02BEE18A212AB23A00098505 /* ThirdPartyIDPlatformInfoResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BEE186212AB23A00098505 /* ThirdPartyIDPlatformInfoResolver.swift */; };
@@ -818,20 +812,8 @@
 		020DF90F214BE467003DFBA4 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.xib; sourceTree = "<group>"; };
 		020DF910214BE467003DFBA4 /* RoomMembershipExpandedBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomMembershipExpandedBubbleCell.xib; sourceTree = "<group>"; };
 		020DF912214BE467003DFBA4 /* RoomTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomTitleView.h; sourceTree = "<group>"; };
-		020DF914214BE467003DFBA4 /* ExpandedRoomTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExpandedRoomTitleView.m; sourceTree = "<group>"; };
-		020DF915214BE467003DFBA4 /* ExpandedRoomTitleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExpandedRoomTitleView.xib; sourceTree = "<group>"; };
-		020DF916214BE467003DFBA4 /* ExpandedRoomTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExpandedRoomTitleView.h; sourceTree = "<group>"; };
 		020DF917214BE467003DFBA4 /* RoomTitleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomTitleView.xib; sourceTree = "<group>"; };
-		020DF919214BE467003DFBA4 /* SimpleRoomTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleRoomTitleView.m; sourceTree = "<group>"; };
-		020DF91A214BE467003DFBA4 /* SimpleRoomTitleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SimpleRoomTitleView.xib; sourceTree = "<group>"; };
-		020DF91B214BE467003DFBA4 /* SimpleRoomTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleRoomTitleView.h; sourceTree = "<group>"; };
 		020DF91C214BE467003DFBA4 /* RoomTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomTitleView.m; sourceTree = "<group>"; };
-		020DF91E214BE467003DFBA4 /* RoomAvatarTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomAvatarTitleView.h; sourceTree = "<group>"; };
-		020DF91F214BE467003DFBA4 /* RoomAvatarTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomAvatarTitleView.m; sourceTree = "<group>"; };
-		020DF920214BE467003DFBA4 /* RoomAvatarTitleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomAvatarTitleView.xib; sourceTree = "<group>"; };
-		020DF922214BE467003DFBA4 /* PreviewRoomTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreviewRoomTitleView.h; sourceTree = "<group>"; };
-		020DF923214BE467003DFBA4 /* PreviewRoomTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreviewRoomTitleView.m; sourceTree = "<group>"; };
-		020DF924214BE467003DFBA4 /* PreviewRoomTitleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PreviewRoomTitleView.xib; sourceTree = "<group>"; };
 		020DF926214BE467003DFBA4 /* KeyboardGrowingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyboardGrowingTextView.m; sourceTree = "<group>"; };
 		020DF927214BE467003DFBA4 /* RoomInputToolbarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomInputToolbarView.m; sourceTree = "<group>"; };
 		020DF928214BE467003DFBA4 /* DisabledRoomInputToolbarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisabledRoomInputToolbarView.m; sourceTree = "<group>"; };
@@ -853,6 +835,9 @@
 		0250C5CD212314B300034691 /* Tchap-Defaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Tchap-Defaults.plist"; sourceTree = "<group>"; };
 		02906071214FD0E0005FE3C1 /* RoomCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomCoordinatorType.swift; sourceTree = "<group>"; };
 		02906072214FD0E0005FE3C1 /* RoomCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomCoordinator.swift; sourceTree = "<group>"; };
+		0290607621501D16005FE3C1 /* PreviewView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PreviewView.xib; sourceTree = "<group>"; };
+		0290607721501D16005FE3C1 /* PreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreviewView.h; sourceTree = "<group>"; };
+		0290607821501D16005FE3C1 /* PreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreviewView.m; sourceTree = "<group>"; };
 		02BEE1512125BBF800098505 /* RoomsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomsDataSource.m; sourceTree = "<group>"; };
 		02BEE1522125BBF800098505 /* RoomsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomsDataSource.h; sourceTree = "<group>"; };
 		02BEE1532125BBF800098505 /* RoomsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomsViewController.h; sourceTree = "<group>"; };
@@ -1530,6 +1515,7 @@
 			children = (
 				020DF892214BE467003DFBA4 /* BubbleCells */,
 				020DF911214BE467003DFBA4 /* Title */,
+				0290607521501D16005FE3C1 /* Preview */,
 				020DF925214BE467003DFBA4 /* InputToolbar */,
 				020DF92D214BE467003DFBA4 /* Activities */,
 				020DF931214BE467003DFBA4 /* Event */,
@@ -1681,54 +1667,10 @@
 			isa = PBXGroup;
 			children = (
 				020DF912214BE467003DFBA4 /* RoomTitleView.h */,
-				020DF913214BE467003DFBA4 /* Expanded */,
-				020DF917214BE467003DFBA4 /* RoomTitleView.xib */,
-				020DF918214BE467003DFBA4 /* Simple */,
 				020DF91C214BE467003DFBA4 /* RoomTitleView.m */,
-				020DF91D214BE467003DFBA4 /* Avatar */,
-				020DF921214BE467003DFBA4 /* Preview */,
+				020DF917214BE467003DFBA4 /* RoomTitleView.xib */,
 			);
 			path = Title;
-			sourceTree = "<group>";
-		};
-		020DF913214BE467003DFBA4 /* Expanded */ = {
-			isa = PBXGroup;
-			children = (
-				020DF914214BE467003DFBA4 /* ExpandedRoomTitleView.m */,
-				020DF915214BE467003DFBA4 /* ExpandedRoomTitleView.xib */,
-				020DF916214BE467003DFBA4 /* ExpandedRoomTitleView.h */,
-			);
-			path = Expanded;
-			sourceTree = "<group>";
-		};
-		020DF918214BE467003DFBA4 /* Simple */ = {
-			isa = PBXGroup;
-			children = (
-				020DF919214BE467003DFBA4 /* SimpleRoomTitleView.m */,
-				020DF91A214BE467003DFBA4 /* SimpleRoomTitleView.xib */,
-				020DF91B214BE467003DFBA4 /* SimpleRoomTitleView.h */,
-			);
-			path = Simple;
-			sourceTree = "<group>";
-		};
-		020DF91D214BE467003DFBA4 /* Avatar */ = {
-			isa = PBXGroup;
-			children = (
-				020DF91E214BE467003DFBA4 /* RoomAvatarTitleView.h */,
-				020DF91F214BE467003DFBA4 /* RoomAvatarTitleView.m */,
-				020DF920214BE467003DFBA4 /* RoomAvatarTitleView.xib */,
-			);
-			path = Avatar;
-			sourceTree = "<group>";
-		};
-		020DF921214BE467003DFBA4 /* Preview */ = {
-			isa = PBXGroup;
-			children = (
-				020DF922214BE467003DFBA4 /* PreviewRoomTitleView.h */,
-				020DF923214BE467003DFBA4 /* PreviewRoomTitleView.m */,
-				020DF924214BE467003DFBA4 /* PreviewRoomTitleView.xib */,
-			);
-			path = Preview;
 			sourceTree = "<group>";
 		};
 		020DF925214BE467003DFBA4 /* InputToolbar */ = {
@@ -1800,6 +1742,16 @@
 				0250C5CD212314B300034691 /* Tchap-Defaults.plist */,
 			);
 			path = Assets;
+			sourceTree = "<group>";
+		};
+		0290607521501D16005FE3C1 /* Preview */ = {
+			isa = PBXGroup;
+			children = (
+				0290607621501D16005FE3C1 /* PreviewView.xib */,
+				0290607721501D16005FE3C1 /* PreviewView.h */,
+				0290607821501D16005FE3C1 /* PreviewView.m */,
+			);
+			path = Preview;
 			sourceTree = "<group>";
 		};
 		02BEE14E2125BBF800098505 /* Modules */ = {
@@ -3529,6 +3481,7 @@
 				020DF968214BE467003DFBA4 /* RoomIncomingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib in Resources */,
 				020DF955214BE467003DFBA4 /* RoomIncomingEncryptedTextMsgBubbleCell.xib in Resources */,
 				B1BC6A2A2136DCCE00D32F8E /* WelcomeViewController.storyboard in Resources */,
+				0290607921501D16005FE3C1 /* PreviewView.xib in Resources */,
 				020DF958214BE467003DFBA4 /* RoomOutgoingEncryptedTextMsgBubbleCell.xib in Resources */,
 				020DF99F214BE467003DFBA4 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.xib in Resources */,
 				B1322FEB213002440054A9DD /* FormTextField.xib in Resources */,
@@ -3541,7 +3494,6 @@
 				0250C5632122B68000034691 /* GroupTableViewCell.xib in Resources */,
 				0250C5672122B68000034691 /* MediaPickerViewController.xib in Resources */,
 				B11C80192139484900CC6F2F /* RegistrationEmailSentViewController.storyboard in Resources */,
-				020DF9A5214BE467003DFBA4 /* SimpleRoomTitleView.xib in Resources */,
 				020DF93F214BE467003DFBA4 /* RoomViewController.xib in Resources */,
 				020DF975214BE467003DFBA4 /* RoomIncomingTextMsgBubbleCell.xib in Resources */,
 				020DF98A214BE467003DFBA4 /* RoomOutgoingTextMsgBubbleCell.xib in Resources */,
@@ -3599,7 +3551,6 @@
 				0250C5932122B68000034691 /* JitsiViewController.xib in Resources */,
 				020DF990214BE467003DFBA4 /* RoomIncomingAttachmentWithoutSenderInfoBubbleCell.xib in Resources */,
 				0250C5972122B68000034691 /* LaunchScreen.storyboard in Resources */,
-				020DF9A2214BE467003DFBA4 /* ExpandedRoomTitleView.xib in Resources */,
 				0250C5982122B68000034691 /* RecentTableViewCell.xib in Resources */,
 				020DF96C214BE467003DFBA4 /* RoomOutgoingEncryptedAttachmentBubbleCell.xib in Resources */,
 				0250C5992122B68000034691 /* DeviceView.xib in Resources */,
@@ -3607,7 +3558,6 @@
 				020DF95D214BE467003DFBA4 /* RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.xib in Resources */,
 				0250C59B2122B68000034691 /* InviteRecentTableViewCell.xib in Resources */,
 				020DF97E214BE467003DFBA4 /* RoomOutgoingTextMsgWithPaginationTitleBubbleCell.xib in Resources */,
-				020DF9A8214BE467003DFBA4 /* RoomAvatarTitleView.xib in Resources */,
 				0250C59E2122B68000034691 /* DeviceTableViewCell.xib in Resources */,
 				020DF959214BE467003DFBA4 /* RoomIncomingEncryptedAttachmentBubbleCell.xib in Resources */,
 				020DF980214BE467003DFBA4 /* RoomMembershipCollapsedBubbleCell.xib in Resources */,
@@ -3621,7 +3571,6 @@
 				020DF9B0214BE467003DFBA4 /* RoomActivitiesView.xib in Resources */,
 				B130C0DC21491C8600F43D33 /* GlobalSearchBar.xib in Resources */,
 				0250C5A72122B68000034691 /* SegmentedViewController.xib in Resources */,
-				020DF9AA214BE467003DFBA4 /* PreviewRoomTitleView.xib in Resources */,
 				0250C5AB2122B68000034691 /* PublicRoomTableViewCell.xib in Resources */,
 				0250C5AC2122B68000034691 /* postMessageAPI.js in Resources */,
 				020DF96B214BE467003DFBA4 /* RoomIncomingEncryptedAttachmentWithPaginationTitleBubbleCell.xib in Resources */,
@@ -3946,7 +3895,6 @@
 				B1F2AAA1212AED170077FDC0 /* RoomsCoordinator.swift in Sources */,
 				0250C4A02122B68000034691 /* WidgetManager.m in Sources */,
 				02BEE1A8212C77B700098505 /* DesignValues.m in Sources */,
-				020DF9A4214BE467003DFBA4 /* SimpleRoomTitleView.m in Sources */,
 				0250C4A32122B68000034691 /* StartChatViewController.m in Sources */,
 				B1F2AA9D212AEC830077FDC0 /* AuthenticationCoordinator.swift in Sources */,
 				020DF974214BE467003DFBA4 /* RoomMembershipCollapsedBubbleCell.m in Sources */,
@@ -3982,7 +3930,6 @@
 				020DF948214BE467003DFBA4 /* RoomMemberTitleView.m in Sources */,
 				B1F2AAAD212AED900077FDC0 /* RootRouterType.swift in Sources */,
 				0250C4B32122B68000034691 /* RiotSettings.swift in Sources */,
-				020DF9A9214BE467003DFBA4 /* PreviewRoomTitleView.m in Sources */,
 				B1BC6A032135E2A600D32F8E /* ActivityIndicatorView.swift in Sources */,
 				0250C4B82122B68000034691 /* Contact.m in Sources */,
 				020DF978214BE467003DFBA4 /* RoomMembershipExpandedBubbleCell.m in Sources */,
@@ -4043,6 +3990,7 @@
 				02BEE1562125BBF800098505 /* RoomsViewController.m in Sources */,
 				020DF94A214BE467003DFBA4 /* RoomParticipantsViewController.m in Sources */,
 				0250C4E62122B68000034691 /* MXRoomSummary+Riot.m in Sources */,
+				0290607A21501D16005FE3C1 /* PreviewView.m in Sources */,
 				B15B868B2135C4DE002782BE /* AuthenticationFormValidationResult.swift in Sources */,
 				B1F2AA95212AEC830077FDC0 /* SettingsCoordinatorType.swift in Sources */,
 				020DF971214BE467003DFBA4 /* RoomIncomingAttachmentBubbleCell.m in Sources */,
@@ -4078,7 +4026,6 @@
 				0250C4FD2122B68000034691 /* GroupHomeViewController.m in Sources */,
 				B1BC6A262136D77A00D32F8E /* WelcomeCoordinatorType.swift in Sources */,
 				020DF991214BE467003DFBA4 /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
-				020DF9A1214BE467003DFBA4 /* ExpandedRoomTitleView.m in Sources */,
 				0250C4FE2122B68000034691 /* RecentTableViewCell.m in Sources */,
 				020DF941214BE467003DFBA4 /* RoomMessagesSearchViewController.m in Sources */,
 				0250C4FF2122B68000034691 /* RecentsViewController.m in Sources */,
@@ -4142,7 +4089,6 @@
 				B1322FF82130032B0054A9DD /* AuthenticationService.swift in Sources */,
 				0250C52B2122B68000034691 /* IntegrationManagerViewController.m in Sources */,
 				0250C52C2122B68000034691 /* DeviceView.m in Sources */,
-				020DF9A7214BE467003DFBA4 /* RoomAvatarTitleView.m in Sources */,
 				020DF984214BE467003DFBA4 /* RoomOutgoingAttachmentWithPaginationTitleBubbleCell.m in Sources */,
 				0250C52D2122B68000034691 /* FilesSearchCellData.m in Sources */,
 				0250C52F2122B68000034691 /* DecryptionFailureTracker.m in Sources */,
