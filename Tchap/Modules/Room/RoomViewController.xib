@@ -15,14 +15,13 @@
                 <outlet property="bubblesTableView" destination="BGD-sd-SQR" id="OG4-Tw-Ovt"/>
                 <outlet property="bubblesTableViewBottomConstraint" destination="Ksk-39-kfi" id="CTo-Ux-4NP"/>
                 <outlet property="bubblesTableViewTopConstraint" destination="X14-4s-uGM" id="Hic-6h-N05"/>
-                <outlet property="expandedHeaderContainer" destination="uK2-9a-rZj" id="0lY-NB-cR1"/>
-                <outlet property="expandedHeaderContainerHeightConstraint" destination="w9z-HS-7wJ" id="6uK-Bn-TcU"/>
                 <outlet property="jumpToLastUnreadBannerContainer" destination="S6r-bo-jxw" id="Ady-Eh-4E0"/>
                 <outlet property="jumpToLastUnreadBannerContainerTopConstraint" destination="xYa-gT-4x0" id="jnh-3C-bQB"/>
                 <outlet property="jumpToLastUnreadButton" destination="ISb-UT-u0O" id="fs0-sQ-lRe"/>
                 <outlet property="jumpToLastUnreadLabel" destination="S1q-B4-Df3" id="McV-gv-bUa"/>
                 <outlet property="previewHeaderContainer" destination="54r-18-K1g" id="Klt-RV-V1E"/>
                 <outlet property="previewHeaderContainerHeightConstraint" destination="goj-GZ-IkD" id="GbA-T9-kiL"/>
+                <outlet property="previewHeaderContainerTopConstraint" destination="ghf-co-a4t" id="nhs-Tj-fIT"/>
                 <outlet property="resetReadMarkerButton" destination="c4g-BY-xOo" id="KuR-hH-rz1"/>
                 <outlet property="roomActivitiesContainer" destination="XX4-n6-hCm" id="uD0-ab-8s8"/>
                 <outlet property="roomActivitiesContainerHeightConstraint" destination="E8v-l2-8eV" id="ebD-oV-ttx"/>
@@ -44,14 +43,6 @@
                         <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="RoomVCBubblesTableView"/>
                     </userDefinedRuntimeAttributes>
                 </tableView>
-                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uK2-9a-rZj" userLabel="Expanded Header Container" customClass="ExpandedRoomTitleView">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="215"/>
-                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <accessibility key="accessibilityConfiguration" identifier="RoomVCExpandedHeaderContainer"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="215" id="w9z-HS-7wJ"/>
-                    </constraints>
-                </view>
                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="54r-18-K1g">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="368"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -155,7 +146,6 @@
                 <constraint firstItem="nLd-BP-JAE" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="4Q7-hr-rqi"/>
                 <constraint firstAttribute="trailing" secondItem="54r-18-K1g" secondAttribute="trailing" id="6NN-Vs-ci8"/>
                 <constraint firstItem="54r-18-K1g" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="BC8-KU-Pus"/>
-                <constraint firstAttribute="trailing" secondItem="uK2-9a-rZj" secondAttribute="trailing" id="HbF-85-ctI"/>
                 <constraint firstAttribute="bottom" secondItem="BGD-sd-SQR" secondAttribute="bottom" constant="41" id="Ksk-39-kfi"/>
                 <constraint firstItem="XX4-n6-hCm" firstAttribute="bottom" secondItem="nLd-BP-JAE" secondAttribute="top" id="QO8-nF-xys"/>
                 <constraint firstItem="XX4-n6-hCm" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" id="WhE-lH-ZtR"/>
@@ -166,9 +156,7 @@
                 <constraint firstItem="54r-18-K1g" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="ghf-co-a4t"/>
                 <constraint firstItem="BGD-sd-SQR" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="haP-Kv-OLI"/>
                 <constraint firstAttribute="bottom" secondItem="nLd-BP-JAE" secondAttribute="bottom" id="kQ6-Cg-FMi"/>
-                <constraint firstItem="uK2-9a-rZj" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="u8r-eN-1g8"/>
                 <constraint firstItem="S6r-bo-jxw" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="xYa-gT-4x0"/>
-                <constraint firstItem="uK2-9a-rZj" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="y6b-JK-CF5"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
         </view>

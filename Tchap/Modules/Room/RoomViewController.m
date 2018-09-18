@@ -31,11 +31,7 @@
 #import "AttachmentsViewController.h"
 
 #import "EventDetailsView.h"
-
-#import "RoomAvatarTitleView.h"
-#import "ExpandedRoomTitleView.h"
-#import "SimpleRoomTitleView.h"
-#import "PreviewRoomTitleView.h"
+#import "PreviewView.h"
 
 #import "RoomMemberDetailsViewController.h"
 #import "ContactDetailsViewController.h"
@@ -125,11 +121,8 @@
 
 @interface RoomViewController ()
 {
-    // The expanded header
-    ExpandedRoomTitleView *expandedHeader;
-    
     // The preview header
-    PreviewRoomTitleView *previewHeader;
+    PreviewView *previewHeader;
     
     // The customized room data source for Vector
     RoomDataSource *customizedRoomDataSource;
@@ -153,9 +146,6 @@
     // No field is selected by default in room details screen in case of 'showRoomDetails' segue.
     // Use this value to select a specific field in room settings.
     RoomSettingsViewControllerField selectedRoomSettingsField;
-    
-    // The position of the first touch down event stored in case of scrolling when the expanded header is visible.
-    CGPoint startScrollingPoint;
     
     // Missed discussions badge
     NSUInteger missedDiscussionsCount;
@@ -271,7 +261,6 @@
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
     
-    _showExpandedHeader = NO;
     _showMissedDiscussionsBadge = YES;
     
     
@@ -332,43 +321,6 @@
     [self.bubblesTableView registerClass:RoomSelectedStickerBubbleCell.class forCellReuseIdentifier:RoomSelectedStickerBubbleCell.defaultReuseIdentifier];
     [self.bubblesTableView registerClass:RoomPredecessorBubbleCell.class forCellReuseIdentifier:RoomPredecessorBubbleCell.defaultReuseIdentifier];
     
-    // Prepare expanded header
-    expandedHeader = [ExpandedRoomTitleView roomTitleView];
-    expandedHeader.delegate = self;
-    expandedHeader.tapGestureDelegate = self;
-    expandedHeader.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.expandedHeaderContainer addSubview:expandedHeader];
-    // Force expanded header in full width
-    NSLayoutConstraint *topConstraint = [NSLayoutConstraint constraintWithItem:expandedHeader
-                                                                     attribute:NSLayoutAttributeTop
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:self.expandedHeaderContainer
-                                                                     attribute:NSLayoutAttributeTop
-                                                                    multiplier:1.0
-                                                                      constant:0];
-    NSLayoutConstraint *leftConstraint = [NSLayoutConstraint constraintWithItem:expandedHeader
-                                                                      attribute:NSLayoutAttributeLeading
-                                                                      relatedBy:NSLayoutRelationEqual
-                                                                         toItem:self.expandedHeaderContainer
-                                                                      attribute:NSLayoutAttributeLeading
-                                                                     multiplier:1.0
-                                                                       constant:0];
-    NSLayoutConstraint *rightConstraint = [NSLayoutConstraint constraintWithItem:expandedHeader
-                                                                       attribute:NSLayoutAttributeTrailing
-                                                                       relatedBy:NSLayoutRelationEqual
-                                                                          toItem:self.expandedHeaderContainer
-                                                                       attribute:NSLayoutAttributeTrailing
-                                                                      multiplier:1.0
-                                                                        constant:0];
-    
-    [NSLayoutConstraint activateConstraints:@[leftConstraint, rightConstraint, topConstraint]];
-    
-    
-    UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(onSwipeGesture:)];
-    [swipe setNumberOfTouchesRequired:1];
-    [swipe setDirection:UISwipeGestureRecognizerDirectionUp];
-    [self.expandedHeaderContainer addGestureRecognizer:swipe];
-    
     // Replace the default input toolbar view.
     // Note: this operation will force the layout of subviews. That is why cell view classes must be registered before.
     [self setRoomInputToolbarViewClass];
@@ -408,29 +360,47 @@
         [self userInterfaceThemeDidChange];
         
     }];
-    [self userInterfaceThemeDidChange];
 }
 
 - (void)userInterfaceThemeDidChange
 {
-    self.defaultBarTintColor = kRiotSecondaryBgColor;
-    self.barTitleColor = kRiotPrimaryTextColor;
+    // The navigation bar color
+    self.navigationController.navigationBar.translucent = NO;
+    self.navigationController.navigationBar.barTintColor = kVariant2PrimaryBgColor;
+    self.navigationController.navigationBar.tintColor = kVariant2ActionColor;
+    // Set navigation bar title color
+    NSDictionary<NSString *,id> *titleTextAttributes = self.navigationController.navigationBar.titleTextAttributes;
+    if (titleTextAttributes)
+    {
+        NSMutableDictionary *textAttributes = [NSMutableDictionary dictionaryWithDictionary:titleTextAttributes];
+        textAttributes[NSForegroundColorAttributeName] = kVariant2PrimaryTextColor;
+        self.navigationController.navigationBar.titleTextAttributes = textAttributes;
+    }
+    else
+    {
+        self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: kVariant2PrimaryTextColor};
+    }
+    
+    // @TODO Design the activvity indicator for Tchap
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
     // Prepare jump to last unread banner
-    self.jumpToLastUnreadBannerContainer.backgroundColor = kRiotPrimaryBgColor;
-    self.jumpToLastUnreadLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_jump_to_first_unread", @"Vector", nil) attributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle), NSUnderlineColorAttributeName: kRiotPrimaryTextColor, NSForegroundColorAttributeName: kRiotPrimaryTextColor}];
+    self.jumpToLastUnreadBannerContainer.backgroundColor = kVariant2SecondaryBgColor;
+    self.jumpToLastUnreadLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_jump_to_first_unread", @"Vector", nil) attributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle), NSUnderlineColorAttributeName: kVariant2SecondaryTextColor, NSForegroundColorAttributeName: kVariant2SecondaryTextColor}];
     
     
-    self.expandedHeaderContainer.backgroundColor = kRiotSecondaryBgColor;
-    self.previewHeaderContainer.backgroundColor = kRiotSecondaryBgColor;
+    self.previewHeaderContainer.backgroundColor = kVariant2PrimaryBgColor;
+    if (previewHeader)
+    {
+        [previewHeader customizeViewRendering];
+    }
     
-    missedDiscussionsBadgeLabel.textColor = kRiotPrimaryBgColor;
+    missedDiscussionsBadgeLabel.textColor = kVariant2PrimaryTextColor;
     missedDiscussionsBadgeLabel.font = [UIFont boldSystemFontOfSize:14];
     missedDiscussionsBadgeLabel.backgroundColor = [UIColor clearColor];
     
     // Check the table view style to select its bg color.
-    self.bubblesTableView.backgroundColor = ((self.bubblesTableView.style == UITableViewStylePlain) ? kRiotPrimaryBgColor : kRiotSecondaryBgColor);
+    self.bubblesTableView.backgroundColor = ((self.bubblesTableView.style == UITableViewStylePlain) ? kVariant2PrimaryBgColor : kVariant2SecondaryBgColor);
     self.view.backgroundColor = self.bubblesTableView.backgroundColor;
     
     if (self.bubblesTableView.dataSource)
@@ -441,7 +411,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return kRiotDesignStatusBarStyle;
+    return kVariant2StatusBarStyle;
 }
 
 - (void)didReceiveMemoryWarning
@@ -471,17 +441,14 @@
     [self listenWidgetNotifications];
     [self listenTombstoneEventNotifications];
     
-    if (self.showExpandedHeader)
-    {
-        [self showExpandedHeader:YES];
-    }
-    
     // Observe kAppDelegateDidTapStatusBarNotification.
     kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         [self.bubblesTableView setContentOffset:CGPointMake(-self.bubblesTableView.mxk_adjustedContentInset.left, -self.bubblesTableView.mxk_adjustedContentInset.top) animated:YES];
         
     }];
+    
+    [self userInterfaceThemeDidChange];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -505,10 +472,6 @@
             [self cancelEventSelection];
         }
     }
-    
-    // Hide expanded/preview header to restore navigation bar settings
-    [self showExpandedHeader:NO];
-    [self showPreviewHeader:NO];
     
     if (kAppDelegateDidTapStatusBarNotificationObserver)
     {
@@ -627,12 +590,7 @@
     // Check here whether a subview has been added or removed
     if (encryptionInfoView)
     {
-        if (encryptionInfoView.superview)
-        {
-            // Hide the potential expanded header when a subview is added.
-            self.showExpandedHeader = NO;
-        }
-        else
+        if (!encryptionInfoView.superview)
         {
             // Reset
             encryptionInfoView = nil;
@@ -644,67 +602,16 @@
     
     if (eventDetailsView)
     {
-        if (eventDetailsView.superview)
-        {
-            // Hide the potential expanded header when a subview is added.
-            self.showExpandedHeader = NO;
-        }
-        else
+        if (!eventDetailsView.superview)
         {
             // Reset
             eventDetailsView = nil;
         }
     }
     
-    // Check whether the expanded header is visible
-    if (self.expandedHeaderContainer.isHidden == NO)
-    {
-        // Adjust the expanded header height by taking into account the actual position of the room avatar
-        // This position depends automatically on the screen orientation.
-        if ([self.titleView isKindOfClass:[RoomAvatarTitleView class]])
-        {
-            RoomAvatarTitleView *avatarTitleView = (RoomAvatarTitleView*)self.titleView;
-            CGPoint roomAvatarOriginInTitleView = avatarTitleView.roomAvatarMask.frame.origin;
-            CGPoint roomAvatarActualPosition = [avatarTitleView convertPoint:roomAvatarOriginInTitleView toView:self.view];
-            
-            CGFloat avatarHeaderHeight = roomAvatarActualPosition.y + expandedHeader.roomAvatar.frame.size.height;
-            if (expandedHeader.roomAvatarHeaderBackgroundHeightConstraint.constant != avatarHeaderHeight)
-            {
-                expandedHeader.roomAvatarHeaderBackgroundHeightConstraint.constant = avatarHeaderHeight;
-                
-                // Force the layout of expandedHeader to update the position of 'bottomBorderView' which
-                // is used to define the actual height of the expanded header container.
-                [expandedHeader layoutIfNeeded];
-            }
-        }
-        
-        // Adjust the top constraint of the bubbles table
-        CGRect frame = expandedHeader.bottomBorderView.frame;
-        self.expandedHeaderContainerHeightConstraint.constant = frame.origin.y + frame.size.height;
-        
-        self.bubblesTableViewTopConstraint.constant = self.expandedHeaderContainerHeightConstraint.constant - self.bubblesTableView.mxk_adjustedContentInset.top;
-        self.jumpToLastUnreadBannerContainerTopConstraint.constant = self.expandedHeaderContainerHeightConstraint.constant;
-    }
     // Check whether the preview header is visible
-    else if (previewHeader)
+    if (previewHeader)
     {
-        if (previewHeader.mainHeaderContainer.isHidden)
-        {
-            // Check here the main background height to display a correct navigation bar background.
-            CGRect frame = self.navigationController.navigationBar.frame;
-            
-            CGFloat mainHeaderBackgroundHeight = frame.size.height + (frame.origin.y > 0 ? frame.origin.y : 0);
-            
-            if (previewHeader.mainHeaderBackgroundHeightConstraint.constant != mainHeaderBackgroundHeight)
-            {
-                previewHeader.mainHeaderBackgroundHeightConstraint.constant = mainHeaderBackgroundHeight;
-                
-                // Force the layout of previewHeader to update the position of 'bottomBorderView' which
-                // is used to define the actual height of the preview container.
-                [previewHeader layoutIfNeeded];
-            }
-        }
-        
         // Adjust the top constraint of the bubbles table
         CGRect frame = previewHeader.bottomBorderView.frame;
         self.previewHeaderContainerHeightConstraint.constant = frame.origin.y + frame.size.height;
@@ -714,77 +621,11 @@
     }
     else
     {
+        self.bubblesTableViewTopConstraint.constant = 0;
         self.jumpToLastUnreadBannerContainerTopConstraint.constant = self.bubblesTableView.mxk_adjustedContentInset.top;
     }
     
     [self refreshMissedDiscussionsCount:YES];
-}
-
-- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator>)coordinator
-{
-    // Hide the expanded header or the preview in case of iPad and iPhone 6 plus.
-    // On these devices, the display mode of the splitviewcontroller may change during screen rotation.
-    // It may correspond to an overlay mode in portrait and a side-by-side mode in landscape.
-    // This display mode change involves a change at the navigation bar level.
-    // If we don't hide the header, the navigation bar is in a wrong state after rotation. FIXME: Find a way to keep visible the header on rotation.
-    if ([GBDeviceInfo deviceInfo].family == GBDeviceFamilyiPad || [GBDeviceInfo deviceInfo].displayInfo.display >= GBDeviceDisplay5p5Inch)
-    {
-        // Hide the expanded header (if any) on device rotation
-        [self showExpandedHeader:NO];
-        
-        // Hide the preview header (if any) before rotating (It will be restored by `refreshRoomTitle` call if this is still a room preview).
-        [self showPreviewHeader:NO];
-        
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)((coordinator.transitionDuration + 0.5) * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            
-            // Let [self refreshRoomTitle] refresh this title view correctly
-            [self refreshRoomTitle];
-            
-        });
-    }
-    else if (previewHeader)
-    {
-        // Refresh here the preview header according to the coming screen orientation.
-        
-        // Retrieve the affine transform indicating the amount of rotation being applied to the interface.
-        // This transform is the identity transform when no rotation is applied;
-        // otherwise, it is a transform that applies a 90 degree, -90 degree, or 180 degree rotation.
-        CGAffineTransform transform = coordinator.targetTransform;
-        
-        // Consider here only the transform that applies a +/- 90 degree.
-        if (transform.b * transform.c == -1)
-        {
-            UIInterfaceOrientation currentScreenOrientation = [[UIApplication sharedApplication] statusBarOrientation];
-            BOOL isLandscapeOriented = YES;
-            
-            switch (currentScreenOrientation)
-            {
-                case UIInterfaceOrientationLandscapeRight:
-                case UIInterfaceOrientationLandscapeLeft:
-                {
-                    // We leave here landscape orientation
-                    isLandscapeOriented = NO;
-                    break;
-                }
-                default:
-                    break;
-            }
-            
-            [self refreshPreviewHeader:isLandscapeOriented];
-        }
-    }
-    else
-    {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)((coordinator.transitionDuration + 0.5) * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            
-            // Refresh the room title at the end of the transition to take into account the potential changes during the transition.
-            // For example the display of a preview header is ignored during transition.
-            [self refreshRoomTitle];
-            
-        });
-    }
-    
-    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
 }
 
 #pragma mark - Override MXKRoomViewController
@@ -805,6 +646,7 @@
     {
         roomPreviewData = nil;
         [self removeMatrixSession:self.mainSession];
+        [self showPreviewHeader:NO];
     }
     
     // Enable the read marker display, and disable its update.
@@ -838,13 +680,12 @@
 
 - (void)onRoomDataSourceReady
 {
-    // Handle here invitation
+    // Sanity check: Contrary to Riot, the room view controller is not used to display a pending invite.
+    // The preview mode is only supported in case of peeking (see roomPreviewData use)
     if (self.roomDataSource.room.summary.membership == MXMembershipInvite)
     {
-        self.navigationItem.rightBarButtonItem.enabled = NO;
-        
-        // Show preview header
-        [self showPreviewHeader:YES];
+        NSLog(@"[RoomVC] onRoomDataSourceReady: unexpected invite room (%@)", self.roomDataSource.roomId);
+        [self withdrawViewControllerAnimated:YES completion:nil];
     }
     else
     {
@@ -868,10 +709,7 @@
         
         if (previewHeader)
         {
-            previewHeader.mxRoom = self.roomDataSource.room;
-            
-            // Force the layout of subviews (some constraints may have been updated)
-            [self forceLayoutRefresh];
+            previewHeader.roomName = self.roomPreviewData.roomName;
         }
     }
     else
@@ -884,15 +722,6 @@
         
         if (self.roomDataSource)
         {
-            // Force expanded header refresh if it is visible
-            if (self.expandedHeaderContainer.isHidden == NO)
-            {
-                expandedHeader.mxRoom = self.roomDataSource.room;
-                
-                // Force the layout of subviews (some constraints may have been updated)
-                [self forceLayoutRefresh];
-            }
-            
             // Restore tool bar view and room activities view if none
             if (!self.inputToolbarView)
             {
@@ -915,12 +744,8 @@
 
 - (void)leaveRoomOnEvent:(MXEvent*)event
 {
-    [self showExpandedHeader:NO];
-    
-    // Force a simple title view initialised with the current room before leaving actually the room.
-    [self setRoomTitleViewClass:SimpleRoomTitleView.class];
-    self.titleView.editable = NO;
-    self.titleView.mxRoom = self.roomDataSource.room;
+    // Disable the tap gesture handling in the title view by removing the delegate.
+    ((RoomTitleView*)self.titleView).tapGestureDelegate = nil;
     
     // Hide the potential read marker banner.
     self.jumpToLastUnreadBannerContainer.hidden = YES;
@@ -1036,17 +861,6 @@
 - (void)setKeyboardHeight:(CGFloat)keyboardHeight
 {
     [super setKeyboardHeight:keyboardHeight];
-    
-    if (keyboardHeight)
-    {
-        // Hide the potential expanded header when keyboard appears.
-        // Dispatch this operation to prevent flickering in navigation bar.
-        dispatch_async(dispatch_get_main_queue(), ^{
-            
-            [self showExpandedHeader:NO];
-            
-        });
-    }
     
     // Make the activity indicator follow the keyboard
     // At runtime, this creates a smooth animation
@@ -1248,7 +1062,7 @@
     [self removeWidgetNotificationsListeners];
     [self removeTombstoneEventNotificationsListener];
 
-    if (previewHeader || (self.expandedHeaderContainer.isHidden == NO))
+    if (previewHeader)
     {
         // Here [destroy] is called before [viewWillDisappear:]
         NSLog(@"[RoomVC] destroyed whereas it is still visible");
@@ -1259,9 +1073,6 @@
         // Hide preview header container to ignore [self showPreviewHeader:NO] call (if any).
         self.previewHeaderContainer.hidden = YES;
     }
-    
-    [expandedHeader removeFromSuperview];
-    expandedHeader = nil;
     
     roomPreviewData = nil;
     
@@ -1350,12 +1161,6 @@
 
 #pragma mark -
 
-- (void)setShowExpandedHeader:(BOOL)showExpandedHeader
-{
-    _showExpandedHeader = showExpandedHeader;
-    [self showExpandedHeader:showExpandedHeader];
-}
-
 - (void)setShowMissedDiscussionsBadge:(BOOL)showMissedDiscussionsBadge
 {
     _showMissedDiscussionsBadge = showMissedDiscussionsBadge;
@@ -1423,17 +1228,11 @@
 
 - (BOOL)isRoomPreview
 {
-    // Check first whether some preview data are defined.
+    // Check whether some preview data are defined.
     if (roomPreviewData)
     {
         return YES;
     }
-    
-    if (self.roomDataSource && self.roomDataSource.state == MXKDataSourceStateReady && self.roomDataSource.room.summary.membership == MXMembershipInvite)
-    {
-        return YES;
-    }
-    
     return NO;
 }
 
@@ -1444,6 +1243,8 @@
         // Restore by default the search bar button.
         self.navigationItem.rightBarButtonItems = rightBarButtonItems;
     }
+    
+    [self setRoomTitleViewClass:RoomTitleView.class];
     
     // Set the right room title view
     if (self.isRoomPreview)
@@ -1491,29 +1292,14 @@
                 }
             }
 
-            // Do not change title view class here if the expanded header is visible.
-            if (self.expandedHeaderContainer.hidden)
-            {
-                [self setRoomTitleViewClass:RoomTitleView.class];
-                ((RoomTitleView*)self.titleView).tapGestureDelegate = self;
-            }
-            else
-            {
-                // Force expanded header refresh
-                expandedHeader.mxRoom = self.roomDataSource.room;
-                
-                // Force the layout of subviews (some constraints may have been updated)
-                [self forceLayoutRefresh];
-            }
+            // Enable tap gesture in the title view
+            ((RoomTitleView*)self.titleView).tapGestureDelegate = self;
         }
         else
         {
             // Remove the search button temporarily
             rightBarButtonItems = self.navigationItem.rightBarButtonItems;
             self.navigationItem.rightBarButtonItems = nil;
-            
-            [self setRoomTitleViewClass:SimpleRoomTitleView.class];
-            self.titleView.editable = NO;
         }
     }
     else
@@ -1603,13 +1389,7 @@
 {
     UIView *view = swipeGestureRecognizer.view;
     
-    if (view == self.expandedHeaderContainer)
-    {
-        // Hide the expanded header when user swipes upward on expanded header.
-        // We reset here the property 'showExpandedHeader'. Then the header is not expanded automatically on viewWillAppear.
-        self.showExpandedHeader = NO;
-    }
-    else if (view == self.activitiesView)
+    if (view == self.activitiesView)
     {
         // Dismiss the keyboard when user swipes down on activities view.
         [self.inputToolbarView dismissKeyboard];
@@ -1626,108 +1406,17 @@
     [UIView setAnimationsEnabled:YES];
 }
 
-#pragma mark - Hide/Show expanded header
-
-- (void)showExpandedHeader:(BOOL)isVisible
-{
-    if (self.expandedHeaderContainer.isHidden == isVisible)
-    {
-        // Check conditions before making the expanded room header visible.
-        // This operation is ignored:
-        // - if a screen rotation is in progress.
-        // - if the room data source has been removed.
-        // - if the room data source does not manage a live timeline.
-        // - if the user's membership is not 'join'.
-        // - if the view controller is not embedded inside a split view controller yet.
-        // - if the encryption view is displayed
-        // - if the event details view is displayed
-        if (isVisible && (isSizeTransitionInProgress == YES || !self.roomDataSource || !self.roomDataSource.isLive || (self.roomDataSource.room.summary.membership != MXMembershipJoin) || !self.splitViewController || encryptionInfoView.superview || eventDetailsView.superview))
-        {
-            NSLog(@"[RoomVC] Show expanded header ignored");
-            return;
-        }
-        
-        self.expandedHeaderContainer.hidden = !isVisible;
-        
-        // Consider the main navigation controller if the current view controller is embedded inside a split view controller.
-        UINavigationController *mainNavigationController = self.navigationController;
-        if (self.splitViewController.isCollapsed && self.splitViewController.viewControllers.count)
-        {
-            mainNavigationController = self.splitViewController.viewControllers.firstObject;
-        }
-        
-        // When the expanded header is displayed, we hide the bottom border of the navigation bar (the shadow image).
-        // The default shadow image is nil. When non-nil, this property represents a custom shadow image to show instead
-        // of the default. For a custom shadow image to be shown, a custom background image must also be set with the
-        // setBackgroundImage:forBarMetrics: method. If the default background image is used, then the default shadow
-        // image will be used regardless of the value of this property.
-        UIImage *shadowImage = nil;
-        
-        if (isVisible)
-        {
-            [self setRoomTitleViewClass:RoomAvatarTitleView.class];
-            // Note the avatar title view does not define tap gesture.
-            
-            expandedHeader.roomAvatar.alpha = 0.0;
-            
-            shadowImage = [[UIImage alloc] init];
-            
-            // Dismiss the keyboard when header is expanded.
-            [self.inputToolbarView dismissKeyboard];
-        }
-        else
-        {
-            [self setRoomTitleViewClass:RoomTitleView.class];
-            ((RoomTitleView*)self.titleView).tapGestureDelegate = self;
-        }
-        
-        // Force the layout of expandedHeader to update the position of 'bottomBorderView' which is used
-        // to define the actual height of the expandedHeader container.
-        [expandedHeader layoutIfNeeded];
-        CGRect frame = expandedHeader.bottomBorderView.frame;
-        self.expandedHeaderContainerHeightConstraint.constant = frame.origin.y + frame.size.height;
-        
-        // Report shadow image
-        [mainNavigationController.navigationBar setShadowImage:shadowImage];
-        [mainNavigationController.navigationBar setBackgroundImage:shadowImage forBarMetrics:UIBarMetricsDefault];
-        
-        [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
-                         animations:^{
-                             
-                             self.bubblesTableViewTopConstraint.constant = (isVisible ? self.expandedHeaderContainerHeightConstraint.constant - self.bubblesTableView.mxk_adjustedContentInset.top : 0);
-                             self.jumpToLastUnreadBannerContainerTopConstraint.constant = (isVisible ? self.expandedHeaderContainerHeightConstraint.constant : self.bubblesTableView.mxk_adjustedContentInset.top);
-                             
-                             expandedHeader.roomAvatar.alpha = 1;
-                             
-                             // Force to render the view
-                             [self forceLayoutRefresh];
-                             
-                         }
-                         completion:^(BOOL finished){
-                         }];
-    }
-}
-
 #pragma mark - Hide/Show preview header
 
 - (void)showPreviewHeader:(BOOL)isVisible
 {
     if (self.previewHeaderContainer && self.previewHeaderContainer.isHidden == isVisible)
     {
-        // Check conditions before making the preview room header visible.
-        // This operation is ignored if a screen rotation is in progress,
-        // or if the view controller is not embedded inside a split view controller yet.
-        if (isVisible && (isSizeTransitionInProgress == YES || !self.splitViewController))
-        {
-            NSLog(@"[RoomVC] Show preview header ignored");
-            return;
-        }
-        
         if (isVisible)
         {
-            previewHeader = [PreviewRoomTitleView roomTitleView];
-            previewHeader.delegate = self;
-            previewHeader.tapGestureDelegate = self;
+            previewHeader = [PreviewView instantiate];
+            [previewHeader.leftButton addTarget:self action:@selector(onJoinPressed:) forControlEvents:UIControlEventTouchUpInside];
+            [previewHeader.rightButton addTarget:self action:@selector(onCancelPressed:) forControlEvents:UIControlEventTouchUpInside];
             previewHeader.translatesAutoresizingMaskIntoConstraints = NO;
             [self.previewHeaderContainer addSubview:previewHeader];
             // Force preview header in full width
@@ -1763,19 +1452,12 @@
             
             [NSLayoutConstraint activateConstraints:@[leftConstraint, rightConstraint, topConstraint, bottomConstraint]];
             
-            if (roomPreviewData)
-            {
-                previewHeader.roomPreviewData = roomPreviewData;
-            }
-            else if (self.roomDataSource)
-            {
-                previewHeader.mxRoom = self.roomDataSource.room;
-            }
+            previewHeader.roomName = self.roomPreviewData.roomName;
+            
+            CGRect frame = previewHeader.bottomBorderView.frame;
+            self.previewHeaderContainerHeightConstraint.constant = frame.origin.y + frame.size.height;
             
             self.previewHeaderContainer.hidden = NO;
-            
-            // Finalize preview header display according to the screen orientation
-            [self refreshPreviewHeader:UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation])];
         }
         else
         {
@@ -1783,154 +1465,63 @@
             previewHeader = nil;
             
             self.previewHeaderContainer.hidden = YES;
-            
-            // Consider the main navigation controller if the current view controller is embedded inside a split view controller.
-            UINavigationController *mainNavigationController = self.navigationController;
-            if (self.splitViewController.isCollapsed && self.splitViewController.viewControllers.count)
-            {
-                mainNavigationController = self.splitViewController.viewControllers.firstObject;
-            }
-            
-            // Set a default title view class without handling tap gesture (Let [self refreshRoomTitle] refresh this view correctly).
-            [self setRoomTitleViewClass:RoomTitleView.class];
-            
-            // Remove details icon
-            RoomTitleView *roomTitleView = (RoomTitleView*)self.titleView;
-            [roomTitleView.roomDetailsIconImageView removeFromSuperview];
-            roomTitleView.roomDetailsIconImageView = nil;
-            
-            // Remove the shadow image used to hide the bottom border of the navigation bar when the preview header is displayed
-            [mainNavigationController.navigationBar setShadowImage:nil];
-            [mainNavigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
-            
-            [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
-                             animations:^{
-                                 
-                                 self.bubblesTableViewTopConstraint.constant = 0;
-                                 self.jumpToLastUnreadBannerContainerTopConstraint.constant = self.bubblesTableView.mxk_adjustedContentInset.top;
-                                 
-                                 // Force to render the view
-                                 [self forceLayoutRefresh];
-                                 
-                             }
-                             completion:^(BOOL finished){
-                             }];
         }
     }
 }
 
-- (void)refreshPreviewHeader:(BOOL)isLandscapeOriented
+- (void)onJoinPressed:(id)sender
 {
-    if (previewHeader)
+    // Attempt to join the room (keep reference on the potential eventId, the preview data will be removed automatically in case of success).
+    NSString *eventId = roomPreviewData.eventId;
+    
+    // We promote here join by room alias instead of room id when an alias is available.
+    NSString *roomIdOrAlias = roomPreviewData.roomId;
+    if (roomPreviewData.roomAliases.count)
     {
-        if (isLandscapeOriented
-            && [GBDeviceInfo deviceInfo].family != GBDeviceFamilyiPad)
+        roomIdOrAlias = roomPreviewData.roomAliases.firstObject;
+    }
+    
+    // Note in case of simple link to a room the signUrl param is nil
+    [self joinRoomWithRoomIdOrAlias:roomIdOrAlias andSignUrl:roomPreviewData.emailInvitation.signUrl completion:^(BOOL succeed) {
+        
+        if (succeed)
         {
-            CGRect frame = self.navigationController.navigationBar.frame;
-            
-            previewHeader.mainHeaderContainer.hidden = YES;
-            previewHeader.mainHeaderBackgroundHeightConstraint.constant = frame.size.height + (frame.origin.y > 0 ? frame.origin.y : 0);
-            
-            [self setRoomTitleViewClass:RoomTitleView.class];
-            // We don't want to handle tap gesture here
-            
-            // Remove details icon
-            RoomTitleView *roomTitleView = (RoomTitleView*)self.titleView;
-            [roomTitleView.roomDetailsIconImageView removeFromSuperview];
-            roomTitleView.roomDetailsIconImageView = nil;
-            
-            // Set preview data to provide the room name
-            roomTitleView.roomPreviewData = roomPreviewData;
-        }
-        else
-        {
-            previewHeader.mainHeaderContainer.hidden = NO;
-            previewHeader.mainHeaderBackgroundHeightConstraint.constant = previewHeader.mainHeaderContainer.frame.size.height;
-
-            if ([previewHeader isKindOfClass:PreviewRoomTitleView.class])
+            // If an event was specified, replace the datasource by a non live datasource showing the event
+            if (eventId)
             {
-                // In case of preview, update the header height so that we can
-                // display as much as possible the room topic in this header.
-                // Note: the header height is handled by the previewHeader.mainHeaderBackgroundHeightConstraint.
-                PreviewRoomTitleView *previewRoomTitleView = (PreviewRoomTitleView *)previewHeader;
-
-                // Compute the height required to display all the room topic
-                CGSize sizeThatFitsTextView = [previewRoomTitleView.roomTopic sizeThatFits:CGSizeMake(previewRoomTitleView.roomTopic.frame.size.width, MAXFLOAT)];
-
-                // Increase the preview header height according to the room topic height
-                // but limit it in order to let room for room messages at the screen bottom.
-                // This free space depends on the device.
-                // On an iphone 5 screen, the room topic height cannot be more than 50px.
-                // Then, on larger screen, we can allow it a bit more height but we
-                // apply a factor to give more priority to the display of more messages.
-                CGFloat screenHeight = [[UIScreen mainScreen] bounds].size.height;
-                CGFloat maxRoomTopicHeight = 50 + (screenHeight - 568) / 3;
-
-                CGFloat additionalHeight = MIN(maxRoomTopicHeight, sizeThatFitsTextView.height)
-                                            - previewRoomTitleView.roomTopic.frame.size.height;
-
-                previewHeader.mainHeaderBackgroundHeightConstraint.constant += additionalHeight;
-            }
-
-            [self setRoomTitleViewClass:RoomAvatarTitleView.class];
-            // Note the avatar title view does not define tap gesture.
-            
-            previewHeader.roomAvatar.alpha = 0.0;
-            
-            // Set the avatar provided in preview data
-            if (roomPreviewData.roomAvatarUrl)
-            {
-                NSString *roomAvatarUrl = [self.mainSession.matrixRestClient urlOfContentThumbnail:roomPreviewData.roomAvatarUrl toFitViewSize:previewHeader.roomAvatar.frame.size withMethod:MXThumbnailingMethodCrop];
-                
-                previewHeader.roomAvatarURL = roomAvatarUrl;
-            }
-            else if (roomPreviewData.roomId && roomPreviewData.roomName)
-            {
-                previewHeader.roomAvatarPlaceholder = [AvatarGenerator generateAvatarForMatrixItem:roomPreviewData.roomId withDisplayName:roomPreviewData.roomName];
+                MXWeakify(self);
+                [RoomDataSource loadRoomDataSourceWithRoomId:self.roomDataSource.roomId initialEventId:eventId andMatrixSession:self.mainSession onComplete:^(id roomDataSource) {
+                    MXStrongifyAndReturnIfNil(self);
+                    
+                    [roomDataSource finalizeInitialization];
+                    ((RoomDataSource*)roomDataSource).markTimelineInitialEvent = YES;
+                    
+                    [self displayRoom:roomDataSource];
+                    
+                    self.hasRoomDataSourceOwnership = YES;
+                }];
             }
             else
             {
-                previewHeader.roomAvatarPlaceholder = [UIImage imageNamed:@"placeholder"];
+                // Enable back the text input
+                [self setRoomInputToolbarViewClass:RoomInputToolbarView.class];
+                [self updateInputToolBarViewHeight];
+                
+                // And the extra area
+                [self setRoomActivitiesViewClass:RoomActivitiesView.class];
+                
+                [self refreshRoomTitle];
+                [self refreshRoomInputToolbar];
             }
         }
         
-        // Force the layout of previewHeader to update the position of 'bottomBorderView' which is used
-        // to define the actual height of the preview container.
-        [previewHeader layoutIfNeeded];
-        CGRect frame = previewHeader.bottomBorderView.frame;
-        self.previewHeaderContainerHeightConstraint.constant = frame.origin.y + frame.size.height;
-        
-        // Consider the main navigation controller if the current view controller is embedded inside a split view controller.
-        UINavigationController *mainNavigationController = self.navigationController;
-        if (self.splitViewController.isCollapsed && self.splitViewController.viewControllers.count)
-        {
-            mainNavigationController = self.splitViewController.viewControllers.firstObject;
-        }
-        
-        // When the preview header is displayed, we hide the bottom border of the navigation bar (the shadow image).
-        // The default shadow image is nil. When non-nil, this property represents a custom shadow image to show instead
-        // of the default. For a custom shadow image to be shown, a custom background image must also be set with the
-        // setBackgroundImage:forBarMetrics: method. If the default background image is used, then the default shadow
-        // image will be used regardless of the value of this property.
-        UIImage *shadowImage = [[UIImage alloc] init];
-        [mainNavigationController.navigationBar setShadowImage:shadowImage];
-        [mainNavigationController.navigationBar setBackgroundImage:shadowImage forBarMetrics:UIBarMetricsDefault];
-        
-        [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
-                         animations:^{
-                             
-                             self.bubblesTableViewTopConstraint.constant = self.previewHeaderContainerHeightConstraint.constant - self.bubblesTableView.mxk_adjustedContentInset.top;
-                             self.jumpToLastUnreadBannerContainerTopConstraint.constant = self.previewHeaderContainerHeightConstraint.constant;
-                             
-                             previewHeader.roomAvatar.alpha = 1;
-                             
-                             // Force to render the view
-                             [self forceLayoutRefresh];
-                             
-                         }
-                         completion:^(BOOL finished){
-                         }];
-    }
+    }];
+}
+
+- (void)onCancelPressed:(id)sender
+{
+    // Cancel de preview
+    [self withdrawViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Preview
@@ -3099,38 +2690,7 @@
             unknownDevices = nil;
         }
     }
-    else if ([[segue identifier] isEqualToString:@"showContactPicker"])
-    {
-        ContactsTableViewController *contactsPickerViewController = (ContactsTableViewController*)pushedViewController;
-        
-        // Set delegate to handle selected contact
-        contactsPickerViewController.contactsTableViewControllerDelegate = self;
-        
-        // Prepare its data source
-        ContactsDataSource *contactsDataSource = [[ContactsDataSource alloc] initWithMatrixSession:self.roomDataSource.mxSession];
-        contactsDataSource.areSectionsShrinkable = YES;
-        contactsDataSource.displaySearchInputInContactsList = YES;
-        // Add a plus icon to the contact cell in the contacts picker, in order to make it more understandable for the end user.
-        contactsDataSource.contactCellAccessoryImage = [UIImage imageNamed:@"plus_icon"];
-        
-        // List all the participants matrix user id to ignore them during the contacts search.
-        NSArray *members = [self.roomDataSource.roomState.members membersWithoutConferenceUser];
-        for (MXRoomMember *mxMember in members)
-        {
-            // Check his status
-            if (mxMember.membership == MXMembershipJoin || mxMember.membership == MXMembershipInvite)
-            {
-                // Create the contact related to this member
-                MXKContact *contact = [[MXKContact alloc] initMatrixContactWithDisplayName:mxMember.displayname andMatrixID:mxMember.userId];
-                [contactsDataSource.ignoredContactsByMatrixId setObject:contact forKey:mxMember.userId];
-            }
-        }
-
-        [contactsPickerViewController showSearch:YES];
-        contactsPickerViewController.searchBar.placeholder = NSLocalizedStringFromTable(@"room_participants_invite_another_user", @"Vector", nil);
-        
-        [contactsPickerViewController displayList:contactsDataSource];
-    }
+    
     
     // Hide back button title
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
@@ -3441,8 +3001,6 @@
     }
     else if (sender == self.jumpToLastUnreadButton)
     {
-        // Hide expanded header to restore navigation bar settings.
-        [self showExpandedHeader:NO];
         // Dismiss potential keyboard.
         [self dismissKeyboard];
 
@@ -3541,28 +3099,6 @@
     }
 }
 
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
-{
-    if ([MXKRoomViewController instancesRespondToSelector:@selector(scrollViewWillBeginDragging:)])
-    {
-        [super scrollViewWillBeginDragging:scrollView];
-    }
-    
-    if (self.expandedHeaderContainer.isHidden == NO)
-    {
-        // Store here the position of the first touch down event
-        UIPanGestureRecognizer *panGestureRecognizer = scrollView.panGestureRecognizer;
-        if (panGestureRecognizer && panGestureRecognizer.numberOfTouches)
-        {
-            startScrollingPoint = [panGestureRecognizer locationOfTouch:0 inView:self.view];
-        }
-        else
-        {
-            startScrollingPoint = CGPointZero;
-        }
-    }
-}
-
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
     if ([MXKRoomViewController instancesRespondToSelector:@selector(scrollViewDidEndDragging:willDecelerate:)])
@@ -3572,21 +3108,8 @@
     
     if (decelerate == NO)
     {
-        // Handle swipe on expanded header
-        [self onScrollViewDidEndScrolling:scrollView];
-        
         [self refreshActivitiesViewDisplay];
         [self refreshJumpToLastUnreadBannerDisplay];
-    }
-    else
-    {
-        // Dispatch async the expanded header handling in order to let the deceleration go first.
-        dispatch_async(dispatch_get_main_queue(), ^{
-            
-            // Handle swipe on expanded header
-            [self onScrollViewDidEndScrolling:scrollView];
-            
-        });
     }
 }
 
@@ -3612,23 +3135,6 @@
     [self refreshJumpToLastUnreadBannerDisplay];
 }
 
-- (void)onScrollViewDidEndScrolling:(UIScrollView *)scrollView
-{
-    // Check whether the user's finger has been dragged over the expanded header.
-    // In that case the expanded header is collapsed
-    if (self.expandedHeaderContainer.isHidden == NO && (startScrollingPoint.y != 0))
-    {
-        UIPanGestureRecognizer *panGestureRecognizer = scrollView.panGestureRecognizer;
-        CGPoint translate = [panGestureRecognizer translationInView:self.view];
-        
-        if (startScrollingPoint.y + translate.y < self.expandedHeaderContainer.frame.size.height)
-        {
-            // Hide the expanded header by reseting the property 'showExpandedHeader'. Then the header is not expanded automatically on viewWillAppear.
-            self.showExpandedHeader = NO;
-        }
-    }
-}
-
 #pragma mark - MXKRoomTitleViewDelegate
 
 - (BOOL)roomTitleViewShouldBeginEditing:(MXKRoomTitleView*)titleView
@@ -3645,155 +3151,16 @@
     
     if (tappedView == titleView.titleMask)
     {
-        if (self.expandedHeaderContainer.isHidden)
-        {
-            // Expand the header
-            [self showExpandedHeader:YES];
-        }
-        else
-        {
-            selectedRoomSettingsField = RoomSettingsViewControllerFieldNone;
-            
-            CGPoint point = [tapGestureRecognizer locationInView:self.expandedHeaderContainer];
-            
-            CGRect roomNameArea = expandedHeader.displayNameTextField.frame;
-            roomNameArea.origin.x -= 10;
-            roomNameArea.origin.y -= 10;
-            roomNameArea.size.width += 20;
-            roomNameArea.size.height += 15;
-            if (CGRectContainsPoint(roomNameArea, point))
-            {
-                // Starting to move the local preview view
-                selectedRoomSettingsField = RoomSettingsViewControllerFieldName;
-            }
-            else
-            {
-                CGRect roomTopicArea = expandedHeader.roomTopic.frame;
-                roomTopicArea.origin.x -= 10;
-                roomTopicArea.size.width += 20;
-                roomTopicArea.size.height += 10;
-                if (CGRectContainsPoint(roomTopicArea, point))
-                {
-                    // Starting to move the local preview view
-                    selectedRoomSettingsField = RoomSettingsViewControllerFieldTopic;
-                }
-                else
-                {
-                    CGRect roomAvatarFrame = expandedHeader.roomAvatar.frame;
-                    if (CGRectContainsPoint(roomAvatarFrame, point))
-                    {
-                        // Starting to move the local preview view
-                        selectedRoomSettingsField = RoomSettingsViewControllerFieldAvatar;
-                    }
-                }
-            }
-            
-            // Open room settings
-            selectedRoomDetailsIndex = 2;
-            [self performSegueWithIdentifier:@"showRoomDetails" sender:self];
-        }
+        // Open room settings
+        selectedRoomSettingsField = RoomSettingsViewControllerFieldNone;
+        selectedRoomDetailsIndex = 2;
+        //[self performSegueWithIdentifier:@"showRoomDetails" sender:self];
     }
     else if (tappedView == titleView.roomDetailsMask)
     {
         // Open room details by selecting member list
         selectedRoomDetailsIndex = 0;
         [self performSegueWithIdentifier:@"showRoomDetails" sender:self];
-    }
-    else if (tappedView == titleView.addParticipantMask)
-    {
-        // Open contact picker
-        [self performSegueWithIdentifier:@"showContactPicker" sender:self];
-    }
-    else if (tappedView == previewHeader.rightButton)
-    {
-        // 'Join' button has been pressed
-        if (roomPreviewData)
-        {
-            // Attempt to join the room (keep reference on the potential eventId, the preview data will be removed automatically in case of success).
-            NSString *eventId = roomPreviewData.eventId;
-            
-            // We promote here join by room alias instead of room id when an alias is available.
-            NSString *roomIdOrAlias = roomPreviewData.roomId;
-            if (roomPreviewData.roomAliases.count)
-            {
-                roomIdOrAlias = roomPreviewData.roomAliases.firstObject;
-            }
-            
-            // Note in case of simple link to a room the signUrl param is nil
-            [self joinRoomWithRoomIdOrAlias:roomIdOrAlias andSignUrl:roomPreviewData.emailInvitation.signUrl completion:^(BOOL succeed) {
-                
-                if (succeed)
-                {
-                    // If an event was specified, replace the datasource by a non live datasource showing the event
-                    if (eventId)
-                    {
-                        MXWeakify(self);
-                        [RoomDataSource loadRoomDataSourceWithRoomId:self.roomDataSource.roomId initialEventId:eventId andMatrixSession:self.mainSession onComplete:^(id roomDataSource) {
-                            MXStrongifyAndReturnIfNil(self);
-
-                            [roomDataSource finalizeInitialization];
-                            ((RoomDataSource*)roomDataSource).markTimelineInitialEvent = YES;
-
-                            [self displayRoom:roomDataSource];
-
-                            self.hasRoomDataSourceOwnership = YES;
-                        }];
-                    }
-                    else
-                    {
-                        // Enable back the text input
-                        [self setRoomInputToolbarViewClass:RoomInputToolbarView.class];
-                        [self updateInputToolBarViewHeight];
-                        
-                        // And the extra area
-                        [self setRoomActivitiesViewClass:RoomActivitiesView.class];
-                        
-                        [self refreshRoomTitle];
-                        [self refreshRoomInputToolbar];
-                    }
-                }
-                
-            }];
-        }
-        else
-        {
-            [self joinRoom:^(BOOL succeed) {
-                
-                if (succeed)
-                {
-                    [self refreshRoomTitle];
-                }
-                
-            }];
-        }
-    }
-    else if (tappedView == previewHeader.leftButton)
-    {
-        // 'Decline' button has been pressed
-        if (roomPreviewData)
-        {
-            // Decline this invitation = leave this page
-            [[AppDelegate theDelegate] restoreInitialDisplay:^{}];
-        }
-        else
-        {
-            [self startActivityIndicator];
-            
-            [self.roomDataSource.room leave:^{
-                
-                [self stopActivityIndicator];
-                
-                // We remove the current view controller.
-                // Pop to homes view controller
-                [[AppDelegate theDelegate] restoreInitialDisplay:^{}];
-                
-            } failure:^(NSError *error) {
-                
-                [self stopActivityIndicator];
-                NSLog(@"[RoomVC] Failed to reject an invited room (%@) failed", self.roomDataSource.room.roomId);
-                
-            }];
-        }
     }
 }
 
