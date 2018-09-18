@@ -17,6 +17,6 @@
 import Foundation
 
 /// Describe a component on which a Style could be applied
-protocol Stylable: NSObjectProtocol {
+@objc protocol Stylable {
     func update(style: Style)
 }
