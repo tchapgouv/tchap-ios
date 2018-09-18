@@ -51,6 +51,7 @@
 }
 
 @property (nonatomic, strong) GlobalSearchBar *globalSearchBar;
+@property (nonatomic, strong) id<Style> currentStyle;
 
 @end
 
@@ -74,6 +75,7 @@
 {
     SegmentedViewController *segmentedViewController = [self instantiate];
     segmentedViewController.globalSearchBar = globalSearchBar;
+    segmentedViewController.currentStyle = Variant1Style.shared;
     return segmentedViewController;
 }
 
@@ -141,8 +143,6 @@
     
     // Setup `MXKViewControllerHandling` properties
     self.enableBarTintColorStatusChange = NO;
-    
-    self.sectionHeaderTintColor = kVariant1PrimaryTextColor;
 }
 
 - (void)viewDidLoad
@@ -171,8 +171,6 @@
     
     [NSLayoutConstraint activateConstraints:@[self.selectionContainerTopConstraint]];
     
-    [self createSegmentedViews];
-    
     // Observe user interface theme change.
     kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
@@ -181,29 +179,27 @@
     }];
     [self userInterfaceThemeDidChange];
     
+    [self createSegmentedViews];
     [self setupGlobalSearchBar];
 }
 
 - (void)userInterfaceThemeDidChange
 {
-    // The navigation bar color
-    self.navigationController.navigationBar.translucent = NO;
-    self.navigationController.navigationBar.barTintColor = kVariant1PrimaryBgColor;
-    self.navigationController.navigationBar.tintColor = kVariant1ActionColor;
-    // Set navigation bar title color
-    NSDictionary<NSString *,id> *titleTextAttributes = self.navigationController.navigationBar.titleTextAttributes;
-    if (titleTextAttributes)
+    [self updateStyle:self.currentStyle];
+}
+
+- (void)updateStyle:(id<Style>)style
+{
+    self.sectionHeaderTintColor = self.currentStyle.primaryTextColor;
+    
+    UINavigationBar *navigationBar = self.navigationController.navigationBar;
+    
+    if (navigationBar)
     {
-        NSMutableDictionary *textAttributes = [NSMutableDictionary dictionaryWithDictionary:titleTextAttributes];
-        textAttributes[NSForegroundColorAttributeName] = kVariant1PrimaryTextColor;
-        self.navigationController.navigationBar.titleTextAttributes = textAttributes;
-    }
-    else
-    {
-        self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: kVariant1PrimaryTextColor};
+        [style applyStyleOnNavigationBar:navigationBar];
     }
     
-    self.view.backgroundColor = kVariant2PrimaryBgColor;
+    self.view.backgroundColor = style.backgroundColor;
     
     // @TODO Design the activvity indicator for Tchap
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
@@ -211,7 +207,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return kVariant1StatusBarStyle;
+    return self.currentStyle.statusBarStyle;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -283,7 +279,7 @@
         label.font = [UIFont systemFontOfSize:17];
         label.textAlignment = NSTextAlignmentCenter;
         label.textColor = _sectionHeaderTintColor;
-        label.backgroundColor = kVariant1PrimaryBgColor;
+        label.backgroundColor = self.currentStyle.secondaryBackgroundColor;
         label.accessibilityIdentifier = [NSString stringWithFormat:@"SegmentedVCSectionLabel%tu", index];
         
         // the constraint defines the label frame
