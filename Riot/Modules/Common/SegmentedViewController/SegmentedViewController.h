@@ -19,6 +19,7 @@ limitations under the License.
 
 #import "UIViewController+RiotSearch.h"
 
+@protocol SegmentedViewControllerDelegate;
 @class GlobalSearchBar;
 
 /**
@@ -53,6 +54,11 @@ limitations under the License.
  The view controllers managed by this SegmentedViewController instance.
  */
 @property (nonatomic, readonly) NSArray<UIViewController*> *viewControllers;
+
+/**
+ 
+ */
+@property (nonatomic, weak) id<SegmentedViewControllerDelegate> delegate;
 
 /**
  Returns the `UINib` object initialized for a `SegmentedViewController`.
@@ -102,4 +108,10 @@ limitations under the License.
  */
 - (void)userInterfaceThemeDidChange;
 
+@end
+
+@protocol SegmentedViewControllerDelegate <NSObject>
+- (void)segmentedViewControllerDidTapStartChatButton:(SegmentedViewController*)segmentedViewController;
+- (void)segmentedViewControllerDidTapCreateRoomButton:(SegmentedViewController*)segmentedViewController;
+- (void)segmentedViewControllerDidTapPublicRoomsAccessButton:(SegmentedViewController*)segmentedViewController;
 @end
