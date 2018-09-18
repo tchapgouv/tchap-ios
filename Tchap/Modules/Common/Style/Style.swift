@@ -17,13 +17,16 @@
 import UIKit
 
 /// Describe UI component style properties and commodity method to apply it
-protocol Style: NSObjectProtocol {
+@objc protocol Style {
     
     var statusBarStyle: UIStatusBarStyle { get }
     
     var backgroundColor: UIColor { get }
+    var secondaryBackgroundColor: UIColor { get }
+    
     var separatorColor: UIColor { get }
     
+    var primaryTextColor: UIColor { get }
     var primarySubTextColor: UIColor { get }
     var secondaryTextColor: UIColor { get }
     
