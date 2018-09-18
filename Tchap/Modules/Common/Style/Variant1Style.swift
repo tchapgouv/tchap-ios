@@ -25,14 +25,17 @@ final class Variant1Style: NSObject, Style {
     let statusBarStyle: UIStatusBarStyle = kVariant1StatusBarStyle
     
     let backgroundColor: UIColor = kVariant1PrimaryBgColor
+    let secondaryBackgroundColor: UIColor = kVariant1SecondaryBgColor
+    
     let separatorColor: UIColor = kVariant1ActionColor
     
+    let primaryTextColor: UIColor = kVariant1PrimaryTextColor
     let primarySubTextColor: UIColor = kVariant1PrimarySubTextColor
     let secondaryTextColor: UIColor = kVariant1SecondaryTextColor
     
     func applyStyle(onNavigationBar navigationBar: UINavigationBar) {
         navigationBar.isTranslucent = false
-        navigationBar.barTintColor = kVariant1PrimaryBgColor
+        navigationBar.barTintColor = self.secondaryBackgroundColor
         navigationBar.tintColor = kVariant1ActionColor
         navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: kVariant1PrimaryTextColor]
     }

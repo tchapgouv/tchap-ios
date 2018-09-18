@@ -25,8 +25,11 @@ final class Variant2Style: NSObject, Style {
     let statusBarStyle: UIStatusBarStyle = kVariant2StatusBarStyle
     
     let backgroundColor: UIColor = kVariant2PrimaryBgColor
+    let secondaryBackgroundColor: UIColor = kVariant2SecondaryBgColor
+    
     let separatorColor: UIColor = kVariant2ActionColor
     
+    let primaryTextColor: UIColor = kVariant1PrimaryTextColor
     let primarySubTextColor: UIColor = kVariant2PrimarySubTextColor
     let secondaryTextColor: UIColor = kVariant2SecondaryTextColor
     
