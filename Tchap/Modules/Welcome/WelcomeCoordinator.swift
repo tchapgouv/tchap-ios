@@ -40,7 +40,7 @@ final class WelcomeCoordinator: WelcomeCoordinatorType {
     
     init(router: RootRouterType) {
         self.rootRouter = router
-        self.navigationRouter = NavigationRouter()
+        self.navigationRouter = NavigationRouter(navigationController: TCNavigationController())
         
         let welcomeViewController = WelcomeViewController.instantiate()
         welcomeViewController.tc_removeBackTitle()

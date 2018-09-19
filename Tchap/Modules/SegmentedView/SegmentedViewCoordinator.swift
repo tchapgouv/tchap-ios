@@ -37,7 +37,7 @@ final class SegmentedViewCoordinator: NSObject, SegmentedViewCoordinatorType {
     // MARK: - Setup
     
     init(session: MXSession) {
-        self.navigationRouter = NavigationRouter()
+        self.navigationRouter = NavigationRouter(navigationController: TCNavigationController())
         self.session = session
     }
     

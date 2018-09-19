@@ -40,7 +40,7 @@ final class PublicRoomsCoordinator: PublicRoomsCoordinatorType {
     // MARK: - Setup
     
     init(session: MXSession) {
-        self.router = NavigationRouter()
+        self.router = NavigationRouter(navigationController: TCNavigationController())
         self.session = session
         
         let publicRoomServers = PublicRoomsCoordinator.getPublicRoomServers()
