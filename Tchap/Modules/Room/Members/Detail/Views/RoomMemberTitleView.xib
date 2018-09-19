@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -15,37 +15,31 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="f6h-pw-FvU">
-                    <rect key="frame" x="209" y="6" width="30" height="32"/>
-                    <accessibility key="accessibilityConfiguration" identifier="MemberBadge"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="30" id="Rz8-gR-gAm"/>
-                        <constraint firstAttribute="height" constant="32" id="dHM-zo-WVT"/>
-                    </constraints>
-                </imageView>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VJM-ib-LUP">
-                    <rect key="frame" x="132" y="11" width="110" height="33"/>
-                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                    <accessibility key="accessibilityConfiguration" identifier="RoomMemberDetailsVCAvatarMask"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="110" id="IYH-gQ-dbK"/>
-                    </constraints>
-                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hqL-As-rGJ">
+                    <rect key="frame" x="167" y="4" width="41" height="20"/>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="umK-Pb-kYj">
+                    <rect key="frame" x="174" y="24" width="27" height="12"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
             <accessibility key="accessibilityConfiguration" identifier="RoomMemberTitleView"/>
             <constraints>
-                <constraint firstItem="f6h-pw-FvU" firstAttribute="top" secondItem="VJM-ib-LUP" secondAttribute="top" constant="-5" id="0pn-Nk-1zK"/>
-                <constraint firstAttribute="bottom" secondItem="VJM-ib-LUP" secondAttribute="bottom" id="5EZ-YP-0he"/>
-                <constraint firstItem="VJM-ib-LUP" firstAttribute="centerX" secondItem="BkF-x3-7fX" secondAttribute="centerX" id="I5C-UZ-BnC"/>
-                <constraint firstItem="VJM-ib-LUP" firstAttribute="top" secondItem="BkF-x3-7fX" secondAttribute="top" constant="11" id="gGL-UL-DHn"/>
-                <constraint firstItem="f6h-pw-FvU" firstAttribute="trailing" secondItem="VJM-ib-LUP" secondAttribute="trailing" constant="-3" id="ilt-qd-gIW"/>
+                <constraint firstItem="hqL-As-rGJ" firstAttribute="centerY" secondItem="BkF-x3-7fX" secondAttribute="centerY" constant="-8" id="GjU-ff-8zY"/>
+                <constraint firstItem="hqL-As-rGJ" firstAttribute="centerX" secondItem="BkF-x3-7fX" secondAttribute="centerX" id="VbG-zF-KzQ"/>
+                <constraint firstItem="umK-Pb-kYj" firstAttribute="top" secondItem="hqL-As-rGJ" secondAttribute="bottom" id="qUT-Ay-i22"/>
+                <constraint firstItem="umK-Pb-kYj" firstAttribute="centerX" secondItem="hqL-As-rGJ" secondAttribute="centerX" id="ua2-ox-SKq"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
-                <outlet property="memberAvatarMask" destination="VJM-ib-LUP" id="cnl-NC-4DH"/>
-                <outlet property="memberAvatarMaskCenterXConstraint" destination="I5C-UZ-BnC" id="rc9-oe-GrK"/>
-                <outlet property="memberBadge" destination="f6h-pw-FvU" id="pDM-O6-238"/>
+                <outlet property="roomMemberDomainLabel" destination="umK-Pb-kYj" id="Wkd-bb-oEN"/>
+                <outlet property="roomMemberNameLabel" destination="hqL-As-rGJ" id="vEY-Ql-NqZ"/>
             </connections>
         </view>
     </objects>

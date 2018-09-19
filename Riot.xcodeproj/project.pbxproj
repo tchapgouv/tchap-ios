@@ -285,6 +285,8 @@
 		02906074214FD0E1005FE3C1 /* RoomCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02906072214FD0E0005FE3C1 /* RoomCoordinator.swift */; };
 		0290607921501D16005FE3C1 /* PreviewView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0290607621501D16005FE3C1 /* PreviewView.xib */; };
 		0290607A21501D16005FE3C1 /* PreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0290607821501D16005FE3C1 /* PreviewView.m */; };
+		0290609221527A3F005FE3C1 /* RoomDetailsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0290609021527A3E005FE3C1 /* RoomDetailsCoordinator.swift */; };
+		0290609321527A3F005FE3C1 /* RoomDetailsCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0290609121527A3F005FE3C1 /* RoomDetailsCoordinatorType.swift */; };
 		02BEE1552125BBF800098505 /* RoomsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 02BEE1512125BBF800098505 /* RoomsDataSource.m */; };
 		02BEE1562125BBF800098505 /* RoomsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 02BEE1542125BBF800098505 /* RoomsViewController.m */; };
 		02BEE18A212AB23A00098505 /* ThirdPartyIDPlatformInfoResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BEE186212AB23A00098505 /* ThirdPartyIDPlatformInfoResolver.swift */; };
@@ -838,6 +840,8 @@
 		0290607621501D16005FE3C1 /* PreviewView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PreviewView.xib; sourceTree = "<group>"; };
 		0290607721501D16005FE3C1 /* PreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreviewView.h; sourceTree = "<group>"; };
 		0290607821501D16005FE3C1 /* PreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreviewView.m; sourceTree = "<group>"; };
+		0290609021527A3E005FE3C1 /* RoomDetailsCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomDetailsCoordinator.swift; sourceTree = "<group>"; };
+		0290609121527A3F005FE3C1 /* RoomDetailsCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomDetailsCoordinatorType.swift; sourceTree = "<group>"; };
 		02BEE1512125BBF800098505 /* RoomsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomsDataSource.m; sourceTree = "<group>"; };
 		02BEE1522125BBF800098505 /* RoomsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomsDataSource.h; sourceTree = "<group>"; };
 		02BEE1532125BBF800098505 /* RoomsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomsViewController.h; sourceTree = "<group>"; };
@@ -1349,6 +1353,8 @@
 		020DF858214BE467003DFBA4 /* Room */ = {
 			isa = PBXGroup;
 			children = (
+				0290609121527A3F005FE3C1 /* RoomDetailsCoordinatorType.swift */,
+				0290609021527A3E005FE3C1 /* RoomDetailsCoordinator.swift */,
 				02906071214FD0E0005FE3C1 /* RoomCoordinatorType.swift */,
 				02906072214FD0E0005FE3C1 /* RoomCoordinator.swift */,
 				020DF85F214BE467003DFBA4 /* RoomViewController.h */,
@@ -1472,9 +1478,9 @@
 			isa = PBXGroup;
 			children = (
 				020DF882214BE467003DFBA4 /* RoomParticipantsViewController.h */,
-				020DF883214BE467003DFBA4 /* Detail */,
 				020DF88B214BE467003DFBA4 /* RoomParticipantsViewController.m */,
 				020DF88C214BE467003DFBA4 /* RoomParticipantsViewController.xib */,
+				020DF883214BE467003DFBA4 /* Detail */,
 			);
 			path = Members;
 			sourceTree = "<group>";
@@ -1493,9 +1499,9 @@
 		020DF887214BE467003DFBA4 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				020DF88A214BE467003DFBA4 /* RoomMemberTitleView.h */,
 				020DF888214BE467003DFBA4 /* RoomMemberTitleView.m */,
 				020DF889214BE467003DFBA4 /* RoomMemberTitleView.xib */,
-				020DF88A214BE467003DFBA4 /* RoomMemberTitleView.h */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -3977,6 +3983,7 @@
 				0250C4DA2122B68000034691 /* GroupsViewController.m in Sources */,
 				B1892E7B21306ADC00742348 /* FormTextViewModel.swift in Sources */,
 				B1322FEA213002440054A9DD /* FormTextField.swift in Sources */,
+				0290609321527A3F005FE3C1 /* RoomDetailsCoordinatorType.swift in Sources */,
 				02906073214FD0E1005FE3C1 /* RoomCoordinatorType.swift in Sources */,
 				B11C800121393E5D00CC6F2F /* RegistrationCoordinatorType.swift in Sources */,
 				0250C4DE2122B68000034691 /* DeactivateAccountViewController.m in Sources */,
@@ -4108,6 +4115,7 @@
 				0250C5392122B68000034691 /* HomeMessagesSearchDataSource.m in Sources */,
 				B15B867421355A7A002782BE /* ErrorPresenter.swift in Sources */,
 				020DF989214BE467003DFBA4 /* RoomOutgoingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
+				0290609221527A3F005FE3C1 /* RoomDetailsCoordinator.swift in Sources */,
 				B15B867F2135BA96002782BE /* AuthenticationViewController.swift in Sources */,
 				0250C53B2122B68000034691 /* CircleButton.m in Sources */,
 				020DF972214BE467003DFBA4 /* RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.m in Sources */,

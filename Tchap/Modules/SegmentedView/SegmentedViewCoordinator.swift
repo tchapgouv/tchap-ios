@@ -47,6 +47,9 @@ final class SegmentedViewCoordinator: SegmentedViewCoordinatorType {
         let roomsCoordinator = RoomsCoordinator(router: self.navigationRouter, session: self.session)
         let contactsCoordinator = ContactsCoordinator(router: self.navigationRouter, session: self.session)
         
+        roomsCoordinator.delegate = self
+        contactsCoordinator.delegate = self
+        
         self.add(childCoordinator: roomsCoordinator)
         self.add(childCoordinator: contactsCoordinator)
         
@@ -57,7 +60,6 @@ final class SegmentedViewCoordinator: SegmentedViewCoordinatorType {
         
         let segmentedViewController = self.createSegmentedViewController(with: viewControllers, and: globalSearchBar)
         segmentedViewController.tc_removeBackTitle()
-        
         
         self.navigationRouter.setRootModule(segmentedViewController)
         
@@ -74,14 +76,26 @@ final class SegmentedViewCoordinator: SegmentedViewCoordinatorType {
     
     // MARK: - Private methods
     
+    private func showRoom(with roomID: String) {
+        let roomCoordinator = RoomCoordinator(router: self.navigationRouter, session: self.session, roomID: roomID)
+        roomCoordinator.start()
+        
+        self.navigationRouter.popToRootModule(animated: false)
+        
+        self.add(childCoordinator: roomCoordinator)
+        self.navigationRouter.push(roomCoordinator, animated: true) {
+            self.remove(childCoordinator: roomCoordinator)
+        }
+    }
+    
     private func showSettings(animated: Bool) {
         let settingsCoordinator = SettingsCoordinator(router: self.navigationRouter)
         settingsCoordinator.start()
-        self.add(childCoordinator: settingsCoordinator)
         
-        self.navigationRouter.push(settingsCoordinator, animated: animated, popCompletion: {
+        self.add(childCoordinator: settingsCoordinator)
+        self.navigationRouter.push(settingsCoordinator, animated: animated) {
             self.remove(childCoordinator: settingsCoordinator)
-        })
+        }
     }
     
     private func createSegmentedViewController(with viewControllers: [UIViewController], and globalSearchBar: GlobalSearchBar) -> SegmentedViewController {
@@ -89,8 +103,7 @@ final class SegmentedViewCoordinator: SegmentedViewCoordinatorType {
             fatalError("[SegmentedViewCoordinator] SegmentedViewController could not be loaded")
         }
         
-        // TODO: Make a protocol to retrieve title from view controller
-        let titles = ["Rooms", "Contact"]
+        let titles = [TchapL10n.conversationsTabTitle, TchapL10n.contactsTabTitle]
         
         segmentedViewController.initWithTitles(titles, viewControllers: viewControllers, defaultSelected: 0)
         
@@ -114,5 +127,30 @@ extension SegmentedViewCoordinator: GlobalSearchBarDelegate {
     func globalSearchBar(_ globalSearchBar: GlobalSearchBar, textDidChange searchText: String?) {
         self.roomsCoordinator?.updateSearchText(searchText)
         self.contactsCoordinator?.updateSearchText(searchText)
+    }
+}
+
+// MARK: - RoomsCoordinatorDelegate
+extension SegmentedViewCoordinator: RoomsCoordinatorDelegate {
+    func roomsCoordinatorShowRoom(_ coordinator: RoomsCoordinatorType, roomID: String) {
+        self.showRoom(with: roomID)
+    }
+}
+
+// MARK: - ContactsCoordinatorDelegate
+extension SegmentedViewCoordinator: ContactsCoordinatorDelegate {
+    func contactsCoordinatorShowRoom(_ coordinator: ContactsCoordinatorType, roomID: String) {
+        self.showRoom(with: roomID)
+    }
+}
+
+// MARK: - RoomCoordinatorDelegate
+extension SegmentedViewCoordinator: RoomCoordinatorDelegate {
+    func roomCoordinatorShowRoom(_ coordinator: RoomCoordinatorType, roomID: String) {
+        self.showRoom(with: roomID)
+    }
+    
+    func roomCoordinatorStartChat(_ coordinator: RoomCoordinatorType, userID: String) {
+        
     }
 }

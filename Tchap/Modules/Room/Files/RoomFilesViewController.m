@@ -1,6 +1,7 @@
 /*
  Copyright 2016 OpenMarket Ltd
  Copyright 2017 Vector Creations Ltd
+ Copyright 2018 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -36,6 +37,11 @@
 @implementation RoomFilesViewController
 
 #pragma mark -
+
++ (instancetype)instantiate
+{
+    return [RoomFilesViewController roomViewController];
+}
 
 - (instancetype)initWithNibName:(nullable NSString *)nibNameOrNil bundle:(nullable NSBundle *)nibBundleOrNil
 {
@@ -109,12 +115,28 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    self.defaultBarTintColor = kRiotSecondaryBgColor;
-    self.barTitleColor = kRiotPrimaryTextColor;
+    // The navigation bar color
+    self.navigationController.navigationBar.translucent = NO;
+    self.navigationController.navigationBar.barTintColor = kVariant2PrimaryBgColor;
+    self.navigationController.navigationBar.tintColor = kVariant2ActionColor;
+    // Set navigation bar title color
+    NSDictionary<NSString *,id> *titleTextAttributes = self.navigationController.navigationBar.titleTextAttributes;
+    if (titleTextAttributes)
+    {
+        NSMutableDictionary *textAttributes = [NSMutableDictionary dictionaryWithDictionary:titleTextAttributes];
+        textAttributes[NSForegroundColorAttributeName] = kVariant2PrimaryTextColor;
+        self.navigationController.navigationBar.titleTextAttributes = textAttributes;
+    }
+    else
+    {
+        self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: kVariant2PrimaryTextColor};
+    }
+    
+    // @TODO Design the activvity indicator for Tchap
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
     // Check the table view style to select its bg color.
-    self.bubblesTableView.backgroundColor = ((self.bubblesTableView.style == UITableViewStylePlain) ? kRiotPrimaryBgColor : kRiotSecondaryBgColor);
+    self.bubblesTableView.backgroundColor = ((self.bubblesTableView.style == UITableViewStylePlain) ? kVariant2PrimaryBgColor : kVariant2SecondaryBgColor);
     self.view.backgroundColor = self.bubblesTableView.backgroundColor;
     
     if (self.bubblesTableView.dataSource)
@@ -125,7 +147,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return kRiotDesignStatusBarStyle;
+    return kVariant2StatusBarStyle;
 }
 
 - (void)destroy

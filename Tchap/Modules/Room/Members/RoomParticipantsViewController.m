@@ -1,6 +1,7 @@
 /*
  Copyright 2015 OpenMarket Ltd
  Copyright 2017 Vector Creations Ltd
+ Copyright 2018 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -74,7 +75,7 @@
                           bundle:[NSBundle bundleForClass:[RoomParticipantsViewController class]]];
 }
 
-+ (instancetype)roomParticipantsViewController
++ (instancetype)instantiate
 {
     return [[[self class] alloc] initWithNibName:NSStringFromClass([RoomParticipantsViewController class])
                                           bundle:[NSBundle bundleForClass:[RoomParticipantsViewController class]]];
@@ -662,8 +663,8 @@
     ContactsDataSource *contactsDataSource = [[ContactsDataSource alloc] initWithMatrixSession:self.mxRoom.mxSession];
     contactsDataSource.areSectionsShrinkable = YES;
     contactsDataSource.displaySearchInputInContactsList = YES;
-    // Add a plus icon to the contact cell in the contacts picker, in order to make it more understandable for the end user.
-    contactsDataSource.contactCellAccessoryImage = [UIImage imageNamed:@"plus_icon"];
+    contactsDataSource.contactsFilter = ContactsDataSourceTchapFilterTchapOnly;
+    
     
     // List all the participants matrix user id to ignore them during the contacts search.
     for (Contact *contact in actualParticipants)
@@ -1293,7 +1294,7 @@
     
     if (contact.mxMember)
     {
-        memberDetailsViewController = [RoomMemberDetailsViewController roomMemberDetailsViewController];
+        memberDetailsViewController = [RoomMemberDetailsViewController instantiate];
         
         // Set delegate to handle action on member (start chat, mention)
         memberDetailsViewController.delegate = self;
@@ -1335,7 +1336,14 @@
 
 - (void)roomMemberDetailsViewController:(MXKRoomMemberDetailsViewController *)roomMemberDetailsViewController startChatWithMemberId:(NSString *)matrixId completion:(void (^)(void))completion
 {
-    [[AppDelegate theDelegate] createDirectChatWithUserId:matrixId completion:completion];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(roomParticipantsViewController:startChatWithMemberId:completion:)])
+    {
+        [self.delegate roomParticipantsViewController:self startChatWithMemberId:matrixId completion:completion];
+    }
+    else
+    {
+        [[AppDelegate theDelegate] createDirectChatWithUserId:matrixId completion:completion];
+    }
 }
 
 - (void)roomMemberDetailsViewController:(MXKRoomMemberDetailsViewController *)roomMemberDetailsViewController mention:(MXRoomMember*)member

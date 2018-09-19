@@ -127,7 +127,7 @@ UIColor *kVariant2SearchBarTintColor;
         kVariant1PrimarySubTextColor = [UIColor whiteColor];
         kVariant1PlaceholderTextColor = kColorWarmGrey;
         kVariant1ActionColor = [UIColor whiteColor];
-        kVariant1SecondaryBgColor = kColorDarkBlue;
+        kVariant1SecondaryBgColor = [UIColor blackColor];
         kVariant1SecondaryTextColor = [UIColor whiteColor];
         
         kVariant1StatusBarStyle = UIStatusBarStyleLightContent;

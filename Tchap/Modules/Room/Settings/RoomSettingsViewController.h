@@ -45,7 +45,15 @@ typedef enum : NSUInteger {
     
 } RoomSettingsViewControllerField;
 
-@interface RoomSettingsViewController : MXKRoomSettingsViewController <UITextViewDelegate, UITextFieldDelegate, MediaPickerViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, TableViewCellWithCheckBoxesDelegate>
+@interface RoomSettingsViewController : MXKRoomSettingsViewController <UITextViewDelegate, UITextFieldDelegate, MediaPickerViewControllerDelegate, TableViewCellWithCheckBoxesDelegate>
+
+/**
+ Creates and returns a new `RoomSettingsViewController` object.
+ 
+ @discussion This is the designated initializer for programmatic instantiation.
+ @return An initialized `RoomSettingsViewController` object if successful, `nil` otherwise.
+ */
++ (instancetype)instantiate;
 
 /**
  Select a settings field in order to edit it ('RoomSettingsViewControllerFieldNone' by default).

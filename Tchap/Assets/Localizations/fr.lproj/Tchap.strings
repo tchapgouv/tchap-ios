@@ -41,6 +41,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Conversations
+"conversations_tab_title" = "Conversations";
 "conversations_invites_section" = "Invitations";
 "conversations_main_section" = "Conversations";
 "conversations_directory_section" = "Salons publics";
@@ -48,6 +49,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Contacts
+"contacts_tab_title" = "Contacts";
 "contacts_main_section" = "Contacts Tchap";
 "contacts_no_contact" = "Aucun contact";
 "contacts_address_book_permission_required" = "Permissions requises pour accéder aux contacts locaux";
@@ -58,3 +60,19 @@
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Search
 "search_no_result" = "Aucun résultat";
+
+////////////////////////////////////////////////////////////////////////////////
+// MARK: Room Members
+"room_members_tab_title" = "Membres";
+
+////////////////////////////////////////////////////////////////////////////////
+// MARK: Room Member Details
+"room_member_details_action_chat" = "Envoyer un message";
+
+////////////////////////////////////////////////////////////////////////////////
+// MARK: Room Files
+"room_files_tab_title" = "Fichiers";
+
+////////////////////////////////////////////////////////////////////////////////
+// MARK: Room Settings
+"room_settings_tab_title" = "Paramètres";

@@ -16,6 +16,10 @@
 
 import Foundation
 
+protocol ContactsCoordinatorDelegate: class {
+    func contactsCoordinatorShowRoom(_ coordinator: ContactsCoordinatorType, roomID: String)
+}
+
 final class ContactsCoordinator: NSObject, ContactsCoordinatorType {
     
     // MARK: - Properties
@@ -32,6 +36,8 @@ final class ContactsCoordinator: NSObject, ContactsCoordinatorType {
     // MARK: Public
     
     var childCoordinators: [Coordinator] = []
+    
+    weak var delegate: ContactsCoordinatorDelegate?
     
     // MARK: - Setup
     
@@ -66,23 +72,42 @@ final class ContactsCoordinator: NSObject, ContactsCoordinatorType {
 
     // MARK: - Private methods
     
-    private func showRoom(with roomID: String) {
-        let roomViewController: RoomViewController = RoomViewController.instantiate()
+    private func chat(with userID: String) {
+        self.activityIndicatorPresenter.presentActivityIndicator(on: self.contactsViewController.view, animated: true)
         
-        self.router.push(roomViewController, animated: true, popCompletion: nil)
-        
-        self.activityIndicatorPresenter.presentActivityIndicator(on: roomViewController.view, animated: false)
-        
-        // Present activity indicator when retrieving roomDataSource for given room ID
-        let roomDataSourceManager: MXKRoomDataSourceManager = MXKRoomDataSourceManager.sharedManager(forMatrixSession: self.session)
-        roomDataSourceManager.roomDataSource(forRoom: roomID, create: true, onComplete: { (roomDataSource) in
-            
-            self.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
-            
-            if let roomDataSource = roomDataSource {
-                roomViewController.displayRoom(roomDataSource)
+        let discussionService = DiscussionService(session: session)
+        discussionService.getDiscussionIdentifier(for: userID) { [weak self] response in
+            guard let sself = self else {
+                return
             }
-        })
+            
+            sself.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
+            
+            switch response {
+            case .success(let roomID):
+                if let roomID = roomID {
+                    if let room = sself.session.room(withRoomId: roomID) {
+                        // Check whether this is a pending invite
+                        if room.summary.membership == .invite {
+                            // Accept this invite
+                            sself.joinRoom(with: roomID)
+                        } else {
+                            // Open the current discussion
+                            sself.delegate?.contactsCoordinatorShowRoom(sself, roomID: roomID)
+                        }
+                    } else {
+                        // Unexpected case where we fail to retrieve the room for the returned id
+                        let errorPresentable = ErrorPresentableImpl.init(title: TchapL10n.errorTitleDefault, message: TchapL10n.errorMessageDefault)
+                        sself.contactsErrorPresenter.present(errorPresentable: errorPresentable, animated: true)
+                    }
+                } else {
+                    //TODO: Display a fake room, create the discussion only when an event is sent (#41).
+                }
+            case .failure(let error):
+                let errorPresentable = sself.openDiscussionErrorPresentable(from: error)
+                sself.contactsErrorPresenter.present(errorPresentable: errorPresentable, animated: true)
+            }
+        }
     }
     
     private func joinRoom(with roomID: String) {
@@ -96,7 +121,7 @@ final class ContactsCoordinator: NSObject, ContactsCoordinatorType {
             sself.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
             switch response {
             case .success:
-                sself.showRoom(with: roomID)
+                sself.delegate?.contactsCoordinatorShowRoom(sself, roomID: roomID)
             case .failure(let error):
                 let errorPresentable = sself.joinRoomErrorPresentable(from: error)
                 sself.contactsErrorPresenter.present(errorPresentable: errorPresentable, animated: true)
@@ -157,40 +182,6 @@ extension ContactsCoordinator: ContactsTableViewControllerDelegate {
             return
         }
         
-        self.activityIndicatorPresenter.presentActivityIndicator(on: self.contactsViewController.view, animated: true)
-        
-        let discussionService = DiscussionService(session: session)
-        discussionService.getDiscussionIdentifier(for: userID) { [weak self] response in
-            guard let sself = self else {
-                return
-            }
-            
-            sself.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
-            
-            switch response {
-            case .success(let roomID):
-                if let roomID = roomID {
-                    if let room = sself.session.room(withRoomId: roomID) {
-                        // Check whether this is a pending invite
-                        if room.summary.membership == .invite {
-                            // Accept this invite
-                            sself.joinRoom(with: roomID)
-                        } else {
-                            // Open the current discussion
-                            sself.showRoom(with: roomID)
-                        }
-                    } else {
-                        // Unexpected case where we fail to retrieve the room for the returned id
-                        let errorPresentable = ErrorPresentableImpl.init(title: TchapL10n.errorTitleDefault, message: TchapL10n.errorMessageDefault)
-                        sself.contactsErrorPresenter.present(errorPresentable: errorPresentable, animated: true)
-                    }
-                } else {
-                    //TODO: Display a fake room, create the discussion only when an event is sent (#41).
-                }
-            case .failure(let error):
-                let errorPresentable = sself.openDiscussionErrorPresentable(from: error)
-                sself.contactsErrorPresenter.present(errorPresentable: errorPresentable, animated: true)
-            }
-        }
+        self.chat(with: userID)
     }
 }

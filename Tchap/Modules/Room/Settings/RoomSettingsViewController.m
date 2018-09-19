@@ -174,6 +174,11 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
 
 @implementation RoomSettingsViewController
 
++ (instancetype)instantiate
+{
+    return [RoomSettingsViewController roomSettingsViewController];
+}
+
 - (void)finalizeInit
 {
     [super finalizeInit];
@@ -3083,9 +3088,8 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         {
             // Show the RoomMemberDetailsViewController on this member so that
             // if the user has enough power level, he will be able to unban him
-            RoomMemberDetailsViewController *roomMemberDetailsViewController = [RoomMemberDetailsViewController roomMemberDetailsViewController];
+            RoomMemberDetailsViewController *roomMemberDetailsViewController = [RoomMemberDetailsViewController instantiate];
             [roomMemberDetailsViewController displayRoomMember:bannedMembers[indexPath.row] withMatrixRoom:mxRoom];
-            roomMemberDetailsViewController.delegate = self;
             roomMemberDetailsViewController.enableVoipCall = NO;
             
             [self.parentViewController.navigationController pushViewController:roomMemberDetailsViewController animated:NO];
@@ -3308,13 +3312,6 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
 {
     // this method should not be called
     [self dismissMediaPicker];
-}
-
-#pragma mark - MXKRoomMemberDetailsViewControllerDelegate
-
-- (void)roomMemberDetailsViewController:(MXKRoomMemberDetailsViewController *)roomMemberDetailsViewController startChatWithMemberId:(NSString *)matrixId completion:(void (^)(void))completion
-{
-    [[AppDelegate theDelegate] createDirectChatWithUserId:matrixId completion:completion];
 }
 
 #pragma mark - actions

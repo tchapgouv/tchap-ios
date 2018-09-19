@@ -181,7 +181,10 @@
     }];
     [self userInterfaceThemeDidChange];
     
-    [self setupGlobalSearchBar];
+    if (self.globalSearchBar)
+    {
+        [self setupGlobalSearchBar];
+    }
 }
 
 - (void)userInterfaceThemeDidChange

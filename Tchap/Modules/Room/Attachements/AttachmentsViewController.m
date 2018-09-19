@@ -58,14 +58,18 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    self.view.backgroundColor = kRiotPrimaryBgColor;
-    self.defaultBarTintColor = kRiotSecondaryBgColor;
-    self.barTitleColor = kRiotPrimaryTextColor;
+    self.view.backgroundColor = kVariant1SecondaryBgColor;
+    
+    self.defaultBarTintColor = kVariant1PrimaryBgColor;
+    self.barTitleColor = kVariant1PrimaryTextColor;
+    
+    // @TODO Design the activvity indicator for Tchap
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
-    self.navigationBar.tintColor = kRiotSecondaryBgColor;
-    self.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: kRiotPrimaryTextColor};
-    self.backButton.tintColor = kRiotColorGreen;
+    self.navigationBar.barTintColor = kVariant1PrimaryBgColor;
+    self.navigationBar.tintColor = kVariant1ActionColor;
+    self.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: kVariant1PrimaryTextColor};
+    self.backButton.tintColor = kVariant1ActionColor;
 }
 
 - (void)viewWillAppear:(BOOL)animated

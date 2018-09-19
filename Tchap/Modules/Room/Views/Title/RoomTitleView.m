@@ -27,6 +27,11 @@
                           bundle:[NSBundle bundleForClass:[RoomTitleView class]]];
 }
 
++ (instancetype)instantiate
+{
+    return [RoomTitleView roomTitleView];
+}
+
 - (void)dealloc
 {
     _roomPreviewData = nil;
