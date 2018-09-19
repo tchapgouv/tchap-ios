@@ -69,6 +69,7 @@ final class PublicRoomsDataSource: NSObject {
     }
     
     func search(with searchText: String?) {
+        self.searchText = searchText
         self.searchTextSubject.onNext(searchText)
     }
     
@@ -87,6 +88,7 @@ final class PublicRoomsDataSource: NSObject {
         .distinctUntilChanged() // Emits only if search text change
         .do(onNext: { [unowned self] _ in
             self.state = MXKDataSourceStatePreparing
+            self.updateRooms(publicRooms: [])
         })
         .flatMapLatest({ [unowned self] (searchText) -> Observable<[MXPublicRoom]> in
             // flatMapLatest cancel subscriptions for any previous Observable. Cancel any previous public rooms requests.
@@ -94,7 +96,7 @@ final class PublicRoomsDataSource: NSObject {
             .map({ (publicRooms) -> [MXPublicRoom] in
                 // Sort public rooms by name
                 return publicRooms.sorted(by: { (item1, item2) -> Bool in
-                    return item1.name.localizedCaseInsensitiveCompare(item2.name) == .orderedDescending
+                    return item1.name.localizedCaseInsensitiveCompare(item2.name) == .orderedAscending
                 })
             })
         })
@@ -165,13 +167,14 @@ extension PublicRoomsDataSource: UITableViewDataSource {
                     } else {
                         cellText = NSLocalizedString("room_directory_no_public_room", tableName: "Vector", bundle: Bundle.main, value: "", comment: "")
                     }
-                default:
+                case MXKDataSourceStatePreparing:
                     if self.hasSearchText {
                         cellText = NSLocalizedString("search_in_progress", tableName: "Vector", bundle: Bundle.main, value: "", comment: "")
                     } else {
-                        // Show nothing in other cases
-                        cellText = ""
+                        cellText = TchapL10n.publicRoomsLoadingInProgress
                     }
+                default:
+                    cellText = ""
                 }
                 
                 tableViewCell.textLabel?.text = cellText

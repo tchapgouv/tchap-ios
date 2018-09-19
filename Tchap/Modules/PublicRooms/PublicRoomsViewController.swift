@@ -61,7 +61,7 @@ final class PublicRoomsViewController: UITableViewController {
         self.setupViews()
         self.setupDataSource()
         
-        self.publicRoomsDataSource.search(with: nil)
+        self.publicRoomsDataSource.search(with: "")
     }
     
     override func viewWillAppear(_ animated: Bool) {
