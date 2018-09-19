@@ -1,5 +1,5 @@
 /*
- Copyright 2016 OpenMarket Ltd
+ Copyright 2018 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -14,19 +14,9 @@
  limitations under the License.
  */
 
-#import "RoomTitleView.h"
+#import <MatrixKit/MatrixKit.h>
 
-@interface PreviewRoomTitleView : RoomTitleView
-
-@property (weak, nonatomic) IBOutlet UIView *mainHeaderBackground;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *mainHeaderBackgroundHeightConstraint;
-
-@property (weak, nonatomic) IBOutlet UIView *mainHeaderContainer;
-
-@property (weak, nonatomic) IBOutlet MXKImageView *roomAvatar;
-@property (weak, nonatomic) IBOutlet UITextView *roomTopic;
-@property (weak, nonatomic) IBOutlet UILabel *roomMembers;
-@property (weak, nonatomic) IBOutlet UIView *roomMembersDetailsIcon;
+@interface PreviewView : MXKView
 
 @property (weak, nonatomic) IBOutlet UILabel *previewLabel;
 @property (weak, nonatomic) IBOutlet UIView *buttonsContainer;
@@ -35,7 +25,21 @@
 @property (weak, nonatomic) IBOutlet UILabel *subNoticeLabel;
 @property (weak, nonatomic) IBOutlet UIView *bottomBorderView;
 
-@property (nonatomic) NSString *roomAvatarURL;
-@property (nonatomic) UIImage  *roomAvatarPlaceholder;
+@property (nonatomic) NSString *roomName;
+
+/**
+ *  Returns the `UINib` object initialized for the room preview view.
+ *
+ *  @return The initialized `UINib` object or `nil` if there were errors during
+ *  initialization or the nib file could not be located.
+ */
++ (UINib *)nib;
+
+/**
+ Creates and returns a new `PreviewView` object.
+ 
+ @return An initialized `PreviewView` object.
+ */
++ (instancetype)instantiate;
 
 @end

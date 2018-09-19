@@ -45,7 +45,7 @@ final class SegmentedViewCoordinator: NSObject, SegmentedViewCoordinatorType {
     
     func start() {
         let roomsCoordinator = RoomsCoordinator(router: self.navigationRouter, session: self.session)
-        let contactsCoordinator = ContactsCoordinator(session: self.session)
+        let contactsCoordinator = ContactsCoordinator(router: self.navigationRouter, session: self.session)
         
         self.add(childCoordinator: roomsCoordinator)
         self.add(childCoordinator: contactsCoordinator)
@@ -118,7 +118,7 @@ final class SegmentedViewCoordinator: NSObject, SegmentedViewCoordinatorType {
 
 // MARK: - GlobalSearchBarDelegate
 extension SegmentedViewCoordinator: GlobalSearchBarDelegate {
-    func globalSearchBar(_ globalSearchBar: GlobalSearchBar, textDidChange searchText: String) {
+    func globalSearchBar(_ globalSearchBar: GlobalSearchBar, textDidChange searchText: String?) {
         self.roomsCoordinator?.updateSearchText(searchText)
         self.contactsCoordinator?.updateSearchText(searchText)
     }

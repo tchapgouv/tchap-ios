@@ -1,6 +1,7 @@
 /*
  Copyright 2014 OpenMarket Ltd
  Copyright 2017 Vector Creations Ltd
+ Copyright 2018 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -29,12 +30,9 @@
 
 @interface RoomViewController : MXKRoomViewController <UISearchBarDelegate, UIGestureRecognizerDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate>
 
-// The expanded header
-@property (weak, nonatomic) IBOutlet UIView *expandedHeaderContainer;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *expandedHeaderContainerHeightConstraint;
-
 // The preview header
 @property (weak, nonatomic) IBOutlet UIView *previewHeaderContainer;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *previewHeaderContainerTopConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *previewHeaderContainerHeightConstraint;
 
 // The jump to last unread banner
@@ -43,14 +41,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *jumpToLastUnreadButton;
 @property (weak, nonatomic) IBOutlet UILabel *jumpToLastUnreadLabel;
 @property (weak, nonatomic) IBOutlet UIButton *resetReadMarkerButton;
-
-/**
- Force the display of the expanded header.
- The default value is NO: this expanded header is hidden on new instantiated RoomViewController object.
- 
- When this property is YES, the expanded header is forced each time the view controller appears.
- */
-@property (nonatomic) BOOL showExpandedHeader;
 
 /**
  Preview data for a room invitation received by email, or a link to a room.

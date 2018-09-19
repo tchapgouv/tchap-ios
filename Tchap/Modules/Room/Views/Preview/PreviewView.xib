@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="Cpa-Xt-cwB" customClass="PreviewView">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="140"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gIX-nY-f6M">
+                    <rect key="frame" x="280" y="24" width="41" height="20"/>
+                    <accessibility key="accessibilityConfiguration" identifier="PreviewLabel"/>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WmW-5h-jL1" userLabel="buttonsContainer">
+                    <rect key="frame" x="60" y="61" width="480" height="30"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="osd-JP-2az" userLabel="Left Button">
+                            <rect key="frame" x="0.0" y="0.0" width="230" height="30"/>
+                            <color key="backgroundColor" red="0.6886889638" green="1" blue="0.74383144840000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <accessibility key="accessibilityConfiguration" identifier="LeftButton"/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                            <state key="normal" title="Left button">
+                                <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="461-vO-hLZ" userLabel="Right Button">
+                            <rect key="frame" x="250" y="0.0" width="230" height="30"/>
+                            <color key="backgroundColor" red="0.6886889638" green="1" blue="0.74383144840000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <accessibility key="accessibilityConfiguration" identifier="RightButton"/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                            <state key="normal" title="Right Button">
+                                <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                        </button>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="osd-JP-2az" firstAttribute="width" secondItem="WmW-5h-jL1" secondAttribute="width" multiplier="0.48" id="Adt-wu-iJh"/>
+                        <constraint firstItem="461-vO-hLZ" firstAttribute="height" secondItem="WmW-5h-jL1" secondAttribute="height" id="Dej-B9-fae"/>
+                        <constraint firstItem="osd-JP-2az" firstAttribute="leading" secondItem="WmW-5h-jL1" secondAttribute="leading" id="EDF-zP-qnv"/>
+                        <constraint firstAttribute="height" constant="30" id="I6E-8A-bDh"/>
+                        <constraint firstItem="461-vO-hLZ" firstAttribute="width" secondItem="WmW-5h-jL1" secondAttribute="width" multiplier="0.48" id="Ojm-gJ-cqD"/>
+                        <constraint firstAttribute="trailing" secondItem="461-vO-hLZ" secondAttribute="trailing" id="PaD-1h-FPr"/>
+                        <constraint firstItem="461-vO-hLZ" firstAttribute="top" secondItem="WmW-5h-jL1" secondAttribute="top" id="q34-ZM-ZO4"/>
+                        <constraint firstItem="osd-JP-2az" firstAttribute="top" secondItem="WmW-5h-jL1" secondAttribute="top" id="sEC-cd-zNV"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="sHS-U2-VkI"/>
+                        <constraint firstItem="osd-JP-2az" firstAttribute="height" secondItem="WmW-5h-jL1" secondAttribute="height" id="zHG-qI-kwU"/>
+                    </constraints>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IwA-0X-IYb">
+                    <rect key="frame" x="281" y="108" width="38" height="18"/>
+                    <accessibility key="accessibilityConfiguration" identifier="SubNoticeLabel"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BCO-DT-F0C">
+                    <rect key="frame" x="0.0" y="139" width="600" height="1"/>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <accessibility key="accessibilityConfiguration" identifier="BottomBorderView"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="LTH-xc-zcs"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <accessibility key="accessibilityConfiguration" identifier="RoomTitle"/>
+            <constraints>
+                <constraint firstItem="IwA-0X-IYb" firstAttribute="top" secondItem="WmW-5h-jL1" secondAttribute="bottom" constant="17" id="0ft-2Y-gk3"/>
+                <constraint firstAttribute="trailing" secondItem="WmW-5h-jL1" secondAttribute="trailing" constant="60" id="1b7-i7-NOb"/>
+                <constraint firstItem="gIX-nY-f6M" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Cpa-Xt-cwB" secondAttribute="leading" constant="31" id="7Kn-g9-Ya6"/>
+                <constraint firstItem="WmW-5h-jL1" firstAttribute="leading" secondItem="Cpa-Xt-cwB" secondAttribute="leading" constant="60" id="8dy-U2-a3G"/>
+                <constraint firstItem="BCO-DT-F0C" firstAttribute="top" secondItem="IwA-0X-IYb" secondAttribute="bottom" constant="13" id="G2S-aH-ycH"/>
+                <constraint firstItem="BCO-DT-F0C" firstAttribute="leading" secondItem="Cpa-Xt-cwB" secondAttribute="leading" id="H07-HA-2Px"/>
+                <constraint firstAttribute="trailing" secondItem="BCO-DT-F0C" secondAttribute="trailing" id="Izl-ms-lGJ"/>
+                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="gIX-nY-f6M" secondAttribute="trailing" constant="31" id="Ljb-d3-KKM"/>
+                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="IwA-0X-IYb" secondAttribute="trailing" constant="31" id="iGR-eh-0e9"/>
+                <constraint firstItem="WmW-5h-jL1" firstAttribute="top" secondItem="gIX-nY-f6M" secondAttribute="bottom" constant="17" id="ioD-jo-XQe"/>
+                <constraint firstItem="IwA-0X-IYb" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Cpa-Xt-cwB" secondAttribute="leading" constant="31" id="lpD-yd-qgt"/>
+                <constraint firstItem="gIX-nY-f6M" firstAttribute="top" secondItem="Cpa-Xt-cwB" secondAttribute="top" constant="24" id="qwA-2S-BIP"/>
+                <constraint firstItem="IwA-0X-IYb" firstAttribute="centerX" secondItem="Cpa-Xt-cwB" secondAttribute="centerX" id="tJ8-2s-eo2"/>
+                <constraint firstItem="gIX-nY-f6M" firstAttribute="centerX" secondItem="Cpa-Xt-cwB" secondAttribute="centerX" id="ydM-eo-gTg"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="bottomBorderView" destination="BCO-DT-F0C" id="nfI-Pk-0et"/>
+                <outlet property="buttonsContainer" destination="WmW-5h-jL1" id="X5t-T9-BT5"/>
+                <outlet property="leftButton" destination="osd-JP-2az" id="HrL-Qy-UDt"/>
+                <outlet property="previewLabel" destination="gIX-nY-f6M" id="Bxi-6M-rTb"/>
+                <outlet property="rightButton" destination="461-vO-hLZ" id="u8R-Rg-WAv"/>
+                <outlet property="subNoticeLabel" destination="IwA-0X-IYb" id="aUb-Pt-V44"/>
+            </connections>
+        </view>
+    </objects>
+</document>

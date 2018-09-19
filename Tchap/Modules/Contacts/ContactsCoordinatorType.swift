@@ -22,6 +22,6 @@ protocol ContactsCoordinatorType: Coordinator, Presentable {
     /// Update contacts search text and update contacts display list.
     ///
     /// - Parameters:
-    ///   - searchText: The search text used to perform contacts filtering.
-    func updateSearchText(_ searchText: String)
+    ///   - searchText: The search text used to perform contacts filtering. Set nil to cancel the filtering.
+    func updateSearchText(_ searchText: String?)
 }

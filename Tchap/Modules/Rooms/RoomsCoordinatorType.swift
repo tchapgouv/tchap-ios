@@ -22,6 +22,6 @@ protocol RoomsCoordinatorType: Coordinator, Presentable {
     /// Update rooms search text and update rooms display list.
     ///
     /// - Parameters:
-    ///   - searchText: The search text used to perform rooms filtering.
-    func updateSearchText(_ searchText: String)
+    ///   - searchText: The search text used to perform rooms filtering. Set nil to cancel the filtering.
+    func updateSearchText(_ searchText: String?)
 }

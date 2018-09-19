@@ -1,5 +1,5 @@
 /*
- Copyright 2016 OpenMarket Ltd
+ Copyright 2018 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -14,17 +14,8 @@
  limitations under the License.
  */
 
-#import "RoomTitleView.h"
+import Foundation
 
-@interface ExpandedRoomTitleView : RoomTitleView
-
-@property (weak, nonatomic) IBOutlet MXKImageView *roomAvatar;
-@property (weak, nonatomic) IBOutlet UIView *roomAvatarHeaderBackground;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *roomAvatarHeaderBackgroundHeightConstraint;
-
-@property (weak, nonatomic) IBOutlet UILabel *roomTopic;
-@property (weak, nonatomic) IBOutlet UILabel *roomMembers;
-
-@property (weak, nonatomic) IBOutlet UIView *bottomBorderView;
-
-@end
+/// `RoomCoordinatorType` is a protocol describing a Coordinator that handle the room navigation flow.
+protocol RoomCoordinatorType: Coordinator, Presentable {
+}

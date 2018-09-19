@@ -9,10 +9,10 @@ source 'https://github.com/CocoaPods/Specs.git'
 
 # Different flavours of pods to MatrixKit
 # The current MatrixKit pod version
-$matrixKitVersion = '0.8.3'
+#$matrixKitVersion = '0.8.3'
 
 # The develop branch version
-#$matrixKitVersion = 'develop'
+$matrixKitVersion = 'develop'
 
 # The one used for developing both MatrixSDK and MatrixKit
 # Note that MatrixSDK must be cloned into a folder called matrix-ios-sdk next to the MatrixKit folder
