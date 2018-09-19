@@ -9,6 +9,7 @@
 #import "SegmentedViewController.h"
 #import "RoomsViewController.h"
 #import "RoomsDataSource.h"
+#import "PublicRoomTableViewCell.h"
 #import "PeopleViewController.h"
 #import "RecentsDataSource.h"
 #import "SettingsViewController.h"
