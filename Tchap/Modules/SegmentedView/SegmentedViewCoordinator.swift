@@ -16,7 +16,7 @@
 
 import Foundation
 
-final class SegmentedViewCoordinator: SegmentedViewCoordinatorType {        
+final class SegmentedViewCoordinator: NSObject, SegmentedViewCoordinatorType {
     
     // MARK: - Properties
     
@@ -57,7 +57,7 @@ final class SegmentedViewCoordinator: SegmentedViewCoordinatorType {
         
         let segmentedViewController = self.createSegmentedViewController(with: viewControllers, and: globalSearchBar)
         segmentedViewController.tc_removeBackTitle()
-        
+        segmentedViewController.delegate = self
         
         self.navigationRouter.setRootModule(segmentedViewController)
         
@@ -107,6 +107,13 @@ final class SegmentedViewCoordinator: SegmentedViewCoordinatorType {
         
         return segmentedViewController
     }
+    
+    private func showPublicRooms() {
+        let publicRoomsCoordinator = PublicRoomsCoordinator(session: self.session)
+        self.add(childCoordinator: publicRoomsCoordinator)
+        self.navigationRouter.present(publicRoomsCoordinator, animated: true)
+        publicRoomsCoordinator.delegate = self
+    }
 }
 
 // MARK: - GlobalSearchBarDelegate
@@ -114,5 +121,31 @@ extension SegmentedViewCoordinator: GlobalSearchBarDelegate {
     func globalSearchBar(_ globalSearchBar: GlobalSearchBar, textDidChange searchText: String) {
         self.roomsCoordinator?.updateSearchText(searchText)
         self.contactsCoordinator?.updateSearchText(searchText)
+    }
+}
+
+// MARK: - SegmentedViewControllerDelegate
+extension SegmentedViewCoordinator: SegmentedViewControllerDelegate {
+    
+    func segmentedViewControllerDidTapStartChatButton(_ segmentedViewController: SegmentedViewController!) {
+        
+    }
+    
+    func segmentedViewControllerDidTapCreateRoomButton(_ segmentedViewController: SegmentedViewController!) {
+        
+    }
+    
+    func segmentedViewControllerDidTapPublicRoomsAccessButton(_ segmentedViewController: SegmentedViewController!) {
+        self.showPublicRooms()
+    }
+}
+
+// MARK: - PublicRoomsCoordinatorDelegate
+extension SegmentedViewCoordinator: PublicRoomsCoordinatorDelegate {
+    
+    func publicRoomsCoordinatorDidCancel(_ publicRoomsCoordinator: PublicRoomsCoordinator) {
+        self.navigationRouter.dismissModule(animated: true) { [weak self] in
+            self?.remove(childCoordinator: publicRoomsCoordinator)
+        }
     }
 }
