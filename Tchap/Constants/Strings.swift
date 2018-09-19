@@ -7,7 +7,7 @@ import Foundation
 
 // swiftlint:disable identifier_name line_length type_body_length
 internal enum TchapL10n {
-  /// Cancel
+  /// Annuler
   internal static let actionCancel = TchapL10n.tr("Tchap", "action_cancel")
   /// Suivant
   internal static let actionNext = TchapL10n.tr("Tchap", "action_next")
@@ -59,6 +59,8 @@ internal enum TchapL10n {
   internal static let errorMessageDefault = TchapL10n.tr("Tchap", "error_message_default")
   /// Erreur
   internal static let errorTitleDefault = TchapL10n.tr("Tchap", "error_title_default")
+  /// Chargement en cours…
+  internal static let publicRoomsLoadingInProgress = TchapL10n.tr("Tchap", "public_rooms_loading_in_progress")
   /// Rechercher
   internal static let publicRoomsSearchBarPlaceholder = TchapL10n.tr("Tchap", "public_rooms_search_bar_placeholder")
   /// Accéder à un salon

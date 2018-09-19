@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Actions
 "action_next" = "Suivant";
-"action_cancel" = "Cancel";
+"action_cancel" = "Annuler";
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Common errors
@@ -67,3 +67,4 @@
 // MARK: Public rooms
 "public_rooms_title" = "Accéder à un salon";
 "public_rooms_search_bar_placeholder" = "Rechercher";
+"public_rooms_loading_in_progress" = "Chargement en cours…";
