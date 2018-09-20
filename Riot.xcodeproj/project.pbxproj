@@ -142,8 +142,6 @@
 		0250C49F2122B68000034691 /* MediaAlbumContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556F020EE6C4C00210D55 /* MediaAlbumContentViewController.m */; };
 		0250C4A02122B68000034691 /* WidgetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5598420EFC3DF00210D55 /* WidgetManager.m */; };
 		0250C4A32122B68000034691 /* StartChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556E220EE6C4C00210D55 /* StartChatViewController.m */; };
-		0250C4A42122B68000034691 /* HomeMessagesSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5570F20EE6C4C00210D55 /* HomeMessagesSearchViewController.m */; };
-		0250C4A62122B68000034691 /* PeopleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556E820EE6C4C00210D55 /* PeopleViewController.m */; };
 		0250C4A72122B68000034691 /* Widget.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5598320EFC3DF00210D55 /* Widget.m */; };
 		0250C4A82122B68000034691 /* MessagesSearchResultAttachmentBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B557E020EF60B900210D55 /* MessagesSearchResultAttachmentBubbleCell.m */; };
 		0250C4A92122B68000034691 /* CallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556DF20EE6C4C00210D55 /* CallViewController.m */; };
@@ -178,7 +176,6 @@
 		0250C4E92122B68000034691 /* GroupRoomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5583B20EF6E7F00210D55 /* GroupRoomTableViewCell.m */; };
 		0250C4EC2122B68000034691 /* GroupInviteTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5578B20EF568D00210D55 /* GroupInviteTableViewCell.m */; };
 		0250C4ED2122B68000034691 /* ForgotPasswordInputsView.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5579420EF575A00210D55 /* ForgotPasswordInputsView.m */; };
-		0250C4EF2122B68000034691 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5568520EE6C4C00210D55 /* HomeViewController.m */; };
 		0250C4F02122B68000034691 /* UnifiedSearchRecentsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932E920F3C39000746532 /* UnifiedSearchRecentsDataSource.m */; };
 		0250C4F12122B68000034691 /* FilesSearchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B557DC20EF5FBA00210D55 /* FilesSearchTableViewCell.m */; };
 		0250C4F22122B68000034691 /* SegmentedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556D720EE6C4C00210D55 /* SegmentedViewController.m */; };
@@ -203,7 +200,6 @@
 		0250C50F2122B68000034691 /* RoomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5596420EF9E9A00210D55 /* RoomTableViewCell.m */; };
 		0250C5132122B68000034691 /* CountryPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5567A20EE6C4C00210D55 /* CountryPickerViewController.m */; };
 		0250C5142122B68000034691 /* GDPRConsentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17982FE2119FED2001FD722 /* GDPRConsentViewController.swift */; };
-		0250C5152122B68000034691 /* UnifiedSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5571120EE6C4C00210D55 /* UnifiedSearchViewController.m */; };
 		0250C5192122B68000034691 /* MXSession+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = 926FA53E1F4C132000F826C2 /* MXSession+Riot.m */; };
 		0250C51C2122B68000034691 /* DirectoryServerDetailTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B557C420EF5CD400210D55 /* DirectoryServerDetailTableViewCell.m */; };
 		0250C51E2122B68000034691 /* UsersDevicesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556E520EE6C4C00210D55 /* UsersDevicesViewController.m */; };
@@ -221,7 +217,6 @@
 		0250C5312122B68000034691 /* RoomEmailInvitation.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBFC1E7009EC00A9B29C /* RoomEmailInvitation.m */; };
 		0250C5342122B68000034691 /* RiotSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556EB20EE6C4C00210D55 /* RiotSplitViewController.m */; };
 		0250C5352122B68000034691 /* DirectoryServerPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556F720EE6C4C00210D55 /* DirectoryServerPickerViewController.m */; };
-		0250C5362122B68000034691 /* HomeFilesSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5571420EE6C4C00210D55 /* HomeFilesSearchViewController.m */; };
 		0250C5392122B68000034691 /* HomeMessagesSearchDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932E620F3C37100746532 /* HomeMessagesSearchDataSource.m */; };
 		0250C53B2122B68000034691 /* CircleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5577B20EE84BE00210D55 /* CircleButton.m */; };
 		0250C53D2122B68000034691 /* TableViewCellWithPhoneNumberTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5590E20EF782800210D55 /* TableViewCellWithPhoneNumberTextField.m */; };
@@ -400,12 +395,13 @@
 		B1892E792130528600742348 /* ErrorPresentableImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1892E772130528500742348 /* ErrorPresentableImpl.swift */; };
 		B1892E7B21306ADC00742348 /* FormTextViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1892E7A21306ADC00742348 /* FormTextViewModel.swift */; };
 		B1892E7D2130719500742348 /* TextInputHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1892E7C2130719500742348 /* TextInputHandler.swift */; };
+		B18D18C42153E68A003677D1 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18D18C32153E68A003677D1 /* HomeViewController.swift */; };
+		B18D18C62153EA32003677D1 /* HomeViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B18D18C52153EA32003677D1 /* HomeViewController.storyboard */; };
 		B1B5571820EE6C4D00210D55 /* CountryPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5567A20EE6C4C00210D55 /* CountryPickerViewController.m */; };
 		B1B5571920EE6C4D00210D55 /* LanguagePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5567C20EE6C4C00210D55 /* LanguagePickerViewController.m */; };
 		B1B5571A20EE6C4D00210D55 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5567E20EE6C4C00210D55 /* SettingsViewController.m */; };
 		B1B5571B20EE6C4D00210D55 /* DeactivateAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5568120EE6C4C00210D55 /* DeactivateAccountViewController.m */; };
 		B1B5571C20EE6C4D00210D55 /* DeactivateAccountViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B1B5568320EE6C4C00210D55 /* DeactivateAccountViewController.storyboard */; };
-		B1B5571D20EE6C4D00210D55 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5568520EE6C4C00210D55 /* HomeViewController.m */; };
 		B1B5571E20EE6C4D00210D55 /* ContactDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5568820EE6C4C00210D55 /* ContactDetailsViewController.m */; };
 		B1B5571F20EE6C4D00210D55 /* ContactDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5568A20EE6C4C00210D55 /* ContactDetailsViewController.xib */; };
 		B1B5572020EE6C4D00210D55 /* ContactsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5568C20EE6C4C00210D55 /* ContactsTableViewController.m */; };
@@ -433,7 +429,6 @@
 		B1B5574520EE6C4D00210D55 /* StartChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556E220EE6C4C00210D55 /* StartChatViewController.m */; };
 		B1B5574620EE6C4D00210D55 /* StartChatViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B556E320EE6C4C00210D55 /* StartChatViewController.xib */; };
 		B1B5574720EE6C4D00210D55 /* UsersDevicesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556E520EE6C4C00210D55 /* UsersDevicesViewController.m */; };
-		B1B5574820EE6C4D00210D55 /* PeopleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556E820EE6C4C00210D55 /* PeopleViewController.m */; };
 		B1B5574920EE6C4D00210D55 /* RiotSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556EB20EE6C4C00210D55 /* RiotSplitViewController.m */; };
 		B1B5574A20EE6C4D00210D55 /* MediaPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556EF20EE6C4C00210D55 /* MediaPickerViewController.m */; };
 		B1B5574B20EE6C4D00210D55 /* MediaAlbumContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556F020EE6C4C00210D55 /* MediaAlbumContentViewController.m */; };
@@ -442,9 +437,6 @@
 		B1B5574E20EE6C4D00210D55 /* DirectoryServerPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556F720EE6C4C00210D55 /* DirectoryServerPickerViewController.m */; };
 		B1B5574F20EE6C4D00210D55 /* RoomsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556F820EE6C4C00210D55 /* RoomsViewController.m */; };
 		B1B5575220EE6C4D00210D55 /* RoomKeyRequestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556FE20EE6C4C00210D55 /* RoomKeyRequestViewController.m */; };
-		B1B5575920EE6C4D00210D55 /* HomeMessagesSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5570F20EE6C4C00210D55 /* HomeMessagesSearchViewController.m */; };
-		B1B5575A20EE6C4D00210D55 /* UnifiedSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5571120EE6C4C00210D55 /* UnifiedSearchViewController.m */; };
-		B1B5575B20EE6C4D00210D55 /* HomeFilesSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5571420EE6C4C00210D55 /* HomeFilesSearchViewController.m */; };
 		B1B5575C20EE6C4D00210D55 /* DirectoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5571620EE6C4C00210D55 /* DirectoryViewController.m */; };
 		B1B5576F20EE702800210D55 /* IntegrationManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5576020EE702800210D55 /* IntegrationManagerViewController.m */; };
 		B1B5577020EE702800210D55 /* WidgetPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5576220EE702800210D55 /* WidgetPickerViewController.m */; };
@@ -1026,6 +1018,8 @@
 		B1892E772130528500742348 /* ErrorPresentableImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorPresentableImpl.swift; sourceTree = "<group>"; };
 		B1892E7A21306ADC00742348 /* FormTextViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormTextViewModel.swift; sourceTree = "<group>"; };
 		B1892E7C2130719500742348 /* TextInputHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInputHandler.swift; sourceTree = "<group>"; };
+		B18D18C32153E68A003677D1 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		B18D18C52153EA32003677D1 /* HomeViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = HomeViewController.storyboard; sourceTree = "<group>"; };
 		B1B5567920EE6C4C00210D55 /* CountryPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountryPickerViewController.h; sourceTree = "<group>"; };
 		B1B5567A20EE6C4C00210D55 /* CountryPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountryPickerViewController.m; sourceTree = "<group>"; };
 		B1B5567C20EE6C4C00210D55 /* LanguagePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LanguagePickerViewController.m; sourceTree = "<group>"; };
@@ -1035,8 +1029,6 @@
 		B1B5568120EE6C4C00210D55 /* DeactivateAccountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeactivateAccountViewController.m; sourceTree = "<group>"; };
 		B1B5568220EE6C4C00210D55 /* DeactivateAccountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeactivateAccountViewController.h; sourceTree = "<group>"; };
 		B1B5568320EE6C4C00210D55 /* DeactivateAccountViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DeactivateAccountViewController.storyboard; sourceTree = "<group>"; };
-		B1B5568520EE6C4C00210D55 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
-		B1B5568620EE6C4C00210D55 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
 		B1B5568820EE6C4C00210D55 /* ContactDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactDetailsViewController.m; sourceTree = "<group>"; };
 		B1B5568920EE6C4C00210D55 /* ContactsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsTableViewController.h; sourceTree = "<group>"; };
 		B1B5568A20EE6C4C00210D55 /* ContactDetailsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactDetailsViewController.xib; sourceTree = "<group>"; };
@@ -1080,8 +1072,6 @@
 		B1B556E320EE6C4C00210D55 /* StartChatViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StartChatViewController.xib; sourceTree = "<group>"; };
 		B1B556E520EE6C4C00210D55 /* UsersDevicesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UsersDevicesViewController.m; sourceTree = "<group>"; };
 		B1B556E620EE6C4C00210D55 /* UsersDevicesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UsersDevicesViewController.h; sourceTree = "<group>"; };
-		B1B556E820EE6C4C00210D55 /* PeopleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PeopleViewController.m; sourceTree = "<group>"; };
-		B1B556E920EE6C4C00210D55 /* PeopleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeopleViewController.h; sourceTree = "<group>"; };
 		B1B556EB20EE6C4C00210D55 /* RiotSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RiotSplitViewController.m; sourceTree = "<group>"; };
 		B1B556EC20EE6C4C00210D55 /* RiotSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RiotSplitViewController.h; sourceTree = "<group>"; };
 		B1B556EE20EE6C4C00210D55 /* MediaAlbumContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaAlbumContentViewController.h; sourceTree = "<group>"; };
@@ -1096,12 +1086,6 @@
 		B1B556F820EE6C4C00210D55 /* RoomsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomsViewController.m; sourceTree = "<group>"; };
 		B1B556FE20EE6C4C00210D55 /* RoomKeyRequestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomKeyRequestViewController.m; sourceTree = "<group>"; };
 		B1B556FF20EE6C4C00210D55 /* RoomKeyRequestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomKeyRequestViewController.h; sourceTree = "<group>"; };
-		B1B5570E20EE6C4C00210D55 /* HomeMessagesSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeMessagesSearchViewController.h; sourceTree = "<group>"; };
-		B1B5570F20EE6C4C00210D55 /* HomeMessagesSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeMessagesSearchViewController.m; sourceTree = "<group>"; };
-		B1B5571020EE6C4C00210D55 /* UnifiedSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnifiedSearchViewController.h; sourceTree = "<group>"; };
-		B1B5571120EE6C4C00210D55 /* UnifiedSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnifiedSearchViewController.m; sourceTree = "<group>"; };
-		B1B5571320EE6C4C00210D55 /* HomeFilesSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeFilesSearchViewController.h; sourceTree = "<group>"; };
-		B1B5571420EE6C4C00210D55 /* HomeFilesSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeFilesSearchViewController.m; sourceTree = "<group>"; };
 		B1B5571620EE6C4C00210D55 /* DirectoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DirectoryViewController.m; sourceTree = "<group>"; };
 		B1B5571720EE6C4C00210D55 /* DirectoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryViewController.h; sourceTree = "<group>"; };
 		B1B5576020EE702800210D55 /* IntegrationManagerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IntegrationManagerViewController.m; sourceTree = "<group>"; };
@@ -2362,8 +2346,6 @@
 		B1B5568420EE6C4C00210D55 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				B1B5568620EE6C4C00210D55 /* HomeViewController.h */,
-				B1B5568520EE6C4C00210D55 /* HomeViewController.m */,
 				B1B5593D20EF7BD000210D55 /* Views */,
 			);
 			path = Home;
@@ -2553,8 +2535,6 @@
 		B1B556E720EE6C4C00210D55 /* People */ = {
 			isa = PBXGroup;
 			children = (
-				B1B556E920EE6C4C00210D55 /* PeopleViewController.h */,
-				B1B556E820EE6C4C00210D55 /* PeopleViewController.m */,
 				B1B5597120EFB02900210D55 /* Views */,
 			);
 			path = People;
@@ -2614,8 +2594,6 @@
 		B1B5570C20EE6C4C00210D55 /* GlobalSearch */ = {
 			isa = PBXGroup;
 			children = (
-				B1B5571020EE6C4C00210D55 /* UnifiedSearchViewController.h */,
-				B1B5571120EE6C4C00210D55 /* UnifiedSearchViewController.m */,
 				B16932E320F3C12B00746532 /* DataSources */,
 				B1B5582720EF666100210D55 /* Views */,
 				B1B5571520EE6C4C00210D55 /* Rooms */,
@@ -2628,8 +2606,6 @@
 		B1B5570D20EE6C4C00210D55 /* Messages */ = {
 			isa = PBXGroup;
 			children = (
-				B1B5570E20EE6C4C00210D55 /* HomeMessagesSearchViewController.h */,
-				B1B5570F20EE6C4C00210D55 /* HomeMessagesSearchViewController.m */,
 				B16932E420F3C29100746532 /* DataSources */,
 				B1B557DF20EF60B900210D55 /* Views */,
 			);
@@ -2639,8 +2615,6 @@
 		B1B5571220EE6C4C00210D55 /* Files */ = {
 			isa = PBXGroup;
 			children = (
-				B1B5571320EE6C4C00210D55 /* HomeFilesSearchViewController.h */,
-				B1B5571420EE6C4C00210D55 /* HomeFilesSearchViewController.m */,
 				B16932EB20F3C39A00746532 /* CellData */,
 				B1B557D920EF5FBA00210D55 /* Views */,
 			);
@@ -3043,6 +3017,8 @@
 			children = (
 				B1F2AA7E212AEC800077FDC0 /* SegmentedViewCoordinatorType.swift */,
 				B1F2AA7F212AEC800077FDC0 /* SegmentedViewCoordinator.swift */,
+				B18D18C32153E68A003677D1 /* HomeViewController.swift */,
+				B18D18C52153EA32003677D1 /* HomeViewController.storyboard */,
 			);
 			path = SegmentedView;
 			sourceTree = "<group>";
@@ -3554,6 +3530,7 @@
 				020DF999214BE467003DFBA4 /* RoomOutgoingAttachmentBubbleCell.xib in Resources */,
 				0250C5752122B68000034691 /* third_party_licenses.html in Resources */,
 				0250C5762122B68000034691 /* GroupParticipantsViewController.xib in Resources */,
+				B18D18C62153EA32003677D1 /* HomeViewController.storyboard in Resources */,
 				0250C5772122B68000034691 /* GroupHomeViewController.xib in Resources */,
 				0250C57A2122B68000034691 /* Vector.strings in Resources */,
 				020DF94E214BE467003DFBA4 /* RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.xib in Resources */,
@@ -3947,12 +3924,10 @@
 				B1F2AA9D212AEC830077FDC0 /* AuthenticationCoordinator.swift in Sources */,
 				020DF974214BE467003DFBA4 /* RoomMembershipCollapsedBubbleCell.m in Sources */,
 				020DF996214BE467003DFBA4 /* RoomMembershipExpandedWithPaginationTitleBubbleCell.m in Sources */,
-				0250C4A42122B68000034691 /* HomeMessagesSearchViewController.m in Sources */,
 				02BEE18B212AB23A00098505 /* IdentityServersURLGetter.swift in Sources */,
 				020DF99E214BE467003DFBA4 /* RoomEmptyBubbleCell.m in Sources */,
 				020DF966214BE467003DFBA4 /* RoomOutgoingEncryptedTextMsgBubbleCell.m in Sources */,
 				020DF98C214BE467003DFBA4 /* RoomIncomingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
-				0250C4A62122B68000034691 /* PeopleViewController.m in Sources */,
 				0250C4A72122B68000034691 /* Widget.m in Sources */,
 				0250C4A82122B68000034691 /* MessagesSearchResultAttachmentBubbleCell.m in Sources */,
 				B1680CFC2152A9E6009B5F92 /* PublicRoomsDataSource.swift in Sources */,
@@ -4052,7 +4027,7 @@
 				0250C4E92122B68000034691 /* GroupRoomTableViewCell.m in Sources */,
 				0250C4EC2122B68000034691 /* GroupInviteTableViewCell.m in Sources */,
 				0250C4ED2122B68000034691 /* ForgotPasswordInputsView.m in Sources */,
-				0250C4EF2122B68000034691 /* HomeViewController.m in Sources */,
+				B18D18C42153E68A003677D1 /* HomeViewController.swift in Sources */,
 				B1F2AAA5212AED840077FDC0 /* Coordinator.swift in Sources */,
 				B1680CFB2152A9E6009B5F92 /* PublicRoomsCoordinatorType.swift in Sources */,
 				020DF93D214BE467003DFBA4 /* TableViewCellWithCheckBoxes.m in Sources */,
@@ -4110,7 +4085,6 @@
 				020DF943214BE467003DFBA4 /* RoomSearchViewController.m in Sources */,
 				0250C5132122B68000034691 /* CountryPickerViewController.m in Sources */,
 				0250C5142122B68000034691 /* GDPRConsentViewController.swift in Sources */,
-				0250C5152122B68000034691 /* UnifiedSearchViewController.m in Sources */,
 				B1F2AA99212AEC830077FDC0 /* LegacyAppDelegate.m in Sources */,
 				B12FD69F2146B3EB001B7F28 /* RestClientBuilder.swift in Sources */,
 				B1F2AA91212AEC830077FDC0 /* SplitViewCoordinatorType.swift in Sources */,
@@ -4160,7 +4134,6 @@
 				B1F2AA97212AEC830077FDC0 /* AppCoordinator.swift in Sources */,
 				0250C5342122B68000034691 /* RiotSplitViewController.m in Sources */,
 				0250C5352122B68000034691 /* DirectoryServerPickerViewController.m in Sources */,
-				0250C5362122B68000034691 /* HomeFilesSearchViewController.m in Sources */,
 				0250C5392122B68000034691 /* HomeMessagesSearchDataSource.m in Sources */,
 				B15B867421355A7A002782BE /* ErrorPresenter.swift in Sources */,
 				020DF989214BE467003DFBA4 /* RoomOutgoingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
@@ -4223,8 +4196,6 @@
 				B1B5598820EFC3E000210D55 /* WidgetManager.m in Sources */,
 				B16932A320F3A21C00746532 /* main.m in Sources */,
 				B1B5574520EE6C4D00210D55 /* StartChatViewController.m in Sources */,
-				B1B5575920EE6C4D00210D55 /* HomeMessagesSearchViewController.m in Sources */,
-				B1B5574820EE6C4D00210D55 /* PeopleViewController.m in Sources */,
 				B1B5598720EFC3E000210D55 /* Widget.m in Sources */,
 				B1B557E320EF60B900210D55 /* MessagesSearchResultAttachmentBubbleCell.m in Sources */,
 				B1B5574420EE6C4D00210D55 /* CallViewController.m in Sources */,
@@ -4261,7 +4232,6 @@
 				B1B5574F20EE6C4D00210D55 /* RoomsViewController.m in Sources */,
 				B1B5579120EF568D00210D55 /* GroupInviteTableViewCell.m in Sources */,
 				B1B5579A20EF575B00210D55 /* ForgotPasswordInputsView.m in Sources */,
-				B1B5571D20EE6C4D00210D55 /* HomeViewController.m in Sources */,
 				B16932EA20F3C39000746532 /* UnifiedSearchRecentsDataSource.m in Sources */,
 				B1B557DE20EF5FBB00210D55 /* FilesSearchTableViewCell.m in Sources */,
 				B1B5574020EE6C4D00210D55 /* SegmentedViewController.m in Sources */,
@@ -4287,7 +4257,6 @@
 				B1B5596620EF9E9B00210D55 /* RoomTableViewCell.m in Sources */,
 				B1B5571820EE6C4D00210D55 /* CountryPickerViewController.m in Sources */,
 				B17982FF2119FED2001FD722 /* GDPRConsentViewController.swift in Sources */,
-				B1B5575A20EE6C4D00210D55 /* UnifiedSearchViewController.m in Sources */,
 				926FA53F1F4C132000F826C2 /* MXSession+Riot.m in Sources */,
 				B1B557C620EF5CD400210D55 /* DirectoryServerDetailTableViewCell.m in Sources */,
 				B1B5574720EE6C4D00210D55 /* UsersDevicesViewController.m in Sources */,
@@ -4306,7 +4275,6 @@
 				B15B86822135BC6F002782BE /* MasterTabBarController.m in Sources */,
 				B1B5574920EE6C4D00210D55 /* RiotSplitViewController.m in Sources */,
 				B1B5574E20EE6C4D00210D55 /* DirectoryServerPickerViewController.m in Sources */,
-				B1B5575B20EE6C4D00210D55 /* HomeFilesSearchViewController.m in Sources */,
 				B16932E720F3C37100746532 /* HomeMessagesSearchDataSource.m in Sources */,
 				B15B86872135BC83002782BE /* AuthenticationViewController.m in Sources */,
 				B1B5577D20EE84BF00210D55 /* CircleButton.m in Sources */,
