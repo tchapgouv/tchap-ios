@@ -18,8 +18,27 @@ import UIKit
 
 /// Describe UI component style properties and commodity method to apply it
 @objc protocol Style {
+
+    // MARK: - Status bar
     
     var statusBarStyle: UIStatusBarStyle { get }
+    
+    // MARK: - Bar
+    
+    var barBackgroundColor: UIColor { get }
+    var barTitleColor: UIColor { get }
+    var barSubTitleColor: UIColor { get }
+    var barActionColor: UIColor { get }
+    
+    // MARK: - Button
+    
+    var buttonBorderedTitleColor: UIColor { get }
+    var buttonBorderedBackgroundColor: UIColor { get }
+    
+    var buttonPlainTitleColor: UIColor { get }
+    var buttonPlainBackgroundColor: UIColor { get }
+    
+    // MARK: - Body
     
     var backgroundColor: UIColor { get }
     var secondaryBackgroundColor: UIColor { get }
@@ -30,7 +49,16 @@ import UIKit
     var primarySubTextColor: UIColor { get }
     var secondaryTextColor: UIColor { get }
     
+    // MARK: - Commodity methods
+    
     func applyStyle(onNavigationBar: UINavigationBar)
-    func applyStyle(onButton: UIButton)
+    func applyStyle(onButton button: UIButton, bordered: Bool)
     func applyStyle(onTextField: UITextField)
+}
+
+// Style default implementation
+extension Style {
+    func applyStyle(onButton button: UIButton) {
+        self.applyStyle(onButton: button, bordered: false)
+    }
 }

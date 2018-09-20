@@ -22,29 +22,64 @@ final class Variant2Style: NSObject, Style {
     
     static let shared = Variant2Style()
     
+    // MARK: - Status bar
+    
     let statusBarStyle: UIStatusBarStyle = kVariant2StatusBarStyle
+    
+    // MARK: - Bar
+    
+    let barBackgroundColor: UIColor = kVariant2BarBgColor
+    let barTitleColor: UIColor = kVariant2BarTitleColor
+    let barSubTitleColor: UIColor = kVariant2BarSubTitleColor
+    let barActionColor: UIColor = kVariant2BarActionColor
+    
+    // MARK: - Button
+    
+    let buttonBorderedTitleColor: UIColor = kVariant2ButtonBorderedTitleColor
+    let buttonBorderedBackgroundColor: UIColor = kVariant2ButtonBorderedBgColor
+    let buttonPlainTitleColor: UIColor = kVariant2ButtonPlainTitleColor
+    let buttonPlainBackgroundColor: UIColor = kVariant2ButtonPlainBgColor
+    
+    // MARK: - Body
     
     let backgroundColor: UIColor = kVariant2PrimaryBgColor
     let secondaryBackgroundColor: UIColor = kVariant2SecondaryBgColor
     
-    let separatorColor: UIColor = kVariant2ActionColor
+    let separatorColor: UIColor = kVariant2SeparatorColor
     
-    let primaryTextColor: UIColor = kVariant1PrimaryTextColor
+    let primaryTextColor: UIColor = kVariant2PrimaryTextColor
     let primarySubTextColor: UIColor = kVariant2PrimarySubTextColor
     let secondaryTextColor: UIColor = kVariant2SecondaryTextColor
     
+    // MARK: - Commodity methods
+    
     func applyStyle(onNavigationBar navigationBar: UINavigationBar) {
-        navigationBar.barTintColor = kVariant2PrimaryBgColor
-        navigationBar.tintColor = kVariant2ActionColor
-        navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: kVariant2PrimaryTextColor]
+        navigationBar.isTranslucent = false
+        navigationBar.barTintColor = self.barBackgroundColor
+        navigationBar.tintColor = self.barActionColor
+        navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: self.barTitleColor]
     }
     
-    func applyStyle(onButton button: UIButton) {
-        button.setTitleColor(kVariant2ActionColor, for: .normal)
+    func applyStyle(onButton button: UIButton, bordered: Bool = false) {
+
+        let titleColor: UIColor
+        let backgroundColor: UIColor
+
+        if bordered {
+            titleColor = self.buttonBorderedTitleColor
+            backgroundColor = self.buttonBorderedBackgroundColor
+        } else {
+            titleColor = self.buttonPlainTitleColor
+            backgroundColor = self.buttonPlainBackgroundColor
+        }
+
+        button.setTitleColor(titleColor, for: .normal)
+        button.setTitleColor(.lightGray, for: .highlighted)
+        button.backgroundColor = backgroundColor
     }
-    
+
     func applyStyle(onTextField textField: UITextField) {
-        textField.textColor = kVariant2PrimaryTextColor
-        textField.tintColor = kVariant2PlaceholderTextColor
+        textField.textColor = self.primaryTextColor
+        textField.tintColor = self.primaryTextColor
     }
 }
