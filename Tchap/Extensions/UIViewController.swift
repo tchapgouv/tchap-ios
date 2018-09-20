@@ -23,4 +23,26 @@ extension UIViewController {
     func tc_removeBackTitle() {
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
+        
+    func tc_addChildViewController(viewController: UIViewController) {
+        self.tc_addChildViewController(viewController: viewController, onView: self.view)
+    }
+    
+    func tc_addChildViewController(viewController: UIViewController, onView view: UIView) {
+        self.addChildViewController(viewController)
+        
+        viewController.view.frame = view.bounds
+        view.tc_addSubViewMathingParent(viewController.view)
+        viewController.didMove(toParentViewController: self)
+    }
+    
+    func tc_removeChildViewController(viewController: UIViewController) {
+        viewController.willMove(toParentViewController: nil)
+        viewController.view.removeFromSuperview()
+        viewController.removeFromParentViewController()
+    }
+    
+    func tc_removeFromParent() {
+        self.tc_removeChildViewController(viewController: self)
+    }
 }
