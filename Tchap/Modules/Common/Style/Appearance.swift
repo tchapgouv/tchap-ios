@@ -26,11 +26,11 @@ struct Appearance {
     
     // UISearchBar textColor could not be set directly
     static func setupSearchBarAppearance() {
-        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self, UINavigationBar.self]).defaultTextAttributes = [NSAttributedStringKey.foregroundColor.rawValue: Variant1Style.shared.primarySubTextColor]
+        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self, UINavigationBar.self]).defaultTextAttributes = [NSAttributedStringKey.foregroundColor.rawValue: Variant1Style.shared.barActionColor]
         
         // Since iOS 11 UISearchController is set as navigationItem and displayed under UINavigationBar in UINavigationController
         if #available(iOS 11.0, *) {
-            UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self, UINavigationController.self]).defaultTextAttributes = [NSAttributedStringKey.foregroundColor.rawValue: Variant1Style.shared.primarySubTextColor]
+            UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self, UINavigationController.self]).defaultTextAttributes = [NSAttributedStringKey.foregroundColor.rawValue: Variant1Style.shared.barActionColor]
         }
     }
 }
