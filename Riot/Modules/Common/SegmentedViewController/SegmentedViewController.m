@@ -50,11 +50,7 @@
     id kRiotDesignValuesDidChangeThemeNotificationObserver;
 }
 
-@property (nonatomic, strong) GlobalSearchBar *globalSearchBar;
 @property (nonatomic, strong) id<Style> currentStyle;
-
-@property (nonatomic, weak) UIImageView *plusButtonImageView;
-@property (nonatomic, weak) UIAlertController *currentAlert;
 
 @end
 
@@ -70,14 +66,8 @@
 
 + (instancetype)instantiate
 {
-    return [[[self class] alloc] initWithNibName:NSStringFromClass([SegmentedViewController class])
+    SegmentedViewController *segmentedViewController = [[[self class] alloc] initWithNibName:NSStringFromClass([SegmentedViewController class])
                                           bundle:[NSBundle bundleForClass:[SegmentedViewController class]]];
-}
-
-+ (instancetype)instantiateWithGlobalSearchBar:(GlobalSearchBar*)globalSearchBar
-{
-    SegmentedViewController *segmentedViewController = [self instantiate];
-    segmentedViewController.globalSearchBar = globalSearchBar;
     segmentedViewController.currentStyle = Variant1Style.shared;
     return segmentedViewController;
 }
@@ -183,8 +173,6 @@
     [self userInterfaceThemeDidChange];
     
     [self createSegmentedViews];
-    [self setupGlobalSearchBar];
-    [self addPlusButton];
 }
 
 - (void)userInterfaceThemeDidChange
@@ -265,9 +253,6 @@
         // Make iOS invoke child viewDidDisappear
         [_selectedViewController endAppearanceTransition];
     }
-        
-    // Reset search text
-    [self.globalSearchBar resetSearchText];
 }
 
 - (void)createSegmentedViews
@@ -510,73 +495,6 @@
     }
 }
 
-- (void)addPlusButton
-{
-    // Add room options button
-    UIImageView *plusButtonImageView = [[UIImageView alloc] init];
-    [plusButtonImageView setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [self.view addSubview:plusButtonImageView];
-    
-    plusButtonImageView.backgroundColor = [UIColor clearColor];
-    plusButtonImageView.contentMode = UIViewContentModeCenter;
-    plusButtonImageView.image = [UIImage imageNamed:@"create_room"];
-    plusButtonImageView.layer.shadowOpacity = 0.3;
-    plusButtonImageView.layer.shadowOffset = CGSizeMake(0, 3);
-    
-    CGFloat side = 78.0f;
-    NSLayoutConstraint* widthConstraint = [NSLayoutConstraint constraintWithItem:plusButtonImageView
-                                                                       attribute:NSLayoutAttributeWidth
-                                                                       relatedBy:NSLayoutRelationEqual
-                                                                          toItem:nil
-                                                                       attribute:NSLayoutAttributeNotAnAttribute
-                                                                      multiplier:1
-                                                                        constant:side];
-    
-    NSLayoutConstraint* heightConstraint = [NSLayoutConstraint constraintWithItem:plusButtonImageView
-                                                                        attribute:NSLayoutAttributeHeight
-                                                                        relatedBy:NSLayoutRelationEqual
-                                                                           toItem:nil
-                                                                        attribute:NSLayoutAttributeNotAnAttribute
-                                                                       multiplier:1
-                                                                         constant:side];
-    
-    NSLayoutConstraint* trailingConstraint = [NSLayoutConstraint constraintWithItem:plusButtonImageView
-                                                                          attribute:NSLayoutAttributeTrailing
-                                                                          relatedBy:NSLayoutRelationEqual
-                                                                             toItem:self.view
-                                                                          attribute:NSLayoutAttributeTrailing
-                                                                         multiplier:1
-                                                                           constant:0];
-    
-    NSLayoutConstraint* bottomConstraint = [NSLayoutConstraint constraintWithItem:self.bottomLayoutGuide
-                                                                        attribute:NSLayoutAttributeTop
-                                                                        relatedBy:NSLayoutRelationEqual
-                                                                           toItem:plusButtonImageView
-                                                                        attribute:NSLayoutAttributeBottom
-                                                                       multiplier:1
-                                                                         constant:9];
-    
-    [NSLayoutConstraint activateConstraints:@[widthConstraint, heightConstraint, trailingConstraint, bottomConstraint]];
-    
-    plusButtonImageView.userInteractionEnabled = YES;
-    
-    // Handle tap gesture
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onPlusButtonPressed)];
-    [tap setNumberOfTouchesRequired:1];
-    [tap setNumberOfTapsRequired:1];
-    [plusButtonImageView addGestureRecognizer:tap];
-    
-    self.plusButtonImageView = plusButtonImageView;
-}
-
-#pragma mark - Search
-
-- (void)setupGlobalSearchBar
-{
-    self.globalSearchBar.frame = self.navigationController.navigationBar.frame;
-    self.navigationItem.titleView = self.globalSearchBar;
-}
-
 #pragma mark - touch event
 
 - (void)onLabelTouch:(UIGestureRecognizer*)gestureRecognizer
@@ -589,45 +507,6 @@
         // update the selected index
         self.selectedIndex = pos;
     }
-}
-
-- (void)onPlusButtonPressed
-{
-    [self.currentAlert dismissViewControllerAnimated:NO completion:nil];
-    
-    UIAlertController *currentAlert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-    
-    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"conversations_start_chat_action", @"Tchap", nil)
-                                                     style:UIAlertActionStyleDefault
-                                                   handler:^(UIAlertAction * action) {
-                                                       [self.delegate segmentedViewControllerDidTapStartChatButton:self];
-                                                   }]];
-    
-    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"conversations_create_room_action", @"Tchap", nil)
-                                                     style:UIAlertActionStyleDefault
-                                                   handler:^(UIAlertAction * action) {
-                                                       [self.delegate segmentedViewControllerDidTapCreateRoomButton:self];
-                                                   }]];
-    
-    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"conversations_access_to_public_rooms_action", @"Tchap", nil)
-                                                     style:UIAlertActionStyleDefault
-                                                   handler:^(UIAlertAction * action) {
-                                                       [self.delegate segmentedViewControllerDidTapPublicRoomsAccessButton:self];
-                                                   }]];
-    
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
-                                                     style:UIAlertActionStyleCancel
-                                                   handler:^(UIAlertAction * action) {
-                                                       
-                                                   }]];
-    
-    [currentAlert popoverPresentationController].sourceView = self.plusButtonImageView;
-    [currentAlert popoverPresentationController].sourceRect = self.plusButtonImageView.bounds;
-    
-    [currentAlert mxk_setAccessibilityIdentifier:@"RecentsVCCreateRoomAlert"];
-    [self presentViewController:currentAlert animated:YES completion:nil];
-    
-    self.currentAlert = currentAlert;
 }
 
 @end

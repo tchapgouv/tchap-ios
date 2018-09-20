@@ -19,9 +19,6 @@ limitations under the License.
 
 #import "UIViewController+RiotSearch.h"
 
-@protocol SegmentedViewControllerDelegate;
-@class GlobalSearchBar;
-
 /**
  This view controller manages several uiviewcontrollers like UISegmentedController manages uiTableView
  except that the managed items are custom UIViewControllers.
@@ -55,10 +52,6 @@ limitations under the License.
  */
 @property (nonatomic, readonly) NSArray<UIViewController*> *viewControllers;
 
-/**
- 
- */
-@property (nonatomic, weak) id<SegmentedViewControllerDelegate> delegate;
 
 /**
  Returns the `UINib` object initialized for a `SegmentedViewController`.
@@ -81,17 +74,6 @@ limitations under the License.
 + (instancetype)instantiate;
 
 /**
- Creates and returns a new `SegmentedViewController` object with a GlobalSearchBar.
- 
- @discussion This is the designated initializer for programmatic instantiation.
- 
- @param globalSearchBar the search bar used to perform global search.
- 
- @return An initialized `SegmentedViewController` object.
- */
-+ (instancetype)instantiateWithGlobalSearchBar:(GlobalSearchBar*)globalSearchBar;
-
-/**
  init the segmentedViewController with a list of UIViewControllers.
  The subviewcontrollers must implement didMoveToParentViewController to display the navbar button.
  
@@ -108,10 +90,4 @@ limitations under the License.
  */
 - (void)userInterfaceThemeDidChange;
 
-@end
-
-@protocol SegmentedViewControllerDelegate <NSObject>
-- (void)segmentedViewControllerDidTapStartChatButton:(SegmentedViewController*)segmentedViewController;
-- (void)segmentedViewControllerDidTapCreateRoomButton:(SegmentedViewController*)segmentedViewController;
-- (void)segmentedViewControllerDidTapPublicRoomsAccessButton:(SegmentedViewController*)segmentedViewController;
 @end
