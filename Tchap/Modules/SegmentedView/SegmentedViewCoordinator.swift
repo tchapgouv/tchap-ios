@@ -51,11 +51,12 @@ final class SegmentedViewCoordinator: NSObject, SegmentedViewCoordinatorType {
         self.add(childCoordinator: contactsCoordinator)
         
         let viewControllers = [roomsCoordinator.toPresentable(), contactsCoordinator.toPresentable()]
+        let viewControllersTitles = ["Rooms", "Contact"] // TODO: Localize titles
         
         let globalSearchBar = GlobalSearchBar.instantiate()
         globalSearchBar.delegate = self
         
-        let segmentedViewController = self.createSegmentedViewController(with: viewControllers, and: globalSearchBar)
+        let segmentedViewController = self.createHomeViewController(with: viewControllers, viewControllersTitles: viewControllersTitles, globalSearchBar: globalSearchBar)
         segmentedViewController.tc_removeBackTitle()
         segmentedViewController.delegate = self
         
@@ -84,28 +85,17 @@ final class SegmentedViewCoordinator: NSObject, SegmentedViewCoordinatorType {
         })
     }
     
-    private func createSegmentedViewController(with viewControllers: [UIViewController], and globalSearchBar: GlobalSearchBar) -> SegmentedViewController {
-        guard let segmentedViewController = SegmentedViewController.instantiate(with: globalSearchBar) else {
-            fatalError("[SegmentedViewCoordinator] SegmentedViewController could not be loaded")
-        }
+    private func createHomeViewController(with viewControllers: [UIViewController], viewControllersTitles: [String], globalSearchBar: GlobalSearchBar) -> HomeViewController {
+        let homeViewController = HomeViewController.instantiate(with: viewControllers, viewControllersTitles: viewControllersTitles, globalSearchBar: globalSearchBar)
         
-        // TODO: Make a protocol to retrieve title from view controller
-        let titles = ["Rooms", "Contact"]
-        
-        segmentedViewController.initWithTitles(titles, viewControllers: viewControllers, defaultSelected: 0)
-        
-        // Setup navigation bar
-        
-        segmentedViewController.navigationItem.leftBarButtonItem = MXKBarButtonItem(image: #imageLiteral(resourceName: "settings_icon"), style: .plain, action: { [weak self] in
-            
+        homeViewController.navigationItem.leftBarButtonItem = MXKBarButtonItem(image: #imageLiteral(resourceName: "settings_icon"), style: .plain, action: { [weak self] in
             guard let sself = self else {
                 return
             }
-            
             sself.showSettings(animated: true)
         })
         
-        return segmentedViewController
+        return homeViewController
     }
     
     private func showPublicRooms() {
@@ -124,18 +114,18 @@ extension SegmentedViewCoordinator: GlobalSearchBarDelegate {
     }
 }
 
-// MARK: - SegmentedViewControllerDelegate
-extension SegmentedViewCoordinator: SegmentedViewControllerDelegate {
+// MARK: - HomeViewControllerDelegate
+extension SegmentedViewCoordinator: HomeViewControllerDelegate {
     
-    func segmentedViewControllerDidTapStartChatButton(_ segmentedViewController: SegmentedViewController!) {
+    func homeViewControllerDidTapStartChatButton(_ homeViewController: HomeViewController) {
         
     }
     
-    func segmentedViewControllerDidTapCreateRoomButton(_ segmentedViewController: SegmentedViewController!) {
+    func homeViewControllerDidTapCreateRoomButton(_ homeViewController: HomeViewController) {
         
     }
     
-    func segmentedViewControllerDidTapPublicRoomsAccessButton(_ segmentedViewController: SegmentedViewController!) {
+    func homeViewControllerDidTapPublicRoomsAccessButton(_ homeViewController: HomeViewController) {
         self.showPublicRooms()
     }
 }
