@@ -229,7 +229,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
     SettingsViewController *settingsViewController = [storyboard instantiateViewControllerWithIdentifier:@"SettingsViewController"];
-    settingsViewController.currentStyle = Variant2Style.shared;
+    settingsViewController.currentStyle = Variant1Style.shared;
     return settingsViewController;
 }
 

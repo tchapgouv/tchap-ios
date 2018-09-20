@@ -135,9 +135,9 @@ extension PublicRoomsViewController: Stylable {
         
         if let searchBar = self.searchController?.searchBar {
             if #available(iOS 11.0, *) {
-                searchBar.tintColor = style.primaryTextColor
+                searchBar.tintColor = style.barActionColor
             } else {
-                searchBar.tintColor = style.secondaryBackgroundColor
+                searchBar.tintColor = style.primarySubTextColor
             }
         }
     }

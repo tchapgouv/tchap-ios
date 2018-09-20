@@ -60,13 +60,13 @@
     
     [self.leftButton.layer setCornerRadius:5];
     self.leftButton.clipsToBounds = YES;
-    self.leftButton.backgroundColor = kVariant1PrimaryBgColor;
-    self.leftButton.titleLabel.textColor = kVariant1PrimaryTextColor;
+    self.leftButton.backgroundColor = kVariant2ButtonBorderedBgColor;
+    self.leftButton.titleLabel.textColor = kVariant2ButtonBorderedTitleColor;
     
     [self.rightButton.layer setCornerRadius:5];
     self.rightButton.clipsToBounds = YES;
-    self.rightButton.backgroundColor = kVariant1PrimaryBgColor;
-    self.rightButton.titleLabel.textColor = kVariant1PrimaryTextColor;
+    self.rightButton.backgroundColor = kVariant2ButtonBorderedBgColor;
+    self.rightButton.titleLabel.textColor = kVariant2ButtonBorderedTitleColor;
 }
 
 - (void)refreshDisplay

@@ -194,7 +194,9 @@
 
 - (void)updateStyle:(id<Style>)style
 {
-    self.sectionHeaderTintColor = self.currentStyle.primaryTextColor;
+    self.currentStyle = style;
+    
+    self.sectionHeaderTintColor = style.barActionColor;
     
     UINavigationBar *navigationBar = self.navigationController.navigationBar;
     
@@ -283,7 +285,7 @@
         label.font = [UIFont systemFontOfSize:17];
         label.textAlignment = NSTextAlignmentCenter;
         label.textColor = _sectionHeaderTintColor;
-        label.backgroundColor = self.currentStyle.secondaryBackgroundColor;
+        label.backgroundColor = self.currentStyle.barBackgroundColor;
         label.accessibilityIdentifier = [NSString stringWithFormat:@"SegmentedVCSectionLabel%tu", index];
         
         // the constraint defines the label frame
