@@ -124,26 +124,6 @@
 - (void)cancelEditionModeAndForceTableViewRefreshIfNeeded;
 
 #pragma mark - Room handling
-/**
- Add the (+) button at the right bottom corner of the view.
- */
-- (void)addPlusButton;
-
-/**
- Action triggered when the user taps on the (+) button.
- Create an empty room by default.
- */
-- (void)onPlusButtonPressed;
-
-/**
- Create an empty room.
- */
-- (void)createAnEmptyRoom;
-
-/**
- Join a room by alias or id.
- */
-- (void)joinARoom;
 
 /**
  Leave the selected room.
