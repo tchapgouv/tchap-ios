@@ -520,8 +520,8 @@
 		B1BC6A2A2136DCCE00D32F8E /* WelcomeViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B1BC6A292136DCCD00D32F8E /* WelcomeViewController.storyboard */; };
 		B1F2AA91212AEC830077FDC0 /* SplitViewCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AA7B212AEC800077FDC0 /* SplitViewCoordinatorType.swift */; };
 		B1F2AA92212AEC830077FDC0 /* SplitViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AA7C212AEC800077FDC0 /* SplitViewCoordinator.swift */; };
-		B1F2AA93212AEC830077FDC0 /* SegmentedViewCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AA7E212AEC800077FDC0 /* SegmentedViewCoordinatorType.swift */; };
-		B1F2AA94212AEC830077FDC0 /* SegmentedViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AA7F212AEC800077FDC0 /* SegmentedViewCoordinator.swift */; };
+		B1F2AA93212AEC830077FDC0 /* HomeCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AA7E212AEC800077FDC0 /* HomeCoordinatorType.swift */; };
+		B1F2AA94212AEC830077FDC0 /* HomeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AA7F212AEC800077FDC0 /* HomeCoordinator.swift */; };
 		B1F2AA95212AEC830077FDC0 /* SettingsCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AA81212AEC810077FDC0 /* SettingsCoordinatorType.swift */; };
 		B1F2AA96212AEC830077FDC0 /* SettingsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AA82212AEC810077FDC0 /* SettingsCoordinator.swift */; };
 		B1F2AA97212AEC830077FDC0 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AA84212AEC820077FDC0 /* AppCoordinator.swift */; };
@@ -1210,8 +1210,8 @@
 		B1BC6A292136DCCD00D32F8E /* WelcomeViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = WelcomeViewController.storyboard; sourceTree = "<group>"; };
 		B1F2AA7B212AEC800077FDC0 /* SplitViewCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplitViewCoordinatorType.swift; sourceTree = "<group>"; };
 		B1F2AA7C212AEC800077FDC0 /* SplitViewCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplitViewCoordinator.swift; sourceTree = "<group>"; };
-		B1F2AA7E212AEC800077FDC0 /* SegmentedViewCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentedViewCoordinatorType.swift; sourceTree = "<group>"; };
-		B1F2AA7F212AEC800077FDC0 /* SegmentedViewCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentedViewCoordinator.swift; sourceTree = "<group>"; };
+		B1F2AA7E212AEC800077FDC0 /* HomeCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeCoordinatorType.swift; sourceTree = "<group>"; };
+		B1F2AA7F212AEC800077FDC0 /* HomeCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeCoordinator.swift; sourceTree = "<group>"; };
 		B1F2AA81212AEC810077FDC0 /* SettingsCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsCoordinatorType.swift; sourceTree = "<group>"; };
 		B1F2AA82212AEC810077FDC0 /* SettingsCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsCoordinator.swift; sourceTree = "<group>"; };
 		B1F2AA84212AEC820077FDC0 /* AppCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
@@ -1771,7 +1771,7 @@
 				B1F2AA8E212AEC820077FDC0 /* Authentication */,
 				B11C7FFA21393E5D00CC6F2F /* Registration */,
 				B1F2AA7A212AEC800077FDC0 /* SplitView */,
-				B1F2AA7D212AEC800077FDC0 /* SegmentedView */,
+				B1F2AA7D212AEC800077FDC0 /* Home */,
 				B130C0D821491C4600F43D33 /* GlobalSearch */,
 				02BEE14F2125BBF800098505 /* Rooms */,
 				B1680CF52152A9E5009B5F92 /* PublicRooms */,
@@ -3018,15 +3018,15 @@
 			path = SplitView;
 			sourceTree = "<group>";
 		};
-		B1F2AA7D212AEC800077FDC0 /* SegmentedView */ = {
+		B1F2AA7D212AEC800077FDC0 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				B1F2AA7E212AEC800077FDC0 /* SegmentedViewCoordinatorType.swift */,
-				B1F2AA7F212AEC800077FDC0 /* SegmentedViewCoordinator.swift */,
+				B1F2AA7E212AEC800077FDC0 /* HomeCoordinatorType.swift */,
+				B1F2AA7F212AEC800077FDC0 /* HomeCoordinator.swift */,
 				B18D18C32153E68A003677D1 /* HomeViewController.swift */,
 				B18D18C52153EA32003677D1 /* HomeViewController.storyboard */,
 			);
-			path = SegmentedView;
+			path = Home;
 			sourceTree = "<group>";
 		};
 		B1F2AA80212AEC810077FDC0 /* Settings */ = {
@@ -3942,7 +3942,7 @@
 				020DF97C214BE467003DFBA4 /* RoomIncomingAttachmentWithPaginationTitleBubbleCell.m in Sources */,
 				0250C4AB2122B68000034691 /* JitsiViewController.m in Sources */,
 				020DF95A214BE467003DFBA4 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleBubbleCell.m in Sources */,
-				B1F2AA94212AEC830077FDC0 /* SegmentedViewCoordinator.swift in Sources */,
+				B1F2AA94212AEC830077FDC0 /* HomeCoordinator.swift in Sources */,
 				B1322FFA2130146D0054A9DD /* AuthenticationServiceType.swift in Sources */,
 				020DF939214BE467003DFBA4 /* TableViewCellWithLabelAndLargeTextView.m in Sources */,
 				0250C4AC2122B68000034691 /* PublicRoomsDirectoryDataSource.m in Sources */,
@@ -3994,7 +3994,7 @@
 				B12FD6A92146BA45001B7F28 /* RegistrationService.swift in Sources */,
 				B11C80122139442700CC6F2F /* RegistrationFormViewModelType.swift in Sources */,
 				B1F2AA96212AEC830077FDC0 /* SettingsCoordinator.swift in Sources */,
-				B1F2AA93212AEC830077FDC0 /* SegmentedViewCoordinatorType.swift in Sources */,
+				B1F2AA93212AEC830077FDC0 /* HomeCoordinatorType.swift in Sources */,
 				02BEE18D212AB23A00098505 /* ThirdPartyIDPlatformInfo.swift in Sources */,
 				0250C4D62122B68000034691 /* TableViewCellWithButton.m in Sources */,
 				B1F2AAAC212AED900077FDC0 /* NavigationRouter.swift in Sources */,
