@@ -17,7 +17,7 @@
 import UIKit
 
 protocol RoomsCoordinatorDelegate: class {
-    func roomsCoordinatorShowRoom(_ coordinator: RoomsCoordinatorType, roomID: String)
+    func roomsCoordinator(_ coordinator: RoomsCoordinatorType, didSelectRoomID roomID: String)
 }
 
 final class RoomsCoordinator: NSObject, RoomsCoordinatorType {
@@ -86,7 +86,7 @@ final class RoomsCoordinator: NSObject, RoomsCoordinatorType {
             sself.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
             switch response {
             case .success:
-                sself.delegate?.roomsCoordinatorShowRoom(sself, roomID: roomID)
+                sself.delegate?.roomsCoordinator(sself, didSelectRoomID: roomID)
             case .failure(let error):
                 let errorPresentable = sself.joinRoomErrorPresentable(from: error)
                 sself.roomsErrorPresenter.present(errorPresentable: errorPresentable, animated: true)
@@ -121,7 +121,7 @@ final class RoomsCoordinator: NSObject, RoomsCoordinatorType {
 extension RoomsCoordinator: RoomsViewControllerDelegate {
     
     func roomsViewController(_ roomsViewController: RoomsViewController!, didSelectRoomWithID roomID: String!) {
-        self.delegate?.roomsCoordinatorShowRoom(self, roomID: roomID)
+        self.delegate?.roomsCoordinator(self, didSelectRoomID: roomID)
     }
     
     func roomsViewController(_ roomsViewController: RoomsViewController!, didAcceptRoomInviteWithRoomID roomID: String!) {

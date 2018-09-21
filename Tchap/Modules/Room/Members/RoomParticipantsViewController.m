@@ -20,7 +20,7 @@
 
 #import "RoomMemberDetailsViewController.h"
 
-#import "AppDelegate.h"
+#import "GeneratedInterface-Swift.h"
 
 #import "Contact.h"
 
@@ -1351,14 +1351,7 @@
 
 - (void)roomMemberDetailsViewController:(MXKRoomMemberDetailsViewController *)roomMemberDetailsViewController startChatWithMemberId:(NSString *)matrixId completion:(void (^)(void))completion
 {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(roomParticipantsViewController:startChatWithMemberId:completion:)])
-    {
-        [self.delegate roomParticipantsViewController:self startChatWithMemberId:matrixId completion:completion];
-    }
-    else
-    {
-        [[AppDelegate theDelegate] createDirectChatWithUserId:matrixId completion:completion];
-    }
+    [self.delegate roomParticipantsViewController:self startChatWithMemberId:matrixId completion:completion];
 }
 
 - (void)roomMemberDetailsViewController:(MXKRoomMemberDetailsViewController *)roomMemberDetailsViewController mention:(MXRoomMember*)member

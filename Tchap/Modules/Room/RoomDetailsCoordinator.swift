@@ -17,9 +17,9 @@
 import Foundation
 
 protocol RoomDetailsCoordinatorDelegate: class {
-    func roomDetailsCoordinatorMentionMember(_ coordinator: RoomDetailsCoordinatorType, roomMember: MXRoomMember)
-    func roomDetailsCoordinatorShowRoom(_ coordinator: RoomDetailsCoordinatorType, roomID: String)
-    func roomDetailsCoordinatorStartChat(_ coordinator: RoomDetailsCoordinatorType, userID: String)
+    func roomDetailsCoordinator(_ coordinator: RoomDetailsCoordinatorType, mention member: MXRoomMember)
+    func roomDetailsCoordinator(_ coordinator: RoomDetailsCoordinatorType, didSelectRoomID roomID: String)
+    func roomDetailsCoordinator(_ coordinator: RoomDetailsCoordinatorType, didSelectUserID userID: String)
 }
 
 final class RoomDetailsCoordinator: NSObject, RoomDetailsCoordinatorType {
@@ -104,7 +104,7 @@ final class RoomDetailsCoordinator: NSObject, RoomDetailsCoordinatorType {
 // MARK: - RoomParticipantsViewControllerDelegate
 extension RoomDetailsCoordinator: RoomParticipantsViewControllerDelegate {
     func roomParticipantsViewController(_ roomParticipantsViewController: RoomParticipantsViewController!, mention member: MXRoomMember!) {
-        self.delegate?.roomDetailsCoordinatorMentionMember(self, roomMember: member)
+        self.delegate?.roomDetailsCoordinator(self, mention: member)
     }
     
     func roomParticipantsViewController(_ roomParticipantsViewController: RoomParticipantsViewController!, startChatWithMemberId matrixId: String!, completion: (() -> Void)?) {

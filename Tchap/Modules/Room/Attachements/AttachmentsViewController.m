@@ -17,7 +17,7 @@
 
 #import "AttachmentsViewController.h"
 
-#import "AppDelegate.h"
+#import "GeneratedInterface-Swift.h"
 
 @interface AttachmentsViewController ()
 {

@@ -36,8 +36,6 @@
  */
 - (void)roomParticipantsViewController:(RoomParticipantsViewController *)roomParticipantsViewController mention:(MXRoomMember*)member;
 
-@optional
-
 /**
  Tells the delegate that the user wants to start a one-to-one chat with a room member.
  

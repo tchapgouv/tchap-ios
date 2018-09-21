@@ -76,7 +76,7 @@
 /**
  The delegate for the view controller.
  */
-@property (nonatomic) id<RoomViewControllerDelegate> delegate;
+@property (weak, nonatomic) id<RoomViewControllerDelegate> delegate;
 
 /**
  Display the preview of a room that is unknown for the user.

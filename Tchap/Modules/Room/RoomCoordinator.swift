@@ -17,8 +17,8 @@
 import UIKit
 
 protocol RoomCoordinatorDelegate: class {
-    func roomCoordinatorShowRoom(_ coordinator: RoomCoordinatorType, roomID: String)
-    func roomCoordinatorStartChat(_ coordinator: RoomCoordinatorType, userID: String)
+    func roomCoordinator(_ coordinator: RoomCoordinatorType, didSelectRoomID roomID: String)
+    func roomCoordinator(_ coordinator: RoomCoordinatorType, didSelectUserID userID: String)
 }
 
 final class RoomCoordinator: NSObject, RoomCoordinatorType {
@@ -134,15 +134,15 @@ extension RoomCoordinator: MXKRoomMemberDetailsViewControllerDelegate {
 
 // MARK: - RoomDetailsCoordinatorDelegate
 extension RoomCoordinator: RoomDetailsCoordinatorDelegate {
-    func roomDetailsCoordinatorMentionMember(_ coordinator: RoomDetailsCoordinatorType, roomMember: MXRoomMember) {
-        self.roomViewController.mention(roomMember)
+    func roomDetailsCoordinator(_ coordinator: RoomDetailsCoordinatorType, mention member: MXRoomMember) {
+        self.roomViewController.mention(member)
     }
     
-    func roomDetailsCoordinatorShowRoom(_ coordinator: RoomDetailsCoordinatorType, roomID: String) {
-        self.delegate?.roomCoordinatorShowRoom(self, roomID: roomID)
+    func roomDetailsCoordinator(_ coordinator: RoomDetailsCoordinatorType, didSelectRoomID roomID: String) {
+        self.delegate?.roomCoordinator(self, didSelectRoomID: roomID)
     }
     
-    func roomDetailsCoordinatorStartChat(_ coordinator: RoomDetailsCoordinatorType, userID: String) {
-        self.delegate?.roomCoordinatorStartChat(self, userID: userID)
+    func roomDetailsCoordinator(_ coordinator: RoomDetailsCoordinatorType, didSelectUserID userID: String) {
+        self.delegate?.roomCoordinator(self, didSelectUserID: userID)
     }
 }

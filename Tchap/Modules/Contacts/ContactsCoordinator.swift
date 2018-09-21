@@ -17,7 +17,7 @@
 import Foundation
 
 protocol ContactsCoordinatorDelegate: class {
-    func contactsCoordinatorShowRoom(_ coordinator: ContactsCoordinatorType, roomID: String)
+    func contactsCoordinator(_ coordinator: ContactsCoordinatorType, didSelectRoomID roomID: String)
 }
 
 final class ContactsCoordinator: NSObject, ContactsCoordinatorType {
@@ -93,7 +93,7 @@ final class ContactsCoordinator: NSObject, ContactsCoordinatorType {
                             sself.joinRoom(with: roomID)
                         } else {
                             // Open the current discussion
-                            sself.delegate?.contactsCoordinatorShowRoom(sself, roomID: roomID)
+                            sself.delegate?.contactsCoordinator(sself, didSelectRoomID: roomID)
                         }
                     } else {
                         // Unexpected case where we fail to retrieve the room for the returned id
@@ -121,7 +121,7 @@ final class ContactsCoordinator: NSObject, ContactsCoordinatorType {
             sself.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
             switch response {
             case .success:
-                sself.delegate?.contactsCoordinatorShowRoom(sself, roomID: roomID)
+                sself.delegate?.contactsCoordinator(sself, didSelectRoomID: roomID)
             case .failure(let error):
                 let errorPresentable = sself.joinRoomErrorPresentable(from: error)
                 sself.contactsErrorPresenter.present(errorPresentable: errorPresentable, animated: true)

@@ -20,7 +20,7 @@
 
 #import "FilesSearchTableViewCell.h"
 
-#import "AppDelegate.h"
+#import "GeneratedInterface-Swift.h"
 
 #import "AttachmentsViewController.h"
 

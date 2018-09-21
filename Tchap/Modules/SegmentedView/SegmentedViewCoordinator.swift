@@ -131,25 +131,25 @@ extension SegmentedViewCoordinator: GlobalSearchBarDelegate {
 
 // MARK: - RoomsCoordinatorDelegate
 extension SegmentedViewCoordinator: RoomsCoordinatorDelegate {
-    func roomsCoordinatorShowRoom(_ coordinator: RoomsCoordinatorType, roomID: String) {
+    func roomsCoordinator(_ coordinator: RoomsCoordinatorType, didSelectRoomID roomID: String) {
         self.showRoom(with: roomID)
     }
 }
 
 // MARK: - ContactsCoordinatorDelegate
 extension SegmentedViewCoordinator: ContactsCoordinatorDelegate {
-    func contactsCoordinatorShowRoom(_ coordinator: ContactsCoordinatorType, roomID: String) {
+    func contactsCoordinator(_ coordinator: ContactsCoordinatorType, didSelectRoomID roomID: String) {
         self.showRoom(with: roomID)
     }
 }
 
 // MARK: - RoomCoordinatorDelegate
 extension SegmentedViewCoordinator: RoomCoordinatorDelegate {
-    func roomCoordinatorShowRoom(_ coordinator: RoomCoordinatorType, roomID: String) {
+    func roomCoordinator(_ coordinator: RoomCoordinatorType, didSelectRoomID roomID: String) {
         self.showRoom(with: roomID)
     }
     
-    func roomCoordinatorStartChat(_ coordinator: RoomCoordinatorType, userID: String) {
+    func roomCoordinator(_ coordinator: RoomCoordinatorType, didSelectUserID userID: String) {
         //TODO Display a fake room, create the discussion only when an event is sent (#41).
     }
 }

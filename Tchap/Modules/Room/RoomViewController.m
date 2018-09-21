@@ -21,7 +21,7 @@
 #import "RoomDataSource.h"
 #import "RoomBubbleCellData.h"
 
-#import "AppDelegate.h"
+#import "GeneratedInterface-Swift.h"
 
 #import "RoomInputToolbarView.h"
 #import "DisabledRoomInputToolbarView.h"
