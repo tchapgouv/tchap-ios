@@ -18,6 +18,14 @@
 
 #import "DesignValues.h"
 
+#import "GeneratedInterface-Swift.h"
+
+@interface PreviewView() <Stylable>
+
+@property (nonatomic, strong) id<Style> currentStyle;
+
+@end
+
 @implementation PreviewView
 
 + (UINib *)nib
@@ -28,7 +36,9 @@
 
 + (instancetype)instantiate
 {
-    return [[[self class] nib] instantiateWithOwner:nil options:nil].firstObject;
+    PreviewView *previewView = [[[self class] nib] instantiateWithOwner:nil options:nil].firstObject;
+    previewView.currentStyle = Variant2Style.shared;
+    return previewView;
 }
 
 - (void)awakeFromNib
@@ -48,25 +58,33 @@
 {
     [super customizeViewRendering];
     
-    self.backgroundColor = kVariant2PrimaryBgColor;
-    
-    self.previewLabel.textColor = kVariant2PrimaryTextColor;
     self.previewLabel.numberOfLines = 0;
-    
-    self.subNoticeLabel.textColor = kVariant2SecondaryTextColor;
     self.subNoticeLabel.numberOfLines = 0;
-    
-    self.bottomBorderView.backgroundColor = kVariant2SecondaryBgColor;
     
     [self.leftButton.layer setCornerRadius:5];
     self.leftButton.clipsToBounds = YES;
-    self.leftButton.backgroundColor = kVariant2ButtonBorderedBgColor;
-    self.leftButton.titleLabel.textColor = kVariant2ButtonBorderedTitleColor;
     
     [self.rightButton.layer setCornerRadius:5];
     self.rightButton.clipsToBounds = YES;
-    self.rightButton.backgroundColor = kVariant2ButtonBorderedBgColor;
-    self.rightButton.titleLabel.textColor = kVariant2ButtonBorderedTitleColor;
+    
+    [self updateWithStyle:self.currentStyle];
+}
+
+- (void)updateWithStyle:(id<Style>)style
+{
+    self.currentStyle = style;
+    
+    self.backgroundColor = style.backgroundColor;
+    
+    self.previewLabel.textColor = style.primaryTextColor;
+    self.subNoticeLabel.textColor = style.secondaryTextColor;
+    self.bottomBorderView.backgroundColor = style.secondaryBackgroundColor;
+    
+    self.leftButton.backgroundColor = style.buttonBorderedBackgroundColor;
+    self.leftButton.titleLabel.textColor = style.buttonBorderedTitleColor;
+    
+    self.rightButton.backgroundColor = style.buttonBorderedBackgroundColor;
+    self.rightButton.titleLabel.textColor = style.buttonBorderedTitleColor;
 }
 
 - (void)refreshDisplay
