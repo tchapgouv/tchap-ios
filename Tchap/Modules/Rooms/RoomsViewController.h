@@ -46,7 +46,5 @@
 @protocol RoomsViewControllerDelegate <NSObject>
 
 - (void)roomsViewController:(RoomsViewController*)roomsViewController didSelectRoomWithID:(NSString*)roomID;
-- (void)roomsViewController:(RoomsViewController*)roomsViewController didSelectPublicRoom:(MXPublicRoom*)publicRoom;
 - (void)roomsViewController:(RoomsViewController*)roomsViewController didAcceptRoomInviteWithRoomID:(NSString*)roomID;
-- (void)roomsViewControllerDidSelectDirectoryServerPicker:(RoomsViewController*)roomsViewController;
 @end

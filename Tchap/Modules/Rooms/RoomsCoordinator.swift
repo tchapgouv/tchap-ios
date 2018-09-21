@@ -127,12 +127,4 @@ extension RoomsCoordinator: RoomsViewControllerDelegate {
     func roomsViewController(_ roomsViewController: RoomsViewController!, didAcceptRoomInviteWithRoomID roomID: String!) {
         self.joinRoom(with: roomID)
     }
-    
-    func roomsViewController(_ roomsViewController: RoomsViewController!, didSelect publicRoom: MXPublicRoom!) {
-        
-    }
-    
-    func roomsViewControllerDidSelectDirectoryServerPicker(_ roomsViewController: RoomsViewController!) {
-        
-    }
 }

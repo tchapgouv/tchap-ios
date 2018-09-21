@@ -31,17 +31,11 @@ extern NSString *const kRoomsDataSourceTapOnDirectoryServerChange;
  */
 @interface RoomsDataSource : MXKInterleavedRecentsDataSource
 
-@property (nonatomic) NSInteger directorySection;
 @property (nonatomic) NSInteger invitesSection;
 @property (nonatomic) NSInteger conversationSection;
 
 @property (nonatomic, readonly) NSArray* invitesCellDataArray;
 @property (nonatomic, readonly) NSArray* conversationCellDataArray;
-
-/**
- The data source used to manage the rooms from directory.
- */
-@property (nonatomic) PublicRoomsDirectoryDataSource *publicRoomsDirectoryDataSource;
 
 /**
  Refresh the rooms data source and notify its delegate.
