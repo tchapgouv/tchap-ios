@@ -16,7 +16,7 @@
 
 import Foundation
 
-final class SegmentedViewCoordinator: SegmentedViewCoordinatorType {        
+final class SegmentedViewCoordinator: NSObject, SegmentedViewCoordinatorType {
     
     // MARK: - Properties
     
@@ -37,7 +37,7 @@ final class SegmentedViewCoordinator: SegmentedViewCoordinatorType {
     // MARK: - Setup
     
     init(session: MXSession) {
-        self.navigationRouter = NavigationRouter()
+        self.navigationRouter = NavigationRouter(navigationController: TCNavigationController())
         self.session = session
     }
     
@@ -51,13 +51,14 @@ final class SegmentedViewCoordinator: SegmentedViewCoordinatorType {
         self.add(childCoordinator: contactsCoordinator)
         
         let viewControllers = [roomsCoordinator.toPresentable(), contactsCoordinator.toPresentable()]
+        let viewControllersTitles = ["Rooms", "Contact"] // TODO: Localize titles
         
         let globalSearchBar = GlobalSearchBar.instantiate()
         globalSearchBar.delegate = self
         
-        let segmentedViewController = self.createSegmentedViewController(with: viewControllers, and: globalSearchBar)
+        let segmentedViewController = self.createHomeViewController(with: viewControllers, viewControllersTitles: viewControllersTitles, globalSearchBar: globalSearchBar)
         segmentedViewController.tc_removeBackTitle()
-        
+        segmentedViewController.delegate = self
         
         self.navigationRouter.setRootModule(segmentedViewController)
         
@@ -84,28 +85,24 @@ final class SegmentedViewCoordinator: SegmentedViewCoordinatorType {
         })
     }
     
-    private func createSegmentedViewController(with viewControllers: [UIViewController], and globalSearchBar: GlobalSearchBar) -> SegmentedViewController {
-        guard let segmentedViewController = SegmentedViewController.instantiate(with: globalSearchBar) else {
-            fatalError("[SegmentedViewCoordinator] SegmentedViewController could not be loaded")
-        }
+    private func createHomeViewController(with viewControllers: [UIViewController], viewControllersTitles: [String], globalSearchBar: GlobalSearchBar) -> HomeViewController {
+        let homeViewController = HomeViewController.instantiate(with: viewControllers, viewControllersTitles: viewControllersTitles, globalSearchBar: globalSearchBar)
         
-        // TODO: Make a protocol to retrieve title from view controller
-        let titles = ["Rooms", "Contact"]
-        
-        segmentedViewController.initWithTitles(titles, viewControllers: viewControllers, defaultSelected: 0)
-        
-        // Setup navigation bar
-        
-        segmentedViewController.navigationItem.leftBarButtonItem = MXKBarButtonItem(image: #imageLiteral(resourceName: "settings_icon"), style: .plain, action: { [weak self] in
-            
+        homeViewController.navigationItem.leftBarButtonItem = MXKBarButtonItem(image: #imageLiteral(resourceName: "settings_icon"), style: .plain, action: { [weak self] in
             guard let sself = self else {
                 return
             }
-            
             sself.showSettings(animated: true)
         })
         
-        return segmentedViewController
+        return homeViewController
+    }
+    
+    private func showPublicRooms() {
+        let publicRoomsCoordinator = PublicRoomsCoordinator(session: self.session)
+        self.add(childCoordinator: publicRoomsCoordinator)
+        self.navigationRouter.present(publicRoomsCoordinator, animated: true)
+        publicRoomsCoordinator.delegate = self
     }
 }
 
@@ -114,5 +111,31 @@ extension SegmentedViewCoordinator: GlobalSearchBarDelegate {
     func globalSearchBar(_ globalSearchBar: GlobalSearchBar, textDidChange searchText: String?) {
         self.roomsCoordinator?.updateSearchText(searchText)
         self.contactsCoordinator?.updateSearchText(searchText)
+    }
+}
+
+// MARK: - HomeViewControllerDelegate
+extension SegmentedViewCoordinator: HomeViewControllerDelegate {
+    
+    func homeViewControllerDidTapStartChatButton(_ homeViewController: HomeViewController) {
+        
+    }
+    
+    func homeViewControllerDidTapCreateRoomButton(_ homeViewController: HomeViewController) {
+        
+    }
+    
+    func homeViewControllerDidTapPublicRoomsAccessButton(_ homeViewController: HomeViewController) {
+        self.showPublicRooms()
+    }
+}
+
+// MARK: - PublicRoomsCoordinatorDelegate
+extension SegmentedViewCoordinator: PublicRoomsCoordinatorDelegate {
+    
+    func publicRoomsCoordinatorDidCancel(_ publicRoomsCoordinator: PublicRoomsCoordinator) {
+        self.navigationRouter.dismissModule(animated: true) { [weak self] in
+            self?.remove(childCoordinator: publicRoomsCoordinator)
+        }
     }
 }

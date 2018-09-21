@@ -28,29 +28,66 @@ UIColor *kColorGreyishPurple;
 UIColor *kColorWarmGrey;
 UIColor *kColorLightGrey;
 
+#pragma mark Variant 1
+
+// Status bar
+
+UIStatusBarStyle kVariant1StatusBarStyle;
+
+// Bar
+
+UIColor *kVariant1BarBgColor;
+UIColor *kVariant1BarTitleColor;
+UIColor *kVariant1BarSubTitleColor;
+UIColor *kVariant1BarActionColor;
+
+// Button
+
+UIColor *kVariant1ButtonBorderedTitleColor;
+UIColor *kVariant1ButtonBorderedBgColor;
+UIColor *kVariant1ButtonPlainTitleColor;
+UIColor *kVariant1ButtonPlainBgColor;
+
+// Body
+
 UIColor *kVariant1PrimaryBgColor;
 UIColor *kVariant1PrimaryTextColor;
 UIColor *kVariant1PrimarySubTextColor;
 UIColor *kVariant1PlaceholderTextColor;
-UIColor *kVariant1ActionColor;
+UIColor *kVariant1SeparatorColor;
 UIColor *kVariant1SecondaryBgColor;
 UIColor *kVariant1SecondaryTextColor;
+
+#pragma mark Variant 2
+
+// Status bar
+
+UIStatusBarStyle kVariant2StatusBarStyle;
+
+// Bar
+
+UIColor *kVariant2BarBgColor;
+UIColor *kVariant2BarTitleColor;
+UIColor *kVariant2BarSubTitleColor;
+UIColor *kVariant2BarActionColor;
+
+// Button
+
+UIColor *kVariant2ButtonBorderedTitleColor;
+UIColor *kVariant2ButtonBorderedBgColor;
+UIColor *kVariant2ButtonPlainTitleColor;
+UIColor *kVariant2ButtonPlainBgColor;
+
+// Body
 
 UIColor *kVariant2PrimaryBgColor;
 UIColor *kVariant2PrimaryTextColor;
 UIColor *kVariant2PrimarySubTextColor;
+UIColor *kVariant2SecondaryTextColor;
 UIColor *kVariant2PlaceholderTextColor;
-UIColor *kVariant2ActionColor;
+UIColor *kVariant2SeparatorColor;
 UIColor *kVariant2SecondaryBgColor;
 UIColor *kVariant2SecondaryTextColor;
-
-UIStatusBarStyle kVariant1StatusBarStyle;
-UIBarStyle kVariant1SearchBarStyle;
-UIColor *kVariant1SearchBarTintColor;
-
-UIStatusBarStyle kVariant2StatusBarStyle;
-UIBarStyle kVariant2SearchBarStyle;
-UIColor *kVariant2SearchBarTintColor;
 
 @implementation DesignValues
 
@@ -104,6 +141,68 @@ UIColor *kVariant2SearchBarTintColor;
     }
 }
 
+- (void)setupVariant1Colors {
+    
+    // Status bar
+    
+    kVariant1StatusBarStyle = UIStatusBarStyleLightContent;
+    
+    // Bar
+    
+    kVariant1BarBgColor = kColorDarkBlue;
+    kVariant1BarTitleColor = [UIColor whiteColor];
+    kVariant1BarSubTitleColor = [UIColor whiteColor];
+    kVariant1BarActionColor = [UIColor whiteColor];
+    
+    // Button
+    
+    kVariant1ButtonBorderedTitleColor = [UIColor whiteColor];
+    kVariant1ButtonBorderedBgColor = kColorDarkBlue;
+    kVariant1ButtonPlainTitleColor = kColorDarkBlue;
+    kVariant1ButtonPlainBgColor = [UIColor clearColor];
+    
+    // Body
+    
+    kVariant1PrimaryBgColor = [UIColor whiteColor];
+    kVariant1PrimaryTextColor = [UIColor blackColor];
+    kVariant1PrimarySubTextColor = kColorDarkBlue;
+    kVariant1PlaceholderTextColor = kColorWarmGrey;
+    kVariant1SeparatorColor = kColorLightNavy;
+    kVariant1SecondaryBgColor = kColorLightGrey;
+    kVariant1SecondaryTextColor = kColorWarmGrey;
+}
+
+- (void)setupVariant2Colors {
+    
+    // Satus bar
+    
+    kVariant2StatusBarStyle = UIStatusBarStyleLightContent;
+    
+    // Bar
+    
+    kVariant2BarBgColor = [UIColor whiteColor];
+    kVariant2BarTitleColor = [UIColor blackColor];
+    kVariant2BarSubTitleColor = kColorDarkBlue;
+    kVariant2BarActionColor = kColorLightNavy;
+    
+    // Button
+    
+    kVariant2ButtonBorderedTitleColor = [UIColor whiteColor];
+    kVariant2ButtonBorderedBgColor = kColorDarkBlue;
+    kVariant2ButtonPlainTitleColor = kColorDarkBlue;
+    kVariant2ButtonPlainBgColor = [UIColor clearColor];
+    
+    // Body
+    
+    kVariant2PrimaryBgColor = [UIColor whiteColor];
+    kVariant2PrimaryTextColor = [UIColor blackColor];
+    kVariant2PrimarySubTextColor = kColorDarkBlue;
+    kVariant2PlaceholderTextColor = kColorWarmGrey;
+    kVariant2SeparatorColor = kColorLightNavy;
+    kVariant2SecondaryBgColor = kColorLightGrey;
+    kVariant2SecondaryTextColor = kColorWarmGrey;
+}
+
 - (void)userInterfaceThemeDidChange
 {
     // Tchap: Only one theme is supported for the moment
@@ -122,29 +221,9 @@ UIColor *kVariant2SearchBarTintColor;
 //    else
     {
         // Set light theme colors by default.
-        kVariant1PrimaryBgColor = kColorDarkBlue;
-        kVariant1PrimaryTextColor = [UIColor whiteColor];
-        kVariant1PrimarySubTextColor = [UIColor whiteColor];
-        kVariant1PlaceholderTextColor = kColorWarmGrey;
-        kVariant1ActionColor = [UIColor whiteColor];
-        kVariant1SecondaryBgColor = kColorDarkBlue;
-        kVariant1SecondaryTextColor = [UIColor whiteColor];
+        [self setupVariant1Colors];
         
-        kVariant1StatusBarStyle = UIStatusBarStyleLightContent;
-        kVariant1SearchBarStyle = UIBarStyleDefault;
-        kVariant1SearchBarTintColor = nil; // Default tint color.
-        
-        kVariant2PrimaryBgColor = [UIColor whiteColor];
-        kVariant2PrimaryTextColor = [UIColor blackColor];
-        kVariant2PrimarySubTextColor = kColorDarkBlue;
-        kVariant2PlaceholderTextColor = kColorWarmGrey;
-        kVariant2ActionColor = kColorLightNavy;
-        kVariant2SecondaryBgColor = kColorLightGrey;
-        kVariant2SecondaryTextColor = kColorWarmGrey;
-        
-        kVariant2StatusBarStyle = UIStatusBarStyleDefault;
-        kVariant2SearchBarStyle = UIBarStyleDefault;
-        kVariant2SearchBarTintColor = nil; // Default tint color.
+        [self setupVariant2Colors];
     }
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kDesignValuesDidChangeThemeNotification object:nil];

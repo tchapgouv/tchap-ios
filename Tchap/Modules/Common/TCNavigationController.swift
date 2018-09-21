@@ -16,7 +16,14 @@
 
 import Foundation
 
-/// Describe a component on which a Style could be applied
-@objc protocol Stylable {
-    func update(style: Style)
+/// Subclass of UINavigationController to handle view controller based status bar style with view controller containment
+final class TCNavigationController: UINavigationController {
+    
+    override var childViewControllerForStatusBarStyle: UIViewController? {
+        return self.topViewController
+    }
+    
+    override var childViewControllerForStatusBarHidden: UIViewController? {
+        return self.topViewController
+    }
 }

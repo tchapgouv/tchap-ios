@@ -16,7 +16,6 @@
 
 import Foundation
 
-/// Describe a component on which a Style could be applied
-@objc protocol Stylable {
-    func update(style: Style)
+/// `PublicRoomsCoordinatorType` is a protocol describing a Coordinator that handle public rooms navigation flow.
+protocol PublicRoomsCoordinatorType: Coordinator, Presentable {
 }

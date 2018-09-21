@@ -7,6 +7,8 @@ import Foundation
 
 // swiftlint:disable identifier_name line_length type_body_length
 internal enum TchapL10n {
+  /// Annuler
+  internal static let actionCancel = TchapL10n.tr("Tchap", "action_cancel")
   /// Suivant
   internal static let actionNext = TchapL10n.tr("Tchap", "action_next")
   /// L'adresse e-mail ne semble pas valide
@@ -39,6 +41,10 @@ internal enum TchapL10n {
   internal static let contactsUserDirectoryOfflineSection = TchapL10n.tr("Tchap", "contacts_user_directory_offline_section")
   /// Répertoire Tchap
   internal static let contactsUserDirectorySection = TchapL10n.tr("Tchap", "contacts_user_directory_section")
+  /// Accéder à un salon public
+  internal static let conversationsAccessToPublicRoomsAction = TchapL10n.tr("Tchap", "conversations_access_to_public_rooms_action")
+  /// Nouveau salon
+  internal static let conversationsCreateRoomAction = TchapL10n.tr("Tchap", "conversations_create_room_action")
   /// Salons publics
   internal static let conversationsDirectorySection = TchapL10n.tr("Tchap", "conversations_directory_section")
   /// Invitations
@@ -47,10 +53,18 @@ internal enum TchapL10n {
   internal static let conversationsMainSection = TchapL10n.tr("Tchap", "conversations_main_section")
   /// Aucune conversation
   internal static let conversationsNoConversation = TchapL10n.tr("Tchap", "conversations_no_conversation")
+  /// Nouvelle discussion
+  internal static let conversationsStartChatAction = TchapL10n.tr("Tchap", "conversations_start_chat_action")
   /// Une erreur est survenue, veuillez réessayer ultérieurement
   internal static let errorMessageDefault = TchapL10n.tr("Tchap", "error_message_default")
   /// Erreur
   internal static let errorTitleDefault = TchapL10n.tr("Tchap", "error_title_default")
+  /// Chargement en cours…
+  internal static let publicRoomsLoadingInProgress = TchapL10n.tr("Tchap", "public_rooms_loading_in_progress")
+  /// Rechercher
+  internal static let publicRoomsSearchBarPlaceholder = TchapL10n.tr("Tchap", "public_rooms_search_bar_placeholder")
+  /// Accéder à un salon
+  internal static let publicRoomsTitle = TchapL10n.tr("Tchap", "public_rooms_title")
   /// Confirmer le mot de passe
   internal static let registrationConfirmPasswordPlaceholder = TchapL10n.tr("Tchap", "registration_confirm_password_placeholder")
   /// Je n'ai pas reçu l'email !

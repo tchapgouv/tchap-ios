@@ -50,7 +50,7 @@
     id kRiotDesignValuesDidChangeThemeNotificationObserver;
 }
 
-@property (nonatomic, strong) GlobalSearchBar *globalSearchBar;
+@property (nonatomic, strong) id<Style> currentStyle;
 
 @end
 
@@ -66,14 +66,9 @@
 
 + (instancetype)instantiate
 {
-    return [[[self class] alloc] initWithNibName:NSStringFromClass([SegmentedViewController class])
+    SegmentedViewController *segmentedViewController = [[[self class] alloc] initWithNibName:NSStringFromClass([SegmentedViewController class])
                                           bundle:[NSBundle bundleForClass:[SegmentedViewController class]]];
-}
-
-+ (instancetype)instantiateWithGlobalSearchBar:(GlobalSearchBar*)globalSearchBar
-{
-    SegmentedViewController *segmentedViewController = [self instantiate];
-    segmentedViewController.globalSearchBar = globalSearchBar;
+    segmentedViewController.currentStyle = Variant1Style.shared;
     return segmentedViewController;
 }
 
@@ -141,8 +136,6 @@
     
     // Setup `MXKViewControllerHandling` properties
     self.enableBarTintColorStatusChange = NO;
-    
-    self.sectionHeaderTintColor = kVariant1PrimaryTextColor;
 }
 
 - (void)viewDidLoad
@@ -171,8 +164,6 @@
     
     [NSLayoutConstraint activateConstraints:@[self.selectionContainerTopConstraint]];
     
-    [self createSegmentedViews];
-    
     // Observe user interface theme change.
     kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
@@ -181,29 +172,28 @@
     }];
     [self userInterfaceThemeDidChange];
     
-    [self setupGlobalSearchBar];
+    [self createSegmentedViews];
 }
 
 - (void)userInterfaceThemeDidChange
 {
-    // The navigation bar color
-    self.navigationController.navigationBar.translucent = NO;
-    self.navigationController.navigationBar.barTintColor = kVariant1PrimaryBgColor;
-    self.navigationController.navigationBar.tintColor = kVariant1ActionColor;
-    // Set navigation bar title color
-    NSDictionary<NSString *,id> *titleTextAttributes = self.navigationController.navigationBar.titleTextAttributes;
-    if (titleTextAttributes)
+    [self updateStyle:self.currentStyle];
+}
+
+- (void)updateStyle:(id<Style>)style
+{
+    self.currentStyle = style;
+    
+    self.sectionHeaderTintColor = style.barActionColor;
+    
+    UINavigationBar *navigationBar = self.navigationController.navigationBar;
+    
+    if (navigationBar)
     {
-        NSMutableDictionary *textAttributes = [NSMutableDictionary dictionaryWithDictionary:titleTextAttributes];
-        textAttributes[NSForegroundColorAttributeName] = kVariant1PrimaryTextColor;
-        self.navigationController.navigationBar.titleTextAttributes = textAttributes;
-    }
-    else
-    {
-        self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: kVariant1PrimaryTextColor};
+        [style applyStyleOnNavigationBar:navigationBar];
     }
     
-    self.view.backgroundColor = kVariant2PrimaryBgColor;
+    self.view.backgroundColor = style.backgroundColor;
     
     // @TODO Design the activvity indicator for Tchap
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
@@ -211,7 +201,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return kVariant1StatusBarStyle;
+    return self.currentStyle.statusBarStyle;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -263,9 +253,6 @@
         // Make iOS invoke child viewDidDisappear
         [_selectedViewController endAppearanceTransition];
     }
-        
-    // Reset search text
-    [self.globalSearchBar resetSearchText];
 }
 
 - (void)createSegmentedViews
@@ -283,7 +270,7 @@
         label.font = [UIFont systemFontOfSize:17];
         label.textAlignment = NSTextAlignmentCenter;
         label.textColor = _sectionHeaderTintColor;
-        label.backgroundColor = kVariant1PrimaryBgColor;
+        label.backgroundColor = self.currentStyle.barBackgroundColor;
         label.accessibilityIdentifier = [NSString stringWithFormat:@"SegmentedVCSectionLabel%tu", index];
         
         // the constraint defines the label frame
@@ -506,14 +493,6 @@
     {
         [_selectedViewController endAppearanceTransition];
     }
-}
-
-#pragma mark - Search
-
-- (void)setupGlobalSearchBar
-{
-    self.globalSearchBar.frame = self.navigationController.navigationBar.frame;
-    self.navigationItem.titleView = self.globalSearchBar;
 }
 
 #pragma mark - touch event

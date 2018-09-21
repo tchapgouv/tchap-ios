@@ -1,6 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Actions
 "action_next" = "Suivant";
+"action_cancel" = "Annuler";
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Common errors
@@ -45,6 +46,9 @@
 "conversations_main_section" = "Conversations";
 "conversations_directory_section" = "Salons publics";
 "conversations_no_conversation" = "Aucune conversation";
+"conversations_start_chat_action" = "Nouvelle discussion";
+"conversations_create_room_action" = "Nouveau salon";
+"conversations_access_to_public_rooms_action" = "Accéder à un salon public";
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Contacts
@@ -58,3 +62,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Search
 "search_no_result" = "Aucun résultat";
+
+////////////////////////////////////////////////////////////////////////////////
+// MARK: Public rooms
+"public_rooms_title" = "Accéder à un salon";
+"public_rooms_search_bar_placeholder" = "Rechercher";
+"public_rooms_loading_in_progress" = "Chargement en cours…";
