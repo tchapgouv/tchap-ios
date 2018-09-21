@@ -25,14 +25,22 @@ final class PublicRoomService: PublicRoomServiceType {
     private let session: MXSession
     private let homeServersStringURL: [String]
     
-    private var currentHomeServer: String? {
-        return self.session.matrixRestClient.homeserver
-    }
-    
     // MARK: - Setup
     
     init(homeServersStringURL: [String], session: MXSession) {
-        self.homeServersStringURL = homeServersStringURL
+        
+        guard let serverUrlPrefix = UserDefaults.standard.string(forKey: "serverUrlPrefix") else {
+            fatalError("serverUrlPrefix should be defined")
+        }
+        
+        let currentHomeServer = session.matrixRestClient.homeserver.replacingOccurrences(of: serverUrlPrefix, with: "")
+        
+        // Remove current homeserver from the list
+        let filteredHomeServersStringURL = homeServersStringURL.filter { (homeServerStringURL) -> Bool in
+            return homeServerStringURL != currentHomeServer
+        }
+        
+        self.homeServersStringURL = filteredHomeServersStringURL
         self.session = session
     }
     
@@ -40,24 +48,27 @@ final class PublicRoomService: PublicRoomServiceType {
     
     func getPublicRooms(searchText: String? = nil) -> Observable<[MXPublicRoom]> {
         
-        let publicRoomsRequests: [Observable<[MXPublicRoom]>] = self.homeServersStringURL.map { (homeServerStringURL) -> Observable<[MXPublicRoom]> in
-            
-            let homeServer: String?
-            
-            // If the homeserver is the same as current one, pass nil to request in order to get public rooms from current homeserver
-            if self.isCurrentHomeServer(homeServerStringURL) {
-                homeServer = nil
-            } else {
-                homeServer = homeServerStringURL
-            }
-            
-            return self.getPublicRooms(from: homeServer, searchText: searchText)
-            .catchError({ (error) -> Observable<[MXPublicRoom]> in
-                print("[PublicRoomService]: Fail to retrieve public rooms for homeserver: \(homeServerStringURL)")
-                // Return an empty array when request fail
-                return Observable.just([])
-            })
+        let createPublicRoomRequest: ((String?) -> Observable<[MXPublicRoom]>) = { homeServerStringURL in
+            return self.getPublicRooms(from: homeServerStringURL, searchText: searchText)
+                .catchError({ (error) -> Observable<[MXPublicRoom]> in
+                    if let homeServerStringURL = homeServerStringURL {
+                        print("[PublicRoomService]: Fail to retrieve public rooms for homeserver: \(homeServerStringURL)")
+                    } else {
+                        print("[PublicRoomService]: Fail to retrieve public rooms for current homeserver")
+                    }
+                    // Return an empty array when request fail
+                    return Observable.just([])
+                })
         }
+        
+        var publicRoomsRequests: [Observable<[MXPublicRoom]>] = self.homeServersStringURL.map { (homeServerStringURL) -> Observable<[MXPublicRoom]> in
+            return createPublicRoomRequest(homeServerStringURL)
+        }
+        
+        // Use nil as homeserver parameter to perform public room request on current homeserver
+        let currentHomeServerPublicRoomRequest = createPublicRoomRequest(nil)
+        
+        publicRoomsRequests.append(currentHomeServerPublicRoomRequest)
         
         return Observable.merge(publicRoomsRequests) // Perform all requests in parallel
             .flatMap({ (publicRooms) -> Observable<MXPublicRoom> in // Get one public rooms request response, i.e. [MXPublicRoom], and emits one MXPublicRoom for each item of the array.
@@ -71,7 +82,7 @@ final class PublicRoomService: PublicRoomServiceType {
     private func getPublicRooms(from homeServerStringURL: String?, searchText: String? = nil) -> Observable<[MXPublicRoom]> {
         return Observable.create { (observer) -> Disposable in
 
-            let httpOperation = self.session.matrixRestClient.publicRooms(onServer: homeServerStringURL, limit: 20, since: nil, filter: searchText, thirdPartyInstanceId: nil, includeAllNetworks: false) { (response) in
+            let httpOperation = self.session.matrixRestClient.publicRooms(onServer: homeServerStringURL, limit: nil, since: nil, filter: searchText, thirdPartyInstanceId: nil, includeAllNetworks: false) { (response) in
                 switch response {
                 case .success(let publicRoomsResponse):
                     let publicRooms = publicRoomsResponse.chunk ?? []
@@ -83,17 +94,12 @@ final class PublicRoomService: PublicRoomServiceType {
                     observer.on(.error(error))
                 }
             }
+            
+            httpOperation.maxRetriesTime = 0
 
             return Disposables.create {
                 httpOperation.cancel()
             }
         }
-    }
-    
-    private func isCurrentHomeServer(_ homeServer: String) -> Bool {
-        guard let currentHomeServer = self.currentHomeServer else {
-            return false
-        }
-        return currentHomeServer.contains(homeServer)
     }
 }
