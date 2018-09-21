@@ -71,6 +71,7 @@ abstract_target 'RiotPods' do
     pod 'PiwikTracker', :git => 'https://github.com/manuroe/matomo-sdk-ios.git', :branch => 'feature/CustomVariables'
     #pod 'PiwikTracker', '~> 4.4.2'
     pod 'Reusable', '~> 4.0'
+    pod 'RxSwift', '~> 4.3'
 
     # Remove warnings from "bad" pods
     pod 'OLMKit', :inhibit_warnings => true

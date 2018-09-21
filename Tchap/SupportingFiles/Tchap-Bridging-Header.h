@@ -10,6 +10,7 @@
 #import "RoomsViewController.h"
 #import "ContactsTableViewController.h"
 #import "RoomsDataSource.h"
+#import "PublicRoomTableViewCell.h"
 #import "RecentsDataSource.h"
 #import "SettingsViewController.h"
 #import "RoomFilesViewController.h"

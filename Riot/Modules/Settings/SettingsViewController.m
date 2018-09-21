@@ -219,6 +219,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 @property (nonatomic) BOOL newPhoneEditingEnabled;
 
 @property (weak, nonatomic) DeactivateAccountViewController *deactivateAccountViewController;
+@property (strong, nonatomic) id<Style> currentStyle;
 
 @end
 
@@ -227,7 +228,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 + (instancetype)instantiate
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
-    return [storyboard instantiateViewControllerWithIdentifier:@"SettingsViewController"];
+    SettingsViewController *settingsViewController = [storyboard instantiateViewControllerWithIdentifier:@"SettingsViewController"];
+    settingsViewController.currentStyle = Variant1Style.shared;
+    return settingsViewController;
 }
 
 - (void)finalizeInit
@@ -318,29 +321,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
 - (void)userInterfaceThemeDidChange
 {
-    // The navigation bar color
-    self.navigationController.navigationBar.translucent = NO;
-    self.navigationController.navigationBar.barTintColor = kVariant1PrimaryBgColor;
-    self.navigationController.navigationBar.tintColor = kVariant1ActionColor;
-    // Set navigation bar title color
-    NSDictionary<NSString *,id> *titleTextAttributes = self.navigationController.navigationBar.titleTextAttributes;
-    if (titleTextAttributes)
-    {
-        NSMutableDictionary *textAttributes = [NSMutableDictionary dictionaryWithDictionary:titleTextAttributes];
-        textAttributes[NSForegroundColorAttributeName] = kVariant1PrimaryTextColor;
-        self.navigationController.navigationBar.titleTextAttributes = textAttributes;
-    }
-    else
-    {
-        self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: kVariant1PrimaryTextColor};
-    }
-    
-    // @TODO Design the activvity indicator for Tchap
-    self.activityIndicator.backgroundColor = kRiotOverlayColor;
-    
-    // Check the table view style to select its bg color.
-    self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? kVariant2PrimaryBgColor : kVariant2SecondaryBgColor);
-    self.view.backgroundColor = self.tableView.backgroundColor;
+    [self updateStyle:self.currentStyle];
     
     if (self.tableView.dataSource)
     {
@@ -348,9 +329,26 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     }
 }
 
+- (void)updateStyle:(id<Style>)style
+{
+    UINavigationBar *navigationBar = self.navigationController.navigationBar;
+    
+    if (navigationBar)
+    {
+        [style applyStyleOnNavigationBar:navigationBar];
+    }
+    
+    // @TODO Design the activvity indicator for Tchap
+    self.activityIndicator.backgroundColor = kRiotOverlayColor;
+    
+    // Check the table view style to select its bg color.
+    self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? style.backgroundColor : style.secondaryBackgroundColor);
+    self.view.backgroundColor = self.tableView.backgroundColor;
+}
+
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return kVariant1StatusBarStyle;
+    return self.currentStyle.statusBarStyle;
 }
 
 - (void)didReceiveMemoryWarning

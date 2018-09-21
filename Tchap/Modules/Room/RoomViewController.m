@@ -346,19 +346,19 @@
 {
     // The navigation bar color
     self.navigationController.navigationBar.translucent = NO;
-    self.navigationController.navigationBar.barTintColor = kVariant2PrimaryBgColor;
-    self.navigationController.navigationBar.tintColor = kVariant2ActionColor;
+    self.navigationController.navigationBar.barTintColor = kVariant2BarBgColor;
+    self.navigationController.navigationBar.tintColor = kVariant2BarActionColor;
     // Set navigation bar title color
     NSDictionary<NSString *,id> *titleTextAttributes = self.navigationController.navigationBar.titleTextAttributes;
     if (titleTextAttributes)
     {
         NSMutableDictionary *textAttributes = [NSMutableDictionary dictionaryWithDictionary:titleTextAttributes];
-        textAttributes[NSForegroundColorAttributeName] = kVariant2PrimaryTextColor;
+        textAttributes[NSForegroundColorAttributeName] = kVariant2BarTitleColor;
         self.navigationController.navigationBar.titleTextAttributes = textAttributes;
     }
     else
     {
-        self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: kVariant2PrimaryTextColor};
+        self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: kVariant2BarTitleColor};
     }
     
     // @TODO Design the activvity indicator for Tchap
@@ -380,7 +380,7 @@
     missedDiscussionsBadgeLabel.backgroundColor = [UIColor clearColor];
     
     // Check the table view style to select its bg color.
-    self.bubblesTableView.backgroundColor = ((self.bubblesTableView.style == UITableViewStylePlain) ? kVariant2PrimaryBgColor : kVariant2SecondaryBgColor);
+    self.bubblesTableView.backgroundColor = kVariant2PrimaryBgColor;
     self.view.backgroundColor = self.bubblesTableView.backgroundColor;
     
     if (self.bubblesTableView.dataSource)

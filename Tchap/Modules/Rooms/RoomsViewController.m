@@ -55,10 +55,7 @@
     [super viewDidLoad];
     
     self.view.accessibilityIdentifier = @"RoomsVCView";
-    self.recentsTableView.accessibilityIdentifier = @"RoomsVCTableView";
-    
-    // Add the (+) button programmatically
-    [self addPlusButton];
+    self.recentsTableView.accessibilityIdentifier = @"RoomsVCTableView";        
     
     self.enableStickyHeaders = YES;
 }

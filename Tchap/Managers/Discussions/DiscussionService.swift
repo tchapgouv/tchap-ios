@@ -72,7 +72,7 @@ final class DiscussionService {
                         case .success(let roomMembers):
                             if let member = roomMembers?.member(withUserId: userID) {
                                 switch member.membership {
-                                case __MXMembershipJoin:
+                                case .join:
                                     if !isPendingInvite {
                                         // the other user is present in this room (join-join)
                                         joinedDiscussions.append(roomID)
@@ -80,10 +80,10 @@ final class DiscussionService {
                                         // I am invited by the other member (invite-join)
                                         receivedInvites.append(roomID)
                                     }
-                                case __MXMembershipInvite:
+                                case .invite:
                                     // the other user is invited (join-invite)
                                     sentInvites.append(roomID)
-                                case __MXMembershipLeave:
+                                case .leave:
                                     // the other member has left this room
                                     // and I can be invite or join
                                     leftDiscussions.append(roomID)

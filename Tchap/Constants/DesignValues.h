@@ -33,31 +33,67 @@ extern UIColor *kColorWarmGrey;
 extern UIColor *kColorLightGrey;
 
 #pragma mark - Tchap Theme Colors
+
+#pragma mark Variant 1
+
+// Status bar
+
+extern UIStatusBarStyle kVariant1StatusBarStyle;
+
+// Bar
+
+extern UIColor *kVariant1BarBgColor;
+extern UIColor *kVariant1BarTitleColor;
+extern UIColor *kVariant1BarSubTitleColor;
+extern UIColor *kVariant1BarActionColor;
+
+// Button
+
+extern UIColor *kVariant1ButtonBorderedTitleColor;
+extern UIColor *kVariant1ButtonBorderedBgColor;
+extern UIColor *kVariant1ButtonPlainTitleColor;
+extern UIColor *kVariant1ButtonPlainBgColor;
+
+// Body
+
 extern UIColor *kVariant1PrimaryBgColor;
 extern UIColor *kVariant1PrimaryTextColor;
 extern UIColor *kVariant1PrimarySubTextColor;
 extern UIColor *kVariant1PlaceholderTextColor;
-extern UIColor *kVariant1ActionColor;
+extern UIColor *kVariant1SeparatorColor;
 extern UIColor *kVariant1SecondaryBgColor;
 extern UIColor *kVariant1SecondaryTextColor;
+
+#pragma mark Variant 2
+
+// Status bar
+
+extern UIStatusBarStyle kVariant2StatusBarStyle;
+
+// Bar
+
+extern UIColor *kVariant2BarBgColor;
+extern UIColor *kVariant2BarTitleColor;
+extern UIColor *kVariant2BarSubTitleColor;
+extern UIColor *kVariant2BarActionColor;
+
+// Button
+
+extern UIColor *kVariant2ButtonBorderedTitleColor;
+extern UIColor *kVariant2ButtonBorderedBgColor;
+extern UIColor *kVariant2ButtonPlainTitleColor;
+extern UIColor *kVariant2ButtonPlainBgColor;
+
+// Body
 
 extern UIColor *kVariant2PrimaryBgColor;
 extern UIColor *kVariant2PrimaryTextColor;
 extern UIColor *kVariant2PrimarySubTextColor;
 extern UIColor *kVariant2SecondaryTextColor;
 extern UIColor *kVariant2PlaceholderTextColor;
-extern UIColor *kVariant2ActionColor;
+extern UIColor *kVariant2SeparatorColor;
 extern UIColor *kVariant2SecondaryBgColor;
 extern UIColor *kVariant2SecondaryTextColor;
-
-#pragma mark - Tchap Bar Style
-extern UIStatusBarStyle kVariant1StatusBarStyle;
-extern UIBarStyle kVariant1SearchBarStyle;
-extern UIColor *kVariant1SearchBarTintColor;
-
-extern UIStatusBarStyle kVariant2StatusBarStyle;
-extern UIBarStyle kVariant2SearchBarStyle;
-extern UIColor *kVariant2SearchBarTintColor;
 
 /**
  `DesignValues` class manages the Tchap design parameters
