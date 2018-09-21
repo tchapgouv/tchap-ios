@@ -113,7 +113,7 @@
 
 #import "GeneratedInterface-Swift.h"
 
-@interface RoomViewController ()
+@interface RoomViewController () <Stylable>
 {
     // The preview header
     PreviewView *previewHeader;
@@ -180,6 +180,8 @@
     id tombstoneEventNotificationsListener;
 }
 
+@property (nonatomic, strong) id<Style> currentStyle;
+
 @end
 
 @implementation RoomViewController
@@ -195,8 +197,10 @@
 
 + (instancetype)instantiate
 {
-    return [[[self class] alloc] initWithNibName:NSStringFromClass(self.class)
-                                          bundle:[NSBundle bundleForClass:self.class]];
+    RoomViewController *roomViewController = [[[self class] alloc] initWithNibName:NSStringFromClass(self.class)
+                                                                            bundle:[NSBundle bundleForClass:self.class]];
+    roomViewController.currentStyle = Variant2Style.shared;
+    return roomViewController;
 }
 
 #pragma mark -
@@ -344,43 +348,40 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    // The navigation bar color
-    self.navigationController.navigationBar.translucent = NO;
-    self.navigationController.navigationBar.barTintColor = kVariant2BarBgColor;
-    self.navigationController.navigationBar.tintColor = kVariant2BarActionColor;
-    // Set navigation bar title color
-    NSDictionary<NSString *,id> *titleTextAttributes = self.navigationController.navigationBar.titleTextAttributes;
-    if (titleTextAttributes)
+    [self updateWithStyle:self.currentStyle];
+}
+
+- (void)updateWithStyle:(id<Style>)style
+{
+    self.currentStyle = style;
+    
+    UINavigationBar *navigationBar = self.navigationController.navigationBar;
+    
+    if (navigationBar)
     {
-        NSMutableDictionary *textAttributes = [NSMutableDictionary dictionaryWithDictionary:titleTextAttributes];
-        textAttributes[NSForegroundColorAttributeName] = kVariant2BarTitleColor;
-        self.navigationController.navigationBar.titleTextAttributes = textAttributes;
-    }
-    else
-    {
-        self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: kVariant2BarTitleColor};
+        [style applyStyleOnNavigationBar:navigationBar];
     }
     
     // @TODO Design the activvity indicator for Tchap
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
     // Prepare jump to last unread banner
-    self.jumpToLastUnreadBannerContainer.backgroundColor = kVariant2SecondaryBgColor;
-    self.jumpToLastUnreadLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_jump_to_first_unread", @"Vector", nil) attributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle), NSUnderlineColorAttributeName: kVariant2SecondaryTextColor, NSForegroundColorAttributeName: kVariant2SecondaryTextColor}];
+    self.jumpToLastUnreadBannerContainer.backgroundColor = style.secondaryBackgroundColor;
+    self.jumpToLastUnreadLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_jump_to_first_unread", @"Vector", nil) attributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle), NSUnderlineColorAttributeName:style.secondaryTextColor, NSForegroundColorAttributeName:style.secondaryTextColor}];
     
     
-    self.previewHeaderContainer.backgroundColor = kVariant2PrimaryBgColor;
+    self.previewHeaderContainer.backgroundColor = style.backgroundColor;
     if (previewHeader)
     {
         [previewHeader customizeViewRendering];
     }
     
-    missedDiscussionsBadgeLabel.textColor = kVariant2PrimaryTextColor;
+    missedDiscussionsBadgeLabel.textColor = style.primaryTextColor;
     missedDiscussionsBadgeLabel.font = [UIFont boldSystemFontOfSize:14];
     missedDiscussionsBadgeLabel.backgroundColor = [UIColor clearColor];
     
     // Check the table view style to select its bg color.
-    self.bubblesTableView.backgroundColor = kVariant2PrimaryBgColor;
+    self.bubblesTableView.backgroundColor = style.backgroundColor;
     self.view.backgroundColor = self.bubblesTableView.backgroundColor;
     
     if (self.bubblesTableView.dataSource)
@@ -391,7 +392,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return kVariant2StatusBarStyle;
+    return self.currentStyle.statusBarStyle;
 }
 
 - (void)didReceiveMemoryWarning
