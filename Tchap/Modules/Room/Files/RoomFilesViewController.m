@@ -32,6 +32,8 @@
     id kRiotDesignValuesDidChangeThemeNotificationObserver;
 }
 
+@property (nonatomic, strong) id<Style> currentStyle;
+
 @end
 
 @implementation RoomFilesViewController
@@ -40,7 +42,9 @@
 
 + (instancetype)instantiate
 {
-    return [RoomFilesViewController roomViewController];
+    RoomFilesViewController *roomFilesViewController = [RoomFilesViewController roomViewController];
+    roomFilesViewController.currentStyle = Variant2Style.shared;
+    return roomFilesViewController;
 }
 
 - (instancetype)initWithNibName:(nullable NSString *)nibNameOrNil bundle:(nullable NSBundle *)nibBundleOrNil
@@ -115,28 +119,24 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    // The navigation bar color
-    self.navigationController.navigationBar.translucent = NO;
-    self.navigationController.navigationBar.barTintColor = kVariant2PrimaryBgColor;
-    self.navigationController.navigationBar.tintColor = kVariant2ActionColor;
-    // Set navigation bar title color
-    NSDictionary<NSString *,id> *titleTextAttributes = self.navigationController.navigationBar.titleTextAttributes;
-    if (titleTextAttributes)
+    [self updateStyle:self.currentStyle];
+}
+
+- (void)updateStyle:(id<Style>)style
+{
+    self.currentStyle = style;
+    
+    UINavigationBar *navigationBar = self.navigationController.navigationBar;
+    
+    if (navigationBar)
     {
-        NSMutableDictionary *textAttributes = [NSMutableDictionary dictionaryWithDictionary:titleTextAttributes];
-        textAttributes[NSForegroundColorAttributeName] = kVariant2PrimaryTextColor;
-        self.navigationController.navigationBar.titleTextAttributes = textAttributes;
-    }
-    else
-    {
-        self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: kVariant2PrimaryTextColor};
+        [style applyStyleOnNavigationBar:navigationBar];
     }
     
-    // @TODO Design the activvity indicator for Tchap
+    //TODO Design the activvity indicator for Tchap
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
-    // Check the table view style to select its bg color.
-    self.bubblesTableView.backgroundColor = ((self.bubblesTableView.style == UITableViewStylePlain) ? kVariant2PrimaryBgColor : kVariant2SecondaryBgColor);
+    self.bubblesTableView.backgroundColor = style.backgroundColor;
     self.view.backgroundColor = self.bubblesTableView.backgroundColor;
     
     if (self.bubblesTableView.dataSource)
@@ -147,7 +147,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return kVariant2StatusBarStyle;
+    return self.currentStyle.statusBarStyle;
 }
 
 - (void)destroy

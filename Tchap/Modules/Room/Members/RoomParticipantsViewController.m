@@ -63,6 +63,8 @@
     id kRiotDesignValuesDidChangeThemeNotificationObserver;
 }
 
+@property (nonatomic, strong) id<Style> currentStyle;
+
 @end
 
 @implementation RoomParticipantsViewController
@@ -77,8 +79,10 @@
 
 + (instancetype)instantiate
 {
-    return [[[self class] alloc] initWithNibName:NSStringFromClass([RoomParticipantsViewController class])
+    RoomParticipantsViewController *roomParticipantsViewController = [[[self class] alloc] initWithNibName:NSStringFromClass([RoomParticipantsViewController class])
                                           bundle:[NSBundle bundleForClass:[RoomParticipantsViewController class]]];
+    roomParticipantsViewController.currentStyle = Variant2Style.shared;
+    return roomParticipantsViewController;
 }
 
 #pragma mark -
@@ -155,24 +159,35 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    self.defaultBarTintColor = kRiotSecondaryBgColor;
-    self.barTitleColor = kRiotPrimaryTextColor;
-    self.activityIndicator.backgroundColor = kRiotOverlayColor;
+    [self updateStyle:self.currentStyle];
+}
+
+- (void)updateStyle:(id<Style>)style
+{
+    self.currentStyle = style;
     
     [self refreshSearchBarItemsColor:_searchBarView];
-    
     _searchBarHeaderBorder.backgroundColor = kRiotAuxiliaryColor;
     
-    // Check the table view style to select its bg color.
-    self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? kRiotPrimaryBgColor : kRiotSecondaryBgColor);
-    self.view.backgroundColor = self.tableView.backgroundColor;
+    UINavigationBar *navigationBar = self.navigationController.navigationBar;
+    
+    if (navigationBar)
+    {
+        [style applyStyleOnNavigationBar:navigationBar];
+    }
+    
+    //TODO Design the activvity indicator for Tchap
+    self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
     // Update the gradient view above the screen
     CGFloat white = 1.0;
-    [kRiotPrimaryBgColor getWhite:&white alpha:nil];
+    [style.backgroundColor getWhite:&white alpha:nil];
     CGColorRef opaqueWhiteColor = [UIColor colorWithWhite:white alpha:1.0].CGColor;
     CGColorRef transparentWhiteColor = [UIColor colorWithWhite:white alpha:0].CGColor;
     tableViewMaskLayer.colors = [NSArray arrayWithObjects:(__bridge id)transparentWhiteColor, (__bridge id)transparentWhiteColor, (__bridge id)opaqueWhiteColor, nil];
+    
+    self.tableView.backgroundColor = style.backgroundColor;
+    self.view.backgroundColor = self.tableView.backgroundColor;
     
     if (self.tableView.dataSource)
     {
@@ -182,7 +197,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return kRiotDesignStatusBarStyle;
+    return self.currentStyle.statusBarStyle;
 }
 
 // This method is called when the viewcontroller is added or removed from a container view controller.

@@ -67,6 +67,9 @@
      */
     BOOL isStatusBarHidden;
 }
+
+@property (nonatomic, strong) id<Style> currentStyle;
+
 @end
 
 @implementation RoomMemberDetailsViewController
@@ -81,8 +84,11 @@
 
 + (instancetype)instantiate
 {
-    return [[[self class] alloc] initWithNibName:NSStringFromClass(self.class)
+    RoomMemberDetailsViewController *roomMemberDetailsViewController = [[[self class] alloc] initWithNibName:NSStringFromClass(self.class)
                                           bundle:[NSBundle bundleForClass:self.class]];
+    
+    roomMemberDetailsViewController.currentStyle = Variant2Style.shared;
+    return roomMemberDetailsViewController;
 }
 
 #pragma mark -
@@ -137,33 +143,29 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    // The navigation bar color
-    self.navigationController.navigationBar.translucent = NO;
-    self.navigationController.navigationBar.barTintColor = kVariant2PrimaryBgColor;
-    self.navigationController.navigationBar.tintColor = kVariant2ActionColor;
-    // Set navigation bar title color
-    NSDictionary<NSString *,id> *titleTextAttributes = self.navigationController.navigationBar.titleTextAttributes;
-    if (titleTextAttributes)
+    [self updateStyle:self.currentStyle];
+}
+
+- (void)updateStyle:(id<Style>)style
+{
+    self.currentStyle = style;
+    
+    UINavigationBar *navigationBar = self.navigationController.navigationBar;
+    
+    if (navigationBar)
     {
-        NSMutableDictionary *textAttributes = [NSMutableDictionary dictionaryWithDictionary:titleTextAttributes];
-        textAttributes[NSForegroundColorAttributeName] = kVariant2PrimaryTextColor;
-        self.navigationController.navigationBar.titleTextAttributes = textAttributes;
-    }
-    else
-    {
-        self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: kVariant2PrimaryTextColor};
+        [style applyStyleOnNavigationBar:navigationBar];
     }
     
-    // @TODO Design the activvity indicator for Tchap
+    //TODO Design the activvity indicator for Tchap
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
-    memberTitleView.roomMemberNameLabel.textColor = kVariant2PrimaryTextColor;
-    memberTitleView.roomMemberDomainLabel.textColor = kVariant2SecondaryTextColor;
-    self.memberHeaderView.backgroundColor = kVariant2PrimaryBgColor;
-    self.roomMemberStatusLabel.textColor = kVariant2SecondaryTextColor;
+    memberTitleView.roomMemberNameLabel.textColor = style.barTitleColor;
+    memberTitleView.roomMemberDomainLabel.textColor = style.barSubTitleColor;
+    self.memberHeaderView.backgroundColor = style.backgroundColor;
+    self.roomMemberStatusLabel.textColor = style.primaryTextColor;
     
-    // Check the table view style to select its bg color.
-    self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? kVariant2PrimaryBgColor : kVariant2SecondaryBgColor);
+    self.tableView.backgroundColor = style.secondaryBackgroundColor;
     self.view.backgroundColor = self.tableView.backgroundColor;
     
     if (self.tableView.dataSource)
@@ -174,7 +176,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return kVariant2StatusBarStyle;
+    return self.currentStyle.statusBarStyle;
 }
 
 - (BOOL)prefersStatusBarHidden

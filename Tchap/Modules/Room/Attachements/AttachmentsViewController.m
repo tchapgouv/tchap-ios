@@ -25,6 +25,8 @@
     id kRiotDesignValuesDidChangeThemeNotificationObserver;
 }
 
+@property (nonatomic, strong) id<Style> currentStyle;
+
 @end
 
 @implementation AttachmentsViewController
@@ -38,6 +40,8 @@
     // Setup `MXKViewControllerHandling` properties.
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
+    
+    self.currentStyle = Variant1Style.shared;
 }
 
 - (void)viewDidLoad
@@ -58,18 +62,22 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    self.view.backgroundColor = kVariant1SecondaryBgColor;
+    [self updateStyle:self.currentStyle];
+}
+
+- (void)updateStyle:(id<Style>)style
+{
+    self.currentStyle = style;
+    if (self.navigationBar)
+    {
+        [style applyStyleOnNavigationBar:self.navigationBar];
+    }
+    self.backButton.tintColor = style.barActionColor;
     
-    self.defaultBarTintColor = kVariant1PrimaryBgColor;
-    self.barTitleColor = kVariant1PrimaryTextColor;
+    self.view.backgroundColor = [UIColor blackColor];
     
     // @TODO Design the activvity indicator for Tchap
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
-    
-    self.navigationBar.barTintColor = kVariant1PrimaryBgColor;
-    self.navigationBar.tintColor = kVariant1ActionColor;
-    self.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: kVariant1PrimaryTextColor};
-    self.backButton.tintColor = kVariant1ActionColor;
 }
 
 - (void)viewWillAppear:(BOOL)animated
