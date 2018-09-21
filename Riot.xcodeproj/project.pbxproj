@@ -1771,7 +1771,7 @@
 				B1F2AA8E212AEC820077FDC0 /* Authentication */,
 				B11C7FFA21393E5D00CC6F2F /* Registration */,
 				B1F2AA7A212AEC800077FDC0 /* SplitView */,
-				B1F2AA7D212AEC800077FDC0 /* SegmentedView */,
+				B1F2AA7D212AEC800077FDC0 /* Home */,
 				B130C0D821491C4600F43D33 /* GlobalSearch */,
 				02BEE14F2125BBF800098505 /* Rooms */,
 				B1680CF52152A9E5009B5F92 /* PublicRooms */,
@@ -3018,7 +3018,7 @@
 			path = SplitView;
 			sourceTree = "<group>";
 		};
-		B1F2AA7D212AEC800077FDC0 /* SegmentedView */ = {
+		B1F2AA7D212AEC800077FDC0 /* Home */ = {
 			isa = PBXGroup;
 			children = (
 				B1F2AA7E212AEC800077FDC0 /* SegmentedViewCoordinatorType.swift */,
@@ -3026,7 +3026,7 @@
 				B18D18C32153E68A003677D1 /* HomeViewController.swift */,
 				B18D18C52153EA32003677D1 /* HomeViewController.storyboard */,
 			);
-			path = SegmentedView;
+			path = Home;
 			sourceTree = "<group>";
 		};
 		B1F2AA80212AEC810077FDC0 /* Settings */ = {
