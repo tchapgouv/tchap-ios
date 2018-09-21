@@ -21,12 +21,18 @@
 
 #import "RiotDesignValues.h"
 
+#import "GeneratedInterface-Swift.h"
+
 #pragma mark - Constant definitions
 
 NSString *const kInviteRecentTableViewCellJoinButtonPressed = @"kInviteRecentTableViewCellJoinButtonPressed";
 NSString *const kInviteRecentTableViewCellDeclineButtonPressed = @"kInviteRecentTableViewCellDeclineButtonPressed";
 
 NSString *const kInviteRecentTableViewCellRoomKey = @"kInviteRecentTableViewCellRoomKey";
+
+@interface InviteRecentTableViewCell() <Stylable>
+@property (nonatomic, strong) id<Style> currentStyle;
+@end
 
 @implementation InviteRecentTableViewCell
 
@@ -51,14 +57,24 @@ NSString *const kInviteRecentTableViewCellRoomKey = @"kInviteRecentTableViewCell
     [self.noticeBadgeView.layer setCornerRadius:10];
     
     self.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    self.currentStyle = Variant2Style.shared;
 }
 
 - (void)customizeTableViewCellRendering
 {
     [super customizeTableViewCellRendering];
+    [self updateWithStyle:self.currentStyle];
+}
+
+- (void)updateWithStyle:(id<Style>)style
+{
+    self.currentStyle = style;
     
-    self.leftButton.backgroundColor = kRiotColorGreen;
-    self.rightButton.backgroundColor = kRiotColorGreen;
+    self.leftButton.backgroundColor = self.currentStyle.buttonBorderedBackgroundColor;
+    self.leftButton.titleLabel.textColor = style.buttonBorderedTitleColor;
+    self.rightButton.backgroundColor = self.currentStyle.buttonBorderedBackgroundColor;
+    self.rightButton.titleLabel.textColor = style.buttonBorderedTitleColor;
     
     self.noticeBadgeView.backgroundColor = kRiotColorPinkRed;
 }
