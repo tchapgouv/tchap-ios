@@ -16,6 +16,6 @@
 
 import Foundation
 
-/// `SegmentedViewCoordinatorType` is a protocol describing a Coordinator that handle segmented view navigation flow.
-protocol SegmentedViewCoordinatorType: Coordinator, Presentable {
+/// `HomeCoordinatorType` is a protocol describing a Coordinator that handle home navigation flow.
+protocol HomeCoordinatorType: Coordinator, Presentable {
 }

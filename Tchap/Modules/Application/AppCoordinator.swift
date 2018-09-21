@@ -25,7 +25,7 @@ final class AppCoordinator: AppCoordinatorType {
     private let rootRouter: RootRouterType
     
 //    private weak var splitViewCoordinator: SplitViewCoordinatorType?
-    private weak var segmentedViewCoordinator: SegmentedViewCoordinatorType?
+    private weak var homeCoordinator: HomeCoordinatorType?
     
     /// Main user Matrix session
     private var mainSession: MXSession? {
@@ -48,7 +48,7 @@ final class AppCoordinator: AppCoordinatorType {
         // If main user exist, user is logged in
         if let mainSession = self.mainSession {
 //            self.showSplitView(session: mainSession)
-            self.showSegmentedView(session: mainSession)
+            self.showHome(session: mainSession)
         } else {
             self.showWelcome()
         }
@@ -72,14 +72,14 @@ final class AppCoordinator: AppCoordinatorType {
 //        self.registerLogoutNotification()
 //    }
     
-    func showSegmentedView(session: MXSession) {
-        let segmentedViewCoordinator = SegmentedViewCoordinator(session: session)
-        segmentedViewCoordinator.start()
-        self.add(childCoordinator: segmentedViewCoordinator)
+    func showHome(session: MXSession) {
+        let homeCoordinator = SegmentedViewCoordinator(session: session)
+        homeCoordinator.start()
+        self.add(childCoordinator: homeCoordinator)
         
-        self.rootRouter.setRootModule(segmentedViewCoordinator)
+        self.rootRouter.setRootModule(homeCoordinator)
         
-        self.segmentedViewCoordinator = segmentedViewCoordinator
+        self.homeCoordinator = homeCoordinator
         
         self.registerLogoutNotification()
     }
@@ -101,8 +101,8 @@ final class AppCoordinator: AppCoordinatorType {
 //            self.remove(childCoordinator: splitViewCoordinator)
 //        }
         
-        if let segmentedViewCoordinator = self.segmentedViewCoordinator {
-            self.remove(childCoordinator: segmentedViewCoordinator)
+        if let homeCoordinator = self.homeCoordinator {
+            self.remove(childCoordinator: homeCoordinator)
         }
     }
 }
@@ -113,7 +113,7 @@ extension AppCoordinator: WelcomeCoordinatorDelegate {
     func welcomeCoordinatorUserDidAuthenticate(_ coordinator: WelcomeCoordinatorType) {
         if let mainSession = self.mainSession {
 //            self.showSplitView(session: mainSession)
-            self.showSegmentedView(session: mainSession)
+            self.showHome(session: mainSession)
             self.remove(childCoordinator: coordinator)
         } else {
             NSLog("[AppCoordinator] Did not find session for current user")

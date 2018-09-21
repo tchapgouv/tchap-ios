@@ -16,7 +16,7 @@
 
 import Foundation
 
-final class SegmentedViewCoordinator: NSObject, SegmentedViewCoordinatorType {
+final class SegmentedViewCoordinator: NSObject, HomeCoordinatorType {
     
     // MARK: - Properties
     
