@@ -127,7 +127,7 @@ enum {
 typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
 
-@interface SettingsViewController () <DeactivateAccountViewControllerDelegate>
+@interface SettingsViewController () <DeactivateAccountViewControllerDelegate, Stylable>
 {
     // Current alert (if any).
     UIAlertController *currentAlert;
@@ -321,7 +321,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
 
 - (void)userInterfaceThemeDidChange
 {
-    [self updateStyle:self.currentStyle];
+    [self updateWithStyle:self.currentStyle];
     
     if (self.tableView.dataSource)
     {
@@ -329,7 +329,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)();
     }
 }
 
-- (void)updateStyle:(id<Style>)style
+- (void)updateWithStyle:(id<Style>)style
 {
     UINavigationBar *navigationBar = self.navigationController.navigationBar;
     

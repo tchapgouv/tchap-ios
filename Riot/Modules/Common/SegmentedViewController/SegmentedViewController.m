@@ -22,7 +22,7 @@
 
 #import "GeneratedInterface-Swift.h"
 
-@interface SegmentedViewController ()
+@interface SegmentedViewController () <Stylable>
 {
     // Tell whether the segmented view is appeared (see viewWillAppear/viewWillDisappear).
     BOOL isViewAppeared;
@@ -177,10 +177,10 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    [self updateStyle:self.currentStyle];
+    [self updateWithStyle:self.currentStyle];
 }
 
-- (void)updateStyle:(id<Style>)style
+- (void)updateWithStyle:(id<Style>)style
 {
     self.currentStyle = style;
     

@@ -34,7 +34,7 @@
 #define TABLEVIEW_SECTION_HEADER_HEIGHT   28
 #define TABLEVIEW_SECTION_HEADER_HEIGHT_WHEN_HIDDEN 0.01f
 
-@interface RoomMemberDetailsViewController ()
+@interface RoomMemberDetailsViewController () <Stylable>
 {
     RoomMemberTitleView* memberTitleView;
     
@@ -143,10 +143,10 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    [self updateStyle:self.currentStyle];
+    [self updateWithStyle:self.currentStyle];
 }
 
-- (void)updateStyle:(id<Style>)style
+- (void)updateWithStyle:(id<Style>)style
 {
     self.currentStyle = style;
     
