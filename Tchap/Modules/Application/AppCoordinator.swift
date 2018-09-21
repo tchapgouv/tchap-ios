@@ -73,7 +73,7 @@ final class AppCoordinator: AppCoordinatorType {
 //    }
     
     func showHome(session: MXSession) {
-        let homeCoordinator = SegmentedViewCoordinator(session: session)
+        let homeCoordinator = HomeCoordinator(session: session)
         homeCoordinator.start()
         self.add(childCoordinator: homeCoordinator)
         

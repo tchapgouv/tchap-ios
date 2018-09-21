@@ -16,7 +16,7 @@
 
 import Foundation
 
-final class SegmentedViewCoordinator: NSObject, HomeCoordinatorType {
+final class HomeCoordinator: NSObject, HomeCoordinatorType {
     
     // MARK: - Properties
     
@@ -122,7 +122,7 @@ final class SegmentedViewCoordinator: NSObject, HomeCoordinatorType {
 }
 
 // MARK: - GlobalSearchBarDelegate
-extension SegmentedViewCoordinator: GlobalSearchBarDelegate {
+extension HomeCoordinator: GlobalSearchBarDelegate {
     func globalSearchBar(_ globalSearchBar: GlobalSearchBar, textDidChange searchText: String?) {
         self.roomsCoordinator?.updateSearchText(searchText)
         self.contactsCoordinator?.updateSearchText(searchText)
@@ -130,21 +130,21 @@ extension SegmentedViewCoordinator: GlobalSearchBarDelegate {
 }
 
 // MARK: - RoomsCoordinatorDelegate
-extension SegmentedViewCoordinator: RoomsCoordinatorDelegate {
+extension HomeCoordinator: RoomsCoordinatorDelegate {
     func roomsCoordinator(_ coordinator: RoomsCoordinatorType, didSelectRoomID roomID: String) {
         self.showRoom(with: roomID)
     }
 }
 
 // MARK: - ContactsCoordinatorDelegate
-extension SegmentedViewCoordinator: ContactsCoordinatorDelegate {
+extension HomeCoordinator: ContactsCoordinatorDelegate {
     func contactsCoordinator(_ coordinator: ContactsCoordinatorType, didSelectRoomID roomID: String) {
         self.showRoom(with: roomID)
     }
 }
 
 // MARK: - RoomCoordinatorDelegate
-extension SegmentedViewCoordinator: RoomCoordinatorDelegate {
+extension HomeCoordinator: RoomCoordinatorDelegate {
     func roomCoordinator(_ coordinator: RoomCoordinatorType, didSelectRoomID roomID: String) {
         self.showRoom(with: roomID)
     }
@@ -155,7 +155,7 @@ extension SegmentedViewCoordinator: RoomCoordinatorDelegate {
 }
         
 // MARK: - HomeViewControllerDelegate
-extension SegmentedViewCoordinator: HomeViewControllerDelegate {
+extension HomeCoordinator: HomeViewControllerDelegate {
     
     func homeViewControllerDidTapStartChatButton(_ homeViewController: HomeViewController) {
         //TODO Open a contact picker with only Tchap users
@@ -171,7 +171,7 @@ extension SegmentedViewCoordinator: HomeViewControllerDelegate {
 }
 
 // MARK: - PublicRoomsCoordinatorDelegate
-extension SegmentedViewCoordinator: PublicRoomsCoordinatorDelegate {
+extension HomeCoordinator: PublicRoomsCoordinatorDelegate {
     
     func publicRoomsCoordinatorDidCancel(_ publicRoomsCoordinator: PublicRoomsCoordinator) {
         self.navigationRouter.dismissModule(animated: true) { [weak self] in

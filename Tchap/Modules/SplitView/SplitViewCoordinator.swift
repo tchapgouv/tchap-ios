@@ -42,16 +42,16 @@ final class SplitViewCoordinator: SplitViewCoordinatorType {
     // MARK: - Public methods
     
     func start() {
-        let segmentedViewCoordinator = SegmentedViewCoordinator(session: self.session)
+        let homeCoordinator = HomeCoordinator(session: self.session)
         
-        self.splitViewController.viewControllers = [segmentedViewCoordinator.toPresentable()]
+        self.splitViewController.viewControllers = [homeCoordinator.toPresentable()]
         self.splitViewController.preferredDisplayMode = .allVisible
         
-        segmentedViewCoordinator.start()
+        homeCoordinator.start()
         
         self.rootRouter.setRootModule(self.splitViewController)
         
-        self.add(childCoordinator: segmentedViewCoordinator)
+        self.add(childCoordinator: homeCoordinator)
     }        
     
     func toPresentable() -> UIViewController {
