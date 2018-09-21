@@ -28,7 +28,7 @@
 
 #import "RageShakeManager.h"
 
-@interface RoomParticipantsViewController ()
+@interface RoomParticipantsViewController () <Stylable>
 {
     // Search result
     NSString *currentSearchText;
@@ -159,10 +159,10 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    [self updateStyle:self.currentStyle];
+    [self updateWithStyle:self.currentStyle];
 }
 
-- (void)updateStyle:(id<Style>)style
+- (void)updateWithStyle:(id<Style>)style
 {
     self.currentStyle = style;
     

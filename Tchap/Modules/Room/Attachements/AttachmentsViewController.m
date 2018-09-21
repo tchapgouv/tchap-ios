@@ -19,7 +19,7 @@
 
 #import "GeneratedInterface-Swift.h"
 
-@interface AttachmentsViewController ()
+@interface AttachmentsViewController () <Stylable>
 {
     // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
     id kRiotDesignValuesDidChangeThemeNotificationObserver;
@@ -62,10 +62,10 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    [self updateStyle:self.currentStyle];
+    [self updateWithStyle:self.currentStyle];
 }
 
-- (void)updateStyle:(id<Style>)style
+- (void)updateWithStyle:(id<Style>)style
 {
     self.currentStyle = style;
     if (self.navigationBar)

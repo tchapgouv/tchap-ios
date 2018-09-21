@@ -24,7 +24,7 @@
 
 #import "AttachmentsViewController.h"
 
-@interface RoomFilesViewController ()
+@interface RoomFilesViewController () <Stylable>
 {
     /**
      Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
@@ -119,10 +119,10 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    [self updateStyle:self.currentStyle];
+    [self updateWithStyle:self.currentStyle];
 }
 
-- (void)updateStyle:(id<Style>)style
+- (void)updateWithStyle:(id<Style>)style
 {
     self.currentStyle = style;
     
