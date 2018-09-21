@@ -116,6 +116,10 @@ extension RoomCoordinator: RoomViewControllerDelegate {
     func roomViewController(_ roomViewController: RoomViewController!, showMemberDetails roomMember: MXRoomMember!) {
         self.showMemberDetails(roomMember, animated: true)
     }
+    
+    func roomViewController(_ roomViewController: RoomViewController!, showRoom roomID: String!) {
+        self.delegate?.roomCoordinator(self, didSelectRoomID: roomID)
+    }
 }
 
 // MARK: - RoomMemberDetailsViewControllerDelegate

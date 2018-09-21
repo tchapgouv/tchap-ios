@@ -797,8 +797,13 @@
 
 - (BOOL)isIRCStyleCommand:(NSString*)string
 {
-    // Override the default behavior for `/join` command in order to open automatically the joined room
+    // Do not support IRC-style command in direct chat (discussion)
+    if (self.roomDataSource.room.isDirect)
+    {
+        return NO;
+    }
     
+    // Override the default behavior for `/join` command in order to open automatically the joined room
     if ([string hasPrefix:kMXKSlashCmdJoinRoom])
     {
         // Join a room
@@ -819,7 +824,10 @@
             [self.mainSession joinRoom:roomAlias success:^(MXRoom *room) {
                 
                 // Show the room
-                [[AppDelegate theDelegate] showRoom:room.roomId andEventId:nil withMatrixSession:self.mainSession];
+                if (self.delegate)
+                {
+                    [self.delegate roomViewController:self showRoom:room.roomId];
+                }
                 
             } failure:^(NSError *error) {
                 
@@ -836,6 +844,12 @@
         }
         return YES;
     }
+    else if ([string hasPrefix:kMXKSlashCmdChangeDisplayName])
+    {
+        // The user is not allowed to change his display name
+        return NO;
+    }
+        
     return [super isIRCStyleCommand:string];
 }
 
