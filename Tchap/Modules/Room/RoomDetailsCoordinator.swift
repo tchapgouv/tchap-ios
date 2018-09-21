@@ -87,6 +87,7 @@ final class RoomDetailsCoordinator: NSObject, RoomDetailsCoordinatorType {
         
         self.segmentedViewController.initWithTitles(titles, viewControllers: viewControllers, defaultSelected: 0)
         self.segmentedViewController.addMatrixSession(self.session)
+        self.segmentedViewController.update(with: Variant2Style.shared)
         
         let titleView = RoomTitleView.instantiate()
         titleView?.mxRoom = session.room(withRoomId: roomID)
