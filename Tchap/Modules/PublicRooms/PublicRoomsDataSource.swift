@@ -94,9 +94,9 @@ final class PublicRoomsDataSource: NSObject {
             // flatMapLatest cancel subscriptions for any previous Observable. Cancel any previous public rooms requests.
             return self.publicRoomService.getPublicRooms(searchText: searchText)
             .map({ (publicRooms) -> [MXPublicRoom] in
-                // Sort public rooms by name
+                // Sort public rooms by joined members count
                 return publicRooms.sorted(by: { (item1, item2) -> Bool in
-                    return item1.name.localizedCaseInsensitiveCompare(item2.name) == .orderedAscending
+                    return item1.numJoinedMembers > item2.numJoinedMembers
                 })
             })
         })
