@@ -29,7 +29,6 @@
 
 #import "DirectoryViewController.h"
 #import "SettingsViewController.h"
-#import "ContactDetailsViewController.h"
 
 #import "BugReportViewController.h"
 #import "RoomKeyRequestViewController.h"

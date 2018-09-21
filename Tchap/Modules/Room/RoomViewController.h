@@ -22,13 +22,33 @@
 
 #import "RoomPreviewData.h"
 
-#import "RoomParticipantsViewController.h"
-
-#import "ContactsTableViewController.h"
-
 #import "UIViewController+RiotSearch.h"
 
-@interface RoomViewController : MXKRoomViewController <UISearchBarDelegate, UIGestureRecognizerDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate>
+@class RoomViewController;
+
+/**
+ `RoomViewController` delegate.
+ */
+@protocol RoomViewControllerDelegate <NSObject>
+
+/**
+ Tells the delegate that the user wants to open the room details (members, files, settings).
+ 
+ @param roomViewController the `RoomViewController` instance.
+ */
+- (void)roomViewControllerShowRoomDetails:(RoomViewController *)roomViewController;
+
+/**
+ Tells the delegate that the user wants to display the details of a room member.
+ 
+ @param roomViewController the `RoomViewController` instance.
+ @param roomMember the selected member
+ */
+- (void)roomViewController:(RoomViewController *)roomViewController showMemberDetails:(MXRoomMember *)roomMember;
+
+@end
+
+@interface RoomViewController : MXKRoomViewController <UISearchBarDelegate, UIGestureRecognizerDelegate, RoomTitleViewTapGestureDelegate>
 
 // The preview header
 @property (weak, nonatomic) IBOutlet UIView *previewHeaderContainer;
@@ -52,6 +72,11 @@
  YES by default.
  */
 @property (nonatomic) BOOL showMissedDiscussionsBadge;
+
+/**
+ The delegate for the view controller.
+ */
+@property (weak, nonatomic) id<RoomViewControllerDelegate> delegate;
 
 /**
  Display the preview of a room that is unknown for the user.

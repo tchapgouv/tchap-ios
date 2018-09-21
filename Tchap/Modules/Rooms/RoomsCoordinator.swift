@@ -16,6 +16,10 @@
 
 import UIKit
 
+protocol RoomsCoordinatorDelegate: class {
+    func roomsCoordinator(_ coordinator: RoomsCoordinatorType, didSelectRoomID roomID: String)
+}
+
 final class RoomsCoordinator: NSObject, RoomsCoordinatorType {
     
     // MARK: - Properties
@@ -33,6 +37,8 @@ final class RoomsCoordinator: NSObject, RoomsCoordinatorType {
     // MARK: Public
     
     var childCoordinators: [Coordinator] = []
+    
+    weak var delegate: RoomsCoordinatorDelegate?
     
     // MARK: - Setup
     
@@ -69,17 +75,6 @@ final class RoomsCoordinator: NSObject, RoomsCoordinatorType {
     
     // MARK: - Private methods
     
-    private func showRoom(with roomID: String) {
-        let roomCoordinator = RoomCoordinator(router: self.router, session: self.session, roomID: roomID)
-        roomCoordinator.start()
-        
-        self.router.push(roomCoordinator, animated: true) {
-            self.remove(childCoordinator: roomCoordinator)
-        }
-        
-        self.add(childCoordinator: roomCoordinator)
-    }
-    
     private func joinRoom(with roomID: String) {
         self.activityIndicatorPresenter.presentActivityIndicator(on: self.roomsViewController.view, animated: true)
         
@@ -91,7 +86,7 @@ final class RoomsCoordinator: NSObject, RoomsCoordinatorType {
             sself.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
             switch response {
             case .success:
-                sself.showRoom(with: roomID)
+                sself.delegate?.roomsCoordinator(sself, didSelectRoomID: roomID)
             case .failure(let error):
                 let errorPresentable = sself.joinRoomErrorPresentable(from: error)
                 sself.roomsErrorPresenter.present(errorPresentable: errorPresentable, animated: true)
@@ -126,7 +121,7 @@ final class RoomsCoordinator: NSObject, RoomsCoordinatorType {
 extension RoomsCoordinator: RoomsViewControllerDelegate {
     
     func roomsViewController(_ roomsViewController: RoomsViewController!, didSelectRoomWithID roomID: String!) {
-        self.showRoom(with: roomID)
+        self.delegate?.roomsCoordinator(self, didSelectRoomID: roomID)
     }
     
     func roomsViewController(_ roomsViewController: RoomsViewController!, didAcceptRoomInviteWithRoomID roomID: String!) {

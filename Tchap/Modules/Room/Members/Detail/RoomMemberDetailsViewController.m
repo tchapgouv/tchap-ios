@@ -34,7 +34,7 @@
 #define TABLEVIEW_SECTION_HEADER_HEIGHT   28
 #define TABLEVIEW_SECTION_HEADER_HEIGHT_WHEN_HIDDEN 0.01f
 
-@interface RoomMemberDetailsViewController () <RoomMemberTitleViewDelegate>
+@interface RoomMemberDetailsViewController ()
 {
     RoomMemberTitleView* memberTitleView;
     
@@ -50,23 +50,12 @@
     NSMutableArray<NSNumber*> *otherActionsArray;
     NSInteger otherActionsIndex;
     
-    /**
-     List of the direct chats (room ids) with this member.
-     */
-    NSMutableArray<NSString*> *directChatsArray;
-    NSInteger directChatsIndex;
-    
-    /**
-     Devices
-     */
-    NSArray<MXDeviceInfo *> *devicesArray;
-    NSInteger devicesIndex;
-    EncryptionInfoView *encryptionInfoView;
-    
-    /**
-     Observe UIApplicationWillChangeStatusBarOrientationNotification to hide/show bubbles bg.
-     */
-    id UIApplicationWillChangeStatusBarOrientationNotificationObserver;
+//    /**
+//     Devices
+//     */
+//    NSArray<MXDeviceInfo *> *devicesArray;
+//    NSInteger devicesIndex;
+//    EncryptionInfoView *encryptionInfoView;
     
     /**
      Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
@@ -78,6 +67,9 @@
      */
     BOOL isStatusBarHidden;
 }
+
+@property (nonatomic, strong) id<Style> currentStyle;
+
 @end
 
 @implementation RoomMemberDetailsViewController
@@ -90,10 +82,13 @@
                           bundle:[NSBundle bundleForClass:self.class]];
 }
 
-+ (instancetype)roomMemberDetailsViewController
++ (instancetype)instantiate
 {
-    return [[[self class] alloc] initWithNibName:NSStringFromClass(self.class)
+    RoomMemberDetailsViewController *roomMemberDetailsViewController = [[[self class] alloc] initWithNibName:NSStringFromClass(self.class)
                                           bundle:[NSBundle bundleForClass:self.class]];
+    
+    roomMemberDetailsViewController.currentStyle = Variant2Style.shared;
+    return roomMemberDetailsViewController;
 }
 
 #pragma mark -
@@ -108,7 +103,6 @@
     
     adminActionsArray = [[NSMutableArray alloc] init];
     otherActionsArray = [[NSMutableArray alloc] init];
-    directChatsArray = [[NSMutableArray alloc] init];
     
     // Keep visible the status bar by default.
     isStatusBarHidden = NO;
@@ -119,92 +113,24 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    memberTitleView = [RoomMemberTitleView roomMemberTitleView];
-    memberTitleView.delegate = self;
-    
-    if (@available(iOS 11.0, *))
-    {
-        // Define directly the navigation titleView with the custom title view instance. Do not use anymore a container.
-        self.navigationItem.titleView = memberTitleView;
-    }
-    else
-    {
-        self.navigationItem.titleView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 600, 40)];
-        
-        // Add the title view and define edge constraints
-        memberTitleView.translatesAutoresizingMaskIntoConstraints = NO;
-        [self.navigationItem.titleView addSubview:memberTitleView];
-        
-        NSLayoutConstraint *topConstraint = [NSLayoutConstraint constraintWithItem:memberTitleView
-                                                                         attribute:NSLayoutAttributeTop
-                                                                         relatedBy:NSLayoutRelationEqual
-                                                                            toItem:self.navigationItem.titleView
-                                                                         attribute:NSLayoutAttributeTop
-                                                                        multiplier:1.0f
-                                                                          constant:0.0f];
-        NSLayoutConstraint *bottomConstraint = [NSLayoutConstraint constraintWithItem:memberTitleView
-                                                                            attribute:NSLayoutAttributeBottom
-                                                                            relatedBy:NSLayoutRelationEqual
-                                                                               toItem:self.navigationItem.titleView
-                                                                            attribute:NSLayoutAttributeBottom
-                                                                           multiplier:1.0f
-                                                                             constant:0.0f];
-        NSLayoutConstraint *leadingConstraint = [NSLayoutConstraint constraintWithItem:memberTitleView
-                                                                             attribute:NSLayoutAttributeLeading
-                                                                             relatedBy:NSLayoutRelationEqual
-                                                                                toItem:self.navigationItem.titleView
-                                                                             attribute:NSLayoutAttributeLeading
-                                                                            multiplier:1.0f
-                                                                              constant:0.0f];
-        NSLayoutConstraint *trailingConstraint = [NSLayoutConstraint constraintWithItem:memberTitleView
-                                                                              attribute:NSLayoutAttributeTrailing
-                                                                              relatedBy:NSLayoutRelationEqual
-                                                                                 toItem:self.navigationItem.titleView
-                                                                              attribute:NSLayoutAttributeTrailing
-                                                                             multiplier:1.0f
-                                                                               constant:0.0f];
-        
-        [NSLayoutConstraint activateConstraints:@[topConstraint, bottomConstraint, leadingConstraint, trailingConstraint]];
-    }
-    
-    // Add tap gesture on member's name
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
-    [tap setNumberOfTouchesRequired:1];
-    [tap setNumberOfTapsRequired:1];
-    [tap setDelegate:self];
-    [self.roomMemberNameLabelMask addGestureRecognizer:tap];
-    self.roomMemberNameLabelMask.userInteractionEnabled = YES;
+    // Define directly the navigation titleView with the custom title view instance.
+    memberTitleView = [RoomMemberTitleView instantiate];
+    self.navigationItem.titleView = memberTitleView;
     
     // Add tap to show the room member avatar in fullscreen
-    tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
     [tap setNumberOfTouchesRequired:1];
     [tap setNumberOfTapsRequired:1];
     [tap setDelegate:self];
     [self.roomMemberAvatarMask addGestureRecognizer:tap];
     self.roomMemberAvatarMask.userInteractionEnabled = YES;
     
-    // Need to listen to the tap gesture in the title view too.
-    tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
-    [tap setNumberOfTouchesRequired:1];
-    [tap setNumberOfTapsRequired:1];
-    [tap setDelegate:self];
-    [memberTitleView.memberAvatarMask addGestureRecognizer:tap];
-    memberTitleView.memberAvatarMask.userInteractionEnabled = YES;
-    
     // Register collection view cell class
     [self.tableView registerClass:TableViewCellWithButton.class forCellReuseIdentifier:[TableViewCellWithButton defaultReuseIdentifier]];
-    [self.tableView registerClass:RoomTableViewCell.class forCellReuseIdentifier:[RoomTableViewCell defaultReuseIdentifier]];
-    [self.tableView registerClass:DeviceTableViewCell.class forCellReuseIdentifier:[DeviceTableViewCell defaultReuseIdentifier]];
+    //[self.tableView registerClass:DeviceTableViewCell.class forCellReuseIdentifier:[DeviceTableViewCell defaultReuseIdentifier]];
     
     // Hide line separators of empty cells
     self.tableView.tableFooterView = [[UIView alloc] init];
-    
-    // Observe UIApplicationWillChangeStatusBarOrientationNotification to hide/show bubbles bg.
-    UIApplicationWillChangeStatusBarOrientationNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillChangeStatusBarOrientationNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-        
-        NSNumber *orientation = (NSNumber*)(notif.userInfo[UIApplicationStatusBarOrientationUserInfoKey]);
-        self.bottomImageView.hidden = (orientation.integerValue == UIInterfaceOrientationLandscapeLeft || orientation.integerValue == UIInterfaceOrientationLandscapeRight);
-    }];
     
     // Observe user interface theme change.
     kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
@@ -217,16 +143,29 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    self.defaultBarTintColor = kRiotSecondaryBgColor;
-    self.barTitleColor = kRiotPrimaryTextColor;
+    [self updateStyle:self.currentStyle];
+}
+
+- (void)updateStyle:(id<Style>)style
+{
+    self.currentStyle = style;
+    
+    UINavigationBar *navigationBar = self.navigationController.navigationBar;
+    
+    if (navigationBar)
+    {
+        [style applyStyleOnNavigationBar:navigationBar];
+    }
+    
+    //TODO Design the activvity indicator for Tchap
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
-    self.memberHeaderView.backgroundColor = kRiotSecondaryBgColor;
-    self.roomMemberNameLabel.textColor = kRiotPrimaryTextColor;
-    self.roomMemberStatusLabel.textColor = kRiotColorGreen;
+    memberTitleView.roomMemberNameLabel.textColor = style.barTitleColor;
+    memberTitleView.roomMemberDomainLabel.textColor = style.barSubTitleColor;
+    self.memberHeaderView.backgroundColor = style.backgroundColor;
+    self.roomMemberStatusLabel.textColor = style.primaryTextColor;
     
-    // Check the table view style to select its bg color.
-    self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? kRiotPrimaryBgColor : kRiotSecondaryBgColor);
+    self.tableView.backgroundColor = style.secondaryBackgroundColor;
     self.view.backgroundColor = self.tableView.backgroundColor;
     
     if (self.tableView.dataSource)
@@ -237,7 +176,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return kRiotDesignStatusBarStyle;
+    return self.currentStyle.statusBarStyle;
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -252,38 +191,11 @@
 
     // Screen tracking
     [[Analytics sharedInstance] trackScreen:@"RoomMemberDetails"];
-    
-    // Hide the bottom border of the navigation bar to display the expander header
-    [self hideNavigationBarBorder:YES];
-    
-    // Handle here the bottom image visibility
-    UIInterfaceOrientation screenOrientation = [[UIApplication sharedApplication] statusBarOrientation];
-    self.bottomImageView.hidden = (screenOrientation == UIInterfaceOrientationLandscapeLeft || screenOrientation == UIInterfaceOrientationLandscapeRight);
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
-    // Restore navigation bar display
-    [self hideNavigationBarBorder:NO];
-    
-    self.bottomImageView.hidden = YES;
-}
-
-- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator>)coordinator
-{
-    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
-    
-    // Restore navigation bar display
-    [self hideNavigationBarBorder:NO];
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(coordinator.transitionDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        
-        // Hide the bottom border of the navigation bar
-        [self hideNavigationBarBorder:YES];
-        
-    });
 }
 
 - (void)destroy
@@ -292,14 +204,7 @@
     
     adminActionsArray = nil;
     otherActionsArray = nil;
-    directChatsArray = nil;
-    devicesArray = nil;
-    
-    if (UIApplicationWillChangeStatusBarOrientationNotificationObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:UIApplicationWillChangeStatusBarOrientationNotificationObserver];
-        UIApplicationWillChangeStatusBarOrientationNotificationObserver = nil;
-    }
+    //devicesArray = nil;
     
     if (kRiotDesignValuesDidChangeThemeNotificationObserver)
     {
@@ -311,41 +216,23 @@
     memberTitleView = nil;
 }
 
-- (void)viewDidLayoutSubviews
-{
-    [super viewDidLayoutSubviews];
-    
-    // Check here whether a subview has been added or removed
-    if (encryptionInfoView)
-    {
-        if (!encryptionInfoView.superview)
-        {
-            // Reset
-            encryptionInfoView = nil;
-            
-            // Reload the full table to take into account a potential change on a device status.
-            [self updateMemberInfo];
-        }
-    }
-    
-    // Check whether the title view has been created and rendered.
-    if (memberTitleView && memberTitleView.superview)
-    {
-        // Adjust the header height by taking into account the actual position of the member avatar in title view
-        // This position depends automatically on the screen orientation.
-        CGPoint memberAvatarOriginInTitleView = memberTitleView.memberAvatarMask.frame.origin;
-        CGPoint memberAvatarActualPosition = [memberTitleView convertPoint:memberAvatarOriginInTitleView toView:self.view];
-        
-        CGFloat avatarHeaderHeight = memberAvatarActualPosition.y + self.memberThumbnail.frame.size.height;
-        if (_roomMemberAvatarHeaderBackgroundHeightConstraint.constant != avatarHeaderHeight)
-        {
-            _roomMemberAvatarHeaderBackgroundHeightConstraint.constant = avatarHeaderHeight;
-            
-            // Force the layout of the header
-            [self.memberHeaderView layoutIfNeeded];
-        }
-    }
-}
+//- (void)viewDidLayoutSubviews
+//{
+//    [super viewDidLayoutSubviews];
+//
+//    // Check here whether a subview has been added or removed
+//    if (encryptionInfoView)
+//    {
+//        if (!encryptionInfoView.superview)
+//        {
+//            // Reset
+//            encryptionInfoView = nil;
+//
+//            // Reload the full table to take into account a potential change on a device status.
+//            [self updateMemberInfo];
+//        }
+//    }
+//}
 
 #pragma mark -
 
@@ -364,7 +251,9 @@
 {
     if (self.mxRoomMember)
     {
-        self.roomMemberNameLabel.text = self.mxRoomMember.displayname ? self.mxRoomMember.displayname : self.mxRoomMember.userId;
+        //TODO: extract the domain name from the display name (if any)
+        memberTitleView.roomMemberNameLabel.text = self.mxRoomMember.displayname;
+        memberTitleView.roomMemberDomainLabel.text = nil;
         
         // Update member badge
         MXWeakify(self);
@@ -375,17 +264,17 @@
             NSInteger powerLevel = [powerLevels powerLevelOfUserWithUserID:self.mxRoomMember.userId];
             if (powerLevel >= kRiotRoomAdminLevel)
             {
-                self->memberTitleView.memberBadge.image = [UIImage imageNamed:@"admin_icon"];
-                self->memberTitleView.memberBadge.hidden = NO;
+                self.memberBadge.image = [UIImage imageNamed:@"admin_icon"];
+                self.memberBadge.hidden = NO;
             }
             else if (powerLevel >= kRiotRoomModeratorLevel)
             {
-                self->memberTitleView.memberBadge.image = [UIImage imageNamed:@"mod_icon"];
-                self->memberTitleView.memberBadge.hidden = NO;
+                self.memberBadge.image = [UIImage imageNamed:@"mod_icon"];
+                self.memberBadge.hidden = NO;
             }
             else
             {
-                self->memberTitleView.memberBadge.hidden = YES;
+                self.memberBadge.hidden = YES;
             }
         }];
         
@@ -399,78 +288,38 @@
         
         self.roomMemberStatusLabel.text = presenceText;
         
-        // Retrieve the existing direct chats
-        [directChatsArray removeAllObjects];
-        NSArray *directRoomIds = self.mainSession.directRooms[self.mxRoomMember.userId];
-        // Check whether the room is still existing
-        for (NSString* directRoomId in directRoomIds)
-        {
-            if ([self.mainSession roomWithRoomId:directRoomId])
-            {
-                [directChatsArray addObject:directRoomId];
-            }
-        }
-        
-        // Retrieve member's devices
-        NSString *userId = self.mxRoomMember.userId;
-        __weak typeof(self) weakSelf = self;
-
-        [self.mxRoom.mxSession.crypto downloadKeys:@[userId] forceDownload:NO success:^(MXUsersDevicesMap<MXDeviceInfo *> *usersDevicesInfoMap) {
-
-            if (weakSelf)
-            {
-                // Restore the status bar
-                typeof(self) self = weakSelf;
-                self->devicesArray = usersDevicesInfoMap.map[userId].allValues;
-                // Reload the full table to take into account a potential change on a device status.
-                [super updateMemberInfo];
-            }
-
-        } failure:^(NSError *error) {
-
-            NSLog(@"[RoomMemberDetailsVC] Crypto failed to download device info for user: %@", userId);
-            if (weakSelf)
-            {
-                // Restore the status bar
-                typeof(self) self = weakSelf;
-                // Notify the end user
-                NSString *myUserId = self.mainSession.myUser.userId;
-                [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error userInfo:myUserId ? @{kMXKErrorUserIdKey: myUserId} : nil];
-            }
-            
-        }];
+//        // Retrieve member's devices
+//        NSString *userId = self.mxRoomMember.userId;
+//        __weak typeof(self) weakSelf = self;
+//
+//        [self.mxRoom.mxSession.crypto downloadKeys:@[userId] forceDownload:NO success:^(MXUsersDevicesMap<MXDeviceInfo *> *usersDevicesInfoMap) {
+//
+//            if (weakSelf)
+//            {
+//                // Restore the status bar
+//                typeof(self) self = weakSelf;
+//                self->devicesArray = usersDevicesInfoMap.map[userId].allValues;
+//                // Reload the full table to take into account a potential change on a device status.
+//                [super updateMemberInfo];
+//            }
+//
+//        } failure:^(NSError *error) {
+//
+//            NSLog(@"[RoomMemberDetailsVC] Crypto failed to download device info for user: %@", userId);
+//            if (weakSelf)
+//            {
+//                // Restore the status bar
+//                typeof(self) self = weakSelf;
+//                // Notify the end user
+//                NSString *myUserId = self.mainSession.myUser.userId;
+//                [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error userInfo:myUserId ? @{kMXKErrorUserIdKey: myUserId} : nil];
+//            }
+//            
+//        }];
     }
     
     // Complete data update and reload table view
     [super updateMemberInfo];
-}
-
-#pragma mark - Hide/Show navigation bar border
-
-- (void)hideNavigationBarBorder:(BOOL)isHidden
-{
-    // Consider the main navigation controller if the current view controller is embedded inside a split view controller.
-    UINavigationController *mainNavigationController = self.navigationController;
-    if (self.splitViewController && self.splitViewController.isCollapsed && self.splitViewController.viewControllers.count)
-    {
-        mainNavigationController = self.splitViewController.viewControllers.firstObject;
-    }
-    
-    if (isHidden)
-    {
-        // The default shadow image is nil. When non-nil, this property represents a custom shadow image to show instead
-        // of the default. For a custom shadow image to be shown, a custom background image must also be set with the
-        // setBackgroundImage:forBarMetrics: method. If the default background image is used, then the default shadow
-        // image will be used regardless of the value of this property.
-        [mainNavigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
-        [mainNavigationController.navigationBar setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
-    }
-    else
-    {
-        // Restore default navigationbar settings
-        [mainNavigationController.navigationBar setShadowImage:nil];
-        [mainNavigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
-    }
 }
 
 #pragma mark - TableView data source
@@ -478,8 +327,6 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     NSInteger sectionCount = 0;
-    
-    BOOL isOneself = NO;
     
     // Check user's power level before allowing an action (kick, ban, ...)
     MXRoomPowerLevels *powerLevels = [self.mxRoom.dangerousSyncState powerLevels];
@@ -492,8 +339,6 @@
     // Consider the case of the user himself
     if ([self.mxRoomMember.userId isEqualToString:self.mainSession.myUser.userId])
     {
-        isOneself = YES;
-        
         [otherActionsArray addObject:@(MXKRoomMemberDetailsActionLeave)];
         
         if (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomPowerLevels])
@@ -595,6 +440,9 @@
             }
         }
         
+        // Use the action startChat to open the current discussion with this member.
+        [otherActionsArray addObject:@(MXKRoomMemberDetailsActionStartChat)];
+        
         // List the other actions
         if (self.enableVoipCall)
         {
@@ -624,7 +472,8 @@
         }
     }
     
-    adminToolsIndex = otherActionsIndex = directChatsIndex = devicesIndex = -1;
+    adminToolsIndex = otherActionsIndex = -1;
+    //devicesIndex = -1;
     
     if (otherActionsArray.count)
     {
@@ -635,15 +484,10 @@
         adminToolsIndex = sectionCount++;
     }
     
-    if (!isOneself)
-    {
-        directChatsIndex = sectionCount++;
-    }
-    
-    if (devicesArray.count)
-    {
-        devicesIndex = sectionCount++;
-    }
+//    if (devicesArray.count)
+//    {
+//        devicesIndex = sectionCount++;
+//    }
     
     return sectionCount;
 }
@@ -658,14 +502,10 @@
     {
         return otherActionsArray.count;
     }
-    else if (section == directChatsIndex)
-    {
-        return (directChatsArray.count + 1);
-    }
-    else if (section == devicesIndex)
-    {
-        return (devicesArray.count);
-    }
+//    else if (section == devicesIndex)
+//    {
+//        return (devicesArray.count);
+//    }
     
     return 0;
 }
@@ -676,14 +516,10 @@
     {
         return NSLocalizedStringFromTable(@"room_participants_action_section_admin_tools", @"Vector", nil);
     }
-    else if (section == directChatsIndex)
-    {
-        return NSLocalizedStringFromTable(@"room_participants_action_section_direct_chats", @"Vector", nil);
-    }
-    else if (section == devicesIndex)
-    {
-        return NSLocalizedStringFromTable(@"room_participants_action_section_devices", @"Vector", nil);
-    }
+//    else if (section == devicesIndex)
+//    {
+//        return NSLocalizedStringFromTable(@"room_participants_action_section_devices", @"Vector", nil);
+//    }
     
     return nil;
 }
@@ -725,7 +561,7 @@
             title = NSLocalizedStringFromTable(@"room_participants_action_set_admin", @"Vector", nil);
             break;
         case MXKRoomMemberDetailsActionStartChat:
-            title = NSLocalizedStringFromTable(@"room_participants_action_start_chat", @"Vector", nil);
+            title = NSLocalizedStringFromTable(@"room_member_details_action_chat", @"Tchap", nil);
             break;
         case MXKRoomMemberDetailsActionStartVoiceCall:
             title = NSLocalizedStringFromTable(@"room_participants_action_start_voice_call", @"Vector", nil);
@@ -786,44 +622,22 @@
         
         cell = cellWithButton;
     }
-    else if (indexPath.section == directChatsIndex)
-    {
-        RoomTableViewCell *roomCell = [tableView dequeueReusableCellWithIdentifier:[RoomTableViewCell defaultReuseIdentifier] forIndexPath:indexPath];
-        
-        if (indexPath.row < directChatsArray.count)
-        {
-            MXRoom *room = [self.mainSession roomWithRoomId:directChatsArray[indexPath.row]];
-            if (room)
-            {
-                [roomCell render:room];
-            }
-        }
-        else
-        {
-            roomCell.avatarImageView.image = [UIImage imageNamed:@"start_chat"];
-            roomCell.avatarImageView.defaultBackgroundColor = [UIColor clearColor];
-            roomCell.avatarImageView.userInteractionEnabled = NO;
-            roomCell.titleLabel.text = NSLocalizedStringFromTable(@"room_participants_action_start_new_chat", @"Vector", nil);
-        }
-        
-        cell = roomCell;
-    }
-    else if (indexPath.section == devicesIndex)
-    {
-        DeviceTableViewCell *deviceCell = [tableView dequeueReusableCellWithIdentifier:[DeviceTableViewCell defaultReuseIdentifier] forIndexPath:indexPath];
-        deviceCell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
-        if (indexPath.row < devicesArray.count)
-        {
-            MXDeviceInfo *deviceInfo = devicesArray[indexPath.row];
-            [deviceCell render:deviceInfo];
-            deviceCell.delegate = self;
-            
-            // Display here the Verify and Block buttons except if the device is the current one.
-            deviceCell.verifyButton.hidden = deviceCell.blockButton.hidden = [deviceInfo.deviceId isEqualToString:self.mxRoom.mxSession.matrixRestClient.credentials.deviceId];
-        }
-        cell = deviceCell;
-    }
+//    else if (indexPath.section == devicesIndex)
+//    {
+//        DeviceTableViewCell *deviceCell = [tableView dequeueReusableCellWithIdentifier:[DeviceTableViewCell defaultReuseIdentifier] forIndexPath:indexPath];
+//        deviceCell.selectionStyle = UITableViewCellSelectionStyleNone;
+//
+//        if (indexPath.row < devicesArray.count)
+//        {
+//            MXDeviceInfo *deviceInfo = devicesArray[indexPath.row];
+//            [deviceCell render:deviceInfo];
+//            deviceCell.delegate = self;
+//
+//            // Display here the Verify and Block buttons except if the device is the current one.
+//            deviceCell.verifyButton.hidden = deviceCell.blockButton.hidden = [deviceInfo.deviceId isEqualToString:self.mxRoom.mxSession.matrixRestClient.credentials.deviceId];
+//        }
+//        cell = deviceCell;
+//    }
     else
     {
         // Create a fake cell to prevent app from crashing
@@ -860,17 +674,13 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == directChatsIndex)
-    {
-        return [RoomTableViewCell cellHeight];
-    }
-    else if (indexPath.section == devicesIndex)
-    {
-        if (indexPath.row < devicesArray.count)
-        {
-            return [DeviceTableViewCell cellHeightWithDeviceInfo:devicesArray[indexPath.row] andCellWidth:self.tableView.frame.size.width];
-        }
-    }
+//    if (indexPath.section == devicesIndex)
+//    {
+//        if (indexPath.row < devicesArray.count)
+//        {
+//            return [DeviceTableViewCell cellHeightWithDeviceInfo:devicesArray[indexPath.row] andCellWidth:self.tableView.frame.size.width];
+//        }
+//    }
     
     return TABLEVIEW_ROW_CELL_HEIGHT;
 }
@@ -887,31 +697,12 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath
 {
-    if (indexPath.section == directChatsIndex)
+    UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
+    if (selectedCell && [selectedCell isKindOfClass:TableViewCellWithButton.class])
     {
-        if (indexPath.row < directChatsArray.count)
-        {
-            // Open this room
-            [[AppDelegate theDelegate] showRoom:directChatsArray[indexPath.row] andEventId:nil withMatrixSession:self.mainSession];
-        }
-        else
-        {
-            // Create a new direct chat with the member
-            UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-            button.tag = MXKRoomMemberDetailsActionStartChat;
-            
-            [super onActionButtonPressed:button];
-        }
-    }
-    else
-    {
-        UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
-        if (selectedCell && [selectedCell isKindOfClass:TableViewCellWithButton.class])
-        {
-            TableViewCellWithButton *cell = (TableViewCellWithButton*)selectedCell;
-            
-            [self onActionButtonPressed:cell.mxkButton];
-        }
+        TableViewCellWithButton *cell = (TableViewCellWithButton*)selectedCell;
+        
+        [self onActionButtonPressed:cell.mxkButton];
     }
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -1086,41 +877,25 @@
 {
     UIView *view = tapGestureRecognizer.view;
     
-    if (view == self.roomMemberNameLabelMask && self.mxRoomMember.displayname)
+    if (view == self.roomMemberAvatarMask)
     {
-        if ([self.roomMemberNameLabel.text isEqualToString:self.mxRoomMember.displayname])
-        {
-            // Display room member matrix id
-            self.roomMemberNameLabel.text = self.mxRoomMember.userId;
-        }
-        else
-        {
-            // Restore display name
-            self.roomMemberNameLabel.text = self.mxRoomMember.displayname;
-        }
-    }
-    else if (view == memberTitleView.memberAvatarMask || view == self.roomMemberAvatarMask)
-    {
-        __weak typeof(self) weakSelf = self;
+        MXWeakify(self);
         
         // Show the avatar in full screen
         __block MXKImageView * avatarFullScreenView = [[MXKImageView alloc] initWithFrame:CGRectZero];
         avatarFullScreenView.stretchable = YES;
 
-        [avatarFullScreenView setRightButtonTitle:[NSBundle mxk_localizedStringForKey:@"ok"] handler:^(MXKImageView* imageView, NSString* buttonTitle)
-         {
+        [avatarFullScreenView setRightButtonTitle:[NSBundle mxk_localizedStringForKey:@"ok"] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
+             MXStrongifyAndReturnIfNil(self);
+             
              [avatarFullScreenView dismissSelection];
              [avatarFullScreenView removeFromSuperview];
              
              avatarFullScreenView = nil;
              
-             if (weakSelf)
-             {
-                 // Restore the status bar
-                 isStatusBarHidden = NO;
-                 typeof(self) self = weakSelf;
-                 [self setNeedsStatusBarAppearanceUpdate];
-             }            
+             // Restore the status bar
+             self->isStatusBarHidden = NO;
+             [self setNeedsStatusBarAppearanceUpdate];
         }];
 
         NSString *avatarURL = nil;
@@ -1143,73 +918,66 @@
     }
 }
 
-#pragma mark - 
-
-- (void)deviceTableViewCell:(DeviceTableViewCell*)deviceTableViewCell updateDeviceVerification:(MXDeviceVerification)verificationStatus
-{
-    if (verificationStatus == MXDeviceVerified)
-    {
-        // Prompt the user before marking as verified the device.
-        encryptionInfoView = [[EncryptionInfoView alloc] initWithDeviceInfo:deviceTableViewCell.deviceInfo andMatrixSession:self.mxRoom.mxSession];
-        [encryptionInfoView onButtonPressed:encryptionInfoView.verifyButton];
-        
-        // Add shadow on added view
-        encryptionInfoView.layer.cornerRadius = 5;
-        encryptionInfoView.layer.shadowOffset = CGSizeMake(0, 1);
-        encryptionInfoView.layer.shadowOpacity = 0.5f;
-        
-        // Add the view and define edge constraints
-        [self.view addSubview:encryptionInfoView];
-        
-        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:encryptionInfoView
-                                                              attribute:NSLayoutAttributeTop
-                                                              relatedBy:NSLayoutRelationEqual
-                                                                 toItem:self.tableView
-                                                              attribute:NSLayoutAttributeTop
-                                                             multiplier:1.0f
-                                                               constant:10.0f]];
-        
-        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:encryptionInfoView
-                                                              attribute:NSLayoutAttributeBottom
-                                                              relatedBy:NSLayoutRelationEqual
-                                                                 toItem:self.tableView
-                                                              attribute:NSLayoutAttributeBottom
-                                                             multiplier:1.0f
-                                                               constant:-10.0f]];
-        
-        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.tableView
-                                                              attribute:NSLayoutAttributeLeading
-                                                              relatedBy:NSLayoutRelationEqual
-                                                                 toItem:encryptionInfoView
-                                                              attribute:NSLayoutAttributeLeading
-                                                             multiplier:1.0f
-                                                               constant:-10.0f]];
-        
-        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.tableView
-                                                              attribute:NSLayoutAttributeTrailing
-                                                              relatedBy:NSLayoutRelationEqual
-                                                                 toItem:encryptionInfoView
-                                                              attribute:NSLayoutAttributeTrailing
-                                                             multiplier:1.0f
-                                                               constant:10.0f]];
-        [self.view setNeedsUpdateConstraints];
-    }
-    else
-    {
-        [self.mxRoom.mxSession.crypto setDeviceVerification:verificationStatus
-                                                  forDevice:deviceTableViewCell.deviceInfo.deviceId
-                                                     ofUser:self.mxRoomMember.userId
-                                                    success:^{
-                                                        [self updateMemberInfo];
-                                                    } failure:nil];
-    }
-}
-
-#pragma mark - RoomMemberTitleViewDelegate
-
-- (void)roomMemberTitleViewDidLayoutSubview:(RoomMemberTitleView*)titleView
-{
-    [self viewDidLayoutSubviews];
-}
+//#pragma mark - DeviceTableViewCellDelegate
+//
+//- (void)deviceTableViewCell:(DeviceTableViewCell*)deviceTableViewCell updateDeviceVerification:(MXDeviceVerification)verificationStatus
+//{
+//    if (verificationStatus == MXDeviceVerified)
+//    {
+//        // Prompt the user before marking as verified the device.
+//        encryptionInfoView = [[EncryptionInfoView alloc] initWithDeviceInfo:deviceTableViewCell.deviceInfo andMatrixSession:self.mxRoom.mxSession];
+//        [encryptionInfoView onButtonPressed:encryptionInfoView.verifyButton];
+//
+//        // Add shadow on added view
+//        encryptionInfoView.layer.cornerRadius = 5;
+//        encryptionInfoView.layer.shadowOffset = CGSizeMake(0, 1);
+//        encryptionInfoView.layer.shadowOpacity = 0.5f;
+//
+//        // Add the view and define edge constraints
+//        [self.view addSubview:encryptionInfoView];
+//
+//        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:encryptionInfoView
+//                                                              attribute:NSLayoutAttributeTop
+//                                                              relatedBy:NSLayoutRelationEqual
+//                                                                 toItem:self.tableView
+//                                                              attribute:NSLayoutAttributeTop
+//                                                             multiplier:1.0f
+//                                                               constant:10.0f]];
+//
+//        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:encryptionInfoView
+//                                                              attribute:NSLayoutAttributeBottom
+//                                                              relatedBy:NSLayoutRelationEqual
+//                                                                 toItem:self.tableView
+//                                                              attribute:NSLayoutAttributeBottom
+//                                                             multiplier:1.0f
+//                                                               constant:-10.0f]];
+//
+//        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.tableView
+//                                                              attribute:NSLayoutAttributeLeading
+//                                                              relatedBy:NSLayoutRelationEqual
+//                                                                 toItem:encryptionInfoView
+//                                                              attribute:NSLayoutAttributeLeading
+//                                                             multiplier:1.0f
+//                                                               constant:-10.0f]];
+//
+//        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.tableView
+//                                                              attribute:NSLayoutAttributeTrailing
+//                                                              relatedBy:NSLayoutRelationEqual
+//                                                                 toItem:encryptionInfoView
+//                                                              attribute:NSLayoutAttributeTrailing
+//                                                             multiplier:1.0f
+//                                                               constant:10.0f]];
+//        [self.view setNeedsUpdateConstraints];
+//    }
+//    else
+//    {
+//        [self.mxRoom.mxSession.crypto setDeviceVerification:verificationStatus
+//                                                  forDevice:deviceTableViewCell.deviceInfo.deviceId
+//                                                     ofUser:self.mxRoomMember.userId
+//                                                    success:^{
+//                                                        [self updateMemberInfo];
+//                                                    } failure:nil];
+//    }
+//}
 
 @end

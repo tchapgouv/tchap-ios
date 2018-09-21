@@ -1,5 +1,5 @@
 /*
- Copyright 2016 OpenMarket Ltd
+ Copyright 2018 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -15,20 +15,6 @@
  */
 
 #import <MatrixKit/MatrixKit.h>
-
-// We add here a protocol to handle title view layout update.
-@class RoomMemberTitleView;
-@protocol RoomMemberTitleViewDelegate <NSObject>
-
-@optional
-/**
- Tells the delegate that the layout has been updated.
- 
- @param titleView the room member title view.
- */
-- (void)roomMemberTitleViewDidLayoutSubview:(RoomMemberTitleView*)titleView;
-
-@end
 
 @interface RoomMemberTitleView : MXKView
 
@@ -46,15 +32,10 @@
  @discussion This is the designated initializer for programmatic instantiation.
  @return An initialized `RoomMemberTitleView-inherited` object if successful, `nil` otherwise.
  */
-+ (instancetype)roomMemberTitleView;
++ (instancetype)instantiate;
 
-@property (weak, nonatomic) IBOutlet UIView *memberAvatarMask;
-@property (weak, nonatomic) IBOutlet UIImageView *memberBadge;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *memberAvatarMaskCenterXConstraint;
 
-/**
- The delegate.
- */
-@property (nonatomic) id<RoomMemberTitleViewDelegate> delegate;
+@property (weak, nonatomic) IBOutlet UILabel *roomMemberNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *roomMemberDomainLabel;
 
 @end

@@ -1,6 +1,7 @@
 /*
  Copyright 2016 OpenMarket Ltd
  Copyright 2017 Vector Creations Ltd
+ Copyright 2018 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -19,7 +20,7 @@
 
 #import "FilesSearchTableViewCell.h"
 
-#import "AppDelegate.h"
+#import "GeneratedInterface-Swift.h"
 
 #import "AttachmentsViewController.h"
 
@@ -31,11 +32,20 @@
     id kRiotDesignValuesDidChangeThemeNotificationObserver;
 }
 
+@property (nonatomic, strong) id<Style> currentStyle;
+
 @end
 
 @implementation RoomFilesViewController
 
 #pragma mark -
+
++ (instancetype)instantiate
+{
+    RoomFilesViewController *roomFilesViewController = [RoomFilesViewController roomViewController];
+    roomFilesViewController.currentStyle = Variant2Style.shared;
+    return roomFilesViewController;
+}
 
 - (instancetype)initWithNibName:(nullable NSString *)nibNameOrNil bundle:(nullable NSBundle *)nibBundleOrNil
 {
@@ -109,12 +119,24 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    self.defaultBarTintColor = kRiotSecondaryBgColor;
-    self.barTitleColor = kRiotPrimaryTextColor;
+    [self updateStyle:self.currentStyle];
+}
+
+- (void)updateStyle:(id<Style>)style
+{
+    self.currentStyle = style;
+    
+    UINavigationBar *navigationBar = self.navigationController.navigationBar;
+    
+    if (navigationBar)
+    {
+        [style applyStyleOnNavigationBar:navigationBar];
+    }
+    
+    //TODO Design the activvity indicator for Tchap
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
-    // Check the table view style to select its bg color.
-    self.bubblesTableView.backgroundColor = ((self.bubblesTableView.style == UITableViewStylePlain) ? kRiotPrimaryBgColor : kRiotSecondaryBgColor);
+    self.bubblesTableView.backgroundColor = style.backgroundColor;
     self.view.backgroundColor = self.bubblesTableView.backgroundColor;
     
     if (self.bubblesTableView.dataSource)
@@ -125,7 +147,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return kRiotDesignStatusBarStyle;
+    return self.currentStyle.statusBarStyle;
 }
 
 - (void)destroy

@@ -14,19 +14,8 @@
  limitations under the License.
  */
 
-#import "RoomMemberTitleView.h"
+import Foundation
 
-@implementation RoomMemberTitleView
-
-+ (UINib *)nib
-{
-    return [UINib nibWithNibName:NSStringFromClass([self class])
-                          bundle:[NSBundle bundleForClass:[self class]]];
+/// `RoomDetailsCoordinatorType` is a protocol describing a Coordinator that handle room details (members, files and settings) navigation flow.
+protocol RoomDetailsCoordinatorType: Coordinator, Presentable {
 }
-
-+ (instancetype)instantiate
-{
-    return [[[self class] nib] instantiateWithOwner:nil options:nil].firstObject;
-}
-
-@end

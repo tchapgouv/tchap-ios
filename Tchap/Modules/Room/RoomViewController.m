@@ -21,7 +21,7 @@
 #import "RoomDataSource.h"
 #import "RoomBubbleCellData.h"
 
-#import "AppDelegate.h"
+#import "GeneratedInterface-Swift.h"
 
 #import "RoomInputToolbarView.h"
 #import "DisabledRoomInputToolbarView.h"
@@ -34,14 +34,8 @@
 #import "PreviewView.h"
 
 #import "RoomMemberDetailsViewController.h"
-#import "ContactDetailsViewController.h"
 
 #import "SegmentedViewController.h"
-#import "RoomSettingsViewController.h"
-
-#import "RoomFilesViewController.h"
-
-#import "RoomSearchViewController.h"
 
 #import "UsersDevicesViewController.h"
 
@@ -127,25 +121,11 @@
     // The customized room data source for Vector
     RoomDataSource *customizedRoomDataSource;
     
-    // The user taps on a member thumbnail
-    MXRoomMember *selectedRoomMember;
-    
-    // The user taps on a user id contained in a message
-    MXKContact *selectedContact;
-    
     // List of members who are typing in the room.
     NSArray *currentTypingUsers;
     
     // Typing notifications listener.
     id typingNotifListener;
-    
-    // The first tab is selected by default in room details screen in case of 'showRoomDetails' segue.
-    // Use this flag to select a specific tab (0: people, 1: files, 2: settings).
-    NSUInteger selectedRoomDetailsIndex;
-    
-    // No field is selected by default in room details screen in case of 'showRoomDetails' segue.
-    // Use this value to select a specific field in room settings.
-    RoomSettingsViewControllerField selectedRoomSettingsField;
     
     // Missed discussions badge
     NSUInteger missedDiscussionsCount;
@@ -1707,10 +1687,10 @@
     {
         if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnAvatarView])
         {
-            selectedRoomMember = [self.roomDataSource.roomState.members memberWithUserId:userInfo[kMXKRoomBubbleCellUserIdKey]];
-            if (selectedRoomMember)
+            MXRoomMember *selectedRoomMember = [self.roomDataSource.roomState.members memberWithUserId:userInfo[kMXKRoomBubbleCellUserIdKey]];
+            if (selectedRoomMember && self.delegate)
             {
-                [self performSegueWithIdentifier:@"showMemberDetails" sender:self];
+                [self.delegate roomViewController:self showMemberDetails:selectedRoomMember];
             }
         }
         else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellLongPressOnAvatarView])
@@ -2485,30 +2465,13 @@
         // Open a detail screen about the clicked user
         else if ([MXTools isMatrixUserIdentifier:absoluteURLString])
         {
-            shouldDoAction = NO;
-            
+            // We display details only for the room members
             NSString *userId = absoluteURLString;
-            
             MXRoomMember* member = [self.roomDataSource.roomState.members memberWithUserId:userId];
-            if (member)
+            if (member && self.delegate)
             {
-                // Use the room member detail VC for room members
-                selectedRoomMember = member;
-                [self performSegueWithIdentifier:@"showMemberDetails" sender:self];
-            }
-            else
-            {
-                // Use the contact detail VC for other users
-                MXUser *user = [self.roomDataSource.room.mxSession userWithUserId:userId];
-                if (user)
-                {
-                    selectedContact = [[MXKContact alloc] initMatrixContactWithDisplayName:((user.displayname.length > 0) ? user.displayname : user.userId) andMatrixID:user.userId];
-                }
-                else
-                {
-                    selectedContact = [[MXKContact alloc] initMatrixContactWithDisplayName:userId andMatrixID:userId];
-                }
-                [self performSegueWithIdentifier:@"showContactDetails" sender:self];
+                shouldDoAction = NO;
+                [self.delegate roomViewController:self showMemberDetails:member];
             }
         }
         // Open the clicked room
@@ -2573,127 +2536,6 @@
     
     // Force table refresh
     [self dataSource:self.roomDataSource didCellChange:nil];
-}
-
-#pragma mark - Segues
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Keep ref on destinationViewController
-    [super prepareForSegue:segue sender:sender];
-    
-    id pushedViewController = [segue destinationViewController];
-    
-    if ([[segue identifier] isEqualToString:@"showRoomDetails"])
-    {
-        if ([pushedViewController isKindOfClass:[SegmentedViewController class]])
-        {
-            // Dismiss keyboard
-            [self dismissKeyboard];
-            
-            SegmentedViewController* segmentedViewController = (SegmentedViewController*)pushedViewController;
-            
-            MXSession* session = self.roomDataSource.mxSession;
-            NSString* roomId = self.roomDataSource.roomId;
-            NSMutableArray* viewControllers = [[NSMutableArray alloc] init];
-            NSMutableArray* titles = [[NSMutableArray alloc] init];
-            
-            // members tab
-            [titles addObject: NSLocalizedStringFromTable(@"room_details_people", @"Vector", nil)];
-            RoomParticipantsViewController* participantsViewController = [RoomParticipantsViewController roomParticipantsViewController];
-            participantsViewController.delegate = self;
-            participantsViewController.enableMention = YES;
-            participantsViewController.mxRoom = [session roomWithRoomId:roomId];
-            [viewControllers addObject:participantsViewController];
-            
-            // Files tab
-            [titles addObject: NSLocalizedStringFromTable(@"room_details_files", @"Vector", nil)];
-            RoomFilesViewController *roomFilesViewController = [RoomFilesViewController roomViewController];
-            // @TODO (async-state): This call should be synchronous. Every thing will be fine
-            __block MXKRoomDataSource *roomFilesDataSource;
-            [MXKRoomDataSource loadRoomDataSourceWithRoomId:roomId andMatrixSession:session onComplete:^(id roomDataSource) {
-                roomFilesDataSource = roomDataSource;
-            }];
-            roomFilesDataSource.filterMessagesWithURL = YES;
-            [roomFilesDataSource finalizeInitialization];
-            // Give the data source ownership to the room files view controller.
-            roomFilesViewController.hasRoomDataSourceOwnership = YES;
-            [roomFilesViewController displayRoom:roomFilesDataSource];
-            [viewControllers addObject:roomFilesViewController];
-            
-            // Settings tab
-            [titles addObject: NSLocalizedStringFromTable(@"room_details_settings", @"Vector", nil)];
-            RoomSettingsViewController *settingsViewController = [RoomSettingsViewController roomSettingsViewController];
-            [settingsViewController initWithSession:session andRoomId:roomId];
-            [viewControllers addObject:settingsViewController];
-            
-            // Sanity check
-            if (selectedRoomDetailsIndex > 2)
-            {
-                selectedRoomDetailsIndex = 0;
-            }
-            
-            segmentedViewController.title = NSLocalizedStringFromTable(@"room_details_title", @"Vector", nil);
-            [segmentedViewController initWithTitles:titles viewControllers:viewControllers defaultSelected:selectedRoomDetailsIndex];
-            
-            // Add the current session to be able to observe its state change.
-            [segmentedViewController addMatrixSession:session];
-            
-            // Preselect the tapped field if any
-            settingsViewController.selectedRoomSettingsField = selectedRoomSettingsField;
-            selectedRoomSettingsField = RoomSettingsViewControllerFieldNone;
-        }
-    }
-    else if ([[segue identifier] isEqualToString:@"showRoomSearch"])
-    {
-        // Dismiss keyboard
-        [self dismissKeyboard];
-        
-        RoomSearchViewController* roomSearchViewController = (RoomSearchViewController*)pushedViewController;
-        // Add the current data source to be able to search messages.
-        roomSearchViewController.roomDataSource = self.roomDataSource;
-    }
-    else if ([[segue identifier] isEqualToString:@"showMemberDetails"])
-    {
-        if (selectedRoomMember)
-        {
-            RoomMemberDetailsViewController *memberViewController = pushedViewController;
-            
-            // Set delegate to handle action on member (start chat, mention)
-            memberViewController.delegate = self;
-            memberViewController.enableMention = (self.inputToolbarView != nil);
-            memberViewController.enableVoipCall = NO;
-            
-            [memberViewController displayRoomMember:selectedRoomMember withMatrixRoom:self.roomDataSource.room];
-            
-            selectedRoomMember = nil;
-        }
-    }
-    else if ([[segue identifier] isEqualToString:@"showContactDetails"])
-    {
-        if (selectedContact)
-        {
-            ContactDetailsViewController *contactDetailsViewController = segue.destinationViewController;
-            contactDetailsViewController.enableVoipCall = NO;
-            contactDetailsViewController.contact = selectedContact;
-            
-            selectedContact = nil;
-        }
-    }
-    else if ([[segue identifier] isEqualToString:@"showUnknownDevices"])
-    {
-        if (unknownDevices)
-        {
-            UsersDevicesViewController *usersDevicesViewController = (UsersDevicesViewController *)segue.destinationViewController.childViewControllers.firstObject;
-            [usersDevicesViewController displayUsersDevices:unknownDevices andMatrixSession:self.roomDataSource.mxSession onComplete:nil];
-            
-            unknownDevices = nil;
-        }
-    }
-    
-    
-    // Hide back button title
-    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
 }
 
 #pragma mark - RoomInputToolbarViewDelegate
@@ -2950,56 +2792,43 @@
     }
 }
 
-#pragma mark - RoomParticipantsViewControllerDelegate
-
-- (void)roomParticipantsViewController:(RoomParticipantsViewController *)roomParticipantsViewController mention:(MXRoomMember*)member
-{
-    [self mention:member];
-}
-
-#pragma mark - MXKRoomMemberDetailsViewControllerDelegate
-
-- (void)roomMemberDetailsViewController:(MXKRoomMemberDetailsViewController *)roomMemberDetailsViewController startChatWithMemberId:(NSString *)matrixId completion:(void (^)(void))completion
-{
-    [[AppDelegate theDelegate] createDirectChatWithUserId:matrixId completion:completion];
-}
-
-- (void)roomMemberDetailsViewController:(MXKRoomMemberDetailsViewController *)roomMemberDetailsViewController mention:(MXRoomMember*)member
-{
-    [self mention:member];
-}
-
 #pragma mark - Action
 
 - (IBAction)onButtonPressed:(id)sender
 {
-    // Search button
-    if (sender == self.navigationItem.rightBarButtonItem)
-    {
-        [self performSegueWithIdentifier:@"showRoomSearch" sender:self];
-    }
-    // Matrix Apps button
-    else if (self.navigationItem.rightBarButtonItems.count == 2 && sender == self.navigationItem.rightBarButtonItems[1])
-    {
-        if ([self widgetsCount:NO])
-        {
-            WidgetPickerViewController *widgetPicker = [[WidgetPickerViewController alloc] initForMXSession:self.roomDataSource.mxSession
-                                                                                                     inRoom:self.roomDataSource.roomId];
-
-            [widgetPicker showInViewController:self];
-        }
-        else
-        {
-            // No widgets -> Directly show the integration manager
-            IntegrationManagerViewController *modularVC = [[IntegrationManagerViewController alloc] initForMXSession:self.roomDataSource.mxSession
-                                                                                                              inRoom:self.roomDataSource.roomId
-                                                                                                              screen:kIntegrationManagerMainScreen
-                                                                                                            widgetId:nil];
-
-            [self presentViewController:modularVC animated:NO completion:nil];
-        }
-    }
-    else if (sender == self.jumpToLastUnreadButton)
+//    // Search button
+//    if (sender == self.navigationItem.rightBarButtonItem)
+//    {
+//        // Dismiss keyboard
+//        [self dismissKeyboard];
+//
+//        RoomSearchViewController* roomSearchViewController = [RoomSearchViewController instantiate];
+//        // Add the current data source to be able to search messages.
+//        roomSearchViewController.roomDataSource = self.roomDataSource;
+//    }
+//    // Matrix Apps button
+//    else if (self.navigationItem.rightBarButtonItems.count == 2 && sender == self.navigationItem.rightBarButtonItems[1])
+//    {
+//        if ([self widgetsCount:NO])
+//        {
+//            WidgetPickerViewController *widgetPicker = [[WidgetPickerViewController alloc] initForMXSession:self.roomDataSource.mxSession
+//                                                                                                     inRoom:self.roomDataSource.roomId];
+//
+//            [widgetPicker showInViewController:self];
+//        }
+//        else
+//        {
+//            // No widgets -> Directly show the integration manager
+//            IntegrationManagerViewController *modularVC = [[IntegrationManagerViewController alloc] initForMXSession:self.roomDataSource.mxSession
+//                                                                                                              inRoom:self.roomDataSource.roomId
+//                                                                                                              screen:kIntegrationManagerMainScreen
+//                                                                                                            widgetId:nil];
+//
+//            [self presentViewController:modularVC animated:NO completion:nil];
+//        }
+//    }
+//    else
+    if (sender == self.jumpToLastUnreadButton)
     {
         // Dismiss potential keyboard.
         [self dismissKeyboard];
@@ -3147,20 +2976,10 @@
 
 - (void)roomTitleView:(RoomTitleView*)titleView recognizeTapGesture:(UITapGestureRecognizer*)tapGestureRecognizer
 {
-    UIView *tappedView = tapGestureRecognizer.view;
-    
-    if (tappedView == titleView.titleMask)
+    if (self.delegate)
     {
         // Open room settings
-        selectedRoomSettingsField = RoomSettingsViewControllerFieldNone;
-        selectedRoomDetailsIndex = 2;
-        //[self performSegueWithIdentifier:@"showRoomDetails" sender:self];
-    }
-    else if (tappedView == titleView.roomDetailsMask)
-    {
-        // Open room details by selecting member list
-        selectedRoomDetailsIndex = 0;
-        [self performSegueWithIdentifier:@"showRoomDetails" sender:self];
+        [self.delegate roomViewControllerShowRoomDetails:self];
     }
 }
 
@@ -3819,7 +3638,7 @@
         && event.sentError.code == MXEncryptingErrorUnknownDeviceCode
         && !unknownDevices)   // Show the alert once in case of resending several events
     {
-        __weak __typeof(self) weakSelf = self;
+        MXWeakify(self);
         
         [self dismissTemporarySubViews];
         
@@ -3847,13 +3666,16 @@
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * action) {
                                                            
-                                                           if (weakSelf)
-                                                           {
-                                                               typeof(self) self = weakSelf;
-                                                               self->currentAlert = nil;
-                                                               
-                                                               [self performSegueWithIdentifier:@"showUnknownDevices" sender:self];
-                                                           }
+                                                           MXStrongifyAndReturnIfNil(self);
+                                                           self->currentAlert = nil;
+                                                           UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+                                                           UINavigationController *navigationController = [storyboard instantiateViewControllerWithIdentifier:@"UsersDevicesNavigationControllerStoryboardId"];
+                                                           
+                                                           UsersDevicesViewController *usersDevicesViewController = navigationController.childViewControllers.firstObject;
+                                                           [usersDevicesViewController displayUsersDevices:self->unknownDevices andMatrixSession:self.roomDataSource.mxSession onComplete:nil];
+                                                           
+                                                           self->unknownDevices = nil;
+                                                           [self presentViewController:navigationController animated:YES completion:nil];
                                                            
                                                        }]];
         
@@ -3861,22 +3683,19 @@
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * action) {
                                                            
-                                                           if (weakSelf)
-                                                           {
-                                                               typeof(self) self = weakSelf;
-                                                               self->currentAlert = nil;
+                                                           MXStrongifyAndReturnIfNil(self);
+                                                           self->currentAlert = nil;
+                                                           
+                                                           // Acknowledge the existence of all devices
+                                                           [self startActivityIndicator];
+                                                           [self.mainSession.crypto setDevicesKnown:self->unknownDevices complete:^{
                                                                
-                                                               // Acknowledge the existence of all devices
-                                                               [self startActivityIndicator];
-                                                               [self.mainSession.crypto setDevicesKnown:self->unknownDevices complete:^{
-                                                                   
-                                                                   self->unknownDevices = nil;
-                                                                   [self stopActivityIndicator];
-                                                                   
-                                                                   // And resend pending messages
-                                                                   [self resendAllUnsentMessages];
-                                                               }];
-                                                           }
+                                                               self->unknownDevices = nil;
+                                                               [self stopActivityIndicator];
+                                                               
+                                                               // And resend pending messages
+                                                               [self resendAllUnsentMessages];
+                                                           }];
                                                            
                                                        }]];
         
@@ -4128,128 +3947,6 @@
             [self.roomDataSource.room forgetReadMarker];
         }
     }
-}
-
-#pragma mark - ContactsTableViewControllerDelegate
-
-- (void)contactsTableViewController:(ContactsTableViewController *)contactsTableViewController didSelectContact:(MXKContact*)contact
-{
-    __weak typeof(self) weakSelf = self;
-    
-    if (currentAlert)
-    {
-        [currentAlert dismissViewControllerAnimated:NO completion:nil];
-        currentAlert = nil;
-    }
-    
-    // Invite ?
-    NSString *promptMsg = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_participants_invite_prompt_msg", @"Vector", nil), contact.displayName];
-    currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"room_participants_invite_prompt_title", @"Vector", nil)
-                                                       message:promptMsg
-                                                preferredStyle:UIAlertControllerStyleAlert];
-    
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
-                                                     style:UIAlertActionStyleCancel
-                                                   handler:^(UIAlertAction * action) {
-                                                       
-                                                       if (weakSelf)
-                                                       {
-                                                           typeof(self) self = weakSelf;
-                                                           self->currentAlert = nil;
-                                                       }
-                                                       
-                                                   }]];
-    
-    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"invite", @"Vector", nil)
-                                                     style:UIAlertActionStyleDefault
-                                                   handler:^(UIAlertAction * action) {
-                                                       
-                                                       // Sanity check
-                                                       if (!weakSelf)
-                                                       {
-                                                           return;
-                                                       }
-                                                       
-                                                       typeof(self) self = weakSelf;
-                                                       self->currentAlert = nil;
-                                                       
-                                                       MXSession* session = self.roomDataSource.mxSession;
-                                                       NSString* roomId = self.roomDataSource.roomId;
-                                                       MXRoom *room = [session roomWithRoomId:roomId];
-                                                       
-                                                       NSArray *identifiers = contact.matrixIdentifiers;
-                                                       NSString *participantId;
-                                                       
-                                                       if (identifiers.count)
-                                                       {
-                                                           participantId = identifiers.firstObject;
-                                                           
-                                                           // Invite this user if a room is defined
-                                                           [room inviteUser:participantId success:^{
-                                                               
-                                                               // Refresh display by removing the contacts picker
-                                                               [contactsTableViewController withdrawViewControllerAnimated:YES completion:nil];
-                                                               
-                                                           } failure:^(NSError *error) {
-                                                               
-                                                               NSLog(@"[RoomVC] Invite %@ failed", participantId);
-                                                               // Alert user
-                                                               [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                               
-                                                           }];
-                                                       }
-                                                       else
-                                                       {
-                                                           if (contact.emailAddresses.count)
-                                                           {
-                                                               // This is a local contact, consider the first email by default.
-                                                               // TODO: Prompt the user to select the right email.
-                                                               MXKEmail *email = contact.emailAddresses.firstObject;
-                                                               participantId = email.emailAddress;
-                                                           }
-                                                           else
-                                                           {
-                                                               // This is the text filled by the user.
-                                                               participantId = contact.displayName;
-                                                           }
-                                                           
-                                                           // Is it an email or a Matrix user ID?
-                                                           if ([MXTools isEmailAddress:participantId])
-                                                           {
-                                                               [room inviteUserByEmail:participantId success:^{
-                                                                   
-                                                                   // Refresh display by removing the contacts picker
-                                                                   [contactsTableViewController withdrawViewControllerAnimated:YES completion:nil];
-                                                                   
-                                                               } failure:^(NSError *error) {
-                                                                   
-                                                                   NSLog(@"[RoomVC] Invite be email %@ failed", participantId);
-                                                                   // Alert user
-                                                                   [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                                   
-                                                               }];
-                                                           }
-                                                           else //if ([MXTools isMatrixUserIdentifier:participantId])
-                                                           {
-                                                               [room inviteUser:participantId success:^{
-                                                                   
-                                                                   // Refresh display by removing the contacts picker
-                                                                   [contactsTableViewController withdrawViewControllerAnimated:YES completion:nil];
-                                                                   
-                                                               } failure:^(NSError *error) {
-                                                                   
-                                                                   NSLog(@"[RoomVC] Invite %@ failed", participantId);
-                                                                   // Alert user
-                                                                   [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                                   
-                                                               }];
-                                                           }
-                                                       }
-                                                       
-                                                   }]];
-    
-    [currentAlert mxk_setAccessibilityIdentifier:@"RoomVCInviteAlert"];
-    [self presentViewController:currentAlert animated:YES completion:nil];
 }
 
 #pragma mark - Re-request encryption keys

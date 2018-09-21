@@ -17,13 +17,15 @@
 
 #import "AttachmentsViewController.h"
 
-#import "AppDelegate.h"
+#import "GeneratedInterface-Swift.h"
 
 @interface AttachmentsViewController ()
 {
     // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
     id kRiotDesignValuesDidChangeThemeNotificationObserver;
 }
+
+@property (nonatomic, strong) id<Style> currentStyle;
 
 @end
 
@@ -38,6 +40,8 @@
     // Setup `MXKViewControllerHandling` properties.
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
+    
+    self.currentStyle = Variant1Style.shared;
 }
 
 - (void)viewDidLoad
@@ -58,14 +62,22 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    self.view.backgroundColor = kRiotPrimaryBgColor;
-    self.defaultBarTintColor = kRiotSecondaryBgColor;
-    self.barTitleColor = kRiotPrimaryTextColor;
-    self.activityIndicator.backgroundColor = kRiotOverlayColor;
+    [self updateStyle:self.currentStyle];
+}
+
+- (void)updateStyle:(id<Style>)style
+{
+    self.currentStyle = style;
+    if (self.navigationBar)
+    {
+        [style applyStyleOnNavigationBar:self.navigationBar];
+    }
+    self.backButton.tintColor = style.barActionColor;
     
-    self.navigationBar.tintColor = kRiotSecondaryBgColor;
-    self.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: kRiotPrimaryTextColor};
-    self.backButton.tintColor = kRiotColorGreen;
+    self.view.backgroundColor = [UIColor blackColor];
+    
+    // @TODO Design the activvity indicator for Tchap
+    self.activityIndicator.backgroundColor = kRiotOverlayColor;
 }
 
 - (void)viewWillAppear:(BOOL)animated

@@ -36,6 +36,15 @@
  */
 - (void)roomParticipantsViewController:(RoomParticipantsViewController *)roomParticipantsViewController mention:(MXRoomMember*)member;
 
+/**
+ Tells the delegate that the user wants to start a one-to-one chat with a room member.
+ 
+ @param roomParticipantsViewController the `RoomParticipantsViewController` instance.
+ @param matrixId the member's matrix id
+ @param completion the block to execute at the end of the operation (independently if it succeeded or not).
+ */
+- (void)roomParticipantsViewController:(RoomParticipantsViewController *)roomParticipantsViewController startChatWithMemberId:(NSString*)matrixId completion:(void (^)(void))completion;
+
 @end
 
 /**
@@ -104,7 +113,7 @@
  @discussion This is the designated initializer for programmatic instantiation.
  @return An initialized `RoomParticipantsViewController` object if successful, `nil` otherwise.
  */
-+ (instancetype)roomParticipantsViewController;
++ (instancetype)instantiate;
 
 @end
 

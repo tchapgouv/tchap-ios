@@ -21,4 +21,12 @@ limitations under the License.
  */
 @interface RoomFilesViewController : MXKRoomViewController
 
+/**
+ Creates and returns a new `RoomFilesViewController` object.
+ 
+ @discussion This is the designated initializer for programmatic instantiation.
+ @return An initialized `RoomFilesViewController` object if successful, `nil` otherwise.
+ */
++ (instancetype)instantiate;
+
 @end

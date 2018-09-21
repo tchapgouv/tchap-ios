@@ -1,5 +1,6 @@
 /*
  Copyright 2016 OpenMarket Ltd
+ Copyright 2018 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -18,18 +19,23 @@
 
 #import "DeviceTableViewCell.h"
 
-@interface RoomMemberDetailsViewController : MXKRoomMemberDetailsViewController <UIGestureRecognizerDelegate, DeviceTableViewCellDelegate>
+@interface RoomMemberDetailsViewController : MXKRoomMemberDetailsViewController <UIGestureRecognizerDelegate> //, DeviceTableViewCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *roomMemberAvatarHeaderBackground;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *roomMemberAvatarHeaderBackgroundHeightConstraint;
 
 @property (weak, nonatomic) IBOutlet UIView *memberHeaderView;
 @property (weak, nonatomic) IBOutlet UIView *roomMemberAvatarMask;
-@property (weak, nonatomic) IBOutlet UILabel *roomMemberNameLabel;
-@property (weak, nonatomic) IBOutlet UIView *roomMemberNameLabelMask;
+@property (weak, nonatomic) IBOutlet UIImageView *memberBadge;
 
 @property (weak, nonatomic) IBOutlet UILabel *roomMemberStatusLabel;
 
-@property (weak, nonatomic) IBOutlet UIImageView *bottomImageView;
+/**
+ Creates and returns a new `RoomMemberDetailsViewController` object.
+ 
+ @return An initialized `RoomMemberDetailsViewController` object.
+ */
++ (instancetype)instantiate;
+
 @end
 

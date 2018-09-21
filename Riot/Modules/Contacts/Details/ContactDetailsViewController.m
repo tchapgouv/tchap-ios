@@ -35,7 +35,7 @@
 #define TABLEVIEW_SECTION_HEADER_HEIGHT   28
 #define TABLEVIEW_SECTION_HEADER_HEIGHT_WHEN_HIDDEN 0.01f
 
-@interface ContactDetailsViewController () <RoomMemberTitleViewDelegate>
+@interface ContactDetailsViewController ()
 {
     RoomMemberTitleView* contactTitleView;
     
@@ -131,8 +131,7 @@
     actionsArray = [[NSMutableArray alloc] init];
     directChatsArray = [[NSMutableArray alloc] init];
     
-    contactTitleView = [RoomMemberTitleView roomMemberTitleView];
-    contactTitleView.delegate = self;
+    contactTitleView = [RoomMemberTitleView instantiate];
     
     self.contactAvatar.contentMode = UIViewContentModeScaleAspectFill;
     self.contactAvatar.defaultBackgroundColor = [UIColor clearColor];
@@ -195,14 +194,6 @@
     [tap setDelegate:self];
     [self.contactAvatarMask addGestureRecognizer:tap];
     self.contactAvatarMask.userInteractionEnabled = YES;
-    
-    // Need to listen to the tap gesture in the title view too.
-    tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
-    [tap setNumberOfTouchesRequired:1];
-    [tap setNumberOfTapsRequired:1];
-    [tap setDelegate:self];
-    [contactTitleView.memberAvatarMask addGestureRecognizer:tap];
-    contactTitleView.memberAvatarMask.userInteractionEnabled = YES;
     
     // Register collection view cell class
     [self.tableView registerClass:TableViewCellWithButton.class forCellReuseIdentifier:[TableViewCellWithButton defaultReuseIdentifier]];
@@ -350,29 +341,6 @@
     
     [currentAlert dismissViewControllerAnimated:NO completion:nil];
     currentAlert = nil;
-}
-
-- (void)viewDidLayoutSubviews
-{
-    [super viewDidLayoutSubviews];
-    
-    // Check whether the title view has been created and rendered.
-    if (contactTitleView && contactTitleView.superview)
-    {
-        // Adjust the header height by taking into account the actual position of the member avatar in title view
-        // This position depends automatically on the screen orientation.
-        CGPoint memberAvatarOriginInTitleView = contactTitleView.memberAvatarMask.frame.origin;
-        CGPoint memberAvatarActualPosition = [contactTitleView convertPoint:memberAvatarOriginInTitleView toView:self.view];
-        
-        CGFloat avatarHeaderHeight = memberAvatarActualPosition.y + self.contactAvatar.frame.size.height;
-        if (_contactAvatarHeaderBackgroundHeightConstraint.constant != avatarHeaderHeight)
-        {
-            _contactAvatarHeaderBackgroundHeightConstraint.constant = avatarHeaderHeight;
-            
-            // Force the layout of the header
-            [self.headerView layoutIfNeeded];
-        }
-    }
 }
 
 #pragma mark -
@@ -1147,7 +1115,7 @@
             self.contactNameLabel.text = _contact.displayName;
         }
     }
-    else if (view == contactTitleView.memberAvatarMask || view == self.contactAvatarMask)
+    else if (view == self.contactAvatarMask)
     {
         // Show the avatar in full screen
         __block MXKImageView * avatarFullScreenView = [[MXKImageView alloc] initWithFrame:CGRectZero];
@@ -1184,13 +1152,6 @@
         // Trigger status bar update
         [self setNeedsStatusBarAppearanceUpdate];
     }
-}
-
-#pragma mark - RoomMemberTitleViewDelegate
-
-- (void)roomMemberTitleViewDidLayoutSubview:(RoomMemberTitleView*)titleView
-{
-    [self viewDidLayoutSubviews];
 }
 
 @end

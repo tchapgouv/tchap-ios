@@ -51,6 +51,13 @@
 @property (nonatomic) id<RoomTitleViewTapGestureDelegate> tapGestureDelegate;
 
 /**
+ Creates and returns a new `RoomTitleView` object.
+ 
+ @return An initialized `RoomTitleView` object.
+ */
++ (instancetype)instantiate;
+
+/**
  The method used to handle the gesture recognized by a receiver.
  */
 - (void)reportTapGesture:(UITapGestureRecognizer*)tapGestureRecognizer;

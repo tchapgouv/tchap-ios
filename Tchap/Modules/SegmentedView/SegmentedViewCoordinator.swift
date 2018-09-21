@@ -47,11 +47,14 @@ final class SegmentedViewCoordinator: NSObject, SegmentedViewCoordinatorType {
         let roomsCoordinator = RoomsCoordinator(router: self.navigationRouter, session: self.session)
         let contactsCoordinator = ContactsCoordinator(router: self.navigationRouter, session: self.session)
         
+        roomsCoordinator.delegate = self
+        contactsCoordinator.delegate = self
+        
         self.add(childCoordinator: roomsCoordinator)
         self.add(childCoordinator: contactsCoordinator)
         
         let viewControllers = [roomsCoordinator.toPresentable(), contactsCoordinator.toPresentable()]
-        let viewControllersTitles = ["Rooms", "Contact"] // TODO: Localize titles
+        let viewControllersTitles = [TchapL10n.conversationsTabTitle, TchapL10n.contactsTabTitle]
         
         let globalSearchBar = GlobalSearchBar.instantiate()
         globalSearchBar.delegate = self
@@ -75,14 +78,26 @@ final class SegmentedViewCoordinator: NSObject, SegmentedViewCoordinatorType {
     
     // MARK: - Private methods
     
+    private func showRoom(with roomID: String) {
+        let roomCoordinator = RoomCoordinator(router: self.navigationRouter, session: self.session, roomID: roomID)
+        roomCoordinator.start()
+        
+        self.navigationRouter.popToRootModule(animated: false)
+        
+        self.add(childCoordinator: roomCoordinator)
+        self.navigationRouter.push(roomCoordinator, animated: true) {
+            self.remove(childCoordinator: roomCoordinator)
+        }
+    }
+    
     private func showSettings(animated: Bool) {
         let settingsCoordinator = SettingsCoordinator(router: self.navigationRouter)
         settingsCoordinator.start()
-        self.add(childCoordinator: settingsCoordinator)
         
-        self.navigationRouter.push(settingsCoordinator, animated: animated, popCompletion: {
+        self.add(childCoordinator: settingsCoordinator)
+        self.navigationRouter.push(settingsCoordinator, animated: animated) {
             self.remove(childCoordinator: settingsCoordinator)
-        })
+        }
     }
     
     private func createHomeViewController(with viewControllers: [UIViewController], viewControllersTitles: [String], globalSearchBar: GlobalSearchBar) -> HomeViewController {
@@ -114,11 +129,36 @@ extension SegmentedViewCoordinator: GlobalSearchBarDelegate {
     }
 }
 
+// MARK: - RoomsCoordinatorDelegate
+extension SegmentedViewCoordinator: RoomsCoordinatorDelegate {
+    func roomsCoordinator(_ coordinator: RoomsCoordinatorType, didSelectRoomID roomID: String) {
+        self.showRoom(with: roomID)
+    }
+}
+
+// MARK: - ContactsCoordinatorDelegate
+extension SegmentedViewCoordinator: ContactsCoordinatorDelegate {
+    func contactsCoordinator(_ coordinator: ContactsCoordinatorType, didSelectRoomID roomID: String) {
+        self.showRoom(with: roomID)
+    }
+}
+
+// MARK: - RoomCoordinatorDelegate
+extension SegmentedViewCoordinator: RoomCoordinatorDelegate {
+    func roomCoordinator(_ coordinator: RoomCoordinatorType, didSelectRoomID roomID: String) {
+        self.showRoom(with: roomID)
+    }
+    
+    func roomCoordinator(_ coordinator: RoomCoordinatorType, didSelectUserID userID: String) {
+        //TODO Display a fake room, create the discussion only when an event is sent (#41).
+    }
+}
+        
 // MARK: - HomeViewControllerDelegate
 extension SegmentedViewCoordinator: HomeViewControllerDelegate {
     
     func homeViewControllerDidTapStartChatButton(_ homeViewController: HomeViewController) {
-        
+        //TODO Open a contact picker with only Tchap users
     }
     
     func homeViewControllerDidTapCreateRoomButton(_ homeViewController: HomeViewController) {

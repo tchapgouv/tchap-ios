@@ -37,6 +37,8 @@ internal enum TchapL10n {
   internal static let contactsMainSection = TchapL10n.tr("Tchap", "contacts_main_section")
   /// Aucun contact
   internal static let contactsNoContact = TchapL10n.tr("Tchap", "contacts_no_contact")
+  /// Contacts
+  internal static let contactsTabTitle = TchapL10n.tr("Tchap", "contacts_tab_title")
   /// Répertoire Tchap (hors-ligne)
   internal static let contactsUserDirectoryOfflineSection = TchapL10n.tr("Tchap", "contacts_user_directory_offline_section")
   /// Répertoire Tchap
@@ -55,6 +57,8 @@ internal enum TchapL10n {
   internal static let conversationsNoConversation = TchapL10n.tr("Tchap", "conversations_no_conversation")
   /// Nouvelle discussion
   internal static let conversationsStartChatAction = TchapL10n.tr("Tchap", "conversations_start_chat_action")
+  /// Conversations
+  internal static let conversationsTabTitle = TchapL10n.tr("Tchap", "conversations_tab_title")
   /// Une erreur est survenue, veuillez réessayer ultérieurement
   internal static let errorMessageDefault = TchapL10n.tr("Tchap", "error_message_default")
   /// Erreur
@@ -83,6 +87,14 @@ internal enum TchapL10n {
   internal static let registrationPasswordPlaceholder = TchapL10n.tr("Tchap", "registration_password_placeholder")
   /// Inscription Tchap
   internal static let registrationTitle = TchapL10n.tr("Tchap", "registration_title")
+  /// Fichiers
+  internal static let roomFilesTabTitle = TchapL10n.tr("Tchap", "room_files_tab_title")
+  /// Envoyer un message
+  internal static let roomMemberDetailsActionChat = TchapL10n.tr("Tchap", "room_member_details_action_chat")
+  /// Membres
+  internal static let roomMembersTabTitle = TchapL10n.tr("Tchap", "room_members_tab_title")
+  /// Paramètres
+  internal static let roomSettingsTabTitle = TchapL10n.tr("Tchap", "room_settings_tab_title")
   /// Aucun résultat
   internal static let searchNoResult = TchapL10n.tr("Tchap", "search_no_result")
   /// J'ai un compte

@@ -1,6 +1,7 @@
 /*
  Copyright 2015 OpenMarket Ltd
  Copyright 2017 Vector Creations Ltd
+ Copyright 2018 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -19,7 +20,7 @@
 
 #import "RoomMemberDetailsViewController.h"
 
-#import "AppDelegate.h"
+#import "GeneratedInterface-Swift.h"
 
 #import "Contact.h"
 
@@ -62,6 +63,8 @@
     id kRiotDesignValuesDidChangeThemeNotificationObserver;
 }
 
+@property (nonatomic, strong) id<Style> currentStyle;
+
 @end
 
 @implementation RoomParticipantsViewController
@@ -74,10 +77,12 @@
                           bundle:[NSBundle bundleForClass:[RoomParticipantsViewController class]]];
 }
 
-+ (instancetype)roomParticipantsViewController
++ (instancetype)instantiate
 {
-    return [[[self class] alloc] initWithNibName:NSStringFromClass([RoomParticipantsViewController class])
+    RoomParticipantsViewController *roomParticipantsViewController = [[[self class] alloc] initWithNibName:NSStringFromClass([RoomParticipantsViewController class])
                                           bundle:[NSBundle bundleForClass:[RoomParticipantsViewController class]]];
+    roomParticipantsViewController.currentStyle = Variant2Style.shared;
+    return roomParticipantsViewController;
 }
 
 #pragma mark -
@@ -154,24 +159,35 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    self.defaultBarTintColor = kRiotSecondaryBgColor;
-    self.barTitleColor = kRiotPrimaryTextColor;
-    self.activityIndicator.backgroundColor = kRiotOverlayColor;
+    [self updateStyle:self.currentStyle];
+}
+
+- (void)updateStyle:(id<Style>)style
+{
+    self.currentStyle = style;
     
     [self refreshSearchBarItemsColor:_searchBarView];
-    
     _searchBarHeaderBorder.backgroundColor = kRiotAuxiliaryColor;
     
-    // Check the table view style to select its bg color.
-    self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? kRiotPrimaryBgColor : kRiotSecondaryBgColor);
-    self.view.backgroundColor = self.tableView.backgroundColor;
+    UINavigationBar *navigationBar = self.navigationController.navigationBar;
+    
+    if (navigationBar)
+    {
+        [style applyStyleOnNavigationBar:navigationBar];
+    }
+    
+    //TODO Design the activvity indicator for Tchap
+    self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
     // Update the gradient view above the screen
     CGFloat white = 1.0;
-    [kRiotPrimaryBgColor getWhite:&white alpha:nil];
+    [style.backgroundColor getWhite:&white alpha:nil];
     CGColorRef opaqueWhiteColor = [UIColor colorWithWhite:white alpha:1.0].CGColor;
     CGColorRef transparentWhiteColor = [UIColor colorWithWhite:white alpha:0].CGColor;
     tableViewMaskLayer.colors = [NSArray arrayWithObjects:(__bridge id)transparentWhiteColor, (__bridge id)transparentWhiteColor, (__bridge id)opaqueWhiteColor, nil];
+    
+    self.tableView.backgroundColor = style.backgroundColor;
+    self.view.backgroundColor = self.tableView.backgroundColor;
     
     if (self.tableView.dataSource)
     {
@@ -181,7 +197,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return kRiotDesignStatusBarStyle;
+    return self.currentStyle.statusBarStyle;
 }
 
 // This method is called when the viewcontroller is added or removed from a container view controller.
@@ -662,8 +678,8 @@
     ContactsDataSource *contactsDataSource = [[ContactsDataSource alloc] initWithMatrixSession:self.mxRoom.mxSession];
     contactsDataSource.areSectionsShrinkable = YES;
     contactsDataSource.displaySearchInputInContactsList = YES;
-    // Add a plus icon to the contact cell in the contacts picker, in order to make it more understandable for the end user.
-    contactsDataSource.contactCellAccessoryImage = [UIImage imageNamed:@"plus_icon"];
+    contactsDataSource.contactsFilter = ContactsDataSourceTchapFilterTchapOnly;
+    
     
     // List all the participants matrix user id to ignore them during the contacts search.
     for (Contact *contact in actualParticipants)
@@ -1293,7 +1309,7 @@
     
     if (contact.mxMember)
     {
-        memberDetailsViewController = [RoomMemberDetailsViewController roomMemberDetailsViewController];
+        memberDetailsViewController = [RoomMemberDetailsViewController instantiate];
         
         // Set delegate to handle action on member (start chat, mention)
         memberDetailsViewController.delegate = self;
@@ -1335,7 +1351,7 @@
 
 - (void)roomMemberDetailsViewController:(MXKRoomMemberDetailsViewController *)roomMemberDetailsViewController startChatWithMemberId:(NSString *)matrixId completion:(void (^)(void))completion
 {
-    [[AppDelegate theDelegate] createDirectChatWithUserId:matrixId completion:completion];
+    [self.delegate roomParticipantsViewController:self startChatWithMemberId:matrixId completion:completion];
 }
 
 - (void)roomMemberDetailsViewController:(MXKRoomMemberDetailsViewController *)roomMemberDetailsViewController mention:(MXRoomMember*)member

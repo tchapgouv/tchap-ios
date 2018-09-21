@@ -16,6 +16,11 @@
 
 import UIKit
 
+protocol RoomCoordinatorDelegate: class {
+    func roomCoordinator(_ coordinator: RoomCoordinatorType, didSelectRoomID roomID: String)
+    func roomCoordinator(_ coordinator: RoomCoordinatorType, didSelectUserID userID: String)
+}
+
 final class RoomCoordinator: NSObject, RoomCoordinatorType {
     
     // MARK: - Properties
@@ -35,6 +40,8 @@ final class RoomCoordinator: NSObject, RoomCoordinatorType {
     
     var childCoordinators: [Coordinator] = []
     
+    weak var delegate: RoomCoordinatorDelegate?
+    
     // MARK: - Setup
     
     init(router: NavigationRouterType, session: MXSession, roomID: String) {
@@ -49,9 +56,11 @@ final class RoomCoordinator: NSObject, RoomCoordinatorType {
     // MARK: - Public methods
     
     func start() {
-        self.activityIndicatorPresenter.presentActivityIndicator(on: roomViewController.view, animated: false)
+        self.roomViewController.delegate = self
         
         // Present activity indicator when retrieving roomDataSource for given room ID
+        self.activityIndicatorPresenter.presentActivityIndicator(on: roomViewController.view, animated: false)
+        
         let roomDataSourceManager: MXKRoomDataSourceManager = MXKRoomDataSourceManager.sharedManager(forMatrixSession: self.session)
         roomDataSourceManager.roomDataSource(forRoom: self.roomID, create: true, onComplete: { (roomDataSource) in
             
@@ -61,7 +70,6 @@ final class RoomCoordinator: NSObject, RoomCoordinatorType {
                 self.roomViewController.displayRoom(roomDataSource)
             }
         })
-        
     }
     
     func toPresentable() -> UIViewController {
@@ -69,4 +77,72 @@ final class RoomCoordinator: NSObject, RoomCoordinatorType {
     }
     
     // MARK: - Private methods
+    private func showRoomDetails(animated: Bool) {
+        let roomDetailsCoordinator = RoomDetailsCoordinator.init(router: self.router, session: self.session, roomID: self.roomID)
+        roomDetailsCoordinator.start()
+        roomDetailsCoordinator.delegate = self
+        self.add(childCoordinator: roomDetailsCoordinator)
+        
+        self.roomViewController.tc_removeBackTitle()
+        
+        self.router.push(roomDetailsCoordinator, animated: animated, popCompletion: {
+            self.remove(childCoordinator: roomDetailsCoordinator)
+        })
+    }
+    
+    private func showMemberDetails(_ member: MXRoomMember, animated: Bool) {
+        guard let roomMemberDetailsViewController = RoomMemberDetailsViewController.instantiate() else {
+            fatalError("[RoomCoordinator] Member details can not be loaded")
+        }
+        // Set delegate to handle action on member (start chat, mention)
+        roomMemberDetailsViewController.delegate = self
+        roomMemberDetailsViewController.enableMention = (self.roomViewController.inputToolbarView != nil)
+        roomMemberDetailsViewController.enableVoipCall = false
+        
+        roomMemberDetailsViewController.display(member, withMatrixRoom: session.room(withRoomId: self.roomID))
+        
+        self.roomViewController.tc_removeBackTitle()
+        
+        self.router.push(roomMemberDetailsViewController, animated: animated, popCompletion: nil)
+    }
+}
+
+// MARK: - RoomViewControllerDelegate
+extension RoomCoordinator: RoomViewControllerDelegate {
+    func roomViewControllerShowRoomDetails(_ roomViewController: RoomViewController!) {
+        self.showRoomDetails(animated: true)
+    }
+    
+    func roomViewController(_ roomViewController: RoomViewController!, showMemberDetails roomMember: MXRoomMember!) {
+        self.showMemberDetails(roomMember, animated: true)
+    }
+}
+
+// MARK: - RoomMemberDetailsViewControllerDelegate
+extension RoomCoordinator: MXKRoomMemberDetailsViewControllerDelegate {
+    func roomMemberDetailsViewController(_ roomMemberDetailsViewController: MXKRoomMemberDetailsViewController!, mention member: MXRoomMember!) {
+        self.roomViewController.mention(member)
+    }
+    
+    func roomMemberDetailsViewController(_ roomMemberDetailsViewController: MXKRoomMemberDetailsViewController!, startChatWithMemberId matrixId: String!, completion: (() -> Void)?) {
+        //TODO create a service to get the right discussion
+        // call delegate ShowRoom or StartChat according to the result
+        
+        completion?()
+    }
+}
+
+// MARK: - RoomDetailsCoordinatorDelegate
+extension RoomCoordinator: RoomDetailsCoordinatorDelegate {
+    func roomDetailsCoordinator(_ coordinator: RoomDetailsCoordinatorType, mention member: MXRoomMember) {
+        self.roomViewController.mention(member)
+    }
+    
+    func roomDetailsCoordinator(_ coordinator: RoomDetailsCoordinatorType, didSelectRoomID roomID: String) {
+        self.delegate?.roomCoordinator(self, didSelectRoomID: roomID)
+    }
+    
+    func roomDetailsCoordinator(_ coordinator: RoomDetailsCoordinatorType, didSelectUserID userID: String) {
+        self.delegate?.roomCoordinator(self, didSelectUserID: userID)
+    }
 }

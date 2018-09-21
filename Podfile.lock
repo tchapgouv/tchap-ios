@@ -91,7 +91,7 @@ PODS:
     - Reusable/View (= 4.0.3)
   - Reusable/Storyboard (4.0.3)
   - Reusable/View (4.0.3)
-  - RxSwift (4.3.0)
+  - RxSwift (4.3.1)
   - SwiftGen (5.3.0)
   - SwiftLint (0.27.0)
   - WebRTC (63.11.20455)
@@ -167,7 +167,7 @@ SPEC CHECKSUMS:
   PiwikTracker: 42862c7b13028065c3dfd36b4dc38db8a5765acf
   Realm: 3d36f208bf3aff8335dc3298742140182bde4edb
   Reusable: 12b67a60e1f3e8c523cc910795dab733f58fbc7e
-  RxSwift: a9717a34df3179fe63563f76e046ad345078dd3a
+  RxSwift: fe0fd770a43acdb7d0a53da411c9b892e69bb6e4
   SwiftGen: 4379bd3640b0a212a0f6ea3c494adba385513d10
   SwiftLint: 3207c1faa2240bf8973b191820a116113cd11073
   WebRTC: f2a6203584745fe53532633397557876b5d71640
