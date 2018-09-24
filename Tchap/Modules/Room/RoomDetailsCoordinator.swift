@@ -55,21 +55,42 @@ final class RoomDetailsCoordinator: NSObject, RoomDetailsCoordinatorType {
     // MARK: - Public methods
     
     func start() {
-        guard let participantsViewController = RoomParticipantsViewController.instantiate(),
-            let roomFilesViewController = RoomFilesViewController.instantiate(),
-            let settingsViewController = RoomSettingsViewController.instantiate() else {
-            fatalError("[RoomDetailsCoordinator] One tab could not be loaded")
+        guard let room = session.room(withRoomId: roomID) else {
+            fatalError("[RoomDetailsCoordinator] The room is unknown")
         }
         
-        let viewControllers = [participantsViewController, roomFilesViewController, settingsViewController]
-        let titles = [TchapL10n.roomMembersTabTitle, TchapL10n.roomFilesTabTitle, TchapL10n.roomSettingsTabTitle]
-        
-        // members tab
-        participantsViewController.delegate = self
-        participantsViewController.enableMention = true
-        participantsViewController.mxRoom = session.room(withRoomId: roomID)
+        let viewControllers: [UIViewController]
+        let titles: [String]
         
         // Files tab
+        guard let roomFilesViewController = RoomFilesViewController.instantiate() else {
+            fatalError("[RoomDetailsCoordinator] Files tab could not be loaded")
+        }
+        
+        // Only the files tab is displayed in case of a direct chat (discussion)
+        if room.isDirect {
+            viewControllers = [roomFilesViewController]
+            titles = [TchapL10n.roomFilesTabTitle]
+        } else {
+            // We add a tab for the participants list and another for the room settings
+            guard let participantsViewController = RoomParticipantsViewController.instantiate(),
+                let settingsViewController = RoomSettingsViewController.instantiate() else {
+                    fatalError("[RoomDetailsCoordinator] Participants or Settings tab could not be loaded")
+            }
+            
+            viewControllers = [participantsViewController, roomFilesViewController, settingsViewController]
+            titles = [TchapL10n.roomMembersTabTitle, TchapL10n.roomFilesTabTitle, TchapL10n.roomSettingsTabTitle]
+            
+            // Prepare members tab
+            participantsViewController.delegate = self
+            participantsViewController.enableMention = true
+            participantsViewController.mxRoom = room
+            
+            // Prepare settings tab
+            settingsViewController.initWith(self.session, andRoomId: self.roomID)
+        }
+        
+        // Prepare files tab
         // @TODO (async-state): This call should be synchronous. Every thing will be fine
         MXKRoomDataSource.load(withRoomId: self.roomID, andMatrixSession: self.session) { roomFilesDataSource in
             guard let roomFilesDataSource = roomFilesDataSource as? MXKRoomDataSource else {
@@ -82,17 +103,13 @@ final class RoomDetailsCoordinator: NSObject, RoomDetailsCoordinatorType {
             roomFilesViewController.displayRoom(roomFilesDataSource)
         }
         
-        // Settings tab
-        settingsViewController.initWith(self.session, andRoomId: self.roomID)
-        
         self.segmentedViewController.initWithTitles(titles, viewControllers: viewControllers, defaultSelected: 0)
         self.segmentedViewController.addMatrixSession(self.session)
         self.segmentedViewController.update(with: Variant2Style.shared)
         
         let titleView = RoomTitleView.instantiate()
-        titleView?.mxRoom = session.room(withRoomId: roomID)
+        titleView?.mxRoom = room
         self.segmentedViewController.navigationItem.titleView = titleView
-        
     }
     
     func toPresentable() -> UIViewController {

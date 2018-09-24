@@ -803,20 +803,6 @@
         
         NSString* title = @"      ";
         
-        // Direct chat toggle
-        BOOL isDirect = room.isDirect;
-        
-        UITableViewRowAction *directAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:title handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
-            
-            [self makeDirectEditedRoom:!isDirect];
-            
-        }];
-        
-        UIImage *actionIcon = isDirect ? [UIImage imageNamed:@"directChatOff"] : [UIImage imageNamed:@"directChatOn"];
-        directAction.backgroundColor = [MXKTools convertImageToPatternColor:isDirect ? @"directChatOff" : @"directChatOn" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
-        [actions insertObject:directAction atIndex:0];
-        
-        
         // Notification toggle
         BOOL isMuted = room.isMute || room.isMentionsOnly;
         
@@ -826,7 +812,7 @@
             
         }];
         
-        actionIcon = isMuted ? [UIImage imageNamed:@"notifications"] : [UIImage imageNamed:@"notificationsOff"];
+        UIImage *actionIcon = isMuted ? [UIImage imageNamed:@"notifications"] : [UIImage imageNamed:@"notificationsOff"];
         muteAction.backgroundColor = [MXKTools convertImageToPatternColor:isMuted ? @"notifications" : @"notificationsOff" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
         [actions insertObject:muteAction atIndex:0];
         
@@ -865,31 +851,6 @@
             
             actionIcon = [UIImage imageNamed:@"favourite"];
             action.backgroundColor = [MXKTools convertImageToPatternColor:@"favourite" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
-            [actions insertObject:action atIndex:0];
-        }
-        
-        if (currentTag && [kMXRoomTagLowPriority isEqualToString:currentTag.name])
-        {
-            UITableViewRowAction* action = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:title handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
-                
-                [self updateEditedRoomTag:nil];
-                
-            }];
-            
-            actionIcon = [UIImage imageNamed:@"priorityHigh"];
-            action.backgroundColor = [MXKTools convertImageToPatternColor:@"priorityHigh" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
-            [actions insertObject:action atIndex:0];
-        }
-        else
-        {
-            UITableViewRowAction* action = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:title handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
-                
-                [self updateEditedRoomTag:kMXRoomTagLowPriority];
-                
-            }];
-            
-            actionIcon = [UIImage imageNamed:@"priorityLow"];
-            action.backgroundColor = [MXKTools convertImageToPatternColor:@"priorityLow" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
             [actions insertObject:action atIndex:0];
         }
         
@@ -1022,58 +983,6 @@
                 
                 // Force table refresh
                 [self cancelEditionMode:YES];
-                
-            }];
-        }
-        else
-        {
-            // Leave editing mode
-            [self cancelEditionMode:isRefreshPending];
-        }
-    }
-}
-
-- (void)makeDirectEditedRoom:(BOOL)isDirect
-{
-    if (editedRoomId)
-    {
-        __weak typeof(self) weakSelf = self;
-        
-        // Check whether the user didn't leave the room
-        // TODO: handle multi-account
-        MXRoom *room = [self.mainSession roomWithRoomId:editedRoomId];
-        if (room)
-        {
-            [self startActivityIndicator];
-            
-            [room setIsDirect:isDirect withUserId:nil success:^{
-                
-                if (weakSelf)
-                {
-                    typeof(self) self = weakSelf;
-                    [self stopActivityIndicator];
-                    // Leave editing mode
-                    [self cancelEditionMode:isRefreshPending];
-                }
-                
-            } failure:^(NSError *error) {
-                
-                if (weakSelf)
-                {
-                    typeof(self) self = weakSelf;
-                    [self stopActivityIndicator];
-                    
-                    NSLog(@"[RecentsViewController] Failed to update direct tag of the room (%@)", editedRoomId);
-                    
-                    // Notify the end user
-                    NSString *userId = self.mainSession.myUser.userId; // TODO: handle multi-account
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification
-                                                                        object:error
-                                                                      userInfo:userId ? @{kMXKErrorUserIdKey: userId} : nil];
-                    
-                    // Leave editing mode
-                    [self cancelEditionMode:isRefreshPending];
-                }
                 
             }];
         }

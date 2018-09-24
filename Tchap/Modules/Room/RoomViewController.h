@@ -46,6 +46,14 @@
  */
 - (void)roomViewController:(RoomViewController *)roomViewController showMemberDetails:(MXRoomMember *)roomMember;
 
+/**
+ Tells the delegate that the user wants to display another room.
+ 
+ @param roomViewController the `RoomViewController` instance.
+ @param roomID the selected roomId
+ */
+- (void)roomViewController:(RoomViewController *)roomViewController showRoom:(NSString *)roomID;
+
 @end
 
 @interface RoomViewController : MXKRoomViewController <UISearchBarDelegate, UIGestureRecognizerDelegate, RoomTitleViewTapGestureDelegate>
