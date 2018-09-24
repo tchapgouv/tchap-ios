@@ -19,6 +19,8 @@ limitations under the License.
 
 #import "UIViewController+RiotSearch.h"
 
+@protocol Style;
+
 /**
  This view controller manages several uiviewcontrollers like UISegmentedController manages uiTableView
  except that the managed items are custom UIViewControllers.
@@ -89,5 +91,10 @@ limitations under the License.
  Callback used to take into account the change of the user interface theme.
  */
 - (void)userInterfaceThemeDidChange;
+
+/**
+ Update the current style.
+ */
+- (void)updateWithStyle:(id<Style>)style;
 
 @end
