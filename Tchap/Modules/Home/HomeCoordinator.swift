@@ -81,6 +81,7 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
     private func showRoom(with roomID: String) {
         let roomCoordinator = RoomCoordinator(router: self.navigationRouter, session: self.session, roomID: roomID)
         roomCoordinator.start()
+        roomCoordinator.delegate = self
         
         self.navigationRouter.popToRootModule(animated: false)
         
@@ -140,6 +141,10 @@ extension HomeCoordinator: RoomsCoordinatorDelegate {
 extension HomeCoordinator: ContactsCoordinatorDelegate {
     func contactsCoordinator(_ coordinator: ContactsCoordinatorType, didSelectRoomID roomID: String) {
         self.showRoom(with: roomID)
+    }
+    
+    func contactsCoordinator(_ coordinator: ContactsCoordinatorType, didSelectUserID userID: String) {
+        //TODO Display a fake room, create the discussion only when an event is sent (#41).
     }
 }
 

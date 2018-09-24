@@ -34,7 +34,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorType {
     private let roomViewController: RoomViewController
     private var roomDataSource: RoomDataSource?
     private let activityIndicatorPresenter: ActivityIndicatorPresenterType
-    private let roomsErrorPresenter: ErrorPresenter
+    private let errorPresenter: ErrorPresenter
     
     // MARK: Public
     
@@ -50,7 +50,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorType {
         self.roomID = roomID
         self.roomViewController = RoomViewController.instantiate()
         self.activityIndicatorPresenter = ActivityIndicatorPresenter()
-        self.roomsErrorPresenter = AlertErrorPresenter(viewControllerPresenter: roomViewController)
+        self.errorPresenter = AlertErrorPresenter(viewControllerPresenter: roomViewController)
     }
     
     // MARK: - Public methods
@@ -77,6 +77,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorType {
     }
     
     // MARK: - Private methods
+    
     private func showRoomDetails(animated: Bool) {
         let roomDetailsCoordinator = RoomDetailsCoordinator.init(router: self.router, session: self.session, roomID: self.roomID)
         roomDetailsCoordinator.start()
@@ -105,6 +106,53 @@ final class RoomCoordinator: NSObject, RoomCoordinatorType {
         
         self.router.push(roomMemberDetailsViewController, animated: animated, popCompletion: nil)
     }
+    
+    private func didSelectUserID(_ userID: String, completion: (() -> Void)?) {
+        self.activityIndicatorPresenter.presentActivityIndicator(on: self.roomViewController.view, animated: true)
+        
+        let discussionService = DiscussionService(session: session)
+        discussionService.getDiscussionIdentifier(for: userID) { [weak self] response in
+            guard let sself = self else {
+                return
+            }
+            
+            sself.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
+            
+            switch response {
+            case .success(let result):
+                switch result {
+                case .joinedDiscussion(let roomID):
+                    // Open the current discussion
+                    sself.delegate?.roomCoordinator(sself, didSelectRoomID: roomID)
+                case .noDiscussion:
+                    // Let the delegate handle this user for who no discussion exists.
+                    sself.delegate?.roomCoordinator(sself, didSelectUserID: userID)
+                default:
+                    break
+                }
+            case .failure(let error):
+                let errorPresentable = sself.openDiscussionErrorPresentable(from: error)
+                sself.errorPresenter.present(errorPresentable: errorPresentable, animated: true)
+            }
+            
+            completion?()
+        }
+    }
+    
+    private func openDiscussionErrorPresentable(from error: Error) -> ErrorPresentable {
+        let errorTitle: String = TchapL10n.errorTitleDefault
+        let errorMessage: String
+        
+        let nsError = error as NSError
+        
+        if let message = nsError.userInfo[NSLocalizedDescriptionKey] as? String {
+            errorMessage = message
+        } else {
+            errorMessage = TchapL10n.errorMessageDefault
+        }
+        
+        return ErrorPresentableImpl(title: errorTitle, message: errorMessage)
+    }
 }
 
 // MARK: - RoomViewControllerDelegate
@@ -129,10 +177,7 @@ extension RoomCoordinator: MXKRoomMemberDetailsViewControllerDelegate {
     }
     
     func roomMemberDetailsViewController(_ roomMemberDetailsViewController: MXKRoomMemberDetailsViewController!, startChatWithMemberId matrixId: String!, completion: (() -> Void)?) {
-        //TODO create a service to get the right discussion
-        // call delegate ShowRoom or StartChat according to the result
-        
-        completion?()
+        self.didSelectUserID(matrixId, completion: completion)
     }
 }
 

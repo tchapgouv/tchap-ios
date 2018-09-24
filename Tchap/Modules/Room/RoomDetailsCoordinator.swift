@@ -33,6 +33,8 @@ final class RoomDetailsCoordinator: NSObject, RoomDetailsCoordinatorType {
     private let roomID: String
     
     private let segmentedViewController: SegmentedViewController
+    private let activityIndicatorPresenter: ActivityIndicatorPresenterType
+    private let errorPresenter: ErrorPresenter
     
     // MARK: Public
     
@@ -50,6 +52,9 @@ final class RoomDetailsCoordinator: NSObject, RoomDetailsCoordinatorType {
         self.roomID = roomID
         
         self.segmentedViewController = SegmentedViewController.instantiate()
+        
+        self.activityIndicatorPresenter = ActivityIndicatorPresenter()
+        self.errorPresenter = AlertErrorPresenter(viewControllerPresenter: self.segmentedViewController)
     }
     
     // MARK: - Public methods
@@ -117,6 +122,53 @@ final class RoomDetailsCoordinator: NSObject, RoomDetailsCoordinatorType {
     }
     
     // MARK: - Private methods
+    
+    private func didSelectUserID(_ userID: String, completion: (() -> Void)?) {
+        self.activityIndicatorPresenter.presentActivityIndicator(on: self.segmentedViewController.view, animated: true)
+        
+        let discussionService = DiscussionService(session: session)
+        discussionService.getDiscussionIdentifier(for: userID) { [weak self] response in
+            guard let sself = self else {
+                return
+            }
+            
+            sself.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
+            
+            switch response {
+            case .success(let result):
+                switch result {
+                case .joinedDiscussion(let roomID):
+                    // Open the current discussion
+                    sself.delegate?.roomDetailsCoordinator(sself, didSelectRoomID: roomID)
+                case .noDiscussion:
+                    // Let the delegate handle this user for who no discussion exists.
+                    sself.delegate?.roomDetailsCoordinator(sself, didSelectUserID: userID)
+                default:
+                    break
+                }
+            case .failure(let error):
+                let errorPresentable = sself.openDiscussionErrorPresentable(from: error)
+                sself.errorPresenter.present(errorPresentable: errorPresentable, animated: true)
+            }
+            
+            completion?()
+        }
+    }
+    
+    private func openDiscussionErrorPresentable(from error: Error) -> ErrorPresentable {
+        let errorTitle: String = TchapL10n.errorTitleDefault
+        let errorMessage: String
+        
+        let nsError = error as NSError
+        
+        if let message = nsError.userInfo[NSLocalizedDescriptionKey] as? String {
+            errorMessage = message
+        } else {
+            errorMessage = TchapL10n.errorMessageDefault
+        }
+        
+        return ErrorPresentableImpl(title: errorTitle, message: errorMessage)
+    }
 }
 
 // MARK: - RoomParticipantsViewControllerDelegate
@@ -126,9 +178,6 @@ extension RoomDetailsCoordinator: RoomParticipantsViewControllerDelegate {
     }
     
     func roomParticipantsViewController(_ roomParticipantsViewController: RoomParticipantsViewController!, startChatWithMemberId matrixId: String!, completion: (() -> Void)?) {
-        //TODO create a service to get the right discussion
-        // call delegate ShowRoom or StartChat according to the result
-        
-        completion?()
+        self.didSelectUserID(matrixId, completion: completion)
     }
 }
