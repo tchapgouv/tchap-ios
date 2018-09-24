@@ -248,7 +248,7 @@ final class DiscussionService {
                             }
                             
                             // Remove this invalid invite from the user's rooms
-                            sself.session.leaveRoom(roomID, completion: { response in
+                            sself.session.leaveRoom(roomID, completion: { _ in
                             })
                             return
                         }
