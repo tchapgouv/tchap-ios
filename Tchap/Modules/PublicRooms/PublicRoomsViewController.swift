@@ -15,7 +15,7 @@
  */
 
 protocol PublicRoomsViewControllerDelegate: class {
-    func publicRoomsViewController(_ publicRoomsViewController: PublicRoomsViewController, didSelectPublicRoom: MXPublicRoom)
+    func publicRoomsViewController(_ publicRoomsViewController: PublicRoomsViewController, didSelect publicRoom: MXPublicRoom)
 }
 
 final class PublicRoomsViewController: UITableViewController {
@@ -118,7 +118,7 @@ extension PublicRoomsViewController {
         guard let publicRoom = publicRoomsDataSource.room(at: indexPath) else {
             return
         }
-        self.delegate?.publicRoomsViewController(self, didSelectPublicRoom: publicRoom)
+        self.delegate?.publicRoomsViewController(self, didSelect: publicRoom)
     }
 }
 
