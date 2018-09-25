@@ -143,26 +143,22 @@ final class DiscussionService {
                             completion(.success(.joinedDiscussion(roomID: roomID)))
                         case .failure(let error):
                             print("[DiscussionService] user: \(userID) failed to join a pending invite")
-                            switch error {
-                            case let serviceError as DiscussionServiceError:
-                                switch serviceError {
-                                case .invalidReceivedInvite:
-                                    // Fallback on other listed rooms, if any.
-                                    if !sentInvites.isEmpty {
-                                        print("[DiscussionService] user: \(userID) found a join-invite discussion")
-                                        self.getOldestRoomID(sentInvites) { roomID in
-                                            completion(.success(.joinedDiscussion(roomID: roomID)))
-                                        }
-                                    } else if !leftDiscussions.isEmpty {
-                                        print("[DiscussionService] user: \(userID) found a join|invite-left discussion")
-                                        self.getOldestRoomID(leftDiscussions) { roomID in
-                                            completion(.success(.joinedDiscussion(roomID: roomID)))
-                                        }
-                                    } else {
-                                        completion(.success(.noDiscussion))
+                            if case DiscussionServiceError.invalidReceivedInvite = error {
+                                // Fallback on other listed rooms, if any.
+                                if !sentInvites.isEmpty {
+                                    print("[DiscussionService] user: \(userID) found a join-invite discussion")
+                                    self.getOldestRoomID(sentInvites) { roomID in
+                                        completion(.success(.joinedDiscussion(roomID: roomID)))
                                     }
+                                } else if !leftDiscussions.isEmpty {
+                                    print("[DiscussionService] user: \(userID) found a join|invite-left discussion")
+                                    self.getOldestRoomID(leftDiscussions) { roomID in
+                                        completion(.success(.joinedDiscussion(roomID: roomID)))
+                                    }
+                                } else {
+                                    completion(.success(.noDiscussion))
                                 }
-                            default:
+                            } else {
                                 completion(.failure(error))
                             }
                         }
@@ -236,24 +232,22 @@ final class DiscussionService {
                 case .failure(let error):
                     // Check whether we failed to join an empty room
                     let nsError = error as NSError
-                    if let message = nsError.userInfo[NSLocalizedDescriptionKey] as? String {
-                        if message == "No known servers" {
-                            print("[DiscussionService] Ignore a pending invite to an empty room")
-                            let updatedInvites = pendingInvites.filter { $0 != roomID }
-                            if !updatedInvites.isEmpty {
-                                // Loop to join another pending invite
-                                sself.joinPendingInvite(updatedInvites, completion: completion)
-                            } else {
-                                completion(.failure(DiscussionServiceError.invalidReceivedInvite))
-                            }
-                            
-                            // Remove this invalid invite from the user's rooms
-                            sself.session.leaveRoom(roomID, completion: { _ in
-                            })
-                            return
+                    if let message = nsError.userInfo[NSLocalizedDescriptionKey] as? String, message == "No known servers" {
+                        print("[DiscussionService] Ignore a pending invite to an empty room")
+                        let updatedInvites = pendingInvites.filter { $0 != roomID }
+                        if !updatedInvites.isEmpty {
+                            // Loop to join another pending invite
+                            sself.joinPendingInvite(updatedInvites, completion: completion)
+                        } else {
+                            completion(.failure(DiscussionServiceError.invalidReceivedInvite))
                         }
+                        
+                        // Remove this invalid invite from the user's rooms
+                        sself.session.leaveRoom(roomID, completion: { _ in
+                        })
+                    } else {
+                        completion(.failure(error))
                     }
-                    completion(.failure(error))
                 }
             }
         }
