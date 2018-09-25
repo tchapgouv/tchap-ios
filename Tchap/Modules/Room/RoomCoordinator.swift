@@ -30,6 +30,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorType {
     private let router: NavigationRouterType
     private let session: MXSession
     private let roomID: String
+    private let eventID: String?
     
     private let roomViewController: RoomViewController
     private var roomDataSource: RoomDataSource?
@@ -44,10 +45,12 @@ final class RoomCoordinator: NSObject, RoomCoordinatorType {
     
     // MARK: - Setup
     
-    init(router: NavigationRouterType, session: MXSession, roomID: String) {
+    init(router: NavigationRouterType, session: MXSession, roomID: String, eventID: String?) {
         self.router = router
         self.session = session
         self.roomID = roomID
+        self.eventID = eventID
+        
         self.roomViewController = RoomViewController.instantiate()
         self.activityIndicatorPresenter = ActivityIndicatorPresenter()
         self.roomsErrorPresenter = AlertErrorPresenter(viewControllerPresenter: roomViewController)
@@ -61,15 +64,26 @@ final class RoomCoordinator: NSObject, RoomCoordinatorType {
         // Present activity indicator when retrieving roomDataSource for given room ID
         self.activityIndicatorPresenter.presentActivityIndicator(on: roomViewController.view, animated: false)
         
-        let roomDataSourceManager: MXKRoomDataSourceManager = MXKRoomDataSourceManager.sharedManager(forMatrixSession: self.session)
-        roomDataSourceManager.roomDataSource(forRoom: self.roomID, create: true, onComplete: { (roomDataSource) in
-            
-            self.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
-            
-            if let roomDataSource = roomDataSource {
+        if let eventId = self.eventID {
+            RoomDataSource.load(withRoomId: self.roomID, initialEventId: eventId, andMatrixSession: self.session) { (dataSource) in
+                guard let roomDataSource = dataSource as? RoomDataSource else {
+                    return
+                }
+                roomDataSource.markTimelineInitialEvent = true
                 self.roomViewController.displayRoom(roomDataSource)
+                self.roomViewController.hasRoomDataSourceOwnership = true
             }
-        })
+        } else {
+            let roomDataSourceManager: MXKRoomDataSourceManager = MXKRoomDataSourceManager.sharedManager(forMatrixSession: self.session)
+            roomDataSourceManager.roomDataSource(forRoom: self.roomID, create: true, onComplete: { (roomDataSource) in
+                
+                self.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
+                
+                if let roomDataSource = roomDataSource {
+                    self.roomViewController.displayRoom(roomDataSource)
+                }
+            })
+        }
     }
     
     func toPresentable() -> UIViewController {
@@ -78,15 +92,15 @@ final class RoomCoordinator: NSObject, RoomCoordinatorType {
     
     // MARK: - Private methods
     private func showRoomDetails(animated: Bool) {
-        let roomDetailsCoordinator = RoomDetailsCoordinator.init(router: self.router, session: self.session, roomID: self.roomID)
+        let roomDetailsCoordinator = RoomDetailsCoordinator(router: self.router, session: self.session, roomID: self.roomID)
         roomDetailsCoordinator.start()
         roomDetailsCoordinator.delegate = self
         self.add(childCoordinator: roomDetailsCoordinator)
         
         self.roomViewController.tc_removeBackTitle()
         
-        self.router.push(roomDetailsCoordinator, animated: animated, popCompletion: {
-            self.remove(childCoordinator: roomDetailsCoordinator)
+        self.router.push(roomDetailsCoordinator, animated: animated, popCompletion: { [weak self] in
+            self?.remove(childCoordinator: roomDetailsCoordinator)
         })
     }
     
@@ -109,6 +123,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorType {
 
 // MARK: - RoomViewControllerDelegate
 extension RoomCoordinator: RoomViewControllerDelegate {
+    
     func roomViewControllerShowRoomDetails(_ roomViewController: RoomViewController!) {
         self.showRoomDetails(animated: true)
     }
@@ -119,6 +134,12 @@ extension RoomCoordinator: RoomViewControllerDelegate {
     
     func roomViewController(_ roomViewController: RoomViewController!, showRoom roomID: String!) {
         self.delegate?.roomCoordinator(self, didSelectRoomID: roomID)
+    }
+    
+    func roomViewControllerPreviewDidTapJoin(_ roomViewController: RoomViewController!) {
+    }
+    
+    func roomViewControllerPreviewDidTapCancel(_ roomViewController: RoomViewController!) {
     }
 }
 
