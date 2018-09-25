@@ -678,9 +678,16 @@
 {
     [super updateViewControllerAppearanceOnRoomDataSourceState];
     
+    self.titleView.editable = NO;
+    
     if (self.isRoomPreview)
     {
         self.navigationItem.rightBarButtonItem.enabled = NO;
+        
+        if (self.titleView)
+        {
+            ((RoomTitleView*)self.titleView).roomPreviewData = self.roomPreviewData;
+        }
         
         // Remove input tool bar if any
         if (self.inputToolbarView)
@@ -698,8 +705,6 @@
         [self showPreviewHeader:NO];
         
         self.navigationItem.rightBarButtonItem.enabled = (self.roomDataSource != nil);
-        
-        self.titleView.editable = NO;
         
         if (self.roomDataSource)
         {
