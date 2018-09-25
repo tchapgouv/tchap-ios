@@ -77,13 +77,6 @@ final class ActivityIndicatorPresenter: ActivityIndicatorPresenterType {
         }
     }
     
-    func createBackgroundOverlayView(with frame: CGRect = CGRect.zero) -> UIView {
-        let backgroundOverlayView = UIView(frame: frame)
-        backgroundOverlayView.backgroundColor = Constants.backgroundOverlayColor
-        backgroundOverlayView.alpha = Constants.backgroundOverlayAlpha
-        return backgroundOverlayView
-    }
-    
     func removeCurrentActivityIndicator(animated: Bool, completion: (() -> Void)? = nil) {
         guard let presentingView = self.presentingView,
             let backgroundOverlayView = self.backgroundOverlayView,
@@ -113,5 +106,14 @@ final class ActivityIndicatorPresenter: ActivityIndicatorPresenterType {
             animationInstructions()
             animationCompletionInstructions()
         }
+    }
+    
+    // MARK: - Private
+    
+    private func createBackgroundOverlayView(with frame: CGRect = CGRect.zero) -> UIView {
+        let backgroundOverlayView = UIView(frame: frame)
+        backgroundOverlayView.backgroundColor = Constants.backgroundOverlayColor
+        backgroundOverlayView.alpha = Constants.backgroundOverlayAlpha
+        return backgroundOverlayView
     }
 }
