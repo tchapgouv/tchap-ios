@@ -18,6 +18,7 @@ import Foundation
 
 protocol ContactsCoordinatorDelegate: class {
     func contactsCoordinator(_ coordinator: ContactsCoordinatorType, didSelectRoomID roomID: String)
+    func contactsCoordinator(_ coordinator: ContactsCoordinatorType, didSelectUserID userID: String)
 }
 
 final class ContactsCoordinator: NSObject, ContactsCoordinatorType {
@@ -72,7 +73,7 @@ final class ContactsCoordinator: NSObject, ContactsCoordinatorType {
 
     // MARK: - Private methods
     
-    private func chat(with userID: String) {
+    private func didSelectUserID(_ userID: String) {
         self.activityIndicatorPresenter.presentActivityIndicator(on: self.contactsViewController.view, animated: true)
         
         let discussionService = DiscussionService(session: session)
@@ -84,71 +85,22 @@ final class ContactsCoordinator: NSObject, ContactsCoordinatorType {
             sself.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
             
             switch response {
-            case .success(let roomID):
-                if let roomID = roomID {
-                    if let room = sself.session.room(withRoomId: roomID) {
-                        // Check whether this is a pending invite
-                        if room.summary.membership == .invite {
-                            // Accept this invite
-                            sself.joinRoom(with: roomID)
-                        } else {
-                            // Open the current discussion
-                            sself.delegate?.contactsCoordinator(sself, didSelectRoomID: roomID)
-                        }
-                    } else {
-                        // Unexpected case where we fail to retrieve the room for the returned id
-                        let errorPresentable = ErrorPresentableImpl.init(title: TchapL10n.errorTitleDefault, message: TchapL10n.errorMessageDefault)
-                        sself.contactsErrorPresenter.present(errorPresentable: errorPresentable, animated: true)
-                    }
-                } else {
-                    //TODO: Display a fake room, create the discussion only when an event is sent (#41).
+            case .success(let result):
+                switch result {
+                case .joinedDiscussion(let roomID):
+                    // Open the current discussion
+                    sself.delegate?.contactsCoordinator(sself, didSelectRoomID: roomID)
+                case .noDiscussion:
+                    // Let the delegate handle this user for who no discussion exists.
+                    sself.delegate?.contactsCoordinator(sself, didSelectUserID: userID)
+                default:
+                    break
                 }
             case .failure(let error):
                 let errorPresentable = sself.openDiscussionErrorPresentable(from: error)
                 sself.contactsErrorPresenter.present(errorPresentable: errorPresentable, animated: true)
             }
         }
-    }
-    
-    private func joinRoom(with roomID: String) {
-        self.activityIndicatorPresenter.presentActivityIndicator(on: self.contactsViewController.view, animated: true)
-        
-        self.session.joinRoom(roomID) { [weak self] (response) in
-            guard let sself = self else {
-                return
-            }
-            
-            sself.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
-            switch response {
-            case .success:
-                sself.delegate?.contactsCoordinator(sself, didSelectRoomID: roomID)
-            case .failure(let error):
-                let errorPresentable = sself.joinRoomErrorPresentable(from: error)
-                sself.contactsErrorPresenter.present(errorPresentable: errorPresentable, animated: true)
-            }
-        }
-    }
-    
-    private func joinRoomErrorPresentable(from error: Error) -> ErrorPresentable {
-        let errorTitle: String = Bundle.mxk_localizedString(forKey: "room_error_join_failed_title")
-        let errorMessage: String
-        
-        let nsError = error as NSError
-        
-        if let message = nsError.userInfo[NSLocalizedDescriptionKey] as? String {
-            
-            if message == "No known servers" {
-                // minging kludge until https://matrix.org/jira/browse/SYN-678 is fixed
-                // 'Error when trying to join an empty room should be more explicit'
-                errorMessage = Bundle.mxk_localizedString(forKey: "room_error_join_failed_empty_room")
-            } else {
-                errorMessage = message
-            }
-        } else {
-            errorMessage = TchapL10n.errorMessageDefault
-        }
-        
-        return ErrorPresentableImpl(title: errorTitle, message: errorMessage)
     }
     
     private func openDiscussionErrorPresentable(from error: Error) -> ErrorPresentable {
@@ -182,6 +134,6 @@ extension ContactsCoordinator: ContactsTableViewControllerDelegate {
             return
         }
         
-        self.chat(with: userID)
+        self.didSelectUserID(userID)
     }
 }
