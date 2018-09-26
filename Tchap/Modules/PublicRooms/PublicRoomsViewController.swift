@@ -68,7 +68,21 @@ final class PublicRoomsViewController: UITableViewController {
         super.viewWillAppear(animated)
         
         self.userThemeDidChange()
-    }        
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        self.searchController?.searchBar.resignFirstResponder()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if #available(iOS 11.0, *) {
+            self.navigationItem.hidesSearchBarWhenScrolling = true
+        }
+    }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return self.currentStyle.statusBarStyle
@@ -91,7 +105,6 @@ final class PublicRoomsViewController: UITableViewController {
     private func setupSearchController() {
         let searchController = UISearchController(searchResultsController: nil)
         
-        self.definesPresentationContext = true
         searchController.dimsBackgroundDuringPresentation = false
         searchController.searchResultsUpdater = self
         searchController.searchBar.placeholder = TchapL10n.publicRoomsSearchBarPlaceholder
@@ -99,9 +112,13 @@ final class PublicRoomsViewController: UITableViewController {
         
         if #available(iOS 11.0, *) {
             self.navigationItem.searchController = searchController
+            // Make the search bar visible on first view appearance
+            self.navigationItem.hidesSearchBarWhenScrolling = false
         } else {
             self.tableView.tableHeaderView = searchController.searchBar
         }
+        
+        self.definesPresentationContext = true
         
         self.searchController = searchController
     }
