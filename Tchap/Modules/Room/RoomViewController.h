@@ -54,6 +54,20 @@
  */
 - (void)roomViewController:(RoomViewController *)roomViewController showRoom:(NSString *)roomID;
 
+/**
+ Tells the delegate that the user wants to join room from room preview.
+ 
+ @param roomViewController the `RoomViewController` instance.
+ */
+- (void)roomViewControllerPreviewDidTapJoin:(RoomViewController *)roomViewController;
+
+/**
+ Tells the delegate that the user wants to cancel the room preview.
+ 
+ @param roomViewController the `RoomViewController` instance.
+ */
+- (void)roomViewControllerPreviewDidTapCancel:(RoomViewController *)roomViewController;
+
 @end
 
 @interface RoomViewController : MXKRoomViewController <UISearchBarDelegate, UIGestureRecognizerDelegate, RoomTitleViewTapGestureDelegate>

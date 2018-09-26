@@ -78,8 +78,8 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
     
     // MARK: - Private methods
     
-    private func showRoom(with roomID: String) {
-        let roomCoordinator = RoomCoordinator(router: self.navigationRouter, session: self.session, roomID: roomID)
+    private func showRoom(with roomID: String, onEventID eventID: String? = nil) {
+        let roomCoordinator = RoomCoordinator(router: self.navigationRouter, session: self.session, roomID: roomID, eventID: eventID)
         roomCoordinator.start()
         roomCoordinator.delegate = self
         
@@ -116,6 +116,7 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
     
     private func showPublicRooms() {
         let publicRoomsCoordinator = PublicRoomsCoordinator(session: self.session)
+        publicRoomsCoordinator.start()
         self.add(childCoordinator: publicRoomsCoordinator)
         self.navigationRouter.present(publicRoomsCoordinator, animated: true)
         publicRoomsCoordinator.delegate = self
@@ -177,6 +178,13 @@ extension HomeCoordinator: HomeViewControllerDelegate {
 
 // MARK: - PublicRoomsCoordinatorDelegate
 extension HomeCoordinator: PublicRoomsCoordinatorDelegate {
+    
+    func publicRoomsCoordinator(_ publicRoomsCoordinator: PublicRoomsCoordinator, showRoomWithId roomId: String, onEventId eventId: String?) {
+        self.navigationRouter.dismissModule(animated: true) { [weak self] in
+            self?.remove(childCoordinator: publicRoomsCoordinator)
+            self?.showRoom(with: roomId, onEventID: eventId)
+        }
+    }
     
     func publicRoomsCoordinatorDidCancel(_ publicRoomsCoordinator: PublicRoomsCoordinator) {
         self.navigationRouter.dismissModule(animated: true) { [weak self] in

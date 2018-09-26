@@ -18,9 +18,10 @@ import UIKit
 
 protocol PublicRoomsCoordinatorDelegate: class {
     func publicRoomsCoordinatorDidCancel(_ publicRoomsCoordinator: PublicRoomsCoordinator)
+    func publicRoomsCoordinator(_ publicRoomsCoordinator: PublicRoomsCoordinator, showRoomWithId roomId: String, onEventId eventId: String?)
 }
 
-final class PublicRoomsCoordinator: PublicRoomsCoordinatorType {
+final class PublicRoomsCoordinator: NSObject, PublicRoomsCoordinatorType {
     
     // MARK: - Properties
     
@@ -49,16 +50,19 @@ final class PublicRoomsCoordinator: PublicRoomsCoordinatorType {
         let publicRoomsViewController = PublicRoomsViewController.instantiate(dataSource: publicRoomDataSource)
         self.publicRoomsViewController = publicRoomsViewController
         
-        publicRoomsViewController.navigationItem.leftBarButtonItem = MXKBarButtonItem(title: TchapL10n.actionCancel, style: .plain) { [weak self] in
-            self?.didCancel()
-        }
-        
-        self.router.setRootModule(publicRoomsViewController)
+        super.init()
     }
     
     // MARK: - Public methods
     
     func start() {
+        self.publicRoomsViewController.tc_removeBackTitle()
+        self.router.setRootModule(self.publicRoomsViewController)
+        self.publicRoomsViewController.delegate = self
+        
+        self.publicRoomsViewController.navigationItem.leftBarButtonItem = MXKBarButtonItem(title: TchapL10n.actionCancel, style: .plain) { [weak self] in
+            self?.didCancel()
+        }
     }
     
     func toPresentable() -> UIViewController {
@@ -76,5 +80,46 @@ final class PublicRoomsCoordinator: PublicRoomsCoordinatorType {
             return []
         }        
         return publicRoomServers
+    }
+    
+    private func showRoomPreview(with publicRoom: MXPublicRoom) {
+        let roomPreviewCoordinator = RoomPreviewCoordinator(session: self.session, publicRoom: publicRoom)
+        roomPreviewCoordinator.start()
+        roomPreviewCoordinator.delegate = self
+        
+        self.add(childCoordinator: roomPreviewCoordinator)
+        
+        self.router.push(roomPreviewCoordinator, animated: true) { [weak self] in
+            self?.remove(childCoordinator: roomPreviewCoordinator)
+        }
+    }
+}
+
+// MARK: - PublicRoomsViewControllerDelegate
+extension PublicRoomsCoordinator: PublicRoomsViewControllerDelegate {
+    
+    func publicRoomsViewController(_ publicRoomsViewController: PublicRoomsViewController, didSelect publicRoom: MXPublicRoom) {
+        guard let publicRoomId = publicRoom.roomId else {
+            return
+        }
+        
+        // If room is joined ask the delegate to present the room
+        if let knownRoom = self.session.room(withRoomId: publicRoomId), knownRoom.summary.membership == .join {
+            self.delegate?.publicRoomsCoordinator(self, showRoomWithId: publicRoomId, onEventId: nil)
+        } else {
+            self.showRoomPreview(with: publicRoom)
+        }
+    }
+}
+
+// MARK: - RoomPreviewCoordinatorDelegate
+extension PublicRoomsCoordinator: RoomPreviewCoordinatorDelegate {
+    
+    func roomPreviewCoordinatorDidCancel(_ coordinator: RoomPreviewCoordinatorType) {
+        self.router.popModule(animated: true)
+    }
+    
+    func roomPreviewCoordinator(_ coordinator: RoomPreviewCoordinatorType, didJoinRoomWithId roomID: String, onEventId eventId: String?) {
+        self.delegate?.publicRoomsCoordinator(self, showRoomWithId: roomID, onEventId: eventId)
     }
 }

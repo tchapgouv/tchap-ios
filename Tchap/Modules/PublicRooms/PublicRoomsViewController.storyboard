@@ -12,7 +12,7 @@
         <!--Public Rooms View Controller-->
         <scene sceneID="goG-04-413">
             <objects>
-                <tableViewController id="Oa0-ec-HMv" customClass="PublicRoomsViewController" customModule="Tchap" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController extendedLayoutIncludesOpaqueBars="YES" id="Oa0-ec-HMv" customClass="PublicRoomsViewController" customModule="Tchap" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="Z5k-mT-J3S">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

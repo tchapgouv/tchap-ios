@@ -678,9 +678,16 @@
 {
     [super updateViewControllerAppearanceOnRoomDataSourceState];
     
+    self.titleView.editable = NO;
+    
     if (self.isRoomPreview)
     {
         self.navigationItem.rightBarButtonItem.enabled = NO;
+        
+        if (self.titleView)
+        {
+            ((RoomTitleView*)self.titleView).roomPreviewData = self.roomPreviewData;
+        }
         
         // Remove input tool bar if any
         if (self.inputToolbarView)
@@ -698,8 +705,6 @@
         [self showPreviewHeader:NO];
         
         self.navigationItem.rightBarButtonItem.enabled = (self.roomDataSource != nil);
-        
-        self.titleView.editable = NO;
         
         if (self.roomDataSource)
         {
@@ -1466,57 +1471,13 @@
 
 - (void)onJoinPressed:(id)sender
 {
-    // Attempt to join the room (keep reference on the potential eventId, the preview data will be removed automatically in case of success).
-    NSString *eventId = roomPreviewData.eventId;
-    
-    // We promote here join by room alias instead of room id when an alias is available.
-    NSString *roomIdOrAlias = roomPreviewData.roomId;
-    if (roomPreviewData.roomAliases.count)
-    {
-        roomIdOrAlias = roomPreviewData.roomAliases.firstObject;
-    }
-    
-    // Note in case of simple link to a room the signUrl param is nil
-    [self joinRoomWithRoomIdOrAlias:roomIdOrAlias andSignUrl:roomPreviewData.emailInvitation.signUrl completion:^(BOOL succeed) {
-        
-        if (succeed)
-        {
-            // If an event was specified, replace the datasource by a non live datasource showing the event
-            if (eventId)
-            {
-                MXWeakify(self);
-                [RoomDataSource loadRoomDataSourceWithRoomId:self.roomDataSource.roomId initialEventId:eventId andMatrixSession:self.mainSession onComplete:^(id roomDataSource) {
-                    MXStrongifyAndReturnIfNil(self);
-                    
-                    [roomDataSource finalizeInitialization];
-                    ((RoomDataSource*)roomDataSource).markTimelineInitialEvent = YES;
-                    
-                    [self displayRoom:roomDataSource];
-                    
-                    self.hasRoomDataSourceOwnership = YES;
-                }];
-            }
-            else
-            {
-                // Enable back the text input
-                [self setRoomInputToolbarViewClass:RoomInputToolbarView.class];
-                [self updateInputToolBarViewHeight];
-                
-                // And the extra area
-                [self setRoomActivitiesViewClass:RoomActivitiesView.class];
-                
-                [self refreshRoomTitle];
-                [self refreshRoomInputToolbar];
-            }
-        }
-        
-    }];
+    [self.delegate roomViewControllerPreviewDidTapJoin:self];
 }
 
 - (void)onCancelPressed:(id)sender
 {
     // Cancel de preview
-    [self withdrawViewControllerAnimated:YES completion:nil];
+    [self.delegate roomViewControllerPreviewDidTapCancel:self];
 }
 
 #pragma mark - Preview

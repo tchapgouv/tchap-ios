@@ -18,6 +18,7 @@ disabled_rules:
 opt_in_rules:  
   - force_unwrapping
   - private_action
+  - explicit_init
 
 # paths to include during linting. `--path` is ignored if present.
 included:

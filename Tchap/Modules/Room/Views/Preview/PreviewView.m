@@ -37,7 +37,7 @@
 + (instancetype)instantiate
 {
     PreviewView *previewView = [[[self class] nib] instantiateWithOwner:nil options:nil].firstObject;
-    previewView.currentStyle = Variant2Style.shared;
+    [previewView updateWithStyle:Variant2Style.shared];
     return previewView;
 }
 
