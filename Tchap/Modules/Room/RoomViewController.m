@@ -2143,9 +2143,8 @@
         
         if (level == 0)
         {
-            // Do not allow to redact the event that enabled encryption (m.room.encryption)
-            // because it breaks everything
-            if (selectedEvent.eventType != MXEventTypeRoomEncryption)
+            // Tchap: Do not allow to redact the state events
+            if (!selectedEvent.isState)
             {
                 [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_redact", @"Vector", nil)
                                                                  style:UIAlertActionStyleDefault
@@ -2180,27 +2179,28 @@
             }
         }
         
-        if (level == 1)
-        {
-            [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_permalink", @"Vector", nil)
-                                                             style:UIAlertActionStyleDefault
-                                                           handler:^(UIAlertAction * action) {
-                                                               
-                                                               if (weakSelf)
-                                                               {
-                                                                   typeof(self) self = weakSelf;
-                                                                   
-                                                                   [self cancelEventSelection];
-                                                                   
-                                                                   // Create a matrix.to permalink that is common to all matrix clients
-                                                                   NSString *permalink = [MXTools permalinkToEvent:selectedEvent.eventId inRoom:selectedEvent.roomId];
-                                                                   
-                                                                   // Create a room matrix.to permalink
-                                                                   [[UIPasteboard generalPasteboard] setString:permalink];
-                                                               }
-                                                               
-                                                           }]];
-        }
+        // Tchap: Disable permalink for the moment
+//        if (level == 1)
+//        {
+//            [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_permalink", @"Vector", nil)
+//                                                             style:UIAlertActionStyleDefault
+//                                                           handler:^(UIAlertAction * action) {
+//
+//                                                               if (weakSelf)
+//                                                               {
+//                                                                   typeof(self) self = weakSelf;
+//
+//                                                                   [self cancelEventSelection];
+//
+//                                                                   // Create a matrix.to permalink that is common to all matrix clients
+//                                                                   NSString *permalink = [MXTools permalinkToEvent:selectedEvent.eventId inRoom:selectedEvent.roomId];
+//
+//                                                                   // Create a room matrix.to permalink
+//                                                                   [[UIPasteboard generalPasteboard] setString:permalink];
+//                                                               }
+//
+//                                                           }]];
+//        }
         
         if (level == 1)
         {
@@ -2241,7 +2241,7 @@
                                                            }]];
         }
         
-        if (level == 1)
+        if (level == 1 && selectedEvent.eventType == MXEventTypeRoomMessage)
         {
             [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_report", @"Vector", nil)
                                                              style:UIAlertActionStyleDefault
