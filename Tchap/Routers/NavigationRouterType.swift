@@ -40,8 +40,14 @@ protocol NavigationRouterType: class, Presentable {
     
     /// Pop to root view controller of navigation controller and remove all others
     ///
-    /// - Parameter animated: Animate.
+    /// - Parameter animated: Specify true to animate the transition.
     func popToRootModule(animated: Bool)
+    
+    /// Pops view controllers until the specified view controller is at the top of the navigation stack
+    ///
+    /// - Parameter module: The Presentable that should to be at the top of the stack.
+    /// - Parameter animated: Specify true to animate the transition.
+    func popToModule(_ module: Presentable, animated: Bool)
     
     /// Push a view controller on navigation controller stack
     ///

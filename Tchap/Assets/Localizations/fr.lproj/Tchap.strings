@@ -27,6 +27,24 @@
 "authentication_error_invalid_password" = "Mot de passe trop court (min %d)";
 
 ////////////////////////////////////////////////////////////////////////////////
+// MARK: Forgot password
+"forgot_password_title" = "Connexion Tchap";
+
+"forgot_password_form_instructions" = "Pour réinitialiser votre mot de passe, saisissez l'adresse email associée à votre compte\U00A0:\U00A0";
+"forgot_password_form_email_placeholder" = "Adresse email";
+"forgot_password_form_password_placeholder" = "Nouveau mot de passe";
+"forgot_password_form_confirm_password_placeholder" = "Confirmez votre nouveau mot de passe";
+"forgot_password_form_send_email_action" = "Envoyer l'email de réinitialisation";
+"forgot_password_form_error_email_not_found" = "Impossible d'envoyer l'e-mail : adresse non trouvée";
+
+"forgot_password_verify_email_instructions" = "Un email a été envoyé à %@. Une fois que vous aurez suivi le lien qu'il contient, cliquez ci-dessous.";
+"forgot_password_verify_email_confirmation_action" = "J'ai vérifié mon adresse email";
+"forgot_password_verify_email_error_email_not_verified" = "Impossible de vérifier l'adresse e-mail : assurez-vous d'avoir cliqué sur le lien dans l'e-mail";
+
+"forgot_password_checked_email_instructions" = "Votre mot de passe a été réinitialisé. Vous avez été déconnecté de tous les appareils et ne recevez plus de notifications. Pour réactiver les notifications, reconnectez-vous sur chaque appareil.";
+"forgot_password_checked_email_done_action" = "Retourner à l'écran de connexion";
+
+////////////////////////////////////////////////////////////////////////////////
 // MARK: Registration
 "registration_title" = "Inscription Tchap";
 "registration_mail_placeholder" = "Adresse email";

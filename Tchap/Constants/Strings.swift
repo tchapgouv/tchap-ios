@@ -63,6 +63,32 @@ internal enum TchapL10n {
   internal static let errorMessageDefault = TchapL10n.tr("Tchap", "error_message_default")
   /// Erreur
   internal static let errorTitleDefault = TchapL10n.tr("Tchap", "error_title_default")
+  /// Retourner à l'écran de connexion
+  internal static let forgotPasswordCheckedEmailDoneAction = TchapL10n.tr("Tchap", "forgot_password_checked_email_done_action")
+  /// Votre mot de passe a été réinitialisé. Vous avez été déconnecté de tous les appareils et ne recevez plus de notifications. Pour réactiver les notifications, reconnectez-vous sur chaque appareil.
+  internal static let forgotPasswordCheckedEmailInstructions = TchapL10n.tr("Tchap", "forgot_password_checked_email_instructions")
+  /// Confirmez votre nouveau mot de passe
+  internal static let forgotPasswordFormConfirmPasswordPlaceholder = TchapL10n.tr("Tchap", "forgot_password_form_confirm_password_placeholder")
+  /// Adresse email
+  internal static let forgotPasswordFormEmailPlaceholder = TchapL10n.tr("Tchap", "forgot_password_form_email_placeholder")
+  /// Impossible d'envoyer l'e-mail : adresse non trouvée
+  internal static let forgotPasswordFormErrorEmailNotFound = TchapL10n.tr("Tchap", "forgot_password_form_error_email_not_found")
+  /// Pour réinitialiser votre mot de passe, saisissez l'adresse email associée à votre compte : 
+  internal static let forgotPasswordFormInstructions = TchapL10n.tr("Tchap", "forgot_password_form_instructions")
+  /// Nouveau mot de passe
+  internal static let forgotPasswordFormPasswordPlaceholder = TchapL10n.tr("Tchap", "forgot_password_form_password_placeholder")
+  /// Envoyer l'email de réinitialisation
+  internal static let forgotPasswordFormSendEmailAction = TchapL10n.tr("Tchap", "forgot_password_form_send_email_action")
+  /// Connexion Tchap
+  internal static let forgotPasswordTitle = TchapL10n.tr("Tchap", "forgot_password_title")
+  /// J'ai vérifié mon adresse email
+  internal static let forgotPasswordVerifyEmailConfirmationAction = TchapL10n.tr("Tchap", "forgot_password_verify_email_confirmation_action")
+  /// Impossible de vérifier l'adresse e-mail : assurez-vous d'avoir cliqué sur le lien dans l'e-mail
+  internal static let forgotPasswordVerifyEmailErrorEmailNotVerified = TchapL10n.tr("Tchap", "forgot_password_verify_email_error_email_not_verified")
+  /// Un email a été envoyé à %@. Une fois que vous aurez suivi le lien qu'il contient, cliquez ci-dessous.
+  internal static func forgotPasswordVerifyEmailInstructions(_ p1: String) -> String {
+    return TchapL10n.tr("Tchap", "forgot_password_verify_email_instructions", p1)
+  }
   /// Chargement en cours…
   internal static let publicRoomsLoadingInProgress = TchapL10n.tr("Tchap", "public_rooms_loading_in_progress")
   /// Rechercher

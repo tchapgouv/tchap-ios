@@ -45,6 +45,7 @@ final class AuthenticationCoordinator: AuthenticationCoordinatorType {
         self.authenticationService = AuthenticationService(accountManager: MXKAccountManager.shared())
         let authenticationViewModel = AuthenticationViewModel()
         let authenticationViewController = AuthenticationViewController.instantiate(viewModel: authenticationViewModel)
+        authenticationViewController.tc_removeBackTitle()
         self.authenticationViewController = authenticationViewController
         self.activityIndicatorPresenter = ActivityIndicatorPresenter()
         self.authenticationErrorPresenter = AlertErrorPresenter(viewControllerPresenter: authenticationViewController)
@@ -105,6 +106,18 @@ final class AuthenticationCoordinator: AuthenticationCoordinatorType {
             }
         }
     }
+    
+    private func showForgotPassword() {
+        let forgotPasswordCoordinator = ForgotPasswordCoordinator(router: self.navigationRouter)
+        forgotPasswordCoordinator.start()
+        forgotPasswordCoordinator.delegate = self
+        
+        self.add(childCoordinator: forgotPasswordCoordinator)
+        
+        self.navigationRouter.push(forgotPasswordCoordinator, animated: true) { [weak self] in
+            self?.remove(childCoordinator: forgotPasswordCoordinator)
+        }
+    }
 }
 
 // MARK: - AuthenticationViewControllerDelegate
@@ -115,6 +128,13 @@ extension AuthenticationCoordinator: AuthenticationViewControllerDelegate {
     }
     
     func authenticationViewControllerDidTapForgotPasswordButton(_ authenticationViewController: AuthenticationViewController) {
-        
+        self.showForgotPassword()
+    }
+}
+
+// MARK: - ForgotPasswordCoordinatorDelegate
+extension AuthenticationCoordinator: ForgotPasswordCoordinatorDelegate {
+    func forgotPasswordCoordinatorDidComplete(_ forgotPasswordCoordinator: ForgotPasswordCoordinator) {
+        self.navigationRouter.popToModule(self.authenticationViewController, animated: true)
     }
 }

@@ -58,6 +58,21 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Tchap.AuthenticationViewController>(storyboard: AuthenticationViewController.self)
   }
+  internal enum ForgotPasswordCheckedEmailViewController: StoryboardType {
+    internal static let storyboardName = "ForgotPasswordCheckedEmailViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.ForgotPasswordCheckedEmailViewController>(storyboard: ForgotPasswordCheckedEmailViewController.self)
+  }
+  internal enum ForgotPasswordFormViewController: StoryboardType {
+    internal static let storyboardName = "ForgotPasswordFormViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.ForgotPasswordFormViewController>(storyboard: ForgotPasswordFormViewController.self)
+  }
+  internal enum ForgotPasswordVerifyEmailViewController: StoryboardType {
+    internal static let storyboardName = "ForgotPasswordVerifyEmailViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.ForgotPasswordVerifyEmailViewController>(storyboard: ForgotPasswordVerifyEmailViewController.self)
+  }
   internal enum HomeViewController: StoryboardType {
     internal static let storyboardName = "HomeViewController"
 
