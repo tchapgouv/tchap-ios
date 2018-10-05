@@ -966,74 +966,6 @@ NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBanne
             }
             return;
         }
-        
-        // Room directory visibility
-        MXRoomDirectoryVisibility directoryVisibility = [updatedItemsDict objectForKey:kRoomSettingsDirectoryKey];
-        if (directoryVisibility)
-        {
-            // Sanity check: for the moment, the user is only allowed to remove a public room from the room directory
-            if (![directoryVisibility isEqualToString:kMXRoomDirectoryVisibilityPrivate]) {
-                [self->updatedItemsDict removeObjectForKey:kRoomSettingsDirectoryKey];
-                [self onSave:nil];
-                return;
-            }
-            
-            void (^failure)(NSError *error) = ^(NSError *error){
-                
-                NSLog(@"[RoomSettingsViewController] Update room directory visibility failed");
-                MXStrongifyAndReturnIfNil(self);
-                self->pendingOperation = nil;
-                
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    
-                    NSString* message = error.localizedDescription;
-                    if (!message.length)
-                    {
-                        message = NSLocalizedStringFromTable(@"room_details_fail_to_update_room_directory_visibility", @"Vector", nil);
-                    }
-                    [self onSaveFailed:message withKeys:@[kRoomSettingsDirectoryKey]];
-                    
-                });
-                
-            };
-            
-            // Update first the joinrule to INVITE
-            pendingOperation = [mxRoom setJoinRule:kMXRoomJoinRuleInvite success:^{
-                
-                MXStrongifyAndReturnIfNil(self);
-                // Turn on the encryption in this room
-                MXWeakify(self);
-                self->pendingOperation = [self->mxRoom enableEncryptionWithAlgorithm:kMXCryptoMegolmAlgorithm success:^{
-                    
-                    MXStrongifyAndReturnIfNil(self);
-                    // Remove the room from the room directory
-                    MXWeakify(self);
-                    self->pendingOperation = [self->mxRoom setDirectoryVisibility:directoryVisibility success:^{
-                        
-                        MXStrongifyAndReturnIfNil(self);
-                        self->pendingOperation = nil;
-                        [self->updatedItemsDict removeObjectForKey:kRoomSettingsDirectoryKey];
-                        [self onSave:nil];
-                        
-                    } failure:failure];
-                    
-                } failure:^(NSError *error) {
-                    
-                    NSLog(@"[RoomSettingsViewController] Enabling encrytion failed. Error: %@", error);
-                    failure(error);
-                    
-                }];
-                
-                
-            } failure:^(NSError *error) {
-                
-                NSLog(@"[RoomSettingsViewController] Update join rule for a public room failed");
-                failure(error);
-                
-            }];
-            
-            return;
-        }
     }
     
     [self getNavigationItem].rightBarButtonItem.enabled = NO;
@@ -1304,23 +1236,13 @@ NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBanne
         }
         else if (indexPath.row == directoryVisibilityIndex)
         {
-            MXKTableViewCellWithLabelAndSwitch *directoryToggleCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+            MXKTableViewCellWithLabelAndSwitch *removeFromDirectoryCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
             
-            directoryToggleCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_access_section_directory_toggle", @"Vector", nil);
+            removeFromDirectoryCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_settings_remove_from_rooms_directory", @"Tchap", nil);
+            removeFromDirectoryCell.mxkSwitch.on = NO;
+            [removeFromDirectoryCell.mxkSwitch addTarget:self action:@selector(toggleRemoveFromDirectory:) forControlEvents:UIControlEventValueChanged];
             
-            [directoryToggleCell.mxkSwitch addTarget:self action:@selector(toggleDirectoryVisibility:) forControlEvents:UIControlEventValueChanged];
-            
-            if ([updatedItemsDict objectForKey:kRoomSettingsDirectoryKey])
-            {
-                directoryToggleCell.mxkSwitch.on = ((NSNumber*)[updatedItemsDict objectForKey:kRoomSettingsDirectoryKey]).boolValue;
-            }
-            else
-            {
-                // Use the last retrieved value if any
-                directoryToggleCell.mxkSwitch.on = actualDirectoryVisibility ? [actualDirectoryVisibility isEqualToString:kMXRoomDirectoryVisibilityPublic] : NO;
-            }
-            
-            cell = directoryToggleCell;
+            cell = removeFromDirectoryCell;
         }
     }
     else if (indexPath.section == ROOM_SETTINGS_BANNED_USERS_SECTION_INDEX)
@@ -1536,24 +1458,114 @@ NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBanne
     [self getNavigationItem].rightBarButtonItem.enabled = (updatedItemsDict.count != 0);
 }
 
-- (void)toggleDirectoryVisibility:(UISwitch*)theSwitch
+- (void)toggleRemoveFromDirectory:(UISwitch*)theSwitch
 {
-    MXRoomDirectoryVisibility visibility = theSwitch.on ? kMXRoomDirectoryVisibilityPublic : kMXRoomDirectoryVisibilityPrivate;
+    // Prompt the user before removing the room from the rooms directory
+    MXWeakify(self);
+    [currentAlert dismissViewControllerAnimated:NO completion:nil];
     
-    // Check whether the actual settings has been retrieved
-    if (actualDirectoryVisibility)
-    {
-        if ([visibility isEqualToString:actualDirectoryVisibility])
-        {
-            [updatedItemsDict removeObjectForKey:kRoomSettingsDirectoryKey];
-        }
-        else
-        {
-            [updatedItemsDict setObject:visibility forKey:kRoomSettingsDirectoryKey];
-        }
+    currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"warning", @"Vector", nil)
+                                                       message:NSLocalizedStringFromTable(@"room_settings_remove_from_rooms_directory_prompt", @"Tchap", nil)
+                                                preferredStyle:UIAlertControllerStyleAlert];
+    
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"yes"]
+                                                     style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction * action) {
+                                                       
+                                                       MXStrongifyAndReturnIfNil(self);
+                                                       self->currentAlert = nil;
+                                                       [self removeFromRoomsDirectory];
+                                                       
+                                                   }]];
+    
+    
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                                                     style:UIAlertActionStyleCancel
+                                                   handler:^(UIAlertAction * action) {
+                                                       
+                                                       MXStrongifyAndReturnIfNil(self);
+                                                       self->currentAlert = nil;
+                                                       // Reset the switch change
+                                                       theSwitch.on = NO;
+                                                       
+                                                   }]];
+    
+    [currentAlert mxk_setAccessibilityIdentifier:@"RoomSettingsVCLeaveAlert"];
+    [self presentViewController:currentAlert animated:YES completion:nil];
+}
+
+- (void)removeFromRoomsDirectory
+{
+    [self startActivityIndicator];
+    MXWeakify(self);
+    
+    void (^failure)(NSError *error) = ^(NSError *error){
         
-        [self getNavigationItem].rightBarButtonItem.enabled = (updatedItemsDict.count != 0);
+        NSLog(@"[RoomSettingsViewController] Update room directory visibility failed");
+        MXStrongifyAndReturnIfNil(self);
+        self->pendingOperation = nil;
+        [self stopActivityIndicator];
+        // Alert user
+        [[AppDelegate theDelegate] showErrorAsAlert:error];
+        [self refreshRoomSettings];
+        
+    };
+    
+    // Set the joinRule to INVITE if this is not already the case
+    if (![mxRoomState.joinRule isEqualToString:kMXRoomJoinRuleInvite])
+    {
+        NSLog(@"[RoomSettingsViewController] Update join rule for a public room");
+        pendingOperation = [mxRoom setJoinRule:kMXRoomJoinRuleInvite success:^{
+            
+            MXStrongifyAndReturnIfNil(self);
+            self->pendingOperation = nil;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                // Pursue the operation
+                [self removeFromRoomsDirectory];
+                
+            });
+            
+        } failure:^(NSError *error) {
+            
+            NSLog(@"[RoomSettingsViewController] Update join rule for a public room failed");
+            failure(error);
+            
+        }];
+        return;
     }
+    
+    // Turn on the encryption if it is not already enabled
+    if (!self->mxRoom.summary.isEncrypted)
+    {
+        NSLog(@"[RoomSettingsViewController] Enable encrytion");
+        self->pendingOperation = [self->mxRoom enableEncryptionWithAlgorithm:kMXCryptoMegolmAlgorithm success:^{
+            
+            MXStrongifyAndReturnIfNil(self);
+            self->pendingOperation = nil;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                // Pursue the operation
+                [self removeFromRoomsDirectory];
+                
+            });
+            
+        } failure:^(NSError *error) {
+            
+            NSLog(@"[RoomSettingsViewController] Enabling encrytion failed. Error: %@", error);
+            failure(error);
+            
+        }];
+        return;
+    }
+    
+    // Remove the room from the rooms directory
+    self->pendingOperation = [self->mxRoom setDirectoryVisibility:kMXRoomDirectoryVisibilityPrivate success:^{
+        
+        MXStrongifyAndReturnIfNil(self);
+        self->pendingOperation = nil;
+        [self stopActivityIndicator];
+        [self refreshRoomSettings];
+        
+    } failure:failure];
 }
 
 @end

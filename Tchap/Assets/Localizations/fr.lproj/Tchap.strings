@@ -98,6 +98,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Room Settings
 "room_settings_tab_title" = "Paramètres";
+"room_settings_remove_from_rooms_directory" = "Retirer ce salon de la liste des salons publics";
+"room_settings_remove_from_rooms_directory_prompt" = "Cette action est irréversible.\nVoulez-vous vraiment retirer ce salon des salons publics ?";
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Public rooms
