@@ -305,6 +305,8 @@
 		92726A4B1F58737A004AD26F /* SiriIntents.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 92726A431F58737A004AD26F /* SiriIntents.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		92726A511F587410004AD26F /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92726A501F587410004AD26F /* Intents.framework */; };
 		9972EF53599AC5CD25D6E8F0 /* Pods_RiotPods_RiotShareExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA7C5FAF411C8F14F5447193 /* Pods_RiotPods_RiotShareExtension.framework */; };
+		B104AA1D215D3EE800B2C452 /* ForgotPasswordService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B104AA1C215D3EE800B2C452 /* ForgotPasswordService.swift */; };
+		B104AA1F215E163000B2C452 /* ForgotPasswordServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B104AA1E215E163000B2C452 /* ForgotPasswordServiceType.swift */; };
 		B11C800121393E5D00CC6F2F /* RegistrationCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11C7FFB21393E5D00CC6F2F /* RegistrationCoordinatorType.swift */; };
 		B11C800621393E5D00CC6F2F /* RegistrationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11C800021393E5D00CC6F2F /* RegistrationCoordinator.swift */; };
 		B11C80112139442700CC6F2F /* RegistrationFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11C800D2139442700CC6F2F /* RegistrationFormViewController.swift */; };
@@ -331,6 +333,16 @@
 		B1322FF82130032B0054A9DD /* AuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1322FF72130032B0054A9DD /* AuthenticationService.swift */; };
 		B1322FFA2130146D0054A9DD /* AuthenticationServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1322FF92130146D0054A9DD /* AuthenticationServiceType.swift */; };
 		B1322FFC21301B5D0054A9DD /* AuthenticationServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1322FFB21301B5D0054A9DD /* AuthenticationServiceError.swift */; };
+		B15AB29E215BF20E007F5405 /* ForgotPasswordCheckedEmailViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B15AB296215BF20D007F5405 /* ForgotPasswordCheckedEmailViewController.storyboard */; };
+		B15AB29F215BF20E007F5405 /* ForgotPasswordFormViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B15AB297215BF20D007F5405 /* ForgotPasswordFormViewController.storyboard */; };
+		B15AB2A0215BF20E007F5405 /* ForgotPasswordCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15AB298215BF20D007F5405 /* ForgotPasswordCoordinatorType.swift */; };
+		B15AB2A1215BF20E007F5405 /* ForgotPasswordCheckedMailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15AB299215BF20D007F5405 /* ForgotPasswordCheckedMailViewController.swift */; };
+		B15AB2A2215BF20E007F5405 /* ForgotPasswordVerifyEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15AB29A215BF20D007F5405 /* ForgotPasswordVerifyEmailViewController.swift */; };
+		B15AB2A3215BF20E007F5405 /* ForgotPasswordFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15AB29B215BF20D007F5405 /* ForgotPasswordFormViewController.swift */; };
+		B15AB2A4215BF20E007F5405 /* ForgotPasswordCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15AB29C215BF20D007F5405 /* ForgotPasswordCoordinator.swift */; };
+		B15AB2A5215BF20E007F5405 /* ForgotPasswordVerifyEmailViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B15AB29D215BF20D007F5405 /* ForgotPasswordVerifyEmailViewController.storyboard */; };
+		B15AB2A7215BF55B007F5405 /* ForgotPasswordFormViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15AB2A6215BF55B007F5405 /* ForgotPasswordFormViewModel.swift */; };
+		B15AB2AA215BF63A007F5405 /* ForgotPasswordFormViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15AB2A9215BF63A007F5405 /* ForgotPasswordFormViewModelType.swift */; };
 		B15B866C21353A41002782BE /* FormTextViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15B866B21353A41002782BE /* FormTextViewModelType.swift */; };
 		B15B866E21353C8D002782BE /* TextInputProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15B866D21353C8D002782BE /* TextInputProperties.swift */; };
 		B15B867021354FF5002782BE /* AuthenticationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15B866F21354FF5002782BE /* AuthenticationViewModel.swift */; };
@@ -884,6 +896,8 @@
 		92726A501F587410004AD26F /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
 		940A45C29F3CB0D58EFBCA8B /* Pods_RiotPods_SiriIntents.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RiotPods_SiriIntents.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0230B8E031D07F2441D2F7E /* Pods-RiotPods-RiotShareExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-RiotShareExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-RiotPods-RiotShareExtension/Pods-RiotPods-RiotShareExtension.release.xcconfig"; sourceTree = "<group>"; };
+		B104AA1C215D3EE800B2C452 /* ForgotPasswordService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordService.swift; sourceTree = "<group>"; };
+		B104AA1E215E163000B2C452 /* ForgotPasswordServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordServiceType.swift; sourceTree = "<group>"; };
 		B11C7FFB21393E5D00CC6F2F /* RegistrationCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistrationCoordinatorType.swift; sourceTree = "<group>"; };
 		B11C800021393E5D00CC6F2F /* RegistrationCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistrationCoordinator.swift; sourceTree = "<group>"; };
 		B11C800D2139442700CC6F2F /* RegistrationFormViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistrationFormViewController.swift; sourceTree = "<group>"; };
@@ -910,6 +924,16 @@
 		B1322FF72130032B0054A9DD /* AuthenticationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationService.swift; sourceTree = "<group>"; };
 		B1322FF92130146D0054A9DD /* AuthenticationServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationServiceType.swift; sourceTree = "<group>"; };
 		B1322FFB21301B5D0054A9DD /* AuthenticationServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationServiceError.swift; sourceTree = "<group>"; };
+		B15AB296215BF20D007F5405 /* ForgotPasswordCheckedEmailViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ForgotPasswordCheckedEmailViewController.storyboard; sourceTree = "<group>"; };
+		B15AB297215BF20D007F5405 /* ForgotPasswordFormViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ForgotPasswordFormViewController.storyboard; sourceTree = "<group>"; };
+		B15AB298215BF20D007F5405 /* ForgotPasswordCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotPasswordCoordinatorType.swift; sourceTree = "<group>"; };
+		B15AB299215BF20D007F5405 /* ForgotPasswordCheckedMailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotPasswordCheckedMailViewController.swift; sourceTree = "<group>"; };
+		B15AB29A215BF20D007F5405 /* ForgotPasswordVerifyEmailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotPasswordVerifyEmailViewController.swift; sourceTree = "<group>"; };
+		B15AB29B215BF20D007F5405 /* ForgotPasswordFormViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotPasswordFormViewController.swift; sourceTree = "<group>"; };
+		B15AB29C215BF20D007F5405 /* ForgotPasswordCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotPasswordCoordinator.swift; sourceTree = "<group>"; };
+		B15AB29D215BF20D007F5405 /* ForgotPasswordVerifyEmailViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ForgotPasswordVerifyEmailViewController.storyboard; sourceTree = "<group>"; };
+		B15AB2A6215BF55B007F5405 /* ForgotPasswordFormViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordFormViewModel.swift; sourceTree = "<group>"; };
+		B15AB2A9215BF63A007F5405 /* ForgotPasswordFormViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordFormViewModelType.swift; sourceTree = "<group>"; };
 		B15B866B21353A41002782BE /* FormTextViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormTextViewModelType.swift; sourceTree = "<group>"; };
 		B15B866D21353C8D002782BE /* TextInputProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInputProperties.swift; sourceTree = "<group>"; };
 		B15B866F21354FF5002782BE /* AuthenticationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewModel.swift; sourceTree = "<group>"; };
@@ -1773,6 +1797,7 @@
 				B1F2AA83212AEC820077FDC0 /* Application */,
 				B1BC6A222136D71500D32F8E /* Welcome */,
 				B1F2AA8E212AEC820077FDC0 /* Authentication */,
+				B15AB295215BF20D007F5405 /* ForgotPassword */,
 				B11C7FFA21393E5D00CC6F2F /* Registration */,
 				B1F2AA7A212AEC800077FDC0 /* SplitView */,
 				B1F2AA7D212AEC800077FDC0 /* Home */,
@@ -2002,8 +2027,51 @@
 				B1322FF92130146D0054A9DD /* AuthenticationServiceType.swift */,
 				B1322FF72130032B0054A9DD /* AuthenticationService.swift */,
 				B1322FFB21301B5D0054A9DD /* AuthenticationServiceError.swift */,
+				B104AA1C215D3EE800B2C452 /* ForgotPasswordService.swift */,
+				B104AA1E215E163000B2C452 /* ForgotPasswordServiceType.swift */,
 			);
 			path = Authentication;
+			sourceTree = "<group>";
+		};
+		B15AB295215BF20D007F5405 /* ForgotPassword */ = {
+			isa = PBXGroup;
+			children = (
+				B15AB298215BF20D007F5405 /* ForgotPasswordCoordinatorType.swift */,
+				B15AB29C215BF20D007F5405 /* ForgotPasswordCoordinator.swift */,
+				B15AB2A8215BF5B8007F5405 /* Form */,
+				B15AB2AB215CFB43007F5405 /* VerifyEmail */,
+				B15AB2AC215CFC6B007F5405 /* CheckedEmail */,
+			);
+			path = ForgotPassword;
+			sourceTree = "<group>";
+		};
+		B15AB2A8215BF5B8007F5405 /* Form */ = {
+			isa = PBXGroup;
+			children = (
+				B15AB2A9215BF63A007F5405 /* ForgotPasswordFormViewModelType.swift */,
+				B15AB2A6215BF55B007F5405 /* ForgotPasswordFormViewModel.swift */,
+				B15AB29B215BF20D007F5405 /* ForgotPasswordFormViewController.swift */,
+				B15AB297215BF20D007F5405 /* ForgotPasswordFormViewController.storyboard */,
+			);
+			path = Form;
+			sourceTree = "<group>";
+		};
+		B15AB2AB215CFB43007F5405 /* VerifyEmail */ = {
+			isa = PBXGroup;
+			children = (
+				B15AB29A215BF20D007F5405 /* ForgotPasswordVerifyEmailViewController.swift */,
+				B15AB29D215BF20D007F5405 /* ForgotPasswordVerifyEmailViewController.storyboard */,
+			);
+			path = VerifyEmail;
+			sourceTree = "<group>";
+		};
+		B15AB2AC215CFC6B007F5405 /* CheckedEmail */ = {
+			isa = PBXGroup;
+			children = (
+				B15AB299215BF20D007F5405 /* ForgotPasswordCheckedMailViewController.swift */,
+				B15AB296215BF20D007F5405 /* ForgotPasswordCheckedEmailViewController.storyboard */,
+			);
+			path = CheckedEmail;
 			sourceTree = "<group>";
 		};
 		B15B867721359013002782BE /* KeyboardAvoiding */ = {
@@ -3553,6 +3621,7 @@
 				B18D18C62153EA32003677D1 /* HomeViewController.storyboard in Resources */,
 				0250C5772122B68000034691 /* GroupHomeViewController.xib in Resources */,
 				0250C57A2122B68000034691 /* Vector.strings in Resources */,
+				B15AB2A5215BF20E007F5405 /* ForgotPasswordVerifyEmailViewController.storyboard in Resources */,
 				020DF94E214BE467003DFBA4 /* RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.xib in Resources */,
 				0250C57B2122B68000034691 /* DirectoryServerDetailTableViewCell.xib in Resources */,
 				020DF9A3214BE467003DFBA4 /* RoomTitleView.xib in Resources */,
@@ -3593,11 +3662,13 @@
 				020DF990214BE467003DFBA4 /* RoomIncomingAttachmentWithoutSenderInfoBubbleCell.xib in Resources */,
 				0250C5972122B68000034691 /* LaunchScreen.storyboard in Resources */,
 				0250C5982122B68000034691 /* RecentTableViewCell.xib in Resources */,
+				B15AB29F215BF20E007F5405 /* ForgotPasswordFormViewController.storyboard in Resources */,
 				020DF96C214BE467003DFBA4 /* RoomOutgoingEncryptedAttachmentBubbleCell.xib in Resources */,
 				0250C5992122B68000034691 /* DeviceView.xib in Resources */,
 				0250C59A2122B68000034691 /* GroupRoomsViewController.xib in Resources */,
 				020DF95D214BE467003DFBA4 /* RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.xib in Resources */,
 				0250C59B2122B68000034691 /* InviteRecentTableViewCell.xib in Resources */,
+				B15AB29E215BF20E007F5405 /* ForgotPasswordCheckedEmailViewController.storyboard in Resources */,
 				020DF97E214BE467003DFBA4 /* RoomOutgoingTextMsgWithPaginationTitleBubbleCell.xib in Resources */,
 				0250C59E2122B68000034691 /* DeviceTableViewCell.xib in Resources */,
 				020DF959214BE467003DFBA4 /* RoomIncomingEncryptedAttachmentBubbleCell.xib in Resources */,
@@ -3927,10 +3998,12 @@
 				0250C4962122B68000034691 /* AvatarGenerator.m in Sources */,
 				B1BC6A052135E42D00D32F8E /* UIView.swift in Sources */,
 				0250C4972122B68000034691 /* GroupRoomsViewController.m in Sources */,
+				B15AB2A2215BF20E007F5405 /* ForgotPasswordVerifyEmailViewController.swift in Sources */,
 				0250C4992122B68000034691 /* BugReportViewController.m in Sources */,
 				0250C49B2122B68000034691 /* RecentCellData.m in Sources */,
 				0250C49C2122B68000034691 /* GroupsDataSource.m in Sources */,
 				B1F2AAAF212AED900077FDC0 /* Presentable.swift in Sources */,
+				B104AA1D215D3EE800B2C452 /* ForgotPasswordService.swift in Sources */,
 				B15B867021354FF5002782BE /* AuthenticationViewModel.swift in Sources */,
 				02906074214FD0E1005FE3C1 /* RoomCoordinator.swift in Sources */,
 				0250C49F2122B68000034691 /* MediaAlbumContentViewController.m in Sources */,
@@ -3955,6 +4028,7 @@
 				0250C4A92122B68000034691 /* CallViewController.m in Sources */,
 				B15B867B21359145002782BE /* KeyboardNotification.swift in Sources */,
 				020DF97C214BE467003DFBA4 /* RoomIncomingAttachmentWithPaginationTitleBubbleCell.m in Sources */,
+				B15AB2A1215BF20E007F5405 /* ForgotPasswordCheckedMailViewController.swift in Sources */,
 				0250C4AB2122B68000034691 /* JitsiViewController.m in Sources */,
 				020DF95A214BE467003DFBA4 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				B1F2AA94212AEC830077FDC0 /* HomeCoordinator.swift in Sources */,
@@ -3977,6 +4051,7 @@
 				0250C4B32122B68000034691 /* RiotSettings.swift in Sources */,
 				B1BC6A032135E2A600D32F8E /* ActivityIndicatorView.swift in Sources */,
 				0250C4B82122B68000034691 /* Contact.m in Sources */,
+				B15AB2AA215BF63A007F5405 /* ForgotPasswordFormViewModelType.swift in Sources */,
 				020DF978214BE467003DFBA4 /* RoomMembershipExpandedBubbleCell.m in Sources */,
 				020DF942214BE467003DFBA4 /* RoomFilesSearchViewController.m in Sources */,
 				020DF977214BE467003DFBA4 /* RoomMembershipWithPaginationTitleBubbleCell.m in Sources */,
@@ -4007,11 +4082,13 @@
 				0250C4D22122B68000034691 /* LanguagePickerViewController.m in Sources */,
 				020DF994214BE467003DFBA4 /* RoomIncomingTextMsgBubbleCell.m in Sources */,
 				B12FD6A92146BA45001B7F28 /* RegistrationService.swift in Sources */,
+				B15AB2A0215BF20E007F5405 /* ForgotPasswordCoordinatorType.swift in Sources */,
 				B11C80122139442700CC6F2F /* RegistrationFormViewModelType.swift in Sources */,
 				B1F2AA96212AEC830077FDC0 /* SettingsCoordinator.swift in Sources */,
 				B1F2AA93212AEC830077FDC0 /* HomeCoordinatorType.swift in Sources */,
 				02BEE18D212AB23A00098505 /* ThirdPartyIDPlatformInfo.swift in Sources */,
 				0250C4D62122B68000034691 /* TableViewCellWithButton.m in Sources */,
+				B15AB2A3215BF20E007F5405 /* ForgotPasswordFormViewController.swift in Sources */,
 				B1F2AAAC212AED900077FDC0 /* NavigationRouter.swift in Sources */,
 				B1F2AAB0212AED900077FDC0 /* NavigationRouterType.swift in Sources */,
 				B1322FF3213002580054A9DD /* AuthenticationErrorPresentableMaker.swift in Sources */,
@@ -4088,7 +4165,9 @@
 				0250C5052122B68000034691 /* FavouritesViewController.m in Sources */,
 				B1680CFD2152A9E6009B5F92 /* PublicRoomsCoordinator.swift in Sources */,
 				0250C5062122B68000034691 /* AuthInputsView.m in Sources */,
+				B15AB2A7215BF55B007F5405 /* ForgotPasswordFormViewModel.swift in Sources */,
 				020DF98E214BE467003DFBA4 /* RoomMembershipBubbleCell.m in Sources */,
+				B104AA1F215E163000B2C452 /* ForgotPasswordServiceType.swift in Sources */,
 				0250C5072122B68000034691 /* InviteRecentTableViewCell.m in Sources */,
 				020DF957214BE467003DFBA4 /* RoomIncomingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
 				020DF9B3214BE467003DFBA4 /* EventDetailsView.m in Sources */,
@@ -4109,6 +4188,7 @@
 				0250C5132122B68000034691 /* CountryPickerViewController.m in Sources */,
 				0250C5142122B68000034691 /* GDPRConsentViewController.swift in Sources */,
 				B1F2AA99212AEC830077FDC0 /* LegacyAppDelegate.m in Sources */,
+				B15AB2A4215BF20E007F5405 /* ForgotPasswordCoordinator.swift in Sources */,
 				B12FD69F2146B3EB001B7F28 /* RestClientBuilder.swift in Sources */,
 				B1F2AA91212AEC830077FDC0 /* SplitViewCoordinatorType.swift in Sources */,
 				020DF979214BE467003DFBA4 /* RoomIncomingAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
