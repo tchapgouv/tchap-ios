@@ -71,7 +71,7 @@ final class RegistrationCoordinator: RegistrationCoordinatorType {
     private func showEmailValidationSentAndPerformRegistration(with userEmail: String, password: String, threePIDCredentials: ThreePIDCredentials) {
         
         guard let registrationService = self.registrationService else {
-            let errorPresentable = ErrorPresentableImpl.init(title: TchapL10n.errorTitleDefault, message: TchapL10n.errorMessageDefault)
+            let errorPresentable = ErrorPresentableImpl(title: TchapL10n.errorTitleDefault, message: TchapL10n.errorMessageDefault)
             self.registrationFormErrorPresenter.present(errorPresentable: errorPresentable)
             return
         }
