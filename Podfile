@@ -85,6 +85,10 @@ abstract_target 'RiotPods' do
     target "Tchap" do
         import_MatrixKit
     end
+    
+    target "TchapTests" do
+        import_MatrixKit
+    end
 
     target "Riot" do
         import_MatrixKit
