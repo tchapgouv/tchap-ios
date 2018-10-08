@@ -334,6 +334,8 @@
 		B1322FFA2130146D0054A9DD /* AuthenticationServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1322FF92130146D0054A9DD /* AuthenticationServiceType.swift */; };
 		B1322FFC21301B5D0054A9DD /* AuthenticationServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1322FFB21301B5D0054A9DD /* AuthenticationServiceError.swift */; };
 		B1454B97216BA84100365A86 /* DisplayNameComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1454B96216BA84000365A86 /* DisplayNameComponents.swift */; };
+		B1454BCD216BBE7200365A86 /* DisplayNameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1454BCC216BBE7200365A86 /* DisplayNameTests.swift */; };
+		B1454BD1216BBF0E00365A86 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B1454BD0216BBF0D00365A86 /* Info.plist */; };
 		B15AB29E215BF20E007F5405 /* ForgotPasswordCheckedEmailViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B15AB296215BF20D007F5405 /* ForgotPasswordCheckedEmailViewController.storyboard */; };
 		B15AB29F215BF20E007F5405 /* ForgotPasswordFormViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B15AB297215BF20D007F5405 /* ForgotPasswordFormViewController.storyboard */; };
 		B15AB2A0215BF20E007F5405 /* ForgotPasswordCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15AB298215BF20D007F5405 /* ForgotPasswordCoordinatorType.swift */; };
@@ -595,6 +597,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 92726A421F58737A004AD26F;
 			remoteInfo = SiriIntents;
+		};
+		B1454BC6216BBE4000365A86 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F094A99A1B78D8F000B1FBBF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0250C48C2122B68000034691;
+			remoteInfo = Tchap;
 		};
 		F094A9BF1B78D8F000B1FBBF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -926,6 +935,10 @@
 		B1322FF92130146D0054A9DD /* AuthenticationServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationServiceType.swift; sourceTree = "<group>"; };
 		B1322FFB21301B5D0054A9DD /* AuthenticationServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationServiceError.swift; sourceTree = "<group>"; };
 		B1454B96216BA84000365A86 /* DisplayNameComponents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayNameComponents.swift; sourceTree = "<group>"; };
+		B1454BC1216BBE3F00365A86 /* TchapTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TchapTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B1454BCC216BBE7200365A86 /* DisplayNameTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayNameTests.swift; sourceTree = "<group>"; };
+		B1454BCF216BBF0D00365A86 /* TchapTests-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TchapTests-Bridging-Header.h"; sourceTree = "<group>"; };
+		B1454BD0216BBF0D00365A86 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B15AB296215BF20D007F5405 /* ForgotPasswordCheckedEmailViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ForgotPasswordCheckedEmailViewController.storyboard; sourceTree = "<group>"; };
 		B15AB297215BF20D007F5405 /* ForgotPasswordFormViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ForgotPasswordFormViewController.storyboard; sourceTree = "<group>"; };
 		B15AB298215BF20D007F5405 /* ForgotPasswordCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotPasswordCoordinatorType.swift; sourceTree = "<group>"; };
@@ -1333,6 +1346,13 @@
 			files = (
 				92726A511F587410004AD26F /* Intents.framework in Frameworks */,
 				75123CD1FC3AEA01A1B0ABBE /* Pods_RiotPods_SiriIntents.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B1454BBE216BBE3F00365A86 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2042,6 +2062,24 @@
 				B1454B96216BA84000365A86 /* DisplayNameComponents.swift */,
 			);
 			path = DisplayName;
+			sourceTree = "<group>";
+		};
+		B1454BC2216BBE4000365A86 /* TchapTests */ = {
+			isa = PBXGroup;
+			children = (
+				B1454BCC216BBE7200365A86 /* DisplayNameTests.swift */,
+				B1454BCE216BBECB00365A86 /* SupportingFiles */,
+			);
+			path = TchapTests;
+			sourceTree = "<group>";
+		};
+		B1454BCE216BBECB00365A86 /* SupportingFiles */ = {
+			isa = PBXGroup;
+			children = (
+				B1454BD0216BBF0D00365A86 /* Info.plist */,
+				B1454BCF216BBF0D00365A86 /* TchapTests-Bridging-Header.h */,
+			);
+			path = SupportingFiles;
 			sourceTree = "<group>";
 		};
 		B15AB295215BF20D007F5405 /* ForgotPassword */ = {
@@ -3355,6 +3393,7 @@
 				F083BB021E7005FD00A9B29C /* RiotTests */,
 				24CBEC4F1F0EAD310093EABB /* RiotShareExtension */,
 				92726A441F58737A004AD26F /* SiriIntents */,
+				B1454BC2216BBE4000365A86 /* TchapTests */,
 				F094A9A31B78D8F000B1FBBF /* Products */,
 				5FC42FA41F5186AFFB6A2404 /* Frameworks */,
 				B641A4596D66C0C6C460750B /* Pods */,
@@ -3369,6 +3408,7 @@
 				24CBEC4E1F0EAD310093EABB /* RiotShareExtension.appex */,
 				92726A431F58737A004AD26F /* SiriIntents.appex */,
 				0250C5BF2122B68000034691 /* Tchap.app */,
+				B1454BC1216BBE3F00365A86 /* TchapTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -3434,6 +3474,24 @@
 			productName = SiriIntents;
 			productReference = 92726A431F58737A004AD26F /* SiriIntents.appex */;
 			productType = "com.apple.product-type.app-extension";
+		};
+		B1454BC0216BBE3F00365A86 /* TchapTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B1454BCA216BBE4000365A86 /* Build configuration list for PBXNativeTarget "TchapTests" */;
+			buildPhases = (
+				B1454BBD216BBE3F00365A86 /* Sources */,
+				B1454BBE216BBE3F00365A86 /* Frameworks */,
+				B1454BBF216BBE3F00365A86 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B1454BC7216BBE4000365A86 /* PBXTargetDependency */,
+			);
+			name = TchapTests;
+			productName = TchapTests;
+			productReference = B1454BC1216BBE3F00365A86 /* TchapTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		F094A9A11B78D8F000B1FBBF /* Riot */ = {
 			isa = PBXNativeTarget;
@@ -3515,6 +3573,11 @@
 							};
 						};
 					};
+					B1454BC0216BBE3F00365A86 = {
+						CreatedOnToolsVersion = 9.4.1;
+						LastSwiftMigration = 0940;
+						TestTargetID = 0250C48C2122B68000034691;
+					};
 					F094A9A11B78D8F000B1FBBF = {
 						CreatedOnToolsVersion = 6.2;
 						DevelopmentTeam = 7J4U792NQT;
@@ -3566,6 +3629,7 @@
 				24CBEC4D1F0EAD310093EABB /* RiotShareExtension */,
 				92726A421F58737A004AD26F /* SiriIntents */,
 				0250C48C2122B68000034691 /* Tchap */,
+				B1454BC0216BBE3F00365A86 /* TchapTests */,
 			);
 		};
 /* End PBXProject section */
@@ -3720,6 +3784,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B1454BBF216BBE3F00365A86 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B1454BD1216BBF0E00365A86 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4294,6 +4366,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B1454BBD216BBE3F00365A86 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B1454BCD216BBE7200365A86 /* DisplayNameTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F094A99E1B78D8F000B1FBBF /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -4418,6 +4498,11 @@
 			isa = PBXTargetDependency;
 			target = 92726A421F58737A004AD26F /* SiriIntents */;
 			targetProxy = 92726A491F58737A004AD26F /* PBXContainerItemProxy */;
+		};
+		B1454BC7216BBE4000365A86 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0250C48C2122B68000034691 /* Tchap */;
+			targetProxy = B1454BC6216BBE4000365A86 /* PBXContainerItemProxy */;
 		};
 		F094A9C01B78D8F000B1FBBF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -4710,6 +4795,74 @@
 			};
 			name = Release;
 		};
+		B1454BC8216BBE4000365A86 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 7J4U792NQT;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = TchapTests/SupportingFiles/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = im.vector.TchapTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "TchapTests/SupportingFiles/TchapTests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Tchap.app/Tchap";
+			};
+			name = Debug;
+		};
+		B1454BC9216BBE4000365A86 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 7J4U792NQT;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = TchapTests/SupportingFiles/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = im.vector.TchapTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "TchapTests/SupportingFiles/TchapTests-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Tchap.app/Tchap";
+			};
+			name = Release;
+		};
 		F094A9C61B78D8F000B1FBBF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -4974,6 +5127,15 @@
 			buildConfigurations = (
 				92726A4C1F58737A004AD26F /* Debug */,
 				92726A4D1F58737A004AD26F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B1454BCA216BBE4000365A86 /* Build configuration list for PBXNativeTarget "TchapTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B1454BC8216BBE4000365A86 /* Debug */,
+				B1454BC9216BBE4000365A86 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
