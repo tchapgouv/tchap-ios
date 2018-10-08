@@ -333,6 +333,7 @@
 		B1322FF82130032B0054A9DD /* AuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1322FF72130032B0054A9DD /* AuthenticationService.swift */; };
 		B1322FFA2130146D0054A9DD /* AuthenticationServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1322FF92130146D0054A9DD /* AuthenticationServiceType.swift */; };
 		B1322FFC21301B5D0054A9DD /* AuthenticationServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1322FFB21301B5D0054A9DD /* AuthenticationServiceError.swift */; };
+		B1454B97216BA84100365A86 /* DisplayNameComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1454B96216BA84000365A86 /* DisplayNameComponents.swift */; };
 		B15AB29E215BF20E007F5405 /* ForgotPasswordCheckedEmailViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B15AB296215BF20D007F5405 /* ForgotPasswordCheckedEmailViewController.storyboard */; };
 		B15AB29F215BF20E007F5405 /* ForgotPasswordFormViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B15AB297215BF20D007F5405 /* ForgotPasswordFormViewController.storyboard */; };
 		B15AB2A0215BF20E007F5405 /* ForgotPasswordCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15AB298215BF20D007F5405 /* ForgotPasswordCoordinatorType.swift */; };
@@ -924,6 +925,7 @@
 		B1322FF72130032B0054A9DD /* AuthenticationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationService.swift; sourceTree = "<group>"; };
 		B1322FF92130146D0054A9DD /* AuthenticationServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationServiceType.swift; sourceTree = "<group>"; };
 		B1322FFB21301B5D0054A9DD /* AuthenticationServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationServiceError.swift; sourceTree = "<group>"; };
+		B1454B96216BA84000365A86 /* DisplayNameComponents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayNameComponents.swift; sourceTree = "<group>"; };
 		B15AB296215BF20D007F5405 /* ForgotPasswordCheckedEmailViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ForgotPasswordCheckedEmailViewController.storyboard; sourceTree = "<group>"; };
 		B15AB297215BF20D007F5405 /* ForgotPasswordFormViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ForgotPasswordFormViewController.storyboard; sourceTree = "<group>"; };
 		B15AB298215BF20D007F5405 /* ForgotPasswordCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotPasswordCoordinatorType.swift; sourceTree = "<group>"; };
@@ -1842,6 +1844,7 @@
 				B12FD6A42146BA14001B7F28 /* Registration */,
 				02BEE185212AB23A00098505 /* ThirdPartyIDPlatformInfoResolver */,
 				B1680D022152AA28009B5F92 /* PublicRoom */,
+				B1454B95216BA84000365A86 /* DisplayName */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -2031,6 +2034,14 @@
 				B104AA1E215E163000B2C452 /* ForgotPasswordServiceType.swift */,
 			);
 			path = Authentication;
+			sourceTree = "<group>";
+		};
+		B1454B95216BA84000365A86 /* DisplayName */ = {
+			isa = PBXGroup;
+			children = (
+				B1454B96216BA84000365A86 /* DisplayNameComponents.swift */,
+			);
+			path = DisplayName;
 			sourceTree = "<group>";
 		};
 		B15AB295215BF20D007F5405 /* ForgotPassword */ = {
@@ -4179,6 +4190,7 @@
 				B12FD6AA2146BA45001B7F28 /* RegistrationServiceError.swift in Sources */,
 				B15B867621357514002782BE /* AlertErrorPresenter.swift in Sources */,
 				0250C50A2122B68000034691 /* GroupDetailsViewController.m in Sources */,
+				B1454B97216BA84100365A86 /* DisplayNameComponents.swift in Sources */,
 				0250C50B2122B68000034691 /* RoomKeyRequestViewController.m in Sources */,
 				B1F2AAB6212AFDBA0077FDC0 /* UIViewController.swift in Sources */,
 				0250C50F2122B68000034691 /* RoomTableViewCell.m in Sources */,
