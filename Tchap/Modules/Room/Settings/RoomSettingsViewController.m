@@ -1531,12 +1531,10 @@ NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBanne
             failure(error);
             
         }];
-        return;
     }
-    
-    // Turn on the encryption if it is not already enabled
-    if (!self->mxRoom.summary.isEncrypted)
+    else if (!self->mxRoom.summary.isEncrypted)
     {
+        // Turn on the encryption if it is not already enabled
         NSLog(@"[RoomSettingsViewController] Enable encrytion");
         self->pendingOperation = [self->mxRoom enableEncryptionWithAlgorithm:kMXCryptoMegolmAlgorithm success:^{
             
@@ -1554,18 +1552,19 @@ NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBanne
             failure(error);
             
         }];
-        return;
     }
-    
-    // Remove the room from the rooms directory
-    self->pendingOperation = [self->mxRoom setDirectoryVisibility:kMXRoomDirectoryVisibilityPrivate success:^{
-        
-        MXStrongifyAndReturnIfNil(self);
-        self->pendingOperation = nil;
-        [self stopActivityIndicator];
-        [self refreshRoomSettings];
-        
-    } failure:failure];
+    else
+    {
+        // Remove the room from the rooms directory
+        self->pendingOperation = [self->mxRoom setDirectoryVisibility:kMXRoomDirectoryVisibilityPrivate success:^{
+            
+            MXStrongifyAndReturnIfNil(self);
+            self->pendingOperation = nil;
+            [self stopActivityIndicator];
+            [self refreshRoomSettings];
+            
+        } failure:failure];
+    }
 }
 
 @end
