@@ -17,8 +17,6 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-#import "PublicRoomsDirectoryDataSource.h"
-
 /**
  List the different modes used to prepare the recents data source.
  Each mode corresponds to an application tab: Home, Favourites, People and Rooms.
@@ -34,19 +32,11 @@ typedef enum : NSUInteger
 
 
 /**
- Action identifier used when the user tapped on the directory change button.
-
- The `userInfo` is nil.
- */
-extern NSString *const kRecentsDataSourceTapOnDirectoryServerChange;
-
-/**
  'RecentsDataSource' class inherits from 'MXKInterleavedRecentsDataSource' to define the Riot recents source
  shared between all the applications tabs.
  */
 @interface RecentsDataSource : MXKInterleavedRecentsDataSource
 
-@property (nonatomic) NSInteger directorySection;
 @property (nonatomic) NSInteger invitesSection;
 @property (nonatomic) NSInteger favoritesSection;
 @property (nonatomic) NSInteger peopleSection;
@@ -68,11 +58,6 @@ extern NSString *const kRecentsDataSourceTapOnDirectoryServerChange;
  The current mode (RecentsDataSourceModeHome by default).
  */
 @property (nonatomic, readonly) RecentsDataSourceMode recentsDataSourceMode;
-
-/**
- The data source used to manage the rooms from directory.
- */
-@property (nonatomic) PublicRoomsDirectoryDataSource *publicRoomsDirectoryDataSource;
 
 /**
  Refresh the recents data source and notify its delegate.
