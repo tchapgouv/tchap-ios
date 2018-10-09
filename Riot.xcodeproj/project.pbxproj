@@ -190,7 +190,6 @@
 		0250C52F2122B68000034691 /* DecryptionFailureTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5599120EFC5E400210D55 /* DecryptionFailureTracker.m */; };
 		0250C5302122B68000034691 /* UIViewController+RiotSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBEC1E7009EC00A9B29C /* UIViewController+RiotSearch.m */; };
 		0250C5312122B68000034691 /* RoomEmailInvitation.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBFC1E7009EC00A9B29C /* RoomEmailInvitation.m */; };
-		0250C5342122B68000034691 /* RiotSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556EB20EE6C4C00210D55 /* RiotSplitViewController.m */; };
 		0250C53B2122B68000034691 /* CircleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5577B20EE84BE00210D55 /* CircleButton.m */; };
 		0250C53D2122B68000034691 /* TableViewCellWithPhoneNumberTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5590E20EF782800210D55 /* TableViewCellWithPhoneNumberTextField.m */; };
 		0250C53F2122B68000034691 /* JitsiMeet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3233F7441F3497DA006ACA81 /* JitsiMeet.framework */; };
@@ -385,7 +384,6 @@
 		B1B5574320EE6C4D00210D55 /* CallViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B556DE20EE6C4C00210D55 /* CallViewController.xib */; };
 		B1B5574420EE6C4D00210D55 /* CallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556DF20EE6C4C00210D55 /* CallViewController.m */; };
 		B1B5574720EE6C4D00210D55 /* UsersDevicesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556E520EE6C4C00210D55 /* UsersDevicesViewController.m */; };
-		B1B5574920EE6C4D00210D55 /* RiotSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556EB20EE6C4C00210D55 /* RiotSplitViewController.m */; };
 		B1B5574A20EE6C4D00210D55 /* MediaPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556EF20EE6C4C00210D55 /* MediaPickerViewController.m */; };
 		B1B5574B20EE6C4D00210D55 /* MediaAlbumContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556F020EE6C4C00210D55 /* MediaAlbumContentViewController.m */; };
 		B1B5574C20EE6C4D00210D55 /* MediaAlbumContentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B556F120EE6C4C00210D55 /* MediaAlbumContentViewController.xib */; };
@@ -998,8 +996,6 @@
 		B1B556DF20EE6C4C00210D55 /* CallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallViewController.m; sourceTree = "<group>"; };
 		B1B556E520EE6C4C00210D55 /* UsersDevicesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UsersDevicesViewController.m; sourceTree = "<group>"; };
 		B1B556E620EE6C4C00210D55 /* UsersDevicesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UsersDevicesViewController.h; sourceTree = "<group>"; };
-		B1B556EB20EE6C4C00210D55 /* RiotSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RiotSplitViewController.m; sourceTree = "<group>"; };
-		B1B556EC20EE6C4C00210D55 /* RiotSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RiotSplitViewController.h; sourceTree = "<group>"; };
 		B1B556EE20EE6C4C00210D55 /* MediaAlbumContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaAlbumContentViewController.h; sourceTree = "<group>"; };
 		B1B556EF20EE6C4C00210D55 /* MediaPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaPickerViewController.m; sourceTree = "<group>"; };
 		B1B556F020EE6C4C00210D55 /* MediaAlbumContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaAlbumContentViewController.m; sourceTree = "<group>"; };
@@ -2209,7 +2205,6 @@
 		B1B5567620EE6C4C00210D55 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
-				B1B556EA20EE6C4C00210D55 /* Main */,
 				B1B556CA20EE6C4C00210D55 /* TabBar */,
 				B17982FD2119FEA7001FD722 /* GDPR */,
 				B1B556E720EE6C4C00210D55 /* People */,
@@ -2382,15 +2377,6 @@
 				B1B5597120EFB02900210D55 /* Views */,
 			);
 			path = People;
-			sourceTree = "<group>";
-		};
-		B1B556EA20EE6C4C00210D55 /* Main */ = {
-			isa = PBXGroup;
-			children = (
-				B1B556EC20EE6C4C00210D55 /* RiotSplitViewController.h */,
-				B1B556EB20EE6C4C00210D55 /* RiotSplitViewController.m */,
-			);
-			path = Main;
 			sourceTree = "<group>";
 		};
 		B1B556ED20EE6C4C00210D55 /* MediaPicker */ = {
@@ -3888,7 +3874,6 @@
 				020DF94D214BE467003DFBA4 /* ReadReceiptsViewController.m in Sources */,
 				020DF935214BE467003DFBA4 /* RoomDataSource.m in Sources */,
 				B1F2AA97212AEC830077FDC0 /* AppCoordinator.swift in Sources */,
-				0250C5342122B68000034691 /* RiotSplitViewController.m in Sources */,
 				B15B867421355A7A002782BE /* ErrorPresenter.swift in Sources */,
 				020DF989214BE467003DFBA4 /* RoomOutgoingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				0290609221527A3F005FE3C1 /* RoomDetailsCoordinator.swift in Sources */,
@@ -4010,7 +3995,6 @@
 				F083BDF01E7009ED00A9B29C /* UIViewController+RiotSearch.m in Sources */,
 				F083BDF91E7009ED00A9B29C /* RoomEmailInvitation.m in Sources */,
 				B15B86822135BC6F002782BE /* MasterTabBarController.m in Sources */,
-				B1B5574920EE6C4D00210D55 /* RiotSplitViewController.m in Sources */,
 				B1B5577D20EE84BF00210D55 /* CircleButton.m in Sources */,
 				B1B5591020EF782800210D55 /* TableViewCellWithPhoneNumberTextField.m in Sources */,
 			);
