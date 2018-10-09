@@ -1055,7 +1055,6 @@
 		B1F2AA82212AEC810077FDC0 /* SettingsCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsCoordinator.swift; sourceTree = "<group>"; };
 		B1F2AA84212AEC820077FDC0 /* AppCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		B1F2AA85212AEC820077FDC0 /* AppCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppCoordinatorType.swift; sourceTree = "<group>"; };
-		B1F2AA87212AEC820077FDC0 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		B1F2AA88212AEC820077FDC0 /* LegacyAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LegacyAppDelegate.m; sourceTree = "<group>"; };
 		B1F2AA89212AEC820077FDC0 /* LegacyAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LegacyAppDelegate.h; sourceTree = "<group>"; };
 		B1F2AA8A212AEC820077FDC0 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -2635,7 +2634,6 @@
 		B1F2AA86212AEC820077FDC0 /* Legacy */ = {
 			isa = PBXGroup;
 			children = (
-				B1F2AA87212AEC820077FDC0 /* AppDelegate.h */,
 				B1F2AA89212AEC820077FDC0 /* LegacyAppDelegate.h */,
 				B1F2AA88212AEC820077FDC0 /* LegacyAppDelegate.m */,
 			);
