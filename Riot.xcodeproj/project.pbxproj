@@ -139,7 +139,6 @@
 		0250C49B2122B68000034691 /* RecentCellData.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932F920F3C51900746532 /* RecentCellData.m */; };
 		0250C49F2122B68000034691 /* MediaAlbumContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556F020EE6C4C00210D55 /* MediaAlbumContentViewController.m */; };
 		0250C4A02122B68000034691 /* WidgetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5598420EFC3DF00210D55 /* WidgetManager.m */; };
-		0250C4A32122B68000034691 /* StartChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556E220EE6C4C00210D55 /* StartChatViewController.m */; };
 		0250C4A72122B68000034691 /* Widget.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5598320EFC3DF00210D55 /* Widget.m */; };
 		0250C4A82122B68000034691 /* MessagesSearchResultAttachmentBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B557E020EF60B900210D55 /* MessagesSearchResultAttachmentBubbleCell.m */; };
 		0250C4A92122B68000034691 /* CallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556DF20EE6C4C00210D55 /* CallViewController.m */; };
@@ -205,7 +204,6 @@
 		0250C53F2122B68000034691 /* JitsiMeet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3233F7441F3497DA006ACA81 /* JitsiMeet.framework */; };
 		0250C5442122B68000034691 /* ring.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F083BBDE1E7009EC00A9B29C /* ring.mp3 */; };
 		0250C5462122B68000034691 /* TableViewCellWithButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5592920EF7A5D00210D55 /* TableViewCellWithButton.xib */; };
-		0250C5472122B68000034691 /* StartChatViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B556E320EE6C4C00210D55 /* StartChatViewController.xib */; };
 		0250C54C2122B68000034691 /* EncryptionInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5596E20EFA85C00210D55 /* EncryptionInfoView.xib */; };
 		0250C54E2122B68000034691 /* ContactDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5568A20EE6C4C00210D55 /* ContactDetailsViewController.xib */; };
 		0250C5502122B68000034691 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B1664D5920F4EBEC00808783 /* Localizable.strings */; };
@@ -401,8 +399,6 @@
 		B1B5574220EE6C4D00210D55 /* RecentsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B556DA20EE6C4C00210D55 /* RecentsViewController.xib */; };
 		B1B5574320EE6C4D00210D55 /* CallViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B556DE20EE6C4C00210D55 /* CallViewController.xib */; };
 		B1B5574420EE6C4D00210D55 /* CallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556DF20EE6C4C00210D55 /* CallViewController.m */; };
-		B1B5574520EE6C4D00210D55 /* StartChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556E220EE6C4C00210D55 /* StartChatViewController.m */; };
-		B1B5574620EE6C4D00210D55 /* StartChatViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B556E320EE6C4C00210D55 /* StartChatViewController.xib */; };
 		B1B5574720EE6C4D00210D55 /* UsersDevicesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556E520EE6C4C00210D55 /* UsersDevicesViewController.m */; };
 		B1B5574920EE6C4D00210D55 /* RiotSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556EB20EE6C4C00210D55 /* RiotSplitViewController.m */; };
 		B1B5574A20EE6C4D00210D55 /* MediaPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556EF20EE6C4C00210D55 /* MediaPickerViewController.m */; };
@@ -1030,9 +1026,6 @@
 		B1B556DD20EE6C4C00210D55 /* CallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallViewController.h; sourceTree = "<group>"; };
 		B1B556DE20EE6C4C00210D55 /* CallViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CallViewController.xib; sourceTree = "<group>"; };
 		B1B556DF20EE6C4C00210D55 /* CallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallViewController.m; sourceTree = "<group>"; };
-		B1B556E120EE6C4C00210D55 /* StartChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StartChatViewController.h; sourceTree = "<group>"; };
-		B1B556E220EE6C4C00210D55 /* StartChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StartChatViewController.m; sourceTree = "<group>"; };
-		B1B556E320EE6C4C00210D55 /* StartChatViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StartChatViewController.xib; sourceTree = "<group>"; };
 		B1B556E520EE6C4C00210D55 /* UsersDevicesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UsersDevicesViewController.m; sourceTree = "<group>"; };
 		B1B556E620EE6C4C00210D55 /* UsersDevicesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UsersDevicesViewController.h; sourceTree = "<group>"; };
 		B1B556EB20EE6C4C00210D55 /* RiotSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RiotSplitViewController.m; sourceTree = "<group>"; };
@@ -2294,7 +2287,6 @@
 				B1B556E720EE6C4C00210D55 /* People */,
 				B1B5567720EE6C4C00210D55 /* Settings */,
 				B1B5570C20EE6C4C00210D55 /* GlobalSearch */,
-				B1B556E020EE6C4C00210D55 /* StartChat */,
 				B169330C20F3CA6000746532 /* PublicRoomList */,
 				B1B5575F20EE702800210D55 /* Integrations */,
 				B1B556DC20EE6C4C00210D55 /* Call */,
@@ -2444,16 +2436,6 @@
 				B1B5578020EE84E700210D55 /* Views */,
 			);
 			path = Call;
-			sourceTree = "<group>";
-		};
-		B1B556E020EE6C4C00210D55 /* StartChat */ = {
-			isa = PBXGroup;
-			children = (
-				B1B556E120EE6C4C00210D55 /* StartChatViewController.h */,
-				B1B556E220EE6C4C00210D55 /* StartChatViewController.m */,
-				B1B556E320EE6C4C00210D55 /* StartChatViewController.xib */,
-			);
-			path = StartChat;
 			sourceTree = "<group>";
 		};
 		B1B556E420EE6C4C00210D55 /* UserDevices */ = {
@@ -3350,7 +3332,6 @@
 				020DF949214BE467003DFBA4 /* RoomMemberTitleView.xib in Resources */,
 				0250C5462122B68000034691 /* TableViewCellWithButton.xib in Resources */,
 				02BEE1A3212C717F00098505 /* SharedImages.xcassets in Resources */,
-				0250C5472122B68000034691 /* StartChatViewController.xib in Resources */,
 				020DF9A0214BE467003DFBA4 /* RoomMembershipExpandedBubbleCell.xib in Resources */,
 				0250C54C2122B68000034691 /* EncryptionInfoView.xib in Resources */,
 				020DF97A214BE467003DFBA4 /* RoomPredecessorBubbleCell.xib in Resources */,
@@ -3492,7 +3473,6 @@
 			files = (
 				F083BDE91E7009ED00A9B29C /* ring.mp3 in Resources */,
 				B1B5592B20EF7A5D00210D55 /* TableViewCellWithButton.xib in Resources */,
-				B1B5574620EE6C4D00210D55 /* StartChatViewController.xib in Resources */,
 				B1B5597020EFA85D00210D55 /* EncryptionInfoView.xib in Resources */,
 				B1B5571F20EE6C4D00210D55 /* ContactDetailsViewController.xib in Resources */,
 				B1664DA220F4F95800808783 /* Localizable.strings in Resources */,
@@ -3837,7 +3817,6 @@
 				0250C4A02122B68000034691 /* WidgetManager.m in Sources */,
 				02BEE1A8212C77B700098505 /* DesignValues.m in Sources */,
 				B1A4D7DD215A2F50004A5AB4 /* RoomPreviewCoordinator.swift in Sources */,
-				0250C4A32122B68000034691 /* StartChatViewController.m in Sources */,
 				B1F2AA9D212AEC830077FDC0 /* AuthenticationCoordinator.swift in Sources */,
 				020DF974214BE467003DFBA4 /* RoomMembershipCollapsedBubbleCell.m in Sources */,
 				020DF996214BE467003DFBA4 /* RoomMembershipExpandedWithPaginationTitleBubbleCell.m in Sources */,
@@ -4113,7 +4092,6 @@
 				B1B5574B20EE6C4D00210D55 /* MediaAlbumContentViewController.m in Sources */,
 				B1B5598820EFC3E000210D55 /* WidgetManager.m in Sources */,
 				B16932A320F3A21C00746532 /* main.m in Sources */,
-				B1B5574520EE6C4D00210D55 /* StartChatViewController.m in Sources */,
 				B1B5598720EFC3E000210D55 /* Widget.m in Sources */,
 				B1B557E320EF60B900210D55 /* MessagesSearchResultAttachmentBubbleCell.m in Sources */,
 				B1B5574420EE6C4D00210D55 /* CallViewController.m in Sources */,
