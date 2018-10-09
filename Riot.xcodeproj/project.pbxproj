@@ -140,7 +140,6 @@
 		0250C49F2122B68000034691 /* MediaAlbumContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556F020EE6C4C00210D55 /* MediaAlbumContentViewController.m */; };
 		0250C4A02122B68000034691 /* WidgetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5598420EFC3DF00210D55 /* WidgetManager.m */; };
 		0250C4A72122B68000034691 /* Widget.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5598320EFC3DF00210D55 /* Widget.m */; };
-		0250C4A82122B68000034691 /* MessagesSearchResultAttachmentBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B557E020EF60B900210D55 /* MessagesSearchResultAttachmentBubbleCell.m */; };
 		0250C4A92122B68000034691 /* CallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556DF20EE6C4C00210D55 /* CallViewController.m */; };
 		0250C4AB2122B68000034691 /* JitsiViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5576C20EE702800210D55 /* JitsiViewController.m */; };
 		0250C4B22122B68000034691 /* MXRoom+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBE81E7009EC00A9B29C /* MXRoom+Riot.m */; };
@@ -184,7 +183,6 @@
 		0250C5192122B68000034691 /* MXSession+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = 926FA53E1F4C132000F826C2 /* MXSession+Riot.m */; };
 		0250C51E2122B68000034691 /* UsersDevicesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556E520EE6C4C00210D55 /* UsersDevicesViewController.m */; };
 		0250C5202122B68000034691 /* MatrixSDK+Swift.m in Sources */ = {isa = PBXBuildFile; fileRef = 32C1033F211DD1A100DFFB5D /* MatrixSDK+Swift.m */; };
-		0250C5242122B68000034691 /* MessagesSearchResultTextMsgBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B557E620EF60F400210D55 /* MessagesSearchResultTextMsgBubbleCell.m */; };
 		0250C5292122B68000034691 /* WidgetPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5576220EE702800210D55 /* WidgetPickerViewController.m */; };
 		0250C52B2122B68000034691 /* IntegrationManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5576020EE702800210D55 /* IntegrationManagerViewController.m */; };
 		0250C52C2122B68000034691 /* DeviceView.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B557AA20EF5A6C00210D55 /* DeviceView.m */; };
@@ -193,7 +191,6 @@
 		0250C5302122B68000034691 /* UIViewController+RiotSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBEC1E7009EC00A9B29C /* UIViewController+RiotSearch.m */; };
 		0250C5312122B68000034691 /* RoomEmailInvitation.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBFC1E7009EC00A9B29C /* RoomEmailInvitation.m */; };
 		0250C5342122B68000034691 /* RiotSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556EB20EE6C4C00210D55 /* RiotSplitViewController.m */; };
-		0250C5392122B68000034691 /* HomeMessagesSearchDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932E620F3C37100746532 /* HomeMessagesSearchDataSource.m */; };
 		0250C53B2122B68000034691 /* CircleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5577B20EE84BE00210D55 /* CircleButton.m */; };
 		0250C53D2122B68000034691 /* TableViewCellWithPhoneNumberTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5590E20EF782800210D55 /* TableViewCellWithPhoneNumberTextField.m */; };
 		0250C53F2122B68000034691 /* JitsiMeet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3233F7441F3497DA006ACA81 /* JitsiMeet.framework */; };
@@ -204,7 +201,6 @@
 		0250C5502122B68000034691 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B1664D5920F4EBEC00808783 /* Localizable.strings */; };
 		0250C5522122B68000034691 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B1664D5720F4EBEC00808783 /* InfoPlist.strings */; };
 		0250C5552122B68000034691 /* callend.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F083BBDC1E7009EC00A9B29C /* callend.mp3 */; };
-		0250C5582122B68000034691 /* MessagesSearchResultAttachmentBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B557E120EF60B900210D55 /* MessagesSearchResultAttachmentBubbleCell.xib */; };
 		0250C5672122B68000034691 /* MediaPickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B556F220EE6C4C00210D55 /* MediaPickerViewController.xib */; };
 		0250C5692122B68000034691 /* CallViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B556DE20EE6C4C00210D55 /* CallViewController.xib */; };
 		0250C56A2122B68000034691 /* ringback.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F083BBDF1E7009EC00A9B29C /* ringback.mp3 */; };
@@ -214,7 +210,6 @@
 		0250C57A2122B68000034691 /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = B1664D5520F4EBEC00808783 /* Vector.strings */; };
 		0250C57D2122B68000034691 /* busy.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F083BBDB1E7009EC00A9B29C /* busy.mp3 */; };
 		0250C57E2122B68000034691 /* MediaAlbumContentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B556F120EE6C4C00210D55 /* MediaAlbumContentViewController.xib */; };
-		0250C57F2122B68000034691 /* MessagesSearchResultTextMsgBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B557E520EF60F400210D55 /* MessagesSearchResultTextMsgBubbleCell.xib */; };
 		0250C5812122B68000034691 /* BugReportViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B556B120EE6C4C00210D55 /* BugReportViewController.xib */; };
 		0250C5822122B68000034691 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B169329520F39E6300746532 /* Main.storyboard */; };
 		0250C58D2122B68000034691 /* RecentsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B556DA20EE6C4C00210D55 /* RecentsViewController.xib */; };
@@ -352,7 +347,6 @@
 		B16932A520F3A21C00746532 /* empty.mm in Sources */ = {isa = PBXBuildFile; fileRef = B16932A220F3A21B00746532 /* empty.mm */; };
 		B16932AC20F3A7B100746532 /* RiotDesignValues.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932AB20F3A7B000746532 /* RiotDesignValues.m */; };
 		B16932AD20F3A7B100746532 /* RiotDesignValues.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932AB20F3A7B000746532 /* RiotDesignValues.m */; };
-		B16932E720F3C37100746532 /* HomeMessagesSearchDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932E620F3C37100746532 /* HomeMessagesSearchDataSource.m */; };
 		B16932EE20F3C3C900746532 /* FilesSearchCellData.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932EC20F3C3C800746532 /* FilesSearchCellData.m */; };
 		B16932F720F3C50E00746532 /* RecentsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932F620F3C50E00746532 /* RecentsDataSource.m */; };
 		B16932FA20F3C51A00746532 /* RecentCellData.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932F920F3C51900746532 /* RecentCellData.m */; };
@@ -415,10 +409,6 @@
 		B1B557D220EF5E3500210D55 /* MediaAlbumTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B557D020EF5E3500210D55 /* MediaAlbumTableCell.xib */; };
 		B1B557DD20EF5FBB00210D55 /* FilesSearchTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B557DA20EF5FBA00210D55 /* FilesSearchTableViewCell.xib */; };
 		B1B557DE20EF5FBB00210D55 /* FilesSearchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B557DC20EF5FBA00210D55 /* FilesSearchTableViewCell.m */; };
-		B1B557E320EF60B900210D55 /* MessagesSearchResultAttachmentBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B557E020EF60B900210D55 /* MessagesSearchResultAttachmentBubbleCell.m */; };
-		B1B557E420EF60B900210D55 /* MessagesSearchResultAttachmentBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B557E120EF60B900210D55 /* MessagesSearchResultAttachmentBubbleCell.xib */; };
-		B1B557E820EF60F500210D55 /* MessagesSearchResultTextMsgBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B557E520EF60F400210D55 /* MessagesSearchResultTextMsgBubbleCell.xib */; };
-		B1B557E920EF60F500210D55 /* MessagesSearchResultTextMsgBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B557E620EF60F400210D55 /* MessagesSearchResultTextMsgBubbleCell.m */; };
 		B1B5590F20EF782800210D55 /* TableViewCellWithPhoneNumberTextField.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5590D20EF782800210D55 /* TableViewCellWithPhoneNumberTextField.xib */; };
 		B1B5591020EF782800210D55 /* TableViewCellWithPhoneNumberTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5590E20EF782800210D55 /* TableViewCellWithPhoneNumberTextField.m */; };
 		B1B5592B20EF7A5D00210D55 /* TableViewCellWithButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5592920EF7A5D00210D55 /* TableViewCellWithButton.xib */; };
@@ -952,8 +942,6 @@
 		B16932A220F3A21B00746532 /* empty.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = empty.mm; sourceTree = "<group>"; };
 		B16932AA20F3A7B000746532 /* RiotDesignValues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RiotDesignValues.h; sourceTree = "<group>"; };
 		B16932AB20F3A7B000746532 /* RiotDesignValues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RiotDesignValues.m; sourceTree = "<group>"; };
-		B16932E520F3C37100746532 /* HomeMessagesSearchDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeMessagesSearchDataSource.h; sourceTree = "<group>"; };
-		B16932E620F3C37100746532 /* HomeMessagesSearchDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeMessagesSearchDataSource.m; sourceTree = "<group>"; };
 		B16932EC20F3C3C800746532 /* FilesSearchCellData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilesSearchCellData.m; sourceTree = "<group>"; };
 		B16932ED20F3C3C800746532 /* FilesSearchCellData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilesSearchCellData.h; sourceTree = "<group>"; };
 		B16932F520F3C50E00746532 /* RecentsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentsDataSource.h; sourceTree = "<group>"; };
@@ -1050,12 +1038,6 @@
 		B1B557DA20EF5FBA00210D55 /* FilesSearchTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FilesSearchTableViewCell.xib; sourceTree = "<group>"; };
 		B1B557DB20EF5FBA00210D55 /* FilesSearchTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilesSearchTableViewCell.h; sourceTree = "<group>"; };
 		B1B557DC20EF5FBA00210D55 /* FilesSearchTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilesSearchTableViewCell.m; sourceTree = "<group>"; };
-		B1B557E020EF60B900210D55 /* MessagesSearchResultAttachmentBubbleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagesSearchResultAttachmentBubbleCell.m; sourceTree = "<group>"; };
-		B1B557E120EF60B900210D55 /* MessagesSearchResultAttachmentBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MessagesSearchResultAttachmentBubbleCell.xib; sourceTree = "<group>"; };
-		B1B557E220EF60B900210D55 /* MessagesSearchResultAttachmentBubbleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagesSearchResultAttachmentBubbleCell.h; sourceTree = "<group>"; };
-		B1B557E520EF60F400210D55 /* MessagesSearchResultTextMsgBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MessagesSearchResultTextMsgBubbleCell.xib; sourceTree = "<group>"; };
-		B1B557E620EF60F400210D55 /* MessagesSearchResultTextMsgBubbleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagesSearchResultTextMsgBubbleCell.m; sourceTree = "<group>"; };
-		B1B557E720EF60F500210D55 /* MessagesSearchResultTextMsgBubbleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagesSearchResultTextMsgBubbleCell.h; sourceTree = "<group>"; };
 		B1B5590C20EF782700210D55 /* TableViewCellWithPhoneNumberTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewCellWithPhoneNumberTextField.h; sourceTree = "<group>"; };
 		B1B5590D20EF782800210D55 /* TableViewCellWithPhoneNumberTextField.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TableViewCellWithPhoneNumberTextField.xib; sourceTree = "<group>"; };
 		B1B5590E20EF782800210D55 /* TableViewCellWithPhoneNumberTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewCellWithPhoneNumberTextField.m; sourceTree = "<group>"; };
@@ -2125,15 +2107,6 @@
 			path = Constants;
 			sourceTree = "<group>";
 		};
-		B16932E420F3C29100746532 /* DataSources */ = {
-			isa = PBXGroup;
-			children = (
-				B16932E520F3C37100746532 /* HomeMessagesSearchDataSource.h */,
-				B16932E620F3C37100746532 /* HomeMessagesSearchDataSource.m */,
-			);
-			path = DataSources;
-			sourceTree = "<group>";
-		};
 		B16932EB20F3C39A00746532 /* CellData */ = {
 			isa = PBXGroup;
 			children = (
@@ -2444,19 +2417,9 @@
 		B1B5570C20EE6C4C00210D55 /* GlobalSearch */ = {
 			isa = PBXGroup;
 			children = (
-				B1B5570D20EE6C4C00210D55 /* Messages */,
 				B1B5571220EE6C4C00210D55 /* Files */,
 			);
 			path = GlobalSearch;
-			sourceTree = "<group>";
-		};
-		B1B5570D20EE6C4C00210D55 /* Messages */ = {
-			isa = PBXGroup;
-			children = (
-				B16932E420F3C29100746532 /* DataSources */,
-				B1B557DF20EF60B900210D55 /* Views */,
-			);
-			path = Messages;
 			sourceTree = "<group>";
 		};
 		B1B5571220EE6C4C00210D55 /* Files */ = {
@@ -2599,19 +2562,6 @@
 				B1B557DB20EF5FBA00210D55 /* FilesSearchTableViewCell.h */,
 				B1B557DC20EF5FBA00210D55 /* FilesSearchTableViewCell.m */,
 				B1B557DA20EF5FBA00210D55 /* FilesSearchTableViewCell.xib */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		B1B557DF20EF60B900210D55 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				B1B557E220EF60B900210D55 /* MessagesSearchResultAttachmentBubbleCell.h */,
-				B1B557E020EF60B900210D55 /* MessagesSearchResultAttachmentBubbleCell.m */,
-				B1B557E120EF60B900210D55 /* MessagesSearchResultAttachmentBubbleCell.xib */,
-				B1B557E720EF60F500210D55 /* MessagesSearchResultTextMsgBubbleCell.h */,
-				B1B557E620EF60F400210D55 /* MessagesSearchResultTextMsgBubbleCell.m */,
-				B1B557E520EF60F400210D55 /* MessagesSearchResultTextMsgBubbleCell.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -3283,7 +3233,6 @@
 				020DF997214BE467003DFBA4 /* RoomOutgoingAttachmentWithPaginationTitleBubbleCell.xib in Resources */,
 				0250C5552122B68000034691 /* callend.mp3 in Resources */,
 				020DF98B214BE467003DFBA4 /* RoomIncomingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib in Resources */,
-				0250C5582122B68000034691 /* MessagesSearchResultAttachmentBubbleCell.xib in Resources */,
 				020DF96F214BE467003DFBA4 /* RoomIncomingEncryptedTextMsgWithPaginationTitleBubbleCell.xib in Resources */,
 				0250C5672122B68000034691 /* MediaPickerViewController.xib in Resources */,
 				B11C80192139484900CC6F2F /* RegistrationEmailSentViewController.storyboard in Resources */,
@@ -3315,7 +3264,6 @@
 				020DF96E214BE467003DFBA4 /* RoomIncomingEncryptedTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
 				0250C57E2122B68000034691 /* MediaAlbumContentViewController.xib in Resources */,
 				020DF94F214BE467003DFBA4 /* RoomMembershipBubbleCell.xib in Resources */,
-				0250C57F2122B68000034691 /* MessagesSearchResultTextMsgBubbleCell.xib in Resources */,
 				B1680CFF2152A9E6009B5F92 /* PublicRoomsViewController.storyboard in Resources */,
 				020DF986214BE467003DFBA4 /* RoomIncomingTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
 				0250C5812122B68000034691 /* BugReportViewController.xib in Resources */,
@@ -3406,7 +3354,6 @@
 				B1664DA220F4F95800808783 /* Localizable.strings in Resources */,
 				B1664DA120F4F94F00808783 /* InfoPlist.strings in Resources */,
 				F083BDE71E7009ED00A9B29C /* callend.mp3 in Resources */,
-				B1B557E420EF60B900210D55 /* MessagesSearchResultAttachmentBubbleCell.xib in Resources */,
 				B1B5572120EE6C4D00210D55 /* ContactsTableViewController.xib in Resources */,
 				B1B5574D20EE6C4D00210D55 /* MediaPickerViewController.xib in Resources */,
 				B1B5574320EE6C4D00210D55 /* CallViewController.xib in Resources */,
@@ -3417,7 +3364,6 @@
 				B1664DA320F4F96200808783 /* Vector.strings in Resources */,
 				F083BDE61E7009ED00A9B29C /* busy.mp3 in Resources */,
 				B1B5574C20EE6C4D00210D55 /* MediaAlbumContentViewController.xib in Resources */,
-				B1B557E820EF60F500210D55 /* MessagesSearchResultTextMsgBubbleCell.xib in Resources */,
 				B1B5573020EE6C4D00210D55 /* BugReportViewController.xib in Resources */,
 				B169329B20F39E6300746532 /* Main.storyboard in Resources */,
 				F083BE061E7009ED00A9B29C /* Riot-Defaults.plist in Resources */,
@@ -3751,7 +3697,6 @@
 				020DF966214BE467003DFBA4 /* RoomOutgoingEncryptedTextMsgBubbleCell.m in Sources */,
 				020DF98C214BE467003DFBA4 /* RoomIncomingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
 				0250C4A72122B68000034691 /* Widget.m in Sources */,
-				0250C4A82122B68000034691 /* MessagesSearchResultAttachmentBubbleCell.m in Sources */,
 				B1680CFC2152A9E6009B5F92 /* PublicRoomsDataSource.swift in Sources */,
 				0250C4A92122B68000034691 /* CallViewController.m in Sources */,
 				B15B867B21359145002782BE /* KeyboardNotification.swift in Sources */,
@@ -3918,7 +3863,6 @@
 				020DF9AB214BE467003DFBA4 /* KeyboardGrowingTextView.m in Sources */,
 				B1680D012152A9F6009B5F92 /* TCNavigationController.swift in Sources */,
 				020DF9AD214BE467003DFBA4 /* DisabledRoomInputToolbarView.m in Sources */,
-				0250C5242122B68000034691 /* MessagesSearchResultTextMsgBubbleCell.m in Sources */,
 				B1BC6A242136D75B00D32F8E /* WelcomeViewController.swift in Sources */,
 				020DF970214BE467003DFBA4 /* RoomIncomingEncryptedTextMsgBubbleCell.m in Sources */,
 				B1892E792130528600742348 /* ErrorPresentableImpl.swift in Sources */,
@@ -3945,7 +3889,6 @@
 				020DF935214BE467003DFBA4 /* RoomDataSource.m in Sources */,
 				B1F2AA97212AEC830077FDC0 /* AppCoordinator.swift in Sources */,
 				0250C5342122B68000034691 /* RiotSplitViewController.m in Sources */,
-				0250C5392122B68000034691 /* HomeMessagesSearchDataSource.m in Sources */,
 				B15B867421355A7A002782BE /* ErrorPresenter.swift in Sources */,
 				020DF989214BE467003DFBA4 /* RoomOutgoingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				0290609221527A3F005FE3C1 /* RoomDetailsCoordinator.swift in Sources */,
@@ -4014,7 +3957,6 @@
 				B1B5598820EFC3E000210D55 /* WidgetManager.m in Sources */,
 				B16932A320F3A21C00746532 /* main.m in Sources */,
 				B1B5598720EFC3E000210D55 /* Widget.m in Sources */,
-				B1B557E320EF60B900210D55 /* MessagesSearchResultAttachmentBubbleCell.m in Sources */,
 				B1B5574420EE6C4D00210D55 /* CallViewController.m in Sources */,
 				B1B5577320EE702800210D55 /* JitsiViewController.m in Sources */,
 				F083BDEE1E7009ED00A9B29C /* MXRoom+Riot.m in Sources */,
@@ -4060,7 +4002,6 @@
 				926FA53F1F4C132000F826C2 /* MXSession+Riot.m in Sources */,
 				B1B5574720EE6C4D00210D55 /* UsersDevicesViewController.m in Sources */,
 				32C10340211DD1A100DFFB5D /* MatrixSDK+Swift.m in Sources */,
-				B1B557E920EF60F500210D55 /* MessagesSearchResultTextMsgBubbleCell.m in Sources */,
 				B1B5577020EE702800210D55 /* WidgetPickerViewController.m in Sources */,
 				B1B5576F20EE702800210D55 /* IntegrationManagerViewController.m in Sources */,
 				B1B557AC20EF5A6D00210D55 /* DeviceView.m in Sources */,
@@ -4070,7 +4011,6 @@
 				F083BDF91E7009ED00A9B29C /* RoomEmailInvitation.m in Sources */,
 				B15B86822135BC6F002782BE /* MasterTabBarController.m in Sources */,
 				B1B5574920EE6C4D00210D55 /* RiotSplitViewController.m in Sources */,
-				B16932E720F3C37100746532 /* HomeMessagesSearchDataSource.m in Sources */,
 				B1B5577D20EE84BF00210D55 /* CircleButton.m in Sources */,
 				B1B5591020EF782800210D55 /* TableViewCellWithPhoneNumberTextField.m in Sources */,
 			);
