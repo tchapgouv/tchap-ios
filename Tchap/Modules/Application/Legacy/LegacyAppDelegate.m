@@ -27,7 +27,6 @@
 
 #import "RoomViewController.h"
 
-#import "DirectoryViewController.h"
 #import "SettingsViewController.h"
 
 #import "BugReportViewController.h"
