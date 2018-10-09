@@ -25,7 +25,6 @@
 #import <OLMKit/OLMKit.h>
 #import <Photos/Photos.h>
 
-#import "AppDelegate.h"
 #import "AvatarGenerator.h"
 
 #import "BugReportViewController.h"

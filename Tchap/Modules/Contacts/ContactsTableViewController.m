@@ -18,7 +18,10 @@
 
 #import "UIViewController+RiotSearch.h"
 
-#import "AppDelegate.h"
+#import "RiotDesignValues.h"
+#import "RageShakeManager.h"
+#import "Analytics.h"
+#import "LegacyAppDelegate.h"
 
 #define CONTACTS_TABLEVC_LOCALCONTACTS_BITWISE 0x01
 #define CONTACTS_TABLEVC_USERDIRECTORY_BITWISE 0x02

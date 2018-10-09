@@ -28,7 +28,11 @@
 
 #import "InviteRecentTableViewCell.h"
 
-#import "AppDelegate.h"
+#import "RageShakeManager.h"
+#import "RiotDesignValues.h"
+#import "DesignValues.h"
+#import "Analytics.h"
+#import "LegacyAppDelegate.h"
 
 @interface RecentsViewController ()
 {

@@ -23,8 +23,6 @@
 
 #import "MXRoom+Riot.h"
 
-#import "AppDelegate.h"
-
 #import "GeneratedInterface-Swift.h"
 
 #define RECENTSDATASOURCE_SECTION_DIRECTORY     0x01

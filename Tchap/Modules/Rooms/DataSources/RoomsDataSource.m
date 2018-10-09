@@ -22,8 +22,6 @@
 
 #import "MXRoom+Riot.h"
 
-#import "AppDelegate.h"
-
 #import "GeneratedInterface-Swift.h"
 
 #define ROOMSDATASOURCE_SECTION_INVITES       0x02

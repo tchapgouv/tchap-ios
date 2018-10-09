@@ -17,7 +17,9 @@
 
 #import "MediaAlbumContentViewController.h"
 
-#import "AppDelegate.h"
+#import "RageShakeManager.h"
+#import "RiotDesignValues.h"
+#import "Analytics.h"
 
 #import <MobileCoreServices/MobileCoreServices.h>
 

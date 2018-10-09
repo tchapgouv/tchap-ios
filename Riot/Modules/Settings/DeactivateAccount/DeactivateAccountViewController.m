@@ -17,7 +17,7 @@
 #import "DeactivateAccountViewController.h"
 
 #import "RiotDesignValues.h"
-#import "AppDelegate.h"
+#import "Analytics.h"
 
 #pragma mark - Defines & Constants
 

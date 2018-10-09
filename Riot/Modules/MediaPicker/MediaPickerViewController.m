@@ -17,7 +17,9 @@
 
 #import "MediaPickerViewController.h"
 
-#import "AppDelegate.h"
+#import "RiotDesignValues.h"
+#import "RageShakeManager.h"
+#import "Analytics.h"
 
 #import <Photos/Photos.h>
 
@@ -30,6 +32,8 @@
 #import "MediaAlbumTableCell.h"
 
 #import <MatrixKit/MatrixKit.h>
+
+#import "GeneratedInterface-Swift.h"
 
 static void *CapturingStillImageContext = &CapturingStillImageContext;
 static void *RecordingContext = &RecordingContext;

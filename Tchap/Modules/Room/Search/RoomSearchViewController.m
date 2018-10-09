@@ -22,7 +22,9 @@
 #import "RoomFilesSearchViewController.h"
 #import "FilesSearchCellData.h"
 
-#import "AppDelegate.h"
+#import "RoomViewController.h"
+#import "RiotDesignValues.h"
+#import "Analytics.h"
 
 @interface RoomSearchViewController ()
 {

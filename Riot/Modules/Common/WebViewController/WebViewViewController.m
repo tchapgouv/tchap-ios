@@ -15,7 +15,9 @@
  */
 
 #import "WebViewViewController.h"
-#import "AppDelegate.h"
+
+#import "RageShakeManager.h"
+#import "RiotDesignValues.h"
 
 @interface WebViewViewController ()
 {
