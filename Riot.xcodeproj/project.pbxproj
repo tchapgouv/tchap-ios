@@ -299,6 +299,7 @@
 		3233F7471F3497E2006ACA81 /* JitsiMeet.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3233F7441F3497DA006ACA81 /* JitsiMeet.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3284A35120A07C210044F922 /* postMessageAPI.js in Resources */ = {isa = PBXBuildFile; fileRef = 3284A35020A07C210044F922 /* postMessageAPI.js */; };
 		32C10340211DD1A100DFFB5D /* MatrixSDK+Swift.m in Sources */ = {isa = PBXBuildFile; fileRef = 32C1033F211DD1A100DFFB5D /* MatrixSDK+Swift.m */; };
+		599A0B2BF3E50939A4FBD2DD /* Pods_RiotPods_TchapTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08BA8F52677EE3F18661D478 /* Pods_RiotPods_TchapTests.framework */; };
 		75123CD1FC3AEA01A1B0ABBE /* Pods_RiotPods_SiriIntents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 940A45C29F3CB0D58EFBCA8B /* Pods_RiotPods_SiriIntents.framework */; };
 		926FA53F1F4C132000F826C2 /* MXSession+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = 926FA53E1F4C132000F826C2 /* MXSession+Riot.m */; };
 		92726A471F58737A004AD26F /* IntentHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 92726A461F58737A004AD26F /* IntentHandler.m */; };
@@ -333,6 +334,9 @@
 		B1322FF82130032B0054A9DD /* AuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1322FF72130032B0054A9DD /* AuthenticationService.swift */; };
 		B1322FFA2130146D0054A9DD /* AuthenticationServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1322FF92130146D0054A9DD /* AuthenticationServiceType.swift */; };
 		B1322FFC21301B5D0054A9DD /* AuthenticationServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1322FFB21301B5D0054A9DD /* AuthenticationServiceError.swift */; };
+		B1454B97216BA84100365A86 /* DisplayNameComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1454B96216BA84000365A86 /* DisplayNameComponents.swift */; };
+		B1454BCD216BBE7200365A86 /* DisplayNameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1454BCC216BBE7200365A86 /* DisplayNameTests.swift */; };
+		B1454BD1216BBF0E00365A86 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B1454BD0216BBF0D00365A86 /* Info.plist */; };
 		B15AB29E215BF20E007F5405 /* ForgotPasswordCheckedEmailViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B15AB296215BF20D007F5405 /* ForgotPasswordCheckedEmailViewController.storyboard */; };
 		B15AB29F215BF20E007F5405 /* ForgotPasswordFormViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B15AB297215BF20D007F5405 /* ForgotPasswordFormViewController.storyboard */; };
 		B15AB2A0215BF20E007F5405 /* ForgotPasswordCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15AB298215BF20D007F5405 /* ForgotPasswordCoordinatorType.swift */; };
@@ -594,6 +598,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 92726A421F58737A004AD26F;
 			remoteInfo = SiriIntents;
+		};
+		B1454BC6216BBE4000365A86 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F094A99A1B78D8F000B1FBBF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0250C48C2122B68000034691;
+			remoteInfo = Tchap;
 		};
 		F094A9BF1B78D8F000B1FBBF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -869,6 +880,8 @@
 		02BEE1A2212C717F00098505 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		02BEE1A6212C77B700098505 /* DesignValues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DesignValues.m; sourceTree = "<group>"; };
 		02BEE1A7212C77B700098505 /* DesignValues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DesignValues.h; sourceTree = "<group>"; };
+		08BA8F52677EE3F18661D478 /* Pods_RiotPods_TchapTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RiotPods_TchapTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1741F88AF0AA753CCB035EA0 /* Pods-RiotPods-TchapTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-TchapTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-RiotPods-TchapTests/Pods-RiotPods-TchapTests.release.xcconfig"; sourceTree = "<group>"; };
 		238E97931CE2A93DB3CC3C7F /* Pods-RiotPods-RiotShareExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-RiotShareExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RiotPods-RiotShareExtension/Pods-RiotPods-RiotShareExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		24CBEC4E1F0EAD310093EABB /* RiotShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = RiotShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		3233F7441F3497DA006ACA81 /* JitsiMeet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JitsiMeet.framework; sourceTree = "<group>"; };
@@ -886,6 +899,7 @@
 		32C1033E211DD1A100DFFB5D /* MatrixSDK+Swift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MatrixSDK+Swift.h"; sourceTree = "<group>"; };
 		32C1033F211DD1A100DFFB5D /* MatrixSDK+Swift.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "MatrixSDK+Swift.m"; sourceTree = "<group>"; };
 		4AF7DFFA02629E46BC6A48DC /* Pods-RiotPods-Riot.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-Riot.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RiotPods-Riot/Pods-RiotPods-Riot.debug.xcconfig"; sourceTree = "<group>"; };
+		4F5F4F8534177BF9B5F0CB94 /* Pods-RiotPods-TchapTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-TchapTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RiotPods-TchapTests/Pods-RiotPods-TchapTests.debug.xcconfig"; sourceTree = "<group>"; };
 		926FA53D1F4C132000F826C2 /* MXSession+Riot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MXSession+Riot.h"; sourceTree = "<group>"; };
 		926FA53E1F4C132000F826C2 /* MXSession+Riot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MXSession+Riot.m"; sourceTree = "<group>"; };
 		92726A431F58737A004AD26F /* SiriIntents.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SiriIntents.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -924,6 +938,11 @@
 		B1322FF72130032B0054A9DD /* AuthenticationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationService.swift; sourceTree = "<group>"; };
 		B1322FF92130146D0054A9DD /* AuthenticationServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationServiceType.swift; sourceTree = "<group>"; };
 		B1322FFB21301B5D0054A9DD /* AuthenticationServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationServiceError.swift; sourceTree = "<group>"; };
+		B1454B96216BA84000365A86 /* DisplayNameComponents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayNameComponents.swift; sourceTree = "<group>"; };
+		B1454BC1216BBE3F00365A86 /* TchapTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TchapTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B1454BCC216BBE7200365A86 /* DisplayNameTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayNameTests.swift; sourceTree = "<group>"; };
+		B1454BCF216BBF0D00365A86 /* TchapTests-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TchapTests-Bridging-Header.h"; sourceTree = "<group>"; };
+		B1454BD0216BBF0D00365A86 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B15AB296215BF20D007F5405 /* ForgotPasswordCheckedEmailViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ForgotPasswordCheckedEmailViewController.storyboard; sourceTree = "<group>"; };
 		B15AB297215BF20D007F5405 /* ForgotPasswordFormViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ForgotPasswordFormViewController.storyboard; sourceTree = "<group>"; };
 		B15AB298215BF20D007F5405 /* ForgotPasswordCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotPasswordCoordinatorType.swift; sourceTree = "<group>"; };
@@ -1331,6 +1350,14 @@
 			files = (
 				92726A511F587410004AD26F /* Intents.framework in Frameworks */,
 				75123CD1FC3AEA01A1B0ABBE /* Pods_RiotPods_SiriIntents.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B1454BBE216BBE3F00365A86 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				599A0B2BF3E50939A4FBD2DD /* Pods_RiotPods_TchapTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1842,6 +1869,7 @@
 				B12FD6A42146BA14001B7F28 /* Registration */,
 				02BEE185212AB23A00098505 /* ThirdPartyIDPlatformInfoResolver */,
 				B1680D022152AA28009B5F92 /* PublicRoom */,
+				B1454B95216BA84000365A86 /* DisplayName */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -1911,6 +1939,7 @@
 				DA7C5FAF411C8F14F5447193 /* Pods_RiotPods_RiotShareExtension.framework */,
 				940A45C29F3CB0D58EFBCA8B /* Pods_RiotPods_SiriIntents.framework */,
 				DA7369E6055F47F7869FF3B2 /* Pods_RiotPods_Tchap.framework */,
+				08BA8F52677EE3F18661D478 /* Pods_RiotPods_TchapTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -2031,6 +2060,32 @@
 				B104AA1E215E163000B2C452 /* ForgotPasswordServiceType.swift */,
 			);
 			path = Authentication;
+			sourceTree = "<group>";
+		};
+		B1454B95216BA84000365A86 /* DisplayName */ = {
+			isa = PBXGroup;
+			children = (
+				B1454B96216BA84000365A86 /* DisplayNameComponents.swift */,
+			);
+			path = DisplayName;
+			sourceTree = "<group>";
+		};
+		B1454BC2216BBE4000365A86 /* TchapTests */ = {
+			isa = PBXGroup;
+			children = (
+				B1454BCC216BBE7200365A86 /* DisplayNameTests.swift */,
+				B1454BCE216BBECB00365A86 /* SupportingFiles */,
+			);
+			path = TchapTests;
+			sourceTree = "<group>";
+		};
+		B1454BCE216BBECB00365A86 /* SupportingFiles */ = {
+			isa = PBXGroup;
+			children = (
+				B1454BD0216BBF0D00365A86 /* Info.plist */,
+				B1454BCF216BBF0D00365A86 /* TchapTests-Bridging-Header.h */,
+			);
+			path = SupportingFiles;
 			sourceTree = "<group>";
 		};
 		B15AB295215BF20D007F5405 /* ForgotPassword */ = {
@@ -3210,6 +3265,8 @@
 				EC9407D4B803A8C4A7BE24BE /* Pods-RiotPods-SiriIntents.release.xcconfig */,
 				E08D5758E6C7E95E873847CE /* Pods-RiotPods-Tchap.debug.xcconfig */,
 				CE094F20A8F9C16D0B285A46 /* Pods-RiotPods-Tchap.release.xcconfig */,
+				4F5F4F8534177BF9B5F0CB94 /* Pods-RiotPods-TchapTests.debug.xcconfig */,
+				1741F88AF0AA753CCB035EA0 /* Pods-RiotPods-TchapTests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -3344,6 +3401,7 @@
 				F083BB021E7005FD00A9B29C /* RiotTests */,
 				24CBEC4F1F0EAD310093EABB /* RiotShareExtension */,
 				92726A441F58737A004AD26F /* SiriIntents */,
+				B1454BC2216BBE4000365A86 /* TchapTests */,
 				F094A9A31B78D8F000B1FBBF /* Products */,
 				5FC42FA41F5186AFFB6A2404 /* Frameworks */,
 				B641A4596D66C0C6C460750B /* Pods */,
@@ -3358,6 +3416,7 @@
 				24CBEC4E1F0EAD310093EABB /* RiotShareExtension.appex */,
 				92726A431F58737A004AD26F /* SiriIntents.appex */,
 				0250C5BF2122B68000034691 /* Tchap.app */,
+				B1454BC1216BBE3F00365A86 /* TchapTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -3423,6 +3482,26 @@
 			productName = SiriIntents;
 			productReference = 92726A431F58737A004AD26F /* SiriIntents.appex */;
 			productType = "com.apple.product-type.app-extension";
+		};
+		B1454BC0216BBE3F00365A86 /* TchapTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B1454BCA216BBE4000365A86 /* Build configuration list for PBXNativeTarget "TchapTests" */;
+			buildPhases = (
+				3194AAFB962A3BB0CCA0D299 /* [CP] Check Pods Manifest.lock */,
+				B1454BBD216BBE3F00365A86 /* Sources */,
+				B1454BBE216BBE3F00365A86 /* Frameworks */,
+				B1454BBF216BBE3F00365A86 /* Resources */,
+				41638F651F31CF2414D67BC6 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B1454BC7216BBE4000365A86 /* PBXTargetDependency */,
+			);
+			name = TchapTests;
+			productName = TchapTests;
+			productReference = B1454BC1216BBE3F00365A86 /* TchapTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		F094A9A11B78D8F000B1FBBF /* Riot */ = {
 			isa = PBXNativeTarget;
@@ -3504,6 +3583,11 @@
 							};
 						};
 					};
+					B1454BC0216BBE3F00365A86 = {
+						CreatedOnToolsVersion = 9.4.1;
+						LastSwiftMigration = 0940;
+						TestTargetID = 0250C48C2122B68000034691;
+					};
 					F094A9A11B78D8F000B1FBBF = {
 						CreatedOnToolsVersion = 6.2;
 						DevelopmentTeam = 7J4U792NQT;
@@ -3555,6 +3639,7 @@
 				24CBEC4D1F0EAD310093EABB /* RiotShareExtension */,
 				92726A421F58737A004AD26F /* SiriIntents */,
 				0250C48C2122B68000034691 /* Tchap */,
+				B1454BC0216BBE3F00365A86 /* TchapTests */,
 			);
 		};
 /* End PBXProject section */
@@ -3712,6 +3797,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B1454BBF216BBE3F00365A86 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B1454BD1216BBF0E00365A86 /* Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F094A9A01B78D8F000B1FBBF /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -3803,6 +3896,24 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		3194AAFB962A3BB0CCA0D299 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-RiotPods-TchapTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		384E5E0363116974553C6919 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -3867,6 +3978,54 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-RiotPods-Tchap/Pods-RiotPods-Tchap-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		41638F651F31CF2414D67BC6 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-RiotPods-TchapTests/Pods-RiotPods-TchapTests-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
+				"${BUILT_PRODUCTS_DIR}/DTCoreText/DTCoreText.framework",
+				"${BUILT_PRODUCTS_DIR}/DTFoundation/DTFoundation.framework",
+				"${BUILT_PRODUCTS_DIR}/GBDeviceInfo/GBDeviceInfo.framework",
+				"${BUILT_PRODUCTS_DIR}/GZIP/GZIP.framework",
+				"${BUILT_PRODUCTS_DIR}/HPGrowingTextView/HPGrowingTextView.framework",
+				"${BUILT_PRODUCTS_DIR}/MatrixKit/MatrixKit.framework",
+				"${BUILT_PRODUCTS_DIR}/MatrixSDK/MatrixSDK.framework",
+				"${BUILT_PRODUCTS_DIR}/OLMKit/OLMKit.framework",
+				"${BUILT_PRODUCTS_DIR}/PiwikTracker/PiwikTracker.framework",
+				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
+				"${BUILT_PRODUCTS_DIR}/Reusable/Reusable.framework",
+				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
+				"${PODS_ROOT}/WebRTC/WebRTC.framework",
+				"${BUILT_PRODUCTS_DIR}/cmark/cmark.framework",
+				"${BUILT_PRODUCTS_DIR}/libPhoneNumber-iOS/libPhoneNumber_iOS.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DTCoreText.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DTFoundation.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GBDeviceInfo.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GZIP.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/HPGrowingTextView.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MatrixKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MatrixSDK.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OLMKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PiwikTracker.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reusable.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WebRTC.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/cmark.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/libPhoneNumber_iOS.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-RiotPods-TchapTests/Pods-RiotPods-TchapTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		46DB7C2D02B4A436989D9102 /* [CP] Check Pods Manifest.lock */ = {
@@ -4179,6 +4338,7 @@
 				B12FD6AA2146BA45001B7F28 /* RegistrationServiceError.swift in Sources */,
 				B15B867621357514002782BE /* AlertErrorPresenter.swift in Sources */,
 				0250C50A2122B68000034691 /* GroupDetailsViewController.m in Sources */,
+				B1454B97216BA84100365A86 /* DisplayNameComponents.swift in Sources */,
 				0250C50B2122B68000034691 /* RoomKeyRequestViewController.m in Sources */,
 				B1F2AAB6212AFDBA0077FDC0 /* UIViewController.swift in Sources */,
 				0250C50F2122B68000034691 /* RoomTableViewCell.m in Sources */,
@@ -4279,6 +4439,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				92726A471F58737A004AD26F /* IntentHandler.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B1454BBD216BBE3F00365A86 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B1454BCD216BBE7200365A86 /* DisplayNameTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4406,6 +4574,11 @@
 			isa = PBXTargetDependency;
 			target = 92726A421F58737A004AD26F /* SiriIntents */;
 			targetProxy = 92726A491F58737A004AD26F /* PBXContainerItemProxy */;
+		};
+		B1454BC7216BBE4000365A86 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0250C48C2122B68000034691 /* Tchap */;
+			targetProxy = B1454BC6216BBE4000365A86 /* PBXContainerItemProxy */;
 		};
 		F094A9C01B78D8F000B1FBBF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -4698,6 +4871,76 @@
 			};
 			name = Release;
 		};
+		B1454BC8216BBE4000365A86 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4F5F4F8534177BF9B5F0CB94 /* Pods-RiotPods-TchapTests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 7J4U792NQT;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = TchapTests/SupportingFiles/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = im.vector.TchapTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "TchapTests/SupportingFiles/TchapTests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Tchap.app/Tchap";
+			};
+			name = Debug;
+		};
+		B1454BC9216BBE4000365A86 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1741F88AF0AA753CCB035EA0 /* Pods-RiotPods-TchapTests.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 7J4U792NQT;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = TchapTests/SupportingFiles/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = im.vector.TchapTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "TchapTests/SupportingFiles/TchapTests-Bridging-Header.h";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Tchap.app/Tchap";
+			};
+			name = Release;
+		};
 		F094A9C61B78D8F000B1FBBF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -4962,6 +5205,15 @@
 			buildConfigurations = (
 				92726A4C1F58737A004AD26F /* Debug */,
 				92726A4D1F58737A004AD26F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B1454BCA216BBE4000365A86 /* Build configuration list for PBXNativeTarget "TchapTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B1454BC8216BBE4000365A86 /* Debug */,
+				B1454BC9216BBE4000365A86 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
