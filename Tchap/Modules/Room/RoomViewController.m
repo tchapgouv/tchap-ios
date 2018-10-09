@@ -111,6 +111,8 @@
 #import "EventFormatter.h"
 #import <MatrixKit/MXKSlashCommands.h>
 
+#import "MXSession+Riot.h"
+
 #import "GeneratedInterface-Swift.h"
 
 @interface RoomViewController () <Stylable>
@@ -3384,6 +3386,16 @@
 
 #pragma mark - Missed discussions handling
 
+- (NSUInteger)missedDiscussionsCount
+{
+    return [self.mainSession riot_missedDiscussionsCount];
+}
+
+- (NSUInteger)missedHighlightDiscussionsCount
+{
+    return [self.mainSession missedHighlightDiscussionsCount];
+}
+
 - (void)refreshMissedDiscussionsCount:(BOOL)force
 {
     // Ignore this action when no room is displayed
@@ -3393,7 +3405,7 @@
     }
     
     NSUInteger highlightCount = 0;
-    NSUInteger missedCount = [[AppDelegate theDelegate].masterTabBarController missedDiscussionsCount];
+    NSUInteger missedCount = [self missedDiscussionsCount];
     
     // Compute the missed notifications count of the current room by considering its notification mode in Riot.
     NSUInteger roomNotificationCount = self.roomDataSource.room.summary.notificationCount;
@@ -3412,7 +3424,7 @@
     if (missedCount)
     {
         // Compute the missed highlight count
-        highlightCount = [[AppDelegate theDelegate].masterTabBarController missedHighlightDiscussionsCount];
+        highlightCount = [self missedHighlightDiscussionsCount];
         if (highlightCount && self.roomDataSource.room.summary.highlightCount)
         {
             // Remove the current room from the missed highlight counter
