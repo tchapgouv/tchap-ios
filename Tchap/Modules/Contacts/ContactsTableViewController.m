@@ -217,12 +217,12 @@
 {
     // Update here the index of the current selected cell (if any) - Useful in landscape mode with split view controller.
     NSIndexPath *currentSelectedCellIndexPath = nil;
-    MasterTabBarController *masterTabBarController = [AppDelegate theDelegate].masterTabBarController;
-    if (masterTabBarController.currentContactDetailViewController)
-    {
-        // Look for the rank of this selected contact in displayed recents
-        currentSelectedCellIndexPath = [contactsDataSource cellIndexPathWithContact:masterTabBarController.selectedContact];
-    }
+//    MasterTabBarController *masterTabBarController = [AppDelegate theDelegate].masterTabBarController;
+//    if (masterTabBarController.currentContactDetailViewController)
+//    {
+//        // Look for the rank of this selected contact in displayed recents
+//        currentSelectedCellIndexPath = [contactsDataSource cellIndexPathWithContact:masterTabBarController.selectedContact];
+//    }
     
     if (currentSelectedCellIndexPath)
     {

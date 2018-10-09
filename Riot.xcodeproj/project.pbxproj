@@ -174,10 +174,8 @@
 		0250C4FF2122B68000034691 /* RecentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556D920EE6C4C00210D55 /* RecentsViewController.m */; };
 		0250C5012122B68000034691 /* StickerPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5576820EE702800210D55 /* StickerPickerViewController.m */; };
 		0250C5072122B68000034691 /* InviteRecentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5597220EFB02900210D55 /* InviteRecentTableViewCell.m */; };
-		0250C5082122B68000034691 /* ContactDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5568820EE6C4C00210D55 /* ContactDetailsViewController.m */; };
 		0250C5092122B68000034691 /* OnBoardingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1798301211B13B3001FD722 /* OnBoardingManager.swift */; };
 		0250C50B2122B68000034691 /* RoomKeyRequestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556FE20EE6C4C00210D55 /* RoomKeyRequestViewController.m */; };
-		0250C50F2122B68000034691 /* RoomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5596420EF9E9A00210D55 /* RoomTableViewCell.m */; };
 		0250C5132122B68000034691 /* CountryPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5567A20EE6C4C00210D55 /* CountryPickerViewController.m */; };
 		0250C5142122B68000034691 /* GDPRConsentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17982FE2119FED2001FD722 /* GDPRConsentViewController.swift */; };
 		0250C5192122B68000034691 /* MXSession+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = 926FA53E1F4C132000F826C2 /* MXSession+Riot.m */; };
@@ -196,7 +194,6 @@
 		0250C5442122B68000034691 /* ring.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F083BBDE1E7009EC00A9B29C /* ring.mp3 */; };
 		0250C5462122B68000034691 /* TableViewCellWithButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5592920EF7A5D00210D55 /* TableViewCellWithButton.xib */; };
 		0250C54C2122B68000034691 /* EncryptionInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5596E20EFA85C00210D55 /* EncryptionInfoView.xib */; };
-		0250C54E2122B68000034691 /* ContactDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5568A20EE6C4C00210D55 /* ContactDetailsViewController.xib */; };
 		0250C5502122B68000034691 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B1664D5920F4EBEC00808783 /* Localizable.strings */; };
 		0250C5522122B68000034691 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B1664D5720F4EBEC00808783 /* InfoPlist.strings */; };
 		0250C5552122B68000034691 /* callend.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F083BBDC1E7009EC00A9B29C /* callend.mp3 */; };
@@ -213,7 +210,6 @@
 		0250C5822122B68000034691 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B169329520F39E6300746532 /* Main.storyboard */; };
 		0250C58D2122B68000034691 /* RecentsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B556DA20EE6C4C00210D55 /* RecentsViewController.xib */; };
 		0250C58E2122B68000034691 /* DeactivateAccountViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B1B5568320EE6C4C00210D55 /* DeactivateAccountViewController.storyboard */; };
-		0250C58F2122B68000034691 /* RoomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5596320EF9E9A00210D55 /* RoomTableViewCell.xib */; };
 		0250C5932122B68000034691 /* JitsiViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5576B20EE702800210D55 /* JitsiViewController.xib */; };
 		0250C5972122B68000034691 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B169329320F39E6200746532 /* LaunchScreen.storyboard */; };
 		0250C5982122B68000034691 /* RecentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5595120EF9A8600210D55 /* RecentTableViewCell.xib */; };
@@ -348,7 +344,6 @@
 		B16932EE20F3C3C900746532 /* FilesSearchCellData.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932EC20F3C3C800746532 /* FilesSearchCellData.m */; };
 		B16932F720F3C50E00746532 /* RecentsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932F620F3C50E00746532 /* RecentsDataSource.m */; };
 		B16932FA20F3C51A00746532 /* RecentCellData.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932F920F3C51900746532 /* RecentCellData.m */; };
-		B169330820F3CA0E00746532 /* ContactsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = B169330620F3CA0D00746532 /* ContactsDataSource.m */; };
 		B169330B20F3CA3A00746532 /* Contact.m in Sources */ = {isa = PBXBuildFile; fileRef = B169330A20F3CA3900746532 /* Contact.m */; };
 		B169331420F3CAFC00746532 /* PublicRoomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B169330E20F3CAFC00746532 /* PublicRoomTableViewCell.m */; };
 		B169331520F3CAFC00746532 /* PublicRoomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B169330F20F3CAFC00746532 /* PublicRoomTableViewCell.xib */; };
@@ -368,10 +363,6 @@
 		B1B5571A20EE6C4D00210D55 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5567E20EE6C4C00210D55 /* SettingsViewController.m */; };
 		B1B5571B20EE6C4D00210D55 /* DeactivateAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5568120EE6C4C00210D55 /* DeactivateAccountViewController.m */; };
 		B1B5571C20EE6C4D00210D55 /* DeactivateAccountViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B1B5568320EE6C4C00210D55 /* DeactivateAccountViewController.storyboard */; };
-		B1B5571E20EE6C4D00210D55 /* ContactDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5568820EE6C4C00210D55 /* ContactDetailsViewController.m */; };
-		B1B5571F20EE6C4D00210D55 /* ContactDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5568A20EE6C4C00210D55 /* ContactDetailsViewController.xib */; };
-		B1B5572020EE6C4D00210D55 /* ContactsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5568C20EE6C4C00210D55 /* ContactsTableViewController.m */; };
-		B1B5572120EE6C4D00210D55 /* ContactsTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5568D20EE6C4C00210D55 /* ContactsTableViewController.xib */; };
 		B1B5573020EE6C4D00210D55 /* BugReportViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B556B120EE6C4C00210D55 /* BugReportViewController.xib */; };
 		B1B5573120EE6C4D00210D55 /* BugReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556B320EE6C4C00210D55 /* BugReportViewController.m */; };
 		B1B5573D20EE6C4D00210D55 /* WebViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556D020EE6C4C00210D55 /* WebViewViewController.m */; };
@@ -396,8 +387,6 @@
 		B1B5577420EE702900210D55 /* WidgetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5576D20EE702800210D55 /* WidgetViewController.m */; };
 		B1B5577D20EE84BF00210D55 /* CircleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5577B20EE84BE00210D55 /* CircleButton.m */; };
 		B1B5577E20EE84BF00210D55 /* IncomingCallView.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5577C20EE84BF00210D55 /* IncomingCallView.m */; };
-		B1B557A120EF58AD00210D55 /* ContactTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5579E20EF58AC00210D55 /* ContactTableViewCell.m */; };
-		B1B557A220EF58AD00210D55 /* ContactTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5579F20EF58AC00210D55 /* ContactTableViewCell.xib */; };
 		B1B557A720EF5A1B00210D55 /* DeviceTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B557A520EF5A1B00210D55 /* DeviceTableViewCell.xib */; };
 		B1B557A820EF5A1B00210D55 /* DeviceTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B557A620EF5A1B00210D55 /* DeviceTableViewCell.m */; };
 		B1B557AC20EF5A6D00210D55 /* DeviceView.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B557AA20EF5A6C00210D55 /* DeviceView.m */; };
@@ -412,8 +401,6 @@
 		B1B5592C20EF7A5D00210D55 /* TableViewCellWithButton.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5592A20EF7A5D00210D55 /* TableViewCellWithButton.m */; };
 		B1B5595220EF9A8700210D55 /* RecentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5595020EF9A8600210D55 /* RecentTableViewCell.m */; };
 		B1B5595320EF9A8700210D55 /* RecentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5595120EF9A8600210D55 /* RecentTableViewCell.xib */; };
-		B1B5596520EF9E9B00210D55 /* RoomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5596320EF9E9A00210D55 /* RoomTableViewCell.xib */; };
-		B1B5596620EF9E9B00210D55 /* RoomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5596420EF9E9A00210D55 /* RoomTableViewCell.m */; };
 		B1B5596F20EFA85D00210D55 /* EncryptionInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5596C20EFA85C00210D55 /* EncryptionInfoView.m */; };
 		B1B5597020EFA85D00210D55 /* EncryptionInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5596E20EFA85C00210D55 /* EncryptionInfoView.xib */; };
 		B1B5597520EFB02A00210D55 /* InviteRecentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5597220EFB02900210D55 /* InviteRecentTableViewCell.m */; };
@@ -943,8 +930,6 @@
 		B16932F620F3C50E00746532 /* RecentsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentsDataSource.m; sourceTree = "<group>"; };
 		B16932F820F3C51900746532 /* RecentCellData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentCellData.h; sourceTree = "<group>"; };
 		B16932F920F3C51900746532 /* RecentCellData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentCellData.m; sourceTree = "<group>"; };
-		B169330620F3CA0D00746532 /* ContactsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactsDataSource.m; sourceTree = "<group>"; };
-		B169330720F3CA0D00746532 /* ContactsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsDataSource.h; sourceTree = "<group>"; };
 		B169330920F3CA3900746532 /* Contact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Contact.h; sourceTree = "<group>"; };
 		B169330A20F3CA3900746532 /* Contact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Contact.m; sourceTree = "<group>"; };
 		B169330E20F3CAFC00746532 /* PublicRoomTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublicRoomTableViewCell.m; sourceTree = "<group>"; };
@@ -969,12 +954,6 @@
 		B1B5568120EE6C4C00210D55 /* DeactivateAccountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeactivateAccountViewController.m; sourceTree = "<group>"; };
 		B1B5568220EE6C4C00210D55 /* DeactivateAccountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeactivateAccountViewController.h; sourceTree = "<group>"; };
 		B1B5568320EE6C4C00210D55 /* DeactivateAccountViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DeactivateAccountViewController.storyboard; sourceTree = "<group>"; };
-		B1B5568820EE6C4C00210D55 /* ContactDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactDetailsViewController.m; sourceTree = "<group>"; };
-		B1B5568920EE6C4C00210D55 /* ContactsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsTableViewController.h; sourceTree = "<group>"; };
-		B1B5568A20EE6C4C00210D55 /* ContactDetailsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactDetailsViewController.xib; sourceTree = "<group>"; };
-		B1B5568B20EE6C4C00210D55 /* ContactDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactDetailsViewController.h; sourceTree = "<group>"; };
-		B1B5568C20EE6C4C00210D55 /* ContactsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactsTableViewController.m; sourceTree = "<group>"; };
-		B1B5568D20EE6C4C00210D55 /* ContactsTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactsTableViewController.xib; sourceTree = "<group>"; };
 		B1B556B120EE6C4C00210D55 /* BugReportViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BugReportViewController.xib; sourceTree = "<group>"; };
 		B1B556B220EE6C4C00210D55 /* BugReportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BugReportViewController.h; sourceTree = "<group>"; };
 		B1B556B320EE6C4C00210D55 /* BugReportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BugReportViewController.m; sourceTree = "<group>"; };
@@ -1016,9 +995,6 @@
 		B1B5577A20EE84BD00210D55 /* IncomingCallView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IncomingCallView.h; sourceTree = "<group>"; };
 		B1B5577B20EE84BE00210D55 /* CircleButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircleButton.m; sourceTree = "<group>"; };
 		B1B5577C20EE84BF00210D55 /* IncomingCallView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IncomingCallView.m; sourceTree = "<group>"; };
-		B1B5579E20EF58AC00210D55 /* ContactTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactTableViewCell.m; sourceTree = "<group>"; };
-		B1B5579F20EF58AC00210D55 /* ContactTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactTableViewCell.xib; sourceTree = "<group>"; };
-		B1B557A020EF58AC00210D55 /* ContactTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactTableViewCell.h; sourceTree = "<group>"; };
 		B1B557A420EF5A1B00210D55 /* DeviceTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceTableViewCell.h; sourceTree = "<group>"; };
 		B1B557A520EF5A1B00210D55 /* DeviceTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DeviceTableViewCell.xib; sourceTree = "<group>"; };
 		B1B557A620EF5A1B00210D55 /* DeviceTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceTableViewCell.m; sourceTree = "<group>"; };
@@ -1040,9 +1016,6 @@
 		B1B5594F20EF9A8600210D55 /* RecentTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentTableViewCell.h; sourceTree = "<group>"; };
 		B1B5595020EF9A8600210D55 /* RecentTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentTableViewCell.m; sourceTree = "<group>"; };
 		B1B5595120EF9A8600210D55 /* RecentTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RecentTableViewCell.xib; sourceTree = "<group>"; };
-		B1B5596220EF9E9A00210D55 /* RoomTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomTableViewCell.h; sourceTree = "<group>"; };
-		B1B5596320EF9E9A00210D55 /* RoomTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomTableViewCell.xib; sourceTree = "<group>"; };
-		B1B5596420EF9E9A00210D55 /* RoomTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomTableViewCell.m; sourceTree = "<group>"; };
 		B1B5596C20EFA85C00210D55 /* EncryptionInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EncryptionInfoView.m; sourceTree = "<group>"; };
 		B1B5596D20EFA85C00210D55 /* EncryptionInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EncryptionInfoView.h; sourceTree = "<group>"; };
 		B1B5596E20EFA85C00210D55 /* EncryptionInfoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EncryptionInfoView.xib; sourceTree = "<group>"; };
@@ -2136,15 +2109,6 @@
 			path = Contact;
 			sourceTree = "<group>";
 		};
-		B169330520F3C9C000746532 /* DataSources */ = {
-			isa = PBXGroup;
-			children = (
-				B169330720F3CA0D00746532 /* ContactsDataSource.h */,
-				B169330620F3CA0D00746532 /* ContactsDataSource.m */,
-			);
-			path = DataSources;
-			sourceTree = "<group>";
-		};
 		B169330C20F3CA6000746532 /* PublicRoomList */ = {
 			isa = PBXGroup;
 			children = (
@@ -2209,7 +2173,6 @@
 				B169330C20F3CA6000746532 /* PublicRoomList */,
 				B1B5575F20EE702800210D55 /* Integrations */,
 				B1B556DC20EE6C4C00210D55 /* Call */,
-				B1B5568720EE6C4C00210D55 /* Contacts */,
 				B1B556ED20EE6C4C00210D55 /* MediaPicker */,
 				B1B556E420EE6C4C00210D55 /* UserDevices */,
 				B1B5596B20EFA85C00210D55 /* EncryptionInfo */,
@@ -2259,19 +2222,6 @@
 				B1B5568320EE6C4C00210D55 /* DeactivateAccountViewController.storyboard */,
 			);
 			path = DeactivateAccount;
-			sourceTree = "<group>";
-		};
-		B1B5568720EE6C4C00210D55 /* Contacts */ = {
-			isa = PBXGroup;
-			children = (
-				B1B5568920EE6C4C00210D55 /* ContactsTableViewController.h */,
-				B1B5568C20EE6C4C00210D55 /* ContactsTableViewController.m */,
-				B1B5568D20EE6C4C00210D55 /* ContactsTableViewController.xib */,
-				B169330520F3C9C000746532 /* DataSources */,
-				B1B5577620EE70D200210D55 /* Details */,
-				B1B5579D20EF58AC00210D55 /* Views */,
-			);
-			path = Contacts;
 			sourceTree = "<group>";
 		};
 		B1B556B020EE6C4C00210D55 /* BugReport */ = {
@@ -2454,17 +2404,6 @@
 			path = Jitsi;
 			sourceTree = "<group>";
 		};
-		B1B5577620EE70D200210D55 /* Details */ = {
-			isa = PBXGroup;
-			children = (
-				B1B5568B20EE6C4C00210D55 /* ContactDetailsViewController.h */,
-				B1B5568820EE6C4C00210D55 /* ContactDetailsViewController.m */,
-				B1B5568A20EE6C4C00210D55 /* ContactDetailsViewController.xib */,
-				B1B5596120EF9E9A00210D55 /* Views */,
-			);
-			path = Details;
-			sourceTree = "<group>";
-		};
 		B1B5577720EE724200210D55 /* Library */ = {
 			isa = PBXGroup;
 			children = (
@@ -2495,16 +2434,6 @@
 				B1B557A920EF5A6C00210D55 /* DeviceView.h */,
 				B1B557AA20EF5A6C00210D55 /* DeviceView.m */,
 				B1B557AB20EF5A6C00210D55 /* DeviceView.xib */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		B1B5579D20EF58AC00210D55 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				B1B557A020EF58AC00210D55 /* ContactTableViewCell.h */,
-				B1B5579E20EF58AC00210D55 /* ContactTableViewCell.m */,
-				B1B5579F20EF58AC00210D55 /* ContactTableViewCell.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2555,16 +2484,6 @@
 				B1B5594F20EF9A8600210D55 /* RecentTableViewCell.h */,
 				B1B5595020EF9A8600210D55 /* RecentTableViewCell.m */,
 				B1B5595120EF9A8600210D55 /* RecentTableViewCell.xib */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		B1B5596120EF9E9A00210D55 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				B1B5596220EF9E9A00210D55 /* RoomTableViewCell.h */,
-				B1B5596420EF9E9A00210D55 /* RoomTableViewCell.m */,
-				B1B5596320EF9E9A00210D55 /* RoomTableViewCell.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -3190,7 +3109,6 @@
 				020DF97A214BE467003DFBA4 /* RoomPredecessorBubbleCell.xib in Resources */,
 				020DF94C214BE467003DFBA4 /* ReadReceiptsViewController.xib in Resources */,
 				020DF9AE214BE467003DFBA4 /* RoomInputToolbarView.xib in Resources */,
-				0250C54E2122B68000034691 /* ContactDetailsViewController.xib in Resources */,
 				B11C80142139442700CC6F2F /* RegistrationFormViewController.storyboard in Resources */,
 				020DF99D214BE467003DFBA4 /* RoomMembershipWithPaginationTitleBubbleCell.xib in Resources */,
 				0250C5502122B68000034691 /* Localizable.strings in Resources */,
@@ -3254,7 +3172,6 @@
 				0250C58D2122B68000034691 /* RecentsViewController.xib in Resources */,
 				0250C58E2122B68000034691 /* DeactivateAccountViewController.storyboard in Resources */,
 				020DF952214BE467003DFBA4 /* RoomOutgoingEncryptedTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
-				0250C58F2122B68000034691 /* RoomTableViewCell.xib in Resources */,
 				020DF995214BE467003DFBA4 /* RoomOutgoingTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
 				020DF953214BE467003DFBA4 /* RoomIncomingEncryptedTextMsgWithoutSenderInfoBubbleCell.xib in Resources */,
 				020DF992214BE467003DFBA4 /* RoomIncomingAttachmentBubbleCell.xib in Resources */,
@@ -3323,11 +3240,9 @@
 				F083BDE91E7009ED00A9B29C /* ring.mp3 in Resources */,
 				B1B5592B20EF7A5D00210D55 /* TableViewCellWithButton.xib in Resources */,
 				B1B5597020EFA85D00210D55 /* EncryptionInfoView.xib in Resources */,
-				B1B5571F20EE6C4D00210D55 /* ContactDetailsViewController.xib in Resources */,
 				B1664DA220F4F95800808783 /* Localizable.strings in Resources */,
 				B1664DA120F4F94F00808783 /* InfoPlist.strings in Resources */,
 				F083BDE71E7009ED00A9B29C /* callend.mp3 in Resources */,
-				B1B5572120EE6C4D00210D55 /* ContactsTableViewController.xib in Resources */,
 				B1B5574D20EE6C4D00210D55 /* MediaPickerViewController.xib in Resources */,
 				B1B5574320EE6C4D00210D55 /* CallViewController.xib in Resources */,
 				F083BDEA1E7009ED00A9B29C /* ringback.mp3 in Resources */,
@@ -3342,7 +3257,6 @@
 				F083BE061E7009ED00A9B29C /* Riot-Defaults.plist in Resources */,
 				B1B5574220EE6C4D00210D55 /* RecentsViewController.xib in Resources */,
 				B1B5571C20EE6C4D00210D55 /* DeactivateAccountViewController.storyboard in Resources */,
-				B1B5596520EF9E9B00210D55 /* RoomTableViewCell.xib in Resources */,
 				B1B5577220EE702800210D55 /* JitsiViewController.xib in Resources */,
 				B169329920F39E6300746532 /* LaunchScreen.storyboard in Resources */,
 				B1B5595320EF9A8700210D55 /* RecentTableViewCell.xib in Resources */,
@@ -3355,7 +3269,6 @@
 				B1B5573F20EE6C4D00210D55 /* SegmentedViewController.xib in Resources */,
 				B169331520F3CAFC00746532 /* PublicRoomTableViewCell.xib in Resources */,
 				3284A35120A07C210044F922 /* postMessageAPI.js in Resources */,
-				B1B557A220EF58AD00210D55 /* ContactTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3803,7 +3716,6 @@
 				020DF957214BE467003DFBA4 /* RoomIncomingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
 				020DF9B3214BE467003DFBA4 /* EventDetailsView.m in Sources */,
 				020DF937214BE467003DFBA4 /* RoomSettingsViewController.m in Sources */,
-				0250C5082122B68000034691 /* ContactDetailsViewController.m in Sources */,
 				020DF961214BE467003DFBA4 /* RoomOutgoingEncryptedAttachmentBubbleCell.m in Sources */,
 				0250C5092122B68000034691 /* OnBoardingManager.swift in Sources */,
 				B1BC6A282136D78500D32F8E /* WelcomeCoordinator.swift in Sources */,
@@ -3812,7 +3724,6 @@
 				B1454B97216BA84100365A86 /* DisplayNameComponents.swift in Sources */,
 				0250C50B2122B68000034691 /* RoomKeyRequestViewController.m in Sources */,
 				B1F2AAB6212AFDBA0077FDC0 /* UIViewController.swift in Sources */,
-				0250C50F2122B68000034691 /* RoomTableViewCell.m in Sources */,
 				020DF9B1214BE467003DFBA4 /* RoomActivitiesView.m in Sources */,
 				020DF946214BE467003DFBA4 /* RoomMemberDetailsViewController.m in Sources */,
 				020DF943214BE467003DFBA4 /* RoomSearchViewController.m in Sources */,
@@ -3919,12 +3830,10 @@
 			files = (
 				B1B557D120EF5E3500210D55 /* MediaAlbumTableCell.m in Sources */,
 				B16932AC20F3A7B100746532 /* RiotDesignValues.m in Sources */,
-				B1B557A120EF58AD00210D55 /* ContactTableViewCell.m in Sources */,
 				F083BE021E7009ED00A9B29C /* AvatarGenerator.m in Sources */,
 				B1B5573120EE6C4D00210D55 /* BugReportViewController.m in Sources */,
 				B16932A520F3A21C00746532 /* empty.mm in Sources */,
 				B16932FA20F3C51A00746532 /* RecentCellData.m in Sources */,
-				B169330820F3CA0E00746532 /* ContactsDataSource.m in Sources */,
 				B1B5574B20EE6C4D00210D55 /* MediaAlbumContentViewController.m in Sources */,
 				B1B5598820EFC3E000210D55 /* WidgetManager.m in Sources */,
 				B16932A320F3A21C00746532 /* main.m in Sources */,
@@ -3963,12 +3872,9 @@
 				B1B5595220EF9A8700210D55 /* RecentTableViewCell.m in Sources */,
 				B1B5574120EE6C4D00210D55 /* RecentsViewController.m in Sources */,
 				B1B5577120EE702800210D55 /* StickerPickerViewController.m in Sources */,
-				B1B5572020EE6C4D00210D55 /* ContactsTableViewController.m in Sources */,
 				B1B5597520EFB02A00210D55 /* InviteRecentTableViewCell.m in Sources */,
-				B1B5571E20EE6C4D00210D55 /* ContactDetailsViewController.m in Sources */,
 				B1798302211B13B3001FD722 /* OnBoardingManager.swift in Sources */,
 				B1B5575220EE6C4D00210D55 /* RoomKeyRequestViewController.m in Sources */,
-				B1B5596620EF9E9B00210D55 /* RoomTableViewCell.m in Sources */,
 				B1B5571820EE6C4D00210D55 /* CountryPickerViewController.m in Sources */,
 				B17982FF2119FED2001FD722 /* GDPRConsentViewController.swift in Sources */,
 				926FA53F1F4C132000F826C2 /* MXSession+Riot.m in Sources */,
