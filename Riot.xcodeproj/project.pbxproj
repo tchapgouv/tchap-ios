@@ -179,7 +179,6 @@
 		0250C4FE2122B68000034691 /* RecentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5595020EF9A8600210D55 /* RecentTableViewCell.m */; };
 		0250C4FF2122B68000034691 /* RecentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556D920EE6C4C00210D55 /* RecentsViewController.m */; };
 		0250C5012122B68000034691 /* StickerPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5576820EE702800210D55 /* StickerPickerViewController.m */; };
-		0250C5052122B68000034691 /* FavouritesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556C920EE6C4C00210D55 /* FavouritesViewController.m */; };
 		0250C5072122B68000034691 /* InviteRecentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5597220EFB02900210D55 /* InviteRecentTableViewCell.m */; };
 		0250C5082122B68000034691 /* ContactDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5568820EE6C4C00210D55 /* ContactDetailsViewController.m */; };
 		0250C5092122B68000034691 /* OnBoardingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1798301211B13B3001FD722 /* OnBoardingManager.swift */; };
@@ -399,7 +398,6 @@
 		B1B5572120EE6C4D00210D55 /* ContactsTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5568D20EE6C4C00210D55 /* ContactsTableViewController.xib */; };
 		B1B5573020EE6C4D00210D55 /* BugReportViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B556B120EE6C4C00210D55 /* BugReportViewController.xib */; };
 		B1B5573120EE6C4D00210D55 /* BugReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556B320EE6C4C00210D55 /* BugReportViewController.m */; };
-		B1B5573B20EE6C4D00210D55 /* FavouritesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556C920EE6C4C00210D55 /* FavouritesViewController.m */; };
 		B1B5573D20EE6C4D00210D55 /* WebViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556D020EE6C4C00210D55 /* WebViewViewController.m */; };
 		B1B5573E20EE6C4D00210D55 /* RiotNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556D320EE6C4C00210D55 /* RiotNavigationController.m */; };
 		B1B5573F20EE6C4D00210D55 /* SegmentedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B556D620EE6C4C00210D55 /* SegmentedViewController.xib */; };
@@ -1030,8 +1028,6 @@
 		B1B556B120EE6C4C00210D55 /* BugReportViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BugReportViewController.xib; sourceTree = "<group>"; };
 		B1B556B220EE6C4C00210D55 /* BugReportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BugReportViewController.h; sourceTree = "<group>"; };
 		B1B556B320EE6C4C00210D55 /* BugReportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BugReportViewController.m; sourceTree = "<group>"; };
-		B1B556C820EE6C4C00210D55 /* FavouritesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavouritesViewController.h; sourceTree = "<group>"; };
-		B1B556C920EE6C4C00210D55 /* FavouritesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavouritesViewController.m; sourceTree = "<group>"; };
 		B1B556CF20EE6C4C00210D55 /* WebViewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewViewController.h; sourceTree = "<group>"; };
 		B1B556D020EE6C4C00210D55 /* WebViewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewViewController.m; sourceTree = "<group>"; };
 		B1B556D220EE6C4C00210D55 /* RiotNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RiotNavigationController.h; sourceTree = "<group>"; };
@@ -2316,7 +2312,6 @@
 				B1B556EA20EE6C4C00210D55 /* Main */,
 				B1B556CA20EE6C4C00210D55 /* TabBar */,
 				B17982FD2119FEA7001FD722 /* GDPR */,
-				B1B556C720EE6C4C00210D55 /* Favorites */,
 				B1B556E720EE6C4C00210D55 /* People */,
 				B1B556F420EE6C4C00210D55 /* Rooms */,
 				B1B5567720EE6C4C00210D55 /* Settings */,
@@ -2398,15 +2393,6 @@
 				B1B556B120EE6C4C00210D55 /* BugReportViewController.xib */,
 			);
 			path = BugReport;
-			sourceTree = "<group>";
-		};
-		B1B556C720EE6C4C00210D55 /* Favorites */ = {
-			isa = PBXGroup;
-			children = (
-				B1B556C820EE6C4C00210D55 /* FavouritesViewController.h */,
-				B1B556C920EE6C4C00210D55 /* FavouritesViewController.m */,
-			);
-			path = Favorites;
 			sourceTree = "<group>";
 		};
 		B1B556CA20EE6C4C00210D55 /* TabBar */ = {
@@ -4049,7 +4035,6 @@
 				B12FD6AB2146BA45001B7F28 /* ThreePIDCredentials.swift in Sources */,
 				0250C5012122B68000034691 /* StickerPickerViewController.m in Sources */,
 				B15B86892135C284002782BE /* AuthenticationViewModelType.swift in Sources */,
-				0250C5052122B68000034691 /* FavouritesViewController.m in Sources */,
 				B1680CFD2152A9E6009B5F92 /* PublicRoomsCoordinator.swift in Sources */,
 				B15AB2A7215BF55B007F5405 /* ForgotPasswordFormViewModel.swift in Sources */,
 				020DF98E214BE467003DFBA4 /* RoomMembershipBubbleCell.m in Sources */,
@@ -4233,7 +4218,6 @@
 				B1B5574120EE6C4D00210D55 /* RecentsViewController.m in Sources */,
 				B1B5577120EE702800210D55 /* StickerPickerViewController.m in Sources */,
 				B1B5572020EE6C4D00210D55 /* ContactsTableViewController.m in Sources */,
-				B1B5573B20EE6C4D00210D55 /* FavouritesViewController.m in Sources */,
 				B1B5597520EFB02A00210D55 /* InviteRecentTableViewCell.m in Sources */,
 				B1B5571E20EE6C4D00210D55 /* ContactDetailsViewController.m in Sources */,
 				B1798302211B13B3001FD722 /* OnBoardingManager.swift in Sources */,
