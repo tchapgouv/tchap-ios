@@ -26,7 +26,6 @@
 #import "Tools.h"
 
 #import "TableViewCellWithButton.h"
-#import "RoomTableViewCell.h"
 
 #import "EncryptionInfoView.h"
 
