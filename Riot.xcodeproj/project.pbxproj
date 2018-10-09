@@ -169,7 +169,6 @@
 		0250C4F32122B68000034691 /* DecryptionFailure.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5598D20EFC5E400210D55 /* DecryptionFailure.m */; };
 		0250C4F52122B68000034691 /* MXKRoomBubbleTableViewCell+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBE61E7009EC00A9B29C /* MXKRoomBubbleTableViewCell+Riot.m */; };
 		0250C4F62122B68000034691 /* DeviceTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B557A620EF5A1B00210D55 /* DeviceTableViewCell.m */; };
-		0250C4F82122B68000034691 /* RoomIdOrAliasTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5582F20EF66BA00210D55 /* RoomIdOrAliasTableViewCell.m */; };
 		0250C4F92122B68000034691 /* RoomPreviewData.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBFE1E7009EC00A9B29C /* RoomPreviewData.m */; };
 		0250C4FB2122B68000034691 /* IncomingCallView.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5577C20EE84BF00210D55 /* IncomingCallView.m */; };
 		0250C4FE2122B68000034691 /* RecentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5595020EF9A8600210D55 /* RecentTableViewCell.m */; };
@@ -233,7 +232,6 @@
 		0250C5A72122B68000034691 /* SegmentedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B556D620EE6C4C00210D55 /* SegmentedViewController.xib */; };
 		0250C5AB2122B68000034691 /* PublicRoomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B169330F20F3CAFC00746532 /* PublicRoomTableViewCell.xib */; };
 		0250C5AC2122B68000034691 /* postMessageAPI.js in Resources */ = {isa = PBXBuildFile; fileRef = 3284A35020A07C210044F922 /* postMessageAPI.js */; };
-		0250C5B02122B68000034691 /* RoomIdOrAliasTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5582E20EF66BA00210D55 /* RoomIdOrAliasTableViewCell.xib */; };
 		0250C5BB2122B68000034691 /* JitsiMeet.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3233F7441F3497DA006ACA81 /* JitsiMeet.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0250C5CB2122E63900034691 /* empty.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0250C5C82122E63900034691 /* empty.mm */; };
 		0250C5CE212314B300034691 /* Tchap-Defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0250C5CD212314B300034691 /* Tchap-Defaults.plist */; };
@@ -421,8 +419,6 @@
 		B1B557E420EF60B900210D55 /* MessagesSearchResultAttachmentBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B557E120EF60B900210D55 /* MessagesSearchResultAttachmentBubbleCell.xib */; };
 		B1B557E820EF60F500210D55 /* MessagesSearchResultTextMsgBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B557E520EF60F400210D55 /* MessagesSearchResultTextMsgBubbleCell.xib */; };
 		B1B557E920EF60F500210D55 /* MessagesSearchResultTextMsgBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B557E620EF60F400210D55 /* MessagesSearchResultTextMsgBubbleCell.m */; };
-		B1B5583020EF66BA00210D55 /* RoomIdOrAliasTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5582E20EF66BA00210D55 /* RoomIdOrAliasTableViewCell.xib */; };
-		B1B5583120EF66BA00210D55 /* RoomIdOrAliasTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5582F20EF66BA00210D55 /* RoomIdOrAliasTableViewCell.m */; };
 		B1B5590F20EF782800210D55 /* TableViewCellWithPhoneNumberTextField.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5590D20EF782800210D55 /* TableViewCellWithPhoneNumberTextField.xib */; };
 		B1B5591020EF782800210D55 /* TableViewCellWithPhoneNumberTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5590E20EF782800210D55 /* TableViewCellWithPhoneNumberTextField.m */; };
 		B1B5592B20EF7A5D00210D55 /* TableViewCellWithButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5592920EF7A5D00210D55 /* TableViewCellWithButton.xib */; };
@@ -1060,9 +1056,6 @@
 		B1B557E520EF60F400210D55 /* MessagesSearchResultTextMsgBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MessagesSearchResultTextMsgBubbleCell.xib; sourceTree = "<group>"; };
 		B1B557E620EF60F400210D55 /* MessagesSearchResultTextMsgBubbleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagesSearchResultTextMsgBubbleCell.m; sourceTree = "<group>"; };
 		B1B557E720EF60F500210D55 /* MessagesSearchResultTextMsgBubbleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagesSearchResultTextMsgBubbleCell.h; sourceTree = "<group>"; };
-		B1B5582D20EF66BA00210D55 /* RoomIdOrAliasTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomIdOrAliasTableViewCell.h; sourceTree = "<group>"; };
-		B1B5582E20EF66BA00210D55 /* RoomIdOrAliasTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomIdOrAliasTableViewCell.xib; sourceTree = "<group>"; };
-		B1B5582F20EF66BA00210D55 /* RoomIdOrAliasTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomIdOrAliasTableViewCell.m; sourceTree = "<group>"; };
 		B1B5590C20EF782700210D55 /* TableViewCellWithPhoneNumberTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewCellWithPhoneNumberTextField.h; sourceTree = "<group>"; };
 		B1B5590D20EF782800210D55 /* TableViewCellWithPhoneNumberTextField.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TableViewCellWithPhoneNumberTextField.xib; sourceTree = "<group>"; };
 		B1B5590E20EF782800210D55 /* TableViewCellWithPhoneNumberTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewCellWithPhoneNumberTextField.m; sourceTree = "<group>"; };
@@ -2451,7 +2444,6 @@
 		B1B5570C20EE6C4C00210D55 /* GlobalSearch */ = {
 			isa = PBXGroup;
 			children = (
-				B1B5582720EF666100210D55 /* Views */,
 				B1B5570D20EE6C4C00210D55 /* Messages */,
 				B1B5571220EE6C4C00210D55 /* Files */,
 			);
@@ -2620,16 +2612,6 @@
 				B1B557E720EF60F500210D55 /* MessagesSearchResultTextMsgBubbleCell.h */,
 				B1B557E620EF60F400210D55 /* MessagesSearchResultTextMsgBubbleCell.m */,
 				B1B557E520EF60F400210D55 /* MessagesSearchResultTextMsgBubbleCell.xib */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		B1B5582720EF666100210D55 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				B1B5582D20EF66BA00210D55 /* RoomIdOrAliasTableViewCell.h */,
-				B1B5582F20EF66BA00210D55 /* RoomIdOrAliasTableViewCell.m */,
-				B1B5582E20EF66BA00210D55 /* RoomIdOrAliasTableViewCell.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -3380,7 +3362,6 @@
 				0250C5AB2122B68000034691 /* PublicRoomTableViewCell.xib in Resources */,
 				0250C5AC2122B68000034691 /* postMessageAPI.js in Resources */,
 				020DF96B214BE467003DFBA4 /* RoomIncomingEncryptedAttachmentWithPaginationTitleBubbleCell.xib in Resources */,
-				0250C5B02122B68000034691 /* RoomIdOrAliasTableViewCell.xib in Resources */,
 				02BEE1A4212C717F00098505 /* Images.xcassets in Resources */,
 				020DF964214BE467003DFBA4 /* RoomIncomingEncryptedAttachmentWithoutSenderInfoBubbleCell.xib in Resources */,
 			);
@@ -3456,7 +3437,6 @@
 				B169331520F3CAFC00746532 /* PublicRoomTableViewCell.xib in Resources */,
 				3284A35120A07C210044F922 /* postMessageAPI.js in Resources */,
 				B1B557A220EF58AD00210D55 /* ContactTableViewCell.xib in Resources */,
-				B1B5583020EF66BA00210D55 /* RoomIdOrAliasTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3884,7 +3864,6 @@
 				020DF981214BE467003DFBA4 /* RoomIncomingTextMsgWithoutSenderNameBubbleCell.m in Sources */,
 				0250C4F62122B68000034691 /* DeviceTableViewCell.m in Sources */,
 				B1BC6A1F2136C9A800D32F8E /* Variant2Style.swift in Sources */,
-				0250C4F82122B68000034691 /* RoomIdOrAliasTableViewCell.m in Sources */,
 				0250C4F92122B68000034691 /* RoomPreviewData.m in Sources */,
 				0250C4FB2122B68000034691 /* IncomingCallView.m in Sources */,
 				020DF99A214BE467003DFBA4 /* RoomIncomingTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
@@ -4065,7 +4044,6 @@
 				B1B5599320EFC5E400210D55 /* DecryptionFailure.m in Sources */,
 				F083BDED1E7009ED00A9B29C /* MXKRoomBubbleTableViewCell+Riot.m in Sources */,
 				B1B557A820EF5A1B00210D55 /* DeviceTableViewCell.m in Sources */,
-				B1B5583120EF66BA00210D55 /* RoomIdOrAliasTableViewCell.m in Sources */,
 				F083BDFA1E7009ED00A9B29C /* RoomPreviewData.m in Sources */,
 				B1B5577E20EE84BF00210D55 /* IncomingCallView.m in Sources */,
 				B1B5595220EF9A8700210D55 /* RecentTableViewCell.m in Sources */,

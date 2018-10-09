@@ -27,8 +27,6 @@
 #import "RoomViewController.h"
 
 #import "InviteRecentTableViewCell.h"
-#import "DirectoryRecentTableViewCell.h"
-#import "RoomIdOrAliasTableViewCell.h"
 
 #import "AppDelegate.h"
 
