@@ -20,7 +20,6 @@
 #import <MatrixKit/MatrixKit.h>
 #import <PushKit/PushKit.h>
 
-#import "MasterTabBarController.h"
 #import "JitsiViewController.h"
 
 #import "RageShakeManager.h"
@@ -59,11 +58,6 @@ extern NSString *const kLegacyAppDelegateDidLoginNotification;
     // background sync management
     void (^_completionHandler)(UIBackgroundFetchResult);
 }
-
-/**
- Application main view controller
- */
-@property (nonatomic, readonly) MasterTabBarController *masterTabBarController;
 
 @property (strong, nonatomic) UIWindow *window;
 

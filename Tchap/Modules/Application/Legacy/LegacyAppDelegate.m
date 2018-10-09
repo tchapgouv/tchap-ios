@@ -1529,11 +1529,24 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 - (void)refreshApplicationIconBadgeNumber
 {
     // Consider the total number of missed discussions including the invites.
-    NSUInteger count = [self.masterTabBarController missedDiscussionsCount];
+    NSUInteger count = [self missedDiscussionsCount];
     
     NSLog(@"[AppDelegate] refreshApplicationIconBadgeNumber: %tu", count);
     
     [UIApplication sharedApplication].applicationIconBadgeNumber = count;
+}
+
+- (NSUInteger)missedDiscussionsCount
+{
+    NSUInteger roomCount = 0;
+    
+    // Considering all the current sessions.
+    for (MXSession *session in mxSessionArray)
+    {
+        roomCount += [session riot_missedDiscussionsCount];
+    }
+    
+    return roomCount;
 }
 
 #pragma mark - Universal link
@@ -2286,9 +2299,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         dispatch_after(dispatch_walltime(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
             [[MXKContactManager sharedManager] addMatrixSession:mxSession];
         });
-        
-        // Update home data sources
-        [_masterTabBarController addMatrixSession:mxSession];
 
         // Register the session to the widgets manager
         [[WidgetManager sharedManager] addMatrixSession:mxSession];
@@ -2309,9 +2319,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 - (void)removeMatrixSession:(MXSession*)mxSession
 {
     [[MXKContactManager sharedManager] removeMatrixSession:mxSession];
-    
-    // Update home data sources
-    [_masterTabBarController removeMatrixSession:mxSession];
 
     // Update the widgets manager
     [[WidgetManager sharedManager] removeMatrixSession:mxSession]; 
@@ -2477,9 +2484,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         {
             completion (YES);
         }
-        
-        // Return to authentication screen
-        [_masterTabBarController showAuthenticationScreen];
         
         // Note: Keep App settings
         
