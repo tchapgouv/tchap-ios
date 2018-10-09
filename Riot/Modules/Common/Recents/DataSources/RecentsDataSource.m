@@ -23,8 +23,6 @@
 
 #import "MXRoom+Riot.h"
 
-#import "AppDelegate.h"
-
 #import "GeneratedInterface-Swift.h"
 
 #define RECENTSDATASOURCE_SECTION_DIRECTORY     0x01
@@ -35,9 +33,6 @@
 #define RECENTSDATASOURCE_SECTION_PEOPLE        0x20
 
 #define RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT     30.0
-#define RECENTSDATASOURCE_DIRECTORY_SECTION_HEADER_HEIGHT   65.0
-
-NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSourceTapOnDirectoryServerChange";
 
 @interface RecentsDataSource()
 {
@@ -49,19 +44,12 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     
     NSInteger shrinkedSectionsBitMask;
 
-    UIView *directorySectionContainer;
-    UILabel *networkLabel;
-    UILabel *directoryServerLabel;
-
     NSMutableDictionary<NSString*, id> *roomTagsListenerByUserId;
-    
-    // Timer to not refresh publicRoomsDirectoryDataSource on every keystroke.
-    NSTimer *publicRoomsTriggerTimer;
 }
 @end
 
 @implementation RecentsDataSource
-@synthesize directorySection, invitesSection, favoritesSection, peopleSection, conversationSection, lowPrioritySection;
+@synthesize invitesSection, favoritesSection, peopleSection, conversationSection, lowPrioritySection;
 @synthesize hiddenCellIndexPath, droppingCellIndexPath, droppingCellBackGroundView;
 @synthesize invitesCellDataArray, favoriteCellDataArray, peopleCellDataArray, conversationCellDataArray, lowPriorityCellDataArray;
 
@@ -76,7 +64,6 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         lowPriorityCellDataArray = [[NSMutableArray alloc] init];
         conversationCellDataArray = [[NSMutableArray alloc] init];
 
-        directorySection = -1;
         invitesSection = -1;
         favoritesSection = -1;
         peopleSection = -1;
@@ -115,11 +102,6 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     UIView *stickyHeader;
 
     NSInteger savedShrinkedSectionsBitMask = shrinkedSectionsBitMask;
-    if (section == directorySection)
-    {
-        // Return the section header used when the section is shrinked
-        shrinkedSectionsBitMask = RECENTSDATASOURCE_SECTION_DIRECTORY;
-    }
 
     stickyHeader = [self viewForHeaderInSection:section withFrame:frame];
 
@@ -133,14 +115,6 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 - (MXKSessionRecentsDataSource *)addMatrixSession:(MXSession *)mxSession
 {
     MXKSessionRecentsDataSource *recentsDataSource = [super addMatrixSession:mxSession];
-
-    // Initialise the public room directory data source
-    // Note that it is single matrix session only for now
-    if (!_publicRoomsDirectoryDataSource)
-    {
-        _publicRoomsDirectoryDataSource = [[PublicRoomsDirectoryDataSource alloc] initWithMatrixSession:mxSession];
-        _publicRoomsDirectoryDataSource.delegate = self;
-    }
     
     return recentsDataSource;
 }
@@ -160,48 +134,31 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             [roomTagsListenerByUserId removeObjectForKey:matrixSession.myUser.userId];
         }
     }
-    
-    if (_publicRoomsDirectoryDataSource.mxSession == matrixSession)
-    {
-        [_publicRoomsDirectoryDataSource destroy];
-        _publicRoomsDirectoryDataSource = nil;
-    }
 }
 
 - (void)dataSource:(MXKDataSource*)dataSource didStateChange:(MXKDataSourceState)aState
 {
-    if (dataSource == _publicRoomsDirectoryDataSource)
+    [super dataSource:dataSource didStateChange:aState];
+    
+    if ((aState == MXKDataSourceStateReady) && dataSource.mxSession.myUser.userId)
     {
-        if (-1 != directorySection && !self.droppingCellIndexPath)
-        {
-            // TODO: We should only update the directory section
-            [self.delegate dataSource:self didCellChange:nil];
-        }
-    }
-    else
-    {
-        [super dataSource:dataSource didStateChange:aState];
-
-        if ((aState == MXKDataSourceStateReady) && dataSource.mxSession.myUser.userId)
-        {
-            // Register the room tags updates to refresh the favorites order
-            id roomTagsListener = [dataSource.mxSession listenToEventsOfTypes:@[kMXEventTypeStringRoomTag]
-                                                                onEvent:^(MXEvent *event, MXTimelineDirection direction, id customObject) {
-
-                                                                    // Consider only live event
-                                                                    if (direction == MXTimelineDirectionForwards)
-                                                                    {
-                                                                        dispatch_async(dispatch_get_main_queue(), ^{
-
-                                                                            [self forceRefresh];
-
-                                                                        });
-                                                                    }
-
-                                                                }];
-
-            [roomTagsListenerByUserId setObject:roomTagsListener forKey:dataSource.mxSession.myUser.userId];
-        }
+        // Register the room tags updates to refresh the favorites order
+        id roomTagsListener = [dataSource.mxSession listenToEventsOfTypes:@[kMXEventTypeStringRoomTag]
+                                                                  onEvent:^(MXEvent *event, MXTimelineDirection direction, id customObject) {
+                                                                      
+                                                                      // Consider only live event
+                                                                      if (direction == MXTimelineDirectionForwards)
+                                                                      {
+                                                                          dispatch_async(dispatch_get_main_queue(), ^{
+                                                                              
+                                                                              [self forceRefresh];
+                                                                              
+                                                                          });
+                                                                      }
+                                                                      
+                                                                  }];
+        
+        [roomTagsListenerByUserId setObject:roomTagsListener forKey:dataSource.mxSession.myUser.userId];
     }
 }
 
@@ -242,7 +199,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     // Check whether all data sources are ready before rendering recents
     if (self.state == MXKDataSourceStateReady)
     {
-        directorySection = favoritesSection = peopleSection = conversationSection = lowPrioritySection = invitesSection = -1;
+        favoritesSection = peopleSection = conversationSection = lowPrioritySection = invitesSection = -1;
         
         if (invitesCellDataArray.count > 0)
         {
@@ -263,12 +220,6 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         if (_recentsDataSourceMode != RecentsDataSourceModeFavourites)
         {
             conversationSection = sectionsCount++;
-        }
-        
-        if (_recentsDataSourceMode == RecentsDataSourceModeRooms)
-        {
-            // Add the directory section after "ROOMS"
-            directorySection = sectionsCount++;
         }
         
         if (lowPriorityCellDataArray.count > 0)
@@ -303,10 +254,6 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     {
         count = conversationCellDataArray.count ? conversationCellDataArray.count : 1;
     }
-    else if (section == directorySection && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_DIRECTORY))
-    {
-        count = [_publicRoomsDirectoryDataSource tableView:tableView numberOfRowsInSection:0];
-    }
     else if (section == lowPrioritySection && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_LOWPRIORITY))
     {
         count = lowPriorityCellDataArray.count;
@@ -332,11 +279,6 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 
 - (CGFloat)heightForHeaderInSection:(NSInteger)section
 {
-    if (section == directorySection && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_DIRECTORY))
-    {
-        return RECENTSDATASOURCE_DIRECTORY_SECTION_HEADER_HEIGHT;
-    }
-
     return RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT;
 }
 
@@ -368,10 +310,6 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         {
             title = NSLocalizedStringFromTable(@"room_recents_conversations_section", @"Vector", nil);
         }
-    }
-    else if (section == directorySection)
-    {
-        title = NSLocalizedStringFromTable(@"room_recents_directory_section", @"Vector", nil);
     }
     else if (section == lowPrioritySection)
     {
@@ -513,10 +451,6 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         {
             sectionBitwise = RECENTSDATASOURCE_SECTION_CONVERSATIONS;
         }
-        else if (section == directorySection)
-        {
-            sectionBitwise = RECENTSDATASOURCE_SECTION_CONVERSATIONS;
-        }
         else if (section == lowPrioritySection)
         {
             sectionBitwise = RECENTSDATASOURCE_SECTION_LOWPRIORITY;
@@ -587,187 +521,6 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     headerLabel.attributedText = [self attributedStringForHeaderTitleInSection:section];
     [sectionHeader addSubview:headerLabel];
 
-    if (section == directorySection && _recentsDataSourceMode == RecentsDataSourceModeRooms && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_DIRECTORY))
-    {
-        NSLayoutConstraint *leadingConstraint, *trailingConstraint, *topConstraint, *bottomConstraint;
-        NSLayoutConstraint *widthConstraint, *heightConstraint, *centerYConstraint;
-
-        if (!directorySectionContainer)
-        {
-            CGFloat containerWidth = sectionHeader.frame.size.width;
-
-            directorySectionContainer = [[UIView alloc] initWithFrame:CGRectMake(0, RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT, containerWidth, sectionHeader.frame.size.height - RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT)];
-            directorySectionContainer.backgroundColor = [UIColor clearColor];
-            directorySectionContainer.translatesAutoresizingMaskIntoConstraints = NO;
-
-            // Add the "Network" label at the left
-            networkLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, 100, 30)];
-            networkLabel.translatesAutoresizingMaskIntoConstraints = NO;
-            networkLabel.font = [UIFont systemFontOfSize:16.0];
-            networkLabel.text = NSLocalizedStringFromTable(@"room_recents_directory_section_network", @"Vector", nil);
-            [directorySectionContainer addSubview:networkLabel];
-
-            // Add label for selected directory server
-            directoryServerLabel = [[UILabel alloc] initWithFrame:CGRectMake(120, 0, containerWidth - 32, 30)];
-            directoryServerLabel.translatesAutoresizingMaskIntoConstraints = NO;
-            directoryServerLabel.font = [UIFont systemFontOfSize:16.0];
-            directoryServerLabel.textAlignment = NSTextAlignmentRight;
-            [directorySectionContainer addSubview:directoryServerLabel];
-
-            // Chevron
-            UIImageView *chevronImageView = [[UIImageView alloc] initWithFrame:CGRectMake(containerWidth - 26, 5, 6, 12)];
-            chevronImageView.image = [UIImage imageNamed:@"disclosure_icon"];
-            chevronImageView.translatesAutoresizingMaskIntoConstraints = NO;
-            [directorySectionContainer addSubview:chevronImageView];
-
-            // Set a tap listener on all the container
-            UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onDirectoryServerPickerTap:)];
-            [tapGesture setNumberOfTouchesRequired:1];
-            [tapGesture setNumberOfTapsRequired:1];
-            [directorySectionContainer addGestureRecognizer:tapGesture];
-
-            // Add networkLabel constraints
-            centerYConstraint = [NSLayoutConstraint constraintWithItem:networkLabel
-                                                             attribute:NSLayoutAttributeCenterY
-                                                             relatedBy:NSLayoutRelationEqual
-                                                                toItem:directorySectionContainer
-                                                             attribute:NSLayoutAttributeCenterY
-                                                            multiplier:1
-                                                              constant:0.0f];
-
-            heightConstraint = [NSLayoutConstraint constraintWithItem:networkLabel
-                                                            attribute:NSLayoutAttributeHeight
-                                                            relatedBy:NSLayoutRelationEqual
-                                                               toItem:nil
-                                                            attribute:NSLayoutAttributeNotAnAttribute
-                                                           multiplier:1
-                                                             constant:30];
-            leadingConstraint = [NSLayoutConstraint constraintWithItem:networkLabel
-                                                             attribute:NSLayoutAttributeLeading
-                                                             relatedBy:NSLayoutRelationEqual
-                                                                toItem:directorySectionContainer
-                                                             attribute:NSLayoutAttributeLeading
-                                                            multiplier:1
-                                                              constant:20];
-            widthConstraint = [NSLayoutConstraint constraintWithItem:networkLabel
-                                                              attribute:NSLayoutAttributeWidth
-                                                              relatedBy:NSLayoutRelationEqual
-                                                                 toItem:nil
-                                                              attribute:NSLayoutAttributeNotAnAttribute
-                                                             multiplier:1
-                                                               constant:100];
-
-            [NSLayoutConstraint activateConstraints:@[centerYConstraint, heightConstraint, leadingConstraint, widthConstraint]];
-
-            // Add directoryServerLabel constraints
-            centerYConstraint = [NSLayoutConstraint constraintWithItem:directoryServerLabel
-                                                             attribute:NSLayoutAttributeCenterY
-                                                             relatedBy:NSLayoutRelationEqual
-                                                                toItem:directorySectionContainer
-                                                             attribute:NSLayoutAttributeCenterY
-                                                            multiplier:1
-                                                              constant:0.0f];
-
-            heightConstraint = [NSLayoutConstraint constraintWithItem:directoryServerLabel
-                                                            attribute:NSLayoutAttributeHeight
-                                                            relatedBy:NSLayoutRelationEqual
-                                                               toItem:nil
-                                                            attribute:NSLayoutAttributeNotAnAttribute
-                                                           multiplier:1
-                                                             constant:30];
-            leadingConstraint = [NSLayoutConstraint constraintWithItem:directoryServerLabel
-                                                             attribute:NSLayoutAttributeLeading
-                                                             relatedBy:NSLayoutRelationEqual
-                                                                toItem:networkLabel
-                                                             attribute:NSLayoutAttributeTrailing
-                                                            multiplier:1
-                                                              constant:20];
-            trailingConstraint = [NSLayoutConstraint constraintWithItem:directoryServerLabel
-                                                              attribute:NSLayoutAttributeTrailing
-                                                              relatedBy:NSLayoutRelationEqual
-                                                                 toItem:chevronImageView
-                                                              attribute:NSLayoutAttributeLeading
-                                                             multiplier:1
-                                                               constant:-8];
-
-            [NSLayoutConstraint activateConstraints:@[centerYConstraint, heightConstraint, leadingConstraint, trailingConstraint]];
-
-            // Add chevron constraints
-            trailingConstraint = [NSLayoutConstraint constraintWithItem:chevronImageView
-                                                              attribute:NSLayoutAttributeTrailing
-                                                              relatedBy:NSLayoutRelationEqual
-                                                                 toItem:directorySectionContainer
-                                                              attribute:NSLayoutAttributeTrailing
-                                                             multiplier:1
-                                                               constant:-20];
-
-            centerYConstraint = [NSLayoutConstraint constraintWithItem:chevronImageView
-                                                             attribute:NSLayoutAttributeCenterY
-                                                             relatedBy:NSLayoutRelationEqual
-                                                                toItem:directorySectionContainer
-                                                             attribute:NSLayoutAttributeCenterY
-                                                            multiplier:1
-                                                              constant:0.0f];
-
-            widthConstraint = [NSLayoutConstraint constraintWithItem:chevronImageView
-                                                           attribute:NSLayoutAttributeWidth
-                                                           relatedBy:NSLayoutRelationEqual
-                                                              toItem:nil
-                                                           attribute:NSLayoutAttributeNotAnAttribute
-                                                          multiplier:1
-                                                            constant:6];
-            heightConstraint = [NSLayoutConstraint constraintWithItem:chevronImageView
-                                                            attribute:NSLayoutAttributeHeight
-                                                            relatedBy:NSLayoutRelationEqual
-                                                               toItem:nil
-                                                            attribute:NSLayoutAttributeNotAnAttribute
-                                                           multiplier:1
-                                                             constant:12];
-
-            [NSLayoutConstraint activateConstraints:@[trailingConstraint, centerYConstraint, widthConstraint, heightConstraint]];
-        }
-        
-        // Apply the current UI theme.
-        networkLabel.textColor = kRiotPrimaryTextColor;
-        directoryServerLabel.textColor = kRiotSecondaryTextColor;
-
-        // Set the current directory server name
-        directoryServerLabel.text = _publicRoomsDirectoryDataSource.directoryServerDisplayname;
-
-        // Add the check box container
-        [sectionHeader addSubview:directorySectionContainer];
-        leadingConstraint = [NSLayoutConstraint constraintWithItem:directorySectionContainer
-                                                         attribute:NSLayoutAttributeLeading
-                                                         relatedBy:NSLayoutRelationEqual
-                                                            toItem:sectionHeader
-                                                         attribute:NSLayoutAttributeLeading
-                                                        multiplier:1
-                                                          constant:0];
-        widthConstraint = [NSLayoutConstraint constraintWithItem:directorySectionContainer
-                                                       attribute:NSLayoutAttributeWidth
-                                                       relatedBy:NSLayoutRelationEqual
-                                                          toItem:sectionHeader
-                                                       attribute:NSLayoutAttributeWidth
-                                                      multiplier:1
-                                                        constant:0];
-        topConstraint = [NSLayoutConstraint constraintWithItem:directorySectionContainer
-                                                     attribute:NSLayoutAttributeTop
-                                                     relatedBy:NSLayoutRelationEqual
-                                                        toItem:sectionHeader
-                                                     attribute:NSLayoutAttributeTop
-                                                    multiplier:1
-                                                      constant:RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT];
-        bottomConstraint = [NSLayoutConstraint constraintWithItem:directorySectionContainer
-                                                        attribute:NSLayoutAttributeBottom
-                                                        relatedBy:NSLayoutRelationEqual
-                                                           toItem:sectionHeader
-                                                        attribute:NSLayoutAttributeBottom
-                                                       multiplier:1
-                                                         constant:0];
-
-        [NSLayoutConstraint activateConstraints:@[leadingConstraint, widthConstraint, topConstraint, bottomConstraint]];
-    }
-
     return sectionHeader;
 }
 
@@ -781,12 +534,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         return [[UITableViewCell alloc] init];
     }
     
-    if (indexPath.section == directorySection)
-    {
-        NSIndexPath *indexPathInPublicRooms = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
-        return [_publicRoomsDirectoryDataSource tableView:tableView cellForRowAtIndexPath:indexPathInPublicRooms];
-    }
-    else if (self.droppingCellIndexPath && [indexPath isEqual:self.droppingCellIndexPath])
+    if (self.droppingCellIndexPath && [indexPath isEqual:self.droppingCellIndexPath])
     {
         static NSString* cellIdentifier = @"RiotRecentsMovingCell";
         
@@ -902,10 +650,6 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 
 - (CGFloat)cellHeightAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == directorySection)
-    {
-        return [_publicRoomsDirectoryDataSource cellHeightAtIndexPath:indexPath];
-    }
     if (self.droppingCellIndexPath && [indexPath isEqual:self.droppingCellIndexPath])
     {
         return self.droppingCellBackGroundView.frame.size.height;
@@ -1060,7 +804,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     _missedDirectDiscussionsCount = _missedHighlightDirectDiscussionsCount = 0;
     _missedGroupDiscussionsCount = _missedHighlightGroupDiscussionsCount = 0;
     
-    directorySection = favoritesSection = peopleSection = conversationSection = lowPrioritySection = invitesSection = -1;
+    favoritesSection = peopleSection = conversationSection = lowPrioritySection = invitesSection = -1;
     
     if (displayedRecentsDataSourceArray.count > 0)
     {
@@ -1365,52 +1109,11 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     }
 }
 
-- (IBAction)onPublicRoomsSearchPatternUpdate:(id)sender
-{
-    if (publicRoomsTriggerTimer)
-    {
-        NSString *searchPattern = publicRoomsTriggerTimer.userInfo;
-
-        [publicRoomsTriggerTimer invalidate];
-        publicRoomsTriggerTimer = nil;
-
-        _publicRoomsDirectoryDataSource.searchPattern = searchPattern;
-        [_publicRoomsDirectoryDataSource paginate:nil failure:nil];
-    }
-}
-
-#pragma mark - Action
-
-- (IBAction)onDirectoryServerPickerTap:(UITapGestureRecognizer*)sender
-{
-    [self.delegate dataSource:self didRecognizeAction:kRecentsDataSourceTapOnDirectoryServerChange inCell:nil userInfo:nil];
-}
-
 #pragma mark - Override MXKDataSource
 
 - (void)destroy
 {
     [super destroy];
-
-    [publicRoomsTriggerTimer invalidate];
-    publicRoomsTriggerTimer = nil;
-}
-
-#pragma mark - Override MXKRecentsDataSource
-
-- (void)searchWithPatterns:(NSArray *)patternsList
-{
-    [super searchWithPatterns:patternsList];
-
-    if (_publicRoomsDirectoryDataSource)
-    {
-        NSString *searchPattern = [patternsList componentsJoinedByString:@" "];
-
-        // Do not send a /publicRooms request for every keystroke
-        // Let user finish typing
-        [publicRoomsTriggerTimer invalidate];
-        publicRoomsTriggerTimer = [NSTimer scheduledTimerWithTimeInterval:0.7 target:self selector:@selector(onPublicRoomsSearchPatternUpdate:) userInfo:searchPattern repeats:NO];
-    }
 }
 
 #pragma mark - drag and drop managemenent

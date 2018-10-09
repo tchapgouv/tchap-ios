@@ -18,7 +18,8 @@
 
 #import "RoomMemberDetailsViewController.h"
 
-#import "AppDelegate.h"
+#import "RiotDesignValues.h"
+#import "Analytics.h"
 
 #import "RoomMemberTitleView.h"
 
@@ -26,9 +27,10 @@
 #import "Tools.h"
 
 #import "TableViewCellWithButton.h"
-#import "RoomTableViewCell.h"
 
 #import "EncryptionInfoView.h"
+
+#import "GeneratedInterface-Swift.h"
 
 #define TABLEVIEW_ROW_CELL_HEIGHT         46
 #define TABLEVIEW_SECTION_HEADER_HEIGHT   28

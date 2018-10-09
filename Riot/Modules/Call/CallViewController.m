@@ -17,7 +17,8 @@
 
 #import "CallViewController.h"
 
-#import "AppDelegate.h"
+#import "RageShakeManager.h"
+#import "RiotDesignValues.h"
 
 #import "AvatarGenerator.h"
 
@@ -26,6 +27,8 @@
 #import "RiotNavigationController.h"
 
 #import "IncomingCallView.h"
+
+#import "GeneratedInterface-Swift.h"
 
 @interface CallViewController ()
 {

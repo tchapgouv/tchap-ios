@@ -135,18 +135,13 @@
 		0250C4932122B68000034691 /* MediaAlbumTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B557CE20EF5E3500210D55 /* MediaAlbumTableCell.m */; };
 		0250C4942122B68000034691 /* RiotDesignValues.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932AB20F3A7B000746532 /* RiotDesignValues.m */; };
 		0250C4962122B68000034691 /* AvatarGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC111E7009EC00A9B29C /* AvatarGenerator.m */; };
-		0250C4972122B68000034691 /* GroupRoomsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556C620EE6C4C00210D55 /* GroupRoomsViewController.m */; };
 		0250C4992122B68000034691 /* BugReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556B320EE6C4C00210D55 /* BugReportViewController.m */; };
 		0250C49B2122B68000034691 /* RecentCellData.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932F920F3C51900746532 /* RecentCellData.m */; };
-		0250C49C2122B68000034691 /* GroupsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932F120F3C49E00746532 /* GroupsDataSource.m */; };
 		0250C49F2122B68000034691 /* MediaAlbumContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556F020EE6C4C00210D55 /* MediaAlbumContentViewController.m */; };
 		0250C4A02122B68000034691 /* WidgetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5598420EFC3DF00210D55 /* WidgetManager.m */; };
-		0250C4A32122B68000034691 /* StartChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556E220EE6C4C00210D55 /* StartChatViewController.m */; };
 		0250C4A72122B68000034691 /* Widget.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5598320EFC3DF00210D55 /* Widget.m */; };
-		0250C4A82122B68000034691 /* MessagesSearchResultAttachmentBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B557E020EF60B900210D55 /* MessagesSearchResultAttachmentBubbleCell.m */; };
 		0250C4A92122B68000034691 /* CallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556DF20EE6C4C00210D55 /* CallViewController.m */; };
 		0250C4AB2122B68000034691 /* JitsiViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5576C20EE702800210D55 /* JitsiViewController.m */; };
-		0250C4AC2122B68000034691 /* PublicRoomsDirectoryDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = B169331220F3CAFC00746532 /* PublicRoomsDirectoryDataSource.m */; };
 		0250C4B22122B68000034691 /* MXRoom+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBE81E7009EC00A9B29C /* MXRoom+Riot.m */; };
 		0250C4B32122B68000034691 /* RiotSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B5597F20EFC3DF00210D55 /* RiotSettings.swift */; };
 		0250C4B82122B68000034691 /* Contact.m in Sources */ = {isa = PBXBuildFile; fileRef = B169330A20F3CA3900746532 /* Contact.m */; };
@@ -156,58 +151,36 @@
 		0250C4BD2122B68000034691 /* RageShakeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5597E20EFC3DF00210D55 /* RageShakeManager.m */; };
 		0250C4BF2122B68000034691 /* PublicRoomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B169330E20F3CAFC00746532 /* PublicRoomTableViewCell.m */; };
 		0250C4C12122B68000034691 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5567E20EE6C4C00210D55 /* SettingsViewController.m */; };
-		0250C4C22122B68000034691 /* RoomCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5594220EF7BD000210D55 /* RoomCollectionViewCell.m */; };
 		0250C4C42122B68000034691 /* RiotNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556D320EE6C4C00210D55 /* RiotNavigationController.m */; };
 		0250C4C92122B68000034691 /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC151E7009EC00A9B29C /* Tools.m */; };
 		0250C4CA2122B68000034691 /* WebViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556D020EE6C4C00210D55 /* WebViewViewController.m */; };
 		0250C4CC2122B68000034691 /* MXGroup+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F05927C71FDED835009F2A68 /* MXGroup+Riot.m */; };
-		0250C4CD2122B68000034691 /* TableViewCellWithCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5594020EF7BD000210D55 /* TableViewCellWithCollectionView.m */; };
 		0250C4CE2122B68000034691 /* UINavigationController+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBEA1E7009EC00A9B29C /* UINavigationController+Riot.m */; };
 		0250C4D22122B68000034691 /* LanguagePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5567C20EE6C4C00210D55 /* LanguagePickerViewController.m */; };
 		0250C4D62122B68000034691 /* TableViewCellWithButton.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5592A20EF7A5D00210D55 /* TableViewCellWithButton.m */; };
-		0250C4D82122B68000034691 /* DirectoryRecentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5582A20EF666100210D55 /* DirectoryRecentTableViewCell.m */; };
-		0250C4DA2122B68000034691 /* GroupsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556BE20EE6C4C00210D55 /* GroupsViewController.m */; };
 		0250C4DE2122B68000034691 /* DeactivateAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5568120EE6C4C00210D55 /* DeactivateAccountViewController.m */; };
 		0250C4E02122B68000034691 /* EventFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC131E7009EC00A9B29C /* EventFormatter.m */; };
 		0250C4E12122B68000034691 /* RecentsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932F620F3C50E00746532 /* RecentsDataSource.m */; };
 		0250C4E62122B68000034691 /* MXRoomSummary+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F0D2ADA01F6AA5FD00A7097D /* MXRoomSummary+Riot.m */; };
 		0250C4E72122B68000034691 /* EncryptionInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5596C20EFA85C00210D55 /* EncryptionInfoView.m */; };
-		0250C4E82122B68000034691 /* GroupParticipantsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556C120EE6C4C00210D55 /* GroupParticipantsViewController.m */; };
-		0250C4E92122B68000034691 /* GroupRoomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5583B20EF6E7F00210D55 /* GroupRoomTableViewCell.m */; };
-		0250C4EC2122B68000034691 /* GroupInviteTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5578B20EF568D00210D55 /* GroupInviteTableViewCell.m */; };
-		0250C4ED2122B68000034691 /* ForgotPasswordInputsView.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5579420EF575A00210D55 /* ForgotPasswordInputsView.m */; };
-		0250C4F02122B68000034691 /* UnifiedSearchRecentsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932E920F3C39000746532 /* UnifiedSearchRecentsDataSource.m */; };
 		0250C4F12122B68000034691 /* FilesSearchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B557DC20EF5FBA00210D55 /* FilesSearchTableViewCell.m */; };
 		0250C4F22122B68000034691 /* SegmentedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556D720EE6C4C00210D55 /* SegmentedViewController.m */; };
 		0250C4F32122B68000034691 /* DecryptionFailure.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5598D20EFC5E400210D55 /* DecryptionFailure.m */; };
 		0250C4F52122B68000034691 /* MXKRoomBubbleTableViewCell+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBE61E7009EC00A9B29C /* MXKRoomBubbleTableViewCell+Riot.m */; };
 		0250C4F62122B68000034691 /* DeviceTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B557A620EF5A1B00210D55 /* DeviceTableViewCell.m */; };
-		0250C4F82122B68000034691 /* RoomIdOrAliasTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5582F20EF66BA00210D55 /* RoomIdOrAliasTableViewCell.m */; };
 		0250C4F92122B68000034691 /* RoomPreviewData.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBFE1E7009EC00A9B29C /* RoomPreviewData.m */; };
 		0250C4FB2122B68000034691 /* IncomingCallView.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5577C20EE84BF00210D55 /* IncomingCallView.m */; };
-		0250C4FC2122B68000034691 /* GroupTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5578920EF568D00210D55 /* GroupTableViewCell.m */; };
-		0250C4FD2122B68000034691 /* GroupHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556B720EE6C4C00210D55 /* GroupHomeViewController.m */; };
 		0250C4FE2122B68000034691 /* RecentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5595020EF9A8600210D55 /* RecentTableViewCell.m */; };
 		0250C4FF2122B68000034691 /* RecentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556D920EE6C4C00210D55 /* RecentsViewController.m */; };
 		0250C5012122B68000034691 /* StickerPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5576820EE702800210D55 /* StickerPickerViewController.m */; };
-		0250C5052122B68000034691 /* FavouritesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556C920EE6C4C00210D55 /* FavouritesViewController.m */; };
-		0250C5062122B68000034691 /* AuthInputsView.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5579320EF575A00210D55 /* AuthInputsView.m */; };
 		0250C5072122B68000034691 /* InviteRecentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5597220EFB02900210D55 /* InviteRecentTableViewCell.m */; };
-		0250C5082122B68000034691 /* ContactDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5568820EE6C4C00210D55 /* ContactDetailsViewController.m */; };
 		0250C5092122B68000034691 /* OnBoardingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1798301211B13B3001FD722 /* OnBoardingManager.swift */; };
-		0250C50A2122B68000034691 /* GroupDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556BD20EE6C4C00210D55 /* GroupDetailsViewController.m */; };
 		0250C50B2122B68000034691 /* RoomKeyRequestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556FE20EE6C4C00210D55 /* RoomKeyRequestViewController.m */; };
-		0250C50F2122B68000034691 /* RoomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5596420EF9E9A00210D55 /* RoomTableViewCell.m */; };
 		0250C5132122B68000034691 /* CountryPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5567A20EE6C4C00210D55 /* CountryPickerViewController.m */; };
 		0250C5142122B68000034691 /* GDPRConsentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17982FE2119FED2001FD722 /* GDPRConsentViewController.swift */; };
 		0250C5192122B68000034691 /* MXSession+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = 926FA53E1F4C132000F826C2 /* MXSession+Riot.m */; };
-		0250C51C2122B68000034691 /* DirectoryServerDetailTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B557C420EF5CD400210D55 /* DirectoryServerDetailTableViewCell.m */; };
 		0250C51E2122B68000034691 /* UsersDevicesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556E520EE6C4C00210D55 /* UsersDevicesViewController.m */; };
 		0250C5202122B68000034691 /* MatrixSDK+Swift.m in Sources */ = {isa = PBXBuildFile; fileRef = 32C1033F211DD1A100DFFB5D /* MatrixSDK+Swift.m */; };
-		0250C5232122B68000034691 /* GroupTableViewCellWithSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5578420EF564900210D55 /* GroupTableViewCellWithSwitch.m */; };
-		0250C5242122B68000034691 /* MessagesSearchResultTextMsgBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B557E620EF60F400210D55 /* MessagesSearchResultTextMsgBubbleCell.m */; };
-		0250C5262122B68000034691 /* DirectoryServerTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B557CA20EF5D7F00210D55 /* DirectoryServerTableViewCell.m */; };
-		0250C5272122B68000034691 /* DirectoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5571620EE6C4C00210D55 /* DirectoryViewController.m */; };
 		0250C5292122B68000034691 /* WidgetPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5576220EE702800210D55 /* WidgetPickerViewController.m */; };
 		0250C52B2122B68000034691 /* IntegrationManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5576020EE702800210D55 /* IntegrationManagerViewController.m */; };
 		0250C52C2122B68000034691 /* DeviceView.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B557AA20EF5A6C00210D55 /* DeviceView.m */; };
@@ -215,64 +188,40 @@
 		0250C52F2122B68000034691 /* DecryptionFailureTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5599120EFC5E400210D55 /* DecryptionFailureTracker.m */; };
 		0250C5302122B68000034691 /* UIViewController+RiotSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBEC1E7009EC00A9B29C /* UIViewController+RiotSearch.m */; };
 		0250C5312122B68000034691 /* RoomEmailInvitation.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBFC1E7009EC00A9B29C /* RoomEmailInvitation.m */; };
-		0250C5342122B68000034691 /* RiotSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556EB20EE6C4C00210D55 /* RiotSplitViewController.m */; };
-		0250C5352122B68000034691 /* DirectoryServerPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556F720EE6C4C00210D55 /* DirectoryServerPickerViewController.m */; };
-		0250C5392122B68000034691 /* HomeMessagesSearchDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932E620F3C37100746532 /* HomeMessagesSearchDataSource.m */; };
 		0250C53B2122B68000034691 /* CircleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5577B20EE84BE00210D55 /* CircleButton.m */; };
 		0250C53D2122B68000034691 /* TableViewCellWithPhoneNumberTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5590E20EF782800210D55 /* TableViewCellWithPhoneNumberTextField.m */; };
 		0250C53F2122B68000034691 /* JitsiMeet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3233F7441F3497DA006ACA81 /* JitsiMeet.framework */; };
 		0250C5442122B68000034691 /* ring.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F083BBDE1E7009EC00A9B29C /* ring.mp3 */; };
 		0250C5462122B68000034691 /* TableViewCellWithButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5592920EF7A5D00210D55 /* TableViewCellWithButton.xib */; };
-		0250C5472122B68000034691 /* StartChatViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B556E320EE6C4C00210D55 /* StartChatViewController.xib */; };
-		0250C5492122B68000034691 /* TableViewCellWithCollectionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5593F20EF7BD000210D55 /* TableViewCellWithCollectionView.xib */; };
 		0250C54C2122B68000034691 /* EncryptionInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5596E20EFA85C00210D55 /* EncryptionInfoView.xib */; };
-		0250C54E2122B68000034691 /* ContactDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5568A20EE6C4C00210D55 /* ContactDetailsViewController.xib */; };
 		0250C5502122B68000034691 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B1664D5920F4EBEC00808783 /* Localizable.strings */; };
 		0250C5522122B68000034691 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B1664D5720F4EBEC00808783 /* InfoPlist.strings */; };
-		0250C5532122B68000034691 /* AuthInputsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5579620EF575A00210D55 /* AuthInputsView.xib */; };
-		0250C5542122B68000034691 /* RoomCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5594120EF7BD000210D55 /* RoomCollectionViewCell.xib */; };
 		0250C5552122B68000034691 /* callend.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F083BBDC1E7009EC00A9B29C /* callend.mp3 */; };
-		0250C5572122B68000034691 /* GroupDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B556BB20EE6C4C00210D55 /* GroupDetailsViewController.xib */; };
-		0250C5582122B68000034691 /* MessagesSearchResultAttachmentBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B557E120EF60B900210D55 /* MessagesSearchResultAttachmentBubbleCell.xib */; };
-		0250C5632122B68000034691 /* GroupTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5578A20EF568D00210D55 /* GroupTableViewCell.xib */; };
 		0250C5672122B68000034691 /* MediaPickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B556F220EE6C4C00210D55 /* MediaPickerViewController.xib */; };
 		0250C5692122B68000034691 /* CallViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B556DE20EE6C4C00210D55 /* CallViewController.xib */; };
 		0250C56A2122B68000034691 /* ringback.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F083BBDF1E7009EC00A9B29C /* ringback.mp3 */; };
 		0250C56B2122B68000034691 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F083BBEE1E7009EC00A9B29C /* GoogleService-Info.plist */; };
-		0250C56F2122B68000034691 /* DirectoryServerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B557C920EF5D7F00210D55 /* DirectoryServerTableViewCell.xib */; };
 		0250C5732122B68000034691 /* message.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F083BBDD1E7009EC00A9B29C /* message.mp3 */; };
-		0250C5742122B68000034691 /* ForgotPasswordInputsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5579820EF575A00210D55 /* ForgotPasswordInputsView.xib */; };
 		0250C5752122B68000034691 /* third_party_licenses.html in Resources */ = {isa = PBXBuildFile; fileRef = F083BC0E1E7009EC00A9B29C /* third_party_licenses.html */; };
-		0250C5762122B68000034691 /* GroupParticipantsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B556C020EE6C4C00210D55 /* GroupParticipantsViewController.xib */; };
-		0250C5772122B68000034691 /* GroupHomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B556B820EE6C4C00210D55 /* GroupHomeViewController.xib */; };
 		0250C57A2122B68000034691 /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = B1664D5520F4EBEC00808783 /* Vector.strings */; };
-		0250C57B2122B68000034691 /* DirectoryServerDetailTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B557C520EF5CD400210D55 /* DirectoryServerDetailTableViewCell.xib */; };
 		0250C57D2122B68000034691 /* busy.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F083BBDB1E7009EC00A9B29C /* busy.mp3 */; };
 		0250C57E2122B68000034691 /* MediaAlbumContentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B556F120EE6C4C00210D55 /* MediaAlbumContentViewController.xib */; };
-		0250C57F2122B68000034691 /* MessagesSearchResultTextMsgBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B557E520EF60F400210D55 /* MessagesSearchResultTextMsgBubbleCell.xib */; };
 		0250C5812122B68000034691 /* BugReportViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B556B120EE6C4C00210D55 /* BugReportViewController.xib */; };
 		0250C5822122B68000034691 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B169329520F39E6300746532 /* Main.storyboard */; };
-		0250C5832122B68000034691 /* GroupInviteTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5578820EF568D00210D55 /* GroupInviteTableViewCell.xib */; };
 		0250C58D2122B68000034691 /* RecentsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B556DA20EE6C4C00210D55 /* RecentsViewController.xib */; };
 		0250C58E2122B68000034691 /* DeactivateAccountViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B1B5568320EE6C4C00210D55 /* DeactivateAccountViewController.storyboard */; };
-		0250C58F2122B68000034691 /* RoomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5596320EF9E9A00210D55 /* RoomTableViewCell.xib */; };
-		0250C5912122B68000034691 /* GroupRoomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5583A20EF6E7F00210D55 /* GroupRoomTableViewCell.xib */; };
 		0250C5932122B68000034691 /* JitsiViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5576B20EE702800210D55 /* JitsiViewController.xib */; };
 		0250C5972122B68000034691 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B169329320F39E6200746532 /* LaunchScreen.storyboard */; };
 		0250C5982122B68000034691 /* RecentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5595120EF9A8600210D55 /* RecentTableViewCell.xib */; };
 		0250C5992122B68000034691 /* DeviceView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B557AB20EF5A6C00210D55 /* DeviceView.xib */; };
-		0250C59A2122B68000034691 /* GroupRoomsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B556C520EE6C4C00210D55 /* GroupRoomsViewController.xib */; };
 		0250C59B2122B68000034691 /* InviteRecentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5597320EFB02900210D55 /* InviteRecentTableViewCell.xib */; };
 		0250C59E2122B68000034691 /* DeviceTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B557A520EF5A1B00210D55 /* DeviceTableViewCell.xib */; };
 		0250C59F2122B68000034691 /* MediaAlbumTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B557D020EF5E3500210D55 /* MediaAlbumTableCell.xib */; };
-		0250C5A12122B68000034691 /* DirectoryRecentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5582820EF666100210D55 /* DirectoryRecentTableViewCell.xib */; };
 		0250C5A22122B68000034691 /* TableViewCellWithPhoneNumberTextField.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5590D20EF782800210D55 /* TableViewCellWithPhoneNumberTextField.xib */; };
-		0250C5A32122B68000034691 /* GroupTableViewCellWithSwitch.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5578320EF564900210D55 /* GroupTableViewCellWithSwitch.xib */; };
 		0250C5A52122B68000034691 /* FilesSearchTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B557DA20EF5FBA00210D55 /* FilesSearchTableViewCell.xib */; };
 		0250C5A72122B68000034691 /* SegmentedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B556D620EE6C4C00210D55 /* SegmentedViewController.xib */; };
 		0250C5AB2122B68000034691 /* PublicRoomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B169330F20F3CAFC00746532 /* PublicRoomTableViewCell.xib */; };
 		0250C5AC2122B68000034691 /* postMessageAPI.js in Resources */ = {isa = PBXBuildFile; fileRef = 3284A35020A07C210044F922 /* postMessageAPI.js */; };
-		0250C5B02122B68000034691 /* RoomIdOrAliasTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5582E20EF66BA00210D55 /* RoomIdOrAliasTableViewCell.xib */; };
 		0250C5BB2122B68000034691 /* JitsiMeet.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3233F7441F3497DA006ACA81 /* JitsiMeet.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0250C5CB2122E63900034691 /* empty.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0250C5C82122E63900034691 /* empty.mm */; };
 		0250C5CE212314B300034691 /* Tchap-Defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0250C5CD212314B300034691 /* Tchap-Defaults.plist */; };
@@ -357,9 +306,6 @@
 		B15B867B21359145002782BE /* KeyboardNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15B867A21359145002782BE /* KeyboardNotification.swift */; };
 		B15B867E2135BA96002782BE /* AuthenticationViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B15B867C2135BA95002782BE /* AuthenticationViewController.storyboard */; };
 		B15B867F2135BA96002782BE /* AuthenticationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15B867D2135BA96002782BE /* AuthenticationViewController.swift */; };
-		B15B86822135BC6F002782BE /* MasterTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = B15B86802135BC6D002782BE /* MasterTabBarController.m */; };
-		B15B86862135BC83002782BE /* AuthenticationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B15B86832135BC81002782BE /* AuthenticationViewController.xib */; };
-		B15B86872135BC83002782BE /* AuthenticationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B15B86852135BC82002782BE /* AuthenticationViewController.m */; };
 		B15B86892135C284002782BE /* AuthenticationViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15B86882135C284002782BE /* AuthenticationViewModelType.swift */; };
 		B15B868B2135C4DE002782BE /* AuthenticationFormValidationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15B868A2135C4DE002782BE /* AuthenticationFormValidationResult.swift */; };
 		B1664BC520F4E67600808783 /* FallbackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1664BAD20F4E67500808783 /* FallbackViewController.xib */; };
@@ -395,17 +341,12 @@
 		B16932A520F3A21C00746532 /* empty.mm in Sources */ = {isa = PBXBuildFile; fileRef = B16932A220F3A21B00746532 /* empty.mm */; };
 		B16932AC20F3A7B100746532 /* RiotDesignValues.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932AB20F3A7B000746532 /* RiotDesignValues.m */; };
 		B16932AD20F3A7B100746532 /* RiotDesignValues.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932AB20F3A7B000746532 /* RiotDesignValues.m */; };
-		B16932E720F3C37100746532 /* HomeMessagesSearchDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932E620F3C37100746532 /* HomeMessagesSearchDataSource.m */; };
-		B16932EA20F3C39000746532 /* UnifiedSearchRecentsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932E920F3C39000746532 /* UnifiedSearchRecentsDataSource.m */; };
 		B16932EE20F3C3C900746532 /* FilesSearchCellData.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932EC20F3C3C800746532 /* FilesSearchCellData.m */; };
-		B16932F220F3C49E00746532 /* GroupsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932F120F3C49E00746532 /* GroupsDataSource.m */; };
 		B16932F720F3C50E00746532 /* RecentsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932F620F3C50E00746532 /* RecentsDataSource.m */; };
 		B16932FA20F3C51A00746532 /* RecentCellData.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932F920F3C51900746532 /* RecentCellData.m */; };
-		B169330820F3CA0E00746532 /* ContactsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = B169330620F3CA0D00746532 /* ContactsDataSource.m */; };
 		B169330B20F3CA3A00746532 /* Contact.m in Sources */ = {isa = PBXBuildFile; fileRef = B169330A20F3CA3900746532 /* Contact.m */; };
 		B169331420F3CAFC00746532 /* PublicRoomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B169330E20F3CAFC00746532 /* PublicRoomTableViewCell.m */; };
 		B169331520F3CAFC00746532 /* PublicRoomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B169330F20F3CAFC00746532 /* PublicRoomTableViewCell.xib */; };
-		B169331620F3CAFC00746532 /* PublicRoomsDirectoryDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = B169331220F3CAFC00746532 /* PublicRoomsDirectoryDataSource.m */; };
 		B169331720F3CBE000746532 /* RecentCellData.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932F920F3C51900746532 /* RecentCellData.m */; };
 		B17982FF2119FED2001FD722 /* GDPRConsentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17982FE2119FED2001FD722 /* GDPRConsentViewController.swift */; };
 		B1798302211B13B3001FD722 /* OnBoardingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1798301211B13B3001FD722 /* OnBoardingManager.swift */; };
@@ -422,22 +363,8 @@
 		B1B5571A20EE6C4D00210D55 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5567E20EE6C4C00210D55 /* SettingsViewController.m */; };
 		B1B5571B20EE6C4D00210D55 /* DeactivateAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5568120EE6C4C00210D55 /* DeactivateAccountViewController.m */; };
 		B1B5571C20EE6C4D00210D55 /* DeactivateAccountViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B1B5568320EE6C4C00210D55 /* DeactivateAccountViewController.storyboard */; };
-		B1B5571E20EE6C4D00210D55 /* ContactDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5568820EE6C4C00210D55 /* ContactDetailsViewController.m */; };
-		B1B5571F20EE6C4D00210D55 /* ContactDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5568A20EE6C4C00210D55 /* ContactDetailsViewController.xib */; };
-		B1B5572020EE6C4D00210D55 /* ContactsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5568C20EE6C4C00210D55 /* ContactsTableViewController.m */; };
-		B1B5572120EE6C4D00210D55 /* ContactsTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5568D20EE6C4C00210D55 /* ContactsTableViewController.xib */; };
 		B1B5573020EE6C4D00210D55 /* BugReportViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B556B120EE6C4C00210D55 /* BugReportViewController.xib */; };
 		B1B5573120EE6C4D00210D55 /* BugReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556B320EE6C4C00210D55 /* BugReportViewController.m */; };
-		B1B5573220EE6C4D00210D55 /* GroupHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556B720EE6C4C00210D55 /* GroupHomeViewController.m */; };
-		B1B5573320EE6C4D00210D55 /* GroupHomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B556B820EE6C4C00210D55 /* GroupHomeViewController.xib */; };
-		B1B5573420EE6C4D00210D55 /* GroupDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B556BB20EE6C4C00210D55 /* GroupDetailsViewController.xib */; };
-		B1B5573520EE6C4D00210D55 /* GroupDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556BD20EE6C4C00210D55 /* GroupDetailsViewController.m */; };
-		B1B5573620EE6C4D00210D55 /* GroupsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556BE20EE6C4C00210D55 /* GroupsViewController.m */; };
-		B1B5573720EE6C4D00210D55 /* GroupParticipantsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B556C020EE6C4C00210D55 /* GroupParticipantsViewController.xib */; };
-		B1B5573820EE6C4D00210D55 /* GroupParticipantsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556C120EE6C4C00210D55 /* GroupParticipantsViewController.m */; };
-		B1B5573920EE6C4D00210D55 /* GroupRoomsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B556C520EE6C4C00210D55 /* GroupRoomsViewController.xib */; };
-		B1B5573A20EE6C4D00210D55 /* GroupRoomsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556C620EE6C4C00210D55 /* GroupRoomsViewController.m */; };
-		B1B5573B20EE6C4D00210D55 /* FavouritesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556C920EE6C4C00210D55 /* FavouritesViewController.m */; };
 		B1B5573D20EE6C4D00210D55 /* WebViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556D020EE6C4C00210D55 /* WebViewViewController.m */; };
 		B1B5573E20EE6C4D00210D55 /* RiotNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556D320EE6C4C00210D55 /* RiotNavigationController.m */; };
 		B1B5573F20EE6C4D00210D55 /* SegmentedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B556D620EE6C4C00210D55 /* SegmentedViewController.xib */; };
@@ -446,18 +373,12 @@
 		B1B5574220EE6C4D00210D55 /* RecentsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B556DA20EE6C4C00210D55 /* RecentsViewController.xib */; };
 		B1B5574320EE6C4D00210D55 /* CallViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B556DE20EE6C4C00210D55 /* CallViewController.xib */; };
 		B1B5574420EE6C4D00210D55 /* CallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556DF20EE6C4C00210D55 /* CallViewController.m */; };
-		B1B5574520EE6C4D00210D55 /* StartChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556E220EE6C4C00210D55 /* StartChatViewController.m */; };
-		B1B5574620EE6C4D00210D55 /* StartChatViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B556E320EE6C4C00210D55 /* StartChatViewController.xib */; };
 		B1B5574720EE6C4D00210D55 /* UsersDevicesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556E520EE6C4C00210D55 /* UsersDevicesViewController.m */; };
-		B1B5574920EE6C4D00210D55 /* RiotSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556EB20EE6C4C00210D55 /* RiotSplitViewController.m */; };
 		B1B5574A20EE6C4D00210D55 /* MediaPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556EF20EE6C4C00210D55 /* MediaPickerViewController.m */; };
 		B1B5574B20EE6C4D00210D55 /* MediaAlbumContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556F020EE6C4C00210D55 /* MediaAlbumContentViewController.m */; };
 		B1B5574C20EE6C4D00210D55 /* MediaAlbumContentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B556F120EE6C4C00210D55 /* MediaAlbumContentViewController.xib */; };
 		B1B5574D20EE6C4D00210D55 /* MediaPickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B556F220EE6C4C00210D55 /* MediaPickerViewController.xib */; };
-		B1B5574E20EE6C4D00210D55 /* DirectoryServerPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556F720EE6C4C00210D55 /* DirectoryServerPickerViewController.m */; };
-		B1B5574F20EE6C4D00210D55 /* RoomsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556F820EE6C4C00210D55 /* RoomsViewController.m */; };
 		B1B5575220EE6C4D00210D55 /* RoomKeyRequestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556FE20EE6C4C00210D55 /* RoomKeyRequestViewController.m */; };
-		B1B5575C20EE6C4D00210D55 /* DirectoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5571620EE6C4C00210D55 /* DirectoryViewController.m */; };
 		B1B5576F20EE702800210D55 /* IntegrationManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5576020EE702800210D55 /* IntegrationManagerViewController.m */; };
 		B1B5577020EE702800210D55 /* WidgetPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5576220EE702800210D55 /* WidgetPickerViewController.m */; };
 		B1B5577120EE702800210D55 /* StickerPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5576820EE702800210D55 /* StickerPickerViewController.m */; };
@@ -466,52 +387,20 @@
 		B1B5577420EE702900210D55 /* WidgetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5576D20EE702800210D55 /* WidgetViewController.m */; };
 		B1B5577D20EE84BF00210D55 /* CircleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5577B20EE84BE00210D55 /* CircleButton.m */; };
 		B1B5577E20EE84BF00210D55 /* IncomingCallView.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5577C20EE84BF00210D55 /* IncomingCallView.m */; };
-		B1B5578520EF564900210D55 /* GroupTableViewCellWithSwitch.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5578320EF564900210D55 /* GroupTableViewCellWithSwitch.xib */; };
-		B1B5578620EF564900210D55 /* GroupTableViewCellWithSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5578420EF564900210D55 /* GroupTableViewCellWithSwitch.m */; };
-		B1B5578E20EF568D00210D55 /* GroupInviteTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5578820EF568D00210D55 /* GroupInviteTableViewCell.xib */; };
-		B1B5578F20EF568D00210D55 /* GroupTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5578920EF568D00210D55 /* GroupTableViewCell.m */; };
-		B1B5579020EF568D00210D55 /* GroupTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5578A20EF568D00210D55 /* GroupTableViewCell.xib */; };
-		B1B5579120EF568D00210D55 /* GroupInviteTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5578B20EF568D00210D55 /* GroupInviteTableViewCell.m */; };
-		B1B5579920EF575B00210D55 /* AuthInputsView.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5579320EF575A00210D55 /* AuthInputsView.m */; };
-		B1B5579A20EF575B00210D55 /* ForgotPasswordInputsView.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5579420EF575A00210D55 /* ForgotPasswordInputsView.m */; };
-		B1B5579B20EF575B00210D55 /* AuthInputsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5579620EF575A00210D55 /* AuthInputsView.xib */; };
-		B1B5579C20EF575B00210D55 /* ForgotPasswordInputsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5579820EF575A00210D55 /* ForgotPasswordInputsView.xib */; };
-		B1B557A120EF58AD00210D55 /* ContactTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5579E20EF58AC00210D55 /* ContactTableViewCell.m */; };
-		B1B557A220EF58AD00210D55 /* ContactTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5579F20EF58AC00210D55 /* ContactTableViewCell.xib */; };
 		B1B557A720EF5A1B00210D55 /* DeviceTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B557A520EF5A1B00210D55 /* DeviceTableViewCell.xib */; };
 		B1B557A820EF5A1B00210D55 /* DeviceTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B557A620EF5A1B00210D55 /* DeviceTableViewCell.m */; };
 		B1B557AC20EF5A6D00210D55 /* DeviceView.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B557AA20EF5A6C00210D55 /* DeviceView.m */; };
 		B1B557AD20EF5A6D00210D55 /* DeviceView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B557AB20EF5A6C00210D55 /* DeviceView.xib */; };
-		B1B557C620EF5CD400210D55 /* DirectoryServerDetailTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B557C420EF5CD400210D55 /* DirectoryServerDetailTableViewCell.m */; };
-		B1B557C720EF5CD400210D55 /* DirectoryServerDetailTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B557C520EF5CD400210D55 /* DirectoryServerDetailTableViewCell.xib */; };
-		B1B557CB20EF5D8000210D55 /* DirectoryServerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B557C920EF5D7F00210D55 /* DirectoryServerTableViewCell.xib */; };
-		B1B557CC20EF5D8000210D55 /* DirectoryServerTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B557CA20EF5D7F00210D55 /* DirectoryServerTableViewCell.m */; };
 		B1B557D120EF5E3500210D55 /* MediaAlbumTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B557CE20EF5E3500210D55 /* MediaAlbumTableCell.m */; };
 		B1B557D220EF5E3500210D55 /* MediaAlbumTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B557D020EF5E3500210D55 /* MediaAlbumTableCell.xib */; };
 		B1B557DD20EF5FBB00210D55 /* FilesSearchTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B557DA20EF5FBA00210D55 /* FilesSearchTableViewCell.xib */; };
 		B1B557DE20EF5FBB00210D55 /* FilesSearchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B557DC20EF5FBA00210D55 /* FilesSearchTableViewCell.m */; };
-		B1B557E320EF60B900210D55 /* MessagesSearchResultAttachmentBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B557E020EF60B900210D55 /* MessagesSearchResultAttachmentBubbleCell.m */; };
-		B1B557E420EF60B900210D55 /* MessagesSearchResultAttachmentBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B557E120EF60B900210D55 /* MessagesSearchResultAttachmentBubbleCell.xib */; };
-		B1B557E820EF60F500210D55 /* MessagesSearchResultTextMsgBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B557E520EF60F400210D55 /* MessagesSearchResultTextMsgBubbleCell.xib */; };
-		B1B557E920EF60F500210D55 /* MessagesSearchResultTextMsgBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B557E620EF60F400210D55 /* MessagesSearchResultTextMsgBubbleCell.m */; };
-		B1B5582B20EF666100210D55 /* DirectoryRecentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5582820EF666100210D55 /* DirectoryRecentTableViewCell.xib */; };
-		B1B5582C20EF666100210D55 /* DirectoryRecentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5582A20EF666100210D55 /* DirectoryRecentTableViewCell.m */; };
-		B1B5583020EF66BA00210D55 /* RoomIdOrAliasTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5582E20EF66BA00210D55 /* RoomIdOrAliasTableViewCell.xib */; };
-		B1B5583120EF66BA00210D55 /* RoomIdOrAliasTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5582F20EF66BA00210D55 /* RoomIdOrAliasTableViewCell.m */; };
-		B1B5583D20EF6E7F00210D55 /* GroupRoomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5583A20EF6E7F00210D55 /* GroupRoomTableViewCell.xib */; };
-		B1B5583E20EF6E7F00210D55 /* GroupRoomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5583B20EF6E7F00210D55 /* GroupRoomTableViewCell.m */; };
 		B1B5590F20EF782800210D55 /* TableViewCellWithPhoneNumberTextField.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5590D20EF782800210D55 /* TableViewCellWithPhoneNumberTextField.xib */; };
 		B1B5591020EF782800210D55 /* TableViewCellWithPhoneNumberTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5590E20EF782800210D55 /* TableViewCellWithPhoneNumberTextField.m */; };
 		B1B5592B20EF7A5D00210D55 /* TableViewCellWithButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5592920EF7A5D00210D55 /* TableViewCellWithButton.xib */; };
 		B1B5592C20EF7A5D00210D55 /* TableViewCellWithButton.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5592A20EF7A5D00210D55 /* TableViewCellWithButton.m */; };
-		B1B5594420EF7BD000210D55 /* TableViewCellWithCollectionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5593F20EF7BD000210D55 /* TableViewCellWithCollectionView.xib */; };
-		B1B5594520EF7BD000210D55 /* TableViewCellWithCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5594020EF7BD000210D55 /* TableViewCellWithCollectionView.m */; };
-		B1B5594620EF7BD000210D55 /* RoomCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5594120EF7BD000210D55 /* RoomCollectionViewCell.xib */; };
-		B1B5594720EF7BD000210D55 /* RoomCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5594220EF7BD000210D55 /* RoomCollectionViewCell.m */; };
 		B1B5595220EF9A8700210D55 /* RecentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5595020EF9A8600210D55 /* RecentTableViewCell.m */; };
 		B1B5595320EF9A8700210D55 /* RecentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5595120EF9A8600210D55 /* RecentTableViewCell.xib */; };
-		B1B5596520EF9E9B00210D55 /* RoomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5596320EF9E9A00210D55 /* RoomTableViewCell.xib */; };
-		B1B5596620EF9E9B00210D55 /* RoomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5596420EF9E9A00210D55 /* RoomTableViewCell.m */; };
 		B1B5596F20EFA85D00210D55 /* EncryptionInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5596C20EFA85C00210D55 /* EncryptionInfoView.m */; };
 		B1B5597020EFA85D00210D55 /* EncryptionInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5596E20EFA85C00210D55 /* EncryptionInfoView.xib */; };
 		B1B5597520EFB02A00210D55 /* InviteRecentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5597220EFB02900210D55 /* InviteRecentTableViewCell.m */; };
@@ -558,7 +447,6 @@
 		B1F2AAAE212AED900077FDC0 /* RootRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AAA9212AED900077FDC0 /* RootRouter.swift */; };
 		B1F2AAAF212AED900077FDC0 /* Presentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AAAA212AED900077FDC0 /* Presentable.swift */; };
 		B1F2AAB0212AED900077FDC0 /* NavigationRouterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AAAB212AED900077FDC0 /* NavigationRouterType.swift */; };
-		B1F2AAB3212AFAA90077FDC0 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AAB2212AFAA90077FDC0 /* AppDelegate.m */; };
 		B1F2AAB6212AFDBA0077FDC0 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AAB5212AFDBA0077FDC0 /* UIViewController.swift */; };
 		D48D6380D4A2A4487B27F13E /* Pods_RiotPods_Riot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D70232F22AD621A2018B15B0 /* Pods_RiotPods_Riot.framework */; };
 		F05927C91FDED836009F2A68 /* MXGroup+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F05927C71FDED835009F2A68 /* MXGroup+Riot.m */; };
@@ -963,11 +851,6 @@
 		B15B867A21359145002782BE /* KeyboardNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardNotification.swift; sourceTree = "<group>"; };
 		B15B867C2135BA95002782BE /* AuthenticationViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = AuthenticationViewController.storyboard; sourceTree = "<group>"; };
 		B15B867D2135BA96002782BE /* AuthenticationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticationViewController.swift; sourceTree = "<group>"; };
-		B15B86802135BC6D002782BE /* MasterTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MasterTabBarController.m; sourceTree = "<group>"; };
-		B15B86812135BC6E002782BE /* MasterTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MasterTabBarController.h; sourceTree = "<group>"; };
-		B15B86832135BC81002782BE /* AuthenticationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AuthenticationViewController.xib; sourceTree = "<group>"; };
-		B15B86842135BC81002782BE /* AuthenticationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthenticationViewController.h; sourceTree = "<group>"; };
-		B15B86852135BC82002782BE /* AuthenticationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthenticationViewController.m; sourceTree = "<group>"; };
 		B15B86882135C284002782BE /* AuthenticationViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewModelType.swift; sourceTree = "<group>"; };
 		B15B868A2135C4DE002782BE /* AuthenticationFormValidationResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationFormValidationResult.swift; sourceTree = "<group>"; };
 		B1664BAD20F4E67500808783 /* FallbackViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FallbackViewController.xib; sourceTree = "<group>"; };
@@ -1040,27 +923,17 @@
 		B16932A220F3A21B00746532 /* empty.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = empty.mm; sourceTree = "<group>"; };
 		B16932AA20F3A7B000746532 /* RiotDesignValues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RiotDesignValues.h; sourceTree = "<group>"; };
 		B16932AB20F3A7B000746532 /* RiotDesignValues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RiotDesignValues.m; sourceTree = "<group>"; };
-		B16932E520F3C37100746532 /* HomeMessagesSearchDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeMessagesSearchDataSource.h; sourceTree = "<group>"; };
-		B16932E620F3C37100746532 /* HomeMessagesSearchDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeMessagesSearchDataSource.m; sourceTree = "<group>"; };
-		B16932E820F3C39000746532 /* UnifiedSearchRecentsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnifiedSearchRecentsDataSource.h; sourceTree = "<group>"; };
-		B16932E920F3C39000746532 /* UnifiedSearchRecentsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnifiedSearchRecentsDataSource.m; sourceTree = "<group>"; };
 		B16932EC20F3C3C800746532 /* FilesSearchCellData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilesSearchCellData.m; sourceTree = "<group>"; };
 		B16932ED20F3C3C800746532 /* FilesSearchCellData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilesSearchCellData.h; sourceTree = "<group>"; };
-		B16932F020F3C49D00746532 /* GroupsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupsDataSource.h; sourceTree = "<group>"; };
-		B16932F120F3C49E00746532 /* GroupsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupsDataSource.m; sourceTree = "<group>"; };
 		B16932F520F3C50E00746532 /* RecentsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentsDataSource.h; sourceTree = "<group>"; };
 		B16932F620F3C50E00746532 /* RecentsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentsDataSource.m; sourceTree = "<group>"; };
 		B16932F820F3C51900746532 /* RecentCellData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentCellData.h; sourceTree = "<group>"; };
 		B16932F920F3C51900746532 /* RecentCellData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentCellData.m; sourceTree = "<group>"; };
-		B169330620F3CA0D00746532 /* ContactsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactsDataSource.m; sourceTree = "<group>"; };
-		B169330720F3CA0D00746532 /* ContactsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsDataSource.h; sourceTree = "<group>"; };
 		B169330920F3CA3900746532 /* Contact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Contact.h; sourceTree = "<group>"; };
 		B169330A20F3CA3900746532 /* Contact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Contact.m; sourceTree = "<group>"; };
 		B169330E20F3CAFC00746532 /* PublicRoomTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublicRoomTableViewCell.m; sourceTree = "<group>"; };
 		B169330F20F3CAFC00746532 /* PublicRoomTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PublicRoomTableViewCell.xib; sourceTree = "<group>"; };
 		B169331020F3CAFC00746532 /* PublicRoomTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublicRoomTableViewCell.h; sourceTree = "<group>"; };
-		B169331220F3CAFC00746532 /* PublicRoomsDirectoryDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublicRoomsDirectoryDataSource.m; sourceTree = "<group>"; };
-		B169331320F3CAFC00746532 /* PublicRoomsDirectoryDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublicRoomsDirectoryDataSource.h; sourceTree = "<group>"; };
 		B17982FE2119FED2001FD722 /* GDPRConsentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDPRConsentViewController.swift; sourceTree = "<group>"; };
 		B1798301211B13B3001FD722 /* OnBoardingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingManager.swift; sourceTree = "<group>"; };
 		B1892E762130528500742348 /* ErrorPresentable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorPresentable.swift; sourceTree = "<group>"; };
@@ -1080,31 +953,9 @@
 		B1B5568120EE6C4C00210D55 /* DeactivateAccountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeactivateAccountViewController.m; sourceTree = "<group>"; };
 		B1B5568220EE6C4C00210D55 /* DeactivateAccountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeactivateAccountViewController.h; sourceTree = "<group>"; };
 		B1B5568320EE6C4C00210D55 /* DeactivateAccountViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DeactivateAccountViewController.storyboard; sourceTree = "<group>"; };
-		B1B5568820EE6C4C00210D55 /* ContactDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactDetailsViewController.m; sourceTree = "<group>"; };
-		B1B5568920EE6C4C00210D55 /* ContactsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsTableViewController.h; sourceTree = "<group>"; };
-		B1B5568A20EE6C4C00210D55 /* ContactDetailsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactDetailsViewController.xib; sourceTree = "<group>"; };
-		B1B5568B20EE6C4C00210D55 /* ContactDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactDetailsViewController.h; sourceTree = "<group>"; };
-		B1B5568C20EE6C4C00210D55 /* ContactsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactsTableViewController.m; sourceTree = "<group>"; };
-		B1B5568D20EE6C4C00210D55 /* ContactsTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactsTableViewController.xib; sourceTree = "<group>"; };
 		B1B556B120EE6C4C00210D55 /* BugReportViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BugReportViewController.xib; sourceTree = "<group>"; };
 		B1B556B220EE6C4C00210D55 /* BugReportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BugReportViewController.h; sourceTree = "<group>"; };
 		B1B556B320EE6C4C00210D55 /* BugReportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BugReportViewController.m; sourceTree = "<group>"; };
-		B1B556B620EE6C4C00210D55 /* GroupHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupHomeViewController.h; sourceTree = "<group>"; };
-		B1B556B720EE6C4C00210D55 /* GroupHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupHomeViewController.m; sourceTree = "<group>"; };
-		B1B556B820EE6C4C00210D55 /* GroupHomeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GroupHomeViewController.xib; sourceTree = "<group>"; };
-		B1B556B920EE6C4C00210D55 /* GroupsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupsViewController.h; sourceTree = "<group>"; };
-		B1B556BB20EE6C4C00210D55 /* GroupDetailsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GroupDetailsViewController.xib; sourceTree = "<group>"; };
-		B1B556BC20EE6C4C00210D55 /* GroupDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupDetailsViewController.h; sourceTree = "<group>"; };
-		B1B556BD20EE6C4C00210D55 /* GroupDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupDetailsViewController.m; sourceTree = "<group>"; };
-		B1B556BE20EE6C4C00210D55 /* GroupsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupsViewController.m; sourceTree = "<group>"; };
-		B1B556C020EE6C4C00210D55 /* GroupParticipantsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GroupParticipantsViewController.xib; sourceTree = "<group>"; };
-		B1B556C120EE6C4C00210D55 /* GroupParticipantsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupParticipantsViewController.m; sourceTree = "<group>"; };
-		B1B556C220EE6C4C00210D55 /* GroupParticipantsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupParticipantsViewController.h; sourceTree = "<group>"; };
-		B1B556C420EE6C4C00210D55 /* GroupRoomsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupRoomsViewController.h; sourceTree = "<group>"; };
-		B1B556C520EE6C4C00210D55 /* GroupRoomsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GroupRoomsViewController.xib; sourceTree = "<group>"; };
-		B1B556C620EE6C4C00210D55 /* GroupRoomsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupRoomsViewController.m; sourceTree = "<group>"; };
-		B1B556C820EE6C4C00210D55 /* FavouritesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavouritesViewController.h; sourceTree = "<group>"; };
-		B1B556C920EE6C4C00210D55 /* FavouritesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavouritesViewController.m; sourceTree = "<group>"; };
 		B1B556CF20EE6C4C00210D55 /* WebViewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewViewController.h; sourceTree = "<group>"; };
 		B1B556D020EE6C4C00210D55 /* WebViewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewViewController.m; sourceTree = "<group>"; };
 		B1B556D220EE6C4C00210D55 /* RiotNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RiotNavigationController.h; sourceTree = "<group>"; };
@@ -1118,27 +969,16 @@
 		B1B556DD20EE6C4C00210D55 /* CallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallViewController.h; sourceTree = "<group>"; };
 		B1B556DE20EE6C4C00210D55 /* CallViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CallViewController.xib; sourceTree = "<group>"; };
 		B1B556DF20EE6C4C00210D55 /* CallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallViewController.m; sourceTree = "<group>"; };
-		B1B556E120EE6C4C00210D55 /* StartChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StartChatViewController.h; sourceTree = "<group>"; };
-		B1B556E220EE6C4C00210D55 /* StartChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StartChatViewController.m; sourceTree = "<group>"; };
-		B1B556E320EE6C4C00210D55 /* StartChatViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StartChatViewController.xib; sourceTree = "<group>"; };
 		B1B556E520EE6C4C00210D55 /* UsersDevicesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UsersDevicesViewController.m; sourceTree = "<group>"; };
 		B1B556E620EE6C4C00210D55 /* UsersDevicesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UsersDevicesViewController.h; sourceTree = "<group>"; };
-		B1B556EB20EE6C4C00210D55 /* RiotSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RiotSplitViewController.m; sourceTree = "<group>"; };
-		B1B556EC20EE6C4C00210D55 /* RiotSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RiotSplitViewController.h; sourceTree = "<group>"; };
 		B1B556EE20EE6C4C00210D55 /* MediaAlbumContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaAlbumContentViewController.h; sourceTree = "<group>"; };
 		B1B556EF20EE6C4C00210D55 /* MediaPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaPickerViewController.m; sourceTree = "<group>"; };
 		B1B556F020EE6C4C00210D55 /* MediaAlbumContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaAlbumContentViewController.m; sourceTree = "<group>"; };
 		B1B556F120EE6C4C00210D55 /* MediaAlbumContentViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MediaAlbumContentViewController.xib; sourceTree = "<group>"; };
 		B1B556F220EE6C4C00210D55 /* MediaPickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MediaPickerViewController.xib; sourceTree = "<group>"; };
 		B1B556F320EE6C4C00210D55 /* MediaPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaPickerViewController.h; sourceTree = "<group>"; };
-		B1B556F520EE6C4C00210D55 /* DirectoryServerPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryServerPickerViewController.h; sourceTree = "<group>"; };
-		B1B556F620EE6C4C00210D55 /* RoomsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomsViewController.h; sourceTree = "<group>"; };
-		B1B556F720EE6C4C00210D55 /* DirectoryServerPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DirectoryServerPickerViewController.m; sourceTree = "<group>"; };
-		B1B556F820EE6C4C00210D55 /* RoomsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomsViewController.m; sourceTree = "<group>"; };
 		B1B556FE20EE6C4C00210D55 /* RoomKeyRequestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomKeyRequestViewController.m; sourceTree = "<group>"; };
 		B1B556FF20EE6C4C00210D55 /* RoomKeyRequestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomKeyRequestViewController.h; sourceTree = "<group>"; };
-		B1B5571620EE6C4C00210D55 /* DirectoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DirectoryViewController.m; sourceTree = "<group>"; };
-		B1B5571720EE6C4C00210D55 /* DirectoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryViewController.h; sourceTree = "<group>"; };
 		B1B5576020EE702800210D55 /* IntegrationManagerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IntegrationManagerViewController.m; sourceTree = "<group>"; };
 		B1B5576220EE702800210D55 /* WidgetPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WidgetPickerViewController.m; sourceTree = "<group>"; };
 		B1B5576320EE702800210D55 /* WidgetPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WidgetPickerViewController.h; sourceTree = "<group>"; };
@@ -1154,75 +994,27 @@
 		B1B5577A20EE84BD00210D55 /* IncomingCallView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IncomingCallView.h; sourceTree = "<group>"; };
 		B1B5577B20EE84BE00210D55 /* CircleButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircleButton.m; sourceTree = "<group>"; };
 		B1B5577C20EE84BF00210D55 /* IncomingCallView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IncomingCallView.m; sourceTree = "<group>"; };
-		B1B5578220EF564900210D55 /* GroupTableViewCellWithSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupTableViewCellWithSwitch.h; sourceTree = "<group>"; };
-		B1B5578320EF564900210D55 /* GroupTableViewCellWithSwitch.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GroupTableViewCellWithSwitch.xib; sourceTree = "<group>"; };
-		B1B5578420EF564900210D55 /* GroupTableViewCellWithSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupTableViewCellWithSwitch.m; sourceTree = "<group>"; };
-		B1B5578820EF568D00210D55 /* GroupInviteTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GroupInviteTableViewCell.xib; sourceTree = "<group>"; };
-		B1B5578920EF568D00210D55 /* GroupTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupTableViewCell.m; sourceTree = "<group>"; };
-		B1B5578A20EF568D00210D55 /* GroupTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GroupTableViewCell.xib; sourceTree = "<group>"; };
-		B1B5578B20EF568D00210D55 /* GroupInviteTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupInviteTableViewCell.m; sourceTree = "<group>"; };
-		B1B5578C20EF568D00210D55 /* GroupInviteTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupInviteTableViewCell.h; sourceTree = "<group>"; };
-		B1B5578D20EF568D00210D55 /* GroupTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupTableViewCell.h; sourceTree = "<group>"; };
-		B1B5579320EF575A00210D55 /* AuthInputsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthInputsView.m; sourceTree = "<group>"; };
-		B1B5579420EF575A00210D55 /* ForgotPasswordInputsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForgotPasswordInputsView.m; sourceTree = "<group>"; };
-		B1B5579520EF575A00210D55 /* AuthInputsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthInputsView.h; sourceTree = "<group>"; };
-		B1B5579620EF575A00210D55 /* AuthInputsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AuthInputsView.xib; sourceTree = "<group>"; };
-		B1B5579720EF575A00210D55 /* ForgotPasswordInputsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForgotPasswordInputsView.h; sourceTree = "<group>"; };
-		B1B5579820EF575A00210D55 /* ForgotPasswordInputsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ForgotPasswordInputsView.xib; sourceTree = "<group>"; };
-		B1B5579E20EF58AC00210D55 /* ContactTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactTableViewCell.m; sourceTree = "<group>"; };
-		B1B5579F20EF58AC00210D55 /* ContactTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactTableViewCell.xib; sourceTree = "<group>"; };
-		B1B557A020EF58AC00210D55 /* ContactTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactTableViewCell.h; sourceTree = "<group>"; };
 		B1B557A420EF5A1B00210D55 /* DeviceTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceTableViewCell.h; sourceTree = "<group>"; };
 		B1B557A520EF5A1B00210D55 /* DeviceTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DeviceTableViewCell.xib; sourceTree = "<group>"; };
 		B1B557A620EF5A1B00210D55 /* DeviceTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceTableViewCell.m; sourceTree = "<group>"; };
 		B1B557A920EF5A6C00210D55 /* DeviceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceView.h; sourceTree = "<group>"; };
 		B1B557AA20EF5A6C00210D55 /* DeviceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceView.m; sourceTree = "<group>"; };
 		B1B557AB20EF5A6C00210D55 /* DeviceView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DeviceView.xib; sourceTree = "<group>"; };
-		B1B557C320EF5CD400210D55 /* DirectoryServerDetailTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryServerDetailTableViewCell.h; sourceTree = "<group>"; };
-		B1B557C420EF5CD400210D55 /* DirectoryServerDetailTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DirectoryServerDetailTableViewCell.m; sourceTree = "<group>"; };
-		B1B557C520EF5CD400210D55 /* DirectoryServerDetailTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DirectoryServerDetailTableViewCell.xib; sourceTree = "<group>"; };
-		B1B557C820EF5D7F00210D55 /* DirectoryServerTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryServerTableViewCell.h; sourceTree = "<group>"; };
-		B1B557C920EF5D7F00210D55 /* DirectoryServerTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DirectoryServerTableViewCell.xib; sourceTree = "<group>"; };
-		B1B557CA20EF5D7F00210D55 /* DirectoryServerTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DirectoryServerTableViewCell.m; sourceTree = "<group>"; };
 		B1B557CE20EF5E3500210D55 /* MediaAlbumTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaAlbumTableCell.m; sourceTree = "<group>"; };
 		B1B557CF20EF5E3500210D55 /* MediaAlbumTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaAlbumTableCell.h; sourceTree = "<group>"; };
 		B1B557D020EF5E3500210D55 /* MediaAlbumTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MediaAlbumTableCell.xib; sourceTree = "<group>"; };
 		B1B557DA20EF5FBA00210D55 /* FilesSearchTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FilesSearchTableViewCell.xib; sourceTree = "<group>"; };
 		B1B557DB20EF5FBA00210D55 /* FilesSearchTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilesSearchTableViewCell.h; sourceTree = "<group>"; };
 		B1B557DC20EF5FBA00210D55 /* FilesSearchTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilesSearchTableViewCell.m; sourceTree = "<group>"; };
-		B1B557E020EF60B900210D55 /* MessagesSearchResultAttachmentBubbleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagesSearchResultAttachmentBubbleCell.m; sourceTree = "<group>"; };
-		B1B557E120EF60B900210D55 /* MessagesSearchResultAttachmentBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MessagesSearchResultAttachmentBubbleCell.xib; sourceTree = "<group>"; };
-		B1B557E220EF60B900210D55 /* MessagesSearchResultAttachmentBubbleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagesSearchResultAttachmentBubbleCell.h; sourceTree = "<group>"; };
-		B1B557E520EF60F400210D55 /* MessagesSearchResultTextMsgBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MessagesSearchResultTextMsgBubbleCell.xib; sourceTree = "<group>"; };
-		B1B557E620EF60F400210D55 /* MessagesSearchResultTextMsgBubbleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagesSearchResultTextMsgBubbleCell.m; sourceTree = "<group>"; };
-		B1B557E720EF60F500210D55 /* MessagesSearchResultTextMsgBubbleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagesSearchResultTextMsgBubbleCell.h; sourceTree = "<group>"; };
-		B1B5582820EF666100210D55 /* DirectoryRecentTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DirectoryRecentTableViewCell.xib; sourceTree = "<group>"; };
-		B1B5582920EF666100210D55 /* DirectoryRecentTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryRecentTableViewCell.h; sourceTree = "<group>"; };
-		B1B5582A20EF666100210D55 /* DirectoryRecentTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DirectoryRecentTableViewCell.m; sourceTree = "<group>"; };
-		B1B5582D20EF66BA00210D55 /* RoomIdOrAliasTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomIdOrAliasTableViewCell.h; sourceTree = "<group>"; };
-		B1B5582E20EF66BA00210D55 /* RoomIdOrAliasTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomIdOrAliasTableViewCell.xib; sourceTree = "<group>"; };
-		B1B5582F20EF66BA00210D55 /* RoomIdOrAliasTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomIdOrAliasTableViewCell.m; sourceTree = "<group>"; };
-		B1B5583A20EF6E7F00210D55 /* GroupRoomTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GroupRoomTableViewCell.xib; sourceTree = "<group>"; };
-		B1B5583B20EF6E7F00210D55 /* GroupRoomTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupRoomTableViewCell.m; sourceTree = "<group>"; };
-		B1B5583C20EF6E7F00210D55 /* GroupRoomTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupRoomTableViewCell.h; sourceTree = "<group>"; };
 		B1B5590C20EF782700210D55 /* TableViewCellWithPhoneNumberTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewCellWithPhoneNumberTextField.h; sourceTree = "<group>"; };
 		B1B5590D20EF782800210D55 /* TableViewCellWithPhoneNumberTextField.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TableViewCellWithPhoneNumberTextField.xib; sourceTree = "<group>"; };
 		B1B5590E20EF782800210D55 /* TableViewCellWithPhoneNumberTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewCellWithPhoneNumberTextField.m; sourceTree = "<group>"; };
 		B1B5592820EF7A5D00210D55 /* TableViewCellWithButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewCellWithButton.h; sourceTree = "<group>"; };
 		B1B5592920EF7A5D00210D55 /* TableViewCellWithButton.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TableViewCellWithButton.xib; sourceTree = "<group>"; };
 		B1B5592A20EF7A5D00210D55 /* TableViewCellWithButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewCellWithButton.m; sourceTree = "<group>"; };
-		B1B5593E20EF7BD000210D55 /* RoomCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomCollectionViewCell.h; sourceTree = "<group>"; };
-		B1B5593F20EF7BD000210D55 /* TableViewCellWithCollectionView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TableViewCellWithCollectionView.xib; sourceTree = "<group>"; };
-		B1B5594020EF7BD000210D55 /* TableViewCellWithCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewCellWithCollectionView.m; sourceTree = "<group>"; };
-		B1B5594120EF7BD000210D55 /* RoomCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomCollectionViewCell.xib; sourceTree = "<group>"; };
-		B1B5594220EF7BD000210D55 /* RoomCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomCollectionViewCell.m; sourceTree = "<group>"; };
-		B1B5594320EF7BD000210D55 /* TableViewCellWithCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewCellWithCollectionView.h; sourceTree = "<group>"; };
 		B1B5594F20EF9A8600210D55 /* RecentTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentTableViewCell.h; sourceTree = "<group>"; };
 		B1B5595020EF9A8600210D55 /* RecentTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentTableViewCell.m; sourceTree = "<group>"; };
 		B1B5595120EF9A8600210D55 /* RecentTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RecentTableViewCell.xib; sourceTree = "<group>"; };
-		B1B5596220EF9E9A00210D55 /* RoomTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomTableViewCell.h; sourceTree = "<group>"; };
-		B1B5596320EF9E9A00210D55 /* RoomTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomTableViewCell.xib; sourceTree = "<group>"; };
-		B1B5596420EF9E9A00210D55 /* RoomTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomTableViewCell.m; sourceTree = "<group>"; };
 		B1B5596C20EFA85C00210D55 /* EncryptionInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EncryptionInfoView.m; sourceTree = "<group>"; };
 		B1B5596D20EFA85C00210D55 /* EncryptionInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EncryptionInfoView.h; sourceTree = "<group>"; };
 		B1B5596E20EFA85C00210D55 /* EncryptionInfoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EncryptionInfoView.xib; sourceTree = "<group>"; };
@@ -1263,7 +1055,6 @@
 		B1F2AA82212AEC810077FDC0 /* SettingsCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsCoordinator.swift; sourceTree = "<group>"; };
 		B1F2AA84212AEC820077FDC0 /* AppCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		B1F2AA85212AEC820077FDC0 /* AppCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppCoordinatorType.swift; sourceTree = "<group>"; };
-		B1F2AA87212AEC820077FDC0 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		B1F2AA88212AEC820077FDC0 /* LegacyAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LegacyAppDelegate.m; sourceTree = "<group>"; };
 		B1F2AA89212AEC820077FDC0 /* LegacyAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LegacyAppDelegate.h; sourceTree = "<group>"; };
 		B1F2AA8A212AEC820077FDC0 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -1279,8 +1070,6 @@
 		B1F2AAA9212AED900077FDC0 /* RootRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootRouter.swift; sourceTree = "<group>"; };
 		B1F2AAAA212AED900077FDC0 /* Presentable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Presentable.swift; sourceTree = "<group>"; };
 		B1F2AAAB212AED900077FDC0 /* NavigationRouterType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationRouterType.swift; sourceTree = "<group>"; };
-		B1F2AAB1212AFAA80077FDC0 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		B1F2AAB2212AFAA90077FDC0 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		B1F2AAB5212AFDBA0077FDC0 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		CE094F20A8F9C16D0B285A46 /* Pods-RiotPods-Tchap.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-Tchap.release.xcconfig"; path = "Pods/Target Support Files/Pods-RiotPods-Tchap/Pods-RiotPods-Tchap.release.xcconfig"; sourceTree = "<group>"; };
 		D70232F22AD621A2018B15B0 /* Pods_RiotPods_Riot.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RiotPods_Riot.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2280,24 +2069,6 @@
 			path = Constants;
 			sourceTree = "<group>";
 		};
-		B16932E320F3C12B00746532 /* DataSources */ = {
-			isa = PBXGroup;
-			children = (
-				B16932E820F3C39000746532 /* UnifiedSearchRecentsDataSource.h */,
-				B16932E920F3C39000746532 /* UnifiedSearchRecentsDataSource.m */,
-			);
-			path = DataSources;
-			sourceTree = "<group>";
-		};
-		B16932E420F3C29100746532 /* DataSources */ = {
-			isa = PBXGroup;
-			children = (
-				B16932E520F3C37100746532 /* HomeMessagesSearchDataSource.h */,
-				B16932E620F3C37100746532 /* HomeMessagesSearchDataSource.m */,
-			);
-			path = DataSources;
-			sourceTree = "<group>";
-		};
 		B16932EB20F3C39A00746532 /* CellData */ = {
 			isa = PBXGroup;
 			children = (
@@ -2305,15 +2076,6 @@
 				B16932EC20F3C3C800746532 /* FilesSearchCellData.m */,
 			);
 			path = CellData;
-			sourceTree = "<group>";
-		};
-		B16932EF20F3C45700746532 /* DataSources */ = {
-			isa = PBXGroup;
-			children = (
-				B16932F020F3C49D00746532 /* GroupsDataSource.h */,
-				B16932F120F3C49E00746532 /* GroupsDataSource.m */,
-			);
-			path = DataSources;
 			sourceTree = "<group>";
 		};
 		B16932F320F3C4B800746532 /* DataSources */ = {
@@ -2343,19 +2105,9 @@
 			path = Contact;
 			sourceTree = "<group>";
 		};
-		B169330520F3C9C000746532 /* DataSources */ = {
-			isa = PBXGroup;
-			children = (
-				B169330720F3CA0D00746532 /* ContactsDataSource.h */,
-				B169330620F3CA0D00746532 /* ContactsDataSource.m */,
-			);
-			path = DataSources;
-			sourceTree = "<group>";
-		};
 		B169330C20F3CA6000746532 /* PublicRoomList */ = {
 			isa = PBXGroup;
 			children = (
-				B169331120F3CAFC00746532 /* DataSources */,
 				B169330D20F3CAFC00746532 /* Views */,
 			);
 			path = PublicRoomList;
@@ -2369,15 +2121,6 @@
 				B169330F20F3CAFC00746532 /* PublicRoomTableViewCell.xib */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		B169331120F3CAFC00746532 /* DataSources */ = {
-			isa = PBXGroup;
-			children = (
-				B169331320F3CAFC00746532 /* PublicRoomsDirectoryDataSource.h */,
-				B169331220F3CAFC00746532 /* PublicRoomsDirectoryDataSource.m */,
-			);
-			path = DataSources;
 			sourceTree = "<group>";
 		};
 		B17982FD2119FEA7001FD722 /* GDPR */ = {
@@ -2419,22 +2162,13 @@
 		B1B5567620EE6C4C00210D55 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
-				B1B556EA20EE6C4C00210D55 /* Main */,
-				B1B556CA20EE6C4C00210D55 /* TabBar */,
-				B1B556F920EE6C4C00210D55 /* Authentication */,
 				B17982FD2119FEA7001FD722 /* GDPR */,
-				B1B5568420EE6C4C00210D55 /* Home */,
-				B1B556C720EE6C4C00210D55 /* Favorites */,
 				B1B556E720EE6C4C00210D55 /* People */,
-				B1B556F420EE6C4C00210D55 /* Rooms */,
-				B1B556B420EE6C4C00210D55 /* Communities */,
 				B1B5567720EE6C4C00210D55 /* Settings */,
 				B1B5570C20EE6C4C00210D55 /* GlobalSearch */,
-				B1B556E020EE6C4C00210D55 /* StartChat */,
 				B169330C20F3CA6000746532 /* PublicRoomList */,
 				B1B5575F20EE702800210D55 /* Integrations */,
 				B1B556DC20EE6C4C00210D55 /* Call */,
-				B1B5568720EE6C4C00210D55 /* Contacts */,
 				B1B556ED20EE6C4C00210D55 /* MediaPicker */,
 				B1B556E420EE6C4C00210D55 /* UserDevices */,
 				B1B5596B20EFA85C00210D55 /* EncryptionInfo */,
@@ -2486,27 +2220,6 @@
 			path = DeactivateAccount;
 			sourceTree = "<group>";
 		};
-		B1B5568420EE6C4C00210D55 /* Home */ = {
-			isa = PBXGroup;
-			children = (
-				B1B5593D20EF7BD000210D55 /* Views */,
-			);
-			path = Home;
-			sourceTree = "<group>";
-		};
-		B1B5568720EE6C4C00210D55 /* Contacts */ = {
-			isa = PBXGroup;
-			children = (
-				B1B5568920EE6C4C00210D55 /* ContactsTableViewController.h */,
-				B1B5568C20EE6C4C00210D55 /* ContactsTableViewController.m */,
-				B1B5568D20EE6C4C00210D55 /* ContactsTableViewController.xib */,
-				B169330520F3C9C000746532 /* DataSources */,
-				B1B5577620EE70D200210D55 /* Details */,
-				B1B5579D20EF58AC00210D55 /* Views */,
-			);
-			path = Contacts;
-			sourceTree = "<group>";
-		};
 		B1B556B020EE6C4C00210D55 /* BugReport */ = {
 			isa = PBXGroup;
 			children = (
@@ -2515,80 +2228,6 @@
 				B1B556B120EE6C4C00210D55 /* BugReportViewController.xib */,
 			);
 			path = BugReport;
-			sourceTree = "<group>";
-		};
-		B1B556B420EE6C4C00210D55 /* Communities */ = {
-			isa = PBXGroup;
-			children = (
-				B1B556B920EE6C4C00210D55 /* GroupsViewController.h */,
-				B1B556BE20EE6C4C00210D55 /* GroupsViewController.m */,
-				B16932EF20F3C45700746532 /* DataSources */,
-				B1B5578720EF568D00210D55 /* Views */,
-				B1B556BA20EE6C4C00210D55 /* TabDetail */,
-				B1B556B520EE6C4C00210D55 /* Home */,
-				B1B556BF20EE6C4C00210D55 /* Members */,
-				B1B556C320EE6C4C00210D55 /* Rooms */,
-			);
-			path = Communities;
-			sourceTree = "<group>";
-		};
-		B1B556B520EE6C4C00210D55 /* Home */ = {
-			isa = PBXGroup;
-			children = (
-				B1B556B620EE6C4C00210D55 /* GroupHomeViewController.h */,
-				B1B556B720EE6C4C00210D55 /* GroupHomeViewController.m */,
-				B1B556B820EE6C4C00210D55 /* GroupHomeViewController.xib */,
-			);
-			path = Home;
-			sourceTree = "<group>";
-		};
-		B1B556BA20EE6C4C00210D55 /* TabDetail */ = {
-			isa = PBXGroup;
-			children = (
-				B1B556BC20EE6C4C00210D55 /* GroupDetailsViewController.h */,
-				B1B556BD20EE6C4C00210D55 /* GroupDetailsViewController.m */,
-				B1B556BB20EE6C4C00210D55 /* GroupDetailsViewController.xib */,
-			);
-			path = TabDetail;
-			sourceTree = "<group>";
-		};
-		B1B556BF20EE6C4C00210D55 /* Members */ = {
-			isa = PBXGroup;
-			children = (
-				B1B556C020EE6C4C00210D55 /* GroupParticipantsViewController.xib */,
-				B1B556C120EE6C4C00210D55 /* GroupParticipantsViewController.m */,
-				B1B556C220EE6C4C00210D55 /* GroupParticipantsViewController.h */,
-			);
-			path = Members;
-			sourceTree = "<group>";
-		};
-		B1B556C320EE6C4C00210D55 /* Rooms */ = {
-			isa = PBXGroup;
-			children = (
-				B1B556C420EE6C4C00210D55 /* GroupRoomsViewController.h */,
-				B1B556C520EE6C4C00210D55 /* GroupRoomsViewController.xib */,
-				B1B556C620EE6C4C00210D55 /* GroupRoomsViewController.m */,
-				B1B5583920EF6E7F00210D55 /* Views */,
-			);
-			path = Rooms;
-			sourceTree = "<group>";
-		};
-		B1B556C720EE6C4C00210D55 /* Favorites */ = {
-			isa = PBXGroup;
-			children = (
-				B1B556C820EE6C4C00210D55 /* FavouritesViewController.h */,
-				B1B556C920EE6C4C00210D55 /* FavouritesViewController.m */,
-			);
-			path = Favorites;
-			sourceTree = "<group>";
-		};
-		B1B556CA20EE6C4C00210D55 /* TabBar */ = {
-			isa = PBXGroup;
-			children = (
-				B15B86812135BC6E002782BE /* MasterTabBarController.h */,
-				B15B86802135BC6D002782BE /* MasterTabBarController.m */,
-			);
-			path = TabBar;
 			sourceTree = "<group>";
 		};
 		B1B556CD20EE6C4C00210D55 /* Common */ = {
@@ -2655,16 +2294,6 @@
 			path = Call;
 			sourceTree = "<group>";
 		};
-		B1B556E020EE6C4C00210D55 /* StartChat */ = {
-			isa = PBXGroup;
-			children = (
-				B1B556E120EE6C4C00210D55 /* StartChatViewController.h */,
-				B1B556E220EE6C4C00210D55 /* StartChatViewController.m */,
-				B1B556E320EE6C4C00210D55 /* StartChatViewController.xib */,
-			);
-			path = StartChat;
-			sourceTree = "<group>";
-		};
 		B1B556E420EE6C4C00210D55 /* UserDevices */ = {
 			isa = PBXGroup;
 			children = (
@@ -2683,15 +2312,6 @@
 			path = People;
 			sourceTree = "<group>";
 		};
-		B1B556EA20EE6C4C00210D55 /* Main */ = {
-			isa = PBXGroup;
-			children = (
-				B1B556EC20EE6C4C00210D55 /* RiotSplitViewController.h */,
-				B1B556EB20EE6C4C00210D55 /* RiotSplitViewController.m */,
-			);
-			path = Main;
-			sourceTree = "<group>";
-		};
 		B1B556ED20EE6C4C00210D55 /* MediaPicker */ = {
 			isa = PBXGroup;
 			children = (
@@ -2702,27 +2322,6 @@
 				B1B5577720EE724200210D55 /* Library */,
 			);
 			path = MediaPicker;
-			sourceTree = "<group>";
-		};
-		B1B556F420EE6C4C00210D55 /* Rooms */ = {
-			isa = PBXGroup;
-			children = (
-				B1B556F620EE6C4C00210D55 /* RoomsViewController.h */,
-				B1B556F820EE6C4C00210D55 /* RoomsViewController.m */,
-				B1B5577820EE75ED00210D55 /* DirectoryPicker */,
-			);
-			path = Rooms;
-			sourceTree = "<group>";
-		};
-		B1B556F920EE6C4C00210D55 /* Authentication */ = {
-			isa = PBXGroup;
-			children = (
-				B15B86842135BC81002782BE /* AuthenticationViewController.h */,
-				B15B86852135BC82002782BE /* AuthenticationViewController.m */,
-				B15B86832135BC81002782BE /* AuthenticationViewController.xib */,
-				B1B5579220EF575A00210D55 /* Views */,
-			);
-			path = Authentication;
 			sourceTree = "<group>";
 		};
 		B1B556FD20EE6C4C00210D55 /* RoomKeyRequest */ = {
@@ -2737,22 +2336,9 @@
 		B1B5570C20EE6C4C00210D55 /* GlobalSearch */ = {
 			isa = PBXGroup;
 			children = (
-				B16932E320F3C12B00746532 /* DataSources */,
-				B1B5582720EF666100210D55 /* Views */,
-				B1B5571520EE6C4C00210D55 /* Rooms */,
-				B1B5570D20EE6C4C00210D55 /* Messages */,
 				B1B5571220EE6C4C00210D55 /* Files */,
 			);
 			path = GlobalSearch;
-			sourceTree = "<group>";
-		};
-		B1B5570D20EE6C4C00210D55 /* Messages */ = {
-			isa = PBXGroup;
-			children = (
-				B16932E420F3C29100746532 /* DataSources */,
-				B1B557DF20EF60B900210D55 /* Views */,
-			);
-			path = Messages;
 			sourceTree = "<group>";
 		};
 		B1B5571220EE6C4C00210D55 /* Files */ = {
@@ -2762,15 +2348,6 @@
 				B1B557D920EF5FBA00210D55 /* Views */,
 			);
 			path = Files;
-			sourceTree = "<group>";
-		};
-		B1B5571520EE6C4C00210D55 /* Rooms */ = {
-			isa = PBXGroup;
-			children = (
-				B1B5571720EE6C4C00210D55 /* DirectoryViewController.h */,
-				B1B5571620EE6C4C00210D55 /* DirectoryViewController.m */,
-			);
-			path = Rooms;
 			sourceTree = "<group>";
 		};
 		B1B5575F20EE702800210D55 /* Integrations */ = {
@@ -2823,17 +2400,6 @@
 			path = Jitsi;
 			sourceTree = "<group>";
 		};
-		B1B5577620EE70D200210D55 /* Details */ = {
-			isa = PBXGroup;
-			children = (
-				B1B5568B20EE6C4C00210D55 /* ContactDetailsViewController.h */,
-				B1B5568820EE6C4C00210D55 /* ContactDetailsViewController.m */,
-				B1B5568A20EE6C4C00210D55 /* ContactDetailsViewController.xib */,
-				B1B5596120EF9E9A00210D55 /* Views */,
-			);
-			path = Details;
-			sourceTree = "<group>";
-		};
 		B1B5577720EE724200210D55 /* Library */ = {
 			isa = PBXGroup;
 			children = (
@@ -2842,16 +2408,6 @@
 				B1B556F120EE6C4C00210D55 /* MediaAlbumContentViewController.xib */,
 			);
 			path = Library;
-			sourceTree = "<group>";
-		};
-		B1B5577820EE75ED00210D55 /* DirectoryPicker */ = {
-			isa = PBXGroup;
-			children = (
-				B1B556F520EE6C4C00210D55 /* DirectoryServerPickerViewController.h */,
-				B1B556F720EE6C4C00210D55 /* DirectoryServerPickerViewController.m */,
-				B1B557C220EF5CD400210D55 /* Views */,
-			);
-			path = DirectoryPicker;
 			sourceTree = "<group>";
 		};
 		B1B5578020EE84E700210D55 /* Views */ = {
@@ -2868,9 +2424,6 @@
 		B1B5578120EF564900210D55 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				B1B5578220EF564900210D55 /* GroupTableViewCellWithSwitch.h */,
-				B1B5578320EF564900210D55 /* GroupTableViewCellWithSwitch.xib */,
-				B1B5578420EF564900210D55 /* GroupTableViewCellWithSwitch.m */,
 				B1B5590C20EF782700210D55 /* TableViewCellWithPhoneNumberTextField.h */,
 				B1B5590E20EF782800210D55 /* TableViewCellWithPhoneNumberTextField.m */,
 				B1B5590D20EF782800210D55 /* TableViewCellWithPhoneNumberTextField.xib */,
@@ -2881,61 +2434,12 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		B1B5578720EF568D00210D55 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				B1B5578C20EF568D00210D55 /* GroupInviteTableViewCell.h */,
-				B1B5578B20EF568D00210D55 /* GroupInviteTableViewCell.m */,
-				B1B5578820EF568D00210D55 /* GroupInviteTableViewCell.xib */,
-				B1B5578D20EF568D00210D55 /* GroupTableViewCell.h */,
-				B1B5578920EF568D00210D55 /* GroupTableViewCell.m */,
-				B1B5578A20EF568D00210D55 /* GroupTableViewCell.xib */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		B1B5579220EF575A00210D55 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				B1B5579520EF575A00210D55 /* AuthInputsView.h */,
-				B1B5579320EF575A00210D55 /* AuthInputsView.m */,
-				B1B5579620EF575A00210D55 /* AuthInputsView.xib */,
-				B1B5579720EF575A00210D55 /* ForgotPasswordInputsView.h */,
-				B1B5579420EF575A00210D55 /* ForgotPasswordInputsView.m */,
-				B1B5579820EF575A00210D55 /* ForgotPasswordInputsView.xib */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		B1B5579D20EF58AC00210D55 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				B1B557A020EF58AC00210D55 /* ContactTableViewCell.h */,
-				B1B5579E20EF58AC00210D55 /* ContactTableViewCell.m */,
-				B1B5579F20EF58AC00210D55 /* ContactTableViewCell.xib */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
 		B1B557A320EF5A1B00210D55 /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				B1B557A420EF5A1B00210D55 /* DeviceTableViewCell.h */,
 				B1B557A620EF5A1B00210D55 /* DeviceTableViewCell.m */,
 				B1B557A520EF5A1B00210D55 /* DeviceTableViewCell.xib */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		B1B557C220EF5CD400210D55 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				B1B557C820EF5D7F00210D55 /* DirectoryServerTableViewCell.h */,
-				B1B557CA20EF5D7F00210D55 /* DirectoryServerTableViewCell.m */,
-				B1B557C920EF5D7F00210D55 /* DirectoryServerTableViewCell.xib */,
-				B1B557C320EF5CD400210D55 /* DirectoryServerDetailTableViewCell.h */,
-				B1B557C420EF5CD400210D55 /* DirectoryServerDetailTableViewCell.m */,
-				B1B557C520EF5CD400210D55 /* DirectoryServerDetailTableViewCell.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2960,42 +2464,6 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		B1B557DF20EF60B900210D55 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				B1B557E220EF60B900210D55 /* MessagesSearchResultAttachmentBubbleCell.h */,
-				B1B557E020EF60B900210D55 /* MessagesSearchResultAttachmentBubbleCell.m */,
-				B1B557E120EF60B900210D55 /* MessagesSearchResultAttachmentBubbleCell.xib */,
-				B1B557E720EF60F500210D55 /* MessagesSearchResultTextMsgBubbleCell.h */,
-				B1B557E620EF60F400210D55 /* MessagesSearchResultTextMsgBubbleCell.m */,
-				B1B557E520EF60F400210D55 /* MessagesSearchResultTextMsgBubbleCell.xib */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		B1B5582720EF666100210D55 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				B1B5582920EF666100210D55 /* DirectoryRecentTableViewCell.h */,
-				B1B5582A20EF666100210D55 /* DirectoryRecentTableViewCell.m */,
-				B1B5582820EF666100210D55 /* DirectoryRecentTableViewCell.xib */,
-				B1B5582D20EF66BA00210D55 /* RoomIdOrAliasTableViewCell.h */,
-				B1B5582F20EF66BA00210D55 /* RoomIdOrAliasTableViewCell.m */,
-				B1B5582E20EF66BA00210D55 /* RoomIdOrAliasTableViewCell.xib */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		B1B5583920EF6E7F00210D55 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				B1B5583C20EF6E7F00210D55 /* GroupRoomTableViewCell.h */,
-				B1B5583B20EF6E7F00210D55 /* GroupRoomTableViewCell.m */,
-				B1B5583A20EF6E7F00210D55 /* GroupRoomTableViewCell.xib */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
 		B1B5592720EF7A5D00210D55 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -3006,35 +2474,12 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
-		B1B5593D20EF7BD000210D55 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				B1B5593E20EF7BD000210D55 /* RoomCollectionViewCell.h */,
-				B1B5594220EF7BD000210D55 /* RoomCollectionViewCell.m */,
-				B1B5594120EF7BD000210D55 /* RoomCollectionViewCell.xib */,
-				B1B5594320EF7BD000210D55 /* TableViewCellWithCollectionView.h */,
-				B1B5594020EF7BD000210D55 /* TableViewCellWithCollectionView.m */,
-				B1B5593F20EF7BD000210D55 /* TableViewCellWithCollectionView.xib */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
 		B1B5594E20EF9A8600210D55 /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				B1B5594F20EF9A8600210D55 /* RecentTableViewCell.h */,
 				B1B5595020EF9A8600210D55 /* RecentTableViewCell.m */,
 				B1B5595120EF9A8600210D55 /* RecentTableViewCell.xib */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		B1B5596120EF9E9A00210D55 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				B1B5596220EF9E9A00210D55 /* RoomTableViewCell.h */,
-				B1B5596420EF9E9A00210D55 /* RoomTableViewCell.m */,
-				B1B5596320EF9E9A00210D55 /* RoomTableViewCell.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -3189,7 +2634,6 @@
 		B1F2AA86212AEC820077FDC0 /* Legacy */ = {
 			isa = PBXGroup;
 			children = (
-				B1F2AA87212AEC820077FDC0 /* AppDelegate.h */,
 				B1F2AA89212AEC820077FDC0 /* LegacyAppDelegate.h */,
 				B1F2AA88212AEC820077FDC0 /* LegacyAppDelegate.m */,
 			);
@@ -3291,8 +2735,6 @@
 		F083BB081E7009EC00A9B29C /* Riot */ = {
 			isa = PBXGroup;
 			children = (
-				B1F2AAB1212AFAA80077FDC0 /* AppDelegate.h */,
-				B1F2AAB2212AFAA90077FDC0 /* AppDelegate.m */,
 				B16932A620F3A6FA00746532 /* Constants */,
 				F083BBE41E7009EC00A9B29C /* Categories */,
 				F083BBF21E7009EC00A9B29C /* Model */,
@@ -3655,21 +3097,16 @@
 				020DF949214BE467003DFBA4 /* RoomMemberTitleView.xib in Resources */,
 				0250C5462122B68000034691 /* TableViewCellWithButton.xib in Resources */,
 				02BEE1A3212C717F00098505 /* SharedImages.xcassets in Resources */,
-				0250C5472122B68000034691 /* StartChatViewController.xib in Resources */,
 				020DF9A0214BE467003DFBA4 /* RoomMembershipExpandedBubbleCell.xib in Resources */,
-				0250C5492122B68000034691 /* TableViewCellWithCollectionView.xib in Resources */,
 				0250C54C2122B68000034691 /* EncryptionInfoView.xib in Resources */,
 				020DF97A214BE467003DFBA4 /* RoomPredecessorBubbleCell.xib in Resources */,
 				020DF94C214BE467003DFBA4 /* ReadReceiptsViewController.xib in Resources */,
 				020DF9AE214BE467003DFBA4 /* RoomInputToolbarView.xib in Resources */,
-				0250C54E2122B68000034691 /* ContactDetailsViewController.xib in Resources */,
 				B11C80142139442700CC6F2F /* RegistrationFormViewController.storyboard in Resources */,
 				020DF99D214BE467003DFBA4 /* RoomMembershipWithPaginationTitleBubbleCell.xib in Resources */,
 				0250C5502122B68000034691 /* Localizable.strings in Resources */,
 				0250C5522122B68000034691 /* InfoPlist.strings in Resources */,
-				0250C5532122B68000034691 /* AuthInputsView.xib in Resources */,
 				02098F342131FE9E00F25086 /* ContactTableViewCell.xib in Resources */,
-				0250C5542122B68000034691 /* RoomCollectionViewCell.xib in Resources */,
 				020DF968214BE467003DFBA4 /* RoomIncomingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib in Resources */,
 				020DF955214BE467003DFBA4 /* RoomIncomingEncryptedTextMsgBubbleCell.xib in Resources */,
 				B1BC6A2A2136DCCE00D32F8E /* WelcomeViewController.storyboard in Resources */,
@@ -3680,10 +3117,7 @@
 				020DF997214BE467003DFBA4 /* RoomOutgoingAttachmentWithPaginationTitleBubbleCell.xib in Resources */,
 				0250C5552122B68000034691 /* callend.mp3 in Resources */,
 				020DF98B214BE467003DFBA4 /* RoomIncomingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib in Resources */,
-				0250C5572122B68000034691 /* GroupDetailsViewController.xib in Resources */,
-				0250C5582122B68000034691 /* MessagesSearchResultAttachmentBubbleCell.xib in Resources */,
 				020DF96F214BE467003DFBA4 /* RoomIncomingEncryptedTextMsgWithPaginationTitleBubbleCell.xib in Resources */,
-				0250C5632122B68000034691 /* GroupTableViewCell.xib in Resources */,
 				0250C5672122B68000034691 /* MediaPickerViewController.xib in Resources */,
 				B11C80192139484900CC6F2F /* RegistrationEmailSentViewController.storyboard in Resources */,
 				020DF93F214BE467003DFBA4 /* RoomViewController.xib in Resources */,
@@ -3697,18 +3131,13 @@
 				0250C56A2122B68000034691 /* ringback.mp3 in Resources */,
 				0250C56B2122B68000034691 /* GoogleService-Info.plist in Resources */,
 				020DF969214BE467003DFBA4 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib in Resources */,
-				0250C56F2122B68000034691 /* DirectoryServerTableViewCell.xib in Resources */,
 				0250C5732122B68000034691 /* message.mp3 in Resources */,
-				0250C5742122B68000034691 /* ForgotPasswordInputsView.xib in Resources */,
 				020DF999214BE467003DFBA4 /* RoomOutgoingAttachmentBubbleCell.xib in Resources */,
 				0250C5752122B68000034691 /* third_party_licenses.html in Resources */,
-				0250C5762122B68000034691 /* GroupParticipantsViewController.xib in Resources */,
 				B18D18C62153EA32003677D1 /* HomeViewController.storyboard in Resources */,
-				0250C5772122B68000034691 /* GroupHomeViewController.xib in Resources */,
 				0250C57A2122B68000034691 /* Vector.strings in Resources */,
 				B15AB2A5215BF20E007F5405 /* ForgotPasswordVerifyEmailViewController.storyboard in Resources */,
 				020DF94E214BE467003DFBA4 /* RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.xib in Resources */,
-				0250C57B2122B68000034691 /* DirectoryServerDetailTableViewCell.xib in Resources */,
 				020DF9A3214BE467003DFBA4 /* RoomTitleView.xib in Resources */,
 				020DF947214BE467003DFBA4 /* RoomMemberDetailsViewController.xib in Resources */,
 				0250C5CE212314B300034691 /* Tchap-Defaults.plist in Resources */,
@@ -3719,13 +3148,11 @@
 				020DF96E214BE467003DFBA4 /* RoomIncomingEncryptedTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
 				0250C57E2122B68000034691 /* MediaAlbumContentViewController.xib in Resources */,
 				020DF94F214BE467003DFBA4 /* RoomMembershipBubbleCell.xib in Resources */,
-				0250C57F2122B68000034691 /* MessagesSearchResultTextMsgBubbleCell.xib in Resources */,
 				B1680CFF2152A9E6009B5F92 /* PublicRoomsViewController.storyboard in Resources */,
 				020DF986214BE467003DFBA4 /* RoomIncomingTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
 				0250C5812122B68000034691 /* BugReportViewController.xib in Resources */,
 				0250C5822122B68000034691 /* Main.storyboard in Resources */,
 				020DF93B214BE467003DFBA4 /* TableViewCellWithLabelAndLargeTextView.xib in Resources */,
-				0250C5832122B68000034691 /* GroupInviteTableViewCell.xib in Resources */,
 				020DF9B2214BE467003DFBA4 /* EventDetailsView.xib in Resources */,
 				020DF976214BE467003DFBA4 /* RoomEmptyBubbleCell.xib in Resources */,
 				020DF94B214BE467003DFBA4 /* RoomParticipantsViewController.xib in Resources */,
@@ -3738,8 +3165,6 @@
 				0250C58D2122B68000034691 /* RecentsViewController.xib in Resources */,
 				0250C58E2122B68000034691 /* DeactivateAccountViewController.storyboard in Resources */,
 				020DF952214BE467003DFBA4 /* RoomOutgoingEncryptedTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
-				0250C58F2122B68000034691 /* RoomTableViewCell.xib in Resources */,
-				0250C5912122B68000034691 /* GroupRoomTableViewCell.xib in Resources */,
 				020DF995214BE467003DFBA4 /* RoomOutgoingTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
 				020DF953214BE467003DFBA4 /* RoomIncomingEncryptedTextMsgWithoutSenderInfoBubbleCell.xib in Resources */,
 				020DF992214BE467003DFBA4 /* RoomIncomingAttachmentBubbleCell.xib in Resources */,
@@ -3750,7 +3175,6 @@
 				B15AB29F215BF20E007F5405 /* ForgotPasswordFormViewController.storyboard in Resources */,
 				020DF96C214BE467003DFBA4 /* RoomOutgoingEncryptedAttachmentBubbleCell.xib in Resources */,
 				0250C5992122B68000034691 /* DeviceView.xib in Resources */,
-				0250C59A2122B68000034691 /* GroupRoomsViewController.xib in Resources */,
 				020DF95D214BE467003DFBA4 /* RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.xib in Resources */,
 				0250C59B2122B68000034691 /* InviteRecentTableViewCell.xib in Resources */,
 				B15AB29E215BF20E007F5405 /* ForgotPasswordCheckedEmailViewController.storyboard in Resources */,
@@ -3759,9 +3183,7 @@
 				020DF959214BE467003DFBA4 /* RoomIncomingEncryptedAttachmentBubbleCell.xib in Resources */,
 				020DF980214BE467003DFBA4 /* RoomMembershipCollapsedBubbleCell.xib in Resources */,
 				0250C59F2122B68000034691 /* MediaAlbumTableCell.xib in Resources */,
-				0250C5A12122B68000034691 /* DirectoryRecentTableViewCell.xib in Resources */,
 				0250C5A22122B68000034691 /* TableViewCellWithPhoneNumberTextField.xib in Resources */,
-				0250C5A32122B68000034691 /* GroupTableViewCellWithSwitch.xib in Resources */,
 				020DF938214BE467003DFBA4 /* TableViewCellWithCheckBoxAndLabel.xib in Resources */,
 				0250C5A52122B68000034691 /* FilesSearchTableViewCell.xib in Resources */,
 				02098F362131FE9E00F25086 /* ContactsTableViewController.xib in Resources */,
@@ -3771,7 +3193,6 @@
 				0250C5AB2122B68000034691 /* PublicRoomTableViewCell.xib in Resources */,
 				0250C5AC2122B68000034691 /* postMessageAPI.js in Resources */,
 				020DF96B214BE467003DFBA4 /* RoomIncomingEncryptedAttachmentWithPaginationTitleBubbleCell.xib in Resources */,
-				0250C5B02122B68000034691 /* RoomIdOrAliasTableViewCell.xib in Resources */,
 				02BEE1A4212C717F00098505 /* Images.xcassets in Resources */,
 				020DF964214BE467003DFBA4 /* RoomIncomingEncryptedAttachmentWithoutSenderInfoBubbleCell.xib in Resources */,
 			);
@@ -3811,60 +3232,36 @@
 			files = (
 				F083BDE91E7009ED00A9B29C /* ring.mp3 in Resources */,
 				B1B5592B20EF7A5D00210D55 /* TableViewCellWithButton.xib in Resources */,
-				B1B5574620EE6C4D00210D55 /* StartChatViewController.xib in Resources */,
-				B1B5594420EF7BD000210D55 /* TableViewCellWithCollectionView.xib in Resources */,
 				B1B5597020EFA85D00210D55 /* EncryptionInfoView.xib in Resources */,
-				B1B5571F20EE6C4D00210D55 /* ContactDetailsViewController.xib in Resources */,
 				B1664DA220F4F95800808783 /* Localizable.strings in Resources */,
 				B1664DA120F4F94F00808783 /* InfoPlist.strings in Resources */,
-				B1B5579B20EF575B00210D55 /* AuthInputsView.xib in Resources */,
-				B1B5594620EF7BD000210D55 /* RoomCollectionViewCell.xib in Resources */,
-				B15B86862135BC83002782BE /* AuthenticationViewController.xib in Resources */,
 				F083BDE71E7009ED00A9B29C /* callend.mp3 in Resources */,
-				B1B5573420EE6C4D00210D55 /* GroupDetailsViewController.xib in Resources */,
-				B1B557E420EF60B900210D55 /* MessagesSearchResultAttachmentBubbleCell.xib in Resources */,
-				B1B5572120EE6C4D00210D55 /* ContactsTableViewController.xib in Resources */,
-				B1B5579020EF568D00210D55 /* GroupTableViewCell.xib in Resources */,
 				B1B5574D20EE6C4D00210D55 /* MediaPickerViewController.xib in Resources */,
 				B1B5574320EE6C4D00210D55 /* CallViewController.xib in Resources */,
 				F083BDEA1E7009ED00A9B29C /* ringback.mp3 in Resources */,
 				F083BDF21E7009ED00A9B29C /* GoogleService-Info.plist in Resources */,
-				B1B557CB20EF5D8000210D55 /* DirectoryServerTableViewCell.xib in Resources */,
 				F083BDE81E7009ED00A9B29C /* message.mp3 in Resources */,
-				B1B5579C20EF575B00210D55 /* ForgotPasswordInputsView.xib in Resources */,
 				F083BE011E7009ED00A9B29C /* third_party_licenses.html in Resources */,
-				B1B5573720EE6C4D00210D55 /* GroupParticipantsViewController.xib in Resources */,
-				B1B5573320EE6C4D00210D55 /* GroupHomeViewController.xib in Resources */,
 				B1664DA320F4F96200808783 /* Vector.strings in Resources */,
-				B1B557C720EF5CD400210D55 /* DirectoryServerDetailTableViewCell.xib in Resources */,
 				F083BDE61E7009ED00A9B29C /* busy.mp3 in Resources */,
 				B1B5574C20EE6C4D00210D55 /* MediaAlbumContentViewController.xib in Resources */,
-				B1B557E820EF60F500210D55 /* MessagesSearchResultTextMsgBubbleCell.xib in Resources */,
 				B1B5573020EE6C4D00210D55 /* BugReportViewController.xib in Resources */,
 				B169329B20F39E6300746532 /* Main.storyboard in Resources */,
-				B1B5578E20EF568D00210D55 /* GroupInviteTableViewCell.xib in Resources */,
 				F083BE061E7009ED00A9B29C /* Riot-Defaults.plist in Resources */,
 				B1B5574220EE6C4D00210D55 /* RecentsViewController.xib in Resources */,
 				B1B5571C20EE6C4D00210D55 /* DeactivateAccountViewController.storyboard in Resources */,
-				B1B5596520EF9E9B00210D55 /* RoomTableViewCell.xib in Resources */,
-				B1B5583D20EF6E7F00210D55 /* GroupRoomTableViewCell.xib in Resources */,
 				B1B5577220EE702800210D55 /* JitsiViewController.xib in Resources */,
 				B169329920F39E6300746532 /* LaunchScreen.storyboard in Resources */,
 				B1B5595320EF9A8700210D55 /* RecentTableViewCell.xib in Resources */,
 				B1B557AD20EF5A6D00210D55 /* DeviceView.xib in Resources */,
-				B1B5573920EE6C4D00210D55 /* GroupRoomsViewController.xib in Resources */,
 				B1B5597620EFB02A00210D55 /* InviteRecentTableViewCell.xib in Resources */,
 				B1B557A720EF5A1B00210D55 /* DeviceTableViewCell.xib in Resources */,
 				B1B557D220EF5E3500210D55 /* MediaAlbumTableCell.xib in Resources */,
-				B1B5582B20EF666100210D55 /* DirectoryRecentTableViewCell.xib in Resources */,
 				B1B5590F20EF782800210D55 /* TableViewCellWithPhoneNumberTextField.xib in Resources */,
-				B1B5578520EF564900210D55 /* GroupTableViewCellWithSwitch.xib in Resources */,
 				B1B557DD20EF5FBB00210D55 /* FilesSearchTableViewCell.xib in Resources */,
 				B1B5573F20EE6C4D00210D55 /* SegmentedViewController.xib in Resources */,
 				B169331520F3CAFC00746532 /* PublicRoomTableViewCell.xib in Resources */,
 				3284A35120A07C210044F922 /* postMessageAPI.js in Resources */,
-				B1B557A220EF58AD00210D55 /* ContactTableViewCell.xib in Resources */,
-				B1B5583020EF66BA00210D55 /* RoomIdOrAliasTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4156,11 +3553,9 @@
 				020DF967214BE467003DFBA4 /* RoomOutgoingEncryptedTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
 				0250C4962122B68000034691 /* AvatarGenerator.m in Sources */,
 				B1BC6A052135E42D00D32F8E /* UIView.swift in Sources */,
-				0250C4972122B68000034691 /* GroupRoomsViewController.m in Sources */,
 				B15AB2A2215BF20E007F5405 /* ForgotPasswordVerifyEmailViewController.swift in Sources */,
 				0250C4992122B68000034691 /* BugReportViewController.m in Sources */,
 				0250C49B2122B68000034691 /* RecentCellData.m in Sources */,
-				0250C49C2122B68000034691 /* GroupsDataSource.m in Sources */,
 				B1F2AAAF212AED900077FDC0 /* Presentable.swift in Sources */,
 				B104AA1D215D3EE800B2C452 /* ForgotPasswordService.swift in Sources */,
 				B15B867021354FF5002782BE /* AuthenticationViewModel.swift in Sources */,
@@ -4173,7 +3568,6 @@
 				0250C4A02122B68000034691 /* WidgetManager.m in Sources */,
 				02BEE1A8212C77B700098505 /* DesignValues.m in Sources */,
 				B1A4D7DD215A2F50004A5AB4 /* RoomPreviewCoordinator.swift in Sources */,
-				0250C4A32122B68000034691 /* StartChatViewController.m in Sources */,
 				B1F2AA9D212AEC830077FDC0 /* AuthenticationCoordinator.swift in Sources */,
 				020DF974214BE467003DFBA4 /* RoomMembershipCollapsedBubbleCell.m in Sources */,
 				020DF996214BE467003DFBA4 /* RoomMembershipExpandedWithPaginationTitleBubbleCell.m in Sources */,
@@ -4182,7 +3576,6 @@
 				020DF966214BE467003DFBA4 /* RoomOutgoingEncryptedTextMsgBubbleCell.m in Sources */,
 				020DF98C214BE467003DFBA4 /* RoomIncomingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
 				0250C4A72122B68000034691 /* Widget.m in Sources */,
-				0250C4A82122B68000034691 /* MessagesSearchResultAttachmentBubbleCell.m in Sources */,
 				B1680CFC2152A9E6009B5F92 /* PublicRoomsDataSource.swift in Sources */,
 				0250C4A92122B68000034691 /* CallViewController.m in Sources */,
 				B15B867B21359145002782BE /* KeyboardNotification.swift in Sources */,
@@ -4193,7 +3586,6 @@
 				B1F2AA94212AEC830077FDC0 /* HomeCoordinator.swift in Sources */,
 				B1322FFA2130146D0054A9DD /* AuthenticationServiceType.swift in Sources */,
 				020DF939214BE467003DFBA4 /* TableViewCellWithLabelAndLargeTextView.m in Sources */,
-				0250C4AC2122B68000034691 /* PublicRoomsDirectoryDataSource.m in Sources */,
 				B15B867221355749002782BE /* FormRules.swift in Sources */,
 				020DF962214BE467003DFBA4 /* RoomIncomingEncryptedTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				020DF95B214BE467003DFBA4 /* RoomIncomingEncryptedAttachmentBubbleCell.m in Sources */,
@@ -4226,7 +3618,6 @@
 				0250C4BF2122B68000034691 /* PublicRoomTableViewCell.m in Sources */,
 				020DF951214BE467003DFBA4 /* RoomOutgoingEncryptedAttachmentWithPaginationTitleBubbleCell.m in Sources */,
 				0250C4C12122B68000034691 /* SettingsViewController.m in Sources */,
-				0250C4C22122B68000034691 /* RoomCollectionViewCell.m in Sources */,
 				020DF973214BE467003DFBA4 /* RoomOutgoingTextMsgBubbleCell.m in Sources */,
 				0250C4C42122B68000034691 /* RiotNavigationController.m in Sources */,
 				0250C4C92122B68000034691 /* Tools.m in Sources */,
@@ -4235,7 +3626,6 @@
 				0250C4CC2122B68000034691 /* MXGroup+Riot.m in Sources */,
 				B11C8017213947A400CC6F2F /* RegistrationEmailSentViewController.swift in Sources */,
 				B15B86792135903E002782BE /* KeyboardAvoider.swift in Sources */,
-				0250C4CD2122B68000034691 /* TableViewCellWithCollectionView.m in Sources */,
 				0250C4CE2122B68000034691 /* UINavigationController+Riot.m in Sources */,
 				02098F372131FE9E00F25086 /* ContactsTableViewController.m in Sources */,
 				0250C4D22122B68000034691 /* LanguagePickerViewController.m in Sources */,
@@ -4251,12 +3641,10 @@
 				B1F2AAAC212AED900077FDC0 /* NavigationRouter.swift in Sources */,
 				B1F2AAB0212AED900077FDC0 /* NavigationRouterType.swift in Sources */,
 				B1322FF3213002580054A9DD /* AuthenticationErrorPresentableMaker.swift in Sources */,
-				0250C4D82122B68000034691 /* DirectoryRecentTableViewCell.m in Sources */,
 				B130C0DA21491C6B00F43D33 /* GlobalSearchBar.swift in Sources */,
 				02BEE1552125BBF800098505 /* RoomsDataSource.m in Sources */,
 				020DF965214BE467003DFBA4 /* RoomEncryptedDataBubbleCell.m in Sources */,
 				020DF95E214BE467003DFBA4 /* RoomIncomingEncryptedTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
-				0250C4DA2122B68000034691 /* GroupsViewController.m in Sources */,
 				B1892E7B21306ADC00742348 /* FormTextViewModel.swift in Sources */,
 				B1322FEA213002440054A9DD /* FormTextField.swift in Sources */,
 				0290609321527A3F005FE3C1 /* RoomDetailsCoordinatorType.swift in Sources */,
@@ -4281,10 +3669,6 @@
 				020DF971214BE467003DFBA4 /* RoomIncomingAttachmentBubbleCell.m in Sources */,
 				0250C4E72122B68000034691 /* EncryptionInfoView.m in Sources */,
 				B1892E7D2130719500742348 /* TextInputHandler.swift in Sources */,
-				0250C4E82122B68000034691 /* GroupParticipantsViewController.m in Sources */,
-				0250C4E92122B68000034691 /* GroupRoomTableViewCell.m in Sources */,
-				0250C4EC2122B68000034691 /* GroupInviteTableViewCell.m in Sources */,
-				0250C4ED2122B68000034691 /* ForgotPasswordInputsView.m in Sources */,
 				B18D18C42153E68A003677D1 /* HomeViewController.swift in Sources */,
 				B1F2AAA5212AED840077FDC0 /* Coordinator.swift in Sources */,
 				B1680CFB2152A9E6009B5F92 /* PublicRoomsCoordinatorType.swift in Sources */,
@@ -4292,7 +3676,6 @@
 				020DF945214BE467003DFBA4 /* RoomFilesViewController.m in Sources */,
 				020DF98F214BE467003DFBA4 /* RoomPredecessorBubbleCell.m in Sources */,
 				B1BC6A022135E2A600D32F8E /* ActivityIndicatorPresenter.swift in Sources */,
-				0250C4F02122B68000034691 /* UnifiedSearchRecentsDataSource.m in Sources */,
 				020DF98D214BE467003DFBA4 /* RoomOutgoingTextMsgWithoutSenderNameBubbleCell.m in Sources */,
 				0250C4F12122B68000034691 /* FilesSearchTableViewCell.m in Sources */,
 				B1F2AAA2212AED170077FDC0 /* RoomsCoordinatorType.swift in Sources */,
@@ -4305,12 +3688,9 @@
 				020DF981214BE467003DFBA4 /* RoomIncomingTextMsgWithoutSenderNameBubbleCell.m in Sources */,
 				0250C4F62122B68000034691 /* DeviceTableViewCell.m in Sources */,
 				B1BC6A1F2136C9A800D32F8E /* Variant2Style.swift in Sources */,
-				0250C4F82122B68000034691 /* RoomIdOrAliasTableViewCell.m in Sources */,
 				0250C4F92122B68000034691 /* RoomPreviewData.m in Sources */,
 				0250C4FB2122B68000034691 /* IncomingCallView.m in Sources */,
 				020DF99A214BE467003DFBA4 /* RoomIncomingTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
-				0250C4FC2122B68000034691 /* GroupTableViewCell.m in Sources */,
-				0250C4FD2122B68000034691 /* GroupHomeViewController.m in Sources */,
 				B1BC6A262136D77A00D32F8E /* WelcomeCoordinatorType.swift in Sources */,
 				020DF991214BE467003DFBA4 /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				0250C4FE2122B68000034691 /* RecentTableViewCell.m in Sources */,
@@ -4321,9 +3701,7 @@
 				B12FD6AB2146BA45001B7F28 /* ThreePIDCredentials.swift in Sources */,
 				0250C5012122B68000034691 /* StickerPickerViewController.m in Sources */,
 				B15B86892135C284002782BE /* AuthenticationViewModelType.swift in Sources */,
-				0250C5052122B68000034691 /* FavouritesViewController.m in Sources */,
 				B1680CFD2152A9E6009B5F92 /* PublicRoomsCoordinator.swift in Sources */,
-				0250C5062122B68000034691 /* AuthInputsView.m in Sources */,
 				B15AB2A7215BF55B007F5405 /* ForgotPasswordFormViewModel.swift in Sources */,
 				020DF98E214BE467003DFBA4 /* RoomMembershipBubbleCell.m in Sources */,
 				B104AA1F215E163000B2C452 /* ForgotPasswordServiceType.swift in Sources */,
@@ -4331,17 +3709,14 @@
 				020DF957214BE467003DFBA4 /* RoomIncomingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
 				020DF9B3214BE467003DFBA4 /* EventDetailsView.m in Sources */,
 				020DF937214BE467003DFBA4 /* RoomSettingsViewController.m in Sources */,
-				0250C5082122B68000034691 /* ContactDetailsViewController.m in Sources */,
 				020DF961214BE467003DFBA4 /* RoomOutgoingEncryptedAttachmentBubbleCell.m in Sources */,
 				0250C5092122B68000034691 /* OnBoardingManager.swift in Sources */,
 				B1BC6A282136D78500D32F8E /* WelcomeCoordinator.swift in Sources */,
 				B12FD6AA2146BA45001B7F28 /* RegistrationServiceError.swift in Sources */,
 				B15B867621357514002782BE /* AlertErrorPresenter.swift in Sources */,
-				0250C50A2122B68000034691 /* GroupDetailsViewController.m in Sources */,
 				B1454B97216BA84100365A86 /* DisplayNameComponents.swift in Sources */,
 				0250C50B2122B68000034691 /* RoomKeyRequestViewController.m in Sources */,
 				B1F2AAB6212AFDBA0077FDC0 /* UIViewController.swift in Sources */,
-				0250C50F2122B68000034691 /* RoomTableViewCell.m in Sources */,
 				020DF9B1214BE467003DFBA4 /* RoomActivitiesView.m in Sources */,
 				020DF946214BE467003DFBA4 /* RoomMemberDetailsViewController.m in Sources */,
 				020DF943214BE467003DFBA4 /* RoomSearchViewController.m in Sources */,
@@ -4354,7 +3729,6 @@
 				020DF979214BE467003DFBA4 /* RoomIncomingAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				020DF95F214BE467003DFBA4 /* RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				0250C5192122B68000034691 /* MXSession+Riot.m in Sources */,
-				0250C51C2122B68000034691 /* DirectoryServerDetailTableViewCell.m in Sources */,
 				02BEE18A212AB23A00098505 /* ThirdPartyIDPlatformInfoResolver.swift in Sources */,
 				0250C51E2122B68000034691 /* UsersDevicesViewController.m in Sources */,
 				0250C5202122B68000034691 /* MatrixSDK+Swift.m in Sources */,
@@ -4366,12 +3740,8 @@
 				020DF9AB214BE467003DFBA4 /* KeyboardGrowingTextView.m in Sources */,
 				B1680D012152A9F6009B5F92 /* TCNavigationController.swift in Sources */,
 				020DF9AD214BE467003DFBA4 /* DisabledRoomInputToolbarView.m in Sources */,
-				0250C5232122B68000034691 /* GroupTableViewCellWithSwitch.m in Sources */,
-				0250C5242122B68000034691 /* MessagesSearchResultTextMsgBubbleCell.m in Sources */,
 				B1BC6A242136D75B00D32F8E /* WelcomeViewController.swift in Sources */,
-				0250C5262122B68000034691 /* DirectoryServerTableViewCell.m in Sources */,
 				020DF970214BE467003DFBA4 /* RoomIncomingEncryptedTextMsgBubbleCell.m in Sources */,
-				0250C5272122B68000034691 /* DirectoryViewController.m in Sources */,
 				B1892E792130528600742348 /* ErrorPresentableImpl.swift in Sources */,
 				0250C5292122B68000034691 /* WidgetPickerViewController.m in Sources */,
 				020DF956214BE467003DFBA4 /* RoomIncomingEncryptedTextMsgWithoutSenderNameBubbleCell.m in Sources */,
@@ -4395,9 +3765,6 @@
 				020DF94D214BE467003DFBA4 /* ReadReceiptsViewController.m in Sources */,
 				020DF935214BE467003DFBA4 /* RoomDataSource.m in Sources */,
 				B1F2AA97212AEC830077FDC0 /* AppCoordinator.swift in Sources */,
-				0250C5342122B68000034691 /* RiotSplitViewController.m in Sources */,
-				0250C5352122B68000034691 /* DirectoryServerPickerViewController.m in Sources */,
-				0250C5392122B68000034691 /* HomeMessagesSearchDataSource.m in Sources */,
 				B15B867421355A7A002782BE /* ErrorPresenter.swift in Sources */,
 				020DF989214BE467003DFBA4 /* RoomOutgoingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				0290609221527A3F005FE3C1 /* RoomDetailsCoordinator.swift in Sources */,
@@ -4456,87 +3823,55 @@
 			files = (
 				B1B557D120EF5E3500210D55 /* MediaAlbumTableCell.m in Sources */,
 				B16932AC20F3A7B100746532 /* RiotDesignValues.m in Sources */,
-				B1B557A120EF58AD00210D55 /* ContactTableViewCell.m in Sources */,
 				F083BE021E7009ED00A9B29C /* AvatarGenerator.m in Sources */,
-				B1B5573A20EE6C4D00210D55 /* GroupRoomsViewController.m in Sources */,
 				B1B5573120EE6C4D00210D55 /* BugReportViewController.m in Sources */,
 				B16932A520F3A21C00746532 /* empty.mm in Sources */,
 				B16932FA20F3C51A00746532 /* RecentCellData.m in Sources */,
-				B16932F220F3C49E00746532 /* GroupsDataSource.m in Sources */,
-				B169330820F3CA0E00746532 /* ContactsDataSource.m in Sources */,
 				B1B5574B20EE6C4D00210D55 /* MediaAlbumContentViewController.m in Sources */,
 				B1B5598820EFC3E000210D55 /* WidgetManager.m in Sources */,
 				B16932A320F3A21C00746532 /* main.m in Sources */,
-				B1B5574520EE6C4D00210D55 /* StartChatViewController.m in Sources */,
 				B1B5598720EFC3E000210D55 /* Widget.m in Sources */,
-				B1B557E320EF60B900210D55 /* MessagesSearchResultAttachmentBubbleCell.m in Sources */,
 				B1B5574420EE6C4D00210D55 /* CallViewController.m in Sources */,
 				B1B5577320EE702800210D55 /* JitsiViewController.m in Sources */,
-				B169331620F3CAFC00746532 /* PublicRoomsDirectoryDataSource.m in Sources */,
 				F083BDEE1E7009ED00A9B29C /* MXRoom+Riot.m in Sources */,
 				B1B5598620EFC3E000210D55 /* RiotSettings.swift in Sources */,
 				B169330B20F3CA3A00746532 /* Contact.m in Sources */,
-				B1F2AAB3212AFAA90077FDC0 /* AppDelegate.m in Sources */,
 				B1B5599220EFC5E400210D55 /* Analytics.m in Sources */,
 				B1B5577420EE702900210D55 /* WidgetViewController.m in Sources */,
 				B1B5574A20EE6C4D00210D55 /* MediaPickerViewController.m in Sources */,
 				B1B5598520EFC3E000210D55 /* RageShakeManager.m in Sources */,
 				B169331420F3CAFC00746532 /* PublicRoomTableViewCell.m in Sources */,
 				B1B5571A20EE6C4D00210D55 /* SettingsViewController.m in Sources */,
-				B1B5594720EF7BD000210D55 /* RoomCollectionViewCell.m in Sources */,
 				B1B5573E20EE6C4D00210D55 /* RiotNavigationController.m in Sources */,
 				F083BE041E7009ED00A9B29C /* Tools.m in Sources */,
 				B1B5573D20EE6C4D00210D55 /* WebViewViewController.m in Sources */,
 				F05927C91FDED836009F2A68 /* MXGroup+Riot.m in Sources */,
-				B1B5594520EF7BD000210D55 /* TableViewCellWithCollectionView.m in Sources */,
 				F083BDEF1E7009ED00A9B29C /* UINavigationController+Riot.m in Sources */,
 				B1B5571920EE6C4D00210D55 /* LanguagePickerViewController.m in Sources */,
 				B1B5592C20EF7A5D00210D55 /* TableViewCellWithButton.m in Sources */,
-				B1B5582C20EF666100210D55 /* DirectoryRecentTableViewCell.m in Sources */,
-				B1B5573620EE6C4D00210D55 /* GroupsViewController.m in Sources */,
 				B1B5571B20EE6C4D00210D55 /* DeactivateAccountViewController.m in Sources */,
 				F083BE031E7009ED00A9B29C /* EventFormatter.m in Sources */,
 				B16932F720F3C50E00746532 /* RecentsDataSource.m in Sources */,
 				F0D2ADA11F6AA5FD00A7097D /* MXRoomSummary+Riot.m in Sources */,
 				B1B5596F20EFA85D00210D55 /* EncryptionInfoView.m in Sources */,
-				B1B5573820EE6C4D00210D55 /* GroupParticipantsViewController.m in Sources */,
-				B1B5583E20EF6E7F00210D55 /* GroupRoomTableViewCell.m in Sources */,
-				B1B5574F20EE6C4D00210D55 /* RoomsViewController.m in Sources */,
-				B1B5579120EF568D00210D55 /* GroupInviteTableViewCell.m in Sources */,
-				B1B5579A20EF575B00210D55 /* ForgotPasswordInputsView.m in Sources */,
-				B16932EA20F3C39000746532 /* UnifiedSearchRecentsDataSource.m in Sources */,
 				B1B557DE20EF5FBB00210D55 /* FilesSearchTableViewCell.m in Sources */,
 				B1B5574020EE6C4D00210D55 /* SegmentedViewController.m in Sources */,
 				B1B5599320EFC5E400210D55 /* DecryptionFailure.m in Sources */,
 				F083BDED1E7009ED00A9B29C /* MXKRoomBubbleTableViewCell+Riot.m in Sources */,
 				B1B557A820EF5A1B00210D55 /* DeviceTableViewCell.m in Sources */,
-				B1B5583120EF66BA00210D55 /* RoomIdOrAliasTableViewCell.m in Sources */,
 				F083BDFA1E7009ED00A9B29C /* RoomPreviewData.m in Sources */,
 				B1B5577E20EE84BF00210D55 /* IncomingCallView.m in Sources */,
-				B1B5578F20EF568D00210D55 /* GroupTableViewCell.m in Sources */,
-				B1B5573220EE6C4D00210D55 /* GroupHomeViewController.m in Sources */,
 				B1B5595220EF9A8700210D55 /* RecentTableViewCell.m in Sources */,
 				B1B5574120EE6C4D00210D55 /* RecentsViewController.m in Sources */,
 				B1B5577120EE702800210D55 /* StickerPickerViewController.m in Sources */,
-				B1B5572020EE6C4D00210D55 /* ContactsTableViewController.m in Sources */,
-				B1B5573B20EE6C4D00210D55 /* FavouritesViewController.m in Sources */,
-				B1B5579920EF575B00210D55 /* AuthInputsView.m in Sources */,
 				B1B5597520EFB02A00210D55 /* InviteRecentTableViewCell.m in Sources */,
-				B1B5571E20EE6C4D00210D55 /* ContactDetailsViewController.m in Sources */,
 				B1798302211B13B3001FD722 /* OnBoardingManager.swift in Sources */,
-				B1B5573520EE6C4D00210D55 /* GroupDetailsViewController.m in Sources */,
 				B1B5575220EE6C4D00210D55 /* RoomKeyRequestViewController.m in Sources */,
-				B1B5596620EF9E9B00210D55 /* RoomTableViewCell.m in Sources */,
 				B1B5571820EE6C4D00210D55 /* CountryPickerViewController.m in Sources */,
 				B17982FF2119FED2001FD722 /* GDPRConsentViewController.swift in Sources */,
 				926FA53F1F4C132000F826C2 /* MXSession+Riot.m in Sources */,
-				B1B557C620EF5CD400210D55 /* DirectoryServerDetailTableViewCell.m in Sources */,
 				B1B5574720EE6C4D00210D55 /* UsersDevicesViewController.m in Sources */,
 				32C10340211DD1A100DFFB5D /* MatrixSDK+Swift.m in Sources */,
-				B1B5578620EF564900210D55 /* GroupTableViewCellWithSwitch.m in Sources */,
-				B1B557E920EF60F500210D55 /* MessagesSearchResultTextMsgBubbleCell.m in Sources */,
-				B1B557CC20EF5D8000210D55 /* DirectoryServerTableViewCell.m in Sources */,
-				B1B5575C20EE6C4D00210D55 /* DirectoryViewController.m in Sources */,
 				B1B5577020EE702800210D55 /* WidgetPickerViewController.m in Sources */,
 				B1B5576F20EE702800210D55 /* IntegrationManagerViewController.m in Sources */,
 				B1B557AC20EF5A6D00210D55 /* DeviceView.m in Sources */,
@@ -4544,11 +3879,6 @@
 				B1B5599420EFC5E400210D55 /* DecryptionFailureTracker.m in Sources */,
 				F083BDF01E7009ED00A9B29C /* UIViewController+RiotSearch.m in Sources */,
 				F083BDF91E7009ED00A9B29C /* RoomEmailInvitation.m in Sources */,
-				B15B86822135BC6F002782BE /* MasterTabBarController.m in Sources */,
-				B1B5574920EE6C4D00210D55 /* RiotSplitViewController.m in Sources */,
-				B1B5574E20EE6C4D00210D55 /* DirectoryServerPickerViewController.m in Sources */,
-				B16932E720F3C37100746532 /* HomeMessagesSearchDataSource.m in Sources */,
-				B15B86872135BC83002782BE /* AuthenticationViewController.m in Sources */,
 				B1B5577D20EE84BF00210D55 /* CircleButton.m in Sources */,
 				B1B5591020EF782800210D55 /* TableViewCellWithPhoneNumberTextField.m in Sources */,
 			);

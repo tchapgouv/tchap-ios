@@ -27,7 +27,6 @@
 
 #import "RoomViewController.h"
 
-#import "DirectoryViewController.h"
 #import "SettingsViewController.h"
 
 #import "BugReportViewController.h"
@@ -157,12 +156,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
      Suspend the error notifications when the navigation stack of the root view controller is updating.
      */
     BOOL isErrorNotificationSuspended;
-    
-    /**
-     Completion block called when [self popToHomeViewControllerAnimated:] has been
-     completed.
-     */
-    void (^popToHomeViewControllerCompletion)();
     
     /**
      The listeners to call events.
@@ -722,96 +715,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 
 #pragma mark - Application layout handling
 
-- (void)restoreInitialDisplay:(void (^)())completion
-{
-    // Suspend error notifications during navigation stack change.
-    isErrorNotificationSuspended = YES;
-    
-    // Dismiss potential view controllers that were presented modally (like the media picker).
-    if (self.window.rootViewController.presentedViewController)
-    {
-        // Do it asynchronously to avoid hasardous dispatch_async after calling restoreInitialDisplay
-        [self.window.rootViewController dismissViewControllerAnimated:NO completion:^{
-            
-            [self popToHomeViewControllerAnimated:NO completion:^{
-                
-                if (completion)
-                {
-                    completion();
-                }
-                
-                // Enable error notifications
-                isErrorNotificationSuspended = NO;
-                
-                if (noCallSupportAlert)
-                {
-                    NSLog(@"[AppDelegate] restoreInitialDisplay: keep visible noCall support alert");
-                    [self showNotificationAlert:noCallSupportAlert];
-                }
-                else if (cryptoDataCorruptedAlert)
-                {
-                    NSLog(@"[AppDelegate] restoreInitialDisplay: keep visible log in again");
-                    [self showNotificationAlert:cryptoDataCorruptedAlert];
-                }
-                // Check whether an error notification is pending
-                else if (_errorNotification)
-                {
-                    [self showNotificationAlert:_errorNotification];
-                }
-                
-            }];
-            
-        }];
-    }
-    else
-    {
-        [self popToHomeViewControllerAnimated:NO completion:^{
-            
-            if (completion)
-            {
-                completion();
-            }
-            
-            // Enable error notification (Check whether a notification is pending)
-            isErrorNotificationSuspended = NO;
-            if (_errorNotification)
-            {
-                [self showNotificationAlert:_errorNotification];
-            }
-        }];
-    }
-}
-
-- (void)restoreEmptyDetailsViewController
-{
-    UIViewController* rootViewController = self.window.rootViewController;
-    
-    if ([rootViewController isKindOfClass:[UISplitViewController class]])
-    {
-        UISplitViewController *splitViewController = (UISplitViewController *)rootViewController;
-        
-        // Be sure that the primary is then visible too.
-        if (splitViewController.displayMode == UISplitViewControllerDisplayModePrimaryHidden)
-        {
-            splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
-        }
-        
-        if (splitViewController.viewControllers.count == 2)
-        {
-            UIViewController *mainViewController = splitViewController.viewControllers[0];
-            
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
-            UIViewController *emptyDetailsViewController = [storyboard instantiateViewControllerWithIdentifier:@"EmptyDetailsViewControllerStoryboardId"];
-            emptyDetailsViewController.view.backgroundColor = kVariant2PrimaryBgColor;
-            
-            splitViewController.viewControllers = @[mainViewController, emptyDetailsViewController];
-        }
-    }
-    
-    // Release the current selected item (room/contact/group...).
-    [_masterTabBarController releaseSelectedItem];
-}
-
 - (UIAlertController*)showErrorAsAlert:(NSError*)error
 {
     // Ignore fake error, or connection cancellation error
@@ -938,67 +841,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
                                                                    }]];
         
         [self showNotificationAlert:cryptoDataCorruptedAlert];
-    }
-}
-
-#pragma mark
-
-- (void)popToHomeViewControllerAnimated:(BOOL)animated completion:(void (^)())completion
-{
-    UINavigationController *secondNavController = self.secondaryNavigationController;
-    if (secondNavController)
-    {
-        [secondNavController popToRootViewControllerAnimated:animated];
-    }
-    
-    // Force back to the main screen if this is not the one that is displayed
-    if (_masterTabBarController && _masterTabBarController != _masterNavigationController.visibleViewController)
-    {
-        // Listen to the masterNavigationController changes
-        // We need to be sure that masterTabBarController is back to the screen
-        popToHomeViewControllerCompletion = completion;
-        _masterNavigationController.delegate = self;
-        
-        [_masterNavigationController popToViewController:_masterTabBarController animated:animated];
-    }
-    else
-    {
-        // Select the Home tab
-        _masterTabBarController.selectedIndex = TABBAR_HOME_INDEX;
-        
-        if (completion)
-        {
-            completion();
-        }
-    }
-}
-
-#pragma mark - UINavigationController delegate
-
-- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
-{
-    if (viewController == _masterTabBarController)
-    {
-        _masterNavigationController.delegate = nil;
-        
-        // For unknown reason, the navigation bar is not restored correctly by [popToViewController:animated:]
-        // when a ViewController has hidden it (see MXKAttachmentsViewController).
-        // Patch: restore navigation bar by default here.
-        _masterNavigationController.navigationBarHidden = NO;
-        
-        // Release the current selected item (room/contact/...).
-        [_masterTabBarController releaseSelectedItem];
-        
-        if (popToHomeViewControllerCompletion)
-        {
-            void (^popToHomeViewControllerCompletion2)() = popToHomeViewControllerCompletion;
-            popToHomeViewControllerCompletion = nil;
-            
-            // Dispatch the completion in order to let navigation stack refresh itself.
-            dispatch_async(dispatch_get_main_queue(), ^{
-                popToHomeViewControllerCompletion2();
-            });
-        }
     }
 }
 
@@ -1687,11 +1529,24 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 - (void)refreshApplicationIconBadgeNumber
 {
     // Consider the total number of missed discussions including the invites.
-    NSUInteger count = [self.masterTabBarController missedDiscussionsCount];
+    NSUInteger count = [self missedDiscussionsCount];
     
     NSLog(@"[AppDelegate] refreshApplicationIconBadgeNumber: %tu", count);
     
     [UIApplication sharedApplication].applicationIconBadgeNumber = count;
+}
+
+- (NSUInteger)missedDiscussionsCount
+{
+    NSUInteger roomCount = 0;
+    
+    // Considering all the current sessions.
+    for (MXSession *session in mxSessionArray)
+    {
+        roomCount += [session riot_missedDiscussionsCount];
+    }
+    
+    return roomCount;
 }
 
 #pragma mark - Universal link
@@ -1749,311 +1604,311 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 - (BOOL)handleUniversalLinkFragment:(NSString*)fragment
 {
     BOOL continueUserActivity = NO;
-    MXKAccountManager *accountManager = [MXKAccountManager sharedManager];
-    
-    NSLog(@"[AppDelegate] Universal link: handleUniversalLinkFragment: %@", fragment);
-    
-    // The app manages only one universal link at a time
-    // Discard any pending one
-    [self resetPendingUniversalLink];
-    
-    // Extract params
-    NSArray<NSString*> *pathParams;
-    NSMutableDictionary *queryParams;
-    [self parseUniversalLinkFragment:fragment outPathParams:&pathParams outQueryParams:&queryParams];
-    
-    // Sanity check
-    if (!pathParams.count)
-    {
-        NSLog(@"[AppDelegate] Universal link: Error: No path parameters");
-        return NO;
-    }
-    
-    NSString *roomIdOrAlias;
-    NSString *eventId;
-    NSString *userId;
-    NSString *groupId;
-    
-    // Check permalink to room or event
-    if ([pathParams[0] isEqualToString:@"room"] && pathParams.count >= 2)
-    {
-        // The link is the form of "/room/[roomIdOrAlias]" or "/room/[roomIdOrAlias]/[eventId]"
-        roomIdOrAlias = pathParams[1];
-        
-        // Is it a link to an event of a room?
-        eventId = (pathParams.count >= 3) ? pathParams[2] : nil;
-    }
-    else if ([pathParams[0] isEqualToString:@"group"] && pathParams.count >= 2)
-    {
-        // The link is the form of "/group/[groupId]"
-        groupId = pathParams[1];
-    }
-    else if (([pathParams[0] hasPrefix:@"#"] || [pathParams[0] hasPrefix:@"!"]) && pathParams.count >= 1)
-    {
-        // The link is the form of "/#/[roomIdOrAlias]" or "/#/[roomIdOrAlias]/[eventId]"
-        // Such links come from matrix.to permalinks
-        roomIdOrAlias = pathParams[0];
-        eventId = (pathParams.count >= 2) ? pathParams[1] : nil;
-    }
-    // Check permalink to a user
-    else if ([pathParams[0] isEqualToString:@"user"] && pathParams.count == 2)
-    {
-        // The link is the form of "/user/userId"
-        userId = pathParams[1];
-    }
-    else if ([pathParams[0] hasPrefix:@"@"] && pathParams.count == 1)
-    {
-        // The link is the form of "/#/[userId]"
-        // Such links come from matrix.to permalinks
-        userId = pathParams[0];
-    }
-    
-    // Check the conditions to keep the room alias information of a pending fragment.
-    if (universalLinkFragmentPendingRoomAlias)
-    {
-        if (!roomIdOrAlias || !universalLinkFragmentPendingRoomAlias[roomIdOrAlias])
-        {
-            universalLinkFragmentPendingRoomAlias = nil;
-        }
-    }
-    
-    if (roomIdOrAlias)
-    {
-        if (accountManager.activeAccounts.count)
-        {
-            // Check there is an account that knows this room
-            MXKAccount *account = [accountManager accountKnowingRoomWithRoomIdOrAlias:roomIdOrAlias];
-            if (account)
-            {
-                NSString *roomId = roomIdOrAlias;
-                
-                // Translate the alias into the room id
-                if ([roomIdOrAlias hasPrefix:@"#"])
-                {
-                    MXRoom *room = [account.mxSession roomWithAlias:roomIdOrAlias];
-                    if (room)
-                    {
-                        roomId = room.roomId;
-                    }
-                }
-                
-                // Open the room page
-                [self showRoom:roomId andEventId:eventId withMatrixSession:account.mxSession];
-                
-                continueUserActivity = YES;
-            }
-            else
-            {
-                // We will display something but we need to do some requests before.
-                // So, come back to the home VC and show its loading wheel while processing
-                [self restoreInitialDisplay:^{
-                    
-                    if ([_masterTabBarController.selectedViewController isKindOfClass:MXKViewController.class])
-                    {
-                        MXKViewController *homeViewController = (MXKViewController*)_masterTabBarController.selectedViewController;
-                        
-                        [homeViewController startActivityIndicator];
-                        
-                        if ([roomIdOrAlias hasPrefix:@"#"])
-                        {
-                            // The alias may be not part of user's rooms states
-                            // Ask the HS to resolve the room alias into a room id and then retry
-                            universalLinkFragmentPending = fragment;
-                            MXKAccount* account = accountManager.activeAccounts.firstObject;
-                            [account.mxSession.matrixRestClient roomIDForRoomAlias:roomIdOrAlias success:^(NSString *roomId) {
-                                
-                                // Note: the activity indicator will not disappear if the session is not ready
-                                [homeViewController stopActivityIndicator];
-                                
-                                // Check that 'fragment' has not been cancelled
-                                if ([universalLinkFragmentPending isEqualToString:fragment])
-                                {
-                                    // Retry opening the link but with the returned room id
-                                    NSString *newUniversalLinkFragment =
-                                    [fragment stringByReplacingOccurrencesOfString:[roomIdOrAlias stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]
-                                                                        withString:[roomId stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-                                    
-                                    universalLinkFragmentPendingRoomAlias = @{roomId: roomIdOrAlias};
-                                    
-                                    [self handleUniversalLinkFragment:newUniversalLinkFragment];
-                                }
-                                
-                            } failure:^(NSError *error) {
-                                NSLog(@"[AppDelegate] Universal link: Error: The home server failed to resolve the room alias (%@)", roomIdOrAlias);
-                            }];
-                        }
-                        else if ([roomIdOrAlias hasPrefix:@"!"] && ((MXKAccount*)accountManager.activeAccounts.firstObject).mxSession.state != MXSessionStateRunning)
-                        {
-                            // The user does not know the room id but this may be because their session is not yet sync'ed
-                            // So, wait for the completion of the sync and then retry
-                            // FIXME: Manange all user's accounts not only the first one
-                            MXKAccount* account = accountManager.activeAccounts.firstObject;
-                            
-                            NSLog(@"[AppDelegate] Universal link: Need to wait for the session to be sync'ed and running");
-                            universalLinkFragmentPending = fragment;
-                            
-                            universalLinkWaitingObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionStateDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull notif) {
-                                
-                                // Check that 'fragment' has not been cancelled
-                                if ([universalLinkFragmentPending isEqualToString:fragment])
-                                {
-                                    // Check whether the concerned session is the associated one
-                                    if (notif.object == account.mxSession && account.mxSession.state == MXSessionStateRunning)
-                                    {
-                                        NSLog(@"[AppDelegate] Universal link: The session is running. Retry the link");
-                                        [self handleUniversalLinkFragment:fragment];
-                                    }
-                                }
-                            }];
-                        }
-                        else
-                        {
-                            NSLog(@"[AppDelegate] Universal link: The room (%@) is not known by any account (email invitation: %@). Display its preview to try to join it", roomIdOrAlias, queryParams ? @"YES" : @"NO");
-                            
-                            // FIXME: In case of multi-account, ask the user which one to use
-                            MXKAccount* account = accountManager.activeAccounts.firstObject;
-                            
-                            RoomPreviewData *roomPreviewData;
-                            if (queryParams)
-                            {
-                                // Note: the activity indicator will not disappear if the session is not ready
-                                [homeViewController stopActivityIndicator];
-                                
-                                roomPreviewData = [[RoomPreviewData alloc] initWithRoomId:roomIdOrAlias emailInvitationParams:queryParams andSession:account.mxSession];
-                                [self showRoomPreview:roomPreviewData];
-                            }
-                            else
-                            {
-                                roomPreviewData = [[RoomPreviewData alloc] initWithRoomId:roomIdOrAlias andSession:account.mxSession];
-                                
-                                // Is it a link to an event of a room?
-                                // If yes, the event will be displayed once the room is joined
-                                roomPreviewData.eventId = (pathParams.count >= 3) ? pathParams[2] : nil;
-                                
-                                // Try to get more information about the room before opening its preview
-                                [roomPreviewData peekInRoom:^(BOOL succeeded) {
-                                    
-                                    // Note: the activity indicator will not disappear if the session is not ready
-                                    [homeViewController stopActivityIndicator];
-                                    
-                                    // If no data is available for this room, we name it with the known room alias (if any).
-                                    if (!succeeded && universalLinkFragmentPendingRoomAlias[roomIdOrAlias])
-                                    {
-                                        roomPreviewData.roomName = universalLinkFragmentPendingRoomAlias[roomIdOrAlias];
-                                    }
-                                    universalLinkFragmentPendingRoomAlias = nil;
-                                    
-                                    [self showRoomPreview:roomPreviewData];
-                                }];
-                            }
-                        }
-                        
-                    }
-                }];
-                
-                // Let's say we are handling the case
-                continueUserActivity = YES;
-            }
-        }
-        else
-        {
-            // There is no account. The app will display the AuthenticationVC.
-            // Wait for a successful login
-            NSLog(@"[AppDelegate] Universal link: The user is not logged in. Wait for a successful login");
-            universalLinkFragmentPending = fragment;
-            
-            // Register an observer in order to handle new account
-            universalLinkWaitingObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidAddAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-                
-                // Check that 'fragment' has not been cancelled
-                if ([universalLinkFragmentPending isEqualToString:fragment])
-                {
-                    NSLog(@"[AppDelegate] Universal link:  The user is now logged in. Retry the link");
-                    [self handleUniversalLinkFragment:fragment];
-                }
-            }];
-        }
-    }
-    else if (userId)
-    {
-        // Check there is an account that knows this user
-        MXUser *mxUser;
-        MXKAccount *account = [accountManager accountKnowingUserWithUserId:userId];
-        if (account)
-        {
-            mxUser = [account.mxSession userWithUserId:userId];
-        }
-
-        // Prepare the display name of this user
-        NSString *displayName;
-        if (mxUser)
-        {
-            displayName = (mxUser.displayname.length > 0) ? mxUser.displayname : userId;
-        }
-        else
-        {
-            displayName = userId;
-        }
-
-        // Create the contact related to this member
-        MXKContact *contact = [[MXKContact alloc] initMatrixContactWithDisplayName:displayName andMatrixID:userId];
-        [self showContact:contact];
-
-        continueUserActivity = YES;
-    }
-    else if (groupId)
-    {
-        // @FIXME: In case of multi-account, ask the user which one to use
-        MXKAccount* account = accountManager.activeAccounts.firstObject;
-        if (account)
-        {
-            MXGroup *group = [account.mxSession groupWithGroupId:groupId];
-            
-            if (!group)
-            {
-                // Create a group instance to display its preview
-                group = [[MXGroup alloc] initWithGroupId:groupId];
-            }
-            
-            // Display the group details
-            [self showGroup:group withMatrixSession:account.mxSession];
-            
-            continueUserActivity = YES;
-        }
-        else
-        {
-            // There is no account. The app will display the AuthenticationVC.
-            // Wait for a successful login
-            NSLog(@"[AppDelegate] Universal link: The user is not logged in. Wait for a successful login");
-            universalLinkFragmentPending = fragment;
-            
-            // Register an observer in order to handle new account
-            universalLinkWaitingObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidAddAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-                
-                // Check that 'fragment' has not been cancelled
-                if ([universalLinkFragmentPending isEqualToString:fragment])
-                {
-                    NSLog(@"[AppDelegate] Universal link:  The user is now logged in. Retry the link");
-                    [self handleUniversalLinkFragment:fragment];
-                }
-            }];
-        }
-    }
-    // Check whether this is a registration links.
-    else if ([pathParams[0] isEqualToString:@"register"])
-    {
-        NSLog(@"[AppDelegate] Universal link with registration parameters");
-        continueUserActivity = YES;
-        
-        [_masterTabBarController showAuthenticationScreenWithRegistrationParameters:queryParams];
-    }
-    else
-    {
-        // Unknown command: Do nothing except coming back to the main screen
-        NSLog(@"[AppDelegate] Universal link: TODO: Do not know what to do with the link arguments: %@", pathParams);
-        
-        [self popToHomeViewControllerAnimated:NO completion:nil];
-    }
+//    MXKAccountManager *accountManager = [MXKAccountManager sharedManager];
+//
+//    NSLog(@"[AppDelegate] Universal link: handleUniversalLinkFragment: %@", fragment);
+//
+//    // The app manages only one universal link at a time
+//    // Discard any pending one
+//    [self resetPendingUniversalLink];
+//
+//    // Extract params
+//    NSArray<NSString*> *pathParams;
+//    NSMutableDictionary *queryParams;
+//    [self parseUniversalLinkFragment:fragment outPathParams:&pathParams outQueryParams:&queryParams];
+//
+//    // Sanity check
+//    if (!pathParams.count)
+//    {
+//        NSLog(@"[AppDelegate] Universal link: Error: No path parameters");
+//        return NO;
+//    }
+//
+//    NSString *roomIdOrAlias;
+//    NSString *eventId;
+//    NSString *userId;
+//    NSString *groupId;
+//
+//    // Check permalink to room or event
+//    if ([pathParams[0] isEqualToString:@"room"] && pathParams.count >= 2)
+//    {
+//        // The link is the form of "/room/[roomIdOrAlias]" or "/room/[roomIdOrAlias]/[eventId]"
+//        roomIdOrAlias = pathParams[1];
+//
+//        // Is it a link to an event of a room?
+//        eventId = (pathParams.count >= 3) ? pathParams[2] : nil;
+//    }
+//    else if ([pathParams[0] isEqualToString:@"group"] && pathParams.count >= 2)
+//    {
+//        // The link is the form of "/group/[groupId]"
+//        groupId = pathParams[1];
+//    }
+//    else if (([pathParams[0] hasPrefix:@"#"] || [pathParams[0] hasPrefix:@"!"]) && pathParams.count >= 1)
+//    {
+//        // The link is the form of "/#/[roomIdOrAlias]" or "/#/[roomIdOrAlias]/[eventId]"
+//        // Such links come from matrix.to permalinks
+//        roomIdOrAlias = pathParams[0];
+//        eventId = (pathParams.count >= 2) ? pathParams[1] : nil;
+//    }
+//    // Check permalink to a user
+//    else if ([pathParams[0] isEqualToString:@"user"] && pathParams.count == 2)
+//    {
+//        // The link is the form of "/user/userId"
+//        userId = pathParams[1];
+//    }
+//    else if ([pathParams[0] hasPrefix:@"@"] && pathParams.count == 1)
+//    {
+//        // The link is the form of "/#/[userId]"
+//        // Such links come from matrix.to permalinks
+//        userId = pathParams[0];
+//    }
+//
+//    // Check the conditions to keep the room alias information of a pending fragment.
+//    if (universalLinkFragmentPendingRoomAlias)
+//    {
+//        if (!roomIdOrAlias || !universalLinkFragmentPendingRoomAlias[roomIdOrAlias])
+//        {
+//            universalLinkFragmentPendingRoomAlias = nil;
+//        }
+//    }
+//
+//    if (roomIdOrAlias)
+//    {
+//        if (accountManager.activeAccounts.count)
+//        {
+//            // Check there is an account that knows this room
+//            MXKAccount *account = [accountManager accountKnowingRoomWithRoomIdOrAlias:roomIdOrAlias];
+//            if (account)
+//            {
+//                NSString *roomId = roomIdOrAlias;
+//
+//                // Translate the alias into the room id
+//                if ([roomIdOrAlias hasPrefix:@"#"])
+//                {
+//                    MXRoom *room = [account.mxSession roomWithAlias:roomIdOrAlias];
+//                    if (room)
+//                    {
+//                        roomId = room.roomId;
+//                    }
+//                }
+//
+//                // Open the room page
+//                [self showRoom:roomId andEventId:eventId withMatrixSession:account.mxSession];
+//
+//                continueUserActivity = YES;
+//            }
+//            else
+//            {
+//                // We will display something but we need to do some requests before.
+//                // So, come back to the home VC and show its loading wheel while processing
+//                [self restoreInitialDisplay:^{
+//
+//                    if ([_masterTabBarController.selectedViewController isKindOfClass:MXKViewController.class])
+//                    {
+//                        MXKViewController *homeViewController = (MXKViewController*)_masterTabBarController.selectedViewController;
+//
+//                        [homeViewController startActivityIndicator];
+//
+//                        if ([roomIdOrAlias hasPrefix:@"#"])
+//                        {
+//                            // The alias may be not part of user's rooms states
+//                            // Ask the HS to resolve the room alias into a room id and then retry
+//                            universalLinkFragmentPending = fragment;
+//                            MXKAccount* account = accountManager.activeAccounts.firstObject;
+//                            [account.mxSession.matrixRestClient roomIDForRoomAlias:roomIdOrAlias success:^(NSString *roomId) {
+//
+//                                // Note: the activity indicator will not disappear if the session is not ready
+//                                [homeViewController stopActivityIndicator];
+//
+//                                // Check that 'fragment' has not been cancelled
+//                                if ([universalLinkFragmentPending isEqualToString:fragment])
+//                                {
+//                                    // Retry opening the link but with the returned room id
+//                                    NSString *newUniversalLinkFragment =
+//                                    [fragment stringByReplacingOccurrencesOfString:[roomIdOrAlias stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]
+//                                                                        withString:[roomId stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+//
+//                                    universalLinkFragmentPendingRoomAlias = @{roomId: roomIdOrAlias};
+//
+//                                    [self handleUniversalLinkFragment:newUniversalLinkFragment];
+//                                }
+//
+//                            } failure:^(NSError *error) {
+//                                NSLog(@"[AppDelegate] Universal link: Error: The home server failed to resolve the room alias (%@)", roomIdOrAlias);
+//                            }];
+//                        }
+//                        else if ([roomIdOrAlias hasPrefix:@"!"] && ((MXKAccount*)accountManager.activeAccounts.firstObject).mxSession.state != MXSessionStateRunning)
+//                        {
+//                            // The user does not know the room id but this may be because their session is not yet sync'ed
+//                            // So, wait for the completion of the sync and then retry
+//                            // FIXME: Manange all user's accounts not only the first one
+//                            MXKAccount* account = accountManager.activeAccounts.firstObject;
+//
+//                            NSLog(@"[AppDelegate] Universal link: Need to wait for the session to be sync'ed and running");
+//                            universalLinkFragmentPending = fragment;
+//
+//                            universalLinkWaitingObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionStateDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull notif) {
+//
+//                                // Check that 'fragment' has not been cancelled
+//                                if ([universalLinkFragmentPending isEqualToString:fragment])
+//                                {
+//                                    // Check whether the concerned session is the associated one
+//                                    if (notif.object == account.mxSession && account.mxSession.state == MXSessionStateRunning)
+//                                    {
+//                                        NSLog(@"[AppDelegate] Universal link: The session is running. Retry the link");
+//                                        [self handleUniversalLinkFragment:fragment];
+//                                    }
+//                                }
+//                            }];
+//                        }
+//                        else
+//                        {
+//                            NSLog(@"[AppDelegate] Universal link: The room (%@) is not known by any account (email invitation: %@). Display its preview to try to join it", roomIdOrAlias, queryParams ? @"YES" : @"NO");
+//
+//                            // FIXME: In case of multi-account, ask the user which one to use
+//                            MXKAccount* account = accountManager.activeAccounts.firstObject;
+//
+//                            RoomPreviewData *roomPreviewData;
+//                            if (queryParams)
+//                            {
+//                                // Note: the activity indicator will not disappear if the session is not ready
+//                                [homeViewController stopActivityIndicator];
+//
+//                                roomPreviewData = [[RoomPreviewData alloc] initWithRoomId:roomIdOrAlias emailInvitationParams:queryParams andSession:account.mxSession];
+//                                [self showRoomPreview:roomPreviewData];
+//                            }
+//                            else
+//                            {
+//                                roomPreviewData = [[RoomPreviewData alloc] initWithRoomId:roomIdOrAlias andSession:account.mxSession];
+//
+//                                // Is it a link to an event of a room?
+//                                // If yes, the event will be displayed once the room is joined
+//                                roomPreviewData.eventId = (pathParams.count >= 3) ? pathParams[2] : nil;
+//
+//                                // Try to get more information about the room before opening its preview
+//                                [roomPreviewData peekInRoom:^(BOOL succeeded) {
+//
+//                                    // Note: the activity indicator will not disappear if the session is not ready
+//                                    [homeViewController stopActivityIndicator];
+//
+//                                    // If no data is available for this room, we name it with the known room alias (if any).
+//                                    if (!succeeded && universalLinkFragmentPendingRoomAlias[roomIdOrAlias])
+//                                    {
+//                                        roomPreviewData.roomName = universalLinkFragmentPendingRoomAlias[roomIdOrAlias];
+//                                    }
+//                                    universalLinkFragmentPendingRoomAlias = nil;
+//
+//                                    [self showRoomPreview:roomPreviewData];
+//                                }];
+//                            }
+//                        }
+//
+//                    }
+//                }];
+//
+//                // Let's say we are handling the case
+//                continueUserActivity = YES;
+//            }
+//        }
+//        else
+//        {
+//            // There is no account. The app will display the AuthenticationVC.
+//            // Wait for a successful login
+//            NSLog(@"[AppDelegate] Universal link: The user is not logged in. Wait for a successful login");
+//            universalLinkFragmentPending = fragment;
+//
+//            // Register an observer in order to handle new account
+//            universalLinkWaitingObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidAddAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+//
+//                // Check that 'fragment' has not been cancelled
+//                if ([universalLinkFragmentPending isEqualToString:fragment])
+//                {
+//                    NSLog(@"[AppDelegate] Universal link:  The user is now logged in. Retry the link");
+//                    [self handleUniversalLinkFragment:fragment];
+//                }
+//            }];
+//        }
+//    }
+//    else if (userId)
+//    {
+//        // Check there is an account that knows this user
+//        MXUser *mxUser;
+//        MXKAccount *account = [accountManager accountKnowingUserWithUserId:userId];
+//        if (account)
+//        {
+//            mxUser = [account.mxSession userWithUserId:userId];
+//        }
+//
+//        // Prepare the display name of this user
+//        NSString *displayName;
+//        if (mxUser)
+//        {
+//            displayName = (mxUser.displayname.length > 0) ? mxUser.displayname : userId;
+//        }
+//        else
+//        {
+//            displayName = userId;
+//        }
+//
+//        // Create the contact related to this member
+//        MXKContact *contact = [[MXKContact alloc] initMatrixContactWithDisplayName:displayName andMatrixID:userId];
+//        [self showContact:contact];
+//
+//        continueUserActivity = YES;
+//    }
+//    else if (groupId)
+//    {
+//        // @FIXME: In case of multi-account, ask the user which one to use
+//        MXKAccount* account = accountManager.activeAccounts.firstObject;
+//        if (account)
+//        {
+//            MXGroup *group = [account.mxSession groupWithGroupId:groupId];
+//
+//            if (!group)
+//            {
+//                // Create a group instance to display its preview
+//                group = [[MXGroup alloc] initWithGroupId:groupId];
+//            }
+//
+//            // Display the group details
+//            [self showGroup:group withMatrixSession:account.mxSession];
+//
+//            continueUserActivity = YES;
+//        }
+//        else
+//        {
+//            // There is no account. The app will display the AuthenticationVC.
+//            // Wait for a successful login
+//            NSLog(@"[AppDelegate] Universal link: The user is not logged in. Wait for a successful login");
+//            universalLinkFragmentPending = fragment;
+//
+//            // Register an observer in order to handle new account
+//            universalLinkWaitingObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidAddAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+//
+//                // Check that 'fragment' has not been cancelled
+//                if ([universalLinkFragmentPending isEqualToString:fragment])
+//                {
+//                    NSLog(@"[AppDelegate] Universal link:  The user is now logged in. Retry the link");
+//                    [self handleUniversalLinkFragment:fragment];
+//                }
+//            }];
+//        }
+//    }
+//    // Check whether this is a registration links.
+//    else if ([pathParams[0] isEqualToString:@"register"])
+//    {
+//        NSLog(@"[AppDelegate] Universal link with registration parameters");
+//        continueUserActivity = YES;
+//
+//        [_masterTabBarController showAuthenticationScreenWithRegistrationParameters:queryParams];
+//    }
+//    else
+//    {
+//        // Unknown command: Do nothing except coming back to the main screen
+//        NSLog(@"[AppDelegate] Universal link: TODO: Do not know what to do with the link arguments: %@", pathParams);
+//
+//        [self popToHomeViewControllerAnimated:NO completion:nil];
+//    }
     
     return continueUserActivity;
 }
@@ -2444,9 +2299,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         dispatch_after(dispatch_walltime(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
             [[MXKContactManager sharedManager] addMatrixSession:mxSession];
         });
-        
-        // Update home data sources
-        [_masterTabBarController addMatrixSession:mxSession];
 
         // Register the session to the widgets manager
         [[WidgetManager sharedManager] addMatrixSession:mxSession];
@@ -2467,9 +2319,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 - (void)removeMatrixSession:(MXSession*)mxSession
 {
     [[MXKContactManager sharedManager] removeMatrixSession:mxSession];
-    
-    // Update home data sources
-    [_masterTabBarController removeMatrixSession:mxSession];
 
     // Update the widgets manager
     [[WidgetManager sharedManager] removeMatrixSession:mxSession]; 
@@ -2517,7 +2366,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     }
     
     // Force back to Recents list if room details is displayed (Room details are not available until the end of initial sync)
-    [self popToHomeViewControllerAnimated:NO completion:nil];
+//    [self popToHomeViewControllerAnimated:NO completion:nil];
     
     if (clearCache)
     {
@@ -2635,9 +2484,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         {
             completion (YES);
         }
-        
-        // Return to authentication screen
-        [_masterTabBarController showAuthenticationScreen];
         
         // Note: Keep App settings
         
@@ -3143,21 +2989,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 
 - (void)showRoom:(NSString*)roomId andEventId:(NSString*)eventId withMatrixSession:(MXSession*)mxSession
 {
-    [self restoreInitialDisplay:^{
-        
-        // Select room to display its details (dispatch this action in order to let TabBarController end its refresh)
-        [_masterTabBarController selectRoomWithId:roomId andEventId:eventId inMatrixSession:mxSession];
-        
-    }];
-}
-
-- (void)showRoomPreview:(RoomPreviewData*)roomPreviewData
-{
-    [self restoreInitialDisplay:^{
-        
-        [_masterTabBarController showRoomPreview:roomPreviewData];
-        
-    }];
+    NSLog(@"[AppDelegate] Implement navigation to room in approriate coordinator");
 }
 
 - (void)setVisibleRoomId:(NSString *)roomId
@@ -3264,15 +3096,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 
 #pragma mark - Contacts handling
 
-- (void)showContact:(MXKContact*)contact
-{
-    [self restoreInitialDisplay:^{
-
-        [self.masterTabBarController selectContact:contact];
-
-    }];
-}
-
 - (void)refreshLocalContacts
 {
     // Check whether the application is allowed to access the local contacts.
@@ -3307,18 +3130,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         // Refresh the local contacts list.
         [[MXKContactManager sharedManager] refreshLocalContacts];
     }
-}
-
-#pragma mark - Matrix Groups handling
-
-- (void)showGroup:(MXGroup*)group withMatrixSession:(MXSession*)mxSession
-{
-    [self restoreInitialDisplay:^{
-        
-        // Select group to display its details (dispatch this action in order to let TabBarController end its refresh)
-        [_masterTabBarController selectGroup:group inMatrixSession:mxSession];
-        
-    }];
 }
 
 #pragma mark - MXKCallViewControllerDelegate
@@ -3619,50 +3430,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         rootController.presentedViewController.view.frame = rootControllerFrame;
     }
     [rootController.view setNeedsLayout];
-}
-
-#pragma mark - SplitViewController delegate
-
-- (nullable UIViewController *)splitViewController:(UISplitViewController *)splitViewController separateSecondaryViewControllerFromPrimaryViewController:(UIViewController *)primaryViewController
-{
-    // Return the top view controller of the master navigation controller, if it is a navigation controller itself.
-    UIViewController *topViewController = _masterNavigationController.topViewController;
-    if ([topViewController isKindOfClass:UINavigationController.class])
-    {
-        return topViewController;
-    }
-    
-    // Else return the default empty details view controller from the storyboard.
-    // Be sure that the primary is then visible too.
-    if (splitViewController.displayMode == UISplitViewControllerDisplayModePrimaryHidden)
-    {
-        splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
-    }
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
-    UIViewController *emptyDetailsViewController = [storyboard instantiateViewControllerWithIdentifier:@"EmptyDetailsViewControllerStoryboardId"];
-    emptyDetailsViewController.view.backgroundColor = kVariant2PrimaryBgColor;
-    return emptyDetailsViewController;
-}
-
-- (BOOL)splitViewController:(UISplitViewController *)splitViewController collapseSecondaryViewController:(UIViewController *)secondaryViewController ontoPrimaryViewController:(UIViewController *)primaryViewController
-{
-    if (!self.masterTabBarController.currentRoomViewController && !self.masterTabBarController.currentContactDetailViewController && !self.masterTabBarController.currentGroupDetailViewController)
-    {
-        // Return YES to indicate that we have handled the collapse by doing nothing; the secondary controller will be discarded.
-        return YES;
-    }
-    else
-    {
-        return NO;
-    }
-}
-
-- (BOOL)splitViewController:(UISplitViewController *)svc shouldHideViewController:(UIViewController *)vc inOrientation:(UIInterfaceOrientation)orientation
-{
-    // oniPad devices, force to display the primary and the secondary viewcontroller
-    // to avoid empty room View Controller in portrait orientation
-    // else, the user cannot select a room
-    return NO;
 }
 
 #pragma mark - Status Bar Tap handling

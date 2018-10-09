@@ -18,7 +18,10 @@
 
 #import "UIViewController+RiotSearch.h"
 
-#import "AppDelegate.h"
+#import "RiotDesignValues.h"
+#import "RageShakeManager.h"
+#import "Analytics.h"
+#import "LegacyAppDelegate.h"
 
 #define CONTACTS_TABLEVC_LOCALCONTACTS_BITWISE 0x01
 #define CONTACTS_TABLEVC_USERDIRECTORY_BITWISE 0x02
@@ -217,12 +220,12 @@
 {
     // Update here the index of the current selected cell (if any) - Useful in landscape mode with split view controller.
     NSIndexPath *currentSelectedCellIndexPath = nil;
-    MasterTabBarController *masterTabBarController = [AppDelegate theDelegate].masterTabBarController;
-    if (masterTabBarController.currentContactDetailViewController)
-    {
-        // Look for the rank of this selected contact in displayed recents
-        currentSelectedCellIndexPath = [contactsDataSource cellIndexPathWithContact:masterTabBarController.selectedContact];
-    }
+//    MasterTabBarController *masterTabBarController = [AppDelegate theDelegate].masterTabBarController;
+//    if (masterTabBarController.currentContactDetailViewController)
+//    {
+//        // Look for the rank of this selected contact in displayed recents
+//        currentSelectedCellIndexPath = [contactsDataSource cellIndexPathWithContact:masterTabBarController.selectedContact];
+//    }
     
     if (currentSelectedCellIndexPath)
     {

@@ -20,7 +20,6 @@
 #import <MatrixKit/MatrixKit.h>
 #import <PushKit/PushKit.h>
 
-#import "MasterTabBarController.h"
 #import "JitsiViewController.h"
 
 #import "RageShakeManager.h"
@@ -52,18 +51,13 @@ extern NSString *const kLegacyAppDelegateDidLoginNotification;
 /**
  LegacyAppDelegate is based on Riot AppDelegate, is here to keep some Riot behaviors and be decoupled in the future.
  */
-@interface LegacyAppDelegate : UIResponder <UIApplicationDelegate, MXKCallViewControllerDelegate, UISplitViewControllerDelegate, UINavigationControllerDelegate, JitsiViewControllerDelegate, PKPushRegistryDelegate>
+@interface LegacyAppDelegate : UIResponder <UIApplicationDelegate, MXKCallViewControllerDelegate, UINavigationControllerDelegate, JitsiViewControllerDelegate, PKPushRegistryDelegate>
 {
     BOOL isPushRegistered;
     
     // background sync management
     void (^_completionHandler)(UIBackgroundFetchResult);
 }
-
-/**
- Application main view controller
- */
-@property (nonatomic, readonly) MasterTabBarController *masterTabBarController;
 
 @property (strong, nonatomic) UIWindow *window;
 
@@ -74,15 +68,6 @@ extern NSString *const kLegacyAppDelegateDidLoginNotification;
 
 @property (nonatomic) BOOL isAppForeground;
 @property (nonatomic) BOOL isOffline;
-
-/**
- The navigation controller of the master view controller of the main split view controller.
- */
-@property (nonatomic, readonly) UINavigationController *masterNavigationController;
-/**
- The navigation controller of the detail view controller of the main split view controller (may be nil).
- */
-@property (nonatomic, readonly) UINavigationController *secondaryNavigationController;
 
 // Associated matrix sessions (empty by default).
 @property (nonatomic, readonly) NSArray *mxSessions;
@@ -96,13 +81,6 @@ extern NSString *const kLegacyAppDelegateDidLoginNotification;
 + (instancetype)theDelegate;
 
 #pragma mark - Application layout handling
-
-- (void)restoreInitialDisplay:(void (^)())completion;
-
-/**
- Replace the secondary view controller of the split view controller (if any) with the default empty details view controller.
- */
-- (void)restoreEmptyDetailsViewController;
 
 - (UIAlertController*)showErrorAsAlert:(NSError*)error;
 
@@ -157,6 +135,7 @@ extern NSString *const kLegacyAppDelegateDidLoginNotification;
 
 #pragma mark - Matrix Room handling
 
+// TODO: Remove this method and implement navigation to a room in approriate coordinator
 - (void)showRoom:(NSString*)roomId andEventId:(NSString*)eventId withMatrixSession:(MXSession*)mxSession;
 
 // Creates a new direct chat with the provided user id
@@ -171,6 +150,7 @@ extern NSString *const kLegacyAppDelegateDidLoginNotification;
  @param fragment the fragment part of the universal link.
  @return YES in case of processing success.
  */
+// TODO: Update universal link navigation behavior
 - (BOOL)handleUniversalLinkFragment:(NSString*)fragment;
 
 #pragma mark - Jitsi call
