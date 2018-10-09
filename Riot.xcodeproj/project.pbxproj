@@ -310,7 +310,6 @@
 		B15B867B21359145002782BE /* KeyboardNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15B867A21359145002782BE /* KeyboardNotification.swift */; };
 		B15B867E2135BA96002782BE /* AuthenticationViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B15B867C2135BA95002782BE /* AuthenticationViewController.storyboard */; };
 		B15B867F2135BA96002782BE /* AuthenticationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15B867D2135BA96002782BE /* AuthenticationViewController.swift */; };
-		B15B86822135BC6F002782BE /* MasterTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = B15B86802135BC6D002782BE /* MasterTabBarController.m */; };
 		B15B86892135C284002782BE /* AuthenticationViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15B86882135C284002782BE /* AuthenticationViewModelType.swift */; };
 		B15B868B2135C4DE002782BE /* AuthenticationFormValidationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15B868A2135C4DE002782BE /* AuthenticationFormValidationResult.swift */; };
 		B1664BC520F4E67600808783 /* FallbackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1664BAD20F4E67500808783 /* FallbackViewController.xib */; };
@@ -866,8 +865,6 @@
 		B15B867A21359145002782BE /* KeyboardNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardNotification.swift; sourceTree = "<group>"; };
 		B15B867C2135BA95002782BE /* AuthenticationViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = AuthenticationViewController.storyboard; sourceTree = "<group>"; };
 		B15B867D2135BA96002782BE /* AuthenticationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticationViewController.swift; sourceTree = "<group>"; };
-		B15B86802135BC6D002782BE /* MasterTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MasterTabBarController.m; sourceTree = "<group>"; };
-		B15B86812135BC6E002782BE /* MasterTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MasterTabBarController.h; sourceTree = "<group>"; };
 		B15B86882135C284002782BE /* AuthenticationViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewModelType.swift; sourceTree = "<group>"; };
 		B15B868A2135C4DE002782BE /* AuthenticationFormValidationResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationFormValidationResult.swift; sourceTree = "<group>"; };
 		B1664BAD20F4E67500808783 /* FallbackViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FallbackViewController.xib; sourceTree = "<group>"; };
@@ -2205,7 +2202,6 @@
 		B1B5567620EE6C4C00210D55 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
-				B1B556CA20EE6C4C00210D55 /* TabBar */,
 				B17982FD2119FEA7001FD722 /* GDPR */,
 				B1B556E720EE6C4C00210D55 /* People */,
 				B1B5567720EE6C4C00210D55 /* Settings */,
@@ -2286,15 +2282,6 @@
 				B1B556B120EE6C4C00210D55 /* BugReportViewController.xib */,
 			);
 			path = BugReport;
-			sourceTree = "<group>";
-		};
-		B1B556CA20EE6C4C00210D55 /* TabBar */ = {
-			isa = PBXGroup;
-			children = (
-				B15B86812135BC6E002782BE /* MasterTabBarController.h */,
-				B15B86802135BC6D002782BE /* MasterTabBarController.m */,
-			);
-			path = TabBar;
 			sourceTree = "<group>";
 		};
 		B1B556CD20EE6C4C00210D55 /* Common */ = {
@@ -3994,7 +3981,6 @@
 				B1B5599420EFC5E400210D55 /* DecryptionFailureTracker.m in Sources */,
 				F083BDF01E7009ED00A9B29C /* UIViewController+RiotSearch.m in Sources */,
 				F083BDF91E7009ED00A9B29C /* RoomEmailInvitation.m in Sources */,
-				B15B86822135BC6F002782BE /* MasterTabBarController.m in Sources */,
 				B1B5577D20EE84BF00210D55 /* CircleButton.m in Sources */,
 				B1B5591020EF782800210D55 /* TableViewCellWithPhoneNumberTextField.m in Sources */,
 			);
