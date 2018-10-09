@@ -247,7 +247,7 @@
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
     
-    _showMissedDiscussionsBadge = YES;
+    _showMissedDiscussionsBadge = NO;
     
     
     // Listen to the event sent state changes
