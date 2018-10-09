@@ -16,11 +16,7 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-#import "DeviceView.h"
-
-#import "MediaPickerViewController.h"
-
-@interface SettingsViewController : MXKTableViewController<UITextFieldDelegate, MediaPickerViewControllerDelegate, MXKDeviceViewDelegate, UIDocumentInteractionControllerDelegate, MXKCountryPickerViewControllerDelegate, MXKLanguagePickerViewControllerDelegate, MXKDataSourceDelegate>
+@interface SettingsViewController : MXKTableViewController
 
 /**
  Creates and returns a new `SettingsViewController` object.
