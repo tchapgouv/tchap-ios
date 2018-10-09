@@ -281,18 +281,18 @@
 {
     [super viewDidAppear:animated];
     
-    // Release the current selected item (if any) except if the second view controller is still visible.
-    if (self.splitViewController.isCollapsed)
-    {
-        // Release the current selected room (if any).
-        [[AppDelegate theDelegate].masterTabBarController releaseSelectedItem];
-    }
-    else
-    {
+//    // Release the current selected item (if any) except if the second view controller is still visible.
+//    if (self.splitViewController.isCollapsed)
+//    {
+//        // Release the current selected room (if any).
+//        [[AppDelegate theDelegate].masterTabBarController releaseSelectedItem];
+//    }
+//    else
+//    {
         // In case of split view controller where the primary and secondary view controllers are displayed side-by-side onscreen,
         // the selected room (if any) is highlighted.
         [self refreshCurrentSelectedCell:YES];
-    }
+//    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -315,9 +315,6 @@
 
 - (void)refreshRecentsTable
 {
-    // Refresh the tabBar icon badges
-    [[AppDelegate theDelegate].masterTabBarController refreshTabBarBadges];
-    
     // do not refresh if there is a pending recent drag and drop
     if (movingCellPath)
     {
@@ -388,35 +385,10 @@
 
 - (void)refreshCurrentSelectedCell:(BOOL)forceVisible
 {
-    // Update here the index of the current selected cell (if any) - Useful in landscape mode with split view controller.
-    NSIndexPath *currentSelectedCellIndexPath = nil;
-    MasterTabBarController *masterTabBarController = [AppDelegate theDelegate].masterTabBarController;
-    if (masterTabBarController.currentRoomViewController)
+    NSIndexPath *indexPath = [self.recentsTableView indexPathForSelectedRow];
+    if (indexPath)
     {
-        // Look for the rank of this selected room in displayed recents
-        currentSelectedCellIndexPath = [self.dataSource cellIndexPathWithRoomId:masterTabBarController.selectedRoomId andMatrixSession:masterTabBarController.selectedRoomSession];
-    }
-    
-    if (currentSelectedCellIndexPath)
-    {
-        // Select the right row
-        [self.recentsTableView selectRowAtIndexPath:currentSelectedCellIndexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
-        
-        if (forceVisible)
-        {
-            // Scroll table view to make the selected row appear at second position
-            NSInteger topCellIndexPathRow = currentSelectedCellIndexPath.row ? currentSelectedCellIndexPath.row - 1: currentSelectedCellIndexPath.row;
-            NSIndexPath* indexPath = [NSIndexPath indexPathForRow:topCellIndexPathRow inSection:currentSelectedCellIndexPath.section];
-            [self.recentsTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
-        }
-    }
-    else
-    {
-        NSIndexPath *indexPath = [self.recentsTableView indexPathForSelectedRow];
-        if (indexPath)
-        {
-            [self.recentsTableView deselectRowAtIndexPath:indexPath animated:NO];
-        }
+        [self.recentsTableView deselectRowAtIndexPath:indexPath animated:NO];
     }
 }
 
