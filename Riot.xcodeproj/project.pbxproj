@@ -154,12 +154,10 @@
 		0250C4BD2122B68000034691 /* RageShakeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5597E20EFC3DF00210D55 /* RageShakeManager.m */; };
 		0250C4BF2122B68000034691 /* PublicRoomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B169330E20F3CAFC00746532 /* PublicRoomTableViewCell.m */; };
 		0250C4C12122B68000034691 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5567E20EE6C4C00210D55 /* SettingsViewController.m */; };
-		0250C4C22122B68000034691 /* RoomCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5594220EF7BD000210D55 /* RoomCollectionViewCell.m */; };
 		0250C4C42122B68000034691 /* RiotNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556D320EE6C4C00210D55 /* RiotNavigationController.m */; };
 		0250C4C92122B68000034691 /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC151E7009EC00A9B29C /* Tools.m */; };
 		0250C4CA2122B68000034691 /* WebViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556D020EE6C4C00210D55 /* WebViewViewController.m */; };
 		0250C4CC2122B68000034691 /* MXGroup+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F05927C71FDED835009F2A68 /* MXGroup+Riot.m */; };
-		0250C4CD2122B68000034691 /* TableViewCellWithCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5594020EF7BD000210D55 /* TableViewCellWithCollectionView.m */; };
 		0250C4CE2122B68000034691 /* UINavigationController+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBEA1E7009EC00A9B29C /* UINavigationController+Riot.m */; };
 		0250C4D22122B68000034691 /* LanguagePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5567C20EE6C4C00210D55 /* LanguagePickerViewController.m */; };
 		0250C4D62122B68000034691 /* TableViewCellWithButton.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5592A20EF7A5D00210D55 /* TableViewCellWithButton.m */; };
@@ -212,12 +210,10 @@
 		0250C5442122B68000034691 /* ring.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F083BBDE1E7009EC00A9B29C /* ring.mp3 */; };
 		0250C5462122B68000034691 /* TableViewCellWithButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5592920EF7A5D00210D55 /* TableViewCellWithButton.xib */; };
 		0250C5472122B68000034691 /* StartChatViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B556E320EE6C4C00210D55 /* StartChatViewController.xib */; };
-		0250C5492122B68000034691 /* TableViewCellWithCollectionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5593F20EF7BD000210D55 /* TableViewCellWithCollectionView.xib */; };
 		0250C54C2122B68000034691 /* EncryptionInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5596E20EFA85C00210D55 /* EncryptionInfoView.xib */; };
 		0250C54E2122B68000034691 /* ContactDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5568A20EE6C4C00210D55 /* ContactDetailsViewController.xib */; };
 		0250C5502122B68000034691 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B1664D5920F4EBEC00808783 /* Localizable.strings */; };
 		0250C5522122B68000034691 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B1664D5720F4EBEC00808783 /* InfoPlist.strings */; };
-		0250C5542122B68000034691 /* RoomCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5594120EF7BD000210D55 /* RoomCollectionViewCell.xib */; };
 		0250C5552122B68000034691 /* callend.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F083BBDC1E7009EC00A9B29C /* callend.mp3 */; };
 		0250C5582122B68000034691 /* MessagesSearchResultAttachmentBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B557E120EF60B900210D55 /* MessagesSearchResultAttachmentBubbleCell.xib */; };
 		0250C5672122B68000034691 /* MediaPickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B556F220EE6C4C00210D55 /* MediaPickerViewController.xib */; };
@@ -458,10 +454,6 @@
 		B1B5591020EF782800210D55 /* TableViewCellWithPhoneNumberTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5590E20EF782800210D55 /* TableViewCellWithPhoneNumberTextField.m */; };
 		B1B5592B20EF7A5D00210D55 /* TableViewCellWithButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5592920EF7A5D00210D55 /* TableViewCellWithButton.xib */; };
 		B1B5592C20EF7A5D00210D55 /* TableViewCellWithButton.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5592A20EF7A5D00210D55 /* TableViewCellWithButton.m */; };
-		B1B5594420EF7BD000210D55 /* TableViewCellWithCollectionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5593F20EF7BD000210D55 /* TableViewCellWithCollectionView.xib */; };
-		B1B5594520EF7BD000210D55 /* TableViewCellWithCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5594020EF7BD000210D55 /* TableViewCellWithCollectionView.m */; };
-		B1B5594620EF7BD000210D55 /* RoomCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5594120EF7BD000210D55 /* RoomCollectionViewCell.xib */; };
-		B1B5594720EF7BD000210D55 /* RoomCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5594220EF7BD000210D55 /* RoomCollectionViewCell.m */; };
 		B1B5595220EF9A8700210D55 /* RecentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5595020EF9A8600210D55 /* RecentTableViewCell.m */; };
 		B1B5595320EF9A8700210D55 /* RecentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5595120EF9A8600210D55 /* RecentTableViewCell.xib */; };
 		B1B5596520EF9E9B00210D55 /* RoomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5596320EF9E9A00210D55 /* RoomTableViewCell.xib */; };
@@ -1128,12 +1120,6 @@
 		B1B5592820EF7A5D00210D55 /* TableViewCellWithButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewCellWithButton.h; sourceTree = "<group>"; };
 		B1B5592920EF7A5D00210D55 /* TableViewCellWithButton.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TableViewCellWithButton.xib; sourceTree = "<group>"; };
 		B1B5592A20EF7A5D00210D55 /* TableViewCellWithButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewCellWithButton.m; sourceTree = "<group>"; };
-		B1B5593E20EF7BD000210D55 /* RoomCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomCollectionViewCell.h; sourceTree = "<group>"; };
-		B1B5593F20EF7BD000210D55 /* TableViewCellWithCollectionView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TableViewCellWithCollectionView.xib; sourceTree = "<group>"; };
-		B1B5594020EF7BD000210D55 /* TableViewCellWithCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewCellWithCollectionView.m; sourceTree = "<group>"; };
-		B1B5594120EF7BD000210D55 /* RoomCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomCollectionViewCell.xib; sourceTree = "<group>"; };
-		B1B5594220EF7BD000210D55 /* RoomCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomCollectionViewCell.m; sourceTree = "<group>"; };
-		B1B5594320EF7BD000210D55 /* TableViewCellWithCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewCellWithCollectionView.h; sourceTree = "<group>"; };
 		B1B5594F20EF9A8600210D55 /* RecentTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentTableViewCell.h; sourceTree = "<group>"; };
 		B1B5595020EF9A8600210D55 /* RecentTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentTableViewCell.m; sourceTree = "<group>"; };
 		B1B5595120EF9A8600210D55 /* RecentTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RecentTableViewCell.xib; sourceTree = "<group>"; };
@@ -2330,7 +2316,6 @@
 				B1B556EA20EE6C4C00210D55 /* Main */,
 				B1B556CA20EE6C4C00210D55 /* TabBar */,
 				B17982FD2119FEA7001FD722 /* GDPR */,
-				B1B5568420EE6C4C00210D55 /* Home */,
 				B1B556C720EE6C4C00210D55 /* Favorites */,
 				B1B556E720EE6C4C00210D55 /* People */,
 				B1B556F420EE6C4C00210D55 /* Rooms */,
@@ -2390,14 +2375,6 @@
 				B1B5568320EE6C4C00210D55 /* DeactivateAccountViewController.storyboard */,
 			);
 			path = DeactivateAccount;
-			sourceTree = "<group>";
-		};
-		B1B5568420EE6C4C00210D55 /* Home */ = {
-			isa = PBXGroup;
-			children = (
-				B1B5593D20EF7BD000210D55 /* Views */,
-			);
-			path = Home;
 			sourceTree = "<group>";
 		};
 		B1B5568720EE6C4C00210D55 /* Contacts */ = {
@@ -2804,19 +2781,6 @@
 				B1B5592920EF7A5D00210D55 /* TableViewCellWithButton.xib */,
 			);
 			path = Cells;
-			sourceTree = "<group>";
-		};
-		B1B5593D20EF7BD000210D55 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				B1B5593E20EF7BD000210D55 /* RoomCollectionViewCell.h */,
-				B1B5594220EF7BD000210D55 /* RoomCollectionViewCell.m */,
-				B1B5594120EF7BD000210D55 /* RoomCollectionViewCell.xib */,
-				B1B5594320EF7BD000210D55 /* TableViewCellWithCollectionView.h */,
-				B1B5594020EF7BD000210D55 /* TableViewCellWithCollectionView.m */,
-				B1B5593F20EF7BD000210D55 /* TableViewCellWithCollectionView.xib */,
-			);
-			path = Views;
 			sourceTree = "<group>";
 		};
 		B1B5594E20EF9A8600210D55 /* Views */ = {
@@ -3457,7 +3421,6 @@
 				02BEE1A3212C717F00098505 /* SharedImages.xcassets in Resources */,
 				0250C5472122B68000034691 /* StartChatViewController.xib in Resources */,
 				020DF9A0214BE467003DFBA4 /* RoomMembershipExpandedBubbleCell.xib in Resources */,
-				0250C5492122B68000034691 /* TableViewCellWithCollectionView.xib in Resources */,
 				0250C54C2122B68000034691 /* EncryptionInfoView.xib in Resources */,
 				020DF97A214BE467003DFBA4 /* RoomPredecessorBubbleCell.xib in Resources */,
 				020DF94C214BE467003DFBA4 /* ReadReceiptsViewController.xib in Resources */,
@@ -3468,7 +3431,6 @@
 				0250C5502122B68000034691 /* Localizable.strings in Resources */,
 				0250C5522122B68000034691 /* InfoPlist.strings in Resources */,
 				02098F342131FE9E00F25086 /* ContactTableViewCell.xib in Resources */,
-				0250C5542122B68000034691 /* RoomCollectionViewCell.xib in Resources */,
 				020DF968214BE467003DFBA4 /* RoomIncomingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib in Resources */,
 				020DF955214BE467003DFBA4 /* RoomIncomingEncryptedTextMsgBubbleCell.xib in Resources */,
 				B1BC6A2A2136DCCE00D32F8E /* WelcomeViewController.storyboard in Resources */,
@@ -3602,12 +3564,10 @@
 				F083BDE91E7009ED00A9B29C /* ring.mp3 in Resources */,
 				B1B5592B20EF7A5D00210D55 /* TableViewCellWithButton.xib in Resources */,
 				B1B5574620EE6C4D00210D55 /* StartChatViewController.xib in Resources */,
-				B1B5594420EF7BD000210D55 /* TableViewCellWithCollectionView.xib in Resources */,
 				B1B5597020EFA85D00210D55 /* EncryptionInfoView.xib in Resources */,
 				B1B5571F20EE6C4D00210D55 /* ContactDetailsViewController.xib in Resources */,
 				B1664DA220F4F95800808783 /* Localizable.strings in Resources */,
 				B1664DA120F4F94F00808783 /* InfoPlist.strings in Resources */,
-				B1B5594620EF7BD000210D55 /* RoomCollectionViewCell.xib in Resources */,
 				F083BDE71E7009ED00A9B29C /* callend.mp3 in Resources */,
 				B1B557E420EF60B900210D55 /* MessagesSearchResultAttachmentBubbleCell.xib in Resources */,
 				B1B5572120EE6C4D00210D55 /* ContactsTableViewController.xib in Resources */,
@@ -4003,7 +3963,6 @@
 				0250C4BF2122B68000034691 /* PublicRoomTableViewCell.m in Sources */,
 				020DF951214BE467003DFBA4 /* RoomOutgoingEncryptedAttachmentWithPaginationTitleBubbleCell.m in Sources */,
 				0250C4C12122B68000034691 /* SettingsViewController.m in Sources */,
-				0250C4C22122B68000034691 /* RoomCollectionViewCell.m in Sources */,
 				020DF973214BE467003DFBA4 /* RoomOutgoingTextMsgBubbleCell.m in Sources */,
 				0250C4C42122B68000034691 /* RiotNavigationController.m in Sources */,
 				0250C4C92122B68000034691 /* Tools.m in Sources */,
@@ -4012,7 +3971,6 @@
 				0250C4CC2122B68000034691 /* MXGroup+Riot.m in Sources */,
 				B11C8017213947A400CC6F2F /* RegistrationEmailSentViewController.swift in Sources */,
 				B15B86792135903E002782BE /* KeyboardAvoider.swift in Sources */,
-				0250C4CD2122B68000034691 /* TableViewCellWithCollectionView.m in Sources */,
 				0250C4CE2122B68000034691 /* UINavigationController+Riot.m in Sources */,
 				02098F372131FE9E00F25086 /* ContactsTableViewController.m in Sources */,
 				0250C4D22122B68000034691 /* LanguagePickerViewController.m in Sources */,
@@ -4248,12 +4206,10 @@
 				B1B5598520EFC3E000210D55 /* RageShakeManager.m in Sources */,
 				B169331420F3CAFC00746532 /* PublicRoomTableViewCell.m in Sources */,
 				B1B5571A20EE6C4D00210D55 /* SettingsViewController.m in Sources */,
-				B1B5594720EF7BD000210D55 /* RoomCollectionViewCell.m in Sources */,
 				B1B5573E20EE6C4D00210D55 /* RiotNavigationController.m in Sources */,
 				F083BE041E7009ED00A9B29C /* Tools.m in Sources */,
 				B1B5573D20EE6C4D00210D55 /* WebViewViewController.m in Sources */,
 				F05927C91FDED836009F2A68 /* MXGroup+Riot.m in Sources */,
-				B1B5594520EF7BD000210D55 /* TableViewCellWithCollectionView.m in Sources */,
 				F083BDEF1E7009ED00A9B29C /* UINavigationController+Riot.m in Sources */,
 				B1B5571920EE6C4D00210D55 /* LanguagePickerViewController.m in Sources */,
 				B1B5592C20EF7A5D00210D55 /* TableViewCellWithButton.m in Sources */,
