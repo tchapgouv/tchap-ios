@@ -35,6 +35,9 @@ final class RoomDetailsCoordinator: NSObject, RoomDetailsCoordinatorType {
     private let segmentedViewController: SegmentedViewController
     private let activityIndicatorPresenter: ActivityIndicatorPresenterType
     private let errorPresenter: ErrorPresenter
+    private let roomTitleViewModelBuilder: RoomTitleViewModelBuilder
+    
+    private weak var roomDetailsTitleView: RoomTitleView?
     
     // MARK: Public
     
@@ -55,6 +58,7 @@ final class RoomDetailsCoordinator: NSObject, RoomDetailsCoordinatorType {
         
         self.activityIndicatorPresenter = ActivityIndicatorPresenter()
         self.errorPresenter = AlertErrorPresenter(viewControllerPresenter: self.segmentedViewController)
+        self.roomTitleViewModelBuilder = RoomTitleViewModelBuilder(session: self.session)
     }
     
     // MARK: - Public methods
@@ -113,8 +117,14 @@ final class RoomDetailsCoordinator: NSObject, RoomDetailsCoordinatorType {
         self.segmentedViewController.update(with: Variant2Style.shared)
         
         let titleView = RoomTitleView.instantiate()
-        titleView?.mxRoom = room
         self.segmentedViewController.navigationItem.titleView = titleView
+        self.roomDetailsTitleView = titleView
+        
+        if let roomSummary = room.summary {
+            self.updateRoomDetailsTitleView(with: roomSummary)
+        }
+        
+        self.registerRoomSummaryDidChangeNotification()
     }
     
     func toPresentable() -> UIViewController {
@@ -168,6 +178,25 @@ final class RoomDetailsCoordinator: NSObject, RoomDetailsCoordinatorType {
         }
         
         return ErrorPresentableImpl(title: errorTitle, message: errorMessage)
+    }
+    
+    private func registerRoomSummaryDidChangeNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(roomSummeryDidChange(notification:)), name: NSNotification.Name.mxRoomSummaryDidChange, object: nil)
+    }
+    
+    @objc private func roomSummeryDidChange(notification: Notification) {
+        guard let roomSummary = notification.object as? MXRoomSummary else {
+            return
+        }
+        self.updateRoomDetailsTitleView(with: roomSummary)
+    }
+    
+    private func updateRoomDetailsTitleView(with roomSummary: MXRoomSummary) {
+        guard let roomTitleView = self.roomDetailsTitleView else {
+            return
+        }
+        let roomTitleViewModel = self.roomTitleViewModelBuilder.build(fromRoomSummary: roomSummary)
+        roomTitleView.fill(roomTitleViewModel: roomTitleViewModel)
     }
 }
 
