@@ -62,7 +62,7 @@ final class RoomTitleViewModelBuilder: NSObject {
         } else {
             let roomMemberCount = Int(roomSummary.membersCount.members)
             title = displayName
-            subtitle = TchapL10n.roomTitlePublicRoomMembersCount(roomMemberCount)
+            subtitle = TchapL10n.roomTitleRoomMembersCount(roomMemberCount)
             avatarImageShape = .hexagon
         }
         

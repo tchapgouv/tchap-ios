@@ -126,8 +126,8 @@ internal enum TchapL10n {
   /// Paramètres
   internal static let roomSettingsTabTitle = TchapL10n.tr("Tchap", "room_settings_tab_title")
   /// %d membre(s)
-  internal static func roomTitlePublicRoomMembersCount(_ p1: Int) -> String {
-    return TchapL10n.tr("Tchap", "room_title_public_room_members_count", p1)
+  internal static func roomTitleRoomMembersCount(_ p1: Int) -> String {
+    return TchapL10n.tr("Tchap", "room_title_room_members_count", p1)
   }
   /// Aucun résultat
   internal static let searchNoResult = TchapL10n.tr("Tchap", "search_no_result")
