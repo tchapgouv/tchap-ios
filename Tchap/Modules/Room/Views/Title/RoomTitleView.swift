@@ -50,7 +50,7 @@ import Reusable
     
     // MARK: Setup
     
-    @objc class func instantiate(style: Style = Variant1Style.shared) -> RoomTitleView {
+    @objc class func instantiate(style: Style = Variant2Style.shared) -> RoomTitleView {
         let roomTitleView = RoomTitleView.loadFromNib()
         roomTitleView.update(style: style)
         return roomTitleView
@@ -123,8 +123,8 @@ import Reusable
     
     @objc func update(style: Style) {
         self.style = style
-        self.titleLabel.textColor = style.primaryTextColor
-        self.subTitleLabel.textColor = style.primarySubTextColor
+        self.titleLabel.textColor = style.barTitleColor
+        self.subTitleLabel.textColor = style.barSubTitleColor
     }
     
     // MARK: - Private
