@@ -152,7 +152,6 @@
 		0250C4C42122B68000034691 /* RiotNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556D320EE6C4C00210D55 /* RiotNavigationController.m */; };
 		0250C4C92122B68000034691 /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC151E7009EC00A9B29C /* Tools.m */; };
 		0250C4CA2122B68000034691 /* WebViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556D020EE6C4C00210D55 /* WebViewViewController.m */; };
-		0250C4CC2122B68000034691 /* MXGroup+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F05927C71FDED835009F2A68 /* MXGroup+Riot.m */; };
 		0250C4CE2122B68000034691 /* UINavigationController+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBEA1E7009EC00A9B29C /* UINavigationController+Riot.m */; };
 		0250C4D22122B68000034691 /* LanguagePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5567C20EE6C4C00210D55 /* LanguagePickerViewController.m */; };
 		0250C4D62122B68000034691 /* TableViewCellWithButton.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5592A20EF7A5D00210D55 /* TableViewCellWithButton.m */; };
@@ -455,7 +454,6 @@
 		B1F2AAB0212AED900077FDC0 /* NavigationRouterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AAAB212AED900077FDC0 /* NavigationRouterType.swift */; };
 		B1F2AAB6212AFDBA0077FDC0 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AAB5212AFDBA0077FDC0 /* UIViewController.swift */; };
 		D48D6380D4A2A4487B27F13E /* Pods_RiotPods_Riot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D70232F22AD621A2018B15B0 /* Pods_RiotPods_Riot.framework */; };
-		F05927C91FDED836009F2A68 /* MXGroup+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F05927C71FDED835009F2A68 /* MXGroup+Riot.m */; };
 		F083BDE61E7009ED00A9B29C /* busy.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F083BBDB1E7009EC00A9B29C /* busy.mp3 */; };
 		F083BDE71E7009ED00A9B29C /* callend.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F083BBDC1E7009EC00A9B29C /* callend.mp3 */; };
 		F083BDE81E7009ED00A9B29C /* message.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F083BBDD1E7009EC00A9B29C /* message.mp3 */; };
@@ -1090,8 +1088,6 @@
 		DFC1FD8E159B557D50457249 /* Pods-RiotPods-SiriIntents.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-SiriIntents.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RiotPods-SiriIntents/Pods-RiotPods-SiriIntents.debug.xcconfig"; sourceTree = "<group>"; };
 		E08D5758E6C7E95E873847CE /* Pods-RiotPods-Tchap.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-Tchap.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RiotPods-Tchap/Pods-RiotPods-Tchap.debug.xcconfig"; sourceTree = "<group>"; };
 		EC9407D4B803A8C4A7BE24BE /* Pods-RiotPods-SiriIntents.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-SiriIntents.release.xcconfig"; path = "Pods/Target Support Files/Pods-RiotPods-SiriIntents/Pods-RiotPods-SiriIntents.release.xcconfig"; sourceTree = "<group>"; };
-		F05927C71FDED835009F2A68 /* MXGroup+Riot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MXGroup+Riot.m"; sourceTree = "<group>"; };
-		F05927C81FDED835009F2A68 /* MXGroup+Riot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MXGroup+Riot.h"; sourceTree = "<group>"; };
 		F083BB031E7005FD00A9B29C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F083BB041E7005FD00A9B29C /* RiotTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RiotTests.m; sourceTree = "<group>"; };
 		F083BBDB1E7009EC00A9B29C /* busy.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = busy.mp3; sourceTree = "<group>"; };
@@ -2802,8 +2798,6 @@
 		F083BBE41E7009EC00A9B29C /* Categories */ = {
 			isa = PBXGroup;
 			children = (
-				F05927C81FDED835009F2A68 /* MXGroup+Riot.h */,
-				F05927C71FDED835009F2A68 /* MXGroup+Riot.m */,
 				F083BBE51E7009EC00A9B29C /* MXKRoomBubbleTableViewCell+Riot.h */,
 				F083BBE61E7009EC00A9B29C /* MXKRoomBubbleTableViewCell+Riot.m */,
 				F083BBE71E7009EC00A9B29C /* MXRoom+Riot.h */,
@@ -3647,7 +3641,6 @@
 				0250C4C92122B68000034691 /* Tools.m in Sources */,
 				0250C4CA2122B68000034691 /* WebViewViewController.m in Sources */,
 				B1680CFE2152A9E6009B5F92 /* PublicRoomsViewController.swift in Sources */,
-				0250C4CC2122B68000034691 /* MXGroup+Riot.m in Sources */,
 				B11C8017213947A400CC6F2F /* RegistrationEmailSentViewController.swift in Sources */,
 				B15B86792135903E002782BE /* KeyboardAvoider.swift in Sources */,
 				0250C4CE2122B68000034691 /* UINavigationController+Riot.m in Sources */,
@@ -3875,7 +3868,6 @@
 				B1B5573E20EE6C4D00210D55 /* RiotNavigationController.m in Sources */,
 				F083BE041E7009ED00A9B29C /* Tools.m in Sources */,
 				B1B5573D20EE6C4D00210D55 /* WebViewViewController.m in Sources */,
-				F05927C91FDED836009F2A68 /* MXGroup+Riot.m in Sources */,
 				F083BDEF1E7009ED00A9B29C /* UINavigationController+Riot.m in Sources */,
 				B1B5571920EE6C4D00210D55 /* LanguagePickerViewController.m in Sources */,
 				B1B5592C20EF7A5D00210D55 /* TableViewCellWithButton.m in Sources */,
