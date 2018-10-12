@@ -21,8 +21,6 @@
 
 #import "GBDeviceInfo_iOS.h"
 
-#import "UINavigationController+Riot.h"
-
 #import <MediaPlayer/MediaPlayer.h>
 
 #import <Photos/Photos.h>

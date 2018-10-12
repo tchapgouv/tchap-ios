@@ -24,10 +24,6 @@
 		020DF93D214BE467003DFBA4 /* TableViewCellWithCheckBoxes.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF86B214BE467003DFBA4 /* TableViewCellWithCheckBoxes.m */; };
 		020DF93E214BE467003DFBA4 /* AttachmentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF86F214BE467003DFBA4 /* AttachmentsViewController.m */; };
 		020DF93F214BE467003DFBA4 /* RoomViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 020DF870214BE467003DFBA4 /* RoomViewController.xib */; };
-		020DF940214BE467003DFBA4 /* RoomSearchDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF873214BE467003DFBA4 /* RoomSearchDataSource.m */; };
-		020DF941214BE467003DFBA4 /* RoomMessagesSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF877214BE467003DFBA4 /* RoomMessagesSearchViewController.m */; };
-		020DF942214BE467003DFBA4 /* RoomFilesSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF87B214BE467003DFBA4 /* RoomFilesSearchViewController.m */; };
-		020DF943214BE467003DFBA4 /* RoomSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF87C214BE467003DFBA4 /* RoomSearchViewController.m */; };
 		020DF944214BE467003DFBA4 /* RoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF87D214BE467003DFBA4 /* RoomViewController.m */; };
 		020DF945214BE467003DFBA4 /* RoomFilesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF87F214BE467003DFBA4 /* RoomFilesViewController.m */; };
 		020DF946214BE467003DFBA4 /* RoomMemberDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF885214BE467003DFBA4 /* RoomMemberDetailsViewController.m */; };
@@ -152,8 +148,6 @@
 		0250C4C42122B68000034691 /* RiotNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556D320EE6C4C00210D55 /* RiotNavigationController.m */; };
 		0250C4C92122B68000034691 /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC151E7009EC00A9B29C /* Tools.m */; };
 		0250C4CA2122B68000034691 /* WebViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556D020EE6C4C00210D55 /* WebViewViewController.m */; };
-		0250C4CC2122B68000034691 /* MXGroup+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F05927C71FDED835009F2A68 /* MXGroup+Riot.m */; };
-		0250C4CE2122B68000034691 /* UINavigationController+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBEA1E7009EC00A9B29C /* UINavigationController+Riot.m */; };
 		0250C4D22122B68000034691 /* LanguagePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5567C20EE6C4C00210D55 /* LanguagePickerViewController.m */; };
 		0250C4D62122B68000034691 /* TableViewCellWithButton.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5592A20EF7A5D00210D55 /* TableViewCellWithButton.m */; };
 		0250C4DE2122B68000034691 /* DeactivateAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5568120EE6C4C00210D55 /* DeactivateAccountViewController.m */; };
@@ -455,7 +449,6 @@
 		B1F2AAB0212AED900077FDC0 /* NavigationRouterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AAAB212AED900077FDC0 /* NavigationRouterType.swift */; };
 		B1F2AAB6212AFDBA0077FDC0 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AAB5212AFDBA0077FDC0 /* UIViewController.swift */; };
 		D48D6380D4A2A4487B27F13E /* Pods_RiotPods_Riot.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D70232F22AD621A2018B15B0 /* Pods_RiotPods_Riot.framework */; };
-		F05927C91FDED836009F2A68 /* MXGroup+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F05927C71FDED835009F2A68 /* MXGroup+Riot.m */; };
 		F083BDE61E7009ED00A9B29C /* busy.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F083BBDB1E7009EC00A9B29C /* busy.mp3 */; };
 		F083BDE71E7009ED00A9B29C /* callend.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F083BBDC1E7009EC00A9B29C /* callend.mp3 */; };
 		F083BDE81E7009ED00A9B29C /* message.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F083BBDD1E7009EC00A9B29C /* message.mp3 */; };
@@ -463,7 +456,6 @@
 		F083BDEA1E7009ED00A9B29C /* ringback.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F083BBDF1E7009EC00A9B29C /* ringback.mp3 */; };
 		F083BDED1E7009ED00A9B29C /* MXKRoomBubbleTableViewCell+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBE61E7009EC00A9B29C /* MXKRoomBubbleTableViewCell+Riot.m */; };
 		F083BDEE1E7009ED00A9B29C /* MXRoom+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBE81E7009EC00A9B29C /* MXRoom+Riot.m */; };
-		F083BDEF1E7009ED00A9B29C /* UINavigationController+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBEA1E7009EC00A9B29C /* UINavigationController+Riot.m */; };
 		F083BDF01E7009ED00A9B29C /* UIViewController+RiotSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBEC1E7009EC00A9B29C /* UIViewController+RiotSearch.m */; };
 		F083BDF21E7009ED00A9B29C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F083BBEE1E7009EC00A9B29C /* GoogleService-Info.plist */; };
 		F083BDF91E7009ED00A9B29C /* RoomEmailInvitation.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBFC1E7009EC00A9B29C /* RoomEmailInvitation.m */; };
@@ -585,14 +577,6 @@
 		020DF86E214BE467003DFBA4 /* AttachmentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttachmentsViewController.h; sourceTree = "<group>"; };
 		020DF86F214BE467003DFBA4 /* AttachmentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AttachmentsViewController.m; sourceTree = "<group>"; };
 		020DF870214BE467003DFBA4 /* RoomViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomViewController.xib; sourceTree = "<group>"; };
-		020DF873214BE467003DFBA4 /* RoomSearchDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomSearchDataSource.m; sourceTree = "<group>"; };
-		020DF874214BE467003DFBA4 /* RoomSearchDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomSearchDataSource.h; sourceTree = "<group>"; };
-		020DF876214BE467003DFBA4 /* RoomMessagesSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomMessagesSearchViewController.h; sourceTree = "<group>"; };
-		020DF877214BE467003DFBA4 /* RoomMessagesSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomMessagesSearchViewController.m; sourceTree = "<group>"; };
-		020DF878214BE467003DFBA4 /* RoomSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomSearchViewController.h; sourceTree = "<group>"; };
-		020DF87A214BE467003DFBA4 /* RoomFilesSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomFilesSearchViewController.h; sourceTree = "<group>"; };
-		020DF87B214BE467003DFBA4 /* RoomFilesSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomFilesSearchViewController.m; sourceTree = "<group>"; };
-		020DF87C214BE467003DFBA4 /* RoomSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomSearchViewController.m; sourceTree = "<group>"; };
 		020DF87D214BE467003DFBA4 /* RoomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomViewController.m; sourceTree = "<group>"; };
 		020DF87F214BE467003DFBA4 /* RoomFilesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomFilesViewController.m; sourceTree = "<group>"; };
 		020DF880214BE467003DFBA4 /* RoomFilesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomFilesViewController.h; sourceTree = "<group>"; };
@@ -1090,8 +1074,6 @@
 		DFC1FD8E159B557D50457249 /* Pods-RiotPods-SiriIntents.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-SiriIntents.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RiotPods-SiriIntents/Pods-RiotPods-SiriIntents.debug.xcconfig"; sourceTree = "<group>"; };
 		E08D5758E6C7E95E873847CE /* Pods-RiotPods-Tchap.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-Tchap.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RiotPods-Tchap/Pods-RiotPods-Tchap.debug.xcconfig"; sourceTree = "<group>"; };
 		EC9407D4B803A8C4A7BE24BE /* Pods-RiotPods-SiriIntents.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-SiriIntents.release.xcconfig"; path = "Pods/Target Support Files/Pods-RiotPods-SiriIntents/Pods-RiotPods-SiriIntents.release.xcconfig"; sourceTree = "<group>"; };
-		F05927C71FDED835009F2A68 /* MXGroup+Riot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MXGroup+Riot.m"; sourceTree = "<group>"; };
-		F05927C81FDED835009F2A68 /* MXGroup+Riot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MXGroup+Riot.h"; sourceTree = "<group>"; };
 		F083BB031E7005FD00A9B29C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F083BB041E7005FD00A9B29C /* RiotTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RiotTests.m; sourceTree = "<group>"; };
 		F083BBDB1E7009EC00A9B29C /* busy.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = busy.mp3; sourceTree = "<group>"; };
@@ -1103,8 +1085,6 @@
 		F083BBE61E7009EC00A9B29C /* MXKRoomBubbleTableViewCell+Riot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MXKRoomBubbleTableViewCell+Riot.m"; sourceTree = "<group>"; };
 		F083BBE71E7009EC00A9B29C /* MXRoom+Riot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MXRoom+Riot.h"; sourceTree = "<group>"; };
 		F083BBE81E7009EC00A9B29C /* MXRoom+Riot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MXRoom+Riot.m"; sourceTree = "<group>"; };
-		F083BBE91E7009EC00A9B29C /* UINavigationController+Riot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+Riot.h"; sourceTree = "<group>"; };
-		F083BBEA1E7009EC00A9B29C /* UINavigationController+Riot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+Riot.m"; sourceTree = "<group>"; };
 		F083BBEB1E7009EC00A9B29C /* UIViewController+RiotSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+RiotSearch.h"; sourceTree = "<group>"; };
 		F083BBEC1E7009EC00A9B29C /* UIViewController+RiotSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+RiotSearch.m"; sourceTree = "<group>"; };
 		F083BBEE1E7009EC00A9B29C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -1221,7 +1201,6 @@
 				020DF85C214BE467003DFBA4 /* CellData */,
 				020DF860214BE467003DFBA4 /* Settings */,
 				020DF86D214BE467003DFBA4 /* Attachements */,
-				020DF871214BE467003DFBA4 /* Search */,
 				020DF87E214BE467003DFBA4 /* Files */,
 				020DF881214BE467003DFBA4 /* Members */,
 				020DF88D214BE467003DFBA4 /* ReadReceiptsDetail */,
@@ -1281,45 +1260,6 @@
 				020DF86F214BE467003DFBA4 /* AttachmentsViewController.m */,
 			);
 			path = Attachements;
-			sourceTree = "<group>";
-		};
-		020DF871214BE467003DFBA4 /* Search */ = {
-			isa = PBXGroup;
-			children = (
-				020DF872214BE467003DFBA4 /* DataSources */,
-				020DF875214BE467003DFBA4 /* Messages */,
-				020DF878214BE467003DFBA4 /* RoomSearchViewController.h */,
-				020DF879214BE467003DFBA4 /* Files */,
-				020DF87C214BE467003DFBA4 /* RoomSearchViewController.m */,
-			);
-			path = Search;
-			sourceTree = "<group>";
-		};
-		020DF872214BE467003DFBA4 /* DataSources */ = {
-			isa = PBXGroup;
-			children = (
-				020DF873214BE467003DFBA4 /* RoomSearchDataSource.m */,
-				020DF874214BE467003DFBA4 /* RoomSearchDataSource.h */,
-			);
-			path = DataSources;
-			sourceTree = "<group>";
-		};
-		020DF875214BE467003DFBA4 /* Messages */ = {
-			isa = PBXGroup;
-			children = (
-				020DF876214BE467003DFBA4 /* RoomMessagesSearchViewController.h */,
-				020DF877214BE467003DFBA4 /* RoomMessagesSearchViewController.m */,
-			);
-			path = Messages;
-			sourceTree = "<group>";
-		};
-		020DF879214BE467003DFBA4 /* Files */ = {
-			isa = PBXGroup;
-			children = (
-				020DF87A214BE467003DFBA4 /* RoomFilesSearchViewController.h */,
-				020DF87B214BE467003DFBA4 /* RoomFilesSearchViewController.m */,
-			);
-			path = Files;
 			sourceTree = "<group>";
 		};
 		020DF87E214BE467003DFBA4 /* Files */ = {
@@ -2802,16 +2742,12 @@
 		F083BBE41E7009EC00A9B29C /* Categories */ = {
 			isa = PBXGroup;
 			children = (
-				F05927C81FDED835009F2A68 /* MXGroup+Riot.h */,
-				F05927C71FDED835009F2A68 /* MXGroup+Riot.m */,
 				F083BBE51E7009EC00A9B29C /* MXKRoomBubbleTableViewCell+Riot.h */,
 				F083BBE61E7009EC00A9B29C /* MXKRoomBubbleTableViewCell+Riot.m */,
 				F083BBE71E7009EC00A9B29C /* MXRoom+Riot.h */,
 				F083BBE81E7009EC00A9B29C /* MXRoom+Riot.m */,
 				F0D2AD9F1F6AA5FD00A7097D /* MXRoomSummary+Riot.h */,
 				F0D2ADA01F6AA5FD00A7097D /* MXRoomSummary+Riot.m */,
-				F083BBE91E7009EC00A9B29C /* UINavigationController+Riot.h */,
-				F083BBEA1E7009EC00A9B29C /* UINavigationController+Riot.m */,
 				F083BBEB1E7009EC00A9B29C /* UIViewController+RiotSearch.h */,
 				F083BBEC1E7009EC00A9B29C /* UIViewController+RiotSearch.m */,
 				926FA53D1F4C132000F826C2 /* MXSession+Riot.h */,
@@ -3629,7 +3565,6 @@
 				0250C4B82122B68000034691 /* Contact.m in Sources */,
 				B15AB2AA215BF63A007F5405 /* ForgotPasswordFormViewModelType.swift in Sources */,
 				020DF978214BE467003DFBA4 /* RoomMembershipExpandedBubbleCell.m in Sources */,
-				020DF942214BE467003DFBA4 /* RoomFilesSearchViewController.m in Sources */,
 				020DF977214BE467003DFBA4 /* RoomMembershipWithPaginationTitleBubbleCell.m in Sources */,
 				0250C4B92122B68000034691 /* Analytics.m in Sources */,
 				0250C4BB2122B68000034691 /* WidgetViewController.m in Sources */,
@@ -3647,10 +3582,8 @@
 				0250C4C92122B68000034691 /* Tools.m in Sources */,
 				0250C4CA2122B68000034691 /* WebViewViewController.m in Sources */,
 				B1680CFE2152A9E6009B5F92 /* PublicRoomsViewController.swift in Sources */,
-				0250C4CC2122B68000034691 /* MXGroup+Riot.m in Sources */,
 				B11C8017213947A400CC6F2F /* RegistrationEmailSentViewController.swift in Sources */,
 				B15B86792135903E002782BE /* KeyboardAvoider.swift in Sources */,
-				0250C4CE2122B68000034691 /* UINavigationController+Riot.m in Sources */,
 				02098F372131FE9E00F25086 /* ContactsTableViewController.m in Sources */,
 				0250C4D22122B68000034691 /* LanguagePickerViewController.m in Sources */,
 				B12DDAA1217020410093172C /* AvatarImageShape.swift in Sources */,
@@ -3721,7 +3654,6 @@
 				B1BC6A262136D77A00D32F8E /* WelcomeCoordinatorType.swift in Sources */,
 				020DF991214BE467003DFBA4 /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				0250C4FE2122B68000034691 /* RecentTableViewCell.m in Sources */,
-				020DF941214BE467003DFBA4 /* RoomMessagesSearchViewController.m in Sources */,
 				0250C4FF2122B68000034691 /* RecentsViewController.m in Sources */,
 				B1A4D7DB215A2F41004A5AB4 /* RoomPreviewCoordinatorType.swift in Sources */,
 				B12FD6A12146B5C0001B7F28 /* RestClientBuilderError.swift in Sources */,
@@ -3746,7 +3678,6 @@
 				B1F2AAB6212AFDBA0077FDC0 /* UIViewController.swift in Sources */,
 				020DF9B1214BE467003DFBA4 /* RoomActivitiesView.m in Sources */,
 				020DF946214BE467003DFBA4 /* RoomMemberDetailsViewController.m in Sources */,
-				020DF943214BE467003DFBA4 /* RoomSearchViewController.m in Sources */,
 				0250C5132122B68000034691 /* CountryPickerViewController.m in Sources */,
 				0250C5142122B68000034691 /* GDPRConsentViewController.swift in Sources */,
 				B1F2AA99212AEC830077FDC0 /* LegacyAppDelegate.m in Sources */,
@@ -3788,7 +3719,6 @@
 				0250C5312122B68000034691 /* RoomEmailInvitation.m in Sources */,
 				B122FB57216D060F00B09BEF /* RoomTitleView.swift in Sources */,
 				B1BC6A1B21369C8F00D32F8E /* Style.swift in Sources */,
-				020DF940214BE467003DFBA4 /* RoomSearchDataSource.m in Sources */,
 				B1F2AA98212AEC830077FDC0 /* AppCoordinatorType.swift in Sources */,
 				02098F332131FE9E00F25086 /* ContactTableViewCell.m in Sources */,
 				020DF944214BE467003DFBA4 /* RoomViewController.m in Sources */,
@@ -3875,8 +3805,6 @@
 				B1B5573E20EE6C4D00210D55 /* RiotNavigationController.m in Sources */,
 				F083BE041E7009ED00A9B29C /* Tools.m in Sources */,
 				B1B5573D20EE6C4D00210D55 /* WebViewViewController.m in Sources */,
-				F05927C91FDED836009F2A68 /* MXGroup+Riot.m in Sources */,
-				F083BDEF1E7009ED00A9B29C /* UINavigationController+Riot.m in Sources */,
 				B1B5571920EE6C4D00210D55 /* LanguagePickerViewController.m in Sources */,
 				B1B5592C20EF7A5D00210D55 /* TableViewCellWithButton.m in Sources */,
 				B1B5571B20EE6C4D00210D55 /* DeactivateAccountViewController.m in Sources */,

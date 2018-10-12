@@ -16,8 +16,6 @@
 
 #import "ContactsTableViewController.h"
 
-#import "UIViewController+RiotSearch.h"
-
 #import "RiotDesignValues.h"
 #import "RageShakeManager.h"
 #import "Analytics.h"
@@ -220,12 +218,6 @@
 {
     // Update here the index of the current selected cell (if any) - Useful in landscape mode with split view controller.
     NSIndexPath *currentSelectedCellIndexPath = nil;
-//    MasterTabBarController *masterTabBarController = [AppDelegate theDelegate].masterTabBarController;
-//    if (masterTabBarController.currentContactDetailViewController)
-//    {
-//        // Look for the rank of this selected contact in displayed recents
-//        currentSelectedCellIndexPath = [contactsDataSource cellIndexPathWithContact:masterTabBarController.selectedContact];
-//    }
     
     if (currentSelectedCellIndexPath)
     {
@@ -348,45 +340,6 @@
     // Else do nothing by default - `ContactsTableViewController-inherited` instance must override this method.
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-}
-
-#pragma mark - UISearchBar delegate
-
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
-{
-    [contactsDataSource searchWithPattern:searchText forceReset:NO];
-}
-
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
-{
-    // "Done" key has been pressed.
-    
-    if (self.contactsTableViewControllerDelegate)
-    {
-        // Check whether the current search input is a valid email or a Matrix user ID
-        MXKContact* filedContact = [contactsDataSource searchInputContact];
-        if (filedContact)
-        {
-            // Select the contact related to the search input, rather than having to hit +
-            [self.contactsTableViewControllerDelegate contactsTableViewController:self didSelectContact:filedContact];
-        }
-    }
-    
-    // Dismiss keyboard
-    [searchBar resignFirstResponder];
-}
-
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
-{
-    searchBar.text = nil;
-    
-    // Reset filtering
-    [contactsDataSource searchWithPattern:nil forceReset:NO];
-    
-    // Leave search
-    [searchBar resignFirstResponder];
-    
-    [self withdrawViewControllerAnimated:YES completion:nil];
 }
 
 @end
