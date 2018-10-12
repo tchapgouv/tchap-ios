@@ -58,10 +58,6 @@
     
     MXHTTPOperation *currentRequest;
     
-    // The fake search bar displayed at the top of the recents table. We switch on the actual search bar (self.recentsSearchBar)
-    // when the user selects it.
-    UISearchBar *tableSearchBar;
-    
     // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
     id kRiotDesignValuesDidChangeThemeNotificationObserver;
 }
@@ -97,21 +93,13 @@
     // Set default screen name
     _screenName = @"RecentsScreen";
     
-    // Enable the search bar in the recents table, and remove the search option from the navigation bar.
-    _enableSearchBar = YES;
+    // Remove the search option from the navigation bar.
     self.enableBarButtonSearch = NO;
     
     _enableDragging = NO;
     
     _enableStickyHeaders = NO;
-    _stickyHeaderHeight = 30.0;
-    
-    // Create the fake search bar
-    tableSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 600, 44)];
-    tableSearchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    tableSearchBar.showsCancelButton = NO;
-    tableSearchBar.placeholder = NSLocalizedStringFromTable(@"search_default_placeholder", @"Vector", nil);
-    tableSearchBar.delegate = self;
+    _stickyHeaderHeight = 30.0;    
     
     displayedSectionHeaders = [NSMutableArray array];
     
@@ -144,9 +132,6 @@
         
     }];
     
-    self.recentsSearchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    self.recentsSearchBar.placeholder = NSLocalizedStringFromTable(@"search_default_placeholder", @"Vector", nil);
-    
     // Observe user interface theme change.
     kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
@@ -166,9 +151,6 @@
     self.recentsTableView.backgroundColor = kRiotPrimaryBgColor;
     topview.backgroundColor = kRiotSecondaryBgColor;
     self.view.backgroundColor = kRiotPrimaryBgColor;
-    
-    tableSearchBar.barStyle = self.recentsSearchBar.barStyle = kRiotDesignSearchBarStyle;
-    tableSearchBar.tintColor = self.recentsSearchBar.tintColor = kRiotDesignSearchBarTintColor;
     
     if (self.recentsTableView.dataSource)
     {
@@ -284,19 +266,8 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
-//    // Release the current selected item (if any) except if the second view controller is still visible.
-//    if (self.splitViewController.isCollapsed)
-//    {
-//        // Release the current selected room (if any).
-//        [[AppDelegate theDelegate].masterTabBarController releaseSelectedItem];
-//    }
-//    else
-//    {
-        // In case of split view controller where the primary and secondary view controllers are displayed side-by-side onscreen,
-        // the selected room (if any) is highlighted.
-        [self refreshCurrentSelectedCell:YES];
-//    }
+
+    [self refreshCurrentSelectedCell:YES];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -349,14 +320,6 @@
     
     [self.recentsTableView reloadData];
     
-    // Check conditions to display the fake search bar into the table header
-    if (_enableSearchBar && self.recentsSearchBar.isHidden && self.recentsTableView.tableHeaderView == nil)
-    {
-        // Add the search bar by hiding it by default.
-        self.recentsTableView.tableHeaderView = tableSearchBar;
-        self.recentsTableView.contentOffset = CGPointMake(0, self.recentsTableView.contentOffset.y + tableSearchBar.frame.size.height);
-    }
-    
     if (_shouldScrollToTopOnRefresh)
     {
         [self scrollToTop:NO];
@@ -370,18 +333,6 @@
     if (!self.splitViewController.isCollapsed)
     {
         [self refreshCurrentSelectedCell:NO];
-    }
-}
-
-- (void)hideSearchBar:(BOOL)hidden
-{
-    [super hideSearchBar:hidden];
-    
-    if (!hidden)
-    {
-        // Remove the fake table header view if any
-        self.recentsTableView.tableHeaderView = nil;
-        self.recentsTableView.contentInset = UIEdgeInsetsZero;
     }
 }
 
@@ -1120,21 +1071,6 @@
     });
     
     [super scrollViewDidScroll:scrollView];
-    
-    if (scrollView == self.recentsTableView)
-    {
-        if (!self.recentsSearchBar.isHidden)
-        {
-            if (!self.recentsSearchBar.text.length && (scrollView.contentOffset.y + scrollView.mxk_adjustedContentInset.top > self.recentsSearchBar.frame.size.height))
-            {
-                // Hide the search bar
-                [self hideSearchBar:YES];
-                
-                // Refresh display
-                [self refreshRecentsTable];
-            }
-        }
-    }
 }
 
 #pragma mark - Recents drag & drop management
@@ -1431,40 +1367,6 @@
 
 - (void)recentListViewController:(MXKRecentListViewController *)recentListViewController didSelectRoom:(NSString *)roomId inMatrixSession:(MXSession *)matrixSession
 {
-}
-
-#pragma mark - UISearchBarDelegate
-
-- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
-{
-    [super scrollViewWillEndDragging:scrollView withVelocity:velocity targetContentOffset:targetContentOffset];
-}
-
-- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
-{
-    if (searchBar == tableSearchBar)
-    {
-        [self hideSearchBar:NO];
-        [self.recentsSearchBar becomeFirstResponder];
-        return NO;
-    }
-    
-    return YES;
-    
-}
-
-- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
-{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        
-        [self.recentsSearchBar setShowsCancelButton:YES animated:NO];
-        
-    });
-}
-
-- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
-{
-    [self.recentsSearchBar setShowsCancelButton:NO animated:NO];
 }
 
 @end
