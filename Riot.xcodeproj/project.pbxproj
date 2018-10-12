@@ -121,8 +121,6 @@
 		020DF99E214BE467003DFBA4 /* RoomEmptyBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF90C214BE467003DFBA4 /* RoomEmptyBubbleCell.m */; };
 		020DF99F214BE467003DFBA4 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 020DF90F214BE467003DFBA4 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.xib */; };
 		020DF9A0214BE467003DFBA4 /* RoomMembershipExpandedBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 020DF910214BE467003DFBA4 /* RoomMembershipExpandedBubbleCell.xib */; };
-		020DF9A3214BE467003DFBA4 /* RoomTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 020DF917214BE467003DFBA4 /* RoomTitleView.xib */; };
-		020DF9A6214BE467003DFBA4 /* RoomTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF91C214BE467003DFBA4 /* RoomTitleView.m */; };
 		020DF9AB214BE467003DFBA4 /* KeyboardGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF926214BE467003DFBA4 /* KeyboardGrowingTextView.m */; };
 		020DF9AC214BE467003DFBA4 /* RoomInputToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF927214BE467003DFBA4 /* RoomInputToolbarView.m */; };
 		020DF9AD214BE467003DFBA4 /* DisabledRoomInputToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF928214BE467003DFBA4 /* DisabledRoomInputToolbarView.m */; };
@@ -265,6 +263,14 @@
 		B11C80142139442700CC6F2F /* RegistrationFormViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B11C80102139442700CC6F2F /* RegistrationFormViewController.storyboard */; };
 		B11C8017213947A400CC6F2F /* RegistrationEmailSentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11C8016213947A400CC6F2F /* RegistrationEmailSentViewController.swift */; };
 		B11C80192139484900CC6F2F /* RegistrationEmailSentViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B11C80182139484900CC6F2F /* RegistrationEmailSentViewController.storyboard */; };
+		B122FB57216D060F00B09BEF /* RoomTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B122FB56216D060F00B09BEF /* RoomTitleView.swift */; };
+		B122FB59216D063000B09BEF /* RoomTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B122FB58216D063000B09BEF /* RoomTitleView.xib */; };
+		B12DDA96216F4EBC0093172C /* Tchap.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = B12DDA98216F4EBC0093172C /* Tchap.stringsdict */; };
+		B12DDA9A216FB2370093172C /* UIBezierPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12DDA99216FB2370093172C /* UIBezierPath.swift */; };
+		B12DDA9F21701FC40093172C /* AvatarImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12DDA9E21701FC40093172C /* AvatarImageViewModel.swift */; };
+		B12DDAA1217020410093172C /* AvatarImageShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12DDAA0217020410093172C /* AvatarImageShape.swift */; };
+		B12DDAA421708F4F0093172C /* RoomTitleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12DDAA221708F4D0093172C /* RoomTitleViewModel.swift */; };
+		B12DDAA521708F4F0093172C /* RoomTitleViewModelBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12DDAA321708F4E0093172C /* RoomTitleViewModelBuilder.swift */; };
 		B12FD69F2146B3EB001B7F28 /* RestClientBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12FD69E2146B3EB001B7F28 /* RestClientBuilder.swift */; };
 		B12FD6A12146B5C0001B7F28 /* RestClientBuilderError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12FD6A02146B5C0001B7F28 /* RestClientBuilderError.swift */; };
 		B12FD6A92146BA45001B7F28 /* RegistrationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12FD6A52146BA42001B7F28 /* RegistrationService.swift */; };
@@ -727,9 +733,6 @@
 		020DF90E214BE467003DFBA4 /* RoomOutgoingAttachmentBubbleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomOutgoingAttachmentBubbleCell.h; sourceTree = "<group>"; };
 		020DF90F214BE467003DFBA4 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.xib; sourceTree = "<group>"; };
 		020DF910214BE467003DFBA4 /* RoomMembershipExpandedBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomMembershipExpandedBubbleCell.xib; sourceTree = "<group>"; };
-		020DF912214BE467003DFBA4 /* RoomTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomTitleView.h; sourceTree = "<group>"; };
-		020DF917214BE467003DFBA4 /* RoomTitleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomTitleView.xib; sourceTree = "<group>"; };
-		020DF91C214BE467003DFBA4 /* RoomTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomTitleView.m; sourceTree = "<group>"; };
 		020DF926214BE467003DFBA4 /* KeyboardGrowingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyboardGrowingTextView.m; sourceTree = "<group>"; };
 		020DF927214BE467003DFBA4 /* RoomInputToolbarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomInputToolbarView.m; sourceTree = "<group>"; };
 		020DF928214BE467003DFBA4 /* DisabledRoomInputToolbarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisabledRoomInputToolbarView.m; sourceTree = "<group>"; };
@@ -808,6 +811,14 @@
 		B11C80102139442700CC6F2F /* RegistrationFormViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = RegistrationFormViewController.storyboard; sourceTree = "<group>"; };
 		B11C8016213947A400CC6F2F /* RegistrationEmailSentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationEmailSentViewController.swift; sourceTree = "<group>"; };
 		B11C80182139484900CC6F2F /* RegistrationEmailSentViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = RegistrationEmailSentViewController.storyboard; sourceTree = "<group>"; };
+		B122FB56216D060F00B09BEF /* RoomTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomTitleView.swift; sourceTree = "<group>"; };
+		B122FB58216D063000B09BEF /* RoomTitleView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomTitleView.xib; sourceTree = "<group>"; };
+		B12DDA97216F4EBC0093172C /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = fr; path = fr.lproj/Tchap.stringsdict; sourceTree = "<group>"; };
+		B12DDA99216FB2370093172C /* UIBezierPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBezierPath.swift; sourceTree = "<group>"; };
+		B12DDA9E21701FC40093172C /* AvatarImageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarImageViewModel.swift; sourceTree = "<group>"; };
+		B12DDAA0217020410093172C /* AvatarImageShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarImageShape.swift; sourceTree = "<group>"; };
+		B12DDAA221708F4D0093172C /* RoomTitleViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomTitleViewModel.swift; sourceTree = "<group>"; };
+		B12DDAA321708F4E0093172C /* RoomTitleViewModelBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomTitleViewModelBuilder.swift; sourceTree = "<group>"; };
 		B12FD69E2146B3EB001B7F28 /* RestClientBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestClientBuilder.swift; sourceTree = "<group>"; };
 		B12FD6A02146B5C0001B7F28 /* RestClientBuilderError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestClientBuilderError.swift; sourceTree = "<group>"; };
 		B12FD6A52146BA42001B7F28 /* RegistrationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistrationService.swift; sourceTree = "<group>"; };
@@ -1518,9 +1529,10 @@
 		020DF911214BE467003DFBA4 /* Title */ = {
 			isa = PBXGroup;
 			children = (
-				020DF912214BE467003DFBA4 /* RoomTitleView.h */,
-				020DF91C214BE467003DFBA4 /* RoomTitleView.m */,
-				020DF917214BE467003DFBA4 /* RoomTitleView.xib */,
+				B12DDAA221708F4D0093172C /* RoomTitleViewModel.swift */,
+				B12DDAA321708F4E0093172C /* RoomTitleViewModelBuilder.swift */,
+				B122FB56216D060F00B09BEF /* RoomTitleView.swift */,
+				B122FB58216D063000B09BEF /* RoomTitleView.xib */,
 			);
 			path = Title;
 			sourceTree = "<group>";
@@ -1609,6 +1621,7 @@
 		02BEE14E2125BBF800098505 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				B12DDA9D21701FA90093172C /* Avatar */,
 				020DF858214BE467003DFBA4 /* Room */,
 				B1F2AA83212AEC820077FDC0 /* Application */,
 				B1BC6A222136D71500D32F8E /* Welcome */,
@@ -1775,6 +1788,15 @@
 			path = EmailSent;
 			sourceTree = "<group>";
 		};
+		B12DDA9D21701FA90093172C /* Avatar */ = {
+			isa = PBXGroup;
+			children = (
+				B12DDA9E21701FC40093172C /* AvatarImageViewModel.swift */,
+				B12DDAA0217020410093172C /* AvatarImageShape.swift */,
+			);
+			path = Avatar;
+			sourceTree = "<group>";
+		};
 		B12FD69D2146B3C3001B7F28 /* RestClientBuilder */ = {
 			isa = PBXGroup;
 			children = (
@@ -1808,6 +1830,7 @@
 			isa = PBXGroup;
 			children = (
 				B1322FDE212FF7480054A9DD /* Tchap.strings */,
+				B12DDA98216F4EBC0093172C /* Tchap.stringsdict */,
 			);
 			path = Localizations;
 			sourceTree = "<group>";
@@ -2694,6 +2717,7 @@
 			children = (
 				B1F2AAB5212AFDBA0077FDC0 /* UIViewController.swift */,
 				B1BC6A042135E42D00D32F8E /* UIView.swift */,
+				B12DDA99216FB2370093172C /* UIBezierPath.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -3115,6 +3139,7 @@
 				020DF99F214BE467003DFBA4 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.xib in Resources */,
 				B1322FEB213002440054A9DD /* FormTextField.xib in Resources */,
 				020DF997214BE467003DFBA4 /* RoomOutgoingAttachmentWithPaginationTitleBubbleCell.xib in Resources */,
+				B122FB59216D063000B09BEF /* RoomTitleView.xib in Resources */,
 				0250C5552122B68000034691 /* callend.mp3 in Resources */,
 				020DF98B214BE467003DFBA4 /* RoomIncomingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib in Resources */,
 				020DF96F214BE467003DFBA4 /* RoomIncomingEncryptedTextMsgWithPaginationTitleBubbleCell.xib in Resources */,
@@ -3138,7 +3163,6 @@
 				0250C57A2122B68000034691 /* Vector.strings in Resources */,
 				B15AB2A5215BF20E007F5405 /* ForgotPasswordVerifyEmailViewController.storyboard in Resources */,
 				020DF94E214BE467003DFBA4 /* RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.xib in Resources */,
-				020DF9A3214BE467003DFBA4 /* RoomTitleView.xib in Resources */,
 				020DF947214BE467003DFBA4 /* RoomMemberDetailsViewController.xib in Resources */,
 				0250C5CE212314B300034691 /* Tchap-Defaults.plist in Resources */,
 				B15B867E2135BA96002782BE /* AuthenticationViewController.storyboard in Resources */,
@@ -3149,6 +3173,7 @@
 				0250C57E2122B68000034691 /* MediaAlbumContentViewController.xib in Resources */,
 				020DF94F214BE467003DFBA4 /* RoomMembershipBubbleCell.xib in Resources */,
 				B1680CFF2152A9E6009B5F92 /* PublicRoomsViewController.storyboard in Resources */,
+				B12DDA96216F4EBC0093172C /* Tchap.stringsdict in Resources */,
 				020DF986214BE467003DFBA4 /* RoomIncomingTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
 				0250C5812122B68000034691 /* BugReportViewController.xib in Resources */,
 				0250C5822122B68000034691 /* Main.storyboard in Resources */,
@@ -3613,7 +3638,6 @@
 				0250C4BC2122B68000034691 /* MediaPickerViewController.m in Sources */,
 				020DF95C214BE467003DFBA4 /* RoomIncomingEncryptedAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				0250C4BD2122B68000034691 /* RageShakeManager.m in Sources */,
-				020DF9A6214BE467003DFBA4 /* RoomTitleView.m in Sources */,
 				B11C800621393E5D00CC6F2F /* RegistrationCoordinator.swift in Sources */,
 				0250C4BF2122B68000034691 /* PublicRoomTableViewCell.m in Sources */,
 				020DF951214BE467003DFBA4 /* RoomOutgoingEncryptedAttachmentWithPaginationTitleBubbleCell.m in Sources */,
@@ -3629,6 +3653,7 @@
 				0250C4CE2122B68000034691 /* UINavigationController+Riot.m in Sources */,
 				02098F372131FE9E00F25086 /* ContactsTableViewController.m in Sources */,
 				0250C4D22122B68000034691 /* LanguagePickerViewController.m in Sources */,
+				B12DDAA1217020410093172C /* AvatarImageShape.swift in Sources */,
 				020DF994214BE467003DFBA4 /* RoomIncomingTextMsgBubbleCell.m in Sources */,
 				B12FD6A92146BA45001B7F28 /* RegistrationService.swift in Sources */,
 				B15AB2A0215BF20E007F5405 /* ForgotPasswordCoordinatorType.swift in Sources */,
@@ -3678,10 +3703,12 @@
 				B1BC6A022135E2A600D32F8E /* ActivityIndicatorPresenter.swift in Sources */,
 				020DF98D214BE467003DFBA4 /* RoomOutgoingTextMsgWithoutSenderNameBubbleCell.m in Sources */,
 				0250C4F12122B68000034691 /* FilesSearchTableViewCell.m in Sources */,
+				B12DDAA421708F4F0093172C /* RoomTitleViewModel.swift in Sources */,
 				B1F2AAA2212AED170077FDC0 /* RoomsCoordinatorType.swift in Sources */,
 				0250C4F22122B68000034691 /* SegmentedViewController.m in Sources */,
 				0250C4F32122B68000034691 /* DecryptionFailure.m in Sources */,
 				B1680D082152AA61009B5F92 /* Appearance.swift in Sources */,
+				B12DDAA521708F4F0093172C /* RoomTitleViewModelBuilder.swift in Sources */,
 				B15B866C21353A41002782BE /* FormTextViewModelType.swift in Sources */,
 				020DF950214BE467003DFBA4 /* RoomOutgoingEncryptedTextMsgWithoutSenderNameBubbleCell.m in Sources */,
 				0250C4F52122B68000034691 /* MXKRoomBubbleTableViewCell+Riot.m in Sources */,
@@ -3743,9 +3770,11 @@
 				B1BC6A242136D75B00D32F8E /* WelcomeViewController.swift in Sources */,
 				020DF970214BE467003DFBA4 /* RoomIncomingEncryptedTextMsgBubbleCell.m in Sources */,
 				B1892E792130528600742348 /* ErrorPresentableImpl.swift in Sources */,
+				B12DDA9F21701FC40093172C /* AvatarImageViewModel.swift in Sources */,
 				0250C5292122B68000034691 /* WidgetPickerViewController.m in Sources */,
 				020DF956214BE467003DFBA4 /* RoomIncomingEncryptedTextMsgWithoutSenderNameBubbleCell.m in Sources */,
 				020DF99B214BE467003DFBA4 /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.m in Sources */,
+				B12DDA9A216FB2370093172C /* UIBezierPath.swift in Sources */,
 				B1F2AA9E212AEC830077FDC0 /* AuthenticationCoordinatorType.swift in Sources */,
 				B1F2AAAE212AED900077FDC0 /* RootRouter.swift in Sources */,
 				B1F2AA9B212AEC830077FDC0 /* ContactsCoordinatorType.swift in Sources */,
@@ -3757,6 +3786,7 @@
 				0250C52F2122B68000034691 /* DecryptionFailureTracker.m in Sources */,
 				0250C5302122B68000034691 /* UIViewController+RiotSearch.m in Sources */,
 				0250C5312122B68000034691 /* RoomEmailInvitation.m in Sources */,
+				B122FB57216D060F00B09BEF /* RoomTitleView.swift in Sources */,
 				B1BC6A1B21369C8F00D32F8E /* Style.swift in Sources */,
 				020DF940214BE467003DFBA4 /* RoomSearchDataSource.m in Sources */,
 				B1F2AA98212AEC830077FDC0 /* AppCoordinatorType.swift in Sources */,
@@ -3918,6 +3948,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		B12DDA98216F4EBC0093172C /* Tchap.stringsdict */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B12DDA97216F4EBC0093172C /* fr */,
+			);
+			name = Tchap.stringsdict;
+			sourceTree = "<group>";
+		};
 		B1322FDE212FF7480054A9DD /* Tchap.strings */ = {
 			isa = PBXVariantGroup;
 			children = (

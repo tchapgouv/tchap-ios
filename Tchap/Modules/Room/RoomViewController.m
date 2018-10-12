@@ -21,8 +21,6 @@
 #import "RoomDataSource.h"
 #import "RoomBubbleCellData.h"
 
-#import "GeneratedInterface-Swift.h"
-
 #import "RoomInputToolbarView.h"
 #import "DisabledRoomInputToolbarView.h"
 
@@ -115,7 +113,7 @@
 
 #import "GeneratedInterface-Swift.h"
 
-@interface RoomViewController () <Stylable>
+@interface RoomViewController () <UIGestureRecognizerDelegate, Stylable, RoomTitleViewDelegate>
 {
     // The preview header
     PreviewView *previewHeader;
@@ -182,6 +180,7 @@
     id tombstoneEventNotificationsListener;
 }
 
+@property (nonatomic, weak) RoomTitleView *roomTitleView;
 @property (nonatomic, strong) id<Style> currentStyle;
 
 @end
@@ -252,6 +251,16 @@
     
     // Listen to the event sent state changes
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eventDidChangeSentState:) name:kMXEventDidChangeSentStateNotification object:nil];
+}
+
+- (void)setupRoomTitleView {
+    
+    if (!self.roomTitleView) {
+        RoomTitleView *roomTitleView = [RoomTitleView instantiateWithStyle:Variant2Style.shared];
+        roomTitleView.delegate = self;
+        self.navigationItem.titleView = roomTitleView;
+        self.roomTitleView = roomTitleView;
+    }
 }
 
 - (void)viewDidLoad
@@ -330,6 +339,8 @@
 
     // Prepare missed dicussion badge (if any)
     self.showMissedDiscussionsBadge = _showMissedDiscussionsBadge;
+    
+    [self setupRoomTitleView];
     
     // Set up the room title view according to the data source (if any)
     [self refreshRoomTitle];
@@ -502,6 +513,7 @@
         if ([roomSummary.roomId isEqualToString:self.roomDataSource.roomId])
         {
             [self refreshMissedDiscussionsCount:NO];
+            [self refreshRoomTitle];
         }
     }];
     [self refreshMissedDiscussionsCount:YES];
@@ -680,16 +692,9 @@
 {
     [super updateViewControllerAppearanceOnRoomDataSourceState];
     
-    self.titleView.editable = NO;
-    
     if (self.isRoomPreview)
     {
         self.navigationItem.rightBarButtonItem.enabled = NO;
-        
-        if (self.titleView)
-        {
-            ((RoomTitleView*)self.titleView).roomPreviewData = self.roomPreviewData;
-        }
         
         // Remove input tool bar if any
         if (self.inputToolbarView)
@@ -733,7 +738,7 @@
 - (void)leaveRoomOnEvent:(MXEvent*)event
 {
     // Disable the tap gesture handling in the title view by removing the delegate.
-    ((RoomTitleView*)self.titleView).tapGestureDelegate = nil;
+    self.roomTitleView.delegate = nil;
     
     // Hide the potential read marker banner.
     self.jumpToLastUnreadBannerContainer.hidden = YES;
@@ -1240,73 +1245,39 @@
 
 - (void)refreshRoomTitle
 {
-    if (rightBarButtonItems && !self.navigationItem.rightBarButtonItems)
+    MXSession *session = self.mainSession;
+    if (!session)
     {
-        // Restore by default the search bar button.
-        self.navigationItem.rightBarButtonItems = rightBarButtonItems;
+        return;
     }
     
-    [self setRoomTitleViewClass:RoomTitleView.class];
+    RoomTitleViewModelBuilder *roomTitleViewModelBuilder = [[RoomTitleViewModelBuilder alloc] initWithSession:session];
+    RoomTitleViewModel *roomTitleViewModel;
     
-    // Set the right room title view
     if (self.isRoomPreview)
     {
-        // Do not show the right buttons
-        self.navigationItem.rightBarButtonItems = nil;
+        if (self.roomPreviewData)
+        {
+            roomTitleViewModel = [roomTitleViewModelBuilder buildFromRoomPreviewData:self.roomPreviewData];
+        }
         
         [self showPreviewHeader:YES];
     }
-    else if (self.roomDataSource)
+    else
     {
         [self showPreviewHeader:NO];
         
-        if (self.roomDataSource.isLive)
+        MXRoomSummary *roomSummary = self.roomDataSource.room.summary;
+        
+        if (roomSummary)
         {
-            // Enable the right buttons (Search and Integrations)
-            for (UIBarButtonItem *barButtonItem in self.navigationItem.rightBarButtonItems)
-            {
-                barButtonItem.enabled = YES;
-            }
-
-            if (self.navigationItem.rightBarButtonItems.count == 2)
-            {
-                BOOL matrixAppsEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:@"matrixApps"];
-                if (!matrixAppsEnabled)
-                {
-                    // If the setting is disabled, do not show the icon
-                    self.navigationItem.rightBarButtonItems = @[self.navigationItem.rightBarButtonItem];
-                }
-                else if ([self widgetsCount:NO])
-                {
-                    // Show there are widgets by changing the "apps" icon color
-                    // Show it in red only for room widgets, not user's widgets
-                    // TODO: Design must be reviewed
-                    UIImage *icon = self.navigationItem.rightBarButtonItems[1].image;
-                    icon = [MXKTools paintImage:icon withColor:kRiotColorPinkRed];
-                    icon = [icon imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-
-                    self.navigationItem.rightBarButtonItems[1].image = icon;
-                }
-                else
-                {
-                    // Reset original icon
-                    self.navigationItem.rightBarButtonItems[1].image = [UIImage imageNamed:@"apps-icon"];
-                }
-            }
-
-            // Enable tap gesture in the title view
-            ((RoomTitleView*)self.titleView).tapGestureDelegate = self;
-        }
-        else
-        {
-            // Remove the search button temporarily
-            rightBarButtonItems = self.navigationItem.rightBarButtonItems;
-            self.navigationItem.rightBarButtonItems = nil;
+            roomTitleViewModel = [roomTitleViewModelBuilder buildFromRoomSummary:roomSummary];
         }
     }
-    else
+    
+    if (roomTitleViewModel)
     {
-        self.navigationItem.rightBarButtonItem.enabled = NO;
+        [self.roomTitleView fillWithRoomTitleViewModel:roomTitleViewModel];
     }
 }
 
@@ -2942,17 +2913,9 @@
     [self refreshJumpToLastUnreadBannerDisplay];
 }
 
-#pragma mark - MXKRoomTitleViewDelegate
+#pragma mark - RoomTitleViewDelegate
 
-- (BOOL)roomTitleViewShouldBeginEditing:(MXKRoomTitleView*)titleView
-{
-    // Disable room name edition
-    return NO;
-}
-
-#pragma mark - RoomTitleViewTapGestureDelegate
-
-- (void)roomTitleView:(RoomTitleView*)titleView recognizeTapGesture:(UITapGestureRecognizer*)tapGestureRecognizer
+- (void)roomTitleViewDidTapped:(RoomTitleView *)roomTitleView
 {
     if (self.delegate)
     {

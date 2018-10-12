@@ -16,6 +16,6 @@
 #import "SettingsViewController.h"
 #import "RoomFilesViewController.h"
 #import "RoomSettingsViewController.h"
-#import "RoomTitleView.h"
 #import "RoomMemberDetailsViewController.h"
 #import "RoomParticipantsViewController.h"
+#import "AvatarGenerator.h"
