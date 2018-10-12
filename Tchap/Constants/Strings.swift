@@ -125,6 +125,10 @@ internal enum TchapL10n {
   internal static let roomSettingsRemoveFromRoomsDirectoryPrompt = TchapL10n.tr("Tchap", "room_settings_remove_from_rooms_directory_prompt")
   /// Paramètres
   internal static let roomSettingsTabTitle = TchapL10n.tr("Tchap", "room_settings_tab_title")
+  /// %d membre(s)
+  internal static func roomTitlePublicRoomMembersCount(_ p1: Int) -> String {
+    return TchapL10n.tr("Tchap", "room_title_public_room_members_count", p1)
+  }
   /// Aucun résultat
   internal static let searchNoResult = TchapL10n.tr("Tchap", "search_no_result")
   /// J'ai un compte
