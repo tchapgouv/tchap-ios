@@ -24,10 +24,6 @@
 		020DF93D214BE467003DFBA4 /* TableViewCellWithCheckBoxes.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF86B214BE467003DFBA4 /* TableViewCellWithCheckBoxes.m */; };
 		020DF93E214BE467003DFBA4 /* AttachmentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF86F214BE467003DFBA4 /* AttachmentsViewController.m */; };
 		020DF93F214BE467003DFBA4 /* RoomViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 020DF870214BE467003DFBA4 /* RoomViewController.xib */; };
-		020DF940214BE467003DFBA4 /* RoomSearchDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF873214BE467003DFBA4 /* RoomSearchDataSource.m */; };
-		020DF941214BE467003DFBA4 /* RoomMessagesSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF877214BE467003DFBA4 /* RoomMessagesSearchViewController.m */; };
-		020DF942214BE467003DFBA4 /* RoomFilesSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF87B214BE467003DFBA4 /* RoomFilesSearchViewController.m */; };
-		020DF943214BE467003DFBA4 /* RoomSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF87C214BE467003DFBA4 /* RoomSearchViewController.m */; };
 		020DF944214BE467003DFBA4 /* RoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF87D214BE467003DFBA4 /* RoomViewController.m */; };
 		020DF945214BE467003DFBA4 /* RoomFilesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF87F214BE467003DFBA4 /* RoomFilesViewController.m */; };
 		020DF946214BE467003DFBA4 /* RoomMemberDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF885214BE467003DFBA4 /* RoomMemberDetailsViewController.m */; };
@@ -583,14 +579,6 @@
 		020DF86E214BE467003DFBA4 /* AttachmentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttachmentsViewController.h; sourceTree = "<group>"; };
 		020DF86F214BE467003DFBA4 /* AttachmentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AttachmentsViewController.m; sourceTree = "<group>"; };
 		020DF870214BE467003DFBA4 /* RoomViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomViewController.xib; sourceTree = "<group>"; };
-		020DF873214BE467003DFBA4 /* RoomSearchDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomSearchDataSource.m; sourceTree = "<group>"; };
-		020DF874214BE467003DFBA4 /* RoomSearchDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomSearchDataSource.h; sourceTree = "<group>"; };
-		020DF876214BE467003DFBA4 /* RoomMessagesSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomMessagesSearchViewController.h; sourceTree = "<group>"; };
-		020DF877214BE467003DFBA4 /* RoomMessagesSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomMessagesSearchViewController.m; sourceTree = "<group>"; };
-		020DF878214BE467003DFBA4 /* RoomSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomSearchViewController.h; sourceTree = "<group>"; };
-		020DF87A214BE467003DFBA4 /* RoomFilesSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomFilesSearchViewController.h; sourceTree = "<group>"; };
-		020DF87B214BE467003DFBA4 /* RoomFilesSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomFilesSearchViewController.m; sourceTree = "<group>"; };
-		020DF87C214BE467003DFBA4 /* RoomSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomSearchViewController.m; sourceTree = "<group>"; };
 		020DF87D214BE467003DFBA4 /* RoomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomViewController.m; sourceTree = "<group>"; };
 		020DF87F214BE467003DFBA4 /* RoomFilesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomFilesViewController.m; sourceTree = "<group>"; };
 		020DF880214BE467003DFBA4 /* RoomFilesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomFilesViewController.h; sourceTree = "<group>"; };
@@ -1217,7 +1205,6 @@
 				020DF85C214BE467003DFBA4 /* CellData */,
 				020DF860214BE467003DFBA4 /* Settings */,
 				020DF86D214BE467003DFBA4 /* Attachements */,
-				020DF871214BE467003DFBA4 /* Search */,
 				020DF87E214BE467003DFBA4 /* Files */,
 				020DF881214BE467003DFBA4 /* Members */,
 				020DF88D214BE467003DFBA4 /* ReadReceiptsDetail */,
@@ -1277,45 +1264,6 @@
 				020DF86F214BE467003DFBA4 /* AttachmentsViewController.m */,
 			);
 			path = Attachements;
-			sourceTree = "<group>";
-		};
-		020DF871214BE467003DFBA4 /* Search */ = {
-			isa = PBXGroup;
-			children = (
-				020DF872214BE467003DFBA4 /* DataSources */,
-				020DF875214BE467003DFBA4 /* Messages */,
-				020DF878214BE467003DFBA4 /* RoomSearchViewController.h */,
-				020DF879214BE467003DFBA4 /* Files */,
-				020DF87C214BE467003DFBA4 /* RoomSearchViewController.m */,
-			);
-			path = Search;
-			sourceTree = "<group>";
-		};
-		020DF872214BE467003DFBA4 /* DataSources */ = {
-			isa = PBXGroup;
-			children = (
-				020DF873214BE467003DFBA4 /* RoomSearchDataSource.m */,
-				020DF874214BE467003DFBA4 /* RoomSearchDataSource.h */,
-			);
-			path = DataSources;
-			sourceTree = "<group>";
-		};
-		020DF875214BE467003DFBA4 /* Messages */ = {
-			isa = PBXGroup;
-			children = (
-				020DF876214BE467003DFBA4 /* RoomMessagesSearchViewController.h */,
-				020DF877214BE467003DFBA4 /* RoomMessagesSearchViewController.m */,
-			);
-			path = Messages;
-			sourceTree = "<group>";
-		};
-		020DF879214BE467003DFBA4 /* Files */ = {
-			isa = PBXGroup;
-			children = (
-				020DF87A214BE467003DFBA4 /* RoomFilesSearchViewController.h */,
-				020DF87B214BE467003DFBA4 /* RoomFilesSearchViewController.m */,
-			);
-			path = Files;
 			sourceTree = "<group>";
 		};
 		020DF87E214BE467003DFBA4 /* Files */ = {
@@ -3623,7 +3571,6 @@
 				0250C4B82122B68000034691 /* Contact.m in Sources */,
 				B15AB2AA215BF63A007F5405 /* ForgotPasswordFormViewModelType.swift in Sources */,
 				020DF978214BE467003DFBA4 /* RoomMembershipExpandedBubbleCell.m in Sources */,
-				020DF942214BE467003DFBA4 /* RoomFilesSearchViewController.m in Sources */,
 				020DF977214BE467003DFBA4 /* RoomMembershipWithPaginationTitleBubbleCell.m in Sources */,
 				0250C4B92122B68000034691 /* Analytics.m in Sources */,
 				0250C4BB2122B68000034691 /* WidgetViewController.m in Sources */,
@@ -3714,7 +3661,6 @@
 				B1BC6A262136D77A00D32F8E /* WelcomeCoordinatorType.swift in Sources */,
 				020DF991214BE467003DFBA4 /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				0250C4FE2122B68000034691 /* RecentTableViewCell.m in Sources */,
-				020DF941214BE467003DFBA4 /* RoomMessagesSearchViewController.m in Sources */,
 				0250C4FF2122B68000034691 /* RecentsViewController.m in Sources */,
 				B1A4D7DB215A2F41004A5AB4 /* RoomPreviewCoordinatorType.swift in Sources */,
 				B12FD6A12146B5C0001B7F28 /* RestClientBuilderError.swift in Sources */,
@@ -3739,7 +3685,6 @@
 				B1F2AAB6212AFDBA0077FDC0 /* UIViewController.swift in Sources */,
 				020DF9B1214BE467003DFBA4 /* RoomActivitiesView.m in Sources */,
 				020DF946214BE467003DFBA4 /* RoomMemberDetailsViewController.m in Sources */,
-				020DF943214BE467003DFBA4 /* RoomSearchViewController.m in Sources */,
 				0250C5132122B68000034691 /* CountryPickerViewController.m in Sources */,
 				0250C5142122B68000034691 /* GDPRConsentViewController.swift in Sources */,
 				B1F2AA99212AEC830077FDC0 /* LegacyAppDelegate.m in Sources */,
@@ -3781,7 +3726,6 @@
 				0250C5312122B68000034691 /* RoomEmailInvitation.m in Sources */,
 				B122FB57216D060F00B09BEF /* RoomTitleView.swift in Sources */,
 				B1BC6A1B21369C8F00D32F8E /* Style.swift in Sources */,
-				020DF940214BE467003DFBA4 /* RoomSearchDataSource.m in Sources */,
 				B1F2AA98212AEC830077FDC0 /* AppCoordinatorType.swift in Sources */,
 				02098F332131FE9E00F25086 /* ContactTableViewCell.m in Sources */,
 				020DF944214BE467003DFBA4 /* RoomViewController.m in Sources */,
