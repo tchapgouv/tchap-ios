@@ -2745,38 +2745,6 @@
 
 - (IBAction)onButtonPressed:(id)sender
 {
-//    // Search button
-//    if (sender == self.navigationItem.rightBarButtonItem)
-//    {
-//        // Dismiss keyboard
-//        [self dismissKeyboard];
-//
-//        RoomSearchViewController* roomSearchViewController = [RoomSearchViewController instantiate];
-//        // Add the current data source to be able to search messages.
-//        roomSearchViewController.roomDataSource = self.roomDataSource;
-//    }
-//    // Matrix Apps button
-//    else if (self.navigationItem.rightBarButtonItems.count == 2 && sender == self.navigationItem.rightBarButtonItems[1])
-//    {
-//        if ([self widgetsCount:NO])
-//        {
-//            WidgetPickerViewController *widgetPicker = [[WidgetPickerViewController alloc] initForMXSession:self.roomDataSource.mxSession
-//                                                                                                     inRoom:self.roomDataSource.roomId];
-//
-//            [widgetPicker showInViewController:self];
-//        }
-//        else
-//        {
-//            // No widgets -> Directly show the integration manager
-//            IntegrationManagerViewController *modularVC = [[IntegrationManagerViewController alloc] initForMXSession:self.roomDataSource.mxSession
-//                                                                                                              inRoom:self.roomDataSource.roomId
-//                                                                                                              screen:kIntegrationManagerMainScreen
-//                                                                                                            widgetId:nil];
-//
-//            [self presentViewController:modularVC animated:NO completion:nil];
-//        }
-//    }
-//    else
     if (sender == self.jumpToLastUnreadButton)
     {
         // Dismiss potential keyboard.
