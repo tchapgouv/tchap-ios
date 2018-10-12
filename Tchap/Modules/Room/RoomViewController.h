@@ -18,8 +18,6 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-#import "RoomTitleView.h"
-
 #import "RoomPreviewData.h"
 
 #import "UIViewController+RiotSearch.h"
@@ -70,7 +68,7 @@
 
 @end
 
-@interface RoomViewController : MXKRoomViewController <UISearchBarDelegate, UIGestureRecognizerDelegate, RoomTitleViewTapGestureDelegate>
+@interface RoomViewController : MXKRoomViewController
 
 // The preview header
 @property (weak, nonatomic) IBOutlet UIView *previewHeaderContainer;
