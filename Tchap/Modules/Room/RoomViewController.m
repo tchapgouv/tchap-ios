@@ -113,7 +113,7 @@
 
 #import "GeneratedInterface-Swift.h"
 
-@interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, Stylable, RoomTitleViewDelegate>
+@interface RoomViewController () <UIGestureRecognizerDelegate, Stylable, RoomTitleViewDelegate>
 {
     // The preview header
     PreviewView *previewHeader;

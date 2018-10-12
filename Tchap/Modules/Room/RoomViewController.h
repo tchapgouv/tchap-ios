@@ -20,8 +20,6 @@
 
 #import "RoomPreviewData.h"
 
-#import "UIViewController+RiotSearch.h"
-
 @class RoomViewController;
 
 /**
