@@ -21,7 +21,7 @@ protocol UserServiceType {
     
     /// Try to find an MXUser from local session with Matrix user id and build a Tchap user.
     ///
-    /// - Parameter userId: The Matrix user id to parse
+    /// - Parameter userId: The Matrix user id.
     /// - Returns: A Tchap User or nil if user is not found in local session.
     func getUserFromLocalSession(with userId: String) -> User?
     

@@ -51,8 +51,7 @@ final class UserService: UserServiceType {
     
     func findUser(with userId: String, completion: @escaping ((User?) -> Void)) {
         
-        if let matrixUser = self.session.user(withUserId: userId) {
-            let user = self.getUserFromLocalSession(with: matrixUser.userId)
+        if let user = self.getUserFromLocalSession(with: userId) {
             completion(user)
         } else {
             self.session.matrixRestClient.searchUsers(userId, limit: Constants.searchUsersLimit, success: { (userSearchResponse) in
@@ -74,11 +73,6 @@ final class UserService: UserServiceType {
     }
     
     // MARK: - Private
-    
-    func buildUser(from userId: String) -> User {
-        let displayName = self.displayName(from: userId)
-        return User(userId: userId, displayName: displayName, avatarStringURL: nil)
-    }
     
     private func buildUser(from mxUser: MXUser) -> User {
         
