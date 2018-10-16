@@ -20,7 +20,7 @@
 
 #import "RoomPreviewData.h"
 
-@class RoomViewController;
+@class RoomViewController, User;
 
 /**
  `RoomViewController` delegate.
@@ -106,6 +106,14 @@
 - (void)displayRoomPreview:(RoomPreviewData*)roomPreviewData;
 
 /**
+ Display a new discussion with a target user without associated room.
+ 
+ @param discussionTargetUser Direct chat target user.
+ @param session The Matrix session.
+ */
+- (void)displayNewDiscussionWithTargetUser:(User*)discussionTargetUser session:(MXSession*)session;
+
+/**
  Action used to handle some buttons.
  */
 - (IBAction)onButtonPressed:(id)sender;
@@ -116,6 +124,16 @@
  @return An initialized `RoomViewController` object.
  */
 + (instancetype)instantiate;
+
+/**
+ Creates a new discussion with a target user without associated room and returns a new `RoomViewController` object.
+
+ @param discussionTargetUser Direct chat target user.
+ @param session The Matrix session.
+
+ @return An initialized `RoomViewController` object.
+ */
++ (instancetype)instantiateWithDiscussionTargetUser:(User*)discussionTargetUser session:(MXSession*)session;
 
 @end
 

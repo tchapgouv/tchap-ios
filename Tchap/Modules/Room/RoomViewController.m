@@ -183,6 +183,9 @@
 @property (nonatomic, weak) RoomTitleView *roomTitleView;
 @property (nonatomic, strong) id<Style> currentStyle;
 
+// Direct chat target user when create a discussion without associated room
+@property (nonatomic, strong) User *discussionTargetUser;
+
 @end
 
 @implementation RoomViewController
@@ -201,6 +204,14 @@
     RoomViewController *roomViewController = [[[self class] alloc] initWithNibName:NSStringFromClass(self.class)
                                                                             bundle:[NSBundle bundleForClass:self.class]];
     roomViewController.currentStyle = Variant2Style.shared;
+    return roomViewController;
+}
+
++ (instancetype)instantiateWithDiscussionTargetUser:(User*)discussionTargetUser session:(MXSession*)session
+{
+    RoomViewController *roomViewController = [self instantiate];
+    roomViewController.discussionTargetUser = discussionTargetUser;
+    [roomViewController addMatrixSession:session];
     return roomViewController;
 }
 
@@ -707,6 +718,11 @@
             previewHeader.roomName = self.roomPreviewData.roomName;
         }
     }
+    else if (self.isNewDiscussion)
+    {
+        [self refreshRoomInputToolbar];
+        self.inputToolbarView.hidden = NO;
+    }
     else
     {
         [self showPreviewHeader:NO];
@@ -908,7 +924,7 @@
 {
     // Re-invite the left member before sending the message in case of a discussion (direct chat)
     MXWeakify(self);
-    [self restoreDiscussionIfNeed:^(BOOL success) {
+    [self createOrRestoreDiscussionIfNeeded:^(BOOL success) {
         MXStrongifyAndReturnIfNil(self);
         if (success)
         {
@@ -942,7 +958,7 @@
 {
     // Re-invite the left member before sending the message in case of a discussion (direct chat)
     MXWeakify(self);
-    [self restoreDiscussionIfNeed:^(BOOL success) {
+    [self createOrRestoreDiscussionIfNeeded:^(BOOL success) {
         MXStrongifyAndReturnIfNil(self);
         if (success)
         {
@@ -961,7 +977,7 @@
 {
     // Re-invite the left member before sending the message in case of a discussion (direct chat)
     MXWeakify(self);
-    [self restoreDiscussionIfNeed:^(BOOL success) {
+    [self createOrRestoreDiscussionIfNeeded:^(BOOL success) {
         MXStrongifyAndReturnIfNil(self);
         if (success)
         {
@@ -981,7 +997,7 @@
 {
     // Re-invite the left member before sending the message in case of a discussion (direct chat)
     MXWeakify(self);
-    [self restoreDiscussionIfNeed:^(BOOL success) {
+    [self createOrRestoreDiscussionIfNeeded:^(BOOL success) {
         MXStrongifyAndReturnIfNil(self);
         if (success)
         {
@@ -1001,7 +1017,7 @@
 {
     // Re-invite the left member before sending the message in case of a discussion (direct chat)
     MXWeakify(self);
-    [self restoreDiscussionIfNeed:^(BOOL success) {
+    [self createOrRestoreDiscussionIfNeeded:^(BOOL success) {
         MXStrongifyAndReturnIfNil(self);
         if (success)
         {
@@ -1097,7 +1113,7 @@
 /**
  Check whether the current room is a direct chat left by the other member.
  */
-- (void)isEmptyDirectChat:(void (^)(BOOL isEmptyDirect))onComplete
+- (void)isDirectChatLeftByTheOther:(void (^)(BOOL isEmptyDirect))onComplete
 {
     // In the case of a direct chat, we check if the other member has left the room.
     if (self.roomDataSource)
@@ -1142,7 +1158,7 @@
  */
 - (void)restoreDiscussionIfNeed:(void (^)(BOOL success))onComplete
 {
-    [self isEmptyDirectChat:^(BOOL isEmptyDirect) {
+    [self isDirectChatLeftByTheOther:^(BOOL isEmptyDirect) {
         if (isEmptyDirect)
         {
             // Invite again the direct user
@@ -1164,6 +1180,72 @@
             onComplete(YES);
         }
     }];
+}
+
+/**
+ Create a direct chat with given user.
+ */
+- (void)createDiscussionWithUser:(User*)user completion:(void (^)(BOOL success))onComplete
+{
+    MXWeakify(self);
+    
+    [self startActivityIndicator];
+    
+    [self.mainSession createRoom:nil
+                      visibility:kMXRoomDirectoryVisibilityPrivate
+                       roomAlias:nil
+                           topic:nil
+                          invite:@[user.userId]
+                      invite3PID:nil
+                        isDirect:YES
+                          preset:kMXRoomPresetTrustedPrivateChat
+                         success:^(MXRoom *room) {
+                             
+                             MXStrongifyAndReturnIfNil(self);
+                             
+                             MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:self.mainSession];
+                             
+                             [roomDataSourceManager roomDataSourceForRoom:room.roomId create:YES onComplete:^(MXKRoomDataSource *roomDataSource) {
+                                 
+                                 [self stopActivityIndicator];
+                                 
+                                 if (roomDataSource.room.summary.isDirect == NO)
+                                 {
+                                     // TODO: Display an error, and retry to set room as direct otherwise quit the room
+                                     
+                                     NSLog(@"[RoomViewController] Fail to create room as direct chat");
+                                 }
+//                                 else
+//                                 {
+                                 // Set user to nil and now use RoomDataSource for updating view
+                                     self.discussionTargetUser = nil;
+                                     [self displayRoom:roomDataSource];
+//                                 }
+
+                                 onComplete(YES);
+                             }];
+                             
+                         } failure:^(NSError *error) {
+                             // TODO: Present error without using AppDelegate
+                             [[AppDelegate theDelegate] showErrorAsAlert:error];
+                             onComplete(NO);
+                         }];
+}
+
+/**
+ Check whether the current room is a direct chat left by the other member.
+ In this case, this method will invite again the left member.
+ */
+- (void)createOrRestoreDiscussionIfNeeded:(void (^)(BOOL success))onComplete
+{
+    if (self.discussionTargetUser)
+    {
+        [self createDiscussionWithUser:self.discussionTargetUser completion:onComplete];
+    }
+    else
+    {
+        [self restoreDiscussionIfNeed:onComplete];
+    }
 }
 
 #pragma mark -
@@ -1243,6 +1325,12 @@
     return NO;
 }
 
+// Indicates if a new discussion with a target user (without associated room) is occuring.
+- (BOOL)isNewDiscussion
+{
+    return self.discussionTargetUser != nil;
+}
+
 - (void)refreshRoomTitle
 {
     MXSession *session = self.mainSession;
@@ -1254,19 +1342,23 @@
     RoomTitleViewModelBuilder *roomTitleViewModelBuilder = [[RoomTitleViewModelBuilder alloc] initWithSession:session];
     RoomTitleViewModel *roomTitleViewModel;
     
+    BOOL showRoomPreviewHeader = NO;
+    
     if (self.isRoomPreview)
     {
+        showRoomPreviewHeader = YES;
+        
         if (self.roomPreviewData)
         {
             roomTitleViewModel = [roomTitleViewModelBuilder buildFromRoomPreviewData:self.roomPreviewData];
         }
-        
-        [self showPreviewHeader:YES];
+    }
+    else if (self.isNewDiscussion)
+    {
+        roomTitleViewModel = [roomTitleViewModelBuilder buildFromUser:self.discussionTargetUser];
     }
     else
     {
-        [self showPreviewHeader:NO];
-        
         MXRoomSummary *roomSummary = self.roomDataSource.room.summary;
         
         if (roomSummary)
@@ -1274,6 +1366,8 @@
             roomTitleViewModel = [roomTitleViewModelBuilder buildFromRoomSummary:roomSummary];
         }
     }
+    
+    [self showPreviewHeader:showRoomPreviewHeader];
     
     if (roomTitleViewModel)
     {
@@ -1475,6 +1569,25 @@
             [super displayRoom:roomPreviewData.roomDataSource];
         }
     }
+}
+
+#pragma mark - New discussion
+
+- (void)displayNewDiscussionWithTargetUser:(User*)discussionTargetUser session:(MXSession*)session
+{
+    // Release existing room data source or preview
+    [self displayRoom:nil];
+    
+    self.eventsAcknowledgementEnabled = NO;
+    
+    [self addMatrixSession:session];
+    
+    self.discussionTargetUser = discussionTargetUser;
+    
+    [self refreshRoomTitle];
+    [self refreshRoomInputToolbar];
+    self.inputToolbarView.hidden = NO;
+    
 }
 
 #pragma mark - MXKDataSourceDelegate
@@ -3278,6 +3391,11 @@
 
 - (void)goBackToLive
 {
+    if (!self.roomDataSource)
+    {
+        return;
+    }
+    
     if (self.roomDataSource.isLive)
     {
         // Enable the read marker display, and disable its update (in order to not mark as read all the new messages by default).
