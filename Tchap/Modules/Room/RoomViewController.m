@@ -655,6 +655,9 @@
         [self showPreviewHeader:NO];
     }
     
+    // Set potential discussion target user to nil, now use the dataSource to populate the view
+    self.discussionTargetUser = nil;
+    
     // Enable the read marker display, and disable its update.
     dataSource.showReadMarker = YES;
     self.updateRoomReadMarker = NO;
@@ -1217,8 +1220,7 @@
                                  }
 //                                 else
 //                                 {
-                                 // Set user to nil and now use RoomDataSource for updating view
-                                     self.discussionTargetUser = nil;
+                                     // Set discussion target user to nil and now use RoomDataSource for updating view
                                      [self displayRoom:roomDataSource];
 //                                 }
 
