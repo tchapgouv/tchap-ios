@@ -37,37 +37,48 @@ final class UserService: UserServiceType {
     
     // MARK: - Public
     
-    func buildUser(from userId: String) -> User {
-        let displayName = self.displayName(from: userId)
-        return User(userId: userId, displayName: displayName, avatarStringURL: nil)
-    }
-    
-    func findOrBuildUser(from userId: String, completion: @escaping ((User) -> Void)) {
+    func getUserFromLocalSession(with userId: String) -> User? {
+        let user: User?
         
         if let matrixUser = self.session.user(withUserId: userId) {
-            let user = self.buildUser(from: matrixUser)
+            user = self.buildUser(from: matrixUser)
+        } else {
+            user = nil
+        }
+        
+        return user
+    }
+    
+    func findUser(with userId: String, completion: @escaping ((User?) -> Void)) {
+        
+        if let matrixUser = self.session.user(withUserId: userId) {
+            let user = self.getUserFromLocalSession(with: matrixUser.userId)
             completion(user)
         } else {
-
-            let fallback = {
-                let user = self.buildUser(from: userId)
-                completion(user)
-            }
-        
             self.session.matrixRestClient.searchUsers(userId, limit: Constants.searchUsersLimit, success: { (userSearchResponse) in
                 if let results = userSearchResponse?.results, let index = results.index(where: { $0.userId == userId }) {
                     let user = self.buildUser(from: results[index])
                     completion(user)
                 } else {
-                    fallback()
+                    completion(nil)
                 }
             }, failure: { error in
-                fallback()
+                completion(nil)
             })
         }
     }
     
+    func buildTemporaryUser(from userId: String) -> User {
+        let displayName = self.displayName(from: userId)
+        return User(userId: userId, displayName: displayName, avatarStringURL: nil)
+    }
+    
     // MARK: - Private
+    
+    func buildUser(from userId: String) -> User {
+        let displayName = self.displayName(from: userId)
+        return User(userId: userId, displayName: displayName, avatarStringURL: nil)
+    }
     
     private func buildUser(from mxUser: MXUser) -> User {
         
@@ -89,7 +100,8 @@ final class UserService: UserServiceType {
         if let name = DisplayNameComponents(userId: userId)?.name {
             displayName = name
         } else {
-            displayName = userId
+            // This case happen only if given user id is not a valid Matrix id
+            displayName = ""
         }
         
         return displayName

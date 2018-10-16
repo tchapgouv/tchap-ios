@@ -34,6 +34,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorType {
     private let discussionTargetUserID: String?
     
     private let userService: UserServiceType
+    private var foundDiscussionTargetUser: User?
     private let roomViewController: RoomViewController
     private var roomDataSource: RoomDataSource?
     private let activityIndicatorPresenter: ActivityIndicatorPresenterType
@@ -67,7 +68,15 @@ final class RoomCoordinator: NSObject, RoomCoordinatorType {
         let userService = UserService(session: self.session)
         
         if let discussionTargetUserID = discussionTargetUserID {
-            let discussionTargetUser = userService.buildUser(from: discussionTargetUserID)
+            let discussionTargetUser: User
+            
+            if let userFromSession = userService.getUserFromLocalSession(with: discussionTargetUserID) {
+                discussionTargetUser = userFromSession
+                self.foundDiscussionTargetUser = discussionTargetUser
+            } else {
+                discussionTargetUser = userService.buildTemporaryUser(from: discussionTargetUserID)
+            }
+            
             self.roomViewController = RoomViewController.instantiate(withDiscussionTargetUser: discussionTargetUser, session: session)
         } else {
             self.roomViewController = RoomViewController.instantiate()
@@ -83,10 +92,10 @@ final class RoomCoordinator: NSObject, RoomCoordinatorType {
     func start() {
         self.roomViewController.delegate = self
         
-        // Present activity indicator when retrieving roomDataSource for given room ID
-        self.activityIndicatorPresenter.presentActivityIndicator(on: roomViewController.view, animated: false)
-        
         if let roomID = self.roomID {
+            
+            // Present activity indicator when retrieving roomDataSource for given room ID
+            self.activityIndicatorPresenter.presentActivityIndicator(on: roomViewController.view, animated: false)
             
             if let eventId = self.eventID {
                 RoomDataSource.load(withRoomId: roomID, initialEventId: eventId, andMatrixSession: self.session) { (dataSource) in
@@ -111,10 +120,22 @@ final class RoomCoordinator: NSObject, RoomCoordinatorType {
                     }
                 })
             }
-        } else if let discussionTargetUserID = self.discussionTargetUserID {
-            self.userService.findOrBuildUser(from: discussionTargetUserID) { (user) in
-                self.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
-                self.roomViewController.displayNewDiscussion(withTargetUser: user, session: self.session)
+        } else if let discussionTargetUserID = self.discussionTargetUserID, self.foundDiscussionTargetUser == nil {
+            
+            // Present activity indicator when retrieving user for given user ID if user has not been retrieved from session 
+            self.activityIndicatorPresenter.presentActivityIndicator(on: roomViewController.view, animated: false)
+            
+            self.userService.findUser(with: discussionTargetUserID) { [weak self] (user) in
+                guard let sself = self else {
+                    return
+                }
+                
+                sself.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
+                
+                if let user = user {
+                    sself.foundDiscussionTargetUser = user
+                    sself.roomViewController.displayNewDiscussion(withTargetUser: user, session: sself.session)
+                }
             }
         }
     }

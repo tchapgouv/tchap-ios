@@ -19,16 +19,22 @@ import Foundation
 /// Protocol describing a service to handle Tchap users.
 protocol UserServiceType {
     
-    /// Build a User by parsing Matrix user id.
+    /// Try to find an MXUser from local session with Matrix user id and build a Tchap user.
     ///
     /// - Parameter userId: The Matrix user id to parse
-    /// - Returns: A Tchap User.
-    func buildUser(from userId: String) -> User
+    /// - Returns: A Tchap User or nil if user is not found in local session.
+    func getUserFromLocalSession(with userId: String) -> User?
     
-    /// Try to find an MXUser from session or remote search with Matrix user id and build a Tchap user. Otherwise build a User by parsing Matrix user id if no MXUser is found.
+    /// Try to find an MXUser from session or remote search with Matrix user id and build a Tchap user.
     ///
     /// - Parameters:
     ///   - userId: The Matrix user id.
-    ///   - completion: A closure called when the operation completes. Provide the Tchap user.
-    func findOrBuildUser(from userId: String, completion: @escaping ((User) -> Void))
+    ///   - completion: A closure called when the operation completes. Provide the Tchap user or nil if not found.
+    func findUser(with userId: String, completion: @escaping ((User?) -> Void))
+    
+    /// Build a temporary User by parsing Matrix user id.
+    ///
+    /// - Parameter userId: The Matrix user id to parse
+    /// - Returns: A Tchap User.
+    func buildTemporaryUser(from userId: String) -> User
 }
