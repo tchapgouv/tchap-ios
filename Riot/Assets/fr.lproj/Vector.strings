@@ -456,7 +456,7 @@
 "settings_ui_theme_dark" = "Sombre";
 "settings_ui_theme_picker_title" = "Selectionnez un thème";
 "settings_ui_theme_picker_message" = "\"Auto\" utilise le paramètre \"Inverser les couleurs\" de votre appareil";
-"collapse" = "réduire";
+"collapse" = "masquer";
 "auth_untrusted_id_server" = "Le serveur d'identité n'est pas fiable";
 "settings_user_interface" = "INTERFACE UTILISATEUR";
 // Events formatter
