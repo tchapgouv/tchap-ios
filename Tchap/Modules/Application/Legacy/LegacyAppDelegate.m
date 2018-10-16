@@ -20,7 +20,6 @@
 
 #import <Intents/Intents.h>
 
-#import "RecentsDataSource.h"
 #import "RoomDataSource.h"
 
 #import "EventFormatter.h"

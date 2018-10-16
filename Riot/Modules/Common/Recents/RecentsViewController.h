@@ -131,11 +131,6 @@
 - (void)updateEditedRoomTag:(NSString*)tag;
 
 /**
- Enable/disable the direct flag of the selected room.
- */
-- (void)makeDirectEditedRoom:(BOOL)isDirect;
-
-/**
  Enable/disable the notifications for the selected room.
  */
 - (void)muteEditedRoomNotifications:(BOOL)mute;
