@@ -57,7 +57,6 @@ enum
     SETTINGS_SECTION_CALLS_INDEX,
     SETTINGS_SECTION_IGNORED_USERS_INDEX,
     SETTINGS_SECTION_CONTACTS_INDEX,
-    SETTINGS_SECTION_ADVANCED_INDEX,
     SETTINGS_SECTION_OTHER_INDEX,
     SETTINGS_SECTION_LABS_INDEX,
     SETTINGS_SECTION_CRYPTOGRAPHY_INDEX,
@@ -1066,10 +1065,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
             localContactsPhoneBookCountryIndex = -1;
         }
     }
-    else if (section == SETTINGS_SECTION_ADVANCED_INDEX)
-    {
-        count = 1;
-    }
     else if (section == SETTINGS_SECTION_OTHER_INDEX)
     {
         count = OTHER_COUNT;
@@ -1490,7 +1485,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         {
             ignoredUserId = session.ignoredUsers[indexPath.row];
         }
-        ignoredUserCell.textLabel.text = ignoredUserId;
+        ignoredUserCell.textLabel.text = ignoredUserId; // FIXME replace this id with a display name
 
         cell = ignoredUserCell;
     }
@@ -1528,19 +1523,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
         }
-    }
-    else if (section == SETTINGS_SECTION_ADVANCED_INDEX)
-    {
-        MXKTableViewCell *configCell = [self getDefaultTableViewCell:tableView];
-        
-        NSString *configFormat = [NSString stringWithFormat:@"%@\n%@\n%@", [NSBundle mxk_localizedStringForKey:@"settings_config_user_id"], [NSBundle mxk_localizedStringForKey:@"settings_config_home_server"], [NSBundle mxk_localizedStringForKey:@"settings_config_identity_server"]];
-        
-        configCell.textLabel.text =[NSString stringWithFormat:configFormat, account.mxCredentials.userId, account.mxCredentials.homeServer, account.identityServerURL];
-        configCell.textLabel.numberOfLines = 0;
-        configCell.textLabel.accessibilityIdentifier=@"SettingsVCConfigStaticText";
-        configCell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
-        cell = configCell;
     }
     else if (section == SETTINGS_SECTION_OTHER_INDEX)
     {
@@ -1880,10 +1862,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     else if (section == SETTINGS_SECTION_CONTACTS_INDEX)
     {
         return NSLocalizedStringFromTable(@"settings_contacts", @"Vector", nil);
-    }
-    else if (section == SETTINGS_SECTION_ADVANCED_INDEX)
-    {
-        return NSLocalizedStringFromTable(@"settings_advanced", @"Vector", nil);
     }
     else if (section == SETTINGS_SECTION_OTHER_INDEX)
     {
