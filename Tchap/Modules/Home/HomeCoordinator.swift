@@ -122,7 +122,7 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
         publicRoomsCoordinator.delegate = self
     }
     
-    // Create a new discussion with a user without associated room
+    // Prepare a new discussion with a user without associated room
     private func startDiscussion(with userID: String) {
         let roomCoordinator = RoomCoordinator(router: self.navigationRouter, session: self.session, discussionTargetUserID: userID)
         roomCoordinator.start()

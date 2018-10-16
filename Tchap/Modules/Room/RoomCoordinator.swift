@@ -72,7 +72,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorType {
             
             if let userFromSession = userService.getUserFromLocalSession(with: discussionTargetUserID) {
                 discussionTargetUser = userFromSession
-                self.foundDiscussionTargetUser = discussionTargetUser
+                self.foundDiscussionTargetUser = userFromSession
             } else {
                 discussionTargetUser = userService.buildTemporaryUser(from: discussionTargetUserID)
             }
