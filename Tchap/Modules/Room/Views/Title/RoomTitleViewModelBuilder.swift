@@ -90,6 +90,24 @@ final class RoomTitleViewModelBuilder: NSObject {
         return RoomTitleViewModel(title: title, subtitle: subtitle, avatarImageViewModel: avatarImageViewModel)
     }
     
+    func build(fromUser user: User) -> RoomTitleViewModel {
+        
+        let displayName = user.displayName
+        let avatarUrl = user.avatarStringURL
+        
+        let displayNameComponents = DisplayNameComponents(displayName: displayName)
+        let title = displayNameComponents.name
+        let subtitle = displayNameComponents.domain
+        let avatarImageShape: AvatarImageShape = .circle
+        
+        let avatarThumbnailURL = self.avatarThumbnailURL(from: avatarUrl)
+        let placeholderImage: UIImage = AvatarGenerator.generateAvatar(forText: displayName)
+        
+        let avatarImageViewModel = AvatarImageViewModel(thumbStringUrl: avatarThumbnailURL, placeholderImage: placeholderImage, shape: avatarImageShape)
+        
+        return RoomTitleViewModel(title: title, subtitle: subtitle, avatarImageViewModel: avatarImageViewModel)
+    }
+    
     // MARK: - Private
     
     private func avatarThumbnailURL(from avatarUrl: String?) -> String? {

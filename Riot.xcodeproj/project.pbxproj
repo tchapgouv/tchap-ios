@@ -249,6 +249,8 @@
 		9972EF53599AC5CD25D6E8F0 /* Pods_RiotPods_RiotShareExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA7C5FAF411C8F14F5447193 /* Pods_RiotPods_RiotShareExtension.framework */; };
 		B104AA1D215D3EE800B2C452 /* ForgotPasswordService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B104AA1C215D3EE800B2C452 /* ForgotPasswordService.swift */; };
 		B104AA1F215E163000B2C452 /* ForgotPasswordServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B104AA1E215E163000B2C452 /* ForgotPasswordServiceType.swift */; };
+		B109EF182170DFEB0018FA06 /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B109EF172170DFEB0018FA06 /* UserService.swift */; };
+		B109EF1B2170F3B90018FA06 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = B109EF1A2170F3B90018FA06 /* User.swift */; };
 		B11C800121393E5D00CC6F2F /* RegistrationCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11C7FFB21393E5D00CC6F2F /* RegistrationCoordinatorType.swift */; };
 		B11C800621393E5D00CC6F2F /* RegistrationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11C800021393E5D00CC6F2F /* RegistrationCoordinator.swift */; };
 		B11C80112139442700CC6F2F /* RegistrationFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11C800D2139442700CC6F2F /* RegistrationFormViewController.swift */; };
@@ -308,6 +310,7 @@
 		B15B867F2135BA96002782BE /* AuthenticationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15B867D2135BA96002782BE /* AuthenticationViewController.swift */; };
 		B15B86892135C284002782BE /* AuthenticationViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15B86882135C284002782BE /* AuthenticationViewModelType.swift */; };
 		B15B868B2135C4DE002782BE /* AuthenticationFormValidationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15B868A2135C4DE002782BE /* AuthenticationFormValidationResult.swift */; };
+		B165250E217502A700146F80 /* UserServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B165250D217502A700146F80 /* UserServiceType.swift */; };
 		B1664BC520F4E67600808783 /* FallbackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1664BAD20F4E67500808783 /* FallbackViewController.xib */; };
 		B1664BC620F4E67600808783 /* FallbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1664BAE20F4E67500808783 /* FallbackViewController.m */; };
 		B1664BC720F4E67600808783 /* SharePresentingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1664BB220F4E67500808783 /* SharePresentingViewController.m */; };
@@ -787,6 +790,8 @@
 		B0230B8E031D07F2441D2F7E /* Pods-RiotPods-RiotShareExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-RiotShareExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-RiotPods-RiotShareExtension/Pods-RiotPods-RiotShareExtension.release.xcconfig"; sourceTree = "<group>"; };
 		B104AA1C215D3EE800B2C452 /* ForgotPasswordService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordService.swift; sourceTree = "<group>"; };
 		B104AA1E215E163000B2C452 /* ForgotPasswordServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordServiceType.swift; sourceTree = "<group>"; };
+		B109EF172170DFEB0018FA06 /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
+		B109EF1A2170F3B90018FA06 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		B11C7FFB21393E5D00CC6F2F /* RegistrationCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistrationCoordinatorType.swift; sourceTree = "<group>"; };
 		B11C800021393E5D00CC6F2F /* RegistrationCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistrationCoordinator.swift; sourceTree = "<group>"; };
 		B11C800D2139442700CC6F2F /* RegistrationFormViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistrationFormViewController.swift; sourceTree = "<group>"; };
@@ -848,6 +853,7 @@
 		B15B867D2135BA96002782BE /* AuthenticationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticationViewController.swift; sourceTree = "<group>"; };
 		B15B86882135C284002782BE /* AuthenticationViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewModelType.swift; sourceTree = "<group>"; };
 		B15B868A2135C4DE002782BE /* AuthenticationFormValidationResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationFormValidationResult.swift; sourceTree = "<group>"; };
+		B165250D217502A700146F80 /* UserServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserServiceType.swift; sourceTree = "<group>"; };
 		B1664BAD20F4E67500808783 /* FallbackViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FallbackViewController.xib; sourceTree = "<group>"; };
 		B1664BAE20F4E67500808783 /* FallbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FallbackViewController.m; sourceTree = "<group>"; };
 		B1664BAF20F4E67500808783 /* FallbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FallbackViewController.h; sourceTree = "<group>"; };
@@ -1516,6 +1522,7 @@
 			children = (
 				02BEE1A5212C772500098505 /* Constants */,
 				B1F2AAB4212AFD9D0077FDC0 /* Extensions */,
+				B109EF192170F3650018FA06 /* Model */,
 				02BEE184212AB23A00098505 /* Managers */,
 				B1F2AAA3212AED830077FDC0 /* Coordinators */,
 				B1F2AAA6212AED900077FDC0 /* Routers */,
@@ -1605,6 +1612,7 @@
 		02BEE184212AB23A00098505 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				B109EF1C2170F41E0018FA06 /* User */,
 				020DF6F921480700003DFBA4 /* Discussions */,
 				B12FD69D2146B3C3001B7F28 /* RestClientBuilder */,
 				B1322FF62130030A0054A9DD /* Authentication */,
@@ -1695,6 +1703,23 @@
 				92726A481F58737A004AD26F /* Info.plist */,
 			);
 			path = SiriIntents;
+			sourceTree = "<group>";
+		};
+		B109EF192170F3650018FA06 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				B109EF1A2170F3B90018FA06 /* User.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		B109EF1C2170F41E0018FA06 /* User */ = {
+			isa = PBXGroup;
+			children = (
+				B165250D217502A700146F80 /* UserServiceType.swift */,
+				B109EF172170DFEB0018FA06 /* UserService.swift */,
+			);
+			path = User;
 			sourceTree = "<group>";
 		};
 		B11C7FFA21393E5D00CC6F2F /* Registration */ = {
@@ -3531,6 +3556,7 @@
 				B1A4D7DD215A2F50004A5AB4 /* RoomPreviewCoordinator.swift in Sources */,
 				B1F2AA9D212AEC830077FDC0 /* AuthenticationCoordinator.swift in Sources */,
 				020DF974214BE467003DFBA4 /* RoomMembershipCollapsedBubbleCell.m in Sources */,
+				B165250E217502A700146F80 /* UserServiceType.swift in Sources */,
 				020DF996214BE467003DFBA4 /* RoomMembershipExpandedWithPaginationTitleBubbleCell.m in Sources */,
 				02BEE18B212AB23A00098505 /* IdentityServersURLGetter.swift in Sources */,
 				020DF99E214BE467003DFBA4 /* RoomEmptyBubbleCell.m in Sources */,
@@ -3631,6 +3657,7 @@
 				B1F2AAA5212AED840077FDC0 /* Coordinator.swift in Sources */,
 				B1680CFB2152A9E6009B5F92 /* PublicRoomsCoordinatorType.swift in Sources */,
 				020DF93D214BE467003DFBA4 /* TableViewCellWithCheckBoxes.m in Sources */,
+				B109EF1B2170F3B90018FA06 /* User.swift in Sources */,
 				020DF945214BE467003DFBA4 /* RoomFilesViewController.m in Sources */,
 				020DF98F214BE467003DFBA4 /* RoomPredecessorBubbleCell.m in Sources */,
 				B1BC6A022135E2A600D32F8E /* ActivityIndicatorPresenter.swift in Sources */,
@@ -3689,6 +3716,7 @@
 				0250C5192122B68000034691 /* MXSession+Riot.m in Sources */,
 				02BEE18A212AB23A00098505 /* ThirdPartyIDPlatformInfoResolver.swift in Sources */,
 				0250C51E2122B68000034691 /* UsersDevicesViewController.m in Sources */,
+				B109EF182170DFEB0018FA06 /* UserService.swift in Sources */,
 				0250C5202122B68000034691 /* MatrixSDK+Swift.m in Sources */,
 				B1BC6A212136CA7F00D32F8E /* Stylable.swift in Sources */,
 				B15B866E21353C8D002782BE /* TextInputProperties.swift in Sources */,
