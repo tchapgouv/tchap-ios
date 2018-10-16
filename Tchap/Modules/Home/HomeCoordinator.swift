@@ -121,6 +121,14 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
         self.navigationRouter.present(publicRoomsCoordinator, animated: true)
         publicRoomsCoordinator.delegate = self
     }
+    
+    private func startDiscussion(with userID: String) {
+        let roomCoordinator = RoomCoordinator(router: self.navigationRouter, session: self.session, discussionTargetUserID: userID)
+        roomCoordinator.start()
+        self.navigationRouter.push(roomCoordinator, animated: true, popCompletion: { [weak self] in
+            self?.remove(childCoordinator: roomCoordinator)
+        })
+    }
 }
 
 // MARK: - GlobalSearchBarDelegate
@@ -145,7 +153,7 @@ extension HomeCoordinator: ContactsCoordinatorDelegate {
     }
     
     func contactsCoordinator(_ coordinator: ContactsCoordinatorType, didSelectUserID userID: String) {
-        //TODO Display a fake room, create the discussion only when an event is sent (#41).
+        self.startDiscussion(with: userID)
     }
 }
 
@@ -156,7 +164,7 @@ extension HomeCoordinator: RoomCoordinatorDelegate {
     }
     
     func roomCoordinator(_ coordinator: RoomCoordinatorType, didSelectUserID userID: String) {
-        //TODO Display a fake room, create the discussion only when an event is sent (#41).
+        self.startDiscussion(with: userID)
     }
 }
         
