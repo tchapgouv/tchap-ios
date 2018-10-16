@@ -58,7 +58,6 @@ enum
     SETTINGS_SECTION_IGNORED_USERS_INDEX,
     SETTINGS_SECTION_CONTACTS_INDEX,
     SETTINGS_SECTION_OTHER_INDEX,
-    SETTINGS_SECTION_LABS_INDEX,
     SETTINGS_SECTION_CRYPTOGRAPHY_INDEX,
     SETTINGS_SECTION_DEVICES_INDEX,
     SETTINGS_SECTION_DEACTIVATE_ACCOUNT_INDEX,
@@ -89,25 +88,14 @@ enum
 enum
 {
     OTHER_VERSION_INDEX = 0,
-    OTHER_OLM_VERSION_INDEX,
-    OTHER_COPYRIGHT_INDEX,
     OTHER_TERM_CONDITIONS_INDEX,
-    OTHER_PRIVACY_INDEX,
     OTHER_THIRD_PARTY_INDEX,
-    OTHER_CRASH_REPORT_INDEX,
-    OTHER_ENABLE_RAGESHAKE_INDEX,
+    //OTHER_CRASH_REPORT_INDEX,
+    //OTHER_ENABLE_RAGESHAKE_INDEX,
     OTHER_MARK_ALL_AS_READ_INDEX,
     OTHER_CLEAR_CACHE_INDEX,
-    OTHER_REPORT_BUG_INDEX,
+    //OTHER_REPORT_BUG_INDEX,
     OTHER_COUNT
-};
-
-enum
-{
-    //LABS_USE_ROOM_MEMBERS_LAZY_LOADING_INDEX = 0,
-    LABS_USE_JITSI_WIDGET_INDEX = 0,
-    LABS_CRYPTO_INDEX,
-    LABS_COUNT
 };
 
 enum {
@@ -1069,10 +1057,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     {
         count = OTHER_COUNT;
     }
-    else if (section == SETTINGS_SECTION_LABS_INDEX)
-    {
-        count = LABS_COUNT;
-    }
     else if (section == SETTINGS_SECTION_DEVICES_INDEX)
     {
         count = devicesArray.count;
@@ -1539,16 +1523,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
             
             cell = versionCell;
         }
-        else if (row == OTHER_OLM_VERSION_INDEX)
-        {
-            MXKTableViewCell *versionCell = [self getDefaultTableViewCell:tableView];
-            
-            versionCell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_olm_version", @"Vector", nil), [OLMKit versionString]];
-            
-            versionCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            
-            cell = versionCell;
-        }
         else if (row == OTHER_TERM_CONDITIONS_INDEX)
         {
             MXKTableViewCell *termAndConditionCell = [self getDefaultTableViewCell:tableView];
@@ -1558,26 +1532,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
             termAndConditionCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             
             cell = termAndConditionCell;
-        }
-        else if (row == OTHER_COPYRIGHT_INDEX)
-        {
-            MXKTableViewCell *copyrightCell = [self getDefaultTableViewCell:tableView];
-
-            copyrightCell.textLabel.text = NSLocalizedStringFromTable(@"settings_copyright", @"Vector", nil);
-            
-            copyrightCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            
-            cell = copyrightCell;
-        }
-        else if (row == OTHER_PRIVACY_INDEX)
-        {
-            MXKTableViewCell *privacyPolicyCell = [self getDefaultTableViewCell:tableView];
-            
-            privacyPolicyCell.textLabel.text = NSLocalizedStringFromTable(@"settings_privacy_policy", @"Vector", nil);
-            
-            privacyPolicyCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            
-            cell = privacyPolicyCell;
         }
         else if (row == OTHER_THIRD_PARTY_INDEX)
         {
@@ -1589,28 +1543,28 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
             
             cell = thirdPartyCell;
         }
-        else if (row == OTHER_CRASH_REPORT_INDEX)
-        {
-            MXKTableViewCellWithLabelAndSwitch* sendCrashReportCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-            
-            sendCrashReportCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_send_crash_report", @"Vector", nil);
-            sendCrashReportCell.mxkSwitch.on = RiotSettings.shared.enableCrashReport;
-            sendCrashReportCell.mxkSwitch.enabled = YES;
-            [sendCrashReportCell.mxkSwitch addTarget:self action:@selector(toggleSendCrashReport:) forControlEvents:UIControlEventTouchUpInside];
-            
-            cell = sendCrashReportCell;
-        }
-        else if (row == OTHER_ENABLE_RAGESHAKE_INDEX)
-        {
-            MXKTableViewCellWithLabelAndSwitch* enableRageShakeCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-
-            enableRageShakeCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_enable_rageshake", @"Vector", nil);
-            enableRageShakeCell.mxkSwitch.on = RiotSettings.shared.enableRageShake;
-            enableRageShakeCell.mxkSwitch.enabled = YES;
-            [enableRageShakeCell.mxkSwitch addTarget:self action:@selector(toggleEnableRageShake:) forControlEvents:UIControlEventTouchUpInside];
-
-            cell = enableRageShakeCell;
-        }
+//        else if (row == OTHER_CRASH_REPORT_INDEX)
+//        {
+//            MXKTableViewCellWithLabelAndSwitch* sendCrashReportCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+//
+//            sendCrashReportCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_send_crash_report", @"Vector", nil);
+//            sendCrashReportCell.mxkSwitch.on = RiotSettings.shared.enableCrashReport;
+//            sendCrashReportCell.mxkSwitch.enabled = YES;
+//            [sendCrashReportCell.mxkSwitch addTarget:self action:@selector(toggleSendCrashReport:) forControlEvents:UIControlEventTouchUpInside];
+//
+//            cell = sendCrashReportCell;
+//        }
+//        else if (row == OTHER_ENABLE_RAGESHAKE_INDEX)
+//        {
+//            MXKTableViewCellWithLabelAndSwitch* enableRageShakeCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+//
+//            enableRageShakeCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_enable_rageshake", @"Vector", nil);
+//            enableRageShakeCell.mxkSwitch.on = RiotSettings.shared.enableRageShake;
+//            enableRageShakeCell.mxkSwitch.enabled = YES;
+//            [enableRageShakeCell.mxkSwitch addTarget:self action:@selector(toggleEnableRageShake:) forControlEvents:UIControlEventTouchUpInside];
+//
+//            cell = enableRageShakeCell;
+//        }
         else if (row == OTHER_MARK_ALL_AS_READ_INDEX)
         {
             MXKTableViewCellWithButton *markAllBtnCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
@@ -1661,75 +1615,31 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
             
             cell = clearCacheBtnCell;
         }
-        else if (row == OTHER_REPORT_BUG_INDEX)
-        {
-            MXKTableViewCellWithButton *reportBugBtnCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
-            if (!reportBugBtnCell)
-            {
-                reportBugBtnCell = [[MXKTableViewCellWithButton alloc] init];
-            }
-            else
-            {
-                // Fix https://github.com/vector-im/riot-ios/issues/1354
-                reportBugBtnCell.mxkButton.titleLabel.text = nil;
-            }
-
-            NSString *btnTitle = NSLocalizedStringFromTable(@"settings_report_bug", @"Vector", nil);
-            [reportBugBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
-            [reportBugBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
-            [reportBugBtnCell.mxkButton setTintColor:kRiotColorGreen];
-            reportBugBtnCell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
-
-            [reportBugBtnCell.mxkButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
-            [reportBugBtnCell.mxkButton addTarget:self action:@selector(reportBug:) forControlEvents:UIControlEventTouchUpInside];
-            reportBugBtnCell.mxkButton.accessibilityIdentifier = nil;
-
-            cell = reportBugBtnCell;
-        }
-    }
-    else if (section == SETTINGS_SECTION_LABS_INDEX)
-    {
-        /*if (row == LABS_USE_ROOM_MEMBERS_LAZY_LOADING_INDEX)
-        {
-            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-
-            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_room_members_lazy_loading", @"Vector", nil);
-            labelAndSwitchCell.mxkSwitch.on = [MXKAppSettings standardAppSettings].syncWithLazyLoadOfRoomMembers;
-
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleSyncWithLazyLoadOfRoomMembers:) forControlEvents:UIControlEventTouchUpInside];
-
-            cell = labelAndSwitchCell;
-        }
-        else*/ if (row == LABS_USE_JITSI_WIDGET_INDEX)
-        {
-            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-
-            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_create_conference_with_jitsi", @"Vector", nil);
-            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.createConferenceCallsWithJitsi;
-
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleJitsiForConference:) forControlEvents:UIControlEventTouchUpInside];
-
-            cell = labelAndSwitchCell;
-        }
-        else if (row == LABS_CRYPTO_INDEX)
-        {
-            MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
-
-            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-
-            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_e2e_encryption", @"Vector", nil);
-            labelAndSwitchCell.mxkSwitch.on = (nil != session.crypto);
-
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleLabsEndToEndEncryption:) forControlEvents:UIControlEventTouchUpInside];
-
-            if (session.crypto)
-            {
-                // Once crypto is enabled, it is enabled
-                labelAndSwitchCell.mxkSwitch.enabled = NO;
-            }
-
-            cell = labelAndSwitchCell;
-        }
+//        else if (row == OTHER_REPORT_BUG_INDEX)
+//        {
+//            MXKTableViewCellWithButton *reportBugBtnCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
+//            if (!reportBugBtnCell)
+//            {
+//                reportBugBtnCell = [[MXKTableViewCellWithButton alloc] init];
+//            }
+//            else
+//            {
+//                // Fix https://github.com/vector-im/riot-ios/issues/1354
+//                reportBugBtnCell.mxkButton.titleLabel.text = nil;
+//            }
+//
+//            NSString *btnTitle = NSLocalizedStringFromTable(@"settings_report_bug", @"Vector", nil);
+//            [reportBugBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
+//            [reportBugBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
+//            [reportBugBtnCell.mxkButton setTintColor:kRiotColorGreen];
+//            reportBugBtnCell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
+//
+//            [reportBugBtnCell.mxkButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+//            [reportBugBtnCell.mxkButton addTarget:self action:@selector(reportBug:) forControlEvents:UIControlEventTouchUpInside];
+//            reportBugBtnCell.mxkButton.accessibilityIdentifier = nil;
+//
+//            cell = reportBugBtnCell;
+//        }
     }
     else if (section == SETTINGS_SECTION_DEVICES_INDEX)
     {
@@ -1867,24 +1777,12 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     {
         return NSLocalizedStringFromTable(@"settings_other", @"Vector", nil);
     }
-    else if (section == SETTINGS_SECTION_LABS_INDEX)
-    {
-        return NSLocalizedStringFromTable(@"settings_labs", @"Vector", nil);
-    }
     else if (section == SETTINGS_SECTION_DEVICES_INDEX)
     {
         // Check whether this section is visible
         if (devicesArray.count > 0)
         {
             return NSLocalizedStringFromTable(@"settings_devices", @"Vector", nil);
-        }
-    }
-    else if (section == SETTINGS_SECTION_CRYPTOGRAPHY_INDEX)
-    {
-        // Check whether this section is visible
-        if (self.mainSession.crypto)
-        {
-            return NSLocalizedStringFromTable(@"settings_cryptography", @"Vector", nil);
         }
     }
     else if (section == SETTINGS_SECTION_CRYPTOGRAPHY_INDEX)
@@ -2116,27 +2014,11 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         }
         else if (section == SETTINGS_SECTION_OTHER_INDEX)
         {
-            if (row == OTHER_COPYRIGHT_INDEX)
-            {
-                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:NSLocalizedStringFromTable(@"settings_copyright_url", @"Vector", nil)];
-                
-                webViewViewController.title = NSLocalizedStringFromTable(@"settings_copyright", @"Vector", nil);
-                
-                [self pushViewController:webViewViewController];
-            }
-            else if (row == OTHER_TERM_CONDITIONS_INDEX)
+            if (row == OTHER_TERM_CONDITIONS_INDEX)
             {
                 WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:NSLocalizedStringFromTable(@"settings_term_conditions_url", @"Vector", nil)];
                 
                 webViewViewController.title = NSLocalizedStringFromTable(@"settings_term_conditions", @"Vector", nil);
-                
-                [self pushViewController:webViewViewController];
-            }
-            else if (row == OTHER_PRIVACY_INDEX)
-            {
-                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:NSLocalizedStringFromTable(@"settings_privacy_policy_url", @"Vector", nil)];
-                
-                webViewViewController.title = NSLocalizedStringFromTable(@"settings_privacy_policy", @"Vector", nil);
                 
                 [self pushViewController:webViewViewController];
             }
@@ -2414,213 +2296,41 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     }
 }
 
-- (void)toggleSendCrashReport:(id)sender
-{
-    BOOL enable = RiotSettings.shared.enableCrashReport;
-    if (enable)
-    {
-        NSLog(@"[SettingsViewController] disable automatic crash report and analytics sending");
-        
-        RiotSettings.shared.enableCrashReport = NO;
-        
-        [[Analytics sharedInstance] stop];
-        
-        // Remove potential crash file.
-        [MXLogger deleteCrashLog];
-    }
-    else
-    {
-        NSLog(@"[SettingsViewController] enable automatic crash report and analytics sending");
-        
-        RiotSettings.shared.enableCrashReport = YES;
-        
-        [[Analytics sharedInstance] start];
-    }
-}
-
-- (void)toggleEnableRageShake:(id)sender
-{
-    if (sender && [sender isKindOfClass:UISwitch.class])
-    {
-        UISwitch *switchButton = (UISwitch*)sender;
-
-        RiotSettings.shared.enableRageShake = switchButton.isOn;
-
-        [self.tableView reloadData];
-    }
-}
-
-- (void)toggleSyncWithLazyLoadOfRoomMembers:(id)sender
-{
-    if (sender && [sender isKindOfClass:UISwitch.class])
-    {
-        UISwitch *switchButton = (UISwitch*)sender;
-
-        if (!switchButton.isOn)
-        {
-            [MXKAppSettings standardAppSettings].syncWithLazyLoadOfRoomMembers = NO;
-            [self launchClearCache];
-        }
-        else
-        {
-            switchButton.enabled = NO;
-            [self startActivityIndicator];
-
-            // Check the user homeserver supports lazy-loading
-            MXSession* session = [AppDelegate theDelegate].mxSessions.firstObject;
-
-            MXWeakify(self);
-            [session setFilter:[MXFilterJSONModel syncFilterForLazyLoading] success:^(NSString *filterId) {
-
-                // Lazy-loading is supported, enable it
-                [MXKAppSettings standardAppSettings].syncWithLazyLoadOfRoomMembers = YES;
-                [self launchClearCache];
-
-            } failure:^(NSError *error) {
-                MXStrongifyAndReturnIfNil(self);
-
-                [switchButton setOn:NO animated:YES];
-                switchButton.enabled = YES;
-                [self stopActivityIndicator];
-
-                // No support of lazy-loading, do not engage it and warn the user
-                [self->currentAlert dismissViewControllerAnimated:NO completion:nil];
-
-                self->currentAlert = [UIAlertController alertControllerWithTitle:nil
-                                                                         message:NSLocalizedStringFromTable(@"settings_labs_room_members_lazy_loading_error_message", @"Vector", nil)
-                                                                  preferredStyle:UIAlertControllerStyleAlert];
-
-                MXWeakify(self);
-                [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
-                                                                       style:UIAlertActionStyleDefault
-                                                                     handler:^(UIAlertAction * action) {
-                                                                         MXStrongifyAndReturnIfNil(self);
-                                                                         self->currentAlert = nil;
-                                                                     }]];
-
-                [self->currentAlert mxk_setAccessibilityIdentifier: @"SettingsVCNoHSSupportOfLazyLoading"];
-                [self presentViewController:self->currentAlert animated:YES completion:nil];
-            }];
-        }
-    }
-}
-
-
-- (void)toggleJitsiForConference:(id)sender
-{
-    if (sender && [sender isKindOfClass:UISwitch.class])
-    {
-        UISwitch *switchButton = (UISwitch*)sender;
-        
-        RiotSettings.shared.createConferenceCallsWithJitsi = switchButton.isOn;
-
-        [self.tableView reloadData];
-    }
-}
-
-- (void)toggleLabsEndToEndEncryption:(id)sender
-{
-    if (sender && [sender isKindOfClass:UISwitch.class])
-    {
-        UISwitch *switchButton = (UISwitch*)sender;
-        MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-        
-        if (switchButton.isOn && !account.mxCredentials.deviceId.length)
-        {
-            // Prompt the user to log in again when no device id is available.
-            __weak typeof(self) weakSelf = self;
-            
-            // Prompt user
-            NSString *msg = NSLocalizedStringFromTable(@"settings_labs_e2e_encryption_prompt_message", @"Vector", nil);
-            
-            [currentAlert dismissViewControllerAnimated:NO completion:nil];
-            
-            currentAlert = [UIAlertController alertControllerWithTitle:nil message:msg preferredStyle:UIAlertControllerStyleAlert];
-            
-            [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"later"]
-                                                             style:UIAlertActionStyleDefault
-                                                           handler:^(UIAlertAction * action) {
-                                                               
-                                                               if (weakSelf)
-                                                               {
-                                                                   typeof(self) self = weakSelf;
-                                                                   self->currentAlert = nil;
-                                                               }
-                                                               
-                                                               // Reset toggle button
-                                                               [switchButton setOn:NO animated:YES];
-                                                               
-                                                           }]];
-            
-            [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
-                                                             style:UIAlertActionStyleDefault
-                                                           handler:^(UIAlertAction * action) {
-                                                               
-                                                               if (weakSelf)
-                                                               {
-                                                                   typeof(self) self = weakSelf;
-                                                                   self->currentAlert = nil;
-                                                                   
-                                                                   switchButton.enabled = NO;
-                                                                   [self startActivityIndicator];
-                                                                   
-                                                                   dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-                                                                       
-                                                                       [[AppDelegate theDelegate] logoutWithConfirmation:NO completion:nil];
-                                                                       
-                                                                   });
-                                                               }
-                                                               
-                                                           }]];
-            
-            [currentAlert mxk_setAccessibilityIdentifier:@"SettingsVCEnableEncryptionAlert"];
-            [self presentViewController:currentAlert animated:YES completion:nil];
-        }
-        else
-        {
-            [self startActivityIndicator];
-            
-            MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
-            [session enableCrypto:switchButton.isOn success:^{
-
-                // When disabling crypto, reset the current device id as it cannot be reused.
-                // This means that the user will need to log in again if he wants to re-enable e2e.
-                if (!switchButton.isOn)
-                {
-                    [account resetDeviceId];
-                }
-                
-                // Reload all data source of encrypted rooms
-                MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:session];
-                
-                for (MXRoom *room in session.rooms)
-                {
-                    if (room.summary.isEncrypted)
-                    {
-                        [roomDataSourceManager roomDataSourceForRoom:room.roomId create:NO onComplete:^(MXKRoomDataSource *roomDataSource) {
-                            [roomDataSource reload];
-                        }];
-                    }
-                }
-                
-                // Once crypto is enabled, it is enabled
-                switchButton.enabled = NO;
-                
-                [self stopActivityIndicator];
-                
-                // Refresh table view to add cryptography information.
-                [self.tableView reloadData];
-                
-            } failure:^(NSError *error) {
-                
-                [self stopActivityIndicator];
-                
-                // Come back to previous state button
-                [switchButton setOn:!switchButton.isOn animated:YES];
-            }];
-        }
-    }
-}
+//- (void)toggleSendCrashReport:(id)sender
+//{
+//    BOOL enable = RiotSettings.shared.enableCrashReport;
+//    if (enable)
+//    {
+//        NSLog(@"[SettingsViewController] disable automatic crash report and analytics sending");
+//
+//        RiotSettings.shared.enableCrashReport = NO;
+//
+//        [[Analytics sharedInstance] stop];
+//
+//        // Remove potential crash file.
+//        [MXLogger deleteCrashLog];
+//    }
+//    else
+//    {
+//        NSLog(@"[SettingsViewController] enable automatic crash report and analytics sending");
+//
+//        RiotSettings.shared.enableCrashReport = YES;
+//
+//        [[Analytics sharedInstance] start];
+//    }
+//}
+//
+//- (void)toggleEnableRageShake:(id)sender
+//{
+//    if (sender && [sender isKindOfClass:UISwitch.class])
+//    {
+//        UISwitch *switchButton = (UISwitch*)sender;
+//
+//        RiotSettings.shared.enableRageShake = switchButton.isOn;
+//
+//        [self.tableView reloadData];
+//    }
+//}
 
 - (void)toggleBlacklistUnverifiedDevices:(id)sender
 {
@@ -2669,11 +2379,11 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     });
 }
 
-- (void)reportBug:(id)sender
-{
-    BugReportViewController *bugReportViewController = [BugReportViewController bugReportViewController];
-    [bugReportViewController showInViewController:self];
-}
+//- (void)reportBug:(id)sender
+//{
+//    BugReportViewController *bugReportViewController = [BugReportViewController bugReportViewController];
+//    [bugReportViewController showInViewController:self];
+//}
 
 - (void)selectPhoneNumberCountry:(id)sender
 {
