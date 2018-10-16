@@ -71,8 +71,6 @@ enum
     NOTIFICATION_SETTINGS_ENABLE_PUSH_INDEX = 0,
     NOTIFICATION_SETTINGS_SHOW_DECODED_CONTENT,
     NOTIFICATION_SETTINGS_GLOBAL_SETTINGS_INDEX,
-    NOTIFICATION_SETTINGS_PIN_MISSED_NOTIFICATIONS_INDEX,
-    NOTIFICATION_SETTINGS_PIN_UNREAD_INDEX,
     //NOTIFICATION_SETTINGS_CONTAINING_MY_USER_NAME_INDEX,
     //NOTIFICATION_SETTINGS_CONTAINING_MY_DISPLAY_NAME_INDEX,
     //NOTIFICATION_SETTINGS_SENT_TO_ME_INDEX,
@@ -1460,28 +1458,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
             
             cell = globalInfoCell;
         }
-        else if (row == NOTIFICATION_SETTINGS_PIN_MISSED_NOTIFICATIONS_INDEX)
-        {
-            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-            
-            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_pin_rooms_with_missed_notif", @"Vector", nil);
-            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.pinRoomsWithMissedNotificationsOnHome;
-            labelAndSwitchCell.mxkSwitch.enabled = YES;
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(togglePinRoomsWithMissedNotif:) forControlEvents:UIControlEventTouchUpInside];
-            
-            cell = labelAndSwitchCell;
-        }
-        else if (row == NOTIFICATION_SETTINGS_PIN_UNREAD_INDEX)
-        {
-            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-            
-            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_pin_rooms_with_unread", @"Vector", nil);
-            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.pinRoomsWithUnreadMessagesOnHome;                        
-            labelAndSwitchCell.mxkSwitch.enabled = YES;
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(togglePinRoomsWithUnread:) forControlEvents:UIControlEventTouchUpInside];
-            
-            cell = labelAndSwitchCell;
-        }
     }
     else if (section == SETTINGS_SECTION_CALLS_INDEX)
     {
@@ -2676,20 +2652,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     account.mxSession.crypto.globalBlacklistUnverifiedDevices = switchButton.on;
 
     [self.tableView reloadData];
-}
-
-- (void)togglePinRoomsWithMissedNotif:(id)sender
-{
-    UISwitch *switchButton = (UISwitch*)sender;
-    
-    RiotSettings.shared.pinRoomsWithMissedNotificationsOnHome = switchButton.on;
-}
-
-- (void)togglePinRoomsWithUnread:(id)sender
-{
-    UISwitch *switchButton = (UISwitch*)sender;
-
-    RiotSettings.shared.pinRoomsWithUnreadMessagesOnHome = switchButton.on;
 }
 
 - (void)markAllAsRead:(id)sender
