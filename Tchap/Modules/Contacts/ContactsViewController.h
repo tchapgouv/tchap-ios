@@ -27,7 +27,7 @@
 /**
  The delegate for the view controller.
  */
-@property (nonatomic, weak) id<ContactsViewControllerDelegate> delegate;
+@property (nonatomic, weak, nullable) id<ContactsViewControllerDelegate> delegate;
 
 /**
  Creates and returns a new `ContactsViewController` object.
@@ -37,7 +37,7 @@
  @param style Used to setup view style parameters.
  @return An initialized `ContactsViewController` object if successful, `nil` otherwise.
  */
-+ (instancetype)instantiateWithStyle:(id<Style>)style;
++ (nonnull instancetype)instantiateWithStyle:(nonnull id<Style>)style;
 
 /**
  Creates and returns a new `ContactsViewController` object.
@@ -48,7 +48,7 @@
  @param showSearchBar YES to indicate to show search bar.
  @return An initialized `ContactsViewController` object if successful, `nil` otherwise.
  */
-+ (instancetype)instantiateWithStyle:(id<Style>)style showSearchBar:(BOOL)showSearchBar;
++ (nonnull instancetype)instantiateWithStyle:(nonnull id<Style>)style showSearchBar:(BOOL)showSearchBar;
 
 /**
  Display the contacts described in the provided data source.
@@ -58,7 +58,7 @@
  
  @param listDataSource the data source providing the contacts list.
  */
-- (void)displayList:(ContactsDataSource*)listDataSource;
+- (void)displayList:(nonnull ContactsDataSource*)listDataSource;
 
 @end
 
@@ -73,6 +73,6 @@
  @param contactsViewController the `ContactsViewController` instance.
  @param contact the selected contact.
  */
-- (void)contactsViewController:(ContactsViewController *)contactsViewController didSelectContact:(MXKContact*)contact;
+- (void)contactsViewController:(nonnull ContactsViewController *)contactsViewController didSelectContact:(nonnull MXKContact*)contact;
 
 @end

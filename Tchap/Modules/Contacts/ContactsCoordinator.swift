@@ -122,12 +122,7 @@ final class ContactsCoordinator: NSObject, ContactsCoordinatorType {
 // MARK: - ContactsViewControllerDelegate
 extension ContactsCoordinator: ContactsViewControllerDelegate {
     
-    func contactsViewController(_ contactsViewController: ContactsViewController!, didSelect contact: MXKContact!) {
-        // Check whether the selected contact is a Tchap user.
-        guard let contact = contact, !contact.matrixIdentifiers.isEmpty else {
-            return
-        }
-
+    func contactsViewController(_ contactsViewController: ContactsViewController, didSelect contact: MXKContact) {        
         // No more than one matrix identifer is expected by contact in Tchap.
         guard contact.matrixIdentifiers.count == 1, let userID = contact.matrixIdentifiers.first as? String else {
             print("[ContactsCoordinator] Invalid selected contact: multiple matrix ids")
