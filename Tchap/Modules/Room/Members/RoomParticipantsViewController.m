@@ -275,7 +275,6 @@
     
     if (contactsPickerViewController)
     {
-        [contactsPickerViewController destroy];
         contactsPickerViewController = nil;
     }
     
@@ -670,7 +669,7 @@
 - (void)onAddParticipantButtonPressed
 {
     // Push the contacts picker.
-    contactsPickerViewController = [ContactsViewController instantiateWithStyle:Variant2Style.shared];
+    contactsPickerViewController = [ContactsViewController instantiateWithStyle:Variant2Style.shared showSearchBar:YES];
     
     // Set delegate to handle action on member (start chat, mention)
     contactsPickerViewController.delegate = self;
@@ -699,13 +698,9 @@
         [contactsDataSource.ignoredContactsByMatrixId setObject:userParticipant forKey:userParticipant.mxMember.userId];
     }
     
-    [contactsPickerViewController showSearch:YES];
-    contactsPickerViewController.searchBar.placeholder = NSLocalizedStringFromTable(@"room_participants_invite_another_user", @"Vector", nil);
-    
     // Apply the search pattern if any
     if (currentSearchText)
     {
-        contactsPickerViewController.searchBar.text = currentSearchText;
         [contactsDataSource searchWithPattern:currentSearchText forceReset:YES];
     }
     
@@ -1001,6 +996,11 @@
         
         [self.navigationController pushViewController:viewController animated:YES];
     }
+}
+
+- (void)dismissContactsPickerViewControllerAnimated:(BOOL)animated
+{
+    [self->contactsPickerViewController dismissViewControllerAnimated:animated completion:nil];
 }
 
 #pragma mark - UITableView data source
@@ -1614,7 +1614,7 @@
                                                                    [self removePendingActionMask];
                                                                    
                                                                    // Refresh display by removing the contacts picker
-                                                                   [self->contactsPickerViewController withdrawViewControllerAnimated:YES completion:nil];
+                                                                   [self dismissContactsPickerViewControllerAnimated:YES];
                                                                    
                                                                } failure:^(NSError *error) {
                                                                    
@@ -1651,7 +1651,7 @@
                                                                        [self removePendingActionMask];
                                                                        
                                                                        // Refresh display by removing the contacts picker
-                                                                       [self->contactsPickerViewController withdrawViewControllerAnimated:YES completion:nil];
+                                                                       [self dismissContactsPickerViewControllerAnimated:YES];
                                                                        
                                                                    } failure:^(NSError *error) {
                                                                        
@@ -1672,7 +1672,7 @@
                                                                        [self removePendingActionMask];
                                                                        
                                                                        // Refresh display by removing the contacts picker
-                                                                       [self->contactsPickerViewController withdrawViewControllerAnimated:YES completion:nil];
+                                                                       [self dismissContactsPickerViewControllerAnimated:YES];
                                                                        
                                                                    } failure:^(NSError *error) {
                                                                        
