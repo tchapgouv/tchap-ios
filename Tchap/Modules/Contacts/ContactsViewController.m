@@ -19,7 +19,6 @@
 #import "RiotDesignValues.h"
 #import "RageShakeManager.h"
 #import "Analytics.h"
-#import "LegacyAppDelegate.h"
 #import "ContactTableViewCell.h"
 #import "ContactsDataSource.h"
 
@@ -45,15 +44,6 @@
  The analytics instance screen name (Default is "ContactsTable").
  */
 @property (nonatomic) NSString *screenName;
-
-/**
- Refresh the cell selection in the table.
- 
- This must be done accordingly to the currently selected contact in the master tabbar of the application.
- 
- @param forceVisible if YES and if the corresponding cell is not visible, scroll the table view to make it visible.
- */
-- (void)refreshCurrentSelectedCell:(BOOL)forceVisible;
 
 /**
  Refresh the contacts table display.
@@ -182,41 +172,6 @@
     {
         [self scrollToTop:NO];
         _shouldScrollToTopOnRefresh = NO;
-    }
-    
-    // In case of split view controller where the primary and secondary view controllers are displayed side-by-side on screen,
-    // the selected room (if any) is updated and kept visible.
-    if (self.splitViewController && !self.splitViewController.isCollapsed)
-    {
-        [self refreshCurrentSelectedCell:YES];
-    }
-}
-
-- (void)refreshCurrentSelectedCell:(BOOL)forceVisible
-{
-    // Update here the index of the current selected cell (if any) - Useful in landscape mode with split view controller.
-    NSIndexPath *currentSelectedCellIndexPath = nil;
-    
-    if (currentSelectedCellIndexPath)
-    {
-        // Select the right row
-        [self.contactsTableView selectRowAtIndexPath:currentSelectedCellIndexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
-        
-        if (forceVisible)
-        {
-            // Scroll table view to make the selected row appear at second position
-            NSInteger topCellIndexPathRow = currentSelectedCellIndexPath.row ? currentSelectedCellIndexPath.row - 1: currentSelectedCellIndexPath.row;
-            NSIndexPath* indexPath = [NSIndexPath indexPathForRow:topCellIndexPathRow inSection:currentSelectedCellIndexPath.section];
-            [self.contactsTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
-        }
-    }
-    else
-    {
-        NSIndexPath *indexPath = [self.contactsTableView indexPathForSelectedRow];
-        if (indexPath)
-        {
-            [self.contactsTableView deselectRowAtIndexPath:indexPath animated:NO];
-        }
     }
 }
 
