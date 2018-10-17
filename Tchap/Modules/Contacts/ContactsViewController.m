@@ -23,24 +23,17 @@
 #import "ContactTableViewCell.h"
 #import "ContactsDataSource.h"
 
-#define CONTACTS_TABLEVC_DEFAULT_SECTION_HEADER_HEIGHT 30.0
-#define CONTACTS_TABLEVC_LOCALCONTACTS_SECTION_HEADER_HEIGHT 65.0
+#import "GeneratedInterface-Swift.h"
 
-@interface ContactsViewController () <UITableViewDelegate, MXKDataSourceDelegate>
-{
-    /**
-     Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
-     */
-    id kRiotDesignValuesDidChangeThemeNotificationObserver;
-    
-@protected
-    ContactsDataSource *contactsDataSource;
-}
+@interface ContactsViewController () <UITableViewDelegate, MXKDataSourceDelegate, Stylable>
 
 /**
  The contacts table view.
  */
 @property (weak, nonatomic) IBOutlet UITableView *contactsTableView;
+
+@property (strong, nonatomic) ContactsDataSource *contactsDataSource;
+@property (nonatomic, strong) id<Style> currentStyle;
 
 /**
  If YES, the table view will scroll at the top on the next data source refresh.
@@ -52,11 +45,6 @@
  The analytics instance screen name (Default is "ContactsTable").
  */
 @property (nonatomic) NSString *screenName;
-
-/**
- Callback used to take into account the change of the user interface theme.
- */
-- (void)userInterfaceThemeDidChange;
 
 /**
  Refresh the cell selection in the table.
@@ -80,7 +68,9 @@
 
 + (instancetype)instantiate
 {
-    return [[UIStoryboard storyboardWithName:NSStringFromClass([ContactsViewController class]) bundle:[NSBundle mainBundle]] instantiateInitialViewController];
+    ContactsViewController *viewController = [[UIStoryboard storyboardWithName:NSStringFromClass([ContactsViewController class]) bundle:[NSBundle mainBundle]] instantiateInitialViewController];
+    [viewController updateWithStyle:Variant1Style.shared];
+    return viewController;
 }
 
 #pragma mark -
@@ -101,67 +91,19 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    // Check whether the view controller has been pushed via storyboard
-    if (!self.contactsTableView)
-    {
-        // Instantiate view controller objects
-        [[[self class] nib] instantiateWithOwner:self options:nil];
-    }
-    
     // Finalize table view configuration
     self.contactsTableView.delegate = self;
-    self.contactsTableView.dataSource = contactsDataSource; // Note: dataSource may be nil here
+    self.contactsTableView.dataSource = self.contactsDataSource; // Note: dataSource may be nil here
     
     [self.contactsTableView registerClass:ContactTableViewCell.class forCellReuseIdentifier:ContactTableViewCell.defaultReuseIdentifier];
     
     // Hide line separators of empty cells
     self.contactsTableView.tableFooterView = [[UIView alloc] init];
-    
-    // Observe user interface theme change.
-    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-        
-        [self userInterfaceThemeDidChange];
-        
-    }];
-    [self userInterfaceThemeDidChange];
-}
-
-- (void)userInterfaceThemeDidChange
-{
-    self.defaultBarTintColor = kRiotSecondaryBgColor;
-    self.barTitleColor = kRiotPrimaryTextColor;
-    self.activityIndicator.backgroundColor = kRiotOverlayColor;
-    
-    // Check the table view style to select its bg color.
-    self.contactsTableView.backgroundColor = ((self.contactsTableView.style == UITableViewStylePlain) ? kRiotPrimaryBgColor : kRiotSecondaryBgColor);
-    self.view.backgroundColor = self.contactsTableView.backgroundColor;
-    
-    if (self.contactsTableView.dataSource)
-    {
-        [self refreshContactsTable];
-    }
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return kRiotDesignStatusBarStyle;
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (void)destroy
-{
-    [super destroy];
-    
-    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
-        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
-    }
+    return self.currentStyle.statusBarStyle;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -186,6 +128,30 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    [self updateWithStyle:self.currentStyle];
+}
+
+- (void)updateWithStyle:(id<Style>)style
+{
+    self.currentStyle = style;
+    
+    UINavigationBar *navigationBar = self.navigationController.navigationBar;
+    
+    if (navigationBar)
+    {
+        [style applyStyleOnNavigationBar:navigationBar];
+    }
+
+    self.activityIndicator.backgroundColor = kRiotOverlayColor;
+    
+    self.contactsTableView.backgroundColor = style.backgroundColor;
+    self.view.backgroundColor = style.backgroundColor;
+    
+    if (self.contactsTableView.dataSource)
+    {
+        [self refreshContactsTable];
+    }
 }
 
 #pragma mark -
@@ -193,18 +159,18 @@
 - (void)displayList:(ContactsDataSource*)listDataSource
 {
     // Cancel registration on existing dataSource if any
-    if (contactsDataSource)
+    if (self.contactsDataSource)
     {
-        contactsDataSource.delegate = nil;
+        self.contactsDataSource.delegate = nil;
     }
     
-    contactsDataSource = listDataSource;
-    contactsDataSource.delegate = self;
+    self.contactsDataSource = listDataSource;
+    self.contactsDataSource.delegate = self;
     
     if (self.contactsTableView)
     {
         // Set up table data source
-        self.contactsTableView.dataSource = contactsDataSource;
+        self.contactsTableView.dataSource = self.contactsDataSource;
     }
 }
 
@@ -293,40 +259,29 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    cell.backgroundColor = kRiotPrimaryBgColor;
+    cell.backgroundColor = self.currentStyle.backgroundColor;
     
-    // Update the selected background view
-    if (kRiotSelectedBgColor)
+    if (!cell.selectedBackgroundView)
     {
         cell.selectedBackgroundView = [[UIView alloc] init];
-        cell.selectedBackgroundView.backgroundColor = kRiotSelectedBgColor;
     }
-    else
-    {
-        if (tableView.style == UITableViewStylePlain)
-        {
-            cell.selectedBackgroundView = nil;
-        }
-        else
-        {
-            cell.selectedBackgroundView.backgroundColor = nil;
-        }
-    }
+    
+    cell.selectedBackgroundView.backgroundColor = self.currentStyle.secondaryBackgroundColor;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return [contactsDataSource heightForHeaderInSection:section];
+    return [self.contactsDataSource heightForHeaderInSection:section];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    return [contactsDataSource viewForHeaderInSection:section withFrame:[tableView rectForHeaderInSection:section]];
+    return [self.contactsDataSource viewForHeaderInSection:section withFrame:[tableView rectForHeaderInSection:section]];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([contactsDataSource contactAtIndexPath:indexPath])
+    if ([self.contactsDataSource contactAtIndexPath:indexPath])
     {
         // Return the default height of the contact cell
         return 74.0;
@@ -337,21 +292,16 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.delegate)
-    {
-        MXKContact *mxkContact = [contactsDataSource contactAtIndexPath:indexPath];
-        
-        if (mxkContact)
-        {
-            [self.delegate contactsViewController:self didSelectContact:mxkContact];
-        
-            // Keep selected the cell by default.
-            return;
-        }
-    }
-    // Else do nothing by default - `ContactsViewController-inherited` instance must override this method.
+    MXKContact *mxkContact = [self.contactsDataSource contactAtIndexPath:indexPath];
     
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if (self.delegate && mxkContact)
+    {
+        [self.delegate contactsViewController:self didSelectContact:mxkContact];
+    }
+    else
+    {
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    }
 }
 
 @end
