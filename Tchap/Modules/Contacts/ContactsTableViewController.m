@@ -20,6 +20,8 @@
 #import "RageShakeManager.h"
 #import "Analytics.h"
 #import "LegacyAppDelegate.h"
+#import "ContactTableViewCell.h"
+#import "ContactsDataSource.h"
 
 #define CONTACTS_TABLEVC_LOCALCONTACTS_BITWISE 0x01
 #define CONTACTS_TABLEVC_USERDIRECTORY_BITWISE 0x02
@@ -27,7 +29,7 @@
 #define CONTACTS_TABLEVC_DEFAULT_SECTION_HEADER_HEIGHT 30.0
 #define CONTACTS_TABLEVC_LOCALCONTACTS_SECTION_HEADER_HEIGHT 65.0
 
-@interface ContactsTableViewController ()
+@interface ContactsTableViewController () <UITableViewDelegate, MXKDataSourceDelegate>
 {
     /**
      Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
@@ -38,19 +40,51 @@
      Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
      */
     id kRiotDesignValuesDidChangeThemeNotificationObserver;
+    
+@protected
+    ContactsDataSource *contactsDataSource;
 }
+
+/**
+ The contacts table view.
+ */
+@property (weak, nonatomic) IBOutlet UITableView *contactsTableView;
+
+/**
+ If YES, the table view will scroll at the top on the next data source refresh.
+ It comes back to NO after each refresh.
+ */
+@property (nonatomic) BOOL shouldScrollToTopOnRefresh;
+
+/**
+ The analytics instance screen name (Default is "ContactsTable").
+ */
+@property (nonatomic) NSString *screenName;
+
+/**
+ Callback used to take into account the change of the user interface theme.
+ */
+- (void)userInterfaceThemeDidChange;
+
+/**
+ Refresh the cell selection in the table.
+ 
+ This must be done accordingly to the currently selected contact in the master tabbar of the application.
+ 
+ @param forceVisible if YES and if the corresponding cell is not visible, scroll the table view to make it visible.
+ */
+- (void)refreshCurrentSelectedCell:(BOOL)forceVisible;
+
+/**
+ Refresh the contacts table display.
+ */
+- (void)refreshContactsTable;
 
 @end
 
 @implementation ContactsTableViewController
 
 #pragma mark - Class methods
-
-+ (UINib *)nib
-{
-    return [UINib nibWithNibName:NSStringFromClass([ContactsTableViewController class])
-                          bundle:[NSBundle bundleForClass:[ContactsTableViewController class]]];
-}
 
 + (instancetype)instantiate
 {
