@@ -56,10 +56,10 @@
 
 #pragma mark - Class methods
 
-+ (instancetype)instantiate
++ (instancetype)instantiateWithStyle:(id<Style>)style
 {
     ContactsViewController *viewController = [[UIStoryboard storyboardWithName:NSStringFromClass([ContactsViewController class]) bundle:[NSBundle mainBundle]] instantiateInitialViewController];
-    [viewController updateWithStyle:Variant1Style.shared];
+    [viewController updateWithStyle:style];
     return viewController;
 }
 

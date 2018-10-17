@@ -46,7 +46,7 @@ final class ContactsCoordinator: NSObject, ContactsCoordinatorType {
         self.router = router
         self.session = session
         
-        self.contactsViewController = ContactsViewController.instantiate()
+        self.contactsViewController = ContactsViewController.instantiate(with: Variant1Style.shared)
         
         self.contactsDataSource = ContactsDataSource(matrixSession: self.session)
         self.contactsDataSource.finalizeInitialization()

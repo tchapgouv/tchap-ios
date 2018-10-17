@@ -17,11 +17,10 @@
 @import MatrixKit;
 
 @class ContactsDataSource;
-@protocol ContactsViewControllerDelegate;
+@protocol ContactsViewControllerDelegate, Style;
 
 /**
  'ContactsViewController' instance is used to display/filter a list of contacts.
- See 'ContactsViewController-inherited' object for example of use.
  */
 @interface ContactsViewController : MXKViewController
 
@@ -34,9 +33,11 @@
  Creates and returns a new `ContactsViewController` object.
  
  @discussion This is the designated initializer for programmatic instantiation.
+ 
+ @param style Used to setup view style parameters.
  @return An initialized `ContactsViewController` object if successful, `nil` otherwise.
  */
-+ (instancetype)instantiate;
++ (instancetype)instantiateWithStyle:(id<Style>)style;
 
 /**
  Display the contacts described in the provided data source.
