@@ -17,7 +17,6 @@
  */
 
 #import "RecentsViewController.h"
-#import "RecentsDataSource.h"
 #import "RecentTableViewCell.h"
 
 #import "MXRoom+Riot.h"
@@ -38,14 +37,6 @@
 {
     // Tell whether a recents refresh is pending (suspended during editing mode).
     BOOL isRefreshPending;
-    
-    // Recents drag and drop management
-    UILongPressGestureRecognizer *longPressGestureRecognizer;
-    UIImageView *cellSnapshot;
-    NSIndexPath* movingCellPath;
-    MXRoom* movingRoom;
-    
-    NSIndexPath* lastPotentialCellPath;
     
     // Observe UIApplicationDidEnterBackgroundNotification to cancel editing mode when app leaves the foreground state.
     id UIApplicationDidEnterBackgroundNotificationObserver;
@@ -168,8 +159,6 @@
 {
     [super destroy];
     
-    longPressGestureRecognizer = nil;
-    
     if (currentRequest)
     {
         [currentRequest cancel];
@@ -290,12 +279,6 @@
 
 - (void)refreshRecentsTable
 {
-    // do not refresh if there is a pending recent drag and drop
-    if (movingCellPath)
-    {
-        return;
-    }
-    
     isRefreshPending = NO;
     
     if (editedRoomId)
@@ -1071,239 +1054,6 @@
     });
     
     [super scrollViewDidScroll:scrollView];
-}
-
-#pragma mark - Recents drag & drop management
-
-- (void)setEnableDragging:(BOOL)enableDragging
-{
-    _enableDragging = enableDragging;
-    
-    if (_enableDragging && !longPressGestureRecognizer && self.recentsTableView)
-    {
-        longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onRecentsLongPress:)];
-        [self.recentsTableView addGestureRecognizer:longPressGestureRecognizer];
-    }
-    else if (longPressGestureRecognizer)
-    {
-        [self.recentsTableView removeGestureRecognizer:longPressGestureRecognizer];
-        longPressGestureRecognizer = nil;
-    }
-}
-
-- (void)onRecentsDragEnd
-{
-    [cellSnapshot removeFromSuperview];
-    cellSnapshot = nil;
-    movingCellPath = nil;
-    movingRoom = nil;
-    
-    lastPotentialCellPath = nil;
-    if ([self.dataSource isKindOfClass:RecentsDataSource.class])
-    {
-        ((RecentsDataSource*)self.dataSource).droppingCellIndexPath = nil;
-        ((RecentsDataSource*)self.dataSource).hiddenCellIndexPath = nil;
-    }
-    
-    [self.activityIndicator stopAnimating];
-}
-
-- (IBAction)onRecentsLongPress:(id)sender
-{
-    if (sender != longPressGestureRecognizer)
-    {
-        return;
-    }
-    
-    RecentsDataSource* recentsDataSource = nil;
-    
-    if ([self.dataSource isKindOfClass:[RecentsDataSource class]])
-    {
-        recentsDataSource = (RecentsDataSource*)self.dataSource;
-    }
-    
-    // only support RecentsDataSource
-    if (!recentsDataSource)
-    {
-        return;
-    }
-    
-    UIGestureRecognizerState state = longPressGestureRecognizer.state;
-    
-    // check if there is a moving cell during the long press managemnt
-    if ((state != UIGestureRecognizerStateBegan) && !movingCellPath)
-    {
-        return;
-    }
-    
-    CGPoint location = [longPressGestureRecognizer locationInView:self.recentsTableView];
-    
-    switch (state)
-    {
-            // step 1 : display the selected cell
-        case UIGestureRecognizerStateBegan:
-        {
-            NSIndexPath *indexPath = [self.recentsTableView indexPathForRowAtPoint:location];
-            
-            // check if the cell can be moved
-            if (indexPath && [recentsDataSource isDraggableCellAt:indexPath])
-            {
-                UITableViewCell *cell = [self.recentsTableView cellForRowAtIndexPath:indexPath];
-                cell.backgroundColor = kRiotPrimaryBgColor;
-                
-                // snapshot the cell
-                UIGraphicsBeginImageContextWithOptions(cell.bounds.size, NO, 0);
-                [cell.layer renderInContext:UIGraphicsGetCurrentContext()];
-                UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-                UIGraphicsEndImageContext();
-                
-                cellSnapshot = [[UIImageView alloc] initWithImage:image];
-                recentsDataSource.droppingCellBackGroundView = [[UIImageView alloc] initWithImage:image];
-                
-                // display the selected cell over the tableview
-                CGPoint center = cell.center;
-                center.y = location.y;
-                cellSnapshot.center = center;
-                cellSnapshot.alpha = 0.5f;
-                [self.recentsTableView addSubview:cellSnapshot];
-                
-                // Store the selected room and the original index path of its cell.
-                movingCellPath = indexPath;
-                movingRoom = [recentsDataSource getRoomAtIndexPath:movingCellPath];
-                
-                lastPotentialCellPath = indexPath;
-                recentsDataSource.droppingCellIndexPath = indexPath;
-                recentsDataSource.hiddenCellIndexPath = indexPath;
-            }
-            break;
-        }
-            
-            // step 2 : the cell must follow the finger
-        case UIGestureRecognizerStateChanged:
-        {
-            CGPoint center = cellSnapshot.center;
-            CGFloat halfHeight = cellSnapshot.frame.size.height / 2.0f;
-            CGFloat cellTop = location.y - halfHeight;
-            CGFloat cellBottom = location.y + halfHeight;
-            
-            CGPoint contentOffset =  self.recentsTableView.contentOffset;
-            CGFloat height = MIN(self.recentsTableView.frame.size.height, self.recentsTableView.contentSize.height);
-            CGFloat bottomOffset = contentOffset.y + height;
-            
-            // check if the moving cell is trying to move under the tableview
-            if (cellBottom > self.recentsTableView.contentSize.height)
-            {
-                // force the cell to stay at the tableview bottom
-                location.y = self.recentsTableView.contentSize.height - halfHeight;
-            }
-            // check if the cell is moving over the displayed tableview bottom
-            else if (cellBottom > bottomOffset)
-            {
-                CGFloat diff = cellBottom - bottomOffset;
-                
-                // moving down the cell
-                location.y -= diff;
-                // scroll up the tableview
-                contentOffset.y += diff;
-            }
-            // the moving is tryin to move over the tableview topmost
-            else if (cellTop < 0)
-            {
-                // force to stay in the topmost
-                contentOffset.y  = 0;
-                location.y = contentOffset.y + halfHeight;
-            }
-            // the moving cell is displayed over the current scroll top
-            else if (cellTop < contentOffset.y)
-            {
-                CGFloat diff = contentOffset.y - cellTop;
-                
-                // move up the cell and the table up
-                location.y -= diff;
-                contentOffset.y -= diff;
-            }
-            
-            // move the cell to follow the user finger
-            center.y = location.y;
-            cellSnapshot.center = center;
-            
-            // scroll the tableview if it is required
-            if (contentOffset.y != self.recentsTableView.contentOffset.y)
-            {
-                [self.recentsTableView setContentOffset:contentOffset animated:NO];
-            }
-            
-            NSIndexPath *indexPath = [self.recentsTableView indexPathForRowAtPoint:location];
-            
-            if (![indexPath isEqual:lastPotentialCellPath])
-            {
-                if ([recentsDataSource canCellMoveFrom:movingCellPath to:indexPath])
-                {
-                    [self.recentsTableView beginUpdates];
-                    if (recentsDataSource.droppingCellIndexPath && recentsDataSource.hiddenCellIndexPath)
-                    {
-                        [self.recentsTableView moveRowAtIndexPath:lastPotentialCellPath toIndexPath:indexPath];
-                    }
-                    else if (indexPath)
-                    {
-                        [self.recentsTableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-                        [self.recentsTableView deleteRowsAtIndexPaths:@[movingCellPath] withRowAnimation:UITableViewRowAnimationNone];
-                    }
-                    recentsDataSource.hiddenCellIndexPath = movingCellPath;
-                    recentsDataSource.droppingCellIndexPath = indexPath;
-                    [self.recentsTableView endUpdates];
-                }
-                // the cell cannot be moved
-                else if (recentsDataSource.droppingCellIndexPath)
-                {
-                    NSIndexPath* pathToDelete = recentsDataSource.droppingCellIndexPath;
-                    NSIndexPath* pathToAdd = recentsDataSource.hiddenCellIndexPath;
-                    
-                    // remove it
-                    [self.recentsTableView beginUpdates];
-                    [self.recentsTableView deleteRowsAtIndexPaths:@[pathToDelete] withRowAnimation:UITableViewRowAnimationNone];
-                    [self.recentsTableView insertRowsAtIndexPaths:@[pathToAdd] withRowAnimation:UITableViewRowAnimationNone];
-                    recentsDataSource.droppingCellIndexPath = nil;
-                    recentsDataSource.hiddenCellIndexPath = nil;
-                    [self.recentsTableView endUpdates];
-                }
-                
-                lastPotentialCellPath = indexPath;
-            }
-            
-            break;
-        }
-            
-            // step 3 : remove the view
-            // and insert when it is possible.
-        case UIGestureRecognizerStateEnded:
-        {
-            [cellSnapshot removeFromSuperview];
-            cellSnapshot = nil;
-            
-            [self.activityIndicator startAnimating];
-            
-            [recentsDataSource moveRoomCell:movingRoom from:movingCellPath to:lastPotentialCellPath success:^{
-                
-                [self onRecentsDragEnd];
-                
-            } failure:^(NSError *error) {
-                
-                [self onRecentsDragEnd];
-                
-            }];
-            
-            break;
-        }
-            
-            // default behaviour
-            // remove the cell and cancel the insertion
-        default:
-        {
-            [self onRecentsDragEnd];
-            break;
-        }
-    }
 }
 
 #pragma mark - Table view scrolling

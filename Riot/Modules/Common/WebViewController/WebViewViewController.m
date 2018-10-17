@@ -19,15 +19,29 @@
 #import "RageShakeManager.h"
 #import "RiotDesignValues.h"
 
-@interface WebViewViewController ()
+#import "GeneratedInterface-Swift.h"
+
+@interface WebViewViewController () <Stylable>
 {
     // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
     id kRiotDesignValuesDidChangeThemeNotificationObserver;
 }
 
+@property (nonatomic, strong) id<Style> currentStyle;
+
 @end
 
 @implementation WebViewViewController
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self)
+    {
+        self.currentStyle = Variant1Style.shared;
+    }
+    return self;
+}
 
 - (void)finalizeInit
 {
@@ -48,22 +62,41 @@
         [self userInterfaceThemeDidChange];
         
     }];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
     [self userInterfaceThemeDidChange];
 }
 
 - (void)userInterfaceThemeDidChange
 {
-    self.view.backgroundColor = kRiotPrimaryBgColor;
-    self.defaultBarTintColor = kRiotSecondaryBgColor;
-    self.barTitleColor = kRiotPrimaryTextColor;
+    [self updateWithStyle:self.currentStyle];
+}
+
+- (void)updateWithStyle:(id<Style>)style
+{
+    self.currentStyle = style;
+    
+    UINavigationBar *navigationBar = self.navigationController.navigationBar;
+    
+    if (navigationBar)
+    {
+        [style applyStyleOnNavigationBar:navigationBar];
+    }
+    
+    // @TODO Design the activvity indicator for Tchap
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
-    webView.backgroundColor = kRiotPrimaryBgColor;
+    self.view.backgroundColor = style.backgroundColor;
+    webView.backgroundColor = style.backgroundColor;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return kRiotDesignStatusBarStyle;
+    return self.currentStyle.statusBarStyle;
 }
 
 - (void)destroy
