@@ -23,19 +23,11 @@
 #import "ContactTableViewCell.h"
 #import "ContactsDataSource.h"
 
-#define CONTACTS_TABLEVC_LOCALCONTACTS_BITWISE 0x01
-#define CONTACTS_TABLEVC_USERDIRECTORY_BITWISE 0x02
-
 #define CONTACTS_TABLEVC_DEFAULT_SECTION_HEADER_HEIGHT 30.0
 #define CONTACTS_TABLEVC_LOCALCONTACTS_SECTION_HEADER_HEIGHT 65.0
 
 @interface ContactsViewController () <UITableViewDelegate, MXKDataSourceDelegate>
 {
-    /**
-     Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
-     */
-    id kAppDelegateDidTapStatusBarNotificationObserver;
-    
     /**
      Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
      */
@@ -187,13 +179,6 @@
         // ask user permission to access their local contacts.
         [MXKAppSettings standardAppSettings].syncLocalContacts = YES;
     }
-
-    // Observe kAppDelegateDidTapStatusBarNotification.
-    kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-        
-        [self.contactsTableView setContentOffset:CGPointMake(-self.contactsTableView.mxk_adjustedContentInset.left, -self.contactsTableView.mxk_adjustedContentInset.top) animated:YES];
-        
-    }];
     
     [self refreshContactsTable];
 }
@@ -201,12 +186,6 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
-    if (kAppDelegateDidTapStatusBarNotificationObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:kAppDelegateDidTapStatusBarNotificationObserver];
-        kAppDelegateDidTapStatusBarNotificationObserver = nil;
-    }
 }
 
 #pragma mark -
