@@ -40,6 +40,17 @@
 + (instancetype)instantiateWithStyle:(id<Style>)style;
 
 /**
+ Creates and returns a new `ContactsViewController` object.
+ 
+ @discussion This is the designated initializer for programmatic instantiation.
+ 
+ @param style Used to setup view style parameters.
+ @param showSearchBar YES to indicate to show search bar.
+ @return An initialized `ContactsViewController` object if successful, `nil` otherwise.
+ */
++ (instancetype)instantiateWithStyle:(id<Style>)style showSearchBar:(BOOL)showSearchBar;
+
+/**
  Display the contacts described in the provided data source.
  
  The provided data source will replace the current data source if any. The caller

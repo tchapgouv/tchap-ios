@@ -78,6 +78,7 @@
 "contacts_address_book_permission_denied" = "Vous n'avez pas autorisé Tchap à accéder à vos contacts locaux";
 "contacts_user_directory_section" = "Répertoire Tchap";
 "contacts_user_directory_offline_section" = "Répertoire Tchap (hors-ligne)";
+"contacts_search_bar_placeholder" = "Rechercher";
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Settings

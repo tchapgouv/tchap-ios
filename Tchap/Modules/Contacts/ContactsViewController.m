@@ -24,7 +24,7 @@
 
 #import "GeneratedInterface-Swift.h"
 
-@interface ContactsViewController () <UITableViewDelegate, MXKDataSourceDelegate, Stylable>
+@interface ContactsViewController () <UITableViewDelegate, MXKDataSourceDelegate, Stylable, UISearchResultsUpdating>
 
 /**
  The contacts table view.
@@ -33,6 +33,9 @@
 
 @property (strong, nonatomic) ContactsDataSource *contactsDataSource;
 @property (nonatomic, strong) id<Style> currentStyle;
+
+@property (nonatomic) BOOL showSearchBar;
+@property (nonatomic, strong) UISearchController *searchController;
 
 /**
  If YES, the table view will scroll at the top on the next data source refresh.
@@ -54,27 +57,33 @@
 
 @implementation ContactsViewController
 
-#pragma mark - Class methods
+#pragma mark - Setup
 
 + (instancetype)instantiateWithStyle:(id<Style>)style
 {
+    return [self instantiateWithStyle:style showSearchBar:NO];
+}
+
++ (instancetype)instantiateWithStyle:(id<Style>)style showSearchBar:(BOOL)showSearchBar
+{
     ContactsViewController *viewController = [[UIStoryboard storyboardWithName:NSStringFromClass([ContactsViewController class]) bundle:[NSBundle mainBundle]] instantiateInitialViewController];
+    viewController.showSearchBar = showSearchBar;
     [viewController updateWithStyle:style];
     return viewController;
 }
 
-#pragma mark -
-
 - (void)finalizeInit
 {
     [super finalizeInit];
-    
+
     // Setup `MXKViewControllerHandling` properties
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
-    
+
     _screenName = @"ContactsTable";
 }
+
+#pragma mark - Life cycle
 
 - (void)viewDidLoad
 {
@@ -89,6 +98,11 @@
     
     // Hide line separators of empty cells
     self.contactsTableView.tableFooterView = [[UIView alloc] init];
+    
+    if (self.showSearchBar)
+    {
+        [self setupSearchController];
+    }
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -112,39 +126,28 @@
         [MXKAppSettings standardAppSettings].syncLocalContacts = YES;
     }
     
-    [self refreshContactsTable];
+    [self updateWithStyle:self.currentStyle];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    if (@available(iOS 11.0, *))
+    {
+        // Enable to hide search bar on scrolling after first time view appear
+        self.navigationItem.hidesSearchBarWhenScrolling = YES;
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     
-    [self updateWithStyle:self.currentStyle];
+    [self.searchController.searchBar resignFirstResponder];
 }
 
-- (void)updateWithStyle:(id<Style>)style
-{
-    self.currentStyle = style;
-    
-    UINavigationBar *navigationBar = self.navigationController.navigationBar;
-    
-    if (navigationBar)
-    {
-        [style applyStyleOnNavigationBar:navigationBar];
-    }
-
-    self.activityIndicator.backgroundColor = kRiotOverlayColor;
-    
-    self.contactsTableView.backgroundColor = style.backgroundColor;
-    self.view.backgroundColor = style.backgroundColor;
-    
-    if (self.contactsTableView.dataSource)
-    {
-        [self refreshContactsTable];
-    }
-}
-
-#pragma mark -
+#pragma mark - Public
 
 - (void)displayList:(ContactsDataSource*)listDataSource
 {
@@ -164,6 +167,8 @@
     }
 }
 
+#pragma mark - Private
+
 - (void)refreshContactsTable
 {
     [self.contactsTableView reloadData];
@@ -172,6 +177,74 @@
     {
         [self scrollToTop:NO];
         _shouldScrollToTopOnRefresh = NO;
+    }
+}
+
+- (void)scrollToTop:(BOOL)animated
+{
+    // Scroll to the top
+    [self.contactsTableView setContentOffset:CGPointMake(-self.contactsTableView.mxk_adjustedContentInset.left, -self.contactsTableView.mxk_adjustedContentInset.top) animated:animated];
+}
+
+- (void)setupSearchController
+{
+    UISearchController *searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
+    searchController.dimsBackgroundDuringPresentation = NO;
+    searchController.searchResultsUpdater = self;
+    searchController.searchBar.placeholder = NSLocalizedStringFromTable(@"contacts_search_bar_placeholder", @"Tchap", nil);
+    searchController.hidesNavigationBarDuringPresentation = NO;
+    
+    if (@available(iOS 11.0, *))
+    {
+        self.navigationItem.searchController = searchController;
+        // Make the search bar visible on first view appearance
+        self.navigationItem.hidesSearchBarWhenScrolling = NO;
+    }
+    else
+    {
+        self.contactsTableView.tableHeaderView = searchController.searchBar;
+    }
+    
+    self.definesPresentationContext = YES;
+    
+    self.searchController = searchController;
+}
+
+#pragma mark - Stylable
+
+- (void)updateWithStyle:(id<Style>)style
+{
+    self.currentStyle = style;
+    
+    UINavigationBar *navigationBar = self.navigationController.navigationBar;
+    
+    if (navigationBar)
+    {
+        [style applyStyleOnNavigationBar:navigationBar];
+    }
+    
+    self.activityIndicator.backgroundColor = kRiotOverlayColor;
+    
+    self.contactsTableView.backgroundColor = style.backgroundColor;
+    self.view.backgroundColor = style.backgroundColor;
+    
+    UISearchBar *searchBar = self.searchController.searchBar;
+    
+    if (searchBar)
+    {
+        if (@available(iOS 11.0, *))
+        {
+            searchBar.tintColor = style.barActionColor;
+        }
+        else
+        {
+            searchBar.tintColor = style.primarySubTextColor;
+        }
+    }
+    
+    if (self.contactsTableView.dataSource)
+    {
+        [self refreshContactsTable];
     }
 }
 
@@ -200,14 +273,6 @@
 - (void)dataSource:(MXKDataSource *)dataSource didCellChange:(id)changes
 {
     [self refreshContactsTable];
-}
-
-#pragma mark - Internal methods
-
-- (void)scrollToTop:(BOOL)animated
-{
-    // Scroll to the top
-    [self.contactsTableView setContentOffset:CGPointMake(-self.contactsTableView.mxk_adjustedContentInset.left, -self.contactsTableView.mxk_adjustedContentInset.top) animated:animated];
 }
 
 #pragma mark - UITableView delegate
@@ -257,6 +322,14 @@
     {
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
+}
+
+#pragma mark - UISearchResultsUpdating
+
+- (void)updateSearchResultsForSearchController:(UISearchController *)searchController
+{
+    NSString *searchText = searchController.searchBar.text;
+    [self.contactsDataSource searchWithPattern:searchText forceReset:NO];
 }
 
 @end
