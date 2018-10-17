@@ -1,50 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="eWl-kn-lZ1">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Tdd-ER-u3q">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Contacts View Controller-->
-        <scene sceneID="bax-3N-1uK">
+        <scene sceneID="LQa-ox-F6s">
             <objects>
-                <viewController extendedLayoutIncludesOpaqueBars="YES" id="eWl-kn-lZ1" customClass="ContactsViewController" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="4yB-Rb-JH0">
+                <tableViewController extendedLayoutIncludesOpaqueBars="YES" id="Tdd-ER-u3q" customClass="ContactsViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="zn5-0x-Nfq">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="52D-wT-RWP">
-                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="ContactsTableVCTableView"/>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <outlet property="delegate" destination="eWl-kn-lZ1" id="t02-D5-X0f"/>
-                                </connections>
-                            </tableView>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstAttribute="bottom" secondItem="52D-wT-RWP" secondAttribute="bottom" id="AMW-it-Ng5"/>
-                            <constraint firstItem="yhz-aA-JEw" firstAttribute="trailing" secondItem="52D-wT-RWP" secondAttribute="trailing" id="E7v-8O-G8d"/>
-                            <constraint firstItem="yhz-aA-JEw" firstAttribute="top" secondItem="52D-wT-RWP" secondAttribute="top" id="myB-NT-sus"/>
-                            <constraint firstItem="52D-wT-RWP" firstAttribute="leading" secondItem="yhz-aA-JEw" secondAttribute="leading" id="qgb-Tb-134"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="yhz-aA-JEw"/>
-                    </view>
-                    <connections>
-                        <outlet property="contactsTableView" destination="52D-wT-RWP" id="1fK-ky-ZVA"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="zNU-mt-ch8" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="X1f-A2-zPG">
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="X1f-A2-zPG" id="vHi-dm-VQt">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="Tdd-ER-u3q" id="YBF-z5-DCl"/>
+                            <outlet property="delegate" destination="Tdd-ER-u3q" id="p73-N6-Tqd"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="594-Md-lwr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-190" y="52"/>
+            <point key="canvasLocation" x="-825" y="-223"/>
         </scene>
     </scenes>
 </document>

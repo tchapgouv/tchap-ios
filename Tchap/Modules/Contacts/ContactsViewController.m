@@ -24,12 +24,7 @@
 
 #import "GeneratedInterface-Swift.h"
 
-@interface ContactsViewController () <UITableViewDelegate, MXKDataSourceDelegate, Stylable, UISearchResultsUpdating>
-
-/**
- The contacts table view.
- */
-@property (weak, nonatomic) IBOutlet UITableView *contactsTableView;
+@interface ContactsViewController () <MXKDataSourceDelegate, Stylable, UISearchResultsUpdating>
 
 @property (strong, nonatomic) ContactsDataSource *contactsDataSource;
 @property (nonatomic, strong) id<Style> currentStyle;
@@ -69,18 +64,8 @@
     ContactsViewController *viewController = [[UIStoryboard storyboardWithName:NSStringFromClass([ContactsViewController class]) bundle:[NSBundle mainBundle]] instantiateInitialViewController];
     viewController.showSearchBar = showSearchBar;
     [viewController updateWithStyle:style];
+    viewController.screenName = @"ContactsTable";
     return viewController;
-}
-
-- (void)finalizeInit
-{
-    [super finalizeInit];
-
-    // Setup `MXKViewControllerHandling` properties
-    self.enableBarTintColorStatusChange = NO;
-    self.rageShakeManager = [RageShakeManager sharedManager];
-
-    _screenName = @"ContactsTable";
 }
 
 #pragma mark - Life cycle
@@ -91,13 +76,13 @@
     // Do any additional setup after loading the view, typically from a nib.
     
     // Finalize table view configuration
-    self.contactsTableView.delegate = self;
-    self.contactsTableView.dataSource = self.contactsDataSource; // Note: dataSource may be nil here
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self.contactsDataSource; // Note: dataSource may be nil here
     
-    [self.contactsTableView registerClass:ContactTableViewCell.class forCellReuseIdentifier:ContactTableViewCell.defaultReuseIdentifier];
+    [self.tableView registerClass:ContactTableViewCell.class forCellReuseIdentifier:ContactTableViewCell.defaultReuseIdentifier];
     
     // Hide line separators of empty cells
-    self.contactsTableView.tableFooterView = [[UIView alloc] init];
+    self.tableView.tableFooterView = [[UIView alloc] init];
     
     if (self.showSearchBar)
     {
@@ -160,10 +145,10 @@
     self.contactsDataSource = listDataSource;
     self.contactsDataSource.delegate = self;
     
-    if (self.contactsTableView)
+    if (self.tableView)
     {
         // Set up table data source
-        self.contactsTableView.dataSource = self.contactsDataSource;
+        self.tableView.dataSource = self.contactsDataSource;
     }
 }
 
@@ -171,19 +156,7 @@
 
 - (void)refreshContactsTable
 {
-    [self.contactsTableView reloadData];
-    
-    if (_shouldScrollToTopOnRefresh)
-    {
-        [self scrollToTop:NO];
-        _shouldScrollToTopOnRefresh = NO;
-    }
-}
-
-- (void)scrollToTop:(BOOL)animated
-{
-    // Scroll to the top
-    [self.contactsTableView setContentOffset:CGPointMake(-self.contactsTableView.mxk_adjustedContentInset.left, -self.contactsTableView.mxk_adjustedContentInset.top) animated:animated];
+    [self.tableView reloadData];
 }
 
 - (void)setupSearchController
@@ -202,7 +175,7 @@
     }
     else
     {
-        self.contactsTableView.tableHeaderView = searchController.searchBar;
+        self.tableView.tableHeaderView = searchController.searchBar;
     }
     
     self.definesPresentationContext = YES;
@@ -223,9 +196,7 @@
         [style applyStyleOnNavigationBar:navigationBar];
     }
     
-    self.activityIndicator.backgroundColor = kRiotOverlayColor;
-    
-    self.contactsTableView.backgroundColor = style.backgroundColor;
+    self.tableView.backgroundColor = style.backgroundColor;
     self.view.backgroundColor = style.backgroundColor;
     
     UISearchBar *searchBar = self.searchController.searchBar;
@@ -242,7 +213,7 @@
         }
     }
     
-    if (self.contactsTableView.dataSource)
+    if (self.tableView.dataSource)
     {
         [self refreshContactsTable];
     }

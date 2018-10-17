@@ -22,7 +22,7 @@
 /**
  'ContactsViewController' instance is used to display/filter a list of contacts.
  */
-@interface ContactsViewController : MXKViewController
+@interface ContactsViewController : UITableViewController
 
 /**
  The delegate for the view controller.
