@@ -49,7 +49,7 @@
     id roomDidFlushDataNotificationObserver;
     
     RoomMemberDetailsViewController *memberDetailsViewController;
-    ContactsTableViewController     *contactsPickerViewController;
+    ContactsViewController     *contactsPickerViewController;
     
     // Display a gradient view above the screen.
     CAGradientLayer* tableViewMaskLayer;
@@ -670,7 +670,7 @@
 - (void)onAddParticipantButtonPressed
 {
     // Push the contacts picker.
-    contactsPickerViewController = [ContactsTableViewController instantiate];
+    contactsPickerViewController = [ContactsViewController instantiate];
     
     // Set delegate to handle action on member (start chat, mention)
     contactsPickerViewController.delegate = self;
@@ -1370,9 +1370,9 @@
     }
 }
 
-#pragma mark - ContactsTableViewControllerDelegate
+#pragma mark - ContactsViewControllerDelegate
 
-- (void)contactsTableViewController:(ContactsTableViewController *)contactsTableViewController didSelectContact:(MXKContact*)contact
+- (void)contactsViewController:(ContactsViewController *)contactsViewController didSelectContact:(MXKContact*)contact
 {
     [self didSelectInvitableContact:contact];
 }

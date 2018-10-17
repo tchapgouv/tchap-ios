@@ -28,7 +28,7 @@ final class ContactsCoordinator: NSObject, ContactsCoordinatorType {
     // MARK: Private
     
     private let router: NavigationRouterType
-    private let contactsViewController: ContactsTableViewController
+    private let contactsViewController: ContactsViewController
     private let session: MXSession
     private let contactsDataSource: ContactsDataSource
     private let activityIndicatorPresenter: ActivityIndicatorPresenterType
@@ -46,7 +46,7 @@ final class ContactsCoordinator: NSObject, ContactsCoordinatorType {
         self.router = router
         self.session = session
         
-        self.contactsViewController = ContactsTableViewController.instantiate()
+        self.contactsViewController = ContactsViewController.instantiate()
         
         self.contactsDataSource = ContactsDataSource(matrixSession: self.session)
         self.contactsDataSource.finalizeInitialization()
@@ -119,21 +119,21 @@ final class ContactsCoordinator: NSObject, ContactsCoordinatorType {
     }
 }
 
-// MARK: - ContactsTableViewControllerDelegate
-extension ContactsCoordinator: ContactsTableViewControllerDelegate {
+// MARK: - ContactsViewControllerDelegate
+extension ContactsCoordinator: ContactsViewControllerDelegate {
     
-    func contactsTableViewController(_ contactsTableViewController: ContactsTableViewController!, didSelect contact: MXKContact!) {
+    func contactsViewController(_ contactsViewController: ContactsViewController!, didSelect contact: MXKContact!) {
         // Check whether the selected contact is a Tchap user.
         guard let contact = contact, !contact.matrixIdentifiers.isEmpty else {
             return
         }
-        
+
         // No more than one matrix identifer is expected by contact in Tchap.
         guard contact.matrixIdentifiers.count == 1, let userID = contact.matrixIdentifiers.first as? String else {
             print("[ContactsCoordinator] Invalid selected contact: multiple matrix ids")
             return
         }
-        
+
         self.didSelectUserID(userID)
     }
 }

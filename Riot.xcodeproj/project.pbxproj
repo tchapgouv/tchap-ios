@@ -10,8 +10,8 @@
 		02098F332131FE9E00F25086 /* ContactTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 02098F2B2131FE9E00F25086 /* ContactTableViewCell.m */; };
 		02098F342131FE9E00F25086 /* ContactTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02098F2C2131FE9E00F25086 /* ContactTableViewCell.xib */; };
 		02098F352131FE9E00F25086 /* ContactsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 02098F302131FE9E00F25086 /* ContactsDataSource.m */; };
-		02098F362131FE9E00F25086 /* ContactsTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02098F312131FE9E00F25086 /* ContactsTableViewController.xib */; };
-		02098F372131FE9E00F25086 /* ContactsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 02098F322131FE9E00F25086 /* ContactsTableViewController.m */; };
+		02098F362131FE9E00F25086 /* ContactsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02098F312131FE9E00F25086 /* ContactsViewController.xib */; };
+		02098F372131FE9E00F25086 /* ContactsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 02098F322131FE9E00F25086 /* ContactsViewController.m */; };
 		020DF6FB21480700003DFBA4 /* DiscussionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020DF6FA21480700003DFBA4 /* DiscussionService.swift */; };
 		020DF935214BE467003DFBA4 /* RoomDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF85B214BE467003DFBA4 /* RoomDataSource.m */; };
 		020DF936214BE467003DFBA4 /* RoomBubbleCellData.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF85E214BE467003DFBA4 /* RoomBubbleCellData.m */; };
@@ -541,14 +541,14 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		02098F292131FE9D00F25086 /* ContactsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsTableViewController.h; sourceTree = "<group>"; };
+		02098F292131FE9D00F25086 /* ContactsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsViewController.h; sourceTree = "<group>"; };
 		02098F2B2131FE9E00F25086 /* ContactTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactTableViewCell.m; sourceTree = "<group>"; };
 		02098F2C2131FE9E00F25086 /* ContactTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactTableViewCell.xib; sourceTree = "<group>"; };
 		02098F2D2131FE9E00F25086 /* ContactTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactTableViewCell.h; sourceTree = "<group>"; };
 		02098F2F2131FE9E00F25086 /* ContactsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsDataSource.h; sourceTree = "<group>"; };
 		02098F302131FE9E00F25086 /* ContactsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactsDataSource.m; sourceTree = "<group>"; };
-		02098F312131FE9E00F25086 /* ContactsTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactsTableViewController.xib; sourceTree = "<group>"; };
-		02098F322131FE9E00F25086 /* ContactsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactsTableViewController.m; sourceTree = "<group>"; };
+		02098F312131FE9E00F25086 /* ContactsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactsViewController.xib; sourceTree = "<group>"; };
+		02098F322131FE9E00F25086 /* ContactsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactsViewController.m; sourceTree = "<group>"; };
 		020DF6FA21480700003DFBA4 /* DiscussionService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscussionService.swift; sourceTree = "<group>"; };
 		020DF85A214BE467003DFBA4 /* RoomDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomDataSource.h; sourceTree = "<group>"; };
 		020DF85B214BE467003DFBA4 /* RoomDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomDataSource.m; sourceTree = "<group>"; };
@@ -2604,9 +2604,9 @@
 				B1F2AA8D212AEC820077FDC0 /* ContactsCoordinator.swift */,
 				02098F2E2131FE9E00F25086 /* DataSources */,
 				02098F2A2131FE9E00F25086 /* Views */,
-				02098F292131FE9D00F25086 /* ContactsTableViewController.h */,
-				02098F322131FE9E00F25086 /* ContactsTableViewController.m */,
-				02098F312131FE9E00F25086 /* ContactsTableViewController.xib */,
+				02098F292131FE9D00F25086 /* ContactsViewController.h */,
+				02098F322131FE9E00F25086 /* ContactsViewController.m */,
+				02098F312131FE9E00F25086 /* ContactsViewController.xib */,
 			);
 			path = Contacts;
 			sourceTree = "<group>";
@@ -3141,7 +3141,7 @@
 				0250C59F2122B68000034691 /* MediaAlbumTableCell.xib in Resources */,
 				020DF938214BE467003DFBA4 /* TableViewCellWithCheckBoxAndLabel.xib in Resources */,
 				0250C5A52122B68000034691 /* FilesSearchTableViewCell.xib in Resources */,
-				02098F362131FE9E00F25086 /* ContactsTableViewController.xib in Resources */,
+				02098F362131FE9E00F25086 /* ContactsViewController.xib in Resources */,
 				020DF9B0214BE467003DFBA4 /* RoomActivitiesView.xib in Resources */,
 				B130C0DC21491C8600F43D33 /* GlobalSearchBar.xib in Resources */,
 				0250C5A72122B68000034691 /* SegmentedViewController.xib in Resources */,
@@ -3576,7 +3576,7 @@
 				B11C8017213947A400CC6F2F /* RegistrationEmailSentViewController.swift in Sources */,
 				B15B86792135903E002782BE /* KeyboardAvoider.swift in Sources */,
 				029CC69121772F4200DCC8B3 /* TableViewCellWithPhoneNumberTextField.m in Sources */,
-				02098F372131FE9E00F25086 /* ContactsTableViewController.m in Sources */,
+				02098F372131FE9E00F25086 /* ContactsViewController.m in Sources */,
 				B12DDAA1217020410093172C /* AvatarImageShape.swift in Sources */,
 				020DF994214BE467003DFBA4 /* RoomIncomingTextMsgBubbleCell.m in Sources */,
 				B12FD6A92146BA45001B7F28 /* RegistrationService.swift in Sources */,

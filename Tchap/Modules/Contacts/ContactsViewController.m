@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-#import "ContactsTableViewController.h"
+#import "ContactsViewController.h"
 
 #import "RiotDesignValues.h"
 #import "RageShakeManager.h"
@@ -29,7 +29,7 @@
 #define CONTACTS_TABLEVC_DEFAULT_SECTION_HEADER_HEIGHT 30.0
 #define CONTACTS_TABLEVC_LOCALCONTACTS_SECTION_HEADER_HEIGHT 65.0
 
-@interface ContactsTableViewController () <UITableViewDelegate, MXKDataSourceDelegate>
+@interface ContactsViewController () <UITableViewDelegate, MXKDataSourceDelegate>
 {
     /**
      Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
@@ -82,14 +82,14 @@
 
 @end
 
-@implementation ContactsTableViewController
+@implementation ContactsViewController
 
 #pragma mark - Class methods
 
 + (instancetype)instantiate
 {
-    return [[[self class] alloc] initWithNibName:NSStringFromClass([ContactsTableViewController class])
-                                          bundle:[NSBundle bundleForClass:[ContactsTableViewController class]]];
+    return [[[self class] alloc] initWithNibName:NSStringFromClass([ContactsViewController class])
+                                          bundle:[NSBundle bundleForClass:[ContactsViewController class]]];
 }
 
 #pragma mark -
@@ -365,13 +365,13 @@
         
         if (mxkContact)
         {
-            [self.delegate contactsTableViewController:self didSelectContact:mxkContact];
+            [self.delegate contactsViewController:self didSelectContact:mxkContact];
         
             // Keep selected the cell by default.
             return;
         }
     }
-    // Else do nothing by default - `ContactsTableViewController-inherited` instance must override this method.
+    // Else do nothing by default - `ContactsViewController-inherited` instance must override this method.
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }

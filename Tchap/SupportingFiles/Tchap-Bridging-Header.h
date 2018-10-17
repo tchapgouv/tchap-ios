@@ -9,7 +9,7 @@
 #import "SegmentedViewController.h"
 #import "RoomsViewController.h"
 #import "RoomViewController.h"
-#import "ContactsTableViewController.h"
+#import "ContactsViewController.h"
 #import "ContactsDataSource.h"
 #import "RoomsDataSource.h"
 #import "PublicRoomTableViewCell.h"

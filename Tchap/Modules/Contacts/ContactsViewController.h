@@ -17,24 +17,24 @@
 @import MatrixKit;
 
 @class ContactsDataSource;
-@protocol ContactsTableViewControllerDelegate;
+@protocol ContactsViewControllerDelegate;
 
 /**
- 'ContactsTableViewController' instance is used to display/filter a list of contacts.
- See 'ContactsTableViewController-inherited' object for example of use.
+ 'ContactsViewController' instance is used to display/filter a list of contacts.
+ See 'ContactsViewController-inherited' object for example of use.
  */
-@interface ContactsTableViewController : MXKViewController
+@interface ContactsViewController : MXKViewController
 
 /**
  The delegate for the view controller.
  */
-@property (nonatomic, weak) id<ContactsTableViewControllerDelegate> delegate;
+@property (nonatomic, weak) id<ContactsViewControllerDelegate> delegate;
 
 /**
- Creates and returns a new `ContactsTableViewController` object.
+ Creates and returns a new `ContactsViewController` object.
  
  @discussion This is the designated initializer for programmatic instantiation.
- @return An initialized `ContactsTableViewController` object if successful, `nil` otherwise.
+ @return An initialized `ContactsViewController` object if successful, `nil` otherwise.
  */
 + (instancetype)instantiate;
 
@@ -51,16 +51,16 @@
 @end
 
 /**
- `ContactsTableViewController` delegate.
+ `ContactsViewController` delegate.
  */
-@protocol ContactsTableViewControllerDelegate <NSObject>
+@protocol ContactsViewControllerDelegate <NSObject>
 
 /**
  Tells the delegate that the user selected a contact.
  
- @param contactsTableViewController the `ContactsTableViewController` instance.
+ @param contactsViewController the `ContactsViewController` instance.
  @param contact the selected contact.
  */
-- (void)contactsTableViewController:(ContactsTableViewController *)contactsTableViewController didSelectContact:(MXKContact*)contact;
+- (void)contactsViewController:(ContactsViewController *)contactsViewController didSelectContact:(MXKContact*)contact;
 
 @end
