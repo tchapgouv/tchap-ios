@@ -33,20 +33,9 @@
 @property (nonatomic, strong) UISearchController *searchController;
 
 /**
- If YES, the table view will scroll at the top on the next data source refresh.
- It comes back to NO after each refresh.
- */
-@property (nonatomic) BOOL shouldScrollToTopOnRefresh;
-
-/**
  The analytics instance screen name (Default is "ContactsTable").
  */
 @property (nonatomic) NSString *screenName;
-
-/**
- Refresh the contacts table display.
- */
-- (void)refreshContactsTable;
 
 @end
 
@@ -76,7 +65,6 @@
     // Do any additional setup after loading the view, typically from a nib.
     
     // Finalize table view configuration
-    self.tableView.delegate = self;
     self.tableView.dataSource = self.contactsDataSource; // Note: dataSource may be nil here
     
     [self.tableView registerClass:ContactTableViewCell.class forCellReuseIdentifier:ContactTableViewCell.defaultReuseIdentifier];
@@ -154,6 +142,9 @@
 
 #pragma mark - Private
 
+/**
+ Refresh the contacts table display.
+ */
 - (void)refreshContactsTable
 {
     [self.tableView reloadData];

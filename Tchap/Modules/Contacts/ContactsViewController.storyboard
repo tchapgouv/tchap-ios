@@ -28,7 +28,6 @@
                             </tableViewCell>
                         </prototypes>
                         <connections>
-                            <outlet property="dataSource" destination="Tdd-ER-u3q" id="YBF-z5-DCl"/>
                             <outlet property="delegate" destination="Tdd-ER-u3q" id="p73-N6-Tqd"/>
                         </connections>
                     </tableView>
