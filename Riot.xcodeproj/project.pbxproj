@@ -10,7 +10,6 @@
 		02098F332131FE9E00F25086 /* ContactTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 02098F2B2131FE9E00F25086 /* ContactTableViewCell.m */; };
 		02098F342131FE9E00F25086 /* ContactTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02098F2C2131FE9E00F25086 /* ContactTableViewCell.xib */; };
 		02098F352131FE9E00F25086 /* ContactsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 02098F302131FE9E00F25086 /* ContactsDataSource.m */; };
-		02098F362131FE9E00F25086 /* ContactsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02098F312131FE9E00F25086 /* ContactsViewController.xib */; };
 		02098F372131FE9E00F25086 /* ContactsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 02098F322131FE9E00F25086 /* ContactsViewController.m */; };
 		020DF6FB21480700003DFBA4 /* DiscussionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020DF6FA21480700003DFBA4 /* DiscussionService.swift */; };
 		020DF935214BE467003DFBA4 /* RoomDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF85B214BE467003DFBA4 /* RoomDataSource.m */; };
@@ -310,6 +309,7 @@
 		B15B86892135C284002782BE /* AuthenticationViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15B86882135C284002782BE /* AuthenticationViewModelType.swift */; };
 		B15B868B2135C4DE002782BE /* AuthenticationFormValidationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15B868A2135C4DE002782BE /* AuthenticationFormValidationResult.swift */; };
 		B165250E217502A700146F80 /* UserServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B165250D217502A700146F80 /* UserServiceType.swift */; };
+		B165251D21775B0D00146F80 /* ContactsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B165251C21775B0C00146F80 /* ContactsViewController.storyboard */; };
 		B1664BC520F4E67600808783 /* FallbackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1664BAD20F4E67500808783 /* FallbackViewController.xib */; };
 		B1664BC620F4E67600808783 /* FallbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1664BAE20F4E67500808783 /* FallbackViewController.m */; };
 		B1664BC720F4E67600808783 /* SharePresentingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1664BB220F4E67500808783 /* SharePresentingViewController.m */; };
@@ -547,7 +547,6 @@
 		02098F2D2131FE9E00F25086 /* ContactTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactTableViewCell.h; sourceTree = "<group>"; };
 		02098F2F2131FE9E00F25086 /* ContactsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsDataSource.h; sourceTree = "<group>"; };
 		02098F302131FE9E00F25086 /* ContactsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactsDataSource.m; sourceTree = "<group>"; };
-		02098F312131FE9E00F25086 /* ContactsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactsViewController.xib; sourceTree = "<group>"; };
 		02098F322131FE9E00F25086 /* ContactsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactsViewController.m; sourceTree = "<group>"; };
 		020DF6FA21480700003DFBA4 /* DiscussionService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscussionService.swift; sourceTree = "<group>"; };
 		020DF85A214BE467003DFBA4 /* RoomDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomDataSource.h; sourceTree = "<group>"; };
@@ -858,6 +857,7 @@
 		B15B86882135C284002782BE /* AuthenticationViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewModelType.swift; sourceTree = "<group>"; };
 		B15B868A2135C4DE002782BE /* AuthenticationFormValidationResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationFormValidationResult.swift; sourceTree = "<group>"; };
 		B165250D217502A700146F80 /* UserServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserServiceType.swift; sourceTree = "<group>"; };
+		B165251C21775B0C00146F80 /* ContactsViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ContactsViewController.storyboard; sourceTree = "<group>"; };
 		B1664BAD20F4E67500808783 /* FallbackViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FallbackViewController.xib; sourceTree = "<group>"; };
 		B1664BAE20F4E67500808783 /* FallbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FallbackViewController.m; sourceTree = "<group>"; };
 		B1664BAF20F4E67500808783 /* FallbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FallbackViewController.h; sourceTree = "<group>"; };
@@ -2606,7 +2606,7 @@
 				02098F2A2131FE9E00F25086 /* Views */,
 				02098F292131FE9D00F25086 /* ContactsViewController.h */,
 				02098F322131FE9E00F25086 /* ContactsViewController.m */,
-				02098F312131FE9E00F25086 /* ContactsViewController.xib */,
+				B165251C21775B0C00146F80 /* ContactsViewController.storyboard */,
 			);
 			path = Contacts;
 			sourceTree = "<group>";
@@ -3049,6 +3049,7 @@
 				020DF99C214BE467003DFBA4 /* RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib in Resources */,
 				020DF93A214BE467003DFBA4 /* TableViewCellWithCheckBoxes.xib in Resources */,
 				020DF949214BE467003DFBA4 /* RoomMemberTitleView.xib in Resources */,
+				B165251D21775B0D00146F80 /* ContactsViewController.storyboard in Resources */,
 				0250C5462122B68000034691 /* TableViewCellWithButton.xib in Resources */,
 				02BEE1A3212C717F00098505 /* SharedImages.xcassets in Resources */,
 				020DF9A0214BE467003DFBA4 /* RoomMembershipExpandedBubbleCell.xib in Resources */,
@@ -3141,7 +3142,6 @@
 				0250C59F2122B68000034691 /* MediaAlbumTableCell.xib in Resources */,
 				020DF938214BE467003DFBA4 /* TableViewCellWithCheckBoxAndLabel.xib in Resources */,
 				0250C5A52122B68000034691 /* FilesSearchTableViewCell.xib in Resources */,
-				02098F362131FE9E00F25086 /* ContactsViewController.xib in Resources */,
 				020DF9B0214BE467003DFBA4 /* RoomActivitiesView.xib in Resources */,
 				B130C0DC21491C8600F43D33 /* GlobalSearchBar.xib in Resources */,
 				0250C5A72122B68000034691 /* SegmentedViewController.xib in Resources */,

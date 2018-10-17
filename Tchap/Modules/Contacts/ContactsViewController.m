@@ -88,8 +88,7 @@
 
 + (instancetype)instantiate
 {
-    return [[[self class] alloc] initWithNibName:NSStringFromClass([ContactsViewController class])
-                                          bundle:[NSBundle bundleForClass:[ContactsViewController class]]];
+    return [[UIStoryboard storyboardWithName:NSStringFromClass([ContactsViewController class]) bundle:[NSBundle mainBundle]] instantiateInitialViewController];
 }
 
 #pragma mark -
