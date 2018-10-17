@@ -28,7 +28,7 @@
 /**
  The delegate for the view controller.
  */
-@property (nonatomic) id<ContactsTableViewControllerDelegate> contactsTableViewControllerDelegate;
+@property (nonatomic, weak) id<ContactsTableViewControllerDelegate> delegate;
 
 /**
  Creates and returns a new `ContactsTableViewController` object.

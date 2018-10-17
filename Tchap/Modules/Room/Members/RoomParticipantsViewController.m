@@ -673,7 +673,7 @@
     contactsPickerViewController = [ContactsTableViewController instantiate];
     
     // Set delegate to handle action on member (start chat, mention)
-    contactsPickerViewController.contactsTableViewControllerDelegate = self;
+    contactsPickerViewController.delegate = self;
     
     // Prepare its data source
     ContactsDataSource *contactsDataSource = [[ContactsDataSource alloc] initWithMatrixSession:self.mxRoom.mxSession];

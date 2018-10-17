@@ -359,13 +359,13 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.contactsTableViewControllerDelegate)
+    if (self.delegate)
     {
         MXKContact *mxkContact = [contactsDataSource contactAtIndexPath:indexPath];
         
         if (mxkContact)
         {
-            [self.contactsTableViewControllerDelegate contactsTableViewController:self didSelectContact:mxkContact];
+            [self.delegate contactsTableViewController:self didSelectContact:mxkContact];
         
             // Keep selected the cell by default.
             return;

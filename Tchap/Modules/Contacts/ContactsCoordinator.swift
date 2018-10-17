@@ -60,7 +60,7 @@ final class ContactsCoordinator: NSObject, ContactsCoordinatorType {
     
     func start() {
         self.contactsViewController.displayList(self.contactsDataSource)
-        self.contactsViewController.contactsTableViewControllerDelegate = self
+        self.contactsViewController.delegate = self
     }
     
     func toPresentable() -> UIViewController {
