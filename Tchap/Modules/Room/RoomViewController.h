@@ -35,6 +35,12 @@
 @property (nonatomic) BOOL showMissedDiscussionsBadge;
 
 /**
+ Tell whether input tool bar should be hidden in every case.
+ NO by default.
+ */
+@property (nonatomic) BOOL forceHideInputToolBar;
+
+/**
  The delegate for the view controller.
  */
 @property (weak, nonatomic, nullable) id<RoomViewControllerDelegate> delegate;

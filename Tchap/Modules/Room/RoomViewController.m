@@ -218,7 +218,7 @@
                           bundle:[NSBundle bundleForClass:self.class]];
 }
 
-+ (instancetype)instantiate
++ (nonnull instancetype)instantiate
 {
     RoomViewController *roomViewController = [[[self class] alloc] initWithNibName:NSStringFromClass(self.class)
                                                                             bundle:[NSBundle bundleForClass:self.class]];
@@ -226,7 +226,7 @@
     return roomViewController;
 }
 
-+ (instancetype)instantiateWithDiscussionTargetUser:(User*)discussionTargetUser session:(MXSession*)session
++ (nonnull instancetype)instantiateWithDiscussionTargetUser:(nonnull User*)discussionTargetUser session:(nonnull MXSession*)session
 {
     RoomViewController *roomViewController = [self instantiate];
     roomViewController.discussionTargetUser = discussionTargetUser;
@@ -348,8 +348,7 @@
     
     // Replace the default input toolbar view.
     // Note: this operation will force the layout of subviews. That is why cell view classes must be registered before.
-    [self setRoomInputToolbarViewClass];
-    [self updateInputToolBarViewHeight];
+    [self updateRoomInputToolbarViewClassIfNeeded];
     
     // set extra area
     [self setRoomActivitiesViewClass:RoomActivitiesView.class];
@@ -743,7 +742,6 @@
     else if (self.isNewDiscussion)
     {
         [self refreshRoomInputToolbar];
-        self.inputToolbarView.hidden = NO;
     }
     else
     {
@@ -756,12 +754,9 @@
             // Restore tool bar view and room activities view if none
             if (!self.inputToolbarView)
             {
-                [self setRoomInputToolbarViewClass];
-                [self updateInputToolBarViewHeight];
+                [self updateRoomInputToolbarViewClassIfNeeded];
                 
                 [self refreshRoomInputToolbar];
-                
-                self.inputToolbarView.hidden = (self.roomDataSource.state != MXKDataSourceStateReady);
             }
             
             if (!self.activitiesView)
@@ -785,10 +780,10 @@
 }
 
 // Set the input toolbar according to the current display
-- (void)setRoomInputToolbarViewClass
+- (void)updateRoomInputToolbarViewClassIfNeeded
 {
     Class roomInputToolbarViewClass = RoomInputToolbarView.class;
-
+    
     // Check the user has enough power to post message
     if (self.roomDataSource.roomState)
     {
@@ -797,8 +792,9 @@
         
         BOOL canSend = (userPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsMessage:kMXEventTypeStringRoomMessage]);
         BOOL isRoomObsolete = self.roomDataSource.roomState.isObsolete;
+        BOOL isResourceLimitExceeded = [self.roomDataSource.mxSession.syncError.errcode isEqualToString:kMXErrCodeStringResourceLimitExceeded];
         
-        if (isRoomObsolete)
+        if (isRoomObsolete || isResourceLimitExceeded)
         {
             roomInputToolbarViewClass = nil;
         }
@@ -807,14 +803,19 @@
             roomInputToolbarViewClass = DisabledRoomInputToolbarView.class;
         }
     }
-
+    
     // Do not show toolbar in case of preview
     if (self.isRoomPreview)
     {
         roomInputToolbarViewClass = nil;
     }
     
-    [super setRoomInputToolbarViewClass:roomInputToolbarViewClass];
+    // Change inputToolbarView class only if given class is different from current one
+    if (!self.inputToolbarView || ![self.inputToolbarView isMemberOfClass:roomInputToolbarViewClass])
+    {
+        [super setRoomInputToolbarViewClass:roomInputToolbarViewClass];
+        [self updateInputToolBarViewHeight];
+    }
 }
 
 // Get the height of the current room input toolbar
@@ -1325,6 +1326,13 @@
     }
 }
 
+- (void)setForceHideInputToolBar:(BOOL)forceHideInputToolBar
+{
+    _forceHideInputToolBar = forceHideInputToolBar;
+    
+    [self refreshRoomInputToolbar];
+}
+
 #pragma mark - Internals
 
 - (void)forceLayoutRefresh
@@ -1396,10 +1404,33 @@
     }
 }
 
+- (void)updateInputToolBarVisibility
+{
+    BOOL hideInputToolBar = NO;
+    
+    if (self.forceHideInputToolBar)
+    {
+        hideInputToolBar = YES;
+    }
+    else if (self.isNewDiscussion)
+    {
+        hideInputToolBar = NO;
+    }
+    else if (self.roomDataSource.state)
+    {
+        hideInputToolBar = (self.roomDataSource.state != MXKDataSourceStateReady);
+    }
+    
+    self.inputToolbarView.hidden = hideInputToolBar;
+}
+
 - (void)refreshRoomInputToolbar
 {
     MXKImageView *userPictureView;
-
+    
+    // Show or hide input tool bar
+    [self updateInputToolBarVisibility];
+    
     // Check whether the input toolbar is ready before updating it.
     if (self.inputToolbarView && [self.inputToolbarView isKindOfClass:RoomInputToolbarView.class])
     {
@@ -1570,31 +1601,28 @@
 
 #pragma mark - Preview
 
-- (void)displayRoomPreview:(RoomPreviewData *)previewData
+- (void)displayRoomPreview:(nonnull RoomPreviewData *)previewData
 {
     // Release existing room data source or preview
     [self displayRoom:nil];
     
-    if (previewData)
+    self.eventsAcknowledgementEnabled = NO;
+    
+    [self addMatrixSession:previewData.mxSession];
+    
+    roomPreviewData = previewData;
+    
+    [self refreshRoomTitle];
+    
+    if (roomPreviewData.roomDataSource)
     {
-        self.eventsAcknowledgementEnabled = NO;
-        
-        [self addMatrixSession:previewData.mxSession];
-        
-        roomPreviewData = previewData;
-        
-        [self refreshRoomTitle];
-        
-        if (roomPreviewData.roomDataSource)
-        {
-            [super displayRoom:roomPreviewData.roomDataSource];
-        }
+        [super displayRoom:roomPreviewData.roomDataSource];
     }
 }
 
 #pragma mark - New discussion
 
-- (void)displayNewDiscussionWithTargetUser:(User*)discussionTargetUser session:(MXSession*)session
+- (void)displayNewDiscussionWithTargetUser:(nonnull User*)discussionTargetUser session:(nonnull MXSession*)session
 {
     // Release existing room data source or preview
     [self displayRoom:nil];
@@ -1607,8 +1635,6 @@
     
     [self refreshRoomTitle];
     [self refreshRoomInputToolbar];
-    self.inputToolbarView.hidden = NO;
-    
 }
 
 #pragma mark - MXKDataSourceDelegate
@@ -4078,8 +4104,7 @@
         // Update activitiesView with room replacement information
         [self refreshActivitiesViewDisplay];
         // Hide inputToolbarView
-        [self setRoomInputToolbarViewClass];
-        [self updateInputToolBarViewHeight];
+        [self updateRoomInputToolbarViewClassIfNeeded];
     }];
 }
 
