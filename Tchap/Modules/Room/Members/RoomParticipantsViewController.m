@@ -19,7 +19,6 @@
 #import "RoomParticipantsViewController.h"
 
 #import "RoomMemberDetailsViewController.h"
-#import "UIViewController+RiotSearch.h"
 
 #import "GeneratedInterface-Swift.h"
 
