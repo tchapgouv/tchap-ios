@@ -272,22 +272,22 @@ final class RoomCoordinator: NSObject, RoomCoordinatorType {
 // MARK: - RoomViewControllerDelegate
 extension RoomCoordinator: RoomViewControllerDelegate {
     
-    func roomViewControllerShowRoomDetails(_ roomViewController: RoomViewController!) {
+    func roomViewControllerShowRoomDetails(_ roomViewController: RoomViewController) {
         self.showRoomDetails(animated: true)
     }
     
-    func roomViewController(_ roomViewController: RoomViewController!, showMemberDetails roomMember: MXRoomMember!) {
+    func roomViewController(_ roomViewController: RoomViewController, showMemberDetails roomMember: MXRoomMember) {
         self.showMemberDetails(roomMember, animated: true)
     }
     
-    func roomViewController(_ roomViewController: RoomViewController!, showRoom roomID: String!) {
+    func roomViewController(_ roomViewController: RoomViewController, showRoom roomID: String) {
         self.delegate?.roomCoordinator(self, didSelectRoomID: roomID)
     }
     
-    func roomViewControllerPreviewDidTapJoin(_ roomViewController: RoomViewController!) {
+    func roomViewControllerPreviewDidTapJoin(_ roomViewController: RoomViewController) {
     }
     
-    func roomViewControllerPreviewDidTapCancel(_ roomViewController: RoomViewController!) {
+    func roomViewControllerPreviewDidTapCancel(_ roomViewController: RoomViewController) {
     }
 }
 
