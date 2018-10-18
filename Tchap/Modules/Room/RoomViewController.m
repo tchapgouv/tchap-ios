@@ -1411,12 +1411,8 @@
     if (self.forceHideInputToolBar)
     {
         hideInputToolBar = YES;
-    }
-    else if (self.isNewDiscussion)
-    {
-        hideInputToolBar = NO;
-    }
-    else if (self.roomDataSource.state)
+    }    
+    else if (self.roomDataSource)
     {
         hideInputToolBar = (self.roomDataSource.state != MXKDataSourceStateReady);
     }
