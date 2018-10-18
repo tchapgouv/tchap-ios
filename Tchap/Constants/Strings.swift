@@ -61,6 +61,8 @@ internal enum TchapL10n {
   internal static let conversationsStartChatAction = TchapL10n.tr("Tchap", "conversations_start_chat_action")
   /// Conversations
   internal static let conversationsTabTitle = TchapL10n.tr("Tchap", "conversations_tab_title")
+  /// Nouvelle discussion
+  internal static let createNewDiscussionTitle = TchapL10n.tr("Tchap", "create_new_discussion_title")
   /// Une erreur est survenue, veuillez réessayer ultérieurement
   internal static let errorMessageDefault = TchapL10n.tr("Tchap", "error_message_default")
   /// Erreur
