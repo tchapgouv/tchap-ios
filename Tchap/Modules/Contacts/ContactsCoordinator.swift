@@ -17,7 +17,6 @@
 import Foundation
 
 protocol ContactsCoordinatorDelegate: class {
-    func contactsCoordinator(_ coordinator: ContactsCoordinatorType, didSelectRoomID roomID: String)
     func contactsCoordinator(_ coordinator: ContactsCoordinatorType, didSelectUserID userID: String)
 }
 
@@ -56,7 +55,7 @@ final class ContactsCoordinator: NSObject, ContactsCoordinatorType {
         self.contactsErrorPresenter = AlertErrorPresenter(viewControllerPresenter: contactsViewController)
     }
     
-    // MARK: - Public methods
+    // MARK: - Public
     
     func start() {
         self.contactsViewController.displayList(self.contactsDataSource)
@@ -71,58 +70,17 @@ final class ContactsCoordinator: NSObject, ContactsCoordinatorType {
         self.contactsDataSource.search(withPattern: searchText, forceReset: false)
     }
 
-    // MARK: - Private methods
+    // MARK: - Private
     
     private func didSelectUserID(_ userID: String) {
-        self.activityIndicatorPresenter.presentActivityIndicator(on: self.contactsViewController.view, animated: true)
-        
-        let discussionService = DiscussionService(session: session)
-        discussionService.getDiscussionIdentifier(for: userID) { [weak self] response in
-            guard let sself = self else {
-                return
-            }
-            
-            sself.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
-            
-            switch response {
-            case .success(let result):
-                switch result {
-                case .joinedDiscussion(let roomID):
-                    // Open the current discussion
-                    sself.delegate?.contactsCoordinator(sself, didSelectRoomID: roomID)
-                case .noDiscussion:
-                    // Let the delegate handle this user for who no discussion exists.
-                    sself.delegate?.contactsCoordinator(sself, didSelectUserID: userID)
-                default:
-                    break
-                }
-            case .failure(let error):
-                let errorPresentable = sself.openDiscussionErrorPresentable(from: error)
-                sself.contactsErrorPresenter.present(errorPresentable: errorPresentable, animated: true)
-            }
-        }
-    }
-    
-    private func openDiscussionErrorPresentable(from error: Error) -> ErrorPresentable {
-        let errorTitle: String = TchapL10n.errorTitleDefault
-        let errorMessage: String
-        
-        let nsError = error as NSError
-        
-        if let message = nsError.userInfo[NSLocalizedDescriptionKey] as? String {
-            errorMessage = message
-        } else {
-            errorMessage = TchapL10n.errorMessageDefault
-        }
-        
-        return ErrorPresentableImpl(title: errorTitle, message: errorMessage)
+        self.delegate?.contactsCoordinator(self, didSelectUserID: userID)
     }
 }
 
 // MARK: - ContactsViewControllerDelegate
 extension ContactsCoordinator: ContactsViewControllerDelegate {
     
-    func contactsViewController(_ contactsViewController: ContactsViewController, didSelect contact: MXKContact) {        
+    func contactsViewController(_ contactsViewController: ContactsViewController, didSelect contact: MXKContact) {
         // No more than one matrix identifer is expected by contact in Tchap.
         guard contact.matrixIdentifiers.count == 1, let userID = contact.matrixIdentifiers.first as? String else {
             print("[ContactsCoordinator] Invalid selected contact: multiple matrix ids")
