@@ -30,8 +30,6 @@ final class ContactsCoordinator: NSObject, ContactsCoordinatorType {
     private let contactsViewController: ContactsViewController
     private let session: MXSession
     private let contactsDataSource: ContactsDataSource
-    private let activityIndicatorPresenter: ActivityIndicatorPresenterType
-    private let contactsErrorPresenter: ErrorPresenter
     
     // MARK: Public
     
@@ -51,8 +49,7 @@ final class ContactsCoordinator: NSObject, ContactsCoordinatorType {
         self.contactsDataSource.finalizeInitialization()
         self.contactsDataSource.contactsFilter = ContactsDataSourceTchapFilterTchapOnly
         
-        self.activityIndicatorPresenter = ActivityIndicatorPresenter()
-        self.contactsErrorPresenter = AlertErrorPresenter(viewControllerPresenter: contactsViewController)
+        super.init()
     }
     
     // MARK: - Public

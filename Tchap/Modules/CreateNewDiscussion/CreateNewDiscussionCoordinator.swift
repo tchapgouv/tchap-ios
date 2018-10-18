@@ -31,8 +31,6 @@ final class CreateNewDiscussionCoordinator: NSObject, CreateNewDiscussionCoordin
     private let contactsViewController: ContactsViewController
     private let session: MXSession
     private let contactsDataSource: ContactsDataSource
-    private let activityIndicatorPresenter: ActivityIndicatorPresenterType
-    private let contactsErrorPresenter: ErrorPresenter
     
     // MARK: Public
     
@@ -54,9 +52,6 @@ final class CreateNewDiscussionCoordinator: NSObject, CreateNewDiscussionCoordin
         contactsDataSource.finalizeInitialization()
         contactsDataSource.contactsFilter = ContactsDataSourceTchapFilterTchapOnly
         self.contactsDataSource = contactsDataSource
-        
-        self.activityIndicatorPresenter = ActivityIndicatorPresenter()
-        self.contactsErrorPresenter = AlertErrorPresenter(viewControllerPresenter: contactsViewController)
         
         super.init()
     }
