@@ -16,7 +16,7 @@
 
 #import "SegmentedViewController.h"
 
-#import "ContactsTableViewController.h"
+#import "ContactsViewController.h"
 
 @class Contact;
 @class RoomParticipantsViewController;
@@ -51,7 +51,7 @@
  'RoomParticipantsViewController' instance is used to edit members of the room defined by the property 'mxRoom'.
  When this property is nil, the view controller is empty.
  */
-@interface RoomParticipantsViewController : MXKViewController <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UIGestureRecognizerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate>
+@interface RoomParticipantsViewController : MXKViewController <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UIGestureRecognizerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsViewControllerDelegate>
 {
 @protected
     /**

@@ -37,6 +37,8 @@ internal enum TchapL10n {
   internal static let contactsMainSection = TchapL10n.tr("Tchap", "contacts_main_section")
   /// Aucun contact
   internal static let contactsNoContact = TchapL10n.tr("Tchap", "contacts_no_contact")
+  /// Rechercher
+  internal static let contactsSearchBarPlaceholder = TchapL10n.tr("Tchap", "contacts_search_bar_placeholder")
   /// Contacts
   internal static let contactsTabTitle = TchapL10n.tr("Tchap", "contacts_tab_title")
   /// Répertoire Tchap (hors-ligne)
@@ -59,6 +61,8 @@ internal enum TchapL10n {
   internal static let conversationsStartChatAction = TchapL10n.tr("Tchap", "conversations_start_chat_action")
   /// Conversations
   internal static let conversationsTabTitle = TchapL10n.tr("Tchap", "conversations_tab_title")
+  /// Nouvelle discussion
+  internal static let createNewDiscussionTitle = TchapL10n.tr("Tchap", "create_new_discussion_title")
   /// Une erreur est survenue, veuillez réessayer ultérieurement
   internal static let errorMessageDefault = TchapL10n.tr("Tchap", "error_message_default")
   /// Erreur

@@ -126,9 +126,22 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
     private func startDiscussion(with userID: String) {
         let roomCoordinator = RoomCoordinator(router: self.navigationRouter, session: self.session, discussionTargetUserID: userID)
         roomCoordinator.start()
+        
         self.navigationRouter.push(roomCoordinator, animated: true, popCompletion: { [weak self] in
             self?.remove(childCoordinator: roomCoordinator)
         })
+        
+        self.add(childCoordinator: roomCoordinator)
+    }
+    
+    private func showCreateNewDiscussion() {
+        let createNewDiscussionCoordinator = CreateNewDiscussionCoordinator(session: self.session)
+        createNewDiscussionCoordinator.delegate = self
+        createNewDiscussionCoordinator.start()
+        
+        self.navigationRouter.present(createNewDiscussionCoordinator, animated: true)
+        
+        self.add(childCoordinator: createNewDiscussionCoordinator)
     }
 }
 
@@ -149,9 +162,6 @@ extension HomeCoordinator: RoomsCoordinatorDelegate {
 
 // MARK: - ContactsCoordinatorDelegate
 extension HomeCoordinator: ContactsCoordinatorDelegate {
-    func contactsCoordinator(_ coordinator: ContactsCoordinatorType, didSelectRoomID roomID: String) {
-        self.showRoom(with: roomID)
-    }
     
     func contactsCoordinator(_ coordinator: ContactsCoordinatorType, didSelectUserID userID: String) {
         self.startDiscussion(with: userID)
@@ -173,7 +183,7 @@ extension HomeCoordinator: RoomCoordinatorDelegate {
 extension HomeCoordinator: HomeViewControllerDelegate {
     
     func homeViewControllerDidTapStartChatButton(_ homeViewController: HomeViewController) {
-        //TODO Open a contact picker with only Tchap users
+        self.showCreateNewDiscussion()
     }
     
     func homeViewControllerDidTapCreateRoomButton(_ homeViewController: HomeViewController) {
@@ -198,6 +208,23 @@ extension HomeCoordinator: PublicRoomsCoordinatorDelegate {
     func publicRoomsCoordinatorDidCancel(_ publicRoomsCoordinator: PublicRoomsCoordinator) {
         self.navigationRouter.dismissModule(animated: true) { [weak self] in
             self?.remove(childCoordinator: publicRoomsCoordinator)
+        }
+    }
+}
+
+// MARK: - CreateNewDiscussionCoordinatorDelegate
+extension HomeCoordinator: CreateNewDiscussionCoordinatorDelegate {
+    
+    func createNewDiscussionCoordinator(_ coordinator: CreateNewDiscussionCoordinatorType, didSelectUserID userID: String) {
+        self.navigationRouter.dismissModule(animated: true) { [weak self] in
+            self?.startDiscussion(with: userID)
+            self?.remove(childCoordinator: coordinator)
+        }
+    }
+    
+    func createNewDiscussionCoordinatorDidCancel(_ coordinator: CreateNewDiscussionCoordinatorType) {
+        self.navigationRouter.dismissModule(animated: true) { [weak self] in
+            self?.remove(childCoordinator: coordinator)
         }
     }
 }

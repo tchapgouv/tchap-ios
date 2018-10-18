@@ -16,11 +16,12 @@
 
 import Foundation
 
-protocol ContactsCoordinatorDelegate: class {
-    func contactsCoordinator(_ coordinator: ContactsCoordinatorType, didSelectUserID userID: String)
+protocol CreateNewDiscussionCoordinatorDelegate: class {
+    func createNewDiscussionCoordinator(_ coordinator: CreateNewDiscussionCoordinatorType, didSelectUserID userID: String)
+    func createNewDiscussionCoordinatorDidCancel(_ coordinator: CreateNewDiscussionCoordinatorType)
 }
 
-final class ContactsCoordinator: NSObject, ContactsCoordinatorType {
+final class CreateNewDiscussionCoordinator: NSObject, CreateNewDiscussionCoordinatorType {
     
     // MARK: - Properties
     
@@ -35,19 +36,22 @@ final class ContactsCoordinator: NSObject, ContactsCoordinatorType {
     
     var childCoordinators: [Coordinator] = []
     
-    weak var delegate: ContactsCoordinatorDelegate?
+    weak var delegate: CreateNewDiscussionCoordinatorDelegate?
     
     // MARK: - Setup
     
-    init(router: NavigationRouterType, session: MXSession) {
-        self.router = router
+    init(session: MXSession) {
+        self.router = NavigationRouter(navigationController: TCNavigationController())
         self.session = session
         
-        self.contactsViewController = ContactsViewController.instantiate(with: Variant1Style.shared)
+        let contactsViewController = ContactsViewController.instantiate(with: Variant1Style.shared, showSearchBar: true)
+        contactsViewController.title = TchapL10n.createNewDiscussionTitle
+        self.contactsViewController = contactsViewController
         
-        self.contactsDataSource = ContactsDataSource(matrixSession: self.session)
-        self.contactsDataSource.finalizeInitialization()
-        self.contactsDataSource.contactsFilter = ContactsDataSourceTchapFilterTchapOnly
+        let contactsDataSource: ContactsDataSource = ContactsDataSource(matrixSession: self.session)
+        contactsDataSource.finalizeInitialization()
+        contactsDataSource.contactsFilter = ContactsDataSourceTchapFilterTchapOnly
+        self.contactsDataSource = contactsDataSource
         
         super.init()
     }
@@ -57,33 +61,38 @@ final class ContactsCoordinator: NSObject, ContactsCoordinatorType {
     func start() {
         self.contactsViewController.displayList(self.contactsDataSource)
         self.contactsViewController.delegate = self
+        self.router.setRootModule(self.contactsViewController)
+        
+        self.contactsViewController.navigationItem.leftBarButtonItem = MXKBarButtonItem(title: TchapL10n.actionCancel, style: .plain) { [weak self] in
+            self?.didCancel()
+        }
     }
     
     func toPresentable() -> UIViewController {
-        return self.contactsViewController
+        return self.router.toPresentable()
     }
     
-    func updateSearchText(_ searchText: String?) {
-        self.contactsDataSource.search(withPattern: searchText, forceReset: false)
-    }
-
     // MARK: - Private
     
     private func didSelectUserID(_ userID: String) {
-        self.delegate?.contactsCoordinator(self, didSelectUserID: userID)
+        self.delegate?.createNewDiscussionCoordinator(self, didSelectUserID: userID)
+    }
+    
+    private func didCancel() {
+        self.delegate?.createNewDiscussionCoordinatorDidCancel(self)
     }
 }
 
 // MARK: - ContactsViewControllerDelegate
-extension ContactsCoordinator: ContactsViewControllerDelegate {
+extension CreateNewDiscussionCoordinator: ContactsViewControllerDelegate {
     
     func contactsViewController(_ contactsViewController: ContactsViewController, didSelect contact: MXKContact) {
         // No more than one matrix identifer is expected by contact in Tchap.
         guard contact.matrixIdentifiers.count == 1, let userID = contact.matrixIdentifiers.first as? String else {
-            print("[ContactsCoordinator] Invalid selected contact: multiple matrix ids")
+            print("[CreateNewDiscussionCoordinator] Invalid selected contact: multiple matrix ids")
             return
         }
-
+        
         self.didSelectUserID(userID)
     }
 }
