@@ -110,6 +110,7 @@
 #import <MatrixKit/MXKSlashCommands.h>
 
 #import "MXSession+Riot.h"
+#import "RoomPreviewData.h"
 
 #import "GeneratedInterface-Swift.h"
 
@@ -180,11 +181,29 @@
     id tombstoneEventNotificationsListener;
 }
 
+
+// The preview header
+@property (weak, nonatomic) IBOutlet UIView *previewHeaderContainer;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *previewHeaderContainerTopConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *previewHeaderContainerHeightConstraint;
+
+// The jump to last unread banner
+@property (weak, nonatomic) IBOutlet UIView *jumpToLastUnreadBannerContainer;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *jumpToLastUnreadBannerContainerTopConstraint;
+@property (weak, nonatomic) IBOutlet UIButton *jumpToLastUnreadButton;
+@property (weak, nonatomic) IBOutlet UILabel *jumpToLastUnreadLabel;
+@property (weak, nonatomic) IBOutlet UIButton *resetReadMarkerButton;
+
 @property (nonatomic, weak) RoomTitleView *roomTitleView;
 @property (nonatomic, strong) id<Style> currentStyle;
 
 // Direct chat target user when create a discussion without associated room
 @property (nonatomic, strong) User *discussionTargetUser;
+
+/**
+ Action used to handle some buttons.
+ */
+- (IBAction)onButtonPressed:(id)sender;
 
 @end
 
