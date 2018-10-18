@@ -17,8 +17,8 @@
 import UIKit
 
 protocol RoomCoordinatorDelegate: class {
-    func roomCoordinator(_ coordinator: RoomCoordinatorType, didSelectRoomID roomID: String)
     func roomCoordinator(_ coordinator: RoomCoordinatorType, didSelectUserID userID: String)
+    func roomCoordinator(_ coordinator: RoomCoordinatorType, didSelectRoomID roomID: String)
 }
 
 final class RoomCoordinator: NSObject, RoomCoordinatorType {
@@ -53,7 +53,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorType {
         self.init(router: router, session: session, roomID: roomID, eventID: eventID, discussionTargetUserID: nil)
     }
     
-    /// Start a new discussion with a user without associated room
+    /// Used to present a room for a discussion with a target user
     convenience init(router: NavigationRouterType, session: MXSession, discussionTargetUserID: String) {
         self.init(router: router, session: session, roomID: nil, eventID: nil, discussionTargetUserID: discussionTargetUserID)
     }
@@ -70,6 +70,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorType {
         if let discussionTargetUserID = discussionTargetUserID {
             let discussionTargetUser: User
             
+            // Try to find user in local session
             if let userFromSession = userService.getUserFromLocalSession(with: discussionTargetUserID) {
                 discussionTargetUser = userFromSession
                 self.foundDiscussionTargetUser = userFromSession
@@ -77,6 +78,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorType {
                 discussionTargetUser = userService.buildTemporaryUser(from: discussionTargetUserID)
             }
             
+            // Use target user information to populate RoomViewController view
             self.roomViewController = RoomViewController.instantiate(withDiscussionTargetUser: discussionTargetUser, session: session)
         } else {
             self.roomViewController = RoomViewController.instantiate()
@@ -93,50 +95,11 @@ final class RoomCoordinator: NSObject, RoomCoordinatorType {
         self.roomViewController.delegate = self
         
         if let roomID = self.roomID {
-            
-            // Present activity indicator when retrieving roomDataSource for given room ID
-            self.activityIndicatorPresenter.presentActivityIndicator(on: roomViewController.view, animated: false)
-            
-            if let eventId = self.eventID {
-                RoomDataSource.load(withRoomId: roomID, initialEventId: eventId, andMatrixSession: self.session) { (dataSource) in
-                    
-                    self.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
-                    
-                    guard let roomDataSource = dataSource as? RoomDataSource else {
-                        return
-                    }
-                    roomDataSource.markTimelineInitialEvent = true
-                    self.roomViewController.displayRoom(roomDataSource)
-                    self.roomViewController.hasRoomDataSourceOwnership = true
-                }
-            } else {
-                let roomDataSourceManager: MXKRoomDataSourceManager = MXKRoomDataSourceManager.sharedManager(forMatrixSession: self.session)
-                roomDataSourceManager.roomDataSource(forRoom: roomID, create: true, onComplete: { (roomDataSource) in
-                    
-                    self.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
-                    
-                    if let roomDataSource = roomDataSource {
-                        self.roomViewController.displayRoom(roomDataSource)
-                    }
-                })
-            }
-        } else if let discussionTargetUserID = self.discussionTargetUserID, self.foundDiscussionTargetUser == nil {
-            
-            // Present activity indicator when retrieving user for given user ID if user has not been retrieved from session 
-            self.activityIndicatorPresenter.presentActivityIndicator(on: roomViewController.view, animated: false)
-            
-            self.userService.findUser(with: discussionTargetUserID) { [weak self] (user) in
-                guard let sself = self else {
-                    return
-                }
-                
-                sself.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
-                
-                if let user = user {
-                    sself.foundDiscussionTargetUser = user
-                    sself.roomViewController.displayNewDiscussion(withTargetUser: user, session: sself.session)
-                }
-            }
+            // Start flow for a known room
+            self.start(with: roomID, eventID: self.eventID)
+        } else if let discussionTargetUserID = self.discussionTargetUserID {
+            // Start flow for a direct chat, try to find an existing room with target user
+            self.start(with: discussionTargetUserID)
         }
     }
     
@@ -145,6 +108,98 @@ final class RoomCoordinator: NSObject, RoomCoordinatorType {
     }
     
     // MARK: - Private methods
+    
+    private func start(with roomID: String, eventID: String?) {
+        
+        // Present activity indicator when retrieving roomDataSource for given room ID
+        self.activityIndicatorPresenter.presentActivityIndicator(on: roomViewController.view, animated: false)
+        
+        if let eventId = self.eventID {
+            RoomDataSource.load(withRoomId: roomID, initialEventId: eventId, andMatrixSession: self.session) { (dataSource) in
+                
+                self.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
+                
+                guard let roomDataSource = dataSource as? RoomDataSource else {
+                    return
+                }
+                roomDataSource.markTimelineInitialEvent = true
+                self.roomViewController.displayRoom(roomDataSource)
+                self.roomViewController.hasRoomDataSourceOwnership = true
+            }
+        } else {
+            let roomDataSourceManager: MXKRoomDataSourceManager = MXKRoomDataSourceManager.sharedManager(forMatrixSession: self.session)
+            roomDataSourceManager.roomDataSource(forRoom: roomID, create: true, onComplete: { (roomDataSource) in
+                
+                self.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
+                
+                if let roomDataSource = roomDataSource {
+                    self.roomViewController.displayRoom(roomDataSource)
+                }
+            })
+        }
+    }
+    
+    private func start(with discussionTargetUserID: String) {
+        
+        // Hide input tool bar during find discussion process and show it again only in case on success. Avoid possibility to send text if a discussion fails to be initiated.
+        self.roomViewController.forceHideInputToolBar = true
+        self.activityIndicatorPresenter.presentActivityIndicator(on: roomViewController.view, animated: false)
+        
+        let removeActivityIndicator: (() -> Void) = {
+            self.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
+        }
+        
+        let discussionService = DiscussionService(session: session)
+        
+        // Try to find an existing room with target user otherwise start a new discussion
+        discussionService.getDiscussionIdentifier(for: discussionTargetUserID) { [weak self] response in
+            guard let sself = self else {
+                return
+            }
+
+            switch response {
+            case .success(let result):
+                switch result {
+                case .joinedDiscussion(let roomID):
+                    // Open the found discussion
+                    removeActivityIndicator()
+                    sself.roomViewController.forceHideInputToolBar = false
+                    sself.start(with: roomID, eventID: nil)
+                case .noDiscussion:
+                    // Start a new discussion
+
+                    // Try to search target user if not exist in local session
+                    if let discussionTargetUserID = sself.discussionTargetUserID, sself.foundDiscussionTargetUser == nil {
+
+                        sself.userService.findUser(with: discussionTargetUserID) { [weak self] (user) in
+                            guard let sself = self else {
+                                return
+                            }
+
+                            removeActivityIndicator()
+                            sself.roomViewController.forceHideInputToolBar = false
+
+                            if let user = user {
+                                sself.foundDiscussionTargetUser = user
+                                // Update RoomViewController with found target user
+                                sself.roomViewController.displayNewDiscussion(withTargetUser: user, session: sself.session)
+                            }
+                        }
+                    } else {
+                        // User has already been found from local session no update needed
+                        removeActivityIndicator()
+                        sself.roomViewController.forceHideInputToolBar = false
+                    }
+                default:
+                    removeActivityIndicator()
+                }
+            case .failure(let error):
+                removeActivityIndicator()
+                let errorPresentable = sself.openDiscussionErrorPresentable(from: error)
+                sself.errorPresenter.present(errorPresentable: errorPresentable, animated: true)
+            }
+        }
+    }
     
     private func currentRoomID() -> String? {
         let currentRoomID: String?
@@ -195,35 +250,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorType {
     }
     
     private func didSelectUserID(_ userID: String, completion: (() -> Void)?) {
-        self.activityIndicatorPresenter.presentActivityIndicator(on: self.roomViewController.view, animated: true)
-        
-        let discussionService = DiscussionService(session: session)
-        discussionService.getDiscussionIdentifier(for: userID) { [weak self] response in
-            guard let sself = self else {
-                return
-            }
-            
-            sself.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
-            
-            switch response {
-            case .success(let result):
-                switch result {
-                case .joinedDiscussion(let roomID):
-                    // Open the current discussion
-                    sself.delegate?.roomCoordinator(sself, didSelectRoomID: roomID)
-                case .noDiscussion:
-                    // Let the delegate handle this user for who no discussion exists.
-                    sself.delegate?.roomCoordinator(sself, didSelectUserID: userID)
-                default:
-                    break
-                }
-            case .failure(let error):
-                let errorPresentable = sself.openDiscussionErrorPresentable(from: error)
-                sself.errorPresenter.present(errorPresentable: errorPresentable, animated: true)
-            }
-            
-            completion?()
-        }
+        self.delegate?.roomCoordinator(self, didSelectUserID: userID)
     }
     
     private func openDiscussionErrorPresentable(from error: Error) -> ErrorPresentable {
