@@ -54,7 +54,11 @@ final class UserService: UserServiceType {
         if let user = self.getUserFromLocalSession(with: userId) {
             completion(user)
         } else {
-            self.session.matrixRestClient.searchUsers(userId, limit: Constants.searchUsersLimit, success: { (userSearchResponse) in
+            // Retrieve the user from the server by triggering a search based on an interpolated display name.
+            let displayName = self.displayName(from: userId)
+                .replacingOccurrences(of: ".", with: " ")
+                .replacingOccurrences(of: "-", with: " ")
+            self.session.matrixRestClient.searchUsers(displayName, limit: Constants.searchUsersLimit, success: { (userSearchResponse) in
                 if let results = userSearchResponse?.results, let index = results.index(where: { $0.userId == userId }) {
                     let user = self.buildUser(from: results[index])
                     completion(user)
