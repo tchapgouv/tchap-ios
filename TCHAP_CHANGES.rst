@@ -1,3 +1,15 @@
+Changes in Tchap 0.0.3 (2018-10-23)
+===================================================
+
+ * Authentication: implement "forgot password" flow #38
+ * Contact selection: create a new discussion (if none) only when the user sends a message #41
+ * Update TAC link #72
+ * BugFix The display name of some users may be missing #69
+ * Design the room title view #68
+ * Encrypt event content for invited members #44
+ * Room history: remove the display of the state events (history access, encryption) #74
+ * Room creation: start/open a discussion with a tchap contact #18
+
 Changes in Tchap 0.0.2 (2018-09-28)
 ===================================================
 
