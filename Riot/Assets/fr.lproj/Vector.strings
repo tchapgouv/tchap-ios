@@ -140,7 +140,7 @@
 "contacts_address_book_matrix_users_toggle" = "Utilisateurs Matrix uniquement";
 "contacts_address_book_no_contact" = "Aucun contact local";
 "contacts_address_book_permission_required" = "Permissions requises pour accéder aux contacts locaux";
-"contacts_address_book_permission_denied" = "Vous n'avez pas autorisé Riot à accéder à vos contacts locaux";
+"contacts_address_book_permission_denied" = "Vous n'avez pas autorisé Tchap à accéder à vos contacts locaux";
 "contacts_user_directory_section" = "RÉPERTOIRE UTILISATEURS";
 "contacts_user_directory_offline_section" = "RÉPERTOIRE UTILISATEURS (hors-ligne)";
 // Chat participants
@@ -433,7 +433,7 @@
 // Crash report
 "google_analytics_use_prompt" = "Souhaitez-vous aider à améliorer %@ en envoyant automatiquement des rapports d'erreur et des statistiques d'utilisation ?";
 // Crypto
-"e2e_enabling_on_app_update" = "Riot prend désormais en charge le chiffrement de bout en bout, mais vous devez vous reconnecter pour l'activer.\n\nVous pouvez le faire maintenant ou plus tard à partir des paramètres de l'application.";
+"e2e_enabling_on_app_update" = "Tchap prend désormais en charge le chiffrement de bout en bout, mais vous devez vous reconnecter pour l'activer.\n\nVous pouvez le faire maintenant ou plus tard à partir des paramètres de l'application.";
 "e2e_need_log_in_again" = "Vous devez vous reconnecter pour générer les clés de chiffrement de bout en bout pour cet appareil et envoyer la clé publique vers votre serveur d'accueil.\nIl s'agit d'une erreur exceptionnelle. Veuillez nous excuser pour ce désagrément.";
 // Bug report
 "bug_report_title" = "Rapport d'erreur";
@@ -456,7 +456,7 @@
 "settings_ui_theme_dark" = "Sombre";
 "settings_ui_theme_picker_title" = "Selectionnez un thème";
 "settings_ui_theme_picker_message" = "\"Auto\" utilise le paramètre \"Inverser les couleurs\" de votre appareil";
-"collapse" = "réduire";
+"collapse" = "masquer";
 "auth_untrusted_id_server" = "Le serveur d'identité n'est pas fiable";
 "settings_user_interface" = "INTERFACE UTILISATEUR";
 // Events formatter
@@ -494,7 +494,7 @@
 "settings_calls_settings" = "APPELS";
 "settings_show_decrypted_content" = "Afficher les messages chiffrés en clair";
 "settings_enable_callkit" = "Appels intégrés";
-"settings_callkit_info" = "Recevez les appels entrants sur votre écran de verrouillage. Voir vos appels Riot dans l'historique des appels du système. Si iCloud est activé, cet historique d'appels sera partagé avec Apple.";
+"settings_callkit_info" = "Recevez les appels entrants sur votre écran de verrouillage. Voir vos appels Tchap dans l'historique des appels du système. Si iCloud est activé, cet historique d'appels sera partagé avec Apple.";
 "event_formatter_widget_added" = "Widget %@ ajoutée par %@";
 "event_formatter_widget_removed" = "Widget %@ supprimée par %@";
 // Share extension
@@ -542,7 +542,7 @@
 "event_formatter_rerequest_keys_part2" = " depuis vos autres appareils.";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Demande envoyée";
-"rerequest_keys_alert_message" = "Veuillez lancer Riot sur un autre appareil qui peut déchiffrer le message pour qu'il puisse envoyer les clés sur cet appareil.";
+"rerequest_keys_alert_message" = "Veuillez lancer Tchap sur un autre appareil qui peut déchiffrer le message pour qu'il puisse envoyer les clés sur cet appareil.";
 "room_message_reply_to_placeholder" = "Envoyer une réponse (non chiffrée)…";
 "encrypted_room_message_reply_to_placeholder" = "Envoyer une réponse chiffrée…";
 "room_message_reply_to_short_placeholder" = "Envoyer une réponse…";

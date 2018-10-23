@@ -43,37 +43,37 @@ PODS:
   - GZIP (1.2.2)
   - HPGrowingTextView (1.1)
   - libPhoneNumber-iOS (0.9.13)
-  - MatrixKit (0.8.4):
+  - MatrixKit (0.8.5):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.21)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixKit/Core (= 0.8.4)
-    - MatrixSDK (= 0.11.4)
-  - MatrixKit/AppExtension (0.8.4):
+    - MatrixKit/Core (= 0.8.5)
+    - MatrixSDK (= 0.11.5)
+  - MatrixKit/AppExtension (0.8.5):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.21)
     - DTCoreText/Extension
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixSDK (= 0.11.4)
-  - MatrixKit/Core (0.8.4):
+    - MatrixSDK (= 0.11.5)
+  - MatrixKit/Core (0.8.5):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.21)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixSDK (= 0.11.4)
-  - MatrixSDK (0.11.4):
-    - MatrixSDK/Core (= 0.11.4)
-  - MatrixSDK/Core (0.11.4):
+    - MatrixSDK (= 0.11.5)
+  - MatrixSDK (0.11.5):
+    - MatrixSDK/Core (= 0.11.5)
+  - MatrixSDK/Core (0.11.5):
     - AFNetworking (~> 3.2.0)
-    - GZIP (~> 1.2.1)
+    - GZIP (~> 1.2.2)
     - OLMKit (~> 2.3.0)
-    - Realm (~> 3.9.0)
-  - MatrixSDK/JingleCallStack (0.11.4):
+    - Realm (~> 3.11.0)
+  - MatrixSDK/JingleCallStack (0.11.5):
     - MatrixSDK/Core
     - WebRTC (= 63.11.20455)
-  - MatrixSDK/SwiftSupport (0.11.4):
+  - MatrixSDK/SwiftSupport (0.11.5):
     - MatrixSDK/Core
   - OLMKit (2.3.0):
     - OLMKit/olmc (= 2.3.0)
@@ -83,9 +83,9 @@ PODS:
   - PiwikTracker (4.4.2):
     - PiwikTracker/Core (= 4.4.2)
   - PiwikTracker/Core (4.4.2)
-  - Realm (3.9.0):
-    - Realm/Headers (= 3.9.0)
-  - Realm/Headers (3.9.0)
+  - Realm (3.11.0):
+    - Realm/Headers (= 3.11.0)
+  - Realm/Headers (3.11.0)
   - Reusable (4.0.3):
     - Reusable/Storyboard (= 4.0.3)
     - Reusable/View (= 4.0.3)
@@ -143,10 +143,10 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   MatrixKit:
-    :commit: ed456a3418e4980ea2460a8f8ca56634d8eae551
+    :commit: 9273fe304f7cb0158964a0e7e94afb7900924c1b
     :git: https://github.com/matrix-org/matrix-ios-kit.git
   MatrixSDK:
-    :commit: 014c2df15c3629b661cc89655d21b49b75136caa
+    :commit: e680504bea30e6b1884cc764b3534f81e4f89846
     :git: https://github.com/matrix-org/matrix-ios-sdk.git
   PiwikTracker:
     :commit: dfb048f25f4eefbe13ff7515c3c1c2cad5d94491
@@ -161,17 +161,17 @@ SPEC CHECKSUMS:
   GZIP: 12374d285e3b5d46cfcd480700fcfc7e16caf4f1
   HPGrowingTextView: 88a716d97fb853bcb08a4a08e4727da17efc9b19
   libPhoneNumber-iOS: e444379ac18bbfbdefad571da735b2cd7e096caa
-  MatrixKit: 33f4361bd62342b6cdacb79fd60f3d9d704366b1
-  MatrixSDK: 9d9f5e9b1fa19f8a84ebfce846d87b138af9999b
+  MatrixKit: 475ded18f6e1ca6e2461467540fb58b2822deb04
+  MatrixSDK: 40e4b34f220e3a9eb4de0fb8065228d1fc292c19
   OLMKit: dd79cdc5fab9ec04c940a901e025195b7801f306
   PiwikTracker: 42862c7b13028065c3dfd36b4dc38db8a5765acf
-  Realm: 3d36f208bf3aff8335dc3298742140182bde4edb
+  Realm: 92f09a102692b96a9a10e9617f214f15c5ab85fc
   Reusable: 12b67a60e1f3e8c523cc910795dab733f58fbc7e
   RxSwift: fe0fd770a43acdb7d0a53da411c9b892e69bb6e4
   SwiftGen: 4379bd3640b0a212a0f6ea3c494adba385513d10
   SwiftLint: 3207c1faa2240bf8973b191820a116113cd11073
   WebRTC: f2a6203584745fe53532633397557876b5d71640
 
-PODFILE CHECKSUM: 87d3326cde7c91ecf520363cf0f32c145a547840
+PODFILE CHECKSUM: c6fedf6188c4d8f7803e2bcdc174aba8d49a4403
 
 COCOAPODS: 1.5.3

@@ -48,7 +48,7 @@
     id roomDidFlushDataNotificationObserver;
     
     RoomMemberDetailsViewController *memberDetailsViewController;
-    ContactsTableViewController     *contactsPickerViewController;
+    ContactsViewController     *contactsPickerViewController;
     
     // Display a gradient view above the screen.
     CAGradientLayer* tableViewMaskLayer;
@@ -274,7 +274,6 @@
     
     if (contactsPickerViewController)
     {
-        [contactsPickerViewController destroy];
         contactsPickerViewController = nil;
     }
     
@@ -669,10 +668,10 @@
 - (void)onAddParticipantButtonPressed
 {
     // Push the contacts picker.
-    contactsPickerViewController = [ContactsTableViewController instantiate];
+    contactsPickerViewController = [ContactsViewController instantiateWithStyle:Variant2Style.shared showSearchBar:YES];
     
     // Set delegate to handle action on member (start chat, mention)
-    contactsPickerViewController.contactsTableViewControllerDelegate = self;
+    contactsPickerViewController.delegate = self;
     
     // Prepare its data source
     ContactsDataSource *contactsDataSource = [[ContactsDataSource alloc] initWithMatrixSession:self.mxRoom.mxSession];
@@ -698,13 +697,9 @@
         [contactsDataSource.ignoredContactsByMatrixId setObject:userParticipant forKey:userParticipant.mxMember.userId];
     }
     
-    [contactsPickerViewController showSearch:YES];
-    contactsPickerViewController.searchBar.placeholder = NSLocalizedStringFromTable(@"room_participants_invite_another_user", @"Vector", nil);
-    
     // Apply the search pattern if any
     if (currentSearchText)
     {
-        contactsPickerViewController.searchBar.text = currentSearchText;
         [contactsDataSource searchWithPattern:currentSearchText forceReset:YES];
     }
     
@@ -1000,6 +995,11 @@
         
         [self.navigationController pushViewController:viewController animated:YES];
     }
+}
+
+- (void)dismissContactsPickerViewControllerAnimated:(BOOL)animated
+{
+    [self->contactsPickerViewController dismissViewControllerAnimated:animated completion:nil];
 }
 
 #pragma mark - UITableView data source
@@ -1369,9 +1369,9 @@
     }
 }
 
-#pragma mark - ContactsTableViewControllerDelegate
+#pragma mark - ContactsViewControllerDelegate
 
-- (void)contactsTableViewController:(ContactsTableViewController *)contactsTableViewController didSelectContact:(MXKContact*)contact
+- (void)contactsViewController:(ContactsViewController *)contactsViewController didSelectContact:(MXKContact*)contact
 {
     [self didSelectInvitableContact:contact];
 }
@@ -1613,7 +1613,7 @@
                                                                    [self removePendingActionMask];
                                                                    
                                                                    // Refresh display by removing the contacts picker
-                                                                   [self->contactsPickerViewController withdrawViewControllerAnimated:YES completion:nil];
+                                                                   [self dismissContactsPickerViewControllerAnimated:YES];
                                                                    
                                                                } failure:^(NSError *error) {
                                                                    
@@ -1650,7 +1650,7 @@
                                                                        [self removePendingActionMask];
                                                                        
                                                                        // Refresh display by removing the contacts picker
-                                                                       [self->contactsPickerViewController withdrawViewControllerAnimated:YES completion:nil];
+                                                                       [self dismissContactsPickerViewControllerAnimated:YES];
                                                                        
                                                                    } failure:^(NSError *error) {
                                                                        
@@ -1671,7 +1671,7 @@
                                                                        [self removePendingActionMask];
                                                                        
                                                                        // Refresh display by removing the contacts picker
-                                                                       [self->contactsPickerViewController withdrawViewControllerAnimated:YES completion:nil];
+                                                                       [self dismissContactsPickerViewControllerAnimated:YES];
                                                                        
                                                                    } failure:^(NSError *error) {
                                                                        

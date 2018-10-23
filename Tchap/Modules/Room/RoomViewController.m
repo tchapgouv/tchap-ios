@@ -21,8 +21,6 @@
 #import "RoomDataSource.h"
 #import "RoomBubbleCellData.h"
 
-#import "GeneratedInterface-Swift.h"
-
 #import "RoomInputToolbarView.h"
 #import "DisabledRoomInputToolbarView.h"
 
@@ -111,9 +109,12 @@
 #import "EventFormatter.h"
 #import <MatrixKit/MXKSlashCommands.h>
 
+#import "MXSession+Riot.h"
+#import "RoomPreviewData.h"
+
 #import "GeneratedInterface-Swift.h"
 
-@interface RoomViewController () <Stylable>
+@interface RoomViewController () <UIGestureRecognizerDelegate, Stylable, RoomTitleViewDelegate>
 {
     // The preview header
     PreviewView *previewHeader;
@@ -180,7 +181,29 @@
     id tombstoneEventNotificationsListener;
 }
 
+
+// The preview header
+@property (weak, nonatomic) IBOutlet UIView *previewHeaderContainer;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *previewHeaderContainerTopConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *previewHeaderContainerHeightConstraint;
+
+// The jump to last unread banner
+@property (weak, nonatomic) IBOutlet UIView *jumpToLastUnreadBannerContainer;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *jumpToLastUnreadBannerContainerTopConstraint;
+@property (weak, nonatomic) IBOutlet UIButton *jumpToLastUnreadButton;
+@property (weak, nonatomic) IBOutlet UILabel *jumpToLastUnreadLabel;
+@property (weak, nonatomic) IBOutlet UIButton *resetReadMarkerButton;
+
+@property (nonatomic, weak) RoomTitleView *roomTitleView;
 @property (nonatomic, strong) id<Style> currentStyle;
+
+// Direct chat target user when create a discussion without associated room
+@property (nonatomic, strong) User *discussionTargetUser;
+
+/**
+ Action used to handle some buttons.
+ */
+- (IBAction)onButtonPressed:(id)sender;
 
 @end
 
@@ -195,11 +218,19 @@
                           bundle:[NSBundle bundleForClass:self.class]];
 }
 
-+ (instancetype)instantiate
++ (nonnull instancetype)instantiate
 {
     RoomViewController *roomViewController = [[[self class] alloc] initWithNibName:NSStringFromClass(self.class)
                                                                             bundle:[NSBundle bundleForClass:self.class]];
     roomViewController.currentStyle = Variant2Style.shared;
+    return roomViewController;
+}
+
++ (nonnull instancetype)instantiateWithDiscussionTargetUser:(nonnull User*)discussionTargetUser session:(nonnull MXSession*)session
+{
+    RoomViewController *roomViewController = [self instantiate];
+    roomViewController.discussionTargetUser = discussionTargetUser;
+    [roomViewController addMatrixSession:session];
     return roomViewController;
 }
 
@@ -245,11 +276,21 @@
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
     
-    _showMissedDiscussionsBadge = YES;
+    _showMissedDiscussionsBadge = NO;
     
     
     // Listen to the event sent state changes
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eventDidChangeSentState:) name:kMXEventDidChangeSentStateNotification object:nil];
+}
+
+- (void)setupRoomTitleView {
+    
+    if (!self.roomTitleView) {
+        RoomTitleView *roomTitleView = [RoomTitleView instantiateWithStyle:Variant2Style.shared];
+        roomTitleView.delegate = self;
+        self.navigationItem.titleView = roomTitleView;
+        self.roomTitleView = roomTitleView;
+    }
 }
 
 - (void)viewDidLoad
@@ -307,8 +348,7 @@
     
     // Replace the default input toolbar view.
     // Note: this operation will force the layout of subviews. That is why cell view classes must be registered before.
-    [self setRoomInputToolbarViewClass];
-    [self updateInputToolBarViewHeight];
+    [self updateRoomInputToolbarViewClassIfNeeded];
     
     // set extra area
     [self setRoomActivitiesViewClass:RoomActivitiesView.class];
@@ -328,6 +368,8 @@
 
     // Prepare missed dicussion badge (if any)
     self.showMissedDiscussionsBadge = _showMissedDiscussionsBadge;
+    
+    [self setupRoomTitleView];
     
     // Set up the room title view according to the data source (if any)
     [self refreshRoomTitle];
@@ -500,6 +542,7 @@
         if ([roomSummary.roomId isEqualToString:self.roomDataSource.roomId])
         {
             [self refreshMissedDiscussionsCount:NO];
+            [self refreshRoomTitle];
         }
     }];
     [self refreshMissedDiscussionsCount:YES];
@@ -630,6 +673,9 @@
         [self showPreviewHeader:NO];
     }
     
+    // Set potential discussion target user to nil, now use the dataSource to populate the view
+    self.discussionTargetUser = nil;
+    
     // Enable the read marker display, and disable its update.
     dataSource.showReadMarker = YES;
     self.updateRoomReadMarker = NO;
@@ -678,16 +724,9 @@
 {
     [super updateViewControllerAppearanceOnRoomDataSourceState];
     
-    self.titleView.editable = NO;
-    
     if (self.isRoomPreview)
     {
         self.navigationItem.rightBarButtonItem.enabled = NO;
-        
-        if (self.titleView)
-        {
-            ((RoomTitleView*)self.titleView).roomPreviewData = self.roomPreviewData;
-        }
         
         // Remove input tool bar if any
         if (self.inputToolbarView)
@@ -700,6 +739,10 @@
             previewHeader.roomName = self.roomPreviewData.roomName;
         }
     }
+    else if (self.isNewDiscussion)
+    {
+        [self refreshRoomInputToolbar];
+    }
     else
     {
         [self showPreviewHeader:NO];
@@ -711,12 +754,9 @@
             // Restore tool bar view and room activities view if none
             if (!self.inputToolbarView)
             {
-                [self setRoomInputToolbarViewClass];
-                [self updateInputToolBarViewHeight];
+                [self updateRoomInputToolbarViewClassIfNeeded];
                 
                 [self refreshRoomInputToolbar];
-                
-                self.inputToolbarView.hidden = (self.roomDataSource.state != MXKDataSourceStateReady);
             }
             
             if (!self.activitiesView)
@@ -731,7 +771,7 @@
 - (void)leaveRoomOnEvent:(MXEvent*)event
 {
     // Disable the tap gesture handling in the title view by removing the delegate.
-    ((RoomTitleView*)self.titleView).tapGestureDelegate = nil;
+    self.roomTitleView.delegate = nil;
     
     // Hide the potential read marker banner.
     self.jumpToLastUnreadBannerContainer.hidden = YES;
@@ -740,10 +780,10 @@
 }
 
 // Set the input toolbar according to the current display
-- (void)setRoomInputToolbarViewClass
+- (void)updateRoomInputToolbarViewClassIfNeeded
 {
     Class roomInputToolbarViewClass = RoomInputToolbarView.class;
-
+    
     // Check the user has enough power to post message
     if (self.roomDataSource.roomState)
     {
@@ -752,8 +792,9 @@
         
         BOOL canSend = (userPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsMessage:kMXEventTypeStringRoomMessage]);
         BOOL isRoomObsolete = self.roomDataSource.roomState.isObsolete;
+        BOOL isResourceLimitExceeded = [self.roomDataSource.mxSession.syncError.errcode isEqualToString:kMXErrCodeStringResourceLimitExceeded];
         
-        if (isRoomObsolete)
+        if (isRoomObsolete || isResourceLimitExceeded)
         {
             roomInputToolbarViewClass = nil;
         }
@@ -762,14 +803,19 @@
             roomInputToolbarViewClass = DisabledRoomInputToolbarView.class;
         }
     }
-
+    
     // Do not show toolbar in case of preview
     if (self.isRoomPreview)
     {
         roomInputToolbarViewClass = nil;
     }
     
-    [super setRoomInputToolbarViewClass:roomInputToolbarViewClass];
+    // Change inputToolbarView class only if given class is different from current one
+    if (!self.inputToolbarView || ![self.inputToolbarView isMemberOfClass:roomInputToolbarViewClass])
+    {
+        [super setRoomInputToolbarViewClass:roomInputToolbarViewClass];
+        [self updateInputToolBarViewHeight];
+    }
 }
 
 // Get the height of the current room input toolbar
@@ -901,7 +947,7 @@
 {
     // Re-invite the left member before sending the message in case of a discussion (direct chat)
     MXWeakify(self);
-    [self restoreDiscussionIfNeed:^(BOOL success) {
+    [self createOrRestoreDiscussionIfNeeded:^(BOOL success) {
         MXStrongifyAndReturnIfNil(self);
         if (success)
         {
@@ -935,7 +981,7 @@
 {
     // Re-invite the left member before sending the message in case of a discussion (direct chat)
     MXWeakify(self);
-    [self restoreDiscussionIfNeed:^(BOOL success) {
+    [self createOrRestoreDiscussionIfNeeded:^(BOOL success) {
         MXStrongifyAndReturnIfNil(self);
         if (success)
         {
@@ -954,7 +1000,7 @@
 {
     // Re-invite the left member before sending the message in case of a discussion (direct chat)
     MXWeakify(self);
-    [self restoreDiscussionIfNeed:^(BOOL success) {
+    [self createOrRestoreDiscussionIfNeeded:^(BOOL success) {
         MXStrongifyAndReturnIfNil(self);
         if (success)
         {
@@ -974,7 +1020,7 @@
 {
     // Re-invite the left member before sending the message in case of a discussion (direct chat)
     MXWeakify(self);
-    [self restoreDiscussionIfNeed:^(BOOL success) {
+    [self createOrRestoreDiscussionIfNeeded:^(BOOL success) {
         MXStrongifyAndReturnIfNil(self);
         if (success)
         {
@@ -994,7 +1040,7 @@
 {
     // Re-invite the left member before sending the message in case of a discussion (direct chat)
     MXWeakify(self);
-    [self restoreDiscussionIfNeed:^(BOOL success) {
+    [self createOrRestoreDiscussionIfNeeded:^(BOOL success) {
         MXStrongifyAndReturnIfNil(self);
         if (success)
         {
@@ -1090,7 +1136,7 @@
 /**
  Check whether the current room is a direct chat left by the other member.
  */
-- (void)isEmptyDirectChat:(void (^)(BOOL isEmptyDirect))onComplete
+- (void)isDirectChatLeftByTheOther:(void (^)(BOOL isEmptyDirect))onComplete
 {
     // In the case of a direct chat, we check if the other member has left the room.
     if (self.roomDataSource)
@@ -1135,7 +1181,7 @@
  */
 - (void)restoreDiscussionIfNeed:(void (^)(BOOL success))onComplete
 {
-    [self isEmptyDirectChat:^(BOOL isEmptyDirect) {
+    [self isDirectChatLeftByTheOther:^(BOOL isEmptyDirect) {
         if (isEmptyDirect)
         {
             // Invite again the direct user
@@ -1157,6 +1203,71 @@
             onComplete(YES);
         }
     }];
+}
+
+/**
+ Create a direct chat with given user.
+ */
+- (void)createDiscussionWithUser:(User*)user completion:(void (^)(BOOL success))onComplete
+{
+    MXWeakify(self);
+    
+    [self startActivityIndicator];
+    
+    [self.mainSession createRoom:nil
+                      visibility:kMXRoomDirectoryVisibilityPrivate
+                       roomAlias:nil
+                           topic:nil
+                          invite:@[user.userId]
+                      invite3PID:nil
+                        isDirect:YES
+                          preset:kMXRoomPresetTrustedPrivateChat
+                         success:^(MXRoom *room) {
+                             
+                             MXStrongifyAndReturnIfNil(self);
+                             
+                             MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:self.mainSession];
+                             
+                             [roomDataSourceManager roomDataSourceForRoom:room.roomId create:YES onComplete:^(MXKRoomDataSource *roomDataSource) {
+                                 
+                                 [self stopActivityIndicator];
+                                 
+                                 if (roomDataSource.room.summary.isDirect == NO)
+                                 {
+                                     // TODO: Display an error, and retry to set room as direct otherwise quit the room
+                                     
+                                     NSLog(@"[RoomViewController] Fail to create room as direct chat");
+                                 }
+//                                 else
+//                                 {
+                                     // Set discussion target user to nil and now use RoomDataSource for updating view
+                                     [self displayRoom:roomDataSource];
+//                                 }
+
+                                 onComplete(YES);
+                             }];
+                             
+                         } failure:^(NSError *error) {
+                             // TODO: Present error without using AppDelegate
+                             [[AppDelegate theDelegate] showErrorAsAlert:error];
+                             onComplete(NO);
+                         }];
+}
+
+/**
+ Check whether the current room is a direct chat left by the other member.
+ In this case, this method will invite again the left member.
+ */
+- (void)createOrRestoreDiscussionIfNeeded:(void (^)(BOOL success))onComplete
+{
+    if (self.discussionTargetUser)
+    {
+        [self createDiscussionWithUser:self.discussionTargetUser completion:onComplete];
+    }
+    else
+    {
+        [self restoreDiscussionIfNeed:onComplete];
+    }
 }
 
 #pragma mark -
@@ -1215,6 +1326,13 @@
     }
 }
 
+- (void)setForceHideInputToolBar:(BOOL)forceHideInputToolBar
+{
+    _forceHideInputToolBar = forceHideInputToolBar;
+    
+    [self refreshRoomInputToolbar];
+}
+
 #pragma mark - Internals
 
 - (void)forceLayoutRefresh
@@ -1236,82 +1354,79 @@
     return NO;
 }
 
+// Indicates if a new discussion with a target user (without associated room) is occuring.
+- (BOOL)isNewDiscussion
+{
+    return self.discussionTargetUser != nil;
+}
+
 - (void)refreshRoomTitle
 {
-    if (rightBarButtonItems && !self.navigationItem.rightBarButtonItems)
+    MXSession *session = self.mainSession;
+    if (!session)
     {
-        // Restore by default the search bar button.
-        self.navigationItem.rightBarButtonItems = rightBarButtonItems;
+        return;
     }
     
-    [self setRoomTitleViewClass:RoomTitleView.class];
+    RoomTitleViewModelBuilder *roomTitleViewModelBuilder = [[RoomTitleViewModelBuilder alloc] initWithSession:session];
+    RoomTitleViewModel *roomTitleViewModel;
     
-    // Set the right room title view
+    BOOL showRoomPreviewHeader = NO;
+    
     if (self.isRoomPreview)
     {
-        // Do not show the right buttons
-        self.navigationItem.rightBarButtonItems = nil;
+        showRoomPreviewHeader = YES;
         
-        [self showPreviewHeader:YES];
+        if (self.roomPreviewData)
+        {
+            roomTitleViewModel = [roomTitleViewModelBuilder buildFromRoomPreviewData:self.roomPreviewData];
+        }
     }
-    else if (self.roomDataSource)
+    else if (self.isNewDiscussion)
     {
-        [self showPreviewHeader:NO];
-        
-        if (self.roomDataSource.isLive)
-        {
-            // Enable the right buttons (Search and Integrations)
-            for (UIBarButtonItem *barButtonItem in self.navigationItem.rightBarButtonItems)
-            {
-                barButtonItem.enabled = YES;
-            }
-
-            if (self.navigationItem.rightBarButtonItems.count == 2)
-            {
-                BOOL matrixAppsEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:@"matrixApps"];
-                if (!matrixAppsEnabled)
-                {
-                    // If the setting is disabled, do not show the icon
-                    self.navigationItem.rightBarButtonItems = @[self.navigationItem.rightBarButtonItem];
-                }
-                else if ([self widgetsCount:NO])
-                {
-                    // Show there are widgets by changing the "apps" icon color
-                    // Show it in red only for room widgets, not user's widgets
-                    // TODO: Design must be reviewed
-                    UIImage *icon = self.navigationItem.rightBarButtonItems[1].image;
-                    icon = [MXKTools paintImage:icon withColor:kRiotColorPinkRed];
-                    icon = [icon imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-
-                    self.navigationItem.rightBarButtonItems[1].image = icon;
-                }
-                else
-                {
-                    // Reset original icon
-                    self.navigationItem.rightBarButtonItems[1].image = [UIImage imageNamed:@"apps-icon"];
-                }
-            }
-
-            // Enable tap gesture in the title view
-            ((RoomTitleView*)self.titleView).tapGestureDelegate = self;
-        }
-        else
-        {
-            // Remove the search button temporarily
-            rightBarButtonItems = self.navigationItem.rightBarButtonItems;
-            self.navigationItem.rightBarButtonItems = nil;
-        }
+        roomTitleViewModel = [roomTitleViewModelBuilder buildFromUser:self.discussionTargetUser];
     }
     else
     {
-        self.navigationItem.rightBarButtonItem.enabled = NO;
+        MXRoomSummary *roomSummary = self.roomDataSource.room.summary;
+        
+        if (roomSummary)
+        {
+            roomTitleViewModel = [roomTitleViewModelBuilder buildFromRoomSummary:roomSummary];
+        }
     }
+    
+    [self showPreviewHeader:showRoomPreviewHeader];
+    
+    if (roomTitleViewModel)
+    {
+        [self.roomTitleView fillWithRoomTitleViewModel:roomTitleViewModel];
+    }
+}
+
+- (void)updateInputToolBarVisibility
+{
+    BOOL hideInputToolBar = NO;
+    
+    if (self.forceHideInputToolBar)
+    {
+        hideInputToolBar = YES;
+    }    
+    else if (self.roomDataSource)
+    {
+        hideInputToolBar = (self.roomDataSource.state != MXKDataSourceStateReady);
+    }
+    
+    self.inputToolbarView.hidden = hideInputToolBar;
 }
 
 - (void)refreshRoomInputToolbar
 {
     MXKImageView *userPictureView;
-
+    
+    // Show or hide input tool bar
+    [self updateInputToolBarVisibility];
+    
     // Check whether the input toolbar is ready before updating it.
     if (self.inputToolbarView && [self.inputToolbarView isKindOfClass:RoomInputToolbarView.class])
     {
@@ -1482,26 +1597,40 @@
 
 #pragma mark - Preview
 
-- (void)displayRoomPreview:(RoomPreviewData *)previewData
+- (void)displayRoomPreview:(nonnull RoomPreviewData *)previewData
 {
     // Release existing room data source or preview
     [self displayRoom:nil];
     
-    if (previewData)
+    self.eventsAcknowledgementEnabled = NO;
+    
+    [self addMatrixSession:previewData.mxSession];
+    
+    roomPreviewData = previewData;
+    
+    [self refreshRoomTitle];
+    
+    if (roomPreviewData.roomDataSource)
     {
-        self.eventsAcknowledgementEnabled = NO;
-        
-        [self addMatrixSession:previewData.mxSession];
-        
-        roomPreviewData = previewData;
-        
-        [self refreshRoomTitle];
-        
-        if (roomPreviewData.roomDataSource)
-        {
-            [super displayRoom:roomPreviewData.roomDataSource];
-        }
+        [super displayRoom:roomPreviewData.roomDataSource];
     }
+}
+
+#pragma mark - New discussion
+
+- (void)displayNewDiscussionWithTargetUser:(nonnull User*)discussionTargetUser session:(nonnull MXSession*)session
+{
+    // Release existing room data source or preview
+    [self displayRoom:nil];
+    
+    self.eventsAcknowledgementEnabled = NO;
+    
+    [self addMatrixSession:session];
+    
+    self.discussionTargetUser = discussionTargetUser;
+    
+    [self refreshRoomTitle];
+    [self refreshRoomInputToolbar];
 }
 
 #pragma mark - MXKDataSourceDelegate
@@ -2772,38 +2901,6 @@
 
 - (IBAction)onButtonPressed:(id)sender
 {
-//    // Search button
-//    if (sender == self.navigationItem.rightBarButtonItem)
-//    {
-//        // Dismiss keyboard
-//        [self dismissKeyboard];
-//
-//        RoomSearchViewController* roomSearchViewController = [RoomSearchViewController instantiate];
-//        // Add the current data source to be able to search messages.
-//        roomSearchViewController.roomDataSource = self.roomDataSource;
-//    }
-//    // Matrix Apps button
-//    else if (self.navigationItem.rightBarButtonItems.count == 2 && sender == self.navigationItem.rightBarButtonItems[1])
-//    {
-//        if ([self widgetsCount:NO])
-//        {
-//            WidgetPickerViewController *widgetPicker = [[WidgetPickerViewController alloc] initForMXSession:self.roomDataSource.mxSession
-//                                                                                                     inRoom:self.roomDataSource.roomId];
-//
-//            [widgetPicker showInViewController:self];
-//        }
-//        else
-//        {
-//            // No widgets -> Directly show the integration manager
-//            IntegrationManagerViewController *modularVC = [[IntegrationManagerViewController alloc] initForMXSession:self.roomDataSource.mxSession
-//                                                                                                              inRoom:self.roomDataSource.roomId
-//                                                                                                              screen:kIntegrationManagerMainScreen
-//                                                                                                            widgetId:nil];
-//
-//            [self presentViewController:modularVC animated:NO completion:nil];
-//        }
-//    }
-//    else
     if (sender == self.jumpToLastUnreadButton)
     {
         // Dismiss potential keyboard.
@@ -2940,17 +3037,9 @@
     [self refreshJumpToLastUnreadBannerDisplay];
 }
 
-#pragma mark - MXKRoomTitleViewDelegate
+#pragma mark - RoomTitleViewDelegate
 
-- (BOOL)roomTitleViewShouldBeginEditing:(MXKRoomTitleView*)titleView
-{
-    // Disable room name edition
-    return NO;
-}
-
-#pragma mark - RoomTitleViewTapGestureDelegate
-
-- (void)roomTitleView:(RoomTitleView*)titleView recognizeTapGesture:(UITapGestureRecognizer*)tapGestureRecognizer
+- (void)roomTitleViewDidTapped:(RoomTitleView *)roomTitleView
 {
     if (self.delegate)
     {
@@ -3345,6 +3434,11 @@
 
 - (void)goBackToLive
 {
+    if (!self.roomDataSource)
+    {
+        return;
+    }
+    
     if (self.roomDataSource.isLive)
     {
         // Enable the read marker display, and disable its update (in order to not mark as read all the new messages by default).
@@ -3384,6 +3478,16 @@
 
 #pragma mark - Missed discussions handling
 
+- (NSUInteger)missedDiscussionsCount
+{
+    return [self.mainSession riot_missedDiscussionsCount];
+}
+
+- (NSUInteger)missedHighlightDiscussionsCount
+{
+    return [self.mainSession missedHighlightDiscussionsCount];
+}
+
 - (void)refreshMissedDiscussionsCount:(BOOL)force
 {
     // Ignore this action when no room is displayed
@@ -3393,7 +3497,7 @@
     }
     
     NSUInteger highlightCount = 0;
-    NSUInteger missedCount = [[AppDelegate theDelegate].masterTabBarController missedDiscussionsCount];
+    NSUInteger missedCount = [self missedDiscussionsCount];
     
     // Compute the missed notifications count of the current room by considering its notification mode in Riot.
     NSUInteger roomNotificationCount = self.roomDataSource.room.summary.notificationCount;
@@ -3412,7 +3516,7 @@
     if (missedCount)
     {
         // Compute the missed highlight count
-        highlightCount = [[AppDelegate theDelegate].masterTabBarController missedHighlightDiscussionsCount];
+        highlightCount = [self missedHighlightDiscussionsCount];
         if (highlightCount && self.roomDataSource.room.summary.highlightCount)
         {
             // Remove the current room from the missed highlight counter
@@ -3996,8 +4100,7 @@
         // Update activitiesView with room replacement information
         [self refreshActivitiesViewDisplay];
         // Hide inputToolbarView
-        [self setRoomInputToolbarViewClass];
-        [self updateInputToolBarViewHeight];
+        [self updateRoomInputToolbarViewClassIfNeeded];
     }];
 }
 

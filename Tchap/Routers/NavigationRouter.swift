@@ -61,6 +61,12 @@ final class NavigationRouter: NSObject, NavigationRouterType {
         }
     }
     
+    func popToModule(_ module: Presentable, animated: Bool) {
+        if let controllers = navigationController.popToViewController(module.toPresentable(), animated: animated) {
+            controllers.forEach { runCompletion(for: $0) }
+        }
+    }
+    
     func push(_ module: Presentable, animated: Bool = true, popCompletion: (() -> Void)? = nil) {
         
         let controller = module.toPresentable()

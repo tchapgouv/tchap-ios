@@ -176,7 +176,7 @@ UIColor *kVariant2SecondaryTextColor;
     
     // Satus bar
     
-    kVariant2StatusBarStyle = UIStatusBarStyleLightContent;
+    kVariant2StatusBarStyle = UIStatusBarStyleDefault;
     
     // Bar
     

@@ -67,7 +67,7 @@ final class AuthenticationErrorPresentableMaker {
         
         if !dict.isEmpty {
 
-            let errorCode = dict["errcode"] as? String
+            let errorCode = dict[kMXErrorCodeKey] as? String
             
             if let localizedError = dict["error"] as? String {
                 message = localizedError

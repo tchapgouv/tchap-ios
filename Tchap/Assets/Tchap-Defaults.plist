@@ -13,10 +13,6 @@
 	</array>
 	<key>otherIdentityServerNames</key>
 	<array/>
-	<key>pinRoomsWithMissedNotif</key>
-	<true/>
-	<key>pinRoomsWithUnread</key>
-	<true/>
 	<key>pushGatewayURL</key>
 	<string>https://matrix.org/_matrix/push/v1/notify</string>
 	<key>pusherAppIdDev</key>

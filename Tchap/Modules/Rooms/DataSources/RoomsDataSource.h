@@ -16,8 +16,6 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-#import "PublicRoomsDirectoryDataSource.h"
-
 /**
  Action identifier used when the user tapped on the directory change button.
  

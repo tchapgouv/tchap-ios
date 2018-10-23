@@ -17,7 +17,6 @@
  */
 
 #import "RecentsViewController.h"
-#import "RecentsDataSource.h"
 #import "RecentTableViewCell.h"
 
 #import "MXRoom+Riot.h"
@@ -27,23 +26,17 @@
 #import "RoomViewController.h"
 
 #import "InviteRecentTableViewCell.h"
-#import "DirectoryRecentTableViewCell.h"
-#import "RoomIdOrAliasTableViewCell.h"
 
-#import "AppDelegate.h"
+#import "RageShakeManager.h"
+#import "RiotDesignValues.h"
+#import "DesignValues.h"
+#import "Analytics.h"
+#import "LegacyAppDelegate.h"
 
 @interface RecentsViewController ()
 {
     // Tell whether a recents refresh is pending (suspended during editing mode).
     BOOL isRefreshPending;
-    
-    // Recents drag and drop management
-    UILongPressGestureRecognizer *longPressGestureRecognizer;
-    UIImageView *cellSnapshot;
-    NSIndexPath* movingCellPath;
-    MXRoom* movingRoom;
-    
-    NSIndexPath* lastPotentialCellPath;
     
     // Observe UIApplicationDidEnterBackgroundNotification to cancel editing mode when app leaves the foreground state.
     id UIApplicationDidEnterBackgroundNotificationObserver;
@@ -55,10 +48,6 @@
     id kMXNotificationCenterDidUpdateRulesObserver;
     
     MXHTTPOperation *currentRequest;
-    
-    // The fake search bar displayed at the top of the recents table. We switch on the actual search bar (self.recentsSearchBar)
-    // when the user selects it.
-    UISearchBar *tableSearchBar;
     
     // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
     id kRiotDesignValuesDidChangeThemeNotificationObserver;
@@ -95,21 +84,13 @@
     // Set default screen name
     _screenName = @"RecentsScreen";
     
-    // Enable the search bar in the recents table, and remove the search option from the navigation bar.
-    _enableSearchBar = YES;
+    // Remove the search option from the navigation bar.
     self.enableBarButtonSearch = NO;
     
     _enableDragging = NO;
     
     _enableStickyHeaders = NO;
-    _stickyHeaderHeight = 30.0;
-    
-    // Create the fake search bar
-    tableSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 600, 44)];
-    tableSearchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    tableSearchBar.showsCancelButton = NO;
-    tableSearchBar.placeholder = NSLocalizedStringFromTable(@"search_default_placeholder", @"Vector", nil);
-    tableSearchBar.delegate = self;
+    _stickyHeaderHeight = 30.0;    
     
     displayedSectionHeaders = [NSMutableArray array];
     
@@ -142,9 +123,6 @@
         
     }];
     
-    self.recentsSearchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    self.recentsSearchBar.placeholder = NSLocalizedStringFromTable(@"search_default_placeholder", @"Vector", nil);
-    
     // Observe user interface theme change.
     kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
@@ -165,9 +143,6 @@
     topview.backgroundColor = kRiotSecondaryBgColor;
     self.view.backgroundColor = kRiotPrimaryBgColor;
     
-    tableSearchBar.barStyle = self.recentsSearchBar.barStyle = kRiotDesignSearchBarStyle;
-    tableSearchBar.tintColor = self.recentsSearchBar.tintColor = kRiotDesignSearchBarTintColor;
-    
     if (self.recentsTableView.dataSource)
     {
         // Force table refresh
@@ -183,8 +158,6 @@
 - (void)destroy
 {
     [super destroy];
-    
-    longPressGestureRecognizer = nil;
     
     if (currentRequest)
     {
@@ -282,19 +255,8 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
-    // Release the current selected item (if any) except if the second view controller is still visible.
-    if (self.splitViewController.isCollapsed)
-    {
-        // Release the current selected room (if any).
-        [[AppDelegate theDelegate].masterTabBarController releaseSelectedItem];
-    }
-    else
-    {
-        // In case of split view controller where the primary and secondary view controllers are displayed side-by-side onscreen,
-        // the selected room (if any) is highlighted.
-        [self refreshCurrentSelectedCell:YES];
-    }
+
+    [self refreshCurrentSelectedCell:YES];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -317,15 +279,6 @@
 
 - (void)refreshRecentsTable
 {
-    // Refresh the tabBar icon badges
-    [[AppDelegate theDelegate].masterTabBarController refreshTabBarBadges];
-    
-    // do not refresh if there is a pending recent drag and drop
-    if (movingCellPath)
-    {
-        return;
-    }
-    
     isRefreshPending = NO;
     
     if (editedRoomId)
@@ -350,14 +303,6 @@
     
     [self.recentsTableView reloadData];
     
-    // Check conditions to display the fake search bar into the table header
-    if (_enableSearchBar && self.recentsSearchBar.isHidden && self.recentsTableView.tableHeaderView == nil)
-    {
-        // Add the search bar by hiding it by default.
-        self.recentsTableView.tableHeaderView = tableSearchBar;
-        self.recentsTableView.contentOffset = CGPointMake(0, self.recentsTableView.contentOffset.y + tableSearchBar.frame.size.height);
-    }
-    
     if (_shouldScrollToTopOnRefresh)
     {
         [self scrollToTop:NO];
@@ -374,51 +319,14 @@
     }
 }
 
-- (void)hideSearchBar:(BOOL)hidden
-{
-    [super hideSearchBar:hidden];
-    
-    if (!hidden)
-    {
-        // Remove the fake table header view if any
-        self.recentsTableView.tableHeaderView = nil;
-        self.recentsTableView.contentInset = UIEdgeInsetsZero;
-    }
-}
-
 #pragma mark -
 
 - (void)refreshCurrentSelectedCell:(BOOL)forceVisible
 {
-    // Update here the index of the current selected cell (if any) - Useful in landscape mode with split view controller.
-    NSIndexPath *currentSelectedCellIndexPath = nil;
-    MasterTabBarController *masterTabBarController = [AppDelegate theDelegate].masterTabBarController;
-    if (masterTabBarController.currentRoomViewController)
+    NSIndexPath *indexPath = [self.recentsTableView indexPathForSelectedRow];
+    if (indexPath)
     {
-        // Look for the rank of this selected room in displayed recents
-        currentSelectedCellIndexPath = [self.dataSource cellIndexPathWithRoomId:masterTabBarController.selectedRoomId andMatrixSession:masterTabBarController.selectedRoomSession];
-    }
-    
-    if (currentSelectedCellIndexPath)
-    {
-        // Select the right row
-        [self.recentsTableView selectRowAtIndexPath:currentSelectedCellIndexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
-        
-        if (forceVisible)
-        {
-            // Scroll table view to make the selected row appear at second position
-            NSInteger topCellIndexPathRow = currentSelectedCellIndexPath.row ? currentSelectedCellIndexPath.row - 1: currentSelectedCellIndexPath.row;
-            NSIndexPath* indexPath = [NSIndexPath indexPathForRow:topCellIndexPathRow inSection:currentSelectedCellIndexPath.section];
-            [self.recentsTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
-        }
-    }
-    else
-    {
-        NSIndexPath *indexPath = [self.recentsTableView indexPathForSelectedRow];
-        if (indexPath)
-        {
-            [self.recentsTableView deselectRowAtIndexPath:indexPath animated:NO];
-        }
+        [self.recentsTableView deselectRowAtIndexPath:indexPath animated:NO];
     }
 }
 
@@ -1146,254 +1054,6 @@
     });
     
     [super scrollViewDidScroll:scrollView];
-    
-    if (scrollView == self.recentsTableView)
-    {
-        if (!self.recentsSearchBar.isHidden)
-        {
-            if (!self.recentsSearchBar.text.length && (scrollView.contentOffset.y + scrollView.mxk_adjustedContentInset.top > self.recentsSearchBar.frame.size.height))
-            {
-                // Hide the search bar
-                [self hideSearchBar:YES];
-                
-                // Refresh display
-                [self refreshRecentsTable];
-            }
-        }
-    }
-}
-
-#pragma mark - Recents drag & drop management
-
-- (void)setEnableDragging:(BOOL)enableDragging
-{
-    _enableDragging = enableDragging;
-    
-    if (_enableDragging && !longPressGestureRecognizer && self.recentsTableView)
-    {
-        longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onRecentsLongPress:)];
-        [self.recentsTableView addGestureRecognizer:longPressGestureRecognizer];
-    }
-    else if (longPressGestureRecognizer)
-    {
-        [self.recentsTableView removeGestureRecognizer:longPressGestureRecognizer];
-        longPressGestureRecognizer = nil;
-    }
-}
-
-- (void)onRecentsDragEnd
-{
-    [cellSnapshot removeFromSuperview];
-    cellSnapshot = nil;
-    movingCellPath = nil;
-    movingRoom = nil;
-    
-    lastPotentialCellPath = nil;
-    if ([self.dataSource isKindOfClass:RecentsDataSource.class])
-    {
-        ((RecentsDataSource*)self.dataSource).droppingCellIndexPath = nil;
-        ((RecentsDataSource*)self.dataSource).hiddenCellIndexPath = nil;
-    }
-    
-    [self.activityIndicator stopAnimating];
-}
-
-- (IBAction)onRecentsLongPress:(id)sender
-{
-    if (sender != longPressGestureRecognizer)
-    {
-        return;
-    }
-    
-    RecentsDataSource* recentsDataSource = nil;
-    
-    if ([self.dataSource isKindOfClass:[RecentsDataSource class]])
-    {
-        recentsDataSource = (RecentsDataSource*)self.dataSource;
-    }
-    
-    // only support RecentsDataSource
-    if (!recentsDataSource)
-    {
-        return;
-    }
-    
-    UIGestureRecognizerState state = longPressGestureRecognizer.state;
-    
-    // check if there is a moving cell during the long press managemnt
-    if ((state != UIGestureRecognizerStateBegan) && !movingCellPath)
-    {
-        return;
-    }
-    
-    CGPoint location = [longPressGestureRecognizer locationInView:self.recentsTableView];
-    
-    switch (state)
-    {
-            // step 1 : display the selected cell
-        case UIGestureRecognizerStateBegan:
-        {
-            NSIndexPath *indexPath = [self.recentsTableView indexPathForRowAtPoint:location];
-            
-            // check if the cell can be moved
-            if (indexPath && [recentsDataSource isDraggableCellAt:indexPath])
-            {
-                UITableViewCell *cell = [self.recentsTableView cellForRowAtIndexPath:indexPath];
-                cell.backgroundColor = kRiotPrimaryBgColor;
-                
-                // snapshot the cell
-                UIGraphicsBeginImageContextWithOptions(cell.bounds.size, NO, 0);
-                [cell.layer renderInContext:UIGraphicsGetCurrentContext()];
-                UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-                UIGraphicsEndImageContext();
-                
-                cellSnapshot = [[UIImageView alloc] initWithImage:image];
-                recentsDataSource.droppingCellBackGroundView = [[UIImageView alloc] initWithImage:image];
-                
-                // display the selected cell over the tableview
-                CGPoint center = cell.center;
-                center.y = location.y;
-                cellSnapshot.center = center;
-                cellSnapshot.alpha = 0.5f;
-                [self.recentsTableView addSubview:cellSnapshot];
-                
-                // Store the selected room and the original index path of its cell.
-                movingCellPath = indexPath;
-                movingRoom = [recentsDataSource getRoomAtIndexPath:movingCellPath];
-                
-                lastPotentialCellPath = indexPath;
-                recentsDataSource.droppingCellIndexPath = indexPath;
-                recentsDataSource.hiddenCellIndexPath = indexPath;
-            }
-            break;
-        }
-            
-            // step 2 : the cell must follow the finger
-        case UIGestureRecognizerStateChanged:
-        {
-            CGPoint center = cellSnapshot.center;
-            CGFloat halfHeight = cellSnapshot.frame.size.height / 2.0f;
-            CGFloat cellTop = location.y - halfHeight;
-            CGFloat cellBottom = location.y + halfHeight;
-            
-            CGPoint contentOffset =  self.recentsTableView.contentOffset;
-            CGFloat height = MIN(self.recentsTableView.frame.size.height, self.recentsTableView.contentSize.height);
-            CGFloat bottomOffset = contentOffset.y + height;
-            
-            // check if the moving cell is trying to move under the tableview
-            if (cellBottom > self.recentsTableView.contentSize.height)
-            {
-                // force the cell to stay at the tableview bottom
-                location.y = self.recentsTableView.contentSize.height - halfHeight;
-            }
-            // check if the cell is moving over the displayed tableview bottom
-            else if (cellBottom > bottomOffset)
-            {
-                CGFloat diff = cellBottom - bottomOffset;
-                
-                // moving down the cell
-                location.y -= diff;
-                // scroll up the tableview
-                contentOffset.y += diff;
-            }
-            // the moving is tryin to move over the tableview topmost
-            else if (cellTop < 0)
-            {
-                // force to stay in the topmost
-                contentOffset.y  = 0;
-                location.y = contentOffset.y + halfHeight;
-            }
-            // the moving cell is displayed over the current scroll top
-            else if (cellTop < contentOffset.y)
-            {
-                CGFloat diff = contentOffset.y - cellTop;
-                
-                // move up the cell and the table up
-                location.y -= diff;
-                contentOffset.y -= diff;
-            }
-            
-            // move the cell to follow the user finger
-            center.y = location.y;
-            cellSnapshot.center = center;
-            
-            // scroll the tableview if it is required
-            if (contentOffset.y != self.recentsTableView.contentOffset.y)
-            {
-                [self.recentsTableView setContentOffset:contentOffset animated:NO];
-            }
-            
-            NSIndexPath *indexPath = [self.recentsTableView indexPathForRowAtPoint:location];
-            
-            if (![indexPath isEqual:lastPotentialCellPath])
-            {
-                if ([recentsDataSource canCellMoveFrom:movingCellPath to:indexPath])
-                {
-                    [self.recentsTableView beginUpdates];
-                    if (recentsDataSource.droppingCellIndexPath && recentsDataSource.hiddenCellIndexPath)
-                    {
-                        [self.recentsTableView moveRowAtIndexPath:lastPotentialCellPath toIndexPath:indexPath];
-                    }
-                    else if (indexPath)
-                    {
-                        [self.recentsTableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-                        [self.recentsTableView deleteRowsAtIndexPaths:@[movingCellPath] withRowAnimation:UITableViewRowAnimationNone];
-                    }
-                    recentsDataSource.hiddenCellIndexPath = movingCellPath;
-                    recentsDataSource.droppingCellIndexPath = indexPath;
-                    [self.recentsTableView endUpdates];
-                }
-                // the cell cannot be moved
-                else if (recentsDataSource.droppingCellIndexPath)
-                {
-                    NSIndexPath* pathToDelete = recentsDataSource.droppingCellIndexPath;
-                    NSIndexPath* pathToAdd = recentsDataSource.hiddenCellIndexPath;
-                    
-                    // remove it
-                    [self.recentsTableView beginUpdates];
-                    [self.recentsTableView deleteRowsAtIndexPaths:@[pathToDelete] withRowAnimation:UITableViewRowAnimationNone];
-                    [self.recentsTableView insertRowsAtIndexPaths:@[pathToAdd] withRowAnimation:UITableViewRowAnimationNone];
-                    recentsDataSource.droppingCellIndexPath = nil;
-                    recentsDataSource.hiddenCellIndexPath = nil;
-                    [self.recentsTableView endUpdates];
-                }
-                
-                lastPotentialCellPath = indexPath;
-            }
-            
-            break;
-        }
-            
-            // step 3 : remove the view
-            // and insert when it is possible.
-        case UIGestureRecognizerStateEnded:
-        {
-            [cellSnapshot removeFromSuperview];
-            cellSnapshot = nil;
-            
-            [self.activityIndicator startAnimating];
-            
-            [recentsDataSource moveRoomCell:movingRoom from:movingCellPath to:lastPotentialCellPath success:^{
-                
-                [self onRecentsDragEnd];
-                
-            } failure:^(NSError *error) {
-                
-                [self onRecentsDragEnd];
-                
-            }];
-            
-            break;
-        }
-            
-            // default behaviour
-            // remove the cell and cancel the insertion
-        default:
-        {
-            [self onRecentsDragEnd];
-            break;
-        }
-    }
 }
 
 #pragma mark - Table view scrolling
@@ -1457,40 +1117,6 @@
 
 - (void)recentListViewController:(MXKRecentListViewController *)recentListViewController didSelectRoom:(NSString *)roomId inMatrixSession:(MXSession *)matrixSession
 {
-}
-
-#pragma mark - UISearchBarDelegate
-
-- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
-{
-    [super scrollViewWillEndDragging:scrollView withVelocity:velocity targetContentOffset:targetContentOffset];
-}
-
-- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
-{
-    if (searchBar == tableSearchBar)
-    {
-        [self hideSearchBar:NO];
-        [self.recentsSearchBar becomeFirstResponder];
-        return NO;
-    }
-    
-    return YES;
-    
-}
-
-- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
-{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        
-        [self.recentsSearchBar setShowsCancelButton:YES animated:NO];
-        
-    });
-}
-
-- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
-{
-    [self.recentsSearchBar setShowsCancelButton:NO animated:NO];
 }
 
 @end

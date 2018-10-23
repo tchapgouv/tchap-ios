@@ -37,6 +37,8 @@ internal enum TchapL10n {
   internal static let contactsMainSection = TchapL10n.tr("Tchap", "contacts_main_section")
   /// Aucun contact
   internal static let contactsNoContact = TchapL10n.tr("Tchap", "contacts_no_contact")
+  /// Rechercher
+  internal static let contactsSearchBarPlaceholder = TchapL10n.tr("Tchap", "contacts_search_bar_placeholder")
   /// Contacts
   internal static let contactsTabTitle = TchapL10n.tr("Tchap", "contacts_tab_title")
   /// Répertoire Tchap (hors-ligne)
@@ -59,10 +61,38 @@ internal enum TchapL10n {
   internal static let conversationsStartChatAction = TchapL10n.tr("Tchap", "conversations_start_chat_action")
   /// Conversations
   internal static let conversationsTabTitle = TchapL10n.tr("Tchap", "conversations_tab_title")
+  /// Nouvelle discussion
+  internal static let createNewDiscussionTitle = TchapL10n.tr("Tchap", "create_new_discussion_title")
   /// Une erreur est survenue, veuillez réessayer ultérieurement
   internal static let errorMessageDefault = TchapL10n.tr("Tchap", "error_message_default")
   /// Erreur
   internal static let errorTitleDefault = TchapL10n.tr("Tchap", "error_title_default")
+  /// Retourner à l'écran de connexion
+  internal static let forgotPasswordCheckedEmailDoneAction = TchapL10n.tr("Tchap", "forgot_password_checked_email_done_action")
+  /// Votre mot de passe a été réinitialisé. Vous avez été déconnecté de tous les appareils et ne recevez plus de notifications. Pour réactiver les notifications, reconnectez-vous sur chaque appareil.
+  internal static let forgotPasswordCheckedEmailInstructions = TchapL10n.tr("Tchap", "forgot_password_checked_email_instructions")
+  /// Confirmez votre nouveau mot de passe
+  internal static let forgotPasswordFormConfirmPasswordPlaceholder = TchapL10n.tr("Tchap", "forgot_password_form_confirm_password_placeholder")
+  /// Adresse email
+  internal static let forgotPasswordFormEmailPlaceholder = TchapL10n.tr("Tchap", "forgot_password_form_email_placeholder")
+  /// Impossible d'envoyer l'e-mail : adresse non trouvée
+  internal static let forgotPasswordFormErrorEmailNotFound = TchapL10n.tr("Tchap", "forgot_password_form_error_email_not_found")
+  /// Pour réinitialiser votre mot de passe, saisissez l'adresse email associée à votre compte : 
+  internal static let forgotPasswordFormInstructions = TchapL10n.tr("Tchap", "forgot_password_form_instructions")
+  /// Nouveau mot de passe
+  internal static let forgotPasswordFormPasswordPlaceholder = TchapL10n.tr("Tchap", "forgot_password_form_password_placeholder")
+  /// Envoyer l'email de réinitialisation
+  internal static let forgotPasswordFormSendEmailAction = TchapL10n.tr("Tchap", "forgot_password_form_send_email_action")
+  /// Connexion Tchap
+  internal static let forgotPasswordTitle = TchapL10n.tr("Tchap", "forgot_password_title")
+  /// J'ai vérifié mon adresse email
+  internal static let forgotPasswordVerifyEmailConfirmationAction = TchapL10n.tr("Tchap", "forgot_password_verify_email_confirmation_action")
+  /// Impossible de vérifier l'adresse e-mail : assurez-vous d'avoir cliqué sur le lien dans l'e-mail
+  internal static let forgotPasswordVerifyEmailErrorEmailNotVerified = TchapL10n.tr("Tchap", "forgot_password_verify_email_error_email_not_verified")
+  /// Un email a été envoyé à %@. Une fois que vous aurez suivi le lien qu'il contient, cliquez ci-dessous.
+  internal static func forgotPasswordVerifyEmailInstructions(_ p1: String) -> String {
+    return TchapL10n.tr("Tchap", "forgot_password_verify_email_instructions", p1)
+  }
   /// Chargement en cours…
   internal static let publicRoomsLoadingInProgress = TchapL10n.tr("Tchap", "public_rooms_loading_in_progress")
   /// Rechercher
@@ -93,10 +123,20 @@ internal enum TchapL10n {
   internal static let roomMemberDetailsActionChat = TchapL10n.tr("Tchap", "room_member_details_action_chat")
   /// Membres
   internal static let roomMembersTabTitle = TchapL10n.tr("Tchap", "room_members_tab_title")
+  /// Retirer ce salon de la liste des salons publics
+  internal static let roomSettingsRemoveFromRoomsDirectory = TchapL10n.tr("Tchap", "room_settings_remove_from_rooms_directory")
+  /// Cette action est irréversible.\nVoulez-vous vraiment retirer ce salon des salons publics ?
+  internal static let roomSettingsRemoveFromRoomsDirectoryPrompt = TchapL10n.tr("Tchap", "room_settings_remove_from_rooms_directory_prompt")
   /// Paramètres
   internal static let roomSettingsTabTitle = TchapL10n.tr("Tchap", "room_settings_tab_title")
+  /// %d membre(s)
+  internal static func roomTitleRoomMembersCount(_ p1: Int) -> String {
+    return TchapL10n.tr("Tchap", "room_title_room_members_count", p1)
+  }
   /// Aucun résultat
   internal static let searchNoResult = TchapL10n.tr("Tchap", "search_no_result")
+  /// https://www.tchap.gouv.fr/tac
+  internal static let settingsTermConditionsUrl = TchapL10n.tr("Tchap", "settings_term_conditions_url")
   /// J'ai un compte
   internal static let welcomeLoginAction = TchapL10n.tr("Tchap", "welcome_login_action")
   /// Je n'ai pas de compte

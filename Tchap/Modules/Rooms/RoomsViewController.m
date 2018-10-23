@@ -22,7 +22,6 @@
 #import "RoomsDataSource.h"
 
 #import "InviteRecentTableViewCell.h"
-#import "RoomIdOrAliasTableViewCell.h"
 
 @interface RoomsViewController ()
 {

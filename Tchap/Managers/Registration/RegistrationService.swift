@@ -118,7 +118,7 @@ final class RegistrationService: RegistrationServiceType {
     
     func submitRegistrationEmailVerification(to email: String, using restClient: MXRestClient, completion: @escaping (MXResponse<ThreePIDCredentials>) -> Void) {
         
-        guard let homeServer = restClient.homeserver, let homeServerURL = URL(string: restClient.homeserver) else {
+        guard let homeServer = restClient.homeserver, let homeServerURL = URL(string: homeServer) else {
             completion(MXResponse.failure(RegistrationServiceError.homeServerURLBuildFailed))
             return
         }

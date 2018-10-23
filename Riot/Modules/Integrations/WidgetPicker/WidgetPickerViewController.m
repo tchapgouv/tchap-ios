@@ -16,11 +16,11 @@
 
 #import "WidgetPickerViewController.h"
 
-#import "AppDelegate.h"
-
 #import "WidgetManager.h"
 #import "WidgetViewController.h"
 #import "IntegrationManagerViewController.h"
+
+#import "GeneratedInterface-Swift.h"
 
 @interface WidgetPickerViewController ()
 {

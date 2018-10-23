@@ -28,8 +28,6 @@ final class RiotSettings: NSObject {
         static let createConferenceCallsWithJitsi = "createConferenceCallsWithJitsi"
         static let userInterfaceTheme = "userInterfaceTheme"
         static let notificationsShowDecryptedContent = "showDecryptedContent"
-        static let pinRoomsWithMissedNotifications = "pinRoomsWithMissedNotif"
-        static let pinRoomsWithUnreadMessages = "pinRoomsWithUnread"
     }
     
     static let shared = RiotSettings()
@@ -49,24 +47,6 @@ final class RiotSettings: NSObject {
             return UserDefaults.standard.bool(forKey: UserDefaultsKeys.notificationsShowDecryptedContent)
         } set {
             UserDefaults.standard.set(newValue, forKey: UserDefaultsKeys.notificationsShowDecryptedContent)
-        }
-    }
-    
-    /// Indicate if rooms with missed notifications should be displayed first on home screen.
-    var pinRoomsWithMissedNotificationsOnHome: Bool {
-        get {
-            return UserDefaults.standard.bool(forKey: UserDefaultsKeys.pinRoomsWithMissedNotifications)
-        } set {
-            UserDefaults.standard.set(newValue, forKey: UserDefaultsKeys.pinRoomsWithMissedNotifications)
-        }
-    }
-    
-    /// Indicate if rooms with unread messages should be displayed first on home screen.
-    var pinRoomsWithUnreadMessagesOnHome: Bool {
-        get {
-            return UserDefaults.standard.bool(forKey: UserDefaultsKeys.pinRoomsWithUnreadMessages)
-        } set {
-            UserDefaults.standard.set(newValue, forKey: UserDefaultsKeys.pinRoomsWithUnreadMessages)
         }
     }
     
