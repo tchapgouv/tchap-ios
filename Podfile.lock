@@ -83,9 +83,9 @@ PODS:
   - PiwikTracker (4.4.2):
     - PiwikTracker/Core (= 4.4.2)
   - PiwikTracker/Core (4.4.2)
-  - Realm (3.11.0):
-    - Realm/Headers (= 3.11.0)
-  - Realm/Headers (3.11.0)
+  - Realm (3.11.1):
+    - Realm/Headers (= 3.11.1)
+  - Realm/Headers (3.11.1)
   - Reusable (4.0.3):
     - Reusable/Storyboard (= 4.0.3)
     - Reusable/View (= 4.0.3)
@@ -143,10 +143,10 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   MatrixKit:
-    :commit: 9273fe304f7cb0158964a0e7e94afb7900924c1b
+    :commit: 35834bac2f0c26f935047a739ff074140d3e2b7c
     :git: https://github.com/matrix-org/matrix-ios-kit.git
   MatrixSDK:
-    :commit: e680504bea30e6b1884cc764b3534f81e4f89846
+    :commit: fd7be99d4c52038638ae6a4c1f2d4e46a9bb252e
     :git: https://github.com/matrix-org/matrix-ios-sdk.git
   PiwikTracker:
     :commit: dfb048f25f4eefbe13ff7515c3c1c2cad5d94491
@@ -165,7 +165,7 @@ SPEC CHECKSUMS:
   MatrixSDK: 40e4b34f220e3a9eb4de0fb8065228d1fc292c19
   OLMKit: dd79cdc5fab9ec04c940a901e025195b7801f306
   PiwikTracker: 42862c7b13028065c3dfd36b4dc38db8a5765acf
-  Realm: 92f09a102692b96a9a10e9617f214f15c5ab85fc
+  Realm: 037c5919b9ceb59d6beed5d3b031096856b119b3
   Reusable: 12b67a60e1f3e8c523cc910795dab733f58fbc7e
   RxSwift: fe0fd770a43acdb7d0a53da411c9b892e69bb6e4
   SwiftGen: 4379bd3640b0a212a0f6ea3c494adba385513d10
