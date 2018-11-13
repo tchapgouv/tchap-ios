@@ -2558,6 +2558,7 @@
         NSString *absoluteURLString = [url.absoluteString stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         
         // If the link can be open it by the app, let it do
+        // Note: Universal links are not supported by Tchap. [Tools isUniversalLink:] returns NO for the moment.
         if ([Tools isUniversalLink:url])
         {
             shouldDoAction = NO;
