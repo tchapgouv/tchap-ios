@@ -72,27 +72,27 @@
 {
     BOOL isUniversalLink = NO;
 
-    if ([url.host isEqualToString:@"vector.im"] || [url.host isEqualToString:@"www.vector.im"]
-        || [url.host isEqualToString:@"riot.im"] || [url.host isEqualToString:@"www.riot.im"])
-    {
-        // iOS Patch: fix vector.im/riot.im urls before using it
-        NSURL *fixedURL = [Tools fixURLWithSeveralHashKeys:url];
-
-        if (NSNotFound != [@[@"/app", @"/staging", @"/beta", @"/develop"] indexOfObject:fixedURL.path])
-        {
-            isUniversalLink = YES;
-        }
-    }
-    else if ([url.host isEqualToString:@"matrix.to"] || [url.host isEqualToString:@"www.matrix.to"])
-    {
-        // iOS Patch: fix matrix.to urls before using it
-        NSURL *fixedURL = [Tools fixURLWithSeveralHashKeys:url];
-
-        if ([fixedURL.path isEqualToString:@"/"])
-        {
-            isUniversalLink = YES;
-        }
-    }
+    // Tchap: Universal links are not supported for the moment.
+//    if ([url.host isEqualToString:@"www.tchap.gouv.fr"])
+//    {
+//        // iOS Patch: fix urls before using it
+//        NSURL *fixedURL = [Tools fixURLWithSeveralHashKeys:url];
+//
+//        if (NSNotFound != [@[@"/app", @"/staging", @"/beta", @"/develop"] indexOfObject:fixedURL.path])
+//        {
+//            isUniversalLink = YES;
+//        }
+//    }
+//    else if ([url.host isEqualToString:@"matrix.to"] || [url.host isEqualToString:@"www.matrix.to"])
+//    {
+//        // iOS Patch: fix matrix.to urls before using it
+//        NSURL *fixedURL = [Tools fixURLWithSeveralHashKeys:url];
+//
+//        if ([fixedURL.path isEqualToString:@"/"])
+//        {
+//            isUniversalLink = YES;
+//        }
+//    }
 
     return isUniversalLink;
 }
