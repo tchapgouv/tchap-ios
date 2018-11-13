@@ -745,8 +745,8 @@
                 
             }];
             
-            actionIcon = [UIImage imageNamed:@"favouriteOff"];
-            action.backgroundColor = [MXKTools convertImageToPatternColor:@"favouriteOff" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
+            actionIcon = [UIImage imageNamed:@"unpin"];
+            action.backgroundColor = [MXKTools convertImageToPatternColor:@"unpin" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
             [actions insertObject:action atIndex:0];
         }
         else
@@ -757,8 +757,8 @@
                 
             }];
             
-            actionIcon = [UIImage imageNamed:@"favourite"];
-            action.backgroundColor = [MXKTools convertImageToPatternColor:@"favourite" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
+            actionIcon = [UIImage imageNamed:@"pin"];
+            action.backgroundColor = [MXKTools convertImageToPatternColor:@"pin" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
             [actions insertObject:action atIndex:0];
         }
         

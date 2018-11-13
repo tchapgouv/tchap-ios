@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -25,6 +24,14 @@
                         <constraints>
                             <constraint firstAttribute="height" constant="73" id="C2z-3m-zJG"/>
                             <constraint firstAttribute="width" constant="5" id="TWc-jq-awv"/>
+                        </constraints>
+                    </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vs7-wh-Cg4">
+                        <rect key="frame" x="0.0" y="0.0" width="10" height="10"/>
+                        <color key="backgroundColor" red="0.85659327649999994" green="0.0" blue="0.0086100643710000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="10" id="RRq-Y5-ClW"/>
+                            <constraint firstAttribute="height" constant="10" id="TfA-tu-JSi"/>
                         </constraints>
                     </view>
                     <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RX5-eD-c3c" userLabel="Room avatar" customClass="MXKImageView">
@@ -75,10 +82,10 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OeZ-wN-eil">
-                        <rect key="frame" x="524" y="14" width="0.0" height="20"/>
+                        <rect key="frame" x="524" y="13.5" width="0.0" height="20"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mbn-A1-1Yw">
-                                <rect key="frame" x="-4" y="2" width="9" height="17"/>
+                                <rect key="frame" x="-4.5" y="1.5" width="9" height="17"/>
                                 <accessibility key="accessibilityConfiguration" identifier="MissedNotifAndUnreadBadge"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -94,7 +101,7 @@
                         </constraints>
                     </view>
                     <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="e2e_verified" translatesAutoresizingMaskIntoConstraints="NO" id="NAZ-zd-MHS">
-                        <rect key="frame" x="50" y="42" width="11" height="13"/>
+                        <rect key="frame" x="50" y="42.5" width="11" height="13"/>
                         <accessibility key="accessibilityConfiguration" identifier="EncryptedRoomIcon"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="13" id="QdE-73-LyZ"/>
@@ -103,6 +110,7 @@
                     </imageView>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="vs7-wh-Cg4" firstAttribute="leading" secondItem="aXz-IR-jj5" secondAttribute="leading" id="14v-n3-ywq"/>
                     <constraint firstItem="8CY-Ku-0qh" firstAttribute="centerX" secondItem="RX5-eD-c3c" secondAttribute="centerX" id="FVh-1h-VkB"/>
                     <constraint firstItem="360-Go-RcG" firstAttribute="leading" secondItem="OeZ-wN-eil" secondAttribute="trailing" constant="8" id="KuE-8m-e9A"/>
                     <constraint firstItem="e7r-zL-9bw" firstAttribute="leading" secondItem="aXz-IR-jj5" secondAttribute="leading" id="PUW-if-ewh"/>
@@ -120,6 +128,7 @@
                     <constraint firstAttribute="trailing" secondItem="dQt-mN-T6b" secondAttribute="trailing" constant="10" id="t2m-pb-5zd"/>
                     <constraint firstItem="Lg1-xQ-AGn" firstAttribute="top" secondItem="aXz-IR-jj5" secondAttribute="top" constant="14" id="tY3-6V-A3B"/>
                     <constraint firstItem="RX5-eD-c3c" firstAttribute="leading" secondItem="aXz-IR-jj5" secondAttribute="leading" constant="13" id="tgy-cX-Wxm"/>
+                    <constraint firstItem="vs7-wh-Cg4" firstAttribute="top" secondItem="aXz-IR-jj5" secondAttribute="top" id="u1K-3o-N9n"/>
                     <constraint firstItem="8CY-Ku-0qh" firstAttribute="centerY" secondItem="RX5-eD-c3c" secondAttribute="centerY" id="ukJ-yz-Kit"/>
                 </constraints>
             </tableViewCellContentView>
@@ -134,6 +143,7 @@
                 <outlet property="missedNotifAndUnreadBadgeBgViewWidthConstraint" destination="86T-0d-rAI" id="KLF-Du-rHT"/>
                 <outlet property="missedNotifAndUnreadBadgeLabel" destination="mbn-A1-1Yw" id="lee-qf-QjM"/>
                 <outlet property="missedNotifAndUnreadIndicator" destination="e7r-zL-9bw" id="jWE-0y-BMv"/>
+                <outlet property="pinView" destination="vs7-wh-Cg4" id="sgt-ya-kwb"/>
                 <outlet property="roomAvatar" destination="RX5-eD-c3c" id="dIC-8p-inL"/>
                 <outlet property="roomTitle" destination="Lg1-xQ-AGn" id="q7Q-TM-5C8"/>
             </connections>

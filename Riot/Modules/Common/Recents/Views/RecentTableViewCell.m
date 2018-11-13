@@ -23,10 +23,16 @@
 
 #import "MXRoomSummary+Riot.h"
 
+#import "GeneratedInterface-Swift.h"
+
 #pragma mark - Defines & Constants
 
 static const CGFloat kDirectRoomBorderColorAlpha = 0.75;
 static const CGFloat kDirectRoomBorderWidth = 3.0;
+
+@interface RecentTableViewCell() <Stylable>
+@property (nonatomic, strong) id<Style> currentStyle;
+@end
 
 @implementation RecentTableViewCell
 
@@ -36,31 +42,36 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
 {
     [super awakeFromNib];
     
-    // Initialize unread count badge
-    [_missedNotifAndUnreadBadgeBgView.layer setCornerRadius:10];
-    _missedNotifAndUnreadBadgeBgViewWidthConstraint.constant = 0;
+    self.currentStyle = Variant2Style.shared;
 }
 
 - (void)customizeTableViewCellRendering
 {
     [super customizeTableViewCellRendering];
+    [self updateWithStyle:self.currentStyle];
+}
+
+- (void)updateWithStyle:(id<Style>)style
+{
+    self.currentStyle = style;
     
-    self.roomTitle.textColor = kRiotPrimaryTextColor;
-    self.lastEventDescription.textColor = kRiotSecondaryTextColor;
-    self.lastEventDate.textColor = kRiotSecondaryTextColor;
-    self.missedNotifAndUnreadBadgeLabel.textColor = kRiotPrimaryBgColor;
+    self.roomTitle.textColor = style.primaryTextColor;
+    self.lastEventDescription.textColor = style.primarySubTextColor;
+    self.lastEventDate.textColor = style.primarySubTextColor;
+    self.missedNotifAndUnreadBadgeLabel.textColor = style.backgroundColor;
     
+    self.roomAvatar.defaultBackgroundColor = [UIColor clearColor];
+    
+    self.pinView.backgroundColor = [UIColor clearColor];
+    
+    // TODO: remove this direct room border
     // Prepare direct room border
     CGColorRef directRoomBorderColor = CGColorCreateCopyWithAlpha(kRiotColorGreen.CGColor, kDirectRoomBorderColorAlpha);
-    
     [self.directRoomBorderView.layer setCornerRadius:self.directRoomBorderView.frame.size.width / 2];
     self.directRoomBorderView.clipsToBounds = YES;
     self.directRoomBorderView.layer.borderColor = directRoomBorderColor;
     self.directRoomBorderView.layer.borderWidth = kDirectRoomBorderWidth;
-    
     CFRelease(directRoomBorderColor);
-    
-    self.roomAvatar.defaultBackgroundColor = [UIColor clearColor];
 }
 
 - (void)layoutSubviews
@@ -70,6 +81,22 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
     // Round image view
     [_roomAvatar.layer setCornerRadius:_roomAvatar.frame.size.width / 2];
     _roomAvatar.clipsToBounds = YES;
+    
+    // Round unread badge corners
+    [_missedNotifAndUnreadBadgeBgView.layer setCornerRadius:10];
+    
+    // Design the pinned room marker
+    CAShapeLayer *pinViewMaskLayer = [[CAShapeLayer alloc] init];
+    pinViewMaskLayer.frame = _pinView.bounds;
+    
+    UIBezierPath *path = [[UIBezierPath alloc] init];
+    [path moveToPoint:CGPointMake(0, 0)];
+    [path addLineToPoint:CGPointMake(0, _pinView.frame.size.height)];
+    [path addLineToPoint:CGPointMake(_pinView.frame.size.width, 0)];
+    [path closePath];
+    
+    pinViewMaskLayer.path = path.CGPath;
+    _pinView.layer.mask = pinViewMaskLayer;
 }
 
 - (void)render:(MXKCellData *)cellData
@@ -155,6 +182,16 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
     else
     {
         self.lastEventDescription.text = @"";
+    }
+    
+    // Check whether the room is pinned
+    if (roomCellData.roomSummary.room.accountData.tags[kMXRoomTagFavourite])
+    {
+        _pinView.backgroundColor = self.currentStyle.buttonBorderedBackgroundColor;
+    }
+    else
+    {
+        _pinView.backgroundColor = [UIColor clearColor];
     }
 }
 
