@@ -104,6 +104,7 @@ internal enum Asset {
         internal static let typing = ImageAsset(name: "typing")
       }
       internal enum Input {
+        internal static let sendIcon = ImageAsset(name: "send_icon")
         internal static let uploadIcon = ImageAsset(name: "upload_icon")
         internal static let voiceCallIcon = ImageAsset(name: "voice_call_icon")
       }
@@ -176,6 +177,7 @@ internal enum Asset {
       Room.Activities.scrolldown,
       Room.Activities.scrollup,
       Room.Activities.typing,
+      Room.Input.sendIcon,
       Room.Input.uploadIcon,
       Room.Input.voiceCallIcon,
       Room.addParticipant,

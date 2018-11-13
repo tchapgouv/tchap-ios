@@ -43,7 +43,6 @@
 @property (weak, nonatomic) IBOutlet UIView *mainToolbarView;
 
 @property (weak, nonatomic) IBOutlet UIView *separatorView;
-@property (strong, nonatomic) IBOutlet MXKImageView *pictureView;
 
 @property (strong, nonatomic) IBOutlet UIImageView *encryptedRoomIcon;
 
