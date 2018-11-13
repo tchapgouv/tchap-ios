@@ -42,22 +42,6 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
 {
     [super awakeFromNib];
     
-    // Initialize unread count badge
-    [_missedNotifAndUnreadBadgeBgView.layer setCornerRadius:10];
-    _missedNotifAndUnreadBadgeBgViewWidthConstraint.constant = 0;
-    
-    CAShapeLayer *pinViewMaskLayer = [[CAShapeLayer alloc] init];
-    pinViewMaskLayer.frame = _pinView.bounds;
-    
-    UIBezierPath *path = [[UIBezierPath alloc] init];
-    [path moveToPoint:CGPointMake(0, 0)];
-    [path addLineToPoint:CGPointMake(0, _pinView.frame.size.height)];
-    [path addLineToPoint:CGPointMake(_pinView.frame.size.width, 0)];
-    [path closePath];
-    
-    pinViewMaskLayer.path = path.CGPath;
-    _pinView.layer.mask = pinViewMaskLayer;
-    
     self.currentStyle = Variant2Style.shared;
 }
 
@@ -97,6 +81,22 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
     // Round image view
     [_roomAvatar.layer setCornerRadius:_roomAvatar.frame.size.width / 2];
     _roomAvatar.clipsToBounds = YES;
+    
+    // Round unread badge corners
+    [_missedNotifAndUnreadBadgeBgView.layer setCornerRadius:10];
+    
+    // Design the pinned room marker
+    CAShapeLayer *pinViewMaskLayer = [[CAShapeLayer alloc] init];
+    pinViewMaskLayer.frame = _pinView.bounds;
+    
+    UIBezierPath *path = [[UIBezierPath alloc] init];
+    [path moveToPoint:CGPointMake(0, 0)];
+    [path addLineToPoint:CGPointMake(0, _pinView.frame.size.height)];
+    [path addLineToPoint:CGPointMake(_pinView.frame.size.width, 0)];
+    [path closePath];
+    
+    pinViewMaskLayer.path = path.CGPath;
+    _pinView.layer.mask = pinViewMaskLayer;
 }
 
 - (void)render:(MXKCellData *)cellData
