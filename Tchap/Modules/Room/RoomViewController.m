@@ -1422,8 +1422,6 @@
 
 - (void)refreshRoomInputToolbar
 {
-    MXKImageView *userPictureView;
-    
     // Show or hide input tool bar
     [self updateInputToolBarVisibility];
     
@@ -1434,9 +1432,6 @@
         
         // Check whether the call option is supported
         roomInputToolbarView.supportCallOption = self.roomDataSource.mxSession.callManager && self.roomDataSource.room.summary.membersCount.joined >= 2;
-        
-        // Get user picture view in input toolbar
-        userPictureView = roomInputToolbarView.pictureView;
         
         // Show the hangup button if there is an active call or an active jitsi
         // conference call in the current room
@@ -1465,27 +1460,8 @@
     {
         DisabledRoomInputToolbarView *roomInputToolbarView = (DisabledRoomInputToolbarView*)self.inputToolbarView;
 
-        // Get user picture view in input toolbar
-        userPictureView = roomInputToolbarView.pictureView;
-
         // For the moment, there is only one reason to use `DisabledRoomInputToolbarView`
         [roomInputToolbarView setDisabledReason:NSLocalizedStringFromTable(@"room_do_not_have_permission_to_post", @"Vector", nil)];
-    }
-
-    // Set user picture in input toolbar
-    if (userPictureView)
-    {
-        UIImage *preview = [AvatarGenerator generateAvatarForMatrixItem:self.mainSession.myUser.userId withDisplayName:self.mainSession.myUser.displayname];
-        NSString *avatarThumbURL = nil;
-        if (self.mainSession.myUser.avatarUrl)
-        {
-            // Suppose this url is a matrix content uri, we use SDK to get the well adapted thumbnail from server
-            avatarThumbURL = [self.mainSession.matrixRestClient urlOfContentThumbnail:self.mainSession.myUser.avatarUrl toFitViewSize:userPictureView.frame.size withMethod:MXThumbnailingMethodCrop];
-        }
-        userPictureView.enableInMemoryCache = YES;
-        [userPictureView setImageURL:avatarThumbURL withType:nil andImageOrientation:UIImageOrientationUp previewImage:preview];
-        [userPictureView.layer setCornerRadius:userPictureView.frame.size.width / 2];
-        userPictureView.clipsToBounds = YES;
     }
 }
 
