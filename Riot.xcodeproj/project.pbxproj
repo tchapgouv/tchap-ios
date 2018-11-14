@@ -166,7 +166,6 @@
 		0250C5142122B68000034691 /* GDPRConsentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17982FE2119FED2001FD722 /* GDPRConsentViewController.swift */; };
 		0250C5192122B68000034691 /* MXSession+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = 926FA53E1F4C132000F826C2 /* MXSession+Riot.m */; };
 		0250C51E2122B68000034691 /* UsersDevicesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556E520EE6C4C00210D55 /* UsersDevicesViewController.m */; };
-		0250C5202122B68000034691 /* MatrixSDK+Swift.m in Sources */ = {isa = PBXBuildFile; fileRef = 32C1033F211DD1A100DFFB5D /* MatrixSDK+Swift.m */; };
 		0250C5292122B68000034691 /* WidgetPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5576220EE702800210D55 /* WidgetPickerViewController.m */; };
 		0250C52B2122B68000034691 /* IntegrationManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5576020EE702800210D55 /* IntegrationManagerViewController.m */; };
 		0250C52D2122B68000034691 /* FilesSearchCellData.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932EC20F3C3C800746532 /* FilesSearchCellData.m */; };
@@ -236,7 +235,6 @@
 		3233F7461F3497E2006ACA81 /* JitsiMeet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3233F7441F3497DA006ACA81 /* JitsiMeet.framework */; };
 		3233F7471F3497E2006ACA81 /* JitsiMeet.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3233F7441F3497DA006ACA81 /* JitsiMeet.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3284A35120A07C210044F922 /* postMessageAPI.js in Resources */ = {isa = PBXBuildFile; fileRef = 3284A35020A07C210044F922 /* postMessageAPI.js */; };
-		32C10340211DD1A100DFFB5D /* MatrixSDK+Swift.m in Sources */ = {isa = PBXBuildFile; fileRef = 32C1033F211DD1A100DFFB5D /* MatrixSDK+Swift.m */; };
 		599A0B2BF3E50939A4FBD2DD /* Pods_RiotPods_TchapTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08BA8F52677EE3F18661D478 /* Pods_RiotPods_TchapTests.framework */; };
 		75123CD1FC3AEA01A1B0ABBE /* Pods_RiotPods_SiriIntents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 940A45C29F3CB0D58EFBCA8B /* Pods_RiotPods_SiriIntents.framework */; };
 		926FA53F1F4C132000F826C2 /* MXSession+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = 926FA53E1F4C132000F826C2 /* MXSession+Riot.m */; };
@@ -777,8 +775,6 @@
 		32BDC9A4211C34C90064AF51 /* sq */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sq; path = sq.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		32BDC9A5211C34C90064AF51 /* sq */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sq; path = sq.lproj/Localizable.strings; sourceTree = "<group>"; };
 		32BDC9A6211C34C90064AF51 /* sq */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sq; path = sq.lproj/Vector.strings; sourceTree = "<group>"; };
-		32C1033E211DD1A100DFFB5D /* MatrixSDK+Swift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MatrixSDK+Swift.h"; sourceTree = "<group>"; };
-		32C1033F211DD1A100DFFB5D /* MatrixSDK+Swift.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "MatrixSDK+Swift.m"; sourceTree = "<group>"; };
 		4AF7DFFA02629E46BC6A48DC /* Pods-RiotPods-Riot.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-Riot.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RiotPods-Riot/Pods-RiotPods-Riot.debug.xcconfig"; sourceTree = "<group>"; };
 		4F5F4F8534177BF9B5F0CB94 /* Pods-RiotPods-TchapTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-TchapTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RiotPods-TchapTests/Pods-RiotPods-TchapTests.debug.xcconfig"; sourceTree = "<group>"; };
 		926FA53D1F4C132000F826C2 /* MXSession+Riot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MXSession+Riot.h"; sourceTree = "<group>"; };
@@ -2754,8 +2750,6 @@
 				F0D2ADA01F6AA5FD00A7097D /* MXRoomSummary+Riot.m */,
 				926FA53D1F4C132000F826C2 /* MXSession+Riot.h */,
 				926FA53E1F4C132000F826C2 /* MXSession+Riot.m */,
-				32C1033E211DD1A100DFFB5D /* MatrixSDK+Swift.h */,
-				32C1033F211DD1A100DFFB5D /* MatrixSDK+Swift.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -3692,7 +3686,6 @@
 				02BEE18A212AB23A00098505 /* ThirdPartyIDPlatformInfoResolver.swift in Sources */,
 				0250C51E2122B68000034691 /* UsersDevicesViewController.m in Sources */,
 				B109EF182170DFEB0018FA06 /* UserService.swift in Sources */,
-				0250C5202122B68000034691 /* MatrixSDK+Swift.m in Sources */,
 				B1BC6A212136CA7F00D32F8E /* Stylable.swift in Sources */,
 				B15B866E21353C8D002782BE /* TextInputProperties.swift in Sources */,
 				B1322FFC21301B5D0054A9DD /* AuthenticationServiceError.swift in Sources */,
@@ -3826,7 +3819,6 @@
 				B17982FF2119FED2001FD722 /* GDPRConsentViewController.swift in Sources */,
 				926FA53F1F4C132000F826C2 /* MXSession+Riot.m in Sources */,
 				B1B5574720EE6C4D00210D55 /* UsersDevicesViewController.m in Sources */,
-				32C10340211DD1A100DFFB5D /* MatrixSDK+Swift.m in Sources */,
 				B1B5577020EE702800210D55 /* WidgetPickerViewController.m in Sources */,
 				B1B5576F20EE702800210D55 /* IntegrationManagerViewController.m in Sources */,
 				B16932EE20F3C3C900746532 /* FilesSearchCellData.m in Sources */,
