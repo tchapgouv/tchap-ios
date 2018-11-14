@@ -374,6 +374,133 @@
     [self checkHeight:YES];
 }
 
+- (void)showResourceLimitExceededError:(NSDictionary *)errorDict onAdminContactTapped:(void (^)(NSURL *adminContact))onAdminContactTapped
+{
+    // Parse error data
+    NSString *limitType, *adminContactString;
+
+    MXJSONModelSetString(limitType, errorDict[kMXErrorResourceLimitExceededLimitTypeKey]);
+    MXJSONModelSetString(adminContactString, errorDict[kMXErrorResourceLimitExceededAdminContactKey]);
+
+    [self showResourceLimit:limitType adminContactString:adminContactString hardLimit:YES onAdminContactTapped:(void (^)(NSURL *adminContact))onAdminContactTapped];
+}
+
+- (void)showResourceUsageLimitNotice:(MXServerNoticeContent *)usageLimit onAdminContactTapped:(void (^)(NSURL *))onAdminContactTapped
+{
+    [self showResourceLimit:usageLimit.limitType adminContactString:usageLimit.adminContact hardLimit:NO onAdminContactTapped:onAdminContactTapped];
+}
+
+- (void)showResourceLimit:(NSString *)limitType adminContactString:(NSString *)adminContactString hardLimit:(BOOL)hardLimit onAdminContactTapped:(void (^)(NSURL *adminContact))onAdminContactTapped
+{
+    [self reset];
+
+    CGFloat fontSize = 15;
+
+    NSURL *adminContact;
+    if (adminContactString)
+    {
+        adminContact = [NSURL URLWithString:adminContactString];
+    }
+
+    // Build the message content
+    NSMutableString *message = [NSMutableString new];
+    NSAttributedString *message2;
+    if (hardLimit)
+    {
+        // Reuse MatrixKit as is for the beginning of hardLimit
+        if ([limitType isEqualToString:kMXErrorResourceLimitExceededLimitTypeMonthlyActiveUserValue])
+        {
+            [message appendString:[NSBundle mxk_localizedStringForKey:@"login_error_resource_limit_exceeded_message_monthly_active_user"]];
+        }
+        else
+        {
+            [message appendString:[NSBundle mxk_localizedStringForKey:@"login_error_resource_limit_exceeded_message_default"]];
+        }
+    }
+    else
+    {
+        if ([limitType isEqualToString:kMXErrorResourceLimitExceededLimitTypeMonthlyActiveUserValue])
+        {
+            [message appendString:NSLocalizedStringFromTable(@"room_resource_usage_limit_reached_message_1_monthly_active_user", @"Vector", nil)];
+        }
+        else
+        {
+            [message appendString:NSLocalizedStringFromTable(@"room_resource_usage_limit_reached_message_1_default", @"Vector", nil)];
+        }
+
+        message2 = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_resource_usage_limit_reached_message_2", @"Vector", nil)
+                                                   attributes:@{
+                                                                NSFontAttributeName: [UIFont boldSystemFontOfSize:fontSize],
+                                                                NSForegroundColorAttributeName: kRiotPrimaryBgColor
+                                                                }];
+    }
+
+    NSDictionary *attributes = @{
+                                 NSFontAttributeName: [UIFont systemFontOfSize:fontSize],
+                                 NSForegroundColorAttributeName: kRiotPrimaryBgColor
+                                 };
+
+    NSDictionary *messageContact2LinkAttributes;
+    if (adminContact && onAdminContactTapped)
+    {
+        void (^onAdminContactTappedLink)(void) = ^() {
+            onAdminContactTapped(adminContact);
+        };
+
+        objc_setAssociatedObject(self.messageTextView, "onAdminContactTappedLink", [onAdminContactTappedLink copy], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        messageContact2LinkAttributes = @{
+                                             NSFontAttributeName : [UIFont systemFontOfSize:fontSize],
+                                             NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle),
+                                             NSLinkAttributeName : @"onAdminContactTappedLink",
+                                             };
+    }
+    else
+    {
+        messageContact2LinkAttributes = attributes;
+    }
+
+    NSAttributedString *messageContact1 = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_resource_limit_exceeded_message_contact_1", @"Vector", nil) attributes:attributes];
+    NSAttributedString *messageContact2Link =  [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_resource_limit_exceeded_message_contact_2_link", @"Vector", nil) attributes:messageContact2LinkAttributes];
+    NSAttributedString *messageContact3;
+    if (hardLimit)
+    {
+        messageContact3 = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_resource_limit_exceeded_message_contact_3", @"Vector", nil) attributes:attributes];
+    }
+    else
+    {
+        messageContact3 = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_resource_usage_limit_reached_message_contact_3", @"Vector", nil) attributes:attributes];
+    }
+
+    NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:message attributes:attributes];
+    if (message2)
+    {
+        [attributedText appendAttributedString:message2];
+    }
+    [attributedText appendAttributedString:messageContact1];
+    [attributedText appendAttributedString:messageContact2Link];
+    [attributedText appendAttributedString:messageContact3];
+
+    self.messageTextView.attributedText = attributedText;
+    self.messageTextView.tintColor = kRiotPrimaryBgColor;
+    self.messageTextView.hidden = NO;
+
+    if (hardLimit)
+    {
+        self.backgroundColor = kRiotColorPinkRed;
+        self.messageTextView.backgroundColor = kRiotColorPinkRed;
+    }
+    else
+    {
+        self.backgroundColor = kRiotColorCuriousBlue;
+        self.messageTextView.backgroundColor = kRiotColorCuriousBlue;
+    }
+
+    // Hide the separator to display correctly the banner
+    self.separatorView.hidden = YES;
+
+    [self checkHeight:YES];
+}
+
 - (void)reset
 {
     self.separatorView.hidden = NO;
@@ -474,6 +601,16 @@
             onRoomReplacementLinkTapped();
         }
         
+        return NO;
+    }
+    else if ([[URL absoluteString] isEqualToString:@"onAdminContactTappedLink"])
+    {
+        void (^onAdminContactTappedLink)(void) = objc_getAssociatedObject(self.messageTextView, "onAdminContactTappedLink");
+        if (onAdminContactTappedLink)
+        {
+            onAdminContactTappedLink();
+        }
+
         return NO;
     }
     

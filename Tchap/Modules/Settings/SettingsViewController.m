@@ -239,6 +239,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     [self.tableView registerClass:MXKTableViewCellWithLabelAndSwitch.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndSwitch defaultReuseIdentifier]];
     [self.tableView registerClass:MXKTableViewCellWithLabelAndMXKImageView.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndMXKImageView defaultReuseIdentifier]];
     [self.tableView registerClass:TableViewCellWithPhoneNumberTextField.class forCellReuseIdentifier:[TableViewCellWithPhoneNumberTextField defaultReuseIdentifier]];
+    [self.tableView registerNib:MXKTableViewCellWithTextView.nib forCellReuseIdentifier:[MXKTableViewCellWithTextView defaultReuseIdentifier]];
     
     // Enable self sizing cells
     self.tableView.rowHeight = UITableViewAutomaticDimension;
@@ -1142,6 +1143,20 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     return cell;
 }
 
+- (MXKTableViewCellWithTextView*)textViewCellForTableView:(UITableView*)tableView atIndexPath:(NSIndexPath *)indexPath
+{
+    MXKTableViewCellWithTextView *textViewCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithTextView defaultReuseIdentifier] forIndexPath:indexPath];
+    
+    textViewCell.mxkTextView.textColor = self.currentStyle.primaryTextColor;
+    textViewCell.mxkTextView.font = [UIFont systemFontOfSize:17];
+    textViewCell.mxkTextView.backgroundColor = [UIColor clearColor];
+    textViewCell.mxkTextViewLeadingConstraint.constant = tableView.separatorInset.left;
+    textViewCell.mxkTextViewTrailingConstraint.constant = tableView.separatorInset.right;
+    textViewCell.mxkTextView.accessibilityIdentifier = nil;
+    
+    return textViewCell;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger section = indexPath.section;
@@ -1226,7 +1241,13 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
                 {
                     profileCell.mxkImageView.enableInMemoryCache = YES;
                     
-                    [profileCell.mxkImageView setImageURL:[session.matrixRestClient urlOfContentThumbnail:myUser.avatarUrl toFitViewSize:profileCell.mxkImageView.frame.size withMethod:MXThumbnailingMethodCrop] withType:nil andImageOrientation:UIImageOrientationUp previewImage:avatarImage];
+                    [profileCell.mxkImageView setImageURI:myUser.avatarUrl
+                                                 withType:nil
+                                      andImageOrientation:UIImageOrientationUp
+                                            toFitViewSize:profileCell.mxkImageView.frame.size
+                                               withMethod:MXThumbnailingMethodCrop
+                                             previewImage:avatarImage
+                                             mediaManager:session.mediaManager];
                 }
                 else
                 {
@@ -1664,12 +1685,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     {
         if (row == CRYPTOGRAPHY_INFO_INDEX)
         {
-            MXKTableViewCell *cryptoCell = [self getDefaultTableViewCell:tableView];
-
-            cryptoCell.textLabel.attributedText = [self cryptographyInformation];
-            cryptoCell.textLabel.numberOfLines = 0;
+            MXKTableViewCellWithTextView *cryptoCell = [self textViewCellForTableView:tableView atIndexPath:indexPath];
             
-            cryptoCell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cryptoCell.mxkTextView.attributedText = [self cryptographyInformation];
 
             cell = cryptoCell;
         }
@@ -3097,7 +3115,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         // Store user settings
         NSUserDefaults *sharedUserDefaults = [MXKAppSettings standardAppSettings].sharedUserDefaults;
         [sharedUserDefaults setObject:language forKey:@"appLanguage"];
-        [sharedUserDefaults synchronize];
 
         // Do a reload in order to recompute strings in the new language
         // Note that "reloadMatrixSessions:NO" will reset room summaries

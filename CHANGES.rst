@@ -1,3 +1,80 @@
+Changes in 0.7.x (2018-xx-xx)
+===============================================
+
+Improvements:
+ * Replace the deprecated MXMediaManager and MXMediaLoader interfaces use (see matrix-org/matrix-ios-sdk/pull/593).
+ * Replace the deprecated MXKAttachment and MXKImageView interfaces use (see matrix-org/matrix-ios-kit/pull/487).
+
+Changes in 0.7.7 (2018-10-31)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.8.6).
+
+Bug fix:
+ * Notifications: old notifications can reappear (#1985).
+
+Changes in 0.7.6 (2018-10-05)
+===============================================
+
+Bug fix:
+ * Wrong version number.
+
+Changes in 0.7.5 (2018-10-05)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.8.5).
+ * Server Quota Notices: Implement the blue banner (#1937).
+
+Changes in 0.7.4 (2018-09-26)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.8.4).
+ * Lazy loading: Enable it by default (if the homeserver supports it).
+ * i18n: Add Spanish (sp).
+ * Settings: Make advanced info copyable (#2023).
+ * Settings: Made cryptography info copyable, thanks to @daverPL (PR #1999).
+ * Room settings: Anyone can now set a room alias (#2033).
+
+Bug fix:
+ * Fix missing read receipts when lazy-loading room members.
+ * Weird text color when selecting a message (#2046).
+
+Changes in 0.7.3 (2018-08-27)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.8.3).
+
+Bug fix:
+ * Fix input toolbar reset in RoomViewController on MXSession state change (#2006 and #2008).
+ * Fix user interaction disabled in master view of UISplitViewContoller when selecting a room (#2005).
+
+Changes in 0.7.2 (2018-08-24)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.8.2).
+ * Server Quota Notices in Riot (#1937).
+ 
+Bug fix:
+ * User defaults: the preset application language (if any) is ignored.
+ * Recents: Avoid to open a room twice (it crashed on room creation on quick HSes).
+ * Riot-bot: Do not try to create a room with it if the user homeserver is not federated.
+
+Changes in 0.7.1 (2018-08-17)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.8.1).
+ 
+Bug fix:
+ * Empty app if initial /sync fails (#1975).
+ * Direct rooms can be lost on an initial /sync (vector-im/riot-ios/issues/1983).
+ * Fix possible race conditions in direct rooms management.
+
 Changes in 0.7.0 (2018-08-10)
 ===============================================
 

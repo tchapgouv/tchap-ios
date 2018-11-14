@@ -114,7 +114,7 @@
 
 #import "GeneratedInterface-Swift.h"
 
-@interface RoomViewController () <UIGestureRecognizerDelegate, Stylable, RoomTitleViewDelegate>
+@interface RoomViewController () <UIGestureRecognizerDelegate, Stylable, RoomTitleViewDelegate, MXServerNoticesDelegate>
 {
     // The preview header
     PreviewView *previewHeader;
@@ -147,7 +147,10 @@
     
     // Observe kAppDelegateNetworkStatusDidChangeNotification to handle network status change.
     id kAppDelegateNetworkStatusDidChangeNotificationObserver;
-    
+
+    // Observers to manage MXSession state (and sync errors)
+    id kMXSessionStateDidChangeObserver;
+
     // Observers to manage ongoing conference call banner
     id kMXCallStateDidChangeObserver;
     id kMXCallManagerConferenceStartedObserver;
@@ -179,6 +182,9 @@
     
     // Listener for `m.room.tombstone` event type
     id tombstoneEventNotificationsListener;
+
+    // Homeserver notices
+    MXServerNotices *serverNotices;
 }
 
 
@@ -463,6 +469,7 @@
     [self listenCallNotifications];
     [self listenWidgetNotifications];
     [self listenTombstoneEventNotifications];
+    [self listenMXSessionStateChangeNotifications];
     
     // Observe kAppDelegateDidTapStatusBarNotification.
     kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
@@ -505,6 +512,7 @@
     [self removeCallNotificationsListeners];
     [self removeWidgetNotificationsListeners];
     [self removeTombstoneEventNotificationsListener];
+    [self removeMXSessionStateChangeNotificationsListener];
 
     // Re-enable the read marker display, and disable its update.
     self.roomDataSource.showReadMarker = YES;
@@ -686,6 +694,8 @@
     
     if (self.roomDataSource)
     {
+        [self listenToServerNotices];
+
         self.eventsAcknowledgementEnabled = YES;
         
         // Set room title view
@@ -1107,6 +1117,8 @@
     [self removeCallNotificationsListeners];
     [self removeWidgetNotificationsListeners];
     [self removeTombstoneEventNotificationsListener];
+    [self removeMXSessionStateChangeNotificationsListener];
+    [self removeServerNoticesListener];
 
     if (previewHeader)
     {
@@ -2134,7 +2146,7 @@
                 selectedEvent.sentState == MXEventSentStateSending)
             {
                 // Upload id is stored in attachment url (nasty trick)
-                NSString *uploadId = roomBubbleTableViewCell.bubbleData.attachment.actualURL;
+                NSString *uploadId = roomBubbleTableViewCell.bubbleData.attachment.contentURL;
                 if ([MXMediaManager existingUploaderWithId:uploadId])
                 {
                     [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_cancel_send", @"Vector", nil)
@@ -2158,7 +2170,7 @@
                                                                            
                                                                            // Remove the outgoing message and its related cached file.
                                                                            [[NSFileManager defaultManager] removeItemAtPath:roomBubbleTableViewCell.bubbleData.attachment.cacheFilePath error:nil];
-                                                                           [[NSFileManager defaultManager] removeItemAtPath:roomBubbleTableViewCell.bubbleData.attachment.cacheThumbnailPath error:nil];
+                                                                           [[NSFileManager defaultManager] removeItemAtPath:roomBubbleTableViewCell.bubbleData.attachment.thumbnailCachePath error:nil];
 
                                                                            // Cancel and remove the outgoing message
                                                                            [self.roomDataSource.room cancelSendingOperation:selectedEvent.eventId];
@@ -2219,8 +2231,8 @@
         // Check whether download is in progress
         if (level == 0 && selectedEvent.isMediaAttachment)
         {
-            NSString *cacheFilePath = roomBubbleTableViewCell.bubbleData.attachment.cacheFilePath;
-            if ([MXMediaManager existingDownloaderWithOutputFilePath:cacheFilePath])
+            NSString *downloadId = roomBubbleTableViewCell.bubbleData.attachment.downloadId;
+            if ([MXMediaManager existingDownloaderWithIdentifier:downloadId])
             {
                 [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_cancel_download", @"Vector", nil)
                                                                  style:UIAlertActionStyleDefault
@@ -2233,7 +2245,7 @@
                                                                        [self cancelEventSelection];
                                                                        
                                                                        // Get again the loader
-                                                                       MXMediaLoader *loader = [MXMediaManager existingDownloaderWithOutputFilePath:cacheFilePath];
+                                                                       MXMediaLoader *loader = [MXMediaManager existingDownloaderWithIdentifier:downloadId];
                                                                        if (loader)
                                                                        {
                                                                            [loader cancel];
@@ -3192,6 +3204,32 @@
     }];
 }
 
+
+#pragma mark - Server notices management
+
+- (void)removeServerNoticesListener
+{
+    if (serverNotices)
+    {
+        [serverNotices close];
+        serverNotices = nil;
+    }
+}
+
+- (void)listenToServerNotices
+{
+    if (!serverNotices)
+    {
+        serverNotices = [[MXServerNotices alloc] initWithMatrixSession:self.roomDataSource.mxSession];
+        serverNotices.delegate = self;
+    }
+}
+
+- (void)serverNoticesDidChangeState:(MXServerNotices *)serverNotices
+{
+    [self refreshActivitiesViewDisplay];
+}
+
 #pragma mark - Widget notifications management
 
 - (void)removeWidgetNotificationsListeners
@@ -3264,8 +3302,21 @@
         }
 
         Widget *jitsiWidget = [customizedRoomDataSource jitsiWidget];
-        
-        if ([AppDelegate theDelegate].isOffline)
+
+        if ([self.roomDataSource.mxSession.syncError.errcode isEqualToString:kMXErrCodeStringResourceLimitExceeded])
+        {
+            [roomActivitiesView showResourceLimitExceededError:self.roomDataSource.mxSession.syncError.userInfo onAdminContactTapped:^(NSURL *adminContact) {
+                if ([[UIApplication sharedApplication] canOpenURL:adminContact])
+                {
+                    [[UIApplication sharedApplication] openURL:adminContact];
+                }
+                else
+                {
+                    NSLog(@"[RoomVC] refreshActivitiesViewDisplay: adminContact(%@) cannot be opened", adminContact);
+                }
+            }];
+        }
+        else if ([AppDelegate theDelegate].isOffline)
         {
             [roomActivitiesView displayNetworkErrorNotification:NSLocalizedStringFromTable(@"room_offline_notification", @"Vector", nil)];
         }
@@ -3393,6 +3444,20 @@
                     
                     [self goBackToLive];
                     
+                }];
+            }
+            else if (serverNotices.usageLimit && serverNotices.usageLimit.isServerNoticeUsageLimit)
+            {
+                [roomActivitiesView showResourceUsageLimitNotice:serverNotices.usageLimit onAdminContactTapped:^(NSURL *adminContact) {
+
+                    if ([[UIApplication sharedApplication] canOpenURL:adminContact])
+                    {
+                        [[UIApplication sharedApplication] openURL:adminContact];
+                    }
+                    else
+                    {
+                        NSLog(@"[RoomVC] refreshActivitiesViewDisplay: adminContact(%@) cannot be opened", adminContact);
+                    }
                 }];
             }
             else
@@ -4091,6 +4156,32 @@
             [self.roomDataSource.room removeListener:tombstoneEventNotificationsListener];
             tombstoneEventNotificationsListener = nil;
         }
+    }
+}
+
+#pragma mark MXSession state change
+
+- (void)listenMXSessionStateChangeNotifications
+{
+    kMXSessionStateDidChangeObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionStateDidChangeNotification object:self.roomDataSource.mxSession queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+
+        if (self.roomDataSource.mxSession.state == MXSessionStateSyncError
+            || self.roomDataSource.mxSession.state == MXSessionStateRunning)
+        {
+            [self refreshActivitiesViewDisplay];
+
+            // update inputToolbarView
+            [self updateRoomInputToolbarViewClassIfNeeded];
+        }
+    }];
+}
+
+- (void)removeMXSessionStateChangeNotificationsListener
+{
+    if (kMXSessionStateDidChangeObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kMXSessionStateDidChangeObserver];
+        kMXSessionStateDidChangeObserver = nil;
     }
 }
 

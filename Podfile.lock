@@ -143,10 +143,10 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   MatrixKit:
-    :commit: ebd5d28bfa667b302c77b80825085411be0a51f3
+    :commit: dbb5140be4f907f005d9da65018972675b4ca8ad
     :git: https://github.com/matrix-org/matrix-ios-kit.git
   MatrixSDK:
-    :commit: f2806f7176dfefc22470c47763f6c48b4440dd87
+    :commit: c524a2a11df721e3f771dec93ffc5f930aacba45
     :git: https://github.com/matrix-org/matrix-ios-sdk.git
   PiwikTracker:
     :commit: dfb048f25f4eefbe13ff7515c3c1c2cad5d94491
@@ -172,6 +172,6 @@ SPEC CHECKSUMS:
   SwiftLint: 3207c1faa2240bf8973b191820a116113cd11073
   WebRTC: f2a6203584745fe53532633397557876b5d71640
 
-PODFILE CHECKSUM: c6fedf6188c4d8f7803e2bcdc174aba8d49a4403
+PODFILE CHECKSUM: 2d57530ee506d5a8f295884a7cdf563322fd6362
 
 COCOAPODS: 1.6.0.beta.2

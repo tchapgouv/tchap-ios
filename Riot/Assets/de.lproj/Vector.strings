@@ -58,7 +58,7 @@
 "auth_username_in_use" = "Nutzername bereits verwendet";
 "auth_forgot_password" = "Passwort vergessen?";
 "auth_msisdn_validation_title" = "Verifizierung ausstehend";
-"auth_msisdn_validation_message" = "Wir sandten eine SMS mit einem Aktivierungs-Code. Bitte gebe den unten ein.";
+"auth_msisdn_validation_message" = "Bitte gib unten den Aktivierungs-Code ein, den wir per SMS verschickt haben.";
 "auth_msisdn_validation_error" = "Telefonnummer kann nicht verifiziert werden.";
 "auth_reset_password_missing_password" = "Ein neues Passwort muss eingegeben werden.";
 "auth_reset_password_next_step_button" = "Ich habe meine E-Mail-Adresse verifiziert";
@@ -221,7 +221,7 @@
 "settings_remove_prompt_title" = "Bestätigung";
 "settings_remove_email_prompt_msg" = "Bist du sicher, dass du die E-Mail-Adresse %@ entfernen möchtest?";
 "settings_email_address" = "E-Mail";
-"settings_email_address_placeholder" = "Gebe deine E-Mail-Adresse ein";
+"settings_email_address_placeholder" = "Gib deine E-Mail-Adresse ein";
 "settings_add_email_address" = "Füge E-Mail-Adresse hinzu";
 "settings_remove_phone_prompt_msg" = "Bist du sicher, dass du die Telefon-Nummer %@ entfernen möchtest?";
 "settings_night_mode" = "Nacht Modus";
@@ -313,7 +313,7 @@
 "room_preview_try_join_an_unknown_room" = "Du versuchst auf %@ zuzugreifen.  Möchtest du dem Raum beitreten um teilzunehmen?";
 "settings_config_identity_server" = "Identitätsserver ist %@";
 "settings_labs" = "Labor";
-"settings_sign_out_e2e_warn" = "Du wirst die Ende-zu-Ende Schlüssel verlieren. Du kannst dann keine alten Nachrichten mehr in verschlüsselten Räumen auf diesem Gerät lesen.";
+"settings_sign_out_e2e_warn" = "Du wirst die Ende-zu-Ende Schlüssel verlieren. Du kannst dann auf diesem Gerät in verschlüsselten Räumen keine alten Nachrichten mehr lesen.";
 "settings_phone_number" = "Telefon";
 "settings_add_phone_number" = "Telefonnummer hinzufügen";
 "settings_fail_to_update_profile" = "Profilaktualisierung fehlgeschlagen";
@@ -381,12 +381,6 @@
 "rage_shake_prompt" = "Du scheinst das Gerät frustriert zu schütteln. Möchtest du einen Bug Report senden?";
 "camera_access_not_granted" = "%@ hat keine Berechtigung die Kamera zu nutzen, bitte berechtigen";
 "large_badge_value_k_format" = "%.1fK";
-// room display name
-"room_displayname_invite_from" = "Einladung von %@";
-"room_displayname_room_invite" = "Raum-Einladung";
-"room_displayname_two_members" = "%@ und %@";
-"room_displayname_more_than_two_members" = "%@ und %u andere";
-"room_displayname_no_title" = "Leerer Raum";
 // Call
 "call_incoming_voice_prompt" = "Eingehender Sprach-Anruf von %@";
 "call_incoming_video_prompt" = "Eingehender Video-Anruf von %@";
@@ -553,3 +547,12 @@
 "settings_labs_room_members_lazy_loading" = "Raummitglieder verzögert laden";
 "settings_labs_room_members_lazy_loading_error_message" = "Dein Heimserver unterstützt das verzögerte Laden von Raummitgliedern noch nicht. Versuche es später erneut.";
 "room_event_action_view_decrypted_source" = "Zeige entschlüsselten Quellcode";
+"room_recents_server_notice_section" = "SYSTEMBENACHRICHTIGUNGEN";
+"room_resource_limit_exceeded_message_contact_1" = " Bitte ";
+"room_resource_limit_exceeded_message_contact_2_link" = "kontaktiere deinen Dienst-Administrator";
+"room_resource_limit_exceeded_message_contact_3" = " um diesen Service weiter zu nutzen.";
+"homeserver_connection_lost" = "Konnte keine Verbindung zum Heimserver herstellen.";
+"room_resource_usage_limit_reached_message_1_default" = "Dieser Heimserver hat einen seiner Ressourcen-Limits überschritten, sodass ";
+"room_resource_usage_limit_reached_message_1_monthly_active_user" = "Dieser Heimserver hat sein Limit an monatlich aktiven Benutzern überschritten, sodass ";
+"room_resource_usage_limit_reached_message_2" = "einige Benutzer nicht in der Lage sein werden, sich einzuloggen.";
+"room_resource_usage_limit_reached_message_contact_3" = " um dieses Limit erhöhen zu lassen.";
