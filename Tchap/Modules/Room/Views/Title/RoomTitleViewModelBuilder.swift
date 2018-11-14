@@ -66,10 +66,14 @@ final class RoomTitleViewModelBuilder: NSObject {
             avatarImageShape = .hexagon
         }
         
-        let avatarThumbnailURL = self.avatarThumbnailURL(from: avatarUrl)
         let placeholderImage: UIImage = AvatarGenerator.generateAvatar(forText: displayName)
         
-        let avatarImageViewModel = AvatarImageViewModel(thumbStringUrl: avatarThumbnailURL, placeholderImage: placeholderImage, shape: avatarImageShape)
+        let avatarImageViewModel = AvatarImageViewModel(avatarContentURI: avatarUrl,
+                                                        mediaManager: self.session.mediaManager,
+                                                        thumbnailSize: self.avatarImageSize,
+                                                        thumbnailingMethod: MXThumbnailingMethodCrop,
+                                                        placeholderImage: placeholderImage,
+                                                        shape: avatarImageShape)
         
         return RoomTitleViewModel(title: title, subtitle: subtitle, avatarImageViewModel: avatarImageViewModel)
     }
@@ -81,11 +85,15 @@ final class RoomTitleViewModelBuilder: NSObject {
         
         let avatarUrl = roomPreviewData.roomAvatarUrl
         
-        let avatarThumbnailURL = self.avatarThumbnailURL(from: avatarUrl)
         let placeholderImage: UIImage = AvatarGenerator.generateAvatar(forText: title)
         let avatarImageShape: AvatarImageShape = .hexagon
 
-        let avatarImageViewModel = AvatarImageViewModel(thumbStringUrl: avatarThumbnailURL, placeholderImage: placeholderImage, shape: avatarImageShape)
+        let avatarImageViewModel = AvatarImageViewModel(avatarContentURI: avatarUrl,
+                                                        mediaManager: self.session.mediaManager,
+                                                        thumbnailSize: self.avatarImageSize,
+                                                        thumbnailingMethod: MXThumbnailingMethodCrop,
+                                                        placeholderImage: placeholderImage,
+                                                        shape: avatarImageShape)
         
         return RoomTitleViewModel(title: title, subtitle: subtitle, avatarImageViewModel: avatarImageViewModel)
     }
@@ -100,20 +108,15 @@ final class RoomTitleViewModelBuilder: NSObject {
         let subtitle = displayNameComponents.domain
         let avatarImageShape: AvatarImageShape = .circle
         
-        let avatarThumbnailURL = self.avatarThumbnailURL(from: avatarUrl)
         let placeholderImage: UIImage = AvatarGenerator.generateAvatar(forText: displayName)
         
-        let avatarImageViewModel = AvatarImageViewModel(thumbStringUrl: avatarThumbnailURL, placeholderImage: placeholderImage, shape: avatarImageShape)
+        let avatarImageViewModel = AvatarImageViewModel(avatarContentURI: avatarUrl,
+                                                        mediaManager: self.session.mediaManager,
+                                                        thumbnailSize: self.avatarImageSize,
+                                                        thumbnailingMethod: MXThumbnailingMethodCrop,
+                                                        placeholderImage: placeholderImage,
+                                                        shape: avatarImageShape)
         
         return RoomTitleViewModel(title: title, subtitle: subtitle, avatarImageViewModel: avatarImageViewModel)
-    }
-    
-    // MARK: - Private
-    
-    private func avatarThumbnailURL(from avatarUrl: String?) -> String? {
-        guard let avatarUrl = avatarUrl else {
-            return nil
-        }
-        return self.session.matrixRestClient.url(ofContentThumbnail: avatarUrl, toFitViewSize: self.avatarImageSize, with: MXThumbnailingMethodCrop)
     }
 }

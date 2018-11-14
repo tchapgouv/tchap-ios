@@ -111,10 +111,22 @@ import Reusable
         self.subTitleLabel.text = roomTitleViewModel.subtitle
         if let avatarImageViewModel = roomTitleViewModel.avatarImageViewModel {
             self.imageView.isHidden = false
-            self.imageView.setImageURL(avatarImageViewModel.thumbStringUrl,
-                                       withType: nil,
-                                       andImageOrientation: .up,
-                                       previewImage: avatarImageViewModel.placeholderImage)
+            if let thumbnailSize = avatarImageViewModel.thumbnailSize, let thumbnailingMethod = avatarImageViewModel.thumbnailingMethod {
+                self.imageView.setImageURI(avatarImageViewModel.avatarContentURI,
+                                           withType: nil,
+                                           andImageOrientation: .up,
+                                           toFitViewSize: thumbnailSize,
+                                           with: thumbnailingMethod,
+                                           previewImage: avatarImageViewModel.placeholderImage,
+                                           mediaManager: avatarImageViewModel.mediaManager)
+            } else {
+                self.imageView.setImageURI(avatarImageViewModel.avatarContentURI,
+                                           withType: nil,
+                                           andImageOrientation: .up,
+                                           previewImage: avatarImageViewModel.placeholderImage,
+                                           mediaManager: avatarImageViewModel.mediaManager)
+            }
+            
             self.imageShape = avatarImageViewModel.shape
         } else {
             self.imageView.isHidden = true
