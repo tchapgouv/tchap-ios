@@ -146,12 +146,11 @@
         // hide the selection
         [tableView deselectRowAtIndexPath:indexPath animated:NO];
     }
-    else if (([cell isKindOfClass:[RecentTableViewCell class]]))
+    else if (([cell isKindOfClass:[RoomsCell class]]))
     {
-        RecentTableViewCell* recentTableViewCell = (RecentTableViewCell*)cell;
-        id<MXKRecentCellDataStoring> recentCellData = (id<MXKRecentCellDataStoring>)recentTableViewCell.renderedCellData;
+        RoomsCell* recentTableViewCell = (RoomsCell*)cell;
         
-        [self.roomsViewControllerDelegate roomsViewController:self didSelectRoomWithID:recentCellData.roomSummary.roomId];
+        [self.roomsViewControllerDelegate roomsViewController:self didSelectRoomWithID:recentTableViewCell.roomCellData.roomSummary.roomId];
     }
 }
 

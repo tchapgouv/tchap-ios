@@ -188,7 +188,7 @@ UIColor *kVariant2SecondaryTextColor;
     // Button
     
     kVariant2ButtonBorderedTitleColor = [UIColor whiteColor];
-    kVariant2ButtonBorderedBgColor = kColorLightNavy;
+    kVariant2ButtonBorderedBgColor = kColorDarkBlue;
     kVariant2ButtonPlainTitleColor = kColorLightNavy;
     kVariant2ButtonPlainBgColor = [UIColor clearColor];
     
