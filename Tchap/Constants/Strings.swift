@@ -51,6 +51,10 @@ internal enum TchapL10n {
   internal static let conversationsCreateRoomAction = TchapL10n.tr("Tchap", "conversations_create_room_action")
   /// Salons publics
   internal static let conversationsDirectorySection = TchapL10n.tr("Tchap", "conversations_directory_section")
+  /// Rejeter
+  internal static let conversationsInviteDecline = TchapL10n.tr("Tchap", "conversations_invite_decline")
+  /// Rejoindre
+  internal static let conversationsInviteJoin = TchapL10n.tr("Tchap", "conversations_invite_join")
   /// Invitations
   internal static let conversationsInvitesSection = TchapL10n.tr("Tchap", "conversations_invites_section")
   /// Conversations

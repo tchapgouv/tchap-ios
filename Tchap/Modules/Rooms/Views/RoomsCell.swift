@@ -22,7 +22,7 @@ import UIKit
     @IBOutlet private(set) weak var avatarView: MXKImageView!
     @IBOutlet private weak var encryptedIcon: UIImageView!
     @IBOutlet private weak var missedNotifAndUnreadBadgeLabel: UILabel!
-    @IBOutlet private weak var missedNotifAndUnreadBadgeBgView: UIView!
+    @IBOutlet private(set) weak var missedNotifAndUnreadBadgeBgView: UIView!
     
     @IBOutlet private weak var labelsStackView: UIStackView!
     @IBOutlet private(set) weak var titleLabel: UILabel!
@@ -67,15 +67,19 @@ import UIKit
         self.avatarView.tc_makeCircle()
         
         // Round unread badge corners
-        self.missedNotifAndUnreadBadgeBgView.layer.cornerRadius = 10
+        if let badgeView = self.missedNotifAndUnreadBadgeBgView {
+            badgeView.layer.cornerRadius = badgeView.frame.size.height / 2
+        }
         
-        // Design the pinned room marker
-        let path = UIBezierPath(rect: self.pinView.bounds)
-        path.move(to: CGPoint(x: 0, y: 0))
-        path.addLine(to: CGPoint(x: 0, y: self.pinView.frame.size.height))
-        path.addLine(to: CGPoint(x: self.pinView.frame.size.width, y: 0))
-        path.close()
-        self.pinView.tc_mask(withPath: path, inverse: true)
+        if let pinView = self.pinView {
+            // Design the pinned room marker
+            let path = UIBezierPath(rect: pinView.bounds)
+            path.move(to: CGPoint(x: 0, y: 0))
+            path.addLine(to: CGPoint(x: 0, y: pinView.frame.size.height))
+            path.addLine(to: CGPoint(x: pinView.frame.size.width, y: 0))
+            path.close()
+            pinView.tc_mask(withPath: path, inverse: true)
+        }
     }
     
     func render(_ cellData: MXKCellData!) {
@@ -86,60 +90,68 @@ import UIKit
         self.roomCellData = roomCellData
         
         // Hide by default missed notifications and unread widgets
-        self.missedNotifAndUnreadBadgeBgView.isHidden = true
+        self.missedNotifAndUnreadBadgeBgView?.isHidden = true
         
         // Report computed values as is
         self.titleLabel.text = roomCellData.roomDisplayname
         
-        self.lastEventDate.text = roomCellData.lastEventDate
-        
-        self.lastEventDescription.text = roomCellData.lastEventTextMessage
+        self.lastEventDate?.text = roomCellData.lastEventDate
         
         // Notify unreads and bing
         if roomCellData.hasUnread {
             self.titleLabel.font = UIFont.systemFont(ofSize: 15, weight: .bold)
-            self.lastEventDescription.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-            self.lastEventDescription.textColor = style.primaryTextColor
+            if let lastEventDesc = self.lastEventDescription {
+                lastEventDesc.font = UIFont.systemFont(ofSize: 12, weight: .medium)
+                lastEventDesc.textColor = style.primaryTextColor
+                lastEventDesc.text = roomCellData.lastEventTextMessage
+            }
             
-            if roomCellData.notificationCount > 0 {
-                self.missedNotifAndUnreadBadgeBgView.isHidden = false
-                
-                self.missedNotifAndUnreadBadgeLabel.text = roomCellData.notificationCountStringValue
-                self.missedNotifAndUnreadBadgeLabel.sizeToFit()
+            if roomCellData.notificationCount > 0,
+                let badgeView = self.missedNotifAndUnreadBadgeBgView,
+                let badgeLabel = self.missedNotifAndUnreadBadgeLabel {
+                badgeView.isHidden = false
+                badgeLabel.text = roomCellData.notificationCountStringValue
+                badgeLabel.sizeToFit()
             }
         } else {
             self.titleLabel.font = UIFont.systemFont(ofSize: 15, weight: .medium)
-            self.lastEventDescription.font = UIFont.systemFont(ofSize: 12, weight: .regular)
-            self.lastEventDescription.textColor = style.secondaryTextColor
+            if let lastEventDesc = self.lastEventDescription {
+                lastEventDesc.font = UIFont.systemFont(ofSize: 12, weight: .regular)
+                lastEventDesc.textColor = style.secondaryTextColor
+                lastEventDesc.text = roomCellData.lastEventTextMessage
+            }
         }
         
-        self.encryptedIcon.isHidden = !roomCellData.roomSummary.isEncrypted
+        self.encryptedIcon?.isHidden = !roomCellData.roomSummary.isEncrypted
         
         roomCellData.roomSummary?.setRoomAvatarImageIn(self.avatarView)
         
-        // Check whether the room is pinned
-        if roomCellData.roomSummary?.room?.accountData?.tags?[kMXRoomTagFavourite] != nil {
-            self.pinView.backgroundColor = self.style.buttonBorderedBackgroundColor
-        } else {
-            self.pinView.backgroundColor = UIColor.clear
+        if let pinView = self.pinView {
+            // Check whether the room is pinned
+            if roomCellData.roomSummary?.room?.accountData?.tags?[kMXRoomTagFavourite] != nil {
+                pinView.backgroundColor = self.style.buttonBorderedBackgroundColor
+            } else {
+                pinView.backgroundColor = UIColor.clear
+            }
         }
     }
     
-    static func height(for cellData: MXKCellData!, withMaximumWidth maxWidth: CGFloat) -> CGFloat {
-        // The height is fixed
-        return 74
+    // TODO: this method should be optional in the MXKCellRendering protocol
+    class func height(for cellData: MXKCellData!, withMaximumWidth maxWidth: CGFloat) -> CGFloat {
+        // The RoomsCell instances support the self-sizing mode, return a default value
+        return 80
     }
     
     func update(style: Style) {
         self.style = style
         self.titleLabel.textColor = style.primaryTextColor
-        self.lastEventDescription.textColor = style.secondaryTextColor
-        self.lastEventDate.textColor = style.secondaryTextColor
-        self.missedNotifAndUnreadBadgeBgView.backgroundColor = style.buttonBorderedBackgroundColor
-        self.missedNotifAndUnreadBadgeLabel.textColor = style.buttonBorderedTitleColor
+        self.lastEventDescription?.textColor = style.secondaryTextColor
+        self.lastEventDate?.textColor = style.secondaryTextColor
+        self.missedNotifAndUnreadBadgeBgView?.backgroundColor = style.buttonBorderedBackgroundColor
+        self.missedNotifAndUnreadBadgeLabel?.textColor = style.buttonBorderedTitleColor
         
-        self.avatarView.defaultBackgroundColor = UIColor.clear
+        self.avatarView?.defaultBackgroundColor = UIColor.clear
         
-        self.pinView.backgroundColor = UIColor.clear
+        self.pinView?.backgroundColor = UIColor.clear
     }
 }

@@ -21,8 +21,6 @@
 
 #import "RoomsDataSource.h"
 
-#import "InviteRecentTableViewCell.h"
-
 @interface RoomsViewController ()
 {
     RoomsDataSource *roomsDataSource;
@@ -53,6 +51,10 @@
     
     self.view.accessibilityIdentifier = @"RoomsVCView";
     self.recentsTableView.accessibilityIdentifier = @"RoomsVCTableView";        
+    
+    // Enable self-sizing cells.
+    self.recentsTableView.rowHeight = UITableViewAutomaticDimension;
+    self.recentsTableView.estimatedRowHeight = 80;
     
     self.enableStickyHeaders = YES;
 }
@@ -96,17 +98,17 @@
 
 - (void)dataSource:(MXKDataSource *)dataSource didRecognizeAction:(NSString *)actionIdentifier inCell:(id<MXKCellRendering>)cell userInfo:(NSDictionary *)userInfo
 {
-    if ([actionIdentifier isEqualToString:kInviteRecentTableViewCellJoinButtonPressed])
+    if ([actionIdentifier isEqualToString:RoomsInviteCell.actionJoinInvite])
     {
         // Retrieve the invited room
-        MXRoom *invitedRoom = userInfo[kInviteRecentTableViewCellRoomKey];
+        MXRoom *invitedRoom = userInfo[RoomsInviteCell.keyRoom];
         
         [self.roomsViewControllerDelegate roomsViewController:self didAcceptRoomInviteWithRoomID:invitedRoom.roomId];
     }
-    else if ([actionIdentifier isEqualToString:kInviteRecentTableViewCellDeclineButtonPressed])
+    else if ([actionIdentifier isEqualToString:RoomsInviteCell.actionDeclineInvite])
     {
         // Retrieve the invited room
-        MXRoom *invitedRoom = userInfo[kInviteRecentTableViewCellRoomKey];
+        MXRoom *invitedRoom = userInfo[RoomsInviteCell.keyRoom];
         
         [self cancelEditionModeAndForceTableViewRefreshIfNeeded];
         
@@ -132,6 +134,11 @@
 
 #pragma mark - UITableView delegate
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return UITableViewAutomaticDimension;
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     return [super tableView:tableView heightForHeaderInSection:section];
@@ -141,7 +148,7 @@
 {
     UITableViewCell* cell = [self.recentsTableView cellForRowAtIndexPath:indexPath];
     
-    if ([cell isKindOfClass:[InviteRecentTableViewCell class]])
+    if ([cell isKindOfClass:[RoomsInviteCell class]])
     {
         // hide the selection
         [tableView deselectRowAtIndexPath:indexPath animated:NO];
