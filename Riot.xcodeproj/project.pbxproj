@@ -219,6 +219,14 @@
 		029CC69121772F4200DCC8B3 /* TableViewCellWithPhoneNumberTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 029CC68721772F4200DCC8B3 /* TableViewCellWithPhoneNumberTextField.m */; };
 		029CC69221772F4200DCC8B3 /* DeviceView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 029CC68921772F4200DCC8B3 /* DeviceView.xib */; };
 		029CC69321772F4200DCC8B3 /* TableViewCellWithPhoneNumberTextField.xib in Resources */ = {isa = PBXBuildFile; fileRef = 029CC68A21772F4200DCC8B3 /* TableViewCellWithPhoneNumberTextField.xib */; };
+		02B3453A219CA8CB00110EC8 /* RoomsDiscussionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B34538219CA8CB00110EC8 /* RoomsDiscussionCell.swift */; };
+		02B3453B219CA8CB00110EC8 /* RoomsDiscussionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02B34539219CA8CB00110EC8 /* RoomsDiscussionCell.xib */; };
+		02B3453E219CA8EE00110EC8 /* RoomsRoomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B3453C219CA8EE00110EC8 /* RoomsRoomCell.swift */; };
+		02B3453F219CA8EE00110EC8 /* RoomsRoomCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02B3453D219CA8EE00110EC8 /* RoomsRoomCell.xib */; };
+		02B34542219E100100110EC8 /* RoomsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B34540219E100100110EC8 /* RoomsCell.swift */; };
+		02B34543219E100100110EC8 /* RoomsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02B34541219E100100110EC8 /* RoomsCell.xib */; };
+		02B34546219E383800110EC8 /* RoomsInviteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B34544219E383800110EC8 /* RoomsInviteCell.swift */; };
+		02B34547219E383800110EC8 /* RoomsInviteCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02B34545219E383800110EC8 /* RoomsInviteCell.xib */; };
 		02BEE1552125BBF800098505 /* RoomsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 02BEE1512125BBF800098505 /* RoomsDataSource.m */; };
 		02BEE1562125BBF800098505 /* RoomsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 02BEE1542125BBF800098505 /* RoomsViewController.m */; };
 		02BEE18A212AB23A00098505 /* ThirdPartyIDPlatformInfoResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BEE186212AB23A00098505 /* ThirdPartyIDPlatformInfoResolver.swift */; };
@@ -747,6 +755,14 @@
 		029CC68821772F4200DCC8B3 /* DeviceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceView.h; sourceTree = "<group>"; };
 		029CC68921772F4200DCC8B3 /* DeviceView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DeviceView.xib; sourceTree = "<group>"; };
 		029CC68A21772F4200DCC8B3 /* TableViewCellWithPhoneNumberTextField.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TableViewCellWithPhoneNumberTextField.xib; sourceTree = "<group>"; };
+		02B34538219CA8CB00110EC8 /* RoomsDiscussionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomsDiscussionCell.swift; sourceTree = "<group>"; };
+		02B34539219CA8CB00110EC8 /* RoomsDiscussionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomsDiscussionCell.xib; sourceTree = "<group>"; };
+		02B3453C219CA8EE00110EC8 /* RoomsRoomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomsRoomCell.swift; sourceTree = "<group>"; };
+		02B3453D219CA8EE00110EC8 /* RoomsRoomCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomsRoomCell.xib; sourceTree = "<group>"; };
+		02B34540219E100100110EC8 /* RoomsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomsCell.swift; sourceTree = "<group>"; };
+		02B34541219E100100110EC8 /* RoomsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomsCell.xib; sourceTree = "<group>"; };
+		02B34544219E383800110EC8 /* RoomsInviteCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomsInviteCell.swift; sourceTree = "<group>"; };
+		02B34545219E383800110EC8 /* RoomsInviteCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomsInviteCell.xib; sourceTree = "<group>"; };
 		02BEE1512125BBF800098505 /* RoomsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomsDataSource.m; sourceTree = "<group>"; };
 		02BEE1522125BBF800098505 /* RoomsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomsDataSource.h; sourceTree = "<group>"; };
 		02BEE1532125BBF800098505 /* RoomsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomsViewController.h; sourceTree = "<group>"; };
@@ -1589,6 +1605,21 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		02B34537219CA68800110EC8 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				02B34544219E383800110EC8 /* RoomsInviteCell.swift */,
+				02B34545219E383800110EC8 /* RoomsInviteCell.xib */,
+				02B34540219E100100110EC8 /* RoomsCell.swift */,
+				02B34541219E100100110EC8 /* RoomsCell.xib */,
+				02B34538219CA8CB00110EC8 /* RoomsDiscussionCell.swift */,
+				02B34539219CA8CB00110EC8 /* RoomsDiscussionCell.xib */,
+				02B3453C219CA8EE00110EC8 /* RoomsRoomCell.swift */,
+				02B3453D219CA8EE00110EC8 /* RoomsRoomCell.xib */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		02BEE14E2125BBF800098505 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
@@ -1616,6 +1647,7 @@
 		02BEE14F2125BBF800098505 /* Rooms */ = {
 			isa = PBXGroup;
 			children = (
+				02B34537219CA68800110EC8 /* Views */,
 				B1F2AAA0212AED170077FDC0 /* RoomsCoordinatorType.swift */,
 				B1F2AA9F212AED160077FDC0 /* RoomsCoordinator.swift */,
 				02BEE1502125BBF800098505 /* DataSources */,
@@ -3072,6 +3104,7 @@
 				020DF958214BE467003DFBA4 /* RoomOutgoingEncryptedTextMsgBubbleCell.xib in Resources */,
 				020DF99F214BE467003DFBA4 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.xib in Resources */,
 				B1322FEB213002440054A9DD /* FormTextField.xib in Resources */,
+				02B3453F219CA8EE00110EC8 /* RoomsRoomCell.xib in Resources */,
 				020DF997214BE467003DFBA4 /* RoomOutgoingAttachmentWithPaginationTitleBubbleCell.xib in Resources */,
 				B122FB59216D063000B09BEF /* RoomTitleView.xib in Resources */,
 				0250C5552122B68000034691 /* callend.mp3 in Resources */,
@@ -3087,6 +3120,7 @@
 				020DF96A214BE467003DFBA4 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleBubbleCell.xib in Resources */,
 				020DF985214BE467003DFBA4 /* RoomIncomingAttachmentWithPaginationTitleBubbleCell.xib in Resources */,
 				020DF97B214BE467003DFBA4 /* RoomIncomingTextMsgWithoutSenderInfoBubbleCell.xib in Resources */,
+				02B3453B219CA8CB00110EC8 /* RoomsDiscussionCell.xib in Resources */,
 				0250C56A2122B68000034691 /* ringback.mp3 in Resources */,
 				0250C56B2122B68000034691 /* GoogleService-Info.plist in Resources */,
 				020DF969214BE467003DFBA4 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib in Resources */,
@@ -3138,7 +3172,9 @@
 				0250C59B2122B68000034691 /* InviteRecentTableViewCell.xib in Resources */,
 				B15AB29E215BF20E007F5405 /* ForgotPasswordCheckedEmailViewController.storyboard in Resources */,
 				020DF97E214BE467003DFBA4 /* RoomOutgoingTextMsgWithPaginationTitleBubbleCell.xib in Resources */,
+				02B34547219E383800110EC8 /* RoomsInviteCell.xib in Resources */,
 				0250C59E2122B68000034691 /* DeviceTableViewCell.xib in Resources */,
+				02B34543219E100100110EC8 /* RoomsCell.xib in Resources */,
 				020DF959214BE467003DFBA4 /* RoomIncomingEncryptedAttachmentBubbleCell.xib in Resources */,
 				020DF980214BE467003DFBA4 /* RoomMembershipCollapsedBubbleCell.xib in Resources */,
 				0250C59F2122B68000034691 /* MediaAlbumTableCell.xib in Resources */,
@@ -3507,6 +3543,7 @@
 				020DF967214BE467003DFBA4 /* RoomOutgoingEncryptedTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
 				0250C4962122B68000034691 /* AvatarGenerator.m in Sources */,
 				B1BC6A052135E42D00D32F8E /* UIView.swift in Sources */,
+				02B3453E219CA8EE00110EC8 /* RoomsRoomCell.swift in Sources */,
 				B15AB2A2215BF20E007F5405 /* ForgotPasswordVerifyEmailViewController.swift in Sources */,
 				0250C4992122B68000034691 /* BugReportViewController.m in Sources */,
 				0250C49B2122B68000034691 /* RecentCellData.m in Sources */,
@@ -3616,6 +3653,7 @@
 				0250C4E62122B68000034691 /* MXRoomSummary+Riot.m in Sources */,
 				0290607A21501D16005FE3C1 /* PreviewView.m in Sources */,
 				B15B868B2135C4DE002782BE /* AuthenticationFormValidationResult.swift in Sources */,
+				02B34542219E100100110EC8 /* RoomsCell.swift in Sources */,
 				B1680D052152AA28009B5F92 /* PublicRoomService.swift in Sources */,
 				B1F2AA95212AEC830077FDC0 /* SettingsCoordinatorType.swift in Sources */,
 				020DF971214BE467003DFBA4 /* RoomIncomingAttachmentBubbleCell.m in Sources */,
@@ -3657,6 +3695,7 @@
 				B15B86892135C284002782BE /* AuthenticationViewModelType.swift in Sources */,
 				B1680CFD2152A9E6009B5F92 /* PublicRoomsCoordinator.swift in Sources */,
 				B15AB2A7215BF55B007F5405 /* ForgotPasswordFormViewModel.swift in Sources */,
+				02B34546219E383800110EC8 /* RoomsInviteCell.swift in Sources */,
 				020DF98E214BE467003DFBA4 /* RoomMembershipBubbleCell.m in Sources */,
 				B104AA1F215E163000B2C452 /* ForgotPasswordServiceType.swift in Sources */,
 				0250C5072122B68000034691 /* InviteRecentTableViewCell.m in Sources */,
@@ -3681,6 +3720,7 @@
 				B12FD69F2146B3EB001B7F28 /* RestClientBuilder.swift in Sources */,
 				B1F2AA91212AEC830077FDC0 /* SplitViewCoordinatorType.swift in Sources */,
 				020DF979214BE467003DFBA4 /* RoomIncomingAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
+				02B3453A219CA8CB00110EC8 /* RoomsDiscussionCell.swift in Sources */,
 				020DF95F214BE467003DFBA4 /* RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				0250C5192122B68000034691 /* MXSession+Riot.m in Sources */,
 				02BEE18A212AB23A00098505 /* ThirdPartyIDPlatformInfoResolver.swift in Sources */,

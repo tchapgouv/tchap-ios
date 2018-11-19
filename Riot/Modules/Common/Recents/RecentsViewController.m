@@ -17,7 +17,6 @@
  */
 
 #import "RecentsViewController.h"
-#import "RecentTableViewCell.h"
 
 #import "MXRoom+Riot.h"
 
@@ -25,13 +24,13 @@
 
 #import "RoomViewController.h"
 
-#import "InviteRecentTableViewCell.h"
-
 #import "RageShakeManager.h"
 #import "RiotDesignValues.h"
 #import "DesignValues.h"
 #import "Analytics.h"
 #import "LegacyAppDelegate.h"
+
+#import "GeneratedInterface-Swift.h"
 
 @interface RecentsViewController ()
 {
@@ -106,8 +105,9 @@
     self.recentsTableView.accessibilityIdentifier = @"RecentsVCTableView";
     
     // Register here the customized cell view class used to render recents
-    [self.recentsTableView registerNib:RecentTableViewCell.nib forCellReuseIdentifier:RecentTableViewCell.defaultReuseIdentifier];
-    [self.recentsTableView registerNib:InviteRecentTableViewCell.nib forCellReuseIdentifier:InviteRecentTableViewCell.defaultReuseIdentifier];
+    [self.recentsTableView registerNib:RoomsDiscussionCell.nib forCellReuseIdentifier:RoomsDiscussionCell.defaultReuseIdentifier];
+    [self.recentsTableView registerNib:RoomsRoomCell.nib forCellReuseIdentifier:RoomsRoomCell.defaultReuseIdentifier];
+    [self.recentsTableView registerNib:RoomsInviteCell.nib forCellReuseIdentifier:RoomsInviteCell.defaultReuseIdentifier];
     
     // Hide line separators of empty cells
     self.recentsTableView.tableFooterView = [[UIView alloc] init];
@@ -669,13 +669,17 @@
 {
     id<MXKRecentCellDataStoring> cellDataStoring = (id<MXKRecentCellDataStoring> )cellData;
     
-    if (cellDataStoring.roomSummary.room.summary.membership != MXMembershipInvite)
+    if (cellDataStoring.roomSummary.room.summary.membership == MXMembershipInvite)
     {
-        return RecentTableViewCell.class;
+        return RoomsInviteCell.class;
+    }
+    else if (cellDataStoring.roomSummary.isDirect)
+    {
+        return RoomsDiscussionCell.class;
     }
     else
     {
-        return InviteRecentTableViewCell.class;
+        return RoomsRoomCell.class;
     }
 }
 

@@ -77,7 +77,7 @@ import Reusable
         case .circle:
             self.imageView.tc_makeCircle()
         case .hexagon:
-            self.imageView.tc_makeHexagon(borderWidth: Constants.hexagonImageBorderWidth, borderColor: self.style.secondaryBackgroundColor)
+            self.imageView.tc_makeHexagon(borderWidth: Constants.hexagonImageBorderWidth, borderColor: self.style.secondaryTextColor)
         }
     }
     
