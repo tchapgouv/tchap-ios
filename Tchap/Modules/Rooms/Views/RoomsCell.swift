@@ -53,7 +53,7 @@ import UIKit
         // Configure the view for the selected state
     }
     
-    static func nib() -> UINib! {
+    static func nib() -> UINib {
         return UINib(nibName: String(describing: self), bundle: nil)
     }
     
