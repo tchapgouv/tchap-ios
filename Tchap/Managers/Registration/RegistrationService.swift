@@ -225,6 +225,7 @@ final class RegistrationService: RegistrationServiceType {
         }
         
         account.identityServerURL = identityServerURL
+        account.antivirusServerURL = credentials.homeServer
         self.accountManager.addAccount(account, andOpenSession: true)
     }
 }
