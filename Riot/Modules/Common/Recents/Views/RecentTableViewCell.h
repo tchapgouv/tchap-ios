@@ -21,6 +21,8 @@
  */
 @interface RecentTableViewCell : MXKRecentTableViewCell
 
+@property (weak, nonatomic) IBOutlet UIView *pinView;
+
 @property (weak, nonatomic) IBOutlet UIView *missedNotifAndUnreadIndicator;
 @property (weak, nonatomic) IBOutlet MXKImageView *roomAvatar;
 @property (weak, nonatomic) IBOutlet UIView *directRoomBorderView;

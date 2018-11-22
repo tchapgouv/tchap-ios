@@ -22,8 +22,6 @@ final class RegistrationService: RegistrationServiceType {
     // MARK: - Constants
     
     private enum Constants {
-        static let homeServerSubDomain = "matrix"
-        static let webAppSubDomain = "chat"
         static let registrationRetryInterval: TimeInterval = 10.0
     }
     
@@ -97,7 +95,8 @@ final class RegistrationService: RegistrationServiceType {
     // MARK: - Private
     
     private func webAppAppBaseStringURL(from homeServer: String) -> String {
-        return homeServer.replacingOccurrences(of: Constants.homeServerSubDomain, with: Constants.webAppSubDomain)
+        // For the moment we use the homeserver url, this base url should be updated later with the actual web app url.
+        return homeServer
     }
     
     private func buildNextLink(webAppBaseStringURL: String, clientSecret: String, homeServerStringURL: String, identityServerStringURL: String) -> String? {
@@ -226,6 +225,7 @@ final class RegistrationService: RegistrationServiceType {
         }
         
         account.identityServerURL = identityServerURL
+        account.antivirusServerURL = credentials.homeServer
         self.accountManager.addAccount(account, andOpenSession: true)
     }
 }

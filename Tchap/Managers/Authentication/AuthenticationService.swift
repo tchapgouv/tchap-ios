@@ -135,6 +135,7 @@ final class AuthenticationService: AuthenticationServiceType {
         }
         
         account.identityServerURL = identityServerURL
+        account.antivirusServerURL = credentials.homeServer
         self.accountManager.addAccount(account, andOpenSession: true)
     }
 }

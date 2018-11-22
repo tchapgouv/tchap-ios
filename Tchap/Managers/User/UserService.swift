@@ -54,16 +54,21 @@ final class UserService: UserServiceType {
         if let user = self.getUserFromLocalSession(with: userId) {
             completion(user)
         } else {
-            self.session.matrixRestClient.searchUsers(userId, limit: Constants.searchUsersLimit, success: { (userSearchResponse) in
-                if let results = userSearchResponse?.results, let index = results.index(where: { $0.userId == userId }) {
-                    let user = self.buildUser(from: results[index])
-                    completion(user)
-                } else {
+            // Retrieve display name and avatar url from user profile
+            self.session.matrixRestClient.profile(forUser: userId) { (response) in
+                switch response {
+                case .success(let (displayName, avatarUrl)):
+                    if let displayName = displayName {
+                        let user = User(userId: userId, displayName: displayName, avatarStringURL: avatarUrl)
+                        completion(user)
+                    } else {
+                        completion(nil)
+                    }
+                case .failure(let error):
+                    print("Get profile failed for user id \(userId) with error: \(error)")
                     completion(nil)
                 }
-            }, failure: { error in
-                completion(nil)
-            })
+            }
         }
     }
     

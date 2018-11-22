@@ -30,13 +30,17 @@
 #import "WidgetManager.h"
 #import "IntegrationManagerViewController.h"
 
-@interface RoomInputToolbarView()
+#import "GeneratedInterface-Swift.h"
+
+@interface RoomInputToolbarView() <Stylable>
 {
     MediaPickerViewController *mediaPicker;
 
     // The intermediate action sheet
     UIAlertController *actionSheet;
 }
+
+@property (nonatomic, strong) id<Style> currentStyle;
 
 @end
 
@@ -51,14 +55,18 @@
 
 + (instancetype)roomInputToolbarView
 {
+    RoomInputToolbarView *inputToolbarView;
     if ([[self class] nib])
     {
-        return [[[self class] nib] instantiateWithOwner:nil options:nil].firstObject;
+        inputToolbarView = [[[self class] nib] instantiateWithOwner:nil options:nil].firstObject;
     }
     else
     {
-        return [[self alloc] init];
+        inputToolbarView = [[self alloc] init];
     }
+    
+    [inputToolbarView updateWithStyle:Variant2Style.shared];
+    return inputToolbarView;
 }
 
 - (void)awakeFromNib
@@ -69,8 +77,9 @@
     
     self.rightInputToolbarButton.hidden = YES;
     
-    [self.rightInputToolbarButton setTitleColor:kRiotColorGreen forState:UIControlStateNormal];
-    [self.rightInputToolbarButton setTitleColor:kRiotColorGreen forState:UIControlStateHighlighted];
+    // Remove label text
+    [self.rightInputToolbarButton setTitle:nil forState:UIControlStateNormal];
+    [self.rightInputToolbarButton setTitle:nil forState:UIControlStateHighlighted];
     
     self.isEncryptionEnabled = _isEncryptionEnabled;
 }
@@ -80,11 +89,17 @@
 -(void)customizeViewRendering
 {
     [super customizeViewRendering];
+    [self updateWithStyle:self.currentStyle];
+}
+
+- (void)updateWithStyle:(id<Style>)style
+{
+    self.currentStyle = style;
     
     // Remove default toolbar background color
     self.backgroundColor = [UIColor clearColor];
     
-    self.separatorView.backgroundColor = kRiotAuxiliaryColor;
+    self.separatorView.backgroundColor = style.separatorColor;
     
     // Custom the growingTextView display
     growingTextView.layer.cornerRadius = 0;
@@ -92,8 +107,8 @@
     growingTextView.backgroundColor = [UIColor clearColor];
     
     growingTextView.font = [UIFont systemFontOfSize:15];
-    growingTextView.textColor = kRiotPrimaryTextColor;
-    growingTextView.tintColor = kRiotColorGreen;
+    growingTextView.textColor = style.primaryTextColor;
+    growingTextView.tintColor = style.secondaryTextColor;
     
     growingTextView.internalTextView.keyboardAppearance = kRiotKeyboard;
 }
@@ -220,7 +235,6 @@
     if (self.rightInputToolbarButton.isEnabled && self.rightInputToolbarButton.isHidden)
     {
         self.rightInputToolbarButton.hidden = NO;
-        self.attachMediaButton.hidden = YES;
         self.voiceCallButton.hidden = YES;
         self.hangupCallButton.hidden = YES;
         
@@ -229,11 +243,10 @@
     else if (!self.rightInputToolbarButton.isEnabled && !self.rightInputToolbarButton.isHidden)
     {
         self.rightInputToolbarButton.hidden = YES;
-        self.attachMediaButton.hidden = NO;
         self.voiceCallButton.hidden = _activeCall;
         self.hangupCallButton.hidden = !_activeCall;
         
-        self.messageComposerContainerTrailingConstraint.constant = self.frame.size.width - self.attachMediaButton.frame.origin.x + 4;
+        self.messageComposerContainerTrailingConstraint.constant = self.frame.size.width - self.voiceCallButton.frame.origin.x + 4;
     }
 }
 
@@ -265,53 +278,55 @@
         // Check whether media attachment is supported
         if ([self.delegate respondsToSelector:@selector(roomInputToolbarView:presentViewController:)])
         {
-            // Ask the user the kind of the call: voice or video?
-            actionSheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-
-            __weak typeof(self) weakSelf = self;
-            [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_action_send_photo_or_video", @"Vector", nil)
-                                                            style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction * action) {
-
-                                                              if (weakSelf)
-                                                              {
-                                                                  typeof(self) self = weakSelf;
-                                                                  self->actionSheet = nil;
-
-                                                                  [self showMediaPicker];
-                                                              }
-
-                                                          }]];
-
-            [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_action_send_sticker", @"Vector", nil)
-                                                            style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction * action) {
-
-                                                              if (weakSelf)
-                                                              {
-                                                                  typeof(self) self = weakSelf;
-                                                                  self->actionSheet = nil;
-
-                                                                  [self.delegate roomInputToolbarViewPresentStickerPicker:self];
-                                                              }
-
-                                                          }]];
-
-            [actionSheet addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
-                                                            style:UIAlertActionStyleCancel
-                                                          handler:^(UIAlertAction * action) {
-
-                                                              if (weakSelf)
-                                                              {
-                                                                  typeof(self) self = weakSelf;
-                                                                  self->actionSheet = nil;
-                                                              }
-
-                                                          }]];
-
-            [actionSheet popoverPresentationController].sourceView = self.voiceCallButton;
-            [actionSheet popoverPresentationController].sourceRect = self.voiceCallButton.bounds;
-            [self.window.rootViewController presentViewController:actionSheet animated:YES completion:nil];
+            // Tchap: Stikers are not supported yet
+//            // Ask the user the kind of the call: voice or video?
+//            actionSheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+//
+//            __weak typeof(self) weakSelf = self;
+//            [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_action_send_photo_or_video", @"Vector", nil)
+//                                                            style:UIAlertActionStyleDefault
+//                                                          handler:^(UIAlertAction * action) {
+//
+//                                                              if (weakSelf)
+//                                                              {
+//                                                                  typeof(self) self = weakSelf;
+//                                                                  self->actionSheet = nil;
+//
+//                                                                  [self showMediaPicker];
+//                                                              }
+//
+//                                                          }]];
+//
+//            [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_action_send_sticker", @"Vector", nil)
+//                                                            style:UIAlertActionStyleDefault
+//                                                          handler:^(UIAlertAction * action) {
+//
+//                                                              if (weakSelf)
+//                                                              {
+//                                                                  typeof(self) self = weakSelf;
+//                                                                  self->actionSheet = nil;
+//
+//                                                                  [self.delegate roomInputToolbarViewPresentStickerPicker:self];
+//                                                              }
+//
+//                                                          }]];
+//
+//            [actionSheet addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+//                                                            style:UIAlertActionStyleCancel
+//                                                          handler:^(UIAlertAction * action) {
+//
+//                                                              if (weakSelf)
+//                                                              {
+//                                                                  typeof(self) self = weakSelf;
+//                                                                  self->actionSheet = nil;
+//                                                              }
+//
+//                                                          }]];
+//
+//            [actionSheet popoverPresentationController].sourceView = self.voiceCallButton;
+//            [actionSheet popoverPresentationController].sourceRect = self.voiceCallButton.bounds;
+//            [self.window.rootViewController presentViewController:actionSheet animated:YES completion:nil];
+            [self showMediaPicker];
         }
         else
         {

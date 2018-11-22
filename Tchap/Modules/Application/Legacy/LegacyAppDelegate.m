@@ -63,7 +63,8 @@
 
 
 #if __has_include(<MatrixSDK/MXJingleCallStack.h>)
-#define CALL_STACK_JINGLE
+// Tchap: Disable voip call for the moment
+//#define CALL_STACK_JINGLE
 #endif
 #ifdef CALL_STACK_JINGLE
 #import <MatrixSDK/MXJingleCallStack.h>
@@ -413,10 +414,8 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         {
             // Move this setting into the shared userDefaults object to apply it to the extensions.
             [sharedUserDefaults setObject:language forKey:@"appLanguage"];
-            [sharedUserDefaults synchronize];
-            
+
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"appLanguage"];
-            [[NSUserDefaults standardUserDefaults] synchronize];
         }
     }
     [NSBundle mxk_setLanguage:language];
@@ -568,6 +567,18 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     }
     
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+
+    // Check if an initial sync failure occured while the app was in background
+    MXSession *mainSession = self.mxSessions.firstObject;
+    if (mainSession.state == MXSessionStateInitialSyncFailed)
+    {
+        // Inform the end user why the app appears blank
+        NSError *error = [NSError errorWithDomain:NSURLErrorDomain
+                                             code:NSURLErrorCannotConnectToHost
+                                         userInfo:@{NSLocalizedDescriptionKey : NSLocalizedStringFromTable(@"homeserver_connection_lost", @"Vector", nil)}];
+
+        [self showErrorAsAlert:error];
+    }
     
     // Register to GDPR consent not given notification
     [self registerUserConsentNotGivenNotification];
@@ -2488,6 +2499,8 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         }
         
         // Note: Keep App settings
+        // But enforce usage of member lazy loading
+        [MXKAppSettings standardAppSettings].syncWithLazyLoadOfRoomMembers = YES;
         
         // Reset the contact manager
         [[MXKContactManager sharedManager] reset];
@@ -2736,7 +2749,15 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         {
             return;
         }
-        
+
+        // If the app is doing an initial sync, ignore all events from which we
+        // did not receive a notification from APNS/PushKit
+        if (!mxSession.isEventStreamInitialised && !self->incomingPushPayloads[event.eventId])
+        {
+            NSLog(@"[AppDelegate][Push] enableLocalNotificationsFromMatrixSession: Initial sync in progress. Ignore event %@", event.eventId);
+            return;
+        }
+
         // Sanity check
         if (event.eventId && event.roomId && rule)
         {
@@ -2789,7 +2810,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     if (!isErrorNotificationSuspended && ![[NSUserDefaults standardUserDefaults] boolForKey:@"deviceIdAtStartupChecked"])
     {
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"deviceIdAtStartupChecked"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
         
         // Check if there is a device id
         if (!mxSession.matrixRestClient.credentials.deviceId)
@@ -3793,20 +3813,17 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 - (void)gdprConsentViewControllerDidConsentToGDPRWithSuccess:(GDPRConsentViewController *)gdprConsentViewController
 {
     MXSession *session = mxSessionArray.firstObject;
-    
+
+    // Leave the GDPR consent right now
+    [self dismissGDPRConsent];
+
+    // And create the room with riot bot in //
     self.onBoardingManager = [[OnBoardingManager alloc] initWithSession:session];
     
     MXWeakify(self);
-    MXWeakify(gdprConsentViewController);
-    
-    [gdprConsentViewController startActivityIndicator];
-    
     void (^createRiotBotDMcompletion)(void) = ^() {
-        
         MXStrongifyAndReturnIfNil(self);
-        
-        [weakgdprConsentViewController stopActivityIndicator];
-        [self dismissGDPRConsent];
+
         self.onBoardingManager = nil;
     };
     

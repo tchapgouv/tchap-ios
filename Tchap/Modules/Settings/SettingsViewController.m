@@ -54,7 +54,7 @@ enum
     SETTINGS_SECTION_SIGN_OUT_INDEX = 0,
     SETTINGS_SECTION_USER_SETTINGS_INDEX,
     SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX,
-    SETTINGS_SECTION_CALLS_INDEX,
+    //SETTINGS_SECTION_CALLS_INDEX, // Tchap: voip call are disabled for the moment.
     SETTINGS_SECTION_IGNORED_USERS_INDEX,
     SETTINGS_SECTION_CONTACTS_INDEX,
     SETTINGS_SECTION_OTHER_INDEX,
@@ -239,6 +239,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     [self.tableView registerClass:MXKTableViewCellWithLabelAndSwitch.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndSwitch defaultReuseIdentifier]];
     [self.tableView registerClass:MXKTableViewCellWithLabelAndMXKImageView.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndMXKImageView defaultReuseIdentifier]];
     [self.tableView registerClass:TableViewCellWithPhoneNumberTextField.class forCellReuseIdentifier:[TableViewCellWithPhoneNumberTextField defaultReuseIdentifier]];
+    [self.tableView registerNib:MXKTableViewCellWithTextView.nib forCellReuseIdentifier:[MXKTableViewCellWithTextView defaultReuseIdentifier]];
     
     // Enable self sizing cells
     self.tableView.rowHeight = UITableViewAutomaticDimension;
@@ -1020,13 +1021,13 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     {
         count = NOTIFICATION_SETTINGS_COUNT;
     }
-    else if (section == SETTINGS_SECTION_CALLS_INDEX)
-    {
-        if ([MXCallKitAdapter callKitAvailable])
-        {
-            count = CALLS_COUNT;
-        }
-    }
+//    else if (section == SETTINGS_SECTION_CALLS_INDEX)
+//    {
+//        if ([MXCallKitAdapter callKitAvailable])
+//        {
+//            count = CALLS_COUNT;
+//        }
+//    }
     else if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
     {
         if ([AppDelegate theDelegate].mxSessions.count > 0)
@@ -1142,6 +1143,20 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     return cell;
 }
 
+- (MXKTableViewCellWithTextView*)textViewCellForTableView:(UITableView*)tableView atIndexPath:(NSIndexPath *)indexPath
+{
+    MXKTableViewCellWithTextView *textViewCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithTextView defaultReuseIdentifier] forIndexPath:indexPath];
+    
+    textViewCell.mxkTextView.textColor = self.currentStyle.primaryTextColor;
+    textViewCell.mxkTextView.font = [UIFont systemFontOfSize:17];
+    textViewCell.mxkTextView.backgroundColor = [UIColor clearColor];
+    textViewCell.mxkTextViewLeadingConstraint.constant = tableView.separatorInset.left;
+    textViewCell.mxkTextViewTrailingConstraint.constant = tableView.separatorInset.right;
+    textViewCell.mxkTextView.accessibilityIdentifier = nil;
+    
+    return textViewCell;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger section = indexPath.section;
@@ -1226,7 +1241,13 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
                 {
                     profileCell.mxkImageView.enableInMemoryCache = YES;
                     
-                    [profileCell.mxkImageView setImageURL:[session.matrixRestClient urlOfContentThumbnail:myUser.avatarUrl toFitViewSize:profileCell.mxkImageView.frame.size withMethod:MXThumbnailingMethodCrop] withType:nil andImageOrientation:UIImageOrientationUp previewImage:avatarImage];
+                    [profileCell.mxkImageView setImageURI:myUser.avatarUrl
+                                                 withType:nil
+                                      andImageOrientation:UIImageOrientationUp
+                                            toFitViewSize:profileCell.mxkImageView.frame.size
+                                               withMethod:MXThumbnailingMethodCrop
+                                             previewImage:avatarImage
+                                             mediaManager:session.mediaManager];
                 }
                 else
                 {
@@ -1438,28 +1459,28 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
             cell = globalInfoCell;
         }
     }
-    else if (section == SETTINGS_SECTION_CALLS_INDEX)
-    {
-        if (row == CALLS_ENABLE_CALLKIT_INDEX)
-        {
-            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_enable_callkit", @"Vector", nil);
-            labelAndSwitchCell.mxkSwitch.on = [MXKAppSettings standardAppSettings].isCallKitEnabled;
-            labelAndSwitchCell.mxkSwitch.enabled = YES;
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleCallKit:) forControlEvents:UIControlEventTouchUpInside];
-            
-            cell = labelAndSwitchCell;
-        }
-        else if (row == CALLS_DESCRIPTION_INDEX)
-        {
-            MXKTableViewCell *globalInfoCell = [self getDefaultTableViewCell:tableView];
-            globalInfoCell.textLabel.text = NSLocalizedStringFromTable(@"settings_callkit_info", @"Vector", nil);
-            globalInfoCell.textLabel.numberOfLines = 0;
-            globalInfoCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            
-            cell = globalInfoCell;
-        }
-    }
+//    else if (section == SETTINGS_SECTION_CALLS_INDEX)
+//    {
+//        if (row == CALLS_ENABLE_CALLKIT_INDEX)
+//        {
+//            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+//            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_enable_callkit", @"Vector", nil);
+//            labelAndSwitchCell.mxkSwitch.on = [MXKAppSettings standardAppSettings].isCallKitEnabled;
+//            labelAndSwitchCell.mxkSwitch.enabled = YES;
+//            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleCallKit:) forControlEvents:UIControlEventTouchUpInside];
+//
+//            cell = labelAndSwitchCell;
+//        }
+//        else if (row == CALLS_DESCRIPTION_INDEX)
+//        {
+//            MXKTableViewCell *globalInfoCell = [self getDefaultTableViewCell:tableView];
+//            globalInfoCell.textLabel.text = NSLocalizedStringFromTable(@"settings_callkit_info", @"Vector", nil);
+//            globalInfoCell.textLabel.numberOfLines = 0;
+//            globalInfoCell.selectionStyle = UITableViewCellSelectionStyleNone;
+//
+//            cell = globalInfoCell;
+//        }
+//    }
     else if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
     {
         MXKTableViewCell *ignoredUserCell = [self getDefaultTableViewCell:tableView];
@@ -1664,12 +1685,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     {
         if (row == CRYPTOGRAPHY_INFO_INDEX)
         {
-            MXKTableViewCell *cryptoCell = [self getDefaultTableViewCell:tableView];
-
-            cryptoCell.textLabel.attributedText = [self cryptographyInformation];
-            cryptoCell.textLabel.numberOfLines = 0;
+            MXKTableViewCellWithTextView *cryptoCell = [self textViewCellForTableView:tableView atIndexPath:indexPath];
             
-            cryptoCell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cryptoCell.mxkTextView.attributedText = [self cryptographyInformation];
 
             cell = cryptoCell;
         }
@@ -1739,13 +1757,13 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     {
         return NSLocalizedStringFromTable(@"settings_notifications_settings", @"Vector", nil);
     }
-    else if (section == SETTINGS_SECTION_CALLS_INDEX)
-    {
-        if ([MXCallKitAdapter callKitAvailable])
-        {
-            return NSLocalizedStringFromTable(@"settings_calls_settings", @"Vector", nil);
-        }
-    }
+//    else if (section == SETTINGS_SECTION_CALLS_INDEX)
+//    {
+//        if ([MXCallKitAdapter callKitAvailable])
+//        {
+//            return NSLocalizedStringFromTable(@"settings_calls_settings", @"Vector", nil);
+//        }
+//    }
     else if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
     {
         // Check whether this section is visible
@@ -1862,13 +1880,13 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
             }
         }
     }
-    else if (section == SETTINGS_SECTION_CALLS_INDEX)
-    {
-        if (![MXCallKitAdapter callKitAvailable])
-        {
-            return SECTION_TITLE_PADDING_WHEN_HIDDEN;
-        }
-    }
+//    else if (section == SETTINGS_SECTION_CALLS_INDEX)
+//    {
+//        if (![MXCallKitAdapter callKitAvailable])
+//        {
+//            return SECTION_TITLE_PADDING_WHEN_HIDDEN;
+//        }
+//    }
     
     return 24;
 }
@@ -1887,13 +1905,13 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
             }
         }
     }
-    else if (section == SETTINGS_SECTION_CALLS_INDEX)
-    {
-        if (![MXCallKitAdapter callKitAvailable])
-        {
-            return SECTION_TITLE_PADDING_WHEN_HIDDEN;
-        }
-    }
+//    else if (section == SETTINGS_SECTION_CALLS_INDEX)
+//    {
+//        if (![MXCallKitAdapter callKitAvailable])
+//        {
+//            return SECTION_TITLE_PADDING_WHEN_HIDDEN;
+//        }
+//    }
 
     return 24;
 }
@@ -3097,7 +3115,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         // Store user settings
         NSUserDefaults *sharedUserDefaults = [MXKAppSettings standardAppSettings].sharedUserDefaults;
         [sharedUserDefaults setObject:language forKey:@"appLanguage"];
-        [sharedUserDefaults synchronize];
 
         // Do a reload in order to recompute strings in the new language
         // Note that "reloadMatrixSessions:NO" will reset room summaries

@@ -1,3 +1,15 @@
+Changes in Tchap 0.0.4 (2018-11-22)
+===================================================
+
+ * Antivirus - Media download: support a potential anti-virus server #40
+ * Support the pinned rooms #16
+ * Room history: update input toolbar #92
+ * Update Rooms cells display #89
+ * Hide the voip option #90
+ * Disable matrix.to support #91
+ * Rebase onto vector-im/riot-ios
+ * Replace "chat.xxx.gouv.fr" url with "matrix.xxx.gouv.fr" #87
+
 Changes in Tchap 0.0.3 (2018-10-23)
 ===================================================
 

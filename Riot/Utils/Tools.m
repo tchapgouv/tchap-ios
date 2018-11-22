@@ -72,27 +72,27 @@
 {
     BOOL isUniversalLink = NO;
 
-    if ([url.host isEqualToString:@"vector.im"] || [url.host isEqualToString:@"www.vector.im"]
-        || [url.host isEqualToString:@"riot.im"] || [url.host isEqualToString:@"www.riot.im"])
-    {
-        // iOS Patch: fix vector.im/riot.im urls before using it
-        NSURL *fixedURL = [Tools fixURLWithSeveralHashKeys:url];
-
-        if (NSNotFound != [@[@"/app", @"/staging", @"/beta", @"/develop"] indexOfObject:fixedURL.path])
-        {
-            isUniversalLink = YES;
-        }
-    }
-    else if ([url.host isEqualToString:@"matrix.to"] || [url.host isEqualToString:@"www.matrix.to"])
-    {
-        // iOS Patch: fix matrix.to urls before using it
-        NSURL *fixedURL = [Tools fixURLWithSeveralHashKeys:url];
-
-        if ([fixedURL.path isEqualToString:@"/"])
-        {
-            isUniversalLink = YES;
-        }
-    }
+    // Tchap: Universal links are not supported for the moment.
+//    if ([url.host isEqualToString:@"www.tchap.gouv.fr"])
+//    {
+//        // iOS Patch: fix urls before using it
+//        NSURL *fixedURL = [Tools fixURLWithSeveralHashKeys:url];
+//
+//        if (NSNotFound != [@[@"/app", @"/staging", @"/beta", @"/develop"] indexOfObject:fixedURL.path])
+//        {
+//            isUniversalLink = YES;
+//        }
+//    }
+//    else if ([url.host isEqualToString:@"matrix.to"] || [url.host isEqualToString:@"www.matrix.to"])
+//    {
+//        // iOS Patch: fix matrix.to urls before using it
+//        NSURL *fixedURL = [Tools fixURLWithSeveralHashKeys:url];
+//
+//        if ([fixedURL.path isEqualToString:@"/"])
+//        {
+//            isUniversalLink = YES;
+//        }
+//    }
 
     return isUniversalLink;
 }
@@ -115,6 +115,31 @@
     }
 
     return fixedURL;
+}
+
+#pragma mark - String utilities
+
++ (NSAttributedString *)setTextColorAlpha:(CGFloat)alpha inAttributedString:(NSAttributedString*)attributedString
+{
+    NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithAttributedString:attributedString];
+
+    // Check all attributes one by one
+    [string enumerateAttributesInRange:NSMakeRange(0, attributedString.length) options:0 usingBlock:^(NSDictionary *attrs, NSRange range, BOOL *stop)
+     {
+         // Replace only colored texts
+         if (attrs[NSForegroundColorAttributeName])
+         {
+             UIColor *color = attrs[NSForegroundColorAttributeName];
+             color = [color colorWithAlphaComponent:0.2];
+
+             NSMutableDictionary *newAttrs = [NSMutableDictionary dictionaryWithDictionary:attrs];
+             newAttrs[NSForegroundColorAttributeName] = color;
+
+             [string setAttributes:newAttrs range:range];
+         }
+     }];
+
+    return string;
 }
 
 @end

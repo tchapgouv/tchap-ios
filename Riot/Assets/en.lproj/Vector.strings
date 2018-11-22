@@ -133,6 +133,7 @@
 "room_recents_conversations_section" = "ROOMS";
 "room_recents_no_conversation" = "No rooms";
 "room_recents_low_priority_section" = "LOW PRIORITY";
+"room_recents_server_notice_section" = "SYSTEM ALERTS";
 "room_recents_invites_section" = "INVITES";
 "room_recents_start_chat_with" = "Start chat";
 "room_recents_create_empty_room" = "Create room";
@@ -277,6 +278,13 @@
 "room_replacement_link" = "The conversation continues here.";
 "room_predecessor_information" = "This room is a continuation of another conversation.";
 "room_predecessor_link" = "Click here to see older messages.";
+"room_resource_limit_exceeded_message_contact_1" = " Please ";
+"room_resource_limit_exceeded_message_contact_2_link" = "contact your service administrator";
+"room_resource_limit_exceeded_message_contact_3" = " to continue using this service.";
+"room_resource_usage_limit_reached_message_1_default" = "This homeserver has exceeded one of its resource limits so ";
+"room_resource_usage_limit_reached_message_1_monthly_active_user" = "This homeserver has hit its Monthly Active User limit so ";
+"room_resource_usage_limit_reached_message_2" = "some users will not be able to log in.";
+"room_resource_usage_limit_reached_message_contact_3" = " to get this limit increased.";
 
 // Unknown devices
 "unknown_devices_alert_title" = "Room contains unknown devices";
@@ -330,7 +338,7 @@
 
 "settings_sign_out" = "Sign Out";
 "settings_sign_out_confirmation" = "Are you sure?";
-"settings_sign_out_e2e_warn" = "You will lose your end-to-end encryption keys. That means you will be no more able to read old messages in encrypted rooms on this device.";
+"settings_sign_out_e2e_warn" = "You will lose your end-to-end encryption keys. That means you will no longer be able to read old messages in encrypted rooms on this device.";
 "settings_profile_picture" = "Profile Picture";
 "settings_display_name" = "Display Name";
 "settings_first_name" = "First Name";
@@ -537,19 +545,13 @@
 "today" = "Today";
 "yesterday" = "Yesterday";
 "network_offline_prompt" = "The Internet connection appears to be offline.";
+"homeserver_connection_lost" = "Could not connect to the homeserver.";
 "public_room_section_title" = "Public Rooms (at %@):";
 "bug_report_prompt" = "The application has crashed last time. Would you like to submit a crash report?";
 "rage_shake_prompt" = "You seem to be shaking the phone in frustration. Would you like to submit a bug report?";
 "do_not_ask_again" = "Do not ask again";
 "camera_access_not_granted" = "%@ doesn't have permission to use Camera, please change privacy settings";
 "large_badge_value_k_format" = "%.1fK";
-
-// room display name
-"room_displayname_invite_from" = "Invite from %@";
-"room_displayname_room_invite" = "Room Invite";
-"room_displayname_two_members" = "%@ and %@";
-"room_displayname_more_than_two_members" = "%@ and %u others";
-"room_displayname_no_title" = "Empty room";
 
 // Call
 "call_incoming_voice_prompt" = "Incoming voice call from %@";

@@ -68,6 +68,8 @@
 "conversations_start_chat_action" = "Nouvelle discussion";
 "conversations_create_room_action" = "Nouveau salon";
 "conversations_access_to_public_rooms_action" = "Accéder à un salon public";
+"conversations_invite_join" = "Rejoindre";
+"conversations_invite_decline" = "Rejeter";
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Contacts

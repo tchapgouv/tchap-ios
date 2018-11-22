@@ -900,16 +900,11 @@
              [self setNeedsStatusBarAppearanceUpdate];
         }];
 
-        NSString *avatarURL = nil;
-        if (self.mxRoomMember.avatarUrl)
-        {
-            avatarURL = [self.mainSession.matrixRestClient urlOfContent:self.mxRoomMember.avatarUrl];
-        }
-
-        [avatarFullScreenView setImageURL:avatarURL
+        [avatarFullScreenView setImageURI:self.mxRoomMember.avatarUrl
                                  withType:nil
                       andImageOrientation:UIImageOrientationUp
-                             previewImage:self.memberThumbnail.image];
+                             previewImage:self.memberThumbnail.image
+                             mediaManager:self.mainSession.mediaManager];
 
         [avatarFullScreenView showFullScreen];
         

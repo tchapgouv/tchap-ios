@@ -4,7 +4,6 @@
 
 @import MatrixSDK;
 #import "WebViewViewController.h"
-#import "MatrixSDK+Swift.h"
 #import "LegacyAppDelegate.h"
 #import "SegmentedViewController.h"
 #import "RoomsViewController.h"
@@ -20,3 +19,4 @@
 #import "RoomMemberDetailsViewController.h"
 #import "RoomParticipantsViewController.h"
 #import "AvatarGenerator.h"
+#import "MXRoomSummary+Riot.h"

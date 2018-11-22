@@ -80,15 +80,11 @@ internal enum Asset {
     }
     internal enum Home {
       internal enum RoomContextualMenu {
-        internal static let directChatOff = ImageAsset(name: "directChatOff")
-        internal static let directChatOn = ImageAsset(name: "directChatOn")
-        internal static let favourite = ImageAsset(name: "favourite")
-        internal static let favouriteOff = ImageAsset(name: "favouriteOff")
         internal static let leave = ImageAsset(name: "leave")
         internal static let notifications = ImageAsset(name: "notifications")
         internal static let notificationsOff = ImageAsset(name: "notificationsOff")
-        internal static let priorityHigh = ImageAsset(name: "priorityHigh")
-        internal static let priorityLow = ImageAsset(name: "priorityLow")
+        internal static let pin = ImageAsset(name: "pin")
+        internal static let unpin = ImageAsset(name: "unpin")
       }
     }
     internal static let launchScreen = ImageAsset(name: "LaunchScreen")
@@ -108,6 +104,7 @@ internal enum Asset {
         internal static let typing = ImageAsset(name: "typing")
       }
       internal enum Input {
+        internal static let sendIcon = ImageAsset(name: "send_icon")
         internal static let uploadIcon = ImageAsset(name: "upload_icon")
         internal static let voiceCallIcon = ImageAsset(name: "voice_call_icon")
       }
@@ -164,15 +161,11 @@ internal enum Asset {
       E2E.e2eBlocked,
       E2E.e2eUnencrypted,
       E2E.e2eWarning,
-      Home.RoomContextualMenu.directChatOff,
-      Home.RoomContextualMenu.directChatOn,
-      Home.RoomContextualMenu.favourite,
-      Home.RoomContextualMenu.favouriteOff,
       Home.RoomContextualMenu.leave,
       Home.RoomContextualMenu.notifications,
       Home.RoomContextualMenu.notificationsOff,
-      Home.RoomContextualMenu.priorityHigh,
-      Home.RoomContextualMenu.priorityLow,
+      Home.RoomContextualMenu.pin,
+      Home.RoomContextualMenu.unpin,
       launchScreen,
       MediaPicker.cameraCapture,
       MediaPicker.cameraPlay,
@@ -184,6 +177,7 @@ internal enum Asset {
       Room.Activities.scrolldown,
       Room.Activities.scrollup,
       Room.Activities.typing,
+      Room.Input.sendIcon,
       Room.Input.uploadIcon,
       Room.Input.voiceCallIcon,
       Room.addParticipant,
