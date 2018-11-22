@@ -2376,6 +2376,11 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         EventFormatter *eventFormatter = [[EventFormatter alloc] initWithMatrixSession:account.mxSession];
         eventFormatter.isForSubtitle = YES;
         account.mxSession.roomSummaryUpdateDelegate = eventFormatter;
+        
+        if (clearCache)
+        {
+            [account.mxSession.scanManager deleteAllAntivirusScans];
+        }
     }
     
     // Force back to Recents list if room details is displayed (Room details are not available until the end of initial sync)
