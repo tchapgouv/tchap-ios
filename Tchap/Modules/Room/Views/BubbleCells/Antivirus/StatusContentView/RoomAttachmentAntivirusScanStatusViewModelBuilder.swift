@@ -24,8 +24,8 @@ final class RoomAttachmentAntivirusScanStatusViewModelBuilder: NSObject {
     
     /// Transform a MXKRoomBubbleCellData to RoomAttachmentAntivirusScanStatusViewModel
     ///
-    /// - Parameter roomBubbleCellData: A room bubble cell data
-    /// - Returns: A view model RoomAttachmentAntivirusScanStatusViewModel
+    /// - Parameter roomBubbleCellData: A room cell data to transform.
+    /// - Returns: A view model RoomAttachmentAntivirusScanStatusViewModel.
     func viewModel(from roomBubbleCellData: MXKRoomBubbleCellData) -> RoomAttachmentAntivirusScanStatusViewModel? {
         
         guard roomBubbleCellData.attachment != nil,
