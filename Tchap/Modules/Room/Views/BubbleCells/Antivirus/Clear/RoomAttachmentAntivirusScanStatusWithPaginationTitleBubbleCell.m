@@ -41,17 +41,6 @@
     }
 }
 
-- (void)customizeTableViewCellRendering
-{
-    [super customizeTableViewCellRendering];
-    
-    self.userNameLabel.textColor = kRiotPrimaryTextColor;
-    
-    self.paginationLabel.textColor = kRiotColorGreen;
-    self.paginationSeparatorView.backgroundColor = kRiotColorGreen;
-    self.messageTextView.tintColor = kRiotColorGreen;
-}
-
 - (void)render:(MXKCellData *)cellData
 {
     [super render:cellData];

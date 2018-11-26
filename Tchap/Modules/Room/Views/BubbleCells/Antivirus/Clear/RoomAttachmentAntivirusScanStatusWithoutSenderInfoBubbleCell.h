@@ -14,11 +14,11 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+#import "RoomIncomingAttachmentWithoutSenderInfoBubbleCell.h"
 
 /**
  `RoomAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell` displays room attachment antivirus scan status bubbles without sender's information.
  */
-@interface RoomAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell : MXKRoomIncomingAttachmentWithoutSenderInfoBubbleCell
+@interface RoomAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell : RoomIncomingAttachmentWithoutSenderInfoBubbleCell
 
 @end

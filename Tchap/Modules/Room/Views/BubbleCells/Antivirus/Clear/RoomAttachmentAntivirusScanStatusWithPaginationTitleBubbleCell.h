@@ -14,15 +14,11 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+#import "RoomIncomingAttachmentWithPaginationTitleBubbleCell.h"
 
 /**
  `RoomAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell` displays incoming attachment antivirus scan status bubbles with sender's information and a pagination title.
  */
-@interface RoomAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell : MXKRoomIncomingAttachmentBubbleCell
-
-@property (weak, nonatomic) IBOutlet UIView *paginationTitleView;
-@property (weak, nonatomic) IBOutlet UILabel *paginationLabel;
-@property (weak, nonatomic) IBOutlet UIView *paginationSeparatorView;
+@interface RoomAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell : RoomIncomingAttachmentWithPaginationTitleBubbleCell
 
 @end

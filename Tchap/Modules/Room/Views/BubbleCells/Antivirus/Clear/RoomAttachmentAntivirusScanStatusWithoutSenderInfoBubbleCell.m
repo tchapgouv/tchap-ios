@@ -42,13 +42,6 @@
     }
 }
 
-- (void)customizeTableViewCellRendering
-{
-    [super customizeTableViewCellRendering];
-
-    self.messageTextView.tintColor = kRiotColorGreen;
-}
-
 - (void)render:(MXKCellData *)cellData
 {
     [super render:cellData];

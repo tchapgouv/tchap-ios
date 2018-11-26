@@ -14,11 +14,11 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+#import "RoomIncomingAttachmentBubbleCell.h"
 
 /**
  `RoomAttachmentAntivirusScanStatusBubbleCell` displays room attachment antivirus scan status with sender's information.
  */
-@interface RoomAttachmentAntivirusScanStatusBubbleCell : MXKRoomIncomingAttachmentBubbleCell
+@interface RoomAttachmentAntivirusScanStatusBubbleCell : RoomIncomingAttachmentBubbleCell
 
 @end
