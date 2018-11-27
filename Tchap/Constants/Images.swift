@@ -103,6 +103,11 @@ internal enum Asset {
         internal static let scrollup = ImageAsset(name: "scrollup")
         internal static let typing = ImageAsset(name: "typing")
       }
+      internal enum Antivirus {
+        internal static let attachmentScanStatusInProgress = ImageAsset(name: "attachment_scan_status_in_progress")
+        internal static let attachmentScanStatusInfected = ImageAsset(name: "attachment_scan_status_infected")
+        internal static let attachmentScanStatusUnavailable = ImageAsset(name: "attachment_scan_status_unavailable")
+      }
       internal enum Input {
         internal static let sendIcon = ImageAsset(name: "send_icon")
         internal static let uploadIcon = ImageAsset(name: "upload_icon")
@@ -177,6 +182,9 @@ internal enum Asset {
       Room.Activities.scrolldown,
       Room.Activities.scrollup,
       Room.Activities.typing,
+      Room.Antivirus.attachmentScanStatusInProgress,
+      Room.Antivirus.attachmentScanStatusInfected,
+      Room.Antivirus.attachmentScanStatusUnavailable,
       Room.Input.sendIcon,
       Room.Input.uploadIcon,
       Room.Input.voiceCallIcon,

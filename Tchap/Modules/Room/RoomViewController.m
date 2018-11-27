@@ -86,6 +86,13 @@
 #import "RoomMembershipExpandedBubbleCell.h"
 #import "RoomMembershipExpandedWithPaginationTitleBubbleCell.h"
 
+#import "RoomAttachmentAntivirusScanStatusBubbleCell.h"
+#import "RoomAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.h"
+#import "RoomAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.h"
+#import "RoomEncryptedAttachmentAntivirusScanStatusBubbleCell.h"
+#import "RoomEncryptedAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.h"
+#import "RoomEncryptedAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.h"
+
 #import "RoomSelectedStickerBubbleCell.h"
 #import "RoomPredecessorBubbleCell.h"
 
@@ -351,6 +358,15 @@
     
     [self.bubblesTableView registerClass:RoomSelectedStickerBubbleCell.class forCellReuseIdentifier:RoomSelectedStickerBubbleCell.defaultReuseIdentifier];
     [self.bubblesTableView registerClass:RoomPredecessorBubbleCell.class forCellReuseIdentifier:RoomPredecessorBubbleCell.defaultReuseIdentifier];
+    
+    [self.bubblesTableView registerNib:RoomAttachmentAntivirusScanStatusBubbleCell.nib forCellReuseIdentifier:RoomAttachmentAntivirusScanStatusBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerNib:RoomAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.nib forCellReuseIdentifier:RoomAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerNib:RoomAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.nib forCellReuseIdentifier:RoomAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+    
+    [self.bubblesTableView registerNib:RoomEncryptedAttachmentAntivirusScanStatusBubbleCell.nib forCellReuseIdentifier:RoomEncryptedAttachmentAntivirusScanStatusBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerNib:RoomEncryptedAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.nib forCellReuseIdentifier:RoomEncryptedAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerNib:RoomEncryptedAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.nib forCellReuseIdentifier:RoomEncryptedAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+    
     
     // Replace the default input toolbar view.
     // Note: this operation will force the layout of subviews. That is why cell view classes must be registered before.
@@ -1633,8 +1649,23 @@
     {
         id<MXKRoomBubbleCellDataStoring> bubbleData = (id<MXKRoomBubbleCellDataStoring>)cellData;
         
-        // Select the suitable table view cell class, by considering first the empty bubble cell.
-        if (bubbleData.hasNoDisplay)
+        // Select the suitable table view cell class
+        if (bubbleData.showAntivirusScanStatus)
+        {
+            if (bubbleData.isPaginationFirstBubble)
+            {
+                cellViewClass = isEncryptedRoom ? RoomEncryptedAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.class : RoomAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.class;
+            }
+            else if (bubbleData.shouldHideSenderInformation)
+            {
+                cellViewClass = isEncryptedRoom ? RoomEncryptedAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.class : RoomAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.class;
+            }
+            else
+            {
+                cellViewClass = isEncryptedRoom ? RoomEncryptedAttachmentAntivirusScanStatusBubbleCell.class : RoomAttachmentAntivirusScanStatusBubbleCell.class;
+            }
+        }
+        else if (bubbleData.hasNoDisplay)
         {
             cellViewClass = RoomEmptyBubbleCell.class;
         }

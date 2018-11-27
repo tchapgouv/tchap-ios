@@ -121,6 +121,16 @@ internal enum TchapL10n {
   internal static let registrationPasswordPlaceholder = TchapL10n.tr("Tchap", "registration_password_placeholder")
   /// Inscription Tchap
   internal static let registrationTitle = TchapL10n.tr("Tchap", "registration_title")
+  /// Analyse antivirus
+  internal static let roomAttachmentScanStatusInProgressTitle = TchapL10n.tr("Tchap", "room_attachment_scan_status_in_progress_title")
+  /// Le document %@ a été filtré par le politique de sécurité
+  internal static func roomAttachmentScanStatusInfectedFileInfo(_ p1: String) -> String {
+    return TchapL10n.tr("Tchap", "room_attachment_scan_status_infected_file_info", p1)
+  }
+  /// Fichier bloqué
+  internal static let roomAttachmentScanStatusInfectedTitle = TchapL10n.tr("Tchap", "room_attachment_scan_status_infected_title")
+  /// Analyse indisponible
+  internal static let roomAttachmentScanStatusUnavailableTitle = TchapL10n.tr("Tchap", "room_attachment_scan_status_unavailable_title")
   /// Fichiers
   internal static let roomFilesTabTitle = TchapL10n.tr("Tchap", "room_files_tab_title")
   /// Envoyer un message
