@@ -84,4 +84,8 @@ final class Variant2Style: NSObject, Style {
         textField.textColor = self.primaryTextColor
         textField.tintColor = self.primaryTextColor
     }
+    
+    func applyStyle(onSwitch uiSwitch: UISwitch) {
+        uiSwitch.onTintColor = self.barBackgroundColor
+    }
 }

@@ -56,6 +56,7 @@ import UIKit
     func applyStyle(onNavigationBar: UINavigationBar)
     func applyStyle(onButton button: UIButton, bordered: Bool)
     func applyStyle(onTextField: UITextField)
+    func applyStyle(onSwitch: UISwitch)
 }
 
 // Style default implementation
