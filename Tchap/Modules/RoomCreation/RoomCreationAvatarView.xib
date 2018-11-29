@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="RoomCreationAvatarView" customModule="Tchap" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="120" height="120"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bke-zP-9J5">
+                    <rect key="frame" x="0.0" y="0.0" width="120" height="120"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="LSv-ce-Vuf">
+                            <rect key="frame" x="0.0" y="0.0" width="120" height="120"/>
+                        </imageView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WKw-o6-dBX">
+                            <rect key="frame" x="0.0" y="0.0" width="120" height="120"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <inset key="contentEdgeInsets" minX="15" minY="0.0" maxX="15" maxY="0.0"/>
+                            <state key="normal" title="Ajouter une photo"/>
+                            <connections>
+                                <action selector="addButtonAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="Uim-X7-qXK"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="0.95105267018779338" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="LSv-ce-Vuf" firstAttribute="top" secondItem="bke-zP-9J5" secondAttribute="top" id="03Y-K4-dHt"/>
+                        <constraint firstAttribute="bottom" secondItem="WKw-o6-dBX" secondAttribute="bottom" id="4OC-7R-pCC"/>
+                        <constraint firstItem="WKw-o6-dBX" firstAttribute="top" secondItem="bke-zP-9J5" secondAttribute="top" id="77R-c3-nsD"/>
+                        <constraint firstItem="LSv-ce-Vuf" firstAttribute="leading" secondItem="bke-zP-9J5" secondAttribute="leading" id="Do3-x4-jzu"/>
+                        <constraint firstAttribute="trailing" secondItem="LSv-ce-Vuf" secondAttribute="trailing" id="LDy-Uq-ZTz"/>
+                        <constraint firstAttribute="trailing" secondItem="WKw-o6-dBX" secondAttribute="trailing" id="f69-vc-JxY"/>
+                        <constraint firstAttribute="bottom" secondItem="LSv-ce-Vuf" secondAttribute="bottom" id="xzn-p1-ET1"/>
+                        <constraint firstItem="WKw-o6-dBX" firstAttribute="leading" secondItem="bke-zP-9J5" secondAttribute="leading" id="yTC-aQ-GvP"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="bke-zP-9J5" secondAttribute="trailing" id="aq2-ln-XsJ"/>
+                <constraint firstAttribute="bottom" secondItem="bke-zP-9J5" secondAttribute="bottom" id="bXs-6t-s8f"/>
+                <constraint firstItem="bke-zP-9J5" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="qHP-tX-gh5"/>
+                <constraint firstItem="bke-zP-9J5" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="roB-kb-JaY"/>
+            </constraints>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="addButton" destination="WKw-o6-dBX" id="RkT-Gt-xZ7"/>
+                <outlet property="backgroundView" destination="bke-zP-9J5" id="AnL-Ke-dNV"/>
+                <outlet property="imageView" destination="LSv-ce-Vuf" id="1Ia-5k-the"/>
+            </connections>
+            <point key="canvasLocation" x="-1162.4000000000001" y="-1139.2803598200901"/>
+        </view>
+    </objects>
+</document>
