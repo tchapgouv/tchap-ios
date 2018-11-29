@@ -131,6 +131,20 @@ internal enum TchapL10n {
   internal static let roomAttachmentScanStatusInfectedTitle = TchapL10n.tr("Tchap", "room_attachment_scan_status_infected_title")
   /// Analyse indisponible
   internal static let roomAttachmentScanStatusUnavailableTitle = TchapL10n.tr("Tchap", "room_attachment_scan_status_unavailable_title")
+  /// Ajouter une photo
+  internal static let roomCreationAddAvatarAction = TchapL10n.tr("Tchap", "room_creation_add_avatar_action")
+  /// Nommer le salon
+  internal static let roomCreationNamePlaceholder = TchapL10n.tr("Tchap", "room_creation_name_placeholder")
+  /// Limiter l'accès à ce salon aux membres du domaine "%@"
+  internal static func roomCreationPublicRoomFederationTitle(_ p1: String) -> String {
+    return TchapL10n.tr("Tchap", "room_creation_public_room_federation_title", p1)
+  }
+  /// Un salon public peut être rejoint par n'importe quel membre de la communauté Tchap, il ne doit contenir aucune donnée sensible.
+  internal static let roomCreationPublicVisibilityInfo = TchapL10n.tr("Tchap", "room_creation_public_visibility_info")
+  /// Rendre ce salon public
+  internal static let roomCreationPublicVisibilityTitle = TchapL10n.tr("Tchap", "room_creation_public_visibility_title")
+  /// Nouveau salon
+  internal static let roomCreationTitle = TchapL10n.tr("Tchap", "room_creation_title")
   /// Fichiers
   internal static let roomFilesTabTitle = TchapL10n.tr("Tchap", "room_files_tab_title")
   /// Envoyer un message

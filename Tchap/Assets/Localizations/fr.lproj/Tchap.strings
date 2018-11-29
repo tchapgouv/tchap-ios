@@ -129,3 +129,13 @@
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Create new discussion
 "create_new_discussion_title" = "Nouvelle discussion";
+
+////////////////////////////////////////////////////////////////////////////////
+// MARK: Room creation
+
+"room_creation_title" = "Nouveau salon";
+"room_creation_name_placeholder" = "Nommer le salon";
+"room_creation_public_visibility_title" = "Rendre ce salon public";
+"room_creation_public_visibility_info" = "Un salon public peut être rejoint par n'importe quel membre de la communauté Tchap, il ne doit contenir aucune donnée sensible.";
+"room_creation_public_room_federation_title" = "Limiter l'accès à ce salon aux membres du domaine \"%@\"";
+"room_creation_add_avatar_action" = "Ajouter une photo";
