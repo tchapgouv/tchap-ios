@@ -164,4 +164,9 @@ extension FormTextField: UITextFieldDelegate {
         
         return false
     }
+    
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        self.formTextViewModel?.value = nil
+        return true
+    }
 }
