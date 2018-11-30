@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		02098F332131FE9E00F25086 /* ContactTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 02098F2B2131FE9E00F25086 /* ContactTableViewCell.m */; };
-		02098F342131FE9E00F25086 /* ContactTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02098F2C2131FE9E00F25086 /* ContactTableViewCell.xib */; };
 		02098F352131FE9E00F25086 /* ContactsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 02098F302131FE9E00F25086 /* ContactsDataSource.m */; };
 		02098F372131FE9E00F25086 /* ContactsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 02098F322131FE9E00F25086 /* ContactsViewController.m */; };
 		020DF6FB21480700003DFBA4 /* DiscussionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020DF6FA21480700003DFBA4 /* DiscussionService.swift */; };
@@ -200,6 +198,8 @@
 		0250C5BB2122B68000034691 /* JitsiMeet.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3233F7441F3497DA006ACA81 /* JitsiMeet.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0250C5CB2122E63900034691 /* empty.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0250C5C82122E63900034691 /* empty.mm */; };
 		0250C5CE212314B300034691 /* Tchap-Defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0250C5CD212314B300034691 /* Tchap-Defaults.plist */; };
+		027DCAC521B14F68000DD05E /* ContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 027DCAC321B14F68000DD05E /* ContactCell.xib */; };
+		027DCAC621B14F68000DD05E /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027DCAC421B14F68000DD05E /* ContactCell.swift */; };
 		02906073214FD0E1005FE3C1 /* RoomCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02906071214FD0E0005FE3C1 /* RoomCoordinatorType.swift */; };
 		02906074214FD0E1005FE3C1 /* RoomCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02906072214FD0E0005FE3C1 /* RoomCoordinator.swift */; };
 		0290607921501D16005FE3C1 /* PreviewView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0290607621501D16005FE3C1 /* PreviewView.xib */; };
@@ -556,9 +556,6 @@
 
 /* Begin PBXFileReference section */
 		02098F292131FE9D00F25086 /* ContactsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsViewController.h; sourceTree = "<group>"; };
-		02098F2B2131FE9E00F25086 /* ContactTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactTableViewCell.m; sourceTree = "<group>"; };
-		02098F2C2131FE9E00F25086 /* ContactTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactTableViewCell.xib; sourceTree = "<group>"; };
-		02098F2D2131FE9E00F25086 /* ContactTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactTableViewCell.h; sourceTree = "<group>"; };
 		02098F2F2131FE9E00F25086 /* ContactsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsDataSource.h; sourceTree = "<group>"; };
 		02098F302131FE9E00F25086 /* ContactsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactsDataSource.m; sourceTree = "<group>"; };
 		02098F322131FE9E00F25086 /* ContactsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactsViewController.m; sourceTree = "<group>"; };
@@ -741,6 +738,8 @@
 		0250C5C72122E63900034691 /* Tchap.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Tchap.entitlements; sourceTree = "<group>"; };
 		0250C5C82122E63900034691 /* empty.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = empty.mm; sourceTree = "<group>"; };
 		0250C5CD212314B300034691 /* Tchap-Defaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Tchap-Defaults.plist"; sourceTree = "<group>"; };
+		027DCAC321B14F68000DD05E /* ContactCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactCell.xib; sourceTree = "<group>"; };
+		027DCAC421B14F68000DD05E /* ContactCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
 		02906071214FD0E0005FE3C1 /* RoomCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomCoordinatorType.swift; sourceTree = "<group>"; };
 		02906072214FD0E0005FE3C1 /* RoomCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomCoordinator.swift; sourceTree = "<group>"; };
 		0290607621501D16005FE3C1 /* PreviewView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PreviewView.xib; sourceTree = "<group>"; };
@@ -1192,9 +1191,8 @@
 		02098F2A2131FE9E00F25086 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				02098F2B2131FE9E00F25086 /* ContactTableViewCell.m */,
-				02098F2C2131FE9E00F25086 /* ContactTableViewCell.xib */,
-				02098F2D2131FE9E00F25086 /* ContactTableViewCell.h */,
+				027DCAC421B14F68000DD05E /* ContactCell.swift */,
+				027DCAC321B14F68000DD05E /* ContactCell.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -3144,7 +3142,6 @@
 				020DF99D214BE467003DFBA4 /* RoomMembershipWithPaginationTitleBubbleCell.xib in Resources */,
 				0250C5502122B68000034691 /* Localizable.strings in Resources */,
 				0250C5522122B68000034691 /* InfoPlist.strings in Resources */,
-				02098F342131FE9E00F25086 /* ContactTableViewCell.xib in Resources */,
 				020DF968214BE467003DFBA4 /* RoomIncomingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib in Resources */,
 				020DF955214BE467003DFBA4 /* RoomIncomingEncryptedTextMsgBubbleCell.xib in Resources */,
 				B1BC6A2A2136DCCE00D32F8E /* WelcomeViewController.storyboard in Resources */,
@@ -3195,6 +3192,7 @@
 				B12DDA96216F4EBC0093172C /* Tchap.stringsdict in Resources */,
 				020DF986214BE467003DFBA4 /* RoomIncomingTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
 				0250C5812122B68000034691 /* BugReportViewController.xib in Resources */,
+				027DCAC521B14F68000DD05E /* ContactCell.xib in Resources */,
 				0250C5822122B68000034691 /* Main.storyboard in Resources */,
 				020DF93B214BE467003DFBA4 /* TableViewCellWithLabelAndLargeTextView.xib in Resources */,
 				020DF9B2214BE467003DFBA4 /* EventDetailsView.xib in Resources */,
@@ -3609,6 +3607,7 @@
 				B104AA1D215D3EE800B2C452 /* ForgotPasswordService.swift in Sources */,
 				B15B867021354FF5002782BE /* AuthenticationViewModel.swift in Sources */,
 				02906074214FD0E1005FE3C1 /* RoomCoordinator.swift in Sources */,
+				027DCAC621B14F68000DD05E /* ContactCell.swift in Sources */,
 				0250C49F2122B68000034691 /* MediaAlbumContentViewController.m in Sources */,
 				020DF963214BE467003DFBA4 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
 				020DF987214BE467003DFBA4 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
@@ -3820,7 +3819,6 @@
 				B122FB57216D060F00B09BEF /* RoomTitleView.swift in Sources */,
 				B1BC6A1B21369C8F00D32F8E /* Style.swift in Sources */,
 				B1F2AA98212AEC830077FDC0 /* AppCoordinatorType.swift in Sources */,
-				02098F332131FE9E00F25086 /* ContactTableViewCell.m in Sources */,
 				020DF944214BE467003DFBA4 /* RoomViewController.m in Sources */,
 				020DF94D214BE467003DFBA4 /* ReadReceiptsViewController.m in Sources */,
 				020DF935214BE467003DFBA4 /* RoomDataSource.m in Sources */,

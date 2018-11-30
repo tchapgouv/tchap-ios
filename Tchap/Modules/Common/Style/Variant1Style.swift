@@ -51,6 +51,8 @@ final class Variant1Style: NSObject, Style {
     let primarySubTextColor: UIColor = kVariant1PrimarySubTextColor
     let secondaryTextColor: UIColor = kVariant1SecondaryTextColor
     
+    let presenceIndicatorOnlineColor: UIColor = kVariant1PresenceIndicatorOnlineColor
+    
     // MARK: - Commodity methods
     
     func applyStyle(onNavigationBar navigationBar: UINavigationBar) {

@@ -49,6 +49,8 @@ import UIKit
     var primarySubTextColor: UIColor { get }
     var secondaryTextColor: UIColor { get }
     
+    var presenceIndicatorOnlineColor: UIColor { get }
+    
     // MARK: - Commodity methods
     
     func applyStyle(onNavigationBar: UINavigationBar)
