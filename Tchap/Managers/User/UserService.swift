@@ -17,7 +17,8 @@
 import Foundation
 
 /// `UserService` implementation of `UserServiceType` is used to handle Tchap users.
-final class UserService: UserServiceType {
+@objcMembers
+final class UserService: NSObject, UserServiceType {
     
     // MARK: - Constants
     
@@ -33,6 +34,8 @@ final class UserService: UserServiceType {
     
     init(session: MXSession) {
         self.session = session
+        
+        super.init()
     }
     
     // MARK: - Public
