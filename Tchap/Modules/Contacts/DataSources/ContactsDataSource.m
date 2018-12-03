@@ -779,14 +779,12 @@
         UITableViewCell<MXKCellRendering> *contactCell;
         
         NSString *cellIdentifier = [self.delegate cellReuseIdentifierForCellData:contact];
-        if (cellIdentifier)
+        if (!cellIdentifier)
         {
-            contactCell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+            // Render a ContactCell instance by default.
+            cellIdentifier = ContactCell.defaultReuseIdentifier;
         }
-        if (!contactCell)
-        {
-            contactCell = [[ContactCell alloc] init];
-        }
+        contactCell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
         
         // Make the cell display the contact
         [contactCell render:contact];

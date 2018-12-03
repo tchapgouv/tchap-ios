@@ -139,9 +139,9 @@ import UIKit
     }
     
     private func refreshContactPresence() {
+        self.presenceView.isHidden = true
         guard self.matrixId != nil, let sessions = MXKContactManager.shared()?.mxSessions as? [MXSession] else {
             // There is no discussion for the moment with this user
-            self.presenceView.isHidden = true
             return
         }
         
@@ -150,6 +150,7 @@ import UIKit
             guard let user = session.user(withUserId: self.matrixId) else { continue }
         
             self.presenceView.isHidden = user.presence != .init(MXPresenceOnline)
+            break
         }
     }
     
@@ -162,9 +163,11 @@ import UIKit
     }
     
     @objc private func onThumbnailUpdate(notification: Notification) {
-        if let contactId = notification.object as? String, contactId == self.contact?.contactID {
-            refreshContactThumbnail()
+        guard let contactId = notification.object as? String, contactId == self.contact?.contactID else {
+            return
         }
+        
+        refreshContactThumbnail()
     }
     
     private func registerContactPresenceNotification() {
@@ -176,8 +179,10 @@ import UIKit
     }
     
     @objc private func onPresenceUpdate(notification: Notification) {
-        if let matrixId = notification.object as? String, matrixId == self.matrixId {
-            refreshContactPresence()
+        guard let matrixId = notification.object as? String, matrixId == self.matrixId else {
+            return
         }
+        
+        refreshContactPresence()
     }
 }
