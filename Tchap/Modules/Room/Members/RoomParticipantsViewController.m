@@ -24,8 +24,6 @@
 
 #import "Contact.h"
 
-#import "ContactTableViewCell.h"
-
 #import "RageShakeManager.h"
 
 @interface RoomParticipantsViewController () <Stylable>
@@ -143,7 +141,11 @@
     // Hide line separators of empty cells
     self.tableView.tableFooterView = [[UIView alloc] init];
     
-    [self.tableView registerClass:ContactTableViewCell.class forCellReuseIdentifier:@"ParticipantTableViewCellId"];
+    [self.tableView registerNib:ContactCell.nib forCellReuseIdentifier:ContactCell.defaultReuseIdentifier];
+    
+    // Enable self-sizing cells.
+    self.tableView.rowHeight = UITableViewAutomaticDimension;
+    self.tableView.estimatedRowHeight = 60;
     
     // Add room creation button programmatically
     [self addAddParticipantButton];
@@ -732,10 +734,8 @@
                 {
                     if (mxMember.membership == MXMembershipJoin || mxMember.membership == MXMembershipInvite)
                     {
-                        // The user is in this room
-                        NSString *displayName = NSLocalizedStringFromTable(@"you", @"Vector", nil);
-
-                        self->userParticipant = [[Contact alloc] initMatrixContactWithDisplayName:displayName andMatrixID:userId];
+                        // The current user is in this room
+                        self->userParticipant = [[Contact alloc] initMatrixContactWithDisplayName:mxMember.displayname andMatrixID:userId];
                         self->userParticipant.mxMember = [roomState.members memberWithUserId:userId];
                     }
                 }
@@ -760,24 +760,8 @@
     // Add this member after checking his status
     if (mxMember.membership == MXMembershipJoin || mxMember.membership == MXMembershipInvite)
     {
-        // Prepare the display name of this member
-        NSString *displayName = mxMember.displayname;
-        if (displayName.length == 0)
-        {
-            // Look for the corresponding MXUser in matrix session
-            MXUser *mxUser = [self.mxRoom.mxSession userWithUserId:mxMember.userId];
-            if (mxUser)
-            {
-                displayName = ((mxUser.displayname.length > 0) ? mxUser.displayname : mxMember.userId);
-            }
-            else
-            {
-                displayName = mxMember.userId;
-            }
-        }
-        
         // Create the contact related to this member
-        Contact *contact = [[Contact alloc] initMatrixContactWithDisplayName:displayName andMatrixID:mxMember.userId];
+        Contact *contact = [[Contact alloc] initMatrixContactWithDisplayName:mxMember.displayname andMatrixID:mxMember.userId];
         contact.mxMember = mxMember;
         
         if (mxMember.membership == MXMembershipInvite)
@@ -1078,10 +1062,8 @@
     
     if (indexPath.section == participantsSection || indexPath.section == invitedSection)
     {
-        ContactTableViewCell* participantCell = [tableView dequeueReusableCellWithIdentifier:@"ParticipantTableViewCellId" forIndexPath:indexPath];
+        ContactCell* participantCell = [tableView dequeueReusableCellWithIdentifier:ContactCell.defaultReuseIdentifier forIndexPath:indexPath];
         participantCell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
-        participantCell.mxRoom = self.mxRoom;
         
         Contact *contact;
         
@@ -1149,12 +1131,6 @@
                 {
                     participantCell.thumbnailBadgeView.image = [UIImage imageNamed:@"mod_icon"];
                     participantCell.thumbnailBadgeView.hidden = NO;
-                }
-                
-                // Update the contact display name by considering the current room state.
-                if (contact.mxMember.userId)
-                {
-                    participantCell.contactDisplayNameLabel.text = [roomState.members memberName:contact.mxMember.userId];
                 }
             }
         }
@@ -1246,11 +1222,6 @@
     }
     
     return sectionHeader;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return 74.0;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

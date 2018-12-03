@@ -15,7 +15,8 @@
  */
 
 #import "ContactsDataSource.h"
-#import "ContactTableViewCell.h"
+
+#import "GeneratedInterface-Swift.h"
 
 #import "RiotDesignValues.h"
 
@@ -775,11 +776,15 @@
     
     if (contact)
     {
-        ContactTableViewCell *contactCell = [tableView dequeueReusableCellWithIdentifier:[ContactTableViewCell defaultReuseIdentifier]];
-        if (!contactCell)
+        UITableViewCell<MXKCellRendering> *contactCell;
+        
+        NSString *cellIdentifier = [self.delegate cellReuseIdentifierForCellData:contact];
+        if (!cellIdentifier)
         {
-            contactCell = [[ContactTableViewCell alloc] init];
+            // Render a ContactCell instance by default.
+            cellIdentifier = ContactCell.defaultReuseIdentifier;
         }
+        contactCell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
         
         // Make the cell display the contact
         [contactCell render:contact];

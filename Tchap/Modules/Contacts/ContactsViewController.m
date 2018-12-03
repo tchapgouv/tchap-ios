@@ -19,7 +19,6 @@
 #import "RiotDesignValues.h"
 #import "RageShakeManager.h"
 #import "Analytics.h"
-#import "ContactTableViewCell.h"
 #import "ContactsDataSource.h"
 
 #import "GeneratedInterface-Swift.h"
@@ -67,10 +66,14 @@
     // Finalize table view configuration
     self.tableView.dataSource = self.contactsDataSource; // Note: dataSource may be nil here
     
-    [self.tableView registerClass:ContactTableViewCell.class forCellReuseIdentifier:ContactTableViewCell.defaultReuseIdentifier];
+    [self.tableView registerNib:ContactCell.nib forCellReuseIdentifier:ContactCell.defaultReuseIdentifier];
     
     // Hide line separators of empty cells
     self.tableView.tableFooterView = [[UIView alloc] init];
+    
+    // Enable self-sizing cells.
+    self.tableView.rowHeight = UITableViewAutomaticDimension;
+    self.tableView.estimatedRowHeight = 60;
     
     if (self.showSearchBar)
     {
@@ -216,7 +219,7 @@
 {
     if ([cellData isKindOfClass:MXKContact.class])
     {
-        return ContactTableViewCell.class;
+        return ContactCell.class;
     }
     
     return nil;
@@ -226,7 +229,7 @@
 {
     if ([cellData isKindOfClass:MXKContact.class])
     {
-        return [ContactTableViewCell defaultReuseIdentifier];
+        return [ContactCell defaultReuseIdentifier];
     }
     
     return nil;
@@ -259,17 +262,6 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     return [self.contactsDataSource viewForHeaderInSection:section withFrame:[tableView rectForHeaderInSection:section]];
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if ([self.contactsDataSource contactAtIndexPath:indexPath])
-    {
-        // Return the default height of the contact cell
-        return 74.0;
-    }
-    
-    return 50;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

@@ -155,9 +155,9 @@
     }
     else if (([cell isKindOfClass:[RoomsCell class]]))
     {
-        RoomsCell* recentTableViewCell = (RoomsCell*)cell;
+        RoomsCell* tableViewCell = (RoomsCell*)cell;
         
-        [self.roomsViewControllerDelegate roomsViewController:self didSelectRoomWithID:recentTableViewCell.roomCellData.roomSummary.roomId];
+        [self.roomsViewControllerDelegate roomsViewController:self didSelectRoomWithID:tableViewCell.roomCellData.roomSummary.roomId];
     }
 }
 
