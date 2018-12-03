@@ -149,7 +149,7 @@ import UIKit
         for session in sessions {
             guard let user = session.user(withUserId: self.matrixId) else { continue }
         
-            self.presenceView.isHidden = user.presence != .init(MXPresenceOnline)
+            self.presenceView.isHidden = user.presence != MXPresenceOnline
             break
         }
     }
