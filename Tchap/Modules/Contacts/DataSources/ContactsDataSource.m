@@ -47,7 +47,11 @@
     MXHTTPOperation *lookup3pidsOperation;
     
     NSDictionary<NSString*, MXKContact*> *directContacts;
-    NSTimer *updateDirectTchapContactsTimer;
+    
+    NSTimer *refreshContactsTimer;
+    
+    // Store all the Tchap contacts for who the client got the profile details
+    NSMutableDictionary<NSString*, MXKContact*> *discoveredTchapContacts;
 }
 
 @end
@@ -77,6 +81,8 @@
         hideNonMatrixEnabledContacts = NO;
         
         _displaySearchInputInContactsList = NO;
+        
+        discoveredTchapContacts = [NSMutableDictionary dictionary];
         
         // Register on contact update notifications
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onContactManagerDidUpdate:) name:kMXKContactManagerDidUpdateMatrixContactsNotification object:nil];
@@ -124,13 +130,14 @@
         lookup3pidsOperation = nil;
     }
     
-    if (updateDirectTchapContactsTimer)
+    if (refreshContactsTimer)
     {
-        [updateDirectTchapContactsTimer invalidate];
-        updateDirectTchapContactsTimer = nil;
+        [refreshContactsTimer invalidate];
+        refreshContactsTimer = nil;
     }
     
     directContacts = nil;
+    discoveredTchapContacts = nil;
     
     [super destroy];
 }
@@ -151,6 +158,12 @@
 
 - (void)forceRefresh
 {
+    if (refreshContactsTimer)
+    {
+        [refreshContactsTimer invalidate];
+        refreshContactsTimer = nil;
+    }
+    
     // Check whether a search is in progress
     if (searchProcessingCount)
     {
@@ -394,12 +407,6 @@
 
 - (void)updateDirectTchapContacts
 {
-    if (updateDirectTchapContactsTimer)
-    {
-        [updateDirectTchapContactsTimer invalidate];
-        updateDirectTchapContactsTimer = nil;
-    }
-    
     if (self.mxSession && MXSessionStateStoreDataReady <= self.mxSession.state)
     {
         NSMutableDictionary *updatedDirectContacts = [NSMutableDictionary dictionary];
@@ -418,7 +425,8 @@
                     continue;
                 }
                 
-                // Retrieve the related user instance
+                // Retrieve the related user instance.
+                // TODO: use the UserService class here when ContactsDataSource will be converted in Swift.
                 MXUser *user = [self.mxSession userWithUserId:key];
                 if (user)
                 {
@@ -428,39 +436,32 @@
                 }
                 else
                 {
-                    // Retrieve the user display name from the room members information.
-                    // By this way we check that the current user has joined (or has been invited in) at least one of the direct chats for this user.
-                    // The users for whom no direct is joined by the current user are ignored for the moment.
-                    // @TODO Keep displaying these users in the contacts list, the problem is to get their displayname
-                    // @NOTE The user displayname may be known thanks to the presence event. But
-                    // it is unknown until we receive a presence event for this user.
-                    for (NSString *roomId in self.mxSession.directRooms[key]) {
-                        MXRoom *room = [self.mxSession roomWithRoomId:roomId];
-                        if (room) {
-                            // Retrieve the room members, update the direct contacts list only in case of a synchronous response.
-                            MXWeakify(self);
-                            __weak typeof(NSMutableDictionary*) weakUpdatedDirectContacts = updatedDirectContacts;
-                            [room members:^(MXRoomMembers *members) {
-                                MXStrongifyAndReturnIfNil(self);
-                                if (weakUpdatedDirectContacts)
+                    // Check whether we already retrieve the details of this user
+                    MXKContact *contact = discoveredTchapContacts[key];
+                    if (contact)
+                    {
+                        updatedDirectContacts[key] = contact;
+                    }
+                    else
+                    {
+                        // Retrieve display name and avatar url from user profile
+                        MXWeakify(self);
+                        [self.mxSession.matrixRestClient profileForUser:key success:^(NSString *displayName, NSString *avatarUrl) {
+                            MXStrongifyAndReturnIfNil(self);
+                            if (displayName.length)
+                            {
+                                MXKContact *contact = [[MXKContact alloc] initMatrixContactWithDisplayName: displayName matrixID: key andMatrixAvatarURL: avatarUrl];
+                                self->discoveredTchapContacts[key] = contact;
+                                
+                                if (!self->refreshContactsTimer)
                                 {
-                                    // The response is synchronous: add a contact for this user if the displayname is available.
-                                    NSMutableDictionary *updatedDirectContacts = weakUpdatedDirectContacts;
-                                    MXRoomMember *roomMember = [members memberWithUserId:key];
-                                    if (roomMember && roomMember.displayname) {
-                                        MXKContact *contact = [[MXKContact alloc] initMatrixContactWithDisplayName: roomMember.displayname matrixID: key andMatrixAvatarURL: roomMember.avatarUrl];
-                                        updatedDirectContacts[key] = contact;
-                                    }
-                                }
-                                else if (!self->updateDirectTchapContactsTimer)
-                                {
-                                    // The room members has been loaded asynchronously.
                                     // arm a timer to auto refresh direct contacts list in 2s.
-                                    self->updateDirectTchapContactsTimer = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(updateDirectTchapContacts) userInfo:self repeats:NO];
+                                    self->refreshContactsTimer = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(forceRefresh) userInfo:self repeats:NO];
                                 }
-                            } failure:nil];
-                            break;
-                        }
+                            }
+                        } failure:^(NSError *error) {
+                            NSLog(@"[ContactsDataSource] Get profile failed for %@", key);
+                        }];
                     }
                 }
             }
@@ -581,12 +582,11 @@
     // + Apply the filter defined about the tchap/non-tchap-enabled contacts
     for (NSUInteger index = 0; index < unfilteredLocalContacts.count;)
     {
-        MXKContact* contact = unfilteredLocalContacts[index];
-        
-        NSArray *identifiers = contact.matrixIdentifiers;
-        if (identifiers.count)
+        MXKContact *contact = unfilteredLocalContacts[index];
+        NSString *matrixId = contact.matrixIdentifiers.firstObject;
+        if (matrixId)
         {
-            if (_contactsFilter == ContactsDataSourceTchapFilterNoTchapOnly || [_ignoredContactsByMatrixId objectForKey:identifiers.firstObject])
+            if (_contactsFilter == ContactsDataSourceTchapFilterNoTchapOnly || [_ignoredContactsByMatrixId objectForKey:matrixId])
             {
                 [unfilteredLocalContacts removeObjectAtIndex:index];
                 continue;
@@ -595,9 +595,53 @@
             // Remove the contact if his matrix identifier has been found in the direct chats dictionary.
             // The items built from the direct chat data have the right avatar (if any).
             // We add them at the end of this method.
-            if (directContacts[identifiers.firstObject]) {
+            if (directContacts[matrixId]) {
                 [unfilteredLocalContacts removeObjectAtIndex:index];
                 continue;
+            }
+            else
+            {
+                // Replace the local contact by a new contact built from the tchap user details.
+                // TODO: use the UserService class here when ContactsDataSource will be converted in Swift.
+                // Try first to get the related user instance.
+                MXUser *user = [self.mxSession userWithUserId:matrixId];
+                if (user)
+                {
+                    // Build a contact from this user instance
+                    unfilteredLocalContacts[index] = [[MXKContact alloc] initMatrixContactWithDisplayName:user.displayname
+                                                                                                 matrixID:matrixId
+                                                                                       andMatrixAvatarURL:user.avatarUrl];
+                }
+                else
+                {
+                    // Check whether we already retrieve the details of this user
+                    if (discoveredTchapContacts[matrixId])
+                    {
+                        unfilteredLocalContacts[index] = discoveredTchapContacts[matrixId];
+                    }
+                    else
+                    {
+                        // Retrieve display name and avatar url from user profile
+                        MXWeakify(self);
+                        [self.mxSession.matrixRestClient profileForUser:matrixId success:^(NSString *displayName, NSString *avatarUrl) {
+                            MXStrongifyAndReturnIfNil(self);
+                            if (displayName.length)
+                            {
+                                self->discoveredTchapContacts[matrixId] = [[MXKContact alloc] initMatrixContactWithDisplayName:displayName
+                                                                                                                      matrixID:matrixId
+                                                                                                            andMatrixAvatarURL:avatarUrl];
+                                
+                                if (!self->refreshContactsTimer)
+                                {
+                                    // arm a timer to auto refresh contacts list in 2s.
+                                    self->refreshContactsTimer = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(forceRefresh) userInfo:self repeats:NO];
+                                }
+                            }
+                        } failure:^(NSError *error) {
+                            NSLog(@"[ContactsDataSource] Get profile failed for %@", matrixId);
+                        }];
+                    }
+                }
             }
         }
         else if (_contactsFilter == ContactsDataSourceTchapFilterTchapOnly)
