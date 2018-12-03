@@ -596,7 +596,7 @@
         NSString *matrixId = contact.matrixIdentifiers.firstObject;
         if (matrixId)
         {
-            if (_contactsFilter == ContactsDataSourceTchapFilterNoTchapOnly || [_ignoredContactsByMatrixId objectForKey:matrixId])
+            if (_contactsFilter == ContactsDataSourceTchapFilterNoTchapOnly || _ignoredContactsByMatrixId[matrixId])
             {
                 [unfilteredLocalContacts removeObjectAtIndex:index];
                 continue;
@@ -695,7 +695,7 @@
         // except the ignored contacts.
         for (NSString *mxId in directContacts)
         {
-            if (![_ignoredContactsByMatrixId objectForKey:mxId])
+            if (!_ignoredContactsByMatrixId[mxId])
             {
                 [unfilteredLocalContacts addObject:directContacts[mxId]];
             }
@@ -721,7 +721,7 @@
         {
             for (NSString *userId in identifiers)
             {
-                if ([_ignoredContactsByMatrixId objectForKey:userId] == nil)
+                if (_ignoredContactsByMatrixId[userId] == nil)
                 {
                     MXKContact *splitContact = [[MXKContact alloc] initMatrixContactWithDisplayName:contact.displayName andMatrixID:userId];
                     [unfilteredMatrixContacts addObject:splitContact];
@@ -731,7 +731,7 @@
         else if (identifiers.count)
         {
             NSString *userId = identifiers.firstObject;
-            if ([_ignoredContactsByMatrixId objectForKey:userId] == nil)
+            if (_ignoredContactsByMatrixId[userId] == nil)
             {
                 [unfilteredMatrixContacts addObject:contact];
             }
