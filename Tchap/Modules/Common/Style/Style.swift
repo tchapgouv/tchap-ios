@@ -48,6 +48,7 @@ import UIKit
     var primaryTextColor: UIColor { get }
     var primarySubTextColor: UIColor { get }
     var secondaryTextColor: UIColor { get }
+    var warnTextColor: UIColor { get }
     
     var presenceIndicatorOnlineColor: UIColor { get }
     

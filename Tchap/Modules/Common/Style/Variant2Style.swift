@@ -50,6 +50,7 @@ final class Variant2Style: NSObject, Style {
     let primaryTextColor: UIColor = kVariant2PrimaryTextColor
     let primarySubTextColor: UIColor = kVariant2PrimarySubTextColor
     let secondaryTextColor: UIColor = kVariant2SecondaryTextColor
+    let warnTextColor: UIColor = kVariant2WarnTextColor
     
     let presenceIndicatorOnlineColor: UIColor = kVariant2PresenceIndicatorOnlineColor
     
