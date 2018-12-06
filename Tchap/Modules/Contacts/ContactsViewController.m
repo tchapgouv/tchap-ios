@@ -30,6 +30,7 @@
 
 @property (nonatomic) BOOL showSearchBar;
 @property (nonatomic, strong) UISearchController *searchController;
+@property (nonatomic) BOOL enableMultipleSelection;
 
 /**
  The analytics instance screen name (Default is "ContactsTable").
@@ -44,13 +45,14 @@
 
 + (instancetype)instantiateWithStyle:(id<Style>)style
 {
-    return [self instantiateWithStyle:style showSearchBar:NO];
+    return [self instantiateWithStyle:style showSearchBar:NO enableMultipleSelection:NO];
 }
 
-+ (instancetype)instantiateWithStyle:(id<Style>)style showSearchBar:(BOOL)showSearchBar
++ (instancetype)instantiateWithStyle:(id<Style>)style showSearchBar:(BOOL)showSearchBar enableMultipleSelection:(BOOL)enableMultipleSelection
 {
     ContactsViewController *viewController = [[UIStoryboard storyboardWithName:NSStringFromClass([ContactsViewController class]) bundle:[NSBundle mainBundle]] instantiateInitialViewController];
     viewController.showSearchBar = showSearchBar;
+    viewController.enableMultipleSelection = enableMultipleSelection;
     [viewController updateWithStyle:style];
     viewController.screenName = @"ContactsTable";
     return viewController;
@@ -66,7 +68,14 @@
     // Finalize table view configuration
     self.tableView.dataSource = self.contactsDataSource; // Note: dataSource may be nil here
     
-    [self.tableView registerNib:ContactCell.nib forCellReuseIdentifier:ContactCell.defaultReuseIdentifier];
+    if (self.enableMultipleSelection)
+    {
+        [self.tableView registerNib:SelectableContactCell.nib forCellReuseIdentifier:SelectableContactCell.defaultReuseIdentifier];
+    }
+    else
+    {
+        [self.tableView registerNib:ContactCell.nib forCellReuseIdentifier:ContactCell.defaultReuseIdentifier];
+    }
     
     // Hide line separators of empty cells
     self.tableView.tableFooterView = [[UIView alloc] init];
@@ -74,6 +83,7 @@
     // Enable self-sizing cells.
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     self.tableView.estimatedRowHeight = 60;
+    self.tableView.allowsMultipleSelection = self.enableMultipleSelection;    
     
     if (self.showSearchBar)
     {
@@ -217,22 +227,40 @@
 
 - (Class<MXKCellRendering>)cellViewClassForCellData:(MXKCellData*)cellData
 {
+    Class<MXKCellRendering> tableViewCellClass;
+    
     if ([cellData isKindOfClass:MXKContact.class])
     {
-        return ContactCell.class;
+        if (self.enableMultipleSelection)
+        {
+            tableViewCellClass = SelectableContactCell.class;
+        }
+        else
+        {
+            tableViewCellClass = ContactCell.class;
+        }
     }
     
-    return nil;
+    return tableViewCellClass;
 }
 
 - (NSString *)cellReuseIdentifierForCellData:(MXKCellData*)cellData
 {
+    NSString *reuseIdentifier;
+    
     if ([cellData isKindOfClass:MXKContact.class])
     {
-        return [ContactCell defaultReuseIdentifier];
+        if (self.enableMultipleSelection)
+        {
+            reuseIdentifier =  [SelectableContactCell defaultReuseIdentifier];
+        }
+        else
+        {
+            reuseIdentifier =  [ContactCell defaultReuseIdentifier];
+        }
     }
     
-    return nil;
+    return reuseIdentifier;
 }
 
 - (void)dataSource:(MXKDataSource *)dataSource didCellChange:(id)changes
@@ -275,6 +303,12 @@
     else
     {
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    }
+    
+    if (self.enableMultipleSelection)
+    {
+        [self.contactsDataSource selectOrDeselectContactAtIndexPath:indexPath];
+        [self.tableView reloadData];
     }
 }
 

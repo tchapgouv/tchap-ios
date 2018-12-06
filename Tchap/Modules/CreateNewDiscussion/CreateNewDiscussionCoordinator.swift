@@ -44,7 +44,7 @@ final class CreateNewDiscussionCoordinator: NSObject, CreateNewDiscussionCoordin
         self.router = NavigationRouter(navigationController: TCNavigationController())
         self.session = session
         
-        let contactsViewController = ContactsViewController.instantiate(with: Variant1Style.shared, showSearchBar: true)
+        let contactsViewController = ContactsViewController.instantiate(with: Variant1Style.shared, showSearchBar: true, enableMultipleSelection: false)
         contactsViewController.title = TchapL10n.createNewDiscussionTitle
         self.contactsViewController = contactsViewController
         
