@@ -55,6 +55,8 @@
     NSMutableDictionary<NSString*, MXKContact*> *discoveredTchapContacts;
 }
 
+@property (nonatomic, strong, readwrite) NSMutableDictionary<NSString*, MXKContact*> *selectedContactByMatrixId;
+
 @end
 
 @implementation ContactsDataSource
@@ -73,6 +75,7 @@
         
         _ignoredContactsByEmail = [NSMutableDictionary dictionary];
         _ignoredContactsByMatrixId = [NSMutableDictionary dictionary];
+        _selectedContactByMatrixId = [NSMutableDictionary dictionary];
         
         _contactsFilter = ContactsDataSourceTchapFilterAll;
         
@@ -741,6 +744,25 @@
     return unfilteredMatrixContacts;
 }
 
+- (void)selectOrDeselectContactAtIndexPath:(NSIndexPath*)indexPath
+{
+    MXKContact *contact = [self contactAtIndexPath:indexPath];
+    NSString *matrixIdentifier = contact.matrixIdentifiers.firstObject;
+    
+    if (matrixIdentifier)
+    {
+        // Contact already selected, deselect it by removing it from selected contacts.
+        if (self.selectedContactByMatrixId[matrixIdentifier])
+        {
+            self.selectedContactByMatrixId[matrixIdentifier] = nil;
+        }
+        else
+        {
+            self.selectedContactByMatrixId[matrixIdentifier] = contact;
+        }
+    }
+}
+
 #pragma mark - UITableView data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -801,6 +823,21 @@
     return count;
 }
 
+- (BOOL)isContactSelectedAtIndexPath:(NSIndexPath*)indexPath
+{
+    MXKContact *selectedContact;
+    
+    MXKContact *contact = [self contactAtIndexPath:indexPath];
+    NSString *matrixIdentifier = contact.matrixIdentifiers.firstObject;
+    
+    if (matrixIdentifier)
+    {
+        selectedContact = self.selectedContactByMatrixId[matrixIdentifier];
+    }
+    
+    return selectedContact != nil;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Prepare a contact cell here
@@ -841,7 +878,18 @@
         // Make the cell display the contact
         [contactCell render:contact];
         
-        contactCell.selectionStyle = UITableViewCellSelectionStyleDefault;
+        if ([contactCell isKindOfClass:[SelectableContactCell class]])
+        {
+            SelectableContactCell *selectableContactCell = (SelectableContactCell*)contactCell;
+            
+            selectableContactCell.selectionStyle = UITableViewCellSelectionStyleNone;
+            selectableContactCell.checkmarkEnabled = [self isContactSelectedAtIndexPath:indexPath];
+        }
+        else
+        {
+            contactCell.selectionStyle = UITableViewCellSelectionStyleDefault;
+        }
+        
         
         // The search displays contacts to invite.
         if (indexPath.section == filteredLocalContactsSection || indexPath.section == filteredMatrixContactsSection)
