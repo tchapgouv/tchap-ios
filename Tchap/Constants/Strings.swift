@@ -11,6 +11,8 @@ internal enum TchapL10n {
   internal static let actionCancel = TchapL10n.tr("Tchap", "action_cancel")
   /// Suivant
   internal static let actionNext = TchapL10n.tr("Tchap", "action_next")
+  /// Valider
+  internal static let actionValidate = TchapL10n.tr("Tchap", "action_validate")
   /// L'adresse e-mail ne semble pas valide
   internal static let authenticationErrorInvalidEmail = TchapL10n.tr("Tchap", "authentication_error_invalid_email")
   /// Mot de passe trop court (min %d)
@@ -37,6 +39,8 @@ internal enum TchapL10n {
   internal static let contactsMainSection = TchapL10n.tr("Tchap", "contacts_main_section")
   /// Aucun contact
   internal static let contactsNoContact = TchapL10n.tr("Tchap", "contacts_no_contact")
+  /// Inviter au salon
+  internal static let contactsPickerTitle = TchapL10n.tr("Tchap", "contacts_picker_title")
   /// Rechercher
   internal static let contactsSearchBarPlaceholder = TchapL10n.tr("Tchap", "contacts_search_bar_placeholder")
   /// Contacts

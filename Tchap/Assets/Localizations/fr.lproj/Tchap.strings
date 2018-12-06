@@ -2,6 +2,7 @@
 // MARK: Actions
 "action_next" = "Suivant";
 "action_cancel" = "Annuler";
+"action_validate" = "Valider";
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Common errors
@@ -82,6 +83,8 @@
 "contacts_user_directory_offline_section" = "Répertoire Tchap (hors-ligne)";
 "contacts_search_bar_placeholder" = "Rechercher";
 
+"contacts_picker_title" = "Inviter au salon";
+
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Settings
 "settings_term_conditions_url" = "https://www.tchap.gouv.fr/tac";
@@ -139,3 +142,5 @@
 "room_creation_public_visibility_info" = "Un salon public peut être rejoint par n'importe quel membre de la communauté Tchap, il ne doit contenir aucune donnée sensible.";
 "room_creation_public_room_federation_title" = "Limiter l'accès à ce salon aux membres du domaine \"%@\"";
 "room_creation_add_avatar_action" = "Ajouter une photo";
+
+
