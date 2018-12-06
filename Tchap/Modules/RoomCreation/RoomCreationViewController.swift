@@ -16,8 +16,15 @@
 
 import UIKit
 
+struct RoomCreationFormResult {
+    let name: String
+    let isPublic: Bool
+    let isFederated: Bool
+}
+
 protocol RoomCreationViewControllerDelegate: class {
     func roomCreationViewControllerDidTapAddAvatarButton(_ roomCreationViewController: RoomCreationViewController)
+    func roomCreationViewController(_ roomCreationViewController: RoomCreationViewController, didTapNextButtonWith roomCreationFormResult: RoomCreationFormResult)
 }
 
 /// RoomCreationViewController enables to create a new room.
@@ -117,7 +124,6 @@ final class RoomCreationViewController: UIViewController {
         self.publicVisibilityInfoLabel.text = TchapL10n.roomCreationPublicVisibilityInfo
         
         self.disablePublicRoomFederationSwitch.isOn = !self.viewModel.isFederated
-        self.disablePublicRoomFederation(self.viewModel.isFederated)
         
         self.publicRoomFederationTitleLabel.text = TchapL10n.roomCreationPublicRoomFederationTitle(self.viewModel.homeServerDomain)
     }
@@ -179,6 +185,11 @@ final class RoomCreationViewController: UIViewController {
     
     private func nextButtonAction() {
         self.view.endEditing(true)
+        
+        if let roomName = self.viewModel.roomNameFormTextViewModel.value {
+            let roomCreationFormResult = RoomCreationFormResult(name: roomName, isPublic: self.viewModel.isPublic, isFederated: self.viewModel.isFederated)
+            self.delegate?.roomCreationViewController(self, didTapNextButtonWith: roomCreationFormResult)
+        }
     }
     
     @IBAction private func publicVisibilitySwitchAction(_ sender: UISwitch) {
