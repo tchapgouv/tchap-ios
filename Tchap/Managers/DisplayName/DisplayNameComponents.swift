@@ -24,8 +24,6 @@ struct DisplayNameComponents {
     private enum Constants {
         static let displayNameDomainLeftSeparator = "["
         static let displayNameDomainRightSeparator = "]"
-        static let matrixIdPrefix = "@"
-        static let homeServerSeparator = ":"
     }
     
     // MARK: - Properties
@@ -80,24 +78,22 @@ struct DisplayNameComponents {
     /// - Parameter userId: The user id to parse
     /// - Returns: displayName without domain, nil if the id is not valid.
     private static func getName(from userId: String) -> String? {
-        guard MXTools.isMatrixUserIdentifier(userId),
-            let homeServerSeparatorIndex = userId.range(of: Constants.homeServerSeparator)?.lowerBound else {
+        guard let matrixIDComponents = MatrixIDComponents(matrixID: userId) else {
             return nil
         }
         
-        let beforeHomeServerSeparatorString = String(userId.prefix(upTo: homeServerSeparatorIndex))
+        let localUserID = matrixIDComponents.localUserID
         
         let beforeLastHyphenString: String
         
         // Take substring until the last hyphen if exist
-        if let hyphenIndex = beforeHomeServerSeparatorString.range(of: "-", options: String.CompareOptions.backwards)?.lowerBound {
-            beforeLastHyphenString = String(beforeHomeServerSeparatorString.prefix(upTo: hyphenIndex))
+        if let hyphenIndex = localUserID.range(of: "-", options: String.CompareOptions.backwards)?.lowerBound {
+            beforeLastHyphenString = String(localUserID.prefix(upTo: hyphenIndex))
         } else {
-            beforeLastHyphenString = beforeHomeServerSeparatorString
+            beforeLastHyphenString = localUserID
         }
         
         let displayName = beforeLastHyphenString
-            .replacingOccurrences(of: Constants.matrixIdPrefix, with: "")
             .replacingOccurrences(of: ".", with: " ")
             .capitalized
         return displayName
