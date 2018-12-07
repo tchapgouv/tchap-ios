@@ -163,6 +163,11 @@ final class RoomCreationViewController: UIViewController {
         self.publicRoomFederationStackView.isHidden = !publicVisibilityEnabled
         self.viewModel.isPublic = publicVisibilityEnabled
         self.highlightPublicVisibilityInfoLabel(publicVisibilityEnabled)
+        
+        if publicVisibilityEnabled == false {
+            self.disablePublicRoomFederation(false)
+            self.disablePublicRoomFederationSwitch.isOn = false
+        }
     }
     
     private func disablePublicRoomFederation(_ publicRoomFederationDisabled: Bool) {
