@@ -40,7 +40,7 @@ final class ContactsPickerCoordinator: NSObject, ContactsPickerCoordinatorType {
     
     // MARK: - Setup
     
-    init(session: MXSession) {
+    init(session: MXSession, showFederatedUsers: Bool) {
         self.session = session
         
         let contactsViewController = ContactsViewController.instantiate(with: Variant1Style.shared, showSearchBar: true, enableMultipleSelection: true)
@@ -49,7 +49,7 @@ final class ContactsPickerCoordinator: NSObject, ContactsPickerCoordinatorType {
         
         let contactsDataSource: ContactsDataSource = ContactsDataSource(matrixSession: self.session)
         contactsDataSource.finalizeInitialization()
-        contactsDataSource.contactsFilter = ContactsDataSourceTchapFilterTchapOnly
+        contactsDataSource.contactsFilter = showFederatedUsers ? ContactsDataSourceTchapFilterTchapOnly : ContactsDataSourceTchapFilterNonFederatedTchapOnly
         self.contactsDataSource = contactsDataSource
         
         self.activityIndicatorPresenter = ActivityIndicatorPresenter()

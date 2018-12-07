@@ -126,7 +126,8 @@ final class RoomCreationCoordinator: NSObject, RoomCreationCoordinatorType {
     }
     
     private func showContactsPicker() {
-        let contactsPickerCoordinator = ContactsPickerCoordinator(session: self.session)
+        let showFederatedUsers = self.roomCreationFormResult?.isFederated ?? true
+        let contactsPickerCoordinator = ContactsPickerCoordinator(session: self.session, showFederatedUsers: showFederatedUsers)
         contactsPickerCoordinator.start()
         contactsPickerCoordinator.delegate = self
         
