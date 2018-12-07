@@ -37,4 +37,12 @@ protocol UserServiceType {
     /// - Parameter userId: The Matrix user id to parse
     /// - Returns: A Tchap User.
     func buildTemporaryUser(from userId: String) -> User
+    
+    /// Check if two users are on the same domain.
+    ///
+    /// - Parameters:
+    ///   - firstUserId: First Matrix ID
+    ///   - secondUserId: Second Matrix ID
+    /// - Returns: true if the two Matrix IDs belong to the same domain.
+    func isUserId(_ firstUserId: String, belongToSameDomainAs secondUserId: String) -> Bool
 }

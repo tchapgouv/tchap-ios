@@ -80,6 +80,14 @@ final class UserService: NSObject, UserServiceType {
         return User(userId: userId, displayName: displayName, avatarStringURL: nil)
     }
     
+    func isUserId(_ firstUserId: String, belongToSameDomainAs secondUserId: String) -> Bool {
+        guard let firstUserHomeserver = self.homeserver(from: firstUserId),
+            let secondUserHomeserver = self.homeserver(from: secondUserId) else {
+                return false
+        }
+        return firstUserHomeserver == secondUserHomeserver
+    }
+    
     // MARK: - Private
     
     private func buildUser(from mxUser: MXUser) -> User {
@@ -107,5 +115,12 @@ final class UserService: NSObject, UserServiceType {
         }
         
         return displayName
+    }
+        
+    private func homeserver(from userId: String) -> String? {
+        guard let matrixIDComponents = MatrixIDComponents(matrixID: userId) else {
+            return nil
+        }
+        return matrixIDComponents.homeServer
     }
 }
