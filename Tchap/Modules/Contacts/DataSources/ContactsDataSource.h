@@ -26,6 +26,7 @@ typedef enum : NSUInteger
 {
     ContactsDataSourceTchapFilterAll,
     ContactsDataSourceTchapFilterTchapOnly,
+    ContactsDataSourceTchapFilterNonFederatedTchapOnly,
     ContactsDataSourceTchapFilterNoTchapOnly
 } ContactsDataSourceTchapFilter;
 

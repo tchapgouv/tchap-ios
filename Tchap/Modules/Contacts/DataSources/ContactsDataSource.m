@@ -56,6 +56,7 @@
 }
 
 @property (nonatomic, strong, readwrite) NSMutableDictionary<NSString*, MXKContact*> *selectedContactByMatrixId;
+@property (nonatomic, strong) UserService *userService;
 
 @end
 
@@ -89,6 +90,8 @@
         forceDirectContactsRefresh = YES;
         
         discoveredTchapContacts = [NSMutableDictionary dictionary];
+        
+        _userService = [[UserService alloc] initWithSession:self.mxSession];
         
         // Register on contact update notifications
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onContactManagerDidUpdate:) name:kMXKContactManagerDidUpdateMatrixContactsNotification object:nil];
@@ -262,8 +265,11 @@
                 // Keep the response order as the hs ordered users by relevance
                 for (MXUser *mxUser in userSearchResponse.results)
                 {
-                    MXKContact *contact = [[MXKContact alloc] initMatrixContactWithDisplayName:mxUser.displayname andMatrixID:mxUser.userId];
-                    [self->filteredMatrixContacts addObject:contact];
+                    if (![self shouldIgnoreContactWithMatrixId:mxUser.userId])
+                    {
+                        MXKContact *contact = [[MXKContact alloc] initMatrixContactWithDisplayName:mxUser.displayname andMatrixID:mxUser.userId];
+                        [self->filteredMatrixContacts addObject:contact];
+                    }
                 }
 
                 self->hsUserDirectoryOperation = nil;
@@ -403,6 +409,25 @@
     }
     
     return nil;
+}
+
+- (void)selectOrDeselectContactAtIndexPath:(NSIndexPath*)indexPath
+{
+    MXKContact *contact = [self contactAtIndexPath:indexPath];
+    NSString *matrixIdentifier = contact.matrixIdentifiers.firstObject;
+    
+    if (matrixIdentifier)
+    {
+        // Contact already selected, deselect it by removing it from selected contacts.
+        if (self.selectedContactByMatrixId[matrixIdentifier])
+        {
+            self.selectedContactByMatrixId[matrixIdentifier] = nil;
+        }
+        else
+        {
+            self.selectedContactByMatrixId[matrixIdentifier] = contact;
+        }
+    }
 }
 
 #pragma mark - Internals
@@ -599,7 +624,7 @@
         NSString *matrixId = contact.matrixIdentifiers.firstObject;
         if (matrixId)
         {
-            if (_contactsFilter == ContactsDataSourceTchapFilterNoTchapOnly || _ignoredContactsByMatrixId[matrixId])
+            if ([self shouldIgnoreContactWithMatrixId:matrixId])
             {
                 [unfilteredLocalContacts removeObjectAtIndex:index];
                 continue;
@@ -616,8 +641,8 @@
             {
                 // Replace the local contact by a new contact built from the tchap user details.
                 // Retrieve the related user instance (if any).
-                UserService *userService = [[UserService alloc] initWithSession:self.mxSession];
-                User *user = [userService getUserFromLocalSessionWith:matrixId];
+                User *user = [self.userService getUserFromLocalSessionWith:matrixId];
+                
                 if (user)
                 {
                     // Build a contact from this user instance
@@ -636,7 +661,7 @@
                     {
                         // Retrieve display name and avatar url from user profile
                         MXWeakify(self);
-                        [userService findUserWith:matrixId completion:^(User * _Nullable user) {
+                        [self.userService findUserWith:matrixId completion:^(User * _Nullable user) {
                             MXStrongifyAndReturnIfNil(self);
                             if (user)
                             {
@@ -698,7 +723,7 @@
         // except the ignored contacts.
         for (NSString *mxId in directContacts)
         {
-            if (!_ignoredContactsByMatrixId[mxId])
+            if (![self shouldIgnoreContactWithMatrixId:mxId])
             {
                 [unfilteredLocalContacts addObject:directContacts[mxId]];
             }
@@ -724,7 +749,7 @@
         {
             for (NSString *userId in identifiers)
             {
-                if (_ignoredContactsByMatrixId[userId] == nil)
+                if (![self shouldIgnoreContactWithMatrixId:userId])
                 {
                     MXKContact *splitContact = [[MXKContact alloc] initMatrixContactWithDisplayName:contact.displayName andMatrixID:userId];
                     [unfilteredMatrixContacts addObject:splitContact];
@@ -734,7 +759,8 @@
         else if (identifiers.count)
         {
             NSString *userId = identifiers.firstObject;
-            if (_ignoredContactsByMatrixId[userId] == nil)
+            
+            if (![self shouldIgnoreContactWithMatrixId:userId])
             {
                 [unfilteredMatrixContacts addObject:contact];
             }
@@ -744,23 +770,13 @@
     return unfilteredMatrixContacts;
 }
 
-- (void)selectOrDeselectContactAtIndexPath:(NSIndexPath*)indexPath
+- (BOOL)shouldIgnoreContactWithMatrixId:(NSString*)matrixId
 {
-    MXKContact *contact = [self contactAtIndexPath:indexPath];
-    NSString *matrixIdentifier = contact.matrixIdentifiers.firstObject;
+    NSString *myUserId = self.mxSession.myUser.userId;
     
-    if (matrixIdentifier)
-    {
-        // Contact already selected, deselect it by removing it from selected contacts.
-        if (self.selectedContactByMatrixId[matrixIdentifier])
-        {
-            self.selectedContactByMatrixId[matrixIdentifier] = nil;
-        }
-        else
-        {
-            self.selectedContactByMatrixId[matrixIdentifier] = contact;
-        }
-    }
+    return _contactsFilter == ContactsDataSourceTchapFilterNoTchapOnly
+    || _ignoredContactsByMatrixId[matrixId]
+    || (_contactsFilter == ContactsDataSourceTchapFilterNonFederatedTchapOnly && ![self.userService isUserId:myUserId belongToSameDomainAs:matrixId]);
 }
 
 #pragma mark - UITableView data source
