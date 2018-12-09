@@ -87,6 +87,6 @@ final class Variant1Style: NSObject, Style {
     }
     
     func applyStyle(onSwitch uiSwitch: UISwitch) {
-        uiSwitch.onTintColor = self.barBackgroundColor
+        uiSwitch.onTintColor = self.buttonBorderedBackgroundColor
     }
 }

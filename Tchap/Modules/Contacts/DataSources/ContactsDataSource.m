@@ -680,7 +680,7 @@
                 }
             }
         }
-        else if (_contactsFilter == ContactsDataSourceTchapFilterTchapOnly)
+        else if (_contactsFilter == ContactsDataSourceTchapFilterTchapOnly || _contactsFilter == ContactsDataSourceTchapFilterNonFederatedTchapOnly)
         {
             // Ignore non-tchap-enabled contact
             [unfilteredLocalContacts removeObjectAtIndex:index];
