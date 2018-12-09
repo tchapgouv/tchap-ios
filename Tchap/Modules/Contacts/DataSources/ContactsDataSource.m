@@ -613,6 +613,7 @@
 {
     // Retrieve all the contacts obtained by splitting each local contact by contact method. This list is ordered alphabetically.
     NSMutableArray *unfilteredLocalContacts = [NSMutableArray arrayWithArray:[MXKContactManager sharedManager].localContactsSplitByContactMethod];
+    NSMutableDictionary *additionalMatrixContacts = [NSMutableDictionary dictionaryWithDictionary:self.selectedContactByMatrixId];
     
     // Extract some Tchap contacts from the direct chats data, if this is relevant, and if this is not already done.
     if (_contactsFilter != ContactsDataSourceTchapFilterNoTchapOnly && forceDirectContactsRefresh)
@@ -687,6 +688,9 @@
                         }];
                     }
                 }
+                
+                // Remove this contacts from the additional list (if present)
+                additionalMatrixContacts[matrixId] = nil;
             }
         }
         else if (_contactsFilter == ContactsDataSourceTchapFilterTchapOnly || _contactsFilter == ContactsDataSourceTchapFilterNonFederatedTchapOnly)
@@ -735,7 +739,16 @@
             if (![self shouldIgnoreContactWithMatrixId:mxId])
             {
                 [unfilteredLocalContacts addObject:directContacts[mxId]];
+                
+                // Remove this contacts from the additional ones (if present)
+                additionalMatrixContacts[mxId] = nil;
             }
+        }
+        
+        // Add the additional contacts (discovered and selected during a users search)
+        for (NSString *mxId in additionalMatrixContacts)
+        {
+            [unfilteredLocalContacts addObject:additionalMatrixContacts[mxId]];
         }
         
         // Sort the updated list
