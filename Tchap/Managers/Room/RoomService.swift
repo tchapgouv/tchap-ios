@@ -110,19 +110,24 @@ final class RoomService: RoomServiceType {
         
         let preset: MXRoomPreset
         let historyVisibility: String?
+        let alias: String?
         
         if visibility == .public {
             preset = .publicChat
             historyVisibility = kMXRoomHistoryVisibilityWorldReadable
+            // In case of a public room, the room alias is mandatory.
+            // That's why, we deduce the room alias from the room name.
+            alias = self.defaultAlias(for: name)
         } else {
             preset = .privateChat
             historyVisibility = nil
+            alias = nil
         }
         
         let roomCreationParameters = RoomCreationParameters(visibility: visibility,
                                                             preset: preset,
                                                             name: name,
-                                                            alias: nil,
+                                                            alias: alias,
                                                             inviteUserIDs: inviteUserIds,
                                                             isFederated: isFederated,
                                                             historyVisibility: historyVisibility)
@@ -139,7 +144,7 @@ final class RoomService: RoomServiceType {
         parameters["visibility"] = roomCreationParameters.visibility.identifier
         
         if let alias = roomCreationParameters.alias {
-            parameters["alias"] = alias
+            parameters["room_alias_name"] = alias
         }
         
         parameters["invite"] = roomCreationParameters.inviteUserIDs
@@ -177,5 +182,22 @@ final class RoomService: RoomServiceType {
             fatalError("[RoomService] history event could not be created")
         }
         return stateEvent
+    }
+    
+    private func defaultAlias(for roomName: String) -> String {
+        var alias = roomName.trimmingCharacters(in: .whitespacesAndNewlines).filter { "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".contains($0) }
+        
+        if alias.isEmpty {
+            alias = self.randomString(length: 7)
+        } else {
+            alias.append(self.randomString(length: 7))
+        }
+        
+        return alias
+    }
+    
+    private func randomString(length: Int) -> String {
+        let letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+        return String((0..<length).map { _ in letters.randomElement()! })
     }
 }

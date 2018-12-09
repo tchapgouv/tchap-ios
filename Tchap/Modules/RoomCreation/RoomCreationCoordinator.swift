@@ -170,9 +170,19 @@ final class RoomCreationCoordinator: NSObject, RoomCreationCoordinatorType {
             removeActivityIndicator()
 
             if let strongSelf = self {
-                let errorPresentable = strongSelf.formErrorPresentable(from: error)
-                let formErrorPresenter = AlertErrorPresenter(viewControllerPresenter: navigationController)
-                formErrorPresenter.present(errorPresentable: errorPresentable)
+                
+                // Check whether the room creation failed because of the generated room alias.
+                let nsError = error as NSError
+                
+                if let matrixErrorCode = nsError.userInfo[kMXErrorCodeKey] as? String, matrixErrorCode == kMXErrCodeStringRoomInUse,
+                    let matrixMessageError = nsError.userInfo[kMXErrorMessageKey] as? String, matrixMessageError == "Room alias already taken" {
+                    // Try again
+                    strongSelf.createRoom(with: userIDs)
+                } else {
+                    let errorPresentable = strongSelf.formErrorPresentable(from: error)
+                    let formErrorPresenter = AlertErrorPresenter(viewControllerPresenter: navigationController)
+                    formErrorPresenter.present(errorPresentable: errorPresentable)
+                }
             }
         })
         .disposed(by: self.disposeBag)
