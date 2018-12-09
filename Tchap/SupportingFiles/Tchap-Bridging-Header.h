@@ -20,3 +20,4 @@
 #import "RoomParticipantsViewController.h"
 #import "AvatarGenerator.h"
 #import "MXRoomSummary+Riot.h"
+#import "MediaPickerViewController.h"

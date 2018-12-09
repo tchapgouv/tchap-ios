@@ -48,11 +48,11 @@ import UIKit
         // Configure the view for the selected state
     }
     
-    static func nib() -> UINib {
+    class func nib() -> UINib {
         return UINib(nibName: String(describing: self), bundle: nil)
     }
     
-    static func defaultReuseIdentifier() -> String {
+    class func defaultReuseIdentifier() -> String {
         return String(describing: self)
     }
     

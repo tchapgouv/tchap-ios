@@ -63,6 +63,7 @@ extern UIColor *kVariant1PlaceholderTextColor;
 extern UIColor *kVariant1SeparatorColor;
 extern UIColor *kVariant1SecondaryBgColor;
 extern UIColor *kVariant1SecondaryTextColor;
+extern UIColor *kVariant1WarnTextColor;
 extern UIColor *kVariant1PresenceIndicatorOnlineColor;
 
 #pragma mark Variant 2
@@ -95,6 +96,7 @@ extern UIColor *kVariant2PlaceholderTextColor;
 extern UIColor *kVariant2SeparatorColor;
 extern UIColor *kVariant2SecondaryBgColor;
 extern UIColor *kVariant2SecondaryTextColor;
+extern UIColor *kVariant2WarnTextColor;
 extern UIColor *kVariant2PresenceIndicatorOnlineColor;
 
 /**

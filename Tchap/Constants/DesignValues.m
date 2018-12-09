@@ -57,6 +57,7 @@ UIColor *kVariant1PlaceholderTextColor;
 UIColor *kVariant1SeparatorColor;
 UIColor *kVariant1SecondaryBgColor;
 UIColor *kVariant1SecondaryTextColor;
+UIColor *kVariant1WarnTextColor;
 UIColor *kVariant1PresenceIndicatorOnlineColor;
 
 #pragma mark Variant 2
@@ -89,6 +90,7 @@ UIColor *kVariant2PlaceholderTextColor;
 UIColor *kVariant2SeparatorColor;
 UIColor *kVariant2SecondaryBgColor;
 UIColor *kVariant2SecondaryTextColor;
+UIColor *kVariant2WarnTextColor;
 UIColor *kVariant2PresenceIndicatorOnlineColor;
 
 @implementation DesignValues
@@ -172,6 +174,7 @@ UIColor *kVariant2PresenceIndicatorOnlineColor;
     kVariant1SeparatorColor = kColorLightNavy;
     kVariant1SecondaryBgColor = kColorLightGrey;
     kVariant1SecondaryTextColor = kColorWarmGrey;
+    kVariant1WarnTextColor = [UIColor redColor];
     
     kVariant1PresenceIndicatorOnlineColor = UIColorFromRGB(0x60ad0d);
 }
@@ -205,6 +208,7 @@ UIColor *kVariant2PresenceIndicatorOnlineColor;
     kVariant2SeparatorColor = kColorLightNavy;
     kVariant2SecondaryBgColor = kColorLightGrey;
     kVariant2SecondaryTextColor = kColorWarmGrey;
+    kVariant2WarnTextColor = [UIColor redColor];
     
     kVariant2PresenceIndicatorOnlineColor = UIColorFromRGB(0x60ad0d);
 }

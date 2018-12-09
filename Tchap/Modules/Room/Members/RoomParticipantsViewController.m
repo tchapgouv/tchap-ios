@@ -670,7 +670,7 @@
 - (void)onAddParticipantButtonPressed
 {
     // Push the contacts picker.
-    contactsPickerViewController = [ContactsViewController instantiateWithStyle:Variant2Style.shared showSearchBar:YES];
+    contactsPickerViewController = [ContactsViewController instantiateWithStyle:Variant2Style.shared showSearchBar:YES enableMultipleSelection:NO];
     
     // Set delegate to handle action on member (start chat, mention)
     contactsPickerViewController.delegate = self;

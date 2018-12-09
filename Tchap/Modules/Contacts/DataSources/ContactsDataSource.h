@@ -26,6 +26,7 @@ typedef enum : NSUInteger
 {
     ContactsDataSourceTchapFilterAll,
     ContactsDataSourceTchapFilterTchapOnly,
+    ContactsDataSourceTchapFilterNonFederatedTchapOnly,
     ContactsDataSourceTchapFilterNoTchapOnly
 } ContactsDataSourceTchapFilter;
 
@@ -118,6 +119,13 @@ typedef enum : NSUInteger
  */
 - (void)forceRefresh;
 
+/**
+ Select or deselect a contact for an index path.
+
+ @param indexPath The indexpath of contact to select/deselect.
+ */
+- (void)selectOrDeselectContactAtIndexPath:(NSIndexPath*)indexPath;
+
 #pragma mark - Configuration
 /**
  Tell whether the sections are shrinkable. NO by default.
@@ -151,6 +159,11 @@ typedef enum : NSUInteger
  The dictionary of the ignored matrix contacts, the keys are their matrix identifier. Empty by default.
  */
 @property (nonatomic) NSMutableDictionary<NSString*, MXKContact*> *ignoredContactsByMatrixId;
+
+/**
+ The dictionary of the selected matrix contacts, the keys are their matrix identifier. Empty by default.
+ */
+@property (nonatomic, strong, readonly) NSMutableDictionary<NSString*, MXKContact*> *selectedContactByMatrixId;
 
 /**
  Filter the contacts list, by keeping only the contacts who have the search pattern
