@@ -286,7 +286,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
             _build = buildNumber;
         } else
         {
-            _build = buildBranch ? buildBranch : NSLocalizedStringFromTable(@"settings_config_no_build_info", @"Vector", nil);
+            _build = buildBranch ? buildBranch : @"";
         }
     }
     return _build;

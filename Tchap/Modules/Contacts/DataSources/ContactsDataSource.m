@@ -482,6 +482,11 @@
                     }
                     else
                     {
+                        user = [userService buildTemporaryUserFrom:key];
+                        updatedDirectContacts[key] = [[MXKContact alloc] initMatrixContactWithDisplayName:user.displayName
+                                                                                                 matrixID:key
+                                                                                       andMatrixAvatarURL:nil];
+                        
                         // Retrieve display name and avatar url from user profile.
                         MXWeakify(self);
                         [userService findUserWith:key completion:^(User * _Nullable user) {
@@ -659,6 +664,11 @@
                     }
                     else
                     {
+                        user = [userService buildTemporaryUserFrom:matrixId];
+                        unfilteredLocalContacts[index] = [[MXKContact alloc] initMatrixContactWithDisplayName:user.displayName
+                                                                                                 matrixID:matrixId
+                                                                                       andMatrixAvatarURL:nil];
+                        
                         // Retrieve display name and avatar url from user profile
                         MXWeakify(self);
                         [self.userService findUserWith:matrixId completion:^(User * _Nullable user) {
