@@ -62,9 +62,9 @@
 
 @implementation ContactsDataSource
 
-- (instancetype)init
+- (instancetype)initWithMatrixSession:(MXSession *)mxSession
 {
-    self = [super init];
+    self = [super initWithMatrixSession:mxSession];
     if (self)
     {
         // Prepare search session
@@ -464,8 +464,7 @@
                 }
                 
                 // Retrieve the related user instance.
-                UserService *userService = [[UserService alloc] initWithSession:self.mxSession];
-                User *user = [userService getUserFromLocalSessionWith:key];
+                User *user = [self.userService getUserFromLocalSessionWith:key];
                 if (user)
                 {
                     // Build a contact from this user instance
@@ -482,14 +481,14 @@
                     }
                     else
                     {
-                        user = [userService buildTemporaryUserFrom:key];
+                        user = [self.userService buildTemporaryUserFrom:key];
                         updatedDirectContacts[key] = [[MXKContact alloc] initMatrixContactWithDisplayName:user.displayName
                                                                                                  matrixID:key
                                                                                        andMatrixAvatarURL:nil];
                         
                         // Retrieve display name and avatar url from user profile.
                         MXWeakify(self);
-                        [userService findUserWith:key completion:^(User * _Nullable user) {
+                        [self.userService findUserWith:key completion:^(User * _Nullable user) {
                             MXStrongifyAndReturnIfNil(self);
                             if (user)
                             {
@@ -664,7 +663,7 @@
                     }
                     else
                     {
-                        user = [userService buildTemporaryUserFrom:matrixId];
+                        user = [self.userService buildTemporaryUserFrom:matrixId];
                         unfilteredLocalContacts[index] = [[MXKContact alloc] initMatrixContactWithDisplayName:user.displayName
                                                                                                  matrixID:matrixId
                                                                                        andMatrixAvatarURL:nil];

@@ -677,6 +677,7 @@
     
     // Prepare its data source
     ContactsDataSource *contactsDataSource = [[ContactsDataSource alloc] initWithMatrixSession:self.mxRoom.mxSession];
+    [contactsDataSource finalizeInitialization];
     contactsDataSource.areSectionsShrinkable = YES;
     contactsDataSource.displaySearchInputInContactsList = YES;
     contactsDataSource.contactsFilter = ContactsDataSourceTchapFilterTchapOnly;
