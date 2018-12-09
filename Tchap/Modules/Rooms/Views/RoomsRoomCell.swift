@@ -35,7 +35,7 @@ class RoomsRoomCell: RoomsCell {
         super.render(cellData)
         
         self.lastEventSenderName.text = nil
-        if let senderId = self.roomCellData?.lastEvent.sender, let session = self.roomCellData?.recentsDataSource.mxSession {
+        if let senderId = self.roomCellData?.lastEvent?.sender, let session = self.roomCellData?.recentsDataSource.mxSession {
             // Try to find user in local session
             let senderUser: User
             let userService = UserService(session: session)
