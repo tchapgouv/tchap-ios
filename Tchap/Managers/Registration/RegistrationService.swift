@@ -32,6 +32,8 @@ final class RegistrationService: RegistrationServiceType {
     
     private var registrationOperation: MXHTTPOperation?
     private var registrationRetryTimer: Timer?
+    private var registrationParameters: [String: Any]?
+    private var registrationCompletion: ((MXResponse<MXCredentials>) -> Void)?
     
     // MARK: - Setup
     
@@ -68,9 +70,10 @@ final class RegistrationService: RegistrationServiceType {
             "initial_device_display_name": deviceDisplayName
         ]
         
-        self.registerUntilEmailValidated(with: registrationParameters, using: self.restClient, completion: { (registrationResult) in
+        let registrationCompletion: (MXResponse<MXCredentials>) -> Void = { (registrationResult) in
             switch registrationResult {
             case .success(let credentials):
+                self.unregisterDidEnterBackgroundNotification()
                 do {
                     try self.addAccount(for: credentials, identityServerURL: identityServer)
                     completion(MXResponse.success(credentials.userId))
@@ -79,10 +82,18 @@ final class RegistrationService: RegistrationServiceType {
                     completion(MXResponse.failure(error))
                 }
             case .failure(let error):
+                self.unregisterDidEnterBackgroundNotification()
                 self.cancelPendingRegistration()
                 completion(MXResponse.failure(error))
             }
-        })
+        }
+        
+        // Keep a copy of these parameters to relaunch the polling when the app is resumed after being suspended.
+        self.registrationParameters = registrationParameters
+        self.registrationCompletion = registrationCompletion
+        self.registerDidEnterBackgroundNotification()
+        
+        self.registerUntilEmailValidated(with: registrationParameters, using: self.restClient, completion: registrationCompletion)
     }
     
     func cancelPendingRegistration() {
@@ -227,5 +238,38 @@ final class RegistrationService: RegistrationServiceType {
         account.identityServerURL = identityServerURL
         account.antivirusServerURL = credentials.homeServer
         self.accountManager.addAccount(account, andOpenSession: true)
+    }
+    
+    private func registerDidEnterBackgroundNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(didEnterBackground), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
+    }
+    
+    private func unregisterDidEnterBackgroundNotification() {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
+    }
+    
+    private func registerWillEnterForegroundNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
+    }
+    
+    private func unregisterWillEnterForegroundNotification() {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
+    }
+    
+    @objc private func didEnterBackground() {
+        self.unregisterDidEnterBackgroundNotification()
+        // Cancel any pending registration request
+        self.cancelPendingRegistration()
+        // Wait for app resume
+        self.registerWillEnterForegroundNotification()
+    }
+    
+    @objc private func willEnterForeground() {
+        self.unregisterWillEnterForegroundNotification()
+        
+        if let parameters = self.registrationParameters, let completion = self.registrationCompletion {
+            // Resume the polling on email validation
+            self.registerUntilEmailValidated(with: parameters, using: restClient, completion: completion)
+        }
     }
 }
