@@ -63,8 +63,7 @@
 
 
 #if __has_include(<MatrixSDK/MXJingleCallStack.h>)
-// Tchap: Disable voip call for the moment
-//#define CALL_STACK_JINGLE
+#define CALL_STACK_JINGLE
 #endif
 #ifdef CALL_STACK_JINGLE
 #import <MatrixSDK/MXJingleCallStack.h>
@@ -2723,7 +2722,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     {
         // Create adapter for Riot
         MXCallKitConfiguration *callKitConfiguration = [[MXCallKitConfiguration alloc] init];
-        callKitConfiguration.iconName = @"riot_icon_callkit";
+        callKitConfiguration.iconName = @"tchap_icon_callkit";
         MXCallKitAdapter *callKitAdapter = [[MXCallKitAdapter alloc] initWithConfiguration:callKitConfiguration];
         
         id<MXCallAudioSessionConfigurator> audioSessionConfigurator;
