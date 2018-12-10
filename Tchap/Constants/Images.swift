@@ -55,7 +55,7 @@ internal enum Asset {
       internal static let callVideoMuteOffIcon = ImageAsset(name: "call_video_mute_off_icon")
       internal static let callVideoMuteOnIcon = ImageAsset(name: "call_video_mute_on_icon")
       internal static let cameraSwitch = ImageAsset(name: "camera_switch")
-      internal static let riotIconCallkit = ImageAsset(name: "riot_icon_callkit")
+      internal static let tchapIconCallkit = ImageAsset(name: "tchap_icon_callkit")
     }
     internal enum Common {
       internal static let adminIcon = ImageAsset(name: "admin_icon")
@@ -148,7 +148,7 @@ internal enum Asset {
       Call.callVideoMuteOffIcon,
       Call.callVideoMuteOnIcon,
       Call.cameraSwitch,
-      Call.riotIconCallkit,
+      Call.tchapIconCallkit,
       Common.adminIcon,
       Common.backIcon,
       Common.chevron,
