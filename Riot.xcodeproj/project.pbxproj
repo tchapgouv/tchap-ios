@@ -234,6 +234,7 @@
 		02BEE1A8212C77B700098505 /* DesignValues.m in Sources */ = {isa = PBXBuildFile; fileRef = 02BEE1A6212C77B700098505 /* DesignValues.m */; };
 		15F203A5A7556AAEC3D5A812 /* Pods_RiotPods_Tchap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA7369E6055F47F7869FF3B2 /* Pods_RiotPods_Tchap.framework */; };
 		599A0B2BF3E50939A4FBD2DD /* Pods_RiotPods_TchapTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08BA8F52677EE3F18661D478 /* Pods_RiotPods_TchapTests.framework */; };
+		9EAAF4CA4D8855A209EE8927 /* Pods_TchapPods_Tchap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B068E8162D4DB055C098230 /* Pods_TchapPods_Tchap.framework */; };
 		B104AA1D215D3EE800B2C452 /* ForgotPasswordService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B104AA1C215D3EE800B2C452 /* ForgotPasswordService.swift */; };
 		B104AA1F215E163000B2C452 /* ForgotPasswordServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B104AA1E215E163000B2C452 /* ForgotPasswordServiceType.swift */; };
 		B1073D6621A8096F00E36CFA /* RoomIncomingEncryptedAttachmentWithPaginationTitleBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1073D5F21A8096300E36CFA /* RoomIncomingEncryptedAttachmentWithPaginationTitleBubbleCell.m */; };
@@ -387,6 +388,7 @@
 		B1F2AAAF212AED900077FDC0 /* Presentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AAAA212AED900077FDC0 /* Presentable.swift */; };
 		B1F2AAB0212AED900077FDC0 /* NavigationRouterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AAAB212AED900077FDC0 /* NavigationRouterType.swift */; };
 		B1F2AAB6212AFDBA0077FDC0 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AAB5212AFDBA0077FDC0 /* UIViewController.swift */; };
+		DD0A0859C363CF265CD99AE5 /* Pods_TchapPods_TchapTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1FC3AA39ED3377696D4C76A /* Pods_TchapPods_TchapTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -652,7 +654,7 @@
 		02BEE1A6212C77B700098505 /* DesignValues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DesignValues.m; sourceTree = "<group>"; };
 		02BEE1A7212C77B700098505 /* DesignValues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DesignValues.h; sourceTree = "<group>"; };
 		08BA8F52677EE3F18661D478 /* Pods_RiotPods_TchapTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RiotPods_TchapTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		1741F88AF0AA753CCB035EA0 /* Pods-RiotPods-TchapTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-TchapTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-RiotPods-TchapTests/Pods-RiotPods-TchapTests.release.xcconfig"; sourceTree = "<group>"; };
+		0B068E8162D4DB055C098230 /* Pods_TchapPods_Tchap.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TchapPods_Tchap.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3233F7441F3497DA006ACA81 /* JitsiMeet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JitsiMeet.framework; sourceTree = "<group>"; };
 		3267EFB320E379FD00FF1CAA /* CHANGES.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGES.rst; sourceTree = "<group>"; };
 		3267EFB420E379FD00FF1CAA /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; fileEncoding = 4; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
@@ -665,11 +667,13 @@
 		32BDC9A4211C34C90064AF51 /* sq */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sq; path = sq.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		32BDC9A5211C34C90064AF51 /* sq */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sq; path = sq.lproj/Localizable.strings; sourceTree = "<group>"; };
 		32BDC9A6211C34C90064AF51 /* sq */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sq; path = sq.lproj/Vector.strings; sourceTree = "<group>"; };
-		4F5F4F8534177BF9B5F0CB94 /* Pods-RiotPods-TchapTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-TchapTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RiotPods-TchapTests/Pods-RiotPods-TchapTests.debug.xcconfig"; sourceTree = "<group>"; };
+		5953E77F746A5DD12412353A /* Pods-TchapPods-Tchap.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TchapPods-Tchap.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TchapPods-Tchap/Pods-TchapPods-Tchap.debug.xcconfig"; sourceTree = "<group>"; };
+		8D73AF691952C247C04B087E /* Pods-TchapPods-Tchap.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TchapPods-Tchap.release.xcconfig"; path = "Pods/Target Support Files/Pods-TchapPods-Tchap/Pods-TchapPods-Tchap.release.xcconfig"; sourceTree = "<group>"; };
 		926FA53D1F4C132000F826C2 /* MXSession+Riot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MXSession+Riot.h"; sourceTree = "<group>"; };
 		926FA53E1F4C132000F826C2 /* MXSession+Riot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MXSession+Riot.m"; sourceTree = "<group>"; };
 		92726A501F587410004AD26F /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
 		940A45C29F3CB0D58EFBCA8B /* Pods_RiotPods_SiriIntents.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RiotPods_SiriIntents.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A1FC3AA39ED3377696D4C76A /* Pods_TchapPods_TchapTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TchapPods_TchapTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B104AA1C215D3EE800B2C452 /* ForgotPasswordService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordService.swift; sourceTree = "<group>"; };
 		B104AA1E215E163000B2C452 /* ForgotPasswordServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordServiceType.swift; sourceTree = "<group>"; };
 		B1073D5D21A8096100E36CFA /* RoomIncomingEncryptedAttachmentWithPaginationTitleBubbleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomIncomingEncryptedAttachmentWithPaginationTitleBubbleCell.h; sourceTree = "<group>"; };
@@ -952,11 +956,10 @@
 		B1F2AAAA212AED900077FDC0 /* Presentable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Presentable.swift; sourceTree = "<group>"; };
 		B1F2AAAB212AED900077FDC0 /* NavigationRouterType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationRouterType.swift; sourceTree = "<group>"; };
 		B1F2AAB5212AFDBA0077FDC0 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
-		CE094F20A8F9C16D0B285A46 /* Pods-RiotPods-Tchap.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-Tchap.release.xcconfig"; path = "Pods/Target Support Files/Pods-RiotPods-Tchap/Pods-RiotPods-Tchap.release.xcconfig"; sourceTree = "<group>"; };
 		D70232F22AD621A2018B15B0 /* Pods_RiotPods_Riot.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RiotPods_Riot.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA7369E6055F47F7869FF3B2 /* Pods_RiotPods_Tchap.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RiotPods_Tchap.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA7C5FAF411C8F14F5447193 /* Pods_RiotPods_RiotShareExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RiotPods_RiotShareExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		E08D5758E6C7E95E873847CE /* Pods-RiotPods-Tchap.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-Tchap.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RiotPods-Tchap/Pods-RiotPods-Tchap.debug.xcconfig"; sourceTree = "<group>"; };
+		DFBE2696E2CDD771A479000F /* Pods-TchapPods-TchapTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TchapPods-TchapTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TchapPods-TchapTests/Pods-TchapPods-TchapTests.debug.xcconfig"; sourceTree = "<group>"; };
 		F083BBDB1E7009EC00A9B29C /* busy.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = busy.mp3; sourceTree = "<group>"; };
 		F083BBDC1E7009EC00A9B29C /* callend.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = callend.mp3; sourceTree = "<group>"; };
 		F083BBDD1E7009EC00A9B29C /* message.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = message.mp3; sourceTree = "<group>"; };
@@ -981,6 +984,7 @@
 		F083BC181E7009EC00A9B29C /* Riot-Defaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Riot-Defaults.plist"; sourceTree = "<group>"; };
 		F0D2AD9F1F6AA5FD00A7097D /* MXRoomSummary+Riot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MXRoomSummary+Riot.h"; sourceTree = "<group>"; };
 		F0D2ADA01F6AA5FD00A7097D /* MXRoomSummary+Riot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MXRoomSummary+Riot.m"; sourceTree = "<group>"; };
+		F650D17175A954519524DA72 /* Pods-TchapPods-TchapTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TchapPods-TchapTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TchapPods-TchapTests/Pods-TchapPods-TchapTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -990,6 +994,7 @@
 			files = (
 				0250C53F2122B68000034691 /* JitsiMeet.framework in Frameworks */,
 				15F203A5A7556AAEC3D5A812 /* Pods_RiotPods_Tchap.framework in Frameworks */,
+				9EAAF4CA4D8855A209EE8927 /* Pods_TchapPods_Tchap.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -998,6 +1003,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				599A0B2BF3E50939A4FBD2DD /* Pods_RiotPods_TchapTests.framework in Frameworks */,
+				DD0A0859C363CF265CD99AE5 /* Pods_TchapPods_TchapTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1582,6 +1588,8 @@
 				940A45C29F3CB0D58EFBCA8B /* Pods_RiotPods_SiriIntents.framework */,
 				DA7369E6055F47F7869FF3B2 /* Pods_RiotPods_Tchap.framework */,
 				08BA8F52677EE3F18661D478 /* Pods_RiotPods_TchapTests.framework */,
+				0B068E8162D4DB055C098230 /* Pods_TchapPods_Tchap.framework */,
+				A1FC3AA39ED3377696D4C76A /* Pods_TchapPods_TchapTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -2497,10 +2505,10 @@
 		B641A4596D66C0C6C460750B /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				E08D5758E6C7E95E873847CE /* Pods-RiotPods-Tchap.debug.xcconfig */,
-				CE094F20A8F9C16D0B285A46 /* Pods-RiotPods-Tchap.release.xcconfig */,
-				4F5F4F8534177BF9B5F0CB94 /* Pods-RiotPods-TchapTests.debug.xcconfig */,
-				1741F88AF0AA753CCB035EA0 /* Pods-RiotPods-TchapTests.release.xcconfig */,
+				5953E77F746A5DD12412353A /* Pods-TchapPods-Tchap.debug.xcconfig */,
+				8D73AF691952C247C04B087E /* Pods-TchapPods-Tchap.release.xcconfig */,
+				DFBE2696E2CDD771A479000F /* Pods-TchapPods-TchapTests.debug.xcconfig */,
+				F650D17175A954519524DA72 /* Pods-TchapPods-TchapTests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -2871,7 +2879,7 @@
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-RiotPods-TchapTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-TchapPods-TchapTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2884,7 +2892,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-RiotPods-Tchap/Pods-RiotPods-Tchap-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-TchapPods-Tchap/Pods-TchapPods-Tchap-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
 				"${BUILT_PRODUCTS_DIR}/DTCoreText/DTCoreText.framework",
 				"${BUILT_PRODUCTS_DIR}/DTFoundation/DTFoundation.framework",
@@ -2925,7 +2933,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-RiotPods-Tchap/Pods-RiotPods-Tchap-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TchapPods-Tchap/Pods-TchapPods-Tchap-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		41638F651F31CF2414D67BC6 /* [CP] Embed Pods Frameworks */ = {
@@ -2934,7 +2942,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-RiotPods-TchapTests/Pods-RiotPods-TchapTests-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-TchapPods-TchapTests/Pods-TchapPods-TchapTests-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
 				"${BUILT_PRODUCTS_DIR}/DTCoreText/DTCoreText.framework",
 				"${BUILT_PRODUCTS_DIR}/DTFoundation/DTFoundation.framework",
@@ -2975,7 +2983,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-RiotPods-TchapTests/Pods-RiotPods-TchapTests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TchapPods-TchapTests/Pods-TchapPods-TchapTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		46DB7C2D02B4A436989D9102 /* [CP] Check Pods Manifest.lock */ = {
@@ -2989,7 +2997,7 @@
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-RiotPods-Tchap-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-TchapPods-Tchap-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -3405,7 +3413,7 @@
 /* Begin XCBuildConfiguration section */
 		0250C5BD2122B68000034691 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E08D5758E6C7E95E873847CE /* Pods-RiotPods-Tchap.debug.xcconfig */;
+			baseConfigurationReference = 5953E77F746A5DD12412353A /* Pods-TchapPods-Tchap.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -3450,7 +3458,7 @@
 		};
 		0250C5BE2122B68000034691 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CE094F20A8F9C16D0B285A46 /* Pods-RiotPods-Tchap.release.xcconfig */;
+			baseConfigurationReference = 8D73AF691952C247C04B087E /* Pods-TchapPods-Tchap.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -3493,7 +3501,7 @@
 		};
 		B1454BC8216BBE4000365A86 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4F5F4F8534177BF9B5F0CB94 /* Pods-RiotPods-TchapTests.debug.xcconfig */;
+			baseConfigurationReference = DFBE2696E2CDD771A479000F /* Pods-TchapPods-TchapTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -3529,7 +3537,7 @@
 		};
 		B1454BC9216BBE4000365A86 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1741F88AF0AA753CCB035EA0 /* Pods-RiotPods-TchapTests.release.xcconfig */;
+			baseConfigurationReference = F650D17175A954519524DA72 /* Pods-TchapPods-TchapTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";

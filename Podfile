@@ -40,7 +40,7 @@ def import_MatrixKit
     end 
 end
 
-abstract_target 'RiotPods' do
+abstract_target 'TchapPods' do
 
     pod 'GBDeviceInfo', '~> 5.2.0'
 
@@ -65,10 +65,6 @@ abstract_target 'RiotPods' do
     end
     
     target "TchapTests" do
-        import_MatrixKit
-    end
-
-    target "Riot" do
         import_MatrixKit
     end
     
