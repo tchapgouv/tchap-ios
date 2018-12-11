@@ -232,8 +232,6 @@
 		02BEE1A3212C717F00098505 /* SharedImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02BEE1A1212C717E00098505 /* SharedImages.xcassets */; };
 		02BEE1A4212C717F00098505 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02BEE1A2212C717F00098505 /* Images.xcassets */; };
 		02BEE1A8212C77B700098505 /* DesignValues.m in Sources */ = {isa = PBXBuildFile; fileRef = 02BEE1A6212C77B700098505 /* DesignValues.m */; };
-		15F203A5A7556AAEC3D5A812 /* Pods_RiotPods_Tchap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA7369E6055F47F7869FF3B2 /* Pods_RiotPods_Tchap.framework */; };
-		599A0B2BF3E50939A4FBD2DD /* Pods_RiotPods_TchapTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08BA8F52677EE3F18661D478 /* Pods_RiotPods_TchapTests.framework */; };
 		9EAAF4CA4D8855A209EE8927 /* Pods_TchapPods_Tchap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B068E8162D4DB055C098230 /* Pods_TchapPods_Tchap.framework */; };
 		B104AA1D215D3EE800B2C452 /* ForgotPasswordService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B104AA1C215D3EE800B2C452 /* ForgotPasswordService.swift */; };
 		B104AA1F215E163000B2C452 /* ForgotPasswordServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B104AA1E215E163000B2C452 /* ForgotPasswordServiceType.swift */; };
@@ -993,7 +991,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0250C53F2122B68000034691 /* JitsiMeet.framework in Frameworks */,
-				15F203A5A7556AAEC3D5A812 /* Pods_RiotPods_Tchap.framework in Frameworks */,
 				9EAAF4CA4D8855A209EE8927 /* Pods_TchapPods_Tchap.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1002,7 +999,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				599A0B2BF3E50939A4FBD2DD /* Pods_RiotPods_TchapTests.framework in Frameworks */,
 				DD0A0859C363CF265CD99AE5 /* Pods_TchapPods_TchapTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2701,7 +2697,7 @@
 					};
 				};
 			};
-			buildConfigurationList = F094A99D1B78D8F000B1FBBF /* Build configuration list for PBXProject "Riot" */;
+			buildConfigurationList = F094A99D1B78D8F000B1FBBF /* Build configuration list for PBXProject "Tchap" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -3700,7 +3696,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F094A99D1B78D8F000B1FBBF /* Build configuration list for PBXProject "Riot" */ = {
+		F094A99D1B78D8F000B1FBBF /* Build configuration list for PBXProject "Tchap" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F094A9C61B78D8F000B1FBBF /* Debug */,
