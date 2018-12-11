@@ -805,11 +805,6 @@
 		B1680D072152AA60009B5F92 /* Appearance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Appearance.swift; sourceTree = "<group>"; };
 		B169329420F39E6200746532 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B169329620F39E6300746532 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		B169329E20F3A21B00746532 /* Riot-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Riot-Bridging-Header.h"; sourceTree = "<group>"; };
-		B169329F20F3A21B00746532 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		B16932A020F3A21B00746532 /* Riot.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Riot.entitlements; sourceTree = "<group>"; };
-		B16932A120F3A21B00746532 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B16932A220F3A21B00746532 /* empty.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = empty.mm; sourceTree = "<group>"; };
 		B16932AA20F3A7B000746532 /* RiotDesignValues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RiotDesignValues.h; sourceTree = "<group>"; };
 		B16932AB20F3A7B000746532 /* RiotDesignValues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RiotDesignValues.m; sourceTree = "<group>"; };
 		B16932EC20F3C3C800746532 /* FilesSearchCellData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilesSearchCellData.m; sourceTree = "<group>"; };
@@ -1894,18 +1889,6 @@
 			path = PublicRoom;
 			sourceTree = "<group>";
 		};
-		B169329D20F3A21B00746532 /* SupportingFiles */ = {
-			isa = PBXGroup;
-			children = (
-				B169329E20F3A21B00746532 /* Riot-Bridging-Header.h */,
-				B169329F20F3A21B00746532 /* main.m */,
-				B16932A020F3A21B00746532 /* Riot.entitlements */,
-				B16932A120F3A21B00746532 /* Info.plist */,
-				B16932A220F3A21B00746532 /* empty.mm */,
-			);
-			path = SupportingFiles;
-			sourceTree = "<group>";
-		};
 		B16932A620F3A6FA00746532 /* Constants */ = {
 			isa = PBXGroup;
 			children = (
@@ -2520,7 +2503,6 @@
 				F083BC0F1E7009EC00A9B29C /* Utils */,
 				3233F7291F31F3B4006ACA81 /* libs */,
 				F083BB0E1E7009EC00A9B29C /* Assets */,
-				B169329D20F3A21B00746532 /* SupportingFiles */,
 			);
 			path = Riot;
 			sourceTree = "<group>";
