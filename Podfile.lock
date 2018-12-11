@@ -26,11 +26,6 @@ PODS:
     - DTFoundation/DTAnimatedGIF (~> 1.7.5)
     - DTFoundation/DTHTMLParser (~> 1.7.5)
     - DTFoundation/UIKit (~> 1.7.5)
-  - DTCoreText/Extension (1.6.21):
-    - DTFoundation/Core (~> 1.7.5)
-    - DTFoundation/DTAnimatedGIF (~> 1.7.5)
-    - DTFoundation/DTHTMLParser (~> 1.7.5)
-    - DTFoundation/UIKit (~> 1.7.5)
   - DTFoundation/Core (1.7.13)
   - DTFoundation/DTAnimatedGIF (1.7.13)
   - DTFoundation/DTHTMLParser (1.7.13):
@@ -50,13 +45,6 @@ PODS:
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
     - MatrixKit/Core (= 0.8.6)
-    - MatrixSDK (= 0.11.6)
-  - MatrixKit/AppExtension (0.8.6):
-    - cmark (~> 0.24.1)
-    - DTCoreText (~> 1.6.21)
-    - DTCoreText/Extension
-    - HPGrowingTextView (~> 1.1)
-    - libPhoneNumber-iOS (~> 0.9.13)
     - MatrixSDK (= 0.11.6)
   - MatrixKit/Core (0.8.6):
     - cmark (~> 0.24.1)
@@ -103,7 +91,6 @@ DEPENDENCIES:
   - DTCoreText
   - GBDeviceInfo (~> 5.2.0)
   - MatrixKit (from `https://github.com/matrix-org/matrix-ios-kit.git`, branch `develop`)
-  - MatrixKit/AppExtension (from `https://github.com/matrix-org/matrix-ios-kit.git`, branch `develop`)
   - MatrixSDK (from `https://github.com/matrix-org/matrix-ios-sdk.git`, branch `develop`)
   - MatrixSDK/JingleCallStack (from `https://github.com/matrix-org/matrix-ios-sdk.git`, branch `develop`)
   - MatrixSDK/SwiftSupport (from `https://github.com/matrix-org/matrix-ios-sdk.git`, branch `develop`)
@@ -176,6 +163,6 @@ SPEC CHECKSUMS:
   SwiftLint: 3207c1faa2240bf8973b191820a116113cd11073
   WebRTC: f2a6203584745fe53532633397557876b5d71640
 
-PODFILE CHECKSUM: 2d57530ee506d5a8f295884a7cdf563322fd6362
+PODFILE CHECKSUM: e590355897a3dd787b7ac7fd5c50b157a1b3ebfb
 
 COCOAPODS: 1.6.0.beta.2

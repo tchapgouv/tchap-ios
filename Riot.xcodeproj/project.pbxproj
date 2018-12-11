@@ -233,19 +233,11 @@
 		02BEE1A4212C717F00098505 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02BEE1A2212C717F00098505 /* Images.xcassets */; };
 		02BEE1A8212C77B700098505 /* DesignValues.m in Sources */ = {isa = PBXBuildFile; fileRef = 02BEE1A6212C77B700098505 /* DesignValues.m */; };
 		15F203A5A7556AAEC3D5A812 /* Pods_RiotPods_Tchap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA7369E6055F47F7869FF3B2 /* Pods_RiotPods_Tchap.framework */; };
-		24CBEC591F0EAD310093EABB /* RiotShareExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 24CBEC4E1F0EAD310093EABB /* RiotShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		24EEE5A21F23A8B400B3C705 /* MXRoom+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBE81E7009EC00A9B29C /* MXRoom+Riot.m */; };
-		24EEE5A31F23A8C300B3C705 /* AvatarGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC111E7009EC00A9B29C /* AvatarGenerator.m */; };
 		3233F7461F3497E2006ACA81 /* JitsiMeet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3233F7441F3497DA006ACA81 /* JitsiMeet.framework */; };
 		3233F7471F3497E2006ACA81 /* JitsiMeet.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3233F7441F3497DA006ACA81 /* JitsiMeet.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3284A35120A07C210044F922 /* postMessageAPI.js in Resources */ = {isa = PBXBuildFile; fileRef = 3284A35020A07C210044F922 /* postMessageAPI.js */; };
 		599A0B2BF3E50939A4FBD2DD /* Pods_RiotPods_TchapTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08BA8F52677EE3F18661D478 /* Pods_RiotPods_TchapTests.framework */; };
-		75123CD1FC3AEA01A1B0ABBE /* Pods_RiotPods_SiriIntents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 940A45C29F3CB0D58EFBCA8B /* Pods_RiotPods_SiriIntents.framework */; };
 		926FA53F1F4C132000F826C2 /* MXSession+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = 926FA53E1F4C132000F826C2 /* MXSession+Riot.m */; };
-		92726A471F58737A004AD26F /* IntentHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 92726A461F58737A004AD26F /* IntentHandler.m */; };
-		92726A4B1F58737A004AD26F /* SiriIntents.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 92726A431F58737A004AD26F /* SiriIntents.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		92726A511F587410004AD26F /* Intents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92726A501F587410004AD26F /* Intents.framework */; };
-		9972EF53599AC5CD25D6E8F0 /* Pods_RiotPods_RiotShareExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA7C5FAF411C8F14F5447193 /* Pods_RiotPods_RiotShareExtension.framework */; };
 		B104AA1D215D3EE800B2C452 /* ForgotPasswordService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B104AA1C215D3EE800B2C452 /* ForgotPasswordService.swift */; };
 		B104AA1F215E163000B2C452 /* ForgotPasswordServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B104AA1E215E163000B2C452 /* ForgotPasswordServiceType.swift */; };
 		B1073D6621A8096F00E36CFA /* RoomIncomingEncryptedAttachmentWithPaginationTitleBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1073D5F21A8096300E36CFA /* RoomIncomingEncryptedAttachmentWithPaginationTitleBubbleCell.m */; };
@@ -329,21 +321,9 @@
 		B165251D21775B0D00146F80 /* ContactsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B165251C21775B0C00146F80 /* ContactsViewController.storyboard */; };
 		B165252221779FA700146F80 /* CreateNewDiscussionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B165252121779FA700146F80 /* CreateNewDiscussionCoordinator.swift */; };
 		B165252421779FB900146F80 /* CreateNewDiscussionCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B165252321779FB900146F80 /* CreateNewDiscussionCoordinatorType.swift */; };
-		B1664BC520F4E67600808783 /* FallbackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1664BAD20F4E67500808783 /* FallbackViewController.xib */; };
-		B1664BC620F4E67600808783 /* FallbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1664BAE20F4E67500808783 /* FallbackViewController.m */; };
-		B1664BC720F4E67600808783 /* SharePresentingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1664BB220F4E67500808783 /* SharePresentingViewController.m */; };
-		B1664BC820F4E67600808783 /* ShareDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = B1664BB520F4E67500808783 /* ShareDataSource.m */; };
-		B1664BC920F4E67600808783 /* ShareViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1664BB720F4E67500808783 /* ShareViewController.xib */; };
-		B1664BCA20F4E67600808783 /* ShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1664BB820F4E67500808783 /* ShareViewController.m */; };
-		B1664BCB20F4E67600808783 /* RoomsListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1664BBA20F4E67500808783 /* RoomsListViewController.xib */; };
-		B1664BCC20F4E67600808783 /* RoomsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1664BBC20F4E67500808783 /* RoomsListViewController.m */; };
-		B1664BCD20F4E67600808783 /* RecentRoomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1664BBE20F4E67500808783 /* RecentRoomTableViewCell.m */; };
-		B1664BCE20F4E67600808783 /* RecentRoomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1664BBF20F4E67500808783 /* RecentRoomTableViewCell.xib */; };
-		B1664BCF20F4E67600808783 /* ShareExtensionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B1664BC420F4E67600808783 /* ShareExtensionManager.m */; };
 		B1664DA120F4F94F00808783 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B1664D5720F4EBEC00808783 /* InfoPlist.strings */; };
 		B1664DA220F4F95800808783 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B1664D5920F4EBEC00808783 /* Localizable.strings */; };
 		B1664DA320F4F96200808783 /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = B1664D5520F4EBEC00808783 /* Vector.strings */; };
-		B1664DA420F4F96300808783 /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = B1664D5520F4EBEC00808783 /* Vector.strings */; };
 		B1680CFB2152A9E6009B5F92 /* PublicRoomsCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1680CF62152A9E5009B5F92 /* PublicRoomsCoordinatorType.swift */; };
 		B1680CFC2152A9E6009B5F92 /* PublicRoomsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1680CF72152A9E5009B5F92 /* PublicRoomsDataSource.swift */; };
 		B1680CFD2152A9E6009B5F92 /* PublicRoomsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1680CF82152A9E5009B5F92 /* PublicRoomsCoordinator.swift */; };
@@ -353,21 +333,16 @@
 		B1680D052152AA28009B5F92 /* PublicRoomService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1680D032152AA28009B5F92 /* PublicRoomService.swift */; };
 		B1680D062152AA28009B5F92 /* PublicRoomServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1680D042152AA28009B5F92 /* PublicRoomServiceType.swift */; };
 		B1680D082152AA61009B5F92 /* Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1680D072152AA60009B5F92 /* Appearance.swift */; };
-		B169328320F38AE600746532 /* RiotSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B5597F20EFC3DF00210D55 /* RiotSettings.swift */; };
-		B169328420F38BE300746532 /* SegmentedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556D720EE6C4C00210D55 /* SegmentedViewController.m */; };
-		B169328520F38BE800746532 /* SegmentedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B556D620EE6C4C00210D55 /* SegmentedViewController.xib */; };
 		B169329920F39E6300746532 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B169329320F39E6200746532 /* LaunchScreen.storyboard */; };
 		B169329B20F39E6300746532 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B169329520F39E6300746532 /* Main.storyboard */; };
 		B16932A320F3A21C00746532 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B169329F20F3A21B00746532 /* main.m */; };
 		B16932A520F3A21C00746532 /* empty.mm in Sources */ = {isa = PBXBuildFile; fileRef = B16932A220F3A21B00746532 /* empty.mm */; };
 		B16932AC20F3A7B100746532 /* RiotDesignValues.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932AB20F3A7B000746532 /* RiotDesignValues.m */; };
-		B16932AD20F3A7B100746532 /* RiotDesignValues.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932AB20F3A7B000746532 /* RiotDesignValues.m */; };
 		B16932EE20F3C3C900746532 /* FilesSearchCellData.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932EC20F3C3C800746532 /* FilesSearchCellData.m */; };
 		B16932FA20F3C51A00746532 /* RecentCellData.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932F920F3C51900746532 /* RecentCellData.m */; };
 		B169330B20F3CA3A00746532 /* Contact.m in Sources */ = {isa = PBXBuildFile; fileRef = B169330A20F3CA3900746532 /* Contact.m */; };
 		B169331420F3CAFC00746532 /* PublicRoomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B169330E20F3CAFC00746532 /* PublicRoomTableViewCell.m */; };
 		B169331520F3CAFC00746532 /* PublicRoomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B169330F20F3CAFC00746532 /* PublicRoomTableViewCell.xib */; };
-		B169331720F3CBE000746532 /* RecentCellData.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932F920F3C51900746532 /* RecentCellData.m */; };
 		B17982FF2119FED2001FD722 /* GDPRConsentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17982FE2119FED2001FD722 /* GDPRConsentViewController.swift */; };
 		B1798302211B13B3001FD722 /* OnBoardingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1798301211B13B3001FD722 /* OnBoardingManager.swift */; };
 		B1892E782130528600742348 /* ErrorPresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1892E762130528500742348 /* ErrorPresentable.swift */; };
@@ -489,25 +464,10 @@
 		F083BE041E7009ED00A9B29C /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC151E7009EC00A9B29C /* Tools.m */; };
 		F083BE061E7009ED00A9B29C /* Riot-Defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = F083BC181E7009EC00A9B29C /* Riot-Defaults.plist */; };
 		F083BEA51E70356E00A9B29C /* RiotTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BB041E7005FD00A9B29C /* RiotTests.m */; };
-		F0A8955F1F7D1FEA00BD6C2A /* MXRoomSummary+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F0D2ADA01F6AA5FD00A7097D /* MXRoomSummary+Riot.m */; };
 		F0D2ADA11F6AA5FD00A7097D /* MXRoomSummary+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F0D2ADA01F6AA5FD00A7097D /* MXRoomSummary+Riot.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		242661F51F12B1BA00D3FC08 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F094A99A1B78D8F000B1FBBF /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 24CBEC4D1F0EAD310093EABB;
-			remoteInfo = "Riot Share Extension";
-		};
-		92726A491F58737A004AD26F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F094A99A1B78D8F000B1FBBF /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 92726A421F58737A004AD26F;
-			remoteInfo = SiriIntents;
-		};
 		B1454BC6216BBE4000365A86 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F094A99A1B78D8F000B1FBBF /* Project object */;
@@ -552,8 +512,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				24CBEC591F0EAD310093EABB /* RiotShareExtension.appex in Embed App Extensions */,
-				92726A4B1F58737A004AD26F /* SiriIntents.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -802,7 +760,6 @@
 		08BA8F52677EE3F18661D478 /* Pods_RiotPods_TchapTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RiotPods_TchapTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1741F88AF0AA753CCB035EA0 /* Pods-RiotPods-TchapTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-TchapTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-RiotPods-TchapTests/Pods-RiotPods-TchapTests.release.xcconfig"; sourceTree = "<group>"; };
 		238E97931CE2A93DB3CC3C7F /* Pods-RiotPods-RiotShareExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-RiotShareExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RiotPods-RiotShareExtension/Pods-RiotPods-RiotShareExtension.debug.xcconfig"; sourceTree = "<group>"; };
-		24CBEC4E1F0EAD310093EABB /* RiotShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = RiotShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		3233F7441F3497DA006ACA81 /* JitsiMeet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JitsiMeet.framework; sourceTree = "<group>"; };
 		3267EFB320E379FD00FF1CAA /* CHANGES.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGES.rst; sourceTree = "<group>"; };
 		3267EFB420E379FD00FF1CAA /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; fileEncoding = 4; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
@@ -819,11 +776,6 @@
 		4F5F4F8534177BF9B5F0CB94 /* Pods-RiotPods-TchapTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-TchapTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RiotPods-TchapTests/Pods-RiotPods-TchapTests.debug.xcconfig"; sourceTree = "<group>"; };
 		926FA53D1F4C132000F826C2 /* MXSession+Riot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MXSession+Riot.h"; sourceTree = "<group>"; };
 		926FA53E1F4C132000F826C2 /* MXSession+Riot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MXSession+Riot.m"; sourceTree = "<group>"; };
-		92726A431F58737A004AD26F /* SiriIntents.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SiriIntents.appex; sourceTree = BUILT_PRODUCTS_DIR; };
-		92726A451F58737A004AD26F /* IntentHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IntentHandler.h; sourceTree = "<group>"; };
-		92726A461F58737A004AD26F /* IntentHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IntentHandler.m; sourceTree = "<group>"; };
-		92726A481F58737A004AD26F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		92726A4F1F587393004AD26F /* SiriIntents.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = SiriIntents.entitlements; sourceTree = "<group>"; };
 		92726A501F587410004AD26F /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
 		940A45C29F3CB0D58EFBCA8B /* Pods_RiotPods_SiriIntents.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RiotPods_SiriIntents.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0230B8E031D07F2441D2F7E /* Pods-RiotPods-RiotShareExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiotPods-RiotShareExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-RiotPods-RiotShareExtension/Pods-RiotPods-RiotShareExtension.release.xcconfig"; sourceTree = "<group>"; };
@@ -918,27 +870,6 @@
 		B165251C21775B0C00146F80 /* ContactsViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ContactsViewController.storyboard; sourceTree = "<group>"; };
 		B165252121779FA700146F80 /* CreateNewDiscussionCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewDiscussionCoordinator.swift; sourceTree = "<group>"; };
 		B165252321779FB900146F80 /* CreateNewDiscussionCoordinatorType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewDiscussionCoordinatorType.swift; sourceTree = "<group>"; };
-		B1664BAD20F4E67500808783 /* FallbackViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FallbackViewController.xib; sourceTree = "<group>"; };
-		B1664BAE20F4E67500808783 /* FallbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FallbackViewController.m; sourceTree = "<group>"; };
-		B1664BAF20F4E67500808783 /* FallbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FallbackViewController.h; sourceTree = "<group>"; };
-		B1664BB120F4E67500808783 /* SharePresentingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharePresentingViewController.h; sourceTree = "<group>"; };
-		B1664BB220F4E67500808783 /* SharePresentingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharePresentingViewController.m; sourceTree = "<group>"; };
-		B1664BB520F4E67500808783 /* ShareDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareDataSource.m; sourceTree = "<group>"; };
-		B1664BB620F4E67500808783 /* ShareDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareDataSource.h; sourceTree = "<group>"; };
-		B1664BB720F4E67500808783 /* ShareViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShareViewController.xib; sourceTree = "<group>"; };
-		B1664BB820F4E67500808783 /* ShareViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareViewController.m; sourceTree = "<group>"; };
-		B1664BBA20F4E67500808783 /* RoomsListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomsListViewController.xib; sourceTree = "<group>"; };
-		B1664BBB20F4E67500808783 /* RoomsListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomsListViewController.h; sourceTree = "<group>"; };
-		B1664BBC20F4E67500808783 /* RoomsListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomsListViewController.m; sourceTree = "<group>"; };
-		B1664BBE20F4E67500808783 /* RecentRoomTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentRoomTableViewCell.m; sourceTree = "<group>"; };
-		B1664BBF20F4E67500808783 /* RecentRoomTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RecentRoomTableViewCell.xib; sourceTree = "<group>"; };
-		B1664BC020F4E67500808783 /* RecentRoomTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentRoomTableViewCell.h; sourceTree = "<group>"; };
-		B1664BC120F4E67500808783 /* ShareViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareViewController.h; sourceTree = "<group>"; };
-		B1664BC320F4E67600808783 /* ShareExtensionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareExtensionManager.h; sourceTree = "<group>"; };
-		B1664BC420F4E67600808783 /* ShareExtensionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareExtensionManager.m; sourceTree = "<group>"; };
-		B1664BD120F4E82700808783 /* RiotShareExtension-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RiotShareExtension-Bridging-Header.h"; sourceTree = "<group>"; };
-		B1664BD220F4E82800808783 /* RiotShareExtension.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = RiotShareExtension.entitlements; sourceTree = "<group>"; };
-		B1664BD320F4E82800808783 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B1664D5A20F4EBEC00808783 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B1664D5B20F4EBED00808783 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		B1664D5E20F4EBEE00808783 /* eu */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = eu; path = eu.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -1175,23 +1106,6 @@
 			files = (
 				0250C53F2122B68000034691 /* JitsiMeet.framework in Frameworks */,
 				15F203A5A7556AAEC3D5A812 /* Pods_RiotPods_Tchap.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		24CBEC4B1F0EAD310093EABB /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				9972EF53599AC5CD25D6E8F0 /* Pods_RiotPods_RiotShareExtension.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		92726A401F58737A004AD26F /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				92726A511F587410004AD26F /* Intents.framework in Frameworks */,
-				75123CD1FC3AEA01A1B0ABBE /* Pods_RiotPods_SiriIntents.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1767,16 +1681,6 @@
 			path = Constants;
 			sourceTree = "<group>";
 		};
-		24CBEC4F1F0EAD310093EABB /* RiotShareExtension */ = {
-			isa = PBXGroup;
-			children = (
-				B1664BC220F4E67600808783 /* Managers */,
-				B1664BAB20F4E67500808783 /* Modules */,
-				B1664BD020F4E80000808783 /* SupportingFiles */,
-			);
-			path = RiotShareExtension;
-			sourceTree = "<group>";
-		};
 		3233F7291F31F3B4006ACA81 /* libs */ = {
 			isa = PBXGroup;
 			children = (
@@ -1812,17 +1716,6 @@
 				08BA8F52677EE3F18661D478 /* Pods_RiotPods_TchapTests.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		92726A441F58737A004AD26F /* SiriIntents */ = {
-			isa = PBXGroup;
-			children = (
-				92726A4F1F587393004AD26F /* SiriIntents.entitlements */,
-				92726A451F58737A004AD26F /* IntentHandler.h */,
-				92726A461F58737A004AD26F /* IntentHandler.m */,
-				92726A481F58737A004AD26F /* Info.plist */,
-			);
-			path = SiriIntents;
 			sourceTree = "<group>";
 		};
 		B1073D5B21A7F90D00E36CFA /* Encrypted */ = {
@@ -2096,96 +1989,6 @@
 				B165252121779FA700146F80 /* CreateNewDiscussionCoordinator.swift */,
 			);
 			path = CreateNewDiscussion;
-			sourceTree = "<group>";
-		};
-		B1664BAB20F4E67500808783 /* Modules */ = {
-			isa = PBXGroup;
-			children = (
-				B1664BB020F4E67500808783 /* Main */,
-				B1664BAC20F4E67500808783 /* Fallback */,
-				B1664BB320F4E67500808783 /* Share */,
-			);
-			path = Modules;
-			sourceTree = "<group>";
-		};
-		B1664BAC20F4E67500808783 /* Fallback */ = {
-			isa = PBXGroup;
-			children = (
-				B1664BAF20F4E67500808783 /* FallbackViewController.h */,
-				B1664BAE20F4E67500808783 /* FallbackViewController.m */,
-				B1664BAD20F4E67500808783 /* FallbackViewController.xib */,
-			);
-			path = Fallback;
-			sourceTree = "<group>";
-		};
-		B1664BB020F4E67500808783 /* Main */ = {
-			isa = PBXGroup;
-			children = (
-				B1664BB120F4E67500808783 /* SharePresentingViewController.h */,
-				B1664BB220F4E67500808783 /* SharePresentingViewController.m */,
-			);
-			path = Main;
-			sourceTree = "<group>";
-		};
-		B1664BB320F4E67500808783 /* Share */ = {
-			isa = PBXGroup;
-			children = (
-				B1664BC120F4E67500808783 /* ShareViewController.h */,
-				B1664BB820F4E67500808783 /* ShareViewController.m */,
-				B1664BB720F4E67500808783 /* ShareViewController.xib */,
-				B1664BB420F4E67500808783 /* DataSources */,
-				B1664BB920F4E67500808783 /* Listing */,
-			);
-			path = Share;
-			sourceTree = "<group>";
-		};
-		B1664BB420F4E67500808783 /* DataSources */ = {
-			isa = PBXGroup;
-			children = (
-				B1664BB620F4E67500808783 /* ShareDataSource.h */,
-				B1664BB520F4E67500808783 /* ShareDataSource.m */,
-			);
-			path = DataSources;
-			sourceTree = "<group>";
-		};
-		B1664BB920F4E67500808783 /* Listing */ = {
-			isa = PBXGroup;
-			children = (
-				B1664BBB20F4E67500808783 /* RoomsListViewController.h */,
-				B1664BBC20F4E67500808783 /* RoomsListViewController.m */,
-				B1664BBA20F4E67500808783 /* RoomsListViewController.xib */,
-				B1664BBD20F4E67500808783 /* Views */,
-			);
-			path = Listing;
-			sourceTree = "<group>";
-		};
-		B1664BBD20F4E67500808783 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				B1664BC020F4E67500808783 /* RecentRoomTableViewCell.h */,
-				B1664BBE20F4E67500808783 /* RecentRoomTableViewCell.m */,
-				B1664BBF20F4E67500808783 /* RecentRoomTableViewCell.xib */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		B1664BC220F4E67600808783 /* Managers */ = {
-			isa = PBXGroup;
-			children = (
-				B1664BC320F4E67600808783 /* ShareExtensionManager.h */,
-				B1664BC420F4E67600808783 /* ShareExtensionManager.m */,
-			);
-			path = Managers;
-			sourceTree = "<group>";
-		};
-		B1664BD020F4E80000808783 /* SupportingFiles */ = {
-			isa = PBXGroup;
-			children = (
-				B1664BD120F4E82700808783 /* RiotShareExtension-Bridging-Header.h */,
-				B1664BD220F4E82800808783 /* RiotShareExtension.entitlements */,
-				B1664BD320F4E82800808783 /* Info.plist */,
-			);
-			path = SupportingFiles;
 			sourceTree = "<group>";
 		};
 		B1664DA520F4FE1B00808783 /* Localizations */ = {
@@ -2958,8 +2761,6 @@
 				0250C5C12122BBA600034691 /* Tchap */,
 				F083BB081E7009EC00A9B29C /* Riot */,
 				F083BB021E7005FD00A9B29C /* RiotTests */,
-				24CBEC4F1F0EAD310093EABB /* RiotShareExtension */,
-				92726A441F58737A004AD26F /* SiriIntents */,
 				B1454BC2216BBE4000365A86 /* TchapTests */,
 				F094A9A31B78D8F000B1FBBF /* Products */,
 				5FC42FA41F5186AFFB6A2404 /* Frameworks */,
@@ -2972,8 +2773,6 @@
 			children = (
 				F094A9A21B78D8F000B1FBBF /* Riot.app */,
 				F094A9BE1B78D8F000B1FBBF /* RiotTests.xctest */,
-				24CBEC4E1F0EAD310093EABB /* RiotShareExtension.appex */,
-				92726A431F58737A004AD26F /* SiriIntents.appex */,
 				0250C5BF2122B68000034691 /* Tchap.app */,
 				B1454BC1216BBE3F00365A86 /* TchapTests.xctest */,
 			);
@@ -3005,42 +2804,6 @@
 			productName = Vector;
 			productReference = 0250C5BF2122B68000034691 /* Tchap.app */;
 			productType = "com.apple.product-type.application";
-		};
-		24CBEC4D1F0EAD310093EABB /* RiotShareExtension */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 24CBEC5C1F0EAD310093EABB /* Build configuration list for PBXNativeTarget "RiotShareExtension" */;
-			buildPhases = (
-				FFEE04C5247D80E6095A5153 /* [CP] Check Pods Manifest.lock */,
-				24CBEC4A1F0EAD310093EABB /* Sources */,
-				24CBEC4B1F0EAD310093EABB /* Frameworks */,
-				24CBEC4C1F0EAD310093EABB /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = RiotShareExtension;
-			productName = "Riot Share Extension";
-			productReference = 24CBEC4E1F0EAD310093EABB /* RiotShareExtension.appex */;
-			productType = "com.apple.product-type.app-extension";
-		};
-		92726A421F58737A004AD26F /* SiriIntents */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 92726A4E1F58737A004AD26F /* Build configuration list for PBXNativeTarget "SiriIntents" */;
-			buildPhases = (
-				384E5E0363116974553C6919 /* [CP] Check Pods Manifest.lock */,
-				92726A3F1F58737A004AD26F /* Sources */,
-				92726A401F58737A004AD26F /* Frameworks */,
-				92726A411F58737A004AD26F /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = SiriIntents;
-			productName = SiriIntents;
-			productReference = 92726A431F58737A004AD26F /* SiriIntents.appex */;
-			productType = "com.apple.product-type.app-extension";
 		};
 		B1454BC0216BBE3F00365A86 /* TchapTests */ = {
 			isa = PBXNativeTarget;
@@ -3077,8 +2840,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				242661F61F12B1BA00D3FC08 /* PBXTargetDependency */,
-				92726A4A1F58737A004AD26F /* PBXTargetDependency */,
 			);
 			name = Riot;
 			productName = Vector;
@@ -3122,26 +2883,6 @@
 							};
 						};
 					};
-					24CBEC4D1F0EAD310093EABB = {
-						CreatedOnToolsVersion = 8.3.2;
-						DevelopmentTeam = 7J4U792NQT;
-						ProvisioningStyle = Automatic;
-						SystemCapabilities = {
-							com.apple.ApplicationGroups.iOS = {
-								enabled = 1;
-							};
-						};
-					};
-					92726A421F58737A004AD26F = {
-						CreatedOnToolsVersion = 8.3.3;
-						DevelopmentTeam = 7J4U792NQT;
-						ProvisioningStyle = Automatic;
-						SystemCapabilities = {
-							com.apple.ApplicationGroups.iOS = {
-								enabled = 1;
-							};
-						};
-					};
 					B1454BC0216BBE3F00365A86 = {
 						CreatedOnToolsVersion = 9.4.1;
 						LastSwiftMigration = 0940;
@@ -3149,9 +2890,7 @@
 					};
 					F094A9A11B78D8F000B1FBBF = {
 						CreatedOnToolsVersion = 6.2;
-						DevelopmentTeam = 7J4U792NQT;
 						LastSwiftMigration = 0940;
-						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
@@ -3163,7 +2902,6 @@
 					};
 					F094A9BD1B78D8F000B1FBBF = {
 						CreatedOnToolsVersion = 6.2;
-						DevelopmentTeam = 7J4U792NQT;
 						TestTargetID = F094A9A11B78D8F000B1FBBF;
 					};
 				};
@@ -3195,8 +2933,6 @@
 			targets = (
 				F094A9A11B78D8F000B1FBBF /* Riot */,
 				F094A9BD1B78D8F000B1FBBF /* RiotTests */,
-				24CBEC4D1F0EAD310093EABB /* RiotShareExtension */,
-				92726A421F58737A004AD26F /* SiriIntents */,
 				0250C48C2122B68000034691 /* Tchap */,
 				B1454BC0216BBE3F00365A86 /* TchapTests */,
 			);
@@ -3328,26 +3064,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		24CBEC4C1F0EAD310093EABB /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				B1664BCB20F4E67600808783 /* RoomsListViewController.xib in Resources */,
-				B169328520F38BE800746532 /* SegmentedViewController.xib in Resources */,
-				B1664DA420F4F96300808783 /* Vector.strings in Resources */,
-				B1664BC920F4E67600808783 /* ShareViewController.xib in Resources */,
-				B1664BC520F4E67600808783 /* FallbackViewController.xib in Resources */,
-				B1664BCE20F4E67600808783 /* RecentRoomTableViewCell.xib in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		92726A411F58737A004AD26F /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		B1454BBF216BBE3F00365A86 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -3430,24 +3146,6 @@
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-RiotPods-TchapTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		384E5E0363116974553C6919 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-RiotPods-SiriIntents-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -3596,8 +3294,6 @@
 				"${BUILT_PRODUCTS_DIR}/cmark/cmark.framework",
 				"${BUILT_PRODUCTS_DIR}/libPhoneNumber-iOS/libPhoneNumber_iOS.framework",
 				"${BUILT_PRODUCTS_DIR}/libbase58/libbase58.framework",
-				"${BUILT_PRODUCTS_DIR}/DTCoreText.default-Extension/DTCoreText.framework",
-				"${BUILT_PRODUCTS_DIR}/MatrixKit-AppExtension/MatrixKit.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -3651,24 +3347,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}\"/Scripts/swiftgen.sh";
-		};
-		FFEE04C5247D80E6095A5153 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-RiotPods-RiotShareExtension-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -3937,35 +3615,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		24CBEC4A1F0EAD310093EABB /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				B169328420F38BE300746532 /* SegmentedViewController.m in Sources */,
-				B16932AD20F3A7B100746532 /* RiotDesignValues.m in Sources */,
-				B1664BCA20F4E67600808783 /* ShareViewController.m in Sources */,
-				B1664BC620F4E67600808783 /* FallbackViewController.m in Sources */,
-				24EEE5A31F23A8C300B3C705 /* AvatarGenerator.m in Sources */,
-				B1664BCF20F4E67600808783 /* ShareExtensionManager.m in Sources */,
-				24EEE5A21F23A8B400B3C705 /* MXRoom+Riot.m in Sources */,
-				B1664BC720F4E67600808783 /* SharePresentingViewController.m in Sources */,
-				F0A8955F1F7D1FEA00BD6C2A /* MXRoomSummary+Riot.m in Sources */,
-				B169328320F38AE600746532 /* RiotSettings.swift in Sources */,
-				B1664BC820F4E67600808783 /* ShareDataSource.m in Sources */,
-				B1664BCD20F4E67600808783 /* RecentRoomTableViewCell.m in Sources */,
-				B169331720F3CBE000746532 /* RecentCellData.m in Sources */,
-				B1664BCC20F4E67600808783 /* RoomsListViewController.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		92726A3F1F58737A004AD26F /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				92726A471F58737A004AD26F /* IntentHandler.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		B1454BBD216BBE3F00365A86 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -4039,16 +3688,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		242661F61F12B1BA00D3FC08 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 24CBEC4D1F0EAD310093EABB /* RiotShareExtension */;
-			targetProxy = 242661F51F12B1BA00D3FC08 /* PBXContainerItemProxy */;
-		};
-		92726A4A1F58737A004AD26F /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 92726A421F58737A004AD26F /* SiriIntents */;
-			targetProxy = 92726A491F58737A004AD26F /* PBXContainerItemProxy */;
-		};
 		B1454BC7216BBE4000365A86 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 0250C48C2122B68000034691 /* Tchap */;
@@ -4162,8 +3801,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Tchap/SupportingFiles/Tchap.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 7J4U792NQT;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = NVMQD635C6;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4188,8 +3829,9 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = im.vector.app;
+				PRODUCT_BUNDLE_IDENTIFIER = fr.gouv.tchap;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/$(PRODUCT_NAME)/SupportingFiles/Tchap-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
@@ -4204,7 +3846,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Tchap/SupportingFiles/Tchap.entitlements;
-				DEVELOPMENT_TEAM = 7J4U792NQT;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = NVMQD635C6;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4229,127 +3873,12 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = im.vector.app;
+				PRODUCT_BUNDLE_IDENTIFIER = fr.gouv.tchap;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/$(PRODUCT_NAME)/SupportingFiles/Tchap-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
-		24CBEC5A1F0EAD310093EABB /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 238E97931CE2A93DB3CC3C7F /* Pods-RiotPods-RiotShareExtension.debug.xcconfig */;
-			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CODE_SIGN_ENTITLEMENTS = RiotShareExtension/SupportingFiles/RiotShareExtension.entitlements;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = 7J4U792NQT;
-				ENABLE_BITCODE = NO;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"$(inherited)",
-					"COCOAPODS=1",
-					"IS_SHARE_EXTENSION=1",
-				);
-				INFOPLIST_FILE = RiotShareExtension/SupportingFiles/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = im.vector.app.shareExtension;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/$(PRODUCT_NAME)/SupportingFiles/RiotShareExtension-Bridging-Header.h";
-				SWIFT_VERSION = 4.0;
-			};
-			name = Debug;
-		};
-		24CBEC5B1F0EAD310093EABB /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = B0230B8E031D07F2441D2F7E /* Pods-RiotPods-RiotShareExtension.release.xcconfig */;
-			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CODE_SIGN_ENTITLEMENTS = RiotShareExtension/SupportingFiles/RiotShareExtension.entitlements;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 7J4U792NQT;
-				ENABLE_BITCODE = NO;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"$(inherited)",
-					"COCOAPODS=1",
-					"IS_SHARE_EXTENSION=1",
-				);
-				INFOPLIST_FILE = RiotShareExtension/SupportingFiles/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = im.vector.app.shareExtension;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/$(PRODUCT_NAME)/SupportingFiles/RiotShareExtension-Bridging-Header.h";
-				SWIFT_VERSION = 4.0;
-			};
-			name = Release;
-		};
-		92726A4C1F58737A004AD26F /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = DFC1FD8E159B557D50457249 /* Pods-RiotPods-SiriIntents.debug.xcconfig */;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CODE_SIGN_ENTITLEMENTS = SiriIntents/SiriIntents.entitlements;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = 7J4U792NQT;
-				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = SiriIntents/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = im.vector.app.SiriIntents;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
-		92726A4D1F58737A004AD26F /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = EC9407D4B803A8C4A7BE24BE /* Pods-RiotPods-SiriIntents.release.xcconfig */;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CODE_SIGN_ENTITLEMENTS = SiriIntents/SiriIntents.entitlements;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 7J4U792NQT;
-				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = SiriIntents/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = im.vector.app.SiriIntents;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
 			};
 			name = Release;
 		};
@@ -4369,7 +3898,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = 7J4U792NQT;
+				DEVELOPMENT_TEAM = NVMQD635C6;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = TchapTests/SupportingFiles/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
@@ -4380,6 +3909,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = im.vector.TchapTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "TchapTests/SupportingFiles/TchapTests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
@@ -4405,7 +3935,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 7J4U792NQT;
+				DEVELOPMENT_TEAM = NVMQD635C6;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = TchapTests/SupportingFiles/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
@@ -4416,6 +3946,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = im.vector.TchapTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "TchapTests/SupportingFiles/TchapTests-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -4539,7 +4070,8 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Riot/SupportingFiles/Riot.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 7J4U792NQT;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4566,6 +4098,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = im.vector.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/$(PRODUCT_NAME)/SupportingFiles/Riot-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
@@ -4580,7 +4113,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Riot/SupportingFiles/Riot.entitlements;
-				DEVELOPMENT_TEAM = 7J4U792NQT;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4607,6 +4141,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = im.vector.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/$(PRODUCT_NAME)/SupportingFiles/Riot-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -4618,7 +4153,8 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				DEVELOPMENT_TEAM = 7J4U792NQT;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -4635,6 +4171,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.matrix.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Riot.app/Riot";
 			};
 			name = Debug;
@@ -4644,7 +4181,8 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				DEVELOPMENT_TEAM = 7J4U792NQT;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -4657,6 +4195,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.matrix.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Riot.app/Riot";
 			};
 			name = Release;
@@ -4669,24 +4208,6 @@
 			buildConfigurations = (
 				0250C5BD2122B68000034691 /* Debug */,
 				0250C5BE2122B68000034691 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		24CBEC5C1F0EAD310093EABB /* Build configuration list for PBXNativeTarget "RiotShareExtension" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				24CBEC5A1F0EAD310093EABB /* Debug */,
-				24CBEC5B1F0EAD310093EABB /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		92726A4E1F58737A004AD26F /* Build configuration list for PBXNativeTarget "SiriIntents" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				92726A4C1F58737A004AD26F /* Debug */,
-				92726A4D1F58737A004AD26F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
