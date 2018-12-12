@@ -63,6 +63,10 @@ abstract_target 'TchapPods' do
     target "Tchap" do
         import_MatrixKit
     end
+	
+    target "Btchap" do
+        import_MatrixKit
+    end
     
     target "TchapTests" do
         import_MatrixKit
