@@ -431,10 +431,11 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     
     _isAppForeground = NO;
     
-    // Configure our analytics. It will indeed start if the option is enabled
-    [MXSDKOptions sharedInstance].analyticsDelegate = [Analytics sharedInstance];
-    [DecryptionFailureTracker sharedInstance].delegate = [Analytics sharedInstance];
-    [[Analytics sharedInstance] start];
+    // Tchap: Disable analytics use for the moment.
+//    // Configure our analytics. It will indeed start if the option is enabled
+//    [MXSDKOptions sharedInstance].analyticsDelegate = [Analytics sharedInstance];
+//    [DecryptionFailureTracker sharedInstance].delegate = [Analytics sharedInstance];
+//    [[Analytics sharedInstance] start];
     
     // Prepare Pushkit handling
     _incomingPushEventIds = [NSMutableDictionary dictionary];

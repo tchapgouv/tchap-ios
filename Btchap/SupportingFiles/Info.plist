@@ -28,19 +28,6 @@
 	<string>d1dd539c-d21c-43e2-92e2-212c5269565c</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSExceptionDomains</key>
-		<dict>
-			<key>cas.openmarket.com</key>
-			<dict>
-				<key>NSExceptionAllowsInsecureHTTPLoads</key>
-				<true/>
-				<key>NSExceptionRequiresForwardSecrecy</key>
-				<false/>
-			</dict>
-		</dict>
-	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>The camera is used to take photos and videos, make video calls.</string>
 	<key>NSContactsUsageDescription</key>
