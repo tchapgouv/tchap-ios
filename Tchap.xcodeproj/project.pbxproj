@@ -198,6 +198,8 @@
 		0250C5BB2122B68000034691 /* JitsiMeet.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3233F7441F3497DA006ACA81 /* JitsiMeet.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0250C5CB2122E63900034691 /* empty.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0250C5C82122E63900034691 /* empty.mm */; };
 		0250C5CE212314B300034691 /* Tchap-Defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0250C5CD212314B300034691 /* Tchap-Defaults.plist */; };
+		026D887021C1C4F40085BED8 /* TchapSharedImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 026D886F21C1C4F40085BED8 /* TchapSharedImages.xcassets */; };
+		026D887221C1C5490085BED8 /* BtchapSharedImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 026D887121C1C5490085BED8 /* BtchapSharedImages.xcassets */; };
 		027DCAC521B14F68000DD05E /* ContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 027DCAC321B14F68000DD05E /* ContactCell.xib */; };
 		027DCAC621B14F68000DD05E /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027DCAC421B14F68000DD05E /* ContactCell.swift */; };
 		02906073214FD0E1005FE3C1 /* RoomCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02906071214FD0E0005FE3C1 /* RoomCoordinatorType.swift */; };
@@ -1005,6 +1007,8 @@
 		0250C5C72122E63900034691 /* Tchap.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Tchap.entitlements; sourceTree = "<group>"; };
 		0250C5C82122E63900034691 /* empty.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = empty.mm; sourceTree = "<group>"; };
 		0250C5CD212314B300034691 /* Tchap-Defaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Tchap-Defaults.plist"; sourceTree = "<group>"; };
+		026D886F21C1C4F40085BED8 /* TchapSharedImages.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = TchapSharedImages.xcassets; sourceTree = "<group>"; };
+		026D887121C1C5490085BED8 /* BtchapSharedImages.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = BtchapSharedImages.xcassets; sourceTree = "<group>"; };
 		027DCAC321B14F68000DD05E /* ContactCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactCell.xib; sourceTree = "<group>"; };
 		027DCAC421B14F68000DD05E /* ContactCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
 		02906071214FD0E0005FE3C1 /* RoomCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomCoordinatorType.swift; sourceTree = "<group>"; };
@@ -1800,6 +1804,7 @@
 				B1322FD9212FF4A30054A9DD /* Localizations */,
 				02BEE1A2212C717F00098505 /* Images.xcassets */,
 				02BEE1A1212C717E00098505 /* SharedImages.xcassets */,
+				026D886F21C1C4F40085BED8 /* TchapSharedImages.xcassets */,
 				0250C5CD212314B300034691 /* Tchap-Defaults.plist */,
 			);
 			path = Assets;
@@ -1980,6 +1985,7 @@
 		02DFECFA21C07792009B6F15 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				026D887121C1C5490085BED8 /* BtchapSharedImages.xcassets */,
 				02DFECFB21C07792009B6F15 /* Btchap-Defaults.plist */,
 			);
 			path = Assets;
@@ -3281,6 +3287,7 @@
 				020DF95D214BE467003DFBA4 /* RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.xib in Resources */,
 				B15AB29E215BF20E007F5405 /* ForgotPasswordCheckedEmailViewController.storyboard in Resources */,
 				020DF97E214BE467003DFBA4 /* RoomOutgoingTextMsgWithPaginationTitleBubbleCell.xib in Resources */,
+				026D887021C1C4F40085BED8 /* TchapSharedImages.xcassets in Resources */,
 				02B34547219E383800110EC8 /* RoomsInviteCell.xib in Resources */,
 				0250C59E2122B68000034691 /* DeviceTableViewCell.xib in Resources */,
 				02B34543219E100100110EC8 /* RoomsCell.xib in Resources */,
@@ -3322,6 +3329,7 @@
 				02DFECFC21C07792009B6F15 /* Btchap-Defaults.plist in Resources */,
 				02DFEC8621C07370009B6F15 /* RegistrationFormViewController.storyboard in Resources */,
 				02DFEC8721C07370009B6F15 /* RoomMembershipWithPaginationTitleBubbleCell.xib in Resources */,
+				026D887221C1C5490085BED8 /* BtchapSharedImages.xcassets in Resources */,
 				02DFEC8821C07370009B6F15 /* Localizable.strings in Resources */,
 				02DFEC8921C07370009B6F15 /* InfoPlist.strings in Resources */,
 				02DFEC8A21C07370009B6F15 /* RoomIncomingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib in Resources */,

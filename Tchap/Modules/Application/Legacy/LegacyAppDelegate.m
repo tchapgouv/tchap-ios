@@ -229,8 +229,8 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     NSLog(@"[AppDelegate] initialize");
 
     // Set the App Group identifier.
-    MXSDKOptions *sdkOptions = [MXSDKOptions sharedInstance];
-    //sdkOptions.applicationGroupIdentifier = @"group.im.vector";
+    //MXSDKOptions *sdkOptions = [MXSDKOptions sharedInstance];
+    //sdkOptions.applicationGroupIdentifier = @"group.fr.gouv.tchap";
 
     // Redirect NSLogs to files only if we are not debugging
     if (!isatty(STDERR_FILENO))
