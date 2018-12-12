@@ -229,8 +229,8 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     NSLog(@"[AppDelegate] initialize");
 
     // Set the App Group identifier.
-    MXSDKOptions *sdkOptions = [MXSDKOptions sharedInstance];
-    //sdkOptions.applicationGroupIdentifier = @"group.im.vector";
+    //MXSDKOptions *sdkOptions = [MXSDKOptions sharedInstance];
+    //sdkOptions.applicationGroupIdentifier = @"group.fr.gouv.tchap";
 
     // Redirect NSLogs to files only if we are not debugging
     if (!isatty(STDERR_FILENO))
@@ -431,10 +431,11 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     
     _isAppForeground = NO;
     
-    // Configure our analytics. It will indeed start if the option is enabled
-    [MXSDKOptions sharedInstance].analyticsDelegate = [Analytics sharedInstance];
-    [DecryptionFailureTracker sharedInstance].delegate = [Analytics sharedInstance];
-    [[Analytics sharedInstance] start];
+    // Tchap: Disable analytics use for the moment.
+//    // Configure our analytics. It will indeed start if the option is enabled
+//    [MXSDKOptions sharedInstance].analyticsDelegate = [Analytics sharedInstance];
+//    [DecryptionFailureTracker sharedInstance].delegate = [Analytics sharedInstance];
+//    [[Analytics sharedInstance] start];
     
     // Prepare Pushkit handling
     _incomingPushEventIds = [NSMutableDictionary dictionary];

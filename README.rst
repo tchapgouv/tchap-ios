@@ -1,7 +1,7 @@
-Riot-ios
+Tchap-ios
 ==========
 
-Riot/iOS is an iOS Matrix client. 
+Tchap/iOS is an iOS Matrix client.
 
 .. image:: https://linkmaker.itunes.apple.com/images/badges/en-us/badge_appstore-lrg.svg
    :target: https://itunes.apple.com/us/app/riot-open-source-collaboration/id1083446067?mt=8
@@ -13,26 +13,24 @@ You can build the app from source as per below:
 Build instructions
 ==================
 
-Before opening the Riot Xcode workspace, you need to build it with the
+Before opening the Tchap Xcode workspace, you need to build it with the
 CocoaPods command::
 
-        $ cd Riot
+        $ cd Tchap
         $ pod install
 
-This will load all dependencies for the Riot source code, including MatrixKit 
+This will load all dependencies for the Tchap source code, including MatrixKit
 and MatrixSDK.  You will need an recent and updated (``pod update``) install of
 CocoaPods.
 
-Then, open ``Riot.xcworkspace`` with Xcode
+Then, open ``Tchap.xcworkspace`` with Xcode
 
-        $ open Riot.xcworkspace
+        $ open Tchap.xcworkspace
 
 Developing
 ==========
 
 Uncomment the right definitions of ``$matrixKitVersion`` for the version you want to develop and build against. For example, if you are trying to build the develop branch, uncomment ``$matrixKitVersion = 'develop'`` and make sure the more specific MatrixKit version is commented out. Once you are done editing the ``Podfile``, run ``pod install``.
-
-You may need to change the bundle identifier and app group identifier to be unique to get Xcode to build the app. Make sure to change the application group identifier everywhere by running a search for ``group.im.vector`` and changing every spot that identifier is used to your new identifier.
 
 Copyright & License
 ==================

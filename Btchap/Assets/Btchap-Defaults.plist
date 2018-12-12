@@ -10,32 +10,21 @@
 	<string>tchap.gouv.fr</string>
 	<key>preferredIdentityServerNames</key>
 	<array>
-		<string>agent.tchap.gouv.fr</string>
-		<string>agent.elysee.tchap.gouv.fr</string>
-		<string>agent.pm.tchap.gouv.fr</string>
-		<string>agent.ssi.tchap.gouv.fr</string>
-		<string>agent.finances.tchap.gouv.fr</string>
-		<string>agent.social.tchap.gouv.fr</string>
-		<string>agent.interieur.tchap.gouv.fr</string>
-		<string>agent.agriculture.tchap.gouv.fr</string>
-		<string>agent.justice.tchap.gouv.fr</string>
-		<string>agent.diplomatie.tchap.gouv.fr</string>
-		<string>agent.intradef.tchap.gouv.fr</string>
-		<string>agent.dinum.tchap.gouv.fr</string>
-		<string>agent.culture.tchap.gouv.fr</string>
-		<string>agent.dev-durable.tchap.gouv.fr</string>
-		<string>agent.education.tchap.gouv.fr</string>
+		<string>i.tchap.gouv.fr</string>
+		<string>a.tchap.gouv.fr</string>
 	</array>
 	<key>otherIdentityServerNames</key>
-	<array/>
+	<array>
+		<string>e.tchap.gouv.fr</string>
+	</array>
 	<key>pushGatewayURL</key>
 	<string>https://matrix.org/_matrix/push/v1/notify</string>
 	<key>pusherAppIdDev</key>
-	<string>fr.gouv.tchap.ios.dev</string>
+	<string>fr.gouv.btchap.ios.dev</string>
 	<key>pusherAppIdProd</key>
-	<string>fr.gouv.tchap.ios.prod</string>
+	<string>fr.gouv.btchap.ios.prod</string>
 	<key>pushKitAppIdProd</key>
-	<string>fr.gouv.tchap.ios.voip.prod</string>
+	<string>fr.gouv.btchap.ios.voip.prod</string>
 	<key>webAppUrlDev</key>
 	<string>https://riot.im/develop</string>
 	<key>webAppUrlBeta</key>
@@ -72,21 +61,8 @@
 	<string>riot-ios</string>
 	<key>roomDirectoryServers</key>
 	<array>
-		<string>agent.tchap.gouv.fr</string>
-		<string>agent.elysee.tchap.gouv.fr</string>
-		<string>agent.pm.tchap.gouv.fr</string>
-		<string>agent.ssi.tchap.gouv.fr</string>
-		<string>agent.finances.tchap.gouv.fr</string>
-		<string>agent.social.tchap.gouv.fr</string>
-		<string>agent.interieur.tchap.gouv.fr</string>
-		<string>agent.agriculture.tchap.gouv.fr</string>
-		<string>agent.justice.tchap.gouv.fr</string>
-		<string>agent.diplomatie.tchap.gouv.fr</string>
-		<string>agent.intradef.tchap.gouv.fr</string>
-		<string>agent.dinum.tchap.gouv.fr</string>
-		<string>agent.culture.tchap.gouv.fr</string>
-		<string>agent.dev-durable.tchap.gouv.fr</string>
-		<string>agent.education.tchap.gouv.fr</string>
+		<string>i.tchap.gouv.fr</string>
+		<string>a.tchap.gouv.fr</string>
 	</array>
 </dict>
 </plist>
