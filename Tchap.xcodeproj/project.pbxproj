@@ -490,7 +490,6 @@
 		02DFEC7321C07370009B6F15 /* RoomOutgoingAttachmentBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF8E5214BE467003DFBA4 /* RoomOutgoingAttachmentBubbleCell.m */; };
 		02DFEC7421C07370009B6F15 /* MatrixIDComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C4646221BACEB3005F4D53 /* MatrixIDComponents.swift */; };
 		02DFEC7621C07370009B6F15 /* JitsiMeet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3233F7441F3497DA006ACA81 /* JitsiMeet.framework */; };
-		02DFEC7721C07370009B6F15 /* Pods_TchapPods_Tchap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B068E8162D4DB055C098230 /* Pods_TchapPods_Tchap.framework */; };
 		02DFEC7921C07370009B6F15 /* ring.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F083BBDE1E7009EC00A9B29C /* ring.mp3 */; };
 		02DFEC7A21C07370009B6F15 /* RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 020DF909214BE467003DFBA4 /* RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib */; };
 		02DFEC7B21C07370009B6F15 /* TableViewCellWithCheckBoxes.xib in Resources */ = {isa = PBXBuildFile; fileRef = 020DF868214BE467003DFBA4 /* TableViewCellWithCheckBoxes.xib */; };
@@ -1400,7 +1399,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				02DFEC7621C07370009B6F15 /* JitsiMeet.framework in Frameworks */,
-				02DFEC7721C07370009B6F15 /* Pods_TchapPods_Tchap.framework in Frameworks */,
 				5DC1A44F89EF6CE6BA50480C /* Pods_TchapPods_Btchap.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3074,7 +3072,7 @@
 			dependencies = (
 			);
 			name = Tchap;
-			productName = Vector;
+			productName = Tchap;
 			productReference = 0250C5BF2122B68000034691 /* Tchap.app */;
 			productType = "com.apple.product-type.application";
 		};
@@ -3097,7 +3095,7 @@
 			dependencies = (
 			);
 			name = Btchap;
-			productName = Vector;
+			productName = Btchap;
 			productReference = 02DFECF521C07370009B6F15 /* Btchap.app */;
 			productType = "com.apple.product-type.application";
 		};
@@ -3128,7 +3126,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0940;
-				ORGANIZATIONNAME = matrix.org;
+				ORGANIZATIONNAME = DINSIC;
 				TargetAttributes = {
 					0250C48C2122B68000034691 = {
 						SystemCapabilities = {
