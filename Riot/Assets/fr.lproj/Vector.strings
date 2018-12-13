@@ -556,3 +556,18 @@
 "room_resource_usage_limit_reached_message_1_monthly_active_user" = "Ce serveur d'accueil a atteint sa limite mensuelle d'utilisateurs actifs donc ";
 "room_resource_usage_limit_reached_message_2" = "quelques utilisateurs ne pourront pas se connecter.";
 "room_resource_usage_limit_reached_message_contact_3" = " pour augmenter cette limite.";
+// Tchap (override MatrixKit strings)
+"attachment_e2e_keys_file_prompt" = "Ce fichier contient des clés de chiffrement exportées d'un client Tchap.\nVoulez-vous voir le contenu du fichier ou importer les clés qu'il contient ?";
+// E2E import
+"e2e_import_room_keys" = "Importer les clés du salon";
+"e2e_import_prompt" = "Ce processus permet d'importer les clés de chiffrement que vous avez précédemment exportées d'un autre client Tchap. Vous pourrez ensuite déchiffrer tous les messages que l'autre client pouvait déchiffrer.\nLe fichier d'export est protégé par une phrase secrète. Entrez la phrase secrète ci-dessous pour déchiffrer le fichier.";
+"e2e_import" = "Importer";
+"e2e_passphrase_enter" = "Entrer la phrase secrète";
+// E2E export
+"e2e_export_room_keys" = "Exporter les clés de salon";
+"e2e_export_prompt" = "Ce processus permet d'exporter vers un fichier local les clés des messages que vous avez reçu sur les salons chiffrés. Vous pourrez ensuite importer ce fichier dans un autre client Tchap, pour qu'il puisse déchiffrer aussi ces messages.\nLe fichier exporté permettra à tous ceux qui y ont accès de déchiffrer tous les messages chiffrés que vous pouvez voir, donc vous devriez le conserver dans un endroit sécurisé.";
+"e2e_export" = "Exporter";
+"e2e_passphrase_confirm" = "Confirmer la phrase secrète";
+"e2e_passphrase_empty" = "La phrase secrète ne peut pas être vide";
+"e2e_passphrase_not_match" = "Les phrases secrète doivent être identiques";
+"e2e_passphrase_create" = "Créer la phrase secrète";

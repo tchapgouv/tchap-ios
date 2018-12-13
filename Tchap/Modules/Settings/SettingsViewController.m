@@ -2732,7 +2732,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     currentAlert = exportView.alertController;
 
     // Use a temporary file for the export
-    keyExportsFile = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:@"riot-keys.txt"]];
+    keyExportsFile = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:@"tchap-keys.txt"]];
 
     // Make sure the file is empty
     [self deleteKeyExportFile];
