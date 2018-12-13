@@ -91,7 +91,7 @@ UIKeyboardAppearance kRiotKeyboard;
     // Load colors at the app load time for the life of the app
 
     // Colors as defined by the design
-    kRiotColorGreen = UIColorFromRGB(0x62CE9C);
+    kRiotColorGreen = UIColorFromRGB(0x162d58); //TODO: remove kRiotColorGreen references in Tchap (we set here kColorDarkBlue)
     kRiotColorSilver = UIColorFromRGB(0xC7C7CC);
     kRiotColorPinkRed = UIColorFromRGB(0xFF0064);
     kRiotColorRed = UIColorFromRGB(0xFF4444);
