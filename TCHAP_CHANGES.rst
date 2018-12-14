@@ -1,3 +1,24 @@
+Changes in Tchap 1.0.0 (2018-12-14)
+===================================================
+
+ Features/Improvements:
+ * Set up push notifications in Tchap #108
+ * Antivirus - Media scan: Implement the MediaScanManager #77
+ * Antivirus Server: encrypt the keys sent to the antivirus server #105
+ * Support the new room creation by setting up avatar, name, privacy and participants #73
+ * Update Contacts cells display #88
+ * Show the voip option #103
+ * Update project by adding Btchap target PR #120
+ * Update color of days in rooms #115
+ * Encrypted room: Do not use the warning icon for the unverified devices #109
+ * Remove beta warning dialog when using encryption #110
+ * Accept unknown devices #111
+ * Configurer le dispositif de publication de l’application
+ 
+ Bug Fixes:
+ * Registration is stuck in the email validation step #117
+ * Matrix name when exporting keys #112
+
 Changes in Tchap 0.0.4 (2018-11-22)
 ===================================================
 
