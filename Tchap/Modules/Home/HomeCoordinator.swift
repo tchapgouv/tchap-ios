@@ -143,6 +143,16 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
         
         self.add(childCoordinator: createNewDiscussionCoordinator)
     }
+    
+    private func showCreateNewRoom() {
+        let roomCreationCoordinator = RoomCreationCoordinator(session: self.session)
+        roomCreationCoordinator.delegate = self
+        roomCreationCoordinator.start()
+        
+        self.navigationRouter.present(roomCreationCoordinator, animated: true)
+        
+        self.add(childCoordinator: roomCreationCoordinator)
+    }
 }
 
 // MARK: - GlobalSearchBarDelegate
@@ -187,7 +197,7 @@ extension HomeCoordinator: HomeViewControllerDelegate {
     }
     
     func homeViewControllerDidTapCreateRoomButton(_ homeViewController: HomeViewController) {
-        
+        self.showCreateNewRoom()
     }
     
     func homeViewControllerDidTapPublicRoomsAccessButton(_ homeViewController: HomeViewController) {
@@ -225,6 +235,23 @@ extension HomeCoordinator: CreateNewDiscussionCoordinatorDelegate {
     func createNewDiscussionCoordinatorDidCancel(_ coordinator: CreateNewDiscussionCoordinatorType) {
         self.navigationRouter.dismissModule(animated: true) { [weak self] in
             self?.remove(childCoordinator: coordinator)
+        }
+    }
+}
+
+// MARK: - RoomCreationCoordinatorDelegate
+extension HomeCoordinator: RoomCreationCoordinatorDelegate {
+    
+    func roomCreationCoordinatorDidCancel(_ coordinator: RoomCreationCoordinatorType) {
+        self.navigationRouter.dismissModule(animated: true) { [weak self] in
+            self?.remove(childCoordinator: coordinator)
+        }
+    }
+    
+    func roomCreationCoordinator(_ coordinator: RoomCreationCoordinatorType, didCreateRoomWithID roomID: String) {
+        self.navigationRouter.dismissModule(animated: true) { [weak self] in
+            self?.remove(childCoordinator: coordinator)
+            self?.showRoom(with: roomID)
         }
     }
 }

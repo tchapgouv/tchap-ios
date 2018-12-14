@@ -55,7 +55,9 @@ NSString *const kRoomEncryptedDataBubbleCellTapOnEncryptionIcon = @"kRoomEncrypt
                 case MXDeviceUnknown:
                 case MXDeviceUnverified:
                 {
-                    encryptionIcon = @"e2e_warning";
+                    // Tchap: Do not use the warning icon for the moment even if the device is unverified
+                    //encryptionIcon = @"e2e_warning";
+                    encryptionIcon = @"e2e_verified";
                     break;
                 }
                 case MXDeviceVerified:
@@ -71,8 +73,10 @@ NSString *const kRoomEncryptedDataBubbleCellTapOnEncryptionIcon = @"kRoomEncrypt
     
     if (!encryptionIcon)
     {
+        // Tchap: Do not use the warning icon for the moment even if the device is unverified
         // Use the warning icon by default
-        encryptionIcon = @"e2e_warning";
+        //encryptionIcon = @"e2e_warning";
+        encryptionIcon = @"e2e_verified";
     }
     
     return [UIImage imageNamed:encryptionIcon];

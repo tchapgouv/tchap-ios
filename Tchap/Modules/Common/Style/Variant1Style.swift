@@ -50,6 +50,9 @@ final class Variant1Style: NSObject, Style {
     let primaryTextColor: UIColor = kVariant1PrimaryTextColor
     let primarySubTextColor: UIColor = kVariant1PrimarySubTextColor
     let secondaryTextColor: UIColor = kVariant1SecondaryTextColor
+    let warnTextColor: UIColor = kVariant1WarnTextColor
+    
+    let presenceIndicatorOnlineColor: UIColor = kVariant1PresenceIndicatorOnlineColor
     
     // MARK: - Commodity methods
     
@@ -81,5 +84,9 @@ final class Variant1Style: NSObject, Style {
     func applyStyle(onTextField textField: UITextField) {
         textField.textColor = self.primaryTextColor
         textField.tintColor = self.primaryTextColor
+    }
+    
+    func applyStyle(onSwitch uiSwitch: UISwitch) {
+        uiSwitch.onTintColor = self.buttonBorderedBackgroundColor
     }
 }

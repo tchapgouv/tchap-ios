@@ -6,27 +6,36 @@
 	<string>fr</string>
 	<key>serverUrlPrefix</key>
 	<string>https://matrix.</string>
+	<key>serverUrlDomain</key>
+	<string>tchap.gouv.fr</string>
 	<key>preferredIdentityServerNames</key>
 	<array>
-		<string>i.tchap.gouv.fr</string>
-		<string>a.tchap.gouv.fr</string>
+		<string>agent.tchap.gouv.fr</string>
+		<string>agent.elysee.tchap.gouv.fr</string>
+		<string>agent.pm.tchap.gouv.fr</string>
+		<string>agent.ssi.tchap.gouv.fr</string>
+		<string>agent.finances.tchap.gouv.fr</string>
+		<string>agent.social.tchap.gouv.fr</string>
+		<string>agent.interieur.tchap.gouv.fr</string>
+		<string>agent.agriculture.tchap.gouv.fr</string>
+		<string>agent.justice.tchap.gouv.fr</string>
+		<string>agent.diplomatie.tchap.gouv.fr</string>
+		<string>agent.intradef.tchap.gouv.fr</string>
+		<string>agent.dinum.tchap.gouv.fr</string>
+		<string>agent.culture.tchap.gouv.fr</string>
+		<string>agent.dev-durable.tchap.gouv.fr</string>
+		<string>agent.education.tchap.gouv.fr</string>
 	</array>
 	<key>otherIdentityServerNames</key>
 	<array/>
 	<key>pushGatewayURL</key>
 	<string>https://matrix.org/_matrix/push/v1/notify</string>
 	<key>pusherAppIdDev</key>
-	<string>im.vector.app.ios.dev</string>
+	<string>fr.gouv.tchap.ios.dev</string>
 	<key>pusherAppIdProd</key>
-	<string>im.vector.app.ios.prod</string>
+	<string>fr.gouv.tchap.ios.prod</string>
 	<key>pushKitAppIdProd</key>
-	<string>im.vector.app.ios.voip.prod</string>
-	<key>identityserverurl</key>
-	<string>https://vector.im</string>
-	<key>homeserverurl</key>
-	<string>https://matrix.org</string>
-	<key>homeserver</key>
-	<string>matrix.org</string>
+	<string>fr.gouv.tchap.ios.voip.prod</string>
 	<key>webAppUrlDev</key>
 	<string>https://riot.im/develop</string>
 	<key>webAppUrlBeta</key>
@@ -39,13 +48,6 @@
 	<string>https://scalar-staging.riot.im/scalar-web/</string>
 	<key>integrationsRestUrl</key>
 	<string>https://scalar-staging.riot.im/scalar/api</string>
-	<key>piwik</key>
-	<dict>
-		<key>url</key>
-		<string>https://piwik.riot.im/piwik.php</string>
-		<key>siteId</key>
-		<string>1</string>
-	</dict>
 	<key>showAllEventsInRoomHistory</key>
 	<false/>
 	<key>showRedactionsInRoomHistory</key>
@@ -61,23 +63,30 @@
 	<key>createConferenceCallsWithJitsi</key>
 	<true/>
 	<key>enableRageShake</key>
-	<true/>
+	<false/>
 	<key>maxAllowedMediaCacheSize</key>
 	<integer>1073741824</integer>
-	<key>presenceColorForOnlineUser</key>
-	<integer>3401011</integer>
-	<key>presenceColorForUnavailableUser</key>
-	<integer>15066368</integer>
-	<key>presenceColorForOfflineUser</key>
-	<integer>15020851</integer>
 	<key>bugReportEndpointUrl</key>
 	<string>https://riot.im/bugreports</string>
 	<key>bugReportApp</key>
 	<string>riot-ios</string>
 	<key>roomDirectoryServers</key>
 	<array>
-		<string>i.tchap.gouv.fr</string>
-		<string>a.tchap.gouv.fr</string>
+		<string>agent.tchap.gouv.fr</string>
+		<string>agent.elysee.tchap.gouv.fr</string>
+		<string>agent.pm.tchap.gouv.fr</string>
+		<string>agent.ssi.tchap.gouv.fr</string>
+		<string>agent.finances.tchap.gouv.fr</string>
+		<string>agent.social.tchap.gouv.fr</string>
+		<string>agent.interieur.tchap.gouv.fr</string>
+		<string>agent.agriculture.tchap.gouv.fr</string>
+		<string>agent.justice.tchap.gouv.fr</string>
+		<string>agent.diplomatie.tchap.gouv.fr</string>
+		<string>agent.intradef.tchap.gouv.fr</string>
+		<string>agent.dinum.tchap.gouv.fr</string>
+		<string>agent.culture.tchap.gouv.fr</string>
+		<string>agent.dev-durable.tchap.gouv.fr</string>
+		<string>agent.education.tchap.gouv.fr</string>
 	</array>
 </dict>
 </plist>

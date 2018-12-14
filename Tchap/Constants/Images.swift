@@ -55,7 +55,7 @@ internal enum Asset {
       internal static let callVideoMuteOffIcon = ImageAsset(name: "call_video_mute_off_icon")
       internal static let callVideoMuteOnIcon = ImageAsset(name: "call_video_mute_on_icon")
       internal static let cameraSwitch = ImageAsset(name: "camera_switch")
-      internal static let riotIconCallkit = ImageAsset(name: "riot_icon_callkit")
+      internal static let tchapIconCallkit = ImageAsset(name: "tchap_icon_callkit")
     }
     internal enum Common {
       internal static let adminIcon = ImageAsset(name: "admin_icon")
@@ -103,6 +103,11 @@ internal enum Asset {
         internal static let scrollup = ImageAsset(name: "scrollup")
         internal static let typing = ImageAsset(name: "typing")
       }
+      internal enum Antivirus {
+        internal static let attachmentScanStatusInProgress = ImageAsset(name: "attachment_scan_status_in_progress")
+        internal static let attachmentScanStatusInfected = ImageAsset(name: "attachment_scan_status_infected")
+        internal static let attachmentScanStatusUnavailable = ImageAsset(name: "attachment_scan_status_unavailable")
+      }
       internal enum Input {
         internal static let sendIcon = ImageAsset(name: "send_icon")
         internal static let uploadIcon = ImageAsset(name: "upload_icon")
@@ -143,7 +148,7 @@ internal enum Asset {
       Call.callVideoMuteOffIcon,
       Call.callVideoMuteOnIcon,
       Call.cameraSwitch,
-      Call.riotIconCallkit,
+      Call.tchapIconCallkit,
       Common.adminIcon,
       Common.backIcon,
       Common.chevron,
@@ -177,6 +182,9 @@ internal enum Asset {
       Room.Activities.scrolldown,
       Room.Activities.scrollup,
       Room.Activities.typing,
+      Room.Antivirus.attachmentScanStatusInProgress,
+      Room.Antivirus.attachmentScanStatusInfected,
+      Room.Antivirus.attachmentScanStatusUnavailable,
       Room.Input.sendIcon,
       Room.Input.uploadIcon,
       Room.Input.voiceCallIcon,

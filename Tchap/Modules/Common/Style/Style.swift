@@ -48,12 +48,16 @@ import UIKit
     var primaryTextColor: UIColor { get }
     var primarySubTextColor: UIColor { get }
     var secondaryTextColor: UIColor { get }
+    var warnTextColor: UIColor { get }
+    
+    var presenceIndicatorOnlineColor: UIColor { get }
     
     // MARK: - Commodity methods
     
     func applyStyle(onNavigationBar: UINavigationBar)
     func applyStyle(onButton button: UIButton, bordered: Bool)
     func applyStyle(onTextField: UITextField)
+    func applyStyle(onSwitch: UISwitch)
 }
 
 // Style default implementation

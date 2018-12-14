@@ -51,7 +51,7 @@ final class DiscussionService {
     ///   - autoJoin: When the current discussion is a pending invite, this boolean tells whether we must join it automatically before returning.
     ///   - completion: A closure called when the operation complete. Provide the discussion id (if any) when succeed.
     func getDiscussionIdentifier(for userID: String, includeInvite: Bool = true, autoJoin: Bool = true, completion: @escaping (MXResponse<DiscussionSearchResult>) -> Void) {
-        guard let roomIDsList = self.session.directRooms[userID] else {
+        guard let roomIDsList = self.session.directRooms?[userID] else {
             // There is no discussion for the moment with this user
             completion(.success(.noDiscussion))
             return

@@ -63,8 +63,7 @@
 
 
 #if __has_include(<MatrixSDK/MXJingleCallStack.h>)
-// Tchap: Disable voip call for the moment
-//#define CALL_STACK_JINGLE
+#define CALL_STACK_JINGLE
 #endif
 #ifdef CALL_STACK_JINGLE
 #import <MatrixSDK/MXJingleCallStack.h>
@@ -230,8 +229,8 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     NSLog(@"[AppDelegate] initialize");
 
     // Set the App Group identifier.
-    MXSDKOptions *sdkOptions = [MXSDKOptions sharedInstance];
-    //sdkOptions.applicationGroupIdentifier = @"group.im.vector";
+    //MXSDKOptions *sdkOptions = [MXSDKOptions sharedInstance];
+    //sdkOptions.applicationGroupIdentifier = @"group.fr.gouv.tchap";
 
     // Redirect NSLogs to files only if we are not debugging
     if (!isatty(STDERR_FILENO))
@@ -286,7 +285,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
             _build = buildNumber;
         } else
         {
-            _build = buildBranch ? buildBranch : NSLocalizedStringFromTable(@"settings_config_no_build_info", @"Vector", nil);
+            _build = buildBranch ? buildBranch : @"";
         }
     }
     return _build;
@@ -432,10 +431,11 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     
     _isAppForeground = NO;
     
-    // Configure our analytics. It will indeed start if the option is enabled
-    [MXSDKOptions sharedInstance].analyticsDelegate = [Analytics sharedInstance];
-    [DecryptionFailureTracker sharedInstance].delegate = [Analytics sharedInstance];
-    [[Analytics sharedInstance] start];
+    // Tchap: Disable analytics use for the moment.
+//    // Configure our analytics. It will indeed start if the option is enabled
+//    [MXSDKOptions sharedInstance].analyticsDelegate = [Analytics sharedInstance];
+//    [DecryptionFailureTracker sharedInstance].delegate = [Analytics sharedInstance];
+//    [[Analytics sharedInstance] start];
     
     // Prepare Pushkit handling
     _incomingPushEventIds = [NSMutableDictionary dictionary];
@@ -2376,6 +2376,11 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         EventFormatter *eventFormatter = [[EventFormatter alloc] initWithMatrixSession:account.mxSession];
         eventFormatter.isForSubtitle = YES;
         account.mxSession.roomSummaryUpdateDelegate = eventFormatter;
+        
+        if (clearCache)
+        {
+            [account.mxSession.scanManager deleteAllAntivirusScans];
+        }
     }
     
     // Force back to Recents list if room details is displayed (Room details are not available until the end of initial sync)
@@ -2718,7 +2723,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     {
         // Create adapter for Riot
         MXCallKitConfiguration *callKitConfiguration = [[MXCallKitConfiguration alloc] init];
-        callKitConfiguration.iconName = @"riot_icon_callkit";
+        callKitConfiguration.iconName = @"tchap_icon_callkit";
         MXCallKitAdapter *callKitAdapter = [[MXCallKitAdapter alloc] initWithConfiguration:callKitConfiguration];
         
         id<MXCallAudioSessionConfigurator> audioSessionConfigurator;

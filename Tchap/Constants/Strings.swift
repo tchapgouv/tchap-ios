@@ -11,6 +11,8 @@ internal enum TchapL10n {
   internal static let actionCancel = TchapL10n.tr("Tchap", "action_cancel")
   /// Suivant
   internal static let actionNext = TchapL10n.tr("Tchap", "action_next")
+  /// Valider
+  internal static let actionValidate = TchapL10n.tr("Tchap", "action_validate")
   /// L'adresse e-mail ne semble pas valide
   internal static let authenticationErrorInvalidEmail = TchapL10n.tr("Tchap", "authentication_error_invalid_email")
   /// Mot de passe trop court (min %d)
@@ -37,6 +39,8 @@ internal enum TchapL10n {
   internal static let contactsMainSection = TchapL10n.tr("Tchap", "contacts_main_section")
   /// Aucun contact
   internal static let contactsNoContact = TchapL10n.tr("Tchap", "contacts_no_contact")
+  /// Inviter au salon
+  internal static let contactsPickerTitle = TchapL10n.tr("Tchap", "contacts_picker_title")
   /// Rechercher
   internal static let contactsSearchBarPlaceholder = TchapL10n.tr("Tchap", "contacts_search_bar_placeholder")
   /// Contacts
@@ -121,6 +125,30 @@ internal enum TchapL10n {
   internal static let registrationPasswordPlaceholder = TchapL10n.tr("Tchap", "registration_password_placeholder")
   /// Inscription Tchap
   internal static let registrationTitle = TchapL10n.tr("Tchap", "registration_title")
+  /// Analyse antivirus
+  internal static let roomAttachmentScanStatusInProgressTitle = TchapL10n.tr("Tchap", "room_attachment_scan_status_in_progress_title")
+  /// Le document %@ a été filtré par le politique de sécurité
+  internal static func roomAttachmentScanStatusInfectedFileInfo(_ p1: String) -> String {
+    return TchapL10n.tr("Tchap", "room_attachment_scan_status_infected_file_info", p1)
+  }
+  /// Fichier bloqué
+  internal static let roomAttachmentScanStatusInfectedTitle = TchapL10n.tr("Tchap", "room_attachment_scan_status_infected_title")
+  /// Analyse indisponible
+  internal static let roomAttachmentScanStatusUnavailableTitle = TchapL10n.tr("Tchap", "room_attachment_scan_status_unavailable_title")
+  /// Ajouter une photo
+  internal static let roomCreationAddAvatarAction = TchapL10n.tr("Tchap", "room_creation_add_avatar_action")
+  /// Nommer le salon
+  internal static let roomCreationNamePlaceholder = TchapL10n.tr("Tchap", "room_creation_name_placeholder")
+  /// Limiter l'accès à ce salon aux membres du domaine "%@"
+  internal static func roomCreationPublicRoomFederationTitle(_ p1: String) -> String {
+    return TchapL10n.tr("Tchap", "room_creation_public_room_federation_title", p1)
+  }
+  /// Un salon public peut être rejoint par n'importe quel membre de la communauté Tchap, il ne doit contenir aucune donnée sensible.
+  internal static let roomCreationPublicVisibilityInfo = TchapL10n.tr("Tchap", "room_creation_public_visibility_info")
+  /// Rendre ce salon public
+  internal static let roomCreationPublicVisibilityTitle = TchapL10n.tr("Tchap", "room_creation_public_visibility_title")
+  /// Nouveau salon
+  internal static let roomCreationTitle = TchapL10n.tr("Tchap", "room_creation_title")
   /// Fichiers
   internal static let roomFilesTabTitle = TchapL10n.tr("Tchap", "room_files_tab_title")
   /// Envoyer un message

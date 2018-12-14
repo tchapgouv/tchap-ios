@@ -2,6 +2,7 @@
 // MARK: Actions
 "action_next" = "Suivant";
 "action_cancel" = "Annuler";
+"action_validate" = "Valider";
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Common errors
@@ -82,6 +83,8 @@
 "contacts_user_directory_offline_section" = "Répertoire Tchap (hors-ligne)";
 "contacts_search_bar_placeholder" = "Rechercher";
 
+"contacts_picker_title" = "Inviter au salon";
+
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Settings
 "settings_term_conditions_url" = "https://www.tchap.gouv.fr/tac";
@@ -113,6 +116,14 @@
 "room_settings_remove_from_rooms_directory_prompt" = "Cette action est irréversible.\nVoulez-vous vraiment retirer ce salon des salons publics ?";
 
 ////////////////////////////////////////////////////////////////////////////////
+// MARK: Room Attachment Antivirus Scan
+
+"room_attachment_scan_status_unavailable_title" = "Analyse indisponible";
+"room_attachment_scan_status_in_progress_title" = "Analyse antivirus";
+"room_attachment_scan_status_infected_title" = "Fichier bloqué";
+"room_attachment_scan_status_infected_file_info" = "Le document %@ a été filtré par le politique de sécurité";
+
+////////////////////////////////////////////////////////////////////////////////
 // MARK: Public rooms
 "public_rooms_title" = "Accéder à un salon";
 "public_rooms_search_bar_placeholder" = "Rechercher";
@@ -121,3 +132,15 @@
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Create new discussion
 "create_new_discussion_title" = "Nouvelle discussion";
+
+////////////////////////////////////////////////////////////////////////////////
+// MARK: Room creation
+
+"room_creation_title" = "Nouveau salon";
+"room_creation_name_placeholder" = "Nommer le salon";
+"room_creation_public_visibility_title" = "Rendre ce salon public";
+"room_creation_public_visibility_info" = "Un salon public peut être rejoint par n'importe quel membre de la communauté Tchap, il ne doit contenir aucune donnée sensible.";
+"room_creation_public_room_federation_title" = "Limiter l'accès à ce salon aux membres du domaine \"%@\"";
+"room_creation_add_avatar_action" = "Ajouter une photo";
+
+

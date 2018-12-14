@@ -31,9 +31,7 @@
 
 /**
  Creates and returns a new `ContactsViewController` object.
- 
- @discussion This is the designated initializer for programmatic instantiation.
- 
+  
  @param style Used to setup view style parameters.
  @return An initialized `ContactsViewController` object if successful, `nil` otherwise.
  */
@@ -43,12 +41,13 @@
  Creates and returns a new `ContactsViewController` object.
  
  @discussion This is the designated initializer for programmatic instantiation.
- 
+
  @param style Used to setup view style parameters.
  @param showSearchBar YES to indicate to show search bar.
+ @param enableMultipleSelection True enable contact selection.
  @return An initialized `ContactsViewController` object if successful, `nil` otherwise.
  */
-+ (nonnull instancetype)instantiateWithStyle:(nonnull id<Style>)style showSearchBar:(BOOL)showSearchBar;
++ (nonnull instancetype)instantiateWithStyle:(nonnull id<Style>)style showSearchBar:(BOOL)showSearchBar enableMultipleSelection:(BOOL)enableMultipleSelection;
 
 /**
  Display the contacts described in the provided data source.
@@ -74,5 +73,6 @@
  @param contact the selected contact.
  */
 - (void)contactsViewController:(nonnull ContactsViewController *)contactsViewController didSelectContact:(nonnull MXKContact*)contact;
+
 
 @end

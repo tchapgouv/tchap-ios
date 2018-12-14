@@ -86,6 +86,13 @@
 #import "RoomMembershipExpandedBubbleCell.h"
 #import "RoomMembershipExpandedWithPaginationTitleBubbleCell.h"
 
+#import "RoomAttachmentAntivirusScanStatusBubbleCell.h"
+#import "RoomAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.h"
+#import "RoomAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.h"
+#import "RoomEncryptedAttachmentAntivirusScanStatusBubbleCell.h"
+#import "RoomEncryptedAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.h"
+#import "RoomEncryptedAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.h"
+
 #import "RoomSelectedStickerBubbleCell.h"
 #import "RoomPredecessorBubbleCell.h"
 
@@ -352,6 +359,15 @@
     [self.bubblesTableView registerClass:RoomSelectedStickerBubbleCell.class forCellReuseIdentifier:RoomSelectedStickerBubbleCell.defaultReuseIdentifier];
     [self.bubblesTableView registerClass:RoomPredecessorBubbleCell.class forCellReuseIdentifier:RoomPredecessorBubbleCell.defaultReuseIdentifier];
     
+    [self.bubblesTableView registerNib:RoomAttachmentAntivirusScanStatusBubbleCell.nib forCellReuseIdentifier:RoomAttachmentAntivirusScanStatusBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerNib:RoomAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.nib forCellReuseIdentifier:RoomAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerNib:RoomAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.nib forCellReuseIdentifier:RoomAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+    
+    [self.bubblesTableView registerNib:RoomEncryptedAttachmentAntivirusScanStatusBubbleCell.nib forCellReuseIdentifier:RoomEncryptedAttachmentAntivirusScanStatusBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerNib:RoomEncryptedAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.nib forCellReuseIdentifier:RoomEncryptedAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerNib:RoomEncryptedAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.nib forCellReuseIdentifier:RoomEncryptedAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+    
+    
     // Replace the default input toolbar view.
     // Note: this operation will force the layout of subviews. That is why cell view classes must be registered before.
     [self updateRoomInputToolbarViewClassIfNeeded];
@@ -555,34 +571,34 @@
     }];
     [self refreshMissedDiscussionsCount:YES];
     
-    // Warn about the beta state of e2e encryption when entering the first time in an encrypted room
-    MXKAccount *account = [[MXKAccountManager sharedManager] accountForUserId:self.roomDataSource.mxSession.myUser.userId];
-    if (account && !account.isWarnedAboutEncryption && self.roomDataSource.room.summary.isEncrypted)
-    {
-        [currentAlert dismissViewControllerAnimated:NO completion:nil];
-        
-        __weak __typeof(self) weakSelf = self;
-        currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"warning", @"Vector", nil)
-                                                           message:NSLocalizedStringFromTable(@"room_warning_about_encryption", @"Vector", nil)
-                                                    preferredStyle:UIAlertControllerStyleAlert];
-        
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
-                                                         style:UIAlertActionStyleDefault
-                                                       handler:^(UIAlertAction * action) {
-                                                           
-                                                           if (weakSelf)
-                                                           {
-                                                               typeof(self) self = weakSelf;
-                                                               self->currentAlert = nil;
-                                                               
-                                                               account.warnedAboutEncryption = YES;
-                                                           }
-                                                           
-                                                       }]];
-        
-        [currentAlert mxk_setAccessibilityIdentifier:@"RoomVCEncryptionAlert"];
-        [self presentViewController:currentAlert animated:YES completion:nil];
-    }
+//    // Warn about the beta state of e2e encryption when entering the first time in an encrypted room
+//    MXKAccount *account = [[MXKAccountManager sharedManager] accountForUserId:self.roomDataSource.mxSession.myUser.userId];
+//    if (account && !account.isWarnedAboutEncryption && self.roomDataSource.room.summary.isEncrypted)
+//    {
+//        [currentAlert dismissViewControllerAnimated:NO completion:nil];
+//        
+//        __weak __typeof(self) weakSelf = self;
+//        currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"warning", @"Vector", nil)
+//                                                           message:NSLocalizedStringFromTable(@"room_warning_about_encryption", @"Vector", nil)
+//                                                    preferredStyle:UIAlertControllerStyleAlert];
+//        
+//        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+//                                                         style:UIAlertActionStyleDefault
+//                                                       handler:^(UIAlertAction * action) {
+//                                                           
+//                                                           if (weakSelf)
+//                                                           {
+//                                                               typeof(self) self = weakSelf;
+//                                                               self->currentAlert = nil;
+//                                                               
+//                                                               account.warnedAboutEncryption = YES;
+//                                                           }
+//                                                           
+//                                                       }]];
+//        
+//        [currentAlert mxk_setAccessibilityIdentifier:@"RoomVCEncryptionAlert"];
+//        [self presentViewController:currentAlert animated:YES completion:nil];
+//    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -1633,8 +1649,23 @@
     {
         id<MXKRoomBubbleCellDataStoring> bubbleData = (id<MXKRoomBubbleCellDataStoring>)cellData;
         
-        // Select the suitable table view cell class, by considering first the empty bubble cell.
-        if (bubbleData.hasNoDisplay)
+        // Select the suitable table view cell class
+        if (bubbleData.showAntivirusScanStatus)
+        {
+            if (bubbleData.isPaginationFirstBubble)
+            {
+                cellViewClass = isEncryptedRoom ? RoomEncryptedAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.class : RoomAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.class;
+            }
+            else if (bubbleData.shouldHideSenderInformation)
+            {
+                cellViewClass = isEncryptedRoom ? RoomEncryptedAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.class : RoomAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.class;
+            }
+            else
+            {
+                cellViewClass = isEncryptedRoom ? RoomEncryptedAttachmentAntivirusScanStatusBubbleCell.class : RoomAttachmentAntivirusScanStatusBubbleCell.class;
+            }
+        }
+        else if (bubbleData.hasNoDisplay)
         {
             cellViewClass = RoomEmptyBubbleCell.class;
         }
@@ -3780,49 +3811,62 @@
             }
         }
         
-        currentAlert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"unknown_devices_alert_title"]
-                                                           message:[NSBundle mxk_localizedStringForKey:@"unknown_devices_alert"]
-                                                    preferredStyle:UIAlertControllerStyleAlert];
+        // Tchap: automatically accept unknown devices for the moment, we will change this later.
+        // Acknowledge the existence of all devices
+        [self startActivityIndicator];
+        [self.mainSession.crypto setDevicesKnown:self->unknownDevices complete:^{
+            
+            MXStrongifyAndReturnIfNil(self);
+            self->unknownDevices = nil;
+            [self stopActivityIndicator];
+            
+            // And resend pending messages
+            [self resendAllUnsentMessages];
+        }];
         
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"unknown_devices_verify"]
-                                                         style:UIAlertActionStyleDefault
-                                                       handler:^(UIAlertAction * action) {
-                                                           
-                                                           MXStrongifyAndReturnIfNil(self);
-                                                           self->currentAlert = nil;
-                                                           UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
-                                                           UINavigationController *navigationController = [storyboard instantiateViewControllerWithIdentifier:@"UsersDevicesNavigationControllerStoryboardId"];
-                                                           
-                                                           UsersDevicesViewController *usersDevicesViewController = navigationController.childViewControllers.firstObject;
-                                                           [usersDevicesViewController displayUsersDevices:self->unknownDevices andMatrixSession:self.roomDataSource.mxSession onComplete:nil];
-                                                           
-                                                           self->unknownDevices = nil;
-                                                           [self presentViewController:navigationController animated:YES completion:nil];
-                                                           
-                                                       }]];
-        
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"unknown_devices_send_anyway"]
-                                                         style:UIAlertActionStyleDefault
-                                                       handler:^(UIAlertAction * action) {
-                                                           
-                                                           MXStrongifyAndReturnIfNil(self);
-                                                           self->currentAlert = nil;
-                                                           
-                                                           // Acknowledge the existence of all devices
-                                                           [self startActivityIndicator];
-                                                           [self.mainSession.crypto setDevicesKnown:self->unknownDevices complete:^{
-                                                               
-                                                               self->unknownDevices = nil;
-                                                               [self stopActivityIndicator];
-                                                               
-                                                               // And resend pending messages
-                                                               [self resendAllUnsentMessages];
-                                                           }];
-                                                           
-                                                       }]];
-        
-        [currentAlert mxk_setAccessibilityIdentifier:@"RoomVCUnknownDevicesAlert"];
-        [self presentViewController:currentAlert animated:YES completion:nil];
+//        currentAlert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"unknown_devices_alert_title"]
+//                                                           message:[NSBundle mxk_localizedStringForKey:@"unknown_devices_alert"]
+//                                                    preferredStyle:UIAlertControllerStyleAlert];
+//        
+//        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"unknown_devices_verify"]
+//                                                         style:UIAlertActionStyleDefault
+//                                                       handler:^(UIAlertAction * action) {
+//                                                           
+//                                                           MXStrongifyAndReturnIfNil(self);
+//                                                           self->currentAlert = nil;
+//                                                           UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+//                                                           UINavigationController *navigationController = [storyboard instantiateViewControllerWithIdentifier:@"UsersDevicesNavigationControllerStoryboardId"];
+//                                                           
+//                                                           UsersDevicesViewController *usersDevicesViewController = navigationController.childViewControllers.firstObject;
+//                                                           [usersDevicesViewController displayUsersDevices:self->unknownDevices andMatrixSession:self.roomDataSource.mxSession onComplete:nil];
+//                                                           
+//                                                           self->unknownDevices = nil;
+//                                                           [self presentViewController:navigationController animated:YES completion:nil];
+//                                                           
+//                                                       }]];
+//        
+//        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"unknown_devices_send_anyway"]
+//                                                         style:UIAlertActionStyleDefault
+//                                                       handler:^(UIAlertAction * action) {
+//                                                           
+//                                                           MXStrongifyAndReturnIfNil(self);
+//                                                           self->currentAlert = nil;
+//                                                           
+//                                                           // Acknowledge the existence of all devices
+//                                                           [self startActivityIndicator];
+//                                                           [self.mainSession.crypto setDevicesKnown:self->unknownDevices complete:^{
+//                                                               
+//                                                               self->unknownDevices = nil;
+//                                                               [self stopActivityIndicator];
+//                                                               
+//                                                               // And resend pending messages
+//                                                               [self resendAllUnsentMessages];
+//                                                           }];
+//                                                           
+//                                                       }]];
+//        
+//        [currentAlert mxk_setAccessibilityIdentifier:@"RoomVCUnknownDevicesAlert"];
+//        [self presentViewController:currentAlert animated:YES completion:nil];
     }
 }
 

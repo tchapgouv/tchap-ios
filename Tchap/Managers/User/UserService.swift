@@ -17,7 +17,8 @@
 import Foundation
 
 /// `UserService` implementation of `UserServiceType` is used to handle Tchap users.
-final class UserService: UserServiceType {
+@objcMembers
+final class UserService: NSObject, UserServiceType {
     
     // MARK: - Constants
     
@@ -33,6 +34,8 @@ final class UserService: UserServiceType {
     
     init(session: MXSession) {
         self.session = session
+        
+        super.init()
     }
     
     // MARK: - Public
@@ -77,6 +80,14 @@ final class UserService: UserServiceType {
         return User(userId: userId, displayName: displayName, avatarStringURL: nil)
     }
     
+    func isUserId(_ firstUserId: String, belongToSameDomainAs secondUserId: String) -> Bool {
+        guard let firstUserHomeserver = self.homeserver(from: firstUserId),
+            let secondUserHomeserver = self.homeserver(from: secondUserId) else {
+                return false
+        }
+        return firstUserHomeserver == secondUserHomeserver
+    }
+    
     // MARK: - Private
     
     private func buildUser(from mxUser: MXUser) -> User {
@@ -104,5 +115,12 @@ final class UserService: UserServiceType {
         }
         
         return displayName
+    }
+        
+    private func homeserver(from userId: String) -> String? {
+        guard let matrixIDComponents = MatrixIDComponents(matrixID: userId) else {
+            return nil
+        }
+        return matrixIDComponents.homeServer
     }
 }
