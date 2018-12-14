@@ -3811,49 +3811,62 @@
             }
         }
         
-        currentAlert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"unknown_devices_alert_title"]
-                                                           message:[NSBundle mxk_localizedStringForKey:@"unknown_devices_alert"]
-                                                    preferredStyle:UIAlertControllerStyleAlert];
+        // Tchap: automatically accept unknown devices for the moment, we will change this later.
+        // Acknowledge the existence of all devices
+        [self startActivityIndicator];
+        [self.mainSession.crypto setDevicesKnown:self->unknownDevices complete:^{
+            
+            MXStrongifyAndReturnIfNil(self);
+            self->unknownDevices = nil;
+            [self stopActivityIndicator];
+            
+            // And resend pending messages
+            [self resendAllUnsentMessages];
+        }];
         
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"unknown_devices_verify"]
-                                                         style:UIAlertActionStyleDefault
-                                                       handler:^(UIAlertAction * action) {
-                                                           
-                                                           MXStrongifyAndReturnIfNil(self);
-                                                           self->currentAlert = nil;
-                                                           UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
-                                                           UINavigationController *navigationController = [storyboard instantiateViewControllerWithIdentifier:@"UsersDevicesNavigationControllerStoryboardId"];
-                                                           
-                                                           UsersDevicesViewController *usersDevicesViewController = navigationController.childViewControllers.firstObject;
-                                                           [usersDevicesViewController displayUsersDevices:self->unknownDevices andMatrixSession:self.roomDataSource.mxSession onComplete:nil];
-                                                           
-                                                           self->unknownDevices = nil;
-                                                           [self presentViewController:navigationController animated:YES completion:nil];
-                                                           
-                                                       }]];
-        
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"unknown_devices_send_anyway"]
-                                                         style:UIAlertActionStyleDefault
-                                                       handler:^(UIAlertAction * action) {
-                                                           
-                                                           MXStrongifyAndReturnIfNil(self);
-                                                           self->currentAlert = nil;
-                                                           
-                                                           // Acknowledge the existence of all devices
-                                                           [self startActivityIndicator];
-                                                           [self.mainSession.crypto setDevicesKnown:self->unknownDevices complete:^{
-                                                               
-                                                               self->unknownDevices = nil;
-                                                               [self stopActivityIndicator];
-                                                               
-                                                               // And resend pending messages
-                                                               [self resendAllUnsentMessages];
-                                                           }];
-                                                           
-                                                       }]];
-        
-        [currentAlert mxk_setAccessibilityIdentifier:@"RoomVCUnknownDevicesAlert"];
-        [self presentViewController:currentAlert animated:YES completion:nil];
+//        currentAlert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"unknown_devices_alert_title"]
+//                                                           message:[NSBundle mxk_localizedStringForKey:@"unknown_devices_alert"]
+//                                                    preferredStyle:UIAlertControllerStyleAlert];
+//        
+//        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"unknown_devices_verify"]
+//                                                         style:UIAlertActionStyleDefault
+//                                                       handler:^(UIAlertAction * action) {
+//                                                           
+//                                                           MXStrongifyAndReturnIfNil(self);
+//                                                           self->currentAlert = nil;
+//                                                           UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+//                                                           UINavigationController *navigationController = [storyboard instantiateViewControllerWithIdentifier:@"UsersDevicesNavigationControllerStoryboardId"];
+//                                                           
+//                                                           UsersDevicesViewController *usersDevicesViewController = navigationController.childViewControllers.firstObject;
+//                                                           [usersDevicesViewController displayUsersDevices:self->unknownDevices andMatrixSession:self.roomDataSource.mxSession onComplete:nil];
+//                                                           
+//                                                           self->unknownDevices = nil;
+//                                                           [self presentViewController:navigationController animated:YES completion:nil];
+//                                                           
+//                                                       }]];
+//        
+//        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"unknown_devices_send_anyway"]
+//                                                         style:UIAlertActionStyleDefault
+//                                                       handler:^(UIAlertAction * action) {
+//                                                           
+//                                                           MXStrongifyAndReturnIfNil(self);
+//                                                           self->currentAlert = nil;
+//                                                           
+//                                                           // Acknowledge the existence of all devices
+//                                                           [self startActivityIndicator];
+//                                                           [self.mainSession.crypto setDevicesKnown:self->unknownDevices complete:^{
+//                                                               
+//                                                               self->unknownDevices = nil;
+//                                                               [self stopActivityIndicator];
+//                                                               
+//                                                               // And resend pending messages
+//                                                               [self resendAllUnsentMessages];
+//                                                           }];
+//                                                           
+//                                                       }]];
+//        
+//        [currentAlert mxk_setAccessibilityIdentifier:@"RoomVCUnknownDevicesAlert"];
+//        [self presentViewController:currentAlert animated:YES completion:nil];
     }
 }
 
