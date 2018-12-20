@@ -658,7 +658,6 @@
 		B1322FFC21301B5D0054A9DD /* AuthenticationServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1322FFB21301B5D0054A9DD /* AuthenticationServiceError.swift */; };
 		B1454B97216BA84100365A86 /* DisplayNameComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1454B96216BA84000365A86 /* DisplayNameComponents.swift */; };
 		B1454BCD216BBE7200365A86 /* DisplayNameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1454BCC216BBE7200365A86 /* DisplayNameTests.swift */; };
-		B1454BD1216BBF0E00365A86 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B1454BD0216BBF0D00365A86 /* Info.plist */; };
 		B146D50E21A5EAE800D8C2C6 /* RoomAttachmentAntivirusScanStatusBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B146D50521A5EAE600D8C2C6 /* RoomAttachmentAntivirusScanStatusBubbleCell.m */; };
 		B146D50F21A5EAE800D8C2C6 /* RoomAttachmentAntivirusScanStatusBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B146D50621A5EAE600D8C2C6 /* RoomAttachmentAntivirusScanStatusBubbleCell.xib */; };
 		B146D51021A5EAE800D8C2C6 /* RoomAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B146D50721A5EAE600D8C2C6 /* RoomAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.xib */; };
@@ -3438,7 +3437,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B1454BD1216BBF0E00365A86 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
