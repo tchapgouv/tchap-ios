@@ -251,6 +251,22 @@ NSString *const kEventFormatterOnReRequestKeysLinkActionSeparator = @"/";
 
 #pragma mark event sender info
 
+- (NSString*)senderDisplayNameForEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState
+{
+    NSString *senderName = [super senderDisplayNameForEvent:event withRoomState:roomState];
+    
+    // Remove the domain from this display name.
+    // FIXME: We should use "DisplayNameComponents" struct here in Swift.
+    NSRange range = [senderName rangeOfString:@"["];
+    if (range.location != NSNotFound)
+    {
+        senderName = [senderName substringToIndex:range.location];
+        senderName = [senderName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    }
+    
+    return senderName;
+}
+
 - (NSString*)senderAvatarUrlForEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState
 {
     // Override this method to ignore the identicons defined by default in matrix kit.
