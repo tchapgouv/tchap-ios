@@ -1698,6 +1698,10 @@
                 cellViewClass = bubbleData.isPaginationFirstBubble ? RoomMembershipWithPaginationTitleBubbleCell.class : RoomMembershipBubbleCell.class;
             }
         }
+        else if (bubbleData.tag == RoomBubbleCellDataTagNotice)
+        {
+            cellViewClass = bubbleData.isPaginationFirstBubble ? RoomMembershipWithPaginationTitleBubbleCell.class : RoomMembershipBubbleCell.class;
+        }
         else if (bubbleData.isIncoming)
         {
             if (bubbleData.isAttachmentWithThumbnail)

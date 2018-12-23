@@ -45,8 +45,7 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
             // Collapse them by default
             self.collapsed = YES;
         }
-        
-        if (event.eventType == MXEventTypeRoomCreate)
+        else if (event.eventType == MXEventTypeRoomCreate)
         {
             MXRoomCreateContent *createContent = [MXRoomCreateContent modelFromJSON:event.content];
             
@@ -54,6 +53,10 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
             {
                 self.tag = RoomBubbleCellDataTagRoomCreateWithPredecessor;
             }
+        }
+        else if ([self isNoticeEvent:event])
+        {
+            self.tag = RoomBubbleCellDataTagNotice;
         }
 
         // Increase maximum number of components
@@ -495,6 +498,12 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
         // We do not want to merge room create event cells with other cell types
         return NO;
     }
+    
+    if (self.tag == RoomBubbleCellDataTagNotice || bubbleCellData.tag == RoomBubbleCellDataTagNotice)
+    {
+        // We do not want to merge "notice"" event cells with other cell types
+        return NO;
+    }
 
     return [super hasSameSenderAsBubbleCellData:bubbleCellData];
 }
@@ -512,11 +521,41 @@ static NSAttributedString *readReceiptVerticalWhitespace = nil;
         // We do not want to merge room create event cells with other cell types
         return NO;
     }
+    
+    if (self.tag == RoomBubbleCellDataTagNotice || [self isNoticeEvent:event])
+    {
+        // We do not want to merge "notice"" event cells with other cell types
+        return NO;
+    }
 
     // Update read receipts for this bubble
     self.readReceipts[event.eventId] = [roomDataSource.room getEventReceipts:event.eventId sorted:YES];
 
     return [super addEvent:event andRoomState:roomState];
+}
+
+- (BOOL)isNoticeEvent:(MXEvent*)event
+{
+    BOOL isNotice;
+    
+    switch (event.eventType)
+    {
+        case MXEventTypeRoomName:
+        case MXEventTypeRoomTopic:
+        case MXEventTypeRoomAvatar:
+        case MXEventTypeRoomThirdPartyInvite:
+        case MXEventTypeCallInvite:
+        case MXEventTypeCallCandidates:
+        case MXEventTypeCallAnswer:
+        case MXEventTypeCallHangup:
+            isNotice = YES;
+            break;
+        default:
+            isNotice = NO;
+            break;
+    }
+    
+    return isNotice;
 }
 
 @end
