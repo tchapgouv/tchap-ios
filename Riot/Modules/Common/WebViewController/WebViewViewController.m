@@ -22,12 +22,11 @@
 #import "GeneratedInterface-Swift.h"
 
 @interface WebViewViewController () <Stylable>
-{
-    // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
-    id kRiotDesignValuesDidChangeThemeNotificationObserver;
-}
 
 @property (nonatomic, strong) id<Style> currentStyle;
+
+// Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
+@property (nonatomic, weak) id kRiotDesignValuesDidChangeThemeNotificationObserver;
 
 @end
 
@@ -57,8 +56,10 @@
     [super viewDidLoad];
     
     // Observe user interface theme change.
-    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    MXWeakify(self);
+    _kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
+        MXStrongifyAndReturnIfNil(self);
         [self userInterfaceThemeDidChange];
         
     }];
@@ -99,15 +100,12 @@
     return self.currentStyle.statusBarStyle;
 }
 
-- (void)destroy
+- (void)dealloc
 {
-    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    if (_kRiotDesignValuesDidChangeThemeNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
-        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:_kRiotDesignValuesDidChangeThemeNotificationObserver];
     }
-    
-    [super destroy];
 }
 
 @end

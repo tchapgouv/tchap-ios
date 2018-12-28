@@ -240,6 +240,9 @@ NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBanne
     // Screen tracking
     [[Analytics sharedInstance] trackScreen:@"RoomSettings"];
     
+    // Release the potential media picker
+    [self dismissMediaPicker];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateRules:) name:kMXNotificationCenterDidUpdateRules object:nil];
     
     // Observe appDelegateDidTapStatusBarNotificationObserver.
