@@ -124,7 +124,6 @@ internal enum Asset {
       internal static let fileMusicIcon = ImageAsset(name: "file_music_icon")
       internal static let filePhotoIcon = ImageAsset(name: "file_photo_icon")
       internal static let fileVideoIcon = ImageAsset(name: "file_video_icon")
-      internal static let searchBg = ImageAsset(name: "search_bg")
       internal static let searchIcon = ImageAsset(name: "search_icon")
     }
     internal enum Settings {
@@ -194,7 +193,6 @@ internal enum Asset {
       Search.fileMusicIcon,
       Search.filePhotoIcon,
       Search.fileVideoIcon,
-      Search.searchBg,
       Search.searchIcon,
       Settings.removeIconPink,
       Settings.settingsIcon,
