@@ -29,7 +29,7 @@ final class AppCoordinator: AppCoordinatorType {
     
     /// Main user Matrix session
     private var mainSession: MXSession? {
-        return MXKAccountManager.shared().accounts.first?.mxSession
+        return MXKAccountManager.shared().activeAccounts.first?.mxSession
     }
   
     // MARK: Public
@@ -73,8 +73,12 @@ final class AppCoordinator: AppCoordinatorType {
 //    }
     
     func showHome(session: MXSession) {
+        // Remove the potential existing home coordinator.
+        self.rootRouter.dismissModule(animated: false, completion: nil)
+        
         let homeCoordinator = HomeCoordinator(session: session)
         homeCoordinator.start()
+        homeCoordinator.delegate = self
         self.add(childCoordinator: homeCoordinator)
         
         self.rootRouter.setRootModule(homeCoordinator)
@@ -82,6 +86,31 @@ final class AppCoordinator: AppCoordinatorType {
         self.homeCoordinator = homeCoordinator
         
         self.registerLogoutNotification()
+    }
+    
+    private func reloadSession(clearCache: Bool) {
+        self.unregisterLogoutNotification()
+        
+        if let accounts = MXKAccountManager.shared().activeAccounts, !accounts.isEmpty {
+            for account in accounts {
+                account.reload(clearCache)
+                
+                // Replace default room summary updater
+                if let eventFormatter = EventFormatter(matrixSession: account.mxSession) {
+                    eventFormatter.isForSubtitle = true
+                    account.mxSession.roomSummaryUpdateDelegate = eventFormatter
+                }
+            }
+            
+            if clearCache {
+                // clear the media cache
+                MXMediaManager.clearCache()
+            }
+        }
+        
+        if let mainSession = self.mainSession {
+            self.showHome(session: mainSession)
+        }
     }
     
     private func registerLogoutNotification() {
@@ -120,5 +149,12 @@ extension AppCoordinator: WelcomeCoordinatorDelegate {
             // TODO: Present an error on
             // coordinator.toPresentable()
         }
+    }
+}
+
+// MARK: - HomeCoordinatorDelegate
+extension AppCoordinator: HomeCoordinatorDelegate {
+    func homeCoordinator(_ coordinator: HomeCoordinatorType, reloadMatrixSessionsByClearingCache clearCache: Bool) {
+        self.reloadSession(clearCache: clearCache)
     }
 }

@@ -26,8 +26,6 @@
 
 #import "RoomViewController.h"
 
-#import "SettingsViewController.h"
-
 #import "BugReportViewController.h"
 #import "RoomKeyRequestViewController.h"
 

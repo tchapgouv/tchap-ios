@@ -2237,13 +2237,16 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 
 - (void)launchClearCache
 {
-    [self startActivityIndicator];
-
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-
-        [[AppDelegate theDelegate] reloadMatrixSessions:YES];
-
-    });
+    if (_delegate)
+    {
+        [self startActivityIndicator];
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            
+            [self.delegate settingsViewController:self reloadMatrixSessionsByClearingCache:YES];
+            
+        });
+    }
 }
 
 //- (void)reportBug:(id)sender
@@ -2888,12 +2891,17 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         [sharedUserDefaults setObject:language forKey:@"appLanguage"];
 
         // Do a reload in order to recompute strings in the new language
-        // Note that "reloadMatrixSessions:NO" will reset room summaries
-        [self startActivityIndicator];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-
-            [[AppDelegate theDelegate] reloadMatrixSessions:NO];
-        });
+        // Note that "reloadMatrixSessionsByClearingCache:NO" will reset room summaries
+        if (_delegate)
+        {
+            [self startActivityIndicator];
+            
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                
+                [self.delegate settingsViewController:self reloadMatrixSessionsByClearingCache:NO];
+                
+            });
+        }
     }
 }
 
