@@ -1287,10 +1287,8 @@ static void *RecordingContext = &RecordingContext;
         return;
     }
 
-    MXWeakify(self);
     dispatch_sync(cameraQueue, ^{
         
-        MXStrongifyAndReturnIfNil(self);
         self->frontCameraInput = nil;
         self->backCameraInput = nil;
         self->captureSession = nil;
