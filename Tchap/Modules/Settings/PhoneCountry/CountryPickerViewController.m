@@ -23,15 +23,13 @@
 @interface CountryPickerViewController ()
 {
     /**
-     Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
-     */
-    id kRiotDesignValuesDidChangeThemeNotificationObserver;
-    
-    /**
      The fake top view displayed in case of vertical bounce.
      */
     UIView *topview;
 }
+
+// Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
+@property (nonatomic, weak) id kRiotDesignValuesDidChangeThemeNotificationObserver;
 
 @end
 
@@ -63,8 +61,10 @@
     [self.tableView addSubview:topview];
 
     // Observe user interface theme change.
-    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    MXWeakify(self);
+    _kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
+        MXStrongifyAndReturnIfNil(self);
         [self userInterfaceThemeDidChange];
         
     }];
@@ -104,17 +104,14 @@
     [[Analytics sharedInstance] trackScreen:@"CountryPicker"];
 }
 
-- (void)destroy
+- (void)dealloc
 {
-    [super destroy];
-    
     [topview removeFromSuperview];
     topview = nil;
     
-    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    if (_kRiotDesignValuesDidChangeThemeNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
-        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:_kRiotDesignValuesDidChangeThemeNotificationObserver];
     }
 }
 
