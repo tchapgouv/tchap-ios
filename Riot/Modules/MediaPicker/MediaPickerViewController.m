@@ -302,17 +302,13 @@ static void *RecordingContext = &RecordingContext;
     cameraPreviewLayer.hidden = YES;
     [self.cameraActivityIndicator startAnimating];
     
-    MXWeakify(self);
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(coordinator.transitionDuration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         
-        MXStrongifyAndReturnIfNil(self);
         [self handleScreenOrientation];
         
         // Show camera preview with delay to hide awful animation
-        MXWeakify(self);
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             
-            MXStrongifyAndReturnIfNil(self);
             [self.cameraActivityIndicator stopAnimating];
             self->cameraPreviewLayer.hidden = NO;
             
@@ -330,16 +326,15 @@ static void *RecordingContext = &RecordingContext;
             showPopUpInViewController:self
                     completionHandler:^(BOOL granted) {
                         
+                        // Check whether the picker has not been removed before reloading the user albums.
                         MXStrongifyAndReturnIfNil(self);
                         if (granted)
                         {
                             // Load recent captures if this is not already done
                             if (!self->recentCaptures.count)
                             {
-                                MXWeakify(self);
                                 dispatch_async(dispatch_get_main_queue(), ^{
                                     
-                                    MXStrongifyAndReturnIfNil(self);
                                     [self reloadRecentCapturesCollection];
                                     [self reloadUserLibraryAlbums];
                                     
@@ -583,10 +578,8 @@ static void *RecordingContext = &RecordingContext;
         return;
     }
     
-    MXWeakify(self);
     dispatch_async(userAlbumsQueue, ^{
         
-        MXStrongifyAndReturnIfNil(self);
         // List user albums which are not empty
         PHFetchResult *albums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:PHAssetCollectionSubtypeAlbumRegular options:nil];
         
@@ -644,10 +637,8 @@ static void *RecordingContext = &RecordingContext;
             [updatedUserAlbums insertObject:cameraRollAlbum atIndex:0];
         }
         
-        MXWeakify(self);
         dispatch_async(dispatch_get_main_queue(), ^{
             
-            MXStrongifyAndReturnIfNil(self);
             self->userAlbums = updatedUserAlbums;
             if (self->userAlbums.count)
             {
@@ -823,10 +814,8 @@ static void *RecordingContext = &RecordingContext;
         [[PHImageManager defaultManager] requestAVAssetForVideo:asset options:options resultHandler:^(AVAsset * _Nullable asset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info) {
             
             MXStrongifyAndReturnIfNil(self);
-            MXWeakify(self);
             dispatch_async(dispatch_get_main_queue(), ^{
                 
-                MXStrongifyAndReturnIfNil(self);
                 if ([topVC respondsToSelector:@selector(stopActivityIndicator)])
                 {
                     [topVC stopActivityIndicator];
@@ -1102,10 +1091,8 @@ static void *RecordingContext = &RecordingContext;
     
     [self.cameraActivityIndicator startAnimating];
     
-    MXWeakify(self);
     dispatch_async(cameraQueue, ^{
         
-        MXStrongifyAndReturnIfNil(self);
         // Get the Camera Device
         AVCaptureDevice *frontCamera = nil;
         AVCaptureDevice *backCamera = nil;
@@ -1191,9 +1178,7 @@ static void *RecordingContext = &RecordingContext;
             }
         }
         
-        MXWeakify(self);
         dispatch_async(dispatch_get_main_queue(), ^{
-            MXStrongifyAndReturnIfNil(self);
             self.cameraSwitchButton.hidden = (!frontCamera || !backCamera);
         });
         
@@ -1271,9 +1256,7 @@ static void *RecordingContext = &RecordingContext;
         }
         else
         {
-            MXWeakify(self);
             dispatch_async(dispatch_get_main_queue(), ^{
-                MXStrongifyAndReturnIfNil(self);
                 [self.cameraActivityIndicator stopAnimating];
             });
         }
@@ -1338,10 +1321,8 @@ static void *RecordingContext = &RecordingContext;
     NSError *error = [[note userInfo] objectForKey:AVCaptureSessionErrorKey];
     NSLog(@"[MediaPickerVC] AV Session Error: %@", error);
     
-    MXWeakify(self);
     dispatch_async(dispatch_get_main_queue(), ^{
         
-        MXStrongifyAndReturnIfNil(self);
         [self tearDownAVCapture];
         // Retry
         [self performSelector:@selector(setupAVCapture) withObject:nil afterDelay:1.0];
@@ -1352,10 +1333,8 @@ static void *RecordingContext = &RecordingContext;
 - (void)AVCaptureSessionDidStartRunning:(NSNotification*)note
 {
     // Show camera preview with delay to hide camera settlement
-    MXWeakify(self);
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         
-        MXStrongifyAndReturnIfNil(self);
         [self.cameraActivityIndicator stopAnimating];
         self->cameraPreviewLayer.hidden = NO;
         
@@ -1371,10 +1350,8 @@ static void *RecordingContext = &RecordingContext;
 {
     if (frontCameraInput && backCameraInput)
     {
-        MXWeakify(self);
         dispatch_async(dispatch_get_main_queue(), ^{
             
-            MXStrongifyAndReturnIfNil(self);
             if (!self->canToggleCamera)
             {
                 return;
@@ -1394,10 +1371,8 @@ static void *RecordingContext = &RecordingContext;
                 oldInput = self->backCameraInput;
             }
             
-            MXWeakify(self);
             dispatch_async(self->cameraQueue, ^{
                 
-                MXStrongifyAndReturnIfNil(self);
                 [self->captureSession beginConfiguration];
                 [self->captureSession removeInput:oldInput];
                 if ([self->captureSession canAddInput:newInput]) {
@@ -1406,10 +1381,8 @@ static void *RecordingContext = &RecordingContext;
                 }
                 [self->captureSession commitConfiguration];
                 
-                MXWeakify(self);
                 dispatch_async(dispatch_get_main_queue(), ^{
                     
-                    MXStrongifyAndReturnIfNil(self);
                     [self.cameraActivityIndicator stopAnimating];
                     self->cameraPreviewLayer.hidden = NO;
                     self->canToggleCamera = YES;
@@ -1426,10 +1399,8 @@ static void *RecordingContext = &RecordingContext;
 {
     self.cameraCaptureButton.enabled = NO;
     
-    MXWeakify(self);
     dispatch_async(cameraQueue, ^{
         
-        MXStrongifyAndReturnIfNil(self);
         if (![self->movieFileOutput isRecording])
         {
             self->lockInterfaceRotation = YES;
@@ -1464,10 +1435,8 @@ static void *RecordingContext = &RecordingContext;
 
 - (void)stopMovieRecording
 {
-    MXWeakify(self);
     dispatch_async(cameraQueue, ^{
         
-        MXStrongifyAndReturnIfNil(self);
         if ([self->movieFileOutput isRecording])
         {
             [self->movieFileOutput stopRecording];
@@ -1479,10 +1448,8 @@ static void *RecordingContext = &RecordingContext;
 {
     self.cameraCaptureButton.enabled = NO;
     
-    MXWeakify(self);
     dispatch_async(cameraQueue, ^{
         
-        MXStrongifyAndReturnIfNil(self);
         // Update the orientation on the still image output video connection before capturing.
         [[self->stillImageOutput connectionWithMediaType:AVMediaTypeVideo] setVideoOrientation:[[self->cameraPreviewLayer connection] videoOrientation]];
         
@@ -1538,16 +1505,12 @@ static void *RecordingContext = &RecordingContext;
 
 - (void)runStillImageCaptureAnimation
 {
-    MXWeakify(self);
     dispatch_async(dispatch_get_main_queue(), ^{
         
-        MXStrongifyAndReturnIfNil(self);
         [self->cameraPreviewLayer setOpacity:0.0];
         
-        MXWeakify(self);
         [UIView animateWithDuration:.25 animations:^{
             
-            MXStrongifyAndReturnIfNil(self);
             [self->cameraPreviewLayer setOpacity:1.0];
             
         }];
@@ -1571,10 +1534,8 @@ static void *RecordingContext = &RecordingContext;
     {
         BOOL isRecording = [change[NSKeyValueChangeNewKey] boolValue];
         
-        MXWeakify(self);
         dispatch_async(dispatch_get_main_queue(), ^{
             
-            MXStrongifyAndReturnIfNil(self);
             if (isRecording)
             {
                 self.cameraSwitchButton.enabled = NO;
