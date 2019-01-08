@@ -2224,27 +2224,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         }
     }];
     
-    [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionIgnoredUsersDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull notif) {
-        
-        NSLog(@"[AppDelegate] kMXSessionIgnoredUsersDidChangeNotification received. Reload the app");
-        
-        // Reload entirely the app when a user has been ignored or unignored
-        [[AppDelegate theDelegate] reloadMatrixSessions:YES];
-        
-    }];
-    
-    [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionDidCorruptDataNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull notif) {
-        
-        NSLog(@"[AppDelegate] kMXSessionDidCorruptDataNotification received. Reload the app");
-        
-        // Reload entirely the app when a session has corrupted its data
-        [[AppDelegate theDelegate] reloadMatrixSessions:YES];
-        
-    }];
-    
-    // Add observer on settings changes.
-    [[MXKAppSettings standardAppSettings] addObserver:self forKeyPath:@"showAllEventsInRoomHistory" options:0 context:nil];
-    
     // Prepare account manager
     MXKAccountManager *accountManager = [MXKAccountManager sharedManager];
     
@@ -2359,35 +2338,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     for (MXSession *session in mxSessionArray)
     {
         [session markAllMessagesAsRead];
-    }
-}
-
-- (void)reloadMatrixSessions:(BOOL)clearCache
-{
-    // Reload all running matrix sessions
-    NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
-    for (MXKAccount *account in mxAccounts)
-    {
-        [account reload:clearCache];
-        
-        // Replace default room summary updater
-        EventFormatter *eventFormatter = [[EventFormatter alloc] initWithMatrixSession:account.mxSession];
-        eventFormatter.isForSubtitle = YES;
-        account.mxSession.roomSummaryUpdateDelegate = eventFormatter;
-        
-        if (clearCache)
-        {
-            [account.mxSession.scanManager deleteAllAntivirusScans];
-        }
-    }
-    
-    // Force back to Recents list if room details is displayed (Room details are not available until the end of initial sync)
-//    [self popToHomeViewControllerAnimated:NO completion:nil];
-    
-    if (clearCache)
-    {
-        // clear the media cache
-        [MXMediaManager clearCache];
     }
 }
 
@@ -2513,12 +2463,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    if ([@"showAllEventsInRoomHistory" isEqualToString:keyPath])
-    {
-        // Flush and restore Matrix data
-        [self reloadMatrixSessions:NO];
-    }
-    else if ([@"enableInAppNotifications" isEqualToString:keyPath] && [object isKindOfClass:[MXKAccount class]])
+    if ([@"enableInAppNotifications" isEqualToString:keyPath] && [object isKindOfClass:[MXKAccount class]])
     {
         [self enableInAppNotificationsForAccount:(MXKAccount*)object];
     }
