@@ -154,9 +154,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     NSMutableArray<MXDevice *> *devicesArray;
     DeviceView *deviceView;
     
-    // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
-    id kAppDelegateDidTapStatusBarNotificationObserver;
-    
     //
     UIAlertController *resetPwdAlertController;
 
@@ -180,10 +177,11 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 @property (strong, nonatomic) id<Style> currentStyle;
 
 // Observer
-@property (nonatomic, weak) id kRiotDesignValuesDidChangeThemeNotificationObserver;
+@property (nonatomic, weak) id riotDesignValuesDidChangeThemeNotificationObserver;
 @property (nonatomic, weak) id removedAccountObserver;
 @property (nonatomic, weak) id accountUserInfoObserver;
 @property (nonatomic, weak) id pushInfoUpdateObserver;
+@property (nonatomic, weak) id appDelegateDidTapStatusBarNotificationObserver;
 
 @end
 
@@ -239,7 +237,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     
     // Observe user interface theme change.
     MXWeakify(self);
-    _kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    _riotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         MXStrongifyAndReturnIfNil(self);
         [self userInterfaceThemeDidChange];
@@ -328,9 +326,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         documentInteractionController = nil;
     }
     
-    if (_kRiotDesignValuesDidChangeThemeNotificationObserver)
+    if (_riotDesignValuesDidChangeThemeNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:_kRiotDesignValuesDidChangeThemeNotificationObserver];
+        [[NSNotificationCenter defaultCenter] removeObserver:_riotDesignValuesDidChangeThemeNotificationObserver];
     }
     
     if (_removedAccountObserver)
@@ -346,6 +344,11 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     if (_pushInfoUpdateObserver)
     {
         [[NSNotificationCenter defaultCenter] removeObserver:_pushInfoUpdateObserver];
+    }
+    
+    if (_appDelegateDidTapStatusBarNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:_appDelegateDidTapStatusBarNotificationObserver];
     }
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -395,9 +398,11 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     // Refresh devices in parallel
     [self loadDevices];
     
-    // Observe kAppDelegateDidTapStatusBarNotificationObserver.
-    kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    // Observe kAppDelegateDidTapStatusBarNotification.
+    MXWeakify(self);
+    _appDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
+        MXStrongifyAndReturnIfNil(self);
         [self.tableView setContentOffset:CGPointMake(-self.tableView.mxk_adjustedContentInset.left, -self.tableView.mxk_adjustedContentInset.top) animated:YES];
         
     }];
@@ -424,10 +429,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         resetPwdAlertController = nil;
     }
     
-    if (kAppDelegateDidTapStatusBarNotificationObserver)
+    if (_appDelegateDidTapStatusBarNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:kAppDelegateDidTapStatusBarNotificationObserver];
-        kAppDelegateDidTapStatusBarNotificationObserver = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:_appDelegateDidTapStatusBarNotificationObserver];
     }
 }
 
@@ -2237,13 +2241,16 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 
 - (void)launchClearCache
 {
-    [self startActivityIndicator];
-
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-
-        [[AppDelegate theDelegate] reloadMatrixSessions:YES];
-
-    });
+    if (_delegate)
+    {
+        [self startActivityIndicator];
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            
+            [self.delegate settingsViewController:self reloadMatrixSessionsByClearingCache:YES];
+            
+        });
+    }
 }
 
 //- (void)reportBug:(id)sender
@@ -2888,12 +2895,17 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         [sharedUserDefaults setObject:language forKey:@"appLanguage"];
 
         // Do a reload in order to recompute strings in the new language
-        // Note that "reloadMatrixSessions:NO" will reset room summaries
-        [self startActivityIndicator];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-
-            [[AppDelegate theDelegate] reloadMatrixSessions:NO];
-        });
+        // Note that "reloadMatrixSessionsByClearingCache:NO" will reset room summaries
+        if (_delegate)
+        {
+            [self startActivityIndicator];
+            
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                
+                [self.delegate settingsViewController:self reloadMatrixSessionsByClearingCache:NO];
+                
+            });
+        }
     }
 }
 
