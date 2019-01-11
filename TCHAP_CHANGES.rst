@@ -1,3 +1,17 @@
+Changes in Tchap 1.0.1 (2019-01-11)
+===================================================
+
+ Features/Improvements:
+ * Room history: update bubbles display #127
+ * Apply the Tchap tint color to the green icons #126
+ 
+ Bug Fixes:
+ * Unexpected logout #134
+ * Clear cache doesn't work properly #124
+ * room preview doesn't work #113
+ * The new joined discussions are displayed like a "salon" #122
+ * Rename the discussions left by the other member ("Salon vide") #128
+
 Changes in Tchap 1.0.0 (2018-12-14)
 ===================================================
 
