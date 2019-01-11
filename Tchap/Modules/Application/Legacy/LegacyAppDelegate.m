@@ -225,10 +225,12 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 + (void)initialize
 {
     NSLog(@"[AppDelegate] initialize");
+    
+    [LegacyAppDelegate setupUserDefaults];
 
     // Set the App Group identifier.
-    //MXSDKOptions *sdkOptions = [MXSDKOptions sharedInstance];
-    //sdkOptions.applicationGroupIdentifier = @"group.fr.gouv.tchap";
+    MXSDKOptions *sdkOptions = [MXSDKOptions sharedInstance];
+    sdkOptions.applicationGroupIdentifier = [[NSUserDefaults standardUserDefaults] objectForKey:@"appGroupId"];
 
     // Redirect NSLogs to files only if we are not debugging
     if (!isatty(STDERR_FILENO))
@@ -366,23 +368,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     NSLog(@"[AppDelegate] didFinishLaunchingWithOptions");
 #endif
 
-    // User credentials (in MXKAccount) are no more stored in NSUserDefaults but in a file
-    // as advised at https://forums.developer.apple.com/thread/15685#45849.
-    // So, there is no more need to loop (sometimes forever) until
-    // [application isProtectedDataAvailable] becomes YES.
-    // But, as we are not so sure, loop but no more than 10s.
-//    // TODO: Remove this loop.
-//    NSUInteger loopCount = 0;
-//
-//    // Check whether the content protection is active before going further.
-//    // Should fix the spontaneous logout.
-//    while (![application isProtectedDataAvailable] && loopCount++ < 50)
-//    {
-//        // Wait for protected data.
-//        [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.2f]];
-//    }
-//
-//    NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: isProtectedDataAvailable: %@ (%tu)", @([application isProtectedDataAvailable]), loopCount);
     NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: isProtectedDataAvailable: %@", @([application isProtectedDataAvailable]));
 
     // Log app information
@@ -397,8 +382,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     NSLog(@"MatrixSDK version: %@", MatrixSDKVersion);
     NSLog(@"Build: %@\n", build);
     NSLog(@"------------------------------\n");
-    
-    [self setupUserDefaults];
 
     // Set up runtime language and fallback by considering the userDefaults object shared within the application group.
     NSUserDefaults *sharedUserDefaults = [MXKAppSettings standardAppSettings].sharedUserDefaults;
@@ -3784,22 +3767,13 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 
 #pragma mark - Settings
 
-- (void)setupUserDefaults
++ (void)setupUserDefaults
 {
     // Register "Tchap-Defaults.plist" default values
     NSString* userDefaults = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"UserDefaults"];
     NSString *defaultsPathFromApp = [[NSBundle mainBundle] pathForResource:userDefaults ofType:@"plist"];
     NSDictionary *defaults = [NSDictionary dictionaryWithContentsOfFile:defaultsPathFromApp];
     [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
-    
-    // Now use RiotSettings and NSUserDefaults to store `showDecryptedContentInNotifications` setting option
-    // Migrate this information from main MXKAccount to RiotSettings, if value is not in UserDefaults
-    
-    if (!RiotSettings.shared.isShowDecryptedContentInNotificationsHasBeenSetOnce)
-    {
-        MXKAccount *currentAccount = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-        RiotSettings.shared.showDecryptedContentInNotifications = currentAccount.showDecryptedContentInNotifications;
-    }
 }
 
 @end

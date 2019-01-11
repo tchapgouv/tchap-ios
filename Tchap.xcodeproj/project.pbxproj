@@ -2926,7 +2926,6 @@
 				8B24EBDB14F52DD337C40E49 /* Pods-TchapPods-TchapTests.debug.xcconfig */,
 				456A8484841ECDA7F54D5999 /* Pods-TchapPods-TchapTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -3126,11 +3125,21 @@
 				TargetAttributes = {
 					0250C48C2122B68000034691 = {
 						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
 							com.apple.SafariKeychain = {
 								enabled = 0;
 							};
 							com.apple.Siri = {
 								enabled = 0;
+							};
+						};
+					};
+					02DFEB6F21C07370009B6F15 = {
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
 							};
 						};
 					};
