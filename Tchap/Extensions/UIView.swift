@@ -50,6 +50,7 @@ extension UIView {
         let minDimension = min(self.bounds.size.width, self.bounds.size.height)
         self.layer.cornerRadius = minDimension/2
         self.layer.masksToBounds = true
+        self.layer.mask = nil
     }
     
     func tc_makeHexagon(borderWidth: CGFloat = 0.0, borderColor: UIColor = UIColor.black) {

@@ -197,7 +197,9 @@ final class RoomService: RoomServiceType {
     }
     
     private func randomString(length: Int) -> String {
-        let letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
-        return String((0..<length).map { _ in letters.randomElement()! })
+        let letters = Set("ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890")
+        return String((0..<length).map { _ in
+            return letters.randomElement() ?? Character("A")
+        })
     }
 }

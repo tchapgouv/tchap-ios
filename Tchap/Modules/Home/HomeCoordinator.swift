@@ -16,6 +16,10 @@
 
 import Foundation
 
+protocol HomeCoordinatorDelegate: class {
+    func homeCoordinator(_ coordinator: HomeCoordinatorType, reloadMatrixSessionsByClearingCache clearCache: Bool)
+}
+
 final class HomeCoordinator: NSObject, HomeCoordinatorType {
     
     // MARK: - Properties
@@ -33,6 +37,8 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
     // MARK: Public
     
     var childCoordinators: [Coordinator] = []
+    
+    weak var delegate: HomeCoordinatorDelegate?
     
     // MARK: - Setup
     
@@ -94,6 +100,7 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
     private func showSettings(animated: Bool) {
         let settingsCoordinator = SettingsCoordinator(router: self.navigationRouter)
         settingsCoordinator.start()
+        settingsCoordinator.delegate = self
         
         self.add(childCoordinator: settingsCoordinator)
         self.navigationRouter.push(settingsCoordinator, animated: animated) {
@@ -152,6 +159,14 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
         self.navigationRouter.present(roomCreationCoordinator, animated: true)
         
         self.add(childCoordinator: roomCreationCoordinator)
+    }
+}
+
+// MARK: - SettingsCoordinatorDelegate
+extension HomeCoordinator: SettingsCoordinatorDelegate {
+    func settingsCoordinator(_ coordinator: SettingsCoordinatorType, reloadMatrixSessionsByClearingCache clearCache: Bool) {
+        self.navigationRouter.popToRootModule(animated: false)
+        self.delegate?.homeCoordinator(self, reloadMatrixSessionsByClearingCache: clearCache)
     }
 }
 

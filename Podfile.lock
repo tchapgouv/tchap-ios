@@ -39,31 +39,31 @@ PODS:
   - HPGrowingTextView (1.1)
   - libbase58 (0.1.4)
   - libPhoneNumber-iOS (0.9.13)
-  - MatrixKit (0.9.1):
+  - MatrixKit (0.9.3):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.21)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixKit/Core (= 0.9.1)
-    - MatrixSDK (= 0.12.0)
-  - MatrixKit/Core (0.9.1):
+    - MatrixKit/Core (= 0.9.3)
+    - MatrixSDK (= 0.12.1)
+  - MatrixKit/Core (0.9.3):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.21)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixSDK (= 0.12.0)
-  - MatrixSDK (0.12.0):
-    - MatrixSDK/Core (= 0.12.0)
-  - MatrixSDK/Core (0.12.0):
+    - MatrixSDK (= 0.12.1)
+  - MatrixSDK (0.12.1):
+    - MatrixSDK/Core (= 0.12.1)
+  - MatrixSDK/Core (0.12.1):
     - AFNetworking (~> 3.2.0)
     - GZIP (~> 1.2.2)
     - libbase58 (~> 0.1.4)
     - OLMKit (~> 3.0.0)
     - Realm (~> 3.11.1)
-  - MatrixSDK/JingleCallStack (0.12.0):
+  - MatrixSDK/JingleCallStack (0.12.1):
     - MatrixSDK/Core
     - WebRTC (= 63.11.20455)
-  - MatrixSDK/SwiftSupport (0.12.0):
+  - MatrixSDK/SwiftSupport (0.12.1):
     - MatrixSDK/Core
   - OLMKit (3.0.0):
     - OLMKit/olmc (= 3.0.0)
@@ -133,10 +133,10 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   MatrixKit:
-    :commit: 064ea5ab77e361f3b33b2f35b7a1c7fb205ba325
+    :commit: 7422326d7e6cab70594b6dce2621fb6225eddc6f
     :git: https://github.com/matrix-org/matrix-ios-kit.git
   MatrixSDK:
-    :commit: e95479104398e67861491e2526736d74ac96826a
+    :commit: 8565811d3f93058a16333806d5c23708147dcf69
     :git: https://github.com/matrix-org/matrix-ios-sdk.git
   PiwikTracker:
     :commit: dfb048f25f4eefbe13ff7515c3c1c2cad5d94491
@@ -152,8 +152,8 @@ SPEC CHECKSUMS:
   HPGrowingTextView: 88a716d97fb853bcb08a4a08e4727da17efc9b19
   libbase58: 7c040313537b8c44b6e2d15586af8e21f7354efd
   libPhoneNumber-iOS: e444379ac18bbfbdefad571da735b2cd7e096caa
-  MatrixKit: 84242042ce625d06f4fabc440a2df56e9188e45e
-  MatrixSDK: 34972f2cd8ac5e2c7f58dc9e5395c3ff8360661f
+  MatrixKit: af9f94f36644bc21b63b114413f7bb510506b7d1
+  MatrixSDK: f1f510d467d127a5f7afafaafa1554ac5d602132
   OLMKit: 88eda69110489f817d59bcb4353b7c247570aa4f
   PiwikTracker: 42862c7b13028065c3dfd36b4dc38db8a5765acf
   Realm: 864477d028db77f7c5a0cba64a4892ad53db128a

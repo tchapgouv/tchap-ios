@@ -18,6 +18,7 @@
 #import "RoomIncomingTextMsgBubbleCell.h"
 
 #import "RiotDesignValues.h"
+#import "DesignValues.h"
 
 @implementation RoomIncomingTextMsgBubbleCell
 
@@ -25,7 +26,7 @@
 {
     [super customizeTableViewCellRendering];
     
-    self.userNameLabel.textColor = kRiotPrimaryTextColor;
+    self.userNameLabel.textColor = kColorLightNavy;
     self.messageTextView.tintColor = kRiotColorGreen;
 }
 

@@ -26,8 +26,6 @@
 
 #import "RoomViewController.h"
 
-#import "SettingsViewController.h"
-
 #import "BugReportViewController.h"
 #import "RoomKeyRequestViewController.h"
 
@@ -227,10 +225,12 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 + (void)initialize
 {
     NSLog(@"[AppDelegate] initialize");
+    
+    [LegacyAppDelegate setupUserDefaults];
 
     // Set the App Group identifier.
-    //MXSDKOptions *sdkOptions = [MXSDKOptions sharedInstance];
-    //sdkOptions.applicationGroupIdentifier = @"group.fr.gouv.tchap";
+    MXSDKOptions *sdkOptions = [MXSDKOptions sharedInstance];
+    sdkOptions.applicationGroupIdentifier = [[NSUserDefaults standardUserDefaults] objectForKey:@"appGroupId"];
 
     // Redirect NSLogs to files only if we are not debugging
     if (!isatty(STDERR_FILENO))
@@ -368,23 +368,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     NSLog(@"[AppDelegate] didFinishLaunchingWithOptions");
 #endif
 
-    // User credentials (in MXKAccount) are no more stored in NSUserDefaults but in a file
-    // as advised at https://forums.developer.apple.com/thread/15685#45849.
-    // So, there is no more need to loop (sometimes forever) until
-    // [application isProtectedDataAvailable] becomes YES.
-    // But, as we are not so sure, loop but no more than 10s.
-//    // TODO: Remove this loop.
-//    NSUInteger loopCount = 0;
-//
-//    // Check whether the content protection is active before going further.
-//    // Should fix the spontaneous logout.
-//    while (![application isProtectedDataAvailable] && loopCount++ < 50)
-//    {
-//        // Wait for protected data.
-//        [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.2f]];
-//    }
-//
-//    NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: isProtectedDataAvailable: %@ (%tu)", @([application isProtectedDataAvailable]), loopCount);
     NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: isProtectedDataAvailable: %@", @([application isProtectedDataAvailable]));
 
     // Log app information
@@ -399,8 +382,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     NSLog(@"MatrixSDK version: %@", MatrixSDKVersion);
     NSLog(@"Build: %@\n", build);
     NSLog(@"------------------------------\n");
-    
-    [self setupUserDefaults];
 
     // Set up runtime language and fallback by considering the userDefaults object shared within the application group.
     NSUserDefaults *sharedUserDefaults = [MXKAppSettings standardAppSettings].sharedUserDefaults;
@@ -2226,27 +2207,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         }
     }];
     
-    [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionIgnoredUsersDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull notif) {
-        
-        NSLog(@"[AppDelegate] kMXSessionIgnoredUsersDidChangeNotification received. Reload the app");
-        
-        // Reload entirely the app when a user has been ignored or unignored
-        [[AppDelegate theDelegate] reloadMatrixSessions:YES];
-        
-    }];
-    
-    [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionDidCorruptDataNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull notif) {
-        
-        NSLog(@"[AppDelegate] kMXSessionDidCorruptDataNotification received. Reload the app");
-        
-        // Reload entirely the app when a session has corrupted its data
-        [[AppDelegate theDelegate] reloadMatrixSessions:YES];
-        
-    }];
-    
-    // Add observer on settings changes.
-    [[MXKAppSettings standardAppSettings] addObserver:self forKeyPath:@"showAllEventsInRoomHistory" options:0 context:nil];
-    
     // Prepare account manager
     MXKAccountManager *accountManager = [MXKAccountManager sharedManager];
     
@@ -2361,35 +2321,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     for (MXSession *session in mxSessionArray)
     {
         [session markAllMessagesAsRead];
-    }
-}
-
-- (void)reloadMatrixSessions:(BOOL)clearCache
-{
-    // Reload all running matrix sessions
-    NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
-    for (MXKAccount *account in mxAccounts)
-    {
-        [account reload:clearCache];
-        
-        // Replace default room summary updater
-        EventFormatter *eventFormatter = [[EventFormatter alloc] initWithMatrixSession:account.mxSession];
-        eventFormatter.isForSubtitle = YES;
-        account.mxSession.roomSummaryUpdateDelegate = eventFormatter;
-        
-        if (clearCache)
-        {
-            [account.mxSession.scanManager deleteAllAntivirusScans];
-        }
-    }
-    
-    // Force back to Recents list if room details is displayed (Room details are not available until the end of initial sync)
-//    [self popToHomeViewControllerAnimated:NO completion:nil];
-    
-    if (clearCache)
-    {
-        // clear the media cache
-        [MXMediaManager clearCache];
     }
 }
 
@@ -2515,12 +2446,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    if ([@"showAllEventsInRoomHistory" isEqualToString:keyPath])
-    {
-        // Flush and restore Matrix data
-        [self reloadMatrixSessions:NO];
-    }
-    else if ([@"enableInAppNotifications" isEqualToString:keyPath] && [object isKindOfClass:[MXKAccount class]])
+    if ([@"enableInAppNotifications" isEqualToString:keyPath] && [object isKindOfClass:[MXKAccount class]])
     {
         [self enableInAppNotificationsForAccount:(MXKAccount*)object];
     }
@@ -3841,22 +3767,13 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 
 #pragma mark - Settings
 
-- (void)setupUserDefaults
++ (void)setupUserDefaults
 {
     // Register "Tchap-Defaults.plist" default values
     NSString* userDefaults = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"UserDefaults"];
     NSString *defaultsPathFromApp = [[NSBundle mainBundle] pathForResource:userDefaults ofType:@"plist"];
     NSDictionary *defaults = [NSDictionary dictionaryWithContentsOfFile:defaultsPathFromApp];
     [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
-    
-    // Now use RiotSettings and NSUserDefaults to store `showDecryptedContentInNotifications` setting option
-    // Migrate this information from main MXKAccount to RiotSettings, if value is not in UserDefaults
-    
-    if (!RiotSettings.shared.isShowDecryptedContentInNotificationsHasBeenSetOnce)
-    {
-        MXKAccount *currentAccount = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-        RiotSettings.shared.showDecryptedContentInNotifications = currentAccount.showDecryptedContentInNotifications;
-    }
 }
 
 @end

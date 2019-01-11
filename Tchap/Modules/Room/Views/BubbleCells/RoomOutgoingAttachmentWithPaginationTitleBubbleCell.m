@@ -18,6 +18,7 @@
 #import "RoomOutgoingAttachmentWithPaginationTitleBubbleCell.h"
 
 #import "RiotDesignValues.h"
+#import "DesignValues.h"
 
 @implementation RoomOutgoingAttachmentWithPaginationTitleBubbleCell
 
@@ -25,7 +26,7 @@
 {
     [super customizeTableViewCellRendering];
     
-    self.userNameLabel.textColor = kRiotPrimaryTextColor;
+    self.userNameLabel.textColor = kColorLightNavy;
     
     self.paginationLabel.textColor = kRiotColorGreen;
     self.paginationSeparatorView.backgroundColor = kRiotColorGreen;

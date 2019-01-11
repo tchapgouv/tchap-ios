@@ -64,7 +64,6 @@ internal enum Asset {
       internal static let createRoom = ImageAsset(name: "create_room")
       internal static let disclosureIcon = ImageAsset(name: "disclosure_icon")
       internal static let group = ImageAsset(name: "group")
-      internal static let logo = ImageAsset(name: "logo")
       internal static let placeholder = ImageAsset(name: "placeholder")
       internal static let plusIcon = ImageAsset(name: "plus_icon")
       internal static let removeIcon = ImageAsset(name: "remove_icon")
@@ -115,11 +114,9 @@ internal enum Asset {
       }
       internal static let addParticipant = ImageAsset(name: "add_participant")
       internal static let appsIcon = ImageAsset(name: "apps-icon")
-      internal static let detailsIcon = ImageAsset(name: "details_icon")
       internal static let editIcon = ImageAsset(name: "edit_icon")
       internal static let jumpToUnread = ImageAsset(name: "jump_to_unread")
       internal static let mainAliasIcon = ImageAsset(name: "main_alias_icon")
-      internal static let membersListIcon = ImageAsset(name: "members_list_icon")
       internal static let modIcon = ImageAsset(name: "mod_icon")
     }
     internal enum Search {
@@ -127,7 +124,6 @@ internal enum Asset {
       internal static let fileMusicIcon = ImageAsset(name: "file_music_icon")
       internal static let filePhotoIcon = ImageAsset(name: "file_photo_icon")
       internal static let fileVideoIcon = ImageAsset(name: "file_video_icon")
-      internal static let searchBg = ImageAsset(name: "search_bg")
       internal static let searchIcon = ImageAsset(name: "search_icon")
     }
     internal enum Settings {
@@ -155,7 +151,6 @@ internal enum Asset {
       Common.createRoom,
       Common.disclosureIcon,
       Common.group,
-      Common.logo,
       Common.placeholder,
       Common.plusIcon,
       Common.removeIcon,
@@ -190,17 +185,14 @@ internal enum Asset {
       Room.Input.voiceCallIcon,
       Room.addParticipant,
       Room.appsIcon,
-      Room.detailsIcon,
       Room.editIcon,
       Room.jumpToUnread,
       Room.mainAliasIcon,
-      Room.membersListIcon,
       Room.modIcon,
       Search.fileDocIcon,
       Search.fileMusicIcon,
       Search.filePhotoIcon,
       Search.fileVideoIcon,
-      Search.searchBg,
       Search.searchIcon,
       Settings.removeIconPink,
       Settings.settingsIcon,

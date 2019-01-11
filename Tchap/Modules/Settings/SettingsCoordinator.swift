@@ -16,7 +16,11 @@
 
 import Foundation
 
-final class SettingsCoordinator: SettingsCoordinatorType {
+protocol SettingsCoordinatorDelegate: class {
+    func settingsCoordinator(_ coordinator: SettingsCoordinatorType, reloadMatrixSessionsByClearingCache clearCache: Bool)
+}
+
+final class SettingsCoordinator: NSObject, SettingsCoordinatorType {
     
     // MARK: - Properties
     
@@ -29,6 +33,8 @@ final class SettingsCoordinator: SettingsCoordinatorType {
     
     var childCoordinators: [Coordinator] = []
     
+    weak var delegate: SettingsCoordinatorDelegate?
+    
     // MARK: - Setup
     
     init(router: NavigationRouterType) {
@@ -39,9 +45,18 @@ final class SettingsCoordinator: SettingsCoordinatorType {
     // MARK: - Public methods
     
     func start() {
+        self.settingsViewController.delegate = self
     }
     
     func toPresentable() -> UIViewController {
         return self.settingsViewController
+    }
+}
+
+// MARK: - SettingsViewControllerDelegate
+extension SettingsCoordinator: SettingsViewControllerDelegate {
+    
+    func settingsViewController(_ settingsViewController: SettingsViewController!, reloadMatrixSessionsByClearingCache clearCache: Bool) {
+        self.delegate?.settingsCoordinator(self, reloadMatrixSessionsByClearingCache: clearCache)
     }
 }

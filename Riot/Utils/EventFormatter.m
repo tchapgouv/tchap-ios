@@ -251,6 +251,22 @@ NSString *const kEventFormatterOnReRequestKeysLinkActionSeparator = @"/";
 
 #pragma mark event sender info
 
+- (NSString*)senderDisplayNameForEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState
+{
+    NSString *senderName = [super senderDisplayNameForEvent:event withRoomState:roomState];
+    
+    // Remove the domain from this display name.
+    // FIXME: We should use "DisplayNameComponents" struct here in Swift.
+    NSRange range = [senderName rangeOfString:@"["];
+    if (range.location != NSNotFound)
+    {
+        senderName = [senderName substringToIndex:range.location];
+        senderName = [senderName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    }
+    
+    return senderName;
+}
+
 - (NSString*)senderAvatarUrlForEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState
 {
     // Override this method to ignore the identicons defined by default in matrix kit.
@@ -374,6 +390,32 @@ NSString *const kEventFormatterOnReRequestKeysLinkActionSeparator = @"/";
     [roomPredecessorAttributedString addAttribute:NSForegroundColorAttributeName value:self.defaultTextColor range:wholeStringRange];
     
     return roomPredecessorAttributedString;
+}
+
+#pragma mark - MXRoomSummaryUpdating
+
+- (BOOL)session:(MXSession*)session updateRoomSummary:(MXRoomSummary*)summary withServerRoomSummary:(MXRoomSyncSummary*)serverRoomSummary roomState:(MXRoomState*)roomState
+{
+    BOOL ret = [super session:session updateRoomSummary:summary withServerRoomSummary:serverRoomSummary roomState:roomState];
+    
+    // Tchap - Direct chat: the discussion must keep the display name and the avatar of the other member, even if this member has left.
+    if (summary.room.isDirect)
+    {
+        NSArray<MXRoomMember *> *leftMembers = [roomState.members membersWithMembership:MXMembershipLeave];
+        if (leftMembers.count)
+        {
+            MXRoomMember *leftMember = leftMembers.firstObject;
+            // The left member display name is available in prevContent.
+            NSString *leftMemberDisplayname;
+            NSString *leftMemberAvatar;
+            MXJSONModelSetString(leftMemberDisplayname, leftMember.originalEvent.prevContent[@"displayname"]);
+            MXJSONModelSetString(leftMemberAvatar, leftMember.originalEvent.prevContent[@"avatar_url"]);
+            summary.displayname = leftMemberDisplayname;
+            summary.avatar = leftMemberAvatar;
+        }
+    }
+    
+    return ret;
 }
 
 @end

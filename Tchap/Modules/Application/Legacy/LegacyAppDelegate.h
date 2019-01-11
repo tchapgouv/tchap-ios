@@ -95,9 +95,6 @@ extern NSString *const kLegacyAppDelegateDidLoginNotification;
 // Mark all messages as read in the running matrix sessions.
 - (void)markAllMessagesAsRead;
 
-// Reload all running matrix sessions
-- (void)reloadMatrixSessions:(BOOL)clearCache;
-
 /**
  Log out all the accounts after asking for a potential confirmation.
  Show the authentication screen on successful logout.

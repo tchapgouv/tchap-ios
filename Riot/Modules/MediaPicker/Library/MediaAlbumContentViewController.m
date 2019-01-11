@@ -26,11 +26,6 @@
 @interface MediaAlbumContentViewController ()
 {
     /**
-     Observe UIApplicationWillEnterForegroundNotification to refresh bubbles when app leaves the background state.
-     */
-    id UIApplicationWillEnterForegroundNotificationObserver;
-    
-    /**
      The current list of assets retrieved from collection.
      */
     PHFetchResult *assets;
@@ -39,12 +34,13 @@
      The currently selected media. Nil when the multiselection is not active.
      */
     NSMutableArray <PHAsset*> *selectedAssets;
-    
-    /**
-     Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
-     */
-    id kRiotDesignValuesDidChangeThemeNotificationObserver;
 }
+
+// Observe UIApplicationWillEnterForegroundNotification to refresh bubbles when app leaves the background state.
+@property (nonatomic, weak) id UIApplicationWillEnterForegroundNotificationObserver;
+
+// Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
+@property (nonatomic, weak) id kRiotDesignValuesDidChangeThemeNotificationObserver;
 
 @end
 
@@ -89,22 +85,25 @@
         self.mediaTypes = @[(NSString *)kUTTypeImage];
     }
     
-    // Observe UIApplicationWillEnterForegroundNotification to refresh captures collection when app leaves the background state.
-    UIApplicationWillEnterForegroundNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillEnterForegroundNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-        
-        // Force a full refresh of the displayed collection
-        self.assetsCollection = _assetsCollection;
-        
-    }];
-
     if (_allowsMultipleSelection)
     {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"media_picker_select", @"Vector", nil) style:UIBarButtonItemStylePlain target:self action:@selector(onSelect:)];
     }
     
-    // Observe user interface theme change.
-    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    MXWeakify(self);
+    // Observe UIApplicationWillEnterForegroundNotification to refresh captures collection when app leaves the background state.
+    _UIApplicationWillEnterForegroundNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillEnterForegroundNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
+        // Force a full refresh of the displayed collection
+        MXStrongifyAndReturnIfNil(self);
+        self.assetsCollection = self.assetsCollection;
+        
+    }];
+    
+    // Observe user interface theme change.
+    _kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        MXStrongifyAndReturnIfNil(self);
         [self userInterfaceThemeDidChange];
         
     }];
@@ -137,14 +136,15 @@
     return NO;
 }
 
-- (void)destroy
+- (void)dealloc
 {
-    [super destroy];
-    
-    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    if (_UIApplicationWillEnterForegroundNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
-        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:_UIApplicationWillEnterForegroundNotificationObserver];
+    }
+    if (_kRiotDesignValuesDidChangeThemeNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:_kRiotDesignValuesDidChangeThemeNotificationObserver];
     }
 }
 

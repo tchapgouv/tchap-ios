@@ -29,7 +29,7 @@ final class AppCoordinator: AppCoordinatorType {
     
     /// Main user Matrix session
     private var mainSession: MXSession? {
-        return MXKAccountManager.shared().accounts.first?.mxSession
+        return MXKAccountManager.shared().activeAccounts.first?.mxSession
     }
   
     // MARK: Public
@@ -73,8 +73,14 @@ final class AppCoordinator: AppCoordinatorType {
 //    }
     
     func showHome(session: MXSession) {
+        // Remove the potential existing home coordinator.
+        if let homeCoordinator = self.homeCoordinator {
+            self.remove(childCoordinator: homeCoordinator)
+        }
+        
         let homeCoordinator = HomeCoordinator(session: session)
         homeCoordinator.start()
+        homeCoordinator.delegate = self
         self.add(childCoordinator: homeCoordinator)
         
         self.rootRouter.setRootModule(homeCoordinator)
@@ -82,6 +88,35 @@ final class AppCoordinator: AppCoordinatorType {
         self.homeCoordinator = homeCoordinator
         
         self.registerLogoutNotification()
+        self.registerIgnoredUsersDidChangeNotification()
+        self.registerDidCorruptDataNotification()
+    }
+    
+    private func reloadSession(clearCache: Bool) {
+        self.unregisterLogoutNotification()
+        self.unregisterIgnoredUsersDidChangeNotification()
+        self.unregisterDidCorruptDataNotification()
+        
+        if let accounts = MXKAccountManager.shared().activeAccounts, !accounts.isEmpty {
+            for account in accounts {
+                account.reload(clearCache)
+                
+                // Replace default room summary updater
+                if let eventFormatter = EventFormatter(matrixSession: account.mxSession) {
+                    eventFormatter.isForSubtitle = true
+                    account.mxSession.roomSummaryUpdateDelegate = eventFormatter
+                }
+            }
+            
+            if clearCache {
+                // clear the media cache
+                MXMediaManager.clearCache()
+            }
+        }
+        
+        if let mainSession = self.mainSession {
+            self.showHome(session: mainSession)
+        }
     }
     
     private func registerLogoutNotification() {
@@ -92,8 +127,26 @@ final class AppCoordinator: AppCoordinatorType {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.legacyAppDelegateDidLogout, object: nil)
     }
     
+    private func registerIgnoredUsersDidChangeNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadSessionAndClearCache), name: NSNotification.Name.mxSessionIgnoredUsersDidChange, object: nil)
+    }
+    
+    private func unregisterIgnoredUsersDidChangeNotification() {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.mxSessionIgnoredUsersDidChange, object: nil)
+    }
+    
+    private func registerDidCorruptDataNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadSessionAndClearCache), name: NSNotification.Name.mxSessionDidCorruptData, object: nil)
+    }
+    
+    private func unregisterDidCorruptDataNotification() {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.mxSessionDidCorruptData, object: nil)
+    }
+    
     @objc private func userDidLogout() {
         self.unregisterLogoutNotification()
+        self.unregisterIgnoredUsersDidChangeNotification()
+        self.unregisterDidCorruptDataNotification()
         
         self.showWelcome()
         
@@ -104,6 +157,11 @@ final class AppCoordinator: AppCoordinatorType {
         if let homeCoordinator = self.homeCoordinator {
             self.remove(childCoordinator: homeCoordinator)
         }
+    }
+    
+    @objc private func reloadSessionAndClearCache() {
+        // Reload entirely the app
+        self.reloadSession(clearCache: true)
     }
 }
 
@@ -120,5 +178,12 @@ extension AppCoordinator: WelcomeCoordinatorDelegate {
             // TODO: Present an error on
             // coordinator.toPresentable()
         }
+    }
+}
+
+// MARK: - HomeCoordinatorDelegate
+extension AppCoordinator: HomeCoordinatorDelegate {
+    func homeCoordinator(_ coordinator: HomeCoordinatorType, reloadMatrixSessionsByClearingCache clearCache: Bool) {
+        self.reloadSession(clearCache: clearCache)
     }
 }

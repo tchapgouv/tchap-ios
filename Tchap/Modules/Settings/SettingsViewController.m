@@ -113,15 +113,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 {
     // Current alert (if any).
     UIAlertController *currentAlert;
-
-    // listener
-    id removedAccountObserver;
-    id accountUserInfoObserver;
-    id pushInfoUpdateObserver;
-    
-    id notificationCenterWillUpdateObserver;
-    id notificationCenterDidUpdateObserver;
-    id notificationCenterDidFailObserver;
     
     // picker
     MediaPickerViewController* mediaPicker;
@@ -163,18 +154,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     NSMutableArray<MXDevice *> *devicesArray;
     DeviceView *deviceView;
     
-    // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
-    id kAppDelegateDidTapStatusBarNotificationObserver;
-    
-    // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
-    id kRiotDesignValuesDidChangeThemeNotificationObserver;
-    
-    // Postpone destroy operation when saving, pwd reset or email binding is in progress
-    BOOL isSavingInProgress;
-    BOOL isResetPwdInProgress;
-    BOOL is3PIDBindingInProgress;
-    blockSettingsViewController_onReadyToDestroy onReadyToDestroyHandler;
-    
     //
     UIAlertController *resetPwdAlertController;
 
@@ -187,9 +166,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     NSTimer *keyExportsFileDeletionTimer;
     
     BOOL keepNewPhoneNumberEditing;
-    
-    // The current pushed view controller
-    UIViewController *pushedViewController;
 }
 
 /**
@@ -199,6 +175,13 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 
 @property (weak, nonatomic) DeactivateAccountViewController *deactivateAccountViewController;
 @property (strong, nonatomic) id<Style> currentStyle;
+
+// Observer
+@property (nonatomic, weak) id riotDesignValuesDidChangeThemeNotificationObserver;
+@property (nonatomic, weak) id removedAccountObserver;
+@property (nonatomic, weak) id accountUserInfoObserver;
+@property (nonatomic, weak) id pushInfoUpdateObserver;
+@property (nonatomic, weak) id appDelegateDidTapStatusBarNotificationObserver;
 
 @end
 
@@ -219,10 +202,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     // Setup `MXKViewControllerHandling` properties
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
-    
-    isSavingInProgress = NO;
-    isResetPwdInProgress = NO;
-    is3PIDBindingInProgress = NO;
 }
 
 - (void)viewDidLoad
@@ -245,35 +224,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     self.tableView.estimatedRowHeight = 50;
     
-    // Add observer to handle removed accounts
-    removedAccountObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidRemoveAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-        
-        if ([MXKAccountManager sharedManager].accounts.count)
-        {
-            // Refresh table to remove this account
-            [self refreshSettings];
-        }
-        
-    }];
-    
-    // Add observer to handle accounts update
-    accountUserInfoObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountUserInfoDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-        
-        [self stopActivityIndicator];
-        
-        [self refreshSettings];
-        
-    }];
-    
-    // Add observer to push settings
-    pushInfoUpdateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountPushKitActivityDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-        
-        [self stopActivityIndicator];
-        
-        [self refreshSettings];
-        
-    }];
-    
     // Add each matrix session, to update the view controller appearance according to mx sessions state
     NSArray *sessions = [AppDelegate theDelegate].mxSessions;
     for (MXSession *mxSession in sessions)
@@ -286,12 +236,47 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 
     
     // Observe user interface theme change.
-    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    MXWeakify(self);
+    _riotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
+        MXStrongifyAndReturnIfNil(self);
         [self userInterfaceThemeDidChange];
         
     }];
     [self userInterfaceThemeDidChange];
+    
+    
+    // Add observer to handle removed accounts
+    _removedAccountObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidRemoveAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        MXStrongifyAndReturnIfNil(self);
+        if ([MXKAccountManager sharedManager].accounts.count)
+        {
+            // Refresh table to remove this account
+            [self refreshSettings];
+        }
+        
+    }];
+    
+    // Add observer to handle accounts update
+    _accountUserInfoObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountUserInfoDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        MXStrongifyAndReturnIfNil(self);
+        [self stopActivityIndicator];
+        
+        [self refreshSettings];
+        
+    }];
+    
+    // Add observer to push settings
+    _pushInfoUpdateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountPushKitActivityDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        MXStrongifyAndReturnIfNil(self);
+        [self stopActivityIndicator];
+        
+        [self refreshSettings];
+        
+    }];
 }
 
 - (void)userInterfaceThemeDidChange
@@ -332,11 +317,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     // Dispose of any resources that can be recreated.
 }
 
-- (void)destroy
+- (void)dealloc
 {
-    // Release the potential pushed view controller
-    [self releasePushedViewController];
-    
     if (documentInteractionController)
     {
         [documentInteractionController dismissPreviewAnimated:NO];
@@ -344,31 +326,37 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         documentInteractionController = nil;
     }
     
-    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    if (_riotDesignValuesDidChangeThemeNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
-        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:_riotDesignValuesDidChangeThemeNotificationObserver];
     }
-
-    if (isSavingInProgress || isResetPwdInProgress || is3PIDBindingInProgress)
+    
+    if (_removedAccountObserver)
     {
-        __weak typeof(self) weakSelf = self;
-        onReadyToDestroyHandler = ^() {
-            
-            if (weakSelf)
-            {
-                typeof(self) self = weakSelf;
-                [self destroy];
-            }
-            
-        };
+        [[NSNotificationCenter defaultCenter] removeObserver:_removedAccountObserver];
     }
-    else
+    
+    if (_accountUserInfoObserver)
     {
-        // Dispose all resources
-        [self reset];
-        
-        [super destroy];
+        [[NSNotificationCenter defaultCenter] removeObserver:_accountUserInfoObserver];
+    }
+    
+    if (_pushInfoUpdateObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:_pushInfoUpdateObserver];
+    }
+    
+    if (_appDelegateDidTapStatusBarNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:_appDelegateDidTapStatusBarNotificationObserver];
+    }
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    if (deviceView)
+    {
+        [deviceView removeFromSuperview];
+        deviceView = nil;
     }
 }
 
@@ -395,8 +383,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     // Screen tracking
     [[Analytics sharedInstance] trackScreen:@"Settings"];
     
-    // Release the potential pushed view controller
-    [self releasePushedViewController];
+    // Release the potential media picker
+    [self dismissMediaPicker];
     
     // Refresh display
     [self refreshSettings];
@@ -410,9 +398,11 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     // Refresh devices in parallel
     [self loadDevices];
     
-    // Observe kAppDelegateDidTapStatusBarNotificationObserver.
-    kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    // Observe kAppDelegateDidTapStatusBarNotification.
+    MXWeakify(self);
+    _appDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
+        MXStrongifyAndReturnIfNil(self);
         [self.tableView setContentOffset:CGPointMake(-self.tableView.mxk_adjustedContentInset.left, -self.tableView.mxk_adjustedContentInset.top) animated:YES];
         
     }];
@@ -438,29 +428,10 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         [resetPwdAlertController dismissViewControllerAnimated:NO completion:nil];
         resetPwdAlertController = nil;
     }
-
-    if (notificationCenterWillUpdateObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:notificationCenterWillUpdateObserver];
-        notificationCenterWillUpdateObserver = nil;
-    }
     
-    if (notificationCenterDidUpdateObserver)
+    if (_appDelegateDidTapStatusBarNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:notificationCenterDidUpdateObserver];
-        notificationCenterDidUpdateObserver = nil;
-    }
-    
-    if (notificationCenterDidFailObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:notificationCenterDidFailObserver];
-        notificationCenterDidFailObserver = nil;
-    }
-    
-    if (kAppDelegateDidTapStatusBarNotificationObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:kAppDelegateDidTapStatusBarNotificationObserver];
-        kAppDelegateDidTapStatusBarNotificationObserver = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:_appDelegateDidTapStatusBarNotificationObserver];
     }
 }
 
@@ -468,37 +439,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 
 - (void)pushViewController:(UIViewController*)viewController
 {
-    // Keep ref on pushed view controller
-    pushedViewController = viewController;
-    
     // Hide back button title
     self.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-    
     [self.navigationController pushViewController:viewController animated:YES];
-}
-
-- (void)releasePushedViewController
-{
-    if (pushedViewController)
-    {
-        if ([pushedViewController isKindOfClass:[UINavigationController class]])
-        {
-            UINavigationController *navigationController = (UINavigationController*)pushedViewController;
-            for (id subViewController in navigationController.viewControllers)
-            {
-                if ([subViewController respondsToSelector:@selector(destroy)])
-                {
-                    [subViewController destroy];
-                }
-            }
-        }
-        else if ([pushedViewController respondsToSelector:@selector(destroy)])
-        {
-            [(id)pushedViewController destroy];
-        }
-        
-        pushedViewController = nil;
-    }
 }
 
 - (void)dismissKeyboard
@@ -507,38 +450,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     [newPasswordTextField1 resignFirstResponder];
     [newPasswordTextField2 resignFirstResponder];
     [newPhoneNumberCell.mxkTextField resignFirstResponder];
-}
-
-- (void)reset
-{
-    // Remove observers
-    if (removedAccountObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:removedAccountObserver];
-        removedAccountObserver = nil;
-    }
-    
-    if (accountUserInfoObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:accountUserInfoObserver];
-        accountUserInfoObserver = nil;
-    }
-    
-    if (pushInfoUpdateObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:pushInfoUpdateObserver];
-        pushInfoUpdateObserver = nil;
-    }
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
-    onReadyToDestroyHandler = nil;
-    
-    if (deviceView)
-    {
-        [deviceView removeFromSuperview];
-        deviceView = nil;
-    }
 }
 
 -(void)setNewPhoneEditingEnabled:(BOOL)newPhoneEditingEnabled
@@ -569,7 +480,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 
 - (void)showValidationMsisdnDialogWithMessage:(NSString*)message for3PID:(MXK3PID*)threePID
 {
-    __weak typeof(self) weakSelf = self;
+    MXWeakify(self);
     
     [currentAlert dismissViewControllerAnimated:NO completion:nil];
     currentAlert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"account_msisdn_validation_title"] message:message preferredStyle:UIAlertControllerStyleAlert];
@@ -578,16 +489,13 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
                                                        
-                                                       if (weakSelf)
-                                                       {
-                                                           typeof(self) self = weakSelf;
-                                                           self->currentAlert = nil;
-                                                           
-                                                           [self stopActivityIndicator];
-                                                           
-                                                           // Reset new phone adding
-                                                           self.newPhoneEditingEnabled = NO;
-                                                       }
+                                                       MXStrongifyAndReturnIfNil(self);
+                                                       self->currentAlert = nil;
+                                                       
+                                                       [self stopActivityIndicator];
+                                                       
+                                                       // Reset new phone adding
+                                                       self.newPhoneEditingEnabled = NO;
                                                        
                                                    }]];
     
@@ -601,144 +509,100 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
                                                        
-                                                       if (weakSelf)
+                                                       MXStrongifyAndReturnIfNil(self);
+                                                       UITextField *textField = [self->currentAlert textFields].firstObject;
+                                                       NSString *smsCode = textField.text;
+                                                       
+                                                       self->currentAlert = nil;
+                                                       
+                                                       if (smsCode.length)
                                                        {
-                                                           typeof(self) self = weakSelf;
-                                                           
-                                                           UITextField *textField = [self->currentAlert textFields].firstObject;
-                                                           NSString *smsCode = textField.text;
-                                                           
-                                                           self->currentAlert = nil;
-                                                           
-                                                           if (smsCode.length)
-                                                           {
-                                                               self->is3PIDBindingInProgress = YES;
+                                                           // We retain 'self' on purpose in the blocks of the 2 operations: "submitValidationToken" and "add3PIDToUser",
+                                                           // in order to keep them running when the user leaves the settings screen.
+                                                           [threePID submitValidationToken:smsCode success:^{
                                                                
-                                                               [threePID submitValidationToken:smsCode success:^{
+                                                               // We always bind the phone numbers when registering, so let's do the same here
+                                                               [threePID add3PIDToUser:YES success:^{
                                                                    
-                                                                   // We always bind the phone numbers when registering, so let's do the same here
-                                                                   [threePID add3PIDToUser:YES success:^{
+                                                                   // Check whether the settings screen is still visible
+                                                                   if (self.navigationController)
+                                                                   {
+                                                                       [self stopActivityIndicator];
                                                                        
-                                                                       if (weakSelf)
-                                                                       {
-                                                                           typeof(self) self = weakSelf;
-                                                                           self->is3PIDBindingInProgress = NO;
-                                                                           
-                                                                           // Check whether destroy has been called during the binding
-                                                                           if (self->onReadyToDestroyHandler)
-                                                                           {
-                                                                               // Ready to destroy
-                                                                               self->onReadyToDestroyHandler();
-                                                                               self->onReadyToDestroyHandler = nil;
-                                                                           }
-                                                                           else
-                                                                           {
-                                                                               [self stopActivityIndicator];
-                                                                               
-                                                                               // Reset new phone adding
-                                                                               self.newPhoneEditingEnabled = NO;
-                                                                               
-                                                                               // Update linked 3pids
-                                                                               [self loadAccount3PIDs];
-                                                                           }
-                                                                       }
+                                                                       // Reset new phone adding
+                                                                       self.newPhoneEditingEnabled = NO;
                                                                        
-                                                                   } failure:^(NSError *error) {
-                                                                       
-                                                                       NSLog(@"[SettingsViewController] Failed to bind phone number");
-                                                                       
-                                                                       if (weakSelf)
-                                                                       {
-                                                                           typeof(self) self = weakSelf;
-                                                                           self->is3PIDBindingInProgress = NO;
-                                                                           
-                                                                           // Check whether destroy has been called during phone binding
-                                                                           if (self->onReadyToDestroyHandler)
-                                                                           {
-                                                                               // Ready to destroy
-                                                                               self->onReadyToDestroyHandler();
-                                                                               self->onReadyToDestroyHandler = nil;
-                                                                           }
-                                                                           else
-                                                                           {
-                                                                               [self stopActivityIndicator];
-                                                                               
-                                                                               NSString *myUserId = self.mainSession.myUser.userId; // TODO: Hanlde multi-account
-                                                                               [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error userInfo:myUserId ? @{kMXKErrorUserIdKey: myUserId} : nil];
-                                                                           }
-                                                                       }
-                                                                       
-                                                                   }];
+                                                                       // Update linked 3pids
+                                                                       [self loadAccount3PIDs];
+                                                                   }
                                                                    
                                                                } failure:^(NSError *error) {
                                                                    
-                                                                   NSLog(@"[SettingsViewController] Failed to submit the sms token");
+                                                                   NSLog(@"[SettingsViewController] Failed to bind phone number");
                                                                    
-                                                                   if (weakSelf)
+                                                                   // Check whether the settings screen is still visible
+                                                                   if (self.navigationController)
                                                                    {
-                                                                       typeof(self) self = weakSelf;
-                                                                       self->is3PIDBindingInProgress = NO;
+                                                                       [self stopActivityIndicator];
                                                                        
-                                                                       // Check whether destroy has been called during phone binding
-                                                                       if (self->onReadyToDestroyHandler)
-                                                                       {
-                                                                           // Ready to destroy
-                                                                           self->onReadyToDestroyHandler();
-                                                                           self->onReadyToDestroyHandler = nil;
-                                                                       }
-                                                                       else
-                                                                       {
-                                                                           // Ignore connection cancellation error
-                                                                           if (([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled))
-                                                                           {
-                                                                               [self stopActivityIndicator];
-                                                                               return;
-                                                                           }
-                                                                           
-                                                                           // Alert user
-                                                                           NSString *title = [error.userInfo valueForKey:NSLocalizedFailureReasonErrorKey];
-                                                                           NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
-                                                                           if (!title)
-                                                                           {
-                                                                               if (msg)
-                                                                               {
-                                                                                   title = msg;
-                                                                                   msg = nil;
-                                                                               }
-                                                                               else
-                                                                               {
-                                                                                   title = [NSBundle mxk_localizedStringForKey:@"error"];
-                                                                               }
-                                                                           }
-                                                                           
-                                                                           
-                                                                           self->currentAlert = [UIAlertController alertControllerWithTitle:title message:msg preferredStyle:UIAlertControllerStyleAlert];
-                                                                           
-                                                                           [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-                                                                               
-                                                                               if (weakSelf)
-                                                                               {
-                                                                                   typeof(self) self = weakSelf;
-                                                                                   self->currentAlert = nil;
-                                                                                   
-                                                                                   // Ask again the sms token
-                                                                                   [self showValidationMsisdnDialogWithMessage:message for3PID:threePID];
-                                                                               }
-                                                                               
-                                                                           }]];
-                                                                           
-                                                                           [self->currentAlert mxk_setAccessibilityIdentifier: @"SettingsVCErrorAlert"];
-                                                                           [self presentViewController:self->currentAlert animated:YES completion:nil];
-                                                                       }
+                                                                       NSString *myUserId = self.mainSession.myUser.userId; // TODO: Handle multi-account
+                                                                       [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error userInfo:myUserId ? @{kMXKErrorUserIdKey: myUserId} : nil];
                                                                    }
                                                                    
                                                                }];
-                                                           }
-                                                           else
-                                                           {
-                                                               // Ask again the sms token
-                                                               [self showValidationMsisdnDialogWithMessage:message for3PID:threePID];
-                                                           }
+                                                               
+                                                           } failure:^(NSError *error) {
+                                                               
+                                                               NSLog(@"[SettingsViewController] Failed to submit the sms token");
+                                                               
+                                                               // Check whether the settings screen is still visible
+                                                               if (self.navigationController)
+                                                               {
+                                                                   // Ignore connection cancellation error
+                                                                   if (([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled))
+                                                                   {
+                                                                       [self stopActivityIndicator];
+                                                                       return;
+                                                                   }
+                                                                   
+                                                                   // Alert user
+                                                                   NSString *title = [error.userInfo valueForKey:NSLocalizedFailureReasonErrorKey];
+                                                                   NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
+                                                                   if (!title)
+                                                                   {
+                                                                       if (msg)
+                                                                       {
+                                                                           title = msg;
+                                                                           msg = nil;
+                                                                       }
+                                                                       else
+                                                                       {
+                                                                           title = [NSBundle mxk_localizedStringForKey:@"error"];
+                                                                       }
+                                                                   }
+                                                                   
+                                                                   MXWeakify(self);
+                                                                   self->currentAlert = [UIAlertController alertControllerWithTitle:title message:msg preferredStyle:UIAlertControllerStyleAlert];
+                                                                   
+                                                                   [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                                                       
+                                                                       MXStrongifyAndReturnIfNil(self);
+                                                                       self->currentAlert = nil;
+                                                                       // Ask again the sms token
+                                                                       [self showValidationMsisdnDialogWithMessage:message for3PID:threePID];
+                                                                       
+                                                                   }]];
+                                                                   
+                                                                   [self->currentAlert mxk_setAccessibilityIdentifier: @"SettingsVCErrorAlert"];
+                                                                   [self presentViewController:self->currentAlert animated:YES completion:nil];
+                                                               }
+                                                               
+                                                           }];
+                                                       }
+                                                       else
+                                                       {
+                                                           // Ask again the sms token
+                                                           [self showValidationMsisdnDialogWithMessage:message for3PID:threePID];
                                                        }
                                                        
                                                    }]];
@@ -2377,13 +2241,16 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 
 - (void)launchClearCache
 {
-    [self startActivityIndicator];
-
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-
-        [[AppDelegate theDelegate] reloadMatrixSessions:YES];
-
-    });
+    if (_delegate)
+    {
+        [self startActivityIndicator];
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            
+            [self.delegate settingsViewController:self reloadMatrixSessionsByClearingCache:YES];
+            
+        });
+    }
 }
 
 //- (void)reportBug:(id)sender
@@ -2451,8 +2318,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     
     self.navigationItem.rightBarButtonItem.enabled = NO;
     [self startActivityIndicator];
-    isSavingInProgress = YES;
-    __weak typeof(self) weakSelf = self;
     
     MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
     
@@ -2462,30 +2327,19 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         UIImage *updatedPicture = [MXKTools forceImageOrientationUp:newAvatarImage];
         
         // Upload picture
+        // We retain 'self' on purpose during this operation in order to keep saving changes when the user leaves the settings screen.
         MXMediaLoader *uploader = [MXMediaManager prepareUploaderWithMatrixSession:account.mxSession initialRange:0 andRange:1.0];
-        
         [uploader uploadData:UIImageJPEGRepresentation(updatedPicture, 0.5) filename:nil mimeType:@"image/jpeg" success:^(NSString *url) {
             
-            if (weakSelf)
-            {
-                typeof(self) self = weakSelf;
-                
-                // Store uploaded picture url and trigger picture saving
-                self->uploadedAvatarURL = url;
-                self->newAvatarImage = nil;
-                [self onSave:nil];
-            }
-            
+            // Store uploaded picture url and trigger picture saving
+            self->uploadedAvatarURL = url;
+            self->newAvatarImage = nil;
+            [self onSave:nil];
             
         } failure:^(NSError *error) {
             
             NSLog(@"[SettingsViewController] Failed to upload image");
-            
-            if (weakSelf)
-            {
-                typeof(self) self = weakSelf;
-                [self handleErrorDuringProfileChangeSaving:error];
-            }
+            [self handleErrorDuringProfileChangeSaving:error];
             
         }];
         
@@ -2493,44 +2347,27 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     }
     else if (uploadedAvatarURL)
     {
-        [account setUserAvatarUrl:uploadedAvatarURL
-                             success:^{
-                                 
-                                 if (weakSelf)
-                                 {
-                                     typeof(self) self = weakSelf;
-                                     self->uploadedAvatarURL = nil;
-                                     [self onSave:nil];
-                                 }
-                                 
-                             }
-                             failure:^(NSError *error) {
-                                 
-                                 NSLog(@"[SettingsViewController] Failed to set avatar url");
-                                
-                                 if (weakSelf)
-                                 {
-                                     typeof(self) self = weakSelf;
-                                     [self handleErrorDuringProfileChangeSaving:error];
-                                 }
-                                 
-                             }];
+        // We retain 'self' on purpose during this operation in order to keep saving changes when the user leaves the settings screen.
+        [account setUserAvatarUrl:uploadedAvatarURL success:^{
+            
+            self->uploadedAvatarURL = nil;
+            [self onSave:nil];
+            
+        } failure:^(NSError *error) {
+            
+            NSLog(@"[SettingsViewController] Failed to set avatar url");
+            [self handleErrorDuringProfileChangeSaving:error];
+            
+        }];
         
         return;
     }
     
     // Backup is complete
-    isSavingInProgress = NO;
     [self stopActivityIndicator];
     
-    // Check whether destroy has been called durign saving
-    if (onReadyToDestroyHandler)
-    {
-        // Ready to destroy
-        onReadyToDestroyHandler();
-        onReadyToDestroyHandler = nil;
-    }
-    else
+    // Check whether the settings screen is still visible
+    if (self.navigationController)
     {
         [self.tableView reloadData];
     }
@@ -2888,118 +2725,74 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 
 - (void)displayPasswordAlert
 {
-    __weak typeof(self) weakSelf = self;
+    MXWeakify(self);
     [resetPwdAlertController dismissViewControllerAnimated:NO completion:nil];
     
     resetPwdAlertController = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"settings_change_password", @"Vector", nil) message:nil preferredStyle:UIAlertControllerStyleAlert];
     resetPwdAlertController.accessibilityLabel=@"ChangePasswordAlertController";
     savePasswordAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"save", @"Vector", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
         
-        if (weakSelf)
+        MXStrongifyAndReturnIfNil(self);
+        self->resetPwdAlertController = nil;
+        
+        if ([MXKAccountManager sharedManager].activeAccounts.count > 0)
         {
-            typeof(self) self = weakSelf;
+            [self startActivityIndicator];
             
-            self->resetPwdAlertController = nil;
-            
-            if ([MXKAccountManager sharedManager].activeAccounts.count > 0)
-            {
-                [self startActivityIndicator];
-                self->isResetPwdInProgress = YES;
+            // We retain 'self' on purpose during this operation in order to keep saving changes when the user leaves the settings screen.
+            MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+            [account changePassword:self->currentPasswordTextField.text with:self->newPasswordTextField1.text success:^{
                 
-                MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+                [self stopActivityIndicator];
                 
-                [account changePassword:currentPasswordTextField.text with:newPasswordTextField1.text success:^{
+                // Display a successful message only if the settings screen is still visible
+                if (self.navigationController)
+                {
+                    MXWeakify(self);
+                    [self->currentAlert dismissViewControllerAnimated:NO completion:nil];
                     
-                    if (weakSelf)
-                    {
-                        typeof(self) self = weakSelf;
-                        
-                        self->isResetPwdInProgress = NO;
-                        [self stopActivityIndicator];
-                        
-                        // Display a successful message only if the settings screen is still visible (destroy is not called yet)
-                        if (!self->onReadyToDestroyHandler)
-                        {
-                            [self->currentAlert dismissViewControllerAnimated:NO completion:nil];
-                            
-                            self->currentAlert = [UIAlertController alertControllerWithTitle:nil message:NSLocalizedStringFromTable(@"settings_password_updated", @"Vector", nil) preferredStyle:UIAlertControllerStyleAlert];
-                            
-                            [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
-                                                                             style:UIAlertActionStyleDefault
-                                                                           handler:^(UIAlertAction * action) {
-                                                                               
-                                                                               if (weakSelf)
-                                                                               {
-                                                                                   typeof(self) self = weakSelf;
-                                                                                   self->currentAlert = nil;
-                                                                                   
-                                                                                   // Check whether destroy has been called durign pwd change
-                                                                                   if (self->onReadyToDestroyHandler)
-                                                                                   {
-                                                                                       // Ready to destroy
-                                                                                       self->onReadyToDestroyHandler();
-                                                                                       self->onReadyToDestroyHandler = nil;
-                                                                                   }
-                                                                               }
-                                                                               
-                                                                           }]];
-                            
-                            [self->currentAlert mxk_setAccessibilityIdentifier:@"SettingsVCOnPasswordUpdatedAlert"];
-                            [self presentViewController:self->currentAlert animated:YES completion:nil];
-                        }
-                        else
-                        {
-                            // Ready to destroy
-                            self->onReadyToDestroyHandler();
-                            self->onReadyToDestroyHandler = nil;
-                        }
-                    }
+                    self->currentAlert = [UIAlertController alertControllerWithTitle:nil message:NSLocalizedStringFromTable(@"settings_password_updated", @"Vector", nil) preferredStyle:UIAlertControllerStyleAlert];
                     
-                } failure:^(NSError *error) {
+                    [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                                                                           style:UIAlertActionStyleDefault
+                                                                         handler:^(UIAlertAction * action) {
+                                                                             
+                                                                             MXStrongifyAndReturnIfNil(self);
+                                                                             self->currentAlert = nil;
+                                                                             
+                                                                         }]];
                     
-                    if (weakSelf)
-                    {
-                        typeof(self) self = weakSelf;
-                        
-                        self->isResetPwdInProgress = NO;
-                        [self stopActivityIndicator];
-                        
-                        // Display a failure message on the current screen
-                        UIViewController *rootViewController = [AppDelegate theDelegate].window.rootViewController;
-                        if (rootViewController)
-                        {
-                            [self->currentAlert dismissViewControllerAnimated:NO completion:nil];
-                            
-                            self->currentAlert = [UIAlertController alertControllerWithTitle:nil message:NSLocalizedStringFromTable(@"settings_fail_to_update_password", @"Vector", nil) preferredStyle:UIAlertControllerStyleAlert];
-                            
-                            [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                    [self->currentAlert mxk_setAccessibilityIdentifier:@"SettingsVCOnPasswordUpdatedAlert"];
+                    [self presentViewController:self->currentAlert animated:YES completion:nil];
+                }
+                
+            } failure:^(NSError *error) {
+                
+                [self stopActivityIndicator];
+                
+                // Display a failure message on the current screen
+                UIViewController *rootViewController = [AppDelegate theDelegate].window.rootViewController;
+                if (rootViewController)
+                {
+                    MXWeakify(self);
+                    [self->currentAlert dismissViewControllerAnimated:NO completion:nil];
+                    
+                    self->currentAlert = [UIAlertController alertControllerWithTitle:nil message:NSLocalizedStringFromTable(@"settings_fail_to_update_password", @"Vector", nil) preferredStyle:UIAlertControllerStyleAlert];
+                    
+                    [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
                                                                                    style:UIAlertActionStyleDefault
                                                                                  handler:^(UIAlertAction * action) {
                                                                                      
-                                                                                     if (weakSelf)
-                                                                                     {
-                                                                                         typeof(self) self = weakSelf;
-                                                                                         
-                                                                                         self->currentAlert = nil;
-                                                                                         
-                                                                                         // Check whether destroy has been called durign pwd change
-                                                                                         if (self->onReadyToDestroyHandler)
-                                                                                         {
-                                                                                             // Ready to destroy
-                                                                                             self->onReadyToDestroyHandler();
-                                                                                             self->onReadyToDestroyHandler = nil;
-                                                                                         }
-                                                                                     }
+                                                                                     MXStrongifyAndReturnIfNil(self);
+                                                                                     self->currentAlert = nil;
                                                                                      
                                                                                  }]];
-                            
-                            [self->currentAlert mxk_setAccessibilityIdentifier:@"SettingsVCPasswordChangeFailedAlert"];
-                            [rootViewController presentViewController:self->currentAlert animated:YES completion:nil];
-                        }
-                    }
                     
-                }];
-            }
+                    [self->currentAlert mxk_setAccessibilityIdentifier:@"SettingsVCPasswordChangeFailedAlert"];
+                    [rootViewController presentViewController:self->currentAlert animated:YES completion:nil];
+                }
+                
+            }];
         }
         
     }];
@@ -3010,54 +2803,39 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     
     UIAlertAction* cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
         
-        if (weakSelf)
-        {
-            typeof(self) self = weakSelf;
-            
-            self->resetPwdAlertController = nil;
-        }
+        MXStrongifyAndReturnIfNil(self);
+        self->resetPwdAlertController = nil;
         
     }];
     
     [resetPwdAlertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
         
-        if (weakSelf)
-        {
-            typeof(self) self = weakSelf;
-            
-            self->currentPasswordTextField = textField;
-            self->currentPasswordTextField.placeholder = NSLocalizedStringFromTable(@"settings_old_password", @"Vector", nil);
-            self->currentPasswordTextField.secureTextEntry = YES;
-            [self->currentPasswordTextField addTarget:self action:@selector(passwordTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-        }
+        MXStrongifyAndReturnIfNil(self);
+        self->currentPasswordTextField = textField;
+        self->currentPasswordTextField.placeholder = NSLocalizedStringFromTable(@"settings_old_password", @"Vector", nil);
+        self->currentPasswordTextField.secureTextEntry = YES;
+        [self->currentPasswordTextField addTarget:self action:@selector(passwordTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
          
      }];
     
     [resetPwdAlertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
         
-        if (weakSelf)
-        {
-            typeof(self) self = weakSelf;
-            
-            self->newPasswordTextField1 = textField;
-            self->newPasswordTextField1.placeholder = NSLocalizedStringFromTable(@"settings_new_password", @"Vector", nil);
-            self->newPasswordTextField1.secureTextEntry = YES;
-            [self->newPasswordTextField1 addTarget:self action:@selector(passwordTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-        }
+        MXStrongifyAndReturnIfNil(self);
+        self->newPasswordTextField1 = textField;
+        self->newPasswordTextField1.placeholder = NSLocalizedStringFromTable(@"settings_new_password", @"Vector", nil);
+        self->newPasswordTextField1.secureTextEntry = YES;
+        [self->newPasswordTextField1 addTarget:self action:@selector(passwordTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
         
     }];
     
     [resetPwdAlertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
         
-        if (weakSelf)
-        {
-            typeof(self) self = weakSelf;
-            
-            self->newPasswordTextField2 = textField;
-            self->newPasswordTextField2.placeholder = NSLocalizedStringFromTable(@"settings_confirm_password", @"Vector", nil);
-            self->newPasswordTextField2.secureTextEntry = YES;
-            [self->newPasswordTextField2 addTarget:self action:@selector(passwordTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-        }
+        MXStrongifyAndReturnIfNil(self);
+        self->newPasswordTextField2 = textField;
+        self->newPasswordTextField2.placeholder = NSLocalizedStringFromTable(@"settings_confirm_password", @"Vector", nil);
+        self->newPasswordTextField2.secureTextEntry = YES;
+        [self->newPasswordTextField2 addTarget:self action:@selector(passwordTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+        
     }];
 
     
@@ -3117,12 +2895,17 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         [sharedUserDefaults setObject:language forKey:@"appLanguage"];
 
         // Do a reload in order to recompute strings in the new language
-        // Note that "reloadMatrixSessions:NO" will reset room summaries
-        [self startActivityIndicator];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-
-            [[AppDelegate theDelegate] reloadMatrixSessions:NO];
-        });
+        // Note that "reloadMatrixSessionsByClearingCache:NO" will reset room summaries
+        if (_delegate)
+        {
+            [self startActivityIndicator];
+            
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                
+                [self.delegate settingsViewController:self reloadMatrixSessionsByClearingCache:NO];
+                
+            });
+        }
     }
 }
 

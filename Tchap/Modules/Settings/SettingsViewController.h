@@ -1,5 +1,6 @@
 /*
  Copyright 2015 OpenMarket Ltd
+ Copyright 2018 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -16,6 +17,23 @@
 
 #import <MatrixKit/MatrixKit.h>
 
+@class SettingsViewController;
+
+/**
+ `SettingsViewController` delegate.
+ */
+@protocol SettingsViewControllerDelegate <NSObject>
+
+/**
+ Tells the delegate to reload all the running matrix sessions by eventually clearing the cache.
+ 
+ @param settingsViewController the `SettingsViewController` instance.
+ @param clearCache tell whether all store data must be cleared.
+ */
+- (void)settingsViewController:(SettingsViewController *)settingsViewController reloadMatrixSessionsByClearingCache:(BOOL)clearCache;
+
+@end
+
 @interface SettingsViewController : MXKTableViewController
 
 /**
@@ -24,6 +42,11 @@
  @return An initialized `SettingsViewController` object.
  */
 + (instancetype)instantiate;
+
+/**
+ The delegate for the view controller.
+ */
+@property (nonatomic, weak) id<SettingsViewControllerDelegate> delegate;
 
 @end
 
