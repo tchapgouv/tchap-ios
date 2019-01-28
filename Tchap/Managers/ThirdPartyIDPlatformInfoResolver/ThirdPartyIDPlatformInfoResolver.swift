@@ -82,7 +82,12 @@ final class ThirdPartyIDPlatformInfoResolver {
             
             let isInvited = response["invited"] as? Bool ?? false
             
-            if let hostname = response["hs"] as? String {
+            if var hostname = response["hs"] as? String {
+                // The protected access is not supported by the ios client, use the shadow hs if any
+                if let shadowHostname = response["shadow_hs"] as? String {
+                    hostname = shadowHostname
+                }
+                
                 let homeServer = "\(self.serverPrefixURL)\(hostname)"
                 let info = ThirdPartyIDPlatformInfo(hostname: hostname, homeServer: homeServer, isInvited: isInvited)
                 success?(.authorizedThirdPartyID(info: info))
