@@ -68,7 +68,7 @@ final class RegistrationCoordinator: RegistrationCoordinatorType {
     
     // MARK: - Private methods
     
-    private func showEmailValidationSentAndPerformRegistration(with userEmail: String, password: String, threePIDCredentials: ThreePIDCredentials) {
+    private func showEmailValidationSentAndPerformRegistration(with userEmail: String, sessionId: String, password: String, threePIDCredentials: ThreePIDCredentials) {
         
         guard let registrationService = self.registrationService else {
             let errorPresentable = ErrorPresentableImpl(title: TchapL10n.errorTitleDefault, message: TchapL10n.errorMessageDefault)
@@ -89,7 +89,7 @@ final class RegistrationCoordinator: RegistrationCoordinatorType {
         
         let deviceDisplayName = UIDevice.current.name
         
-        registrationService.register(withEmailCredentials: threePIDCredentials, password: password, deviceDisplayName: deviceDisplayName) { (registrationResult) in
+        registrationService.register(withEmailCredentials: threePIDCredentials, sessionId: sessionId, password: password, deviceDisplayName: deviceDisplayName) { (registrationResult) in
             switch registrationResult {
             case .success:
                 // NOTE: Do not call delegate directly for the moment, wait for NSNotification.Name.legacyAppDelegateDidLogin
@@ -121,21 +121,33 @@ final class RegistrationCoordinator: RegistrationCoordinatorType {
             case .success(let restClient):
                 let registrationService = RegistrationService(accountManager: MXKAccountManager.shared(), restClient: restClient)
                 
-                // Validate email
-                registrationService.submitRegistrationEmailVerification(to: email) { (emailVerificationResult) in
+                // Initialize a registration session (in order to define a session Id)
+                registrationService.initRegistrationSession(completion: { (initResult) in
                     
-                    removeActivityIndicator()
-                    
-                    switch emailVerificationResult {
-                    case .success(let threePIDCredentials):
-                        self.showEmailValidationSentAndPerformRegistration(with: email, password: password, threePIDCredentials: threePIDCredentials)
+                    switch initResult {
+                    case .success(let sessionId):
+                        // Validate email
+                        registrationService.submitRegistrationEmailVerification(to: email, sessionId: sessionId) { (emailVerificationResult) in
+                            
+                            removeActivityIndicator()
+                            
+                            switch emailVerificationResult {
+                            case .success(let threePIDCredentials):
+                                self.showEmailValidationSentAndPerformRegistration(with: email, sessionId: sessionId, password: password, threePIDCredentials: threePIDCredentials)
+                            case .failure(let error):
+                                let authenticationErrorPresentableMaker = AuthenticationErrorPresentableMaker()
+                                if let errorPresentable = authenticationErrorPresentableMaker.errorPresentable(from: error) {
+                                    self.registrationFormErrorPresenter.present(errorPresentable: errorPresentable)
+                                }
+                            }
+                        }
                     case .failure(let error):
                         let authenticationErrorPresentableMaker = AuthenticationErrorPresentableMaker()
                         if let errorPresentable = authenticationErrorPresentableMaker.errorPresentable(from: error) {
                             self.registrationFormErrorPresenter.present(errorPresentable: errorPresentable)
                         }
                     }
-                }
+                })
                 
                 self.registrationService = registrationService
             case .failure(let error):

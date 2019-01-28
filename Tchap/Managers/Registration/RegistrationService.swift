@@ -44,31 +44,58 @@ final class RegistrationService: RegistrationServiceType {
     
     // MARK: - Public
     
-    func submitRegistrationEmailVerification(to email: String, completion: @escaping (MXResponse<ThreePIDCredentials>) -> Void) {
-        self.submitRegistrationEmailVerification(to: email, using: self.restClient, completion: completion)
+    func initRegistrationSession(completion: @escaping (MXResponse<String>) -> Void) {
+        self.restClient.getRegisterSession(completion: { (response) in
+            switch response {
+            case .success(let authenticationSession):
+                if let sessionId = authenticationSession.session {
+                    completion(MXResponse.success(sessionId))
+                } else {
+                    let error = NSError(domain: MXKAuthErrorDomain, code: 0, userInfo: [NSLocalizedDescriptionKey: Bundle.mxk_localizedString(forKey: "not_supported_yet")])
+                    completion(MXResponse.failure(error))
+                }
+                
+            case .failure(let error):
+                completion(MXResponse.failure(error))
+            }
+        })
     }
     
-    func register(withEmailCredentials threePIDCredentials: ThreePIDCredentials, password: String, deviceDisplayName: String, completion: @escaping (MXResponse<String>) -> Void) {
+    func submitRegistrationEmailVerification(to email: String, sessionId: String, completion: @escaping (MXResponse<ThreePIDCredentials>) -> Void) {
+        self.submitRegistrationEmailVerification(to: email, sessionId: sessionId, using: self.restClient, completion: completion)
+    }
+    
+    func register(withEmailCredentials threePIDCredentials: ThreePIDCredentials, sessionId: String?, password: String?, deviceDisplayName: String, completion: @escaping (MXResponse<String>) -> Void) {
         
         guard let identityServer = self.restClient.identityServer else {
             completion(MXResponse.failure(RegistrationServiceError.identityServerURLBuildFailed))
             return
         }
         
-        let registrationParameters: [String: Any] = [
-            "auth":
-                ["threepid_creds":
-                    [
-                        "client_secret": threePIDCredentials.clientSecret,
-                        "id_server": threePIDCredentials.identityServerHost,
-                        "sid": threePIDCredentials.sid
-                    ],
-                 "type": kMXLoginFlowTypeEmailIdentity
+        var authParameters: [String: Any] = [
+            "threepid_creds": [
+                "client_secret": threePIDCredentials.clientSecret,
+                "id_server": threePIDCredentials.identityServerHost,
+                "sid": threePIDCredentials.sid
             ],
-            "password": password,
-            "bind_email": true,
+            "type": kMXLoginFlowTypeEmailIdentity
+        ]
+        
+        // Check whether a sessionId is provided
+        if let sessionId = sessionId {
+            authParameters["session"] = sessionId
+        }
+        
+        var registrationParameters: [String: Any] = [
+            "auth": authParameters,
             "initial_device_display_name": deviceDisplayName
         ]
+        
+        // Check whether a password is provided
+        if let password = password {
+            registrationParameters["password"] = password
+            registrationParameters["bind_email"] = true
+        }
         
         let registrationCompletion: (MXResponse<MXCredentials>) -> Void = { (registrationResult) in
             switch registrationResult {
@@ -110,7 +137,7 @@ final class RegistrationService: RegistrationServiceType {
         return homeServer
     }
     
-    private func buildNextLink(webAppBaseStringURL: String, clientSecret: String, homeServerStringURL: String, identityServerStringURL: String) -> String? {
+    private func buildNextLink(webAppBaseStringURL: String, clientSecret: String, homeServerStringURL: String, identityServerStringURL: String, sessionId: String) -> String? {
         
         let percentEncode: ((String) -> String?) = { stringToEncode in
             stringToEncode.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
@@ -119,14 +146,15 @@ final class RegistrationService: RegistrationServiceType {
         guard let webAppBaseStringURLEncoded = percentEncode(webAppBaseStringURL),
             let clientSecretURLEncoded = percentEncode(clientSecret),
             let homeServerStringURLEncoded = percentEncode(homeServerStringURL),
-            let identityServerStringURLEncoded = percentEncode(identityServerStringURL) else {
+            let identityServerStringURLEncoded = percentEncode(identityServerStringURL),
+            let sessionIdURLEncoded = percentEncode(sessionId) else {
                 return nil
         }
         
-        return "\(webAppBaseStringURLEncoded)/#/register?client_secret=\(clientSecretURLEncoded)&hs_url=\(homeServerStringURLEncoded)&is_url=\(identityServerStringURLEncoded)"
+        return "\(webAppBaseStringURLEncoded)/#/register?client_secret=\(clientSecretURLEncoded)&hs_url=\(homeServerStringURLEncoded)&is_url=\(identityServerStringURLEncoded)&session_id=\(sessionIdURLEncoded)"
     }
     
-    func submitRegistrationEmailVerification(to email: String, using restClient: MXRestClient, completion: @escaping (MXResponse<ThreePIDCredentials>) -> Void) {
+    func submitRegistrationEmailVerification(to email: String, sessionId: String, using restClient: MXRestClient, completion: @escaping (MXResponse<ThreePIDCredentials>) -> Void) {
         
         guard let homeServer = restClient.homeserver, let homeServerURL = URL(string: homeServer) else {
             completion(MXResponse.failure(RegistrationServiceError.homeServerURLBuildFailed))
@@ -144,7 +172,8 @@ final class RegistrationService: RegistrationServiceType {
         
         let webAppBaseStringURL = self.webAppAppBaseStringURL(from: homeServer)
         
-        guard let nextLink: String = self.buildNextLink(webAppBaseStringURL: webAppBaseStringURL, clientSecret: clientSecret, homeServerStringURL: homeServerURL.absoluteString, identityServerStringURL: identityServerURL.absoluteString) else {
+        let homeServerURLString = homeServerURL.absoluteString
+        guard let nextLink: String = self.buildNextLink(webAppBaseStringURL: webAppBaseStringURL, clientSecret: clientSecret, homeServerStringURL: homeServerURLString, identityServerStringURL: homeServerURLString, sessionId: sessionId) else {
             completion(MXResponse.failure(RegistrationServiceError.nextLinkBuildFailed))
             return
         }
@@ -180,7 +209,7 @@ final class RegistrationService: RegistrationServiceType {
             switch response {
             case .success(let jsonResponse):
                 
-                guard let credentials = MXCredentials.model(fromJSON: jsonResponse) as? MXCredentials, credentials.userId != nil, credentials.accessToken != nil else {
+                guard let credentials = MXCredentials(fromJSON: jsonResponse), credentials.userId != nil, credentials.accessToken != nil else {
                     let error = NSError(domain: MXKAuthErrorDomain, code: 0, userInfo: [NSLocalizedDescriptionKey: Bundle.mxk_localizedString(forKey: "not_supported_yet")])
                     completion(MXResponse.failure(error))
                     return
