@@ -178,7 +178,7 @@ final class RoomService: RoomServiceType {
             ]
         ]
         
-        guard let stateEvent = MXEvent.model(fromJSON: stateEventJSON) as? MXEvent else {
+        guard let stateEvent = MXEvent(fromJSON: stateEventJSON) else {
             fatalError("[RoomService] history event could not be created")
         }
         return stateEvent
