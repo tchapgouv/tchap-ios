@@ -180,7 +180,7 @@ final class RegistrationService: RegistrationServiceType {
             switch response {
             case .success(let jsonResponse):
                 
-                guard let credentials = MXCredentials.model(fromJSON: jsonResponse) as? MXCredentials, credentials.userId != nil, credentials.accessToken != nil else {
+                guard let credentials = MXCredentials(fromJSON: jsonResponse), credentials.userId != nil, credentials.accessToken != nil else {
                     let error = NSError(domain: MXKAuthErrorDomain, code: 0, userInfo: [NSLocalizedDescriptionKey: Bundle.mxk_localizedString(forKey: "not_supported_yet")])
                     completion(MXResponse.failure(error))
                     return

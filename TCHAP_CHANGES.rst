@@ -1,3 +1,9 @@
+Changes in Tchap 1.0.2 (2019-01-30)
+===================================================
+
+ Features/Improvements:
+ * Turn on "ITSAppUsesNonExemptEncryption" flag
+
 Changes in Tchap 1.0.1 (2019-01-11)
 ===================================================
 

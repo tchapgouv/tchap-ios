@@ -167,8 +167,6 @@ internal enum TchapL10n {
   }
   /// Aucun résultat
   internal static let searchNoResult = TchapL10n.tr("Tchap", "search_no_result")
-  /// https://www.tchap.gouv.fr/tac
-  internal static let settingsTermConditionsUrl = TchapL10n.tr("Tchap", "settings_term_conditions_url")
   /// J'ai un compte
   internal static let welcomeLoginAction = TchapL10n.tr("Tchap", "welcome_login_action")
   /// Je n'ai pas de compte

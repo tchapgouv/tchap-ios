@@ -1887,7 +1887,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         {
             if (row == OTHER_TERM_CONDITIONS_INDEX)
             {
-                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:NSLocalizedStringFromTable(@"settings_term_conditions_url", @"Tchap", nil)];
+                NSString *tac_url = [[MXKAppSettings standardAppSettings].sharedUserDefaults objectForKey:@"tacURL"];
+                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:tac_url];
                 
                 webViewViewController.title = NSLocalizedStringFromTable(@"settings_term_conditions", @"Vector", nil);
                 
