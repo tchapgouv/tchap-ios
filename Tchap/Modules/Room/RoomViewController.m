@@ -2582,17 +2582,18 @@
         
         // If the link can be open it by the app, let it do
         // Note: Universal links are not supported by Tchap. [Tools isUniversalLink:] returns NO for the moment.
-        if ([Tools isUniversalLink:url])
-        {
-            shouldDoAction = NO;
-            
-            // iOS Patch: fix vector.im urls before using it
-            NSURL *fixedURL = [Tools fixURLWithSeveralHashKeys:url];
-            
-            [[AppDelegate theDelegate] handleUniversalLinkFragment:fixedURL.fragment];
-        }
+        // TODO use the UniversalLinkService
+//        if ([Tools isUniversalLink:url])
+//        {
+//            shouldDoAction = NO;
+//
+//            // iOS Patch: fix vector.im urls before using it
+//            NSURL *fixedURL = [Tools fixURLWithSeveralHashKeys:url];
+//
+//            [[AppDelegate theDelegate] handleUniversalLinkFragment:fixedURL.fragment];
+//        }
         // Open a detail screen about the clicked user
-        else if ([MXTools isMatrixUserIdentifier:absoluteURLString])
+        if ([MXTools isMatrixUserIdentifier:absoluteURLString])
         {
             // We display details only for the room members
             NSString *userId = absoluteURLString;
@@ -2606,23 +2607,35 @@
         // Open the clicked room
         else if ([MXTools isMatrixRoomIdentifier:absoluteURLString] || [MXTools isMatrixRoomAlias:absoluteURLString])
         {
-            shouldDoAction = NO;
+            // Note: Presently we may fail to display correctly the rooms which are not joined by the user
+            // TODO: Support all roomId and alias to preview the room when the user doesn't join the room...
+            NSString *roomId = absoluteURLString;
+            if ([MXTools isMatrixRoomAlias:absoluteURLString])
+            {
+                // Translate the alias into the room id
+                // We don't support for the moment the alias of the rooms which are not joined
+                MXRoom *room = [self.mainSession roomWithAlias:absoluteURLString];
+                if (room)
+                {
+                    roomId = room.roomId;
+                }
+            }
             
-            NSString *roomIdOrAlias = absoluteURLString;
-            
-            // Open the room or preview it
-            NSString *fragment = [NSString stringWithFormat:@"/room/%@", [roomIdOrAlias stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-            [[AppDelegate theDelegate] handleUniversalLinkFragment:fragment];
+            if (roomId && self.delegate)
+            {
+                shouldDoAction = NO;
+                [self.delegate roomViewController:self showRoom:roomId];
+            }
         }
-        // Preview the clicked group
-        else if ([MXTools isMatrixGroupIdentifier:absoluteURLString])
-        {
-            shouldDoAction = NO;
-            
-            // Open the group or preview it
-            NSString *fragment = [NSString stringWithFormat:@"/group/%@", [absoluteURLString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-            [[AppDelegate theDelegate] handleUniversalLinkFragment:fragment];
-        }
+//        // Preview the clicked group
+//        else if ([MXTools isMatrixGroupIdentifier:absoluteURLString])
+//        {
+//            shouldDoAction = NO;
+//
+//            // Open the group or preview it
+//            NSString *fragment = [NSString stringWithFormat:@"/group/%@", [absoluteURLString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+//            [[AppDelegate theDelegate] handleUniversalLinkFragment:fragment];
+//        }
         else if ([absoluteURLString hasPrefix:kEventFormatterOnReRequestKeysLinkAction])
         {
             NSArray<NSString*> *arguments = [absoluteURLString componentsSeparatedByString:kEventFormatterOnReRequestKeysLinkActionSeparator];
@@ -3358,11 +3371,12 @@
         else if (customizedRoomDataSource.roomState.isObsolete)
         {
             NSString *replacementRoomId = customizedRoomDataSource.roomState.tombStoneContent.replacementRoomId;
-            NSString *roomLinkFragment = [NSString stringWithFormat:@"/room/%@", [replacementRoomId stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-            
-            [roomActivitiesView displayRoomReplacementWithRoomLinkTappedHandler:^{
-                [[AppDelegate theDelegate] handleUniversalLinkFragment:roomLinkFragment];
-            }];
+            if (replacementRoomId && self.delegate)
+            {
+                [roomActivitiesView displayRoomReplacementWithRoomLinkTappedHandler:^{
+                    [self.delegate roomViewController:self showRoom:replacementRoomId];
+                }];
+            }
         }
         else if (customizedRoomDataSource.roomState.isOngoingConferenceCall)
         {

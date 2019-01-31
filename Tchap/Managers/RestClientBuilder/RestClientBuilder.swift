@@ -43,6 +43,20 @@ final class RestClientBuilder {
         }
     }
     
+    /// Create an `MXRestClient` based on a homeserver.
+    ///
+    /// - Parameters:
+    ///   - homeserver: The homeserver.
+    ///   - completion: A closure called when the operation complete. Provide the rest client when succeed.
+    func build(_ homeServer: String, completion: @escaping (MXResponse<MXRestClient>) -> Void) {
+        do {
+            let restClient = try self.createRestClient(homeServerStringURL: homeServer)
+            completion(MXResponse.success(restClient))
+        } catch {
+            completion(MXResponse.failure(error))
+        }
+    }
+    
     // MARK: - Private
     
     private func resolveHomeServer(with mail: String, completion: @escaping (MXResponse<String>) -> Void) {

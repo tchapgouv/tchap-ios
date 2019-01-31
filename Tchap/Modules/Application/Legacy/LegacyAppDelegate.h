@@ -141,15 +141,6 @@ extern NSString *const kLegacyAppDelegateDidLoginNotification;
 // Reopen an existing direct room with this userId or creates a new one (if it doesn't exist)
 - (void)startDirectChatWithUserId:(NSString*)userId completion:(void (^)(void))completion;
 
-/**
- Process the fragment part of a vector.im link.
- 
- @param fragment the fragment part of the universal link.
- @return YES in case of processing success.
- */
-// TODO: Update universal link navigation behavior
-- (BOOL)handleUniversalLinkFragment:(NSString*)fragment;
-
 #pragma mark - Jitsi call
 
 /**
