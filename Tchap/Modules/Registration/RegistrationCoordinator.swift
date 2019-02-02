@@ -122,7 +122,7 @@ final class RegistrationCoordinator: RegistrationCoordinatorType {
                 let registrationService = RegistrationService(accountManager: MXKAccountManager.shared(), restClient: restClient)
                 
                 // Initialize a registration session (in order to define a session Id)
-                registrationService.initRegistrationSession(completion: { (initResult) in
+                registrationService.setupRegistrationSession(completion: { (initResult) in
                     
                     switch initResult {
                     case .success(let sessionId):

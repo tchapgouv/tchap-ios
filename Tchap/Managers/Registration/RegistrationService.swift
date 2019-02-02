@@ -44,7 +44,7 @@ final class RegistrationService: RegistrationServiceType {
     
     // MARK: - Public
     
-    func initRegistrationSession(completion: @escaping (MXResponse<String>) -> Void) {
+    func setupRegistrationSession(completion: @escaping (MXResponse<String>) -> Void) {
         self.restClient.getRegisterSession(completion: { (response) in
             switch response {
             case .success(let authenticationSession):
