@@ -22,7 +22,7 @@ protocol RegistrationServiceType {
     ///
     /// - Parameters:
     ///   - completion: A closure called when the operation complete. Provide the authentication session id when succeed.
-    func initRegistrationSession(completion: @escaping (MXResponse<String>) -> Void)
+    func setupRegistrationSession(completion: @escaping (MXResponse<String>) -> Void)
     
     /// Submit registration verification email and return third PID credentials for registration.
     ///
