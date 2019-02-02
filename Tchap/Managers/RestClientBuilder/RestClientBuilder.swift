@@ -26,7 +26,7 @@ final class RestClientBuilder {
     /// - Parameters:
     ///   - email: The user email.
     ///   - completion: A closure called when the operation complete. Provide the rest client when succeed.
-    func build(from email: String, completion: @escaping (MXResponse<MXRestClient>) -> Void) {
+    func build(fromEmail email: String, completion: @escaping (MXResponse<MXRestClient>) -> Void) {
         
         self.resolveHomeServer(with: email) { (resolveResult) in
             switch resolveResult {
@@ -48,7 +48,7 @@ final class RestClientBuilder {
     /// - Parameters:
     ///   - homeserver: The homeserver.
     ///   - completion: A closure called when the operation complete. Provide the rest client when succeed.
-    func build(_ homeServer: String, completion: @escaping (MXResponse<MXRestClient>) -> Void) {
+    func build(fromHomeServer homeServer: String, completion: @escaping (MXResponse<MXRestClient>) -> Void) {
         do {
             let restClient = try self.createRestClient(homeServerStringURL: homeServer)
             completion(MXResponse.success(restClient))

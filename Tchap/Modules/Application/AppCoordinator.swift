@@ -70,8 +70,7 @@ final class AppCoordinator: AppCoordinatorType {
                         _ = self.showRoom(with: roomIdOrAlias, onEventID: eventID)
                     }
                 case .failure(let error):
-                    // FIXME: Present an error on coordinator.toPresentable()
-                    AppDelegate.theDelegate().showError(asAlert: error)
+                    self.showError(error)
                 }
             })
         } else if userActivity.activityType == INStartAudioCallIntentIdentifier ||
@@ -85,47 +84,59 @@ final class AppCoordinator: AppCoordinatorType {
             }
             let interaction = userActivity.interaction
             
+            let finalRoomID: String?
             // Check roomID provided by Siri intent
-            var roomID = userActivity.userInfo?["roomID"] as? String
-            if roomID == nil {
+            if let roomID = userActivity.userInfo?["roomID"] as? String {
+                finalRoomID = roomID
+            } else {
                 // We've launched from calls history list
-                var person: INPerson?
+                let person: INPerson?
                 
                 if let audioCallIntent = interaction?.intent as? INStartAudioCallIntent {
                     person = audioCallIntent.contacts?.first
                 } else if let videoCallIntent = interaction?.intent as? INStartVideoCallIntent {
                     person = videoCallIntent.contacts?.first
+                } else {
+                    person = nil
                 }
                 
-                roomID = person?.personHandle?.value
+                finalRoomID = person?.personHandle?.value
             }
             
-            let isVideoCall = userActivity.activityType == INStartVideoCallIntentIdentifier
-            var backgroundTaskIdentifier: UIBackgroundTaskIdentifier?
-            
-            // Start background task since we need time for MXSession preparation because our app can be launched in the background
-            if application.applicationState == .background {
-                backgroundTaskIdentifier = application.beginBackgroundTask(expirationHandler: nil)
-            }
-            
-            session.callManager.placeCall(inRoom: roomID ?? "", withVideo: isVideoCall, success: { (call) in
+            if let roomID = finalRoomID {
+                let isVideoCall = userActivity.activityType == INStartVideoCallIntentIdentifier
+                var backgroundTaskIdentifier: UIBackgroundTaskIdentifier?
+                
+                // Start background task since we need time for MXSession preparation because our app can be launched in the background
                 if application.applicationState == .background {
-                    let center = NotificationCenter.default
-                    var token: NSObjectProtocol?
-                    token = center.addObserver(forName: Notification.Name(kMXCallStateDidChange), object: call, queue: nil, using: { [weak center] (note) in
-                        if call.state == .ended {
-                            if let bgTaskIdentifier = backgroundTaskIdentifier {
-                                application.endBackgroundTask(bgTaskIdentifier)
+                    backgroundTaskIdentifier = application.beginBackgroundTask(expirationHandler: nil)
+                }
+                
+                session.callManager.placeCall(inRoom: roomID, withVideo: isVideoCall, success: { (call) in
+                    if application.applicationState == .background {
+                        let center = NotificationCenter.default
+                        var token: NSObjectProtocol?
+                        token = center.addObserver(forName: Notification.Name(kMXCallStateDidChange), object: call, queue: nil, using: { [weak center] (note) in
+                            if call.state == .ended {
+                                if let bgTaskIdentifier = backgroundTaskIdentifier {
+                                    application.endBackgroundTask(bgTaskIdentifier)
+                                }
+                                if let obsToken = token {
+                                    center?.removeObserver(obsToken)
+                                }
                             }
-                            center?.removeObserver(token!)
-                        }
-                    })
-                }
-            }, failure: { (error) in
-                if let bgTaskIdentifier = backgroundTaskIdentifier {
-                    application.endBackgroundTask(bgTaskIdentifier)
-                }
-            })
+                        })
+                    }
+                }, failure: { (error) in
+                    if let bgTaskIdentifier = backgroundTaskIdentifier {
+                        application.endBackgroundTask(bgTaskIdentifier)
+                    }
+                })
+            } else {
+                let error = NSError(domain: MXKAuthErrorDomain, code: 0, userInfo: [NSLocalizedDescriptionKey: Bundle.mxk_localizedString(forKey: "error_common_message")])
+                self.showError(error)
+            }
+            
             return true
         }
         return false
@@ -243,7 +254,7 @@ final class AppCoordinator: AppCoordinatorType {
         
         // Create a rest client
         let restClientBuilder = RestClientBuilder()
-        restClientBuilder.build(homeserver) { (restClientBuilderResult) in
+        restClientBuilder.build(fromHomeServer: homeserver) { (restClientBuilderResult) in
             switch restClientBuilderResult {
             case .success(let restClient):
                 if let identityServerURL = registerParams["is_url"] {
@@ -254,8 +265,7 @@ final class AppCoordinator: AppCoordinatorType {
                     let identityServerURL = URL(string: identityServer),
                     let identityServerHost = identityServerURL.host else {
                         let error = NSError(domain: MXKAuthErrorDomain, code: 0, userInfo: [NSLocalizedDescriptionKey: Bundle.mxk_localizedString(forKey: "error_common_message")])
-                        // FIXME: Present an error on coordinator.toPresentable()
-                        AppDelegate.theDelegate().showError(asAlert: error)
+                        self.showError(error)
                         return
                 }
                 
@@ -269,40 +279,49 @@ final class AppCoordinator: AppCoordinatorType {
                         print("[AppCoordinator] handleRegisterAfterEmailValidation: success")
                         _ = self.userDidLogin()
                     case .failure(let error):
-                        // FIXME: Present an error on coordinator.toPresentable()
-                        AppDelegate.theDelegate().showError(asAlert: error)
+                        self.showError(error)
                     }
                 }
             case .failure(let error):
-                // FIXME: Present an error on coordinator.toPresentable()
-                AppDelegate.theDelegate().showError(asAlert: error)
+                self.showError(error)
             }
         }
     }
     
     private func showRoom(with roomIdOrAlias: String, onEventID eventID: String? = nil) -> Bool {
-        if let account = MXKAccountManager.shared().accountKnowingRoom(withRoomIdOrAlias: roomIdOrAlias) {
-            var roomID: String?
-            
-            if roomIdOrAlias.hasPrefix("#") {
-                // Translate the alias into the room id
-                if let room = account.mxSession.room(withAlias: roomIdOrAlias) {
-                    roomID = room.roomId
-                }
-            } else {
-                roomID = roomIdOrAlias
-            }
-            
-            if let finalRoomID = roomID, let homeCoordinator = self.homeCoordinator {
-                homeCoordinator.showRoom(with: finalRoomID, onEventID: eventID)
-                return true
-            }
+        guard let account = MXKAccountManager.shared().accountKnowingRoom(withRoomIdOrAlias: roomIdOrAlias),
+            let homeCoordinator = self.homeCoordinator else {
+            return false
         }
-        return false
+        
+        let roomID: String?
+        
+        if roomIdOrAlias.hasPrefix("#") {
+            // Translate the alias into the room id
+            if let room = account.mxSession.room(withAlias: roomIdOrAlias) {
+                roomID = room.roomId
+            } else {
+                roomID = nil
+            }
+        } else {
+            roomID = roomIdOrAlias
+        }
+        
+        if let finalRoomID = roomID {
+            homeCoordinator.showRoom(with: finalRoomID, onEventID: eventID)
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    private func showError(_ error: Error) {
+        // FIXME: Present an error on coordinator.toPresentable()
+        AppDelegate.theDelegate().showError(asAlert: error)
     }
     
     private func userDidLogin() -> Bool {
-        var success = false
+        let success: Bool
         
         if let mainSession = self.mainSession {
             // self.showSplitView(session: mainSession)
@@ -310,6 +329,7 @@ final class AppCoordinator: AppCoordinatorType {
             success = true
         } else {
             NSLog("[AppCoordinator] Did not find session for current user")
+            success = false
             // TODO: Present an error on
             // coordinator.toPresentable()
         }

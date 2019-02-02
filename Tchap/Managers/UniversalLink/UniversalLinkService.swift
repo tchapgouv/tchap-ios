@@ -57,7 +57,7 @@ final class UniversalLinkService: UniversalLinkServiceType {
                 let identityServer: String = "\(scheme)://\(host)"
                 let restClientBuilder = RestClientBuilder()
                 
-                restClientBuilder.build(identityServer) { (restClientBuilderResult) in
+                restClientBuilder.build(fromHomeServer: identityServer) { (restClientBuilderResult) in
                     switch restClientBuilderResult {
                     case .success(let restClient):
                         restClient.submit3PIDValidationToken(token,
@@ -102,12 +102,12 @@ final class UniversalLinkService: UniversalLinkServiceType {
         
         // Extract required parameters from the link
         let params = parseFragment(fragment)
-        if params.pathParams.isEmpty {
+        guard params.pathParams.isEmpty == false else {
             NSLog("[UniversalLinkService] handleFragment: Error: No path parameters")
             return false
         }
         
-        var isSupported: Bool = false
+        let isSupported: Bool
         
         // Check whether this is a registration links.
         if params.pathParams[0] == Constants.registerPathParam, let registerParams = params.queryParams {
@@ -142,6 +142,7 @@ final class UniversalLinkService: UniversalLinkServiceType {
             isSupported = true
         } else {
             NSLog("[UniversalLinkService] handleFragment: Do not know what to do with the link arguments: %@", params.pathParams)
+            isSupported = false
         }
         
         return isSupported
@@ -153,29 +154,31 @@ final class UniversalLinkService: UniversalLinkServiceType {
         
         let fragmentParts = fragment.split(separator: "?")
         
-        // Extract path params by removing empty ones, and removing percent encoding
-        let pathSubstrings = fragmentParts[0].split(separator: "/").filter { !$0.isEmpty }
-        for substring in pathSubstrings {
-            if let param = substring.removingPercentEncoding {
-                pathParams.append(param)
-            }
-        }
-        
-        // Extract query params if any
-        // Query params are in the form [queryParam1Key]=[queryParam1Value], so the
-        // presence of at least one '=' character is mandatory
-        if fragmentParts.count == 2 {
-            var queryParameters = [String: String]()
-            let querySubstrings = fragmentParts[1].split(separator: "&").filter { $0.contains("=") }
-            for substring in querySubstrings {
-                let key = substring.split(separator: "=")[0]
-                if let value = substring.split(separator: "=")[1].replacingOccurrences(of: "+", with: " ").removingPercentEncoding {
-                    queryParameters[String(key)] = String(value)
+        if let firstFragment = fragmentParts.first {
+            // Extract path params by removing empty ones, and removing percent encoding
+            let pathSubstrings = firstFragment.split(separator: "/").filter { !$0.isEmpty }
+            for substring in pathSubstrings {
+                if let param = substring.removingPercentEncoding {
+                    pathParams.append(param)
                 }
             }
             
-            if !queryParameters.isEmpty {
-                queryParams = queryParameters
+            // Extract query params if any
+            // Query params are in the form [queryParam1Key]=[queryParam1Value], so the
+            // presence of at least one '=' character is mandatory
+            if fragmentParts.count == 2 {
+                var queryParameters = [String: String]()
+                let querySubstrings = fragmentParts[1].split(separator: "&").filter { $0.contains("=") }
+                for substring in querySubstrings {
+                    let key = substring.split(separator: "=")[0]
+                    if let value = substring.split(separator: "=")[1].replacingOccurrences(of: "+", with: " ").removingPercentEncoding {
+                        queryParameters[String(key)] = String(value)
+                    }
+                }
+                
+                if !queryParameters.isEmpty {
+                    queryParams = queryParameters
+                }
             }
         }
         
