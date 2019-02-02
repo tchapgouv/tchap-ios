@@ -15,6 +15,7 @@
  */
 
 import Foundation
+import Intents
 
 final class AppCoordinator: AppCoordinatorType {
     
@@ -23,6 +24,8 @@ final class AppCoordinator: AppCoordinatorType {
     // MARK: Private
     
     private let rootRouter: RootRouterType
+    
+    private let universalLinkService: UniversalLinkService
     
 //    private weak var splitViewCoordinator: SplitViewCoordinatorType?
     private weak var homeCoordinator: HomeCoordinatorType?
@@ -40,6 +43,7 @@ final class AppCoordinator: AppCoordinatorType {
     
     init(router: RootRouterType) {
         self.rootRouter = router
+        self.universalLinkService = UniversalLinkService()
     }
     
     // MARK: - Public methods
@@ -52,6 +56,90 @@ final class AppCoordinator: AppCoordinatorType {
         } else {
             self.showWelcome()
         }
+    }
+    
+    func handleUserActivity(_ userActivity: NSUserActivity, application: UIApplication) -> Bool {
+        if userActivity.activityType == NSUserActivityTypeBrowsingWeb {
+            return self.universalLinkService.handleUserActivity(userActivity, completion: { (response) in
+                switch response {
+                case .success(let parsingResult):
+                    switch parsingResult {
+                    case .registrationLink(let registerParams):
+                        self.handleRegisterAfterEmailValidation(registerParams)
+                    case .roomLink(let roomIdOrAlias, let eventID):
+                        _ = self.showRoom(with: roomIdOrAlias, onEventID: eventID)
+                    }
+                case .failure(let error):
+                    self.showError(error)
+                }
+            })
+        } else if userActivity.activityType == INStartAudioCallIntentIdentifier ||
+        userActivity.activityType == INStartVideoCallIntentIdentifier {
+            // Check whether a session is available (Ignore multi-accounts FTM)
+            guard let account = MXKAccountManager.shared()?.activeAccounts.first else {
+                return false
+            }
+            guard let session = account.mxSession else {
+                return false
+            }
+            let interaction = userActivity.interaction
+            
+            let finalRoomID: String?
+            // Check roomID provided by Siri intent
+            if let roomID = userActivity.userInfo?["roomID"] as? String {
+                finalRoomID = roomID
+            } else {
+                // We've launched from calls history list
+                let person: INPerson?
+                
+                if let audioCallIntent = interaction?.intent as? INStartAudioCallIntent {
+                    person = audioCallIntent.contacts?.first
+                } else if let videoCallIntent = interaction?.intent as? INStartVideoCallIntent {
+                    person = videoCallIntent.contacts?.first
+                } else {
+                    person = nil
+                }
+                
+                finalRoomID = person?.personHandle?.value
+            }
+            
+            if let roomID = finalRoomID {
+                let isVideoCall = userActivity.activityType == INStartVideoCallIntentIdentifier
+                var backgroundTaskIdentifier: UIBackgroundTaskIdentifier?
+                
+                // Start background task since we need time for MXSession preparation because our app can be launched in the background
+                if application.applicationState == .background {
+                    backgroundTaskIdentifier = application.beginBackgroundTask(expirationHandler: nil)
+                }
+                
+                session.callManager.placeCall(inRoom: roomID, withVideo: isVideoCall, success: { (call) in
+                    if application.applicationState == .background {
+                        let center = NotificationCenter.default
+                        var token: NSObjectProtocol?
+                        token = center.addObserver(forName: Notification.Name(kMXCallStateDidChange), object: call, queue: nil, using: { [weak center] (note) in
+                            if call.state == .ended {
+                                if let bgTaskIdentifier = backgroundTaskIdentifier {
+                                    application.endBackgroundTask(bgTaskIdentifier)
+                                }
+                                if let obsToken = token {
+                                    center?.removeObserver(obsToken)
+                                }
+                            }
+                        })
+                    }
+                }, failure: { (error) in
+                    if let bgTaskIdentifier = backgroundTaskIdentifier {
+                        application.endBackgroundTask(bgTaskIdentifier)
+                    }
+                })
+            } else {
+                let error = NSError(domain: MXKAuthErrorDomain, code: 0, userInfo: [NSLocalizedDescriptionKey: Bundle.mxk_localizedString(forKey: "error_common_message")])
+                self.showError(error)
+            }
+            
+            return true
+        }
+        return false
     }
     
     // MARK: - Private methods
@@ -143,6 +231,112 @@ final class AppCoordinator: AppCoordinatorType {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.mxSessionDidCorruptData, object: nil)
     }
     
+    private func handleRegisterAfterEmailValidation(_ registerParams: [String: String]) {
+        // Check required parameters
+        guard let homeserver = registerParams["hs_url"],
+            let sessionId = registerParams["session_id"],
+            let clientSecret = registerParams["client_secret"],
+            let sid = registerParams["sid"] else {
+                NSLog("[AppCoordinator] handleRegisterAfterEmailValidation: failed, missing parameters")
+                return
+        }
+        
+        // Check whether there is already an active account
+        if self.mainSession != nil {
+            NSLog("[AppCoordinator] handleRegisterAfterEmailValidation: Prompt to logout current sessions to complete the registration")
+            AppDelegate.theDelegate().logout(withConfirmation: true) { (isLoggedOut) in
+                if isLoggedOut {
+                    self.handleRegisterAfterEmailValidation(registerParams)
+                }
+            }
+            return
+        }
+        
+        // Create a rest client
+        let restClientBuilder = RestClientBuilder()
+        restClientBuilder.build(fromHomeServer: homeserver) { (restClientBuilderResult) in
+            switch restClientBuilderResult {
+            case .success(let restClient):
+                if let identityServerURL = registerParams["is_url"] {
+                    restClient.identityServer = identityServerURL
+                }
+                
+                guard let identityServer = restClient.identityServer,
+                    let identityServerURL = URL(string: identityServer),
+                    let identityServerHost = identityServerURL.host else {
+                        let error = NSError(domain: MXKAuthErrorDomain, code: 0, userInfo: [NSLocalizedDescriptionKey: Bundle.mxk_localizedString(forKey: "error_common_message")])
+                        self.showError(error)
+                        return
+                }
+                
+                let registrationService = RegistrationService(accountManager: MXKAccountManager.shared(), restClient: restClient)
+                let deviceDisplayName = UIDevice.current.name
+                let threePIDCredentials = ThreePIDCredentials(clientSecret: clientSecret, sid: sid, identityServerHost: identityServerHost)
+                
+                registrationService.register(withEmailCredentials: threePIDCredentials, sessionId: sessionId, password: nil, deviceDisplayName: deviceDisplayName) { (registrationResult) in
+                    switch registrationResult {
+                    case .success:
+                        print("[AppCoordinator] handleRegisterAfterEmailValidation: success")
+                        _ = self.userDidLogin()
+                    case .failure(let error):
+                        self.showError(error)
+                    }
+                }
+            case .failure(let error):
+                self.showError(error)
+            }
+        }
+    }
+    
+    private func showRoom(with roomIdOrAlias: String, onEventID eventID: String? = nil) -> Bool {
+        guard let account = MXKAccountManager.shared().accountKnowingRoom(withRoomIdOrAlias: roomIdOrAlias),
+            let homeCoordinator = self.homeCoordinator else {
+            return false
+        }
+        
+        let roomID: String?
+        
+        if roomIdOrAlias.hasPrefix("#") {
+            // Translate the alias into the room id
+            if let room = account.mxSession.room(withAlias: roomIdOrAlias) {
+                roomID = room.roomId
+            } else {
+                roomID = nil
+            }
+        } else {
+            roomID = roomIdOrAlias
+        }
+        
+        if let finalRoomID = roomID {
+            homeCoordinator.showRoom(with: finalRoomID, onEventID: eventID)
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    private func showError(_ error: Error) {
+        // FIXME: Present an error on coordinator.toPresentable()
+        AppDelegate.theDelegate().showError(asAlert: error)
+    }
+    
+    private func userDidLogin() -> Bool {
+        let success: Bool
+        
+        if let mainSession = self.mainSession {
+            // self.showSplitView(session: mainSession)
+            self.showHome(session: mainSession)
+            success = true
+        } else {
+            NSLog("[AppCoordinator] Did not find session for current user")
+            success = false
+            // TODO: Present an error on
+            // coordinator.toPresentable()
+        }
+        
+        return success
+    }
+    
     @objc private func userDidLogout() {
         self.unregisterLogoutNotification()
         self.unregisterIgnoredUsersDidChangeNotification()
@@ -169,14 +363,9 @@ final class AppCoordinator: AppCoordinatorType {
 extension AppCoordinator: WelcomeCoordinatorDelegate {
     
     func welcomeCoordinatorUserDidAuthenticate(_ coordinator: WelcomeCoordinatorType) {
-        if let mainSession = self.mainSession {
-//            self.showSplitView(session: mainSession)
-            self.showHome(session: mainSession)
+        // Check that the new account actually exists before removing the current coordinator
+        if userDidLogin() {
             self.remove(childCoordinator: coordinator)
-        } else {
-            NSLog("[AppCoordinator] Did not find session for current user")
-            // TODO: Present an error on
-            // coordinator.toPresentable()
         }
     }
 }

@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		02018F9622003F76008D68BE /* UniversalLinkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02018F9522003F76008D68BE /* UniversalLinkService.swift */; };
+		02018F9722003F76008D68BE /* UniversalLinkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02018F9522003F76008D68BE /* UniversalLinkService.swift */; };
+		02018F9922004417008D68BE /* UniversalLinkServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02018F9822004417008D68BE /* UniversalLinkServiceType.swift */; };
+		02018F9A22004417008D68BE /* UniversalLinkServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02018F9822004417008D68BE /* UniversalLinkServiceType.swift */; };
+		02018F9C22006200008D68BE /* UniversalLinkParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02018F9B22006200008D68BE /* UniversalLinkParameters.swift */; };
+		02018F9D22006200008D68BE /* UniversalLinkParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02018F9B22006200008D68BE /* UniversalLinkParameters.swift */; };
+		02018F9F22006282008D68BE /* UniversalLinkParametersType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02018F9E22006282008D68BE /* UniversalLinkParametersType.swift */; };
+		02018FA022006282008D68BE /* UniversalLinkParametersType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02018F9E22006282008D68BE /* UniversalLinkParametersType.swift */; };
 		02098F352131FE9E00F25086 /* ContactsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 02098F302131FE9E00F25086 /* ContactsDataSource.m */; };
 		02098F372131FE9E00F25086 /* ContactsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 02098F322131FE9E00F25086 /* ContactsViewController.m */; };
 		020DF6FB21480700003DFBA4 /* DiscussionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020DF6FA21480700003DFBA4 /* DiscussionService.swift */; };
@@ -823,6 +831,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		02018F9522003F76008D68BE /* UniversalLinkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniversalLinkService.swift; sourceTree = "<group>"; };
+		02018F9822004417008D68BE /* UniversalLinkServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniversalLinkServiceType.swift; sourceTree = "<group>"; };
+		02018F9B22006200008D68BE /* UniversalLinkParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniversalLinkParameters.swift; sourceTree = "<group>"; };
+		02018F9E22006282008D68BE /* UniversalLinkParametersType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniversalLinkParametersType.swift; sourceTree = "<group>"; };
 		02098F292131FE9D00F25086 /* ContactsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsViewController.h; sourceTree = "<group>"; };
 		02098F2F2131FE9E00F25086 /* ContactsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsDataSource.h; sourceTree = "<group>"; };
 		02098F302131FE9E00F25086 /* ContactsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactsDataSource.m; sourceTree = "<group>"; };
@@ -1412,6 +1424,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		02018F9422003462008D68BE /* UniversalLink */ = {
+			isa = PBXGroup;
+			children = (
+				02018F9822004417008D68BE /* UniversalLinkServiceType.swift */,
+				02018F9522003F76008D68BE /* UniversalLinkService.swift */,
+				02018F9E22006282008D68BE /* UniversalLinkParametersType.swift */,
+				02018F9B22006200008D68BE /* UniversalLinkParameters.swift */,
+			);
+			path = UniversalLink;
+			sourceTree = "<group>";
+		};
 		02098F2A2131FE9E00F25086 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -1921,6 +1944,7 @@
 		02BEE184212AB23A00098505 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				02018F9422003462008D68BE /* UniversalLink */,
 				B109EF1C2170F41E0018FA06 /* User */,
 				020DF6F921480700003DFBA4 /* Discussions */,
 				B12FD69D2146B3C3001B7F28 /* RestClientBuilder */,
@@ -3129,7 +3153,7 @@
 								enabled = 1;
 							};
 							com.apple.SafariKeychain = {
-								enabled = 0;
+								enabled = 1;
 							};
 							com.apple.Siri = {
 								enabled = 0;
@@ -3139,6 +3163,9 @@
 					02DFEB6F21C07370009B6F15 = {
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+							com.apple.SafariKeychain = {
 								enabled = 1;
 							};
 						};
@@ -3777,6 +3804,7 @@
 				B15AB2A1215BF20E007F5405 /* ForgotPasswordCheckedMailViewController.swift in Sources */,
 				0250C4AB2122B68000034691 /* JitsiViewController.m in Sources */,
 				020DF95A214BE467003DFBA4 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleBubbleCell.m in Sources */,
+				02018F9C22006200008D68BE /* UniversalLinkParameters.swift in Sources */,
 				B165252421779FB900146F80 /* CreateNewDiscussionCoordinatorType.swift in Sources */,
 				B146D50E21A5EAE800D8C2C6 /* RoomAttachmentAntivirusScanStatusBubbleCell.m in Sources */,
 				B1F2AA94212AEC830077FDC0 /* HomeCoordinator.swift in Sources */,
@@ -3799,6 +3827,7 @@
 				B1F2AAAD212AED900077FDC0 /* RootRouterType.swift in Sources */,
 				0250C4B32122B68000034691 /* RiotSettings.swift in Sources */,
 				B1BC6A032135E2A600D32F8E /* ActivityIndicatorView.swift in Sources */,
+				02018F9622003F76008D68BE /* UniversalLinkService.swift in Sources */,
 				0250C4B82122B68000034691 /* Contact.m in Sources */,
 				B15AB2AA215BF63A007F5405 /* ForgotPasswordFormViewModelType.swift in Sources */,
 				020DF978214BE467003DFBA4 /* RoomMembershipExpandedBubbleCell.m in Sources */,
@@ -3860,6 +3889,7 @@
 				02BEE1562125BBF800098505 /* RoomsViewController.m in Sources */,
 				020DF94A214BE467003DFBA4 /* RoomParticipantsViewController.m in Sources */,
 				0250C4E62122B68000034691 /* MXRoomSummary+Riot.m in Sources */,
+				02018F9922004417008D68BE /* UniversalLinkServiceType.swift in Sources */,
 				0290607A21501D16005FE3C1 /* PreviewView.m in Sources */,
 				B15B868B2135C4DE002782BE /* AuthenticationFormValidationResult.swift in Sources */,
 				B1C4646121B6DD42005F4D53 /* RoomServiceType.swift in Sources */,
@@ -3971,6 +4001,7 @@
 				0250C52F2122B68000034691 /* DecryptionFailureTracker.m in Sources */,
 				0250C5312122B68000034691 /* RoomEmailInvitation.m in Sources */,
 				B122FB57216D060F00B09BEF /* RoomTitleView.swift in Sources */,
+				02018F9F22006282008D68BE /* UniversalLinkParametersType.swift in Sources */,
 				B1BC6A1B21369C8F00D32F8E /* Style.swift in Sources */,
 				B1F2AA98212AEC830077FDC0 /* AppCoordinatorType.swift in Sources */,
 				020DF944214BE467003DFBA4 /* RoomViewController.m in Sources */,
@@ -4041,6 +4072,7 @@
 				02DFEB9C21C07370009B6F15 /* ForgotPasswordCheckedMailViewController.swift in Sources */,
 				02DFEB9D21C07370009B6F15 /* JitsiViewController.m in Sources */,
 				02DFEB9E21C07370009B6F15 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleBubbleCell.m in Sources */,
+				02018F9D22006200008D68BE /* UniversalLinkParameters.swift in Sources */,
 				02DFEB9F21C07370009B6F15 /* CreateNewDiscussionCoordinatorType.swift in Sources */,
 				02DFEBA021C07370009B6F15 /* RoomAttachmentAntivirusScanStatusBubbleCell.m in Sources */,
 				02DFEBA121C07370009B6F15 /* HomeCoordinator.swift in Sources */,
@@ -4063,6 +4095,7 @@
 				02DFEBB221C07370009B6F15 /* RootRouterType.swift in Sources */,
 				02DFEBB321C07370009B6F15 /* RiotSettings.swift in Sources */,
 				02DFEBB421C07370009B6F15 /* ActivityIndicatorView.swift in Sources */,
+				02018F9722003F76008D68BE /* UniversalLinkService.swift in Sources */,
 				02DFEBB521C07370009B6F15 /* Contact.m in Sources */,
 				02DFEBB621C07370009B6F15 /* ForgotPasswordFormViewModelType.swift in Sources */,
 				02DFEBB721C07370009B6F15 /* RoomMembershipExpandedBubbleCell.m in Sources */,
@@ -4124,6 +4157,7 @@
 				02DFEBEF21C07370009B6F15 /* RoomsViewController.m in Sources */,
 				02DFEBF021C07370009B6F15 /* RoomParticipantsViewController.m in Sources */,
 				02DFEBF121C07370009B6F15 /* MXRoomSummary+Riot.m in Sources */,
+				02018F9A22004417008D68BE /* UniversalLinkServiceType.swift in Sources */,
 				02DFEBF221C07370009B6F15 /* PreviewView.m in Sources */,
 				02DFEBF321C07370009B6F15 /* AuthenticationFormValidationResult.swift in Sources */,
 				02DFEBF421C07370009B6F15 /* RoomServiceType.swift in Sources */,
@@ -4235,6 +4269,7 @@
 				02DFEC5E21C07370009B6F15 /* DecryptionFailureTracker.m in Sources */,
 				02DFEC5F21C07370009B6F15 /* RoomEmailInvitation.m in Sources */,
 				02DFEC6021C07370009B6F15 /* RoomTitleView.swift in Sources */,
+				02018FA022006282008D68BE /* UniversalLinkParametersType.swift in Sources */,
 				02DFEC6121C07370009B6F15 /* Style.swift in Sources */,
 				02DFEC6221C07370009B6F15 /* AppCoordinatorType.swift in Sources */,
 				02DFEC6321C07370009B6F15 /* RoomViewController.m in Sources */,

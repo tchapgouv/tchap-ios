@@ -116,7 +116,7 @@ final class RegistrationCoordinator: RegistrationCoordinatorType {
         }
         
         // Create rest client from email address
-        self.restClientBuilder.build(from: email) { [unowned self] (restClientBuilderResult) in
+        self.restClientBuilder.build(fromEmail: email) { [unowned self] (restClientBuilderResult) in
             switch restClientBuilderResult {
             case .success(let restClient):
                 let registrationService = RegistrationService(accountManager: MXKAccountManager.shared(), restClient: restClient)

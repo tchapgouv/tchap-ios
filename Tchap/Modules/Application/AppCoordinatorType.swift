@@ -17,5 +17,13 @@
 import Foundation
 
 /// `AppCoordinatorType` is a protocol describing a Coordinator that handle application navigation flow.
-protocol AppCoordinatorType: Coordinator {    
+protocol AppCoordinatorType: Coordinator {
+    
+    /// Handle a user activity
+    ///
+    /// - Parameters:
+    ///   - userActivity: The user activity.
+    ///   - application: The shared app object that controls and coordinates your app.
+    /// - Returns: true to indicate that the activity has been handled, or false to let iOS handle the activity.
+    func handleUserActivity(_ userActivity: NSUserActivity, application: UIApplication) -> Bool
 }

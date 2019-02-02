@@ -102,7 +102,7 @@ final class ForgotPasswordCoordinator: ForgotPasswordCoordinatorType {
         }
         
         // Create rest client from email address
-        self.restClientBuilder.build(from: email) { [weak self] (restClientBuilderResult) in
+        self.restClientBuilder.build(fromEmail: email) { [weak self] (restClientBuilderResult) in
             guard let sself = self else {
                 return
             }

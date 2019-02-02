@@ -82,9 +82,7 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
         return self.navigationRouter.toPresentable()
     }
     
-    // MARK: - Private methods
-    
-    private func showRoom(with roomID: String, onEventID eventID: String? = nil) {
+    func showRoom(with roomID: String, onEventID eventID: String? = nil) {
         let roomCoordinator = RoomCoordinator(router: self.navigationRouter, session: self.session, roomID: roomID, eventID: eventID)
         roomCoordinator.start()
         roomCoordinator.delegate = self
@@ -96,6 +94,8 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
             self.remove(childCoordinator: roomCoordinator)
         }
     }
+    
+    // MARK: - Private methods
     
     private func showSettings(animated: Bool) {
         let settingsCoordinator = SettingsCoordinator(router: self.navigationRouter)
