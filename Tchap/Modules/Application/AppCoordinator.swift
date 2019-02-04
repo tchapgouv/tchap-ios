@@ -257,6 +257,7 @@ final class AppCoordinator: AppCoordinatorType {
         restClientBuilder.build(fromHomeServer: homeserver) { (restClientBuilderResult) in
             switch restClientBuilderResult {
             case .success(let restClient):
+                // Apply the potential id server url if any
                 if let identityServerURL = registerParams["is_url"] {
                     restClient.identityServer = identityServerURL
                 }

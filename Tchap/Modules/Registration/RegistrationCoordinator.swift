@@ -17,7 +17,8 @@
 import Foundation
 
 protocol RegistrationCoordinatorDelegate: class {
-    func registrationCoordinatorDidRegisterUser(_ coordinator: RegistrationCoordinatorType)    
+    func registrationCoordinatorDidRegisterUser(_ coordinator: RegistrationCoordinatorType)
+    func registrationCoordinatorShowAuthentication(_ coordinator: RegistrationCoordinatorType)
 }
 
 final class RegistrationCoordinator: RegistrationCoordinatorType {
@@ -95,9 +96,14 @@ final class RegistrationCoordinator: RegistrationCoordinatorType {
                 // NOTE: Do not call delegate directly for the moment, wait for NSNotification.Name.legacyAppDelegateDidLogin
                 print("[RegistrationCoordinator] User did authenticate with success")
             case .failure(let error):
-                let authenticationErrorPresentableMaker = AuthenticationErrorPresentableMaker()
-                if let errorPresentable = authenticationErrorPresentableMaker.errorPresentable(from: error) {
-                    registrationEmailSentErrorPresenter.present(errorPresentable: errorPresentable)
+                // Ignore unauthorized error
+                if let mxError = MXError(nsError: error), mxError.errcode == kMXErrCodeStringUnauthorized {
+                    print("[RegistrationCoordinator] The email validation is pending")
+                } else {
+                    let authenticationErrorPresentableMaker = AuthenticationErrorPresentableMaker()
+                    if let errorPresentable = authenticationErrorPresentableMaker.errorPresentable(from: error) {
+                        registrationEmailSentErrorPresenter.present(errorPresentable: errorPresentable)
+                    }
                 }
             }
         }
@@ -193,6 +199,10 @@ extension RegistrationCoordinator: RegistrationFormViewControllerDelegate {
 
 // MARK: - RegistrationViewControllerDelegate
 extension RegistrationCoordinator: RegistrationEmailSentViewControllerDelegate {
+    
+    func registrationEmailSentViewControllerDidTapGoToLoginButton(_ registrationEmailSentViewController: RegistrationEmailSentViewController) {
+        self.delegate?.registrationCoordinatorShowAuthentication(self)
+    }
     
     func registrationEmailSentViewControllerDidTapEmailNotReceivedButton(_ registrationEmailSentViewController: RegistrationEmailSentViewController) {
         self.navigationRouter.popModule(animated: true)
