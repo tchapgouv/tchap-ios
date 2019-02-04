@@ -70,10 +70,12 @@
 	<false/>
 	<key>maxAllowedMediaCacheSize</key>
 	<integer>1073741824</integer>
-	<key>bugReportEndpointUrl</key>
-	<string>https://riot.im/bugreports</string>
+	<key>bugReportEndpointUrlSuffix</key>
+	<string>/bugreports</string>
+	<key>bugReportDefaultHost</key>
+	<string>agent.tchap.gouv.fr</string>
 	<key>bugReportApp</key>
-	<string>riot-ios</string>
+	<string>tchap-ios</string>
 	<key>roomDirectoryServers</key>
 	<array>
 		<string>agent.tchap.gouv.fr</string>
