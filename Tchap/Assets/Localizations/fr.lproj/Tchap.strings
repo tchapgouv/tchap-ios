@@ -55,8 +55,9 @@
 
 "registration_error_passwords_dont_match" = "Les mots de passe ne correspondent pas";
 
-"registration_email_sent_info" = "Un email vous a été envoyé";
-"registration_email_sent_instructions" = "Veuillez l'ouvrir et cliquer sur le lien proposé pour valider votre inscription";
+"registration_email_sent_info" = "Un email vous a été envoyé à :";
+"registration_email_sent_instructions" = "Merci de cliquer sur le lien proposé dans cet email afin de terminer la création de votre compte. Vous pourrez alors vous connecter en allant sur l'écran de connexion.";
+"registration_email_login_action" = "Aller à l'écran de connexion";
 "registration_email_not_received_action" = "Je n'ai pas reçu l'email !";
 
 ////////////////////////////////////////////////////////////////////////////////

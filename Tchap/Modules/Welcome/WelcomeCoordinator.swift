@@ -111,4 +111,9 @@ extension WelcomeCoordinator: RegistrationCoordinatorDelegate {
     func registrationCoordinatorDidRegisterUser(_ coordinator: RegistrationCoordinatorType) {
         self.delegate?.welcomeCoordinatorUserDidAuthenticate(self)
     }
+    
+    func registrationCoordinatorShowAuthentication(_ coordinator: RegistrationCoordinatorType) {
+        self.navigationRouter.popToRootModule(animated: false)
+        self.showAuthentication()
+    }
 }
