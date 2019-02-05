@@ -26,6 +26,7 @@ final class AppCoordinator: AppCoordinatorType {
     private let rootRouter: RootRouterType
     
     private let universalLinkService: UniversalLinkService
+    private var registrationService: RegistrationServiceType?
     
 //    private weak var splitViewCoordinator: SplitViewCoordinatorType?
     private weak var homeCoordinator: HomeCoordinatorType?
@@ -275,6 +276,7 @@ final class AppCoordinator: AppCoordinatorType {
                 let threePIDCredentials = ThreePIDCredentials(clientSecret: clientSecret, sid: sid, identityServerHost: identityServerHost)
                 
                 registrationService.register(withEmailCredentials: threePIDCredentials, sessionId: sessionId, password: nil, deviceDisplayName: deviceDisplayName) { (registrationResult) in
+                    self.registrationService = nil
                     switch registrationResult {
                     case .success:
                         print("[AppCoordinator] handleRegisterAfterEmailValidation: success")
@@ -283,6 +285,7 @@ final class AppCoordinator: AppCoordinatorType {
                         self.showError(error)
                     }
                 }
+                self.registrationService = registrationService
             case .failure(let error):
                 self.showError(error)
             }
