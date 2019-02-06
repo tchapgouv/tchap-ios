@@ -39,13 +39,13 @@
                         <rect key="frame" x="65" y="4" width="527" height="92.5"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="OQC-c8-4Vu">
-                                <rect key="frame" x="0.0" y="0.0" width="527" height="38"/>
+                                <rect key="frame" x="0.0" y="0.0" width="527" height="20"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AGF-8C-y3g">
-                                        <rect key="frame" x="0.0" y="0.0" width="50" height="38"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="50" height="20"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1Y5-nS-fhi">
-                                                <rect key="frame" x="0.0" y="10" width="50" height="18"/>
+                                                <rect key="frame" x="0.0" y="1" width="50" height="18"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xb7-ZS-bl2">
                                                         <rect key="frame" x="9" y="2" width="32" height="14"/>
@@ -73,13 +73,13 @@
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a7B-bJ-KEo">
-                                        <rect key="frame" x="54" y="0.0" width="444.5" height="38"/>
+                                        <rect key="frame" x="54" y="0.0" width="444.5" height="20"/>
                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AaS-xQ-0rM">
-                                        <rect key="frame" x="502.5" y="0.0" width="24.5" height="38"/>
+                                        <rect key="frame" x="502.5" y="0.0" width="24.5" height="20"/>
                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="9"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -87,43 +87,55 @@
                                 </subviews>
                             </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Label" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w7m-6w-8My">
-                                <rect key="frame" x="0.0" y="42" width="31.5" height="14.5"/>
+                                <rect key="frame" x="0.0" y="24" width="31.5" height="14.5"/>
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="12"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <stackView opaque="NO" contentMode="scaleToFill" spacing="17" translatesAutoresizingMaskIntoConstraints="NO" id="vay-Su-Xj1">
-                                <rect key="frame" x="0.0" y="60.5" width="527" height="32"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rK0-2B-8Fu">
+                                <rect key="frame" x="0.0" y="42.5" width="527" height="50"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ED4-kj-Ive" userLabel="Left Button">
-                                        <rect key="frame" x="0.0" y="0.0" width="255" height="32"/>
-                                        <color key="backgroundColor" red="0.028153735480000001" green="0.82494870580000002" blue="0.051896891280000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <accessibility key="accessibilityConfiguration" identifier="LeftButton"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
-                                        <state key="normal" title="Left button">
-                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="onLeftPressed:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="oKr-Ky-KjG"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oXu-g8-56f" userLabel="Right Button">
-                                        <rect key="frame" x="272" y="0.0" width="255" height="32"/>
-                                        <color key="backgroundColor" red="0.028153735480000001" green="0.82494870580000002" blue="0.051896891280000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <accessibility key="accessibilityConfiguration" identifier="RightButton"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
-                                        <state key="normal" title="Right Button">
-                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="onRightPressed:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="zYC-Mi-FVO"/>
-                                        </connections>
-                                    </button>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="17" translatesAutoresizingMaskIntoConstraints="NO" id="vay-Su-Xj1">
+                                        <rect key="frame" x="0.0" y="10" width="527" height="40"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ED4-kj-Ive" userLabel="Left Button">
+                                                <rect key="frame" x="0.0" y="0.0" width="255" height="40"/>
+                                                <color key="backgroundColor" red="0.028153735480000001" green="0.82494870580000002" blue="0.051896891280000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="LeftButton"/>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                                                <state key="normal" title="Left button">
+                                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="onLeftPressed:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="oKr-Ky-KjG"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oXu-g8-56f" userLabel="Right Button">
+                                                <rect key="frame" x="272" y="0.0" width="255" height="40"/>
+                                                <color key="backgroundColor" red="0.028153735480000001" green="0.82494870580000002" blue="0.051896891280000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="RightButton"/>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                                                <state key="normal" title="Right Button">
+                                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="onRightPressed:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="zYC-Mi-FVO"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="ED4-kj-Ive" firstAttribute="width" secondItem="oXu-g8-56f" secondAttribute="width" id="xNQ-PY-GDX"/>
+                                        </constraints>
+                                    </stackView>
                                 </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="ED4-kj-Ive" firstAttribute="width" secondItem="oXu-g8-56f" secondAttribute="width" id="xNQ-PY-GDX"/>
+                                    <constraint firstItem="vay-Su-Xj1" firstAttribute="top" secondItem="rK0-2B-8Fu" secondAttribute="top" constant="10" id="3wM-XN-mPQ"/>
+                                    <constraint firstAttribute="bottom" secondItem="vay-Su-Xj1" secondAttribute="bottom" id="NmI-o3-Fnp"/>
+                                    <constraint firstItem="vay-Su-Xj1" firstAttribute="leading" secondItem="rK0-2B-8Fu" secondAttribute="leading" id="f6P-Vp-gcc"/>
+                                    <constraint firstAttribute="trailing" secondItem="vay-Su-Xj1" secondAttribute="trailing" id="oDh-Qi-g2U"/>
                                 </constraints>
-                            </stackView>
+                            </view>
                         </subviews>
                         <constraints>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="w7m-6w-8My" secondAttribute="trailing" constant="60" id="jqx-YU-DpE"/>
