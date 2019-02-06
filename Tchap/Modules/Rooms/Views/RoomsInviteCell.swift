@@ -58,7 +58,7 @@ import UIKit
         super.render(cellData)
         
         // Show by default missed notifications and unread widgets
-        self.missedNotifAndUnreadBadgeBgView.isHidden = false
+        self.missedNotifAndUnreadBadgeContainerView.isHidden = false
         
         if let isDirect = self.roomCellData?.roomSummary.isDirect {
             self.isDirectChat = isDirect
