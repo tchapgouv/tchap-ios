@@ -22,3 +22,4 @@
 #import "MXRoomSummary+Riot.h"
 #import "MediaPickerViewController.h"
 #import "EventFormatter.h"
+#import "Tools.h"

@@ -42,7 +42,7 @@ final class AuthenticationService: AuthenticationServiceType {
         
         self.cancelPendingAuthentication()
         
-        self.restClientBuilder.build(from: email) { (restClientBuilderResult) in
+        self.restClientBuilder.build(fromEmail: email) { (restClientBuilderResult) in
             switch restClientBuilderResult {
             case .success(let restClient):
                 

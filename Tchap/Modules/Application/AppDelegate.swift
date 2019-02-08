@@ -91,7 +91,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
-        return self.legacyAppDelegate.application(application, continue: userActivity, restorationHandler: restorationHandler)
+        return self.appCoordinator.handleUserActivity(userActivity, application: application)
     }
     
     func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Bwo-DD-cZB">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Bwo-DD-cZB">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -36,24 +36,6 @@
                                 <color key="textColor" red="0.086274509799999996" green="0.1764705882" blue="0.34509803919999998" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1Cs-Ip-pGu" userLabel="ActivityIndicatorContainerView">
-                                <rect key="frame" x="0.0" y="188.5" width="320" height="315.5"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NDY-ms-xaS" customClass="ActivityIndicatorView" customModule="Tchap" customModuleProvider="target">
-                                        <rect key="frame" x="134.5" y="133" width="50" height="50"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" priority="250" constant="50" placeholder="YES" id="2QI-0W-WIT"/>
-                                            <constraint firstAttribute="width" priority="250" constant="50" placeholder="YES" id="oyE-n3-wFO"/>
-                                        </constraints>
-                                    </view>
-                                </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstItem="NDY-ms-xaS" firstAttribute="centerY" secondItem="1Cs-Ip-pGu" secondAttribute="centerY" id="2GE-6c-caa"/>
-                                    <constraint firstItem="NDY-ms-xaS" firstAttribute="centerX" secondItem="1Cs-Ip-pGu" secondAttribute="centerX" id="gnM-7a-pqU"/>
-                                </constraints>
-                            </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wkv-AG-LZC">
                                 <rect key="frame" x="65.5" y="504" width="189" height="44"/>
                                 <constraints>
@@ -64,33 +46,42 @@
                                     <action selector="emailNotReceivedButtonAction:" destination="Bwo-DD-cZB" eventType="touchUpInside" id="6SI-UQ-axR"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GvQ-JN-neo">
+                                <rect key="frame" x="175" y="208.5" width="125" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="qtx-d6-UX9"/>
+                                </constraints>
+                                <state key="normal" title="Go to login screen"/>
+                                <connections>
+                                    <action selector="goToLoginButtonAction:" destination="Bwo-DD-cZB" eventType="touchUpInside" id="HMK-Dh-Tz8"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="GvQ-JN-neo" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="9GJ-qa-Lut" secondAttribute="leading" constant="20" id="0N4-Sz-U2n"/>
                             <constraint firstItem="MOI-HC-vNQ" firstAttribute="leading" secondItem="ivq-3X-bm0" secondAttribute="leading" id="3Yk-rz-TLI"/>
-                            <constraint firstItem="1Cs-Ip-pGu" firstAttribute="leading" secondItem="9GJ-qa-Lut" secondAttribute="leading" id="5CC-jE-fgY"/>
                             <constraint firstItem="wkv-AG-LZC" firstAttribute="centerX" secondItem="9GJ-qa-Lut" secondAttribute="centerX" id="BOa-WT-GXE"/>
-                            <constraint firstItem="9GJ-qa-Lut" firstAttribute="trailing" secondItem="1Cs-Ip-pGu" secondAttribute="trailing" id="FMI-Cy-jVd"/>
                             <constraint firstItem="MOI-HC-vNQ" firstAttribute="trailing" secondItem="ivq-3X-bm0" secondAttribute="trailing" id="FjF-hW-9Ps"/>
                             <constraint firstItem="ivq-3X-bm0" firstAttribute="leading" secondItem="9GJ-qa-Lut" secondAttribute="leading" constant="20" id="Hue-Wi-ySq"/>
                             <constraint firstItem="osW-1C-svS" firstAttribute="top" secondItem="MOI-HC-vNQ" secondAttribute="bottom" constant="40" id="QiD-a8-2f3"/>
-                            <constraint firstItem="wkv-AG-LZC" firstAttribute="top" secondItem="1Cs-Ip-pGu" secondAttribute="bottom" id="SnL-5S-f1c"/>
                             <constraint firstItem="osW-1C-svS" firstAttribute="trailing" secondItem="MOI-HC-vNQ" secondAttribute="trailing" id="YnS-2D-OOw"/>
+                            <constraint firstItem="GvQ-JN-neo" firstAttribute="top" secondItem="osW-1C-svS" secondAttribute="bottom" constant="30" id="aD0-5g-cOZ"/>
                             <constraint firstItem="osW-1C-svS" firstAttribute="leading" secondItem="MOI-HC-vNQ" secondAttribute="leading" id="abk-wT-F4P"/>
                             <constraint firstItem="wkv-AG-LZC" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="9GJ-qa-Lut" secondAttribute="leading" constant="20" id="c1X-TV-j7y"/>
                             <constraint firstItem="9GJ-qa-Lut" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="wkv-AG-LZC" secondAttribute="trailing" constant="20" id="ceJ-bc-udk"/>
-                            <constraint firstItem="1Cs-Ip-pGu" firstAttribute="top" secondItem="osW-1C-svS" secondAttribute="bottom" constant="10" id="fbl-ye-f4u"/>
                             <constraint firstItem="MOI-HC-vNQ" firstAttribute="top" secondItem="ivq-3X-bm0" secondAttribute="bottom" constant="4" id="m41-d9-ygC"/>
                             <constraint firstItem="9GJ-qa-Lut" firstAttribute="bottom" secondItem="wkv-AG-LZC" secondAttribute="bottom" constant="20" id="tGp-dV-H4B"/>
                             <constraint firstItem="ivq-3X-bm0" firstAttribute="top" secondItem="9GJ-qa-Lut" secondAttribute="top" constant="40" id="uhG-wy-RYb"/>
                             <constraint firstItem="9GJ-qa-Lut" firstAttribute="trailing" secondItem="ivq-3X-bm0" secondAttribute="trailing" constant="20" id="waN-G3-Es8"/>
+                            <constraint firstItem="9GJ-qa-Lut" firstAttribute="trailing" secondItem="GvQ-JN-neo" secondAttribute="trailing" constant="20" id="z1B-Ql-YVq"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="9GJ-qa-Lut"/>
                     </view>
                     <connections>
-                        <outlet property="activityIndicatorView" destination="NDY-ms-xaS" id="6By-hr-2pV"/>
                         <outlet property="emailNotReceivedButton" destination="wkv-AG-LZC" id="WZp-AN-Y7t"/>
                         <outlet property="emailSentInfoLabel" destination="ivq-3X-bm0" id="5L6-ZG-5Yk"/>
+                        <outlet property="goToLoginButton" destination="GvQ-JN-neo" id="CNV-lQ-SL8"/>
                         <outlet property="userEmailLabel" destination="MOI-HC-vNQ" id="Cvv-ts-TiL"/>
                         <outlet property="userInstructionsLabel" destination="osW-1C-svS" id="WLa-Ga-kez"/>
                     </connections>

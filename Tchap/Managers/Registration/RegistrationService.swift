@@ -31,9 +31,6 @@ final class RegistrationService: RegistrationServiceType {
     private let restClient: MXRestClient
     
     private var registrationOperation: MXHTTPOperation?
-    private var registrationRetryTimer: Timer?
-    private var registrationParameters: [String: Any]?
-    private var registrationCompletion: ((MXResponse<MXCredentials>) -> Void)?
     
     // MARK: - Setup
     
@@ -44,63 +41,81 @@ final class RegistrationService: RegistrationServiceType {
     
     // MARK: - Public
     
-    func submitRegistrationEmailVerification(to email: String, completion: @escaping (MXResponse<ThreePIDCredentials>) -> Void) {
-        self.submitRegistrationEmailVerification(to: email, using: self.restClient, completion: completion)
+    func setupRegistrationSession(completion: @escaping (MXResponse<String>) -> Void) {
+        self.restClient.getRegisterSession(completion: { (response) in
+            switch response {
+            case .success(let authenticationSession):
+                if let sessionId = authenticationSession.session {
+                    completion(MXResponse.success(sessionId))
+                } else {
+                    let error = NSError(domain: MXKAuthErrorDomain, code: 0, userInfo: [NSLocalizedDescriptionKey: Bundle.mxk_localizedString(forKey: "not_supported_yet")])
+                    completion(MXResponse.failure(error))
+                }
+                
+            case .failure(let error):
+                completion(MXResponse.failure(error))
+            }
+        })
     }
     
-    func register(withEmailCredentials threePIDCredentials: ThreePIDCredentials, password: String, deviceDisplayName: String, completion: @escaping (MXResponse<String>) -> Void) {
+    func submitRegistrationEmailVerification(to email: String, sessionId: String, completion: @escaping (MXResponse<ThreePIDCredentials>) -> Void) {
+        self.submitRegistrationEmailVerification(to: email, sessionId: sessionId, using: self.restClient, completion: completion)
+    }
+    
+    func register(withEmailCredentials threePIDCredentials: ThreePIDCredentials, sessionId: String?, password: String?, deviceDisplayName: String, completion: @escaping (MXResponse<String>) -> Void) {
         
         guard let identityServer = self.restClient.identityServer else {
             completion(MXResponse.failure(RegistrationServiceError.identityServerURLBuildFailed))
             return
         }
         
-        let registrationParameters: [String: Any] = [
-            "auth":
-                ["threepid_creds":
-                    [
-                        "client_secret": threePIDCredentials.clientSecret,
-                        "id_server": threePIDCredentials.identityServerHost,
-                        "sid": threePIDCredentials.sid
-                    ],
-                 "type": kMXLoginFlowTypeEmailIdentity
+        var authParameters: [String: Any] = [
+            "threepid_creds": [
+                "client_secret": threePIDCredentials.clientSecret,
+                "id_server": threePIDCredentials.identityServerHost,
+                "sid": threePIDCredentials.sid
             ],
-            "password": password,
-            "bind_email": true,
+            "type": kMXLoginFlowTypeEmailIdentity
+        ]
+        
+        // Check whether a sessionId is provided
+        if let sessionId = sessionId {
+            authParameters["session"] = sessionId
+        }
+        
+        var registrationParameters: [String: Any] = [
+            "auth": authParameters,
             "initial_device_display_name": deviceDisplayName
         ]
         
-        let registrationCompletion: (MXResponse<MXCredentials>) -> Void = { (registrationResult) in
+        // Check whether a password is provided
+        if let password = password {
+            registrationParameters["password"] = password
+            registrationParameters["bind_email"] = true
+        }
+        
+        // Cancel pending registration request
+        self.cancelPendingRegistration()
+        self.registrationOperation = self.register(using: self.restClient, parameters: registrationParameters) { [unowned self] (registrationResult) in
+            
+            self.registrationOperation = nil
             switch registrationResult {
             case .success(let credentials):
-                self.unregisterDidEnterBackgroundNotification()
                 do {
                     try self.addAccount(for: credentials, identityServerURL: identityServer)
                     completion(MXResponse.success(credentials.userId))
                 } catch {
-                    self.cancelPendingRegistration()
                     completion(MXResponse.failure(error))
                 }
             case .failure(let error):
-                self.unregisterDidEnterBackgroundNotification()
-                self.cancelPendingRegistration()
                 completion(MXResponse.failure(error))
             }
         }
-        
-        // Keep a copy of these parameters to relaunch the polling when the app is resumed after being suspended.
-        self.registrationParameters = registrationParameters
-        self.registrationCompletion = registrationCompletion
-        self.registerDidEnterBackgroundNotification()
-        
-        self.registerUntilEmailValidated(with: registrationParameters, using: self.restClient, completion: registrationCompletion)
     }
     
     func cancelPendingRegistration() {
         self.registrationOperation?.cancel()
         self.registrationOperation = nil
-        self.registrationRetryTimer?.invalidate()
-        self.registrationRetryTimer = nil
     }
     
     // MARK: - Private
@@ -110,7 +125,7 @@ final class RegistrationService: RegistrationServiceType {
         return homeServer
     }
     
-    private func buildNextLink(webAppBaseStringURL: String, clientSecret: String, homeServerStringURL: String, identityServerStringURL: String) -> String? {
+    private func buildNextLink(webAppBaseStringURL: String, clientSecret: String, homeServerStringURL: String, identityServerStringURL: String, sessionId: String) -> String? {
         
         let percentEncode: ((String) -> String?) = { stringToEncode in
             stringToEncode.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
@@ -119,14 +134,15 @@ final class RegistrationService: RegistrationServiceType {
         guard let webAppBaseStringURLEncoded = percentEncode(webAppBaseStringURL),
             let clientSecretURLEncoded = percentEncode(clientSecret),
             let homeServerStringURLEncoded = percentEncode(homeServerStringURL),
-            let identityServerStringURLEncoded = percentEncode(identityServerStringURL) else {
+            let identityServerStringURLEncoded = percentEncode(identityServerStringURL),
+            let sessionIdURLEncoded = percentEncode(sessionId) else {
                 return nil
         }
         
-        return "\(webAppBaseStringURLEncoded)/#/register?client_secret=\(clientSecretURLEncoded)&hs_url=\(homeServerStringURLEncoded)&is_url=\(identityServerStringURLEncoded)"
+        return "\(webAppBaseStringURLEncoded)/#/register?client_secret=\(clientSecretURLEncoded)&hs_url=\(homeServerStringURLEncoded)&is_url=\(identityServerStringURLEncoded)&session_id=\(sessionIdURLEncoded)"
     }
     
-    func submitRegistrationEmailVerification(to email: String, using restClient: MXRestClient, completion: @escaping (MXResponse<ThreePIDCredentials>) -> Void) {
+    func submitRegistrationEmailVerification(to email: String, sessionId: String, using restClient: MXRestClient, completion: @escaping (MXResponse<ThreePIDCredentials>) -> Void) {
         
         guard let homeServer = restClient.homeserver, let homeServerURL = URL(string: homeServer) else {
             completion(MXResponse.failure(RegistrationServiceError.homeServerURLBuildFailed))
@@ -144,7 +160,8 @@ final class RegistrationService: RegistrationServiceType {
         
         let webAppBaseStringURL = self.webAppAppBaseStringURL(from: homeServer)
         
-        guard let nextLink: String = self.buildNextLink(webAppBaseStringURL: webAppBaseStringURL, clientSecret: clientSecret, homeServerStringURL: homeServerURL.absoluteString, identityServerStringURL: identityServerURL.absoluteString) else {
+        let homeServerURLString = homeServerURL.absoluteString
+        guard let nextLink: String = self.buildNextLink(webAppBaseStringURL: webAppBaseStringURL, clientSecret: clientSecret, homeServerStringURL: homeServerURLString, identityServerStringURL: homeServerURLString, sessionId: sessionId) else {
             completion(MXResponse.failure(RegistrationServiceError.nextLinkBuildFailed))
             return
         }
@@ -198,32 +215,6 @@ final class RegistrationService: RegistrationServiceType {
         }
     }
     
-    private func registerUntilEmailValidated(with parameters: [String: Any], using restClient: MXRestClient, completion: @escaping (MXResponse<MXCredentials>) -> Void) {
-        
-        // Cancel pending registration request
-        self.cancelPendingRegistration()
-        
-        let registerOperation = self.register(using: restClient, parameters: parameters) { [unowned self] (registrationResult) in
-            
-            switch registrationResult {
-            case .success(let credentials):
-                completion(MXResponse.success(credentials))
-            case .failure(let error):
-                
-                // MXError unauthorized, retry registration until email validation is done
-                if let mxError = MXError(nsError: error), mxError.errcode == kMXErrCodeStringUnauthorized {
-                    self.registrationRetryTimer = Timer.scheduledTimer(withTimeInterval: Constants.registrationRetryInterval, repeats: false, block: { [weak self] _ in
-                        self?.registerUntilEmailValidated(with: parameters, using: restClient, completion: completion)
-                    })
-                } else {
-                    completion(MXResponse.failure(error))
-                }
-            }
-        }
-        
-        self.registrationOperation = registerOperation
-    }
-    
     private func addAccount(for credentials: MXCredentials, identityServerURL: String) throws {
         // Sanity check: check whether the user is not already logged in with this id
         guard self.accountManager.account(forUserId: credentials.userId) == nil else {
@@ -238,38 +229,5 @@ final class RegistrationService: RegistrationServiceType {
         account.identityServerURL = identityServerURL
         account.antivirusServerURL = credentials.homeServer
         self.accountManager.addAccount(account, andOpenSession: true)
-    }
-    
-    private func registerDidEnterBackgroundNotification() {
-        NotificationCenter.default.addObserver(self, selector: #selector(didEnterBackground), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
-    }
-    
-    private func unregisterDidEnterBackgroundNotification() {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
-    }
-    
-    private func registerWillEnterForegroundNotification() {
-        NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
-    }
-    
-    private func unregisterWillEnterForegroundNotification() {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
-    }
-    
-    @objc private func didEnterBackground() {
-        self.unregisterDidEnterBackgroundNotification()
-        // Cancel any pending registration request
-        self.cancelPendingRegistration()
-        // Wait for app resume
-        self.registerWillEnterForegroundNotification()
-    }
-    
-    @objc private func willEnterForeground() {
-        self.unregisterWillEnterForegroundNotification()
-        
-        if let parameters = self.registrationParameters, let completion = self.registrationCompletion {
-            // Resume the polling on email validation
-            self.registerUntilEmailValidated(with: parameters, using: restClient, completion: completion)
-        }
     }
 }

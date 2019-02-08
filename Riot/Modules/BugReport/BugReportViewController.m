@@ -276,9 +276,29 @@
 {
     _sendButton.hidden = YES;
     _sendingContainer.hidden = NO;
+    
+    // Check whether a session is running
+    // TODO: handle multi-account and find a way to expose them in rageshake API)
+    MXKAccount *mainAccount = [MXKAccountManager sharedManager].activeAccounts.firstObject;
 
-    // Setup data to send
-    NSString *url = [[NSUserDefaults standardUserDefaults] objectForKey:@"bugReportEndpointUrl"];
+    // Setup the bug report end point
+    NSString *bugReportEndpoint;
+    if (mainAccount)
+    {
+        // Report to the current homeserver
+        bugReportEndpoint = mainAccount.mxSession.matrixRestClient.homeserver;
+    }
+    else
+    {
+        // Use the default one
+        NSString *urlPrefix = [[NSUserDefaults standardUserDefaults] objectForKey:@"serverUrlPrefix"];
+        NSString *host = [[NSUserDefaults standardUserDefaults] objectForKey:@"bugReportDefaultHost"];
+        bugReportEndpoint = [NSString stringWithFormat:@"%@%@", urlPrefix, host];
+    }
+    
+    NSString *urlSuffix = [[NSUserDefaults standardUserDefaults] objectForKey:@"bugReportEndpointUrlSuffix"];
+    NSString *url = [NSString stringWithFormat:@"%@%@", bugReportEndpoint, urlSuffix];
+    
     bugReportRestClient = [[MXBugReportRestClient alloc] initWithBugReportEndpoint:url];
 
     // App info
@@ -290,9 +310,8 @@
     bugReportRestClient.deviceModel = [GBDeviceInfo deviceInfo].modelString;
     bugReportRestClient.deviceOS = [NSString stringWithFormat:@"%@ %@", [[UIDevice currentDevice] systemName], [[UIDevice currentDevice] systemVersion]];
 
-    // User info (TODO: handle multi-account and find a way to expose them in rageshake API)
+    // User info
     NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
-    MXKAccount *mainAccount = [MXKAccountManager sharedManager].accounts.firstObject;
     if (mainAccount.mxSession.myUser.userId)
     {
         userInfo[@"user_id"] = mainAccount.mxSession.myUser.userId;

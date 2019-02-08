@@ -49,23 +49,35 @@
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="OQC-c8-4Vu">
                                 <rect key="frame" x="0.0" y="0.0" width="527" height="19.5"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1Y5-nS-fhi">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FHh-1v-6OU">
                                         <rect key="frame" x="0.0" y="0.0" width="50" height="19.5"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="20" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xb7-ZS-bl2">
-                                                <rect key="frame" x="9" y="2" width="32" height="15.5"/>
-                                                <accessibility key="accessibilityConfiguration" identifier="MissedNotifAndUnreadBadge"/>
-                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="11"/>
-                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1Y5-nS-fhi">
+                                                <rect key="frame" x="0.0" y="1" width="50" height="18"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="20" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xb7-ZS-bl2">
+                                                        <rect key="frame" x="9" y="2" width="32" height="14"/>
+                                                        <accessibility key="accessibilityConfiguration" identifier="MissedNotifAndUnreadBadge"/>
+                                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="11"/>
+                                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                                <color key="backgroundColor" red="0.0" green="0.72547743060000003" blue="0.0041503219759999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstItem="Xb7-ZS-bl2" firstAttribute="top" secondItem="1Y5-nS-fhi" secondAttribute="top" constant="2" id="1lb-u4-Ux5"/>
+                                                    <constraint firstAttribute="height" constant="18" id="8BT-Xe-Oqk"/>
+                                                    <constraint firstAttribute="trailing" secondItem="Xb7-ZS-bl2" secondAttribute="trailing" constant="9" id="EWi-iL-DJ7"/>
+                                                    <constraint firstItem="Xb7-ZS-bl2" firstAttribute="leading" secondItem="1Y5-nS-fhi" secondAttribute="leading" constant="9" id="bM5-sv-PmM"/>
+                                                    <constraint firstAttribute="bottom" secondItem="Xb7-ZS-bl2" secondAttribute="bottom" constant="2" id="uVn-Ij-h0v"/>
+                                                </constraints>
+                                            </view>
                                         </subviews>
-                                        <color key="backgroundColor" red="0.0" green="0.72547743060000003" blue="0.0041503219759999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstItem="Xb7-ZS-bl2" firstAttribute="top" secondItem="1Y5-nS-fhi" secondAttribute="top" constant="2" id="1lb-u4-Ux5"/>
-                                            <constraint firstAttribute="trailing" secondItem="Xb7-ZS-bl2" secondAttribute="trailing" constant="9" id="EWi-iL-DJ7"/>
-                                            <constraint firstItem="Xb7-ZS-bl2" firstAttribute="leading" secondItem="1Y5-nS-fhi" secondAttribute="leading" constant="9" id="bM5-sv-PmM"/>
-                                            <constraint firstAttribute="bottom" secondItem="Xb7-ZS-bl2" secondAttribute="bottom" constant="2" id="uVn-Ij-h0v"/>
+                                            <constraint firstItem="1Y5-nS-fhi" firstAttribute="leading" secondItem="FHh-1v-6OU" secondAttribute="leading" id="AbT-xN-7eM"/>
+                                            <constraint firstItem="1Y5-nS-fhi" firstAttribute="centerY" secondItem="FHh-1v-6OU" secondAttribute="centerY" id="Bri-nj-gHE"/>
+                                            <constraint firstAttribute="trailing" secondItem="1Y5-nS-fhi" secondAttribute="trailing" id="ysa-Ph-wJS"/>
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a7B-bJ-KEo">
@@ -129,6 +141,7 @@
                 <outlet property="lastEventDescription" destination="w7m-6w-8My" id="Hyw-r7-65p"/>
                 <outlet property="lastEventSenderName" destination="hZb-Qm-N4l" id="2HL-So-fBe"/>
                 <outlet property="missedNotifAndUnreadBadgeBgView" destination="1Y5-nS-fhi" id="GAg-p5-OtP"/>
+                <outlet property="missedNotifAndUnreadBadgeContainerView" destination="FHh-1v-6OU" id="HEv-JH-Ucs"/>
                 <outlet property="missedNotifAndUnreadBadgeLabel" destination="Xb7-ZS-bl2" id="jzI-xm-Bhw"/>
                 <outlet property="pinView" destination="mqD-9e-3lZ" id="aFr-m2-PLU"/>
                 <outlet property="titleLabel" destination="a7B-bJ-KEo" id="uet-Q0-GTU"/>
@@ -137,6 +150,6 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="e2e_verified" width="10" height="12"/>
+        <image name="e2e_verified" width="16" height="19.200000762939453"/>
     </resources>
 </document>

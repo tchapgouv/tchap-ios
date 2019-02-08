@@ -23,6 +23,7 @@ import UIKit
     @IBOutlet private weak var encryptedIcon: UIImageView!
     @IBOutlet private weak var missedNotifAndUnreadBadgeLabel: UILabel!
     @IBOutlet private(set) weak var missedNotifAndUnreadBadgeBgView: UIView!
+    @IBOutlet private(set) weak var missedNotifAndUnreadBadgeContainerView: UIView!
     
     @IBOutlet private weak var labelsStackView: UIStackView!
     @IBOutlet private(set) weak var titleLabel: UILabel!
@@ -90,7 +91,7 @@ import UIKit
         self.roomCellData = roomCellData
         
         // Hide by default missed notifications and unread widgets
-        self.missedNotifAndUnreadBadgeBgView?.isHidden = true
+        self.missedNotifAndUnreadBadgeContainerView?.isHidden = true
         
         // Report computed values as is
         self.titleLabel.text = roomCellData.roomDisplayname
@@ -107,9 +108,9 @@ import UIKit
             }
             
             if roomCellData.notificationCount > 0,
-                let badgeView = self.missedNotifAndUnreadBadgeBgView,
+                let badgeContainerView = self.missedNotifAndUnreadBadgeContainerView,
                 let badgeLabel = self.missedNotifAndUnreadBadgeLabel {
-                badgeView.isHidden = false
+                badgeContainerView.isHidden = false
                 badgeLabel.text = roomCellData.notificationCountStringValue
                 badgeLabel.sizeToFit()
             }

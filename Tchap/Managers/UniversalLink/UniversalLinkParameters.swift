@@ -1,5 +1,5 @@
 /*
- Copyright 2018 New Vector Ltd
+ Copyright 2019 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -16,13 +16,11 @@
 
 import Foundation
 
-/// `HomeCoordinatorType` is a protocol describing a Coordinator that handle home navigation flow.
-protocol HomeCoordinatorType: Coordinator, Presentable {
+/// Structure use to return the parameters extracted from a universal links.
+struct UniversalLinkParameters: UniversalLinkParametersType {
+    /// The decoded path params.
+    let pathParams: [String]
     
-    /// Open a specific room.
-    ///
-    /// - Parameters:
-    ///   - roomID: The room identifier.
-    ///   - enventID: An optional event id in this room on which the user wants to focus.
-    func showRoom(with roomID: String, onEventID eventID: String?)
+    /// The decoded query params.
+    let queryParams: [String : String]?
 }

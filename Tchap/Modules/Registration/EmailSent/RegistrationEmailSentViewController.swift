@@ -17,6 +17,7 @@
 import Foundation
 
 protocol RegistrationEmailSentViewControllerDelegate: class {
+    func registrationEmailSentViewControllerDidTapGoToLoginButton(_ registrationEmailSentViewController: RegistrationEmailSentViewController)
     func registrationEmailSentViewControllerDidTapEmailNotReceivedButton(_ registrationEmailSentViewController: RegistrationEmailSentViewController)
 }
 
@@ -29,7 +30,7 @@ final class RegistrationEmailSentViewController: UIViewController {
     @IBOutlet private weak var emailSentInfoLabel: UILabel!
     @IBOutlet private weak var userEmailLabel: UILabel!
     @IBOutlet private weak var userInstructionsLabel: UILabel!
-    @IBOutlet private weak var activityIndicatorView: ActivityIndicatorView!
+    @IBOutlet private weak var goToLoginButton: UIButton!
     @IBOutlet private weak var emailNotReceivedButton: UIButton!
     
     // MARK: Private
@@ -65,13 +66,10 @@ final class RegistrationEmailSentViewController: UIViewController {
         super.viewWillAppear(animated)
         
         self.userThemeDidChange()
-        self.activityIndicatorView.startAnimating()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        
-        self.activityIndicatorView.stopAnimating()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -84,6 +82,7 @@ final class RegistrationEmailSentViewController: UIViewController {
         self.emailSentInfoLabel.text = TchapL10n.registrationEmailSentInfo
         self.userEmailLabel.text = self.userEmail
         self.userInstructionsLabel.text = TchapL10n.registrationEmailSentInstructions
+        self.goToLoginButton.setTitle(TchapL10n.registrationEmailLoginAction, for: .normal)
         self.emailNotReceivedButton.setTitle(TchapL10n.registrationEmailNotReceivedAction, for: .normal)
     }
     
@@ -92,6 +91,10 @@ final class RegistrationEmailSentViewController: UIViewController {
     }
     
     // MARK: - Actions
+    
+    @IBAction private func goToLoginButtonAction(_ sender: Any) {
+        self.delegate?.registrationEmailSentViewControllerDidTapGoToLoginButton(self)
+    }
     
     @IBAction private func emailNotReceivedButtonAction(_ sender: Any) {
         self.delegate?.registrationEmailSentViewControllerDidTapEmailNotReceivedButton(self)
@@ -112,8 +115,8 @@ extension RegistrationEmailSentViewController: Stylable {
         self.emailSentInfoLabel.textColor = style.primarySubTextColor
         self.userEmailLabel.textColor = style.secondaryTextColor
         self.userInstructionsLabel.textColor = style.primarySubTextColor
-        self.activityIndicatorView.color = style.primarySubTextColor
         
+        style.applyStyle(onButton: self.goToLoginButton)
         style.applyStyle(onButton: self.emailNotReceivedButton)
     }
 }
