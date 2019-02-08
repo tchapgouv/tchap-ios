@@ -1,3 +1,17 @@
+Changes in Tchap 1.0.3 (2019-02-08)
+===================================================
+
+ Features/Improvements:
+ * Setup Universal Links support for the registration process #119
+ * Registration: remove the polling mechanism on email validation #145
+ * Enable bug report #104
+ * Update TAC url
+ * Turn off "ITSAppUsesNonExemptEncryption" flag (until export compliance is reviewed)
+ * Enlarge room invite cell
+ 
+ Bug Fixes:
+ * Fix the flickering during unread messages badge rendering PR #148
+
 Changes in Tchap 1.0.2 (2019-01-30)
 ===================================================
 
