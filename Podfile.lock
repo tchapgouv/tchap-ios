@@ -136,7 +136,7 @@ CHECKOUT OPTIONS:
     :commit: c01b04bf1e2ca9cf4dc8a069062090cd1574e995
     :git: https://github.com/matrix-org/matrix-ios-kit.git
   MatrixSDK:
-    :commit: 22f13a9f0fc287b803cf705bcaf197dd1af7af61
+    :commit: 09477f8433c6e5313ff797de082973e5407f9c83
     :git: https://github.com/matrix-org/matrix-ios-sdk.git
   PiwikTracker:
     :commit: dfb048f25f4eefbe13ff7515c3c1c2cad5d94491
