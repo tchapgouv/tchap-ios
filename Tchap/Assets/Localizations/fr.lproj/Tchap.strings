@@ -140,4 +140,6 @@
 "room_creation_public_room_federation_title" = "Limiter l'accès à ce salon aux membres du domaine \"%@\"";
 "room_creation_add_avatar_action" = "Ajouter une photo";
 
-
+////////////////////////////////////////////////////////////////////////////////
+// MARK: Room creation
+"gdpr_consent_not_given_alert_message" = "Pour continuer à utiliser Tchap, vous devez lire et accepter les conditions générales.";

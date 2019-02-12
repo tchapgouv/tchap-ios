@@ -3154,10 +3154,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
             
             __weak typeof(self) weakSelf = self;
             
-            MXSession *mainSession = self.mxSessions.firstObject;
-            NSString *homeServerName = mainSession.matrixRestClient.credentials.homeServerName;
-            
-            NSString *alertMessage = [NSString stringWithFormat:NSLocalizedStringFromTable(@"gdpr_consent_not_given_alert_message", @"Vector", nil), homeServerName];
+            NSString *alertMessage = NSLocalizedStringFromTable(@"gdpr_consent_not_given_alert_message", @"Tchap", nil);
             
             UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"settings_term_conditions", @"Vector", nil)                                        
                                                                            message:alertMessage
