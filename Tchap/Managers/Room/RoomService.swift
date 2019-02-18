@@ -120,7 +120,7 @@ final class RoomService: RoomServiceType {
             alias = self.defaultAlias(for: name)
         } else {
             preset = .privateChat
-            historyVisibility = nil
+            historyVisibility = kMXRoomHistoryVisibilityInvited
             alias = nil
         }
         
