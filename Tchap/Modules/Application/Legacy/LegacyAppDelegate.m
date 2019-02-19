@@ -61,7 +61,8 @@
 
 
 #if __has_include(<MatrixSDK/MXJingleCallStack.h>)
-#define CALL_STACK_JINGLE
+// Tchap: Disable voip call for the moment
+//#define CALL_STACK_JINGLE
 #endif
 #ifdef CALL_STACK_JINGLE
 #import <MatrixSDK/MXJingleCallStack.h>
