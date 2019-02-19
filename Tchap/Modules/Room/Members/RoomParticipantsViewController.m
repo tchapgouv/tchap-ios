@@ -48,6 +48,9 @@
     RoomMemberDetailsViewController *memberDetailsViewController;
     ContactsViewController     *contactsPickerViewController;
     
+    // Tell whether the user is allowed to invite other users
+    BOOL isUserAllowedToInvite;
+    
     // Display a gradient view above the screen.
     CAGradientLayer* tableViewMaskLayer;
     
@@ -327,10 +330,12 @@
         {
             newBounds.origin = CGPointZero;
             
+            MXWeakify(self);
             [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
                              animations:^{
                                  
-                                 tableViewMaskLayer.bounds = newBounds;
+                                 MXStrongifyAndReturnIfNil(self);
+                                 self->tableViewMaskLayer.bounds = newBounds;
                                  
                              }
                              completion:^(BOOL finished){
@@ -340,7 +345,7 @@
         
         // Hide the addParticipants button on landscape when keyboard is visible
         BOOL isLandscapeOriented = UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation);
-        addParticipantButtonImageView.hidden = tableViewMaskLayer.hidden = (isLandscapeOriented && self.keyboardHeight);
+        addParticipantButtonImageView.hidden = tableViewMaskLayer.hidden = (!isUserAllowedToInvite || (isLandscapeOriented && self.keyboardHeight));
     }
 }
 
@@ -556,10 +561,12 @@
     super.keyboardHeight = keyboardHeight;
     
     // Update addParticipants button position with animation
+    MXWeakify(self);
     [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
                      animations:^{
                          
-                         addParticipantButtonImageViewBottomConstraint.constant = keyboardHeight + 9;
+                         MXStrongifyAndReturnIfNil(self);
+                         self->addParticipantButtonImageViewBottomConstraint.constant = keyboardHeight + 9;
                          
                          // Force to render the view
                          [self.view layoutIfNeeded];
@@ -665,6 +672,8 @@
     [tap setNumberOfTapsRequired:1];
     [tap setDelegate:self];
     [addParticipantButtonImageView addGestureRecognizer:tap];
+    
+    addParticipantButtonImageView.hidden = tableViewMaskLayer.hidden = !isUserAllowedToInvite;
 }
 
 - (void)onAddParticipantButtonPressed
@@ -752,6 +761,11 @@
             }
 
             [self finalizeParticipantsList:roomState];
+            
+            // Check whether the current user is allowed to invite
+            MXRoomPowerLevels *powerLevels = [roomState powerLevels];
+            self->isUserAllowedToInvite = ([powerLevels powerLevelOfUserWithUserID:userId] >= powerLevels.invite);
+            self->addParticipantButtonImageView.hidden = self->tableViewMaskLayer.hidden = !self->isUserAllowedToInvite;
         }];
     }
 }
@@ -1121,6 +1135,7 @@
                 MXRoomState *roomState = self.mxRoom.dangerousSyncState;
                 
                 // Update member badge
+                participantCell.thumbnailBadgeView.hidden = YES;
                 MXRoomPowerLevels *powerLevels = [roomState powerLevels];
                 NSInteger powerLevel = [powerLevels powerLevelOfUserWithUserID:contact.mxMember.userId];
                 if (powerLevel >= RoomPowerLevelAdmin)
