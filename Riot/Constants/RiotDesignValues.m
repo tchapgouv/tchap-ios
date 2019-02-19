@@ -61,9 +61,6 @@ UIColor *kRiotTextColorGray;
 UIColor *kRiotTextColorWhite;
 UIColor *kRiotTextColorDarkWhite;
 
-NSInteger const kRiotRoomModeratorLevel = 50;
-NSInteger const kRiotRoomAdminLevel = 100;
-
 UIStatusBarStyle kRiotDesignStatusBarStyle = UIStatusBarStyleDefault;
 UIBarStyle kRiotDesignSearchBarStyle = UIBarStyleDefault;
 UIColor *kRiotDesignSearchBarTintColor = nil;

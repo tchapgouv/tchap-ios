@@ -26,6 +26,7 @@ private struct RoomCreationParameters {
     let inviteUserIDs: [String]
     let isFederated: Bool
     let historyVisibility: String?
+    let powerLevelContentOverride: [String: Any]?
 }
 
 enum RoomServiceError: Error {
@@ -124,13 +125,17 @@ final class RoomService: RoomServiceType {
             alias = nil
         }
         
+        // A Tchap room member must be moderator to invite
+        let powerLevelContentOverride = ["invite": RoomPowerLevel.moderator.rawValue]
+        
         let roomCreationParameters = RoomCreationParameters(visibility: visibility,
                                                             preset: preset,
                                                             name: name,
                                                             alias: alias,
                                                             inviteUserIDs: inviteUserIds,
                                                             isFederated: isFederated,
-                                                            historyVisibility: historyVisibility)
+                                                            historyVisibility: historyVisibility,
+                                                            powerLevelContentOverride: powerLevelContentOverride)
         
         return self.createRoom(with: roomCreationParameters, completion: completion)
     }
@@ -163,6 +168,10 @@ final class RoomService: RoomServiceType {
         
         if initialStates.isEmpty == false {
             parameters["initial_state"] = initialStates
+        }
+        
+        if let powerLevelContentOverride = roomCreationParameters.powerLevelContentOverride {
+            parameters["power_level_content_override"] = powerLevelContentOverride
         }
         
         return self.session.matrixRestClient.createRoom(parameters: parameters, completion: completion)
