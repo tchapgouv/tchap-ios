@@ -26,7 +26,7 @@ private struct RoomCreationParameters {
     let inviteUserIDs: [String]
     let isFederated: Bool
     let historyVisibility: String?
-    let powerLevelContentOverride: [String: Int]?
+    let powerLevelContentOverride: [String: Any]?
 }
 
 enum RoomServiceError: Error {
@@ -126,7 +126,7 @@ final class RoomService: RoomServiceType {
         }
         
         // A Tchap room member must be moderator to invite
-        let powerLevelContentOverride = ["invite": 50]
+        let powerLevelContentOverride = ["invite": RoomPowerLevel.moderator.rawValue]
         
         let roomCreationParameters = RoomCreationParameters(visibility: visibility,
                                                             preset: preset,
