@@ -330,11 +330,9 @@
         {
             newBounds.origin = CGPointZero;
             
-            MXWeakify(self);
             [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
                              animations:^{
                                  
-                                 MXStrongifyAndReturnIfNil(self);
                                  self->tableViewMaskLayer.bounds = newBounds;
                                  
                              }
@@ -561,11 +559,9 @@
     super.keyboardHeight = keyboardHeight;
     
     // Update addParticipants button position with animation
-    MXWeakify(self);
     [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
                      animations:^{
                          
-                         MXStrongifyAndReturnIfNil(self);
                          self->addParticipantButtonImageViewBottomConstraint.constant = keyboardHeight + 9;
                          
                          // Force to render the view
@@ -962,7 +958,7 @@
     pendingMaskSpinnerView.alpha = 0;
     [UIView animateWithDuration:0.3 delay:0.3 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
         
-        pendingMaskSpinnerView.alpha = 1;
+        self->pendingMaskSpinnerView.alpha = 1;
         
     } completion:^(BOOL finished) {
     }];
