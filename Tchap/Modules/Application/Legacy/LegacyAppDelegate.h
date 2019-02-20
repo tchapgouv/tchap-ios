@@ -130,17 +130,6 @@ extern NSString *const kLegacyAppDelegateDidLoginNotification;
  */
 - (void)registerForRemoteNotificationsWithCompletion:(void (^)(NSError *))completion;
 
-#pragma mark - Matrix Room handling
-
-// TODO: Remove this method and implement navigation to a room in approriate coordinator
-- (void)showRoom:(NSString*)roomId andEventId:(NSString*)eventId withMatrixSession:(MXSession*)mxSession;
-
-// Creates a new direct chat with the provided user id
-- (void)createDirectChatWithUserId:(NSString*)userId completion:(void (^)(void))completion;
-
-// Reopen an existing direct room with this userId or creates a new one (if it doesn't exist)
-- (void)startDirectChatWithUserId:(NSString*)userId completion:(void (^)(void))completion;
-
 #pragma mark - Jitsi call
 
 /**

@@ -181,8 +181,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     NSDate *launchAnimationStart;
 }
 
-@property (strong, nonatomic) UIAlertController *mxInAppNotification;
-
 @property (strong, nonatomic) UIAlertController *logoutConfirmation;
 
 @property (weak, nonatomic) UIAlertController *gdprConsentNotGivenAlertController;
@@ -469,13 +467,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     
     // check if some media must be released to reduce the cache size
     [MXMediaManager reduceCacheSizeToInsert:0];
-    
-    // Hide potential notification
-    if (self.mxInAppNotification)
-    {
-        [self.mxInAppNotification dismissViewControllerAnimated:NO completion:nil];
-        self.mxInAppNotification = nil;
-    }
     
     // Suspend all running matrix sessions
     NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
@@ -874,52 +865,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         NSLog(@"[AppDelegate][Push] handleActionWithIdentifier: unhandled identifier %@", identifier);
     }
     completionHandler();
-}
-
-- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
-{
-    NSLog(@"[AppDelegate][Push] didReceiveLocalNotification: applicationState: %@", @(application.applicationState));
-    
-    NSString* roomId = notification.userInfo[@"room_id"];
-    if (roomId.length)
-    {
-        // TODO retrieve the right matrix session
-        // We can use the "user_id" value in notification.userInfo
-        
-        //**************
-        // Patch consider the first session which knows the room id
-        MXKAccount *dedicatedAccount = nil;
-        
-        NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
-        
-        if (mxAccounts.count == 1)
-        {
-            dedicatedAccount = mxAccounts.firstObject;
-        }
-        else
-        {
-            for (MXKAccount *account in mxAccounts)
-            {
-                if ([account.mxSession roomWithRoomId:roomId])
-                {
-                    dedicatedAccount = account;
-                    break;
-                }
-            }
-        }
-        
-        // sanity checks
-        if (dedicatedAccount && dedicatedAccount.mxSession)
-        {
-            NSLog(@"[AppDelegate][Push] didReceiveLocalNotification: open the roomViewController %@", roomId);
-            
-            [self showRoom:roomId andEventId:nil withMatrixSession:dedicatedAccount.mxSession];
-        }
-        else
-        {
-            NSLog(@"[AppDelegate][Push] didReceiveLocalNotification : no linked session / account has been found.");
-        }
-    }
 }
 
 - (void)pushRegistry:(PKPushRegistry *)registry didUpdatePushCredentials:(PKPushCredentials *)credentials forType:(PKPushType)type
@@ -1543,18 +1488,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
             
             // Enable local notifications
             [self enableLocalNotificationsFromMatrixSession:mxSession];
-            
-            // Look for the account related to this session.
-            NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
-            for (MXKAccount *account in mxAccounts)
-            {
-                if (account.mxSession == mxSession)
-                {
-                    // Enable inApp notifications (if they are allowed for this account).
-                    [self enableInAppNotificationsForAccount:account];
-                    break;
-                }
-            }
         }
         else if (mxSession.state == MXSessionStateClosed)
         {
@@ -1645,9 +1578,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
                 // Set up push notifications
                 [self registerUserNotificationSettings];
             }
-            
-            // Observe inApp notifications toggle change
-            [account addObserver:self forKeyPath:@"enableInAppNotifications" options:0 context:nil];
         }
         
         // Load the local contacts on first account creation.
@@ -1666,11 +1596,8 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     // Add observer to handle removed accounts
     removedAccountObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidRemoveAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
-        // Remove inApp notifications toggle change
-        MXKAccount *account = notif.object;
-        [account removeObserver:self forKeyPath:@"enableInAppNotifications"];
-
         // Clear Modular data
+        MXKAccount *account = notif.object;
         [[WidgetManager sharedManager] deleteDataForUser:account.mxCredentials.userId];
         
         // Logout the app when there is no available account
@@ -1719,12 +1646,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         
         // Set up push notifications
         [self registerUserNotificationSettings];
-        
-        // Observe inApp notifications toggle change for each account
-        for (MXKAccount *account in mxAccounts)
-        {
-            [account addObserver:self forKeyPath:@"enableInAppNotifications" options:0 context:nil];
-        }
     }
 }
 
@@ -1919,11 +1840,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    if ([@"enableInAppNotifications" isEqualToString:keyPath] && [object isKindOfClass:[MXKAccount class]])
-    {
-        [self enableInAppNotificationsForAccount:(MXKAccount*)object];
-    }
-    else if (object == [MXKAppSettings standardAppSettings] && [keyPath isEqualToString:@"enableCallKit"])
+    if (object == [MXKAppSettings standardAppSettings] && [keyPath isEqualToString:@"enableCallKit"])
     {
         BOOL isCallKitEnabled = [MXKAppSettings standardAppSettings].isCallKitEnabled;
         MXCallManager *callManager = [[[[[MXKAccountManager sharedManager] activeAccounts] firstObject] mxSession] callManager];
@@ -2261,97 +2178,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 
 #pragma mark - Matrix Accounts handling
 
-- (void)enableInAppNotificationsForAccount:(MXKAccount*)account
-{
-    if (account.mxSession)
-    {
-        if (account.enableInAppNotifications)
-        {
-            // Build MXEvent -> NSString formatter
-            EventFormatter *eventFormatter = [[EventFormatter alloc] initWithMatrixSession:account.mxSession];
-            eventFormatter.isForSubtitle = YES;
-            
-            [account listenToNotifications:^(MXEvent *event, MXRoomState *roomState, MXPushRule *rule) {
-                
-                // Check conditions to display this notification
-                if (![self.visibleRoomId isEqualToString:event.roomId]
-                    && !self.window.rootViewController.presentedViewController)
-                {
-                    MXKEventFormatterError error;
-                    NSString* messageText = [eventFormatter stringFromEvent:event withRoomState:roomState error:&error];
-                    if (messageText.length && (error == MXKEventFormatterErrorNone))
-                    {
-                        // Removing existing notification (if any)
-                        if (self.mxInAppNotification)
-                        {
-                            [self.mxInAppNotification dismissViewControllerAnimated:NO completion:nil];
-                        }
-                        
-                        // Check whether tweak is required
-                        for (MXPushRuleAction *ruleAction in rule.actions)
-                        {
-                            if (ruleAction.actionType == MXPushRuleActionTypeSetTweak)
-                            {
-                                if ([[ruleAction.parameters valueForKey:@"set_tweak"] isEqualToString:@"sound"])
-                                {
-                                    // Play message sound
-                                    AudioServicesPlaySystemSound(_messageSound);
-                                }
-                            }
-                        }
-                        
-                        MXRoomSummary *roomSummary = [account.mxSession roomSummaryWithRoomId:event.roomId];
-                        
-                        __weak typeof(self) weakSelf = self;
-                        self.mxInAppNotification = [UIAlertController alertControllerWithTitle:roomSummary.displayname
-                                                                                       message:messageText
-                                                                                preferredStyle:UIAlertControllerStyleAlert];
-                        
-                        [self.mxInAppNotification addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
-                                                                                     style:UIAlertActionStyleCancel
-                                                                                   handler:^(UIAlertAction * action) {
-                                                                                       
-                                                                                       if (weakSelf)
-                                                                                       {
-                                                                                           typeof(self) self = weakSelf;
-                                                                                           self.mxInAppNotification = nil;
-                                                                                           [account updateNotificationListenerForRoomId:event.roomId ignore:YES];
-                                                                                       }
-                                                                                       
-                                                                                   }]];
-                        
-                        [self.mxInAppNotification addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"view", @"Vector", nil)
-                                                                                     style:UIAlertActionStyleDefault
-                                                                                   handler:^(UIAlertAction * action) {
-                                                                                       
-                                                                                       if (weakSelf)
-                                                                                       {
-                                                                                           typeof(self) self = weakSelf;
-                                                                                           self.mxInAppNotification = nil;
-                                                                                           // Show the room
-                                                                                           [self showRoom:event.roomId andEventId:nil withMatrixSession:account.mxSession];
-                                                                                       }
-                                                                                       
-                                                                                   }]];
-                        
-                        [self.window.rootViewController presentViewController:self.mxInAppNotification animated:YES completion:nil];
-                    }
-                }
-            }];
-        }
-        else
-        {
-            [account removeNotificationListener];
-        }
-    }
-    
-    if (self.mxInAppNotification)
-    {
-        [self.mxInAppNotification dismissViewControllerAnimated:NO completion:nil];
-        self.mxInAppNotification = nil;
-    }
-}
-
 - (void)selectMatrixAccount:(void (^)(MXKAccount *selectedAccount))onSelection
 {
     NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
@@ -2409,115 +2235,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         
         [self showNotificationAlert:accountPicker];
     }
-}
-
-#pragma mark - Matrix Rooms handling
-
-- (void)showRoom:(NSString*)roomId andEventId:(NSString*)eventId withMatrixSession:(MXSession*)mxSession
-{
-    NSLog(@"[AppDelegate] Implement navigation to room in approriate coordinator");
-}
-
-- (void)setVisibleRoomId:(NSString *)roomId
-{
-    if (roomId)
-    {
-        // Enable inApp notification for this room in all existing accounts.
-        NSArray *mxAccounts = [MXKAccountManager sharedManager].accounts;
-        for (MXKAccount *account in mxAccounts)
-        {
-            [account updateNotificationListenerForRoomId:roomId ignore:NO];
-        }
-    }
-    
-    _visibleRoomId = roomId;
-}
-
-- (void)createDirectChatWithUserId:(NSString*)userId completion:(void (^)(void))completion
-{
-    // Handle here potential multiple accounts
-    [self selectMatrixAccount:^(MXKAccount *selectedAccount) {
-        
-        MXSession *mxSession = selectedAccount.mxSession;
-        
-        if (mxSession)
-        {
-            // Create a new room by inviting the other user only if it is defined and not oneself
-            NSArray *invite = ((userId && ![mxSession.myUser.userId isEqualToString:userId]) ? @[userId] : nil);
-            
-            [mxSession createRoom:nil
-                       visibility:kMXRoomDirectoryVisibilityPrivate
-                        roomAlias:nil
-                            topic:nil
-                           invite:invite
-                       invite3PID:nil
-                         isDirect:(invite.count != 0)
-                           preset:kMXRoomPresetTrustedPrivateChat
-                          success:^(MXRoom *room) {
-                              
-                              // Open created room
-                              [self showRoom:room.roomId andEventId:nil withMatrixSession:mxSession];
-                              
-                              if (completion)
-                              {
-                                  completion();
-                              }
-                              
-                          }
-                          failure:^(NSError *error) {
-                              
-                              NSLog(@"[AppDelegate] Create direct chat failed");
-                              //Alert user
-                              [self showErrorAsAlert:error];
-                              
-                              if (completion)
-                              {
-                                  completion();
-                              }
-                              
-                          }];
-        }
-        else if (completion)
-        {
-            completion();
-        }
-        
-    }];
-}
-
-- (void)startDirectChatWithUserId:(NSString*)userId completion:(void (^)(void))completion
-{
-    // Handle here potential multiple accounts
-    [self selectMatrixAccount:^(MXKAccount *selectedAccount) {
-        
-        MXSession *mxSession = selectedAccount.mxSession;
-        
-        if (mxSession)
-        {
-            MXRoom *directRoom = [mxSession directJoinedRoomWithUserId:userId];
-            
-            // if the room exists
-            if (directRoom)
-            {
-                // open it
-                [self showRoom:directRoom.roomId andEventId:nil withMatrixSession:mxSession];
-                
-                if (completion)
-                {
-                    completion();
-                }
-            }
-            else
-            {
-                [self createDirectChatWithUserId:userId completion:completion];
-            }
-        }
-        else if (completion)
-        {
-            completion();
-        }
-        
-    }];
 }
 
 #pragma mark - Contacts handling

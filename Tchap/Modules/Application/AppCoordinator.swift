@@ -143,6 +143,33 @@ final class AppCoordinator: AppCoordinatorType {
         return false
     }
     
+    func showRoom(with roomIdOrAlias: String, onEventID eventID: String? = nil) -> Bool {
+        guard let account = MXKAccountManager.shared().accountKnowingRoom(withRoomIdOrAlias: roomIdOrAlias),
+            let homeCoordinator = self.homeCoordinator else {
+                return false
+        }
+        
+        let roomID: String?
+        
+        if roomIdOrAlias.hasPrefix("#") {
+            // Translate the alias into the room id
+            if let room = account.mxSession.room(withAlias: roomIdOrAlias) {
+                roomID = room.roomId
+            } else {
+                roomID = nil
+            }
+        } else {
+            roomID = roomIdOrAlias
+        }
+        
+        if let finalRoomID = roomID {
+            homeCoordinator.showRoom(with: finalRoomID, onEventID: eventID)
+            return true
+        } else {
+            return false
+        }
+    }
+    
     // MARK: - Private methods
     
     private func showWelcome() {
@@ -289,33 +316,6 @@ final class AppCoordinator: AppCoordinatorType {
             case .failure(let error):
                 self.showError(error)
             }
-        }
-    }
-    
-    private func showRoom(with roomIdOrAlias: String, onEventID eventID: String? = nil) -> Bool {
-        guard let account = MXKAccountManager.shared().accountKnowingRoom(withRoomIdOrAlias: roomIdOrAlias),
-            let homeCoordinator = self.homeCoordinator else {
-            return false
-        }
-        
-        let roomID: String?
-        
-        if roomIdOrAlias.hasPrefix("#") {
-            // Translate the alias into the room id
-            if let room = account.mxSession.room(withAlias: roomIdOrAlias) {
-                roomID = room.roomId
-            } else {
-                roomID = nil
-            }
-        } else {
-            roomID = roomIdOrAlias
-        }
-        
-        if let finalRoomID = roomID {
-            homeCoordinator.showRoom(with: finalRoomID, onEventID: eventID)
-            return true
-        } else {
-            return false
         }
     }
     

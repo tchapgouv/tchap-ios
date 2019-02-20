@@ -455,19 +455,21 @@
 {
     if (sender == _chatButton)
     {
-        if (self.delegate)
-        {
-            // Dismiss the view controller whereas the call is still running
-            [self.delegate dismissCallViewController:self completion:^{
-                
-                if (self.mxCall.room)
-                {
-                    // Open the room page
-                    [[AppDelegate theDelegate] showRoom:self.mxCall.room.roomId andEventId:nil withMatrixSession:self.mxCall.room.mxSession];
-                }
-                
-            }];
-        }
+        NSLog(@"[CallViewController] Implement navigation to room in appropriate coordinator");
+        // FIXME: The CallViewController must be handled by the AppCoordinator, then we will be able to go back to the chat room during the call.
+//        if (self.delegate)
+//        {
+//            // Dismiss the view controller whereas the call is still running
+//            [self.delegate dismissCallViewController:self completion:^{
+//
+//                if (self.mxCall.room)
+//                {
+//                    // Open the room page
+//                    [[AppDelegate theDelegate] showRoom:self.mxCall.room.roomId andEventId:nil withMatrixSession:self.mxCall.room.mxSession];
+//                }
+//
+//            }];
+//        }
     }
     else
     {
