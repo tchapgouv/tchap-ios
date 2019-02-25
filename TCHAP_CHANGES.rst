@@ -1,3 +1,16 @@
+Changes in Tchap 1.0.4 (2019-02-25)
+===================================================
+
+ Features/Improvements:
+ * Private Room creation: change history visibility to "invited" #154
+ * Power level: a room member must be moderator to invite #155
+ * Adjust wording on bug report #160
+ * Keys sharing: remove the verification option #149
+ * Disable voip call #153
+ 
+ Bug Fixes:
+ * Push Notification: Tchap is not opened on the right room #150
+
 Changes in Tchap 1.0.3 (2019-02-08)
 ===================================================
 
