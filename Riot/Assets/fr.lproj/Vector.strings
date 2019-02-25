@@ -431,7 +431,7 @@
 "e2e_need_log_in_again" = "Vous devez vous reconnecter pour générer les clés de chiffrement de bout en bout pour cet appareil et envoyer la clé publique vers votre serveur d'accueil.\nIl s'agit d'une erreur exceptionnelle. Veuillez nous excuser pour ce désagrément.";
 // Bug report
 "bug_report_title" = "Rapport d'erreur";
-"bug_report_description" = "Veuillez décrire l'erreur. Qu'avez-vous fait ? Quel était le comportement attendu ? Que s'est-il réellement passé ?";
+"bug_report_description" = "Vous avez rencontré une erreur et vous voulez nous aider ? Veuillez décrire l'erreur rencontrée.\nIl ne sera pas apporté de réponse directe mais votre rapport nous aidera à améliorer Tchap.\n\nQu'avez vous fait ? Quel était le comportement attendu ? Que s'est-il réellement passé ?";
 "bug_crash_report_title" = "Rapport d'erreur";
 "bug_crash_report_description" = "Merci de décrire ce que vous faisiez avant l'arrêt de l'application :";
 "bug_report_logs_description" = "Afin de diagnostiquer les problèmes, les journaux de ce client seront envoyés avec le rapport d'erreur. Si vous préférez envoyer uniquement le texte ci-dessus, veuillez décocher la case :";
@@ -498,9 +498,9 @@
 // Room key request dialog
 "e2e_room_key_request_title" = "Demande de clés de chiffrement";
 "e2e_room_key_request_message_new_device" = "Vous avez ajouté un nouvel appareil '%@', qui demande les clés de chiffrement.";
-"e2e_room_key_request_message" = "Votre appareil non vérifié '%@' demande les clés de chiffrement.";
+"e2e_room_key_request_message" = "Votre appareil '%@' demande les clés de chiffrement.";
 "e2e_room_key_request_start_verification" = "Commencer la vérification...";
-"e2e_room_key_request_share_without_verifying" = "Partager sans vérifier";
+"e2e_room_key_request_share_without_verifying" = "Accepter la demande";
 "e2e_room_key_request_ignore_request" = "Ignorer la demande";
 "settings_flair" = "Afficher le badge aux endroits autorisés";
 "room_details_flair_section" = "Afficher le badge pour des communautés";

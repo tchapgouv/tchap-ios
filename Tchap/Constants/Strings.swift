@@ -101,6 +101,8 @@ internal enum TchapL10n {
   internal static func forgotPasswordVerifyEmailInstructions(_ p1: String) -> String {
     return TchapL10n.tr("Tchap", "forgot_password_verify_email_instructions", p1)
   }
+  /// Pour continuer à utiliser Tchap, vous devez lire et accepter les conditions générales.
+  internal static let gdprConsentNotGivenAlertMessage = TchapL10n.tr("Tchap", "gdpr_consent_not_given_alert_message")
   /// Chargement en cours…
   internal static let publicRoomsLoadingInProgress = TchapL10n.tr("Tchap", "public_rooms_loading_in_progress")
   /// Rechercher

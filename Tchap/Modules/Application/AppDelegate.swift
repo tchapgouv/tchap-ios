@@ -103,7 +103,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ application: UIApplication, didReceive notification: UILocalNotification) {
-        self.legacyAppDelegate.application(application, didReceive: notification)
+        guard let roomId = notification.userInfo?["room_id"] as? String else {
+            return
+        }
+        
+        _ = self.appCoordinator.showRoom(with: roomId)
     }
 }
 

@@ -48,6 +48,9 @@
     RoomMemberDetailsViewController *memberDetailsViewController;
     ContactsViewController     *contactsPickerViewController;
     
+    // Tell whether the user is allowed to invite other users
+    BOOL isUserAllowedToInvite;
+    
     // Display a gradient view above the screen.
     CAGradientLayer* tableViewMaskLayer;
     
@@ -330,7 +333,7 @@
             [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
                              animations:^{
                                  
-                                 tableViewMaskLayer.bounds = newBounds;
+                                 self->tableViewMaskLayer.bounds = newBounds;
                                  
                              }
                              completion:^(BOOL finished){
@@ -340,7 +343,7 @@
         
         // Hide the addParticipants button on landscape when keyboard is visible
         BOOL isLandscapeOriented = UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation);
-        addParticipantButtonImageView.hidden = tableViewMaskLayer.hidden = (isLandscapeOriented && self.keyboardHeight);
+        addParticipantButtonImageView.hidden = tableViewMaskLayer.hidden = (!isUserAllowedToInvite || (isLandscapeOriented && self.keyboardHeight));
     }
 }
 
@@ -559,7 +562,7 @@
     [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
                      animations:^{
                          
-                         addParticipantButtonImageViewBottomConstraint.constant = keyboardHeight + 9;
+                         self->addParticipantButtonImageViewBottomConstraint.constant = keyboardHeight + 9;
                          
                          // Force to render the view
                          [self.view layoutIfNeeded];
@@ -665,6 +668,8 @@
     [tap setNumberOfTapsRequired:1];
     [tap setDelegate:self];
     [addParticipantButtonImageView addGestureRecognizer:tap];
+    
+    addParticipantButtonImageView.hidden = tableViewMaskLayer.hidden = !isUserAllowedToInvite;
 }
 
 - (void)onAddParticipantButtonPressed
@@ -752,6 +757,11 @@
             }
 
             [self finalizeParticipantsList:roomState];
+            
+            // Check whether the current user is allowed to invite
+            MXRoomPowerLevels *powerLevels = [roomState powerLevels];
+            self->isUserAllowedToInvite = ([powerLevels powerLevelOfUserWithUserID:userId] >= powerLevels.invite);
+            self->addParticipantButtonImageView.hidden = self->tableViewMaskLayer.hidden = !self->isUserAllowedToInvite;
         }];
     }
 }
@@ -948,7 +958,7 @@
     pendingMaskSpinnerView.alpha = 0;
     [UIView animateWithDuration:0.3 delay:0.3 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
         
-        pendingMaskSpinnerView.alpha = 1;
+        self->pendingMaskSpinnerView.alpha = 1;
         
     } completion:^(BOOL finished) {
     }];
@@ -1121,14 +1131,15 @@
                 MXRoomState *roomState = self.mxRoom.dangerousSyncState;
                 
                 // Update member badge
+                participantCell.thumbnailBadgeView.hidden = YES;
                 MXRoomPowerLevels *powerLevels = [roomState powerLevels];
                 NSInteger powerLevel = [powerLevels powerLevelOfUserWithUserID:contact.mxMember.userId];
-                if (powerLevel >= kRiotRoomAdminLevel)
+                if (powerLevel >= RoomPowerLevelAdmin)
                 {
                     participantCell.thumbnailBadgeView.image = [UIImage imageNamed:@"admin_icon"];
                     participantCell.thumbnailBadgeView.hidden = NO;
                 }
-                else if (powerLevel >= kRiotRoomModeratorLevel)
+                else if (powerLevel >= RoomPowerLevelModerator)
                 {
                     participantCell.thumbnailBadgeView.image = [UIImage imageNamed:@"mod_icon"];
                     participantCell.thumbnailBadgeView.hidden = NO;
