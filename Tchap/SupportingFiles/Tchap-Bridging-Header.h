@@ -12,7 +12,6 @@
 #import "ContactsViewController.h"
 #import "ContactsDataSource.h"
 #import "RoomsDataSource.h"
-#import "PublicRoomTableViewCell.h"
 #import "SettingsViewController.h"
 #import "RoomFilesViewController.h"
 #import "RoomSettingsViewController.h"

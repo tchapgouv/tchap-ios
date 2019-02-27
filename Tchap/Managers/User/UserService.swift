@@ -118,7 +118,7 @@ final class UserService: NSObject, UserServiceType {
     }
         
     private func homeserver(from userId: String) -> String? {
-        guard let matrixIDComponents = MatrixIDComponents(matrixID: userId) else {
+        guard let matrixIDComponents = UserIDComponents(matrixID: userId) else {
             return nil
         }
         return matrixIDComponents.homeServer

@@ -116,7 +116,7 @@ final class PublicRoomsDataSource: NSObject {
     // MARK: - Private
     
     private func setupTableViewCells() {
-        self.tableView?.register(PublicRoomTableViewCell.nib(), forCellReuseIdentifier: PublicRoomTableViewCell.defaultReuseIdentifier())
+        self.tableView?.register(PublicRoomsCell.nib(), forCellReuseIdentifier: PublicRoomsCell.defaultReuseIdentifier())
         self.tableView?.register(MXKTableViewCell.self, forCellReuseIdentifier: MXKTableViewCell.defaultReuseIdentifier())
     }
     
@@ -146,11 +146,11 @@ extension PublicRoomsDataSource: UITableViewDataSource {
             
             let room = rooms[indexPath.row]
             
-            if let publicRoomCell = tableView.dequeueReusableCell(withIdentifier: PublicRoomTableViewCell.defaultReuseIdentifier(), for: indexPath) as? PublicRoomTableViewCell {
-                publicRoomCell.render(room, withMatrixSession: self.session)
+            if let publicRoomCell = tableView.dequeueReusableCell(withIdentifier: PublicRoomsCell.defaultReuseIdentifier(), for: indexPath) as? PublicRoomsCell {
+                publicRoomCell.render(publicRoom: room, withMatrixSession: self.session)
                 cell = publicRoomCell
             } else {
-                fatalError("Fail to dequeue PublicRoomTableViewCell")
+                fatalError("Fail to dequeue PublicRoomsCell")
             }
         } else {
             
