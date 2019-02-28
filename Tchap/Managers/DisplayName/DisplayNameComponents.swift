@@ -78,7 +78,7 @@ struct DisplayNameComponents {
     /// - Parameter userId: The user id to parse
     /// - Returns: displayName without domain, nil if the id is not valid.
     private static func getName(from userId: String) -> String? {
-        guard let matrixIDComponents = MatrixIDComponents(matrixID: userId) else {
+        guard let matrixIDComponents = UserIDComponents(matrixID: userId) else {
             return nil
         }
         

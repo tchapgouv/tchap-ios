@@ -116,7 +116,7 @@ final class PublicRoomsDataSource: NSObject {
     // MARK: - Private
     
     private func setupTableViewCells() {
-        self.tableView?.register(PublicRoomTableViewCell.nib(), forCellReuseIdentifier: PublicRoomTableViewCell.defaultReuseIdentifier())
+        self.tableView?.register(cellType: PublicRoomsCell.self)
         self.tableView?.register(MXKTableViewCell.self, forCellReuseIdentifier: MXKTableViewCell.defaultReuseIdentifier())
     }
     
@@ -143,17 +143,12 @@ extension PublicRoomsDataSource: UITableViewDataSource {
         
         // Sanity check
         if indexPath.row < rooms.count {
-            
             let room = rooms[indexPath.row]
             
-            if let publicRoomCell = tableView.dequeueReusableCell(withIdentifier: PublicRoomTableViewCell.defaultReuseIdentifier(), for: indexPath) as? PublicRoomTableViewCell {
-                publicRoomCell.render(room, withMatrixSession: self.session)
-                cell = publicRoomCell
-            } else {
-                fatalError("Fail to dequeue PublicRoomTableViewCell")
-            }
+            let publicRoomCell: PublicRoomsCell = tableView.dequeueReusableCell(for: indexPath)
+            publicRoomCell.render(publicRoom: room, using: self.session.mediaManager)
+            cell = publicRoomCell
         } else {
-            
             if let tableViewCell = tableView.dequeueReusableCell(withIdentifier: MXKTableViewCell.defaultReuseIdentifier(), for: indexPath) as? MXKTableViewCell {
                 tableViewCell.textLabel?.font = UIFont.systemFont(ofSize: 15.0)
                 tableViewCell.selectionStyle = UITableViewCellSelectionStyle.none

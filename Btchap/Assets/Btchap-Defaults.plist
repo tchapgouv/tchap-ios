@@ -10,8 +10,6 @@
 	<string>fr</string>
 	<key>serverUrlPrefix</key>
 	<string>https://matrix.</string>
-	<key>serverUrlDomain</key>
-	<string>tchap.gouv.fr</string>
 	<key>preferredIdentityServerNames</key>
 	<array>
 		<string>i.tchap.gouv.fr</string>

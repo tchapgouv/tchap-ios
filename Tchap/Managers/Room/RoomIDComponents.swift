@@ -1,5 +1,5 @@
 /*
- Copyright 2018 New Vector Ltd
+ Copyright 2019 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -16,49 +16,49 @@
 
 import Foundation
 
-/// A structure that parses Matrix ID and constructs their constituent parts.
-struct MatrixIDComponents {
+/// A structure that parses Matrix Room ID and constructs their constituent parts.
+struct RoomIDComponents {
     
     // MARK: - Constants
     
     private enum Constants {
-        static let matrixIdPrefix = "@"
+        static let matrixRoomIdPrefix = "!"
         static let homeServerSeparator: Character = ":"
     }
     
     // MARK: - Properties
     
-    let localUserID: String
+    let localRoomID: String
     let homeServer: String
     
     // MARK: - Setup
     
     init?(matrixID: String) {
-        guard MXTools.isMatrixUserIdentifier(matrixID),
-            let (localUserID, homeServer) = MatrixIDComponents.getLocalUserIDAndHomeServer(from: matrixID) else {
+        guard MXTools.isMatrixRoomIdentifier(matrixID),
+            let (localRoomID, homeServer) = RoomIDComponents.getLocalRoomIDAndHomeServer(from: matrixID) else {
             return nil
         }
         
-        self.localUserID = localUserID
+        self.localRoomID = localRoomID
         self.homeServer = homeServer
     }
     
     // MARK: - Private    
 
-    /// Extract local user id and homeserver from Matrix ID
+    /// Extract local room id and homeserver from Matrix ID
     ///
     /// - Parameter matrixID: A Matrix ID
-    /// - Returns: A tuple with local user ID and homeserver.
-    private static func getLocalUserIDAndHomeServer(from matrixID: String) -> (String, String)? {
+    /// - Returns: A tuple with local room ID and homeserver.
+    private static func getLocalRoomIDAndHomeServer(from matrixID: String) -> (String, String)? {
         let matrixIDParts = matrixID.split(separator: Constants.homeServerSeparator)
         
         guard matrixIDParts.count == 2 else {
             return nil
         }
         
-        let localUserID = matrixIDParts[0].replacingOccurrences(of: Constants.matrixIdPrefix, with: "")
+        let localRoomID = matrixIDParts[0].replacingOccurrences(of: Constants.matrixRoomIdPrefix, with: "")
         let homeServer = String(matrixIDParts[1])
 
-        return (localUserID, homeServer)
+        return (localRoomID, homeServer)
     }
 }
