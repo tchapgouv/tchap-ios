@@ -133,6 +133,8 @@
 		020DF9B3214BE467003DFBA4 /* EventDetailsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF934214BE467003DFBA4 /* EventDetailsView.m */; };
 		0223EFA72227095100B9EA34 /* PublicRoomsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0223EFA62227095100B9EA34 /* PublicRoomsCell.xib */; };
 		0223EFA82227095800B9EA34 /* PublicRoomsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0223EFA62227095100B9EA34 /* PublicRoomsCell.xib */; };
+		0223EFAB2227E41B00B9EA34 /* HomeServerComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0223EFAA2227E41B00B9EA34 /* HomeServerComponents.swift */; };
+		0223EFAC2227E41B00B9EA34 /* HomeServerComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0223EFAA2227E41B00B9EA34 /* HomeServerComponents.swift */; };
 		0250C4932122B68000034691 /* MediaAlbumTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B557CE20EF5E3500210D55 /* MediaAlbumTableCell.m */; };
 		0250C4942122B68000034691 /* RiotDesignValues.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932AB20F3A7B000746532 /* RiotDesignValues.m */; };
 		0250C4962122B68000034691 /* AvatarGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC111E7009EC00A9B29C /* AvatarGenerator.m */; };
@@ -1017,6 +1019,7 @@
 		020DF933214BE467003DFBA4 /* EventDetailsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventDetailsView.xib; sourceTree = "<group>"; };
 		020DF934214BE467003DFBA4 /* EventDetailsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventDetailsView.m; sourceTree = "<group>"; };
 		0223EFA62227095100B9EA34 /* PublicRoomsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PublicRoomsCell.xib; sourceTree = "<group>"; };
+		0223EFAA2227E41B00B9EA34 /* HomeServerComponents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeServerComponents.swift; sourceTree = "<group>"; };
 		0250C5BF2122B68000034691 /* Tchap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tchap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0250C5C42122E63900034691 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0250C5C52122E63900034691 /* Tchap-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tchap-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -1793,6 +1796,14 @@
 			path = Event;
 			sourceTree = "<group>";
 		};
+		0223EFA92227E3C800B9EA34 /* HomeServer */ = {
+			isa = PBXGroup;
+			children = (
+				0223EFAA2227E41B00B9EA34 /* HomeServerComponents.swift */,
+			);
+			path = HomeServer;
+			sourceTree = "<group>";
+		};
 		0250C5C12122BBA600034691 /* Tchap */ = {
 			isa = PBXGroup;
 			children = (
@@ -1949,6 +1960,7 @@
 		02BEE184212AB23A00098505 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				0223EFA92227E3C800B9EA34 /* HomeServer */,
 				02018F9422003462008D68BE /* UniversalLink */,
 				B109EF1C2170F41E0018FA06 /* User */,
 				020DF6F921480700003DFBA4 /* Discussions */,
@@ -3962,6 +3974,7 @@
 				B1F2AA99212AEC830077FDC0 /* LegacyAppDelegate.m in Sources */,
 				B15AB2A4215BF20E007F5405 /* ForgotPasswordCoordinator.swift in Sources */,
 				029CC68D21772F4200DCC8B3 /* DeactivateAccountViewController.m in Sources */,
+				0223EFAB2227E41B00B9EA34 /* HomeServerComponents.swift in Sources */,
 				B12FD69F2146B3EB001B7F28 /* RestClientBuilder.swift in Sources */,
 				B1F2AA91212AEC830077FDC0 /* SplitViewCoordinatorType.swift in Sources */,
 				020DF979214BE467003DFBA4 /* RoomIncomingAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
@@ -4232,6 +4245,7 @@
 				02DFEC3821C07370009B6F15 /* LegacyAppDelegate.m in Sources */,
 				02DFEC3921C07370009B6F15 /* ForgotPasswordCoordinator.swift in Sources */,
 				02DFEC3A21C07370009B6F15 /* DeactivateAccountViewController.m in Sources */,
+				0223EFAC2227E41B00B9EA34 /* HomeServerComponents.swift in Sources */,
 				02DFEC3B21C07370009B6F15 /* RestClientBuilder.swift in Sources */,
 				02DFEC3C21C07370009B6F15 /* SplitViewCoordinatorType.swift in Sources */,
 				02DFEC3D21C07370009B6F15 /* RoomIncomingAttachmentWithoutSenderInfoBubbleCell.m in Sources */,

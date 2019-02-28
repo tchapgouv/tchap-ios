@@ -15,8 +15,9 @@
  */
 
 import UIKit
+import Reusable
 
-@objcMembers class PublicRoomsCell: UITableViewCell, Stylable {
+@objcMembers class PublicRoomsCell: UITableViewCell, Stylable, NibReusable {
     
     private enum Constants {
         static let hexagonImageBorderWidth: CGFloat = 1.0
@@ -39,21 +40,13 @@ import UIKit
         self.avatarView.enableInMemoryCache = true
     }
     
-    static func nib() -> UINib {
-        return UINib(nibName: String(describing: self), bundle: nil)
-    }
-    
-    static func defaultReuseIdentifier() -> String {
-        return String(describing: self)
-    }
-    
     override func layoutSubviews() {
         super.layoutSubviews()
         
         self.avatarView.tc_makeHexagon(borderWidth: Constants.hexagonImageBorderWidth, borderColor: self.style.secondaryTextColor)
     }
     
-    func render(publicRoom: MXPublicRoom, withMatrixSession session: MXSession) {
+    func render(publicRoom: MXPublicRoom, using mediaManager: MXMediaManager) {
         
         // Set the public room name display
         let roomDisplayName: String?
@@ -76,14 +69,14 @@ import UIKit
         let avatarImage = AvatarGenerator.generateAvatar(forMatrixItem: publicRoom.roomId, withDisplayName: roomDisplayName)
         
         if let avatarUrl = publicRoom.avatarUrl {
-            self.avatarView.setImageURI(avatarUrl, withType: nil, andImageOrientation: UIImageOrientation.up, toFitViewSize: self.avatarView.frame.size, with: MXThumbnailingMethodCrop, previewImage: avatarImage, mediaManager: session.mediaManager)
+            self.avatarView.setImageURI(avatarUrl, withType: nil, andImageOrientation: UIImageOrientation.up, toFitViewSize: self.avatarView.frame.size, with: MXThumbnailingMethodCrop, previewImage: avatarImage, mediaManager: mediaManager)
         } else {
             self.avatarView.image = avatarImage
         }
-        self.avatarView.contentMode = UIViewContentMode.scaleAspectFill
+        self.avatarView.contentMode = .scaleAspectFill
         
         // Set Room domain
-        self.domainLabel.text = PublicRoomsCell.homeServerDomain(from: publicRoom.roomId)
+        self.domainLabel.text = PublicRoomsCell.homeServerDisplayName(from: publicRoom.roomId)
         
         // Set member count
         let membersLabel: String!
@@ -107,22 +100,11 @@ import UIKit
         self.avatarView?.defaultBackgroundColor = UIColor.clear
     }
     
-    private class func homeServerDomain(from publicRoomId: String) -> String? {
-        guard let matrixIDComponents = RoomIDComponents(matrixID: publicRoomId),
-            let serverUrlDomain = UserDefaults.standard.string(forKey: "serverUrlDomain") else {
+    private static func homeServerDisplayName(from publicRoomId: String) -> String? {
+        guard let matrixIDComponents = RoomIDComponents(matrixID: publicRoomId) else {
             return nil
         }
         
-        let domain: String?
-        
-        let homeServerSubDomainComponents = matrixIDComponents.homeServer.replacingOccurrences(of: serverUrlDomain, with: "").split(separator: ".")
-        
-        if let domainSubtring = homeServerSubDomainComponents.last {
-            domain = String(domainSubtring)
-        } else {
-            domain = nil
-        }
-        
-        return domain
+        return HomeServerComponents(hostname: matrixIDComponents.homeServer).displayName
     }
 }

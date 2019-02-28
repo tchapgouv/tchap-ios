@@ -91,22 +91,11 @@ final class RoomCreationCoordinator: NSObject, RoomCreationCoordinatorType {
     
     private class func homeServerDomain(from homeServerURL: String) -> String? {
         guard let homeServerURLComponents = URLComponents(string: homeServerURL),
-            let homeServerHost = homeServerURLComponents.host,
-            let serverUrlDomain = UserDefaults.standard.string(forKey: "serverUrlDomain") else {
+            let homeServerHost = homeServerURLComponents.host else {
             return nil
         }
         
-        let domain: String?
-        
-        let homeServerSubDomainComponents = homeServerHost.replacingOccurrences(of: serverUrlDomain, with: "").split(separator: ".")
-        
-        if let domainSubtring = homeServerSubDomainComponents.last {
-            domain = String(domainSubtring)
-        } else {
-            domain = nil
-        }
-        
-        return domain
+        return HomeServerComponents(hostname: homeServerHost).displayName
     }
     
     private class func getHomeServerDomain(from session: MXSession) -> String {
