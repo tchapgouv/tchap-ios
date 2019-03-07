@@ -54,11 +54,15 @@ final class AuthenticationService: AuthenticationServiceType {
                 self.authenticationOperation = self.authenticate(using: restClient, email: email, password: password, completion: { (authenticationResult) in
                     switch authenticationResult {
                     case .success(let credentials):
-                        do {
-                            try self.addAccount(for: credentials, identityServerURL: identityServer)
-                            completion(MXResponse.success(credentials.userId))
-                        } catch {
-                            completion(MXResponse.failure(error))
+                        if let userId = credentials.userId {
+                            do {
+                                try self.addAccount(for: credentials, identityServerURL: identityServer)
+                                completion(MXResponse.success(userId))
+                            } catch {
+                                completion(MXResponse.failure(error))
+                            }
+                        } else {
+                            completion(MXResponse.failure(AuthenticationServiceError.failToCreateAccount))
                         }
                     case .failure(let error):
                         completion(MXResponse.failure(error))
@@ -105,14 +109,15 @@ final class AuthenticationService: AuthenticationServiceType {
             switch response {
             case .success(let jsonResponse):
                 
-                guard let credentials = MXCredentials(fromJSON: jsonResponse), credentials.userId != nil, credentials.accessToken != nil else {
+                guard let loginResponse = MXLoginResponse(fromJSON: jsonResponse), loginResponse.userId != nil, loginResponse.accessToken != nil else {
                     let error = NSError(domain: MXKAuthErrorDomain, code: 0, userInfo: [NSLocalizedDescriptionKey: Bundle.mxk_localizedString(forKey: "not_supported_yet")])
                     completion(MXResponse.failure(error))
                     return
                 }
                 
-                // Workaround: HS does not return the right URL. Use the one we used to make the request
-                credentials.homeServer = restClient.homeserver
+                // Build credentials
+                let credentials = MXCredentials(loginResponse: loginResponse, andDefaultCredentials: restClient.credentials)
+                
                 // Report the certificate trusted by user (if any)
                 credentials.allowedCertificate = restClient.allowedCertificate
                 
