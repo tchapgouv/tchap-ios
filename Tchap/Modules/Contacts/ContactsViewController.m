@@ -294,8 +294,12 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    MXKContact *mxkContact = [self.contactsDataSource contactAtIndexPath:indexPath];
+    if (self.enableMultipleSelection)
+    {
+        [self.contactsDataSource selectOrDeselectContactAtIndexPath:indexPath];
+    }
     
+    MXKContact *mxkContact = [self.contactsDataSource contactAtIndexPath:indexPath];
     if (self.delegate && mxkContact)
     {
         [self.delegate contactsViewController:self didSelectContact:mxkContact];
@@ -307,7 +311,6 @@
     
     if (self.enableMultipleSelection)
     {
-        [self.contactsDataSource selectOrDeselectContactAtIndexPath:indexPath];
         [self.tableView reloadData];
     }
 }
