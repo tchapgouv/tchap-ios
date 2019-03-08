@@ -1,3 +1,14 @@
+Changes in Tchap 1.0.5 (2019-03-08)
+===================================================
+
+ Features/Improvements:
+ * Turn on ITSAppUsesNonExemptEncryption flag
+ 
+ Bug Fixes:
+ * Public room: the avatar shape is wrong #152
+ * Room details: the attachments list is empty #151
+ * Room members: improve the contacts picker #140
+
 Changes in Tchap 1.0.4 (2019-02-25)
 ===================================================
 
