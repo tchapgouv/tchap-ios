@@ -119,10 +119,19 @@
 {
     [super viewDidAppear:animated];
     
-    if (@available(iOS 11.0, *))
+    UISearchBar *searchBar = self.searchController.searchBar;
+    if (searchBar)
     {
-        // Enable to hide search bar on scrolling after first time view appear
-        self.navigationItem.hidesSearchBarWhenScrolling = YES;
+        if (@available(iOS 11.0, *))
+        {
+            // Enable to hide search bar on scrolling after first time view appear
+            self.navigationItem.hidesSearchBarWhenScrolling = YES;
+        }
+        
+        // For unknown reason, we have to force here the UISearchBar search text color again.
+        // The value set by [updateWithStyle:] call is ignored.
+        UITextField *searchBarTextField = [searchBar valueForKey:@"_searchField"];
+        searchBarTextField.textColor = searchBar.tintColor;
     }
 }
 
@@ -215,6 +224,9 @@
         {
             searchBar.tintColor = style.primarySubTextColor;
         }
+        
+        UITextField *searchBarTextField = [searchBar valueForKey:@"_searchField"];
+        searchBarTextField.textColor = searchBar.tintColor;
     }
     
     if (self.tableView.dataSource)

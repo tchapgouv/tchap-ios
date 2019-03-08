@@ -292,6 +292,15 @@
     [self refreshTableView];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    // For unknown reason, we have to force here the UISearchBar search text color again.
+    // The value set by [updateWithStyle:] call is ignored.
+    [self refreshSearchBarItemsColor:_searchBarView];
+}
+
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
@@ -695,7 +704,7 @@
     contactsDataSource = [[ContactsDataSource alloc] initWithMatrixSession:self.mxRoom.mxSession];
     [contactsDataSource finalizeInitialization];
     contactsDataSource.areSectionsShrinkable = YES;
-    contactsDataSource.displaySearchInputInContactsList = YES;
+    contactsDataSource.displaySearchInputInContactsList = NO;
     contactsDataSource.contactsFilter = ContactsDataSourceTchapFilterTchapOnly;
     
     
@@ -1622,7 +1631,7 @@
     
     // text color
     UITextField *searchBarTextField = [searchBar valueForKey:@"_searchField"];
-    searchBarTextField.textColor = self.currentStyle.primaryTextColor;
+    searchBarTextField.textColor = self.currentStyle.barSubTitleColor;
     
     // Magnifying glass icon.
     UIImageView *leftImageView = (UIImageView *)searchBarTextField.leftView;
@@ -1706,7 +1715,6 @@
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
 {
-    [self refreshSearchBarItemsColor:searchBar];
     searchBar.showsCancelButton = YES;
     
     return YES;
