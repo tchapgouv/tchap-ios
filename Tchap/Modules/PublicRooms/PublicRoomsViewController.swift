@@ -22,10 +22,6 @@ final class PublicRoomsViewController: UITableViewController {
     
     // MARK: - Constants
     
-    private enum Constants {
-        static let cellHeight: CGFloat = 72.0
-    }
-    
     // MARK: - Properties
     
     // MARK: Outlets
@@ -94,7 +90,9 @@ final class PublicRoomsViewController: UITableViewController {
         self.setupSearchController()
 
         self.clearsSelectionOnViewWillAppear = true
-        self.tableView.rowHeight = Constants.cellHeight
+        self.tableView.rowHeight = UITableViewAutomaticDimension
+        self.tableView.estimatedRowHeight = 80
+        
         self.tableView.tableFooterView = UIView()
     }
     
