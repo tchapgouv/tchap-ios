@@ -163,7 +163,6 @@
         [self userInterfaceThemeDidChange];
         
     }];
-    [self userInterfaceThemeDidChange];
 }
 
 - (void)userInterfaceThemeDidChange
@@ -175,15 +174,14 @@
 {
     self.currentStyle = style;
     
-    [self refreshSearchBarItemsColor:_searchBarView];
-    _searchBarHeaderBorder.backgroundColor = kRiotAuxiliaryColor;
-    
     UINavigationBar *navigationBar = self.navigationController.navigationBar;
-    
     if (navigationBar)
     {
         [style applyStyleOnNavigationBar:navigationBar];
     }
+    
+    [self refreshSearchBarItemsColor:_searchBarView];
+    _searchBarHeaderBorder.backgroundColor = kRiotAuxiliaryColor;
     
     //TODO Design the activvity indicator for Tchap
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
@@ -287,6 +285,8 @@
         contactsDataSource = nil;
         contactsPickerViewController = nil;
     }
+    
+    [self userInterfaceThemeDidChange];
     
     // Refresh display
     [self refreshTableView];
@@ -1616,19 +1616,18 @@
 - (void)refreshSearchBarItemsColor:(UISearchBar *)searchBar
 {
     // bar tint color
-    searchBar.barTintColor = searchBar.tintColor = kRiotColorGreen;
-    searchBar.tintColor = kRiotColorGreen;
+    searchBar.barTintColor = searchBar.tintColor = self.currentStyle.barSubTitleColor;
     
     // FIXME: this all seems incredibly fragile and tied to gutwrenching the current UISearchBar internals.
     
     // text color
     UITextField *searchBarTextField = [searchBar valueForKey:@"_searchField"];
-    searchBarTextField.textColor = kRiotSecondaryTextColor;
+    searchBarTextField.textColor = self.currentStyle.primaryTextColor;
     
     // Magnifying glass icon.
     UIImageView *leftImageView = (UIImageView *)searchBarTextField.leftView;
     leftImageView.image = [leftImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    leftImageView.tintColor = kRiotColorGreen;
+    leftImageView.tintColor = self.currentStyle.buttonBorderedBackgroundColor;
     
     // remove the gray background color
     UIView *effectBackgroundTop =  [searchBarTextField valueForKey:@"_effectBackgroundTop"];
@@ -1639,8 +1638,8 @@
     // place holder
     searchBarTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:searchBarTextField.placeholder
                                                                                attributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle),
-                                                                                            NSUnderlineColorAttributeName: kRiotColorGreen,
-                                                                                            NSForegroundColorAttributeName: kRiotColorGreen}];
+                                                                                            NSUnderlineColorAttributeName: self.currentStyle.barSubTitleColor,
+                                                                                            NSForegroundColorAttributeName: self.currentStyle.barSubTitleColor}];
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
@@ -1707,6 +1706,7 @@
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
 {
+    [self refreshSearchBarItemsColor:searchBar];
     searchBar.showsCancelButton = YES;
     
     return YES;
