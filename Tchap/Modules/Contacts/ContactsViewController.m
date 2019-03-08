@@ -119,10 +119,19 @@
 {
     [super viewDidAppear:animated];
     
-    if (@available(iOS 11.0, *))
+    UISearchBar *searchBar = self.searchController.searchBar;
+    if (searchBar)
     {
-        // Enable to hide search bar on scrolling after first time view appear
-        self.navigationItem.hidesSearchBarWhenScrolling = YES;
+        if (@available(iOS 11.0, *))
+        {
+            // Enable to hide search bar on scrolling after first time view appear
+            self.navigationItem.hidesSearchBarWhenScrolling = YES;
+        }
+        
+        // For unknown reason, we have to force here the UISearchBar search text color again.
+        // The value set by [updateWithStyle:] call is ignored.
+        UITextField *searchBarTextField = [searchBar valueForKey:@"_searchField"];
+        searchBarTextField.textColor = searchBar.tintColor;
     }
 }
 
@@ -215,6 +224,9 @@
         {
             searchBar.tintColor = style.primarySubTextColor;
         }
+        
+        UITextField *searchBarTextField = [searchBar valueForKey:@"_searchField"];
+        searchBarTextField.textColor = searchBar.tintColor;
     }
     
     if (self.tableView.dataSource)
@@ -294,8 +306,12 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    MXKContact *mxkContact = [self.contactsDataSource contactAtIndexPath:indexPath];
+    if (self.enableMultipleSelection)
+    {
+        [self.contactsDataSource selectOrDeselectContactAtIndexPath:indexPath];
+    }
     
+    MXKContact *mxkContact = [self.contactsDataSource contactAtIndexPath:indexPath];
     if (self.delegate && mxkContact)
     {
         [self.delegate contactsViewController:self didSelectContact:mxkContact];
@@ -307,7 +323,6 @@
     
     if (self.enableMultipleSelection)
     {
-        [self.contactsDataSource selectOrDeselectContactAtIndexPath:indexPath];
         [self.tableView reloadData];
     }
 }
