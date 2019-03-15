@@ -1,5 +1,5 @@
 // Permissions usage explanations
-"NSCameraUsageDescription" = "L'appareil photo est utilisé pour prendre des photos et des vidéos et pour passer des appels vidéo.";
-"NSPhotoLibraryUsageDescription" = "La photothèque est utilisée pour envoyer des photos et des vidéos.";
-"NSMicrophoneUsageDescription" = "Le microphone est utilisé pour prendre des vidéos et passer des appels.";
-"NSContactsUsageDescription" = "Afin d’afficher qui parmi vos contacts utilise déjà Tchap, nous pouvons exploiter les adresses e-mails de votre carnet d'adresse. Ces données ne seront pas mémorisées. Pour plus d'informations, veuillez consulter la page de politique de confidentialité dans les paramètres de l'application";
+"NSCameraUsageDescription" = "Cela vous permet de prendre des photos ou des vidéos avec l'appareil photo et de les envoyer dans vos conversations. Vous pouvez également utiliser l'appareil photo pour définir la photo de votre profil.";
+"NSPhotoLibraryUsageDescription" = "Cela vous permet de sélectionner des photos ou des vidéos depuis votre photothèque, et de les envoyer dans vos conversations. Vous pouvez également utiliser l'une de ces photos pour définir la photo de votre profil.";
+"NSMicrophoneUsageDescription" = "Le microphone est utilisé lorsque vous enregistrez des vidéos avec la caméra.";
+"NSContactsUsageDescription" = "Afin d’afficher qui parmi vos contacts utilise déjà Tchap, nous pouvons exploiter les adresses e-mails de votre carnet d'adresse. Ces données ne seront pas mémorisées. Pour plus d'informations, veuillez consulter la page de politique de confidentialité dans les paramètres de l'application.";
