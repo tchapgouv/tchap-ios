@@ -15,8 +15,8 @@
  */
 
 // Permissions usage explanations
-"NSCameraUsageDescription" = "The camera is used to take photos and videos, make video calls.";
-"NSPhotoLibraryUsageDescription" = "The photo library is used to send photos and videos.";
-"NSMicrophoneUsageDescription" = "The microphone is used to take videos, make calls.";
-"NSContactsUsageDescription" = "In order to show you which of your contacts are already using Tchap, we can send the email addresses and phone numbers in your address book to your Identity Server. Tchap does not store this data or use it for any other purpose. For more information please see the privacy policy page in application settings.";
+"NSCameraUsageDescription" = "This allows you to take pictures or videos with the camera and send them in your conversations. You can also use the camera to set your profile picture.";
+"NSPhotoLibraryUsageDescription" = "This allows you to select pictures or videos from the photo library, and send them in your conversations. You can also use one of these pictures to set your profile picture.";
+"NSMicrophoneUsageDescription" = "The microphone is used when you record videos with the camera.";
+"NSContactsUsageDescription" = "In order to show who among your contacts already uses Tchap, we can exploit the e-mail addresses of your address book. These data will not be stored. For more information, please visit the privacy policy page in the app settings.";
 
