@@ -133,7 +133,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   MatrixKit:
-    :commit: fe75b7809a79c09c387e696c1b8bc7a78742c222
+    :commit: d3e2d6dfa3e14fb3fb2022cf0091aa874ad40aaf
     :git: https://github.com/matrix-org/matrix-ios-kit.git
   MatrixSDK:
     :commit: 98f38c6e20dddac54bd06f26fc1754f4cf927bd4
