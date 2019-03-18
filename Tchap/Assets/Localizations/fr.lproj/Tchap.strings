@@ -87,6 +87,12 @@
 "contacts_picker_title" = "Inviter au salon";
 
 ////////////////////////////////////////////////////////////////////////////////
+// MARK: Settings
+"settings_change_pwd_caution" = "Changer le mot de passe réinitialise les clés de chiffrement sur tous les appareils, rendant l’historique des discussions illisible: pensez d'abord à exporter vos clés pour pouvoir les ré-importer après le changement de mot de passe.";
+"settings_change_pwd_success_title" = "Succès";
+"settings_change_pwd_success_msg" = "Votre mot de passe a été changé avec succès.\nVous ne recevrez plus de notifications sur vos autres appareils tant que vous ne vous y reconnecterez pas.";
+
+////////////////////////////////////////////////////////////////////////////////
 // MARK: Search
 "search_no_result" = "Aucun résultat";
 

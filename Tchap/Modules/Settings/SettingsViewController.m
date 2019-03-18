@@ -1913,7 +1913,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
             }
             else if (row == userSettingsChangePasswordIndex)
             {
-                [self displayPasswordAlert];
+                [self promptUserBeforePasswordChange];
             }
             else if (row == userSettingsNewPhoneIndex)
             {
@@ -2719,6 +2719,42 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 
 #pragma password update management
 
+- (void)promptUserBeforePasswordChange
+{
+    MXWeakify(self);
+    [resetPwdAlertController dismissViewControllerAnimated:NO completion:nil];
+    
+    resetPwdAlertController = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"warning", @"Vector", nil) message:NSLocalizedStringFromTable(@"settings_change_pwd_caution", @"Tchap", nil) preferredStyle:UIAlertControllerStyleAlert];
+    resetPwdAlertController.accessibilityLabel=@"promptUserBeforePasswordChange";
+    UIAlertAction  *continueAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"continue", @"Vector", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+        
+        MXStrongifyAndReturnIfNil(self);
+        self->resetPwdAlertController = nil;
+        [self displayPasswordAlert];
+        
+    }];
+    
+    UIAlertAction  *exportAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"settings_crypto_export", @"Vector", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+        
+        MXStrongifyAndReturnIfNil(self);
+        self->resetPwdAlertController = nil;
+        [self exportEncryptionKeys:nil];
+        
+    }];
+    
+    UIAlertAction* cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
+        
+        MXStrongifyAndReturnIfNil(self);
+        self->resetPwdAlertController = nil;
+        
+    }];
+    
+    [resetPwdAlertController addAction:continueAction];
+    [resetPwdAlertController addAction:exportAction];
+    [resetPwdAlertController addAction:cancel];
+    [self presentViewController:resetPwdAlertController animated:YES completion:nil];
+}
+
 - (IBAction)passwordTextFieldDidChange:(id)sender
 {
     savePasswordAction.enabled = (currentPasswordTextField.text.length > 0) && (newPasswordTextField1.text.length > 2) && [newPasswordTextField1.text isEqualToString:newPasswordTextField2.text];
@@ -2752,7 +2788,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
                     MXWeakify(self);
                     [self->currentAlert dismissViewControllerAnimated:NO completion:nil];
                     
-                    self->currentAlert = [UIAlertController alertControllerWithTitle:nil message:NSLocalizedStringFromTable(@"settings_password_updated", @"Vector", nil) preferredStyle:UIAlertControllerStyleAlert];
+                    self->currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"settings_change_pwd_success_title", @"Tchap", nil) message:NSLocalizedStringFromTable(@"settings_change_pwd_success_msg", @"Tchap", nil) preferredStyle:UIAlertControllerStyleAlert];
                     
                     [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
                                                                            style:UIAlertActionStyleDefault
