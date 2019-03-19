@@ -463,6 +463,25 @@
                     continue;
                 }
                 
+                // @NOTE We decided to ignore users who left all our direct chats to prevent the user from inviting
+                // a deactivated account user.
+                // Check whether there is at least one direct chat in which both member are joined (or invited)
+                BOOL shouldIgnore = YES;
+                NSArray *roomIds = self.mxSession.directRooms[key];
+                for (NSString *roomId in roomIds)
+                {
+                    MXRoomSummary *summary = [self.mxSession roomSummaryWithRoomId:roomId];
+                    if (summary && (summary.membersCount.joined + summary.membersCount.invited == 2))
+                    {
+                        shouldIgnore = NO;
+                        break;
+                    }
+                }
+                if (shouldIgnore)
+                {
+                    continue;
+                }
+                
                 // Retrieve the related user instance.
                 User *user = [self.userService getUserFromLocalSessionWith:key];
                 if (user)
