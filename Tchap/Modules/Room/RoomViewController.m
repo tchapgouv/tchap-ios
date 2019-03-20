@@ -1216,12 +1216,12 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
         {
             NSString *directUserId = self.roomDataSource.room.directUserId;
             
-            // Check whether the left member has deactivated his account,
-            // in this case his display name is null.
+            // Check whether the left member has deactivated his account
+            UserService *userService = [[UserService alloc] initWithSession:self.mainSession];
             MXWeakify(self);
             NSLog(@"[RoomViewController] restoreDiscussionIfNeed: check left member %@", directUserId);
-            [self.mainSession.matrixRestClient profileForUser:directUserId success:^(NSString *displayName, NSString *avatarUrl) {
-                if (!displayName)
+            [userService isAccountDeactivatedFor:directUserId success:^(BOOL isDeactivated) {
+                if (isDeactivated)
                 {
                     NSLog(@"[RoomViewController] restoreDiscussionIfNeed: the left member has deactivated his account");
                     NSError *error = [NSError errorWithDomain:RoomErrorDomain
@@ -1247,7 +1247,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                         onComplete(NO);
                     }];
                 }
-            } failure:^(NSError *error) {
+            } failure:^(NSError * _Nullable error) {
                 NSLog(@"[RoomViewController] restoreDiscussionIfNeed: check member status failed");
                 // Alert user
                 [[AppDelegate theDelegate] showErrorAsAlert:error];
