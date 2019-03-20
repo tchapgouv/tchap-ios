@@ -1247,7 +1247,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                         onComplete(NO);
                     }];
                 }
-            } failure:^(NSError * _Nullable error) {
+            } failure:^(NSError *error) {
                 NSLog(@"[RoomViewController] restoreDiscussionIfNeed: check member status failed");
                 // Alert user
                 [[AppDelegate theDelegate] showErrorAsAlert:error];

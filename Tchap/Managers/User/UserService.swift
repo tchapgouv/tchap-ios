@@ -101,8 +101,8 @@ final class UserService: NSObject, UserServiceType {
             }
         }
     }
-    
-    func isAccountDeactivated(for userId: String, success: @escaping ((Bool) -> Void), failure: ((Error?) -> Void)?) {
+    // Temporary version used in ObjectiveC.
+    func isAccountDeactivated(for userId: String, success: @escaping ((Bool) -> Void), failure: ((Error) -> Void)?) {
         self.isAccountDeactivated(for: userId) { (response) in
             switch response {
             case .success(let value):
