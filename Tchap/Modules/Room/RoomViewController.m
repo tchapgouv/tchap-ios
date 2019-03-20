@@ -121,6 +121,8 @@
 
 #import "GeneratedInterface-Swift.h"
 
+NSString *const RoomErrorDomain = @"RoomErrorDomain";
+
 @interface RoomViewController () <UIGestureRecognizerDelegate, Stylable, RoomTitleViewDelegate, MXServerNoticesDelegate>
 {
     // The preview header
@@ -1212,21 +1214,48 @@
     [self isDirectChatLeftByTheOther:^(BOOL isEmptyDirect) {
         if (isEmptyDirect)
         {
-            // Invite again the direct user
             NSString *directUserId = self.roomDataSource.room.directUserId;
-            NSLog(@"[RoomViewController] restoreDiscussionIfNeed: invite again %@", directUserId);
-            [self.roomDataSource.room inviteUser:directUserId success:^{
-                // Delay the completion in order to display the invite before the local echo of the new message.
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    onComplete(YES);
-                });
+            
+            // Check whether the left member has deactivated his account,
+            // in this case his display name is null.
+            MXWeakify(self);
+            NSLog(@"[RoomViewController] restoreDiscussionIfNeed: check left member %@", directUserId);
+            [self.mainSession.matrixRestClient profileForUser:directUserId success:^(NSString *displayName, NSString *avatarUrl) {
+                if (!displayName)
+                {
+                    NSLog(@"[RoomViewController] restoreDiscussionIfNeed: the left member has deactivated his account");
+                    NSError *error = [NSError errorWithDomain:RoomErrorDomain
+                                                         code:0
+                                                     userInfo:@{NSLocalizedDescriptionKey: NSLocalizedStringFromTable(@"tchap_cannot_invite_deactivated_account_user", @"Tchap", nil)}];
+                    [[AppDelegate theDelegate] showErrorAsAlert:error];
+                    onComplete(NO);
+                }
+                else
+                {
+                    // Invite again the direct user
+                    MXStrongifyAndReturnIfNil(self);
+                    NSLog(@"[RoomViewController] restoreDiscussionIfNeed: invite again %@", directUserId);
+                    [self.roomDataSource.room inviteUser:directUserId success:^{
+                        // Delay the completion in order to display the invite before the local echo of the new message.
+                        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                            onComplete(YES);
+                        });
+                    } failure:^(NSError *error) {
+                        NSLog(@"[RoomViewController] restoreDiscussionIfNeed: invite failed");
+                        // Alert user
+                        [[AppDelegate theDelegate] showErrorAsAlert:error];
+                        onComplete(NO);
+                    }];
+                }
             } failure:^(NSError *error) {
-                NSLog(@"[RoomViewController] restoreDiscussionIfNeed: invite failed");
+                NSLog(@"[RoomViewController] restoreDiscussionIfNeed: check member status failed");
                 // Alert user
                 [[AppDelegate theDelegate] showErrorAsAlert:error];
                 onComplete(NO);
             }];
-        } else {
+        }
+        else
+        {
             // Nothing to do
             onComplete(YES);
         }

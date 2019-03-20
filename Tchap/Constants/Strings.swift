@@ -177,6 +177,8 @@ internal enum TchapL10n {
   internal static let settingsChangePwdSuccessMsg = TchapL10n.tr("Tchap", "settings_change_pwd_success_msg")
   /// Succès
   internal static let settingsChangePwdSuccessTitle = TchapL10n.tr("Tchap", "settings_change_pwd_success_title")
+  /// Votre correspondant a quitté définitivement cette discussion.\nVous devez en créer une nouvelle pour le recontacter, s'il est toujours joignable sur Tchap.
+  internal static let tchapCannotInviteDeactivatedAccountUser = TchapL10n.tr("Tchap", "tchap_cannot_invite_deactivated_account_user")
   /// J'ai un compte
   internal static let welcomeLoginAction = TchapL10n.tr("Tchap", "welcome_login_action")
   /// Je n'ai pas de compte
