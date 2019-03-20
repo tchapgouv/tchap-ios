@@ -101,6 +101,10 @@
 "room_title_room_members_count" = "%d membre(s)";
 
 ////////////////////////////////////////////////////////////////////////////////
+// MARK: Room
+"tchap_cannot_invite_deactivated_account_user" = "Votre correspondant a quitté définitivement cette discussion.\nVous devez en créer une nouvelle pour le recontacter, s'il est toujours joignable sur Tchap.";
+
+////////////////////////////////////////////////////////////////////////////////
 // MARK: Room Members
 "room_members_tab_title" = "Membres";
 
@@ -120,7 +124,6 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Room Attachment Antivirus Scan
-
 "room_attachment_scan_status_unavailable_title" = "Analyse indisponible";
 "room_attachment_scan_status_in_progress_title" = "Analyse antivirus";
 "room_attachment_scan_status_infected_title" = "Fichier bloqué";
@@ -138,7 +141,6 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Room creation
-
 "room_creation_title" = "Nouveau salon";
 "room_creation_name_placeholder" = "Nommer le salon";
 "room_creation_public_visibility_title" = "Rendre ce salon public";

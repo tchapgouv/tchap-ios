@@ -88,6 +88,31 @@ final class UserService: NSObject, UserServiceType {
         return firstUserHomeserver == secondUserHomeserver
     }
     
+    func isAccountDeactivated(for userId: String, completion: @escaping ((MXResponse<Bool>) -> Void)) {
+        // There is no Client-Server API for this request for the moment,
+        // we will check the user display name which is mandatory on Tchap.
+        self.session.matrixRestClient.profile(forUser: userId) { (response) in
+            switch response {
+            case .success(let (displayName, _)):
+                completion(MXResponse.success(displayName == nil))
+            case .failure(let error):
+                print("Get profile failed for user id \(userId) with error: \(error)")
+                completion(MXResponse.failure(error))
+            }
+        }
+    }
+    // Temporary version used in ObjectiveC.
+    func isAccountDeactivated(for userId: String, success: @escaping ((Bool) -> Void), failure: ((Error) -> Void)?) {
+        self.isAccountDeactivated(for: userId) { (response) in
+            switch response {
+            case .success(let value):
+                success(value)
+            case .failure(let error):
+                failure?(error)
+            }
+        }
+    }
+    
     // MARK: - Private
     
     private func buildUser(from mxUser: MXUser) -> User {
