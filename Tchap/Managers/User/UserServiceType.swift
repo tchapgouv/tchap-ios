@@ -52,4 +52,12 @@ protocol UserServiceType {
     ///   - userId: The Matrix user id.
     ///   - completion: A closure called when the operation completes. Provide the answer or an error.
     func isAccountDeactivated(for userId: String, completion: @escaping ((MXResponse<Bool>) -> Void))
+    
+    /// Tells whether the provided Matrix identifier corresponds to an external Tchap user.
+    /// Note: invalid identifier will be considered as external.
+    ///
+    /// - Parameters:
+    ///   - userId: The Matrix user id.
+    /// - Returns: true if the user is external.
+    func isExternalUser(_ userId: String) -> Bool
 }

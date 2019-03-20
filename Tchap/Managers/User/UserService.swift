@@ -24,6 +24,8 @@ final class UserService: NSObject, UserServiceType {
     
     private enum Constants {
         static let searchUsersLimit: UInt = 50
+        static let preprod_external_prefix: String = "e."
+        static let external_prefix: String = "externe."
     }
     
     // MARK: - Properties
@@ -111,6 +113,14 @@ final class UserService: NSObject, UserServiceType {
                 failure?(error)
             }
         }
+    }
+    
+    func isExternalUser(_ userId: String) -> Bool {
+        guard let matrixIDComponents = UserIDComponents(matrixID: userId) else {
+            return true
+        }
+        return matrixIDComponents.homeServer.starts(with: Constants.preprod_external_prefix)
+            || matrixIDComponents.homeServer.starts(with: Constants.external_prefix)
     }
     
     // MARK: - Private
