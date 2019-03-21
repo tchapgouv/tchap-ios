@@ -329,17 +329,18 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     NSInteger sectionCount = 0;
+    NSString *myUserId = self.mainSession.myUser.userId;
     
     // Check user's power level before allowing an action (kick, ban, ...)
     MXRoomPowerLevels *powerLevels = [self.mxRoom.dangerousSyncState powerLevels];
     NSInteger memberPowerLevel = [powerLevels powerLevelOfUserWithUserID:self.mxRoomMember.userId];
-    NSInteger oneSelfPowerLevel = [powerLevels powerLevelOfUserWithUserID:self.mainSession.myUser.userId];
+    NSInteger oneSelfPowerLevel = [powerLevels powerLevelOfUserWithUserID:myUserId];
     
     [adminActionsArray removeAllObjects];
     [otherActionsArray removeAllObjects];
     
     // Consider the case of the user himself
-    if ([self.mxRoomMember.userId isEqualToString:self.mainSession.myUser.userId])
+    if ([self.mxRoomMember.userId isEqualToString:myUserId])
     {
         [otherActionsArray addObject:@(MXKRoomMemberDetailsActionLeave)];
         
@@ -373,6 +374,8 @@
     }
     else if (self.mxRoomMember)
     {
+        UserService *userService = [[UserService alloc] initWithSession:self.mainSession];
+        
         // Enumerate admin actions
         switch (self.mxRoomMember.membership)
         {
@@ -442,8 +445,13 @@
             }
         }
         
-        // Use the action startChat to open the current discussion with this member.
-        [otherActionsArray addObject:@(MXKRoomMemberDetailsActionStartChat)];
+        // Note the external users are not allowed to start chat with another external user.
+        // Hide the option "envoyer un message" for the external users when the current user is external too.
+        if (![userService isExternalUser:myUserId] || ![userService isExternalUser:self.mxRoomMember.userId])
+        {
+            // Use the action startChat to open the current discussion with this member.
+            [otherActionsArray addObject:@(MXKRoomMemberDetailsActionStartChat)];
+        }
         
         // List the other actions
         if (self.enableVoipCall)
