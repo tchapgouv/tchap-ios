@@ -815,9 +815,13 @@
 {
     NSString *myUserId = self.mxSession.myUser.userId;
     
+    // Note the external users are not allowed to start chat with another external user.
+    // So we ignore here the external users when the current user is external.
+    
     return _contactsFilter == ContactsDataSourceTchapFilterNoTchapOnly
     || _ignoredContactsByMatrixId[matrixId]
-    || (_contactsFilter == ContactsDataSourceTchapFilterNonFederatedTchapOnly && ![self.userService isUserId:myUserId belongToSameDomainAs:matrixId]);
+    || (_contactsFilter == ContactsDataSourceTchapFilterNonFederatedTchapOnly && ![self.userService isUserId:myUserId belongToSameDomainAs:matrixId])
+    || ([self.userService isExternalUser:myUserId] && [self.userService isExternalUser:matrixId]);
 }
 
 #pragma mark - UITableView data source
