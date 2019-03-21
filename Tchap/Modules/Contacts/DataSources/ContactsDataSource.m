@@ -211,6 +211,10 @@
 {
     // If possible, always start a new search by asking the homeserver user directory
     BOOL hsUserDirectory = (self.mxSession.state != MXSessionStateHomeserverNotReachable);
+    
+    // The external users are not allowed to search in users directory.
+    hsUserDirectory &= ![self.userService isExternalUser:self.mxSession.myUser.userId];
+    
     [self searchWithPattern:searchText forceReset:forceRefresh hsUserDirectory:hsUserDirectory];
 }
 
