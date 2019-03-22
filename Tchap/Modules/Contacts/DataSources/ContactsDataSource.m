@@ -1112,17 +1112,26 @@
     }
     else //if (section == filteredMatrixContactsSection)
     {
-        switch (_userDirectoryState)
+        // The contacts search is only local for an external user (hide the online/offline info)
+        if ([self.userService isExternalUser:self.mxSession.myUser.userId])
         {
-            case ContactsDataSourceUserDirectoryStateOfflineLoading:
-            case ContactsDataSourceUserDirectoryStateOfflineLoaded:
-                title = NSLocalizedStringFromTable(@"contacts_user_directory_offline_section", @"Tchap", nil);
-                break;
-
-            default:
-                title = NSLocalizedStringFromTable(@"contacts_user_directory_section", @"Tchap", nil);
-                break;
+            title = NSLocalizedStringFromTable(@"contacts_user_directory_section", @"Tchap", nil);
         }
+        else
+        {
+            switch (_userDirectoryState)
+            {
+                case ContactsDataSourceUserDirectoryStateOfflineLoading:
+                case ContactsDataSourceUserDirectoryStateOfflineLoaded:
+                    title = NSLocalizedStringFromTable(@"contacts_user_directory_offline_section", @"Tchap", nil);
+                    break;
+                    
+                default:
+                    title = NSLocalizedStringFromTable(@"contacts_user_directory_section", @"Tchap", nil);
+                    break;
+            }
+        }
+        
         
         if (currentSearchText.length)
         {
