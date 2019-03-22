@@ -330,17 +330,23 @@
 {
     NSInteger sectionCount = 0;
     NSString *myUserId = self.mainSession.myUser.userId;
+    NSString *roomMemberId = self.mxRoomMember.userId;
+    
+    // Sanity check
+    if (!myUserId || !roomMemberId) {
+        return sectionCount;
+    }
     
     // Check user's power level before allowing an action (kick, ban, ...)
     MXRoomPowerLevels *powerLevels = [self.mxRoom.dangerousSyncState powerLevels];
-    NSInteger memberPowerLevel = [powerLevels powerLevelOfUserWithUserID:self.mxRoomMember.userId];
+    NSInteger memberPowerLevel = [powerLevels powerLevelOfUserWithUserID:roomMemberId];
     NSInteger oneSelfPowerLevel = [powerLevels powerLevelOfUserWithUserID:myUserId];
     
     [adminActionsArray removeAllObjects];
     [otherActionsArray removeAllObjects];
     
     // Consider the case of the user himself
-    if ([self.mxRoomMember.userId isEqualToString:myUserId])
+    if ([roomMemberId isEqualToString:myUserId])
     {
         [otherActionsArray addObject:@(MXKRoomMemberDetailsActionLeave)];
         
@@ -447,7 +453,7 @@
         
         // Note the external users are not allowed to start chat with another external user.
         // Hide the option "envoyer un message" for the external users when the current user is external too.
-        if (![userService isExternalUser:myUserId] || ![userService isExternalUser:self.mxRoomMember.userId])
+        if (![userService isExternalUserFor:myUserId] || ![userService isExternalUserFor:roomMemberId])
         {
             // Use the action startChat to open the current discussion with this member.
             [otherActionsArray addObject:@(MXKRoomMemberDetailsActionStartChat)];
@@ -465,7 +471,7 @@
         if (self.mxRoomMember.membership == MXMembershipJoin)
         {
             // is he already ignored ?
-            if (![self.mainSession isUserIgnored:self.mxRoomMember.userId])
+            if (![self.mainSession isUserIgnored:roomMemberId])
             {
                 [otherActionsArray addObject:@(MXKRoomMemberDetailsActionIgnore)];
             }

@@ -114,7 +114,7 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
         // Check whether the current user id is available
         if let myUserId = self.session.myUser?.userId {
             self.unregisterSessionStateNotification()
-            self.homeViewController?.setExternalUseMode(self.userService.isExternalUser(myUserId))
+            self.homeViewController?.setExternalUseMode(self.userService.isExternalUser(for: myUserId))
         }
     }
     
@@ -134,7 +134,7 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
         
         // Check whether the current user is available
         if let myUserId = self.session.myUser?.userId {
-            homeViewController.setExternalUseMode(self.userService.isExternalUser(myUserId))
+            homeViewController.setExternalUseMode(self.userService.isExternalUser(for: myUserId))
         } else {
             registerSessionStateNotification()
         }

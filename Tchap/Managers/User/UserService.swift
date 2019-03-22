@@ -115,7 +115,7 @@ final class UserService: NSObject, UserServiceType {
         }
     }
     
-    func isExternalUser(_ userId: String) -> Bool {
+    func isExternalUser(for userId: String) -> Bool {
         guard let matrixIDComponents = UserIDComponents(matrixID: userId) else {
             return true
         }

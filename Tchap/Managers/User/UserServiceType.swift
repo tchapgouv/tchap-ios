@@ -59,5 +59,5 @@ protocol UserServiceType {
     /// - Parameters:
     ///   - userId: The Matrix user id.
     /// - Returns: true if the user is external.
-    func isExternalUser(_ userId: String) -> Bool
+    func isExternalUser(for userId: String) -> Bool
 }

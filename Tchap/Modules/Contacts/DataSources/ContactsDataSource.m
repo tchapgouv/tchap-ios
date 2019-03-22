@@ -213,7 +213,8 @@
     BOOL hsUserDirectory = (self.mxSession.state != MXSessionStateHomeserverNotReachable);
     
     // The external users are not allowed to search in users directory.
-    hsUserDirectory &= ![self.userService isExternalUser:self.mxSession.myUser.userId];
+    NSString *myUserId = self.mxSession.myUser.userId;
+    hsUserDirectory &= (myUserId && ![self.userService isExternalUserFor:myUserId]);
     
     [self searchWithPattern:searchText forceReset:forceRefresh hsUserDirectory:hsUserDirectory];
 }
@@ -819,13 +820,19 @@
 {
     NSString *myUserId = self.mxSession.myUser.userId;
     
+    // Sanity check
+    if (!myUserId || !matrixId)
+    {
+        return YES;
+    }
+    
     // Note the external users are not allowed to start chat with another external user.
     // So we ignore here the external users when the current user is external.
     
     return _contactsFilter == ContactsDataSourceTchapFilterNoTchapOnly
     || _ignoredContactsByMatrixId[matrixId]
     || (_contactsFilter == ContactsDataSourceTchapFilterNonFederatedTchapOnly && ![self.userService isUserId:myUserId belongToSameDomainAs:matrixId])
-    || ([self.userService isExternalUser:myUserId] && [self.userService isExternalUser:matrixId]);
+    || ([self.userService isExternalUserFor:myUserId] && [self.userService isExternalUserFor:matrixId]);
 }
 
 #pragma mark - UITableView data source
@@ -1113,7 +1120,8 @@
     else //if (section == filteredMatrixContactsSection)
     {
         // The contacts search is only local for an external user (hide the online/offline info)
-        if ([self.userService isExternalUser:self.mxSession.myUser.userId])
+        NSString *myUserId = self.mxSession.myUser.userId;
+        if (myUserId && [self.userService isExternalUserFor:self.mxSession.myUser.userId])
         {
             title = NSLocalizedStringFromTable(@"contacts_user_directory_section", @"Tchap", nil);
         }
