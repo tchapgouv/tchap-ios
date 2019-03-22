@@ -37,6 +37,7 @@ final class HomeViewController: UIViewController {
     private var currentStyle: Style!
     private var segmentViewControllers: [UIViewController] = []
     private var segmentViewControllersTitles: [String] = []
+    private var isExternalUseMode: Bool = false
     
     private weak var currentAlertController: UIAlertController?
     
@@ -62,6 +63,7 @@ final class HomeViewController: UIViewController {
         
         self.setupGlobalSearchBar()
         self.setupSegmentedViewController()
+        self.setupPlusButton()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -72,6 +74,11 @@ final class HomeViewController: UIViewController {
         
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return self.currentStyle.statusBarStyle
+    }
+    
+    func setExternalUseMode(_ isExternal: Bool) {
+        isExternalUseMode = isExternal
+        self.setupPlusButton()
     }
     
     // MARK: - Private
@@ -89,6 +96,11 @@ final class HomeViewController: UIViewController {
         }
         segmentedViewController.initWithTitles(self.segmentViewControllersTitles, viewControllers: self.segmentViewControllers, defaultSelected: 0)
         self.tc_addChildViewController(viewController: segmentedViewController, onView: self.segmentedViewControllerContainerView)
+    }
+    
+    private func setupPlusButton() {
+        // Hide the plus button for external user (the corresponding actions are not allowed for them)
+        self.plusButton.isHidden = isExternalUseMode
     }
     
     // MARK: - Action

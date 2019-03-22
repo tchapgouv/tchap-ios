@@ -211,6 +211,11 @@
 {
     // If possible, always start a new search by asking the homeserver user directory
     BOOL hsUserDirectory = (self.mxSession.state != MXSessionStateHomeserverNotReachable);
+    
+    // The external users are not allowed to search in users directory.
+    NSString *myUserId = self.mxSession.myUser.userId;
+    hsUserDirectory &= (myUserId && ![self.userService isExternalUserFor:myUserId]);
+    
     [self searchWithPattern:searchText forceReset:forceRefresh hsUserDirectory:hsUserDirectory];
 }
 
@@ -815,9 +820,19 @@
 {
     NSString *myUserId = self.mxSession.myUser.userId;
     
+    // Sanity check
+    if (!myUserId || !matrixId)
+    {
+        return YES;
+    }
+    
+    // Note the external users are not allowed to start chat with another external user.
+    // So we ignore here the external users when the current user is external.
+    
     return _contactsFilter == ContactsDataSourceTchapFilterNoTchapOnly
     || _ignoredContactsByMatrixId[matrixId]
-    || (_contactsFilter == ContactsDataSourceTchapFilterNonFederatedTchapOnly && ![self.userService isUserId:myUserId belongToSameDomainAs:matrixId]);
+    || (_contactsFilter == ContactsDataSourceTchapFilterNonFederatedTchapOnly && ![self.userService isUserId:myUserId belongToSameDomainAs:matrixId])
+    || ([self.userService isExternalUserFor:myUserId] && [self.userService isExternalUserFor:matrixId]);
 }
 
 #pragma mark - UITableView data source
@@ -1104,17 +1119,27 @@
     }
     else //if (section == filteredMatrixContactsSection)
     {
-        switch (_userDirectoryState)
+        // The contacts search is only local for an external user (hide the online/offline info)
+        NSString *myUserId = self.mxSession.myUser.userId;
+        if (myUserId && [self.userService isExternalUserFor:self.mxSession.myUser.userId])
         {
-            case ContactsDataSourceUserDirectoryStateOfflineLoading:
-            case ContactsDataSourceUserDirectoryStateOfflineLoaded:
-                title = NSLocalizedStringFromTable(@"contacts_user_directory_offline_section", @"Tchap", nil);
-                break;
-
-            default:
-                title = NSLocalizedStringFromTable(@"contacts_user_directory_section", @"Tchap", nil);
-                break;
+            title = NSLocalizedStringFromTable(@"contacts_user_directory_section", @"Tchap", nil);
         }
+        else
+        {
+            switch (_userDirectoryState)
+            {
+                case ContactsDataSourceUserDirectoryStateOfflineLoading:
+                case ContactsDataSourceUserDirectoryStateOfflineLoaded:
+                    title = NSLocalizedStringFromTable(@"contacts_user_directory_offline_section", @"Tchap", nil);
+                    break;
+                    
+                default:
+                    title = NSLocalizedStringFromTable(@"contacts_user_directory_section", @"Tchap", nil);
+                    break;
+            }
+        }
+        
         
         if (currentSearchText.length)
         {

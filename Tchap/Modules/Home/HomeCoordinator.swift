@@ -29,6 +29,9 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
     private let navigationRouter: NavigationRouterType
     private let session: MXSession
     
+    private let userService: UserServiceType
+    
+    private weak var homeViewController: HomeViewController?
     private weak var roomsCoordinator: RoomsCoordinatorType?
     private weak var contactsCoordinator: ContactsCoordinatorType?
     
@@ -45,6 +48,7 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
     init(session: MXSession) {
         self.navigationRouter = NavigationRouter(navigationController: TCNavigationController())
         self.session = session
+        self.userService = UserService(session: self.session)
     }
     
     // MARK: - Public methods
@@ -76,6 +80,7 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
         
         self.roomsCoordinator = roomsCoordinator
         self.contactsCoordinator = contactsCoordinator
+        self.homeViewController = segmentedViewController
     }
     
     func toPresentable() -> UIViewController {
@@ -97,6 +102,22 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
     
     // MARK: - Private methods
     
+    private func registerSessionStateNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(sessionStateDidChange), name: NSNotification.Name.mxSessionStateDidChange, object: nil)
+    }
+    
+    private func unregisterSessionStateNotification() {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.mxSessionStateDidChange, object: nil)
+    }
+    
+    @objc private func sessionStateDidChange() {
+        // Check whether the current user id is available
+        if let myUserId = self.session.myUser?.userId {
+            self.unregisterSessionStateNotification()
+            self.homeViewController?.setExternalUseMode(self.userService.isExternalUser(for: myUserId))
+        }
+    }
+    
     private func showSettings(animated: Bool) {
         let settingsCoordinator = SettingsCoordinator(router: self.navigationRouter)
         settingsCoordinator.start()
@@ -110,6 +131,13 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
     
     private func createHomeViewController(with viewControllers: [UIViewController], viewControllersTitles: [String], globalSearchBar: GlobalSearchBar) -> HomeViewController {
         let homeViewController = HomeViewController.instantiate(with: viewControllers, viewControllersTitles: viewControllersTitles, globalSearchBar: globalSearchBar)
+        
+        // Check whether the current user is available
+        if let myUserId = self.session.myUser?.userId {
+            homeViewController.setExternalUseMode(self.userService.isExternalUser(for: myUserId))
+        } else {
+            registerSessionStateNotification()
+        }
         
         homeViewController.navigationItem.leftBarButtonItem = MXKBarButtonItem(image: #imageLiteral(resourceName: "settings_icon"), style: .plain, action: { [weak self] in
             guard let sself = self else {
