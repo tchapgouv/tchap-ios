@@ -1,3 +1,15 @@
+Changes in Tchap 1.0.6 (2019-03-25)
+===================================================
+
+ Features/Improvements:
+ * Block invite to a deactivated account user #168
+ * Warn the user about the remote logout in case of a password change #164
+ * Hide the rooms created to invite some non-tchap contact by email. #172
+ * Configure the application for the extern users #139
+ 
+ Bug Fixes:
+ * Bug when leaving a room #162
+
 Changes in Tchap 1.0.5 (2019-03-08)
 ===================================================
 
