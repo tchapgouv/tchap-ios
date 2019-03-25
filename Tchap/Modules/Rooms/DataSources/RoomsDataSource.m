@@ -470,6 +470,12 @@
             id<MXKRecentCellDataStoring> recentCellDataStoring = [recentsDataSource cellDataAtIndex:index];
             MXRoom* room = recentCellDataStoring.roomSummary.room;
             
+            // Hide the rooms created to invite some non-tchap contact by email.
+            if (room.isDirect && [MXTools isEmailAddress:room.directUserId])
+            {
+                continue;
+            }
+            
             // Keep only the invites, the favourites and the rooms without tag
             if (room.summary.membership == MXMembershipInvite)
             {

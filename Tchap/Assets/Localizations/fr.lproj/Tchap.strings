@@ -87,12 +87,22 @@
 "contacts_picker_title" = "Inviter au salon";
 
 ////////////////////////////////////////////////////////////////////////////////
+// MARK: Settings
+"settings_change_pwd_caution" = "Changer le mot de passe réinitialise les clés de chiffrement sur tous les appareils, rendant l’historique des discussions illisible: pensez d'abord à exporter vos clés pour pouvoir les ré-importer après le changement de mot de passe.";
+"settings_change_pwd_success_title" = "Succès";
+"settings_change_pwd_success_msg" = "Votre mot de passe a été changé avec succès.\nVous ne recevrez plus de notifications sur vos autres appareils tant que vous ne vous y reconnecterez pas.";
+
+////////////////////////////////////////////////////////////////////////////////
 // MARK: Search
 "search_no_result" = "Aucun résultat";
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Room title
 "room_title_room_members_count" = "%d membre(s)";
+
+////////////////////////////////////////////////////////////////////////////////
+// MARK: Room
+"tchap_cannot_invite_deactivated_account_user" = "Votre correspondant a quitté définitivement cette discussion.\nVous devez en créer une nouvelle pour le recontacter, s'il est toujours joignable sur Tchap.";
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Room Members
@@ -114,7 +124,6 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Room Attachment Antivirus Scan
-
 "room_attachment_scan_status_unavailable_title" = "Analyse indisponible";
 "room_attachment_scan_status_in_progress_title" = "Analyse antivirus";
 "room_attachment_scan_status_infected_title" = "Fichier bloqué";
@@ -132,7 +141,6 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Room creation
-
 "room_creation_title" = "Nouveau salon";
 "room_creation_name_placeholder" = "Nommer le salon";
 "room_creation_public_visibility_title" = "Rendre ce salon public";

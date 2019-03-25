@@ -45,4 +45,19 @@ protocol UserServiceType {
     ///   - secondUserId: Second Matrix ID
     /// - Returns: true if the two Matrix IDs belong to the same domain.
     func isUserId(_ firstUserId: String, belongToSameDomainAs secondUserId: String) -> Bool
+    
+    /// Check whether the account associated to the provided userId has been deactivated.
+    ///
+    /// - Parameters:
+    ///   - userId: The Matrix user id.
+    ///   - completion: A closure called when the operation completes. Provide the answer or an error.
+    func isAccountDeactivated(for userId: String, completion: @escaping ((MXResponse<Bool>) -> Void))
+    
+    /// Tells whether the provided Matrix identifier corresponds to an external Tchap user.
+    /// Note: invalid identifier will be considered as external.
+    ///
+    /// - Parameters:
+    ///   - userId: The Matrix user id.
+    /// - Returns: true if the user is external.
+    func isExternalUser(for userId: String) -> Bool
 }
