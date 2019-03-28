@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>tacURL</key>
-	<string>https://www.beta.tchap.gouv.fr/tac.html</string>
+	<string>https://www.tchap.gouv.fr/tac.html</string>
 	<key>appGroupId</key>
 	<string>group.fr.gouv.btchap</string>
 	<key>appLanguage</key>
