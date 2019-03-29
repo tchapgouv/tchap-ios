@@ -704,7 +704,7 @@
     contactsDataSource = [[ContactsDataSource alloc] initWithMatrixSession:self.mxRoom.mxSession];
     [contactsDataSource finalizeInitialization];
     contactsDataSource.areSectionsShrinkable = YES;
-    contactsDataSource.displaySearchInputInContactsList = NO;
+    contactsDataSource.showInviteButton = NO;
     contactsDataSource.contactsFilter = ContactsDataSourceTchapFilterTchapOnly;
     
     

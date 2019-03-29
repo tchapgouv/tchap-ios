@@ -47,6 +47,7 @@ final class ContactsCoordinator: NSObject, ContactsCoordinatorType {
         
         self.contactsDataSource = ContactsDataSource(matrixSession: self.session)
         self.contactsDataSource.finalizeInitialization()
+        self.contactsDataSource.showInviteButton = true
         self.contactsDataSource.contactsFilter = ContactsDataSourceTchapFilterTchapOnly
         
         super.init()

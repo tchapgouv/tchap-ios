@@ -51,7 +51,7 @@ typedef enum : NSUInteger
 {
 @protected
     // Section indexes
-    NSInteger searchInputSection;
+    NSInteger inviteButtonSection;
     NSInteger filteredLocalContactsSection;
     NSInteger filteredMatrixContactsSection;
     
@@ -175,9 +175,9 @@ typedef enum : NSUInteger
 - (void)searchWithPattern:(NSString *)searchText forceReset:(BOOL)forceReset;
 
 /**
- Tell whether the search input is displayed in the contacts list. So that the user can select it (NO by default).
+ Tell whether the invite button is displayed at the top of the contacts list (NO by default).
  */
-@property (nonatomic) BOOL displaySearchInputInContactsList;
+@property (nonatomic) BOOL showInviteButton;
 
 /**
  The temporary contact built from the search input. This contact is not nil only when the search input is

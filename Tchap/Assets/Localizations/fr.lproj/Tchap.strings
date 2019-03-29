@@ -83,6 +83,7 @@
 "contacts_user_directory_section" = "Répertoire Tchap";
 "contacts_user_directory_offline_section" = "Répertoire Tchap (hors-ligne)";
 "contacts_search_bar_placeholder" = "Rechercher";
+"contacts_inviter_par_email" = "Envoyer une invitation par e-mail";
 
 "contacts_picker_title" = "Inviter au salon";
 

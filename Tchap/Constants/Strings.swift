@@ -35,6 +35,8 @@ internal enum TchapL10n {
   internal static let contactsAddressBookPermissionDenied = TchapL10n.tr("Tchap", "contacts_address_book_permission_denied")
   /// Permissions requises pour accéder aux contacts locaux
   internal static let contactsAddressBookPermissionRequired = TchapL10n.tr("Tchap", "contacts_address_book_permission_required")
+  /// Envoyer une invitation par e-mail
+  internal static let contactsInviterParEmail = TchapL10n.tr("Tchap", "contacts_inviter_par_email")
   /// Contacts Tchap
   internal static let contactsMainSection = TchapL10n.tr("Tchap", "contacts_main_section")
   /// Aucun contact
