@@ -3,6 +3,7 @@
 "action_next" = "Suivant";
 "action_cancel" = "Annuler";
 "action_validate" = "Valider";
+"action_invite" = "Inviter";
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Common errors
@@ -83,8 +84,9 @@
 "contacts_user_directory_section" = "Répertoire Tchap";
 "contacts_user_directory_offline_section" = "Répertoire Tchap (hors-ligne)";
 "contacts_search_bar_placeholder" = "Rechercher";
-"contacts_inviter_par_email" = "Envoyer une invitation par e-mail";
-
+"contacts_invite_by_email_button" = "Envoyer une invitation par e-mail";
+"contacts_invite_by_email_title" = "Envoyer une invitation";
+"contacts_invite_by_email_message" = "Veuillez saisir l'adresse e-mail de la personne à inviter. Cet e-mail définira son nom dans Tchap, veuillez privilègier un e-mail comportant nom et prénom.";
 "contacts_picker_title" = "Inviter au salon";
 
 ////////////////////////////////////////////////////////////////////////////////

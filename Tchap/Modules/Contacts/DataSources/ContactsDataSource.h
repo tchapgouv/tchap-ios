@@ -65,6 +65,14 @@ typedef enum : NSUInteger
 }
 
 /**
+ Check whether the invite button is located to the given index path.
+ 
+ @param indexPath the index of the cell
+ @return YES if the indexPath is the invite button one
+ */
+-(BOOL)isInviteButtonIndexPath:(NSIndexPath*)indexPath;
+
+/**
  Get the contact at the given index path.
  
  @param indexPath the index of the cell
@@ -178,12 +186,6 @@ typedef enum : NSUInteger
  Tell whether the invite button is displayed at the top of the contacts list (NO by default).
  */
 @property (nonatomic) BOOL showInviteButton;
-
-/**
- The temporary contact built from the search input. This contact is not nil only when the search input is
- a valid email or a Matrix user ID.
- */
-@property (nonatomic, readonly) MXKContact *searchInputContact;
 
 /**
  The state of the users search from the homeserver user directory.

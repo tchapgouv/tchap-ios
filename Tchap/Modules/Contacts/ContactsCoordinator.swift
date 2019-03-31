@@ -18,6 +18,7 @@ import Foundation
 
 protocol ContactsCoordinatorDelegate: class {
     func contactsCoordinator(_ coordinator: ContactsCoordinatorType, didSelectUserID userID: String)
+    func contactsCoordinator(_ coordinator: ContactsCoordinatorType, sendEmailInviteTo email: String)
 }
 
 final class ContactsCoordinator: NSObject, ContactsCoordinatorType {
@@ -86,5 +87,9 @@ extension ContactsCoordinator: ContactsViewControllerDelegate {
         }
 
         self.didSelectUserID(userID)
+    }
+    
+    func contactsViewController(_ contactsViewController: ContactsViewController, sendEmailInviteTo email: String) {
+        self.delegate?.contactsCoordinator(self, sendEmailInviteTo: email)
     }
 }

@@ -405,17 +405,6 @@
     }
 }
 
-- (MXKContact*)searchInputContact
-{
-    // Check whether the current search input is a valid email or a Matrix user ID
-    if (currentSearchText.length && ([MXTools isEmailAddress:currentSearchText] || [MXTools isMatrixUserIdentifier:currentSearchText]))
-    {
-        return [[MXKContact alloc] initMatrixContactWithDisplayName:currentSearchText andMatrixID:nil];
-    }
-    
-    return nil;
-}
-
 - (void)selectOrDeselectContactAtIndexPath:(NSIndexPath*)indexPath
 {
     MXKContact *contact = [self contactAtIndexPath:indexPath];
@@ -918,7 +907,7 @@
     {
         ContactButtonView *buttonView = [tableView dequeueReusableCellWithIdentifier:ContactButtonView.defaultReuseIdentifier forIndexPath:indexPath];
         ContactButtonViewModel *buttonModel = [[ContactButtonViewModel alloc] initWithIcon: [UIImage imageNamed:@"tchap_ic_add_bymail"]
-                                                                                    action: NSLocalizedStringFromTable(@"contacts_inviter_par_email", @"Tchap", nil)];
+                                                                                    action: NSLocalizedStringFromTable(@"contacts_invite_by_email_button", @"Tchap", nil)];
         [buttonView renderWithModel:buttonModel];
         
         return buttonView;
@@ -1037,6 +1026,11 @@
 }
 
 #pragma mark -
+
+-(BOOL)isInviteButtonIndexPath:(NSIndexPath*)indexPath
+{
+    return (indexPath.section == inviteButtonSection);
+}
 
 -(MXKContact *)contactAtIndexPath:(NSIndexPath*)indexPath
 {

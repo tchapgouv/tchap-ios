@@ -23,6 +23,8 @@
 
 #import "GeneratedInterface-Swift.h"
 
+NSString *const ContactErrorDomain = @"ContactErrorDomain";
+
 @interface ContactsViewController () <MXKDataSourceDelegate, Stylable, UISearchResultsUpdating>
 
 @property (strong, nonatomic) ContactsDataSource *contactsDataSource;
@@ -31,6 +33,8 @@
 @property (nonatomic) BOOL showSearchBar;
 @property (nonatomic, strong) UISearchController *searchController;
 @property (nonatomic) BOOL enableMultipleSelection;
+
+@property (nonatomic) UIAlertController *currentAlert;
 
 /**
  The analytics instance screen name (Default is "ContactsTable").
@@ -140,6 +144,12 @@
     [super viewWillDisappear:animated];
     
     [self.searchController.searchBar resignFirstResponder];
+    
+    if (self.currentAlert)
+    {
+        [self.currentAlert dismissViewControllerAnimated:NO completion:nil];
+        self.currentAlert = nil;
+    }
 }
 
 #pragma mark - Public
@@ -195,6 +205,63 @@
     
     self.searchController = searchController;
 }
+
+- (void)sendInviteByEmail
+{
+    MXWeakify(self);
+    
+    [self.currentAlert dismissViewControllerAnimated:NO completion:nil];
+    self.currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"contacts_invite_by_email_title", @"Tchap", nil)
+                                                            message:NSLocalizedStringFromTable(@"contacts_invite_by_email_message", @"Tchap", nil)
+                                                     preferredStyle:UIAlertControllerStyleAlert];
+    
+    [self.currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                                                     style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction * action) {
+                                                       
+                                                       MXStrongifyAndReturnIfNil(self);
+                                                       self.currentAlert = nil;
+                                                       
+                                                   }]];
+    
+    [self.currentAlert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+        textField.secureTextEntry = NO;
+        textField.placeholder = nil;
+        textField.keyboardType = UIKeyboardTypeEmailAddress;
+    }];
+    
+    [self.currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"action_invite", @"Tchap", nil)
+                                                     style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction * action) {
+                                                       
+                                                       MXStrongifyAndReturnIfNil(self);
+                                                       UITextField *textField = [self.currentAlert textFields].firstObject;
+                                                       NSString *email = textField.text;
+                                                       
+                                                       self.currentAlert = nil;
+                                                       
+                                                       if ([MXTools isEmailAddress:email])
+                                                       {
+                                                           // Sanity check
+                                                           if ([self.delegate respondsToSelector:@selector(contactsViewController:sendEmailInviteTo:)])
+                                                           {
+                                                               [self.delegate contactsViewController:self sendEmailInviteTo:email];
+                                                           }
+                                                       }
+                                                       else
+                                                       {
+                                                           NSError *error = [NSError errorWithDomain:ContactErrorDomain
+                                                                                                code:0
+                                                                                            userInfo:@{NSLocalizedDescriptionKey : NSLocalizedStringFromTable(@"authentication_error_invalid_email", @"Tchap", nil)}];
+                                                           [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                       }
+                                                       
+                                                   }]];
+    
+    [self.currentAlert mxk_setAccessibilityIdentifier: @"ContactsVCInviteByEmailDialog"];
+    [self presentViewController:self.currentAlert animated:YES completion:nil];
+}
+
 
 #pragma mark - Stylable
 
@@ -306,6 +373,14 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    // Check first the potential invite button
+    if ([self.contactsDataSource isInviteButtonIndexPath:indexPath])
+    {
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        [self sendInviteByEmail];
+        return;
+    }
+    
     if (self.enableMultipleSelection)
     {
         [self.contactsDataSource selectOrDeselectContactAtIndexPath:indexPath];

@@ -35,6 +35,8 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
     private weak var roomsCoordinator: RoomsCoordinatorType?
     private weak var contactsCoordinator: ContactsCoordinatorType?
     
+    private let activityIndicatorPresenter: ActivityIndicatorPresenterType
+    
     // MARK: Public
     
     // MARK: Public
@@ -49,6 +51,7 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
         self.navigationRouter = NavigationRouter(navigationController: TCNavigationController())
         self.session = session
         self.userService = UserService(session: self.session)
+        self.activityIndicatorPresenter = ActivityIndicatorPresenter()
     }
     
     // MARK: - Public methods
@@ -188,6 +191,16 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
         
         self.add(childCoordinator: roomCreationCoordinator)
     }
+    
+    private func sendEmailInvite(to email: String) {
+        guard let homeViewController = self.homeViewController else {
+            return
+        }
+        
+        self.activityIndicatorPresenter.presentActivityIndicator(on: homeViewController.view, animated: true)
+        // TODO
+        self.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
+    }
 }
 
 // MARK: - SettingsCoordinatorDelegate
@@ -215,9 +228,11 @@ extension HomeCoordinator: RoomsCoordinatorDelegate {
 
 // MARK: - ContactsCoordinatorDelegate
 extension HomeCoordinator: ContactsCoordinatorDelegate {
-    
     func contactsCoordinator(_ coordinator: ContactsCoordinatorType, didSelectUserID userID: String) {
         self.startDiscussion(with: userID)
+    }
+    func contactsCoordinator(_ coordinator: ContactsCoordinatorType, sendEmailInviteTo email: String) {
+        self.sendEmailInvite(to: email)
     }
 }
 

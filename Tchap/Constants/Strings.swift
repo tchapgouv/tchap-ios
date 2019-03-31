@@ -9,6 +9,8 @@ import Foundation
 internal enum TchapL10n {
   /// Annuler
   internal static let actionCancel = TchapL10n.tr("Tchap", "action_cancel")
+  /// Inviter
+  internal static let actionInvite = TchapL10n.tr("Tchap", "action_invite")
   /// Suivant
   internal static let actionNext = TchapL10n.tr("Tchap", "action_next")
   /// Valider
@@ -36,7 +38,11 @@ internal enum TchapL10n {
   /// Permissions requises pour accéder aux contacts locaux
   internal static let contactsAddressBookPermissionRequired = TchapL10n.tr("Tchap", "contacts_address_book_permission_required")
   /// Envoyer une invitation par e-mail
-  internal static let contactsInviterParEmail = TchapL10n.tr("Tchap", "contacts_inviter_par_email")
+  internal static let contactsInviteByEmailButton = TchapL10n.tr("Tchap", "contacts_invite_by_email_button")
+  /// Veuillez saisir l'adresse e-mail de la personne à inviter. Cet e-mail définira son nom dans Tchap, veuillez privilègier un e-mail comportant nom et prénom.
+  internal static let contactsInviteByEmailMessage = TchapL10n.tr("Tchap", "contacts_invite_by_email_message")
+  /// Envoyer une invitation
+  internal static let contactsInviteByEmailTitle = TchapL10n.tr("Tchap", "contacts_invite_by_email_title")
   /// Contacts Tchap
   internal static let contactsMainSection = TchapL10n.tr("Tchap", "contacts_main_section")
   /// Aucun contact
