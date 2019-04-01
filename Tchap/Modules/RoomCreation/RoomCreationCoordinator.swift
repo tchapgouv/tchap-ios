@@ -230,7 +230,7 @@ extension RoomCreationCoordinator: MediaPickerViewControllerDelegate {
     }
 }
 
-// MARK: - ContactsCoordinatorDelegate
+// MARK: - ContactsPickerCoordinatorDelegate
 extension RoomCreationCoordinator: ContactsPickerCoordinatorDelegate {
     
     func contactsPickerCoordinator(_ coordinator: ContactsPickerCoordinatorType, didSelectUserIDs userIDs: [String]) {

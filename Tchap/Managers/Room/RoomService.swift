@@ -62,7 +62,9 @@ final class RoomService: RoomServiceType {
         }
     }
     
-    func setAvatar(with url: String, for roomId: String) -> Single<Void> {
+    // MARK: - Private
+    
+    private func setAvatar(with url: String, for roomId: String) -> Single<Void> {
         guard let avatarUrl = URL(string: url) else {
             return Single.error(RoomServiceError.invalidAvatarURL)
         }
@@ -84,8 +86,6 @@ final class RoomService: RoomServiceType {
             }
         }
     }
-    
-    // MARK: - Private
     
     private func createRoom(visibility: MXRoomDirectoryVisibility, name: String, inviteUserIds: [String], isFederated: Bool) -> Single<MXCreateRoomResponse> {
         
