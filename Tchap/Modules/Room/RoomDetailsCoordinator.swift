@@ -136,8 +136,8 @@ final class RoomDetailsCoordinator: NSObject, RoomDetailsCoordinatorType {
     private func didSelectUserID(_ userID: String, completion: (() -> Void)?) {
         self.activityIndicatorPresenter.presentActivityIndicator(on: self.segmentedViewController.view, animated: true)
         
-        let discussionService = DiscussionService(session: session)
-        discussionService.getDiscussionIdentifier(for: userID) { [weak self] response in
+        let discussionFinder = DiscussionFinder(session: session)
+        discussionFinder.getDiscussionIdentifier(for: userID) { [weak self] response in
             guard let sself = self else {
                 return
             }

@@ -149,10 +149,10 @@ final class RoomCoordinator: NSObject, RoomCoordinatorType {
             self.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
         }
         
-        let discussionService = DiscussionService(session: session)
+        let discussionFinder = DiscussionFinder(session: session)
         
         // Try to find an existing room with target user otherwise start a new discussion
-        discussionService.getDiscussionIdentifier(for: discussionTargetUserID) { [weak self] response in
+        discussionFinder.getDiscussionIdentifier(for: discussionTargetUserID) { [weak self] response in
             guard let sself = self else {
                 return
             }

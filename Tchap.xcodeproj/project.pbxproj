@@ -17,7 +17,7 @@
 		02018FA022006282008D68BE /* UniversalLinkParametersType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02018F9E22006282008D68BE /* UniversalLinkParametersType.swift */; };
 		02098F352131FE9E00F25086 /* ContactsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 02098F302131FE9E00F25086 /* ContactsDataSource.m */; };
 		02098F372131FE9E00F25086 /* ContactsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 02098F322131FE9E00F25086 /* ContactsViewController.m */; };
-		020DF6FB21480700003DFBA4 /* DiscussionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020DF6FA21480700003DFBA4 /* DiscussionService.swift */; };
+		020DF6FB21480700003DFBA4 /* DiscussionFinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020DF6FA21480700003DFBA4 /* DiscussionFinder.swift */; };
 		020DF935214BE467003DFBA4 /* RoomDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF85B214BE467003DFBA4 /* RoomDataSource.m */; };
 		020DF936214BE467003DFBA4 /* RoomBubbleCellData.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF85E214BE467003DFBA4 /* RoomBubbleCellData.m */; };
 		020DF937214BE467003DFBA4 /* RoomSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF862214BE467003DFBA4 /* RoomSettingsViewController.m */; };
@@ -312,7 +312,7 @@
 		02DFEBAB21C07370009B6F15 /* Storyboards.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1322FE0212FFCCB0054A9DD /* Storyboards.swift */; };
 		02DFEBAC21C07370009B6F15 /* Variant1Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1BC6A1C2136C99F00D32F8E /* Variant1Style.swift */; };
 		02DFEBAD21C07370009B6F15 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1322FE2212FFCCD0054A9DD /* Strings.swift */; };
-		02DFEBAE21C07370009B6F15 /* DiscussionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020DF6FA21480700003DFBA4 /* DiscussionService.swift */; };
+		02DFEBAE21C07370009B6F15 /* DiscussionFinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020DF6FA21480700003DFBA4 /* DiscussionFinder.swift */; };
 		02DFEBAF21C07370009B6F15 /* MXRoom+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBE81E7009EC00A9B29C /* MXRoom+Riot.m */; };
 		02DFEBB021C07370009B6F15 /* RoomAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B146D50B21A5EAE600D8C2C6 /* RoomAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.m */; };
 		02DFEBB121C07370009B6F15 /* RoomMemberTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF888214BE467003DFBA4 /* RoomMemberTitleView.m */; };
@@ -853,7 +853,7 @@
 		02098F2F2131FE9E00F25086 /* ContactsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsDataSource.h; sourceTree = "<group>"; };
 		02098F302131FE9E00F25086 /* ContactsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactsDataSource.m; sourceTree = "<group>"; };
 		02098F322131FE9E00F25086 /* ContactsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactsViewController.m; sourceTree = "<group>"; };
-		020DF6FA21480700003DFBA4 /* DiscussionService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscussionService.swift; sourceTree = "<group>"; };
+		020DF6FA21480700003DFBA4 /* DiscussionFinder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscussionFinder.swift; sourceTree = "<group>"; };
 		020DF85A214BE467003DFBA4 /* RoomDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomDataSource.h; sourceTree = "<group>"; };
 		020DF85B214BE467003DFBA4 /* RoomDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomDataSource.m; sourceTree = "<group>"; };
 		020DF85D214BE467003DFBA4 /* RoomBubbleCellData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomBubbleCellData.h; sourceTree = "<group>"; };
@@ -1479,7 +1479,7 @@
 		020DF6F921480700003DFBA4 /* Discussions */ = {
 			isa = PBXGroup;
 			children = (
-				020DF6FA21480700003DFBA4 /* DiscussionService.swift */,
+				020DF6FA21480700003DFBA4 /* DiscussionFinder.swift */,
 			);
 			path = Discussions;
 			sourceTree = "<group>";
@@ -3857,7 +3857,7 @@
 				B1322FE3212FFCCD0054A9DD /* Storyboards.swift in Sources */,
 				B1BC6A1D2136C99F00D32F8E /* Variant1Style.swift in Sources */,
 				B1322FE5212FFCCD0054A9DD /* Strings.swift in Sources */,
-				020DF6FB21480700003DFBA4 /* DiscussionService.swift in Sources */,
+				020DF6FB21480700003DFBA4 /* DiscussionFinder.swift in Sources */,
 				0250C4B22122B68000034691 /* MXRoom+Riot.m in Sources */,
 				B146D51121A5EAE800D8C2C6 /* RoomAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.m in Sources */,
 				020DF948214BE467003DFBA4 /* RoomMemberTitleView.m in Sources */,
@@ -4131,7 +4131,7 @@
 				02DFEBAB21C07370009B6F15 /* Storyboards.swift in Sources */,
 				02DFEBAC21C07370009B6F15 /* Variant1Style.swift in Sources */,
 				02DFEBAD21C07370009B6F15 /* Strings.swift in Sources */,
-				02DFEBAE21C07370009B6F15 /* DiscussionService.swift in Sources */,
+				02DFEBAE21C07370009B6F15 /* DiscussionFinder.swift in Sources */,
 				02DFEBAF21C07370009B6F15 /* MXRoom+Riot.m in Sources */,
 				02DFEBB021C07370009B6F15 /* RoomAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.m in Sources */,
 				02DFEBB121C07370009B6F15 /* RoomMemberTitleView.m in Sources */,
