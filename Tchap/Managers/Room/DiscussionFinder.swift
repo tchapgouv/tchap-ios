@@ -16,22 +16,13 @@
 
 import Foundation
 
-/// List the different result cases
-enum DiscussionFinderResult {
-    case joinedDiscussion(roomID: String)
-    case pendingInvite(roomID: String)
-    case noDiscussion
-}
-
 /// `DiscussionFinderError` represent errors reported by DiscussionFinder.
 enum DiscussionFinderError: Error {
     case invalidReceivedInvite
 }
 
-
 /// `DiscussionFinder` is used to find the direct chat which is the most suitable discussion with a Tchap user.
-/// The aim is to handle only one discussion by Tchap user, and prevent the client from creating multiple one-one with the same user.
-final class DiscussionFinder {
+final class DiscussionFinder: DiscussionFinderType {
     
     // MARK: Private
     private let session: MXSession
@@ -42,14 +33,6 @@ final class DiscussionFinder {
         self.session = session
     }
     
-    /// Returns the identifier of the current discussion for a given user ID, if any.
-    /// The returned discussion may be a pending invite from this user.
-    ///
-    /// - Parameters:
-    ///   - userID: The user identifier to search for. This identifier is a matrix id or an email address.
-    ///   - includeInvite: Tell whether the pending invitations have to be considered or not.
-    ///   - autoJoin: When the current discussion is a pending invite, this boolean tells whether we must join it automatically before returning.
-    ///   - completion: A closure called when the operation complete. Provide the discussion id (if any) when succeed.
     func getDiscussionIdentifier(for userID: String, includeInvite: Bool = true, autoJoin: Bool = true, completion: @escaping (MXResponse<DiscussionFinderResult>) -> Void) {
         guard let roomIDsList = self.session.directRooms?[userID] else {
             // There is no discussion for the moment with this user
@@ -83,7 +66,8 @@ final class DiscussionFinder {
                     room.members { response in
                         switch response {
                         case .success(let roomMembers):
-                            if let member = roomMembers?.member(withUserId: userID) {
+                            // Ignore room which are not 1:1
+                            if roomMembers?.members.count == 2, let member = roomMembers?.member(withUserId: userID) {
                                 switch member.membership {
                                 case .join:
                                     if !isPendingInvite {
@@ -107,7 +91,15 @@ final class DiscussionFinder {
                         case .failure(let error):
                             // We did not optimize the error handling here because this is an unexpected error in our use case.
                             // We should improve the error handling by breaking the loop for.
-                            membersError = error
+                            
+                            // Patch here: https://github.com/matrix-org/synapse/issues/4985
+                            if isPendingInvite {
+                                // Keep this pending invite which seems come from a federated hs.
+                                receivedInvites.append(roomID)
+                            } else {
+                                membersError = error
+                            }
+                            
                             group.leave()
                         }
                     }

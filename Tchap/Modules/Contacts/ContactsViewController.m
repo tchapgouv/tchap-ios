@@ -216,7 +216,7 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
                                                      preferredStyle:UIAlertControllerStyleAlert];
     
     [self.currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
-                                                     style:UIAlertActionStyleDefault
+                                                     style:UIAlertActionStyleCancel
                                                    handler:^(UIAlertAction * action) {
                                                        
                                                        MXStrongifyAndReturnIfNil(self);

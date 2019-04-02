@@ -21,12 +21,14 @@ import RxSwift
 private struct RoomCreationParameters {
     let visibility: MXRoomDirectoryVisibility
     let preset: MXRoomPreset
-    let name: String
+    let name: String?
     let alias: String?
-    let inviteUserIDs: [String]
+    let inviteUserIDs: [String]?
+    let inviteThirdPartyIDs: [MXInvite3PID]?
     let isFederated: Bool
     let historyVisibility: String?
     let powerLevelContentOverride: [String: Any]?
+    let isDirect: Bool
 }
 
 enum RoomServiceError: Error {
@@ -48,29 +50,43 @@ final class RoomService: RoomServiceType {
     
     // MARK: - Public
     
-    func createRoom(visibility: MXRoomDirectoryVisibility, name: String, avatarURL: String?, inviteUserIds: [String], isFederated: Bool) -> Single<MXCreateRoomResponse> {
+    func createRoom(visibility: MXRoomDirectoryVisibility, name: String, avatarURL: String?, inviteUserIds: [String], isFederated: Bool) -> Single<String> {
         return self.createRoom(visibility: visibility, name: name, inviteUserIds: inviteUserIds, isFederated: isFederated)
-        .flatMap { createRoomResponse in
-            guard let roomId = createRoomResponse.roomId, let avatarURL = avatarURL else {
-                return Single.just(createRoomResponse)
+        .flatMap { roomID in
+            guard let avatarURL = avatarURL else {
+                return Single.just(roomID)
             }
             
-            return self.setAvatar(with: avatarURL, for: roomId)
+            return self.setAvatar(with: avatarURL, for: roomID)
             .map {
-                return createRoomResponse
+                return roomID
             }
         }
     }
     
+    func createDiscussionWithThirdPartyID(_ thirdPartyID: MXInvite3PID, completion: @escaping (MXResponse<String>) -> Void) -> MXHTTPOperation {
+        let roomCreationParameters = RoomCreationParameters(visibility: .private,
+                                                            preset: .trustedPrivateChat,
+                                                            name: nil,
+                                                            alias: nil,
+                                                            inviteUserIDs: nil,
+                                                            inviteThirdPartyIDs: [thirdPartyID],
+                                                            isFederated: true,
+                                                            historyVisibility: nil,
+                                                            powerLevelContentOverride: nil,
+                                                            isDirect: true)
+        return self.createRoom(with: roomCreationParameters, completion: completion)
+    }
+    
     // MARK: - Private
     
-    private func setAvatar(with url: String, for roomId: String) -> Single<Void> {
+    private func setAvatar(with url: String, for roomID: String) -> Single<Void> {
         guard let avatarUrl = URL(string: url) else {
             return Single.error(RoomServiceError.invalidAvatarURL)
         }
         
         return Single.create { (single) -> Disposable in
-            let httpOperation = self.session.matrixRestClient.setAvatar(ofRoom: roomId, avatarUrl: avatarUrl) { (response) in
+            let httpOperation = self.session.matrixRestClient.setAvatar(ofRoom: roomID, avatarUrl: avatarUrl) { (response) in
                 switch response {
                 case .success:
                     single(.success(Void()))
@@ -87,13 +103,13 @@ final class RoomService: RoomServiceType {
         }
     }
     
-    private func createRoom(visibility: MXRoomDirectoryVisibility, name: String, inviteUserIds: [String], isFederated: Bool) -> Single<MXCreateRoomResponse> {
+    private func createRoom(visibility: MXRoomDirectoryVisibility, name: String, inviteUserIds: [String], isFederated: Bool) -> Single<String> {
         
         return Single.create { (single) -> Disposable in
             let httpOperation = self.createRoom(visibility: visibility, name: name, inviteUserIds: inviteUserIds, isFederated: isFederated) { (response) in
                 switch response {
-                case .success(let createRoomResponse):
-                    single(.success(createRoomResponse))
+                case .success(let roomID):
+                    single(.success(roomID))
                 case .failure(let error):                    
                     single(.error(error))
                 }
@@ -107,7 +123,7 @@ final class RoomService: RoomServiceType {
         }
     }
     
-    private func createRoom(visibility: MXRoomDirectoryVisibility, name: String, inviteUserIds: [String], isFederated: Bool, completion: @escaping (MXResponse<MXCreateRoomResponse>) -> Void) -> MXHTTPOperation {
+    private func createRoom(visibility: MXRoomDirectoryVisibility, name: String, inviteUserIds: [String], isFederated: Bool, completion: @escaping (MXResponse<String>) -> Void) -> MXHTTPOperation {
         
         let preset: MXRoomPreset
         let historyVisibility: String?
@@ -133,18 +149,22 @@ final class RoomService: RoomServiceType {
                                                             name: name,
                                                             alias: alias,
                                                             inviteUserIDs: inviteUserIds,
+                                                            inviteThirdPartyIDs: nil,
                                                             isFederated: isFederated,
                                                             historyVisibility: historyVisibility,
-                                                            powerLevelContentOverride: powerLevelContentOverride)
+                                                            powerLevelContentOverride: powerLevelContentOverride,
+                                                            isDirect: false)
         
         return self.createRoom(with: roomCreationParameters, completion: completion)
     }
     
-    private func createRoom(with roomCreationParameters: RoomCreationParameters, completion: @escaping (MXResponse<MXCreateRoomResponse>) -> Void) -> MXHTTPOperation {
+    private func createRoom(with roomCreationParameters: RoomCreationParameters, completion: @escaping (MXResponse<String>) -> Void) -> MXHTTPOperation {
         
         var parameters: [String: Any] = [:]
         
-        parameters["name"] = roomCreationParameters.name
+        if let name = roomCreationParameters.name {
+            parameters["name"] = name
+        }
         
         parameters["visibility"] = roomCreationParameters.visibility.identifier
         
@@ -152,7 +172,13 @@ final class RoomService: RoomServiceType {
             parameters["room_alias_name"] = alias
         }
         
-        parameters["invite"] = roomCreationParameters.inviteUserIDs
+        if let inviteUserIDs = roomCreationParameters.inviteUserIDs {
+            parameters["invite"] = inviteUserIDs
+        }
+        if let inviteThirdPartyIDs = roomCreationParameters.inviteThirdPartyIDs?.compactMap({$0.dictionary}), inviteThirdPartyIDs.isEmpty == false {
+            parameters["invite_3pid"] = inviteThirdPartyIDs
+        }
+        
         parameters["preset"] = roomCreationParameters.preset.identifier
         
         if roomCreationParameters.isFederated == false {
@@ -174,7 +200,32 @@ final class RoomService: RoomServiceType {
             parameters["power_level_content_override"] = powerLevelContentOverride
         }
         
-        return self.session.matrixRestClient.createRoom(parameters: parameters, completion: completion)
+        if roomCreationParameters.isDirect {
+            parameters["is_direct"] = true
+        }
+        
+        return self.session.createRoom(parameters: parameters, completion: { (response) in
+            switch response {
+            case .success(let room):
+                if roomCreationParameters.isDirect,
+                    roomCreationParameters.inviteUserIDs == nil,
+                    let address = roomCreationParameters.inviteThirdPartyIDs?.first?.address {
+                    // Force this room to be direct for the invited 3pid, the matrix-ios-sdk don't do that by default for the moment.
+                    room.setIsDirect(true, withUserId: address, success: {
+                        completion(.success(room.roomId))
+                    }, failure: { (error) in
+                        NSLog("[RoomService] setIsDirect failed")
+                        if let error = error {
+                            completion(.failure(error))
+                        }
+                    })
+                } else {
+                    completion(.success(room.roomId))
+                }
+            case.failure(let error):
+                completion(.failure(error))
+            }
+        })
     }
     
     private func historyVisibilityStateEvent(with historyVisibility: String) -> MXEvent {

@@ -253,6 +253,14 @@
 		02BEE1A8212C77B700098505 /* DesignValues.m in Sources */ = {isa = PBXBuildFile; fileRef = 02BEE1A6212C77B700098505 /* DesignValues.m */; };
 		02C4BE842252278400F7BB0E /* DiscussionFinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C4BE832252278400F7BB0E /* DiscussionFinder.swift */; };
 		02C4BE852252278400F7BB0E /* DiscussionFinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C4BE832252278400F7BB0E /* DiscussionFinder.swift */; };
+		02C4BE88225231ED00F7BB0E /* InviteService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C4BE87225231ED00F7BB0E /* InviteService.swift */; };
+		02C4BE89225231ED00F7BB0E /* InviteService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C4BE87225231ED00F7BB0E /* InviteService.swift */; };
+		02C4BE8B22523D2200F7BB0E /* DiscussionFinderType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C4BE8A22523D2200F7BB0E /* DiscussionFinderType.swift */; };
+		02C4BE8C22523D2200F7BB0E /* DiscussionFinderType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C4BE8A22523D2200F7BB0E /* DiscussionFinderType.swift */; };
+		02C4BE8E2252456000F7BB0E /* ThirdPartyIDPlatformInfoResolverType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C4BE8D2252456000F7BB0E /* ThirdPartyIDPlatformInfoResolverType.swift */; };
+		02C4BE8F2252456000F7BB0E /* ThirdPartyIDPlatformInfoResolverType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C4BE8D2252456000F7BB0E /* ThirdPartyIDPlatformInfoResolverType.swift */; };
+		02C4BE912252502900F7BB0E /* InviteServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C4BE902252502900F7BB0E /* InviteServiceType.swift */; };
+		02C4BE922252502900F7BB0E /* InviteServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C4BE902252502900F7BB0E /* InviteServiceType.swift */; };
 		02DC4F4B221C46E500B551EE /* RoomPowerLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DC4F4A221C46E500B551EE /* RoomPowerLevel.swift */; };
 		02DC4F4C221C46E500B551EE /* RoomPowerLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DC4F4A221C46E500B551EE /* RoomPowerLevel.swift */; };
 		02DFEB7421C07370009B6F15 /* RoomAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B146D50C21A5EAE600D8C2C6 /* RoomAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.m */; };
@@ -1084,6 +1092,10 @@
 		02BEE1A6212C77B700098505 /* DesignValues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DesignValues.m; sourceTree = "<group>"; };
 		02BEE1A7212C77B700098505 /* DesignValues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DesignValues.h; sourceTree = "<group>"; };
 		02C4BE832252278400F7BB0E /* DiscussionFinder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscussionFinder.swift; sourceTree = "<group>"; };
+		02C4BE87225231ED00F7BB0E /* InviteService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InviteService.swift; sourceTree = "<group>"; };
+		02C4BE8A22523D2200F7BB0E /* DiscussionFinderType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionFinderType.swift; sourceTree = "<group>"; };
+		02C4BE8D2252456000F7BB0E /* ThirdPartyIDPlatformInfoResolverType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThirdPartyIDPlatformInfoResolverType.swift; sourceTree = "<group>"; };
+		02C4BE902252502900F7BB0E /* InviteServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteServiceType.swift; sourceTree = "<group>"; };
 		02DC4F4A221C46E500B551EE /* RoomPowerLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomPowerLevel.swift; sourceTree = "<group>"; };
 		02DFECF521C07370009B6F15 /* Btchap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Btchap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		02DFECF921C0771C009B6F15 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -1976,6 +1988,7 @@
 		02BEE184212AB23A00098505 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				02C4BE86225231ED00F7BB0E /* Invite */,
 				0223EFA92227E3C800B9EA34 /* HomeServer */,
 				02018F9422003462008D68BE /* UniversalLink */,
 				B109EF1C2170F41E0018FA06 /* User */,
@@ -1994,6 +2007,7 @@
 		02BEE185212AB23A00098505 /* ThirdPartyIDPlatformInfoResolver */ = {
 			isa = PBXGroup;
 			children = (
+				02C4BE8D2252456000F7BB0E /* ThirdPartyIDPlatformInfoResolverType.swift */,
 				02BEE186212AB23A00098505 /* ThirdPartyIDPlatformInfoResolver.swift */,
 				02BEE187212AB23A00098505 /* IdentityServersURLGetter.swift */,
 				02BEE188212AB23A00098505 /* ThirdPartyIDPlatformInfoType.swift */,
@@ -2012,6 +2026,15 @@
 				B1322FE2212FFCCD0054A9DD /* Strings.swift */,
 			);
 			path = Constants;
+			sourceTree = "<group>";
+		};
+		02C4BE86225231ED00F7BB0E /* Invite */ = {
+			isa = PBXGroup;
+			children = (
+				02C4BE902252502900F7BB0E /* InviteServiceType.swift */,
+				02C4BE87225231ED00F7BB0E /* InviteService.swift */,
+			);
+			path = Invite;
 			sourceTree = "<group>";
 		};
 		02DFECF721C074CC009B6F15 /* Btchap */ = {
@@ -2844,6 +2867,7 @@
 		B1C4645D21B6DD42005F4D53 /* Room */ = {
 			isa = PBXGroup;
 			children = (
+				02C4BE8A22523D2200F7BB0E /* DiscussionFinderType.swift */,
 				02C4BE832252278400F7BB0E /* DiscussionFinder.swift */,
 				02F0FF442226F82600066908 /* RoomIDComponents.swift */,
 				B1C4645E21B6DD42005F4D53 /* RoomService.swift */,
@@ -3876,6 +3900,7 @@
 				0250C4C42122B68000034691 /* RiotNavigationController.m in Sources */,
 				0250C4C92122B68000034691 /* Tools.m in Sources */,
 				B1C4646021B6DD42005F4D53 /* RoomService.swift in Sources */,
+				02C4BE88225231ED00F7BB0E /* InviteService.swift in Sources */,
 				0250C4CA2122B68000034691 /* WebViewViewController.m in Sources */,
 				B1680CFE2152A9E6009B5F92 /* PublicRoomsViewController.swift in Sources */,
 				B11C8017213947A400CC6F2F /* RegistrationEmailSentViewController.swift in Sources */,
@@ -3988,10 +4013,12 @@
 				B15B867621357514002782BE /* AlertErrorPresenter.swift in Sources */,
 				B1454B97216BA84100365A86 /* DisplayNameComponents.swift in Sources */,
 				0250C50B2122B68000034691 /* RoomKeyRequestViewController.m in Sources */,
+				02C4BE8B22523D2200F7BB0E /* DiscussionFinderType.swift in Sources */,
 				B1F2AAB6212AFDBA0077FDC0 /* UIViewController.swift in Sources */,
 				020DF9B1214BE467003DFBA4 /* RoomActivitiesView.m in Sources */,
 				020DF946214BE467003DFBA4 /* RoomMemberDetailsViewController.m in Sources */,
 				0250C5142122B68000034691 /* GDPRConsentViewController.swift in Sources */,
+				02C4BE8E2252456000F7BB0E /* ThirdPartyIDPlatformInfoResolverType.swift in Sources */,
 				B1F2AA99212AEC830077FDC0 /* LegacyAppDelegate.m in Sources */,
 				B15AB2A4215BF20E007F5405 /* ForgotPasswordCoordinator.swift in Sources */,
 				029CC68D21772F4200DCC8B3 /* DeactivateAccountViewController.m in Sources */,
@@ -4005,6 +4032,7 @@
 				02BEE18A212AB23A00098505 /* ThirdPartyIDPlatformInfoResolver.swift in Sources */,
 				0250C51E2122B68000034691 /* UsersDevicesViewController.m in Sources */,
 				B109EF182170DFEB0018FA06 /* UserService.swift in Sources */,
+				02C4BE912252502900F7BB0E /* InviteServiceType.swift in Sources */,
 				B1BC6A212136CA7F00D32F8E /* Stylable.swift in Sources */,
 				B15B866E21353C8D002782BE /* TextInputProperties.swift in Sources */,
 				B1322FFC21301B5D0054A9DD /* AuthenticationServiceError.swift in Sources */,
@@ -4150,6 +4178,7 @@
 				02DFEBC621C07370009B6F15 /* RiotNavigationController.m in Sources */,
 				02DFEBC721C07370009B6F15 /* Tools.m in Sources */,
 				02DFEBC821C07370009B6F15 /* RoomService.swift in Sources */,
+				02C4BE89225231ED00F7BB0E /* InviteService.swift in Sources */,
 				02DFEBC921C07370009B6F15 /* WebViewViewController.m in Sources */,
 				02DFEBCA21C07370009B6F15 /* PublicRoomsViewController.swift in Sources */,
 				02DFEBCB21C07370009B6F15 /* RegistrationEmailSentViewController.swift in Sources */,
@@ -4262,10 +4291,12 @@
 				02DFEC3121C07370009B6F15 /* AlertErrorPresenter.swift in Sources */,
 				02DFEC3221C07370009B6F15 /* DisplayNameComponents.swift in Sources */,
 				02DFEC3321C07370009B6F15 /* RoomKeyRequestViewController.m in Sources */,
+				02C4BE8C22523D2200F7BB0E /* DiscussionFinderType.swift in Sources */,
 				02DFEC3421C07370009B6F15 /* UIViewController.swift in Sources */,
 				02DFEC3521C07370009B6F15 /* RoomActivitiesView.m in Sources */,
 				02DFEC3621C07370009B6F15 /* RoomMemberDetailsViewController.m in Sources */,
 				02DFEC3721C07370009B6F15 /* GDPRConsentViewController.swift in Sources */,
+				02C4BE8F2252456000F7BB0E /* ThirdPartyIDPlatformInfoResolverType.swift in Sources */,
 				02DFEC3821C07370009B6F15 /* LegacyAppDelegate.m in Sources */,
 				02DFEC3921C07370009B6F15 /* ForgotPasswordCoordinator.swift in Sources */,
 				02DFEC3A21C07370009B6F15 /* DeactivateAccountViewController.m in Sources */,
@@ -4279,6 +4310,7 @@
 				02DFEC4121C07370009B6F15 /* ThirdPartyIDPlatformInfoResolver.swift in Sources */,
 				02DFEC4221C07370009B6F15 /* UsersDevicesViewController.m in Sources */,
 				02DFEC4321C07370009B6F15 /* UserService.swift in Sources */,
+				02C4BE922252502900F7BB0E /* InviteServiceType.swift in Sources */,
 				02DFEC4421C07370009B6F15 /* Stylable.swift in Sources */,
 				02DFEC4521C07370009B6F15 /* TextInputProperties.swift in Sources */,
 				02DFEC4621C07370009B6F15 /* AuthenticationServiceError.swift in Sources */,

@@ -16,15 +16,8 @@
 
 import Foundation
 
-/// List the different result cases
-enum ResolveResult {
-    case authorizedThirdPartyID(info: ThirdPartyIDPlatformInfoType)
-    case unauthorizedThirdPartyID
-}
-
 /// `ThirdPartyIDPlatformInfoResolver` is used to check whether a third-party identifier (for example: an email address) is authorized in Tchap.
-/// It is used to retrieve the information of the platform associated to an authorized 3pid.
-final class ThirdPartyIDPlatformInfoResolver {
+final class ThirdPartyIDPlatformInfoResolver: ThirdPartyIDPlatformInfoResolverType {
     
     /// The list of the known identity server urls.
     private let identityServerUrls: [String]
@@ -43,14 +36,6 @@ final class ThirdPartyIDPlatformInfoResolver {
         self.serverPrefixURL = serverPrefixURL
     }
     
-    /// Check whether a third-party identifier is authorized or not.
-    /// The platform information for this identifier are available only when it is authorized.
-    ///
-    /// - Parameters:
-    ///   - address: The third party identifier (email address, msisdn,...).
-    ///   - medium: the type of the third-party id (see kMX3PIDMediumEmail, kMX3PIDMediumMSISDN).
-    ///   - success: A block object called when the operation succeeds.
-    ///   - failure: A block object called when the operation fails.
     func resolvePlatformInformation(address: String, medium: String, success: ((ResolveResult) -> Void)?, failure: ((Error?) -> Void)?) {
         
         // Run over all the provided identity servers until we get the Tchap platform for the provided email address.
