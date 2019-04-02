@@ -45,4 +45,7 @@ protocol UniversalLinkServiceType {
     ///   - completion: A closure called when the operation complete. Provide the parsing result when succeed.
     /// - Returns: true to indicate that the fragment has been handled, or false when the fragment is not supported.
     func handleFragment(_ fragment: String, completion: @escaping (MXResponse<UniversalLinkServiceParsingResult>) -> Void) -> Bool
+    
+    /// Cancel pending request.
+    func cancelPendingRequest()
 }

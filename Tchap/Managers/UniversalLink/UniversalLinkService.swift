@@ -31,6 +31,9 @@ final class UniversalLinkService: UniversalLinkServiceType {
         static let roomPermalinkPathParam = "room"
     }
     
+    private var restClient: MXRestClient?
+    private var currentOperation: MXHTTPOperation?
+    
     // MARK: - Public
     
     func handleUserActivity(_ userActivity: NSUserActivity, completion: @escaping (MXResponse<UniversalLinkServiceParsingResult>) -> Void) -> Bool {
@@ -54,37 +57,40 @@ final class UniversalLinkService: UniversalLinkServiceType {
                 let scheme = url.scheme,
                 let host = url.host {
                 
+                self.cancelPendingRequest()
+                
                 let identityServer: String = "\(scheme)://\(host)"
                 let restClientBuilder = RestClientBuilder()
                 
                 restClientBuilder.build(fromHomeServer: identityServer) { (restClientBuilderResult) in
                     switch restClientBuilderResult {
                     case .success(let restClient):
-                        restClient.submit3PIDValidationToken(token,
-                                                             medium: kMX3PIDMediumEmail,
-                                                             clientSecret: clientSecret,
-                                                             sid: sid,
-                                                             completion: { (response) in
-                                                                switch response {
-                                                                case .success:
-                                                                    NSLog("[UniversalLinkService] handleUserActivity. Email successfully validated.")
-                                                                    
-                                                                    if let nextLink = params.queryParams?[Constants.emailValidationNextLinkKey] {
-                                                                        // Continue the registration with the passed nextLink
-                                                                        NSLog("[UniversalLinkService] handleUserActivity. Complete registration with nextLink")
-                                                                        let nextLinkURL = URL(string: nextLink)
-                                                                        if let fragment = nextLinkURL?.fragment {
-                                                                            _ = self.handleFragment(fragment, completion: completion)
-                                                                        }
-                                                                    } else {
-                                                                        // No nextLink means validation for binding a new email
-                                                                        NSLog("[UniversalLinkService] handleUserActivity. TODO: Complete email binding")
-                                                                    }
-                                                                case .failure(let error):
-                                                                    NSLog("[UniversalLinkService] handleUserActivity. Error: submitToken failed")
-                                                                    completion(MXResponse.failure(error))
-                                                                }
+                        self.currentOperation = restClient.submit3PIDValidationToken(token,
+                                                                                     medium: kMX3PIDMediumEmail,
+                                                                                     clientSecret: clientSecret,
+                                                                                     sid: sid,
+                                                                                     completion: { (response) in
+                                                                                        switch response {
+                                                                                        case .success:
+                                                                                            NSLog("[UniversalLinkService] handleUserActivity. Email successfully validated.")
+                                                                                            
+                                                                                            if let nextLink = params.queryParams?[Constants.emailValidationNextLinkKey] {
+                                                                                                // Continue the registration with the passed nextLink
+                                                                                                NSLog("[UniversalLinkService] handleUserActivity. Complete registration with nextLink")
+                                                                                                let nextLinkURL = URL(string: nextLink)
+                                                                                                if let fragment = nextLinkURL?.fragment {
+                                                                                                    _ = self.handleFragment(fragment, completion: completion)
+                                                                                                }
+                                                                                            } else {
+                                                                                                // No nextLink means validation for binding a new email
+                                                                                                NSLog("[UniversalLinkService] handleUserActivity. TODO: Complete email binding")
+                                                                                            }
+                                                                                        case .failure(let error):
+                                                                                            NSLog("[UniversalLinkService] handleUserActivity. Error: submitToken failed")
+                                                                                            completion(MXResponse.failure(error))
+                                                                                        }
                         })
+                        self.restClient = restClient
                     case .failure(let error):
                         completion(MXResponse.failure(error))
                     }
@@ -147,6 +153,13 @@ final class UniversalLinkService: UniversalLinkServiceType {
         
         return isSupported
     }
+    
+    func cancelPendingRequest() {
+        self.currentOperation?.cancel()
+        self.restClient = nil
+    }
+    
+    // MARK: - Private
     
     private func parseFragment(_ fragment: String) -> UniversalLinkParameters {
         var pathParams = [String]()
