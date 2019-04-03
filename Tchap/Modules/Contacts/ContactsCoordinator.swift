@@ -18,6 +18,7 @@ import Foundation
 
 protocol ContactsCoordinatorDelegate: class {
     func contactsCoordinator(_ coordinator: ContactsCoordinatorType, didSelectUserID userID: String)
+    func contactsCoordinator(_ coordinator: ContactsCoordinatorType, sendEmailInviteTo email: String)
 }
 
 final class ContactsCoordinator: NSObject, ContactsCoordinatorType {
@@ -30,6 +31,8 @@ final class ContactsCoordinator: NSObject, ContactsCoordinatorType {
     private let contactsViewController: ContactsViewController
     private let session: MXSession
     private let contactsDataSource: ContactsDataSource
+    
+    private let userService: UserServiceType
     
     // MARK: Public
     
@@ -49,6 +52,8 @@ final class ContactsCoordinator: NSObject, ContactsCoordinatorType {
         self.contactsDataSource.finalizeInitialization()
         self.contactsDataSource.contactsFilter = ContactsDataSourceTchapFilterTchapOnly
         
+        self.userService = UserService(session: session)
+        
         super.init()
     }
     
@@ -57,6 +62,14 @@ final class ContactsCoordinator: NSObject, ContactsCoordinatorType {
     func start() {
         self.contactsViewController.displayList(self.contactsDataSource)
         self.contactsViewController.delegate = self
+        
+        // Display the invite button at the top of the contacts list, except if the current user is an external users.
+        // Check whether the current user is available
+        if let myUserId = session.myUser?.userId {
+            self.contactsDataSource.showInviteButton = !self.userService.isExternalUser(for: myUserId)
+        } else {
+            self.registerSessionStateNotification()
+        }
     }
     
     func toPresentable() -> UIViewController {
@@ -68,6 +81,22 @@ final class ContactsCoordinator: NSObject, ContactsCoordinatorType {
     }
 
     // MARK: - Private
+    
+    private func registerSessionStateNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(sessionStateDidChange), name: NSNotification.Name.mxSessionStateDidChange, object: nil)
+    }
+    
+    private func unregisterSessionStateNotification() {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.mxSessionStateDidChange, object: nil)
+    }
+    
+    @objc private func sessionStateDidChange() {
+        // Check whether the current user id is available
+        if let myUserId = self.session.myUser?.userId {
+            self.unregisterSessionStateNotification()
+            self.contactsDataSource.showInviteButton = !self.userService.isExternalUser(for: myUserId)
+        }
+    }
     
     private func didSelectUserID(_ userID: String) {
         self.delegate?.contactsCoordinator(self, didSelectUserID: userID)
@@ -85,5 +114,9 @@ extension ContactsCoordinator: ContactsViewControllerDelegate {
         }
 
         self.didSelectUserID(userID)
+    }
+    
+    func contactsViewController(_ contactsViewController: ContactsViewController, sendEmailInviteTo email: String) {
+        self.delegate?.contactsCoordinator(self, sendEmailInviteTo: email)
     }
 }

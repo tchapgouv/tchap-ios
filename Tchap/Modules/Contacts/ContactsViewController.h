@@ -74,5 +74,14 @@
  */
 - (void)contactsViewController:(nonnull ContactsViewController *)contactsViewController didSelectContact:(nonnull MXKContact*)contact;
 
+@optional
+/**
+ Tells the delegate to send an invite to an email address.
+ 
+ @param contactsViewController the `ContactsViewController` instance.
+ @param email the selected email.
+ */
+- (void)contactsViewController:(nonnull ContactsViewController *)contactsViewController sendEmailInviteTo:(nonnull NSString*)email;
+
 
 @end
