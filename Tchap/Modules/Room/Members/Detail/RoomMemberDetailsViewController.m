@@ -21,8 +21,6 @@
 #import "RiotDesignValues.h"
 #import "Analytics.h"
 
-#import "RoomMemberTitleView.h"
-
 #import "AvatarGenerator.h"
 #import "Tools.h"
 
@@ -38,7 +36,7 @@
 
 @interface RoomMemberDetailsViewController () <Stylable>
 {
-    RoomMemberTitleView* memberTitleView;
+    RoomTitleView* memberTitleView;
     
     /**
      List of the admin actions on this member.
@@ -51,6 +49,8 @@
      */
     NSMutableArray<NSNumber*> *otherActionsArray;
     NSInteger otherActionsIndex;
+    
+    NSInteger filesIndex;
     
 //    /**
 //     Devices
@@ -68,6 +68,9 @@
      The current visibility of the status bar in this view controller.
      */
     BOOL isStatusBarHidden;
+    
+    // Files list presenter and its resources
+    RoomFilesViewController *filesViewController;
 }
 
 @property (nonatomic, strong) id<Style> currentStyle;
@@ -110,14 +113,22 @@
     isStatusBarHidden = NO;
 }
 
+- (void)setupTitleView {
+    
+    if (!memberTitleView) {
+        RoomTitleView *titleView = [RoomTitleView instantiateWithStyle:Variant2Style.shared];
+        self.navigationItem.titleView = titleView;
+        memberTitleView = titleView;
+    }
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
     // Define directly the navigation titleView with the custom title view instance.
-    memberTitleView = [RoomMemberTitleView instantiate];
-    self.navigationItem.titleView = memberTitleView;
+    [self setupTitleView];
     
     // Add tap to show the room member avatar in fullscreen
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
@@ -162,8 +173,6 @@
     //TODO Design the activvity indicator for Tchap
     self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
-    memberTitleView.roomMemberNameLabel.textColor = style.barTitleColor;
-    memberTitleView.roomMemberDomainLabel.textColor = style.barSubTitleColor;
     self.memberHeaderView.backgroundColor = style.backgroundColor;
     self.roomMemberStatusLabel.textColor = style.primaryTextColor;
     
@@ -193,6 +202,12 @@
 
     // Screen tracking
     [[Analytics sharedInstance] trackScreen:@"RoomMemberDetails"];
+    
+    if (filesViewController)
+    {
+        [filesViewController destroy];
+        filesViewController = nil;
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -253,9 +268,12 @@
 {
     if (self.mxRoomMember)
     {
-        //TODO: extract the domain name from the display name (if any)
-        memberTitleView.roomMemberNameLabel.text = self.mxRoomMember.displayname;
-        memberTitleView.roomMemberDomainLabel.text = nil;
+        RoomTitleViewModelBuilder *titleViewModelBuilder = [[RoomTitleViewModelBuilder alloc] initWithSession:self.mainSession];
+        RoomTitleViewModel *titleViewModel;
+        User *roomMember = [[User alloc] initWithUserId:self.mxRoomMember.userId displayName:self.mxRoomMember.displayname avatarStringURL:self.mxRoomMember.avatarUrl];
+        
+        titleViewModel = [titleViewModelBuilder buildWithoutAvatarFromUser:(roomMember)];
+        [memberTitleView fillWithRoomTitleViewModel:titleViewModel];
         
         // Update member badge
         MXWeakify(self);
@@ -331,6 +349,7 @@
     NSInteger sectionCount = 0;
     NSString *myUserId = self.mainSession.myUser.userId;
     NSString *roomMemberId = self.mxRoomMember.userId;
+    BOOL showFilesAccess = NO;
     
     // Sanity check
     if (!myUserId || !roomMemberId) {
@@ -378,7 +397,29 @@
             }
         }
     }
-    else if (self.mxRoomMember)
+    else if (self.mxRoom.isDirect)
+    {
+        // In case of a discussion (direct chat) only 2 options are displayed
+        // We hack here the historic room member details view controller
+        // TODO rewrite this screen in Swift with the actual design
+        
+        showFilesAccess = YES;
+        
+        // Check whether the option Ignore may be presented
+        if (self.mxRoomMember.membership == MXMembershipJoin)
+        {
+            // is he already ignored ?
+            if (![self.mainSession isUserIgnored:roomMemberId])
+            {
+                [otherActionsArray addObject:@(MXKRoomMemberDetailsActionIgnore)];
+            }
+            else
+            {
+                [otherActionsArray addObject:@(MXKRoomMemberDetailsActionUnignore)];
+            }
+        }
+    }
+    else
     {
         UserService *userService = [[UserService alloc] initWithSession:self.mainSession];
         
@@ -488,9 +529,13 @@
         }
     }
     
-    adminToolsIndex = otherActionsIndex = -1;
+    adminToolsIndex = otherActionsIndex = filesIndex = -1;
     //devicesIndex = -1;
     
+    if (showFilesAccess)
+    {
+        filesIndex = sectionCount++;
+    }
     if (otherActionsArray.count)
     {
         otherActionsIndex = sectionCount++;
@@ -517,6 +562,10 @@
     else if (section == otherActionsIndex)
     {
         return otherActionsArray.count;
+    }
+    else if (section == filesIndex)
+    {
+        return 1;
     }
 //    else if (section == devicesIndex)
 //    {
@@ -638,6 +687,21 @@
         
         cell = cellWithButton;
     }
+    else if (indexPath.section == filesIndex)
+    {
+        TableViewCellWithButton *cellWithButton = [tableView dequeueReusableCellWithIdentifier:[TableViewCellWithButton defaultReuseIdentifier] forIndexPath:indexPath];
+        
+        NSString *title = NSLocalizedStringFromTable(@"room_member_details_files", @"Tchap", nil);
+        
+        [cellWithButton.mxkButton setTitle:title forState:UIControlStateNormal];
+        [cellWithButton.mxkButton setTitle:title forState:UIControlStateHighlighted];
+        [cellWithButton.mxkButton setTitleColor:kRiotPrimaryTextColor forState:UIControlStateNormal];
+        [cellWithButton.mxkButton setTitleColor:kRiotPrimaryTextColor forState:UIControlStateHighlighted];
+        
+        [cellWithButton.mxkButton addTarget:self action:@selector(onFilesButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+        
+        cell = cellWithButton;
+    }
 //    else if (indexPath.section == devicesIndex)
 //    {
 //        DeviceTableViewCell *deviceCell = [tableView dequeueReusableCellWithIdentifier:[DeviceTableViewCell defaultReuseIdentifier] forIndexPath:indexPath];
@@ -703,7 +767,17 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (section == otherActionsIndex)
+    if (section == otherActionsIndex || section == filesIndex)
+    {
+        return TABLEVIEW_SECTION_HEADER_HEIGHT_WHEN_HIDDEN;
+    }
+    
+    return TABLEVIEW_SECTION_HEADER_HEIGHT;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    if (section == filesIndex)
     {
         return TABLEVIEW_SECTION_HEADER_HEIGHT_WHEN_HIDDEN;
     }
@@ -713,12 +787,19 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath
 {
-    UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
-    if (selectedCell && [selectedCell isKindOfClass:TableViewCellWithButton.class])
+    if (indexPath.section == filesIndex)
     {
-        TableViewCellWithButton *cell = (TableViewCellWithButton*)selectedCell;
-        
-        [self onActionButtonPressed:cell.mxkButton];
+        [self onFilesButtonPressed:nil];
+    }
+    else
+    {
+        UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
+        if (selectedCell && [selectedCell isKindOfClass:TableViewCellWithButton.class])
+        {
+            TableViewCellWithButton *cell = (TableViewCellWithButton*)selectedCell;
+            
+            [self onActionButtonPressed:cell.mxkButton];
+        }
     }
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -887,6 +968,29 @@
             }
         }
     }
+}
+
+- (void)onFilesButtonPressed:(id)sender
+{
+    // Push the files list presenter.
+    filesViewController = [RoomFilesViewController instantiate];
+    
+    MXWeakify(self);
+    [MXKRoomDataSource loadRoomDataSourceWithRoomId:self.mxRoom.roomId andMatrixSession:self.mainSession onComplete:^(id roomDataSource) {
+        MXStrongifyAndReturnIfNil(self);
+        if ([roomDataSource isKindOfClass:[MXKRoomDataSource class]])
+        {
+            MXKRoomDataSource *filesDataSource = (MXKRoomDataSource*)roomDataSource;
+            filesDataSource.filterMessagesWithURL = true;
+            // Give the data source ownership to the room files view controller.
+            self->filesViewController.hasRoomDataSourceOwnership = true;
+            [self->filesViewController displayRoom:filesDataSource];
+        }
+    }];
+    
+    // Hide back button title
+    self.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    [self.navigationController pushViewController:filesViewController animated:YES];
 }
 
 - (void)handleTapGesture:(UITapGestureRecognizer*)tapGestureRecognizer

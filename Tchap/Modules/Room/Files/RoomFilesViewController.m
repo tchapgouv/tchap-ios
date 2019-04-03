@@ -161,6 +161,14 @@
     }
 }
 
+- (void)updateViewControllerAppearanceOnRoomDataSourceState
+{
+    [super updateViewControllerAppearanceOnRoomDataSourceState];
+    
+    // Override the default title
+    self.navigationItem.title = NSLocalizedStringFromTable(@"room_member_details_files", @"Tchap", nil);
+}
+
 // This method is called when the viewcontroller is added or removed from a container view controller.
 - (void)didMoveToParentViewController:(nullable UIViewController *)parent
 {

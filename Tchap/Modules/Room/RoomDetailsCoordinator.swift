@@ -191,7 +191,9 @@ final class RoomDetailsCoordinator: NSObject, RoomDetailsCoordinatorType {
         guard let roomSummary = notification.object as? MXRoomSummary else {
             return
         }
-        self.updateRoomDetailsTitleView(with: roomSummary)
+        if roomSummary.roomId == roomID {
+            self.updateRoomDetailsTitleView(with: roomSummary)
+        }
     }
     
     private func updateRoomDetailsTitleView(with roomSummary: MXRoomSummary) {
