@@ -119,4 +119,14 @@ final class RoomTitleViewModelBuilder: NSObject {
         
         return RoomTitleViewModel(title: title, subtitle: subtitle, avatarImageViewModel: avatarImageViewModel)
     }
+    
+    func buildWithoutAvatar(fromUser user: User) -> RoomTitleViewModel {
+        
+        let displayName = user.displayName
+        let displayNameComponents = DisplayNameComponents(displayName: displayName)
+        let title = displayNameComponents.name
+        let subtitle = displayNameComponents.domain
+        
+        return RoomTitleViewModel(title: title, subtitle: subtitle, avatarImageViewModel: nil)
+    }
 }

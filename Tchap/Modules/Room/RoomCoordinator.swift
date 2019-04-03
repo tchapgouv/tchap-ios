@@ -36,7 +36,6 @@ final class RoomCoordinator: NSObject, RoomCoordinatorType {
     private let userService: UserServiceType
     private var foundDiscussionTargetUser: User?
     private let roomViewController: RoomViewController
-    private var roomDataSource: RoomDataSource?
     private let activityIndicatorPresenter: ActivityIndicatorPresenterType
     private let errorPresenter: ErrorPresenter
     
@@ -221,15 +220,22 @@ final class RoomCoordinator: NSObject, RoomCoordinatorType {
             return
         }
         
-        let roomDetailsCoordinator = RoomDetailsCoordinator(router: self.router, session: self.session, roomID: roomID)
-        roomDetailsCoordinator.start()
-        roomDetailsCoordinator.delegate = self
-        self.add(childCoordinator: roomDetailsCoordinator)
+        let detailsCoordinator: RoomDetailsCoordinatorType
+        if let roomDataSource = self.roomViewController.roomDataSource, roomDataSource.room.isDirect {
+            detailsCoordinator = DiscussionDetailsCoordinator(router: self.router, session: self.session, roomID: roomID)
+        } else {
+            let roomDetailsCoordinator = RoomDetailsCoordinator(router: self.router, session: self.session, roomID: roomID)
+            roomDetailsCoordinator.delegate = self
+            detailsCoordinator = roomDetailsCoordinator
+        }
+        
+        detailsCoordinator.start()
+        self.add(childCoordinator: detailsCoordinator)
         
         self.roomViewController.tc_removeBackTitle()
         
-        self.router.push(roomDetailsCoordinator, animated: animated, popCompletion: { [weak self] in
-            self?.remove(childCoordinator: roomDetailsCoordinator)
+        self.router.push(detailsCoordinator, animated: animated, popCompletion: { [weak self] in
+            self?.remove(childCoordinator: detailsCoordinator)
         })
     }
     

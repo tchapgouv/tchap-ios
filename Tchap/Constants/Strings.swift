@@ -157,6 +157,8 @@ internal enum TchapL10n {
   internal static let roomFilesTabTitle = TchapL10n.tr("Tchap", "room_files_tab_title")
   /// Envoyer un message
   internal static let roomMemberDetailsActionChat = TchapL10n.tr("Tchap", "room_member_details_action_chat")
+  /// Fichiers partagés
+  internal static let roomMemberDetailsFiles = TchapL10n.tr("Tchap", "room_member_details_files")
   /// Membres
   internal static let roomMembersTabTitle = TchapL10n.tr("Tchap", "room_members_tab_title")
   /// Retirer ce salon de la liste des salons publics

@@ -244,6 +244,8 @@
 		02BEE1A3212C717F00098505 /* SharedImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02BEE1A1212C717E00098505 /* SharedImages.xcassets */; };
 		02BEE1A4212C717F00098505 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02BEE1A2212C717F00098505 /* Images.xcassets */; };
 		02BEE1A8212C77B700098505 /* DesignValues.m in Sources */ = {isa = PBXBuildFile; fileRef = 02BEE1A6212C77B700098505 /* DesignValues.m */; };
+		02C4BE94225502DD00F7BB0E /* DiscussionDetailsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C4BE93225502DD00F7BB0E /* DiscussionDetailsCoordinator.swift */; };
+		02C4BE95225502DD00F7BB0E /* DiscussionDetailsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C4BE93225502DD00F7BB0E /* DiscussionDetailsCoordinator.swift */; };
 		02DC4F4B221C46E500B551EE /* RoomPowerLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DC4F4A221C46E500B551EE /* RoomPowerLevel.swift */; };
 		02DC4F4C221C46E500B551EE /* RoomPowerLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DC4F4A221C46E500B551EE /* RoomPowerLevel.swift */; };
 		02DFEB7421C07370009B6F15 /* RoomAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B146D50C21A5EAE600D8C2C6 /* RoomAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.m */; };
@@ -1072,6 +1074,7 @@
 		02BEE1A2212C717F00098505 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		02BEE1A6212C77B700098505 /* DesignValues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DesignValues.m; sourceTree = "<group>"; };
 		02BEE1A7212C77B700098505 /* DesignValues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DesignValues.h; sourceTree = "<group>"; };
+		02C4BE93225502DD00F7BB0E /* DiscussionDetailsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionDetailsCoordinator.swift; sourceTree = "<group>"; };
 		02DC4F4A221C46E500B551EE /* RoomPowerLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomPowerLevel.swift; sourceTree = "<group>"; };
 		02DFECF521C07370009B6F15 /* Btchap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Btchap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		02DFECF921C0771C009B6F15 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -1476,6 +1479,7 @@
 			children = (
 				0290609121527A3F005FE3C1 /* RoomDetailsCoordinatorType.swift */,
 				0290609021527A3E005FE3C1 /* RoomDetailsCoordinator.swift */,
+				02C4BE93225502DD00F7BB0E /* DiscussionDetailsCoordinator.swift */,
 				02906071214FD0E0005FE3C1 /* RoomCoordinatorType.swift */,
 				02906072214FD0E0005FE3C1 /* RoomCoordinator.swift */,
 				020DF85F214BE467003DFBA4 /* RoomViewController.h */,
@@ -3192,6 +3196,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 				nl,
@@ -3820,6 +3825,7 @@
 				B1F2AA94212AEC830077FDC0 /* HomeCoordinator.swift in Sources */,
 				B1322FFA2130146D0054A9DD /* AuthenticationServiceType.swift in Sources */,
 				020DF939214BE467003DFBA4 /* TableViewCellWithLabelAndLargeTextView.m in Sources */,
+				02C4BE94225502DD00F7BB0E /* DiscussionDetailsCoordinator.swift in Sources */,
 				B15B867221355749002782BE /* FormRules.swift in Sources */,
 				020DF962214BE467003DFBA4 /* RoomIncomingEncryptedTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				B1073D6B21A8096F00E36CFA /* RoomIncomingEncryptedAttachmentBubbleCell.m in Sources */,
@@ -4091,6 +4097,7 @@
 				02DFEBA121C07370009B6F15 /* HomeCoordinator.swift in Sources */,
 				02DFEBA221C07370009B6F15 /* AuthenticationServiceType.swift in Sources */,
 				02DFEBA321C07370009B6F15 /* TableViewCellWithLabelAndLargeTextView.m in Sources */,
+				02C4BE95225502DD00F7BB0E /* DiscussionDetailsCoordinator.swift in Sources */,
 				02DFEBA421C07370009B6F15 /* FormRules.swift in Sources */,
 				02DFEBA521C07370009B6F15 /* RoomIncomingEncryptedTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				02DFEBA621C07370009B6F15 /* RoomIncomingEncryptedAttachmentBubbleCell.m in Sources */,
