@@ -1,3 +1,13 @@
+Changes in Tchap 1.0.7 (2019-04-04)
+===================================================
+
+ Features/Improvements:
+ * Invite contact by email #166
+ * Restore the option to ignore a user from a Discussion #176
+ 
+ Bug Fixes:
+ * BugFix the account creation is stuck on email token submission PR #181
+
 Changes in Tchap 1.0.6 (2019-03-25)
 ===================================================
 
