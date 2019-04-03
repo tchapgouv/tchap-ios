@@ -37,6 +37,8 @@ final class RoomDetailsCoordinator: NSObject, RoomDetailsCoordinatorType {
     private let errorPresenter: ErrorPresenter
     private let roomTitleViewModelBuilder: RoomTitleViewModelBuilder
     
+    private let discussionFinder: DiscussionFinderType
+    
     private weak var roomDetailsTitleView: RoomTitleView?
     
     // MARK: Public
@@ -59,6 +61,8 @@ final class RoomDetailsCoordinator: NSObject, RoomDetailsCoordinatorType {
         self.activityIndicatorPresenter = ActivityIndicatorPresenter()
         self.errorPresenter = AlertErrorPresenter(viewControllerPresenter: self.segmentedViewController)
         self.roomTitleViewModelBuilder = RoomTitleViewModelBuilder(session: self.session)
+        
+        self.discussionFinder = DiscussionFinder(session: session)
     }
     
     // MARK: - Public methods
@@ -136,8 +140,7 @@ final class RoomDetailsCoordinator: NSObject, RoomDetailsCoordinatorType {
     private func didSelectUserID(_ userID: String, completion: (() -> Void)?) {
         self.activityIndicatorPresenter.presentActivityIndicator(on: self.segmentedViewController.view, animated: true)
         
-        let discussionService = DiscussionService(session: session)
-        discussionService.getDiscussionIdentifier(for: userID) { [weak self] response in
+        self.discussionFinder.getDiscussionIdentifier(for: userID) { [weak self] response in
             guard let sself = self else {
                 return
             }

@@ -85,7 +85,7 @@
         
         hideNonMatrixEnabledContacts = NO;
         
-        _displaySearchInputInContactsList = NO;
+        _showInviteButton = NO;
         
         forceDirectContactsRefresh = YES;
         
@@ -395,25 +395,14 @@
     });
 }
 
-- (void)setDisplaySearchInputInContactsList:(BOOL)displaySearchInputInContactsList
+- (void)setShowInviteButton:(BOOL)showInviteButton
 {
-    if (_displaySearchInputInContactsList != displaySearchInputInContactsList)
+   if (_showInviteButton != showInviteButton)
     {
-        _displaySearchInputInContactsList = displaySearchInputInContactsList;
+        _showInviteButton = showInviteButton;
         
         [self forceRefresh];
     }
-}
-
-- (MXKContact*)searchInputContact
-{
-    // Check whether the current search input is a valid email or a Matrix user ID
-    if (currentSearchText.length && ([MXTools isEmailAddress:currentSearchText] || [MXTools isMatrixUserIdentifier:currentSearchText]))
-    {
-        return [[MXKContact alloc] initMatrixContactWithDisplayName:currentSearchText andMatrixID:nil];
-    }
-    
-    return nil;
 }
 
 - (void)selectOrDeselectContactAtIndexPath:(NSIndexPath*)indexPath
@@ -841,15 +830,16 @@
 {
     NSInteger count = 0;
     
-    searchInputSection = filteredLocalContactsSection = filteredMatrixContactsSection = -1;
+    inviteButtonSection = filteredLocalContactsSection = filteredMatrixContactsSection = -1;
+    
+    if (_showInviteButton)
+    {
+        [tableView registerNib:ContactButtonView.nib forCellReuseIdentifier:ContactButtonView.defaultReuseIdentifier];
+        inviteButtonSection = count++;
+    }
     
     if (currentSearchText.length)
     {
-        if (_displaySearchInputInContactsList)
-        {
-            searchInputSection = count++;
-        }
-        
         // Keep visible the header for the local contact sections, even if their are empty.
         filteredLocalContactsSection = count++;
         // Keep visible the header for the matrix contact sections, even if their are empty, only when tchap-enabled users are displayed
@@ -877,7 +867,7 @@
 {
     NSInteger count = 0;
     
-    if (section == searchInputSection)
+    if (section == inviteButtonSection)
     {
         count = 1;
     }
@@ -912,15 +902,20 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    // Consider first the potential button displayed to invite a contact by email.
+    if (indexPath.section == inviteButtonSection)
+    {
+        ContactButtonView *buttonView = [tableView dequeueReusableCellWithIdentifier:ContactButtonView.defaultReuseIdentifier forIndexPath:indexPath];
+        ContactButtonViewModel *buttonModel = [[ContactButtonViewModel alloc] initWithIcon: [UIImage imageNamed:@"tchap_ic_add_bymail"]
+                                                                                    action: NSLocalizedStringFromTable(@"contacts_invite_by_email_button", @"Tchap", nil)];
+        [buttonView renderWithModel:buttonModel];
+        
+        return buttonView;
+    }
+    
     // Prepare a contact cell here
     MXKContact *contact;
-    
-    if (indexPath.section == searchInputSection)
-    {
-        // Show what the user is typing in a cell. So that he can click on it
-        contact = [[MXKContact alloc] initMatrixContactWithDisplayName:currentSearchText andMatrixID:nil];
-    }
-    else if (indexPath.section == filteredLocalContactsSection)
+    if (indexPath.section == filteredLocalContactsSection)
     {
         if (indexPath.row < filteredLocalContacts.count)
         {
@@ -962,35 +957,11 @@
             contactCell.selectionStyle = UITableViewCellSelectionStyleDefault;
         }
         
-        
-        // The search displays contacts to invite.
-        if (indexPath.section == filteredLocalContactsSection || indexPath.section == filteredMatrixContactsSection)
+        // Add the right accessory view if any
+        contactCell.accessoryType = self.contactCellAccessoryType;
+        if (self.contactCellAccessoryImage)
         {
-            // Add the right accessory view if any
-            contactCell.accessoryType = self.contactCellAccessoryType;
-            if (self.contactCellAccessoryImage)
-            {
-                contactCell.accessoryView = [[UIImageView alloc] initWithImage:self.contactCellAccessoryImage];
-            }
-        }
-        else if (indexPath.section == searchInputSection)
-        {
-            // This is the text entered by the user
-            // Check whether the search input is a valid email or a Matrix user ID before adding the accessory view.
-            if (![MXTools isEmailAddress:currentSearchText] && ![MXTools isMatrixUserIdentifier:currentSearchText])
-            {
-                contactCell.contentView.alpha = 0.5;
-                contactCell.userInteractionEnabled = NO;
-            }
-            else
-            {
-                // Add the right accessory view if any
-                contactCell.accessoryType = self.contactCellAccessoryType;
-                if (self.contactCellAccessoryImage)
-                {
-                    contactCell.accessoryView = [[UIImageView alloc] initWithImage:self.contactCellAccessoryImage];
-                }
-            }
+            contactCell.accessoryView = [[UIImageView alloc] initWithImage:self.contactCellAccessoryImage];
         }
         
         return contactCell;
@@ -1001,8 +972,8 @@
         if (!tableViewCell)
         {
             tableViewCell = [[MXKTableViewCell alloc] init];
-            tableViewCell.textLabel.textColor = kRiotSecondaryTextColor;
             tableViewCell.textLabel.font = [UIFont systemFontOfSize:15.0];
+            tableViewCell.textLabel.textColor = kColorWarmGrey;
             tableViewCell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
         
@@ -1056,16 +1027,17 @@
 
 #pragma mark -
 
+-(BOOL)isInviteButtonIndexPath:(NSIndexPath*)indexPath
+{
+    return (indexPath.section == inviteButtonSection);
+}
+
 -(MXKContact *)contactAtIndexPath:(NSIndexPath*)indexPath
 {
     NSInteger row = indexPath.row;
     MXKContact *mxkContact;
     
-    if (indexPath.section == searchInputSection)
-    {
-        mxkContact = [[MXKContact alloc] initMatrixContactWithDisplayName:currentSearchText andMatrixID:nil];
-    }
-    else if (indexPath.section == filteredLocalContactsSection && row < filteredLocalContacts.count)
+    if (indexPath.section == filteredLocalContactsSection && row < filteredLocalContacts.count)
     {
         mxkContact = filteredLocalContacts[row];
     }

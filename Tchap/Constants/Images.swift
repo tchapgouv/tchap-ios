@@ -72,6 +72,9 @@ internal enum Asset {
       internal static let shrinkIcon = ImageAsset(name: "shrink_icon")
       internal static let startChat = ImageAsset(name: "start_chat")
     }
+    internal enum Contacts {
+      internal static let tchapIcAddBymail = ImageAsset(name: "tchap_ic_add_bymail")
+    }
     internal enum E2E {
       internal static let e2eBlocked = ImageAsset(name: "e2e_blocked")
       internal static let e2eUnencrypted = ImageAsset(name: "e2e_unencrypted")
@@ -158,6 +161,7 @@ internal enum Asset {
       Common.selectionUntick,
       Common.shrinkIcon,
       Common.startChat,
+      Contacts.tchapIcAddBymail,
       E2E.e2eBlocked,
       E2E.e2eUnencrypted,
       E2E.e2eWarning,

@@ -30,10 +30,16 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
     private let session: MXSession
     
     private let userService: UserServiceType
+    private let inviteService: InviteServiceType
     
     private weak var homeViewController: HomeViewController?
     private weak var roomsCoordinator: RoomsCoordinatorType?
     private weak var contactsCoordinator: ContactsCoordinatorType?
+    
+    private let activityIndicatorPresenter: ActivityIndicatorPresenterType
+    
+    private var errorPresenter: ErrorPresenter?
+    private weak var currentAlertController: UIAlertController?
     
     // MARK: Public
     
@@ -49,6 +55,8 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
         self.navigationRouter = NavigationRouter(navigationController: TCNavigationController())
         self.session = session
         self.userService = UserService(session: self.session)
+        self.inviteService = InviteService(session: self.session)
+        self.activityIndicatorPresenter = ActivityIndicatorPresenter()
     }
     
     // MARK: - Public methods
@@ -81,6 +89,7 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
         self.roomsCoordinator = roomsCoordinator
         self.contactsCoordinator = contactsCoordinator
         self.homeViewController = segmentedViewController
+        self.errorPresenter = AlertErrorPresenter(viewControllerPresenter: segmentedViewController)
     }
     
     func toPresentable() -> UIViewController {
@@ -188,6 +197,72 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
         
         self.add(childCoordinator: roomCreationCoordinator)
     }
+    
+    private func sendEmailInvite(to email: String) {
+        guard let homeViewController = self.homeViewController else {
+            return
+        }
+        
+        self.activityIndicatorPresenter.presentActivityIndicator(on: homeViewController.view, animated: true)
+        self.inviteService.sendEmailInvite(to: email) { [weak self] (response) in
+            guard let sself = self else {
+                return
+            }
+            
+            sself.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
+            switch response {
+            case .success(let result):
+                var message: String
+                var discoveredUserID: String?
+                switch result {
+                case .inviteHasBeenSent(roomID: _):
+                    message = TchapL10n.inviteSendingSucceeded
+                case .inviteAlreadySent(roomID: _):
+                    message = TchapL10n.inviteAlreadySentByEmail(email)
+                case .inviteIgnoredForDiscoveredUser(userID: let userID):
+                    discoveredUserID = userID
+                    message = TchapL10n.inviteNotSentForDiscoveredUser
+                case .inviteIgnoredForUnauthorizedEmail:
+                    message = TchapL10n.inviteNotSentForUnauthorizedEmail(email)
+                }
+                
+                sself.currentAlertController?.dismiss(animated: false)
+                
+                let alert = UIAlertController(title: TchapL10n.inviteInformationTitle, message: message, preferredStyle: .alert)
+                
+                let okTitle = Bundle.mxk_localizedString(forKey: "ok")
+                let okAction = UIAlertAction(title: okTitle, style: .default, handler: { action in
+                    if let userID = discoveredUserID {
+                        // Open the discussion
+                        sself.startDiscussion(with: userID)
+                    }
+                })
+                alert.addAction(okAction)
+                sself.currentAlertController = alert
+                
+                homeViewController.present(alert, animated: true, completion: nil)
+            case .failure(let error):
+                let errorPresentable = sself.inviteErrorPresentable(from: error)
+                sself.errorPresenter?.present(errorPresentable: errorPresentable, animated: true)
+            }
+        }
+        
+    }
+    
+    private func inviteErrorPresentable(from error: Error) -> ErrorPresentable {
+        let errorTitle = TchapL10n.inviteSendingFailedTitle
+        let errorMessage: String
+        
+        let nsError = error as NSError
+        
+        if let message = nsError.userInfo[NSLocalizedDescriptionKey] as? String {
+            errorMessage = message
+        } else {
+            errorMessage = TchapL10n.errorMessageDefault
+        }
+        
+        return ErrorPresentableImpl(title: errorTitle, message: errorMessage)
+    }
 }
 
 // MARK: - SettingsCoordinatorDelegate
@@ -215,9 +290,11 @@ extension HomeCoordinator: RoomsCoordinatorDelegate {
 
 // MARK: - ContactsCoordinatorDelegate
 extension HomeCoordinator: ContactsCoordinatorDelegate {
-    
     func contactsCoordinator(_ coordinator: ContactsCoordinatorType, didSelectUserID userID: String) {
         self.startDiscussion(with: userID)
+    }
+    func contactsCoordinator(_ coordinator: ContactsCoordinatorType, sendEmailInviteTo email: String) {
+        self.sendEmailInvite(to: email)
     }
 }
 

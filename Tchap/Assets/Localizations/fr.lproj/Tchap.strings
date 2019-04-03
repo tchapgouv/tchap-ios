@@ -3,6 +3,7 @@
 "action_next" = "Suivant";
 "action_cancel" = "Annuler";
 "action_validate" = "Valider";
+"action_invite" = "Inviter";
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Common errors
@@ -83,8 +84,19 @@
 "contacts_user_directory_section" = "Répertoire Tchap";
 "contacts_user_directory_offline_section" = "Répertoire Tchap (hors-ligne)";
 "contacts_search_bar_placeholder" = "Rechercher";
-
+"contacts_invite_by_email_button" = "Envoyer une invitation par e-mail";
+"contacts_invite_by_email_title" = "Envoyer une invitation";
+"contacts_invite_by_email_message" = "Veuillez saisir l'adresse e-mail de la personne à inviter :";
 "contacts_picker_title" = "Inviter au salon";
+
+////////////////////////////////////////////////////////////////////////////////
+// MARK: Sending an invite
+"invite_information_title" = "Information";
+"invite_already_sent_by_email" = "Vous avez déjà envoyé une invitation à %@.";
+"invite_not_sent_for_discovered_user" = "Ce contact utilise déjà Tchap, vous pouvez dès à présent lui envoyer un message.";
+"invite_not_sent_for_unauthorized_email" = "%@ n’est pas joignable pour l’instant par Tchap.";
+"invite_sending_failed_title" = "Echec de l’envoi de l’invitation";
+"invite_sending_succeeded" = "L'invitation a bien été envoyée.\nVous recevrez une notification lorsque\nvotre invité rejoindra la communauté Tchap.";
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Settings
