@@ -9,6 +9,8 @@ import Foundation
 internal enum TchapL10n {
   /// Annuler
   internal static let actionCancel = TchapL10n.tr("Tchap", "action_cancel")
+  /// Inviter
+  internal static let actionInvite = TchapL10n.tr("Tchap", "action_invite")
   /// Suivant
   internal static let actionNext = TchapL10n.tr("Tchap", "action_next")
   /// Valider
@@ -35,6 +37,12 @@ internal enum TchapL10n {
   internal static let contactsAddressBookPermissionDenied = TchapL10n.tr("Tchap", "contacts_address_book_permission_denied")
   /// Permissions requises pour accéder aux contacts locaux
   internal static let contactsAddressBookPermissionRequired = TchapL10n.tr("Tchap", "contacts_address_book_permission_required")
+  /// Envoyer une invitation par e-mail
+  internal static let contactsInviteByEmailButton = TchapL10n.tr("Tchap", "contacts_invite_by_email_button")
+  /// Veuillez saisir l'adresse e-mail de la personne à inviter :
+  internal static let contactsInviteByEmailMessage = TchapL10n.tr("Tchap", "contacts_invite_by_email_message")
+  /// Envoyer une invitation
+  internal static let contactsInviteByEmailTitle = TchapL10n.tr("Tchap", "contacts_invite_by_email_title")
   /// Contacts Tchap
   internal static let contactsMainSection = TchapL10n.tr("Tchap", "contacts_main_section")
   /// Aucun contact
@@ -103,6 +111,22 @@ internal enum TchapL10n {
   }
   /// Pour continuer à utiliser Tchap, vous devez lire et accepter les conditions générales.
   internal static let gdprConsentNotGivenAlertMessage = TchapL10n.tr("Tchap", "gdpr_consent_not_given_alert_message")
+  /// Vous avez déjà envoyé une invitation à %@.
+  internal static func inviteAlreadySentByEmail(_ p1: String) -> String {
+    return TchapL10n.tr("Tchap", "invite_already_sent_by_email", p1)
+  }
+  /// Information
+  internal static let inviteInformationTitle = TchapL10n.tr("Tchap", "invite_information_title")
+  /// Ce contact utilise déjà Tchap, vous pouvez dès à présent lui envoyer un message.
+  internal static let inviteNotSentForDiscoveredUser = TchapL10n.tr("Tchap", "invite_not_sent_for_discovered_user")
+  /// %@ n’est pas joignable pour l’instant par Tchap.
+  internal static func inviteNotSentForUnauthorizedEmail(_ p1: String) -> String {
+    return TchapL10n.tr("Tchap", "invite_not_sent_for_unauthorized_email", p1)
+  }
+  /// Echec de l’envoi de l’invitation
+  internal static let inviteSendingFailedTitle = TchapL10n.tr("Tchap", "invite_sending_failed_title")
+  /// L'invitation a bien été envoyée.\nVous recevrez une notification lorsque\nvotre invité rejoindra la communauté Tchap.
+  internal static let inviteSendingSucceeded = TchapL10n.tr("Tchap", "invite_sending_succeeded")
   /// Chargement en cours…
   internal static let publicRoomsLoadingInProgress = TchapL10n.tr("Tchap", "public_rooms_loading_in_progress")
   /// Rechercher

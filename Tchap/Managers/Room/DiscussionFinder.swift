@@ -16,22 +16,13 @@
 
 import Foundation
 
-/// List the different result cases
-enum DiscussionSearchResult {
-    case joinedDiscussion(roomID: String)
-    case pendingInvite(roomID: String)
-    case noDiscussion
-}
-
-/// `DiscussionServiceError` represent errors reported by DiscussionService.
-enum DiscussionServiceError: Error {
+/// `DiscussionFinderError` represent errors reported by DiscussionFinder.
+enum DiscussionFinderError: Error {
     case invalidReceivedInvite
 }
 
-
-/// `DiscussionService` is used to find the direct chat which is the most suitable discussion with a Tchap user.
-/// The aim is to handle only one discussion by Tchap user, and prevent the client from creating multiple one-one with the same user.
-final class DiscussionService {
+/// `DiscussionFinder` is used to find the direct chat which is the most suitable discussion with a Tchap user.
+final class DiscussionFinder: DiscussionFinderType {
     
     // MARK: Private
     private let session: MXSession
@@ -42,15 +33,7 @@ final class DiscussionService {
         self.session = session
     }
     
-    /// Returns the identifier of the current discussion for a given user ID, if any.
-    /// The returned discussion may be a pending invite from this user.
-    ///
-    /// - Parameters:
-    ///   - userID: The user identifier to search for. This identifier is a matrix id or an email address.
-    ///   - includeInvite: Tell whether the pending invitations have to be considered or not.
-    ///   - autoJoin: When the current discussion is a pending invite, this boolean tells whether we must join it automatically before returning.
-    ///   - completion: A closure called when the operation complete. Provide the discussion id (if any) when succeed.
-    func getDiscussionIdentifier(for userID: String, includeInvite: Bool = true, autoJoin: Bool = true, completion: @escaping (MXResponse<DiscussionSearchResult>) -> Void) {
+    func getDiscussionIdentifier(for userID: String, includeInvite: Bool = true, autoJoin: Bool = true, completion: @escaping (MXResponse<DiscussionFinderResult>) -> Void) {
         guard let roomIDsList = self.session.directRooms?[userID] else {
             // There is no discussion for the moment with this user
             completion(.success(.noDiscussion))
@@ -83,7 +66,8 @@ final class DiscussionService {
                     room.members { response in
                         switch response {
                         case .success(let roomMembers):
-                            if let member = roomMembers?.member(withUserId: userID) {
+                            // Ignore room which are not 1:1
+                            if roomMembers?.members.count == 2, let member = roomMembers?.member(withUserId: userID) {
                                 switch member.membership {
                                 case .join:
                                     if !isPendingInvite {
@@ -107,7 +91,15 @@ final class DiscussionService {
                         case .failure(let error):
                             // We did not optimize the error handling here because this is an unexpected error in our use case.
                             // We should improve the error handling by breaking the loop for.
-                            membersError = error
+                            
+                            // Patch here: https://github.com/matrix-org/synapse/issues/4985
+                            if isPendingInvite {
+                                // Keep this pending invite which seems come from a federated hs.
+                                receivedInvites.append(roomID)
+                            } else {
+                                membersError = error
+                            }
+                            
                             group.leave()
                         }
                     }
@@ -128,30 +120,30 @@ final class DiscussionService {
             
             // Select the most suitable array
             if !joinedDiscussions.isEmpty {
-                print("[DiscussionService] user: \(userID) found a join-join discussion")
+                print("[DiscussionFinder] user: \(userID) found a join-join discussion")
                 self.getOldestRoomID(joinedDiscussions) { roomID in
                     completion(.success(.joinedDiscussion(roomID: roomID)))
                 }
             } else if !receivedInvites.isEmpty {
-                print("[DiscussionService] user: \(userID) found an invite-join discussion")
+                print("[DiscussionFinder] user: \(userID) found an invite-join discussion")
                 
                 if autoJoin {
                     self.joinPendingInvite(receivedInvites, completion: { (response) in
                         switch response {
                         case .success (let roomID):
-                            print("[DiscussionService] user: \(userID) join a pending invite")
+                            print("[DiscussionFinder] user: \(userID) join a pending invite")
                             completion(.success(.joinedDiscussion(roomID: roomID)))
                         case .failure(let error):
-                            print("[DiscussionService] user: \(userID) failed to join a pending invite")
-                            if case DiscussionServiceError.invalidReceivedInvite = error {
+                            print("[DiscussionFinder] user: \(userID) failed to join a pending invite")
+                            if case DiscussionFinderError.invalidReceivedInvite = error {
                                 // Fallback on other listed rooms, if any.
                                 if !sentInvites.isEmpty {
-                                    print("[DiscussionService] user: \(userID) found a join-invite discussion")
+                                    print("[DiscussionFinder] user: \(userID) found a join-invite discussion")
                                     self.getOldestRoomID(sentInvites) { roomID in
                                         completion(.success(.joinedDiscussion(roomID: roomID)))
                                     }
                                 } else if !leftDiscussions.isEmpty {
-                                    print("[DiscussionService] user: \(userID) found a join|invite-left discussion")
+                                    print("[DiscussionFinder] user: \(userID) found a join|invite-left discussion")
                                     self.getOldestRoomID(leftDiscussions) { roomID in
                                         completion(.success(.joinedDiscussion(roomID: roomID)))
                                     }
@@ -169,12 +161,12 @@ final class DiscussionService {
                     }
                 }
             } else if !sentInvites.isEmpty {
-                print("[DiscussionService] user: \(userID) found a join-invite discussion")
+                print("[DiscussionFinder] user: \(userID) found a join-invite discussion")
                 self.getOldestRoomID(sentInvites) { roomID in
                     completion(.success(.joinedDiscussion(roomID: roomID)))
                 }
             } else if !leftDiscussions.isEmpty {
-                print("[DiscussionService] user: \(userID) found a join|invite-left discussion")
+                print("[DiscussionFinder] user: \(userID) found a join|invite-left discussion")
                 self.getOldestRoomID(leftDiscussions) { roomID in
                     completion(.success(.joinedDiscussion(roomID: roomID)))
                 }
@@ -233,13 +225,13 @@ final class DiscussionService {
                     // Check whether we failed to join an empty room
                     let nsError = error as NSError
                     if let message = nsError.userInfo[NSLocalizedDescriptionKey] as? String, message == "No known servers" {
-                        print("[DiscussionService] Ignore a pending invite to an empty room")
+                        print("[DiscussionFinder] Ignore a pending invite to an empty room")
                         let updatedInvites = pendingInvites.filter { $0 != roomID }
                         if !updatedInvites.isEmpty {
                             // Loop to join another pending invite
                             sself.joinPendingInvite(updatedInvites, completion: completion)
                         } else {
-                            completion(.failure(DiscussionServiceError.invalidReceivedInvite))
+                            completion(.failure(DiscussionFinderError.invalidReceivedInvite))
                         }
                         
                         // Remove this invalid invite from the user's rooms

@@ -27,7 +27,14 @@ protocol RoomServiceType {
     ///   - name: Room name.
     ///   - avatarURL: Room avatar MXC URL.
     ///   - inviteUserIds: The array of Matrix user ids to invite.
-    ///   - completion: A closure called when the operation completes.
+    ///   - completion: A closure called when the operation completes. Provide the room id when succeed.
     /// - Returns: A Single of MXCreateRoomResponse.
-    func createRoom(visibility: MXRoomDirectoryVisibility, name: String, avatarURL: String?, inviteUserIds: [String], isFederated: Bool) -> Single<MXCreateRoomResponse>
+    func createRoom(visibility: MXRoomDirectoryVisibility, name: String, avatarURL: String?, inviteUserIds: [String], isFederated: Bool) -> Single<String>
+    
+    /// Create a direct chat by inviting a third party identifier.
+    ///
+    /// - Parameters:
+    ///   - thirdPartyID: the third party identifier to invite.
+    ///   - completion: A closure called when the operation complete. Provide the discussion id when succeed.
+    func createDiscussionWithThirdPartyID(_ thirdPartyID: MXInvite3PID, completion: @escaping (MXResponse<String>) -> Void) -> MXHTTPOperation
 }

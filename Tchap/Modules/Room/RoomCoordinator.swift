@@ -39,6 +39,8 @@ final class RoomCoordinator: NSObject, RoomCoordinatorType {
     private let activityIndicatorPresenter: ActivityIndicatorPresenterType
     private let errorPresenter: ErrorPresenter
     
+    private let discussionFinder: DiscussionFinderType
+    
     // MARK: Public
     
     var childCoordinators: [Coordinator] = []
@@ -86,6 +88,8 @@ final class RoomCoordinator: NSObject, RoomCoordinatorType {
         self.userService = userService
         self.activityIndicatorPresenter = ActivityIndicatorPresenter()
         self.errorPresenter = AlertErrorPresenter(viewControllerPresenter: roomViewController)
+        
+        self.discussionFinder = DiscussionFinder(session: session)
     }
     
     // MARK: - Public methods
@@ -148,10 +152,8 @@ final class RoomCoordinator: NSObject, RoomCoordinatorType {
             self.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
         }
         
-        let discussionService = DiscussionService(session: session)
-        
         // Try to find an existing room with target user otherwise start a new discussion
-        discussionService.getDiscussionIdentifier(for: discussionTargetUserID) { [weak self] response in
+        self.discussionFinder.getDiscussionIdentifier(for: discussionTargetUserID) { [weak self] response in
             guard let sself = self else {
                 return
             }

@@ -146,14 +146,14 @@ final class RoomCreationCoordinator: NSObject, RoomCreationCoordinatorType {
         self.activityIndicatorPresenter.presentActivityIndicator(on: navigationController.view, animated: true)
 
         self.uploadRoomAvatarIfNeeded()
-        .flatMap { [unowned self] (avatarUrl) -> Single<MXCreateRoomResponse> in
+        .flatMap { [unowned self] (avatarUrl) -> Single<String> in
             return self.createRoom(roomCreationFormResult: roomCreationFormResult, avatarUrl: avatarUrl, userIDs: userIDs)
         }
         .subscribeOn(MainScheduler.instance)
-        .subscribe(onSuccess: { [weak self] (creationRoomResponse) in
+        .subscribe(onSuccess: { [weak self] (roomID) in
             removeActivityIndicator()
             if let strongSelf = self {
-                strongSelf.delegate?.roomCreationCoordinator(strongSelf, didCreateRoomWithID: creationRoomResponse.roomId)
+                strongSelf.delegate?.roomCreationCoordinator(strongSelf, didCreateRoomWithID: roomID)
             }
         }, onError: { [weak self] error in
             removeActivityIndicator()
@@ -193,7 +193,7 @@ final class RoomCreationCoordinator: NSObject, RoomCreationCoordinatorType {
         return self.mediaService.upload(image: image).map({ $0 })
     }
     
-    private func createRoom(roomCreationFormResult: RoomCreationFormResult, avatarUrl: String?, userIDs: [String]) -> Single<MXCreateRoomResponse> {
+    private func createRoom(roomCreationFormResult: RoomCreationFormResult, avatarUrl: String?, userIDs: [String]) -> Single<String> {
         let roomVisibility: MXRoomDirectoryVisibility = roomCreationFormResult.isPublic ? .public : .private
         return self.roomService.createRoom(visibility: roomVisibility, name: roomCreationFormResult.name, avatarURL: avatarUrl, inviteUserIds: userIDs, isFederated: roomCreationFormResult.isFederated)
     }
@@ -230,7 +230,7 @@ extension RoomCreationCoordinator: MediaPickerViewControllerDelegate {
     }
 }
 
-// MARK: - ContactsCoordinatorDelegate
+// MARK: - ContactsPickerCoordinatorDelegate
 extension RoomCreationCoordinator: ContactsPickerCoordinatorDelegate {
     
     func contactsPickerCoordinator(_ coordinator: ContactsPickerCoordinatorType, didSelectUserIDs userIDs: [String]) {
