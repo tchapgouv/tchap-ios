@@ -83,9 +83,6 @@ final class AuthenticationViewModel: AuthenticationViewModelType {
         } else if password.isEmpty {
             print("[AuthenticationViewModel] Missing Password")
             errorMessage = TchapL10n.authenticationErrorMissingPassword
-        } else if password.count < FormRules.passwordMinLength {
-            print("[AuthenticationViewModel] Invalid Password")
-            errorMessage = TchapL10n.authenticationErrorInvalidPassword(FormRules.passwordMinLength)
         }
         
         if let errorMessage = errorMessage {
