@@ -74,7 +74,7 @@
 "auth_identity_server_placeholder" = "URL (e.g. https://matrix.org)";
 "auth_invalid_login_param" = "Incorrect username and/or password";
 "auth_invalid_user_name" = "User names may only contain letters, numbers, dots, hyphens and underscores";
-"auth_invalid_password" = "Password too short (min 6)";
+"auth_invalid_password" = "Password too short (min 8)";
 "auth_invalid_email" = "This doesn't look like a valid email address";
 "auth_invalid_phone" = "This doesn't look like a valid phone number";
 "auth_missing_password" = "Missing password";

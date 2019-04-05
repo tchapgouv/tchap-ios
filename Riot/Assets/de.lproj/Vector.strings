@@ -47,7 +47,7 @@
 "auth_repeat_password_placeholder" = "Wiederhole Passwort";
 "auth_repeat_new_password_placeholder" = "Bestätige dein neues Passwort";
 "auth_invalid_user_name" = "Nutzernamen dürfen nur Buchstaben, Nummern, Punkte, Binde- und Unterstriche enthalten";
-"auth_invalid_password" = "Passwort zu kurz (min. 6 Zeichen)";
+"auth_invalid_password" = "Passwort zu kurz (min. 8 Zeichen)";
 "auth_invalid_email" = "Dies sieht nicht nach eine validen E-Mail-Adresse aus";
 "auth_invalid_phone" = "Dies sieht nicht nach einer validen Telefon-Nummer aus";
 "auth_missing_password" = "Passwort fehlt";

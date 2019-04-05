@@ -50,7 +50,7 @@
 "auth_home_server_placeholder" = "URL (p.sh. https://matrix.org)";
 "auth_identity_server_placeholder" = "URL (p.sh. https://matrix.org)";
 "auth_invalid_login_param" = "Emër përdoruesi dhe/ose fjalëkalim i pasaktë";
-"auth_invalid_password" = "Fjalëkalim shumë i shkurtër (min 6)";
+"auth_invalid_password" = "Fjalëkalim shumë i shkurtër (min 8)";
 "auth_invalid_email" = "Kjo s’duket si adresë email e vlefshme";
 "auth_invalid_phone" = "Ky s’duket si numër telefoni i vlefshëm";
 "auth_missing_password" = "Mungon fjalëkalimi";

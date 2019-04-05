@@ -162,6 +162,7 @@ extension AuthenticationViewController: FormTextFieldDelegate {
             _ = self.passwordFormTextField?.becomeFirstResponder()
         } else {
             _ = formTextField.resignFirstResponder()
+            self.nextButtonAction()
         }
         
         return false

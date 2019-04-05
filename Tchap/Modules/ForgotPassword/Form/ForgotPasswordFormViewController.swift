@@ -170,6 +170,7 @@ extension ForgotPasswordFormViewController: FormTextFieldDelegate {
         
         if nextIndex > self.formTextFields.count - 1 {
             _ = formTextField.resignFirstResponder()
+            self.sendEmailButtonAction(self.sendEmailButton)
         } else {
             _ = self.formTextFields[nextIndex].becomeFirstResponder()
         }

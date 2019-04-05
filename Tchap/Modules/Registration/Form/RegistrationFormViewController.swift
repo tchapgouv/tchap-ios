@@ -171,6 +171,7 @@ extension RegistrationFormViewController: FormTextFieldDelegate {
         
         if nextIndex > self.formTextFields.count - 1 {
             _ = formTextField.resignFirstResponder()
+            self.nextButtonAction()
         } else {
             _ = self.formTextFields[nextIndex].becomeFirstResponder()
         }

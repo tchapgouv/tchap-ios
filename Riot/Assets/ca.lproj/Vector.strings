@@ -55,7 +55,7 @@
 "auth_identity_server_placeholder" = "URL (ex. https://matriu.cat)";
 "auth_invalid_login_param" = "Usuari i/o contrasenya incorrectes";
 "auth_invalid_user_name" = "Els noms d'usuari només poden tenir lletres, números, punts, guions i guions baixos";
-"auth_invalid_password" = "Contrasenya massa curta (min 6)";
+"auth_invalid_password" = "Contrasenya massa curta (min 8)";
 "auth_invalid_email" = "Això no sembla una adreça de correu valida";
 "auth_invalid_phone" = "Això no sembla un número de telèfon valid";
 "auth_missing_password" = "Falta la contrasenya";
