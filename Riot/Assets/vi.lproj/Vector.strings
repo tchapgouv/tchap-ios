@@ -54,7 +54,7 @@
 "auth_invalid_login_param" = "Tên đăng nhập hoặc mật khẩu không đúng";
 "warning" = "Cảnh báo";
 "auth_invalid_user_name" = "Tên đăng nhập chỉ được chứa các chữ cái, dấu chấm, dấu gạch ngang và dấu gạch dưới";
-"auth_invalid_password" = "Mật khẩu quá ngắn (tối thiểu 6 kí tự)";
+"auth_invalid_password" = "Mật khẩu quá ngắn (tối thiểu 8 kí tự)";
 "auth_invalid_email" = "Địa chỉ Email không hợp lệ";
 "auth_invalid_phone" = "Số điện thoại không hợp lệ";
 "auth_missing_password" = "Thiếu mật khẩu";

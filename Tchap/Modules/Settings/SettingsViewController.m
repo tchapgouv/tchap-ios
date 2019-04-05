@@ -2757,7 +2757,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 
 - (IBAction)passwordTextFieldDidChange:(id)sender
 {
-    savePasswordAction.enabled = (currentPasswordTextField.text.length > 0) && (newPasswordTextField1.text.length > 2) && [newPasswordTextField1.text isEqualToString:newPasswordTextField2.text];
+    savePasswordAction.enabled = (currentPasswordTextField.text.length > 0) && (newPasswordTextField1.text.length > 7) && [newPasswordTextField1.text isEqualToString:newPasswordTextField2.text];
 }
 
 - (void)displayPasswordAlert
@@ -2765,7 +2765,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     MXWeakify(self);
     [resetPwdAlertController dismissViewControllerAnimated:NO completion:nil];
     
-    resetPwdAlertController = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"settings_change_password", @"Vector", nil) message:nil preferredStyle:UIAlertControllerStyleAlert];
+    resetPwdAlertController = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"settings_change_password", @"Vector", nil)
+                                                                  message:NSLocalizedStringFromTable(@"settings_change_pwd_message", @"Tchap", nil) preferredStyle:UIAlertControllerStyleAlert];
     resetPwdAlertController.accessibilityLabel=@"ChangePasswordAlertController";
     savePasswordAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"save", @"Vector", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
         

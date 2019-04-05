@@ -50,7 +50,7 @@
 "auth_repeat_new_password_placeholder" = "Confirmer le nouveau mot de passe";
 "auth_invalid_login_param" = "Nom d'utilisateur et/ou mot de passe incorrect";
 "auth_invalid_user_name" = "Les noms d'utilisateur ne peuvent contenir que des lettres, des chiffres, des points, des traits d'union ou des tirets bas";
-"auth_invalid_password" = "Mot de passe trop court (min 6)";
+"auth_invalid_password" = "Mot de passe trop court (min 8)";
 "auth_invalid_email" = "L'adresse e-mail ne semble pas valide";
 "auth_invalid_phone" = "Le numéro de téléphone ne semble pas valide";
 "auth_missing_password" = "Mot de passe manquant";

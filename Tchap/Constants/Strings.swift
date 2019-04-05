@@ -199,6 +199,8 @@ internal enum TchapL10n {
   internal static let searchNoResult = TchapL10n.tr("Tchap", "search_no_result")
   /// Changer le mot de passe réinitialise les clés de chiffrement sur tous les appareils, rendant l’historique des discussions illisible: pensez d'abord à exporter vos clés pour pouvoir les ré-importer après le changement de mot de passe.
   internal static let settingsChangePwdCaution = TchapL10n.tr("Tchap", "settings_change_pwd_caution")
+  /// Votre nouveau mot de passe doit contenir au moins 8 caractères.
+  internal static let settingsChangePwdMessage = TchapL10n.tr("Tchap", "settings_change_pwd_message")
   /// Votre mot de passe a été changé avec succès.\nVous ne recevrez plus de notifications sur vos autres appareils tant que vous ne vous y reconnecterez pas.
   internal static let settingsChangePwdSuccessMsg = TchapL10n.tr("Tchap", "settings_change_pwd_success_msg")
   /// Succès
