@@ -125,6 +125,10 @@ final class ForgotPasswordFormViewController: UIViewController {
     // MARK: - Actions
     
     @IBAction private func sendEmailButtonAction(_ sender: Any) {
+        self.submitForm()
+    }
+    
+    @IBAction private func submitForm() {
         self.view.endEditing(true)
         
         let formValidationResult = self.viewModel.validateForm()
@@ -170,7 +174,7 @@ extension ForgotPasswordFormViewController: FormTextFieldDelegate {
         
         if nextIndex > self.formTextFields.count - 1 {
             _ = formTextField.resignFirstResponder()
-            self.sendEmailButtonAction(self.sendEmailButton)
+            self.submitForm()
         } else {
             _ = self.formTextFields[nextIndex].becomeFirstResponder()
         }
