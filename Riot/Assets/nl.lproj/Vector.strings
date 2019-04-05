@@ -65,7 +65,7 @@
 "auth_repeat_new_password_placeholder" = "Bevestig je nieuwe wachtwoord";
 "auth_invalid_login_param" = "Incorrecte gebruikersnaam en/of wachtwoord";
 "auth_invalid_user_name" = "Gebruikersnamen mogen alleen letters, cijfers, punten, afbreekstreepjes en lage streepjes bevatten";
-"auth_invalid_password" = "Het wachtwoord is te kort (min 6)";
+"auth_invalid_password" = "Het wachtwoord is te kort (min 8)";
 "auth_invalid_email" = "Dit ziet er niet uit als een geldig e-mailadres";
 "auth_invalid_phone" = "Dit ziet er niet uit als een geldig telefoonnummer";
 "auth_missing_password" = "Missend wachtwoord";

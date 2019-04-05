@@ -100,7 +100,7 @@ final class HomeViewController: UIViewController {
     
     private func setupPlusButton() {
         // Hide the plus button for external user (the corresponding actions are not allowed for them)
-        self.plusButton.isHidden = isExternalUseMode
+        self.plusButton?.isHidden = isExternalUseMode
     }
     
     // MARK: - Action

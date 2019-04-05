@@ -1,3 +1,13 @@
+Changes in Tchap 1.0.8 (2019-04-05)
+===================================================
+
+ Features/Improvements:
+ * Increase the minimum password length to 8 #179
+ 
+ Bug Fixes:
+  * Improve external users handing
+  * Fix a crash observed after a successful login
+
 Changes in Tchap 1.0.7 (2019-04-04)
 ===================================================
 

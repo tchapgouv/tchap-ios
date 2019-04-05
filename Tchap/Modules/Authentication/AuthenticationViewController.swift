@@ -95,7 +95,7 @@ final class AuthenticationViewController: UIViewController {
     private func setupViews() {
         
         self.navigationItem.rightBarButtonItem = MXKBarButtonItem(title: TchapL10n.actionNext, style: .plain, action: {
-            self.nextButtonAction()
+            self.submitForm()
         })
         
         self.scrollView.keyboardDismissMode = .interactive
@@ -118,7 +118,7 @@ final class AuthenticationViewController: UIViewController {
     
     // MARK: - Actions
     
-    private func nextButtonAction() {
+    private func submitForm() {
         self.view.endEditing(true)
         
         let formValidationResult = self.viewModel.validateForm()
@@ -162,6 +162,7 @@ extension AuthenticationViewController: FormTextFieldDelegate {
             _ = self.passwordFormTextField?.becomeFirstResponder()
         } else {
             _ = formTextField.resignFirstResponder()
+            self.submitForm()
         }
         
         return false

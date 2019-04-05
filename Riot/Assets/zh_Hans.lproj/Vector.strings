@@ -49,7 +49,7 @@
 "auth_repeat_new_password_placeholder" = "确认您的新密码";
 "auth_invalid_login_param" = "无效的用户名和/或密码";
 "auth_invalid_user_name" = "用户名只能包含字母、数字、短横（-）与下划线（_）";
-"auth_invalid_password" = "密码太短（至少 6 个字符）";
+"auth_invalid_password" = "密码太短（至少 8 个字符）";
 "auth_invalid_email" = "这不像是一个有效的邮箱地址";
 "auth_invalid_phone" = "这不像是一个有效的手机号码";
 "auth_missing_password" = "缺少密码";

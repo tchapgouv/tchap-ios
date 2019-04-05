@@ -25,7 +25,7 @@ final class UserService: NSObject, UserServiceType {
     private enum Constants {
         static let searchUsersLimit: UInt = 50
         static let preprod_external_prefix: String = "e."
-        static let external_prefix: String = "externe."
+        static let external_prefix: String = "agent.externe."
     }
     
     // MARK: - Properties

@@ -18,5 +18,5 @@ import Foundation
 
 /// General form validation constants
 struct FormRules {
-    static let passwordMinLength = 6
+    static let passwordMinLength = 8
 }

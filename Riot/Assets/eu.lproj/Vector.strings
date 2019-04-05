@@ -60,7 +60,7 @@
 "auth_repeat_new_password_placeholder" = "Berretsi zure pasahitza";
 "auth_invalid_login_param" = "Erabiltzaile-izen eta/edo pasahitz okerra";
 "auth_invalid_user_name" = "Erabiltzaile-izenek letrak, zenbakiak, puntuak, gidoiak eta gidoi baxuak besterik ezin dituzte izan";
-"auth_invalid_password" = "Pasahitz laburregia (gutx 6)";
+"auth_invalid_password" = "Pasahitz laburregia (gutx 8)";
 "auth_missing_password" = "Pasahitza falta da";
 "auth_invalid_email" = "Honek ez du baliozko e-mail helbide baten antzik";
 "auth_invalid_phone" = "Honek ez du baliozko telefono zenbaki baten antzik";

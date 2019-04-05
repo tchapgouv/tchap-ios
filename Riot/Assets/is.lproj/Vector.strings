@@ -49,7 +49,7 @@
 "auth_repeat_new_password_placeholder" = "Staðfestu nýtt lykilorð";
 "auth_invalid_login_param" = "Rangt notandanafn og/eða lykilorð";
 "auth_invalid_user_name" = "Notandanöfn mega einungis innihalda bókstafi, tölustafi, punkta, bandstrik eða undirstrik";
-"auth_invalid_password" = "Lykilorð er of stutt (lágmark 6 stafir)";
+"auth_invalid_password" = "Lykilorð er of stutt (lágmark 8 stafir)";
 "auth_missing_password" = "Lykilorð vantar";
 "auth_missing_email" = "Vantar tölvupóstfang";
 "auth_missing_phone" = "Vantar símanúmer";

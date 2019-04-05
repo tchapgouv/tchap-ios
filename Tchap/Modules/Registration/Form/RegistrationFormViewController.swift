@@ -96,7 +96,7 @@ final class RegistrationFormViewController: UIViewController {
     private func setupViews() {
         
         self.navigationItem.rightBarButtonItem = MXKBarButtonItem(title: TchapL10n.actionNext, style: .plain, action: {
-            self.nextButtonAction()
+            self.submitForm()
         })
         
         self.scrollView.keyboardDismissMode = .interactive
@@ -128,7 +128,7 @@ final class RegistrationFormViewController: UIViewController {
     
     // MARK: - Actions
     
-    private func nextButtonAction() {
+    private func submitForm() {
         self.view.endEditing(true)
         
         let formValidationResult = self.viewModel.validateForm()
@@ -171,6 +171,7 @@ extension RegistrationFormViewController: FormTextFieldDelegate {
         
         if nextIndex > self.formTextFields.count - 1 {
             _ = formTextField.resignFirstResponder()
+            self.submitForm()
         } else {
             _ = self.formTextFields[nextIndex].becomeFirstResponder()
         }

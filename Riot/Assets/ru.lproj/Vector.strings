@@ -47,7 +47,7 @@
 "auth_repeat_new_password_placeholder" = "Подтвердите свой новый пароль";
 "auth_invalid_login_param" = "Неверное имя пользователя и/или пароль";
 "auth_invalid_user_name" = "Имена пользователей могут содержать только буквы, цифры, точки, дефисы и символы подчеркивания";
-"auth_invalid_password" = "Пароль слишком короткий (мин. 6 символов)";
+"auth_invalid_password" = "Пароль слишком короткий (мин. 8 символов)";
 // Room Details
 "room_details_title" = "Информация о комнате";
 "auth_invalid_email" = "Это не похоже на допустимый адрес электронной почты";
