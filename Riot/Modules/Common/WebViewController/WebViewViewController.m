@@ -77,6 +77,11 @@
     [self updateWithStyle:self.currentStyle];
 }
 
+- (void)applyVariant2Style
+{
+    [self updateWithStyle:Variant2Style.shared];
+}
+
 - (void)updateWithStyle:(id<Style>)style
 {
     self.currentStyle = style;

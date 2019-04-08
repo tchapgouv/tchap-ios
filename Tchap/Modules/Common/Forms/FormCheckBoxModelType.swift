@@ -1,5 +1,5 @@
 /*
- Copyright 2017 Vector Creations Ltd
+ Copyright 2019 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -14,15 +14,17 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+import Foundation
 
-/**
- WebViewViewController extends MXKWebViewViewController to handle customization.
- */
-
-@interface WebViewViewController : MXKWebViewViewController
-
-- (void)applyVariant2Style;
-
-@end
-
+/// Representing a form check box view model
+protocol FormCheckBoxModelType {
+    
+    /// The label
+    var label: String { get }
+    
+    /// The optional link in the label - label is a formatted string if set
+    var labelLink: String? { get }
+    
+    /// Check box value
+    var isSelected: Bool { get set }
+}

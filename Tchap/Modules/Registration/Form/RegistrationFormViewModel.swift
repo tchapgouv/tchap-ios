@@ -24,6 +24,7 @@ final class RegistrationFormViewModel: RegistrationFormViewModelType {
     let loginTextViewModel: FormTextViewModelType
     let passwordTextViewModel: FormTextViewModelType
     let confirmPasswordTextViewModel: FormTextViewModelType
+    let termsCheckBoxModel: FormCheckBoxModelType
     
     // MARK: - Setup
     
@@ -79,6 +80,8 @@ final class RegistrationFormViewModel: RegistrationFormViewModelType {
         self.loginTextViewModel = emailTextViewModel
         self.passwordTextViewModel = passwordTextViewModel
         self.confirmPasswordTextViewModel = confirmPasswordTextViewModel
+        
+        self.termsCheckBoxModel = FormCheckBoxModel(label: TchapL10n.registrationTermsLabelFormat(TchapL10n.registrationTermsLabelLink), labelLink: TchapL10n.registrationTermsLabelLink, isSelected: false)
     }
     
     // MARK: - Public
@@ -94,6 +97,11 @@ final class RegistrationFormViewModel: RegistrationFormViewModelType {
         
         guard let password = self.passwordTextViewModel.value else {
             let errorPresentable = ErrorPresentableImpl(title: errorTitle, message: TchapL10n.authenticationErrorMissingPassword)
+            return .failure(errorPresentable)
+        }
+        
+        guard self.termsCheckBoxModel.isSelected else {
+            let errorPresentable = ErrorPresentableImpl(title: errorTitle, message: TchapL10n.registrationErrorUncheckedTerms)
             return .failure(errorPresentable)
         }
         
