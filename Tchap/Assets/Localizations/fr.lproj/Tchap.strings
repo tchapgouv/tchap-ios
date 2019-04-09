@@ -54,6 +54,11 @@
 "registration_password_placeholder" = "Mot de passe Tchap";
 "registration_confirm_password_placeholder" = "Confirmer le mot de passe";
 
+"registration_terms_label_format" = "J'accepte les %@";
+"registration_terms_label_link" = "Conditions Générales d'Utilisation";
+"registration_terms_and_conditions_title" = "Termes et Conditions";
+
+"registration_error_unchecked_terms" = "Vous devez accepter les Conditions Générales d'Utilisation";
 "registration_error_passwords_dont_match" = "Les mots de passe ne correspondent pas";
 
 "registration_email_sent_info" = "Un email vous a été envoyé à :";

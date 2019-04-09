@@ -145,12 +145,22 @@ internal enum TchapL10n {
   internal static let registrationEmailSentInstructions = TchapL10n.tr("Tchap", "registration_email_sent_instructions")
   /// Les mots de passe ne correspondent pas
   internal static let registrationErrorPasswordsDontMatch = TchapL10n.tr("Tchap", "registration_error_passwords_dont_match")
+  /// Vous devez accepter les Conditions Générales d'Utilisation
+  internal static let registrationErrorUncheckedTerms = TchapL10n.tr("Tchap", "registration_error_unchecked_terms")
   /// Utilisez votre adresse professionnelle
   internal static let registrationMailAdditionalInfo = TchapL10n.tr("Tchap", "registration_mail_additional_info")
   /// Adresse email
   internal static let registrationMailPlaceholder = TchapL10n.tr("Tchap", "registration_mail_placeholder")
   /// Mot de passe Tchap
   internal static let registrationPasswordPlaceholder = TchapL10n.tr("Tchap", "registration_password_placeholder")
+  /// Termes et Conditions
+  internal static let registrationTermsAndConditionsTitle = TchapL10n.tr("Tchap", "registration_terms_and_conditions_title")
+  /// J'accepte les %@
+  internal static func registrationTermsLabelFormat(_ p1: String) -> String {
+    return TchapL10n.tr("Tchap", "registration_terms_label_format", p1)
+  }
+  /// Conditions Générales d'Utilisation
+  internal static let registrationTermsLabelLink = TchapL10n.tr("Tchap", "registration_terms_label_link")
   /// Inscription Tchap
   internal static let registrationTitle = TchapL10n.tr("Tchap", "registration_title")
   /// Analyse antivirus
