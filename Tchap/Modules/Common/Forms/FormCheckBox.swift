@@ -31,7 +31,7 @@ final class FormCheckBox: UIView, NibOwnerLoadable {
     @IBOutlet private weak var checkBoxImaveView: UIImageView!
     @IBOutlet private weak var checkBoxMask: UIView!
     @IBOutlet private weak var label: UILabel!
-    @IBOutlet private weak var textView: UITextView!
+    @IBOutlet private weak var labelMask: UIView!
     
     // MARK: Private
     
@@ -47,8 +47,11 @@ final class FormCheckBox: UIView, NibOwnerLoadable {
         self.label.text = nil
         
         self.isUserInteractionEnabled = true
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleCheckBoxTap(_:)))
-        self.checkBoxMask.addGestureRecognizer(tapGestureRecognizer)
+        let checkBoxTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleCheckBoxTap(_:)))
+        self.checkBoxMask.addGestureRecognizer(checkBoxTapGestureRecognizer)
+        
+        let labelTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleLabelTap(_:)))
+        self.labelMask.addGestureRecognizer(labelTapGestureRecognizer)
     }
     
     convenience init() {
@@ -92,13 +95,8 @@ final class FormCheckBox: UIView, NibOwnerLoadable {
             attributedLabel.addAttribute(.underlineStyle, value: NSUnderlineStyle.styleSingle.rawValue, range: range)
             attributedLabel.addAttribute(.link, value: "link", range: range)
             self.label.attributedText = attributedLabel
-            self.label.isHidden = true
-            self.textView.attributedText = attributedLabel
-            self.textView.isHidden = false
         } else {
             self.label.text = label
-            self.label.isHidden = false
-            self.textView.isHidden = true
         }
     }
     
@@ -111,21 +109,15 @@ final class FormCheckBox: UIView, NibOwnerLoadable {
             self.updateCheckBoxImage()
         }
     }
+    
+    @objc private func handleLabelTap(_ sender: UITapGestureRecognizer) {
+        self.delegate?.formCheckBoxDidSelectLabelLink(self)
+    }
 }
 
 // MARK: - Stylable
 extension FormCheckBox: Stylable {
     func update(style: Style) {
         self.label.textColor = style.buttonPlainTitleColor
-        self.textView.textColor = style.buttonPlainTitleColor
-        self.textView.tintColor = style.buttonPlainTitleColor
-    }
-}
-
-//MARK: - UITextViewDelegate
-extension FormCheckBox: UITextViewDelegate {
-    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
-        self.delegate?.formCheckBoxDidSelectLabelLink(self)
-        return false
     }
 }
