@@ -1,3 +1,10 @@
+Changes in Tchap 1.0.9 (2019-04-09)
+===================================================
+
+ Features/Improvements:
+ * Registration: require that users agree to terms (EULA) #186
+ * Settings: Remove the phone number option #178
+
 Changes in Tchap 1.0.8 (2019-04-05)
 ===================================================
 
