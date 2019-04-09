@@ -28,6 +28,9 @@ protocol RegistrationFormViewModelType {
     /// Confirm password view model
     var confirmPasswordTextViewModel: FormTextViewModelType { get }
     
+    /// Terms check box view model
+    var termsCheckBoxModel: FormCheckBoxModelType { get }
+    
     /// Registration form validation
     func validateForm() -> AuthenticationFormValidationResult
 }

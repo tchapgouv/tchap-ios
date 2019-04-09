@@ -18,6 +18,7 @@ import Foundation
 
 protocol RegistrationFormViewControllerDelegate: class {
     func registrationFormViewController(_ registrationFormViewController: RegistrationFormViewController, didTapNextButtonWith mail: String, password: String)
+    func registrationFormViewControllerShowTermsAndConditions(_ registrationFormViewController: RegistrationFormViewController)
 }
 
 final class RegistrationFormViewController: UIViewController {
@@ -30,6 +31,7 @@ final class RegistrationFormViewController: UIViewController {
     @IBOutlet private weak var loginFormTextField: FormTextField!
     @IBOutlet private weak var passwordFormTextField: FormTextField!
     @IBOutlet private weak var confirmPasswordFormTextField: FormTextField!
+    @IBOutlet private weak var termsFormCheckBox: FormCheckBox!
     
     private var formTextFields: [FormTextField] = []
     
@@ -102,6 +104,7 @@ final class RegistrationFormViewController: UIViewController {
         self.scrollView.keyboardDismissMode = .interactive
         
         self.setupFormTextFields()
+        self.setupTermsCheckBox()
     }
     
     private func setupFormTextFields() {
@@ -120,6 +123,11 @@ final class RegistrationFormViewController: UIViewController {
         }
         
         self.formTextFields = formTextFields
+    }
+    
+    private func setupTermsCheckBox() {
+        self.termsFormCheckBox.fill(formCheckBoxModel: viewModel.termsCheckBoxModel)
+        self.termsFormCheckBox.delegate = self
     }
     
     private func userThemeDidChange() {
@@ -156,6 +164,8 @@ extension RegistrationFormViewController: Stylable {
         for formTextield in self.formTextFields {
             formTextield.update(style: style)
         }
+        
+        self.termsFormCheckBox.update(style: style)
     }
 }
 
@@ -177,5 +187,13 @@ extension RegistrationFormViewController: FormTextFieldDelegate {
         }
         
         return false
+    }
+}
+
+// MARK: - FormCheckBoxDelegate
+extension RegistrationFormViewController: FormCheckBoxDelegate {
+    
+    func formCheckBoxDidSelectLabelLink(_ formCheckBox: FormCheckBox) {
+        self.delegate?.registrationFormViewControllerShowTermsAndConditions(self)
     }
 }

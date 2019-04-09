@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FormCheckBox" customModule="Tchap" customModuleProvider="target">
+            <connections>
+                <outlet property="checkBoxImaveView" destination="DhF-l2-XHE" id="vJq-6d-HWQ"/>
+                <outlet property="checkBoxMask" destination="78B-27-JQ8" id="qjW-tK-Tyv"/>
+                <outlet property="label" destination="SGZ-ww-vHN" id="Mvc-rH-nT4"/>
+                <outlet property="labelMask" destination="3Nq-AQ-AOG" id="SUU-Mk-KGe"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="mpD-Nd-d1Z">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="42"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="selection_untick" translatesAutoresizingMaskIntoConstraints="NO" id="DhF-l2-XHE">
+                    <rect key="frame" x="0.0" y="10" width="22" height="22"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="22" id="6gY-Oh-4FO"/>
+                        <constraint firstAttribute="width" secondItem="DhF-l2-XHE" secondAttribute="height" multiplier="1:1" id="sAb-rm-7YQ"/>
+                    </constraints>
+                </imageView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="78B-27-JQ8">
+                    <rect key="frame" x="-5" y="5" width="32" height="32"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="78B-27-JQ8" secondAttribute="height" multiplier="1:1" id="L7d-SX-Uj9"/>
+                        <constraint firstAttribute="width" constant="32" id="zMY-Fa-Hoe"/>
+                    </constraints>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SGZ-ww-vHN">
+                    <rect key="frame" x="32" y="12.5" width="343" height="17"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Nq-AQ-AOG">
+                    <rect key="frame" x="28" y="8.5" width="351" height="25"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="3Nq-AQ-AOG" firstAttribute="leading" secondItem="SGZ-ww-vHN" secondAttribute="leading" constant="-4" id="11g-QL-1oE"/>
+                <constraint firstItem="zcG-Rl-Y4f" firstAttribute="trailing" secondItem="SGZ-ww-vHN" secondAttribute="trailing" id="3BQ-61-4ow"/>
+                <constraint firstItem="SGZ-ww-vHN" firstAttribute="centerY" secondItem="DhF-l2-XHE" secondAttribute="centerY" id="7ge-GN-UdU"/>
+                <constraint firstItem="DhF-l2-XHE" firstAttribute="leading" secondItem="zcG-Rl-Y4f" secondAttribute="leading" id="9lr-Cg-eyb"/>
+                <constraint firstItem="78B-27-JQ8" firstAttribute="centerY" secondItem="DhF-l2-XHE" secondAttribute="centerY" id="MY9-Ul-v3o"/>
+                <constraint firstItem="78B-27-JQ8" firstAttribute="centerX" secondItem="DhF-l2-XHE" secondAttribute="centerX" id="Wd9-78-YYp"/>
+                <constraint firstItem="DhF-l2-XHE" firstAttribute="top" secondItem="zcG-Rl-Y4f" secondAttribute="top" constant="10" id="fEc-It-tpF"/>
+                <constraint firstItem="SGZ-ww-vHN" firstAttribute="leading" secondItem="DhF-l2-XHE" secondAttribute="trailing" constant="10" id="j40-PU-wEc"/>
+                <constraint firstItem="3Nq-AQ-AOG" firstAttribute="bottom" secondItem="SGZ-ww-vHN" secondAttribute="bottom" constant="4" id="nhY-BA-iyY"/>
+                <constraint firstItem="3Nq-AQ-AOG" firstAttribute="trailing" secondItem="SGZ-ww-vHN" secondAttribute="trailing" constant="4" id="oOv-l9-44h"/>
+                <constraint firstItem="3Nq-AQ-AOG" firstAttribute="top" secondItem="SGZ-ww-vHN" secondAttribute="top" constant="-4" id="trd-tq-6U1"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="zcG-Rl-Y4f"/>
+            <point key="canvasLocation" x="39.200000000000003" y="46.776611694152926"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="selection_untick" width="22" height="22"/>
+    </resources>
+</document>

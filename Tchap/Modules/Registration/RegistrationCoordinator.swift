@@ -186,6 +186,15 @@ final class RegistrationCoordinator: RegistrationCoordinatorType {
     private func didAuthenticate(with userId: String) {
         self.delegate?.registrationCoordinatorDidRegisterUser(self)
     }
+    
+    private func showTermsAndConditions() {
+        if let tacURL = UserDefaults.standard.string(forKey: "tacURL"), let tacViewController = WebViewViewController(url: tacURL) {
+            tacViewController.applyVariant2Style()
+            tacViewController.tc_removeBackTitle()
+            tacViewController.title = TchapL10n.registrationTermsAndConditionsTitle
+            self.navigationRouter.push(tacViewController, animated: true, popCompletion: nil)
+        }
+    }
 }
 
 // MARK: - RegistrationViewControllerDelegate
@@ -194,6 +203,10 @@ extension RegistrationCoordinator: RegistrationFormViewControllerDelegate {
     func registrationFormViewController(_ registrationViewController: RegistrationFormViewController, didTapNextButtonWith mail: String, password: String) {
         // Local registration form succeed, validate email now
         self.validateRegistrationForm(with: mail, password: password)
+    }
+    
+    func registrationFormViewControllerShowTermsAndConditions(_ registrationViewController: RegistrationFormViewController) {
+        self.showTermsAndConditions()
     }
 }
 
