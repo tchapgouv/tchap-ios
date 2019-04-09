@@ -93,7 +93,6 @@ final class FormCheckBox: UIView, NibOwnerLoadable {
             let attributedLabel = NSMutableAttributedString(string: label)
             let range = (label as NSString).range(of: link)
             attributedLabel.addAttribute(.underlineStyle, value: NSUnderlineStyle.styleSingle.rawValue, range: range)
-            attributedLabel.addAttribute(.link, value: "link", range: range)
             self.label.attributedText = attributedLabel
         } else {
             self.label.text = label
