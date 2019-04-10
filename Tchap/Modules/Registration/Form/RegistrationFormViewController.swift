@@ -193,6 +193,9 @@ extension RegistrationFormViewController: FormTextFieldDelegate {
         if formTextField == passwordFormTextField {
             // hide the confirmPassword textField in case of password auto filled.
             confirmPasswordFormTextField.isHidden = hasBeenAutoFilled
+            if confirmPasswordFormTextField.isHidden {
+                confirmPasswordFormTextField.resetTextField()
+            }
         }
     }
 }

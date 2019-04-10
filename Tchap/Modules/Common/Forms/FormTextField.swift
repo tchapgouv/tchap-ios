@@ -111,6 +111,12 @@ final class FormTextField: UIView, NibOwnerLoadable {
         self.textField.text = formTextViewModel.value
     }
     
+    func resetTextField() {
+        self.textField.text = nil
+        self.formTextViewModel?.value = nil
+        self.toggleAutoFillStatus(false)
+    }
+    
     // MARK: - Private
     
     private func updateTextFieldProperties(textFieldProperties: TextInputProperties) {
