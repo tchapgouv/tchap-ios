@@ -2133,6 +2133,11 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     {
         [textField resignFirstResponder];
     }
+    else if (textField == newPasswordTextField2)
+    {
+        [newPasswordTextField2 resignFirstResponder];
+        return NO;
+    }
     
     return YES;
 }
@@ -2162,7 +2167,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         
     }];
     
-    UIAlertAction* cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
+    UIAlertAction* cancel = [UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
         
         MXStrongifyAndReturnIfNil(self);
         self->resetPwdAlertController = nil;
@@ -2259,7 +2264,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     // check if the textfields have the right value
     savePasswordAction.enabled = NO;
     
-    UIAlertAction* cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
+    UIAlertAction* cancel = [UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
         
         MXStrongifyAndReturnIfNil(self);
         self->resetPwdAlertController = nil;
@@ -2272,6 +2277,10 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         self->currentPasswordTextField = textField;
         self->currentPasswordTextField.placeholder = NSLocalizedStringFromTable(@"settings_old_password", @"Vector", nil);
         self->currentPasswordTextField.secureTextEntry = YES;
+        self->currentPasswordTextField.returnKeyType = UIReturnKeyNext;
+        if (@available(iOS 11.0, *)) {
+            self->currentPasswordTextField.textContentType = UITextContentTypePassword;
+        }
         [self->currentPasswordTextField addTarget:self action:@selector(passwordTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
          
      }];
@@ -2282,6 +2291,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         self->newPasswordTextField1 = textField;
         self->newPasswordTextField1.placeholder = NSLocalizedStringFromTable(@"settings_new_password", @"Vector", nil);
         self->newPasswordTextField1.secureTextEntry = YES;
+        self->newPasswordTextField1.returnKeyType = UIReturnKeyNext;
         [self->newPasswordTextField1 addTarget:self action:@selector(passwordTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
         
     }];
@@ -2292,6 +2302,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         self->newPasswordTextField2 = textField;
         self->newPasswordTextField2.placeholder = NSLocalizedStringFromTable(@"settings_confirm_password", @"Vector", nil);
         self->newPasswordTextField2.secureTextEntry = YES;
+        self->newPasswordTextField2.returnKeyType = UIReturnKeyDone;
+        self->newPasswordTextField2.delegate = self;
         [self->newPasswordTextField2 addTarget:self action:@selector(passwordTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
         
     }];
