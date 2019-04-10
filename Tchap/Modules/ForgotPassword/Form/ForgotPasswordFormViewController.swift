@@ -181,4 +181,11 @@ extension ForgotPasswordFormViewController: FormTextFieldDelegate {
         
         return false
     }
+    
+    func formTextField(_ formTextField: FormTextField, hasBeenAutoFilled: Bool) {
+        if formTextField == passwordFormTextField {
+            // hide the confirmPassword textField in case of password auto filled.
+            confirmPasswordFormTextField.isHidden = hasBeenAutoFilled
+        }
+    }
 }

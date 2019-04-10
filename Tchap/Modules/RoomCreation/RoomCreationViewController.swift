@@ -234,6 +234,10 @@ extension RoomCreationViewController: FormTextFieldDelegate {
         _ = formTextField.resignFirstResponder()
         return false
     }
+    
+    func formTextField(_ formTextField: FormTextField, hasBeenAutoFilled: Bool) {
+        // Ignore
+    }
 }
 
 // MARK: - RoomCreationAvatarViewDelegate

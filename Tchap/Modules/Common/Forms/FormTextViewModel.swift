@@ -32,11 +32,14 @@ final class FormTextViewModel: FormTextViewModelType {
         }
     }
     
+    var valueMinimumCharacterLength: Int?
     var valueMaximumCharacterLength: Int?
     
     var valueDidUpdate: ((String?) -> Void)?
     
     var isEditable: Bool
+    
+    var hasBeenAutoFilled: Bool
     
     var textInputProperties: TextInputProperties = TextInputProperties()
     
@@ -45,24 +48,32 @@ final class FormTextViewModel: FormTextViewModelType {
     init(placeholder: String,
          additionalInfo: String? = nil,
          value: String? = nil,
+         valueMinimumCharacterLength: Int? = nil,
          valueMaximumCharacterLength: Int? = nil,
-         isEditable: Bool = true) {
+         isEditable: Bool = true,
+         hasBeenAutoFilled: Bool = false) {
         self.placeholder = placeholder
         self.additionalInfo = additionalInfo
         self.value = value
+        self.valueMinimumCharacterLength = valueMinimumCharacterLength
         self.valueMaximumCharacterLength = valueMaximumCharacterLength
         self.isEditable = isEditable
+        self.hasBeenAutoFilled = hasBeenAutoFilled
     }
     
     init(attributedPlaceholder: NSAttributedString,
          additionalInfo: String? = nil,
          value: String? = nil,
+         valueMinimumCharacterLength: Int? = nil,
          valueMaximumCharacterLength: Int? = nil,
-         isEditable: Bool = true) {
+         isEditable: Bool = true,
+         hasBeenAutoFilled: Bool = false) {
         self.attributedPlaceholder = attributedPlaceholder
         self.additionalInfo = additionalInfo
         self.value = value
+        self.valueMinimumCharacterLength = valueMinimumCharacterLength
         self.valueMaximumCharacterLength = valueMaximumCharacterLength
         self.isEditable = isEditable
+        self.hasBeenAutoFilled = hasBeenAutoFilled
     }
 }

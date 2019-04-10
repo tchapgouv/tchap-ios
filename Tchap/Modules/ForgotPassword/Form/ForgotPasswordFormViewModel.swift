@@ -44,17 +44,21 @@ final class ForgotPasswordFormViewModel: ForgotPasswordFormViewModelType {
         
         var passwordTextFieldProperties = TextInputProperties()
         passwordTextFieldProperties.isSecureTextEntry = true
-        if #available(iOS 11.0, *) {
+        if #available(iOS 12.0, *) {
+            passwordTextFieldProperties.textContentType = .newPassword
+        } else if #available(iOS 11.0, *) {
             passwordTextFieldProperties.textContentType = .password
         }
         
         let passwordTextViewModel = FormTextViewModel(placeholder: TchapL10n.forgotPasswordFormPasswordPlaceholder)
         passwordTextViewModel.textInputProperties = passwordTextFieldProperties
+        passwordTextViewModel.valueMinimumCharacterLength = FormRules.passwordMinLength
         
         // Confirm password
         
         let confirmPasswordTextViewModel = FormTextViewModel(placeholder: TchapL10n.forgotPasswordFormConfirmPasswordPlaceholder)
         confirmPasswordTextViewModel.textInputProperties = passwordTextFieldProperties
+        confirmPasswordTextViewModel.valueMinimumCharacterLength = FormRules.passwordMinLength
         
         let textViewModels = [
             emailTextViewModel,
@@ -91,12 +95,26 @@ final class ForgotPasswordFormViewModel: ForgotPasswordFormViewModelType {
             return .failure(errorPresentable)
         }
         
-        guard let password = self.passwordTextViewModel.value else {
+        // Handle here the potential Password AutoFill feature
+        let doPasswordsMatch: Bool
+        var password = self.passwordTextViewModel.value
+        if let confirmPassword = self.confirmPasswordTextViewModel.value {
+            if self.confirmPasswordTextViewModel.hasBeenAutoFilled {
+                // Ignore the first password value if the confirmed one has been auto-filled.
+                password = confirmPassword
+                doPasswordsMatch = true
+            } else {
+                doPasswordsMatch = (password == confirmPassword)
+            }
+        } else {
+            // Ignore the null comfirmed password if the main password has been auto-filled.
+            doPasswordsMatch = self.passwordTextViewModel.hasBeenAutoFilled
+        }
+        
+        guard let actualPassword = password else {
             let errorPresentable = ErrorPresentableImpl(title: errorTitle, message: TchapL10n.authenticationErrorMissingPassword)
             return .failure(errorPresentable)
         }
-        
-        let confirmPassword = self.confirmPasswordTextViewModel.value
         
         let validationResult: AuthenticationFormValidationResult
         
@@ -105,13 +123,13 @@ final class ForgotPasswordFormViewModel: ForgotPasswordFormViewModelType {
         if !MXTools.isEmailAddress(mail) {
             print("[ForgotPasswordFormViewModel] Invalid email")
             errorMessage = TchapL10n.authenticationErrorInvalidEmail
-        } else if password.isEmpty {
+        } else if actualPassword.isEmpty {
             print("[ForgotPasswordFormViewModel] Missing Password")
             errorMessage = TchapL10n.authenticationErrorMissingPassword
-        } else if password.count < FormRules.passwordMinLength {
+        } else if actualPassword.count < FormRules.passwordMinLength {
             print("[ForgotPasswordFormViewModel] Invalid Password")
             errorMessage = TchapL10n.authenticationErrorInvalidPassword(FormRules.passwordMinLength)
-        } else if password != confirmPassword {
+        } else if doPasswordsMatch == false {
             print("[ForgotPasswordFormViewModel] Passwords don't match")
             errorMessage = TchapL10n.registrationErrorPasswordsDontMatch
         }
@@ -120,7 +138,7 @@ final class ForgotPasswordFormViewModel: ForgotPasswordFormViewModelType {
             let errorPresentable = ErrorPresentableImpl(title: errorTitle, message: errorMessage)
             validationResult = .failure(errorPresentable)
         } else {
-            let authenticationFields = AuthenticationFields(login: mail, password: password)
+            let authenticationFields = AuthenticationFields(login: mail, password: actualPassword)
             validationResult = .success(authenticationFields)
         }
         

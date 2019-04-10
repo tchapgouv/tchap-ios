@@ -32,6 +32,9 @@ protocol FormTextViewModelType {
     var value: String? { get set }
     
     /// Value maximum character length
+    var valueMinimumCharacterLength: Int? { get }
+    
+    /// Value maximum character length
     var valueMaximumCharacterLength: Int? { get }
     
     /// Called when value update
@@ -39,6 +42,9 @@ protocol FormTextViewModelType {
     
     /// Indicate if text is editable
     var isEditable: Bool { get }
+    
+    /// Tell whether the text input seems to have been auto filled (or full pasted).
+    var hasBeenAutoFilled: Bool { get set }
     
     /// Text input properties (Some UITextInputTraits properties)
     var textInputProperties: TextInputProperties { get }
