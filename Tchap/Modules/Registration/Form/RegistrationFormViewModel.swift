@@ -58,8 +58,16 @@ final class RegistrationFormViewModel: RegistrationFormViewModelType {
         
         // Confirm password
         
+        // Note ".newPassword" type could not be used for the confirmation text field
+        // because this triggers an auto fill and clears the manually filled password (if any)
+        var confirmPasswordTextFieldProperties = TextInputProperties()
+        confirmPasswordTextFieldProperties.isSecureTextEntry = true
+        if #available(iOS 11.0, *) {
+            confirmPasswordTextFieldProperties.textContentType = .password
+        }
+        
         let confirmPasswordTextViewModel = FormTextViewModel(placeholder: TchapL10n.registrationConfirmPasswordPlaceholder)
-        confirmPasswordTextViewModel.textInputProperties = passwordTextFieldProperties
+        confirmPasswordTextViewModel.textInputProperties = confirmPasswordTextFieldProperties
         confirmPasswordTextViewModel.valueMinimumCharacterLength = FormRules.passwordMinLength
         
         let textViewModels = [
@@ -94,7 +102,7 @@ final class RegistrationFormViewModel: RegistrationFormViewModelType {
         
         let errorTitle = TchapL10n.errorTitleDefault
         
-        guard let mail = self.loginTextViewModel.value else {
+        guard let login = self.loginTextViewModel.value else {
             let errorPresentable = ErrorPresentableImpl(title: errorTitle, message: TchapL10n.authenticationErrorInvalidEmail)
             return .failure(errorPresentable)
         }
@@ -125,6 +133,7 @@ final class RegistrationFormViewModel: RegistrationFormViewModelType {
             return .failure(errorPresentable)
         }
         
+        let mail = login.trimmingCharacters(in: .whitespacesAndNewlines)
         let validationResult: AuthenticationFormValidationResult
         
         var errorMessage: String?
