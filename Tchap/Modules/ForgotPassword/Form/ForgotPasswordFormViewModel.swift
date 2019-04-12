@@ -22,8 +22,22 @@ final class ForgotPasswordFormViewModel: ForgotPasswordFormViewModelType {
     // MARK: - Properties
     
     let loginTextViewModel: FormTextViewModelType
-    let passwordTextViewModel: FormTextViewModelType
+    var passwordTextViewModel: FormTextViewModelType
     let confirmPasswordTextViewModel: FormTextViewModelType
+    
+    // MARK: Public
+    
+    weak var delegate: ForgotPasswordFormViewModelDelegate? {
+        didSet {
+            self.passwordTextViewModel.valueDidUpdate = { [weak self] (_, hasBeenAutoFilled) in
+                guard let sself = self else {
+                    return
+                }
+                // hide the confirmPassword textField in case of password auto filled.
+                sself.delegate?.forgotPasswordFormViewModel(sself, shouldHideConfirmPasswordTextField: hasBeenAutoFilled)
+            }
+        }
+    }
     
     // MARK: - Setup
     

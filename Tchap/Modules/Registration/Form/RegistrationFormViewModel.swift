@@ -22,9 +22,23 @@ final class RegistrationFormViewModel: RegistrationFormViewModelType {
     // MARK: - Properties
     
     let loginTextViewModel: FormTextViewModelType
-    let passwordTextViewModel: FormTextViewModelType
+    var passwordTextViewModel: FormTextViewModelType
     let confirmPasswordTextViewModel: FormTextViewModelType
     let termsCheckBoxModel: FormCheckBoxModelType
+    
+    // MARK: Public
+    
+    weak var delegate: RegistrationFormViewModelDelegate? {
+        didSet {
+            self.passwordTextViewModel.valueDidUpdate = { [weak self] (_, hasBeenAutoFilled) in
+                guard let sself = self else {
+                    return
+                }
+                // hide the confirmPassword textField in case of password auto filled.
+                sself.delegate?.registrationFormViewModel(sself, shouldHideConfirmPasswordTextField: hasBeenAutoFilled)
+            }
+        }
+    }
     
     // MARK: - Setup
     

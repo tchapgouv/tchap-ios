@@ -167,8 +167,4 @@ extension AuthenticationViewController: FormTextFieldDelegate {
         
         return false
     }
-    
-    func formTextField(_ formTextField: FormTextField, hasBeenAutoFilled: Bool) {
-        // Ignore
-    }
 }

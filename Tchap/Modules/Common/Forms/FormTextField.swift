@@ -19,7 +19,6 @@ import Reusable
 
 protocol FormTextFieldDelegate: class {
     func formTextFieldShouldReturn(_ formTextField: FormTextField) -> Bool
-    func formTextField(_ formTextField: FormTextField, hasBeenAutoFilled: Bool)
 }
 
 /// FormTextField represent a text field used in application forms 
@@ -113,8 +112,7 @@ final class FormTextField: UIView, NibOwnerLoadable {
     
     func resetTextField() {
         self.textField.text = nil
-        self.formTextViewModel?.value = nil
-        self.toggleAutoFillStatus(false)
+        self.formTextViewModel?.updateValue(value: nil, comesFromAutoFill: false)
     }
     
     // MARK: - Private
@@ -131,18 +129,6 @@ final class FormTextField: UIView, NibOwnerLoadable {
     
     private func setTextFieldEditable(_ enable: Bool) {
         self.isUserInteractionEnabled = enable
-    }
-    
-    private func toggleAutoFillStatus(_ hasBeenAutoFilled: Bool) {
-        // Consider only state change
-        guard let currentFlag = self.formTextViewModel?.hasBeenAutoFilled else {
-            return
-        }
-        
-        if currentFlag != hasBeenAutoFilled {
-            self.formTextViewModel?.hasBeenAutoFilled = hasBeenAutoFilled
-            self.delegate?.formTextField(self, hasBeenAutoFilled: hasBeenAutoFilled)
-        }
     }
     
 }
@@ -175,15 +161,14 @@ extension FormTextField: UITextFieldDelegate {
         // Check whether the textfield value is autofilled or full pasted
         let minLength = self.formTextViewModel?.valueMinimumCharacterLength ?? 1
         let hasBeenAutoFilled = (range.location == 0 && range.length == 0 && originalString.count == 0 && string.count > minLength)
-        self.toggleAutoFillStatus(hasBeenAutoFilled)
         
         guard let maxChar = self.formTextViewModel?.valueMaximumCharacterLength else {
-            self.formTextViewModel?.value = currentText
+            self.formTextViewModel?.updateValue(value: currentText, comesFromAutoFill: hasBeenAutoFilled)
             return true
         }
         
         if currentText.count <= maxChar {
-            self.formTextViewModel?.value = currentText
+            self.formTextViewModel?.updateValue(value: currentText, comesFromAutoFill: hasBeenAutoFilled)
             return true
         }
         
@@ -191,8 +176,7 @@ extension FormTextField: UITextFieldDelegate {
     }
     
     func textFieldShouldClear(_ textField: UITextField) -> Bool {
-        self.formTextViewModel?.value = nil
-        self.toggleAutoFillStatus(false)
+        self.formTextViewModel?.updateValue(value: nil, comesFromAutoFill: false)
         return true
     }
 }

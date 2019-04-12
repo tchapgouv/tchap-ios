@@ -28,18 +28,23 @@ final class FormTextViewModel: FormTextViewModelType {
     
     var value: String? {
         didSet {
-            self.valueDidUpdate?(value)
+            self.valueDidUpdate?(value, hasBeenAutoFilled)
         }
+    }
+    
+    private (set) var hasBeenAutoFilled: Bool
+    
+    func updateValue(value: String?, comesFromAutoFill: Bool = false) {
+        self.hasBeenAutoFilled = comesFromAutoFill
+        self.value = value
     }
     
     var valueMinimumCharacterLength: Int?
     var valueMaximumCharacterLength: Int?
     
-    var valueDidUpdate: ((String?) -> Void)?
+    var valueDidUpdate: ((_ newValue: String?, _ hasBeenAutoFilled: Bool) -> Void)?
     
     var isEditable: Bool
-    
-    var hasBeenAutoFilled: Bool
     
     var textInputProperties: TextInputProperties = TextInputProperties()
     
