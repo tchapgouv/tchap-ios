@@ -32,14 +32,23 @@ protocol FormTextViewModelType {
     var value: String? { get set }
     
     /// Value maximum character length
+    var valueMinimumCharacterLength: Int? { get }
+    
+    /// Value maximum character length
     var valueMaximumCharacterLength: Int? { get }
     
     /// Called when value update
-    var valueDidUpdate: ((String?) -> Void)? { get }
+    var valueDidUpdate: ((_ newValue: String?, _ hasBeenAutoFilled: Bool) -> Void)? { get set }
     
     /// Indicate if text is editable
     var isEditable: Bool { get }
     
+    /// Tell whether the text input seems to have been auto filled (or full pasted).
+    var hasBeenAutoFilled: Bool { get }
+    
     /// Text input properties (Some UITextInputTraits properties)
     var textInputProperties: TextInputProperties { get }
+    
+    /// Update the value by mentioning whether the new value comes from the auto fill (or pasteboard)
+    func updateValue(value: String?, comesFromAutoFill: Bool)
 }

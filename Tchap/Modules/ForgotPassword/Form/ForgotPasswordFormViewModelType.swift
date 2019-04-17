@@ -16,6 +16,10 @@
 
 import Foundation
 
+protocol ForgotPasswordFormViewModelDelegate: class {
+    func forgotPasswordFormViewModel(_ viewModel: ForgotPasswordFormViewModelType, shouldHideConfirmPasswordTextField isHidden: Bool)
+}
+
 /// Protocol describing the view model used by ForgotPasswordFormViewController
 protocol ForgotPasswordFormViewModelType {
     
@@ -27,6 +31,9 @@ protocol ForgotPasswordFormViewModelType {
     
     /// Confirm password view model
     var confirmPasswordTextViewModel: FormTextViewModelType { get }
+    
+    /// The potential delegate
+    var delegate: ForgotPasswordFormViewModelDelegate? { get set }
     
     /// Authentication form validation
     func validateForm() -> AuthenticationFormValidationResult

@@ -28,13 +28,21 @@ final class FormTextViewModel: FormTextViewModelType {
     
     var value: String? {
         didSet {
-            self.valueDidUpdate?(value)
+            self.valueDidUpdate?(value, hasBeenAutoFilled)
         }
     }
     
+    private (set) var hasBeenAutoFilled: Bool
+    
+    func updateValue(value: String?, comesFromAutoFill: Bool = false) {
+        self.hasBeenAutoFilled = comesFromAutoFill
+        self.value = value
+    }
+    
+    var valueMinimumCharacterLength: Int?
     var valueMaximumCharacterLength: Int?
     
-    var valueDidUpdate: ((String?) -> Void)?
+    var valueDidUpdate: ((_ newValue: String?, _ hasBeenAutoFilled: Bool) -> Void)?
     
     var isEditable: Bool
     
@@ -45,24 +53,32 @@ final class FormTextViewModel: FormTextViewModelType {
     init(placeholder: String,
          additionalInfo: String? = nil,
          value: String? = nil,
+         valueMinimumCharacterLength: Int? = nil,
          valueMaximumCharacterLength: Int? = nil,
-         isEditable: Bool = true) {
+         isEditable: Bool = true,
+         hasBeenAutoFilled: Bool = false) {
         self.placeholder = placeholder
         self.additionalInfo = additionalInfo
         self.value = value
+        self.valueMinimumCharacterLength = valueMinimumCharacterLength
         self.valueMaximumCharacterLength = valueMaximumCharacterLength
         self.isEditable = isEditable
+        self.hasBeenAutoFilled = hasBeenAutoFilled
     }
     
     init(attributedPlaceholder: NSAttributedString,
          additionalInfo: String? = nil,
          value: String? = nil,
+         valueMinimumCharacterLength: Int? = nil,
          valueMaximumCharacterLength: Int? = nil,
-         isEditable: Bool = true) {
+         isEditable: Bool = true,
+         hasBeenAutoFilled: Bool = false) {
         self.attributedPlaceholder = attributedPlaceholder
         self.additionalInfo = additionalInfo
         self.value = value
+        self.valueMinimumCharacterLength = valueMinimumCharacterLength
         self.valueMaximumCharacterLength = valueMaximumCharacterLength
         self.isEditable = isEditable
+        self.hasBeenAutoFilled = hasBeenAutoFilled
     }
 }

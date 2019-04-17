@@ -110,6 +110,11 @@ final class FormTextField: UIView, NibOwnerLoadable {
         self.textField.text = formTextViewModel.value
     }
     
+    func resetTextField() {
+        self.textField.text = nil
+        self.formTextViewModel?.updateValue(value: nil, comesFromAutoFill: false)
+    }
+    
     // MARK: - Private
     
     private func updateTextFieldProperties(textFieldProperties: TextInputProperties) {
@@ -125,6 +130,7 @@ final class FormTextField: UIView, NibOwnerLoadable {
     private func setTextFieldEditable(_ enable: Bool) {
         self.isUserInteractionEnabled = enable
     }
+    
 }
 
 // MARK: - Stylable
@@ -152,13 +158,17 @@ extension FormTextField: UITextFieldDelegate {
         
         let currentText = TextInputHandler.currentText(fromOrginalString: originalString, replacementCharactersRange: range, replacementString: string)
         
+        // Check whether the textfield value is autofilled or full pasted
+        let minLength = self.formTextViewModel?.valueMinimumCharacterLength ?? 1
+        let hasBeenAutoFilled = (range.location == 0 && range.length == 0 && originalString.count == 0 && string.count > minLength)
+        
         guard let maxChar = self.formTextViewModel?.valueMaximumCharacterLength else {
-            self.formTextViewModel?.value = currentText
+            self.formTextViewModel?.updateValue(value: currentText, comesFromAutoFill: hasBeenAutoFilled)
             return true
         }
         
         if currentText.count <= maxChar {
-            self.formTextViewModel?.value = currentText
+            self.formTextViewModel?.updateValue(value: currentText, comesFromAutoFill: hasBeenAutoFilled)
             return true
         }
         
@@ -166,7 +176,7 @@ extension FormTextField: UITextFieldDelegate {
     }
     
     func textFieldShouldClear(_ textField: UITextField) -> Bool {
-        self.formTextViewModel?.value = nil
+        self.formTextViewModel?.updateValue(value: nil, comesFromAutoFill: false)
         return true
     }
 }

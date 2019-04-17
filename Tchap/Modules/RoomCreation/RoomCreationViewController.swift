@@ -148,7 +148,7 @@ final class RoomCreationViewController: UIViewController {
         self.roomNameFormTextField.fill(formTextViewModel: self.viewModel.roomNameFormTextViewModel)
         self.roomNameFormTextField.delegate = self
         
-        self.viewModel.roomNameFormTextViewModel.valueDidUpdate = { [weak self] text in
+        self.viewModel.roomNameFormTextViewModel.valueDidUpdate = { [weak self] (text, _) in
             self?.roomNameDidChange(with: text)
         }
         
