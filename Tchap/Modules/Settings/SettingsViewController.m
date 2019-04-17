@@ -1032,7 +1032,17 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         {
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
             
-            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_hide_from_users_directory", @"Tchap", nil);
+            NSString *title = NSLocalizedStringFromTable(@"settings_hide_from_users_directory_title", @"Tchap", nil);
+            NSString *summary = NSLocalizedStringFromTable(@"settings_hide_from_users_directory_summary", @"Tchap", nil);
+            NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString: title
+                                                                                               attributes:@{NSForegroundColorAttributeName : self.currentStyle.primaryTextColor,
+                                                                                                            NSFontAttributeName: [UIFont systemFontOfSize:17.0]}];
+            [attributedText appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n"]];
+            [attributedText appendAttributedString:[[NSMutableAttributedString alloc] initWithString: summary
+                                                                                          attributes:@{NSForegroundColorAttributeName : self.currentStyle.secondaryTextColor,
+                                                                                                       NSFontAttributeName: [UIFont systemFontOfSize:14.0]}]];
+            
+            labelAndSwitchCell.mxkLabel.attributedText = attributedText;
             labelAndSwitchCell.mxkSwitch.on = [self isHiddenFromUsersDirectory:session];
             labelAndSwitchCell.mxkSwitch.enabled = YES;
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleHideFromUsersDirectory:) forControlEvents:UIControlEventTouchUpInside];
