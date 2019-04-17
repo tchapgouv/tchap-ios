@@ -215,6 +215,10 @@ internal enum TchapL10n {
   internal static let settingsChangePwdSuccessMsg = TchapL10n.tr("Tchap", "settings_change_pwd_success_msg")
   /// Succès
   internal static let settingsChangePwdSuccessTitle = TchapL10n.tr("Tchap", "settings_change_pwd_success_title")
+  /// Utiliser les adresses e-mails pour retrouver des utilisateurs
+  internal static let settingsContactsDiscoverMatrixUsers = TchapL10n.tr("Tchap", "settings_contacts_discover_matrix_users")
+  /// Inscrire mon compte sur liste rouge.\nLes autres utilisateurs ne pourront pas découvrir mon compte lors de leurs recherches
+  internal static let settingsHideFromUsersDirectory = TchapL10n.tr("Tchap", "settings_hide_from_users_directory")
   /// Votre correspondant a quitté définitivement cette discussion.\nVous devez en créer une nouvelle pour le recontacter, s'il est toujours joignable sur Tchap.
   internal static let tchapCannotInviteDeactivatedAccountUser = TchapL10n.tr("Tchap", "tchap_cannot_invite_deactivated_account_user")
   /// J'ai un compte

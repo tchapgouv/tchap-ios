@@ -139,6 +139,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     NSInteger userSettingsChangePasswordIndex;
     NSInteger userSettingsNightModeSepIndex;
     NSInteger userSettingsNightModeIndex;
+    NSInteger userSettingsHideFromUsersDirIndex;
     
     // Dynamic rows in the local contacts section
     NSInteger localContactsSyncIndex;
@@ -169,6 +170,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 @property (nonatomic, weak) id accountUserInfoObserver;
 @property (nonatomic, weak) id pushInfoUpdateObserver;
 @property (nonatomic, weak) id appDelegateDidTapStatusBarNotificationObserver;
+@property (nonatomic, weak) id sessionAccountDataDidChangeNotificationObserver;
 
 @end
 
@@ -338,6 +340,11 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         [[NSNotificationCenter defaultCenter] removeObserver:_appDelegateDidTapStatusBarNotificationObserver];
     }
     
+    if (_sessionAccountDataDidChangeNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:_sessionAccountDataDidChangeNotificationObserver];
+    }
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     if (deviceView)
@@ -394,6 +401,13 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         
     }];
     
+    _sessionAccountDataDidChangeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionAccountDataDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+
+        MXStrongifyAndReturnIfNil(self);
+        [self refreshSettings];
+
+    }];
+    
     // Apply the current theme
     [self userInterfaceThemeDidChange];
 }
@@ -417,6 +431,11 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     if (_appDelegateDidTapStatusBarNotificationObserver)
     {
         [[NSNotificationCenter defaultCenter] removeObserver:_appDelegateDidTapStatusBarNotificationObserver];
+    }
+    
+    if (_sessionAccountDataDidChangeNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:_sessionAccountDataDidChangeNotificationObserver];
     }
 }
 
@@ -653,20 +672,38 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     else if (section == SETTINGS_SECTION_USER_SETTINGS_INDEX)
     {
         MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-
-        userSettingsProfilePictureIndex = 0;
-        userSettingsDisplayNameIndex = 1;
-        userSettingsChangePasswordIndex = 2;
-        userSettingsEmailStartIndex = 3;
-        userSettingsPhoneStartIndex = userSettingsEmailStartIndex + account.linkedEmails.count;
-
-        // Hide some unsupported account settings
-        userSettingsFirstNameIndex = -1;
-        userSettingsSurnameIndex = -1;
-        userSettingsNightModeSepIndex = -1;
-        userSettingsNightModeIndex = -1;
-
-        count = userSettingsPhoneStartIndex + account.linkedPhoneNumbers.count;
+        MXSession* session = [account mxSession];
+        
+        if (session)
+        {
+            UserService *userService = [[UserService alloc] initWithSession:session];
+            
+            userSettingsProfilePictureIndex = count++;
+            userSettingsDisplayNameIndex = count++;
+            userSettingsChangePasswordIndex = count++;
+            
+            
+            // Note the external users are not allowed to hide them from the users directory.
+            if (![userService isExternalUserFor:session.myUser.userId])
+            {
+                userSettingsHideFromUsersDirIndex = count++;
+            }
+            else
+            {
+                userSettingsHideFromUsersDirIndex = -1;
+            }
+            
+            userSettingsEmailStartIndex = count;
+            userSettingsPhoneStartIndex = userSettingsEmailStartIndex + account.linkedEmails.count;
+            
+            // Hide some unsupported account settings
+            userSettingsFirstNameIndex = -1;
+            userSettingsSurnameIndex = -1;
+            userSettingsNightModeSepIndex = -1;
+            userSettingsNightModeIndex = -1;
+            
+            count = userSettingsPhoneStartIndex + account.linkedPhoneNumbers.count;
+        }
     }
     else if (section == SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX)
     {
@@ -681,9 +718,11 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 //    }
     else if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
     {
-        if ([AppDelegate theDelegate].mxSessions.count > 0)
+        MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+        MXSession* session = [account mxSession];
+        
+        if (session)
         {
-            MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
             count = session.ignoredUsers.count;
         }
         else
@@ -818,14 +857,12 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     cell.backgroundColor = self.currentStyle.warnTextColor;
     
     // check if there is a valid session
-    if (([AppDelegate theDelegate].mxSessions.count == 0) || ([MXKAccountManager sharedManager].activeAccounts.count == 0))
+    MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+    MXSession* session = [account mxSession];
+    if (!session)
     {
-        // else use a default cell
         return cell;
     }
-    
-    MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
-    MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
 
     if (section == SETTINGS_SECTION_SIGN_OUT_INDEX)
     {
@@ -991,6 +1028,17 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
             nightModeCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell = nightModeCell;
         }
+        else if (row == userSettingsHideFromUsersDirIndex)
+        {
+            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+            
+            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_hide_from_users_directory", @"Tchap", nil);
+            labelAndSwitchCell.mxkSwitch.on = [self isHiddenFromUsersDirectory:session];
+            labelAndSwitchCell.mxkSwitch.enabled = YES;
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleHideFromUsersDirectory:) forControlEvents:UIControlEventTouchUpInside];
+            
+            cell = labelAndSwitchCell;
+        }
     }
     else if (section == SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX)
     {
@@ -1072,7 +1120,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
 
             labelAndSwitchCell.mxkLabel.numberOfLines = 0;
-            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_contacts_discover_matrix_users", @"Vector", nil);
+            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_contacts_discover_matrix_users", @"Tchap", nil);
             labelAndSwitchCell.mxkSwitch.on = [MXKAppSettings standardAppSettings].syncLocalContacts;
             labelAndSwitchCell.mxkSwitch.enabled = YES;
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleLocalContactsSync:) forControlEvents:UIControlEventTouchUpInside];
@@ -1338,13 +1386,11 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     else if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
     {
         // Check whether this section is visible
-        if ([AppDelegate theDelegate].mxSessions.count > 0)
+        MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+        MXSession* session = [account mxSession];
+        if (session && session.ignoredUsers.count)
         {
-            MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
-            if (session.ignoredUsers.count)
-            {
-                return NSLocalizedStringFromTable(@"settings_ignored_users", @"Vector", nil);
-            }
+            return NSLocalizedStringFromTable(@"settings_ignored_users", @"Vector", nil);
         }
     }
     else if (section == SETTINGS_SECTION_CONTACTS_INDEX)
@@ -1432,14 +1478,12 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 {
     if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
     {
-        if ([AppDelegate theDelegate].mxSessions.count > 0)
+        MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+        MXSession* session = [account mxSession];
+        if (session && session.ignoredUsers.count == 0)
         {
-            MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
-            if (session.ignoredUsers.count == 0)
-            {
-                // Hide this section
-                return SECTION_TITLE_PADDING_WHEN_HIDDEN;
-            }
+            // Hide this section
+            return SECTION_TITLE_PADDING_WHEN_HIDDEN;
         }
     }
 //    else if (section == SETTINGS_SECTION_CALLS_INDEX)
@@ -1457,14 +1501,12 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 {
     if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
     {
-        if ([AppDelegate theDelegate].mxSessions.count > 0)
+        MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+        MXSession* session = [account mxSession];
+        if (session && session.ignoredUsers.count == 0)
         {
-            MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
-            if (session.ignoredUsers.count == 0)
-            {
-                // Hide this section
-                return SECTION_TITLE_PADDING_WHEN_HIDDEN;
-            }
+            // Hide this section
+            return SECTION_TITLE_PADDING_WHEN_HIDDEN;
         }
     }
 //    else if (section == SETTINGS_SECTION_CALLS_INDEX)
@@ -1487,7 +1529,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         
         if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
         {
-            MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
+            MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+            MXSession* session = [account mxSession];
 
             NSString *ignoredUserId;
             if (indexPath.row < session.ignoredUsers.count)
@@ -1511,8 +1554,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
                                                                    {
                                                                        typeof(self) self = weakSelf;
                                                                        self->currentAlert = nil;
-                                                                       
-                                                                       MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
                                                                        
                                                                        // Remove the member from the ignored user list
                                                                        [self startActivityIndicator];
@@ -1820,8 +1861,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 //- (void)onRuleUpdate:(id)sender
 //{
 //    MXPushRule* pushRule = nil;
-//    MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
-//    
+//    MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+//    MXSession* session = [account mxSession];
+//
 //    NSInteger row = ((UIView*)sender).tag;
 //    
 //    if (row == NOTIFICATION_SETTINGS_CONTAINING_MY_DISPLAY_NAME_INDEX)
@@ -1985,15 +2027,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 
 - (void)updateSaveButtonStatus
 {
-    if ([AppDelegate theDelegate].mxSessions.count > 0)
-    {
-        MXSession* session = [[AppDelegate theDelegate].mxSessions objectAtIndex:0];
-        MXMyUser* myUser = session.myUser;
-        
-        BOOL saveButtonEnabled = (nil != newAvatarImage);
-        
-        self.navigationItem.rightBarButtonItem.enabled = saveButtonEnabled;
-    }
+    self.navigationItem.rightBarButtonItem.enabled = (nil != newAvatarImage);
 }
 
 - (void)onProfileAvatarTap:(UITapGestureRecognizer *)recognizer
@@ -2384,6 +2418,45 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 - (void)deactivateAccountViewControllerDidCancel:(DeactivateAccountViewController *)deactivateAccountViewController
 {
     [deactivateAccountViewController dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - Hide from users directory
+
+- (BOOL)isHiddenFromUsersDirectory:(MXSession *)session
+{
+    BOOL isHidden = NO;
+    NSDictionary *content = [session.accountData accountDataForEventType:@"im.vector.hide_profile"];
+    if (content && content[@"hide_profile"])
+    {
+        MXJSONModelSetBoolean(isHidden, content[@"hide_profile"]);
+    }
+    return isHidden;
+}
+
+- (void)toggleHideFromUsersDirectory:(id)sender
+{
+    UISwitch *switchButton = (UISwitch*)sender;
+    MXKAccount *account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+    MXSession *session = [account mxSession];
+    if (session)
+    {
+        NSDictionary *dict = @{@"hide_profile": [NSNumber numberWithBool:switchButton.on]};
+        
+        MXWeakify(self);
+        [self startActivityIndicator];
+        [account.mxSession setAccountData:dict forType:@"im.vector.hide_profile" success:^{
+            MXStrongifyAndReturnIfNil(self);
+            [self stopActivityIndicator];
+        } failure:^(NSError *error) {
+            MXStrongifyAndReturnIfNil(self);
+            [self stopActivityIndicator];
+            NSLog(@"[SettingsViewController] toggleHideFromUsersDirectory failed");
+            
+            NSString *myUserId = account.mxSession.myUser.userId;
+            [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error userInfo:myUserId ? @{kMXKErrorUserIdKey: myUserId} : nil];
+            [self refreshSettings];
+        }];
+    }
 }
 
 @end
