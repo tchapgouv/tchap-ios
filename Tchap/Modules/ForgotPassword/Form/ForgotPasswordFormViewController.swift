@@ -94,6 +94,8 @@ final class ForgotPasswordFormViewController: UIViewController {
     private func setupViews() {
         self.scrollView.keyboardDismissMode = .interactive
         
+        self.viewModel.delegate = self
+        
         self.setupFormTextFields()
         
         self.instructionsLabel.text = TchapL10n.forgotPasswordFormInstructions
@@ -120,6 +122,13 @@ final class ForgotPasswordFormViewController: UIViewController {
     
     private func userThemeDidChange() {
         self.update(style: self.currentStyle)
+    }
+    
+    private func hideConfirmPasswordTextField(_ hide: Bool) {
+        confirmPasswordFormTextField.isHidden = hide
+        if confirmPasswordFormTextField.isHidden {
+            confirmPasswordFormTextField.resetTextField()
+        }
     }
     
     // MARK: - Actions
@@ -159,6 +168,14 @@ extension ForgotPasswordFormViewController: Stylable {
         }
         
         style.applyStyle(onButton: self.sendEmailButton)
+    }
+}
+
+// MARK: - ForgotPasswordFormViewModelDelegate
+extension ForgotPasswordFormViewController: ForgotPasswordFormViewModelDelegate {
+    
+    func forgotPasswordFormViewModel(_ viewModel: ForgotPasswordFormViewModelType, shouldHideConfirmPasswordTextField isHidden: Bool) {
+        self.hideConfirmPasswordTextField(isHidden)
     }
 }
 

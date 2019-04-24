@@ -103,6 +103,8 @@ final class RegistrationFormViewController: UIViewController {
         
         self.scrollView.keyboardDismissMode = .interactive
         
+        self.viewModel.delegate = self
+        
         self.setupFormTextFields()
         self.setupTermsCheckBox()
     }
@@ -132,6 +134,13 @@ final class RegistrationFormViewController: UIViewController {
     
     private func userThemeDidChange() {
         self.update(style: self.currentStyle)
+    }
+    
+    private func hideConfirmPasswordTextField(_ hide: Bool) {
+        confirmPasswordFormTextField.isHidden = hide
+        if confirmPasswordFormTextField.isHidden {
+            confirmPasswordFormTextField.resetTextField()
+        }
     }
     
     // MARK: - Actions
@@ -166,6 +175,14 @@ extension RegistrationFormViewController: Stylable {
         }
         
         self.termsFormCheckBox.update(style: style)
+    }
+}
+
+// MARK: - RegistrationFormViewModelDelegate
+extension RegistrationFormViewController: RegistrationFormViewModelDelegate {
+    
+    func registrationFormViewModel(_ viewModel: RegistrationFormViewModelType, shouldHideConfirmPasswordTextField isHidden: Bool) {
+        self.hideConfirmPasswordTextField(isHidden)
     }
 }
 

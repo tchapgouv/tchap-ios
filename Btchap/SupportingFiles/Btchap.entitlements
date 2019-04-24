@@ -11,7 +11,7 @@
 		<string>applinks:matrix.e.tchap.gouv.fr</string>
 		<string>applinks:www.beta.tchap.gouv.fr</string>
 		<string>applinks:beta.tchap.gouv.fr</string>
-		<string>webcredentials:beta.tchap.gouv.fr</string>
+		<string>webcredentials:www.beta.tchap.gouv.fr</string>
 	</array>
 	<key>com.apple.security.application-groups</key>
 	<array>

@@ -105,6 +105,9 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Settings
+"settings_hide_from_users_directory_title" = "Inscrire mon compte sur liste rouge";
+"settings_hide_from_users_directory_summary" = "Les autres utilisateurs ne pourront pas découvrir mon compte lors de leurs recherches";
+"settings_contacts_discover_matrix_users" = "Utiliser les adresses e-mails pour retrouver des utilisateurs";
 "settings_change_pwd_caution" = "Changer le mot de passe réinitialise les clés de chiffrement sur tous les appareils, rendant l’historique des discussions illisible: pensez d'abord à exporter vos clés pour pouvoir les ré-importer après le changement de mot de passe.";
 "settings_change_pwd_message" = "Votre nouveau mot de passe doit contenir au moins 8 caractères.";
 "settings_change_pwd_success_title" = "Succès";

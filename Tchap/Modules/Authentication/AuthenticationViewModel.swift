@@ -63,7 +63,7 @@ final class AuthenticationViewModel: AuthenticationViewModelType {
         
         let errorTitle = TchapL10n.errorTitleDefault
         
-        guard let mail = self.loginTextViewModel.value else {
+        guard let login = self.loginTextViewModel.value else {
             let errorPresentable = ErrorPresentableImpl(title: errorTitle, message: TchapL10n.authenticationErrorInvalidEmail)
             return .failure(errorPresentable)
         }
@@ -73,6 +73,7 @@ final class AuthenticationViewModel: AuthenticationViewModelType {
             return .failure(errorPresentable)
         }
         
+        let mail = login.trimmingCharacters(in: .whitespacesAndNewlines)
         let validationResult: AuthenticationFormValidationResult
         
         var errorMessage: String?

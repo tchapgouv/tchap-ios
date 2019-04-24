@@ -21,9 +21,9 @@
 		<string>applinks:matrix.agent.social.tchap.gouv.fr</string>
 		<string>applinks:matrix.agent.ssi.tchap.gouv.fr</string>
 		<string>applinks:matrix.agent.tchap.gouv.fr</string>
-		<string>applinks:www.agent.tchap.gouv.fr</string>
-		<string>applinks:agent.tchap.gouv.fr</string>
-		<string>webcredentials:agent.tchap.gouv.fr</string>
+		<string>applinks:www.tchap.gouv.fr</string>
+		<string>applinks:tchap.gouv.fr</string>
+		<string>webcredentials:www.tchap.gouv.fr</string>
 	</array>
 	<key>com.apple.security.application-groups</key>
 	<array>

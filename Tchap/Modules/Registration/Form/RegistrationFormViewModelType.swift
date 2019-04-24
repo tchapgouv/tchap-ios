@@ -16,6 +16,10 @@
 
 import Foundation
 
+protocol RegistrationFormViewModelDelegate: class {
+    func registrationFormViewModel(_ viewModel: RegistrationFormViewModelType, shouldHideConfirmPasswordTextField isHidden: Bool)
+}
+
 /// Protocol describing the view model used by RegistrationFormViewController
 protocol RegistrationFormViewModelType {
     
@@ -30,6 +34,9 @@ protocol RegistrationFormViewModelType {
     
     /// Terms check box view model
     var termsCheckBoxModel: FormCheckBoxModelType { get }
+    
+    /// The potential delegate
+    var delegate: RegistrationFormViewModelDelegate? { get set }
     
     /// Registration form validation
     func validateForm() -> AuthenticationFormValidationResult
