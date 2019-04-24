@@ -1,3 +1,14 @@
+Changes in Tchap 1.0.10 (2019-04-24)
+===================================================
+
+ Features/Improvements:
+ * User Profile: add an option to hide the user from users directory search #167
+ 
+ Bug Fixes:
+ * Handle the Password AutoFill Workflow PR #187
+ * Flickering of the notification badges #189
+ * Room history: the most recent event is not displayed #136
+
 Changes in Tchap 1.0.9 (2019-04-09)
 ===================================================
 
@@ -12,8 +23,8 @@ Changes in Tchap 1.0.8 (2019-04-05)
  * Increase the minimum password length to 8 #179
  
  Bug Fixes:
-  * Improve external users handing
-  * Fix a crash observed after a successful login
+ * Improve external users handing
+ * Fix a crash observed after a successful login
 
 Changes in Tchap 1.0.7 (2019-04-04)
 ===================================================
