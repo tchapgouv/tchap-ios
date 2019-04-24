@@ -213,7 +213,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
 @property (nonatomic, strong) User *discussionTargetUser;
 
 // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
-@property (nonatomic, weak) id kRiotDesignValuesDidChangeThemeNotificationObserver;
+@property (nonatomic, weak) id themeDidChangeNotificationObserver;
 
 /**
  Action used to handle some buttons.
@@ -406,7 +406,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     
     // Observe user interface theme change.
     MXWeakify(self);
-    _kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    _themeDidChangeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         MXStrongifyAndReturnIfNil(self);
         [self userInterfaceThemeDidChange];
@@ -1108,9 +1108,9 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     
     [self removeTypingNotificationsListener];
     
-    if (_kRiotDesignValuesDidChangeThemeNotificationObserver)
+    if (_themeDidChangeNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:_kRiotDesignValuesDidChangeThemeNotificationObserver];
+        [[NSNotificationCenter defaultCenter] removeObserver:_themeDidChangeNotificationObserver];
     }
     if (kAppDelegateDidTapStatusBarNotificationObserver)
     {
