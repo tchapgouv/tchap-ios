@@ -714,6 +714,14 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     
     if (self.roomDataSource)
     {
+        // Issue: when the room has been already rendered once, a partial reload of the table is observed during [super displayRoom:].
+        // This triggers a scroll to bottom and reset the flag shouldScrollToBottomOnTableRefresh whereas the view controller does not appeared yet.
+        // Patch: Force the flag to scroll to bottom the bubble history if the table is not visible yet.
+        if (self.bubblesTableView.isHidden)
+        {
+            shouldScrollToBottomOnTableRefresh = YES;
+        }
+        
         [self listenToServerNotices];
 
         self.eventsAcknowledgementEnabled = YES;
