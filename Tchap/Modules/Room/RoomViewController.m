@@ -182,9 +182,6 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     
     // The right bar button items back up.
     NSArray<UIBarButtonItem *> *rightBarButtonItems;
-
-    // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
-    id kRiotDesignValuesDidChangeThemeNotificationObserver;
     
     // Tell whether the input text field is in send reply mode. If true typed message will be sent to highlighted event.
     BOOL isInReplyMode;
@@ -214,6 +211,9 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
 
 // Direct chat target user when create a discussion without associated room
 @property (nonatomic, strong) User *discussionTargetUser;
+
+// Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
+@property (nonatomic, weak) id themeDidChangeNotificationObserver;
 
 /**
  Action used to handle some buttons.
@@ -405,8 +405,10 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     }
     
     // Observe user interface theme change.
-    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    MXWeakify(self);
+    _themeDidChangeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
+        MXStrongifyAndReturnIfNil(self);
         [self userInterfaceThemeDidChange];
         
     }];
@@ -1084,7 +1086,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     }];
 }
 
-- (void)destroy
+- (void)dealloc
 {
     rightBarButtonItems = nil;
     for (UIBarButtonItem *barButtonItem in self.navigationItem.rightBarButtonItems)
@@ -1106,10 +1108,9 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     
     [self removeTypingNotificationsListener];
     
-    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    if (_themeDidChangeNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
-        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:_themeDidChangeNotificationObserver];
     }
     if (kAppDelegateDidTapStatusBarNotificationObserver)
     {
@@ -1157,8 +1158,6 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     missedDiscussionsBadgeLabel = nil;
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXEventDidChangeSentStateNotification object:nil];
-    
-    [super destroy];
 }
 
 #pragma mark - Tchap
