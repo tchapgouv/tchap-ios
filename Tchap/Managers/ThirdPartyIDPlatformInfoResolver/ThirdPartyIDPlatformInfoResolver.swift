@@ -75,7 +75,7 @@ final class ThirdPartyIDPlatformInfoResolver: ThirdPartyIDPlatformInfoResolverTy
                 hostname = host
             }
             
-            if let finalHostname = hostname {
+            if let finalHostname = hostname, finalHostname.count > 0 {
                 let homeServer = "\(self.serverPrefixURL)\(finalHostname)"
                 let info = ThirdPartyIDPlatformInfo(hostname: finalHostname, homeServer: homeServer, isInvited: isInvited)
                 success?(.authorizedThirdPartyID(info: info))
