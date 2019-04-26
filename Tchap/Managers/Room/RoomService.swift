@@ -33,6 +33,7 @@ private struct RoomCreationParameters {
 
 enum RoomServiceError: Error {
     case invalidAvatarURL
+    case directRoomCreationFailed
 }
 
 /// `RoomService` implementation of `RoomServiceType` is used to perform room operations.
@@ -41,6 +42,7 @@ final class RoomService: RoomServiceType {
     // MARK: - Properties
     
     private let session: MXSession
+    private var createdRoom: MXRoom?
     
     // MARK: - Setup
     
@@ -211,13 +213,22 @@ final class RoomService: RoomServiceType {
                     roomCreationParameters.inviteUserIDs == nil,
                     let address = roomCreationParameters.inviteThirdPartyIDs?.first?.address {
                     // Force this room to be direct for the invited 3pid, the matrix-ios-sdk don't do that by default for the moment.
+                    self.createdRoom = room
                     room.setIsDirect(true, withUserId: address, success: {
-                        completion(.success(room.roomId))
+                        if let roomID = self.createdRoom?.roomId {
+                            completion(.success(roomID))
+                        } else {
+                            completion(.failure(RoomServiceError.directRoomCreationFailed))
+                        }
+                        self.createdRoom = nil
                     }, failure: { (error) in
                         NSLog("[RoomService] setIsDirect failed")
                         if let error = error {
                             completion(.failure(error))
+                        } else {
+                            completion(.failure(RoomServiceError.directRoomCreationFailed))
                         }
+                        self.createdRoom = nil
                     })
                 } else {
                     completion(.success(room.roomId))
