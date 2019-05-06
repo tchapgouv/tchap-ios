@@ -28,8 +28,7 @@ final class FormCheckBox: UIView, NibOwnerLoadable {
     
     // MARK: Outlets
     
-    @IBOutlet private weak var checkBoxImaveView: UIImageView!
-    @IBOutlet private weak var checkBoxMask: UIView!
+    @IBOutlet private weak var checkBoxButton: UIButton!
     @IBOutlet private weak var label: UILabel!
     @IBOutlet private weak var labelMask: UIView!
     
@@ -46,9 +45,10 @@ final class FormCheckBox: UIView, NibOwnerLoadable {
     private func commonInit() {
         self.label.text = nil
         
+        self.checkBoxButton.accessibilityLabel = TchapL10n.registrationTermsCheckboxAccessibility
+        self.label.accessibilityLabel = TchapL10n.registrationTermsLabelAccessibility
+        
         self.isUserInteractionEnabled = true
-        let checkBoxTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleCheckBoxTap(_:)))
-        self.checkBoxMask.addGestureRecognizer(checkBoxTapGestureRecognizer)
         
         let labelTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleLabelTap(_:)))
         self.labelMask.addGestureRecognizer(labelTapGestureRecognizer)
@@ -77,15 +77,14 @@ final class FormCheckBox: UIView, NibOwnerLoadable {
     func fill(formCheckBoxModel: FormCheckBoxModelType) {
         self.formCheckBoxModel = formCheckBoxModel
         
-        self.updateCheckBoxImage()
+        self.updateCheckBoxButton()
         self.setupCheckBoxLabel(formCheckBoxModel.label, labelLink: formCheckBoxModel.labelLink)
     }
     
     // MARK: - Private
     
-    private func updateCheckBoxImage() {
-        let isSelected = self.formCheckBoxModel?.isSelected ?? false
-        self.checkBoxImaveView.image = isSelected ? Asset.Images.Common.selectionTick.image : Asset.Images.Common.selectionUntick.image
+    private func updateCheckBoxButton() {
+        self.checkBoxButton.isSelected = self.formCheckBoxModel?.isSelected ?? false
     }
     
     private func setupCheckBoxLabel(_ label: String, labelLink: String?) {
@@ -101,11 +100,11 @@ final class FormCheckBox: UIView, NibOwnerLoadable {
     
     // MARK: - Actions
     
-    @objc private func handleCheckBoxTap(_ sender: UITapGestureRecognizer) {
+    @IBAction private func handleCheckBoxTap(_ sender: UIButton) {
         if let model = self.formCheckBoxModel {
             // invert the current state
             self.formCheckBoxModel?.isSelected = !model.isSelected
-            self.updateCheckBoxImage()
+            self.updateCheckBoxButton()
         }
     }
     

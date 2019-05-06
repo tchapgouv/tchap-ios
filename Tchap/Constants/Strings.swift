@@ -155,6 +155,10 @@ internal enum TchapL10n {
   internal static let registrationPasswordPlaceholder = TchapL10n.tr("Tchap", "registration_password_placeholder")
   /// Termes et Conditions
   internal static let registrationTermsAndConditionsTitle = TchapL10n.tr("Tchap", "registration_terms_and_conditions_title")
+  /// Accepter les conditions générales d'utilisation
+  internal static let registrationTermsCheckboxAccessibility = TchapL10n.tr("Tchap", "registration_terms_checkbox_accessibility")
+  /// Lire les conditions générales d'utilisation
+  internal static let registrationTermsLabelAccessibility = TchapL10n.tr("Tchap", "registration_terms_label_accessibility")
   /// J'accepte les %@
   internal static func registrationTermsLabelFormat(_ p1: String) -> String {
     return TchapL10n.tr("Tchap", "registration_terms_label_format", p1)
