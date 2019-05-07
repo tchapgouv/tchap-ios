@@ -19,11 +19,11 @@ import Foundation
 /// Subclass of UINavigationController to handle view controller based status bar style with view controller containment
 final class TCNavigationController: UINavigationController {
     
-    override var childViewControllerForStatusBarStyle: UIViewController? {
+    override var childForStatusBarStyle: UIViewController? {
         return self.topViewController
     }
     
-    override var childViewControllerForStatusBarHidden: UIViewController? {
+    override var childForStatusBarHidden: UIViewController? {
         return self.topViewController
     }
 }

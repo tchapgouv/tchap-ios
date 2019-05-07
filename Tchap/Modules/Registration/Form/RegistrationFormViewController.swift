@@ -190,7 +190,7 @@ extension RegistrationFormViewController: RegistrationFormViewModelDelegate {
 extension RegistrationFormViewController: FormTextFieldDelegate {
     
     func formTextFieldShouldReturn(_ formTextField: FormTextField) -> Bool {
-        guard let index = self.formTextFields.index(of: formTextField) else {
+        guard let index = self.formTextFields.firstIndex(of: formTextField) else {
             return false
         }
         

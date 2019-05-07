@@ -51,7 +51,7 @@ final class GlobalSearchBar: UIView, NibLoadable {
     // MARK: - Overrides
     
     override var intrinsicContentSize: CGSize {
-        return UILayoutFittingExpandedSize
+        return UIView.layoutFittingExpandedSize
     }
     
     override func becomeFirstResponder() -> Bool {

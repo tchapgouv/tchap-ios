@@ -38,7 +38,7 @@ extension UIView {
         
         if inverse {
             path.append(UIBezierPath(rect: self.bounds))
-            maskLayer.fillRule = kCAFillRuleEvenOdd
+            maskLayer.fillRule = CAShapeLayerFillRule.evenOdd
         }
         
         maskLayer.path = path.cgPath
@@ -62,7 +62,7 @@ extension UIView {
     
     func tc_addOrUpdateBorderLayer(with path: CGPath, name: String, bringToFront: Bool = true, borderWidth: CGFloat = 0.0, borderColor: UIColor = UIColor.black) {
         
-        let foundBorderLayerIndex = self.layer.sublayers?.index(where: { sublayer -> Bool in
+        let foundBorderLayerIndex = self.layer.sublayers?.firstIndex(where: { sublayer -> Bool in
             return sublayer.name == name
         })
         

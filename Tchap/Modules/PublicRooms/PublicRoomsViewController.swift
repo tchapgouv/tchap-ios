@@ -90,7 +90,7 @@ final class PublicRoomsViewController: UITableViewController {
         self.setupSearchController()
 
         self.clearsSelectionOnViewWillAppear = true
-        self.tableView.rowHeight = UITableViewAutomaticDimension
+        self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.estimatedRowHeight = 80
         
         self.tableView.tableFooterView = UIView()

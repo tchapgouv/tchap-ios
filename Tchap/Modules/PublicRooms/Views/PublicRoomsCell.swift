@@ -69,7 +69,7 @@ import Reusable
         let avatarImage = AvatarGenerator.generateAvatar(forMatrixItem: publicRoom.roomId, withDisplayName: roomDisplayName)
         
         if let avatarUrl = publicRoom.avatarUrl {
-            self.avatarView.setImageURI(avatarUrl, withType: nil, andImageOrientation: UIImageOrientation.up, toFitViewSize: self.avatarView.frame.size, with: MXThumbnailingMethodCrop, previewImage: avatarImage, mediaManager: mediaManager)
+            self.avatarView.setImageURI(avatarUrl, withType: nil, andImageOrientation: UIImage.Orientation.up, toFitViewSize: self.avatarView.frame.size, with: MXThumbnailingMethodCrop, previewImage: avatarImage, mediaManager: mediaManager)
         } else {
             self.avatarView.image = avatarImage
         }

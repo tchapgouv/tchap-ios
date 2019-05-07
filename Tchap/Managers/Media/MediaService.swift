@@ -47,7 +47,7 @@ final class MediaService: MediaServiceType {
     
     func upload(image: UIImage) -> Single<String> {
         guard let upImage = MXKTools.forceImageOrientationUp(image), // Retrieve the current picture and make sure its orientation is up
-            let imageData = UIImageJPEGRepresentation(upImage, Constants.jpegCompressionQuality) else {
+            let imageData = upImage.jpegData(compressionQuality: Constants.jpegCompressionQuality) else {
                 return Single.error(MediaServiceError.imageToDataRepresentationFailed)
         }
         

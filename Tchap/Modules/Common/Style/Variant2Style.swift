@@ -60,7 +60,7 @@ final class Variant2Style: NSObject, Style {
         navigationBar.isTranslucent = false
         navigationBar.barTintColor = self.barBackgroundColor
         navigationBar.tintColor = self.barActionColor
-        navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: self.barTitleColor]
+        navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: self.barTitleColor]
     }
     
     func applyStyle(onButton button: UIButton, bordered: Bool = false) {
