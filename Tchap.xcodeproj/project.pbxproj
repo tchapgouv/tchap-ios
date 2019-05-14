@@ -186,7 +186,6 @@
 		0250C52F2122B68000034691 /* DecryptionFailureTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5599120EFC5E400210D55 /* DecryptionFailureTracker.m */; };
 		0250C5312122B68000034691 /* RoomEmailInvitation.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBFC1E7009EC00A9B29C /* RoomEmailInvitation.m */; };
 		0250C53B2122B68000034691 /* CircleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5577B20EE84BE00210D55 /* CircleButton.m */; };
-		0250C53F2122B68000034691 /* JitsiMeet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3233F7441F3497DA006ACA81 /* JitsiMeet.framework */; };
 		0250C5442122B68000034691 /* ring.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F083BBDE1E7009EC00A9B29C /* ring.mp3 */; };
 		0250C5462122B68000034691 /* TableViewCellWithButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5592920EF7A5D00210D55 /* TableViewCellWithButton.xib */; };
 		0250C54C2122B68000034691 /* EncryptionInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B5596E20EFA85C00210D55 /* EncryptionInfoView.xib */; };
@@ -212,7 +211,6 @@
 		0250C5A52122B68000034691 /* FilesSearchTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B557DA20EF5FBA00210D55 /* FilesSearchTableViewCell.xib */; };
 		0250C5A72122B68000034691 /* SegmentedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B556D620EE6C4C00210D55 /* SegmentedViewController.xib */; };
 		0250C5AC2122B68000034691 /* postMessageAPI.js in Resources */ = {isa = PBXBuildFile; fileRef = 3284A35020A07C210044F922 /* postMessageAPI.js */; };
-		0250C5BB2122B68000034691 /* JitsiMeet.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3233F7441F3497DA006ACA81 /* JitsiMeet.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0250C5CB2122E63900034691 /* empty.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0250C5C82122E63900034691 /* empty.mm */; };
 		0250C5CE212314B300034691 /* Tchap-Defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0250C5CD212314B300034691 /* Tchap-Defaults.plist */; };
 		02520307224EBD4800262433 /* ContactButtonViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02520303224EBD4800262433 /* ContactButtonViewModelType.swift */; };
@@ -528,7 +526,6 @@
 		02DFEC7221C07370009B6F15 /* ContactsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AA8D212AEC820077FDC0 /* ContactsCoordinator.swift */; };
 		02DFEC7321C07370009B6F15 /* RoomOutgoingAttachmentBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF8E5214BE467003DFBA4 /* RoomOutgoingAttachmentBubbleCell.m */; };
 		02DFEC7421C07370009B6F15 /* UserIDComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C4646221BACEB3005F4D53 /* UserIDComponents.swift */; };
-		02DFEC7621C07370009B6F15 /* JitsiMeet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3233F7441F3497DA006ACA81 /* JitsiMeet.framework */; };
 		02DFEC7921C07370009B6F15 /* ring.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F083BBDE1E7009EC00A9B29C /* ring.mp3 */; };
 		02DFEC7A21C07370009B6F15 /* RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 020DF909214BE467003DFBA4 /* RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib */; };
 		02DFEC7B21C07370009B6F15 /* TableViewCellWithCheckBoxes.xib in Resources */ = {isa = PBXBuildFile; fileRef = 020DF868214BE467003DFBA4 /* TableViewCellWithCheckBoxes.xib */; };
@@ -644,7 +641,6 @@
 		02DFECEB21C07370009B6F15 /* RoomEncryptedAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 020DF8BF214BE467003DFBA4 /* RoomEncryptedAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.xib */; };
 		02DFECEC21C07370009B6F15 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02BEE1A2212C717F00098505 /* Images.xcassets */; };
 		02DFECED21C07370009B6F15 /* RoomEncryptedAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 020DF8B5214BE467003DFBA4 /* RoomEncryptedAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.xib */; };
-		02DFECF021C07370009B6F15 /* JitsiMeet.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3233F7441F3497DA006ACA81 /* JitsiMeet.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		02DFECFC21C07792009B6F15 /* Btchap-Defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 02DFECFB21C07792009B6F15 /* Btchap-Defaults.plist */; };
 		02F0FF3F22268D5F00066908 /* PublicRoomsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F0FF3E22268D5F00066908 /* PublicRoomsCell.swift */; };
 		02F0FF4022268D5F00066908 /* PublicRoomsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F0FF3E22268D5F00066908 /* PublicRoomsCell.swift */; };
@@ -834,7 +830,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				0250C5BB2122B68000034691 /* JitsiMeet.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -855,7 +850,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				02DFECF021C07370009B6F15 /* JitsiMeet.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1119,7 +1113,6 @@
 		02F0FF3E22268D5F00066908 /* PublicRoomsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicRoomsCell.swift; sourceTree = "<group>"; };
 		02F0FF442226F82600066908 /* RoomIDComponents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomIDComponents.swift; sourceTree = "<group>"; };
 		23307BF65CCF37A2CAE36E4F /* Pods-TchapPods-Btchap.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TchapPods-Btchap.debug.xcconfig"; path = "Target Support Files/Pods-TchapPods-Btchap/Pods-TchapPods-Btchap.debug.xcconfig"; sourceTree = "<group>"; };
-		3233F7441F3497DA006ACA81 /* JitsiMeet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JitsiMeet.framework; sourceTree = "<group>"; };
 		3267EFB320E379FD00FF1CAA /* CHANGES.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGES.rst; sourceTree = "<group>"; };
 		3267EFB420E379FD00FF1CAA /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; fileEncoding = 4; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		3267EFB520E379FD00FF1CAA /* AUTHORS.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AUTHORS.rst; sourceTree = "<group>"; };
@@ -1446,7 +1439,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0250C53F2122B68000034691 /* JitsiMeet.framework in Frameworks */,
 				3758AAFA0E62019A0A322926 /* Pods_TchapPods_Tchap.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1455,7 +1447,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				02DFEC7621C07370009B6F15 /* JitsiMeet.framework in Frameworks */,
 				88D99D182A4DAA23DCFAEFC1 /* Pods_TchapPods_Btchap.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2087,22 +2078,6 @@
 				0223EFA62227095100B9EA34 /* PublicRoomsCell.xib */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		3233F7291F31F3B4006ACA81 /* libs */ = {
-			isa = PBXGroup;
-			children = (
-				3233F7431F3497DA006ACA81 /* jitsi-meet */,
-			);
-			path = libs;
-			sourceTree = "<group>";
-		};
-		3233F7431F3497DA006ACA81 /* jitsi-meet */ = {
-			isa = PBXGroup;
-			children = (
-				3233F7441F3497DA006ACA81 /* JitsiMeet.framework */,
-			);
-			path = "jitsi-meet";
 			sourceTree = "<group>";
 		};
 		32935CB21F628B98006888C8 /* js */ = {
@@ -3032,7 +3007,6 @@
 				B1B5597C20EFC3DF00210D55 /* Managers */,
 				B1B5567620EE6C4C00210D55 /* Modules */,
 				F083BC0F1E7009EC00A9B29C /* Utils */,
-				3233F7291F31F3B4006ACA81 /* libs */,
 				F083BB0E1E7009EC00A9B29C /* Assets */,
 			);
 			path = Riot;
