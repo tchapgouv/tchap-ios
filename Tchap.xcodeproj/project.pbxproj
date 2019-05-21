@@ -225,6 +225,8 @@
 		026D887221C1C5490085BED8 /* BtchapSharedImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 026D887121C1C5490085BED8 /* BtchapSharedImages.xcassets */; };
 		027DCAC521B14F68000DD05E /* ContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 027DCAC321B14F68000DD05E /* ContactCell.xib */; };
 		027DCAC621B14F68000DD05E /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027DCAC421B14F68000DD05E /* ContactCell.swift */; };
+		028B50B5228E2931005DB9B6 /* matrix.agent.tchap.gouv.fr.cer in Resources */ = {isa = PBXBuildFile; fileRef = 028B50B4228E2931005DB9B6 /* matrix.agent.tchap.gouv.fr.cer */; };
+		028B50B7228EB2C3005DB9B6 /* www.tchap.gouv.fr.cer in Resources */ = {isa = PBXBuildFile; fileRef = 028B50B6228EB2C2005DB9B6 /* www.tchap.gouv.fr.cer */; };
 		02906073214FD0E1005FE3C1 /* RoomCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02906071214FD0E0005FE3C1 /* RoomCoordinatorType.swift */; };
 		02906074214FD0E1005FE3C1 /* RoomCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02906072214FD0E0005FE3C1 /* RoomCoordinator.swift */; };
 		0290607921501D16005FE3C1 /* PreviewView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0290607621501D16005FE3C1 /* PreviewView.xib */; };
@@ -1057,6 +1059,8 @@
 		026D887121C1C5490085BED8 /* BtchapSharedImages.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = BtchapSharedImages.xcassets; sourceTree = "<group>"; };
 		027DCAC321B14F68000DD05E /* ContactCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactCell.xib; sourceTree = "<group>"; };
 		027DCAC421B14F68000DD05E /* ContactCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
+		028B50B4228E2931005DB9B6 /* matrix.agent.tchap.gouv.fr.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = matrix.agent.tchap.gouv.fr.cer; sourceTree = "<group>"; };
+		028B50B6228EB2C2005DB9B6 /* www.tchap.gouv.fr.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = www.tchap.gouv.fr.cer; sourceTree = "<group>"; };
 		02906071214FD0E0005FE3C1 /* RoomCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomCoordinatorType.swift; sourceTree = "<group>"; };
 		02906072214FD0E0005FE3C1 /* RoomCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomCoordinator.swift; sourceTree = "<group>"; };
 		0290607621501D16005FE3C1 /* PreviewView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PreviewView.xib; sourceTree = "<group>"; };
@@ -1858,6 +1862,7 @@
 		0250C5CC2123146A00034691 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				028B50B3228E2931005DB9B6 /* Certificates */,
 				B1322FD9212FF4A30054A9DD /* Localizations */,
 				02BEE1A2212C717F00098505 /* Images.xcassets */,
 				02BEE1A1212C717E00098505 /* SharedImages.xcassets */,
@@ -1876,6 +1881,15 @@
 				02520304224EBD4800262433 /* ContactButtonView.xib */,
 			);
 			path = ContactButton;
+			sourceTree = "<group>";
+		};
+		028B50B3228E2931005DB9B6 /* Certificates */ = {
+			isa = PBXGroup;
+			children = (
+				028B50B6228EB2C2005DB9B6 /* www.tchap.gouv.fr.cer */,
+				028B50B4228E2931005DB9B6 /* matrix.agent.tchap.gouv.fr.cer */,
+			);
+			path = Certificates;
 			sourceTree = "<group>";
 		};
 		0290607521501D16005FE3C1 /* Preview */ = {
@@ -3266,6 +3280,7 @@
 				020DF949214BE467003DFBA4 /* RoomMemberTitleView.xib in Resources */,
 				B165251D21775B0D00146F80 /* ContactsViewController.storyboard in Resources */,
 				0250C5462122B68000034691 /* TableViewCellWithButton.xib in Resources */,
+				028B50B5228E2931005DB9B6 /* matrix.agent.tchap.gouv.fr.cer in Resources */,
 				02BEE1A3212C717F00098505 /* SharedImages.xcassets in Resources */,
 				020DF9A0214BE467003DFBA4 /* RoomMembershipExpandedBubbleCell.xib in Resources */,
 				0250C54C2122B68000034691 /* EncryptionInfoView.xib in Resources */,
@@ -3312,6 +3327,7 @@
 				0250C5752122B68000034691 /* third_party_licenses.html in Resources */,
 				B18D18C62153EA32003677D1 /* HomeViewController.storyboard in Resources */,
 				0250C57A2122B68000034691 /* Vector.strings in Resources */,
+				028B50B7228EB2C3005DB9B6 /* www.tchap.gouv.fr.cer in Resources */,
 				B15AB2A5215BF20E007F5405 /* ForgotPasswordVerifyEmailViewController.storyboard in Resources */,
 				020DF94E214BE467003DFBA4 /* RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.xib in Resources */,
 				020DF947214BE467003DFBA4 /* RoomMemberDetailsViewController.xib in Resources */,
