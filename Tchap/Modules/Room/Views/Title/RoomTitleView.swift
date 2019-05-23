@@ -101,7 +101,7 @@ import Reusable
     }
     
     override var intrinsicContentSize: CGSize {
-        return UILayoutFittingExpandedSize
+        return UIView.layoutFittingExpandedSize
     }
     
     // MARK: - Public    

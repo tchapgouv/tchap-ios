@@ -22,5 +22,5 @@ struct UniversalLinkParameters: UniversalLinkParametersType {
     let pathParams: [String]
     
     /// The decoded query params.
-    let queryParams: [String : String]?
+    let queryParams: [String: String]?
 }

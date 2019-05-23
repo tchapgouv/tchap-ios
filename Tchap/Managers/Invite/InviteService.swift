@@ -16,6 +16,10 @@
 
 import Foundation
 
+enum InviteServiceError: Error {
+    case unknown
+}
+
 /// `InviteService` is used to invite someone to join Tchap
 final class InviteService: InviteServiceType {
     
@@ -23,24 +27,18 @@ final class InviteService: InviteServiceType {
     private let session: MXSession
     
     private let discussionFinder: DiscussionFinderType
+    private let thirdPartyIDResolver: ThirdPartyIDResolverType
     private let thirdPartyIDPlatformInfoResolver: ThirdPartyIDPlatformInfoResolverType
     private let roomService: RoomServiceType
     
     // MARK: - Public
-    
-    init(session: MXSession, discussionFinder: DiscussionFinderType, platformResolver: ThirdPartyIDPlatformInfoResolverType, roomService: RoomServiceType) {
-        self.session = session
-        self.discussionFinder = discussionFinder
-        self.thirdPartyIDPlatformInfoResolver = platformResolver
-        self.roomService = roomService
-    }
-    
     init(session: MXSession) {
         guard let serverUrlPrefix = UserDefaults.standard.string(forKey: "serverUrlPrefix") else {
             fatalError("serverUrlPrefix should be defined")
         }
         self.session = session
         self.discussionFinder = DiscussionFinder(session: session)
+        self.thirdPartyIDResolver = ThirdPartyIDResolver(credentials: self.session.matrixRestClient.credentials)
         let identityServerURLs = IdentityServersURLGetter(currentIdentityServerURL: session.matrixRestClient.identityServer).identityServerUrls
         self.thirdPartyIDPlatformInfoResolver = ThirdPartyIDPlatformInfoResolver(identityServerUrls: identityServerURLs, serverPrefixURL: serverUrlPrefix)
         self.roomService = RoomService(session: session)
@@ -63,10 +61,11 @@ final class InviteService: InviteServiceType {
                     // Pursue the invite process by checking whether a Tchap account has been created for this email.
                     sself.discoverUser(with: email, completion: { [weak sself] (response) in
                         switch response {
-                        case .success(let userID):
-                            if let userID = userID {
+                        case .success(let result):
+                            switch result {
+                            case .bound(let userID):
                                 completion(.success(.inviteIgnoredForDiscoveredUser(userID: userID)))
-                            } else {
+                            case .unbound:
                                 sself?.createDiscussion(with: email, completion: completion)
                             }
                         case .failure(let error):
@@ -86,7 +85,15 @@ final class InviteService: InviteServiceType {
     // MARK: - Private
     
     // Check whether a Tchap account has been created for this email. The closure returns a nil identifier when no account exists.
-    private func discoverUser(with email: String, completion: @escaping (MXResponse<String?>) -> Void) {
+    private func discoverUser(with email: String, completion: @escaping (MXResponse<ThirdPartyIDResolveResult>) -> Void) {
+#if ENABLE_PROXY_LOOKUP
+        if let lookup3pidsOperation = self.thirdPartyIDResolver.lookup(address: email, medium: .email, identityServer: self.session.matrixRestClient.identityServer, completion: completion) {
+            lookup3pidsOperation.maxRetriesTime = 0
+        } else {
+            NSLog("[InviteService] discoverUser failed")
+            completion(MXResponse.failure(InviteServiceError.unknown))
+        }
+#else
         let email3PID = MX3PID(medium: .email, address: email)
         let lookup3pidsOperation = self.session.matrixRestClient.lookup3PIDs([email3PID]) { (response) in
             switch response {
@@ -94,10 +101,10 @@ final class InviteService: InviteServiceType {
                 if let lookupResponse = responseDict.first,
                     lookupResponse.key == email3PID {
                     NSLog("[InviteService] discoverUser: a Tchap user exists")
-                    completion(.success(lookupResponse.value))
+                    completion(.success(.bound(userID: lookupResponse.value)))
                 } else {
                     NSLog("[InviteService] discoverUser: no Tchap user exists")
-                    completion(.success(nil))
+                    completion(.success(.unbound))
                 }
             case .failure(let error):
                 NSLog("[InviteService] discoverUser failed")
@@ -105,6 +112,7 @@ final class InviteService: InviteServiceType {
             }
         }
         lookup3pidsOperation.maxRetriesTime = 0
+#endif
     }
     
     private func createDiscussion(with email: String, completion: @escaping (MXResponse<InviteServiceResult>) -> Void) {

@@ -24,7 +24,7 @@ final class RootRouter: RootRouterType {
     // `rootViewController` animation constants
     private enum RootViewControllerUpdateAnimation {
         static let duration: TimeInterval = 0.5
-        static let options: UIViewAnimationOptions = .transitionCrossDissolve
+        static let options: UIView.AnimationOptions = .transitionCrossDissolve
     }
     
     // MARK: - Properties

@@ -123,13 +123,13 @@ static const NSString *kJitsiServerUrl = @"https://jitsi.riot.im/";
 
     self.jitsiMeetView.delegate = self;
 
-    // Pass the URL to jitsi-meet sdk
-    [self.jitsiMeetView loadURLObject: @{
-                                         @"url": jitsiUrl,
-                                         @"configOverwrite": @{
-                                                 @"startWithVideoMuted": @(!video)
-                                                 }
-                                         }];
+//    // Pass the URL to jitsi-meet sdk
+//    [self.jitsiMeetView loadURLObject: @{
+//                                         @"url": jitsiUrl,
+//                                         @"configOverwrite": @{
+//                                                 @"startWithVideoMuted": @(!video)
+//                                                 }
+//                                         }];
 
     // TODO: Set up user info but it is not yet available in the jitsi-meet iOS SDK
     // See https://github.com/jitsi/jitsi-meet/issues/1880

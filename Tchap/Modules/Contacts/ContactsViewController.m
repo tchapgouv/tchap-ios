@@ -34,7 +34,7 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
 @property (nonatomic, strong) UISearchController *searchController;
 @property (nonatomic) BOOL enableMultipleSelection;
 
-@property (nonatomic) UIAlertController *currentAlert;
+@property (weak, nonatomic) UIAlertController *currentAlert;
 
 /**
  The analytics instance screen name (Default is "ContactsTable").

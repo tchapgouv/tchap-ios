@@ -12,8 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FormCheckBox" customModule="Tchap" customModuleProvider="target">
             <connections>
-                <outlet property="checkBoxImaveView" destination="DhF-l2-XHE" id="vJq-6d-HWQ"/>
-                <outlet property="checkBoxMask" destination="78B-27-JQ8" id="qjW-tK-Tyv"/>
+                <outlet property="checkBoxButton" destination="wcS-ls-xty" id="3EX-0Y-HeS"/>
                 <outlet property="label" destination="SGZ-ww-vHN" id="Mvc-rH-nT4"/>
                 <outlet property="labelMask" destination="3Nq-AQ-AOG" id="SUU-Mk-KGe"/>
             </connections>
@@ -23,21 +22,18 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="42"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="selection_untick" translatesAutoresizingMaskIntoConstraints="NO" id="DhF-l2-XHE">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wcS-ls-xty">
                     <rect key="frame" x="0.0" y="10" width="22" height="22"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="22" id="6gY-Oh-4FO"/>
-                        <constraint firstAttribute="width" secondItem="DhF-l2-XHE" secondAttribute="height" multiplier="1:1" id="sAb-rm-7YQ"/>
+                        <constraint firstAttribute="width" secondItem="wcS-ls-xty" secondAttribute="height" multiplier="1:1" id="Sbi-16-p74"/>
+                        <constraint firstAttribute="width" constant="22" id="W9E-Y3-daG"/>
                     </constraints>
-                </imageView>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="78B-27-JQ8">
-                    <rect key="frame" x="-5" y="5" width="32" height="32"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <constraints>
-                        <constraint firstAttribute="width" secondItem="78B-27-JQ8" secondAttribute="height" multiplier="1:1" id="L7d-SX-Uj9"/>
-                        <constraint firstAttribute="width" constant="32" id="zMY-Fa-Hoe"/>
-                    </constraints>
-                </view>
+                    <state key="normal" image="selection_untick"/>
+                    <state key="selected" image="selection_tick"/>
+                    <connections>
+                        <action selector="handleCheckBoxTap:" destination="-1" eventType="touchUpInside" id="dPB-jD-NTe"/>
+                    </connections>
+                </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SGZ-ww-vHN">
                     <rect key="frame" x="32" y="12.5" width="343" height="17"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -53,12 +49,10 @@
             <constraints>
                 <constraint firstItem="3Nq-AQ-AOG" firstAttribute="leading" secondItem="SGZ-ww-vHN" secondAttribute="leading" constant="-4" id="11g-QL-1oE"/>
                 <constraint firstItem="zcG-Rl-Y4f" firstAttribute="trailing" secondItem="SGZ-ww-vHN" secondAttribute="trailing" id="3BQ-61-4ow"/>
-                <constraint firstItem="SGZ-ww-vHN" firstAttribute="centerY" secondItem="DhF-l2-XHE" secondAttribute="centerY" id="7ge-GN-UdU"/>
-                <constraint firstItem="DhF-l2-XHE" firstAttribute="leading" secondItem="zcG-Rl-Y4f" secondAttribute="leading" id="9lr-Cg-eyb"/>
-                <constraint firstItem="78B-27-JQ8" firstAttribute="centerY" secondItem="DhF-l2-XHE" secondAttribute="centerY" id="MY9-Ul-v3o"/>
-                <constraint firstItem="78B-27-JQ8" firstAttribute="centerX" secondItem="DhF-l2-XHE" secondAttribute="centerX" id="Wd9-78-YYp"/>
-                <constraint firstItem="DhF-l2-XHE" firstAttribute="top" secondItem="zcG-Rl-Y4f" secondAttribute="top" constant="10" id="fEc-It-tpF"/>
-                <constraint firstItem="SGZ-ww-vHN" firstAttribute="leading" secondItem="DhF-l2-XHE" secondAttribute="trailing" constant="10" id="j40-PU-wEc"/>
+                <constraint firstItem="3Nq-AQ-AOG" firstAttribute="leading" secondItem="wcS-ls-xty" secondAttribute="trailing" constant="6" id="A7L-qz-LYc"/>
+                <constraint firstItem="wcS-ls-xty" firstAttribute="top" secondItem="zcG-Rl-Y4f" secondAttribute="top" constant="10" id="Ayi-9O-BsM"/>
+                <constraint firstItem="wcS-ls-xty" firstAttribute="leading" secondItem="zcG-Rl-Y4f" secondAttribute="leading" id="D2Y-Qw-6sB"/>
+                <constraint firstItem="wcS-ls-xty" firstAttribute="centerY" secondItem="SGZ-ww-vHN" secondAttribute="centerY" id="HcD-La-ftH"/>
                 <constraint firstItem="3Nq-AQ-AOG" firstAttribute="bottom" secondItem="SGZ-ww-vHN" secondAttribute="bottom" constant="4" id="nhY-BA-iyY"/>
                 <constraint firstItem="3Nq-AQ-AOG" firstAttribute="trailing" secondItem="SGZ-ww-vHN" secondAttribute="trailing" constant="4" id="oOv-l9-44h"/>
                 <constraint firstItem="3Nq-AQ-AOG" firstAttribute="top" secondItem="SGZ-ww-vHN" secondAttribute="top" constant="-4" id="trd-tq-6U1"/>
@@ -69,6 +63,7 @@
         </view>
     </objects>
     <resources>
+        <image name="selection_tick" width="22" height="22"/>
         <image name="selection_untick" width="22" height="22"/>
     </resources>
 </document>

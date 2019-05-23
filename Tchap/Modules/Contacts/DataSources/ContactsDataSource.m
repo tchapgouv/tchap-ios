@@ -45,6 +45,7 @@
     NSInteger shrinkedSectionsBitMask;
     
     MXHTTPOperation *lookup3pidsOperation;
+    ThirdPartyIDResolver *thirdPartyIDResolver;
     
     NSDictionary<NSString*, MXKContact*> *directContacts;
     BOOL forceDirectContactsRefresh;
@@ -90,6 +91,7 @@
         forceDirectContactsRefresh = YES;
         
         discoveredTchapContacts = [NSMutableDictionary dictionary];
+        thirdPartyIDResolver = [[ThirdPartyIDResolver alloc] initWithCredentials:mxSession.matrixRestClient.credentials];
         
         _userService = [[UserService alloc] initWithSession:self.mxSession];
         
@@ -99,6 +101,7 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onContactManagerDidUpdate:) name:kMXKContactManagerDidUpdateLocalContactMatrixIDsNotification object:nil];
         // Listen to the direct rooms list
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onDirectRoomsDidChange:) name:kMXSessionDirectRoomsDidChangeNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillEnterForeground:) name:UIApplicationWillEnterForegroundNotification object:nil];
         
         // Refresh the matrix identifiers for all the local contacts.
         if ([CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts] != CNAuthorizationStatusNotDetermined)
@@ -116,6 +119,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXKContactManagerDidUpdateLocalContactsNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXKContactManagerDidUpdateLocalContactMatrixIDsNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXSessionDirectRoomsDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillEnterForegroundNotification object:nil];
     
     filteredLocalContacts = nil;
     filteredMatrixContacts = nil;
@@ -147,6 +151,7 @@
     
     directContacts = nil;
     discoveredTchapContacts = nil;
+    thirdPartyIDResolver = nil;
     
     [super destroy];
 }
@@ -437,6 +442,16 @@
     [self forceRefresh];
 }
 
+- (void)applicationWillEnterForeground:(NSNotification *)notif
+{
+    // Check whether we should refresh the contacts extracted from the direct chat data.
+    if (_contactsFilter != ContactsDataSourceTchapFilterNoTchapOnly)
+    {
+        forceDirectContactsRefresh = YES;
+        [self forceRefresh];
+    }
+}
+
 - (void)updateDirectTchapContacts
 {
     if (self.mxSession && MXSessionStateStoreDataReady <= self.mxSession.state)
@@ -537,82 +552,95 @@
         if (lookup3pidsArray.count > 0 && !lookup3pidsOperation)
         {
             MXWeakify(self);
+            void (^success)(NSArray<NSArray<NSString *> *> *) = ^(NSArray<NSArray<NSString *> *> *discoveredUsers) {
+                
+                MXStrongifyAndReturnIfNil(self);
+                
+                if (discoveredUsers.count)
+                {
+                    MXWeakify(self);
+                    [self.mxSession runOrQueueDirectRoomOperation:^{
+                        MXStrongifyAndReturnIfNil(self);
+                        
+                        NSMutableDictionary<NSString *,NSArray<NSString *> *> *updatedDirectRooms = [self.mxSession.directRooms mutableCopy];
+                        BOOL isUpdated = NO;
+                        
+                        // Consider each discovered user
+                        for (NSArray *discoveredUser in discoveredUsers)
+                        {
+                            // Sanity check
+                            if (discoveredUser.count == 3)
+                            {
+                                NSString *threepid, *userId;
+                                MXJSONModelSetString(threepid, discoveredUser[1]);
+                                MXJSONModelSetString(userId, discoveredUser[2]);
+                                
+                                if (threepid && userId)
+                                {
+                                    isUpdated = YES;
+                                    NSArray<NSString*> *roomIds = updatedDirectRooms[threepid];
+                                    [updatedDirectRooms removeObjectForKey:threepid];
+                                    
+                                    NSArray<NSString*> *existingRoomIds = updatedDirectRooms[userId];
+                                    if (existingRoomIds)
+                                    {
+                                        NSMutableArray *updatedRoomIds = [NSMutableArray arrayWithArray:existingRoomIds];
+                                        for (NSString *roomId in roomIds)
+                                        {
+                                            if (![updatedRoomIds containsObject:roomId])
+                                            {
+                                                [updatedRoomIds addObject:roomId];
+                                            }
+                                        }
+                                        updatedDirectRooms[userId] = updatedRoomIds;
+                                    }
+                                    else
+                                    {
+                                        updatedDirectRooms[userId] = roomIds;
+                                    }
+                                }
+                            }
+                        }
+                        
+                        if (isUpdated)
+                        {
+                            MXWeakify(self);
+                            [self.mxSession uploadDirectRoomsInOperationsQueue:updatedDirectRooms success:^{
+                                MXStrongifyAndReturnIfNil(self);
+                                NSLog(@"[ContactsDataSource] uploadDirectRooms succeeded");
+                                self->lookup3pidsOperation = nil;
+                            } failure:^(NSError *error) {
+                                MXStrongifyAndReturnIfNil(self);
+                                NSLog(@"[ContactsDataSource] uploadDirectRooms failed");
+                                self->lookup3pidsOperation = nil;
+                            }];
+                        }
+                    }];
+                }
+                else
+                {
+                    NSLog(@"[ContactsDataSource] lookup3pids: discoveredUsers is empty");
+                    self->lookup3pidsOperation = nil;
+                }
+            };
+            
+#if ENABLE_PROXY_LOOKUP
+            self->lookup3pidsOperation = [thirdPartyIDResolver bulkLookupWithThreepids:lookup3pidsArray
+                                                                        identityServer:self.mxSession.matrixRestClient.identityServer
+                                                                               success:success
+                                                                               failure:^(NSError *error) {
+                                                                                   NSLog(@"[ContactsDataSource] lookup3pids failed");
+                                                                                   self->lookup3pidsOperation = nil;
+                                                                               }];
+                                          
+#else
             self->lookup3pidsOperation = [self.mxSession.matrixRestClient lookup3pids:lookup3pidsArray
-                                                                              success:^(NSArray *discoveredUsers) {
-                                                                                  
-                                                                                  MXStrongifyAndReturnIfNil(self);
-                                                                                  
-                                                                                  if (discoveredUsers.count)
-                                                                                  {
-                                                                                      MXWeakify(self);
-                                                                                      [self.mxSession runOrQueueDirectRoomOperation:^{
-                                                                                          MXStrongifyAndReturnIfNil(self);
-                                                                                          
-                                                                                          NSMutableDictionary<NSString *,NSArray<NSString *> *> *updatedDirectRooms = [self.mxSession.directRooms mutableCopy];
-                                                                                          BOOL isUpdated = NO;
-                                                                                          
-                                                                                          // Consider each discovered user
-                                                                                          for (NSArray *discoveredUser in discoveredUsers)
-                                                                                          {
-                                                                                              // Sanity check
-                                                                                              if (discoveredUser.count == 3)
-                                                                                              {
-                                                                                                  NSString *threepid, *userId;
-                                                                                                  MXJSONModelSetString(threepid, discoveredUser[1]);
-                                                                                                  MXJSONModelSetString(userId, discoveredUser[2]);
-                                                                                                  
-                                                                                                  if (threepid && userId)
-                                                                                                  {
-                                                                                                      isUpdated = YES;
-                                                                                                      NSArray<NSString*> *roomIds = updatedDirectRooms[threepid];
-                                                                                                      [updatedDirectRooms removeObjectForKey:threepid];
-                                                                                                      
-                                                                                                      NSArray<NSString*> *existingRoomIds = updatedDirectRooms[userId];
-                                                                                                      if (existingRoomIds)
-                                                                                                      {
-                                                                                                          NSMutableArray *updatedRoomIds = [NSMutableArray arrayWithArray:existingRoomIds];
-                                                                                                          for (NSString *roomId in roomIds)
-                                                                                                          {
-                                                                                                              if (![updatedRoomIds containsObject:roomId])
-                                                                                                              {
-                                                                                                                  [updatedRoomIds addObject:roomId];
-                                                                                                              }
-                                                                                                          }
-                                                                                                          updatedDirectRooms[userId] = updatedRoomIds;
-                                                                                                      }
-                                                                                                      else
-                                                                                                      {
-                                                                                                          updatedDirectRooms[userId] = roomIds;
-                                                                                                      }
-                                                                                                  }
-                                                                                              }
-                                                                                          }
-                                                                                          
-                                                                                          if (isUpdated)
-                                                                                          {
-                                                                                              MXWeakify(self);
-                                                                                              [self.mxSession uploadDirectRoomsInOperationsQueue:updatedDirectRooms success:^{
-                                                                                                  MXStrongifyAndReturnIfNil(self);
-                                                                                                  NSLog(@"[ContactsDataSource] uploadDirectRooms succeeded");
-                                                                                                  self->lookup3pidsOperation = nil;
-                                                                                              } failure:^(NSError *error) {
-                                                                                                  MXStrongifyAndReturnIfNil(self);
-                                                                                                  NSLog(@"[ContactsDataSource] uploadDirectRooms failed");
-                                                                                                  self->lookup3pidsOperation = nil;
-                                                                                              }];
-                                                                                          }
-                                                                                      }];
-                                                                                  }
-                                                                                  else
-                                                                                  {
-                                                                                      NSLog(@"[ContactsDataSource] lookup3pids: discoveredUsers is empty");
-                                                                                      self->lookup3pidsOperation = nil;
-                                                                                  }
-                                                                              }
+                                                                              success:success
                                                                               failure:^(NSError *error) {
                                                                                   NSLog(@"[ContactsDataSource] lookup3pids failed");
                                                                                   self->lookup3pidsOperation = nil;
                                                                               }];
+#endif
             // Do not retry on failure
             self->lookup3pidsOperation.maxRetriesTime = 0;
         }

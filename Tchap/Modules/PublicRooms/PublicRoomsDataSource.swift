@@ -151,7 +151,7 @@ extension PublicRoomsDataSource: UITableViewDataSource {
         } else {
             if let tableViewCell = tableView.dequeueReusableCell(withIdentifier: MXKTableViewCell.defaultReuseIdentifier(), for: indexPath) as? MXKTableViewCell {
                 tableViewCell.textLabel?.font = UIFont.systemFont(ofSize: 15.0)
-                tableViewCell.selectionStyle = UITableViewCellSelectionStyle.none
+                tableViewCell.selectionStyle = UITableViewCell.SelectionStyle.none
                 
                 let cellText: String
                 
