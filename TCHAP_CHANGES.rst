@@ -1,3 +1,13 @@
+Changes in Tchap 1.0.11 (2019-05-23)
+===================================================
+
+ Features/Improvements:
+ * Certificate pinning #165
+ * Support the proxy lookup PR #199
+ 
+ Bug Fixes:
+ * Registration - Accessibility: CGU checkbox is not accessible by Voiceover #194
+
 Changes in Tchap 1.0.10 (2019-04-24)
 ===================================================
 
