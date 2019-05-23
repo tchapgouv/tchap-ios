@@ -140,7 +140,7 @@ import UIKit
     
     private func refreshContactPresence() {
         self.presenceView.isHidden = true
-        guard self.matrixId != nil, let sessions = MXKContactManager.shared()?.mxSessions as? [MXSession] else {
+        guard self.matrixId != nil, let sessions = MXKContactManager.shared().mxSessions as? [MXSession] else {
             // There is no discussion for the moment with this user
             return
         }

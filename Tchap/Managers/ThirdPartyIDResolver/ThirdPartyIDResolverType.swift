@@ -40,5 +40,17 @@ protocol ThirdPartyIDResolverType {
     /// - response: Provides the user ID for each MX3PID submitted.
     ///
     /// - returns: a `MXHTTPOperation` instance.
-    func bulkLookup(threepids: [(MX3PID.Medium, String)], identityServer: String, completion: @escaping (MXResponse<[(MX3PID.Medium, String, String)]?>) -> Void) -> MXHTTPOperation?
+    func bulkLookup(threepids: [(MX3PID.Medium, String)], identityServer: String, completion: @escaping (MXResponse<[(MX3PID.Medium, String, String)]>) -> Void) -> MXHTTPOperation?
+    
+    /// Retrieve user matrix ids from a list of 3rd party ids.
+    /// This method has been added to interact with the existing Objective C source code.
+    ///
+    /// - Parameters:
+    /// - threepids: the list of 3rd party ids
+    /// - identityServer: the url of the identity server to proxy the request to if the homeserver is allowed to do so
+    /// - success: A block object called when the operation succeeded.
+    /// - failure: A block object called when the operation failed.
+    ///
+    /// - returns: a `MXHTTPOperation` instance.
+    func bulkLookup(threepids: [[String]], identityServer: String, success: @escaping (([[String]]) -> Void), failure: @escaping ((Error) -> Void)) -> MXHTTPOperation?
 }

@@ -59,36 +59,28 @@ final class ThirdPartyIDResolver: NSObject, ThirdPartyIDResolverType {
         })
     }
     
-    func bulkLookup(threepids: [(MX3PID.Medium, String)], identityServer: String, completion: @escaping (MXResponse<[(MX3PID.Medium, String, String)]?>) -> Void) -> MXHTTPOperation? {
+    func bulkLookup(threepids: [(MX3PID.Medium, String)], identityServer: String, completion: @escaping (MXResponse<[(MX3PID.Medium, String, String)]>) -> Void) -> MXHTTPOperation? {
         let ids = threepids.map { (medium, address) -> [String] in
             return [medium.identifier, address]
         }
         
         return bulkLookup(threepids: ids,
                           identityServer: identityServer,
-                          success: { (discoveredUsers: [[String]]?) in
-                            if let discoveredUsers = discoveredUsers {
-                                let result = discoveredUsers.compactMap { triplet -> (MX3PID.Medium, String, String)? in
-                                    // Make sure the array contains 3 items
-                                    guard triplet.count == 3 else {
-                                        return nil
-                                    }
-                                    
-                                    return (MX3PID.Medium(identifier: triplet[0]), triplet[1], triplet[2])
+                          success: { (discoveredUsers: [[String]]) in
+                            let result = discoveredUsers.compactMap { triplet -> (MX3PID.Medium, String, String)? in
+                                // Make sure the array contains 3 items
+                                guard triplet.count == 3 else {
+                                    return nil
                                 }
-                                completion(.success(result))
-                            } else {
-                                completion(.success(nil))
-                            }},
-                          failure: { (error: Error?) in
-                            if let error = error {
-                                completion(.failure(error))
-                            } else {
-                                completion(.failure(ThirdPartyIDResolverError.unknown))
-                            }})
+                                
+                                return (MX3PID.Medium(identifier: triplet[0]), triplet[1], triplet[2])
+                            }
+                            completion(.success(result))},
+                          failure: { (error: Error) in
+                            completion(.failure(error))})
     }
     
-    @objc func bulkLookup(threepids: [[String]], identityServer: String, success: @escaping (([[String]]?) -> Void), failure: @escaping ((Error?) -> Void)) -> MXHTTPOperation? {
+    @objc func bulkLookup(threepids: [[String]], identityServer: String, success: @escaping (([[String]]) -> Void), failure: @escaping ((Error) -> Void)) -> MXHTTPOperation? {
         guard let identityServerURL = URL(string: identityServer),
             let identityServerHost = identityServerURL.host,
             let payloadData = try? JSONSerialization.data(withJSONObject: ["threepids": threepids, "id_server": identityServerHost], options: []) else {
@@ -115,6 +107,11 @@ final class ThirdPartyIDResolver: NSObject, ThirdPartyIDResolverType {
                                     } else {
                                         failure(ThirdPartyIDResolverError.unknown)
                                     }},
-                                  failure: failure)
+                                  failure: { (error: Error?) in
+                                    if let error = error {
+                                        failure(error)
+                                    } else {
+                                        failure(ThirdPartyIDResolverError.unknown)
+                                    }})
     }
 }
