@@ -61,10 +61,11 @@ final class InviteService: InviteServiceType {
                     // Pursue the invite process by checking whether a Tchap account has been created for this email.
                     sself.discoverUser(with: email, completion: { [weak sself] (response) in
                         switch response {
-                        case .success(let userID):
-                            if let userID = userID {
+                        case .success(let result):
+                            switch result {
+                            case .bound(let userID):
                                 completion(.success(.inviteIgnoredForDiscoveredUser(userID: userID)))
-                            } else {
+                            case .unbound:
                                 sself?.createDiscussion(with: email, completion: completion)
                             }
                         case .failure(let error):
@@ -84,7 +85,7 @@ final class InviteService: InviteServiceType {
     // MARK: - Private
     
     // Check whether a Tchap account has been created for this email. The closure returns a nil identifier when no account exists.
-    private func discoverUser(with email: String, completion: @escaping (MXResponse<String?>) -> Void) {
+    private func discoverUser(with email: String, completion: @escaping (MXResponse<ThirdPartyIDResolveResult>) -> Void) {
 #if ENABLE_PROXY_LOOKUP
         if let lookup3pidsOperation = self.thirdPartyIDResolver.lookup(address: email, medium: .email, identityServer: self.session.matrixRestClient.identityServer, completion: completion) {
             lookup3pidsOperation.maxRetriesTime = 0
@@ -100,10 +101,10 @@ final class InviteService: InviteServiceType {
                 if let lookupResponse = responseDict.first,
                     lookupResponse.key == email3PID {
                     NSLog("[InviteService] discoverUser: a Tchap user exists")
-                    completion(.success(lookupResponse.value))
+                    completion(.success(.bound(userID: lookupResponse.value)))
                 } else {
                     NSLog("[InviteService] discoverUser: no Tchap user exists")
-                    completion(.success(nil))
+                    completion(.success(.unbound))
                 }
             case .failure(let error):
                 NSLog("[InviteService] discoverUser failed")

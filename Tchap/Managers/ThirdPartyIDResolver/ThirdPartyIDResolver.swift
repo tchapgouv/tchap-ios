@@ -35,7 +35,7 @@ final class ThirdPartyIDResolver: NSObject, ThirdPartyIDResolverType {
         self.httpClient = MXHTTPClient(baseURL: "\(homeServer)/\(kMXAPIPrefixPathUnstable)", accessToken: accessToken, andOnUnrecognizedCertificateBlock: nil)
     }
     
-    func lookup(address: String, medium: MX3PID.Medium, identityServer: String, completion: @escaping (MXResponse<String?>) -> Void) -> MXHTTPOperation? {
+    func lookup(address: String, medium: MX3PID.Medium, identityServer: String, completion: @escaping (MXResponse<ThirdPartyIDResolveResult>) -> Void) -> MXHTTPOperation? {
         guard let identityServerURL = URL(string: identityServer),
             let identityServerHost = identityServerURL.host else {
                 return nil
@@ -44,11 +44,14 @@ final class ThirdPartyIDResolver: NSObject, ThirdPartyIDResolverType {
         return httpClient.request(withMethod: "GET", path: "account/3pid/lookup", parameters: ["address": address, "medium": medium.identifier, "id_server": identityServerHost], success: { (response: [AnyHashable: Any]?) in
             NSLog("[ThirdPartyIDResolver] lookup resquest succeeded")
             guard let response = response else {
-                completion(.success(nil))
+                completion(.success(.unbound))
                 return
             }
-            let mxid = response["mxid"] as? String
-            completion(.success(mxid))
+            if let mxid = response["mxid"] as? String {
+                completion(.success(.bound(userID: mxid)))
+            } else {
+                completion(.success(.unbound))
+            }
         }, failure: { (error: Error?) in
             NSLog("[ThirdPartyIDResolver] lookup resquest failed")
             if let error = error {

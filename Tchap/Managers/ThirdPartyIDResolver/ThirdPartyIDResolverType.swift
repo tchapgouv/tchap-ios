@@ -16,6 +16,12 @@
 
 import Foundation
 
+/// List the different result cases
+enum ThirdPartyIDResolveResult {
+    case bound(userID: String)
+    case unbound
+}
+
 /// Protocol describing a service used to discover Tchap users from third-party identifiers (for example: an email address).
 protocol ThirdPartyIDResolverType {
     
@@ -29,7 +35,7 @@ protocol ThirdPartyIDResolverType {
     /// - response: Provides the Matrix user id (or `nil` if the user is not found) on success.
     
     /// returns: a `MXHTTPOperation` instance.
-    func lookup(address: String, medium: MX3PID.Medium, identityServer: String, completion: @escaping (MXResponse<String?>) -> Void) -> MXHTTPOperation?
+    func lookup(address: String, medium: MX3PID.Medium, identityServer: String, completion: @escaping (MXResponse<ThirdPartyIDResolveResult>) -> Void) -> MXHTTPOperation?
     
     /// Retrieve user matrix ids from a list of 3rd party ids.
     ///
