@@ -36,6 +36,8 @@
 	<string>The microphone is used when you record videos with the camera.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>This allows you to select pictures or videos from the photo library, and send them in your conversations. You can also use one of these pictures to set your profile picture.</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>See your scheduled meetings in the app.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>
