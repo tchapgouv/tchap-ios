@@ -66,13 +66,8 @@ final class AuthenticationErrorPresentableMaker {
         let dict = nsError.userInfo
         
         if !dict.isEmpty {
-
-            let errorCode = dict[kMXErrorCodeKey] as? String
             
-            if let localizedError = dict["error"] as? String {
-                message = localizedError
-            } else if let errCode = errorCode {
-                
+            if let errCode = dict[kMXErrorCodeKey] as? String {
                 switch errCode {
                 case kMXErrCodeStringForbidden:
                     message = Bundle.mxk_localizedString(forKey: "login_error_forbidden")
@@ -88,9 +83,23 @@ final class AuthenticationErrorPresentableMaker {
                     message = Bundle.mxk_localizedString(forKey: "login_error_user_in_use")
                 case kMXErrCodeStringLoginEmailURLNotYet:
                     message = Bundle.mxk_localizedString(forKey: "login_error_login_email_not_yet")
+                case kMXErrCodeStringPasswordNoDigit:
+                    message = TchapL10n.passwordPolicyWeakPwdError
+                case kMXErrCodeStringPasswordNoLowercase:
+                    message = TchapL10n.passwordPolicyWeakPwdError
+                case kMXErrCodeStringPasswordNoUppercase:
+                    message = TchapL10n.passwordPolicyWeakPwdError
+                case kMXErrCodeStringPasswordNoSymbol:
+                    message = TchapL10n.passwordPolicyWeakPwdError
+                case kMXErrCodeStringWeakPassword:
+                    message = TchapL10n.passwordPolicyWeakPwdError
+                case kMXErrCodeStringPasswordInDictionary:
+                    message = TchapL10n.passwordPolicyPwdInDictError
                 default:
-                    message = errCode
+                    message = dict[kMXErrorMessageKey] as? String ?? errCode
                 }                                
+            } else if let localizedError = dict[kMXErrorMessageKey] as? String {
+                message = localizedError
             } else {
                 message = error.localizedDescription
             }

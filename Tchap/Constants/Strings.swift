@@ -127,6 +127,10 @@ internal enum TchapL10n {
   internal static let inviteSendingFailedTitle = TchapL10n.tr("Tchap", "invite_sending_failed_title")
   /// L'invitation a bien été envoyée.\nVous recevrez une notification lorsque\nvotre invité rejoindra la communauté Tchap.
   internal static let inviteSendingSucceeded = TchapL10n.tr("Tchap", "invite_sending_succeeded")
+  /// Ce mot de passe a été trouvé dans un dictionnaire, il n’est pas autorisé
+  internal static let passwordPolicyPwdInDictError = TchapL10n.tr("Tchap", "password_policy_pwd_in_dict_error")
+  /// Ce mot de passe est trop faible. Il doit contenir au moins 8 caractères, avec au moins un caractère de chaque type : majuscule, minuscule, chiffre, caractère spécial
+  internal static let passwordPolicyWeakPwdError = TchapL10n.tr("Tchap", "password_policy_weak_pwd_error")
   /// Chargement en cours…
   internal static let publicRoomsLoadingInProgress = TchapL10n.tr("Tchap", "public_rooms_loading_in_progress")
   /// Rechercher
@@ -151,6 +155,8 @@ internal enum TchapL10n {
   internal static let registrationMailAdditionalInfo = TchapL10n.tr("Tchap", "registration_mail_additional_info")
   /// Adresse email
   internal static let registrationMailPlaceholder = TchapL10n.tr("Tchap", "registration_mail_placeholder")
+  /// Votre mot de passe doit contenir au moins 8 caractères, avec au moins un caractère de chaque type : majuscule, minuscule, chiffre, caractère spécial
+  internal static let registrationPasswordAdditionalInfo = TchapL10n.tr("Tchap", "registration_password_additional_info")
   /// Mot de passe Tchap
   internal static let registrationPasswordPlaceholder = TchapL10n.tr("Tchap", "registration_password_placeholder")
   /// Termes et Conditions

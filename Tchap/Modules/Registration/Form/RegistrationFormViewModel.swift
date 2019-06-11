@@ -68,7 +68,8 @@ final class RegistrationFormViewModel: RegistrationFormViewModelType {
             passwordTextFieldProperties.textContentType = .password
         }
         
-        let passwordTextViewModel = FormTextViewModel(placeholder: TchapL10n.registrationPasswordPlaceholder)
+        let passwordTextViewModel = FormTextViewModel(placeholder: TchapL10n.registrationPasswordPlaceholder,
+                                                      additionalInfo: TchapL10n.registrationPasswordAdditionalInfo)
         passwordTextViewModel.textInputProperties = passwordTextFieldProperties
         passwordTextViewModel.valueMinimumCharacterLength = FormRules.passwordMinLength
         

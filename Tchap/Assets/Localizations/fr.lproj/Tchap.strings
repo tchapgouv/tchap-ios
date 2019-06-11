@@ -52,6 +52,7 @@
 "registration_mail_placeholder" = "Adresse email";
 "registration_mail_additional_info" = "Utilisez votre adresse professionnelle";
 "registration_password_placeholder" = "Mot de passe Tchap";
+"registration_password_additional_info" = "Votre mot de passe doit contenir au moins 8 caractères, avec au moins un caractère de chaque type : majuscule, minuscule, chiffre, caractère spécial";
 "registration_confirm_password_placeholder" = "Confirmer le mot de passe";
 
 "registration_terms_label_format" = "J'accepte les %@";
@@ -67,6 +68,9 @@
 "registration_email_sent_instructions" = "Merci de cliquer sur le lien proposé dans cet email afin de terminer la création de votre compte. Vous pourrez alors vous connecter en allant sur l'écran de connexion.";
 "registration_email_login_action" = "Aller à l'écran de connexion";
 "registration_email_not_received_action" = "Je n'ai pas reçu l'email !";
+
+"password_policy_weak_pwd_error" = "Ce mot de passe est trop faible. Il doit contenir au moins 8 caractères, avec au moins un caractère de chaque type : majuscule, minuscule, chiffre, caractère spécial";
+"password_policy_pwd_in_dict_error" = "Ce mot de passe a été trouvé dans un dictionnaire, il n’est pas autorisé";
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Conversations
