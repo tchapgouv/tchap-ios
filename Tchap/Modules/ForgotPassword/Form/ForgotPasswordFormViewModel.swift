@@ -154,7 +154,7 @@ final class ForgotPasswordFormViewModel: ForgotPasswordFormViewModelType {
             errorMessage = TchapL10n.authenticationErrorMissingPassword
         } else if actualPassword.count < FormRules.passwordMinLength {
             print("[ForgotPasswordFormViewModel] Invalid Password")
-            errorMessage = TchapL10n.authenticationErrorInvalidPassword(FormRules.passwordMinLength)
+            errorMessage = TchapL10n.passwordPolicyTooShortPwdDetailedError(FormRules.passwordMinLength)
         } else if doPasswordsMatch == false {
             print("[ForgotPasswordFormViewModel] Passwords don't match")
             errorMessage = TchapL10n.registrationErrorPasswordsDontMatch

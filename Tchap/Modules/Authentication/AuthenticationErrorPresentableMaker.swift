@@ -83,6 +83,8 @@ final class AuthenticationErrorPresentableMaker {
                     message = Bundle.mxk_localizedString(forKey: "login_error_user_in_use")
                 case kMXErrCodeStringLoginEmailURLNotYet:
                     message = Bundle.mxk_localizedString(forKey: "login_error_login_email_not_yet")
+                case kMXErrCodeStringPasswordTooShort:
+                    message = TchapL10n.passwordPolicyTooShortPwdError
                 case kMXErrCodeStringPasswordNoDigit:
                     message = TchapL10n.passwordPolicyWeakPwdError
                 case kMXErrCodeStringPasswordNoLowercase:

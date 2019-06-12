@@ -17,10 +17,6 @@ internal enum TchapL10n {
   internal static let actionValidate = TchapL10n.tr("Tchap", "action_validate")
   /// L'adresse email ne semble pas valide
   internal static let authenticationErrorInvalidEmail = TchapL10n.tr("Tchap", "authentication_error_invalid_email")
-  /// Mot de passe trop court (min %d)
-  internal static func authenticationErrorInvalidPassword(_ p1: Int) -> String {
-    return TchapL10n.tr("Tchap", "authentication_error_invalid_password", p1)
-  }
   /// Mot de passe manquant
   internal static let authenticationErrorMissingPassword = TchapL10n.tr("Tchap", "authentication_error_missing_password")
   /// Cette adresse email n'est pas autorisée
@@ -129,6 +125,12 @@ internal enum TchapL10n {
   internal static let inviteSendingSucceeded = TchapL10n.tr("Tchap", "invite_sending_succeeded")
   /// Ce mot de passe a été trouvé dans un dictionnaire, il n’est pas autorisé
   internal static let passwordPolicyPwdInDictError = TchapL10n.tr("Tchap", "password_policy_pwd_in_dict_error")
+  /// Mot de passe trop court (min %d)
+  internal static func passwordPolicyTooShortPwdDetailedError(_ p1: Int) -> String {
+    return TchapL10n.tr("Tchap", "password_policy_too_short_pwd_detailed_error", p1)
+  }
+  /// Mot de passe trop court
+  internal static let passwordPolicyTooShortPwdError = TchapL10n.tr("Tchap", "password_policy_too_short_pwd_error")
   /// Ce mot de passe est trop faible. Il doit contenir au moins 8 caractères, avec au moins un caractère de chaque type : majuscule, minuscule, chiffre, caractère spécial
   internal static let passwordPolicyWeakPwdError = TchapL10n.tr("Tchap", "password_policy_weak_pwd_error")
   /// Chargement en cours…
@@ -219,7 +221,7 @@ internal enum TchapL10n {
   internal static let searchNoResult = TchapL10n.tr("Tchap", "search_no_result")
   /// Changer le mot de passe réinitialise les clés de chiffrement sur tous les appareils, rendant l’historique des discussions illisible: pensez d'abord à exporter vos clés pour pouvoir les ré-importer après le changement de mot de passe.
   internal static let settingsChangePwdCaution = TchapL10n.tr("Tchap", "settings_change_pwd_caution")
-  /// Votre nouveau mot de passe doit contenir au moins 8 caractères.
+  /// Votre nouveau mot de passe doit contenir au moins 8 caractères, avec au moins un caractère de chaque type : majuscule, minuscule, chiffre, caractère spécial.
   internal static let settingsChangePwdMessage = TchapL10n.tr("Tchap", "settings_change_pwd_message")
   /// Votre mot de passe a été changé avec succès.\nVous ne recevrez plus de notifications sur vos autres appareils tant que vous ne vous y reconnecterez pas.
   internal static let settingsChangePwdSuccessMsg = TchapL10n.tr("Tchap", "settings_change_pwd_success_msg")

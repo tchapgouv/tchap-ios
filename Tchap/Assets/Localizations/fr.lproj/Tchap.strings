@@ -26,7 +26,6 @@
 "authentication_error_unauthorized_email" = "Cette adresse email n'est pas autorisée";
 "authentication_error_invalid_email" = "L'adresse email ne semble pas valide";
 "authentication_error_missing_password" = "Mot de passe manquant";
-"authentication_error_invalid_password" = "Mot de passe trop court (min %d)";
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Forgot password
@@ -69,6 +68,8 @@
 "registration_email_login_action" = "Aller à l'écran de connexion";
 "registration_email_not_received_action" = "Je n'ai pas reçu l'email !";
 
+"password_policy_too_short_pwd_error" = "Mot de passe trop court";
+"password_policy_too_short_pwd_detailed_error" = "Mot de passe trop court (min %d)";
 "password_policy_weak_pwd_error" = "Ce mot de passe est trop faible. Il doit contenir au moins 8 caractères, avec au moins un caractère de chaque type\U00A0:\U00A0majuscule, minuscule, chiffre, caractère spécial";
 "password_policy_pwd_in_dict_error" = "Ce mot de passe a été trouvé dans un dictionnaire, il n’est pas autorisé";
 
@@ -115,7 +116,7 @@
 "settings_hide_from_users_directory_summary" = "Les autres utilisateurs ne pourront pas découvrir mon compte lors de leurs recherches";
 "settings_contacts_discover_matrix_users" = "Utiliser les adresses emails pour retrouver des utilisateurs";
 "settings_change_pwd_caution" = "Changer le mot de passe réinitialise les clés de chiffrement sur tous les appareils, rendant l’historique des discussions illisible: pensez d'abord à exporter vos clés pour pouvoir les ré-importer après le changement de mot de passe.";
-"settings_change_pwd_message" = "Votre nouveau mot de passe doit contenir au moins 8 caractères.";
+"settings_change_pwd_message" = "Votre nouveau mot de passe doit contenir au moins 8 caractères, avec au moins un caractère de chaque type\U00A0:\U00A0majuscule, minuscule, chiffre, caractère spécial.";
 "settings_change_pwd_success_title" = "Succès";
 "settings_change_pwd_success_msg" = "Votre mot de passe a été changé avec succès.\nVous ne recevrez plus de notifications sur vos autres appareils tant que vous ne vous y reconnecterez pas.";
 

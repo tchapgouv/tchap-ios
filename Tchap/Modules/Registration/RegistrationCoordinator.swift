@@ -163,7 +163,7 @@ final class RegistrationCoordinator: RegistrationCoordinatorType {
                             var errorMessage: String
                             switch reason {
                             case .tooShort(let minLength):
-                                errorMessage = TchapL10n.authenticationErrorInvalidPassword(minLength)
+                                errorMessage = TchapL10n.passwordPolicyTooShortPwdDetailedError(minLength)
                             case .no_digit:
                                 errorMessage = TchapL10n.passwordPolicyWeakPwdError
                             case .no_symbol:

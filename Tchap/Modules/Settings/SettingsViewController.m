@@ -2284,7 +2284,15 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
                     MXWeakify(self);
                     [self->currentAlert dismissViewControllerAnimated:NO completion:nil];
                     
-                    self->currentAlert = [UIAlertController alertControllerWithTitle:nil message:NSLocalizedStringFromTable(@"settings_fail_to_update_password", @"Vector", nil) preferredStyle:UIAlertControllerStyleAlert];
+                    NSString *alertTitle = NSLocalizedStringFromTable(@"settings_fail_to_update_password", @"Vector", nil);
+                    NSString *alertMessage = [self detailedMessageOnPasswordUpdateFailure:error];
+                    if (!alertMessage)
+                    {
+                        alertMessage = alertTitle;
+                        alertTitle = nil;
+                    }
+                    
+                    self->currentAlert = [UIAlertController alertControllerWithTitle:alertTitle message:alertMessage preferredStyle:UIAlertControllerStyleAlert];
                     
                     [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
                                                                                    style:UIAlertActionStyleDefault
@@ -2356,6 +2364,37 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     [resetPwdAlertController addAction:cancel];
     [resetPwdAlertController addAction:savePasswordAction];
     [self presentViewController:resetPwdAlertController animated:YES completion:nil];
+}
+
+- (nullable NSString *)detailedMessageOnPasswordUpdateFailure:(NSError *)error
+{
+    // Check for specific password policy error
+    NSDictionary* dict = error.userInfo;
+    NSString *message = nil;
+    if (dict)
+    {
+        NSString* errCode = [dict valueForKey:@"errcode"];
+        if (errCode)
+        {
+            if ([errCode isEqualToString:kMXErrCodeStringPasswordTooShort])
+            {
+                message = NSLocalizedStringFromTable(@"password_policy_too_short_pwd_error", @"Tchap", nil);;
+            }
+            else if ([errCode isEqualToString:kMXErrCodeStringPasswordNoDigit]
+                     || [errCode isEqualToString:kMXErrCodeStringPasswordNoSymbol]
+                     || [errCode isEqualToString:kMXErrCodeStringPasswordNoUppercase]
+                     || [errCode isEqualToString:kMXErrCodeStringPasswordNoLowercase]
+                     || [errCode isEqualToString:kMXErrCodeStringWeakPassword])
+            {
+                message = NSLocalizedStringFromTable(@"password_policy_weak_pwd_error", @"Tchap", nil);;
+            }
+            else if ([errCode isEqualToString:kMXErrCodeStringPasswordInDictionary])
+            {
+                message = NSLocalizedStringFromTable(@"password_policy_pwd_in_dict_error", @"Tchap", nil);;
+            }
+        }
+    }
+    return message;
 }
 
 #pragma mark - UIDocumentInteractionControllerDelegate

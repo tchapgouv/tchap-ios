@@ -163,7 +163,7 @@ final class RegistrationFormViewModel: RegistrationFormViewModelType {
             errorMessage = TchapL10n.authenticationErrorMissingPassword
         } else if actualPassword.count < FormRules.passwordMinLength {
             print("[RegistrationViewModel] Invalid Password")
-            errorMessage = TchapL10n.authenticationErrorInvalidPassword(FormRules.passwordMinLength)
+            errorMessage = TchapL10n.passwordPolicyTooShortPwdDetailedError(FormRules.passwordMinLength)
         } else if doPasswordsMatch == false {
             print("[RegistrationViewModel] Passwords don't match")
             errorMessage = TchapL10n.registrationErrorPasswordsDontMatch

@@ -148,7 +148,7 @@ final class ForgotPasswordCoordinator: ForgotPasswordCoordinatorType {
                             var errorMessage: String
                             switch reason {
                             case .tooShort(let minLength):
-                                errorMessage = TchapL10n.authenticationErrorInvalidPassword(minLength)
+                                errorMessage = TchapL10n.passwordPolicyTooShortPwdDetailedError(minLength)
                             case .no_digit:
                                 errorMessage = TchapL10n.passwordPolicyWeakPwdError
                             case .no_symbol:
@@ -200,6 +200,8 @@ final class ForgotPasswordCoordinator: ForgotPasswordCoordinatorType {
         
         if let errCode = nsError.userInfo[kMXErrorCodeKey] as? String {
             switch errCode {
+            case kMXErrCodeStringPasswordTooShort:
+                shouldGoBack = true
             case kMXErrCodeStringPasswordNoDigit:
                 shouldGoBack = true
             case kMXErrCodeStringPasswordNoLowercase:
@@ -231,6 +233,8 @@ final class ForgotPasswordCoordinator: ForgotPasswordCoordinatorType {
             switch errCode {
             case kMXErrCodeStringUnauthorized:
                 errorMessage = TchapL10n.forgotPasswordVerifyEmailErrorEmailNotVerified
+            case kMXErrCodeStringPasswordTooShort:
+                errorMessage = TchapL10n.passwordPolicyTooShortPwdError
             case kMXErrCodeStringPasswordNoDigit:
                 errorMessage = TchapL10n.passwordPolicyWeakPwdError
             case kMXErrCodeStringPasswordNoLowercase:
