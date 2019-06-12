@@ -18,11 +18,12 @@ import Foundation
 
 protocol RegistrationServiceType {     
     
-    /// Initialize a registration session
+    /// Initialize a registration session.
     ///
     /// - Parameters:
-    ///   - completion: A closure called when the operation complete. Provide the authentication session id when succeed.
-    func setupRegistrationSession(completion: @escaping (MXResponse<String>) -> Void)
+    ///   - completion: A closure called when the operation complete. Provide the authentication session id
+    /// and a potential password policy service when succeed.
+    func setupRegistrationSession(completion: @escaping (MXResponse<(String, PasswordPolicyServiceType?)>) -> Void)
     
     /// Submit registration verification email and return third PID credentials for registration.
     ///

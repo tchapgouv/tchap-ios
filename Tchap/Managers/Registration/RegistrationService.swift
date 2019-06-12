@@ -29,31 +29,37 @@ final class RegistrationService: RegistrationServiceType {
     
     private let accountManager: MXKAccountManager
     private let restClient: MXRestClient
+    private let passwordPolicyGetter: PasswordPolicyGetterType
+    
+    private var passwordPolicyService: PasswordPolicyServiceType?
     
     private var registrationOperation: MXHTTPOperation?
     
     // MARK: - Setup
     
     init(accountManager: MXKAccountManager, restClient: MXRestClient) {
+        guard let homeServer = restClient.credentials.homeServer else {
+                fatalError("homeserver should be defined")
+        }
         self.accountManager = accountManager
         self.restClient = restClient
+        self.passwordPolicyGetter = PasswordPolicyGetter(homeServer: homeServer)
     }
     
     // MARK: - Public
     
-    func setupRegistrationSession(completion: @escaping (MXResponse<String>) -> Void) {
-        self.restClient.getRegisterSession(completion: { (response) in
+    func setupRegistrationSession(completion: @escaping (MXResponse<(String, PasswordPolicyServiceType?)>) -> Void) {
+        // Retrieve first the potential password policy
+        _ = self.passwordPolicyGetter.passwordPolicy(completion: { (response) in
             switch response {
-            case .success(let authenticationSession):
-                if let sessionId = authenticationSession.session {
-                    completion(MXResponse.success(sessionId))
-                } else {
-                    let error = NSError(domain: MXKAuthErrorDomain, code: 0, userInfo: [NSLocalizedDescriptionKey: Bundle.mxk_localizedString(forKey: "not_supported_yet")])
-                    completion(MXResponse.failure(error))
-                }
-                
-            case .failure(let error):
-                completion(MXResponse.failure(error))
+            case .success(let policy):
+                self.passwordPolicyService = PasswordPolicyService(policy: policy)
+                // Pursue the registration session setup
+                self.setupSession(completion: completion)
+            case .failure:
+                self.passwordPolicyService = nil
+                // Pursue the registration session setup
+                self.setupSession(completion: completion)
             }
         })
     }
@@ -123,6 +129,23 @@ final class RegistrationService: RegistrationServiceType {
     }
     
     // MARK: - Private
+    
+    private func setupSession(completion: @escaping (MXResponse<(String, PasswordPolicyServiceType?)>) -> Void) {
+        self.restClient.getRegisterSession(completion: { (response) in
+            switch response {
+            case .success(let authenticationSession):
+                if let sessionId = authenticationSession.session {
+                    completion(MXResponse.success((sessionId, self.passwordPolicyService)))
+                } else {
+                    let error = NSError(domain: MXKAuthErrorDomain, code: 0, userInfo: [NSLocalizedDescriptionKey: Bundle.mxk_localizedString(forKey: "not_supported_yet")])
+                    completion(MXResponse.failure(error))
+                }
+                
+            case .failure(let error):
+                completion(MXResponse.failure(error))
+            }
+        })
+    }
     
     private func webAppAppBaseStringURL(from homeServer: String) -> String {
         // For the moment we use the homeserver url, this base url should be updated later with the actual web app url.

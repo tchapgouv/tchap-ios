@@ -221,6 +221,18 @@
 		0252030C224EBD4800262433 /* ContactButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02520305224EBD4800262433 /* ContactButtonView.swift */; };
 		0252030D224EBD4800262433 /* ContactButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02520306224EBD4800262433 /* ContactButtonViewModel.swift */; };
 		0252030E224EBD4800262433 /* ContactButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02520306224EBD4800262433 /* ContactButtonViewModel.swift */; };
+		0259328822AFE8A500C93762 /* PasswordPolicyServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0259328722AFE8A500C93762 /* PasswordPolicyServiceType.swift */; };
+		0259328922AFE8A500C93762 /* PasswordPolicyServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0259328722AFE8A500C93762 /* PasswordPolicyServiceType.swift */; };
+		0259328B22AFEF5700C93762 /* PasswordPolicyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0259328A22AFEF5700C93762 /* PasswordPolicyService.swift */; };
+		0259328C22AFEF5700C93762 /* PasswordPolicyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0259328A22AFEF5700C93762 /* PasswordPolicyService.swift */; };
+		0259328E22B00D0200C93762 /* PasswordPolicyType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0259328D22B00D0200C93762 /* PasswordPolicyType.swift */; };
+		0259328F22B00D0200C93762 /* PasswordPolicyType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0259328D22B00D0200C93762 /* PasswordPolicyType.swift */; };
+		0259329122B00E4300C93762 /* PasswordPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0259329022B00E4300C93762 /* PasswordPolicy.swift */; };
+		0259329222B00E4300C93762 /* PasswordPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0259329022B00E4300C93762 /* PasswordPolicy.swift */; };
+		0259329422B00F0200C93762 /* PasswordPolicyGetterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0259329322B00F0200C93762 /* PasswordPolicyGetterType.swift */; };
+		0259329522B00F0200C93762 /* PasswordPolicyGetterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0259329322B00F0200C93762 /* PasswordPolicyGetterType.swift */; };
+		0259329722B016A200C93762 /* PasswordPolicyGetter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0259329622B016A200C93762 /* PasswordPolicyGetter.swift */; };
+		0259329822B016A200C93762 /* PasswordPolicyGetter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0259329622B016A200C93762 /* PasswordPolicyGetter.swift */; };
 		025E36F5229546A000C9D9AE /* ThirdPartyIDResolverType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025E36F4229546A000C9D9AE /* ThirdPartyIDResolverType.swift */; };
 		025E36F6229546A000C9D9AE /* ThirdPartyIDResolverType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025E36F4229546A000C9D9AE /* ThirdPartyIDResolverType.swift */; };
 		025E36F8229548C000C9D9AE /* ThirdPartyIDResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025E36F7229548C000C9D9AE /* ThirdPartyIDResolver.swift */; };
@@ -1059,6 +1071,12 @@
 		02520304224EBD4800262433 /* ContactButtonView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactButtonView.xib; sourceTree = "<group>"; };
 		02520305224EBD4800262433 /* ContactButtonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactButtonView.swift; sourceTree = "<group>"; };
 		02520306224EBD4800262433 /* ContactButtonViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactButtonViewModel.swift; sourceTree = "<group>"; };
+		0259328722AFE8A500C93762 /* PasswordPolicyServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordPolicyServiceType.swift; sourceTree = "<group>"; };
+		0259328A22AFEF5700C93762 /* PasswordPolicyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordPolicyService.swift; sourceTree = "<group>"; };
+		0259328D22B00D0200C93762 /* PasswordPolicyType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordPolicyType.swift; sourceTree = "<group>"; };
+		0259329022B00E4300C93762 /* PasswordPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordPolicy.swift; sourceTree = "<group>"; };
+		0259329322B00F0200C93762 /* PasswordPolicyGetterType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordPolicyGetterType.swift; sourceTree = "<group>"; };
+		0259329622B016A200C93762 /* PasswordPolicyGetter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordPolicyGetter.swift; sourceTree = "<group>"; };
 		025E36F4229546A000C9D9AE /* ThirdPartyIDResolverType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThirdPartyIDResolverType.swift; sourceTree = "<group>"; };
 		025E36F7229548C000C9D9AE /* ThirdPartyIDResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThirdPartyIDResolver.swift; sourceTree = "<group>"; };
 		026D886F21C1C4F40085BED8 /* TchapSharedImages.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = TchapSharedImages.xcassets; sourceTree = "<group>"; };
@@ -1889,6 +1907,19 @@
 			path = ContactButton;
 			sourceTree = "<group>";
 		};
+		0259328622AFE84400C93762 /* PasswordPolicy */ = {
+			isa = PBXGroup;
+			children = (
+				0259328D22B00D0200C93762 /* PasswordPolicyType.swift */,
+				0259329022B00E4300C93762 /* PasswordPolicy.swift */,
+				0259329322B00F0200C93762 /* PasswordPolicyGetterType.swift */,
+				0259329622B016A200C93762 /* PasswordPolicyGetter.swift */,
+				0259328722AFE8A500C93762 /* PasswordPolicyServiceType.swift */,
+				0259328A22AFEF5700C93762 /* PasswordPolicyService.swift */,
+			);
+			path = PasswordPolicy;
+			sourceTree = "<group>";
+		};
 		025E36F32295466400C9D9AE /* ThirdPartyIDResolver */ = {
 			isa = PBXGroup;
 			children = (
@@ -2024,6 +2055,7 @@
 		02BEE184212AB23A00098505 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				0259328622AFE84400C93762 /* PasswordPolicy */,
 				025E36F32295466400C9D9AE /* ThirdPartyIDResolver */,
 				02C4BE86225231ED00F7BB0E /* Invite */,
 				0223EFA92227E3C800B9EA34 /* HomeServer */,
@@ -3869,6 +3901,7 @@
 				0250C49F2122B68000034691 /* MediaAlbumContentViewController.m in Sources */,
 				020DF963214BE467003DFBA4 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
 				020DF987214BE467003DFBA4 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
+				0259329122B00E4300C93762 /* PasswordPolicy.swift in Sources */,
 				B12FD6AC2146BA45001B7F28 /* RegistrationServiceType.swift in Sources */,
 				B165252221779FA700146F80 /* CreateNewDiscussionCoordinator.swift in Sources */,
 				B1F2AAA1212AED170077FDC0 /* RoomsCoordinator.swift in Sources */,
@@ -3937,6 +3970,7 @@
 				025E36F5229546A000C9D9AE /* ThirdPartyIDResolverType.swift in Sources */,
 				0250C4C42122B68000034691 /* RiotNavigationController.m in Sources */,
 				0250C4C92122B68000034691 /* Tools.m in Sources */,
+				0259329722B016A200C93762 /* PasswordPolicyGetter.swift in Sources */,
 				B1C4646021B6DD42005F4D53 /* RoomService.swift in Sources */,
 				02C4BE88225231ED00F7BB0E /* InviteService.swift in Sources */,
 				0250C4CA2122B68000034691 /* WebViewViewController.m in Sources */,
@@ -3979,6 +4013,7 @@
 				B1680D062152AA28009B5F92 /* PublicRoomServiceType.swift in Sources */,
 				020DF9AC214BE467003DFBA4 /* RoomInputToolbarView.m in Sources */,
 				020DF954214BE467003DFBA4 /* RoomEncryptedAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.m in Sources */,
+				0259329422B00F0200C93762 /* PasswordPolicyGetterType.swift in Sources */,
 				B1BC6A072135EA2800D32F8E /* ActivityIndicatorPresenterType.swift in Sources */,
 				02BEE1562125BBF800098505 /* RoomsViewController.m in Sources */,
 				025E36F8229548C000C9D9AE /* ThirdPartyIDResolver.swift in Sources */,
@@ -3996,7 +4031,9 @@
 				B1F2AA95212AEC830077FDC0 /* SettingsCoordinatorType.swift in Sources */,
 				0252030B224EBD4800262433 /* ContactButtonView.swift in Sources */,
 				020DF971214BE467003DFBA4 /* RoomIncomingAttachmentBubbleCell.m in Sources */,
+				0259328B22AFEF5700C93762 /* PasswordPolicyService.swift in Sources */,
 				0250C4E72122B68000034691 /* EncryptionInfoView.m in Sources */,
+				0259328822AFE8A500C93762 /* PasswordPolicyServiceType.swift in Sources */,
 				B1892E7D2130719500742348 /* TextInputHandler.swift in Sources */,
 				B18D18C42153E68A003677D1 /* HomeViewController.swift in Sources */,
 				B1F2AAA5212AED840077FDC0 /* Coordinator.swift in Sources */,
@@ -4103,6 +4140,7 @@
 				0250C52F2122B68000034691 /* DecryptionFailureTracker.m in Sources */,
 				0250C5312122B68000034691 /* RoomEmailInvitation.m in Sources */,
 				B122FB57216D060F00B09BEF /* RoomTitleView.swift in Sources */,
+				0259328E22B00D0200C93762 /* PasswordPolicyType.swift in Sources */,
 				02018F9F22006282008D68BE /* UniversalLinkParametersType.swift in Sources */,
 				B1BC6A1B21369C8F00D32F8E /* Style.swift in Sources */,
 				B1F2AA98212AEC830077FDC0 /* AppCoordinatorType.swift in Sources */,
@@ -4153,6 +4191,7 @@
 				02DFEB8521C07370009B6F15 /* MediaAlbumContentViewController.m in Sources */,
 				02DFEB8621C07370009B6F15 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
 				02DFEB8721C07370009B6F15 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
+				0259329222B00E4300C93762 /* PasswordPolicy.swift in Sources */,
 				02DFEB8821C07370009B6F15 /* RegistrationServiceType.swift in Sources */,
 				02DFEB8921C07370009B6F15 /* CreateNewDiscussionCoordinator.swift in Sources */,
 				02DFEB8A21C07370009B6F15 /* RoomsCoordinator.swift in Sources */,
@@ -4221,6 +4260,7 @@
 				025E36F6229546A000C9D9AE /* ThirdPartyIDResolverType.swift in Sources */,
 				02DFEBC621C07370009B6F15 /* RiotNavigationController.m in Sources */,
 				02DFEBC721C07370009B6F15 /* Tools.m in Sources */,
+				0259329822B016A200C93762 /* PasswordPolicyGetter.swift in Sources */,
 				02DFEBC821C07370009B6F15 /* RoomService.swift in Sources */,
 				02C4BE89225231ED00F7BB0E /* InviteService.swift in Sources */,
 				02DFEBC921C07370009B6F15 /* WebViewViewController.m in Sources */,
@@ -4263,6 +4303,7 @@
 				02DFEBEB21C07370009B6F15 /* PublicRoomServiceType.swift in Sources */,
 				02DFEBEC21C07370009B6F15 /* RoomInputToolbarView.m in Sources */,
 				02DFEBED21C07370009B6F15 /* RoomEncryptedAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.m in Sources */,
+				0259329522B00F0200C93762 /* PasswordPolicyGetterType.swift in Sources */,
 				02DFEBEE21C07370009B6F15 /* ActivityIndicatorPresenterType.swift in Sources */,
 				02DFEBEF21C07370009B6F15 /* RoomsViewController.m in Sources */,
 				025E36F9229548C000C9D9AE /* ThirdPartyIDResolver.swift in Sources */,
@@ -4280,7 +4321,9 @@
 				02DFEBF921C07370009B6F15 /* SettingsCoordinatorType.swift in Sources */,
 				0252030C224EBD4800262433 /* ContactButtonView.swift in Sources */,
 				02DFEBFA21C07370009B6F15 /* RoomIncomingAttachmentBubbleCell.m in Sources */,
+				0259328C22AFEF5700C93762 /* PasswordPolicyService.swift in Sources */,
 				02DFEBFB21C07370009B6F15 /* EncryptionInfoView.m in Sources */,
+				0259328922AFE8A500C93762 /* PasswordPolicyServiceType.swift in Sources */,
 				02DFEBFC21C07370009B6F15 /* TextInputHandler.swift in Sources */,
 				02DFEBFD21C07370009B6F15 /* HomeViewController.swift in Sources */,
 				02DFEBFE21C07370009B6F15 /* Coordinator.swift in Sources */,
@@ -4387,6 +4430,7 @@
 				02DFEC5E21C07370009B6F15 /* DecryptionFailureTracker.m in Sources */,
 				02DFEC5F21C07370009B6F15 /* RoomEmailInvitation.m in Sources */,
 				02DFEC6021C07370009B6F15 /* RoomTitleView.swift in Sources */,
+				0259328F22B00D0200C93762 /* PasswordPolicyType.swift in Sources */,
 				02018FA022006282008D68BE /* UniversalLinkParametersType.swift in Sources */,
 				02DFEC6121C07370009B6F15 /* Style.swift in Sources */,
 				02DFEC6221C07370009B6F15 /* AppCoordinatorType.swift in Sources */,
