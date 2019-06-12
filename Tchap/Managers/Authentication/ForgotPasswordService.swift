@@ -22,14 +22,36 @@ final class ForgotPasswordService: ForgotPasswordServiceType {
     // MARK: - Properties
         
     private let restClient: MXRestClient
+    private let passwordPolicyGetter: PasswordPolicyGetterType
+    
+    private var passwordPolicyService: PasswordPolicyServiceType?
     
     // MARK: - Setup
     
     init(restClient: MXRestClient) {
+        guard let homeServer = restClient.credentials.homeServer else {
+            fatalError("homeserver should be defined")
+        }
         self.restClient = restClient
+        self.passwordPolicyGetter = PasswordPolicyGetter(homeServer: homeServer)
     }
     
     // MARK: - Public
+    
+    func setupPasswordPolicyService(completion: @escaping (MXResponse<PasswordPolicyServiceType?>) -> Void) {
+        // Retrieve the potential password policy
+        _ = self.passwordPolicyGetter.passwordPolicy(completion: { (response) in
+            switch response {
+            case .success(let policy):
+                self.passwordPolicyService = PasswordPolicyService(policy: policy)
+                completion(MXResponse.success(self.passwordPolicyService))
+            case .failure:
+                // Ignore the error for the moment, the password will be verified on the server side.
+                self.passwordPolicyService = nil
+                completion(MXResponse.success(self.passwordPolicyService))
+            }
+        })
+    }
     
     func submitForgotPasswordEmail(to email: String, completion: @escaping (MXResponse<ThreePIDCredentials>) -> Void) -> MXHTTPOperation? {
         return self.submitForgotPasswordEmail(to: email, using: self.restClient, completion: completion)

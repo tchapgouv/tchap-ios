@@ -15,7 +15,7 @@ internal enum TchapL10n {
   internal static let actionNext = TchapL10n.tr("Tchap", "action_next")
   /// Valider
   internal static let actionValidate = TchapL10n.tr("Tchap", "action_validate")
-  /// L'adresse e-mail ne semble pas valide
+  /// L'adresse email ne semble pas valide
   internal static let authenticationErrorInvalidEmail = TchapL10n.tr("Tchap", "authentication_error_invalid_email")
   /// Mot de passe trop court (min %d)
   internal static func authenticationErrorInvalidPassword(_ p1: Int) -> String {
@@ -23,7 +23,7 @@ internal enum TchapL10n {
   }
   /// Mot de passe manquant
   internal static let authenticationErrorMissingPassword = TchapL10n.tr("Tchap", "authentication_error_missing_password")
-  /// Cette adresse e-mail n'est pas autorisée
+  /// Cette adresse email n'est pas autorisée
   internal static let authenticationErrorUnauthorizedEmail = TchapL10n.tr("Tchap", "authentication_error_unauthorized_email")
   /// Mot de passe oublié ?
   internal static let authenticationForgotPassword = TchapL10n.tr("Tchap", "authentication_forgot_password")
@@ -37,9 +37,9 @@ internal enum TchapL10n {
   internal static let contactsAddressBookPermissionDenied = TchapL10n.tr("Tchap", "contacts_address_book_permission_denied")
   /// Permissions requises pour accéder aux contacts locaux
   internal static let contactsAddressBookPermissionRequired = TchapL10n.tr("Tchap", "contacts_address_book_permission_required")
-  /// Envoyer une invitation par e-mail
+  /// Envoyer une invitation par email
   internal static let contactsInviteByEmailButton = TchapL10n.tr("Tchap", "contacts_invite_by_email_button")
-  /// Veuillez saisir l'adresse e-mail de la personne à inviter :
+  /// Veuillez saisir l'adresse email de la personne à inviter : 
   internal static let contactsInviteByEmailMessage = TchapL10n.tr("Tchap", "contacts_invite_by_email_message")
   /// Envoyer une invitation
   internal static let contactsInviteByEmailTitle = TchapL10n.tr("Tchap", "contacts_invite_by_email_title")
@@ -91,7 +91,7 @@ internal enum TchapL10n {
   internal static let forgotPasswordFormConfirmPasswordPlaceholder = TchapL10n.tr("Tchap", "forgot_password_form_confirm_password_placeholder")
   /// Adresse email
   internal static let forgotPasswordFormEmailPlaceholder = TchapL10n.tr("Tchap", "forgot_password_form_email_placeholder")
-  /// Impossible d'envoyer l'e-mail : adresse non trouvée
+  /// Impossible d'envoyer l'email : adresse non trouvée
   internal static let forgotPasswordFormErrorEmailNotFound = TchapL10n.tr("Tchap", "forgot_password_form_error_email_not_found")
   /// Pour réinitialiser votre mot de passe, saisissez l'adresse email associée à votre compte : 
   internal static let forgotPasswordFormInstructions = TchapL10n.tr("Tchap", "forgot_password_form_instructions")
@@ -103,7 +103,7 @@ internal enum TchapL10n {
   internal static let forgotPasswordTitle = TchapL10n.tr("Tchap", "forgot_password_title")
   /// J'ai vérifié mon adresse email
   internal static let forgotPasswordVerifyEmailConfirmationAction = TchapL10n.tr("Tchap", "forgot_password_verify_email_confirmation_action")
-  /// Impossible de vérifier l'adresse e-mail : assurez-vous d'avoir cliqué sur le lien dans l'e-mail
+  /// Impossible de vérifier l'adresse email : assurez-vous d'avoir cliqué sur le lien dans l'email
   internal static let forgotPasswordVerifyEmailErrorEmailNotVerified = TchapL10n.tr("Tchap", "forgot_password_verify_email_error_email_not_verified")
   /// Un email a été envoyé à %@. Une fois que vous aurez suivi le lien qu'il contient, cliquez ci-dessous.
   internal static func forgotPasswordVerifyEmailInstructions(_ p1: String) -> String {
@@ -129,7 +129,7 @@ internal enum TchapL10n {
   internal static let inviteSendingSucceeded = TchapL10n.tr("Tchap", "invite_sending_succeeded")
   /// Ce mot de passe a été trouvé dans un dictionnaire, il n’est pas autorisé
   internal static let passwordPolicyPwdInDictError = TchapL10n.tr("Tchap", "password_policy_pwd_in_dict_error")
-  /// Ce mot de passe est trop faible. Il doit contenir au moins 8 caractères, avec au moins un caractère de chaque type : majuscule, minuscule, chiffre, caractère spécial
+  /// Ce mot de passe est trop faible. Il doit contenir au moins 8 caractères, avec au moins un caractère de chaque type : majuscule, minuscule, chiffre, caractère spécial
   internal static let passwordPolicyWeakPwdError = TchapL10n.tr("Tchap", "password_policy_weak_pwd_error")
   /// Chargement en cours…
   internal static let publicRoomsLoadingInProgress = TchapL10n.tr("Tchap", "public_rooms_loading_in_progress")
@@ -143,7 +143,7 @@ internal enum TchapL10n {
   internal static let registrationEmailLoginAction = TchapL10n.tr("Tchap", "registration_email_login_action")
   /// Je n'ai pas reçu l'email !
   internal static let registrationEmailNotReceivedAction = TchapL10n.tr("Tchap", "registration_email_not_received_action")
-  /// Un email vous a été envoyé à :
+  /// Un email vous a été envoyé à : 
   internal static let registrationEmailSentInfo = TchapL10n.tr("Tchap", "registration_email_sent_info")
   /// Merci de cliquer sur le lien proposé dans cet email afin de terminer la création de votre compte. Vous pourrez alors vous connecter en allant sur l'écran de connexion.
   internal static let registrationEmailSentInstructions = TchapL10n.tr("Tchap", "registration_email_sent_instructions")
@@ -155,7 +155,7 @@ internal enum TchapL10n {
   internal static let registrationMailAdditionalInfo = TchapL10n.tr("Tchap", "registration_mail_additional_info")
   /// Adresse email
   internal static let registrationMailPlaceholder = TchapL10n.tr("Tchap", "registration_mail_placeholder")
-  /// Votre mot de passe doit contenir au moins 8 caractères, avec au moins un caractère de chaque type : majuscule, minuscule, chiffre, caractère spécial
+  /// Votre mot de passe doit contenir au moins 8 caractères, avec au moins un caractère de chaque type : majuscule, minuscule, chiffre, caractère spécial
   internal static let registrationPasswordAdditionalInfo = TchapL10n.tr("Tchap", "registration_password_additional_info")
   /// Mot de passe Tchap
   internal static let registrationPasswordPlaceholder = TchapL10n.tr("Tchap", "registration_password_placeholder")
@@ -225,7 +225,7 @@ internal enum TchapL10n {
   internal static let settingsChangePwdSuccessMsg = TchapL10n.tr("Tchap", "settings_change_pwd_success_msg")
   /// Succès
   internal static let settingsChangePwdSuccessTitle = TchapL10n.tr("Tchap", "settings_change_pwd_success_title")
-  /// Utiliser les adresses e-mails pour retrouver des utilisateurs
+  /// Utiliser les adresses emails pour retrouver des utilisateurs
   internal static let settingsContactsDiscoverMatrixUsers = TchapL10n.tr("Tchap", "settings_contacts_discover_matrix_users")
   /// Les autres utilisateurs ne pourront pas découvrir mon compte lors de leurs recherches
   internal static let settingsHideFromUsersDirectorySummary = TchapL10n.tr("Tchap", "settings_hide_from_users_directory_summary")

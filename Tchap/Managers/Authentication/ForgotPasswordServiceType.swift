@@ -19,6 +19,12 @@ import Foundation
 /// Protocol describing a service to handle forgot password.
 protocol ForgotPasswordServiceType {
     
+    /// Initialize the password policy service based on the server's policy.
+    ///
+    /// - Parameters:
+    ///   - completion: A closure called when the operation complete. Provide the potential password policy service when succeed.
+    func setupPasswordPolicyService(completion: @escaping (MXResponse<PasswordPolicyServiceType?>) -> Void)
+    
     /// Submit forgot password email and return third PID credentials for registration.
     ///
     /// - Parameters:

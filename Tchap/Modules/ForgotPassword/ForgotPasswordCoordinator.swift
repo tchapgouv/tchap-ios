@@ -111,21 +111,63 @@ final class ForgotPasswordCoordinator: ForgotPasswordCoordinatorType {
             case .success(let restClient):
                 let forgotPasswordService = ForgotPasswordService(restClient: restClient)
                 
-                // Validate email
-                _ = forgotPasswordService.submitForgotPasswordEmail(to: email) { (emailVerificationResult) in
+                // Retrieve the potential password policy service
+                forgotPasswordService.setupPasswordPolicyService(completion: { (response) in
                     
-                    removeActivityIndicator()
-                    
-                    switch emailVerificationResult {
-                    case .success(let threePIDCredentials):
-                        sself.emailCredentials = threePIDCredentials
-                        sself.newPassword = password
-                        sself.showVerifyEmail(with: email)
+                    switch response {
+                    case .success(let pwdPolicyService):
+                        // Validate first the password
+                        let pwdVerificationResult: PasswordPolicyVerificationResult
+                        if let passwordPolicyService = pwdPolicyService {
+                            pwdVerificationResult = passwordPolicyService.verify(password)
+                        } else {
+                            // There is no server's policy to check
+                            pwdVerificationResult = PasswordPolicyVerificationResult.authorized
+                        }
+                        
+                        switch pwdVerificationResult {
+                        case .authorized:
+                            // Request an email to validate the email address
+                            _ = forgotPasswordService.submitForgotPasswordEmail(to: email) { (emailVerificationResult) in
+                                
+                                removeActivityIndicator()
+                                
+                                switch emailVerificationResult {
+                                case .success(let threePIDCredentials):
+                                    sself.emailCredentials = threePIDCredentials
+                                    sself.newPassword = password
+                                    sself.showVerifyEmail(with: email)
+                                case .failure(let error):
+                                    let errorPresentable = sself.formErrorPresentable(from: error)
+                                    sself.forgotPasswordFormErrorPresenter.present(errorPresentable: errorPresentable)
+                                }
+                            }
+                        case .unauthorized(let reason):
+                            removeActivityIndicator()
+                            
+                            var errorMessage: String
+                            switch reason {
+                            case .tooShort(let minLength):
+                                errorMessage = TchapL10n.authenticationErrorInvalidPassword(minLength)
+                            case .no_digit:
+                                errorMessage = TchapL10n.passwordPolicyWeakPwdError
+                            case .no_symbol:
+                                errorMessage = TchapL10n.passwordPolicyWeakPwdError
+                            case .no_uppercase:
+                                errorMessage = TchapL10n.passwordPolicyWeakPwdError
+                            case .no_lowercase:
+                                errorMessage = TchapL10n.passwordPolicyWeakPwdError
+                            }
+                            let errorPresentable = ErrorPresentableImpl(title: TchapL10n.errorTitleDefault, message: errorMessage)
+                            sself.forgotPasswordFormErrorPresenter.present(errorPresentable: errorPresentable)
+                        }
                     case .failure(let error):
+                        removeActivityIndicator()
+                        
                         let errorPresentable = sself.formErrorPresentable(from: error)
                         sself.forgotPasswordFormErrorPresenter.present(errorPresentable: errorPresentable)
                     }
-                }
+                })
                 
                 sself.forgotPasswordService = forgotPasswordService
             case .failure(let error):
@@ -152,14 +194,58 @@ final class ForgotPasswordCoordinator: ForgotPasswordCoordinatorType {
         return ErrorPresentableImpl(title: errorTitle, message: errorMessage)
     }
     
+    private func shouldGoBackOnVerifyEmailError(_ error: Error) -> Bool {
+        let shouldGoBack: Bool
+        let nsError = error as NSError
+        
+        if let errCode = nsError.userInfo[kMXErrorCodeKey] as? String {
+            switch errCode {
+            case kMXErrCodeStringPasswordNoDigit:
+                shouldGoBack = true
+            case kMXErrCodeStringPasswordNoLowercase:
+                shouldGoBack = true
+            case kMXErrCodeStringPasswordNoUppercase:
+                shouldGoBack = true
+            case kMXErrCodeStringPasswordNoSymbol:
+                shouldGoBack = true
+            case kMXErrCodeStringWeakPassword:
+                shouldGoBack = true
+            case kMXErrCodeStringPasswordInDictionary:
+                shouldGoBack = true
+            default:
+                shouldGoBack = false
+            }
+        } else {
+            shouldGoBack = false
+        }
+        return shouldGoBack
+    }
+    
     private func verifyEmailErrorPresentable(from error: Error) -> ErrorPresentable {
         let errorTitle: String = TchapL10n.errorTitleDefault
         let errorMessage: String
         
         let nsError = error as NSError
         
-        if let matrixErrorCode = nsError.userInfo[kMXErrorCodeKey] as? String, matrixErrorCode == kMXErrCodeStringUnauthorized {
-            errorMessage = TchapL10n.forgotPasswordVerifyEmailErrorEmailNotVerified
+        if let errCode = nsError.userInfo[kMXErrorCodeKey] as? String {
+            switch errCode {
+            case kMXErrCodeStringUnauthorized:
+                errorMessage = TchapL10n.forgotPasswordVerifyEmailErrorEmailNotVerified
+            case kMXErrCodeStringPasswordNoDigit:
+                errorMessage = TchapL10n.passwordPolicyWeakPwdError
+            case kMXErrCodeStringPasswordNoLowercase:
+                errorMessage = TchapL10n.passwordPolicyWeakPwdError
+            case kMXErrCodeStringPasswordNoUppercase:
+                errorMessage = TchapL10n.passwordPolicyWeakPwdError
+            case kMXErrCodeStringPasswordNoSymbol:
+                errorMessage = TchapL10n.passwordPolicyWeakPwdError
+            case kMXErrCodeStringWeakPassword:
+                errorMessage = TchapL10n.passwordPolicyWeakPwdError
+            case kMXErrCodeStringPasswordInDictionary:
+                errorMessage = TchapL10n.passwordPolicyPwdInDictError
+            default:
+                errorMessage = TchapL10n.errorMessageDefault
+            }
         } else {
             errorMessage = TchapL10n.errorMessageDefault
         }
@@ -201,8 +287,14 @@ extension ForgotPasswordCoordinator: ForgotPasswordVerifyEmailViewControllerDele
             case .success:
                 sself.showCheckedEmail()
             case .failure(let error):
-                let errorPresentable = sself.verifyEmailErrorPresentable(from: error)
-                errorPresenter.present(errorPresentable: errorPresentable)
+                if sself.shouldGoBackOnVerifyEmailError(error) {
+                    sself.navigationRouter.popModule(animated: true)
+                    let errorPresentable = sself.verifyEmailErrorPresentable(from: error)
+                    sself.forgotPasswordFormErrorPresenter.present(errorPresentable: errorPresentable)
+                } else {
+                    let errorPresentable = sself.verifyEmailErrorPresentable(from: error)
+                    errorPresenter.present(errorPresentable: errorPresentable)
+                }
             }
         }
     }

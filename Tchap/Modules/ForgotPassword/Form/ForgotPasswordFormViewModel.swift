@@ -66,7 +66,8 @@ final class ForgotPasswordFormViewModel: ForgotPasswordFormViewModelType {
             passwordTextFieldProperties.textContentType = .password
         }
         
-        let passwordTextViewModel = FormTextViewModel(placeholder: TchapL10n.forgotPasswordFormPasswordPlaceholder)
+        let passwordTextViewModel = FormTextViewModel(placeholder: TchapL10n.forgotPasswordFormPasswordPlaceholder,
+                                                      additionalInfo: TchapL10n.registrationPasswordAdditionalInfo)
         passwordTextViewModel.textInputProperties = passwordTextFieldProperties
         passwordTextViewModel.valueMinimumCharacterLength = FormRules.passwordMinLength
         
