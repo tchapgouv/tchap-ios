@@ -19,6 +19,12 @@ import Intents
 
 final class AppCoordinator: AppCoordinatorType {
     
+    // MARK: - Constants
+    
+    private enum Constants {
+        static let expiredAccountError: String = "ORG_MATRIX_EXPIRED_ACCOUNT"
+    }
+    
     // MARK: - Properties
   
     // MARK: Private
@@ -30,6 +36,9 @@ final class AppCoordinator: AppCoordinatorType {
     
 //    private weak var splitViewCoordinator: SplitViewCoordinatorType?
     private weak var homeCoordinator: HomeCoordinatorType?
+    
+    private weak var expiredAccountAlertController: UIAlertController?
+    private var accountValidityService: AccountValidityServiceType?
     
     /// Main user Matrix session
     private var mainSession: MXSession? {
@@ -190,14 +199,14 @@ final class AppCoordinator: AppCoordinatorType {
     
     func showHome(session: MXSession) {
         // Remove the potential existing home coordinator.
-        if let homeCoordinator = self.homeCoordinator {
-            self.remove(childCoordinator: homeCoordinator)
-        }
+        self.removeHome()
         
         let homeCoordinator = HomeCoordinator(session: session)
         homeCoordinator.start()
         homeCoordinator.delegate = self
         self.add(childCoordinator: homeCoordinator)
+        
+        homeCoordinator.overrideContactManagerUsersDiscovery(true)
         
         self.rootRouter.setRootModule(homeCoordinator)
         
@@ -206,12 +215,25 @@ final class AppCoordinator: AppCoordinatorType {
         self.registerLogoutNotification()
         self.registerIgnoredUsersDidChangeNotification()
         self.registerDidCorruptDataNotification()
+        
+        // Track the server error related to an expired account.
+        session.matrixRestClient.trackedServerErrorCodes = [Constants.expiredAccountError]
+        AppDelegate.theDelegate().ignoredServerErrorCodes = [Constants.expiredAccountError]
+        self.registerTrackedServerErrorNotification()
+    }
+    
+    private func removeHome() {
+        if let homeCoordinator = self.homeCoordinator {
+            homeCoordinator.overrideContactManagerUsersDiscovery(false)
+            self.remove(childCoordinator: homeCoordinator)
+        }
     }
     
     private func reloadSession(clearCache: Bool) {
         self.unregisterLogoutNotification()
         self.unregisterIgnoredUsersDidChangeNotification()
         self.unregisterDidCorruptDataNotification()
+        self.unregisterTrackedServerErrorNotification()
         
         if let accounts = MXKAccountManager.shared().activeAccounts, !accounts.isEmpty {
             for account in accounts {
@@ -257,6 +279,14 @@ final class AppCoordinator: AppCoordinatorType {
     
     private func unregisterDidCorruptDataNotification() {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.mxSessionDidCorruptData, object: nil)
+    }
+    
+    private func registerTrackedServerErrorNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(handleTrackedServerError(notification:)), name: NSNotification.Name.mxhttpClientTrackedError, object: nil)
+    }
+    
+    private func unregisterTrackedServerErrorNotification() {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.mxhttpClientTrackedError, object: nil)
     }
     
     private func handleRegisterAfterEmailValidation(_ registerParams: [String: String]) {
@@ -345,6 +375,7 @@ final class AppCoordinator: AppCoordinatorType {
         self.unregisterLogoutNotification()
         self.unregisterIgnoredUsersDidChangeNotification()
         self.unregisterDidCorruptDataNotification()
+        self.unregisterTrackedServerErrorNotification()
         
         self.showWelcome()
         
@@ -352,14 +383,82 @@ final class AppCoordinator: AppCoordinatorType {
 //            self.remove(childCoordinator: splitViewCoordinator)
 //        }
         
-        if let homeCoordinator = self.homeCoordinator {
-            self.remove(childCoordinator: homeCoordinator)
-        }
+        self.removeHome()
     }
     
     @objc private func reloadSessionAndClearCache() {
         // Reload entirely the app
         self.reloadSession(clearCache: true)
+    }
+    
+    @objc private func handleTrackedServerError(notification: Notification) {
+        guard let errorCode = notification.userInfo?[kMXHTTPClientTrackedErrorNotificationErrorCodeKey] as? String else {
+            return
+        }
+        if errorCode == Constants.expiredAccountError {
+            self.handleExpiredAccount()
+        }
+    }
+    
+    private func handleExpiredAccount() {
+        NSLog("[AppCoordinator] expired account")
+        // Suspend the app by closing all the sessions (presently only one session is supported)
+        if let accounts = MXKAccountManager.shared().activeAccounts, !accounts.isEmpty {
+            for account in accounts {
+                account.closeSession(true)
+            }
+        }
+        // clear the media cache
+        MXMediaManager.clearCache()
+        
+        // Remove the block provided to the contactManager to discover users
+        if let homeCoordinator = self.homeCoordinator {
+            homeCoordinator.overrideContactManagerUsersDiscovery(false)
+        }
+        
+        if self.expiredAccountAlertController == nil {
+            self.displayExpiredAccountAlert()
+        }
+    }
+    
+    private func displayExpiredAccountAlert() {
+        guard let presenter = self.homeCoordinator?.toPresentable() else {
+            return
+        }
+        
+        self.expiredAccountAlertController?.dismiss(animated: false)
+        
+        let alert = UIAlertController(title: TchapL10n.warningTitle, message: TchapL10n.expiredAccountAlertMessage, preferredStyle: .alert)
+        
+        let resumeTitle = TchapL10n.expiredAccountResumeButton
+        let resumeAction = UIAlertAction(title: resumeTitle, style: .default, handler: { action in
+            // Relaunch the session
+            self.reloadSession(clearCache: false)
+        })
+        alert.addAction(resumeAction)
+        let sendEmailTitle = TchapL10n.expiredAccountRequestRenewalEmailButton
+        let sendEmailAction = UIAlertAction(title: sendEmailTitle, style: .default, handler: { action in
+            // Request a new email for the main account
+            if let credentials = MXKAccountManager.shared().activeAccounts.first?.mxCredentials {
+                let accountValidityService = AccountValidityService(credentials: credentials)
+                _ = accountValidityService.requestRenewalEmail(completion: { (response) in
+                    switch response {
+                    case .success:
+                        // Keep display the alert
+                        self.displayExpiredAccountAlert()
+                    case .failure(let error):
+                        self.showError(error)
+                    }
+                    self.accountValidityService = nil
+                    
+                })
+                self.accountValidityService = accountValidityService
+            }
+        })
+        alert.addAction(sendEmailAction)
+        self.expiredAccountAlertController = alert
+        
+        presenter.present(alert, animated: true, completion: nil)
     }
 }
 
