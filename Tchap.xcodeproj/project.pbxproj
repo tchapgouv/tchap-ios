@@ -130,6 +130,10 @@
 		020DF9B1214BE467003DFBA4 /* RoomActivitiesView.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF930214BE467003DFBA4 /* RoomActivitiesView.m */; };
 		020DF9B2214BE467003DFBA4 /* EventDetailsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 020DF933214BE467003DFBA4 /* EventDetailsView.xib */; };
 		020DF9B3214BE467003DFBA4 /* EventDetailsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF934214BE467003DFBA4 /* EventDetailsView.m */; };
+		0215542322B24058004663A6 /* AccountValidityServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0215542222B24058004663A6 /* AccountValidityServiceType.swift */; };
+		0215542422B24058004663A6 /* AccountValidityServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0215542222B24058004663A6 /* AccountValidityServiceType.swift */; };
+		0215542622B2406B004663A6 /* AccountValidityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0215542522B2406B004663A6 /* AccountValidityService.swift */; };
+		0215542722B2406B004663A6 /* AccountValidityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0215542522B2406B004663A6 /* AccountValidityService.swift */; };
 		0223EFA72227095100B9EA34 /* PublicRoomsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0223EFA62227095100B9EA34 /* PublicRoomsCell.xib */; };
 		0223EFA82227095800B9EA34 /* PublicRoomsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0223EFA62227095100B9EA34 /* PublicRoomsCell.xib */; };
 		0223EFAB2227E41B00B9EA34 /* HomeServerComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0223EFAA2227E41B00B9EA34 /* HomeServerComponents.swift */; };
@@ -1055,6 +1059,8 @@
 		020DF932214BE467003DFBA4 /* EventDetailsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventDetailsView.h; sourceTree = "<group>"; };
 		020DF933214BE467003DFBA4 /* EventDetailsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventDetailsView.xib; sourceTree = "<group>"; };
 		020DF934214BE467003DFBA4 /* EventDetailsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventDetailsView.m; sourceTree = "<group>"; };
+		0215542222B24058004663A6 /* AccountValidityServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountValidityServiceType.swift; sourceTree = "<group>"; };
+		0215542522B2406B004663A6 /* AccountValidityService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountValidityService.swift; sourceTree = "<group>"; };
 		0223EFA62227095100B9EA34 /* PublicRoomsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PublicRoomsCell.xib; sourceTree = "<group>"; };
 		0223EFAA2227E41B00B9EA34 /* HomeServerComponents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeServerComponents.swift; sourceTree = "<group>"; };
 		0234A99F225BD08A00E8E489 /* FormCheckBoxModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCheckBoxModel.swift; sourceTree = "<group>"; };
@@ -1848,6 +1854,15 @@
 			path = Event;
 			sourceTree = "<group>";
 		};
+		0215542122B24011004663A6 /* AccountValidity */ = {
+			isa = PBXGroup;
+			children = (
+				0215542222B24058004663A6 /* AccountValidityServiceType.swift */,
+				0215542522B2406B004663A6 /* AccountValidityService.swift */,
+			);
+			path = AccountValidity;
+			sourceTree = "<group>";
+		};
 		0223EFA92227E3C800B9EA34 /* HomeServer */ = {
 			isa = PBXGroup;
 			children = (
@@ -2056,6 +2071,7 @@
 			isa = PBXGroup;
 			children = (
 				0259328622AFE84400C93762 /* PasswordPolicy */,
+				0215542122B24011004663A6 /* AccountValidity */,
 				025E36F32295466400C9D9AE /* ThirdPartyIDResolver */,
 				02C4BE86225231ED00F7BB0E /* Invite */,
 				0223EFA92227E3C800B9EA34 /* HomeServer */,
@@ -4024,6 +4040,7 @@
 				0290607A21501D16005FE3C1 /* PreviewView.m in Sources */,
 				B15B868B2135C4DE002782BE /* AuthenticationFormValidationResult.swift in Sources */,
 				B1C4646121B6DD42005F4D53 /* RoomServiceType.swift in Sources */,
+				0215542322B24058004663A6 /* AccountValidityServiceType.swift in Sources */,
 				B146D52121A7453900D8C2C6 /* RoomAttachmentAntivirusScanStatusCellContentView.swift in Sources */,
 				02B34542219E100100110EC8 /* RoomsCell.swift in Sources */,
 				B1680D052152AA28009B5F92 /* PublicRoomService.swift in Sources */,
@@ -4053,6 +4070,7 @@
 				0250C4F22122B68000034691 /* SegmentedViewController.m in Sources */,
 				0250C4F32122B68000034691 /* DecryptionFailure.m in Sources */,
 				B1073D6921A8096F00E36CFA /* RoomIncomingEncryptedAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
+				0215542622B2406B004663A6 /* AccountValidityService.swift in Sources */,
 				B1680D082152AA61009B5F92 /* Appearance.swift in Sources */,
 				B12DDAA521708F4F0093172C /* RoomTitleViewModelBuilder.swift in Sources */,
 				B15B866C21353A41002782BE /* FormTextViewModelType.swift in Sources */,
@@ -4314,6 +4332,7 @@
 				02DFEBF221C07370009B6F15 /* PreviewView.m in Sources */,
 				02DFEBF321C07370009B6F15 /* AuthenticationFormValidationResult.swift in Sources */,
 				02DFEBF421C07370009B6F15 /* RoomServiceType.swift in Sources */,
+				0215542422B24058004663A6 /* AccountValidityServiceType.swift in Sources */,
 				02DFEBF521C07370009B6F15 /* RoomAttachmentAntivirusScanStatusCellContentView.swift in Sources */,
 				02DFEBF621C07370009B6F15 /* RoomsCell.swift in Sources */,
 				02DFEBF721C07370009B6F15 /* PublicRoomService.swift in Sources */,
@@ -4343,6 +4362,7 @@
 				02DFEC0C21C07370009B6F15 /* SegmentedViewController.m in Sources */,
 				02DFEC0D21C07370009B6F15 /* DecryptionFailure.m in Sources */,
 				02DFEC0E21C07370009B6F15 /* RoomIncomingEncryptedAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
+				0215542722B2406B004663A6 /* AccountValidityService.swift in Sources */,
 				02DFEC0F21C07370009B6F15 /* Appearance.swift in Sources */,
 				02DFEC1021C07370009B6F15 /* RoomTitleViewModelBuilder.swift in Sources */,
 				02DFEC1121C07370009B6F15 /* FormTextViewModelType.swift in Sources */,

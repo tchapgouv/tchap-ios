@@ -78,6 +78,9 @@ extern NSString *const kLegacyAppDelegateDidLoginNotification;
 // New message sound id.
 @property (nonatomic, readonly) SystemSoundID messageSound;
 
+// List here the server error codes which must be ignored by `[showErrorAsAlert:]`
+@property (nonatomic) NSSet<NSString *> *ignoredServerErrorCodes;
+
 + (instancetype)theDelegate;
 
 #pragma mark - Application layout handling

@@ -79,6 +79,12 @@ internal enum TchapL10n {
   internal static let errorMessageDefault = TchapL10n.tr("Tchap", "error_message_default")
   /// Erreur
   internal static let errorTitleDefault = TchapL10n.tr("Tchap", "error_title_default")
+  /// La durée de validité de votre compte a expiré. Un email vous a été envoyé pour la renouveler. Une fois que vous aurez suivi le lien qu’il contient, cliquez ci-dessous.
+  internal static let expiredAccountAlertMessage = TchapL10n.tr("Tchap", "expired_account_alert_message")
+  /// Demander l’envoi d’un nouvel email
+  internal static let expiredAccountRequestRenewalEmailButton = TchapL10n.tr("Tchap", "expired_account_request_renewal_email_button")
+  /// J’ai renouvelé mon compte
+  internal static let expiredAccountResumeButton = TchapL10n.tr("Tchap", "expired_account_resume_button")
   /// Retourner à l'écran de connexion
   internal static let forgotPasswordCheckedEmailDoneAction = TchapL10n.tr("Tchap", "forgot_password_checked_email_done_action")
   /// Votre mot de passe a été réinitialisé. Vous avez été déconnecté de tous les appareils et ne recevez plus de notifications. Pour réactiver les notifications, reconnectez-vous sur chaque appareil.
@@ -235,6 +241,8 @@ internal enum TchapL10n {
   internal static let settingsHideFromUsersDirectoryTitle = TchapL10n.tr("Tchap", "settings_hide_from_users_directory_title")
   /// Votre correspondant a quitté définitivement cette discussion.\nVous devez en créer une nouvelle pour le recontacter, s'il est toujours joignable sur Tchap.
   internal static let tchapCannotInviteDeactivatedAccountUser = TchapL10n.tr("Tchap", "tchap_cannot_invite_deactivated_account_user")
+  /// Attention
+  internal static let warningTitle = TchapL10n.tr("Tchap", "warning_title")
   /// J'ai un compte
   internal static let welcomeLoginAction = TchapL10n.tr("Tchap", "welcome_login_action")
   /// Je n'ai pas de compte
