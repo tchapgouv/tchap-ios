@@ -29,9 +29,7 @@ final class RegistrationService: RegistrationServiceType {
     
     private let accountManager: MXKAccountManager
     private let restClient: MXRestClient
-    private let passwordPolicyGetter: PasswordPolicyGetterType
-    
-    private var passwordPolicyService: PasswordPolicyServiceType?
+    private let passwordPolicyService: PasswordPolicyServiceType
     
     private var registrationOperation: MXHTTPOperation?
     
@@ -43,7 +41,7 @@ final class RegistrationService: RegistrationServiceType {
         }
         self.accountManager = accountManager
         self.restClient = restClient
-        self.passwordPolicyGetter = PasswordPolicyGetter(homeServer: homeServer)
+        self.passwordPolicyService = PasswordPolicyService(homeServer: homeServer)
     }
     
     // MARK: - Public
@@ -68,7 +66,7 @@ final class RegistrationService: RegistrationServiceType {
     func validateRegistrationParametersAndRequestEmailVerification(password: String?, email: String, sessionId: String, completion: @escaping (MXResponse<ThreePIDCredentials>) -> Void) {
         // Validate first the password (if any)
         if let password = password {
-            self.validatePassword(passwword: password) { (response) in
+            _ = self.passwordPolicyService.verifyPassword(password) { (response) in
                 switch response {
                 case .success(let result):
                     switch result {
@@ -169,25 +167,6 @@ final class RegistrationService: RegistrationServiceType {
         }
         
         return "\(webAppBaseStringURLEncoded)/#/register?client_secret=\(clientSecretURLEncoded)&hs_url=\(homeServerStringURLEncoded)&is_url=\(identityServerStringURLEncoded)&session_id=\(sessionIdURLEncoded)"
-    }
-    
-    private func validatePassword(passwword: String, completion: @escaping (MXResponse<PasswordPolicyVerificationResult>) -> Void) {
-        if let passwordPolicyService = self.passwordPolicyService {
-            completion(.success(passwordPolicyService.verify(passwword)))
-        } else {
-            _ = self.passwordPolicyGetter.passwordPolicy(completion: { (response) in
-                switch response {
-                case .success(let policy):
-                    let passwordPolicyService = PasswordPolicyService(policy: policy)
-                    completion(.success(passwordPolicyService.verify(passwword)))
-                    self.passwordPolicyService = passwordPolicyService
-                case .failure/*(let error)*/:
-                    // Ignore this error for the moment (some servers did not support this request yet), validate by default the pwd
-                    //completion(.failure(error))
-                    completion(.success(.authorized))
-                }
-            })
-        }
     }
     
     private func requestEmailVerification(to email: String, sessionId: String, using restClient: MXRestClient, completion: @escaping (MXResponse<ThreePIDCredentials>) -> Void) {

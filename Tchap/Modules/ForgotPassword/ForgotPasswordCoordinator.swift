@@ -111,63 +111,21 @@ final class ForgotPasswordCoordinator: ForgotPasswordCoordinatorType {
             case .success(let restClient):
                 let forgotPasswordService = ForgotPasswordService(restClient: restClient)
                 
-                // Retrieve the potential password policy service
-                forgotPasswordService.setupPasswordPolicyService(completion: { (response) in
+                // Validate the forgot password parameters
+                _ = forgotPasswordService.validateParametersAndRequestForgotPasswordEmail(password: password, email: email) { (emailVerificationResult) in
                     
-                    switch response {
-                    case .success(let pwdPolicyService):
-                        // Validate first the password
-                        let pwdVerificationResult: PasswordPolicyVerificationResult
-                        if let passwordPolicyService = pwdPolicyService {
-                            pwdVerificationResult = passwordPolicyService.verify(password)
-                        } else {
-                            // There is no server's policy to check
-                            pwdVerificationResult = PasswordPolicyVerificationResult.authorized
-                        }
-                        
-                        switch pwdVerificationResult {
-                        case .authorized:
-                            // Request an email to validate the email address
-                            _ = forgotPasswordService.submitForgotPasswordEmail(to: email) { (emailVerificationResult) in
-                                
-                                removeActivityIndicator()
-                                
-                                switch emailVerificationResult {
-                                case .success(let threePIDCredentials):
-                                    sself.emailCredentials = threePIDCredentials
-                                    sself.newPassword = password
-                                    sself.showVerifyEmail(with: email)
-                                case .failure(let error):
-                                    let errorPresentable = sself.formErrorPresentable(from: error)
-                                    sself.forgotPasswordFormErrorPresenter.present(errorPresentable: errorPresentable)
-                                }
-                            }
-                        case .unauthorized(let reason):
-                            removeActivityIndicator()
-                            
-                            var errorMessage: String
-                            switch reason {
-                            case .tooShort(let minLength):
-                                errorMessage = TchapL10n.passwordPolicyTooShortPwdDetailedError(minLength)
-                            case .no_digit:
-                                errorMessage = TchapL10n.passwordPolicyWeakPwdError
-                            case .no_symbol:
-                                errorMessage = TchapL10n.passwordPolicyWeakPwdError
-                            case .no_uppercase:
-                                errorMessage = TchapL10n.passwordPolicyWeakPwdError
-                            case .no_lowercase:
-                                errorMessage = TchapL10n.passwordPolicyWeakPwdError
-                            }
-                            let errorPresentable = ErrorPresentableImpl(title: TchapL10n.errorTitleDefault, message: errorMessage)
-                            sself.forgotPasswordFormErrorPresenter.present(errorPresentable: errorPresentable)
-                        }
+                    removeActivityIndicator()
+                    
+                    switch emailVerificationResult {
+                    case .success(let threePIDCredentials):
+                        sself.emailCredentials = threePIDCredentials
+                        sself.newPassword = password
+                        sself.showVerifyEmail(with: email)
                     case .failure(let error):
-                        removeActivityIndicator()
-                        
                         let errorPresentable = sself.formErrorPresentable(from: error)
                         sself.forgotPasswordFormErrorPresenter.present(errorPresentable: errorPresentable)
                     }
-                })
+                }
                 
                 sself.forgotPasswordService = forgotPasswordService
             case .failure(let error):
@@ -183,12 +141,30 @@ final class ForgotPasswordCoordinator: ForgotPasswordCoordinatorType {
         let errorTitle: String = TchapL10n.errorTitleDefault
         let errorMessage: String
         
-        let nsError = error as NSError
-        
-        if let matrixErrorCode = nsError.userInfo[kMXErrorCodeKey] as? String, matrixErrorCode == kMXErrCodeStringThreePIDNotFound {
-            errorMessage = TchapL10n.forgotPasswordFormErrorEmailNotFound
+        if let forgotPwdError = error as? ForgotPasswordServiceError {
+            switch forgotPwdError {
+            case .invalidPassword(let reason):
+                switch reason {
+                case .tooShort(let minLength):
+                    errorMessage = TchapL10n.passwordPolicyTooShortPwdDetailedError(minLength)
+                case .no_digit:
+                    errorMessage = TchapL10n.passwordPolicyWeakPwdError
+                case .no_symbol:
+                    errorMessage = TchapL10n.passwordPolicyWeakPwdError
+                case .no_uppercase:
+                    errorMessage = TchapL10n.passwordPolicyWeakPwdError
+                case .no_lowercase:
+                    errorMessage = TchapL10n.passwordPolicyWeakPwdError
+                }
+            }
         } else {
-            errorMessage = TchapL10n.errorMessageDefault
+            let nsError = error as NSError
+            
+            if let matrixErrorCode = nsError.userInfo[kMXErrorCodeKey] as? String, matrixErrorCode == kMXErrCodeStringThreePIDNotFound {
+                errorMessage = TchapL10n.forgotPasswordFormErrorEmailNotFound
+            } else {
+                errorMessage = TchapL10n.errorMessageDefault
+            }
         }
         
         return ErrorPresentableImpl(title: errorTitle, message: errorMessage)

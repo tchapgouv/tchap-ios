@@ -233,10 +233,6 @@
 		0259328F22B00D0200C93762 /* PasswordPolicyType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0259328D22B00D0200C93762 /* PasswordPolicyType.swift */; };
 		0259329122B00E4300C93762 /* PasswordPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0259329022B00E4300C93762 /* PasswordPolicy.swift */; };
 		0259329222B00E4300C93762 /* PasswordPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0259329022B00E4300C93762 /* PasswordPolicy.swift */; };
-		0259329422B00F0200C93762 /* PasswordPolicyGetterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0259329322B00F0200C93762 /* PasswordPolicyGetterType.swift */; };
-		0259329522B00F0200C93762 /* PasswordPolicyGetterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0259329322B00F0200C93762 /* PasswordPolicyGetterType.swift */; };
-		0259329722B016A200C93762 /* PasswordPolicyGetter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0259329622B016A200C93762 /* PasswordPolicyGetter.swift */; };
-		0259329822B016A200C93762 /* PasswordPolicyGetter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0259329622B016A200C93762 /* PasswordPolicyGetter.swift */; };
 		025E36F5229546A000C9D9AE /* ThirdPartyIDResolverType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025E36F4229546A000C9D9AE /* ThirdPartyIDResolverType.swift */; };
 		025E36F6229546A000C9D9AE /* ThirdPartyIDResolverType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025E36F4229546A000C9D9AE /* ThirdPartyIDResolverType.swift */; };
 		025E36F8229548C000C9D9AE /* ThirdPartyIDResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025E36F7229548C000C9D9AE /* ThirdPartyIDResolver.swift */; };
@@ -1081,8 +1077,6 @@
 		0259328A22AFEF5700C93762 /* PasswordPolicyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordPolicyService.swift; sourceTree = "<group>"; };
 		0259328D22B00D0200C93762 /* PasswordPolicyType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordPolicyType.swift; sourceTree = "<group>"; };
 		0259329022B00E4300C93762 /* PasswordPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordPolicy.swift; sourceTree = "<group>"; };
-		0259329322B00F0200C93762 /* PasswordPolicyGetterType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordPolicyGetterType.swift; sourceTree = "<group>"; };
-		0259329622B016A200C93762 /* PasswordPolicyGetter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordPolicyGetter.swift; sourceTree = "<group>"; };
 		025E36F4229546A000C9D9AE /* ThirdPartyIDResolverType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThirdPartyIDResolverType.swift; sourceTree = "<group>"; };
 		025E36F7229548C000C9D9AE /* ThirdPartyIDResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThirdPartyIDResolver.swift; sourceTree = "<group>"; };
 		026D886F21C1C4F40085BED8 /* TchapSharedImages.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = TchapSharedImages.xcassets; sourceTree = "<group>"; };
@@ -1927,8 +1921,6 @@
 			children = (
 				0259328D22B00D0200C93762 /* PasswordPolicyType.swift */,
 				0259329022B00E4300C93762 /* PasswordPolicy.swift */,
-				0259329322B00F0200C93762 /* PasswordPolicyGetterType.swift */,
-				0259329622B016A200C93762 /* PasswordPolicyGetter.swift */,
 				0259328722AFE8A500C93762 /* PasswordPolicyServiceType.swift */,
 				0259328A22AFEF5700C93762 /* PasswordPolicyService.swift */,
 			);
@@ -3986,7 +3978,6 @@
 				025E36F5229546A000C9D9AE /* ThirdPartyIDResolverType.swift in Sources */,
 				0250C4C42122B68000034691 /* RiotNavigationController.m in Sources */,
 				0250C4C92122B68000034691 /* Tools.m in Sources */,
-				0259329722B016A200C93762 /* PasswordPolicyGetter.swift in Sources */,
 				B1C4646021B6DD42005F4D53 /* RoomService.swift in Sources */,
 				02C4BE88225231ED00F7BB0E /* InviteService.swift in Sources */,
 				0250C4CA2122B68000034691 /* WebViewViewController.m in Sources */,
@@ -4029,7 +4020,6 @@
 				B1680D062152AA28009B5F92 /* PublicRoomServiceType.swift in Sources */,
 				020DF9AC214BE467003DFBA4 /* RoomInputToolbarView.m in Sources */,
 				020DF954214BE467003DFBA4 /* RoomEncryptedAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.m in Sources */,
-				0259329422B00F0200C93762 /* PasswordPolicyGetterType.swift in Sources */,
 				B1BC6A072135EA2800D32F8E /* ActivityIndicatorPresenterType.swift in Sources */,
 				02BEE1562125BBF800098505 /* RoomsViewController.m in Sources */,
 				025E36F8229548C000C9D9AE /* ThirdPartyIDResolver.swift in Sources */,
@@ -4278,7 +4268,6 @@
 				025E36F6229546A000C9D9AE /* ThirdPartyIDResolverType.swift in Sources */,
 				02DFEBC621C07370009B6F15 /* RiotNavigationController.m in Sources */,
 				02DFEBC721C07370009B6F15 /* Tools.m in Sources */,
-				0259329822B016A200C93762 /* PasswordPolicyGetter.swift in Sources */,
 				02DFEBC821C07370009B6F15 /* RoomService.swift in Sources */,
 				02C4BE89225231ED00F7BB0E /* InviteService.swift in Sources */,
 				02DFEBC921C07370009B6F15 /* WebViewViewController.m in Sources */,
@@ -4321,7 +4310,6 @@
 				02DFEBEB21C07370009B6F15 /* PublicRoomServiceType.swift in Sources */,
 				02DFEBEC21C07370009B6F15 /* RoomInputToolbarView.m in Sources */,
 				02DFEBED21C07370009B6F15 /* RoomEncryptedAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.m in Sources */,
-				0259329522B00F0200C93762 /* PasswordPolicyGetterType.swift in Sources */,
 				02DFEBEE21C07370009B6F15 /* ActivityIndicatorPresenterType.swift in Sources */,
 				02DFEBEF21C07370009B6F15 /* RoomsViewController.m in Sources */,
 				025E36F9229548C000C9D9AE /* ThirdPartyIDResolver.swift in Sources */,

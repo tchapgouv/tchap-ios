@@ -16,15 +16,17 @@
 
 import Foundation
 
+enum ForgotPasswordServiceError: Error {
+    case invalidPassword(reason: PasswordPolicyRejectionReason)
+}
+
 /// `ForgotPasswordService` implementation of `ForgotPasswordServiceType` is used to perform reset password requests on Tchap platforms.
 final class ForgotPasswordService: ForgotPasswordServiceType {
     
     // MARK: - Properties
         
     private let restClient: MXRestClient
-    private let passwordPolicyGetter: PasswordPolicyGetterType
-    
-    private var passwordPolicyService: PasswordPolicyServiceType?
+    private let passwordPolicyService: PasswordPolicyServiceType
     
     // MARK: - Setup
     
@@ -33,28 +35,38 @@ final class ForgotPasswordService: ForgotPasswordServiceType {
             fatalError("homeserver should be defined")
         }
         self.restClient = restClient
-        self.passwordPolicyGetter = PasswordPolicyGetter(homeServer: homeServer)
+        self.passwordPolicyService = PasswordPolicyService(homeServer: homeServer)
     }
     
     // MARK: - Public
     
-    func setupPasswordPolicyService(completion: @escaping (MXResponse<PasswordPolicyServiceType?>) -> Void) {
-        // Retrieve the potential password policy
-        _ = self.passwordPolicyGetter.passwordPolicy(completion: { (response) in
-            switch response {
-            case .success(let policy):
-                self.passwordPolicyService = PasswordPolicyService(policy: policy)
-                completion(MXResponse.success(self.passwordPolicyService))
-            case .failure:
-                // Ignore the error for the moment, the password will be verified on the server side.
-                self.passwordPolicyService = nil
-                completion(MXResponse.success(self.passwordPolicyService))
+    func validateParametersAndRequestForgotPasswordEmail(password: String?, email: String, completion: @escaping (MXResponse<ThreePIDCredentials>) -> Void) -> MXHTTPOperation {
+        // Create an empty operation that will be mutated later
+        let operation = MXHTTPOperation()
+        
+        // Validate first the password (if any)
+        if let password = password {
+            let operation1 = self.passwordPolicyService.verifyPassword(password) { (response) in
+                switch response {
+                case .success(let result):
+                    switch result {
+                    case .authorized:
+                        // Pursue by requesting an email to validate the email address
+                        let operation2 = self.requestForgotPasswordEmail(to: email, using: self.restClient, completion: completion)
+                        operation.mutate(to: operation2)
+                    case .unauthorized(let reason):
+                        completion(.failure(ForgotPasswordServiceError.invalidPassword(reason: reason)))
+                    }
+                case .failure(let error):
+                    completion(.failure(error))
+                }
             }
-        })
-    }
-    
-    func submitForgotPasswordEmail(to email: String, completion: @escaping (MXResponse<ThreePIDCredentials>) -> Void) -> MXHTTPOperation? {
-        return self.submitForgotPasswordEmail(to: email, using: self.restClient, completion: completion)
+            operation.mutate(to: operation1)
+        } else if let operation1 = self.requestForgotPasswordEmail(to: email, using: self.restClient, completion: completion) {
+            operation.mutate(to: operation1)
+        }
+        
+        return operation
     }
     
     func resetPassword(withEmailCredentials threePIDCredentials: ThreePIDCredentials, newPassword: String, completion: @escaping (MXResponse<Void>) -> Void) -> MXHTTPOperation {
@@ -77,7 +89,7 @@ final class ForgotPasswordService: ForgotPasswordServiceType {
     
     // MARK: - Private
     
-    private func submitForgotPasswordEmail(to email: String, using restClient: MXRestClient, completion: @escaping (MXResponse<ThreePIDCredentials>) -> Void) -> MXHTTPOperation? {
+    private func requestForgotPasswordEmail(to email: String, using restClient: MXRestClient, completion: @escaping (MXResponse<ThreePIDCredentials>) -> Void) -> MXHTTPOperation? {
         guard let identityServer = restClient.identityServer,
             let identityServerURL = URL(string: identityServer),
             let identityServerHost = identityServerURL.host else {

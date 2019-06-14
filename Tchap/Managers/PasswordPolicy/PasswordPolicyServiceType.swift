@@ -39,5 +39,8 @@ protocol PasswordPolicyServiceType {
     ///
     /// - Parameters:
     /// - password: The password to check against the policy.
-    func verify(_ password: String) -> PasswordPolicyVerificationResult
+    /// - completion: A block object called when the operation completes.
+    ///
+    /// returns: a `MXHTTPOperation` instance.
+    func verifyPassword(_ passwword: String, completion: @escaping (MXResponse<PasswordPolicyVerificationResult>) -> Void) -> MXHTTPOperation?
 }
