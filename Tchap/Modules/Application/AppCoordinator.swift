@@ -216,8 +216,7 @@ final class AppCoordinator: AppCoordinatorType {
         self.registerIgnoredUsersDidChangeNotification()
         self.registerDidCorruptDataNotification()
         
-        // Track the server error related to an expired account.
-        session.matrixRestClient.trackedServerErrorCodes = [Constants.expiredAccountError]
+        // Track ourself the server error related to an expired account.
         AppDelegate.theDelegate().ignoredServerErrorCodes = [Constants.expiredAccountError]
         self.registerTrackedServerErrorNotification()
     }
@@ -282,11 +281,11 @@ final class AppCoordinator: AppCoordinatorType {
     }
     
     private func registerTrackedServerErrorNotification() {
-        NotificationCenter.default.addObserver(self, selector: #selector(handleTrackedServerError(notification:)), name: NSNotification.Name.mxhttpClientTrackedError, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleTrackedServerError(notification:)), name: NSNotification.Name.mxhttpClientMatrixError, object: nil)
     }
     
     private func unregisterTrackedServerErrorNotification() {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.mxhttpClientTrackedError, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.mxhttpClientMatrixError, object: nil)
     }
     
     private func handleRegisterAfterEmailValidation(_ registerParams: [String: String]) {
@@ -392,10 +391,10 @@ final class AppCoordinator: AppCoordinatorType {
     }
     
     @objc private func handleTrackedServerError(notification: Notification) {
-        guard let errorCode = notification.userInfo?[kMXHTTPClientTrackedErrorNotificationErrorCodeKey] as? String else {
+        guard let error = notification.userInfo?[kMXHTTPClientMatrixErrorNotificationErrorKey] as? MXError else {
             return
         }
-        if errorCode == Constants.expiredAccountError {
+        if error.errcode == Constants.expiredAccountError {
             self.handleExpiredAccount()
         }
     }
