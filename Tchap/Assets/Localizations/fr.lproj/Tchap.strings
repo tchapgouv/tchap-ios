@@ -27,6 +27,7 @@
 "authentication_error_unauthorized_email" = "Cette adresse email n'est pas autorisée";
 "authentication_error_invalid_email" = "L'adresse email ne semble pas valide";
 "authentication_error_missing_password" = "Mot de passe manquant";
+"authentication_error_email_in_use" = "Cette adresse email est déjà utilisée";
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Forgot password

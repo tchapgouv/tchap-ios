@@ -15,6 +15,8 @@ internal enum TchapL10n {
   internal static let actionNext = TchapL10n.tr("Tchap", "action_next")
   /// Valider
   internal static let actionValidate = TchapL10n.tr("Tchap", "action_validate")
+  /// Cette adresse email est déjà utilisée
+  internal static let authenticationErrorEmailInUse = TchapL10n.tr("Tchap", "authentication_error_email_in_use")
   /// L'adresse email ne semble pas valide
   internal static let authenticationErrorInvalidEmail = TchapL10n.tr("Tchap", "authentication_error_invalid_email")
   /// Mot de passe manquant
