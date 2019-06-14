@@ -86,33 +86,12 @@ final class InviteService: InviteServiceType {
     
     // Check whether a Tchap account has been created for this email. The closure returns a nil identifier when no account exists.
     private func discoverUser(with email: String, completion: @escaping (MXResponse<ThirdPartyIDResolveResult>) -> Void) {
-#if ENABLE_PROXY_LOOKUP
         if let lookup3pidsOperation = self.thirdPartyIDResolver.lookup(address: email, medium: .email, identityServer: self.session.matrixRestClient.identityServer, completion: completion) {
             lookup3pidsOperation.maxRetriesTime = 0
         } else {
             NSLog("[InviteService] discoverUser failed")
             completion(MXResponse.failure(InviteServiceError.unknown))
         }
-#else
-        let email3PID = MX3PID(medium: .email, address: email)
-        let lookup3pidsOperation = self.session.matrixRestClient.lookup3PIDs([email3PID]) { (response) in
-            switch response {
-            case .success(let responseDict):
-                if let lookupResponse = responseDict.first,
-                    lookupResponse.key == email3PID {
-                    NSLog("[InviteService] discoverUser: a Tchap user exists")
-                    completion(.success(.bound(userID: lookupResponse.value)))
-                } else {
-                    NSLog("[InviteService] discoverUser: no Tchap user exists")
-                    completion(.success(.unbound))
-                }
-            case .failure(let error):
-                NSLog("[InviteService] discoverUser failed")
-                completion(MXResponse.failure(error))
-            }
-        }
-        lookup3pidsOperation.maxRetriesTime = 0
-#endif
     }
     
     private func createDiscussion(with email: String, completion: @escaping (MXResponse<InviteServiceResult>) -> Void) {

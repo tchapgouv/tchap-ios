@@ -64,11 +64,9 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
     // MARK: - Public methods
     
     func start() {
-#if ENABLE_PROXY_LOOKUP
         MXKContactManager.shared().discoverUsersBoundTo3PIDsBlock = { (threepids: [[String]], success: @escaping (([[String]]) -> Void), failure: @escaping ((Error) -> Void)) in
             _ = self.thirdPartyIDResolver.bulkLookup(threepids: threepids, identityServer: self.session.matrixRestClient.identityServer, success: success, failure: failure)
         }
-#endif
         
         let roomsCoordinator = RoomsCoordinator(router: self.navigationRouter, session: self.session)
         let contactsCoordinator = ContactsCoordinator(router: self.navigationRouter, session: self.session)

@@ -624,7 +624,6 @@
                 }
             };
             
-#if ENABLE_PROXY_LOOKUP
             self->lookup3pidsOperation = [thirdPartyIDResolver bulkLookupWithThreepids:lookup3pidsArray
                                                                         identityServer:self.mxSession.matrixRestClient.identityServer
                                                                                success:success
@@ -633,14 +632,6 @@
                                                                                    self->lookup3pidsOperation = nil;
                                                                                }];
                                           
-#else
-            self->lookup3pidsOperation = [self.mxSession.matrixRestClient lookup3pids:lookup3pidsArray
-                                                                              success:success
-                                                                              failure:^(NSError *error) {
-                                                                                  NSLog(@"[ContactsDataSource] lookup3pids failed");
-                                                                                  self->lookup3pidsOperation = nil;
-                                                                              }];
-#endif
             // Do not retry on failure
             self->lookup3pidsOperation.maxRetriesTime = 0;
         }
