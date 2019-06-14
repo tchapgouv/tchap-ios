@@ -154,6 +154,19 @@ final class AuthenticationErrorPresentableMaker {
         switch authenticationServiceError {
         case .userAlreadyLoggedIn:
             message = Bundle.mxk_localizedString(forKey: "login_error_already_logged_in")
+        case .invalidPassword(let reason):
+            switch reason {
+            case .tooShort(let minLength):
+                message = TchapL10n.passwordPolicyTooShortPwdDetailedError(minLength)
+            case .no_digit:
+                message = TchapL10n.passwordPolicyWeakPwdError
+            case .no_symbol:
+                message = TchapL10n.passwordPolicyWeakPwdError
+            case .no_uppercase:
+                message = TchapL10n.passwordPolicyWeakPwdError
+            case .no_lowercase:
+                message = TchapL10n.passwordPolicyWeakPwdError
+            }
         default:
             message = TchapL10n.errorMessageDefault
         }

@@ -48,24 +48,43 @@ final class RegistrationService: RegistrationServiceType {
     
     // MARK: - Public
     
-    func setupRegistrationSession(completion: @escaping (MXResponse<(String, PasswordPolicyServiceType?)>) -> Void) {
-        // Retrieve first the potential password policy
-        _ = self.passwordPolicyGetter.passwordPolicy(completion: { (response) in
+    func setupRegistrationSession(completion: @escaping (MXResponse<String>) -> Void) {
+        self.restClient.getRegisterSession(completion: { (response) in
             switch response {
-            case .success(let policy):
-                self.passwordPolicyService = PasswordPolicyService(policy: policy)
-                // Pursue the registration session setup
-                self.setupSession(completion: completion)
-            case .failure:
-                self.passwordPolicyService = nil
-                // Pursue the registration session setup
-                self.setupSession(completion: completion)
+            case .success(let authenticationSession):
+                if let sessionId = authenticationSession.session {
+                    completion(MXResponse.success(sessionId))
+                } else {
+                    let error = NSError(domain: MXKAuthErrorDomain, code: 0, userInfo: [NSLocalizedDescriptionKey: Bundle.mxk_localizedString(forKey: "not_supported_yet")])
+                    completion(MXResponse.failure(error))
+                }
+                
+            case .failure(let error):
+                completion(MXResponse.failure(error))
             }
         })
     }
     
-    func submitRegistrationEmailVerification(to email: String, sessionId: String, completion: @escaping (MXResponse<ThreePIDCredentials>) -> Void) {
-        self.submitRegistrationEmailVerification(to: email, sessionId: sessionId, using: self.restClient, completion: completion)
+    func validateRegistrationParametersAndRequestEmailVerification(password: String?, email: String, sessionId: String, completion: @escaping (MXResponse<ThreePIDCredentials>) -> Void) {
+        // Validate first the password (if any)
+        if let password = password {
+            self.validatePassword(passwword: password) { (response) in
+                switch response {
+                case .success(let result):
+                    switch result {
+                    case .authorized:
+                        // Pursue by requesting an email to validate the email address
+                        self.requestEmailVerification(to: email, sessionId: sessionId, using: self.restClient, completion: completion)
+                    case .unauthorized(let reason):
+                        completion(.failure(RegistrationServiceError.invalidPassword(reason: reason)))
+                    }
+                case .failure(let error):
+                    completion(.failure(error))
+                }
+            }
+        } else {
+            self.requestEmailVerification(to: email, sessionId: sessionId, using: self.restClient, completion: completion)
+        }
     }
     
     func register(withEmailCredentials threePIDCredentials: ThreePIDCredentials, sessionId: String?, password: String?, deviceDisplayName: String, completion: @escaping (MXResponse<String>) -> Void) {
@@ -130,23 +149,6 @@ final class RegistrationService: RegistrationServiceType {
     
     // MARK: - Private
     
-    private func setupSession(completion: @escaping (MXResponse<(String, PasswordPolicyServiceType?)>) -> Void) {
-        self.restClient.getRegisterSession(completion: { (response) in
-            switch response {
-            case .success(let authenticationSession):
-                if let sessionId = authenticationSession.session {
-                    completion(MXResponse.success((sessionId, self.passwordPolicyService)))
-                } else {
-                    let error = NSError(domain: MXKAuthErrorDomain, code: 0, userInfo: [NSLocalizedDescriptionKey: Bundle.mxk_localizedString(forKey: "not_supported_yet")])
-                    completion(MXResponse.failure(error))
-                }
-                
-            case .failure(let error):
-                completion(MXResponse.failure(error))
-            }
-        })
-    }
-    
     private func webAppAppBaseStringURL(from homeServer: String) -> String {
         // For the moment we use the homeserver url, this base url should be updated later with the actual web app url.
         return homeServer
@@ -169,7 +171,26 @@ final class RegistrationService: RegistrationServiceType {
         return "\(webAppBaseStringURLEncoded)/#/register?client_secret=\(clientSecretURLEncoded)&hs_url=\(homeServerStringURLEncoded)&is_url=\(identityServerStringURLEncoded)&session_id=\(sessionIdURLEncoded)"
     }
     
-    func submitRegistrationEmailVerification(to email: String, sessionId: String, using restClient: MXRestClient, completion: @escaping (MXResponse<ThreePIDCredentials>) -> Void) {
+    private func validatePassword(passwword: String, completion: @escaping (MXResponse<PasswordPolicyVerificationResult>) -> Void) {
+        if let passwordPolicyService = self.passwordPolicyService {
+            completion(.success(passwordPolicyService.verify(passwword)))
+        } else {
+            _ = self.passwordPolicyGetter.passwordPolicy(completion: { (response) in
+                switch response {
+                case .success(let policy):
+                    let passwordPolicyService = PasswordPolicyService(policy: policy)
+                    completion(.success(passwordPolicyService.verify(passwword)))
+                    self.passwordPolicyService = passwordPolicyService
+                case .failure/*(let error)*/:
+                    // Ignore this error for the moment (some servers did not support this request yet), validate by default the pwd
+                    //completion(.failure(error))
+                    completion(.success(.authorized))
+                }
+            })
+        }
+    }
+    
+    private func requestEmailVerification(to email: String, sessionId: String, using restClient: MXRestClient, completion: @escaping (MXResponse<ThreePIDCredentials>) -> Void) {
         
         guard let homeServer = restClient.homeserver, let homeServerURL = URL(string: homeServer) else {
             completion(MXResponse.failure(RegistrationServiceError.homeServerURLBuildFailed))

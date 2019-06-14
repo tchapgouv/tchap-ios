@@ -21,17 +21,19 @@ protocol RegistrationServiceType {
     /// Initialize a registration session.
     ///
     /// - Parameters:
-    ///   - completion: A closure called when the operation complete. Provide the authentication session id
-    /// and a potential password policy service when succeed.
-    func setupRegistrationSession(completion: @escaping (MXResponse<(String, PasswordPolicyServiceType?)>) -> Void)
+    ///   - completion: A closure called when the operation complete. Provide the authentication session id when succeed.
+    func setupRegistrationSession(completion: @escaping (MXResponse<String>) -> Void)
     
-    /// Submit registration verification email and return third PID credentials for registration.
+    /// Validate the registration parameters.
+    /// - check first whether the provided password (if any) complies with the server's policy (if any).
+    /// - then request a verification email and return the corresponding third PID credentials for registration.
     ///
     /// - Parameters:
+    ///   - password: (optional) The password to check against the policy.
     ///   - email: The user email.
     ///   - sessionId: The registration session identifier
     ///   - completion: A closure called when the operation succeeds. Provide the three PID credentials.
-    func submitRegistrationEmailVerification(to email: String, sessionId: String, completion: @escaping (MXResponse<ThreePIDCredentials>) -> Void)
+    func validateRegistrationParametersAndRequestEmailVerification(password: String?, email: String, sessionId: String, completion: @escaping (MXResponse<ThreePIDCredentials>) -> Void)
         
     /// Register user on homeserver.
     ///

@@ -126,55 +126,25 @@ final class RegistrationCoordinator: RegistrationCoordinatorType {
                 // Build a registration service based on this restClient
                 let registrationService = RegistrationService(accountManager: MXKAccountManager.shared(), restClient: restClient)
                 
-                // Initialize a registration session (in order to define a session Id, and get a potential password policy service)
+                // Initialize a registration session (in order to define a session Id)
                 registrationService.setupRegistrationSession(completion: { (initResult) in
                     
                     switch initResult {
-                    case .success(let sessionId, let pwdPolicyService):
-                        // Validate first the password
-                        let pwdVerificationResult: PasswordPolicyVerificationResult
-                        if let passwordPolicyService = pwdPolicyService {
-                            pwdVerificationResult = passwordPolicyService.verify(password)
-                        } else {
-                            // There is no server's policy to check
-                            pwdVerificationResult = PasswordPolicyVerificationResult.authorized
-                        }
-                        
-                        switch pwdVerificationResult {
-                        case .authorized:
-                            // Request an email to validate the email address
-                            registrationService.submitRegistrationEmailVerification(to: email, sessionId: sessionId) { (emailVerificationResult) in
-                                
-                                removeActivityIndicator()
-                                
-                                switch emailVerificationResult {
-                                case .success(let threePIDCredentials):
-                                    self.performRegistrationAndShowEmailValidationSent(with: email, sessionId: sessionId, password: password, threePIDCredentials: threePIDCredentials)
-                                case .failure(let error):
-                                    let authenticationErrorPresentableMaker = AuthenticationErrorPresentableMaker()
-                                    if let errorPresentable = authenticationErrorPresentableMaker.errorPresentable(from: error) {
-                                        self.registrationFormErrorPresenter.present(errorPresentable: errorPresentable)
-                                    }
-                                }
-                            }
-                        case .unauthorized(let reason):
+                    case .success(let sessionId):
+                        // Validate registration parameters
+                        registrationService.validateRegistrationParametersAndRequestEmailVerification(password: password, email: email, sessionId: sessionId) { (emailVerificationResult) in
+                            
                             removeActivityIndicator()
                             
-                            var errorMessage: String
-                            switch reason {
-                            case .tooShort(let minLength):
-                                errorMessage = TchapL10n.passwordPolicyTooShortPwdDetailedError(minLength)
-                            case .no_digit:
-                                errorMessage = TchapL10n.passwordPolicyWeakPwdError
-                            case .no_symbol:
-                                errorMessage = TchapL10n.passwordPolicyWeakPwdError
-                            case .no_uppercase:
-                                errorMessage = TchapL10n.passwordPolicyWeakPwdError
-                            case .no_lowercase:
-                                errorMessage = TchapL10n.passwordPolicyWeakPwdError
+                            switch emailVerificationResult {
+                            case .success(let threePIDCredentials):
+                                self.performRegistrationAndShowEmailValidationSent(with: email, sessionId: sessionId, password: password, threePIDCredentials: threePIDCredentials)
+                            case .failure(let error):
+                                let authenticationErrorPresentableMaker = AuthenticationErrorPresentableMaker()
+                                if let errorPresentable = authenticationErrorPresentableMaker.errorPresentable(from: error) {
+                                    self.registrationFormErrorPresenter.present(errorPresentable: errorPresentable)
+                                }
                             }
-                            let errorPresentable = ErrorPresentableImpl(title: TchapL10n.errorTitleDefault, message: errorMessage)
-                            self.registrationFormErrorPresenter.present(errorPresentable: errorPresentable)
                         }
                     case .failure(let error):
                         removeActivityIndicator()
