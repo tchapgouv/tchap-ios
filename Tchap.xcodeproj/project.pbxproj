@@ -4662,10 +4662,6 @@
 					"\"${PODS_ROOT}/WebRTC\"",
 					"\"$(PROJECT_DIR)/Riot/libs/jitsi-meet\"",
 				);
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"$(inherited)",
-					"ENABLE_PROXY_LOOKUP=1",
-				);
 				INFOPLIST_FILE = "$(SRCROOT)/Btchap/SupportingFiles/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -4676,7 +4672,6 @@
 				PRODUCT_MODULE_NAME = Tchap;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = ENABLE_PROXY_LOOKUP;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/Tchap/SupportingFiles/Tchap-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -4712,10 +4707,6 @@
 					"\"${PODS_ROOT}/WebRTC\"",
 					"\"$(PROJECT_DIR)/Riot/libs/jitsi-meet\"",
 				);
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"$(inherited)",
-					"ENABLE_PROXY_LOOKUP=1",
-				);
 				INFOPLIST_FILE = "$(SRCROOT)/Btchap/SupportingFiles/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -4726,7 +4717,6 @@
 				PRODUCT_MODULE_NAME = Tchap;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = ENABLE_PROXY_LOOKUP;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/Tchap/SupportingFiles/Tchap-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

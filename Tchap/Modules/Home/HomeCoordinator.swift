@@ -115,7 +115,6 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
     
     func overrideContactManagerUsersDiscovery(_ isOverridden: Bool) {
         if isOverridden {
-#if ENABLE_PROXY_LOOKUP
             MXKContactManager.shared().discoverUsersBoundTo3PIDsBlock = { [weak self] (threepids: [[String]], success: @escaping (([[String]]) -> Void), failure: @escaping ((Error) -> Void)) in
                 guard let self = self else {
                     return
@@ -123,7 +122,6 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
                 
                 _ = self.thirdPartyIDResolver.bulkLookup(threepids: threepids, identityServer: self.identityServer, success: success, failure: failure)
             }
-#endif
         } else {
             // Remove the block provided to the contactManager to discover users
             MXKContactManager.shared().discoverUsersBoundTo3PIDsBlock = nil
