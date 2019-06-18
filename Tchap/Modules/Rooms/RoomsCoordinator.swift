@@ -78,7 +78,7 @@ final class RoomsCoordinator: NSObject, RoomsCoordinatorType {
     private func joinRoom(with roomID: String) {
         self.activityIndicatorPresenter.presentActivityIndicator(on: self.roomsViewController.view, animated: true)
         
-        self.session.joinRoom(roomID) { [weak self] (response) in
+        joinRoomByHandlingThirdPartyInvite(roomID: roomID) { [weak self] (response) in
             guard let sself = self else {
                 return
             }
@@ -91,6 +91,114 @@ final class RoomsCoordinator: NSObject, RoomsCoordinatorType {
                 let errorPresentable = sself.joinRoomErrorPresentable(from: error)
                 sself.roomsErrorPresenter.present(errorPresentable: errorPresentable, animated: true)
             }
+        }
+    }
+    
+    // Patch: Check before joining the room if a third party invite has been accepted by the tchap user.
+    // Do it before joining the room because the room state will be updated during the operation.
+    // This information will be useful to consider or not the new joined room as a direct chat.
+    private func joinRoomByHandlingThirdPartyInvite(roomID: String, completion: @escaping (MXResponse<MXRoom>) -> Void) {
+        
+        getPotentialThirdPartyInviteSenderID(roomID: roomID) { [weak self] (response) in
+            guard let self = self else {
+                return
+            }
+            
+            let thirdPartyInviteSenderID: String?
+            switch response {
+            case .success(let userID):
+                thirdPartyInviteSenderID = userID
+            case .failure:
+                thirdPartyInviteSenderID = nil
+            }
+            
+            // Join now the wanted room
+            self.session.joinRoom(roomID) { [weak self] (response) in
+                guard let self = self else {
+                    return
+                }
+                
+                switch response {
+                case .success(let room):
+                    if thirdPartyInviteSenderID != nil {
+                        // Mark direct the new joined room if there are only 2 members
+                        self.getRoomMembersPatch(room: room, iterCount: 5) { [weak self] (response) in
+                            guard let self = self else {
+                                return
+                            }
+                            
+                            switch response {
+                            case .success(let roomMembers):
+                                if roomMembers?.members.count == 2 {
+                                    // This new joined room is a direct one
+                                    self.session.setRoom(roomID, directWithUserId: thirdPartyInviteSenderID, success: {
+                                        NSLog("[RoomsCoordinator] joinRoomByHandlingThirdPartyInvite succeeded to mark direct this new joined room")
+                                    }, failure: { _ in
+                                        NSLog("[RoomsCoordinator] joinRoomByHandlingThirdPartyInvite failed to mark direct this new joined room")
+                                    })
+                                }
+                            case .failure:
+                                NSLog("[RoomsCoordinator] joinRoomByHandlingThirdPartyInvite failed to get room members")
+                            }
+                            
+                        }
+                    }
+                    completion(.success(room))
+                case .failure(let error):
+                    completion(.failure(error))
+                }
+            }
+        }
+    }
+    
+    /// Check in the room state if a third party invite has been accepted by the tchap user.
+    /// The response provides on success the Matrix user id of the invite sender (or `nil` if this is not third party invite).
+    private func getPotentialThirdPartyInviteSenderID(roomID: String, completion: @escaping (MXResponse<String?>) -> Void) {
+        if let room = self.session.room(withRoomId: roomID) {
+            let userID = self.session.myUser.userId
+            
+            // Note: We don't use here `room.members` because of https://github.com/matrix-org/synapse/issues/4985
+            room.liveTimeline { (eventTimeline) in
+                if let roomMembers = eventTimeline?.state.members,
+                    let roomMember = roomMembers.member(withUserId: userID),
+                    roomMember.thirdPartyInviteToken != nil {
+                    NSLog("[RoomsCoordinator] getPotentialThirdPartyInviteSenderID: The current user has accepted a third party invite for this room")
+                    completion(.success(roomMember.originalEvent.sender))
+                } else {
+                    completion(.success(nil))
+                }
+            }
+        } else {
+            // The session doesn't know this room, the current user has not been invited.
+            completion(.success(nil))
+        }
+    }
+    
+    /// Note: The request `room.members` may fail for the new join room because of https://github.com/matrix-org/synapse/issues/4985
+    /// We patch here this issue by renewing the request after some delay.
+    /// The maximum nb of iteration is fixed by `iterCount`
+    private func getRoomMembersPatch(room: MXRoom, iterCount: Int, completion: @escaping (MXResponse<MXRoomMembers?>) -> Void) {
+        room.members { [weak self] (response) in
+            guard let sself = self else {
+                return
+            }
+            
+            switch response {
+            case .success(let roomMembers):
+                completion(.success(roomMembers))
+            case .failure(let error):
+                NSLog("[RoomsCoordinator] getRoomMembersPatch failed")
+                let count = iterCount - 1
+                if count > 0 {
+                    // Try again
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: {
+                        sself.getRoomMembersPatch(room: room, iterCount: count, completion: completion)
+                    })
+                } else {
+                    completion(.failure(error))
+                }
+            }
+            
         }
     }
     
