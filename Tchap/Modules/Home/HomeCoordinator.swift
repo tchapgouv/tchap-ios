@@ -32,6 +32,7 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
     private let userService: UserServiceType
     private let inviteService: InviteServiceType
     private let thirdPartyIDResolver: ThirdPartyIDResolverType
+    private let identityServer: String
     
     private weak var homeViewController: HomeViewController?
     private weak var roomsCoordinator: RoomsCoordinatorType?
@@ -58,16 +59,13 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
         self.userService = UserService(session: self.session)
         self.inviteService = InviteService(session: self.session)
         self.thirdPartyIDResolver = ThirdPartyIDResolver(credentials: session.matrixRestClient.credentials)
+        self.identityServer = self.session.matrixRestClient.identityServer
         self.activityIndicatorPresenter = ActivityIndicatorPresenter()
     }
     
     // MARK: - Public methods
     
     func start() {
-        MXKContactManager.shared().discoverUsersBoundTo3PIDsBlock = { (threepids: [[String]], success: @escaping (([[String]]) -> Void), failure: @escaping ((Error) -> Void)) in
-            _ = self.thirdPartyIDResolver.bulkLookup(threepids: threepids, identityServer: self.session.matrixRestClient.identityServer, success: success, failure: failure)
-        }
-        
         let roomsCoordinator = RoomsCoordinator(router: self.navigationRouter, session: self.session)
         let contactsCoordinator = ContactsCoordinator(router: self.navigationRouter, session: self.session)
         
@@ -112,6 +110,21 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
         self.add(childCoordinator: roomCoordinator)
         self.navigationRouter.push(roomCoordinator, animated: true) {
             self.remove(childCoordinator: roomCoordinator)
+        }
+    }
+    
+    func overrideContactManagerUsersDiscovery(_ isOverridden: Bool) {
+        if isOverridden {
+            MXKContactManager.shared().discoverUsersBoundTo3PIDsBlock = { [weak self] (threepids: [[String]], success: @escaping (([[String]]) -> Void), failure: @escaping ((Error) -> Void)) in
+                guard let self = self else {
+                    return
+                }
+                
+                _ = self.thirdPartyIDResolver.bulkLookup(threepids: threepids, identityServer: self.identityServer, success: success, failure: failure)
+            }
+        } else {
+            // Remove the block provided to the contactManager to discover users
+            MXKContactManager.shared().discoverUsersBoundTo3PIDsBlock = nil
         }
     }
     

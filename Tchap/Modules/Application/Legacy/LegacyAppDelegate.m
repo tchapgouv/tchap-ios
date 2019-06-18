@@ -618,11 +618,12 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         return nil;
     }
     
-    // Ignore GDPR Consent not given error. Already caught by kMXHTTPClientUserConsentNotGivenErrorNotification observation
     if ([MXError isMXError:error])
     {
         MXError *mxError = [[MXError alloc] initWithNSError:error];
-        if ([mxError.errcode isEqualToString:kMXErrCodeStringConsentNotGiven])
+        // Ignore the listed error codes, and the "GDPR Consent not given" already caught by kMXHTTPClientUserConsentNotGivenErrorNotification,
+        if ([mxError.errcode isEqualToString:kMXErrCodeStringConsentNotGiven]
+            || [self.ignoredServerErrorCodes containsObject:mxError.errcode])
         {
             return nil;
         }

@@ -25,4 +25,10 @@ protocol HomeCoordinatorType: Coordinator, Presentable {
     ///   - roomID: The room identifier.
     ///   - enventID: An optional event id in this room on which the user wants to focus.
     func showRoom(with roomID: String, onEventID eventID: String?)
+    
+    /// Override or not the users discovery performed by the Contact Manager.
+    ///
+    /// - Parameters:
+    ///   - isOverridden: tell whether the default behavior is overridden.
+    func overrideContactManagerUsersDiscovery(_ isOverridden: Bool)
 }

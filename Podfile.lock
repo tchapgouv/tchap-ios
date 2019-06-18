@@ -39,7 +39,7 @@ PODS:
   - HPGrowingTextView (1.1)
   - JitsiMeetSDK (2.1.0)
   - libbase58 (0.1.4)
-  - libPhoneNumber-iOS (0.9.13)
+  - libPhoneNumber-iOS (0.9.15)
   - MatrixKit (0.9.9):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.21)
@@ -133,10 +133,10 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   MatrixKit:
-    :commit: ad2424f42b167bb7a8bfc92f168697b96585bbba
+    :commit: f1fdd059c96b1c6fe9275ef9a6518f6f3d5b03e6
     :git: https://github.com/matrix-org/matrix-ios-kit.git
   MatrixSDK:
-    :commit: 49b7cf47c448d1b870598901a7d080f415ddd4df
+    :commit: 866f5a4773219473a098a2a7a905b5d4c1af8e9d
     :git: https://github.com/matrix-org/matrix-ios-sdk.git
   PiwikTracker:
     :commit: dfb048f25f4eefbe13ff7515c3c1c2cad5d94491
@@ -152,7 +152,7 @@ SPEC CHECKSUMS:
   HPGrowingTextView: 88a716d97fb853bcb08a4a08e4727da17efc9b19
   JitsiMeetSDK: 3e66564af7f38a19142338955dd7f581801852b3
   libbase58: 7c040313537b8c44b6e2d15586af8e21f7354efd
-  libPhoneNumber-iOS: e444379ac18bbfbdefad571da735b2cd7e096caa
+  libPhoneNumber-iOS: 0a32a9525cf8744fe02c5206eb30d571e38f7d75
   MatrixKit: 77865408e69d4529ef9c550f699126d2104df467
   MatrixSDK: ed0d0cee4877955052f19730bb3ee727e01ec948
   OLMKit: 4ee0159d63feeb86d836fdcfefe418e163511639

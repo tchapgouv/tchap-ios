@@ -7,6 +7,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Common errors
+"warning_title" = "Attention";
 "error_title_default" = "Erreur";
 "error_message_default" = "Une erreur est survenue, veuillez réessayer ultérieurement";
 
@@ -175,3 +176,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Room creation
 "gdpr_consent_not_given_alert_message" = "Pour continuer à utiliser Tchap, vous devez lire et accepter les conditions générales.";
+
+////////////////////////////////////////////////////////////////////////////////
+// MARK: Expired Account
+"expired_account_alert_message" = "La durée de validité de votre compte a expiré. Un email vous a été envoyé pour la renouveler. Une fois que vous aurez suivi le lien qu’il contient, cliquez ci-dessous.";
+"expired_account_resume_button" = "J’ai renouvelé mon compte";
+"expired_account_request_renewal_email_button" = "Demander l’envoi d’un nouvel email";
