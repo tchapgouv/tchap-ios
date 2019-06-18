@@ -1,3 +1,14 @@
+Changes in Tchap 1.0.12 (2019-06-18)
+===================================================
+
+ Features/Improvements:
+ * Support the account validity error #177
+ * The external users can now be hidden from the users directory search, show the option in settings #205
+ * Enable the proxy lookup use on Prod
+ 
+ Bug Fixes:
+ * Invite by email: The joined discussion is displayed like a "salon" #200
+
 Changes in Tchap 1.0.11 (2019-05-23)
 ===================================================
 
