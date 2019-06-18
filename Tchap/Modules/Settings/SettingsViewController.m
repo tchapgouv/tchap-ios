@@ -676,22 +676,13 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         
         if (session)
         {
-            UserService *userService = [[UserService alloc] initWithSession:session];
-            
             userSettingsProfilePictureIndex = count++;
             userSettingsDisplayNameIndex = count++;
             userSettingsChangePasswordIndex = count++;
             
             
-            // Note the external users are not allowed to hide them from the users directory.
-            if (![userService isExternalUserFor:session.myUser.userId])
-            {
-                userSettingsHideFromUsersDirIndex = count++;
-            }
-            else
-            {
-                userSettingsHideFromUsersDirIndex = -1;
-            }
+            // Presently all Tchap users are allowed to hide themselves from the users directory search
+            userSettingsHideFromUsersDirIndex = count++;
             
             userSettingsEmailStartIndex = count;
             userSettingsPhoneStartIndex = userSettingsEmailStartIndex + account.linkedEmails.count;
