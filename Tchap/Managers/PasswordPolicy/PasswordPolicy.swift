@@ -1,5 +1,5 @@
 /*
- Copyright 2018 New Vector Ltd
+ Copyright 2019 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -16,15 +16,11 @@
 
 import Foundation
 
-/// `RegistrationServiceError` represent errors reported by RegistrationService.
-enum RegistrationServiceError: Error {
-    case identityServerURLBuildFailed
-    case homeServerURLBuildFailed
-    case userAlreadyLoggedIn
-    case failToCreateAccount
-    case deallocatedRestClient
-    case validationTokenFailed
-    case nextLinkBuildFailed
-    case missingClientSecret
-    case invalidPassword(reason: PasswordPolicyRejectionReason)
+/// Structure use to define a password policy.
+struct PasswordPolicy: PasswordPolicyType {
+    let minLength: Int
+    let isDigitRequired: Bool
+    let isSymbolRequired: Bool
+    let isUppercaseRequired: Bool
+    let isLowercaseRequired: Bool
 }
