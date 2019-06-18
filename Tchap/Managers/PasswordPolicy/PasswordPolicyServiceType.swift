@@ -25,10 +25,10 @@ enum PasswordPolicyVerificationResult {
 /// Reasons of the password rejection
 enum PasswordPolicyRejectionReason {
     case tooShort(minLength: Int)
-    case no_digit
-    case no_symbol
-    case no_uppercase
-    case no_lowercase
+    case noDigit
+    case noSymbol
+    case noUppercase
+    case noLowercase
 }
 
 

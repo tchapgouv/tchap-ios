@@ -158,13 +158,13 @@ final class AuthenticationErrorPresentableMaker {
             switch reason {
             case .tooShort(let minLength):
                 message = TchapL10n.passwordPolicyTooShortPwdDetailedError(minLength)
-            case .no_digit:
+            case .noDigit:
                 message = TchapL10n.passwordPolicyWeakPwdError
-            case .no_symbol:
+            case .noSymbol:
                 message = TchapL10n.passwordPolicyWeakPwdError
-            case .no_uppercase:
+            case .noUppercase:
                 message = TchapL10n.passwordPolicyWeakPwdError
-            case .no_lowercase:
+            case .noLowercase:
                 message = TchapL10n.passwordPolicyWeakPwdError
             }
         default:

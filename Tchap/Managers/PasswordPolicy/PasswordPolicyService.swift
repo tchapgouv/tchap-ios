@@ -86,22 +86,22 @@ final class PasswordPolicyService: PasswordPolicyServiceType {
         }
         
         if policy.isDigitRequired, password.rangeOfCharacter(from: CharacterSet.decimalDigits) == nil {
-            return .unauthorized(reason: .no_digit)
+            return .unauthorized(reason: .noDigit)
         }
         
         if policy.isSymbolRequired {
             let pwd = password.filter { !"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".contains($0) }
             if pwd.count == 0 {
-                return .unauthorized(reason: .no_symbol)
+                return .unauthorized(reason: .noSymbol)
             }
         }
         
         if policy.isUppercaseRequired, password.rangeOfCharacter(from: CharacterSet(charactersIn: "ABCDEFGHIJKLMNOPQRSTUVWXYZ")) == nil {
-            return .unauthorized(reason: .no_uppercase)
+            return .unauthorized(reason: .noUppercase)
         }
         
         if policy.isLowercaseRequired, password.rangeOfCharacter(from: CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyz")) == nil {
-            return .unauthorized(reason: .no_lowercase)
+            return .unauthorized(reason: .noLowercase)
         }
         
         return .authorized

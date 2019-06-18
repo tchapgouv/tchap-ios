@@ -147,13 +147,13 @@ final class ForgotPasswordCoordinator: ForgotPasswordCoordinatorType {
                 switch reason {
                 case .tooShort(let minLength):
                     errorMessage = TchapL10n.passwordPolicyTooShortPwdDetailedError(minLength)
-                case .no_digit:
+                case .noDigit:
                     errorMessage = TchapL10n.passwordPolicyWeakPwdError
-                case .no_symbol:
+                case .noSymbol:
                     errorMessage = TchapL10n.passwordPolicyWeakPwdError
-                case .no_uppercase:
+                case .noUppercase:
                     errorMessage = TchapL10n.passwordPolicyWeakPwdError
-                case .no_lowercase:
+                case .noLowercase:
                     errorMessage = TchapL10n.passwordPolicyWeakPwdError
                 }
             }
@@ -176,19 +176,13 @@ final class ForgotPasswordCoordinator: ForgotPasswordCoordinatorType {
         
         if let errCode = nsError.userInfo[kMXErrorCodeKey] as? String {
             switch errCode {
-            case kMXErrCodeStringPasswordTooShort:
-                shouldGoBack = true
-            case kMXErrCodeStringPasswordNoDigit:
-                shouldGoBack = true
-            case kMXErrCodeStringPasswordNoLowercase:
-                shouldGoBack = true
-            case kMXErrCodeStringPasswordNoUppercase:
-                shouldGoBack = true
-            case kMXErrCodeStringPasswordNoSymbol:
-                shouldGoBack = true
-            case kMXErrCodeStringWeakPassword:
-                shouldGoBack = true
-            case kMXErrCodeStringPasswordInDictionary:
+            case kMXErrCodeStringPasswordTooShort,
+                 kMXErrCodeStringPasswordNoDigit,
+                 kMXErrCodeStringPasswordNoLowercase,
+                 kMXErrCodeStringPasswordNoUppercase,
+                 kMXErrCodeStringPasswordNoSymbol,
+                 kMXErrCodeStringWeakPassword,
+                 kMXErrCodeStringPasswordInDictionary:
                 shouldGoBack = true
             default:
                 shouldGoBack = false
@@ -211,15 +205,11 @@ final class ForgotPasswordCoordinator: ForgotPasswordCoordinatorType {
                 errorMessage = TchapL10n.forgotPasswordVerifyEmailErrorEmailNotVerified
             case kMXErrCodeStringPasswordTooShort:
                 errorMessage = TchapL10n.passwordPolicyTooShortPwdError
-            case kMXErrCodeStringPasswordNoDigit:
-                errorMessage = TchapL10n.passwordPolicyWeakPwdError
-            case kMXErrCodeStringPasswordNoLowercase:
-                errorMessage = TchapL10n.passwordPolicyWeakPwdError
-            case kMXErrCodeStringPasswordNoUppercase:
-                errorMessage = TchapL10n.passwordPolicyWeakPwdError
-            case kMXErrCodeStringPasswordNoSymbol:
-                errorMessage = TchapL10n.passwordPolicyWeakPwdError
-            case kMXErrCodeStringWeakPassword:
+            case kMXErrCodeStringPasswordNoDigit,
+                 kMXErrCodeStringPasswordNoLowercase,
+                 kMXErrCodeStringPasswordNoUppercase,
+                 kMXErrCodeStringPasswordNoSymbol,
+                 kMXErrCodeStringWeakPassword:
                 errorMessage = TchapL10n.passwordPolicyWeakPwdError
             case kMXErrCodeStringPasswordInDictionary:
                 errorMessage = TchapL10n.passwordPolicyPwdInDictError
