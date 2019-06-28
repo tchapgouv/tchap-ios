@@ -1,3 +1,9 @@
+Changes in Tchap 1.0.13 (2019-06-28)
+===================================================
+
+ Features/Improvements:
+ * Pin the certificate of the `agent.externe` instance.
+
 Changes in Tchap 1.0.12 (2019-06-18)
 ===================================================
 
