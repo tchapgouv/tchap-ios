@@ -38,7 +38,7 @@ enum RoomServiceError: Error {
 }
 
 /// `RoomService` implementation of `RoomServiceType` is used to perform room operations.
-final class RoomService: RoomServiceType {
+final class RoomService: NSObject, RoomServiceType {
     
     // MARK: - Properties
     
@@ -48,7 +48,7 @@ final class RoomService: RoomServiceType {
     
     // MARK: - Setup
     
-    init(session: MXSession) {
+    @objc init(session: MXSession) {
         self.session = session
         self.roomStateService = RoomStateService(session: session)
     }
@@ -82,6 +82,28 @@ final class RoomService: RoomServiceType {
                                                             powerLevelContentOverride: nil,
                                                             isDirect: true)
         return self.createRoom(with: roomCreationParameters, completion: completion)
+    }
+    
+    @objc func createDiscussion(with userID: String, success: @escaping ((String) -> Void), failure: @escaping ((Error) -> Void)) -> MXHTTPOperation {
+        let roomCreationParameters = RoomCreationParameters(visibility: .private,
+                                                            accessRule: .direct,
+                                                            preset: .trustedPrivateChat,
+                                                            name: nil,
+                                                            alias: nil,
+                                                            inviteUserIDs: [userID],
+                                                            inviteThirdPartyIDs: nil,
+                                                            isFederated: true,
+                                                            historyVisibility: nil,
+                                                            powerLevelContentOverride: nil,
+                                                            isDirect: true)
+        return self.createRoom(with: roomCreationParameters, completion: { (response) in
+            switch response {
+            case .success(let roomID):
+                success(roomID)
+            case.failure(let error):
+                failure(error)
+            }
+        })
     }
     
     // MARK: - Private

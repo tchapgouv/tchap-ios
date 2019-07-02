@@ -39,4 +39,15 @@ protocol RoomServiceType {
     ///   - thirdPartyID: the third party identifier to invite.
     ///   - completion: A closure called when the operation complete. Provide the discussion id when succeed.
     func createDiscussionWithThirdPartyID(_ thirdPartyID: MXInvite3PID, completion: @escaping (MXResponse<String>) -> Void) -> MXHTTPOperation
+    
+    /// Create a direct chat by inviting a user by their identifier.
+    /// This method has been added to interact with the existing Objective C source code.
+    ///
+    /// - Parameters:
+    /// - userID: the user id to invite.
+    /// - success: A block object called when the operation succeeded. Provide the discussion id
+    /// - failure: A block object called when the operation failed.
+    ///
+    /// - returns: a `MXHTTPOperation` instance.
+    func createDiscussion(with userID: String, success: @escaping ((String) -> Void), failure: @escaping ((Error) -> Void)) -> MXHTTPOperation
 }
