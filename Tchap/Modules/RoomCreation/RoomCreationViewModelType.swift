@@ -20,6 +20,7 @@ import Foundation
 protocol RoomCreationViewModelType {
     
     var roomNameFormTextViewModel: FormTextViewModel { get }
+    var isRestricted: Bool { get set }
     var isPublic: Bool { get set }
     var isFederated: Bool { get set }
     var homeServerDomain: String { get }

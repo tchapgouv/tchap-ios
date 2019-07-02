@@ -172,6 +172,7 @@
 "room_creation_public_visibility_info" = "Un salon public peut être rejoint par n'importe quel membre de la communauté Tchap, il ne doit contenir aucune donnée sensible.";
 "room_creation_public_room_federation_title" = "Limiter l'accès à ce salon aux membres du domaine \"%@\"";
 "room_creation_add_avatar_action" = "Ajouter une photo";
+"room_creation_room_access_title" = "Autoriser l’accès aux externes à ce salon";
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Room creation
