@@ -20,33 +20,61 @@ class RoomsRoomCell: RoomsCell {
     // MARK: - Constants
     
     private enum Constants {
-        static let hexagonImageBorderWidth: CGFloat = 1.0
+        static let hexagonImageBorderWidth: CGFloat = 7.0
     }
+    
+    private var avatarBorderColor: UIColor = UIColor.clear
     
     @IBOutlet private weak var lastEventSenderName: UILabel!
     
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        self.avatarView.tc_makeHexagon(borderWidth: Constants.hexagonImageBorderWidth, borderColor: self.style.secondaryTextColor)
+        self.updateAvatarView()
     }
     
     override func render(_ cellData: MXKCellData!) {
         super.render(cellData)
         
         self.lastEventSenderName.text = nil
-        if let senderId = self.roomCellData?.lastEvent?.sender, let session = self.roomCellData?.recentsDataSource.mxSession {
-            // Try to find user in local session
-            let senderUser: User
-            let userService = UserService(session: session)
-            
-            if let userFromSession = userService.getUserFromLocalSession(with: senderId) {
-                senderUser = userFromSession
-            } else {
-                senderUser = userService.buildTemporaryUser(from: senderId)
+        self.avatarBorderColor = UIColor.clear
+        
+        if let session = self.roomCellData?.recentsDataSource.mxSession {
+            // Adjust last sender name
+            if let senderId = self.roomCellData?.lastEvent?.sender {
+                // Try to find user in local session
+                let senderUser: User
+                let userService = UserService(session: session)
+                
+                if let userFromSession = userService.getUserFromLocalSession(with: senderId) {
+                    senderUser = userFromSession
+                } else {
+                    senderUser = userService.buildTemporaryUser(from: senderId)
+                }
+                let displayNameComponents = DisplayNameComponents(displayName: senderUser.displayName)
+                self.lastEventSenderName.text = displayNameComponents.name
             }
-            let displayNameComponents = DisplayNameComponents(displayName: senderUser.displayName)
-            self.lastEventSenderName.text = displayNameComponents.name
+            
+            // Set the right avatar border
+            if let roomId = self.roomCellData?.roomSummary.roomId {
+                let roomStateService = RoomStateService(session: session)
+                roomStateService.getRoomAccessRule(for: roomId) { [weak self] (response) in
+                    switch response {
+                    case .success(let rule):
+                        switch rule {
+                        case .restricted:
+                            self?.avatarBorderColor = kColorDarkBlue
+                        case .unrestricted:
+                            self?.avatarBorderColor = kColorDarkGrey
+                        default:
+                            self?.avatarBorderColor = UIColor.clear
+                        }
+                        self?.updateAvatarView()
+                    case .failure:
+                        NSLog("[RoomsRoomCell] getRoomAccessRule failed")
+                    }
+                }
+            }
         }
     }
     
@@ -55,4 +83,7 @@ class RoomsRoomCell: RoomsCell {
         self.lastEventSenderName.textColor = style.primaryTextColor
     }
     
+    private func updateAvatarView () {
+        self.avatarView.tc_makeHexagon(borderWidth: Constants.hexagonImageBorderWidth, borderColor: self.avatarBorderColor)
+    }
 }
