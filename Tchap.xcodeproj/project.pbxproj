@@ -146,6 +146,7 @@
 		0234A9A7225BDA4E00E8E489 /* FormCheckBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0234A9A5225BDA4E00E8E489 /* FormCheckBox.swift */; };
 		0234A9AC225BE42D00E8E489 /* FormCheckBox.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0234A9AB225BE42D00E8E489 /* FormCheckBox.xib */; };
 		0234A9AD225BE42D00E8E489 /* FormCheckBox.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0234A9AB225BE42D00E8E489 /* FormCheckBox.xib */; };
+		0234DEF322C5129300EBBBC5 /* matrix.agent.externe.tchap.gouv.fr.cer in Resources */ = {isa = PBXBuildFile; fileRef = 0234DEF222C5129300EBBBC5 /* matrix.agent.externe.tchap.gouv.fr.cer */; };
 		0250C4932122B68000034691 /* MediaAlbumTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B557CE20EF5E3500210D55 /* MediaAlbumTableCell.m */; };
 		0250C4942122B68000034691 /* RiotDesignValues.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932AB20F3A7B000746532 /* RiotDesignValues.m */; };
 		0250C4962122B68000034691 /* AvatarGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC111E7009EC00A9B29C /* AvatarGenerator.m */; };
@@ -1063,6 +1064,7 @@
 		0234A9A2225BD0D000E8E489 /* FormCheckBoxModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCheckBoxModelType.swift; sourceTree = "<group>"; };
 		0234A9A5225BDA4E00E8E489 /* FormCheckBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCheckBox.swift; sourceTree = "<group>"; };
 		0234A9AB225BE42D00E8E489 /* FormCheckBox.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FormCheckBox.xib; sourceTree = "<group>"; };
+		0234DEF222C5129300EBBBC5 /* matrix.agent.externe.tchap.gouv.fr.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = matrix.agent.externe.tchap.gouv.fr.cer; sourceTree = "<group>"; };
 		0250C5BF2122B68000034691 /* Tchap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tchap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0250C5C42122E63900034691 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0250C5C52122E63900034691 /* Tchap-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tchap-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -1939,6 +1941,7 @@
 		028B50B3228E2931005DB9B6 /* Certificates */ = {
 			isa = PBXGroup;
 			children = (
+				0234DEF222C5129300EBBBC5 /* matrix.agent.externe.tchap.gouv.fr.cer */,
 				028B50B6228EB2C2005DB9B6 /* www.tchap.gouv.fr.cer */,
 				028B50B4228E2931005DB9B6 /* matrix.agent.tchap.gouv.fr.cer */,
 			);
@@ -3352,6 +3355,7 @@
 				020DF955214BE467003DFBA4 /* RoomIncomingEncryptedTextMsgBubbleCell.xib in Resources */,
 				B1BC6A2A2136DCCE00D32F8E /* WelcomeViewController.storyboard in Resources */,
 				0290607921501D16005FE3C1 /* PreviewView.xib in Resources */,
+				0234DEF322C5129300EBBBC5 /* matrix.agent.externe.tchap.gouv.fr.cer in Resources */,
 				020DF958214BE467003DFBA4 /* RoomOutgoingEncryptedTextMsgBubbleCell.xib in Resources */,
 				020DF99F214BE467003DFBA4 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.xib in Resources */,
 				B1322FEB213002440054A9DD /* FormTextField.xib in Resources */,
