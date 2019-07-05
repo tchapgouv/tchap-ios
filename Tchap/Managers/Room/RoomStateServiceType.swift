@@ -68,5 +68,13 @@ protocol RoomStateServiceType {
     /// - Parameters:
     ///   - roomID: the room identifier.
     ///   - completion: A closure called when the operation complete. Provide the rule when succeed.
-    func getRoomAccessRule(_ roomID: String, completion: @escaping (MXResponse<RoomAccessRule>) -> Void)
+    func getRoomAccessRule(for roomID: String, completion: @escaping (MXResponse<RoomAccessRule>) -> Void)
+    
+    /// Get the room access rule of a room if its state has been already loaded else return nil.
+    ///
+    /// Use this method only where you are sure the room state is already mounted.
+    ///
+    /// - Parameters:
+    ///   - roomID: the room identifier.
+    func getRoomAccessRule(for roomID: String) -> RoomAccessRule?
 }

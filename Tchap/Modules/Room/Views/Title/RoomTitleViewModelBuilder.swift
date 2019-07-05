@@ -49,6 +49,7 @@ final class RoomTitleViewModelBuilder: NSObject {
         let title: String
         let subtitle: String?
         let avatarImageShape: AvatarImageShape
+        let avatarBorderColor: UIColor?
         
         let displayName = roomSummary.displayname ?? ""
         let avatarUrl = roomSummary.avatar
@@ -59,11 +60,27 @@ final class RoomTitleViewModelBuilder: NSObject {
             title = displayNameComponents.name
             subtitle = displayNameComponents.domain
             avatarImageShape = .circle
+            avatarBorderColor = nil
         } else {
             let roomMemberCount = Int(roomSummary.membersCount.members)
             title = displayName
             subtitle = TchapL10n.roomTitleRoomMembersCount(roomMemberCount)
             avatarImageShape = .hexagon
+            
+            // Look for the right avatar border
+            let roomStateService = RoomStateService(session: session)
+            if let rule = roomStateService.getRoomAccessRule(for: roomSummary.roomId) {
+                switch rule {
+                case .restricted:
+                    avatarBorderColor = kColorDarkBlue
+                case .unrestricted:
+                    avatarBorderColor = kColorDarkGrey
+                default:
+                    avatarBorderColor = UIColor.clear
+                }
+            } else {
+                avatarBorderColor = UIColor.clear
+            }
         }
         
         let placeholderImage: UIImage = AvatarGenerator.generateAvatar(forText: displayName)
@@ -73,7 +90,8 @@ final class RoomTitleViewModelBuilder: NSObject {
                                                         thumbnailSize: self.avatarImageSize,
                                                         thumbnailingMethod: MXThumbnailingMethodCrop,
                                                         placeholderImage: placeholderImage,
-                                                        shape: avatarImageShape)
+                                                        shape: avatarImageShape,
+                                                        borderColor: avatarBorderColor)
         
         return RoomTitleViewModel(title: title, subtitle: subtitle, avatarImageViewModel: avatarImageViewModel)
     }
@@ -88,12 +106,14 @@ final class RoomTitleViewModelBuilder: NSObject {
         let placeholderImage: UIImage = AvatarGenerator.generateAvatar(forText: title)
         let avatarImageShape: AvatarImageShape = .hexagon
 
+        // The room preview is only supported for public room which are restricted by default (external users can not join them)
         let avatarImageViewModel = AvatarImageViewModel(avatarContentURI: avatarUrl,
                                                         mediaManager: self.session.mediaManager,
                                                         thumbnailSize: self.avatarImageSize,
                                                         thumbnailingMethod: MXThumbnailingMethodCrop,
                                                         placeholderImage: placeholderImage,
-                                                        shape: avatarImageShape)
+                                                        shape: avatarImageShape,
+                                                        borderColor: kColorDarkBlue)
         
         return RoomTitleViewModel(title: title, subtitle: subtitle, avatarImageViewModel: avatarImageViewModel)
     }
@@ -115,7 +135,8 @@ final class RoomTitleViewModelBuilder: NSObject {
                                                         thumbnailSize: self.avatarImageSize,
                                                         thumbnailingMethod: MXThumbnailingMethodCrop,
                                                         placeholderImage: placeholderImage,
-                                                        shape: avatarImageShape)
+                                                        shape: avatarImageShape,
+                                                        borderColor: nil)
         
         return RoomTitleViewModel(title: title, subtitle: subtitle, avatarImageViewModel: avatarImageViewModel)
     }

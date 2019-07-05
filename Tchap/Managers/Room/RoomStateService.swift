@@ -16,6 +16,10 @@
 
 import Foundation
 
+enum RoomStateServiceError: Error {
+    case unknownRoom
+}
+
 final class RoomStateService: RoomStateServiceType {
     
     // MARK: - Constants
@@ -68,9 +72,70 @@ final class RoomStateService: RoomStateServiceType {
         return stateEvent
     }
     
-    func getRoomAccessRule(_ roomID: String, completion: @escaping (MXResponse<RoomAccessRule>) -> Void) {
-        // TODO
+    func getRoomAccessRule(for roomID: String, completion: @escaping (MXResponse<RoomAccessRule>) -> Void) {
+        guard let room = self.session.room(withRoomId: roomID) else {
+            completion(.failure(RoomStateServiceError.unknownRoom))
+            return
+        }
+        
+        room.state { (roomState) in
+            guard let roomState = roomState else {
+                completion(.failure(RoomStateServiceError.unknownRoom))
+                return
+            }
+            
+            if let accessRule = self.roomAccessRule(from: roomState) {
+                completion(.success(accessRule))
+            } else if room.isDirect {
+                // TODO add the right state event to this discussion
+                completion(.success(.direct))
+            } else {
+                // The room is considered as restricted by default
+                completion(.success(.restricted))
+            }
+        }
+    }
+    
+    func getRoomAccessRule(for roomID: String) -> RoomAccessRule? {
+        guard let room = self.session.room(withRoomId: roomID) else {
+            return nil
+        }
+        
+        if let roomState = room.dangerousSyncState {
+            if let accessRule = self.roomAccessRule(from: roomState) {
+                return accessRule
+            } else if room.isDirect {
+                // TODO add the right state event to this discussion
+                return .direct
+            } else {
+                // The room is considered as restricted by default
+                return .restricted
+            }
+        } else {
+            return nil
+        }
     }
     
     // MARK: - Private
+    
+    private func roomAccessRule(from roomState: MXRoomState) -> RoomAccessRule? {
+        guard let roomAccessRulesEvents = roomState.stateEvents(with: .custom(Constants.roomAccessRulesStateEventType)),
+            var accessRuleStateEvent = roomAccessRulesEvents.last else {
+                return nil
+        }
+        
+        // Consider the most recent state event if multiple events exist
+        for event in roomAccessRulesEvents where accessRuleStateEvent.originServerTs < event.originServerTs {
+            accessRuleStateEvent = event
+        }
+        return self.roomAccessRule(from: accessRuleStateEvent)
+    }
+    
+    private func roomAccessRule(from event: MXEvent) -> RoomAccessRule? {
+        guard let content = event.content, let rule = content["rule"] as? String else {
+            return nil
+        }
+        
+        return RoomAccessRule(identifier: rule)
+    }
 }

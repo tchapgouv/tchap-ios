@@ -26,7 +26,7 @@ import Reusable
     // MARK: - Constants
     
     private enum Constants {
-        static let hexagonImageBorderWidth: CGFloat = 1.0
+        static let hexagonImageBorderWidth: CGFloat = 5.0
         static let backBarButtonItemRightPosition: CGFloat = 30.0
     }
     
@@ -38,6 +38,8 @@ import Reusable
     @IBOutlet private weak var imageView: MXKImageView!
     
     private var style: Style!
+    
+    private var imageBorderColor: UIColor = UIColor.clear
     
     private weak var titlesStackViewCenterXConstraint: NSLayoutConstraint?
     
@@ -77,7 +79,7 @@ import Reusable
         case .circle:
             self.imageView.tc_makeCircle()
         case .hexagon:
-            self.imageView.tc_makeHexagon(borderWidth: Constants.hexagonImageBorderWidth, borderColor: self.style.secondaryTextColor)
+            self.imageView.tc_makeHexagon(borderWidth: Constants.hexagonImageBorderWidth, borderColor: self.imageBorderColor)
         }
     }
     
@@ -128,6 +130,9 @@ import Reusable
             }
             
             self.imageShape = avatarImageViewModel.shape
+            if let borderColor = avatarImageViewModel.borderColor {
+                self.imageBorderColor = borderColor
+            }
         } else {
             self.imageView.isHidden = true
         }

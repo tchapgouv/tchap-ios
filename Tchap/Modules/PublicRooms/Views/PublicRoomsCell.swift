@@ -20,7 +20,7 @@ import Reusable
 @objcMembers class PublicRoomsCell: UITableViewCell, Stylable, NibReusable {
     
     private enum Constants {
-        static let hexagonImageBorderWidth: CGFloat = 1.0
+        static let hexagonImageBorderWidth: CGFloat = 7.0
     }
     
     @IBOutlet private(set) weak var avatarView: MXKImageView!
@@ -43,7 +43,7 @@ import Reusable
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        self.avatarView.tc_makeHexagon(borderWidth: Constants.hexagonImageBorderWidth, borderColor: self.style.secondaryTextColor)
+        self.avatarView.tc_makeHexagon(borderWidth: Constants.hexagonImageBorderWidth, borderColor: kColorDarkBlue)
     }
     
     func render(publicRoom: MXPublicRoom, using mediaManager: MXMediaManager) {

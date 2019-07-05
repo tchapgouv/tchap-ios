@@ -147,6 +147,7 @@ final class RoomCreationViewController: UIViewController {
     private func setupRoomAvatarCreationView() {
         let roomCreationAvatarView = RoomCreationAvatarView.loadFromNib()
         roomCreationAvatarView.delegate = self
+        roomCreationAvatarView.setAvatarBorderColor(self.viewModel.isRestricted ? kColorDarkBlue : kColorDarkGrey)
         self.avatarContentView.tc_addSubViewMathingParent(roomCreationAvatarView)
         self.roomCreationAvatarView = roomCreationAvatarView
     }
@@ -173,11 +174,13 @@ final class RoomCreationViewController: UIViewController {
         if !isEnabled {
             self.roomAccessSwitch.isOn = false
             self.viewModel.isRestricted = true
+            self.roomCreationAvatarView?.setAvatarBorderColor(kColorDarkBlue)
         }
     }
     
     private func allowExternalUsers(_ isUnrestricted: Bool) {
         self.viewModel.isRestricted = !isUnrestricted
+        self.roomCreationAvatarView?.setAvatarBorderColor(self.viewModel.isRestricted ? kColorDarkBlue : kColorDarkGrey)
     }
     
     private func enablePublicVisibility(_ publicVisibilityEnabled: Bool) {

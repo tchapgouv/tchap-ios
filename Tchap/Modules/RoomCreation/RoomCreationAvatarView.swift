@@ -26,7 +26,7 @@ final class RoomCreationAvatarView: UIView, NibLoadable, Stylable {
     // MARK: - Constants
     
     private enum Constants {
-        static let hexagonBorderWidth: CGFloat = 1.0
+        static let hexagonBorderWidth: CGFloat = 10.0
     }
     
     // MARK: - Properties
@@ -36,6 +36,7 @@ final class RoomCreationAvatarView: UIView, NibLoadable, Stylable {
     @IBOutlet private weak var imageView: UIImageView!
     
     private var style: Style!
+    private var hexagonBorderColor: UIColor = UIColor.clear
     
     weak var delegate: RoomCreationAvatarViewDelegate?
     
@@ -57,7 +58,7 @@ final class RoomCreationAvatarView: UIView, NibLoadable, Stylable {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        self.backgroundView.tc_makeHexagon(borderWidth: Constants.hexagonBorderWidth, borderColor: self.style.secondaryTextColor)
+        self.updateBackgroundView()
     }
     
     // MARK: - Public
@@ -65,6 +66,11 @@ final class RoomCreationAvatarView: UIView, NibLoadable, Stylable {
     func updateAvatar(with image: UIImage) {
         self.imageView.image = image
         self.updateAddButtonTextVisibility()
+    }
+    
+    func setAvatarBorderColor(_ color: UIColor) {
+        self.hexagonBorderColor = color
+        self.updateBackgroundView()
     }
     
     // MARK: - Private
@@ -80,6 +86,10 @@ final class RoomCreationAvatarView: UIView, NibLoadable, Stylable {
         }
         
         self.addButton.setTitle(buttonTitle, for: .normal)
+    }
+    
+    private func updateBackgroundView () {
+        self.backgroundView.tc_makeHexagon(borderWidth: Constants.hexagonBorderWidth, borderColor: self.hexagonBorderColor)
     }
     
     // MARK: - Actions

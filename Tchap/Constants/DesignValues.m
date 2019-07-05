@@ -27,6 +27,7 @@ UIColor *kColorLightNavy;
 UIColor *kColorGreyishPurple;
 UIColor *kColorWarmGrey;
 UIColor *kColorLightGrey;
+UIColor *kColorDarkGrey;
 
 #pragma mark Variant 1
 
@@ -118,6 +119,7 @@ UIColor *kVariant2PresenceIndicatorOnlineColor;
     kColorGreyishPurple = UIColorFromRGB(0x8b8999);
     kColorWarmGrey = UIColorFromRGB(0x858585);
     kColorLightGrey = UIColorFromRGB(0xf0f0f0);
+    kColorDarkGrey = UIColorFromRGB(0xcccccc);
     
     // Observe user interface theme change.
     [[NSUserDefaults standardUserDefaults] addObserver:[DesignValues sharedInstance] forKeyPath:@"userInterfaceTheme" options:0 context:nil];
