@@ -205,6 +205,8 @@ internal enum TchapL10n {
   internal static let roomCreationPublicVisibilityInfo = TchapL10n.tr("Tchap", "room_creation_public_visibility_info")
   /// Rendre ce salon public
   internal static let roomCreationPublicVisibilityTitle = TchapL10n.tr("Tchap", "room_creation_public_visibility_title")
+  /// Autoriser l’accès aux externes à ce salon
+  internal static let roomCreationRoomAccessTitle = TchapL10n.tr("Tchap", "room_creation_room_access_title")
   /// Nouveau salon
   internal static let roomCreationTitle = TchapL10n.tr("Tchap", "room_creation_title")
   /// Fichiers

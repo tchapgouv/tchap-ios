@@ -195,7 +195,8 @@ final class RoomCreationCoordinator: NSObject, RoomCreationCoordinatorType {
     
     private func createRoom(roomCreationFormResult: RoomCreationFormResult, avatarUrl: String?, userIDs: [String]) -> Single<String> {
         let roomVisibility: MXRoomDirectoryVisibility = roomCreationFormResult.isPublic ? .public : .private
-        return self.roomService.createRoom(visibility: roomVisibility, name: roomCreationFormResult.name, avatarURL: avatarUrl, inviteUserIds: userIDs, isFederated: roomCreationFormResult.isFederated)
+        let roomAccessRule: RoomAccessRule = roomCreationFormResult.isRestricted ? .restricted: .unrestricted
+        return self.roomService.createRoom(visibility: roomVisibility, name: roomCreationFormResult.name, avatarURL: avatarUrl, inviteUserIds: userIDs, isFederated: roomCreationFormResult.isFederated, accessRule: roomAccessRule)
     }
 }
 
