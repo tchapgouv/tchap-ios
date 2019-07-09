@@ -910,7 +910,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
         // Check
         if (roomAlias.length)
         {
-            [self.mainSession joinRoom:roomAlias success:^(MXRoom *room) {
+            [self.mainSession joinRoom:roomAlias viaServers:nil success:^(MXRoom *room) {
                 
                 // Show the room
                 if (self.delegate)
