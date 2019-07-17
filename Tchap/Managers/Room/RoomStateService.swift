@@ -20,13 +20,15 @@ enum RoomStateServiceError: Error {
     case unknownRoom
 }
 
-final class RoomStateService: RoomStateServiceType {
+final class RoomStateService: NSObject, RoomStateServiceType {
     
     // MARK: - Constants
     
-    private enum Constants {
-        static let roomAccessRulesStateEventType: String = "im.vector.room.access_rules"
-    }
+    @objc static let roomAccessRuleIdentifierRestricted = RoomAccessRule.restricted.identifier
+    @objc static let roomAccessRuleIdentifierUnrestricted = RoomAccessRule.unrestricted.identifier
+    @objc static let roomAccessRuleIdentifierDirect = RoomAccessRule.direct.identifier
+    
+    @objc static let roomAccessRulesStateEventType = "im.vector.room.access_rules"
     
     // MARK: - Properties
     
@@ -34,7 +36,7 @@ final class RoomStateService: RoomStateServiceType {
     
     // MARK: - Setup
     
-    init(session: MXSession) {
+    @objc init(session: MXSession) {
         self.session = session
     }
     
@@ -60,7 +62,7 @@ final class RoomStateService: RoomStateServiceType {
         
         let stateEventJSON: [AnyHashable: Any] = [
             "state_key": "",
-            "type": Constants.roomAccessRulesStateEventType,
+            "type": RoomStateService.roomAccessRulesStateEventType,
             "content": [
                 "rule": accessRule.identifier
             ]
@@ -116,10 +118,20 @@ final class RoomStateService: RoomStateServiceType {
         }
     }
     
+    /// Get the room access rule of a room if its state has been already loaded else return nil.
+    /// This method has been added to interact with the existing Objective C source code.
+    @objc func getRoomAccessRuleIdentifier(for roomID: String) -> String? {
+        guard let rule = getRoomAccessRule(for: roomID) else {
+            return nil
+        }
+        
+        return rule.identifier
+    }
+    
     // MARK: - Private
     
     private func roomAccessRule(from roomState: MXRoomState) -> RoomAccessRule? {
-        guard let roomAccessRulesEvents = roomState.stateEvents(with: .custom(Constants.roomAccessRulesStateEventType)),
+        guard let roomAccessRulesEvents = roomState.stateEvents(with: .custom(RoomStateService.roomAccessRulesStateEventType)),
             var accessRuleStateEvent = roomAccessRulesEvents.last else {
                 return nil
         }
