@@ -1572,7 +1572,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
             if (isPushRegistered)
             {
                 // Enable push notifications by default on new added account
-                account.enablePushKitNotifications = YES;
+                [account enablePushKitNotifications:YES success:nil failure:nil];
             }
             else
             {
