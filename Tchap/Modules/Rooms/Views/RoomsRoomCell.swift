@@ -56,24 +56,16 @@ class RoomsRoomCell: RoomsCell {
             }
             
             // Set the right avatar border
-            if let roomId = self.roomCellData?.roomSummary.roomId {
-                let roomStateService = RoomStateService(session: session)
-                roomStateService.getRoomAccessRule(for: roomId) { [weak self] (response) in
-                    switch response {
-                    case .success(let rule):
-                        switch rule {
-                        case .restricted:
-                            self?.avatarBorderColor = kColorDarkBlue
-                        case .unrestricted:
-                            self?.avatarBorderColor = kColorDarkGrey
-                        default:
-                            self?.avatarBorderColor = UIColor.clear
-                        }
-                        self?.updateAvatarView()
-                    case .failure:
-                        NSLog("[RoomsRoomCell] getRoomAccessRule failed")
-                    }
+            if let accessRule = self.roomCellData?.roomSummary.tc_roomAccessRule() {
+                switch accessRule {
+                case .restricted:
+                    self.avatarBorderColor = kColorDarkBlue
+                case .unrestricted:
+                    self.avatarBorderColor = kColorDarkGrey
+                default:
+                    self.avatarBorderColor = UIColor.clear
                 }
+                self.updateAvatarView()
             }
         }
     }

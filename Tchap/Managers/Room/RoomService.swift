@@ -43,14 +43,12 @@ final class RoomService: NSObject, RoomServiceType {
     // MARK: - Properties
     
     private let session: MXSession
-    private let roomStateService: RoomStateServiceType
     private var createdRoom: MXRoom?
     
     // MARK: - Setup
     
     @objc init(session: MXSession) {
         self.session = session
-        self.roomStateService = RoomStateService(session: session)
     }
     
     // MARK: - Public
@@ -216,11 +214,11 @@ final class RoomService: NSObject, RoomServiceType {
         
         var initialStates: Array<[AnyHashable: Any]> = []
         
-        let roomAccessRulesStateEvent = self.roomStateService.roomAccessRulesStateEvent(with: roomCreationParameters.accessRule)
+        let roomAccessRulesStateEvent = RoomStateService.roomAccessRulesStateEvent(with: roomCreationParameters.accessRule)
         initialStates.append(roomAccessRulesStateEvent.jsonDictionary())
         
         if let historyVisibility = roomCreationParameters.historyVisibility {
-            let historyVisibilityStateEvent = self.roomStateService.historyVisibilityStateEvent(with: historyVisibility)
+            let historyVisibilityStateEvent = RoomStateService.historyVisibilityStateEvent(with: historyVisibility)
             initialStates.append(historyVisibilityStateEvent.jsonDictionary())
         }
         

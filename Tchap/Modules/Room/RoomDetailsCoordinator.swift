@@ -184,10 +184,10 @@ final class RoomDetailsCoordinator: NSObject, RoomDetailsCoordinatorType {
     }
     
     private func registerRoomSummaryDidChangeNotification() {
-        NotificationCenter.default.addObserver(self, selector: #selector(roomSummeryDidChange(notification:)), name: NSNotification.Name.mxRoomSummaryDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(roomSummaryDidChange(notification:)), name: NSNotification.Name.mxRoomSummaryDidChange, object: nil)
     }
     
-    @objc private func roomSummeryDidChange(notification: Notification) {
+    @objc private func roomSummaryDidChange(notification: Notification) {
         guard let roomSummary = notification.object as? MXRoomSummary else {
             return
         }

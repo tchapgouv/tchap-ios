@@ -75,12 +75,7 @@ import Reusable
             self.updateFrameFromSuperview()
         }
         
-        switch self.imageShape {        
-        case .circle:
-            self.imageView.tc_makeCircle()
-        case .hexagon:
-            self.imageView.tc_makeHexagon(borderWidth: Constants.hexagonImageBorderWidth, borderColor: self.imageBorderColor)
-        }
+        self.updateAvatarView()
     }
     
     override func updateConstraints() {
@@ -133,6 +128,7 @@ import Reusable
             if let borderColor = avatarImageViewModel.borderColor {
                 self.imageBorderColor = borderColor
             }
+            self.updateAvatarView()
         } else {
             self.imageView.isHidden = true
         }
@@ -171,6 +167,15 @@ import Reusable
         // Center horizontally titles with superview
         self.titlesStackViewCenterXConstraint = self.titlesStackView.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: -leftMargin/2)
         self.titlesStackViewCenterXConstraint?.isActive = true
+    }
+    
+    private func updateAvatarView () {
+        switch self.imageShape {
+        case .circle:
+            self.imageView.tc_makeCircle()
+        case .hexagon:
+            self.imageView.tc_makeHexagon(borderWidth: Constants.hexagonImageBorderWidth, borderColor: self.imageBorderColor)
+        }
     }
     
     // MARK: - Actions

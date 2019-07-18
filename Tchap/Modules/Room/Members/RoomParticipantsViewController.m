@@ -700,9 +700,8 @@
     validateBarButtonItem.enabled = NO;
     contactsPickerViewController.navigationItem.rightBarButtonItem = validateBarButtonItem;
     
-    RoomStateService *roomStateService = [[RoomStateService alloc] initWithSession:self.mxRoom.mxSession];
-    NSString *roomAccessRule = [roomStateService getRoomAccessRuleIdentifierFor:self.mxRoom.roomId];
-    BOOL isFederated = [roomStateService isFederatedRoomWithRoomID:self.mxRoom.roomId];
+    NSString *roomAccessRule = [self.mxRoom.summary tc_roomAccessRuleIdentifier];
+    BOOL isFederated = [self.mxRoom.summary tc_isFederated];
     
     // Prepare its data source
     contactsDataSource = [[ContactsDataSource alloc] initWithMatrixSession:self.mxRoom.mxSession];
@@ -711,7 +710,7 @@
     contactsDataSource.showInviteButton = NO;
     if (isFederated)
     {
-        if ([roomAccessRule isEqualToString:RoomStateService.roomAccessRuleIdentifierRestricted])
+        if ([roomAccessRule isEqualToString:RoomStateService.roomAccessRuleRestricted])
         {
             contactsDataSource.contactsFilter = ContactsDataSourceTchapFilterNonExternalTchapOnly;
         }

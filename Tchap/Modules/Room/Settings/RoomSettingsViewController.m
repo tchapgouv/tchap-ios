@@ -112,8 +112,6 @@ NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBanne
 
 @property (nonatomic, strong) id<Style> currentStyle;
 
-@property (nonatomic, nullable, strong) RoomStateService *roomStateService;
-
 @end
 
 @implementation RoomSettingsViewController
@@ -148,8 +146,6 @@ NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBanne
             [self updateRoomState:roomState];
         }
     }];
-    
-    self.roomStateService = [[RoomStateService alloc] initWithSession:self.mainSession];
 }
 
 - (void)updateRoomState:(MXRoomState *)newRoomState
@@ -362,8 +358,6 @@ NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBanne
             self->extraEventsListener = nil;
         }];
     }
-    
-    self.roomStateService = nil;
     
     [super destroy];
 }
@@ -1261,14 +1255,14 @@ NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBanne
         else if (indexPath.row == roomAccessRuleIndex)
         {
             // Retrieve the current room access rule
-            NSString *roomAccessRule = [self.roomStateService getRoomAccessRuleIdentifierFor:self.roomId];
+            NSString *roomAccessRule = [mxRoom.summary tc_roomAccessRuleIdentifier];
             
             // Check whether the current user is room admin
             BOOL isAdmin = (oneSelfPowerLevel >= RoomPowerLevelAdmin);
             
             // The room admin is able to open a "private room" to the external users
             // (We name "private rooms" those which require an invite to be joined)
-            if ([roomAccessRule isEqualToString:RoomStateService.roomAccessRuleIdentifierRestricted]
+            if ([roomAccessRule isEqualToString:RoomStateService.roomAccessRuleRestricted]
                 && isAdmin
                 && [mxRoomState.joinRule isEqualToString:kMXRoomJoinRuleInvite]) {
                 MXKTableViewCellWithLabelAndSwitch *allowExternalMembersCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
@@ -1286,7 +1280,7 @@ NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBanne
                 NSString *title = NSLocalizedStringFromTable(@"room_settings_room_access_title", @"Tchap", nil);
                 // Display a summary according to the room access rule value
                 NSString *summary = roomAccessRule ? NSLocalizedStringFromTable(@"room_settings_room_access_restricted", @"Tchap", nil) : @"";
-                if ([roomAccessRule isEqualToString:RoomStateService.roomAccessRuleIdentifierUnrestricted]) {
+                if ([roomAccessRule isEqualToString:RoomStateService.roomAccessRuleUnrestricted]) {
                     summary = NSLocalizedStringFromTable(@"room_settings_room_access_unrestricted", @"Tchap", nil);
                 }
                 NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString: title
@@ -1670,7 +1664,8 @@ NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBanne
     
     pendingOperation = [self->mxRoom sendStateEventOfType:RoomStateService.roomAccessRulesStateEventType
                                                   content:@{
-                                                            @"rule": RoomStateService.roomAccessRuleIdentifierUnrestricted
+                                                            RoomStateService.roomAccessRulesContentRuleKey:
+                                                                RoomStateService.roomAccessRuleUnrestricted
                                                             }
                                                  stateKey:@""
                                                   success:^(NSString *eventId) {

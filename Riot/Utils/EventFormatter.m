@@ -23,6 +23,8 @@
 
 #import "DecryptionFailureTracker.h"
 
+#import "GeneratedInterface-Swift.h"
+
 #pragma mark - Constants definitions
 
 NSString *const kEventFormatterOnReRequestKeysLinkAction = @"kEventFormatterOnReRequestKeysLinkAction";
@@ -422,16 +424,8 @@ NSString *const kEventFormatterOnReRequestKeysLinkActionSeparator = @"/";
 {
     BOOL ret = [super session:session updateRoomSummary:summary withStateEvents:stateEvents roomState:roomState];
     
-    // Store in the room summary a flag which tells whether the room is federated or not.
-    for (MXEvent *event in stateEvents)
-    {
-        if (event.eventType == MXEventTypeRoomCreate)
-        {
-            MXRoomCreateContent *createContent = [MXRoomCreateContent modelFromJSON:event.content];
-            summary.others[@"isFederated"] = @(createContent.isFederated);
-            break;
-        }
-    }
+    // Store in the room summary some additional information
+    ret |= [summary tc_updateWithStateEvents:stateEvents];
     
     return ret;
 }
