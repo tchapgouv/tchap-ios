@@ -77,4 +77,10 @@ protocol RoomStateServiceType {
     /// - Parameters:
     ///   - roomID: the room identifier.
     func getRoomAccessRule(for roomID: String) -> RoomAccessRule?
+    
+    /// Tell whether users on other servers can join this room.
+    ///
+    /// - Parameters:
+    ///   - roomID: the room identifier.
+    func isFederatedRoom(roomID: String) -> Bool
 }

@@ -418,4 +418,22 @@ NSString *const kEventFormatterOnReRequestKeysLinkActionSeparator = @"/";
     return ret;
 }
 
+- (BOOL)session:(MXSession *)session updateRoomSummary:(MXRoomSummary *)summary withStateEvents:(NSArray<MXEvent *> *)stateEvents roomState:(MXRoomState *)roomState
+{
+    BOOL ret = [super session:session updateRoomSummary:summary withStateEvents:stateEvents roomState:roomState];
+    
+    // Store in the room summary a flag which tells whether the room is federated or not.
+    for (MXEvent *event in stateEvents)
+    {
+        if (event.eventType == MXEventTypeRoomCreate)
+        {
+            MXRoomCreateContent *createContent = [MXRoomCreateContent modelFromJSON:event.content];
+            summary.others[@"isFederated"] = @(createContent.isFederated);
+            break;
+        }
+    }
+    
+    return ret;
+}
+
 @end

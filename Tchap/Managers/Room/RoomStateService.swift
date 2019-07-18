@@ -128,6 +128,15 @@ final class RoomStateService: NSObject, RoomStateServiceType {
         return rule.identifier
     }
     
+    @objc func isFederatedRoom(roomID: String) -> Bool {
+        guard let roomSummary = self.session.roomSummary(withRoomId: roomID) else {
+            return false
+        }
+        
+        let isFederated = roomSummary.others["isFederated"] as? Bool ?? true
+        return isFederated
+    }
+    
     // MARK: - Private
     
     private func roomAccessRule(from roomState: MXRoomState) -> RoomAccessRule? {

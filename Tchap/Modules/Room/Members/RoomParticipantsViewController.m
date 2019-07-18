@@ -702,16 +702,27 @@
     
     RoomStateService *roomStateService = [[RoomStateService alloc] initWithSession:self.mxRoom.mxSession];
     NSString *roomAccessRule = [roomStateService getRoomAccessRuleIdentifierFor:self.mxRoom.roomId];
+    BOOL isFederated = [roomStateService isFederatedRoomWithRoomID:self.mxRoom.roomId];
     
     // Prepare its data source
     contactsDataSource = [[ContactsDataSource alloc] initWithMatrixSession:self.mxRoom.mxSession];
     [contactsDataSource finalizeInitialization];
     contactsDataSource.areSectionsShrinkable = YES;
     contactsDataSource.showInviteButton = NO;
-    if ([roomAccessRule isEqualToString:RoomStateService.roomAccessRuleIdentifierRestricted]) {
-        contactsDataSource.contactsFilter = ContactsDataSourceTchapFilterNonExternalTchapOnly;
-    } else {
-        contactsDataSource.contactsFilter = ContactsDataSourceTchapFilterTchapOnly;
+    if (isFederated)
+    {
+        if ([roomAccessRule isEqualToString:RoomStateService.roomAccessRuleIdentifierRestricted])
+        {
+            contactsDataSource.contactsFilter = ContactsDataSourceTchapFilterNonExternalTchapOnly;
+        }
+        else
+        {
+            contactsDataSource.contactsFilter = ContactsDataSourceTchapFilterTchapOnly;
+        }
+    }
+    else
+    {
+        contactsDataSource.contactsFilter = ContactsDataSourceTchapFilterNonFederatedTchapOnly;
     }
     
     // List all the participants matrix user id to ignore them during the contacts search.
