@@ -39,34 +39,36 @@ class RoomsRoomCell: RoomsCell {
         self.lastEventSenderName.text = nil
         self.avatarBorderColor = UIColor.clear
         
-        if let session = self.roomCellData?.recentsDataSource.mxSession {
-            // Adjust last sender name
-            if let senderId = self.roomCellData?.lastEvent?.sender {
-                // Try to find user in local session
-                let senderUser: User
-                let userService = UserService(session: session)
-                
-                if let userFromSession = userService.getUserFromLocalSession(with: senderId) {
-                    senderUser = userFromSession
-                } else {
-                    senderUser = userService.buildTemporaryUser(from: senderId)
-                }
-                let displayNameComponents = DisplayNameComponents(displayName: senderUser.displayName)
-                self.lastEventSenderName.text = displayNameComponents.name
-            }
+        guard let session = self.roomCellData?.recentsDataSource.mxSession else {
+            return
+        }
+        
+        // Adjust last sender name
+        if let senderId = self.roomCellData?.lastEvent?.sender {
+            // Try to find user in local session
+            let senderUser: User
+            let userService = UserService(session: session)
             
-            // Set the right avatar border
-            if let accessRule = self.roomCellData?.roomSummary.tc_roomAccessRule() {
-                switch accessRule {
-                case .restricted:
-                    self.avatarBorderColor = kColorDarkBlue
-                case .unrestricted:
-                    self.avatarBorderColor = kColorDarkGrey
-                default:
-                    self.avatarBorderColor = UIColor.clear
-                }
-                self.updateAvatarView()
+            if let userFromSession = userService.getUserFromLocalSession(with: senderId) {
+                senderUser = userFromSession
+            } else {
+                senderUser = userService.buildTemporaryUser(from: senderId)
             }
+            let displayNameComponents = DisplayNameComponents(displayName: senderUser.displayName)
+            self.lastEventSenderName.text = displayNameComponents.name
+        }
+        
+        // Set the right avatar border
+        if let accessRule = self.roomCellData?.roomSummary.tc_roomAccessRule() {
+            switch accessRule {
+            case .restricted:
+                self.avatarBorderColor = kColorDarkBlue
+            case .unrestricted:
+                self.avatarBorderColor = kColorDarkGrey
+            default:
+                self.avatarBorderColor = UIColor.clear
+            }
+            self.updateAvatarView()
         }
     }
     
