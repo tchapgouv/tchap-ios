@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
     <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
         <scene sceneID="EHf-IW-A2E">
             <objects>
-                <viewController id="01J-lp-oVM" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LaunchScreenId" id="01J-lp-oVM" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Llm-lL-Icb"/>
                         <viewControllerLayoutGuide type="bottom" id="xb3-aO-Qok"/>
@@ -22,18 +21,25 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreen" translatesAutoresizingMaskIntoConstraints="NO" id="IcW-17-3Qq">
-                                <rect key="frame" x="122" y="192" width="170" height="170"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreen" translatesAutoresizingMaskIntoConstraints="NO" id="7gG-Yr-mqW">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                            </imageView>
+                            <imageView clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="TchapLogo" translatesAutoresizingMaskIntoConstraints="NO" id="IcW-17-3Qq">
+                                <rect key="frame" x="128" y="289" width="158" height="158"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="170" id="Lbo-ar-PiJ"/>
-                                    <constraint firstAttribute="width" constant="170" id="v1s-rq-3ay"/>
+                                    <constraint firstAttribute="width" secondItem="IcW-17-3Qq" secondAttribute="height" multiplier="1:1" id="kaT-CS-VzP"/>
                                 </constraints>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="IcW-17-3Qq" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" multiplier="3:4" constant="1" id="F7e-z4-CXI"/>
-                            <constraint firstItem="IcW-17-3Qq" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="nPP-aG-NuB"/>
+                            <constraint firstItem="7gG-Yr-mqW" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="59E-px-SCX"/>
+                            <constraint firstItem="7gG-Yr-mqW" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="-20" id="6Lf-wr-jA6"/>
+                            <constraint firstItem="IcW-17-3Qq" firstAttribute="centerX" secondItem="7gG-Yr-mqW" secondAttribute="centerX" id="843-f0-IiF"/>
+                            <constraint firstAttribute="trailing" secondItem="7gG-Yr-mqW" secondAttribute="trailing" id="Bmy-1r-IIj"/>
+                            <constraint firstItem="IcW-17-3Qq" firstAttribute="width" secondItem="7gG-Yr-mqW" secondAttribute="width" multiplier="1/3" constant="20" id="Fn2-EI-loJ"/>
+                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="7gG-Yr-mqW" secondAttribute="bottom" id="bD8-dB-3hM"/>
+                            <constraint firstItem="IcW-17-3Qq" firstAttribute="centerY" secondItem="7gG-Yr-mqW" secondAttribute="centerY" id="w3P-uQ-MAd"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -43,6 +49,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="LaunchScreen" width="480" height="480"/>
+        <image name="LaunchScreen" width="414" height="736"/>
+        <image name="TchapLogo" width="160" height="160"/>
     </resources>
 </document>
