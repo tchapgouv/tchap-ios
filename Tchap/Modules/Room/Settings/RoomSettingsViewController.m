@@ -1387,7 +1387,7 @@ NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBanne
     [self startActivityIndicator];
     MXWeakify(self);
     
-    [mxRoom tc_isLastAdministrator:^(BOOL isLastAdmin) {
+    [mxRoom tc_isCurrentUserLastAdministrator:^(BOOL isLastAdmin) {
         MXStrongifyAndReturnIfNil(self);
         [self stopActivityIndicator];
         

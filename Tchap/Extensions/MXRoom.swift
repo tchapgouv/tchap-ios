@@ -23,7 +23,7 @@ import Foundation
     /// - Parameters:
     /// - success: A block object called when the operation succeeded.
     /// Provide a boolean telling whether the current user is the last admin.
-    func tc_isLastAdministrator(_ completion: @escaping ((Bool) -> Void)) {
+    func tc_isCurrentUserLastAdministrator(_ completion: @escaping ((Bool) -> Void)) {
         self.state { roomState in
             guard let powerlevels = roomState?.powerLevels, let currentUserId = self.mxSession.myUser.userId else {
                 completion(false)

@@ -801,7 +801,7 @@
         [self startActivityIndicator];
         MXWeakify(self);
         
-        [room tc_isLastAdministrator:^(BOOL isLastAdmin) {
+        [room tc_isCurrentUserLastAdministrator:^(BOOL isLastAdmin) {
             MXStrongifyAndReturnIfNil(self);
             [self stopActivityIndicator];
             
