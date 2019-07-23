@@ -710,7 +710,7 @@
     contactsDataSource.showInviteButton = NO;
     if (isFederated)
     {
-        if ([roomAccessRule isEqualToString:RoomStateService.roomAccessRuleRestricted])
+        if ([roomAccessRule isEqualToString:RoomService.roomAccessRuleRestricted])
         {
             contactsDataSource.contactsFilter = ContactsDataSourceTchapFilterNonExternalTchapOnly;
         }

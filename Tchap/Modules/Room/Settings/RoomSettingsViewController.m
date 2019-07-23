@@ -139,7 +139,7 @@ NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBanne
     [super initWithSession:session andRoomId:roomId];
     
     // Add an additional listener to update banned users
-    self->extraEventsListener = [mxRoom listenToEventsOfTypes:@[kMXEventTypeStringRoomMember, RoomStateService.roomAccessRulesStateEventType] onEvent:^(MXEvent *event, MXTimelineDirection direction, MXRoomState *roomState) {
+    self->extraEventsListener = [mxRoom listenToEventsOfTypes:@[kMXEventTypeStringRoomMember, RoomService.roomAccessRulesStateEventType] onEvent:^(MXEvent *event, MXTimelineDirection direction, MXRoomState *roomState) {
 
         if (direction == MXTimelineDirectionForwards)
         {
@@ -1262,7 +1262,7 @@ NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBanne
             
             // The room admin is able to open a "private room" to the external users
             // (We name "private rooms" those which require an invite to be joined)
-            if ([roomAccessRule isEqualToString:RoomStateService.roomAccessRuleRestricted]
+            if ([roomAccessRule isEqualToString:RoomService.roomAccessRuleRestricted]
                 && isAdmin
                 && [mxRoomState.joinRule isEqualToString:kMXRoomJoinRuleInvite]) {
                 MXKTableViewCellWithLabelAndSwitch *allowExternalMembersCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
@@ -1280,7 +1280,7 @@ NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBanne
                 NSString *title = NSLocalizedStringFromTable(@"room_settings_room_access_title", @"Tchap", nil);
                 // Display a summary according to the room access rule value
                 NSString *summary = roomAccessRule ? NSLocalizedStringFromTable(@"room_settings_room_access_restricted", @"Tchap", nil) : @"";
-                if ([roomAccessRule isEqualToString:RoomStateService.roomAccessRuleUnrestricted]) {
+                if ([roomAccessRule isEqualToString:RoomService.roomAccessRuleUnrestricted]) {
                     summary = NSLocalizedStringFromTable(@"room_settings_room_access_unrestricted", @"Tchap", nil);
                 }
                 NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString: title
@@ -1662,10 +1662,10 @@ NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBanne
     [self startActivityIndicator];
     MXWeakify(self);
     
-    pendingOperation = [self->mxRoom sendStateEventOfType:RoomStateService.roomAccessRulesStateEventType
+    pendingOperation = [self->mxRoom sendStateEventOfType:RoomService.roomAccessRulesStateEventType
                                                   content:@{
-                                                            RoomStateService.roomAccessRulesContentRuleKey:
-                                                                RoomStateService.roomAccessRuleUnrestricted
+                                                            RoomService.roomAccessRulesContentRuleKey:
+                                                                RoomService.roomAccessRuleUnrestricted
                                                             }
                                                  stateKey:@""
                                                   success:^(NSString *eventId) {

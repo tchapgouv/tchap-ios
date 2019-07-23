@@ -45,8 +45,8 @@ import Foundation
                         self.others[Constants.isFederatedKey] = createContent.isFederated
                         updated = true
                     }
-                } else if type == RoomStateService.roomAccessRulesStateEventType {
-                    if let rule = event.content[RoomStateService.roomAccessRulesContentRuleKey] as? String {
+                } else if type == RoomService.roomAccessRulesStateEventType {
+                    if let rule = event.content[RoomService.roomAccessRulesContentRuleKey] as? String {
                         self.others[Constants.roomAccessRuleKey] = rule
                         updated = true
                     }

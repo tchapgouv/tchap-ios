@@ -17,6 +17,37 @@
 import UIKit
 import RxSwift
 
+/// The room access rules.
+public enum RoomAccessRule {
+    /// External users are not allowed
+    case restricted
+    /// External users are allowed to join
+    case unrestricted
+    /// The room is a 1:1 chat
+    case direct
+    /// unknown
+    case other(String)
+    
+    /// String identifier
+    public var identifier: String {
+        switch self {
+        case .restricted: return "restricted"
+        case .unrestricted: return "unrestricted"
+        case .direct: return "direct"
+        case .other(let value): return value
+        }
+    }
+    
+    public init(identifier: String) {
+        let roomAccessRules: [RoomAccessRule] = [.restricted, .unrestricted, .direct]
+        if let rule = roomAccessRules.first(where: { $0.identifier == identifier }) {
+            self = rule
+        } else {
+            self = .other(identifier)
+        }
+    }
+}
+
 // Internal structure used to store room creation parameters
 private struct RoomCreationParameters {
     let visibility: MXRoomDirectoryVisibility
@@ -39,6 +70,15 @@ enum RoomServiceError: Error {
 
 /// `RoomService` implementation of `RoomServiceType` is used to perform room operations.
 final class RoomService: NSObject, RoomServiceType {
+    
+    // MARK: - Constants
+    
+    @objc static let roomAccessRuleRestricted = RoomAccessRule.restricted.identifier
+    @objc static let roomAccessRuleUnrestricted = RoomAccessRule.unrestricted.identifier
+    @objc static let roomAccessRuleDirect = RoomAccessRule.direct.identifier
+    
+    @objc static let roomAccessRulesStateEventType = "im.vector.room.access_rules"
+    @objc static let roomAccessRulesContentRuleKey = "rule"
     
     // MARK: - Properties
     
@@ -214,11 +254,11 @@ final class RoomService: NSObject, RoomServiceType {
         
         var initialStates: Array<[AnyHashable: Any]> = []
         
-        let roomAccessRulesStateEvent = RoomStateService.roomAccessRulesStateEvent(with: roomCreationParameters.accessRule)
+        let roomAccessRulesStateEvent = self.roomAccessRulesStateEvent(with: roomCreationParameters.accessRule)
         initialStates.append(roomAccessRulesStateEvent.jsonDictionary())
         
         if let historyVisibility = roomCreationParameters.historyVisibility {
-            let historyVisibilityStateEvent = RoomStateService.historyVisibilityStateEvent(with: historyVisibility)
+            let historyVisibilityStateEvent = self.historyVisibilityStateEvent(with: historyVisibility)
             initialStates.append(historyVisibilityStateEvent.jsonDictionary())
         }
         
@@ -282,5 +322,35 @@ final class RoomService: NSObject, RoomServiceType {
         return String((0..<length).map { _ in
             return letters.randomElement() ?? Character("A")
         })
+    }
+    
+    private func historyVisibilityStateEvent(with historyVisibility: MXRoomHistoryVisibility) -> MXEvent {
+        let stateEventJSON: [AnyHashable: Any] = [
+            "state_key": "",
+            "type": MXEventType.roomHistoryVisibility.identifier,
+            "content": [
+                "history_visibility": historyVisibility.identifier
+            ]
+        ]
+        
+        guard let stateEvent = MXEvent(fromJSON: stateEventJSON) else {
+            fatalError("[RoomService] history event could not be created")
+        }
+        return stateEvent
+    }
+    
+    private func roomAccessRulesStateEvent(with accessRule: RoomAccessRule) -> MXEvent {
+        let stateEventJSON: [AnyHashable: Any] = [
+            "state_key": "",
+            "type": RoomService.roomAccessRulesStateEventType,
+            "content": [
+                RoomService.roomAccessRulesContentRuleKey: accessRule.identifier
+            ]
+        ]
+        
+        guard let stateEvent = MXEvent(fromJSON: stateEventJSON) else {
+            fatalError("[RoomService] access rule event could not be created")
+        }
+        return stateEvent
     }
 }
