@@ -17,37 +17,6 @@
 import UIKit
 import RxSwift
 
-/// The room access rules.
-public enum RoomAccessRule {
-    /// External users are not allowed
-    case restricted
-    /// External users are allowed to join
-    case unrestricted
-    /// The room is a 1:1 chat
-    case direct
-    /// unknown
-    case other(String)
-    
-    /// String identifier
-    public var identifier: String {
-        switch self {
-        case .restricted: return "restricted"
-        case .unrestricted: return "unrestricted"
-        case .direct: return "direct"
-        case .other(let value): return value
-        }
-    }
-    
-    public init(identifier: String) {
-        let roomAccessRules: [RoomAccessRule] = [.restricted, .unrestricted, .direct]
-        if let rule = roomAccessRules.first(where: { $0.identifier == identifier }) {
-            self = rule
-        } else {
-            self = .other(identifier)
-        }
-    }
-}
-
 // Internal structure used to store room creation parameters
 private struct RoomCreationParameters {
     let visibility: MXRoomDirectoryVisibility

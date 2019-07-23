@@ -250,6 +250,8 @@
 		0290607A21501D16005FE3C1 /* PreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0290607821501D16005FE3C1 /* PreviewView.m */; };
 		0290609221527A3F005FE3C1 /* RoomDetailsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0290609021527A3E005FE3C1 /* RoomDetailsCoordinator.swift */; };
 		0290609321527A3F005FE3C1 /* RoomDetailsCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0290609121527A3F005FE3C1 /* RoomDetailsCoordinatorType.swift */; };
+		029C927D22E7044200E62D27 /* RoomAccessRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029C927C22E7044200E62D27 /* RoomAccessRule.swift */; };
+		029C927E22E7044200E62D27 /* RoomAccessRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029C927C22E7044200E62D27 /* RoomAccessRule.swift */; };
 		029CC68B21772F4200DCC8B3 /* LanguagePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 029CC67921772F4200DCC8B3 /* LanguagePickerViewController.m */; };
 		029CC68C21772F4200DCC8B3 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 029CC67C21772F4200DCC8B3 /* SettingsViewController.m */; };
 		029CC68D21772F4200DCC8B3 /* DeactivateAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 029CC67E21772F4200DCC8B3 /* DeactivateAccountViewController.m */; };
@@ -1096,6 +1098,7 @@
 		0290607821501D16005FE3C1 /* PreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreviewView.m; sourceTree = "<group>"; };
 		0290609021527A3E005FE3C1 /* RoomDetailsCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomDetailsCoordinator.swift; sourceTree = "<group>"; };
 		0290609121527A3F005FE3C1 /* RoomDetailsCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomDetailsCoordinatorType.swift; sourceTree = "<group>"; };
+		029C927C22E7044200E62D27 /* RoomAccessRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomAccessRule.swift; sourceTree = "<group>"; };
 		029CC67921772F4200DCC8B3 /* LanguagePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LanguagePickerViewController.m; sourceTree = "<group>"; };
 		029CC67A21772F4200DCC8B3 /* LanguagePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LanguagePickerViewController.h; sourceTree = "<group>"; };
 		029CC67B21772F4200DCC8B3 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
@@ -2943,6 +2946,7 @@
 				02F0FF442226F82600066908 /* RoomIDComponents.swift */,
 				B1C4645E21B6DD42005F4D53 /* RoomService.swift */,
 				B1C4645F21B6DD42005F4D53 /* RoomServiceType.swift */,
+				029C927C22E7044200E62D27 /* RoomAccessRule.swift */,
 			);
 			path = Room;
 			sourceTree = "<group>";
@@ -3908,6 +3912,7 @@
 				B11C800121393E5D00CC6F2F /* RegistrationCoordinatorType.swift in Sources */,
 				B1F2AA9A212AEC830077FDC0 /* AppDelegate.swift in Sources */,
 				0250C4E02122B68000034691 /* EventFormatter.m in Sources */,
+				029C927D22E7044200E62D27 /* RoomAccessRule.swift in Sources */,
 				B1F2AA92212AEC830077FDC0 /* SplitViewCoordinator.swift in Sources */,
 				B1680D062152AA28009B5F92 /* PublicRoomServiceType.swift in Sources */,
 				020DF9AC214BE467003DFBA4 /* RoomInputToolbarView.m in Sources */,
@@ -4199,6 +4204,7 @@
 				02DFEBE721C07370009B6F15 /* RegistrationCoordinatorType.swift in Sources */,
 				02DFEBE821C07370009B6F15 /* AppDelegate.swift in Sources */,
 				02DFEBE921C07370009B6F15 /* EventFormatter.m in Sources */,
+				029C927E22E7044200E62D27 /* RoomAccessRule.swift in Sources */,
 				02DFEBEA21C07370009B6F15 /* SplitViewCoordinator.swift in Sources */,
 				02DFEBEB21C07370009B6F15 /* PublicRoomServiceType.swift in Sources */,
 				02DFEBEC21C07370009B6F15 /* RoomInputToolbarView.m in Sources */,
