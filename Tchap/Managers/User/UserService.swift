@@ -83,11 +83,11 @@ final class UserService: NSObject, UserServiceType {
     }
     
     func isUserId(_ firstUserId: String, belongToSameDomainAs secondUserId: String) -> Bool {
-        guard let firstUserHomeserver = self.homeserver(from: firstUserId),
-            let secondUserHomeserver = self.homeserver(from: secondUserId) else {
+        guard let firstUserHostName = self.hostName(from: firstUserId),
+            let secondUserHostName = self.hostName(from: secondUserId) else {
                 return false
         }
-        return firstUserHomeserver == secondUserHomeserver
+        return firstUserHostName == secondUserHostName
     }
     
     func isAccountDeactivated(for userId: String, completion: @escaping ((MXResponse<Bool>) -> Void)) {
@@ -119,8 +119,12 @@ final class UserService: NSObject, UserServiceType {
         guard let matrixIDComponents = UserIDComponents(matrixID: userId) else {
             return true
         }
-        return matrixIDComponents.homeServer.starts(with: Constants.preprod_external_prefix)
-            || matrixIDComponents.homeServer.starts(with: Constants.external_prefix)
+        return self.isExternalServer(for: matrixIDComponents.hostName)
+    }
+    
+    func isExternalServer(for hostName: String) -> Bool {
+        return hostName.starts(with: Constants.preprod_external_prefix)
+            || hostName.starts(with: Constants.external_prefix)
     }
     
     // MARK: - Private
@@ -152,10 +156,10 @@ final class UserService: NSObject, UserServiceType {
         return displayName
     }
         
-    private func homeserver(from userId: String) -> String? {
+    private func hostName(from userId: String) -> String? {
         guard let matrixIDComponents = UserIDComponents(matrixID: userId) else {
             return nil
         }
-        return matrixIDComponents.homeServer
+        return matrixIDComponents.hostName
     }
 }

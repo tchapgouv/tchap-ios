@@ -23,42 +23,42 @@ struct UserIDComponents {
     
     private enum Constants {
         static let matrixUserIdPrefix = "@"
-        static let homeServerSeparator: Character = ":"
+        static let hostNameSeparator: Character = ":"
     }
     
     // MARK: - Properties
     
     let localUserID: String
-    let homeServer: String
+    let hostName: String
     
     // MARK: - Setup
     
     init?(matrixID: String) {
         guard MXTools.isMatrixUserIdentifier(matrixID),
-            let (localUserID, homeServer) = UserIDComponents.getLocalUserIDAndHomeServer(from: matrixID) else {
+            let (localUserID, hostName) = UserIDComponents.getLocalUserIDAndHostName(from: matrixID) else {
             return nil
         }
         
         self.localUserID = localUserID
-        self.homeServer = homeServer
+        self.hostName = hostName
     }
     
     // MARK: - Private    
 
-    /// Extract local user id and homeserver from Matrix ID
+    /// Extract local user id and hostName from Matrix ID
     ///
     /// - Parameter matrixID: A Matrix ID
-    /// - Returns: A tuple with local user ID and homeserver.
-    private static func getLocalUserIDAndHomeServer(from matrixID: String) -> (String, String)? {
-        let matrixIDParts = matrixID.split(separator: Constants.homeServerSeparator)
+    /// - Returns: A tuple with local user ID and hostName.
+    private static func getLocalUserIDAndHostName(from matrixID: String) -> (String, String)? {
+        let matrixIDParts = matrixID.split(separator: Constants.hostNameSeparator)
         
         guard matrixIDParts.count == 2 else {
             return nil
         }
         
         let localUserID = matrixIDParts[0].replacingOccurrences(of: Constants.matrixUserIdPrefix, with: "")
-        let homeServer = String(matrixIDParts[1])
+        let hostName = String(matrixIDParts[1])
 
-        return (localUserID, homeServer)
+        return (localUserID, hostName)
     }
 }
