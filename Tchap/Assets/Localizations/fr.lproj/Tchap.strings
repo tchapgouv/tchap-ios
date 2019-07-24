@@ -121,6 +121,7 @@
 "settings_change_pwd_message" = "Votre nouveau mot de passe doit contenir au moins 8 caractères, avec au moins un caractère de chaque type\U00A0:\U00A0majuscule, minuscule, chiffre, caractère spécial.";
 "settings_change_pwd_success_title" = "Succès";
 "settings_change_pwd_success_msg" = "Votre mot de passe a été changé avec succès.\nVous ne recevrez plus de notifications sur vos autres appareils tant que vous ne vous y reconnecterez pas.";
+"settings_show_external_user_in_users_directory_prompt" = "Pour désactiver cette option, vous devez accepter que votre adresse email soit visible des autres utilisateurs lors de leurs recherches.";
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Search
@@ -133,6 +134,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Room
 "tchap_cannot_invite_deactivated_account_user" = "Votre correspondant a quitté définitivement cette discussion.\nVous devez en créer une nouvelle pour le recontacter, s'il est toujours joignable sur Tchap.";
+"tchap_room_admin_leave_prompt_msg" = "Voulez-vous vraiment quitter cette conversation ?\n\nElle ne sera plus administrée, et vous risquez de ne plus pouvoir la joindre de nouveau.";
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Room Members

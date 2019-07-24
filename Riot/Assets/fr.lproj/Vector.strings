@@ -148,8 +148,8 @@
 "room_participants_add_participant" = "Ajouter un membre";
 "room_participants_one_participant" = "1 membre";
 "room_participants_multi_participants" = "%d membres";
-"room_participants_leave_prompt_title" = "Quitter le salon";
-"room_participants_leave_prompt_msg" = "Voulez-vous vraiment quitter le salon ?";
+"room_participants_leave_prompt_title" = "Quitter la conversation";
+"room_participants_leave_prompt_msg" = "Voulez-vous vraiment quitter cette conversation ?";
 "room_participants_remove_prompt_title" = "Confirmation";
 "room_participants_remove_prompt_msg" = "Voulez-vous vraiment exclure %@ de ce salon ?";
 "room_participants_invite_prompt_title" = "Confirmation";

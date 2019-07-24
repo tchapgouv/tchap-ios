@@ -252,6 +252,8 @@
 		0290609321527A3F005FE3C1 /* RoomDetailsCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0290609121527A3F005FE3C1 /* RoomDetailsCoordinatorType.swift */; };
 		029C927D22E7044200E62D27 /* RoomAccessRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029C927C22E7044200E62D27 /* RoomAccessRule.swift */; };
 		029C927E22E7044200E62D27 /* RoomAccessRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029C927C22E7044200E62D27 /* RoomAccessRule.swift */; };
+		029C927722E21F5900E62D27 /* MXRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029C927622E21F5900E62D27 /* MXRoom.swift */; };
+		029C927822E21F5900E62D27 /* MXRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029C927622E21F5900E62D27 /* MXRoom.swift */; };
 		029CC68B21772F4200DCC8B3 /* LanguagePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 029CC67921772F4200DCC8B3 /* LanguagePickerViewController.m */; };
 		029CC68C21772F4200DCC8B3 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 029CC67C21772F4200DCC8B3 /* SettingsViewController.m */; };
 		029CC68D21772F4200DCC8B3 /* DeactivateAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 029CC67E21772F4200DCC8B3 /* DeactivateAccountViewController.m */; };
@@ -1099,6 +1101,7 @@
 		0290609021527A3E005FE3C1 /* RoomDetailsCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomDetailsCoordinator.swift; sourceTree = "<group>"; };
 		0290609121527A3F005FE3C1 /* RoomDetailsCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomDetailsCoordinatorType.swift; sourceTree = "<group>"; };
 		029C927C22E7044200E62D27 /* RoomAccessRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomAccessRule.swift; sourceTree = "<group>"; };
+		029C927622E21F5900E62D27 /* MXRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MXRoom.swift; sourceTree = "<group>"; };
 		029CC67921772F4200DCC8B3 /* LanguagePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LanguagePickerViewController.m; sourceTree = "<group>"; };
 		029CC67A21772F4200DCC8B3 /* LanguagePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LanguagePickerViewController.h; sourceTree = "<group>"; };
 		029CC67B21772F4200DCC8B3 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
@@ -3062,6 +3065,7 @@
 				B1BC6A042135E42D00D32F8E /* UIView.swift */,
 				B12DDA99216FB2370093172C /* UIBezierPath.swift */,
 				02ECA87F22E0C5BA00ECDA5E /* MXRoomSummary.swift */,
+				029C927622E21F5900E62D27 /* MXRoom.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -3887,6 +3891,7 @@
 				B12FD6A92146BA45001B7F28 /* RegistrationService.swift in Sources */,
 				02F0FF452226F82600066908 /* RoomIDComponents.swift in Sources */,
 				B15AB2A0215BF20E007F5405 /* ForgotPasswordCoordinatorType.swift in Sources */,
+				029C927722E21F5900E62D27 /* MXRoom.swift in Sources */,
 				B11C80122139442700CC6F2F /* RegistrationFormViewModelType.swift in Sources */,
 				B1F2AA96212AEC830077FDC0 /* SettingsCoordinator.swift in Sources */,
 				B1F2AA93212AEC830077FDC0 /* HomeCoordinatorType.swift in Sources */,
@@ -4179,6 +4184,7 @@
 				02DFEBD121C07370009B6F15 /* RegistrationService.swift in Sources */,
 				02F0FF462226F82600066908 /* RoomIDComponents.swift in Sources */,
 				02DFEBD221C07370009B6F15 /* ForgotPasswordCoordinatorType.swift in Sources */,
+				029C927822E21F5900E62D27 /* MXRoom.swift in Sources */,
 				02DFEBD321C07370009B6F15 /* RegistrationFormViewModelType.swift in Sources */,
 				02DFEBD421C07370009B6F15 /* SettingsCoordinator.swift in Sources */,
 				02DFEBD521C07370009B6F15 /* HomeCoordinatorType.swift in Sources */,
