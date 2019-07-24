@@ -700,13 +700,29 @@
     validateBarButtonItem.enabled = NO;
     contactsPickerViewController.navigationItem.rightBarButtonItem = validateBarButtonItem;
     
+    NSString *roomAccessRule = [self.mxRoom.summary tc_roomAccessRuleIdentifier];
+    BOOL isFederated = [self.mxRoom.summary tc_isFederated];
+    
     // Prepare its data source
     contactsDataSource = [[ContactsDataSource alloc] initWithMatrixSession:self.mxRoom.mxSession];
     [contactsDataSource finalizeInitialization];
     contactsDataSource.areSectionsShrinkable = YES;
     contactsDataSource.showInviteButton = NO;
-    contactsDataSource.contactsFilter = ContactsDataSourceTchapFilterTchapOnly;
-    
+    if (isFederated)
+    {
+        if ([roomAccessRule isEqualToString:RoomService.roomAccessRuleRestricted])
+        {
+            contactsDataSource.contactsFilter = ContactsDataSourceTchapFilterNonExternalTchapOnly;
+        }
+        else
+        {
+            contactsDataSource.contactsFilter = ContactsDataSourceTchapFilterTchapOnly;
+        }
+    }
+    else
+    {
+        contactsDataSource.contactsFilter = ContactsDataSourceTchapFilterNonFederatedTchapOnly;
+    }
     
     // List all the participants matrix user id to ignore them during the contacts search.
     for (Contact *contact in actualParticipants)

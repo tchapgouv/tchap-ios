@@ -1028,7 +1028,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
             NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString: title
                                                                                                attributes:@{NSForegroundColorAttributeName : self.currentStyle.primaryTextColor,
                                                                                                             NSFontAttributeName: [UIFont systemFontOfSize:17.0]}];
-            [attributedText appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n"]];
+            [attributedText appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n\n" attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:4]}]];
             [attributedText appendAttributedString:[[NSMutableAttributedString alloc] initWithString: summary
                                                                                           attributes:@{NSForegroundColorAttributeName : self.currentStyle.secondaryTextColor,
                                                                                                        NSFontAttributeName: [UIFont systemFontOfSize:14.0]}]];

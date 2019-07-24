@@ -152,6 +152,11 @@
 "room_settings_tab_title" = "Paramètres";
 "room_settings_remove_from_rooms_directory" = "Retirer ce salon de la liste des salons publics";
 "room_settings_remove_from_rooms_directory_prompt" = "Cette action est irréversible.\nVoulez-vous vraiment retirer ce salon des salons publics ?";
+"room_settings_room_access_title" = "Information complémentaire :";
+"room_settings_room_access_restricted" = "Les externes ne sont pas autorisés à rejoindre ce salon";
+"room_settings_room_access_unrestricted" = "Les externes sont autorisés à rejoindre ce salon";
+"room_settings_allow_external_users_to_join" = "Autoriser l’accès aux externes à ce salon";
+"room_settings_allow_external_users_to_join_prompt_msg" = "Cette action est irréversible.\nVoulez-vous vraiment autoriser les externes à rejoindre ce salon ?";
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Room Attachment Antivirus Scan

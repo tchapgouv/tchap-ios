@@ -40,17 +40,24 @@ enum RoomServiceError: Error {
 /// `RoomService` implementation of `RoomServiceType` is used to perform room operations.
 final class RoomService: NSObject, RoomServiceType {
     
+    // MARK: - Constants
+    
+    @objc static let roomAccessRuleRestricted = RoomAccessRule.restricted.identifier
+    @objc static let roomAccessRuleUnrestricted = RoomAccessRule.unrestricted.identifier
+    @objc static let roomAccessRuleDirect = RoomAccessRule.direct.identifier
+    
+    @objc static let roomAccessRulesStateEventType = "im.vector.room.access_rules"
+    @objc static let roomAccessRulesContentRuleKey = "rule"
+    
     // MARK: - Properties
     
     private let session: MXSession
-    private let roomStateService: RoomStateServiceType
     private var createdRoom: MXRoom?
     
     // MARK: - Setup
     
     @objc init(session: MXSession) {
         self.session = session
-        self.roomStateService = RoomStateService(session: session)
     }
     
     // MARK: - Public
@@ -216,11 +223,11 @@ final class RoomService: NSObject, RoomServiceType {
         
         var initialStates: Array<[AnyHashable: Any]> = []
         
-        let roomAccessRulesStateEvent = self.roomStateService.roomAccessRulesStateEvent(with: roomCreationParameters.accessRule)
+        let roomAccessRulesStateEvent = self.roomAccessRulesStateEvent(with: roomCreationParameters.accessRule)
         initialStates.append(roomAccessRulesStateEvent.jsonDictionary())
         
         if let historyVisibility = roomCreationParameters.historyVisibility {
-            let historyVisibilityStateEvent = self.roomStateService.historyVisibilityStateEvent(with: historyVisibility)
+            let historyVisibilityStateEvent = self.historyVisibilityStateEvent(with: historyVisibility)
             initialStates.append(historyVisibilityStateEvent.jsonDictionary())
         }
         
@@ -284,5 +291,35 @@ final class RoomService: NSObject, RoomServiceType {
         return String((0..<length).map { _ in
             return letters.randomElement() ?? Character("A")
         })
+    }
+    
+    private func historyVisibilityStateEvent(with historyVisibility: MXRoomHistoryVisibility) -> MXEvent {
+        let stateEventJSON: [AnyHashable: Any] = [
+            "state_key": "",
+            "type": MXEventType.roomHistoryVisibility.identifier,
+            "content": [
+                "history_visibility": historyVisibility.identifier
+            ]
+        ]
+        
+        guard let stateEvent = MXEvent(fromJSON: stateEventJSON) else {
+            fatalError("[RoomService] history event could not be created")
+        }
+        return stateEvent
+    }
+    
+    private func roomAccessRulesStateEvent(with accessRule: RoomAccessRule) -> MXEvent {
+        let stateEventJSON: [AnyHashable: Any] = [
+            "state_key": "",
+            "type": RoomService.roomAccessRulesStateEventType,
+            "content": [
+                RoomService.roomAccessRulesContentRuleKey: accessRule.identifier
+            ]
+        ]
+        
+        guard let stateEvent = MXEvent(fromJSON: stateEventJSON) else {
+            fatalError("[RoomService] access rule event could not be created")
+        }
+        return stateEvent
     }
 }

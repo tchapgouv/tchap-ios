@@ -115,8 +115,21 @@ final class RoomCreationCoordinator: NSObject, RoomCreationCoordinatorType {
     }
     
     private func showContactsPicker() {
+        // Check whether the federation has been disabled to limit the invitation to the non federated users
         let showFederatedUsers = self.roomCreationFormResult?.isFederated ?? true
-        let contactsPickerCoordinator = ContactsPickerCoordinator(session: self.session, showFederatedUsers: showFederatedUsers)
+        let filter: ContactsDataSourceTchapFilter
+        if showFederatedUsers {
+            // Check the room access rule
+            let isRestricted = self.roomCreationFormResult?.isRestricted ?? true
+            if isRestricted {
+                filter = ContactsDataSourceTchapFilterNonExternalTchapOnly
+            } else {
+                filter = ContactsDataSourceTchapFilterTchapOnly
+            }
+        } else {
+            filter = ContactsDataSourceTchapFilterNonFederatedTchapOnly
+        }
+        let contactsPickerCoordinator = ContactsPickerCoordinator(session: self.session, contactsFilter: filter)
         contactsPickerCoordinator.start()
         contactsPickerCoordinator.delegate = self
         

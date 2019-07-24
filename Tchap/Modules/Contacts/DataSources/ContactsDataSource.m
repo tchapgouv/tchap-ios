@@ -725,7 +725,9 @@
                 additionalMatrixContacts[matrixId] = nil;
             }
         }
-        else if (_contactsFilter == ContactsDataSourceTchapFilterTchapOnly || _contactsFilter == ContactsDataSourceTchapFilterNonFederatedTchapOnly)
+        else if (_contactsFilter == ContactsDataSourceTchapFilterTchapOnly
+                 || _contactsFilter == ContactsDataSourceTchapFilterNonFederatedTchapOnly
+                 || _contactsFilter == ContactsDataSourceTchapFilterNonExternalTchapOnly)
         {
             // Ignore non-tchap-enabled contact
             [unfilteredLocalContacts removeObjectAtIndex:index];
@@ -840,6 +842,7 @@
     return _contactsFilter == ContactsDataSourceTchapFilterNoTchapOnly
     || _ignoredContactsByMatrixId[matrixId]
     || (_contactsFilter == ContactsDataSourceTchapFilterNonFederatedTchapOnly && ![self.userService isUserId:myUserId belongToSameDomainAs:matrixId])
+    || (_contactsFilter == ContactsDataSourceTchapFilterNonExternalTchapOnly && [self.userService isExternalUserFor:matrixId])
     || ([self.userService isExternalUserFor:myUserId] && [self.userService isExternalUserFor:matrixId]);
 }
 

@@ -68,17 +68,13 @@ final class RoomTitleViewModelBuilder: NSObject {
             avatarImageShape = .hexagon
             
             // Look for the right avatar border
-            let roomStateService = RoomStateService(session: session)
-            if let rule = roomStateService.getRoomAccessRule(for: roomSummary.roomId) {
-                switch rule {
-                case .restricted:
-                    avatarBorderColor = kColorDarkBlue
-                case .unrestricted:
-                    avatarBorderColor = kColorDarkGrey
-                default:
-                    avatarBorderColor = UIColor.clear
-                }
-            } else {
+            let rule = roomSummary.tc_roomAccessRule()
+            switch rule {
+            case .restricted:
+                avatarBorderColor = kColorDarkBlue
+            case .unrestricted:
+                avatarBorderColor = kColorDarkGrey
+            default:
                 avatarBorderColor = UIColor.clear
             }
         }

@@ -1,5 +1,5 @@
 /*
- Copyright 2019 New Vector Ltd
+ Copyright 2018 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -17,8 +17,7 @@
 import Foundation
 
 /// The room access rules.
-public enum RoomAccessRule {
-    
+enum RoomAccessRule {
     /// External users are not allowed
     case restricted
     /// External users are allowed to join
@@ -46,35 +45,4 @@ public enum RoomAccessRule {
             self = .other(identifier)
         }
     }
-}
-
-/// Protocol describing a service to perform operations on the room state.
-protocol RoomStateServiceType {
-    
-    /// Return the state event used to define a room history visibility.
-    ///
-    /// - Parameters:
-    ///   - historyVisibility: the room history visibility.
-    func historyVisibilityStateEvent(with historyVisibility: MXRoomHistoryVisibility) -> MXEvent
-    
-    /// Return the state event used to define a room access rule.
-    ///
-    /// - Parameters:
-    ///   - accessRule: the room access rule.
-    func roomAccessRulesStateEvent(with accessRule: RoomAccessRule) -> MXEvent
-    
-    /// Retrieve the room access rule of a room
-    ///
-    /// - Parameters:
-    ///   - roomID: the room identifier.
-    ///   - completion: A closure called when the operation complete. Provide the rule when succeed.
-    func getRoomAccessRule(for roomID: String, completion: @escaping (MXResponse<RoomAccessRule>) -> Void)
-    
-    /// Get the room access rule of a room if its state has been already loaded else return nil.
-    ///
-    /// Use this method only where you are sure the room state is already mounted.
-    ///
-    /// - Parameters:
-    ///   - roomID: the room identifier.
-    func getRoomAccessRule(for roomID: String) -> RoomAccessRule?
 }
