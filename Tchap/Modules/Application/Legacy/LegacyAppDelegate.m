@@ -175,9 +175,9 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     UIAlertController *cryptoDataCorruptedAlert;
     
     /**
-     The launch animation container view
+     The launch screen container view
      */
-    UIView *launchAnimationContainerView;
+    UIView *launchScreenContainerView;
     NSDate *launchAnimationStart;
 }
 
@@ -332,6 +332,12 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     // Create message sound
     NSURL *messageSoundURL = [[NSBundle mainBundle] URLForResource:@"message" withExtension:@"mp3"];
     AudioServicesCreateSystemSoundID((__bridge CFURLRef)messageSoundURL, &_messageSound);
+    
+    // Prepare the launch screen displayed after the splash screen
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"LaunchScreen" bundle:[NSBundle mainBundle]];
+    UIViewController *launchScreenVC = [storyboard instantiateViewControllerWithIdentifier:@"LaunchScreenId"];
+    launchScreenContainerView = launchScreenVC.view;
+    launchScreenContainerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
     NSLog(@"[AppDelegate] willFinishLaunchingWithOptions: Done");
 
@@ -1572,7 +1578,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
             if (isPushRegistered)
             {
                 // Enable push notifications by default on new added account
-                account.enablePushKitNotifications = YES;
+                [account enablePushKitNotifications:YES success:nil failure:nil];
             }
             else
             {
@@ -1952,7 +1958,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
             case MXSessionStateStoreDataReady:
             case MXSessionStateSyncInProgress:
                 // Stay in launching during the first server sync if the store is empty.
-                isLaunching = (mainSession.rooms.count == 0 && launchAnimationContainerView);
+                isLaunching = (mainSession.rooms.count == 0 && launchScreenContainerView.superview);
             default:
                 break;
         }
@@ -1960,57 +1966,9 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         if (isLaunching)
         {
             UIWindow *window = [[UIApplication sharedApplication] keyWindow];
-            
-            if (!launchAnimationContainerView && window)
+            if (!launchScreenContainerView.superview && window)
             {
-                launchAnimationContainerView = [[UIView alloc] initWithFrame:window.bounds];
-                launchAnimationContainerView.backgroundColor = kVariant2PrimaryBgColor;
-                launchAnimationContainerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-                [window addSubview:launchAnimationContainerView];
-                
-                // Add animation view
-                UIImageView *animationView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 170, 170)];
-                animationView.image = [UIImage animatedImageNamed:@"animatedLogo-" duration:2];
-                
-                animationView.center = CGPointMake(launchAnimationContainerView.center.x, 3 * launchAnimationContainerView.center.y / 4);
-                
-                animationView.translatesAutoresizingMaskIntoConstraints = NO;
-                [launchAnimationContainerView addSubview:animationView];
-                
-                NSLayoutConstraint* widthConstraint = [NSLayoutConstraint constraintWithItem:animationView
-                                                                                   attribute:NSLayoutAttributeWidth
-                                                                                   relatedBy:NSLayoutRelationEqual
-                                                                                      toItem:nil
-                                                                                   attribute:NSLayoutAttributeNotAnAttribute
-                                                                                  multiplier:1
-                                                                                    constant:170];
-                
-                NSLayoutConstraint* heightConstraint = [NSLayoutConstraint constraintWithItem:animationView
-                                                                                    attribute:NSLayoutAttributeHeight
-                                                                                    relatedBy:NSLayoutRelationEqual
-                                                                                       toItem:nil
-                                                                                    attribute:NSLayoutAttributeNotAnAttribute
-                                                                                   multiplier:1
-                                                                                     constant:170];
-                
-                NSLayoutConstraint* centerXConstraint = [NSLayoutConstraint constraintWithItem:animationView
-                                                                                     attribute:NSLayoutAttributeCenterX
-                                                                                     relatedBy:NSLayoutRelationEqual
-                                                                                        toItem:launchAnimationContainerView
-                                                                                     attribute:NSLayoutAttributeCenterX
-                                                                                    multiplier:1
-                                                                                      constant:0];
-                
-                NSLayoutConstraint* centerYConstraint = [NSLayoutConstraint constraintWithItem:animationView
-                                                                                     attribute:NSLayoutAttributeCenterY
-                                                                                     relatedBy:NSLayoutRelationEqual
-                                                                                        toItem:launchAnimationContainerView
-                                                                                     attribute:NSLayoutAttributeCenterY
-                                                                                    multiplier:3.0/4.0
-                                                                                      constant:0];
-                
-                [NSLayoutConstraint activateConstraints:@[widthConstraint, heightConstraint, centerXConstraint, centerYConstraint]];
-                
+                [window addSubview:launchScreenContainerView];
                 launchAnimationStart = [NSDate date];
             }
             
@@ -2018,10 +1976,10 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         }
     }
     
-    if (launchAnimationContainerView)
+    if (launchScreenContainerView.superview)
     {
         NSTimeInterval duration = [[NSDate date] timeIntervalSinceDate:launchAnimationStart];
-        NSLog(@"[AppDelegate] LaunchAnimation was shown for %.3fms", duration * 1000);
+        NSLog(@"[AppDelegate] LaunchScreen was shown for %.3fms", duration * 1000);
 
         // Track it on our analytics
         [[Analytics sharedInstance] trackLaunchScreenDisplayDuration:duration];
@@ -2029,8 +1987,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         // TODO: Send durationMs to Piwik
         // Such information should be the same on all platforms
         
-        [launchAnimationContainerView removeFromSuperview];
-        launchAnimationContainerView = nil;
+        [launchScreenContainerView removeFromSuperview];
     }
 }
 

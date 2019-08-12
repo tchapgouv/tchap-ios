@@ -231,8 +231,12 @@ internal enum TchapL10n {
   internal static let settingsHideFromUsersDirectorySummary = TchapL10n.tr("Tchap", "settings_hide_from_users_directory_summary")
   /// Inscrire mon compte sur liste rouge
   internal static let settingsHideFromUsersDirectoryTitle = TchapL10n.tr("Tchap", "settings_hide_from_users_directory_title")
+  /// Pour désactiver cette option, vous devez accepter que votre adresse email soit visible des autres utilisateurs lors de leurs recherches.
+  internal static let settingsShowExternalUserInUsersDirectoryPrompt = TchapL10n.tr("Tchap", "settings_show_external_user_in_users_directory_prompt")
   /// Votre correspondant a quitté définitivement cette discussion.\nVous devez en créer une nouvelle pour le recontacter, s'il est toujours joignable sur Tchap.
   internal static let tchapCannotInviteDeactivatedAccountUser = TchapL10n.tr("Tchap", "tchap_cannot_invite_deactivated_account_user")
+  /// Voulez-vous vraiment quitter cette conversation ?\n\nElle ne sera plus administrée, et vous risquez de ne plus pouvoir la joindre de nouveau.
+  internal static let tchapRoomAdminLeavePromptMsg = TchapL10n.tr("Tchap", "tchap_room_admin_leave_prompt_msg")
   /// Attention
   internal static let warningTitle = TchapL10n.tr("Tchap", "warning_title")
   /// J'ai un compte

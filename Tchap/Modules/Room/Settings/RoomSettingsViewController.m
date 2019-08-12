@@ -1384,43 +1384,52 @@ NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBanne
 - (void)onLeave:(id)sender
 {
     // Prompt user before leaving the room
-    __weak typeof(self) weakSelf = self;
+    [self startActivityIndicator];
+    MXWeakify(self);
     
-    [currentAlert dismissViewControllerAnimated:NO completion:nil];
-    
-    
-    currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"room_participants_leave_prompt_title", @"Vector", nil)
-                                                       message:NSLocalizedStringFromTable(@"room_participants_leave_prompt_msg", @"Vector", nil)
-                                                preferredStyle:UIAlertControllerStyleAlert];
-    
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
-                                                     style:UIAlertActionStyleCancel
-                                                   handler:^(UIAlertAction * action) {
-                                                       
-                                                       if (weakSelf)
-                                                       {
-                                                           typeof(self) self = weakSelf;
+    [mxRoom tc_isCurrentUserLastAdministrator:^(BOOL isLastAdmin) {
+        MXStrongifyAndReturnIfNil(self);
+        [self stopActivityIndicator];
+        
+        // confirm leave
+        NSString *promptMessage = NSLocalizedStringFromTable(@"room_participants_leave_prompt_msg", @"Vector", nil);
+        if (isLastAdmin)
+        {
+            promptMessage = NSLocalizedStringFromTable(@"tchap_room_admin_leave_prompt_msg", @"Tchap", nil);
+        }
+        
+        MXWeakify(self);
+        [self->currentAlert dismissViewControllerAnimated:NO completion:nil];
+        self->currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"room_participants_leave_prompt_title", @"Vector", nil)
+                                                           message:promptMessage
+                                                    preferredStyle:UIAlertControllerStyleAlert];
+        
+        [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                                                         style:UIAlertActionStyleCancel
+                                                       handler:^(UIAlertAction * action) {
+                                                           
+                                                           MXStrongifyAndReturnIfNil(self);
                                                            self->currentAlert = nil;
-                                                       }
-                                                       
-                                                   }]];
-    
-    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"leave", @"Vector", nil)
-                                                     style:UIAlertActionStyleDefault
-                                                   handler:^(UIAlertAction * action) {
-                                                       
-                                                       if (weakSelf)
-                                                       {
-                                                           typeof(self) self = weakSelf;
+                                                           
+                                                       }]];
+        
+        [self->currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"leave", @"Vector", nil)
+                                                         style:UIAlertActionStyleDefault
+                                                       handler:^(UIAlertAction * action) {
+                                                           
+                                                           MXStrongifyAndReturnIfNil(self);
                                                            self->currentAlert = nil;
                                                            
                                                            [self startActivityIndicator];
+                                                           MXWeakify(self);
                                                            [self->mxRoom leave:^{
                                                                
+                                                               MXStrongifyAndReturnIfNil(self);
                                                                [self withdrawViewControllerAnimated:YES completion:nil];
                                                                
                                                            } failure:^(NSError *error) {
                                                                
+                                                               MXStrongifyAndReturnIfNil(self);
                                                                [self stopActivityIndicator];
                                                                
                                                                NSLog(@"[RoomSettingsViewController] Leave room failed");
@@ -1428,12 +1437,12 @@ NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBanne
                                                                [[AppDelegate theDelegate] showErrorAsAlert:error];
                                                                
                                                            }];
-                                                       }
-                                                       
-                                                   }]];
-    
-    [currentAlert mxk_setAccessibilityIdentifier:@"RoomSettingsVCLeaveAlert"];
-    [self presentViewController:currentAlert animated:YES completion:nil];
+                                                           
+                                                       }]];
+        
+        [self->currentAlert mxk_setAccessibilityIdentifier:@"RoomSettingsVCLeaveAlert"];
+        [self presentViewController:self->currentAlert animated:YES completion:nil];
+    }];
 }
 
 - (void)onRoomAvatarTap:(UITapGestureRecognizer *)recognizer

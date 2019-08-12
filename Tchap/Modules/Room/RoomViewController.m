@@ -743,21 +743,6 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     [self refreshRoomInputToolbar];
 }
 
-- (void)onRoomDataSourceReady
-{
-    // Sanity check: Contrary to Riot, the room view controller is not used to display a pending invite.
-    // The preview mode is only supported in case of peeking (see roomPreviewData use)
-    if (self.roomDataSource.room.summary.membership == MXMembershipInvite)
-    {
-        NSLog(@"[RoomVC] onRoomDataSourceReady: unexpected invite room (%@)", self.roomDataSource.roomId);
-        [self withdrawViewControllerAnimated:YES completion:nil];
-    }
-    else
-    {
-        [super onRoomDataSourceReady];
-    }
-}
-
 - (void)updateViewControllerAppearanceOnRoomDataSourceState
 {
     [super updateViewControllerAppearanceOnRoomDataSourceState];
@@ -910,7 +895,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
         // Check
         if (roomAlias.length)
         {
-            [self.mainSession joinRoom:roomAlias success:^(MXRoom *room) {
+            [self.mainSession joinRoom:roomAlias viaServers:nil success:^(MXRoom *room) {
                 
                 // Show the room
                 if (self.delegate)

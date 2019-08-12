@@ -1,3 +1,16 @@
+Changes in Tchap 1.0.14 (2019-08-12)
+===================================================
+
+ Features/Improvements:
+ * Prompt external users before displaying their email in user directory #208
+ * Prompt the last room admin before letting him leave the room #218
+ * Allow the user to send a new invite to an external email address #220
+ * Add a splash screen
+ 
+ Bug Fixes:
+ * Preview on invited public room failed
+ * Error "Profile isn't available" just after logging in #219
+
 Changes in Tchap 1.0.13 (2019-06-28)
 ===================================================
 

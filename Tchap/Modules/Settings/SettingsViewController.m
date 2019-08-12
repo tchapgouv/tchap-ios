@@ -1714,7 +1714,11 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         
         if (accountManager.pushDeviceToken)
         {
-            [account setEnablePushKitNotifications:!account.isPushKitNotificationActive];
+            [account enablePushKitNotifications:!account.isPushKitNotificationActive success:^{
+                [self stopActivityIndicator];
+            } failure:^(NSError *error) {
+                [self stopActivityIndicator];
+            }];
         }
         else
         {
@@ -1727,7 +1731,11 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
                 }
                 else
                 {
-                    [account setEnablePushKitNotifications:YES];
+                    [account enablePushKitNotifications:YES success:^{
+                        [self stopActivityIndicator];
+                    } failure:^(NSError *error) {
+                        [self stopActivityIndicator];
+                    }];
                 }
             }];
         }
@@ -2441,23 +2449,65 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     MXSession *session = [account mxSession];
     if (session)
     {
-        NSDictionary *dict = @{@"hide_profile": [NSNumber numberWithBool:switchButton.on]};
-        
-        MXWeakify(self);
-        [self startActivityIndicator];
-        [account.mxSession setAccountData:dict forType:@"im.vector.hide_profile" success:^{
-            MXStrongifyAndReturnIfNil(self);
-            [self stopActivityIndicator];
-        } failure:^(NSError *error) {
-            MXStrongifyAndReturnIfNil(self);
-            [self stopActivityIndicator];
-            NSLog(@"[SettingsViewController] toggleHideFromUsersDirectory failed");
+        // The external users must be prompted before showing them to the users directory
+        BOOL isHidden = switchButton.on;
+        UserService *userService = [[UserService alloc] initWithSession:session];
+        if (!isHidden && [userService isExternalUserFor:session.myUser.userId])
+        {
+            MXWeakify(self);
+            [currentAlert dismissViewControllerAnimated:NO completion:nil];
+            currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"warning_title", @"Tchap", nil)
+                                                               message:NSLocalizedStringFromTable(@"settings_show_external_user_in_users_directory_prompt", @"Tchap", nil)
+                                                        preferredStyle:UIAlertControllerStyleAlert];
+            currentAlert.accessibilityLabel=@"promptUserBeforeShowingThemInUsersDirectory";
+            [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"accept", @"Vector", nil)
+                                                                   style:UIAlertActionStyleDefault
+                                                                 handler:^(UIAlertAction * action) {
+                                                                     
+                                                                     MXStrongifyAndReturnIfNil(self);
+                                                                     self->currentAlert = nil;
+                                                                     [self hideUserFromUsersDirectory:isHidden withSession:session];
+                                                                     
+                                                                 }]];
             
-            NSString *myUserId = account.mxSession.myUser.userId;
-            [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error userInfo:myUserId ? @{kMXKErrorUserIdKey: myUserId} : nil];
-            [self refreshSettings];
-        }];
+            
+            [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                                                             style:UIAlertActionStyleCancel
+                                                           handler:^(UIAlertAction * action) {
+                                                               
+                                                               MXStrongifyAndReturnIfNil(self);
+                                                               self->currentAlert = nil;
+                                                               switchButton.on = YES;
+                                                               
+                                                           }]];
+            
+            [self presentViewController:currentAlert animated:YES completion:nil];
+        }
+        else
+        {
+            [self hideUserFromUsersDirectory:isHidden withSession:session];
+        }
     }
+}
+
+- (void)hideUserFromUsersDirectory:(BOOL)isHidden withSession:(MXSession*)session
+{
+    NSDictionary *dict = @{@"hide_profile": [NSNumber numberWithBool:isHidden]};
+    NSString *myUserId = session.myUser.userId;
+    
+    MXWeakify(self);
+    [self startActivityIndicator];
+    [session setAccountData:dict forType:@"im.vector.hide_profile" success:^{
+        MXStrongifyAndReturnIfNil(self);
+        [self stopActivityIndicator];
+    } failure:^(NSError *error) {
+        MXStrongifyAndReturnIfNil(self);
+        [self stopActivityIndicator];
+        NSLog(@"[SettingsViewController] hideUserFromUsersDirectory failed");
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error userInfo:myUserId ? @{kMXKErrorUserIdKey: myUserId} : nil];
+        [self refreshSettings];
+    }];
 }
 
 @end

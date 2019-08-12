@@ -45,41 +45,68 @@ final class InviteService: InviteServiceType {
     }
     
     func sendEmailInvite(to email: String, completion: @escaping (MXResponse<InviteServiceResult>) -> Void) {
-        // Check whether an invite has been already sent
-        self.discussionFinder.getDiscussionIdentifier(for: email) { [weak self] (response) in
-            guard let sself = self else {
-                return
-            }
-            
+        // Start the invite process by checking whether a Tchap account has been created for this email.
+        self.discoverUser(with: email, completion: { [weak self] (response) in
             switch response {
             case .success(let result):
                 switch result {
-                case .joinedDiscussion(let roomID):
-                    // There is already a discussion with this email
-                    completion(.success(.inviteAlreadySent(roomID: roomID)))
-                case .noDiscussion:
-                    // Pursue the invite process by checking whether a Tchap account has been created for this email.
-                    sself.discoverUser(with: email, completion: { [weak sself] (response) in
+                case .bound(let userID):
+                    completion(.success(.inviteIgnoredForDiscoveredUser(userID: userID)))
+                case .unbound:
+                    // Pursue the invite process by checking whether an invite has been already sent
+                    self?.discussionFinder.getDiscussionIdentifier(for: email) { [weak self] (response) in
+                        guard let self = self else {
+                            return
+                        }
+                        
                         switch response {
                         case .success(let result):
                             switch result {
-                            case .bound(let userID):
-                                completion(.success(.inviteIgnoredForDiscoveredUser(userID: userID)))
-                            case .unbound:
-                                sself?.createDiscussion(with: email, completion: completion)
+                            case .joinedDiscussion(let roomID):
+                                // There is already a discussion with this email
+                                // We do not re-invite the NoTchapUser except if
+                                // the email is bound to the external instance (for which the invites may expire).
+                                self.isBoundToExternalServer(email: email) { [weak self] (response) in
+                                    switch response {
+                                    case .success(let isExternal):
+                                        if isExternal {
+                                            // Leave this empty discussion, we will invite again this email.
+                                            // We don't have a way for the moment to check if the invite expired or not...
+                                            self?.session.leaveRoom(roomID) { [weak self] (response) in
+                                                switch response {
+                                                case .success:
+                                                    // Send the new invite
+                                                    self?.createDiscussion(with: email, completion: completion)
+                                                case .failure:
+                                                    // Ignore the error, notify the user that the invite has been already sent
+                                                    completion(.success(.inviteAlreadySent(roomID: roomID)))
+                                                }
+                                            }
+                                        } else {
+                                            // Notify the user that the invite has been already sent
+                                            completion(.success(.inviteAlreadySent(roomID: roomID)))
+                                        }
+                                    case .failure:
+                                        // Ignore the error, notify the user that the invite has been already sent
+                                        completion(.success(.inviteAlreadySent(roomID: roomID)))
+                                    }
+                                }
+                            case .noDiscussion:
+                                // Send the invite if the email is authorized
+                                self.createDiscussion(with: email, completion: completion)
+                            default:
+                                break
                             }
                         case .failure(let error):
+                            NSLog("[InviteService] sendEmailInvite failed")
                             completion(MXResponse.failure(error))
                         }
-                    })
-                default:
-                    break
+                    }
                 }
             case .failure(let error):
-                NSLog("[InviteService] sendEmailInvite failed")
                 completion(MXResponse.failure(error))
             }
-        }
+        })
     }
     
     // MARK: - Private
@@ -139,6 +166,23 @@ final class InviteService: InviteServiceType {
             }
         }, failure: { (error) in
             NSLog("[InviteService] isAuthorized failed")
+            if let error = error {
+                completion(MXResponse.failure(error))
+            }
+        })
+    }
+    
+    private func isBoundToExternalServer(email: String, completion: @escaping (MXResponse<Bool>) -> Void) {
+        self.thirdPartyIDPlatformInfoResolver.resolvePlatformInformation(address: email, medium: kMX3PIDMediumEmail, success: { (resolveResult) in
+            switch resolveResult {
+            case .authorizedThirdPartyID(info: let thirdPartyIDPlatformInfo):
+                let userService = UserService(session: self.session)
+                completion(.success(userService.isExternalServer(for: thirdPartyIDPlatformInfo.hostname)))
+            case .unauthorizedThirdPartyID:
+                completion(.success(false))
+            }
+        }, failure: { (error) in
+            NSLog("[InviteService] isBoundToExternalServer failed")
             if let error = error {
                 completion(MXResponse.failure(error))
             }

@@ -133,6 +133,7 @@ internal enum Asset {
       internal static let removeIconPink = ImageAsset(name: "remove_icon_pink")
       internal static let settingsIcon = ImageAsset(name: "settings_icon")
     }
+    internal static let tchapLogo = ImageAsset(name: "TchapLogo")
 
     // swiftlint:disable trailing_comma
     internal static let allColors: [ColorAsset] = [
@@ -200,16 +201,13 @@ internal enum Asset {
       Search.searchIcon,
       Settings.removeIconPink,
       Settings.settingsIcon,
+      tchapLogo,
     ]
     // swiftlint:enable trailing_comma
     @available(*, deprecated, renamed: "allImages")
     internal static let allValues: [AssetType] = allImages
   }
   internal enum SharedImages {
-    internal enum AnimatedLogo {
-      internal static let animatedLogo0 = ImageAsset(name: "animatedLogo-0")
-      internal static let animatedLogo1 = ImageAsset(name: "animatedLogo-1")
-    }
     internal enum Common {
       internal static let cancel = ImageAsset(name: "cancel")
     }
@@ -221,8 +219,6 @@ internal enum Asset {
     internal static let allColors: [ColorAsset] = [
     ]
     internal static let allImages: [ImageAsset] = [
-      AnimatedLogo.animatedLogo0,
-      AnimatedLogo.animatedLogo1,
       Common.cancel,
       E2E.e2eVerified,
     ]

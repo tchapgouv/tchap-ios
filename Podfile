@@ -1,10 +1,8 @@
 # Uncomment this line to define a global platform for your project
 platform :ios, "10.0"
 
-# Use frameforks to allow usage of pod written in Swift (like PiwikTracker)
+# Use frameworks to allow usage of pod written in Swift (like MatomoTracker)
 use_frameworks!
-
-source 'https://github.com/CocoaPods/Specs.git'
 
 
 # Different flavours of pods to MatrixKit
@@ -43,12 +41,12 @@ end
 abstract_target 'TchapPods' do
 
     pod 'GBDeviceInfo', '~> 5.2.0'
+    pod 'Reusable', '~> 4.1'
+    pod 'SwiftUTI', :git => 'https://github.com/speramusinc/SwiftUTI.git', :branch => 'master'
 
-    # Piwik for analytics
-    # While https://github.com/matomo-org/matomo-sdk-ios/pull/223 is not released, use the PR branch
-    pod 'PiwikTracker', :git => 'https://github.com/manuroe/matomo-sdk-ios.git', :branch => 'feature/CustomVariables'
-    #pod 'PiwikTracker', '~> 4.4.2'
-    pod 'Reusable', '~> 4.0'
+    # Matomo for analytics
+    pod 'MatomoTracker', '~> 6.0.1'
+    
     pod 'RxSwift', '~> 4.3'
 
     # Remove warnings from "bad" pods
@@ -83,7 +81,16 @@ post_install do |installer|
         # Plus the app does not enable it
         target.build_configurations.each do |config|
             config.build_settings['ENABLE_BITCODE'] = 'NO'
-            config.build_settings['SWIFT_VERSION'] = '4.0'     # Required for PiwikTracker. Should be removed
+            
+            # Force the min IOS deployment target for matrixKit
+            if target.name.include? 'MatrixKit'
+                config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '10.0'
+            end
+            
+            # Force SwiftUTI Swift version to 5.0 (as there is no code changes to perform for SwiftUTI fork using Swift 4.2)
+            if target.name.include? 'SwiftUTI'
+                config.build_settings['SWIFT_VERSION'] = '5.0'
+            end
         end
     end
 end
