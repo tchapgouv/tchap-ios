@@ -56,7 +56,7 @@
     NSMutableDictionary<NSString*, MXKContact*> *discoveredTchapContacts;
 }
 
-@property (nonatomic, strong, readwrite) NSMutableDictionary<NSString*, MXKContact*> *selectedContactByMatrixId;
+@property (nonatomic, strong, readwrite) NSMutableDictionary<NSString*, MXKContact*> *selectedContactByIdentifier;
 @property (nonatomic, strong) UserService *userService;
 
 @end
@@ -77,7 +77,7 @@
         
         _ignoredContactsByEmail = [NSMutableDictionary dictionary];
         _ignoredContactsByMatrixId = [NSMutableDictionary dictionary];
-        _selectedContactByMatrixId = [NSMutableDictionary dictionary];
+        _selectedContactByIdentifier = [NSMutableDictionary dictionary];
         
         _contactsFilter = ContactsDataSourceTchapFilterAll;
         
@@ -413,20 +413,39 @@
 - (void)selectOrDeselectContactAtIndexPath:(NSIndexPath*)indexPath
 {
     MXKContact *contact = [self contactAtIndexPath:indexPath];
-    NSString *matrixIdentifier = contact.matrixIdentifiers.firstObject;
-    
-    if (matrixIdentifier)
+    NSString *identifier = [self contactIdentifier:contact];
+    if (identifier)
     {
         // Contact already selected, deselect it by removing it from selected contacts.
-        if (self.selectedContactByMatrixId[matrixIdentifier])
+        if (self.selectedContactByIdentifier[identifier])
         {
-            self.selectedContactByMatrixId[matrixIdentifier] = nil;
+            self.selectedContactByIdentifier[identifier] = nil;
         }
         else
         {
-            self.selectedContactByMatrixId[matrixIdentifier] = contact;
+            self.selectedContactByIdentifier[identifier] = contact;
         }
     }
+}
+
+- (NSString*)contactIdentifier:(MXKContact*)contact
+{
+    NSString *identifier = contact.matrixIdentifiers.firstObject;
+    if (!identifier)
+    {
+        if (contact.emailAddresses.count)
+        {
+            // This is a local contact, consider the first email by default.
+            MXKEmail *email = contact.emailAddresses.firstObject;
+            identifier = email.emailAddress;
+        }
+        else
+        {
+            // This is an email added manually by the user.
+            identifier = contact.displayName;
+        }
+    }
+    return identifier;
 }
 
 #pragma mark - Internals
@@ -645,7 +664,7 @@
 {
     // Retrieve all the contacts obtained by splitting each local contact by contact method. This list is ordered alphabetically.
     NSMutableArray *unfilteredLocalContacts = [NSMutableArray arrayWithArray:[MXKContactManager sharedManager].localContactsSplitByContactMethod];
-    NSMutableDictionary *additionalMatrixContacts = [NSMutableDictionary dictionaryWithDictionary:self.selectedContactByMatrixId];
+    NSMutableDictionary *additionalContacts = [NSMutableDictionary dictionaryWithDictionary:self.selectedContactByIdentifier];
     
     // Extract some Tchap contacts from the direct chats data, if this is relevant, and if this is not already done.
     if (_contactsFilter != ContactsDataSourceTchapFilterNoTchapOnly && forceDirectContactsRefresh)
@@ -722,7 +741,7 @@
                 }
                 
                 // Remove this contacts from the additional list (if present)
-                additionalMatrixContacts[matrixId] = nil;
+                additionalContacts[matrixId] = nil;
             }
         }
         else if (_contactsFilter == ContactsDataSourceTchapFilterTchapOnly
@@ -740,6 +759,9 @@
             {
                 // Here the contact has only one email address.
                 MXKEmail *email = emails.firstObject;
+                
+                // Remove this contacts from the additional list (if present)
+                additionalContacts[email.emailAddress] = nil;
                 
                 // Trick: ignore @facebook.com email addresses from the results - facebook have discontinued that service...
                 if ([_ignoredContactsByEmail objectForKey:email.emailAddress] || [email.emailAddress hasSuffix:@"@facebook.com"])
@@ -775,14 +797,14 @@
                 [unfilteredLocalContacts addObject:directContacts[mxId]];
                 
                 // Remove this contacts from the additional ones (if present)
-                additionalMatrixContacts[mxId] = nil;
+                additionalContacts[mxId] = nil;
             }
         }
         
         // Add the additional contacts (discovered and selected during a users search)
-        for (NSString *mxId in additionalMatrixContacts)
+        for (NSString *identifier in additionalContacts)
         {
-            [unfilteredLocalContacts addObject:additionalMatrixContacts[mxId]];
+            [unfilteredLocalContacts addObject:additionalContacts[identifier]];
         }
         
         // Sort the updated list
@@ -912,11 +934,10 @@
     MXKContact *selectedContact;
     
     MXKContact *contact = [self contactAtIndexPath:indexPath];
-    NSString *matrixIdentifier = contact.matrixIdentifiers.firstObject;
-    
-    if (matrixIdentifier)
+    NSString *identifier = [self contactIdentifier:contact];
+    if (identifier)
     {
-        selectedContact = self.selectedContactByMatrixId[matrixIdentifier];
+        selectedContact = self.selectedContactByIdentifier[identifier];
     }
     
     return selectedContact != nil;

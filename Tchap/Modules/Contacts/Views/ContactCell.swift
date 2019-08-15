@@ -86,6 +86,8 @@ import UIKit
         if let matrixId = contact.matrixIdentifiers?.first as? String {
             self.matrixId = matrixId
             registerContactPresenceNotification()
+        } else {
+            self.matrixId = nil
         }
         
         // Be warned when the thumbnail is updated

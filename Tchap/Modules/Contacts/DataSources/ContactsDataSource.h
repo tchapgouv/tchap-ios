@@ -170,9 +170,9 @@ typedef enum : NSUInteger
 @property (nonatomic) NSMutableDictionary<NSString*, MXKContact*> *ignoredContactsByMatrixId;
 
 /**
- The dictionary of the selected matrix contacts, the keys are their matrix identifier. Empty by default.
+ The dictionary of the selected contacts, the keys are their matrix identifier or their email address. Empty by default.
  */
-@property (nonatomic, strong, readonly) NSMutableDictionary<NSString*, MXKContact*> *selectedContactByMatrixId;
+@property (nonatomic, strong, readonly) NSMutableDictionary<NSString*, MXKContact*> *selectedContactByIdentifier;
 
 /**
  Filter the contacts list, by keeping only the contacts who have the search pattern

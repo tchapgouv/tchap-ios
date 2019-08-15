@@ -1402,7 +1402,7 @@
 
 - (void)contactsViewController:(ContactsViewController *)contactsViewController didSelectContact:(MXKContact*)contact
 {
-    validateBarButtonItem.enabled = contactsDataSource.selectedContactByMatrixId.count;
+    validateBarButtonItem.enabled = contactsDataSource.selectedContactByIdentifier.count;
 }
 
 #pragma mark - Actions
@@ -1605,7 +1605,8 @@
 
 - (void)inviteSelectedContacts
 {
-    NSMutableArray *selectedUserIds = [NSMutableArray arrayWithArray:contactsDataSource.selectedContactByMatrixId.allKeys];
+    // Retrieve the selected identifiers (2 types of ids are supported: Matrix ids and email addresses)
+    NSMutableArray *selectedIdentifiers = [NSMutableArray arrayWithArray:contactsDataSource.selectedContactByIdentifier.allKeys];
     
     // Remove contacts picker
     [self popViewControllerAnimated:YES];
@@ -1615,32 +1616,44 @@
     
     // Invite one by one selected userIds
     [self addPendingActionMask];
-    [self inviteOneByOneSelectedUserIds:selectedUserIds];
+    [self inviteOneByOneSelectedIdentifiers:selectedIdentifiers];
 }
 
-- (void)inviteOneByOneSelectedUserIds:(NSMutableArray*)selectedUserIds
+- (void)inviteOneByOneSelectedIdentifiers:(NSMutableArray*)selectedIdentifiers
 {
-    NSString *userId = selectedUserIds.lastObject;
-    if (userId)
+    NSString *identifier = selectedIdentifiers.lastObject;
+    if (identifier)
     {
-        [selectedUserIds removeLastObject];
+        [selectedIdentifiers removeLastObject];
+        
         MXWeakify(self);
-        [self.mxRoom inviteUser:userId success:^{
+        void (^success)(void)= ^{
             
             MXStrongifyAndReturnIfNil(self);
-            [self inviteOneByOneSelectedUserIds:selectedUserIds];
+            [self inviteOneByOneSelectedIdentifiers:selectedIdentifiers];
             
-        } failure:^(NSError *error) {
+        };
+        void (^failure)(NSError *error) = ^(NSError *error) {
             
             MXStrongifyAndReturnIfNil(self);
             
             // Stop invite process
             [self removePendingActionMask];
-            NSLog(@"[RoomParticipantsVC] Invite %@ failed (%tu)", userId, selectedUserIds.count);
+            NSLog(@"[RoomParticipantsVC] Invite failed (%tu)", selectedIdentifiers.count);
             
             // Alert user
             [[AppDelegate theDelegate] showErrorAsAlert:error];
-        }];
+        };
+        
+        // Check whether this is a Matrix id or an email address
+        if ([MXTools isMatrixUserIdentifier:identifier])
+        {
+            [self.mxRoom inviteUser:identifier success:success failure:failure];
+        }
+        else if ([MXTools isEmailAddress:identifier])
+        {
+            [self.mxRoom inviteUserByEmail:identifier success:success failure:failure];
+        }
     }
     else
     {

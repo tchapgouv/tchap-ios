@@ -17,7 +17,8 @@
 import Foundation
 
 protocol ContactsPickerCoordinatorDelegate: class {
-    func contactsPickerCoordinator(_ coordinator: ContactsPickerCoordinatorType, didSelectUserIDs userIDs: [String])
+    // Two types of identifiers are supported here: Matrix ids and email addresses.
+    func contactsPickerCoordinator(_ coordinator: ContactsPickerCoordinatorType, didSelectContactIdentifiers identifiers: [String])
 }
 
 final class ContactsPickerCoordinator: NSObject, ContactsPickerCoordinatorType {
@@ -87,15 +88,15 @@ final class ContactsPickerCoordinator: NSObject, ContactsPickerCoordinatorType {
     // MARK: - Private
     
     private func validateSelection() {
-        let selectedMatrixIds: [String]
+        let selectedIdentifiers: [String]
         
-        if let matrixIds = self.contactsDataSource.selectedContactByMatrixId.allKeys as? [String] {
-            selectedMatrixIds = matrixIds
+        if let identifiers = self.contactsDataSource.selectedContactByIdentifier.allKeys as? [String] {
+            selectedIdentifiers = identifiers
         } else {
-            selectedMatrixIds = []
+            selectedIdentifiers = []
         }
         
-        self.delegate?.contactsPickerCoordinator(self, didSelectUserIDs: selectedMatrixIds)
+        self.delegate?.contactsPickerCoordinator(self, didSelectContactIdentifiers: selectedIdentifiers)
     }    
 }
 
