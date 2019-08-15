@@ -714,16 +714,16 @@
     {
         if ([roomAccessRule isEqualToString:RoomService.roomAccessRuleRestricted])
         {
-            contactsDataSource.contactsFilter = ContactsDataSourceTchapFilterNonExternalTchapOnly;
+            contactsDataSource.contactsFilter = ContactsDataSourceTchapFilterAllWithoutExternals;
         }
         else
         {
-            contactsDataSource.contactsFilter = ContactsDataSourceTchapFilterTchapOnly;
+            contactsDataSource.contactsFilter = ContactsDataSourceTchapFilterAll;
         }
     }
     else
     {
-        contactsDataSource.contactsFilter = ContactsDataSourceTchapFilterNonFederatedTchapOnly;
+        contactsDataSource.contactsFilter = ContactsDataSourceTchapFilterAllWithoutFederation;
     }
     
     // List all the participants matrix user id to ignore them during the contacts search.

@@ -161,7 +161,7 @@
     if (MXSessionStateStoreDataReady <= self.mxSession.state)
     {
         // Extract some Tchap contacts from the direct chats data, if this is relevant, and if this is not already done.
-        if (_contactsFilter != ContactsDataSourceTchapFilterNoTchapOnly && forceDirectContactsRefresh)
+        if (_contactsFilter != ContactsDataSourceTchapFilterAllWithoutTchapUsers && forceDirectContactsRefresh)
         {
             [self forceRefresh];
         }
@@ -197,7 +197,7 @@
         
         // Check whether we have to listen direct chats updates
         [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXSessionDirectRoomsDidChangeNotification object:nil];
-        if (_contactsFilter == ContactsDataSourceTchapFilterNoTchapOnly)
+        if (_contactsFilter == ContactsDataSourceTchapFilterAllWithoutTchapUsers)
         {
             directContacts = nil;
         }
@@ -464,7 +464,7 @@
 - (void)applicationWillEnterForeground:(NSNotification *)notif
 {
     // Check whether we should refresh the contacts extracted from the direct chat data.
-    if (_contactsFilter != ContactsDataSourceTchapFilterNoTchapOnly)
+    if (_contactsFilter != ContactsDataSourceTchapFilterAllWithoutTchapUsers)
     {
         forceDirectContactsRefresh = YES;
         [self forceRefresh];
@@ -667,7 +667,7 @@
     NSMutableDictionary *additionalContacts = [NSMutableDictionary dictionaryWithDictionary:self.selectedContactByIdentifier];
     
     // Extract some Tchap contacts from the direct chats data, if this is relevant, and if this is not already done.
-    if (_contactsFilter != ContactsDataSourceTchapFilterNoTchapOnly && forceDirectContactsRefresh)
+    if (_contactsFilter != ContactsDataSourceTchapFilterAllWithoutTchapUsers && forceDirectContactsRefresh)
     {
         [self updateDirectTchapContacts];
     }
@@ -744,11 +744,11 @@
                 additionalContacts[matrixId] = nil;
             }
         }
-        else if (_contactsFilter == ContactsDataSourceTchapFilterTchapOnly
-                 || _contactsFilter == ContactsDataSourceTchapFilterNonFederatedTchapOnly
-                 || _contactsFilter == ContactsDataSourceTchapFilterNonExternalTchapOnly)
+        else if (_contactsFilter == ContactsDataSourceTchapFilterTchapUsersOnly
+                 || _contactsFilter == ContactsDataSourceTchapFilterTchapUsersOnlyWithoutExternals
+                 || _contactsFilter == ContactsDataSourceTchapFilterTchapUsersOnlyWithoutFederation)
         {
-            // Ignore non-tchap-enabled contact
+            // Ignore contacts who are not Tchap users
             [unfilteredLocalContacts removeObjectAtIndex:index];
             continue;
         }
@@ -786,7 +786,7 @@
         index++;
     }
     
-    if (_contactsFilter != ContactsDataSourceTchapFilterNoTchapOnly)
+    if (_contactsFilter != ContactsDataSourceTchapFilterAllWithoutTchapUsers)
     {
         // Add all the tchap contacts built from the direct chat dictionary,
         // except the ignored contacts.
@@ -858,14 +858,28 @@
         return YES;
     }
     
-    // Note the external users are not allowed to start chat with another external user.
+    // Check the conditions to ignore this Tchap user.
+    // Note: the external users are not allowed to start chat with another external user.
     // So we ignore here the external users when the current user is external.
+    BOOL shouldIgnore = _ignoredContactsByMatrixId[matrixId] || ([self.userService isExternalUserFor:myUserId] && [self.userService isExternalUserFor:matrixId]);
     
-    return _contactsFilter == ContactsDataSourceTchapFilterNoTchapOnly
-    || _ignoredContactsByMatrixId[matrixId]
-    || (_contactsFilter == ContactsDataSourceTchapFilterNonFederatedTchapOnly && ![self.userService isUserId:myUserId belongToSameDomainAs:matrixId])
-    || (_contactsFilter == ContactsDataSourceTchapFilterNonExternalTchapOnly && [self.userService isExternalUserFor:matrixId])
-    || ([self.userService isExternalUserFor:myUserId] && [self.userService isExternalUserFor:matrixId]);
+    switch (_contactsFilter) {
+        case ContactsDataSourceTchapFilterAllWithoutExternals:
+        case ContactsDataSourceTchapFilterTchapUsersOnlyWithoutExternals:
+            shouldIgnore |= [self.userService isExternalUserFor:matrixId];
+            break;
+        case ContactsDataSourceTchapFilterAllWithoutFederation:
+        case ContactsDataSourceTchapFilterTchapUsersOnlyWithoutFederation:
+            shouldIgnore |= ![self.userService isUserId:myUserId belongToSameDomainAs:matrixId];
+            break;
+        case ContactsDataSourceTchapFilterAllWithoutTchapUsers:
+            shouldIgnore = YES;
+            break;
+        default:
+            break;
+    }
+    
+    return shouldIgnore;
 }
 
 #pragma mark - UITableView data source
@@ -887,7 +901,7 @@
         // Keep visible the header for the local contact sections, even if their are empty.
         filteredLocalContactsSection = count++;
         // Keep visible the header for the matrix contact sections, even if their are empty, only when tchap-enabled users are displayed
-        if (_contactsFilter != ContactsDataSourceTchapFilterNoTchapOnly)
+        if (_contactsFilter != ContactsDataSourceTchapFilterAllWithoutTchapUsers)
         {
             filteredMatrixContactsSection = count++;
         }

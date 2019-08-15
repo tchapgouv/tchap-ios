@@ -161,7 +161,7 @@ import UIKit
     
     private func refreshContactEmail() {
         self.contactEmailLabel.isHidden = true
-        guard self.matrixId == nil, let email = self.contact?.emailAddresses.first as? MXKEmail else {
+        guard self.matrixId == nil, let email = self.contact?.emailAddresses?.first as? MXKEmail else {
             // The email is displayed only for no-tchap users
             return
         }

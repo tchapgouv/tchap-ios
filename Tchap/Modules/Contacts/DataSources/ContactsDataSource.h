@@ -19,16 +19,43 @@
 
 /**
  This enum is used to filter the displayed contacts.
- Note: the Tchap users for who a discussion (direct chat) exists will be considered as local contacts.
- This means they will appear in the local contacts section.
  */
 typedef enum : NSUInteger
 {
+    /**
+     * Display all the local contacts who have email(s).
+     * The contacts with several emails are displayed several times (One item by email).
+     * When an email is bound to a Tchap account, the Tchap display name is used and
+     * the email is hidden. Else the name defined in the local contacts book is used with the email.
+     * Note: the Tchap users for who a discussion (direct chat) exists will be considered as local contacts.
+     * This means they will appear in the local contacts section.
+     * The search in the Tchap users directory is available (except if the current user is external).
+     */
     ContactsDataSourceTchapFilterAll,
-    ContactsDataSourceTchapFilterTchapOnly,
-    ContactsDataSourceTchapFilterNonFederatedTchapOnly,
-    ContactsDataSourceTchapFilterNonExternalTchapOnly,
-    ContactsDataSourceTchapFilterNoTchapOnly
+    /**
+     * Same as ALL, but the contacts related to the external Tchap server(s) are excluded.
+     */
+    ContactsDataSourceTchapFilterAllWithoutExternals,
+    /**
+     * Same as ALL, but only the contacts bound to the same host than the current user are displayed.
+     */
+    ContactsDataSourceTchapFilterAllWithoutFederation,
+    /**
+     * Display only the Tchap users.
+     */
+    ContactsDataSourceTchapFilterTchapUsersOnly,
+    /**
+     * Display only the Tchap users by excluding the external ones.
+     */
+    ContactsDataSourceTchapFilterTchapUsersOnlyWithoutExternals,
+    /**
+     * Display only the Tchap users hosted on the same host than the current user.
+     */
+    ContactsDataSourceTchapFilterTchapUsersOnlyWithoutFederation,
+    /**
+     * Display the local contacts who are not Tchap users yet.
+     */
+    ContactsDataSourceTchapFilterAllWithoutTchapUsers
 } ContactsDataSourceTchapFilter;
 
 /**

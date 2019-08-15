@@ -50,7 +50,7 @@ final class ContactsCoordinator: NSObject, ContactsCoordinatorType {
         
         self.contactsDataSource = ContactsDataSource(matrixSession: self.session)
         self.contactsDataSource.finalizeInitialization()
-        self.contactsDataSource.contactsFilter = ContactsDataSourceTchapFilterTchapOnly
+        self.contactsDataSource.contactsFilter = ContactsDataSourceTchapFilterTchapUsersOnly
         
         self.userService = UserService(session: session)
         

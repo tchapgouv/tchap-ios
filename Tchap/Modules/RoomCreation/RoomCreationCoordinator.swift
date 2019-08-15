@@ -122,12 +122,12 @@ final class RoomCreationCoordinator: NSObject, RoomCreationCoordinatorType {
             // Check the room access rule
             let isRestricted = self.roomCreationFormResult?.isRestricted ?? true
             if isRestricted {
-                filter = ContactsDataSourceTchapFilterNonExternalTchapOnly
+                filter = ContactsDataSourceTchapFilterTchapUsersOnlyWithoutExternals
             } else {
-                filter = ContactsDataSourceTchapFilterTchapOnly
+                filter = ContactsDataSourceTchapFilterTchapUsersOnly
             }
         } else {
-            filter = ContactsDataSourceTchapFilterNonFederatedTchapOnly
+            filter = ContactsDataSourceTchapFilterTchapUsersOnlyWithoutFederation
         }
         let contactsPickerCoordinator = ContactsPickerCoordinator(session: self.session, contactsFilter: filter)
         contactsPickerCoordinator.start()
