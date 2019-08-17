@@ -870,7 +870,7 @@
             break;
         case ContactsDataSourceTchapFilterAllWithoutFederation:
         case ContactsDataSourceTchapFilterTchapUsersOnlyWithoutFederation:
-            shouldIgnore |= ![self.userService isUserId:myUserId belongToSameDomainAs:matrixId];
+            shouldIgnore |= ![self.userService isUserId:myUserId onTheSameHostAs:matrixId];
             break;
         case ContactsDataSourceTchapFilterAllWithoutTchapUsers:
             shouldIgnore = YES;

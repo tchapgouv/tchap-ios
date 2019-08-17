@@ -47,6 +47,14 @@ internal enum TchapL10n {
   internal static let contactsNoContact = TchapL10n.tr("Tchap", "contacts_no_contact")
   /// Inviter au salon
   internal static let contactsPickerTitle = TchapL10n.tr("Tchap", "contacts_picker_title")
+  /// Les externes ne sont pas autorisés à rejoindre ce salon
+  internal static let contactsPickerUnauthorizedEmailMessageRestrictedRoom = TchapL10n.tr("Tchap", "contacts_picker_unauthorized_email_message_restricted_room")
+  /// Seuls les membres du domaine %@ sont autorisés
+  internal static func contactsPickerUnauthorizedEmailMessageUnfederatedRoom(_ p1: String) -> String {
+    return TchapL10n.tr("Tchap", "contacts_picker_unauthorized_email_message_unfederated_room", p1)
+  }
+  /// L'invitation de cet email est refusée
+  internal static let contactsPickerUnauthorizedEmailTitle = TchapL10n.tr("Tchap", "contacts_picker_unauthorized_email_title")
   /// Rechercher
   internal static let contactsSearchBarPlaceholder = TchapL10n.tr("Tchap", "contacts_search_bar_placeholder")
   /// Contacts

@@ -102,6 +102,9 @@
 "contacts_invite_by_email_title" = "Envoyer une invitation";
 "contacts_invite_by_email_message" = "Veuillez saisir l'adresse email de la personne à inviter\U00A0:\U00A0";
 "contacts_picker_title" = "Inviter au salon";
+"contacts_picker_unauthorized_email_title" = "L'invitation de cet email est refusée";
+"contacts_picker_unauthorized_email_message_restricted_room" = "Les externes ne sont pas autorisés à rejoindre ce salon";
+"contacts_picker_unauthorized_email_message_unfederated_room" = "Seuls les membres du domaine %@ sont autorisés";
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Sending an invite

@@ -709,7 +709,7 @@
     contactsDataSource = [[ContactsDataSource alloc] initWithMatrixSession:self.mxRoom.mxSession];
     [contactsDataSource finalizeInitialization];
     contactsDataSource.areSectionsShrinkable = YES;
-    contactsDataSource.showInviteButton = NO;
+    contactsDataSource.showInviteButton = YES;
     if (isFederated)
     {
         if ([roomAccessRule isEqualToString:RoomService.roomAccessRuleRestricted])
@@ -1403,6 +1403,70 @@
 - (void)contactsViewController:(ContactsViewController *)contactsViewController didSelectContact:(MXKContact*)contact
 {
     validateBarButtonItem.enabled = contactsDataSource.selectedContactByIdentifier.count;
+}
+
+- (void)contactsViewController:(nonnull ContactsViewController *)contactsViewController askPermissionToSelect:(nonnull NSString*)email completion:(void (^_Nonnull)(BOOL granted, NSString * _Nullable reason))completion
+{
+    // Use the value of the filter defined at the data source level
+    UserService *userService = [[UserService alloc] initWithSession:self.mxRoom.mxSession];
+    
+    switch (contactsDataSource.contactsFilter) {
+        case ContactsDataSourceTchapFilterAll:
+        case ContactsDataSourceTchapFilterAllWithoutTchapUsers:
+        {
+            // Check whether the registration is allowed for this email.
+            [userService isEmailAuthorized:email success:^(BOOL isAuthorized) {
+                NSString *reason = isAuthorized ? nil : [NSString stringWithFormat:NSLocalizedStringFromTable(@"invite_not_sent_for_unauthorized_email", @"Tchap", nil), email];
+                completion(isAuthorized, reason);
+            } failure:^(NSError * _Nonnull error) {
+                // We allow the selection when we failed to get the informmation (We let the server reject the invite or not).
+                completion(true, nil);
+            }];
+            break;
+        }
+        case ContactsDataSourceTchapFilterAllWithoutExternals:
+        {
+            // Check whether this email is bound to the external instance.
+            [userService isEmailBoundToTheExternalHost:email success:^(BOOL isExternal) {
+                NSString *reason = isExternal ? NSLocalizedStringFromTable(@"contacts_picker_unauthorized_email_message_restricted_room", @"Tchap", nil) : nil;
+                completion(!isExternal, reason);
+            } failure:^(NSError * _Nonnull error) {
+                // We allow the selection when we failed to get the informmation (We let the server reject the invite or not).
+                completion(true, nil);
+            }];
+            break;
+        }
+        case ContactsDataSourceTchapFilterAllWithoutFederation:
+        {
+            // Check whether this email belongs to the same host as the current user.
+            NSString *myUserId = self.mxRoom.mxSession.myUser.userId;
+            if (myUserId)
+            {
+                NSString *hostName = [userService hostNameFor:myUserId];
+                [userService isEmailBound:email to:hostName success:^(BOOL isBoundToTheSameHost) {
+                    NSString *reason = isBoundToTheSameHost ? nil : [NSString stringWithFormat:NSLocalizedStringFromTable(@"contacts_picker_unauthorized_email_message_unfederated_room", @"Tchap", nil), [userService hostDisplayNameFor:myUserId]];
+                    completion(isBoundToTheSameHost, reason);
+                } failure:^(NSError * _Nonnull error) {
+                    // We allow the selection when we failed to get the informmation (We let the server reject the invite or not).
+                    completion(true, nil);
+                }];
+            }
+            else
+            {
+                // We allow the selection when we failed to get the informmation (We let the server reject the invite or not).
+                completion(true, nil);
+            }
+            break;
+        }
+        default:
+            completion(false, nil);
+            break;
+    }
+}
+
+- (void)contactsViewController:(ContactsViewController *)contactsViewController sendEmailInviteTo:(NSString *)email
+{
+    [self inviteOneByOneSelectedIdentifiers:[NSMutableArray arrayWithObject:email]];
 }
 
 #pragma mark - Actions

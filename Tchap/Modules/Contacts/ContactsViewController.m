@@ -36,6 +36,8 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
 
 @property (weak, nonatomic) UIAlertController *currentAlert;
 
+@property (nonatomic) UIActivityIndicatorView *activityIndicator;
+
 /**
  The analytics instance screen name (Default is "ContactsTable").
  */
@@ -87,7 +89,17 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
     // Enable self-sizing cells.
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     self.tableView.estimatedRowHeight = 60;
-    self.tableView.allowsMultipleSelection = self.enableMultipleSelection;    
+    self.tableView.allowsMultipleSelection = self.enableMultipleSelection;
+    
+    // Add activity indicator
+    self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    CGRect frame = self.activityIndicator.frame;
+    frame.size.width += 30;
+    frame.size.height += 30;
+    self.activityIndicator.bounds = frame;
+    [self.activityIndicator.layer setCornerRadius:5];
+    self.activityIndicator.center = self.view.center;
+    [self.view addSubview:self.activityIndicator];
     
     if (self.showSearchBar)
     {
@@ -152,6 +164,26 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
     }
 }
 
+#pragma mark - Activity indicator
+
+- (void)startActivityIndicator
+{
+    [self.view bringSubviewToFront:self.activityIndicator];
+    [self.activityIndicator startAnimating];
+    
+    // Show the loading wheel after a delay so that if the caller calls stopActivityIndicator
+    // in a short future, the loading wheel will not be displayed to the end user.
+    self.activityIndicator.alpha = 0;
+    [UIView animateWithDuration:0.3 delay:0.3 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+        self.activityIndicator.alpha = 1;
+    } completion:^(BOOL finished) {}];
+}
+
+- (void)stopActivityIndicator
+{
+    [self.activityIndicator stopAnimating];
+}
+
 #pragma mark - Public
 
 - (void)displayList:(ContactsDataSource*)listDataSource
@@ -206,7 +238,7 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
     self.searchController = searchController;
 }
 
-- (void)sendInviteByEmail
+- (void)promptUserToFillEmailToInvite
 {
     MXWeakify(self);
     
@@ -236,32 +268,81 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
                                                        
                                                        MXStrongifyAndReturnIfNil(self);
                                                        UITextField *textField = [self.currentAlert textFields].firstObject;
-                                                       NSString *email = textField.text;
-                                                       
+                                                       // Force the filled email address in lowercase
+                                                       NSString *email = [textField.text lowercaseString];
                                                        self.currentAlert = nil;
                                                        
                                                        if ([MXTools isEmailAddress:email])
                                                        {
-                                                           // Sanity check
-                                                           if ([self.delegate respondsToSelector:@selector(contactsViewController:sendEmailInviteTo:)])
-                                                           {
-                                                               [self.delegate contactsViewController:self sendEmailInviteTo:email];
-                                                           }
+                                                           [self sendInviteByEmail: email];
                                                        }
                                                        else
                                                        {
-                                                           NSError *error = [NSError errorWithDomain:ContactErrorDomain
-                                                                                                code:0
-                                                                                            userInfo:@{NSLocalizedDescriptionKey : NSLocalizedStringFromTable(@"authentication_error_invalid_email", @"Tchap", nil)}];
-                                                           [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                           MXWeakify(self);
+                                                           [self.currentAlert dismissViewControllerAnimated:NO completion:nil];
+                                                           self.currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"authentication_error_invalid_email", @"Tchap", nil)
+                                                                                                                   message:nil
+                                                                                                            preferredStyle:UIAlertControllerStyleAlert];
+                                                           [self.currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                                                                                                                 style:UIAlertActionStyleDefault
+                                                                                                               handler:^(UIAlertAction * action) {
+                                                                                                                   
+                                                                                                                   MXStrongifyAndReturnIfNil(self);
+                                                                                                                   self.currentAlert = nil;
+                                                                                                                   
+                                                                                                               }]];
+                                                           [self.currentAlert mxk_setAccessibilityIdentifier: @"ContactsVCInviteByEmailError"];
+                                                           [self presentViewController:self.currentAlert animated:YES completion:nil];
                                                        }
-                                                       
                                                    }]];
     
     [self.currentAlert mxk_setAccessibilityIdentifier: @"ContactsVCInviteByEmailDialog"];
     [self presentViewController:self.currentAlert animated:YES completion:nil];
 }
 
+- (void)sendInviteByEmail:(NSString *)email
+{
+    // Check whether the delegate allows this email to be invited
+    if ([self.delegate respondsToSelector:@selector(contactsViewController:askPermissionToSelect:completion:)])
+    {
+        [self startActivityIndicator];
+        MXWeakify(self);
+        [self.delegate contactsViewController:self
+                        askPermissionToSelect:email
+                                   completion:^(BOOL granted, NSString * _Nullable reason) {
+                                       MXStrongifyAndReturnIfNil(self);
+                                       [self stopActivityIndicator];
+                                       if (granted
+                                           && [self.delegate respondsToSelector:@selector(contactsViewController:sendEmailInviteTo:)])
+                                       {
+                                           [self.delegate contactsViewController:self sendEmailInviteTo:email];
+                                       }
+                                       else
+                                       {
+                                           MXWeakify(self);
+                                           [self.currentAlert dismissViewControllerAnimated:NO completion:nil];
+                                           self.currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"contacts_picker_unauthorized_email_title", @"Tchap", nil)
+                                                                                                   message:reason
+                                                                                            preferredStyle:UIAlertControllerStyleAlert];
+                                           [self.currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                                                                                                 style:UIAlertActionStyleDefault
+                                                                                               handler:^(UIAlertAction * action) {
+                                                                                                   
+                                                                                                   MXStrongifyAndReturnIfNil(self);
+                                                                                                   self.currentAlert = nil;
+                                                                                                   
+                                                                                               }]];
+                                           [self.currentAlert mxk_setAccessibilityIdentifier: @"ContactsVCInviteByEmailError"];
+                                           [self presentViewController:self.currentAlert animated:YES completion:nil];
+                                       }
+                                   }];
+    }
+    else if ([self.delegate respondsToSelector:@selector(contactsViewController:sendEmailInviteTo:)])
+    {
+        // Be default the email is allowed
+        [self.delegate contactsViewController:self sendEmailInviteTo:email];
+    }
+}
 
 #pragma mark - Stylable
 
@@ -278,6 +359,9 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
     
     self.tableView.backgroundColor = style.backgroundColor;
     self.view.backgroundColor = style.backgroundColor;
+    
+    //TODO Design the activvity indicator for Tchap
+    self.activityIndicator.backgroundColor = kRiotOverlayColor;
     
     UISearchBar *searchBar = self.searchController.searchBar;
     
@@ -377,23 +461,72 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
     if ([self.contactsDataSource isInviteButtonIndexPath:indexPath])
     {
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
-        [self sendInviteByEmail];
+        [self promptUserToFillEmailToInvite];
         return;
     }
     
+    MXKContact *mxkContact = [self.contactsDataSource contactAtIndexPath:indexPath];
+    if (mxkContact)
+    {
+        NSString *identifier = [self.contactsDataSource contactIdentifier:mxkContact];
+        // Before selecting a new email, we ask the delegate whether the email is allowed.
+        if ([MXTools isEmailAddress:identifier]
+            && !self.contactsDataSource.selectedContactByIdentifier[identifier]
+            && [self.delegate respondsToSelector:@selector(contactsViewController:askPermissionToSelect:completion:)])
+        {
+            [self startActivityIndicator];
+            MXWeakify(self);
+            [self.delegate contactsViewController:self
+                            askPermissionToSelect:identifier
+                                       completion:^(BOOL granted, NSString * _Nullable reason) {
+                                           MXStrongifyAndReturnIfNil(self);
+                                           [self stopActivityIndicator];
+                                           if (granted)
+                                           {
+                                               [self selectContact:mxkContact atIndexPath:indexPath];
+                                           }
+                                           else
+                                           {
+                                               MXWeakify(self);
+                                               [self.currentAlert dismissViewControllerAnimated:NO completion:nil];
+                                               self.currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"contacts_picker_unauthorized_email_title", @"Tchap", nil)
+                                                                                                       message:reason
+                                                                                                preferredStyle:UIAlertControllerStyleAlert];
+                                               [self.currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                                                                                                     style:UIAlertActionStyleDefault
+                                                                                                   handler:^(UIAlertAction * action) {
+                                                                                                       
+                                                                                                       MXStrongifyAndReturnIfNil(self);
+                                                                                                       self.currentAlert = nil;
+                                                                                                       
+                                                                                                   }]];
+                                               [self.currentAlert mxk_setAccessibilityIdentifier: @"ContactsVCInviteByEmailError"];
+                                               [self presentViewController:self.currentAlert animated:YES completion:nil];
+                                               [tableView deselectRowAtIndexPath:indexPath animated:YES];
+                                           }
+                                       }];
+        }
+        else
+        {
+            [self selectContact:mxkContact atIndexPath:indexPath];
+        }
+    }
+    else
+    {
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    }
+}
+
+- (void)selectContact:(MXKContact*)contact atIndexPath:(NSIndexPath *)indexPath
+{
     if (self.enableMultipleSelection)
     {
         [self.contactsDataSource selectOrDeselectContactAtIndexPath:indexPath];
     }
     
-    MXKContact *mxkContact = [self.contactsDataSource contactAtIndexPath:indexPath];
-    if (self.delegate && mxkContact)
+    if (self.delegate)
     {
-        [self.delegate contactsViewController:self didSelectContact:mxkContact];
-    }
-    else
-    {
-        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        [self.delegate contactsViewController:self didSelectContact:contact];
     }
     
     if (self.enableMultipleSelection)

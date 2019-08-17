@@ -162,6 +162,13 @@ typedef enum : NSUInteger
  */
 - (void)selectOrDeselectContactAtIndexPath:(NSIndexPath*)indexPath;
 
+/**
+ Return the identifier (Matrix id or email) related to a contact.
+ 
+ @param contact
+ */
+- (NSString*)contactIdentifier:(MXKContact*)contact;
+
 #pragma mark - Configuration
 /**
  Tell whether the sections are shrinkable. NO by default.

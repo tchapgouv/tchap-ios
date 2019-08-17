@@ -38,13 +38,13 @@ protocol UserServiceType {
     /// - Returns: A Tchap User.
     func buildTemporaryUser(from userId: String) -> User
     
-    /// Check if two users are on the same domain.
+    /// Check if two users are on the same host.
     ///
     /// - Parameters:
     ///   - firstUserId: First Matrix ID
     ///   - secondUserId: Second Matrix ID
-    /// - Returns: true if the two Matrix IDs belong to the same domain.
-    func isUserId(_ firstUserId: String, belongToSameDomainAs secondUserId: String) -> Bool
+    /// - Returns: true if the two Matrix IDs belong to the same host.
+    func isUserId(_ firstUserId: String, onTheSameHostAs secondUserId: String) -> Bool
     
     /// Check whether the account associated to the provided userId has been deactivated.
     ///
@@ -53,11 +53,54 @@ protocol UserServiceType {
     ///   - completion: A closure called when the operation completes. Provide the answer or an error.
     func isAccountDeactivated(for userId: String, completion: @escaping ((MXResponse<Bool>) -> Void))
     
-    /// Tells whether the provided Matrix identifier corresponds to an external Tchap user.
+    /// Tells whether a Matrix identifier corresponds to an external Tchap user.
     /// Note: invalid identifier will be considered as external.
     ///
     /// - Parameters:
     ///   - userId: The Matrix user id.
     /// - Returns: true if the user is external.
     func isExternalUser(for userId: String) -> Bool
+    
+    /// Tells whether a host name corresponds to an external server.
+    ///
+    /// - Parameters:
+    ///   - hostName: The host name.
+    /// - Returns: true if the related host is external.
+    func isExternalServer(_ hostName: String) -> Bool
+    
+    /// Tells whether the Tchap registration with the provided email address is allowed.
+    ///
+    /// - Parameters:
+    ///   - email: an email address.
+    ///   - completion: A closure called when the operation completes. Provide the answer or an error.
+    func isEmailAuthorized(_ email: String, completion: @escaping (MXResponse<Bool>) -> Void)
+    
+    /// Tells whether an email address is bound to the external server.
+    ///
+    /// - Parameters:
+    ///   - email: an email address.
+    ///   - completion: A closure called when the operation completes. Provide the answer or an error.
+    func isEmailBoundToTheExternalHost(_ email: String, completion: @escaping (MXResponse<Bool>) -> Void)
+    
+    /// Tells whether an email address is bound to the provided host.
+    ///
+    /// - Parameters:
+    ///   - email: an email address.
+    ///   - hostName: the host name to consider.
+    ///   - completion: A closure called when the operation completes. Provide the answer or an error.
+    func isEmailBound(_ email: String, to hostName: String, completion: @escaping (MXResponse<Bool>) -> Void)
+    
+    /// Returns the host name for a Matrix user id.
+    ///
+    /// - Parameters:
+    ///   - userId: The Matrix user id.
+    /// - Returns: the host name (if any).
+    func hostName(for userId: String) -> String?
+    
+    /// Returns the display name of the host related to the provided Matrix user id.
+    ///
+    /// - Parameters:
+    ///   - userId: The Matrix user id.
+    /// - Returns: the host display name (if any).
+    func hostDisplayName(for userId: String) -> String?
 }
