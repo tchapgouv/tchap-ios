@@ -86,12 +86,12 @@
 - (void)contactsViewController:(nonnull ContactsViewController *)contactsViewController askPermissionToSelect:(nonnull NSString*)email completion:(void (^_Nonnull)(BOOL granted, NSString * _Nullable reason))completion;
 
 /**
- Tells the delegate to send an invite to an email address.
+ Tells the delegate to send an invite to Tchap to an email address.
  
  @param contactsViewController the `ContactsViewController` instance.
  @param email the selected email.
  */
-- (void)contactsViewController:(nonnull ContactsViewController *)contactsViewController sendEmailInviteTo:(nonnull NSString*)email;
+- (void)contactsViewController:(nonnull ContactsViewController *)contactsViewController sendInviteToTchapByEmail:(nonnull NSString*)email;
 
 
 @end

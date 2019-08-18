@@ -79,7 +79,8 @@ typedef enum : NSUInteger
 {
 @protected
     // Section indexes
-    NSInteger inviteButtonSection;
+    NSInteger inviteToTchapButtonSection;
+    NSInteger addEmailButtonSection;
     NSInteger filteredLocalContactsSection;
     NSInteger filteredMatrixContactsSection;
     
@@ -99,6 +100,14 @@ typedef enum : NSUInteger
  @return YES if the indexPath is the invite button one
  */
 -(BOOL)isInviteButtonIndexPath:(NSIndexPath*)indexPath;
+
+/**
+ Check whether the add email button is located to the given index path.
+ 
+ @param indexPath the index of the cell
+ @return YES if the indexPath is the addEmail button one
+ */
+-(BOOL)isAddEmailButtonIndexPath:(NSIndexPath*)indexPath;
 
 /**
  Get the contact at the given index path.
@@ -163,6 +172,14 @@ typedef enum : NSUInteger
 - (void)selectOrDeselectContactAtIndexPath:(NSIndexPath*)indexPath;
 
 /**
+ Add an email address to the selection.
+ 
+ @param email.
+ @return the contact used to represent the email in the selection.
+ */
+- (MXKContact*)addSelectedEmail:(NSString*)email;
+
+/**
  Return the identifier (Matrix id or email) related to a contact.
  
  @param contact
@@ -218,9 +235,14 @@ typedef enum : NSUInteger
 - (void)searchWithPattern:(NSString *)searchText forceReset:(BOOL)forceReset;
 
 /**
- Tell whether the invite button is displayed at the top of the contacts list (NO by default).
+ Tell whether the invite to Tchap button is displayed at the top of the contacts list (NO by default).
  */
-@property (nonatomic) BOOL showInviteButton;
+@property (nonatomic) BOOL showInviteToTchapButton;
+
+/**
+ Tell whether the user is allowed to add some email addresses to the list (NO by default).
+ */
+@property (nonatomic) BOOL showAddEmailButton;
 
 /**
  The state of the users search from the homeserver user directory.

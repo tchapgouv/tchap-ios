@@ -98,6 +98,7 @@
 "contacts_user_directory_section" = "Répertoire Tchap";
 "contacts_user_directory_offline_section" = "Répertoire Tchap (hors-ligne)";
 "contacts_search_bar_placeholder" = "Rechercher";
+"contacts_invite_to_tchap_button" = "Inviter des contacts dans Tchap";
 "contacts_invite_by_email_button" = "Envoyer une invitation par email";
 "contacts_invite_by_email_title" = "Envoyer une invitation";
 "contacts_invite_by_email_message" = "Veuillez saisir l'adresse email de la personne à inviter\U00A0:\U00A0";

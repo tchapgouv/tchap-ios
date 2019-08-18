@@ -86,7 +86,8 @@
         
         hideNonMatrixEnabledContacts = NO;
         
-        _showInviteButton = NO;
+        _showInviteToTchapButton = NO;
+        _showAddEmailButton = NO;
         
         forceDirectContactsRefresh = YES;
         
@@ -400,11 +401,21 @@
     });
 }
 
-- (void)setShowInviteButton:(BOOL)showInviteButton
+- (void)setShowInviteToTchapButton:(BOOL)showInviteButton
 {
-   if (_showInviteButton != showInviteButton)
+   if (_showInviteToTchapButton != showInviteButton)
     {
-        _showInviteButton = showInviteButton;
+        _showInviteToTchapButton = showInviteButton;
+        
+        [self forceRefresh];
+    }
+}
+
+- (void)setShowAddEmailButton:(BOOL)showAddEmailButton
+{
+    if (_showAddEmailButton != showAddEmailButton)
+    {
+        _showAddEmailButton = showAddEmailButton;
         
         [self forceRefresh];
     }
@@ -426,6 +437,21 @@
             self.selectedContactByIdentifier[identifier] = contact;
         }
     }
+}
+
+- (MXKContact*)addSelectedEmail:(NSString*)email
+{
+    // Add a fake contact to the selection
+    MXKContact *contact = [[MXKContact alloc] initContactWithDisplayName:email emails:nil phoneNumbers:nil andThumbnail:nil];
+    self.selectedContactByIdentifier[email] = contact;
+    [self forceRefresh];
+    
+    return contact;
+}
+
+- (BOOL)isTemporaryAddedEmail:(MXKContact*)contact
+{
+    return (!contact.emailAddresses && !contact.phoneNumbers && [contact.contactID hasPrefix:kMXKContactDefaultContactPrefixId]);
 }
 
 - (NSString*)contactIdentifier:(MXKContact*)contact
@@ -808,10 +834,43 @@
         }
         
         // Sort the updated list
-        [[MXKContactManager sharedManager] sortAlphabeticallyContacts:unfilteredLocalContacts];
+        [self sortAlphabeticallyContacts:unfilteredLocalContacts];
     }
     
     return unfilteredLocalContacts;
+}
+
+- (void)sortAlphabeticallyContacts:(NSMutableArray<MXKContact*> *)contactsArray
+{
+    NSComparator comparator = ^NSComparisonResult(MXKContact *contactA, MXKContact *contactB) {
+        
+        // The potential added emails are moved to the top.
+        if ([self isTemporaryAddedEmail:contactA] && ![self isTemporaryAddedEmail:contactB])
+        {
+            return NSOrderedAscending;
+        }
+        if (![self isTemporaryAddedEmail:contactA] && [self isTemporaryAddedEmail:contactB])
+        {
+            return NSOrderedDescending;
+        }
+        
+        if (contactA.sortingDisplayName.length && contactB.sortingDisplayName.length)
+        {
+            return [contactA.sortingDisplayName compare:contactB.sortingDisplayName options:NSCaseInsensitiveSearch];
+        }
+        else if (contactA.sortingDisplayName.length)
+        {
+            return NSOrderedAscending;
+        }
+        else if (contactB.sortingDisplayName.length)
+        {
+            return NSOrderedDescending;
+        }
+        return [contactA.displayName compare:contactB.displayName options:NSCaseInsensitiveSearch];
+    };
+    
+    // Sort the contacts list
+    [contactsArray sortUsingComparator:comparator];
 }
 
 - (NSMutableArray<MXKContact*>*)unfilteredMatrixContactsArray
@@ -888,12 +947,18 @@
 {
     NSInteger count = 0;
     
-    inviteButtonSection = filteredLocalContactsSection = filteredMatrixContactsSection = -1;
+    inviteToTchapButtonSection = addEmailButtonSection = filteredLocalContactsSection = filteredMatrixContactsSection = -1;
     
-    if (_showInviteButton)
+    if (_showInviteToTchapButton)
     {
         [tableView registerNib:ContactButtonView.nib forCellReuseIdentifier:ContactButtonView.defaultReuseIdentifier];
-        inviteButtonSection = count++;
+        inviteToTchapButtonSection = count++;
+    }
+    
+    if (_showAddEmailButton)
+    {
+        [tableView registerNib:ContactButtonView.nib forCellReuseIdentifier:ContactButtonView.defaultReuseIdentifier];
+        addEmailButtonSection = count++;
     }
     
     if (currentSearchText.length)
@@ -925,7 +990,11 @@
 {
     NSInteger count = 0;
     
-    if (section == inviteButtonSection)
+    if (section == inviteToTchapButtonSection)
+    {
+        count = 1;
+    }
+    else if (section == addEmailButtonSection)
     {
         count = 1;
     }
@@ -959,8 +1028,19 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Consider first the potential button displayed to invite a contact by email.
-    if (indexPath.section == inviteButtonSection)
+    // Consider first the potential button displayed to invite by email a contact to join Tchap.
+    if (indexPath.section == inviteToTchapButtonSection)
+    {
+        ContactButtonView *buttonView = [tableView dequeueReusableCellWithIdentifier:ContactButtonView.defaultReuseIdentifier forIndexPath:indexPath];
+        ContactButtonViewModel *buttonModel = [[ContactButtonViewModel alloc] initWithIcon: [UIImage imageNamed:@"tchap_ic_add_contact"]
+                                                                                    action: NSLocalizedStringFromTable(@"contacts_invite_to_tchap_button", @"Tchap", nil)];
+        [buttonView renderWithModel:buttonModel];
+        
+        return buttonView;
+    }
+    
+    // Check whether the user is allowed to add manually some email addresses
+    if (indexPath.section == addEmailButtonSection)
     {
         ContactButtonView *buttonView = [tableView dequeueReusableCellWithIdentifier:ContactButtonView.defaultReuseIdentifier forIndexPath:indexPath];
         ContactButtonViewModel *buttonModel = [[ContactButtonViewModel alloc] initWithIcon: [UIImage imageNamed:@"tchap_ic_add_bymail"]
@@ -1086,7 +1166,12 @@
 
 -(BOOL)isInviteButtonIndexPath:(NSIndexPath*)indexPath
 {
-    return (indexPath.section == inviteButtonSection);
+    return (indexPath.section == inviteToTchapButtonSection);
+}
+
+-(BOOL)isAddEmailButtonIndexPath:(NSIndexPath*)indexPath
+{
+    return (indexPath.section == addEmailButtonSection);
 }
 
 -(MXKContact *)contactAtIndexPath:(NSIndexPath*)indexPath

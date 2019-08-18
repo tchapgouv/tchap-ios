@@ -41,6 +41,8 @@ internal enum TchapL10n {
   internal static let contactsInviteByEmailMessage = TchapL10n.tr("Tchap", "contacts_invite_by_email_message")
   /// Envoyer une invitation
   internal static let contactsInviteByEmailTitle = TchapL10n.tr("Tchap", "contacts_invite_by_email_title")
+  /// Inviter des contacts dans Tchap
+  internal static let contactsInviteToTchapButton = TchapL10n.tr("Tchap", "contacts_invite_to_tchap_button")
   /// Contacts Tchap
   internal static let contactsMainSection = TchapL10n.tr("Tchap", "contacts_main_section")
   /// Aucun contact

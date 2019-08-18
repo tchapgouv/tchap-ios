@@ -709,7 +709,7 @@
     contactsDataSource = [[ContactsDataSource alloc] initWithMatrixSession:self.mxRoom.mxSession];
     [contactsDataSource finalizeInitialization];
     contactsDataSource.areSectionsShrinkable = YES;
-    contactsDataSource.showInviteButton = YES;
+    contactsDataSource.showAddEmailButton = YES;
     if (isFederated)
     {
         if ([roomAccessRule isEqualToString:RoomService.roomAccessRuleRestricted])
@@ -1462,11 +1462,6 @@
             completion(false, nil);
             break;
     }
-}
-
-- (void)contactsViewController:(ContactsViewController *)contactsViewController sendEmailInviteTo:(NSString *)email
-{
-    [self inviteOneByOneSelectedIdentifiers:[NSMutableArray arrayWithObject:email]];
 }
 
 #pragma mark - Actions

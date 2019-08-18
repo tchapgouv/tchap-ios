@@ -238,7 +238,7 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
     self.searchController = searchController;
 }
 
-- (void)promptUserToFillEmailToInvite
+- (void)promptUserToFillAnEmailToInvite:(void (^)(NSString *email))completion
 {
     MXWeakify(self);
     
@@ -274,7 +274,7 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
                                                        
                                                        if ([MXTools isEmailAddress:email])
                                                        {
-                                                           [self sendInviteByEmail: email];
+                                                           completion(email);
                                                        }
                                                        else
                                                        {
@@ -300,7 +300,16 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
     [self presentViewController:self.currentAlert animated:YES completion:nil];
 }
 
-- (void)sendInviteByEmail:(NSString *)email
+- (void)sendInviteToTchapByEmail:(NSString *)email
+{
+    // Sanity check
+    if ([self.delegate respondsToSelector:@selector(contactsViewController:sendInviteToTchapByEmail:)])
+    {
+        [self.delegate contactsViewController:self sendInviteToTchapByEmail:email];
+    }
+}
+
+- (void)selectEmail:(NSString *)email
 {
     // Check whether the delegate allows this email to be invited
     if ([self.delegate respondsToSelector:@selector(contactsViewController:askPermissionToSelect:completion:)])
@@ -312,10 +321,13 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
                                    completion:^(BOOL granted, NSString * _Nullable reason) {
                                        MXStrongifyAndReturnIfNil(self);
                                        [self stopActivityIndicator];
-                                       if (granted
-                                           && [self.delegate respondsToSelector:@selector(contactsViewController:sendEmailInviteTo:)])
+                                       if (granted)
                                        {
-                                           [self.delegate contactsViewController:self sendEmailInviteTo:email];
+                                           MXKContact *contact = [self.contactsDataSource addSelectedEmail:email];
+                                           if (self.delegate)
+                                           {
+                                               [self.delegate contactsViewController:self didSelectContact:contact];
+                                           }
                                        }
                                        else
                                        {
@@ -337,10 +349,14 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
                                        }
                                    }];
     }
-    else if ([self.delegate respondsToSelector:@selector(contactsViewController:sendEmailInviteTo:)])
+    else
     {
-        // Be default the email is allowed
-        [self.delegate contactsViewController:self sendEmailInviteTo:email];
+        // By default all email is allowed
+        MXKContact *contact = [self.contactsDataSource addSelectedEmail:email];
+        if (self.delegate)
+        {
+            [self.delegate contactsViewController:self didSelectContact:contact];
+        }
     }
 }
 
@@ -461,7 +477,19 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
     if ([self.contactsDataSource isInviteButtonIndexPath:indexPath])
     {
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
-        [self promptUserToFillEmailToInvite];
+        [self promptUserToFillAnEmailToInvite:^(NSString *email) {
+            [self sendInviteToTchapByEmail:email];
+        }];
+        return;
+    }
+    
+    // Check whether the user wants to add manually some email into the list
+    if ([self.contactsDataSource isAddEmailButtonIndexPath:indexPath])
+    {
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        [self promptUserToFillAnEmailToInvite:^(NSString *email) {
+            [self selectEmail:email];
+        }];
         return;
     }
     

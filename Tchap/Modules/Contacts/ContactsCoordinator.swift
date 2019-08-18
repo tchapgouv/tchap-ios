@@ -66,7 +66,7 @@ final class ContactsCoordinator: NSObject, ContactsCoordinatorType {
         // Display the invite button at the top of the contacts list, except if the current user is an external users.
         // Check whether the current user is available
         if let myUserId = session.myUser?.userId {
-            self.contactsDataSource.showInviteButton = !self.userService.isExternalUser(for: myUserId)
+            self.contactsDataSource.showInviteToTchapButton = !self.userService.isExternalUser(for: myUserId)
         } else {
             self.registerSessionStateNotification()
         }
@@ -94,7 +94,7 @@ final class ContactsCoordinator: NSObject, ContactsCoordinatorType {
         // Check whether the current user id is available
         if let myUserId = self.session.myUser?.userId {
             self.unregisterSessionStateNotification()
-            self.contactsDataSource.showInviteButton = !self.userService.isExternalUser(for: myUserId)
+            self.contactsDataSource.showInviteToTchapButton = !self.userService.isExternalUser(for: myUserId)
         }
     }
     
@@ -116,7 +116,7 @@ extension ContactsCoordinator: ContactsViewControllerDelegate {
         self.didSelectUserID(userID)
     }
     
-    func contactsViewController(_ contactsViewController: ContactsViewController, sendEmailInviteTo email: String) {
+    func contactsViewController(_ contactsViewController: ContactsViewController, sendInviteToTchapByEmail email: String) {
         self.delegate?.contactsCoordinator(self, sendEmailInviteTo: email)
     }
 }
