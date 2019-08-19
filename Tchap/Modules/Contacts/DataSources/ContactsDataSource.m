@@ -951,13 +951,11 @@
     
     if (_showInviteToTchapButton)
     {
-        [tableView registerNib:ContactButtonView.nib forCellReuseIdentifier:ContactButtonView.defaultReuseIdentifier];
         inviteToTchapButtonSection = count++;
     }
     
     if (_showAddEmailButton)
     {
-        [tableView registerNib:ContactButtonView.nib forCellReuseIdentifier:ContactButtonView.defaultReuseIdentifier];
         addEmailButtonSection = count++;
     }
     

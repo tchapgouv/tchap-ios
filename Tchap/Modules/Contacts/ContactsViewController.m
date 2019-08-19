@@ -82,6 +82,7 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
     {
         [self.tableView registerNib:ContactCell.nib forCellReuseIdentifier:ContactCell.defaultReuseIdentifier];
     }
+    [self.tableView registerNib:ContactButtonView.nib forCellReuseIdentifier:ContactButtonView.defaultReuseIdentifier];
     
     // Hide line separators of empty cells
     self.tableView.tableFooterView = [[UIView alloc] init];
