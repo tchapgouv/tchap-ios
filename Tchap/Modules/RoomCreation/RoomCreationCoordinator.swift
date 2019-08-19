@@ -122,12 +122,12 @@ final class RoomCreationCoordinator: NSObject, RoomCreationCoordinatorType {
             // Check the room access rule
             let isRestricted = self.roomCreationFormResult?.isRestricted ?? true
             if isRestricted {
-                filter = ContactsDataSourceTchapFilterNonExternalTchapOnly
+                filter = ContactsDataSourceTchapFilterTchapUsersOnlyWithoutExternals
             } else {
-                filter = ContactsDataSourceTchapFilterTchapOnly
+                filter = ContactsDataSourceTchapFilterTchapUsersOnly
             }
         } else {
-            filter = ContactsDataSourceTchapFilterNonFederatedTchapOnly
+            filter = ContactsDataSourceTchapFilterTchapUsersOnlyWithoutFederation
         }
         let contactsPickerCoordinator = ContactsPickerCoordinator(session: self.session, contactsFilter: filter)
         contactsPickerCoordinator.start()
@@ -247,7 +247,8 @@ extension RoomCreationCoordinator: MediaPickerViewControllerDelegate {
 // MARK: - ContactsPickerCoordinatorDelegate
 extension RoomCreationCoordinator: ContactsPickerCoordinatorDelegate {
     
-    func contactsPickerCoordinator(_ coordinator: ContactsPickerCoordinatorType, didSelectUserIDs userIDs: [String]) {
-        self.createRoom(with: userIDs)
+    func contactsPickerCoordinator(_ coordinator: ContactsPickerCoordinatorType, didSelectContactIdentifiers identifiers: [String]) {
+        // Presently only Matrix ids are expected in this identifiers list (the picker is configured to display only Tchap users).
+        self.createRoom(with: identifiers)
     }
 }

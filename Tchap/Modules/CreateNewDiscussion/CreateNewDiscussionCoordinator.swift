@@ -50,7 +50,7 @@ final class CreateNewDiscussionCoordinator: NSObject, CreateNewDiscussionCoordin
         
         let contactsDataSource: ContactsDataSource = ContactsDataSource(matrixSession: self.session)
         contactsDataSource.finalizeInitialization()
-        contactsDataSource.contactsFilter = ContactsDataSourceTchapFilterTchapOnly
+        contactsDataSource.contactsFilter = ContactsDataSourceTchapFilterTchapUsersOnly
         self.contactsDataSource = contactsDataSource
         
         super.init()

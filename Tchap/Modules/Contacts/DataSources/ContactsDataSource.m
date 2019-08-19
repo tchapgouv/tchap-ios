@@ -56,7 +56,7 @@
     NSMutableDictionary<NSString*, MXKContact*> *discoveredTchapContacts;
 }
 
-@property (nonatomic, strong, readwrite) NSMutableDictionary<NSString*, MXKContact*> *selectedContactByMatrixId;
+@property (nonatomic, strong, readwrite) NSMutableDictionary<NSString*, MXKContact*> *selectedContactByIdentifier;
 @property (nonatomic, strong) UserService *userService;
 
 @end
@@ -77,7 +77,7 @@
         
         _ignoredContactsByEmail = [NSMutableDictionary dictionary];
         _ignoredContactsByMatrixId = [NSMutableDictionary dictionary];
-        _selectedContactByMatrixId = [NSMutableDictionary dictionary];
+        _selectedContactByIdentifier = [NSMutableDictionary dictionary];
         
         _contactsFilter = ContactsDataSourceTchapFilterAll;
         
@@ -86,7 +86,8 @@
         
         hideNonMatrixEnabledContacts = NO;
         
-        _showInviteButton = NO;
+        _showInviteToTchapButton = NO;
+        _showAddEmailButton = NO;
         
         forceDirectContactsRefresh = YES;
         
@@ -161,7 +162,7 @@
     if (MXSessionStateStoreDataReady <= self.mxSession.state)
     {
         // Extract some Tchap contacts from the direct chats data, if this is relevant, and if this is not already done.
-        if (_contactsFilter != ContactsDataSourceTchapFilterNoTchapOnly && forceDirectContactsRefresh)
+        if (_contactsFilter != ContactsDataSourceTchapFilterAllWithoutTchapUsers && forceDirectContactsRefresh)
         {
             [self forceRefresh];
         }
@@ -197,7 +198,7 @@
         
         // Check whether we have to listen direct chats updates
         [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXSessionDirectRoomsDidChangeNotification object:nil];
-        if (_contactsFilter == ContactsDataSourceTchapFilterNoTchapOnly)
+        if (_contactsFilter == ContactsDataSourceTchapFilterAllWithoutTchapUsers)
         {
             directContacts = nil;
         }
@@ -400,11 +401,21 @@
     });
 }
 
-- (void)setShowInviteButton:(BOOL)showInviteButton
+- (void)setShowInviteToTchapButton:(BOOL)showInviteButton
 {
-   if (_showInviteButton != showInviteButton)
+   if (_showInviteToTchapButton != showInviteButton)
     {
-        _showInviteButton = showInviteButton;
+        _showInviteToTchapButton = showInviteButton;
+        
+        [self forceRefresh];
+    }
+}
+
+- (void)setShowAddEmailButton:(BOOL)showAddEmailButton
+{
+    if (_showAddEmailButton != showAddEmailButton)
+    {
+        _showAddEmailButton = showAddEmailButton;
         
         [self forceRefresh];
     }
@@ -413,20 +424,54 @@
 - (void)selectOrDeselectContactAtIndexPath:(NSIndexPath*)indexPath
 {
     MXKContact *contact = [self contactAtIndexPath:indexPath];
-    NSString *matrixIdentifier = contact.matrixIdentifiers.firstObject;
-    
-    if (matrixIdentifier)
+    NSString *identifier = [self contactIdentifier:contact];
+    if (identifier)
     {
         // Contact already selected, deselect it by removing it from selected contacts.
-        if (self.selectedContactByMatrixId[matrixIdentifier])
+        if (self.selectedContactByIdentifier[identifier])
         {
-            self.selectedContactByMatrixId[matrixIdentifier] = nil;
+            self.selectedContactByIdentifier[identifier] = nil;
         }
         else
         {
-            self.selectedContactByMatrixId[matrixIdentifier] = contact;
+            self.selectedContactByIdentifier[identifier] = contact;
         }
     }
+}
+
+- (MXKContact*)addSelectedEmail:(NSString*)email
+{
+    // Add a fake contact to the selection
+    MXKContact *contact = [[MXKContact alloc] initContactWithDisplayName:email emails:nil phoneNumbers:nil andThumbnail:nil];
+    self.selectedContactByIdentifier[email] = contact;
+    [self forceRefresh];
+    
+    return contact;
+}
+
+- (BOOL)isTemporaryAddedEmail:(MXKContact*)contact
+{
+    return (!contact.emailAddresses && !contact.phoneNumbers && [contact.contactID hasPrefix:kMXKContactDefaultContactPrefixId]);
+}
+
+- (NSString*)contactIdentifier:(MXKContact*)contact
+{
+    NSString *identifier = contact.matrixIdentifiers.firstObject;
+    if (!identifier)
+    {
+        if (contact.emailAddresses.count)
+        {
+            // This is a local contact, consider the first email by default.
+            MXKEmail *email = contact.emailAddresses.firstObject;
+            identifier = email.emailAddress;
+        }
+        else
+        {
+            // This is an email added manually by the user.
+            identifier = contact.displayName;
+        }
+    }
+    return identifier;
 }
 
 #pragma mark - Internals
@@ -445,7 +490,7 @@
 - (void)applicationWillEnterForeground:(NSNotification *)notif
 {
     // Check whether we should refresh the contacts extracted from the direct chat data.
-    if (_contactsFilter != ContactsDataSourceTchapFilterNoTchapOnly)
+    if (_contactsFilter != ContactsDataSourceTchapFilterAllWithoutTchapUsers)
     {
         forceDirectContactsRefresh = YES;
         [self forceRefresh];
@@ -645,10 +690,10 @@
 {
     // Retrieve all the contacts obtained by splitting each local contact by contact method. This list is ordered alphabetically.
     NSMutableArray *unfilteredLocalContacts = [NSMutableArray arrayWithArray:[MXKContactManager sharedManager].localContactsSplitByContactMethod];
-    NSMutableDictionary *additionalMatrixContacts = [NSMutableDictionary dictionaryWithDictionary:self.selectedContactByMatrixId];
+    NSMutableDictionary *additionalContacts = [NSMutableDictionary dictionaryWithDictionary:self.selectedContactByIdentifier];
     
     // Extract some Tchap contacts from the direct chats data, if this is relevant, and if this is not already done.
-    if (_contactsFilter != ContactsDataSourceTchapFilterNoTchapOnly && forceDirectContactsRefresh)
+    if (_contactsFilter != ContactsDataSourceTchapFilterAllWithoutTchapUsers && forceDirectContactsRefresh)
     {
         [self updateDirectTchapContacts];
     }
@@ -722,14 +767,14 @@
                 }
                 
                 // Remove this contacts from the additional list (if present)
-                additionalMatrixContacts[matrixId] = nil;
+                additionalContacts[matrixId] = nil;
             }
         }
-        else if (_contactsFilter == ContactsDataSourceTchapFilterTchapOnly
-                 || _contactsFilter == ContactsDataSourceTchapFilterNonFederatedTchapOnly
-                 || _contactsFilter == ContactsDataSourceTchapFilterNonExternalTchapOnly)
+        else if (_contactsFilter == ContactsDataSourceTchapFilterTchapUsersOnly
+                 || _contactsFilter == ContactsDataSourceTchapFilterTchapUsersOnlyWithoutExternals
+                 || _contactsFilter == ContactsDataSourceTchapFilterTchapUsersOnlyWithoutFederation)
         {
-            // Ignore non-tchap-enabled contact
+            // Ignore contacts who are not Tchap users
             [unfilteredLocalContacts removeObjectAtIndex:index];
             continue;
         }
@@ -740,6 +785,9 @@
             {
                 // Here the contact has only one email address.
                 MXKEmail *email = emails.firstObject;
+                
+                // Remove this contacts from the additional list (if present)
+                additionalContacts[email.emailAddress] = nil;
                 
                 // Trick: ignore @facebook.com email addresses from the results - facebook have discontinued that service...
                 if ([_ignoredContactsByEmail objectForKey:email.emailAddress] || [email.emailAddress hasSuffix:@"@facebook.com"])
@@ -764,7 +812,7 @@
         index++;
     }
     
-    if (_contactsFilter != ContactsDataSourceTchapFilterNoTchapOnly)
+    if (_contactsFilter != ContactsDataSourceTchapFilterAllWithoutTchapUsers)
     {
         // Add all the tchap contacts built from the direct chat dictionary,
         // except the ignored contacts.
@@ -775,21 +823,54 @@
                 [unfilteredLocalContacts addObject:directContacts[mxId]];
                 
                 // Remove this contacts from the additional ones (if present)
-                additionalMatrixContacts[mxId] = nil;
+                additionalContacts[mxId] = nil;
             }
         }
         
         // Add the additional contacts (discovered and selected during a users search)
-        for (NSString *mxId in additionalMatrixContacts)
+        for (NSString *identifier in additionalContacts)
         {
-            [unfilteredLocalContacts addObject:additionalMatrixContacts[mxId]];
+            [unfilteredLocalContacts addObject:additionalContacts[identifier]];
         }
         
         // Sort the updated list
-        [[MXKContactManager sharedManager] sortAlphabeticallyContacts:unfilteredLocalContacts];
+        [self sortAlphabeticallyContacts:unfilteredLocalContacts];
     }
     
     return unfilteredLocalContacts;
+}
+
+- (void)sortAlphabeticallyContacts:(NSMutableArray<MXKContact*> *)contactsArray
+{
+    NSComparator comparator = ^NSComparisonResult(MXKContact *contactA, MXKContact *contactB) {
+        
+        // The potential added emails are moved to the top.
+        if ([self isTemporaryAddedEmail:contactA] && ![self isTemporaryAddedEmail:contactB])
+        {
+            return NSOrderedAscending;
+        }
+        if (![self isTemporaryAddedEmail:contactA] && [self isTemporaryAddedEmail:contactB])
+        {
+            return NSOrderedDescending;
+        }
+        
+        if (contactA.sortingDisplayName.length && contactB.sortingDisplayName.length)
+        {
+            return [contactA.sortingDisplayName compare:contactB.sortingDisplayName options:NSCaseInsensitiveSearch];
+        }
+        else if (contactA.sortingDisplayName.length)
+        {
+            return NSOrderedAscending;
+        }
+        else if (contactB.sortingDisplayName.length)
+        {
+            return NSOrderedDescending;
+        }
+        return [contactA.displayName compare:contactB.displayName options:NSCaseInsensitiveSearch];
+    };
+    
+    // Sort the contacts list
+    [contactsArray sortUsingComparator:comparator];
 }
 
 - (NSMutableArray<MXKContact*>*)unfilteredMatrixContactsArray
@@ -836,14 +917,28 @@
         return YES;
     }
     
-    // Note the external users are not allowed to start chat with another external user.
+    // Check the conditions to ignore this Tchap user.
+    // Note: the external users are not allowed to start chat with another external user.
     // So we ignore here the external users when the current user is external.
+    BOOL shouldIgnore = _ignoredContactsByMatrixId[matrixId] || ([self.userService isExternalUserFor:myUserId] && [self.userService isExternalUserFor:matrixId]);
     
-    return _contactsFilter == ContactsDataSourceTchapFilterNoTchapOnly
-    || _ignoredContactsByMatrixId[matrixId]
-    || (_contactsFilter == ContactsDataSourceTchapFilterNonFederatedTchapOnly && ![self.userService isUserId:myUserId belongToSameDomainAs:matrixId])
-    || (_contactsFilter == ContactsDataSourceTchapFilterNonExternalTchapOnly && [self.userService isExternalUserFor:matrixId])
-    || ([self.userService isExternalUserFor:myUserId] && [self.userService isExternalUserFor:matrixId]);
+    switch (_contactsFilter) {
+        case ContactsDataSourceTchapFilterAllWithoutExternals:
+        case ContactsDataSourceTchapFilterTchapUsersOnlyWithoutExternals:
+            shouldIgnore |= [self.userService isExternalUserFor:matrixId];
+            break;
+        case ContactsDataSourceTchapFilterAllWithoutFederation:
+        case ContactsDataSourceTchapFilterTchapUsersOnlyWithoutFederation:
+            shouldIgnore |= ![self.userService isUserId:myUserId onTheSameHostAs:matrixId];
+            break;
+        case ContactsDataSourceTchapFilterAllWithoutTchapUsers:
+            shouldIgnore = YES;
+            break;
+        default:
+            break;
+    }
+    
+    return shouldIgnore;
 }
 
 #pragma mark - UITableView data source
@@ -852,12 +947,16 @@
 {
     NSInteger count = 0;
     
-    inviteButtonSection = filteredLocalContactsSection = filteredMatrixContactsSection = -1;
+    inviteToTchapButtonSection = addEmailButtonSection = filteredLocalContactsSection = filteredMatrixContactsSection = -1;
     
-    if (_showInviteButton)
+    if (_showInviteToTchapButton)
     {
-        [tableView registerNib:ContactButtonView.nib forCellReuseIdentifier:ContactButtonView.defaultReuseIdentifier];
-        inviteButtonSection = count++;
+        inviteToTchapButtonSection = count++;
+    }
+    
+    if (_showAddEmailButton)
+    {
+        addEmailButtonSection = count++;
     }
     
     if (currentSearchText.length)
@@ -865,7 +964,7 @@
         // Keep visible the header for the local contact sections, even if their are empty.
         filteredLocalContactsSection = count++;
         // Keep visible the header for the matrix contact sections, even if their are empty, only when tchap-enabled users are displayed
-        if (_contactsFilter != ContactsDataSourceTchapFilterNoTchapOnly)
+        if (_contactsFilter != ContactsDataSourceTchapFilterAllWithoutTchapUsers)
         {
             filteredMatrixContactsSection = count++;
         }
@@ -889,7 +988,11 @@
 {
     NSInteger count = 0;
     
-    if (section == inviteButtonSection)
+    if (section == inviteToTchapButtonSection)
+    {
+        count = 1;
+    }
+    else if (section == addEmailButtonSection)
     {
         count = 1;
     }
@@ -912,11 +1015,10 @@
     MXKContact *selectedContact;
     
     MXKContact *contact = [self contactAtIndexPath:indexPath];
-    NSString *matrixIdentifier = contact.matrixIdentifiers.firstObject;
-    
-    if (matrixIdentifier)
+    NSString *identifier = [self contactIdentifier:contact];
+    if (identifier)
     {
-        selectedContact = self.selectedContactByMatrixId[matrixIdentifier];
+        selectedContact = self.selectedContactByIdentifier[identifier];
     }
     
     return selectedContact != nil;
@@ -924,8 +1026,19 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Consider first the potential button displayed to invite a contact by email.
-    if (indexPath.section == inviteButtonSection)
+    // Consider first the potential button displayed to invite by email a contact to join Tchap.
+    if (indexPath.section == inviteToTchapButtonSection)
+    {
+        ContactButtonView *buttonView = [tableView dequeueReusableCellWithIdentifier:ContactButtonView.defaultReuseIdentifier forIndexPath:indexPath];
+        ContactButtonViewModel *buttonModel = [[ContactButtonViewModel alloc] initWithIcon: [UIImage imageNamed:@"tchap_ic_add_contact"]
+                                                                                    action: NSLocalizedStringFromTable(@"contacts_invite_to_tchap_button", @"Tchap", nil)];
+        [buttonView renderWithModel:buttonModel];
+        
+        return buttonView;
+    }
+    
+    // Check whether the user is allowed to add manually some email addresses
+    if (indexPath.section == addEmailButtonSection)
     {
         ContactButtonView *buttonView = [tableView dequeueReusableCellWithIdentifier:ContactButtonView.defaultReuseIdentifier forIndexPath:indexPath];
         ContactButtonViewModel *buttonModel = [[ContactButtonViewModel alloc] initWithIcon: [UIImage imageNamed:@"tchap_ic_add_bymail"]
@@ -1051,7 +1164,12 @@
 
 -(BOOL)isInviteButtonIndexPath:(NSIndexPath*)indexPath
 {
-    return (indexPath.section == inviteButtonSection);
+    return (indexPath.section == inviteToTchapButtonSection);
+}
+
+-(BOOL)isAddEmailButtonIndexPath:(NSIndexPath*)indexPath
+{
+    return (indexPath.section == addEmailButtonSection);
 }
 
 -(MXKContact *)contactAtIndexPath:(NSIndexPath*)indexPath
