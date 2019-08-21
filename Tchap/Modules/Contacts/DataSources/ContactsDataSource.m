@@ -18,6 +18,8 @@
 
 #import "GeneratedInterface-Swift.h"
 
+#import "Contact.h"
+
 #import "RiotDesignValues.h"
 
 #import <Contacts/CNContactStore.h>
@@ -278,7 +280,11 @@
                 {
                     if (![self shouldIgnoreContactWithMatrixId:mxUser.userId])
                     {
-                        MXKContact *contact = [[MXKContact alloc] initMatrixContactWithDisplayName:mxUser.displayname andMatrixID:mxUser.userId];
+                        // Create a contact to display this user.
+                        // Store the related user, this may be useful to get more information later.
+                        Contact *contact = [[Contact alloc] initMatrixContactWithDisplayName:mxUser.displayname andMatrixID:mxUser.userId];
+                        contact.mxUser = mxUser;
+                        
                         [self->filteredMatrixContacts addObject:contact];
                     }
                 }
@@ -741,8 +747,22 @@
                     }
                     else
                     {
-                        user = [self.userService buildTemporaryUserFrom:matrixId];
-                        unfilteredLocalContacts[index] = [[MXKContact alloc] initMatrixContactWithDisplayName:user.displayName
+                        // Compute the most suitable display name for this contact.
+                        NSString *displayName;
+                        NSArray *emails = contact.emailAddresses;
+                        if ([self.userService isExternalUserFor:matrixId] && emails.count)
+                        {
+                            // External user display name is their email address (Only one email is available here).
+                            MXKEmail *email = emails.firstObject;
+                            displayName = email.emailAddress;
+                        }
+                        else
+                        {
+                            user = [self.userService buildTemporaryUserFrom:matrixId];
+                            displayName = user.displayName;
+                        }
+                        
+                        unfilteredLocalContacts[index] = [[MXKContact alloc] initMatrixContactWithDisplayName:displayName
                                                                                                  matrixID:matrixId
                                                                                        andMatrixAvatarURL:nil];
                         

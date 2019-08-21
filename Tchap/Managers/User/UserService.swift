@@ -211,6 +211,20 @@ final class UserService: NSObject, UserServiceType {
         }
     }
     
+    func displayName(from userId: String) -> String {
+        let displayName: String
+        let isExternal = isExternalUser(for: userId)
+        
+        if let name = DisplayNameComponents(userId: userId, isExternal: isExternal)?.name {
+            displayName = name
+        } else {
+            // This case happen only if given user id is not a valid Matrix id
+            displayName = ""
+        }
+        
+        return displayName
+    }
+    
     func hostName(for userId: String) -> String? {
         guard let matrixIDComponents = UserIDComponents(matrixID: userId) else {
             return nil
@@ -239,18 +253,5 @@ final class UserService: NSObject, UserServiceType {
         }
         
         return User(userId: userId, displayName: displayName, avatarStringURL: mxUser.avatarUrl)
-    }
-    
-    private func displayName(from userId: String) -> String {
-        let displayName: String
-        
-        if let name = DisplayNameComponents(userId: userId)?.name {
-            displayName = name
-        } else {
-            // This case happen only if given user id is not a valid Matrix id
-            displayName = ""
-        }
-        
-        return displayName
     }
 }

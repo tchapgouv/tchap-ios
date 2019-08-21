@@ -20,6 +20,7 @@
 #import "RageShakeManager.h"
 #import "Analytics.h"
 #import "ContactsDataSource.h"
+#import "Contact.h"
 
 #import "GeneratedInterface-Swift.h"
 
@@ -548,6 +549,15 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
 
 - (void)selectContact:(MXKContact*)contact atIndexPath:(NSIndexPath *)indexPath
 {
+    // Store into the session the user info if any (This allows to display correctly this contact in other screens)
+    if ([contact isKindOfClass:Contact.class]) {
+        MXUser *user = ((Contact*)contact).mxUser;
+        if (user)
+        {
+            [self.contactsDataSource.mxSession.store storeUser:user];
+        }
+    }
+    
     if (self.enableMultipleSelection)
     {
         [self.contactsDataSource selectOrDeselectContactAtIndexPath:indexPath];
