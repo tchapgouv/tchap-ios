@@ -90,6 +90,16 @@ protocol UserServiceType {
     ///   - completion: A closure called when the operation completes. Provide the answer or an error.
     func isEmailBound(_ email: String, to hostName: String, completion: @escaping (MXResponse<Bool>) -> Void)
     
+    /// Build a display name from the tchap user identifier.
+    /// We don't extract the domain for the moment in order to not display unexpected information.
+    /// For example in case of "@jean.martin-modernisation.fr:matrix.org", this will return "Jean Martin".
+    /// In case of an external user identifier, we return the local part of the id which corresponds to their email.
+    ///
+    /// - Parameter
+    ///   - userId: The user id to parse
+    /// - Returns: displayName without domain, an empty string if the id is not valid.
+    func displayName(from userId: String) -> String
+    
     /// Returns the host name for a Matrix user id.
     ///
     /// - Parameters:

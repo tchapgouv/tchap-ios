@@ -415,6 +415,15 @@ NSString *const kEventFormatterOnReRequestKeysLinkActionSeparator = @"/";
             summary.displayname = leftMemberDisplayname;
             summary.avatar = leftMemberAvatar;
         }
+        
+        // When an invite by email to a direct has been accepted but not joined yet,
+        // the displayname of the room is a matrix id
+        // We change it here with a more friendly string
+        if ([MXTools isMatrixUserIdentifier:summary.displayname])
+        {
+            UserService *userService = [[UserService alloc] initWithSession:session];
+            summary.displayname = [userService displayNameFrom:summary.displayname];
+        }
     }
     
     return ret;

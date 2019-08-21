@@ -40,8 +40,8 @@ struct DisplayNameComponents {
         self.domain = domain
     }
 
-    init?(userId: String) {
-        guard let name = DisplayNameComponents.getName(from: userId) else {
+    init?(userId: String, isExternal: Bool) {
+        guard let name = DisplayNameComponents.getName(from: userId, isExternal: isExternal) else {
             return nil
         }
         self.name = name
@@ -74,28 +74,40 @@ struct DisplayNameComponents {
     /// Build a display name from the tchap user identifier.
     /// We don't extract the domain for the moment in order to not display unexpected information.
     /// For example in case of "@jean.martin-modernisation.fr:matrix.org", this will return "Jean Martin".
+    /// In case of an external user identifier, we return the local part of the id which corresponds to their email.
     ///
     /// - Parameter userId: The user id to parse
     /// - Returns: displayName without domain, nil if the id is not valid.
-    private static func getName(from userId: String) -> String? {
+    private static func getName(from userId: String, isExternal: Bool) -> String? {
         guard let matrixIDComponents = UserIDComponents(matrixID: userId) else {
             return nil
         }
         
         let localUserID = matrixIDComponents.localUserID
+        let displayName: String
         
-        let beforeLastHyphenString: String
-        
-        // Take substring until the last hyphen if exist
-        if let hyphenIndex = localUserID.range(of: "-", options: String.CompareOptions.backwards)?.lowerBound {
-            beforeLastHyphenString = String(localUserID.prefix(upTo: hyphenIndex))
+        if isExternal {
+            // Replace the "-" with "@" if there is only one occurrence
+            if localUserID.components(separatedBy: "-").count == 2 {
+                displayName = localUserID.replacingOccurrences(of: "-", with: "@")
+            } else {
+                displayName = localUserID
+            }
         } else {
-            beforeLastHyphenString = localUserID
+            let beforeLastHyphenString: String
+            
+            // Take substring until the last hyphen if exist
+            if let hyphenIndex = localUserID.range(of: "-", options: String.CompareOptions.backwards)?.lowerBound {
+                beforeLastHyphenString = String(localUserID.prefix(upTo: hyphenIndex))
+            } else {
+                beforeLastHyphenString = localUserID
+            }
+            
+            displayName = beforeLastHyphenString
+                .replacingOccurrences(of: ".", with: " ")
+                .capitalized
         }
         
-        let displayName = beforeLastHyphenString
-            .replacingOccurrences(of: ".", with: " ")
-            .capitalized
         return displayName
     }
 }
