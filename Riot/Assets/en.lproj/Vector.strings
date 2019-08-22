@@ -274,6 +274,7 @@
 "room_event_failed_to_send" = "Failed to send";
 "room_action_send_photo_or_video" = "Send photo or video";
 "room_action_send_sticker" = "Send sticker";
+"room_action_send_file" = "Send file";
 "room_replacement_information" = "This room has been replaced and is no longer active.";
 "room_replacement_link" = "The conversation continues here.";
 "room_predecessor_information" = "This room is a continuation of another conversation.";
@@ -640,3 +641,7 @@
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Request Sent";
 "rerequest_keys_alert_message" = "Please launch Riot on another device that can decrypt the message so it can send the keys to this device.";
+
+// MARK: File upload
+"file_upload_error_title" = "File upload";
+"file_upload_error_unsupported_file_type_message" = "File type not supported.";
