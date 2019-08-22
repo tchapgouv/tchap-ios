@@ -105,7 +105,13 @@ final class RestClientBuilder {
             throw RestClientBuilderError.homeServerURLBuildFailed
         }
         
-        return self.createRestClient(homeServerURL: homeServerURL)
+        let restClient = self.createRestClient(homeServerURL: homeServerURL)
+        
+        // Force the identity server url with the provided homeserver (to keep temporarily the historical behavior)
+        // TODO: Use a MXIdentityService to handle the request to id server when it will be available in matrixSDK
+        restClient.identityServer = homeServerStringURL
+        
+        return restClient
     }
     
     private func onUnrecognizedCertificateAction(homeServerURL: URL) -> MXHTTPClientOnUnrecognizedCertificate {

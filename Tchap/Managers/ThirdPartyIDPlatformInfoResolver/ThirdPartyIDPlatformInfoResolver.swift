@@ -52,7 +52,7 @@ final class ThirdPartyIDPlatformInfoResolver: ThirdPartyIDPlatformInfoResolverTy
         
         let identityServer = identityServerUrls[index]
         
-        guard let identityHttpClient = MXHTTPClient(baseURL: "\(identityServer)/\(kMXIdentityAPIPrefixPath)", andOnUnrecognizedCertificateBlock: nil) else {
+        guard let identityHttpClient = MXHTTPClient(baseURL: "\(identityServer)/\(kMXIdentityAPIPrefixPathV1)", andOnUnrecognizedCertificateBlock: nil) else {
             failure?(nil)
             return
         }
