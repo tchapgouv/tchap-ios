@@ -73,7 +73,7 @@ final class AuthenticationViewModel: AuthenticationViewModelType {
             return .failure(errorPresentable)
         }
         
-        let mail = login.trimmingCharacters(in: .whitespacesAndNewlines)
+        let mail = login.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
         let validationResult: AuthenticationFormValidationResult
         
         var errorMessage: String?
