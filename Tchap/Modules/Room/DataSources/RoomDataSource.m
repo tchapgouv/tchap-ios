@@ -24,6 +24,8 @@
 #import "AvatarGenerator.h"
 #import "RiotDesignValues.h"
 
+#import "GeneratedInterface-Swift.h"
+
 #import "MXRoom+Riot.h"
 
 @interface RoomDataSource()
@@ -518,6 +520,14 @@
     jitsiWidget = [[WidgetManager sharedManager] widgetsOfTypes:@[kWidgetTypeJitsi] inRoom:self.room withRoomState:self.roomState].firstObject;
 
     return jitsiWidget;
+}
+
+- (void)sendVideo:(NSURL*)videoLocalURL
+          success:(void (^)(NSString *eventId))success
+          failure:(void (^)(NSError *error))failure
+{
+    UIImage *videoThumbnail = [MXKVideoThumbnailGenerator.shared generateThumbnailFrom:videoLocalURL];
+    [self sendVideo:videoLocalURL withThumbnail:videoThumbnail success:success failure:failure];
 }
 
 @end

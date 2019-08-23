@@ -43,33 +43,33 @@ PODS:
   - MatomoTracker (6.0.1):
     - MatomoTracker/Core (= 6.0.1)
   - MatomoTracker/Core (6.0.1)
-  - MatrixKit (0.10.1):
+  - MatrixKit (0.10.2):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.21)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixKit/Core (= 0.10.1)
-    - MatrixSDK (= 0.13.0)
+    - MatrixKit/Core (= 0.10.2)
+    - MatrixSDK (= 0.13.1)
     - SwiftUTI (~> 1.0.6)
-  - MatrixKit/Core (0.10.1):
+  - MatrixKit/Core (0.10.2):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.21)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixSDK (= 0.13.0)
+    - MatrixSDK (= 0.13.1)
     - SwiftUTI (~> 1.0.6)
-  - MatrixSDK (0.13.0):
-    - MatrixSDK/Core (= 0.13.0)
-  - MatrixSDK/Core (0.13.0):
+  - MatrixSDK (0.13.1):
+    - MatrixSDK/Core (= 0.13.1)
+  - MatrixSDK/Core (0.13.1):
     - AFNetworking (~> 3.2.0)
     - GZIP (~> 1.2.2)
     - libbase58 (~> 0.1.4)
     - OLMKit (~> 3.1.0)
     - Realm (~> 3.13.1)
-  - MatrixSDK/JingleCallStack (0.13.0):
+  - MatrixSDK/JingleCallStack (0.13.1):
     - JitsiMeetSDK (~> 2.1.0)
     - MatrixSDK/Core
-  - MatrixSDK/SwiftSupport (0.13.0):
+  - MatrixSDK/SwiftSupport (0.13.1):
     - MatrixSDK/Core
   - OLMKit (3.1.0):
     - OLMKit/olmc (= 3.1.0)
@@ -138,10 +138,10 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   MatrixKit:
-    :commit: da1a8cbe1f5aed3e46643b50841527559d6eb002
+    :commit: 65d22872a33a54185de21918686dddc2130ad529
     :git: https://github.com/matrix-org/matrix-ios-kit.git
   MatrixSDK:
-    :commit: 414d43bd1c5aaac709f55eaa1beff68c45855895
+    :commit: 1a352dc4c611038890c2eae7e3aea157194959a2
     :git: https://github.com/matrix-org/matrix-ios-sdk.git
   SwiftUTI:
     :commit: c21237f13e9fb31a07f3fcd5243c5cf79d75901c
@@ -159,8 +159,8 @@ SPEC CHECKSUMS:
   libbase58: 7c040313537b8c44b6e2d15586af8e21f7354efd
   libPhoneNumber-iOS: 0a32a9525cf8744fe02c5206eb30d571e38f7d75
   MatomoTracker: 3ae4f65a1f5ace8043bda7244888fee28a734de5
-  MatrixKit: f8224de32ca8b6e4c54a2654369cedec7744dc6d
-  MatrixSDK: 6886e7234c650408db5876b44a7f7608c865ce30
+  MatrixKit: 208801ba995442a6daa913eb6d639bb918c91c24
+  MatrixSDK: 16c8c4b530a7f9fb264baced52b6b0948b1d0a98
   OLMKit: 4ee0159d63feeb86d836fdcfefe418e163511639
   Realm: 50071da38fe079e0735e47c9f2eae738c68c5996
   Reusable: 82be188f29d96dc5eff0db7b2393bcc08d2cdd5b

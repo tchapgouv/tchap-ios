@@ -516,6 +516,7 @@
 "gdpr_consent_not_given_alert_review_now_action" = "Voir maintenant";
 "room_action_send_photo_or_video" = "Envoyer une photo ou une vidéo";
 "room_action_send_sticker" = "Envoyer un sticker";
+"room_action_send_file" = "Envoyer un fichier";
 "settings_deactivate_account" = "DÉSACTIVER LE COMPTE";
 "settings_deactivate_my_account" = "Désactiver mon compte";
 "widget_sticker_picker_no_stickerpacks_alert" = "Vous n'avez aucun pack de stickers activé.";
@@ -571,3 +572,7 @@
 "e2e_passphrase_empty" = "La phrase secrète ne peut pas être vide";
 "e2e_passphrase_not_match" = "Les phrases secrète doivent être identiques";
 "e2e_passphrase_create" = "Créer la phrase secrète";
+
+// MARK: File upload
+"file_upload_error_title" = "Envoi de fichier";
+"file_upload_error_unsupported_file_type_message" = "Type de fichier non pris en charge.";

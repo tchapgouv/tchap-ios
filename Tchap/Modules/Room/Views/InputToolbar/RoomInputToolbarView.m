@@ -278,25 +278,24 @@
         // Check whether media attachment is supported
         if ([self.delegate respondsToSelector:@selector(roomInputToolbarView:presentViewController:)])
         {
+            // Ask the user the kind of the call: voice or video?
+            actionSheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+
+            __weak typeof(self) weakSelf = self;
+            [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_action_send_photo_or_video", @"Vector", nil)
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * action) {
+
+                                                              if (weakSelf)
+                                                              {
+                                                                  typeof(self) self = weakSelf;
+                                                                  self->actionSheet = nil;
+
+                                                                  [self showMediaPicker];
+                                                              }
+
+                                                          }]];
             // Tchap: Stikers are not supported yet
-//            // Ask the user the kind of the call: voice or video?
-//            actionSheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-//
-//            __weak typeof(self) weakSelf = self;
-//            [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_action_send_photo_or_video", @"Vector", nil)
-//                                                            style:UIAlertActionStyleDefault
-//                                                          handler:^(UIAlertAction * action) {
-//
-//                                                              if (weakSelf)
-//                                                              {
-//                                                                  typeof(self) self = weakSelf;
-//                                                                  self->actionSheet = nil;
-//
-//                                                                  [self showMediaPicker];
-//                                                              }
-//
-//                                                          }]];
-//
 //            [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_action_send_sticker", @"Vector", nil)
 //                                                            style:UIAlertActionStyleDefault
 //                                                          handler:^(UIAlertAction * action) {
@@ -310,23 +309,35 @@
 //                                                              }
 //
 //                                                          }]];
-//
-//            [actionSheet addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
-//                                                            style:UIAlertActionStyleCancel
-//                                                          handler:^(UIAlertAction * action) {
-//
-//                                                              if (weakSelf)
-//                                                              {
-//                                                                  typeof(self) self = weakSelf;
-//                                                                  self->actionSheet = nil;
-//                                                              }
-//
-//                                                          }]];
-//
-//            [actionSheet popoverPresentationController].sourceView = self.voiceCallButton;
-//            [actionSheet popoverPresentationController].sourceRect = self.voiceCallButton.bounds;
-//            [self.window.rootViewController presentViewController:actionSheet animated:YES completion:nil];
-            [self showMediaPicker];
+            
+            [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_action_send_file", @"Vector", nil)
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * action) {
+                                                              
+                                                              if (weakSelf)
+                                                              {
+                                                                  typeof(self) self = weakSelf;
+                                                                  self->actionSheet = nil;
+                                                                  
+                                                                  [self.delegate roomInputToolbarViewDidTapFileUpload:self];
+                                                              }
+                                                          }]];
+            
+            [actionSheet addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                                                            style:UIAlertActionStyleCancel
+                                                          handler:^(UIAlertAction * action) {
+
+                                                              if (weakSelf)
+                                                              {
+                                                                  typeof(self) self = weakSelf;
+                                                                  self->actionSheet = nil;
+                                                              }
+
+                                                          }]];
+
+            [actionSheet popoverPresentationController].sourceView = self.attachMediaButton;
+            [actionSheet popoverPresentationController].sourceRect = self.attachMediaButton.bounds;
+            [self.window.rootViewController presentViewController:actionSheet animated:YES completion:nil];
         }
         else
         {

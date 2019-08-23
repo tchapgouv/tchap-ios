@@ -3288,6 +3288,9 @@
 							com.apple.Siri = {
 								enabled = 0;
 							};
+							com.apple.iCloud = {
+								enabled = 1;
+							};
 						};
 					};
 					02DFEB6F21C07370009B6F15 = {
@@ -3296,6 +3299,9 @@
 								enabled = 1;
 							};
 							com.apple.SafariKeychain = {
+								enabled = 1;
+							};
+							com.apple.iCloud = {
 								enabled = 1;
 							};
 						};
