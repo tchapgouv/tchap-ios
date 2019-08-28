@@ -94,11 +94,12 @@ final class RoomsCoordinator: NSObject, RoomsCoordinatorType {
         }
     }
     
-    // Patch: Check before joining the room if a third party invite has been accepted by the tchap user.
-    // Do it before joining the room because the room state will be updated during the operation.
-    // This information will be useful to consider or not the new joined room as a direct chat.
     private func joinRoomByHandlingThirdPartyInvite(roomID: String, completion: @escaping (MXResponse<MXRoom>) -> Void) {
-        
+        // When the user is invited by his email to a direct chat, the pending invite is not mark as direct by the SDK.
+        // We will do that after joining the room according to the room access rule (available in the room state).
+        // We check before joining the room if a third party invite has been accepted by the tchap user
+        // (Do it before joining the room because the room state will be updated during the operation).
+        // The invite sender will be used if the room is a direct chat.
         getPotentialThirdPartyInviteSenderID(roomID: roomID) { [weak self] (response) in
             guard let self = self else {
                 return
@@ -120,27 +121,23 @@ final class RoomsCoordinator: NSObject, RoomsCoordinatorType {
                 
                 switch response {
                 case .success(let room):
+                    // Check whether we have to consider potentially this room as a direct.
                     if thirdPartyInviteSenderID != nil {
-                        // Mark direct the new joined room if there are only 2 members
-                        self.getRoomMembersPatch(room: room, iterCount: 5) { [weak self] (response) in
-                            guard let self = self else {
-                                return
+                        // Check the room access rule.
+                        let rule = room.summary.tc_roomAccessRule()
+                        switch rule {
+                        case .direct:
+                            // This new joined room is a direct one.
+                            // Mark it as direct if this is not already done
+                            if room.isDirect == false {
+                                self.session.setRoom(roomID, directWithUserId: thirdPartyInviteSenderID, success: {
+                                    NSLog("[RoomsCoordinator] joinRoomByHandlingThirdPartyInvite succeeded to mark direct this new joined room")
+                                }, failure: { _ in
+                                    NSLog("[RoomsCoordinator] joinRoomByHandlingThirdPartyInvite failed to mark direct this new joined room")
+                                })
                             }
-                            
-                            switch response {
-                            case .success(let roomMembers):
-                                if roomMembers?.members.count == 2 {
-                                    // This new joined room is a direct one
-                                    self.session.setRoom(roomID, directWithUserId: thirdPartyInviteSenderID, success: {
-                                        NSLog("[RoomsCoordinator] joinRoomByHandlingThirdPartyInvite succeeded to mark direct this new joined room")
-                                    }, failure: { _ in
-                                        NSLog("[RoomsCoordinator] joinRoomByHandlingThirdPartyInvite failed to mark direct this new joined room")
-                                    })
-                                }
-                            case .failure:
-                                NSLog("[RoomsCoordinator] joinRoomByHandlingThirdPartyInvite failed to get room members")
-                            }
-                            
+                        default:
+                            break
                         }
                     }
                     completion(.success(room))
@@ -171,34 +168,6 @@ final class RoomsCoordinator: NSObject, RoomsCoordinatorType {
         } else {
             // The session doesn't know this room, the current user has not been invited.
             completion(.success(nil))
-        }
-    }
-    
-    /// Note: The request `room.members` may fail for the new join room because of https://github.com/matrix-org/synapse/issues/4985
-    /// We patch here this issue by renewing the request after some delay.
-    /// The maximum nb of iteration is fixed by `iterCount`
-    private func getRoomMembersPatch(room: MXRoom, iterCount: Int, completion: @escaping (MXResponse<MXRoomMembers?>) -> Void) {
-        room.members { [weak self] (response) in
-            guard let sself = self else {
-                return
-            }
-            
-            switch response {
-            case .success(let roomMembers):
-                completion(.success(roomMembers))
-            case .failure(let error):
-                NSLog("[RoomsCoordinator] getRoomMembersPatch failed")
-                let count = iterCount - 1
-                if count > 0 {
-                    // Try again
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: {
-                        sself.getRoomMembersPatch(room: room, iterCount: count, completion: completion)
-                    })
-                } else {
-                    completion(.failure(error))
-                }
-            }
-            
         }
     }
     
