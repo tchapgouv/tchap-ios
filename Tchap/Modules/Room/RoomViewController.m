@@ -479,9 +479,6 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     // Screen tracking
     [[Analytics sharedInstance] trackScreen:@"ChatRoom"];
     
-    // Refresh the room title view
-    [self refreshRoomTitle];
-    
     // Refresh tool bar if the room data source is set.
     if (self.roomDataSource)
     {
@@ -577,6 +574,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
         }
     }];
     [self refreshMissedDiscussionsCount:YES];
+    [self refreshRoomTitle];
     
 //    // Warn about the beta state of e2e encryption when entering the first time in an encrypted room
 //    MXKAccount *account = [[MXKAccountManager sharedManager] accountForUserId:self.roomDataSource.mxSession.myUser.userId];
