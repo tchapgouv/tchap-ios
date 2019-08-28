@@ -30,6 +30,13 @@ protocol RoomCreationViewControllerDelegate: class {
 
 /// RoomCreationViewController enables to create a new room.
 final class RoomCreationViewController: UIViewController {
+    
+    // MARK: - Constants
+    
+    private enum Constants {
+        static let hexagonBorderWidthDefault: CGFloat = 1.0
+        static let hexagonBorderWidthUnrestricted: CGFloat = 10.0
+    }
 
     // MARK: - Properties
     
@@ -147,9 +154,9 @@ final class RoomCreationViewController: UIViewController {
     private func setupRoomAvatarCreationView() {
         let roomCreationAvatarView = RoomCreationAvatarView.loadFromNib()
         roomCreationAvatarView.delegate = self
-        roomCreationAvatarView.setAvatarBorderColor(self.viewModel.isRestricted ? kColorDarkBlue : kColorDarkGrey)
         self.avatarContentView.tc_addSubViewMathingParent(roomCreationAvatarView)
         self.roomCreationAvatarView = roomCreationAvatarView
+        refreshAvatarView()
     }
     
     private func setupRoomNameFormTextField() {
@@ -174,13 +181,26 @@ final class RoomCreationViewController: UIViewController {
         if !isEnabled {
             self.roomAccessSwitch.isOn = false
             self.viewModel.isRestricted = true
-            self.roomCreationAvatarView?.setAvatarBorderColor(kColorDarkBlue)
+            self.roomCreationAvatarView?.setAvatarBorder(color: kColorDarkBlue, width: Constants.hexagonBorderWidthDefault)
         }
     }
     
     private func allowExternalUsers(_ isUnrestricted: Bool) {
         self.viewModel.isRestricted = !isUnrestricted
-        self.roomCreationAvatarView?.setAvatarBorderColor(self.viewModel.isRestricted ? kColorDarkBlue : kColorDarkGrey)
+        refreshAvatarView()
+    }
+    
+    private func refreshAvatarView() {
+        let borderColor: UIColor
+        let borderWidth: CGFloat
+        if self.viewModel.isRestricted {
+            borderColor = kColorDarkBlue
+            borderWidth = Constants.hexagonBorderWidthDefault
+        } else {
+            borderColor = kColorDarkGrey
+            borderWidth = Constants.hexagonBorderWidthUnrestricted
+        }
+        self.roomCreationAvatarView?.setAvatarBorder(color: borderColor, width: borderWidth)
     }
     
     private func enablePublicVisibility(_ publicVisibilityEnabled: Bool) {

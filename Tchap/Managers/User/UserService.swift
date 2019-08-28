@@ -40,7 +40,7 @@ final class UserService: NSObject, UserServiceType {
             fatalError("serverUrlPrefix should be defined")
         }
         self.session = session
-        let identityServerURLs = IdentityServersURLGetter(currentIdentityServerURL: session.matrixRestClient.identityServer).identityServerUrls
+        let identityServerURLs = IdentityServersURLGetter(currentIdentityServerURL: session.matrixRestClient?.identityServer).identityServerUrls
         self.thirdPartyIDPlatformInfoResolver = ThirdPartyIDPlatformInfoResolver(identityServerUrls: identityServerURLs, serverPrefixURL: serverUrlPrefix)
         
         super.init()
