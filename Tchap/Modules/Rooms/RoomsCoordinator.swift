@@ -125,8 +125,7 @@ final class RoomsCoordinator: NSObject, RoomsCoordinatorType {
                     if thirdPartyInviteSenderID != nil {
                         // Check the room access rule.
                         let rule = room.summary.tc_roomAccessRule()
-                        switch rule {
-                        case .direct:
+                        if case RoomAccessRule.direct = rule {
                             // This new joined room is a direct one.
                             // Mark it as direct if this is not already done
                             if room.isDirect == false {
@@ -136,8 +135,6 @@ final class RoomsCoordinator: NSObject, RoomsCoordinatorType {
                                     NSLog("[RoomsCoordinator] joinRoomByHandlingThirdPartyInvite failed to mark direct this new joined room")
                                 })
                             }
-                        default:
-                            break
                         }
                     }
                     completion(.success(room))
