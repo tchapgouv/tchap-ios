@@ -142,6 +142,8 @@ import Reusable
         self.style = style
         self.titleLabel.textColor = style.barTitleColor
         self.subTitleLabel.textColor = style.barSubTitleColor
+        
+        self.imageView?.defaultBackgroundColor = UIColor.clear
     }
     
     // MARK: - Private

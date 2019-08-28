@@ -92,7 +92,10 @@ extension UIView {
                 self.layer.addSublayer(borderLayer)
             }
             
-            // Bring border layer at the top
+            // Bring border layer at the top ?
+            borderLayer.zPosition = bringToFront ? 10 : 0
+            // Use the zPosition > 0 should be enough to keep displaying this border in front
+            // We keep the following code which may help to keep it in front (but it should be useless).
             if bringToFront, let sublayers = self.layer.sublayers, sublayers.count > 1, let lastLayer = sublayers.last, lastLayer != borderLayer {
                 borderLayer.removeFromSuperlayer()
                 self.layer.addSublayer(borderLayer)
