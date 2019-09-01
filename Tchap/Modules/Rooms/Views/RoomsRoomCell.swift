@@ -20,10 +20,9 @@ class RoomsRoomCell: RoomsCell {
     // MARK: - Constants
     
     private enum Constants {
-        static let hexagonImageBorderWidth: CGFloat = 7.0
+        static let hexagonImageBorderWidthDefault: CGFloat = 1.0
+        static let hexagonImageBorderWidthUnrestricted: CGFloat = 5.0
     }
-    
-    private var avatarBorderColor: UIColor = UIColor.clear
     
     @IBOutlet private weak var lastEventSenderName: UILabel!
     
@@ -37,7 +36,6 @@ class RoomsRoomCell: RoomsCell {
         super.render(cellData)
         
         self.lastEventSenderName.text = nil
-        self.avatarBorderColor = UIColor.clear
         
         guard let session = self.roomCellData?.recentsDataSource.mxSession else {
             return
@@ -59,17 +57,7 @@ class RoomsRoomCell: RoomsCell {
         }
         
         // Set the right avatar border
-        if let accessRule = self.roomCellData?.roomSummary.tc_roomAccessRule() {
-            switch accessRule {
-            case .restricted:
-                self.avatarBorderColor = kColorDarkBlue
-            case .unrestricted:
-                self.avatarBorderColor = kColorDarkGrey
-            default:
-                self.avatarBorderColor = UIColor.clear
-            }
-            self.updateAvatarView()
-        }
+        self.updateAvatarView()
     }
     
     override func update(style: Style) {
@@ -78,6 +66,27 @@ class RoomsRoomCell: RoomsCell {
     }
     
     private func updateAvatarView () {
-        self.avatarView.tc_makeHexagon(borderWidth: Constants.hexagonImageBorderWidth, borderColor: self.avatarBorderColor)
+        let avatarBorderColor: UIColor
+        let avatarBorderWidth: CGFloat
+        
+        // Set the right avatar border
+        if let accessRule = self.roomCellData?.roomSummary.tc_roomAccessRule() {
+            switch accessRule {
+            case .restricted:
+                avatarBorderColor = kColorDarkBlue
+                avatarBorderWidth = Constants.hexagonImageBorderWidthDefault
+            case .unrestricted:
+                avatarBorderColor = kColorDarkGrey
+                avatarBorderWidth = Constants.hexagonImageBorderWidthUnrestricted
+            default:
+                avatarBorderColor = UIColor.clear
+                avatarBorderWidth = Constants.hexagonImageBorderWidthDefault
+            }
+        } else {
+            avatarBorderColor = UIColor.clear
+            avatarBorderWidth = Constants.hexagonImageBorderWidthDefault
+        }
+        
+        self.avatarView.tc_makeHexagon(borderWidth: avatarBorderWidth, borderColor: avatarBorderColor)
     }
 }

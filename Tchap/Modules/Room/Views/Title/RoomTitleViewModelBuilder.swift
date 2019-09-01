@@ -24,6 +24,8 @@ final class RoomTitleViewModelBuilder: NSObject {
     
     private enum Constants {
         static let defaultAvatarSize = CGSize(width: 32, height: 32)
+        static let hexagonImageBorderWidthDefault: CGFloat = 1.0
+        static let hexagonImageBorderWidthUnrestricted: CGFloat = 5.0
     }
     
     // MARK: - Properties
@@ -50,6 +52,7 @@ final class RoomTitleViewModelBuilder: NSObject {
         let subtitle: String?
         let avatarImageShape: AvatarImageShape
         let avatarBorderColor: UIColor?
+        let avatarBorderWidth: CGFloat?
         
         let displayName = roomSummary.displayname ?? ""
         let avatarUrl = roomSummary.avatar
@@ -61,6 +64,7 @@ final class RoomTitleViewModelBuilder: NSObject {
             subtitle = displayNameComponents.domain
             avatarImageShape = .circle
             avatarBorderColor = nil
+            avatarBorderWidth = nil
         } else {
             let roomMemberCount = Int(roomSummary.membersCount.members)
             title = displayName
@@ -72,10 +76,13 @@ final class RoomTitleViewModelBuilder: NSObject {
             switch rule {
             case .restricted:
                 avatarBorderColor = kColorDarkBlue
+                avatarBorderWidth = Constants.hexagonImageBorderWidthDefault
             case .unrestricted:
                 avatarBorderColor = kColorDarkGrey
+                avatarBorderWidth = Constants.hexagonImageBorderWidthUnrestricted
             default:
                 avatarBorderColor = UIColor.clear
+                avatarBorderWidth = Constants.hexagonImageBorderWidthDefault
             }
         }
         
@@ -87,7 +94,8 @@ final class RoomTitleViewModelBuilder: NSObject {
                                                         thumbnailingMethod: MXThumbnailingMethodCrop,
                                                         placeholderImage: placeholderImage,
                                                         shape: avatarImageShape,
-                                                        borderColor: avatarBorderColor)
+                                                        borderColor: avatarBorderColor,
+                                                        borderWidth: avatarBorderWidth)
         
         return RoomTitleViewModel(title: title, subtitle: subtitle, avatarImageViewModel: avatarImageViewModel)
     }
@@ -109,7 +117,8 @@ final class RoomTitleViewModelBuilder: NSObject {
                                                         thumbnailingMethod: MXThumbnailingMethodCrop,
                                                         placeholderImage: placeholderImage,
                                                         shape: avatarImageShape,
-                                                        borderColor: kColorDarkBlue)
+                                                        borderColor: kColorDarkBlue,
+                                                        borderWidth: Constants.hexagonImageBorderWidthDefault)
         
         return RoomTitleViewModel(title: title, subtitle: subtitle, avatarImageViewModel: avatarImageViewModel)
     }
@@ -132,7 +141,8 @@ final class RoomTitleViewModelBuilder: NSObject {
                                                         thumbnailingMethod: MXThumbnailingMethodCrop,
                                                         placeholderImage: placeholderImage,
                                                         shape: avatarImageShape,
-                                                        borderColor: nil)
+                                                        borderColor: nil,
+                                                        borderWidth: nil)
         
         return RoomTitleViewModel(title: title, subtitle: subtitle, avatarImageViewModel: avatarImageViewModel)
     }

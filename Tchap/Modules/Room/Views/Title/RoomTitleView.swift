@@ -26,7 +26,7 @@ import Reusable
     // MARK: - Constants
     
     private enum Constants {
-        static let hexagonImageBorderWidth: CGFloat = 5.0
+        static let hexagonImageBorderWidth: CGFloat = 1.0
         static let backBarButtonItemRightPosition: CGFloat = 30.0
     }
     
@@ -40,6 +40,7 @@ import Reusable
     private var style: Style!
     
     private var imageBorderColor: UIColor = UIColor.clear
+    private var imageBorderWidth: CGFloat = Constants.hexagonImageBorderWidth
     
     private weak var titlesStackViewCenterXConstraint: NSLayoutConstraint?
     
@@ -128,6 +129,9 @@ import Reusable
             if let borderColor = avatarImageViewModel.borderColor {
                 self.imageBorderColor = borderColor
             }
+            if let borderWidth = avatarImageViewModel.borderWidth {
+                self.imageBorderWidth = borderWidth
+            }
             self.updateAvatarView()
         } else {
             self.imageView.isHidden = true
@@ -138,6 +142,8 @@ import Reusable
         self.style = style
         self.titleLabel.textColor = style.barTitleColor
         self.subTitleLabel.textColor = style.barSubTitleColor
+        
+        self.imageView?.defaultBackgroundColor = UIColor.clear
     }
     
     // MARK: - Private
@@ -174,7 +180,7 @@ import Reusable
         case .circle:
             self.imageView.tc_makeCircle()
         case .hexagon:
-            self.imageView.tc_makeHexagon(borderWidth: Constants.hexagonImageBorderWidth, borderColor: self.imageBorderColor)
+            self.imageView.tc_makeHexagon(borderWidth: self.imageBorderWidth, borderColor: self.imageBorderColor)
         }
     }
     

@@ -26,7 +26,7 @@ final class RoomCreationAvatarView: UIView, NibLoadable, Stylable {
     // MARK: - Constants
     
     private enum Constants {
-        static let hexagonBorderWidth: CGFloat = 10.0
+        static let hexagonBorderWidthDefault: CGFloat = 1.0
     }
     
     // MARK: - Properties
@@ -37,6 +37,7 @@ final class RoomCreationAvatarView: UIView, NibLoadable, Stylable {
     
     private var style: Style!
     private var hexagonBorderColor: UIColor = UIColor.clear
+    private var hexagonBorderWidth: CGFloat = Constants.hexagonBorderWidthDefault
     
     weak var delegate: RoomCreationAvatarViewDelegate?
     
@@ -68,8 +69,9 @@ final class RoomCreationAvatarView: UIView, NibLoadable, Stylable {
         self.updateAddButtonTextVisibility()
     }
     
-    func setAvatarBorderColor(_ color: UIColor) {
+    func setAvatarBorder(color: UIColor, width: CGFloat) {
         self.hexagonBorderColor = color
+        self.hexagonBorderWidth = width
         self.updateBackgroundView()
     }
     
@@ -89,7 +91,7 @@ final class RoomCreationAvatarView: UIView, NibLoadable, Stylable {
     }
     
     private func updateBackgroundView () {
-        self.backgroundView.tc_makeHexagon(borderWidth: Constants.hexagonBorderWidth, borderColor: self.hexagonBorderColor)
+        self.backgroundView.tc_makeHexagon(borderWidth: self.hexagonBorderWidth, borderColor: self.hexagonBorderColor)
     }
     
     // MARK: - Actions

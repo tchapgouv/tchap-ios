@@ -20,7 +20,7 @@ import Reusable
 @objcMembers class PublicRoomsCell: UITableViewCell, Stylable, NibReusable {
     
     private enum Constants {
-        static let hexagonImageBorderWidth: CGFloat = 7.0
+        static let hexagonImageBorderWidth: CGFloat = 1.0
     }
     
     @IBOutlet private(set) weak var avatarView: MXKImageView!
@@ -43,6 +43,7 @@ import Reusable
     override func layoutSubviews() {
         super.layoutSubviews()
         
+        // All the public rooms are restricted
         self.avatarView.tc_makeHexagon(borderWidth: Constants.hexagonImageBorderWidth, borderColor: kColorDarkBlue)
     }
     
