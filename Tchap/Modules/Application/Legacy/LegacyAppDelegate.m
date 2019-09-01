@@ -652,7 +652,20 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         }
     }
     
-    _errorNotification = [UIAlertController alertControllerWithTitle:title message:msg preferredStyle:UIAlertControllerStyleAlert];
+    // Switch in offline mode in case of network reachability error
+    if ([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorNotConnectedToInternet)
+    {
+        self.isOffline = YES;
+    }
+    
+    return [self showAlertWithTitle:title message:msg];
+}
+
+- (UIAlertController*)showAlertWithTitle:(NSString*)title message:(NSString*)message
+{
+    [_errorNotification dismissViewControllerAnimated:NO completion:nil];
+    
+    _errorNotification = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
     [_errorNotification addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
                                                            style:UIAlertActionStyleDefault
                                                          handler:^(UIAlertAction * action) {
@@ -665,12 +678,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     {
         [_errorNotification mxk_setAccessibilityIdentifier:@"AppDelegateErrorAlert"];
         [self showNotificationAlert:_errorNotification];
-    }
-    
-    // Switch in offline mode in case of network reachability error
-    if ([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorNotConnectedToInternet)
-    {
-        self.isOffline = YES;
     }
     
     return self.errorNotification;

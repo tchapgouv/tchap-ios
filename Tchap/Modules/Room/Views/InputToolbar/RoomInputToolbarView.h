@@ -27,6 +27,13 @@
  */
 - (void)roomInputToolbarViewPresentStickerPicker:(MXKRoomInputToolbarView*)toolbarView;
 
+/**
+ Tells the delegate that the user wants to send external files.
+ 
+ @param toolbarView the room input toolbar view
+ */
+- (void)roomInputToolbarViewDidTapFileUpload:(MXKRoomInputToolbarView*)toolbarView;
+
 @end
 
 /**

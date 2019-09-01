@@ -123,7 +123,7 @@
 
 NSString *const RoomErrorDomain = @"RoomErrorDomain";
 
-@interface RoomViewController () <UIGestureRecognizerDelegate, Stylable, RoomTitleViewDelegate, MXServerNoticesDelegate>
+@interface RoomViewController () <UIGestureRecognizerDelegate, Stylable, RoomTitleViewDelegate, MXServerNoticesDelegate, MXKDocumentPickerPresenterDelegate>
 {
     // The preview header
     PreviewView *previewHeader;
@@ -214,6 +214,8 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
 
 // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
 @property (nonatomic, weak) id themeDidChangeNotificationObserver;
+
+@property (nonatomic, strong) MXKDocumentPickerPresenter *documentPickerPresenter;
 
 /**
  Action used to handle some buttons.
@@ -2955,6 +2957,17 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     }
 }
 
+- (void)roomInputToolbarViewDidTapFileUpload:(MXKRoomInputToolbarView *)toolbarView
+{
+    MXKDocumentPickerPresenter *documentPickerPresenter = [MXKDocumentPickerPresenter new];
+    documentPickerPresenter.delegate = self;
+    
+    NSArray<MXKUTI*> *allowedUTIs = @[MXKUTI.data];
+    [documentPickerPresenter presentDocumentPickerWith:allowedUTIs from:self animated:YES completion:nil];
+    
+    self.documentPickerPresenter = documentPickerPresenter;
+}
+
 #pragma mark - Action
 
 - (IBAction)onButtonPressed:(id)sender
@@ -4265,6 +4278,52 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     {
         [[NSNotificationCenter defaultCenter] removeObserver:kMXSessionStateDidChangeObserver];
         kMXSessionStateDidChangeObserver = nil;
+    }
+}
+
+#pragma mark - DocumentPickerPresenterDelegate
+
+- (void)documentPickerPresenterWasCancelled:(MXKDocumentPickerPresenter *)presenter
+{
+    self.documentPickerPresenter = nil;
+}
+
+- (void)documentPickerPresenter:(MXKDocumentPickerPresenter *)presenter didPickDocumentsAt:(NSURL *)url
+{
+    self.documentPickerPresenter = nil;
+    
+    MXKUTI *fileUTI = [[MXKUTI alloc] initWithLocalFileURL:url];
+    NSString *mimeType = fileUTI.mimeType;
+    
+    if (fileUTI.isImage)
+    {
+        NSData *imageData = [[NSData alloc] initWithContentsOfURL:url];
+        
+        [self.roomDataSource sendImage:imageData mimeType:mimeType success:nil failure:^(NSError *error) {
+            // Nothing to do. The image is marked as unsent in the room history by the datasource
+            NSLog(@"[MXKRoomViewController] sendImage failed.");
+        }];
+    }
+    else if (fileUTI.isVideo)
+    {
+        [(RoomDataSource*)self.roomDataSource sendVideo:url success:nil failure:^(NSError *error) {
+            // Nothing to do. The video is marked as unsent in the room history by the datasource
+            NSLog(@"[MXKRoomViewController] sendVideo failed.");
+        }];
+    }
+    else if (fileUTI.isFile)
+    {
+        [self.roomDataSource sendFile:url mimeType:mimeType success:nil failure:^(NSError *error) {
+            // Nothing to do. The file is marked as unsent in the room history by the datasource
+            NSLog(@"[MXKRoomViewController] sendFile failed.");
+        }];
+    }
+    else
+    {
+        NSLog(@"[MXKRoomViewController] File upload using MIME type %@ is not supported.", mimeType);
+        
+        [[AppDelegate theDelegate] showAlertWithTitle:NSLocalizedStringFromTable(@"file_upload_error_title", @"Vector", nil)
+                                              message:NSLocalizedStringFromTable(@"file_upload_error_unsupported_file_type_message", @"Vector", nil)];
     }
 }
 
