@@ -1,3 +1,14 @@
+Changes in Tchap 1.0.15 (2019-09-01)
+===================================================
+
+ Features/Improvements:
+ * Room attachments: allow to send files from the file system #215
+ * Force the email address in lower case #230
+ * Update MatrixKit and MatrixSDK
+ 
+ Bug Fixes:
+ * Handle correctly M_LIMIT_EXCEEDED error code #229
+ 
 Changes in Tchap 1.0.14 (2019-08-12)
 ===================================================
 
