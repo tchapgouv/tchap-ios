@@ -211,7 +211,7 @@ typedef enum : NSUInteger
 @property (nonatomic) UIImage *contactCellAccessoryImage;
 
 /**
- The dictionary of the ignored local contacts, the keys are their email. Empty by default.
+ The dictionary of the ignored local contacts, the keys are their email (in lowercase). Empty by default.
  */
 @property (nonatomic) NSMutableDictionary<NSString*, MXKContact*> *ignoredContactsByEmail;
 
