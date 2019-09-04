@@ -443,9 +443,11 @@ final class AppCoordinator: AppCoordinatorType {
                 _ = accountValidityService.requestRenewalEmail(completion: { (response) in
                     switch response {
                     case .success:
-                        // Keep display the alert
-                        self.displayExpiredAccountAlert()
+                        // Update the displayed alert
+                        self.displayAlertOnRequestedRenewalEmail()
                     case .failure(let error):
+                        // Display again the alert
+                        self.displayExpiredAccountAlert()
                         self.showError(error)
                     }
                     self.accountValidityService = nil
@@ -455,6 +457,27 @@ final class AppCoordinator: AppCoordinatorType {
             }
         })
         alert.addAction(sendEmailAction)
+        self.expiredAccountAlertController = alert
+        
+        presenter.present(alert, animated: true, completion: nil)
+    }
+    
+    private func displayAlertOnRequestedRenewalEmail() {
+        guard let presenter = self.homeCoordinator?.toPresentable() else {
+            return
+        }
+        
+        self.expiredAccountAlertController?.dismiss(animated: false)
+        
+        let alert = UIAlertController(title: TchapL10n.infoTitle, message: TchapL10n.expiredAccountOnNewSentEmailMsg, preferredStyle: .alert)
+        
+        let resumeTitle = TchapL10n.expiredAccountResumeButton
+        let resumeAction = UIAlertAction(title: resumeTitle, style: .default, handler: { action in
+            // Relaunch the session
+            self.reloadSession(clearCache: false)
+        })
+        alert.addAction(resumeAction)
+
         self.expiredAccountAlertController = alert
         
         presenter.present(alert, animated: true, completion: nil)
