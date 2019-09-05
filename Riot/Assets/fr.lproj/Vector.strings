@@ -157,7 +157,7 @@
 "room_participants_filter_room_members" = "Filtrer les membres du salon";
 "room_participants_invite_another_user" = "Rechercher/inviter par identifiant, nom ou e-mail";
 "room_participants_invite_malformed_id_title" = "Erreur lors de l'invitation";
-"room_participants_remove_third_party_invite_prompt_msg" = "Voulez-vous vraiment retirer cette invitation?";
+"room_participants_remove_third_party_invite_prompt_msg" = "Voulez-vous vraiment retirer cette invitation ?";
 "room_participants_remove_third_party_invite_msg" = "Supprimer une invitation de tiers n'est pas prise en charge tant que l'API n'existe pas";
 "room_participants_invite_malformed_id" = "Identifiant au mauvais format. Une adresse e-mail ou un identifiant Matrix au format \"@utilisateur:domaine\" est attendu";
 "room_participants_invited_section" = "INVITÉS";
