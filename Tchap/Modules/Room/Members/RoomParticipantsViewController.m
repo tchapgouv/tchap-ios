@@ -1156,12 +1156,12 @@
         {
             [participantCell render:contact];
             
+            participantCell.thumbnailBadgeView.hidden = YES;
             if (contact.mxMember)
             {
                 MXRoomState *roomState = self.mxRoom.dangerousSyncState;
                 
                 // Update member badge
-                participantCell.thumbnailBadgeView.hidden = YES;
                 MXRoomPowerLevels *powerLevels = [roomState powerLevels];
                 NSInteger powerLevel = [powerLevels powerLevelOfUserWithUserID:contact.mxMember.userId];
                 if (powerLevel >= RoomPowerLevelAdmin)
