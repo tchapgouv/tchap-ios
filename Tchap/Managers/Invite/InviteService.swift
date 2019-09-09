@@ -200,22 +200,32 @@ final class InviteService: InviteServiceType {
         
         roomInProcess = room
         room.state { [weak self] roomState in
+            guard let self = self else {
+                return
+            }
+            
             if let thirdPartyInvite = roomState?.thirdPartyInvites?.first,
                 let token = thirdPartyInvite.token {
-                self?.roomInProcess?.sendStateEvent(.roomThirdPartyInvite, content: [:], stateKey: token) { [weak self] (response) in
+                self.roomInProcess?.sendStateEvent(.roomThirdPartyInvite, content: [:], stateKey: token) { [weak self] (response) in
+                    guard let self = self else {
+                        return
+                    }
+                    
                     switch response {
                     case .success:
                         // Leave now the room
-                        self?.session.leaveRoom(roomID, completion: completion)
+                        self.session.leaveRoom(roomID, completion: completion)
                     case .failure (let error):
                         completion(.failure(error))
                     }
+                    
+                    self.roomInProcess = nil
                 }
             } else {
                 NSLog("[InviteService] unable to revoke invite (no pending invite)")
-                self?.session.leaveRoom(roomID, completion: completion)
+                self.session.leaveRoom(roomID, completion: completion)
+                self.roomInProcess = nil
             }
-            self?.roomInProcess = nil
         }
     }
 }
