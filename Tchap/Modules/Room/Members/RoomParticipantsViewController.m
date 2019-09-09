@@ -56,6 +56,7 @@
     
     // Tell whether the user is allowed to invite other users
     BOOL isUserAllowedToInvite;
+    BOOL isUserAllowedToKick;
     
     // Display a gradient view above the screen.
     CAGradientLayer* tableViewMaskLayer;
@@ -783,6 +784,7 @@
             // Check whether the current user is allowed to invite
             MXRoomPowerLevels *powerLevels = [roomState powerLevels];
             self->isUserAllowedToInvite = ([powerLevels powerLevelOfUserWithUserID:userId] >= powerLevels.invite);
+            self->isUserAllowedToKick = ([powerLevels powerLevelOfUserWithUserID:userId] >= powerLevels.kick);
             self->addParticipantButtonImageView.hidden = self->tableViewMaskLayer.hidden = !self->isUserAllowedToInvite;
         }];
     }
@@ -821,8 +823,10 @@
 
 - (void)addRoomThirdPartyInviteToParticipants:(MXRoomThirdPartyInvite*)roomThirdPartyInvite roomState:(MXRoomState*)roomState
 {
-    // If the homeserver has converted the 3pid invite into a room member, do no show it
-    if (![roomState memberWithThirdPartyInviteToken:roomThirdPartyInvite.token])
+    // If the homeserver has converted the 3pid invite into a room member, do no show it.
+    // If the invite has been revoked (null display name), do not show it too.
+    if (![roomState memberWithThirdPartyInviteToken:roomThirdPartyInvite.token]
+        && roomThirdPartyInvite.displayname)
     {
         Contact *contact = [[Contact alloc] initMatrixContactWithDisplayName:roomThirdPartyInvite.displayname andMatrixID:nil];
         contact.isThirdPartyInvite = YES;
@@ -1190,9 +1194,18 @@
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == participantsSection || indexPath.section == invitedSection)
+    // Check whether the user is allowed to remove members
+    if (isUserAllowedToKick && (indexPath.section == participantsSection || indexPath.section == invitedSection))
     {
         return YES;
+    }
+    else
+    {
+        // Edit only the row of the current user
+        if ((indexPath.section == participantsSection && userParticipant && indexPath.row == 0) && !currentSearchText.length)
+        {
+            return YES;
+        }
     }
     return NO;
 }
@@ -1398,8 +1411,6 @@
     
     if (section == participantsSection || section == invitedSection)
     {
-        __weak typeof(self) weakSelf = self;
-        
         if (currentAlert)
         {
             [currentAlert dismissViewControllerAnimated:NO completion:nil];
@@ -1502,6 +1513,7 @@
             if (row < participants.count)
             {
                 Contact *contact = participants[row];
+                MXWeakify(self);
                 
                 if (contact.mxMember)
                 {
@@ -1517,11 +1529,8 @@
                                                                      style:UIAlertActionStyleCancel
                                                                    handler:^(UIAlertAction * action) {
                                                                        
-                                                                       if (weakSelf)
-                                                                       {
-                                                                           typeof(self) self = weakSelf;
-                                                                           self->currentAlert = nil;
-                                                                       }
+                                                                       MXStrongifyAndReturnIfNil(self);
+                                                                       self->currentAlert = nil;
                                                                        
                                                                    }]];
                     
@@ -1529,51 +1538,80 @@
                                                                      style:UIAlertActionStyleDefault
                                                                    handler:^(UIAlertAction * action) {
                                                                        
-                                                                       if (weakSelf)
-                                                                       {
-                                                                           typeof(self) self = weakSelf;
-                                                                           self->currentAlert = nil;
-                                                                           
-                                                                           [self addPendingActionMask];
-                                                                           [self.mxRoom kickUser:memberUserId
-                                                                                          reason:nil
-                                                                                         success:^{
-                                                                                             
-                                                                                             [self removePendingActionMask];
-                                                                                             
-                                                                                             [participants removeObjectAtIndex:row];
-                                                                                             
-                                                                                             // Refresh display
-                                                                                             [self.tableView reloadData];
-                                                                                             
-                                                                                         } failure:^(NSError *error) {
-                                                                                             
-                                                                                             [self removePendingActionMask];
-                                                                                             NSLog(@"[RoomParticipantsVC] Kick %@ failed", memberUserId);
-                                                                                             // Alert user
-                                                                                             [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                                                             
-                                                                                         }];
-                                                                       }
+                                                                       MXStrongifyAndReturnIfNil(self);
+                                                                       self->currentAlert = nil;
+                                                                       
+                                                                       [self addPendingActionMask];
+                                                                       MXWeakify(self);
+                                                                       [self.mxRoom kickUser:memberUserId
+                                                                                      reason:nil
+                                                                                     success:^{
+                                                                                         
+                                                                                         MXStrongifyAndReturnIfNil(self);
+                                                                                         [self removePendingActionMask];
+                                                                                         
+                                                                                         [participants removeObjectAtIndex:row];
+                                                                                         
+                                                                                         // Refresh display
+                                                                                         [self.tableView reloadData];
+                                                                                         
+                                                                                     } failure:^(NSError *error) {
+                                                                                         
+                                                                                         MXStrongifyAndReturnIfNil(self);
+                                                                                         [self removePendingActionMask];
+                                                                                         NSLog(@"[RoomParticipantsVC] Kick %@ failed", memberUserId);
+                                                                                         // Alert user
+                                                                                         [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                                                         
+                                                                                     }];
                                                                        
                                                                    }]];
                 }
-                else
+                else if (contact.mxThirdPartyInvite)
                 {
-                    // This is a third-party invite, it could not be removed until the api exists
+                    // This is a third-party invite
                     currentAlert = [UIAlertController alertControllerWithTitle:nil
-                                                                       message:NSLocalizedStringFromTable(@"room_participants_remove_third_party_invite_msg", @"Vector", nil)
+                                                                       message:NSLocalizedStringFromTable(@"room_participants_remove_third_party_invite_prompt_msg", @"Vector", nil)
                                                                 preferredStyle:UIAlertControllerStyleAlert];
                     
                     [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
                                                                      style:UIAlertActionStyleCancel
                                                                    handler:^(UIAlertAction * action) {
                                                                        
-                                                                       if (weakSelf)
-                                                                       {
-                                                                           typeof(self) self = weakSelf;
-                                                                           self->currentAlert = nil;
-                                                                       }
+                                                                       MXStrongifyAndReturnIfNil(self);
+                                                                       self->currentAlert = nil;
+                                                                       
+                                                                   }]];
+                    
+                    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"remove", @"Vector", nil)
+                                                                     style:UIAlertActionStyleDefault
+                                                                   handler:^(UIAlertAction * action) {
+                                                                       
+                                                                       MXStrongifyAndReturnIfNil(self);
+                                                                       self->currentAlert = nil;
+                                                                       
+                                                                       [self addPendingActionMask];
+                                                                       MXWeakify(self);
+                                                                       [self.mxRoom sendStateEventOfType:kMXEventTypeStringRoomThirdPartyInvite
+                                                                                                 content:@{} stateKey:contact.mxThirdPartyInvite.token success:^(NSString *eventId) {
+                                                                                                     
+                                                                                                     MXStrongifyAndReturnIfNil(self);
+                                                                                                     [self removePendingActionMask];
+                                                                                                     
+                                                                                                     [participants removeObjectAtIndex:row];
+                                                                                                     
+                                                                                                     // Refresh display
+                                                                                                     [self.tableView reloadData];
+                                                                                                     
+                                                                                                 } failure:^(NSError *error) {
+                                                                                                     
+                                                                                                     MXStrongifyAndReturnIfNil(self);
+                                                                                                     [self removePendingActionMask];
+                                                                                                     NSLog(@"[RoomParticipantsVC] Revoke 3pid invite failed");
+                                                                                                     // Alert user
+                                                                                                     [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                                                                     
+                                                                                                 }];
                                                                        
                                                                    }]];
                 }
