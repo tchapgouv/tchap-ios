@@ -93,6 +93,8 @@ internal enum TchapL10n {
   internal static let errorTitleDefault = TchapL10n.tr("Tchap", "error_title_default")
   /// La durée de validité de votre compte a expiré. Un email vous a été envoyé pour la renouveler. Une fois que vous aurez suivi le lien qu’il contient, cliquez ci-dessous.
   internal static let expiredAccountAlertMessage = TchapL10n.tr("Tchap", "expired_account_alert_message")
+  /// Un nouvel email vous a été envoyé pour renouveler la validité de votre compte. Une fois que vous aurez suivi le lien qu’il contient, cliquez ci-dessous.
+  internal static let expiredAccountOnNewSentEmailMsg = TchapL10n.tr("Tchap", "expired_account_on_new_sent_email_msg")
   /// Demander l’envoi d’un nouvel email
   internal static let expiredAccountRequestRenewalEmailButton = TchapL10n.tr("Tchap", "expired_account_request_renewal_email_button")
   /// J’ai renouvelé mon compte
@@ -125,6 +127,8 @@ internal enum TchapL10n {
   }
   /// Pour continuer à utiliser Tchap, vous devez lire et accepter les conditions générales.
   internal static let gdprConsentNotGivenAlertMessage = TchapL10n.tr("Tchap", "gdpr_consent_not_given_alert_message")
+  /// Information
+  internal static let infoTitle = TchapL10n.tr("Tchap", "info_title")
   /// Vous avez déjà envoyé une invitation à %@.
   internal static func inviteAlreadySentByEmail(_ p1: String) -> String {
     return TchapL10n.tr("Tchap", "invite_already_sent_by_email", p1)

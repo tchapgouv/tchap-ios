@@ -83,6 +83,7 @@ import UIKit
         
         // Tchap contacts are defined with only one matrix id.
         // Consider here only the first id if any.
+        self.matrixId = nil
         if let matrixId = contact.matrixIdentifiers?.first as? String {
             self.matrixId = matrixId
             registerContactPresenceNotification()

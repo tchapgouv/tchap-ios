@@ -31,6 +31,8 @@ final class InviteService: InviteServiceType {
     private let userService: UserServiceType
     private let roomService: RoomServiceType
     
+    private var roomInProcess: MXRoom?
+    
     // MARK: - Public
     init(session: MXSession) {
         self.session = session
@@ -66,9 +68,9 @@ final class InviteService: InviteServiceType {
                                     switch response {
                                     case .success(let isExternal):
                                         if isExternal {
-                                            // Leave this empty discussion, we will invite again this email.
+                                            // Revoke the pending invite and leave this empty discussion, we will invite again this email.
                                             // We don't have a way for the moment to check if the invite expired or not...
-                                            self?.session.leaveRoom(roomID) { [weak self] (response) in
+                                            self?.revokePendingInviteAndLeave(roomID) { [weak self] (response) in
                                                 switch response {
                                                 case .success:
                                                     // Send the new invite
@@ -148,6 +150,44 @@ final class InviteService: InviteServiceType {
                 
             case .failure(let error):
                 completion(MXResponse.failure(error))
+            }
+        }
+    }
+    
+    private func revokePendingInviteAndLeave(_ roomID: String, completion: @escaping (MXResponse<Void>) -> Void) {
+        guard let room = self.session.room(withRoomId: roomID) else {
+            NSLog("[InviteService] unable to revoke invite")
+            completion(.failure(InviteServiceError.unknown))
+            return
+        }
+        
+        roomInProcess = room
+        room.state { [weak self] roomState in
+            guard let self = self else {
+                return
+            }
+            
+            if let thirdPartyInvite = roomState?.thirdPartyInvites?.first,
+                let token = thirdPartyInvite.token {
+                self.roomInProcess?.sendStateEvent(.roomThirdPartyInvite, content: [:], stateKey: token) { [weak self] (response) in
+                    guard let self = self else {
+                        return
+                    }
+                    
+                    switch response {
+                    case .success:
+                        // Leave now the room
+                        self.session.leaveRoom(roomID, completion: completion)
+                    case .failure (let error):
+                        completion(.failure(error))
+                    }
+                    
+                    self.roomInProcess = nil
+                }
+            } else {
+                NSLog("[InviteService] unable to revoke invite (no pending invite)")
+                self.session.leaveRoom(roomID, completion: completion)
+                self.roomInProcess = nil
             }
         }
     }
