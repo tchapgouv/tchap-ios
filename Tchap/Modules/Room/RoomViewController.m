@@ -210,7 +210,8 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
 @property (nonatomic, strong) id<Style> currentStyle;
 
 // Direct chat target user when create a discussion without associated room
-@property (nonatomic, strong) User *discussionTargetUser;
+@property (nonatomic, nullable, strong) User *discussionTargetUser;
+@property (nonatomic, nullable, strong) RoomService *roomService;
 
 // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
 @property (nonatomic, weak) id themeDidChangeNotificationObserver;
@@ -478,9 +479,6 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     // Screen tracking
     [[Analytics sharedInstance] trackScreen:@"ChatRoom"];
     
-    // Refresh the room title view
-    [self refreshRoomTitle];
-    
     // Refresh tool bar if the room data source is set.
     if (self.roomDataSource)
     {
@@ -576,6 +574,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
         }
     }];
     [self refreshMissedDiscussionsCount:YES];
+    [self refreshRoomTitle];
     
 //    // Warn about the beta state of e2e encryption when entering the first time in an encrypted room
 //    MXKAccount *account = [[MXKAccountManager sharedManager] accountForUserId:self.roomDataSource.mxSession.myUser.userId];
@@ -1265,44 +1264,41 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     
     [self startActivityIndicator];
     
-    [self.mainSession createRoom:nil
-                      visibility:kMXRoomDirectoryVisibilityPrivate
-                       roomAlias:nil
-                           topic:nil
-                          invite:@[user.userId]
-                      invite3PID:nil
-                        isDirect:YES
-                          preset:kMXRoomPresetTrustedPrivateChat
-                         success:^(MXRoom *room) {
-                             
-                             MXStrongifyAndReturnIfNil(self);
-                             
-                             MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:self.mainSession];
-                             
-                             [roomDataSourceManager roomDataSourceForRoom:room.roomId create:YES onComplete:^(MXKRoomDataSource *roomDataSource) {
-                                 
-                                 [self stopActivityIndicator];
-                                 
-                                 if (roomDataSource.room.summary.isDirect == NO)
-                                 {
-                                     // TODO: Display an error, and retry to set room as direct otherwise quit the room
-                                     
-                                     NSLog(@"[RoomViewController] Fail to create room as direct chat");
-                                 }
-//                                 else
-//                                 {
-                                     // Set discussion target user to nil and now use RoomDataSource for updating view
-                                     [self displayRoom:roomDataSource];
-//                                 }
-
-                                 onComplete(YES);
-                             }];
-                             
-                         } failure:^(NSError *error) {
-                             // TODO: Present error without using AppDelegate
-                             [[AppDelegate theDelegate] showErrorAsAlert:error];
-                             onComplete(NO);
-                         }];
+    self.roomService = [[RoomService alloc] initWithSession:self.mainSession];
+    MXHTTPOperation * operation;
+    
+    operation = [self.roomService createDiscussionWith:user.userId success:^(NSString * _Nonnull roomId) {
+        MXStrongifyAndReturnIfNil(self);
+        
+        MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:self.mainSession];
+        
+        [roomDataSourceManager roomDataSourceForRoom:roomId create:YES onComplete:^(MXKRoomDataSource *roomDataSource) {
+            
+            [self stopActivityIndicator];
+            self.roomService = nil;
+            
+            if (roomDataSource.room.summary.isDirect == NO)
+            {
+                // TODO: Display an error, and retry to set room as direct otherwise quit the room
+                NSLog(@"[RoomViewController] Fail to create room as direct chat");
+            }
+            //            else
+            //            {
+            //                // Set discussion target user to nil and now use RoomDataSource for updating view
+            [self displayRoom:roomDataSource];
+            //            }
+            
+            onComplete(YES);
+        }];
+    } failure:^(NSError * _Nonnull error) {
+        MXStrongifyAndReturnIfNil(self);
+        [self stopActivityIndicator];
+        self.roomService = nil;
+        
+        // TODO: Present error without using AppDelegate
+        [[AppDelegate theDelegate] showErrorAsAlert:error];
+        onComplete(NO);
+    }];
 }
 
 /**

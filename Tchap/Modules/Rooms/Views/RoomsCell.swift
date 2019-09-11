@@ -65,8 +65,6 @@ import UIKit
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        self.avatarView.tc_makeCircle()
-        
         // Round unread badge corners
         if let badgeView = self.missedNotifAndUnreadBadgeBgView {
             badgeView.layer.cornerRadius = badgeView.frame.size.height / 2

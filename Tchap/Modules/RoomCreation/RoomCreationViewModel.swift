@@ -22,6 +22,7 @@ final class RoomCreationViewModel: RoomCreationViewModelType {
     // MARK: - Properties
     
     let roomNameFormTextViewModel: FormTextViewModel
+    var isRestricted: Bool
     var isPublic: Bool
     var isFederated: Bool
     let homeServerDomain: String
@@ -42,7 +43,7 @@ final class RoomCreationViewModel: RoomCreationViewModelType {
         self.roomNameFormTextViewModel = roomNameFormTextViewModel
         
         // Other properties
-        
+        self.isRestricted = true
         self.isPublic = false
         self.isFederated = true
         self.homeServerDomain = homeServerDomain

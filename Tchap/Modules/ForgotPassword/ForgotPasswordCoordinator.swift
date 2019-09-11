@@ -111,8 +111,8 @@ final class ForgotPasswordCoordinator: ForgotPasswordCoordinatorType {
             case .success(let restClient):
                 let forgotPasswordService = ForgotPasswordService(restClient: restClient)
                 
-                // Validate email
-                _ = forgotPasswordService.submitForgotPasswordEmail(to: email) { (emailVerificationResult) in
+                // Validate the forgot password parameters
+                _ = forgotPasswordService.validateParametersAndRequestForgotPasswordEmail(password: password, email: email) { (emailVerificationResult) in
                     
                     removeActivityIndicator()
                     
@@ -141,15 +141,56 @@ final class ForgotPasswordCoordinator: ForgotPasswordCoordinatorType {
         let errorTitle: String = TchapL10n.errorTitleDefault
         let errorMessage: String
         
-        let nsError = error as NSError
-        
-        if let matrixErrorCode = nsError.userInfo[kMXErrorCodeKey] as? String, matrixErrorCode == kMXErrCodeStringThreePIDNotFound {
-            errorMessage = TchapL10n.forgotPasswordFormErrorEmailNotFound
+        if let forgotPwdError = error as? ForgotPasswordServiceError {
+            switch forgotPwdError {
+            case .invalidPassword(let reason):
+                switch reason {
+                case .tooShort(let minLength):
+                    errorMessage = TchapL10n.passwordPolicyTooShortPwdDetailedError(minLength)
+                case .noDigit:
+                    errorMessage = TchapL10n.passwordPolicyWeakPwdError
+                case .noSymbol:
+                    errorMessage = TchapL10n.passwordPolicyWeakPwdError
+                case .noUppercase:
+                    errorMessage = TchapL10n.passwordPolicyWeakPwdError
+                case .noLowercase:
+                    errorMessage = TchapL10n.passwordPolicyWeakPwdError
+                }
+            }
         } else {
-            errorMessage = TchapL10n.errorMessageDefault
+            let nsError = error as NSError
+            
+            if let matrixErrorCode = nsError.userInfo[kMXErrorCodeKey] as? String, matrixErrorCode == kMXErrCodeStringThreePIDNotFound {
+                errorMessage = TchapL10n.forgotPasswordFormErrorEmailNotFound
+            } else {
+                errorMessage = TchapL10n.errorMessageDefault
+            }
         }
         
         return ErrorPresentableImpl(title: errorTitle, message: errorMessage)
+    }
+    
+    private func shouldGoBackOnVerifyEmailError(_ error: Error) -> Bool {
+        let shouldGoBack: Bool
+        let nsError = error as NSError
+        
+        if let errCode = nsError.userInfo[kMXErrorCodeKey] as? String {
+            switch errCode {
+            case kMXErrCodeStringPasswordTooShort,
+                 kMXErrCodeStringPasswordNoDigit,
+                 kMXErrCodeStringPasswordNoLowercase,
+                 kMXErrCodeStringPasswordNoUppercase,
+                 kMXErrCodeStringPasswordNoSymbol,
+                 kMXErrCodeStringWeakPassword,
+                 kMXErrCodeStringPasswordInDictionary:
+                shouldGoBack = true
+            default:
+                shouldGoBack = false
+            }
+        } else {
+            shouldGoBack = false
+        }
+        return shouldGoBack
     }
     
     private func verifyEmailErrorPresentable(from error: Error) -> ErrorPresentable {
@@ -158,8 +199,23 @@ final class ForgotPasswordCoordinator: ForgotPasswordCoordinatorType {
         
         let nsError = error as NSError
         
-        if let matrixErrorCode = nsError.userInfo[kMXErrorCodeKey] as? String, matrixErrorCode == kMXErrCodeStringUnauthorized {
-            errorMessage = TchapL10n.forgotPasswordVerifyEmailErrorEmailNotVerified
+        if let errCode = nsError.userInfo[kMXErrorCodeKey] as? String {
+            switch errCode {
+            case kMXErrCodeStringUnauthorized:
+                errorMessage = TchapL10n.forgotPasswordVerifyEmailErrorEmailNotVerified
+            case kMXErrCodeStringPasswordTooShort:
+                errorMessage = TchapL10n.passwordPolicyTooShortPwdError
+            case kMXErrCodeStringPasswordNoDigit,
+                 kMXErrCodeStringPasswordNoLowercase,
+                 kMXErrCodeStringPasswordNoUppercase,
+                 kMXErrCodeStringPasswordNoSymbol,
+                 kMXErrCodeStringWeakPassword:
+                errorMessage = TchapL10n.passwordPolicyWeakPwdError
+            case kMXErrCodeStringPasswordInDictionary:
+                errorMessage = TchapL10n.passwordPolicyPwdInDictError
+            default:
+                errorMessage = TchapL10n.errorMessageDefault
+            }
         } else {
             errorMessage = TchapL10n.errorMessageDefault
         }
@@ -201,8 +257,14 @@ extension ForgotPasswordCoordinator: ForgotPasswordVerifyEmailViewControllerDele
             case .success:
                 sself.showCheckedEmail()
             case .failure(let error):
-                let errorPresentable = sself.verifyEmailErrorPresentable(from: error)
-                errorPresenter.present(errorPresentable: errorPresentable)
+                if sself.shouldGoBackOnVerifyEmailError(error) {
+                    sself.navigationRouter.popModule(animated: true)
+                    let errorPresentable = sself.verifyEmailErrorPresentable(from: error)
+                    sself.forgotPasswordFormErrorPresenter.present(errorPresentable: errorPresentable)
+                } else {
+                    let errorPresentable = sself.verifyEmailErrorPresentable(from: error)
+                    errorPresenter.present(errorPresentable: errorPresentable)
+                }
             }
         }
     }

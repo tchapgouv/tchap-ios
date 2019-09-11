@@ -69,7 +69,7 @@ final class RegistrationCoordinator: RegistrationCoordinatorType {
     
     // MARK: - Private methods
     
-    private func showEmailValidationSentAndPerformRegistration(with userEmail: String, sessionId: String, password: String, threePIDCredentials: ThreePIDCredentials) {
+    private func performRegistrationAndShowEmailValidationSent(with userEmail: String, sessionId: String, password: String, threePIDCredentials: ThreePIDCredentials) {
         
         guard let registrationService = self.registrationService else {
             let errorPresentable = ErrorPresentableImpl(title: TchapL10n.errorTitleDefault, message: TchapL10n.errorMessageDefault)
@@ -78,15 +78,6 @@ final class RegistrationCoordinator: RegistrationCoordinatorType {
         }
         
         self.registerLoginNotification()
-        
-        let registrationEmailSentViewController = RegistrationEmailSentViewController.instantiate(userEmail: userEmail)
-        registrationEmailSentViewController.delegate = self
-        self.navigationRouter.push(registrationEmailSentViewController, animated: true, popCompletion: {
-            // Cancel any pending registration request
-            registrationService.cancelPendingRegistration()
-        })
-        
-        let registrationEmailSentErrorPresenter = AlertErrorPresenter(viewControllerPresenter: registrationEmailSentViewController)
         
         let deviceDisplayName = UIDevice.current.name
         
@@ -99,10 +90,17 @@ final class RegistrationCoordinator: RegistrationCoordinatorType {
                 // Ignore unauthorized error
                 if let mxError = MXError(nsError: error), mxError.errcode == kMXErrCodeStringUnauthorized {
                     print("[RegistrationCoordinator] The email validation is pending")
+                    
+                    let registrationEmailSentViewController = RegistrationEmailSentViewController.instantiate(userEmail: userEmail)
+                    registrationEmailSentViewController.delegate = self
+                    self.navigationRouter.push(registrationEmailSentViewController, animated: true, popCompletion: {
+                        // Cancel any pending registration request
+                        registrationService.cancelPendingRegistration()
+                    })
                 } else {
                     let authenticationErrorPresentableMaker = AuthenticationErrorPresentableMaker()
                     if let errorPresentable = authenticationErrorPresentableMaker.errorPresentable(from: error) {
-                        registrationEmailSentErrorPresenter.present(errorPresentable: errorPresentable)
+                        self.registrationFormErrorPresenter.present(errorPresentable: errorPresentable)
                     }
                 }
             }
@@ -125,6 +123,7 @@ final class RegistrationCoordinator: RegistrationCoordinatorType {
         self.restClientBuilder.build(fromEmail: email) { [unowned self] (restClientBuilderResult) in
             switch restClientBuilderResult {
             case .success(let restClient):
+                // Build a registration service based on this restClient
                 let registrationService = RegistrationService(accountManager: MXKAccountManager.shared(), restClient: restClient)
                 
                 // Initialize a registration session (in order to define a session Id)
@@ -132,14 +131,14 @@ final class RegistrationCoordinator: RegistrationCoordinatorType {
                     
                     switch initResult {
                     case .success(let sessionId):
-                        // Validate email
-                        registrationService.submitRegistrationEmailVerification(to: email, sessionId: sessionId) { (emailVerificationResult) in
+                        // Validate registration parameters
+                        registrationService.validateRegistrationParametersAndRequestEmailVerification(password: password, email: email, sessionId: sessionId) { (emailVerificationResult) in
                             
                             removeActivityIndicator()
                             
                             switch emailVerificationResult {
                             case .success(let threePIDCredentials):
-                                self.showEmailValidationSentAndPerformRegistration(with: email, sessionId: sessionId, password: password, threePIDCredentials: threePIDCredentials)
+                                self.performRegistrationAndShowEmailValidationSent(with: email, sessionId: sessionId, password: password, threePIDCredentials: threePIDCredentials)
                             case .failure(let error):
                                 let authenticationErrorPresentableMaker = AuthenticationErrorPresentableMaker()
                                 if let errorPresentable = authenticationErrorPresentableMaker.errorPresentable(from: error) {
@@ -148,6 +147,8 @@ final class RegistrationCoordinator: RegistrationCoordinatorType {
                             }
                         }
                     case .failure(let error):
+                        removeActivityIndicator()
+                        
                         let authenticationErrorPresentableMaker = AuthenticationErrorPresentableMaker()
                         if let errorPresentable = authenticationErrorPresentableMaker.errorPresentable(from: error) {
                             self.registrationFormErrorPresenter.present(errorPresentable: errorPresentable)

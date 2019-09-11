@@ -24,4 +24,6 @@
 
 @property (nonatomic) MXGroupUser* mxGroupUser;
 
+@property (nonatomic) MXUser* mxUser;
+
 @end

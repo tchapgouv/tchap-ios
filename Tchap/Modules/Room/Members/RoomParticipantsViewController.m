@@ -703,13 +703,29 @@
     validateBarButtonItem.enabled = NO;
     contactsPickerViewController.navigationItem.rightBarButtonItem = validateBarButtonItem;
     
+    NSString *roomAccessRule = [self.mxRoom.summary tc_roomAccessRuleIdentifier];
+    BOOL isFederated = [self.mxRoom.summary tc_isFederated];
+    
     // Prepare its data source
     contactsDataSource = [[ContactsDataSource alloc] initWithMatrixSession:self.mxRoom.mxSession];
     [contactsDataSource finalizeInitialization];
     contactsDataSource.areSectionsShrinkable = YES;
-    contactsDataSource.showInviteButton = NO;
-    contactsDataSource.contactsFilter = ContactsDataSourceTchapFilterTchapOnly;
-    
+    contactsDataSource.showAddEmailButton = YES;
+    if (isFederated)
+    {
+        if ([roomAccessRule isEqualToString:RoomService.roomAccessRuleRestricted])
+        {
+            contactsDataSource.contactsFilter = ContactsDataSourceTchapFilterAllWithoutExternals;
+        }
+        else
+        {
+            contactsDataSource.contactsFilter = ContactsDataSourceTchapFilterAll;
+        }
+    }
+    else
+    {
+        contactsDataSource.contactsFilter = ContactsDataSourceTchapFilterAllWithoutFederation;
+    }
     
     // List all the participants matrix user id to ignore them during the contacts search.
     for (Contact *contact in actualParticipants)
@@ -1399,7 +1415,66 @@
 
 - (void)contactsViewController:(ContactsViewController *)contactsViewController didSelectContact:(MXKContact*)contact
 {
-    validateBarButtonItem.enabled = contactsDataSource.selectedContactByMatrixId.count;
+    validateBarButtonItem.enabled = contactsDataSource.selectedContactByIdentifier.count;
+}
+
+- (void)contactsViewController:(nonnull ContactsViewController *)contactsViewController askPermissionToSelect:(nonnull NSString*)email completion:(void (^_Nonnull)(BOOL granted, NSString * _Nullable reason))completion
+{
+    // Use the value of the filter defined at the data source level
+    UserService *userService = [[UserService alloc] initWithSession:self.mxRoom.mxSession];
+    
+    switch (contactsDataSource.contactsFilter) {
+        case ContactsDataSourceTchapFilterAll:
+        case ContactsDataSourceTchapFilterAllWithoutTchapUsers:
+        {
+            // Check whether the registration is allowed for this email.
+            [userService isEmailAuthorized:email success:^(BOOL isAuthorized) {
+                NSString *reason = isAuthorized ? nil : [NSString stringWithFormat:NSLocalizedStringFromTable(@"invite_not_sent_for_unauthorized_email", @"Tchap", nil), email];
+                completion(isAuthorized, reason);
+            } failure:^(NSError * _Nonnull error) {
+                // We allow the selection when we failed to get the informmation (We let the server reject the invite or not).
+                completion(true, nil);
+            }];
+            break;
+        }
+        case ContactsDataSourceTchapFilterAllWithoutExternals:
+        {
+            // Check whether this email is bound to the external instance.
+            [userService isEmailBoundToTheExternalHost:email success:^(BOOL isExternal) {
+                NSString *reason = isExternal ? NSLocalizedStringFromTable(@"contacts_picker_unauthorized_email_message_restricted_room", @"Tchap", nil) : nil;
+                completion(!isExternal, reason);
+            } failure:^(NSError * _Nonnull error) {
+                // We allow the selection when we failed to get the informmation (We let the server reject the invite or not).
+                completion(true, nil);
+            }];
+            break;
+        }
+        case ContactsDataSourceTchapFilterAllWithoutFederation:
+        {
+            // Check whether this email belongs to the same host as the current user.
+            NSString *myUserId = self.mxRoom.mxSession.myUser.userId;
+            if (myUserId)
+            {
+                NSString *hostName = [userService hostNameFor:myUserId];
+                [userService isEmailBound:email to:hostName success:^(BOOL isBoundToTheSameHost) {
+                    NSString *reason = isBoundToTheSameHost ? nil : [NSString stringWithFormat:NSLocalizedStringFromTable(@"contacts_picker_unauthorized_email_message_unfederated_room", @"Tchap", nil), [userService hostDisplayNameFor:myUserId]];
+                    completion(isBoundToTheSameHost, reason);
+                } failure:^(NSError * _Nonnull error) {
+                    // We allow the selection when we failed to get the informmation (We let the server reject the invite or not).
+                    completion(true, nil);
+                }];
+            }
+            else
+            {
+                // We allow the selection when we failed to get the informmation (We let the server reject the invite or not).
+                completion(true, nil);
+            }
+            break;
+        }
+        default:
+            completion(false, nil);
+            break;
+    }
 }
 
 #pragma mark - Actions
@@ -1627,7 +1702,8 @@
 
 - (void)inviteSelectedContacts
 {
-    NSMutableArray *selectedUserIds = [NSMutableArray arrayWithArray:contactsDataSource.selectedContactByMatrixId.allKeys];
+    // Retrieve the selected identifiers (2 types of ids are supported: Matrix ids and email addresses)
+    NSMutableArray *selectedIdentifiers = [NSMutableArray arrayWithArray:contactsDataSource.selectedContactByIdentifier.allKeys];
     
     // Remove contacts picker
     [self popViewControllerAnimated:YES];
@@ -1637,32 +1713,44 @@
     
     // Invite one by one selected userIds
     [self addPendingActionMask];
-    [self inviteOneByOneSelectedUserIds:selectedUserIds];
+    [self inviteOneByOneSelectedIdentifiers:selectedIdentifiers];
 }
 
-- (void)inviteOneByOneSelectedUserIds:(NSMutableArray*)selectedUserIds
+- (void)inviteOneByOneSelectedIdentifiers:(NSMutableArray*)selectedIdentifiers
 {
-    NSString *userId = selectedUserIds.lastObject;
-    if (userId)
+    NSString *identifier = selectedIdentifiers.lastObject;
+    if (identifier)
     {
-        [selectedUserIds removeLastObject];
+        [selectedIdentifiers removeLastObject];
+        
         MXWeakify(self);
-        [self.mxRoom inviteUser:userId success:^{
+        void (^success)(void)= ^{
             
             MXStrongifyAndReturnIfNil(self);
-            [self inviteOneByOneSelectedUserIds:selectedUserIds];
+            [self inviteOneByOneSelectedIdentifiers:selectedIdentifiers];
             
-        } failure:^(NSError *error) {
+        };
+        void (^failure)(NSError *error) = ^(NSError *error) {
             
             MXStrongifyAndReturnIfNil(self);
             
             // Stop invite process
             [self removePendingActionMask];
-            NSLog(@"[RoomParticipantsVC] Invite %@ failed (%tu)", userId, selectedUserIds.count);
+            NSLog(@"[RoomParticipantsVC] Invite failed (%tu)", selectedIdentifiers.count);
             
             // Alert user
             [[AppDelegate theDelegate] showErrorAsAlert:error];
-        }];
+        };
+        
+        // Check whether this is a Matrix id or an email address
+        if ([MXTools isMatrixUserIdentifier:identifier])
+        {
+            [self.mxRoom inviteUser:identifier success:success failure:failure];
+        }
+        else if ([MXTools isEmailAddress:identifier])
+        {
+            [self.mxRoom inviteUserByEmail:identifier success:success failure:failure];
+        }
     }
     else
     {

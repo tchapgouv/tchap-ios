@@ -27,9 +27,11 @@ protocol RoomServiceType {
     ///   - name: Room name.
     ///   - avatarURL: Room avatar MXC URL.
     ///   - inviteUserIds: The array of Matrix user ids to invite.
+    ///   - isFederated: Tell whether a public room can be joined from the other federated servers.
+    ///   - roomAccessRule: Tell whether the external users are allowed to join this room or not.
     ///   - completion: A closure called when the operation completes. Provide the room id when succeed.
     /// - Returns: A Single of MXCreateRoomResponse.
-    func createRoom(visibility: MXRoomDirectoryVisibility, name: String, avatarURL: String?, inviteUserIds: [String], isFederated: Bool) -> Single<String>
+    func createRoom(visibility: MXRoomDirectoryVisibility, name: String, avatarURL: String?, inviteUserIds: [String], isFederated: Bool, accessRule: RoomAccessRule) -> Single<String>
     
     /// Create a direct chat by inviting a third party identifier.
     ///
@@ -37,4 +39,15 @@ protocol RoomServiceType {
     ///   - thirdPartyID: the third party identifier to invite.
     ///   - completion: A closure called when the operation complete. Provide the discussion id when succeed.
     func createDiscussionWithThirdPartyID(_ thirdPartyID: MXInvite3PID, completion: @escaping (MXResponse<String>) -> Void) -> MXHTTPOperation
+    
+    /// Create a direct chat by inviting a user by their identifier.
+    /// This method has been added to interact with the existing Objective C source code.
+    ///
+    /// - Parameters:
+    /// - userID: the user id to invite.
+    /// - success: A block object called when the operation succeeded. Provide the discussion id
+    /// - failure: A block object called when the operation failed.
+    ///
+    /// - returns: a `MXHTTPOperation` instance.
+    func createDiscussion(with userID: String, success: @escaping ((String) -> Void), failure: @escaping ((Error) -> Void)) -> MXHTTPOperation
 }

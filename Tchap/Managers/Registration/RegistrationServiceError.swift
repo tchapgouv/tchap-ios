@@ -26,4 +26,5 @@ enum RegistrationServiceError: Error {
     case validationTokenFailed
     case nextLinkBuildFailed
     case missingClientSecret
+    case invalidPassword(reason: PasswordPolicyRejectionReason)
 }

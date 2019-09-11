@@ -16,23 +16,57 @@
 
 import Foundation
 
+enum ForgotPasswordServiceError: Error {
+    case invalidPassword(reason: PasswordPolicyRejectionReason)
+}
+
 /// `ForgotPasswordService` implementation of `ForgotPasswordServiceType` is used to perform reset password requests on Tchap platforms.
 final class ForgotPasswordService: ForgotPasswordServiceType {
     
     // MARK: - Properties
         
     private let restClient: MXRestClient
+    private let passwordPolicyService: PasswordPolicyServiceType
     
     // MARK: - Setup
     
     init(restClient: MXRestClient) {
+        guard let homeServer = restClient.credentials.homeServer else {
+            fatalError("homeserver should be defined")
+        }
         self.restClient = restClient
+        self.passwordPolicyService = PasswordPolicyService(homeServer: homeServer)
     }
     
     // MARK: - Public
     
-    func submitForgotPasswordEmail(to email: String, completion: @escaping (MXResponse<ThreePIDCredentials>) -> Void) -> MXHTTPOperation? {
-        return self.submitForgotPasswordEmail(to: email, using: self.restClient, completion: completion)
+    func validateParametersAndRequestForgotPasswordEmail(password: String?, email: String, completion: @escaping (MXResponse<ThreePIDCredentials>) -> Void) -> MXHTTPOperation {
+        // Create an empty operation that will be mutated later
+        let operation = MXHTTPOperation()
+        
+        // Validate first the password (if any)
+        if let password = password {
+            let operation1 = self.passwordPolicyService.verifyPassword(password) { (response) in
+                switch response {
+                case .success(let result):
+                    switch result {
+                    case .authorized:
+                        // Pursue by requesting an email to validate the email address
+                        let operation2 = self.requestForgotPasswordEmail(to: email, using: self.restClient, completion: completion)
+                        operation.mutate(to: operation2)
+                    case .unauthorized(let reason):
+                        completion(.failure(ForgotPasswordServiceError.invalidPassword(reason: reason)))
+                    }
+                case .failure(let error):
+                    completion(.failure(error))
+                }
+            }
+            operation.mutate(to: operation1)
+        } else if let operation1 = self.requestForgotPasswordEmail(to: email, using: self.restClient, completion: completion) {
+            operation.mutate(to: operation1)
+        }
+        
+        return operation
     }
     
     func resetPassword(withEmailCredentials threePIDCredentials: ThreePIDCredentials, newPassword: String, completion: @escaping (MXResponse<Void>) -> Void) -> MXHTTPOperation {
@@ -55,7 +89,7 @@ final class ForgotPasswordService: ForgotPasswordServiceType {
     
     // MARK: - Private
     
-    private func submitForgotPasswordEmail(to email: String, using restClient: MXRestClient, completion: @escaping (MXResponse<ThreePIDCredentials>) -> Void) -> MXHTTPOperation? {
+    private func requestForgotPasswordEmail(to email: String, using restClient: MXRestClient, completion: @escaping (MXResponse<ThreePIDCredentials>) -> Void) -> MXHTTPOperation? {
         guard let identityServer = restClient.identityServer,
             let identityServerURL = URL(string: identityServer),
             let identityServerHost = identityServerURL.host else {

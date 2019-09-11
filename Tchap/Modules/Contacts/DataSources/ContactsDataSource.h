@@ -19,15 +19,43 @@
 
 /**
  This enum is used to filter the displayed contacts.
- Note: the Tchap users for who a discussion (direct chat) exists will be considered as local contacts.
- This means they will appear in the local contacts section.
  */
 typedef enum : NSUInteger
 {
+    /**
+     * Display all the local contacts who have email(s).
+     * The contacts with several emails are displayed several times (One item by email).
+     * When an email is bound to a Tchap account, the Tchap display name is used and
+     * the email is hidden. Else the name defined in the local contacts book is used with the email.
+     * Note: the Tchap users for who a discussion (direct chat) exists will be considered as local contacts.
+     * This means they will appear in the local contacts section.
+     * The search in the Tchap users directory is available (except if the current user is external).
+     */
     ContactsDataSourceTchapFilterAll,
-    ContactsDataSourceTchapFilterTchapOnly,
-    ContactsDataSourceTchapFilterNonFederatedTchapOnly,
-    ContactsDataSourceTchapFilterNoTchapOnly
+    /**
+     * Same as ALL, but the contacts related to the external Tchap server(s) are excluded.
+     */
+    ContactsDataSourceTchapFilterAllWithoutExternals,
+    /**
+     * Same as ALL, but only the contacts bound to the same host than the current user are displayed.
+     */
+    ContactsDataSourceTchapFilterAllWithoutFederation,
+    /**
+     * Display only the Tchap users.
+     */
+    ContactsDataSourceTchapFilterTchapUsersOnly,
+    /**
+     * Display only the Tchap users by excluding the external ones.
+     */
+    ContactsDataSourceTchapFilterTchapUsersOnlyWithoutExternals,
+    /**
+     * Display only the Tchap users hosted on the same host than the current user.
+     */
+    ContactsDataSourceTchapFilterTchapUsersOnlyWithoutFederation,
+    /**
+     * Display the local contacts who are not Tchap users yet.
+     */
+    ContactsDataSourceTchapFilterAllWithoutTchapUsers
 } ContactsDataSourceTchapFilter;
 
 /**
@@ -51,7 +79,8 @@ typedef enum : NSUInteger
 {
 @protected
     // Section indexes
-    NSInteger inviteButtonSection;
+    NSInteger inviteToTchapButtonSection;
+    NSInteger addEmailButtonSection;
     NSInteger filteredLocalContactsSection;
     NSInteger filteredMatrixContactsSection;
     
@@ -71,6 +100,14 @@ typedef enum : NSUInteger
  @return YES if the indexPath is the invite button one
  */
 -(BOOL)isInviteButtonIndexPath:(NSIndexPath*)indexPath;
+
+/**
+ Check whether the add email button is located to the given index path.
+ 
+ @param indexPath the index of the cell
+ @return YES if the indexPath is the addEmail button one
+ */
+-(BOOL)isAddEmailButtonIndexPath:(NSIndexPath*)indexPath;
 
 /**
  Get the contact at the given index path.
@@ -134,6 +171,21 @@ typedef enum : NSUInteger
  */
 - (void)selectOrDeselectContactAtIndexPath:(NSIndexPath*)indexPath;
 
+/**
+ Add an email address to the selection.
+ 
+ @param email.
+ @return the contact used to represent the email in the selection.
+ */
+- (MXKContact*)addSelectedEmail:(NSString*)email;
+
+/**
+ Return the identifier (Matrix id or email) related to a contact.
+ 
+ @param contact
+ */
+- (NSString*)contactIdentifier:(MXKContact*)contact;
+
 #pragma mark - Configuration
 /**
  Tell whether the sections are shrinkable. NO by default.
@@ -169,9 +221,9 @@ typedef enum : NSUInteger
 @property (nonatomic) NSMutableDictionary<NSString*, MXKContact*> *ignoredContactsByMatrixId;
 
 /**
- The dictionary of the selected matrix contacts, the keys are their matrix identifier. Empty by default.
+ The dictionary of the selected contacts, the keys are their matrix identifier or their email address. Empty by default.
  */
-@property (nonatomic, strong, readonly) NSMutableDictionary<NSString*, MXKContact*> *selectedContactByMatrixId;
+@property (nonatomic, strong, readonly) NSMutableDictionary<NSString*, MXKContact*> *selectedContactByIdentifier;
 
 /**
  Filter the contacts list, by keeping only the contacts who have the search pattern
@@ -183,9 +235,14 @@ typedef enum : NSUInteger
 - (void)searchWithPattern:(NSString *)searchText forceReset:(BOOL)forceReset;
 
 /**
- Tell whether the invite button is displayed at the top of the contacts list (NO by default).
+ Tell whether the invite to Tchap button is displayed at the top of the contacts list (NO by default).
  */
-@property (nonatomic) BOOL showInviteButton;
+@property (nonatomic) BOOL showInviteToTchapButton;
+
+/**
+ Tell whether the user is allowed to add some email addresses to the list (NO by default).
+ */
+@property (nonatomic) BOOL showAddEmailButton;
 
 /**
  The state of the users search from the homeserver user directory.

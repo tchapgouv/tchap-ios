@@ -75,10 +75,13 @@ NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBanne
     UITextField* nameTextField;
     UITextView* topicTextView;
     
-    // Room Access items
+    // Rooms directory items
     NSInteger directoryVisibilityIndex;
     MXRoomDirectoryVisibility actualDirectoryVisibility;
     MXHTTPOperation* actualDirectoryVisibilityRequest;
+    
+    // Room Access items
+    NSInteger roomAccessRuleIndex;
     
     // The potential image loader
     MXMediaLoader *uploader;
@@ -136,7 +139,7 @@ NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBanne
     [super initWithSession:session andRoomId:roomId];
     
     // Add an additional listener to update banned users
-    self->extraEventsListener = [mxRoom listenToEventsOfTypes:@[kMXEventTypeStringRoomMember] onEvent:^(MXEvent *event, MXTimelineDirection direction, MXRoomState *roomState) {
+    self->extraEventsListener = [mxRoom listenToEventsOfTypes:@[kMXEventTypeStringRoomMember, RoomService.roomAccessRulesStateEventType] onEvent:^(MXEvent *event, MXTimelineDirection direction, MXRoomState *roomState) {
 
         if (direction == MXTimelineDirectionForwards)
         {
@@ -1002,11 +1005,13 @@ NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBanne
             // Check user's power level to know whether the user may remove this room from the rooms directory.
             MXRoomPowerLevels *powerLevels = [mxRoomState powerLevels];
             NSInteger oneSelfPowerLevel = [powerLevels powerLevelOfUserWithUserID:self.mainSession.myUser.userId];
-            if (oneSelfPowerLevel >= powerLevels.stateDefault)
+            if (oneSelfPowerLevel >= RoomPowerLevelAdmin)
             {
                 directoryVisibilityIndex = count++;
             }
         }
+        
+        roomAccessRuleIndex = count++;
     }
     else if (section == ROOM_SETTINGS_BANNED_USERS_SECTION_INDEX)
     {
@@ -1246,6 +1251,52 @@ NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBanne
             [removeFromDirectoryCell.mxkSwitch addTarget:self action:@selector(toggleRemoveFromDirectory:) forControlEvents:UIControlEventValueChanged];
             
             cell = removeFromDirectoryCell;
+        }
+        else if (indexPath.row == roomAccessRuleIndex)
+        {
+            // Retrieve the current room access rule
+            NSString *roomAccessRule = [mxRoom.summary tc_roomAccessRuleIdentifier];
+            
+            // Check whether the current user is room admin
+            BOOL isAdmin = (oneSelfPowerLevel >= RoomPowerLevelAdmin);
+            
+            // The room admin is able to open a "private room" to the external users
+            // (We name "private rooms" those which require an invite to be joined)
+            if ([roomAccessRule isEqualToString:RoomService.roomAccessRuleRestricted]
+                && isAdmin
+                && [mxRoomState.joinRule isEqualToString:kMXRoomJoinRuleInvite]) {
+                MXKTableViewCellWithLabelAndSwitch *allowExternalMembersCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+                
+                allowExternalMembersCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_settings_allow_external_users_to_join", @"Tchap", nil);
+                allowExternalMembersCell.mxkSwitch.on = NO;
+                [allowExternalMembersCell.mxkSwitch addTarget:self action:@selector(toggleRoomAccessRule:) forControlEvents:UIControlEventValueChanged];
+                
+                cell = allowExternalMembersCell;
+            }
+            else
+            {
+                MXKTableViewCell *roomAccessInfo = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier] forIndexPath:indexPath];
+                
+                NSString *title = NSLocalizedStringFromTable(@"room_settings_room_access_title", @"Tchap", nil);
+                // Display a summary according to the room access rule value
+                NSString *summary = roomAccessRule ? NSLocalizedStringFromTable(@"room_settings_room_access_restricted", @"Tchap", nil) : @"";
+                if ([roomAccessRule isEqualToString:RoomService.roomAccessRuleUnrestricted]) {
+                    summary = NSLocalizedStringFromTable(@"room_settings_room_access_unrestricted", @"Tchap", nil);
+                }
+                NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString: title
+                                                                                                   attributes:@{NSForegroundColorAttributeName : self.currentStyle.primaryTextColor,
+                                                                                                                NSFontAttributeName: [UIFont systemFontOfSize:17.0]}];
+                [attributedText appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n\n" attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:4]}]];
+                [attributedText appendAttributedString:[[NSMutableAttributedString alloc] initWithString: summary
+                                                                                              attributes:@{NSForegroundColorAttributeName : self.currentStyle.secondaryTextColor,
+                                                                                                           NSFontAttributeName: [UIFont systemFontOfSize:14.0]}]];
+                
+                roomAccessInfo.textLabel.numberOfLines = 0;
+                roomAccessInfo.textLabel.attributedText = attributedText;
+                roomAccessInfo.selectionStyle = UITableViewCellSelectionStyleNone;
+                
+                cell = roomAccessInfo;
+            }
         }
     }
     else if (indexPath.section == ROOM_SETTINGS_BANNED_USERS_SECTION_INDEX)
@@ -1502,7 +1553,7 @@ NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBanne
                                                        
                                                    }]];
     
-    [currentAlert mxk_setAccessibilityIdentifier:@"RoomSettingsVCLeaveAlert"];
+    [currentAlert mxk_setAccessibilityIdentifier:@"RoomSettingsVCRoomDirectoryAlert"];
     [self presentViewController:currentAlert animated:YES completion:nil];
 }
 
@@ -1577,6 +1628,74 @@ NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBanne
             
         } failure:failure];
     }
+}
+
+- (void)toggleRoomAccessRule:(UISwitch*)theSwitch
+{
+    // Prompt the user before opening the room to the external users
+    MXWeakify(self);
+    [currentAlert dismissViewControllerAnimated:NO completion:nil];
+    
+    currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"warning", @"Vector", nil)
+                                                       message:NSLocalizedStringFromTable(@"room_settings_allow_external_users_to_join_prompt_msg", @"Tchap", nil)
+                                                preferredStyle:UIAlertControllerStyleAlert];
+    
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"yes"]
+                                                     style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction * action) {
+                                                       
+                                                       MXStrongifyAndReturnIfNil(self);
+                                                       self->currentAlert = nil;
+                                                       [self allowExternalsToJoin];
+                                                       
+                                                   }]];
+    
+    
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                                                     style:UIAlertActionStyleCancel
+                                                   handler:^(UIAlertAction * action) {
+                                                       
+                                                       MXStrongifyAndReturnIfNil(self);
+                                                       self->currentAlert = nil;
+                                                       // Reset the switch change
+                                                       theSwitch.on = NO;
+                                                       
+                                                   }]];
+    
+    [currentAlert mxk_setAccessibilityIdentifier:@"RoomSettingsVCRoomAccessAlert"];
+    [self presentViewController:currentAlert animated:YES completion:nil];
+}
+
+- (void)allowExternalsToJoin
+{
+    [self startActivityIndicator];
+    MXWeakify(self);
+    
+    pendingOperation = [self->mxRoom sendStateEventOfType:RoomService.roomAccessRulesStateEventType
+                                                  content:@{
+                                                            RoomService.roomAccessRulesContentRuleKey:
+                                                                RoomService.roomAccessRuleUnrestricted
+                                                            }
+                                                 stateKey:@""
+                                                  success:^(NSString *eventId) {
+                                                      
+                                                      MXStrongifyAndReturnIfNil(self);
+                                                      self->pendingOperation = nil;
+                                                      [self stopActivityIndicator];
+                                                      [self refreshRoomSettings];
+                                                      
+                                                  }
+                                                  failure:^(NSError *error){
+                                                      
+                                                      NSLog(@"[RoomSettingsViewController] Update room access rule failed");
+                                                      MXStrongifyAndReturnIfNil(self);
+                                                      self->pendingOperation = nil;
+                                                      [self stopActivityIndicator];
+                                                      // Alert user
+                                                      [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                      [self refreshRoomSettings];
+                                                      
+                                                  }];
 }
 
 @end

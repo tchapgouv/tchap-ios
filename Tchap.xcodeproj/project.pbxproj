@@ -226,6 +226,14 @@
 		0252030C224EBD4800262433 /* ContactButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02520305224EBD4800262433 /* ContactButtonView.swift */; };
 		0252030D224EBD4800262433 /* ContactButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02520306224EBD4800262433 /* ContactButtonViewModel.swift */; };
 		0252030E224EBD4800262433 /* ContactButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02520306224EBD4800262433 /* ContactButtonViewModel.swift */; };
+		0259328822AFE8A500C93762 /* PasswordPolicyServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0259328722AFE8A500C93762 /* PasswordPolicyServiceType.swift */; };
+		0259328922AFE8A500C93762 /* PasswordPolicyServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0259328722AFE8A500C93762 /* PasswordPolicyServiceType.swift */; };
+		0259328B22AFEF5700C93762 /* PasswordPolicyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0259328A22AFEF5700C93762 /* PasswordPolicyService.swift */; };
+		0259328C22AFEF5700C93762 /* PasswordPolicyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0259328A22AFEF5700C93762 /* PasswordPolicyService.swift */; };
+		0259328E22B00D0200C93762 /* PasswordPolicyType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0259328D22B00D0200C93762 /* PasswordPolicyType.swift */; };
+		0259328F22B00D0200C93762 /* PasswordPolicyType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0259328D22B00D0200C93762 /* PasswordPolicyType.swift */; };
+		0259329122B00E4300C93762 /* PasswordPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0259329022B00E4300C93762 /* PasswordPolicy.swift */; };
+		0259329222B00E4300C93762 /* PasswordPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0259329022B00E4300C93762 /* PasswordPolicy.swift */; };
 		025E36F5229546A000C9D9AE /* ThirdPartyIDResolverType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025E36F4229546A000C9D9AE /* ThirdPartyIDResolverType.swift */; };
 		025E36F6229546A000C9D9AE /* ThirdPartyIDResolverType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025E36F4229546A000C9D9AE /* ThirdPartyIDResolverType.swift */; };
 		025E36F8229548C000C9D9AE /* ThirdPartyIDResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025E36F7229548C000C9D9AE /* ThirdPartyIDResolver.swift */; };
@@ -242,6 +250,8 @@
 		0290607A21501D16005FE3C1 /* PreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0290607821501D16005FE3C1 /* PreviewView.m */; };
 		0290609221527A3F005FE3C1 /* RoomDetailsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0290609021527A3E005FE3C1 /* RoomDetailsCoordinator.swift */; };
 		0290609321527A3F005FE3C1 /* RoomDetailsCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0290609121527A3F005FE3C1 /* RoomDetailsCoordinatorType.swift */; };
+		029C927D22E7044200E62D27 /* RoomAccessRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029C927C22E7044200E62D27 /* RoomAccessRule.swift */; };
+		029C927E22E7044200E62D27 /* RoomAccessRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029C927C22E7044200E62D27 /* RoomAccessRule.swift */; };
 		029C927722E21F5900E62D27 /* MXRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029C927622E21F5900E62D27 /* MXRoom.swift */; };
 		029C927822E21F5900E62D27 /* MXRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029C927622E21F5900E62D27 /* MXRoom.swift */; };
 		029CC68B21772F4200DCC8B3 /* LanguagePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 029CC67921772F4200DCC8B3 /* LanguagePickerViewController.m */; };
@@ -655,6 +665,8 @@
 		02DFECEC21C07370009B6F15 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02BEE1A2212C717F00098505 /* Images.xcassets */; };
 		02DFECED21C07370009B6F15 /* RoomEncryptedAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 020DF8B5214BE467003DFBA4 /* RoomEncryptedAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.xib */; };
 		02DFECFC21C07792009B6F15 /* Btchap-Defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 02DFECFB21C07792009B6F15 /* Btchap-Defaults.plist */; };
+		02ECA88022E0C5BA00ECDA5E /* MXRoomSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ECA87F22E0C5BA00ECDA5E /* MXRoomSummary.swift */; };
+		02ECA88122E0C5BA00ECDA5E /* MXRoomSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ECA87F22E0C5BA00ECDA5E /* MXRoomSummary.swift */; };
 		02F0FF3F22268D5F00066908 /* PublicRoomsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F0FF3E22268D5F00066908 /* PublicRoomsCell.swift */; };
 		02F0FF4022268D5F00066908 /* PublicRoomsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F0FF3E22268D5F00066908 /* PublicRoomsCell.swift */; };
 		02F0FF452226F82600066908 /* RoomIDComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F0FF442226F82600066908 /* RoomIDComponents.swift */; };
@@ -1069,6 +1081,10 @@
 		02520304224EBD4800262433 /* ContactButtonView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactButtonView.xib; sourceTree = "<group>"; };
 		02520305224EBD4800262433 /* ContactButtonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactButtonView.swift; sourceTree = "<group>"; };
 		02520306224EBD4800262433 /* ContactButtonViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactButtonViewModel.swift; sourceTree = "<group>"; };
+		0259328722AFE8A500C93762 /* PasswordPolicyServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordPolicyServiceType.swift; sourceTree = "<group>"; };
+		0259328A22AFEF5700C93762 /* PasswordPolicyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordPolicyService.swift; sourceTree = "<group>"; };
+		0259328D22B00D0200C93762 /* PasswordPolicyType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordPolicyType.swift; sourceTree = "<group>"; };
+		0259329022B00E4300C93762 /* PasswordPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordPolicy.swift; sourceTree = "<group>"; };
 		025E36F4229546A000C9D9AE /* ThirdPartyIDResolverType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThirdPartyIDResolverType.swift; sourceTree = "<group>"; };
 		025E36F7229548C000C9D9AE /* ThirdPartyIDResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThirdPartyIDResolver.swift; sourceTree = "<group>"; };
 		026D886F21C1C4F40085BED8 /* TchapSharedImages.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = TchapSharedImages.xcassets; sourceTree = "<group>"; };
@@ -1084,6 +1100,7 @@
 		0290607821501D16005FE3C1 /* PreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreviewView.m; sourceTree = "<group>"; };
 		0290609021527A3E005FE3C1 /* RoomDetailsCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomDetailsCoordinator.swift; sourceTree = "<group>"; };
 		0290609121527A3F005FE3C1 /* RoomDetailsCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomDetailsCoordinatorType.swift; sourceTree = "<group>"; };
+		029C927C22E7044200E62D27 /* RoomAccessRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomAccessRule.swift; sourceTree = "<group>"; };
 		029C927622E21F5900E62D27 /* MXRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MXRoom.swift; sourceTree = "<group>"; };
 		029CC67921772F4200DCC8B3 /* LanguagePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LanguagePickerViewController.m; sourceTree = "<group>"; };
 		029CC67A21772F4200DCC8B3 /* LanguagePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LanguagePickerViewController.h; sourceTree = "<group>"; };
@@ -1131,6 +1148,7 @@
 		02DFECF921C0771C009B6F15 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		02DFECFB21C07792009B6F15 /* Btchap-Defaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Btchap-Defaults.plist"; sourceTree = "<group>"; };
 		02DFECFD21C1197E009B6F15 /* Btchap.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Btchap.entitlements; sourceTree = "<group>"; };
+		02ECA87F22E0C5BA00ECDA5E /* MXRoomSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MXRoomSummary.swift; sourceTree = "<group>"; };
 		02F0FF3E22268D5F00066908 /* PublicRoomsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicRoomsCell.swift; sourceTree = "<group>"; };
 		02F0FF442226F82600066908 /* RoomIDComponents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomIDComponents.swift; sourceTree = "<group>"; };
 		23307BF65CCF37A2CAE36E4F /* Pods-TchapPods-Btchap.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TchapPods-Btchap.debug.xcconfig"; path = "Target Support Files/Pods-TchapPods-Btchap/Pods-TchapPods-Btchap.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1909,6 +1927,17 @@
 			path = ContactButton;
 			sourceTree = "<group>";
 		};
+		0259328622AFE84400C93762 /* PasswordPolicy */ = {
+			isa = PBXGroup;
+			children = (
+				0259328D22B00D0200C93762 /* PasswordPolicyType.swift */,
+				0259329022B00E4300C93762 /* PasswordPolicy.swift */,
+				0259328722AFE8A500C93762 /* PasswordPolicyServiceType.swift */,
+				0259328A22AFEF5700C93762 /* PasswordPolicyService.swift */,
+			);
+			path = PasswordPolicy;
+			sourceTree = "<group>";
+		};
 		025E36F32295466400C9D9AE /* ThirdPartyIDResolver */ = {
 			isa = PBXGroup;
 			children = (
@@ -2045,6 +2074,7 @@
 		02BEE184212AB23A00098505 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				0259328622AFE84400C93762 /* PasswordPolicy */,
 				0215542122B24011004663A6 /* AccountValidity */,
 				025E36F32295466400C9D9AE /* ThirdPartyIDResolver */,
 				02C4BE86225231ED00F7BB0E /* Invite */,
@@ -2919,6 +2949,7 @@
 				02F0FF442226F82600066908 /* RoomIDComponents.swift */,
 				B1C4645E21B6DD42005F4D53 /* RoomService.swift */,
 				B1C4645F21B6DD42005F4D53 /* RoomServiceType.swift */,
+				029C927C22E7044200E62D27 /* RoomAccessRule.swift */,
 			);
 			path = Room;
 			sourceTree = "<group>";
@@ -3033,6 +3064,7 @@
 				B1F2AAB5212AFDBA0077FDC0 /* UIViewController.swift */,
 				B1BC6A042135E42D00D32F8E /* UIView.swift */,
 				B12DDA99216FB2370093172C /* UIBezierPath.swift */,
+				02ECA87F22E0C5BA00ECDA5E /* MXRoomSummary.swift */,
 				029C927622E21F5900E62D27 /* MXRoom.swift */,
 			);
 			path = Extensions;
@@ -3782,6 +3814,7 @@
 				0250C49F2122B68000034691 /* MediaAlbumContentViewController.m in Sources */,
 				020DF963214BE467003DFBA4 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
 				020DF987214BE467003DFBA4 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
+				0259329122B00E4300C93762 /* PasswordPolicy.swift in Sources */,
 				B12FD6AC2146BA45001B7F28 /* RegistrationServiceType.swift in Sources */,
 				B165252221779FA700146F80 /* CreateNewDiscussionCoordinator.swift in Sources */,
 				B1F2AAA1212AED170077FDC0 /* RoomsCoordinator.swift in Sources */,
@@ -3823,6 +3856,7 @@
 				B1322FE3212FFCCD0054A9DD /* Storyboards.swift in Sources */,
 				B1BC6A1D2136C99F00D32F8E /* Variant1Style.swift in Sources */,
 				B1322FE5212FFCCD0054A9DD /* Strings.swift in Sources */,
+				02ECA88022E0C5BA00ECDA5E /* MXRoomSummary.swift in Sources */,
 				0250C4B22122B68000034691 /* MXRoom+Riot.m in Sources */,
 				B146D51121A5EAE800D8C2C6 /* RoomAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.m in Sources */,
 				020DF948214BE467003DFBA4 /* RoomMemberTitleView.m in Sources */,
@@ -3889,6 +3923,7 @@
 				B11C800121393E5D00CC6F2F /* RegistrationCoordinatorType.swift in Sources */,
 				B1F2AA9A212AEC830077FDC0 /* AppDelegate.swift in Sources */,
 				0250C4E02122B68000034691 /* EventFormatter.m in Sources */,
+				029C927D22E7044200E62D27 /* RoomAccessRule.swift in Sources */,
 				B1F2AA92212AEC830077FDC0 /* SplitViewCoordinator.swift in Sources */,
 				B1680D062152AA28009B5F92 /* PublicRoomServiceType.swift in Sources */,
 				020DF9AC214BE467003DFBA4 /* RoomInputToolbarView.m in Sources */,
@@ -3911,7 +3946,9 @@
 				B1F2AA95212AEC830077FDC0 /* SettingsCoordinatorType.swift in Sources */,
 				0252030B224EBD4800262433 /* ContactButtonView.swift in Sources */,
 				020DF971214BE467003DFBA4 /* RoomIncomingAttachmentBubbleCell.m in Sources */,
+				0259328B22AFEF5700C93762 /* PasswordPolicyService.swift in Sources */,
 				0250C4E72122B68000034691 /* EncryptionInfoView.m in Sources */,
+				0259328822AFE8A500C93762 /* PasswordPolicyServiceType.swift in Sources */,
 				B1892E7D2130719500742348 /* TextInputHandler.swift in Sources */,
 				B18D18C42153E68A003677D1 /* HomeViewController.swift in Sources */,
 				B1F2AAA5212AED840077FDC0 /* Coordinator.swift in Sources */,
@@ -4019,6 +4056,7 @@
 				0250C52F2122B68000034691 /* DecryptionFailureTracker.m in Sources */,
 				0250C5312122B68000034691 /* RoomEmailInvitation.m in Sources */,
 				B122FB57216D060F00B09BEF /* RoomTitleView.swift in Sources */,
+				0259328E22B00D0200C93762 /* PasswordPolicyType.swift in Sources */,
 				02018F9F22006282008D68BE /* UniversalLinkParametersType.swift in Sources */,
 				B1BC6A1B21369C8F00D32F8E /* Style.swift in Sources */,
 				B1F2AA98212AEC830077FDC0 /* AppCoordinatorType.swift in Sources */,
@@ -4069,6 +4107,7 @@
 				02DFEB8521C07370009B6F15 /* MediaAlbumContentViewController.m in Sources */,
 				02DFEB8621C07370009B6F15 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
 				02DFEB8721C07370009B6F15 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
+				0259329222B00E4300C93762 /* PasswordPolicy.swift in Sources */,
 				02DFEB8821C07370009B6F15 /* RegistrationServiceType.swift in Sources */,
 				02DFEB8921C07370009B6F15 /* CreateNewDiscussionCoordinator.swift in Sources */,
 				02DFEB8A21C07370009B6F15 /* RoomsCoordinator.swift in Sources */,
@@ -4110,6 +4149,7 @@
 				02DFEBAB21C07370009B6F15 /* Storyboards.swift in Sources */,
 				02DFEBAC21C07370009B6F15 /* Variant1Style.swift in Sources */,
 				02DFEBAD21C07370009B6F15 /* Strings.swift in Sources */,
+				02ECA88122E0C5BA00ECDA5E /* MXRoomSummary.swift in Sources */,
 				02DFEBAF21C07370009B6F15 /* MXRoom+Riot.m in Sources */,
 				02DFEBB021C07370009B6F15 /* RoomAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.m in Sources */,
 				02DFEBB121C07370009B6F15 /* RoomMemberTitleView.m in Sources */,
@@ -4176,6 +4216,7 @@
 				02DFEBE721C07370009B6F15 /* RegistrationCoordinatorType.swift in Sources */,
 				02DFEBE821C07370009B6F15 /* AppDelegate.swift in Sources */,
 				02DFEBE921C07370009B6F15 /* EventFormatter.m in Sources */,
+				029C927E22E7044200E62D27 /* RoomAccessRule.swift in Sources */,
 				02DFEBEA21C07370009B6F15 /* SplitViewCoordinator.swift in Sources */,
 				02DFEBEB21C07370009B6F15 /* PublicRoomServiceType.swift in Sources */,
 				02DFEBEC21C07370009B6F15 /* RoomInputToolbarView.m in Sources */,
@@ -4198,7 +4239,9 @@
 				02DFEBF921C07370009B6F15 /* SettingsCoordinatorType.swift in Sources */,
 				0252030C224EBD4800262433 /* ContactButtonView.swift in Sources */,
 				02DFEBFA21C07370009B6F15 /* RoomIncomingAttachmentBubbleCell.m in Sources */,
+				0259328C22AFEF5700C93762 /* PasswordPolicyService.swift in Sources */,
 				02DFEBFB21C07370009B6F15 /* EncryptionInfoView.m in Sources */,
+				0259328922AFE8A500C93762 /* PasswordPolicyServiceType.swift in Sources */,
 				02DFEBFC21C07370009B6F15 /* TextInputHandler.swift in Sources */,
 				02DFEBFD21C07370009B6F15 /* HomeViewController.swift in Sources */,
 				02DFEBFE21C07370009B6F15 /* Coordinator.swift in Sources */,
@@ -4306,6 +4349,7 @@
 				02DFEC5E21C07370009B6F15 /* DecryptionFailureTracker.m in Sources */,
 				02DFEC5F21C07370009B6F15 /* RoomEmailInvitation.m in Sources */,
 				02DFEC6021C07370009B6F15 /* RoomTitleView.swift in Sources */,
+				0259328F22B00D0200C93762 /* PasswordPolicyType.swift in Sources */,
 				02018FA022006282008D68BE /* UniversalLinkParametersType.swift in Sources */,
 				02DFEC6121C07370009B6F15 /* Style.swift in Sources */,
 				02DFEC6221C07370009B6F15 /* AppCoordinatorType.swift in Sources */,

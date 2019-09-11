@@ -115,8 +115,21 @@ final class RoomCreationCoordinator: NSObject, RoomCreationCoordinatorType {
     }
     
     private func showContactsPicker() {
+        // Check whether the federation has been disabled to limit the invitation to the non federated users
         let showFederatedUsers = self.roomCreationFormResult?.isFederated ?? true
-        let contactsPickerCoordinator = ContactsPickerCoordinator(session: self.session, showFederatedUsers: showFederatedUsers)
+        let filter: ContactsDataSourceTchapFilter
+        if showFederatedUsers {
+            // Check the room access rule
+            let isRestricted = self.roomCreationFormResult?.isRestricted ?? true
+            if isRestricted {
+                filter = ContactsDataSourceTchapFilterTchapUsersOnlyWithoutExternals
+            } else {
+                filter = ContactsDataSourceTchapFilterTchapUsersOnly
+            }
+        } else {
+            filter = ContactsDataSourceTchapFilterTchapUsersOnlyWithoutFederation
+        }
+        let contactsPickerCoordinator = ContactsPickerCoordinator(session: self.session, contactsFilter: filter)
         contactsPickerCoordinator.start()
         contactsPickerCoordinator.delegate = self
         
@@ -195,7 +208,8 @@ final class RoomCreationCoordinator: NSObject, RoomCreationCoordinatorType {
     
     private func createRoom(roomCreationFormResult: RoomCreationFormResult, avatarUrl: String?, userIDs: [String]) -> Single<String> {
         let roomVisibility: MXRoomDirectoryVisibility = roomCreationFormResult.isPublic ? .public : .private
-        return self.roomService.createRoom(visibility: roomVisibility, name: roomCreationFormResult.name, avatarURL: avatarUrl, inviteUserIds: userIDs, isFederated: roomCreationFormResult.isFederated)
+        let roomAccessRule: RoomAccessRule = roomCreationFormResult.isRestricted ? .restricted: .unrestricted
+        return self.roomService.createRoom(visibility: roomVisibility, name: roomCreationFormResult.name, avatarURL: avatarUrl, inviteUserIds: userIDs, isFederated: roomCreationFormResult.isFederated, accessRule: roomAccessRule)
     }
 }
 
@@ -233,7 +247,8 @@ extension RoomCreationCoordinator: MediaPickerViewControllerDelegate {
 // MARK: - ContactsPickerCoordinatorDelegate
 extension RoomCreationCoordinator: ContactsPickerCoordinatorDelegate {
     
-    func contactsPickerCoordinator(_ coordinator: ContactsPickerCoordinatorType, didSelectUserIDs userIDs: [String]) {
-        self.createRoom(with: userIDs)
+    func contactsPickerCoordinator(_ coordinator: ContactsPickerCoordinatorType, didSelectContactIdentifiers identifiers: [String]) {
+        // Presently only Matrix ids are expected in this identifiers list (the picker is configured to display only Tchap users).
+        self.createRoom(with: identifiers)
     }
 }

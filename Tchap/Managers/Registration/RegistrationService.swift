@@ -29,14 +29,19 @@ final class RegistrationService: RegistrationServiceType {
     
     private let accountManager: MXKAccountManager
     private let restClient: MXRestClient
+    private let passwordPolicyService: PasswordPolicyServiceType
     
     private var registrationOperation: MXHTTPOperation?
     
     // MARK: - Setup
     
     init(accountManager: MXKAccountManager, restClient: MXRestClient) {
+        guard let homeServer = restClient.credentials.homeServer else {
+                fatalError("homeserver should be defined")
+        }
         self.accountManager = accountManager
         self.restClient = restClient
+        self.passwordPolicyService = PasswordPolicyService(homeServer: homeServer)
     }
     
     // MARK: - Public
@@ -58,8 +63,26 @@ final class RegistrationService: RegistrationServiceType {
         })
     }
     
-    func submitRegistrationEmailVerification(to email: String, sessionId: String, completion: @escaping (MXResponse<ThreePIDCredentials>) -> Void) {
-        self.submitRegistrationEmailVerification(to: email, sessionId: sessionId, using: self.restClient, completion: completion)
+    func validateRegistrationParametersAndRequestEmailVerification(password: String?, email: String, sessionId: String, completion: @escaping (MXResponse<ThreePIDCredentials>) -> Void) {
+        // Validate first the password (if any)
+        if let password = password {
+            _ = self.passwordPolicyService.verifyPassword(password) { (response) in
+                switch response {
+                case .success(let result):
+                    switch result {
+                    case .authorized:
+                        // Pursue by requesting an email to validate the email address
+                        self.requestEmailVerification(to: email, sessionId: sessionId, using: self.restClient, completion: completion)
+                    case .unauthorized(let reason):
+                        completion(.failure(RegistrationServiceError.invalidPassword(reason: reason)))
+                    }
+                case .failure(let error):
+                    completion(.failure(error))
+                }
+            }
+        } else {
+            self.requestEmailVerification(to: email, sessionId: sessionId, using: self.restClient, completion: completion)
+        }
     }
     
     func register(withEmailCredentials threePIDCredentials: ThreePIDCredentials, sessionId: String?, password: String?, deviceDisplayName: String, completion: @escaping (MXResponse<String>) -> Void) {
@@ -146,7 +169,7 @@ final class RegistrationService: RegistrationServiceType {
         return "\(webAppBaseStringURLEncoded)/#/register?client_secret=\(clientSecretURLEncoded)&hs_url=\(homeServerStringURLEncoded)&is_url=\(identityServerStringURLEncoded)&session_id=\(sessionIdURLEncoded)"
     }
     
-    func submitRegistrationEmailVerification(to email: String, sessionId: String, using restClient: MXRestClient, completion: @escaping (MXResponse<ThreePIDCredentials>) -> Void) {
+    private func requestEmailVerification(to email: String, sessionId: String, using restClient: MXRestClient, completion: @escaping (MXResponse<ThreePIDCredentials>) -> Void) {
         
         guard let homeServer = restClient.homeserver, let homeServerURL = URL(string: homeServer) else {
             completion(MXResponse.failure(RegistrationServiceError.homeServerURLBuildFailed))

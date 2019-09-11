@@ -23,6 +23,8 @@
 
 #import "DecryptionFailureTracker.h"
 
+#import "GeneratedInterface-Swift.h"
+
 #pragma mark - Constants definitions
 
 NSString *const kEventFormatterOnReRequestKeysLinkAction = @"kEventFormatterOnReRequestKeysLinkAction";
@@ -416,6 +418,15 @@ NSString *const kEventFormatterOnReRequestKeysLinkActionSeparator = @"/";
             summary.displayname = leftMemberDisplayname;
             summary.avatar = leftMemberAvatar;
         }
+        
+        // When an invite by email to a direct has been accepted but not joined yet,
+        // the displayname of the room is a matrix id
+        // We change it here with a more friendly string
+        if ([MXTools isMatrixUserIdentifier:summary.displayname])
+        {
+            UserService *userService = [[UserService alloc] initWithSession:session];
+            summary.displayname = [userService displayNameFrom:summary.displayname];
+        }
     }
     else
     {
@@ -427,6 +438,16 @@ NSString *const kEventFormatterOnReRequestKeysLinkActionSeparator = @"/";
     }
     
     return updated;
+}
+
+- (BOOL)session:(MXSession *)session updateRoomSummary:(MXRoomSummary *)summary withStateEvents:(NSArray<MXEvent *> *)stateEvents roomState:(MXRoomState *)roomState
+{
+    BOOL ret = [super session:session updateRoomSummary:summary withStateEvents:stateEvents roomState:roomState];
+    
+    // Store in the room summary some additional information
+    ret |= [summary tc_updateWithStateEvents:stateEvents];
+    
+    return ret;
 }
 
 @end
