@@ -250,10 +250,10 @@
 		0290607A21501D16005FE3C1 /* PreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0290607821501D16005FE3C1 /* PreviewView.m */; };
 		0290609221527A3F005FE3C1 /* RoomDetailsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0290609021527A3E005FE3C1 /* RoomDetailsCoordinator.swift */; };
 		0290609321527A3F005FE3C1 /* RoomDetailsCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0290609121527A3F005FE3C1 /* RoomDetailsCoordinatorType.swift */; };
-		029C927D22E7044200E62D27 /* RoomAccessRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029C927C22E7044200E62D27 /* RoomAccessRule.swift */; };
-		029C927E22E7044200E62D27 /* RoomAccessRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029C927C22E7044200E62D27 /* RoomAccessRule.swift */; };
 		029C927722E21F5900E62D27 /* MXRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029C927622E21F5900E62D27 /* MXRoom.swift */; };
 		029C927822E21F5900E62D27 /* MXRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029C927622E21F5900E62D27 /* MXRoom.swift */; };
+		029C927D22E7044200E62D27 /* RoomAccessRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029C927C22E7044200E62D27 /* RoomAccessRule.swift */; };
+		029C927E22E7044200E62D27 /* RoomAccessRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029C927C22E7044200E62D27 /* RoomAccessRule.swift */; };
 		029CC68B21772F4200DCC8B3 /* LanguagePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 029CC67921772F4200DCC8B3 /* LanguagePickerViewController.m */; };
 		029CC68C21772F4200DCC8B3 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 029CC67C21772F4200DCC8B3 /* SettingsViewController.m */; };
 		029CC68D21772F4200DCC8B3 /* DeactivateAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 029CC67E21772F4200DCC8B3 /* DeactivateAccountViewController.m */; };
@@ -292,6 +292,7 @@
 		02C4BE922252502900F7BB0E /* InviteServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C4BE902252502900F7BB0E /* InviteServiceType.swift */; };
 		02C4BE94225502DD00F7BB0E /* DiscussionDetailsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C4BE93225502DD00F7BB0E /* DiscussionDetailsCoordinator.swift */; };
 		02C4BE95225502DD00F7BB0E /* DiscussionDetailsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C4BE93225502DD00F7BB0E /* DiscussionDetailsCoordinator.swift */; };
+		02CEE1DE23312C370085ACF0 /* matrix.agent.externe.tchap.gouv.fr2.cer in Resources */ = {isa = PBXBuildFile; fileRef = 02CEE1DD23312C370085ACF0 /* matrix.agent.externe.tchap.gouv.fr2.cer */; };
 		02DC4F4B221C46E500B551EE /* RoomPowerLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DC4F4A221C46E500B551EE /* RoomPowerLevel.swift */; };
 		02DC4F4C221C46E500B551EE /* RoomPowerLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DC4F4A221C46E500B551EE /* RoomPowerLevel.swift */; };
 		02DFEB7421C07370009B6F15 /* RoomAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B146D50C21A5EAE600D8C2C6 /* RoomAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.m */; };
@@ -1100,8 +1101,8 @@
 		0290607821501D16005FE3C1 /* PreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreviewView.m; sourceTree = "<group>"; };
 		0290609021527A3E005FE3C1 /* RoomDetailsCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomDetailsCoordinator.swift; sourceTree = "<group>"; };
 		0290609121527A3F005FE3C1 /* RoomDetailsCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomDetailsCoordinatorType.swift; sourceTree = "<group>"; };
-		029C927C22E7044200E62D27 /* RoomAccessRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomAccessRule.swift; sourceTree = "<group>"; };
 		029C927622E21F5900E62D27 /* MXRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MXRoom.swift; sourceTree = "<group>"; };
+		029C927C22E7044200E62D27 /* RoomAccessRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomAccessRule.swift; sourceTree = "<group>"; };
 		029CC67921772F4200DCC8B3 /* LanguagePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LanguagePickerViewController.m; sourceTree = "<group>"; };
 		029CC67A21772F4200DCC8B3 /* LanguagePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LanguagePickerViewController.h; sourceTree = "<group>"; };
 		029CC67B21772F4200DCC8B3 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
@@ -1143,6 +1144,7 @@
 		02C4BE8D2252456000F7BB0E /* ThirdPartyIDPlatformInfoResolverType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThirdPartyIDPlatformInfoResolverType.swift; sourceTree = "<group>"; };
 		02C4BE902252502900F7BB0E /* InviteServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteServiceType.swift; sourceTree = "<group>"; };
 		02C4BE93225502DD00F7BB0E /* DiscussionDetailsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionDetailsCoordinator.swift; sourceTree = "<group>"; };
+		02CEE1DD23312C370085ACF0 /* matrix.agent.externe.tchap.gouv.fr2.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = matrix.agent.externe.tchap.gouv.fr2.cer; sourceTree = "<group>"; };
 		02DC4F4A221C46E500B551EE /* RoomPowerLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomPowerLevel.swift; sourceTree = "<group>"; };
 		02DFECF521C07370009B6F15 /* Btchap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Btchap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		02DFECF921C0771C009B6F15 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -1950,6 +1952,7 @@
 		028B50B3228E2931005DB9B6 /* Certificates */ = {
 			isa = PBXGroup;
 			children = (
+				02CEE1DD23312C370085ACF0 /* matrix.agent.externe.tchap.gouv.fr2.cer */,
 				0234DEF222C5129300EBBBC5 /* matrix.agent.externe.tchap.gouv.fr.cer */,
 				028B50B6228EB2C2005DB9B6 /* www.tchap.gouv.fr.cer */,
 				028B50B4228E2931005DB9B6 /* matrix.agent.tchap.gouv.fr.cer */,
@@ -3394,6 +3397,7 @@
 				B1C4645721B68257005F4D53 /* SelectableContactCell.xib in Resources */,
 				020DF96A214BE467003DFBA4 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleBubbleCell.xib in Resources */,
 				020DF985214BE467003DFBA4 /* RoomIncomingAttachmentWithPaginationTitleBubbleCell.xib in Resources */,
+				02CEE1DE23312C370085ACF0 /* matrix.agent.externe.tchap.gouv.fr2.cer in Resources */,
 				020DF97B214BE467003DFBA4 /* RoomIncomingTextMsgWithoutSenderInfoBubbleCell.xib in Resources */,
 				02B3453B219CA8CB00110EC8 /* RoomsDiscussionCell.xib in Resources */,
 				0250C56A2122B68000034691 /* ringback.mp3 in Resources */,
