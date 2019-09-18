@@ -50,6 +50,7 @@ final class RoomTitleViewModelBuilder: NSObject {
         
         let title: String
         let subtitle: String?
+        let roomAccessInfo: String?
         let avatarImageShape: AvatarImageShape
         let avatarBorderColor: UIColor?
         let avatarBorderWidth: CGFloat?
@@ -62,6 +63,7 @@ final class RoomTitleViewModelBuilder: NSObject {
             let displayNameComponents = DisplayNameComponents(displayName: displayName)
             title = displayNameComponents.name
             subtitle = displayNameComponents.domain
+            roomAccessInfo = nil
             avatarImageShape = .circle
             avatarBorderColor = nil
             avatarBorderWidth = nil
@@ -77,12 +79,15 @@ final class RoomTitleViewModelBuilder: NSObject {
             case .restricted:
                 avatarBorderColor = kColorDarkBlue
                 avatarBorderWidth = Constants.hexagonImageBorderWidthDefault
+                roomAccessInfo = nil
             case .unrestricted:
                 avatarBorderColor = kColorDarkGrey
                 avatarBorderWidth = Constants.hexagonImageBorderWidthUnrestricted
+                roomAccessInfo = TchapL10n.roomTitleUnrestrictedRoom
             default:
                 avatarBorderColor = UIColor.clear
                 avatarBorderWidth = Constants.hexagonImageBorderWidthDefault
+                roomAccessInfo = nil
             }
         }
         
@@ -97,7 +102,7 @@ final class RoomTitleViewModelBuilder: NSObject {
                                                         borderColor: avatarBorderColor,
                                                         borderWidth: avatarBorderWidth)
         
-        return RoomTitleViewModel(title: title, subtitle: subtitle, avatarImageViewModel: avatarImageViewModel)
+        return RoomTitleViewModel(title: title, subtitle: subtitle, roomAccessInfo: roomAccessInfo, avatarImageViewModel: avatarImageViewModel)
     }
     
     func build(fromRoomPreviewData roomPreviewData: RoomPreviewData) -> RoomTitleViewModel {
@@ -120,7 +125,7 @@ final class RoomTitleViewModelBuilder: NSObject {
                                                         borderColor: kColorDarkBlue,
                                                         borderWidth: Constants.hexagonImageBorderWidthDefault)
         
-        return RoomTitleViewModel(title: title, subtitle: subtitle, avatarImageViewModel: avatarImageViewModel)
+        return RoomTitleViewModel(title: title, subtitle: subtitle, roomAccessInfo: nil, avatarImageViewModel: avatarImageViewModel)
     }
     
     func build(fromUser user: User) -> RoomTitleViewModel {
@@ -144,7 +149,7 @@ final class RoomTitleViewModelBuilder: NSObject {
                                                         borderColor: nil,
                                                         borderWidth: nil)
         
-        return RoomTitleViewModel(title: title, subtitle: subtitle, avatarImageViewModel: avatarImageViewModel)
+        return RoomTitleViewModel(title: title, subtitle: subtitle, roomAccessInfo: nil, avatarImageViewModel: avatarImageViewModel)
     }
     
     func buildWithoutAvatar(fromUser user: User) -> RoomTitleViewModel {
@@ -154,6 +159,6 @@ final class RoomTitleViewModelBuilder: NSObject {
         let title = displayNameComponents.name
         let subtitle = displayNameComponents.domain
         
-        return RoomTitleViewModel(title: title, subtitle: subtitle, avatarImageViewModel: nil)
+        return RoomTitleViewModel(title: title, subtitle: subtitle, roomAccessInfo: nil, avatarImageViewModel: nil)
     }
 }
