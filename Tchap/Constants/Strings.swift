@@ -197,6 +197,8 @@ internal enum TchapL10n {
   internal static let registrationTermsLabelLink = TchapL10n.tr("Tchap", "registration_terms_label_link")
   /// Inscription Tchap
   internal static let registrationTitle = TchapL10n.tr("Tchap", "registration_title")
+  /// Le domaine de votre adresse email n’est pas déclaré dans Tchap. Si vous avez reçu une invitation, vous allez pouvoir créer un compte Tchap « invité », permettant uniquement de participer aux échanges privés auxquels vous êtes convié
+  internal static let registrationWarningForExternalUser = TchapL10n.tr("Tchap", "registration_warning_for_external_user")
   /// Analyse antivirus
   internal static let roomAttachmentScanStatusInProgressTitle = TchapL10n.tr("Tchap", "room_attachment_scan_status_in_progress_title")
   /// Le document %@ a été filtré par le politique de sécurité

@@ -57,6 +57,8 @@
 "registration_password_additional_info" = "Votre mot de passe doit contenir au moins 8 caractères, avec au moins un caractère de chaque type\U00A0:\U00A0majuscule, minuscule, chiffre, caractère spécial";
 "registration_confirm_password_placeholder" = "Confirmer le mot de passe";
 
+"registration_warning_for_external_user" = "Le domaine de votre adresse email n’est pas déclaré dans Tchap. Si vous avez reçu une invitation, vous allez pouvoir créer un compte Tchap\U00A0«\U00A0invité\U00A0», permettant uniquement de participer aux échanges privés auxquels vous êtes convié";
+
 "registration_terms_label_format" = "J'accepte les %@";
 "registration_terms_label_link" = "Conditions Générales d'Utilisation";
 "registration_terms_and_conditions_title" = "Termes et Conditions";

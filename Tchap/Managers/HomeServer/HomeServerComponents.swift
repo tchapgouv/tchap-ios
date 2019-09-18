@@ -26,7 +26,7 @@ struct HomeServerComponents {
     // MARK: - Constants
     
     private enum Constants {
-        static let homeServerSuffix: String = "tchap.gouv.fr"
+        static let hostNameSuffix: String = "tchap.gouv.fr"
         static let homeServerComponentsSeparator: Character = "."
     }
     
@@ -45,7 +45,7 @@ struct HomeServerComponents {
     private static func getHomeServerDisplayName(from hostname: String) -> String? {
         let displayName: String?
         
-        let homeServerSubDomainComponents = hostname.replacingOccurrences(of: Constants.homeServerSuffix, with: "").split(separator: Constants.homeServerComponentsSeparator)
+        let homeServerSubDomainComponents = hostname.replacingOccurrences(of: Constants.hostNameSuffix, with: "").split(separator: Constants.homeServerComponentsSeparator)
         
         if let domainSubtring = homeServerSubDomainComponents.last {
             displayName = String(domainSubtring).capitalized

@@ -123,40 +123,28 @@ final class RegistrationCoordinator: RegistrationCoordinatorType {
         self.restClientBuilder.build(fromEmail: email) { [unowned self] (restClientBuilderResult) in
             switch restClientBuilderResult {
             case .success(let restClient):
-                // Build a registration service based on this restClient
-                let registrationService = RegistrationService(accountManager: MXKAccountManager.shared(), restClient: restClient)
                 
-                // Initialize a registration session (in order to define a session Id)
-                registrationService.setupRegistrationSession(completion: { (initResult) in
+                // Prompt the user before creating an external account
+                if self.isExternalRestClient(restClient) {
+                    let alert = UIAlertController(title: TchapL10n.warningTitle, message: TchapL10n.registrationWarningForExternalUser, preferredStyle: .alert)
                     
-                    switch initResult {
-                    case .success(let sessionId):
-                        // Validate registration parameters
-                        registrationService.validateRegistrationParametersAndRequestEmailVerification(password: password, email: email, sessionId: sessionId) { (emailVerificationResult) in
-                            
-                            removeActivityIndicator()
-                            
-                            switch emailVerificationResult {
-                            case .success(let threePIDCredentials):
-                                self.performRegistrationAndShowEmailValidationSent(with: email, sessionId: sessionId, password: password, threePIDCredentials: threePIDCredentials)
-                            case .failure(let error):
-                                let authenticationErrorPresentableMaker = AuthenticationErrorPresentableMaker()
-                                if let errorPresentable = authenticationErrorPresentableMaker.errorPresentable(from: error) {
-                                    self.registrationFormErrorPresenter.present(errorPresentable: errorPresentable)
-                                }
-                            }
-                        }
-                    case .failure(let error):
+                    let okTitle = Bundle.mxk_localizedString(forKey: "ok")
+                    let okAction = UIAlertAction(title: okTitle, style: .default, handler: { action in
+                        // Pursue the registration
+                        self.startRegistration(with: restClient, email: email, password: password, removeActivityIndicator: removeActivityIndicator)
+                    })
+                    alert.addAction(okAction)
+                    
+                    let cancelTitle = Bundle.mxk_localizedString(forKey: "cancel")
+                    let cancelAction = UIAlertAction(title: cancelTitle, style: .cancel, handler: { action in
                         removeActivityIndicator()
-                        
-                        let authenticationErrorPresentableMaker = AuthenticationErrorPresentableMaker()
-                        if let errorPresentable = authenticationErrorPresentableMaker.errorPresentable(from: error) {
-                            self.registrationFormErrorPresenter.present(errorPresentable: errorPresentable)
-                        }
-                    }
-                })
-                
-                self.registrationService = registrationService
+                    })
+                    alert.addAction(cancelAction)
+                    
+                    self.registrationFormViewController.present(alert, animated: true, completion: nil)
+                } else {
+                    self.startRegistration(with: restClient, email: email, password: password, removeActivityIndicator: removeActivityIndicator)
+                }
             case .failure(let error):
                 removeActivityIndicator()
                 
@@ -166,6 +154,52 @@ final class RegistrationCoordinator: RegistrationCoordinatorType {
                 }
             }
         }
+    }
+    
+    private func isExternalRestClient(_ restClient: MXRestClient) -> Bool {
+        guard let serverUrlPrefix = UserDefaults.standard.string(forKey: "serverUrlPrefix"), let homeserver = restClient.homeserver else {
+            return false
+        }
+        
+        let host = homeserver.replacingOccurrences(of: serverUrlPrefix, with: "")
+        return UserService.isExternalServer(host)
+    }
+    
+    private func startRegistration(with restClient: MXRestClient, email: String, password: String, removeActivityIndicator: @escaping (() -> Void)) {
+        // Build a registration service based on this restClient
+        let registrationService = RegistrationService(accountManager: MXKAccountManager.shared(), restClient: restClient)
+        
+        // Initialize a registration session (in order to define a session Id)
+        registrationService.setupRegistrationSession(completion: { (initResult) in
+            
+            switch initResult {
+            case .success(let sessionId):
+                // Validate registration parameters
+                registrationService.validateRegistrationParametersAndRequestEmailVerification(password: password, email: email, sessionId: sessionId) { (emailVerificationResult) in
+                    
+                    removeActivityIndicator()
+                    
+                    switch emailVerificationResult {
+                    case .success(let threePIDCredentials):
+                        self.performRegistrationAndShowEmailValidationSent(with: email, sessionId: sessionId, password: password, threePIDCredentials: threePIDCredentials)
+                    case .failure(let error):
+                        let authenticationErrorPresentableMaker = AuthenticationErrorPresentableMaker()
+                        if let errorPresentable = authenticationErrorPresentableMaker.errorPresentable(from: error) {
+                            self.registrationFormErrorPresenter.present(errorPresentable: errorPresentable)
+                        }
+                    }
+                }
+            case .failure(let error):
+                removeActivityIndicator()
+                
+                let authenticationErrorPresentableMaker = AuthenticationErrorPresentableMaker()
+                if let errorPresentable = authenticationErrorPresentableMaker.errorPresentable(from: error) {
+                    self.registrationFormErrorPresenter.present(errorPresentable: errorPresentable)
+                }
+            }
+        })
+        
+        self.registrationService = registrationService
     }
     
     private func registerLoginNotification() {

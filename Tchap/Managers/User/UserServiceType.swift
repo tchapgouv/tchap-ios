@@ -61,13 +61,6 @@ protocol UserServiceType {
     /// - Returns: true if the user is external.
     func isExternalUser(for userId: String) -> Bool
     
-    /// Tells whether a host name corresponds to an external server.
-    ///
-    /// - Parameters:
-    ///   - hostName: The host name.
-    /// - Returns: true if the related host is external.
-    func isExternalServer(_ hostName: String) -> Bool
-    
     /// Tells whether the Tchap registration with the provided email address is allowed.
     ///
     /// - Parameters:
