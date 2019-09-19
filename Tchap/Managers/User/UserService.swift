@@ -125,10 +125,10 @@ final class UserService: NSObject, UserServiceType {
         guard let matrixIDComponents = UserIDComponents(matrixID: userId) else {
             return true
         }
-        return self.isExternalServer(matrixIDComponents.hostName)
+        return UserService.isExternalServer(matrixIDComponents.hostName)
     }
     
-    func isExternalServer(_ hostName: String) -> Bool {
+    static func isExternalServer(_ hostName: String) -> Bool {
         return hostName.starts(with: Constants.preprod_external_prefix)
             || hostName.starts(with: Constants.external_prefix)
     }
@@ -163,7 +163,7 @@ final class UserService: NSObject, UserServiceType {
         self.thirdPartyIDPlatformInfoResolver.resolvePlatformInformation(address: email, medium: kMX3PIDMediumEmail, success: { (resolveResult) in
             switch resolveResult {
             case .authorizedThirdPartyID(info: let thirdPartyIDPlatformInfo):
-                completion(.success(self.isExternalServer(thirdPartyIDPlatformInfo.hostname)))
+                completion(.success(UserService.isExternalServer(thirdPartyIDPlatformInfo.hostname)))
             case .unauthorizedThirdPartyID:
                 completion(.success(false))
             }
