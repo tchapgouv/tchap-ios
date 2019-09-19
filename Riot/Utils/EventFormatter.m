@@ -23,6 +23,8 @@
 
 #import "DecryptionFailureTracker.h"
 
+#import "GeneratedInterface-Swift.h"
+
 #pragma mark - Constants definitions
 
 NSString *const kEventFormatterOnReRequestKeysLinkAction = @"kEventFormatterOnReRequestKeysLinkAction";
@@ -396,9 +398,12 @@ NSString *const kEventFormatterOnReRequestKeysLinkActionSeparator = @"/";
 
 - (BOOL)session:(MXSession*)session updateRoomSummary:(MXRoomSummary*)summary withServerRoomSummary:(MXRoomSyncSummary*)serverRoomSummary roomState:(MXRoomState*)roomState
 {
-    BOOL ret = [super session:session updateRoomSummary:summary withServerRoomSummary:serverRoomSummary roomState:roomState];
+    BOOL updated = [super session:session updateRoomSummary:summary withServerRoomSummary:serverRoomSummary roomState:roomState];
     
-    // Tchap - Direct chat: the discussion must keep the display name and the avatar of the other member, even if this member has left.
+    // Tchap:
+    // - Direct chat: the discussion must keep the display name and the avatar of the other member, even if this member has left.
+    // - Room: Do not use by default a member avatar for the room avatar.
+    // Note: The boolean `updated` is not modified below because it is already true when we need to apply our changes.
     if (summary.room.isDirect)
     {
         NSArray<MXRoomMember *> *leftMembers = [roomState.members membersWithMembership:MXMembershipLeave];
@@ -413,7 +418,34 @@ NSString *const kEventFormatterOnReRequestKeysLinkActionSeparator = @"/";
             summary.displayname = leftMemberDisplayname;
             summary.avatar = leftMemberAvatar;
         }
+        
+        // When an invite by email to a direct has been accepted but not joined yet,
+        // the displayname of the room is a matrix id
+        // We change it here with a more friendly string
+        if ([MXTools isMatrixUserIdentifier:summary.displayname])
+        {
+            UserService *userService = [[UserService alloc] initWithSession:session];
+            summary.displayname = [userService displayNameFrom:summary.displayname];
+        }
     }
+    else
+    {
+        // Remove the potential member avatar used as the room avatar
+        if (!roomState.avatar && summary.avatar)
+        {
+            summary.avatar = nil;
+        }
+    }
+    
+    return updated;
+}
+
+- (BOOL)session:(MXSession *)session updateRoomSummary:(MXRoomSummary *)summary withStateEvents:(NSArray<MXEvent *> *)stateEvents roomState:(MXRoomState *)roomState
+{
+    BOOL ret = [super session:session updateRoomSummary:summary withStateEvents:stateEvents roomState:roomState];
+    
+    // Store in the room summary some additional information
+    ret |= [summary tc_updateWithStateEvents:stateEvents];
     
     return ret;
 }

@@ -28,19 +28,17 @@ final class InviteService: InviteServiceType {
     
     private let discussionFinder: DiscussionFinderType
     private let thirdPartyIDResolver: ThirdPartyIDResolverType
-    private let thirdPartyIDPlatformInfoResolver: ThirdPartyIDPlatformInfoResolverType
+    private let userService: UserServiceType
     private let roomService: RoomServiceType
+    
+    private var roomInProcess: MXRoom?
     
     // MARK: - Public
     init(session: MXSession) {
-        guard let serverUrlPrefix = UserDefaults.standard.string(forKey: "serverUrlPrefix") else {
-            fatalError("serverUrlPrefix should be defined")
-        }
         self.session = session
         self.discussionFinder = DiscussionFinder(session: session)
         self.thirdPartyIDResolver = ThirdPartyIDResolver(credentials: self.session.matrixRestClient.credentials)
-        let identityServerURLs = IdentityServersURLGetter(currentIdentityServerURL: session.matrixRestClient.identityServer).identityServerUrls
-        self.thirdPartyIDPlatformInfoResolver = ThirdPartyIDPlatformInfoResolver(identityServerUrls: identityServerURLs, serverPrefixURL: serverUrlPrefix)
+        self.userService = UserService(session: session)
         self.roomService = RoomService(session: session)
     }
     
@@ -66,13 +64,13 @@ final class InviteService: InviteServiceType {
                                 // There is already a discussion with this email
                                 // We do not re-invite the NoTchapUser except if
                                 // the email is bound to the external instance (for which the invites may expire).
-                                self.isBoundToExternalServer(email: email) { [weak self] (response) in
+                                self.userService.isEmailBoundToTheExternalHost(email) { [weak self] (response) in
                                     switch response {
                                     case .success(let isExternal):
                                         if isExternal {
-                                            // Leave this empty discussion, we will invite again this email.
+                                            // Revoke the pending invite and leave this empty discussion, we will invite again this email.
                                             // We don't have a way for the moment to check if the invite expired or not...
-                                            self?.session.leaveRoom(roomID) { [weak self] (response) in
+                                            self?.revokePendingInviteAndLeave(roomID) { [weak self] (response) in
                                                 switch response {
                                                 case .success:
                                                     // Send the new invite
@@ -122,7 +120,7 @@ final class InviteService: InviteServiceType {
     }
     
     private func createDiscussion(with email: String, completion: @escaping (MXResponse<InviteServiceResult>) -> Void) {
-        self.isAuthorized(email: email) { [weak self] (response) in
+        self.userService.isEmailAuthorized(email) { [weak self] (response) in
             switch response {
             case .success(let isAuthorized):
                 if isAuthorized {
@@ -156,36 +154,41 @@ final class InviteService: InviteServiceType {
         }
     }
     
-    private func isAuthorized(email: String, completion: @escaping (MXResponse<Bool>) -> Void) {
-        self.thirdPartyIDPlatformInfoResolver.resolvePlatformInformation(address: email, medium: kMX3PIDMediumEmail, success: { (resolveResult) in
-            switch resolveResult {
-            case .authorizedThirdPartyID(info: _):
-                completion(.success(true))
-            case .unauthorizedThirdPartyID:
-                completion(.success(false))
+    private func revokePendingInviteAndLeave(_ roomID: String, completion: @escaping (MXResponse<Void>) -> Void) {
+        guard let room = self.session.room(withRoomId: roomID) else {
+            NSLog("[InviteService] unable to revoke invite")
+            completion(.failure(InviteServiceError.unknown))
+            return
+        }
+        
+        roomInProcess = room
+        room.state { [weak self] roomState in
+            guard let self = self else {
+                return
             }
-        }, failure: { (error) in
-            NSLog("[InviteService] isAuthorized failed")
-            if let error = error {
-                completion(MXResponse.failure(error))
+            
+            if let thirdPartyInvite = roomState?.thirdPartyInvites?.first,
+                let token = thirdPartyInvite.token {
+                self.roomInProcess?.sendStateEvent(.roomThirdPartyInvite, content: [:], stateKey: token) { [weak self] (response) in
+                    guard let self = self else {
+                        return
+                    }
+                    
+                    switch response {
+                    case .success:
+                        // Leave now the room
+                        self.session.leaveRoom(roomID, completion: completion)
+                    case .failure (let error):
+                        completion(.failure(error))
+                    }
+                    
+                    self.roomInProcess = nil
+                }
+            } else {
+                NSLog("[InviteService] unable to revoke invite (no pending invite)")
+                self.session.leaveRoom(roomID, completion: completion)
+                self.roomInProcess = nil
             }
-        })
-    }
-    
-    private func isBoundToExternalServer(email: String, completion: @escaping (MXResponse<Bool>) -> Void) {
-        self.thirdPartyIDPlatformInfoResolver.resolvePlatformInformation(address: email, medium: kMX3PIDMediumEmail, success: { (resolveResult) in
-            switch resolveResult {
-            case .authorizedThirdPartyID(info: let thirdPartyIDPlatformInfo):
-                let userService = UserService(session: self.session)
-                completion(.success(userService.isExternalServer(for: thirdPartyIDPlatformInfo.hostname)))
-            case .unauthorizedThirdPartyID:
-                completion(.success(false))
-            }
-        }, failure: { (error) in
-            NSLog("[InviteService] isBoundToExternalServer failed")
-            if let error = error {
-                completion(MXResponse.failure(error))
-            }
-        })
+        }
     }
 }

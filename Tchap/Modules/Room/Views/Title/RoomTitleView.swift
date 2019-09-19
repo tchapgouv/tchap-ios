@@ -34,10 +34,14 @@ import Reusable
     
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var subTitleLabel: UILabel!
+    @IBOutlet private weak var roomAccessLabel: UILabel!
     @IBOutlet private weak var titlesStackView: UIStackView!
     @IBOutlet private weak var imageView: MXKImageView!
     
     private var style: Style!
+    
+    private var imageBorderColor: UIColor = UIColor.clear
+    private var imageBorderWidth: CGFloat = Constants.hexagonImageBorderWidth
     
     private weak var titlesStackViewCenterXConstraint: NSLayoutConstraint?
     
@@ -73,12 +77,7 @@ import Reusable
             self.updateFrameFromSuperview()
         }
         
-        switch self.imageShape {        
-        case .circle:
-            self.imageView.tc_makeCircle()
-        case .hexagon:
-            self.imageView.tc_makeHexagon(borderWidth: Constants.hexagonImageBorderWidth, borderColor: self.style.secondaryTextColor)
-        }
+        self.updateAvatarView()
     }
     
     override func updateConstraints() {
@@ -109,6 +108,7 @@ import Reusable
     @objc func fill(roomTitleViewModel: RoomTitleViewModel) {
         self.titleLabel.text = roomTitleViewModel.title
         self.subTitleLabel.text = roomTitleViewModel.subtitle
+        self.roomAccessLabel.text = roomTitleViewModel.roomAccessInfo
         if let avatarImageViewModel = roomTitleViewModel.avatarImageViewModel {
             self.imageView.isHidden = false
             if let thumbnailSize = avatarImageViewModel.thumbnailSize, let thumbnailingMethod = avatarImageViewModel.thumbnailingMethod {
@@ -128,6 +128,13 @@ import Reusable
             }
             
             self.imageShape = avatarImageViewModel.shape
+            if let borderColor = avatarImageViewModel.borderColor {
+                self.imageBorderColor = borderColor
+            }
+            if let borderWidth = avatarImageViewModel.borderWidth {
+                self.imageBorderWidth = borderWidth
+            }
+            self.updateAvatarView()
         } else {
             self.imageView.isHidden = true
         }
@@ -137,6 +144,9 @@ import Reusable
         self.style = style
         self.titleLabel.textColor = style.barTitleColor
         self.subTitleLabel.textColor = style.barSubTitleColor
+        self.roomAccessLabel.textColor = style.secondaryTextColor
+        
+        self.imageView?.defaultBackgroundColor = UIColor.clear
     }
     
     // MARK: - Private
@@ -166,6 +176,15 @@ import Reusable
         // Center horizontally titles with superview
         self.titlesStackViewCenterXConstraint = self.titlesStackView.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: -leftMargin/2)
         self.titlesStackViewCenterXConstraint?.isActive = true
+    }
+    
+    private func updateAvatarView () {
+        switch self.imageShape {
+        case .circle:
+            self.imageView.tc_makeCircle()
+        case .hexagon:
+            self.imageView.tc_makeHexagon(borderWidth: self.imageBorderWidth, borderColor: self.imageBorderColor)
+        }
     }
     
     // MARK: - Actions

@@ -43,7 +43,8 @@ import Reusable
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        self.avatarView.tc_makeHexagon(borderWidth: Constants.hexagonImageBorderWidth, borderColor: self.style.secondaryTextColor)
+        // All the public rooms are restricted
+        self.avatarView.tc_makeHexagon(borderWidth: Constants.hexagonImageBorderWidth, borderColor: kColorDarkBlue)
     }
     
     func render(publicRoom: MXPublicRoom, using mediaManager: MXMediaManager) {

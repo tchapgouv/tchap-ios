@@ -18,6 +18,7 @@ import UIKit
 
 struct RoomCreationFormResult {
     let name: String
+    let isRestricted: Bool
     let isPublic: Bool
     let isFederated: Bool
 }
@@ -29,6 +30,13 @@ protocol RoomCreationViewControllerDelegate: class {
 
 /// RoomCreationViewController enables to create a new room.
 final class RoomCreationViewController: UIViewController {
+    
+    // MARK: - Constants
+    
+    private enum Constants {
+        static let hexagonBorderWidthDefault: CGFloat = 1.0
+        static let hexagonBorderWidthUnrestricted: CGFloat = 10.0
+    }
 
     // MARK: - Properties
     
@@ -38,6 +46,9 @@ final class RoomCreationViewController: UIViewController {
     
     @IBOutlet private weak var avatarContentView: UIView!
     @IBOutlet private weak var roomNameFormTextField: FormTextField!
+    
+    @IBOutlet private weak var roomAccessTitleLabel: UILabel!
+    @IBOutlet private weak var roomAccessSwitch: UISwitch!
     
     @IBOutlet private weak var publicVisibilityTitleLabel: UILabel!
     @IBOutlet private weak var publicVisibilitySwitch: UISwitch!
@@ -117,6 +128,9 @@ final class RoomCreationViewController: UIViewController {
         self.setupRoomAvatarCreationView()
         self.setupRoomNameFormTextField()
         
+        self.roomAccessSwitch.isOn = !self.viewModel.isRestricted
+        self.roomAccessTitleLabel.text = TchapL10n.roomCreationRoomAccessTitle
+        
         self.publicVisibilitySwitch.isOn = self.viewModel.isPublic
         self.enablePublicVisibility(self.viewModel.isPublic)
         
@@ -142,6 +156,7 @@ final class RoomCreationViewController: UIViewController {
         roomCreationAvatarView.delegate = self
         self.avatarContentView.tc_addSubViewMathingParent(roomCreationAvatarView)
         self.roomCreationAvatarView = roomCreationAvatarView
+        refreshAvatarView()
     }
     
     private func setupRoomNameFormTextField() {
@@ -159,7 +174,37 @@ final class RoomCreationViewController: UIViewController {
         self.publicVisibilityInfoLabel.textColor = highlight ? self.currentStyle.warnTextColor : self.currentStyle.secondaryTextColor
     }
     
+    private func enableRoomAccessOption(_ isEnabled: Bool) {
+        self.roomAccessTitleLabel.textColor = isEnabled ? self.currentStyle.primarySubTextColor : self.currentStyle.secondaryTextColor
+        self.roomAccessSwitch.isEnabled = isEnabled
+        
+        if !isEnabled {
+            self.roomAccessSwitch.isOn = false
+            self.viewModel.isRestricted = true
+            self.roomCreationAvatarView?.setAvatarBorder(color: kColorDarkBlue, width: Constants.hexagonBorderWidthDefault)
+        }
+    }
+    
+    private func allowExternalUsers(_ isUnrestricted: Bool) {
+        self.viewModel.isRestricted = !isUnrestricted
+        refreshAvatarView()
+    }
+    
+    private func refreshAvatarView() {
+        let borderColor: UIColor
+        let borderWidth: CGFloat
+        if self.viewModel.isRestricted {
+            borderColor = kColorDarkBlue
+            borderWidth = Constants.hexagonBorderWidthDefault
+        } else {
+            borderColor = kColorDarkGrey
+            borderWidth = Constants.hexagonBorderWidthUnrestricted
+        }
+        self.roomCreationAvatarView?.setAvatarBorder(color: borderColor, width: borderWidth)
+    }
+    
     private func enablePublicVisibility(_ publicVisibilityEnabled: Bool) {
+        self.enableRoomAccessOption(!publicVisibilityEnabled)
         self.publicRoomFederationStackView.isHidden = !publicVisibilityEnabled
         self.viewModel.isPublic = publicVisibilityEnabled
         self.highlightPublicVisibilityInfoLabel(publicVisibilityEnabled)
@@ -192,9 +237,13 @@ final class RoomCreationViewController: UIViewController {
         self.view.endEditing(true)
         
         if let roomName = self.viewModel.roomNameFormTextViewModel.value {
-            let roomCreationFormResult = RoomCreationFormResult(name: roomName, isPublic: self.viewModel.isPublic, isFederated: self.viewModel.isFederated)
+            let roomCreationFormResult = RoomCreationFormResult(name: roomName, isRestricted: self.viewModel.isRestricted, isPublic: self.viewModel.isPublic, isFederated: self.viewModel.isFederated)
             self.delegate?.roomCreationViewController(self, didTapNextButtonWith: roomCreationFormResult)
         }
+    }
+    
+    @IBAction private func roomAccessSwitchAction(_ sender: UISwitch) {
+        self.allowExternalUsers(sender.isOn)
     }
     
     @IBAction private func publicVisibilitySwitchAction(_ sender: UISwitch) {
@@ -218,10 +267,12 @@ extension RoomCreationViewController: Stylable {
         }
         
         self.roomNameFormTextField.update(style: style)
+        self.enableRoomAccessOption(!self.viewModel.isPublic)
         self.publicVisibilityTitleLabel.textColor = style.primarySubTextColor
-        self.publicVisibilityInfoLabel.textColor = style.secondaryTextColor
+        self.highlightPublicVisibilityInfoLabel(self.viewModel.isPublic)
         self.publicRoomFederationTitleLabel.textColor = style.primarySubTextColor
         
+        style.applyStyle(onSwitch: self.roomAccessSwitch)
         style.applyStyle(onSwitch: self.publicVisibilitySwitch)
         style.applyStyle(onSwitch: self.disablePublicRoomFederationSwitch)
     }

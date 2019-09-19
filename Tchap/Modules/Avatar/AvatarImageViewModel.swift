@@ -25,23 +25,29 @@ final class AvatarImageViewModel: NSObject {
     let thumbnailingMethod: MXThumbnailingMethod?
     let placeholderImage: UIImage
     let shape: AvatarImageShape
+    let borderColor: UIColor?
+    let borderWidth: CGFloat?
     
     
-    init(avatarContentURI: String?, mediaManager: MXMediaManager?, placeholderImage: UIImage, shape: AvatarImageShape) {
+    init(avatarContentURI: String?, mediaManager: MXMediaManager?, placeholderImage: UIImage, shape: AvatarImageShape, borderColor: UIColor?, borderWidth: CGFloat?) {
         self.avatarContentURI = avatarContentURI
         self.mediaManager = mediaManager
         self.thumbnailSize = nil
         self.thumbnailingMethod = nil
         self.placeholderImage = placeholderImage
         self.shape = shape
+        self.borderColor = borderColor
+        self.borderWidth = borderWidth
     }
     
-    init(avatarContentURI: String?, mediaManager: MXMediaManager?, thumbnailSize: CGSize, thumbnailingMethod: MXThumbnailingMethod, placeholderImage: UIImage, shape: AvatarImageShape) {
+    init(avatarContentURI: String?, mediaManager: MXMediaManager?, thumbnailSize: CGSize, thumbnailingMethod: MXThumbnailingMethod, placeholderImage: UIImage, shape: AvatarImageShape, borderColor: UIColor?, borderWidth: CGFloat?) {
         self.avatarContentURI = avatarContentURI
         self.mediaManager = mediaManager
         self.thumbnailSize = thumbnailSize
         self.thumbnailingMethod = thumbnailingMethod
         self.placeholderImage = placeholderImage
         self.shape = shape
+        self.borderColor = borderColor
+        self.borderWidth = borderWidth
     }
 }

@@ -1,5 +1,5 @@
 /*
- Copyright 2018 New Vector Ltd
+ Copyright 2019 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -16,18 +16,11 @@
 
 import Foundation
 
-@objcMembers
-final class RoomTitleViewModel: NSObject {
-    
-    let title: String
-    let subtitle: String?
-    let roomAccessInfo: String?
-    let avatarImageViewModel: AvatarImageViewModel?
-    
-    init(title: String, subtitle: String?, roomAccessInfo: String?, avatarImageViewModel: AvatarImageViewModel?) {
-        self.title = title
-        self.subtitle = subtitle
-        self.roomAccessInfo = roomAccessInfo
-        self.avatarImageViewModel = avatarImageViewModel
-    }
+/// Structure use to define a password policy.
+struct PasswordPolicy: PasswordPolicyType {
+    let minLength: Int
+    let isDigitRequired: Bool
+    let isSymbolRequired: Bool
+    let isUppercaseRequired: Bool
+    let isLowercaseRequired: Bool
 }

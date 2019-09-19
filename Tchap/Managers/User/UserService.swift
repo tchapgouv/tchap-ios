@@ -31,11 +31,17 @@ final class UserService: NSObject, UserServiceType {
     // MARK: - Properties
     
     private let session: MXSession
+    private let thirdPartyIDPlatformInfoResolver: ThirdPartyIDPlatformInfoResolverType
     
     // MARK: - Setup
     
     init(session: MXSession) {
+        guard let serverUrlPrefix = UserDefaults.standard.string(forKey: "serverUrlPrefix") else {
+            fatalError("serverUrlPrefix should be defined")
+        }
         self.session = session
+        let identityServerURLs = IdentityServersURLGetter(currentIdentityServerURL: session.matrixRestClient?.identityServer).identityServerUrls
+        self.thirdPartyIDPlatformInfoResolver = ThirdPartyIDPlatformInfoResolver(identityServerUrls: identityServerURLs, serverPrefixURL: serverUrlPrefix)
         
         super.init()
     }
@@ -82,9 +88,9 @@ final class UserService: NSObject, UserServiceType {
         return User(userId: userId, displayName: displayName, avatarStringURL: nil)
     }
     
-    func isUserId(_ firstUserId: String, belongToSameDomainAs secondUserId: String) -> Bool {
-        guard let firstUserHostName = self.hostName(from: firstUserId),
-            let secondUserHostName = self.hostName(from: secondUserId) else {
+    func isUserId(_ firstUserId: String, onTheSameHostAs secondUserId: String) -> Bool {
+        guard let firstUserHostName = self.hostName(for: firstUserId),
+            let secondUserHostName = self.hostName(for: secondUserId) else {
                 return false
         }
         return firstUserHostName == secondUserHostName
@@ -119,12 +125,118 @@ final class UserService: NSObject, UserServiceType {
         guard let matrixIDComponents = UserIDComponents(matrixID: userId) else {
             return true
         }
-        return self.isExternalServer(for: matrixIDComponents.hostName)
+        return UserService.isExternalServer(matrixIDComponents.hostName)
     }
     
-    func isExternalServer(for hostName: String) -> Bool {
+    static func isExternalServer(_ hostName: String) -> Bool {
         return hostName.starts(with: Constants.preprod_external_prefix)
             || hostName.starts(with: Constants.external_prefix)
+    }
+    
+    func isEmailAuthorized(_ email: String, completion: @escaping (MXResponse<Bool>) -> Void) {
+        self.thirdPartyIDPlatformInfoResolver.resolvePlatformInformation(address: email, medium: kMX3PIDMediumEmail, success: { (resolveResult) in
+            switch resolveResult {
+            case .authorizedThirdPartyID(info: _):
+                completion(.success(true))
+            case .unauthorizedThirdPartyID:
+                completion(.success(false))
+            }
+        }, failure: { (error) in
+            if let error = error {
+                completion(MXResponse.failure(error))
+            }
+        })
+    }
+    // Temporary version used in ObjectiveC.
+    func isEmailAuthorized(_ email: String, success: @escaping ((Bool) -> Void), failure: ((Error) -> Void)?) {
+        self.isEmailAuthorized(email) { (response) in
+            switch response {
+            case .success(let value):
+                success(value)
+            case .failure(let error):
+                failure?(error)
+            }
+        }
+    }
+    
+    func isEmailBoundToTheExternalHost(_ email: String, completion: @escaping (MXResponse<Bool>) -> Void) {
+        self.thirdPartyIDPlatformInfoResolver.resolvePlatformInformation(address: email, medium: kMX3PIDMediumEmail, success: { (resolveResult) in
+            switch resolveResult {
+            case .authorizedThirdPartyID(info: let thirdPartyIDPlatformInfo):
+                completion(.success(UserService.isExternalServer(thirdPartyIDPlatformInfo.hostname)))
+            case .unauthorizedThirdPartyID:
+                completion(.success(false))
+            }
+        }, failure: { (error) in
+            if let error = error {
+                completion(MXResponse.failure(error))
+            }
+        })
+    }
+    // Temporary version used in ObjectiveC.
+    func isEmailBoundToTheExternalHost(_ email: String, success: @escaping ((Bool) -> Void), failure: ((Error) -> Void)?) {
+        self.isEmailBoundToTheExternalHost(email) { (response) in
+            switch response {
+            case .success(let value):
+                success(value)
+            case .failure(let error):
+                failure?(error)
+            }
+        }
+    }
+    
+    func isEmailBound(_ email: String, to hostName: String, completion: @escaping (MXResponse<Bool>) -> Void) {
+        self.thirdPartyIDPlatformInfoResolver.resolvePlatformInformation(address: email, medium: kMX3PIDMediumEmail, success: { (resolveResult) in
+            switch resolveResult {
+            case .authorizedThirdPartyID(info: let thirdPartyIDPlatformInfo):
+                completion(.success(thirdPartyIDPlatformInfo.hostname == hostName))
+            case .unauthorizedThirdPartyID:
+                completion(.success(false))
+            }
+        }, failure: { (error) in
+            if let error = error {
+                completion(MXResponse.failure(error))
+            }
+        })
+    }
+    // Temporary version used in ObjectiveC.
+    func isEmailBound(_ email: String, to hostName: String, success: @escaping ((Bool) -> Void), failure: ((Error) -> Void)?) {
+        self.isEmailBound(email, to: hostName) { (response) in
+            switch response {
+            case .success(let value):
+                success(value)
+            case .failure(let error):
+                failure?(error)
+            }
+        }
+    }
+    
+    func displayName(from userId: String) -> String {
+        let displayName: String
+        let isExternal = isExternalUser(for: userId)
+        
+        if let name = DisplayNameComponents(userId: userId, isExternal: isExternal)?.name {
+            displayName = name
+        } else {
+            // This case happen only if given user id is not a valid Matrix id
+            displayName = ""
+        }
+        
+        return displayName
+    }
+    
+    func hostName(for userId: String) -> String? {
+        guard let matrixIDComponents = UserIDComponents(matrixID: userId) else {
+            return nil
+        }
+        return matrixIDComponents.hostName
+    }
+    
+    func hostDisplayName(for userId: String) -> String? {
+        guard let hostname = self.hostName(for: userId) else {
+            return nil
+        }
+        return HomeServerComponents(hostname: hostname).displayName
     }
     
     // MARK: - Private
@@ -141,25 +253,5 @@ final class UserService: NSObject, UserServiceType {
         }
         
         return User(userId: userId, displayName: displayName, avatarStringURL: mxUser.avatarUrl)
-    }
-    
-    private func displayName(from userId: String) -> String {
-        let displayName: String
-        
-        if let name = DisplayNameComponents(userId: userId)?.name {
-            displayName = name
-        } else {
-            // This case happen only if given user id is not a valid Matrix id
-            displayName = ""
-        }
-        
-        return displayName
-    }
-        
-    private func hostName(from userId: String) -> String? {
-        guard let matrixIDComponents = UserIDComponents(matrixID: userId) else {
-            return nil
-        }
-        return matrixIDComponents.hostName
     }
 }

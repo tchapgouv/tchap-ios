@@ -1,3 +1,26 @@
+Changes in Tchap 1.0.16 (2019-09-19)
+===================================================
+
+ Features/Improvements:
+ * Handle the strong password policy forced by the server #195
+ * Room creation: allow or not the external users to join the room #202
+ * Add a marker to indicate whether or not a room can be joined by external users #203
+ * The room admin is able to open the room to the external users #204
+ * Room members: invite new members by their email address #209
+ * Room members: remove the external users from the picker when they are not allowed to join #210
+ * Room members: remove the federated users from the picker when the room is not federated #222
+ * Improve the direct chat handling #235
+ * Expired account: update the dialog message when on new email has been requested #241
+ * Pin the new agent.externe certificate.
+ * Prompt the user before creating an external account #240
+ * Add room access info in the Room title #249
+ 
+ Bug Fixes:
+ * Room members: third-party invites can now be revoked PR #244
+ * Room member: some unexpected badges are displayed on invited members PR #246
+ * Room members: Some invited members don't have name.
+ * Do not use by default a member avatar for the room avatar #242
+
 Changes in Tchap 1.0.15 (2019-09-01)
 ===================================================
 

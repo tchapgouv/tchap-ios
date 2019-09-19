@@ -76,12 +76,22 @@
 
 @optional
 /**
- Tells the delegate to send an invite to an email address.
+ Asks the delegate whether the email address is allowed to be selected/invited.
+ By default all the email addresses are allowed, when this method is not implemented.
+ 
+ @param contactsViewController the `ContactsViewController` instance.
+ @param email the selected email.
+ @param completion block called with the delegate's answer, a reason my be returned when the email is not allowed.
+ */
+- (void)contactsViewController:(nonnull ContactsViewController *)contactsViewController askPermissionToSelect:(nonnull NSString*)email completion:(void (^_Nonnull)(BOOL granted, NSString * _Nullable reason))completion;
+
+/**
+ Tells the delegate to send an invite to Tchap to an email address.
  
  @param contactsViewController the `ContactsViewController` instance.
  @param email the selected email.
  */
-- (void)contactsViewController:(nonnull ContactsViewController *)contactsViewController sendEmailInviteTo:(nonnull NSString*)email;
+- (void)contactsViewController:(nonnull ContactsViewController *)contactsViewController sendInviteToTchapByEmail:(nonnull NSString*)email;
 
 
 @end

@@ -20,13 +20,14 @@ import RxSwift
 // Internal structure used to store room creation parameters
 private struct RoomCreationParameters {
     let visibility: MXRoomDirectoryVisibility
+    let accessRule: RoomAccessRule
     let preset: MXRoomPreset
     let name: String?
     let alias: String?
     let inviteUserIDs: [String]?
     let inviteThirdPartyIDs: [MXInvite3PID]?
     let isFederated: Bool
-    let historyVisibility: String?
+    let historyVisibility: MXRoomHistoryVisibility?
     let powerLevelContentOverride: [String: Any]?
     let isDirect: Bool
 }
@@ -37,7 +38,16 @@ enum RoomServiceError: Error {
 }
 
 /// `RoomService` implementation of `RoomServiceType` is used to perform room operations.
-final class RoomService: RoomServiceType {
+final class RoomService: NSObject, RoomServiceType {
+    
+    // MARK: - Constants
+    
+    @objc static let roomAccessRuleRestricted = RoomAccessRule.restricted.identifier
+    @objc static let roomAccessRuleUnrestricted = RoomAccessRule.unrestricted.identifier
+    @objc static let roomAccessRuleDirect = RoomAccessRule.direct.identifier
+    
+    @objc static let roomAccessRulesStateEventType = "im.vector.room.access_rules"
+    @objc static let roomAccessRulesContentRuleKey = "rule"
     
     // MARK: - Properties
     
@@ -46,14 +56,14 @@ final class RoomService: RoomServiceType {
     
     // MARK: - Setup
     
-    init(session: MXSession) {
+    @objc init(session: MXSession) {
         self.session = session
     }
     
     // MARK: - Public
     
-    func createRoom(visibility: MXRoomDirectoryVisibility, name: String, avatarURL: String?, inviteUserIds: [String], isFederated: Bool) -> Single<String> {
-        return self.createRoom(visibility: visibility, name: name, inviteUserIds: inviteUserIds, isFederated: isFederated)
+    func createRoom(visibility: MXRoomDirectoryVisibility, name: String, avatarURL: String?, inviteUserIds: [String], isFederated: Bool, accessRule: RoomAccessRule) -> Single<String> {
+        return self.createRoom(visibility: visibility, name: name, inviteUserIds: inviteUserIds, isFederated: isFederated, accessRule: accessRule)
         .flatMap { roomID in
             guard let avatarURL = avatarURL else {
                 return Single.just(roomID)
@@ -68,6 +78,7 @@ final class RoomService: RoomServiceType {
     
     func createDiscussionWithThirdPartyID(_ thirdPartyID: MXInvite3PID, completion: @escaping (MXResponse<String>) -> Void) -> MXHTTPOperation {
         let roomCreationParameters = RoomCreationParameters(visibility: .private,
+                                                            accessRule: .direct,
                                                             preset: .trustedPrivateChat,
                                                             name: nil,
                                                             alias: nil,
@@ -78,6 +89,28 @@ final class RoomService: RoomServiceType {
                                                             powerLevelContentOverride: nil,
                                                             isDirect: true)
         return self.createRoom(with: roomCreationParameters, completion: completion)
+    }
+    
+    @objc func createDiscussion(with userID: String, success: @escaping ((String) -> Void), failure: @escaping ((Error) -> Void)) -> MXHTTPOperation {
+        let roomCreationParameters = RoomCreationParameters(visibility: .private,
+                                                            accessRule: .direct,
+                                                            preset: .trustedPrivateChat,
+                                                            name: nil,
+                                                            alias: nil,
+                                                            inviteUserIDs: [userID],
+                                                            inviteThirdPartyIDs: nil,
+                                                            isFederated: true,
+                                                            historyVisibility: nil,
+                                                            powerLevelContentOverride: nil,
+                                                            isDirect: true)
+        return self.createRoom(with: roomCreationParameters, completion: { (response) in
+            switch response {
+            case .success(let roomID):
+                success(roomID)
+            case.failure(let error):
+                failure(error)
+            }
+        })
     }
     
     // MARK: - Private
@@ -105,10 +138,10 @@ final class RoomService: RoomServiceType {
         }
     }
     
-    private func createRoom(visibility: MXRoomDirectoryVisibility, name: String, inviteUserIds: [String], isFederated: Bool) -> Single<String> {
+    private func createRoom(visibility: MXRoomDirectoryVisibility, name: String, inviteUserIds: [String], isFederated: Bool, accessRule: RoomAccessRule) -> Single<String> {
         
         return Single.create { (single) -> Disposable in
-            let httpOperation = self.createRoom(visibility: visibility, name: name, inviteUserIds: inviteUserIds, isFederated: isFederated) { (response) in
+            let httpOperation = self.createRoom(visibility: visibility, name: name, inviteUserIds: inviteUserIds, isFederated: isFederated, accessRule: accessRule) { (response) in
                 switch response {
                 case .success(let roomID):
                     single(.success(roomID))
@@ -125,21 +158,21 @@ final class RoomService: RoomServiceType {
         }
     }
     
-    private func createRoom(visibility: MXRoomDirectoryVisibility, name: String, inviteUserIds: [String], isFederated: Bool, completion: @escaping (MXResponse<String>) -> Void) -> MXHTTPOperation {
+    private func createRoom(visibility: MXRoomDirectoryVisibility, name: String, inviteUserIds: [String], isFederated: Bool, accessRule: RoomAccessRule, completion: @escaping (MXResponse<String>) -> Void) -> MXHTTPOperation {
         
         let preset: MXRoomPreset
-        let historyVisibility: String?
+        let historyVisibility: MXRoomHistoryVisibility?
         let alias: String?
         
         if visibility == .public {
             preset = .publicChat
-            historyVisibility = kMXRoomHistoryVisibilityWorldReadable
+            historyVisibility = .worldReadable
             // In case of a public room, the room alias is mandatory.
             // That's why, we deduce the room alias from the room name.
             alias = self.defaultAlias(for: name)
         } else {
             preset = .privateChat
-            historyVisibility = kMXRoomHistoryVisibilityInvited
+            historyVisibility = .invited
             alias = nil
         }
         
@@ -147,6 +180,7 @@ final class RoomService: RoomServiceType {
         let powerLevelContentOverride = ["invite": RoomPowerLevel.moderator.rawValue]
         
         let roomCreationParameters = RoomCreationParameters(visibility: visibility,
+                                                            accessRule: accessRule,
                                                             preset: preset,
                                                             name: name,
                                                             alias: alias,
@@ -189,14 +223,15 @@ final class RoomService: RoomServiceType {
         
         var initialStates: Array<[AnyHashable: Any]> = []
         
+        let roomAccessRulesStateEvent = self.roomAccessRulesStateEvent(with: roomCreationParameters.accessRule)
+        initialStates.append(roomAccessRulesStateEvent.jsonDictionary())
+        
         if let historyVisibility = roomCreationParameters.historyVisibility {
             let historyVisibilityStateEvent = self.historyVisibilityStateEvent(with: historyVisibility)
             initialStates.append(historyVisibilityStateEvent.jsonDictionary())
         }
         
-        if initialStates.isEmpty == false {
-            parameters["initial_state"] = initialStates
-        }
+        parameters["initial_state"] = initialStates
         
         if let powerLevelContentOverride = roomCreationParameters.powerLevelContentOverride {
             parameters["power_level_content_override"] = powerLevelContentOverride
@@ -239,22 +274,6 @@ final class RoomService: RoomServiceType {
         })
     }
     
-    private func historyVisibilityStateEvent(with historyVisibility: String) -> MXEvent {
-        
-        let stateEventJSON: [AnyHashable: Any] = [
-            "state_key": "",
-            "type": MXEventType.roomHistoryVisibility.identifier,
-            "content": [
-                "history_visibility": historyVisibility
-            ]
-        ]
-        
-        guard let stateEvent = MXEvent(fromJSON: stateEventJSON) else {
-            fatalError("[RoomService] history event could not be created")
-        }
-        return stateEvent
-    }
-    
     private func defaultAlias(for roomName: String) -> String {
         var alias = roomName.trimmingCharacters(in: .whitespacesAndNewlines).filter { "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".contains($0) }
         
@@ -272,5 +291,35 @@ final class RoomService: RoomServiceType {
         return String((0..<length).map { _ in
             return letters.randomElement() ?? Character("A")
         })
+    }
+    
+    private func historyVisibilityStateEvent(with historyVisibility: MXRoomHistoryVisibility) -> MXEvent {
+        let stateEventJSON: [AnyHashable: Any] = [
+            "state_key": "",
+            "type": MXEventType.roomHistoryVisibility.identifier,
+            "content": [
+                "history_visibility": historyVisibility.identifier
+            ]
+        ]
+        
+        guard let stateEvent = MXEvent(fromJSON: stateEventJSON) else {
+            fatalError("[RoomService] history event could not be created")
+        }
+        return stateEvent
+    }
+    
+    private func roomAccessRulesStateEvent(with accessRule: RoomAccessRule) -> MXEvent {
+        let stateEventJSON: [AnyHashable: Any] = [
+            "state_key": "",
+            "type": RoomService.roomAccessRulesStateEventType,
+            "content": [
+                RoomService.roomAccessRulesContentRuleKey: accessRule.identifier
+            ]
+        ]
+        
+        guard let stateEvent = MXEvent(fromJSON: stateEventJSON) else {
+            fatalError("[RoomService] access rule event could not be created")
+        }
+        return stateEvent
     }
 }

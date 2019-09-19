@@ -23,6 +23,7 @@ import UIKit
     @IBOutlet private(set) weak var presenceView: UIImageView!
     @IBOutlet private(set) weak var contactDisplayNameLabel: UILabel!
     @IBOutlet private(set) weak var contactDomainLabel: UILabel!
+    @IBOutlet private(set) weak var contactEmailLabel: UILabel!
     
     private(set) var style: Style!
     
@@ -82,9 +83,12 @@ import UIKit
         
         // Tchap contacts are defined with only one matrix id.
         // Consider here only the first id if any.
+        self.matrixId = nil
         if let matrixId = contact.matrixIdentifiers?.first as? String {
             self.matrixId = matrixId
             registerContactPresenceNotification()
+        } else {
+            self.matrixId = nil
         }
         
         // Be warned when the thumbnail is updated
@@ -93,6 +97,7 @@ import UIKit
         refreshContactThumbnail()
         refreshContactDisplayName()
         refreshContactPresence()
+        refreshContactEmail()
     }
     
     // TODO: this method should be optional in the MXKCellRendering protocol
@@ -112,6 +117,7 @@ import UIKit
         self.style = style
         self.contactDisplayNameLabel.textColor = style.primaryTextColor
         self.contactDomainLabel.textColor = style.primarySubTextColor
+        self.contactEmailLabel.textColor = style.secondaryTextColor
         
         // Clear the default background color of a MXKImageView instance
         self.thumbnailView?.defaultBackgroundColor = UIColor.clear
@@ -152,6 +158,17 @@ import UIKit
             self.presenceView.isHidden = user.presence != MXPresenceOnline
             break
         }
+    }
+    
+    private func refreshContactEmail() {
+        self.contactEmailLabel.isHidden = true
+        guard self.matrixId == nil, let email = self.contact?.emailAddresses?.first as? MXKEmail else {
+            // The email is displayed only for no-tchap users
+            return
+        }
+        
+        self.contactEmailLabel.isHidden = false
+        self.contactEmailLabel.text = email.emailAddress
     }
     
     private func registerContactUpdateNotification() {
