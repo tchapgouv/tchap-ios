@@ -811,8 +811,15 @@
     // Add this member after checking his status
     if (mxMember.membership == MXMembershipJoin || mxMember.membership == MXMembershipInvite)
     {
-        // Create the contact related to this member
-        Contact *contact = [[Contact alloc] initMatrixContactWithDisplayName:mxMember.displayname andMatrixID:mxMember.userId];
+        // Create the contact related to this member.
+        // If the display name is unknown, build a temporary name from the user id.
+        NSString *displayName = mxMember.displayname;
+        if (!displayName.length && mxMember.userId)
+        {
+            UserService *userService = [[UserService alloc] initWithSession:self.mxRoom.mxSession];
+            displayName = [userService displayNameFrom:mxMember.userId];
+        }
+        Contact *contact = [[Contact alloc] initMatrixContactWithDisplayName:displayName andMatrixID:mxMember.userId];
         contact.mxMember = mxMember;
         
         if (mxMember.membership == MXMembershipInvite)
