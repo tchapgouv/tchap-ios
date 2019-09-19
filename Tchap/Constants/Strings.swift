@@ -253,6 +253,8 @@ internal enum TchapL10n {
   internal static func roomTitleRoomMembersCount(_ p1: Int) -> String {
     return TchapL10n.tr("Tchap", "room_title_room_members_count", p1)
   }
+  /// Salon accessible aux externes
+  internal static let roomTitleUnrestrictedRoom = TchapL10n.tr("Tchap", "room_title_unrestricted_room")
   /// Aucun résultat
   internal static let searchNoResult = TchapL10n.tr("Tchap", "search_no_result")
   /// Changer le mot de passe réinitialise les clés de chiffrement sur tous les appareils, rendant l’historique des discussions illisible: pensez d'abord à exporter vos clés pour pouvoir les ré-importer après le changement de mot de passe.
