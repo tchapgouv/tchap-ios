@@ -62,19 +62,18 @@ final class AppCoordinator: AppCoordinatorType {
     func start() {
         // If main user exists, user is logged in
         if let mainSession = self.mainSession {
-            // Check whether a clear cache is required
+            // Check whether a clear cache is required before launching the app
             if AppVersion.isLastVersionLowerThan(Constants.lastAppVersionWhichRequiresCacheClearing) {
-                AppVersion.updateLastVersion()
                 self.reloadSession(clearCache: true)
             } else {
-                AppVersion.updateLastVersion()
 //                self.showSplitView(session: mainSession)
                 self.showHome(session: mainSession)
             }
         } else {
-            AppVersion.updateLastVersion()
             self.showWelcome()
         }
+        
+        AppVersion.updateLastVersion()
     }
     
     func handleUserActivity(_ userActivity: NSUserActivity, application: UIApplication) -> Bool {
