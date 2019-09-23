@@ -23,7 +23,7 @@ final class AppCoordinator: AppCoordinatorType {
     
     private enum Constants {
         static let expiredAccountError: String = "ORG_MATRIX_EXPIRED_ACCOUNT"
-        static let lastAppVersionWhichRequiresCacheClearing: AppVersion = AppVersion(bundleShortVersion: "1.0.15", bundleVersion: "1")
+        static let lastAppVersionWhichRequiresCacheClearing: AppVersion = AppVersion(bundleShortVersion: "1.0.17", bundleVersion: "1")
     }
     
     // MARK: - Properties
