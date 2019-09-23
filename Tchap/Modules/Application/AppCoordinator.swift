@@ -23,6 +23,7 @@ final class AppCoordinator: AppCoordinatorType {
     
     private enum Constants {
         static let expiredAccountError: String = "ORG_MATRIX_EXPIRED_ACCOUNT"
+        static let lastAppVersionWhichRequiresCacheClearing: AppVersion = AppVersion(bundleShortVersion: "1.0.17", bundleVersion: "1")
     }
     
     // MARK: - Properties
@@ -59,13 +60,20 @@ final class AppCoordinator: AppCoordinatorType {
     // MARK: - Public methods
     
     func start() {
-        // If main user exist, user is logged in
+        // If main user exists, user is logged in
         if let mainSession = self.mainSession {
-//            self.showSplitView(session: mainSession)
-            self.showHome(session: mainSession)
+            // Check whether a clear cache is required before launching the app
+            if AppVersion.isLastVersionLowerThan(Constants.lastAppVersionWhichRequiresCacheClearing) {
+                self.reloadSession(clearCache: true)
+            } else {
+//                self.showSplitView(session: mainSession)
+                self.showHome(session: mainSession)
+            }
         } else {
             self.showWelcome()
         }
+        
+        AppVersion.updateLastVersion()
     }
     
     func handleUserActivity(_ userActivity: NSUserActivity, application: UIApplication) -> Bool {
@@ -143,7 +151,7 @@ final class AppCoordinator: AppCoordinatorType {
                     }
                 })
             } else {
-                let error = NSError(domain: MXKAuthErrorDomain, code: 0, userInfo: [NSLocalizedDescriptionKey: Bundle.mxk_localizedString(forKey: "error_common_message")])
+                let error = NSError(domain: MXKAuthErrorDomain, code: 0, userInfo: [NSLocalizedDescriptionKey: TchapL10n.errorMessageDefault])
                 self.showError(error)
             }
             
@@ -322,7 +330,7 @@ final class AppCoordinator: AppCoordinatorType {
                 guard let identityServer = restClient.identityServer,
                     let identityServerURL = URL(string: identityServer),
                     let identityServerHost = identityServerURL.host else {
-                        let error = NSError(domain: MXKAuthErrorDomain, code: 0, userInfo: [NSLocalizedDescriptionKey: Bundle.mxk_localizedString(forKey: "error_common_message")])
+                        let error = NSError(domain: MXKAuthErrorDomain, code: 0, userInfo: [NSLocalizedDescriptionKey: TchapL10n.errorMessageDefault])
                         self.showError(error)
                         return
                 }

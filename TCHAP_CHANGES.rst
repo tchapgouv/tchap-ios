@@ -1,3 +1,10 @@
+Changes in Tchap 1.0.17 (2019-09-23)
+===================================================
+
+ Features/Improvements:
+ * Add a mechanism to handle a potential cache clearing (if need) during the application update PR #252
+ * Force a cache clearing for this version
+
 Changes in Tchap 1.0.16 (2019-09-19)
 ===================================================
 

@@ -293,6 +293,8 @@
 		02C4BE94225502DD00F7BB0E /* DiscussionDetailsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C4BE93225502DD00F7BB0E /* DiscussionDetailsCoordinator.swift */; };
 		02C4BE95225502DD00F7BB0E /* DiscussionDetailsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C4BE93225502DD00F7BB0E /* DiscussionDetailsCoordinator.swift */; };
 		02CEE1DE23312C370085ACF0 /* matrix.agent.externe.tchap.gouv.fr2.cer in Resources */ = {isa = PBXBuildFile; fileRef = 02CEE1DD23312C370085ACF0 /* matrix.agent.externe.tchap.gouv.fr2.cer */; };
+		02CEE1E52338C5B20085ACF0 /* AppVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CEE1E42338C5B10085ACF0 /* AppVersion.swift */; };
+		02CEE1E62338C5B20085ACF0 /* AppVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CEE1E42338C5B10085ACF0 /* AppVersion.swift */; };
 		02DC4F4B221C46E500B551EE /* RoomPowerLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DC4F4A221C46E500B551EE /* RoomPowerLevel.swift */; };
 		02DC4F4C221C46E500B551EE /* RoomPowerLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DC4F4A221C46E500B551EE /* RoomPowerLevel.swift */; };
 		02DFEB7421C07370009B6F15 /* RoomAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B146D50C21A5EAE600D8C2C6 /* RoomAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.m */; };
@@ -1145,6 +1147,7 @@
 		02C4BE902252502900F7BB0E /* InviteServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteServiceType.swift; sourceTree = "<group>"; };
 		02C4BE93225502DD00F7BB0E /* DiscussionDetailsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionDetailsCoordinator.swift; sourceTree = "<group>"; };
 		02CEE1DD23312C370085ACF0 /* matrix.agent.externe.tchap.gouv.fr2.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = matrix.agent.externe.tchap.gouv.fr2.cer; sourceTree = "<group>"; };
+		02CEE1E42338C5B10085ACF0 /* AppVersion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppVersion.swift; sourceTree = "<group>"; };
 		02DC4F4A221C46E500B551EE /* RoomPowerLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomPowerLevel.swift; sourceTree = "<group>"; };
 		02DFECF521C07370009B6F15 /* Btchap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Btchap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		02DFECF921C0771C009B6F15 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -2077,6 +2080,7 @@
 		02BEE184212AB23A00098505 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				02CEE1E32338C5B10085ACF0 /* AppVersion */,
 				0259328622AFE84400C93762 /* PasswordPolicy */,
 				0215542122B24011004663A6 /* AccountValidity */,
 				025E36F32295466400C9D9AE /* ThirdPartyIDResolver */,
@@ -2127,6 +2131,14 @@
 				02C4BE87225231ED00F7BB0E /* InviteService.swift */,
 			);
 			path = Invite;
+			sourceTree = "<group>";
+		};
+		02CEE1E32338C5B10085ACF0 /* AppVersion */ = {
+			isa = PBXGroup;
+			children = (
+				02CEE1E42338C5B10085ACF0 /* AppVersion.swift */,
+			);
+			path = AppVersion;
 			sourceTree = "<group>";
 		};
 		02DFECF721C074CC009B6F15 /* Btchap */ = {
@@ -3923,6 +3935,7 @@
 				B1322FEA213002440054A9DD /* FormTextField.swift in Sources */,
 				0290609321527A3F005FE3C1 /* RoomDetailsCoordinatorType.swift in Sources */,
 				B146D52321A7453900D8C2C6 /* RoomAttachmentAntivirusScanStatusViewModel.swift in Sources */,
+				02CEE1E52338C5B20085ACF0 /* AppVersion.swift in Sources */,
 				02906073214FD0E1005FE3C1 /* RoomCoordinatorType.swift in Sources */,
 				B11C800121393E5D00CC6F2F /* RegistrationCoordinatorType.swift in Sources */,
 				B1F2AA9A212AEC830077FDC0 /* AppDelegate.swift in Sources */,
@@ -4216,6 +4229,7 @@
 				02DFEBE321C07370009B6F15 /* FormTextField.swift in Sources */,
 				02DFEBE421C07370009B6F15 /* RoomDetailsCoordinatorType.swift in Sources */,
 				02DFEBE521C07370009B6F15 /* RoomAttachmentAntivirusScanStatusViewModel.swift in Sources */,
+				02CEE1E62338C5B20085ACF0 /* AppVersion.swift in Sources */,
 				02DFEBE621C07370009B6F15 /* RoomCoordinatorType.swift in Sources */,
 				02DFEBE721C07370009B6F15 /* RegistrationCoordinatorType.swift in Sources */,
 				02DFEBE821C07370009B6F15 /* AppDelegate.swift in Sources */,
