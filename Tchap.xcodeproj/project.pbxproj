@@ -238,6 +238,8 @@
 		025E36F6229546A000C9D9AE /* ThirdPartyIDResolverType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025E36F4229546A000C9D9AE /* ThirdPartyIDResolverType.swift */; };
 		025E36F8229548C000C9D9AE /* ThirdPartyIDResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025E36F7229548C000C9D9AE /* ThirdPartyIDResolver.swift */; };
 		025E36F9229548C000C9D9AE /* ThirdPartyIDResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025E36F7229548C000C9D9AE /* ThirdPartyIDResolver.swift */; };
+		026154C7235123410045459E /* IdentityServiceBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026154C6235123410045459E /* IdentityServiceBuilder.swift */; };
+		026154C8235123410045459E /* IdentityServiceBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026154C6235123410045459E /* IdentityServiceBuilder.swift */; };
 		026D887021C1C4F40085BED8 /* TchapSharedImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 026D886F21C1C4F40085BED8 /* TchapSharedImages.xcassets */; };
 		026D887221C1C5490085BED8 /* BtchapSharedImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 026D887121C1C5490085BED8 /* BtchapSharedImages.xcassets */; };
 		027DCAC521B14F68000DD05E /* ContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 027DCAC321B14F68000DD05E /* ContactCell.xib */; };
@@ -1090,6 +1092,7 @@
 		0259329022B00E4300C93762 /* PasswordPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordPolicy.swift; sourceTree = "<group>"; };
 		025E36F4229546A000C9D9AE /* ThirdPartyIDResolverType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThirdPartyIDResolverType.swift; sourceTree = "<group>"; };
 		025E36F7229548C000C9D9AE /* ThirdPartyIDResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThirdPartyIDResolver.swift; sourceTree = "<group>"; };
+		026154C6235123410045459E /* IdentityServiceBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentityServiceBuilder.swift; sourceTree = "<group>"; };
 		026D886F21C1C4F40085BED8 /* TchapSharedImages.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = TchapSharedImages.xcassets; sourceTree = "<group>"; };
 		026D887121C1C5490085BED8 /* BtchapSharedImages.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = BtchapSharedImages.xcassets; sourceTree = "<group>"; };
 		027DCAC321B14F68000DD05E /* ContactCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactCell.xib; sourceTree = "<group>"; };
@@ -1952,6 +1955,14 @@
 			path = ThirdPartyIDResolver;
 			sourceTree = "<group>";
 		};
+		026154C5235122D70045459E /* IdentityService */ = {
+			isa = PBXGroup;
+			children = (
+				026154C6235123410045459E /* IdentityServiceBuilder.swift */,
+			);
+			path = IdentityService;
+			sourceTree = "<group>";
+		};
 		028B50B3228E2931005DB9B6 /* Certificates */ = {
 			isa = PBXGroup;
 			children = (
@@ -2080,6 +2091,7 @@
 		02BEE184212AB23A00098505 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				026154C5235122D70045459E /* IdentityService */,
 				02CEE1E32338C5B10085ACF0 /* AppVersion */,
 				0259328622AFE84400C93762 /* PasswordPolicy */,
 				0215542122B24011004663A6 /* AccountValidity */,
@@ -3853,6 +3865,7 @@
 				B1C4645B21B6DD28005F4D53 /* MediaServiceType.swift in Sources */,
 				020DF97C214BE467003DFBA4 /* RoomIncomingAttachmentWithPaginationTitleBubbleCell.m in Sources */,
 				B15AB2A1215BF20E007F5405 /* ForgotPasswordCheckedMailViewController.swift in Sources */,
+				026154C7235123410045459E /* IdentityServiceBuilder.swift in Sources */,
 				0250C4AB2122B68000034691 /* JitsiViewController.m in Sources */,
 				020DF95A214BE467003DFBA4 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				02018F9C22006200008D68BE /* UniversalLinkParameters.swift in Sources */,
@@ -4147,6 +4160,7 @@
 				02DFEB9A21C07370009B6F15 /* MediaServiceType.swift in Sources */,
 				02DFEB9B21C07370009B6F15 /* RoomIncomingAttachmentWithPaginationTitleBubbleCell.m in Sources */,
 				02DFEB9C21C07370009B6F15 /* ForgotPasswordCheckedMailViewController.swift in Sources */,
+				026154C8235123410045459E /* IdentityServiceBuilder.swift in Sources */,
 				02DFEB9D21C07370009B6F15 /* JitsiViewController.m in Sources */,
 				02DFEB9E21C07370009B6F15 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				02018F9D22006200008D68BE /* UniversalLinkParameters.swift in Sources */,
