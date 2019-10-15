@@ -31,7 +31,7 @@ final class UniversalLinkService: UniversalLinkServiceType {
         static let roomPermalinkPathParam = "room"
     }
     
-    private var restClient: MXRestClient?
+    private var identityService: MXIdentityService?
     private var currentOperation: MXHTTPOperation?
     
     // MARK: - Public
@@ -60,12 +60,12 @@ final class UniversalLinkService: UniversalLinkServiceType {
                 self.cancelPendingRequest()
                 
                 let identityServer: String = "\(scheme)://\(host)"
-                let restClientBuilder = RestClientBuilder()
                 
-                restClientBuilder.build(fromHomeServer: identityServer) { (restClientBuilderResult) in
-                    switch restClientBuilderResult {
-                    case .success(let restClient):
-                        self.currentOperation = restClient.submit3PIDValidationToken(token,
+                let identityServiceBuilder = IdentityServiceBuilder()
+                identityServiceBuilder.build(fromIdentityServer: identityServer) { (identityServiceResult) in
+                    switch identityServiceResult {
+                    case .success(let identityService):
+                        self.currentOperation = identityService.submit3PIDValidationToken(token,
                                                                                      medium: kMX3PIDMediumEmail,
                                                                                      clientSecret: clientSecret,
                                                                                      sid: sid,
@@ -90,7 +90,7 @@ final class UniversalLinkService: UniversalLinkServiceType {
                                                                                             completion(MXResponse.failure(error))
                                                                                         }
                         })
-                        self.restClient = restClient
+                        self.identityService = identityService
                     case .failure(let error):
                         completion(MXResponse.failure(error))
                     }
@@ -156,7 +156,7 @@ final class UniversalLinkService: UniversalLinkServiceType {
     
     func cancelPendingRequest() {
         self.currentOperation?.cancel()
-        self.restClient = nil
+        self.identityService = nil
     }
     
     // MARK: - Private
