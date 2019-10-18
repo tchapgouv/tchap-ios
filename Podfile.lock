@@ -138,7 +138,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   MatrixKit:
-    :commit: 771aeaa63db809ea50429965bd0b8e4709da1927
+    :commit: 008bdf430686c46acf1043b317b55501b3cbb529
     :git: https://github.com/matrix-org/matrix-ios-kit.git
   MatrixSDK:
     :commit: e18825141e46be27cb3adc788755039b9f9638ea
@@ -159,7 +159,7 @@ SPEC CHECKSUMS:
   libbase58: 7c040313537b8c44b6e2d15586af8e21f7354efd
   libPhoneNumber-iOS: 0a32a9525cf8744fe02c5206eb30d571e38f7d75
   MatomoTracker: 3ae4f65a1f5ace8043bda7244888fee28a734de5
-  MatrixKit: db698352271a738b3c0e2f1a331088ea41f90ae1
+  MatrixKit: 035f409b5208556904b57f84b099fc2c2fe63755
   MatrixSDK: 0f965f8700420696ab15bf48d827a03d98b0ffac
   OLMKit: 4ee0159d63feeb86d836fdcfefe418e163511639
   Realm: 50071da38fe079e0735e47c9f2eae738c68c5996
