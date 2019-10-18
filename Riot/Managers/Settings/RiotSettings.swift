@@ -28,6 +28,8 @@ final class RiotSettings: NSObject {
         static let createConferenceCallsWithJitsi = "createConferenceCallsWithJitsi"
         static let userInterfaceTheme = "userInterfaceTheme"
         static let notificationsShowDecryptedContent = "showDecryptedContent"
+        static let showJoinLeaveEvents = "showJoinLeaveEvents"
+        static let showProfileUpdateEvents = "showProfileUpdateEvents"
     }
     
     static let shared = RiotSettings()
@@ -47,6 +49,26 @@ final class RiotSettings: NSObject {
             return UserDefaults.standard.bool(forKey: UserDefaultsKeys.notificationsShowDecryptedContent)
         } set {
             UserDefaults.standard.set(newValue, forKey: UserDefaultsKeys.notificationsShowDecryptedContent)
+        }
+    }
+    
+    /// Indicate if the user wants to display the join and leave events in the room history.
+    /// (No by default)
+    var showJoinLeaveEvents: Bool {
+        get {
+            return UserDefaults.standard.bool(forKey: UserDefaultsKeys.showJoinLeaveEvents)
+        } set {
+            UserDefaults.standard.set(newValue, forKey: UserDefaultsKeys.showJoinLeaveEvents)
+        }
+    }
+    
+    /// Indicate if the user wants to display the profile update events (avatar / displayname) in the room history.
+    /// (No by default)
+    var showProfileUpdateEvents: Bool {
+        get {
+            return UserDefaults.standard.bool(forKey: UserDefaultsKeys.showProfileUpdateEvents)
+        } set {
+            UserDefaults.standard.set(newValue, forKey: UserDefaultsKeys.showProfileUpdateEvents)
         }
     }
     

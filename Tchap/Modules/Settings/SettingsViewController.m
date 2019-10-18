@@ -57,6 +57,7 @@ enum
     //SETTINGS_SECTION_CALLS_INDEX, // Tchap: voip call are disabled for the moment.
     SETTINGS_SECTION_IGNORED_USERS_INDEX,
     SETTINGS_SECTION_CONTACTS_INDEX,
+    SETTINGS_SECTION_PREFERENCES_INDEX,
     SETTINGS_SECTION_OTHER_INDEX,
     SETTINGS_SECTION_CRYPTOGRAPHY_INDEX,
     SETTINGS_SECTION_DEVICES_INDEX,
@@ -83,6 +84,13 @@ enum
     CALLS_ENABLE_CALLKIT_INDEX = 0,
     CALLS_DESCRIPTION_INDEX,
     CALLS_COUNT
+};
+
+enum
+{
+    PREFERENCES_SHOW_JOIN_LEAVE_EVENTS_INDEX = 0,
+    PREFERENCES_SHOW_PROFILE_UPDATE_EVENTS_INDEX,
+    PREFERENCES_COUNT
 };
 
 enum
@@ -734,6 +742,10 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
             localContactsPhoneBookCountryIndex = -1;
         }
     }
+    else if (section == SETTINGS_SECTION_PREFERENCES_INDEX)
+    {
+        count = PREFERENCES_COUNT;
+    }
     else if (section == SETTINGS_SECTION_OTHER_INDEX)
     {
         count = OTHER_COUNT;
@@ -1149,6 +1161,41 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
         }
     }
+    else if (section == SETTINGS_SECTION_PREFERENCES_INDEX)
+    {
+        if (row == PREFERENCES_SHOW_JOIN_LEAVE_EVENTS_INDEX)
+        {
+            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+            
+            NSString *title = NSLocalizedStringFromTable(@"settings_show_join_leave_messages_title", @"Tchap", nil);
+            NSString *summary = NSLocalizedStringFromTable(@"settings_show_join_leave_messages_summary", @"Tchap", nil);
+            NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString: title
+                                                                                               attributes:@{NSForegroundColorAttributeName : self.currentStyle.primaryTextColor,
+                                                                                                            NSFontAttributeName: [UIFont systemFontOfSize:17.0]}];
+            [attributedText appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n\n" attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:4]}]];
+            [attributedText appendAttributedString:[[NSMutableAttributedString alloc] initWithString: summary
+                                                                                          attributes:@{NSForegroundColorAttributeName : self.currentStyle.secondaryTextColor,
+                                                                                                       NSFontAttributeName: [UIFont systemFontOfSize:14.0]}]];
+            
+            labelAndSwitchCell.mxkLabel.attributedText = attributedText;
+            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.showJoinLeaveEvents;
+            labelAndSwitchCell.mxkSwitch.enabled = YES;
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleShowJoinLeaveEvents:) forControlEvents:UIControlEventTouchUpInside];
+            
+            cell = labelAndSwitchCell;
+        }
+        else if (row == PREFERENCES_SHOW_PROFILE_UPDATE_EVENTS_INDEX)
+        {
+            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+            
+            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_show_profile_changes_messages_title", @"Tchap", nil);
+            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.showProfileUpdateEvents;
+            labelAndSwitchCell.mxkSwitch.enabled = YES;
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleShowProfileUpdateEvents:) forControlEvents:UIControlEventTouchUpInside];
+            
+            cell = labelAndSwitchCell;
+        }
+    }
     else if (section == SETTINGS_SECTION_OTHER_INDEX)
     {
         if (row == OTHER_VERSION_INDEX)
@@ -1397,6 +1444,10 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     else if (section == SETTINGS_SECTION_CONTACTS_INDEX)
     {
         return NSLocalizedStringFromTable(@"settings_contacts", @"Vector", nil);
+    }
+    else if (section == SETTINGS_SECTION_PREFERENCES_INDEX)
+    {
+        return NSLocalizedStringFromTable(@"settings_preferences", @"Tchap", nil);
     }
     else if (section == SETTINGS_SECTION_OTHER_INDEX)
     {
@@ -1773,6 +1824,18 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         
         [self.tableView reloadData];
     }
+}
+
+- (void)toggleShowJoinLeaveEvents:(id)sender
+{
+    UISwitch *switchButton = (UISwitch*)sender;
+    RiotSettings.shared.showJoinLeaveEvents = switchButton.isOn;
+}
+
+- (void)toggleShowProfileUpdateEvents:(id)sender
+{
+    UISwitch *switchButton = (UISwitch*)sender;
+    RiotSettings.shared.showProfileUpdateEvents = switchButton.isOn;
 }
 
 //- (void)toggleSendCrashReport:(id)sender

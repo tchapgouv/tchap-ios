@@ -271,8 +271,16 @@ internal enum TchapL10n {
   internal static let settingsHideFromUsersDirectorySummary = TchapL10n.tr("Tchap", "settings_hide_from_users_directory_summary")
   /// Inscrire mon compte sur liste rouge
   internal static let settingsHideFromUsersDirectoryTitle = TchapL10n.tr("Tchap", "settings_hide_from_users_directory_title")
+  /// Préférences
+  internal static let settingsPreferences = TchapL10n.tr("Tchap", "settings_preferences")
   /// Pour désactiver cette option, vous devez accepter que votre adresse email soit visible des autres utilisateurs lors de leurs recherches.
   internal static let settingsShowExternalUserInUsersDirectoryPrompt = TchapL10n.tr("Tchap", "settings_show_external_user_in_users_directory_prompt")
+  /// Les invitations, expulsions et bannissements ne sont pas concernés
+  internal static let settingsShowJoinLeaveMessagesSummary = TchapL10n.tr("Tchap", "settings_show_join_leave_messages_summary")
+  /// Afficher les notifications d’arrivée et de départ
+  internal static let settingsShowJoinLeaveMessagesTitle = TchapL10n.tr("Tchap", "settings_show_join_leave_messages_title")
+  /// Afficher les changements d’avatar
+  internal static let settingsShowProfileChangesMessagesTitle = TchapL10n.tr("Tchap", "settings_show_profile_changes_messages_title")
   /// Votre correspondant a quitté définitivement cette discussion.\nVous devez en créer une nouvelle pour le recontacter, s'il est toujours joignable sur Tchap.
   internal static let tchapCannotInviteDeactivatedAccountUser = TchapL10n.tr("Tchap", "tchap_cannot_invite_deactivated_account_user")
   /// Voulez-vous vraiment quitter cette conversation ?\n\nElle ne sera plus administrée, et vous risquez de ne plus pouvoir la joindre de nouveau.
