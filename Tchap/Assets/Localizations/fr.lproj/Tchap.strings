@@ -129,6 +129,11 @@
 "settings_change_pwd_success_title" = "Succès";
 "settings_change_pwd_success_msg" = "Votre mot de passe a été changé avec succès.\nVous ne recevrez plus de notifications sur vos autres appareils tant que vous ne vous y reconnecterez pas.";
 "settings_show_external_user_in_users_directory_prompt" = "Pour désactiver cette option, vous devez accepter que votre adresse email soit visible des autres utilisateurs lors de leurs recherches.";
+"settings_preferences" = "Préférences";
+"settings_show_join_leave_messages_title" = "Afficher les notifications d’arrivée et de départ";
+"settings_show_join_leave_messages_summary" = "Les invitations, expulsions et bannissements ne sont pas concernés";
+"settings_show_profile_changes_messages_title" = "Afficher les changements d’avatar";
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Search
