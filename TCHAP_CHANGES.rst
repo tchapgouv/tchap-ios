@@ -1,14 +1,14 @@
 Changes in Tchap 1.0.17 (2019-09-23)
 ===================================================
 
- Features/Improvements:
+Features/Improvements:
  * Add a mechanism to handle a potential cache clearing (if need) during the application update PR #252
  * Force a cache clearing for this version
 
 Changes in Tchap 1.0.16 (2019-09-19)
 ===================================================
 
- Features/Improvements:
+Features/Improvements:
  * Handle the strong password policy forced by the server #195
  * Room creation: allow or not the external users to join the room #202
  * Add a marker to indicate whether or not a room can be joined by external users #203
@@ -22,7 +22,7 @@ Changes in Tchap 1.0.16 (2019-09-19)
  * Prompt the user before creating an external account #240
  * Add room access info in the Room title #249
  
- Bug Fixes:
+Bug Fixes:
  * Room members: third-party invites can now be revoked PR #244
  * Room member: some unexpected badges are displayed on invited members PR #246
  * Room members: Some invited members don't have name.
@@ -31,61 +31,61 @@ Changes in Tchap 1.0.16 (2019-09-19)
 Changes in Tchap 1.0.15 (2019-09-01)
 ===================================================
 
- Features/Improvements:
+Features/Improvements:
  * Room attachments: allow to send files from the file system #215
  * Force the email address in lower case #230
  * Update MatrixKit and MatrixSDK
  
- Bug Fixes:
+Bug Fixes:
  * Handle correctly M_LIMIT_EXCEEDED error code #229
  
 Changes in Tchap 1.0.14 (2019-08-12)
 ===================================================
 
- Features/Improvements:
+Features/Improvements:
  * Prompt external users before displaying their email in user directory #208
  * Prompt the last room admin before letting him leave the room #218
  * Allow the user to send a new invite to an external email address #220
  * Add a splash screen
  
- Bug Fixes:
+Bug Fixes:
  * Preview on invited public room failed
  * Error "Profile isn't available" just after logging in #219
 
 Changes in Tchap 1.0.13 (2019-06-28)
 ===================================================
 
- Features/Improvements:
+Features/Improvements:
  * Pin the certificate of the `agent.externe` instance.
 
 Changes in Tchap 1.0.12 (2019-06-18)
 ===================================================
 
- Features/Improvements:
+Features/Improvements:
  * Support the account validity error #177
  * The external users can now be hidden from the users directory search, show the option in settings #205
  * Enable the proxy lookup use on Prod
  
- Bug Fixes:
+Bug Fixes:
  * Invite by email: The joined discussion is displayed like a "salon" #200
 
 Changes in Tchap 1.0.11 (2019-05-23)
 ===================================================
 
- Features/Improvements:
+Features/Improvements:
  * Certificate pinning #165
  * Support the proxy lookup PR #199
  
- Bug Fixes:
+Bug Fixes:
  * Registration - Accessibility: CGU checkbox is not accessible by Voiceover #194
 
 Changes in Tchap 1.0.10 (2019-04-24)
 ===================================================
 
- Features/Improvements:
+Features/Improvements:
  * User Profile: add an option to hide the user from users directory search #167
  
- Bug Fixes:
+Bug Fixes:
  * Handle the Password AutoFill Workflow PR #187
  * Flickering of the notification badges #189
  * Room history: the most recent event is not displayed #136
@@ -93,49 +93,49 @@ Changes in Tchap 1.0.10 (2019-04-24)
 Changes in Tchap 1.0.9 (2019-04-09)
 ===================================================
 
- Features/Improvements:
+Features/Improvements:
  * Registration: require that users agree to terms (EULA) #186
  * Settings: Remove the phone number option #178
 
 Changes in Tchap 1.0.8 (2019-04-05)
 ===================================================
 
- Features/Improvements:
+Features/Improvements:
  * Increase the minimum password length to 8 #179
  
- Bug Fixes:
+Bug Fixes:
  * Improve external users handing
  * Fix a crash observed after a successful login
 
 Changes in Tchap 1.0.7 (2019-04-04)
 ===================================================
 
- Features/Improvements:
+Features/Improvements:
  * Invite contact by email #166
  * Restore the option to ignore a user from a Discussion #176
  
- Bug Fixes:
+Bug Fixes:
  * BugFix the account creation is stuck on email token submission PR #181
 
 Changes in Tchap 1.0.6 (2019-03-25)
 ===================================================
 
- Features/Improvements:
+Features/Improvements:
  * Block invite to a deactivated account user #168
  * Warn the user about the remote logout in case of a password change #164
  * Hide the rooms created to invite some non-tchap contact by email. #172
  * Configure the application for the extern users #139
  
- Bug Fixes:
+Bug Fixes:
  * Bug when leaving a room #162
 
 Changes in Tchap 1.0.5 (2019-03-08)
 ===================================================
 
- Features/Improvements:
+Features/Improvements:
  * Turn on ITSAppUsesNonExemptEncryption flag
  
- Bug Fixes:
+Bug Fixes:
  * Public room: the avatar shape is wrong #152
  * Room details: the attachments list is empty #151
  * Room members: improve the contacts picker #140
@@ -143,20 +143,20 @@ Changes in Tchap 1.0.5 (2019-03-08)
 Changes in Tchap 1.0.4 (2019-02-25)
 ===================================================
 
- Features/Improvements:
+Features/Improvements:
  * Private Room creation: change history visibility to "invited" #154
  * Power level: a room member must be moderator to invite #155
  * Adjust wording on bug report #160
  * Keys sharing: remove the verification option #149
  * Disable voip call #153
  
- Bug Fixes:
+Bug Fixes:
  * Push Notification: Tchap is not opened on the right room #150
 
 Changes in Tchap 1.0.3 (2019-02-08)
 ===================================================
 
- Features/Improvements:
+Features/Improvements:
  * Setup Universal Links support for the registration process #119
  * Registration: remove the polling mechanism on email validation #145
  * Enable bug report #104
@@ -164,23 +164,23 @@ Changes in Tchap 1.0.3 (2019-02-08)
  * Turn off "ITSAppUsesNonExemptEncryption" flag (until export compliance is reviewed)
  * Enlarge room invite cell
  
- Bug Fixes:
+Bug Fixes:
  * Fix the flickering during unread messages badge rendering PR #148
 
 Changes in Tchap 1.0.2 (2019-01-30)
 ===================================================
 
- Features/Improvements:
+Features/Improvements:
  * Turn on "ITSAppUsesNonExemptEncryption" flag
 
 Changes in Tchap 1.0.1 (2019-01-11)
 ===================================================
 
- Features/Improvements:
+Features/Improvements:
  * Room history: update bubbles display #127
  * Apply the Tchap tint color to the green icons #126
  
- Bug Fixes:
+Bug Fixes:
  * Unexpected logout #134
  * Clear cache doesn't work properly #124
  * room preview doesn't work #113
@@ -190,7 +190,7 @@ Changes in Tchap 1.0.1 (2019-01-11)
 Changes in Tchap 1.0.0 (2018-12-14)
 ===================================================
 
- Features/Improvements:
+Features/Improvements:
  * Set up push notifications in Tchap #108
  * Antivirus - Media scan: Implement the MediaScanManager #77
  * Antivirus Server: encrypt the keys sent to the antivirus server #105
@@ -204,13 +204,14 @@ Changes in Tchap 1.0.0 (2018-12-14)
  * Accept unknown devices #111
  * Configurer le dispositif de publication de l’application
  
- Bug Fixes:
+Bug Fixes:
  * Registration is stuck in the email validation step #117
  * Matrix name when exporting keys #112
 
 Changes in Tchap 0.0.4 (2018-11-22)
 ===================================================
 
+Features/Improvements:
  * Antivirus - Media download: support a potential anti-virus server #40
  * Support the pinned rooms #16
  * Room history: update input toolbar #92
@@ -223,6 +224,7 @@ Changes in Tchap 0.0.4 (2018-11-22)
 Changes in Tchap 0.0.3 (2018-10-23)
 ===================================================
 
+Features/Improvements:
  * Authentication: implement "forgot password" flow #38
  * Contact selection: create a new discussion (if none) only when the user sends a message #41
  * Update TAC link #72
@@ -235,6 +237,7 @@ Changes in Tchap 0.0.3 (2018-10-23)
 Changes in Tchap 0.0.2 (2018-09-28)
 ===================================================
 
+Features/Improvements:
  * Authentication: implement the registration screens #4
  * Add the search in the navigation bar #10
  * Check the pending invites before creating new direct chat #13
@@ -248,6 +251,7 @@ Changes in Tchap 0.0.2 (2018-09-28)
 Changes in Tchap 0.0.1 (2018-09-05)
 ===================================================
  
+Features/Improvements:
  * Set up the new application Tchap-ios #1
  * Replace Riot icons with the Tchap ones #2
  * Disable/Hide the Home, Favorites and Communities tabs #6
