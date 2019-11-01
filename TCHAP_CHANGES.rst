@@ -1,3 +1,13 @@
+Changes in Tchap 1.0.18 (2019-11-01)
+===================================================
+
+Features/Improvements:
+ * Settings: Let the user decide to hide/show the join and leave events #216
+ * Update the pinned certificates list
+
+Bug Fixes:
+ * Room members: the states of some members are wrong #253
+
 Changes in Tchap 1.0.17 (2019-09-23)
 ===================================================
 
