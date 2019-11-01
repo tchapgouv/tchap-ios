@@ -108,8 +108,8 @@ final class RestClientBuilder {
         let restClient = self.createRestClient(homeServerURL: homeServerURL)
         
         // Force the identity server url with the provided homeserver (to keep temporarily the historical behavior)
-        // TODO: Use a MXIdentityService to handle the request to id server when it will be available in matrixSDK
         restClient.identityServer = homeServerStringURL
+        restClient.credentials.identityServer = homeServerStringURL
         
         return restClient
     }

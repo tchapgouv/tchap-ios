@@ -132,6 +132,28 @@ NSString *const kEventFormatterOnReRequestKeysLinkActionSeparator = @"/";
         }
     }
     
+    if (event.eventType == MXEventTypeRoomMember)
+    {
+        if (event.isUserProfileChange)
+        {
+            // Check whether the profile change must be hidden or not
+            if (!RiotSettings.shared.showProfileUpdateEvents)
+            {
+                return nil;
+            }
+        }
+        else if (!RiotSettings.shared.showJoinLeaveEvents)
+        {
+            // Hide the join and leave events
+            NSString* membership;
+            MXJSONModelSetString(membership, event.content[@"membership"]);
+            if ([membership isEqualToString:kMXMembershipStringJoin] || [membership isEqualToString:kMXMembershipStringLeave])
+            {
+                return nil;
+            }
+        }
+    }
+    
     NSAttributedString *attributedString = [super attributedStringFromEvent:event withRoomState:roomState error:error];
 
     if (event.sentState == MXEventSentStateSent

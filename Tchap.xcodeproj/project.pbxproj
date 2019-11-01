@@ -238,6 +238,25 @@
 		025E36F6229546A000C9D9AE /* ThirdPartyIDResolverType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025E36F4229546A000C9D9AE /* ThirdPartyIDResolverType.swift */; };
 		025E36F8229548C000C9D9AE /* ThirdPartyIDResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025E36F7229548C000C9D9AE /* ThirdPartyIDResolver.swift */; };
 		025E36F9229548C000C9D9AE /* ThirdPartyIDResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025E36F7229548C000C9D9AE /* ThirdPartyIDResolver.swift */; };
+		026154C7235123410045459E /* IdentityServiceBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026154C6235123410045459E /* IdentityServiceBuilder.swift */; };
+		026154C8235123410045459E /* IdentityServiceBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026154C6235123410045459E /* IdentityServiceBuilder.swift */; };
+		026154DA236C7D930045459E /* agent.agriculture_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154C9236C7D910045459E /* agent.agriculture_2019_10.cer */; };
+		026154DB236C7D930045459E /* agent.justice_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154CA236C7D910045459E /* agent.justice_2019_10.cer */; };
+		026154DC236C7D930045459E /* agent.finances_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154CB236C7D920045459E /* agent.finances_2019_10.cer */; };
+		026154DD236C7D930045459E /* agent.education_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154CC236C7D920045459E /* agent.education_2019_10.cer */; };
+		026154DE236C7D930045459E /* agent.intradef_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154CD236C7D920045459E /* agent.intradef_2019_10.cer */; };
+		026154DF236C7D930045459E /* agent.elysee_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154CE236C7D920045459E /* agent.elysee_2019_10.cer */; };
+		026154E0236C7D930045459E /* agent.social_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154CF236C7D920045459E /* agent.social_2019_10.cer */; };
+		026154E1236C7D930045459E /* agent.dinum_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154D0236C7D920045459E /* agent.dinum_2019_10.cer */; };
+		026154E2236C7D930045459E /* agent.pm_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154D1236C7D920045459E /* agent.pm_2019_10.cer */; };
+		026154E3236C7D930045459E /* agent.diplomatie_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154D2236C7D920045459E /* agent.diplomatie_2019_10.cer */; };
+		026154E4236C7D930045459E /* agent.dev-durable_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154D3236C7D920045459E /* agent.dev-durable_2019_10.cer */; };
+		026154E5236C7D930045459E /* agent.externe_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154D4236C7D920045459E /* agent.externe_2019_10.cer */; };
+		026154E6236C7D930045459E /* agent.culture_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154D5236C7D920045459E /* agent.culture_2019_10.cer */; };
+		026154E7236C7D930045459E /* agent.collectivites_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154D6236C7D930045459E /* agent.collectivites_2019_10.cer */; };
+		026154E8236C7D930045459E /* agent.interieur_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154D7236C7D930045459E /* agent.interieur_2019_10.cer */; };
+		026154E9236C7D930045459E /* agent.ssi_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154D8236C7D930045459E /* agent.ssi_2019_10.cer */; };
+		026154EA236C7D930045459E /* agent_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154D9236C7D930045459E /* agent_2019_10.cer */; };
 		026D887021C1C4F40085BED8 /* TchapSharedImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 026D886F21C1C4F40085BED8 /* TchapSharedImages.xcassets */; };
 		026D887221C1C5490085BED8 /* BtchapSharedImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 026D887121C1C5490085BED8 /* BtchapSharedImages.xcassets */; };
 		027DCAC521B14F68000DD05E /* ContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 027DCAC321B14F68000DD05E /* ContactCell.xib */; };
@@ -1090,6 +1109,24 @@
 		0259329022B00E4300C93762 /* PasswordPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordPolicy.swift; sourceTree = "<group>"; };
 		025E36F4229546A000C9D9AE /* ThirdPartyIDResolverType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThirdPartyIDResolverType.swift; sourceTree = "<group>"; };
 		025E36F7229548C000C9D9AE /* ThirdPartyIDResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThirdPartyIDResolver.swift; sourceTree = "<group>"; };
+		026154C6235123410045459E /* IdentityServiceBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentityServiceBuilder.swift; sourceTree = "<group>"; };
+		026154C9236C7D910045459E /* agent.agriculture_2019_10.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = agent.agriculture_2019_10.cer; sourceTree = "<group>"; };
+		026154CA236C7D910045459E /* agent.justice_2019_10.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = agent.justice_2019_10.cer; sourceTree = "<group>"; };
+		026154CB236C7D920045459E /* agent.finances_2019_10.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = agent.finances_2019_10.cer; sourceTree = "<group>"; };
+		026154CC236C7D920045459E /* agent.education_2019_10.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = agent.education_2019_10.cer; sourceTree = "<group>"; };
+		026154CD236C7D920045459E /* agent.intradef_2019_10.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = agent.intradef_2019_10.cer; sourceTree = "<group>"; };
+		026154CE236C7D920045459E /* agent.elysee_2019_10.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = agent.elysee_2019_10.cer; sourceTree = "<group>"; };
+		026154CF236C7D920045459E /* agent.social_2019_10.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = agent.social_2019_10.cer; sourceTree = "<group>"; };
+		026154D0236C7D920045459E /* agent.dinum_2019_10.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = agent.dinum_2019_10.cer; sourceTree = "<group>"; };
+		026154D1236C7D920045459E /* agent.pm_2019_10.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = agent.pm_2019_10.cer; sourceTree = "<group>"; };
+		026154D2236C7D920045459E /* agent.diplomatie_2019_10.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = agent.diplomatie_2019_10.cer; sourceTree = "<group>"; };
+		026154D3236C7D920045459E /* agent.dev-durable_2019_10.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = "agent.dev-durable_2019_10.cer"; sourceTree = "<group>"; };
+		026154D4236C7D920045459E /* agent.externe_2019_10.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = agent.externe_2019_10.cer; sourceTree = "<group>"; };
+		026154D5236C7D920045459E /* agent.culture_2019_10.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = agent.culture_2019_10.cer; sourceTree = "<group>"; };
+		026154D6236C7D930045459E /* agent.collectivites_2019_10.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = agent.collectivites_2019_10.cer; sourceTree = "<group>"; };
+		026154D7236C7D930045459E /* agent.interieur_2019_10.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = agent.interieur_2019_10.cer; sourceTree = "<group>"; };
+		026154D8236C7D930045459E /* agent.ssi_2019_10.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = agent.ssi_2019_10.cer; sourceTree = "<group>"; };
+		026154D9236C7D930045459E /* agent_2019_10.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = agent_2019_10.cer; sourceTree = "<group>"; };
 		026D886F21C1C4F40085BED8 /* TchapSharedImages.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = TchapSharedImages.xcassets; sourceTree = "<group>"; };
 		026D887121C1C5490085BED8 /* BtchapSharedImages.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = BtchapSharedImages.xcassets; sourceTree = "<group>"; };
 		027DCAC321B14F68000DD05E /* ContactCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactCell.xib; sourceTree = "<group>"; };
@@ -1952,9 +1989,34 @@
 			path = ThirdPartyIDResolver;
 			sourceTree = "<group>";
 		};
+		026154C5235122D70045459E /* IdentityService */ = {
+			isa = PBXGroup;
+			children = (
+				026154C6235123410045459E /* IdentityServiceBuilder.swift */,
+			);
+			path = IdentityService;
+			sourceTree = "<group>";
+		};
 		028B50B3228E2931005DB9B6 /* Certificates */ = {
 			isa = PBXGroup;
 			children = (
+				026154D9236C7D930045459E /* agent_2019_10.cer */,
+				026154C9236C7D910045459E /* agent.agriculture_2019_10.cer */,
+				026154D6236C7D930045459E /* agent.collectivites_2019_10.cer */,
+				026154D5236C7D920045459E /* agent.culture_2019_10.cer */,
+				026154D3236C7D920045459E /* agent.dev-durable_2019_10.cer */,
+				026154D0236C7D920045459E /* agent.dinum_2019_10.cer */,
+				026154D2236C7D920045459E /* agent.diplomatie_2019_10.cer */,
+				026154CC236C7D920045459E /* agent.education_2019_10.cer */,
+				026154CE236C7D920045459E /* agent.elysee_2019_10.cer */,
+				026154D4236C7D920045459E /* agent.externe_2019_10.cer */,
+				026154CB236C7D920045459E /* agent.finances_2019_10.cer */,
+				026154D7236C7D930045459E /* agent.interieur_2019_10.cer */,
+				026154CD236C7D920045459E /* agent.intradef_2019_10.cer */,
+				026154CA236C7D910045459E /* agent.justice_2019_10.cer */,
+				026154D1236C7D920045459E /* agent.pm_2019_10.cer */,
+				026154CF236C7D920045459E /* agent.social_2019_10.cer */,
+				026154D8236C7D930045459E /* agent.ssi_2019_10.cer */,
 				02CEE1DD23312C370085ACF0 /* matrix.agent.externe.tchap.gouv.fr2.cer */,
 				0234DEF222C5129300EBBBC5 /* matrix.agent.externe.tchap.gouv.fr.cer */,
 				028B50B6228EB2C2005DB9B6 /* www.tchap.gouv.fr.cer */,
@@ -2080,6 +2142,7 @@
 		02BEE184212AB23A00098505 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				026154C5235122D70045459E /* IdentityService */,
 				02CEE1E32338C5B10085ACF0 /* AppVersion */,
 				0259328622AFE84400C93762 /* PasswordPolicy */,
 				0215542122B24011004663A6 /* AccountValidity */,
@@ -3369,6 +3432,7 @@
 				0250C5442122B68000034691 /* ring.mp3 in Resources */,
 				020DF99C214BE467003DFBA4 /* RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib in Resources */,
 				020DF93A214BE467003DFBA4 /* TableViewCellWithCheckBoxes.xib in Resources */,
+				026154DC236C7D930045459E /* agent.finances_2019_10.cer in Resources */,
 				020DF949214BE467003DFBA4 /* RoomMemberTitleView.xib in Resources */,
 				B165251D21775B0D00146F80 /* ContactsViewController.storyboard in Resources */,
 				0250C5462122B68000034691 /* TableViewCellWithButton.xib in Resources */,
@@ -3377,6 +3441,7 @@
 				020DF9A0214BE467003DFBA4 /* RoomMembershipExpandedBubbleCell.xib in Resources */,
 				0250C54C2122B68000034691 /* EncryptionInfoView.xib in Resources */,
 				020DF97A214BE467003DFBA4 /* RoomPredecessorBubbleCell.xib in Resources */,
+				026154E9236C7D930045459E /* agent.ssi_2019_10.cer in Resources */,
 				029CC69321772F4200DCC8B3 /* TableViewCellWithPhoneNumberTextField.xib in Resources */,
 				020DF94C214BE467003DFBA4 /* ReadReceiptsViewController.xib in Resources */,
 				020DF9AE214BE467003DFBA4 /* RoomInputToolbarView.xib in Resources */,
@@ -3390,6 +3455,7 @@
 				0290607921501D16005FE3C1 /* PreviewView.xib in Resources */,
 				0234DEF322C5129300EBBBC5 /* matrix.agent.externe.tchap.gouv.fr.cer in Resources */,
 				020DF958214BE467003DFBA4 /* RoomOutgoingEncryptedTextMsgBubbleCell.xib in Resources */,
+				026154DE236C7D930045459E /* agent.intradef_2019_10.cer in Resources */,
 				020DF99F214BE467003DFBA4 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.xib in Resources */,
 				B1322FEB213002440054A9DD /* FormTextField.xib in Resources */,
 				02B3453F219CA8EE00110EC8 /* RoomsRoomCell.xib in Resources */,
@@ -3399,6 +3465,7 @@
 				020DF98B214BE467003DFBA4 /* RoomIncomingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib in Resources */,
 				020DF96F214BE467003DFBA4 /* RoomIncomingEncryptedTextMsgWithPaginationTitleBubbleCell.xib in Resources */,
 				0250C5672122B68000034691 /* MediaPickerViewController.xib in Resources */,
+				026154E0236C7D930045459E /* agent.social_2019_10.cer in Resources */,
 				B11C80192139484900CC6F2F /* RegistrationEmailSentViewController.storyboard in Resources */,
 				020DF93F214BE467003DFBA4 /* RoomViewController.xib in Resources */,
 				0223EFA72227095100B9EA34 /* PublicRoomsCell.xib in Resources */,
@@ -3415,7 +3482,9 @@
 				0250C56A2122B68000034691 /* ringback.mp3 in Resources */,
 				0250C56B2122B68000034691 /* GoogleService-Info.plist in Resources */,
 				020DF969214BE467003DFBA4 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib in Resources */,
+				026154DA236C7D930045459E /* agent.agriculture_2019_10.cer in Resources */,
 				0250C5732122B68000034691 /* message.mp3 in Resources */,
+				026154DF236C7D930045459E /* agent.elysee_2019_10.cer in Resources */,
 				B1C4644A21B67F1E005F4D53 /* RoomCreationViewController.storyboard in Resources */,
 				020DF999214BE467003DFBA4 /* RoomOutgoingAttachmentBubbleCell.xib in Resources */,
 				0250C5752122B68000034691 /* third_party_licenses.html in Resources */,
@@ -3425,6 +3494,7 @@
 				B15AB2A5215BF20E007F5405 /* ForgotPasswordVerifyEmailViewController.storyboard in Resources */,
 				020DF94E214BE467003DFBA4 /* RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.xib in Resources */,
 				020DF947214BE467003DFBA4 /* RoomMemberDetailsViewController.xib in Resources */,
+				026154E4236C7D930045459E /* agent.dev-durable_2019_10.cer in Resources */,
 				0250C5CE212314B300034691 /* Tchap-Defaults.plist in Resources */,
 				B1073D6A21A8096F00E36CFA /* RoomIncomingEncryptedAttachmentWithPaginationTitleBubbleCell.xib in Resources */,
 				B15B867E2135BA96002782BE /* AuthenticationViewController.storyboard in Resources */,
@@ -3435,6 +3505,8 @@
 				020DF96E214BE467003DFBA4 /* RoomIncomingEncryptedTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
 				B146D52221A7453900D8C2C6 /* RoomAttachmentAntivirusScanStatusCellContentView.xib in Resources */,
 				0250C57E2122B68000034691 /* MediaAlbumContentViewController.xib in Resources */,
+				026154DB236C7D930045459E /* agent.justice_2019_10.cer in Resources */,
+				026154EA236C7D930045459E /* agent_2019_10.cer in Resources */,
 				020DF94F214BE467003DFBA4 /* RoomMembershipBubbleCell.xib in Resources */,
 				B1680CFF2152A9E6009B5F92 /* PublicRoomsViewController.storyboard in Resources */,
 				B12DDA96216F4EBC0093172C /* Tchap.stringsdict in Resources */,
@@ -3457,21 +3529,27 @@
 				020DF993214BE467003DFBA4 /* RoomMembershipExpandedWithPaginationTitleBubbleCell.xib in Resources */,
 				0250C58D2122B68000034691 /* RecentsViewController.xib in Resources */,
 				020DF952214BE467003DFBA4 /* RoomOutgoingEncryptedTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
+				026154E2236C7D930045459E /* agent.pm_2019_10.cer in Resources */,
+				026154E6236C7D930045459E /* agent.culture_2019_10.cer in Resources */,
 				029CC69221772F4200DCC8B3 /* DeviceView.xib in Resources */,
+				026154E7236C7D930045459E /* agent.collectivites_2019_10.cer in Resources */,
 				020DF995214BE467003DFBA4 /* RoomOutgoingTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
 				020DF953214BE467003DFBA4 /* RoomIncomingEncryptedTextMsgWithoutSenderInfoBubbleCell.xib in Resources */,
 				020DF992214BE467003DFBA4 /* RoomIncomingAttachmentBubbleCell.xib in Resources */,
 				0250C5932122B68000034691 /* JitsiViewController.xib in Resources */,
 				020DF990214BE467003DFBA4 /* RoomIncomingAttachmentWithoutSenderInfoBubbleCell.xib in Resources */,
+				026154E3236C7D930045459E /* agent.diplomatie_2019_10.cer in Resources */,
 				0250C5972122B68000034691 /* LaunchScreen.storyboard in Resources */,
 				029CC68E21772F4200DCC8B3 /* DeactivateAccountViewController.storyboard in Resources */,
 				B15AB29F215BF20E007F5405 /* ForgotPasswordFormViewController.storyboard in Resources */,
+				026154DD236C7D930045459E /* agent.education_2019_10.cer in Resources */,
 				B146D50F21A5EAE800D8C2C6 /* RoomAttachmentAntivirusScanStatusBubbleCell.xib in Resources */,
 				020DF96C214BE467003DFBA4 /* RoomOutgoingEncryptedAttachmentBubbleCell.xib in Resources */,
 				020DF95D214BE467003DFBA4 /* RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.xib in Resources */,
 				B15AB29E215BF20E007F5405 /* ForgotPasswordCheckedEmailViewController.storyboard in Resources */,
 				020DF97E214BE467003DFBA4 /* RoomOutgoingTextMsgWithPaginationTitleBubbleCell.xib in Resources */,
 				026D887021C1C4F40085BED8 /* TchapSharedImages.xcassets in Resources */,
+				026154E5236C7D930045459E /* agent.externe_2019_10.cer in Resources */,
 				02B34547219E383800110EC8 /* RoomsInviteCell.xib in Resources */,
 				0250C59E2122B68000034691 /* DeviceTableViewCell.xib in Resources */,
 				02B34543219E100100110EC8 /* RoomsCell.xib in Resources */,
@@ -3479,6 +3557,7 @@
 				020DF980214BE467003DFBA4 /* RoomMembershipCollapsedBubbleCell.xib in Resources */,
 				B1C4644921B67F1E005F4D53 /* RoomCreationAvatarView.xib in Resources */,
 				B1073D6721A8096F00E36CFA /* RoomIncomingEncryptedAttachmentWithoutSenderInfoBubbleCell.xib in Resources */,
+				026154E1236C7D930045459E /* agent.dinum_2019_10.cer in Resources */,
 				0250C59F2122B68000034691 /* MediaAlbumTableCell.xib in Resources */,
 				020DF938214BE467003DFBA4 /* TableViewCellWithCheckBoxAndLabel.xib in Resources */,
 				0250C5A52122B68000034691 /* FilesSearchTableViewCell.xib in Resources */,
@@ -3490,6 +3569,7 @@
 				020DF96B214BE467003DFBA4 /* RoomEncryptedAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.xib in Resources */,
 				02BEE1A4212C717F00098505 /* Images.xcassets in Resources */,
 				020DF964214BE467003DFBA4 /* RoomEncryptedAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.xib in Resources */,
+				026154E8236C7D930045459E /* agent.interieur_2019_10.cer in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3853,6 +3933,7 @@
 				B1C4645B21B6DD28005F4D53 /* MediaServiceType.swift in Sources */,
 				020DF97C214BE467003DFBA4 /* RoomIncomingAttachmentWithPaginationTitleBubbleCell.m in Sources */,
 				B15AB2A1215BF20E007F5405 /* ForgotPasswordCheckedMailViewController.swift in Sources */,
+				026154C7235123410045459E /* IdentityServiceBuilder.swift in Sources */,
 				0250C4AB2122B68000034691 /* JitsiViewController.m in Sources */,
 				020DF95A214BE467003DFBA4 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				02018F9C22006200008D68BE /* UniversalLinkParameters.swift in Sources */,
@@ -4147,6 +4228,7 @@
 				02DFEB9A21C07370009B6F15 /* MediaServiceType.swift in Sources */,
 				02DFEB9B21C07370009B6F15 /* RoomIncomingAttachmentWithPaginationTitleBubbleCell.m in Sources */,
 				02DFEB9C21C07370009B6F15 /* ForgotPasswordCheckedMailViewController.swift in Sources */,
+				026154C8235123410045459E /* IdentityServiceBuilder.swift in Sources */,
 				02DFEB9D21C07370009B6F15 /* JitsiViewController.m in Sources */,
 				02DFEB9E21C07370009B6F15 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				02018F9D22006200008D68BE /* UniversalLinkParameters.swift in Sources */,

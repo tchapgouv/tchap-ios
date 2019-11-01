@@ -105,13 +105,6 @@
         // Listen to the direct rooms list
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onDirectRoomsDidChange:) name:kMXSessionDirectRoomsDidChangeNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillEnterForeground:) name:UIApplicationWillEnterForegroundNotification object:nil];
-        
-        // Refresh the matrix identifiers for all the local contacts.
-        if ([CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts] != CNAuthorizationStatusNotDetermined)
-        {
-            // Refresh the matrix identifiers for all the local contacts.
-            [[MXKContactManager sharedManager] updateMatrixIDsForAllLocalContacts];
-        }
     }
     return self;
 }

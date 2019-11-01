@@ -250,8 +250,8 @@
 "settings_config_home_server" = "Le serveur d'accueil est %@";
 "settings_config_identity_server" = "Le serveur d'identité est %@";
 "settings_config_user_id" = "Identifié en tant que %@";
-"settings_user_settings" = "PRÉFÉRENCES UTILISATEUR";
-"settings_notifications_settings" = "PRÉFÉRENCES DE NOTIFICATIONS";
+"settings_user_settings" = "PARAMÈTRES UTILISATEUR";
+"settings_notifications_settings" = "NOTIFICATIONS";
 "settings_ignored_users" = "UTILISATEURS IGNORÉS";
 "settings_contacts" = "CONTACTS LOCAUX";
 "settings_advanced" = "AVANCÉ";
