@@ -45,7 +45,7 @@ abstract_target 'TchapPods' do
     pod 'SwiftUTI', :git => 'https://github.com/speramusinc/SwiftUTI.git', :branch => 'master'
 
     # Matomo for analytics
-    pod 'MatomoTracker', '~> 6.0.1'
+    pod 'MatomoTracker', '~> 7.2.0'
     
     pod 'RxSwift', '~> 4.3'
 
