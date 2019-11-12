@@ -58,19 +58,19 @@ final class RoomPreviewCoordinator: NSObject, RoomPreviewCoordinatorType {
     func start() {
         self.roomViewController.tc_removeBackTitle()
         
-        let roomPreviewData: RoomPreviewData
+        let roomPreviewData: RoomPreviewData = RoomPreviewData(publicRoom: publicRoom, andSession: self.session)
+        let roomName = roomPreviewData.roomName
         
         if publicRoom.worldReadable {
-            roomPreviewData = RoomPreviewData(roomId: publicRoom.roomId, andSession: self.session)
-            
-            // Try to get more information about the room before opening its preview
+            // Try to get more information about the room
             roomPreviewData.peek(inRoom: { [weak self] succeeded in
                 if succeeded {
                     self?.roomViewController.displayRoomPreview(roomPreviewData)
+                } else if roomName != nil {
+                    // Restore the room name which has been overwritten with the roomId
+                    roomPreviewData.roomName = roomName
                 }
             })
-        } else {
-            roomPreviewData = RoomPreviewData(publicRoom: publicRoom, andSession: self.session)
         }
         
         self.roomViewController.displayRoomPreview(roomPreviewData)
