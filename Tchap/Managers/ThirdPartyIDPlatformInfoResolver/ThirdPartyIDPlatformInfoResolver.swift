@@ -25,6 +25,9 @@ final class ThirdPartyIDPlatformInfoResolver: ThirdPartyIDPlatformInfoResolverTy
     /// URL prefix used by identity and home servers.
     private let serverPrefixURL: String
     
+    /// The current http client
+    private var currentHttpClient: MXHTTPClient?
+    
     // MARK: - Public
     
     /// - Parameters:
@@ -58,6 +61,7 @@ final class ThirdPartyIDPlatformInfoResolver: ThirdPartyIDPlatformInfoResolverTy
         }
         
         let httpOperation = identityHttpClient.request(withMethod: "GET", path: "info", parameters: ["address": address, "medium": medium], success: { (response: [AnyHashable: Any]?) in
+            self.currentHttpClient = nil
             guard let response = response else {
                 success?(.unauthorizedThirdPartyID)
                 return
@@ -84,6 +88,7 @@ final class ThirdPartyIDPlatformInfoResolver: ThirdPartyIDPlatformInfoResolverTy
             }
         }, failure: { (error: Error?) in
             NSLog("[ThirdPartyIDPlatformInfoResolver] info resquest on \(identityServer) failed")
+            self.currentHttpClient = nil
             
             // Try another identity server if any
             let index = index + 1
@@ -96,5 +101,7 @@ final class ThirdPartyIDPlatformInfoResolver: ThirdPartyIDPlatformInfoResolverTy
         
         // Do not retry on failure
         httpOperation?.maxNumberOfTries = 0
+        
+        self.currentHttpClient = identityHttpClient
     }
 }
