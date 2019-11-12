@@ -56,12 +56,9 @@ final class RoomPreviewCoordinator: NSObject, RoomPreviewCoordinatorType {
     // MARK: - Public methods
     
     func start() {
-        guard let roomPreviewData = RoomPreviewData(publicRoom: publicRoom, andSession: self.session) else {
-            return
-        }
-        
         self.roomViewController.tc_removeBackTitle()
         
+        let roomPreviewData: RoomPreviewData = RoomPreviewData(publicRoom: publicRoom, andSession: self.session)
         let roomName = roomPreviewData.roomName
         
         if publicRoom.worldReadable {
