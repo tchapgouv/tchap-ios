@@ -706,6 +706,10 @@
 		B1073D6B21A8096F00E36CFA /* RoomIncomingEncryptedAttachmentBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1073D6421A8096500E36CFA /* RoomIncomingEncryptedAttachmentBubbleCell.m */; };
 		B109EF182170DFEB0018FA06 /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B109EF172170DFEB0018FA06 /* UserService.swift */; };
 		B109EF1B2170F3B90018FA06 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = B109EF1A2170F3B90018FA06 /* User.swift */; };
+		B1104DBC237B123400687B3A /* ChangePasswordServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1104DBB237B123400687B3A /* ChangePasswordServiceType.swift */; };
+		B1104DBD237B123400687B3A /* ChangePasswordServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1104DBB237B123400687B3A /* ChangePasswordServiceType.swift */; };
+		B1104DBF237B124600687B3A /* ChangePasswordService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1104DBE237B124600687B3A /* ChangePasswordService.swift */; };
+		B1104DC0237B124600687B3A /* ChangePasswordService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1104DBE237B124600687B3A /* ChangePasswordService.swift */; };
 		B11C800121393E5D00CC6F2F /* RegistrationCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11C7FFB21393E5D00CC6F2F /* RegistrationCoordinatorType.swift */; };
 		B11C800621393E5D00CC6F2F /* RegistrationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11C800021393E5D00CC6F2F /* RegistrationCoordinator.swift */; };
 		B11C80112139442700CC6F2F /* RegistrationFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11C800D2139442700CC6F2F /* RegistrationFormViewController.swift */; };
@@ -808,6 +812,44 @@
 		B1BC6A262136D77A00D32F8E /* WelcomeCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1BC6A252136D77A00D32F8E /* WelcomeCoordinatorType.swift */; };
 		B1BC6A282136D78500D32F8E /* WelcomeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1BC6A272136D78500D32F8E /* WelcomeCoordinator.swift */; };
 		B1BC6A2A2136DCCE00D32F8E /* WelcomeViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B1BC6A292136DCCD00D32F8E /* WelcomeViewController.storyboard */; };
+		B1C0EE632375B77F00E8BB88 /* ChangePasswordCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C0EE612375B77F00E8BB88 /* ChangePasswordCoordinator.swift */; };
+		B1C0EE642375B77F00E8BB88 /* ChangePasswordCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C0EE622375B77F00E8BB88 /* ChangePasswordCoordinatorType.swift */; };
+		B1C0EE652375B78C00E8BB88 /* ChangePasswordCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C0EE612375B77F00E8BB88 /* ChangePasswordCoordinator.swift */; };
+		B1C0EE662375B78C00E8BB88 /* ChangePasswordCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C0EE622375B77F00E8BB88 /* ChangePasswordCoordinatorType.swift */; };
+		B1C0EE6F2375B7A000E8BB88 /* ChangePasswordCurrentPasswordCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C0EE672375B79F00E8BB88 /* ChangePasswordCurrentPasswordCoordinator.swift */; };
+		B1C0EE702375B7A000E8BB88 /* ChangePasswordCurrentPasswordCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C0EE672375B79F00E8BB88 /* ChangePasswordCurrentPasswordCoordinator.swift */; };
+		B1C0EE712375B7A000E8BB88 /* ChangePasswordCurrentPasswordViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C0EE682375B79F00E8BB88 /* ChangePasswordCurrentPasswordViewState.swift */; };
+		B1C0EE722375B7A000E8BB88 /* ChangePasswordCurrentPasswordViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C0EE682375B79F00E8BB88 /* ChangePasswordCurrentPasswordViewState.swift */; };
+		B1C0EE732375B7A000E8BB88 /* ChangePasswordCurrentPasswordCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C0EE692375B79F00E8BB88 /* ChangePasswordCurrentPasswordCoordinatorType.swift */; };
+		B1C0EE742375B7A000E8BB88 /* ChangePasswordCurrentPasswordCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C0EE692375B79F00E8BB88 /* ChangePasswordCurrentPasswordCoordinatorType.swift */; };
+		B1C0EE752375B7A000E8BB88 /* ChangePasswordCurrentPasswordViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C0EE6A2375B79F00E8BB88 /* ChangePasswordCurrentPasswordViewModelType.swift */; };
+		B1C0EE762375B7A000E8BB88 /* ChangePasswordCurrentPasswordViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C0EE6A2375B79F00E8BB88 /* ChangePasswordCurrentPasswordViewModelType.swift */; };
+		B1C0EE772375B7A000E8BB88 /* ChangePasswordCurrentPasswordViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B1C0EE6B2375B79F00E8BB88 /* ChangePasswordCurrentPasswordViewController.storyboard */; };
+		B1C0EE782375B7A000E8BB88 /* ChangePasswordCurrentPasswordViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B1C0EE6B2375B79F00E8BB88 /* ChangePasswordCurrentPasswordViewController.storyboard */; };
+		B1C0EE792375B7A000E8BB88 /* ChangePasswordCurrentPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C0EE6C2375B79F00E8BB88 /* ChangePasswordCurrentPasswordViewController.swift */; };
+		B1C0EE7A2375B7A000E8BB88 /* ChangePasswordCurrentPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C0EE6C2375B79F00E8BB88 /* ChangePasswordCurrentPasswordViewController.swift */; };
+		B1C0EE7B2375B7A000E8BB88 /* ChangePasswordCurrentPasswordViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C0EE6D2375B7A000E8BB88 /* ChangePasswordCurrentPasswordViewAction.swift */; };
+		B1C0EE7C2375B7A000E8BB88 /* ChangePasswordCurrentPasswordViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C0EE6D2375B7A000E8BB88 /* ChangePasswordCurrentPasswordViewAction.swift */; };
+		B1C0EE7D2375B7A000E8BB88 /* ChangePasswordCurrentPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C0EE6E2375B7A000E8BB88 /* ChangePasswordCurrentPasswordViewModel.swift */; };
+		B1C0EE7E2375B7A000E8BB88 /* ChangePasswordCurrentPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C0EE6E2375B7A000E8BB88 /* ChangePasswordCurrentPasswordViewModel.swift */; };
+		B1C0EE872375B7F400E8BB88 /* ChangePasswordNewPasswordViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B1C0EE7F2375B7F300E8BB88 /* ChangePasswordNewPasswordViewController.storyboard */; };
+		B1C0EE882375B7F400E8BB88 /* ChangePasswordNewPasswordViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B1C0EE7F2375B7F300E8BB88 /* ChangePasswordNewPasswordViewController.storyboard */; };
+		B1C0EE892375B7F400E8BB88 /* ChangePasswordNewPasswordCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C0EE802375B7F300E8BB88 /* ChangePasswordNewPasswordCoordinatorType.swift */; };
+		B1C0EE8A2375B7F400E8BB88 /* ChangePasswordNewPasswordCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C0EE802375B7F300E8BB88 /* ChangePasswordNewPasswordCoordinatorType.swift */; };
+		B1C0EE8B2375B7F400E8BB88 /* ChangePasswordNewPasswordViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C0EE812375B7F300E8BB88 /* ChangePasswordNewPasswordViewAction.swift */; };
+		B1C0EE8C2375B7F400E8BB88 /* ChangePasswordNewPasswordViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C0EE812375B7F300E8BB88 /* ChangePasswordNewPasswordViewAction.swift */; };
+		B1C0EE8D2375B7F400E8BB88 /* ChangePasswordNewPasswordCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C0EE822375B7F300E8BB88 /* ChangePasswordNewPasswordCoordinator.swift */; };
+		B1C0EE8E2375B7F400E8BB88 /* ChangePasswordNewPasswordCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C0EE822375B7F300E8BB88 /* ChangePasswordNewPasswordCoordinator.swift */; };
+		B1C0EE8F2375B7F400E8BB88 /* ChangePasswordNewPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C0EE832375B7F300E8BB88 /* ChangePasswordNewPasswordViewController.swift */; };
+		B1C0EE902375B7F400E8BB88 /* ChangePasswordNewPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C0EE832375B7F300E8BB88 /* ChangePasswordNewPasswordViewController.swift */; };
+		B1C0EE912375B7F400E8BB88 /* ChangePasswordNewPasswordViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C0EE842375B7F300E8BB88 /* ChangePasswordNewPasswordViewState.swift */; };
+		B1C0EE922375B7F400E8BB88 /* ChangePasswordNewPasswordViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C0EE842375B7F300E8BB88 /* ChangePasswordNewPasswordViewState.swift */; };
+		B1C0EE932375B7F400E8BB88 /* ChangePasswordNewPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C0EE852375B7F300E8BB88 /* ChangePasswordNewPasswordViewModel.swift */; };
+		B1C0EE942375B7F400E8BB88 /* ChangePasswordNewPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C0EE852375B7F300E8BB88 /* ChangePasswordNewPasswordViewModel.swift */; };
+		B1C0EE952375B7F400E8BB88 /* ChangePasswordNewPasswordViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C0EE862375B7F400E8BB88 /* ChangePasswordNewPasswordViewModelType.swift */; };
+		B1C0EE962375B7F400E8BB88 /* ChangePasswordNewPasswordViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C0EE862375B7F400E8BB88 /* ChangePasswordNewPasswordViewModelType.swift */; };
+		B1C0EE982375B92100E8BB88 /* ChangePasswordCoordinatorBridgePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C0EE972375B92100E8BB88 /* ChangePasswordCoordinatorBridgePresenter.swift */; };
+		B1C0EE992375B92100E8BB88 /* ChangePasswordCoordinatorBridgePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C0EE972375B92100E8BB88 /* ChangePasswordCoordinatorBridgePresenter.swift */; };
 		B1C4644721B67F1E005F4D53 /* RoomCreationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C4643F21B67F1C005F4D53 /* RoomCreationCoordinator.swift */; };
 		B1C4644821B67F1E005F4D53 /* RoomCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C4644021B67F1C005F4D53 /* RoomCreationViewController.swift */; };
 		B1C4644921B67F1E005F4D53 /* RoomCreationAvatarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1C4644121B67F1C005F4D53 /* RoomCreationAvatarView.xib */; };
@@ -1227,6 +1269,8 @@
 		B1073D6521A8096800E36CFA /* RoomIncomingEncryptedAttachmentWithoutSenderInfoBubbleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomIncomingEncryptedAttachmentWithoutSenderInfoBubbleCell.h; sourceTree = "<group>"; };
 		B109EF172170DFEB0018FA06 /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		B109EF1A2170F3B90018FA06 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		B1104DBB237B123400687B3A /* ChangePasswordServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordServiceType.swift; sourceTree = "<group>"; };
+		B1104DBE237B124600687B3A /* ChangePasswordService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordService.swift; sourceTree = "<group>"; };
 		B11C7FFB21393E5D00CC6F2F /* RegistrationCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistrationCoordinatorType.swift; sourceTree = "<group>"; };
 		B11C800021393E5D00CC6F2F /* RegistrationCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistrationCoordinator.swift; sourceTree = "<group>"; };
 		B11C800D2139442700CC6F2F /* RegistrationFormViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistrationFormViewController.swift; sourceTree = "<group>"; };
@@ -1447,6 +1491,25 @@
 		B1BC6A252136D77A00D32F8E /* WelcomeCoordinatorType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeCoordinatorType.swift; sourceTree = "<group>"; };
 		B1BC6A272136D78500D32F8E /* WelcomeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeCoordinator.swift; sourceTree = "<group>"; };
 		B1BC6A292136DCCD00D32F8E /* WelcomeViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = WelcomeViewController.storyboard; sourceTree = "<group>"; };
+		B1C0EE612375B77F00E8BB88 /* ChangePasswordCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordCoordinator.swift; sourceTree = "<group>"; };
+		B1C0EE622375B77F00E8BB88 /* ChangePasswordCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordCoordinatorType.swift; sourceTree = "<group>"; };
+		B1C0EE672375B79F00E8BB88 /* ChangePasswordCurrentPasswordCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordCurrentPasswordCoordinator.swift; sourceTree = "<group>"; };
+		B1C0EE682375B79F00E8BB88 /* ChangePasswordCurrentPasswordViewState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordCurrentPasswordViewState.swift; sourceTree = "<group>"; };
+		B1C0EE692375B79F00E8BB88 /* ChangePasswordCurrentPasswordCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordCurrentPasswordCoordinatorType.swift; sourceTree = "<group>"; };
+		B1C0EE6A2375B79F00E8BB88 /* ChangePasswordCurrentPasswordViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordCurrentPasswordViewModelType.swift; sourceTree = "<group>"; };
+		B1C0EE6B2375B79F00E8BB88 /* ChangePasswordCurrentPasswordViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ChangePasswordCurrentPasswordViewController.storyboard; sourceTree = "<group>"; };
+		B1C0EE6C2375B79F00E8BB88 /* ChangePasswordCurrentPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordCurrentPasswordViewController.swift; sourceTree = "<group>"; };
+		B1C0EE6D2375B7A000E8BB88 /* ChangePasswordCurrentPasswordViewAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordCurrentPasswordViewAction.swift; sourceTree = "<group>"; };
+		B1C0EE6E2375B7A000E8BB88 /* ChangePasswordCurrentPasswordViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordCurrentPasswordViewModel.swift; sourceTree = "<group>"; };
+		B1C0EE7F2375B7F300E8BB88 /* ChangePasswordNewPasswordViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ChangePasswordNewPasswordViewController.storyboard; sourceTree = "<group>"; };
+		B1C0EE802375B7F300E8BB88 /* ChangePasswordNewPasswordCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordNewPasswordCoordinatorType.swift; sourceTree = "<group>"; };
+		B1C0EE812375B7F300E8BB88 /* ChangePasswordNewPasswordViewAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordNewPasswordViewAction.swift; sourceTree = "<group>"; };
+		B1C0EE822375B7F300E8BB88 /* ChangePasswordNewPasswordCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordNewPasswordCoordinator.swift; sourceTree = "<group>"; };
+		B1C0EE832375B7F300E8BB88 /* ChangePasswordNewPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordNewPasswordViewController.swift; sourceTree = "<group>"; };
+		B1C0EE842375B7F300E8BB88 /* ChangePasswordNewPasswordViewState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordNewPasswordViewState.swift; sourceTree = "<group>"; };
+		B1C0EE852375B7F300E8BB88 /* ChangePasswordNewPasswordViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordNewPasswordViewModel.swift; sourceTree = "<group>"; };
+		B1C0EE862375B7F400E8BB88 /* ChangePasswordNewPasswordViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordNewPasswordViewModelType.swift; sourceTree = "<group>"; };
+		B1C0EE972375B92100E8BB88 /* ChangePasswordCoordinatorBridgePresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordCoordinatorBridgePresenter.swift; sourceTree = "<group>"; };
 		B1C4643F21B67F1C005F4D53 /* RoomCreationCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomCreationCoordinator.swift; sourceTree = "<group>"; };
 		B1C4644021B67F1C005F4D53 /* RoomCreationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomCreationViewController.swift; sourceTree = "<group>"; };
 		B1C4644121B67F1C005F4D53 /* RoomCreationAvatarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomCreationAvatarView.xib; sourceTree = "<group>"; };
@@ -2098,6 +2161,7 @@
 				B1BC6A222136D71500D32F8E /* Welcome */,
 				B1F2AA8E212AEC820077FDC0 /* Authentication */,
 				B15AB295215BF20D007F5405 /* ForgotPassword */,
+				B1C0EE5E2375B06800E8BB88 /* ChangePassword */,
 				B11C7FFA21393E5D00CC6F2F /* Registration */,
 				B1F2AA7A212AEC800077FDC0 /* SplitView */,
 				B1F2AA7D212AEC800077FDC0 /* Home */,
@@ -2142,6 +2206,7 @@
 		02BEE184212AB23A00098505 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				B1104DBA237B11BF00687B3A /* ChangePassword */,
 				026154C5235122D70045459E /* IdentityService */,
 				02CEE1E32338C5B10085ACF0 /* AppVersion */,
 				0259328622AFE84400C93762 /* PasswordPolicy */,
@@ -2308,6 +2373,15 @@
 				B1C4646221BACEB3005F4D53 /* UserIDComponents.swift */,
 			);
 			path = User;
+			sourceTree = "<group>";
+		};
+		B1104DBA237B11BF00687B3A /* ChangePassword */ = {
+			isa = PBXGroup;
+			children = (
+				B1104DBB237B123400687B3A /* ChangePasswordServiceType.swift */,
+				B1104DBE237B124600687B3A /* ChangePasswordService.swift */,
+			);
+			path = ChangePassword;
 			sourceTree = "<group>";
 		};
 		B11C7FFA21393E5D00CC6F2F /* Registration */ = {
@@ -2986,6 +3060,48 @@
 			path = Welcome;
 			sourceTree = "<group>";
 		};
+		B1C0EE5E2375B06800E8BB88 /* ChangePassword */ = {
+			isa = PBXGroup;
+			children = (
+				B1C0EE972375B92100E8BB88 /* ChangePasswordCoordinatorBridgePresenter.swift */,
+				B1C0EE612375B77F00E8BB88 /* ChangePasswordCoordinator.swift */,
+				B1C0EE622375B77F00E8BB88 /* ChangePasswordCoordinatorType.swift */,
+				B1C0EE5F2375B47700E8BB88 /* CurrentPassword */,
+				B1C0EE602375B49E00E8BB88 /* NewPassword */,
+			);
+			path = ChangePassword;
+			sourceTree = "<group>";
+		};
+		B1C0EE5F2375B47700E8BB88 /* CurrentPassword */ = {
+			isa = PBXGroup;
+			children = (
+				B1C0EE692375B79F00E8BB88 /* ChangePasswordCurrentPasswordCoordinatorType.swift */,
+				B1C0EE672375B79F00E8BB88 /* ChangePasswordCurrentPasswordCoordinator.swift */,
+				B1C0EE6A2375B79F00E8BB88 /* ChangePasswordCurrentPasswordViewModelType.swift */,
+				B1C0EE6E2375B7A000E8BB88 /* ChangePasswordCurrentPasswordViewModel.swift */,
+				B1C0EE682375B79F00E8BB88 /* ChangePasswordCurrentPasswordViewState.swift */,
+				B1C0EE6D2375B7A000E8BB88 /* ChangePasswordCurrentPasswordViewAction.swift */,
+				B1C0EE6C2375B79F00E8BB88 /* ChangePasswordCurrentPasswordViewController.swift */,
+				B1C0EE6B2375B79F00E8BB88 /* ChangePasswordCurrentPasswordViewController.storyboard */,
+			);
+			path = CurrentPassword;
+			sourceTree = "<group>";
+		};
+		B1C0EE602375B49E00E8BB88 /* NewPassword */ = {
+			isa = PBXGroup;
+			children = (
+				B1C0EE822375B7F300E8BB88 /* ChangePasswordNewPasswordCoordinator.swift */,
+				B1C0EE802375B7F300E8BB88 /* ChangePasswordNewPasswordCoordinatorType.swift */,
+				B1C0EE862375B7F400E8BB88 /* ChangePasswordNewPasswordViewModelType.swift */,
+				B1C0EE852375B7F300E8BB88 /* ChangePasswordNewPasswordViewModel.swift */,
+				B1C0EE842375B7F300E8BB88 /* ChangePasswordNewPasswordViewState.swift */,
+				B1C0EE812375B7F300E8BB88 /* ChangePasswordNewPasswordViewAction.swift */,
+				B1C0EE832375B7F300E8BB88 /* ChangePasswordNewPasswordViewController.swift */,
+				B1C0EE7F2375B7F300E8BB88 /* ChangePasswordNewPasswordViewController.storyboard */,
+			);
+			path = NewPassword;
+			sourceTree = "<group>";
+		};
 		B1C4643E21B67F1C005F4D53 /* RoomCreation */ = {
 			isa = PBXGroup;
 			children = (
@@ -3470,6 +3586,7 @@
 				020DF93F214BE467003DFBA4 /* RoomViewController.xib in Resources */,
 				0223EFA72227095100B9EA34 /* PublicRoomsCell.xib in Resources */,
 				020DF975214BE467003DFBA4 /* RoomIncomingTextMsgBubbleCell.xib in Resources */,
+				B1C0EE872375B7F400E8BB88 /* ChangePasswordNewPasswordViewController.storyboard in Resources */,
 				020DF98A214BE467003DFBA4 /* RoomOutgoingTextMsgBubbleCell.xib in Resources */,
 				020DF96D214BE467003DFBA4 /* RoomOutgoingEncryptedTextMsgWithoutSenderInfoBubbleCell.xib in Resources */,
 				0250C5692122B68000034691 /* CallViewController.xib in Resources */,
@@ -3522,6 +3639,7 @@
 				B146D51021A5EAE800D8C2C6 /* RoomAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.xib in Resources */,
 				B146D51321A5EAE800D8C2C6 /* RoomAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.xib in Resources */,
 				020DF983214BE467003DFBA4 /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.xib in Resources */,
+				B1C0EE772375B7A000E8BB88 /* ChangePasswordCurrentPasswordViewController.storyboard in Resources */,
 				B1322FDC212FF7480054A9DD /* Tchap.strings in Resources */,
 				020DF960214BE467003DFBA4 /* RoomOutgoingEncryptedAttachmentWithPaginationTitleBubbleCell.xib in Resources */,
 				020DF9AF214BE467003DFBA4 /* DisabledRoomInputToolbarView.xib in Resources */,
@@ -3627,6 +3745,7 @@
 				02DFECA521C07370009B6F15 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib in Resources */,
 				02DFECA621C07370009B6F15 /* message.mp3 in Resources */,
 				02DFECA721C07370009B6F15 /* RoomCreationViewController.storyboard in Resources */,
+				B1C0EE882375B7F400E8BB88 /* ChangePasswordNewPasswordViewController.storyboard in Resources */,
 				02DFECA821C07370009B6F15 /* RoomOutgoingAttachmentBubbleCell.xib in Resources */,
 				02DFECA921C07370009B6F15 /* third_party_licenses.html in Resources */,
 				02DFECAA21C07370009B6F15 /* HomeViewController.storyboard in Resources */,
@@ -3685,6 +3804,7 @@
 				02DFECDF21C07370009B6F15 /* RoomEncryptedAttachmentAntivirusScanStatusBubbleCell.xib in Resources */,
 				02DFECE021C07370009B6F15 /* RoomMembershipCollapsedBubbleCell.xib in Resources */,
 				02DFECE121C07370009B6F15 /* RoomCreationAvatarView.xib in Resources */,
+				B1C0EE782375B7A000E8BB88 /* ChangePasswordCurrentPasswordViewController.storyboard in Resources */,
 				02DFECE221C07370009B6F15 /* RoomIncomingEncryptedAttachmentWithoutSenderInfoBubbleCell.xib in Resources */,
 				02DFECE321C07370009B6F15 /* MediaAlbumTableCell.xib in Resources */,
 				02DFECE421C07370009B6F15 /* TableViewCellWithCheckBoxAndLabel.xib in Resources */,
@@ -3897,6 +4017,7 @@
 				020DF93C214BE467003DFBA4 /* TableViewCellWithCheckBoxAndLabel.m in Sources */,
 				020DF967214BE467003DFBA4 /* RoomOutgoingEncryptedTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
 				0250C4962122B68000034691 /* AvatarGenerator.m in Sources */,
+				B1C0EE792375B7A000E8BB88 /* ChangePasswordCurrentPasswordViewController.swift in Sources */,
 				B1BC6A052135E42D00D32F8E /* UIView.swift in Sources */,
 				02B3453E219CA8EE00110EC8 /* RoomsRoomCell.swift in Sources */,
 				B15AB2A2215BF20E007F5405 /* ForgotPasswordVerifyEmailViewController.swift in Sources */,
@@ -3906,15 +4027,18 @@
 				B104AA1D215D3EE800B2C452 /* ForgotPasswordService.swift in Sources */,
 				B15B867021354FF5002782BE /* AuthenticationViewModel.swift in Sources */,
 				02906074214FD0E1005FE3C1 /* RoomCoordinator.swift in Sources */,
+				B1C0EE8F2375B7F400E8BB88 /* ChangePasswordNewPasswordViewController.swift in Sources */,
 				027DCAC621B14F68000DD05E /* ContactCell.swift in Sources */,
 				0250C49F2122B68000034691 /* MediaAlbumContentViewController.m in Sources */,
 				020DF963214BE467003DFBA4 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
 				020DF987214BE467003DFBA4 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				0259329122B00E4300C93762 /* PasswordPolicy.swift in Sources */,
 				B12FD6AC2146BA45001B7F28 /* RegistrationServiceType.swift in Sources */,
+				B1C0EE892375B7F400E8BB88 /* ChangePasswordNewPasswordCoordinatorType.swift in Sources */,
 				B165252221779FA700146F80 /* CreateNewDiscussionCoordinator.swift in Sources */,
 				B1F2AAA1212AED170077FDC0 /* RoomsCoordinator.swift in Sources */,
 				0250C4A02122B68000034691 /* WidgetManager.m in Sources */,
+				B1C0EE8D2375B7F400E8BB88 /* ChangePasswordNewPasswordCoordinator.swift in Sources */,
 				02BEE1A8212C77B700098505 /* DesignValues.m in Sources */,
 				B1A4D7DD215A2F50004A5AB4 /* RoomPreviewCoordinator.swift in Sources */,
 				B1F2AA9D212AEC830077FDC0 /* AuthenticationCoordinator.swift in Sources */,
@@ -3938,6 +4062,8 @@
 				020DF95A214BE467003DFBA4 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				02018F9C22006200008D68BE /* UniversalLinkParameters.swift in Sources */,
 				B165252421779FB900146F80 /* CreateNewDiscussionCoordinatorType.swift in Sources */,
+				B1C0EE752375B7A000E8BB88 /* ChangePasswordCurrentPasswordViewModelType.swift in Sources */,
+				B1C0EE912375B7F400E8BB88 /* ChangePasswordNewPasswordViewState.swift in Sources */,
 				B146D50E21A5EAE800D8C2C6 /* RoomAttachmentAntivirusScanStatusBubbleCell.m in Sources */,
 				B1F2AA94212AEC830077FDC0 /* HomeCoordinator.swift in Sources */,
 				B1322FFA2130146D0054A9DD /* AuthenticationServiceType.swift in Sources */,
@@ -3952,6 +4078,7 @@
 				02098F352131FE9E00F25086 /* ContactsDataSource.m in Sources */,
 				B1322FE3212FFCCD0054A9DD /* Storyboards.swift in Sources */,
 				B1BC6A1D2136C99F00D32F8E /* Variant1Style.swift in Sources */,
+				B1C0EE7B2375B7A000E8BB88 /* ChangePasswordCurrentPasswordViewAction.swift in Sources */,
 				B1322FE5212FFCCD0054A9DD /* Strings.swift in Sources */,
 				02ECA88022E0C5BA00ECDA5E /* MXRoomSummary.swift in Sources */,
 				0250C4B22122B68000034691 /* MXRoom+Riot.m in Sources */,
@@ -3965,6 +4092,7 @@
 				B15AB2AA215BF63A007F5405 /* ForgotPasswordFormViewModelType.swift in Sources */,
 				020DF978214BE467003DFBA4 /* RoomMembershipExpandedBubbleCell.m in Sources */,
 				020DF977214BE467003DFBA4 /* RoomMembershipWithPaginationTitleBubbleCell.m in Sources */,
+				B1C0EE8B2375B7F400E8BB88 /* ChangePasswordNewPasswordViewAction.swift in Sources */,
 				0250C4B92122B68000034691 /* Analytics.m in Sources */,
 				0250C4BB2122B68000034691 /* WidgetViewController.m in Sources */,
 				020DF988214BE467003DFBA4 /* RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
@@ -3978,10 +4106,12 @@
 				020DF951214BE467003DFBA4 /* RoomOutgoingEncryptedAttachmentWithPaginationTitleBubbleCell.m in Sources */,
 				020DF973214BE467003DFBA4 /* RoomOutgoingTextMsgBubbleCell.m in Sources */,
 				B1073D6621A8096F00E36CFA /* RoomIncomingEncryptedAttachmentWithPaginationTitleBubbleCell.m in Sources */,
+				B1104DBC237B123400687B3A /* ChangePasswordServiceType.swift in Sources */,
 				025E36F5229546A000C9D9AE /* ThirdPartyIDResolverType.swift in Sources */,
 				0250C4C42122B68000034691 /* RiotNavigationController.m in Sources */,
 				0250C4C92122B68000034691 /* Tools.m in Sources */,
 				B1C4646021B6DD42005F4D53 /* RoomService.swift in Sources */,
+				B1104DBF237B124600687B3A /* ChangePasswordService.swift in Sources */,
 				02C4BE88225231ED00F7BB0E /* InviteService.swift in Sources */,
 				0250C4CA2122B68000034691 /* WebViewViewController.m in Sources */,
 				B1680CFE2152A9E6009B5F92 /* PublicRoomsViewController.swift in Sources */,
@@ -4006,6 +4136,7 @@
 				B1F2AAB0212AED900077FDC0 /* NavigationRouterType.swift in Sources */,
 				02C4BE842252278400F7BB0E /* DiscussionFinder.swift in Sources */,
 				B1322FF3213002580054A9DD /* AuthenticationErrorPresentableMaker.swift in Sources */,
+				B1C0EE732375B7A000E8BB88 /* ChangePasswordCurrentPasswordCoordinatorType.swift in Sources */,
 				0234A9A3225BD0D000E8E489 /* FormCheckBoxModelType.swift in Sources */,
 				B130C0DA21491C6B00F43D33 /* GlobalSearchBar.swift in Sources */,
 				02BEE1552125BBF800098505 /* RoomsDataSource.m in Sources */,
@@ -4016,8 +4147,10 @@
 				B1322FEA213002440054A9DD /* FormTextField.swift in Sources */,
 				0290609321527A3F005FE3C1 /* RoomDetailsCoordinatorType.swift in Sources */,
 				B146D52321A7453900D8C2C6 /* RoomAttachmentAntivirusScanStatusViewModel.swift in Sources */,
+				B1C0EE932375B7F400E8BB88 /* ChangePasswordNewPasswordViewModel.swift in Sources */,
 				02CEE1E52338C5B20085ACF0 /* AppVersion.swift in Sources */,
 				02906073214FD0E1005FE3C1 /* RoomCoordinatorType.swift in Sources */,
+				B1C0EE982375B92100E8BB88 /* ChangePasswordCoordinatorBridgePresenter.swift in Sources */,
 				B11C800121393E5D00CC6F2F /* RegistrationCoordinatorType.swift in Sources */,
 				B1F2AA9A212AEC830077FDC0 /* AppDelegate.swift in Sources */,
 				0250C4E02122B68000034691 /* EventFormatter.m in Sources */,
@@ -4050,6 +4183,7 @@
 				B1892E7D2130719500742348 /* TextInputHandler.swift in Sources */,
 				B18D18C42153E68A003677D1 /* HomeViewController.swift in Sources */,
 				B1F2AAA5212AED840077FDC0 /* Coordinator.swift in Sources */,
+				B1C0EE6F2375B7A000E8BB88 /* ChangePasswordCurrentPasswordCoordinator.swift in Sources */,
 				B1680CFB2152A9E6009B5F92 /* PublicRoomsCoordinatorType.swift in Sources */,
 				B146D52421A7453900D8C2C6 /* RoomAttachmentAntivirusScanStatusViewModelBuilder.swift in Sources */,
 				020DF93D214BE467003DFBA4 /* TableViewCellWithCheckBoxes.m in Sources */,
@@ -4069,6 +4203,7 @@
 				0215542622B2406B004663A6 /* AccountValidityService.swift in Sources */,
 				B1680D082152AA61009B5F92 /* Appearance.swift in Sources */,
 				B12DDAA521708F4F0093172C /* RoomTitleViewModelBuilder.swift in Sources */,
+				B1C0EE642375B77F00E8BB88 /* ChangePasswordCoordinatorType.swift in Sources */,
 				B15B866C21353A41002782BE /* FormTextViewModelType.swift in Sources */,
 				020DF950214BE467003DFBA4 /* RoomOutgoingEncryptedTextMsgWithoutSenderNameBubbleCell.m in Sources */,
 				0250C4F52122B68000034691 /* MXKRoomBubbleTableViewCell+Riot.m in Sources */,
@@ -4082,6 +4217,7 @@
 				B1BC6A262136D77A00D32F8E /* WelcomeCoordinatorType.swift in Sources */,
 				020DF991214BE467003DFBA4 /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				0250C4FF2122B68000034691 /* RecentsViewController.m in Sources */,
+				B1C0EE712375B7A000E8BB88 /* ChangePasswordCurrentPasswordViewState.swift in Sources */,
 				B1A4D7DB215A2F41004A5AB4 /* RoomPreviewCoordinatorType.swift in Sources */,
 				B12FD6A12146B5C0001B7F28 /* RestClientBuilderError.swift in Sources */,
 				B12FD6AB2146BA45001B7F28 /* ThreePIDCredentials.swift in Sources */,
@@ -4104,6 +4240,7 @@
 				B15B867621357514002782BE /* AlertErrorPresenter.swift in Sources */,
 				B1454B97216BA84100365A86 /* DisplayNameComponents.swift in Sources */,
 				0250C50B2122B68000034691 /* RoomKeyRequestViewController.m in Sources */,
+				B1C0EE7D2375B7A000E8BB88 /* ChangePasswordCurrentPasswordViewModel.swift in Sources */,
 				02C4BE8B22523D2200F7BB0E /* DiscussionFinderType.swift in Sources */,
 				B1F2AAB6212AFDBA0077FDC0 /* UIViewController.swift in Sources */,
 				020DF9B1214BE467003DFBA4 /* RoomActivitiesView.m in Sources */,
@@ -4142,6 +4279,7 @@
 				0250C5292122B68000034691 /* WidgetPickerViewController.m in Sources */,
 				029CC69021772F4200DCC8B3 /* DeviceView.m in Sources */,
 				020DF956214BE467003DFBA4 /* RoomIncomingEncryptedTextMsgWithoutSenderNameBubbleCell.m in Sources */,
+				B1C0EE632375B77F00E8BB88 /* ChangePasswordCoordinator.swift in Sources */,
 				020DF99B214BE467003DFBA4 /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.m in Sources */,
 				B12DDA9A216FB2370093172C /* UIBezierPath.swift in Sources */,
 				B1F2AA9E212AEC830077FDC0 /* AuthenticationCoordinatorType.swift in Sources */,
@@ -4174,6 +4312,7 @@
 				020DF972214BE467003DFBA4 /* RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
 				B11C80112139442700CC6F2F /* RegistrationFormViewController.swift in Sources */,
 				020DF936214BE467003DFBA4 /* RoomBubbleCellData.m in Sources */,
+				B1C0EE952375B7F400E8BB88 /* ChangePasswordNewPasswordViewModelType.swift in Sources */,
 				B1322FE4212FFCCD0054A9DD /* Images.swift in Sources */,
 				B1F2AA9C212AEC830077FDC0 /* ContactsCoordinator.swift in Sources */,
 				020DF982214BE467003DFBA4 /* RoomOutgoingAttachmentBubbleCell.m in Sources */,
@@ -4192,6 +4331,7 @@
 				02DFEB7821C07370009B6F15 /* TableViewCellWithCheckBoxAndLabel.m in Sources */,
 				02DFEB7921C07370009B6F15 /* RoomOutgoingEncryptedTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
 				02DFEB7A21C07370009B6F15 /* AvatarGenerator.m in Sources */,
+				B1C0EE7A2375B7A000E8BB88 /* ChangePasswordCurrentPasswordViewController.swift in Sources */,
 				02DFEB7B21C07370009B6F15 /* UIView.swift in Sources */,
 				02DFEB7C21C07370009B6F15 /* RoomsRoomCell.swift in Sources */,
 				02DFEB7D21C07370009B6F15 /* ForgotPasswordVerifyEmailViewController.swift in Sources */,
@@ -4201,15 +4341,18 @@
 				02DFEB8121C07370009B6F15 /* ForgotPasswordService.swift in Sources */,
 				02DFEB8221C07370009B6F15 /* AuthenticationViewModel.swift in Sources */,
 				02DFEB8321C07370009B6F15 /* RoomCoordinator.swift in Sources */,
+				B1C0EE902375B7F400E8BB88 /* ChangePasswordNewPasswordViewController.swift in Sources */,
 				02DFEB8421C07370009B6F15 /* ContactCell.swift in Sources */,
 				02DFEB8521C07370009B6F15 /* MediaAlbumContentViewController.m in Sources */,
 				02DFEB8621C07370009B6F15 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
 				02DFEB8721C07370009B6F15 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				0259329222B00E4300C93762 /* PasswordPolicy.swift in Sources */,
 				02DFEB8821C07370009B6F15 /* RegistrationServiceType.swift in Sources */,
+				B1C0EE8A2375B7F400E8BB88 /* ChangePasswordNewPasswordCoordinatorType.swift in Sources */,
 				02DFEB8921C07370009B6F15 /* CreateNewDiscussionCoordinator.swift in Sources */,
 				02DFEB8A21C07370009B6F15 /* RoomsCoordinator.swift in Sources */,
 				02DFEB8B21C07370009B6F15 /* WidgetManager.m in Sources */,
+				B1C0EE8E2375B7F400E8BB88 /* ChangePasswordNewPasswordCoordinator.swift in Sources */,
 				02DFEB8C21C07370009B6F15 /* DesignValues.m in Sources */,
 				02DFEB8D21C07370009B6F15 /* RoomPreviewCoordinator.swift in Sources */,
 				02DFEB8E21C07370009B6F15 /* AuthenticationCoordinator.swift in Sources */,
@@ -4233,6 +4376,8 @@
 				02DFEB9E21C07370009B6F15 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				02018F9D22006200008D68BE /* UniversalLinkParameters.swift in Sources */,
 				02DFEB9F21C07370009B6F15 /* CreateNewDiscussionCoordinatorType.swift in Sources */,
+				B1C0EE762375B7A000E8BB88 /* ChangePasswordCurrentPasswordViewModelType.swift in Sources */,
+				B1C0EE922375B7F400E8BB88 /* ChangePasswordNewPasswordViewState.swift in Sources */,
 				02DFEBA021C07370009B6F15 /* RoomAttachmentAntivirusScanStatusBubbleCell.m in Sources */,
 				02DFEBA121C07370009B6F15 /* HomeCoordinator.swift in Sources */,
 				02DFEBA221C07370009B6F15 /* AuthenticationServiceType.swift in Sources */,
@@ -4247,6 +4392,7 @@
 				02DFEBAA21C07370009B6F15 /* ContactsDataSource.m in Sources */,
 				02DFEBAB21C07370009B6F15 /* Storyboards.swift in Sources */,
 				02DFEBAC21C07370009B6F15 /* Variant1Style.swift in Sources */,
+				B1C0EE7C2375B7A000E8BB88 /* ChangePasswordCurrentPasswordViewAction.swift in Sources */,
 				02DFEBAD21C07370009B6F15 /* Strings.swift in Sources */,
 				02ECA88122E0C5BA00ECDA5E /* MXRoomSummary.swift in Sources */,
 				02DFEBAF21C07370009B6F15 /* MXRoom+Riot.m in Sources */,
@@ -4260,6 +4406,7 @@
 				02DFEBB621C07370009B6F15 /* ForgotPasswordFormViewModelType.swift in Sources */,
 				02DFEBB721C07370009B6F15 /* RoomMembershipExpandedBubbleCell.m in Sources */,
 				02DFEBB821C07370009B6F15 /* RoomMembershipWithPaginationTitleBubbleCell.m in Sources */,
+				B1C0EE8C2375B7F400E8BB88 /* ChangePasswordNewPasswordViewAction.swift in Sources */,
 				02DFEBB921C07370009B6F15 /* Analytics.m in Sources */,
 				02DFEBBA21C07370009B6F15 /* WidgetViewController.m in Sources */,
 				02DFEBBB21C07370009B6F15 /* RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
@@ -4273,10 +4420,12 @@
 				02DFEBC321C07370009B6F15 /* RoomOutgoingEncryptedAttachmentWithPaginationTitleBubbleCell.m in Sources */,
 				02DFEBC421C07370009B6F15 /* RoomOutgoingTextMsgBubbleCell.m in Sources */,
 				02DFEBC521C07370009B6F15 /* RoomIncomingEncryptedAttachmentWithPaginationTitleBubbleCell.m in Sources */,
+				B1104DBD237B123400687B3A /* ChangePasswordServiceType.swift in Sources */,
 				025E36F6229546A000C9D9AE /* ThirdPartyIDResolverType.swift in Sources */,
 				02DFEBC621C07370009B6F15 /* RiotNavigationController.m in Sources */,
 				02DFEBC721C07370009B6F15 /* Tools.m in Sources */,
 				02DFEBC821C07370009B6F15 /* RoomService.swift in Sources */,
+				B1104DC0237B124600687B3A /* ChangePasswordService.swift in Sources */,
 				02C4BE89225231ED00F7BB0E /* InviteService.swift in Sources */,
 				02DFEBC921C07370009B6F15 /* WebViewViewController.m in Sources */,
 				02DFEBCA21C07370009B6F15 /* PublicRoomsViewController.swift in Sources */,
@@ -4301,6 +4450,7 @@
 				02DFEBDB21C07370009B6F15 /* NavigationRouterType.swift in Sources */,
 				02C4BE852252278400F7BB0E /* DiscussionFinder.swift in Sources */,
 				02DFEBDC21C07370009B6F15 /* AuthenticationErrorPresentableMaker.swift in Sources */,
+				B1C0EE742375B7A000E8BB88 /* ChangePasswordCurrentPasswordCoordinatorType.swift in Sources */,
 				0234A9A4225BD0D000E8E489 /* FormCheckBoxModelType.swift in Sources */,
 				02DFEBDD21C07370009B6F15 /* GlobalSearchBar.swift in Sources */,
 				02DFEBDE21C07370009B6F15 /* RoomsDataSource.m in Sources */,
@@ -4311,8 +4461,10 @@
 				02DFEBE321C07370009B6F15 /* FormTextField.swift in Sources */,
 				02DFEBE421C07370009B6F15 /* RoomDetailsCoordinatorType.swift in Sources */,
 				02DFEBE521C07370009B6F15 /* RoomAttachmentAntivirusScanStatusViewModel.swift in Sources */,
+				B1C0EE942375B7F400E8BB88 /* ChangePasswordNewPasswordViewModel.swift in Sources */,
 				02CEE1E62338C5B20085ACF0 /* AppVersion.swift in Sources */,
 				02DFEBE621C07370009B6F15 /* RoomCoordinatorType.swift in Sources */,
+				B1C0EE992375B92100E8BB88 /* ChangePasswordCoordinatorBridgePresenter.swift in Sources */,
 				02DFEBE721C07370009B6F15 /* RegistrationCoordinatorType.swift in Sources */,
 				02DFEBE821C07370009B6F15 /* AppDelegate.swift in Sources */,
 				02DFEBE921C07370009B6F15 /* EventFormatter.m in Sources */,
@@ -4345,6 +4497,7 @@
 				02DFEBFC21C07370009B6F15 /* TextInputHandler.swift in Sources */,
 				02DFEBFD21C07370009B6F15 /* HomeViewController.swift in Sources */,
 				02DFEBFE21C07370009B6F15 /* Coordinator.swift in Sources */,
+				B1C0EE702375B7A000E8BB88 /* ChangePasswordCurrentPasswordCoordinator.swift in Sources */,
 				02DFEBFF21C07370009B6F15 /* PublicRoomsCoordinatorType.swift in Sources */,
 				02DFEC0021C07370009B6F15 /* RoomAttachmentAntivirusScanStatusViewModelBuilder.swift in Sources */,
 				02DFEC0121C07370009B6F15 /* TableViewCellWithCheckBoxes.m in Sources */,
@@ -4364,6 +4517,7 @@
 				0215542722B2406B004663A6 /* AccountValidityService.swift in Sources */,
 				02DFEC0F21C07370009B6F15 /* Appearance.swift in Sources */,
 				02DFEC1021C07370009B6F15 /* RoomTitleViewModelBuilder.swift in Sources */,
+				B1C0EE662375B78C00E8BB88 /* ChangePasswordCoordinatorType.swift in Sources */,
 				02DFEC1121C07370009B6F15 /* FormTextViewModelType.swift in Sources */,
 				02DFEC1221C07370009B6F15 /* RoomOutgoingEncryptedTextMsgWithoutSenderNameBubbleCell.m in Sources */,
 				02DFEC1321C07370009B6F15 /* MXKRoomBubbleTableViewCell+Riot.m in Sources */,
@@ -4377,6 +4531,7 @@
 				02DFEC1B21C07370009B6F15 /* WelcomeCoordinatorType.swift in Sources */,
 				02DFEC1C21C07370009B6F15 /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				02DFEC1D21C07370009B6F15 /* RecentsViewController.m in Sources */,
+				B1C0EE722375B7A000E8BB88 /* ChangePasswordCurrentPasswordViewState.swift in Sources */,
 				02DFEC1E21C07370009B6F15 /* RoomPreviewCoordinatorType.swift in Sources */,
 				02DFEC1F21C07370009B6F15 /* RestClientBuilderError.swift in Sources */,
 				02DFEC2021C07370009B6F15 /* ThreePIDCredentials.swift in Sources */,
@@ -4399,6 +4554,7 @@
 				02DFEC3121C07370009B6F15 /* AlertErrorPresenter.swift in Sources */,
 				02DFEC3221C07370009B6F15 /* DisplayNameComponents.swift in Sources */,
 				02DFEC3321C07370009B6F15 /* RoomKeyRequestViewController.m in Sources */,
+				B1C0EE7E2375B7A000E8BB88 /* ChangePasswordCurrentPasswordViewModel.swift in Sources */,
 				02C4BE8C22523D2200F7BB0E /* DiscussionFinderType.swift in Sources */,
 				02DFEC3421C07370009B6F15 /* UIViewController.swift in Sources */,
 				02DFEC3521C07370009B6F15 /* RoomActivitiesView.m in Sources */,
@@ -4437,6 +4593,7 @@
 				02DFEC5221C07370009B6F15 /* WidgetPickerViewController.m in Sources */,
 				02DFEC5321C07370009B6F15 /* DeviceView.m in Sources */,
 				02DFEC5421C07370009B6F15 /* RoomIncomingEncryptedTextMsgWithoutSenderNameBubbleCell.m in Sources */,
+				B1C0EE652375B78C00E8BB88 /* ChangePasswordCoordinator.swift in Sources */,
 				02DFEC5521C07370009B6F15 /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.m in Sources */,
 				02DFEC5621C07370009B6F15 /* UIBezierPath.swift in Sources */,
 				02DFEC5721C07370009B6F15 /* AuthenticationCoordinatorType.swift in Sources */,
@@ -4469,6 +4626,7 @@
 				02DFEC6E21C07370009B6F15 /* RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
 				02DFEC6F21C07370009B6F15 /* RegistrationFormViewController.swift in Sources */,
 				02DFEC7021C07370009B6F15 /* RoomBubbleCellData.m in Sources */,
+				B1C0EE962375B7F400E8BB88 /* ChangePasswordNewPasswordViewModelType.swift in Sources */,
 				02DFEC7121C07370009B6F15 /* Images.swift in Sources */,
 				02DFEC7221C07370009B6F15 /* ContactsCoordinator.swift in Sources */,
 				02DFEC7321C07370009B6F15 /* RoomOutgoingAttachmentBubbleCell.m in Sources */,
