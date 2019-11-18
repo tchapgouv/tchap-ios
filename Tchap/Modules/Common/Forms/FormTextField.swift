@@ -42,6 +42,7 @@ final class FormTextField: UIView, NibOwnerLoadable {
     // MARK: Private
     
     private var formTextViewModel: FormTextViewModelType?
+    private var textFieldTextKVO: NSKeyValueObservation?
     
     // MARK: Public
     
@@ -52,6 +53,8 @@ final class FormTextField: UIView, NibOwnerLoadable {
     private func commonInit() {
         self.textField.placeholder = nil
         self.additionalInfoLabel.text = nil
+        self.registerEditingChangedEvent()
+        self.registerTextFieldTextKVO()
     }
     
     convenience init() {
@@ -131,6 +134,38 @@ final class FormTextField: UIView, NibOwnerLoadable {
         self.isUserInteractionEnabled = enable
     }
     
+    private func registerEditingChangedEvent() {
+        self.textField.addTarget(self, action: #selector(textFieldEditingChanged(_:)), for: UIControl.Event.editingChanged)
+    }
+    
+    private func registerTextFieldTextKVO() {
+        
+        // Note: KVO on text property is only triggered after textFieldDidEndEditing: or after using password AutoFill.
+        // AutoFill issue: Handle "Choose my own password" case that clears password fields but that is only catched here. `textFieldShouldClear:` is not called.
+        self.textFieldTextKVO = self.textField.observe(\.text, options: [.new, .old], changeHandler: { [weak self] (textField, change) in
+            guard let self = self else {
+                return
+            }
+            
+            let newValue = change.newValue as? String
+            let currentValue = self.formTextViewModel?.value
+            
+            if currentValue != newValue {
+                self.formTextViewModel?.updateValue(value: newValue, comesFromAutoFill: false)
+            }
+        })
+    }
+    
+    @objc func textFieldEditingChanged(_ textField: UITextField) {
+
+        let newValue = textField.text
+        let currentValue = self.formTextViewModel?.value
+        
+        // AutoFill issue: When using password AutoFill with two textFields using `.newPassword` as textContentType, the second one is filled with a strong password but `textField:shouldChangeCharactersIn:replacementString:` is not called. That is why we update manually the value here
+        if currentValue != newValue {
+            self.formTextViewModel?.updateValue(value: newValue, comesFromAutoFill: true)
+        }
+    }
 }
 
 // MARK: - Stylable

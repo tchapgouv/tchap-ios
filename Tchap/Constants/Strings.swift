@@ -31,6 +31,30 @@ internal enum TchapL10n {
   internal static let authenticationPasswordPlaceholder = TchapL10n.tr("Tchap", "authentication_password_placeholder")
   /// Connexion Tchap
   internal static let authenticationTitle = TchapL10n.tr("Tchap", "authentication_title")
+  /// Veuillez saisir votre mot de passe actuel.
+  internal static let changePasswordCurrentPasswordInstructions = TchapL10n.tr("Tchap", "change_password_current_password_instructions")
+  /// Mot de passe actuel
+  internal static let changePasswordCurrentPasswordPasswordPlaceholder = TchapL10n.tr("Tchap", "change_password_current_password_password_placeholder")
+  /// Mot de passe actuel
+  internal static let changePasswordCurrentPasswordTitle = TchapL10n.tr("Tchap", "change_password_current_password_title")
+  /// Valider
+  internal static let changePasswordCurrentPasswordValidateAction = TchapL10n.tr("Tchap", "change_password_current_password_validate_action")
+  /// Confirmez votre nouveau mot de passe
+  internal static let changePasswordNewPasswordConfirmPasswordPlaceholder = TchapL10n.tr("Tchap", "change_password_new_password_confirm_password_placeholder")
+  /// Votre nouveau mot de passe doit contenir au moins 8 caractères, avec au moins un caractère de chaque type : majuscule, minuscule, chiffre, caractère spécial.
+  internal static let changePasswordNewPasswordInstructions = TchapL10n.tr("Tchap", "change_password_new_password_instructions")
+  /// Votre ancien mot de passe est invalide, souhaitez-vous le modifier ?
+  internal static let changePasswordNewPasswordInvalidOldPassword = TchapL10n.tr("Tchap", "change_password_new_password_invalid_old_password")
+  /// Nouveau mot de passe
+  internal static let changePasswordNewPasswordPasswordPlaceholder = TchapL10n.tr("Tchap", "change_password_new_password_password_placeholder")
+  /// Votre mot de passe a été changé avec succès.\nVous ne recevrez plus de notifications sur vos autres appareils tant que vous ne vous y reconnecterez pas.
+  internal static let changePasswordNewPasswordSuccessMessage = TchapL10n.tr("Tchap", "change_password_new_password_success_message")
+  /// Succès
+  internal static let changePasswordNewPasswordSuccessTitle = TchapL10n.tr("Tchap", "change_password_new_password_success_title")
+  /// Nouveau mot de passe
+  internal static let changePasswordNewPasswordTitle = TchapL10n.tr("Tchap", "change_password_new_password_title")
+  /// Valider
+  internal static let changePasswordNewPasswordValidateAction = TchapL10n.tr("Tchap", "change_password_new_password_validate_action")
   /// Vous n'avez pas autorisé Tchap à accéder à vos contacts locaux
   internal static let contactsAddressBookPermissionDenied = TchapL10n.tr("Tchap", "contacts_address_book_permission_denied")
   /// Permissions requises pour accéder aux contacts locaux
@@ -259,12 +283,6 @@ internal enum TchapL10n {
   internal static let searchNoResult = TchapL10n.tr("Tchap", "search_no_result")
   /// Changer le mot de passe réinitialise les clés de chiffrement sur tous les appareils, rendant l’historique des discussions illisible: pensez d'abord à exporter vos clés pour pouvoir les ré-importer après le changement de mot de passe.
   internal static let settingsChangePwdCaution = TchapL10n.tr("Tchap", "settings_change_pwd_caution")
-  /// Votre nouveau mot de passe doit contenir au moins 8 caractères, avec au moins un caractère de chaque type : majuscule, minuscule, chiffre, caractère spécial.
-  internal static let settingsChangePwdMessage = TchapL10n.tr("Tchap", "settings_change_pwd_message")
-  /// Votre mot de passe a été changé avec succès.\nVous ne recevrez plus de notifications sur vos autres appareils tant que vous ne vous y reconnecterez pas.
-  internal static let settingsChangePwdSuccessMsg = TchapL10n.tr("Tchap", "settings_change_pwd_success_msg")
-  /// Succès
-  internal static let settingsChangePwdSuccessTitle = TchapL10n.tr("Tchap", "settings_change_pwd_success_title")
   /// Utiliser les adresses emails pour retrouver des utilisateurs
   internal static let settingsContactsDiscoverMatrixUsers = TchapL10n.tr("Tchap", "settings_contacts_discover_matrix_users")
   /// Les autres utilisateurs ne pourront pas découvrir mon compte lors de leurs recherches

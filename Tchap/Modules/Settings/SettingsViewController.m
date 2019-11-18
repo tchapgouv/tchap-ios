@@ -117,7 +117,7 @@ enum {
 typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 
 
-@interface SettingsViewController () <UITextFieldDelegate, MediaPickerViewControllerDelegate, MXKDeviceViewDelegate, UIDocumentInteractionControllerDelegate, MXKCountryPickerViewControllerDelegate, MXKLanguagePickerViewControllerDelegate, DeactivateAccountViewControllerDelegate, Stylable>
+@interface SettingsViewController () <UITextFieldDelegate, MediaPickerViewControllerDelegate, MXKDeviceViewDelegate, UIDocumentInteractionControllerDelegate, MXKCountryPickerViewControllerDelegate, MXKLanguagePickerViewControllerDelegate, DeactivateAccountViewControllerDelegate, Stylable, ChangePasswordCoordinatorBridgePresenterDelegate>
 {
     // Current alert (if any).
     UIAlertController *currentAlert;
@@ -130,12 +130,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     UIImage* newAvatarImage;
     // the avatar image has been uploaded
     NSString* uploadedAvatarURL;
-    
-    // password update
-    UITextField* currentPasswordTextField;
-    UITextField* newPasswordTextField1;
-    UITextField* newPasswordTextField2;
-    UIAlertAction* savePasswordAction;
     
     // Dynamic rows in the user settings section
     NSInteger userSettingsProfilePictureIndex;
@@ -171,6 +165,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 
 @property (weak, nonatomic) DeactivateAccountViewController *deactivateAccountViewController;
 @property (strong, nonatomic) id<Style> currentStyle;
+@property (strong, nonatomic) ChangePasswordCoordinatorBridgePresenter *changePasswordPresenter;
 
 // Observer
 @property (nonatomic, weak) id riotDesignValuesDidChangeThemeNotificationObserver;
@@ -458,9 +453,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 
 - (void)dismissKeyboard
 {
-    [currentPasswordTextField resignFirstResponder];
-    [newPasswordTextField1 resignFirstResponder];
-    [newPasswordTextField2 resignFirstResponder];
+    [self.view endEditing:YES];
 }
 
 - (void)loadAccount3PIDs
@@ -1005,12 +998,11 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         }
         else if (row == userSettingsChangePasswordIndex)
         {
-            MXKTableViewCellWithLabelAndTextField *passwordCell = [self getLabelAndTextFieldCell:tableView forIndexPath:indexPath];
+            MXKTableViewCell *passwordCell = [self getDefaultTableViewCell:tableView];
             
-            passwordCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_change_password", @"Vector", nil);
-            passwordCell.mxkTextField.text = @"*********";
-            passwordCell.mxkTextField.userInteractionEnabled = NO;
-            passwordCell.mxkLabel.accessibilityIdentifier=@"SettingsVCChangePwdStaticText";
+            passwordCell.textLabel.text = NSLocalizedStringFromTable(@"settings_change_password", @"Vector", nil);
+            passwordCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            passwordCell.accessibilityIdentifier = @"SettingsVCChangePwdStaticText";
             
             cell = passwordCell;
         }
@@ -2239,11 +2231,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     {
         [textField resignFirstResponder];
     }
-    else if (textField == newPasswordTextField2)
-    {
-        [newPasswordTextField2 resignFirstResponder];
-        return NO;
-    }
     
     return YES;
 }
@@ -2261,8 +2248,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         
         MXStrongifyAndReturnIfNil(self);
         self->resetPwdAlertController = nil;
-        [self displayPasswordAlert];
-        
+        [self presentChangePassword];
     }];
     
     UIAlertAction  *exportAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"settings_crypto_export", @"Vector", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
@@ -2286,146 +2272,14 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     [self presentViewController:resetPwdAlertController animated:YES completion:nil];
 }
 
-- (IBAction)passwordTextFieldDidChange:(id)sender
+- (void)presentChangePassword
 {
-    savePasswordAction.enabled = (currentPasswordTextField.text.length > 0) && (newPasswordTextField1.text.length > 7) && [newPasswordTextField1.text isEqualToString:newPasswordTextField2.text];
-}
-
-- (void)displayPasswordAlert
-{
-    MXWeakify(self);
-    [resetPwdAlertController dismissViewControllerAnimated:NO completion:nil];
+    ChangePasswordCoordinatorBridgePresenter *changePasswordPresenter = [[ChangePasswordCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
+    changePasswordPresenter.delegate = self;
     
-    resetPwdAlertController = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"settings_change_password", @"Vector", nil)
-                                                                  message:NSLocalizedStringFromTable(@"settings_change_pwd_message", @"Tchap", nil) preferredStyle:UIAlertControllerStyleAlert];
-    resetPwdAlertController.accessibilityLabel=@"ChangePasswordAlertController";
-    savePasswordAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"save", @"Vector", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-        
-        MXStrongifyAndReturnIfNil(self);
-        self->resetPwdAlertController = nil;
-        
-        if ([MXKAccountManager sharedManager].activeAccounts.count > 0)
-        {
-            [self startActivityIndicator];
-            
-            // We retain 'self' on purpose during this operation in order to keep saving changes when the user leaves the settings screen.
-            MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-            [account changePassword:self->currentPasswordTextField.text with:self->newPasswordTextField1.text success:^{
-                
-                [self stopActivityIndicator];
-                
-                // Display a successful message only if the settings screen is still visible
-                if (self.navigationController)
-                {
-                    MXWeakify(self);
-                    [self->currentAlert dismissViewControllerAnimated:NO completion:nil];
-                    
-                    self->currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"settings_change_pwd_success_title", @"Tchap", nil) message:NSLocalizedStringFromTable(@"settings_change_pwd_success_msg", @"Tchap", nil) preferredStyle:UIAlertControllerStyleAlert];
-                    
-                    [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
-                                                                           style:UIAlertActionStyleDefault
-                                                                         handler:^(UIAlertAction * action) {
-                                                                             
-                                                                             MXStrongifyAndReturnIfNil(self);
-                                                                             self->currentAlert = nil;
-                                                                             
-                                                                         }]];
-                    
-                    [self->currentAlert mxk_setAccessibilityIdentifier:@"SettingsVCOnPasswordUpdatedAlert"];
-                    [self presentViewController:self->currentAlert animated:YES completion:nil];
-                }
-                
-            } failure:^(NSError *error) {
-                
-                [self stopActivityIndicator];
-                
-                // Display a failure message on the current screen
-                UIViewController *rootViewController = [AppDelegate theDelegate].window.rootViewController;
-                if (rootViewController)
-                {
-                    MXWeakify(self);
-                    [self->currentAlert dismissViewControllerAnimated:NO completion:nil];
-                    
-                    NSString *alertTitle = NSLocalizedStringFromTable(@"settings_fail_to_update_password", @"Vector", nil);
-                    NSString *alertMessage = [self detailedMessageOnPasswordUpdateFailure:error];
-                    if (!alertMessage)
-                    {
-                        alertMessage = alertTitle;
-                        alertTitle = nil;
-                    }
-                    
-                    self->currentAlert = [UIAlertController alertControllerWithTitle:alertTitle message:alertMessage preferredStyle:UIAlertControllerStyleAlert];
-                    
-                    [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
-                                                                                   style:UIAlertActionStyleDefault
-                                                                                 handler:^(UIAlertAction * action) {
-                                                                                     
-                                                                                     MXStrongifyAndReturnIfNil(self);
-                                                                                     self->currentAlert = nil;
-                                                                                     
-                                                                                 }]];
-                    
-                    [self->currentAlert mxk_setAccessibilityIdentifier:@"SettingsVCPasswordChangeFailedAlert"];
-                    [rootViewController presentViewController:self->currentAlert animated:YES completion:nil];
-                }
-                
-            }];
-        }
-        
-    }];
+    [changePasswordPresenter presentFrom:self animated:YES];
     
-    // disable by default
-    // check if the textfields have the right value
-    savePasswordAction.enabled = NO;
-    
-    UIAlertAction* cancel = [UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
-        
-        MXStrongifyAndReturnIfNil(self);
-        self->resetPwdAlertController = nil;
-        
-    }];
-    
-    [resetPwdAlertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-        
-        MXStrongifyAndReturnIfNil(self);
-        self->currentPasswordTextField = textField;
-        self->currentPasswordTextField.placeholder = NSLocalizedStringFromTable(@"settings_old_password", @"Vector", nil);
-        self->currentPasswordTextField.secureTextEntry = YES;
-        self->currentPasswordTextField.returnKeyType = UIReturnKeyNext;
-        if (@available(iOS 11.0, *)) {
-            self->currentPasswordTextField.textContentType = UITextContentTypePassword;
-        }
-        [self->currentPasswordTextField addTarget:self action:@selector(passwordTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-         
-     }];
-    
-    [resetPwdAlertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-        
-        MXStrongifyAndReturnIfNil(self);
-        self->newPasswordTextField1 = textField;
-        self->newPasswordTextField1.placeholder = NSLocalizedStringFromTable(@"settings_new_password", @"Vector", nil);
-        self->newPasswordTextField1.secureTextEntry = YES;
-        self->newPasswordTextField1.returnKeyType = UIReturnKeyNext;
-        [self->newPasswordTextField1 addTarget:self action:@selector(passwordTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-        
-    }];
-    
-    [resetPwdAlertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-        
-        MXStrongifyAndReturnIfNil(self);
-        self->newPasswordTextField2 = textField;
-        self->newPasswordTextField2.placeholder = NSLocalizedStringFromTable(@"settings_confirm_password", @"Vector", nil);
-        self->newPasswordTextField2.secureTextEntry = YES;
-        self->newPasswordTextField2.returnKeyType = UIReturnKeyDone;
-        self->newPasswordTextField2.delegate = self;
-        [self->newPasswordTextField2 addTarget:self action:@selector(passwordTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-        
-    }];
-
-    
-    [resetPwdAlertController addAction:cancel];
-    [resetPwdAlertController addAction:savePasswordAction];
-    [self presentViewController:resetPwdAlertController animated:YES completion:nil];
+    self.changePasswordPresenter = changePasswordPresenter;
 }
 
 - (nullable NSString *)detailedMessageOnPasswordUpdateFailure:(NSError *)error
@@ -2609,6 +2463,22 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         
         [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error userInfo:myUserId ? @{kMXKErrorUserIdKey: myUserId} : nil];
         [self refreshSettings];
+    }];
+}
+
+#pragma mark - ChangePasswordCoordinatorBridgePresenterDelegate
+
+- (void)changePasswordCoordinatorBridgePresenterDelegateDidComplete:(ChangePasswordCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+        self.changePasswordPresenter = nil;
+    }];
+}
+
+- (void)changePasswordCoordinatorBridgePresenterDelegateDidCancel:(ChangePasswordCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+        self.changePasswordPresenter = nil;
     }];
 }
 
