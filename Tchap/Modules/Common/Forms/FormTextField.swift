@@ -161,7 +161,7 @@ final class FormTextField: UIView, NibOwnerLoadable {
         let newValue = textField.text
         let currentValue = self.formTextViewModel?.value
         
-        // AutoFill issue: When using password AutoFill with two textFields using `.newPassword` as textContentType, the second one is filled with a strong password but is only updated here, `textField:shouldChangeCharactersIn:replacementString:` is not called.
+        // AutoFill issue: When using password AutoFill with two textFields using `.newPassword` as textContentType, the second one is filled with a strong password but `textField:shouldChangeCharactersIn:replacementString:` is not called. That is why we update manually the value here
         if currentValue != newValue {
             self.formTextViewModel?.updateValue(value: newValue, comesFromAutoFill: true)
         }
