@@ -20,13 +20,13 @@ import XCTest
 @testable import Tchap
 
 class DisplayNameTests: XCTestCase {
-        
+    
     // MARK: - Tests
     
     // MARK: Display name components from user id
     
     func testComputeDisplayNameFromUserIdSimple() {
-        let displayNameComponents = DisplayNameComponents(userId: "@jean.martin-modernisation.fr:matrix.org")
+        let displayNameComponents = DisplayNameComponents(userId: "@jean.martin-modernisation.fr:matrix.org", isExternal: false)
         
         XCTAssertNotNil(displayNameComponents)
         XCTAssertEqual(displayNameComponents?.name, "Jean Martin")
@@ -35,7 +35,7 @@ class DisplayNameTests: XCTestCase {
     
     func testComputeDisplayNameFromUserIdWithDashInName() {
         
-        let displayNameComponents = DisplayNameComponents(userId: "@jean-philippe.martin-modernisation.fr:matrix.org")
+        let displayNameComponents = DisplayNameComponents(userId: "@jean-philippe.martin-modernisation.fr:matrix.org", isExternal: false)
         
         XCTAssertNotNil(displayNameComponents)
         XCTAssertEqual(displayNameComponents?.name, "Jean-Philippe Martin")
@@ -44,7 +44,7 @@ class DisplayNameTests: XCTestCase {
     
  
     func testComputeDisplayNameFromUserIdWithDashesInName() {
-        let displayNameComponents = DisplayNameComponents(userId: "@jean.martin.de-la-rampe-modernisation.gouv.fr:a.tchap.gouv.fr")
+        let displayNameComponents = DisplayNameComponents(userId: "@jean.martin.de-la-rampe-modernisation.gouv.fr:a.tchap.gouv.fr", isExternal: false)
         
         XCTAssertNotNil(displayNameComponents)
         XCTAssertEqual(displayNameComponents?.name, "Jean Martin De-La-Rampe")
@@ -53,7 +53,7 @@ class DisplayNameTests: XCTestCase {
 
     func testComputeDisplayNameFromUserIdWithDashesInDomain() {
         
-        let displayNameComponents = DisplayNameComponents(userId: "@jean.martin-dev-durable.gouv.fr:a.tchap.gouv.fr")
+        let displayNameComponents = DisplayNameComponents(userId: "@jean.martin-dev-durable.gouv.fr:a.tchap.gouv.fr", isExternal: false)
         
         XCTAssertNotNil(displayNameComponents)
         XCTAssertEqual(displayNameComponents?.name, "Jean Martin-Dev")
