@@ -34,6 +34,9 @@ protocol AppCoordinatorType: Coordinator {
     ///   - eventID: an optional event identifier to point to in the room history.
     /// - Returns: true to indicate that the room has been opened, or false if the room has not been found.
     func showRoom(with roomIdOrAlias: String, onEventID eventID: String?) -> Bool
+    
+    /// Check if the user should be notified of an application update.
+    func checkMinAppVersionRequirements()
 }
 
 // `AppCoordinatorType` default implementation

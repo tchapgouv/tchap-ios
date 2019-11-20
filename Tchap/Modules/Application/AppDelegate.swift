@@ -67,7 +67,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func applicationDidBecomeActive(_ application: UIApplication) {
-        self.legacyAppDelegate.applicationDidBecomeActive(application)
+        self.legacyAppDelegate.applicationDidBecomeActive(application)        
+        
+        self.appCoordinator.checkMinAppVersionRequirements()
     }
     
     func applicationWillResignActive(_ application: UIApplication) {        
