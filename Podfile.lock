@@ -85,7 +85,7 @@ PODS:
   - Reusable/Storyboard (4.1.0)
   - Reusable/View (4.1.0)
   - RxSwift (4.5.0)
-  - SwiftGen (5.3.0)
+  - SwiftGen (6.1.0)
   - SwiftLint (0.33.1)
   - SwiftUTI (1.0.7)
 
@@ -101,12 +101,12 @@ DEPENDENCIES:
   - OLMKit
   - Reusable (~> 4.1)
   - RxSwift (~> 4.3)
-  - SwiftGen (~> 5.3)
+  - SwiftGen (~> 6.1)
   - SwiftLint (~> 0.27)
   - SwiftUTI (from `https://github.com/speramusinc/SwiftUTI.git`, branch `master`)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  https://github.com/CocoaPods/Specs.git:
     - AFNetworking
     - cmark
     - DTCoreText
@@ -122,8 +122,9 @@ SPEC REPOS:
     - Realm
     - Reusable
     - RxSwift
-    - SwiftGen
     - SwiftLint
+  trunk:
+    - SwiftGen
 
 EXTERNAL SOURCES:
   MatrixKit:
@@ -159,16 +160,16 @@ SPEC CHECKSUMS:
   libbase58: 7c040313537b8c44b6e2d15586af8e21f7354efd
   libPhoneNumber-iOS: 0a32a9525cf8744fe02c5206eb30d571e38f7d75
   MatomoTracker: 6f89e2561083685a360e223fb663e9ccd57c1d1a
-  MatrixKit: 68632c9c413f99330af553dc0d08ce93287aeb00
+  MatrixKit: 7f681c9086509a4f5e6e7172ce00f552cba1f8bc
   MatrixSDK: 342384d62bac5d95a31a7dab79e5f687bd87ddca
   OLMKit: 4ee0159d63feeb86d836fdcfefe418e163511639
   Realm: 5a1d9d47bfc101dd597668b1a8af4288a2557f6d
   Reusable: 82be188f29d96dc5eff0db7b2393bcc08d2cdd5b
   RxSwift: f172070dfd1a93d70a9ab97a5a01166206e1c575
-  SwiftGen: 4379bd3640b0a212a0f6ea3c494adba385513d10
+  SwiftGen: f872ca75cbd17bf7103c17f13dcfa0d9a15667b0
   SwiftLint: 9fc1143bbacec37f94994a7d0d2a85b2154b6294
   SwiftUTI: 917993c124f8eac25e88ced0202fc58d7eb50fa8
 
-PODFILE CHECKSUM: 3fe597137da7f3cfa20d3a54e23106a9348d6c0c
+PODFILE CHECKSUM: 7c608941e00b0e565e1d4fe58bb95d331f3d7194
 
-COCOAPODS: 1.7.4
+COCOAPODS: 1.8.4
