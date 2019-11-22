@@ -17,7 +17,12 @@
 import Foundation
 
 struct MinimumClientVersion {
-    let criticalVersion: ClientVersionInfo
-    let mandatoryVersion: ClientVersionInfo
-    let infoVersion: ClientVersionInfo
+    let critical: ClientVersionInfo
+    let mandatory: ClientVersionInfo
+    let info: ClientVersionInfo
+}
+
+// MARK: - Decodable
+// Note: CodingKeys are the same as MinimumClientVersion properties name.
+extension MinimumClientVersion: Decodable {
 }

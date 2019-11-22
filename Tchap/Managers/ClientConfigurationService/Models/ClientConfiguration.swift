@@ -19,3 +19,8 @@ import Foundation
 struct ClientConfiguration {
     let minimumClientVersion: MinimumClientVersion
 }
+
+// MARK: - Decodable
+// Note: CodingKeys are the same as ClientConfiguration properties name.
+extension ClientConfiguration: Decodable {
+}

@@ -52,7 +52,7 @@ final class ClientConfigurationServiceTests: XCTestCase {
                 
                 // Critical version
                 
-                let criticalVersion = clientConfiguration.minimumClientVersion.criticalVersion
+                let criticalVersion = clientConfiguration.minimumClientVersion.critical
                 
                 XCTAssertEqual(criticalVersion.criticity, .critical)
                 XCTAssertEqual(criticalVersion.minBundleShortVersion, "1.0.11")
@@ -60,7 +60,7 @@ final class ClientConfigurationServiceTests: XCTestCase {
                 XCTAssertEqual(criticalVersion.displayOnlyOnce, false)
                 XCTAssertEqual(criticalVersion.allowOpeningApp, false)
                 
-                let criticalMessages = clientConfiguration.minimumClientVersion.criticalVersion.messages
+                let criticalMessages = criticalVersion.messages
                 
                 let isCriticalDefaultMessageValid = criticalMessages.contains { (versionInfoMessage) -> Bool in
                     return versionInfoMessage.language == ClientVersionInfoMessage.defaultLanguageValue && versionInfoMessage.message == "A new version is available, for security reason, you've been disconnected, please update your application first"
@@ -77,7 +77,7 @@ final class ClientConfigurationServiceTests: XCTestCase {
                 
                 // Mandatory version
                 
-                let mandatoryVersion = clientConfiguration.minimumClientVersion.mandatoryVersion
+                let mandatoryVersion = clientConfiguration.minimumClientVersion.mandatory
                 
                 XCTAssertEqual(mandatoryVersion.criticity, .mandatory)
                 XCTAssertEqual(mandatoryVersion.minBundleShortVersion, "1.0.18")
@@ -85,7 +85,7 @@ final class ClientConfigurationServiceTests: XCTestCase {
                 XCTAssertEqual(mandatoryVersion.displayOnlyOnce, false)
                 XCTAssertEqual(mandatoryVersion.allowOpeningApp, true)
                 
-                let mandatoryMessages = clientConfiguration.minimumClientVersion.mandatoryVersion.messages
+                let mandatoryMessages = mandatoryVersion.messages
                 
                 let isMandatoryDefaultMessageValid = mandatoryMessages.contains { (versionInfoMessage) -> Bool in
                     return versionInfoMessage.language == "default" && versionInfoMessage.message == "A new version is available, please update your application"
@@ -101,7 +101,7 @@ final class ClientConfigurationServiceTests: XCTestCase {
                 
                 // Minimum version
                 
-                let infoVersion = clientConfiguration.minimumClientVersion.infoVersion
+                let infoVersion = clientConfiguration.minimumClientVersion.info
                 
                 XCTAssertEqual(infoVersion.criticity, .info)
                 XCTAssertEqual(infoVersion.minBundleShortVersion, "1.0.19")
@@ -109,7 +109,7 @@ final class ClientConfigurationServiceTests: XCTestCase {
                 XCTAssertEqual(infoVersion.displayOnlyOnce, true)
                 XCTAssertEqual(infoVersion.allowOpeningApp, true)
                 
-                let infoMessages = clientConfiguration.minimumClientVersion.infoVersion.messages
+                let infoMessages = infoVersion.messages
                 
                 let isInfoDefaultMessageValid = infoMessages.contains { (versionInfoMessage) -> Bool in
                     return versionInfoMessage.language == "default" && versionInfoMessage.message == "A new version is available!"

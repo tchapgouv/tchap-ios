@@ -21,6 +21,7 @@ import Foundation
 
 final class ClientConfigurationServiceFake: ClientConfigurationServiceType {
     
+    @discardableResult
     func getClientConfiguration(completion: @escaping (Result<ClientConfiguration, Error>) -> Void) -> MXHTTPOperation? {
         
         let jsonFileName = "ios-config"

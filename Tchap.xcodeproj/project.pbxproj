@@ -733,16 +733,12 @@
 		B12209BA23854F91004D069C /* ClientConfigurationServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12209AF23854F91004D069C /* ClientConfigurationServiceType.swift */; };
 		B12209BB23854F92004D069C /* ClientConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12209B123854F91004D069C /* ClientConfiguration.swift */; };
 		B12209BC23854F92004D069C /* ClientConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12209B123854F91004D069C /* ClientConfiguration.swift */; };
-		B12209BD23854F92004D069C /* ClientConfiguration+Decodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12209B223854F91004D069C /* ClientConfiguration+Decodable.swift */; };
-		B12209BE23854F92004D069C /* ClientConfiguration+Decodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12209B223854F91004D069C /* ClientConfiguration+Decodable.swift */; };
 		B12209BF23854F92004D069C /* ClientVersionInfo+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12209B323854F91004D069C /* ClientVersionInfo+Codable.swift */; };
 		B12209C023854F92004D069C /* ClientVersionInfo+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12209B323854F91004D069C /* ClientVersionInfo+Codable.swift */; };
 		B12209C123854F92004D069C /* ClientVersionInfoMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12209B423854F91004D069C /* ClientVersionInfoMessage.swift */; };
 		B12209C223854F92004D069C /* ClientVersionInfoMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12209B423854F91004D069C /* ClientVersionInfoMessage.swift */; };
 		B12209C523854F92004D069C /* MinimumClientVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12209B623854F91004D069C /* MinimumClientVersion.swift */; };
 		B12209C623854F92004D069C /* MinimumClientVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12209B623854F91004D069C /* MinimumClientVersion.swift */; };
-		B12209C723854F92004D069C /* MinimumClientVersion+Decodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12209B723854F91004D069C /* MinimumClientVersion+Decodable.swift */; };
-		B12209C823854F92004D069C /* MinimumClientVersion+Decodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12209B723854F91004D069C /* MinimumClientVersion+Decodable.swift */; };
 		B12209C923854F92004D069C /* ClientConfigurationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12209B823854F91004D069C /* ClientConfigurationService.swift */; };
 		B12209CA23854F92004D069C /* ClientConfigurationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12209B823854F91004D069C /* ClientConfigurationService.swift */; };
 		B12209D023854FCE004D069C /* AppVersionCheckerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12209CB23854FCD004D069C /* AppVersionCheckerTests.swift */; };
@@ -1344,11 +1340,9 @@
 		B12209AB23854F6A004D069C /* AppVersionChecker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppVersionChecker.swift; sourceTree = "<group>"; };
 		B12209AF23854F91004D069C /* ClientConfigurationServiceType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClientConfigurationServiceType.swift; sourceTree = "<group>"; };
 		B12209B123854F91004D069C /* ClientConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClientConfiguration.swift; sourceTree = "<group>"; };
-		B12209B223854F91004D069C /* ClientConfiguration+Decodable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ClientConfiguration+Decodable.swift"; sourceTree = "<group>"; };
 		B12209B323854F91004D069C /* ClientVersionInfo+Codable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ClientVersionInfo+Codable.swift"; sourceTree = "<group>"; };
 		B12209B423854F91004D069C /* ClientVersionInfoMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClientVersionInfoMessage.swift; sourceTree = "<group>"; };
 		B12209B623854F91004D069C /* MinimumClientVersion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MinimumClientVersion.swift; sourceTree = "<group>"; };
-		B12209B723854F91004D069C /* MinimumClientVersion+Decodable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MinimumClientVersion+Decodable.swift"; sourceTree = "<group>"; };
 		B12209B823854F91004D069C /* ClientConfigurationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClientConfigurationService.swift; sourceTree = "<group>"; };
 		B12209CB23854FCD004D069C /* AppVersionCheckerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppVersionCheckerTests.swift; sourceTree = "<group>"; };
 		B12209CC23854FCE004D069C /* ClientConfigurationServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClientConfigurationServiceTests.swift; sourceTree = "<group>"; };
@@ -2559,9 +2553,7 @@
 			isa = PBXGroup;
 			children = (
 				B12209B123854F91004D069C /* ClientConfiguration.swift */,
-				B12209B223854F91004D069C /* ClientConfiguration+Decodable.swift */,
 				B12209B623854F91004D069C /* MinimumClientVersion.swift */,
-				B12209B723854F91004D069C /* MinimumClientVersion+Decodable.swift */,
 				B15FE5F423858D4100D2A5B2 /* ClientVersionInfo.swift */,
 				B12209B323854F91004D069C /* ClientVersionInfo+Codable.swift */,
 				B12209B423854F91004D069C /* ClientVersionInfoMessage.swift */,
@@ -4225,7 +4217,6 @@
 				B12FD6AC2146BA45001B7F28 /* RegistrationServiceType.swift in Sources */,
 				B1C0EE892375B7F400E8BB88 /* ChangePasswordNewPasswordCoordinatorType.swift in Sources */,
 				B165252221779FA700146F80 /* CreateNewDiscussionCoordinator.swift in Sources */,
-				B12209BD23854F92004D069C /* ClientConfiguration+Decodable.swift in Sources */,
 				B1F2AAA1212AED170077FDC0 /* RoomsCoordinator.swift in Sources */,
 				0250C4A02122B68000034691 /* WidgetManager.m in Sources */,
 				B1C0EE8D2375B7F400E8BB88 /* ChangePasswordNewPasswordCoordinator.swift in Sources */,
@@ -4330,7 +4321,6 @@
 				B1F2AAAC212AED900077FDC0 /* NavigationRouter.swift in Sources */,
 				B1F2AAB0212AED900077FDC0 /* NavigationRouterType.swift in Sources */,
 				02C4BE842252278400F7BB0E /* DiscussionFinder.swift in Sources */,
-				B12209C723854F92004D069C /* MinimumClientVersion+Decodable.swift in Sources */,
 				B1322FF3213002580054A9DD /* AuthenticationErrorPresentableMaker.swift in Sources */,
 				B1C0EE732375B7A000E8BB88 /* ChangePasswordCurrentPasswordCoordinatorType.swift in Sources */,
 				0234A9A3225BD0D000E8E489 /* FormCheckBoxModelType.swift in Sources */,
@@ -4718,9 +4708,7 @@
 				02DFEBFB21C07370009B6F15 /* EncryptionInfoView.m in Sources */,
 				0259328922AFE8A500C93762 /* PasswordPolicyServiceType.swift in Sources */,
 				02DFEBFC21C07370009B6F15 /* TextInputHandler.swift in Sources */,
-				B12209BE23854F92004D069C /* ClientConfiguration+Decodable.swift in Sources */,
 				02DFEBFD21C07370009B6F15 /* HomeViewController.swift in Sources */,
-				B12209C823854F92004D069C /* MinimumClientVersion+Decodable.swift in Sources */,
 				02DFEBFE21C07370009B6F15 /* Coordinator.swift in Sources */,
 				B1C0EE702375B7A000E8BB88 /* ChangePasswordCurrentPasswordCoordinator.swift in Sources */,
 				B122099F23854F11004D069C /* Images.swift in Sources */,

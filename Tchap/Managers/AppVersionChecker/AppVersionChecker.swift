@@ -82,6 +82,7 @@ final class AppVersionChecker: AppVersionCheckerType {
         }
     }
     
+    @discardableResult
     func checkAppVersion(_ appVersion: AppVersion, completion: @escaping (AppVersionCheckerResult) -> Void) -> MXHTTPOperation? {
         return self.internalCheckVersion(appVersion) { (fetchResult) in
             switch fetchResult {
@@ -140,16 +141,16 @@ final class AppVersionChecker: AppVersionCheckerType {
         
         let appVersionCheckerResult: AppVersionCheckerResult
         
-        let criticalAppVersion = self.appVersion(from: minimumClientVersion.criticalVersion)
-        let mandatoryAppVersion = self.appVersion(from: minimumClientVersion.mandatoryVersion)
-        let infoAppVersion = self.appVersion(from: minimumClientVersion.infoVersion)
+        let criticalAppVersion = self.appVersion(from: minimumClientVersion.critical)
+        let mandatoryAppVersion = self.appVersion(from: minimumClientVersion.mandatory)
+        let infoAppVersion = self.appVersion(from: minimumClientVersion.info)
         
         if appVersion.compare(criticalAppVersion) == .orderedAscending {
-            appVersionCheckerResult = .shouldUpdate(versionInfo: minimumClientVersion.criticalVersion)
+            appVersionCheckerResult = .shouldUpdate(versionInfo: minimumClientVersion.critical)
         } else if appVersion.compare(mandatoryAppVersion) == .orderedAscending {
-            appVersionCheckerResult = .shouldUpdate(versionInfo: minimumClientVersion.mandatoryVersion)
+            appVersionCheckerResult = .shouldUpdate(versionInfo: minimumClientVersion.mandatory)
         } else if appVersion.compare(infoAppVersion) == .orderedAscending {
-            appVersionCheckerResult = .shouldUpdate(versionInfo: minimumClientVersion.infoVersion)
+            appVersionCheckerResult = .shouldUpdate(versionInfo: minimumClientVersion.info)
         } else {
             appVersionCheckerResult = .upToDate
         }
