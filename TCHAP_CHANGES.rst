@@ -1,3 +1,12 @@
+Changes in Tchap 1.0.19 (2019-11-25)
+===================================================
+
+Bug Fixes:
+ * Reply to: replace the matrix id with the member display name #236
+ * Join a federated public room failed #262
+ * KeyChain is not updated in case of Change Password #188
+ * Several DM invites may be sent to the same users #260
+
 Changes in Tchap 1.0.18 (2019-11-01)
 ===================================================
 
