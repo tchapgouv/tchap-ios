@@ -1887,7 +1887,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
             currentCallViewController.playRingtone = !isCallKitEnabled;
             currentCallViewController.mxCall = mxCall;
             currentCallViewController.delegate = self;
-
+            
             UIApplicationState applicationState = UIApplication.sharedApplication.applicationState;
             
             // App has been woken by PushKit notification in the background
@@ -1897,7 +1897,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
                 // Without CallKit this will allow us to play vibro until the call was ended
                 // With CallKit we'll inform the system when the call is ended to let the system terminate our app to save resources
                 id<MXBackgroundModeHandler> handler = [MXSDKOptions sharedInstance].backgroundModeHandler;
-                NSUInteger callTaskIdentifier = [handler startBackgroundTaskWithName:nil completion:^{}];
+                id<MXBackgroundTask> callBackgroundTask = [handler startBackgroundTaskWithName:@"[AppDelegate] addMatrixCallObserver" expirationHandler:nil];
                 
                 // Start listening for call state change notifications
                 __weak NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
@@ -1912,12 +1912,11 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
                                                                                          // Set call vc to nil to let our app handle new incoming calls even it wasn't killed by the system
                                                                                          currentCallViewController = nil;
                                                                                          [notificationCenter removeObserver:token];
-                                                                                         
-                                                                                         [handler endBackgrounTaskWithIdentifier:callTaskIdentifier];
+                                                                                         [callBackgroundTask stop];
                                                                                      }
                                                                                  }];
             }
-
+            
             if (mxCall.isIncoming && isCallKitEnabled)
             {
                 // Let's CallKit display the system incoming call screen
@@ -1928,13 +1927,13 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
                                                                                       queue:nil
                                                                                  usingBlock:^(NSNotification * _Nonnull note) {
                                                                                      MXCall *call = (MXCall *)note.object;
-
+                                                                                     
                                                                                      NSLog(@"[AppDelegate] call.state: %@", call);
-
+                                                                                     
                                                                                      if (call.state == MXCallStateCreateAnswer)
                                                                                      {
                                                                                          [notificationCenter removeObserver:token];
-
+                                                                                         
                                                                                          NSLog(@"[AppDelegate] presentCallViewController");
                                                                                          [self presentCallViewController:NO completion:nil];
                                                                                      }

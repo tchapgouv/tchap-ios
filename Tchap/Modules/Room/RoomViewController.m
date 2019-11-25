@@ -1307,13 +1307,24 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
  */
 - (void)createOrRestoreDiscussionIfNeeded:(void (^)(BOOL success))onComplete
 {
+    // Disable the input tool bar during this operation. This prevents us from creating several discussions, or
+    // trying to send several invites.
+    self.inputToolbarView.userInteractionEnabled = false;
+    
+    void(^completion)(BOOL) = ^(BOOL success) {
+        self.inputToolbarView.userInteractionEnabled = true;
+        if (onComplete) {
+            onComplete(success);
+        }
+    };
+    
     if (self.discussionTargetUser)
     {
-        [self createDiscussionWithUser:self.discussionTargetUser completion:onComplete];
+        [self createDiscussionWithUser:self.discussionTargetUser completion:completion];
     }
     else
     {
-        [self restoreDiscussionIfNeed:onComplete];
+        [self restoreDiscussionIfNeed:completion];
     }
 }
 

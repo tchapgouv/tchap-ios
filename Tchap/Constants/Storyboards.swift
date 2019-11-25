@@ -58,6 +58,16 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Tchap.AuthenticationViewController>(storyboard: AuthenticationViewController.self)
   }
+  internal enum ChangePasswordCurrentPasswordViewController: StoryboardType {
+    internal static let storyboardName = "ChangePasswordCurrentPasswordViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.ChangePasswordCurrentPasswordViewController>(storyboard: ChangePasswordCurrentPasswordViewController.self)
+  }
+  internal enum ChangePasswordNewPasswordViewController: StoryboardType {
+    internal static let storyboardName = "ChangePasswordNewPasswordViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.ChangePasswordNewPasswordViewController>(storyboard: ChangePasswordNewPasswordViewController.self)
+  }
   internal enum ContactsViewController: StoryboardType {
     internal static let storyboardName = "ContactsViewController"
 
