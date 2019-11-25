@@ -38,4 +38,14 @@ protocol AppVersionCheckerStoreType {
     ///
     /// - Returns: Last ClientVersionInfo displayed to user as update or nil.
     func getLastDisplayedClientVersionInfo() -> ClientVersionInfo?
+    
+    /// Save the date when the last ClientVersionInfo has been displayed to user.
+    ///
+    /// - Parameter date: the date.
+    func saveLastDisplayedClientVersionDate(_ date: Date)
+    
+    /// Get the date when the last ClientVersionInfo has been displayed to user.
+    ///
+    /// - Returns: the date.
+    func getLastDisplayedClientVersionDate() -> Date?
 }

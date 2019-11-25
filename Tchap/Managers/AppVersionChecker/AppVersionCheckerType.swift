@@ -35,9 +35,15 @@ protocol AppVersionCheckerType {
     @discardableResult
     func checkAppVersion(_ appVersion: AppVersion, completion: @escaping (AppVersionCheckerResult) -> Void) -> MXHTTPOperation?
     
-    /// Check if an update information has already been displayed to user.
+    /// Check if an update information has already been displayed to the user.
     ///
     /// - Parameter versionInfo: The ClientInfoVersion to check.
     /// - Returns: true if the ClientInfoVersion has already been displayed.
     func isClientVersionInfoAlreadyDisplayed(_ versionInfo: ClientVersionInfo) -> Bool
+    
+    /// Check if an update information has already been displayed today to the user.
+    ///
+    /// - Parameter versionInfo: The ClientInfoVersion to check.
+    /// - Returns: true if the ClientInfoVersion has already been displayed today.
+    func isClientVersionInfoAlreadyDisplayedToday(_ versionInfo: ClientVersionInfo) -> Bool
 }

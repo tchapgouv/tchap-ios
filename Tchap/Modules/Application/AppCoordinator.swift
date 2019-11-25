@@ -207,6 +207,7 @@ final class AppCoordinator: AppCoordinatorType {
                 break
             case .shouldUpdate(versionInfo: let versionInfo):
                 print("[AppCoordinator] App should be upated with \(versionInfo)")
+                self.presentApplicationUpdate(with: versionInfo)
             }
             self.pendingCheckAppVersionOperation = nil
         }
@@ -526,6 +527,9 @@ final class AppCoordinator: AppCoordinatorType {
         if versionInfo.displayOnlyOnce && self.appVersionChecker.isClientVersionInfoAlreadyDisplayed(versionInfo) {
             print("[AppCoordinor] AppVersionUpdateCoordinator already presented for versionInfo: \(versionInfo)")
             return
+        } else if versionInfo.allowOpeningApp && self.appVersionChecker.isClientVersionInfoAlreadyDisplayedToday(versionInfo) {
+            print("[AppCoordinor] AppVersionUpdateCoordinator already presented today for versionInfo: \(versionInfo)")
+            return
         }
         
         let appVersionUpdateCoordinator = AppVersionUpdateCoordinator(rootRouter: self.rootRouter, versionInfo: versionInfo)
@@ -535,6 +539,7 @@ final class AppCoordinator: AppCoordinatorType {
         self.appVersionUpdateCoordinator = appVersionUpdateCoordinator
         
         self.appVersionCheckerStore.saveLastDisplayedClientVersionInfo(versionInfo)
+        self.appVersionCheckerStore.saveLastDisplayedClientVersionDate(Calendar.current.startOfDay(for: Date()))
     }
 }
 

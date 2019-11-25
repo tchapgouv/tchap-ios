@@ -28,7 +28,7 @@ internal enum TchapL10n {
   internal static let appVersionUpdateLaterAction = TchapL10n.tr("Tchap", "app_version_update_later_action")
   /// Une nouvelle version est disponible, veuillez mettre à jour votre application.
   internal static let appVersionUpdateMandatoryUpdateMessageFallback = TchapL10n.tr("Tchap", "app_version_update_mandatory_update_message_fallback")
-  /// Ouvrir dans l'App Store
+  /// Ouvrir l'App Store
   internal static let appVersionUpdateOpenAppStoreAction = TchapL10n.tr("Tchap", "app_version_update_open_app_store_action")
   /// Cette adresse email est déjà utilisée
   internal static let authenticationErrorEmailInUse = TchapL10n.tr("Tchap", "authentication_error_email_in_use")

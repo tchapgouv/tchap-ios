@@ -28,7 +28,7 @@ final class AppVersionChecker: AppVersionCheckerType {
     
     private enum Constants {
         static let lastAppVersionCheckDateUserDefaultsKey = "AppVersionChecker_LastCurrentAppVersionCheckDate"
-        static let appVersionRemoteFetchMinDelay: TimeInterval = 86_400_000
+        static let appVersionRemoteFetchMinDelay: TimeInterval = 86_400
     }
     
     // MARK: - Properties
@@ -70,7 +70,8 @@ final class AppVersionChecker: AppVersionCheckerType {
         return self.internalCheckVersion(currentAppVersion) { (fetchResult) in
             switch fetchResult {
             case .remote(result: let versionResult):
-                self.lastAppVersionCheckDate = Date()
+                // Store the today date at midnight
+                self.lastAppVersionCheckDate = Calendar.current.startOfDay(for: Date())
                 self.appVersionCheckerStore.saveLastResult(versionResult)
                 completion(versionResult)
             case .cache(result: let versionResult):
@@ -106,6 +107,19 @@ final class AppVersionChecker: AppVersionCheckerType {
         return appVersion.compare(lastDisplayedAppVersionUpdate) == .orderedSame
     }
     
+    func isClientVersionInfoAlreadyDisplayedToday(_ versionInfo: ClientVersionInfo) -> Bool {
+        guard let lastDisplayedUpdateVersionInfo = self.appVersionCheckerStore.getLastDisplayedClientVersionInfo(), let lastDisplayedUpdateVersionDate = self.appVersionCheckerStore.getLastDisplayedClientVersionDate() else {
+            return false
+        }
+        let appVersion = self.appVersion(from: versionInfo)
+        let lastDisplayedAppVersionUpdate = self.appVersion(from: lastDisplayedUpdateVersionInfo)
+        if appVersion.compare(lastDisplayedAppVersionUpdate) == .orderedSame {
+            return -lastDisplayedUpdateVersionDate.timeIntervalSinceNow < 86_400
+        } else {
+            return false
+        }
+    }
+    
     // MARK: - Private
     
     private func internalCheckVersion(_ appVersion: AppVersion, completion: @escaping (AppVersionCheckerFetchResult) -> Void) -> MXHTTPOperation? {
@@ -131,10 +145,6 @@ final class AppVersionChecker: AppVersionCheckerType {
         }
         
         return httpOperation
-    }
-    
-    private func getLastAppVersionCheckerResultCached() -> AppVersionCheckerResult {
-        return self.appVersionCheckerStore.getLastResult() ?? AppVersionCheckerResult.unknown
     }
     
     private func checkAppVersion(_ appVersion: AppVersion, with minimumClientVersion: MinimumClientVersion) -> AppVersionCheckerResult {

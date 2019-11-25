@@ -33,16 +33,18 @@ extension ClientVersionInfo: Codable {
         
         let criticityOptional: ClientVersionInfoCriticity?
         
-        // Decode from WS
-        if let criticityString = decoder.codingPath.last?.stringValue {
+        // Decode from UserDefaults
+        if let storedCriticity = try container.decodeIfPresent(ClientVersionInfoCriticity.self, forKey: .criticity) {
+            criticityOptional = storedCriticity
+        } else if let criticityString = decoder.codingPath.last?.stringValue {
+            // Decode from WS
             criticityOptional = ClientVersionInfoCriticity(rawValue: criticityString)
         } else {
-            // Decode from UserDefaults
-            criticityOptional = try container.decodeIfPresent(ClientVersionInfoCriticity.self, forKey: .criticity)
+            criticityOptional = nil
         }
     
         guard let criticity = criticityOptional  else {
-            throw DecodingError.dataCorruptedError(forKey: .criticity, in: container, debugDescription: "Cannot initialize criticty")
+            throw DecodingError.dataCorruptedError(forKey: .criticity, in: container, debugDescription: "Cannot initialize criticity")
         }
         
         let minBundleShortVersion = try container.decode(String.self, forKey: .minBundleShortVersion)

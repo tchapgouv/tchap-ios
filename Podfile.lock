@@ -122,9 +122,8 @@ SPEC REPOS:
     - Realm
     - Reusable
     - RxSwift
-    - SwiftLint
-  trunk:
     - SwiftGen
+    - SwiftLint
 
 EXTERNAL SOURCES:
   MatrixKit:
@@ -160,7 +159,7 @@ SPEC CHECKSUMS:
   libbase58: 7c040313537b8c44b6e2d15586af8e21f7354efd
   libPhoneNumber-iOS: 0a32a9525cf8744fe02c5206eb30d571e38f7d75
   MatomoTracker: 6f89e2561083685a360e223fb663e9ccd57c1d1a
-  MatrixKit: 7f681c9086509a4f5e6e7172ce00f552cba1f8bc
+  MatrixKit: 68632c9c413f99330af553dc0d08ce93287aeb00
   MatrixSDK: 342384d62bac5d95a31a7dab79e5f687bd87ddca
   OLMKit: 4ee0159d63feeb86d836fdcfefe418e163511639
   Realm: 5a1d9d47bfc101dd597668b1a8af4288a2557f6d

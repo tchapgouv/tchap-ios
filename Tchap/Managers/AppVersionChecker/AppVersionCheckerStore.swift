@@ -23,6 +23,7 @@ final class AppVersionCheckerStore: AppVersionCheckerStoreType {
     private enum UserDefaultsKeys {
         static let lastAppVersionCheckerResult = "AppVersionCheckerStore_LastAppVersionCheckerResult"
         static let lastDisplayedClientVersionInfo = "AppVersionCheckerStore_LastDisplayedClientVersionInfo"
+        static let lastDisplayedClientVersionDate = "AppVersionCheckerStore_LastDisplayedClientVersionDate"
     }
     
     // MARK: - Public
@@ -57,5 +58,13 @@ final class AppVersionCheckerStore: AppVersionCheckerStoreType {
             return nil
         }
         return try? JSONDecoder().decode(ClientVersionInfo.self, from: appVersionInfoData)
+    }
+    
+    func saveLastDisplayedClientVersionDate(_ date: Date) {
+        UserDefaults.standard.set(date, forKey: UserDefaultsKeys.lastDisplayedClientVersionDate)
+    }
+    
+    func getLastDisplayedClientVersionDate() -> Date? {
+        return UserDefaults.standard.object(forKey: UserDefaultsKeys.lastDisplayedClientVersionDate) as? Date
     }
 }
