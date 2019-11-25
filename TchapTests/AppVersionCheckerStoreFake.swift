@@ -34,4 +34,11 @@ final class AppVersionCheckerStoreFake: AppVersionCheckerStoreType {
     func getLastDisplayedClientVersionInfo() -> ClientVersionInfo? {
         return nil
     }
+    
+    func saveLastDisplayedClientVersionDate(_ date: Date) {
+    }
+    
+    func getLastDisplayedClientVersionDate() -> Date? {
+        return nil;
+    }
 }
