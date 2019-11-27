@@ -85,7 +85,7 @@ PODS:
   - Reusable/Storyboard (4.1.0)
   - Reusable/View (4.1.0)
   - RxSwift (4.5.0)
-  - SwiftGen (5.3.0)
+  - SwiftGen (6.1.0)
   - SwiftLint (0.33.1)
   - SwiftUTI (1.0.7)
 
@@ -101,12 +101,12 @@ DEPENDENCIES:
   - OLMKit
   - Reusable (~> 4.1)
   - RxSwift (~> 4.3)
-  - SwiftGen (~> 5.3)
+  - SwiftGen (~> 6.1)
   - SwiftLint (~> 0.27)
   - SwiftUTI (from `https://github.com/speramusinc/SwiftUTI.git`, branch `master`)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  https://github.com/CocoaPods/Specs.git:
     - AFNetworking
     - cmark
     - DTCoreText
@@ -165,10 +165,10 @@ SPEC CHECKSUMS:
   Realm: 5a1d9d47bfc101dd597668b1a8af4288a2557f6d
   Reusable: 82be188f29d96dc5eff0db7b2393bcc08d2cdd5b
   RxSwift: f172070dfd1a93d70a9ab97a5a01166206e1c575
-  SwiftGen: 4379bd3640b0a212a0f6ea3c494adba385513d10
+  SwiftGen: f872ca75cbd17bf7103c17f13dcfa0d9a15667b0
   SwiftLint: 9fc1143bbacec37f94994a7d0d2a85b2154b6294
   SwiftUTI: 917993c124f8eac25e88ced0202fc58d7eb50fa8
 
-PODFILE CHECKSUM: 3fe597137da7f3cfa20d3a54e23106a9348d6c0c
+PODFILE CHECKSUM: 7c608941e00b0e565e1d4fe58bb95d331f3d7194
 
-COCOAPODS: 1.7.4
+COCOAPODS: 1.8.4

@@ -55,7 +55,7 @@ abstract_target 'TchapPods' do
     pod 'DTCoreText', :inhibit_warnings => true
     
     # Build tools
-    pod 'SwiftGen', '~> 5.3'
+    pod 'SwiftGen', '~> 6.1'
     pod 'SwiftLint', '~> 0.27'
 
     target "Tchap" do

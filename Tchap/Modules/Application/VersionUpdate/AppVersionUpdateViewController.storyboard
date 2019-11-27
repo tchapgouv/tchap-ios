@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="RIL-dr-Jif">
+    <device id="retina4_0" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--App Version Update View Controller-->
+        <scene sceneID="qW2-Os-pMZ">
+            <objects>
+                <viewController id="RIL-dr-Jif" customClass="AppVersionUpdateViewController" customModule="Tchap" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="HUs-aT-rba">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="TchapLogo" translatesAutoresizingMaskIntoConstraints="NO" id="w5L-Zk-vDw">
+                                <rect key="frame" x="110" y="100.5" width="100" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="w5L-Zk-vDw" secondAttribute="height" multiplier="1:1" id="R3b-by-9hb"/>
+                                    <constraint firstAttribute="height" constant="100" id="W3p-fy-vRH"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JS1-Qx-9Sy">
+                                <rect key="frame" x="20" y="240.5" width="280" height="107.5"/>
+                                <string key="text">Une nouvelle version est disponible. Pour des raisons de sécurité, veuillez mettre à jour votre application avant de poursuivre son utilisation.</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <color key="textColor" red="0.086274509799999996" green="0.1764705882" blue="0.34509803919999998" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="AtI-8T-5fZ">
+                                <rect key="frame" x="27" y="504" width="273" height="44"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YXV-kx-dM6">
+                                        <rect key="frame" x="0.0" y="0.0" width="72" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="VHv-yk-Lhb"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
+                                        <state key="normal" title="Ignorer"/>
+                                        <connections>
+                                            <action selector="cancelButtonAction:" destination="RIL-dr-Jif" eventType="touchUpInside" id="xiB-de-oYq"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pcO-ye-zop">
+                                        <rect key="frame" x="82" y="0.0" width="191" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="Dkg-lG-9n2"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                                        <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
+                                        <state key="normal" title="Ouvrir dans l'App Store"/>
+                                        <connections>
+                                            <action selector="openAppStoreButtonAction:" destination="RIL-dr-Jif" eventType="touchUpInside" id="Hjb-T0-38h"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="JS1-Qx-9Sy" firstAttribute="top" secondItem="w5L-Zk-vDw" secondAttribute="bottom" constant="40" id="0uo-pm-TR2"/>
+                            <constraint firstItem="JS1-Qx-9Sy" firstAttribute="leading" secondItem="jiY-J2-aEc" secondAttribute="leading" constant="20" id="3Bp-qE-4Bb"/>
+                            <constraint firstItem="jiY-J2-aEc" firstAttribute="bottom" secondItem="AtI-8T-5fZ" secondAttribute="bottom" constant="20" id="E0J-JQ-kpw"/>
+                            <constraint firstItem="jiY-J2-aEc" firstAttribute="trailing" secondItem="AtI-8T-5fZ" secondAttribute="trailing" constant="20" id="Iab-Vo-lRg"/>
+                            <constraint firstItem="AtI-8T-5fZ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="jiY-J2-aEc" secondAttribute="leading" constant="20" id="P45-qU-pqU"/>
+                            <constraint firstItem="AtI-8T-5fZ" firstAttribute="top" relation="greaterThanOrEqual" secondItem="JS1-Qx-9Sy" secondAttribute="bottom" constant="10" id="PS4-PP-AGV"/>
+                            <constraint firstItem="JS1-Qx-9Sy" firstAttribute="centerY" secondItem="jiY-J2-aEc" secondAttribute="centerY" priority="750" id="VLK-He-a1J"/>
+                            <constraint firstItem="jiY-J2-aEc" firstAttribute="trailing" secondItem="JS1-Qx-9Sy" secondAttribute="trailing" constant="20" id="WBm-C0-bXA"/>
+                            <constraint firstItem="w5L-Zk-vDw" firstAttribute="centerX" secondItem="jiY-J2-aEc" secondAttribute="centerX" id="fgS-1Z-fQo"/>
+                            <constraint firstItem="w5L-Zk-vDw" firstAttribute="top" relation="greaterThanOrEqual" secondItem="jiY-J2-aEc" secondAttribute="top" constant="20" id="oYp-wU-gYL"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="jiY-J2-aEc"/>
+                    </view>
+                    <connections>
+                        <outlet property="appStoreButton" destination="pcO-ye-zop" id="dMd-1g-cis"/>
+                        <outlet property="cancelButton" destination="YXV-kx-dM6" id="9ej-ag-a6Y"/>
+                        <outlet property="messageLabel" destination="JS1-Qx-9Sy" id="5mm-8r-o8z"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="EZa-Ab-KFN" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-139.13043478260872" y="-9.375"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="TchapLogo" width="160" height="160"/>
+    </resources>
+</document>

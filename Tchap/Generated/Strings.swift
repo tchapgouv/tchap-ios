@@ -1,11 +1,14 @@
-// Generated using SwiftGen, by O.Halligon — https://github.com/SwiftGen/SwiftGen
+// swiftlint:disable all
+// Generated using SwiftGen — https://github.com/SwiftGen/SwiftGen
 
 import Foundation
 
 // swiftlint:disable superfluous_disable_command
 // swiftlint:disable file_length
 
-// swiftlint:disable identifier_name line_length type_body_length
+// MARK: - Strings
+
+// swiftlint:disable function_parameter_count identifier_name line_length type_body_length
 internal enum TchapL10n {
   /// Annuler
   internal static let actionCancel = TchapL10n.tr("Tchap", "action_cancel")
@@ -15,6 +18,18 @@ internal enum TchapL10n {
   internal static let actionNext = TchapL10n.tr("Tchap", "action_next")
   /// Valider
   internal static let actionValidate = TchapL10n.tr("Tchap", "action_validate")
+  /// Une nouvelle version est disponible. Pour des raisons de sécurité, veuillez mettre à jour votre application avant de poursuivre son utilisation.
+  internal static let appVersionUpdateCriticalUpdateMessageFallback = TchapL10n.tr("Tchap", "app_version_update_critical_update_message_fallback")
+  /// Ignorer
+  internal static let appVersionUpdateIgnoreAction = TchapL10n.tr("Tchap", "app_version_update_ignore_action")
+  /// Une nouvelle version est disponible. Nous vous invitons à  mettre à jour votre application.
+  internal static let appVersionUpdateInfoUpdateMessageFallback = TchapL10n.tr("Tchap", "app_version_update_info_update_message_fallback")
+  /// Plus tard
+  internal static let appVersionUpdateLaterAction = TchapL10n.tr("Tchap", "app_version_update_later_action")
+  /// Une nouvelle version est disponible, veuillez mettre à jour votre application.
+  internal static let appVersionUpdateMandatoryUpdateMessageFallback = TchapL10n.tr("Tchap", "app_version_update_mandatory_update_message_fallback")
+  /// Ouvrir l'App Store
+  internal static let appVersionUpdateOpenAppStoreAction = TchapL10n.tr("Tchap", "app_version_update_open_app_store_action")
   /// Cette adresse email est déjà utilisée
   internal static let authenticationErrorEmailInUse = TchapL10n.tr("Tchap", "authentication_error_email_in_use")
   /// L'adresse email ne semble pas valide
@@ -312,10 +327,13 @@ internal enum TchapL10n {
   /// Bienvenue dans Tchap
   internal static let welcomeTitle = TchapL10n.tr("Tchap", "welcome_title")
 }
-// swiftlint:enable identifier_name line_length type_body_length
+// swiftlint:enable function_parameter_count identifier_name line_length type_body_length
+
+// MARK: - Implementation Details
 
 extension TchapL10n {
   private static func tr(_ table: String, _ key: String, _ args: CVarArg...) -> String {
+    // swiftlint:disable:next nslocalizedstring_key
     let format = NSLocalizedString(key, tableName: table, bundle: Bundle(for: BundleToken.self), comment: "")
     return String(format: format, locale: Locale.current, arguments: args)
   }

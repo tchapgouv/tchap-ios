@@ -30,5 +30,20 @@ protocol RootRouterType: class {
     /// - Parameters:
     ///     - animated: Specify true to animate the transition.
     ///     - completion: The closure executed after the view controller is dismissed.
+    func dismissRootModule(animated: Bool, completion: (() -> Void)?)
+    
+    /// Present modally a view controller on the root view controller
+    ///
+    /// - Parameters:
+    ///   - module: Specify true to animate the transition.
+    ///   - animated: Specify true to animate the transition.
+    ///   - completion: Animation completion.
+    func presentModule(_ module: Presentable, animated: Bool, completion: (() -> Void)?)
+    
+    /// Dismiss modally presented view controller from root view controller
+    ///
+    /// - Parameters:
+    ///   - animated: Specify true to animate the transition.
+    ///   - completion: Animation completion.
     func dismissModule(animated: Bool, completion: (() -> Void)?)
 }

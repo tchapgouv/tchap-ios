@@ -48,6 +48,6 @@ final class SelectableContactCell: ContactCell {
     // MARK: - Private
     
     private func toggleCheckmarkImage() {
-        self.checkMarkImageView.image = self.checkmarkEnabled ? Asset.Images.Common.selectionTick.image : Asset.Images.Common.selectionUntick.image
+        self.checkMarkImageView.image = self.checkmarkEnabled ? Asset.Images.selectionTick.image : Asset.Images.selectionUntick.image
     }
 }

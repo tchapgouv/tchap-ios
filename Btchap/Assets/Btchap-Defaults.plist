@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>clientConfigURL</key>
+	<string>https://www.tchap.gouv.fr/client/config/preprod/ios</string>
 	<key>tacURL</key>
 	<string>https://www.tchap.gouv.fr/tac.html</string>
 	<key>appGroupId</key>

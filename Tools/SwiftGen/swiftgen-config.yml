@@ -1,0 +1,36 @@
+input_dir: ../../
+output_dir: ../../
+ib:  
+  inputs: 
+    - Tchap/Modules/
+  filter: ^((?!DeactivateAccountViewController|ContactsViewController).)*\.(storyboard)
+  outputs:
+    - templateName: scenes-swift4
+      output: Tchap/Generated/Storyboards.swift
+strings:
+  inputs: Tchap/Assets/Localizations/fr.lproj/Tchap.strings
+  outputs:
+    - templateName: flat-swift4
+      output: Tchap/Generated/Strings.swift
+      params:
+        enumName: TchapL10n
+xcassets:  
+  inputs:
+    - Tchap/Assets/Images.xcassets  
+    - Tchap/Assets/SharedImages.xcassets
+  outputs:  
+    - templateName: swift4
+      output: Tchap/Generated/Images.swift
+plist:
+  - inputs: Tchap/Assets/Tchap-Defaults.plist
+    outputs:
+      templateName: runtime-swift4
+      output: Tchap/Generated/TchapDefaults.swift
+      params:
+        enumName: TchapDefaults
+  - inputs: BTchap/Assets/Btchap-Defaults.plist
+    outputs:
+      templateName: runtime-swift4
+      output: BTchap/Generated/TchapDefaults.swift
+      params:
+        enumName: TchapDefaults
