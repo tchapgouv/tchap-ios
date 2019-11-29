@@ -107,23 +107,24 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
-    - AFNetworking
     - cmark
     - DTCoreText
     - DTFoundation
     - GBDeviceInfo
+    - MatomoTracker
+    - OLMKit
+    - Reusable
+    - RxSwift
+    - SwiftGen
+    - SwiftLint
+  trunk:
+    - AFNetworking
     - GZIP
     - HPGrowingTextView
     - JitsiMeetSDK
     - libbase58
     - libPhoneNumber-iOS
-    - MatomoTracker
-    - OLMKit
     - Realm
-    - Reusable
-    - RxSwift
-    - SwiftGen
-    - SwiftLint
 
 EXTERNAL SOURCES:
   MatrixKit:
@@ -138,10 +139,10 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   MatrixKit:
-    :commit: 865b69aabcbc23765b5cfb707fc08194c4160635
+    :commit: 6b7d7caafbd9bcea2ad4cf6ce6415886c7979111
     :git: https://github.com/matrix-org/matrix-ios-kit.git
   MatrixSDK:
-    :commit: ac4aff6630827c206f09ab60b72be636385ee2cc
+    :commit: edcdbee8bd0ee2e3c018ec42777a0cf0e3287dff
     :git: https://github.com/matrix-org/matrix-ios-sdk.git
   SwiftUTI:
     :commit: c21237f13e9fb31a07f3fcd5243c5cf79d75901c
@@ -159,7 +160,7 @@ SPEC CHECKSUMS:
   libbase58: 7c040313537b8c44b6e2d15586af8e21f7354efd
   libPhoneNumber-iOS: 0a32a9525cf8744fe02c5206eb30d571e38f7d75
   MatomoTracker: 6f89e2561083685a360e223fb663e9ccd57c1d1a
-  MatrixKit: 68632c9c413f99330af553dc0d08ce93287aeb00
+  MatrixKit: 7f681c9086509a4f5e6e7172ce00f552cba1f8bc
   MatrixSDK: 342384d62bac5d95a31a7dab79e5f687bd87ddca
   OLMKit: 4ee0159d63feeb86d836fdcfefe418e163511639
   Realm: 5a1d9d47bfc101dd597668b1a8af4288a2557f6d
