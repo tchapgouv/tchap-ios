@@ -1,5 +1,5 @@
 /*
- Copyright 2018 Vector Creations Ltd
+ Copyright 2019 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -35,34 +35,12 @@ class RoomsRoomCell: RoomsCell {
     override func render(_ cellData: MXKCellData!) {
         super.render(cellData)
         
-        self.lastEventSenderName.text = nil
-        
-        guard let session = self.roomCellData?.recentsDataSource?.mxSession else {
-            return
-        }
-        
-        // Adjust last sender name
-        if let senderId = self.roomCellData?.lastEvent?.sender {
-            // Try to find user in local session
-            let senderUser: User
-            let userService = UserService(session: session)
-            
-            if let userFromSession = userService.getUserFromLocalSession(with: senderId) {
-                senderUser = userFromSession
-            } else {
-                senderUser = userService.buildTemporaryUser(from: senderId)
-            }
-            let displayNameComponents = DisplayNameComponents(displayName: senderUser.displayName)
-            self.lastEventSenderName.text = displayNameComponents.name
-        }
-        
         // Set the right avatar border
         self.updateAvatarView()
     }
     
     override func update(style: Style) {
         super.update(style: style)
-        self.lastEventSenderName.textColor = style.primaryTextColor
     }
     
     private func updateAvatarView () {

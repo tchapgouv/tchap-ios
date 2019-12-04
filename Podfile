@@ -38,6 +38,24 @@ def import_MatrixKit
     end 
 end
 
+# Method to import the right MatrixKit/AppExtension flavour
+def import_MatrixKitAppExtension
+    if $matrixKitVersion == 'local'
+        pod 'MatrixSDK', :path => '../matrix-ios-sdk/MatrixSDK.podspec'
+        pod 'MatrixSDK/SwiftSupport', :path => '../matrix-ios-sdk/MatrixSDK.podspec'
+        pod 'MatrixKit/AppExtension', :path => '../matrix-ios-kit/MatrixKit.podspec'
+    else
+        if $matrixKitVersion == 'develop'
+            pod 'MatrixSDK', :git => 'https://github.com/matrix-org/matrix-ios-sdk.git', :branch => 'develop'
+            pod 'MatrixSDK/SwiftSupport', :git => 'https://github.com/matrix-org/matrix-ios-sdk.git', :branch => 'develop'
+            pod 'MatrixKit/AppExtension', :git => 'https://github.com/matrix-org/matrix-ios-kit.git', :branch => 'develop'
+        else
+            pod 'MatrixKit/AppExtension', $matrixKitVersion
+            pod 'MatrixSDK/SwiftSupport'
+        end
+    end 
+end
+
 abstract_target 'TchapPods' do
 
     pod 'GBDeviceInfo', '~> 5.2.0'
@@ -64,6 +82,10 @@ abstract_target 'TchapPods' do
 	
     target "Btchap" do
         import_MatrixKit
+    end
+    
+    target "BtchapShareExtension" do
+        import_MatrixKitAppExtension
     end
     
     target "TchapTests" do

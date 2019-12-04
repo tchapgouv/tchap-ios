@@ -16,7 +16,11 @@
 
 #import "DesignValues.h"
 
+#ifdef IS_SHARE_EXTENSION
+#import "GeneratedInterfaceShareExtension-Swift.h"
+#else
 #import "GeneratedInterface-Swift.h"
+#endif
 
 NSString *const kDesignValuesDidChangeThemeNotification = @"kDesignValuesDidChangeThemeNotification";
 

@@ -314,6 +314,8 @@ internal enum TchapL10n {
   internal static let settingsShowJoinLeaveMessagesTitle = TchapL10n.tr("Tchap", "settings_show_join_leave_messages_title")
   /// Afficher les changements d’avatar
   internal static let settingsShowProfileChangesMessagesTitle = TchapL10n.tr("Tchap", "settings_show_profile_changes_messages_title")
+  /// Échec d'envoi. Veuillez renouveler cet envoi depuis l'application
+  internal static let shareExtensionFailedToShareInEmptyDiscussion = TchapL10n.tr("Tchap", "share_extension_failed_to_share_in_empty_discussion")
   /// Votre correspondant a quitté définitivement cette discussion.\nVous devez en créer une nouvelle pour le recontacter, s'il est toujours joignable sur Tchap.
   internal static let tchapCannotInviteDeactivatedAccountUser = TchapL10n.tr("Tchap", "tchap_cannot_invite_deactivated_account_user")
   /// Voulez-vous vraiment quitter cette conversation ?\n\nElle ne sera plus administrée, et vous risquez de ne plus pouvoir la joindre de nouveau.

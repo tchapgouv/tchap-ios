@@ -257,6 +257,59 @@
 		026154E8236C7D930045459E /* agent.interieur_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154D7236C7D930045459E /* agent.interieur_2019_10.cer */; };
 		026154E9236C7D930045459E /* agent.ssi_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154D8236C7D930045459E /* agent.ssi_2019_10.cer */; };
 		026154EA236C7D930045459E /* agent_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154D9236C7D930045459E /* agent_2019_10.cer */; };
+		0261550D239507000045459E /* BtchapShareExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 02615502239507000045459E /* BtchapShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		0261552E239547880045459E /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 02615513239547880045459E /* Info.plist */; };
+		0261552F239547880045459E /* ShareExtensionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 02615516239547880045459E /* ShareExtensionManager.m */; };
+		02615530239547880045459E /* FallbackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02615519239547880045459E /* FallbackViewController.xib */; };
+		02615531239547880045459E /* FallbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0261551A239547880045459E /* FallbackViewController.m */; };
+		02615532239547880045459E /* SharePresentingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0261551E239547880045459E /* SharePresentingViewController.m */; };
+		02615533239547880045459E /* ShareDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 02615521239547880045459E /* ShareDataSource.m */; };
+		02615534239547880045459E /* ShareViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02615523239547880045459E /* ShareViewController.xib */; };
+		02615535239547880045459E /* ShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 02615524239547880045459E /* ShareViewController.m */; };
+		02615536239547880045459E /* RoomsListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02615526239547880045459E /* RoomsListViewController.xib */; };
+		02615537239547880045459E /* RoomsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 02615528239547880045459E /* RoomsListViewController.m */; };
+		0261553C2395C03F0045459E /* SegmentedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556D720EE6C4C00210D55 /* SegmentedViewController.m */; };
+		0261553E2395C8E80045459E /* Stylable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1BC6A202136CA7F00D32F8E /* Stylable.swift */; };
+		0261553F2395CB0A0045459E /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1BC6A1A21369C8F00D32F8E /* Style.swift */; };
+		026155402395CCA00045459E /* Variant1Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1BC6A1C2136C99F00D32F8E /* Variant1Style.swift */; };
+		026155412395CCA80045459E /* Variant2Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1BC6A1E2136C9A800D32F8E /* Variant2Style.swift */; };
+		026155422395D2A80045459E /* DesignValues.m in Sources */ = {isa = PBXBuildFile; fileRef = 02BEE1A6212C77B700098505 /* DesignValues.m */; };
+		026155432395D6F30045459E /* RiotDesignValues.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932AB20F3A7B000746532 /* RiotDesignValues.m */; };
+		026155442395D8280045459E /* RiotSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B5597F20EFC3DF00210D55 /* RiotSettings.swift */; };
+		026155452395DC130045459E /* RecentCellData.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932F920F3C51900746532 /* RecentCellData.m */; };
+		026155462395DC230045459E /* MXRoom+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBE81E7009EC00A9B29C /* MXRoom+Riot.m */; };
+		026155472395DC650045459E /* AvatarGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC111E7009EC00A9B29C /* AvatarGenerator.m */; };
+		02615548239652C70045459E /* SharedImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02BEE1A1212C717E00098505 /* SharedImages.xcassets */; };
+		02615549239653130045459E /* BtchapSharedImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 026D887121C1C5490085BED8 /* BtchapSharedImages.xcassets */; };
+		0261554A2396573F0045459E /* Tchap.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = B12DDA98216F4EBC0093172C /* Tchap.stringsdict */; };
+		0261554B239657420045459E /* Tchap.strings in Resources */ = {isa = PBXBuildFile; fileRef = B1322FDE212FF7480054A9DD /* Tchap.strings */; };
+		0261554C23965A4C0045459E /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = B1664D5520F4EBEC00808783 /* Vector.strings */; };
+		0261554D2396743F0045459E /* SegmentedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1B556D620EE6C4C00210D55 /* SegmentedViewController.xib */; };
+		0261554E239675060045459E /* MXRoomSummary+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F0D2ADA01F6AA5FD00A7097D /* MXRoomSummary+Riot.m */; };
+		02615555239724220045459E /* RoomsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02B34541219E100100110EC8 /* RoomsCell.xib */; };
+		02615556239724260045459E /* RoomsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B34540219E100100110EC8 /* RoomsCell.swift */; };
+		0261555823972DD40045459E /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1BC6A042135E42D00D32F8E /* UIView.swift */; };
+		0261555923972DFF0045459E /* DisplayNameComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1454B96216BA84000365A86 /* DisplayNameComponents.swift */; };
+		0261555A23972E1F0045459E /* MXRoomSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ECA87F22E0C5BA00ECDA5E /* MXRoomSummary.swift */; };
+		0261555B23972E400045459E /* UIBezierPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12DDA99216FB2370093172C /* UIBezierPath.swift */; };
+		0261555C23972E5A0045459E /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B109EF172170DFEB0018FA06 /* UserService.swift */; };
+		0261555D23972E7C0045459E /* HomeServerComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0223EFAA2227E41B00B9EA34 /* HomeServerComponents.swift */; };
+		0261555E23972E960045459E /* UserIDComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C4646221BACEB3005F4D53 /* UserIDComponents.swift */; };
+		0261555F23972EB00045459E /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = B109EF1A2170F3B90018FA06 /* User.swift */; };
+		0261556023972ECB0045459E /* IdentityServersURLGetter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BEE187212AB23A00098505 /* IdentityServersURLGetter.swift */; };
+		0261556123972EE10045459E /* ThirdPartyIDPlatformInfoResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BEE186212AB23A00098505 /* ThirdPartyIDPlatformInfoResolver.swift */; };
+		0261556223972EF30045459E /* ThirdPartyIDPlatformInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BEE189212AB23A00098505 /* ThirdPartyIDPlatformInfo.swift */; };
+		0261556323972F060045459E /* ThirdPartyIDPlatformInfoType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BEE188212AB23A00098505 /* ThirdPartyIDPlatformInfoType.swift */; };
+		0261556423972F1C0045459E /* RoomService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C4645E21B6DD42005F4D53 /* RoomService.swift */; };
+		0261556523972F300045459E /* RoomServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C4645F21B6DD42005F4D53 /* RoomServiceType.swift */; };
+		0261556623972F4A0045459E /* RoomAccessRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029C927C22E7044200E62D27 /* RoomAccessRule.swift */; };
+		0261556723972F5A0045459E /* ThirdPartyIDPlatformInfoResolverType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C4BE8D2252456000F7BB0E /* ThirdPartyIDPlatformInfoResolverType.swift */; };
+		0261556823972F670045459E /* UserServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B165250D217502A700146F80 /* UserServiceType.swift */; };
+		0261556923972F730045459E /* RoomPowerLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DC4F4A221C46E500B551EE /* RoomPowerLevel.swift */; };
+		0261556E23979C690045459E /* RoomsDiscussionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0261556A23979C690045459E /* RoomsDiscussionCell.swift */; };
+		0261556F23979C690045459E /* RoomsDiscussionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0261556B23979C690045459E /* RoomsDiscussionCell.xib */; };
+		0261557023979C690045459E /* RoomsRoomCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0261556C23979C690045459E /* RoomsRoomCell.xib */; };
+		0261557123979C690045459E /* RoomsRoomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0261556D23979C690045459E /* RoomsRoomCell.swift */; };
 		026D887021C1C4F40085BED8 /* TchapSharedImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 026D886F21C1C4F40085BED8 /* TchapSharedImages.xcassets */; };
 		026D887221C1C5490085BED8 /* BtchapSharedImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 026D887121C1C5490085BED8 /* BtchapSharedImages.xcassets */; };
 		027DCAC521B14F68000DD05E /* ContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 027DCAC321B14F68000DD05E /* ContactCell.xib */; };
@@ -690,6 +743,7 @@
 		02F0FF4022268D5F00066908 /* PublicRoomsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F0FF3E22268D5F00066908 /* PublicRoomsCell.swift */; };
 		02F0FF452226F82600066908 /* RoomIDComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F0FF442226F82600066908 /* RoomIDComponents.swift */; };
 		02F0FF462226F82600066908 /* RoomIDComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F0FF442226F82600066908 /* RoomIDComponents.swift */; };
+		323BD4C6148B554408CDD950 /* Pods_TchapPods_BtchapShareExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EFEE7E56697557ECD04FEDAE /* Pods_TchapPods_BtchapShareExtension.framework */; };
 		3758AAFA0E62019A0A322926 /* Pods_TchapPods_Tchap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6969DC25D5C9C2BB6A87FF16 /* Pods_TchapPods_Tchap.framework */; };
 		88D99D182A4DAA23DCFAEFC1 /* Pods_TchapPods_Btchap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42D17E495E890C4E93B6454C /* Pods_TchapPods_Btchap.framework */; };
 		9BB56DCE73301826A61AB27C /* Pods_TchapPods_TchapTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86EB8C3A36242C8A56747B11 /* Pods_TchapPods_TchapTests.framework */; };
@@ -942,6 +996,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		0261550B239507000045459E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F094A99A1B78D8F000B1FBBF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 02615501239507000045459E;
+			remoteInfo = BtchapShareExtension;
+		};
 		B1454BC6216BBE4000365A86 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F094A99A1B78D8F000B1FBBF /* Project object */;
@@ -978,6 +1039,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				0261550D239507000045459E /* BtchapShareExtension.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1218,6 +1280,29 @@
 		026154D7236C7D930045459E /* agent.interieur_2019_10.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = agent.interieur_2019_10.cer; sourceTree = "<group>"; };
 		026154D8236C7D930045459E /* agent.ssi_2019_10.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = agent.ssi_2019_10.cer; sourceTree = "<group>"; };
 		026154D9236C7D930045459E /* agent_2019_10.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = agent_2019_10.cer; sourceTree = "<group>"; };
+		02615502239507000045459E /* BtchapShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BtchapShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		02615512239547880045459E /* BtchapShareExtension-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BtchapShareExtension-Bridging-Header.h"; sourceTree = "<group>"; };
+		02615513239547880045459E /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		02615515239547880045459E /* ShareExtensionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareExtensionManager.h; sourceTree = "<group>"; };
+		02615516239547880045459E /* ShareExtensionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareExtensionManager.m; sourceTree = "<group>"; };
+		02615519239547880045459E /* FallbackViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FallbackViewController.xib; sourceTree = "<group>"; };
+		0261551A239547880045459E /* FallbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FallbackViewController.m; sourceTree = "<group>"; };
+		0261551B239547880045459E /* FallbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FallbackViewController.h; sourceTree = "<group>"; };
+		0261551D239547880045459E /* SharePresentingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharePresentingViewController.h; sourceTree = "<group>"; };
+		0261551E239547880045459E /* SharePresentingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharePresentingViewController.m; sourceTree = "<group>"; };
+		02615521239547880045459E /* ShareDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareDataSource.m; sourceTree = "<group>"; };
+		02615522239547880045459E /* ShareDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareDataSource.h; sourceTree = "<group>"; };
+		02615523239547880045459E /* ShareViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShareViewController.xib; sourceTree = "<group>"; };
+		02615524239547880045459E /* ShareViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareViewController.m; sourceTree = "<group>"; };
+		02615526239547880045459E /* RoomsListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomsListViewController.xib; sourceTree = "<group>"; };
+		02615527239547880045459E /* RoomsListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomsListViewController.h; sourceTree = "<group>"; };
+		02615528239547880045459E /* RoomsListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomsListViewController.m; sourceTree = "<group>"; };
+		0261552D239547880045459E /* ShareViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareViewController.h; sourceTree = "<group>"; };
+		0261553A239548E20045459E /* BtchapShareExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BtchapShareExtension.entitlements; sourceTree = "<group>"; };
+		0261556A23979C690045459E /* RoomsDiscussionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomsDiscussionCell.swift; sourceTree = "<group>"; };
+		0261556B23979C690045459E /* RoomsDiscussionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomsDiscussionCell.xib; sourceTree = "<group>"; };
+		0261556C23979C690045459E /* RoomsRoomCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomsRoomCell.xib; sourceTree = "<group>"; };
+		0261556D23979C690045459E /* RoomsRoomCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomsRoomCell.swift; sourceTree = "<group>"; };
 		026D886F21C1C4F40085BED8 /* TchapSharedImages.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = TchapSharedImages.xcassets; sourceTree = "<group>"; };
 		026D887121C1C5490085BED8 /* BtchapSharedImages.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = BtchapSharedImages.xcassets; sourceTree = "<group>"; };
 		027DCAC321B14F68000DD05E /* ContactCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactCell.xib; sourceTree = "<group>"; };
@@ -1628,8 +1713,11 @@
 		B1F2AAAA212AED900077FDC0 /* Presentable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Presentable.swift; sourceTree = "<group>"; };
 		B1F2AAAB212AED900077FDC0 /* NavigationRouterType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationRouterType.swift; sourceTree = "<group>"; };
 		B1F2AAB5212AFDBA0077FDC0 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
+		B2DB622F345CC7F58E3EFC2C /* Pods-TchapPods-BtchapShareExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TchapPods-BtchapShareExtension.debug.xcconfig"; path = "Target Support Files/Pods-TchapPods-BtchapShareExtension/Pods-TchapPods-BtchapShareExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		CDBBDA3F49689725FAC83694 /* Pods-TchapPods-Btchap.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TchapPods-Btchap.release.xcconfig"; path = "Target Support Files/Pods-TchapPods-Btchap/Pods-TchapPods-Btchap.release.xcconfig"; sourceTree = "<group>"; };
 		DAFE4421A6E68062815E3CB1 /* Pods-TchapPods-Tchap.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TchapPods-Tchap.release.xcconfig"; path = "Target Support Files/Pods-TchapPods-Tchap/Pods-TchapPods-Tchap.release.xcconfig"; sourceTree = "<group>"; };
+		EC12B265ADB7DBE5FAE5277F /* Pods-TchapPods-BtchapShareExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TchapPods-BtchapShareExtension.release.xcconfig"; path = "Target Support Files/Pods-TchapPods-BtchapShareExtension/Pods-TchapPods-BtchapShareExtension.release.xcconfig"; sourceTree = "<group>"; };
+		EFEE7E56697557ECD04FEDAE /* Pods_TchapPods_BtchapShareExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TchapPods_BtchapShareExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F083BBDB1E7009EC00A9B29C /* busy.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = busy.mp3; sourceTree = "<group>"; };
 		F083BBDC1E7009EC00A9B29C /* callend.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = callend.mp3; sourceTree = "<group>"; };
 		F083BBDD1E7009EC00A9B29C /* message.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = message.mp3; sourceTree = "<group>"; };
@@ -1661,6 +1749,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				3758AAFA0E62019A0A322926 /* Pods_TchapPods_Tchap.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		026154FF239507000045459E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				323BD4C6148B554408CDD950 /* Pods_TchapPods_BtchapShareExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2138,6 +2234,107 @@
 			path = IdentityService;
 			sourceTree = "<group>";
 		};
+		02615503239507000045459E /* BtchapShareExtension */ = {
+			isa = PBXGroup;
+			children = (
+				02615514239547880045459E /* Managers */,
+				02615517239547880045459E /* Modules */,
+				02615511239547880045459E /* SupportingFiles */,
+			);
+			path = BtchapShareExtension;
+			sourceTree = "<group>";
+		};
+		02615511239547880045459E /* SupportingFiles */ = {
+			isa = PBXGroup;
+			children = (
+				0261553A239548E20045459E /* BtchapShareExtension.entitlements */,
+				02615512239547880045459E /* BtchapShareExtension-Bridging-Header.h */,
+				02615513239547880045459E /* Info.plist */,
+			);
+			path = SupportingFiles;
+			sourceTree = "<group>";
+		};
+		02615514239547880045459E /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				02615515239547880045459E /* ShareExtensionManager.h */,
+				02615516239547880045459E /* ShareExtensionManager.m */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
+		02615517239547880045459E /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				02615518239547880045459E /* Fallback */,
+				0261551C239547880045459E /* Main */,
+				0261551F239547880045459E /* Share */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+		02615518239547880045459E /* Fallback */ = {
+			isa = PBXGroup;
+			children = (
+				02615519239547880045459E /* FallbackViewController.xib */,
+				0261551B239547880045459E /* FallbackViewController.h */,
+				0261551A239547880045459E /* FallbackViewController.m */,
+			);
+			path = Fallback;
+			sourceTree = "<group>";
+		};
+		0261551C239547880045459E /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				0261551D239547880045459E /* SharePresentingViewController.h */,
+				0261551E239547880045459E /* SharePresentingViewController.m */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		0261551F239547880045459E /* Share */ = {
+			isa = PBXGroup;
+			children = (
+				02615525239547880045459E /* Listing */,
+				02615520239547880045459E /* DataSources */,
+				02615523239547880045459E /* ShareViewController.xib */,
+				02615524239547880045459E /* ShareViewController.m */,
+				0261552D239547880045459E /* ShareViewController.h */,
+			);
+			path = Share;
+			sourceTree = "<group>";
+		};
+		02615520239547880045459E /* DataSources */ = {
+			isa = PBXGroup;
+			children = (
+				02615522239547880045459E /* ShareDataSource.h */,
+				02615521239547880045459E /* ShareDataSource.m */,
+			);
+			path = DataSources;
+			sourceTree = "<group>";
+		};
+		02615525239547880045459E /* Listing */ = {
+			isa = PBXGroup;
+			children = (
+				02615526239547880045459E /* RoomsListViewController.xib */,
+				02615527239547880045459E /* RoomsListViewController.h */,
+				02615528239547880045459E /* RoomsListViewController.m */,
+				02615529239547880045459E /* Views */,
+			);
+			path = Listing;
+			sourceTree = "<group>";
+		};
+		02615529239547880045459E /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				0261556A23979C690045459E /* RoomsDiscussionCell.swift */,
+				0261556B23979C690045459E /* RoomsDiscussionCell.xib */,
+				0261556D23979C690045459E /* RoomsRoomCell.swift */,
+				0261556C23979C690045459E /* RoomsRoomCell.xib */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		028B50B3228E2931005DB9B6 /* Certificates */ = {
 			isa = PBXGroup;
 			children = (
@@ -2399,6 +2596,7 @@
 				42D17E495E890C4E93B6454C /* Pods_TchapPods_Btchap.framework */,
 				6969DC25D5C9C2BB6A87FF16 /* Pods_TchapPods_Tchap.framework */,
 				86EB8C3A36242C8A56747B11 /* Pods_TchapPods_TchapTests.framework */,
+				EFEE7E56697557ECD04FEDAE /* Pods_TchapPods_BtchapShareExtension.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -3450,6 +3648,8 @@
 				DAFE4421A6E68062815E3CB1 /* Pods-TchapPods-Tchap.release.xcconfig */,
 				8B24EBDB14F52DD337C40E49 /* Pods-TchapPods-TchapTests.debug.xcconfig */,
 				456A8484841ECDA7F54D5999 /* Pods-TchapPods-TchapTests.release.xcconfig */,
+				B2DB622F345CC7F58E3EFC2C /* Pods-TchapPods-BtchapShareExtension.debug.xcconfig */,
+				EC12B265ADB7DBE5FAE5277F /* Pods-TchapPods-BtchapShareExtension.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -3553,6 +3753,7 @@
 				0250C5C12122BBA600034691 /* Tchap */,
 				F083BB081E7009EC00A9B29C /* Riot */,
 				B1454BC2216BBE4000365A86 /* TchapTests */,
+				02615503239507000045459E /* BtchapShareExtension */,
 				F094A9A31B78D8F000B1FBBF /* Products */,
 				5FC42FA41F5186AFFB6A2404 /* Frameworks */,
 				D7B69168A4294EDA667C93D6 /* Pods */,
@@ -3565,6 +3766,7 @@
 				0250C5BF2122B68000034691 /* Tchap.app */,
 				B1454BC1216BBE3F00365A86 /* TchapTests.xctest */,
 				02DFECF521C07370009B6F15 /* Btchap.app */,
+				02615502239507000045459E /* BtchapShareExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -3595,6 +3797,24 @@
 			productReference = 0250C5BF2122B68000034691 /* Tchap.app */;
 			productType = "com.apple.product-type.application";
 		};
+		02615501239507000045459E /* BtchapShareExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 02615510239507000045459E /* Build configuration list for PBXNativeTarget "BtchapShareExtension" */;
+			buildPhases = (
+				543847EAB5A8A774FBDE5AA5 /* [CP] Check Pods Manifest.lock */,
+				026154FE239507000045459E /* Sources */,
+				026154FF239507000045459E /* Frameworks */,
+				02615500239507000045459E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BtchapShareExtension;
+			productName = BtchapShareExtension;
+			productReference = 02615502239507000045459E /* BtchapShareExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		02DFEB6F21C07370009B6F15 /* Btchap */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 02DFECF221C07370009B6F15 /* Build configuration list for PBXNativeTarget "Btchap" */;
@@ -3612,6 +3832,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				0261550C239507000045459E /* PBXTargetDependency */,
 			);
 			name = Btchap;
 			productName = Btchap;
@@ -3644,6 +3865,7 @@
 		F094A99A1B78D8F000B1FBBF /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				DefaultBuildSystemTypeForWorkspace = Original;
 				LastUpgradeCheck = 0940;
 				ORGANIZATIONNAME = DINSIC;
 				TargetAttributes = {
@@ -3660,6 +3882,14 @@
 								enabled = 0;
 							};
 							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
+					};
+					02615501239507000045459E = {
+						CreatedOnToolsVersion = 10.3;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
 							};
 						};
@@ -3713,6 +3943,7 @@
 				0250C48C2122B68000034691 /* Tchap */,
 				B1454BC0216BBE3F00365A86 /* TchapTests */,
 				02DFEB6F21C07370009B6F15 /* Btchap */,
+				02615501239507000045459E /* BtchapShareExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -3866,6 +4097,26 @@
 				02BEE1A4212C717F00098505 /* Images.xcassets in Resources */,
 				020DF964214BE467003DFBA4 /* RoomEncryptedAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.xib in Resources */,
 				026154E8236C7D930045459E /* agent.interieur_2019_10.cer in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		02615500239507000045459E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0261556F23979C690045459E /* RoomsDiscussionCell.xib in Resources */,
+				02615530239547880045459E /* FallbackViewController.xib in Resources */,
+				02615534239547880045459E /* ShareViewController.xib in Resources */,
+				0261554C23965A4C0045459E /* Vector.strings in Resources */,
+				0261552E239547880045459E /* Info.plist in Resources */,
+				02615555239724220045459E /* RoomsCell.xib in Resources */,
+				0261557023979C690045459E /* RoomsRoomCell.xib in Resources */,
+				0261554D2396743F0045459E /* SegmentedViewController.xib in Resources */,
+				02615548239652C70045459E /* SharedImages.xcassets in Resources */,
+				0261554A2396573F0045459E /* Tchap.stringsdict in Resources */,
+				0261554B239657420045459E /* Tchap.strings in Resources */,
+				02615549239653130045459E /* BtchapSharedImages.xcassets in Resources */,
+				02615536239547880045459E /* RoomsListViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4037,6 +4288,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "${PODS_ROOT}/SwiftGen/bin/swiftgen config run --config Tools/SwiftGen/swiftgen-config.yml\n";
+		};
+		543847EAB5A8A774FBDE5AA5 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TchapPods-BtchapShareExtension-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
 		};
 		5F9952DCE099FEAF4439E4BD /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -4521,6 +4794,52 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		026154FE239507000045459E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0261554E239675060045459E /* MXRoomSummary+Riot.m in Sources */,
+				0261553E2395C8E80045459E /* Stylable.swift in Sources */,
+				0261555C23972E5A0045459E /* UserService.swift in Sources */,
+				0261555E23972E960045459E /* UserIDComponents.swift in Sources */,
+				026155442395D8280045459E /* RiotSettings.swift in Sources */,
+				0261555923972DFF0045459E /* DisplayNameComponents.swift in Sources */,
+				026155422395D2A80045459E /* DesignValues.m in Sources */,
+				02615531239547880045459E /* FallbackViewController.m in Sources */,
+				0261555F23972EB00045459E /* User.swift in Sources */,
+				026155432395D6F30045459E /* RiotDesignValues.m in Sources */,
+				0261552F239547880045459E /* ShareExtensionManager.m in Sources */,
+				0261556223972EF30045459E /* ThirdPartyIDPlatformInfo.swift in Sources */,
+				0261556523972F300045459E /* RoomServiceType.swift in Sources */,
+				0261555823972DD40045459E /* UIView.swift in Sources */,
+				026155452395DC130045459E /* RecentCellData.m in Sources */,
+				02615556239724260045459E /* RoomsCell.swift in Sources */,
+				02615533239547880045459E /* ShareDataSource.m in Sources */,
+				0261556623972F4A0045459E /* RoomAccessRule.swift in Sources */,
+				02615535239547880045459E /* ShareViewController.m in Sources */,
+				0261555D23972E7C0045459E /* HomeServerComponents.swift in Sources */,
+				026155462395DC230045459E /* MXRoom+Riot.m in Sources */,
+				026155412395CCA80045459E /* Variant2Style.swift in Sources */,
+				0261556723972F5A0045459E /* ThirdPartyIDPlatformInfoResolverType.swift in Sources */,
+				0261556923972F730045459E /* RoomPowerLevel.swift in Sources */,
+				026155472395DC650045459E /* AvatarGenerator.m in Sources */,
+				02615532239547880045459E /* SharePresentingViewController.m in Sources */,
+				0261555B23972E400045459E /* UIBezierPath.swift in Sources */,
+				02615537239547880045459E /* RoomsListViewController.m in Sources */,
+				0261555A23972E1F0045459E /* MXRoomSummary.swift in Sources */,
+				026155402395CCA00045459E /* Variant1Style.swift in Sources */,
+				0261556823972F670045459E /* UserServiceType.swift in Sources */,
+				0261556E23979C690045459E /* RoomsDiscussionCell.swift in Sources */,
+				0261556323972F060045459E /* ThirdPartyIDPlatformInfoType.swift in Sources */,
+				0261556023972ECB0045459E /* IdentityServersURLGetter.swift in Sources */,
+				0261556123972EE10045459E /* ThirdPartyIDPlatformInfoResolver.swift in Sources */,
+				0261553C2395C03F0045459E /* SegmentedViewController.m in Sources */,
+				0261557123979C690045459E /* RoomsRoomCell.swift in Sources */,
+				0261553F2395CB0A0045459E /* Style.swift in Sources */,
+				0261556423972F1C0045459E /* RoomService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		02DFEB7321C07370009B6F15 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -4871,6 +5190,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		0261550C239507000045459E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 02615501239507000045459E /* BtchapShareExtension */;
+			targetProxy = 0261550B239507000045459E /* PBXContainerItemProxy */;
+		};
 		B1454BC7216BBE4000365A86 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 0250C48C2122B68000034691 /* Tchap */;
@@ -4976,6 +5300,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 56D1C658F955BD97CBA30525 /* Pods-TchapPods-Tchap.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Tchap/SupportingFiles/Tchap.entitlements;
@@ -5021,6 +5346,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DAFE4421A6E68062815E3CB1 /* Pods-TchapPods-Tchap.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Tchap/SupportingFiles/Tchap.entitlements;
@@ -5060,10 +5386,92 @@
 			};
 			name = Release;
 		};
+		0261550E239507000045459E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B2DB622F345CC7F58E3EFC2C /* Pods-TchapPods-BtchapShareExtension.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = BtchapShareExtension/SupportingFiles/BtchapShareExtension.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = NVMQD635C6;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"IS_SHARE_EXTENSION=1",
+				);
+				INFOPLIST_FILE = "$(SRCROOT)/BtchapShareExtension/SupportingFiles/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = fr.gouv.btchap.shareExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/BtchapShareExtension/SupportingFiles/BtchapShareExtension-Bridging-Header.h";
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "GeneratedInterfaceShareExtension-Swift.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		0261550F239507000045459E /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = EC12B265ADB7DBE5FAE5277F /* Pods-TchapPods-BtchapShareExtension.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = BtchapShareExtension/SupportingFiles/BtchapShareExtension.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = NVMQD635C6;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"IS_SHARE_EXTENSION=1",
+				);
+				INFOPLIST_FILE = "$(SRCROOT)/BtchapShareExtension/SupportingFiles/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = fr.gouv.btchap.shareExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/BtchapShareExtension/SupportingFiles/BtchapShareExtension-Bridging-Header.h";
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "GeneratedInterfaceShareExtension-Swift.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		02DFECF321C07370009B6F15 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 23307BF65CCF37A2CAE36E4F /* Pods-TchapPods-Btchap.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Btchap/SupportingFiles/Btchap.entitlements;
@@ -5110,6 +5518,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CDBBDA3F49689725FAC83694 /* Pods-TchapPods-Btchap.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Btchap/SupportingFiles/Btchap.entitlements;
@@ -5154,7 +5563,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8B24EBDB14F52DD337C40E49 /* Pods-TchapPods-TchapTests.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -5190,7 +5599,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 456A8484841ECDA7F54D5999 /* Pods-TchapPods-TchapTests.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -5338,6 +5747,15 @@
 			buildConfigurations = (
 				0250C5BD2122B68000034691 /* Debug */,
 				0250C5BE2122B68000034691 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		02615510239507000045459E /* Build configuration list for PBXNativeTarget "BtchapShareExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0261550E239507000045459E /* Debug */,
+				0261550F239507000045459E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
