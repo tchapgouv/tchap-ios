@@ -23,7 +23,7 @@
 #import "RiotDesignValues.h"
 #import <MatrixKit/MatrixKit.h>
 
-#import "GeneratedInterfaceShareExtension-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 @interface RoomsListViewController () <ShareExtensionManagerDelegate>
 

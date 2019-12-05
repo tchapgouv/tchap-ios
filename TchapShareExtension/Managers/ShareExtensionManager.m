@@ -73,9 +73,15 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         // Add observer to handle memory warning
         [NSNotificationCenter.defaultCenter addObserver:sharedInstance selector:@selector(didReceiveMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
         
+        // Register "Tchap-Defaults.plist" default values
+        NSString* userDefaults = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"UserDefaults"];
+        NSString *defaultsPathFromApp = [[NSBundle mainBundle] pathForResource:userDefaults ofType:@"plist"];
+        NSDictionary *defaults = [NSDictionary dictionaryWithContentsOfFile:defaultsPathFromApp];
+        [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
+        
         MXSDKOptions *sdkOptions = [MXSDKOptions sharedInstance];
         // Apply the application group
-        sdkOptions.applicationGroupIdentifier = @"group.fr.gouv.btchap";
+        sdkOptions.applicationGroupIdentifier = [[NSUserDefaults standardUserDefaults] objectForKey:@"appGroupId"];
         // Disable identicon use
         sdkOptions.disableIdenticonUseForUserAvatar = YES;
         // Enable e2e encryption for newly created MXSession

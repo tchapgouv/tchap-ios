@@ -20,7 +20,7 @@
 #import "ShareExtensionManager.h"
 //#import "ThemeService.h"
 
-#import "GeneratedInterfaceShareExtension-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 @interface SharePresentingViewController ()
 

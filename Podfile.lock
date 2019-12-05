@@ -48,41 +48,41 @@ PODS:
   - MatomoTracker (7.2.0):
     - MatomoTracker/Core (= 7.2.0)
   - MatomoTracker/Core (7.2.0)
-  - MatrixKit (0.11.2):
+  - MatrixKit (0.11.3):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.21)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixKit/Core (= 0.11.2)
-    - MatrixSDK (= 0.15.0)
+    - MatrixKit/Core (= 0.11.3)
+    - MatrixSDK (= 0.15.2)
     - SwiftUTI (~> 1.0.6)
-  - MatrixKit/AppExtension (0.11.2):
+  - MatrixKit/AppExtension (0.11.3):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.21)
     - DTCoreText/Extension
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixSDK (= 0.15.0)
+    - MatrixSDK (= 0.15.2)
     - SwiftUTI (~> 1.0.6)
-  - MatrixKit/Core (0.11.2):
+  - MatrixKit/Core (0.11.3):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.21)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixSDK (= 0.15.0)
+    - MatrixSDK (= 0.15.2)
     - SwiftUTI (~> 1.0.6)
-  - MatrixSDK (0.15.0):
-    - MatrixSDK/Core (= 0.15.0)
-  - MatrixSDK/Core (0.15.0):
+  - MatrixSDK (0.15.2):
+    - MatrixSDK/Core (= 0.15.2)
+  - MatrixSDK/Core (0.15.2):
     - AFNetworking (~> 3.2.0)
     - GZIP (~> 1.2.2)
     - libbase58 (~> 0.1.4)
     - OLMKit (~> 3.1.0)
     - Realm (~> 3.17.3)
-  - MatrixSDK/JingleCallStack (0.15.0):
+  - MatrixSDK/JingleCallStack (0.15.2):
     - JitsiMeetSDK (~> 2.3.1)
     - MatrixSDK/Core
-  - MatrixSDK/SwiftSupport (0.15.0):
+  - MatrixSDK/SwiftSupport (0.15.2):
     - MatrixSDK/Core
   - OLMKit (3.1.0):
     - OLMKit/olmc (= 3.1.0)
@@ -99,7 +99,7 @@ PODS:
   - Reusable/View (4.1.0)
   - RxSwift (4.5.0)
   - SwiftGen (6.1.0)
-  - SwiftLint (0.37.0)
+  - SwiftLint (0.38.0)
   - SwiftUTI (1.0.7)
 
 DEPENDENCIES:
@@ -152,10 +152,10 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   MatrixKit:
-    :commit: 981e320e0e84b09eb65030283f9dcb8901c6b16a
+    :commit: 599b72e69ee45c74aef8dca7da7b82926749b5dd
     :git: https://github.com/matrix-org/matrix-ios-kit.git
   MatrixSDK:
-    :commit: edcdbee8bd0ee2e3c018ec42777a0cf0e3287dff
+    :commit: e59a9b8fc70be049b30fd6eb40926de5d517d4ea
     :git: https://github.com/matrix-org/matrix-ios-sdk.git
   SwiftUTI:
     :commit: b6b46942fb3aad819610851f62a70e17a528444e
@@ -173,16 +173,16 @@ SPEC CHECKSUMS:
   libbase58: 7c040313537b8c44b6e2d15586af8e21f7354efd
   libPhoneNumber-iOS: 0a32a9525cf8744fe02c5206eb30d571e38f7d75
   MatomoTracker: 6f89e2561083685a360e223fb663e9ccd57c1d1a
-  MatrixKit: 7f681c9086509a4f5e6e7172ce00f552cba1f8bc
-  MatrixSDK: 342384d62bac5d95a31a7dab79e5f687bd87ddca
+  MatrixKit: 5a20025b05490a70694b701e607ec75e0988af21
+  MatrixSDK: f83bd3c5519c1cb9ac3998f6423574cf528f0250
   OLMKit: 4ee0159d63feeb86d836fdcfefe418e163511639
   Realm: 5a1d9d47bfc101dd597668b1a8af4288a2557f6d
   Reusable: 82be188f29d96dc5eff0db7b2393bcc08d2cdd5b
   RxSwift: f172070dfd1a93d70a9ab97a5a01166206e1c575
   SwiftGen: f872ca75cbd17bf7103c17f13dcfa0d9a15667b0
-  SwiftLint: c078a14d7d7ade75e5507795d185e3da41d844d2
+  SwiftLint: 4105f061f9812b214568b736dab580ab2c73a582
   SwiftUTI: 917993c124f8eac25e88ced0202fc58d7eb50fa8
 
-PODFILE CHECKSUM: ba01081549c4da3ce6da660afe55a373286ac426
+PODFILE CHECKSUM: e62bf233552e4a306f3d37bae2d96bafe8ffad33
 
 COCOAPODS: 1.8.4

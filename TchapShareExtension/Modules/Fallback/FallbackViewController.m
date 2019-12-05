@@ -19,7 +19,7 @@
 //#import "ThemeService.h"
 #import "RiotDesignValues.h"
 
-#import "GeneratedInterfaceShareExtension-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 @interface FallbackViewController ()
 
