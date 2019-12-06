@@ -1,5 +1,6 @@
 /*
  Copyright 2017 Vector Creations Ltd
+ Copyright 2019 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -173,7 +174,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     BOOL areAllAttachmentsImages = [self areAllAttachmentsImages];
     NSMutableArray <NSItemProvider *> *pendingImagesItemProviders = [NSMutableArray new]; // Used to keep NSItemProvider associated to pending images (used only when all items are images).
 
-    __block NSError *firstRequestError = nil;
+    __block NSError *mainRequestError = nil;
     __block NSMutableArray *returningExtensionItems = [NSMutableArray new];
     dispatch_group_t requestsGroup = dispatch_group_create();
     
@@ -187,9 +188,19 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     };
     
     void (^requestFailure)(NSError*) = ^(NSError *requestError) {
-        if (requestError && !firstRequestError)
+        if (requestError)
         {
-            firstRequestError = requestError;
+            // Keep only one error, the first one by default.
+            // but MXEncryptingErrorUnknownDeviceCode is ignored in case of any other error.
+            if (!mainRequestError)
+            {
+                mainRequestError = requestError;
+            }
+            else if ([mainRequestError.domain isEqualToString:MXEncryptingErrorDomain]
+                     && mainRequestError.code == MXEncryptingErrorUnknownDeviceCode)
+            {
+                mainRequestError = requestError;
+            }
         }
         
         dispatch_group_leave(requestsGroup);
@@ -409,11 +420,22 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     dispatch_group_notify(requestsGroup, dispatch_get_main_queue(), ^{
         [self resetPendingData];
         
-        if (firstRequestError)
+        if (mainRequestError)
         {
-            if (failureBlock)
+            if ([mainRequestError.domain isEqualToString:MXEncryptingErrorDomain]
+                && mainRequestError.code == MXEncryptingErrorUnknownDeviceCode)
             {
-                failureBlock(firstRequestError);
+                // Tchap: Resend all the messages which failed because of unknown devices,
+                // we automatically accept unknown devices for the moment (we will change this later).
+                [self resendContentToRoom:room failureBlock:failureBlock];
+            }
+            else if (failureBlock)
+            {
+                failureBlock(mainRequestError);
+            }
+            else
+            {
+                [self.shareExtensionContext cancelRequestWithError:mainRequestError];
             }
         }
         else
@@ -872,6 +894,72 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     }
 }
 
+- (void)resendContentToRoom:(MXRoom *)room failureBlock:(void(^)(NSError *error))failureBlock
+{
+    // Tchap: Resend all the messages which failed because of unknown devices,
+    // we automatically accept unknown devices for the moment (we will change this later).
+    NSLog(@"[ShareExtensionManager] resendContentToRoom: resend all the messages which failed because of unknown devices");
+    NSArray *outgoingMsgs = room.outgoingMessages;
+    NSMutableArray<MXEvent *> *failedEvents = [NSMutableArray arrayWithCapacity:outgoingMsgs.count];
+    MXUsersDevicesMap<MXDeviceInfo*> *unknownDevices  = [[MXUsersDevicesMap alloc] init];
+    for (MXEvent *event in outgoingMsgs)
+    {
+        if (event.sentState == MXEventSentStateFailed
+            && [event.sentError.domain isEqualToString:MXEncryptingErrorDomain]
+            && event.sentError.code == MXEncryptingErrorUnknownDeviceCode
+            && [event.wireType isEqualToString:kMXEventTypeStringRoomMessage])
+        {
+            [failedEvents addObject:event];
+            
+            MXUsersDevicesMap<MXDeviceInfo*> *eventUnknownDevices = event.sentError.userInfo[MXEncryptingErrorUnknownDeviceDevicesKey];
+            [unknownDevices addEntriesFromMap:eventUnknownDevices];
+        }
+    }
+    
+    MXWeakify(self);
+    [room.mxSession.crypto setDevicesKnown:unknownDevices complete:^{
+        MXStrongifyAndReturnIfNil(self);
+        // Launch iterative operation
+        [self resendFailedEvent:0 inArray:failedEvents toRoom:room failureBlock:failureBlock];
+    }];
+}
+
+- (void)resendFailedEvent:(NSUInteger)index inArray:(NSArray<MXEvent *>*)failedEvents toRoom:(MXRoom*)room failureBlock:(void(^)(NSError *error))failureBlock
+{
+    if (index < failedEvents.count)
+    {
+        MXEvent *failedEvent = failedEvents[index];
+        NSUInteger nextIndex = index + 1;
+        
+        MXWeakify(self);
+        // We try here to resent the event (we keep the existing local echo).
+        [room sendEventOfType:kMXEventTypeStringRoomMessage
+                      content:failedEvent.wireContent
+                    localEcho:&failedEvent
+                      success:^(NSString *eventId) {
+                          MXStrongifyAndReturnIfNil(self);
+                          [self resendFailedEvent:nextIndex inArray:failedEvents toRoom:room failureBlock:failureBlock];
+                      }
+                      failure:^(NSError* error) {
+                          MXStrongifyAndReturnIfNil(self);
+                          // Stop the iteration on this error
+                          NSLog(@"[ShareExtensionManager] resendFailedEvent (%lu) failed", index);
+                          if (failureBlock)
+                          {
+                              failureBlock(error);
+                          }
+                          else
+                          {
+                              [self.shareExtensionContext cancelRequestWithError:error];
+                          }
+                      }];
+        return;
+    }
+    
+    // Done, close the extension
+    // TODO: build and return the right result items array
+    [self completeRequestReturningItems:nil completionHandler:nil];
+}
 
 #pragma mark - Notifications
 

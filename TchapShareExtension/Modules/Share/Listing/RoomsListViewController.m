@@ -33,6 +33,9 @@
 // when the user selects it.
 @property (nonatomic) UISearchBar *tableSearchBar;
 
+@property (nonatomic) MXSession *session;
+@property (nonatomic) MXRoom *selectedRoom;
+
 @end
 
 @implementation RoomsListViewController
@@ -86,6 +89,13 @@
 {
     // Release the room data source
     [self.dataSource destroy];
+    
+    if (self.session)
+    {
+        [self.session close];
+        self.session = nil;
+    }
+    self.selectedRoom = nil;
     
     [super destroy];
 }
@@ -149,18 +159,18 @@
     UIAlertAction *sendAction = [UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"send"] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         
         // The selected room is instanciated here
-        MXSession *session = [[MXSession alloc] initWithMatrixRestClient:[[MXRestClient alloc] initWithCredentials:[ShareExtensionManager sharedManager].userAccount.mxCredentials andOnUnrecognizedCertificateBlock:nil]];
+        self.session = [[MXSession alloc] initWithMatrixRestClient:[[MXRestClient alloc] initWithCredentials:[ShareExtensionManager sharedManager].userAccount.mxCredentials andOnUnrecognizedCertificateBlock:nil]];
 
         [MXFileStore setPreloadOptions:0];
 
-        MXWeakify(session);
-        [session setStore:[ShareExtensionManager sharedManager].fileStore success:^{
-            MXStrongifyAndReturnIfNil(session);
-
-            MXRoom *selectedRoom = [MXRoom loadRoomFromStore:[ShareExtensionManager sharedManager].fileStore withRoomId:recentCellData.roomSummary.roomId matrixSession:session];
+        MXWeakify(self);
+        [self.session setStore:[ShareExtensionManager sharedManager].fileStore success:^{
+            
+            MXStrongifyAndReturnIfNil(self);
+            self.selectedRoom = [MXRoom loadRoomFromStore:[ShareExtensionManager sharedManager].fileStore withRoomId:recentCellData.roomSummary.roomId matrixSession:self.session];
 
             MXWeakify(self);
-            [self isDirectChatLeftByTheOther:selectedRoom completion:^(BOOL isEmptyDirect) {
+            [self isDirectChatLeftByTheOther:self.selectedRoom completion:^(BOOL isEmptyDirect) {
                 MXStrongifyAndReturnIfNil(self);
                 if (isEmptyDirect)
                 {
@@ -171,14 +181,14 @@
                 else
                 {
                     [ShareExtensionManager sharedManager].delegate = self;
-                    [[ShareExtensionManager sharedManager] sendContentToRoom:selectedRoom failureBlock:^(NSError* error) {
-                        
+                    MXWeakify(self);
+                    [[ShareExtensionManager sharedManager] sendContentToRoom:self.selectedRoom failureBlock:^(NSError* error) {
+                        MXStrongifyAndReturnIfNil(self);
                         NSString *title;
                         if ([error.domain isEqualToString:MXEncryptingErrorDomain])
                         {
                             title = NSLocalizedStringFromTable(@"share_extension_failed_to_encrypt", @"Vector", nil);
                         }
-                        
                         [self showFailureAlert:title];
                     }];
                 }
