@@ -239,3 +239,7 @@
 "app_version_update_later_action" = "Plus tard";
 "app_version_update_ignore_action" = "Ignorer";
 "app_version_update_open_app_store_action" = "Ouvrir l'App Store";
+
+////////////////////////////////////////////////////////////////////////////////
+// Share extension
+"share_extension_failed_to_share_in_empty_discussion" = "Échec d'envoi. Veuillez renouveler cet envoi depuis l'application";

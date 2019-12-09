@@ -82,7 +82,6 @@ internal enum Asset {
     internal static let searchIcon = ImageAsset(name: "search_icon")
     internal static let removeIconPink = ImageAsset(name: "remove_icon_pink")
     internal static let settingsIcon = ImageAsset(name: "settings_icon")
-    internal static let tchapLogo = ImageAsset(name: "TchapLogo")
   }
   internal enum SharedImages {
     internal static let cancel = ImageAsset(name: "cancel")

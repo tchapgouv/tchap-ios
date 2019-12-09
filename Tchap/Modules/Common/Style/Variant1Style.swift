@@ -15,6 +15,7 @@
  */
 
 import Foundation
+import UIKit
 
 /// UI component style variant 1
 @objcMembers
