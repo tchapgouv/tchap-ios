@@ -34,6 +34,8 @@ internal enum TchapL10n {
   internal static let authenticationErrorEmailInUse = TchapL10n.tr("Tchap", "authentication_error_email_in_use")
   /// L'adresse email ne semble pas valide
   internal static let authenticationErrorInvalidEmail = TchapL10n.tr("Tchap", "authentication_error_invalid_email")
+  /// Vos trois dernières tentatives de connexion ont échoué. Veuillez réessayer dans 30 minutes
+  internal static let authenticationErrorLimitExceeded = TchapL10n.tr("Tchap", "authentication_error_limit_exceeded")
   /// Mot de passe manquant
   internal static let authenticationErrorMissingPassword = TchapL10n.tr("Tchap", "authentication_error_missing_password")
   /// Cette adresse email n'est pas autorisée
