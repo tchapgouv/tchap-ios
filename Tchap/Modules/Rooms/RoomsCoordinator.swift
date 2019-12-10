@@ -73,6 +73,12 @@ final class RoomsCoordinator: NSObject, RoomsCoordinatorType {
         self.roomsDataSource.search(withPatterns: pattern)
     }
     
+    func scrollToRoom(with roomID: String, animated: Bool) {
+        if let indexPath = self.roomsDataSource.cellIndexPath(withRoomId: roomID, andMatrixSession: self.session) {
+            self.roomsViewController.recentsTableView.scrollToRow(at: indexPath, at: UITableView.ScrollPosition.top, animated: animated)
+        }
+    }
+    
     // MARK: - Private methods
     
     private func joinRoom(with roomID: String) {

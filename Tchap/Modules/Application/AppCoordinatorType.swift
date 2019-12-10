@@ -27,6 +27,12 @@ protocol AppCoordinatorType: Coordinator {
     /// - Returns: true to indicate that the activity has been handled, or false to let iOS handle the activity.
     func handleUserActivity(_ userActivity: NSUserActivity, application: UIApplication) -> Bool
     
+    /// Resume the application by selecting a room.
+    ///
+    /// - Parameters:
+    ///   - roomId: the room identifier.
+    func resumeBySelectingRoom(with roomId: String)
+    
     /// Open a Tchap room
     ///
     /// - Parameters:
