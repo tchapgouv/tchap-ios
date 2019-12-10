@@ -177,7 +177,7 @@ final class AppCoordinator: AppCoordinatorType {
         }
         
         if room.summary.membership == .invite {
-            homeCoordinator.scrollToRoom(with: roomId, animated: true)
+            homeCoordinator.scrollToRoom(with: roomId, animated: false)
         } else {
             homeCoordinator.showRoom(with: roomId, onEventID: nil)
         }
