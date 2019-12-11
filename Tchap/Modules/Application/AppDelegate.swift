@@ -109,7 +109,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return
         }
         
-        _ = self.appCoordinator.showRoom(with: roomId)
+        _ = self.appCoordinator.resumeBySelectingRoom(with: roomId)
     }
 }
 

@@ -24,4 +24,11 @@ protocol RoomsCoordinatorType: Coordinator, Presentable {
     /// - Parameters:
     ///   - searchText: The search text used to perform rooms filtering. Set nil to cancel the filtering.
     func updateSearchText(_ searchText: String?)
+    
+    /// Scroll to the corresponding room cell (if any).
+    ///
+    /// - Parameters:
+    ///   - roomID: The room identifier.
+    ///   - animated: tell whether the transition is animated
+    func scrollToRoom(with roomID: String, animated: Bool)
 }

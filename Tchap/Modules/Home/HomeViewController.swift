@@ -35,6 +35,7 @@ final class HomeViewController: UIViewController {
     
     private var globalSearchBar: GlobalSearchBar!
     private var currentStyle: Style!
+    private var segmentedViewController: SegmentedViewController?
     private var segmentViewControllers: [UIViewController] = []
     private var segmentViewControllersTitles: [String] = []
     private var isExternalUseMode: Bool = false
@@ -81,6 +82,13 @@ final class HomeViewController: UIViewController {
         self.setupPlusButton()
     }
     
+    func setSelectedTabIndex(_ index: UInt) {
+        guard let segmentedViewController = self.segmentedViewController else {
+            return
+        }
+        segmentedViewController.selectedIndex = index
+    }
+    
     // MARK: - Private
     
     private func setupGlobalSearchBar() {
@@ -96,6 +104,7 @@ final class HomeViewController: UIViewController {
         }
         segmentedViewController.initWithTitles(self.segmentViewControllersTitles, viewControllers: self.segmentViewControllers, defaultSelected: 0)
         self.tc_addChildViewController(viewController: segmentedViewController, onView: self.segmentedViewControllerContainerView)
+        self.segmentedViewController = segmentedViewController
     }
     
     private func setupPlusButton() {

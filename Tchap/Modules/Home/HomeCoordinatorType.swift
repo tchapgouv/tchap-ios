@@ -26,6 +26,13 @@ protocol HomeCoordinatorType: Coordinator, Presentable {
     ///   - enventID: An optional event id in this room on which the user wants to focus.
     func showRoom(with roomID: String, onEventID eventID: String?)
     
+    /// Select the rooms tab and scroll to the corresponding room cell (if any).
+    ///
+    /// - Parameters:
+    ///   - roomID: The room identifier.
+    ///   - animated: tell whether the transition is animated
+    func scrollToRoom(with roomID: String, animated: Bool)
+    
     /// Override or not the users discovery performed by the Contact Manager.
     ///
     /// - Parameters:

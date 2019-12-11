@@ -169,6 +169,20 @@ final class AppCoordinator: AppCoordinatorType {
         return false
     }
     
+    func resumeBySelectingRoom(with roomId: String) {
+        guard let account = MXKAccountManager.shared().accountKnowingRoom(withRoomIdOrAlias: roomId),
+            let homeCoordinator = self.homeCoordinator,
+            let room = account.mxSession.room(withRoomId: roomId) else {
+                return
+        }
+        
+        if room.summary.membership == .invite {
+            homeCoordinator.scrollToRoom(with: roomId, animated: false)
+        } else {
+            homeCoordinator.showRoom(with: roomId, onEventID: nil)
+        }
+    }
+    
     func showRoom(with roomIdOrAlias: String, onEventID eventID: String? = nil) -> Bool {
         guard let account = MXKAccountManager.shared().accountKnowingRoom(withRoomIdOrAlias: roomIdOrAlias),
             let homeCoordinator = self.homeCoordinator else {
