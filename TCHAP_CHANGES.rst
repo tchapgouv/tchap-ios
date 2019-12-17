@@ -1,3 +1,15 @@
+Changes in Tchap 1.0.20 (2019-12-17)
+===================================================
+
+Features/Improvements:
+ * Set up the Tchap share extension #228
+ * Manage a minimum client version #214
+ * Update wording on limit exceeded error #276
+
+Bug Fixes:
+ * Select an invite from the notifications doesn't not work #275
+ * The user lands in an empty room after selecting a notification #274
+
 Changes in Tchap 1.0.19 (2019-11-25)
 ===================================================
 
