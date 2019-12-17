@@ -113,6 +113,11 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
         }
     }
     
+    func scrollToRoom(with roomID: String, animated: Bool) {
+        self.homeViewController?.setSelectedTabIndex(0)
+        self.roomsCoordinator?.scrollToRoom(with: roomID, animated: animated)
+    }
+    
     func overrideContactManagerUsersDiscovery(_ isOverridden: Bool) {
         if isOverridden {
             MXKContactManager.shared().discoverUsersBoundTo3PIDsBlock = { [weak self] (threepids: [[String]], success: @escaping (([[String]]) -> Void), failure: @escaping ((Error) -> Void)) in

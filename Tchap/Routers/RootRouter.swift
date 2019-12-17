@@ -29,6 +29,8 @@ final class RootRouter: RootRouterType {
     
     // MARK: - Properties
     
+    private var presentedModule: Presentable?
+    
     let window: UIWindow
     
     /// The root view controller currently presented    
@@ -49,8 +51,19 @@ final class RootRouter: RootRouterType {
         self.window.makeKeyAndVisible()
     }
     
-    func dismissModule(animated: Bool, completion: (() -> Void)?) {
+    func dismissRootModule(animated: Bool, completion: (() -> Void)?) {
         self.updateRootViewController(rootViewController: nil, animated: animated, completion: completion)
+    }
+    
+    func presentModule(_ module: Presentable, animated: Bool, completion: (() -> Void)?) {
+        let viewControllerPresenter = self.rootViewController?.presentedViewController ?? self.rootViewController
+        
+        viewControllerPresenter?.present(module.toPresentable(), animated: animated, completion: completion)
+        self.presentedModule = module
+    }
+    
+    func dismissModule(animated: Bool, completion: (() -> Void)?) {
+        self.presentedModule?.toPresentable().dismiss(animated: animated, completion: completion)
     }
     
     // MARK: - Private methods

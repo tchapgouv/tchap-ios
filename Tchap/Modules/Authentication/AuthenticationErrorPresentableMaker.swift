@@ -78,7 +78,7 @@ final class AuthenticationErrorPresentableMaker {
                 case kMXErrCodeStringNotJSON:
                     message = Bundle.mxk_localizedString(forKey: "login_error_bad_json")
                 case kMXErrCodeStringLimitExceeded:
-                    message = Bundle.mxk_localizedString(forKey: "login_error_limit_exceeded")
+                    message = TchapL10n.authenticationErrorLimitExceeded
                 case kMXErrCodeStringUserInUse:
                     message = Bundle.mxk_localizedString(forKey: "login_error_user_in_use")
                 case kMXErrCodeStringLoginEmailURLNotYet:

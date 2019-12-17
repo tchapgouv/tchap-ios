@@ -30,7 +30,7 @@ final class IdentityServiceBuilder {
     /// - Parameters:
     ///   - identityserver: The identity service.
     ///   - completion: A closure called when the operation complete. Provide the service when succeed.
-    func build(fromIdentityServer identityServer: String, completion: @escaping (MXResponse<MXIdentityService>) -> Void) {
+    func build(from identityServer: String, completion: @escaping (MXResponse<MXIdentityService>) -> Void) {
         guard let identityServerURL = URL(string: identityServer) else {
             completion(MXResponse.failure(IdentityServiceError.identityServiceURLBuildFailed))
             return

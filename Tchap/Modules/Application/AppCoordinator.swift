@@ -33,10 +33,14 @@ final class AppCoordinator: AppCoordinatorType {
     private let rootRouter: RootRouterType
     
     private let universalLinkService: UniversalLinkService
+    private let appVersionCheckerStore: AppVersionCheckerStoreType
+    private let appVersionChecker: AppVersionChecker
     private var registrationService: RegistrationServiceType?
+    private var pendingCheckAppVersionOperation: MXHTTPOperation?
     
 //    private weak var splitViewCoordinator: SplitViewCoordinatorType?
     private weak var homeCoordinator: HomeCoordinatorType?
+    private weak var appVersionUpdateCoordinator: AppVersionUpdateCoordinatorType?
     
     private weak var expiredAccountAlertController: UIAlertController?
     private var accountValidityService: AccountValidityServiceType?
@@ -55,6 +59,11 @@ final class AppCoordinator: AppCoordinatorType {
     init(router: RootRouterType) {
         self.rootRouter = router
         self.universalLinkService = UniversalLinkService()
+        
+        let clientConfigurationService = ClientConfigurationService()
+        let appVersionCheckerStore = AppVersionCheckerStore()
+        self.appVersionChecker = AppVersionChecker(clientConfigurationService: clientConfigurationService, appVersionCheckerStore: appVersionCheckerStore)
+        self.appVersionCheckerStore = appVersionCheckerStore
     }
     
     // MARK: - Public methods
@@ -63,7 +72,7 @@ final class AppCoordinator: AppCoordinatorType {
         // If main user exists, user is logged in
         if let mainSession = self.mainSession {
             // Check whether a clear cache is required before launching the app
-            if AppVersion.isLastVersionLowerThan(Constants.lastAppVersionWhichRequiresCacheClearing) {
+            if AppVersion.isLastUsedVersionLowerThan(Constants.lastAppVersionWhichRequiresCacheClearing) {
                 self.reloadSession(clearCache: true)
             } else {
 //                self.showSplitView(session: mainSession)
@@ -73,7 +82,7 @@ final class AppCoordinator: AppCoordinatorType {
             self.showWelcome()
         }
         
-        AppVersion.updateLastVersion()
+        AppVersion.updateLastUsedVersion()
     }
     
     func handleUserActivity(_ userActivity: NSUserActivity, application: UIApplication) -> Bool {
@@ -160,6 +169,20 @@ final class AppCoordinator: AppCoordinatorType {
         return false
     }
     
+    func resumeBySelectingRoom(with roomId: String) {
+        guard let account = MXKAccountManager.shared().accountKnowingRoom(withRoomIdOrAlias: roomId),
+            let homeCoordinator = self.homeCoordinator,
+            let room = account.mxSession.room(withRoomId: roomId) else {
+                return
+        }
+        
+        if room.summary.membership == .invite {
+            homeCoordinator.scrollToRoom(with: roomId, animated: false)
+        } else {
+            homeCoordinator.showRoom(with: roomId, onEventID: nil)
+        }
+    }
+    
     func showRoom(with roomIdOrAlias: String, onEventID eventID: String? = nil) -> Bool {
         guard let account = MXKAccountManager.shared().accountKnowingRoom(withRoomIdOrAlias: roomIdOrAlias),
             let homeCoordinator = self.homeCoordinator else {
@@ -184,6 +207,23 @@ final class AppCoordinator: AppCoordinatorType {
             return true
         } else {
             return false
+        }
+    }
+    
+    func checkMinAppVersionRequirements() {
+        guard self.pendingCheckAppVersionOperation == nil else {
+            return
+        }
+        
+        self.pendingCheckAppVersionOperation = self.appVersionChecker.checkCurrentAppVersion { (versionResult) in
+            switch versionResult {
+            case .upToDate, .unknown:
+                break
+            case .shouldUpdate(versionInfo: let versionInfo):
+                print("[AppCoordinator] App should be upated with \(versionInfo)")
+                self.presentApplicationUpdate(with: versionInfo)
+            }
+            self.pendingCheckAppVersionOperation = nil
         }
     }
     
@@ -490,6 +530,31 @@ final class AppCoordinator: AppCoordinatorType {
         
         presenter.present(alert, animated: true, completion: nil)
     }
+    
+    private func presentApplicationUpdate(with versionInfo: ClientVersionInfo) {
+        guard self.appVersionUpdateCoordinator == nil else {
+            print("[AppCoordinor] AppVersionUpdateCoordinator already presented")
+            return
+        }
+        
+        // Update should be display once and has already been dislayed, do not display again
+        if versionInfo.displayOnlyOnce && self.appVersionChecker.isClientVersionInfoAlreadyDisplayed(versionInfo) {
+            print("[AppCoordinor] AppVersionUpdateCoordinator already presented for versionInfo: \(versionInfo)")
+            return
+        } else if versionInfo.allowOpeningApp && self.appVersionChecker.isClientVersionInfoAlreadyDisplayedToday(versionInfo) {
+            print("[AppCoordinor] AppVersionUpdateCoordinator already presented today for versionInfo: \(versionInfo)")
+            return
+        }
+        
+        let appVersionUpdateCoordinator = AppVersionUpdateCoordinator(rootRouter: self.rootRouter, versionInfo: versionInfo)
+        appVersionUpdateCoordinator.delegate = self
+        appVersionUpdateCoordinator.start()
+        self.add(childCoordinator: appVersionUpdateCoordinator)
+        self.appVersionUpdateCoordinator = appVersionUpdateCoordinator
+        
+        self.appVersionCheckerStore.saveLastDisplayedClientVersionInfo(versionInfo)
+        self.appVersionCheckerStore.saveLastDisplayedClientVersionDate(Calendar.current.startOfDay(for: Date()))
+    }
 }
 
 // MARK: - WelcomeCoordinatorDelegate
@@ -507,5 +572,12 @@ extension AppCoordinator: WelcomeCoordinatorDelegate {
 extension AppCoordinator: HomeCoordinatorDelegate {
     func homeCoordinator(_ coordinator: HomeCoordinatorType, reloadMatrixSessionsByClearingCache clearCache: Bool) {
         self.reloadSession(clearCache: clearCache)
+    }
+}
+
+// MARK: - AppVersionUpdateCoordinatorDelegate
+extension AppCoordinator: AppVersionUpdateCoordinatorDelegate {
+    func appVersionUpdateCoordinatorDidCancel(_ coordinator: AppVersionUpdateCoordinatorType) {
+        self.remove(childCoordinator: coordinator)
     }
 }

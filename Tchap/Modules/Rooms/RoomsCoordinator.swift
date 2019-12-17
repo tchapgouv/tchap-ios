@@ -73,6 +73,16 @@ final class RoomsCoordinator: NSObject, RoomsCoordinatorType {
         self.roomsDataSource.search(withPatterns: pattern)
     }
     
+    func scrollToRoom(with roomID: String, animated: Bool) {
+        if let indexPath = self.roomsDataSource.cellIndexPath(withRoomId: roomID, andMatrixSession: self.session) {
+            // We decided to scroll to the middle position because we failed to scroll correctly to the top position.
+            // Indeed an unexpected offset is observed at the end of the scrolling (sometimes). According to our first
+            // investigations, this is due to the "sticky headers" handling.
+            // We failed to fix this issue for the moment.
+            self.roomsViewController.recentsTableView.scrollToRow(at: indexPath, at: UITableView.ScrollPosition.middle, animated: animated)
+        }
+    }
+    
     // MARK: - Private methods
     
     private func joinRoom(with roomID: String) {

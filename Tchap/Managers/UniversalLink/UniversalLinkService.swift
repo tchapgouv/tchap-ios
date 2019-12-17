@@ -62,7 +62,7 @@ final class UniversalLinkService: UniversalLinkServiceType {
                 let identityServer: String = "\(scheme)://\(host)"
                 
                 let identityServiceBuilder = IdentityServiceBuilder()
-                identityServiceBuilder.build(fromIdentityServer: identityServer) { (identityServiceResult) in
+                identityServiceBuilder.build(from: identityServer) { (identityServiceResult) in
                     switch identityServiceResult {
                     case .success(let identityService):
                         self.currentOperation = identityService.submit3PIDValidationToken(token,

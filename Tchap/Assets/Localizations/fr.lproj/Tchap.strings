@@ -29,6 +29,7 @@
 "authentication_error_invalid_email" = "L'adresse email ne semble pas valide";
 "authentication_error_missing_password" = "Mot de passe manquant";
 "authentication_error_email_in_use" = "Cette adresse email est déjà utilisée";
+"authentication_error_limit_exceeded" = "Vos trois dernières tentatives de connexion ont échoué. Veuillez réessayer dans 30 minutes";
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Forgot password
@@ -228,3 +229,18 @@
 "change_password_new_password_success_title" = "Succès";
 "change_password_new_password_success_message" = "Votre mot de passe a été changé avec succès.\nVous ne recevrez plus de notifications sur vos autres appareils tant que vous ne vous y reconnecterez pas.";
 "change_password_new_password_invalid_old_password" = "Votre ancien mot de passe est invalide, souhaitez-vous le modifier ?";
+
+
+////////////////////////////////////////////////////////////////////////////////
+// MARK: App version update
+
+"app_version_update_critical_update_message_fallback" = "Une nouvelle version est disponible. Pour des raisons de sécurité, veuillez mettre à jour votre application avant de poursuivre son utilisation.";
+"app_version_update_mandatory_update_message_fallback" = "Une nouvelle version est disponible, veuillez mettre à jour votre application.";
+"app_version_update_info_update_message_fallback" = "Une nouvelle version est disponible. Nous vous invitons à  mettre à jour votre application.";
+"app_version_update_later_action" = "Plus tard";
+"app_version_update_ignore_action" = "Ignorer";
+"app_version_update_open_app_store_action" = "Ouvrir l'App Store";
+
+////////////////////////////////////////////////////////////////////////////////
+// Share extension
+"share_extension_failed_to_share_in_empty_discussion" = "Échec d'envoi. Veuillez renouveler cet envoi depuis l'application";
