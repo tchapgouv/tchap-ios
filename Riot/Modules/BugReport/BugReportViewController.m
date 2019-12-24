@@ -21,7 +21,7 @@
 #import "GBDeviceInfo_iOS.h"
 
 #import "RageShakeManager.h"
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
 #import "GeneratedInterface-Swift.h"
 
 @interface BugReportViewController ()

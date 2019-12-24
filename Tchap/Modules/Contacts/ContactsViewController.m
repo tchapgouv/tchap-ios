@@ -16,7 +16,6 @@
 
 #import "ContactsViewController.h"
 
-#import "RiotDesignValues.h"
 #import "RageShakeManager.h"
 #import "Analytics.h"
 #import "ContactsDataSource.h"

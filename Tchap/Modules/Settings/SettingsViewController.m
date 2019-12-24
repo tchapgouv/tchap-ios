@@ -37,7 +37,7 @@
 
 #import "NBPhoneNumberUtil.h"
 #import "RageShakeManager.h"
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
 #import "TableViewCellWithPhoneNumberTextField.h"
 
 #import "GBDeviceInfo_iOS.h"
@@ -168,7 +168,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 @property (strong, nonatomic) ChangePasswordCoordinatorBridgePresenter *changePasswordPresenter;
 
 // Observer
-@property (nonatomic, weak) id riotDesignValuesDidChangeThemeNotificationObserver;
+@property (nonatomic, weak) id themeServiceDidChangeThemeNotificationObserver;
 @property (nonatomic, weak) id removedAccountObserver;
 @property (nonatomic, weak) id accountUserInfoObserver;
 @property (nonatomic, weak) id pushInfoUpdateObserver;
@@ -229,7 +229,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     
     // Observe user interface theme change.
     MXWeakify(self);
-    _riotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    _themeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         MXStrongifyAndReturnIfNil(self);
         [self userInterfaceThemeDidChange];
@@ -318,9 +318,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         documentInteractionController = nil;
     }
     
-    if (_riotDesignValuesDidChangeThemeNotificationObserver)
+    if (_themeServiceDidChangeThemeNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:_riotDesignValuesDidChangeThemeNotificationObserver];
+        [[NSNotificationCenter defaultCenter] removeObserver:_themeServiceDidChangeThemeNotificationObserver];
     }
     
     if (_removedAccountObserver)

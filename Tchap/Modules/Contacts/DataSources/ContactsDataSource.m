@@ -20,8 +20,6 @@
 
 #import "Contact.h"
 
-#import "RiotDesignValues.h"
-
 #import <Contacts/CNContactStore.h>
 
 #define CONTACTSDATASOURCE_LOCALCONTACTS_BITWISE 0x01

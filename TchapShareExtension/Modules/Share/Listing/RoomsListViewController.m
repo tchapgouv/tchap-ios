@@ -20,7 +20,6 @@
 #import "ShareExtensionManager.h"
 #import "RecentCellData.h"
 #import "ThemeService.h"
-#import "RiotDesignValues.h"
 #import <MatrixKit/MatrixKit.h>
 
 #import "GeneratedInterface-Swift.h"

@@ -17,8 +17,8 @@
 #import "CountryPickerViewController.h"
 
 #import "RageShakeManager.h"
-#import "RiotDesignValues.h"
 #import "Analytics.h"
+#import "ThemeService.h"
 #import "GeneratedInterface-Swift.h"
 
 @interface CountryPickerViewController ()

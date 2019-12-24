@@ -170,7 +170,6 @@
 		0245190023A1968B006873DF /* DefaultTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024518F223A19675006873DF /* DefaultTheme.swift */; };
 		0245190123A1968C006873DF /* DefaultTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024518F223A19675006873DF /* DefaultTheme.swift */; };
 		0250C4932122B68000034691 /* MediaAlbumTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B557CE20EF5E3500210D55 /* MediaAlbumTableCell.m */; };
-		0250C4942122B68000034691 /* RiotDesignValues.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932AB20F3A7B000746532 /* RiotDesignValues.m */; };
 		0250C4962122B68000034691 /* AvatarGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC111E7009EC00A9B29C /* AvatarGenerator.m */; };
 		0250C4992122B68000034691 /* BugReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556B320EE6C4C00210D55 /* BugReportViewController.m */; };
 		0250C49B2122B68000034691 /* RecentCellData.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932F920F3C51900746532 /* RecentCellData.m */; };
@@ -284,7 +283,6 @@
 		026155402395CCA00045459E /* Variant1Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1BC6A1C2136C99F00D32F8E /* Variant1Style.swift */; };
 		026155412395CCA80045459E /* Variant2Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1BC6A1E2136C9A800D32F8E /* Variant2Style.swift */; };
 		026155422395D2A80045459E /* DesignValues.m in Sources */ = {isa = PBXBuildFile; fileRef = 02BEE1A6212C77B700098505 /* DesignValues.m */; };
-		026155432395D6F30045459E /* RiotDesignValues.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932AB20F3A7B000746532 /* RiotDesignValues.m */; };
 		026155442395D8280045459E /* RiotSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B5597F20EFC3DF00210D55 /* RiotSettings.swift */; };
 		026155452395DC130045459E /* RecentCellData.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932F920F3C51900746532 /* RecentCellData.m */; };
 		026155462395DC230045459E /* MXRoom+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBE81E7009EC00A9B29C /* MXRoom+Riot.m */; };
@@ -376,7 +374,6 @@
 		026155E0239901000045459E /* ThirdPartyIDPlatformInfoType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BEE188212AB23A00098505 /* ThirdPartyIDPlatformInfoType.swift */; };
 		026155E1239901250045459E /* ThirdPartyIDPlatformInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BEE189212AB23A00098505 /* ThirdPartyIDPlatformInfo.swift */; };
 		026155E2239901730045459E /* RiotSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B5597F20EFC3DF00210D55 /* RiotSettings.swift */; };
-		026155E32399024E0045459E /* RiotDesignValues.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932AB20F3A7B000746532 /* RiotDesignValues.m */; };
 		026155E42399027C0045459E /* RecentCellData.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932F920F3C51900746532 /* RecentCellData.m */; };
 		026155E52399031B0045459E /* Vector.strings in Resources */ = {isa = PBXBuildFile; fileRef = B1664D5520F4EBEC00808783 /* Vector.strings */; };
 		026155E6239907000045459E /* TchapDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = B122099723854EF2004D069C /* TchapDefaults.swift */; };
@@ -404,6 +401,22 @@
 		026155FD239939DE0045459E /* agent.ssi_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154D8236C7D930045459E /* agent.ssi_2019_10.cer */; };
 		026155FE23993A3B0045459E /* www.tchap.gouv.fr.cer in Resources */ = {isa = PBXBuildFile; fileRef = 028B50B6228EB2C2005DB9B6 /* www.tchap.gouv.fr.cer */; };
 		026155FF23993A460045459E /* matrix.agent.tchap.gouv.fr.cer in Resources */ = {isa = PBXBuildFile; fileRef = 028B50B4228E2931005DB9B6 /* matrix.agent.tchap.gouv.fr.cer */; };
+		026A465123B20E510058D80B /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026A465023B20E510058D80B /* UIColor.swift */; };
+		026A465223B20E510058D80B /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026A465023B20E510058D80B /* UIColor.swift */; };
+		026A465323B20E510058D80B /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026A465023B20E510058D80B /* UIColor.swift */; };
+		026A465423B20E510058D80B /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026A465023B20E510058D80B /* UIColor.swift */; };
+		026A465923B215900058D80B /* MediaPickerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026A465523B215900058D80B /* MediaPickerCoordinator.swift */; };
+		026A465A23B215900058D80B /* MediaPickerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026A465523B215900058D80B /* MediaPickerCoordinator.swift */; };
+		026A465B23B215900058D80B /* MediaPickerCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026A465623B215900058D80B /* MediaPickerCoordinatorType.swift */; };
+		026A465C23B215900058D80B /* MediaPickerCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026A465623B215900058D80B /* MediaPickerCoordinatorType.swift */; };
+		026A465D23B215900058D80B /* SingleImagePickerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026A465723B215900058D80B /* SingleImagePickerPresenter.swift */; };
+		026A465E23B215900058D80B /* SingleImagePickerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026A465723B215900058D80B /* SingleImagePickerPresenter.swift */; };
+		026A465F23B215900058D80B /* MediaPickerCoordinatorBridgePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026A465823B215900058D80B /* MediaPickerCoordinatorBridgePresenter.swift */; };
+		026A466023B215900058D80B /* MediaPickerCoordinatorBridgePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026A465823B215900058D80B /* MediaPickerCoordinatorBridgePresenter.swift */; };
+		026A466223B21AFF0058D80B /* UISearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026A466123B21AFF0058D80B /* UISearchBar.swift */; };
+		026A466323B21AFF0058D80B /* UISearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026A466123B21AFF0058D80B /* UISearchBar.swift */; };
+		026A466423B21AFF0058D80B /* UISearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026A466123B21AFF0058D80B /* UISearchBar.swift */; };
+		026A466523B21AFF0058D80B /* UISearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026A466123B21AFF0058D80B /* UISearchBar.swift */; };
 		026D887021C1C4F40085BED8 /* TchapSharedImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 026D886F21C1C4F40085BED8 /* TchapSharedImages.xcassets */; };
 		026D887221C1C5490085BED8 /* BtchapSharedImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 026D887121C1C5490085BED8 /* BtchapSharedImages.xcassets */; };
 		027DCAC521B14F68000DD05E /* ContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 027DCAC321B14F68000DD05E /* ContactCell.xib */; };
@@ -466,7 +479,6 @@
 		02DFEB7421C07370009B6F15 /* RoomAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B146D50C21A5EAE600D8C2C6 /* RoomAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.m */; };
 		02DFEB7521C07370009B6F15 /* RegistrationFormViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11C800F2139442700CC6F2F /* RegistrationFormViewModel.swift */; };
 		02DFEB7621C07370009B6F15 /* MediaAlbumTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B557CE20EF5E3500210D55 /* MediaAlbumTableCell.m */; };
-		02DFEB7721C07370009B6F15 /* RiotDesignValues.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932AB20F3A7B000746532 /* RiotDesignValues.m */; };
 		02DFEB7821C07370009B6F15 /* TableViewCellWithCheckBoxAndLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF86A214BE467003DFBA4 /* TableViewCellWithCheckBoxAndLabel.m */; };
 		02DFEB7921C07370009B6F15 /* RoomOutgoingEncryptedTextMsgWithoutSenderInfoBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF8BA214BE467003DFBA4 /* RoomOutgoingEncryptedTextMsgWithoutSenderInfoBubbleCell.m */; };
 		02DFEB7A21C07370009B6F15 /* AvatarGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC111E7009EC00A9B29C /* AvatarGenerator.m */; };
@@ -1416,6 +1428,12 @@
 		026155BD2398F8210045459E /* TchapShareExtension-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TchapShareExtension-Bridging-Header.h"; sourceTree = "<group>"; };
 		026155BE2398F8210045459E /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		026155C02398F8BB0045459E /* TchapShareExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TchapShareExtension.entitlements; sourceTree = "<group>"; };
+		026A465023B20E510058D80B /* UIColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
+		026A465523B215900058D80B /* MediaPickerCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaPickerCoordinator.swift; sourceTree = "<group>"; };
+		026A465623B215900058D80B /* MediaPickerCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaPickerCoordinatorType.swift; sourceTree = "<group>"; };
+		026A465723B215900058D80B /* SingleImagePickerPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingleImagePickerPresenter.swift; sourceTree = "<group>"; };
+		026A465823B215900058D80B /* MediaPickerCoordinatorBridgePresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaPickerCoordinatorBridgePresenter.swift; sourceTree = "<group>"; };
+		026A466123B21AFF0058D80B /* UISearchBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UISearchBar.swift; sourceTree = "<group>"; };
 		026D886F21C1C4F40085BED8 /* TchapSharedImages.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = TchapSharedImages.xcassets; sourceTree = "<group>"; };
 		026D887121C1C5490085BED8 /* BtchapSharedImages.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = BtchapSharedImages.xcassets; sourceTree = "<group>"; };
 		027DCAC321B14F68000DD05E /* ContactCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactCell.xib; sourceTree = "<group>"; };
@@ -1636,8 +1654,6 @@
 		B1680D042152AA28009B5F92 /* PublicRoomServiceType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PublicRoomServiceType.swift; sourceTree = "<group>"; };
 		B1680D072152AA60009B5F92 /* Appearance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Appearance.swift; sourceTree = "<group>"; };
 		B169329420F39E6200746532 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		B16932AA20F3A7B000746532 /* RiotDesignValues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RiotDesignValues.h; sourceTree = "<group>"; };
-		B16932AB20F3A7B000746532 /* RiotDesignValues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RiotDesignValues.m; sourceTree = "<group>"; };
 		B16932EC20F3C3C800746532 /* FilesSearchCellData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilesSearchCellData.m; sourceTree = "<group>"; };
 		B16932ED20F3C3C800746532 /* FilesSearchCellData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilesSearchCellData.h; sourceTree = "<group>"; };
 		B16932F820F3C51900746532 /* RecentCellData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentCellData.h; sourceTree = "<group>"; };
@@ -3156,15 +3172,6 @@
 			path = PublicRoom;
 			sourceTree = "<group>";
 		};
-		B16932A620F3A6FA00746532 /* Constants */ = {
-			isa = PBXGroup;
-			children = (
-				B16932AA20F3A7B000746532 /* RiotDesignValues.h */,
-				B16932AB20F3A7B000746532 /* RiotDesignValues.m */,
-			);
-			path = Constants;
-			sourceTree = "<group>";
-		};
 		B16932EB20F3C39A00746532 /* CellData */ = {
 			isa = PBXGroup;
 			children = (
@@ -3330,6 +3337,10 @@
 		B1B556ED20EE6C4C00210D55 /* MediaPicker */ = {
 			isa = PBXGroup;
 			children = (
+				026A465523B215900058D80B /* MediaPickerCoordinator.swift */,
+				026A465823B215900058D80B /* MediaPickerCoordinatorBridgePresenter.swift */,
+				026A465623B215900058D80B /* MediaPickerCoordinatorType.swift */,
+				026A465723B215900058D80B /* SingleImagePickerPresenter.swift */,
 				B1B556F320EE6C4C00210D55 /* MediaPickerViewController.h */,
 				B1B556EF20EE6C4C00210D55 /* MediaPickerViewController.m */,
 				B1B556F220EE6C4C00210D55 /* MediaPickerViewController.xib */,
@@ -3799,7 +3810,6 @@
 		F083BB081E7009EC00A9B29C /* Riot */ = {
 			isa = PBXGroup;
 			children = (
-				B16932A620F3A6FA00746532 /* Constants */,
 				F083BBE41E7009EC00A9B29C /* Categories */,
 				F083BBF21E7009EC00A9B29C /* Model */,
 				B1B5597C20EFC3DF00210D55 /* Managers */,
@@ -3839,6 +3849,8 @@
 		F083BBE41E7009EC00A9B29C /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				026A466123B21AFF0058D80B /* UISearchBar.swift */,
+				026A465023B20E510058D80B /* UIColor.swift */,
 				F083BBE51E7009EC00A9B29C /* MXKRoomBubbleTableViewCell+Riot.h */,
 				F083BBE61E7009EC00A9B29C /* MXKRoomBubbleTableViewCell+Riot.m */,
 				F083BBE71E7009EC00A9B29C /* MXRoom+Riot.h */,
@@ -4690,7 +4702,6 @@
 				B146D51221A5EAE800D8C2C6 /* RoomAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.m in Sources */,
 				B11C80132139442700CC6F2F /* RegistrationFormViewModel.swift in Sources */,
 				0250C4932122B68000034691 /* MediaAlbumTableCell.m in Sources */,
-				0250C4942122B68000034691 /* RiotDesignValues.m in Sources */,
 				020DF93C214BE467003DFBA4 /* TableViewCellWithCheckBoxAndLabel.m in Sources */,
 				020DF967214BE467003DFBA4 /* RoomOutgoingEncryptedTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
 				0250C4962122B68000034691 /* AvatarGenerator.m in Sources */,
@@ -4708,6 +4719,7 @@
 				B1C0EE8F2375B7F400E8BB88 /* ChangePasswordNewPasswordViewController.swift in Sources */,
 				027DCAC621B14F68000DD05E /* ContactCell.swift in Sources */,
 				0250C49F2122B68000034691 /* MediaAlbumContentViewController.m in Sources */,
+				026A465923B215900058D80B /* MediaPickerCoordinator.swift in Sources */,
 				020DF963214BE467003DFBA4 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
 				020DF987214BE467003DFBA4 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				0259329122B00E4300C93762 /* PasswordPolicy.swift in Sources */,
@@ -4749,6 +4761,7 @@
 				B1322FFA2130146D0054A9DD /* AuthenticationServiceType.swift in Sources */,
 				020DF939214BE467003DFBA4 /* TableViewCellWithLabelAndLargeTextView.m in Sources */,
 				02C4BE94225502DD00F7BB0E /* DiscussionDetailsCoordinator.swift in Sources */,
+				026A465B23B215900058D80B /* MediaPickerCoordinatorType.swift in Sources */,
 				B15B867221355749002782BE /* FormRules.swift in Sources */,
 				020DF962214BE467003DFBA4 /* RoomIncomingEncryptedTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				B1073D6B21A8096F00E36CFA /* RoomIncomingEncryptedAttachmentBubbleCell.m in Sources */,
@@ -4916,6 +4929,7 @@
 				0250C5012122B68000034691 /* StickerPickerViewController.m in Sources */,
 				B15B86892135C284002782BE /* AuthenticationViewModelType.swift in Sources */,
 				B1680CFD2152A9E6009B5F92 /* PublicRoomsCoordinator.swift in Sources */,
+				026A466223B21AFF0058D80B /* UISearchBar.swift in Sources */,
 				B15AB2A7215BF55B007F5405 /* ForgotPasswordFormViewModel.swift in Sources */,
 				02B34546219E383800110EC8 /* RoomsInviteCell.swift in Sources */,
 				B1C4645621B68257005F4D53 /* SelectableContactCell.swift in Sources */,
@@ -4945,7 +4959,9 @@
 				024518FA23A19676006873DF /* DefaultTheme.swift in Sources */,
 				B15AB2A4215BF20E007F5405 /* ForgotPasswordCoordinator.swift in Sources */,
 				029CC68D21772F4200DCC8B3 /* DeactivateAccountViewController.m in Sources */,
+				026A465F23B215900058D80B /* MediaPickerCoordinatorBridgePresenter.swift in Sources */,
 				0223EFAB2227E41B00B9EA34 /* HomeServerComponents.swift in Sources */,
+				026A465123B20E510058D80B /* UIColor.swift in Sources */,
 				0234A9A0225BD08A00E8E489 /* FormCheckBoxModel.swift in Sources */,
 				B12FD69F2146B3EB001B7F28 /* RestClientBuilder.swift in Sources */,
 				B1F2AA91212AEC830077FDC0 /* SplitViewCoordinatorType.swift in Sources */,
@@ -4982,6 +4998,7 @@
 				B15FE5EF23858BDC00D2A5B2 /* AppVersionUpdateViewModelType.swift in Sources */,
 				020DF99B214BE467003DFBA4 /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.m in Sources */,
 				B12DDA9A216FB2370093172C /* UIBezierPath.swift in Sources */,
+				026A465D23B215900058D80B /* SingleImagePickerPresenter.swift in Sources */,
 				B1F2AA9E212AEC830077FDC0 /* AuthenticationCoordinatorType.swift in Sources */,
 				B1F2AAAE212AED900077FDC0 /* RootRouter.swift in Sources */,
 				B1F2AA9B212AEC830077FDC0 /* ContactsCoordinatorType.swift in Sources */,
@@ -5039,13 +5056,13 @@
 				026155422395D2A80045459E /* DesignValues.m in Sources */,
 				026155A92398F7420045459E /* ShareDataSource.m in Sources */,
 				0261555F23972EB00045459E /* User.swift in Sources */,
-				026155432395D6F30045459E /* RiotDesignValues.m in Sources */,
 				026155B92398F7420045459E /* RoomsRoomCell.swift in Sources */,
 				0261556223972EF30045459E /* ThirdPartyIDPlatformInfo.swift in Sources */,
 				024518FC23A19680006873DF /* ThemeService.m in Sources */,
 				0261556523972F300045459E /* RoomServiceType.swift in Sources */,
 				0261555823972DD40045459E /* UIView.swift in Sources */,
 				026155452395DC130045459E /* RecentCellData.m in Sources */,
+				026A466423B21AFF0058D80B /* UISearchBar.swift in Sources */,
 				02615556239724260045459E /* RoomsCell.swift in Sources */,
 				0261556623972F4A0045459E /* RoomAccessRule.swift in Sources */,
 				0261555D23972E7C0045459E /* HomeServerComponents.swift in Sources */,
@@ -5057,6 +5074,7 @@
 				0261556723972F5A0045459E /* ThirdPartyIDPlatformInfoResolverType.swift in Sources */,
 				0261556923972F730045459E /* RoomPowerLevel.swift in Sources */,
 				024518FE23A19685006873DF /* Theme.swift in Sources */,
+				026A465323B20E510058D80B /* UIColor.swift in Sources */,
 				026155472395DC650045459E /* AvatarGenerator.m in Sources */,
 				0261555B23972E400045459E /* UIBezierPath.swift in Sources */,
 				0261555A23972E1F0045459E /* MXRoomSummary.swift in Sources */,
@@ -5095,6 +5113,7 @@
 				024518FD23A19681006873DF /* ThemeService.m in Sources */,
 				026155EC2399366F0045459E /* MXRoom+Riot.m in Sources */,
 				026155DF239900E70045459E /* ThirdPartyIDPlatformInfoResolver.swift in Sources */,
+				026A466523B21AFF0058D80B /* UISearchBar.swift in Sources */,
 				026155A22398F7420045459E /* ShareExtensionManager.m in Sources */,
 				026155D52398FA630045459E /* Stylable.swift in Sources */,
 				026155AA2398F7420045459E /* ShareDataSource.m in Sources */,
@@ -5107,8 +5126,8 @@
 				026155D62398FAAB0045459E /* SegmentedViewController.m in Sources */,
 				026155A82398F7420045459E /* SharePresentingViewController.m in Sources */,
 				024518FF23A19686006873DF /* Theme.swift in Sources */,
+				026A465423B20E510058D80B /* UIColor.swift in Sources */,
 				026155ED239936E40045459E /* AvatarGenerator.m in Sources */,
-				026155E32399024E0045459E /* RiotDesignValues.m in Sources */,
 				026155C32398F9430045459E /* UIBezierPath.swift in Sources */,
 				026155E6239907000045459E /* TchapDefaults.swift in Sources */,
 				026155E42399027C0045459E /* RecentCellData.m in Sources */,
@@ -5132,7 +5151,6 @@
 				02DFEB7521C07370009B6F15 /* RegistrationFormViewModel.swift in Sources */,
 				B12209D723855059004D069C /* SerializationService.swift in Sources */,
 				02DFEB7621C07370009B6F15 /* MediaAlbumTableCell.m in Sources */,
-				02DFEB7721C07370009B6F15 /* RiotDesignValues.m in Sources */,
 				02DFEB7821C07370009B6F15 /* TableViewCellWithCheckBoxAndLabel.m in Sources */,
 				02DFEB7921C07370009B6F15 /* RoomOutgoingEncryptedTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
 				B12209BC23854F92004D069C /* ClientConfiguration.swift in Sources */,
@@ -5149,6 +5167,7 @@
 				02DFEB8021C07370009B6F15 /* Presentable.swift in Sources */,
 				02DFEB8121C07370009B6F15 /* ForgotPasswordService.swift in Sources */,
 				02DFEB8221C07370009B6F15 /* AuthenticationViewModel.swift in Sources */,
+				026A465A23B215900058D80B /* MediaPickerCoordinator.swift in Sources */,
 				02DFEB8321C07370009B6F15 /* RoomCoordinator.swift in Sources */,
 				B1C0EE902375B7F400E8BB88 /* ChangePasswordNewPasswordViewController.swift in Sources */,
 				02DFEB8421C07370009B6F15 /* ContactCell.swift in Sources */,
@@ -5190,6 +5209,7 @@
 				02DFEB9F21C07370009B6F15 /* CreateNewDiscussionCoordinatorType.swift in Sources */,
 				B1C0EE762375B7A000E8BB88 /* ChangePasswordCurrentPasswordViewModelType.swift in Sources */,
 				B1C0EE922375B7F400E8BB88 /* ChangePasswordNewPasswordViewState.swift in Sources */,
+				026A465C23B215900058D80B /* MediaPickerCoordinatorType.swift in Sources */,
 				02DFEBA021C07370009B6F15 /* RoomAttachmentAntivirusScanStatusBubbleCell.m in Sources */,
 				02DFEBA121C07370009B6F15 /* HomeCoordinator.swift in Sources */,
 				02DFEBA221C07370009B6F15 /* AuthenticationServiceType.swift in Sources */,
@@ -5357,6 +5377,7 @@
 				02DFEC1D21C07370009B6F15 /* RecentsViewController.m in Sources */,
 				B1C0EE722375B7A000E8BB88 /* ChangePasswordCurrentPasswordViewState.swift in Sources */,
 				02DFEC1E21C07370009B6F15 /* RoomPreviewCoordinatorType.swift in Sources */,
+				026A466323B21AFF0058D80B /* UISearchBar.swift in Sources */,
 				02DFEC1F21C07370009B6F15 /* RestClientBuilderError.swift in Sources */,
 				02DFEC2021C07370009B6F15 /* ThreePIDCredentials.swift in Sources */,
 				02DFEC2121C07370009B6F15 /* StickerPickerViewController.m in Sources */,
@@ -5386,7 +5407,9 @@
 				024518FB23A19676006873DF /* DefaultTheme.swift in Sources */,
 				02DFEC3621C07370009B6F15 /* RoomMemberDetailsViewController.m in Sources */,
 				02DFEC3721C07370009B6F15 /* GDPRConsentViewController.swift in Sources */,
+				026A466023B215900058D80B /* MediaPickerCoordinatorBridgePresenter.swift in Sources */,
 				02C4BE8F2252456000F7BB0E /* ThirdPartyIDPlatformInfoResolverType.swift in Sources */,
+				026A465223B20E510058D80B /* UIColor.swift in Sources */,
 				02DFEC3821C07370009B6F15 /* LegacyAppDelegate.m in Sources */,
 				02DFEC3921C07370009B6F15 /* ForgotPasswordCoordinator.swift in Sources */,
 				02DFEC3A21C07370009B6F15 /* DeactivateAccountViewController.m in Sources */,
@@ -5423,6 +5446,7 @@
 				02DFEC5321C07370009B6F15 /* DeviceView.m in Sources */,
 				02DFEC5421C07370009B6F15 /* RoomIncomingEncryptedTextMsgWithoutSenderNameBubbleCell.m in Sources */,
 				B1C0EE652375B78C00E8BB88 /* ChangePasswordCoordinator.swift in Sources */,
+				026A465E23B215900058D80B /* SingleImagePickerPresenter.swift in Sources */,
 				02DFEC5521C07370009B6F15 /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.m in Sources */,
 				02DFEC5621C07370009B6F15 /* UIBezierPath.swift in Sources */,
 				B15FE5E7238584B800D2A5B2 /* AppVersionCheckerResult+Codable.swift in Sources */,

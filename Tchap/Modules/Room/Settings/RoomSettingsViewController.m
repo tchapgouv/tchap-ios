@@ -25,6 +25,8 @@
 #import "AvatarGenerator.h"
 #import "Tools.h"
 
+#import "ThemeService.h"
+
 #import "MXRoom+Riot.h"
 #import "MXRoomSummary+Riot.h"
 
@@ -102,10 +104,10 @@ NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBanne
     
     // A copy of the banned members
     NSArray<MXRoomMember*> *bannedMembers;
-    
-    // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
-    id kRiotDesignValuesDidChangeThemeNotificationObserver;
 }
+
+// Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
+@property (nonatomic, weak) id kThemeServiceDidChangeThemeNotificationObserver;
 
 @property (nonatomic, strong) id<Style> currentStyle;
 
@@ -194,8 +196,10 @@ NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBanne
     [self setNavBarButtons];
     
     // Observe user interface theme change.
-    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    MXWeakify(self);
+    _kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
+        MXStrongifyAndReturnIfNil(self);
         [self userInterfaceThemeDidChange];
         
     }];
@@ -330,10 +334,9 @@ NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBanne
         actualDirectoryVisibilityRequest = nil;
     }
     
-    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    if (_kThemeServiceDidChangeThemeNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
-        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:_kThemeServiceDidChangeThemeNotificationObserver];
     }
     
     if (appDelegateDidTapStatusBarNotificationObserver)

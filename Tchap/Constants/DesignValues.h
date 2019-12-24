@@ -16,9 +16,6 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-// @TODO: Remove this RiotDesignValues dependency
-#import "RiotDesignValues.h"
-
 // @TODO: Support multiple theme (presently only one theme is supported)
 #import "ThemeService.h"
 

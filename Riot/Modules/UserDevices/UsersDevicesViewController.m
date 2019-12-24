@@ -18,7 +18,7 @@
 #import "UsersDevicesViewController.h"
 
 #import "RageShakeManager.h"
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
 #import "Analytics.h"
 #import "GeneratedInterface-Swift.h"
 

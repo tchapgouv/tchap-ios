@@ -17,7 +17,7 @@
 #import "WebViewViewController.h"
 
 #import "RageShakeManager.h"
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
 
 #import "GeneratedInterface-Swift.h"
 
