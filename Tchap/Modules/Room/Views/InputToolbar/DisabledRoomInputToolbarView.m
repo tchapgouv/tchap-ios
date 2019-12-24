@@ -16,7 +16,7 @@
 
 #import "DisabledRoomInputToolbarView.h"
 
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
 
 #import "GeneratedInterface-Swift.h"
 

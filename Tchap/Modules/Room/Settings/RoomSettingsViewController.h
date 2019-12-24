@@ -45,7 +45,7 @@ typedef enum : NSUInteger {
     
 } RoomSettingsViewControllerField;
 
-@interface RoomSettingsViewController : MXKRoomSettingsViewController <UITextViewDelegate, UITextFieldDelegate, MediaPickerViewControllerDelegate>
+@interface RoomSettingsViewController : MXKRoomSettingsViewController <UITextViewDelegate, UITextFieldDelegate>
 
 /**
  Creates and returns a new `RoomSettingsViewController` object.

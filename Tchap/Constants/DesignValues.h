@@ -19,6 +19,9 @@
 // @TODO: Remove this RiotDesignValues dependency
 #import "RiotDesignValues.h"
 
+// @TODO: Support multiple theme (presently only one theme is supported)
+#import "ThemeService.h"
+
 /**
  Posted when the user interface theme has been changed.
  */
@@ -66,6 +69,7 @@ extern UIColor *kVariant1SecondaryBgColor;
 extern UIColor *kVariant1SecondaryTextColor;
 extern UIColor *kVariant1WarnTextColor;
 extern UIColor *kVariant1PresenceIndicatorOnlineColor;
+extern UIColor *kVariant1OverlayBackgroundColor;
 
 #pragma mark Variant 2
 
@@ -99,6 +103,7 @@ extern UIColor *kVariant2SecondaryBgColor;
 extern UIColor *kVariant2SecondaryTextColor;
 extern UIColor *kVariant2WarnTextColor;
 extern UIColor *kVariant2PresenceIndicatorOnlineColor;
+extern UIColor *kVariant2OverlayBackgroundColor;
 
 /**
  `DesignValues` class manages the Tchap design parameters

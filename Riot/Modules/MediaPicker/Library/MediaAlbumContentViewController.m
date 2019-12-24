@@ -23,6 +23,8 @@
 
 #import <MobileCoreServices/MobileCoreServices.h>
 
+#import "GeneratedInterface-Swift.h"
+
 @interface MediaAlbumContentViewController ()
 {
     /**
@@ -39,8 +41,8 @@
 // Observe UIApplicationWillEnterForegroundNotification to refresh bubbles when app leaves the background state.
 @property (nonatomic, weak) id UIApplicationWillEnterForegroundNotificationObserver;
 
-// Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
-@property (nonatomic, weak) id kRiotDesignValuesDidChangeThemeNotificationObserver;
+// Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
+@property (nonatomic, weak) id kThemeServiceDidChangeThemeNotificationObserver;
 
 @end
 
@@ -91,17 +93,19 @@
     }
     
     MXWeakify(self);
+
     // Observe UIApplicationWillEnterForegroundNotification to refresh captures collection when app leaves the background state.
     _UIApplicationWillEnterForegroundNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillEnterForegroundNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
-        // Force a full refresh of the displayed collection
         MXStrongifyAndReturnIfNil(self);
-        self.assetsCollection = self.assetsCollection;
+        
+        // Force a full refresh of the displayed collection
+        self.assetsCollection = self->_assetsCollection;
         
     }];
     
     // Observe user interface theme change.
-    _kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    _kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         MXStrongifyAndReturnIfNil(self);
         [self userInterfaceThemeDidChange];
@@ -112,15 +116,15 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    self.assetsCollectionView.backgroundColor = kRiotPrimaryBgColor;
-    self.defaultBarTintColor = kRiotSecondaryBgColor;
-    self.barTitleColor = kRiotPrimaryTextColor;
-    self.activityIndicator.backgroundColor = kRiotOverlayColor;
+    [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+
+    self.assetsCollectionView.backgroundColor = ThemeService.shared.theme.backgroundColor;
+    self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return kRiotDesignStatusBarStyle;
+    return ThemeService.shared.theme.statusBarStyle;
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -142,9 +146,9 @@
     {
         [[NSNotificationCenter defaultCenter] removeObserver:_UIApplicationWillEnterForegroundNotificationObserver];
     }
-    if (_kRiotDesignValuesDidChangeThemeNotificationObserver)
+    if (_kThemeServiceDidChangeThemeNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:_kRiotDesignValuesDidChangeThemeNotificationObserver];
+        [[NSNotificationCenter defaultCenter] removeObserver:_kThemeServiceDidChangeThemeNotificationObserver];
     }
 }
 

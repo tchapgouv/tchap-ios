@@ -19,6 +19,7 @@
 #import "RageShakeManager.h"
 #import "RiotDesignValues.h"
 #import "Analytics.h"
+#import "GeneratedInterface-Swift.h"
 
 @interface CountryPickerViewController ()
 {
@@ -28,8 +29,8 @@
     UIView *topview;
 }
 
-// Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
-@property (nonatomic, weak) id kRiotDesignValuesDidChangeThemeNotificationObserver;
+// Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
+@property (nonatomic, weak) id kThemeServiceDidChangeThemeNotificationObserver;
 
 @end
 
@@ -62,7 +63,7 @@
 
     // Observe user interface theme change.
     MXWeakify(self);
-    _kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    _kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         MXStrongifyAndReturnIfNil(self);
         [self userInterfaceThemeDidChange];
@@ -73,16 +74,15 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    self.defaultBarTintColor = kRiotSecondaryBgColor;
-    self.barTitleColor = kRiotPrimaryTextColor;
-    self.activityIndicator.backgroundColor = kRiotOverlayColor;
+    [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+
+    self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     
-    self.searchBar.barStyle = kRiotDesignSearchBarStyle;
-    self.searchBar.tintColor = kRiotDesignSearchBarTintColor;
+    [ThemeService.shared.theme applyStyleOnSearchBar:self.searchBar];
     
     // Use the primary bg color for the table view in plain style.
-    self.tableView.backgroundColor = kRiotPrimaryBgColor;
-    topview.backgroundColor = kRiotPrimaryBgColor;
+    self.tableView.backgroundColor = ThemeService.shared.theme.backgroundColor;
+    topview.backgroundColor = ThemeService.shared.theme.backgroundColor;
     self.searchDisplayController.searchResultsTableView.backgroundColor = self.tableView.backgroundColor;
     
     if (self.tableView.dataSource)
@@ -93,7 +93,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return kRiotDesignStatusBarStyle;
+    return ThemeService.shared.theme.statusBarStyle;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -109,23 +109,23 @@
     [topview removeFromSuperview];
     topview = nil;
     
-    if (_kRiotDesignValuesDidChangeThemeNotificationObserver)
+    if (_kThemeServiceDidChangeThemeNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:_kRiotDesignValuesDidChangeThemeNotificationObserver];
+        [[NSNotificationCenter defaultCenter] removeObserver:_kThemeServiceDidChangeThemeNotificationObserver];
     }
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    cell.textLabel.textColor = kRiotPrimaryTextColor;
-    cell.detailTextLabel.textColor = kRiotSecondaryTextColor;
-    cell.backgroundColor = kRiotPrimaryBgColor;
+    cell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+    cell.detailTextLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
+    cell.backgroundColor = ThemeService.shared.theme.backgroundColor;
     
     // Update the selected background view
-    if (kRiotSelectedBgColor)
+    if (ThemeService.shared.theme.selectedBackgroundColor)
     {
         cell.selectedBackgroundView = [[UIView alloc] init];
-        cell.selectedBackgroundView.backgroundColor = kRiotSelectedBgColor;
+        cell.selectedBackgroundView.backgroundColor = ThemeService.shared.theme.selectedBackgroundColor;
     }
     else
     {

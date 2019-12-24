@@ -1,5 +1,6 @@
 /*
  Copyright 2017 Vector Creations Ltd
+ Copyright 2019 New Vector Ltd
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -18,11 +19,14 @@
 
 #import "WidgetManager.h"
 
+#import "AppDelegate.h"
+#import "GeneratedInterface-Swift.h"
+
 NSString *const kIntegrationManagerMainScreen = nil;
 NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
 
 
-@interface IntegrationManagerViewController ()
+@interface IntegrationManagerViewController () <ServiceTermsModalCoordinatorBridgePresenterDelegate>
 {
     MXSession *mxSession;
     NSString *roomId;
@@ -32,6 +36,9 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
 
     MXHTTPOperation *operation;
 }
+
+@property (nonatomic, strong) ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter;
+@property (nonatomic) BOOL isViewAppearedOnce;
 
 @end
 
@@ -66,6 +73,22 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    if (!self.isViewAppearedOnce)
+    {
+        self.isViewAppearedOnce = YES;
+        [self loadData];
+    }
+}
+
+- (void)loadData
+{
+    RiotSharedSettings *sharedSettings = [[RiotSharedSettings alloc] initWithSession:mxSession];
+    if (!sharedSettings.hasIntegrationProvisioningEnabled)
+    {
+        [self showDisabledIntegrationManagerError];
+        return;
+    }
 
     if (!self.URL && !operation)
     {
@@ -73,7 +96,7 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
 
         // Make sure we have a scalar token
         MXWeakify(self);
-        operation = [[WidgetManager sharedManager] getScalarTokenForMXSession:mxSession success:^(NSString *theScalarToken) {
+        operation = [[WidgetManager sharedManager] getScalarTokenForMXSession:mxSession validate:YES  success:^(NSString *theScalarToken) {
             MXStrongifyAndReturnIfNil(self);
 
             self->operation = nil;
@@ -85,8 +108,22 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
         } failure:^(NSError *error) {
             MXStrongifyAndReturnIfNil(self);
 
+            NSLog(@"[IntegraionManagerVS] Cannot open due to missing scalar token. Error: %@", error);
+
             self->operation = nil;
             [self stopActivityIndicator];
+
+            if ([error.domain isEqualToString:WidgetManagerErrorDomain]
+                && error.code == WidgetManagerErrorCodeTermsNotSigned)
+            {
+                [self presentTerms];
+            }
+            else
+            {
+                [self withdrawViewControllerAnimated:YES completion:^{
+                    [[AppDelegate theDelegate] showErrorAsAlert:error];
+                }];
+            }
         }];
     }
 }
@@ -100,24 +137,26 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
 {
     NSMutableString *url;
 
+    NSString *integrationsUiUrl = [[WidgetManager sharedManager] configForUser:mxSession.myUser.userId].uiUrl;
+
     if (scalarToken)
     {
         url = [NSMutableString stringWithFormat:@"%@?scalar_token=%@&room_id=%@",
-               [[NSUserDefaults standardUserDefaults] objectForKey:@"integrationsUiUrl"],
-               [scalarToken stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
-               [roomId stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]
+               integrationsUiUrl,
+               [MXTools encodeURIComponent:scalarToken],
+               [MXTools encodeURIComponent:roomId]
                ];
 
         if (screen)
         {
             [url appendString:@"&screen="];
-            [url appendString:[screen stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+            [url appendString:[MXTools encodeURIComponent:screen]];
         }
 
         if (widgetId)
         {
             [url appendString:@"&integ_id="];
-            [url appendString:[widgetId stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+            [url appendString:[MXTools encodeURIComponent:widgetId]];
         }
     }
     
@@ -667,6 +706,77 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
         NSUInteger membershipCount = room.summary.membersCount.joined;
         [self sendIntegerResponse:membershipCount toRequest:requestId];
     }];
+}
+
+
+#pragma mark - Widget Permission
+
+- (void)checkWidgetPermissionWithCompletion:(void (^)(BOOL granted))completion
+{
+    // The integration manager widget has its own terms
+    completion(YES);
+}
+
+
+#pragma mark - Disabled Integrations
+
+- (void)showDisabledIntegrationManagerError
+{
+    NSString *message = NSLocalizedStringFromTable(@"widget_integration_manager_disabled", @"Vector", nil);
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
+                                                                   message:message
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+
+    [alert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                                              style:UIAlertActionStyleDefault
+                                            handler:^(UIAlertAction * action) {
+                                                [self withdrawViewControllerAnimated:YES completion:nil];
+                                            }]];
+
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+#pragma mark - Service terms
+
+- (void)presentTerms
+{
+    WidgetManagerConfig *config =  [[WidgetManager sharedManager] configForUser:mxSession.myUser.userId];
+
+    NSLog(@"[IntegrationManagerVC] presentTerms for %@", config.baseUrl);
+
+    ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter = [[ServiceTermsModalCoordinatorBridgePresenter alloc] initWithSession:mxSession baseUrl:config.baseUrl
+                                                                                                                                                        serviceType:MXServiceTypeIntegrationManager
+                                                                                                                                                       outOfContext:NO
+                                                                                                                                                        accessToken:config.scalarToken];
+
+    serviceTermsModalCoordinatorBridgePresenter.delegate = self;
+
+    [serviceTermsModalCoordinatorBridgePresenter presentFrom:self animated:YES];
+    self.serviceTermsModalCoordinatorBridgePresenter = serviceTermsModalCoordinatorBridgePresenter;
+}
+
+- (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidAccept:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+        [self loadData];
+    }];
+    self.serviceTermsModalCoordinatorBridgePresenter = nil;
+}
+
+- (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidCancel:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+        [self withdrawViewControllerAnimated:YES completion:nil];
+    }];
+    self.serviceTermsModalCoordinatorBridgePresenter = nil;
+}
+
+- (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidDecline:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter session:(MXSession * _Nonnull)session
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+        [self withdrawViewControllerAnimated:YES completion:nil];
+    }];
+    self.serviceTermsModalCoordinatorBridgePresenter = nil;
 }
 
 @end

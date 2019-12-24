@@ -379,7 +379,7 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
     self.view.backgroundColor = style.backgroundColor;
     
     //TODO Design the activvity indicator for Tchap
-    self.activityIndicator.backgroundColor = kRiotOverlayColor;
+    self.activityIndicator.backgroundColor = style.overlayBackgroundColor;
     
     UISearchBar *searchBar = self.searchController.searchBar;
     

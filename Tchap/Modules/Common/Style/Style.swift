@@ -52,6 +52,8 @@ import UIKit
     
     var presenceIndicatorOnlineColor: UIColor { get }
     
+    var overlayBackgroundColor: UIColor { get }
+    
     // MARK: - Commodity methods
     
     func applyStyle(onNavigationBar: UINavigationBar)

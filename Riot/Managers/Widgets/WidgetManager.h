@@ -1,5 +1,6 @@
 /*
  Copyright 2017 Vector Creations Ltd
+ Copyright 2019 New Vector Ltd
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -19,6 +20,8 @@
 #import <MatrixSDK/MatrixSDK.h>
 
 #import "Widget.h"
+
+@class WidgetManagerConfig;
 
 /**
  The type of matrix event used for matrix widgets.
@@ -51,10 +54,15 @@ FOUNDATION_EXPORT NSString *const WidgetManagerErrorDomain;
 typedef enum : NSUInteger
 {
     WidgetManagerErrorCodeNotEnoughPower,
-    WidgetManagerErrorCodeCreationFailed
+    WidgetManagerErrorCodeCreationFailed,
+    WidgetManagerErrorCodeNoIntegrationsServerConfigured,
+    WidgetManagerErrorCodeDisabledIntegrationsServer,
+    WidgetManagerErrorCodeFailedToConnectToIntegrationsServer,
+    WidgetManagerErrorCodeTermsNotSigned
 }
 WidgetManagerErrorCode;
 
+FOUNDATION_EXPORT NSString *const WidgetManagerErrorOpenIdTokenKey;
 
 /**
  The `WidgetManager` helps to handle modular widgets.
@@ -181,18 +189,53 @@ WidgetManagerErrorCode;
 #pragma mark - Modular interface
 
 /**
+ Get the integration manager configuration for a user.
+
+ @param userId the user id.
+ @return the integration manager configuration.
+ */
+- (WidgetManagerConfig*)configForUser:(NSString*)userId;
+
+/**
+ Store the integration manager configuration for a user.
+
+ @param the integration manager configuration.
+ @param userId the user id.
+ */
+- (void)setConfig:(WidgetManagerConfig*)config forUser:(NSString*)userId;
+
+/**
+ Check if the user has URLs for an integration manager configured.
+
+ @param userId the user id.
+ @return YES if they have URLs for an integration manager.
+ */
+- (BOOL)hasIntegrationManagerForUser:(NSString*)userId;
+
+/**
  Make sure there is a scalar token for the given Matrix session.
  
  If no token was gotten and stored before, the operation will make http requests
  to get one.
 
  @param mxSession the session to check.
+ @param validate if it is cached, check its validity on the scalar server.
  
  @param success A block object called when the operation succeeds.
  @param failure A block object called when the operation fails.
  */
 - (MXHTTPOperation *)getScalarTokenForMXSession:(MXSession*)mxSession
+                                       validate:(BOOL)validate
                                         success:(void (^)(NSString *scalarToken))success
                                         failure:(void (^)(NSError *error))failure;
+
+/**
+ Returns true if specified url is a scalar URL, typically https://scalar.vector.im/api
+
+ @param urlString the URL to check.
+ @param userId the user id.
+ @return YES if specified URL is a scalar URL.
+ */
+- (BOOL)isScalarUrl:(NSString*)urlString forUser:(NSString*)userId;
 
 @end

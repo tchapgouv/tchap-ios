@@ -179,6 +179,7 @@ UIColor *kVariant2PresenceIndicatorOnlineColor;
     kVariant1WarnTextColor = [UIColor redColor];
     
     kVariant1PresenceIndicatorOnlineColor = UIColorFromRGB(0x60ad0d);
+    kVariant1OverlayBackgroundColor = [UIColor colorWithWhite:0.7 alpha:0.5];
 }
 
 - (void)setupVariant2Colors {
@@ -213,6 +214,7 @@ UIColor *kVariant2PresenceIndicatorOnlineColor;
     kVariant2WarnTextColor = [UIColor redColor];
     
     kVariant2PresenceIndicatorOnlineColor = UIColorFromRGB(0x60ad0d);
+    kVariant2OverlayBackgroundColor = [UIColor colorWithWhite:0.7 alpha:0.5];
 }
 
 - (void)userInterfaceThemeDidChange

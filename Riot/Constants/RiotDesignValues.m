@@ -30,7 +30,7 @@ UIColor *kRiotPlaceholderTextColor;
 UIColor *kRiotTopicTextColor;
 UIColor *kRiotSelectedBgColor;
 UIColor *kRiotAuxiliaryColor;
-UIColor *kRiotOverlayColor;
+//UIColor *kRiotOverlayColor;
 UIColor *kRiotKeyboardColor;
 
 // Riot Colors
@@ -169,7 +169,7 @@ UIKeyboardAppearance kRiotKeyboard;
         kRiotDesignSearchBarTintColor = kRiotColorGreen;
         
         kRiotAuxiliaryColor = kRiotTextColorGray;
-        kRiotOverlayColor = [UIColor colorWithWhite:0.3 alpha:0.5];
+        //kRiotOverlayColor = [UIColor colorWithWhite:0.3 alpha:0.5];
         kRiotKeyboardColor = kRiotColorDarkKeyboard;
         
         [UITextField appearance].keyboardAppearance = UIKeyboardAppearanceDark;
@@ -191,7 +191,7 @@ UIKeyboardAppearance kRiotKeyboard;
         kRiotDesignSearchBarTintColor = kRiotColorGreen;
         
         kRiotAuxiliaryColor = kRiotTextColorGray;
-        kRiotOverlayColor = [UIColor colorWithWhite:0.3 alpha:0.5];
+        //kRiotOverlayColor = [UIColor colorWithWhite:0.3 alpha:0.5];
         kRiotKeyboardColor = kRiotColorDarkKeyboard;
         
         [UITextField appearance].keyboardAppearance = UIKeyboardAppearanceDark;
@@ -213,7 +213,7 @@ UIKeyboardAppearance kRiotKeyboard;
         kRiotDesignSearchBarTintColor = nil; // Default tint color.
         
         kRiotAuxiliaryColor = kRiotColorSilver;
-        kRiotOverlayColor = [UIColor colorWithWhite:0.7 alpha:0.5];
+        //kRiotOverlayColor = [UIColor colorWithWhite:0.7 alpha:0.5];
         kRiotKeyboardColor = kRiotColorLightKeyboard;
                 
         [UITextField appearance].keyboardAppearance = UIKeyboardAppearanceLight;

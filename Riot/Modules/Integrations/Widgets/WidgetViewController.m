@@ -22,7 +22,12 @@
 
 NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse('%@', %@);";
 
-@interface WidgetViewController ()
+@interface WidgetViewController () <ServiceTermsModalCoordinatorBridgePresenterDelegate>
+
+@property (nonatomic, strong) ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter;
+@property (nonatomic, strong) NSString *widgetUrl;
+
+@property (nonatomic, strong) SlidingModalPresenter *slidingModalPresenter;
 
 @end
 
@@ -31,9 +36,12 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
 
 - (instancetype)initWithUrl:(NSString*)widgetUrl forWidget:(Widget*)theWidget
 {
-    self = [super initWithURL:widgetUrl];
+    // The opening of the url is delayed in viewWillAppear where we will check
+    // the widget permission
+    self = [super initWithURL:nil];
     if (self)
     {
+        self.widgetUrl = widgetUrl;
         widget = theWidget;
     }
     return self;
@@ -51,6 +59,74 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
     if (widget)
     {
         self.navigationItem.title = widget.name ? widget.name : widget.type;
+
+        UIBarButtonItem *menuButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"room_context_menu_more"] style:UIBarButtonItemStylePlain target:self action:@selector(onMenuButtonPressed:)];
+        self.navigationItem.rightBarButtonItem = menuButton;
+    }
+    
+    self.slidingModalPresenter = [SlidingModalPresenter new];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    // Check widget permission before opening the widget
+    [self checkWidgetPermissionWithCompletion:^(BOOL granted) {
+                
+        [self.slidingModalPresenter dismissWithAnimated:YES completion:nil];
+        
+        if (granted)
+        {
+            self.URL = self.widgetUrl;
+        }
+        else
+        {
+            [self withdrawViewControllerAnimated:YES completion:nil];
+        }
+    }];
+}
+
+- (void)reloadWidget
+{
+    self.URL = self.widgetUrl;
+}
+
+- (BOOL)hasUserEnoughPowerToManageCurrentWidget
+{
+    BOOL hasUserEnoughPower = NO;
+
+    MXSession *session = widget.mxSession;
+    MXRoom *room = [session roomWithRoomId:self.widget.roomId];
+    MXRoomState *roomState = room.dangerousSyncState;
+    if (roomState)
+    {
+        // Check user's power in the room
+        MXRoomPowerLevels *powerLevels = roomState.powerLevels;
+        NSInteger oneSelfPowerLevel = [powerLevels powerLevelOfUserWithUserID:session.myUser.userId];
+
+        // The user must be able to send state events to manage widgets
+        if (oneSelfPowerLevel >= powerLevels.stateDefault)
+        {
+            hasUserEnoughPower = YES;
+        }
+    }
+    
+    return hasUserEnoughPower;
+}
+
+- (void)removeCurrentWidget
+{
+    WidgetManager *widgetManager = [WidgetManager sharedManager];
+
+    MXRoom *room = [self.widget.mxSession roomWithRoomId:self.widget.roomId];
+    NSString *widgetId = self.widget.widgetId;
+    if (room && widgetId)
+    {
+        [widgetManager closeWidget:widgetId inRoom:room success:^{
+        } failure:^(NSError *error) {
+            NSLog(@"[WidgetVC] removeCurrentWidget failed. Error: %@", error);
+        }];
     }
 }
 
@@ -90,6 +166,182 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
 
     [self presentViewController:alert animated:YES completion:nil];
 }
+
+
+#pragma mark - Widget Permission
+
+- (void)checkWidgetPermissionWithCompletion:(void (^)(BOOL granted))completion
+{
+    MXSession *session = widget.mxSession;
+
+    if ([widget.widgetEvent.sender isEqualToString:session.myUser.userId])
+    {
+        // No need of more permission check if the user created the widget
+        completion(YES);
+        return;
+    }
+
+    // Check permission in user Riot settings
+    __block RiotSharedSettings *sharedSettings = [[RiotSharedSettings alloc] initWithSession:session];
+
+    WidgetPermission permission = [sharedSettings permissionFor:widget];
+    if (permission == WidgetPermissionGranted)
+    {
+        completion(YES);
+    }
+    else
+    {
+        // Note: ask permission again if the user previously declined it
+        [self askPermissionWithCompletion:^(BOOL granted) {
+            // Update the settings in user account data in parallel
+            [sharedSettings setPermission:granted ? WidgetPermissionGranted : WidgetPermissionDeclined
+                                      for:self.widget
+                                           success:^
+             {
+                 sharedSettings = nil;
+             }
+                                           failure:^(NSError * _Nullable error)
+             {
+                 NSLog(@"[WidgetVC] setPermissionForWidget failed. Error: %@", error);
+                 sharedSettings = nil;
+             }];
+
+            completion(granted);
+        }];
+    }
+}
+
+- (void)askPermissionWithCompletion:(void (^)(BOOL granted))completion
+{
+    NSString *widgetCreatorUserId = self.widget.widgetEvent.sender ?: NSLocalizedStringFromTable(@"room_participants_unknown", @"Vector", nil);
+    
+    MXSession *session = widget.mxSession;
+    MXRoom *room = [session roomWithRoomId:self.widget.widgetEvent.roomId];
+    MXRoomState *roomState = room.dangerousSyncState;
+    MXRoomMember *widgetCreatorRoomMember = [roomState.members memberWithUserId:widgetCreatorUserId];
+    
+    NSString *widgetDomain = @"";
+    
+    if (widget.url)
+    {
+        NSString *host = [[NSURL alloc] initWithString:widget.url].host;
+        if (host)
+        {
+            widgetDomain = host;
+        }
+    }
+    
+    MXMediaManager *mediaManager = widget.mxSession.mediaManager;
+    NSString *widgetCreatorDisplayName = widgetCreatorRoomMember.displayname;
+    NSString *widgetCreatorAvatarURL = widgetCreatorRoomMember.avatarUrl;
+    
+    NSArray<NSString*> *permissionStrings = @[
+                                              NSLocalizedStringFromTable(@"room_widget_permission_display_name_permission", @"Vector", nil),
+                                              NSLocalizedStringFromTable(@"room_widget_permission_avatar_url_permission", @"Vector", nil),
+                                              NSLocalizedStringFromTable(@"room_widget_permission_user_id_permission", @"Vector", nil),
+                                              NSLocalizedStringFromTable(@"room_widget_permission_theme_permission", @"Vector", nil),
+                                              NSLocalizedStringFromTable(@"room_widget_permission_widget_id_permission", @"Vector", nil),
+                                              NSLocalizedStringFromTable(@"room_widget_permission_room_id_permission", @"Vector", nil)
+                                            ];
+    
+    
+    WidgetPermissionViewModel *widgetPermissionViewModel = [[WidgetPermissionViewModel alloc] initWithCreatorUserId:widgetCreatorUserId
+                                                                                                 creatorDisplayName:widgetCreatorDisplayName creatorAvatarUrl:widgetCreatorAvatarURL widgetDomain:widgetDomain
+                                                                                                    isWebviewWidget:YES
+                                                                                                  widgetPermissions:permissionStrings
+                                                                                                       mediaManager:mediaManager];
+    
+    
+    WidgetPermissionViewController *widgetPermissionViewController = [WidgetPermissionViewController instantiateWith:widgetPermissionViewModel];
+    
+    widgetPermissionViewController.didTapContinueButton = ^{
+        completion(YES);
+    };
+    
+    widgetPermissionViewController.didTapCloseButton = ^{
+        completion(NO);
+    };
+        
+    
+    [self.slidingModalPresenter present:widgetPermissionViewController from:self animated:YES completion:nil];
+}
+
+- (void)revokePermissionForCurrentWidget
+{
+    MXSession *session = widget.mxSession;
+    __block RiotSharedSettings *sharedSettings = [[RiotSharedSettings alloc] initWithSession:session];
+
+    [sharedSettings setPermission:WidgetPermissionDeclined for:widget success:^{
+        sharedSettings = nil;
+    } failure:^(NSError * _Nullable error) {
+        NSLog(@"[WidgetVC] revokePermissionForCurrentWidget failed. Error: %@", error);
+        sharedSettings = nil;
+    }];
+}
+
+
+#pragma mark - Contextual Menu
+
+- (IBAction)onMenuButtonPressed:(id)sender
+{
+    [self showMenu];
+}
+
+-(void)showMenu
+{
+    MXSession *session = widget.mxSession;
+
+    UIAlertController *menu = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+
+    [menu addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"widget_menu_refresh", @"Vector", nil)
+                                             style:UIAlertActionStyleDefault
+                                           handler:^(UIAlertAction * action)
+                     {
+                         [self reloadWidget];
+                     }]];
+
+    NSURL *url = [NSURL URLWithString:self.widgetUrl];
+    if (url && [[UIApplication sharedApplication] canOpenURL:url])
+    {
+        [menu addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"widget_menu_open_outside", @"Vector", nil)
+                                                 style:UIAlertActionStyleDefault
+                                               handler:^(UIAlertAction * action)
+                         {
+                             [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:^(BOOL success) {
+                             }];
+                         }]];
+    }
+
+    if (![widget.widgetEvent.sender isEqualToString:session.myUser.userId])
+    {
+        [menu addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"widget_menu_revoke_permission", @"Vector", nil)
+                                                 style:UIAlertActionStyleDefault
+                                               handler:^(UIAlertAction * action)
+                         {
+                             [self revokePermissionForCurrentWidget];
+                             [self withdrawViewControllerAnimated:YES completion:nil];
+                         }]];
+    }
+
+    if ([self hasUserEnoughPowerToManageCurrentWidget])
+    {
+        [menu addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"widget_menu_remove", @"Vector", nil)
+                                                 style:UIAlertActionStyleDefault
+                                               handler:^(UIAlertAction * action)
+                         {
+                             [self removeCurrentWidget];
+                             [self withdrawViewControllerAnimated:YES completion:nil];
+                         }]];
+    }
+
+    [menu addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                                                    style:UIAlertActionStyleCancel
+                                                  handler:^(UIAlertAction * action) {
+                                                  }]];
+
+    [self presentViewController:menu animated:YES completion:nil];
+}
+
 
 #pragma mark - WKNavigationDelegate
 
@@ -172,17 +424,30 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
 {
     // Filter out the users's scalar token
     NSString *errorDescription = error.description;
-    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"scalar_token=\\w*"
-                                                                           options:NSRegularExpressionCaseInsensitive error:nil];
-    errorDescription = [regex stringByReplacingMatchesInString:errorDescription
-                                                       options:0
-                                                         range:NSMakeRange(0, errorDescription.length)
-                                                  withTemplate:@"scalar_token=..."];
+    errorDescription = [self stringByReplacingScalarTokenInString:errorDescription byScalarToken:@"..."];
 
     NSLog(@"[WidgetVC] didFailLoadWithError: %@", errorDescription);
 
     [self stopActivityIndicator];
     [self showErrorAsAlert:error];
+}
+
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationResponse:(WKNavigationResponse *)navigationResponse decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler {
+
+    if ([navigationResponse.response isKindOfClass:[NSHTTPURLResponse class]])
+    {
+        NSHTTPURLResponse * response = (NSHTTPURLResponse *)navigationResponse.response;
+        if (response.statusCode != 200)
+        {
+            NSLog(@"[WidgetVC] decidePolicyForNavigationResponse: statusCode: %@", @(response.statusCode));
+        }
+
+        if (response.statusCode == 403 && [[WidgetManager sharedManager] isScalarUrl:self.URL forUser:self.widget.mxSession.myUser.userId])
+        {
+            [self fixScalarToken];
+        }
+    }
+    decisionHandler(WKNavigationResponsePolicyAllow);
 }
 
 #pragma mark - postMessage API
@@ -313,6 +578,118 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
 - (void)sendLocalisedError:(NSString*)errorKey toRequest:(NSString*)requestId
 {
     [self sendError:NSLocalizedStringFromTable(errorKey, @"Vector", nil) toRequest:requestId];
+}
+
+
+#pragma mark - Private methods
+
+- (NSString *)stringByReplacingScalarTokenInString:(NSString*)string byScalarToken:(NSString*)scalarToken
+{
+    if (!string)
+    {
+        return nil;
+    }
+
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"scalar_token=\\w*"
+                                                                           options:NSRegularExpressionCaseInsensitive error:nil];
+    return [regex stringByReplacingMatchesInString:string
+                                           options:0
+                                             range:NSMakeRange(0, string.length)
+                                      withTemplate:[NSString stringWithFormat:@"scalar_token=%@", scalarToken]];
+}
+
+/**
+ Reset the scalar token used in the webview URL.
+ */
+- (void)fixScalarToken
+{
+    NSLog(@"[WidgetVC] fixScalarToken");
+
+    self->webView.hidden = YES;
+
+    // Get a fresh new scalar token
+    [WidgetManager.sharedManager deleteDataForUser:widget.mxSession.myUser.userId];
+
+    MXWeakify(self);
+    [WidgetManager.sharedManager getScalarTokenForMXSession:widget.mxSession validate:NO success:^(NSString *scalarToken) {
+        MXStrongifyAndReturnIfNil(self);
+
+        NSLog(@"[WidgetVC] fixScalarToken: DONE");
+        [self loadDataWithScalarToken:scalarToken];
+
+    } failure:^(NSError *error) {
+        NSLog(@"[WidgetVC] fixScalarToken: Error: %@", error);
+
+        if ([error.domain isEqualToString:WidgetManagerErrorDomain]
+            && error.code == WidgetManagerErrorCodeTermsNotSigned)
+        {
+            [self presentTerms];
+        }
+        else
+        {
+            [self showErrorAsAlert:error];
+        }
+    }];
+}
+
+- (void)loadDataWithScalarToken:(NSString*)scalarToken
+{
+    self.URL = [self stringByReplacingScalarTokenInString:self.URL byScalarToken:scalarToken];
+
+    self->webView.hidden = NO;
+}
+
+
+
+#pragma mark - Service terms
+
+- (void)presentTerms
+{
+    if (self.serviceTermsModalCoordinatorBridgePresenter)
+    {
+        return;
+    }
+    
+    WidgetManagerConfig *config =  [[WidgetManager sharedManager] configForUser:widget.mxSession.myUser.userId];
+
+    NSLog(@"[WidgetVC] presentTerms for %@", config.baseUrl);
+
+    ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter = [[ServiceTermsModalCoordinatorBridgePresenter alloc] initWithSession:widget.mxSession baseUrl:config.baseUrl
+                                                                                                                                                       serviceType:MXServiceTypeIntegrationManager
+                                                                                                                                                       outOfContext:NO
+                                                                                                                                                        accessToken:config.scalarToken];
+    serviceTermsModalCoordinatorBridgePresenter.delegate = self;
+
+    [serviceTermsModalCoordinatorBridgePresenter presentFrom:self animated:YES];
+    self.serviceTermsModalCoordinatorBridgePresenter = serviceTermsModalCoordinatorBridgePresenter;
+}
+
+- (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidAccept:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter
+{
+    MXWeakify(self);
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+        MXStrongifyAndReturnIfNil(self);
+
+        WidgetManagerConfig *config = [[WidgetManager sharedManager] configForUser:self->widget.mxSession.myUser.userId];
+        [self loadDataWithScalarToken:config.scalarToken];
+    }];
+    self.serviceTermsModalCoordinatorBridgePresenter = nil;
+}
+
+- (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidCancel:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+        [self withdrawViewControllerAnimated:YES completion:nil];
+    }];
+    self.serviceTermsModalCoordinatorBridgePresenter = nil;
+}
+
+- (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidDecline:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter session:(MXSession * _Nonnull)session
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+        [self withdrawViewControllerAnimated:YES completion:nil];
+    }];
+    self.serviceTermsModalCoordinatorBridgePresenter = nil;
 }
 
 @end

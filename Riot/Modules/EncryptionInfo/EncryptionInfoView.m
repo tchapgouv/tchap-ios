@@ -17,7 +17,17 @@
 
 #import "EncryptionInfoView.h"
 
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
+#import "GeneratedInterface-Swift.h"
+
+#import "AppDelegate.h"
+
+@interface EncryptionInfoView() <DeviceVerificationCoordinatorBridgePresenterDelegate>
+{
+    DeviceVerificationCoordinatorBridgePresenter *deviceVerificationCoordinatorBridgePresenter;
+}
+
+@end
 
 @implementation EncryptionInfoView
 
@@ -27,13 +37,47 @@
 {
     [super customizeViewRendering];
     
-    self.backgroundColor = kRiotSecondaryBgColor;
-    self.textView.backgroundColor = kRiotPrimaryBgColor;
-    self.defaultTextColor = kRiotPrimaryTextColor;
-    self.cancelButton.tintColor = kRiotColorGreen;
-    self.verifyButton.tintColor = kRiotColorGreen;
-    self.blockButton.tintColor = kRiotColorGreen;
-    self.confirmVerifyButton.tintColor = kRiotColorGreen;
+    self.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
+    self.textView.backgroundColor = ThemeService.shared.theme.backgroundColor;
+    self.defaultTextColor = ThemeService.shared.theme.textPrimaryColor;
+    self.cancelButton.tintColor = ThemeService.shared.theme.tintColor;
+    self.verifyButton.tintColor = ThemeService.shared.theme.tintColor;
+    self.blockButton.tintColor = ThemeService.shared.theme.tintColor;
+    self.confirmVerifyButton.tintColor = ThemeService.shared.theme.tintColor;
+}
+
+- (void)displayLegacyVerificationScreen
+{
+    [super onButtonPressed:self.verifyButton];
+}
+
+- (void)onButtonPressed:(id)sender
+{
+    UIViewController *rootViewController = [AppDelegate theDelegate].window.rootViewController;
+    if (sender == self.verifyButton && self.mxDeviceInfo.verified != MXDeviceVerified
+        && self.mxDeviceInfo
+        && rootViewController)
+    {
+        // Redirect to the interactive device verification flow
+        deviceVerificationCoordinatorBridgePresenter = [[DeviceVerificationCoordinatorBridgePresenter alloc] initWithSession:self.mxSession];
+        deviceVerificationCoordinatorBridgePresenter.delegate = self;
+
+        // Show it on the root view controller
+        [deviceVerificationCoordinatorBridgePresenter presentFrom:rootViewController otherUserId:self.mxDeviceInfo.userId otherDeviceId:self.mxDeviceInfo.deviceId animated:YES];
+    }
+    else
+    {
+        [super onButtonPressed:sender];
+    }
+}
+
+- (void)deviceVerificationCoordinatorBridgePresenterDelegateDidComplete:(DeviceVerificationCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter otherUserId:(NSString * _Nonnull)otherUserId otherDeviceId:(NSString * _Nonnull)otherDeviceId {
+
+    [deviceVerificationCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    deviceVerificationCoordinatorBridgePresenter = nil;
+
+    // Eject like MXKEncryptionInfoView does
+    [self removeFromSuperview];
 }
 
 @end

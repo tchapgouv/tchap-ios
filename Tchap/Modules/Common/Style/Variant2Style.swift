@@ -55,6 +55,8 @@ final class Variant2Style: NSObject, Style {
     
     let presenceIndicatorOnlineColor: UIColor = kVariant2PresenceIndicatorOnlineColor
     
+    let overlayBackgroundColor: UIColor = kVariant2OverlayBackgroundColor
+    
     // MARK: - Commodity methods
     
     func applyStyle(onNavigationBar navigationBar: UINavigationBar) {

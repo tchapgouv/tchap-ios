@@ -16,8 +16,6 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-#import <JitsiMeet/JitsiMeet.h>
-
 #import "WidgetManager.h"
 
 @protocol JitsiViewControllerDelegate;
@@ -28,7 +26,7 @@
  
  https://github.com/jitsi/jitsi-meet/tree/master/ios
  */
-@interface JitsiViewController : MXKViewController <JitsiMeetViewDelegate>
+@interface JitsiViewController : MXKViewController
 
 /**
  Returns the `UINib` object initialized for a `JitsiViewController`.
@@ -57,7 +55,7 @@
  @param failure A block object called when the operation fails.
  */
 - (void)openWidget:(Widget*)widget withVideo:(BOOL)video
-           success:(void (^)())success
+           success:(void (^)(void))success
            failure:(void (^)(NSError *error))failure;
 
 /**
@@ -75,12 +73,6 @@
  */
 @property (nonatomic) id<JitsiViewControllerDelegate> delegate;
 
-#pragma mark - Xib attributes
-
-// The jitsi-meet SDK view
-@property (weak, nonatomic) IBOutlet JitsiMeetView *jitsiMeetView;
-@property (weak, nonatomic) IBOutlet UIButton *backToAppButton;
-
 @end
 
 
@@ -95,7 +87,7 @@
  @param jitsiViewController the jitsi view controller.
  @param completion the block to execute at the end of the operation.
  */
-- (void)jitsiViewController:(JitsiViewController *)jitsiViewController dismissViewJitsiController:(void (^)())completion;
+- (void)jitsiViewController:(JitsiViewController *)jitsiViewController dismissViewJitsiController:(void (^)(void))completion;
 
 /**
  Tells the delegate to put the jitsi view controller in background.
@@ -103,6 +95,6 @@
  @param jitsiViewController the jitsi view controller.
  @param completion the block to execute at the end of the operation.
  */
-- (void)jitsiViewController:(JitsiViewController *)jitsiViewController goBackToApp:(void (^)())completion;
+- (void)jitsiViewController:(JitsiViewController *)jitsiViewController goBackToApp:(void (^)(void))completion;
 
 @end

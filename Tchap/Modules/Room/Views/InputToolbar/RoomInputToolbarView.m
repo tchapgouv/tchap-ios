@@ -17,15 +17,10 @@
 
 #import "RoomInputToolbarView.h"
 
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
+#import "GeneratedInterface-Swift.h"
 
 #import "GBDeviceInfo_iOS.h"
-
-#import <MediaPlayer/MediaPlayer.h>
-
-#import <Photos/Photos.h>
-
-#import <MobileCoreServices/MobileCoreServices.h>
 
 #import "WidgetManager.h"
 #import "IntegrationManagerViewController.h"
@@ -34,8 +29,6 @@
 
 @interface RoomInputToolbarView() <Stylable>
 {
-    MediaPickerViewController *mediaPicker;
-
     // The intermediate action sheet
     UIAlertController *actionSheet;
 }
@@ -74,10 +67,13 @@
     [super awakeFromNib];
     
     _supportCallOption = YES;
+    _sendMode = RoomInputToolbarViewSendModeSend;
     
     self.rightInputToolbarButton.hidden = YES;
     
     // Remove label text
+//    [self.rightInputToolbarButton setTitleColor:ThemeService.shared.theme.tintColor forState:UIControlStateNormal];
+//    [self.rightInputToolbarButton setTitleColor:ThemeService.shared.theme.tintColor forState:UIControlStateHighlighted];
     [self.rightInputToolbarButton setTitle:nil forState:UIControlStateNormal];
     [self.rightInputToolbarButton setTitle:nil forState:UIControlStateHighlighted];
     
@@ -110,7 +106,11 @@
     growingTextView.textColor = style.primaryTextColor;
     growingTextView.tintColor = style.secondaryTextColor;
     
-    growingTextView.internalTextView.keyboardAppearance = kRiotKeyboard;
+    growingTextView.internalTextView.keyboardAppearance = ThemeService.shared.theme.keyboardAppearance;
+
+    self.attachMediaButton.accessibilityLabel = NSLocalizedStringFromTable(@"room_accessibility_upload", @"Vector", nil);
+    self.voiceCallButton.accessibilityLabel = NSLocalizedStringFromTable(@"room_accessibility_call", @"Vector", nil);
+    self.hangupCallButton.accessibilityLabel = NSLocalizedStringFromTable(@"room_accessibility_hangup", @"Vector", nil);
 }
 
 #pragma mark -
@@ -166,12 +166,34 @@
     self.placeholder = placeholder;
 }
 
-- (void)setReplyToEnabled:(BOOL)isReplyToEnabled
+- (void)setSendMode:(RoomInputToolbarViewSendMode)sendMode
 {
-    _replyToEnabled = isReplyToEnabled;
-    
+    _sendMode = sendMode;
+
     [self updatePlaceholder];
+    //[self updateToolbarButtonLabel];
 }
+
+//- (void)updateToolbarButtonLabel
+//{
+//    NSString *title;
+//
+//    switch (_sendMode)
+//    {
+//        case RoomInputToolbarViewSendModeReply:
+//            title = NSLocalizedStringFromTable(@"room_action_reply", @"Vector", nil);
+//            break;
+//        case RoomInputToolbarViewSendModeEdit:
+//            title = NSLocalizedStringFromTable(@"save", @"Vector", nil);
+//            break;
+//        default:
+//            title = [NSBundle mxk_localizedStringForKey:@"send"];
+//            break;
+//    }
+//
+//    [self.rightInputToolbarButton setTitle:title forState:UIControlStateNormal];
+//    [self.rightInputToolbarButton setTitle:title forState:UIControlStateHighlighted];
+//}
 
 - (void)updatePlaceholder
 {
@@ -184,17 +206,44 @@
     
     if (!shouldDisplayLargePlaceholder)
     {
-        placeholder = _replyToEnabled ? NSLocalizedStringFromTable(@"room_message_reply_to_short_placeholder", @"Vector", nil) : NSLocalizedStringFromTable(@"room_message_short_placeholder", @"Vector", nil);
+        switch (_sendMode)
+        {
+            case RoomInputToolbarViewSendModeReply:
+                placeholder = NSLocalizedStringFromTable(@"room_message_reply_to_short_placeholder", @"Vector", nil);
+                break;
+
+            default:
+                placeholder = NSLocalizedStringFromTable(@"room_message_short_placeholder", @"Vector", nil);
+                break;
+        }
     }
     else
     {
         if (_isEncryptionEnabled)
         {
-            placeholder = _replyToEnabled ? NSLocalizedStringFromTable(@"encrypted_room_message_reply_to_placeholder", @"Vector", nil) : NSLocalizedStringFromTable(@"encrypted_room_message_placeholder", @"Vector", nil);
+            switch (_sendMode)
+            {
+                case RoomInputToolbarViewSendModeReply:
+                    placeholder = NSLocalizedStringFromTable(@"encrypted_room_message_reply_to_placeholder", @"Vector", nil);
+                    break;
+
+                default:
+                    placeholder = NSLocalizedStringFromTable(@"encrypted_room_message_placeholder", @"Vector", nil);
+                    break;
+            }
         }
         else
         {
-            placeholder = _replyToEnabled ? NSLocalizedStringFromTable(@"room_message_reply_to_placeholder", @"Vector", nil) : NSLocalizedStringFromTable(@"room_message_placeholder", @"Vector", nil);
+            switch (_sendMode)
+            {
+                case RoomInputToolbarViewSendModeReply:
+                    placeholder = NSLocalizedStringFromTable(@"room_message_reply_to_placeholder", @"Vector", nil);
+                    break;
+
+                default:
+                    placeholder = NSLocalizedStringFromTable(@"room_message_placeholder", @"Vector", nil);
+                    break;
+            }
         }
     }
     
@@ -282,6 +331,21 @@
             actionSheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
 
             __weak typeof(self) weakSelf = self;
+            
+            [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_action_camera", @"Vector", nil)
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * action) {
+                                                              
+                                                              if (weakSelf)
+                                                              {
+                                                                  typeof(self) self = weakSelf;
+                                                                  self->actionSheet = nil;
+                                                                  
+                                                                  [self.delegate roomInputToolbarViewDidTapCamera:self];
+                                                              }
+                                                          }]];
+            
+            
             [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_action_send_photo_or_video", @"Vector", nil)
                                                             style:UIAlertActionStyleDefault
                                                           handler:^(UIAlertAction * action) {
@@ -291,7 +355,7 @@
                                                                   typeof(self) self = weakSelf;
                                                                   self->actionSheet = nil;
 
-                                                                  [self showMediaPicker];
+                                                                  [self.delegate roomInputToolbarViewDidTapMediaLibrary:self];
                                                               }
 
                                                           }]];
@@ -408,32 +472,8 @@
     [super onTouchUpInside:button];
 }
 
-- (void)showMediaPicker
-{
-    // MediaPickerViewController is based on the Photos framework. So it is available only for iOS 8 and later.
-    Class PHAsset_class = NSClassFromString(@"PHAsset");
-    if (PHAsset_class)
-    {
-        mediaPicker = [MediaPickerViewController mediaPickerViewController];
-        mediaPicker.mediaTypes = @[(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie];
-        mediaPicker.delegate = self;
-        UINavigationController *navigationController = [UINavigationController new];
-        [navigationController pushViewController:mediaPicker animated:NO];
-
-        [self.delegate roomInputToolbarView:self presentViewController:navigationController];
-    }
-    else
-    {
-        // We use UIImagePickerController by default for iOS < 8
-        self.leftInputToolbarButton = self.attachMediaButton;
-        [super onTouchUpInside:self.leftInputToolbarButton];
-    }
-}
-
 - (void)destroy
 {
-    [self dismissMediaPicker];
-
     if (actionSheet)
     {
         [actionSheet dismissViewControllerAnimated:NO completion:nil];
@@ -441,42 +481,6 @@
     }
     
     [super destroy];
-}
-
-#pragma mark - MediaPickerViewController Delegate
-
-- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectImage:(NSData*)imageData withMimeType:(NSString *)mimetype isPhotoLibraryAsset:(BOOL)isPhotoLibraryAsset
-{
-    [self dismissMediaPicker];
-    
-    [self sendSelectedImage:imageData withMimeType:mimetype andCompressionMode:MXKRoomInputToolbarCompressionModePrompt isPhotoLibraryAsset:isPhotoLibraryAsset];
-}
-
-- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectVideo:(NSURL*)videoURL
-{
-    [self dismissMediaPicker];
-    
-    BOOL isPhotoLibraryAsset = ![videoURL.path hasPrefix:NSTemporaryDirectory()];
-    [self sendSelectedVideo:videoURL isPhotoLibraryAsset:isPhotoLibraryAsset];
-}
-
-- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectAssets:(NSArray<PHAsset*>*)assets
-{
-    [self dismissMediaPicker];
-
-    [self sendSelectedAssets:assets withCompressionMode:MXKRoomInputToolbarCompressionModePrompt];
-}
-
-#pragma mark - Media picker handling
-
-- (void)dismissMediaPicker
-{
-    if (mediaPicker)
-    {
-        [mediaPicker withdrawViewControllerAnimated:YES completion:nil];
-        [mediaPicker destroy];
-        mediaPicker = nil;
-    }
 }
 
 #pragma mark - Clipboard - Handle image/data paste from general pasteboard
