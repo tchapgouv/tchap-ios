@@ -32,6 +32,31 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Tchap.ChangePasswordNewPasswordViewController>(storyboard: ChangePasswordNewPasswordViewController.self)
   }
+  internal enum DeviceVerificationDataLoadingViewController: StoryboardType {
+    internal static let storyboardName = "DeviceVerificationDataLoadingViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.DeviceVerificationDataLoadingViewController>(storyboard: DeviceVerificationDataLoadingViewController.self)
+  }
+  internal enum DeviceVerificationIncomingViewController: StoryboardType {
+    internal static let storyboardName = "DeviceVerificationIncomingViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.DeviceVerificationIncomingViewController>(storyboard: DeviceVerificationIncomingViewController.self)
+  }
+  internal enum DeviceVerificationStartViewController: StoryboardType {
+    internal static let storyboardName = "DeviceVerificationStartViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.DeviceVerificationStartViewController>(storyboard: DeviceVerificationStartViewController.self)
+  }
+  internal enum DeviceVerificationVerifiedViewController: StoryboardType {
+    internal static let storyboardName = "DeviceVerificationVerifiedViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.DeviceVerificationVerifiedViewController>(storyboard: DeviceVerificationVerifiedViewController.self)
+  }
+  internal enum DeviceVerificationVerifyViewController: StoryboardType {
+    internal static let storyboardName = "DeviceVerificationVerifyViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.DeviceVerificationVerifyViewController>(storyboard: DeviceVerificationVerifyViewController.self)
+  }
   internal enum ForgotPasswordCheckedEmailViewController: StoryboardType {
     internal static let storyboardName = "ForgotPasswordCheckedEmailViewController"
 
