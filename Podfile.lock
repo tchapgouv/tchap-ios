@@ -37,9 +37,9 @@ PODS:
     - DTFoundation/Core
   - DTFoundation/UIKit (1.7.14):
     - DTFoundation/Core
-  - GBDeviceInfo (5.2.0):
-    - GBDeviceInfo/Core (= 5.2.0)
-  - GBDeviceInfo/Core (5.2.0)
+  - GBDeviceInfo (6.3.0):
+    - GBDeviceInfo/Core (= 6.3.0)
+  - GBDeviceInfo/Core (6.3.0)
   - GZIP (1.2.3)
   - HPGrowingTextView (1.1)
   - JitsiMeetSDK (2.3.1)
@@ -99,13 +99,13 @@ PODS:
   - Reusable/View (4.1.0)
   - RxSwift (4.5.0)
   - SwiftGen (6.1.0)
-  - SwiftLint (0.38.0)
+  - SwiftLint (0.36.0)
   - SwiftUTI (1.0.7)
+  - zxcvbn-ios (1.0.4)
 
 DEPENDENCIES:
   - cmark
-  - DTCoreText
-  - GBDeviceInfo (~> 5.2.0)
+  - GBDeviceInfo (~> 6.3.0)
   - MatomoTracker (~> 7.2.0)
   - MatrixKit (from `https://github.com/matrix-org/matrix-ios-kit.git`, branch `develop`)
   - MatrixKit/AppExtension (from `https://github.com/matrix-org/matrix-ios-kit.git`, branch `develop`)
@@ -116,8 +116,9 @@ DEPENDENCIES:
   - Reusable (~> 4.1)
   - RxSwift (~> 4.3)
   - SwiftGen (~> 6.1)
-  - SwiftLint (~> 0.27)
+  - SwiftLint (~> 0.36.0)
   - SwiftUTI (from `https://github.com/speramusinc/SwiftUTI.git`, branch `master`)
+  - zxcvbn-ios
 
 SPEC REPOS:
   trunk:
@@ -138,6 +139,7 @@ SPEC REPOS:
     - RxSwift
     - SwiftGen
     - SwiftLint
+    - zxcvbn-ios
 
 EXTERNAL SOURCES:
   MatrixKit:
@@ -166,7 +168,7 @@ SPEC CHECKSUMS:
   cmark: 1d9ad0375e3b9fa281732e992467903606015520
   DTCoreText: 67023bb51b26711d5f640c851f4845aea14c24c9
   DTFoundation: 25aa19bb7c6e225b1dfae195604fb8cf1da0ab4c
-  GBDeviceInfo: 2c65ceb9404f9079264d4c238f5b81916fdfc5e2
+  GBDeviceInfo: a3f39dba1a04dcb630abff65d6f7e8fbf319eadd
   GZIP: af5c90ef903776a7e9afe6ebebd794a84a2929d4
   HPGrowingTextView: 88a716d97fb853bcb08a4a08e4727da17efc9b19
   JitsiMeetSDK: 69e4978fbab21f9a535d1bec3b8d43721a4c72b2
@@ -180,9 +182,10 @@ SPEC CHECKSUMS:
   Reusable: 82be188f29d96dc5eff0db7b2393bcc08d2cdd5b
   RxSwift: f172070dfd1a93d70a9ab97a5a01166206e1c575
   SwiftGen: f872ca75cbd17bf7103c17f13dcfa0d9a15667b0
-  SwiftLint: 4105f061f9812b214568b736dab580ab2c73a582
+  SwiftLint: fc9859e4e1752340664851f667bb1898b9c90114
   SwiftUTI: 917993c124f8eac25e88ced0202fc58d7eb50fa8
+  zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
 
-PODFILE CHECKSUM: c68ee2ab4839245ea4d46618f0ac174b8fa40a98
+PODFILE CHECKSUM: 7de50211f07218c520f9c63c655d5996035fef22
 
 COCOAPODS: 1.8.4
