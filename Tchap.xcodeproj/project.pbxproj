@@ -849,6 +849,8 @@
 		02F0FF462226F82600066908 /* RoomIDComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F0FF442226F82600066908 /* RoomIDComponents.swift */; };
 		02FAE23423B2489200DE73D8 /* CameraPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE23323B2489200DE73D8 /* CameraPresenter.swift */; };
 		02FAE23523B2489200DE73D8 /* CameraPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE23323B2489200DE73D8 /* CameraPresenter.swift */; };
+		02FAE23823B25C8400DE73D8 /* Vector_Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE23723B25C8400DE73D8 /* Vector_Strings.swift */; };
+		02FAE23923B25C8400DE73D8 /* Vector_Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE23723B25C8400DE73D8 /* Vector_Strings.swift */; };
 		193B2CED1BFA08EA45ED6460 /* Pods_TchapPods_TchapShareExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8582197A7D3C5D692C381218 /* Pods_TchapPods_TchapShareExtension.framework */; };
 		323BD4C6148B554408CDD950 /* Pods_TchapPods_BtchapShareExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EFEE7E56697557ECD04FEDAE /* Pods_TchapPods_BtchapShareExtension.framework */; };
 		3758AAFA0E62019A0A322926 /* Pods_TchapPods_Tchap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6969DC25D5C9C2BB6A87FF16 /* Pods_TchapPods_Tchap.framework */; };
@@ -1503,6 +1505,7 @@
 		02F0FF3E22268D5F00066908 /* PublicRoomsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicRoomsCell.swift; sourceTree = "<group>"; };
 		02F0FF442226F82600066908 /* RoomIDComponents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomIDComponents.swift; sourceTree = "<group>"; };
 		02FAE23323B2489200DE73D8 /* CameraPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraPresenter.swift; sourceTree = "<group>"; };
+		02FAE23723B25C8400DE73D8 /* Vector_Strings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vector_Strings.swift; sourceTree = "<group>"; };
 		23307BF65CCF37A2CAE36E4F /* Pods-TchapPods-Btchap.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TchapPods-Btchap.debug.xcconfig"; path = "Target Support Files/Pods-TchapPods-Btchap/Pods-TchapPods-Btchap.debug.xcconfig"; sourceTree = "<group>"; };
 		3267EFB320E379FD00FF1CAA /* CHANGES.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGES.rst; sourceTree = "<group>"; };
 		3267EFB420E379FD00FF1CAA /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; fileEncoding = 4; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
@@ -2746,6 +2749,14 @@
 			path = Camera;
 			sourceTree = "<group>";
 		};
+		02FAE23623B25C8400DE73D8 /* Generated */ = {
+			isa = PBXGroup;
+			children = (
+				02FAE23723B25C8400DE73D8 /* Vector_Strings.swift */,
+			);
+			path = Generated;
+			sourceTree = "<group>";
+		};
 		32935CB21F628B98006888C8 /* js */ = {
 			isa = PBXGroup;
 			children = (
@@ -3823,6 +3834,7 @@
 			isa = PBXGroup;
 			children = (
 				F083BBE41E7009EC00A9B29C /* Categories */,
+				02FAE23623B25C8400DE73D8 /* Generated */,
 				F083BBF21E7009EC00A9B29C /* Model */,
 				B1B5597C20EFC3DF00210D55 /* Managers */,
 				B1B5567620EE6C4C00210D55 /* Modules */,
@@ -4877,6 +4889,7 @@
 				0250C4E62122B68000034691 /* MXRoomSummary+Riot.m in Sources */,
 				02520307224EBD4800262433 /* ContactButtonViewModelType.swift in Sources */,
 				02018F9922004417008D68BE /* UniversalLinkServiceType.swift in Sources */,
+				02FAE23823B25C8400DE73D8 /* Vector_Strings.swift in Sources */,
 				0290607A21501D16005FE3C1 /* PreviewView.m in Sources */,
 				B15B868B2135C4DE002782BE /* AuthenticationFormValidationResult.swift in Sources */,
 				B1C4646121B6DD42005F4D53 /* RoomServiceType.swift in Sources */,
@@ -5326,6 +5339,7 @@
 				02DFEBED21C07370009B6F15 /* RoomEncryptedAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.m in Sources */,
 				02DFEBEE21C07370009B6F15 /* ActivityIndicatorPresenterType.swift in Sources */,
 				02DFEBEF21C07370009B6F15 /* RoomsViewController.m in Sources */,
+				02FAE23923B25C8400DE73D8 /* Vector_Strings.swift in Sources */,
 				025E36F9229548C000C9D9AE /* ThirdPartyIDResolver.swift in Sources */,
 				02DFEBF021C07370009B6F15 /* RoomParticipantsViewController.m in Sources */,
 				02DFEBF121C07370009B6F15 /* MXRoomSummary+Riot.m in Sources */,
