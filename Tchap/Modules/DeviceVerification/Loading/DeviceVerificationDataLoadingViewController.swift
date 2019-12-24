@@ -48,7 +48,7 @@ final class DeviceVerificationDataLoadingViewController: UIViewController {
         // Do any additional setup after loading the view.
         
         self.title = VectorL10n.deviceVerificationTitle
-        self.vc_removeBackTitle()
+        self.tc_removeBackTitle()
         
         self.setupViews()
 

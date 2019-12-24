@@ -48,7 +48,7 @@ final class DeviceVerificationCoordinator: DeviceVerificationCoordinatorType {
     ///   - otherUserId: the device user id
     ///   - otherDevice: the device id
     init(session: MXSession, otherUserId: String, otherDeviceId: String) {
-        self.navigationRouter = NavigationRouter(navigationController: RiotNavigationController())
+        self.navigationRouter = NavigationRouter(navigationController: TCNavigationController())
         self.session = session
         self.otherUserId = otherUserId
         self.otherDeviceId = otherDeviceId
