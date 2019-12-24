@@ -93,7 +93,6 @@ extern UIColor *kVariant2ButtonPlainBgColor;
 extern UIColor *kVariant2PrimaryBgColor;
 extern UIColor *kVariant2PrimaryTextColor;
 extern UIColor *kVariant2PrimarySubTextColor;
-extern UIColor *kVariant2SecondaryTextColor;
 extern UIColor *kVariant2PlaceholderTextColor;
 extern UIColor *kVariant2SeparatorColor;
 extern UIColor *kVariant2SecondaryBgColor;

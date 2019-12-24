@@ -87,7 +87,6 @@ UIColor *kVariant2ButtonPlainBgColor;
 UIColor *kVariant2PrimaryBgColor;
 UIColor *kVariant2PrimaryTextColor;
 UIColor *kVariant2PrimarySubTextColor;
-UIColor *kVariant2SecondaryTextColor;
 UIColor *kVariant2PlaceholderTextColor;
 UIColor *kVariant2SeparatorColor;
 UIColor *kVariant2SecondaryBgColor;

@@ -32,8 +32,8 @@ class DefaultTheme: NSObject, Theme {
 
     var headerBackgroundColor: UIColor = UIColor(rgb: 0xF2F2F2)   //
     var headerBorderColor: UIColor  = UIColor(rgb: 0xC7C7CC) //
-    var headerTextPrimaryColor: UIColor = UIColor(rgb: 0x61708B)
-    var headerTextSecondaryColor: UIColor = UIColor(rgb: 0xC8C8CD)
+    var headerTextPrimaryColor: UIColor = UIColor(rgb: 0x858585) //
+    var headerTextSecondaryColor: UIColor = UIColor(rgb: 0xC8C8CD) //
 
     var textPrimaryColor: UIColor = UIColor(rgb: 0x000000)   //
     var textSecondaryColor: UIColor = UIColor(rgb: 0x9D9D9D)   //
