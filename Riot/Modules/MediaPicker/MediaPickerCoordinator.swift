@@ -44,7 +44,7 @@ final class MediaPickerCoordinator: NSObject, MediaPickerCoordinatorType {
         self.mediaUTIs = mediaUTIs
         self.allowsMultipleSelection = allowsMultipleSelection
         
-        self.navigationRouter = NavigationRouter(navigationController: RiotNavigationController())
+        self.navigationRouter = NavigationRouter(navigationController: TCNavigationController())
         
         super.init()
     }

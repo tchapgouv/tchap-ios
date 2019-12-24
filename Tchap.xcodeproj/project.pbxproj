@@ -847,6 +847,8 @@
 		02F0FF4022268D5F00066908 /* PublicRoomsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F0FF3E22268D5F00066908 /* PublicRoomsCell.swift */; };
 		02F0FF452226F82600066908 /* RoomIDComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F0FF442226F82600066908 /* RoomIDComponents.swift */; };
 		02F0FF462226F82600066908 /* RoomIDComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F0FF442226F82600066908 /* RoomIDComponents.swift */; };
+		02FAE23423B2489200DE73D8 /* CameraPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE23323B2489200DE73D8 /* CameraPresenter.swift */; };
+		02FAE23523B2489200DE73D8 /* CameraPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE23323B2489200DE73D8 /* CameraPresenter.swift */; };
 		193B2CED1BFA08EA45ED6460 /* Pods_TchapPods_TchapShareExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8582197A7D3C5D692C381218 /* Pods_TchapPods_TchapShareExtension.framework */; };
 		323BD4C6148B554408CDD950 /* Pods_TchapPods_BtchapShareExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EFEE7E56697557ECD04FEDAE /* Pods_TchapPods_BtchapShareExtension.framework */; };
 		3758AAFA0E62019A0A322926 /* Pods_TchapPods_Tchap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6969DC25D5C9C2BB6A87FF16 /* Pods_TchapPods_Tchap.framework */; };
@@ -1500,6 +1502,7 @@
 		02ECA87F22E0C5BA00ECDA5E /* MXRoomSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MXRoomSummary.swift; sourceTree = "<group>"; };
 		02F0FF3E22268D5F00066908 /* PublicRoomsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicRoomsCell.swift; sourceTree = "<group>"; };
 		02F0FF442226F82600066908 /* RoomIDComponents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomIDComponents.swift; sourceTree = "<group>"; };
+		02FAE23323B2489200DE73D8 /* CameraPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraPresenter.swift; sourceTree = "<group>"; };
 		23307BF65CCF37A2CAE36E4F /* Pods-TchapPods-Btchap.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TchapPods-Btchap.debug.xcconfig"; path = "Target Support Files/Pods-TchapPods-Btchap/Pods-TchapPods-Btchap.debug.xcconfig"; sourceTree = "<group>"; };
 		3267EFB320E379FD00FF1CAA /* CHANGES.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGES.rst; sourceTree = "<group>"; };
 		3267EFB420E379FD00FF1CAA /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; fileEncoding = 4; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
@@ -2735,6 +2738,14 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		02FAE23223B2489200DE73D8 /* Camera */ = {
+			isa = PBXGroup;
+			children = (
+				02FAE23323B2489200DE73D8 /* CameraPresenter.swift */,
+			);
+			path = Camera;
+			sourceTree = "<group>";
+		};
 		32935CB21F628B98006888C8 /* js */ = {
 			isa = PBXGroup;
 			children = (
@@ -3238,6 +3249,7 @@
 		B1B5567620EE6C4C00210D55 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				02FAE23223B2489200DE73D8 /* Camera */,
 				B17982FD2119FEA7001FD722 /* GDPR */,
 				B1B5570C20EE6C4C00210D55 /* GlobalSearch */,
 				B1B5575F20EE702800210D55 /* Integrations */,
@@ -4832,6 +4844,7 @@
 				B15AB2A3215BF20E007F5405 /* ForgotPasswordFormViewController.swift in Sources */,
 				B1F2AAAC212AED900077FDC0 /* NavigationRouter.swift in Sources */,
 				B1F2AAB0212AED900077FDC0 /* NavigationRouterType.swift in Sources */,
+				02FAE23423B2489200DE73D8 /* CameraPresenter.swift in Sources */,
 				02C4BE842252278400F7BB0E /* DiscussionFinder.swift in Sources */,
 				B1322FF3213002580054A9DD /* AuthenticationErrorPresentableMaker.swift in Sources */,
 				B1C0EE732375B7A000E8BB88 /* ChangePasswordCurrentPasswordCoordinatorType.swift in Sources */,
@@ -5280,6 +5293,7 @@
 				B12209C623854F92004D069C /* MinimumClientVersion.swift in Sources */,
 				02DFEBD621C07370009B6F15 /* ThirdPartyIDPlatformInfo.swift in Sources */,
 				02DFEBD721C07370009B6F15 /* TableViewCellWithButton.m in Sources */,
+				02FAE23523B2489200DE73D8 /* CameraPresenter.swift in Sources */,
 				02DFEBD821C07370009B6F15 /* SettingsViewController.m in Sources */,
 				02DFEBD921C07370009B6F15 /* ForgotPasswordFormViewController.swift in Sources */,
 				02DFEBDA21C07370009B6F15 /* NavigationRouter.swift in Sources */,

@@ -19,7 +19,6 @@
 #import "LegacyAppDelegate.h"
 
 #import <Intents/Intents.h>
-#import <PushKit/PushKit.h>
 #import <Contacts/Contacts.h>
 
 #import "RoomDataSource.h"
@@ -82,7 +81,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 NSString *const kLegacyAppDelegateDidLogoutNotification = @"kLegacyAppDelegateDidLogoutNotification";
 NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDidLoginNotification";
 
-@interface LegacyAppDelegate () <PKPushRegistryDelegate, GDPRConsentViewControllerDelegate, DeviceVerificationCoordinatorBridgePresenterDelegate>
+@interface LegacyAppDelegate () <GDPRConsentViewControllerDelegate, DeviceVerificationCoordinatorBridgePresenterDelegate>
 {
     /**
      Reachability observer

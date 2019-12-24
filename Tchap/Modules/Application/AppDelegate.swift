@@ -97,8 +97,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        if let roomId = notification.userInfo?["room_id"] as? String,
-            let actionIdentifier = response.actionIdentifier == UNNotificationDefaultActionIdentifier {
+        let actionIdentifier = response.actionIdentifier
+        if actionIdentifier == UNNotificationDefaultActionIdentifier,
+            let roomId = response.notification.request.content.userInfo["room_id"] as? String {
             _ = self.appCoordinator.resumeBySelectingRoom(with: roomId)
             completionHandler()
         } else {
@@ -108,7 +109,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     // iOS 10+, this is called when a notification is about to display in foreground.
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        completionHandler(UNNotificationPresentationOptionNone)
+        completionHandler([])
     }
 }
 

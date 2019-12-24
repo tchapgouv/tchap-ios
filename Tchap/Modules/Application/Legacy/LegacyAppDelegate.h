@@ -18,6 +18,7 @@
 
 #import <UIKit/UIKit.h>
 #import <MatrixKit/MatrixKit.h>
+#import <PushKit/PushKit.h>
 #import <UserNotifications/UserNotifications.h>
 
 #import "JitsiViewController.h"
@@ -51,7 +52,7 @@ extern NSString *const kLegacyAppDelegateDidLoginNotification;
 /**
  LegacyAppDelegate is based on Riot AppDelegate, is here to keep some Riot behaviors and be decoupled in the future.
  */
-@interface LegacyAppDelegate : UIResponder <UIApplicationDelegate, MXKCallViewControllerDelegate, JitsiViewControllerDelegate, UNUserNotificationCenterDelegate>
+@interface LegacyAppDelegate : UIResponder <UIApplicationDelegate, MXKCallViewControllerDelegate, JitsiViewControllerDelegate, PKPushRegistryDelegate, UNUserNotificationCenterDelegate>
 {
     BOOL isPushRegistered;
     
