@@ -20,8 +20,6 @@
 #import "ThemeService.h"
 #import "GeneratedInterface-Swift.h"
 
-#import "AppDelegate.h"
-
 @interface EncryptionInfoView() <DeviceVerificationCoordinatorBridgePresenterDelegate>
 {
     DeviceVerificationCoordinatorBridgePresenter *deviceVerificationCoordinatorBridgePresenter;

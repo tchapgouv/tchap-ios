@@ -851,6 +851,14 @@
 		02FAE23523B2489200DE73D8 /* CameraPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE23323B2489200DE73D8 /* CameraPresenter.swift */; };
 		02FAE23823B25C8400DE73D8 /* Vector_Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE23723B25C8400DE73D8 /* Vector_Strings.swift */; };
 		02FAE23923B25C8400DE73D8 /* Vector_Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE23723B25C8400DE73D8 /* Vector_Strings.swift */; };
+		02FAE30223B26BEA00DE73D8 /* WidgetManagerConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE30123B26BEA00DE73D8 /* WidgetManagerConfig.swift */; };
+		02FAE30323B26BEA00DE73D8 /* WidgetManagerConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE30123B26BEA00DE73D8 /* WidgetManagerConfig.swift */; };
+		02FAE30923B26C0B00DE73D8 /* RiotSettingIntegrationProvisioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE30623B26C0B00DE73D8 /* RiotSettingIntegrationProvisioning.swift */; };
+		02FAE30A23B26C0B00DE73D8 /* RiotSettingIntegrationProvisioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE30623B26C0B00DE73D8 /* RiotSettingIntegrationProvisioning.swift */; };
+		02FAE30B23B26C0B00DE73D8 /* RiotSettingAllowedWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE30723B26C0B00DE73D8 /* RiotSettingAllowedWidgets.swift */; };
+		02FAE30C23B26C0B00DE73D8 /* RiotSettingAllowedWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE30723B26C0B00DE73D8 /* RiotSettingAllowedWidgets.swift */; };
+		02FAE30D23B26C0B00DE73D8 /* RiotSharedSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE30823B26C0B00DE73D8 /* RiotSharedSettings.swift */; };
+		02FAE30E23B26C0B00DE73D8 /* RiotSharedSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE30823B26C0B00DE73D8 /* RiotSharedSettings.swift */; };
 		193B2CED1BFA08EA45ED6460 /* Pods_TchapPods_TchapShareExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8582197A7D3C5D692C381218 /* Pods_TchapPods_TchapShareExtension.framework */; };
 		323BD4C6148B554408CDD950 /* Pods_TchapPods_BtchapShareExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EFEE7E56697557ECD04FEDAE /* Pods_TchapPods_BtchapShareExtension.framework */; };
 		3758AAFA0E62019A0A322926 /* Pods_TchapPods_Tchap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6969DC25D5C9C2BB6A87FF16 /* Pods_TchapPods_Tchap.framework */; };
@@ -1506,6 +1514,10 @@
 		02F0FF442226F82600066908 /* RoomIDComponents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomIDComponents.swift; sourceTree = "<group>"; };
 		02FAE23323B2489200DE73D8 /* CameraPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraPresenter.swift; sourceTree = "<group>"; };
 		02FAE23723B25C8400DE73D8 /* Vector_Strings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vector_Strings.swift; sourceTree = "<group>"; };
+		02FAE30123B26BEA00DE73D8 /* WidgetManagerConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WidgetManagerConfig.swift; sourceTree = "<group>"; };
+		02FAE30623B26C0B00DE73D8 /* RiotSettingIntegrationProvisioning.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RiotSettingIntegrationProvisioning.swift; sourceTree = "<group>"; };
+		02FAE30723B26C0B00DE73D8 /* RiotSettingAllowedWidgets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RiotSettingAllowedWidgets.swift; sourceTree = "<group>"; };
+		02FAE30823B26C0B00DE73D8 /* RiotSharedSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RiotSharedSettings.swift; sourceTree = "<group>"; };
 		23307BF65CCF37A2CAE36E4F /* Pods-TchapPods-Btchap.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TchapPods-Btchap.debug.xcconfig"; path = "Target Support Files/Pods-TchapPods-Btchap/Pods-TchapPods-Btchap.debug.xcconfig"; sourceTree = "<group>"; };
 		3267EFB320E379FD00FF1CAA /* CHANGES.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGES.rst; sourceTree = "<group>"; };
 		3267EFB420E379FD00FF1CAA /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; fileEncoding = 4; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
@@ -2757,6 +2769,24 @@
 			path = Generated;
 			sourceTree = "<group>";
 		};
+		02FAE30423B26C0B00DE73D8 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				02FAE30523B26C0B00DE73D8 /* JSONModels */,
+				02FAE30823B26C0B00DE73D8 /* RiotSharedSettings.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		02FAE30523B26C0B00DE73D8 /* JSONModels */ = {
+			isa = PBXGroup;
+			children = (
+				02FAE30623B26C0B00DE73D8 /* RiotSettingIntegrationProvisioning.swift */,
+				02FAE30723B26C0B00DE73D8 /* RiotSettingAllowedWidgets.swift */,
+			);
+			path = JSONModels;
+			sourceTree = "<group>";
+		};
 		32935CB21F628B98006888C8 /* js */ = {
 			isa = PBXGroup;
 			children = (
@@ -3536,6 +3566,7 @@
 		B1B5598020EFC3DF00210D55 /* Widgets */ = {
 			isa = PBXGroup;
 			children = (
+				02FAE30123B26BEA00DE73D8 /* WidgetManagerConfig.swift */,
 				B1B5598220EFC3DF00210D55 /* WidgetManager.h */,
 				B1B5598420EFC3DF00210D55 /* WidgetManager.m */,
 				B1B5598120EFC3DF00210D55 /* Widget.h */,
@@ -3556,6 +3587,7 @@
 		B1B5598A20EFC42100210D55 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				02FAE30423B26C0B00DE73D8 /* Shared */,
 				B1B5597F20EFC3DF00210D55 /* RiotSettings.swift */,
 			);
 			path = Settings;
@@ -4907,6 +4939,7 @@
 				0259328822AFE8A500C93762 /* PasswordPolicyServiceType.swift in Sources */,
 				024518EB23A150D5006873DF /* PasswordStrengthManager.swift in Sources */,
 				B1892E7D2130719500742348 /* TextInputHandler.swift in Sources */,
+				02FAE30923B26C0B00DE73D8 /* RiotSettingIntegrationProvisioning.swift in Sources */,
 				B18D18C42153E68A003677D1 /* HomeViewController.swift in Sources */,
 				B1F2AAA5212AED840077FDC0 /* Coordinator.swift in Sources */,
 				B1C0EE6F2375B7A000E8BB88 /* ChangePasswordCurrentPasswordCoordinator.swift in Sources */,
@@ -4946,6 +4979,7 @@
 				B122099C23854EF2004D069C /* Storyboards.swift in Sources */,
 				B1BC6A262136D77A00D32F8E /* WelcomeCoordinatorType.swift in Sources */,
 				020DF991214BE467003DFBA4 /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
+				02FAE30223B26BEA00DE73D8 /* WidgetManagerConfig.swift in Sources */,
 				0250C4FF2122B68000034691 /* RecentsViewController.m in Sources */,
 				B15FE5EC23858B8200D2A5B2 /* AppVersionUpdateCoordinatorType.swift in Sources */,
 				B1C0EE712375B7A000E8BB88 /* ChangePasswordCurrentPasswordViewState.swift in Sources */,
@@ -5006,6 +5040,7 @@
 				B1C4644D21B67F1E005F4D53 /* RoomCreationViewModel.swift in Sources */,
 				B12209C923854F92004D069C /* ClientConfigurationService.swift in Sources */,
 				B122099D23854EF2004D069C /* Images.swift in Sources */,
+				02FAE30B23B26C0B00DE73D8 /* RiotSettingAllowedWidgets.swift in Sources */,
 				020DF93E214BE467003DFBA4 /* AttachmentsViewController.m in Sources */,
 				020DF97D214BE467003DFBA4 /* RoomSelectedStickerBubbleCell.m in Sources */,
 				029CC68F21772F4200DCC8B3 /* CountryPickerViewController.m in Sources */,
@@ -5058,6 +5093,7 @@
 				B15B867F2135BA96002782BE /* AuthenticationViewController.swift in Sources */,
 				0250C53B2122B68000034691 /* CircleButton.m in Sources */,
 				020DF972214BE467003DFBA4 /* RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
+				02FAE30D23B26C0B00DE73D8 /* RiotSharedSettings.swift in Sources */,
 				B11C80112139442700CC6F2F /* RegistrationFormViewController.swift in Sources */,
 				020DF936214BE467003DFBA4 /* RoomBubbleCellData.m in Sources */,
 				B1C0EE952375B7F400E8BB88 /* ChangePasswordNewPasswordViewModelType.swift in Sources */,
@@ -5357,6 +5393,7 @@
 				02DFEBF921C07370009B6F15 /* SettingsCoordinatorType.swift in Sources */,
 				024518EC23A150D5006873DF /* PasswordStrengthManager.swift in Sources */,
 				0252030C224EBD4800262433 /* ContactButtonView.swift in Sources */,
+				02FAE30A23B26C0B00DE73D8 /* RiotSettingIntegrationProvisioning.swift in Sources */,
 				02DFEBFA21C07370009B6F15 /* RoomIncomingAttachmentBubbleCell.m in Sources */,
 				0259328C22AFEF5700C93762 /* PasswordPolicyService.swift in Sources */,
 				02DFEBFB21C07370009B6F15 /* EncryptionInfoView.m in Sources */,
@@ -5396,6 +5433,7 @@
 				02DFEC1521C07370009B6F15 /* RoomIncomingTextMsgWithoutSenderNameBubbleCell.m in Sources */,
 				02DFEC1621C07370009B6F15 /* DeviceTableViewCell.m in Sources */,
 				02DFEC1721C07370009B6F15 /* Variant2Style.swift in Sources */,
+				02FAE30323B26BEA00DE73D8 /* WidgetManagerConfig.swift in Sources */,
 				B15FE5ED23858B8200D2A5B2 /* AppVersionUpdateCoordinatorType.swift in Sources */,
 				02DFEC1821C07370009B6F15 /* RoomPreviewData.m in Sources */,
 				02DFEC1921C07370009B6F15 /* IncomingCallView.m in Sources */,
@@ -5456,6 +5494,7 @@
 				02C4BE922252502900F7BB0E /* InviteServiceType.swift in Sources */,
 				02DFEC4421C07370009B6F15 /* Stylable.swift in Sources */,
 				02DFEC4521C07370009B6F15 /* TextInputProperties.swift in Sources */,
+				02FAE30C23B26C0B00DE73D8 /* RiotSettingAllowedWidgets.swift in Sources */,
 				02DFEC4621C07370009B6F15 /* AuthenticationServiceError.swift in Sources */,
 				02DFEC4721C07370009B6F15 /* RoomCreationViewModel.swift in Sources */,
 				02DFEC4821C07370009B6F15 /* AttachmentsViewController.m in Sources */,
@@ -5508,6 +5547,7 @@
 				02DFEC6C21C07370009B6F15 /* AuthenticationViewController.swift in Sources */,
 				02DFEC6D21C07370009B6F15 /* CircleButton.m in Sources */,
 				02DFEC6E21C07370009B6F15 /* RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
+				02FAE30E23B26C0B00DE73D8 /* RiotSharedSettings.swift in Sources */,
 				02DFEC6F21C07370009B6F15 /* RegistrationFormViewController.swift in Sources */,
 				02DFEC7021C07370009B6F15 /* RoomBubbleCellData.m in Sources */,
 				B1C0EE962375B7F400E8BB88 /* ChangePasswordNewPasswordViewModelType.swift in Sources */,

@@ -43,7 +43,6 @@
 #import "GBDeviceInfo_iOS.h"
 
 #import "DeviceView.h"
-#import "MediaPickerViewController.h"
 
 #import "GeneratedInterface-Swift.h"
 
@@ -117,13 +116,10 @@ enum {
 typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 
 
-@interface SettingsViewController () <UITextFieldDelegate, MediaPickerViewControllerDelegate, MXKDeviceViewDelegate, UIDocumentInteractionControllerDelegate, MXKCountryPickerViewControllerDelegate, MXKLanguagePickerViewControllerDelegate, DeactivateAccountViewControllerDelegate, Stylable, ChangePasswordCoordinatorBridgePresenterDelegate>
+@interface SettingsViewController () <UITextFieldDelegate, SingleImagePickerPresenterDelegate, MXKDeviceViewDelegate, UIDocumentInteractionControllerDelegate, MXKCountryPickerViewControllerDelegate, MXKLanguagePickerViewControllerDelegate, DeactivateAccountViewControllerDelegate, Stylable, ChangePasswordCoordinatorBridgePresenterDelegate>
 {
     // Current alert (if any).
     UIAlertController *currentAlert;
-    
-    // picker
-    MediaPickerViewController* mediaPicker;
     
     // profile updates
     // avatar
@@ -162,6 +158,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     NSURL *keyExportsFile;
     NSTimer *keyExportsFileDeletionTimer;
 }
+
+@property (nonatomic, strong) SingleImagePickerPresenter *imagePickerPresenter;
 
 @property (weak, nonatomic) DeactivateAccountViewController *deactivateAccountViewController;
 @property (strong, nonatomic) id<Style> currentStyle;
@@ -380,8 +378,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     // Screen tracking
     [[Analytics sharedInstance] trackScreen:@"Settings"];
     
-    // Release the potential media picker
-    [self dismissMediaPicker];
+    // Release the potential image picker presenter
+    [self dismissImagePickerPresenter];
     
     // Refresh display
     [self refreshSettings];
@@ -2096,13 +2094,23 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 
 - (void)onProfileAvatarTap:(UITapGestureRecognizer *)recognizer
 {
-    mediaPicker = [MediaPickerViewController mediaPickerViewController];
-    mediaPicker.mediaTypes = @[(NSString *)kUTTypeImage];
-    mediaPicker.delegate = self;
-    UINavigationController *navigationController = [UINavigationController new];
-    [navigationController pushViewController:mediaPicker animated:NO];
+    SingleImagePickerPresenter *singleImagePickerPresenter = [[SingleImagePickerPresenter alloc] initWithSession:self.mainSession];
+    singleImagePickerPresenter.delegate = self;
     
-    [self presentViewController:navigationController animated:YES completion:nil];
+    UIView *sourceView = nil;
+    CGRect sourceRect = CGRectNull;
+    if (userSettingsProfilePictureIndex != -1)
+    {
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:userSettingsProfilePictureIndex inSection:SETTINGS_SECTION_USER_SETTINGS_INDEX];
+        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+        
+        sourceView = cell;
+        sourceRect = sourceView.bounds;
+    }
+    
+    [singleImagePickerPresenter presentFrom:self sourceView:sourceView sourceRect:sourceRect animated:YES];
+    
+    self.imagePickerPresenter = singleImagePickerPresenter;
 }
 
 - (void)exportEncryptionKeys:(UITapGestureRecognizer *)recognizer
@@ -2182,30 +2190,28 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     self.deactivateAccountViewController = deactivateAccountViewController;
 }
 
-#pragma mark - MediaPickerViewController Delegate
+#pragma mark - SingleImagePickerPresenterDelegate
 
-- (void)dismissMediaPicker
+- (void)dismissImagePickerPresenter
 {
-    if (mediaPicker)
+    if (self.imagePickerPresenter)
     {
-        [mediaPicker withdrawViewControllerAnimated:YES completion:nil];
-        mediaPicker = nil;
+        [self.imagePickerPresenter dismissWithAnimated:YES completion:nil];
+        self.imagePickerPresenter = nil;
     }
 }
-
-- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectImage:(NSData*)imageData withMimeType:(NSString *)mimetype isPhotoLibraryAsset:(BOOL)isPhotoLibraryAsset
+- (void)singleImagePickerPresenterDidCancel:(SingleImagePickerPresenter *)presenter
 {
-    [self dismissMediaPicker];
+    [self dismissImagePickerPresenter];
+}
+
+- (void)singleImagePickerPresenter:(SingleImagePickerPresenter *)presenter didSelectImageData:(NSData *)imageData withUTI:(MXKUTI *)uti
+{
+    [self dismissImagePickerPresenter];
     
     newAvatarImage = [UIImage imageWithData:imageData];
     
     [self.tableView reloadData];
-}
-
-- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectVideo:(NSURL*)videoURL
-{
-    // this method should not be called
-    [self dismissMediaPicker];
 }
 
 #pragma mark - UITextField delegate
