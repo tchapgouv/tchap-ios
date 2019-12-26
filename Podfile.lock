@@ -15,6 +15,7 @@ PODS:
   - AFNetworking/UIKit (3.2.1):
     - AFNetworking/NSURLSession
   - cmark (0.24.1)
+  - DGCollectionViewLeftAlignFlowLayout (1.0.4)
   - DTCoreText (1.6.23):
     - DTCoreText/Core (= 1.6.23)
     - DTFoundation/Core (~> 1.7.5)
@@ -105,6 +106,7 @@ PODS:
 
 DEPENDENCIES:
   - cmark
+  - DGCollectionViewLeftAlignFlowLayout (~> 1.0.4)
   - GBDeviceInfo (~> 6.3.0)
   - MatomoTracker (~> 7.2.0)
   - MatrixKit (from `https://github.com/matrix-org/matrix-ios-kit.git`, branch `develop`)
@@ -124,6 +126,7 @@ SPEC REPOS:
   trunk:
     - AFNetworking
     - cmark
+    - DGCollectionViewLeftAlignFlowLayout
     - DTCoreText
     - DTFoundation
     - GBDeviceInfo
@@ -166,6 +169,7 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
   cmark: 1d9ad0375e3b9fa281732e992467903606015520
+  DGCollectionViewLeftAlignFlowLayout: a0fa58797373ded039cafba8133e79373d048399
   DTCoreText: 67023bb51b26711d5f640c851f4845aea14c24c9
   DTFoundation: 25aa19bb7c6e225b1dfae195604fb8cf1da0ab4c
   GBDeviceInfo: a3f39dba1a04dcb630abff65d6f7e8fbf319eadd
@@ -186,6 +190,6 @@ SPEC CHECKSUMS:
   SwiftUTI: 917993c124f8eac25e88ced0202fc58d7eb50fa8
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
 
-PODFILE CHECKSUM: 7de50211f07218c520f9c63c655d5996035fef22
+PODFILE CHECKSUM: 365317ae5011539666b873e5051d03bd6628251a
 
 COCOAPODS: 1.8.4

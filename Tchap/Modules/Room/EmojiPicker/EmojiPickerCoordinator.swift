@@ -43,7 +43,7 @@ final class EmojiPickerCoordinator: EmojiPickerCoordinatorType {
         self.session = session
         self.roomId = roomId
         self.eventId = eventId
-        self.router = NavigationRouter(navigationController: RiotNavigationController())
+        self.router = NavigationRouter(navigationController: TCNavigationController())
     }
     
     // MARK: - Public methods

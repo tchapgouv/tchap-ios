@@ -1079,6 +1079,172 @@
 		02FAE50823B4B70600DE73D8 /* OperationQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE50623B4B70600DE73D8 /* OperationQueue.swift */; };
 		02FAE50A23B4C0B300DE73D8 /* KeyBackupBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE50923B4C0B300DE73D8 /* KeyBackupBanner.swift */; };
 		02FAE50B23B4C0B300DE73D8 /* KeyBackupBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE50923B4C0B300DE73D8 /* KeyBackupBanner.swift */; };
+		02FAE56223B4C41500DE73D8 /* BubbleReactionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE50D23B4C41500DE73D8 /* BubbleReactionsView.swift */; };
+		02FAE56323B4C41500DE73D8 /* BubbleReactionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE50D23B4C41500DE73D8 /* BubbleReactionsView.swift */; };
+		02FAE56423B4C41500DE73D8 /* BubbleReactionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02FAE50E23B4C41500DE73D8 /* BubbleReactionViewCell.xib */; };
+		02FAE56523B4C41500DE73D8 /* BubbleReactionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02FAE50E23B4C41500DE73D8 /* BubbleReactionViewCell.xib */; };
+		02FAE56623B4C41500DE73D8 /* BubbleReactionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE50F23B4C41500DE73D8 /* BubbleReactionsViewModel.swift */; };
+		02FAE56723B4C41500DE73D8 /* BubbleReactionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE50F23B4C41500DE73D8 /* BubbleReactionsViewModel.swift */; };
+		02FAE56823B4C41500DE73D8 /* BubbleReactionsViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE51023B4C41500DE73D8 /* BubbleReactionsViewModelType.swift */; };
+		02FAE56923B4C41500DE73D8 /* BubbleReactionsViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE51023B4C41500DE73D8 /* BubbleReactionsViewModelType.swift */; };
+		02FAE56A23B4C41500DE73D8 /* BubbleReactionActionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02FAE51123B4C41500DE73D8 /* BubbleReactionActionViewCell.xib */; };
+		02FAE56B23B4C41500DE73D8 /* BubbleReactionActionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02FAE51123B4C41500DE73D8 /* BubbleReactionActionViewCell.xib */; };
+		02FAE56C23B4C41500DE73D8 /* BubbleReactionViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE51223B4C41500DE73D8 /* BubbleReactionViewData.swift */; };
+		02FAE56D23B4C41500DE73D8 /* BubbleReactionViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE51223B4C41500DE73D8 /* BubbleReactionViewData.swift */; };
+		02FAE56E23B4C41500DE73D8 /* BubbleReactionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE51323B4C41500DE73D8 /* BubbleReactionViewCell.swift */; };
+		02FAE56F23B4C41500DE73D8 /* BubbleReactionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE51323B4C41500DE73D8 /* BubbleReactionViewCell.swift */; };
+		02FAE57023B4C41500DE73D8 /* BubbleReactionsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02FAE51423B4C41500DE73D8 /* BubbleReactionsView.xib */; };
+		02FAE57123B4C41500DE73D8 /* BubbleReactionsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02FAE51423B4C41500DE73D8 /* BubbleReactionsView.xib */; };
+		02FAE57223B4C41500DE73D8 /* BubbleReactionActionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE51523B4C41500DE73D8 /* BubbleReactionActionViewCell.swift */; };
+		02FAE57323B4C41500DE73D8 /* BubbleReactionActionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE51523B4C41500DE73D8 /* BubbleReactionActionViewCell.swift */; };
+		02FAE57423B4C41500DE73D8 /* RoomContextualMenuAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE51723B4C41500DE73D8 /* RoomContextualMenuAction.swift */; };
+		02FAE57523B4C41500DE73D8 /* RoomContextualMenuAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE51723B4C41500DE73D8 /* RoomContextualMenuAction.swift */; };
+		02FAE57623B4C41500DE73D8 /* ContextualMenuItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE51823B4C41500DE73D8 /* ContextualMenuItemView.swift */; };
+		02FAE57723B4C41500DE73D8 /* ContextualMenuItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE51823B4C41500DE73D8 /* ContextualMenuItemView.swift */; };
+		02FAE57823B4C41500DE73D8 /* ReactionsMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE51A23B4C41500DE73D8 /* ReactionsMenuView.swift */; };
+		02FAE57923B4C41500DE73D8 /* ReactionsMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE51A23B4C41500DE73D8 /* ReactionsMenuView.swift */; };
+		02FAE57A23B4C41500DE73D8 /* ReactionsMenuViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE51B23B4C41500DE73D8 /* ReactionsMenuViewAction.swift */; };
+		02FAE57B23B4C41500DE73D8 /* ReactionsMenuViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE51B23B4C41500DE73D8 /* ReactionsMenuViewAction.swift */; };
+		02FAE57C23B4C41500DE73D8 /* ReactionsMenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE51C23B4C41500DE73D8 /* ReactionsMenuButton.swift */; };
+		02FAE57D23B4C41500DE73D8 /* ReactionsMenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE51C23B4C41500DE73D8 /* ReactionsMenuButton.swift */; };
+		02FAE57E23B4C41500DE73D8 /* ReactionsMenuViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE51D23B4C41500DE73D8 /* ReactionsMenuViewModelType.swift */; };
+		02FAE57F23B4C41500DE73D8 /* ReactionsMenuViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE51D23B4C41500DE73D8 /* ReactionsMenuViewModelType.swift */; };
+		02FAE58023B4C41500DE73D8 /* ReactionsMenuViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE51E23B4C41500DE73D8 /* ReactionsMenuViewState.swift */; };
+		02FAE58123B4C41500DE73D8 /* ReactionsMenuViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE51E23B4C41500DE73D8 /* ReactionsMenuViewState.swift */; };
+		02FAE58223B4C41500DE73D8 /* ReactionMenuItemViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE51F23B4C41500DE73D8 /* ReactionMenuItemViewData.swift */; };
+		02FAE58323B4C41500DE73D8 /* ReactionMenuItemViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE51F23B4C41500DE73D8 /* ReactionMenuItemViewData.swift */; };
+		02FAE58423B4C41500DE73D8 /* ReactionsMenuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE52023B4C41500DE73D8 /* ReactionsMenuViewModel.swift */; };
+		02FAE58523B4C41500DE73D8 /* ReactionsMenuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE52023B4C41500DE73D8 /* ReactionsMenuViewModel.swift */; };
+		02FAE58623B4C41500DE73D8 /* ReactionsMenuView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02FAE52123B4C41500DE73D8 /* ReactionsMenuView.xib */; };
+		02FAE58723B4C41500DE73D8 /* ReactionsMenuView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02FAE52123B4C41500DE73D8 /* ReactionsMenuView.xib */; };
+		02FAE58823B4C41500DE73D8 /* RoomContextualMenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE52223B4C41500DE73D8 /* RoomContextualMenuItem.swift */; };
+		02FAE58923B4C41500DE73D8 /* RoomContextualMenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE52223B4C41500DE73D8 /* RoomContextualMenuItem.swift */; };
+		02FAE58A23B4C41500DE73D8 /* ContextualMenuItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02FAE52323B4C41500DE73D8 /* ContextualMenuItemView.xib */; };
+		02FAE58B23B4C41500DE73D8 /* ContextualMenuItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02FAE52323B4C41500DE73D8 /* ContextualMenuItemView.xib */; };
+		02FAE58C23B4C41500DE73D8 /* RoomContextualMenuPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE52423B4C41500DE73D8 /* RoomContextualMenuPresenter.swift */; };
+		02FAE58D23B4C41500DE73D8 /* RoomContextualMenuPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE52423B4C41500DE73D8 /* RoomContextualMenuPresenter.swift */; };
+		02FAE58E23B4C41500DE73D8 /* RoomContextualMenuViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02FAE52523B4C41500DE73D8 /* RoomContextualMenuViewController.storyboard */; };
+		02FAE58F23B4C41500DE73D8 /* RoomContextualMenuViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02FAE52523B4C41500DE73D8 /* RoomContextualMenuViewController.storyboard */; };
+		02FAE59023B4C41500DE73D8 /* RoomContextualMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE52623B4C41500DE73D8 /* RoomContextualMenuViewController.swift */; };
+		02FAE59123B4C41500DE73D8 /* RoomContextualMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE52623B4C41500DE73D8 /* RoomContextualMenuViewController.swift */; };
+		02FAE59223B4C41600DE73D8 /* RoomContextualMenuToolbarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02FAE52723B4C41500DE73D8 /* RoomContextualMenuToolbarView.xib */; };
+		02FAE59323B4C41600DE73D8 /* RoomContextualMenuToolbarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02FAE52723B4C41500DE73D8 /* RoomContextualMenuToolbarView.xib */; };
+		02FAE59423B4C41600DE73D8 /* RoomContextualMenuToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE52823B4C41500DE73D8 /* RoomContextualMenuToolbarView.swift */; };
+		02FAE59523B4C41600DE73D8 /* RoomContextualMenuToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE52823B4C41500DE73D8 /* RoomContextualMenuToolbarView.swift */; };
+		02FAE59623B4C41600DE73D8 /* EmojiPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE52A23B4C41500DE73D8 /* EmojiPickerViewController.swift */; };
+		02FAE59723B4C41600DE73D8 /* EmojiPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE52A23B4C41500DE73D8 /* EmojiPickerViewController.swift */; };
+		02FAE59823B4C41600DE73D8 /* EmojiPickerViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE52B23B4C41500DE73D8 /* EmojiPickerViewState.swift */; };
+		02FAE59923B4C41600DE73D8 /* EmojiPickerViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE52B23B4C41500DE73D8 /* EmojiPickerViewState.swift */; };
+		02FAE59A23B4C41600DE73D8 /* EmojiPickerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE52C23B4C41500DE73D8 /* EmojiPickerCoordinator.swift */; };
+		02FAE59B23B4C41600DE73D8 /* EmojiPickerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE52C23B4C41500DE73D8 /* EmojiPickerCoordinator.swift */; };
+		02FAE59C23B4C41600DE73D8 /* EmojiPickerItemViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE52D23B4C41500DE73D8 /* EmojiPickerItemViewData.swift */; };
+		02FAE59D23B4C41600DE73D8 /* EmojiPickerItemViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE52D23B4C41500DE73D8 /* EmojiPickerItemViewData.swift */; };
+		02FAE59E23B4C41600DE73D8 /* EmojiPickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE52E23B4C41500DE73D8 /* EmojiPickerViewModel.swift */; };
+		02FAE59F23B4C41600DE73D8 /* EmojiPickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE52E23B4C41500DE73D8 /* EmojiPickerViewModel.swift */; };
+		02FAE5A023B4C41600DE73D8 /* EmojiPickerCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE52F23B4C41500DE73D8 /* EmojiPickerCoordinatorType.swift */; };
+		02FAE5A123B4C41600DE73D8 /* EmojiPickerCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE52F23B4C41500DE73D8 /* EmojiPickerCoordinatorType.swift */; };
+		02FAE5A223B4C41600DE73D8 /* EmojiPickerViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE53023B4C41500DE73D8 /* EmojiPickerViewModelType.swift */; };
+		02FAE5A323B4C41600DE73D8 /* EmojiPickerViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE53023B4C41500DE73D8 /* EmojiPickerViewModelType.swift */; };
+		02FAE5A423B4C41600DE73D8 /* EmojiPickerViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE53123B4C41500DE73D8 /* EmojiPickerViewAction.swift */; };
+		02FAE5A523B4C41600DE73D8 /* EmojiPickerViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE53123B4C41500DE73D8 /* EmojiPickerViewAction.swift */; };
+		02FAE5A623B4C41600DE73D8 /* EmojiPickerHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE53223B4C41500DE73D8 /* EmojiPickerHeaderView.swift */; };
+		02FAE5A723B4C41600DE73D8 /* EmojiPickerHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE53223B4C41500DE73D8 /* EmojiPickerHeaderView.swift */; };
+		02FAE5A823B4C41600DE73D8 /* EmojiPickerCategoryViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE53323B4C41500DE73D8 /* EmojiPickerCategoryViewData.swift */; };
+		02FAE5A923B4C41600DE73D8 /* EmojiPickerCategoryViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE53323B4C41500DE73D8 /* EmojiPickerCategoryViewData.swift */; };
+		02FAE5AA23B4C41600DE73D8 /* EmojiPickerViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02FAE53423B4C41500DE73D8 /* EmojiPickerViewCell.xib */; };
+		02FAE5AB23B4C41600DE73D8 /* EmojiPickerViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02FAE53423B4C41500DE73D8 /* EmojiPickerViewCell.xib */; };
+		02FAE5AC23B4C41600DE73D8 /* EmojiPickerViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE53523B4C41500DE73D8 /* EmojiPickerViewCell.swift */; };
+		02FAE5AD23B4C41600DE73D8 /* EmojiPickerViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE53523B4C41500DE73D8 /* EmojiPickerViewCell.swift */; };
+		02FAE5AE23B4C41600DE73D8 /* EmojiPickerViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02FAE53623B4C41500DE73D8 /* EmojiPickerViewController.storyboard */; };
+		02FAE5AF23B4C41600DE73D8 /* EmojiPickerViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02FAE53623B4C41500DE73D8 /* EmojiPickerViewController.storyboard */; };
+		02FAE5B023B4C41600DE73D8 /* EmojiPickerCoordinatorBridgePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE53723B4C41500DE73D8 /* EmojiPickerCoordinatorBridgePresenter.swift */; };
+		02FAE5B123B4C41600DE73D8 /* EmojiPickerCoordinatorBridgePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE53723B4C41500DE73D8 /* EmojiPickerCoordinatorBridgePresenter.swift */; };
+		02FAE5B223B4C41600DE73D8 /* EmojiServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE53923B4C41500DE73D8 /* EmojiServiceType.swift */; };
+		02FAE5B323B4C41600DE73D8 /* EmojiServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE53923B4C41500DE73D8 /* EmojiServiceType.swift */; };
+		02FAE5B423B4C41600DE73D8 /* EmojiItem+EmojiMart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE53B23B4C41500DE73D8 /* EmojiItem+EmojiMart.swift */; };
+		02FAE5B523B4C41600DE73D8 /* EmojiItem+EmojiMart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE53B23B4C41500DE73D8 /* EmojiItem+EmojiMart.swift */; };
+		02FAE5B623B4C41600DE73D8 /* EmojiMartService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE53C23B4C41500DE73D8 /* EmojiMartService.swift */; };
+		02FAE5B723B4C41600DE73D8 /* EmojiMartService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE53C23B4C41500DE73D8 /* EmojiMartService.swift */; };
+		02FAE5B823B4C41600DE73D8 /* EmojiMartStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE53D23B4C41500DE73D8 /* EmojiMartStore.swift */; };
+		02FAE5B923B4C41600DE73D8 /* EmojiMartStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE53D23B4C41500DE73D8 /* EmojiMartStore.swift */; };
+		02FAE5BC23B4C41600DE73D8 /* EmojiMartCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE53F23B4C41500DE73D8 /* EmojiMartCategory.swift */; };
+		02FAE5BD23B4C41600DE73D8 /* EmojiMartCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE53F23B4C41500DE73D8 /* EmojiMartCategory.swift */; };
+		02FAE5BE23B4C41600DE73D8 /* EmojiItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE54123B4C41500DE73D8 /* EmojiItem.swift */; };
+		02FAE5BF23B4C41600DE73D8 /* EmojiItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE54123B4C41500DE73D8 /* EmojiItem.swift */; };
+		02FAE5C023B4C41600DE73D8 /* EmojiCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE54223B4C41500DE73D8 /* EmojiCategory.swift */; };
+		02FAE5C123B4C41600DE73D8 /* EmojiCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE54223B4C41500DE73D8 /* EmojiCategory.swift */; };
+		02FAE5C223B4C41600DE73D8 /* EmojiStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE54323B4C41500DE73D8 /* EmojiStore.swift */; };
+		02FAE5C323B4C41600DE73D8 /* EmojiStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE54323B4C41500DE73D8 /* EmojiStore.swift */; };
+		02FAE5C423B4C41600DE73D8 /* EmojiPickerHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02FAE54423B4C41500DE73D8 /* EmojiPickerHeaderView.xib */; };
+		02FAE5C523B4C41600DE73D8 /* EmojiPickerHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02FAE54423B4C41500DE73D8 /* EmojiPickerHeaderView.xib */; };
+		02FAE5C623B4C41600DE73D8 /* EditHistoryViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE54623B4C41500DE73D8 /* EditHistoryViewState.swift */; };
+		02FAE5C723B4C41600DE73D8 /* EditHistoryViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE54623B4C41500DE73D8 /* EditHistoryViewState.swift */; };
+		02FAE5C823B4C41600DE73D8 /* EditHistoryMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE54723B4C41500DE73D8 /* EditHistoryMessage.swift */; };
+		02FAE5C923B4C41600DE73D8 /* EditHistoryMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE54723B4C41500DE73D8 /* EditHistoryMessage.swift */; };
+		02FAE5CA23B4C41600DE73D8 /* EditHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE54823B4C41500DE73D8 /* EditHistoryViewController.swift */; };
+		02FAE5CB23B4C41600DE73D8 /* EditHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE54823B4C41500DE73D8 /* EditHistoryViewController.swift */; };
+		02FAE5CC23B4C41600DE73D8 /* EditHistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE54923B4C41500DE73D8 /* EditHistoryViewModel.swift */; };
+		02FAE5CD23B4C41600DE73D8 /* EditHistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE54923B4C41500DE73D8 /* EditHistoryViewModel.swift */; };
+		02FAE5CE23B4C41600DE73D8 /* EditHistoryViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE54A23B4C41500DE73D8 /* EditHistoryViewModelType.swift */; };
+		02FAE5CF23B4C41600DE73D8 /* EditHistoryViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE54A23B4C41500DE73D8 /* EditHistoryViewModelType.swift */; };
+		02FAE5D023B4C41600DE73D8 /* EditHistoryCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE54B23B4C41500DE73D8 /* EditHistoryCoordinator.swift */; };
+		02FAE5D123B4C41600DE73D8 /* EditHistoryCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE54B23B4C41500DE73D8 /* EditHistoryCoordinator.swift */; };
+		02FAE5D223B4C41600DE73D8 /* EditHistoryHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE54C23B4C41500DE73D8 /* EditHistoryHeaderView.swift */; };
+		02FAE5D323B4C41600DE73D8 /* EditHistoryHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE54C23B4C41500DE73D8 /* EditHistoryHeaderView.swift */; };
+		02FAE5D423B4C41600DE73D8 /* EditHistoryViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE54D23B4C41500DE73D8 /* EditHistoryViewAction.swift */; };
+		02FAE5D523B4C41600DE73D8 /* EditHistoryViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE54D23B4C41500DE73D8 /* EditHistoryViewAction.swift */; };
+		02FAE5D623B4C41600DE73D8 /* EditHistoryViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02FAE54E23B4C41500DE73D8 /* EditHistoryViewController.storyboard */; };
+		02FAE5D723B4C41600DE73D8 /* EditHistoryViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02FAE54E23B4C41500DE73D8 /* EditHistoryViewController.storyboard */; };
+		02FAE5D823B4C41600DE73D8 /* EditHistoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02FAE54F23B4C41500DE73D8 /* EditHistoryCell.xib */; };
+		02FAE5D923B4C41600DE73D8 /* EditHistoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02FAE54F23B4C41500DE73D8 /* EditHistoryCell.xib */; };
+		02FAE5DA23B4C41600DE73D8 /* EditHistoryCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE55023B4C41500DE73D8 /* EditHistoryCoordinatorType.swift */; };
+		02FAE5DB23B4C41600DE73D8 /* EditHistoryCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE55023B4C41500DE73D8 /* EditHistoryCoordinatorType.swift */; };
+		02FAE5DC23B4C41600DE73D8 /* EditHistorySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE55123B4C41500DE73D8 /* EditHistorySection.swift */; };
+		02FAE5DD23B4C41600DE73D8 /* EditHistorySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE55123B4C41500DE73D8 /* EditHistorySection.swift */; };
+		02FAE5DE23B4C41600DE73D8 /* EditHistoryCoordinatorBridgePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE55223B4C41500DE73D8 /* EditHistoryCoordinatorBridgePresenter.swift */; };
+		02FAE5DF23B4C41600DE73D8 /* EditHistoryCoordinatorBridgePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE55223B4C41500DE73D8 /* EditHistoryCoordinatorBridgePresenter.swift */; };
+		02FAE5E023B4C41600DE73D8 /* EditHistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE55323B4C41500DE73D8 /* EditHistoryCell.swift */; };
+		02FAE5E123B4C41600DE73D8 /* EditHistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE55323B4C41500DE73D8 /* EditHistoryCell.swift */; };
+		02FAE5E223B4C41600DE73D8 /* EditHistoryHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02FAE55423B4C41500DE73D8 /* EditHistoryHeaderView.xib */; };
+		02FAE5E323B4C41600DE73D8 /* EditHistoryHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02FAE55423B4C41500DE73D8 /* EditHistoryHeaderView.xib */; };
+		02FAE5E423B4C41600DE73D8 /* ReactionHistoryCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE55623B4C41500DE73D8 /* ReactionHistoryCoordinatorType.swift */; };
+		02FAE5E523B4C41600DE73D8 /* ReactionHistoryCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE55623B4C41500DE73D8 /* ReactionHistoryCoordinatorType.swift */; };
+		02FAE5E623B4C41600DE73D8 /* ReactionHistoryBridgeCoordinatorPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE55723B4C41500DE73D8 /* ReactionHistoryBridgeCoordinatorPresenter.swift */; };
+		02FAE5E723B4C41600DE73D8 /* ReactionHistoryBridgeCoordinatorPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE55723B4C41500DE73D8 /* ReactionHistoryBridgeCoordinatorPresenter.swift */; };
+		02FAE5E823B4C41600DE73D8 /* ReactionHistoryViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02FAE55823B4C41500DE73D8 /* ReactionHistoryViewCell.xib */; };
+		02FAE5E923B4C41600DE73D8 /* ReactionHistoryViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02FAE55823B4C41500DE73D8 /* ReactionHistoryViewCell.xib */; };
+		02FAE5EA23B4C41600DE73D8 /* ReactionHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE55923B4C41500DE73D8 /* ReactionHistoryViewController.swift */; };
+		02FAE5EB23B4C41600DE73D8 /* ReactionHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE55923B4C41500DE73D8 /* ReactionHistoryViewController.swift */; };
+		02FAE5EC23B4C41600DE73D8 /* ReactionHistoryViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE55A23B4C41500DE73D8 /* ReactionHistoryViewCell.swift */; };
+		02FAE5ED23B4C41600DE73D8 /* ReactionHistoryViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE55A23B4C41500DE73D8 /* ReactionHistoryViewCell.swift */; };
+		02FAE5EE23B4C41600DE73D8 /* ReactionHistoryViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE55B23B4C41500DE73D8 /* ReactionHistoryViewData.swift */; };
+		02FAE5EF23B4C41600DE73D8 /* ReactionHistoryViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE55B23B4C41500DE73D8 /* ReactionHistoryViewData.swift */; };
+		02FAE5F023B4C41600DE73D8 /* ReactionHistoryViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02FAE55C23B4C41500DE73D8 /* ReactionHistoryViewController.storyboard */; };
+		02FAE5F123B4C41600DE73D8 /* ReactionHistoryViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02FAE55C23B4C41500DE73D8 /* ReactionHistoryViewController.storyboard */; };
+		02FAE5F223B4C41600DE73D8 /* ReactionHistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE55D23B4C41500DE73D8 /* ReactionHistoryViewModel.swift */; };
+		02FAE5F323B4C41600DE73D8 /* ReactionHistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE55D23B4C41500DE73D8 /* ReactionHistoryViewModel.swift */; };
+		02FAE5F423B4C41600DE73D8 /* ReactionHistoryViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE55E23B4C41500DE73D8 /* ReactionHistoryViewModelType.swift */; };
+		02FAE5F523B4C41600DE73D8 /* ReactionHistoryViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE55E23B4C41500DE73D8 /* ReactionHistoryViewModelType.swift */; };
+		02FAE5F623B4C41600DE73D8 /* ReactionHistoryCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE55F23B4C41500DE73D8 /* ReactionHistoryCoordinator.swift */; };
+		02FAE5F723B4C41600DE73D8 /* ReactionHistoryCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE55F23B4C41500DE73D8 /* ReactionHistoryCoordinator.swift */; };
+		02FAE5F823B4C41600DE73D8 /* ReactionHistoryViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE56023B4C41500DE73D8 /* ReactionHistoryViewAction.swift */; };
+		02FAE5F923B4C41600DE73D8 /* ReactionHistoryViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE56023B4C41500DE73D8 /* ReactionHistoryViewAction.swift */; };
+		02FAE5FA23B4C41600DE73D8 /* ReactionHistoryViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE56123B4C41500DE73D8 /* ReactionHistoryViewState.swift */; };
+		02FAE5FB23B4C41600DE73D8 /* ReactionHistoryViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE56123B4C41500DE73D8 /* ReactionHistoryViewState.swift */; };
+		02FAE5FD23B4CFC500DE73D8 /* UIStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE5FC23B4CFC500DE73D8 /* UIStackView.swift */; };
+		02FAE5FE23B4CFC500DE73D8 /* UIStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE5FC23B4CFC500DE73D8 /* UIStackView.swift */; };
+		02FAE60023B4D14C00DE73D8 /* UIGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE5FF23B4D14C00DE73D8 /* UIGestureRecognizer.swift */; };
+		02FAE60123B4D14C00DE73D8 /* UIGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE5FF23B4D14C00DE73D8 /* UIGestureRecognizer.swift */; };
+		02FAE60323B4D35200DE73D8 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE60223B4D35200DE73D8 /* String.swift */; };
+		02FAE60423B4D35200DE73D8 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE60223B4D35200DE73D8 /* String.swift */; };
+		02FAE60623B4D37B00DE73D8 /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE60523B4D37B00DE73D8 /* Character.swift */; };
+		02FAE60723B4D37B00DE73D8 /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE60523B4D37B00DE73D8 /* Character.swift */; };
+		02FAE60923B4D38F00DE73D8 /* UITouch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE60823B4D38F00DE73D8 /* UITouch.swift */; };
+		02FAE60A23B4D38F00DE73D8 /* UITouch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE60823B4D38F00DE73D8 /* UITouch.swift */; };
+		02FAE60D23B4E70600DE73D8 /* RoomMessageURLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE60C23B4E70600DE73D8 /* RoomMessageURLParser.swift */; };
+		02FAE60E23B4E70600DE73D8 /* RoomMessageURLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE60C23B4E70600DE73D8 /* RoomMessageURLParser.swift */; };
+		02FAE61023B4E7AA00DE73D8 /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE60F23B4E7AA00DE73D8 /* UIApplication.swift */; };
+		02FAE61123B4E7AA00DE73D8 /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE60F23B4E7AA00DE73D8 /* UIApplication.swift */; };
 		193B2CED1BFA08EA45ED6460 /* Pods_TchapPods_TchapShareExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8582197A7D3C5D692C381218 /* Pods_TchapPods_TchapShareExtension.framework */; };
 		323BD4C6148B554408CDD950 /* Pods_TchapPods_BtchapShareExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EFEE7E56697557ECD04FEDAE /* Pods_TchapPods_BtchapShareExtension.framework */; };
 		3758AAFA0E62019A0A322926 /* Pods_TchapPods_Tchap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6969DC25D5C9C2BB6A87FF16 /* Pods_TchapPods_Tchap.framework */; };
@@ -1860,6 +2026,89 @@
 		02FAE4AB23B4B61700DE73D8 /* KeyBackupRecoverCoordinatorBridgePresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyBackupRecoverCoordinatorBridgePresenter.swift; sourceTree = "<group>"; };
 		02FAE50623B4B70600DE73D8 /* OperationQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationQueue.swift; sourceTree = "<group>"; };
 		02FAE50923B4C0B300DE73D8 /* KeyBackupBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBackupBanner.swift; sourceTree = "<group>"; };
+		02FAE50D23B4C41500DE73D8 /* BubbleReactionsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BubbleReactionsView.swift; sourceTree = "<group>"; };
+		02FAE50E23B4C41500DE73D8 /* BubbleReactionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BubbleReactionViewCell.xib; sourceTree = "<group>"; };
+		02FAE50F23B4C41500DE73D8 /* BubbleReactionsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BubbleReactionsViewModel.swift; sourceTree = "<group>"; };
+		02FAE51023B4C41500DE73D8 /* BubbleReactionsViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BubbleReactionsViewModelType.swift; sourceTree = "<group>"; };
+		02FAE51123B4C41500DE73D8 /* BubbleReactionActionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BubbleReactionActionViewCell.xib; sourceTree = "<group>"; };
+		02FAE51223B4C41500DE73D8 /* BubbleReactionViewData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BubbleReactionViewData.swift; sourceTree = "<group>"; };
+		02FAE51323B4C41500DE73D8 /* BubbleReactionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BubbleReactionViewCell.swift; sourceTree = "<group>"; };
+		02FAE51423B4C41500DE73D8 /* BubbleReactionsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BubbleReactionsView.xib; sourceTree = "<group>"; };
+		02FAE51523B4C41500DE73D8 /* BubbleReactionActionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BubbleReactionActionViewCell.swift; sourceTree = "<group>"; };
+		02FAE51723B4C41500DE73D8 /* RoomContextualMenuAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomContextualMenuAction.swift; sourceTree = "<group>"; };
+		02FAE51823B4C41500DE73D8 /* ContextualMenuItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContextualMenuItemView.swift; sourceTree = "<group>"; };
+		02FAE51A23B4C41500DE73D8 /* ReactionsMenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactionsMenuView.swift; sourceTree = "<group>"; };
+		02FAE51B23B4C41500DE73D8 /* ReactionsMenuViewAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactionsMenuViewAction.swift; sourceTree = "<group>"; };
+		02FAE51C23B4C41500DE73D8 /* ReactionsMenuButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactionsMenuButton.swift; sourceTree = "<group>"; };
+		02FAE51D23B4C41500DE73D8 /* ReactionsMenuViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactionsMenuViewModelType.swift; sourceTree = "<group>"; };
+		02FAE51E23B4C41500DE73D8 /* ReactionsMenuViewState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactionsMenuViewState.swift; sourceTree = "<group>"; };
+		02FAE51F23B4C41500DE73D8 /* ReactionMenuItemViewData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactionMenuItemViewData.swift; sourceTree = "<group>"; };
+		02FAE52023B4C41500DE73D8 /* ReactionsMenuViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactionsMenuViewModel.swift; sourceTree = "<group>"; };
+		02FAE52123B4C41500DE73D8 /* ReactionsMenuView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReactionsMenuView.xib; sourceTree = "<group>"; };
+		02FAE52223B4C41500DE73D8 /* RoomContextualMenuItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomContextualMenuItem.swift; sourceTree = "<group>"; };
+		02FAE52323B4C41500DE73D8 /* ContextualMenuItemView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContextualMenuItemView.xib; sourceTree = "<group>"; };
+		02FAE52423B4C41500DE73D8 /* RoomContextualMenuPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomContextualMenuPresenter.swift; sourceTree = "<group>"; };
+		02FAE52523B4C41500DE73D8 /* RoomContextualMenuViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = RoomContextualMenuViewController.storyboard; sourceTree = "<group>"; };
+		02FAE52623B4C41500DE73D8 /* RoomContextualMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomContextualMenuViewController.swift; sourceTree = "<group>"; };
+		02FAE52723B4C41500DE73D8 /* RoomContextualMenuToolbarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomContextualMenuToolbarView.xib; sourceTree = "<group>"; };
+		02FAE52823B4C41500DE73D8 /* RoomContextualMenuToolbarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomContextualMenuToolbarView.swift; sourceTree = "<group>"; };
+		02FAE52A23B4C41500DE73D8 /* EmojiPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmojiPickerViewController.swift; sourceTree = "<group>"; };
+		02FAE52B23B4C41500DE73D8 /* EmojiPickerViewState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmojiPickerViewState.swift; sourceTree = "<group>"; };
+		02FAE52C23B4C41500DE73D8 /* EmojiPickerCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmojiPickerCoordinator.swift; sourceTree = "<group>"; };
+		02FAE52D23B4C41500DE73D8 /* EmojiPickerItemViewData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmojiPickerItemViewData.swift; sourceTree = "<group>"; };
+		02FAE52E23B4C41500DE73D8 /* EmojiPickerViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmojiPickerViewModel.swift; sourceTree = "<group>"; };
+		02FAE52F23B4C41500DE73D8 /* EmojiPickerCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmojiPickerCoordinatorType.swift; sourceTree = "<group>"; };
+		02FAE53023B4C41500DE73D8 /* EmojiPickerViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmojiPickerViewModelType.swift; sourceTree = "<group>"; };
+		02FAE53123B4C41500DE73D8 /* EmojiPickerViewAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmojiPickerViewAction.swift; sourceTree = "<group>"; };
+		02FAE53223B4C41500DE73D8 /* EmojiPickerHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmojiPickerHeaderView.swift; sourceTree = "<group>"; };
+		02FAE53323B4C41500DE73D8 /* EmojiPickerCategoryViewData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmojiPickerCategoryViewData.swift; sourceTree = "<group>"; };
+		02FAE53423B4C41500DE73D8 /* EmojiPickerViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EmojiPickerViewCell.xib; sourceTree = "<group>"; };
+		02FAE53523B4C41500DE73D8 /* EmojiPickerViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmojiPickerViewCell.swift; sourceTree = "<group>"; };
+		02FAE53623B4C41500DE73D8 /* EmojiPickerViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = EmojiPickerViewController.storyboard; sourceTree = "<group>"; };
+		02FAE53723B4C41500DE73D8 /* EmojiPickerCoordinatorBridgePresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmojiPickerCoordinatorBridgePresenter.swift; sourceTree = "<group>"; };
+		02FAE53923B4C41500DE73D8 /* EmojiServiceType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmojiServiceType.swift; sourceTree = "<group>"; };
+		02FAE53B23B4C41500DE73D8 /* EmojiItem+EmojiMart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EmojiItem+EmojiMart.swift"; sourceTree = "<group>"; };
+		02FAE53C23B4C41500DE73D8 /* EmojiMartService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmojiMartService.swift; sourceTree = "<group>"; };
+		02FAE53D23B4C41500DE73D8 /* EmojiMartStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmojiMartStore.swift; sourceTree = "<group>"; };
+		02FAE53F23B4C41500DE73D8 /* EmojiMartCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmojiMartCategory.swift; sourceTree = "<group>"; };
+		02FAE54123B4C41500DE73D8 /* EmojiItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmojiItem.swift; sourceTree = "<group>"; };
+		02FAE54223B4C41500DE73D8 /* EmojiCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmojiCategory.swift; sourceTree = "<group>"; };
+		02FAE54323B4C41500DE73D8 /* EmojiStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmojiStore.swift; sourceTree = "<group>"; };
+		02FAE54423B4C41500DE73D8 /* EmojiPickerHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EmojiPickerHeaderView.xib; sourceTree = "<group>"; };
+		02FAE54623B4C41500DE73D8 /* EditHistoryViewState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditHistoryViewState.swift; sourceTree = "<group>"; };
+		02FAE54723B4C41500DE73D8 /* EditHistoryMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditHistoryMessage.swift; sourceTree = "<group>"; };
+		02FAE54823B4C41500DE73D8 /* EditHistoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditHistoryViewController.swift; sourceTree = "<group>"; };
+		02FAE54923B4C41500DE73D8 /* EditHistoryViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditHistoryViewModel.swift; sourceTree = "<group>"; };
+		02FAE54A23B4C41500DE73D8 /* EditHistoryViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditHistoryViewModelType.swift; sourceTree = "<group>"; };
+		02FAE54B23B4C41500DE73D8 /* EditHistoryCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditHistoryCoordinator.swift; sourceTree = "<group>"; };
+		02FAE54C23B4C41500DE73D8 /* EditHistoryHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditHistoryHeaderView.swift; sourceTree = "<group>"; };
+		02FAE54D23B4C41500DE73D8 /* EditHistoryViewAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditHistoryViewAction.swift; sourceTree = "<group>"; };
+		02FAE54E23B4C41500DE73D8 /* EditHistoryViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = EditHistoryViewController.storyboard; sourceTree = "<group>"; };
+		02FAE54F23B4C41500DE73D8 /* EditHistoryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditHistoryCell.xib; sourceTree = "<group>"; };
+		02FAE55023B4C41500DE73D8 /* EditHistoryCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditHistoryCoordinatorType.swift; sourceTree = "<group>"; };
+		02FAE55123B4C41500DE73D8 /* EditHistorySection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditHistorySection.swift; sourceTree = "<group>"; };
+		02FAE55223B4C41500DE73D8 /* EditHistoryCoordinatorBridgePresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditHistoryCoordinatorBridgePresenter.swift; sourceTree = "<group>"; };
+		02FAE55323B4C41500DE73D8 /* EditHistoryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditHistoryCell.swift; sourceTree = "<group>"; };
+		02FAE55423B4C41500DE73D8 /* EditHistoryHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditHistoryHeaderView.xib; sourceTree = "<group>"; };
+		02FAE55623B4C41500DE73D8 /* ReactionHistoryCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactionHistoryCoordinatorType.swift; sourceTree = "<group>"; };
+		02FAE55723B4C41500DE73D8 /* ReactionHistoryBridgeCoordinatorPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactionHistoryBridgeCoordinatorPresenter.swift; sourceTree = "<group>"; };
+		02FAE55823B4C41500DE73D8 /* ReactionHistoryViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReactionHistoryViewCell.xib; sourceTree = "<group>"; };
+		02FAE55923B4C41500DE73D8 /* ReactionHistoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactionHistoryViewController.swift; sourceTree = "<group>"; };
+		02FAE55A23B4C41500DE73D8 /* ReactionHistoryViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactionHistoryViewCell.swift; sourceTree = "<group>"; };
+		02FAE55B23B4C41500DE73D8 /* ReactionHistoryViewData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactionHistoryViewData.swift; sourceTree = "<group>"; };
+		02FAE55C23B4C41500DE73D8 /* ReactionHistoryViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ReactionHistoryViewController.storyboard; sourceTree = "<group>"; };
+		02FAE55D23B4C41500DE73D8 /* ReactionHistoryViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactionHistoryViewModel.swift; sourceTree = "<group>"; };
+		02FAE55E23B4C41500DE73D8 /* ReactionHistoryViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactionHistoryViewModelType.swift; sourceTree = "<group>"; };
+		02FAE55F23B4C41500DE73D8 /* ReactionHistoryCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactionHistoryCoordinator.swift; sourceTree = "<group>"; };
+		02FAE56023B4C41500DE73D8 /* ReactionHistoryViewAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactionHistoryViewAction.swift; sourceTree = "<group>"; };
+		02FAE56123B4C41500DE73D8 /* ReactionHistoryViewState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactionHistoryViewState.swift; sourceTree = "<group>"; };
+		02FAE5FC23B4CFC500DE73D8 /* UIStackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIStackView.swift; sourceTree = "<group>"; };
+		02FAE5FF23B4D14C00DE73D8 /* UIGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIGestureRecognizer.swift; sourceTree = "<group>"; };
+		02FAE60223B4D35200DE73D8 /* String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		02FAE60523B4D37B00DE73D8 /* Character.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Character.swift; sourceTree = "<group>"; };
+		02FAE60823B4D38F00DE73D8 /* UITouch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITouch.swift; sourceTree = "<group>"; };
+		02FAE60C23B4E70600DE73D8 /* RoomMessageURLParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomMessageURLParser.swift; sourceTree = "<group>"; };
+		02FAE60F23B4E7AA00DE73D8 /* UIApplication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
 		23307BF65CCF37A2CAE36E4F /* Pods-TchapPods-Btchap.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TchapPods-Btchap.debug.xcconfig"; path = "Target Support Files/Pods-TchapPods-Btchap/Pods-TchapPods-Btchap.debug.xcconfig"; sourceTree = "<group>"; };
 		3267EFB320E379FD00FF1CAA /* CHANGES.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGES.rst; sourceTree = "<group>"; };
 		3267EFB420E379FD00FF1CAA /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; fileEncoding = 4; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
@@ -2276,6 +2525,11 @@
 				020DF85F214BE467003DFBA4 /* RoomViewController.h */,
 				020DF87D214BE467003DFBA4 /* RoomViewController.m */,
 				020DF870214BE467003DFBA4 /* RoomViewController.xib */,
+				02FAE50C23B4C41500DE73D8 /* BubbleReactions */,
+				02FAE51623B4C41500DE73D8 /* ContextualMenu */,
+				02FAE54523B4C41500DE73D8 /* EditHistory */,
+				02FAE52923B4C41500DE73D8 /* EmojiPicker */,
+				02FAE55523B4C41500DE73D8 /* ReactionHistory */,
 				020DF859214BE467003DFBA4 /* DataSources */,
 				020DF85C214BE467003DFBA4 /* CellData */,
 				020DF860214BE467003DFBA4 /* Settings */,
@@ -3458,6 +3712,157 @@
 			path = Passphrase;
 			sourceTree = "<group>";
 		};
+		02FAE50C23B4C41500DE73D8 /* BubbleReactions */ = {
+			isa = PBXGroup;
+			children = (
+				02FAE50D23B4C41500DE73D8 /* BubbleReactionsView.swift */,
+				02FAE50E23B4C41500DE73D8 /* BubbleReactionViewCell.xib */,
+				02FAE50F23B4C41500DE73D8 /* BubbleReactionsViewModel.swift */,
+				02FAE51023B4C41500DE73D8 /* BubbleReactionsViewModelType.swift */,
+				02FAE51123B4C41500DE73D8 /* BubbleReactionActionViewCell.xib */,
+				02FAE51223B4C41500DE73D8 /* BubbleReactionViewData.swift */,
+				02FAE51323B4C41500DE73D8 /* BubbleReactionViewCell.swift */,
+				02FAE51423B4C41500DE73D8 /* BubbleReactionsView.xib */,
+				02FAE51523B4C41500DE73D8 /* BubbleReactionActionViewCell.swift */,
+			);
+			path = BubbleReactions;
+			sourceTree = "<group>";
+		};
+		02FAE51623B4C41500DE73D8 /* ContextualMenu */ = {
+			isa = PBXGroup;
+			children = (
+				02FAE51723B4C41500DE73D8 /* RoomContextualMenuAction.swift */,
+				02FAE51823B4C41500DE73D8 /* ContextualMenuItemView.swift */,
+				02FAE51923B4C41500DE73D8 /* ReactionsMenu */,
+				02FAE52223B4C41500DE73D8 /* RoomContextualMenuItem.swift */,
+				02FAE52323B4C41500DE73D8 /* ContextualMenuItemView.xib */,
+				02FAE52423B4C41500DE73D8 /* RoomContextualMenuPresenter.swift */,
+				02FAE52523B4C41500DE73D8 /* RoomContextualMenuViewController.storyboard */,
+				02FAE52623B4C41500DE73D8 /* RoomContextualMenuViewController.swift */,
+				02FAE52723B4C41500DE73D8 /* RoomContextualMenuToolbarView.xib */,
+				02FAE52823B4C41500DE73D8 /* RoomContextualMenuToolbarView.swift */,
+			);
+			path = ContextualMenu;
+			sourceTree = "<group>";
+		};
+		02FAE51923B4C41500DE73D8 /* ReactionsMenu */ = {
+			isa = PBXGroup;
+			children = (
+				02FAE51A23B4C41500DE73D8 /* ReactionsMenuView.swift */,
+				02FAE51B23B4C41500DE73D8 /* ReactionsMenuViewAction.swift */,
+				02FAE51C23B4C41500DE73D8 /* ReactionsMenuButton.swift */,
+				02FAE51D23B4C41500DE73D8 /* ReactionsMenuViewModelType.swift */,
+				02FAE51E23B4C41500DE73D8 /* ReactionsMenuViewState.swift */,
+				02FAE51F23B4C41500DE73D8 /* ReactionMenuItemViewData.swift */,
+				02FAE52023B4C41500DE73D8 /* ReactionsMenuViewModel.swift */,
+				02FAE52123B4C41500DE73D8 /* ReactionsMenuView.xib */,
+			);
+			path = ReactionsMenu;
+			sourceTree = "<group>";
+		};
+		02FAE52923B4C41500DE73D8 /* EmojiPicker */ = {
+			isa = PBXGroup;
+			children = (
+				02FAE52A23B4C41500DE73D8 /* EmojiPickerViewController.swift */,
+				02FAE52B23B4C41500DE73D8 /* EmojiPickerViewState.swift */,
+				02FAE52C23B4C41500DE73D8 /* EmojiPickerCoordinator.swift */,
+				02FAE52D23B4C41500DE73D8 /* EmojiPickerItemViewData.swift */,
+				02FAE52E23B4C41500DE73D8 /* EmojiPickerViewModel.swift */,
+				02FAE52F23B4C41500DE73D8 /* EmojiPickerCoordinatorType.swift */,
+				02FAE53023B4C41500DE73D8 /* EmojiPickerViewModelType.swift */,
+				02FAE53123B4C41500DE73D8 /* EmojiPickerViewAction.swift */,
+				02FAE53223B4C41500DE73D8 /* EmojiPickerHeaderView.swift */,
+				02FAE53323B4C41500DE73D8 /* EmojiPickerCategoryViewData.swift */,
+				02FAE53423B4C41500DE73D8 /* EmojiPickerViewCell.xib */,
+				02FAE53523B4C41500DE73D8 /* EmojiPickerViewCell.swift */,
+				02FAE53623B4C41500DE73D8 /* EmojiPickerViewController.storyboard */,
+				02FAE53723B4C41500DE73D8 /* EmojiPickerCoordinatorBridgePresenter.swift */,
+				02FAE54423B4C41500DE73D8 /* EmojiPickerHeaderView.xib */,
+				02FAE53823B4C41500DE73D8 /* Data */,
+			);
+			path = EmojiPicker;
+			sourceTree = "<group>";
+		};
+		02FAE53823B4C41500DE73D8 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				02FAE53923B4C41500DE73D8 /* EmojiServiceType.swift */,
+				02FAE53A23B4C41500DE73D8 /* EmojiMart */,
+				02FAE54023B4C41500DE73D8 /* Store */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		02FAE53A23B4C41500DE73D8 /* EmojiMart */ = {
+			isa = PBXGroup;
+			children = (
+				02FAE53B23B4C41500DE73D8 /* EmojiItem+EmojiMart.swift */,
+				02FAE53C23B4C41500DE73D8 /* EmojiMartService.swift */,
+				02FAE53D23B4C41500DE73D8 /* EmojiMartStore.swift */,
+				02FAE53F23B4C41500DE73D8 /* EmojiMartCategory.swift */,
+			);
+			path = EmojiMart;
+			sourceTree = "<group>";
+		};
+		02FAE54023B4C41500DE73D8 /* Store */ = {
+			isa = PBXGroup;
+			children = (
+				02FAE54123B4C41500DE73D8 /* EmojiItem.swift */,
+				02FAE54223B4C41500DE73D8 /* EmojiCategory.swift */,
+				02FAE54323B4C41500DE73D8 /* EmojiStore.swift */,
+			);
+			path = Store;
+			sourceTree = "<group>";
+		};
+		02FAE54523B4C41500DE73D8 /* EditHistory */ = {
+			isa = PBXGroup;
+			children = (
+				02FAE54623B4C41500DE73D8 /* EditHistoryViewState.swift */,
+				02FAE54723B4C41500DE73D8 /* EditHistoryMessage.swift */,
+				02FAE54823B4C41500DE73D8 /* EditHistoryViewController.swift */,
+				02FAE54923B4C41500DE73D8 /* EditHistoryViewModel.swift */,
+				02FAE54A23B4C41500DE73D8 /* EditHistoryViewModelType.swift */,
+				02FAE54B23B4C41500DE73D8 /* EditHistoryCoordinator.swift */,
+				02FAE54C23B4C41500DE73D8 /* EditHistoryHeaderView.swift */,
+				02FAE54D23B4C41500DE73D8 /* EditHistoryViewAction.swift */,
+				02FAE54E23B4C41500DE73D8 /* EditHistoryViewController.storyboard */,
+				02FAE54F23B4C41500DE73D8 /* EditHistoryCell.xib */,
+				02FAE55023B4C41500DE73D8 /* EditHistoryCoordinatorType.swift */,
+				02FAE55123B4C41500DE73D8 /* EditHistorySection.swift */,
+				02FAE55223B4C41500DE73D8 /* EditHistoryCoordinatorBridgePresenter.swift */,
+				02FAE55323B4C41500DE73D8 /* EditHistoryCell.swift */,
+				02FAE55423B4C41500DE73D8 /* EditHistoryHeaderView.xib */,
+			);
+			path = EditHistory;
+			sourceTree = "<group>";
+		};
+		02FAE55523B4C41500DE73D8 /* ReactionHistory */ = {
+			isa = PBXGroup;
+			children = (
+				02FAE55623B4C41500DE73D8 /* ReactionHistoryCoordinatorType.swift */,
+				02FAE55723B4C41500DE73D8 /* ReactionHistoryBridgeCoordinatorPresenter.swift */,
+				02FAE55823B4C41500DE73D8 /* ReactionHistoryViewCell.xib */,
+				02FAE55923B4C41500DE73D8 /* ReactionHistoryViewController.swift */,
+				02FAE55A23B4C41500DE73D8 /* ReactionHistoryViewCell.swift */,
+				02FAE55B23B4C41500DE73D8 /* ReactionHistoryViewData.swift */,
+				02FAE55C23B4C41500DE73D8 /* ReactionHistoryViewController.storyboard */,
+				02FAE55D23B4C41500DE73D8 /* ReactionHistoryViewModel.swift */,
+				02FAE55E23B4C41500DE73D8 /* ReactionHistoryViewModelType.swift */,
+				02FAE55F23B4C41500DE73D8 /* ReactionHistoryCoordinator.swift */,
+				02FAE56023B4C41500DE73D8 /* ReactionHistoryViewAction.swift */,
+				02FAE56123B4C41500DE73D8 /* ReactionHistoryViewState.swift */,
+			);
+			path = ReactionHistory;
+			sourceTree = "<group>";
+		};
+		02FAE60B23B4E70600DE73D8 /* RoomMessageLinkParser */ = {
+			isa = PBXGroup;
+			children = (
+				02FAE60C23B4E70600DE73D8 /* RoomMessageURLParser.swift */,
+			);
+			path = RoomMessageLinkParser;
+			sourceTree = "<group>";
+		};
 		32935CB21F628B98006888C8 /* js */ = {
 			isa = PBXGroup;
 			children = (
@@ -4163,6 +4568,7 @@
 		B1B5597C20EFC3DF00210D55 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				02FAE60B23B4E70600DE73D8 /* RoomMessageLinkParser */,
 				024518E623A150D4006873DF /* PasswordStrength */,
 				B1798300211B137B001FD722 /* OnBoarding */,
 				B1B5598B20EFC5E400210D55 /* Analytics */,
@@ -4515,6 +4921,12 @@
 		F083BBE41E7009EC00A9B29C /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				02FAE60F23B4E7AA00DE73D8 /* UIApplication.swift */,
+				02FAE60823B4D38F00DE73D8 /* UITouch.swift */,
+				02FAE60523B4D37B00DE73D8 /* Character.swift */,
+				02FAE60223B4D35200DE73D8 /* String.swift */,
+				02FAE5FF23B4D14C00DE73D8 /* UIGestureRecognizer.swift */,
+				02FAE5FC23B4CFC500DE73D8 /* UIStackView.swift */,
 				02FAE50623B4B70600DE73D8 /* OperationQueue.swift */,
 				02FAE46D23B4ACCB00DE73D8 /* UIImage.swift */,
 				02FAE46A23B4ACA000DE73D8 /* UIButton.swift */,
@@ -4798,6 +5210,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				02FAE58E23B4C41500DE73D8 /* RoomContextualMenuViewController.storyboard in Resources */,
 				0250C5442122B68000034691 /* ring.mp3 in Resources */,
 				020DF99C214BE467003DFBA4 /* RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib in Resources */,
 				020DF93A214BE467003DFBA4 /* TableViewCellWithCheckBoxes.xib in Resources */,
@@ -4805,9 +5218,11 @@
 				020DF949214BE467003DFBA4 /* RoomMemberTitleView.xib in Resources */,
 				B165251D21775B0D00146F80 /* ContactsViewController.storyboard in Resources */,
 				0250C5462122B68000034691 /* TableViewCellWithButton.xib in Resources */,
+				02FAE58623B4C41500DE73D8 /* ReactionsMenuView.xib in Resources */,
 				028B50B5228E2931005DB9B6 /* matrix.agent.tchap.gouv.fr.cer in Resources */,
 				02BEE1A3212C717F00098505 /* SharedImages.xcassets in Resources */,
 				02FAE3ED23B2912A00DE73D8 /* DeviceVerificationIncomingViewController.storyboard in Resources */,
+				02FAE5AA23B4C41600DE73D8 /* EmojiPickerViewCell.xib in Resources */,
 				020DF9A0214BE467003DFBA4 /* RoomMembershipExpandedBubbleCell.xib in Resources */,
 				02FAE41B23B29EBD00DE73D8 /* ServiceTermsModalScreenViewController.storyboard in Resources */,
 				0250C54C2122B68000034691 /* EncryptionInfoView.xib in Resources */,
@@ -4815,6 +5230,8 @@
 				026154E9236C7D930045459E /* agent.ssi_2019_10.cer in Resources */,
 				029CC69321772F4200DCC8B3 /* TableViewCellWithPhoneNumberTextField.xib in Resources */,
 				020DF94C214BE467003DFBA4 /* ReadReceiptsViewController.xib in Resources */,
+				02FAE56A23B4C41500DE73D8 /* BubbleReactionActionViewCell.xib in Resources */,
+				02FAE56423B4C41500DE73D8 /* BubbleReactionViewCell.xib in Resources */,
 				02FAE4B023B4B61700DE73D8 /* KeyBackupSetupSuccessFromPassphraseViewController.storyboard in Resources */,
 				020DF9AE214BE467003DFBA4 /* RoomInputToolbarView.xib in Resources */,
 				B11C80142139442700CC6F2F /* RegistrationFormViewController.storyboard in Resources */,
@@ -4848,14 +5265,17 @@
 				020DF96D214BE467003DFBA4 /* RoomOutgoingEncryptedTextMsgWithoutSenderInfoBubbleCell.xib in Resources */,
 				0250C5692122B68000034691 /* CallViewController.xib in Resources */,
 				B1C4645721B68257005F4D53 /* SelectableContactCell.xib in Resources */,
+				02FAE58A23B4C41500DE73D8 /* ContextualMenuItemView.xib in Resources */,
 				020DF96A214BE467003DFBA4 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleBubbleCell.xib in Resources */,
 				020DF985214BE467003DFBA4 /* RoomIncomingAttachmentWithPaginationTitleBubbleCell.xib in Resources */,
 				02CEE1DE23312C370085ACF0 /* matrix.agent.externe.tchap.gouv.fr2.cer in Resources */,
 				020DF97B214BE467003DFBA4 /* RoomIncomingTextMsgWithoutSenderInfoBubbleCell.xib in Resources */,
+				02FAE5C423B4C41600DE73D8 /* EmojiPickerHeaderView.xib in Resources */,
 				02B3453B219CA8CB00110EC8 /* RoomsDiscussionCell.xib in Resources */,
 				02FAE3CB23B2912A00DE73D8 /* DeviceVerificationVerifyViewController.storyboard in Resources */,
 				0250C56A2122B68000034691 /* ringback.mp3 in Resources */,
 				0250C56B2122B68000034691 /* GoogleService-Info.plist in Resources */,
+				02FAE5D823B4C41600DE73D8 /* EditHistoryCell.xib in Resources */,
 				02FAE3BF23B2912A00DE73D8 /* DeviceVerificationDataLoadingViewController.storyboard in Resources */,
 				020DF969214BE467003DFBA4 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib in Resources */,
 				026154DA236C7D930045459E /* agent.agriculture_2019_10.cer in Resources */,
@@ -4864,6 +5284,7 @@
 				020DF999214BE467003DFBA4 /* RoomOutgoingAttachmentBubbleCell.xib in Resources */,
 				0250C5752122B68000034691 /* third_party_licenses.html in Resources */,
 				02FAE43623B2B98900DE73D8 /* SlidingModalContainerView.xib in Resources */,
+				02FAE5E223B4C41600DE73D8 /* EditHistoryHeaderView.xib in Resources */,
 				B18D18C62153EA32003677D1 /* HomeViewController.storyboard in Resources */,
 				0250C57A2122B68000034691 /* Vector.strings in Resources */,
 				028B50B7228EB2C3005DB9B6 /* www.tchap.gouv.fr.cer in Resources */,
@@ -4874,16 +5295,19 @@
 				026154E4236C7D930045459E /* agent.dev-durable_2019_10.cer in Resources */,
 				0250C5CE212314B300034691 /* Tchap-Defaults.plist in Resources */,
 				B1073D6A21A8096F00E36CFA /* RoomIncomingEncryptedAttachmentWithPaginationTitleBubbleCell.xib in Resources */,
+				02FAE5F023B4C41600DE73D8 /* ReactionHistoryViewController.storyboard in Resources */,
 				B15B867E2135BA96002782BE /* AuthenticationViewController.storyboard in Resources */,
 				0250C57D2122B68000034691 /* busy.mp3 in Resources */,
 				B1073D6821A8096F00E36CFA /* RoomIncomingEncryptedAttachmentBubbleCell.xib in Resources */,
 				020DF97F214BE467003DFBA4 /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.xib in Resources */,
+				02FAE5AE23B4C41600DE73D8 /* EmojiPickerViewController.storyboard in Resources */,
 				020DF998214BE467003DFBA4 /* RoomSelectedStickerBubbleCell.xib in Resources */,
 				020DF96E214BE467003DFBA4 /* RoomIncomingEncryptedTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
 				B146D52221A7453900D8C2C6 /* RoomAttachmentAntivirusScanStatusCellContentView.xib in Resources */,
 				0250C57E2122B68000034691 /* MediaAlbumContentViewController.xib in Resources */,
 				026154DB236C7D930045459E /* agent.justice_2019_10.cer in Resources */,
 				026154EA236C7D930045459E /* agent_2019_10.cer in Resources */,
+				02FAE59223B4C41600DE73D8 /* RoomContextualMenuToolbarView.xib in Resources */,
 				020DF94F214BE467003DFBA4 /* RoomMembershipBubbleCell.xib in Resources */,
 				02FAE4CA23B4B61700DE73D8 /* KeyBackupSetupPassphraseViewController.storyboard in Resources */,
 				B1680CFF2152A9E6009B5F92 /* PublicRoomsViewController.storyboard in Resources */,
@@ -4923,13 +5347,16 @@
 				026154E3236C7D930045459E /* agent.diplomatie_2019_10.cer in Resources */,
 				0250C5972122B68000034691 /* LaunchScreen.storyboard in Resources */,
 				029CC68E21772F4200DCC8B3 /* DeactivateAccountViewController.storyboard in Resources */,
+				02FAE57023B4C41500DE73D8 /* BubbleReactionsView.xib in Resources */,
 				B15AB29F215BF20E007F5405 /* ForgotPasswordFormViewController.storyboard in Resources */,
 				026154DD236C7D930045459E /* agent.education_2019_10.cer in Resources */,
 				B146D50F21A5EAE800D8C2C6 /* RoomAttachmentAntivirusScanStatusBubbleCell.xib in Resources */,
+				02FAE5D623B4C41600DE73D8 /* EditHistoryViewController.storyboard in Resources */,
 				020DF96C214BE467003DFBA4 /* RoomOutgoingEncryptedAttachmentBubbleCell.xib in Resources */,
 				020DF95D214BE467003DFBA4 /* RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.xib in Resources */,
 				B15AB29E215BF20E007F5405 /* ForgotPasswordCheckedEmailViewController.storyboard in Resources */,
 				020DF97E214BE467003DFBA4 /* RoomOutgoingTextMsgWithPaginationTitleBubbleCell.xib in Resources */,
+				02FAE5E823B4C41600DE73D8 /* ReactionHistoryViewCell.xib in Resources */,
 				026D887021C1C4F40085BED8 /* TchapSharedImages.xcassets in Resources */,
 				02FAE4DE23B4B61700DE73D8 /* KeyBackupRecoverSuccessViewController.storyboard in Resources */,
 				026154E5236C7D930045459E /* agent.externe_2019_10.cer in Resources */,
@@ -5031,7 +5458,10 @@
 				02DFEC7C21C07370009B6F15 /* RoomMemberTitleView.xib in Resources */,
 				02DFEC7D21C07370009B6F15 /* ContactsViewController.storyboard in Resources */,
 				02DFEC7E21C07370009B6F15 /* TableViewCellWithButton.xib in Resources */,
+				02FAE58F23B4C41500DE73D8 /* RoomContextualMenuViewController.storyboard in Resources */,
+				02FAE59323B4C41600DE73D8 /* RoomContextualMenuToolbarView.xib in Resources */,
 				02DFEC7F21C07370009B6F15 /* SharedImages.xcassets in Resources */,
+				02FAE5F123B4C41600DE73D8 /* ReactionHistoryViewController.storyboard in Resources */,
 				02DFEC8021C07370009B6F15 /* RoomMembershipExpandedBubbleCell.xib in Resources */,
 				02FAE4F323B4B61700DE73D8 /* KeyBackupRecoverFromPassphraseViewController.storyboard in Resources */,
 				02DFEC8121C07370009B6F15 /* EncryptionInfoView.xib in Resources */,
@@ -5052,7 +5482,9 @@
 				02DFEC8D21C07370009B6F15 /* PreviewView.xib in Resources */,
 				02DFEC8E21C07370009B6F15 /* RoomOutgoingEncryptedTextMsgBubbleCell.xib in Resources */,
 				02DFEC8F21C07370009B6F15 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.xib in Resources */,
+				02FAE5E323B4C41600DE73D8 /* EditHistoryHeaderView.xib in Resources */,
 				02FAE4D523B4B61700DE73D8 /* KeyBackupBannerCell.xib in Resources */,
+				02FAE5C523B4C41600DE73D8 /* EmojiPickerHeaderView.xib in Resources */,
 				02DFEC9021C07370009B6F15 /* FormTextField.xib in Resources */,
 				02DFEC9121C07370009B6F15 /* RoomsRoomCell.xib in Resources */,
 				02DFEC9221C07370009B6F15 /* RoomOutgoingAttachmentWithPaginationTitleBubbleCell.xib in Resources */,
@@ -5092,6 +5524,7 @@
 				02DFECB021C07370009B6F15 /* RoomIncomingEncryptedAttachmentWithPaginationTitleBubbleCell.xib in Resources */,
 				02DFECB121C07370009B6F15 /* AuthenticationViewController.storyboard in Resources */,
 				02DFECB221C07370009B6F15 /* busy.mp3 in Resources */,
+				02FAE5AF23B4C41600DE73D8 /* EmojiPickerViewController.storyboard in Resources */,
 				02DFECB321C07370009B6F15 /* RoomIncomingEncryptedAttachmentBubbleCell.xib in Resources */,
 				02DFECB421C07370009B6F15 /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.xib in Resources */,
 				02DFECB521C07370009B6F15 /* RoomSelectedStickerBubbleCell.xib in Resources */,
@@ -5105,6 +5538,7 @@
 				02FAE43723B2B98900DE73D8 /* SlidingModalContainerView.xib in Resources */,
 				02DFECBB21C07370009B6F15 /* Tchap.stringsdict in Resources */,
 				02FAE3C023B2912A00DE73D8 /* DeviceVerificationDataLoadingViewController.storyboard in Resources */,
+				02FAE5D923B4C41600DE73D8 /* EditHistoryCell.xib in Resources */,
 				02DFECBC21C07370009B6F15 /* RoomIncomingTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
 				02DFECBD21C07370009B6F15 /* BugReportViewController.xib in Resources */,
 				02DFECBE21C07370009B6F15 /* ContactCell.xib in Resources */,
@@ -5129,10 +5563,13 @@
 				02DFECCE21C07370009B6F15 /* DeviceView.xib in Resources */,
 				02DFECCF21C07370009B6F15 /* RoomOutgoingTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
 				02DFECD021C07370009B6F15 /* RoomIncomingEncryptedTextMsgWithoutSenderInfoBubbleCell.xib in Resources */,
+				02FAE5E923B4C41600DE73D8 /* ReactionHistoryViewCell.xib in Resources */,
 				02DFECD121C07370009B6F15 /* RoomIncomingAttachmentBubbleCell.xib in Resources */,
 				02DFECD321C07370009B6F15 /* RoomIncomingAttachmentWithoutSenderInfoBubbleCell.xib in Resources */,
 				02DFECD421C07370009B6F15 /* LaunchScreen.storyboard in Resources */,
+				02FAE5AB23B4C41600DE73D8 /* EmojiPickerViewCell.xib in Resources */,
 				02DFECD521C07370009B6F15 /* DeactivateAccountViewController.storyboard in Resources */,
+				02FAE56B23B4C41500DE73D8 /* BubbleReactionActionViewCell.xib in Resources */,
 				02DFECD621C07370009B6F15 /* ForgotPasswordFormViewController.storyboard in Resources */,
 				02DFECD721C07370009B6F15 /* RoomAttachmentAntivirusScanStatusBubbleCell.xib in Resources */,
 				02DFECD821C07370009B6F15 /* RoomOutgoingEncryptedAttachmentBubbleCell.xib in Resources */,
@@ -5143,6 +5580,7 @@
 				02FAE3DE23B2912A00DE73D8 /* DeviceVerificationStartViewController.storyboard in Resources */,
 				024518E523A1467A006873DF /* message.caf in Resources */,
 				02DFECDD21C07370009B6F15 /* DeviceTableViewCell.xib in Resources */,
+				02FAE57123B4C41500DE73D8 /* BubbleReactionsView.xib in Resources */,
 				02DFECDE21C07370009B6F15 /* RoomsCell.xib in Resources */,
 				02DFECDF21C07370009B6F15 /* RoomEncryptedAttachmentAntivirusScanStatusBubbleCell.xib in Resources */,
 				02DFECE021C07370009B6F15 /* RoomMembershipCollapsedBubbleCell.xib in Resources */,
@@ -5156,14 +5594,18 @@
 				02FAE4C123B4B61700DE73D8 /* PasswordStrengthView.xib in Resources */,
 				02DFECE621C07370009B6F15 /* RoomActivitiesView.xib in Resources */,
 				02DFECE721C07370009B6F15 /* GlobalSearchBar.xib in Resources */,
+				02FAE56523B4C41500DE73D8 /* BubbleReactionViewCell.xib in Resources */,
+				02FAE5D723B4C41600DE73D8 /* EditHistoryViewController.storyboard in Resources */,
 				0252030A224EBD4800262433 /* ContactButtonView.xib in Resources */,
 				B12209DF23855643004D069C /* AppVersionUpdateViewController.storyboard in Resources */,
 				02FAE4CB23B4B61700DE73D8 /* KeyBackupSetupPassphraseViewController.storyboard in Resources */,
 				02DFECE821C07370009B6F15 /* SegmentedViewController.xib in Resources */,
 				02DFECEA21C07370009B6F15 /* postMessageAPI.js in Resources */,
+				02FAE58B23B4C41500DE73D8 /* ContextualMenuItemView.xib in Resources */,
 				02DFECEB21C07370009B6F15 /* RoomEncryptedAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.xib in Resources */,
 				02DFECEC21C07370009B6F15 /* Images.xcassets in Resources */,
 				02DFECED21C07370009B6F15 /* RoomEncryptedAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.xib in Resources */,
+				02FAE58723B4C41500DE73D8 /* ReactionsMenuView.xib in Resources */,
 				02FAE46523B4AB3300DE73D8 /* JitsiViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -5404,6 +5846,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B146D51221A5EAE800D8C2C6 /* RoomAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.m in Sources */,
+				02FAE5BE23B4C41600DE73D8 /* EmojiItem.swift in Sources */,
 				B11C80132139442700CC6F2F /* RegistrationFormViewModel.swift in Sources */,
 				0250C4932122B68000034691 /* MediaAlbumTableCell.m in Sources */,
 				020DF93C214BE467003DFBA4 /* TableViewCellWithCheckBoxAndLabel.m in Sources */,
@@ -5412,12 +5855,14 @@
 				B1C0EE792375B7A000E8BB88 /* ChangePasswordCurrentPasswordViewController.swift in Sources */,
 				B1BC6A052135E42D00D32F8E /* UIView.swift in Sources */,
 				02B3453E219CA8EE00110EC8 /* RoomsRoomCell.swift in Sources */,
+				02FAE5CA23B4C41600DE73D8 /* EditHistoryViewController.swift in Sources */,
 				B15AB2A2215BF20E007F5405 /* ForgotPasswordVerifyEmailViewController.swift in Sources */,
 				02FAE46623B4AB3300DE73D8 /* JitsiViewController.m in Sources */,
 				0250C4992122B68000034691 /* BugReportViewController.m in Sources */,
 				0250C49B2122B68000034691 /* RecentCellData.m in Sources */,
 				B1F2AAAF212AED900077FDC0 /* Presentable.swift in Sources */,
 				B104AA1D215D3EE800B2C452 /* ForgotPasswordService.swift in Sources */,
+				02FAE58023B4C41500DE73D8 /* ReactionsMenuViewState.swift in Sources */,
 				B15FE5E32385848F00D2A5B2 /* AppVersionCheckerResult.swift in Sources */,
 				B15B867021354FF5002782BE /* AuthenticationViewModel.swift in Sources */,
 				02FAE50423B4B61700DE73D8 /* KeyBackupRecoverCoordinatorBridgePresenter.swift in Sources */,
@@ -5431,26 +5876,33 @@
 				02FAE45E23B4AB3300DE73D8 /* WidgetPermissionViewModel.swift in Sources */,
 				026A465923B215900058D80B /* MediaPickerCoordinator.swift in Sources */,
 				020DF963214BE467003DFBA4 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
+				02FAE5D023B4C41600DE73D8 /* EditHistoryCoordinator.swift in Sources */,
 				02FAE43F23B2BBF200DE73D8 /* FloatingPoint.swift in Sources */,
 				020DF987214BE467003DFBA4 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				0259329122B00E4300C93762 /* PasswordPolicy.swift in Sources */,
 				B12FD6AC2146BA45001B7F28 /* RegistrationServiceType.swift in Sources */,
 				B1C0EE892375B7F400E8BB88 /* ChangePasswordNewPasswordCoordinatorType.swift in Sources */,
+				02FAE5B623B4C41600DE73D8 /* EmojiMartService.swift in Sources */,
 				02FAE4D223B4B61700DE73D8 /* KeyBackupSetupCoordinatorBridgePresenter.swift in Sources */,
 				B165252221779FA700146F80 /* CreateNewDiscussionCoordinator.swift in Sources */,
 				B1F2AAA1212AED170077FDC0 /* RoomsCoordinator.swift in Sources */,
 				0250C4A02122B68000034691 /* WidgetManager.m in Sources */,
 				B1C0EE8D2375B7F400E8BB88 /* ChangePasswordNewPasswordCoordinator.swift in Sources */,
 				02BEE1A8212C77B700098505 /* DesignValues.m in Sources */,
+				02FAE5A023B4C41600DE73D8 /* EmojiPickerCoordinatorType.swift in Sources */,
 				B15FE5E0238583C500D2A5B2 /* AppVersionCheckerStoreType.swift in Sources */,
+				02FAE5B223B4C41600DE73D8 /* EmojiServiceType.swift in Sources */,
 				B1A4D7DD215A2F50004A5AB4 /* RoomPreviewCoordinator.swift in Sources */,
 				B1F2AA9D212AEC830077FDC0 /* AuthenticationCoordinator.swift in Sources */,
+				02FAE5A623B4C41600DE73D8 /* EmojiPickerHeaderView.swift in Sources */,
+				02FAE56E23B4C41500DE73D8 /* BubbleReactionViewCell.swift in Sources */,
 				020DF974214BE467003DFBA4 /* RoomMembershipCollapsedBubbleCell.m in Sources */,
 				B165250E217502A700146F80 /* UserServiceType.swift in Sources */,
 				B122099A23854EF2004D069C /* Strings.swift in Sources */,
 				020DF996214BE467003DFBA4 /* RoomMembershipExpandedWithPaginationTitleBubbleCell.m in Sources */,
 				02FAE50723B4B70600DE73D8 /* OperationQueue.swift in Sources */,
 				02BEE18B212AB23A00098505 /* IdentityServersURLGetter.swift in Sources */,
+				02FAE5B023B4C41600DE73D8 /* EmojiPickerCoordinatorBridgePresenter.swift in Sources */,
 				02FAE3E123B2912A00DE73D8 /* DeviceVerificationStartViewAction.swift in Sources */,
 				02FAE4F023B4B61700DE73D8 /* KeyBackupRecoverFromPassphraseViewModel.swift in Sources */,
 				020DF99E214BE467003DFBA4 /* RoomEmptyBubbleCell.m in Sources */,
@@ -5468,6 +5920,7 @@
 				B15AB2A1215BF20E007F5405 /* ForgotPasswordCheckedMailViewController.swift in Sources */,
 				026154C7235123410045459E /* IdentityServiceBuilder.swift in Sources */,
 				02FAE4F423B4B61700DE73D8 /* KeyBackupRecoverFromPassphraseCoordinatorType.swift in Sources */,
+				02FAE60623B4D37B00DE73D8 /* Character.swift in Sources */,
 				020DF95A214BE467003DFBA4 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				02018F9C22006200008D68BE /* UniversalLinkParameters.swift in Sources */,
 				B165252421779FB900146F80 /* CreateNewDiscussionCoordinatorType.swift in Sources */,
@@ -5489,6 +5942,7 @@
 				0250C5CB2122E63900034691 /* empty.mm in Sources */,
 				B12209C523854F92004D069C /* MinimumClientVersion.swift in Sources */,
 				B1892E782130528600742348 /* ErrorPresentable.swift in Sources */,
+				02FAE60923B4D38F00DE73D8 /* UITouch.swift in Sources */,
 				02098F352131FE9E00F25086 /* ContactsDataSource.m in Sources */,
 				B1BC6A1D2136C99F00D32F8E /* Variant1Style.swift in Sources */,
 				B1C0EE7B2375B7A000E8BB88 /* ChangePasswordCurrentPasswordViewAction.swift in Sources */,
@@ -5501,6 +5955,7 @@
 				020DF948214BE467003DFBA4 /* RoomMemberTitleView.m in Sources */,
 				B1F2AAAD212AED900077FDC0 /* RootRouterType.swift in Sources */,
 				0250C4B32122B68000034691 /* RiotSettings.swift in Sources */,
+				02FAE5F223B4C41600DE73D8 /* ReactionHistoryViewModel.swift in Sources */,
 				B1BC6A032135E2A600D32F8E /* ActivityIndicatorView.swift in Sources */,
 				B122099B23854EF2004D069C /* TchapDefaults.swift in Sources */,
 				B12209D823855059004D069C /* SerializationServiceType.swift in Sources */,
@@ -5518,11 +5973,15 @@
 				02FAE3E923B2912A00DE73D8 /* DeviceVerificationStartViewState.swift in Sources */,
 				020DF988214BE467003DFBA4 /* RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
 				B1C4645221B67F41005F4D53 /* ContactsPickerCoordinator.swift in Sources */,
+				02FAE59C23B4C41600DE73D8 /* EmojiPickerItemViewData.swift in Sources */,
 				02BEE18C212AB23A00098505 /* ThirdPartyIDPlatformInfoType.swift in Sources */,
 				0250C4BC2122B68000034691 /* MediaPickerViewController.m in Sources */,
 				020DF95C214BE467003DFBA4 /* RoomEncryptedAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.m in Sources */,
 				02FAE3E323B2912A00DE73D8 /* DeviceVerificationStartViewModelType.swift in Sources */,
+				02FAE57C23B4C41500DE73D8 /* ReactionsMenuButton.swift in Sources */,
 				0250C4BD2122B68000034691 /* RageShakeManager.m in Sources */,
+				02FAE5FD23B4CFC500DE73D8 /* UIStackView.swift in Sources */,
+				02FAE5EC23B4C41600DE73D8 /* ReactionHistoryViewCell.swift in Sources */,
 				B11C800621393E5D00CC6F2F /* RegistrationCoordinator.swift in Sources */,
 				02DC4F4B221C46E500B551EE /* RoomPowerLevel.swift in Sources */,
 				020DF951214BE467003DFBA4 /* RoomOutgoingEncryptedAttachmentWithPaginationTitleBubbleCell.m in Sources */,
@@ -5530,8 +5989,10 @@
 				024518F823A19676006873DF /* Theme.swift in Sources */,
 				B1073D6621A8096F00E36CFA /* RoomIncomingEncryptedAttachmentWithPaginationTitleBubbleCell.m in Sources */,
 				B1104DBC237B123400687B3A /* ChangePasswordServiceType.swift in Sources */,
+				02FAE56C23B4C41500DE73D8 /* BubbleReactionViewData.swift in Sources */,
 				025E36F5229546A000C9D9AE /* ThirdPartyIDResolverType.swift in Sources */,
 				B12209D623855059004D069C /* SerializationService.swift in Sources */,
+				02FAE59A23B4C41600DE73D8 /* EmojiPickerCoordinator.swift in Sources */,
 				02FAE4AC23B4B61700DE73D8 /* KeyBackupSetupSuccessFromRecoveryKeyViewController.swift in Sources */,
 				02FAE4C223B4B61700DE73D8 /* KeyBackupSetupPassphraseViewModelType.swift in Sources */,
 				02FAE3F323B2912A00DE73D8 /* DeviceVerificationIncomingViewAction.swift in Sources */,
@@ -5539,15 +6000,19 @@
 				B1C4646021B6DD42005F4D53 /* RoomService.swift in Sources */,
 				B1104DBF237B124600687B3A /* ChangePasswordService.swift in Sources */,
 				02C4BE88225231ED00F7BB0E /* InviteService.swift in Sources */,
+				02FAE57823B4C41500DE73D8 /* ReactionsMenuView.swift in Sources */,
 				0250C4CA2122B68000034691 /* WebViewViewController.m in Sources */,
 				B1680CFE2152A9E6009B5F92 /* PublicRoomsViewController.swift in Sources */,
 				B11C8017213947A400CC6F2F /* RegistrationEmailSentViewController.swift in Sources */,
 				02FAE3EB23B2912A00DE73D8 /* DeviceVerificationStartViewModel.swift in Sources */,
 				B15B86792135903E002782BE /* KeyboardAvoider.swift in Sources */,
+				02FAE5CE23B4C41600DE73D8 /* EditHistoryViewModelType.swift in Sources */,
 				029CC69121772F4200DCC8B3 /* TableViewCellWithPhoneNumberTextField.m in Sources */,
+				02FAE59E23B4C41600DE73D8 /* EmojiPickerViewModel.swift in Sources */,
 				02098F372131FE9E00F25086 /* ContactsViewController.m in Sources */,
 				B12DDAA1217020410093172C /* AvatarImageShape.swift in Sources */,
 				02FAE3E523B2912A00DE73D8 /* DeviceVerificationStartViewController.swift in Sources */,
+				02FAE5DA23B4C41600DE73D8 /* EditHistoryCoordinatorType.swift in Sources */,
 				02FAE4BC23B4B61700DE73D8 /* KeyBackupSetupPassphraseViewController.swift in Sources */,
 				B12209A723854F32004D069C /* AppVersionUpdateViewModel.swift in Sources */,
 				020DF994214BE467003DFBA4 /* RoomIncomingTextMsgBubbleCell.m in Sources */,
@@ -5563,6 +6028,8 @@
 				02BEE18D212AB23A00098505 /* ThirdPartyIDPlatformInfo.swift in Sources */,
 				0250C4D62122B68000034691 /* TableViewCellWithButton.m in Sources */,
 				029CC68C21772F4200DCC8B3 /* SettingsViewController.m in Sources */,
+				02FAE5E623B4C41600DE73D8 /* ReactionHistoryBridgeCoordinatorPresenter.swift in Sources */,
+				02FAE60323B4D35200DE73D8 /* String.swift in Sources */,
 				B15AB2A3215BF20E007F5405 /* ForgotPasswordFormViewController.swift in Sources */,
 				B1F2AAAC212AED900077FDC0 /* NavigationRouter.swift in Sources */,
 				B1F2AAB0212AED900077FDC0 /* NavigationRouterType.swift in Sources */,
@@ -5587,8 +6054,10 @@
 				B1C0EE932375B7F400E8BB88 /* ChangePasswordNewPasswordViewModel.swift in Sources */,
 				02CEE1E52338C5B20085ACF0 /* AppVersion.swift in Sources */,
 				02FAE43423B2B98900DE73D8 /* SlidingModalPresentable.swift in Sources */,
+				02FAE59423B4C41600DE73D8 /* RoomContextualMenuToolbarView.swift in Sources */,
 				02906073214FD0E1005FE3C1 /* RoomCoordinatorType.swift in Sources */,
 				B1C0EE982375B92100E8BB88 /* ChangePasswordCoordinatorBridgePresenter.swift in Sources */,
+				02FAE5FA23B4C41600DE73D8 /* ReactionHistoryViewState.swift in Sources */,
 				B11C800121393E5D00CC6F2F /* RegistrationCoordinatorType.swift in Sources */,
 				02FAE3F923B2912A00DE73D8 /* DeviceVerificationIncomingViewModelType.swift in Sources */,
 				B1F2AA9A212AEC830077FDC0 /* AppDelegate.swift in Sources */,
@@ -5603,11 +6072,13 @@
 				02FAE3D523B2912A00DE73D8 /* DeviceVerificationVerifyViewState.swift in Sources */,
 				02FAE41D23B29EBD00DE73D8 /* ServiceTermsModalScreenViewModelType.swift in Sources */,
 				020DF954214BE467003DFBA4 /* RoomEncryptedAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.m in Sources */,
+				02FAE58823B4C41500DE73D8 /* RoomContextualMenuItem.swift in Sources */,
 				B1BC6A072135EA2800D32F8E /* ActivityIndicatorPresenterType.swift in Sources */,
 				02BEE1562125BBF800098505 /* RoomsViewController.m in Sources */,
 				025E36F8229548C000C9D9AE /* ThirdPartyIDResolver.swift in Sources */,
 				020DF94A214BE467003DFBA4 /* RoomParticipantsViewController.m in Sources */,
 				0250C4E62122B68000034691 /* MXRoomSummary+Riot.m in Sources */,
+				02FAE59823B4C41600DE73D8 /* EmojiPickerViewState.swift in Sources */,
 				02520307224EBD4800262433 /* ContactButtonViewModelType.swift in Sources */,
 				02018F9922004417008D68BE /* UniversalLinkServiceType.swift in Sources */,
 				02FAE23823B25C8400DE73D8 /* Vector_Strings.swift in Sources */,
@@ -5620,23 +6091,30 @@
 				02FAE46823B4AB3300DE73D8 /* WidgetViewController.m in Sources */,
 				B146D52121A7453900D8C2C6 /* RoomAttachmentAntivirusScanStatusCellContentView.swift in Sources */,
 				02FAE43C23B2B98900DE73D8 /* SlidingModalPresentationController.swift in Sources */,
+				02FAE58C23B4C41500DE73D8 /* RoomContextualMenuPresenter.swift in Sources */,
 				02B34542219E100100110EC8 /* RoomsCell.swift in Sources */,
 				B1680D052152AA28009B5F92 /* PublicRoomService.swift in Sources */,
 				B1C4644C21B67F1E005F4D53 /* RoomCreationAvatarView.swift in Sources */,
+				02FAE5A223B4C41600DE73D8 /* EmojiPickerViewModelType.swift in Sources */,
 				02FAE42123B29EBD00DE73D8 /* ServiceTermsModalScreenViewAction.swift in Sources */,
 				B1F2AA95212AEC830077FDC0 /* SettingsCoordinatorType.swift in Sources */,
 				0252030B224EBD4800262433 /* ContactButtonView.swift in Sources */,
+				02FAE5E023B4C41600DE73D8 /* EditHistoryCell.swift in Sources */,
 				B15FE5DD238583AB00D2A5B2 /* AppVersionCheckerStore.swift in Sources */,
 				020DF971214BE467003DFBA4 /* RoomIncomingAttachmentBubbleCell.m in Sources */,
 				0259328B22AFEF5700C93762 /* PasswordPolicyService.swift in Sources */,
 				0250C4E72122B68000034691 /* EncryptionInfoView.m in Sources */,
 				0259328822AFE8A500C93762 /* PasswordPolicyServiceType.swift in Sources */,
+				02FAE5EA23B4C41600DE73D8 /* ReactionHistoryViewController.swift in Sources */,
 				024518EB23A150D5006873DF /* PasswordStrengthManager.swift in Sources */,
 				B1892E7D2130719500742348 /* TextInputHandler.swift in Sources */,
 				02FAE30923B26C0B00DE73D8 /* RiotSettingIntegrationProvisioning.swift in Sources */,
 				02FAE3FF23B2912A00DE73D8 /* DeviceVerificationCoordinator.swift in Sources */,
 				02FAE3C123B2912A00DE73D8 /* DeviceVerificationDataLoadingViewModel.swift in Sources */,
+				02FAE57423B4C41500DE73D8 /* RoomContextualMenuAction.swift in Sources */,
 				B18D18C42153E68A003677D1 /* HomeViewController.swift in Sources */,
+				02FAE60023B4D14C00DE73D8 /* UIGestureRecognizer.swift in Sources */,
+				02FAE57A23B4C41500DE73D8 /* ReactionsMenuViewAction.swift in Sources */,
 				B1F2AAA5212AED840077FDC0 /* Coordinator.swift in Sources */,
 				B1C0EE6F2375B7A000E8BB88 /* ChangePasswordCurrentPasswordCoordinator.swift in Sources */,
 				B1680CFB2152A9E6009B5F92 /* PublicRoomsCoordinatorType.swift in Sources */,
@@ -5647,6 +6125,7 @@
 				020DF945214BE467003DFBA4 /* RoomFilesViewController.m in Sources */,
 				B1C4644821B67F1E005F4D53 /* RoomCreationViewController.swift in Sources */,
 				020DF98F214BE467003DFBA4 /* RoomPredecessorBubbleCell.m in Sources */,
+				02FAE57E23B4C41500DE73D8 /* ReactionsMenuViewModelType.swift in Sources */,
 				B1BC6A022135E2A600D32F8E /* ActivityIndicatorPresenter.swift in Sources */,
 				020DF98D214BE467003DFBA4 /* RoomOutgoingTextMsgWithoutSenderNameBubbleCell.m in Sources */,
 				B1C4644B21B67F1E005F4D53 /* RoomCreationViewModelType.swift in Sources */,
@@ -5669,6 +6148,7 @@
 				B1C0EE642375B77F00E8BB88 /* ChangePasswordCoordinatorType.swift in Sources */,
 				B15B866C21353A41002782BE /* FormTextViewModelType.swift in Sources */,
 				02FAE46023B4AB3300DE73D8 /* StickerPickerViewController.m in Sources */,
+				02FAE5A823B4C41600DE73D8 /* EmojiPickerCategoryViewData.swift in Sources */,
 				020DF950214BE467003DFBA4 /* RoomOutgoingEncryptedTextMsgWithoutSenderNameBubbleCell.m in Sources */,
 				0250C4F52122B68000034691 /* MXKRoomBubbleTableViewCell+Riot.m in Sources */,
 				02FAE3C323B2912A00DE73D8 /* DeviceVerificationDataLoadingCoordinator.swift in Sources */,
@@ -5687,13 +6167,16 @@
 				020DF99A214BE467003DFBA4 /* RoomIncomingTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
 				02FAE3D723B2912A00DE73D8 /* VerifyEmojiCollectionViewCell.swift in Sources */,
 				B122099C23854EF2004D069C /* Storyboards.swift in Sources */,
+				02FAE61023B4E7AA00DE73D8 /* UIApplication.swift in Sources */,
 				B1BC6A262136D77A00D32F8E /* WelcomeCoordinatorType.swift in Sources */,
 				020DF991214BE467003DFBA4 /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				02FAE30223B26BEA00DE73D8 /* WidgetManagerConfig.swift in Sources */,
 				0250C4FF2122B68000034691 /* RecentsViewController.m in Sources */,
 				B15FE5EC23858B8200D2A5B2 /* AppVersionUpdateCoordinatorType.swift in Sources */,
+				02FAE56623B4C41500DE73D8 /* BubbleReactionsViewModel.swift in Sources */,
 				B1C0EE712375B7A000E8BB88 /* ChangePasswordCurrentPasswordViewState.swift in Sources */,
 				B1A4D7DB215A2F41004A5AB4 /* RoomPreviewCoordinatorType.swift in Sources */,
+				02FAE5F623B4C41600DE73D8 /* ReactionHistoryCoordinator.swift in Sources */,
 				B12FD6A12146B5C0001B7F28 /* RestClientBuilderError.swift in Sources */,
 				B12FD6AB2146BA45001B7F28 /* ThreePIDCredentials.swift in Sources */,
 				B15B86892135C284002782BE /* AuthenticationViewModelType.swift in Sources */,
@@ -5708,31 +6191,39 @@
 				020DF98E214BE467003DFBA4 /* RoomMembershipBubbleCell.m in Sources */,
 				B104AA1F215E163000B2C452 /* ForgotPasswordServiceType.swift in Sources */,
 				020DF957214BE467003DFBA4 /* RoomIncomingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
+				02FAE59623B4C41600DE73D8 /* EmojiPickerViewController.swift in Sources */,
 				020DF9B3214BE467003DFBA4 /* EventDetailsView.m in Sources */,
 				020DF937214BE467003DFBA4 /* RoomSettingsViewController.m in Sources */,
 				02FAE3FD23B2912A00DE73D8 /* DeviceVerificationCoordinatorBridgePresenter.swift in Sources */,
 				02FAE3F523B2912A00DE73D8 /* DeviceVerificationIncomingViewModel.swift in Sources */,
 				029CC68B21772F4200DCC8B3 /* LanguagePickerViewController.m in Sources */,
 				020DF961214BE467003DFBA4 /* RoomOutgoingEncryptedAttachmentBubbleCell.m in Sources */,
+				02FAE5C823B4C41600DE73D8 /* EditHistoryMessage.swift in Sources */,
 				0250C5092122B68000034691 /* OnBoardingManager.swift in Sources */,
+				02FAE5BC23B4C41600DE73D8 /* EmojiMartCategory.swift in Sources */,
 				024518E923A150D5006873DF /* PasswordStrength.swift in Sources */,
 				B1BC6A282136D78500D32F8E /* WelcomeCoordinator.swift in Sources */,
+				02FAE5E423B4C41600DE73D8 /* ReactionHistoryCoordinatorType.swift in Sources */,
 				B12FD6AA2146BA45001B7F28 /* RegistrationServiceError.swift in Sources */,
 				B15B867621357514002782BE /* AlertErrorPresenter.swift in Sources */,
 				B1454B97216BA84100365A86 /* DisplayNameComponents.swift in Sources */,
+				02FAE5C223B4C41600DE73D8 /* EmojiStore.swift in Sources */,
 				02FAE50223B4B61700DE73D8 /* KeyBackupRecoverCoordinator.swift in Sources */,
 				0250C50B2122B68000034691 /* RoomKeyRequestViewController.m in Sources */,
 				B1C0EE7D2375B7A000E8BB88 /* ChangePasswordCurrentPasswordViewModel.swift in Sources */,
 				02C4BE8B22523D2200F7BB0E /* DiscussionFinderType.swift in Sources */,
 				B1F2AAB6212AFDBA0077FDC0 /* UIViewController.swift in Sources */,
 				02FAE3CD23B2912A00DE73D8 /* DeviceVerificationVerifyViewModelType.swift in Sources */,
+				02FAE5CC23B4C41600DE73D8 /* EditHistoryViewModel.swift in Sources */,
 				02FAE3DB23B2912A00DE73D8 /* DeviceVerificationCoordinatorType.swift in Sources */,
 				020DF9B1214BE467003DFBA4 /* RoomActivitiesView.m in Sources */,
 				020DF946214BE467003DFBA4 /* RoomMemberDetailsViewController.m in Sources */,
+				02FAE56823B4C41500DE73D8 /* BubbleReactionsViewModelType.swift in Sources */,
 				B12209C123854F92004D069C /* ClientVersionInfoMessage.swift in Sources */,
 				02FAE3BB23B2912A00DE73D8 /* DeviceVerificationDataLoadingViewAction.swift in Sources */,
 				0250C5142122B68000034691 /* GDPRConsentViewController.swift in Sources */,
 				02C4BE8E2252456000F7BB0E /* ThirdPartyIDPlatformInfoResolverType.swift in Sources */,
+				02FAE60D23B4E70600DE73D8 /* RoomMessageURLParser.swift in Sources */,
 				B1F2AA99212AEC830077FDC0 /* LegacyAppDelegate.m in Sources */,
 				02FAE4F823B4B61700DE73D8 /* KeyBackupRecoverFromPassphraseViewState.swift in Sources */,
 				024518FA23A19676006873DF /* DefaultTheme.swift in Sources */,
@@ -5744,11 +6235,13 @@
 				02FAE42323B29EBD00DE73D8 /* ServiceTermsModalScreenCoordinator.swift in Sources */,
 				0234A9A0225BD08A00E8E489 /* FormCheckBoxModel.swift in Sources */,
 				B12FD69F2146B3EB001B7F28 /* RestClientBuilder.swift in Sources */,
+				02FAE5D423B4C41600DE73D8 /* EditHistoryViewAction.swift in Sources */,
 				B1F2AA91212AEC830077FDC0 /* SplitViewCoordinatorType.swift in Sources */,
 				02FAE43A23B2B98900DE73D8 /* SlidingModalPresentationDelegate.swift in Sources */,
 				B12209BF23854F92004D069C /* ClientVersionInfo+Codable.swift in Sources */,
 				020DF979214BE467003DFBA4 /* RoomIncomingAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				02FAE40F23B29EBD00DE73D8 /* ServiceTermsModalCoordinatorType.swift in Sources */,
+				02FAE5DE23B4C41600DE73D8 /* EditHistoryCoordinatorBridgePresenter.swift in Sources */,
 				02B3453A219CA8CB00110EC8 /* RoomsDiscussionCell.swift in Sources */,
 				020DF95F214BE467003DFBA4 /* RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				0250C5192122B68000034691 /* MXSession+Riot.m in Sources */,
@@ -5756,6 +6249,7 @@
 				02FAE3B923B2912A00DE73D8 /* DeviceVerificationDataLoadingViewController.swift in Sources */,
 				0250C51E2122B68000034691 /* UsersDevicesViewController.m in Sources */,
 				B109EF182170DFEB0018FA06 /* UserService.swift in Sources */,
+				02FAE5EE23B4C41600DE73D8 /* ReactionHistoryViewData.swift in Sources */,
 				02C4BE912252502900F7BB0E /* InviteServiceType.swift in Sources */,
 				B1BC6A212136CA7F00D32F8E /* Stylable.swift in Sources */,
 				02FAE3D923B2912A00DE73D8 /* DeviceVerificationVerifyViewAction.swift in Sources */,
@@ -5773,15 +6267,19 @@
 				02FAE41123B29EBD00DE73D8 /* ServiceTermsModalCoordinatorBridgePresenter.swift in Sources */,
 				02FAE30B23B26C0B00DE73D8 /* RiotSettingAllowedWidgets.swift in Sources */,
 				020DF93E214BE467003DFBA4 /* AttachmentsViewController.m in Sources */,
+				02FAE5F823B4C41600DE73D8 /* ReactionHistoryViewAction.swift in Sources */,
 				02FAE3FB23B2912A00DE73D8 /* DeviceVerificationIncomingCoordinator.swift in Sources */,
 				020DF97D214BE467003DFBA4 /* RoomSelectedStickerBubbleCell.m in Sources */,
+				02FAE57623B4C41500DE73D8 /* ContextualMenuItemView.swift in Sources */,
 				029CC68F21772F4200DCC8B3 /* CountryPickerViewController.m in Sources */,
 				020DF9AB214BE467003DFBA4 /* KeyboardGrowingTextView.m in Sources */,
+				02FAE5AC23B4C41600DE73D8 /* EmojiPickerViewCell.swift in Sources */,
 				B12209A623854F32004D069C /* AppVersionUpdateCoordinator.swift in Sources */,
 				B1680D012152A9F6009B5F92 /* TCNavigationController.swift in Sources */,
 				020DF9AD214BE467003DFBA4 /* DisabledRoomInputToolbarView.m in Sources */,
 				B1BC6A242136D75B00D32F8E /* WelcomeViewController.swift in Sources */,
 				020DF970214BE467003DFBA4 /* RoomIncomingEncryptedTextMsgBubbleCell.m in Sources */,
+				02FAE5B823B4C41600DE73D8 /* EmojiMartStore.swift in Sources */,
 				B1892E792130528600742348 /* ErrorPresentableImpl.swift in Sources */,
 				02FAE4C823B4B61700DE73D8 /* KeyBackupSetupPassphraseViewModel.swift in Sources */,
 				B12DDA9F21701FC40093172C /* AvatarImageViewModel.swift in Sources */,
@@ -5794,10 +6292,14 @@
 				B15FE5EF23858BDC00D2A5B2 /* AppVersionUpdateViewModelType.swift in Sources */,
 				020DF99B214BE467003DFBA4 /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.m in Sources */,
 				B12DDA9A216FB2370093172C /* UIBezierPath.swift in Sources */,
+				02FAE57223B4C41500DE73D8 /* BubbleReactionActionViewCell.swift in Sources */,
 				026A465D23B215900058D80B /* SingleImagePickerPresenter.swift in Sources */,
+				02FAE5DC23B4C41600DE73D8 /* EditHistorySection.swift in Sources */,
+				02FAE5D223B4C41600DE73D8 /* EditHistoryHeaderView.swift in Sources */,
 				02FAE46B23B4ACA000DE73D8 /* UIButton.swift in Sources */,
 				B1F2AA9E212AEC830077FDC0 /* AuthenticationCoordinatorType.swift in Sources */,
 				02FAE45A23B4AB3300DE73D8 /* WidgetPermissionViewController.swift in Sources */,
+				02FAE59023B4C41500DE73D8 /* RoomContextualMenuViewController.swift in Sources */,
 				B1F2AAAE212AED900077FDC0 /* RootRouter.swift in Sources */,
 				B1F2AA9B212AEC830077FDC0 /* ContactsCoordinatorType.swift in Sources */,
 				B15FE5E6238584B800D2A5B2 /* AppVersionCheckerResult+Codable.swift in Sources */,
@@ -5820,27 +6322,35 @@
 				02F0FF3F22268D5F00066908 /* PublicRoomsCell.swift in Sources */,
 				B1C4644E21B67F1E005F4D53 /* RoomCreationCoordinatorType.swift in Sources */,
 				02FAE42E23B2B98900DE73D8 /* SlidingModalPresentationAnimator.swift in Sources */,
+				02FAE5F423B4C41600DE73D8 /* ReactionHistoryViewModelType.swift in Sources */,
 				B12209A923854F32004D069C /* AppVersionUpdateViewController.swift in Sources */,
 				B1F2AA97212AEC830077FDC0 /* AppCoordinator.swift in Sources */,
 				0252030D224EBD4800262433 /* ContactButtonViewModel.swift in Sources */,
 				B15B867421355A7A002782BE /* ErrorPresenter.swift in Sources */,
 				020DF989214BE467003DFBA4 /* RoomOutgoingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				B1C4644721B67F1E005F4D53 /* RoomCreationCoordinator.swift in Sources */,
+				02FAE58423B4C41500DE73D8 /* ReactionsMenuViewModel.swift in Sources */,
 				0290609221527A3F005FE3C1 /* RoomDetailsCoordinator.swift in Sources */,
 				B15FE5F523858D4200D2A5B2 /* ClientVersionInfo.swift in Sources */,
+				02FAE5B423B4C41600DE73D8 /* EmojiItem+EmojiMart.swift in Sources */,
 				02FAE3F123B2912A00DE73D8 /* DeviceVerificationIncomingViewState.swift in Sources */,
 				02FAE4EA23B4B61700DE73D8 /* KeyBackupRecoverFromRecoveryKeyViewModel.swift in Sources */,
 				02FAE3EF23B2912A00DE73D8 /* DeviceVerificationIncomingViewController.swift in Sources */,
 				B15B867F2135BA96002782BE /* AuthenticationViewController.swift in Sources */,
 				0250C53B2122B68000034691 /* CircleButton.m in Sources */,
 				020DF972214BE467003DFBA4 /* RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
+				02FAE58223B4C41500DE73D8 /* ReactionMenuItemViewData.swift in Sources */,
 				02FAE30D23B26C0B00DE73D8 /* RiotSharedSettings.swift in Sources */,
+				02FAE5C623B4C41600DE73D8 /* EditHistoryViewState.swift in Sources */,
 				B11C80112139442700CC6F2F /* RegistrationFormViewController.swift in Sources */,
+				02FAE5A423B4C41600DE73D8 /* EmojiPickerViewAction.swift in Sources */,
 				020DF936214BE467003DFBA4 /* RoomBubbleCellData.m in Sources */,
 				B1C0EE952375B7F400E8BB88 /* ChangePasswordNewPasswordViewModelType.swift in Sources */,
 				B1F2AA9C212AEC830077FDC0 /* ContactsCoordinator.swift in Sources */,
+				02FAE5C023B4C41600DE73D8 /* EmojiCategory.swift in Sources */,
 				020DF982214BE467003DFBA4 /* RoomOutgoingAttachmentBubbleCell.m in Sources */,
 				B1C4646321BACEB3005F4D53 /* UserIDComponents.swift in Sources */,
+				02FAE56223B4C41500DE73D8 /* BubbleReactionsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5951,6 +6461,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				02DFEB7421C07370009B6F15 /* RoomAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.m in Sources */,
+				02FAE5BF23B4C41600DE73D8 /* EmojiItem.swift in Sources */,
 				02DFEB7521C07370009B6F15 /* RegistrationFormViewModel.swift in Sources */,
 				B12209D723855059004D069C /* SerializationService.swift in Sources */,
 				02DFEB7621C07370009B6F15 /* MediaAlbumTableCell.m in Sources */,
@@ -5959,12 +6470,14 @@
 				B12209BC23854F92004D069C /* ClientConfiguration.swift in Sources */,
 				02DFEB7A21C07370009B6F15 /* AvatarGenerator.m in Sources */,
 				B1C0EE7A2375B7A000E8BB88 /* ChangePasswordCurrentPasswordViewController.swift in Sources */,
+				02FAE5CB23B4C41600DE73D8 /* EditHistoryViewController.swift in Sources */,
 				02DFEB7B21C07370009B6F15 /* UIView.swift in Sources */,
 				02FAE46723B4AB3300DE73D8 /* JitsiViewController.m in Sources */,
 				02DFEB7C21C07370009B6F15 /* RoomsRoomCell.swift in Sources */,
 				B12209AD23854F6B004D069C /* AppVersionChecker.swift in Sources */,
 				02DFEB7D21C07370009B6F15 /* ForgotPasswordVerifyEmailViewController.swift in Sources */,
 				02DFEB7E21C07370009B6F15 /* BugReportViewController.m in Sources */,
+				02FAE58123B4C41500DE73D8 /* ReactionsMenuViewState.swift in Sources */,
 				B15FE5E42385848F00D2A5B2 /* AppVersionCheckerResult.swift in Sources */,
 				B12209C223854F92004D069C /* ClientVersionInfoMessage.swift in Sources */,
 				02FAE50523B4B61700DE73D8 /* KeyBackupRecoverCoordinatorBridgePresenter.swift in Sources */,
@@ -5978,26 +6491,33 @@
 				02FAE45F23B4AB3300DE73D8 /* WidgetPermissionViewModel.swift in Sources */,
 				026A465A23B215900058D80B /* MediaPickerCoordinator.swift in Sources */,
 				02DFEB8321C07370009B6F15 /* RoomCoordinator.swift in Sources */,
+				02FAE5D123B4C41600DE73D8 /* EditHistoryCoordinator.swift in Sources */,
 				02FAE44023B2BBF200DE73D8 /* FloatingPoint.swift in Sources */,
 				B1C0EE902375B7F400E8BB88 /* ChangePasswordNewPasswordViewController.swift in Sources */,
 				02DFEB8421C07370009B6F15 /* ContactCell.swift in Sources */,
 				02DFEB8521C07370009B6F15 /* MediaAlbumContentViewController.m in Sources */,
 				02DFEB8621C07370009B6F15 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
+				02FAE5B723B4C41600DE73D8 /* EmojiMartService.swift in Sources */,
 				02FAE4D323B4B61700DE73D8 /* KeyBackupSetupCoordinatorBridgePresenter.swift in Sources */,
 				02DFEB8721C07370009B6F15 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				0259329222B00E4300C93762 /* PasswordPolicy.swift in Sources */,
 				02DFEB8821C07370009B6F15 /* RegistrationServiceType.swift in Sources */,
 				B1C0EE8A2375B7F400E8BB88 /* ChangePasswordNewPasswordCoordinatorType.swift in Sources */,
 				02DFEB8921C07370009B6F15 /* CreateNewDiscussionCoordinator.swift in Sources */,
+				02FAE5A123B4C41600DE73D8 /* EmojiPickerCoordinatorType.swift in Sources */,
 				02DFEB8A21C07370009B6F15 /* RoomsCoordinator.swift in Sources */,
+				02FAE5B323B4C41600DE73D8 /* EmojiServiceType.swift in Sources */,
 				B15FE5E1238583C500D2A5B2 /* AppVersionCheckerStoreType.swift in Sources */,
 				02DFEB8B21C07370009B6F15 /* WidgetManager.m in Sources */,
+				02FAE5A723B4C41600DE73D8 /* EmojiPickerHeaderView.swift in Sources */,
+				02FAE56F23B4C41500DE73D8 /* BubbleReactionViewCell.swift in Sources */,
 				B1C0EE8E2375B7F400E8BB88 /* ChangePasswordNewPasswordCoordinator.swift in Sources */,
 				02DFEB8C21C07370009B6F15 /* DesignValues.m in Sources */,
 				02DFEB8D21C07370009B6F15 /* RoomPreviewCoordinator.swift in Sources */,
 				02DFEB8E21C07370009B6F15 /* AuthenticationCoordinator.swift in Sources */,
 				02FAE50823B4B70600DE73D8 /* OperationQueue.swift in Sources */,
 				02DFEB8F21C07370009B6F15 /* RoomMembershipCollapsedBubbleCell.m in Sources */,
+				02FAE5B123B4C41600DE73D8 /* EmojiPickerCoordinatorBridgePresenter.swift in Sources */,
 				02FAE3E223B2912A00DE73D8 /* DeviceVerificationStartViewAction.swift in Sources */,
 				02FAE4F123B4B61700DE73D8 /* KeyBackupRecoverFromPassphraseViewModel.swift in Sources */,
 				02DFEB9021C07370009B6F15 /* UserServiceType.swift in Sources */,
@@ -6015,6 +6535,7 @@
 				02DFEB9921C07370009B6F15 /* KeyboardNotification.swift in Sources */,
 				02DFEB9A21C07370009B6F15 /* MediaServiceType.swift in Sources */,
 				02FAE4F523B4B61700DE73D8 /* KeyBackupRecoverFromPassphraseCoordinatorType.swift in Sources */,
+				02FAE60723B4D37B00DE73D8 /* Character.swift in Sources */,
 				02DFEB9B21C07370009B6F15 /* RoomIncomingAttachmentWithPaginationTitleBubbleCell.m in Sources */,
 				B122099E23854F01004D069C /* Strings.swift in Sources */,
 				02DFEB9C21C07370009B6F15 /* ForgotPasswordCheckedMailViewController.swift in Sources */,
@@ -6036,6 +6557,7 @@
 				B12209C023854F92004D069C /* ClientVersionInfo+Codable.swift in Sources */,
 				02C4BE95225502DD00F7BB0E /* DiscussionDetailsCoordinator.swift in Sources */,
 				02DFEBA421C07370009B6F15 /* FormRules.swift in Sources */,
+				02FAE60A23B4D38F00DE73D8 /* UITouch.swift in Sources */,
 				02DFEBA521C07370009B6F15 /* RoomIncomingEncryptedTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				02DFEBA621C07370009B6F15 /* RoomIncomingEncryptedAttachmentBubbleCell.m in Sources */,
 				02DFEBA721C07370009B6F15 /* RoomEncryptedAttachmentAntivirusScanStatusBubbleCell.m in Sources */,
@@ -6048,6 +6570,7 @@
 				02DFEBAA21C07370009B6F15 /* ContactsDataSource.m in Sources */,
 				02DFEBAC21C07370009B6F15 /* Variant1Style.swift in Sources */,
 				B1C0EE7C2375B7A000E8BB88 /* ChangePasswordCurrentPasswordViewAction.swift in Sources */,
+				02FAE5F323B4C41600DE73D8 /* ReactionHistoryViewModel.swift in Sources */,
 				02ECA88122E0C5BA00ECDA5E /* MXRoomSummary.swift in Sources */,
 				02DFEBAF21C07370009B6F15 /* MXRoom+Riot.m in Sources */,
 				02DFEBB021C07370009B6F15 /* RoomAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.m in Sources */,
@@ -6065,11 +6588,15 @@
 				02FAE3EA23B2912A00DE73D8 /* DeviceVerificationStartViewState.swift in Sources */,
 				02DFEBB621C07370009B6F15 /* ForgotPasswordFormViewModelType.swift in Sources */,
 				02DFEBB721C07370009B6F15 /* RoomMembershipExpandedBubbleCell.m in Sources */,
+				02FAE59D23B4C41600DE73D8 /* EmojiPickerItemViewData.swift in Sources */,
 				02DFEBB821C07370009B6F15 /* RoomMembershipWithPaginationTitleBubbleCell.m in Sources */,
 				B1C0EE8C2375B7F400E8BB88 /* ChangePasswordNewPasswordViewAction.swift in Sources */,
 				02DFEBB921C07370009B6F15 /* Analytics.m in Sources */,
 				02FAE3E423B2912A00DE73D8 /* DeviceVerificationStartViewModelType.swift in Sources */,
+				02FAE57D23B4C41500DE73D8 /* ReactionsMenuButton.swift in Sources */,
 				02DFEBBB21C07370009B6F15 /* RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
+				02FAE5FE23B4CFC500DE73D8 /* UIStackView.swift in Sources */,
+				02FAE5ED23B4C41600DE73D8 /* ReactionHistoryViewCell.swift in Sources */,
 				02DFEBBC21C07370009B6F15 /* ContactsPickerCoordinator.swift in Sources */,
 				02DFEBBD21C07370009B6F15 /* ThirdPartyIDPlatformInfoType.swift in Sources */,
 				02DFEBBE21C07370009B6F15 /* MediaPickerViewController.m in Sources */,
@@ -6077,8 +6604,10 @@
 				024518F923A19676006873DF /* Theme.swift in Sources */,
 				02DFEBC021C07370009B6F15 /* RageShakeManager.m in Sources */,
 				02DFEBC121C07370009B6F15 /* RegistrationCoordinator.swift in Sources */,
+				02FAE56D23B4C41500DE73D8 /* BubbleReactionViewData.swift in Sources */,
 				02DC4F4C221C46E500B551EE /* RoomPowerLevel.swift in Sources */,
 				02DFEBC321C07370009B6F15 /* RoomOutgoingEncryptedAttachmentWithPaginationTitleBubbleCell.m in Sources */,
+				02FAE59B23B4C41600DE73D8 /* EmojiPickerCoordinator.swift in Sources */,
 				02FAE4AD23B4B61700DE73D8 /* KeyBackupSetupSuccessFromRecoveryKeyViewController.swift in Sources */,
 				02DFEBC421C07370009B6F15 /* RoomOutgoingTextMsgBubbleCell.m in Sources */,
 				02FAE4C323B4B61700DE73D8 /* KeyBackupSetupPassphraseViewModelType.swift in Sources */,
@@ -6086,15 +6615,19 @@
 				02DFEBC521C07370009B6F15 /* RoomIncomingEncryptedAttachmentWithPaginationTitleBubbleCell.m in Sources */,
 				B1104DBD237B123400687B3A /* ChangePasswordServiceType.swift in Sources */,
 				025E36F6229546A000C9D9AE /* ThirdPartyIDResolverType.swift in Sources */,
+				02FAE57923B4C41500DE73D8 /* ReactionsMenuView.swift in Sources */,
 				02DFEBC721C07370009B6F15 /* Tools.m in Sources */,
 				02DFEBC821C07370009B6F15 /* RoomService.swift in Sources */,
 				B1104DC0237B124600687B3A /* ChangePasswordService.swift in Sources */,
 				02FAE3EC23B2912A00DE73D8 /* DeviceVerificationStartViewModel.swift in Sources */,
 				02C4BE89225231ED00F7BB0E /* InviteService.swift in Sources */,
+				02FAE5CF23B4C41600DE73D8 /* EditHistoryViewModelType.swift in Sources */,
 				02DFEBC921C07370009B6F15 /* WebViewViewController.m in Sources */,
+				02FAE59F23B4C41600DE73D8 /* EmojiPickerViewModel.swift in Sources */,
 				02DFEBCA21C07370009B6F15 /* PublicRoomsViewController.swift in Sources */,
 				02DFEBCB21C07370009B6F15 /* RegistrationEmailSentViewController.swift in Sources */,
 				02FAE3E623B2912A00DE73D8 /* DeviceVerificationStartViewController.swift in Sources */,
+				02FAE5DB23B4C41600DE73D8 /* EditHistoryCoordinatorType.swift in Sources */,
 				02FAE4BD23B4B61700DE73D8 /* KeyBackupSetupPassphraseViewController.swift in Sources */,
 				02DFEBCC21C07370009B6F15 /* KeyboardAvoider.swift in Sources */,
 				02DFEBCD21C07370009B6F15 /* TableViewCellWithPhoneNumberTextField.m in Sources */,
@@ -6110,6 +6643,8 @@
 				02DFEBD321C07370009B6F15 /* RegistrationFormViewModelType.swift in Sources */,
 				02DFEBD421C07370009B6F15 /* SettingsCoordinator.swift in Sources */,
 				02DFEBD521C07370009B6F15 /* HomeCoordinatorType.swift in Sources */,
+				02FAE5E723B4C41600DE73D8 /* ReactionHistoryBridgeCoordinatorPresenter.swift in Sources */,
+				02FAE60423B4D35200DE73D8 /* String.swift in Sources */,
 				B12209C623854F92004D069C /* MinimumClientVersion.swift in Sources */,
 				02DFEBD621C07370009B6F15 /* ThirdPartyIDPlatformInfo.swift in Sources */,
 				02DFEBD721C07370009B6F15 /* TableViewCellWithButton.m in Sources */,
@@ -6134,8 +6669,10 @@
 				02DFEBE121C07370009B6F15 /* ContactsPickerCoordinatorType.swift in Sources */,
 				02DFEBE221C07370009B6F15 /* FormTextViewModel.swift in Sources */,
 				02FAE43523B2B98900DE73D8 /* SlidingModalPresentable.swift in Sources */,
+				02FAE59523B4C41600DE73D8 /* RoomContextualMenuToolbarView.swift in Sources */,
 				02DFEBE321C07370009B6F15 /* FormTextField.swift in Sources */,
 				02DFEBE421C07370009B6F15 /* RoomDetailsCoordinatorType.swift in Sources */,
+				02FAE5FB23B4C41600DE73D8 /* ReactionHistoryViewState.swift in Sources */,
 				02DFEBE521C07370009B6F15 /* RoomAttachmentAntivirusScanStatusViewModel.swift in Sources */,
 				02FAE3FA23B2912A00DE73D8 /* DeviceVerificationIncomingViewModelType.swift in Sources */,
 				B1C0EE942375B7F400E8BB88 /* ChangePasswordNewPasswordViewModel.swift in Sources */,
@@ -6150,11 +6687,13 @@
 				02FAE3D623B2912A00DE73D8 /* DeviceVerificationVerifyViewState.swift in Sources */,
 				02FAE41E23B29EBD00DE73D8 /* ServiceTermsModalScreenViewModelType.swift in Sources */,
 				02DFEBE921C07370009B6F15 /* EventFormatter.m in Sources */,
+				02FAE58923B4C41500DE73D8 /* RoomContextualMenuItem.swift in Sources */,
 				029C927E22E7044200E62D27 /* RoomAccessRule.swift in Sources */,
 				02DFEBEA21C07370009B6F15 /* SplitViewCoordinator.swift in Sources */,
 				02DFEBEB21C07370009B6F15 /* PublicRoomServiceType.swift in Sources */,
 				02DFEBEC21C07370009B6F15 /* RoomInputToolbarView.m in Sources */,
 				02DFEBED21C07370009B6F15 /* RoomEncryptedAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.m in Sources */,
+				02FAE59923B4C41600DE73D8 /* EmojiPickerViewState.swift in Sources */,
 				02DFEBEE21C07370009B6F15 /* ActivityIndicatorPresenterType.swift in Sources */,
 				02DFEBEF21C07370009B6F15 /* RoomsViewController.m in Sources */,
 				02FAE23923B25C8400DE73D8 /* Vector_Strings.swift in Sources */,
@@ -6167,23 +6706,30 @@
 				02FAE46923B4AB3300DE73D8 /* WidgetViewController.m in Sources */,
 				02018F9A22004417008D68BE /* UniversalLinkServiceType.swift in Sources */,
 				02FAE43D23B2B98900DE73D8 /* SlidingModalPresentationController.swift in Sources */,
+				02FAE58D23B4C41500DE73D8 /* RoomContextualMenuPresenter.swift in Sources */,
 				02DFEBF221C07370009B6F15 /* PreviewView.m in Sources */,
 				02DFEBF321C07370009B6F15 /* AuthenticationFormValidationResult.swift in Sources */,
 				02DFEBF421C07370009B6F15 /* RoomServiceType.swift in Sources */,
+				02FAE5A323B4C41600DE73D8 /* EmojiPickerViewModelType.swift in Sources */,
 				02FAE42223B29EBD00DE73D8 /* ServiceTermsModalScreenViewAction.swift in Sources */,
 				0215542422B24058004663A6 /* AccountValidityServiceType.swift in Sources */,
 				02DFEBF521C07370009B6F15 /* RoomAttachmentAntivirusScanStatusCellContentView.swift in Sources */,
+				02FAE5E123B4C41600DE73D8 /* EditHistoryCell.swift in Sources */,
 				02DFEBF621C07370009B6F15 /* RoomsCell.swift in Sources */,
 				B15FE5DE238583AB00D2A5B2 /* AppVersionCheckerStore.swift in Sources */,
 				02DFEBF721C07370009B6F15 /* PublicRoomService.swift in Sources */,
 				02DFEBF821C07370009B6F15 /* RoomCreationAvatarView.swift in Sources */,
 				02DFEBF921C07370009B6F15 /* SettingsCoordinatorType.swift in Sources */,
+				02FAE5EB23B4C41600DE73D8 /* ReactionHistoryViewController.swift in Sources */,
 				024518EC23A150D5006873DF /* PasswordStrengthManager.swift in Sources */,
 				0252030C224EBD4800262433 /* ContactButtonView.swift in Sources */,
 				02FAE30A23B26C0B00DE73D8 /* RiotSettingIntegrationProvisioning.swift in Sources */,
 				02FAE40023B2912A00DE73D8 /* DeviceVerificationCoordinator.swift in Sources */,
 				02FAE3C223B2912A00DE73D8 /* DeviceVerificationDataLoadingViewModel.swift in Sources */,
+				02FAE57523B4C41500DE73D8 /* RoomContextualMenuAction.swift in Sources */,
 				02DFEBFA21C07370009B6F15 /* RoomIncomingAttachmentBubbleCell.m in Sources */,
+				02FAE60123B4D14C00DE73D8 /* UIGestureRecognizer.swift in Sources */,
+				02FAE57B23B4C41500DE73D8 /* ReactionsMenuViewAction.swift in Sources */,
 				0259328C22AFEF5700C93762 /* PasswordPolicyService.swift in Sources */,
 				02DFEBFB21C07370009B6F15 /* EncryptionInfoView.m in Sources */,
 				0259328922AFE8A500C93762 /* PasswordPolicyServiceType.swift in Sources */,
@@ -6194,6 +6740,7 @@
 				B1C0EE702375B7A000E8BB88 /* ChangePasswordCurrentPasswordCoordinator.swift in Sources */,
 				B122099F23854F11004D069C /* Images.swift in Sources */,
 				02DFEBFF21C07370009B6F15 /* PublicRoomsCoordinatorType.swift in Sources */,
+				02FAE57F23B4C41500DE73D8 /* ReactionsMenuViewModelType.swift in Sources */,
 				02DFEC0021C07370009B6F15 /* RoomAttachmentAntivirusScanStatusViewModelBuilder.swift in Sources */,
 				02DFEC0121C07370009B6F15 /* TableViewCellWithCheckBoxes.m in Sources */,
 				02DFEC0221C07370009B6F15 /* User.swift in Sources */,
@@ -6216,6 +6763,7 @@
 				02DFEC0C21C07370009B6F15 /* SegmentedViewController.m in Sources */,
 				02DFEC0D21C07370009B6F15 /* DecryptionFailure.m in Sources */,
 				02FAE46123B4AB3300DE73D8 /* StickerPickerViewController.m in Sources */,
+				02FAE5A923B4C41600DE73D8 /* EmojiPickerCategoryViewData.swift in Sources */,
 				02DFEC0E21C07370009B6F15 /* RoomIncomingEncryptedAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				0215542722B2406B004663A6 /* AccountValidityService.swift in Sources */,
 				02FAE3C423B2912A00DE73D8 /* DeviceVerificationDataLoadingCoordinator.swift in Sources */,
@@ -6234,13 +6782,16 @@
 				02DFEC1421C07370009B6F15 /* MediaService.swift in Sources */,
 				02FAE3D823B2912A00DE73D8 /* VerifyEmojiCollectionViewCell.swift in Sources */,
 				02DFEC1521C07370009B6F15 /* RoomIncomingTextMsgWithoutSenderNameBubbleCell.m in Sources */,
+				02FAE61123B4E7AA00DE73D8 /* UIApplication.swift in Sources */,
 				02DFEC1621C07370009B6F15 /* DeviceTableViewCell.m in Sources */,
 				02DFEC1721C07370009B6F15 /* Variant2Style.swift in Sources */,
 				02FAE30323B26BEA00DE73D8 /* WidgetManagerConfig.swift in Sources */,
 				B15FE5ED23858B8200D2A5B2 /* AppVersionUpdateCoordinatorType.swift in Sources */,
 				02DFEC1821C07370009B6F15 /* RoomPreviewData.m in Sources */,
+				02FAE56723B4C41500DE73D8 /* BubbleReactionsViewModel.swift in Sources */,
 				02DFEC1921C07370009B6F15 /* IncomingCallView.m in Sources */,
 				02DFEC1A21C07370009B6F15 /* RoomIncomingTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
+				02FAE5F723B4C41600DE73D8 /* ReactionHistoryCoordinator.swift in Sources */,
 				02DFEC1B21C07370009B6F15 /* WelcomeCoordinatorType.swift in Sources */,
 				02DFEC1C21C07370009B6F15 /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				02DFEC1D21C07370009B6F15 /* RecentsViewController.m in Sources */,
@@ -6255,31 +6806,39 @@
 				02DFEC2221C07370009B6F15 /* AuthenticationViewModelType.swift in Sources */,
 				02DFEC2321C07370009B6F15 /* PublicRoomsCoordinator.swift in Sources */,
 				02DFEC2421C07370009B6F15 /* ForgotPasswordFormViewModel.swift in Sources */,
+				02FAE59723B4C41600DE73D8 /* EmojiPickerViewController.swift in Sources */,
 				02DFEC2521C07370009B6F15 /* RoomsInviteCell.swift in Sources */,
 				02DFEC2621C07370009B6F15 /* SelectableContactCell.swift in Sources */,
 				02FAE3FE23B2912A00DE73D8 /* DeviceVerificationCoordinatorBridgePresenter.swift in Sources */,
 				02FAE3F623B2912A00DE73D8 /* DeviceVerificationIncomingViewModel.swift in Sources */,
 				02DFEC2721C07370009B6F15 /* RoomMembershipBubbleCell.m in Sources */,
 				02DFEC2821C07370009B6F15 /* ForgotPasswordServiceType.swift in Sources */,
+				02FAE5C923B4C41600DE73D8 /* EditHistoryMessage.swift in Sources */,
 				02DFEC2921C07370009B6F15 /* RoomIncomingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
+				02FAE5BD23B4C41600DE73D8 /* EmojiMartCategory.swift in Sources */,
 				024518EA23A150D5006873DF /* PasswordStrength.swift in Sources */,
 				02DFEC2A21C07370009B6F15 /* EventDetailsView.m in Sources */,
+				02FAE5E523B4C41600DE73D8 /* ReactionHistoryCoordinatorType.swift in Sources */,
 				02DFEC2B21C07370009B6F15 /* RoomSettingsViewController.m in Sources */,
 				02DFEC2C21C07370009B6F15 /* LanguagePickerViewController.m in Sources */,
 				02DFEC2D21C07370009B6F15 /* RoomOutgoingEncryptedAttachmentBubbleCell.m in Sources */,
+				02FAE5C323B4C41600DE73D8 /* EmojiStore.swift in Sources */,
 				02FAE50323B4B61700DE73D8 /* KeyBackupRecoverCoordinator.swift in Sources */,
 				02DFEC2E21C07370009B6F15 /* OnBoardingManager.swift in Sources */,
 				02DFEC2F21C07370009B6F15 /* WelcomeCoordinator.swift in Sources */,
 				02DFEC3021C07370009B6F15 /* RegistrationServiceError.swift in Sources */,
 				02DFEC3121C07370009B6F15 /* AlertErrorPresenter.swift in Sources */,
 				02FAE3CE23B2912A00DE73D8 /* DeviceVerificationVerifyViewModelType.swift in Sources */,
+				02FAE5CD23B4C41600DE73D8 /* EditHistoryViewModel.swift in Sources */,
 				02FAE3DC23B2912A00DE73D8 /* DeviceVerificationCoordinatorType.swift in Sources */,
 				02DFEC3221C07370009B6F15 /* DisplayNameComponents.swift in Sources */,
 				02DFEC3321C07370009B6F15 /* RoomKeyRequestViewController.m in Sources */,
+				02FAE56923B4C41500DE73D8 /* BubbleReactionsViewModelType.swift in Sources */,
 				B1C0EE7E2375B7A000E8BB88 /* ChangePasswordCurrentPasswordViewModel.swift in Sources */,
 				02FAE3BC23B2912A00DE73D8 /* DeviceVerificationDataLoadingViewAction.swift in Sources */,
 				02C4BE8C22523D2200F7BB0E /* DiscussionFinderType.swift in Sources */,
 				02DFEC3421C07370009B6F15 /* UIViewController.swift in Sources */,
+				02FAE60E23B4E70600DE73D8 /* RoomMessageURLParser.swift in Sources */,
 				02DFEC3521C07370009B6F15 /* RoomActivitiesView.m in Sources */,
 				02FAE4F923B4B61700DE73D8 /* KeyBackupRecoverFromPassphraseViewState.swift in Sources */,
 				024518FB23A19676006873DF /* DefaultTheme.swift in Sources */,
@@ -6291,11 +6850,13 @@
 				02FAE42423B29EBD00DE73D8 /* ServiceTermsModalScreenCoordinator.swift in Sources */,
 				02DFEC3821C07370009B6F15 /* LegacyAppDelegate.m in Sources */,
 				02DFEC3921C07370009B6F15 /* ForgotPasswordCoordinator.swift in Sources */,
+				02FAE5D523B4C41600DE73D8 /* EditHistoryViewAction.swift in Sources */,
 				02DFEC3A21C07370009B6F15 /* DeactivateAccountViewController.m in Sources */,
 				02FAE43B23B2B98900DE73D8 /* SlidingModalPresentationDelegate.swift in Sources */,
 				0223EFAC2227E41B00B9EA34 /* HomeServerComponents.swift in Sources */,
 				0234A9A1225BD08A00E8E489 /* FormCheckBoxModel.swift in Sources */,
 				02FAE41023B29EBD00DE73D8 /* ServiceTermsModalCoordinatorType.swift in Sources */,
+				02FAE5DF23B4C41600DE73D8 /* EditHistoryCoordinatorBridgePresenter.swift in Sources */,
 				B12209CA23854F92004D069C /* ClientConfigurationService.swift in Sources */,
 				02DFEC3B21C07370009B6F15 /* RestClientBuilder.swift in Sources */,
 				02DFEC3C21C07370009B6F15 /* SplitViewCoordinatorType.swift in Sources */,
@@ -6303,6 +6864,7 @@
 				02FAE3BA23B2912A00DE73D8 /* DeviceVerificationDataLoadingViewController.swift in Sources */,
 				02DFEC3E21C07370009B6F15 /* RoomsDiscussionCell.swift in Sources */,
 				02DFEC3F21C07370009B6F15 /* RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
+				02FAE5EF23B4C41600DE73D8 /* ReactionHistoryViewData.swift in Sources */,
 				02DFEC4021C07370009B6F15 /* MXSession+Riot.m in Sources */,
 				02DFEC4121C07370009B6F15 /* ThirdPartyIDPlatformInfoResolver.swift in Sources */,
 				02FAE3DA23B2912A00DE73D8 /* DeviceVerificationVerifyViewAction.swift in Sources */,
@@ -6320,15 +6882,19 @@
 				02FAE41223B29EBD00DE73D8 /* ServiceTermsModalCoordinatorBridgePresenter.swift in Sources */,
 				02FAE30C23B26C0B00DE73D8 /* RiotSettingAllowedWidgets.swift in Sources */,
 				02DFEC4621C07370009B6F15 /* AuthenticationServiceError.swift in Sources */,
+				02FAE5F923B4C41600DE73D8 /* ReactionHistoryViewAction.swift in Sources */,
 				02FAE3FC23B2912A00DE73D8 /* DeviceVerificationIncomingCoordinator.swift in Sources */,
 				02DFEC4721C07370009B6F15 /* RoomCreationViewModel.swift in Sources */,
+				02FAE57723B4C41500DE73D8 /* ContextualMenuItemView.swift in Sources */,
 				02DFEC4821C07370009B6F15 /* AttachmentsViewController.m in Sources */,
 				02DFEC4921C07370009B6F15 /* RoomSelectedStickerBubbleCell.m in Sources */,
+				02FAE5AD23B4C41600DE73D8 /* EmojiPickerViewCell.swift in Sources */,
 				02DFEC4A21C07370009B6F15 /* CountryPickerViewController.m in Sources */,
 				02DFEC4B21C07370009B6F15 /* KeyboardGrowingTextView.m in Sources */,
 				02DFEC4C21C07370009B6F15 /* TCNavigationController.swift in Sources */,
 				B12209DC238550FE004D069C /* AppVersionUpdateViewController.swift in Sources */,
 				02DFEC4D21C07370009B6F15 /* DisabledRoomInputToolbarView.m in Sources */,
+				02FAE5B923B4C41600DE73D8 /* EmojiMartStore.swift in Sources */,
 				02DFEC4E21C07370009B6F15 /* WelcomeViewController.swift in Sources */,
 				02FAE4C923B4B61700DE73D8 /* KeyBackupSetupPassphraseViewModel.swift in Sources */,
 				02DFEC4F21C07370009B6F15 /* RoomIncomingEncryptedTextMsgBubbleCell.m in Sources */,
@@ -6341,10 +6907,14 @@
 				02DFEC5321C07370009B6F15 /* DeviceView.m in Sources */,
 				02DFEC5421C07370009B6F15 /* RoomIncomingEncryptedTextMsgWithoutSenderNameBubbleCell.m in Sources */,
 				B1C0EE652375B78C00E8BB88 /* ChangePasswordCoordinator.swift in Sources */,
+				02FAE57323B4C41500DE73D8 /* BubbleReactionActionViewCell.swift in Sources */,
 				026A465E23B215900058D80B /* SingleImagePickerPresenter.swift in Sources */,
+				02FAE5DD23B4C41600DE73D8 /* EditHistorySection.swift in Sources */,
+				02FAE5D323B4C41600DE73D8 /* EditHistoryHeaderView.swift in Sources */,
 				02FAE46C23B4ACA000DE73D8 /* UIButton.swift in Sources */,
 				02DFEC5521C07370009B6F15 /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.m in Sources */,
 				02FAE45B23B4AB3300DE73D8 /* WidgetPermissionViewController.swift in Sources */,
+				02FAE59123B4C41500DE73D8 /* RoomContextualMenuViewController.swift in Sources */,
 				02DFEC5621C07370009B6F15 /* UIBezierPath.swift in Sources */,
 				B15FE5E7238584B800D2A5B2 /* AppVersionCheckerResult+Codable.swift in Sources */,
 				02DFEC5721C07370009B6F15 /* AuthenticationCoordinatorType.swift in Sources */,
@@ -6367,27 +6937,35 @@
 				02F0FF4022268D5F00066908 /* PublicRoomsCell.swift in Sources */,
 				02DFEC6621C07370009B6F15 /* RoomCreationCoordinatorType.swift in Sources */,
 				02FAE42F23B2B98900DE73D8 /* SlidingModalPresentationAnimator.swift in Sources */,
+				02FAE5F523B4C41600DE73D8 /* ReactionHistoryViewModelType.swift in Sources */,
 				02DFEC6721C07370009B6F15 /* AppCoordinator.swift in Sources */,
 				0252030E224EBD4800262433 /* ContactButtonViewModel.swift in Sources */,
 				02DFEC6821C07370009B6F15 /* ErrorPresenter.swift in Sources */,
 				02DFEC6921C07370009B6F15 /* RoomOutgoingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				02DFEC6A21C07370009B6F15 /* RoomCreationCoordinator.swift in Sources */,
 				B12209BA23854F91004D069C /* ClientConfigurationServiceType.swift in Sources */,
+				02FAE58523B4C41500DE73D8 /* ReactionsMenuViewModel.swift in Sources */,
 				02DFEC6B21C07370009B6F15 /* RoomDetailsCoordinator.swift in Sources */,
 				B15FE5F623858D4200D2A5B2 /* ClientVersionInfo.swift in Sources */,
+				02FAE5B523B4C41600DE73D8 /* EmojiItem+EmojiMart.swift in Sources */,
 				02FAE3F223B2912A00DE73D8 /* DeviceVerificationIncomingViewState.swift in Sources */,
 				02FAE4EB23B4B61700DE73D8 /* KeyBackupRecoverFromRecoveryKeyViewModel.swift in Sources */,
 				02FAE3F023B2912A00DE73D8 /* DeviceVerificationIncomingViewController.swift in Sources */,
 				02DFEC6C21C07370009B6F15 /* AuthenticationViewController.swift in Sources */,
 				02DFEC6D21C07370009B6F15 /* CircleButton.m in Sources */,
 				02DFEC6E21C07370009B6F15 /* RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
+				02FAE58323B4C41500DE73D8 /* ReactionMenuItemViewData.swift in Sources */,
 				02FAE30E23B26C0B00DE73D8 /* RiotSharedSettings.swift in Sources */,
+				02FAE5C723B4C41600DE73D8 /* EditHistoryViewState.swift in Sources */,
 				02DFEC6F21C07370009B6F15 /* RegistrationFormViewController.swift in Sources */,
+				02FAE5A523B4C41600DE73D8 /* EmojiPickerViewAction.swift in Sources */,
 				02DFEC7021C07370009B6F15 /* RoomBubbleCellData.m in Sources */,
 				B1C0EE962375B7F400E8BB88 /* ChangePasswordNewPasswordViewModelType.swift in Sources */,
 				02DFEC7221C07370009B6F15 /* ContactsCoordinator.swift in Sources */,
+				02FAE5C123B4C41600DE73D8 /* EmojiCategory.swift in Sources */,
 				02DFEC7321C07370009B6F15 /* RoomOutgoingAttachmentBubbleCell.m in Sources */,
 				02DFEC7421C07370009B6F15 /* UserIDComponents.swift in Sources */,
+				02FAE56323B4C41500DE73D8 /* BubbleReactionsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

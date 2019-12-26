@@ -1107,7 +1107,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
         if (success)
         {
             // Let the datasource send it and manage the local echo
-            [(RoomDataSource*)self.roomDataSource sendVideo:url
+            [(RoomDataSource*)self.roomDataSource sendVideo:videoLocalURL
                                                     success:nil
                                                     failure:^(NSError *error) {
                                                         // Nothing to do. The video is marked as unsent in the room history by the datasource
@@ -2008,7 +2008,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                     if (predecessorRoomId)
                     {
                         // Show predecessor room
-                        [[AppDelegate theDelegate] showRoom:predecessorRoomId andEventId:nil withMatrixSession:self.mainSession];
+                        [self.delegate roomViewController:self showRoom:predecessorRoomId];
                     }
                 }
                 else
@@ -4901,15 +4901,15 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     {
         NSData *imageData = [[NSData alloc] initWithContentsOfURL:url];
         
-        [self sendImage:imageData mimeType:mimeType];
+        [self sendImage:imageData withMimeType:mimeType];
     }
     else if (fileUTI.isVideo)
     {
-        [self sendVideo:url]
+        [self sendVideo:url];
     }
     else if (fileUTI.isFile)
     {
-        [self sendFile:url mimeType:mimeType];
+        [self sendFile:url withMimeType:mimeType];
     }
     else
     {

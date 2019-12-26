@@ -78,10 +78,12 @@ abstract_target 'TchapPods' do
 
     target "Tchap" do
         import_MatrixKit
+        pod 'DGCollectionViewLeftAlignFlowLayout', '~> 1.0.4'
     end
 	
     target "Btchap" do
         import_MatrixKit
+        pod 'DGCollectionViewLeftAlignFlowLayout', '~> 1.0.4'
     end
     
     target "TchapShareExtension" do

@@ -229,7 +229,7 @@ final class RoomContextualMenuViewController: UIViewController, Themable {
         
         if self.reactionsMenuContainerView.subviews.isEmpty {
             let reactionsMenuView = ReactionsMenuView.loadFromNib()
-            self.reactionsMenuContainerView.vc_addSubViewMatchingParent(reactionsMenuView)
+            self.reactionsMenuContainerView.tc_addSubViewMatchingParent(reactionsMenuView)
             reactionsMenuView.update(theme: self.theme)
             self.reactionsMenuView = reactionsMenuView
         }
