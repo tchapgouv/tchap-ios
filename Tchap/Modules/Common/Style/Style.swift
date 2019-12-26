@@ -54,6 +54,8 @@ import UIKit
     
     var overlayBackgroundColor: UIColor { get }
     
+    var keyboardAppearance: UIKeyboardAppearance { get }
+    
     // MARK: - Commodity methods
     
     func applyStyle(onNavigationBar: UINavigationBar)

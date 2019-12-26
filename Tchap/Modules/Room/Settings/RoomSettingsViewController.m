@@ -1181,7 +1181,7 @@ NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBanne
             topicTextView.editable = (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomTopic]);
             topicTextView.textColor = self.currentStyle.secondaryTextColor;
             
-            topicTextView.keyboardAppearance = kRiotKeyboard;
+            topicTextView.keyboardAppearance = self.currentStyle.keyboardAppearance;
             
             cell = roomTopicCell;
         }

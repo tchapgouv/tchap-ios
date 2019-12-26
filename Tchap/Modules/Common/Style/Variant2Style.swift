@@ -57,6 +57,8 @@ final class Variant2Style: NSObject, Style {
     
     let overlayBackgroundColor: UIColor = kVariant2OverlayBackgroundColor
     
+    let keyboardAppearance: UIKeyboardAppearance = .light
+    
     // MARK: - Commodity methods
     
     func applyStyle(onNavigationBar navigationBar: UINavigationBar) {
