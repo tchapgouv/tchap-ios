@@ -1247,6 +1247,8 @@
 		02FAE61123B4E7AA00DE73D8 /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE60F23B4E7AA00DE73D8 /* UIApplication.swift */; };
 		02FAE61723B4FBB100DE73D8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02FAE61523B4FBB100DE73D8 /* Main.storyboard */; };
 		02FAE61823B4FBB100DE73D8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02FAE61523B4FBB100DE73D8 /* Main.storyboard */; };
+		02FAE61B23B5587200DE73D8 /* AutosizedCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE61A23B5587200DE73D8 /* AutosizedCollectionView.swift */; };
+		02FAE61C23B5587200DE73D8 /* AutosizedCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE61A23B5587200DE73D8 /* AutosizedCollectionView.swift */; };
 		193B2CED1BFA08EA45ED6460 /* Pods_TchapPods_TchapShareExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8582197A7D3C5D692C381218 /* Pods_TchapPods_TchapShareExtension.framework */; };
 		323BD4C6148B554408CDD950 /* Pods_TchapPods_BtchapShareExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EFEE7E56697557ECD04FEDAE /* Pods_TchapPods_BtchapShareExtension.framework */; };
 		3758AAFA0E62019A0A322926 /* Pods_TchapPods_Tchap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6969DC25D5C9C2BB6A87FF16 /* Pods_TchapPods_Tchap.framework */; };
@@ -2112,6 +2114,7 @@
 		02FAE60C23B4E70600DE73D8 /* RoomMessageURLParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomMessageURLParser.swift; sourceTree = "<group>"; };
 		02FAE60F23B4E7AA00DE73D8 /* UIApplication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
 		02FAE61623B4FBB100DE73D8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		02FAE61A23B5587200DE73D8 /* AutosizedCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutosizedCollectionView.swift; sourceTree = "<group>"; };
 		23307BF65CCF37A2CAE36E4F /* Pods-TchapPods-Btchap.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TchapPods-Btchap.debug.xcconfig"; path = "Target Support Files/Pods-TchapPods-Btchap/Pods-TchapPods-Btchap.debug.xcconfig"; sourceTree = "<group>"; };
 		3267EFB320E379FD00FF1CAA /* CHANGES.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGES.rst; sourceTree = "<group>"; };
 		3267EFB420E379FD00FF1CAA /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; fileEncoding = 4; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
@@ -3866,6 +3869,14 @@
 			path = RoomMessageLinkParser;
 			sourceTree = "<group>";
 		};
+		02FAE61923B5587100DE73D8 /* CollectionView */ = {
+			isa = PBXGroup;
+			children = (
+				02FAE61A23B5587200DE73D8 /* AutosizedCollectionView.swift */,
+			);
+			path = CollectionView;
+			sourceTree = "<group>";
+		};
 		32935CB21F628B98006888C8 /* js */ = {
 			isa = PBXGroup;
 			children = (
@@ -4396,6 +4407,7 @@
 		B1B556CD20EE6C4C00210D55 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				02FAE61923B5587100DE73D8 /* CollectionView */,
 				B1B556CE20EE6C4C00210D55 /* WebViewController */,
 				B1B556D420EE6C4C00210D55 /* SegmentedViewController */,
 				B1B556D820EE6C4C00210D55 /* Recents */,
@@ -6335,6 +6347,7 @@
 				B15B867421355A7A002782BE /* ErrorPresenter.swift in Sources */,
 				020DF989214BE467003DFBA4 /* RoomOutgoingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				B1C4644721B67F1E005F4D53 /* RoomCreationCoordinator.swift in Sources */,
+				02FAE61B23B5587200DE73D8 /* AutosizedCollectionView.swift in Sources */,
 				02FAE58423B4C41500DE73D8 /* ReactionsMenuViewModel.swift in Sources */,
 				0290609221527A3F005FE3C1 /* RoomDetailsCoordinator.swift in Sources */,
 				B15FE5F523858D4200D2A5B2 /* ClientVersionInfo.swift in Sources */,
@@ -6950,6 +6963,7 @@
 				02DFEC6921C07370009B6F15 /* RoomOutgoingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				02DFEC6A21C07370009B6F15 /* RoomCreationCoordinator.swift in Sources */,
 				B12209BA23854F91004D069C /* ClientConfigurationServiceType.swift in Sources */,
+				02FAE61C23B5587200DE73D8 /* AutosizedCollectionView.swift in Sources */,
 				02FAE58523B4C41500DE73D8 /* ReactionsMenuViewModel.swift in Sources */,
 				02DFEC6B21C07370009B6F15 /* RoomDetailsCoordinator.swift in Sources */,
 				B15FE5F623858D4200D2A5B2 /* ClientVersionInfo.swift in Sources */,

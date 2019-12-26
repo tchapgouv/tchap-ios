@@ -39,7 +39,7 @@ class DefaultTheme: NSObject, Theme {
     var textSecondaryColor: UIColor = UIColor(rgb: 0x9D9D9D)   //
 
     var tintColor: UIColor = UIColor(rgb: 0x162d58)   //
-    var tintBackgroundColor: UIColor = UIColor(rgb: 0x2A9EDB) //
+    var tintBackgroundColor: UIColor = UIColor(rgb: 0xEEFDFF) //
     var unreadRoomIndentColor: UIColor = UIColor(rgb: 0x2E3648)
     var lineBreakColor: UIColor = UIColor(rgb: 0xEEEFEF) // 0xF2F2F2
     
