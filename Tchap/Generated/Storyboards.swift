@@ -107,6 +107,11 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Tchap.WelcomeViewController>(storyboard: WelcomeViewController.self)
   }
+  internal enum WidgetPermissionViewController: StoryboardType {
+    internal static let storyboardName = "WidgetPermissionViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.WidgetPermissionViewController>(storyboard: WidgetPermissionViewController.self)
+  }
 }
 // swiftlint:enable explicit_type_interface identifier_name line_length type_body_length type_name
 
