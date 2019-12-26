@@ -97,6 +97,11 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Tchap.RoomCreationViewController>(storyboard: RoomCreationViewController.self)
   }
+  internal enum ServiceTermsModalScreenViewController: StoryboardType {
+    internal static let storyboardName = "ServiceTermsModalScreenViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.ServiceTermsModalScreenViewController>(storyboard: ServiceTermsModalScreenViewController.self)
+  }
   internal enum WelcomeViewController: StoryboardType {
     internal static let storyboardName = "WelcomeViewController"
 

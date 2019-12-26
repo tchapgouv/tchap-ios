@@ -63,7 +63,7 @@ final class SlidingModalPresentationAnimator: NSObject {
         slidingModalContainerView.setContentView(presentedViewControllerView)
         
         // Add slidingModalContainerView to container view
-        containerView.vc_addSubViewMatchingParent(slidingModalContainerView)
+        containerView.tc_addSubViewMatchingParent(slidingModalContainerView)
         containerView.layoutIfNeeded()
         
         // Adapt slidingModalContainerView content view height from presentedViewControllerView height 

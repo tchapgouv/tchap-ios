@@ -39,7 +39,7 @@ final class ServiceTermsModalCoordinator: ServiceTermsModalCoordinatorType {
     
     // MARK: - Setup
     init(session: MXSession, baseUrl: String, serviceType: MXServiceType, outOfContext: Bool, accessToken: String) {
-        self.navigationRouter = NavigationRouter(navigationController: RiotNavigationController())
+        self.navigationRouter = NavigationRouter(navigationController: TCNavigationController())
         self.session = session
         self.serviceTerms = MXServiceTerms(baseUrl: baseUrl, serviceType: serviceType, matrixSession: session, accessToken: accessToken)
         self.outOfContext = outOfContext

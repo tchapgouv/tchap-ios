@@ -23,3 +23,4 @@
 #import "EventFormatter.h"
 #import "Tools.h"
 #import "EncryptionInfoView.h"
+#import "TableViewCellWithCheckBoxAndLabel.h"

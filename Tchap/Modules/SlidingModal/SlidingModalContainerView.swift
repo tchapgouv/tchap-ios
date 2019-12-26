@@ -120,7 +120,7 @@ final class SlidingModalContainerView: UIView, Themable, NibLoadable {
         for subView in self.contentView.subviews {
             subView.removeFromSuperview()
         }
-        self.contentView.vc_addSubViewMatchingParent(contentView)
+        self.contentView.tc_addSubViewMatchingParent(contentView)
     }
     
     func updateDimmingViewAlpha(_ alpha: CGFloat) {
