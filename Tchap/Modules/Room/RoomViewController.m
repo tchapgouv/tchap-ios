@@ -198,6 +198,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
 @property (weak, nonatomic) IBOutlet UIButton *jumpToLastUnreadButton;
 @property (weak, nonatomic) IBOutlet UILabel *jumpToLastUnreadLabel;
 @property (weak, nonatomic) IBOutlet UIButton *resetReadMarkerButton;
+@property (weak, nonatomic) IBOutlet UIView *jumpToLastUnreadBannerSeparatorView;
 
 @property (nonatomic, weak) RoomTitleView *roomTitleView;
 @property (nonatomic, strong) id<Style> currentStyle;
@@ -443,6 +444,8 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     // Prepare jump to last unread banner
     self.jumpToLastUnreadBannerContainer.backgroundColor = style.secondaryBackgroundColor;
     self.jumpToLastUnreadLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_jump_to_first_unread", @"Vector", nil) attributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle), NSUnderlineColorAttributeName:style.secondaryTextColor, NSForegroundColorAttributeName:style.secondaryTextColor}];
+    
+    self.jumpToLastUnreadBannerSeparatorView.backgroundColor = style.secondaryBackgroundColor;
     
     
     self.previewHeaderContainer.backgroundColor = style.backgroundColor;
@@ -3248,7 +3251,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    cell.backgroundColor = ThemeService.shared.theme.backgroundColor;
+    cell.backgroundColor = self.currentStyle.backgroundColor;
     
     // Update the selected background view
     if (ThemeService.shared.theme.selectedBackgroundColor)

@@ -1245,6 +1245,8 @@
 		02FAE60E23B4E70600DE73D8 /* RoomMessageURLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE60C23B4E70600DE73D8 /* RoomMessageURLParser.swift */; };
 		02FAE61023B4E7AA00DE73D8 /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE60F23B4E7AA00DE73D8 /* UIApplication.swift */; };
 		02FAE61123B4E7AA00DE73D8 /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE60F23B4E7AA00DE73D8 /* UIApplication.swift */; };
+		02FAE61723B4FBB100DE73D8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02FAE61523B4FBB100DE73D8 /* Main.storyboard */; };
+		02FAE61823B4FBB100DE73D8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02FAE61523B4FBB100DE73D8 /* Main.storyboard */; };
 		193B2CED1BFA08EA45ED6460 /* Pods_TchapPods_TchapShareExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8582197A7D3C5D692C381218 /* Pods_TchapPods_TchapShareExtension.framework */; };
 		323BD4C6148B554408CDD950 /* Pods_TchapPods_BtchapShareExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EFEE7E56697557ECD04FEDAE /* Pods_TchapPods_BtchapShareExtension.framework */; };
 		3758AAFA0E62019A0A322926 /* Pods_TchapPods_Tchap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6969DC25D5C9C2BB6A87FF16 /* Pods_TchapPods_Tchap.framework */; };
@@ -2109,6 +2111,7 @@
 		02FAE60823B4D38F00DE73D8 /* UITouch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITouch.swift; sourceTree = "<group>"; };
 		02FAE60C23B4E70600DE73D8 /* RoomMessageURLParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomMessageURLParser.swift; sourceTree = "<group>"; };
 		02FAE60F23B4E7AA00DE73D8 /* UIApplication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
+		02FAE61623B4FBB100DE73D8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		23307BF65CCF37A2CAE36E4F /* Pods-TchapPods-Btchap.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TchapPods-Btchap.debug.xcconfig"; path = "Target Support Files/Pods-TchapPods-Btchap/Pods-TchapPods-Btchap.debug.xcconfig"; sourceTree = "<group>"; };
 		3267EFB320E379FD00FF1CAA /* CHANGES.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGES.rst; sourceTree = "<group>"; };
 		3267EFB420E379FD00FF1CAA /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; fileEncoding = 4; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
@@ -4900,6 +4903,7 @@
 				32935CB21F628B98006888C8 /* js */,
 				024518E023A135FC006873DF /* apple_emojis_data.json */,
 				B169329320F39E6200746532 /* LaunchScreen.storyboard */,
+				02FAE61523B4FBB100DE73D8 /* Main.storyboard */,
 				F083BC0E1E7009EC00A9B29C /* third_party_licenses.html */,
 				F083BBEE1E7009EC00A9B29C /* GoogleService-Info.plist */,
 			);
@@ -5381,6 +5385,7 @@
 				02520309224EBD4800262433 /* ContactButtonView.xib in Resources */,
 				024518E123A135FC006873DF /* apple_emojis_data.json in Resources */,
 				0250C5A72122B68000034691 /* SegmentedViewController.xib in Resources */,
+				02FAE61723B4FBB100DE73D8 /* Main.storyboard in Resources */,
 				0250C5AC2122B68000034691 /* postMessageAPI.js in Resources */,
 				020DF96B214BE467003DFBA4 /* RoomEncryptedAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.xib in Resources */,
 				02BEE1A4212C717F00098505 /* Images.xcassets in Resources */,
@@ -5563,6 +5568,7 @@
 				02DFECCE21C07370009B6F15 /* DeviceView.xib in Resources */,
 				02DFECCF21C07370009B6F15 /* RoomOutgoingTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
 				02DFECD021C07370009B6F15 /* RoomIncomingEncryptedTextMsgWithoutSenderInfoBubbleCell.xib in Resources */,
+				02FAE61823B4FBB100DE73D8 /* Main.storyboard in Resources */,
 				02FAE5E923B4C41600DE73D8 /* ReactionHistoryViewCell.xib in Resources */,
 				02DFECD121C07370009B6F15 /* RoomIncomingAttachmentBubbleCell.xib in Resources */,
 				02DFECD321C07370009B6F15 /* RoomIncomingAttachmentWithoutSenderInfoBubbleCell.xib in Resources */,
@@ -7002,6 +7008,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		02FAE61523B4FBB100DE73D8 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				02FAE61623B4FBB100DE73D8 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
 		B12DDA98216F4EBC0093172C /* Tchap.stringsdict */ = {
 			isa = PBXVariantGroup;
 			children = (
