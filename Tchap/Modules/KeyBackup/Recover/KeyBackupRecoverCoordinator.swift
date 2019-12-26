@@ -37,7 +37,7 @@ final class KeyBackupRecoverCoordinator: KeyBackupRecoverCoordinatorType {
     init(session: MXSession, keyBackupVersion: MXKeyBackupVersion) {
         self.session = session
         self.keyBackupVersion = keyBackupVersion
-        self.navigationRouter = NavigationRouter(navigationController: RiotNavigationController())
+        self.navigationRouter = NavigationRouter(navigationController: TCNavigationController())
     }
     
     // MARK: - Public

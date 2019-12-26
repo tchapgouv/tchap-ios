@@ -57,7 +57,7 @@ final class KeyBackupRecoverSuccessViewController: UIViewController {
         // Do any additional setup after loading the view.
         
         self.title = VectorL10n.keyBackupRecoverTitle
-        self.vc_removeBackTitle()
+        self.tc_removeBackTitle()
         
         self.setupViews()
         self.registerThemeServiceDidChangeThemeNotification()

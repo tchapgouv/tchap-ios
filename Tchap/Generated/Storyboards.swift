@@ -77,6 +77,41 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Tchap.HomeViewController>(storyboard: HomeViewController.self)
   }
+  internal enum KeyBackupRecoverFromPassphraseViewController: StoryboardType {
+    internal static let storyboardName = "KeyBackupRecoverFromPassphraseViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.KeyBackupRecoverFromPassphraseViewController>(storyboard: KeyBackupRecoverFromPassphraseViewController.self)
+  }
+  internal enum KeyBackupRecoverFromRecoveryKeyViewController: StoryboardType {
+    internal static let storyboardName = "KeyBackupRecoverFromRecoveryKeyViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.KeyBackupRecoverFromRecoveryKeyViewController>(storyboard: KeyBackupRecoverFromRecoveryKeyViewController.self)
+  }
+  internal enum KeyBackupRecoverSuccessViewController: StoryboardType {
+    internal static let storyboardName = "KeyBackupRecoverSuccessViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.KeyBackupRecoverSuccessViewController>(storyboard: KeyBackupRecoverSuccessViewController.self)
+  }
+  internal enum KeyBackupSetupIntroViewController: StoryboardType {
+    internal static let storyboardName = "KeyBackupSetupIntroViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.KeyBackupSetupIntroViewController>(storyboard: KeyBackupSetupIntroViewController.self)
+  }
+  internal enum KeyBackupSetupPassphraseViewController: StoryboardType {
+    internal static let storyboardName = "KeyBackupSetupPassphraseViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.KeyBackupSetupPassphraseViewController>(storyboard: KeyBackupSetupPassphraseViewController.self)
+  }
+  internal enum KeyBackupSetupSuccessFromPassphraseViewController: StoryboardType {
+    internal static let storyboardName = "KeyBackupSetupSuccessFromPassphraseViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.KeyBackupSetupSuccessFromPassphraseViewController>(storyboard: KeyBackupSetupSuccessFromPassphraseViewController.self)
+  }
+  internal enum KeyBackupSetupSuccessFromRecoveryKeyViewController: StoryboardType {
+    internal static let storyboardName = "KeyBackupSetupSuccessFromRecoveryKeyViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.KeyBackupSetupSuccessFromRecoveryKeyViewController>(storyboard: KeyBackupSetupSuccessFromRecoveryKeyViewController.self)
+  }
   internal enum PublicRoomsViewController: StoryboardType {
     internal static let storyboardName = "PublicRoomsViewController"
 

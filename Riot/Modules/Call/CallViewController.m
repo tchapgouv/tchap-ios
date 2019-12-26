@@ -25,8 +25,6 @@
 
 #import "UsersDevicesViewController.h"
 
-#import "RiotNavigationController.h"
-
 #import "IncomingCallView.h"
 
 #import "GeneratedInterface-Swift.h"
@@ -315,7 +313,7 @@
                                                                }];
                                                                
                                                                // Show this screen within a navigation controller
-                                                               UINavigationController *usersDevicesNavigationController = [[RiotNavigationController alloc] init];
+                                                               UINavigationController *usersDevicesNavigationController = [[TCNavigationController alloc] init];
                                                                
                                                                // Set Riot navigation bar colors
                                                                [ThemeService.shared.theme applyStyleOnNavigationBar:usersDevicesNavigationController.navigationBar];

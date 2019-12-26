@@ -1,5 +1,5 @@
 /*
- Copyright 2017 Vector Creations Ltd
+ Copyright 2019 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -14,13 +14,11 @@
  limitations under the License.
  */
 
-#import <UIKit/UIKit.h>
+import Foundation
 
-/**
- RiotNavigationController extends UINavigationController to handle status bar display.
- */
-
-@interface RiotNavigationController : UINavigationController
-
-@end
-
+/// List the different key backup banners that could be displayed
+enum KeyBackupBanner {
+    case none
+    case setup
+    case recover
+}
