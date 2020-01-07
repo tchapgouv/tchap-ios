@@ -62,6 +62,7 @@ import UIKit
     func applyStyle(onButton button: UIButton, bordered: Bool)
     func applyStyle(onTextField: UITextField)
     func applyStyle(onSwitch: UISwitch)
+    func applyStyle(onSearchBar: UISearchBar)
 }
 
 // Style default implementation

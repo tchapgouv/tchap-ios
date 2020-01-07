@@ -1677,7 +1677,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         {
             if (row == localContactsPhoneBookCountryIndex)
             {
-                CountryPickerViewController *countryPicker = [CountryPickerViewController countryPickerViewController];
+                CountryPickerViewController *countryPicker = [CountryPickerViewController instantiateWithStyle:self.currentStyle];
                 countryPicker.view.tag = SETTINGS_SECTION_CONTACTS_INDEX;
                 countryPicker.delegate = self;
                 countryPicker.showCountryCallingCode = YES;

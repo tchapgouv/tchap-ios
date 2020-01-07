@@ -21,7 +21,7 @@
 #import "ThemeService.h"
 #import "GeneratedInterface-Swift.h"
 
-@interface CountryPickerViewController ()
+@interface CountryPickerViewController () <Stylable>
 {
     /**
      The fake top view displayed in case of vertical bounce.
@@ -31,10 +31,18 @@
 
 // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
 @property (nonatomic, weak) id kThemeServiceDidChangeThemeNotificationObserver;
+@property (strong, nonatomic) id<Style> currentStyle;
 
 @end
 
 @implementation CountryPickerViewController
+
++ (instancetype)instantiateWithStyle:(id<Style>)style
+{
+    CountryPickerViewController *countryPickerViewController = [CountryPickerViewController countryPickerViewController];
+    countryPickerViewController.currentStyle = style;
+    return countryPickerViewController;
+}
 
 - (void)finalizeInit
 {
@@ -69,32 +77,44 @@
         [self userInterfaceThemeDidChange];
         
     }];
-    [self userInterfaceThemeDidChange];
 }
 
 - (void)userInterfaceThemeDidChange
 {
-    [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+    [self updateWithStyle:self.currentStyle];
+}
 
-    self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
+- (void)updateWithStyle:(id<Style>)style
+{
+    self.currentStyle = style;
     
-    [ThemeService.shared.theme applyStyleOnSearchBar:self.searchBar];
+    UINavigationBar *navigationBar = self.navigationController.navigationBar;
+    if (navigationBar)
+    {
+        [style applyStyleOnNavigationBar:navigationBar];
+    }
+    
+    [style applyStyleOnSearchBar:self.searchBar];
+    
+    //TODO Design the activvity indicator for Tchap
+    self.activityIndicator.backgroundColor = style.overlayBackgroundColor;
     
     // Use the primary bg color for the table view in plain style.
-    self.tableView.backgroundColor = ThemeService.shared.theme.backgroundColor;
-    topview.backgroundColor = ThemeService.shared.theme.backgroundColor;
+    self.tableView.backgroundColor = style.backgroundColor;
+    topview.backgroundColor = style.backgroundColor;
     self.searchDisplayController.searchResultsTableView.backgroundColor = self.tableView.backgroundColor;
     
     if (self.tableView.dataSource)
     {
         [self.tableView reloadData];
-    }  
+    }
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return ThemeService.shared.theme.statusBarStyle;
+    return self.currentStyle.statusBarStyle;
 }
+
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -102,6 +122,9 @@
 
     // Screen tracking
     [[Analytics sharedInstance] trackScreen:@"CountryPicker"];
+    
+    
+    [self userInterfaceThemeDidChange];
 }
 
 - (void)dealloc
@@ -117,15 +140,15 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    cell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
-    cell.detailTextLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
-    cell.backgroundColor = ThemeService.shared.theme.backgroundColor;
+    cell.textLabel.textColor = self.currentStyle.primaryTextColor;
+    cell.detailTextLabel.textColor = self.currentStyle.secondaryTextColor;
+    cell.backgroundColor = self.currentStyle.backgroundColor;
     
     // Update the selected background view
-    if (ThemeService.shared.theme.selectedBackgroundColor)
+    if (self.currentStyle.secondaryBackgroundColor)
     {
         cell.selectedBackgroundView = [[UIView alloc] init];
-        cell.selectedBackgroundView.backgroundColor = ThemeService.shared.theme.selectedBackgroundColor;
+        cell.selectedBackgroundView.backgroundColor = self.currentStyle.secondaryBackgroundColor;
     }
     else
     {
