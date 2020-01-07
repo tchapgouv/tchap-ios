@@ -585,10 +585,10 @@
 "settings_key_backup_delete_confirmation_prompt_msg" = "En êtes-vous sûr(e) ? Vous perdrez vos messages chiffrés si vos clés ne sont pas sauvegardées correctement.";
 "room_does_not_exist" = "%@ n'existe pas";
 "key_backup_setup_title" = "Sauvegarde de clés";
-"key_backup_setup_skip_action" = "Passer";
-"key_backup_setup_skip_alert_title" = "En êtes-vous certain(e) ?";
+"key_backup_setup_skip_action" = "Ignorer";
+"key_backup_setup_skip_alert_title" = "Êtes-vous sûr(e) ?";
 "key_backup_setup_skip_alert_message" = "Vous pourriez perdre vos messages sécurisés si vous vous déconnectez ou si vous perdez votre appareil.";
-"key_backup_setup_skip_alert_skip_action" = "Passer";
+"key_backup_setup_skip_alert_skip_action" = "Ignorer";
 "key_backup_setup_intro_title" = "Ne perdez jamais vos messages chiffrés";
 "key_backup_setup_intro_info" = "Les messages des salons chiffrés sont sécurisés avec un chiffrement de bout en bout. Seuls vous et le(s) destinataire(s) avez les clés pour lire ces messages.\n\nSauvegardez vos clés de façon sécurisée pour éviter de les perdre.";
 "key_backup_setup_intro_setup_action" = "Configurer";

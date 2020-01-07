@@ -29,7 +29,7 @@
 
 #define ROOMSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT     30.0
 
-@interface RoomsDataSource()
+@interface RoomsDataSource() <KeyBackupBannerCellDelegate>
 {
     NSMutableArray* invitesCellDataArray;
     NSMutableArray* conversationCellDataArray;
@@ -42,10 +42,13 @@
     
     NSMutableDictionary<NSString*, id> *roomTagsListenerByUserId;
 }
+
+@property (nonatomic, assign, readwrite) KeyBackupBanner keyBackupBanner;
+
 @end
 
 @implementation RoomsDataSource
-@synthesize invitesSection, conversationSection;
+@synthesize invitesSection, conversationSection, keyBackupBannerSection;
 @synthesize invitesCellDataArray, conversationCellDataArray;
 
 - (instancetype)init
@@ -56,6 +59,8 @@
         invitesCellDataArray = [[NSMutableArray alloc] init];
         conversationCellDataArray = [[NSMutableArray alloc] init];
         
+        _keyBackupBanner = KeyBackupBannerNone;
+        keyBackupBannerSection = -1;
         invitesSection = -1;
         conversationSection = -1;
         
@@ -84,6 +89,103 @@
     
     return stickyHeader;
 }
+
+#pragma mark - Key backup setup banner
+
+- (void)registerKeyBackupStateDidChangeNotification
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyBackupStateDidChangeNotification:) name:kMXKeyBackupDidStateChangeNotification object:nil];
+    [self keyBackupStateDidChangeNotification:nil];
+    
+    // Check homeserver update in background
+    [self.mxSession.crypto.backup forceRefresh:nil failure:nil];
+}
+
+- (void)unregisterKeyBackupStateDidChangeNotification
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXKeyBackupDidStateChangeNotification object:nil];
+}
+
+- (void)keyBackupStateDidChangeNotification:(NSNotification*)notification
+{
+    if ([self updateKeyBackupBanner])
+    {
+        [self forceRefresh];
+    }
+}
+
+- (BOOL)updateKeyBackupBanner
+{
+    KeyBackupBanner keyBackupBanner = KeyBackupBannerNone;
+    
+    if (self.mxSession.crypto.backup.hasKeysToBackup)
+    {
+        KeyBackupBannerPreferences *keyBackupBannersPreferences = KeyBackupBannerPreferences.shared;
+        
+        NSString *keyBackupVersion = self.mxSession.crypto.backup.keyBackupVersion.version;
+        
+        switch (self.mxSession.crypto.backup.state) {
+            case MXKeyBackupStateDisabled:
+                // Show key backup setup banner only if user has not hidden it once.
+                if (keyBackupBannersPreferences.hideSetupBanner)
+                {
+                    keyBackupBanner = KeyBackupBannerNone;
+                }
+                else
+                {
+                    keyBackupBanner = KeyBackupBannerSetup;
+                }
+                break;
+            case MXKeyBackupStateNotTrusted:
+            case MXKeyBackupStateWrongBackUpVersion:
+                // Show key backup recover banner only if user has not hidden it for the given version.
+                if (keyBackupVersion && [keyBackupBannersPreferences isRecoverBannerHiddenFor:keyBackupVersion])
+                {
+                    keyBackupBanner = KeyBackupBannerNone;
+                }
+                else
+                {
+                    keyBackupBanner = KeyBackupBannerRecover;
+                }
+                break;
+            default:
+                keyBackupBanner = KeyBackupBannerNone;
+                break;
+        }
+    }
+    
+    BOOL updated = (self.keyBackupBanner != keyBackupBanner);
+    
+    self.keyBackupBanner = keyBackupBanner;
+    
+    return updated;
+}
+
+- (void)hideKeyBackupBanner:(KeyBackupBanner)keyBackupBanner
+{
+    KeyBackupBannerPreferences *keyBackupBannersPreferences = KeyBackupBannerPreferences.shared;
+    
+    switch (keyBackupBanner) {
+        case KeyBackupBannerSetup:
+            keyBackupBannersPreferences.hideSetupBanner = YES;
+            break;
+        case KeyBackupBannerRecover:
+        {
+            NSString *keyBackupVersion = self.mxSession.crypto.backup.keyBackupVersion.version;
+            if (keyBackupVersion)
+            {
+                [keyBackupBannersPreferences hideRecoverBannerFor:keyBackupVersion];
+            }
+        }
+            break;
+        default:
+            break;
+    }
+    
+    [self updateKeyBackupBanner];
+    [self forceRefresh];
+}
+
 
 #pragma mark -
 
@@ -163,7 +265,12 @@
     // Check whether all data sources are ready before rendering recents
     if (self.state == MXKDataSourceStateReady)
     {
-        conversationSection = invitesSection = -1;
+        keyBackupBannerSection = conversationSection = invitesSection = -1;
+        
+        if (self.keyBackupBanner != KeyBackupBannerNone)
+        {
+            self.keyBackupBannerSection = sectionsCount++;
+        }
         
         if (invitesCellDataArray.count > 0)
         {
@@ -181,7 +288,11 @@
 {
     NSUInteger count = 0;
     
-    if (section == conversationSection && !(shrinkedSectionsBitMask & ROOMSDATASOURCE_SECTION_CONVERSATIONS))
+    if (section == self.keyBackupBannerSection && self.keyBackupBanner != KeyBackupBannerNone)
+    {
+        count = 1;
+    }
+    else if (section == conversationSection && !(shrinkedSectionsBitMask & ROOMSDATASOURCE_SECTION_CONVERSATIONS))
     {
         count = conversationCellDataArray.count ? conversationCellDataArray.count : 1;
     }
@@ -195,6 +306,11 @@
 
 - (CGFloat)heightForHeaderInSection:(NSInteger)section
 {
+    if (section == self.keyBackupBannerSection)
+    {
+        return 0.0;
+    }
+    
     return ROOMSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT;
 }
 
@@ -242,6 +358,12 @@
 
 - (UIView *)viewForHeaderInSection:(NSInteger)section withFrame:(CGRect)frame
 {
+    // No header view in key backup banner section
+    if (section == self.keyBackupBannerSection)
+    {
+        return nil;
+    }
+    
     UIView *sectionHeader = [[UIView alloc] initWithFrame:frame];
     sectionHeader.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
     NSInteger sectionBitwise = 0;
@@ -310,7 +432,14 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == conversationSection && !conversationCellDataArray.count)
+    if (indexPath.section == self.keyBackupBannerSection)
+    {
+        KeyBackupBannerCell* keyBackupBannerCell = [tableView dequeueReusableCellWithIdentifier:KeyBackupBannerCell.defaultReuseIdentifier forIndexPath:indexPath];
+        [keyBackupBannerCell configureFor:self.keyBackupBanner];
+        keyBackupBannerCell.delegate = self;
+        return keyBackupBannerCell;
+    }
+    else if (indexPath.section == conversationSection && !conversationCellDataArray.count)
     {
         MXKTableViewCell *tableViewCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier]];
         if (!tableViewCell)
@@ -455,7 +584,7 @@
     
     _missedConversationsCount = _missedHighlightConversationsCount = 0;
     
-    conversationSection = invitesSection = -1;
+    keyBackupBannerSection = conversationSection = invitesSection = -1;
     
     if (displayedRecentsDataSourceArray.count > 0)
     {
@@ -561,6 +690,13 @@
         // Inform the delegate about the update
         [self.delegate dataSource:self didCellChange:nil];
     }
+}
+
+#pragma mark - KeyBackupSetupBannerCellDelegate
+
+- (void)keyBackupBannerCellDidTapCloseAction:(KeyBackupBannerCell * _Nonnull)cell
+{
+    [self hideKeyBackupBanner:self.keyBackupBanner];
 }
 
 @end

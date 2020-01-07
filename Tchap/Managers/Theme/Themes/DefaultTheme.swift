@@ -55,7 +55,7 @@ class DefaultTheme: NSObject, Theme {
         UIColor(rgb: 0x124a9d)  //
     ]
 
-    var statusBarStyle: UIStatusBarStyle = .lightContent //????
+    var statusBarStyle: UIStatusBarStyle = .default //
     var scrollBarStyle: UIScrollView.IndicatorStyle = .default
     var keyboardAppearance: UIKeyboardAppearance = .light
 
