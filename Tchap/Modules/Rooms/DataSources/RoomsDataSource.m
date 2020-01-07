@@ -118,7 +118,9 @@
 {
     KeyBackupBanner keyBackupBanner = KeyBackupBannerNone;
     
-    if (self.mxSession.crypto.backup.hasKeysToBackup)
+    // Tchap: display the banner even if there is no new key to backup, in order to let the user recover an existing
+    // backup (if any)
+    //if (self.mxSession.crypto.backup.hasKeysToBackup)
     {
         KeyBackupBannerPreferences *keyBackupBannersPreferences = KeyBackupBannerPreferences.shared;
         
