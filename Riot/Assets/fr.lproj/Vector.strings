@@ -501,7 +501,7 @@
 "e2e_room_key_request_message_new_device" = "Vous avez ajouté un nouvel appareil '%@', qui demande les clés de chiffrement.";
 "e2e_room_key_request_message" = "Votre appareil '%@' demande les clés de chiffrement.";
 "e2e_room_key_request_start_verification" = "Commencer la vérification...";
-"e2e_room_key_request_share_without_verifying" = "Accepter la demande";
+"e2e_room_key_request_share_without_verifying" = "Partager sans vérifier";
 "e2e_room_key_request_ignore_request" = "Ignorer la demande";
 "settings_flair" = "Afficher le badge aux endroits autorisés";
 "room_details_flair_section" = "Afficher le badge pour des communautés";
@@ -965,3 +965,8 @@
 "e2e_passphrase_empty" = "La phrase secrète ne peut pas être vide";
 "e2e_passphrase_not_match" = "Les phrases secrète doivent être identiques";
 "e2e_passphrase_create" = "Créer la phrase secrète";
+// Encryption information
+"room_event_encryption_info_verify" = "Vérifier...";
+"room_event_encryption_info_unverify" = "A revérifier";
+"room_event_encryption_info_block" = "Bloquer";
+"room_event_encryption_info_unblock" = "Débloquer";

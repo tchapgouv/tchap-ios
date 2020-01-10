@@ -67,18 +67,18 @@
 
         __weak typeof(self) weakSelf = self;
 
-//        [_alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"e2e_room_key_request_start_verification", @"Vector", nil)
-//                                                             style:UIAlertActionStyleDefault
-//                                                           handler:^(UIAlertAction * action) {
-//
-//                                                               if (weakSelf)
-//                                                               {
-//                                                                   typeof(self) self = weakSelf;
-//
-//                                                                   self->_alertController = nil;
-//                                                                   [self showVerificationView];
-//                                                               }
-//                                                           }]];
+        [_alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"e2e_room_key_request_start_verification", @"Vector", nil)
+                                                             style:UIAlertActionStyleDefault
+                                                           handler:^(UIAlertAction * action) {
+
+                                                               if (weakSelf)
+                                                               {
+                                                                   typeof(self) self = weakSelf;
+
+                                                                   self->_alertController = nil;
+                                                                   [self showVerificationView];
+                                                               }
+                                                           }]];
 
         [_alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"e2e_room_key_request_share_without_verifying", @"Vector", nil)
                                                              style:UIAlertActionStyleDefault
