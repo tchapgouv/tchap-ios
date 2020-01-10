@@ -200,6 +200,9 @@ final class KeyBackupSetupPassphraseViewController: UIViewController {
         self.setPassphraseButton.vc_enableMultiLinesTitle()
         self.setPassphraseButton.setTitle(VectorL10n.keyBackupSetupPassphraseSetPassphraseAction, for: .normal)
         
+        self.setUpRecoveryKeyInfoLabel.text = VectorL10n.keyBackupSetupPassphraseSetupRecoveryKeyInfo
+        self.setUpRecoveryKeyButton.setTitle(VectorL10n.keyBackupSetupPassphraseSetupRecoveryKeyAction, for: .normal)
+        
         self.updateSetPassphraseButton()
     }
     

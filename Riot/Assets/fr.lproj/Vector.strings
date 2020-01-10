@@ -603,8 +603,6 @@
 "key_backup_setup_passphrase_confirm_passphrase_invalid" = "Les phrases de passe ne correspondent pas";
 "key_backup_setup_passphrase_set_passphrase_action" = "Définir la phrase secrète";
 "key_backup_setup_recovery_key_info" = "Faites une copie de cette clé de récupération et conservez-la en lieu sûr.\n\nPar mesure de précaution, vous pouvez l'utiliser pour restaurer votre historique de messages chiffrés si vous oubliez votre phrase secrète de récupération.";
-"key_backup_setup_passphrase_setup_recovery_key_info" = "Ou, sécurisez votre sauvegarde avec une clé de récupération, à conserver dans un endroit sûr.";
-"key_backup_setup_passphrase_setup_recovery_key_action" = "Configuration (avancée) avec clé de récupération";
 "key_backup_setup_recovery_key_recovery_key_title" = "Clé de récupération";
 "key_backup_setup_recovery_key_make_copy_action" = "En faire une copie";
 "key_backup_setup_recovery_key_made_copy_action" = "J'en ai fait une copie";
@@ -635,8 +633,8 @@
 "key_backup_setup_intro_setup_action_without_existing_backup" = "Commencer à utiliser la sauvegarde de clés";
 "key_backup_setup_intro_setup_action_with_existing_backup" = "Utiliser la sauvegarde de clés";
 "key_backup_setup_passphrase_title" = "Protégez votre sauvegarde avec une phrase secrète";
-"key_backup_setup_passphrase_setup_recovery_key_info" = "Sinon, protégez votre sauvegarde avec une clé de récupération, en la conservant dans un endroit sûr.";
-"key_backup_setup_passphrase_setup_recovery_key_action" = "(Avancé) Configurer avec la clé de récupération";
+"key_backup_setup_passphrase_setup_recovery_key_info" = "Ou, protégez votre sauvegarde avec une clé de récupération, à conserver dans un endroit sûr.";
+"key_backup_setup_passphrase_setup_recovery_key_action" = "Configuration (avancée) avec clé de récupération";
 "key_backup_setup_success_title" = "Terminé !";
 // Success from passphrase
 "key_backup_setup_success_from_passphrase_info" = "Vos clés sont en cours de sauvegarde.\n\nVotre clé de récupération est une mesure de précaution. Vous pouvez l'utiliser pour restaurer l'accès à vos messages chiffrés si vous oubliez votre phrase secrète.\n\nConservez votre clé de récupération dans un lieu très sûr, comme un gestionnaire de mots de passe (ou un coffre-fort).";

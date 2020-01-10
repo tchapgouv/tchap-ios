@@ -32,7 +32,6 @@
 #import "WebViewViewController.h"
 
 #import "CountryPickerViewController.h"
-#import "LanguagePickerViewController.h"
 #import "DeactivateAccountViewController.h"
 
 #import "NBPhoneNumberUtil.h"
@@ -59,6 +58,7 @@ enum
     SETTINGS_SECTION_PREFERENCES_INDEX,
     SETTINGS_SECTION_OTHER_INDEX,
     SETTINGS_SECTION_CRYPTOGRAPHY_INDEX,
+    SETTINGS_SECTION_KEYBACKUP_INDEX,
     SETTINGS_SECTION_DEVICES_INDEX,
     SETTINGS_SECTION_DEACTIVATE_ACCOUNT_INDEX,
     SETTINGS_SECTION_COUNT
@@ -116,7 +116,18 @@ enum {
 typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 
 
-@interface SettingsViewController () <UITextFieldDelegate, SingleImagePickerPresenterDelegate, MXKDeviceViewDelegate, UIDocumentInteractionControllerDelegate, MXKCountryPickerViewControllerDelegate, MXKLanguagePickerViewControllerDelegate, DeactivateAccountViewControllerDelegate, Stylable, ChangePasswordCoordinatorBridgePresenterDelegate>
+@interface SettingsViewController () <UITextFieldDelegate,
+DeactivateAccountViewControllerDelegate,
+SettingsKeyBackupTableViewSectionDelegate,
+KeyBackupSetupCoordinatorBridgePresenterDelegate,
+KeyBackupRecoverCoordinatorBridgePresenterDelegate,
+SignOutAlertPresenterDelegate,
+SingleImagePickerPresenterDelegate,
+MXKDeviceViewDelegate,
+UIDocumentInteractionControllerDelegate,
+MXKCountryPickerViewControllerDelegate,
+Stylable,
+ChangePasswordCoordinatorBridgePresenterDelegate>
 {
     // Current alert (if any).
     UIAlertController *currentAlert;
@@ -157,8 +168,14 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     UIDocumentInteractionController *documentInteractionController;
     NSURL *keyExportsFile;
     NSTimer *keyExportsFileDeletionTimer;
+    
+    SettingsKeyBackupTableViewSection *keyBackupSection;
+    KeyBackupSetupCoordinatorBridgePresenter *keyBackupSetupCoordinatorBridgePresenter;
+    KeyBackupRecoverCoordinatorBridgePresenter *keyBackupRecoverCoordinatorBridgePresenter;
 }
 
+@property (nonatomic, strong) SignOutAlertPresenter *signOutAlertPresenter;
+@property (nonatomic, weak) UIButton *signOutButton;
 @property (nonatomic, strong) SingleImagePickerPresenter *imagePickerPresenter;
 
 @property (weak, nonatomic) DeactivateAccountViewController *deactivateAccountViewController;
@@ -221,6 +238,18 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         [self addMatrixSession:mxSession];
     }
     
+    if (self.mainSession.crypto.backup)
+    {
+        MXDeviceInfo *deviceInfo = [self.mainSession.crypto.deviceList storedDevice:self.mainSession.matrixRestClient.credentials.userId
+                                                                           deviceId:self.mainSession.matrixRestClient.credentials.deviceId];
+        
+        if (deviceInfo)
+        {
+            keyBackupSection = [[SettingsKeyBackupTableViewSection alloc] initWithKeyBackup:self.mainSession.crypto.backup userDevice:deviceInfo];
+            keyBackupSection.delegate = self;
+        }
+    }
+    
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(onSave:)];
     self.navigationItem.rightBarButtonItem.accessibilityIdentifier=@"SettingsVCNavBarSaveButton";
 
@@ -233,7 +262,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         [self userInterfaceThemeDidChange];
         
     }];
-    [self userInterfaceThemeDidChange];
     
     
     // Add observer to handle removed accounts
@@ -267,6 +295,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         [self refreshSettings];
         
     }];
+    
+    self.signOutAlertPresenter = [SignOutAlertPresenter new];
+    self.signOutAlertPresenter.delegate = self;
 }
 
 - (void)userInterfaceThemeDidChange
@@ -353,6 +384,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         [deviceView removeFromSuperview];
         deviceView = nil;
     }
+    
+    keyBackupSetupCoordinatorBridgePresenter = nil;
+    keyBackupRecoverCoordinatorBridgePresenter = nil;
 }
 
 - (void)onMatrixSessionStateDidChange:(NSNotification *)notif
@@ -751,6 +785,14 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         if (self.mainSession.crypto)
         {
             count = CRYPTOGRAPHY_COUNT;
+        }
+    }
+    else if (section == SETTINGS_SECTION_KEYBACKUP_INDEX)
+    {
+        // Check whether this section is visible.
+        if (self.mainSession.crypto)
+        {
+            count = keyBackupSection.numberOfRows;
         }
     }
     else if (section == SETTINGS_SECTION_DEACTIVATE_ACCOUNT_INDEX)
@@ -1374,6 +1416,10 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
             cell = exportKeysBtnCell;
         }
     }
+    else if (section == SETTINGS_SECTION_KEYBACKUP_INDEX)
+    {
+        cell = [keyBackupSection cellForRowAtRow:row];
+    }
     else if (section == SETTINGS_SECTION_DEACTIVATE_ACCOUNT_INDEX)
     {
         MXKTableViewCellWithButton *deactivateAccountBtnCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
@@ -1457,6 +1503,14 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         if (self.mainSession.crypto)
         {
             return NSLocalizedStringFromTable(@"settings_cryptography", @"Vector", nil);
+        }
+    }
+    else if (section == SETTINGS_SECTION_KEYBACKUP_INDEX)
+    {
+        // Check whether this section is visible
+        if (self.mainSession.crypto)
+        {
+            return NSLocalizedStringFromTable(@"settings_key_backup", @"Vector", nil);
         }
     }
     else if (section == SETTINGS_SECTION_DEACTIVATE_ACCOUNT_INDEX)
@@ -1694,24 +1748,15 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 
 - (void)onSignout:(id)sender
 {
-    // Feedback: disable button and run activity indicator
-    UIButton *button = (UIButton*)sender;
-    button.enabled = NO;
-    [self startActivityIndicator];
+    self.signOutButton = (UIButton*)sender;
     
-     __weak typeof(self) weakSelf = self;
+    MXKeyBackup *keyBackup = self.mainSession.crypto.backup;
     
-    [[AppDelegate theDelegate] logoutWithConfirmation:YES completion:^(BOOL isLoggedOut) {
-        
-        if (!isLoggedOut && weakSelf)
-        {
-            typeof(self) self = weakSelf;
-            
-            // Enable the button and stop activity indicator
-            button.enabled = YES;
-            [self stopActivityIndicator];
-        }
-    }];
+    [self.signOutAlertPresenter presentFor:keyBackup.state
+                      areThereKeysToBackup:keyBackup.hasKeysToBackup
+                                      from:self
+                                sourceView:self.signOutButton
+                                  animated:YES];
 }
 
 - (void)togglePushNotifications:(id)sender
@@ -2344,36 +2389,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     [countryPickerViewController withdrawViewControllerAnimated:YES completion:nil];
 }
 
-#pragma mark - MXKCountryPickerViewControllerDelegate
-
-- (void)languagePickerViewController:(MXKLanguagePickerViewController *)languagePickerViewController didSelectLangugage:(NSString *)language
-{
-    [languagePickerViewController withdrawViewControllerAnimated:YES completion:nil];
-
-    if (![language isEqualToString:[NSBundle mxk_language]]
-        || (language == nil && [NSBundle mxk_language]))
-    {
-        [NSBundle mxk_setLanguage:language];
-
-        // Store user settings
-        NSUserDefaults *sharedUserDefaults = [MXKAppSettings standardAppSettings].sharedUserDefaults;
-        [sharedUserDefaults setObject:language forKey:@"appLanguage"];
-
-        // Do a reload in order to recompute strings in the new language
-        // Note that "reloadMatrixSessionsByClearingCache:NO" will reset room summaries
-        if (_delegate)
-        {
-            [self startActivityIndicator];
-            
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-                
-                [self.delegate settingsViewController:self reloadMatrixSessionsByClearingCache:NO];
-                
-            });
-        }
-    }
-}
-
 #pragma mark - DeactivateAccountViewControllerDelegate
 
 - (void)deactivateAccountViewControllerDidDeactivateWithSuccess:(DeactivateAccountViewController *)deactivateAccountViewController
@@ -2485,6 +2500,168 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 {
     [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
         self.changePasswordPresenter = nil;
+    }];
+}
+
+#pragma mark - SettingsKeyBackupTableViewSectionDelegate
+
+- (void)settingsKeyBackupTableViewSectionDidUpdate:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection
+{
+    [self.tableView reloadData];
+}
+
+- (MXKTableViewCellWithTextView *)settingsKeyBackupTableViewSection:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection textCellForRow:(NSInteger)textCellForRow
+{
+    return [self textViewCellForTableView:self.tableView atIndexPath:[NSIndexPath indexPathForRow:textCellForRow inSection:SETTINGS_SECTION_KEYBACKUP_INDEX]];
+}
+
+- (MXKTableViewCellWithButton *)settingsKeyBackupTableViewSection:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection buttonCellForRow:(NSInteger)buttonCellForRow
+{
+    MXKTableViewCellWithButton *cell = [self.tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
+    
+    if (!cell)
+    {
+        cell = [[MXKTableViewCellWithButton alloc] init];
+    }
+    else
+    {
+        // Fix https://github.com/vector-im/riot-ios/issues/1354
+        cell.mxkButton.titleLabel.text = nil;
+    }
+    
+    cell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
+    [cell.mxkButton setTintColor:ThemeService.shared.theme.tintColor];
+    
+    return cell;
+}
+
+- (void)settingsKeyBackupTableViewSectionShowKeyBackupSetup:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection
+{
+    [self showKeyBackupSetupFromSignOutFlow:NO];
+}
+
+- (void)settingsKeyBackup:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection showKeyBackupRecover:(MXKeyBackupVersion *)keyBackupVersion
+{
+    [self showKeyBackupRecover:keyBackupVersion];
+}
+
+- (void)settingsKeyBackup:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection showKeyBackupDeleteConfirm:(MXKeyBackupVersion *)keyBackupVersion
+{
+    MXWeakify(self);
+    [currentAlert dismissViewControllerAnimated:NO completion:nil];
+    
+    currentAlert =
+    [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"settings_key_backup_delete_confirmation_prompt_title", @"Vector", nil)
+                                        message:NSLocalizedStringFromTable(@"settings_key_backup_delete_confirmation_prompt_msg", @"Vector", nil)
+                                 preferredStyle:UIAlertControllerStyleAlert];
+    
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                                                     style:UIAlertActionStyleCancel
+                                                   handler:^(UIAlertAction * action) {
+                                                       MXStrongifyAndReturnIfNil(self);
+                                                       self->currentAlert = nil;
+                                                   }]];
+    
+    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"settings_key_backup_button_delete", @"Vector", nil)
+                                                     style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction * action) {
+                                                       MXStrongifyAndReturnIfNil(self);
+                                                       self->currentAlert = nil;
+                                                       
+                                                       [self->keyBackupSection deleteWithKeyBackupVersion:keyBackupVersion];
+                                                   }]];
+    
+    [currentAlert mxk_setAccessibilityIdentifier: @"SettingsVCDeleteKeyBackup"];
+    [self presentViewController:currentAlert animated:YES completion:nil];
+}
+
+- (void)settingsKeyBackup:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection showActivityIndicator:(BOOL)show
+{
+    if (show)
+    {
+        [self startActivityIndicator];
+    }
+    else
+    {
+        [self stopActivityIndicator];
+    }
+}
+
+- (void)settingsKeyBackup:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection showError:(NSError *)error
+{
+    [[AppDelegate theDelegate] showErrorAsAlert:error];
+}
+
+#pragma mark - KeyBackupRecoverCoordinatorBridgePresenter
+
+- (void)showKeyBackupSetupFromSignOutFlow:(BOOL)showFromSignOutFlow
+{
+    keyBackupSetupCoordinatorBridgePresenter = [[KeyBackupSetupCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
+    
+    [keyBackupSetupCoordinatorBridgePresenter presentFrom:self
+                                     isStartedFromSignOut:showFromSignOutFlow
+                                                 animated:true];
+    
+    keyBackupSetupCoordinatorBridgePresenter.delegate = self;
+}
+
+- (void)keyBackupSetupCoordinatorBridgePresenterDelegateDidCancel:(KeyBackupSetupCoordinatorBridgePresenter *)bridgePresenter {
+    [keyBackupSetupCoordinatorBridgePresenter dismissWithAnimated:true];
+    keyBackupSetupCoordinatorBridgePresenter = nil;
+}
+
+- (void)keyBackupSetupCoordinatorBridgePresenterDelegateDidSetupRecoveryKey:(KeyBackupSetupCoordinatorBridgePresenter *)bridgePresenter {
+    [keyBackupSetupCoordinatorBridgePresenter dismissWithAnimated:true];
+    keyBackupSetupCoordinatorBridgePresenter = nil;
+    
+    [keyBackupSection reload];
+}
+
+#pragma mark - KeyBackupRecoverCoordinatorBridgePresenter
+
+- (void)showKeyBackupRecover:(MXKeyBackupVersion*)keyBackupVersion
+{
+    keyBackupRecoverCoordinatorBridgePresenter = [[KeyBackupRecoverCoordinatorBridgePresenter alloc] initWithSession:self.mainSession keyBackupVersion:keyBackupVersion];
+    
+    [keyBackupRecoverCoordinatorBridgePresenter presentFrom:self animated:true];
+    keyBackupRecoverCoordinatorBridgePresenter.delegate = self;
+}
+
+- (void)keyBackupRecoverCoordinatorBridgePresenterDidCancel:(KeyBackupRecoverCoordinatorBridgePresenter *)bridgePresenter {
+    [keyBackupRecoverCoordinatorBridgePresenter dismissWithAnimated:true];
+    keyBackupRecoverCoordinatorBridgePresenter = nil;
+}
+
+- (void)keyBackupRecoverCoordinatorBridgePresenterDidRecover:(KeyBackupRecoverCoordinatorBridgePresenter *)bridgePresenter {
+    [keyBackupRecoverCoordinatorBridgePresenter dismissWithAnimated:true];
+    keyBackupRecoverCoordinatorBridgePresenter = nil;
+}
+
+#pragma mark - SignOutAlertPresenterDelegate
+
+- (void)signOutAlertPresenterDidTapBackupAction:(SignOutAlertPresenter * _Nonnull)presenter
+{
+    [self showKeyBackupSetupFromSignOutFlow:YES];
+}
+
+- (void)signOutAlertPresenterDidTapSignOutAction:(SignOutAlertPresenter * _Nonnull)presenter
+{
+    // Prevent user to perform user interaction in settings when sign out
+    // TODO: Prevent user interaction in all application (navigation controller and split view controller included)
+    self.view.userInteractionEnabled = NO;
+    self.signOutButton.enabled = NO;
+    
+    [self startActivityIndicator];
+    
+    MXWeakify(self);
+    
+    [[AppDelegate theDelegate] logoutWithConfirmation:NO completion:^(BOOL isLoggedOut) {
+        MXStrongifyAndReturnIfNil(self);
+        
+        [self stopActivityIndicator];
+        
+        self.view.userInteractionEnabled = YES;
+        self.signOutButton.enabled = YES;
     }];
 }
 
