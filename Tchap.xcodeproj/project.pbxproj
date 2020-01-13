@@ -183,6 +183,8 @@
 		024F787023C8E420008EC68F /* SignOutAlertPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024F786E23C8E420008EC68F /* SignOutAlertPresenter.swift */; };
 		024F787223C93A64008EC68F /* UIControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024F787123C93A64008EC68F /* UIControl.swift */; };
 		024F787323C93A64008EC68F /* UIControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024F787123C93A64008EC68F /* UIControl.swift */; };
+		024F787623CC6602008EC68F /* ChangePasswordAlertPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024F787523CC6602008EC68F /* ChangePasswordAlertPresenter.swift */; };
+		024F787723CC6602008EC68F /* ChangePasswordAlertPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024F787523CC6602008EC68F /* ChangePasswordAlertPresenter.swift */; };
 		0250C4932122B68000034691 /* MediaAlbumTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B557CE20EF5E3500210D55 /* MediaAlbumTableCell.m */; };
 		0250C4962122B68000034691 /* AvatarGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC111E7009EC00A9B29C /* AvatarGenerator.m */; };
 		0250C4992122B68000034691 /* BugReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556B320EE6C4C00210D55 /* BugReportViewController.m */; };
@@ -1789,6 +1791,7 @@
 		024F786223C8E38D008EC68F /* SettingsKeyBackupViewAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsKeyBackupViewAction.swift; sourceTree = "<group>"; };
 		024F786E23C8E420008EC68F /* SignOutAlertPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignOutAlertPresenter.swift; sourceTree = "<group>"; };
 		024F787123C93A64008EC68F /* UIControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIControl.swift; sourceTree = "<group>"; };
+		024F787523CC6602008EC68F /* ChangePasswordAlertPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordAlertPresenter.swift; sourceTree = "<group>"; };
 		0250C5BF2122B68000034691 /* Tchap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tchap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0250C5C42122E63900034691 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0250C5C52122E63900034691 /* Tchap-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tchap-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -2934,6 +2937,14 @@
 				024F786E23C8E420008EC68F /* SignOutAlertPresenter.swift */,
 			);
 			path = SignOut;
+			sourceTree = "<group>";
+		};
+		024F787423CC6602008EC68F /* ChangePassword */ = {
+			isa = PBXGroup;
+			children = (
+				024F787523CC6602008EC68F /* ChangePasswordAlertPresenter.swift */,
+			);
+			path = ChangePassword;
 			sourceTree = "<group>";
 		};
 		0250C5C12122BBA600034691 /* Tchap */ = {
@@ -4819,6 +4830,7 @@
 		B1F2AA80212AEC810077FDC0 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				024F787423CC6602008EC68F /* ChangePassword */,
 				024F786D23C8E420008EC68F /* SignOut */,
 				024F785D23C8E38D008EC68F /* KeyBackup */,
 				029CC67D21772F4200DCC8B3 /* DeactivateAccount */,
@@ -6213,6 +6225,7 @@
 				02FAE5A823B4C41600DE73D8 /* EmojiPickerCategoryViewData.swift in Sources */,
 				020DF950214BE467003DFBA4 /* RoomOutgoingEncryptedTextMsgWithoutSenderNameBubbleCell.m in Sources */,
 				0250C4F52122B68000034691 /* MXKRoomBubbleTableViewCell+Riot.m in Sources */,
+				024F787623CC6602008EC68F /* ChangePasswordAlertPresenter.swift in Sources */,
 				02FAE3C323B2912A00DE73D8 /* DeviceVerificationDataLoadingCoordinator.swift in Sources */,
 				B1C4645C21B6DD28005F4D53 /* MediaService.swift in Sources */,
 				020DF981214BE467003DFBA4 /* RoomIncomingTextMsgWithoutSenderNameBubbleCell.m in Sources */,
@@ -6835,6 +6848,7 @@
 				02FAE5A923B4C41600DE73D8 /* EmojiPickerCategoryViewData.swift in Sources */,
 				02DFEC0E21C07370009B6F15 /* RoomIncomingEncryptedAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				0215542722B2406B004663A6 /* AccountValidityService.swift in Sources */,
+				024F787723CC6602008EC68F /* ChangePasswordAlertPresenter.swift in Sources */,
 				02FAE3C423B2912A00DE73D8 /* DeviceVerificationDataLoadingCoordinator.swift in Sources */,
 				02DFEC0F21C07370009B6F15 /* Appearance.swift in Sources */,
 				02DFEC1021C07370009B6F15 /* RoomTitleViewModelBuilder.swift in Sources */,

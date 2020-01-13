@@ -1,7 +1,7 @@
 /*
  Copyright 2015 OpenMarket Ltd
  Copyright 2017 Vector Creations Ltd
- Copyright 2018 New Vector Ltd
+ Copyright 2018-2020 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -122,6 +122,7 @@ SettingsKeyBackupTableViewSectionDelegate,
 KeyBackupSetupCoordinatorBridgePresenterDelegate,
 KeyBackupRecoverCoordinatorBridgePresenterDelegate,
 SignOutAlertPresenterDelegate,
+ChangePasswordAlertPresenterDelegate,
 SingleImagePickerPresenterDelegate,
 MXKDeviceViewDelegate,
 UIDocumentInteractionControllerDelegate,
@@ -157,9 +158,6 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     // Devices
     NSMutableArray<MXDevice *> *devicesArray;
     DeviceView *deviceView;
-    
-    //
-    UIAlertController *resetPwdAlertController;
 
     // The view used to export e2e keys
     MXKEncryptionKeysExportView *exportView;
@@ -180,6 +178,8 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 
 @property (weak, nonatomic) DeactivateAccountViewController *deactivateAccountViewController;
 @property (strong, nonatomic) id<Style> currentStyle;
+
+@property (nonatomic, strong) ChangePasswordAlertPresenter *changePasswordAlertPresenter;
 @property (strong, nonatomic) ChangePasswordCoordinatorBridgePresenter *changePasswordPresenter;
 
 // Observer
@@ -298,6 +298,9 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     
     self.signOutAlertPresenter = [SignOutAlertPresenter new];
     self.signOutAlertPresenter.delegate = self;
+    
+    self.changePasswordAlertPresenter = [ChangePasswordAlertPresenter new];
+    self.changePasswordAlertPresenter.delegate = self;
 }
 
 - (void)userInterfaceThemeDidChange
@@ -455,12 +458,6 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     {
         [currentAlert dismissViewControllerAnimated:NO completion:nil];
         currentAlert = nil;
-    }
-    
-    if (resetPwdAlertController)
-    {
-        [resetPwdAlertController dismissViewControllerAnimated:NO completion:nil];
-        resetPwdAlertController = nil;
     }
     
     if (_appDelegateDidTapStatusBarNotificationObserver)
@@ -2290,37 +2287,13 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 
 - (void)promptUserBeforePasswordChange
 {
-    MXWeakify(self);
-    [resetPwdAlertController dismissViewControllerAnimated:NO completion:nil];
+    MXKeyBackup *keyBackup = self.mainSession.crypto.backup;
     
-    resetPwdAlertController = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"warning", @"Vector", nil) message:NSLocalizedStringFromTable(@"settings_change_pwd_caution", @"Tchap", nil) preferredStyle:UIAlertControllerStyleAlert];
-    resetPwdAlertController.accessibilityLabel=@"promptUserBeforePasswordChange";
-    UIAlertAction  *continueAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"continue", @"Vector", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-        
-        MXStrongifyAndReturnIfNil(self);
-        self->resetPwdAlertController = nil;
-        [self presentChangePassword];
-    }];
-    
-    UIAlertAction  *exportAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"settings_crypto_export", @"Vector", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-        
-        MXStrongifyAndReturnIfNil(self);
-        self->resetPwdAlertController = nil;
-        [self exportEncryptionKeys:nil];
-        
-    }];
-    
-    UIAlertAction* cancel = [UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
-        
-        MXStrongifyAndReturnIfNil(self);
-        self->resetPwdAlertController = nil;
-        
-    }];
-    
-    [resetPwdAlertController addAction:continueAction];
-    [resetPwdAlertController addAction:exportAction];
-    [resetPwdAlertController addAction:cancel];
-    [self presentViewController:resetPwdAlertController animated:YES completion:nil];
+    [self.changePasswordAlertPresenter presentFor:keyBackup.state
+                      areThereKeysToBackup:keyBackup.hasKeysToBackup
+                                      from:self
+                                sourceView:self.tableView
+                                  animated:YES];
 }
 
 - (void)presentChangePassword
@@ -2664,5 +2637,18 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         self.signOutButton.enabled = YES;
     }];
 }
+
+#pragma mark - ChangePasswordAlertPresenterDelegate
+
+- (void)changePasswordAlertPresenterDidTapBackupAction:(ChangePasswordAlertPresenter * _Nonnull)presenter
+{
+    [self showKeyBackupSetupFromSignOutFlow:NO];
+}
+
+- (void)changePasswordAlertPresenterDidTapChangePasswordAction:(ChangePasswordAlertPresenter * _Nonnull)presenter
+{
+    [self presentChangePassword];
+}
+
 
 @end

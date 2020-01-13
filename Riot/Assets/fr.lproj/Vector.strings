@@ -633,7 +633,7 @@
 "key_backup_setup_intro_setup_action_without_existing_backup" = "Commencer à utiliser la sauvegarde de clés";
 "key_backup_setup_intro_setup_action_with_existing_backup" = "Utiliser la sauvegarde de clés";
 "key_backup_setup_passphrase_title" = "Protégez votre sauvegarde avec une phrase secrète";
-"key_backup_setup_passphrase_setup_recovery_key_info" = "Ou, protégez votre sauvegarde avec une clé de récupération, à conserver dans un endroit sûr.";
+"key_backup_setup_passphrase_setup_recovery_key_info" = "Sinon, protégez votre sauvegarde avec une clé de récupération, à conserver dans un endroit sûr.";
 "key_backup_setup_passphrase_setup_recovery_key_action" = "Configuration (avancée) avec clé de récupération";
 "key_backup_setup_success_title" = "Terminé !";
 // Success from passphrase
@@ -650,13 +650,13 @@
 "key_backup_recover_invalid_recovery_key_title" = "La clé de récupération ne correspond pas";
 "key_backup_recover_invalid_recovery_key" = "La sauvegarde n'a pas pu être déchiffrée avec cette clé : vérifiez que vous avez saisi la bonne clé de récupération.";
 "key_backup_setup_banner_title" = "Ne perdez jamais vos messages chiffrés";
-"key_backup_setup_banner_subtitle" = "Commencez à utiliser la sauvegarde de clés";
+"key_backup_setup_banner_subtitle" = "Mettre en place la sauvegarde de clés";
 "key_backup_recover_banner_title" = "Ne perdez jamais vos messages chiffrés";
 "key_backup_recover_banner_subtitle" = "Utilisez la sauvegarde de clés";
 "sign_out_existing_key_backup_alert_title" = "Voulez-vous vraiment vous déconnecter ?";
 "sign_out_existing_key_backup_alert_sign_out_action" = "Se déconnecter";
 "sign_out_non_existing_key_backup_alert_title" = "Vous n'aurez plus accès à vos messages chiffrés si vous vous déconnectez maintenant";
-"sign_out_non_existing_key_backup_alert_setup_key_backup_action" = "Commencer à utiliser la sauvegarde de clés";
+"sign_out_non_existing_key_backup_alert_setup_key_backup_action" = "Mettre en place la sauvegarde de clés";
 "sign_out_non_existing_key_backup_alert_discard_key_backup_action" = "Je ne veux pas de mes messages chiffrés";
 "sign_out_non_existing_key_backup_sign_out_confirmation_alert_title" = "Vous perdrez vos messages chiffrés";
 "sign_out_non_existing_key_backup_sign_out_confirmation_alert_message" = "Vous n'aurez plus accès à vos messages chiffrés sauf si vous sauvegardez vos clés avant de vous déconnecter.";
