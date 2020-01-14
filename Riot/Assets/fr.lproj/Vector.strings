@@ -968,3 +968,5 @@
 "room_event_encryption_info_unverify" = "A revérifier";
 "room_event_encryption_info_block" = "Bloquer";
 "room_event_encryption_info_unblock" = "Débloquer";
+// Contacts
+"local_contacts_access_discovery_warning" = "Afin d’afficher qui parmi vos contacts utilise déjà Tchap, nous pouvons exploiter les adresses e-mails de votre carnet d'adresse. Ces données ne seront pas mémorisées. Pour plus d'informations, veuillez consulter les Termes et Conditions disponibles dans les paramètres de l'application.";

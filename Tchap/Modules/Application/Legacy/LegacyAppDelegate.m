@@ -2602,17 +2602,20 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 
 - (void)refreshLocalContacts
 {
-    // Do not scan local contacts in background if the user has not decided yet about using
-    // an identity server
-    BOOL doRefreshLocalContacts = NO;
-    for (MXSession *session in mxSessionArray)
-    {
-        if (session.hasAccountDataIdentityServerValue)
-        {
-            doRefreshLocalContacts = YES;
-            break;
-        }
-    }
+    // Tchap: An identity server is defined by default. The user accepts to use it when he accepts
+    // the Terms on registration
+//    // Do not scan local contacts in background if the user has not decided yet about using
+//    // an identity server
+//    BOOL doRefreshLocalContacts = NO;
+//    for (MXSession *session in mxSessionArray)
+//    {
+//        if (session.hasAccountDataIdentityServerValue)
+//        {
+//            doRefreshLocalContacts = YES;
+//            break;
+//        }
+//    }
+    BOOL doRefreshLocalContacts = YES;
 
     // Check whether the application is allowed to access the local contacts.
     if (doRefreshLocalContacts
