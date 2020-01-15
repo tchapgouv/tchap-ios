@@ -39,6 +39,7 @@ final class RoomCreationCoordinator: NSObject, RoomCreationCoordinatorType {
     private var imageData: Data?
     private var roomCreationFormResult: RoomCreationFormResult?
     
+    private var imagePickerPresenter: SingleImagePickerPresenter?
     private weak var contactsPickerCoordinator: ContactsPickerCoordinatorType?
     
     private var disposeBag: DisposeBag = DisposeBag()
@@ -111,6 +112,8 @@ final class RoomCreationCoordinator: NSObject, RoomCreationCoordinatorType {
         singleImagePickerPresenter.delegate = self
         
         singleImagePickerPresenter.present(from: self.toPresentable(), sourceView: nil, sourceRect: .null, animated: true)
+        
+        self.imagePickerPresenter = singleImagePickerPresenter
     }
     
     private func showContactsPicker() {
@@ -229,10 +232,12 @@ extension RoomCreationCoordinator: RoomCreationViewControllerDelegate {
 extension RoomCreationCoordinator: SingleImagePickerPresenterDelegate {
     func singleImagePickerPresenterDidCancel(_ presenter: SingleImagePickerPresenter) {
         presenter.dismiss(animated: true, completion: nil)
+        self.imagePickerPresenter = nil
     }
     
     func singleImagePickerPresenter(_ presenter: SingleImagePickerPresenter, didSelectImageData imageData: Data, withUTI uti: MXKUTI?) {
         presenter.dismiss(animated: true, completion: nil)
+        self.imagePickerPresenter = nil
         
         if let image = UIImage(data: imageData) {
             self.roomCreationViewController.updateAvatar(with: image)
