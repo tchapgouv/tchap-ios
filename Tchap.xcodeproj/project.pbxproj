@@ -213,7 +213,6 @@
 		0250C4F92122B68000034691 /* RoomPreviewData.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BBFE1E7009EC00A9B29C /* RoomPreviewData.m */; };
 		0250C4FB2122B68000034691 /* IncomingCallView.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5577C20EE84BF00210D55 /* IncomingCallView.m */; };
 		0250C4FF2122B68000034691 /* RecentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556D920EE6C4C00210D55 /* RecentsViewController.m */; };
-		0250C5092122B68000034691 /* OnBoardingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1798301211B13B3001FD722 /* OnBoardingManager.swift */; };
 		0250C50B2122B68000034691 /* RoomKeyRequestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556FE20EE6C4C00210D55 /* RoomKeyRequestViewController.m */; };
 		0250C5142122B68000034691 /* GDPRConsentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17982FE2119FED2001FD722 /* GDPRConsentViewController.swift */; };
 		0250C5192122B68000034691 /* MXSession+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = 926FA53E1F4C132000F826C2 /* MXSession+Riot.m */; };
@@ -662,7 +661,6 @@
 		02DFEC2B21C07370009B6F15 /* RoomSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF862214BE467003DFBA4 /* RoomSettingsViewController.m */; };
 		02DFEC2C21C07370009B6F15 /* LanguagePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 029CC67921772F4200DCC8B3 /* LanguagePickerViewController.m */; };
 		02DFEC2D21C07370009B6F15 /* RoomOutgoingEncryptedAttachmentBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF8B2214BE467003DFBA4 /* RoomOutgoingEncryptedAttachmentBubbleCell.m */; };
-		02DFEC2E21C07370009B6F15 /* OnBoardingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1798301211B13B3001FD722 /* OnBoardingManager.swift */; };
 		02DFEC2F21C07370009B6F15 /* WelcomeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1BC6A272136D78500D32F8E /* WelcomeCoordinator.swift */; };
 		02DFEC3021C07370009B6F15 /* RegistrationServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12FD6A62146BA42001B7F28 /* RegistrationServiceError.swift */; };
 		02DFEC3121C07370009B6F15 /* AlertErrorPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15B867521357514002782BE /* AlertErrorPresenter.swift */; };
@@ -2297,7 +2295,6 @@
 		B169330920F3CA3900746532 /* Contact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Contact.h; sourceTree = "<group>"; };
 		B169330A20F3CA3900746532 /* Contact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Contact.m; sourceTree = "<group>"; };
 		B17982FE2119FED2001FD722 /* GDPRConsentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDPRConsentViewController.swift; sourceTree = "<group>"; };
-		B1798301211B13B3001FD722 /* OnBoardingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingManager.swift; sourceTree = "<group>"; };
 		B1892E762130528500742348 /* ErrorPresentable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorPresentable.swift; sourceTree = "<group>"; };
 		B1892E772130528500742348 /* ErrorPresentableImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorPresentableImpl.swift; sourceTree = "<group>"; };
 		B1892E7A21306ADC00742348 /* FormTextViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormTextViewModel.swift; sourceTree = "<group>"; };
@@ -4397,14 +4394,6 @@
 			path = GDPR;
 			sourceTree = "<group>";
 		};
-		B1798300211B137B001FD722 /* OnBoarding */ = {
-			isa = PBXGroup;
-			children = (
-				B1798301211B13B3001FD722 /* OnBoardingManager.swift */,
-			);
-			path = OnBoarding;
-			sourceTree = "<group>";
-		};
 		B1892E752130524100742348 /* ErrorPresentation */ = {
 			isa = PBXGroup;
 			children = (
@@ -4633,7 +4622,6 @@
 			children = (
 				02FAE60B23B4E70600DE73D8 /* RoomMessageLinkParser */,
 				024518E623A150D4006873DF /* PasswordStrength */,
-				B1798300211B137B001FD722 /* OnBoarding */,
 				B1B5598B20EFC5E400210D55 /* Analytics */,
 				B1B5598920EFC41100210D55 /* BugReport */,
 				B1B5598A20EFC42100210D55 /* Settings */,
@@ -6273,7 +6261,6 @@
 				029CC68B21772F4200DCC8B3 /* LanguagePickerViewController.m in Sources */,
 				020DF961214BE467003DFBA4 /* RoomOutgoingEncryptedAttachmentBubbleCell.m in Sources */,
 				02FAE5C823B4C41600DE73D8 /* EditHistoryMessage.swift in Sources */,
-				0250C5092122B68000034691 /* OnBoardingManager.swift in Sources */,
 				02FAE5BC23B4C41600DE73D8 /* EmojiMartCategory.swift in Sources */,
 				024518E923A150D5006873DF /* PasswordStrength.swift in Sources */,
 				B1BC6A282136D78500D32F8E /* WelcomeCoordinator.swift in Sources */,
@@ -6906,7 +6893,6 @@
 				02DFEC2D21C07370009B6F15 /* RoomOutgoingEncryptedAttachmentBubbleCell.m in Sources */,
 				02FAE5C323B4C41600DE73D8 /* EmojiStore.swift in Sources */,
 				02FAE50323B4B61700DE73D8 /* KeyBackupRecoverCoordinator.swift in Sources */,
-				02DFEC2E21C07370009B6F15 /* OnBoardingManager.swift in Sources */,
 				02DFEC2F21C07370009B6F15 /* WelcomeCoordinator.swift in Sources */,
 				02DFEC3021C07370009B6F15 /* RegistrationServiceError.swift in Sources */,
 				02DFEC3121C07370009B6F15 /* AlertErrorPresenter.swift in Sources */,

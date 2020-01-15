@@ -206,11 +206,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 @property (nonatomic, strong) ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter;
 @property (nonatomic, strong) SlidingModalPresenter *slidingModalPresenter;
 
-/**
- Used to manage on boarding steps, like create DM with riot bot
- */
-@property (strong, nonatomic) OnBoardingManager *onBoardingManager;
-
 @property (nonatomic, nullable, copy) void (^registrationForRemoteNotificationsCompletion)(NSError *);
 
 
@@ -3545,26 +3540,8 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 
 - (void)gdprConsentViewControllerDidConsentToGDPRWithSuccess:(GDPRConsentViewController *)gdprConsentViewController
 {
-    MXSession *session = mxSessionArray.firstObject;
-
     // Leave the GDPR consent right now
     [self dismissGDPRConsent];
-
-    // And create the room with riot bot in //
-    self.onBoardingManager = [[OnBoardingManager alloc] initWithSession:session];
-    
-    MXWeakify(self);
-    void (^createRiotBotDMcompletion)(void) = ^() {
-        MXStrongifyAndReturnIfNil(self);
-
-        self.onBoardingManager = nil;
-    };
-    
-    [self.onBoardingManager createRiotBotDirectMessageIfNeededWithSuccess:^{
-        createRiotBotDMcompletion();
-    } failure:^(NSError * _Nonnull error) {
-        createRiotBotDMcompletion();
-    }];
 }
 
 #pragma mark - Identity server service terms
