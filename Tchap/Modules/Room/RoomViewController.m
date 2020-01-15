@@ -151,9 +151,6 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     // The list of unknown devices that prevent outgoing messages from being sent
     MXUsersDevicesMap<MXDeviceInfo*> *unknownDevices;
     
-    // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
-    id kAppDelegateDidTapStatusBarNotificationObserver;
-    
     // Observe kAppDelegateNetworkStatusDidChangeNotification to handle network status change.
     id kAppDelegateNetworkStatusDidChangeNotificationObserver;
 
@@ -498,12 +495,6 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     [self listenTombstoneEventNotifications];
     [self listenMXSessionStateChangeNotifications];
     
-    // Observe kAppDelegateDidTapStatusBarNotification.
-    kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-        
-        [self setBubbleTableViewContentOffset:CGPointMake(-self.bubblesTableView.mxk_adjustedContentInset.left, -self.bubblesTableView.mxk_adjustedContentInset.top) animated:YES];
-    }];
-    
     [self userInterfaceThemeDidChange];
 }
 
@@ -527,12 +518,6 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
         {
             [self cancelEventSelection];
         }
-    }
-    
-    if (kAppDelegateDidTapStatusBarNotificationObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:kAppDelegateDidTapStatusBarNotificationObserver];
-        kAppDelegateDidTapStatusBarNotificationObserver = nil;
     }
     
     [self removeCallNotificationsListeners];
@@ -1159,11 +1144,6 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     if (_kThemeServiceDidChangeThemeNotificationObserver)
     {
         [[NSNotificationCenter defaultCenter] removeObserver:_kThemeServiceDidChangeThemeNotificationObserver];
-    }
-    if (kAppDelegateDidTapStatusBarNotificationObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:kAppDelegateDidTapStatusBarNotificationObserver];
-        kAppDelegateDidTapStatusBarNotificationObserver = nil;
     }
     if (kAppDelegateNetworkStatusDidChangeNotificationObserver)
     {

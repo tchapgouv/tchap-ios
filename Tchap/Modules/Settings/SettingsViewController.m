@@ -187,7 +187,6 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 @property (nonatomic, weak) id removedAccountObserver;
 @property (nonatomic, weak) id accountUserInfoObserver;
 @property (nonatomic, weak) id pushInfoUpdateObserver;
-@property (nonatomic, weak) id appDelegateDidTapStatusBarNotificationObserver;
 @property (nonatomic, weak) id sessionAccountDataDidChangeNotificationObserver;
 
 @end
@@ -370,11 +369,6 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         [[NSNotificationCenter defaultCenter] removeObserver:_pushInfoUpdateObserver];
     }
     
-    if (_appDelegateDidTapStatusBarNotificationObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:_appDelegateDidTapStatusBarNotificationObserver];
-    }
-    
     if (_sessionAccountDataDidChangeNotificationObserver)
     {
         [[NSNotificationCenter defaultCenter] removeObserver:_sessionAccountDataDidChangeNotificationObserver];
@@ -430,15 +424,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     // Refresh devices in parallel
     [self loadDevices];
     
-    // Observe kAppDelegateDidTapStatusBarNotification.
     MXWeakify(self);
-    _appDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-        
-        MXStrongifyAndReturnIfNil(self);
-        [self.tableView setContentOffset:CGPointMake(-self.tableView.mxk_adjustedContentInset.left, -self.tableView.mxk_adjustedContentInset.top) animated:YES];
-        
-    }];
-    
     _sessionAccountDataDidChangeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionAccountDataDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
 
         MXStrongifyAndReturnIfNil(self);
@@ -458,11 +444,6 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     {
         [currentAlert dismissViewControllerAnimated:NO completion:nil];
         currentAlert = nil;
-    }
-    
-    if (_appDelegateDidTapStatusBarNotificationObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:_appDelegateDidTapStatusBarNotificationObserver];
     }
     
     if (_sessionAccountDataDidChangeNotificationObserver)

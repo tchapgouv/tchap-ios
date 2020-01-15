@@ -29,10 +29,6 @@
 #import "DesignValues.h"
 
 #pragma mark - Notifications
-/**
- Posted when the user taps the clock status bar.
- */
-extern NSString *const kAppDelegateDidTapStatusBarNotification;
 
 /**
  Posted when the property 'isOffline' has changed. This property is related to the network reachability status.

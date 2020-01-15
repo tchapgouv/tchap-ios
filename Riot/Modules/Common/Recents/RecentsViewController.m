@@ -39,9 +39,6 @@
     // Observe UIApplicationDidEnterBackgroundNotification to cancel editing mode when app leaves the foreground state.
     id UIApplicationDidEnterBackgroundNotificationObserver;
     
-    // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
-    id kAppDelegateDidTapStatusBarNotificationObserver;
-    
     // Observe kMXNotificationCenterDidUpdateRules to update missed messages counts.
     id kMXNotificationCenterDidUpdateRulesObserver;
     
@@ -221,13 +218,6 @@
         [self.recentsTableView deselectRowAtIndexPath:indexPath animated:NO];
     }
     
-    // Observe kAppDelegateDidTapStatusBarNotificationObserver.
-    kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-        
-        [self scrollToTop:YES];
-        
-    }];
-    
     // Observe kMXNotificationCenterDidUpdateRules to refresh missed messages counts
     kMXNotificationCenterDidUpdateRulesObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXNotificationCenterDidUpdateRules object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
         
@@ -245,12 +235,6 @@
     
     // Leave potential editing mode
     [self cancelEditionMode:NO];
-    
-    if (kAppDelegateDidTapStatusBarNotificationObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:kAppDelegateDidTapStatusBarNotificationObserver];
-        kAppDelegateDidTapStatusBarNotificationObserver = nil;
-    }
     
     if (kMXNotificationCenterDidUpdateRulesObserver)
     {

@@ -99,9 +99,6 @@ NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBanne
     // listen to more events than the mother class
     id extraEventsListener;
     
-    // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
-    id appDelegateDidTapStatusBarNotificationObserver;
-    
     // A copy of the banned members
     NSArray<MXRoomMember*> *bannedMembers;
 }
@@ -247,13 +244,6 @@ NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBanne
     [[Analytics sharedInstance] trackScreen:@"RoomSettings"];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateRules:) name:kMXNotificationCenterDidUpdateRules object:nil];
-    
-    // Observe appDelegateDidTapStatusBarNotificationObserver.
-    appDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-        
-        [self.tableView setContentOffset:CGPointMake(-self.tableView.mxk_adjustedContentInset.left, -self.tableView.mxk_adjustedContentInset.top) animated:YES];
-        
-    }];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -274,12 +264,6 @@ NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBanne
     [self dismissFirstResponder];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXNotificationCenterDidUpdateRules object:nil];
-    
-    if (appDelegateDidTapStatusBarNotificationObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:appDelegateDidTapStatusBarNotificationObserver];
-        appDelegateDidTapStatusBarNotificationObserver = nil;
-    }
 }
 
 // Those methods are called when the viewcontroller is added or removed from a container view controller.
@@ -337,12 +321,6 @@ NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBanne
     if (_kThemeServiceDidChangeThemeNotificationObserver)
     {
         [[NSNotificationCenter defaultCenter] removeObserver:_kThemeServiceDidChangeThemeNotificationObserver];
-    }
-    
-    if (appDelegateDidTapStatusBarNotificationObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:appDelegateDidTapStatusBarNotificationObserver];
-        appDelegateDidTapStatusBarNotificationObserver = nil;
     }
     
     updatedItemsDict = nil;

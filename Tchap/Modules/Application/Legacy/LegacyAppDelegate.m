@@ -76,7 +76,6 @@
 #define MAKE_STRING(x) #x
 #define MAKE_NS_STRING(x) @MAKE_STRING(x)
 
-NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapStatusBarNotification";
 NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateNetworkStatusDidChangeNotification";
 NSString *const kLegacyAppDelegateDidLogoutNotification = @"kLegacyAppDelegateDidLogoutNotification";
 NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDidLoginNotification";
@@ -3110,23 +3109,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         rootController.presentedViewController.view.frame = rootControllerFrame;
     }
     [rootController.view setNeedsLayout];
-}
-
-#pragma mark - Status Bar Tap handling
-
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    [super touchesBegan:touches withEvent:event];
-    
-    UITouch *touch = [touches anyObject];
-    CGPoint point = [touch locationInView:self.window];
-    
-    CGRect statusBarFrame = [UIApplication sharedApplication].statusBarFrame;
-    
-    if (CGRectContainsPoint(statusBarFrame, point))
-    {
-        [[NSNotificationCenter defaultCenter] postNotificationName:kAppDelegateDidTapStatusBarNotification object:nil];
-    }
 }
 
 #pragma mark - No call support
