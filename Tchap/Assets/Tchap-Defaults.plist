@@ -14,6 +14,8 @@
 	<string>https://matrix.</string>
 	<key>preferredIdentityServerNames</key>
 	<array>
+		<string>agent.externe.tchap.gouv.fr</string>
+		<string>agent.collectivites.tchap.gouv.fr</string>
 		<string>agent.tchap.gouv.fr</string>
 		<string>agent.elysee.tchap.gouv.fr</string>
 		<string>agent.pm.tchap.gouv.fr</string>
@@ -78,6 +80,7 @@
 	<string>tchap-ios</string>
 	<key>roomDirectoryServers</key>
 	<array>
+		<string>agent.collectivites.tchap.gouv.fr</string>
 		<string>agent.tchap.gouv.fr</string>
 		<string>agent.elysee.tchap.gouv.fr</string>
 		<string>agent.pm.tchap.gouv.fr</string>

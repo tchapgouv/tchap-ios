@@ -14,7 +14,6 @@
 	<string>https://matrix.</string>
 	<key>preferredIdentityServerNames</key>
 	<array>
-		<string>i.tchap.gouv.fr</string>
 		<string>a.tchap.gouv.fr</string>
 	</array>
 	<key>otherIdentityServerNames</key>
@@ -67,7 +66,6 @@
 	<string>btchap-ios</string>
 	<key>roomDirectoryServers</key>
 	<array>
-		<string>i.tchap.gouv.fr</string>
 		<string>a.tchap.gouv.fr</string>
 	</array>
 </dict>

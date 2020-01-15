@@ -6,7 +6,6 @@
 	<string>development</string>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
-		<string>applinks:matrix.i.tchap.gouv.fr</string>
 		<string>applinks:matrix.a.tchap.gouv.fr</string>
 		<string>applinks:matrix.e.tchap.gouv.fr</string>
 		<string>applinks:www.beta.tchap.gouv.fr</string>
