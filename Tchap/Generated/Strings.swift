@@ -268,6 +268,12 @@ internal enum TchapL10n {
   internal static let roomCreationPublicVisibilityTitle = TchapL10n.tr("Tchap", "room_creation_public_visibility_title")
   /// Autoriser l’accès aux externes à ce salon
   internal static let roomCreationRoomAccessTitle = TchapL10n.tr("Tchap", "room_creation_room_access_title")
+  /// Limiter l’historique du salon à %u jours
+  internal static func roomCreationRoomRetentionPeriodDays(_ p1: Int) -> String {
+    return TchapL10n.tr("Tchap", "room_creation_room_retention_period_days", p1)
+  }
+  /// Limiter l’historique du salon à 1 jour
+  internal static let roomCreationRoomRetentionPeriodOneDay = TchapL10n.tr("Tchap", "room_creation_room_retention_period_one_day")
   /// Nouveau salon
   internal static let roomCreationTitle = TchapL10n.tr("Tchap", "room_creation_title")
   /// Fichiers

@@ -199,6 +199,8 @@
 "room_creation_public_room_federation_title" = "Limiter l'accès à ce salon aux membres du domaine \"%@\"";
 "room_creation_add_avatar_action" = "Ajouter une photo";
 "room_creation_room_access_title" = "Autoriser l’accès aux externes à ce salon";
+"room_creation_room_retention_period_one_day" = "Limiter l’historique du salon à 1 jour";
+"room_creation_room_retention_period_days" = "Limiter l’historique du salon à %u jours";
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Room creation

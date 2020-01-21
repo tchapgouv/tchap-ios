@@ -15,6 +15,8 @@
 		02018F9D22006200008D68BE /* UniversalLinkParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02018F9B22006200008D68BE /* UniversalLinkParameters.swift */; };
 		02018F9F22006282008D68BE /* UniversalLinkParametersType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02018F9E22006282008D68BE /* UniversalLinkParametersType.swift */; };
 		02018FA022006282008D68BE /* UniversalLinkParametersType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02018F9E22006282008D68BE /* UniversalLinkParametersType.swift */; };
+		02040CC923D65CE100DE0690 /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = 024F787923D1F296008EC68F /* Tools.m */; };
+		02040CCA23D65CE200DE0690 /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = 024F787923D1F296008EC68F /* Tools.m */; };
 		02098F352131FE9E00F25086 /* ContactsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 02098F302131FE9E00F25086 /* ContactsDataSource.m */; };
 		02098F372131FE9E00F25086 /* ContactsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 02098F322131FE9E00F25086 /* ContactsViewController.m */; };
 		020DF935214BE467003DFBA4 /* RoomDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF85B214BE467003DFBA4 /* RoomDataSource.m */; };
@@ -147,6 +149,8 @@
 		0234A9AC225BE42D00E8E489 /* FormCheckBox.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0234A9AB225BE42D00E8E489 /* FormCheckBox.xib */; };
 		0234A9AD225BE42D00E8E489 /* FormCheckBox.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0234A9AB225BE42D00E8E489 /* FormCheckBox.xib */; };
 		0234DEF322C5129300EBBBC5 /* matrix.agent.externe.tchap.gouv.fr.cer in Resources */ = {isa = PBXBuildFile; fileRef = 0234DEF222C5129300EBBBC5 /* matrix.agent.externe.tchap.gouv.fr.cer */; };
+		024F787B23D1F297008EC68F /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = 024F787923D1F296008EC68F /* Tools.m */; };
+		024F787C23D1F297008EC68F /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = 024F787923D1F296008EC68F /* Tools.m */; };
 		0250C4932122B68000034691 /* MediaAlbumTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B557CE20EF5E3500210D55 /* MediaAlbumTableCell.m */; };
 		0250C4942122B68000034691 /* RiotDesignValues.m in Sources */ = {isa = PBXBuildFile; fileRef = B16932AB20F3A7B000746532 /* RiotDesignValues.m */; };
 		0250C4962122B68000034691 /* AvatarGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC111E7009EC00A9B29C /* AvatarGenerator.m */; };
@@ -165,7 +169,6 @@
 		0250C4BC2122B68000034691 /* MediaPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556EF20EE6C4C00210D55 /* MediaPickerViewController.m */; };
 		0250C4BD2122B68000034691 /* RageShakeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5597E20EFC3DF00210D55 /* RageShakeManager.m */; };
 		0250C4C42122B68000034691 /* RiotNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556D320EE6C4C00210D55 /* RiotNavigationController.m */; };
-		0250C4C92122B68000034691 /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC151E7009EC00A9B29C /* Tools.m */; };
 		0250C4CA2122B68000034691 /* WebViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556D020EE6C4C00210D55 /* WebViewViewController.m */; };
 		0250C4D62122B68000034691 /* TableViewCellWithButton.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B5592A20EF7A5D00210D55 /* TableViewCellWithButton.m */; };
 		0250C4E02122B68000034691 /* EventFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC131E7009EC00A9B29C /* EventFormatter.m */; };
@@ -522,7 +525,6 @@
 		02DFEBC421C07370009B6F15 /* RoomOutgoingTextMsgBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF8CC214BE467003DFBA4 /* RoomOutgoingTextMsgBubbleCell.m */; };
 		02DFEBC521C07370009B6F15 /* RoomIncomingEncryptedAttachmentWithPaginationTitleBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1073D5F21A8096300E36CFA /* RoomIncomingEncryptedAttachmentWithPaginationTitleBubbleCell.m */; };
 		02DFEBC621C07370009B6F15 /* RiotNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556D320EE6C4C00210D55 /* RiotNavigationController.m */; };
-		02DFEBC721C07370009B6F15 /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC151E7009EC00A9B29C /* Tools.m */; };
 		02DFEBC821C07370009B6F15 /* RoomService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C4645E21B6DD42005F4D53 /* RoomService.swift */; };
 		02DFEBC921C07370009B6F15 /* WebViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556D020EE6C4C00210D55 /* WebViewViewController.m */; };
 		02DFEBCA21C07370009B6F15 /* PublicRoomsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1680CF92152A9E5009B5F92 /* PublicRoomsViewController.swift */; };
@@ -1329,6 +1331,8 @@
 		0234A9A5225BDA4E00E8E489 /* FormCheckBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCheckBox.swift; sourceTree = "<group>"; };
 		0234A9AB225BE42D00E8E489 /* FormCheckBox.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FormCheckBox.xib; sourceTree = "<group>"; };
 		0234DEF222C5129300EBBBC5 /* matrix.agent.externe.tchap.gouv.fr.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = matrix.agent.externe.tchap.gouv.fr.cer; sourceTree = "<group>"; };
+		024F787923D1F296008EC68F /* Tools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tools.m; sourceTree = "<group>"; };
+		024F787A23D1F296008EC68F /* Tools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tools.h; sourceTree = "<group>"; };
 		0250C5BF2122B68000034691 /* Tchap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tchap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0250C5C42122E63900034691 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0250C5C52122E63900034691 /* Tchap-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tchap-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -1826,8 +1830,6 @@
 		F083BC111E7009EC00A9B29C /* AvatarGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AvatarGenerator.m; sourceTree = "<group>"; };
 		F083BC121E7009EC00A9B29C /* EventFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventFormatter.h; sourceTree = "<group>"; };
 		F083BC131E7009EC00A9B29C /* EventFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventFormatter.m; sourceTree = "<group>"; };
-		F083BC141E7009EC00A9B29C /* Tools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tools.h; sourceTree = "<group>"; };
-		F083BC151E7009EC00A9B29C /* Tools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tools.m; sourceTree = "<group>"; };
 		F0D2AD9F1F6AA5FD00A7097D /* MXRoomSummary+Riot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MXRoomSummary+Riot.h"; sourceTree = "<group>"; };
 		F0D2ADA01F6AA5FD00A7097D /* MXRoomSummary+Riot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MXRoomSummary+Riot.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -2251,6 +2253,15 @@
 			path = HomeServer;
 			sourceTree = "<group>";
 		};
+		024F787823D1F296008EC68F /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				024F787923D1F296008EC68F /* Tools.m */,
+				024F787A23D1F296008EC68F /* Tools.h */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		0250C5C12122BBA600034691 /* Tchap */ = {
 			isa = PBXGroup;
 			children = (
@@ -2262,6 +2273,7 @@
 				B1F2AAA3212AED830077FDC0 /* Coordinators */,
 				B1F2AAA6212AED900077FDC0 /* Routers */,
 				02BEE14E2125BBF800098505 /* Modules */,
+				024F787823D1F296008EC68F /* Utils */,
 				0250C5CC2123146A00034691 /* Assets */,
 				0250C5C22122BBD200034691 /* SupportingFiles */,
 			);
@@ -3853,8 +3865,6 @@
 				F083BC111E7009EC00A9B29C /* AvatarGenerator.m */,
 				F083BC121E7009EC00A9B29C /* EventFormatter.h */,
 				F083BC131E7009EC00A9B29C /* EventFormatter.m */,
-				F083BC141E7009EC00A9B29C /* Tools.h */,
-				F083BC151E7009EC00A9B29C /* Tools.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -4775,7 +4785,6 @@
 				025E36F5229546A000C9D9AE /* ThirdPartyIDResolverType.swift in Sources */,
 				B12209D623855059004D069C /* SerializationService.swift in Sources */,
 				0250C4C42122B68000034691 /* RiotNavigationController.m in Sources */,
-				0250C4C92122B68000034691 /* Tools.m in Sources */,
 				B1C4646021B6DD42005F4D53 /* RoomService.swift in Sources */,
 				B1104DBF237B124600687B3A /* ChangePasswordService.swift in Sources */,
 				02C4BE88225231ED00F7BB0E /* InviteService.swift in Sources */,
@@ -4947,6 +4956,7 @@
 				029CC68F21772F4200DCC8B3 /* CountryPickerViewController.m in Sources */,
 				020DF9AB214BE467003DFBA4 /* KeyboardGrowingTextView.m in Sources */,
 				B12209A623854F32004D069C /* AppVersionUpdateCoordinator.swift in Sources */,
+				024F787B23D1F297008EC68F /* Tools.m in Sources */,
 				B1680D012152A9F6009B5F92 /* TCNavigationController.swift in Sources */,
 				020DF9AD214BE467003DFBA4 /* DisabledRoomInputToolbarView.m in Sources */,
 				B1BC6A242136D75B00D32F8E /* WelcomeViewController.swift in Sources */,
@@ -5035,6 +5045,7 @@
 				026155472395DC650045459E /* AvatarGenerator.m in Sources */,
 				0261555B23972E400045459E /* UIBezierPath.swift in Sources */,
 				0261555A23972E1F0045459E /* MXRoomSummary.swift in Sources */,
+				02040CC923D65CE100DE0690 /* Tools.m in Sources */,
 				026155402395CCA00045459E /* Variant1Style.swift in Sources */,
 				0261556823972F670045459E /* UserServiceType.swift in Sources */,
 				0261556323972F060045459E /* ThirdPartyIDPlatformInfoType.swift in Sources */,
@@ -5082,6 +5093,7 @@
 				026155ED239936E40045459E /* AvatarGenerator.m in Sources */,
 				026155E32399024E0045459E /* RiotDesignValues.m in Sources */,
 				026155C32398F9430045459E /* UIBezierPath.swift in Sources */,
+				02040CCA23D65CE200DE0690 /* Tools.m in Sources */,
 				026155E6239907000045459E /* TchapDefaults.swift in Sources */,
 				026155E42399027C0045459E /* RecentCellData.m in Sources */,
 				026155CB2398F9870045459E /* UserServiceType.swift in Sources */,
@@ -5208,7 +5220,6 @@
 				B1104DBD237B123400687B3A /* ChangePasswordServiceType.swift in Sources */,
 				025E36F6229546A000C9D9AE /* ThirdPartyIDResolverType.swift in Sources */,
 				02DFEBC621C07370009B6F15 /* RiotNavigationController.m in Sources */,
-				02DFEBC721C07370009B6F15 /* Tools.m in Sources */,
 				02DFEBC821C07370009B6F15 /* RoomService.swift in Sources */,
 				B1104DC0237B124600687B3A /* ChangePasswordService.swift in Sources */,
 				02C4BE89225231ED00F7BB0E /* InviteService.swift in Sources */,
@@ -5376,6 +5387,7 @@
 				02DFEC4821C07370009B6F15 /* AttachmentsViewController.m in Sources */,
 				02DFEC4921C07370009B6F15 /* RoomSelectedStickerBubbleCell.m in Sources */,
 				02DFEC4A21C07370009B6F15 /* CountryPickerViewController.m in Sources */,
+				024F787C23D1F297008EC68F /* Tools.m in Sources */,
 				02DFEC4B21C07370009B6F15 /* KeyboardGrowingTextView.m in Sources */,
 				02DFEC4C21C07370009B6F15 /* TCNavigationController.swift in Sources */,
 				B12209DC238550FE004D069C /* AppVersionUpdateViewController.swift in Sources */,
@@ -5827,12 +5839,17 @@
 					"\"${PODS_ROOT}/WebRTC\"",
 					"\"$(PROJECT_DIR)/Riot/libs/jitsi-meet\"",
 				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"ENABLE_ROOM_RETENTION=1",
+				);
 				INFOPLIST_FILE = "$(SRCROOT)/Btchap/SupportingFiles/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D ENABLE_ROOM_RETENTION";
 				PRODUCT_BUNDLE_IDENTIFIER = fr.gouv.btchap;
 				PRODUCT_MODULE_NAME = Tchap;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5873,12 +5890,17 @@
 					"\"${PODS_ROOT}/WebRTC\"",
 					"\"$(PROJECT_DIR)/Riot/libs/jitsi-meet\"",
 				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"ENABLE_ROOM_RETENTION=1",
+				);
 				INFOPLIST_FILE = "$(SRCROOT)/Btchap/SupportingFiles/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D ENABLE_ROOM_RETENTION";
 				PRODUCT_BUNDLE_IDENTIFIER = fr.gouv.btchap;
 				PRODUCT_MODULE_NAME = Tchap;
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -1,5 +1,6 @@
 /*
  Copyright 2016 OpenMarket Ltd
+ Copyright 2020 New Vector Ltd
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -140,6 +141,18 @@
      }];
 
     return string;
+}
+
+#pragma mark - Time utilities
+
++ (uint64_t)durationInMsFromDays:(uint)days
+{
+    return days * 86400000;
+}
+
++ (uint)numberOfDaysFromDurationInMs:(uint64_t)duration
+{
+    return (uint)(duration / 86400000);
 }
 
 @end
