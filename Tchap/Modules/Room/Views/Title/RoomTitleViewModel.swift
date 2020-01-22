@@ -21,13 +21,13 @@ final class RoomTitleViewModel: NSObject {
     
     let title: String
     let subtitle: String?
-    let roomAccessInfo: String?
+    let roomInfo: String?
     let avatarImageViewModel: AvatarImageViewModel?
     
-    init(title: String, subtitle: String?, roomAccessInfo: String?, avatarImageViewModel: AvatarImageViewModel?) {
+    init(title: String, subtitle: String?, roomInfo: String?, avatarImageViewModel: AvatarImageViewModel?) {
         self.title = title
         self.subtitle = subtitle
-        self.roomAccessInfo = roomAccessInfo
+        self.roomInfo = roomInfo
         self.avatarImageViewModel = avatarImageViewModel
     }
 }

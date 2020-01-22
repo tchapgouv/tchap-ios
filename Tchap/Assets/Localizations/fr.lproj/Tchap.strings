@@ -143,6 +143,8 @@
 // MARK: Room title
 "room_title_room_members_count" = "%d membre(s)";
 "room_title_unrestricted_room" = "Salon accessible aux externes";
+"room_title_retention_info_one_day" = "Historique limité à 1 jour";
+"room_title_retention_info_in_days" = "Historique limité à %d jours";
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Room
@@ -174,7 +176,7 @@
 "room_settings_allow_external_users_to_join_prompt_msg" = "Cette action est irréversible.\nVoulez-vous vraiment autoriser les externes à rejoindre ce salon ?";
 "room_settings_retention_title" = "Limitation de l’historique";
 "room_settings_retention_period_one_day" = "1 jour";
-"room_settings_retention_period_in_days" = "%u jours";
+"room_settings_retention_period_in_days" = "%d jours";
 "room_settings_fail_to_update_retention_period" = "Échec de mise à jour de la durée de l'historique";
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -204,7 +206,7 @@
 "room_creation_add_avatar_action" = "Ajouter une photo";
 "room_creation_room_access_title" = "Autoriser l’accès aux externes à ce salon";
 "room_creation_room_retention_period_one_day" = "Limiter l’historique du salon à 1 jour";
-"room_creation_room_retention_period_days" = "Limiter l’historique du salon à %u jours";
+"room_creation_room_retention_period_days" = "Limiter l’historique du salon à %d jours";
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Room creation

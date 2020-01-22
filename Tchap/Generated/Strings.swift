@@ -268,7 +268,7 @@ internal enum TchapL10n {
   internal static let roomCreationPublicVisibilityTitle = TchapL10n.tr("Tchap", "room_creation_public_visibility_title")
   /// Autoriser l’accès aux externes à ce salon
   internal static let roomCreationRoomAccessTitle = TchapL10n.tr("Tchap", "room_creation_room_access_title")
-  /// Limiter l’historique du salon à %u jours
+  /// Limiter l’historique du salon à %d jours
   internal static func roomCreationRoomRetentionPeriodDays(_ p1: Int) -> String {
     return TchapL10n.tr("Tchap", "room_creation_room_retention_period_days", p1)
   }
@@ -294,7 +294,7 @@ internal enum TchapL10n {
   internal static let roomSettingsRemoveFromRoomsDirectory = TchapL10n.tr("Tchap", "room_settings_remove_from_rooms_directory")
   /// Cette action est irréversible.\nVoulez-vous vraiment retirer ce salon des salons publics ?
   internal static let roomSettingsRemoveFromRoomsDirectoryPrompt = TchapL10n.tr("Tchap", "room_settings_remove_from_rooms_directory_prompt")
-  /// %u jours
+  /// %d jours
   internal static func roomSettingsRetentionPeriodInDays(_ p1: Int) -> String {
     return TchapL10n.tr("Tchap", "room_settings_retention_period_in_days", p1)
   }
@@ -310,6 +310,12 @@ internal enum TchapL10n {
   internal static let roomSettingsRoomAccessUnrestricted = TchapL10n.tr("Tchap", "room_settings_room_access_unrestricted")
   /// Paramètres
   internal static let roomSettingsTabTitle = TchapL10n.tr("Tchap", "room_settings_tab_title")
+  /// Historique limité à %d jours
+  internal static func roomTitleRetentionInfoInDays(_ p1: Int) -> String {
+    return TchapL10n.tr("Tchap", "room_title_retention_info_in_days", p1)
+  }
+  /// Historique limité à 1 jour
+  internal static let roomTitleRetentionInfoOneDay = TchapL10n.tr("Tchap", "room_title_retention_info_one_day")
   /// %d membre(s)
   internal static func roomTitleRoomMembersCount(_ p1: Int) -> String {
     return TchapL10n.tr("Tchap", "room_title_room_members_count", p1)
