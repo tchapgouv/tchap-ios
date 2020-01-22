@@ -17,10 +17,14 @@
 		02018FA022006282008D68BE /* UniversalLinkParametersType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02018F9E22006282008D68BE /* UniversalLinkParametersType.swift */; };
 		02040CC923D65CE100DE0690 /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = 024F787923D1F296008EC68F /* Tools.m */; };
 		02040CCA23D65CE200DE0690 /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = 024F787923D1F296008EC68F /* Tools.m */; };
-		02040CCC23D7622200DE0690 /* RoomRetentionPeriodPickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02040CCB23D7622200DE0690 /* RoomRetentionPeriodPickerCell.swift */; };
-		02040CCD23D7622200DE0690 /* RoomRetentionPeriodPickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02040CCB23D7622200DE0690 /* RoomRetentionPeriodPickerCell.swift */; };
-		02040CD823D76A7F00DE0690 /* RoomRetentionPeriodPickerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02040CD723D76A7F00DE0690 /* RoomRetentionPeriodPickerCell.xib */; };
-		02040CD923D76A7F00DE0690 /* RoomRetentionPeriodPickerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02040CD723D76A7F00DE0690 /* RoomRetentionPeriodPickerCell.xib */; };
+		02040CCC23D7622200DE0690 /* RetentionPeriodInDaysPickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02040CCB23D7622200DE0690 /* RetentionPeriodInDaysPickerCell.swift */; };
+		02040CCD23D7622200DE0690 /* RetentionPeriodInDaysPickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02040CCB23D7622200DE0690 /* RetentionPeriodInDaysPickerCell.swift */; };
+		02040CD823D76A7F00DE0690 /* RetentionPeriodInDaysPickerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02040CD723D76A7F00DE0690 /* RetentionPeriodInDaysPickerCell.xib */; };
+		02040CD923D76A7F00DE0690 /* RetentionPeriodInDaysPickerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02040CD723D76A7F00DE0690 /* RetentionPeriodInDaysPickerCell.xib */; };
+		02040CDC23D88D7700DE0690 /* RetentionPeriodInDaysPickerContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02040CDB23D88D7700DE0690 /* RetentionPeriodInDaysPickerContentView.swift */; };
+		02040CDD23D88D7700DE0690 /* RetentionPeriodInDaysPickerContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02040CDB23D88D7700DE0690 /* RetentionPeriodInDaysPickerContentView.swift */; };
+		02040CE523D8938400DE0690 /* RetentionPeriodInDaysPickerContentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02040CE423D8938400DE0690 /* RetentionPeriodInDaysPickerContentView.xib */; };
+		02040CE623D8938400DE0690 /* RetentionPeriodInDaysPickerContentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02040CE423D8938400DE0690 /* RetentionPeriodInDaysPickerContentView.xib */; };
 		02098F352131FE9E00F25086 /* ContactsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 02098F302131FE9E00F25086 /* ContactsDataSource.m */; };
 		02098F372131FE9E00F25086 /* ContactsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 02098F322131FE9E00F25086 /* ContactsViewController.m */; };
 		020DF935214BE467003DFBA4 /* RoomDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF85B214BE467003DFBA4 /* RoomDataSource.m */; };
@@ -1150,8 +1154,10 @@
 		02018F9822004417008D68BE /* UniversalLinkServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniversalLinkServiceType.swift; sourceTree = "<group>"; };
 		02018F9B22006200008D68BE /* UniversalLinkParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniversalLinkParameters.swift; sourceTree = "<group>"; };
 		02018F9E22006282008D68BE /* UniversalLinkParametersType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniversalLinkParametersType.swift; sourceTree = "<group>"; };
-		02040CCB23D7622200DE0690 /* RoomRetentionPeriodPickerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomRetentionPeriodPickerCell.swift; sourceTree = "<group>"; };
-		02040CD723D76A7F00DE0690 /* RoomRetentionPeriodPickerCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomRetentionPeriodPickerCell.xib; sourceTree = "<group>"; };
+		02040CCB23D7622200DE0690 /* RetentionPeriodInDaysPickerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetentionPeriodInDaysPickerCell.swift; sourceTree = "<group>"; };
+		02040CD723D76A7F00DE0690 /* RetentionPeriodInDaysPickerCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RetentionPeriodInDaysPickerCell.xib; sourceTree = "<group>"; };
+		02040CDB23D88D7700DE0690 /* RetentionPeriodInDaysPickerContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetentionPeriodInDaysPickerContentView.swift; sourceTree = "<group>"; };
+		02040CE423D8938400DE0690 /* RetentionPeriodInDaysPickerContentView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RetentionPeriodInDaysPickerContentView.xib; sourceTree = "<group>"; };
 		02098F292131FE9D00F25086 /* ContactsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsViewController.h; sourceTree = "<group>"; };
 		02098F2F2131FE9E00F25086 /* ContactsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsDataSource.h; sourceTree = "<group>"; };
 		02098F302131FE9E00F25086 /* ContactsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactsDataSource.m; sourceTree = "<group>"; };
@@ -1895,6 +1901,15 @@
 			path = UniversalLink;
 			sourceTree = "<group>";
 		};
+		02040CDA23D88D3300DE0690 /* RetentionPeriodPicker */ = {
+			isa = PBXGroup;
+			children = (
+				02040CDB23D88D7700DE0690 /* RetentionPeriodInDaysPickerContentView.swift */,
+				02040CE423D8938400DE0690 /* RetentionPeriodInDaysPickerContentView.xib */,
+			);
+			path = RetentionPeriodPicker;
+			sourceTree = "<group>";
+		};
 		02098F2A2131FE9E00F25086 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -1979,8 +1994,8 @@
 				020DF86A214BE467003DFBA4 /* TableViewCellWithCheckBoxAndLabel.m */,
 				020DF86B214BE467003DFBA4 /* TableViewCellWithCheckBoxes.m */,
 				020DF86C214BE467003DFBA4 /* TableViewCellWithLabelAndLargeTextView.h */,
-				02040CCB23D7622200DE0690 /* RoomRetentionPeriodPickerCell.swift */,
-				02040CD723D76A7F00DE0690 /* RoomRetentionPeriodPickerCell.xib */,
+				02040CCB23D7622200DE0690 /* RetentionPeriodInDaysPickerCell.swift */,
+				02040CD723D76A7F00DE0690 /* RetentionPeriodInDaysPickerCell.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2969,6 +2984,7 @@
 		B1322FE6213002430054A9DD /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				02040CDA23D88D3300DE0690 /* RetentionPeriodPicker */,
 				B1892E752130524100742348 /* ErrorPresentation */,
 				B1322FE7213002430054A9DD /* Forms */,
 				B15B867721359013002782BE /* KeyboardAvoiding */,
@@ -4250,7 +4266,7 @@
 				B1C4644921B67F1E005F4D53 /* RoomCreationAvatarView.xib in Resources */,
 				B1073D6721A8096F00E36CFA /* RoomIncomingEncryptedAttachmentWithoutSenderInfoBubbleCell.xib in Resources */,
 				026154E1236C7D930045459E /* agent.dinum_2019_10.cer in Resources */,
-				02040CD823D76A7F00DE0690 /* RoomRetentionPeriodPickerCell.xib in Resources */,
+				02040CD823D76A7F00DE0690 /* RetentionPeriodInDaysPickerCell.xib in Resources */,
 				0250C59F2122B68000034691 /* MediaAlbumTableCell.xib in Resources */,
 				020DF938214BE467003DFBA4 /* TableViewCellWithCheckBoxAndLabel.xib in Resources */,
 				0250C5A52122B68000034691 /* FilesSearchTableViewCell.xib in Resources */,
@@ -4262,6 +4278,7 @@
 				020DF96B214BE467003DFBA4 /* RoomEncryptedAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.xib in Resources */,
 				02BEE1A4212C717F00098505 /* Images.xcassets in Resources */,
 				020DF964214BE467003DFBA4 /* RoomEncryptedAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.xib in Resources */,
+				02040CE523D8938400DE0690 /* RetentionPeriodInDaysPickerContentView.xib in Resources */,
 				026154E8236C7D930045459E /* agent.interieur_2019_10.cer in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4425,7 +4442,8 @@
 				02DFECD221C07370009B6F15 /* JitsiViewController.xib in Resources */,
 				02DFECD321C07370009B6F15 /* RoomIncomingAttachmentWithoutSenderInfoBubbleCell.xib in Resources */,
 				02DFECD421C07370009B6F15 /* LaunchScreen.storyboard in Resources */,
-				02040CD923D76A7F00DE0690 /* RoomRetentionPeriodPickerCell.xib in Resources */,
+				02040CD923D76A7F00DE0690 /* RetentionPeriodInDaysPickerCell.xib in Resources */,
+				02040CE623D8938400DE0690 /* RetentionPeriodInDaysPickerContentView.xib in Resources */,
 				02DFECD521C07370009B6F15 /* DeactivateAccountViewController.storyboard in Resources */,
 				02DFECD621C07370009B6F15 /* ForgotPasswordFormViewController.storyboard in Resources */,
 				02DFECD721C07370009B6F15 /* RoomAttachmentAntivirusScanStatusBubbleCell.xib in Resources */,
@@ -4708,6 +4726,7 @@
 				B104AA1D215D3EE800B2C452 /* ForgotPasswordService.swift in Sources */,
 				B15FE5E32385848F00D2A5B2 /* AppVersionCheckerResult.swift in Sources */,
 				B15B867021354FF5002782BE /* AuthenticationViewModel.swift in Sources */,
+				02040CDC23D88D7700DE0690 /* RetentionPeriodInDaysPickerContentView.swift in Sources */,
 				02906074214FD0E1005FE3C1 /* RoomCoordinator.swift in Sources */,
 				B1C0EE8F2375B7F400E8BB88 /* ChangePasswordNewPasswordViewController.swift in Sources */,
 				027DCAC621B14F68000DD05E /* ContactCell.swift in Sources */,
@@ -4875,7 +4894,7 @@
 				B146D52421A7453900D8C2C6 /* RoomAttachmentAntivirusScanStatusViewModelBuilder.swift in Sources */,
 				020DF93D214BE467003DFBA4 /* TableViewCellWithCheckBoxes.m in Sources */,
 				B109EF1B2170F3B90018FA06 /* User.swift in Sources */,
-				02040CCC23D7622200DE0690 /* RoomRetentionPeriodPickerCell.swift in Sources */,
+				02040CCC23D7622200DE0690 /* RetentionPeriodInDaysPickerCell.swift in Sources */,
 				020DF945214BE467003DFBA4 /* RoomFilesViewController.m in Sources */,
 				B1C4644821B67F1E005F4D53 /* RoomCreationViewController.swift in Sources */,
 				020DF98F214BE467003DFBA4 /* RoomPredecessorBubbleCell.m in Sources */,
@@ -5140,6 +5159,7 @@
 				02DFEB7E21C07370009B6F15 /* BugReportViewController.m in Sources */,
 				B15FE5E42385848F00D2A5B2 /* AppVersionCheckerResult.swift in Sources */,
 				B12209C223854F92004D069C /* ClientVersionInfoMessage.swift in Sources */,
+				02040CDD23D88D7700DE0690 /* RetentionPeriodInDaysPickerContentView.swift in Sources */,
 				02DFEB7F21C07370009B6F15 /* RecentCellData.m in Sources */,
 				02DFEB8021C07370009B6F15 /* Presentable.swift in Sources */,
 				02DFEB8121C07370009B6F15 /* ForgotPasswordService.swift in Sources */,
@@ -5307,7 +5327,7 @@
 				02DFEBFC21C07370009B6F15 /* TextInputHandler.swift in Sources */,
 				02DFEBFD21C07370009B6F15 /* HomeViewController.swift in Sources */,
 				02DFEBFE21C07370009B6F15 /* Coordinator.swift in Sources */,
-				02040CCD23D7622200DE0690 /* RoomRetentionPeriodPickerCell.swift in Sources */,
+				02040CCD23D7622200DE0690 /* RetentionPeriodInDaysPickerCell.swift in Sources */,
 				B1C0EE702375B7A000E8BB88 /* ChangePasswordCurrentPasswordCoordinator.swift in Sources */,
 				B122099F23854F11004D069C /* Images.swift in Sources */,
 				02DFEBFF21C07370009B6F15 /* PublicRoomsCoordinatorType.swift in Sources */,

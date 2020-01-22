@@ -30,18 +30,14 @@ protocol RoomCreationViewControllerDelegate: class {
 }
 
 /// RoomCreationViewController enables to create a new room.
-final class RoomCreationViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
+final class RoomCreationViewController: UIViewController, RetentionPeriodInDaysPickerContentViewDelegate {
     
     // MARK: - Constants
     
     private enum Constants {
+        static let animationDuration: TimeInterval = 0.3
         static let hexagonBorderWidthDefault: CGFloat = 1.0
         static let hexagonBorderWidthUnrestricted: CGFloat = 10.0
-    }
-    
-    private enum RoomRetentionPeriod {
-        static let min: uint = 1
-        static let max: uint = 365
     }
 
     // MARK: - Properties
@@ -54,7 +50,7 @@ final class RoomCreationViewController: UIViewController, UIPickerViewDelegate, 
     @IBOutlet private weak var roomNameFormTextField: FormTextField!
     
     @IBOutlet private weak var roomRetentionLabel: UILabel!
-    @IBOutlet private weak var roomRetentionPeriodPicker: UIPickerView!
+    @IBOutlet private weak var retentionPeriodInDaysPicker: RetentionPeriodInDaysPickerContentView!
     
     @IBOutlet private weak var roomAccessTitleLabel: UILabel!
     @IBOutlet private weak var roomAccessSwitch: UISwitch!
@@ -73,7 +69,6 @@ final class RoomCreationViewController: UIViewController, UIPickerViewDelegate, 
     private var currentStyle: Style!
     private var viewModel: RoomCreationViewModelType!
     private var keyboardAvoider: KeyboardAvoider?
-    private var retentionPeriodValuesNb: Int!
     
     private weak var nextBarButtonItem: UIBarButtonItem?
     private weak var roomCreationAvatarView: RoomCreationAvatarView?
@@ -88,7 +83,6 @@ final class RoomCreationViewController: UIViewController, UIPickerViewDelegate, 
         let viewController = StoryboardScene.RoomCreationViewController.initialScene.instantiate()
         viewController.currentStyle = style
         viewController.viewModel = viewModel
-        viewController.retentionPeriodValuesNb = (Int)(RoomRetentionPeriod.max - RoomRetentionPeriod.min) + 1
         return viewController
     }
     
@@ -111,6 +105,12 @@ final class RoomCreationViewController: UIViewController, UIPickerViewDelegate, 
         self.keyboardAvoider?.startAvoiding()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        self.hideRetentionPeriodPicker(true)
+    }
+    
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
@@ -128,21 +128,8 @@ final class RoomCreationViewController: UIViewController, UIPickerViewDelegate, 
         self.roomCreationAvatarView?.updateAvatar(with: image)
     }
     
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        // Make the picker wrap around by adding a set of values before and after -> 3 sets
-        return 3 * self.retentionPeriodValuesNb
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return String(row % self.retentionPeriodValuesNb + 1)
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        self.setRetentionPeriodInDays((uint)(row % self.retentionPeriodValuesNb + 1))
+    func retentionPeriodInDaysPickerContentView(_ view: RetentionPeriodInDaysPickerContentView, didSelect period: uint) {
+        self.setRetentionPeriodInDays(period)
     }
     
     // MARK: - Private
@@ -158,7 +145,7 @@ final class RoomCreationViewController: UIViewController, UIPickerViewDelegate, 
         
         #if ENABLE_ROOM_RETENTION
         self.setupRoomRetentionLabel()
-        self.setupRoomRetentionPeriodPicker()
+        self.setupRetentionPeriodPicker()
         self.setRetentionPeriodInDays(self.viewModel.retentionPeriodInDays)
         #else
         self.roomRetentionLabel.isHidden = true
@@ -212,12 +199,10 @@ final class RoomCreationViewController: UIViewController, UIPickerViewDelegate, 
         tapGestureRecognizer.numberOfTouchesRequired = 1
         self.roomRetentionLabel.addGestureRecognizer(tapGestureRecognizer)
         self.roomRetentionLabel.isUserInteractionEnabled = true
-        self.roomRetentionLabel.textColor = self.currentStyle.primarySubTextColor
     }
     
-    private func setupRoomRetentionPeriodPicker() {
-        self.roomRetentionPeriodPicker.backgroundColor = self.currentStyle.backgroundColor
-        self.roomRetentionPeriodPicker.tintColor = self.currentStyle.primaryTextColor
+    private func setupRetentionPeriodPicker() {
+        self.retentionPeriodInDaysPicker.delegate = self
         
         // Add a tap gesture recognizer on the main view to hide the picker (if any)
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(mainViewTapGestureRecognizer(_:)))
@@ -298,13 +283,13 @@ final class RoomCreationViewController: UIViewController, UIPickerViewDelegate, 
         self.nextBarButtonItem?.isEnabled = enableNextButton
     }
     
-    private func hideRoomRetentionPeriodPicker(_ isHidden: Bool) {
+    private func hideRetentionPeriodPicker(_ isHidden: Bool) {
         if isHidden {
             // Hide without animation because the animation is buggy...
-            self.roomRetentionPeriodPicker.isHidden = true
+            self.retentionPeriodInDaysPicker.isHidden = true
         } else {
-            UIView.animate(withDuration: 0.3) {
-                self.roomRetentionPeriodPicker.isHidden = isHidden
+            UIView.animate(withDuration: Constants.animationDuration) {
+                self.retentionPeriodInDaysPicker.isHidden = false
             }
         }
     }
@@ -325,16 +310,16 @@ final class RoomCreationViewController: UIViewController, UIPickerViewDelegate, 
     }
     
     @IBAction private func roomRetentionLabelTapGestureRecognizer(_ sender: UITapGestureRecognizer) {
-        if self.roomRetentionPeriodPicker.isHidden == true {
-            self.roomRetentionPeriodPicker.selectRow((Int)(self.viewModel.retentionPeriodInDays - 1) + self.retentionPeriodValuesNb, inComponent: 0, animated: false)
-            self.hideRoomRetentionPeriodPicker(false)
+        if self.retentionPeriodInDaysPicker.isHidden == true {
+            self.retentionPeriodInDaysPicker.scrollTo(retentionPeriodInDays: self.viewModel.retentionPeriodInDays, animated: false)
+            self.hideRetentionPeriodPicker(false)
         } else {
-            self.hideRoomRetentionPeriodPicker(true)
+            self.hideRetentionPeriodPicker(true)
         }
     }
     
     @IBAction private func mainViewTapGestureRecognizer(_ sender: UITapGestureRecognizer) {
-        self.hideRoomRetentionPeriodPicker(true)
+        self.hideRetentionPeriodPicker(true)
     }
     
     @IBAction private func roomAccessSwitchAction(_ sender: UISwitch) {
@@ -362,6 +347,8 @@ extension RoomCreationViewController: Stylable {
         }
         
         self.roomNameFormTextField.update(style: style)
+        self.roomRetentionLabel.textColor = style.primarySubTextColor
+        self.retentionPeriodInDaysPicker.update(style: style)
         self.enableRoomAccessOption(!self.viewModel.isPublic)
         self.publicVisibilityTitleLabel.textColor = style.primarySubTextColor
         self.highlightPublicVisibilityInfoLabel(self.viewModel.isPublic)

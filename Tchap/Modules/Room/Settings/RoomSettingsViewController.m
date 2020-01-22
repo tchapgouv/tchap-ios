@@ -42,7 +42,6 @@ enum
 };
 
 #define ROOM_TOPIC_CELL_HEIGHT 124
-#define ROOM_RETENTION_PICKER_CELL_HEIGHT 216
 
 #define SECTION_TITLE_PADDING_WHEN_HIDDEN 0.01f
 
@@ -59,7 +58,7 @@ NSString *const kRoomSettingsTopicCellViewIdentifier = @"kRoomSettingsTopicCellV
 NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBannedUserCellViewIdentifier";
 NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetentionCellViewIdentifier";
 
-@interface RoomSettingsViewController () <Stylable, RoomRetentionPeriodPickerCellDelegate>
+@interface RoomSettingsViewController () <Stylable, RetentionPeriodInDaysPickerCellDelegate>
 {
     // The updated user data
     NSMutableDictionary<NSString*, id> *updatedItemsDict;
@@ -198,7 +197,7 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
     [self.tableView registerClass:MXKTableViewCellWithButton.class forCellReuseIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
     [self.tableView registerClass:MXKTableViewCell.class forCellReuseIdentifier:[MXKTableViewCell defaultReuseIdentifier]];
     
-    [self.tableView registerNib:RoomRetentionPeriodPickerCell.nib forCellReuseIdentifier:RoomRetentionPeriodPickerCell.defaultReuseIdentifier];
+    [self.tableView registerNib:RetentionPeriodInDaysPickerCell.nib forCellReuseIdentifier:RetentionPeriodInDaysPickerCell.defaultReuseIdentifier];
     
     // Enable self sizing cells
     self.tableView.rowHeight = UITableViewAutomaticDimension;
@@ -1150,10 +1149,6 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
         {
             return ROOM_TOPIC_CELL_HEIGHT;
         }
-        else if (indexPath.row == retentionPeriodPickerIndex)
-        {
-            return ROOM_RETENTION_PICKER_CELL_HEIGHT;
-        }
     }
     
     return [super tableView:tableView heightForRowAtIndexPath:indexPath];
@@ -1223,7 +1218,7 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
         }
         else if (row == retentionPeriodPickerIndex)
         {
-            RoomRetentionPeriodPickerCell *pickerCell = [tableView dequeueReusableCellWithIdentifier:[RoomRetentionPeriodPickerCell defaultReuseIdentifier] forIndexPath:indexPath];
+            RetentionPeriodInDaysPickerCell *pickerCell = [tableView dequeueReusableCellWithIdentifier:[RetentionPeriodInDaysPickerCell defaultReuseIdentifier] forIndexPath:indexPath];
             
             pickerCell.delegate = self;
             [pickerCell scrollToRetentionPeriodInDays:displayedRetentionPeriod animated:NO];
@@ -1840,9 +1835,9 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
                                                   }];
 }
 
-#pragma mark - RoomRetentionPeriodPickerCellDelegate
+#pragma mark - RetentionPeriodInDaysPickerCellDelegate
 
-- (void)roomRetentionPeriodPickerCell:(RoomRetentionPeriodPickerCell *)cell didSelectRetentionPeriodInDays:(uint)period
+- (void)retentionPeriodInDaysPickerCell:(RetentionPeriodInDaysPickerCell *)cell didSelect:(uint)period
 {
     uint currentPeriod = [mxRoom.summary tc_roomRetentionPeriodInDays];
     

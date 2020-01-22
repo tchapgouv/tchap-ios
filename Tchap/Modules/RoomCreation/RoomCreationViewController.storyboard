@@ -49,14 +49,13 @@
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <pickerView hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TKr-iO-apD">
-                                                        <rect key="frame" x="0.0" y="84" width="335" height="0.0"/>
+                                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="snx-AX-REp" customClass="RetentionPeriodInDaysPickerContentView" customModule="Tchap" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="84" width="335" height="1"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <connections>
-                                                            <outlet property="dataSource" destination="55i-A4-2Rr" id="1d5-EZ-KOC"/>
-                                                            <outlet property="delegate" destination="55i-A4-2Rr" id="ILf-oU-Mac"/>
-                                                        </connections>
-                                                    </pickerView>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="1" id="Ypf-kq-1hu"/>
+                                                        </constraints>
+                                                    </view>
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="top" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="e33-0q-FAo">
                                                         <rect key="frame" x="0.0" y="91.5" width="335" height="115"/>
                                                         <subviews>
@@ -161,11 +160,11 @@
                         <outlet property="publicVisibilityInfoLabel" destination="dmu-Nz-cah" id="ogN-jV-L79"/>
                         <outlet property="publicVisibilitySwitch" destination="DXL-3C-IAc" id="qnK-6u-AQQ"/>
                         <outlet property="publicVisibilityTitleLabel" destination="XU5-RI-0G4" id="xmQ-hF-YtY"/>
+                        <outlet property="retentionPeriodInDaysPicker" destination="snx-AX-REp" id="2iU-T3-tZc"/>
                         <outlet property="roomAccessSwitch" destination="4mf-vD-bHt" id="lWd-CZ-gVH"/>
                         <outlet property="roomAccessTitleLabel" destination="K0u-la-34J" id="HgJ-hw-dsx"/>
                         <outlet property="roomNameFormTextField" destination="2AX-mv-koP" id="j3J-pI-6to"/>
                         <outlet property="roomRetentionLabel" destination="E1b-5B-MFr" id="2rB-Up-rLC"/>
-                        <outlet property="roomRetentionPeriodPicker" destination="TKr-iO-apD" id="U15-r3-QJ5"/>
                         <outlet property="scrollView" destination="e1F-ue-rdd" id="wOm-wi-pst"/>
                     </connections>
                 </viewController>

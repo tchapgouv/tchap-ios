@@ -11,29 +11,27 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="TW9-ZO-zr7" customClass="RoomRetentionPeriodPickerCell" customModule="Tchap" customModuleProvider="target">
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="TW9-ZO-zr7" customClass="RetentionPeriodInDaysPickerCell" customModule="Tchap" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="414" height="162"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="TW9-ZO-zr7" id="BCH-4m-9Ek">
                 <rect key="frame" x="0.0" y="0.0" width="414" height="161.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="R28-6a-2rR">
-                        <rect key="frame" x="0.0" y="-0.5" width="414" height="162"/>
-                        <connections>
-                            <outlet property="dataSource" destination="TW9-ZO-zr7" id="jqe-DP-hQe"/>
-                            <outlet property="delegate" destination="TW9-ZO-zr7" id="oTf-TI-OYR"/>
-                        </connections>
-                    </pickerView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vPI-kw-iaC" customClass="RetentionPeriodInDaysPickerContentView" customModule="Tchap" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="161.5"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="trailing" secondItem="R28-6a-2rR" secondAttribute="trailing" id="8RU-Cg-Tom"/>
-                    <constraint firstItem="R28-6a-2rR" firstAttribute="leading" secondItem="BCH-4m-9Ek" secondAttribute="leading" id="WQ4-kq-yVb"/>
-                    <constraint firstAttribute="bottom" secondItem="R28-6a-2rR" secondAttribute="bottom" id="atE-G8-0pv"/>
+                    <constraint firstItem="vPI-kw-iaC" firstAttribute="leading" secondItem="BCH-4m-9Ek" secondAttribute="leading" id="4Ac-TP-Yjn"/>
+                    <constraint firstItem="vPI-kw-iaC" firstAttribute="top" secondItem="BCH-4m-9Ek" secondAttribute="top" id="5pH-nQ-X4A"/>
+                    <constraint firstAttribute="trailing" secondItem="vPI-kw-iaC" secondAttribute="trailing" id="nsn-7t-8NV"/>
+                    <constraint firstAttribute="bottom" secondItem="vPI-kw-iaC" secondAttribute="bottom" id="qRx-3i-w6h"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
-                <outlet property="pickerView" destination="R28-6a-2rR" id="BN4-gW-pQV"/>
+                <outlet property="retentionPeriodInDaysPickerContentView" destination="vPI-kw-iaC" id="b3x-F3-fZj"/>
             </connections>
         </tableViewCell>
     </objects>
