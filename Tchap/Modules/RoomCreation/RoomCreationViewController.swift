@@ -37,8 +37,11 @@ final class RoomCreationViewController: UIViewController, UIPickerViewDelegate, 
     private enum Constants {
         static let hexagonBorderWidthDefault: CGFloat = 1.0
         static let hexagonBorderWidthUnrestricted: CGFloat = 10.0
-        static let roomRetentionPeriodMin: Int = 1
-        static let roomRetentionPeriodMax: Int = 365
+    }
+    
+    private enum RoomRetentionPeriod {
+        static let min: uint = 1
+        static let max: uint = 365
     }
 
     // MARK: - Properties
@@ -85,7 +88,7 @@ final class RoomCreationViewController: UIViewController, UIPickerViewDelegate, 
         let viewController = StoryboardScene.RoomCreationViewController.initialScene.instantiate()
         viewController.currentStyle = style
         viewController.viewModel = viewModel
-        viewController.retentionPeriodValuesNb = (Constants.roomRetentionPeriodMax - Constants.roomRetentionPeriodMin + 1)
+        viewController.retentionPeriodValuesNb = (Int)(RoomRetentionPeriod.max - RoomRetentionPeriod.min) + 1
         return viewController
     }
     

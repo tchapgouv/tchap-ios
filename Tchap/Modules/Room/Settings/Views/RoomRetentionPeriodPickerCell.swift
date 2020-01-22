@@ -22,9 +22,9 @@ import UIKit
 
 @objcMembers class RoomRetentionPeriodPickerCell: UITableViewCell, Stylable, UIPickerViewDataSource, UIPickerViewDelegate {
     
-    private enum Constants {
-        static let roomRetentionPeriodMin: Int = 1
-        static let roomRetentionPeriodMax: Int = 365
+    private enum RoomRetentionPeriod {
+        static let min: uint = 1
+        static let max: uint = 365
     }
     
     @IBOutlet private weak var pickerView: UIPickerView!
@@ -38,7 +38,7 @@ import UIKit
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        retentionPeriodValuesNb = (Constants.roomRetentionPeriodMax - Constants.roomRetentionPeriodMin + 1)
+        retentionPeriodValuesNb = (Int)(RoomRetentionPeriod.max - RoomRetentionPeriod.min) + 1
         self.update(style: Variant2Style.shared)
     }
     
@@ -75,7 +75,7 @@ import UIKit
     }
     
     func scrollTo(retentionPeriodInDays: uint, animated: Bool) {
-        let period = retentionPeriodInDays < 1 ? 1 : retentionPeriodInDays > 365 ? 365 : retentionPeriodInDays
+        let period = retentionPeriodInDays < RoomRetentionPeriod.min ? RoomRetentionPeriod.min : retentionPeriodInDays > RoomRetentionPeriod.max ? RoomRetentionPeriod.max : retentionPeriodInDays
         self.pickerView.selectRow((Int)(period - 1) + self.retentionPeriodValuesNb, inComponent: 0, animated: animated)
     }
 }

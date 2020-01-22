@@ -989,17 +989,13 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
                                                         }
                                                         failure:^(NSError *error){
                                                             
-                                                            NSLog(@"[RoomSettingsViewController] Update room retention failed");
+                                                            NSLog(@"[RoomSettingsViewController] Update room retention failed (%@)", error.localizedDescription);
                                                             MXStrongifyAndReturnIfNil(self);
                                                             self->pendingOperation = nil;
                                                             
                                                             dispatch_async(dispatch_get_main_queue(), ^{
                                                                 
-                                                                NSString* message = error.localizedDescription;
-                                                                if (!message.length)
-                                                                {
-                                                                    message = NSLocalizedStringFromTable(@"room_settings_fail_to_update_retention_period", @"Tchap", nil);
-                                                                }
+                                                                NSString* message = NSLocalizedStringFromTable(@"room_settings_fail_to_update_retention_period", @"Tchap", nil);
                                                                 [self onSaveFailed:message withKeys:@[kRoomSettingsRetentionKey]];
                                                                 
                                                             });
