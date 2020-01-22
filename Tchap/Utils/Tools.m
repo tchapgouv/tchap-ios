@@ -147,7 +147,7 @@
 
 + (uint64_t)durationInMsFromDays:(uint)days
 {
-    return days * 86400000;
+    return days * (uint64_t)(86400000);
 }
 
 + (uint)numberOfDaysFromDurationInMs:(uint64_t)duration

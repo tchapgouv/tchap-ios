@@ -41,17 +41,8 @@ enum
     ROOM_SETTINGS_SECTION_COUNT
 };
 
-enum
-{
-    ROOM_SETTINGS_MAIN_SECTION_ROW_PHOTO = 0,
-    ROOM_SETTINGS_MAIN_SECTION_ROW_NAME,
-    ROOM_SETTINGS_MAIN_SECTION_ROW_TOPIC,
-    ROOM_SETTINGS_MAIN_SECTION_ROW_MUTE_NOTIFICATIONS,
-    ROOM_SETTINGS_MAIN_SECTION_ROW_LEAVE,
-    ROOM_SETTINGS_MAIN_SECTION_ROW_COUNT
-};
-
 #define ROOM_TOPIC_CELL_HEIGHT 124
+#define ROOM_RETENTION_PICKER_CELL_HEIGHT 216
 
 #define SECTION_TITLE_PADDING_WHEN_HIDDEN 0.01f
 
@@ -61,19 +52,36 @@ NSString *const kRoomSettingsNameKey = @"kRoomSettingsNameKey";
 NSString *const kRoomSettingsTopicKey = @"kRoomSettingsTopicKey";
 NSString *const kRoomSettingsMuteNotifKey = @"kRoomSettingsMuteNotifKey";
 NSString *const kRoomSettingsDirectoryKey = @"kRoomSettingsDirectoryKey";
+NSString *const kRoomSettingsRetentionKey = @"kRoomSettingsRetentionKey";
 
 NSString *const kRoomSettingsNameCellViewIdentifier = @"kRoomSettingsNameCellViewIdentifier";
 NSString *const kRoomSettingsTopicCellViewIdentifier = @"kRoomSettingsTopicCellViewIdentifier";
 NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBannedUserCellViewIdentifier";
+NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetentionCellViewIdentifier";
 
-@interface RoomSettingsViewController () <Stylable>
+@interface RoomSettingsViewController () <Stylable, RoomRetentionPeriodPickerCellDelegate>
 {
     // The updated user data
     NSMutableDictionary<NSString*, id> *updatedItemsDict;
     
-    // The current table items
+    // Room profile items
+    NSInteger avatarIndex;
+    NSInteger nameIndex;
     UITextField* nameTextField;
+    NSInteger topicIndex;
     UITextView* topicTextView;
+    
+    // Room notifications
+    NSInteger notificationsIndex;
+    
+    // Room retention
+    NSInteger retentionIndex;
+    uint displayedRetentionPeriod;
+    BOOL isRetentionEdited;
+    NSInteger retentionPeriodPickerIndex;
+    
+    // Action
+    NSInteger leaveActionIndex;
     
     // Rooms directory items
     NSInteger directoryVisibilityIndex;
@@ -126,6 +134,8 @@ NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBanne
 - (void)finalizeInit
 {
     [super finalizeInit];
+    
+    isRetentionEdited = NO;
     
     _selectedRoomSettingsField = RoomSettingsViewControllerFieldNone;
     
@@ -188,6 +198,8 @@ NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBanne
     [self.tableView registerClass:MXKTableViewCellWithButton.class forCellReuseIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
     [self.tableView registerClass:MXKTableViewCell.class forCellReuseIdentifier:[MXKTableViewCell defaultReuseIdentifier]];
     
+    [self.tableView registerNib:RoomRetentionPeriodPickerCell.nib forCellReuseIdentifier:RoomRetentionPeriodPickerCell.defaultReuseIdentifier];
+    
     // Enable self sizing cells
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     self.tableView.estimatedRowHeight = 44;
@@ -200,7 +212,6 @@ NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBanne
         [self userInterfaceThemeDidChange];
         
     }];
-    [self userInterfaceThemeDidChange];
 }
 
 - (void)userInterfaceThemeDidChange
@@ -254,6 +265,8 @@ NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBanne
         [self.tableView setContentOffset:CGPointMake(-self.tableView.mxk_adjustedContentInset.left, -self.tableView.mxk_adjustedContentInset.top) animated:YES];
         
     }];
+    
+    [self userInterfaceThemeDidChange];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -272,6 +285,8 @@ NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBanne
     [super viewWillDisappear:animated];
     
     [self dismissFirstResponder];
+    
+    isRetentionEdited = NO;
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXNotificationCenterDidUpdateRules object:nil];
     
@@ -685,6 +700,12 @@ NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBanne
     if (textField == nameTextField)
     {
         nameTextField.textAlignment = NSTextAlignmentLeft;
+        
+        if (isRetentionEdited)
+        {
+            isRetentionEdited = NO;
+            [self refreshRoomSettings];
+        }
     }
 }
 - (void)textFieldDidEndEditing:(UITextField *)textField
@@ -946,6 +967,47 @@ NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBanne
                 
                 return;
             }
+            
+            // has a new retention period
+            if ([updatedItemsDict objectForKey:kRoomSettingsRetentionKey])
+            {
+                uint periodInDays = ((NSNumber*)[updatedItemsDict objectForKey:kRoomSettingsRetentionKey]).unsignedIntValue;
+                UInt64 periodInMs = [Tools durationInMsFromDays:periodInDays];
+                pendingOperation = [mxRoom sendStateEventOfType:RoomService.roomRetentionStateEventType
+                                                        content:@{
+                                                                  RoomService.roomRetentionContentMaxLifetimeKey: @(periodInMs),
+                                                                  RoomService.roomRetentionContentExpireOnClientsKey: @(YES)
+                                                                  }
+                                                       stateKey:@""
+                                                        success:^(NSString *eventId) {
+                                                            
+                                                            MXStrongifyAndReturnIfNil(self);
+                                                            self->pendingOperation = nil;
+                                                            [self->updatedItemsDict removeObjectForKey:kRoomSettingsRetentionKey];
+                                                            [self onSave:nil];
+                                                            
+                                                        }
+                                                        failure:^(NSError *error){
+                                                            
+                                                            NSLog(@"[RoomSettingsViewController] Update room retention failed");
+                                                            MXStrongifyAndReturnIfNil(self);
+                                                            self->pendingOperation = nil;
+                                                            
+                                                            dispatch_async(dispatch_get_main_queue(), ^{
+                                                                
+                                                                NSString* message = error.localizedDescription;
+                                                                if (!message.length)
+                                                                {
+                                                                    message = NSLocalizedStringFromTable(@"room_settings_fail_to_update_retention_period", @"Tchap", nil);
+                                                                }
+                                                                [self onSaveFailed:message withKeys:@[kRoomSettingsRetentionKey]];
+                                                                
+                                                            });
+                                                            
+                                                        }];
+                
+                return;
+            }
         }
         
         if ([updatedItemsDict objectForKey:kRoomSettingsMuteNotifKey])
@@ -995,7 +1057,18 @@ NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBanne
     
     if (section == ROOM_SETTINGS_MAIN_SECTION_INDEX)
     {
-        count = ROOM_SETTINGS_MAIN_SECTION_ROW_COUNT;
+        avatarIndex = count++;
+        nameIndex = count++;
+        topicIndex = count++;
+        notificationsIndex = count++;
+#ifdef ENABLE_ROOM_RETENTION
+        retentionIndex = count++;
+        retentionPeriodPickerIndex = isRetentionEdited ? count++ : -1;
+#else
+        retentionIndex = -1;
+        retentionPeriodPickerIndex = -1;
+#endif
+        leaveActionIndex = count++;
         
         directoryVisibilityIndex = -1;
         // Add a toggle when the room is listed in the rooms directory (public rooms) to let the user remove it from this list.
@@ -1077,9 +1150,13 @@ NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBanne
 {
     if (indexPath.section == ROOM_SETTINGS_MAIN_SECTION_INDEX)
     {
-        if (indexPath.row == ROOM_SETTINGS_MAIN_SECTION_ROW_TOPIC)
+        if (indexPath.row == topicIndex)
         {
             return ROOM_TOPIC_CELL_HEIGHT;
+        }
+        else if (indexPath.row == retentionPeriodPickerIndex)
+        {
+            return ROOM_RETENTION_PICKER_CELL_HEIGHT;
         }
     }
     
@@ -1098,7 +1175,7 @@ NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBanne
     // general settings
     if (indexPath.section == ROOM_SETTINGS_MAIN_SECTION_INDEX)
     {
-        if (row == ROOM_SETTINGS_MAIN_SECTION_ROW_MUTE_NOTIFICATIONS)
+        if (row == notificationsIndex)
         {
             MXKTableViewCellWithLabelAndSwitch *roomNotifCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
 
@@ -1117,7 +1194,47 @@ NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBanne
             
             cell = roomNotifCell;
         }
-        else if (row == ROOM_SETTINGS_MAIN_SECTION_ROW_PHOTO)
+        else if (row == retentionIndex)
+        {
+            cell = [tableView dequeueReusableCellWithIdentifier:kRoomSettingsRetentionCellViewIdentifier];
+            if (!cell)
+            {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kRoomSettingsRetentionCellViewIdentifier];
+            }
+            
+            cell.textLabel.textColor = self.currentStyle.primaryTextColor;
+            cell.textLabel.text = NSLocalizedStringFromTable(@"room_settings_retention_title", @"Tchap", nil);
+            
+            displayedRetentionPeriod = [mxRoom.summary tc_roomRetentionPeriodInDays];
+            if ([updatedItemsDict objectForKey:kRoomSettingsRetentionKey])
+            {
+                displayedRetentionPeriod = ((NSNumber*)[updatedItemsDict objectForKey:kRoomSettingsRetentionKey]).unsignedIntValue;
+            }
+            
+            if (displayedRetentionPeriod == 1)
+            {
+                cell.detailTextLabel.text = NSLocalizedStringFromTable(@"room_settings_retention_period_one_day", @"Tchap", nil);
+            }
+            else
+            {
+                cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_settings_retention_period_in_days", @"Tchap", nil), displayedRetentionPeriod];
+            }
+            cell.detailTextLabel.textColor = isRetentionEdited ? self.currentStyle.warnTextColor : self.currentStyle.secondaryTextColor;
+            
+            cell.accessoryView = nil;
+            cell.accessoryType = UITableViewCellAccessoryNone;
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        }
+        else if (row == retentionPeriodPickerIndex)
+        {
+            RoomRetentionPeriodPickerCell *pickerCell = [tableView dequeueReusableCellWithIdentifier:[RoomRetentionPeriodPickerCell defaultReuseIdentifier] forIndexPath:indexPath];
+            
+            pickerCell.delegate = self;
+            [pickerCell scrollToRetentionPeriodInDays:displayedRetentionPeriod animated:NO];
+            
+            cell = pickerCell;
+        }
+        else if (row == avatarIndex)
         {
             MXKTableViewCellWithLabelAndMXKImageView *roomPhotoCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndMXKImageView defaultReuseIdentifier] forIndexPath:indexPath];
             
@@ -1154,7 +1271,7 @@ NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBanne
             
             cell = roomPhotoCell;
         }
-        else if (row == ROOM_SETTINGS_MAIN_SECTION_ROW_TOPIC)
+        else if (row == topicIndex)
         {
             TableViewCellWithLabelAndLargeTextView *roomTopicCell = [tableView dequeueReusableCellWithIdentifier:kRoomSettingsTopicCellViewIdentifier forIndexPath:indexPath];
             
@@ -1186,7 +1303,7 @@ NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBanne
             
             cell = roomTopicCell;
         }
-        else if (row == ROOM_SETTINGS_MAIN_SECTION_ROW_NAME)
+        else if (row == nameIndex)
         {
             MXKTableViewCellWithLabelAndTextField *roomNameCell = [tableView dequeueReusableCellWithIdentifier:kRoomSettingsNameCellViewIdentifier forIndexPath:indexPath];
             
@@ -1226,7 +1343,7 @@ NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBanne
             
             cell = roomNameCell;
         }
-        else if (row == ROOM_SETTINGS_MAIN_SECTION_ROW_LEAVE)
+        else if (row == leaveActionIndex)
         {
             MXKTableViewCellWithButton *leaveCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier] forIndexPath:indexPath];
             
@@ -1365,18 +1482,40 @@ NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBanne
     if (self.tableView == tableView)
     {
         [self dismissFirstResponder];
+        BOOL shouldRefresh = NO;
         
         if (indexPath.section == ROOM_SETTINGS_MAIN_SECTION_INDEX)
         {
-            if (indexPath.row == ROOM_SETTINGS_MAIN_SECTION_ROW_PHOTO)
+            if (indexPath.row == retentionIndex)
             {
-                [self onRoomAvatarTap:nil];
-            }
-            else if (indexPath.row == ROOM_SETTINGS_MAIN_SECTION_ROW_TOPIC)
-            {
-                if (topicTextView.editable)
+                // Check user's power level to know whether the user may change the retention period.
+                MXRoomPowerLevels *powerLevels = [mxRoomState powerLevels];
+                NSInteger oneSelfPowerLevel = [powerLevels powerLevelOfUserWithUserID:self.mainSession.myUser.userId];
+                if (oneSelfPowerLevel >= RoomPowerLevelAdmin)
                 {
-                    [self editRoomTopic];
+                    isRetentionEdited = !isRetentionEdited;
+                    shouldRefresh = YES;
+                }
+            }
+            else
+            {
+                // Hide the potential retention period picker
+                if (isRetentionEdited)
+                {
+                    isRetentionEdited = NO;
+                    shouldRefresh = YES;
+                }
+                
+                if (indexPath.row == avatarIndex)
+                {
+                    [self onRoomAvatarTap:nil];
+                }
+                else if (indexPath.row == topicIndex)
+                {
+                    if (topicTextView.editable)
+                    {
+                        [self editRoomTopic];
+                    }
                 }
             }
         }
@@ -1391,7 +1530,14 @@ NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBanne
             [self.parentViewController.navigationController pushViewController:roomMemberDetailsViewController animated:NO];
         }
         
-        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        if (shouldRefresh)
+        {
+            [self refreshRoomSettings];
+        }
+        else
+        {
+            [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        }
     }
 }
 
@@ -1696,6 +1842,27 @@ NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBanne
                                                       [self refreshRoomSettings];
                                                       
                                                   }];
+}
+
+#pragma mark - RoomRetentionPeriodPickerCellDelegate
+
+- (void)roomRetentionPeriodPickerCell:(RoomRetentionPeriodPickerCell *)cell didSelectRetentionPeriodInDays:(uint)period
+{
+    uint currentPeriod = [mxRoom.summary tc_roomRetentionPeriodInDays];
+    
+    // Check whether the topic has been actually changed
+    if (currentPeriod != period)
+    {
+        [updatedItemsDict setObject:@(period) forKey:kRoomSettingsRetentionKey];
+    }
+    else
+    {
+        [updatedItemsDict removeObjectForKey:kRoomSettingsRetentionKey];
+    }
+    
+    [self getNavigationItem].rightBarButtonItem.enabled = (updatedItemsDict.count != 0);
+    
+    [self.tableView reloadData];
 }
 
 @end

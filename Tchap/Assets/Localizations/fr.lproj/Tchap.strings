@@ -172,6 +172,10 @@
 "room_settings_room_access_unrestricted" = "Les externes sont autorisés à rejoindre ce salon";
 "room_settings_allow_external_users_to_join" = "Autoriser l’accès aux externes à ce salon";
 "room_settings_allow_external_users_to_join_prompt_msg" = "Cette action est irréversible.\nVoulez-vous vraiment autoriser les externes à rejoindre ce salon ?";
+"room_settings_retention_title" = "Limitation de l’historique";
+"room_settings_retention_period_one_day" = "1 jour";
+"room_settings_retention_period_in_days" = "%u jours";
+"room_settings_fail_to_update_retention_period" = "Échec de mise à jour de la durée de l'historique";
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Room Attachment Antivirus Scan

@@ -214,6 +214,7 @@ final class RoomCreationViewController: UIViewController, UIPickerViewDelegate, 
     
     private func setupRoomRetentionPeriodPicker() {
         self.roomRetentionPeriodPicker.backgroundColor = self.currentStyle.backgroundColor
+        self.roomRetentionPeriodPicker.tintColor = self.currentStyle.primaryTextColor
         
         // Add a tap gesture recognizer on the main view to hide the picker (if any)
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(mainViewTapGestureRecognizer(_:)))

@@ -23,6 +23,7 @@ import Foundation
     private enum Constants {
         static let isFederatedKey = "isFederated"
         static let roomAccessRuleKey = "roomAccessRule"
+        static let roomRetentionInDaysKey = "roomRetentionInDays"
     }
     
     /// Called to update the room summary on received state events.
@@ -48,6 +49,11 @@ import Foundation
                 } else if type == RoomService.roomAccessRulesStateEventType {
                     if let rule = event.content[RoomService.roomAccessRulesContentRuleKey] as? String {
                         self.others[Constants.roomAccessRuleKey] = rule
+                        updated = true
+                    }
+                } else if type == RoomService.roomRetentionStateEventType {
+                    if let maxLifetime = event.content[RoomService.roomRetentionContentMaxLifetimeKey] as? UInt64 {
+                        self.others[Constants.roomRetentionInDaysKey] = Tools.numberOfDaysFromDuration(inMs: maxLifetime)
                         updated = true
                     }
                 }
@@ -80,5 +86,14 @@ import Foundation
     /// Get the current room access rule of the room
     func tc_roomAccessRuleIdentifier() -> String {
         return tc_roomAccessRule().identifier
+    }
+    
+    /// Get the room messages retention period in days
+    func tc_roomRetentionPeriodInDays() -> uint {
+        if let period = self.others[Constants.roomRetentionInDaysKey] as? uint {
+            return period
+        } else {
+            return 365
+        }
     }
 }
