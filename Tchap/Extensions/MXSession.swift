@@ -1,5 +1,5 @@
 /*
- Copyright 2018 New Vector Ltd
+ Copyright 2020 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -16,18 +16,17 @@
 
 import Foundation
 
-@objcMembers
-final class RoomTitleViewModel: NSObject {
+@objc extension MXSession {
     
-    let title: String
-    let subtitle: String?
-    let roomInfo: String?
-    let avatarImageViewModel: AvatarImageViewModel?
-    
-    init(title: String, subtitle: String?, roomInfo: String?, avatarImageViewModel: AvatarImageViewModel?) {
-        self.title = title
-        self.subtitle = subtitle
-        self.roomInfo = roomInfo
-        self.avatarImageViewModel = avatarImageViewModel
+    /// Clean the storage of a session by removing the expired contents.
+    func tc_removeExpiredMessages() {
+        var hasStoreChanged = false
+        for summary in self.roomsSummaries() {
+            hasStoreChanged = hasStoreChanged || summary.tc_removeExpiredRoomContentsFromStore()
+        }
+        
+        if hasStoreChanged {
+            self.store.commit?()
+        }
     }
 }

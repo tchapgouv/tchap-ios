@@ -27,11 +27,12 @@ protocol RoomServiceType {
     ///   - name: Room name.
     ///   - avatarURL: Room avatar MXC URL.
     ///   - inviteUserIds: The array of Matrix user ids to invite.
+    ///   - rententionPeriodInMs: the room retention period in ms (optional).
     ///   - isFederated: Tell whether a public room can be joined from the other federated servers.
     ///   - roomAccessRule: Tell whether the external users are allowed to join this room or not.
     ///   - completion: A closure called when the operation completes. Provide the room id when succeed.
     /// - Returns: A Single of MXCreateRoomResponse.
-    func createRoom(visibility: MXRoomDirectoryVisibility, name: String, avatarURL: String?, inviteUserIds: [String], isFederated: Bool, accessRule: RoomAccessRule) -> Single<String>
+    func createRoom(visibility: MXRoomDirectoryVisibility, name: String, avatarURL: String?, inviteUserIds: [String], rententionPeriodInMs: UInt64?, isFederated: Bool, accessRule: RoomAccessRule) -> Single<String>
     
     /// Create a direct chat by inviting a third party identifier.
     ///

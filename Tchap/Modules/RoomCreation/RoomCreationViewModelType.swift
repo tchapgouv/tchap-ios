@@ -20,6 +20,7 @@ import Foundation
 protocol RoomCreationViewModelType {
     
     var roomNameFormTextViewModel: FormTextViewModel { get }
+    var retentionPeriodInDays: uint { get set }
     var isRestricted: Bool { get set }
     var isPublic: Bool { get set }
     var isFederated: Bool { get set }
