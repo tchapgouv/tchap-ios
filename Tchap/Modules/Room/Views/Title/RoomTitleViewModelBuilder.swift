@@ -104,6 +104,8 @@ final class RoomTitleViewModelBuilder: NSObject {
             } else {
                 roomInfo = retentionInfo
             }
+            #else
+            roomInfo = roomAccessInfo
             #endif
         }
         
