@@ -25,6 +25,8 @@
 		02040CDD23D88D7700DE0690 /* RetentionPeriodInDaysPickerContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02040CDB23D88D7700DE0690 /* RetentionPeriodInDaysPickerContentView.swift */; };
 		02040CE523D8938400DE0690 /* RetentionPeriodInDaysPickerContentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02040CE423D8938400DE0690 /* RetentionPeriodInDaysPickerContentView.xib */; };
 		02040CE623D8938400DE0690 /* RetentionPeriodInDaysPickerContentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02040CE423D8938400DE0690 /* RetentionPeriodInDaysPickerContentView.xib */; };
+		02040CF223DA17DC00DE0690 /* MXSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02040CF123DA17DC00DE0690 /* MXSession.swift */; };
+		02040CF323DA17DC00DE0690 /* MXSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02040CF123DA17DC00DE0690 /* MXSession.swift */; };
 		02098F352131FE9E00F25086 /* ContactsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 02098F302131FE9E00F25086 /* ContactsDataSource.m */; };
 		02098F372131FE9E00F25086 /* ContactsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 02098F322131FE9E00F25086 /* ContactsViewController.m */; };
 		020DF935214BE467003DFBA4 /* RoomDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF85B214BE467003DFBA4 /* RoomDataSource.m */; };
@@ -1158,6 +1160,7 @@
 		02040CD723D76A7F00DE0690 /* RetentionPeriodInDaysPickerCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RetentionPeriodInDaysPickerCell.xib; sourceTree = "<group>"; };
 		02040CDB23D88D7700DE0690 /* RetentionPeriodInDaysPickerContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetentionPeriodInDaysPickerContentView.swift; sourceTree = "<group>"; };
 		02040CE423D8938400DE0690 /* RetentionPeriodInDaysPickerContentView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RetentionPeriodInDaysPickerContentView.xib; sourceTree = "<group>"; };
+		02040CF123DA17DC00DE0690 /* MXSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MXSession.swift; sourceTree = "<group>"; };
 		02098F292131FE9D00F25086 /* ContactsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsViewController.h; sourceTree = "<group>"; };
 		02098F2F2131FE9E00F25086 /* ContactsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsDataSource.h; sourceTree = "<group>"; };
 		02098F302131FE9E00F25086 /* ContactsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactsDataSource.m; sourceTree = "<group>"; };
@@ -3786,6 +3789,7 @@
 				B12DDA99216FB2370093172C /* UIBezierPath.swift */,
 				02ECA87F22E0C5BA00ECDA5E /* MXRoomSummary.swift */,
 				029C927622E21F5900E62D27 /* MXRoom.swift */,
+				02040CF123DA17DC00DE0690 /* MXSession.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -4953,6 +4957,7 @@
 				0250C50B2122B68000034691 /* RoomKeyRequestViewController.m in Sources */,
 				B1C0EE7D2375B7A000E8BB88 /* ChangePasswordCurrentPasswordViewModel.swift in Sources */,
 				02C4BE8B22523D2200F7BB0E /* DiscussionFinderType.swift in Sources */,
+				02040CF223DA17DC00DE0690 /* MXSession.swift in Sources */,
 				B1F2AAB6212AFDBA0077FDC0 /* UIViewController.swift in Sources */,
 				020DF9B1214BE467003DFBA4 /* RoomActivitiesView.m in Sources */,
 				020DF946214BE467003DFBA4 /* RoomMemberDetailsViewController.m in Sources */,
@@ -5386,6 +5391,7 @@
 				02DFEC2E21C07370009B6F15 /* OnBoardingManager.swift in Sources */,
 				02DFEC2F21C07370009B6F15 /* WelcomeCoordinator.swift in Sources */,
 				02DFEC3021C07370009B6F15 /* RegistrationServiceError.swift in Sources */,
+				02040CF323DA17DC00DE0690 /* MXSession.swift in Sources */,
 				02DFEC3121C07370009B6F15 /* AlertErrorPresenter.swift in Sources */,
 				02DFEC3221C07370009B6F15 /* DisplayNameComponents.swift in Sources */,
 				02DFEC3321C07370009B6F15 /* RoomKeyRequestViewController.m in Sources */,

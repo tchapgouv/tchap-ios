@@ -1,5 +1,5 @@
 /*
- Copyright 2019 New Vector Ltd
+ Copyright 2019-2020 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -16,7 +16,13 @@
 
 import Foundation
 
+extension Notification.Name {
+    static let roomSummaryDidRemoveExpiredDataFromStore = Notification.Name(MXRoomSummary.roomSummaryDidRemoveExpiredDataFromStore)
+}
+
 @objc extension MXRoomSummary {
+    
+    static let roomSummaryDidRemoveExpiredDataFromStore = "roomSummaryDidRemoveExpiredDataFromStore"
     
     // MARK: - Constants
     
@@ -95,5 +101,25 @@ import Foundation
         } else {
             return 365
         }
+    }
+    
+    /// Get the timestamp below which the received messages must be removed from the store, and the display
+    func tc_mininumTimestamp() -> UInt64 {
+        let periodInMs = Tools.durationInMs(fromDays: self.tc_roomRetentionPeriodInDays())
+        let currentTs = (UInt64)(Date().timeIntervalSince1970 * 1000)
+        return (currentTs - periodInMs)
+    }
+    
+    /// Remove the expired messages from the store.
+    /// If some data are removed, this operation posts the notification: roomSummaryDidRemoveExpiredDataFromStore.
+    /// This operation does not commit the potential change. We let the caller trigger the commit when this is the more suitable.
+    ///
+    /// Provide a boolean telling whether some data have been removed.
+    func tc_removeExpiredRoomContentsFromStore() -> Bool {
+        let ret = self.mxSession.store.removeAllMessagesSent(before: self.tc_mininumTimestamp(), inRoom: roomId)
+        if ret {
+            NotificationCenter.default.post(name: .roomSummaryDidRemoveExpiredDataFromStore, object: self)
+        }
+        return ret
     }
 }
