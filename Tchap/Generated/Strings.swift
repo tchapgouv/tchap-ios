@@ -18,6 +18,8 @@ internal enum TchapL10n {
   internal static let actionNext = TchapL10n.tr("Tchap", "action_next")
   /// Poursuivre
   internal static let actionProceed = TchapL10n.tr("Tchap", "action_proceed")
+  /// Retirer
+  internal static let actionRemove = TchapL10n.tr("Tchap", "action_remove")
   /// Valider
   internal static let actionValidate = TchapL10n.tr("Tchap", "action_validate")
   /// Une nouvelle version est disponible. Pour des raisons de sécurité, veuillez mettre à jour votre application avant de poursuivre son utilisation.
@@ -282,6 +284,10 @@ internal enum TchapL10n {
   internal static let roomMemberDetailsActionChat = TchapL10n.tr("Tchap", "room_member_details_action_chat")
   /// Fichiers partagés
   internal static let roomMemberDetailsFiles = TchapL10n.tr("Tchap", "room_member_details_files")
+  /// Voulez-vous vraiment retirer %@ de ce salon ?
+  internal static func roomMembersRemovePromptMsg(_ p1: String) -> String {
+    return TchapL10n.tr("Tchap", "room_members_remove_prompt_msg", p1)
+  }
   /// Membres
   internal static let roomMembersTabTitle = TchapL10n.tr("Tchap", "room_members_tab_title")
   /// Autoriser l’accès aux externes à ce salon
