@@ -1418,7 +1418,24 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
         addressCell.accessoryType = UITableViewCellAccessoryNone;
         addressCell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        addressCell.textLabel.text = bannedMembers[indexPath.row].userId;
+        MXRoomMember *bannedMember = bannedMembers[indexPath.row];
+        NSString *displayName = bannedMember.displayname;
+        if (!displayName.length && bannedMember.userId)
+        {
+            UserService *userService = [[UserService alloc] initWithSession:mxRoom.mxSession];
+            User *user = [userService getUserFromLocalSessionWith:bannedMember.userId];
+            if (user)
+            {
+                displayName = user.displayName;
+            }
+            else
+            {
+                // If the display name is unknown, build a temporary name from the user id.
+                displayName = [userService displayNameFrom:bannedMember.userId];
+            }
+        }
+        
+        addressCell.textLabel.text = displayName;
         
         cell = addressCell;
     }
