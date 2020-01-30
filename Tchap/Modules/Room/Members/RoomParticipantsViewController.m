@@ -72,6 +72,7 @@
 }
 
 @property (nonatomic, strong) id<Style> currentStyle;
+@property (nonatomic, nullable, strong) UserService *userService;
 
 @end
 
@@ -220,6 +221,8 @@
 
 - (void)destroy
 {
+    self.userService = nil;
+    
     if (kRiotDesignValuesDidChangeThemeNotificationObserver)
     {
         [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
@@ -437,9 +440,9 @@
                 if (self.mxRoom.mxSession == room.mxSession && [self.mxRoom.roomId isEqualToString:room.roomId])
                 {
                     // The existing room history has been flushed during server sync. Take into account the updated room members list.
-                    [self refreshParticipantsFromRoomMembers];
-
-                    [self refreshTableView];
+                    [self refreshParticipantsFromRoomMembers:^{
+                        [self refreshTableView];
+                    }];
                 }
 
             }];
@@ -478,9 +481,9 @@
 
                                         [self handleRoomMember:mxMember];
 
-                                        [self finalizeParticipantsList:liveTimeline.state];
-
-                                        [self refreshTableView];
+                                        [self finalizeParticipantsList:liveTimeline.state completion:^{
+                                            [self refreshTableView];
+                                        }];
                                     }
                                 }
 
@@ -496,17 +499,17 @@
                                     
                                     [self addRoomThirdPartyInviteToParticipants:thirdPartyInvite roomState:liveTimeline.state];
 
-                                    [self finalizeParticipantsList:liveTimeline.state];
-
-                                    [self refreshTableView];
+                                    [self finalizeParticipantsList:liveTimeline.state completion:^{
+                                        [self refreshTableView];
+                                    }];
                                 }
                                 break;
                             }
                             case MXEventTypeRoomPowerLevels:
                             {
-                                [self refreshParticipantsFromRoomMembers];
-
-                                [self refreshTableView];
+                                [self refreshParticipantsFromRoomMembers:^{
+                                    [self refreshTableView];
+                                }];
                                 break;
                             }
                             default:
@@ -521,11 +524,11 @@
             // Search bar header is hidden when no room is provided
             self.searchBarHeader.hidden = YES;
         }
-
+                                 
         // Refresh the members list.
-        [self refreshParticipantsFromRoomMembers];
-
-        [self refreshTableView];
+        [self refreshParticipantsFromRoomMembers:^{
+            [self refreshTableView];
+        }];
     }];
 }
 
@@ -753,7 +756,7 @@
     [self pushViewController:contactsPickerViewController];
 }
 
-- (void)refreshParticipantsFromRoomMembers
+- (void)refreshParticipantsFromRoomMembers:(void (^)(void))completion
 {
     actualParticipants = [NSMutableArray array];
     invitedParticipants = [NSMutableArray array];
@@ -778,15 +781,19 @@
             {
                 [self addRoomThirdPartyInviteToParticipants:roomThirdPartyInvite roomState:roomState];
             }
-
-            [self finalizeParticipantsList:roomState];
             
             // Check whether the current user is allowed to invite
             MXRoomPowerLevels *powerLevels = [roomState powerLevels];
             self->isUserAllowedToInvite = ([powerLevels powerLevelOfUserWithUserID:userId] >= powerLevels.invite);
             self->isUserAllowedToKick = ([powerLevels powerLevelOfUserWithUserID:userId] >= powerLevels.kick);
             self->addParticipantButtonImageView.hidden = self->tableViewMaskLayer.hidden = !self->isUserAllowedToInvite;
+            
+            [self finalizeParticipantsList:roomState completion:completion];
         }];
+    }
+    else if (completion)
+    {
+        completion();
     }
 }
 
@@ -883,10 +890,56 @@
     }
 }
 
-- (void)finalizeParticipantsList:(MXRoomState*)roomState
+- (void)checkExpiredAccounts:(void (^)(void))completion
+{
+    dispatch_group_t requestsGroup = dispatch_group_create();
+    self.userService = [[UserService alloc] initWithSession:self.mxRoom.mxSession];
+    MXHTTPOperation *op;
+    for (Contact *contact in actualParticipants)
+    {
+        if (contact.mxMember.userId)
+        {
+            dispatch_group_enter(requestsGroup);
+            op = [self.userService isAccountExpiredFor:contact.mxMember.userId
+                                          success:^(BOOL isExpired) {
+                                              contact.isExpired = isExpired;
+                                              dispatch_group_leave(requestsGroup);
+                                          } failure:^(NSError * _Nonnull error) {
+                                              contact.isExpired = false;
+                                              dispatch_group_leave(requestsGroup);
+                                          }];
+        }
+    }
+    for (Contact *contact in invitedParticipants)
+    {
+        if (contact.mxMember.userId)
+        {
+            dispatch_group_enter(requestsGroup);
+            op = [self.userService isAccountExpiredFor:contact.mxMember.userId
+                                          success:^(BOOL isExpired) {
+                                              contact.isExpired = isExpired;
+                                              dispatch_group_leave(requestsGroup);
+                                          } failure:^(NSError * _Nonnull error) {
+                                              contact.isExpired = false;
+                                              dispatch_group_leave(requestsGroup);
+                                          }];
+        }
+    }
+    
+    dispatch_group_notify(requestsGroup, dispatch_get_main_queue(), ^{
+        self.userService = nil;
+        if (completion)
+        {
+            completion();
+        }
+    });
+}
+
+- (void)finalizeParticipantsList:(MXRoomState*)roomState completion:(void (^)(void))completion
 {
     // Sort contacts by power
     // ...and then alphabetically.
+    // Move at the end expired accounts...
     // We could tiebreak instead by "last recently spoken in this room" if we wanted to.
     NSComparator comparator = ^NSComparisonResult(Contact *contactA, Contact *contactB) {
         
@@ -899,11 +952,22 @@
         }
         if (userIdA && !userIdB)
         {
-            return NSOrderedAscending;
+            return contactA.isExpired ? NSOrderedDescending : NSOrderedAscending;
         }
         if (!userIdA && userIdB)
         {
-            return NSOrderedDescending;
+            return contactB.isExpired ? NSOrderedAscending : NSOrderedDescending;
+        }
+        if (contactA.isExpired)
+        {
+            if (!contactB.isExpired)
+            {
+                return NSOrderedDescending;
+            }
+        }
+        else if (contactB.isExpired)
+        {
+            return NSOrderedAscending;
         }
         
         // Order first by power levels (admins then moderators then others)
@@ -934,12 +998,22 @@
         }
     };
     
-    // Sort each participants list in alphabetical order
-    [actualParticipants sortUsingComparator:comparator];
-    [invitedParticipants sortUsingComparator:comparator];
-    
-    // Reload search result if any
-    [self reloadSearchResult];
+    // Check whether some accounts have expired
+    MXWeakify(self);
+    [self checkExpiredAccounts:^{
+        MXStrongifyAndReturnIfNil(self);
+        // Sort each participants list in alphabetical order
+        [self->actualParticipants sortUsingComparator:comparator];
+        [self->invitedParticipants sortUsingComparator:comparator];
+        
+        // Reload search result if any
+        [self reloadSearchResult];
+        
+        if (completion)
+        {
+            completion();
+        }
+    }];
 }
 
 - (Contact*)getContactAtIndexPath:(NSIndexPath *)indexPath
@@ -1339,17 +1413,19 @@
 - (void)contactsViewController:(nonnull ContactsViewController *)contactsViewController askPermissionToSelect:(nonnull NSString*)email completion:(void (^_Nonnull)(BOOL granted, NSString * _Nullable reason))completion
 {
     // Use the value of the filter defined at the data source level
-    UserService *userService = [[UserService alloc] initWithSession:self.mxRoom.mxSession];
+    self.userService = [[UserService alloc] initWithSession:self.mxRoom.mxSession];
     
     switch (contactsDataSource.contactsFilter) {
         case ContactsDataSourceTchapFilterAll:
         case ContactsDataSourceTchapFilterAllWithoutTchapUsers:
         {
             // Check whether the registration is allowed for this email.
-            [userService isEmailAuthorized:email success:^(BOOL isAuthorized) {
+            [self.userService isEmailAuthorized:email success:^(BOOL isAuthorized) {
+                self.userService = nil;
                 NSString *reason = isAuthorized ? nil : [NSString stringWithFormat:NSLocalizedStringFromTable(@"invite_not_sent_for_unauthorized_email", @"Tchap", nil), email];
                 completion(isAuthorized, reason);
             } failure:^(NSError * _Nonnull error) {
+                self.userService = nil;
                 // We allow the selection when we failed to get the informmation (We let the server reject the invite or not).
                 completion(true, nil);
             }];
@@ -1358,10 +1434,12 @@
         case ContactsDataSourceTchapFilterAllWithoutExternals:
         {
             // Check whether this email is bound to the external instance.
-            [userService isEmailBoundToTheExternalHost:email success:^(BOOL isExternal) {
+            [self.userService isEmailBoundToTheExternalHost:email success:^(BOOL isExternal) {
+                self.userService = nil;
                 NSString *reason = isExternal ? NSLocalizedStringFromTable(@"contacts_picker_unauthorized_email_message_restricted_room", @"Tchap", nil) : nil;
                 completion(!isExternal, reason);
             } failure:^(NSError * _Nonnull error) {
+                self.userService = nil;
                 // We allow the selection when we failed to get the informmation (We let the server reject the invite or not).
                 completion(true, nil);
             }];
@@ -1373,11 +1451,13 @@
             NSString *myUserId = self.mxRoom.mxSession.myUser.userId;
             if (myUserId)
             {
-                NSString *hostName = [userService hostNameFor:myUserId];
-                [userService isEmailBound:email to:hostName success:^(BOOL isBoundToTheSameHost) {
-                    NSString *reason = isBoundToTheSameHost ? nil : [NSString stringWithFormat:NSLocalizedStringFromTable(@"contacts_picker_unauthorized_email_message_unfederated_room", @"Tchap", nil), [userService hostDisplayNameFor:myUserId]];
+                NSString *hostName = [self.userService hostNameFor:myUserId];
+                [self.userService isEmailBound:email to:hostName success:^(BOOL isBoundToTheSameHost) {
+                    NSString *reason = isBoundToTheSameHost ? nil : [NSString stringWithFormat:NSLocalizedStringFromTable(@"contacts_picker_unauthorized_email_message_unfederated_room", @"Tchap", nil), [self.userService hostDisplayNameFor:myUserId]];
+                    self.userService = nil;
                     completion(isBoundToTheSameHost, reason);
                 } failure:^(NSError * _Nonnull error) {
+                    self.userService = nil;
                     // We allow the selection when we failed to get the informmation (We let the server reject the invite or not).
                     completion(true, nil);
                 }];

@@ -26,4 +26,6 @@
 
 @property (nonatomic) MXUser* mxUser;
 
+@property (nonatomic) BOOL isExpired;
+
 @end

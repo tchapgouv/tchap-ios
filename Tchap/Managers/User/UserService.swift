@@ -119,9 +119,30 @@ final class UserService: NSObject, UserServiceType {
         }
     }
     
+    func isAccountExpired(for userId: String, completion: @escaping ((MXResponse<Bool>) -> Void)) -> MXHTTPOperation? {
+        return self.getUserInfo(for: userId) { (response) in
+            switch response {
+            case .success(let userInfo):
+                completion(.success(userInfo.expired))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
     // Temporary version used in ObjectiveC.
     func isAccountDeactivated(for userId: String, success: @escaping ((Bool) -> Void), failure: ((Error) -> Void)?) -> MXHTTPOperation? {
         return self.isAccountDeactivated(for: userId) { (response) in
+            switch response {
+            case .success(let value):
+                success(value)
+            case .failure(let error):
+                failure?(error)
+            }
+        }
+    }
+    func isAccountExpired(for userId: String, success: @escaping ((Bool) -> Void), failure: ((Error) -> Void)?) -> MXHTTPOperation? {
+        return self.isAccountExpired(for: userId) { (response) in
             switch response {
             case .success(let value):
                 success(value)
