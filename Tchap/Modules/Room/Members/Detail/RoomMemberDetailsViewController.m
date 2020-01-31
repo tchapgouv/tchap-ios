@@ -317,11 +317,11 @@
         
         NSString* presenceText;
         
-        if (self.mxRoomMember.userId)
-        {
-            MXUser *user = [self.mxRoom.mxSession userWithUserId:self.mxRoomMember.userId];
-            presenceText = [Tools presenceText:user];
-        }
+//        if (self.mxRoomMember.userId)
+//        {
+//            MXUser *user = [self.mxRoom.mxSession userWithUserId:self.mxRoomMember.userId];
+//            presenceText = [Tools presenceText:user];
+//        }
         
         self.roomMemberStatusLabel.text = presenceText;
         

@@ -422,6 +422,14 @@
 		029CC69121772F4200DCC8B3 /* TableViewCellWithPhoneNumberTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 029CC68721772F4200DCC8B3 /* TableViewCellWithPhoneNumberTextField.m */; };
 		029CC69221772F4200DCC8B3 /* DeviceView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 029CC68921772F4200DCC8B3 /* DeviceView.xib */; };
 		029CC69321772F4200DCC8B3 /* TableViewCellWithPhoneNumberTextField.xib in Resources */ = {isa = PBXBuildFile; fileRef = 029CC68A21772F4200DCC8B3 /* TableViewCellWithPhoneNumberTextField.xib */; };
+		02A7900023E0DD5A00F17374 /* UserStatusInfoType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A78FFF23E0DD5A00F17374 /* UserStatusInfoType.swift */; };
+		02A7900123E0DD5A00F17374 /* UserStatusInfoType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A78FFF23E0DD5A00F17374 /* UserStatusInfoType.swift */; };
+		02A7900323E0DEB400F17374 /* UserStatusInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A7900223E0DEB400F17374 /* UserStatusInfo.swift */; };
+		02A7900423E0DEB400F17374 /* UserStatusInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A7900223E0DEB400F17374 /* UserStatusInfo.swift */; };
+		02A7900523E0E60A00F17374 /* UserStatusInfoType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A78FFF23E0DD5A00F17374 /* UserStatusInfoType.swift */; };
+		02A7900623E0E60A00F17374 /* UserStatusInfoType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A78FFF23E0DD5A00F17374 /* UserStatusInfoType.swift */; };
+		02A7900723E0E60E00F17374 /* UserStatusInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A7900223E0DEB400F17374 /* UserStatusInfo.swift */; };
+		02A7900823E0E60F00F17374 /* UserStatusInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A7900223E0DEB400F17374 /* UserStatusInfo.swift */; };
 		02B3453A219CA8CB00110EC8 /* RoomsDiscussionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B34538219CA8CB00110EC8 /* RoomsDiscussionCell.swift */; };
 		02B3453B219CA8CB00110EC8 /* RoomsDiscussionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02B34539219CA8CB00110EC8 /* RoomsDiscussionCell.xib */; };
 		02B3453E219CA8EE00110EC8 /* RoomsRoomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B3453C219CA8EE00110EC8 /* RoomsRoomCell.swift */; };
@@ -1438,6 +1446,8 @@
 		029CC68821772F4200DCC8B3 /* DeviceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceView.h; sourceTree = "<group>"; };
 		029CC68921772F4200DCC8B3 /* DeviceView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DeviceView.xib; sourceTree = "<group>"; };
 		029CC68A21772F4200DCC8B3 /* TableViewCellWithPhoneNumberTextField.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TableViewCellWithPhoneNumberTextField.xib; sourceTree = "<group>"; };
+		02A78FFF23E0DD5A00F17374 /* UserStatusInfoType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStatusInfoType.swift; sourceTree = "<group>"; };
+		02A7900223E0DEB400F17374 /* UserStatusInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStatusInfo.swift; sourceTree = "<group>"; };
 		02B34538219CA8CB00110EC8 /* RoomsDiscussionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomsDiscussionCell.swift; sourceTree = "<group>"; };
 		02B34539219CA8CB00110EC8 /* RoomsDiscussionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomsDiscussionCell.xib; sourceTree = "<group>"; };
 		02B3453C219CA8EE00110EC8 /* RoomsRoomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomsRoomCell.swift; sourceTree = "<group>"; };
@@ -2801,6 +2811,8 @@
 				B165250D217502A700146F80 /* UserServiceType.swift */,
 				B109EF172170DFEB0018FA06 /* UserService.swift */,
 				B1C4646221BACEB3005F4D53 /* UserIDComponents.swift */,
+				02A78FFF23E0DD5A00F17374 /* UserStatusInfoType.swift */,
+				02A7900223E0DEB400F17374 /* UserStatusInfo.swift */,
 			);
 			path = User;
 			sourceTree = "<group>";
@@ -4855,6 +4867,7 @@
 				B1892E7B21306ADC00742348 /* FormTextViewModel.swift in Sources */,
 				B1322FEA213002440054A9DD /* FormTextField.swift in Sources */,
 				0290609321527A3F005FE3C1 /* RoomDetailsCoordinatorType.swift in Sources */,
+				02A7900323E0DEB400F17374 /* UserStatusInfo.swift in Sources */,
 				B146D52321A7453900D8C2C6 /* RoomAttachmentAntivirusScanStatusViewModel.swift in Sources */,
 				B1C0EE932375B7F400E8BB88 /* ChangePasswordNewPasswordViewModel.swift in Sources */,
 				02CEE1E52338C5B20085ACF0 /* AppVersion.swift in Sources */,
@@ -4991,6 +5004,7 @@
 				029CC68F21772F4200DCC8B3 /* CountryPickerViewController.m in Sources */,
 				020DF9AB214BE467003DFBA4 /* KeyboardGrowingTextView.m in Sources */,
 				B12209A623854F32004D069C /* AppVersionUpdateCoordinator.swift in Sources */,
+				02A7900023E0DD5A00F17374 /* UserStatusInfoType.swift in Sources */,
 				024F787B23D1F297008EC68F /* Tools.m in Sources */,
 				B1680D012152A9F6009B5F92 /* TCNavigationController.swift in Sources */,
 				020DF9AD214BE467003DFBA4 /* DisabledRoomInputToolbarView.m in Sources */,
@@ -5063,6 +5077,7 @@
 				026155A92398F7420045459E /* ShareDataSource.m in Sources */,
 				0261555F23972EB00045459E /* User.swift in Sources */,
 				026155432395D6F30045459E /* RiotDesignValues.m in Sources */,
+				02A7900723E0E60E00F17374 /* UserStatusInfo.swift in Sources */,
 				026155B92398F7420045459E /* RoomsRoomCell.swift in Sources */,
 				0261556223972EF30045459E /* ThirdPartyIDPlatformInfo.swift in Sources */,
 				0261556523972F300045459E /* RoomServiceType.swift in Sources */,
@@ -5075,6 +5090,7 @@
 				026155412395CCA80045459E /* Variant2Style.swift in Sources */,
 				026155EA239926F00045459E /* TchapDefaults.swift in Sources */,
 				026155A72398F7420045459E /* SharePresentingViewController.m in Sources */,
+				02A7900523E0E60A00F17374 /* UserStatusInfoType.swift in Sources */,
 				0261556723972F5A0045459E /* ThirdPartyIDPlatformInfoResolverType.swift in Sources */,
 				0261556923972F730045459E /* RoomPowerLevel.swift in Sources */,
 				026155472395DC650045459E /* AvatarGenerator.m in Sources */,
@@ -5111,6 +5127,7 @@
 				026155E0239901000045459E /* ThirdPartyIDPlatformInfoType.swift in Sources */,
 				026155C82398F9730045459E /* RoomAccessRule.swift in Sources */,
 				026155D82398FACF0045459E /* RoomsCell.swift in Sources */,
+				02A7900823E0E60F00F17374 /* UserStatusInfo.swift in Sources */,
 				026155E1239901250045459E /* ThirdPartyIDPlatformInfo.swift in Sources */,
 				026155DC239900C20045459E /* ThirdPartyIDPlatformInfoResolverType.swift in Sources */,
 				026155EC2399366F0045459E /* MXRoom+Riot.m in Sources */,
@@ -5123,6 +5140,7 @@
 				026155C42398F9460045459E /* MXRoomSummary.swift in Sources */,
 				026155DD239900CF0045459E /* IdentityServersURLGetter.swift in Sources */,
 				026155AE2398F7420045459E /* ShareViewController.m in Sources */,
+				02A7900623E0E60A00F17374 /* UserStatusInfoType.swift in Sources */,
 				026155D62398FAAB0045459E /* SegmentedViewController.m in Sources */,
 				026155A82398F7420045459E /* SharePresentingViewController.m in Sources */,
 				026155ED239936E40045459E /* AvatarGenerator.m in Sources */,
@@ -5289,6 +5307,7 @@
 				02DFEBDE21C07370009B6F15 /* RoomsDataSource.m in Sources */,
 				02DFEBDF21C07370009B6F15 /* RoomEncryptedDataBubbleCell.m in Sources */,
 				02DFEBE021C07370009B6F15 /* RoomIncomingEncryptedTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
+				02A7900423E0DEB400F17374 /* UserStatusInfo.swift in Sources */,
 				B12209D923855059004D069C /* SerializationServiceType.swift in Sources */,
 				02DFEBE121C07370009B6F15 /* ContactsPickerCoordinatorType.swift in Sources */,
 				02DFEBE221C07370009B6F15 /* FormTextViewModel.swift in Sources */,
@@ -5425,6 +5444,7 @@
 				02DFEC4821C07370009B6F15 /* AttachmentsViewController.m in Sources */,
 				02DFEC4921C07370009B6F15 /* RoomSelectedStickerBubbleCell.m in Sources */,
 				02DFEC4A21C07370009B6F15 /* CountryPickerViewController.m in Sources */,
+				02A7900123E0DD5A00F17374 /* UserStatusInfoType.swift in Sources */,
 				024F787C23D1F297008EC68F /* Tools.m in Sources */,
 				02DFEC4B21C07370009B6F15 /* KeyboardGrowingTextView.m in Sources */,
 				02DFEC4C21C07370009B6F15 /* TCNavigationController.swift in Sources */,
