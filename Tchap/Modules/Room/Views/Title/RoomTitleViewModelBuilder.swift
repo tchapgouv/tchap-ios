@@ -75,7 +75,7 @@ final class RoomTitleViewModelBuilder: NSObject {
             avatarBorderColor = nil
             avatarBorderWidth = nil
         } else {
-            let roomMemberCount = Int(roomSummary.membersCount.members)
+            let roomMemberCount = Int(roomSummary.membersCount.joined)
             title = displayName
             subtitle = TchapL10n.roomTitleRoomMembersCount(roomMemberCount)
             avatarImageShape = .hexagon
