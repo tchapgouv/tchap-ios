@@ -1785,12 +1785,6 @@
         // Copy participants and invited participants
         filteredActualParticipants = [NSMutableArray arrayWithArray:actualParticipants];
         filteredInvitedParticipants = [NSMutableArray arrayWithArray:invitedParticipants];
-        
-        // Add the current user if he belongs to the room members.
-        if (userParticipant)
-        {
-            [filteredActualParticipants addObject:userParticipant];
-        }
     }
     
     currentSearchText = searchText;
