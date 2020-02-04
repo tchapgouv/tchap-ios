@@ -15,8 +15,6 @@
 		02018F9D22006200008D68BE /* UniversalLinkParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02018F9B22006200008D68BE /* UniversalLinkParameters.swift */; };
 		02018F9F22006282008D68BE /* UniversalLinkParametersType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02018F9E22006282008D68BE /* UniversalLinkParametersType.swift */; };
 		02018FA022006282008D68BE /* UniversalLinkParametersType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02018F9E22006282008D68BE /* UniversalLinkParametersType.swift */; };
-		02040CC923D65CE100DE0690 /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = 024F787923D1F296008EC68F /* Tools.m */; };
-		02040CCA23D65CE200DE0690 /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = 024F787923D1F296008EC68F /* Tools.m */; };
 		02040CCC23D7622200DE0690 /* RetentionPeriodInDaysPickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02040CCB23D7622200DE0690 /* RetentionPeriodInDaysPickerCell.swift */; };
 		02040CCD23D7622200DE0690 /* RetentionPeriodInDaysPickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02040CCB23D7622200DE0690 /* RetentionPeriodInDaysPickerCell.swift */; };
 		02040CD823D76A7F00DE0690 /* RetentionPeriodInDaysPickerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02040CD723D76A7F00DE0690 /* RetentionPeriodInDaysPickerCell.xib */; };
@@ -181,6 +179,10 @@
 		024518FF23A19686006873DF /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024518F023A19675006873DF /* Theme.swift */; };
 		0245190023A1968B006873DF /* DefaultTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024518F223A19675006873DF /* DefaultTheme.swift */; };
 		0245190123A1968C006873DF /* DefaultTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024518F223A19675006873DF /* DefaultTheme.swift */; };
+		024732C523EA23FD008CD543 /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = 024732C323EA23FC008CD543 /* Tools.m */; };
+		024732C623EA23FD008CD543 /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = 024732C323EA23FC008CD543 /* Tools.m */; };
+		024732C723EA23FD008CD543 /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = 024732C323EA23FC008CD543 /* Tools.m */; };
+		024732C823EA23FD008CD543 /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = 024732C323EA23FC008CD543 /* Tools.m */; };
 		024F786323C8E38D008EC68F /* SettingsKeyBackupViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024F785E23C8E38D008EC68F /* SettingsKeyBackupViewState.swift */; };
 		024F786423C8E38D008EC68F /* SettingsKeyBackupViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024F785E23C8E38D008EC68F /* SettingsKeyBackupViewState.swift */; };
 		024F786523C8E38D008EC68F /* SettingsKeyBackupTableViewSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024F785F23C8E38D008EC68F /* SettingsKeyBackupTableViewSection.swift */; };
@@ -197,8 +199,6 @@
 		024F787323C93A64008EC68F /* UIControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024F787123C93A64008EC68F /* UIControl.swift */; };
 		024F787623CC6602008EC68F /* ChangePasswordAlertPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024F787523CC6602008EC68F /* ChangePasswordAlertPresenter.swift */; };
 		024F787723CC6602008EC68F /* ChangePasswordAlertPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024F787523CC6602008EC68F /* ChangePasswordAlertPresenter.swift */; };
-		024F787B23D1F297008EC68F /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = 024F787923D1F296008EC68F /* Tools.m */; };
-		024F787C23D1F297008EC68F /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = 024F787923D1F296008EC68F /* Tools.m */; };
 		0250C4932122B68000034691 /* MediaAlbumTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B557CE20EF5E3500210D55 /* MediaAlbumTableCell.m */; };
 		0250C4962122B68000034691 /* AvatarGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC111E7009EC00A9B29C /* AvatarGenerator.m */; };
 		0250C4992122B68000034691 /* BugReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556B320EE6C4C00210D55 /* BugReportViewController.m */; };
@@ -1807,6 +1807,8 @@
 		024518F023A19675006873DF /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		024518F223A19675006873DF /* DefaultTheme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultTheme.swift; sourceTree = "<group>"; };
 		024518F323A19675006873DF /* ThemeService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThemeService.h; sourceTree = "<group>"; };
+		024732C323EA23FC008CD543 /* Tools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tools.m; sourceTree = "<group>"; };
+		024732C423EA23FC008CD543 /* Tools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tools.h; sourceTree = "<group>"; };
 		024F785E23C8E38D008EC68F /* SettingsKeyBackupViewState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsKeyBackupViewState.swift; sourceTree = "<group>"; };
 		024F785F23C8E38D008EC68F /* SettingsKeyBackupTableViewSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsKeyBackupTableViewSection.swift; sourceTree = "<group>"; };
 		024F786023C8E38D008EC68F /* SettingsKeyBackupViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsKeyBackupViewModel.swift; sourceTree = "<group>"; };
@@ -2952,6 +2954,15 @@
 			path = Themes;
 			sourceTree = "<group>";
 		};
+		024732C223EA23FC008CD543 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				024732C323EA23FC008CD543 /* Tools.m */,
+				024732C423EA23FC008CD543 /* Tools.h */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		024F785D23C8E38D008EC68F /* KeyBackup */ = {
 			isa = PBXGroup;
 			children = (
@@ -2983,6 +2994,7 @@
 		0250C5C12122BBA600034691 /* Tchap */ = {
 			isa = PBXGroup;
 			children = (
+				024732C223EA23FC008CD543 /* Utils */,
 				02BEE1A5212C772500098505 /* Constants */,
 				B122099523854EF2004D069C /* Generated */,
 				B1F2AAB4212AFD9D0077FDC0 /* Extensions */,
@@ -2991,7 +3003,6 @@
 				B1F2AAA3212AED830077FDC0 /* Coordinators */,
 				B1F2AAA6212AED900077FDC0 /* Routers */,
 				02BEE14E2125BBF800098505 /* Modules */,
-				024F787823D1F296008EC68F /* Utils */,
 				0250C5CC2123146A00034691 /* Assets */,
 				0250C5C22122BBD200034691 /* SupportingFiles */,
 			);
@@ -6275,6 +6286,7 @@
 				020DF99A214BE467003DFBA4 /* RoomIncomingTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
 				02FAE3D723B2912A00DE73D8 /* VerifyEmojiCollectionViewCell.swift in Sources */,
 				B122099C23854EF2004D069C /* Storyboards.swift in Sources */,
+				024732C523EA23FD008CD543 /* Tools.m in Sources */,
 				02FAE61023B4E7AA00DE73D8 /* UIApplication.swift in Sources */,
 				B1BC6A262136D77A00D32F8E /* WelcomeCoordinatorType.swift in Sources */,
 				020DF991214BE467003DFBA4 /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
@@ -6385,7 +6397,6 @@
 				02FAE5AC23B4C41600DE73D8 /* EmojiPickerViewCell.swift in Sources */,
 				B12209A623854F32004D069C /* AppVersionUpdateCoordinator.swift in Sources */,
 				02A7900023E0DD5A00F17374 /* UserStatusInfoType.swift in Sources */,
-				024F787B23D1F297008EC68F /* Tools.m in Sources */,
 				B1680D012152A9F6009B5F92 /* TCNavigationController.swift in Sources */,
 				020DF9AD214BE467003DFBA4 /* DisabledRoomInputToolbarView.m in Sources */,
 				B1BC6A242136D75B00D32F8E /* WelcomeViewController.swift in Sources */,
@@ -6472,6 +6483,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0261554E239675060045459E /* MXRoomSummary+Riot.m in Sources */,
+				024732C723EA23FD008CD543 /* Tools.m in Sources */,
 				0261553E2395C8E80045459E /* Stylable.swift in Sources */,
 				026155AD2398F7420045459E /* ShareViewController.m in Sources */,
 				0261555C23972E5A0045459E /* UserService.swift in Sources */,
@@ -6506,7 +6518,6 @@
 				026155472395DC650045459E /* AvatarGenerator.m in Sources */,
 				0261555B23972E400045459E /* UIBezierPath.swift in Sources */,
 				0261555A23972E1F0045459E /* MXRoomSummary.swift in Sources */,
-				02040CC923D65CE100DE0690 /* Tools.m in Sources */,
 				026155402395CCA00045459E /* Variant1Style.swift in Sources */,
 				0261556823972F670045459E /* UserServiceType.swift in Sources */,
 				0261556323972F060045459E /* ThirdPartyIDPlatformInfoType.swift in Sources */,
@@ -6526,6 +6537,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				026155EB239936490045459E /* MXRoomSummary+Riot.m in Sources */,
+				024732C823EA23FD008CD543 /* Tools.m in Sources */,
 				026155C72398F9680045459E /* DisplayNameComponents.swift in Sources */,
 				026155C52398F94E0045459E /* User.swift in Sources */,
 				026155CA2398F9830045459E /* UserService.swift in Sources */,
@@ -6560,7 +6572,6 @@
 				026A465423B20E510058D80B /* UIColor.swift in Sources */,
 				026155ED239936E40045459E /* AvatarGenerator.m in Sources */,
 				026155C32398F9430045459E /* UIBezierPath.swift in Sources */,
-				02040CCA23D65CE200DE0690 /* Tools.m in Sources */,
 				026155E6239907000045459E /* TchapDefaults.swift in Sources */,
 				026155E42399027C0045459E /* RecentCellData.m in Sources */,
 				026155CB2398F9870045459E /* UserServiceType.swift in Sources */,
@@ -6908,6 +6919,7 @@
 				02DFEC1421C07370009B6F15 /* MediaService.swift in Sources */,
 				02FAE3D823B2912A00DE73D8 /* VerifyEmojiCollectionViewCell.swift in Sources */,
 				02DFEC1521C07370009B6F15 /* RoomIncomingTextMsgWithoutSenderNameBubbleCell.m in Sources */,
+				024732C623EA23FD008CD543 /* Tools.m in Sources */,
 				02FAE61123B4E7AA00DE73D8 /* UIApplication.swift in Sources */,
 				02DFEC1621C07370009B6F15 /* DeviceTableViewCell.m in Sources */,
 				02DFEC1721C07370009B6F15 /* Variant2Style.swift in Sources */,
@@ -7018,7 +7030,6 @@
 				02FAE5AD23B4C41600DE73D8 /* EmojiPickerViewCell.swift in Sources */,
 				02DFEC4A21C07370009B6F15 /* CountryPickerViewController.m in Sources */,
 				02A7900123E0DD5A00F17374 /* UserStatusInfoType.swift in Sources */,
-				024F787C23D1F297008EC68F /* Tools.m in Sources */,
 				02DFEC4B21C07370009B6F15 /* KeyboardGrowingTextView.m in Sources */,
 				02DFEC4C21C07370009B6F15 /* TCNavigationController.swift in Sources */,
 				B12209DC238550FE004D069C /* AppVersionUpdateViewController.swift in Sources */,

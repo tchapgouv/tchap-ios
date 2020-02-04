@@ -1597,7 +1597,7 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
     SingleImagePickerPresenter *singleImagePickerPresenter = [[SingleImagePickerPresenter alloc] initWithSession:self.mainSession];
     singleImagePickerPresenter.delegate = self;
     
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:ROOM_SETTINGS_MAIN_SECTION_INDEX inSection:ROOM_SETTINGS_MAIN_SECTION_ROW_PHOTO];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:avatarIndex inSection:ROOM_SETTINGS_MAIN_SECTION_INDEX];
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
     
     UIView *sourceView = cell;
