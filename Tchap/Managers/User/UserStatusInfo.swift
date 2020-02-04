@@ -1,5 +1,5 @@
 /*
- Copyright 2015 OpenMarket Ltd
+ Copyright 2020 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -14,18 +14,10 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+import Foundation
 
-@interface Contact : MXKContact
-
-@property (nonatomic) MXRoomMember* mxMember;
-
-@property (nonatomic) MXRoomThirdPartyInvite* mxThirdPartyInvite;
-
-@property (nonatomic) MXGroupUser* mxGroupUser;
-
-@property (nonatomic) MXUser* mxUser;
-
-@property (nonatomic) BOOL isExpired;
-
-@end
+/// Structure use to store expiration and deactivation information about a given user.
+struct UserStatusInfo: UserStatusInfoType {
+    let expired: Bool
+    let deactivated: Bool
+}

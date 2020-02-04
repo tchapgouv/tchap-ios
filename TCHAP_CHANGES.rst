@@ -1,3 +1,10 @@
+Changes in Tchap 1.0.21 (2020-01-16)
+===================================================
+
+Features/Improvements:
+ * Improve the warning dialog displayed before creating an external account
+ * Update the known instances list #283
+
 Changes in Tchap 1.0.20 (2019-12-17)
 ===================================================
 

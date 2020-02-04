@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -68,7 +64,7 @@
             <viewLayoutGuide key="safeArea" id="lZX-lJ-78K"/>
             <connections>
                 <outlet property="imageView" destination="PQX-3w-scV" id="O4R-bE-kKZ"/>
-                <outlet property="roomAccessLabel" destination="oly-uR-WyY" id="yRh-Jv-5Vw"/>
+                <outlet property="roomInfoLabel" destination="oly-uR-WyY" id="yRh-Jv-5Vw"/>
                 <outlet property="subTitleLabel" destination="kdk-B6-vOY" id="y8i-2p-yTd"/>
                 <outlet property="titleLabel" destination="IZL-Jn-z4r" id="L13-pw-r6s"/>
                 <outlet property="titlesStackView" destination="3h3-ZD-edw" id="Oai-hh-ayq"/>

@@ -111,9 +111,9 @@ DEPENDENCIES:
   - MatomoTracker (~> 7.2.0)
   - MatrixKit (from `https://github.com/matrix-org/matrix-ios-kit.git`, branch `develop`)
   - MatrixKit/AppExtension (from `https://github.com/matrix-org/matrix-ios-kit.git`, branch `develop`)
-  - MatrixSDK (from `https://github.com/matrix-org/matrix-ios-sdk.git`, branch `develop`)
-  - MatrixSDK/JingleCallStack (from `https://github.com/matrix-org/matrix-ios-sdk.git`, branch `develop`)
-  - MatrixSDK/SwiftSupport (from `https://github.com/matrix-org/matrix-ios-sdk.git`, branch `develop`)
+  - MatrixSDK (from `https://github.com/matrix-org/matrix-ios-sdk.git`, branch `dinum`)
+  - MatrixSDK/JingleCallStack (from `https://github.com/matrix-org/matrix-ios-sdk.git`, branch `dinum`)
+  - MatrixSDK/SwiftSupport (from `https://github.com/matrix-org/matrix-ios-sdk.git`, branch `dinum`)
   - OLMKit
   - Reusable (~> 4.1)
   - RxSwift (~> 4.3)
@@ -149,7 +149,7 @@ EXTERNAL SOURCES:
     :branch: develop
     :git: https://github.com/matrix-org/matrix-ios-kit.git
   MatrixSDK:
-    :branch: develop
+    :branch: dinum
     :git: https://github.com/matrix-org/matrix-ios-sdk.git
   SwiftUTI:
     :branch: master
@@ -160,7 +160,7 @@ CHECKOUT OPTIONS:
     :commit: 78d96ec35b868bccf66f705486bab9eebbace931
     :git: https://github.com/matrix-org/matrix-ios-kit.git
   MatrixSDK:
-    :commit: 756a3c32dbcfbd48c205dea65d32d2d9936db324
+    :commit: 509fdc062040f4970c5bb0b76734eb5734295a78
     :git: https://github.com/matrix-org/matrix-ios-sdk.git
   SwiftUTI:
     :commit: b6b46942fb3aad819610851f62a70e17a528444e
@@ -190,6 +190,6 @@ SPEC CHECKSUMS:
   SwiftUTI: 917993c124f8eac25e88ced0202fc58d7eb50fa8
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
 
-PODFILE CHECKSUM: 365317ae5011539666b873e5051d03bd6628251a
+PODFILE CHECKSUM: 3701ad39833ed7bb719d87770a74c0bb3ad09200
 
 COCOAPODS: 1.8.4

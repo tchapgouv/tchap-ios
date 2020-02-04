@@ -24,6 +24,8 @@
 		<string>applinks:www.tchap.gouv.fr</string>
 		<string>applinks:tchap.gouv.fr</string>
 		<string>webcredentials:www.tchap.gouv.fr</string>
+		<string>applinks:matrix.agent.collectivites.tchap.gouv.fr</string>
+		<string>applinks:matrix.agent.externe.tchap.gouv.fr</string>
 	</array>
 	<key>com.apple.developer.icloud-container-identifiers</key>
 	<array>

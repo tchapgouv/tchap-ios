@@ -25,3 +25,4 @@
 #import "EncryptionInfoView.h"
 #import "TableViewCellWithCheckBoxAndLabel.h"
 #import "RoomDataSource.h"
+#import "Contact.h"

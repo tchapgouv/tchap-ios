@@ -1,5 +1,5 @@
 /*
- Copyright 2015 OpenMarket Ltd
+ Copyright 2020 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -14,18 +14,19 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+import Foundation
 
-@interface Contact : MXKContact
-
-@property (nonatomic) MXRoomMember* mxMember;
-
-@property (nonatomic) MXRoomThirdPartyInvite* mxThirdPartyInvite;
-
-@property (nonatomic) MXGroupUser* mxGroupUser;
-
-@property (nonatomic) MXUser* mxUser;
-
-@property (nonatomic) BOOL isExpired;
-
-@end
+@objc extension MXSession {
+    
+    /// Clean the storage of a session by removing the expired contents.
+    func tc_removeExpiredMessages() {
+        var hasStoreChanged = false
+        for summary in self.roomsSummaries() {
+            hasStoreChanged = hasStoreChanged || summary.tc_removeExpiredRoomContentsFromStore()
+        }
+        
+        if hasStoreChanged {
+            self.store.commit?()
+        }
+    }
+}

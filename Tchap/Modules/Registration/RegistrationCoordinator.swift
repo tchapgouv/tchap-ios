@@ -126,9 +126,11 @@ final class RegistrationCoordinator: RegistrationCoordinatorType {
                 
                 // Prompt the user before creating an external account
                 if self.isExternalRestClient(restClient) {
-                    let alert = UIAlertController(title: TchapL10n.warningTitle, message: TchapL10n.registrationWarningForExternalUser, preferredStyle: .alert)
+                    let alert = UIAlertController(title: TchapL10n.registrationWarningForExternalUserTitle,
+                                                  message: TchapL10n.registrationWarningForExternalUser,
+                                                  preferredStyle: .alert)
                     
-                    let okTitle = Bundle.mxk_localizedString(forKey: "ok")
+                    let okTitle = TchapL10n.actionProceed
                     let okAction = UIAlertAction(title: okTitle, style: .default, handler: { action in
                         // Pursue the registration
                         self.startRegistration(with: restClient, email: email, password: password, removeActivityIndicator: removeActivityIndicator)

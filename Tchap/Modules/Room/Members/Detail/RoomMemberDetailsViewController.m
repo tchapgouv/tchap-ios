@@ -250,12 +250,29 @@
 {
     if (self.mxRoomMember)
     {
-        RoomTitleViewModelBuilder *titleViewModelBuilder = [[RoomTitleViewModelBuilder alloc] initWithSession:self.mainSession];
-        RoomTitleViewModel *titleViewModel;
-        User *roomMember = [[User alloc] initWithUserId:self.mxRoomMember.userId displayName:self.mxRoomMember.displayname avatarStringURL:self.mxRoomMember.avatarUrl];
-        
-        titleViewModel = [titleViewModelBuilder buildWithoutAvatarFromUser:(roomMember)];
-        [memberTitleView fillWithRoomTitleViewModel:titleViewModel];
+        NSString *memberUserId = self.mxRoomMember.userId;
+        if (memberUserId)
+        {
+            NSString *memberDisplayName = self.mxRoomMember.displayname;
+            if (!memberDisplayName.length)
+            {
+                UserService *userService = [[UserService alloc] initWithSession:self.mainSession];
+                User *user = [userService getUserFromLocalSessionWith:memberUserId];
+                if (user)
+                {
+                    memberDisplayName = user.displayName;
+                }
+                else
+                {
+                    // If the display name is unknown, build a temporary name from the user id.
+                    memberDisplayName = [userService displayNameFrom:memberUserId];
+                }
+            }
+            User *user = [[User alloc] initWithUserId:memberUserId displayName:memberDisplayName avatarStringURL:self.mxRoomMember.avatarUrl];
+            RoomTitleViewModelBuilder *titleViewModelBuilder = [[RoomTitleViewModelBuilder alloc] initWithSession:self.mainSession];
+            RoomTitleViewModel *titleViewModel = [titleViewModelBuilder buildWithoutAvatarFromUser:user];
+            [memberTitleView fillWithRoomTitleViewModel:titleViewModel];
+        }
         
         // Update member badge
         MXWeakify(self);
@@ -282,11 +299,11 @@
         
         NSString* presenceText;
         
-        if (self.mxRoomMember.userId)
-        {
-            MXUser *user = [self.mxRoom.mxSession userWithUserId:self.mxRoomMember.userId];
-            presenceText = [Tools presenceText:user];
-        }
+//        if (self.mxRoomMember.userId)
+//        {
+//            MXUser *user = [self.mxRoom.mxSession userWithUserId:self.mxRoomMember.userId];
+//            presenceText = [Tools presenceText:user];
+//        }
         
         self.roomMemberStatusLabel.text = presenceText;
         
@@ -847,7 +864,7 @@
                                                                    
                                                                }]];
                 
-                [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"ban", @"Vector", nil)
+                [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ban"]
                                                                  style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
                                                                      
                                                                      if (weakSelf)

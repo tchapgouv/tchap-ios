@@ -16,6 +16,10 @@ internal enum TchapL10n {
   internal static let actionInvite = TchapL10n.tr("Tchap", "action_invite")
   /// Suivant
   internal static let actionNext = TchapL10n.tr("Tchap", "action_next")
+  /// Poursuivre
+  internal static let actionProceed = TchapL10n.tr("Tchap", "action_proceed")
+  /// Retirer
+  internal static let actionRemove = TchapL10n.tr("Tchap", "action_remove")
   /// Valider
   internal static let actionValidate = TchapL10n.tr("Tchap", "action_validate")
   /// Une nouvelle version est disponible. Pour des raisons de sécurité, veuillez mettre à jour votre application avant de poursuivre son utilisation.
@@ -240,6 +244,8 @@ internal enum TchapL10n {
   internal static let registrationTitle = TchapL10n.tr("Tchap", "registration_title")
   /// Le domaine de votre adresse email n’est pas déclaré dans Tchap. Si vous avez reçu une invitation, vous allez pouvoir créer un compte Tchap « invité », permettant uniquement de participer aux échanges privés auxquels vous êtes convié
   internal static let registrationWarningForExternalUser = TchapL10n.tr("Tchap", "registration_warning_for_external_user")
+  /// Information concernant votre inscription
+  internal static let registrationWarningForExternalUserTitle = TchapL10n.tr("Tchap", "registration_warning_for_external_user_title")
   /// Analyse antivirus
   internal static let roomAttachmentScanStatusInProgressTitle = TchapL10n.tr("Tchap", "room_attachment_scan_status_in_progress_title")
   /// Le document %@ a été filtré par le politique de sécurité
@@ -264,6 +270,12 @@ internal enum TchapL10n {
   internal static let roomCreationPublicVisibilityTitle = TchapL10n.tr("Tchap", "room_creation_public_visibility_title")
   /// Autoriser l’accès aux externes à ce salon
   internal static let roomCreationRoomAccessTitle = TchapL10n.tr("Tchap", "room_creation_room_access_title")
+  /// Limiter l’historique du salon à %d jours
+  internal static func roomCreationRoomRetentionPeriodDays(_ p1: Int) -> String {
+    return TchapL10n.tr("Tchap", "room_creation_room_retention_period_days", p1)
+  }
+  /// Limiter l’historique du salon à 1 jour
+  internal static let roomCreationRoomRetentionPeriodOneDay = TchapL10n.tr("Tchap", "room_creation_room_retention_period_one_day")
   /// Nouveau salon
   internal static let roomCreationTitle = TchapL10n.tr("Tchap", "room_creation_title")
   /// Fichiers
@@ -272,16 +284,30 @@ internal enum TchapL10n {
   internal static let roomMemberDetailsActionChat = TchapL10n.tr("Tchap", "room_member_details_action_chat")
   /// Fichiers partagés
   internal static let roomMemberDetailsFiles = TchapL10n.tr("Tchap", "room_member_details_files")
+  /// Voulez-vous vraiment retirer %@ de ce salon ?
+  internal static func roomMembersRemovePromptMsg(_ p1: String) -> String {
+    return TchapL10n.tr("Tchap", "room_members_remove_prompt_msg", p1)
+  }
   /// Membres
   internal static let roomMembersTabTitle = TchapL10n.tr("Tchap", "room_members_tab_title")
   /// Autoriser l’accès aux externes à ce salon
   internal static let roomSettingsAllowExternalUsersToJoin = TchapL10n.tr("Tchap", "room_settings_allow_external_users_to_join")
   /// Cette action est irréversible.\nVoulez-vous vraiment autoriser les externes à rejoindre ce salon ?
   internal static let roomSettingsAllowExternalUsersToJoinPromptMsg = TchapL10n.tr("Tchap", "room_settings_allow_external_users_to_join_prompt_msg")
+  /// Échec de mise à jour de la durée de l'historique
+  internal static let roomSettingsFailToUpdateRetentionPeriod = TchapL10n.tr("Tchap", "room_settings_fail_to_update_retention_period")
   /// Retirer ce salon de la liste des salons publics
   internal static let roomSettingsRemoveFromRoomsDirectory = TchapL10n.tr("Tchap", "room_settings_remove_from_rooms_directory")
   /// Cette action est irréversible.\nVoulez-vous vraiment retirer ce salon des salons publics ?
   internal static let roomSettingsRemoveFromRoomsDirectoryPrompt = TchapL10n.tr("Tchap", "room_settings_remove_from_rooms_directory_prompt")
+  /// %d jours
+  internal static func roomSettingsRetentionPeriodInDays(_ p1: Int) -> String {
+    return TchapL10n.tr("Tchap", "room_settings_retention_period_in_days", p1)
+  }
+  /// 1 jour
+  internal static let roomSettingsRetentionPeriodOneDay = TchapL10n.tr("Tchap", "room_settings_retention_period_one_day")
+  /// Limitation de l’historique
+  internal static let roomSettingsRetentionTitle = TchapL10n.tr("Tchap", "room_settings_retention_title")
   /// Les externes ne sont pas autorisés à rejoindre ce salon
   internal static let roomSettingsRoomAccessRestricted = TchapL10n.tr("Tchap", "room_settings_room_access_restricted")
   /// Information complémentaire :
@@ -290,6 +316,12 @@ internal enum TchapL10n {
   internal static let roomSettingsRoomAccessUnrestricted = TchapL10n.tr("Tchap", "room_settings_room_access_unrestricted")
   /// Paramètres
   internal static let roomSettingsTabTitle = TchapL10n.tr("Tchap", "room_settings_tab_title")
+  /// Historique limité à %d jours
+  internal static func roomTitleRetentionInfoInDays(_ p1: Int) -> String {
+    return TchapL10n.tr("Tchap", "room_title_retention_info_in_days", p1)
+  }
+  /// Historique limité à 1 jour
+  internal static let roomTitleRetentionInfoOneDay = TchapL10n.tr("Tchap", "room_title_retention_info_one_day")
   /// %d membre(s)
   internal static func roomTitleRoomMembersCount(_ p1: Int) -> String {
     return TchapL10n.tr("Tchap", "room_title_room_members_count", p1)

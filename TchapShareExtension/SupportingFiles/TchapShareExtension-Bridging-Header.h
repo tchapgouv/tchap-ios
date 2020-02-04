@@ -4,3 +4,4 @@
 
 #import "DesignValues.h"
 #import "MXRoomSummary+Riot.h"
+#import "Tools.h"

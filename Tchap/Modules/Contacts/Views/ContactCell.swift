@@ -29,6 +29,7 @@ import UIKit
     
     /// The current displayed contact.
     private var contact: MXKContact?
+    private var isExpiredUser: Bool = false
     /// The tchap id
     private var matrixId: String?
     
@@ -80,6 +81,9 @@ import UIKit
         unregisterContactPresenceNotification()
         
         self.contact = contact
+        if let tcContact = contact as? Contact {
+            self.isExpiredUser = tcContact.isExpired
+        }
         
         // Tchap contacts are defined with only one matrix id.
         // Consider here only the first id if any.
@@ -115,8 +119,8 @@ import UIKit
     
     func update(style: Style) {
         self.style = style
-        self.contactDisplayNameLabel.textColor = style.primaryTextColor
-        self.contactDomainLabel.textColor = style.primarySubTextColor
+        self.contactDisplayNameLabel.textColor = self.isExpiredUser ? style.secondaryTextColor : style.primaryTextColor
+        self.contactDomainLabel.textColor = self.isExpiredUser ? style.secondaryTextColor : style.primarySubTextColor
         self.contactEmailLabel.textColor = style.secondaryTextColor
         
         // Clear the default background color of a MXKImageView instance
@@ -142,6 +146,9 @@ import UIKit
             self.contactDisplayNameLabel.text = nil
             self.contactDomainLabel.text = nil
         }
+        
+        self.contactDisplayNameLabel.textColor = self.isExpiredUser ? style.secondaryTextColor : style.primaryTextColor
+        self.contactDomainLabel.textColor = self.isExpiredUser ? style.secondaryTextColor : style.primarySubTextColor
     }
     
     private func refreshContactPresence() {

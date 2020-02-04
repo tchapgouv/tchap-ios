@@ -203,6 +203,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
 // Direct chat target user when create a discussion without associated room
 @property (nonatomic, nullable, strong) User *discussionTargetUser;
 @property (nonatomic, nullable, strong) RoomService *roomService;
+@property (nonatomic, nullable, strong) UserService *userService;
 
 // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
 @property (nonatomic, weak) id kThemeServiceDidChangeThemeNotificationObserver;
@@ -1187,6 +1188,9 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXEventDidChangeSentStateNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXEventDidChangeIdentifierNotification object:nil];
+    
+    self.roomService = nil;
+    self.userService = nil;
 }
 
 #pragma mark - Tchap
@@ -1245,10 +1249,12 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
             NSString *directUserId = self.roomDataSource.room.directUserId;
             
             // Check whether the left member has deactivated his account
-            UserService *userService = [[UserService alloc] initWithSession:self.mainSession];
+            self.userService = [[UserService alloc] initWithSession:self.mainSession];
+            MXHTTPOperation * operation;
             MXWeakify(self);
             NSLog(@"[RoomViewController] restoreDiscussionIfNeed: check left member %@", directUserId);
-            [userService isAccountDeactivatedFor:directUserId success:^(BOOL isDeactivated) {
+            
+            operation = [self.userService isAccountDeactivatedFor:directUserId success:^(BOOL isDeactivated) {
                 if (isDeactivated)
                 {
                     NSLog(@"[RoomViewController] restoreDiscussionIfNeed: the left member has deactivated his account");
@@ -1275,11 +1281,13 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                         onComplete(NO);
                     }];
                 }
+                self.userService = nil;
             } failure:^(NSError *error) {
                 NSLog(@"[RoomViewController] restoreDiscussionIfNeed: check member status failed");
                 // Alert user
                 [[AppDelegate theDelegate] showErrorAsAlert:error];
                 onComplete(NO);
+                self.userService = nil;
             }];
         }
         else
