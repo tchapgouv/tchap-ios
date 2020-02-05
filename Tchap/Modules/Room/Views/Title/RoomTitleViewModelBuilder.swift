@@ -50,7 +50,7 @@ final class RoomTitleViewModelBuilder: NSObject {
         
         let title: String
         let subtitle: String?
-        let roomAccessInfo: String?
+        let roomInfo: String?
         let avatarImageShape: AvatarImageShape
         let avatarBorderColor: UIColor?
         let avatarBorderWidth: CGFloat?
@@ -59,22 +59,30 @@ final class RoomTitleViewModelBuilder: NSObject {
         let avatarUrl = roomSummary.avatar
         let isDirectChat = roomSummary.isDirect
         
+        let retentionPeriod = roomSummary.tc_roomRetentionPeriodInDays()
+        let retentionInfo = retentionPeriod == 1 ? TchapL10n.roomTitleRetentionInfoOneDay : TchapL10n.roomTitleRetentionInfoInDays(Int(retentionPeriod))
+        
         if isDirectChat {
             let displayNameComponents = DisplayNameComponents(displayName: displayName)
             title = displayNameComponents.name
             subtitle = displayNameComponents.domain
-            roomAccessInfo = nil
+            #if ENABLE_ROOM_RETENTION
+            roomInfo = retentionInfo
+            #else
+            roomInfo = nil
+            #endif
             avatarImageShape = .circle
             avatarBorderColor = nil
             avatarBorderWidth = nil
         } else {
-            let roomMemberCount = Int(roomSummary.membersCount.members)
+            let roomMemberCount = Int(roomSummary.membersCount.joined)
             title = displayName
             subtitle = TchapL10n.roomTitleRoomMembersCount(roomMemberCount)
             avatarImageShape = .hexagon
             
             // Look for the right avatar border
             let rule = roomSummary.tc_roomAccessRule()
+            let roomAccessInfo: String?
             switch rule {
             case .restricted:
                 avatarBorderColor = kColorDarkBlue
@@ -89,6 +97,16 @@ final class RoomTitleViewModelBuilder: NSObject {
                 avatarBorderWidth = Constants.hexagonImageBorderWidthDefault
                 roomAccessInfo = nil
             }
+            
+            #if ENABLE_ROOM_RETENTION
+            if let accessInfo = roomAccessInfo {
+                roomInfo = accessInfo + " - " + retentionInfo
+            } else {
+                roomInfo = retentionInfo
+            }
+            #else
+            roomInfo = roomAccessInfo
+            #endif
         }
         
         let placeholderImage: UIImage = AvatarGenerator.generateAvatar(forText: displayName)
@@ -102,7 +120,7 @@ final class RoomTitleViewModelBuilder: NSObject {
                                                         borderColor: avatarBorderColor,
                                                         borderWidth: avatarBorderWidth)
         
-        return RoomTitleViewModel(title: title, subtitle: subtitle, roomAccessInfo: roomAccessInfo, avatarImageViewModel: avatarImageViewModel)
+        return RoomTitleViewModel(title: title, subtitle: subtitle, roomInfo: roomInfo, avatarImageViewModel: avatarImageViewModel)
     }
     
     func build(fromRoomPreviewData roomPreviewData: RoomPreviewData) -> RoomTitleViewModel {
@@ -125,7 +143,7 @@ final class RoomTitleViewModelBuilder: NSObject {
                                                         borderColor: kColorDarkBlue,
                                                         borderWidth: Constants.hexagonImageBorderWidthDefault)
         
-        return RoomTitleViewModel(title: title, subtitle: subtitle, roomAccessInfo: nil, avatarImageViewModel: avatarImageViewModel)
+        return RoomTitleViewModel(title: title, subtitle: subtitle, roomInfo: nil, avatarImageViewModel: avatarImageViewModel)
     }
     
     func build(fromUser user: User) -> RoomTitleViewModel {
@@ -149,7 +167,7 @@ final class RoomTitleViewModelBuilder: NSObject {
                                                         borderColor: nil,
                                                         borderWidth: nil)
         
-        return RoomTitleViewModel(title: title, subtitle: subtitle, roomAccessInfo: nil, avatarImageViewModel: avatarImageViewModel)
+        return RoomTitleViewModel(title: title, subtitle: subtitle, roomInfo: nil, avatarImageViewModel: avatarImageViewModel)
     }
     
     func buildWithoutAvatar(fromUser user: User) -> RoomTitleViewModel {
@@ -159,6 +177,6 @@ final class RoomTitleViewModelBuilder: NSObject {
         let title = displayNameComponents.name
         let subtitle = displayNameComponents.domain
         
-        return RoomTitleViewModel(title: title, subtitle: subtitle, roomAccessInfo: nil, avatarImageViewModel: nil)
+        return RoomTitleViewModel(title: title, subtitle: subtitle, roomInfo: nil, avatarImageViewModel: nil)
     }
 }

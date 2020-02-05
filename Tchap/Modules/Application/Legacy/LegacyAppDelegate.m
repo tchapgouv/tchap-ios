@@ -1502,6 +1502,9 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
             
             // Enable local notifications
             [self enableLocalNotificationsFromMatrixSession:mxSession];
+            
+            // Clean the storage by removing expired data
+            [mxSession tc_removeExpiredMessages];
         }
         else if (mxSession.state == MXSessionStateClosed)
         {

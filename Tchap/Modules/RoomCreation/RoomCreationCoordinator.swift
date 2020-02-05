@@ -209,7 +209,14 @@ final class RoomCreationCoordinator: NSObject, RoomCreationCoordinatorType {
     private func createRoom(roomCreationFormResult: RoomCreationFormResult, avatarUrl: String?, userIDs: [String]) -> Single<String> {
         let roomVisibility: MXRoomDirectoryVisibility = roomCreationFormResult.isPublic ? .public : .private
         let roomAccessRule: RoomAccessRule = roomCreationFormResult.isRestricted ? .restricted: .unrestricted
-        return self.roomService.createRoom(visibility: roomVisibility, name: roomCreationFormResult.name, avatarURL: avatarUrl, inviteUserIds: userIDs, isFederated: roomCreationFormResult.isFederated, accessRule: roomAccessRule)
+        let retentionPeriodInMS = Tools.durationInMs(fromDays: roomCreationFormResult.retentionPeriodInDays)
+        return self.roomService.createRoom(visibility: roomVisibility,
+                                           name: roomCreationFormResult.name,
+                                           avatarURL: avatarUrl,
+                                           inviteUserIds: userIDs,
+                                           rententionPeriodInMs: retentionPeriodInMS,
+                                           isFederated: roomCreationFormResult.isFederated,
+                                           accessRule: roomAccessRule)
     }
 }
 

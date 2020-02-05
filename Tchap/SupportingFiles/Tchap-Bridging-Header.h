@@ -22,3 +22,4 @@
 #import "MediaPickerViewController.h"
 #import "EventFormatter.h"
 #import "Tools.h"
+#import "Contact.h"

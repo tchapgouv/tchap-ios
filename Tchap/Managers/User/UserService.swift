@@ -16,6 +16,10 @@
 
 import Foundation
 
+enum UserServiceError: Error {
+    case unknown
+}
+
 /// `UserService` implementation of `UserServiceType` is used to handle Tchap users.
 @objcMembers
 final class UserService: NSObject, UserServiceType {
@@ -26,22 +30,30 @@ final class UserService: NSObject, UserServiceType {
         static let searchUsersLimit: UInt = 50
         static let preprod_external_prefix: String = "e."
         static let external_prefix: String = "agent.externe."
+        static let userInfoKeyExpired = "expired"
+        static let userInfoKeyDeactivated = "deactivated"
     }
     
     // MARK: - Properties
     
     private let session: MXSession
     private let thirdPartyIDPlatformInfoResolver: ThirdPartyIDPlatformInfoResolverType
+    private let httpClient: MXHTTPClient
     
     // MARK: - Setup
     
     init(session: MXSession) {
-        guard let serverUrlPrefix = UserDefaults.standard.string(forKey: "serverUrlPrefix") else {
-            fatalError("serverUrlPrefix should be defined")
+        guard let serverUrlPrefix = UserDefaults.standard.string(forKey: "serverUrlPrefix"),
+            let homeServer = session.matrixRestClient.credentials.homeServer,
+            let accessToken = session.matrixRestClient.credentials.accessToken else {
+            fatalError("serverUrlPrefix and credentials should be defined")
         }
         self.session = session
         let identityServerURLs = IdentityServersURLGetter(currentIdentityServerURL: session.matrixRestClient?.identityServer).identityServerUrls
         self.thirdPartyIDPlatformInfoResolver = ThirdPartyIDPlatformInfoResolver(identityServerUrls: identityServerURLs, serverPrefixURL: serverUrlPrefix)
+        
+        /// The current HttpClient
+        self.httpClient = MXHTTPClient(baseURL: "\(homeServer)/\(kMXAPIPrefixPathR0)", accessToken: accessToken, andOnUnrecognizedCertificateBlock: nil)
         
         super.init()
     }
@@ -96,22 +108,41 @@ final class UserService: NSObject, UserServiceType {
         return firstUserHostName == secondUserHostName
     }
     
-    func isAccountDeactivated(for userId: String, completion: @escaping ((MXResponse<Bool>) -> Void)) {
-        // There is no Client-Server API for this request for the moment,
-        // we will check the user display name which is mandatory on Tchap.
-        self.session.matrixRestClient.profile(forUser: userId) { (response) in
+    func isAccountDeactivated(for userId: String, completion: @escaping ((MXResponse<Bool>) -> Void)) -> MXHTTPOperation? {
+        return self.getUserInfo(for: userId) { (response) in
             switch response {
-            case .success(let (displayName, _)):
-                completion(MXResponse.success(displayName == nil))
+            case .success(let userInfo):
+                completion(.success(userInfo.deactivated))
             case .failure(let error):
-                print("Get profile failed for user id \(userId) with error: \(error)")
-                completion(MXResponse.failure(error))
+                completion(.failure(error))
             }
         }
     }
+    
+    func isAccountExpired(for userId: String, completion: @escaping ((MXResponse<Bool>) -> Void)) -> MXHTTPOperation? {
+        return self.getUserInfo(for: userId) { (response) in
+            switch response {
+            case .success(let userInfo):
+                completion(.success(userInfo.expired))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
     // Temporary version used in ObjectiveC.
-    func isAccountDeactivated(for userId: String, success: @escaping ((Bool) -> Void), failure: ((Error) -> Void)?) {
-        self.isAccountDeactivated(for: userId) { (response) in
+    func isAccountDeactivated(for userId: String, success: @escaping ((Bool) -> Void), failure: ((Error) -> Void)?) -> MXHTTPOperation? {
+        return self.isAccountDeactivated(for: userId) { (response) in
+            switch response {
+            case .success(let value):
+                success(value)
+            case .failure(let error):
+                failure?(error)
+            }
+        }
+    }
+    func isAccountExpired(for userId: String, success: @escaping ((Bool) -> Void), failure: ((Error) -> Void)?) -> MXHTTPOperation? {
+        return self.isAccountExpired(for: userId) { (response) in
             switch response {
             case .success(let value):
                 success(value)
@@ -253,5 +284,32 @@ final class UserService: NSObject, UserServiceType {
         }
         
         return User(userId: userId, displayName: displayName, avatarStringURL: mxUser.avatarUrl)
+    }
+    
+    private func getUserInfo(for userId: String, completion: @escaping ((MXResponse<UserStatusInfoType>) -> Void)) -> MXHTTPOperation? {
+        let path = "user/" + MXTools.encodeURIComponent(userId) + "/info"
+        return httpClient.request(withMethod: "GET",
+                                  path: path,
+                                  parameters: nil,
+                                  success: { (response: [AnyHashable: Any]?) in
+                                    NSLog("[UserService] user info resquest succeeded")
+                                    guard let response = response else {
+                                        completion(.success(UserStatusInfo(expired: false, deactivated: false)))
+                                        return
+                                    }
+                                    
+                                    let expired = response[Constants.userInfoKeyExpired] as? Bool ?? false
+                                    let deactivated = response[Constants.userInfoKeyDeactivated] as? Bool ?? false
+                                    let userInfo = UserStatusInfo(expired: expired, deactivated: deactivated)
+                                    completion(.success(userInfo))
+        },
+                                  failure: { (error: Error?) in
+                                    NSLog("[UserService] user info resquest failed")
+                                    if let error = error {
+                                        completion(.failure(error))
+                                    } else {
+                                        completion(.failure(UserServiceError.unknown))
+                                    }
+        })
     }
 }
