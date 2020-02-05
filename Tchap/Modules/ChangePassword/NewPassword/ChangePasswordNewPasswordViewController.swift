@@ -97,6 +97,7 @@ final class ChangePasswordNewPasswordViewController: UIViewController {
             style.applyStyle(onNavigationBar: navigationBar)
         }
         
+        self.instructionsLabel.textColor = style.secondaryTextColor
         for formTextield in self.formTextFields {
             formTextield.update(style: style)
         }
