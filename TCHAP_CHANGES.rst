@@ -1,3 +1,15 @@
+Changes in Tchap 1.0.22 (2020-02-05)
+===================================================
+
+Features/Improvements:
+ * Configure per-room retention period for messages #239 - Enabled only on Pre-prod.
+ * Order the room members by considering admin(s) first #284
+ * Room members: gray out the expired users #273
+ 
+Bug Fixes:
+ * Room members count displayed in the title is wrong #291
+ * Room settings: the banned users are listed with their id instead of their display name #282
+
 Changes in Tchap 1.0.21 (2020-01-16)
 ===================================================
 
