@@ -171,4 +171,8 @@ extension RoomPreviewCoordinator: RoomViewControllerDelegate {
     func roomViewControllerPreviewDidTapCancel(_ roomViewController: RoomViewController!) {
         self.didCancel()
     }
+    
+    func roomViewController(_ roomViewController: RoomViewController, handlePermalinkFragment fragment: String) -> Bool {
+        return false
+    }
 }

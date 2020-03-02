@@ -19,6 +19,7 @@ import UIKit
 protocol RoomCoordinatorDelegate: class {
     func roomCoordinator(_ coordinator: RoomCoordinatorType, didSelectUserID userID: String)
     func roomCoordinator(_ coordinator: RoomCoordinatorType, didSelectRoomID roomID: String)
+    func roomCoordinator(_ coordinator: RoomCoordinatorType, handlePermalinkFragment fragment: String) -> Bool
 }
 
 final class RoomCoordinator: NSObject, RoomCoordinatorType {
@@ -296,6 +297,13 @@ extension RoomCoordinator: RoomViewControllerDelegate {
     }
     
     func roomViewControllerPreviewDidTapCancel(_ roomViewController: RoomViewController) {
+    }
+    
+    func roomViewController(_ roomViewController: RoomViewController, handlePermalinkFragment fragment: String) -> Bool {
+        guard let delegate = self.delegate else {
+            return false
+        }
+        return delegate.roomCoordinator(self, handlePermalinkFragment: fragment)
     }
 }
 

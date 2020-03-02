@@ -208,7 +208,7 @@
 "room_event_action_redact" = "Effacer";
 "room_event_action_more" = "Plus";
 "room_event_action_share" = "Partager";
-"room_event_action_permalink" = "Permalien";
+"room_event_action_permalink" = "Créer un lien";
 "room_event_action_view_source" = "Voir la source";
 "room_event_action_report" = "Signaler le contenu";
 "room_event_action_report_prompt_reason" = "Raison pour le signalement du contenu";

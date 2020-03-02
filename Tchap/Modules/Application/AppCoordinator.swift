@@ -169,6 +169,24 @@ final class AppCoordinator: AppCoordinatorType {
         return false
     }
     
+    func handlePermalinkFragment(_ fragment: String) -> Bool {
+        // Handle the permalink fragment with the universal link service
+        return self.universalLinkService.handleFragment(fragment, completion: { (response) in
+            switch response {
+            case .success(let parsingResult):
+                switch parsingResult {
+                case .registrationLink(_):
+                    // We don't expect a registration link from a permalink, we ignore this case here.
+                    NSLog("[AppCoordinator] handlePermalinkFragment: unexpected fragment (registration link)")
+                case .roomLink(let roomIdOrAlias, let eventID):
+                    _ = self.showRoom(with: roomIdOrAlias, onEventID: eventID)
+                }
+            case .failure(let error):
+                self.showError(error)
+            }
+        })
+    }
+    
     func resumeBySelectingRoom(with roomId: String) {
         guard let account = MXKAccountManager.shared().accountKnowingRoom(withRoomIdOrAlias: roomId),
             let homeCoordinator = self.homeCoordinator,
@@ -572,6 +590,10 @@ extension AppCoordinator: WelcomeCoordinatorDelegate {
 extension AppCoordinator: HomeCoordinatorDelegate {
     func homeCoordinator(_ coordinator: HomeCoordinatorType, reloadMatrixSessionsByClearingCache clearCache: Bool) {
         self.reloadSession(clearCache: clearCache)
+    }
+    
+    func homeCoordinator(_ coordinator: HomeCoordinatorType, handlePermalinkFragment fragment: String) -> Bool {
+        return self.handlePermalinkFragment(fragment)
     }
 }
 

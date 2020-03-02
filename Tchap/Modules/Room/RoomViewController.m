@@ -2369,28 +2369,25 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
             }
         }
         
-        // Tchap: Disable permalink for the moment
-//        if (level == 1)
-//        {
-//            [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_permalink", @"Vector", nil)
-//                                                             style:UIAlertActionStyleDefault
-//                                                           handler:^(UIAlertAction * action) {
-//
-//                                                               if (weakSelf)
-//                                                               {
-//                                                                   typeof(self) self = weakSelf;
-//
-//                                                                   [self cancelEventSelection];
-//
-//                                                                   // Create a matrix.to permalink that is common to all matrix clients
-//                                                                   NSString *permalink = [MXTools permalinkToEvent:selectedEvent.eventId inRoom:selectedEvent.roomId];
-//
-//                                                                   // Create a room matrix.to permalink
-//                                                                   [[UIPasteboard generalPasteboard] setString:permalink];
-//                                                               }
-//
-//                                                           }]];
-//        }
+        if (level == 1)
+        {
+            [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_permalink", @"Vector", nil)
+                                                             style:UIAlertActionStyleDefault
+                                                           handler:^(UIAlertAction * action) {
+
+                                                               if (weakSelf)
+                                                               {
+                                                                   typeof(self) self = weakSelf;
+
+                                                                   [self cancelEventSelection];
+
+                                                                   // Create a Tchap permalink
+                                                                   NSString *permalink = [Tools permalinkToEvent:selectedEvent.eventId inRoom:selectedEvent.roomId];
+                                                                   [[UIPasteboard generalPasteboard] setString:permalink];
+                                                               }
+
+                                                           }]];
+        }
         
         if (level == 1)
         {
@@ -2616,22 +2613,22 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
         
         // When a link refers to a room alias/id, a user id or an event id, the non-ASCII characters (like '#' in room alias) has been escaped
         // to be able to convert it into a legal URL string.
-        NSString *absoluteURLString = [url.absoluteString stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSString *absoluteURLString = [url.absoluteString stringByRemovingPercentEncoding];
         
-        // If the link can be open it by the app, let it do
-        // Note: Universal links are not supported by Tchap. [Tools isUniversalLink:] returns NO for the moment.
-        // TODO use the UniversalLinkService
-//        if ([Tools isUniversalLink:url])
-//        {
-//            shouldDoAction = NO;
-//
-//            // iOS Patch: fix vector.im urls before using it
-//            NSURL *fixedURL = [Tools fixURLWithSeveralHashKeys:url];
-//
-//            [[AppDelegate theDelegate] handleUniversalLinkFragment:fixedURL.fragment];
-//        }
+        // Check whether this is a permalink to handle it directly into the app
+        if ([Tools isPermaLink:url])
+        {
+            // iOS Patch: fix urls before using it
+            NSURL *fixedURL = [Tools fixURLWithSeveralHashKeys:url];
+            NSString *fragment = fixedURL.fragment;
+            
+            if (fragment && self.delegate)
+            {
+                shouldDoAction = ![self.delegate roomViewController:self handlePermalinkFragment:fragment];
+            }
+        }
         // Open a detail screen about the clicked user
-        if ([MXTools isMatrixUserIdentifier:absoluteURLString])
+        else if ([MXTools isMatrixUserIdentifier:absoluteURLString])
         {
             // We display details only for the room members
             NSString *userId = absoluteURLString;

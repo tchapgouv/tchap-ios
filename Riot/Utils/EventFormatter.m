@@ -387,7 +387,7 @@ NSString *const kEventFormatterOnReRequestKeysLinkActionSeparator = @"/";
 
 - (NSAttributedString*)roomCreatePredecessorAttributedStringWithPredecessorRoomId:(NSString*)predecessorRoomId
 {
-    NSString *predecessorRoomPermalink = [MXTools permalinkToRoom:predecessorRoomId];
+    NSString *predecessorRoomPermalink = [Tools permalinkToRoom:predecessorRoomId];
     
     NSDictionary *roomPredecessorReasonAttributes = @{
                                                       NSFontAttributeName : self.defaultTextFont

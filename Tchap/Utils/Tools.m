@@ -62,40 +62,28 @@
 
 #pragma mark - Universal link
 
-+ (NSString *)webAppUrl
++ (BOOL)isPermaLink:(NSURL*)url
 {
-    return [[NSUserDefaults standardUserDefaults] objectForKey:@"webAppUrl"];
-    //return [[NSUserDefaults standardUserDefaults] objectForKey:@"webAppUrlBeta"];
-    //return [[NSUserDefaults standardUserDefaults] objectForKey:@"webAppUrlDev"];
-}
+    BOOL isPermaLink = NO;
+    
+    NSArray<NSString*> *supportedHosts = [[NSUserDefaults standardUserDefaults] objectForKey:@"permalinkSupportedHosts"];
 
-+ (BOOL)isUniversalLink:(NSURL*)url
-{
-    BOOL isUniversalLink = NO;
+    if (NSNotFound != [supportedHosts indexOfObject:url.host])
+    {
+        isPermaLink = YES;
+    }
+    else if ([url.host isEqualToString:@"matrix.to"] || [url.host isEqualToString:@"www.matrix.to"])
+    {
+        // iOS Patch: fix matrix.to urls before using it
+        NSURL *fixedURL = [Tools fixURLWithSeveralHashKeys:url];
 
-    // Tchap: Universal links are not supported for the moment.
-//    if ([url.host isEqualToString:@"www.tchap.gouv.fr"])
-//    {
-//        // iOS Patch: fix urls before using it
-//        NSURL *fixedURL = [Tools fixURLWithSeveralHashKeys:url];
-//
-//        if (NSNotFound != [@[@"/app", @"/staging", @"/beta", @"/develop"] indexOfObject:fixedURL.path])
-//        {
-//            isUniversalLink = YES;
-//        }
-//    }
-//    else if ([url.host isEqualToString:@"matrix.to"] || [url.host isEqualToString:@"www.matrix.to"])
-//    {
-//        // iOS Patch: fix matrix.to urls before using it
-//        NSURL *fixedURL = [Tools fixURLWithSeveralHashKeys:url];
-//
-//        if ([fixedURL.path isEqualToString:@"/"])
-//        {
-//            isUniversalLink = YES;
-//        }
-//    }
+        if ([fixedURL.path isEqualToString:@"/"])
+        {
+            isPermaLink = YES;
+        }
+    }
 
-    return isUniversalLink;
+    return isPermaLink;
 }
 
 + (NSURL *)fixURLWithSeveralHashKeys:(NSURL *)url
@@ -153,6 +141,20 @@
 + (uint)numberOfDaysFromDurationInMs:(uint64_t)duration
 {
     return (uint)(duration / 86400000);
+}
+
+#pragma mark - Tchap permalink
+
++ (NSString *)permalinkToRoom:(NSString *)roomIdOrAlias
+{
+    NSString *urlPrefix = [[NSUserDefaults standardUserDefaults] objectForKey:@"permalinkPrefix"];
+    return [NSString stringWithFormat:@"%@/#/room/%@", urlPrefix, [MXTools encodeURIComponent:roomIdOrAlias]];
+}
+
++ (NSString *)permalinkToEvent:(NSString *)eventId inRoom:(NSString *)roomIdOrAlias
+{
+    NSString *urlPrefix = [[NSUserDefaults standardUserDefaults] objectForKey:@"permalinkPrefix"];
+    return [NSString stringWithFormat:@"%@/#/room/%@/%@", urlPrefix, [MXTools encodeURIComponent:roomIdOrAlias], [MXTools encodeURIComponent:eventId]];
 }
 
 @end
