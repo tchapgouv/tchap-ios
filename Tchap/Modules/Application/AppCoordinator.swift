@@ -175,7 +175,7 @@ final class AppCoordinator: AppCoordinatorType {
             switch response {
             case .success(let parsingResult):
                 switch parsingResult {
-                case .registrationLink(_):
+                case .registrationLink:
                     // We don't expect a registration link from a permalink, we ignore this case here.
                     NSLog("[AppCoordinator] handlePermalinkFragment: unexpected fragment (registration link)")
                 case .roomLink(let roomIdOrAlias, let eventID):

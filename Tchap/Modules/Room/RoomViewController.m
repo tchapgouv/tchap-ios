@@ -2618,13 +2618,14 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
         // Check whether this is a permalink to handle it directly into the app
         if ([Tools isPermaLink:url])
         {
+            shouldDoAction = NO;
+            
             // iOS Patch: fix urls before using it
             NSURL *fixedURL = [Tools fixURLWithSeveralHashKeys:url];
             NSString *fragment = fixedURL.fragment;
-            
             if (fragment && self.delegate)
             {
-                shouldDoAction = ![self.delegate roomViewController:self handlePermalinkFragment:fragment];
+                [self.delegate roomViewController:self handlePermalinkFragment:fragment];
             }
         }
         // Open a detail screen about the clicked user
