@@ -166,7 +166,7 @@ internal enum TchapL10n {
   internal static let forgotPasswordVerifyEmailConfirmationAction = TchapL10n.tr("Tchap", "forgot_password_verify_email_confirmation_action")
   /// Impossible de vérifier l'adresse email : assurez-vous d'avoir cliqué sur le lien dans l'email
   internal static let forgotPasswordVerifyEmailErrorEmailNotVerified = TchapL10n.tr("Tchap", "forgot_password_verify_email_error_email_not_verified")
-  /// Un email a été envoyé à %@. Une fois que vous aurez suivi le lien qu'il contient, cliquez ci-dessous.
+  /// Si un compte Tchap existe, un email a été envoyé à l'adresse : %@. Une fois que vous aurez suivi le lien qu'il contient, cliquez ci-dessous.
   internal static func forgotPasswordVerifyEmailInstructions(_ p1: String) -> String {
     return TchapL10n.tr("Tchap", "forgot_password_verify_email_instructions", p1)
   }
@@ -212,7 +212,7 @@ internal enum TchapL10n {
   internal static let registrationEmailLoginAction = TchapL10n.tr("Tchap", "registration_email_login_action")
   /// Je n'ai pas reçu l'email !
   internal static let registrationEmailNotReceivedAction = TchapL10n.tr("Tchap", "registration_email_not_received_action")
-  /// Un email vous a été envoyé à : 
+  /// Un email vous a été envoyé à l'adresse suivante, sauf si un compte Tchap lui a déjà été associé : 
   internal static let registrationEmailSentInfo = TchapL10n.tr("Tchap", "registration_email_sent_info")
   /// Merci de cliquer sur le lien proposé dans cet email afin de terminer la création de votre compte. Vous pourrez alors vous connecter en allant sur l'écran de connexion.
   internal static let registrationEmailSentInstructions = TchapL10n.tr("Tchap", "registration_email_sent_instructions")
