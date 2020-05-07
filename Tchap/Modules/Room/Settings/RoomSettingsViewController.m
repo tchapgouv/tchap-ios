@@ -1782,6 +1782,9 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
             [self refreshRoomSettings];
             
         } failure:failure];
+        
+        // Update the history visibility value (by ignoring a potential error)
+        [self->mxRoom setHistoryVisibility:kMXRoomHistoryVisibilityInvited success:nil failure:nil];
     }
 }
 
