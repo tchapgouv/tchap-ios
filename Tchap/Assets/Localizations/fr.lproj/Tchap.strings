@@ -44,7 +44,7 @@
 "forgot_password_form_send_email_action" = "Envoyer l'email de réinitialisation";
 "forgot_password_form_error_email_not_found" = "Impossible d'envoyer l'email\U00A0:\U00A0adresse non trouvée";
 
-"forgot_password_verify_email_instructions" = "Un email a été envoyé à %@. Une fois que vous aurez suivi le lien qu'il contient, cliquez ci-dessous.";
+"forgot_password_verify_email_instructions" = "Si un compte Tchap existe, un email a été envoyé à l'adresse\U00A0:\U00A0%@. Une fois que vous aurez suivi le lien qu'il contient, cliquez ci-dessous.";
 "forgot_password_verify_email_confirmation_action" = "J'ai vérifié mon adresse email";
 "forgot_password_verify_email_error_email_not_verified" = "Impossible de vérifier l'adresse email\U00A0:\U00A0assurez-vous d'avoir cliqué sur le lien dans l'email";
 
@@ -72,7 +72,7 @@
 "registration_error_unchecked_terms" = "Vous devez accepter les Conditions Générales d'Utilisation";
 "registration_error_passwords_dont_match" = "Les mots de passe ne correspondent pas";
 
-"registration_email_sent_info" = "Un email vous a été envoyé à\U00A0:\U00A0";
+"registration_email_sent_info" = "Un email vous a été envoyé à l'adresse suivante, sauf si un compte Tchap lui a déjà été associé\U00A0:\U00A0";
 "registration_email_sent_instructions" = "Merci de cliquer sur le lien proposé dans cet email afin de terminer la création de votre compte. Vous pourrez alors vous connecter en allant sur l'écran de connexion.";
 "registration_email_login_action" = "Aller à l'écran de connexion";
 "registration_email_not_received_action" = "Je n'ai pas reçu l'email !";

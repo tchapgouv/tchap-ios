@@ -584,10 +584,10 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
     actualDirectoryVisibilityRequest = [mxRoom directoryVisibility:^(MXRoomDirectoryVisibility directoryVisibility) {
         
         MXStrongifyAndReturnIfNil(self);
-        self->actualDirectoryVisibilityRequest = nil;
         
         // Return when the visibility is already known
         if ([self->actualDirectoryVisibility isEqualToString:directoryVisibility]) {
+            self->actualDirectoryVisibilityRequest = nil;
             return;
         }
         
@@ -608,6 +608,7 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
         
         // Force a refresh
         [self refreshRoomSettings];
+        self->actualDirectoryVisibilityRequest = nil;
         
     } failure:^(NSError *error) {
         
@@ -1727,6 +1728,9 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
             [self refreshRoomSettings];
             
         } failure:failure];
+        
+        // Update the history visibility value (by ignoring a potential error)
+        [self->mxRoom setHistoryVisibility:kMXRoomHistoryVisibilityInvited success:nil failure:nil];
     }
 }
 
