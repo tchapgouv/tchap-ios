@@ -58,7 +58,9 @@ enum
     SETTINGS_SECTION_PREFERENCES_INDEX,
     SETTINGS_SECTION_OTHER_INDEX,
     SETTINGS_SECTION_CRYPTOGRAPHY_INDEX,
+#ifdef SUPPORT_KEYS_BACKUP
     SETTINGS_SECTION_KEYBACKUP_INDEX,
+#endif
     SETTINGS_SECTION_DEVICES_INDEX,
     SETTINGS_SECTION_DEACTIVATE_ACCOUNT_INDEX,
     SETTINGS_SECTION_COUNT
@@ -118,11 +120,13 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 
 @interface SettingsViewController () <UITextFieldDelegate,
 DeactivateAccountViewControllerDelegate,
+#ifdef SUPPORT_KEYS_BACKUP
 SettingsKeyBackupTableViewSectionDelegate,
 KeyBackupSetupCoordinatorBridgePresenterDelegate,
 KeyBackupRecoverCoordinatorBridgePresenterDelegate,
 SignOutAlertPresenterDelegate,
 ChangePasswordAlertPresenterDelegate,
+#endif
 SingleImagePickerPresenterDelegate,
 MXKDeviceViewDelegate,
 UIDocumentInteractionControllerDelegate,
@@ -158,6 +162,9 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     // Devices
     NSMutableArray<MXDevice *> *devicesArray;
     DeviceView *deviceView;
+#ifndef SUPPORT_KEYS_BACKUP
+    UIAlertController *resetPwdAlertController;
+#endif
 
     // The view used to export e2e keys
     MXKEncryptionKeysExportView *exportView;
@@ -167,19 +174,25 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     NSURL *keyExportsFile;
     NSTimer *keyExportsFileDeletionTimer;
     
+#ifdef SUPPORT_KEYS_BACKUP
     SettingsKeyBackupTableViewSection *keyBackupSection;
     KeyBackupSetupCoordinatorBridgePresenter *keyBackupSetupCoordinatorBridgePresenter;
     KeyBackupRecoverCoordinatorBridgePresenter *keyBackupRecoverCoordinatorBridgePresenter;
+#endif
 }
 
+#ifdef SUPPORT_KEYS_BACKUP
 @property (nonatomic, strong) SignOutAlertPresenter *signOutAlertPresenter;
 @property (nonatomic, weak) UIButton *signOutButton;
+#endif
 @property (nonatomic, strong) SingleImagePickerPresenter *imagePickerPresenter;
 
 @property (weak, nonatomic) DeactivateAccountViewController *deactivateAccountViewController;
 @property (strong, nonatomic) id<Style> currentStyle;
 
+#ifdef SUPPORT_KEYS_BACKUP
 @property (nonatomic, strong) ChangePasswordAlertPresenter *changePasswordAlertPresenter;
+#endif
 @property (strong, nonatomic) ChangePasswordCoordinatorBridgePresenter *changePasswordPresenter;
 
 // Observer
@@ -237,6 +250,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         [self addMatrixSession:mxSession];
     }
     
+#ifdef SUPPORT_KEYS_BACKUP
     if (self.mainSession.crypto.backup)
     {
         MXDeviceInfo *deviceInfo = [self.mainSession.crypto.deviceList storedDevice:self.mainSession.matrixRestClient.credentials.userId
@@ -248,6 +262,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
             keyBackupSection.delegate = self;
         }
     }
+#endif
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(onSave:)];
     self.navigationItem.rightBarButtonItem.accessibilityIdentifier=@"SettingsVCNavBarSaveButton";
@@ -295,11 +310,13 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         
     }];
     
+#ifdef SUPPORT_KEYS_BACKUP
     self.signOutAlertPresenter = [SignOutAlertPresenter new];
     self.signOutAlertPresenter.delegate = self;
     
     self.changePasswordAlertPresenter = [ChangePasswordAlertPresenter new];
     self.changePasswordAlertPresenter.delegate = self;
+#endif
 }
 
 - (void)userInterfaceThemeDidChange
@@ -382,8 +399,10 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         deviceView = nil;
     }
     
+#ifdef SUPPORT_KEYS_BACKUP
     keyBackupSetupCoordinatorBridgePresenter = nil;
     keyBackupRecoverCoordinatorBridgePresenter = nil;
+#endif
 }
 
 - (void)onMatrixSessionStateDidChange:(NSNotification *)notif
@@ -445,6 +464,14 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         [currentAlert dismissViewControllerAnimated:NO completion:nil];
         currentAlert = nil;
     }
+    
+#ifndef SUPPORT_KEYS_BACKUP
+    if (resetPwdAlertController)
+    {
+        [resetPwdAlertController dismissViewControllerAnimated:NO completion:nil];
+        resetPwdAlertController = nil;
+    }
+#endif
     
     if (_sessionAccountDataDidChangeNotificationObserver)
     {
@@ -765,6 +792,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
             count = CRYPTOGRAPHY_COUNT;
         }
     }
+#ifdef SUPPORT_KEYS_BACKUP
     else if (section == SETTINGS_SECTION_KEYBACKUP_INDEX)
     {
         // Check whether this section is visible.
@@ -773,6 +801,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
             count = keyBackupSection.numberOfRows;
         }
     }
+#endif
     else if (section == SETTINGS_SECTION_DEACTIVATE_ACCOUNT_INDEX)
     {
         count = 1;
@@ -1394,10 +1423,12 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
             cell = exportKeysBtnCell;
         }
     }
+#ifdef SUPPORT_KEYS_BACKUP
     else if (section == SETTINGS_SECTION_KEYBACKUP_INDEX)
     {
         cell = [keyBackupSection cellForRowAtRow:row];
     }
+#endif
     else if (section == SETTINGS_SECTION_DEACTIVATE_ACCOUNT_INDEX)
     {
         MXKTableViewCellWithButton *deactivateAccountBtnCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
@@ -1483,6 +1514,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
             return NSLocalizedStringFromTable(@"settings_cryptography", @"Vector", nil);
         }
     }
+#ifdef SUPPORT_KEYS_BACKUP
     else if (section == SETTINGS_SECTION_KEYBACKUP_INDEX)
     {
         // Check whether this section is visible
@@ -1491,6 +1523,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
             return NSLocalizedStringFromTable(@"settings_key_backup", @"Vector", nil);
         }
     }
+#endif
     else if (section == SETTINGS_SECTION_DEACTIVATE_ACCOUNT_INDEX)
     {
         return NSLocalizedStringFromTable(@"settings_deactivate_my_account", @"Vector", nil);
@@ -1726,6 +1759,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 
 - (void)onSignout:(id)sender
 {
+#ifdef SUPPORT_KEYS_BACKUP
     self.signOutButton = (UIButton*)sender;
     
     MXKeyBackup *keyBackup = self.mainSession.crypto.backup;
@@ -1735,6 +1769,26 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
                                       from:self
                                 sourceView:self.signOutButton
                                   animated:YES];
+#else
+    // Feedback: disable button and run activity indicator
+    UIButton *button = (UIButton*)sender;
+    button.enabled = NO;
+    [self startActivityIndicator];
+    
+    __weak typeof(self) weakSelf = self;
+    
+    [[AppDelegate theDelegate] logoutWithConfirmation:YES completion:^(BOOL isLoggedOut) {
+        
+        if (!isLoggedOut && weakSelf)
+        {
+            typeof(self) self = weakSelf;
+            
+            // Enable the button and stop activity indicator
+            button.enabled = YES;
+            [self stopActivityIndicator];
+        }
+    }];
+#endif
 }
 
 - (void)togglePushNotifications:(id)sender
@@ -2268,6 +2322,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 
 - (void)promptUserBeforePasswordChange
 {
+#ifdef SUPPORT_KEYS_BACKUP
     MXKeyBackup *keyBackup = self.mainSession.crypto.backup;
     
     [self.changePasswordAlertPresenter presentFor:keyBackup.state
@@ -2275,6 +2330,39 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
                                       from:self
                                 sourceView:self.tableView
                                   animated:YES];
+#else
+    MXWeakify(self);
+    [resetPwdAlertController dismissViewControllerAnimated:NO completion:nil];
+    
+    resetPwdAlertController = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"warning", @"Vector", nil) message:NSLocalizedStringFromTable(@"settings_change_pwd_caution", @"Tchap", nil) preferredStyle:UIAlertControllerStyleAlert];
+    resetPwdAlertController.accessibilityLabel=@"promptUserBeforePasswordChange";
+    UIAlertAction  *continueAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"continue", @"Vector", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+        
+        MXStrongifyAndReturnIfNil(self);
+        self->resetPwdAlertController = nil;
+        [self presentChangePassword];
+    }];
+    
+    UIAlertAction  *exportAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"settings_crypto_export", @"Vector", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+        
+        MXStrongifyAndReturnIfNil(self);
+        self->resetPwdAlertController = nil;
+        [self exportEncryptionKeys:nil];
+        
+    }];
+    
+    UIAlertAction* cancel = [UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
+        
+        MXStrongifyAndReturnIfNil(self);
+        self->resetPwdAlertController = nil;
+        
+    }];
+    
+    [resetPwdAlertController addAction:continueAction];
+    [resetPwdAlertController addAction:exportAction];
+    [resetPwdAlertController addAction:cancel];
+    [self presentViewController:resetPwdAlertController animated:YES completion:nil];
+#endif
 }
 
 - (void)presentChangePassword
@@ -2457,6 +2545,8 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     }];
 }
 
+#ifdef SUPPORT_KEYS_BACKUP
+
 #pragma mark - SettingsKeyBackupTableViewSectionDelegate
 
 - (void)settingsKeyBackupTableViewSectionDidUpdate:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection
@@ -2631,5 +2721,6 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     [self presentChangePassword];
 }
 
+#endif
 
 @end
