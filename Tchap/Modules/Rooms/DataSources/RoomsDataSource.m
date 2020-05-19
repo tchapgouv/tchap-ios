@@ -118,6 +118,7 @@
 {
     KeyBackupBanner keyBackupBanner = KeyBackupBannerNone;
     
+#ifdef SUPPORT_KEYS_BACKUP
     // Tchap: display the banner even if there is no new key to backup, in order to let the user recover an existing
     // backup (if any)
     //if (self.mxSession.crypto.backup.hasKeysToBackup)
@@ -155,6 +156,7 @@
                 break;
         }
     }
+#endif
     
     BOOL updated = (self.keyBackupBanner != keyBackupBanner);
     

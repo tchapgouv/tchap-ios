@@ -330,6 +330,8 @@ internal enum TchapL10n {
   internal static let roomTitleUnrestrictedRoom = TchapL10n.tr("Tchap", "room_title_unrestricted_room")
   /// Aucun résultat
   internal static let searchNoResult = TchapL10n.tr("Tchap", "search_no_result")
+  /// Changer le mot de passe réinitialise les clés de chiffrement sur tous les appareils, rendant l’historique des discussions illisible: pensez d'abord à exporter vos clés pour pouvoir les ré-importer après le changement de mot de passe.
+  internal static let settingsChangePwdCaution = TchapL10n.tr("Tchap", "settings_change_pwd_caution")
   /// Je vais patienter
   internal static let settingsChangePwdKeyBackupInProgressAlertCancelAction = TchapL10n.tr("Tchap", "settings_change_pwd_key_backup_in_progress_alert_cancel_action")
   /// Je ne veux plus de mes messages chiffrés

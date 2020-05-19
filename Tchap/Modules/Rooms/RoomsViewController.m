@@ -21,7 +21,10 @@
 
 #import "RoomsDataSource.h"
 
-@interface RoomsViewController () <KeyBackupSetupCoordinatorBridgePresenterDelegate, KeyBackupRecoverCoordinatorBridgePresenterDelegate>
+@interface RoomsViewController ()
+#ifdef SUPPORT_KEYS_BACKUP
+<KeyBackupSetupCoordinatorBridgePresenterDelegate, KeyBackupRecoverCoordinatorBridgePresenterDelegate>
+#endif
 {
     RoomsDataSource *roomsDataSource;
 
@@ -29,8 +32,10 @@
     UIView* footerSpinnerView;
 }
 
+#ifdef SUPPORT_KEYS_BACKUP
 @property (nonatomic, strong) KeyBackupSetupCoordinatorBridgePresenter *keyBackupSetupCoordinatorBridgePresenter;
 @property (nonatomic, strong) KeyBackupRecoverCoordinatorBridgePresenter *keyBackupRecoverCoordinatorBridgePresenter;
+#endif
 
 @end
 
@@ -90,6 +95,8 @@
     [super destroy];
 }
 
+#ifdef SUPPORT_KEYS_BACKUP
+
 #pragma mark - Key backup
 
 - (void)presentKeyBackupSetup
@@ -115,6 +122,8 @@
         self.keyBackupRecoverCoordinatorBridgePresenter = keyBackupRecoverCoordinatorBridgePresenter;
     }
 }
+
+#endif
 
 #pragma mark - Override RecentsViewController
 
@@ -193,6 +202,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+#ifdef SUPPORT_KEYS_BACKUP
     if (indexPath.section == roomsDataSource.keyBackupBannerSection)
     {
         switch (roomsDataSource.keyBackupBanner) {
@@ -207,6 +217,7 @@
         }
     }
     else
+#endif
     {
         UITableViewCell* cell = [self.recentsTableView cellForRowAtIndexPath:indexPath];
         
@@ -223,6 +234,8 @@
         }
     }
 }
+
+#ifdef SUPPORT_KEYS_BACKUP
 
 #pragma mark - KeyBackupSetupCoordinatorBridgePresenterDelegate
 
@@ -247,5 +260,7 @@
     [keyBackupRecoverCoordinatorBridgePresenter dismissWithAnimated:YES];
     self.keyBackupRecoverCoordinatorBridgePresenter = nil;
 }
+
+#endif
 
 @end
