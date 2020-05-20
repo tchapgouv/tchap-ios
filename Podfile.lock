@@ -109,8 +109,8 @@ DEPENDENCIES:
   - DGCollectionViewLeftAlignFlowLayout (~> 1.0.4)
   - GBDeviceInfo (~> 6.3.0)
   - MatomoTracker (~> 7.2.0)
-  - MatrixKit (from `https://github.com/matrix-org/matrix-ios-kit.git`, branch `develop`)
-  - MatrixKit/AppExtension (from `https://github.com/matrix-org/matrix-ios-kit.git`, branch `develop`)
+  - MatrixKit (from `https://github.com/matrix-org/matrix-ios-kit.git`, branch `dinum`)
+  - MatrixKit/AppExtension (from `https://github.com/matrix-org/matrix-ios-kit.git`, branch `dinum`)
   - MatrixSDK (from `https://github.com/matrix-org/matrix-ios-sdk.git`, branch `dinum`)
   - MatrixSDK/JingleCallStack (from `https://github.com/matrix-org/matrix-ios-sdk.git`, branch `dinum`)
   - MatrixSDK/SwiftSupport (from `https://github.com/matrix-org/matrix-ios-sdk.git`, branch `dinum`)
@@ -146,7 +146,7 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   MatrixKit:
-    :branch: develop
+    :branch: dinum
     :git: https://github.com/matrix-org/matrix-ios-kit.git
   MatrixSDK:
     :branch: dinum
@@ -157,7 +157,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   MatrixKit:
-    :commit: 78d96ec35b868bccf66f705486bab9eebbace931
+    :commit: 9675e4e12d588af7d1a870a966dd6215aa9dbc36
     :git: https://github.com/matrix-org/matrix-ios-kit.git
   MatrixSDK:
     :commit: 509fdc062040f4970c5bb0b76734eb5734295a78
@@ -190,6 +190,6 @@ SPEC CHECKSUMS:
   SwiftUTI: 917993c124f8eac25e88ced0202fc58d7eb50fa8
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
 
-PODFILE CHECKSUM: 506e5f9fc17fc85d11f7b1dbdc8e6e5f67382e7b
+PODFILE CHECKSUM: c10f7f4c7e5046157a7e5e5d5c319ebd6b01d27f
 
 COCOAPODS: 1.8.4
