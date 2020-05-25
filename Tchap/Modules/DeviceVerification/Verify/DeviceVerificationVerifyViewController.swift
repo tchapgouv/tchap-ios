@@ -159,13 +159,13 @@ final class DeviceVerificationVerifyViewController: UIViewController {
     
     private func renderLoading() {
         self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
+        
+        self.continueButtonBackgroundView.isHidden = true
+        self.waitingPartnerLabel.isHidden = false
     }
     
     private func renderVerified() {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-
-        self.continueButtonBackgroundView.isHidden = true
-        self.waitingPartnerLabel.isHidden = false
     }
 
     private func renderCancelled(reason: MXTransactionCancelCode) {
