@@ -135,6 +135,8 @@ final class DeviceVerificationVerifyViewController: UIViewController {
         self.informationLabel.text = VectorL10n.deviceVerificationSecurityAdvice
         self.waitingPartnerLabel.text = VectorL10n.deviceVerificationVerifyWaitPartner
 
+        // Tchap: hide the security remark (useless in case of self-device verification)
+        self.informationLabel.isHidden = true
         self.waitingPartnerLabel.isHidden = true
 
         self.continueButton.setTitle(VectorL10n.continue, for: .normal)

@@ -701,8 +701,8 @@
 "device_verification_incoming_description_2" = "En vérifiant cet appareil, il sera marqué comme appareil de confiance, et le vôtre sera aussi marqué comme appareil de confiance pour votre partenaire.";
 // MARK: Start
 "device_verification_start_title" = "Vérifier en comparant une liste d'émojis";
-"device_verification_start_wait_partner" = "Nous attendons que le partenaire accepte…";
-"device_verification_start_use_legacy" = "Rien n'apparaît ? Certains clients ne prennent pas encore en charge la vérification interactive. Utilisez la vérification traditionnelle.";
+"device_verification_start_wait_partner" = "Merci d'accepter la demande sur l'appareil à vérifier…";
+"device_verification_start_use_legacy" = "Il est possible que la demande ne s'affiche pas sur cet appareil, car certaines versions de l'application ne prennent pas en charge la vérification interactive. Nous vous invitions alors à utiliser la vérification traditionnelle.";
 "device_verification_start_verify_button" = "Commencer la vérification";
 "device_verification_start_use_legacy_action" = "Utiliser la vérification traditionnelle";
 // MARK: Verify
