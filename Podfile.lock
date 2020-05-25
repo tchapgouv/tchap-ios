@@ -160,7 +160,7 @@ CHECKOUT OPTIONS:
     :commit: 9675e4e12d588af7d1a870a966dd6215aa9dbc36
     :git: https://github.com/matrix-org/matrix-ios-kit.git
   MatrixSDK:
-    :commit: 509fdc062040f4970c5bb0b76734eb5734295a78
+    :commit: bc6cae39a0ff9e22ed3f6b0a86fbcfaca9722d78
     :git: https://github.com/matrix-org/matrix-ios-sdk.git
   SwiftUTI:
     :commit: b6b46942fb3aad819610851f62a70e17a528444e
