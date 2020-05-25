@@ -692,7 +692,7 @@
 // MARK: - Device Verification
 "device_verification_title" = "Vérifier l’appareil";
 "device_verification_security_advice" = "Pour une sécurité maximale, nous vous recommandons de faire cela en personne ou d’utiliser un autre moyen sûr de communication";
-"device_verification_cancelled" = "L’autre personne a annulé la vérification.";
+"device_verification_cancelled" = "La vérification a été annulée sur l’autre appareil.";
 "device_verification_cancelled_by_me" = "La vérification a été annulée. Motif : %@";
 "device_verification_error_cannot_load_device" = "Impossible de charger les informations de l’appareil.";
 // Mark: Incoming
@@ -706,9 +706,9 @@
 "device_verification_start_verify_button" = "Commencer la vérification";
 "device_verification_start_use_legacy_action" = "Utiliser la vérification traditionnelle";
 // MARK: Verify
-"device_verification_verify_title_emoji" = "Vérifier cet appareil en confirmant que les émojis suivant apparaissent sur l’écran de votre partenaire";
-"device_verification_verify_title_number" = "Vérifier cet utilisateur en confirmant que les chiffres suivant apparaissent sur l’écran de votre partenaire";
-"device_verification_verify_wait_partner" = "Nous attendons la confirmation de votre partenaire…";
+"device_verification_verify_title_emoji" = "Vérifiez l’appareil en confirmant que les émojis suivants apparaissent également sur son écran";
+"device_verification_verify_title_number" = "Vérifiez l’appareil en confirmant que les chiffres suivant apparaissent également sur son écran";
+"device_verification_verify_wait_partner" = "Attente de la confirmation de l’autre appareil…";
 // MARK: Verified
 "device_verification_verified_title" = "Vérifié !";
 "device_verification_verified_description_1" = "Vous avez bien vérifié cet appareil.";

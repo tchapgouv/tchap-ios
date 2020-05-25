@@ -84,6 +84,7 @@ final class DeviceVerificationVerifiedViewController: UIViewController {
         self.titleLabel.text =  VectorL10n.deviceVerificationVerifiedTitle
         self.description1Label.text = VectorL10n.deviceVerificationVerifiedDescription1
         self.description2Label.text = VectorL10n.deviceVerificationVerifiedDescription2
+        self.description2Label.isHidden = true
 
         self.okButton.setTitle(VectorL10n.deviceVerificationVerifiedGotItButton, for: .normal)
     }
