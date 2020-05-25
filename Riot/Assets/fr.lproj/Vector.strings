@@ -692,23 +692,23 @@
 // MARK: - Device Verification
 "device_verification_title" = "Vérifier l’appareil";
 "device_verification_security_advice" = "Pour une sécurité maximale, nous vous recommandons de faire cela en personne ou d’utiliser un autre moyen sûr de communication";
-"device_verification_cancelled" = "L’autre personne a annulé la vérification.";
+"device_verification_cancelled" = "La vérification a été annulée sur l’autre appareil.";
 "device_verification_cancelled_by_me" = "La vérification a été annulée. Motif : %@";
 "device_verification_error_cannot_load_device" = "Impossible de charger les informations de l’appareil.";
 // Mark: Incoming
 "device_verification_incoming_title" = "Demande de vérification entrante";
-"device_verification_incoming_description_1" = "Vérifier cet appareil pour que ce soit un appareil de confiance. Faire confiance aux appareils de vos partenaires vous apporte une tranquillité d’esprit quand vous utilisez des messages chiffrés de bout en bout.";
+"device_verification_incoming_description_1" = "L’un de vos appareils souhaite vérifier votre appareil actuel. En effectuant cette vérification, un lien de confiance s’établira entre vos deux appareils afin de faciliter le partage de clés de chiffrement.";
 "device_verification_incoming_description_2" = "En vérifiant cet appareil, il sera marqué comme appareil de confiance, et le vôtre sera aussi marqué comme appareil de confiance pour votre partenaire.";
 // MARK: Start
-"device_verification_start_title" = "Vérifier en comparant une chaîne de caractères courte";
-"device_verification_start_wait_partner" = "Nous attendons que le partenaire accepte…";
-"device_verification_start_use_legacy" = "Rien n'apparaît ? Certains clients ne prennent pas encore en charge la vérification interactive. Utilisez la vérification traditionnelle.";
+"device_verification_start_title" = "Vérifier en comparant une liste d'émojis";
+"device_verification_start_wait_partner" = "Merci d'accepter la demande sur l'appareil à vérifier…";
+"device_verification_start_use_legacy" = "Il est possible que la demande ne s'affiche pas sur cet appareil, car certaines versions de l'application ne prennent pas en charge la vérification interactive. Nous vous invitions alors à utiliser la vérification traditionnelle.";
 "device_verification_start_verify_button" = "Commencer la vérification";
 "device_verification_start_use_legacy_action" = "Utiliser la vérification traditionnelle";
 // MARK: Verify
-"device_verification_verify_title_emoji" = "Vérifier cet appareil en confirmant que les émojis suivant apparaissent sur l’écran de votre partenaire";
-"device_verification_verify_title_number" = "Vérifier cet utilisateur en confirmant que les chiffres suivant apparaissent sur l’écran de votre partenaire";
-"device_verification_verify_wait_partner" = "Nous attendons la confirmation de votre partenaire…";
+"device_verification_verify_title_emoji" = "Vérifiez l’appareil en confirmant que les émojis suivants apparaissent également sur son écran";
+"device_verification_verify_title_number" = "Vérifiez l’appareil en confirmant que les chiffres suivant apparaissent également sur son écran";
+"device_verification_verify_wait_partner" = "Attente de la confirmation de l’autre appareil…";
 // MARK: Verified
 "device_verification_verified_title" = "Vérifié !";
 "device_verification_verified_description_1" = "Vous avez bien vérifié cet appareil.";
@@ -964,6 +964,7 @@
 "e2e_passphrase_not_match" = "Les phrases secrète doivent être identiques";
 "e2e_passphrase_create" = "Créer la phrase secrète";
 // Encryption information
+"room_event_encryption_verify_message" = "Pour valider que vous pouvez faire confiance à cet appareil, merci de vérifier que la clé que vous voyez dans les Paramètres Utilisateur de cet appareil correspond à la clé ci-dessous :\n\n    Nom de l'appareil : %@\n    Identifiant de l'appareil : %@\n    Clé de l'appareil : %@\n\nSi les clés correspondent, cliquer sur le bouton Vérifier ci-dessous.";
 "room_event_encryption_info_verify" = "Vérifier...";
 "room_event_encryption_info_unverify" = "A revérifier";
 "room_event_encryption_info_block" = "Bloquer";

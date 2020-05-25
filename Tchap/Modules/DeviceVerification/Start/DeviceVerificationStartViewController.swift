@@ -70,6 +70,9 @@ final class DeviceVerificationStartViewController: UIViewController {
         self.update(theme: self.theme)
         
         self.viewModel.viewDelegate = self
+        
+        // Tchap: start directly the verification based on emojis
+        self.viewModel.process(viewAction: .beginVerifying)
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -125,6 +128,12 @@ final class DeviceVerificationStartViewController: UIViewController {
 
         self.verifyButton.setTitle(VectorL10n.deviceVerificationStartVerifyButton, for: .normal)
         self.useLegacyVerificationButton.setTitle(VectorL10n.deviceVerificationStartUseLegacyAction, for: .normal)
+        
+        // Tchap: hide the security remark (useless in case of self-device verification)
+        self.informationLabel.isHidden = true
+        // Tchap: hide button by default
+        self.verifyButtonBackgroundView.isHidden = true
+        self.useLegacyVerificationButton.isHidden = true
     }
 
     private func render(viewState: DeviceVerificationStartViewState) {
@@ -154,6 +163,8 @@ final class DeviceVerificationStartViewController: UIViewController {
         self.verifyButtonBackgroundView.isHidden = true
         self.waitingPartnerLabel.isHidden = false
         self.useLegacyVerificationLabel.isHidden = false
+        // Tchap: show legacy verifcation here
+        self.useLegacyVerificationButton.isHidden = false
     }
 
     private func renderVerifyUsingLegacy(session: MXSession, deviceInfo: MXDeviceInfo) {
