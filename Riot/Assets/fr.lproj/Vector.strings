@@ -964,6 +964,7 @@
 "e2e_passphrase_not_match" = "Les phrases secrète doivent être identiques";
 "e2e_passphrase_create" = "Créer la phrase secrète";
 // Encryption information
+"room_event_encryption_verify_message" = "Pour valider que vous pouvez faire confiance à cet appareil, merci de vérifier que la clé que vous voyez dans les Paramètres Utilisateur de cet appareil correspond à la clé ci-dessous :\n\n    Nom de l'appareil : %@\n    Identifiant de l'appareil : %@\n    Clé de l'appareil : %@\n\nSi les clés correspondent, cliquer sur le bouton Vérifier ci-dessous.";
 "room_event_encryption_info_verify" = "Vérifier...";
 "room_event_encryption_info_unverify" = "A revérifier";
 "room_event_encryption_info_block" = "Bloquer";
