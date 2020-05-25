@@ -697,7 +697,7 @@
 "device_verification_error_cannot_load_device" = "Impossible de charger les informations de l’appareil.";
 // Mark: Incoming
 "device_verification_incoming_title" = "Demande de vérification entrante";
-"device_verification_incoming_description_1" = "Vérifier cet appareil pour que ce soit un appareil de confiance. Faire confiance aux appareils de vos partenaires vous apporte une tranquillité d’esprit quand vous utilisez des messages chiffrés de bout en bout.";
+"device_verification_incoming_description_1" = "L’un de vos appareils souhaite vérifier votre appareil actuel. En effectuant cette vérification, un lien de confiance s’établira entre vos deux appareils afin de faciliter le partage de clés de chiffrement.";
 "device_verification_incoming_description_2" = "En vérifiant cet appareil, il sera marqué comme appareil de confiance, et le vôtre sera aussi marqué comme appareil de confiance pour votre partenaire.";
 // MARK: Start
 "device_verification_start_title" = "Vérifier en comparant une liste d'émojis";

@@ -128,6 +128,10 @@ final class DeviceVerificationIncomingViewController: UIViewController {
         self.titleLabel.text = VectorL10n.deviceVerificationIncomingTitle
         self.description1Label.text = VectorL10n.deviceVerificationIncomingDescription1
         self.description2Label.text = VectorL10n.deviceVerificationIncomingDescription2
+        
+        // Tchap keep visible only one description
+        self.description2Label.isHidden = true
+        
         self.continueButton.setTitle(VectorL10n.continue, for: .normal)
 
         if let avatarImageView = self.avatarImageView {
