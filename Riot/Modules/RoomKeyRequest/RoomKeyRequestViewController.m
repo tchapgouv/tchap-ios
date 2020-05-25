@@ -79,24 +79,24 @@
                                                                    [self showVerificationView];
                                                                }
                                                            }]];
-
-        [_alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"e2e_room_key_request_share_without_verifying", @"Vector", nil)
-                                                             style:UIAlertActionStyleDefault
-                                                           handler:^(UIAlertAction * action) {
-
-                                                               if (weakSelf)
-                                                               {
-                                                                   typeof(self) self = weakSelf;
-
-                                                                   self->_alertController = nil;
-
-                                                                   // Accept the received requests from this device
-                                                                   [self.mxSession.crypto acceptAllPendingKeyRequestsFromUser:self.device.userId andDevice:self.device.deviceId onComplete:^{
-
-                                                                       onComplete();
-                                                                   }];
-                                                               }
-                                                           }]];
+// Tchap remove "share without verifying" option
+//        [_alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"e2e_room_key_request_share_without_verifying", @"Vector", nil)
+//                                                             style:UIAlertActionStyleDefault
+//                                                           handler:^(UIAlertAction * action) {
+//
+//                                                               if (weakSelf)
+//                                                               {
+//                                                                   typeof(self) self = weakSelf;
+//
+//                                                                   self->_alertController = nil;
+//
+//                                                                   // Accept the received requests from this device
+//                                                                   [self.mxSession.crypto acceptAllPendingKeyRequestsFromUser:self.device.userId andDevice:self.device.deviceId onComplete:^{
+//
+//                                                                       onComplete();
+//                                                                   }];
+//                                                               }
+//                                                           }]];
 
         [_alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"e2e_room_key_request_ignore_request", @"Vector", nil)
                                                              style:UIAlertActionStyleDefault
