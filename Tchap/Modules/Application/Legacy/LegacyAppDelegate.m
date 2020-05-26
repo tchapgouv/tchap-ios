@@ -123,6 +123,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
      If any the currently displayed sharing key dialog
      */
     RoomKeyRequestViewController *roomKeyRequestViewController;
+    BOOL isCheckPendingKeyRequestsInProgress;
 
     /**
      Incoming device verification requests observers
@@ -3273,19 +3274,29 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         NSLog(@"[AppDelegate] checkPendingRoomKeyRequestsInSession called while the app is not active. Ignore it.");
         return;
     }
-
+    
+    if (isCheckPendingKeyRequestsInProgress)
+    {
+        NSLog(@"[AppDelegate] checkPendingRoomKeyRequestsInSession called while a check is already in progress. Ignore it.");
+        return;
+    }
+    
+    MXWeakify(self);
+    isCheckPendingKeyRequestsInProgress = YES;
     [mxSession.crypto pendingKeyRequests:^(MXUsersDevicesMap<NSArray<MXIncomingRoomKeyRequest *> *> *pendingKeyRequests) {
 
+        MXStrongifyAndReturnIfNil(self);
+        self->isCheckPendingKeyRequestsInProgress = FALSE;
         NSLog(@"[AppDelegate] checkPendingRoomKeyRequestsInSession: pendingKeyRequests.count: %@. Already displayed: %@",
               @(pendingKeyRequests.count),
-              roomKeyRequestViewController ? @"YES" : @"NO");
+              self->roomKeyRequestViewController ? @"YES" : @"NO");
 
-        if (roomKeyRequestViewController)
+        if (self->roomKeyRequestViewController)
         {
             // Check if the current RoomKeyRequestViewController is still valid
-            MXSession *currentMXSession = roomKeyRequestViewController.mxSession;
-            NSString *currentUser = roomKeyRequestViewController.device.userId;
-            NSString *currentDevice = roomKeyRequestViewController.device.deviceId;
+            MXSession *currentMXSession = self->roomKeyRequestViewController.mxSession;
+            NSString *currentUser = self->roomKeyRequestViewController.device.userId;
+            NSString *currentDevice = self->roomKeyRequestViewController.device.deviceId;
 
             NSArray<MXIncomingRoomKeyRequest *> *currentPendingRequest = [pendingKeyRequests objectForDevice:currentDevice forUser:currentUser];
 
@@ -3294,12 +3305,12 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
                 NSLog(@"[AppDelegate] checkPendingRoomKeyRequestsInSession: Cancel current dialog");
 
                 // The key request has been probably cancelled, remove the popup
-                [roomKeyRequestViewController hide];
-                roomKeyRequestViewController = nil;
+                [self->roomKeyRequestViewController hide];
+                self->roomKeyRequestViewController = nil;
             }
         }
 
-        if (!roomKeyRequestViewController && pendingKeyRequests.count)
+        if (!self->roomKeyRequestViewController && pendingKeyRequests.count)
         {
             // Pick the first coming user/device pair
             NSString *userId = pendingKeyRequests.userIds.firstObject;
@@ -3317,15 +3328,15 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
                     {
                         NSLog(@"[AppDelegate] checkPendingRoomKeyRequestsInSession: Open dialog for %@", deviceInfo);
 
-                        roomKeyRequestViewController = [[RoomKeyRequestViewController alloc] initWithDeviceInfo:deviceInfo wasNewDevice:wasNewDevice andMatrixSession:mxSession onComplete:^{
+                        self->roomKeyRequestViewController = [[RoomKeyRequestViewController alloc] initWithDeviceInfo:deviceInfo wasNewDevice:wasNewDevice andMatrixSession:mxSession onComplete:^{
 
-                            roomKeyRequestViewController = nil;
+                            self->roomKeyRequestViewController = nil;
 
                             // Check next pending key request, if any
                             [self checkPendingRoomKeyRequests];
                         }];
 
-                        [roomKeyRequestViewController show];
+                        [self->roomKeyRequestViewController show];
                     };
 
                     // If the device was new before, it's not any more.
