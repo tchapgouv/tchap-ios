@@ -3339,7 +3339,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
                             [self checkPendingRoomKeyRequests];
                         }];
 
-                        self->isCheckPendingKeyRequestsInProgress = FALSE;
+                        self->isCheckPendingKeyRequestsInProgress = NO;
                         [self->roomKeyRequestViewController show];
                     };
 
@@ -3356,7 +3356,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
                 else
                 {
                     NSLog(@"[AppDelegate] checkPendingRoomKeyRequestsInSession: No details found for device %@:%@", userId, deviceId);
-                    self->isCheckPendingKeyRequestsInProgress = FALSE;
+                    self->isCheckPendingKeyRequestsInProgress = NO;
                     // Ignore this device to avoid to loop on it
                     [mxSession.crypto ignoreAllPendingKeyRequestsFromUser:userId andDevice:deviceId onComplete:^{
                         // And check next requests
@@ -3367,14 +3367,14 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
             } failure:^(NSError *error) {
                 // Retry
                 MXStrongifyAndReturnIfNil(self);
-                self->isCheckPendingKeyRequestsInProgress = FALSE;
+                self->isCheckPendingKeyRequestsInProgress = NO;
                 NSLog(@"[AppDelegate] checkPendingRoomKeyRequestsInSession: Failed to download device keys. Retry");
                 [self checkPendingRoomKeyRequests];
             }];
         }
         else
         {
-            self->isCheckPendingKeyRequestsInProgress = FALSE;
+            self->isCheckPendingKeyRequestsInProgress = NO;
         }
     }];
 }
