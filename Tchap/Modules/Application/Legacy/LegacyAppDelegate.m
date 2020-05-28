@@ -123,6 +123,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
      If any the currently displayed sharing key dialog
      */
     RoomKeyRequestViewController *roomKeyRequestViewController;
+    BOOL isCheckPendingKeyRequestsInProgress;
 
     /**
      Incoming device verification requests observers
@@ -3273,19 +3274,28 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         NSLog(@"[AppDelegate] checkPendingRoomKeyRequestsInSession called while the app is not active. Ignore it.");
         return;
     }
-
+    
+    if (isCheckPendingKeyRequestsInProgress)
+    {
+        NSLog(@"[AppDelegate] checkPendingRoomKeyRequestsInSession called while a check is already in progress. Ignore it.");
+        return;
+    }
+    
+    MXWeakify(self);
+    isCheckPendingKeyRequestsInProgress = YES;
     [mxSession.crypto pendingKeyRequests:^(MXUsersDevicesMap<NSArray<MXIncomingRoomKeyRequest *> *> *pendingKeyRequests) {
 
+        MXStrongifyAndReturnIfNil(self);
         NSLog(@"[AppDelegate] checkPendingRoomKeyRequestsInSession: pendingKeyRequests.count: %@. Already displayed: %@",
               @(pendingKeyRequests.count),
-              roomKeyRequestViewController ? @"YES" : @"NO");
+              self->roomKeyRequestViewController ? @"YES" : @"NO");
 
-        if (roomKeyRequestViewController)
+        if (self->roomKeyRequestViewController)
         {
             // Check if the current RoomKeyRequestViewController is still valid
-            MXSession *currentMXSession = roomKeyRequestViewController.mxSession;
-            NSString *currentUser = roomKeyRequestViewController.device.userId;
-            NSString *currentDevice = roomKeyRequestViewController.device.deviceId;
+            MXSession *currentMXSession = self->roomKeyRequestViewController.mxSession;
+            NSString *currentUser = self->roomKeyRequestViewController.device.userId;
+            NSString *currentDevice = self->roomKeyRequestViewController.device.deviceId;
 
             NSArray<MXIncomingRoomKeyRequest *> *currentPendingRequest = [pendingKeyRequests objectForDevice:currentDevice forUser:currentUser];
 
@@ -3294,38 +3304,43 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
                 NSLog(@"[AppDelegate] checkPendingRoomKeyRequestsInSession: Cancel current dialog");
 
                 // The key request has been probably cancelled, remove the popup
-                [roomKeyRequestViewController hide];
-                roomKeyRequestViewController = nil;
+                [self->roomKeyRequestViewController hide];
+                self->roomKeyRequestViewController = nil;
             }
         }
 
-        if (!roomKeyRequestViewController && pendingKeyRequests.count)
+        if (!self->roomKeyRequestViewController && pendingKeyRequests.count)
         {
             // Pick the first coming user/device pair
             NSString *userId = pendingKeyRequests.userIds.firstObject;
             NSString *deviceId = [pendingKeyRequests deviceIdsForUser:userId].firstObject;
 
             // Give the client a chance to refresh the device list
+            MXWeakify(self);
             [mxSession.crypto downloadKeys:@[userId] forceDownload:NO success:^(MXUsersDevicesMap<MXDeviceInfo *> *usersDevicesInfoMap) {
 
+                MXStrongifyAndReturnIfNil(self);
                 MXDeviceInfo *deviceInfo = [usersDevicesInfoMap objectForDevice:deviceId forUser:userId];
                 if (deviceInfo)
                 {
                     BOOL wasNewDevice = (deviceInfo.verified == MXDeviceUnknown);
-
+                    
+                    MXWeakify(self);
                     void (^openDialog)(void) = ^void()
                     {
+                        MXStrongifyAndReturnIfNil(self);
                         NSLog(@"[AppDelegate] checkPendingRoomKeyRequestsInSession: Open dialog for %@", deviceInfo);
 
-                        roomKeyRequestViewController = [[RoomKeyRequestViewController alloc] initWithDeviceInfo:deviceInfo wasNewDevice:wasNewDevice andMatrixSession:mxSession onComplete:^{
+                        self->roomKeyRequestViewController = [[RoomKeyRequestViewController alloc] initWithDeviceInfo:deviceInfo wasNewDevice:wasNewDevice andMatrixSession:mxSession onComplete:^{
 
-                            roomKeyRequestViewController = nil;
+                            self->roomKeyRequestViewController = nil;
 
                             // Check next pending key request, if any
                             [self checkPendingRoomKeyRequests];
                         }];
 
-                        [roomKeyRequestViewController show];
+                        self->isCheckPendingKeyRequestsInProgress = NO;
+                        [self->roomKeyRequestViewController show];
                     };
 
                     // If the device was new before, it's not any more.
@@ -3341,7 +3356,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
                 else
                 {
                     NSLog(@"[AppDelegate] checkPendingRoomKeyRequestsInSession: No details found for device %@:%@", userId, deviceId);
-
+                    self->isCheckPendingKeyRequestsInProgress = NO;
                     // Ignore this device to avoid to loop on it
                     [mxSession.crypto ignoreAllPendingKeyRequestsFromUser:userId andDevice:deviceId onComplete:^{
                         // And check next requests
@@ -3350,10 +3365,16 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
                 }
 
             } failure:^(NSError *error) {
-                // Retry later
+                // Retry
+                MXStrongifyAndReturnIfNil(self);
+                self->isCheckPendingKeyRequestsInProgress = NO;
                 NSLog(@"[AppDelegate] checkPendingRoomKeyRequestsInSession: Failed to download device keys. Retry");
                 [self checkPendingRoomKeyRequests];
             }];
+        }
+        else
+        {
+            self->isCheckPendingKeyRequestsInProgress = NO;
         }
     }];
 }
