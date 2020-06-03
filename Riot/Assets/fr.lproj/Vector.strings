@@ -534,8 +534,8 @@
 "deactivate_account_validate_action" = "Désactiver le compte";
 "deactivate_account_password_alert_title" = "Désactiver le compte";
 "deactivate_account_password_alert_message" = "Pour continuer, veuillez renseigner votre mot de passe";
-"event_formatter_rerequest_keys_part1_link" = "Redemander les clés de chiffrement";
-"event_formatter_rerequest_keys_part2" = " depuis vos autres appareils.";
+"event_formatter_rerequest_keys_part1" = "Demande envoyée.\U00A0";
+"event_formatter_rerequest_keys_part2_link" = "Renvoyer";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Demande envoyée";
 "rerequest_keys_alert_message" = "Veuillez lancer Tchap sur un autre appareil qui peut déchiffrer le message pour qu'il puisse envoyer les clés sur cet appareil.";
@@ -712,7 +712,7 @@
 // MARK: Verified
 "device_verification_verified_title" = "Vérifié !";
 "device_verification_verified_description_1" = "Vous avez bien vérifié cet appareil.";
-"device_verification_verified_description_2" = "Les messages sécurisés avec cet utilisateur sont chiffrés de bout en bout et ne peuvent être lus par d’autres personnes.";
+"device_verification_verified_description_2" = "Le partage des clés va s'effectuer progressivement. Les messages se déchiffreront au fur à mesure. Cela peut prendre quelques minutes.";
 "device_verification_verified_got_it_button" = "Compris";
 // MARK: Emoji
 "device_verification_emoji_dog" = "Chien";
@@ -971,3 +971,6 @@
 "room_event_encryption_info_unblock" = "Débloquer";
 // Contacts
 "local_contacts_access_discovery_warning" = "Afin d’afficher qui parmi vos contacts utilise déjà Tchap, nous pouvons exploiter les adresses e-mails de votre carnet d'adresse. Ces données ne seront pas mémorisées. Pour plus d'informations, veuillez consulter les Termes et Conditions disponibles dans les paramètres de l'application.";
+// Events formatter
+"notice_crypto_unable_to_decrypt" = "** Echec de déchiffrement : %@ **";
+"notice_crypto_error_unknown_inbound_session_id" = "Veuillez ouvrir Tchap sur vos autres appareils afin d'autoriser le partage de clés.";

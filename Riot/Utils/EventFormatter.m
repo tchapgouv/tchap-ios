@@ -186,18 +186,18 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
             NSString *linkActionString = [NSString stringWithFormat:@"%@%@%@", EventFormatterOnReRequestKeysLinkAction,
                                           EventFormatterLinkActionSeparator,
                                           event.eventId];
-
+            
             [attributedStringWithRerequestMessage appendAttributedString:
-             [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"event_formatter_rerequest_keys_part1_link", @"Vector", nil)
+             [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"event_formatter_rerequest_keys_part1", @"Vector", nil)
                                              attributes:@{
-                                                          NSLinkAttributeName: linkActionString,
                                                           NSForegroundColorAttributeName: self.sendingTextColor,
                                                           NSFontAttributeName: self.encryptedMessagesTextFont
                                                           }]];
 
             [attributedStringWithRerequestMessage appendAttributedString:
-             [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"event_formatter_rerequest_keys_part2", @"Vector", nil)
+             [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"event_formatter_rerequest_keys_part2_link", @"Vector", nil)
                                              attributes:@{
+                                                          NSLinkAttributeName: linkActionString,
                                                           NSForegroundColorAttributeName: self.sendingTextColor,
                                                           NSFontAttributeName: self.encryptedMessagesTextFont
                                                           }]];
