@@ -7479,6 +7479,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"ENABLE_ROOM_RETENTION=1",
+					"ENABLE_REACTIONS=1",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Btchap/SupportingFiles/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -7486,7 +7487,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				OTHER_SWIFT_FLAGS = "$(inherited) -D ENABLE_ROOM_RETENTION";
+				OTHER_SWIFT_FLAGS = "$(inherited) -D ENABLE_ROOM_RETENTION -D ENABLE_REACTIONS";
 				PRODUCT_BUNDLE_IDENTIFIER = fr.gouv.btchap;
 				PRODUCT_MODULE_NAME = Tchap;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -7530,6 +7531,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"ENABLE_ROOM_RETENTION=1",
+					"ENABLE_REACTIONS=1",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Btchap/SupportingFiles/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -7537,7 +7539,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				OTHER_SWIFT_FLAGS = "$(inherited) -D ENABLE_ROOM_RETENTION";
+				OTHER_SWIFT_FLAGS = "$(inherited) -D ENABLE_ROOM_RETENTION -D ENABLE_REACTIONS";
 				PRODUCT_BUNDLE_IDENTIFIER = fr.gouv.btchap;
 				PRODUCT_MODULE_NAME = Tchap;
 				PRODUCT_NAME = "$(TARGET_NAME)";
