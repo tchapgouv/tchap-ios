@@ -129,6 +129,12 @@
 "settings_hide_from_users_directory_summary" = "Les autres utilisateurs ne pourront pas découvrir mon compte lors de leurs recherches";
 "settings_contacts_discover_matrix_users" = "Utiliser les adresses emails pour retrouver des utilisateurs";
 "settings_change_pwd_caution" = "Changer le mot de passe réinitialise les clés de chiffrement sur tous les appareils, rendant l’historique des discussions illisible: pensez d'abord à exporter vos clés pour pouvoir les ré-importer après le changement de mot de passe.";
+"settings_change_pwd_non_existing_key_backup_alert_title" = "Changer le mot de passe réinitialise les clés de chiffrement sur tous les appareils, rendant l’historique des discussions illisible: pensez à mettre en place la sauvegarde de vos clés avant ce changement.";
+"settings_change_pwd_non_existing_key_backup_alert_setup_key_backup_action" = "Mettre en place la sauvegarde de clés";
+"settings_change_pwd_non_existing_key_backup_alert_discard_key_backup_action" = "Changer le mot de passe sans sauvegarde de clés";
+"settings_change_pwd_key_backup_in_progress_alert_title" = "Sauvegarde de clés en cours. Si vous changez votre mot de passe maintenant vous n'aurez plus accès à vos messages chiffrés.";
+"settings_change_pwd_key_backup_in_progress_alert_discard_key_backup_action" = "Je ne veux plus de mes messages chiffrés";
+"settings_change_pwd_key_backup_in_progress_alert_cancel_action" = "Je vais patienter";
 "settings_show_external_user_in_users_directory_prompt" = "Pour désactiver cette option, vous devez accepter que votre adresse email soit visible des autres utilisateurs lors de leurs recherches.";
 "settings_preferences" = "Préférences";
 "settings_show_join_leave_messages_title" = "Afficher les notifications d’arrivée et de départ";

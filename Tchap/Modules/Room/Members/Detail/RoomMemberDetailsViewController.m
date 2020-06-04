@@ -18,7 +18,6 @@
 
 #import "RoomMemberDetailsViewController.h"
 
-#import "RiotDesignValues.h"
 #import "Analytics.h"
 
 #import "AvatarGenerator.h"
@@ -26,15 +25,13 @@
 
 #import "TableViewCellWithButton.h"
 
-#import "EncryptionInfoView.h"
-
 #import "GeneratedInterface-Swift.h"
 
 #define TABLEVIEW_ROW_CELL_HEIGHT         46
 #define TABLEVIEW_SECTION_HEADER_HEIGHT   28
 #define TABLEVIEW_SECTION_HEADER_HEIGHT_WHEN_HIDDEN 0.01f
 
-@interface RoomMemberDetailsViewController () <Stylable>
+@interface RoomMemberDetailsViewController () <Stylable> // , DeviceVerificationCoordinatorBridgePresenterDelegate>
 {
     RoomTitleView* memberTitleView;
     
@@ -57,12 +54,12 @@
 //     */
 //    NSArray<MXDeviceInfo *> *devicesArray;
 //    NSInteger devicesIndex;
-//    EncryptionInfoView *encryptionInfoView;
+//    DeviceVerificationCoordinatorBridgePresenter *deviceVerificationCoordinatorBridgePresenter;
     
     /**
-     Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
+     Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
      */
-    id kRiotDesignValuesDidChangeThemeNotificationObserver;
+    id kThemeServiceDidChangeThemeNotificationObserver;
     
     /**
      The current visibility of the status bar in this view controller.
@@ -146,8 +143,10 @@
     self.tableView.tableFooterView = [[UIView alloc] init];
     
     // Observe user interface theme change.
-    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    MXWeakify(self);
+    kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
+        MXStrongifyAndReturnIfNil(self);
         [self userInterfaceThemeDidChange];
         
     }];
@@ -171,7 +170,7 @@
     }
     
     //TODO Design the activvity indicator for Tchap
-    self.activityIndicator.backgroundColor = kRiotOverlayColor;
+    self.activityIndicator.backgroundColor = style.overlayBackgroundColor;
     
     self.memberHeaderView.backgroundColor = style.backgroundColor;
     self.roomMemberStatusLabel.textColor = style.primaryTextColor;
@@ -223,33 +222,15 @@
     otherActionsArray = nil;
     //devicesArray = nil;
     
-    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    if (kThemeServiceDidChangeThemeNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
-        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
+        kThemeServiceDidChangeThemeNotificationObserver = nil;
     }
     
     [memberTitleView removeFromSuperview];
     memberTitleView = nil;
 }
-
-//- (void)viewDidLayoutSubviews
-//{
-//    [super viewDidLayoutSubviews];
-//
-//    // Check here whether a subview has been added or removed
-//    if (encryptionInfoView)
-//    {
-//        if (!encryptionInfoView.superview)
-//        {
-//            // Reset
-//            encryptionInfoView = nil;
-//
-//            // Reload the full table to take into account a potential change on a device status.
-//            [self updateMemberInfo];
-//        }
-//    }
-//}
 
 #pragma mark -
 
@@ -261,7 +242,8 @@
         return [AvatarGenerator generateAvatarForMatrixItem:self.mxRoomMember.userId withDisplayName:self.mxRoomMember.displayname];
     }
     
-    return [UIImage imageNamed:@"placeholder"];
+    return [MXKTools paintImage:[UIImage imageNamed:@"placeholder"]
+                      withColor:ThemeService.shared.theme.tintColor];
 }
 
 - (void)updateMemberInfo
@@ -672,11 +654,11 @@
         NSNumber *actionNumber;
         if (indexPath.section == adminToolsIndex && indexPath.row < adminActionsArray.count)
         {
-            actionNumber = [adminActionsArray objectAtIndex:indexPath.row];
+            actionNumber = adminActionsArray[indexPath.row];
         }
         else if (indexPath.section == otherActionsIndex && indexPath.row < otherActionsArray.count)
         {
-            actionNumber = [otherActionsArray objectAtIndex:indexPath.row];
+            actionNumber = otherActionsArray[indexPath.row];
         }
         
         if (actionNumber)
@@ -688,13 +670,13 @@
             
             if (actionNumber.unsignedIntegerValue == MXKRoomMemberDetailsActionKick)
             {
-                [cellWithButton.mxkButton setTitleColor:kRiotColorPinkRed forState:UIControlStateNormal];
-                [cellWithButton.mxkButton setTitleColor:kRiotColorPinkRed forState:UIControlStateHighlighted];
+                [cellWithButton.mxkButton setTitleColor:ThemeService.shared.theme.warningColor forState:UIControlStateNormal];
+                [cellWithButton.mxkButton setTitleColor:ThemeService.shared.theme.warningColor forState:UIControlStateHighlighted];
             }
             else
             {
-                [cellWithButton.mxkButton setTitleColor:kRiotPrimaryTextColor forState:UIControlStateNormal];
-                [cellWithButton.mxkButton setTitleColor:kRiotPrimaryTextColor forState:UIControlStateHighlighted];
+                [cellWithButton.mxkButton setTitleColor:ThemeService.shared.theme.textPrimaryColor forState:UIControlStateNormal];
+                [cellWithButton.mxkButton setTitleColor:ThemeService.shared.theme.textPrimaryColor forState:UIControlStateHighlighted];
             }
             
             [cellWithButton.mxkButton addTarget:self action:@selector(onActionButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
@@ -712,8 +694,8 @@
         
         [cellWithButton.mxkButton setTitle:title forState:UIControlStateNormal];
         [cellWithButton.mxkButton setTitle:title forState:UIControlStateHighlighted];
-        [cellWithButton.mxkButton setTitleColor:kRiotPrimaryTextColor forState:UIControlStateNormal];
-        [cellWithButton.mxkButton setTitleColor:kRiotPrimaryTextColor forState:UIControlStateHighlighted];
+        [cellWithButton.mxkButton setTitleColor:ThemeService.shared.theme.textPrimaryColor forState:UIControlStateNormal];
+        [cellWithButton.mxkButton setTitleColor:ThemeService.shared.theme.textPrimaryColor forState:UIControlStateHighlighted];
         
         [cellWithButton.mxkButton addTarget:self action:@selector(onFilesButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
         
@@ -748,13 +730,13 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    cell.backgroundColor = kRiotPrimaryBgColor;
+    cell.backgroundColor = ThemeService.shared.theme.backgroundColor;
     
     // Update the selected background view
-    if (kRiotSelectedBgColor)
+    if (ThemeService.shared.theme.selectedBackgroundColor)
     {
         cell.selectedBackgroundView = [[UIView alloc] init];
-        cell.selectedBackgroundView.backgroundColor = kRiotSelectedBgColor;
+        cell.selectedBackgroundView.backgroundColor = ThemeService.shared.theme.selectedBackgroundColor;
     }
     else
     {
@@ -888,13 +870,15 @@
                                                                      if (weakSelf)
                                                                      {
                                                                          typeof(self) self = weakSelf;
+
+                                                                         NSString *text = [self->currentAlert textFields].firstObject.text;
+
                                                                          self->currentAlert = nil;
                                                                          
                                                                          [self startActivityIndicator];
                                                                          
                                                                          // kick user
-                                                                         UITextField *textField = [self->currentAlert textFields].firstObject;
-                                                                         [self.mxRoom banUser:self.mxRoomMember.userId reason:textField.text success:^{
+                                                                         [self.mxRoom banUser:self.mxRoomMember.userId reason:text success:^{
                                                                              
                                                                              __strong __typeof(weakSelf)self = weakSelf;
                                                                              [self stopActivityIndicator];
@@ -950,13 +934,15 @@
                                                                    if (weakSelf)
                                                                    {
                                                                        typeof(self) self = weakSelf;
+
+                                                                       NSString *text = [self->currentAlert textFields].firstObject.text;
+
                                                                        self->currentAlert = nil;
                                                                        
                                                                        [self startActivityIndicator];
                                                                        
                                                                        // kick user
-                                                                       UITextField *textField = [self->currentAlert textFields].firstObject;
-                                                                       [self.mxRoom kickUser:self.mxRoomMember.userId reason:textField.text success:^{
+                                                                       [self.mxRoom kickUser:self.mxRoomMember.userId reason:text success:^{
                                                                            
                                                                            __strong __typeof(weakSelf)self = weakSelf;
                                                                            [self stopActivityIndicator];
@@ -1050,56 +1036,16 @@
     }
 }
 
-//#pragma mark - DeviceTableViewCellDelegate
-//
+#pragma mark - 
+
 //- (void)deviceTableViewCell:(DeviceTableViewCell*)deviceTableViewCell updateDeviceVerification:(MXDeviceVerification)verificationStatus
 //{
 //    if (verificationStatus == MXDeviceVerified)
 //    {
-//        // Prompt the user before marking as verified the device.
-//        encryptionInfoView = [[EncryptionInfoView alloc] initWithDeviceInfo:deviceTableViewCell.deviceInfo andMatrixSession:self.mxRoom.mxSession];
-//        [encryptionInfoView onButtonPressed:encryptionInfoView.verifyButton];
+//        deviceVerificationCoordinatorBridgePresenter = [[DeviceVerificationCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
+//        deviceVerificationCoordinatorBridgePresenter.delegate = self;
 //
-//        // Add shadow on added view
-//        encryptionInfoView.layer.cornerRadius = 5;
-//        encryptionInfoView.layer.shadowOffset = CGSizeMake(0, 1);
-//        encryptionInfoView.layer.shadowOpacity = 0.5f;
-//
-//        // Add the view and define edge constraints
-//        [self.view addSubview:encryptionInfoView];
-//
-//        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:encryptionInfoView
-//                                                              attribute:NSLayoutAttributeTop
-//                                                              relatedBy:NSLayoutRelationEqual
-//                                                                 toItem:self.tableView
-//                                                              attribute:NSLayoutAttributeTop
-//                                                             multiplier:1.0f
-//                                                               constant:10.0f]];
-//
-//        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:encryptionInfoView
-//                                                              attribute:NSLayoutAttributeBottom
-//                                                              relatedBy:NSLayoutRelationEqual
-//                                                                 toItem:self.tableView
-//                                                              attribute:NSLayoutAttributeBottom
-//                                                             multiplier:1.0f
-//                                                               constant:-10.0f]];
-//
-//        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.tableView
-//                                                              attribute:NSLayoutAttributeLeading
-//                                                              relatedBy:NSLayoutRelationEqual
-//                                                                 toItem:encryptionInfoView
-//                                                              attribute:NSLayoutAttributeLeading
-//                                                             multiplier:1.0f
-//                                                               constant:-10.0f]];
-//
-//        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.tableView
-//                                                              attribute:NSLayoutAttributeTrailing
-//                                                              relatedBy:NSLayoutRelationEqual
-//                                                                 toItem:encryptionInfoView
-//                                                              attribute:NSLayoutAttributeTrailing
-//                                                             multiplier:1.0f
-//                                                               constant:10.0f]];
-//        [self.view setNeedsUpdateConstraints];
+//        [deviceVerificationCoordinatorBridgePresenter presentFrom:self otherUserId:deviceTableViewCell.deviceInfo.userId otherDeviceId:deviceTableViewCell.deviceInfo.deviceId animated:YES];
 //    }
 //    else
 //    {
@@ -1110,6 +1056,14 @@
 //                                                        [self updateMemberInfo];
 //                                                    } failure:nil];
 //    }
+//}
+
+#pragma mark - DeviceVerificationCoordinatorBridgePresenterDelegate
+
+//- (void)deviceVerificationCoordinatorBridgePresenterDelegateDidComplete:(DeviceVerificationCoordinatorBridgePresenter *)coordinatorBridgePresenter otherUserId:(NSString * _Nonnull)otherUserId otherDeviceId:(NSString * _Nonnull)otherDeviceId
+//{
+//    [deviceVerificationCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+//    deviceVerificationCoordinatorBridgePresenter = nil;
 //}
 
 @end

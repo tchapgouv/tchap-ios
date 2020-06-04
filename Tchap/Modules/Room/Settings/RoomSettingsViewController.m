@@ -25,6 +25,8 @@
 #import "AvatarGenerator.h"
 #import "Tools.h"
 
+#import "ThemeService.h"
+
 #import "MXRoom+Riot.h"
 #import "MXRoomSummary+Riot.h"
 
@@ -58,7 +60,7 @@ NSString *const kRoomSettingsTopicCellViewIdentifier = @"kRoomSettingsTopicCellV
 NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBannedUserCellViewIdentifier";
 NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetentionCellViewIdentifier";
 
-@interface RoomSettingsViewController () <Stylable, RetentionPeriodInDaysPickerCellDelegate>
+@interface RoomSettingsViewController () <Stylable, SingleImagePickerPresenterDelegate, RetentionPeriodInDaysPickerCellDelegate>
 {
     // The updated user data
     NSMutableDictionary<NSString*, id> *updatedItemsDict;
@@ -104,20 +106,16 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
     // listen to more events than the mother class
     id extraEventsListener;
     
-    // picker
-    MediaPickerViewController* mediaPicker;
-    
-    // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
-    id appDelegateDidTapStatusBarNotificationObserver;
-    
     // A copy of the banned members
     NSArray<MXRoomMember*> *bannedMembers;
-    
-    // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
-    id kRiotDesignValuesDidChangeThemeNotificationObserver;
 }
 
+// Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
+@property (nonatomic, weak) id kThemeServiceDidChangeThemeNotificationObserver;
+
 @property (nonatomic, strong) id<Style> currentStyle;
+
+@property (nonatomic, strong) SingleImagePickerPresenter *imagePickerPresenter;
 
 @end
 
@@ -206,8 +204,10 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
     [self setNavBarButtons];
     
     // Observe user interface theme change.
-    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    MXWeakify(self);
+    _kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
+        MXStrongifyAndReturnIfNil(self);
         [self userInterfaceThemeDidChange];
         
     }];
@@ -230,7 +230,7 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
     }
     
     //TODO Design the activvity indicator for Tchap
-    self.activityIndicator.backgroundColor = kRiotOverlayColor;
+    self.activityIndicator.backgroundColor = style.overlayBackgroundColor;
     
     self.tableView.backgroundColor = style.secondaryBackgroundColor;
     self.view.backgroundColor = self.tableView.backgroundColor;
@@ -253,17 +253,7 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
     // Screen tracking
     [[Analytics sharedInstance] trackScreen:@"RoomSettings"];
     
-    // Release the potential media picker
-    [self dismissMediaPicker];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateRules:) name:kMXNotificationCenterDidUpdateRules object:nil];
-    
-    // Observe appDelegateDidTapStatusBarNotificationObserver.
-    appDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-        
-        [self.tableView setContentOffset:CGPointMake(-self.tableView.mxk_adjustedContentInset.left, -self.tableView.mxk_adjustedContentInset.top) animated:YES];
-        
-    }];
     
     [self userInterfaceThemeDidChange];
 }
@@ -288,12 +278,6 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
     isRetentionEdited = NO;
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXNotificationCenterDidUpdateRules object:nil];
-    
-    if (appDelegateDidTapStatusBarNotificationObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:appDelegateDidTapStatusBarNotificationObserver];
-        appDelegateDidTapStatusBarNotificationObserver = nil;
-    }
 }
 
 // Those methods are called when the viewcontroller is added or removed from a container view controller.
@@ -348,16 +332,9 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
         actualDirectoryVisibilityRequest = nil;
     }
     
-    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    if (_kThemeServiceDidChangeThemeNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
-        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
-    }
-    
-    if (appDelegateDidTapStatusBarNotificationObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:appDelegateDidTapStatusBarNotificationObserver];
-        appDelegateDidTapStatusBarNotificationObserver = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:_kThemeServiceDidChangeThemeNotificationObserver];
     }
     
     updatedItemsDict = nil;
@@ -1291,7 +1268,7 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
             topicTextView.editable = (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomTopic]);
             topicTextView.textColor = self.currentStyle.secondaryTextColor;
             
-            topicTextView.keyboardAppearance = kRiotKeyboard;
+            topicTextView.keyboardAppearance = self.currentStyle.keyboardAppearance;
             
             cell = roomTopicCell;
         }
@@ -1550,41 +1527,6 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
     }
 }
 
-#pragma mark - MediaPickerViewController Delegate
-
-- (void)dismissMediaPicker
-{
-    if (mediaPicker)
-    {
-        [mediaPicker withdrawViewControllerAnimated:YES completion:nil];
-        mediaPicker = nil;
-    }
-}
-
-- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectImage:(NSData*)imageData withMimeType:(NSString *)mimetype isPhotoLibraryAsset:(BOOL)isPhotoLibraryAsset
-{
-    [self dismissMediaPicker];
-    
-    if (imageData)
-    {
-        UIImage *image = [UIImage imageWithData:imageData];
-        if (image)
-        {
-            [self getNavigationItem].rightBarButtonItem.enabled = YES;
-            
-            [updatedItemsDict setObject:image forKey:kRoomSettingsAvatarKey];
-            
-            [self refreshRoomSettings];
-        }
-    }
-}
-
-- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectVideo:(NSURL*)videoURL
-{
-    // this method should not be called
-    [self dismissMediaPicker];
-}
-
 #pragma mark - actions
 
 - (void)onLeave:(id)sender
@@ -1653,13 +1595,17 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
 
 - (void)onRoomAvatarTap:(UITapGestureRecognizer *)recognizer
 {
-    mediaPicker = [MediaPickerViewController mediaPickerViewController];
-    mediaPicker.mediaTypes = @[(NSString *)kUTTypeImage];
-    mediaPicker.delegate = self;
-    UINavigationController *navigationController = [UINavigationController new];
-    [navigationController pushViewController:mediaPicker animated:NO];
+    SingleImagePickerPresenter *singleImagePickerPresenter = [[SingleImagePickerPresenter alloc] initWithSession:self.mainSession];
+    singleImagePickerPresenter.delegate = self;
     
-    [self presentViewController:navigationController animated:YES completion:nil];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:avatarIndex inSection:ROOM_SETTINGS_MAIN_SECTION_INDEX];
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    
+    UIView *sourceView = cell;
+    
+    [singleImagePickerPresenter presentFrom:self sourceView:sourceView sourceRect:sourceView.bounds animated:YES];
+    
+    self.imagePickerPresenter = singleImagePickerPresenter;
 }
 
 - (void)toggleRoomNotification:(UISwitch*)theSwitch
@@ -1854,6 +1800,30 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
                                                       [self refreshRoomSettings];
                                                       
                                                   }];
+}
+
+#pragma mark - SingleImagePickerPresenterDelegate
+
+- (void)singleImagePickerPresenterDidCancel:(SingleImagePickerPresenter *)presenter
+{
+    [presenter dismissWithAnimated:YES completion:nil];
+    self.imagePickerPresenter = nil;
+}
+
+- (void)singleImagePickerPresenter:(SingleImagePickerPresenter *)presenter didSelectImageData:(NSData *)imageData withUTI:(MXKUTI *)uti
+{
+    [presenter dismissWithAnimated:YES completion:nil];
+    self.imagePickerPresenter = nil;
+    
+    UIImage *image = [UIImage imageWithData:imageData];
+    if (image)
+    {
+        [self getNavigationItem].rightBarButtonItem.enabled = YES;
+        
+        updatedItemsDict[kRoomSettingsAvatarKey] = image;
+        
+        [self refreshRoomSettings];
+    }
 }
 
 #pragma mark - RetentionPeriodInDaysPickerCellDelegate

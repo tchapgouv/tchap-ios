@@ -43,6 +43,13 @@
  */
 - (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectVideo:(NSURL*)videoURL;
 
+/**
+ Tells the delegate that the user wants to cancel media picking.
+ 
+ @param mediaPickerController the `MediaPickerViewController` instance.
+ */
+- (void)mediaPickerControllerDidCancel:(MediaPickerViewController *)mediaPickerController;
+
 @optional
 /**
  Tells the delegate that the user select multiple media.
@@ -55,16 +62,9 @@
 @end
 
 /**
+ * MediaPickerViewController displays recent camera captures and photo/video albums from user library.
  */
-@interface MediaPickerViewController : MXKViewController <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, AVCaptureFileOutputRecordingDelegate, MediaAlbumContentViewControllerDelegate>
-
-/**
- *  Returns the `UINib` object initialized for a `MediaPickerViewController`.
- *
- *  @return The initialized `UINib` object or `nil` if there were errors during initialization
- *  or the nib file could not be located.
- */
-+ (UINib *)nib;
+@interface MediaPickerViewController : MXKViewController
 
 /**
  *  Creates and returns a new `MediaPickerViewController` object.
@@ -73,39 +73,23 @@
  *
  *  @return An initialized `MediaPickerViewController` object if successful, `nil` otherwise.
  */
-+ (instancetype)mediaPickerViewController;
-
-@property (weak, nonatomic) IBOutlet UIScrollView *mainScrollView;
-
-@property (weak, nonatomic) IBOutlet UIView *captureViewContainer;
-//@property (weak, nonatomic) IBOutlet NSLayoutConstraint *captureViewContainerHeightConstraint;
-
-@property (weak, nonatomic) IBOutlet UIView *cameraPreviewContainerView;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *cameraPreviewContainerAspectRatio;
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *cameraActivityIndicator;
-@property (weak, nonatomic) IBOutlet UIButton *closeButton;
-@property (weak, nonatomic) IBOutlet UIButton *cameraSwitchButton;
-@property (weak, nonatomic) IBOutlet UIButton *cameraCaptureButton;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *cameraCaptureButtonWidthConstraint;
-@property (weak, nonatomic) IBOutlet MXKPieChartView *cameraVideoCaptureProgressView;
-
-@property (weak, nonatomic) IBOutlet UIView *recentCapturesCollectionContainerView;
-@property (weak, nonatomic) IBOutlet UICollectionView *recentCapturesCollectionView;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *recentCapturesCollectionContainerViewHeightConstraint;
-
-@property (weak, nonatomic) IBOutlet UIView *libraryViewContainer;
-@property (weak, nonatomic) IBOutlet UITableView *userAlbumsTableView;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *libraryViewContainerViewHeightConstraint;
++ (instancetype)instantiate;
 
 /**
  The delegate for the view controller.
  */
-@property (nonatomic) id<MediaPickerViewControllerDelegate> delegate;
+@property (nonatomic, weak) id<MediaPickerViewControllerDelegate> delegate;
 
 /**
  The array of the media types supported by the picker (default value is an array containing kUTTypeImage).
  */
 @property (nonatomic) NSArray *mediaTypes;
+
+/**
+ A Boolean value that determines whether users can select more than one item.
+ Default is NO.
+ */
+@property (nonatomic) BOOL allowsMultipleSelection;
 
 @end
 

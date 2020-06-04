@@ -51,7 +51,7 @@ final class WelcomeCoordinator: WelcomeCoordinatorType {
     
     func start() {
         self.rootRouter.setRootModule(self.navigationRouter)
-        self.navigationRouter.setRootModule(self.welcomeViewController, hideNavigationBar: true)
+        self.navigationRouter.setRootModule(self.welcomeViewController, hideNavigationBar: true, animated: false, popCompletion: nil)
         self.welcomeViewController.delegate = self
     }
     

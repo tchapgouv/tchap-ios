@@ -16,8 +16,7 @@
  */
 
 #import "FallbackViewController.h"
-//#import "ThemeService.h"
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
 
 #import "GeneratedInterface-Swift.h"
 
@@ -33,8 +32,7 @@
 {
     [super viewDidLoad];
     
-    //self.titleLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
-    self.titleLabel.textColor = kRiotSecondaryTextColor;
+    self.titleLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
     self.titleLabel.text = NSLocalizedStringFromTable(@"share_extension_auth_prompt", @"Vector", nil);
 }
 

@@ -19,6 +19,7 @@
 #import <UIKit/UIKit.h>
 #import <MatrixKit/MatrixKit.h>
 #import <PushKit/PushKit.h>
+#import <UserNotifications/UserNotifications.h>
 
 #import "JitsiViewController.h"
 
@@ -28,10 +29,6 @@
 #import "DesignValues.h"
 
 #pragma mark - Notifications
-/**
- Posted when the user taps the clock status bar.
- */
-extern NSString *const kAppDelegateDidTapStatusBarNotification;
 
 /**
  Posted when the property 'isOffline' has changed. This property is related to the network reachability status.
@@ -51,7 +48,7 @@ extern NSString *const kLegacyAppDelegateDidLoginNotification;
 /**
  LegacyAppDelegate is based on Riot AppDelegate, is here to keep some Riot behaviors and be decoupled in the future.
  */
-@interface LegacyAppDelegate : UIResponder <UIApplicationDelegate, MXKCallViewControllerDelegate, UINavigationControllerDelegate, JitsiViewControllerDelegate, PKPushRegistryDelegate>
+@interface LegacyAppDelegate : UIResponder <UIApplicationDelegate, MXKCallViewControllerDelegate, JitsiViewControllerDelegate, PKPushRegistryDelegate, UNUserNotificationCenterDelegate>
 {
     BOOL isPushRegistered;
     
@@ -99,6 +96,9 @@ extern NSString *const kLegacyAppDelegateDidLoginNotification;
 // Mark all messages as read in the running matrix sessions.
 - (void)markAllMessagesAsRead;
 
+// Remove delivred notifications for a given room id except call notifications
+- (void)removeDeliveredNotificationsWithRoomId:(NSString*)roomId completion:(dispatch_block_t)completion;
+
 /**
  Log out all the accounts after asking for a potential confirmation.
  Show the authentication screen on successful logout.
@@ -112,7 +112,7 @@ extern NSString *const kLegacyAppDelegateDidLoginNotification;
  Log out all the accounts without confirmation.
  Show the authentication screen on successful logout.
  
- @param sendLogoutRequest Indicate whether send logout request to home server.
+ @param sendLogoutRequest Indicate whether send logout request to homeserver.
  @param completion the block to execute at the end of the operation.
  */
 - (void)logoutSendingRequestServer:(BOOL)sendLogoutServerRequest

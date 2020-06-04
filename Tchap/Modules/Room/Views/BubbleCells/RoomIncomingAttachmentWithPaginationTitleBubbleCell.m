@@ -17,8 +17,11 @@
 
 #import "RoomIncomingAttachmentWithPaginationTitleBubbleCell.h"
 
-#import "RiotDesignValues.h"
-#import "DesignValues.h"
+#import "ThemeService.h"
+
+#import "MXKRoomBubbleTableViewCell+Riot.h"
+
+#import "GeneratedInterface-Swift.h"
 
 @implementation RoomIncomingAttachmentWithPaginationTitleBubbleCell
 
@@ -26,11 +29,11 @@
 {
     [super customizeTableViewCellRendering];
     
-    self.userNameLabel.textColor = kColorLightNavy;
+    self.userNameLabel.textColor = ThemeService.shared.theme.userNameColors[0];
     
-    self.paginationLabel.textColor = kRiotColorGreen;
-    self.paginationSeparatorView.backgroundColor = kRiotColorGreen;
-    self.messageTextView.tintColor = kRiotColorGreen;
+    self.paginationLabel.textColor = ThemeService.shared.theme.tintColor;
+    self.paginationSeparatorView.backgroundColor = ThemeService.shared.theme.tintColor;
+    self.messageTextView.tintColor = ThemeService.shared.theme.tintColor;
 }
 
 - (void)render:(MXKCellData *)cellData
@@ -41,6 +44,18 @@
     {
         self.paginationLabel.text = [[bubbleData.eventFormatter dateStringFromDate:bubbleData.date withTime:NO] uppercaseString];
     }
+}
+
++ (CGFloat)heightForCellData:(MXKCellData*)cellData withMaximumWidth:(CGFloat)maxWidth
+{
+    CGFloat rowHeight = [self attachmentBubbleCellHeightForCellData:cellData withMaximumWidth:maxWidth];
+    
+    if (rowHeight <= 0)
+    {
+        rowHeight = [super heightForCellData:cellData withMaximumWidth:maxWidth];
+    }
+    
+    return rowHeight;
 }
 
 @end
