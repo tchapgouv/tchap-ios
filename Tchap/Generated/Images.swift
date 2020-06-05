@@ -73,6 +73,7 @@ internal enum Asset {
     internal static let roomContextMenuCopy = ImageAsset(name: "room_context_menu_copy")
     internal static let roomContextMenuEdit = ImageAsset(name: "room_context_menu_edit")
     internal static let roomContextMenuMore = ImageAsset(name: "room_context_menu_more")
+    internal static let roomContextMenuRedact = ImageAsset(name: "room_context_menu_redact")
     internal static let roomContextMenuReply = ImageAsset(name: "room_context_menu_reply")
     internal static let sendIcon = ImageAsset(name: "send_icon")
     internal static let uploadIcon = ImageAsset(name: "upload_icon")
