@@ -177,7 +177,7 @@ final class RoomCreationViewController: UIViewController, RetentionPeriodInDaysP
     private func setupRoomAvatarCreationView() {
         let roomCreationAvatarView = RoomCreationAvatarView.loadFromNib()
         roomCreationAvatarView.delegate = self
-        self.avatarContentView.tc_addSubViewMathingParent(roomCreationAvatarView)
+        self.avatarContentView.tc_addSubViewMatchingParent(roomCreationAvatarView)
         self.roomCreationAvatarView = roomCreationAvatarView
         refreshAvatarView()
     }

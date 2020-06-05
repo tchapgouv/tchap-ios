@@ -37,7 +37,7 @@ class RoomsRoomCell: RoomsCell {
         
         self.lastEventSenderName.text = nil
         
-        guard let session = self.roomCellData?.recentsDataSource?.mxSession else {
+        guard let session = self.roomCellData?.recentsDataSource?.mxSession, session.matrixRestClient != nil else {
             return
         }
         

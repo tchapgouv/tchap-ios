@@ -16,8 +16,10 @@
 
 #import "DeactivateAccountViewController.h"
 
-#import "RiotDesignValues.h"
+
 #import "Analytics.h"
+#import "ThemeService.h"
+#import "GeneratedInterface-Swift.h"
 
 #pragma mark - Defines & Constants
 
@@ -108,36 +110,37 @@ static CGFloat const kTextFontSize = 15.0;
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return kRiotDesignStatusBarStyle;
+    return ThemeService.shared.theme.statusBarStyle;
 }
 
 #pragma mark - Private
 
 - (void)registerThemeNotification
 {
-    self.themeDidChangeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    self.themeDidChangeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         [self userInterfaceThemeDidChange];
     }];
 }
 
 - (void)userInterfaceThemeDidChange
 {
-    self.view.backgroundColor = kRiotPrimaryBgColor;
-    self.defaultBarTintColor = kRiotSecondaryBgColor;
-    self.activityIndicator.backgroundColor = kRiotOverlayColor;
+    self.view.backgroundColor = ThemeService.shared.theme.backgroundColor;
+    [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+
+    self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
 }
 
 - (void)setupStringAttributes
 {
     self.normalStringAttributes = @{
                                     NSFontAttributeName: [UIFont systemFontOfSize:kTextFontSize],
-                                    NSForegroundColorAttributeName: kRiotPrimaryTextColor
+                                    NSForegroundColorAttributeName: ThemeService.shared.theme.textPrimaryColor
                                     };
     
     
     self.emphasizeStringAttributes = @{
                                        NSFontAttributeName: [UIFont systemFontOfSize:kTextFontSize weight:UIFontWeightBold],
-                                       NSForegroundColorAttributeName: kRiotPrimaryTextColor
+                                       NSForegroundColorAttributeName: ThemeService.shared.theme.textPrimaryColor
                                        };
 }
 
@@ -151,7 +154,7 @@ static CGFloat const kTextFontSize = 15.0;
 
 - (void)setupNavigationBar
 {
-    self.navigationController.navigationBar.titleTextAttributes = @{ NSForegroundColorAttributeName: kRiotColorRed };
+    self.navigationController.navigationBar.titleTextAttributes = @{ NSForegroundColorAttributeName: ThemeService.shared.theme.warningColor };
     
     UIBarButtonItem *cancelBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"cancel", @"Vector", nil) style:UIBarButtonItemStylePlain target:self action:@selector(cancelButtonAction:)];
     self.navigationItem.rightBarButtonItem = cancelBarButtonItem;
@@ -165,9 +168,9 @@ static CGFloat const kTextFontSize = 15.0;
     self.deactivateAcccountButton.titleLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
     
     self.deactivateAcccountButton.layer.masksToBounds = YES;
-    self.deactivateAcccountButton.backgroundColor = kRiotColorGreen;
+    self.deactivateAcccountButton.backgroundColor = ThemeService.shared.theme.tintColor;
     [self.deactivateAcccountButton setTitle:NSLocalizedStringFromTable(@"deactivate_account_validate_action", @"Vector", nil) forState:UIControlStateNormal];    
-    [self.deactivateAcccountButton setTitleColor:kRiotColorSilver forState:UIControlStateDisabled];
+    [self.deactivateAcccountButton setTitleColor:ThemeService.shared.theme.headerTextSecondaryColor forState:UIControlStateDisabled];
 }
 
 - (void)setupDeactivateAccountInfosLabel

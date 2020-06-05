@@ -12,6 +12,8 @@ import Foundation
 internal enum TchapL10n {
   /// Annuler
   internal static let actionCancel = TchapL10n.tr("Tchap", "action_cancel")
+  /// Confirmer
+  internal static let actionConfirm = TchapL10n.tr("Tchap", "action_confirm")
   /// Inviter
   internal static let actionInvite = TchapL10n.tr("Tchap", "action_invite")
   /// Suivant
@@ -166,7 +168,7 @@ internal enum TchapL10n {
   internal static let forgotPasswordVerifyEmailConfirmationAction = TchapL10n.tr("Tchap", "forgot_password_verify_email_confirmation_action")
   /// Impossible de vérifier l'adresse email : assurez-vous d'avoir cliqué sur le lien dans l'email
   internal static let forgotPasswordVerifyEmailErrorEmailNotVerified = TchapL10n.tr("Tchap", "forgot_password_verify_email_error_email_not_verified")
-  /// Un email a été envoyé à %@. Une fois que vous aurez suivi le lien qu'il contient, cliquez ci-dessous.
+  /// Si un compte Tchap existe, un email a été envoyé à l'adresse : %@. Une fois que vous aurez suivi le lien qu'il contient, cliquez ci-dessous.
   internal static func forgotPasswordVerifyEmailInstructions(_ p1: String) -> String {
     return TchapL10n.tr("Tchap", "forgot_password_verify_email_instructions", p1)
   }
@@ -212,7 +214,7 @@ internal enum TchapL10n {
   internal static let registrationEmailLoginAction = TchapL10n.tr("Tchap", "registration_email_login_action")
   /// Je n'ai pas reçu l'email !
   internal static let registrationEmailNotReceivedAction = TchapL10n.tr("Tchap", "registration_email_not_received_action")
-  /// Un email vous a été envoyé à : 
+  /// Un email vous a été envoyé à l'adresse suivante, sauf si un compte Tchap lui a déjà été associé : 
   internal static let registrationEmailSentInfo = TchapL10n.tr("Tchap", "registration_email_sent_info")
   /// Merci de cliquer sur le lien proposé dans cet email afin de terminer la création de votre compte. Vous pourrez alors vous connecter en allant sur l'écran de connexion.
   internal static let registrationEmailSentInstructions = TchapL10n.tr("Tchap", "registration_email_sent_instructions")
@@ -332,6 +334,18 @@ internal enum TchapL10n {
   internal static let searchNoResult = TchapL10n.tr("Tchap", "search_no_result")
   /// Changer le mot de passe réinitialise les clés de chiffrement sur tous les appareils, rendant l’historique des discussions illisible: pensez d'abord à exporter vos clés pour pouvoir les ré-importer après le changement de mot de passe.
   internal static let settingsChangePwdCaution = TchapL10n.tr("Tchap", "settings_change_pwd_caution")
+  /// Je vais patienter
+  internal static let settingsChangePwdKeyBackupInProgressAlertCancelAction = TchapL10n.tr("Tchap", "settings_change_pwd_key_backup_in_progress_alert_cancel_action")
+  /// Je ne veux plus de mes messages chiffrés
+  internal static let settingsChangePwdKeyBackupInProgressAlertDiscardKeyBackupAction = TchapL10n.tr("Tchap", "settings_change_pwd_key_backup_in_progress_alert_discard_key_backup_action")
+  /// Sauvegarde de clés en cours. Si vous changez votre mot de passe maintenant vous n'aurez plus accès à vos messages chiffrés.
+  internal static let settingsChangePwdKeyBackupInProgressAlertTitle = TchapL10n.tr("Tchap", "settings_change_pwd_key_backup_in_progress_alert_title")
+  /// Changer le mot de passe sans sauvegarde de clés
+  internal static let settingsChangePwdNonExistingKeyBackupAlertDiscardKeyBackupAction = TchapL10n.tr("Tchap", "settings_change_pwd_non_existing_key_backup_alert_discard_key_backup_action")
+  /// Mettre en place la sauvegarde de clés
+  internal static let settingsChangePwdNonExistingKeyBackupAlertSetupKeyBackupAction = TchapL10n.tr("Tchap", "settings_change_pwd_non_existing_key_backup_alert_setup_key_backup_action")
+  /// Changer le mot de passe réinitialise les clés de chiffrement sur tous les appareils, rendant l’historique des discussions illisible: pensez à mettre en place la sauvegarde de vos clés avant ce changement.
+  internal static let settingsChangePwdNonExistingKeyBackupAlertTitle = TchapL10n.tr("Tchap", "settings_change_pwd_non_existing_key_backup_alert_title")
   /// Utiliser les adresses emails pour retrouver des utilisateurs
   internal static let settingsContactsDiscoverMatrixUsers = TchapL10n.tr("Tchap", "settings_contacts_discover_matrix_users")
   /// Les autres utilisateurs ne pourront pas découvrir mon compte lors de leurs recherches

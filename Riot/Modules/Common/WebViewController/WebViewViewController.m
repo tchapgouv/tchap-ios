@@ -17,7 +17,7 @@
 #import "WebViewViewController.h"
 
 #import "RageShakeManager.h"
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
 
 #import "GeneratedInterface-Swift.h"
 
@@ -25,8 +25,8 @@
 
 @property (nonatomic, strong) id<Style> currentStyle;
 
-// Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
-@property (nonatomic, weak) id kRiotDesignValuesDidChangeThemeNotificationObserver;
+// Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
+@property (nonatomic, weak) id kThemeServiceDidChangeThemeNotificationObserver;
 
 @end
 
@@ -57,7 +57,7 @@
     
     // Observe user interface theme change.
     MXWeakify(self);
-    _kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    _kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         MXStrongifyAndReturnIfNil(self);
         [self userInterfaceThemeDidChange];
@@ -94,7 +94,7 @@
     }
     
     // @TODO Design the activvity indicator for Tchap
-    self.activityIndicator.backgroundColor = kRiotOverlayColor;
+    self.activityIndicator.backgroundColor = style.overlayBackgroundColor;
     
     self.view.backgroundColor = style.backgroundColor;
     webView.backgroundColor = style.backgroundColor;
@@ -107,9 +107,9 @@
 
 - (void)dealloc
 {
-    if (_kRiotDesignValuesDidChangeThemeNotificationObserver)
+    if (_kThemeServiceDidChangeThemeNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:_kRiotDesignValuesDidChangeThemeNotificationObserver];
+        [[NSNotificationCenter defaultCenter] removeObserver:_kThemeServiceDidChangeThemeNotificationObserver];
     }
 }
 

@@ -22,4 +22,7 @@
 #import "MediaPickerViewController.h"
 #import "EventFormatter.h"
 #import "Tools.h"
+#import "EncryptionInfoView.h"
+#import "TableViewCellWithCheckBoxAndLabel.h"
+#import "RoomDataSource.h"
 #import "Contact.h"

@@ -1,7 +1,7 @@
 /*
  Copyright 2015 OpenMarket Ltd
  Copyright 2017 Vector Creations Ltd
- Copyright 2018 New Vector Ltd
+ Copyright 2018-2020 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -32,18 +32,16 @@
 #import "WebViewViewController.h"
 
 #import "CountryPickerViewController.h"
-#import "LanguagePickerViewController.h"
 #import "DeactivateAccountViewController.h"
 
 #import "NBPhoneNumberUtil.h"
 #import "RageShakeManager.h"
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
 #import "TableViewCellWithPhoneNumberTextField.h"
 
 #import "GBDeviceInfo_iOS.h"
 
 #import "DeviceView.h"
-#import "MediaPickerViewController.h"
 
 #import "GeneratedInterface-Swift.h"
 
@@ -60,6 +58,9 @@ enum
     SETTINGS_SECTION_PREFERENCES_INDEX,
     SETTINGS_SECTION_OTHER_INDEX,
     SETTINGS_SECTION_CRYPTOGRAPHY_INDEX,
+#ifdef SUPPORT_KEYS_BACKUP
+    SETTINGS_SECTION_KEYBACKUP_INDEX,
+#endif
     SETTINGS_SECTION_DEVICES_INDEX,
     SETTINGS_SECTION_DEACTIVATE_ACCOUNT_INDEX,
     SETTINGS_SECTION_COUNT
@@ -117,13 +118,24 @@ enum {
 typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 
 
-@interface SettingsViewController () <UITextFieldDelegate, MediaPickerViewControllerDelegate, MXKDeviceViewDelegate, UIDocumentInteractionControllerDelegate, MXKCountryPickerViewControllerDelegate, MXKLanguagePickerViewControllerDelegate, DeactivateAccountViewControllerDelegate, Stylable, ChangePasswordCoordinatorBridgePresenterDelegate>
+@interface SettingsViewController () <UITextFieldDelegate,
+DeactivateAccountViewControllerDelegate,
+#ifdef SUPPORT_KEYS_BACKUP
+SettingsKeyBackupTableViewSectionDelegate,
+KeyBackupSetupCoordinatorBridgePresenterDelegate,
+KeyBackupRecoverCoordinatorBridgePresenterDelegate,
+SignOutAlertPresenterDelegate,
+ChangePasswordAlertPresenterDelegate,
+#endif
+SingleImagePickerPresenterDelegate,
+MXKDeviceViewDelegate,
+UIDocumentInteractionControllerDelegate,
+MXKCountryPickerViewControllerDelegate,
+Stylable,
+ChangePasswordCoordinatorBridgePresenterDelegate>
 {
     // Current alert (if any).
     UIAlertController *currentAlert;
-    
-    // picker
-    MediaPickerViewController* mediaPicker;
     
     // profile updates
     // avatar
@@ -150,9 +162,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     // Devices
     NSMutableArray<MXDevice *> *devicesArray;
     DeviceView *deviceView;
-    
-    //
+#ifndef SUPPORT_KEYS_BACKUP
     UIAlertController *resetPwdAlertController;
+#endif
 
     // The view used to export e2e keys
     MXKEncryptionKeysExportView *exportView;
@@ -161,18 +173,33 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     UIDocumentInteractionController *documentInteractionController;
     NSURL *keyExportsFile;
     NSTimer *keyExportsFileDeletionTimer;
+    
+#ifdef SUPPORT_KEYS_BACKUP
+    SettingsKeyBackupTableViewSection *keyBackupSection;
+    KeyBackupSetupCoordinatorBridgePresenter *keyBackupSetupCoordinatorBridgePresenter;
+    KeyBackupRecoverCoordinatorBridgePresenter *keyBackupRecoverCoordinatorBridgePresenter;
+#endif
 }
+
+#ifdef SUPPORT_KEYS_BACKUP
+@property (nonatomic, strong) SignOutAlertPresenter *signOutAlertPresenter;
+@property (nonatomic, weak) UIButton *signOutButton;
+#endif
+@property (nonatomic, strong) SingleImagePickerPresenter *imagePickerPresenter;
 
 @property (weak, nonatomic) DeactivateAccountViewController *deactivateAccountViewController;
 @property (strong, nonatomic) id<Style> currentStyle;
+
+#ifdef SUPPORT_KEYS_BACKUP
+@property (nonatomic, strong) ChangePasswordAlertPresenter *changePasswordAlertPresenter;
+#endif
 @property (strong, nonatomic) ChangePasswordCoordinatorBridgePresenter *changePasswordPresenter;
 
 // Observer
-@property (nonatomic, weak) id riotDesignValuesDidChangeThemeNotificationObserver;
+@property (nonatomic, weak) id themeServiceDidChangeThemeNotificationObserver;
 @property (nonatomic, weak) id removedAccountObserver;
 @property (nonatomic, weak) id accountUserInfoObserver;
 @property (nonatomic, weak) id pushInfoUpdateObserver;
-@property (nonatomic, weak) id appDelegateDidTapStatusBarNotificationObserver;
 @property (nonatomic, weak) id sessionAccountDataDidChangeNotificationObserver;
 
 @end
@@ -223,19 +250,32 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         [self addMatrixSession:mxSession];
     }
     
+#ifdef SUPPORT_KEYS_BACKUP
+    if (self.mainSession.crypto.backup)
+    {
+        MXDeviceInfo *deviceInfo = [self.mainSession.crypto.deviceList storedDevice:self.mainSession.matrixRestClient.credentials.userId
+                                                                           deviceId:self.mainSession.matrixRestClient.credentials.deviceId];
+        
+        if (deviceInfo)
+        {
+            keyBackupSection = [[SettingsKeyBackupTableViewSection alloc] initWithKeyBackup:self.mainSession.crypto.backup userDevice:deviceInfo];
+            keyBackupSection.delegate = self;
+        }
+    }
+#endif
+    
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(onSave:)];
     self.navigationItem.rightBarButtonItem.accessibilityIdentifier=@"SettingsVCNavBarSaveButton";
 
     
     // Observe user interface theme change.
     MXWeakify(self);
-    _riotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    _themeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         MXStrongifyAndReturnIfNil(self);
         [self userInterfaceThemeDidChange];
         
     }];
-    [self userInterfaceThemeDidChange];
     
     
     // Add observer to handle removed accounts
@@ -269,6 +309,14 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         [self refreshSettings];
         
     }];
+    
+#ifdef SUPPORT_KEYS_BACKUP
+    self.signOutAlertPresenter = [SignOutAlertPresenter new];
+    self.signOutAlertPresenter.delegate = self;
+    
+    self.changePasswordAlertPresenter = [ChangePasswordAlertPresenter new];
+    self.changePasswordAlertPresenter.delegate = self;
+#endif
 }
 
 - (void)userInterfaceThemeDidChange
@@ -291,7 +339,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     }
     
     // @TODO Design the activvity indicator for Tchap
-    self.activityIndicator.backgroundColor = kRiotOverlayColor;
+    self.activityIndicator.backgroundColor = style.overlayBackgroundColor;
     
     // Check the table view style to select its bg color.
     self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? style.backgroundColor : style.secondaryBackgroundColor);
@@ -318,9 +366,9 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         documentInteractionController = nil;
     }
     
-    if (_riotDesignValuesDidChangeThemeNotificationObserver)
+    if (_themeServiceDidChangeThemeNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:_riotDesignValuesDidChangeThemeNotificationObserver];
+        [[NSNotificationCenter defaultCenter] removeObserver:_themeServiceDidChangeThemeNotificationObserver];
     }
     
     if (_removedAccountObserver)
@@ -338,11 +386,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         [[NSNotificationCenter defaultCenter] removeObserver:_pushInfoUpdateObserver];
     }
     
-    if (_appDelegateDidTapStatusBarNotificationObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:_appDelegateDidTapStatusBarNotificationObserver];
-    }
-    
     if (_sessionAccountDataDidChangeNotificationObserver)
     {
         [[NSNotificationCenter defaultCenter] removeObserver:_sessionAccountDataDidChangeNotificationObserver];
@@ -355,6 +398,11 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         [deviceView removeFromSuperview];
         deviceView = nil;
     }
+    
+#ifdef SUPPORT_KEYS_BACKUP
+    keyBackupSetupCoordinatorBridgePresenter = nil;
+    keyBackupRecoverCoordinatorBridgePresenter = nil;
+#endif
 }
 
 - (void)onMatrixSessionStateDidChange:(NSNotification *)notif
@@ -380,8 +428,8 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     // Screen tracking
     [[Analytics sharedInstance] trackScreen:@"Settings"];
     
-    // Release the potential media picker
-    [self dismissMediaPicker];
+    // Release the potential image picker presenter
+    [self dismissImagePickerPresenter];
     
     // Refresh display
     [self refreshSettings];
@@ -395,15 +443,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     // Refresh devices in parallel
     [self loadDevices];
     
-    // Observe kAppDelegateDidTapStatusBarNotification.
     MXWeakify(self);
-    _appDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-        
-        MXStrongifyAndReturnIfNil(self);
-        [self.tableView setContentOffset:CGPointMake(-self.tableView.mxk_adjustedContentInset.left, -self.tableView.mxk_adjustedContentInset.top) animated:YES];
-        
-    }];
-    
     _sessionAccountDataDidChangeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionAccountDataDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
 
         MXStrongifyAndReturnIfNil(self);
@@ -425,16 +465,13 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         currentAlert = nil;
     }
     
+#ifndef SUPPORT_KEYS_BACKUP
     if (resetPwdAlertController)
     {
         [resetPwdAlertController dismissViewControllerAnimated:NO completion:nil];
         resetPwdAlertController = nil;
     }
-    
-    if (_appDelegateDidTapStatusBarNotificationObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:_appDelegateDidTapStatusBarNotificationObserver];
-    }
+#endif
     
     if (_sessionAccountDataDidChangeNotificationObserver)
     {
@@ -755,6 +792,16 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
             count = CRYPTOGRAPHY_COUNT;
         }
     }
+#ifdef SUPPORT_KEYS_BACKUP
+    else if (section == SETTINGS_SECTION_KEYBACKUP_INDEX)
+    {
+        // Check whether this section is visible.
+        if (self.mainSession.crypto)
+        {
+            count = keyBackupSection.numberOfRows;
+        }
+    }
+#endif
     else if (section == SETTINGS_SECTION_DEACTIVATE_ACCOUNT_INDEX)
     {
         count = 1;
@@ -1376,6 +1423,12 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
             cell = exportKeysBtnCell;
         }
     }
+#ifdef SUPPORT_KEYS_BACKUP
+    else if (section == SETTINGS_SECTION_KEYBACKUP_INDEX)
+    {
+        cell = [keyBackupSection cellForRowAtRow:row];
+    }
+#endif
     else if (section == SETTINGS_SECTION_DEACTIVATE_ACCOUNT_INDEX)
     {
         MXKTableViewCellWithButton *deactivateAccountBtnCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
@@ -1461,6 +1514,16 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
             return NSLocalizedStringFromTable(@"settings_cryptography", @"Vector", nil);
         }
     }
+#ifdef SUPPORT_KEYS_BACKUP
+    else if (section == SETTINGS_SECTION_KEYBACKUP_INDEX)
+    {
+        // Check whether this section is visible
+        if (self.mainSession.crypto)
+        {
+            return NSLocalizedStringFromTable(@"settings_key_backup", @"Vector", nil);
+        }
+    }
+#endif
     else if (section == SETTINGS_SECTION_DEACTIVATE_ACCOUNT_INDEX)
     {
         return NSLocalizedStringFromTable(@"settings_deactivate_my_account", @"Vector", nil);
@@ -1679,7 +1742,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         {
             if (row == localContactsPhoneBookCountryIndex)
             {
-                CountryPickerViewController *countryPicker = [CountryPickerViewController countryPickerViewController];
+                CountryPickerViewController *countryPicker = [CountryPickerViewController instantiateWithStyle:self.currentStyle];
                 countryPicker.view.tag = SETTINGS_SECTION_CONTACTS_INDEX;
                 countryPicker.delegate = self;
                 countryPicker.showCountryCallingCode = YES;
@@ -1696,12 +1759,23 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 
 - (void)onSignout:(id)sender
 {
+#ifdef SUPPORT_KEYS_BACKUP
+    self.signOutButton = (UIButton*)sender;
+    
+    MXKeyBackup *keyBackup = self.mainSession.crypto.backup;
+    
+    [self.signOutAlertPresenter presentFor:keyBackup.state
+                      areThereKeysToBackup:keyBackup.hasKeysToBackup
+                                      from:self
+                                sourceView:self.signOutButton
+                                  animated:YES];
+#else
     // Feedback: disable button and run activity indicator
     UIButton *button = (UIButton*)sender;
     button.enabled = NO;
     [self startActivityIndicator];
     
-     __weak typeof(self) weakSelf = self;
+    __weak typeof(self) weakSelf = self;
     
     [[AppDelegate theDelegate] logoutWithConfirmation:YES completion:^(BOOL isLoggedOut) {
         
@@ -1714,6 +1788,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
             [self stopActivityIndicator];
         }
     }];
+#endif
 }
 
 - (void)togglePushNotifications:(id)sender
@@ -2096,13 +2171,23 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 
 - (void)onProfileAvatarTap:(UITapGestureRecognizer *)recognizer
 {
-    mediaPicker = [MediaPickerViewController mediaPickerViewController];
-    mediaPicker.mediaTypes = @[(NSString *)kUTTypeImage];
-    mediaPicker.delegate = self;
-    UINavigationController *navigationController = [UINavigationController new];
-    [navigationController pushViewController:mediaPicker animated:NO];
+    SingleImagePickerPresenter *singleImagePickerPresenter = [[SingleImagePickerPresenter alloc] initWithSession:self.mainSession];
+    singleImagePickerPresenter.delegate = self;
     
-    [self presentViewController:navigationController animated:YES completion:nil];
+    UIView *sourceView = nil;
+    CGRect sourceRect = CGRectNull;
+    if (userSettingsProfilePictureIndex != -1)
+    {
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:userSettingsProfilePictureIndex inSection:SETTINGS_SECTION_USER_SETTINGS_INDEX];
+        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+        
+        sourceView = cell;
+        sourceRect = sourceView.bounds;
+    }
+    
+    [singleImagePickerPresenter presentFrom:self sourceView:sourceView sourceRect:sourceRect animated:YES];
+    
+    self.imagePickerPresenter = singleImagePickerPresenter;
 }
 
 - (void)exportEncryptionKeys:(UITapGestureRecognizer *)recognizer
@@ -2182,30 +2267,28 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     self.deactivateAccountViewController = deactivateAccountViewController;
 }
 
-#pragma mark - MediaPickerViewController Delegate
+#pragma mark - SingleImagePickerPresenterDelegate
 
-- (void)dismissMediaPicker
+- (void)dismissImagePickerPresenter
 {
-    if (mediaPicker)
+    if (self.imagePickerPresenter)
     {
-        [mediaPicker withdrawViewControllerAnimated:YES completion:nil];
-        mediaPicker = nil;
+        [self.imagePickerPresenter dismissWithAnimated:YES completion:nil];
+        self.imagePickerPresenter = nil;
     }
 }
-
-- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectImage:(NSData*)imageData withMimeType:(NSString *)mimetype isPhotoLibraryAsset:(BOOL)isPhotoLibraryAsset
+- (void)singleImagePickerPresenterDidCancel:(SingleImagePickerPresenter *)presenter
 {
-    [self dismissMediaPicker];
+    [self dismissImagePickerPresenter];
+}
+
+- (void)singleImagePickerPresenter:(SingleImagePickerPresenter *)presenter didSelectImageData:(NSData *)imageData withUTI:(MXKUTI *)uti
+{
+    [self dismissImagePickerPresenter];
     
     newAvatarImage = [UIImage imageWithData:imageData];
     
     [self.tableView reloadData];
-}
-
-- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectVideo:(NSURL*)videoURL
-{
-    // this method should not be called
-    [self dismissMediaPicker];
 }
 
 #pragma mark - UITextField delegate
@@ -2239,6 +2322,15 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 
 - (void)promptUserBeforePasswordChange
 {
+#ifdef SUPPORT_KEYS_BACKUP
+    MXKeyBackup *keyBackup = self.mainSession.crypto.backup;
+    
+    [self.changePasswordAlertPresenter presentFor:keyBackup.state
+                      areThereKeysToBackup:keyBackup.hasKeysToBackup
+                                      from:self
+                                sourceView:self.tableView
+                                  animated:YES];
+#else
     MXWeakify(self);
     [resetPwdAlertController dismissViewControllerAnimated:NO completion:nil];
     
@@ -2270,6 +2362,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     [resetPwdAlertController addAction:exportAction];
     [resetPwdAlertController addAction:cancel];
     [self presentViewController:resetPwdAlertController animated:YES completion:nil];
+#endif
 }
 
 - (void)presentChangePassword
@@ -2336,36 +2429,6 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
     }
     
     [countryPickerViewController withdrawViewControllerAnimated:YES completion:nil];
-}
-
-#pragma mark - MXKCountryPickerViewControllerDelegate
-
-- (void)languagePickerViewController:(MXKLanguagePickerViewController *)languagePickerViewController didSelectLangugage:(NSString *)language
-{
-    [languagePickerViewController withdrawViewControllerAnimated:YES completion:nil];
-
-    if (![language isEqualToString:[NSBundle mxk_language]]
-        || (language == nil && [NSBundle mxk_language]))
-    {
-        [NSBundle mxk_setLanguage:language];
-
-        // Store user settings
-        NSUserDefaults *sharedUserDefaults = [MXKAppSettings standardAppSettings].sharedUserDefaults;
-        [sharedUserDefaults setObject:language forKey:@"appLanguage"];
-
-        // Do a reload in order to recompute strings in the new language
-        // Note that "reloadMatrixSessionsByClearingCache:NO" will reset room summaries
-        if (_delegate)
-        {
-            [self startActivityIndicator];
-            
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-                
-                [self.delegate settingsViewController:self reloadMatrixSessionsByClearingCache:NO];
-                
-            });
-        }
-    }
 }
 
 #pragma mark - DeactivateAccountViewControllerDelegate
@@ -2481,5 +2544,183 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
         self.changePasswordPresenter = nil;
     }];
 }
+
+#ifdef SUPPORT_KEYS_BACKUP
+
+#pragma mark - SettingsKeyBackupTableViewSectionDelegate
+
+- (void)settingsKeyBackupTableViewSectionDidUpdate:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection
+{
+    [self.tableView reloadData];
+}
+
+- (MXKTableViewCellWithTextView *)settingsKeyBackupTableViewSection:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection textCellForRow:(NSInteger)textCellForRow
+{
+    return [self textViewCellForTableView:self.tableView atIndexPath:[NSIndexPath indexPathForRow:textCellForRow inSection:SETTINGS_SECTION_KEYBACKUP_INDEX]];
+}
+
+- (MXKTableViewCellWithButton *)settingsKeyBackupTableViewSection:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection buttonCellForRow:(NSInteger)buttonCellForRow
+{
+    MXKTableViewCellWithButton *cell = [self.tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
+    
+    if (!cell)
+    {
+        cell = [[MXKTableViewCellWithButton alloc] init];
+    }
+    else
+    {
+        // Fix https://github.com/vector-im/riot-ios/issues/1354
+        cell.mxkButton.titleLabel.text = nil;
+    }
+    
+    cell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
+    [cell.mxkButton setTintColor:ThemeService.shared.theme.tintColor];
+    
+    return cell;
+}
+
+- (void)settingsKeyBackupTableViewSectionShowKeyBackupSetup:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection
+{
+    [self showKeyBackupSetupFromSignOutFlow:NO];
+}
+
+- (void)settingsKeyBackup:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection showKeyBackupRecover:(MXKeyBackupVersion *)keyBackupVersion
+{
+    [self showKeyBackupRecover:keyBackupVersion];
+}
+
+- (void)settingsKeyBackup:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection showKeyBackupDeleteConfirm:(MXKeyBackupVersion *)keyBackupVersion
+{
+    MXWeakify(self);
+    [currentAlert dismissViewControllerAnimated:NO completion:nil];
+    
+    currentAlert =
+    [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"settings_key_backup_delete_confirmation_prompt_title", @"Vector", nil)
+                                        message:NSLocalizedStringFromTable(@"settings_key_backup_delete_confirmation_prompt_msg", @"Vector", nil)
+                                 preferredStyle:UIAlertControllerStyleAlert];
+    
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                                                     style:UIAlertActionStyleCancel
+                                                   handler:^(UIAlertAction * action) {
+                                                       MXStrongifyAndReturnIfNil(self);
+                                                       self->currentAlert = nil;
+                                                   }]];
+    
+    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"settings_key_backup_button_delete", @"Vector", nil)
+                                                     style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction * action) {
+                                                       MXStrongifyAndReturnIfNil(self);
+                                                       self->currentAlert = nil;
+                                                       
+                                                       [self->keyBackupSection deleteWithKeyBackupVersion:keyBackupVersion];
+                                                   }]];
+    
+    [currentAlert mxk_setAccessibilityIdentifier: @"SettingsVCDeleteKeyBackup"];
+    [self presentViewController:currentAlert animated:YES completion:nil];
+}
+
+- (void)settingsKeyBackup:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection showActivityIndicator:(BOOL)show
+{
+    if (show)
+    {
+        [self startActivityIndicator];
+    }
+    else
+    {
+        [self stopActivityIndicator];
+    }
+}
+
+- (void)settingsKeyBackup:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection showError:(NSError *)error
+{
+    [[AppDelegate theDelegate] showErrorAsAlert:error];
+}
+
+#pragma mark - KeyBackupRecoverCoordinatorBridgePresenter
+
+- (void)showKeyBackupSetupFromSignOutFlow:(BOOL)showFromSignOutFlow
+{
+    keyBackupSetupCoordinatorBridgePresenter = [[KeyBackupSetupCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
+    
+    [keyBackupSetupCoordinatorBridgePresenter presentFrom:self
+                                     isStartedFromSignOut:showFromSignOutFlow
+                                                 animated:true];
+    
+    keyBackupSetupCoordinatorBridgePresenter.delegate = self;
+}
+
+- (void)keyBackupSetupCoordinatorBridgePresenterDelegateDidCancel:(KeyBackupSetupCoordinatorBridgePresenter *)bridgePresenter {
+    [keyBackupSetupCoordinatorBridgePresenter dismissWithAnimated:true];
+    keyBackupSetupCoordinatorBridgePresenter = nil;
+}
+
+- (void)keyBackupSetupCoordinatorBridgePresenterDelegateDidSetupRecoveryKey:(KeyBackupSetupCoordinatorBridgePresenter *)bridgePresenter {
+    [keyBackupSetupCoordinatorBridgePresenter dismissWithAnimated:true];
+    keyBackupSetupCoordinatorBridgePresenter = nil;
+    
+    [keyBackupSection reload];
+}
+
+#pragma mark - KeyBackupRecoverCoordinatorBridgePresenter
+
+- (void)showKeyBackupRecover:(MXKeyBackupVersion*)keyBackupVersion
+{
+    keyBackupRecoverCoordinatorBridgePresenter = [[KeyBackupRecoverCoordinatorBridgePresenter alloc] initWithSession:self.mainSession keyBackupVersion:keyBackupVersion];
+    
+    [keyBackupRecoverCoordinatorBridgePresenter presentFrom:self animated:true];
+    keyBackupRecoverCoordinatorBridgePresenter.delegate = self;
+}
+
+- (void)keyBackupRecoverCoordinatorBridgePresenterDidCancel:(KeyBackupRecoverCoordinatorBridgePresenter *)bridgePresenter {
+    [keyBackupRecoverCoordinatorBridgePresenter dismissWithAnimated:true];
+    keyBackupRecoverCoordinatorBridgePresenter = nil;
+}
+
+- (void)keyBackupRecoverCoordinatorBridgePresenterDidRecover:(KeyBackupRecoverCoordinatorBridgePresenter *)bridgePresenter {
+    [keyBackupRecoverCoordinatorBridgePresenter dismissWithAnimated:true];
+    keyBackupRecoverCoordinatorBridgePresenter = nil;
+}
+
+#pragma mark - SignOutAlertPresenterDelegate
+
+- (void)signOutAlertPresenterDidTapBackupAction:(SignOutAlertPresenter * _Nonnull)presenter
+{
+    [self showKeyBackupSetupFromSignOutFlow:YES];
+}
+
+- (void)signOutAlertPresenterDidTapSignOutAction:(SignOutAlertPresenter * _Nonnull)presenter
+{
+    // Prevent user to perform user interaction in settings when sign out
+    // TODO: Prevent user interaction in all application (navigation controller and split view controller included)
+    self.view.userInteractionEnabled = NO;
+    self.signOutButton.enabled = NO;
+    
+    [self startActivityIndicator];
+    
+    MXWeakify(self);
+    
+    [[AppDelegate theDelegate] logoutWithConfirmation:NO completion:^(BOOL isLoggedOut) {
+        MXStrongifyAndReturnIfNil(self);
+        
+        [self stopActivityIndicator];
+        
+        self.view.userInteractionEnabled = YES;
+        self.signOutButton.enabled = YES;
+    }];
+}
+
+#pragma mark - ChangePasswordAlertPresenterDelegate
+
+- (void)changePasswordAlertPresenterDidTapBackupAction:(ChangePasswordAlertPresenter * _Nonnull)presenter
+{
+    [self showKeyBackupSetupFromSignOutFlow:NO];
+}
+
+- (void)changePasswordAlertPresenterDidTapChangePasswordAction:(ChangePasswordAlertPresenter * _Nonnull)presenter
+{
+    [self presentChangePassword];
+}
+
+#endif
 
 @end
