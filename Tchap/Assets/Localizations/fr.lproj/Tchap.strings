@@ -6,6 +6,7 @@
 "action_invite" = "Inviter";
 "action_proceed" = "Poursuivre";
 "action_remove" = "Retirer";
+"action_confirm" = "Confirmer";
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Common errors

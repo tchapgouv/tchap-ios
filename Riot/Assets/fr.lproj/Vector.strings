@@ -708,7 +708,7 @@
 // MARK: Verify
 "device_verification_verify_title_emoji" = "Vérifiez l’appareil en confirmant que les émojis suivants apparaissent également sur son écran";
 "device_verification_verify_title_number" = "Vérifiez l’appareil en confirmant que les chiffres suivant apparaissent également sur son écran";
-"device_verification_verify_wait_partner" = "Attente de la confirmation de l’autre appareil…";
+"device_verification_verify_wait_partner" = "Veuillez confirmer également les emojis sur l'autre appareil…";
 // MARK: Verified
 "device_verification_verified_title" = "Vérifié !";
 "device_verification_verified_description_1" = "Vous avez bien vérifié cet appareil.";
