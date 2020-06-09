@@ -17,6 +17,16 @@
 #import <MatrixKit/MatrixKit.h>
 
 /**
+ List the different key backup banners that could be displayed.
+ */
+typedef NS_ENUM(NSInteger, KeyBackupBanner)
+{
+    KeyBackupBannerNone,
+    KeyBackupBannerSetup,
+    KeyBackupBannerRecover
+};
+
+/**
  Action identifier used when the user tapped on the directory change button.
  
  The `userInfo` is nil.
@@ -29,11 +39,14 @@ extern NSString *const kRoomsDataSourceTapOnDirectoryServerChange;
  */
 @interface RoomsDataSource : MXKInterleavedRecentsDataSource
 
+@property (nonatomic) NSInteger keyBackupBannerSection;
 @property (nonatomic) NSInteger invitesSection;
 @property (nonatomic) NSInteger conversationSection;
 
 @property (nonatomic, readonly) NSArray* invitesCellDataArray;
 @property (nonatomic, readonly) NSArray* conversationCellDataArray;
+
+@property (nonatomic, readonly) KeyBackupBanner keyBackupBanner;
 
 /**
  Refresh the rooms data source and notify its delegate.
@@ -44,6 +57,9 @@ extern NSString *const kRoomsDataSourceTapOnDirectoryServerChange;
  Tell whether the sections are shrinkable. NO by default.
  */
 @property (nonatomic) BOOL areSectionsShrinkable;
+
+- (void)registerKeyBackupStateDidChangeNotification;
+- (void)unregisterKeyBackupStateDidChangeNotification;
 
 /**
  Get the sticky header view for the specified section.

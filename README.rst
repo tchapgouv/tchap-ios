@@ -4,7 +4,7 @@ Tchap-ios
 Tchap/iOS is an iOS Matrix client.
 
 .. image:: https://linkmaker.itunes.apple.com/images/badges/en-us/badge_appstore-lrg.svg
-   :target: https://itunes.apple.com/us/app/riot-open-source-collaboration/id1083446067?mt=8
+   :target: https://apps.apple.com/fr/app/tchap/id1446253779?mt=8
 
 It is based on MatrixKit (https://github.com/matrix-org/matrix-ios-kit) and MatrixSDK (https://github.com/matrix-org/matrix-ios-sdk).
 
@@ -17,10 +17,11 @@ Before opening the Tchap Xcode workspace, you need to build it with the
 CocoaPods command::
 
         $ cd Tchap
-        $ pod install
+        $ bundle install
+        $ bundle exec pod install
 
 This will load all dependencies for the Tchap source code, including MatrixKit
-and MatrixSDK.  You will need an recent and updated (``pod update``) install of
+and MatrixSDK.  You will need an recent and updated (``pod setup``) install of
 CocoaPods.
 
 Then, open ``Tchap.xcworkspace`` with Xcode
@@ -37,7 +38,7 @@ Copyright & License
 
 Copyright (c) 2014-2017 OpenMarket Ltd
 Copyright (c) 2017 Vector Creations Ltd
-Copyright (c) 2017-2018 New Vector Ltd
+Copyright (c) 2017-2019 New Vector Ltd
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this work except in compliance with the License. You may obtain a copy of the License in the LICENSE file, or at:
 

@@ -30,7 +30,7 @@
 
 /**
  Tell whether a badge must be added next to the chevron (back button) showing number of unread rooms.
- YES by default.
+ NO by default.
  */
 @property (nonatomic) BOOL showMissedDiscussionsBadge;
 

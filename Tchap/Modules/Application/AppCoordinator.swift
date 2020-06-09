@@ -23,7 +23,7 @@ final class AppCoordinator: AppCoordinatorType {
     
     private enum Constants {
         static let expiredAccountError: String = "ORG_MATRIX_EXPIRED_ACCOUNT"
-        static let lastAppVersionWhichRequiresCacheClearing: AppVersion = AppVersion(bundleShortVersion: "1.0.17", bundleVersion: "1")
+        static let lastAppVersionWhichRequiresCacheClearing: AppVersion = AppVersion(bundleShortVersion: "1.0.23", bundleVersion: "1")
     }
     
     // MARK: - Properties
@@ -221,6 +221,7 @@ final class AppCoordinator: AppCoordinatorType {
         }
         
         if let finalRoomID = roomID {
+            AppDelegate.theDelegate().removeDeliveredNotifications(withRoomId: finalRoomID, completion: nil)
             homeCoordinator.showRoom(with: finalRoomID, onEventID: eventID)
             return true
         } else {

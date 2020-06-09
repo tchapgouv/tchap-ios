@@ -22,16 +22,17 @@
 
 #import "MXKRoomBubbleTableViewCell+Riot.h"
 #import "AvatarGenerator.h"
-#import "RiotDesignValues.h"
-
+#import "ThemeService.h"
 #import "GeneratedInterface-Swift.h"
 
 #import "MXRoom+Riot.h"
 
-@interface RoomDataSource()
+
+
+@interface RoomDataSource() <BubbleReactionsViewModelDelegate>
 {
-    // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
-    id kRiotDesignValuesDidChangeThemeNotificationObserver;
+    // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
+    id kThemeServiceDidChangeThemeNotificationObserver;
     
     // The listener to the room retention changes.
     id retentionListener;
@@ -62,8 +63,11 @@
         
         self.markTimelineInitialEvent = NO;
         
+        self.showBubbleDateTimeOnSelection = YES;
+        self.showReactions = YES;
+        
         // Observe user interface theme change.
-        kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
             
             // Force room data reload.
             [self updateEventFormatter];
@@ -135,10 +139,10 @@
 
 - (void)destroy
 {
-    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    if (kThemeServiceDidChangeThemeNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
-        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
+        kThemeServiceDidChangeThemeNotificationObserver = nil;
     }
     [self unregisterRoomSummaryDidRemoveExpiredDataFromStoreNotifications];
     [self removeRoomRetentionEventListener];
@@ -146,87 +150,29 @@
     [super destroy];
 }
 
-- (void)didReceiveReceiptEvent:(MXEvent *)receiptEvent roomState:(MXRoomState *)roomState
+- (void)updateCellDataReactions:(id<MXKRoomBubbleCellDataStoring>)cellData forEventId:(NSString*)eventId
 {
-    // Do the processing on the same processing queue as MXKRoomDataSource
-    dispatch_async(MXKRoomDataSource.processingQueue, ^{
+    [super updateCellDataReactions:cellData forEventId:eventId];
 
-        // Remove the previous displayed read receipt for each user who sent a
-        // new read receipt.
-        // To implement it, we need to find the sender id of each new read receipt
-        // among the read receipts array of all events in all bubbles.
-        NSArray *readReceiptSenders = receiptEvent.readReceiptSenders;
+    [self setNeedsUpdateAdditionalContentHeightForCellData:cellData];
+}
 
-        @synchronized(bubbles)
-        {
-            for (RoomBubbleCellData *cellData in bubbles)
-            {
-                NSMutableDictionary<NSString* /* eventId */, NSArray<MXReceiptData*> *> *updatedCellDataReadReceipts = [NSMutableDictionary dictionary];
+- (void)updateCellData:(MXKRoomBubbleCellData*)cellData withReadReceipts:(NSArray<MXReceiptData*>*)readReceipts forEventId:(NSString*)eventId
+{
+    [super updateCellData:cellData withReadReceipts:readReceipts forEventId:eventId];
+    
+    [self setNeedsUpdateAdditionalContentHeightForCellData:cellData];
+}
 
-                for (NSString *eventId in cellData.readReceipts)
-                {
-                    for (MXReceiptData *receiptData in cellData.readReceipts[eventId])
-                    {
-                        for (NSString *senderId in readReceiptSenders)
-                        {
-                            if ([receiptData.userId isEqualToString:senderId])
-                            {
-                                 if (!updatedCellDataReadReceipts[eventId])
-                                {
-                                    updatedCellDataReadReceipts[eventId] = cellData.readReceipts[eventId];
-                                }
-
-                                NSPredicate *predicate = [NSPredicate predicateWithFormat:@"userId!=%@", receiptData.userId];
-                                updatedCellDataReadReceipts[eventId] = [updatedCellDataReadReceipts[eventId] filteredArrayUsingPredicate:predicate];
-                                break;
-                            }
-                        }
-
-                    }
-                }
-
-                // Flush found changed to the cell data
-                for (NSString *eventId in updatedCellDataReadReceipts)
-                {
-                    if (updatedCellDataReadReceipts[eventId].count)
-                    {
-                        cellData.readReceipts[eventId] = updatedCellDataReadReceipts[eventId];
-                    }
-                    else
-                    {
-                        cellData.readReceipts[eventId] = nil;
-                    }
-                }
-            }
-        }
-
-        // Update cell data we have received a read receipt for
-        NSArray *readEventIds = receiptEvent.readReceiptEventIds;
-        for (NSString* eventId in readEventIds)
-        {
-            RoomBubbleCellData *cellData = [self cellDataOfEventWithEventId:eventId];
-            if (cellData)
-            {
-                @synchronized(bubbles)
-                {
-                    if (!cellData.hasNoDisplay)
-                    {
-                        cellData.readReceipts[eventId] = [self.room getEventReceipts:eventId sorted:YES];
-                    }
-                    else
-                    {
-                        // Ignore the read receipts on the events without an actual display.
-                        cellData.readReceipts[eventId] = nil;
-                    }
-                }
-            }
-        }
-
-        dispatch_async(dispatch_get_main_queue(), ^{
-            // TODO: Be smarter and update only updated cells
-            [super didReceiveReceiptEvent:receiptEvent roomState:roomState];
-        });
-    });
+- (void)setNeedsUpdateAdditionalContentHeightForCellData:(id<MXKRoomBubbleCellDataStoring>)cellData
+{
+    RoomBubbleCellData *roomBubbleCellData;
+    
+    if ([cellData isKindOfClass:[RoomBubbleCellData class]])
+    {
+        roomBubbleCellData = (RoomBubbleCellData*)cellData;
+        [roomBubbleCellData setNeedsUpdateAdditionalContentHeight];
+    }
 }
 
 #pragma  mark -
@@ -280,6 +226,8 @@
     if ([cell isKindOfClass:MXKRoomBubbleTableViewCell.class])
     {
         MXKRoomBubbleTableViewCell *bubbleCell = (MXKRoomBubbleTableViewCell*)cell;
+        [self resetAccessibilityForCell:bubbleCell];
+
         RoomBubbleCellData *cellData = (RoomBubbleCellData*)bubbleCell.bubbleData;
         NSArray *bubbleComponents = cellData.bubbleComponents;
 
@@ -291,21 +239,83 @@
             [bubbleCell addTimestampLabelForComponent:cellData.mostRecentComponentIndex];
         }
         
+        NSMutableArray *temporaryViews = [NSMutableArray new];
+        
         // Handle read receipts and read marker display.
         // Ignore the read receipts on the bubble without actual display.
         // Ignore the read receipts on collapsed bubbles
-        if ((self.showBubbleReceipts && cellData.readReceipts.count && !isCollapsableCellCollapsed) || self.showReadMarker)
+        if ((((self.showBubbleReceipts && cellData.readReceipts.count) || cellData.reactions.count) && !isCollapsableCellCollapsed) || self.showReadMarker)
         {
             // Read receipts container are inserted here on the right side into the content view.
             // Some vertical whitespaces are added in message text view (see RoomBubbleCellData class) to insert correctly multiple receipts.
-            NSInteger index = bubbleComponents.count;
-            CGFloat bottomPositionY = bubbleCell.frame.size.height;
-            while (index--)
+            
+            NSInteger index = 0;
+            
+            for (MXKRoomBubbleComponent *component in bubbleComponents)
             {
-                MXKRoomBubbleComponent *component = bubbleComponents[index];
+                NSString *componentEventId = component.event.eventId;
                 
                 if (component.event.sentState != MXEventSentStateFailed)
                 {
+                    CGFloat bottomPositionY;
+                    
+                    CGRect bubbleComponentFrame = [bubbleCell componentFrameInContentViewForIndex:index];
+                    
+                    if (CGRectEqualToRect(bubbleComponentFrame, CGRectNull) == NO)
+                    {
+                        bottomPositionY = bubbleComponentFrame.origin.y + bubbleComponentFrame.size.height;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                
+                    MXAggregatedReactions* reactions = cellData.reactions[componentEventId].aggregatedReactionsWithNonZeroCount;
+                    
+                    BubbleReactionsView *reactionsView;
+                    
+                    if (!component.event.isRedactedEvent && reactions && !isCollapsableCellCollapsed)
+                    {                        
+                        BOOL showAllReactions = [cellData showAllReactionsForEvent:componentEventId];
+                        BubbleReactionsViewModel *bubbleReactionsViewModel = [[BubbleReactionsViewModel alloc] initWithAggregatedReactions:reactions
+                                                                                                                                   eventId:componentEventId
+                                                                                                                                   showAll:showAllReactions];
+                        
+                        reactionsView = [BubbleReactionsView new];
+                        reactionsView.viewModel = bubbleReactionsViewModel;
+                        [reactionsView updateWithTheme:ThemeService.shared.theme];
+                        
+                        [temporaryViews addObject:reactionsView];
+                        
+                        bubbleReactionsViewModel.viewModelDelegate = self;
+                        
+                        reactionsView.translatesAutoresizingMaskIntoConstraints = NO;
+                        [bubbleCell.contentView addSubview:reactionsView];
+                        
+                        if (!bubbleCell.tmpSubviews)
+                        {
+                            bubbleCell.tmpSubviews = [NSMutableArray array];
+                        }
+                        [bubbleCell.tmpSubviews addObject:reactionsView];
+                        
+                        CGFloat leftMargin = RoomBubbleCellLayout.reactionsViewLeftMargin;
+                        
+                        if (self.room.summary.isEncrypted)
+                        {
+                            leftMargin+= RoomBubbleCellLayout.encryptedContentLeftMargin;
+                        }
+                        
+                        // Force receipts container size
+                        [NSLayoutConstraint activateConstraints:
+                         @[
+                           [reactionsView.leadingAnchor constraintEqualToAnchor:reactionsView.superview.leadingAnchor constant:leftMargin],
+                           [reactionsView.trailingAnchor constraintEqualToAnchor:reactionsView.superview.trailingAnchor constant:-RoomBubbleCellLayout.reactionsViewRightMargin],
+                           [reactionsView.topAnchor constraintEqualToAnchor:reactionsView.superview.topAnchor constant:bottomPositionY + RoomBubbleCellLayout.reactionsViewTopMargin]
+                           ]];
+                    }
+                    
+                    MXKReceiptSendersContainer* avatarsContainer;
+                    
                     // Handle read receipts (if any)
                     if (self.showBubbleReceipts && cellData.readReceipts.count && !isCollapsableCellCollapsed)
                     {
@@ -336,7 +346,7 @@
                         if (roomMembers.count)
                         {
                             // Define the read receipts container, positioned on the right border of the bubble cell (Note the right margin 6 pts).
-                            MXKReceiptSendersContainer* avatarsContainer = [[MXKReceiptSendersContainer alloc] initWithFrame:CGRectMake(bubbleCell.frame.size.width - 156, bottomPositionY - 13, 150, 12) andMediaManager:self.mxSession.mediaManager];
+                            avatarsContainer = [[MXKReceiptSendersContainer alloc] initWithFrame:CGRectMake(bubbleCell.frame.size.width - RoomBubbleCellLayout.readReceiptsViewWidth + RoomBubbleCellLayout.readReceiptsViewRightMargin, bottomPositionY + RoomBubbleCellLayout.readReceiptsViewTopMargin, RoomBubbleCellLayout.readReceiptsViewWidth, RoomBubbleCellLayout.readReceiptsViewHeight) andMediaManager:self.mxSession.mediaManager];
                             
                             // Custom avatar display
                             avatarsContainer.maxDisplayedAvatars = 5;
@@ -344,6 +354,8 @@
                             
                             // Set the container tag to be able to retrieve read receipts container from component index (see component selection in MXKRoomBubbleTableViewCell (Vector) category).
                             avatarsContainer.tag = index;
+                            
+                            avatarsContainer.moreLabelTextColor = ThemeService.shared.theme.textPrimaryColor;
                             
                             [avatarsContainer refreshReceiptSenders:roomMembers withPlaceHolders:placeholders andAlignment:ReadReceiptAlignmentRight];
                             avatarsContainer.readReceipts = receipts;
@@ -355,6 +367,8 @@
                             
                             avatarsContainer.translatesAutoresizingMaskIntoConstraints = NO;
                             avatarsContainer.accessibilityIdentifier = @"readReceiptsContainer";
+                            
+                            [temporaryViews addObject:avatarsContainer];
                             
                             // Add this read receipts container in the content view
                             if (!bubbleCell.tmpSubviews)
@@ -374,14 +388,14 @@
                                                                                                   toItem:nil
                                                                                                attribute:NSLayoutAttributeNotAnAttribute
                                                                                               multiplier:1.0
-                                                                                                constant:150];
+                                                                                                constant:RoomBubbleCellLayout.readReceiptsViewWidth];
                             NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:avatarsContainer
                                                                                                 attribute:NSLayoutAttributeHeight
                                                                                                 relatedBy:NSLayoutRelationEqual
                                                                                                    toItem:nil
                                                                                                 attribute:NSLayoutAttributeNotAnAttribute
                                                                                                multiplier:1.0
-                                                                                                 constant:12];
+                                                                                                 constant:RoomBubbleCellLayout.readReceiptsViewHeight];
                             
                             // Force receipts container position
                             NSLayoutConstraint *trailingConstraint = [NSLayoutConstraint constraintWithItem:avatarsContainer
@@ -390,14 +404,19 @@
                                                                                                      toItem:avatarsContainer.superview
                                                                                                   attribute:NSLayoutAttributeTrailing
                                                                                                  multiplier:1.0
-                                                                                                   constant:-6];
-                            NSLayoutConstraint *topConstraint = [NSLayoutConstraint constraintWithItem:avatarsContainer
-                                                                                             attribute:NSLayoutAttributeTop
-                                                                                             relatedBy:NSLayoutRelationEqual
-                                                                                                toItem:avatarsContainer.superview
-                                                                                             attribute:NSLayoutAttributeTop
-                                                                                            multiplier:1.0
-                                                                                              constant:bottomPositionY - 13];
+                                                                                                   constant:-RoomBubbleCellLayout.readReceiptsViewRightMargin];
+                            
+                            // At the bottom, we have reactions or nothing
+                            NSLayoutConstraint *topConstraint;
+                            if (reactionsView)
+                            {
+                                topConstraint = [avatarsContainer.topAnchor constraintEqualToAnchor:reactionsView.bottomAnchor constant:RoomBubbleCellLayout.readReceiptsViewTopMargin];
+                            }
+                            else
+                            {
+                                topConstraint = [avatarsContainer.topAnchor constraintEqualToAnchor:avatarsContainer.superview.topAnchor constant:bottomPositionY + RoomBubbleCellLayout.readReceiptsViewTopMargin];
+                            }
+                            
                             
                             // Available on iOS 8 and later
                             [NSLayoutConstraint activateConstraints:@[widthConstraint, heightConstraint, topConstraint, trailingConstraint]];
@@ -414,10 +433,10 @@
                         bubbleCell.bubbleOverlayContainer.userInteractionEnabled = NO;
                         bubbleCell.bubbleOverlayContainer.hidden = NO;
                         
-                        if ([component.event.eventId isEqualToString:self.room.accountData.readMarkerEventId])
+                        if ([componentEventId isEqualToString:self.room.accountData.readMarkerEventId])
                         {
-                            bubbleCell.readMarkerView = [[UIView alloc] initWithFrame:CGRectMake(0, bottomPositionY - 2, bubbleCell.bubbleOverlayContainer.frame.size.width, 2)];
-                            bubbleCell.readMarkerView.backgroundColor = kRiotColorGreen;
+                            bubbleCell.readMarkerView = [[UIView alloc] initWithFrame:CGRectMake(0, bottomPositionY - RoomBubbleCellLayout.readMarkerViewHeight, bubbleCell.bubbleOverlayContainer.frame.size.width, RoomBubbleCellLayout.readMarkerViewHeight)];
+                            bubbleCell.readMarkerView.backgroundColor = ThemeService.shared.theme.tintColor;
                             // Hide by default the marker, it will be shown and animated when the cell will be rendered.
                             bubbleCell.readMarkerView.hidden = YES;
                             bubbleCell.readMarkerView.tag = index;
@@ -428,43 +447,56 @@
                             
                             // Force read marker constraints
                             bubbleCell.readMarkerViewTopConstraint = [NSLayoutConstraint constraintWithItem:bubbleCell.readMarkerView
-                                                                                             attribute:NSLayoutAttributeTop
-                                                                                             relatedBy:NSLayoutRelationEqual
-                                                                                                toItem:bubbleCell.bubbleOverlayContainer
-                                                                                             attribute:NSLayoutAttributeTop
-                                                                                            multiplier:1.0
-                                                                                              constant:bottomPositionY - 2];
-                            bubbleCell.readMarkerViewLeadingConstraint = [NSLayoutConstraint constraintWithItem:bubbleCell.readMarkerView
-                                                                                                 attribute:NSLayoutAttributeLeading
-                                                                                                 relatedBy:NSLayoutRelationEqual
-                                                                                                    toItem:bubbleCell.bubbleOverlayContainer
-                                                                                                 attribute:NSLayoutAttributeLeading
-                                                                                                multiplier:1.0
-                                                                                                  constant:0];
-                            bubbleCell.readMarkerViewTrailingConstraint = [NSLayoutConstraint constraintWithItem:bubbleCell.bubbleOverlayContainer
-                                                                                                  attribute:NSLayoutAttributeTrailing
+                                                                                                  attribute:NSLayoutAttributeTop
                                                                                                   relatedBy:NSLayoutRelationEqual
-                                                                                                     toItem:bubbleCell.readMarkerView
-                                                                                                  attribute:NSLayoutAttributeTrailing
+                                                                                                     toItem:bubbleCell.bubbleOverlayContainer
+                                                                                                  attribute:NSLayoutAttributeTop
                                                                                                  multiplier:1.0
-                                                                                                   constant:0];
+                                                                                                   constant:bottomPositionY - RoomBubbleCellLayout.readMarkerViewHeight];
+                            bubbleCell.readMarkerViewLeadingConstraint = [NSLayoutConstraint constraintWithItem:bubbleCell.readMarkerView
+                                                                                                      attribute:NSLayoutAttributeLeading
+                                                                                                      relatedBy:NSLayoutRelationEqual
+                                                                                                         toItem:bubbleCell.bubbleOverlayContainer
+                                                                                                      attribute:NSLayoutAttributeLeading
+                                                                                                     multiplier:1.0
+                                                                                                       constant:0];
+                            bubbleCell.readMarkerViewTrailingConstraint = [NSLayoutConstraint constraintWithItem:bubbleCell.bubbleOverlayContainer
+                                                                                                       attribute:NSLayoutAttributeTrailing
+                                                                                                       relatedBy:NSLayoutRelationEqual
+                                                                                                          toItem:bubbleCell.readMarkerView
+                                                                                                       attribute:NSLayoutAttributeTrailing
+                                                                                                      multiplier:1.0
+                                                                                                        constant:0];
                             
                             bubbleCell.readMarkerViewHeightConstraint = [NSLayoutConstraint constraintWithItem:bubbleCell.readMarkerView
-                                                                                                attribute:NSLayoutAttributeHeight
-                                                                                                relatedBy:NSLayoutRelationEqual
-                                                                                                   toItem:nil
-                                                                                                attribute:NSLayoutAttributeNotAnAttribute
-                                                                                               multiplier:1.0
-                                                                                                 constant:2];
+                                                                                                     attribute:NSLayoutAttributeHeight
+                                                                                                     relatedBy:NSLayoutRelationEqual
+                                                                                                        toItem:nil
+                                                                                                     attribute:NSLayoutAttributeNotAnAttribute
+                                                                                                    multiplier:1.0
+                                                                                                      constant:RoomBubbleCellLayout.readMarkerViewHeight];
                             
                             [NSLayoutConstraint activateConstraints:@[bubbleCell.readMarkerViewTopConstraint, bubbleCell.readMarkerViewLeadingConstraint, bubbleCell.readMarkerViewTrailingConstraint, bubbleCell.readMarkerViewHeightConstraint]];
                         }
                     }
                 }
                 
-                // Prepare the bottom position for the next read receipt container (if any)
-                bottomPositionY = bubbleCell.msgTextViewTopConstraint.constant + component.position.y;
+                index++;
             }
+        }
+        
+        // Update attachmentView bottom constraint to display reactions and read receipts if needed
+        
+        UIView *attachmentView = bubbleCell.attachmentView;
+        NSLayoutConstraint *attachmentViewBottomConstraint = bubbleCell.attachViewBottomConstraint;
+
+        if (attachmentView && temporaryViews.count)
+        {
+            attachmentViewBottomConstraint.constant = roomBubbleCellData.additionalContentHeight;
+        }
+        else if (attachmentView)
+        {
+            [bubbleCell resetAttachmentViewBottomConstraintConstant];
         }
         
         // Check whether an event is currently selected: the other messages are then blurred
@@ -474,7 +506,7 @@
             NSInteger selectedComponentIndex = cellData.selectedComponentIndex;
             if (selectedComponentIndex != NSNotFound)
             {
-                [bubbleCell selectComponent:cellData.selectedComponentIndex];
+                [bubbleCell selectComponent:cellData.selectedComponentIndex showEditButton:NO showTimestamp:cellData.showTimestampForSelectedComponent];
             }
             else
             {
@@ -507,6 +539,8 @@
         
         // Auto animate the sticker in case of animated gif
         bubbleCell.isAutoAnimatedGif = (cellData.attachment && cellData.attachment.type == MXKAttachmentTypeSticker);
+
+        [self setupAccessibilityForCell:bubbleCell withCellData:cellData];
     }
 
     return cell;
@@ -521,11 +555,14 @@
     {
         RoomBubbleCellData *cellData = [self cellDataOfEventWithEventId:_selectedEventId];
         cellData.selectedEventId = nil;
+        cellData.showTimestampForSelectedComponent = NO;
     }
     
     if (selectedEventId.length)
     {
         RoomBubbleCellData *cellData = [self cellDataOfEventWithEventId:selectedEventId];
+        
+        cellData.showTimestampForSelectedComponent = self.showBubbleDateTimeOnSelection;
 
         if (cellData.collapsed && cellData.nextCollapsableCellData)
         {
@@ -558,6 +595,83 @@
 {
     UIImage *videoThumbnail = [MXKVideoThumbnailGenerator.shared generateThumbnailFrom:videoLocalURL];
     [self sendVideo:videoLocalURL withThumbnail:videoThumbnail success:success failure:failure];
+}
+
+#pragma - Accessibility
+
+- (void)setupAccessibilityForCell:(MXKRoomBubbleTableViewCell *)cell withCellData:(RoomBubbleCellData*)cellData
+{
+    // Set accessibility only on media. Let VoiceOver automatically manages text messages
+    if (cellData.attachment)
+    {
+        NSString *accessibilityLabel = [cellData accessibilityLabel];
+        if (cell.messageTextView.text.length)
+        {
+            // Files are presented as text with link
+            cell.messageTextView.accessibilityLabel = accessibilityLabel;
+            cell.messageTextView.isAccessibilityElement = YES;
+        }
+        else
+        {
+            cell.attachmentView.accessibilityLabel = accessibilityLabel;
+            cell.attachmentView.isAccessibilityElement = YES;
+        }
+    }
+}
+
+- (void)resetAccessibilityForCell:(MXKRoomBubbleTableViewCell *)cell
+{
+    cell.messageTextView.accessibilityLabel = nil;
+    cell.attachmentView.accessibilityLabel = nil;
+}
+
+#pragma mark - BubbleReactionsViewModelDelegate
+
+- (void)bubbleReactionsViewModel:(BubbleReactionsViewModel *)viewModel didAddReaction:(MXReactionCount *)reactionCount forEventId:(NSString *)eventId
+{
+    [self addReaction:reactionCount.reaction forEventId:eventId success:^{
+        
+    } failure:^(NSError *error) {
+        
+    }];
+}
+
+- (void)bubbleReactionsViewModel:(BubbleReactionsViewModel *)viewModel didRemoveReaction:(MXReactionCount * _Nonnull)reactionCount forEventId:(NSString * _Nonnull)eventId
+{
+    [self removeReaction:reactionCount.reaction forEventId:eventId success:^{
+        
+    } failure:^(NSError *error) {
+        
+    }];
+}
+
+- (void)bubbleReactionsViewModel:(BubbleReactionsViewModel *)viewModel didShowAllTappedForEventId:(NSString * _Nonnull)eventId
+{
+    [self setShowAllReactions:YES forEvent:eventId];
+}
+
+- (void)bubbleReactionsViewModel:(BubbleReactionsViewModel *)viewModel didShowLessTappedForEventId:(NSString * _Nonnull)eventId
+{
+    [self setShowAllReactions:NO forEvent:eventId];
+}
+
+- (void)setShowAllReactions:(BOOL)showAllReactions forEvent:(NSString*)eventId
+{
+    id<MXKRoomBubbleCellDataStoring> cellData = [self cellDataOfEventWithEventId:eventId];
+    if ([cellData isKindOfClass:[RoomBubbleCellData class]])
+    {
+        RoomBubbleCellData *roomBubbleCellData = (RoomBubbleCellData*)cellData;
+
+        [roomBubbleCellData setShowAllReactions:showAllReactions forEvent:eventId];
+        [self updateCellDataReactions:roomBubbleCellData forEventId:eventId];
+
+        [self.delegate dataSource:self didCellChange:nil];
+    }
+}
+
+- (void)bubbleReactionsViewModel:(BubbleReactionsViewModel *)viewModel didLongPressForEventId:(NSString *)eventId
+{
+    [self.delegate dataSource:self didRecognizeAction:kMXKRoomBubbleCellLongPressOnReactionView inCell:nil userInfo:@{ kMXKRoomBubbleCellEventIdKey: eventId }];
 }
 
 #pragma mark - roomSummaryDidRemoveExpiredDataFromStore notifications
@@ -634,5 +748,4 @@
         retentionListener = nil;
     }
 }
-
 @end

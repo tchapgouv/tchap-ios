@@ -25,11 +25,10 @@
 #import "RoomViewController.h"
 
 #import "RageShakeManager.h"
-#import "RiotDesignValues.h"
 #import "DesignValues.h"
 #import "Analytics.h"
-#import "LegacyAppDelegate.h"
 
+#import "ThemeService.h"
 #import "GeneratedInterface-Swift.h"
 
 @interface RecentsViewController ()
@@ -40,16 +39,13 @@
     // Observe UIApplicationDidEnterBackgroundNotification to cancel editing mode when app leaves the foreground state.
     id UIApplicationDidEnterBackgroundNotificationObserver;
     
-    // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
-    id kAppDelegateDidTapStatusBarNotificationObserver;
-    
     // Observe kMXNotificationCenterDidUpdateRules to update missed messages counts.
     id kMXNotificationCenterDidUpdateRulesObserver;
     
     MXHTTPOperation *currentRequest;
     
-    // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
-    id kRiotDesignValuesDidChangeThemeNotificationObserver;
+    // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
+    id kThemeServiceDidChangeThemeNotificationObserver;
 }
 
 @end
@@ -116,16 +112,19 @@
     self.enableDragging = _enableDragging;
     
     // Observe UIApplicationDidEnterBackgroundNotification to refresh bubbles when app leaves the foreground state.
+    MXWeakify(self);
     UIApplicationDidEnterBackgroundNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidEnterBackgroundNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         // Leave potential editing mode
-        [self cancelEditionMode:isRefreshPending];
+        MXStrongifyAndReturnIfNil(self);
+        [self cancelEditionMode:self->isRefreshPending];
         
     }];
     
     // Observe user interface theme change.
-    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
+        MXStrongifyAndReturnIfNil(self);
         [self userInterfaceThemeDidChange];
         
     }];
@@ -134,14 +133,19 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    self.defaultBarTintColor = kRiotSecondaryBgColor;
-    self.barTitleColor = kRiotPrimaryTextColor;
-    self.activityIndicator.backgroundColor = kRiotOverlayColor;
+    [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+
+    self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     
     // Use the primary bg color for the recents table view in plain style.
-    self.recentsTableView.backgroundColor = kRiotPrimaryBgColor;
-    topview.backgroundColor = kRiotSecondaryBgColor;
-    self.view.backgroundColor = kRiotPrimaryBgColor;
+    self.recentsTableView.backgroundColor = ThemeService.shared.theme.backgroundColor;
+    topview.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
+    self.view.backgroundColor = ThemeService.shared.theme.backgroundColor;
+    
+    if (self.recentsSearchBar)
+    {
+        [ThemeService.shared.theme applyStyleOnSearchBar:self.recentsSearchBar];
+    }
     
     if (self.recentsTableView.dataSource)
     {
@@ -152,7 +156,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return kVariant1StatusBarStyle;
+    return ThemeService.shared.theme.statusBarStyle;
 }
 
 - (void)destroy
@@ -177,10 +181,10 @@
         UIApplicationDidEnterBackgroundNotificationObserver = nil;
     }
     
-    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    if (kThemeServiceDidChangeThemeNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
-        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
+        kThemeServiceDidChangeThemeNotificationObserver = nil;
     }
 }
 
@@ -214,13 +218,6 @@
         [self.recentsTableView deselectRowAtIndexPath:indexPath animated:NO];
     }
     
-    // Observe kAppDelegateDidTapStatusBarNotificationObserver.
-    kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-        
-        [self scrollToTop:YES];
-        
-    }];
-    
     // Observe kMXNotificationCenterDidUpdateRules to refresh missed messages counts
     kMXNotificationCenterDidUpdateRulesObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXNotificationCenterDidUpdateRules object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
         
@@ -238,12 +235,6 @@
     
     // Leave potential editing mode
     [self cancelEditionMode:NO];
-    
-    if (kAppDelegateDidTapStatusBarNotificationObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:kAppDelegateDidTapStatusBarNotificationObserver];
-        kAppDelegateDidTapStatusBarNotificationObserver = nil;
-    }
     
     if (kMXNotificationCenterDidUpdateRulesObserver)
     {
@@ -725,7 +716,7 @@
         }];
         
         UIImage *actionIcon = isMuted ? [UIImage imageNamed:@"notifications"] : [UIImage imageNamed:@"notificationsOff"];
-        muteAction.backgroundColor = [MXKTools convertImageToPatternColor:isMuted ? @"notifications" : @"notificationsOff" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
+        muteAction.backgroundColor = [MXKTools convertImageToPatternColor:isMuted ? @"notifications" : @"notificationsOff" backgroundColor:ThemeService.shared.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
         [actions insertObject:muteAction atIndex:0];
         
         // Favorites management
@@ -737,7 +728,7 @@
             NSArray<MXRoomTag*>* tags = room.accountData.tags.allValues;
             if (tags.count)
             {
-                currentTag = [tags objectAtIndex:0];
+                currentTag = tags[0];
             }
         }
         
@@ -750,7 +741,7 @@
             }];
             
             actionIcon = [UIImage imageNamed:@"unpin"];
-            action.backgroundColor = [MXKTools convertImageToPatternColor:@"unpin" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
+            action.backgroundColor = [MXKTools convertImageToPatternColor:@"unpin" backgroundColor:ThemeService.shared.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
             [actions insertObject:action atIndex:0];
         }
         else
@@ -762,7 +753,7 @@
             }];
             
             actionIcon = [UIImage imageNamed:@"pin"];
-            action.backgroundColor = [MXKTools convertImageToPatternColor:@"pin" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
+            action.backgroundColor = [MXKTools convertImageToPatternColor:@"pin" backgroundColor:ThemeService.shared.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
             [actions insertObject:action atIndex:0];
         }
         
@@ -773,7 +764,7 @@
         }];
         
         actionIcon = [UIImage imageNamed:@"leave"];
-        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"leave" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
+        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"leave" backgroundColor:ThemeService.shared.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
         
         [actions insertObject:leaveAction atIndex:0];
     }
@@ -958,13 +949,13 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    cell.backgroundColor = kRiotPrimaryBgColor;
+    cell.backgroundColor = ThemeService.shared.theme.backgroundColor;
     
     // Update the selected background view
-    if (kRiotSelectedBgColor)
+    if (ThemeService.shared.theme.selectedBackgroundColor)
     {
         cell.selectedBackgroundView = [[UIView alloc] init];
-        cell.selectedBackgroundView.backgroundColor = kRiotSelectedBgColor;
+        cell.selectedBackgroundView.backgroundColor = ThemeService.shared.theme.selectedBackgroundColor;
     }
     else
     {

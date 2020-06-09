@@ -52,12 +52,17 @@ import UIKit
     
     var presenceIndicatorOnlineColor: UIColor { get }
     
+    var overlayBackgroundColor: UIColor { get }
+    
+    var keyboardAppearance: UIKeyboardAppearance { get }
+    
     // MARK: - Commodity methods
     
     func applyStyle(onNavigationBar: UINavigationBar)
     func applyStyle(onButton button: UIButton, bordered: Bool)
     func applyStyle(onTextField: UITextField)
     func applyStyle(onSwitch: UISwitch)
+    func applyStyle(onSearchBar: UISearchBar)
 }
 
 // Style default implementation

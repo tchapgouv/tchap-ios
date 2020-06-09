@@ -17,10 +17,11 @@
 #import "CountryPickerViewController.h"
 
 #import "RageShakeManager.h"
-#import "RiotDesignValues.h"
 #import "Analytics.h"
+#import "ThemeService.h"
+#import "GeneratedInterface-Swift.h"
 
-@interface CountryPickerViewController ()
+@interface CountryPickerViewController () <Stylable>
 {
     /**
      The fake top view displayed in case of vertical bounce.
@@ -28,12 +29,20 @@
     UIView *topview;
 }
 
-// Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
-@property (nonatomic, weak) id kRiotDesignValuesDidChangeThemeNotificationObserver;
+// Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
+@property (nonatomic, weak) id kThemeServiceDidChangeThemeNotificationObserver;
+@property (strong, nonatomic) id<Style> currentStyle;
 
 @end
 
 @implementation CountryPickerViewController
+
++ (instancetype)instantiateWithStyle:(id<Style>)style
+{
+    CountryPickerViewController *countryPickerViewController = [CountryPickerViewController countryPickerViewController];
+    countryPickerViewController.currentStyle = style;
+    return countryPickerViewController;
+}
 
 - (void)finalizeInit
 {
@@ -62,39 +71,50 @@
 
     // Observe user interface theme change.
     MXWeakify(self);
-    _kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    _kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         MXStrongifyAndReturnIfNil(self);
         [self userInterfaceThemeDidChange];
         
     }];
-    [self userInterfaceThemeDidChange];
 }
 
 - (void)userInterfaceThemeDidChange
 {
-    self.defaultBarTintColor = kRiotSecondaryBgColor;
-    self.barTitleColor = kRiotPrimaryTextColor;
-    self.activityIndicator.backgroundColor = kRiotOverlayColor;
+    [self updateWithStyle:self.currentStyle];
+}
+
+- (void)updateWithStyle:(id<Style>)style
+{
+    self.currentStyle = style;
     
-    self.searchBar.barStyle = kRiotDesignSearchBarStyle;
-    self.searchBar.tintColor = kRiotDesignSearchBarTintColor;
+    UINavigationBar *navigationBar = self.navigationController.navigationBar;
+    if (navigationBar)
+    {
+        [style applyStyleOnNavigationBar:navigationBar];
+    }
+    
+    [style applyStyleOnSearchBar:self.searchBar];
+    
+    //TODO Design the activvity indicator for Tchap
+    self.activityIndicator.backgroundColor = style.overlayBackgroundColor;
     
     // Use the primary bg color for the table view in plain style.
-    self.tableView.backgroundColor = kRiotPrimaryBgColor;
-    topview.backgroundColor = kRiotPrimaryBgColor;
+    self.tableView.backgroundColor = style.backgroundColor;
+    topview.backgroundColor = style.backgroundColor;
     self.searchDisplayController.searchResultsTableView.backgroundColor = self.tableView.backgroundColor;
     
     if (self.tableView.dataSource)
     {
         [self.tableView reloadData];
-    }  
+    }
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return kRiotDesignStatusBarStyle;
+    return self.currentStyle.statusBarStyle;
 }
+
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -102,6 +122,9 @@
 
     // Screen tracking
     [[Analytics sharedInstance] trackScreen:@"CountryPicker"];
+    
+    
+    [self userInterfaceThemeDidChange];
 }
 
 - (void)dealloc
@@ -109,23 +132,23 @@
     [topview removeFromSuperview];
     topview = nil;
     
-    if (_kRiotDesignValuesDidChangeThemeNotificationObserver)
+    if (_kThemeServiceDidChangeThemeNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:_kRiotDesignValuesDidChangeThemeNotificationObserver];
+        [[NSNotificationCenter defaultCenter] removeObserver:_kThemeServiceDidChangeThemeNotificationObserver];
     }
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    cell.textLabel.textColor = kRiotPrimaryTextColor;
-    cell.detailTextLabel.textColor = kRiotSecondaryTextColor;
-    cell.backgroundColor = kRiotPrimaryBgColor;
+    cell.textLabel.textColor = self.currentStyle.primaryTextColor;
+    cell.detailTextLabel.textColor = self.currentStyle.secondaryTextColor;
+    cell.backgroundColor = self.currentStyle.backgroundColor;
     
     // Update the selected background view
-    if (kRiotSelectedBgColor)
+    if (self.currentStyle.secondaryBackgroundColor)
     {
         cell.selectedBackgroundView = [[UIView alloc] init];
-        cell.selectedBackgroundView.backgroundColor = kRiotSelectedBgColor;
+        cell.selectedBackgroundView.backgroundColor = self.currentStyle.secondaryBackgroundColor;
     }
     else
     {

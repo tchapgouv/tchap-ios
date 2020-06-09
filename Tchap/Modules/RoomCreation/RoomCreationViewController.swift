@@ -1,5 +1,6 @@
 /*
  Copyright 2018 New Vector Ltd
+ Copyright 2020 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -177,7 +178,7 @@ final class RoomCreationViewController: UIViewController, RetentionPeriodInDaysP
     private func setupRoomAvatarCreationView() {
         let roomCreationAvatarView = RoomCreationAvatarView.loadFromNib()
         roomCreationAvatarView.delegate = self
-        self.avatarContentView.tc_addSubViewMathingParent(roomCreationAvatarView)
+        self.avatarContentView.tc_addSubViewMatchingParent(roomCreationAvatarView)
         self.roomCreationAvatarView = roomCreationAvatarView
         refreshAvatarView()
     }
@@ -262,13 +263,18 @@ final class RoomCreationViewController: UIViewController, RetentionPeriodInDaysP
         self.highlightPublicVisibilityInfoLabel(publicVisibilityEnabled)
         
         if publicVisibilityEnabled == false {
-            self.disablePublicRoomFederation(false)
+            // Private rooms are all federated
+            self.disableRoomFederation(false)
             self.disablePublicRoomFederationSwitch.isOn = false
+        } else {
+            // Public rooms are not federated by default
+            self.disableRoomFederation(true)
+            self.disablePublicRoomFederationSwitch.isOn = true
         }
     }
     
-    private func disablePublicRoomFederation(_ publicRoomFederationDisabled: Bool) {
-        self.viewModel.isFederated = !publicRoomFederationDisabled
+    private func disableRoomFederation(_ roomFederationDisabled: Bool) {
+        self.viewModel.isFederated = !roomFederationDisabled
     }
     
     private func roomNameDidChange(with text: String?) {
@@ -331,7 +337,7 @@ final class RoomCreationViewController: UIViewController, RetentionPeriodInDaysP
     }
     
     @IBAction private func disablePublicRoomFederationSwitchAction(_ sender: UISwitch) {
-        self.disablePublicRoomFederation(sender.isOn)
+        self.disableRoomFederation(sender.isOn)
     }
 }
 
