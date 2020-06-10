@@ -332,6 +332,18 @@ internal enum TchapL10n {
   internal static let searchNoResult = TchapL10n.tr("Tchap", "search_no_result")
   /// Changer le mot de passe réinitialise les clés de chiffrement sur tous les appareils, rendant l’historique des discussions illisible: pensez d'abord à exporter vos clés pour pouvoir les ré-importer après le changement de mot de passe.
   internal static let settingsChangePwdCaution = TchapL10n.tr("Tchap", "settings_change_pwd_caution")
+  /// Je vais patienter
+  internal static let settingsChangePwdKeyBackupInProgressAlertCancelAction = TchapL10n.tr("Tchap", "settings_change_pwd_key_backup_in_progress_alert_cancel_action")
+  /// Je ne veux plus de mes messages chiffrés
+  internal static let settingsChangePwdKeyBackupInProgressAlertDiscardKeyBackupAction = TchapL10n.tr("Tchap", "settings_change_pwd_key_backup_in_progress_alert_discard_key_backup_action")
+  /// Sauvegarde de clés en cours. Si vous changez votre mot de passe maintenant vous n'aurez plus accès à vos messages chiffrés.
+  internal static let settingsChangePwdKeyBackupInProgressAlertTitle = TchapL10n.tr("Tchap", "settings_change_pwd_key_backup_in_progress_alert_title")
+  /// Changer le mot de passe sans sauvegarde de clés
+  internal static let settingsChangePwdNonExistingKeyBackupAlertDiscardKeyBackupAction = TchapL10n.tr("Tchap", "settings_change_pwd_non_existing_key_backup_alert_discard_key_backup_action")
+  /// Mettre en place la sauvegarde de clés
+  internal static let settingsChangePwdNonExistingKeyBackupAlertSetupKeyBackupAction = TchapL10n.tr("Tchap", "settings_change_pwd_non_existing_key_backup_alert_setup_key_backup_action")
+  /// Changer le mot de passe réinitialise les clés de chiffrement sur tous les appareils, rendant l’historique des discussions illisible: pensez à mettre en place la sauvegarde de vos clés avant ce changement.
+  internal static let settingsChangePwdNonExistingKeyBackupAlertTitle = TchapL10n.tr("Tchap", "settings_change_pwd_non_existing_key_backup_alert_title")
   /// Utiliser les adresses emails pour retrouver des utilisateurs
   internal static let settingsContactsDiscoverMatrixUsers = TchapL10n.tr("Tchap", "settings_contacts_discover_matrix_users")
   /// Les autres utilisateurs ne pourront pas découvrir mon compte lors de leurs recherches

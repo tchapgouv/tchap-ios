@@ -16,11 +16,11 @@
 
 #import "ContactsDataSource.h"
 
+#import "ThemeService.h"
+
 #import "GeneratedInterface-Swift.h"
 
 #import "Contact.h"
-
-#import "RiotDesignValues.h"
 
 #import <Contacts/CNContactStore.h>
 
@@ -1121,7 +1121,7 @@
         {
             tableViewCell = [[MXKTableViewCell alloc] init];
             tableViewCell.textLabel.font = [UIFont systemFontOfSize:15.0];
-            tableViewCell.textLabel.textColor = kColorWarmGrey;
+            tableViewCell.textLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
             tableViewCell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
         
@@ -1278,10 +1278,10 @@
         NSString *roomCount = [NSString stringWithFormat:roomCountFormat, count];
         
         NSMutableAttributedString *mutableSectionTitle = [[NSMutableAttributedString alloc] initWithString:title
-                                                                                         attributes:@{NSForegroundColorAttributeName : kRiotPrimaryTextColor,
+                                                                                         attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.headerTextPrimaryColor,
                                                                                                       NSFontAttributeName: [UIFont boldSystemFontOfSize:15.0]}];
         [mutableSectionTitle appendAttributedString:[[NSMutableAttributedString alloc] initWithString:roomCount
-                                                                                    attributes:@{NSForegroundColorAttributeName : kRiotAuxiliaryColor,
+                                                                                    attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.headerTextSecondaryColor,
                                                                                                  NSFontAttributeName: [UIFont boldSystemFontOfSize:15.0]}]];
         
         sectionTitle = mutableSectionTitle;
@@ -1289,7 +1289,7 @@
     else if (title)
     {
         sectionTitle = [[NSAttributedString alloc] initWithString:title
-                                               attributes:@{NSForegroundColorAttributeName : kRiotPrimaryTextColor,
+                                               attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.headerTextPrimaryColor,
                                                             NSFontAttributeName: [UIFont boldSystemFontOfSize:15.0]}];
     }
     
@@ -1303,7 +1303,7 @@
     NSInteger sectionBitwise = 0;
     
     sectionHeader = [[UIView alloc] initWithFrame:frame];
-    sectionHeader.backgroundColor = kRiotSecondaryBgColor;
+    sectionHeader.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
     
     frame.origin.x = 20;
     frame.origin.y = 5;

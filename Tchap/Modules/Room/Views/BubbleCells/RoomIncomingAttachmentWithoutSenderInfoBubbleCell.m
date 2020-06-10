@@ -16,8 +16,10 @@
  */
 
 #import "RoomIncomingAttachmentWithoutSenderInfoBubbleCell.h"
+#import "MXKRoomBubbleTableViewCell+Riot.h"
 
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
+#import "GeneratedInterface-Swift.h"
 
 @implementation RoomIncomingAttachmentWithoutSenderInfoBubbleCell
 
@@ -25,7 +27,19 @@
 {
     [super customizeTableViewCellRendering];
 
-    self.messageTextView.tintColor = kRiotColorGreen;
+    self.messageTextView.tintColor = ThemeService.shared.theme.tintColor;
+}
+
++ (CGFloat)heightForCellData:(MXKCellData*)cellData withMaximumWidth:(CGFloat)maxWidth
+{
+    CGFloat rowHeight = [self attachmentBubbleCellHeightForCellData:cellData withMaximumWidth:maxWidth];
+    
+    if (rowHeight <= 0)
+    {
+        rowHeight = [super heightForCellData:cellData withMaximumWidth:maxWidth];
+    }
+    
+    return rowHeight;
 }
 
 @end

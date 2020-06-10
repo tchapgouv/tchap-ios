@@ -17,8 +17,6 @@
 
 #import "RoomAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.h"
 
-#import "RiotDesignValues.h"
-
 #import "RoomBubbleCellData.h"
 #import "GeneratedInterface-Swift.h"
 

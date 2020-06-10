@@ -28,9 +28,7 @@ included:
 excluded:
   - Carthage
   - Pods
-  - Tchap/Constants/Storyboards.swift
-  - Tchap/Constants/Strings.swift
-  - Tchap/Constants/Images.swift 
+  - Tchap/Generated/
   - Riot 
 
 line_length:

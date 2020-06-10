@@ -1,9 +1,328 @@
-Changes in 0.7.x (2018-xx-xx)
+Changes in 0.10.4 (2019-12-11)
 ===============================================
 
 Improvements:
+ * ON/OFF Cross-signing development in a Lab setting (#2855).
+
+Bug fix:
+ * Device Verification: Stay in infinite waiting (#2878).
+
+Changes in 0.10.3 (2019-12-05)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.11.3](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.11.3)).
+ * Integrations: Use the integrations manager provided by the homeserver admin via .well-known (#2815).
+ * i18n: Add Welsh (cy).
+ * i18n: Add Italian (it).
+ * SerializationService: Add deserialisation of Any.
+ * RiotSharedSettings: New class to handle user settings shared accross Riot apps.
+ * Widgets: Check user permission before opening a widget (#2833).
+ * Widgets: Check user permission before opening jitsi (#2842).
+ * Widgets: Add a contextual menu to refresh, open outside, remove and revoke the permission (#2834).
+ * Settings: Add an option for disabling use of the integration manager (#2843).
+ * Jitsi: Display room name, user name and user avatar in the conference screen.
+ * Improve UNNotificationSound compatibility with MA4 (IMA/ADPCM) file, thanks to @pixlwave (PR #2847).
+
+Bug fix:
+ * Accessibility: Make checkboxes accessible in terms of service screen.
+ * RoomVC: Tapping on location links gives 'unable to open link' (#2803).
+ * RoomVC: Reply to links fail with 'unable to open link' (#2804).
+
+Changes in 0.10.2 (2019-11-15)
+===============================================
+
+Bug fix:
+ * Integrations: Fix terms consent display when they are required.
+
+Changes in 0.10.1 (2019-11-06)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.11.2](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.11.2)).
+ * Settings: Add User-Interactive Auth for adding email and msidsn to user's account (vector-im/riot-ios#2744).
+ * Improve UIApplication background task management.
+
+Bug fix:
+ * Room cell: The states of direct chat and favorite buttons are reversed in the menu (#2788).
+ * Pasteboard: Fix a crash when passing a nil object to UIPasteboard.
+ * RoomVC: Fix crash occurring when tap on an unsent media with retrieved event equal to nil.
+ * Emoji Picker: Background color is not white (#2630).
+ * Device Verification: Selecting 'start verification' from a keyshare request wedges you in an entirely blank verification screen (#2504).
+ * Tab bar icons are not centered vertically on iOS 13 (#2802).
+
+Changes in 0.10.0 (2019-10-11)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.11.1](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.11.1)).
+ * Upgrade MatrixKit version ([v0.11.0](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.11.0)).
+ * Widgets: Whitelist [MSC1961](https://github.com/matrix-org/matrix-doc/pull/1961) widget urls.
+ * Settings: CALLS section: Always display the CallKit option but grey it out when not available (only on China).
+ * VoIP: Fallback to matrix.org STUN server with a confirmation dialog (#2646).
+ * Widgets: Whitelist [MSC1961](https://github.com/matrix-org/matrix-doc/pull/1961) widget urls
+ * i18n: Enable Polish (pl).
+ * Room members: third-party invites can now be revoked
+ * Privacy: Prompt to accept integration manager policies on use (#2600).
+ * Privacy: Make clear that device names are publicly readable (#2662).
+ * Privacy: Remove the ability to set an IS at login/registration (#2661).
+ * Privacy: Remove the bind true flag from 3PID calls on registration (#2648).
+ * Privacy: Remove the bind true flag from 3PID adds in settings (#2650).
+ * Privacy: Email help text on registration should be updated without binding (#2675).
+ * Privacy: Use MXIdentityService to perform identity server requests (#2647).
+ * Privacy: Support identity server v2 API authentication (#2603).
+ * Privacy: Use the hashed v2 lookup API for 3PIDs (#2652).
+ * Privacy: Prompt to accept identity server policies on firt use (#2602).
+ * Privacy: Settings: Allow adding 3pids when no IS (#2659).
+ * Privacy: Allow password reset when no IS (#2658).
+ * Privacy: Allow email registration when no IS (#2657).
+ * Privacy: Settings: Add a Discovery section (#2606).
+ * Privacy: Make NSContactsUsageDescription more generic and mention that 3pids are now uploaded hashed (#2521).
+ * Privacy: Settings: Add IDENTITY SERVER section (#2604).
+ * Privacy: Make IS terms wording clearer when we fallback to vector.im (#2760).
+
+Bug fix:
+ * Theme: Make button theming work (#2734).
+
+Changes in 0.9.5 (2019-09-20)
+===============================================
+
+Bug fix:
+ * VoiceOver: RoomVC: Fix some missing accessibility labels for buttons (#2722).
+ * VoiceOver: RoomVC: Make VoiceOver focus on the contextual menu when selecting an event (#2721).
+ * VoiceOver: RoomVC: Do not lose the focus on the timeline when paginating (with 3 fingers) (#2720).
+ * VoiceOver: RoomVC: No VoiceOver on media (#2726).
+
+Changes in 0.9.4 (2019-09-13)
+===============================================
+
+Improvements:
+ * Authentication: Improve the webview used for SSO (#2715).
+
+Changes in 0.9.3 (2019-09-10)
+===============================================
+
+Improvements:
+ * Support Riot configuration link to customise HS and IS (#2703).
+ * Authentication: Create a way to filter and prioritise flows (with handleSupportedFlowsInAuthenticationSession).
+
+Changes in 0.9.2 (2019-08-08)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.10.2](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.10.2)).
+ * Soft logout: Support soft logout (#2540).
+ * Reactions: Emoji picker (#2370).
+ * Widgets: Whitelist https://scalar-staging.vector.im/api (#2612).
+ * Reactions: Show who reacted (#2591).
+ * Media picking: Use native camera and use separate actions for camera and media picker (#638).
+ * Ability to disable all identity server functionality via the config file (#2643).
+
+Bug fix:
+ * Crash when leaving settings due to backup section refresh animation.
+ * Reactions: Do not display reactions on redacted events in timeline.
+ * Fix crash for search bar customisation in iOS13 (#2626).
+ * Build: Fix build based on git tag.
+
+Changes in 0.9.1 (2019-07-17)
+===============================================
+
+Bug fix:
+ * Edits history: Original event is missing (#2585).
+
+Changes in 0.9.0 (2019-07-16)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.10.1](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.10.1)).
+ * Upgrade MatrixKit version ([v0.10.0](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.10.0)).
+ * RoomVC: When replying, use a "Reply" button instead of "Send".
+ * RoomVC: New message actions (#2394).
+ * Room upgrade: Autojoin the upgraded room when the user taps on the tombstone banner (#2486).
+ * Room upgrade: Use the `server_name` parameter when joining the new room (#2550).
+ * Join Room: Support via parameters to better handle federation (#2547).
+ * Reactions: Display existing reactions below the message (#2396).
+ * Menu actions: Display message time (#2463).
+ * Reactions Menu: Fix position (#2447).
+ * Context menu polish (#2466).
+ * Upgrade Piwik/MatomoTracker (v6.0.1) (#2159).	
+ * Message Editing: Annotate edited messages in timeline (#2400).	
+ * Message Editing: Editing in the timeline (#2404).	
+ * Read receipts: They are now counted at the MatrixKit level.
+ * Migrate to Swift 5.0.
+ * Reactions: Update quick reactions (#2459).
+ * Message Editing: Handle reply edition (#2492).
+ * RoomVC: Add ability to upload a file that comes from outside the app’s sandbox (#2019).
+ * Share extension: Enable any file upload (max 5).
+ * Tools: Create filterCryptoLogs.sh to filter logs related to e2ee from Riot logs.
+
+Bug fix:
+ * Device Verification: Fix user display name and device id colors in dark theme
+ * Device Verification: Name for 🔒 is "Lock" (#2526).
+ * Device Verification: Name for ⏰ is "Clock.
+ * Registration with an email is broken (#2417).
+ * Reactions: Bad position (#2462).
+ * Reactions: It lets you react to join/leave events (#2476).
+ * Adjust size of the insert button in the People tab, thanks to @dcordero (PR #2473).
+
+Changes in 0.8.6 (2019-05-06)
+===============================================
+
+Bug fix:
+ * Device Verification: Fix bell emoji name.
+ * Device Verification: Fix buttons colors in dark theme.
+
+Changes in 0.8.5 (2019-05-03)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.9.9](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.9.9)).
+ * Push: Add more logs to track spontaneously disabling (#2348).
+ * Widgets: Use scalar prod urls in Riot mobile apps (#2349).
+ * Productiviy: Create templates (see Tools/Templates/README.md).
+ * Notifications: Use UserNotifications framework for local notifications (iOS 10+), thanks to @fridtjof (PR #2207).
+ * Notifications: Added titles to notifications on iOS 10+, thanks to @fridtjof (PR #2347).
+ * iOS 12 Notification: Group them by room (#2337 and PR #2347 thanks to @fridtjof).
+ * Notifications: When navigate to a room, remove associated delivered notifications (#2337).
+ * Key backup: Adjust wording for untrusted backup to match Riot Web.
+ * Jitsi integration: Use the matching WebRTC framework (#1483).
+ * Fastlane: Set iCloud container environment (PR #2385).
+ * Remove code used for iOS 9 only (PR #2386).
+
+Bug fix:
+ * Share extension: Fix a crash when receive a memory warning (PR #2352).
+ * Upgraded rooms show up in the share extension twice (#2293).
+ * +N read receipt text is invisible on dark theme (#2294).
+ * Avoid crashes with tableview reload animation in settings and room settings (PR #2364).
+ * Media picker: Fix some retain cycles (PR #2382).
+
+Changes in 0.8.4 (2019-03-21)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.9.8](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.9.8)).
+ * Share extension: Remove image large size resizing choice if output dimension is too high to prevent memory limit exception (PR #2342).
+
+Bug fix:
+ * Unable to open a file attachment of a room message (#2338).
+
+Changes in 0.8.3 (2019-03-13)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.9.7](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.9.7)).
+
+Bug fix:
+ * Widgets: Attempt to re-register for a scalar token if ours is invalid (#2326).
+ * Widgets: Pass scalar_token only when required.
+
+
+Changes in 0.8.2 (2019-03-11)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.9.6](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.9.6)).
+ * Maintenance: Update cocopoads and pods. Automatic update to Swift4.2.
+ * Add app store description as app string resource to make them available for translation on weblate (#2201).
+ * Update deprecated contact availability checks (#2222).
+ * RoomVC: Remove the beta warning modal when enabling e2e in a room (#2239).
+ * RoomVC: Use accent color (green) for the ongoing conference call banner.
+ * Fastlane: Update to Xcode 10.1 (#2202).
+ * Use SwiftLint to enforce Swift style and conventions (PR #2300).
+ * Fix SWIFT_VERSION configuration in post install hook of Podfile (PR #2302).
+ * Authentication: support SSO by using the fallback URL (#2307).
+ * Authentication: .well-known support (#2117).
+ * Reskin: Colorise users displaynames (#2287).
+
+Bug fix:
+ * Reskin: status bar text is no more readable on iPad (#2276).
+ * Reskin: Text in badges should be white in dark theme (#2283).
+ * Reskin: HomeVC: use notices colors for badges background in section headers (#2292).
+ * Crash in Settings in 0.8.1 (#2295).
+ * Quickly tapping on a URL in a message highlights the message rather than opening the URL (#728).
+ * 3D touching a link can lock the app (#1818).
+ * Do not display key backup UI if the user has no e2e rooms (#2304).
+
+Changes in 0.8.1 (2019-02-19)
+===============================================
+
+Improvements:
+ * Key backup: avoid to refresh the home room list on every backup state change (#2265).
+
+Bug fix:
+ * Fix text color in room preview (PR #2261).
+ * Fix navigation bar background after accepting an invite (PR #2261)
+ * Tabs at the top of Room Details are hard to see in dark theme (#2260).
+
+Changes in 0.8.0 (2019-02-15)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.9.5 - https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.9.5).
+ * Theming: Create ThemeService to make theming easier. Use it to reskin Riot.
+ * Use modern literals and array/dictionary syntax where possible (PR #2160).
+ * Add SwiftGen pod in order to generate Swift constants for assets (#2177).
+ * RoomVC: Remove the beta warning modal when opening an e2e room (#2239).
+ * RoomVC: `Redact` has been renamed to `Remove` to match riot/web (#2134).
+ * Clean up iOS version checking (#2190).
+ * Key backup: Implement setup screen (#2198).
+ * Key backup: Implement recover screen (#2196).
+ * Key backup: Add a dedicated section to settings (#2193).
+ * Key backup: Implement setup reminder (#2211).
+ * Key backup: Implement recover reminder (#2206).
+ * Key backup: Update key backup setup UI and UX (PR #2243).
+ * Key backup: Logout warning (#2245).
+ * Key backup: new recover method detected (#2230).
+
+Bug fix:
+ * Use white scroll bar on dark themes (#2158).
+ * Registration: fix tap gesture on checkboxes in the terms screen.
+ * Registration: improve validation UX on the terms screen (#2164).
+ * Registration: improve scrolling on the reCaptcha screen (#2165).
+ * Infinite loading wheel when taping on a fake room alias (#679).
+ * Ban and kick reasons are silently discarded (#2162).
+ * Room Version Upgrade: Clicking the link in the room continuation event to go back to the old version of the room doesn't work (#2179).
+ * Share extension: Fail to send screenshot (#2168).
+ * Share extension: Handle rich item sharing (image + text + URL) (#2224).
+ * Share extension: Sharing pages from Firefox only shares their title (#2163).
+ * Share extension: Fix unloaded theme (PR #2235).
+ * Reskin: Jump to first unread message doesn't show up in 0.7.12 TF (#2218).
+ * Reskin: Sometimes the roomVC navigation bar is tranparent (#2252).
+
+Changes in 0.7.11 (2019-01-08)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.9.3).
+ * Fix almost all the warnings caused by -Wstrict-prototypes, thanks to @fridtjof (PR #2155).
+
+Changes in 0.7.10 (2019-01-04)
+===============================================
+
+Bug fix:
+ * Share extension: Fix screenshot sharing (#2022). Improve image sharing performance to avoid out of memory crash.
+
+Changes in 0.7.9 (2019-01-04)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.9.2).
+
+Bug fix:
+ * Registration: email or phone number is no more skippable (#2140).
+
+Changes in 0.7.8 (2018-12-12)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version (v0.9.1).
  * Replace the deprecated MXMediaManager and MXMediaLoader interfaces use (see matrix-org/matrix-ios-sdk/pull/593).
  * Replace the deprecated MXKAttachment and MXKImageView interfaces use (see matrix-org/matrix-ios-kit/pull/487).
+ * i18n: Enable Japanese (ja)
+ * i18n: Enable Hungarian (hu)
+ 
+Bug fix:
+ * Registration: reCAPTCHA does not work anymore on iOS 10 (#2119).
 
 Changes in 0.7.7 (2018-10-31)
 ===============================================

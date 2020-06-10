@@ -17,7 +17,8 @@
 
 #import "EventFormatter.h"
 
-#import "RiotDesignValues.h"
+#import "ThemeService.h"
+#import "GeneratedInterface-Swift.h"
 
 #import "WidgetManager.h"
 
@@ -27,8 +28,11 @@
 
 #pragma mark - Constants definitions
 
-NSString *const kEventFormatterOnReRequestKeysLinkAction = @"kEventFormatterOnReRequestKeysLinkAction";
-NSString *const kEventFormatterOnReRequestKeysLinkActionSeparator = @"/";
+NSString *const EventFormatterOnReRequestKeysLinkAction = @"EventFormatterOnReRequestKeysLinkAction";
+NSString *const EventFormatterLinkActionSeparator = @"/";
+NSString *const EventFormatterEditedEventLinkAction = @"EventFormatterEditedEventLinkAction";
+
+static NSString *const kEventFormatterTimeFormat = @"HH:mm";
 
 @interface EventFormatter ()
 {
@@ -40,6 +44,14 @@ NSString *const kEventFormatterOnReRequestKeysLinkActionSeparator = @"/";
 @end
 
 @implementation EventFormatter
+
+- (void)initDateTimeFormatters
+{
+    [super initDateTimeFormatters];
+    
+    timeFormatter.locale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
+    [timeFormatter setDateFormat:kEventFormatterTimeFormat];
+}
 
 - (NSAttributedString *)attributedStringFromEvent:(MXEvent *)event withRoomState:(MXRoomState *)roomState error:(MXKEventFormatterError *)error
 {
@@ -171,27 +183,47 @@ NSString *const kEventFormatterOnReRequestKeysLinkActionSeparator = @"/";
             NSMutableAttributedString *attributedStringWithRerequestMessage = [attributedString mutableCopy];
             [attributedStringWithRerequestMessage appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n"]];
 
-            NSString *linkActionString = [NSString stringWithFormat:@"%@%@%@", kEventFormatterOnReRequestKeysLinkAction,
-                                          kEventFormatterOnReRequestKeysLinkActionSeparator,
+            NSString *linkActionString = [NSString stringWithFormat:@"%@%@%@", EventFormatterOnReRequestKeysLinkAction,
+                                          EventFormatterLinkActionSeparator,
                                           event.eventId];
+            
+            [attributedStringWithRerequestMessage appendAttributedString:
+             [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"event_formatter_rerequest_keys_part1", @"Vector", nil)
+                                             attributes:@{
+                                                          NSForegroundColorAttributeName: self.sendingTextColor,
+                                                          NSFontAttributeName: self.encryptedMessagesTextFont
+                                                          }]];
 
             [attributedStringWithRerequestMessage appendAttributedString:
-             [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"event_formatter_rerequest_keys_part1_link", @"Vector", nil)
+             [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"event_formatter_rerequest_keys_part2_link", @"Vector", nil)
                                              attributes:@{
                                                           NSLinkAttributeName: linkActionString,
                                                           NSForegroundColorAttributeName: self.sendingTextColor,
                                                           NSFontAttributeName: self.encryptedMessagesTextFont
                                                           }]];
 
-            [attributedStringWithRerequestMessage appendAttributedString:
-             [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"event_formatter_rerequest_keys_part2", @"Vector", nil)
-                                             attributes:@{
-                                                          NSForegroundColorAttributeName: self.sendingTextColor,
-                                                          NSFontAttributeName: self.encryptedMessagesTextFont
-                                                          }]];
-
             attributedString = attributedStringWithRerequestMessage;
         }
+    }
+    else if (self.showEditionMention && event.contentHasBeenEdited)
+    {
+        NSMutableAttributedString *attributedStringWithEditMention = [attributedString mutableCopy];
+        
+        NSString *linkActionString = [NSString stringWithFormat:@"%@%@%@", EventFormatterEditedEventLinkAction,
+                                      EventFormatterLinkActionSeparator,
+                                      event.eventId];
+        
+        [attributedStringWithEditMention appendAttributedString:
+         [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@" %@", NSLocalizedStringFromTable(@"event_formatter_message_edited_mention", @"Vector", nil)]
+                                         attributes:@{
+                                                      NSLinkAttributeName: linkActionString,
+                                                      // NOTE: Color is curretly overidden by UIText.tintColor as we use `NSLinkAttributeName`.
+                                                      // If we use UITextView.linkTextAttributes to set link color we will also have the issue that color will be the same for all kind of links.
+                                                      NSForegroundColorAttributeName: self.editionMentionTextColor,
+                                                      NSFontAttributeName: self.editionMentionTextFont
+                                                      }]];
+        
+        attributedString = attributedStringWithEditMention;
     }
 
     return attributedString;
@@ -228,7 +260,7 @@ NSString *const kEventFormatterOnReRequestKeysLinkActionSeparator = @"/";
         calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
         
         // Use the secondary bg color to set the background color in the default CSS.
-        NSUInteger bgColor = [MXKTools rgbValueWithColor:kRiotSecondaryBgColor];
+        NSUInteger bgColor = [MXKTools rgbValueWithColor:ThemeService.shared.theme.headerBackgroundColor];
         self.defaultCSS = [NSString stringWithFormat:@" \
                            pre,code { \
                            background-color: #%06lX; \
@@ -239,28 +271,24 @@ NSString *const kEventFormatterOnReRequestKeysLinkActionSeparator = @"/";
                            font-size: small; \
                            }", (unsigned long)bgColor];
         
-        self.defaultTextColor = kRiotPrimaryTextColor;
-        self.subTitleTextColor = kRiotSecondaryTextColor;
-        self.prefixTextColor = kRiotSecondaryTextColor;
-        self.bingTextColor = kRiotColorPinkRed;
-        self.encryptingTextColor = kRiotColorGreen;
-        self.sendingTextColor = kRiotSecondaryTextColor;
-        self.errorTextColor = kRiotColorRed;
+        self.defaultTextColor = ThemeService.shared.theme.textPrimaryColor;
+        self.subTitleTextColor = ThemeService.shared.theme.textSecondaryColor;
+        self.prefixTextColor = ThemeService.shared.theme.textSecondaryColor;
+        self.bingTextColor = ThemeService.shared.theme.noticeColor;
+        self.encryptingTextColor = ThemeService.shared.theme.tintColor;
+        self.sendingTextColor = ThemeService.shared.theme.textSecondaryColor;
+        self.errorTextColor = ThemeService.shared.theme.warningColor;
+        self.showEditionMention = YES;
+        self.editionMentionTextColor = ThemeService.shared.theme.textSecondaryColor;
         
         self.defaultTextFont = [UIFont systemFontOfSize:15];
         self.prefixTextFont = [UIFont boldSystemFontOfSize:15];
-        if ([UIFont respondsToSelector:@selector(systemFontOfSize:weight:)])
-        {
-            self.bingTextFont = [UIFont systemFontOfSize:15 weight:UIFontWeightMedium];
-        }
-        else
-        {
-            self.bingTextFont = [UIFont systemFontOfSize:15];
-        }
+        self.bingTextFont = [UIFont systemFontOfSize:15 weight:UIFontWeightMedium];
         self.stateEventTextFont = [UIFont italicSystemFontOfSize:15];
         self.callNoticesTextFont = [UIFont italicSystemFontOfSize:15];
         self.encryptedMessagesTextFont = [UIFont italicSystemFontOfSize:15];
         self.emojiOnlyTextFont = [UIFont systemFontOfSize:48];
+        self.editionMentionTextFont = [UIFont systemFontOfSize:12];
     }
     return self;
 }
@@ -387,16 +415,13 @@ NSString *const kEventFormatterOnReRequestKeysLinkActionSeparator = @"/";
 
 - (NSAttributedString*)roomCreatePredecessorAttributedStringWithPredecessorRoomId:(NSString*)predecessorRoomId
 {
-    NSString *predecessorRoomPermalink = [MXTools permalinkToRoom:predecessorRoomId];
-    
     NSDictionary *roomPredecessorReasonAttributes = @{
                                                       NSFontAttributeName : self.defaultTextFont
                                                       };
     
     NSDictionary *roomLinkAttributes = @{
                                          NSFontAttributeName : self.defaultTextFont,
-                                         NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle),
-                                         NSLinkAttributeName : predecessorRoomPermalink,
+                                         NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle)
                                          };
     
     NSMutableAttributedString *roomPredecessorAttributedString = [NSMutableAttributedString new];

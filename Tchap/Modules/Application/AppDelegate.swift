@@ -18,7 +18,7 @@ import UIKit
 import PushKit
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
     
     // MARK: - Properties
     
@@ -96,20 +96,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return self.appCoordinator.handleUserActivity(userActivity, application: application)
     }
     
-    func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {
-        self.legacyAppDelegate.application(application, didRegister: notificationSettings)
-    }
-    
-    func application(_ application: UIApplication, handleActionWithIdentifier identifier: String?, for notification: UILocalNotification, withResponseInfo responseInfo: [AnyHashable: Any], completionHandler: @escaping () -> Void) {
-        self.legacyAppDelegate.application(application, handleActionWithIdentifier: identifier, for: notification, withResponseInfo: responseInfo, completionHandler: completionHandler)
-    }
-    
-    func application(_ application: UIApplication, didReceive notification: UILocalNotification) {
-        guard let roomId = notification.userInfo?["room_id"] as? String else {
-            return
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        let actionIdentifier = response.actionIdentifier
+        if actionIdentifier == UNNotificationDefaultActionIdentifier,
+            let roomId = response.notification.request.content.userInfo["room_id"] as? String {
+            _ = self.appCoordinator.resumeBySelectingRoom(with: roomId)
+            completionHandler()
+        } else {
+            self.legacyAppDelegate.userNotificationCenter(center, didReceive: response, withCompletionHandler: completionHandler)
         }
-        
-        _ = self.appCoordinator.resumeBySelectingRoom(with: roomId)
+    }
+    
+    // iOS 10+, this is called when a notification is about to display in foreground.
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler([])
     }
 }
 

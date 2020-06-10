@@ -55,6 +55,10 @@ final class Variant1Style: NSObject, Style {
     
     let presenceIndicatorOnlineColor: UIColor = kVariant1PresenceIndicatorOnlineColor
     
+    let overlayBackgroundColor: UIColor = kVariant1OverlayBackgroundColor
+    
+    let keyboardAppearance: UIKeyboardAppearance = .light
+    
     // MARK: - Commodity methods
     
     func applyStyle(onNavigationBar navigationBar: UINavigationBar) {
@@ -89,5 +93,15 @@ final class Variant1Style: NSObject, Style {
     
     func applyStyle(onSwitch uiSwitch: UISwitch) {
         uiSwitch.onTintColor = self.buttonBorderedBackgroundColor
+    }
+    
+    func applyStyle(onSearchBar searchBar: UISearchBar) {
+        searchBar.barStyle = .black
+        searchBar.tintColor = self.barActionColor
+        searchBar.barTintColor = self.barBackgroundColor
+        
+        if let searchBarTextField = searchBar.vc_searchTextField {
+            searchBarTextField.textColor = searchBar.tintColor
+        }
     }
 }

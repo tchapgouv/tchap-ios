@@ -26,8 +26,6 @@
 
 #import "RageShakeManager.h"
 
-#import "GeneratedInterface-Swift.h"
-
 @interface RoomParticipantsViewController () <Stylable>
 {
     // Search result
@@ -67,8 +65,8 @@
     
     UIAlertController *currentAlert;
     
-    // Observe kRiotDesignValuesDidChangeThemeNotification to handle user interface theme change.
-    id kRiotDesignValuesDidChangeThemeNotificationObserver;
+    // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
+    id kThemeServiceDidChangeThemeNotificationObserver;
 }
 
 @property (nonatomic, strong) id<Style> currentStyle;
@@ -162,8 +160,10 @@
     [self addAddParticipantButton];
     
     // Observe user interface theme change.
-    kRiotDesignValuesDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kRiotDesignValuesDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    MXWeakify(self);
+    kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
+        MXStrongifyAndReturnIfNil(self);
         [self userInterfaceThemeDidChange];
         
     }];
@@ -185,17 +185,17 @@
     }
     
     [self refreshSearchBarItemsColor:_searchBarView];
-    _searchBarHeaderBorder.backgroundColor = kRiotAuxiliaryColor;
+    _searchBarHeaderBorder.backgroundColor = ThemeService.shared.theme.headerBorderColor;
     
     //TODO Design the activvity indicator for Tchap
-    self.activityIndicator.backgroundColor = kRiotOverlayColor;
+    self.activityIndicator.backgroundColor = style.overlayBackgroundColor;
     
     // Update the gradient view above the screen
     CGFloat white = 1.0;
     [style.backgroundColor getWhite:&white alpha:nil];
     CGColorRef opaqueWhiteColor = [UIColor colorWithWhite:white alpha:1.0].CGColor;
     CGColorRef transparentWhiteColor = [UIColor colorWithWhite:white alpha:0].CGColor;
-    tableViewMaskLayer.colors = [NSArray arrayWithObjects:(__bridge id)transparentWhiteColor, (__bridge id)transparentWhiteColor, (__bridge id)opaqueWhiteColor, nil];
+    tableViewMaskLayer.colors = @[(__bridge id) transparentWhiteColor, (__bridge id) transparentWhiteColor, (__bridge id) opaqueWhiteColor];
     
     self.tableView.backgroundColor = style.backgroundColor;
     self.view.backgroundColor = self.tableView.backgroundColor;
@@ -223,10 +223,10 @@
 {
     self.userService = nil;
     
-    if (kRiotDesignValuesDidChangeThemeNotificationObserver)
+    if (kThemeServiceDidChangeThemeNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:kRiotDesignValuesDidChangeThemeNotificationObserver];
-        kRiotDesignValuesDidChangeThemeNotificationObserver = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
+        kThemeServiceDidChangeThemeNotificationObserver = nil;
     }
     
     if (leaveRoomNotificationObserver)
@@ -615,20 +615,19 @@
     // Add blur mask programmatically
     tableViewMaskLayer = [CAGradientLayer layer];
     
-    // Consider the grayscale components of the kRiotPrimaryBgColor.
+    // Consider the grayscale components of the ThemeService.shared.theme.backgroundColor.
     CGFloat white = 1.0;
-    [kRiotPrimaryBgColor getWhite:&white alpha:nil];
+    [ThemeService.shared.theme.backgroundColor getWhite:&white alpha:nil];
     
     CGColorRef opaqueWhiteColor = [UIColor colorWithWhite:white alpha:1.0].CGColor;
     CGColorRef transparentWhiteColor = [UIColor colorWithWhite:white alpha:0].CGColor;
     
-    tableViewMaskLayer.colors = [NSArray arrayWithObjects:(__bridge id)transparentWhiteColor, (__bridge id)transparentWhiteColor, (__bridge id)opaqueWhiteColor, nil];
+    tableViewMaskLayer.colors = @[(__bridge id) transparentWhiteColor, (__bridge id) transparentWhiteColor, (__bridge id) opaqueWhiteColor];
     
     // display a gradient to the rencents bottom (20% of the bottom of the screen)
-    tableViewMaskLayer.locations = [NSArray arrayWithObjects:
-                                    [NSNumber numberWithFloat:0],
-                                    [NSNumber numberWithFloat:0.85],
-                                    [NSNumber numberWithFloat:1.0], nil];
+    tableViewMaskLayer.locations = @[@0.0F,
+            @0.85F,
+            @1.0F];
     
     tableViewMaskLayer.bounds = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
     tableViewMaskLayer.anchorPoint = CGPointZero;
@@ -735,13 +734,13 @@
     // List all the participants matrix user id to ignore them during the contacts search.
     for (Contact *contact in actualParticipants)
     {
-        [contactsDataSource.ignoredContactsByMatrixId setObject:contact forKey:contact.mxMember.userId];
+        contactsDataSource.ignoredContactsByMatrixId[contact.mxMember.userId] = contact;
     }
     for (Contact *contact in invitedParticipants)
     {
         if (contact.mxMember)
         {
-            [contactsDataSource.ignoredContactsByMatrixId setObject:contact forKey:contact.mxMember.userId];
+            contactsDataSource.ignoredContactsByMatrixId[contact.mxMember.userId] = contact;
         }
     }
     
@@ -1286,13 +1285,13 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    cell.backgroundColor = kRiotPrimaryBgColor;
+    cell.backgroundColor = ThemeService.shared.theme.backgroundColor;
     
     // Update the selected background view
-    if (kRiotSelectedBgColor)
+    if (ThemeService.shared.theme.selectedBackgroundColor)
     {
         cell.selectedBackgroundView = [[UIView alloc] init];
-        cell.selectedBackgroundView.backgroundColor = kRiotSelectedBgColor;
+        cell.selectedBackgroundView.backgroundColor = ThemeService.shared.theme.selectedBackgroundColor;
     }
     else
     {
@@ -1326,7 +1325,7 @@
     if (section == invitedSection)
     {
         sectionHeader = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 30)];
-        sectionHeader.backgroundColor = kRiotSecondaryBgColor;
+        sectionHeader.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
         
         CGRect frame = sectionHeader.frame;
         frame.origin.x = 20;
@@ -1334,7 +1333,7 @@
         frame.size.width = sectionHeader.frame.size.width - 10;
         frame.size.height -= 10;
         UILabel *headerLabel = [[UILabel alloc] initWithFrame:frame];
-        headerLabel.textColor = kRiotPrimaryTextColor;
+        headerLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
         headerLabel.font = [UIFont boldSystemFontOfSize:15.0];
         headerLabel.backgroundColor = [UIColor clearColor];
         
@@ -1388,7 +1387,7 @@
             
         }];
         
-        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon" backgroundColor:kRiotSecondaryBgColor patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(24, 24)];
+        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon" backgroundColor:ThemeService.shared.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(24, 24)];
         [actions insertObject:leaveAction atIndex:0];
     }
     
