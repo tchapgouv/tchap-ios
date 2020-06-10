@@ -19,7 +19,11 @@ import Foundation
 @objc enum RoomContextualMenuAction: Int {
     case copy
     case reply
+#if ENABLE_EDITION
     case edit
+#else
+    case redact
+#endif
     case more
     
     // MARK: - Properties
@@ -32,8 +36,13 @@ import Foundation
             title = VectorL10n.roomEventActionCopy
         case .reply:
             title = VectorL10n.roomEventActionReply
+#if ENABLE_EDITION
         case .edit:
             title = VectorL10n.roomEventActionEdit
+#else
+        case .redact:
+            title = VectorL10n.roomEventActionRedact
+#endif
         case .more:
             title = VectorL10n.roomEventActionMore
         }
@@ -49,8 +58,13 @@ import Foundation
             image = Asset.Images.roomContextMenuCopy.image
         case .reply:
             image = Asset.Images.roomContextMenuReply.image
+#if ENABLE_EDITION
         case .edit:
             image = Asset.Images.roomContextMenuEdit.image
+#else
+        case .redact:
+            image = Asset.Images.roomContextMenuRedact.image
+#endif
         case .more:
             image = Asset.Images.roomContextMenuMore.image
         default:
