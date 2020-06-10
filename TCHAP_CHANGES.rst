@@ -1,3 +1,21 @@
+Changes in Tchap 1.0.23 (2020-06-10)
+===================================================
+
+Features/Improvements:
+ * Rebase onto vector-im/riot-ios #277
+    - Get all changes from Riot 0.7.10 to Riot 0.10.4 (https://github.com/dinsic-pim/tchap-ios/pull/304/files#diff-db23dcd814354c954091a9b90dbfd92a)
+ * Enable the device verification based on emojis string
+ * Disable key backup in the rebase version of the code #299
+ * Disable the message edition PR #305
+ * Disable the reactions
+ * Update the messages displayed during the request of a token by email #297
+ 
+Bug Fixes:
+ * [Device verification] Only half of the key sharing requests are handled after verification #303
+ * The app may be stuck on the device verification screen #302
+ * Room members: the states of some members are wrong #253 (Force a clear cache on application update)
+ * Change history_visibility when a room is removed from the rooms directory #278
+
 Changes in Tchap 1.0.22 (2020-02-05)
 ===================================================
 
