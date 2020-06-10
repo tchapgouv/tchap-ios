@@ -1,4 +1,4 @@
-Changes in Tchap 1.0.23 (2020-06-05)
+Changes in Tchap 1.0.23 (2020-06-10)
 ===================================================
 
 Features/Improvements:
