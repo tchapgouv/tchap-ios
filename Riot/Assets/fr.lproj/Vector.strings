@@ -697,7 +697,7 @@
 "device_verification_error_cannot_load_device" = "Impossible de charger les informations de l’appareil.";
 // Mark: Incoming
 "device_verification_incoming_title" = "Demande de vérification entrante";
-"device_verification_incoming_description_1" = "L’un de vos appareils souhaite vérifier votre appareil actuel. En effectuant cette vérification, un lien de confiance s’établira entre vos deux appareils afin de faciliter le partage de clés de chiffrement.";
+"device_verification_incoming_description_1" = "L’un de vos appareils souhaite vérifier votre appareil actuel. En effectuant cette vérification, un lien de confiance s’établira entre vos deux appareils afin de faciliter le partage de clés.";
 "device_verification_incoming_description_2" = "En vérifiant cet appareil, il sera marqué comme appareil de confiance, et le vôtre sera aussi marqué comme appareil de confiance pour votre partenaire.";
 // MARK: Start
 "device_verification_start_title" = "Vérifier en comparant une liste d'émojis";
@@ -708,7 +708,7 @@
 // MARK: Verify
 "device_verification_verify_title_emoji" = "Vérifiez l’appareil en confirmant que les émojis suivants apparaissent également sur son écran";
 "device_verification_verify_title_number" = "Vérifiez l’appareil en confirmant que les chiffres suivant apparaissent également sur son écran";
-"device_verification_verify_wait_partner" = "Attente de la confirmation de l’autre appareil…";
+"device_verification_verify_wait_partner" = "Veuillez confirmer également les emojis sur l'autre appareil…";
 // MARK: Verified
 "device_verification_verified_title" = "Vérifié !";
 "device_verification_verified_description_1" = "Vous avez bien vérifié cet appareil.";

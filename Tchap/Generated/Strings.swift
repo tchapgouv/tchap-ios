@@ -12,6 +12,8 @@ import Foundation
 internal enum TchapL10n {
   /// Annuler
   internal static let actionCancel = TchapL10n.tr("Tchap", "action_cancel")
+  /// Confirmer
+  internal static let actionConfirm = TchapL10n.tr("Tchap", "action_confirm")
   /// Inviter
   internal static let actionInvite = TchapL10n.tr("Tchap", "action_invite")
   /// Suivant
