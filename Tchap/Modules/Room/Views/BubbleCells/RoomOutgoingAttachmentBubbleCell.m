@@ -17,8 +17,11 @@
 
 #import "RoomOutgoingAttachmentBubbleCell.h"
 
-#import "RiotDesignValues.h"
-#import "DesignValues.h"
+#import "ThemeService.h"
+
+#import "MXKRoomBubbleTableViewCell+Riot.h"
+
+#import "GeneratedInterface-Swift.h"
 
 @implementation RoomOutgoingAttachmentBubbleCell
 
@@ -26,14 +29,13 @@
 {
     [super customizeTableViewCellRendering];
     
-    self.userNameLabel.textColor = kColorLightNavy;
-    self.messageTextView.tintColor = kRiotColorGreen;
+    self.userNameLabel.textColor = ThemeService.shared.theme.userNameColors[0];
+    self.messageTextView.tintColor = ThemeService.shared.theme.tintColor;
 }
 
 - (void)render:(MXKCellData *)cellData
 {
     [super render:cellData];
-
     [RoomOutgoingAttachmentBubbleCell render:cellData inBubbleCell:self];
 }
 
@@ -49,7 +51,7 @@
         // Show a red border when the attachment sending failed
         if (bubbleCell->bubbleData.attachment.eventSentState == MXEventSentStateFailed)
         {
-            bubbleCell.attachmentView.layer.borderColor = kRiotColorPinkRed.CGColor;
+            bubbleCell.attachmentView.layer.borderColor = ThemeService.shared.theme.warningColor.CGColor;
             bubbleCell.attachmentView.layer.borderWidth = 1;
         }
         else
@@ -57,6 +59,18 @@
             bubbleCell.attachmentView.layer.borderWidth = 0;
         }
     }
+}
+
++ (CGFloat)heightForCellData:(MXKCellData*)cellData withMaximumWidth:(CGFloat)maxWidth
+{
+    CGFloat rowHeight = [self attachmentBubbleCellHeightForCellData:cellData withMaximumWidth:maxWidth];
+    
+    if (rowHeight <= 0)
+    {
+        rowHeight = [super heightForCellData:cellData withMaximumWidth:maxWidth];
+    }
+    
+    return rowHeight;
 }
 
 @end

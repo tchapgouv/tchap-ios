@@ -39,6 +39,7 @@ final class RoomCreationCoordinator: NSObject, RoomCreationCoordinatorType {
     private var imageData: Data?
     private var roomCreationFormResult: RoomCreationFormResult?
     
+    private var imagePickerPresenter: SingleImagePickerPresenter?
     private weak var contactsPickerCoordinator: ContactsPickerCoordinatorType?
     
     private var disposeBag: DisposeBag = DisposeBag()
@@ -106,12 +107,13 @@ final class RoomCreationCoordinator: NSObject, RoomCreationCoordinatorType {
         return homeServerDomain
     }
     
-    private func showMediaPicker() {
-        let mediaPickerViewController = MediaPickerViewController()
-        mediaPickerViewController.mediaTypes = [kUTTypeImage as String]
-        mediaPickerViewController.delegate = self
+    private func showImagePicker() {
+        let singleImagePickerPresenter = SingleImagePickerPresenter(session: self.session)
+        singleImagePickerPresenter.delegate = self
         
-        self.router.present(mediaPickerViewController, animated: true)
+        singleImagePickerPresenter.present(from: self.toPresentable(), sourceView: nil, sourceRect: .null, animated: true)
+        
+        self.imagePickerPresenter = singleImagePickerPresenter
     }
     
     private func showContactsPicker() {
@@ -224,7 +226,7 @@ final class RoomCreationCoordinator: NSObject, RoomCreationCoordinatorType {
 // MARK: - RoomCreationViewControllerDelegate
 extension RoomCreationCoordinator: RoomCreationViewControllerDelegate {
     func roomCreationViewControllerDidTapAddAvatarButton(_ roomCreationViewController: RoomCreationViewController) {
-        self.showMediaPicker()
+        self.showImagePicker()
     }
     
     func roomCreationViewController(_ roomCreationViewController: RoomCreationViewController, didTapNextButtonWith roomCreationFormResult: RoomCreationFormResult) {
@@ -233,21 +235,22 @@ extension RoomCreationCoordinator: RoomCreationViewControllerDelegate {
     }
 }
 
-// MARK: - MediaPickerViewControllerDelegate
-extension RoomCreationCoordinator: MediaPickerViewControllerDelegate {
-    func mediaPickerController(_ mediaPickerController: MediaPickerViewController!, didSelectImage imageData: Data!, withMimeType mimetype: String!, isPhotoLibraryAsset: Bool) {
+// MARK: - SingleImagePickerPresenterDelegate
+extension RoomCreationCoordinator: SingleImagePickerPresenterDelegate {
+    func singleImagePickerPresenterDidCancel(_ presenter: SingleImagePickerPresenter) {
+        presenter.dismiss(animated: true, completion: nil)
+        self.imagePickerPresenter = nil
+    }
+    
+    func singleImagePickerPresenter(_ presenter: SingleImagePickerPresenter, didSelectImageData imageData: Data, withUTI uti: MXKUTI?) {
+        presenter.dismiss(animated: true, completion: nil)
+        self.imagePickerPresenter = nil
         
-        self.router.dismissModule(animated: true, completion: nil)
-        
-        if let imageData = imageData, let image = UIImage(data: imageData) {
+        if let image = UIImage(data: imageData) {
             self.roomCreationViewController.updateAvatar(with: image)
         }
         
         self.imageData = imageData
-    }
-    
-    func mediaPickerController(_ mediaPickerController: MediaPickerViewController!, didSelectVideo videoURL: URL!) {
-        self.router.dismissModule(animated: true, completion: nil)
     }
 }
 

@@ -18,8 +18,6 @@
 
 #import "RoomEncryptedDataBubbleCell.h"
 
-#import "RiotDesignValues.h"
-
 @implementation RoomEncryptedAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell
 
 - (void)awakeFromNib
