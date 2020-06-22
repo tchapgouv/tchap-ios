@@ -18,7 +18,7 @@ import UIKit
 import PushKit
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, PushNotificationServiceDelegate {
     
     // MARK: - Properties
     
@@ -96,35 +96,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         return self.appCoordinator.handleUserActivity(userActivity, application: application)
     }
     
-    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        let actionIdentifier = response.actionIdentifier
-        if actionIdentifier == UNNotificationDefaultActionIdentifier,
-            let roomId = response.notification.request.content.userInfo["room_id"] as? String {
-            _ = self.appCoordinator.resumeBySelectingRoom(with: roomId)
-            completionHandler()
-        } else {
-            self.legacyAppDelegate.userNotificationCenter(center, didReceive: response, withCompletionHandler: completionHandler)
-        }
+    func pushNotificationServiceShouldRefreshApplicationBadgeNumber(_ pushNotificationService: PushNotificationService) {
+        self.legacyAppDelegate.refreshApplicationIconBadgeNumber()
     }
     
-    // iOS 10+, this is called when a notification is about to display in foreground.
-    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        completionHandler([])
+    func pushNotificationService(_ pushNotificationService: PushNotificationService, shouldNavigateToRoomWithId roomId: String) {
+        _ = self.appCoordinator.resumeBySelectingRoom(with: roomId)
     }
-}
-
-// MARK: - PKPushRegistryDelegate
-extension AppDelegate: PKPushRegistryDelegate {
-    
-    func pushRegistry(_ registry: PKPushRegistry, didUpdate pushCredentials: PKPushCredentials, for type: PKPushType) {
-        self.legacyAppDelegate.pushRegistry(registry, didUpdate: pushCredentials, for: type)
-    }
-    
-    func pushRegistry(_ registry: PKPushRegistry, didInvalidatePushTokenFor type: PKPushType) {
-        self.legacyAppDelegate.pushRegistry(registry, didInvalidatePushTokenFor: type)
-    }
-    
-    func pushRegistry(_ registry: PKPushRegistry, didReceiveIncomingPushWith payload: PKPushPayload, for type: PKPushType) {
-        self.legacyAppDelegate.pushRegistry(registry, didReceiveIncomingPushWith: payload, for: type)
-    }        
 }

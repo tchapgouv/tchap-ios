@@ -32,8 +32,8 @@ final class RiotSettings: NSObject {
         static let showProfileUpdateEvents = "showProfileUpdateEvents"
         static let allowStunServerFallback = "allowStunServerFallback"
         static let stunServerFallback = "stunServerFallback"
-        static let enableCrossSigning = "enableCrossSigning"
-        static let enableDMKeyVerification = "enableDMKeyVerification"
+        static let hideVerifyThisSessionAlert = "hideVerifyThisSessionAlert"
+        static let hideReviewSessionsAlert = "hideReviewSessionsAlert"
     }
     
     static let shared = RiotSettings()
@@ -118,22 +118,6 @@ final class RiotSettings: NSObject {
             UserDefaults.standard.set(newValue, forKey: UserDefaultsKeys.createConferenceCallsWithJitsi)
         }
     }
-    
-    var enableDMKeyVerification: Bool {
-        get {
-            return UserDefaults.standard.bool(forKey: UserDefaultsKeys.enableDMKeyVerification)
-        } set {
-            UserDefaults.standard.set(newValue, forKey: UserDefaultsKeys.enableDMKeyVerification)
-        }
-    }
-
-    var enableCrossSigning: Bool {
-        get {
-            return UserDefaults.standard.bool(forKey: UserDefaultsKeys.enableCrossSigning)
-        } set {
-            UserDefaults.standard.set(newValue, forKey: UserDefaultsKeys.enableCrossSigning)
-        }
-    }
 
     // MARK: Calls
 
@@ -152,5 +136,23 @@ final class RiotSettings: NSObject {
 
     var stunServerFallback: String? {
         return UserDefaults.standard.string(forKey: UserDefaultsKeys.stunServerFallback)
+    }
+    
+    // MARK: Key verification
+    
+    var hideVerifyThisSessionAlert: Bool {
+        get {
+            return UserDefaults.standard.bool(forKey: UserDefaultsKeys.hideVerifyThisSessionAlert)
+        } set {
+            UserDefaults.standard.set(newValue, forKey: UserDefaultsKeys.hideVerifyThisSessionAlert)
+        }
+    }
+    
+    var hideReviewSessionsAlert: Bool {
+        get {
+            return UserDefaults.standard.bool(forKey: UserDefaultsKeys.hideReviewSessionsAlert)
+        } set {
+            UserDefaults.standard.set(newValue, forKey: UserDefaultsKeys.hideReviewSessionsAlert)
+        }
     }
 }

@@ -1,7 +1,7 @@
 /*
  Copyright 2014 OpenMarket Ltd
  Copyright 2017 Vector Creations Ltd
- Copyright 2018 New Vector Ltd
+ Copyright 2018-2020 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -18,8 +18,6 @@
 
 #import <UIKit/UIKit.h>
 #import <MatrixKit/MatrixKit.h>
-#import <PushKit/PushKit.h>
-#import <UserNotifications/UserNotifications.h>
 
 #import "JitsiViewController.h"
 
@@ -48,10 +46,8 @@ extern NSString *const kLegacyAppDelegateDidLoginNotification;
 /**
  LegacyAppDelegate is based on Riot AppDelegate, is here to keep some Riot behaviors and be decoupled in the future.
  */
-@interface LegacyAppDelegate : UIResponder <UIApplicationDelegate, MXKCallViewControllerDelegate, JitsiViewControllerDelegate, PKPushRegistryDelegate, UNUserNotificationCenterDelegate>
+@interface LegacyAppDelegate : UIResponder <UIApplicationDelegate, MXKCallViewControllerDelegate, JitsiViewControllerDelegate>
 {
-    BOOL isPushRegistered;
-    
     // background sync management
     void (^_completionHandler)(UIBackgroundFetchResult);
 }
@@ -66,6 +62,12 @@ extern NSString *const kLegacyAppDelegateDidLoginNotification;
 @property (nonatomic) BOOL isAppForeground;
 @property (nonatomic) BOOL isOffline;
 
+/**
+ Let the AppDelegate handle and display self verification requests.
+ Default is YES;
+ */
+@property (nonatomic) BOOL handleSelfVerificationRequest;
+
 // Associated matrix sessions (empty by default).
 @property (nonatomic, readonly) NSArray *mxSessions;
 
@@ -79,6 +81,19 @@ extern NSString *const kLegacyAppDelegateDidLoginNotification;
 @property (nonatomic) NSSet<NSString *> *ignoredServerErrorCodes;
 
 + (instancetype)theDelegate;
+
+#pragma mark - Push Notifications
+
+/**
+ Perform registration for remote notifications.
+ 
+ @param completion the block to be executed when registration finished.
+ */
+- (void)registerForRemoteNotificationsWithCompletion:(nullable void (^)(NSError *))completion;
+
+#pragma mark - Badge Count
+
+- (void)refreshApplicationIconBadgeNumber;
 
 #pragma mark - Application layout handling
 
@@ -102,7 +117,7 @@ extern NSString *const kLegacyAppDelegateDidLoginNotification;
 /**
  Log out all the accounts after asking for a potential confirmation.
  Show the authentication screen on successful logout.
- 
+
  @param askConfirmation tell whether a confirmation is required before logging out.
  @param completion the block to execute at the end of the operation.
  */
@@ -111,34 +126,36 @@ extern NSString *const kLegacyAppDelegateDidLoginNotification;
 /**
  Log out all the accounts without confirmation.
  Show the authentication screen on successful logout.
- 
+
  @param sendLogoutRequest Indicate whether send logout request to homeserver.
  @param completion the block to execute at the end of the operation.
  */
 - (void)logoutSendingRequestServer:(BOOL)sendLogoutServerRequest
                         completion:(void (^)(BOOL isLoggedOut))completion;
 
+/**
+ Present incoming key verification request to accept.
+
+ @param incomingKeyVerificationRequest The incoming key verification request.
+ @param The matrix session.
+ @return Indicate NO if the key verification screen could not be presented.
+ */
+- (BOOL)presentIncomingKeyVerificationRequest:(MXKeyVerificationRequest*)incomingKeyVerificationRequest
+                                    inSession:(MXSession*)session;
+
+//- (BOOL)presentUserVerificationForRoomMember:(MXRoomMember*)roomMember session:(MXSession*)mxSession;
+//
+//- (BOOL)presentCompleteSecurityForSession:(MXSession*)mxSession;
 
 #pragma mark - Matrix Accounts handling
 
 - (void)selectMatrixAccount:(void (^)(MXKAccount *selectedAccount))onSelection;
 
-#pragma mark - Push notifications
-
-- (void)registerUserNotificationSettings;
-
-/**
- Perform registration for remote notifications.
- 
- @param completion the block to be executed when registration finished.
- */
-- (void)registerForRemoteNotificationsWithCompletion:(void (^)(NSError *))completion;
-
 #pragma mark - Jitsi call
 
 /**
  Open the Jitsi view controller from a widget.
- 
+
  @param jitsiWidget the jitsi widget.
  @param video to indicate voice or video call.
  */
@@ -158,4 +175,3 @@ extern NSString *const kLegacyAppDelegateDidLoginNotification;
 @property (nonatomic, readonly) UIButton* callStatusBarButton;
 
 @end
-

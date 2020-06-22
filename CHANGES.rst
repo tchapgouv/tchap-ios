@@ -1,3 +1,112 @@
+Changes in 0.11.6 (2020-xx-xx)
+===============================================
+
+Improvements:
+ * PushNotificationService: Move all notification related code to a new class (PR #3100).
+ * Cross-signing: Bootstrap cross-sign on registration (and login if applicable). This action is now invisible to the user (#3292).
+ * Authentication: Redirect the webview (SSO) javascript logs to iOS native logs.
+ * Timeline: Hide encrypted history (pre-invite) (#3239).
+ * Complete security: Add recovery from 4S (#3304).
+ 
+Bug fix:
+ * CallVC: Declined calls now properly reset call view controller, thanks to @Legi429 (#2877).
+
+Changes in 0.11.5 (2020-05-18)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.12.6](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.6)).
+
+Bug fix:
+ * AuthenticationViewController: Adapt UIWebView changes in MatrixKit (PR #3242).
+ * Share extension & Siri intent: Do not fail when sending to locally unverified devices (#3252).
+ * CountryPickerVC: Search field is invisible in dark theme (#3219).
+
+Changes in 0.11.4 (2020-05-08)
+===============================================
+
+Bug fix:
+ * App asks to verify all devices on every startup for no valid reason (#3221).
+
+Changes in 0.11.3 (2020-05-07)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.12.3](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.3)).
+ * Cross-signing: Display "Verify your other sessions" modal at every startup if needed (#3180).
+ * Cross-signing: The "Complete Security" button now triggers a verification request to all user devices.
+ * Secrets: On startup, request again private keys we are missing locally.
+
+Bug fix:
+ * KeyVerificationSelfVerifyStartViewController has no navigation (#3195).
+ * Self-verification: QR code scanning screen refers to other-person scanning (#3189).
+
+Changes in 0.11.2 (2020-05-01)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.12.2](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.2)).
+ * Registration / Email addition: Support email verification link from homeserver (#3167).
+ * Verification requests: Hide incoming request modal when it is no more pending (#3033).
+ * Self-verification: Do not display incoming self verification requests at the top of the Complete Security screen.
+ * Verification: Do not talk about QR code if only emoji is possible (#3035).
+ * Registration: Prefill email field when opened with universal link (PR #3173).
+ * Cross-signing: Display "Verify this session" modal at every startup if needed (#3179).
+ * Complete Security: Support SAS verification start (#3183).
+
+Bug fix:
+ * AuthenticationViewController: Remove fallback to matrix.org when authentication failed (PR #3165).
+
+Changes in 0.11.1 (2020-04-24)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.12.1](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.1)).
+ * New icons.
+ * Cross-signing: Allow incoming device verification request from other user (#3139).
+ * Cross-signing: Allow to verify each device of users with no cross-signing (#3138).
+ * Jitsi: Make Jitsi widgets compatible with Matrix Widget API v2. This allows to use any Jitsi servers (#3150).
+
+Bug fix:
+ * Settings: Security, present complete security when my device is not trusted (#3127).
+ * Settings: Security: Do not ask to complete security if there is no cross-signing (#3147).
+
+Changes in 0.11.0 (2020-04-17)
+===============================================
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.12.0](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.0)).
+ * Crypto: Enable E2EE by default for DM
+ * Crypto: Cross-signing support
+ * Crypto: Do not warn anymore for unknown devices. Trust on First Use.
+ * RoomVC: Update encryption decoration with shields (#2934, #2930, #2906).
+ * Settings: Remove "End-to-End Encryption" from the LABS section (#2941).
+ * Room decoration: Use shields instead of padlocks (#2906).
+ * Room decoration: Remove horizontal empty space when there is no decoration badge to set on room message (#2978).
+ * RoomVC: For a room preview use room canonical alias if present when joining a room.
+ * Update Matomo app id (#3001)
+ * Verification by DM: Support QR code (#2921).
+ * Cross-Signing: Detect and expose new sign-ins (#2918).
+ * Cross-signing: Complete security at the end of sign in process( #3003).
+ * Make decoration uniform (#2972).
+ * DeactivateAccountViewController: Respect active theme (PR #3107).
+ * Verification by emojis: Center emojis in screen horizontally (PR #3119).
+ 
+Bug fix:
+ * Key backup banner is not hidden correctly (#2899). 
+
+Bug fix:
+ * Considered safe area insets for some screens (PR #3084).
+
+Changes in 0.10.5 (2020-04-01)
+===============================================
+
+Bug fix:
+ * Fix error when joining some public rooms, thanks to @chrismoos (PR #2888).
+ * Fix crash due to malformed widget (#2997).
+ * Push notifications: Avoid any automatic deactivation (vector-im/riot-ios#3017).
+ * Fix links breaking user out of SSO flow, thanks to @schultetwin (#3039).
+
 Changes in 0.10.4 (2019-12-11)
 ===============================================
 

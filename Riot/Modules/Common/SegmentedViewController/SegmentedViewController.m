@@ -228,6 +228,8 @@
 {
     [super viewWillAppear:animated];
 
+    [self userInterfaceThemeDidChange];
+
     if (_selectedViewController)
     {
         // Make iOS invoke child viewWillAppear

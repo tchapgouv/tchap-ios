@@ -7,13 +7,13 @@ use_frameworks!
 
 # Different flavours of pods to MatrixKit
 # The current MatrixKit pod version
-#$matrixKitVersion = '0.11.3'
+#$matrixKitVersion = '0.12.6'
 
 # The develop branch version
-#$matrixKitVersion = 'develop'
+$matrixKitVersion = 'develop'
 
 # The develop branch version
-$matrixKitVersion = 'dinum'
+#$matrixKitVersion = 'dinum'
 
 # The one used for developing both MatrixSDK and MatrixKit
 # Note that MatrixSDK must be cloned into a folder called matrix-ios-sdk next to the MatrixKit folder
@@ -76,8 +76,6 @@ abstract_target 'TchapPods' do
 
     pod 'GBDeviceInfo', '~> 6.3.0'
     pod 'Reusable', '~> 4.1'
-    pod 'SwiftUTI', :git => 'https://github.com/speramusinc/SwiftUTI.git', :branch => 'master'
-
     # Matomo for analytics
     pod 'MatomoTracker', '~> 7.2.0'
     
@@ -95,11 +93,15 @@ abstract_target 'TchapPods' do
     target "Tchap" do
         import_MatrixKit
         pod 'DGCollectionViewLeftAlignFlowLayout', '~> 1.0.4'
+        pod 'KTCenterFlowLayout', '~> 1.3.1'
+        #pod 'ZXingObjC', '~> 3.6.5'
     end
 	
     target "Btchap" do
         import_MatrixKit
         pod 'DGCollectionViewLeftAlignFlowLayout', '~> 1.0.4'
+        pod 'KTCenterFlowLayout', '~> 1.3.1'
+        #pod 'ZXingObjC', '~> 3.6.5'
     end
     
     target "TchapShareExtension" do

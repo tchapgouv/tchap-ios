@@ -26,3 +26,4 @@
 #import "TableViewCellWithCheckBoxAndLabel.h"
 #import "RoomDataSource.h"
 #import "Contact.h"
+#import "PushNotificationService.h"
