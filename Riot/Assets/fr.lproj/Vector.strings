@@ -708,8 +708,6 @@
 "device_verification_verify_wait_partner" = "Veuillez confirmer également les emojis sur l'autre appareil…";
 // MARK: Verified
 "device_verification_verified_title" = "Vérifié !";
-"device_verification_verified_description_1" = "Vous avez bien vérifié cet appareil.";
-"device_verification_verified_description_2" = "Le partage des clés va s'effectuer progressivement. Les messages se déchiffreront au fur à mesure. Cela peut prendre quelques minutes.";
 "device_verification_verified_got_it_button" = "Compris";
 // MARK: Emoji
 "device_verification_emoji_dog" = "Chien";

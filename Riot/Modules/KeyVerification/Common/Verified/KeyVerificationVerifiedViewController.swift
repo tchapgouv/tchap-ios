@@ -58,7 +58,7 @@ final class KeyVerificationVerifiedViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         
-        self.vc_removeBackTitle()
+        self.tc_removeBackTitle()
         
         self.setupViews()
         self.registerThemeServiceDidChangeThemeNotification()
@@ -79,28 +79,33 @@ final class KeyVerificationVerifiedViewController: UIViewController {
     // MARK: - Private
     
     private func setupViews() {
-        let bodyTitle: String
-        let informationText: String
+//        let bodyTitle: String
+//        let informationText: String
+//
+//        switch self.verificationKind {
+//        case .otherSession:
+//            bodyTitle = VectorL10n.deviceVerificationVerifiedTitle
+//            informationText = VectorL10n.keyVerificationVerifiedOtherSessionInformation
+//        case .newSession:
+//            bodyTitle = VectorL10n.keyVerificationVerifiedNewSessionTitle
+//            informationText = VectorL10n.keyVerificationVerifiedNewSessionInformation
+//        case .thisSession:
+//            bodyTitle = VectorL10n.deviceVerificationVerifiedTitle
+//            informationText = VectorL10n.keyVerificationVerifiedThisSessionInformation
+//        case .user:
+//            bodyTitle = VectorL10n.deviceVerificationVerifiedTitle
+//            informationText = VectorL10n.keyVerificationVerifiedUserInformation
+//        }
+//
+//        self.title = self.verificationKind.verificationTitle
+//        self.titleLabel.text =  bodyTitle
+//        self.informationLabel.text = informationText
         
-        switch self.verificationKind {
-        case .otherSession:
-            bodyTitle = VectorL10n.deviceVerificationVerifiedTitle
-            informationText = VectorL10n.keyVerificationVerifiedOtherSessionInformation
-        case .newSession:
-            bodyTitle = VectorL10n.keyVerificationVerifiedNewSessionTitle
-            informationText = VectorL10n.keyVerificationVerifiedNewSessionInformation
-        case .thisSession:
-            bodyTitle = VectorL10n.deviceVerificationVerifiedTitle
-            informationText = VectorL10n.keyVerificationVerifiedThisSessionInformation
-        case .user:
-            bodyTitle = VectorL10n.deviceVerificationVerifiedTitle
-            informationText = VectorL10n.keyVerificationVerifiedUserInformation
-        }
+        // Tchap: only the device verification is supported for the moment
+        self.title = TchapL10n.deviceVerificationTitle
+        self.titleLabel.text = VectorL10n.deviceVerificationVerifiedTitle
+        self.informationLabel.text = TchapL10n.deviceVerificationVerifiedDescription
         
-        self.title = self.verificationKind.verificationTitle
-        self.titleLabel.text =  bodyTitle
-        self.informationLabel.text = informationText
-
         self.doneButton.setTitle(VectorL10n.deviceVerificationVerifiedGotItButton, for: .normal)
     }
     

@@ -63,7 +63,7 @@ final class UserVerificationSessionsStatusViewController: UIViewController {
         // Do any additional setup after loading the view.
                 
         self.setupViews()
-        self.vc_removeBackTitle()
+        self.tc_removeBackTitle()
         self.activityIndicatorPresenter = ActivityIndicatorPresenter()
         self.errorPresenter = MXKErrorAlertPresentation()
         

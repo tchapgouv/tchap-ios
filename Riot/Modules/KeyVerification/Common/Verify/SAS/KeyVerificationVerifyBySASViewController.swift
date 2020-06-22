@@ -62,7 +62,7 @@ final class KeyVerificationVerifyBySASViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.vc_removeBackTitle()
+        self.tc_removeBackTitle()
         
         self.setupViews()
         self.errorPresenter = MXKErrorAlertPresentation()
@@ -157,6 +157,10 @@ final class KeyVerificationVerifyBySASViewController: UIViewController {
         self.validateButton.setTitle(VectorL10n.keyVerificationVerifySasValidateAction, for: .normal)
         
         self.additionalInformationLabel.text = VectorL10n.keyVerificationVerifySasAdditionalInformation
+        
+        // Tchap: hide the security remark (useless in case of self-device verification)
+        self.informationLabel.isHidden = true
+        self.additionalInformationLabel.isHidden = true
     }
 
     private func render(viewState: KeyVerificationVerifyViewState) {
@@ -176,13 +180,13 @@ final class KeyVerificationVerifyBySASViewController: UIViewController {
     
     private func renderLoading() {
         self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
+        
+        self.buttonsStackView.isHidden = true
+        self.waitingPartnerLabel.isHidden = false
     }
     
     private func renderVerified() {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-        
-        self.buttonsStackView.isHidden = true
-        self.waitingPartnerLabel.isHidden = false
     }
 
     private func renderCancelled(reason: MXTransactionCancelCode) {

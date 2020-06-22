@@ -27,7 +27,6 @@ internal enum TchapDefaults {
   internal static let otherIdentityServerNames: [String] = _document["otherIdentityServerNames"]
   internal static let preferredIdentityServerNames: [String] = _document["preferredIdentityServerNames"]
   internal static let pushGatewayURL: String = _document["pushGatewayURL"]
-  internal static let pushKitAppIdDev: String = _document["pushKitAppIdDev"]
   internal static let pushKitAppIdProd: String = _document["pushKitAppIdProd"]
   internal static let pusherAppIdDev: String = _document["pusherAppIdDev"]
   internal static let pusherAppIdProd: String = _document["pusherAppIdProd"]
