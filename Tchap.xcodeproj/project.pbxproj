@@ -2085,6 +2085,7 @@
 		0257366824A13F4000A54385 /* DeviceVerificationIncomingCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationIncomingCoordinatorType.swift; sourceTree = "<group>"; };
 		0257366924A13F4000A54385 /* DeviceVerificationIncomingViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationIncomingViewModelType.swift; sourceTree = "<group>"; };
 		0257366A24A13F4000A54385 /* DeviceVerificationIncomingCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceVerificationIncomingCoordinator.swift; sourceTree = "<group>"; };
+		025738A624A16BB000A54385 /* UserEncryptionTrustLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserEncryptionTrustLevel.h; sourceTree = "<group>"; };
 		0259328722AFE8A500C93762 /* PasswordPolicyServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordPolicyServiceType.swift; sourceTree = "<group>"; };
 		0259328A22AFEF5700C93762 /* PasswordPolicyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordPolicyService.swift; sourceTree = "<group>"; };
 		0259328D22B00D0200C93762 /* PasswordPolicyType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordPolicyType.swift; sourceTree = "<group>"; };
@@ -2904,6 +2905,7 @@
 		020DF883214BE467003DFBA4 /* Detail */ = {
 			isa = PBXGroup;
 			children = (
+				025738A624A16BB000A54385 /* UserEncryptionTrustLevel.h */,
 				020DF884214BE467003DFBA4 /* RoomMemberDetailsViewController.h */,
 				020DF885214BE467003DFBA4 /* RoomMemberDetailsViewController.m */,
 				020DF886214BE467003DFBA4 /* RoomMemberDetailsViewController.xib */,

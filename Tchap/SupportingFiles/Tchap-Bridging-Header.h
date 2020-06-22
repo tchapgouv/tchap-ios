@@ -27,3 +27,4 @@
 #import "RoomDataSource.h"
 #import "Contact.h"
 #import "PushNotificationService.h"
+#import "UserEncryptionTrustLevel.h"
