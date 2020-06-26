@@ -86,7 +86,7 @@ final class KeyVerificationCoordinator: KeyVerificationCoordinatorType {
     ///   - flow: The wanted key verification flow.
     ///   - navigationRouter: Existing NavigationRouter from which present the flow (optional).
     init(session: MXSession, flow: KeyVerificationFlow, navigationRouter: NavigationRouterType? = nil) {
-        self.navigationRouter = navigationRouter ?? NavigationRouter(navigationController: RiotNavigationController())
+        self.navigationRouter = navigationRouter ?? NavigationRouter(navigationController: TCNavigationController())
         
         self.session = session
         self.verificationFlow = flow

@@ -64,7 +64,7 @@ final class SecretsRecoveryWithKeyViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.vc_removeBackTitle()
+        self.tc_removeBackTitle()
         
         self.setupViews()
         self.keyboardAvoider = KeyboardAvoider(scrollViewContainerView: self.view, scrollView: self.scrollView)

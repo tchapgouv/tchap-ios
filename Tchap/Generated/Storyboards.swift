@@ -32,6 +32,16 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Tchap.ChangePasswordNewPasswordViewController>(storyboard: ChangePasswordNewPasswordViewController.self)
   }
+  internal enum DeviceVerificationIncomingViewController: StoryboardType {
+    internal static let storyboardName = "DeviceVerificationIncomingViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.DeviceVerificationIncomingViewController>(storyboard: DeviceVerificationIncomingViewController.self)
+  }
+  internal enum DeviceVerificationStartViewController: StoryboardType {
+    internal static let storyboardName = "DeviceVerificationStartViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.DeviceVerificationStartViewController>(storyboard: DeviceVerificationStartViewController.self)
+  }
   internal enum EditHistoryViewController: StoryboardType {
     internal static let storyboardName = "EditHistoryViewController"
 
@@ -67,6 +77,11 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Tchap.KeyBackupRecoverFromPassphraseViewController>(storyboard: KeyBackupRecoverFromPassphraseViewController.self)
   }
+  internal enum KeyBackupRecoverFromPrivateKeyViewController: StoryboardType {
+    internal static let storyboardName = "KeyBackupRecoverFromPrivateKeyViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.KeyBackupRecoverFromPrivateKeyViewController>(storyboard: KeyBackupRecoverFromPrivateKeyViewController.self)
+  }
   internal enum KeyBackupRecoverFromRecoveryKeyViewController: StoryboardType {
     internal static let storyboardName = "KeyBackupRecoverFromRecoveryKeyViewController"
 
@@ -96,6 +111,46 @@ internal enum StoryboardScene {
     internal static let storyboardName = "KeyBackupSetupSuccessFromRecoveryKeyViewController"
 
     internal static let initialScene = InitialSceneType<Tchap.KeyBackupSetupSuccessFromRecoveryKeyViewController>(storyboard: KeyBackupSetupSuccessFromRecoveryKeyViewController.self)
+  }
+  internal enum KeyVerificationDataLoadingViewController: StoryboardType {
+    internal static let storyboardName = "KeyVerificationDataLoadingViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.KeyVerificationDataLoadingViewController>(storyboard: KeyVerificationDataLoadingViewController.self)
+  }
+  internal enum KeyVerificationManuallyVerifyViewController: StoryboardType {
+    internal static let storyboardName = "KeyVerificationManuallyVerifyViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.KeyVerificationManuallyVerifyViewController>(storyboard: KeyVerificationManuallyVerifyViewController.self)
+  }
+  internal enum KeyVerificationScanConfirmationViewController: StoryboardType {
+    internal static let storyboardName = "KeyVerificationScanConfirmationViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.KeyVerificationScanConfirmationViewController>(storyboard: KeyVerificationScanConfirmationViewController.self)
+  }
+  internal enum KeyVerificationSelfVerifyStartViewController: StoryboardType {
+    internal static let storyboardName = "KeyVerificationSelfVerifyStartViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.KeyVerificationSelfVerifyStartViewController>(storyboard: KeyVerificationSelfVerifyStartViewController.self)
+  }
+  internal enum KeyVerificationSelfVerifyWaitViewController: StoryboardType {
+    internal static let storyboardName = "KeyVerificationSelfVerifyWaitViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.KeyVerificationSelfVerifyWaitViewController>(storyboard: KeyVerificationSelfVerifyWaitViewController.self)
+  }
+  internal enum KeyVerificationVerifiedViewController: StoryboardType {
+    internal static let storyboardName = "KeyVerificationVerifiedViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.KeyVerificationVerifiedViewController>(storyboard: KeyVerificationVerifiedViewController.self)
+  }
+  internal enum KeyVerificationVerifyBySASViewController: StoryboardType {
+    internal static let storyboardName = "KeyVerificationVerifyBySASViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.KeyVerificationVerifyBySASViewController>(storyboard: KeyVerificationVerifyBySASViewController.self)
+  }
+  internal enum KeyVerificationVerifyByScanningViewController: StoryboardType {
+    internal static let storyboardName = "KeyVerificationVerifyByScanningViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.KeyVerificationVerifyByScanningViewController>(storyboard: KeyVerificationVerifyByScanningViewController.self)
   }
   internal enum PublicRoomsViewController: StoryboardType {
     internal static let storyboardName = "PublicRoomsViewController"
@@ -127,10 +182,35 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Tchap.RoomCreationViewController>(storyboard: RoomCreationViewController.self)
   }
+  internal enum SecretsRecoveryWithKeyViewController: StoryboardType {
+    internal static let storyboardName = "SecretsRecoveryWithKeyViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.SecretsRecoveryWithKeyViewController>(storyboard: SecretsRecoveryWithKeyViewController.self)
+  }
+  internal enum SecretsRecoveryWithPassphraseViewController: StoryboardType {
+    internal static let storyboardName = "SecretsRecoveryWithPassphraseViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.SecretsRecoveryWithPassphraseViewController>(storyboard: SecretsRecoveryWithPassphraseViewController.self)
+  }
   internal enum ServiceTermsModalScreenViewController: StoryboardType {
     internal static let storyboardName = "ServiceTermsModalScreenViewController"
 
     internal static let initialScene = InitialSceneType<Tchap.ServiceTermsModalScreenViewController>(storyboard: ServiceTermsModalScreenViewController.self)
+  }
+  internal enum UserVerificationSessionStatusViewController: StoryboardType {
+    internal static let storyboardName = "UserVerificationSessionStatusViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.UserVerificationSessionStatusViewController>(storyboard: UserVerificationSessionStatusViewController.self)
+  }
+  internal enum UserVerificationSessionsStatusViewController: StoryboardType {
+    internal static let storyboardName = "UserVerificationSessionsStatusViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.UserVerificationSessionsStatusViewController>(storyboard: UserVerificationSessionsStatusViewController.self)
+  }
+  internal enum UserVerificationStartViewController: StoryboardType {
+    internal static let storyboardName = "UserVerificationStartViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.UserVerificationStartViewController>(storyboard: UserVerificationStartViewController.self)
   }
   internal enum WelcomeViewController: StoryboardType {
     internal static let storyboardName = "WelcomeViewController"

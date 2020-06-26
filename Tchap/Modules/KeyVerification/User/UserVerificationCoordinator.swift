@@ -43,7 +43,7 @@ final class UserVerificationCoordinator: NSObject, UserVerificationCoordinatorTy
     
     init(presenter: Presentable, session: MXSession, userId: String, userDisplayName: String?) {
         self.presenter = presenter
-        self.navigationRouter = NavigationRouter(navigationController: RiotNavigationController())
+        self.navigationRouter = NavigationRouter(navigationController: TCNavigationController())
         self.session = session
         self.userId = userId
         self.userDisplayName = userDisplayName

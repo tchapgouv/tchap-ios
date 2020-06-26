@@ -181,7 +181,7 @@ final class DeviceVerificationStartViewController: UIViewController {
 
         // Display the legacy verification view in full screen
         // TODO: Do not reuse the legacy EncryptionInfoView and create a screen from scratch
-        self.view.vc_addSubViewMatchingParent(encryptionInfoView)
+        self.view.tc_addSubViewMatchingParent(encryptionInfoView)
         self.navigationController?.isNavigationBarHidden = true
     }
 
