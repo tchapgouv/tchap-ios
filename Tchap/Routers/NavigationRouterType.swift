@@ -1,5 +1,5 @@
 /*
- Copyright 2018 New Vector Ltd
+ Copyright 2018-2020 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -61,6 +61,9 @@ protocol NavigationRouterType: class, Presentable {
     ///
     /// - Parameter animated: Specify true to animate the transition.
     func popModule(animated: Bool)
+    
+    /// Returns the modules that are currently in the navigation stack
+    var modules: [Presentable] { get }
 }
 
 // `NavigationRouterType` default implementation
