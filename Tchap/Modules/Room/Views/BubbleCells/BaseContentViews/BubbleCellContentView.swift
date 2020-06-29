@@ -79,13 +79,13 @@ final class BubbleCellContentView: UIView, NibLoadable {
 extension BubbleCellContentView: BubbleCellReadReceiptsDisplayable {
     
     func addReadReceiptsView(_ readReceiptsView: UIView) {
-        self.readReceiptsContentView.vc_removeAllSubviews()
-        self.readReceiptsContentView.vc_addSubViewMatchingParent(readReceiptsView)
+        self.readReceiptsContentView.tc_removeAllSubviews()
+        self.readReceiptsContentView.tc_addSubViewMatchingParent(readReceiptsView)
         self.showReadReceipts = true
     }
     
     func removeReadReceiptsView() {
         self.showReadReceipts = false
-        self.readReceiptsContentView.vc_removeAllSubviews()
+        self.readReceiptsContentView.tc_removeAllSubviews()
     }
 }

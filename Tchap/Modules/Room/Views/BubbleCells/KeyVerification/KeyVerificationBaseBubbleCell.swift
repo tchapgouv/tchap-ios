@@ -206,9 +206,9 @@ class KeyVerificationBaseBubbleCell: MXKRoomBubbleTableViewCell {
             
             let innerContentView = KeyVerificationCellInnerContentView.instantiate()
             
-            bubbleCellContentView.innerContentView.vc_addSubViewMatchingParent(innerContentView)
+            bubbleCellContentView.innerContentView.tc_addSubViewMatchingParent(innerContentView)
             
-            self.contentView.vc_addSubViewMatchingParent(bubbleCellContentView)
+            self.contentView.tc_addSubViewMatchingParent(bubbleCellContentView)
             
             self.bubbleCellContentView = bubbleCellContentView
             self.keyVerificationCellInnerContentView = innerContentView
