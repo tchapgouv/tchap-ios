@@ -157,6 +157,11 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Tchap.PublicRoomsViewController>(storyboard: PublicRoomsViewController.self)
   }
+  internal enum QRCodeReaderViewController: StoryboardType {
+    internal static let storyboardName = "QRCodeReaderViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.QRCodeReaderViewController>(storyboard: QRCodeReaderViewController.self)
+  }
   internal enum ReactionHistoryViewController: StoryboardType {
     internal static let storyboardName = "ReactionHistoryViewController"
 

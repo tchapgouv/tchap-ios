@@ -94,14 +94,14 @@ abstract_target 'TchapPods' do
         import_MatrixKit
         pod 'DGCollectionViewLeftAlignFlowLayout', '~> 1.0.4'
         pod 'KTCenterFlowLayout', '~> 1.3.1'
-        #pod 'ZXingObjC', '~> 3.6.5'
+        pod 'ZXingObjC', '~> 3.6.5'
     end
 	
     target "Btchap" do
         import_MatrixKit
         pod 'DGCollectionViewLeftAlignFlowLayout', '~> 1.0.4'
         pod 'KTCenterFlowLayout', '~> 1.3.1'
-        #pod 'ZXingObjC', '~> 3.6.5'
+        pod 'ZXingObjC', '~> 3.6.5'
     end
     
     target "TchapShareExtension" do

@@ -25,6 +25,12 @@
 		02040CE623D8938400DE0690 /* RetentionPeriodInDaysPickerContentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02040CE423D8938400DE0690 /* RetentionPeriodInDaysPickerContentView.xib */; };
 		02040CF223DA17DC00DE0690 /* MXSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02040CF123DA17DC00DE0690 /* MXSession.swift */; };
 		02040CF323DA17DC00DE0690 /* MXSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02040CF123DA17DC00DE0690 /* MXSession.swift */; };
+		02057A0024A9D7D200C96719 /* QRCodeReaderViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 020579FD24A9D7D100C96719 /* QRCodeReaderViewController.storyboard */; };
+		02057A0124A9D7D200C96719 /* QRCodeReaderViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 020579FD24A9D7D100C96719 /* QRCodeReaderViewController.storyboard */; };
+		02057A0224A9D7D200C96719 /* QRCodeReaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020579FE24A9D7D100C96719 /* QRCodeReaderViewController.swift */; };
+		02057A0324A9D7D200C96719 /* QRCodeReaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020579FE24A9D7D100C96719 /* QRCodeReaderViewController.swift */; };
+		02057A0424A9D7D200C96719 /* QRCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020579FF24A9D7D100C96719 /* QRCodeGenerator.swift */; };
+		02057A0524A9D7D200C96719 /* QRCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020579FF24A9D7D100C96719 /* QRCodeGenerator.swift */; };
 		02098F352131FE9E00F25086 /* ContactsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 02098F302131FE9E00F25086 /* ContactsDataSource.m */; };
 		02098F372131FE9E00F25086 /* ContactsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 02098F322131FE9E00F25086 /* ContactsViewController.m */; };
 		020DF935214BE467003DFBA4 /* RoomDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF85B214BE467003DFBA4 /* RoomDataSource.m */; };
@@ -1827,6 +1833,9 @@
 		02040CDB23D88D7700DE0690 /* RetentionPeriodInDaysPickerContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetentionPeriodInDaysPickerContentView.swift; sourceTree = "<group>"; };
 		02040CE423D8938400DE0690 /* RetentionPeriodInDaysPickerContentView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RetentionPeriodInDaysPickerContentView.xib; sourceTree = "<group>"; };
 		02040CF123DA17DC00DE0690 /* MXSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MXSession.swift; sourceTree = "<group>"; };
+		020579FD24A9D7D100C96719 /* QRCodeReaderViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = QRCodeReaderViewController.storyboard; sourceTree = "<group>"; };
+		020579FE24A9D7D100C96719 /* QRCodeReaderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeReaderViewController.swift; sourceTree = "<group>"; };
+		020579FF24A9D7D100C96719 /* QRCodeGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeGenerator.swift; sourceTree = "<group>"; };
 		02098F292131FE9D00F25086 /* ContactsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsViewController.h; sourceTree = "<group>"; };
 		02098F2F2131FE9E00F25086 /* ContactsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsDataSource.h; sourceTree = "<group>"; };
 		02098F302131FE9E00F25086 /* ContactsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactsDataSource.m; sourceTree = "<group>"; };
@@ -2875,6 +2884,24 @@
 				02040CE423D8938400DE0690 /* RetentionPeriodInDaysPickerContentView.xib */,
 			);
 			path = RetentionPeriodPicker;
+			sourceTree = "<group>";
+		};
+		020579FB24A9D7D100C96719 /* QRCode */ = {
+			isa = PBXGroup;
+			children = (
+				020579FC24A9D7D100C96719 /* Reader */,
+				020579FF24A9D7D100C96719 /* QRCodeGenerator.swift */,
+			);
+			path = QRCode;
+			sourceTree = "<group>";
+		};
+		020579FC24A9D7D100C96719 /* Reader */ = {
+			isa = PBXGroup;
+			children = (
+				020579FD24A9D7D100C96719 /* QRCodeReaderViewController.storyboard */,
+				020579FE24A9D7D100C96719 /* QRCodeReaderViewController.swift */,
+			);
+			path = Reader;
 			sourceTree = "<group>";
 		};
 		02098F2A2131FE9E00F25086 /* Views */ = {
@@ -3966,6 +3993,7 @@
 		02BEE14E2125BBF800098505 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				020579FB24A9D7D100C96719 /* QRCode */,
 				02388EC124A2AF9B00F3B485 /* SecretsRecovery */,
 				02388D6424A2AF7900F3B485 /* KeyVerification */,
 				02FAE47323B4B61700DE73D8 /* KeyBackup */,
@@ -6050,6 +6078,7 @@
 				029CC69221772F4200DCC8B3 /* DeviceView.xib in Resources */,
 				B12209A823854F32004D069C /* AppVersionUpdateViewController.storyboard in Resources */,
 				026154E7236C7D930045459E /* agent.collectivites_2019_10.cer in Resources */,
+				02057A0024A9D7D200C96719 /* QRCodeReaderViewController.storyboard in Resources */,
 				020DF995214BE467003DFBA4 /* RoomOutgoingTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
 				020DF953214BE467003DFBA4 /* RoomIncomingEncryptedTextMsgWithoutSenderInfoBubbleCell.xib in Resources */,
 				020DF992214BE467003DFBA4 /* RoomIncomingAttachmentBubbleCell.xib in Resources */,
@@ -6172,6 +6201,7 @@
 				02DFEC7B21C07370009B6F15 /* TableViewCellWithCheckBoxes.xib in Resources */,
 				02DFEC7C21C07370009B6F15 /* RoomMemberTitleView.xib in Resources */,
 				02DFEC7D21C07370009B6F15 /* ContactsViewController.storyboard in Resources */,
+				02057A0124A9D7D200C96719 /* QRCodeReaderViewController.storyboard in Resources */,
 				02DFEC7E21C07370009B6F15 /* TableViewCellWithButton.xib in Resources */,
 				02FAE58F23B4C41500DE73D8 /* RoomContextualMenuViewController.storyboard in Resources */,
 				02388E0424A2AF7900F3B485 /* UserVerificationStartViewController.storyboard in Resources */,
@@ -6600,6 +6630,7 @@
 				02FAE58023B4C41500DE73D8 /* ReactionsMenuViewState.swift in Sources */,
 				B15FE5E32385848F00D2A5B2 /* AppVersionCheckerResult.swift in Sources */,
 				B15B867021354FF5002782BE /* AuthenticationViewModel.swift in Sources */,
+				02057A0424A9D7D200C96719 /* QRCodeGenerator.swift in Sources */,
 				02FAE50423B4B61700DE73D8 /* KeyBackupRecoverCoordinatorBridgePresenter.swift in Sources */,
 				02FAE4FA23B4B61700DE73D8 /* KeyBackupRecoverFromPassphraseViewAction.swift in Sources */,
 				02040CDC23D88D7700DE0690 /* RetentionPeriodInDaysPickerContentView.swift in Sources */,
@@ -6917,6 +6948,7 @@
 				B109EF1B2170F3B90018FA06 /* User.swift in Sources */,
 				02040CCC23D7622200DE0690 /* RetentionPeriodInDaysPickerCell.swift in Sources */,
 				02388E0124A2AF7900F3B485 /* UserVerificationStartViewModel.swift in Sources */,
+				02057A0224A9D7D200C96719 /* QRCodeReaderViewController.swift in Sources */,
 				020DF945214BE467003DFBA4 /* RoomFilesViewController.m in Sources */,
 				B1C4644821B67F1E005F4D53 /* RoomCreationViewController.swift in Sources */,
 				020DF98F214BE467003DFBA4 /* RoomPredecessorBubbleCell.m in Sources */,
@@ -7328,6 +7360,7 @@
 				02FAE58123B4C41500DE73D8 /* ReactionsMenuViewState.swift in Sources */,
 				B15FE5E42385848F00D2A5B2 /* AppVersionCheckerResult.swift in Sources */,
 				B12209C223854F92004D069C /* ClientVersionInfoMessage.swift in Sources */,
+				02057A0524A9D7D200C96719 /* QRCodeGenerator.swift in Sources */,
 				02FAE50523B4B61700DE73D8 /* KeyBackupRecoverCoordinatorBridgePresenter.swift in Sources */,
 				02FAE4FB23B4B61700DE73D8 /* KeyBackupRecoverFromPassphraseViewAction.swift in Sources */,
 				02040CDD23D88D7700DE0690 /* RetentionPeriodInDaysPickerContentView.swift in Sources */,
@@ -7645,6 +7678,7 @@
 				02DFEBFE21C07370009B6F15 /* Coordinator.swift in Sources */,
 				02040CCD23D7622200DE0690 /* RetentionPeriodInDaysPickerCell.swift in Sources */,
 				02388E0224A2AF7900F3B485 /* UserVerificationStartViewModel.swift in Sources */,
+				02057A0324A9D7D200C96719 /* QRCodeReaderViewController.swift in Sources */,
 				B1C0EE702375B7A000E8BB88 /* ChangePasswordCurrentPasswordCoordinator.swift in Sources */,
 				B122099F23854F11004D069C /* Images.swift in Sources */,
 				02DFEBFF21C07370009B6F15 /* PublicRoomsCoordinatorType.swift in Sources */,

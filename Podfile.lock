@@ -100,6 +100,9 @@ PODS:
   - SwiftGen (6.1.0)
   - SwiftLint (0.36.0)
   - zxcvbn-ios (1.0.4)
+  - ZXingObjC (3.6.5):
+    - ZXingObjC/All (= 3.6.5)
+  - ZXingObjC/All (3.6.5)
 
 DEPENDENCIES:
   - cmark
@@ -118,6 +121,7 @@ DEPENDENCIES:
   - SwiftGen (~> 6.1)
   - SwiftLint (~> 0.36.0)
   - zxcvbn-ios
+  - ZXingObjC (~> 3.6.5)
 
 SPEC REPOS:
   trunk:
@@ -141,6 +145,7 @@ SPEC REPOS:
     - SwiftGen
     - SwiftLint
     - zxcvbn-ios
+    - ZXingObjC
 
 EXTERNAL SOURCES:
   MatrixKit:
@@ -152,10 +157,10 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   MatrixKit:
-    :commit: 6c4c4408e1b3d81da993b4e1e5bc0c5f51fa883d
+    :commit: a7b3234f755f43fc5b1fb7a5471ed2356a151c1f
     :git: https://github.com/matrix-org/matrix-ios-kit.git
   MatrixSDK:
-    :commit: 2259774d0a3d0e37b79819de5a65cf881276ae9b
+    :commit: d059cba49834c96a827baee9117aa37b49499636
     :git: https://github.com/matrix-org/matrix-ios-sdk.git
 
 SPEC CHECKSUMS:
@@ -181,7 +186,8 @@ SPEC CHECKSUMS:
   SwiftGen: f872ca75cbd17bf7103c17f13dcfa0d9a15667b0
   SwiftLint: fc9859e4e1752340664851f667bb1898b9c90114
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
+  ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: 34069f1206c63e18cb1795d15920596150fb9e39
+PODFILE CHECKSUM: e4f0904c71fe24ed0f371d121b6f491b65ff3fb8
 
 COCOAPODS: 1.8.4
