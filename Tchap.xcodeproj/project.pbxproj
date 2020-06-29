@@ -31,6 +31,8 @@
 		02057A0324A9D7D200C96719 /* QRCodeReaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020579FE24A9D7D100C96719 /* QRCodeReaderViewController.swift */; };
 		02057A0424A9D7D200C96719 /* QRCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020579FF24A9D7D100C96719 /* QRCodeGenerator.swift */; };
 		02057A0524A9D7D200C96719 /* QRCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020579FF24A9D7D100C96719 /* QRCodeGenerator.swift */; };
+		02057A0724AA8CC100C96719 /* UIDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02057A0624AA8CC100C96719 /* UIDevice.swift */; };
+		02057A0824AA8CC100C96719 /* UIDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02057A0624AA8CC100C96719 /* UIDevice.swift */; };
 		02098F352131FE9E00F25086 /* ContactsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 02098F302131FE9E00F25086 /* ContactsDataSource.m */; };
 		02098F372131FE9E00F25086 /* ContactsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 02098F322131FE9E00F25086 /* ContactsViewController.m */; };
 		020DF935214BE467003DFBA4 /* RoomDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF85B214BE467003DFBA4 /* RoomDataSource.m */; };
@@ -1836,6 +1838,7 @@
 		020579FD24A9D7D100C96719 /* QRCodeReaderViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = QRCodeReaderViewController.storyboard; sourceTree = "<group>"; };
 		020579FE24A9D7D100C96719 /* QRCodeReaderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeReaderViewController.swift; sourceTree = "<group>"; };
 		020579FF24A9D7D100C96719 /* QRCodeGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeGenerator.swift; sourceTree = "<group>"; };
+		02057A0624AA8CC100C96719 /* UIDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIDevice.swift; sourceTree = "<group>"; };
 		02098F292131FE9D00F25086 /* ContactsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsViewController.h; sourceTree = "<group>"; };
 		02098F2F2131FE9E00F25086 /* ContactsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsDataSource.h; sourceTree = "<group>"; };
 		02098F302131FE9E00F25086 /* ContactsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactsDataSource.m; sourceTree = "<group>"; };
@@ -5649,6 +5652,7 @@
 		F083BBE41E7009EC00A9B29C /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				02057A0624AA8CC100C96719 /* UIDevice.swift */,
 				02388F0824A2B54C00F3B485 /* UILabel.swift */,
 				024F787123C93A64008EC68F /* UIControl.swift */,
 				02FAE60F23B4E7AA00DE73D8 /* UIApplication.swift */,
@@ -6940,6 +6944,7 @@
 				B1C0EE6F2375B7A000E8BB88 /* ChangePasswordCurrentPasswordCoordinator.swift in Sources */,
 				02388E8324A2AF7A00F3B485 /* KeyVerificationSelfVerifyWaitCoordinatorType.swift in Sources */,
 				B1680CFB2152A9E6009B5F92 /* PublicRoomsCoordinatorType.swift in Sources */,
+				02057A0724AA8CC100C96719 /* UIDevice.swift in Sources */,
 				B146D52421A7453900D8C2C6 /* RoomAttachmentAntivirusScanStatusViewModelBuilder.swift in Sources */,
 				02388DFD24A2AF7900F3B485 /* UserVerificationStartCoordinator.swift in Sources */,
 				02388E0524A2AF7900F3B485 /* UserVerificationStartViewController.swift in Sources */,
@@ -7670,6 +7675,7 @@
 				02DFEBFB21C07370009B6F15 /* EncryptionInfoView.m in Sources */,
 				02388E8424A2AF7A00F3B485 /* KeyVerificationSelfVerifyWaitCoordinatorType.swift in Sources */,
 				0259328922AFE8A500C93762 /* PasswordPolicyServiceType.swift in Sources */,
+				02057A0824AA8CC100C96719 /* UIDevice.swift in Sources */,
 				02DFEBFC21C07370009B6F15 /* TextInputHandler.swift in Sources */,
 				02388DFE24A2AF7900F3B485 /* UserVerificationStartCoordinator.swift in Sources */,
 				02388E0624A2AF7900F3B485 /* UserVerificationStartViewController.swift in Sources */,

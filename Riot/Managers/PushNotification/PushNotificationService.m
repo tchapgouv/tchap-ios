@@ -21,7 +21,7 @@
 
 #import "MXRoom+Riot.h"
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 @interface PushNotificationService()
 {

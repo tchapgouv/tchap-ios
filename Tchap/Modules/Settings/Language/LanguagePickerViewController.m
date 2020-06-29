@@ -74,7 +74,10 @@
 
     self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     
-    [ThemeService.shared.theme applyStyleOnSearchBar:self.searchBar];
+    if (self.searchController.searchBar)
+    {
+        [ThemeService.shared.theme applyStyleOnSearchBar:self.searchController.searchBar];
+    }
     
     // Use the primary bg color for the table view in plain style.
     self.tableView.backgroundColor = ThemeService.shared.theme.backgroundColor;
