@@ -123,11 +123,12 @@ final class KeyVerificationCoordinator: KeyVerificationCoordinatorType {
         case .verifyUser(let roomMember):
             rootCoordinator = self.createUserVerificationStartCoordinator(with: roomMember)
         case .verifyDevice(let userId, let deviceId):
-            if userId ==  self.session.myUser.userId {
-                rootCoordinator = self.createSelfVerificationCoordinator(otherDeviceId: deviceId)
-            } else {
+            // Tchap: self verification is not supported yet
+//            if userId ==  self.session.myUser.userId {
+//                rootCoordinator = self.createSelfVerificationCoordinator(otherDeviceId: deviceId)
+//            } else {
                 rootCoordinator = self.createDataLoadingScreenCoordinator(otherUserId: userId, otherDeviceId: deviceId)
-            }
+//            }
         case .incomingRequest(let incomingKeyVerificationRequest):
             rootCoordinator = self.createDataLoadingScreenCoordinator(with: incomingKeyVerificationRequest)
         case .incomingSASTransaction(let incomingSASTransaction):

@@ -152,9 +152,9 @@ final class KeyVerificationVerifyBySASViewController: UIViewController {
 
         self.waitingPartnerLabel.isHidden = true
 
-        self.cancelButton.setTitle(VectorL10n.keyVerificationVerifySasCancelAction, for: .normal)
+        self.cancelButton.setTitle(VectorL10n.cancel, for: .normal)
         self.cancelButton.actionStyle = .cancel
-        self.validateButton.setTitle(VectorL10n.keyVerificationVerifySasValidateAction, for: .normal)
+        self.validateButton.setTitle(TchapL10n.actionConfirm, for: .normal)
         
         self.additionalInformationLabel.text = VectorL10n.keyVerificationVerifySasAdditionalInformation
         

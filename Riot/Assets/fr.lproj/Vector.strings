@@ -1066,13 +1066,13 @@
 "device_verification_self_verify_wait_new_sign_in_title" = "Vérifier cette connexion";
 "device_verification_self_verify_wait_additional_information" = "ou un autre client Matrix qui prend en charge la signature croisée";
 // MARK: - Device Verification
-"key_verification_other_session_title" = "Vérifier la session";
-"key_verification_new_session_title" = "Vérifiez votre nouvelle session";
-"key_verification_this_session_title" = "Vérifier cette session";
+"key_verification_other_session_title" = "Vérifier l’appareil";
+"key_verification_new_session_title" = "Vérifiez votre nouvel appareil";
+"key_verification_this_session_title" = "Vérifier cet appareil";
 "device_verification_security_advice_emoji" = "Comparez les émojis uniques, en vérifiant qu’ils apparaissent bien dans le même ordre.";
 "device_verification_security_advice_number" = "Comparez les nombres, en vérifiant qu’ils apparaissent bien dans le même ordre.";
-"key_verification_verify_sas_title_emoji" = "Comparer les émojis";
-"key_verification_verify_sas_title_number" = "Comparer les nombres";
+"key_verification_verify_sas_title_emoji" = "Vérifiez l’appareil en confirmant que les émojis suivants apparaissent également sur son écran";
+"key_verification_verify_sas_title_number" = "Vérifiez l’appareil en confirmant que les chiffres suivants apparaissent également sur son écran";
 "key_verification_verify_sas_cancel_action" = "Ils ne correspondent pas";
 "key_verification_verify_sas_validate_action" = "Ils correspondent";
 "key_verification_verify_sas_additional_information" = "Pour une sécurité optimale, utilisez un autre moyen de communication fiable ou faites cela en personne.";
