@@ -136,7 +136,7 @@
                                                         </constraints>
                                                     </stackView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Waiting for partner to confirm..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6yX-xD-4X5">
-                                                        <rect key="frame" x="20" y="216" width="335" height="54"/>
+                                                        <rect key="frame" x="20" y="389" width="335" height="54"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="335" id="9C0-ev-AVw"/>
                                                             <constraint firstAttribute="height" constant="54" id="pta-eP-0yH"/>
@@ -154,11 +154,11 @@
                                                 </subviews>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
-                                                    <constraint firstItem="6yX-xD-4X5" firstAttribute="top" secondItem="bxI-mu-qng" secondAttribute="bottom" constant="47" id="6Bh-e4-HVr"/>
                                                     <constraint firstItem="6xJ-uL-C85" firstAttribute="top" secondItem="34i-3X-YvQ" secondAttribute="bottom" constant="20" id="BaX-9q-msm"/>
                                                     <constraint firstAttribute="trailing" secondItem="6xJ-uL-C85" secondAttribute="trailing" constant="20" id="G5w-nx-cbM"/>
                                                     <constraint firstAttribute="trailing" secondItem="gDW-77-nwN" secondAttribute="trailing" constant="20" id="Iel-ki-dp5"/>
                                                     <constraint firstItem="6xJ-uL-C85" firstAttribute="leading" secondItem="voD-3Q-ryt" secondAttribute="leading" constant="20" id="MET-AV-3jS"/>
+                                                    <constraint firstItem="6yX-xD-4X5" firstAttribute="top" secondItem="6xJ-uL-C85" secondAttribute="top" id="NIG-Km-mby"/>
                                                     <constraint firstItem="he8-pl-xE9" firstAttribute="leading" secondItem="bxI-mu-qng" secondAttribute="leading" id="Q9n-7p-gHl"/>
                                                     <constraint firstItem="he8-pl-xE9" firstAttribute="leading" secondItem="voD-3Q-ryt" secondAttribute="leading" constant="20" id="QSg-yz-aaB"/>
                                                     <constraint firstItem="6yX-xD-4X5" firstAttribute="centerX" secondItem="voD-3Q-ryt" secondAttribute="centerX" id="Rg4-jV-Nht"/>
