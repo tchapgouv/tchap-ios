@@ -773,6 +773,16 @@
 		027DCAC621B14F68000DD05E /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027DCAC421B14F68000DD05E /* ContactCell.swift */; };
 		0287985624AE7EFA004FC7AE /* BtchapNSE.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 0287984F24AE7EFA004FC7AE /* BtchapNSE.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		0287986624AE80C8004FC7AE /* TchapNSE.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 0287985F24AE80C8004FC7AE /* TchapNSE.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		0287986E24AE8404004FC7AE /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0287986C24AE8404004FC7AE /* NotificationService.swift */; };
+		0287986F24AE8404004FC7AE /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0287986C24AE8404004FC7AE /* NotificationService.swift */; };
+		0287987024AE8404004FC7AE /* NSEMemoryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0287986D24AE8404004FC7AE /* NSEMemoryStore.swift */; };
+		0287987124AE8404004FC7AE /* NSEMemoryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0287986D24AE8404004FC7AE /* NSEMemoryStore.swift */; };
+		0287987224AE846D004FC7AE /* RiotSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B5597F20EFC3DF00210D55 /* RiotSettings.swift */; };
+		0287987324AE846D004FC7AE /* RiotSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B5597F20EFC3DF00210D55 /* RiotSettings.swift */; };
+		0287987424AE84FF004FC7AE /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D0FC8824AE2DDA008DD5BB /* Constants.swift */; };
+		0287987524AE8500004FC7AE /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D0FC8824AE2DDA008DD5BB /* Constants.swift */; };
+		0287987624AE850F004FC7AE /* DataProtectionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D0FC8924AE2DDA008DD5BB /* DataProtectionHelper.swift */; };
+		0287987724AE8510004FC7AE /* DataProtectionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D0FC8924AE2DDA008DD5BB /* DataProtectionHelper.swift */; };
 		028B50B5228E2931005DB9B6 /* matrix.agent.tchap.gouv.fr.cer in Resources */ = {isa = PBXBuildFile; fileRef = 028B50B4228E2931005DB9B6 /* matrix.agent.tchap.gouv.fr.cer */; };
 		028B50B7228EB2C3005DB9B6 /* www.tchap.gouv.fr.cer in Resources */ = {isa = PBXBuildFile; fileRef = 028B50B6228EB2C2005DB9B6 /* www.tchap.gouv.fr.cer */; };
 		02906073214FD0E1005FE3C1 /* RoomCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02906071214FD0E0005FE3C1 /* RoomCoordinatorType.swift */; };
@@ -2335,6 +2345,8 @@
 		0287985F24AE80C8004FC7AE /* TchapNSE.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TchapNSE.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		0287986324AE80C8004FC7AE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0287986A24AE8142004FC7AE /* TchapNSE.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TchapNSE.entitlements; sourceTree = "<group>"; };
+		0287986C24AE8404004FC7AE /* NotificationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		0287986D24AE8404004FC7AE /* NSEMemoryStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSEMemoryStore.swift; sourceTree = "<group>"; };
 		028B50B4228E2931005DB9B6 /* matrix.agent.tchap.gouv.fr.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = matrix.agent.tchap.gouv.fr.cer; sourceTree = "<group>"; };
 		028B50B6228EB2C2005DB9B6 /* www.tchap.gouv.fr.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = www.tchap.gouv.fr.cer; sourceTree = "<group>"; };
 		02906071214FD0E0005FE3C1 /* RoomCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomCoordinatorType.swift; sourceTree = "<group>"; };
@@ -4033,6 +4045,8 @@
 		0287986024AE80C8004FC7AE /* TchapNSE */ = {
 			isa = PBXGroup;
 			children = (
+				0287986C24AE8404004FC7AE /* NotificationService.swift */,
+				0287986D24AE8404004FC7AE /* NSEMemoryStore.swift */,
 				0287986A24AE8142004FC7AE /* TchapNSE.entitlements */,
 				0287986324AE80C8004FC7AE /* Info.plist */,
 			);
@@ -6068,9 +6082,11 @@
 					};
 					0287984E24AE7EFA004FC7AE = {
 						CreatedOnToolsVersion = 11.3.1;
+						LastSwiftMigration = 1130;
 					};
 					0287985E24AE80C8004FC7AE = {
 						CreatedOnToolsVersion = 11.3.1;
+						LastSwiftMigration = 1130;
 					};
 					02DFEB6F21C07370009B6F15 = {
 						SystemCapabilities = {
@@ -7554,6 +7570,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0287986E24AE8404004FC7AE /* NotificationService.swift in Sources */,
+				0287987224AE846D004FC7AE /* RiotSettings.swift in Sources */,
+				0287987024AE8404004FC7AE /* NSEMemoryStore.swift in Sources */,
+				0287987624AE850F004FC7AE /* DataProtectionHelper.swift in Sources */,
+				0287987424AE84FF004FC7AE /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7561,6 +7582,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0287986F24AE8404004FC7AE /* NotificationService.swift in Sources */,
+				0287987324AE846D004FC7AE /* RiotSettings.swift in Sources */,
+				0287987124AE8404004FC7AE /* NSEMemoryStore.swift in Sources */,
+				0287987724AE8510004FC7AE /* DataProtectionHelper.swift in Sources */,
+				0287987524AE8500004FC7AE /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8555,6 +8581,7 @@
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
@@ -8590,6 +8617,7 @@
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
@@ -8623,6 +8651,7 @@
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
@@ -8658,6 +8687,7 @@
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
