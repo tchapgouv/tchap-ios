@@ -783,6 +783,10 @@
 		0287987524AE8500004FC7AE /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D0FC8824AE2DDA008DD5BB /* Constants.swift */; };
 		0287987624AE850F004FC7AE /* DataProtectionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D0FC8924AE2DDA008DD5BB /* DataProtectionHelper.swift */; };
 		0287987724AE8510004FC7AE /* DataProtectionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D0FC8924AE2DDA008DD5BB /* DataProtectionHelper.swift */; };
+		0287987824AE8683004FC7AE /* UNUserNotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E9144524AE090300DC0B97 /* UNUserNotificationCenter.swift */; };
+		0287987924AE8683004FC7AE /* UNUserNotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E9144524AE090300DC0B97 /* UNUserNotificationCenter.swift */; };
+		0287987A24AE872C004FC7AE /* TchapDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = B122099323854ED2004D069C /* TchapDefaults.swift */; };
+		0287987B24AE873D004FC7AE /* TchapDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = B122099723854EF2004D069C /* TchapDefaults.swift */; };
 		028B50B5228E2931005DB9B6 /* matrix.agent.tchap.gouv.fr.cer in Resources */ = {isa = PBXBuildFile; fileRef = 028B50B4228E2931005DB9B6 /* matrix.agent.tchap.gouv.fr.cer */; };
 		028B50B7228EB2C3005DB9B6 /* www.tchap.gouv.fr.cer in Resources */ = {isa = PBXBuildFile; fileRef = 028B50B6228EB2C2005DB9B6 /* www.tchap.gouv.fr.cer */; };
 		02906073214FD0E1005FE3C1 /* RoomCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02906071214FD0E0005FE3C1 /* RoomCoordinatorType.swift */; };
@@ -1550,10 +1554,12 @@
 		02FAE61B23B5587200DE73D8 /* AutosizedCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE61A23B5587200DE73D8 /* AutosizedCollectionView.swift */; };
 		02FAE61C23B5587200DE73D8 /* AutosizedCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE61A23B5587200DE73D8 /* AutosizedCollectionView.swift */; };
 		193B2CED1BFA08EA45ED6460 /* Pods_TchapPods_TchapShareExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8582197A7D3C5D692C381218 /* Pods_TchapPods_TchapShareExtension.framework */; };
+		2246FD2FAB52E3C6490FD4BA /* Pods_TchapPods_BtchapNSE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01A24A7FB32EBE89014DD918 /* Pods_TchapPods_BtchapNSE.framework */; };
 		323BD4C6148B554408CDD950 /* Pods_TchapPods_BtchapShareExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EFEE7E56697557ECD04FEDAE /* Pods_TchapPods_BtchapShareExtension.framework */; };
 		3758AAFA0E62019A0A322926 /* Pods_TchapPods_Tchap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6969DC25D5C9C2BB6A87FF16 /* Pods_TchapPods_Tchap.framework */; };
 		88D99D182A4DAA23DCFAEFC1 /* Pods_TchapPods_Btchap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42D17E495E890C4E93B6454C /* Pods_TchapPods_Btchap.framework */; };
 		9BB56DCE73301826A61AB27C /* Pods_TchapPods_TchapTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86EB8C3A36242C8A56747B11 /* Pods_TchapPods_TchapTests.framework */; };
+		AF9665A83D61A89EF70F9739 /* Pods_TchapPods_TchapNSE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36D255B2C1E174D71079370D /* Pods_TchapPods_TchapNSE.framework */; };
 		B104AA1D215D3EE800B2C452 /* ForgotPasswordService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B104AA1C215D3EE800B2C452 /* ForgotPasswordService.swift */; };
 		B104AA1F215E163000B2C452 /* ForgotPasswordServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B104AA1E215E163000B2C452 /* ForgotPasswordServiceType.swift */; };
 		B1073D6621A8096F00E36CFA /* RoomIncomingEncryptedAttachmentWithPaginationTitleBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B1073D5F21A8096300E36CFA /* RoomIncomingEncryptedAttachmentWithPaginationTitleBubbleCell.m */; };
@@ -1888,6 +1894,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		01A24A7FB32EBE89014DD918 /* Pods_TchapPods_BtchapNSE.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TchapPods_BtchapNSE.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		02018F9522003F76008D68BE /* UniversalLinkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniversalLinkService.swift; sourceTree = "<group>"; };
 		02018F9822004417008D68BE /* UniversalLinkServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniversalLinkServiceType.swift; sourceTree = "<group>"; };
 		02018F9B22006200008D68BE /* UniversalLinkParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniversalLinkParameters.swift; sourceTree = "<group>"; };
@@ -2594,17 +2601,21 @@
 		3267EFB520E379FD00FF1CAA /* AUTHORS.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AUTHORS.rst; sourceTree = "<group>"; };
 		3267EFB620E379FD00FF1CAA /* README.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.rst; sourceTree = "<group>"; };
 		3284A35020A07C210044F922 /* postMessageAPI.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = postMessageAPI.js; sourceTree = "<group>"; };
+		36D255B2C1E174D71079370D /* Pods_TchapPods_TchapNSE.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TchapPods_TchapNSE.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		42D17E495E890C4E93B6454C /* Pods_TchapPods_Btchap.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TchapPods_Btchap.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		456A8484841ECDA7F54D5999 /* Pods-TchapPods-TchapTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TchapPods-TchapTests.release.xcconfig"; path = "Target Support Files/Pods-TchapPods-TchapTests/Pods-TchapPods-TchapTests.release.xcconfig"; sourceTree = "<group>"; };
 		56D1C658F955BD97CBA30525 /* Pods-TchapPods-Tchap.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TchapPods-Tchap.debug.xcconfig"; path = "Target Support Files/Pods-TchapPods-Tchap/Pods-TchapPods-Tchap.debug.xcconfig"; sourceTree = "<group>"; };
 		625E30A4635DA46F0FC3CDF5 /* Pods-TchapPods-TchapShareExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TchapPods-TchapShareExtension.release.xcconfig"; path = "Target Support Files/Pods-TchapPods-TchapShareExtension/Pods-TchapPods-TchapShareExtension.release.xcconfig"; sourceTree = "<group>"; };
 		6969DC25D5C9C2BB6A87FF16 /* Pods_TchapPods_Tchap.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TchapPods_Tchap.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		707571FAD9C944CD0B492B03 /* Pods-TchapPods-TchapNSE.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TchapPods-TchapNSE.release.xcconfig"; path = "Target Support Files/Pods-TchapPods-TchapNSE/Pods-TchapPods-TchapNSE.release.xcconfig"; sourceTree = "<group>"; };
 		8582197A7D3C5D692C381218 /* Pods_TchapPods_TchapShareExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TchapPods_TchapShareExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		86EB8C3A36242C8A56747B11 /* Pods_TchapPods_TchapTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TchapPods_TchapTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B24EBDB14F52DD337C40E49 /* Pods-TchapPods-TchapTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TchapPods-TchapTests.debug.xcconfig"; path = "Target Support Files/Pods-TchapPods-TchapTests/Pods-TchapPods-TchapTests.debug.xcconfig"; sourceTree = "<group>"; };
 		926FA53D1F4C132000F826C2 /* MXSession+Riot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MXSession+Riot.h"; sourceTree = "<group>"; };
 		926FA53E1F4C132000F826C2 /* MXSession+Riot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MXSession+Riot.m"; sourceTree = "<group>"; };
 		92726A501F587410004AD26F /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
+		9DC54D5D711B24AF40853E49 /* Pods-TchapPods-TchapNSE.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TchapPods-TchapNSE.debug.xcconfig"; path = "Target Support Files/Pods-TchapPods-TchapNSE/Pods-TchapPods-TchapNSE.debug.xcconfig"; sourceTree = "<group>"; };
+		9FBCA44ECB93548DFC6800AB /* Pods-TchapPods-BtchapNSE.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TchapPods-BtchapNSE.debug.xcconfig"; path = "Target Support Files/Pods-TchapPods-BtchapNSE/Pods-TchapPods-BtchapNSE.debug.xcconfig"; sourceTree = "<group>"; };
 		B104AA1C215D3EE800B2C452 /* ForgotPasswordService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordService.swift; sourceTree = "<group>"; };
 		B104AA1E215E163000B2C452 /* ForgotPasswordServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordServiceType.swift; sourceTree = "<group>"; };
 		B1073D5D21A8096100E36CFA /* RoomIncomingEncryptedAttachmentWithPaginationTitleBubbleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomIncomingEncryptedAttachmentWithPaginationTitleBubbleCell.h; sourceTree = "<group>"; };
@@ -2911,6 +2922,7 @@
 		F083BC131E7009EC00A9B29C /* EventFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventFormatter.m; sourceTree = "<group>"; };
 		F0D2AD9F1F6AA5FD00A7097D /* MXRoomSummary+Riot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MXRoomSummary+Riot.h"; sourceTree = "<group>"; };
 		F0D2ADA01F6AA5FD00A7097D /* MXRoomSummary+Riot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MXRoomSummary+Riot.m"; sourceTree = "<group>"; };
+		FCBF30105DF231AA03EC9564 /* Pods-TchapPods-BtchapNSE.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TchapPods-BtchapNSE.release.xcconfig"; path = "Target Support Files/Pods-TchapPods-BtchapNSE/Pods-TchapPods-BtchapNSE.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2942,6 +2954,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2246FD2FAB52E3C6490FD4BA /* Pods_TchapPods_BtchapNSE.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2949,6 +2962,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AF9665A83D61A89EF70F9739 /* Pods_TchapPods_TchapNSE.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4751,6 +4765,8 @@
 				86EB8C3A36242C8A56747B11 /* Pods_TchapPods_TchapTests.framework */,
 				EFEE7E56697557ECD04FEDAE /* Pods_TchapPods_BtchapShareExtension.framework */,
 				8582197A7D3C5D692C381218 /* Pods_TchapPods_TchapShareExtension.framework */,
+				01A24A7FB32EBE89014DD918 /* Pods_TchapPods_BtchapNSE.framework */,
+				36D255B2C1E174D71079370D /* Pods_TchapPods_TchapNSE.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -5747,6 +5763,10 @@
 				EC12B265ADB7DBE5FAE5277F /* Pods-TchapPods-BtchapShareExtension.release.xcconfig */,
 				B53EBE04EF6E755A4CB0505C /* Pods-TchapPods-TchapShareExtension.debug.xcconfig */,
 				625E30A4635DA46F0FC3CDF5 /* Pods-TchapPods-TchapShareExtension.release.xcconfig */,
+				9FBCA44ECB93548DFC6800AB /* Pods-TchapPods-BtchapNSE.debug.xcconfig */,
+				FCBF30105DF231AA03EC9564 /* Pods-TchapPods-BtchapNSE.release.xcconfig */,
+				9DC54D5D711B24AF40853E49 /* Pods-TchapPods-TchapNSE.debug.xcconfig */,
+				707571FAD9C944CD0B492B03 /* Pods-TchapPods-TchapNSE.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -5961,6 +5981,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0287985924AE7EFA004FC7AE /* Build configuration list for PBXNativeTarget "BtchapNSE" */;
 			buildPhases = (
+				49527C48034115FDE5F0205A /* [CP] Check Pods Manifest.lock */,
 				0287984B24AE7EFA004FC7AE /* Sources */,
 				0287984C24AE7EFA004FC7AE /* Frameworks */,
 				0287984D24AE7EFA004FC7AE /* Resources */,
@@ -5978,6 +5999,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0287986724AE80C8004FC7AE /* Build configuration list for PBXNativeTarget "TchapNSE" */;
 			buildPhases = (
+				858EC0AC6B3F549F04789D9A /* [CP] Check Pods Manifest.lock */,
 				0287985B24AE80C8004FC7AE /* Sources */,
 				0287985C24AE80C8004FC7AE /* Frameworks */,
 				0287985D24AE80C8004FC7AE /* Resources */,
@@ -6648,6 +6670,28 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		49527C48034115FDE5F0205A /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TchapPods-BtchapNSE-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		543847EAB5A8A774FBDE5AA5 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -6746,6 +6790,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TchapPods-Btchap/Pods-TchapPods-Btchap-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		858EC0AC6B3F549F04789D9A /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TchapPods-TchapNSE-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		9A3BB602232A4956CAE9C431 /* [CP] Check Pods Manifest.lock */ = {
@@ -7574,7 +7640,9 @@
 				0287987224AE846D004FC7AE /* RiotSettings.swift in Sources */,
 				0287987024AE8404004FC7AE /* NSEMemoryStore.swift in Sources */,
 				0287987624AE850F004FC7AE /* DataProtectionHelper.swift in Sources */,
+				0287987A24AE872C004FC7AE /* TchapDefaults.swift in Sources */,
 				0287987424AE84FF004FC7AE /* Constants.swift in Sources */,
+				0287987824AE8683004FC7AE /* UNUserNotificationCenter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7586,7 +7654,9 @@
 				0287987324AE846D004FC7AE /* RiotSettings.swift in Sources */,
 				0287987124AE8404004FC7AE /* NSEMemoryStore.swift in Sources */,
 				0287987724AE8510004FC7AE /* DataProtectionHelper.swift in Sources */,
+				0287987B24AE873D004FC7AE /* TchapDefaults.swift in Sources */,
 				0287987524AE8500004FC7AE /* Constants.swift in Sources */,
+				0287987924AE8683004FC7AE /* UNUserNotificationCenter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8366,7 +8436,7 @@
 					"\"$(PROJECT_DIR)/Riot/libs/jitsi-meet\"",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Tchap/SupportingFiles/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -8411,7 +8481,7 @@
 					"\"$(PROJECT_DIR)/Riot/libs/jitsi-meet\"",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Tchap/SupportingFiles/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -8446,7 +8516,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
 				INFOPLIST_FILE = "$(SRCROOT)/BtchapShareExtension/SupportingFiles/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -8485,7 +8555,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
 				INFOPLIST_FILE = "$(SRCROOT)/BtchapShareExtension/SupportingFiles/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -8522,7 +8592,7 @@
 				ENABLE_BITCODE = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "$(SRCROOT)/TchapShareExtension/SupportingFiles/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -8559,7 +8629,7 @@
 				ENABLE_BITCODE = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "$(SRCROOT)/TchapShareExtension/SupportingFiles/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -8577,6 +8647,7 @@
 		};
 		0287985724AE7EFA004FC7AE /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9FBCA44ECB93548DFC6800AB /* Pods-TchapPods-BtchapNSE.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -8593,7 +8664,7 @@
 				DEVELOPMENT_TEAM = NVMQD635C6;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = BtchapNSE/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -8613,6 +8684,7 @@
 		};
 		0287985824AE7EFA004FC7AE /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FCBF30105DF231AA03EC9564 /* Pods-TchapPods-BtchapNSE.release.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -8629,7 +8701,7 @@
 				DEVELOPMENT_TEAM = NVMQD635C6;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = BtchapNSE/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -8647,6 +8719,7 @@
 		};
 		0287986824AE80C8004FC7AE /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9DC54D5D711B24AF40853E49 /* Pods-TchapPods-TchapNSE.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -8663,7 +8736,7 @@
 				DEVELOPMENT_TEAM = NVMQD635C6;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = TchapNSE/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -8683,6 +8756,7 @@
 		};
 		0287986924AE80C8004FC7AE /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 707571FAD9C944CD0B492B03 /* Pods-TchapPods-TchapNSE.release.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -8699,7 +8773,7 @@
 				DEVELOPMENT_TEAM = NVMQD635C6;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = TchapNSE/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -8752,7 +8826,7 @@
 					"ENABLE_EDITION=1",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Btchap/SupportingFiles/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -8805,7 +8879,7 @@
 					"ENABLE_EDITION=1",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Btchap/SupportingFiles/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -8942,7 +9016,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 1.0.23;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -8994,7 +9068,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 1.0.23;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
