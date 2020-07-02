@@ -1284,6 +1284,9 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     // Reset key backup banner preferences
     [KeyBackupBannerPreferences.shared reset];
     
+    // Reset key verification banner preferences
+    [CrossSigningBannerPreferences.shared reset];
+    
 #ifdef MX_CALL_STACK_ENDPOINT
     // Erase all created certificates and private keys by MXEndpointCallStack
     for (MXKAccount *account in MXKAccountManager.sharedManager.accounts)
@@ -3128,6 +3131,11 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     NSString *defaultsPathFromApp = [[NSBundle mainBundle] pathForResource:userDefaults ofType:@"plist"];
     NSDictionary *defaults = [NSDictionary dictionaryWithContentsOfFile:defaultsPathFromApp];
     [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
+    
+    if (!RiotSettings.shared.isUserDefaultsMigrated)
+    {
+        [RiotSettings.shared migrate];
+    }
 }
 
 @end

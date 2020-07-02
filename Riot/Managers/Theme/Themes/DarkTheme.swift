@@ -20,6 +20,8 @@ import UIKit
 /// Color constants for the dark theme
 @objcMembers
 class DarkTheme: NSObject, Theme {
+    
+    var identifier: String = "dark"
 
     var backgroundColor: UIColor = UIColor(rgb: 0x181B21)
 
@@ -91,12 +93,19 @@ class DarkTheme: NSObject, Theme {
     }
 
     func applyStyle(onSearchBar searchBar: UISearchBar) {
-        searchBar.barStyle = .black
-        searchBar.tintColor = self.searchPlaceholderColor
-        searchBar.barTintColor = self.headerBackgroundColor
+        searchBar.barStyle = .default
+        searchBar.barTintColor = self.baseColor
         
-        if let searchBarTextField = searchBar.vc_searchTextField {
-            searchBarTextField.textColor = searchBar.tintColor            
+        if #available(iOS 13.0, *) {
+            searchBar.searchTextField.backgroundColor = self.searchBackgroundColor
+            searchBar.searchTextField.textColor = self.searchPlaceholderColor
+            searchBar.tintColor = self.tintColor
+        } else {
+            searchBar.tintColor = self.searchPlaceholderColor
+            
+            if let searchBarTextField = searchBar.vc_searchTextField {
+                searchBarTextField.textColor = searchBar.tintColor
+            }
         }
     }
     

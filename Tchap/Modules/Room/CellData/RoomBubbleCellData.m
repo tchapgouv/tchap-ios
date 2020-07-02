@@ -867,6 +867,7 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
         default:
             break;
     }
+    
 }
 
 #pragma mark - Show all reactions

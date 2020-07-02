@@ -344,6 +344,8 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     // Check the table view style to select its bg color.
     self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? style.backgroundColor : style.secondaryBackgroundColor);
     self.view.backgroundColor = self.tableView.backgroundColor;
+    
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle

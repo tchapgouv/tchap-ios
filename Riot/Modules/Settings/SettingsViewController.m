@@ -87,9 +87,7 @@ enum
 
 enum
 {
-    CALLS_ENABLE_CALLKIT_INDEX = 0,
-    CALLS_CALLKIT_DESCRIPTION_INDEX,
-    CALLS_ENABLE_STUN_SERVER_FALLBACK_INDEX,
+    CALLS_ENABLE_STUN_SERVER_FALLBACK_INDEX=0,
     CALLS_STUN_SERVER_FALLBACK_DESCRIPTION_INDEX,
     CALLS_COUNT
 };
@@ -150,7 +148,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 
 
 @interface SettingsViewController () <DeactivateAccountViewControllerDelegate,
-KeyBackupSetupCoordinatorBridgePresenterDelegate,
+SecureBackupSetupCoordinatorBridgePresenterDelegate,
 SignOutAlertPresenterDelegate,
 SingleImagePickerPresenterDelegate,
 SettingsDiscoveryTableViewSectionDelegate, SettingsDiscoveryViewModelCoordinatorDelegate,
@@ -233,8 +231,6 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     // The current pushed view controller
     UIViewController *pushedViewController;
 
-    KeyBackupSetupCoordinatorBridgePresenter *keyBackupSetupCoordinatorBridgePresenter;
-
     SettingsIdentityServerCoordinatorBridgePresenter *identityServerSettingsCoordinatorBridgePresenter;
 }
 
@@ -256,6 +252,9 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 @property (nonatomic, strong) SettingsDiscoveryViewModel *settingsDiscoveryViewModel;
 @property (nonatomic, strong) SettingsDiscoveryTableViewSection *settingsDiscoveryTableViewSection;
 @property (nonatomic, strong) SettingsDiscoveryThreePidDetailsCoordinatorBridgePresenter *discoveryThreePidDetailsPresenter;
+
+@property (nonatomic, strong) SecureBackupSetupCoordinatorBridgePresenter *secureBackupSetupCoordinatorBridgePresenter;
+@property (nonatomic, strong) AuthenticatedSessionViewControllerFactory *authenticatedSessionViewControllerFactory;
 
 @end
 
@@ -323,7 +322,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     }];
     
     // Add observer to push settings
-    pushInfoUpdateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountPushKitActivityDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    pushInfoUpdateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountAPNSActivityDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         [self stopActivityIndicator];
         
@@ -377,6 +376,8 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     {
         [self refreshSettings];
     }
+
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -429,7 +430,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
         [super destroy];
     }
 
-    keyBackupSetupCoordinatorBridgePresenter = nil;
+    _secureBackupSetupCoordinatorBridgePresenter = nil;
     identityServerSettingsCoordinatorBridgePresenter = nil;
 }
 
@@ -1563,6 +1564,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                 newPhoneCell.countryCodeButton.accessibilityIdentifier = @"SettingsVCPhoneCountryButton";
                 
                 newPhoneCell.mxkLabel.font = newPhoneCell.mxkTextField.font = [UIFont systemFontOfSize:16];
+                newPhoneCell.mxkTextField.textColor = ThemeService.shared.theme.textSecondaryColor;                
                 
                 newPhoneCell.mxkTextField.userInteractionEnabled = YES;
                 newPhoneCell.mxkTextField.keyboardType = UIKeyboardTypePhonePad;
@@ -1669,7 +1671,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
     
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_enable_push_notif", @"Vector", nil);
-            labelAndSwitchCell.mxkSwitch.on = account.isPushKitNotificationActive;
+            labelAndSwitchCell.mxkSwitch.on = account.pushNotificationServiceIsActive;
             labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
             labelAndSwitchCell.mxkSwitch.enabled = YES;
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(togglePushNotifications:) forControlEvents:UIControlEventTouchUpInside];
@@ -1683,7 +1685,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_show_decrypted_content", @"Vector", nil);
             labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.showDecryptedContentInNotifications;
             labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
-            labelAndSwitchCell.mxkSwitch.enabled = account.isPushKitNotificationActive;
+            labelAndSwitchCell.mxkSwitch.enabled = account.pushNotificationServiceIsActive;
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleShowDecodedContent:) forControlEvents:UIControlEventTouchUpInside];
             
             
@@ -1729,39 +1731,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     }
     else if (section == SETTINGS_SECTION_CALLS_INDEX)
     {
-        if (row == CALLS_ENABLE_CALLKIT_INDEX)
-        {
-            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_enable_callkit", @"Vector", nil);
-            labelAndSwitchCell.mxkSwitch.on = [MXKAppSettings standardAppSettings].isCallKitEnabled;
-            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
-            labelAndSwitchCell.mxkSwitch.enabled = YES;
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleCallKit:) forControlEvents:UIControlEventTouchUpInside];
-
-            if (![MXCallKitAdapter callKitAvailable])
-            {
-                labelAndSwitchCell.mxkSwitch.on = NO;
-                labelAndSwitchCell.mxkSwitch.enabled = NO;
-                labelAndSwitchCell.mxkLabel.enabled = NO;
-            }
-
-            cell = labelAndSwitchCell;
-        }
-        else if (row == CALLS_CALLKIT_DESCRIPTION_INDEX)
-        {
-            MXKTableViewCell *globalInfoCell = [self getDefaultTableViewCell:tableView];
-            globalInfoCell.textLabel.text = NSLocalizedStringFromTable(@"settings_callkit_info", @"Vector", nil);
-            globalInfoCell.textLabel.numberOfLines = 0;
-            globalInfoCell.selectionStyle = UITableViewCellSelectionStyleNone;
-
-            if (![MXCallKitAdapter callKitAvailable])
-            {
-                globalInfoCell.textLabel.enabled = NO;
-            }
-
-            cell = globalInfoCell;
-        }
-        else if (row == CALLS_ENABLE_STUN_SERVER_FALLBACK_INDEX)
+        if (row == CALLS_ENABLE_STUN_SERVER_FALLBACK_INDEX)
         {
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_calls_stun_server_fallback_button", @"Vector", nil);
@@ -2846,10 +2816,10 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
         
         MXKAccountManager *accountManager = [MXKAccountManager sharedManager];
         MXKAccount* account = accountManager.activeAccounts.firstObject;
-        
-        if (accountManager.pushDeviceToken)
+
+        if (accountManager.apnsDeviceToken)
         {
-            [account enablePushKitNotifications:!account.isPushKitNotificationActive success:^{
+            [account enablePushNotifications:!account.pushNotificationServiceIsActive success:^{
                 [self stopActivityIndicator];
             } failure:^(NSError *error) {
                 [self stopActivityIndicator];
@@ -2866,7 +2836,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                 }
                 else
                 {
-                    [account enablePushKitNotifications:YES success:^{
+                    [account enablePushNotifications:YES success:^{
                         [self stopActivityIndicator];
                     } failure:^(NSError *error) {
                         [self stopActivityIndicator];
@@ -4084,35 +4054,72 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     [deactivateAccountViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
+#pragma mark - SecureBackupSetupCoordinatorBridgePresenter
 
-#pragma mark - KeyBackupSetupCoordinatorBridgePresenter
-
-- (void)showKeyBackupSetupFromSignOutFlow:(BOOL)showFromSignOutFlow
+- (void)showSecureBackupSetupFromSignOutFlow
 {
-    keyBackupSetupCoordinatorBridgePresenter = [[KeyBackupSetupCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
-    
-    [keyBackupSetupCoordinatorBridgePresenter presentFrom:self
-                                     isStartedFromSignOut:showFromSignOutFlow
-                                                 animated:true];
-    
-    keyBackupSetupCoordinatorBridgePresenter.delegate = self;
+    if (self.canSetupSecureBackup)
+    {
+        [self setupSecureBackup2];
+    }
+    else
+    {
+        // Set up cross-signing first
+        [self setupCrossSigningWithTitle:NSLocalizedStringFromTable(@"secure_key_backup_setup_intro_title", @"Vector", nil)
+                                 message:NSLocalizedStringFromTable(@"security_settings_user_password_description", @"Vector", nil)
+                                 success:^{
+                                     [self setupSecureBackup2];
+                                 } failure:^(NSError *error) {
+                                 }];
+    }
 }
 
-- (void)keyBackupSetupCoordinatorBridgePresenterDelegateDidCancel:(KeyBackupSetupCoordinatorBridgePresenter *)bridgePresenter {
-    [keyBackupSetupCoordinatorBridgePresenter dismissWithAnimated:true];
-    keyBackupSetupCoordinatorBridgePresenter = nil;
+- (void)setupSecureBackup2
+{
+    SecureBackupSetupCoordinatorBridgePresenter *secureBackupSetupCoordinatorBridgePresenter = [[SecureBackupSetupCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
+    secureBackupSetupCoordinatorBridgePresenter.delegate = self;
+    
+    [secureBackupSetupCoordinatorBridgePresenter presentFrom:self animated:YES];
+    
+    self.secureBackupSetupCoordinatorBridgePresenter = secureBackupSetupCoordinatorBridgePresenter;
 }
 
-- (void)keyBackupSetupCoordinatorBridgePresenterDelegateDidSetupRecoveryKey:(KeyBackupSetupCoordinatorBridgePresenter *)bridgePresenter {
-    [keyBackupSetupCoordinatorBridgePresenter dismissWithAnimated:true];
-    keyBackupSetupCoordinatorBridgePresenter = nil;
+- (BOOL)canSetupSecureBackup
+{
+    // Accept to create a setup only if we have the 3 cross-signing keys
+    // This is the path to have a sane state
+    // TODO: What about missing MSK that was not gossiped before?
+    
+    MXRecoveryService *recoveryService = self.mainSession.crypto.recoveryService;
+    
+    NSArray *crossSigningServiceSecrets = @[
+                                            MXSecretId.crossSigningMaster,
+                                            MXSecretId.crossSigningSelfSigning,
+                                            MXSecretId.crossSigningUserSigning];
+    
+    return ([recoveryService.secretsStoredLocally mx_intersectArray:crossSigningServiceSecrets].count
+            == crossSigningServiceSecrets.count);
+}
+
+#pragma mark - SecureBackupSetupCoordinatorBridgePresenterDelegate
+
+- (void)secureBackupSetupCoordinatorBridgePresenterDelegateDidComplete:(SecureBackupSetupCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [self.secureBackupSetupCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    self.secureBackupSetupCoordinatorBridgePresenter = nil;
+}
+
+- (void)secureBackupSetupCoordinatorBridgePresenterDelegateDidCancel:(SecureBackupSetupCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [self.secureBackupSetupCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    self.secureBackupSetupCoordinatorBridgePresenter = nil;
 }
 
 #pragma mark - SignOutAlertPresenterDelegate
 
 - (void)signOutAlertPresenterDidTapBackupAction:(SignOutAlertPresenter * _Nonnull)presenter
 {
-    [self showKeyBackupSetupFromSignOutFlow:YES];
+    [self showSecureBackupSetupFromSignOutFlow];
 }
 
 - (void)signOutAlertPresenterDidTapSignOutAction:(SignOutAlertPresenter * _Nonnull)presenter
@@ -4135,6 +4142,63 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
         self.signOutButton.enabled = YES;
     }];
 }
+
+- (void)setupCrossSigningWithTitle:(NSString*)title
+                           message:(NSString*)message
+                           success:(void (^)(void))success
+                           failure:(void (^)(NSError *error))failure
+{
+    __block UIViewController *viewController;
+    [self startActivityIndicator];
+    
+    // Get credentials to set up cross-signing
+    NSString *path = [NSString stringWithFormat:@"%@/keys/device_signing/upload", kMXAPIPrefixPathUnstable];
+    _authenticatedSessionViewControllerFactory = [[AuthenticatedSessionViewControllerFactory alloc] initWithSession:self.mainSession];
+    [_authenticatedSessionViewControllerFactory viewControllerForPath:path
+                                                           httpMethod:@"POST"
+                                                                title:title
+                                                              message:message
+                                                     onViewController:^(UIViewController * _Nonnull theViewController)
+     {
+         viewController = theViewController;
+         [self presentViewController:viewController animated:YES completion:nil];
+         
+     } onAuthenticated:^(NSDictionary * _Nonnull authParams) {
+         
+         [viewController dismissViewControllerAnimated:NO completion:nil];
+         viewController = nil;
+         
+         MXCrossSigning *crossSigning = self.mainSession.crypto.crossSigning;
+         if (crossSigning)
+         {
+             [crossSigning setupWithAuthParams:authParams success:^{
+                 [self stopActivityIndicator];
+                 success();
+             } failure:^(NSError * _Nonnull error) {
+                 [self stopActivityIndicator];
+                 
+                 [[AppDelegate theDelegate] showErrorAsAlert:error];
+                 failure(error);
+             }];
+         }
+         
+     } onCancelled:^{
+         [self stopActivityIndicator];
+         
+         [viewController dismissViewControllerAnimated:NO completion:nil];
+         viewController = nil;
+         failure(nil);
+     } onFailure:^(NSError * _Nonnull error) {
+         
+         [self stopActivityIndicator];
+         [[AppDelegate theDelegate] showErrorAsAlert:error];
+         
+         [viewController dismissViewControllerAnimated:NO completion:nil];
+         viewController = nil;
+         failure(error);
+     }];
+}
+
 
 #pragma mark - SingleImagePickerPresenterDelegate
 

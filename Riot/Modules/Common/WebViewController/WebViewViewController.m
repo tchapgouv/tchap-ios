@@ -98,6 +98,8 @@
     
     self.view.backgroundColor = style.backgroundColor;
     webView.backgroundColor = style.backgroundColor;
+
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle

@@ -96,10 +96,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PushNotificationServiceDe
         return self.appCoordinator.handleUserActivity(userActivity, application: application)
     }
     
-    func pushNotificationServiceShouldRefreshApplicationBadgeNumber(_ pushNotificationService: PushNotificationService) {
-        self.legacyAppDelegate.refreshApplicationIconBadgeNumber()
-    }
-    
     func pushNotificationService(_ pushNotificationService: PushNotificationService, shouldNavigateToRoomWithId roomId: String) {
         _ = self.appCoordinator.resumeBySelectingRoom(with: roomId)
     }

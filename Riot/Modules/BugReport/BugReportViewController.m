@@ -166,6 +166,8 @@
     self.cancelButton.tintColor = ThemeService.shared.theme.tintColor;
     
     _bugReportDescriptionTextView.layer.borderColor = ThemeService.shared.theme.headerBackgroundColor.CGColor;
+
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle

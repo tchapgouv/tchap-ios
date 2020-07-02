@@ -832,6 +832,14 @@
 		02CEE1DE23312C370085ACF0 /* matrix.agent.externe.tchap.gouv.fr2.cer in Resources */ = {isa = PBXBuildFile; fileRef = 02CEE1DD23312C370085ACF0 /* matrix.agent.externe.tchap.gouv.fr2.cer */; };
 		02CEE1E52338C5B20085ACF0 /* AppVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CEE1E42338C5B10085ACF0 /* AppVersion.swift */; };
 		02CEE1E62338C5B20085ACF0 /* AppVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CEE1E42338C5B10085ACF0 /* AppVersion.swift */; };
+		02D0FC8D24AE2DDA008DD5BB /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D0FC8824AE2DDA008DD5BB /* Constants.swift */; };
+		02D0FC8E24AE2DDA008DD5BB /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D0FC8824AE2DDA008DD5BB /* Constants.swift */; };
+		02D0FC8F24AE2DDA008DD5BB /* DataProtectionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D0FC8924AE2DDA008DD5BB /* DataProtectionHelper.swift */; };
+		02D0FC9024AE2DDA008DD5BB /* DataProtectionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D0FC8924AE2DDA008DD5BB /* DataProtectionHelper.swift */; };
+		02D0FC9124AE2DDA008DD5BB /* EventFormatter+DTCoreTextFix.m in Sources */ = {isa = PBXBuildFile; fileRef = 02D0FC8A24AE2DDA008DD5BB /* EventFormatter+DTCoreTextFix.m */; };
+		02D0FC9224AE2DDA008DD5BB /* EventFormatter+DTCoreTextFix.m in Sources */ = {isa = PBXBuildFile; fileRef = 02D0FC8A24AE2DDA008DD5BB /* EventFormatter+DTCoreTextFix.m */; };
+		02D0FC9324AE2DDA008DD5BB /* EncryptionTrustLevelBadgeImageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D0FC8B24AE2DDA008DD5BB /* EncryptionTrustLevelBadgeImageHelper.swift */; };
+		02D0FC9424AE2DDA008DD5BB /* EncryptionTrustLevelBadgeImageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D0FC8B24AE2DDA008DD5BB /* EncryptionTrustLevelBadgeImageHelper.swift */; };
 		02DC4F4B221C46E500B551EE /* RoomPowerLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DC4F4A221C46E500B551EE /* RoomPowerLevel.swift */; };
 		02DC4F4C221C46E500B551EE /* RoomPowerLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DC4F4A221C46E500B551EE /* RoomPowerLevel.swift */; };
 		02DFEB7421C07370009B6F15 /* RoomAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B146D50C21A5EAE600D8C2C6 /* RoomAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.m */; };
@@ -1189,6 +1197,8 @@
 		02DFECEC21C07370009B6F15 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02BEE1A2212C717F00098505 /* Images.xcassets */; };
 		02DFECED21C07370009B6F15 /* RoomEncryptedAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 020DF8B5214BE467003DFBA4 /* RoomEncryptedAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.xib */; };
 		02DFECFC21C07792009B6F15 /* Btchap-Defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 02DFECFB21C07792009B6F15 /* Btchap-Defaults.plist */; };
+		02E9144624AE090300DC0B97 /* UNUserNotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E9144524AE090300DC0B97 /* UNUserNotificationCenter.swift */; };
+		02E9144724AE090300DC0B97 /* UNUserNotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E9144524AE090300DC0B97 /* UNUserNotificationCenter.swift */; };
 		02ECA88022E0C5BA00ECDA5E /* MXRoomSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ECA87F22E0C5BA00ECDA5E /* MXRoomSummary.swift */; };
 		02ECA88122E0C5BA00ECDA5E /* MXRoomSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ECA87F22E0C5BA00ECDA5E /* MXRoomSummary.swift */; };
 		02F0FF3F22268D5F00066908 /* PublicRoomsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F0FF3E22268D5F00066908 /* PublicRoomsCell.swift */; };
@@ -2363,11 +2373,17 @@
 		02C4BE93225502DD00F7BB0E /* DiscussionDetailsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionDetailsCoordinator.swift; sourceTree = "<group>"; };
 		02CEE1DD23312C370085ACF0 /* matrix.agent.externe.tchap.gouv.fr2.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = matrix.agent.externe.tchap.gouv.fr2.cer; sourceTree = "<group>"; };
 		02CEE1E42338C5B10085ACF0 /* AppVersion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppVersion.swift; sourceTree = "<group>"; };
+		02D0FC8824AE2DDA008DD5BB /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		02D0FC8924AE2DDA008DD5BB /* DataProtectionHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataProtectionHelper.swift; sourceTree = "<group>"; };
+		02D0FC8A24AE2DDA008DD5BB /* EventFormatter+DTCoreTextFix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EventFormatter+DTCoreTextFix.m"; sourceTree = "<group>"; };
+		02D0FC8B24AE2DDA008DD5BB /* EncryptionTrustLevelBadgeImageHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptionTrustLevelBadgeImageHelper.swift; sourceTree = "<group>"; };
+		02D0FC8C24AE2DDA008DD5BB /* EventFormatter+DTCoreTextFix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EventFormatter+DTCoreTextFix.h"; sourceTree = "<group>"; };
 		02DC4F4A221C46E500B551EE /* RoomPowerLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomPowerLevel.swift; sourceTree = "<group>"; };
 		02DFECF521C07370009B6F15 /* Btchap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Btchap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		02DFECF921C0771C009B6F15 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		02DFECFB21C07792009B6F15 /* Btchap-Defaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Btchap-Defaults.plist"; sourceTree = "<group>"; };
 		02DFECFD21C1197E009B6F15 /* Btchap.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Btchap.entitlements; sourceTree = "<group>"; };
+		02E9144524AE090300DC0B97 /* UNUserNotificationCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UNUserNotificationCenter.swift; sourceTree = "<group>"; };
 		02ECA87F22E0C5BA00ECDA5E /* MXRoomSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MXRoomSummary.swift; sourceTree = "<group>"; };
 		02F0FF3E22268D5F00066908 /* PublicRoomsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicRoomsCell.swift; sourceTree = "<group>"; };
 		02F0FF442226F82600066908 /* RoomIDComponents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomIDComponents.swift; sourceTree = "<group>"; };
@@ -5728,6 +5744,7 @@
 		F083BBE41E7009EC00A9B29C /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				02E9144524AE090300DC0B97 /* UNUserNotificationCenter.swift */,
 				02057A0624AA8CC100C96719 /* UIDevice.swift */,
 				02388F0824A2B54C00F3B485 /* UILabel.swift */,
 				024F787123C93A64008EC68F /* UIControl.swift */,
@@ -5778,6 +5795,11 @@
 		F083BC0F1E7009EC00A9B29C /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				02D0FC8824AE2DDA008DD5BB /* Constants.swift */,
+				02D0FC8924AE2DDA008DD5BB /* DataProtectionHelper.swift */,
+				02D0FC8B24AE2DDA008DD5BB /* EncryptionTrustLevelBadgeImageHelper.swift */,
+				02D0FC8C24AE2DDA008DD5BB /* EventFormatter+DTCoreTextFix.h */,
+				02D0FC8A24AE2DDA008DD5BB /* EventFormatter+DTCoreTextFix.m */,
 				F083BC101E7009EC00A9B29C /* AvatarGenerator.h */,
 				F083BC111E7009EC00A9B29C /* AvatarGenerator.m */,
 				F083BC121E7009EC00A9B29C /* EventFormatter.h */,
@@ -6902,6 +6924,7 @@
 				02098F372131FE9E00F25086 /* ContactsViewController.m in Sources */,
 				B12DDAA1217020410093172C /* AvatarImageShape.swift in Sources */,
 				02FAE5DA23B4C41600DE73D8 /* EditHistoryCoordinatorType.swift in Sources */,
+				02E9144624AE090300DC0B97 /* UNUserNotificationCenter.swift in Sources */,
 				02FAE4BC23B4B61700DE73D8 /* KeyBackupSetupPassphraseViewController.swift in Sources */,
 				B12209A723854F32004D069C /* AppVersionUpdateViewModel.swift in Sources */,
 				020DF994214BE467003DFBA4 /* RoomIncomingTextMsgBubbleCell.m in Sources */,
@@ -7031,6 +7054,7 @@
 				02388E8324A2AF7A00F3B485 /* KeyVerificationSelfVerifyWaitCoordinatorType.swift in Sources */,
 				B1680CFB2152A9E6009B5F92 /* PublicRoomsCoordinatorType.swift in Sources */,
 				02057A0724AA8CC100C96719 /* UIDevice.swift in Sources */,
+				02D0FC9124AE2DDA008DD5BB /* EventFormatter+DTCoreTextFix.m in Sources */,
 				B146D52421A7453900D8C2C6 /* RoomAttachmentAntivirusScanStatusViewModelBuilder.swift in Sources */,
 				02388DFD24A2AF7900F3B485 /* UserVerificationStartCoordinator.swift in Sources */,
 				02388E0524A2AF7900F3B485 /* UserVerificationStartViewController.swift in Sources */,
@@ -7088,6 +7112,7 @@
 				02FAE41F23B29EBD00DE73D8 /* ServiceTermsModalScreenCoordinatorType.swift in Sources */,
 				02FAE41323B29EBD00DE73D8 /* ServiceTermsModalCoordinator.swift in Sources */,
 				02FAE41923B29EBD00DE73D8 /* ServiceTermsModalScreenViewController.swift in Sources */,
+				02D0FC9324AE2DDA008DD5BB /* EncryptionTrustLevelBadgeImageHelper.swift in Sources */,
 				02388EA524A2AF7A00F3B485 /* DeviceVerificationStartViewAction.swift in Sources */,
 				0250C4F92122B68000034691 /* RoomPreviewData.m in Sources */,
 				B15FE5E92385871A00D2A5B2 /* AppVersionCheckerType.swift in Sources */,
@@ -7192,11 +7217,13 @@
 				024F786323C8E38D008EC68F /* SettingsKeyBackupViewState.swift in Sources */,
 				02388F0424A2B21D00F3B485 /* CloseButton.swift in Sources */,
 				0250C51E2122B68000034691 /* UsersDevicesViewController.m in Sources */,
+				02D0FC8F24AE2DDA008DD5BB /* DataProtectionHelper.swift in Sources */,
 				02057A2B24AA8EFA00C96719 /* KeyVerificationRequestStatusViewData.swift in Sources */,
 				B109EF182170DFEB0018FA06 /* UserService.swift in Sources */,
 				02FAE5EE23B4C41600DE73D8 /* ReactionHistoryViewData.swift in Sources */,
 				02C4BE912252502900F7BB0E /* InviteServiceType.swift in Sources */,
 				B1BC6A212136CA7F00D32F8E /* Stylable.swift in Sources */,
+				02D0FC8D24AE2DDA008DD5BB /* Constants.swift in Sources */,
 				02388E3B24A2AF7900F3B485 /* KeyVerificationVerifyByScanningViewModelType.swift in Sources */,
 				B15B866E21353C8D002782BE /* TextInputProperties.swift in Sources */,
 				02FAE4D823B4B61700DE73D8 /* KeyBackupBannerPreferences.swift in Sources */,
@@ -7647,6 +7674,7 @@
 				02DFEBCA21C07370009B6F15 /* PublicRoomsViewController.swift in Sources */,
 				02DFEBCB21C07370009B6F15 /* RegistrationEmailSentViewController.swift in Sources */,
 				02FAE5DB23B4C41600DE73D8 /* EditHistoryCoordinatorType.swift in Sources */,
+				02E9144724AE090300DC0B97 /* UNUserNotificationCenter.swift in Sources */,
 				02FAE4BD23B4B61700DE73D8 /* KeyBackupSetupPassphraseViewController.swift in Sources */,
 				02DFEBCC21C07370009B6F15 /* KeyboardAvoider.swift in Sources */,
 				02DFEBCD21C07370009B6F15 /* TableViewCellWithPhoneNumberTextField.m in Sources */,
@@ -7776,6 +7804,7 @@
 				02388E8424A2AF7A00F3B485 /* KeyVerificationSelfVerifyWaitCoordinatorType.swift in Sources */,
 				0259328922AFE8A500C93762 /* PasswordPolicyServiceType.swift in Sources */,
 				02057A0824AA8CC100C96719 /* UIDevice.swift in Sources */,
+				02D0FC9224AE2DDA008DD5BB /* EventFormatter+DTCoreTextFix.m in Sources */,
 				02DFEBFC21C07370009B6F15 /* TextInputHandler.swift in Sources */,
 				02388DFE24A2AF7900F3B485 /* UserVerificationStartCoordinator.swift in Sources */,
 				02388E0624A2AF7900F3B485 /* UserVerificationStartViewController.swift in Sources */,
@@ -7833,6 +7862,7 @@
 				02FAE42023B29EBD00DE73D8 /* ServiceTermsModalScreenCoordinatorType.swift in Sources */,
 				02FAE41423B29EBD00DE73D8 /* ServiceTermsModalCoordinator.swift in Sources */,
 				02FAE41A23B29EBD00DE73D8 /* ServiceTermsModalScreenViewController.swift in Sources */,
+				02D0FC9424AE2DDA008DD5BB /* EncryptionTrustLevelBadgeImageHelper.swift in Sources */,
 				02388EA624A2AF7A00F3B485 /* DeviceVerificationStartViewAction.swift in Sources */,
 				B15FE5EA2385871A00D2A5B2 /* AppVersionCheckerType.swift in Sources */,
 				02DFEC1221C07370009B6F15 /* RoomOutgoingEncryptedTextMsgWithoutSenderNameBubbleCell.m in Sources */,
@@ -7937,11 +7967,13 @@
 				024F786423C8E38D008EC68F /* SettingsKeyBackupViewState.swift in Sources */,
 				02388F0524A2B21D00F3B485 /* CloseButton.swift in Sources */,
 				02DFEC3E21C07370009B6F15 /* RoomsDiscussionCell.swift in Sources */,
+				02D0FC9024AE2DDA008DD5BB /* DataProtectionHelper.swift in Sources */,
 				02057A2C24AA8EFA00C96719 /* KeyVerificationRequestStatusViewData.swift in Sources */,
 				02DFEC3F21C07370009B6F15 /* RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				02FAE5EF23B4C41600DE73D8 /* ReactionHistoryViewData.swift in Sources */,
 				02DFEC4021C07370009B6F15 /* MXSession+Riot.m in Sources */,
 				02DFEC4121C07370009B6F15 /* ThirdPartyIDPlatformInfoResolver.swift in Sources */,
+				02D0FC8E24AE2DDA008DD5BB /* Constants.swift in Sources */,
 				02388E3C24A2AF7900F3B485 /* KeyVerificationVerifyByScanningViewModelType.swift in Sources */,
 				02DFEC4221C07370009B6F15 /* UsersDevicesViewController.m in Sources */,
 				02FAE4D923B4B61700DE73D8 /* KeyBackupBannerPreferences.swift in Sources */,
@@ -8608,6 +8640,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -8627,6 +8660,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MARKETING_VERSION = 1.0.23;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -8665,6 +8699,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
+				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -8677,6 +8712,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MARKETING_VERSION = 1.0.23;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;

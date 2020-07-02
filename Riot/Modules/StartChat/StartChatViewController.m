@@ -196,10 +196,10 @@
     }
 }
 
-- (void)viewWillDisappear:(BOOL)animated
+- (void)viewDidDisappear:(BOOL)animated
 {
-    [super viewWillDisappear:animated];
- 
+    [super viewDidDisappear:animated];
+
     // cancel any pending search
     [self searchBarCancelButtonClicked:_searchBarView];
 }
@@ -564,7 +564,7 @@
                 [[AppDelegate theDelegate] showErrorAsAlert:error];
             };
 
-            [self.mainSession canEnableE2EByDefaultInNewRoomWithUsers:inviteArray success:^(BOOL canEnableE2E) {
+            [self.mainSession vc_canEnableE2EByDefaultInNewRoomWithUsers:inviteArray success:^(BOOL canEnableE2E) {
                 MXStrongifyAndReturnIfNil(self);
 
                 // Create new room

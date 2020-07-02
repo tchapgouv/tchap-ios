@@ -401,6 +401,8 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
     {
         [self refreshContactsTable];
     }
+    
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 #pragma mark - MXKDataSourceDelegate

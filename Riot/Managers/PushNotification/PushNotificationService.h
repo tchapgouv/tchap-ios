@@ -15,16 +15,19 @@
  limitations under the License.
  */
 
+#import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
-#import <PushKit/PushKit.h>
 #import <UserNotifications/UserNotifications.h>
 
 @class MXSession;
+@class MXEvent;
+@class MXPushRule;
+@class MXKAccount;
 @protocol PushNotificationServiceDelegate;
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface PushNotificationService : NSObject <PKPushRegistryDelegate, UNUserNotificationCenterDelegate>
+@interface PushNotificationService : NSObject <UNUserNotificationCenterDelegate>
 
 /**
  Is push really registered.
@@ -48,6 +51,13 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)registerForRemoteNotificationsWithCompletion:(nullable void (^)(NSError *))completion;
 
+- (void)didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken;
+
+- (void)didFailToRegisterForRemoteNotificationsWithError:(NSError *)error;
+
+- (void)didReceiveRemoteNotification:(NSDictionary *)userInfo
+              fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler;
+
 /**
  Perform deregistration for remote notifications.
  */
@@ -57,41 +67,6 @@ NS_ASSUME_NONNULL_BEGIN
  Method to be called when the application enters foreground. Flushs all the pending notifications.
  */
 - (void)applicationWillEnterForeground;
-
-/**
- Add Matrix session to be handled for incoming pushes.
-
- @param mxSession Matrix session.
- */
-- (void)addMatrixSession:(MXSession *)mxSession;
-
-/**
- Remove Matrix session to incoming push handling.
-
- @param mxSession Matrix session.
- */
-- (void)removeMatrixSession:(MXSession *)mxSession;
-
-/**
- Enable local notifications for the passed Matrix session.
-
- @param mxSession Matrix session.
- */
-- (void)enableLocalNotificationsFromMatrixSession:(MXSession*)mxSession;
-
-/**
- Disable local notifications for the passed Matrix session.
-
- @param mxSession Matrix session.
- */
-- (void)disableLocalNotificationsFromMatrixSession:(MXSession*)mxSession;
-
-/**
- Handle state changes for a Matrix session, when in background. If this method called when the application is not in background, it has no effect.
-
- @param mxSession Matrix session.
- */
-- (void)handleSessionStateChangesInBackgroundFor:(MXSession *)mxSession;
 
 /**
  Remove delivered notifications for a given room id except call notifications
@@ -107,13 +82,6 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol PushNotificationServiceDelegate <NSObject>
 
 @optional
-
-/**
- Will be called when it's a good idea to update application badge number.
-
- @param pushNotificationService PushNotificationService object.
- */
-- (void)pushNotificationServiceShouldRefreshApplicationBadgeNumber:(PushNotificationService *)pushNotificationService;
 
 /**
  Will be called when the user interacts with a notification, which will be led the user to navigate to a specific room.

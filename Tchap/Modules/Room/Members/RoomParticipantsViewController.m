@@ -196,6 +196,8 @@
     {
         [self.tableView reloadData];
     }
+
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle

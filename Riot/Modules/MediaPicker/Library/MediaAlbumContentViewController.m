@@ -120,6 +120,8 @@
 
     self.assetsCollectionView.backgroundColor = ThemeService.shared.theme.backgroundColor;
     self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
+
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle

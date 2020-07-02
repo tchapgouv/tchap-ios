@@ -148,6 +148,8 @@
     {
         [self.bubblesTableView reloadData];
     }
+
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle

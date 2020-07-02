@@ -470,6 +470,8 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     {
         [self.bubblesTableView reloadData];
     }
+    
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
