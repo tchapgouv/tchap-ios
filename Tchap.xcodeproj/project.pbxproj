@@ -771,6 +771,10 @@
 		026D887221C1C5490085BED8 /* BtchapSharedImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 026D887121C1C5490085BED8 /* BtchapSharedImages.xcassets */; };
 		027DCAC521B14F68000DD05E /* ContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 027DCAC321B14F68000DD05E /* ContactCell.xib */; };
 		027DCAC621B14F68000DD05E /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027DCAC421B14F68000DD05E /* ContactCell.swift */; };
+		0287985224AE7EFA004FC7AE /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0287985124AE7EFA004FC7AE /* NotificationService.swift */; };
+		0287985624AE7EFA004FC7AE /* BtchapNSE.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 0287984F24AE7EFA004FC7AE /* BtchapNSE.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		0287986224AE80C8004FC7AE /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0287986124AE80C8004FC7AE /* NotificationService.swift */; };
+		0287986624AE80C8004FC7AE /* TchapNSE.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 0287985F24AE80C8004FC7AE /* TchapNSE.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		028B50B5228E2931005DB9B6 /* matrix.agent.tchap.gouv.fr.cer in Resources */ = {isa = PBXBuildFile; fileRef = 028B50B4228E2931005DB9B6 /* matrix.agent.tchap.gouv.fr.cer */; };
 		028B50B7228EB2C3005DB9B6 /* www.tchap.gouv.fr.cer in Resources */ = {isa = PBXBuildFile; fileRef = 028B50B6228EB2C2005DB9B6 /* www.tchap.gouv.fr.cer */; };
 		02906073214FD0E1005FE3C1 /* RoomCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02906071214FD0E0005FE3C1 /* RoomCoordinatorType.swift */; };
@@ -1321,12 +1325,6 @@
 		02FAE4D123B4B61700DE73D8 /* KeyBackupSetupCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE48B23B4B61700DE73D8 /* KeyBackupSetupCoordinatorType.swift */; };
 		02FAE4D223B4B61700DE73D8 /* KeyBackupSetupCoordinatorBridgePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE48C23B4B61700DE73D8 /* KeyBackupSetupCoordinatorBridgePresenter.swift */; };
 		02FAE4D323B4B61700DE73D8 /* KeyBackupSetupCoordinatorBridgePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE48C23B4B61700DE73D8 /* KeyBackupSetupCoordinatorBridgePresenter.swift */; };
-		02FAE4D423B4B61700DE73D8 /* KeyBackupBannerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02FAE48E23B4B61700DE73D8 /* KeyBackupBannerCell.xib */; };
-		02FAE4D523B4B61700DE73D8 /* KeyBackupBannerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02FAE48E23B4B61700DE73D8 /* KeyBackupBannerCell.xib */; };
-		02FAE4D623B4B61700DE73D8 /* KeyBackupBannerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE48F23B4B61700DE73D8 /* KeyBackupBannerCell.swift */; };
-		02FAE4D723B4B61700DE73D8 /* KeyBackupBannerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE48F23B4B61700DE73D8 /* KeyBackupBannerCell.swift */; };
-		02FAE4D823B4B61700DE73D8 /* KeyBackupBannerPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE49023B4B61700DE73D8 /* KeyBackupBannerPreferences.swift */; };
-		02FAE4D923B4B61700DE73D8 /* KeyBackupBannerPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE49023B4B61700DE73D8 /* KeyBackupBannerPreferences.swift */; };
 		02FAE4DA23B4B61700DE73D8 /* EncryptionKeysExportPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE49223B4B61700DE73D8 /* EncryptionKeysExportPresenter.swift */; };
 		02FAE4DB23B4B61700DE73D8 /* EncryptionKeysExportPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE49223B4B61700DE73D8 /* EncryptionKeysExportPresenter.swift */; };
 		02FAE4DC23B4B61700DE73D8 /* KeyBackupRecoverSuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE49523B4B61700DE73D8 /* KeyBackupRecoverSuccessViewController.swift */; };
@@ -1811,6 +1809,20 @@
 			remoteGlobalIDString = 026155762398F6450045459E;
 			remoteInfo = TchapShareExtension;
 		};
+		0287985424AE7EFA004FC7AE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F094A99A1B78D8F000B1FBBF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0287984E24AE7EFA004FC7AE;
+			remoteInfo = BtchapNSE;
+		};
+		0287986424AE80C8004FC7AE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F094A99A1B78D8F000B1FBBF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0287985E24AE80C8004FC7AE;
+			remoteInfo = TchapNSE;
+		};
 		B1454BC6216BBE4000365A86 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F094A99A1B78D8F000B1FBBF /* Project object */;
@@ -1827,6 +1839,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				0287986624AE80C8004FC7AE /* TchapNSE.appex in Embed App Extensions */,
 				026155822398F6460045459E /* TchapShareExtension.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
@@ -1849,6 +1862,7 @@
 			dstSubfolderSpec = 13;
 			files = (
 				0261550D239507000045459E /* BtchapShareExtension.appex in Embed App Extensions */,
+				0287985624AE7EFA004FC7AE /* BtchapNSE.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2317,6 +2331,14 @@
 		026D887121C1C5490085BED8 /* BtchapSharedImages.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = BtchapSharedImages.xcassets; sourceTree = "<group>"; };
 		027DCAC321B14F68000DD05E /* ContactCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactCell.xib; sourceTree = "<group>"; };
 		027DCAC421B14F68000DD05E /* ContactCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
+		0287984F24AE7EFA004FC7AE /* BtchapNSE.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BtchapNSE.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		0287985124AE7EFA004FC7AE /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		0287985324AE7EFA004FC7AE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0287985A24AE807F004FC7AE /* BtchapNSE.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BtchapNSE.entitlements; sourceTree = "<group>"; };
+		0287985F24AE80C8004FC7AE /* TchapNSE.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TchapNSE.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		0287986124AE80C8004FC7AE /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		0287986324AE80C8004FC7AE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0287986A24AE8142004FC7AE /* TchapNSE.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TchapNSE.entitlements; sourceTree = "<group>"; };
 		028B50B4228E2931005DB9B6 /* matrix.agent.tchap.gouv.fr.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = matrix.agent.tchap.gouv.fr.cer; sourceTree = "<group>"; };
 		028B50B6228EB2C2005DB9B6 /* www.tchap.gouv.fr.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = www.tchap.gouv.fr.cer; sourceTree = "<group>"; };
 		02906071214FD0E0005FE3C1 /* RoomCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomCoordinatorType.swift; sourceTree = "<group>"; };
@@ -2450,9 +2472,6 @@
 		02FAE48A23B4B61700DE73D8 /* KeyBackupSetupPassphraseCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyBackupSetupPassphraseCoordinator.swift; sourceTree = "<group>"; };
 		02FAE48B23B4B61700DE73D8 /* KeyBackupSetupCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyBackupSetupCoordinatorType.swift; sourceTree = "<group>"; };
 		02FAE48C23B4B61700DE73D8 /* KeyBackupSetupCoordinatorBridgePresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyBackupSetupCoordinatorBridgePresenter.swift; sourceTree = "<group>"; };
-		02FAE48E23B4B61700DE73D8 /* KeyBackupBannerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KeyBackupBannerCell.xib; sourceTree = "<group>"; };
-		02FAE48F23B4B61700DE73D8 /* KeyBackupBannerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyBackupBannerCell.swift; sourceTree = "<group>"; };
-		02FAE49023B4B61700DE73D8 /* KeyBackupBannerPreferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyBackupBannerPreferences.swift; sourceTree = "<group>"; };
 		02FAE49223B4B61700DE73D8 /* EncryptionKeysExportPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptionKeysExportPresenter.swift; sourceTree = "<group>"; };
 		02FAE49523B4B61700DE73D8 /* KeyBackupRecoverSuccessViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyBackupRecoverSuccessViewController.swift; sourceTree = "<group>"; };
 		02FAE49623B4B61700DE73D8 /* KeyBackupRecoverSuccessViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = KeyBackupRecoverSuccessViewController.storyboard; sourceTree = "<group>"; };
@@ -2908,6 +2927,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				193B2CED1BFA08EA45ED6460 /* Pods_TchapPods_TchapShareExtension.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0287984C24AE7EFA004FC7AE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0287985C24AE80C8004FC7AE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3992,6 +4025,26 @@
 			path = SupportingFiles;
 			sourceTree = "<group>";
 		};
+		0287985024AE7EFA004FC7AE /* BtchapNSE */ = {
+			isa = PBXGroup;
+			children = (
+				0287985A24AE807F004FC7AE /* BtchapNSE.entitlements */,
+				0287985124AE7EFA004FC7AE /* NotificationService.swift */,
+				0287985324AE7EFA004FC7AE /* Info.plist */,
+			);
+			path = BtchapNSE;
+			sourceTree = "<group>";
+		};
+		0287986024AE80C8004FC7AE /* TchapNSE */ = {
+			isa = PBXGroup;
+			children = (
+				0287986A24AE8142004FC7AE /* TchapNSE.entitlements */,
+				0287986124AE80C8004FC7AE /* NotificationService.swift */,
+				0287986324AE80C8004FC7AE /* Info.plist */,
+			);
+			path = TchapNSE;
+			sourceTree = "<group>";
+		};
 		028B50B3228E2931005DB9B6 /* Certificates */ = {
 			isa = PBXGroup;
 			children = (
@@ -4397,7 +4450,6 @@
 			isa = PBXGroup;
 			children = (
 				02FAE47423B4B61700DE73D8 /* Setup */,
-				02FAE48D23B4B61700DE73D8 /* Banners */,
 				02FAE49123B4B61700DE73D8 /* ManualExport */,
 				02FAE49323B4B61700DE73D8 /* Recover */,
 			);
@@ -4452,16 +4504,6 @@
 				02FAE48A23B4B61700DE73D8 /* KeyBackupSetupPassphraseCoordinator.swift */,
 			);
 			path = Passphrase;
-			sourceTree = "<group>";
-		};
-		02FAE48D23B4B61700DE73D8 /* Banners */ = {
-			isa = PBXGroup;
-			children = (
-				02FAE48E23B4B61700DE73D8 /* KeyBackupBannerCell.xib */,
-				02FAE48F23B4B61700DE73D8 /* KeyBackupBannerCell.swift */,
-				02FAE49023B4B61700DE73D8 /* KeyBackupBannerPreferences.swift */,
-			);
-			path = Banners;
 			sourceTree = "<group>";
 		};
 		02FAE49123B4B61700DE73D8 /* ManualExport */ = {
@@ -5821,6 +5863,8 @@
 				B1454BC2216BBE4000365A86 /* TchapTests */,
 				02615503239507000045459E /* BtchapShareExtension */,
 				026155782398F6460045459E /* TchapShareExtension */,
+				0287985024AE7EFA004FC7AE /* BtchapNSE */,
+				0287986024AE80C8004FC7AE /* TchapNSE */,
 				F094A9A31B78D8F000B1FBBF /* Products */,
 				5FC42FA41F5186AFFB6A2404 /* Frameworks */,
 				D7B69168A4294EDA667C93D6 /* Pods */,
@@ -5835,6 +5879,8 @@
 				02DFECF521C07370009B6F15 /* Btchap.app */,
 				02615502239507000045459E /* BtchapShareExtension.appex */,
 				026155772398F6450045459E /* TchapShareExtension.appex */,
+				0287984F24AE7EFA004FC7AE /* BtchapNSE.appex */,
+				0287985F24AE80C8004FC7AE /* TchapNSE.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -5860,6 +5906,7 @@
 			);
 			dependencies = (
 				026155812398F6460045459E /* PBXTargetDependency */,
+				0287986524AE80C8004FC7AE /* PBXTargetDependency */,
 			);
 			name = Tchap;
 			productName = Tchap;
@@ -5902,6 +5949,40 @@
 			productReference = 026155772398F6450045459E /* TchapShareExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		0287984E24AE7EFA004FC7AE /* BtchapNSE */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0287985924AE7EFA004FC7AE /* Build configuration list for PBXNativeTarget "BtchapNSE" */;
+			buildPhases = (
+				0287984B24AE7EFA004FC7AE /* Sources */,
+				0287984C24AE7EFA004FC7AE /* Frameworks */,
+				0287984D24AE7EFA004FC7AE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BtchapNSE;
+			productName = BtchapNSE;
+			productReference = 0287984F24AE7EFA004FC7AE /* BtchapNSE.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		0287985E24AE80C8004FC7AE /* TchapNSE */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0287986724AE80C8004FC7AE /* Build configuration list for PBXNativeTarget "TchapNSE" */;
+			buildPhases = (
+				0287985B24AE80C8004FC7AE /* Sources */,
+				0287985C24AE80C8004FC7AE /* Frameworks */,
+				0287985D24AE80C8004FC7AE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TchapNSE;
+			productName = TchapNSE;
+			productReference = 0287985F24AE80C8004FC7AE /* TchapNSE.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		02DFEB6F21C07370009B6F15 /* Btchap */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 02DFECF221C07370009B6F15 /* Build configuration list for PBXNativeTarget "Btchap" */;
@@ -5920,6 +6001,7 @@
 			);
 			dependencies = (
 				0261550C239507000045459E /* PBXTargetDependency */,
+				0287985524AE7EFA004FC7AE /* PBXTargetDependency */,
 			);
 			name = Btchap;
 			productName = Btchap;
@@ -5953,6 +6035,7 @@
 			isa = PBXProject;
 			attributes = {
 				DefaultBuildSystemTypeForWorkspace = Original;
+				LastSwiftUpdateCheck = 1130;
 				LastUpgradeCheck = 0940;
 				ORGANIZATIONNAME = DINSIC;
 				TargetAttributes = {
@@ -5988,6 +6071,12 @@
 								enabled = 1;
 							};
 						};
+					};
+					0287984E24AE7EFA004FC7AE = {
+						CreatedOnToolsVersion = 11.3.1;
+					};
+					0287985E24AE80C8004FC7AE = {
+						CreatedOnToolsVersion = 11.3.1;
 					};
 					02DFEB6F21C07370009B6F15 = {
 						SystemCapabilities = {
@@ -6031,6 +6120,8 @@
 				02DFEB6F21C07370009B6F15 /* Btchap */,
 				02615501239507000045459E /* BtchapShareExtension */,
 				026155762398F6450045459E /* TchapShareExtension */,
+				0287984E24AE7EFA004FC7AE /* BtchapNSE */,
+				0287985E24AE80C8004FC7AE /* TchapNSE */,
 			);
 		};
 /* End PBXProject section */
@@ -6221,7 +6312,6 @@
 				020DF938214BE467003DFBA4 /* TableViewCellWithCheckBoxAndLabel.xib in Resources */,
 				0250C5A52122B68000034691 /* FilesSearchTableViewCell.xib in Resources */,
 				020DF9B0214BE467003DFBA4 /* RoomActivitiesView.xib in Resources */,
-				02FAE4D423B4B61700DE73D8 /* KeyBackupBannerCell.xib in Resources */,
 				B130C0DC21491C8600F43D33 /* GlobalSearchBar.xib in Resources */,
 				02520309224EBD4800262433 /* ContactButtonView.xib in Resources */,
 				024518E123A135FC006873DF /* apple_emojis_data.json in Resources */,
@@ -6295,6 +6385,20 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		0287984D24AE7EFA004FC7AE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0287985D24AE80C8004FC7AE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		02DFEC7821C07370009B6F15 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -6335,7 +6439,6 @@
 				02DFEC8E21C07370009B6F15 /* RoomOutgoingEncryptedTextMsgBubbleCell.xib in Resources */,
 				02DFEC8F21C07370009B6F15 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.xib in Resources */,
 				02FAE5E323B4C41600DE73D8 /* EditHistoryHeaderView.xib in Resources */,
-				02FAE4D523B4B61700DE73D8 /* KeyBackupBannerCell.xib in Resources */,
 				02FAE5C523B4C41600DE73D8 /* EmojiPickerHeaderView.xib in Resources */,
 				02DFEC9021C07370009B6F15 /* FormTextField.xib in Resources */,
 				02DFEC9121C07370009B6F15 /* RoomsRoomCell.xib in Resources */,
@@ -7226,14 +7329,12 @@
 				02D0FC8D24AE2DDA008DD5BB /* Constants.swift in Sources */,
 				02388E3B24A2AF7900F3B485 /* KeyVerificationVerifyByScanningViewModelType.swift in Sources */,
 				B15B866E21353C8D002782BE /* TextInputProperties.swift in Sources */,
-				02FAE4D823B4B61700DE73D8 /* KeyBackupBannerPreferences.swift in Sources */,
 				02388EDA24A2AF9B00F3B485 /* SecretsRecoveryWithPassphraseCoordinatorType.swift in Sources */,
 				B1322FFC21301B5D0054A9DD /* AuthenticationServiceError.swift in Sources */,
 				B1C4644D21B67F1E005F4D53 /* RoomCreationViewModel.swift in Sources */,
 				02388E6724A2AF7900F3B485 /* KeyVerificationScanConfirmationCoordinator.swift in Sources */,
 				B12209C923854F92004D069C /* ClientConfigurationService.swift in Sources */,
 				02388E7124A2AF7A00F3B485 /* KeyVerificationSelfVerifyStartViewModelType.swift in Sources */,
-				02FAE4D623B4B61700DE73D8 /* KeyBackupBannerCell.swift in Sources */,
 				02FAE4EE23B4B61700DE73D8 /* KeyBackupRecoverFromRecoveryKeyViewController.swift in Sources */,
 				02FAE4CC23B4B61700DE73D8 /* KeyBackupSetupPassphraseViewState.swift in Sources */,
 				02FAE4FC23B4B61700DE73D8 /* KeyBackupRecoverFromPassphraseViewModelType.swift in Sources */,
@@ -7452,6 +7553,22 @@
 				026155C92398F9780045459E /* RoomService.swift in Sources */,
 				026155D42398FA5F0045459E /* Variant2Style.swift in Sources */,
 				026155DE239900DA0045459E /* HomeServerComponents.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0287984B24AE7EFA004FC7AE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0287985224AE7EFA004FC7AE /* NotificationService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0287985B24AE80C8004FC7AE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0287986224AE80C8004FC7AE /* NotificationService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7976,14 +8093,12 @@
 				02D0FC8E24AE2DDA008DD5BB /* Constants.swift in Sources */,
 				02388E3C24A2AF7900F3B485 /* KeyVerificationVerifyByScanningViewModelType.swift in Sources */,
 				02DFEC4221C07370009B6F15 /* UsersDevicesViewController.m in Sources */,
-				02FAE4D923B4B61700DE73D8 /* KeyBackupBannerPreferences.swift in Sources */,
 				02388EDB24A2AF9B00F3B485 /* SecretsRecoveryWithPassphraseCoordinatorType.swift in Sources */,
 				02DFEC4321C07370009B6F15 /* UserService.swift in Sources */,
 				02C4BE922252502900F7BB0E /* InviteServiceType.swift in Sources */,
 				02388E6824A2AF7900F3B485 /* KeyVerificationScanConfirmationCoordinator.swift in Sources */,
 				02DFEC4421C07370009B6F15 /* Stylable.swift in Sources */,
 				02388E7224A2AF7A00F3B485 /* KeyVerificationSelfVerifyStartViewModelType.swift in Sources */,
-				02FAE4D723B4B61700DE73D8 /* KeyBackupBannerCell.swift in Sources */,
 				02FAE4EF23B4B61700DE73D8 /* KeyBackupRecoverFromRecoveryKeyViewController.swift in Sources */,
 				02FAE4CD23B4B61700DE73D8 /* KeyBackupSetupPassphraseViewState.swift in Sources */,
 				02FAE4FD23B4B61700DE73D8 /* KeyBackupRecoverFromPassphraseViewModelType.swift in Sources */,
@@ -8121,6 +8236,16 @@
 			isa = PBXTargetDependency;
 			target = 026155762398F6450045459E /* TchapShareExtension */;
 			targetProxy = 026155802398F6460045459E /* PBXContainerItemProxy */;
+		};
+		0287985524AE7EFA004FC7AE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0287984E24AE7EFA004FC7AE /* BtchapNSE */;
+			targetProxy = 0287985424AE7EFA004FC7AE /* PBXContainerItemProxy */;
+		};
+		0287986524AE80C8004FC7AE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0287985E24AE80C8004FC7AE /* TchapNSE */;
+			targetProxy = 0287986424AE80C8004FC7AE /* PBXContainerItemProxy */;
 		};
 		B1454BC7216BBE4000365A86 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -8427,6 +8552,142 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/TchapShareExtension/SupportingFiles/TchapShareExtension-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		0287985724AE7EFA004FC7AE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = BtchapNSE/BtchapNSE.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = NVMQD635C6;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = BtchapNSE/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = fr.gouv.btchap.nse;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		0287985824AE7EFA004FC7AE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = BtchapNSE/BtchapNSE.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = NVMQD635C6;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = BtchapNSE/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = fr.gouv.btchap.nse;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		0287986824AE80C8004FC7AE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = TchapNSE/TchapNSE.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = NVMQD635C6;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = TchapNSE/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = fr.gouv.tchap.nse;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		0287986924AE80C8004FC7AE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = TchapNSE/TchapNSE.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = NVMQD635C6;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = TchapNSE/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = fr.gouv.tchap.nse;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -8748,6 +9009,24 @@
 			buildConfigurations = (
 				026155842398F6460045459E /* Debug */,
 				026155852398F6460045459E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0287985924AE7EFA004FC7AE /* Build configuration list for PBXNativeTarget "BtchapNSE" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0287985724AE7EFA004FC7AE /* Debug */,
+				0287985824AE7EFA004FC7AE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0287986724AE80C8004FC7AE /* Build configuration list for PBXNativeTarget "TchapNSE" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0287986824AE80C8004FC7AE /* Debug */,
+				0287986924AE80C8004FC7AE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
