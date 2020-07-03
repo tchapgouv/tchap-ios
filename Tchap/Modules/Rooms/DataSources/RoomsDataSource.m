@@ -1,5 +1,5 @@
 /*
- Copyright 2018 Vector Creations Ltd
+ Copyright 2018-2020 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@
 
 #define ROOMSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT     30.0
 
-@interface RoomsDataSource() <KeyBackupBannerCellDelegate>
+@interface RoomsDataSource() <SecureBackupBannerCellDelegate, CrossSigningSetupBannerCellDelegate>
 {
     NSMutableArray* invitesCellDataArray;
     NSMutableArray* conversationCellDataArray;
@@ -43,12 +43,15 @@
     NSMutableDictionary<NSString*, id> *roomTagsListenerByUserId;
 }
 
-@property (nonatomic, assign, readwrite) KeyBackupBanner keyBackupBanner;
+@property (nonatomic, assign, readwrite) SecureBackupBannerDisplay secureBackupBannerDisplay;
+@property (nonatomic, assign, readwrite) CrossSigningBannerDisplay crossSigningBannerDisplay;
+
+@property (nonatomic, strong) CrossSigningService *crossSigningService;
 
 @end
 
 @implementation RoomsDataSource
-@synthesize invitesSection, conversationSection, keyBackupBannerSection;
+@synthesize invitesSection, conversationSection, secureBackupBannerSection, crossSigningBannerSection;
 @synthesize invitesCellDataArray, conversationCellDataArray;
 
 - (instancetype)init
@@ -59,8 +62,11 @@
         invitesCellDataArray = [[NSMutableArray alloc] init];
         conversationCellDataArray = [[NSMutableArray alloc] init];
         
-        _keyBackupBanner = KeyBackupBannerNone;
-        keyBackupBannerSection = -1;
+        _crossSigningBannerDisplay = CrossSigningBannerDisplayNone;
+        crossSigningBannerSection = -1;
+        
+        _secureBackupBannerDisplay = SecureBackupBannerDisplayNone;
+        secureBackupBannerSection = -1;
         invitesSection = -1;
         conversationSection = -1;
         
@@ -68,6 +74,8 @@
         shrinkedSectionsBitMask = 0;
         
         roomTagsListenerByUserId = [[NSMutableDictionary alloc] init];
+        
+        _crossSigningService = [CrossSigningService new];
         
         // Set default data and view classes
         [self registerCellDataClass:RecentCellData.class forCellIdentifier:kMXKRecentCellIdentifier];
@@ -116,78 +124,89 @@
 
 - (BOOL)updateKeyBackupBanner
 {
-    KeyBackupBanner keyBackupBanner = KeyBackupBannerNone;
+    SecureBackupBannerDisplay secureBackupBanner = SecureBackupBannerDisplayNone;
     
 #ifdef SUPPORT_KEYS_BACKUP
-    // Tchap: display the banner even if there is no new key to backup, in order to let the user recover an existing
-    // backup (if any)
-    //if (self.mxSession.crypto.backup.hasKeysToBackup)
+    SecureBackupBannerPreferences *secureBackupBannersPreferences = SecureBackupBannerPreferences.shared;
+    
+    if (!secureBackupBannersPreferences.hideSetupBanner && [self.mxSession vc_canSetupSecureBackup])
     {
-        KeyBackupBannerPreferences *keyBackupBannersPreferences = KeyBackupBannerPreferences.shared;
-        
-        NSString *keyBackupVersion = self.mxSession.crypto.backup.keyBackupVersion.version;
-        
-        switch (self.mxSession.crypto.backup.state) {
-            case MXKeyBackupStateDisabled:
-                // Show key backup setup banner only if user has not hidden it once.
-                if (keyBackupBannersPreferences.hideSetupBanner)
-                {
-                    keyBackupBanner = KeyBackupBannerNone;
-                }
-                else
-                {
-                    keyBackupBanner = KeyBackupBannerSetup;
-                }
-                break;
-            case MXKeyBackupStateNotTrusted:
-            case MXKeyBackupStateWrongBackUpVersion:
-                // Show key backup recover banner only if user has not hidden it for the given version.
-                if (keyBackupVersion && [keyBackupBannersPreferences isRecoverBannerHiddenFor:keyBackupVersion])
-                {
-                    keyBackupBanner = KeyBackupBannerNone;
-                }
-                else
-                {
-                    keyBackupBanner = KeyBackupBannerRecover;
-                }
-                break;
-            default:
-                keyBackupBanner = KeyBackupBannerNone;
-                break;
-        }
+        secureBackupBanner = SecureBackupBannerDisplaySetup;
     }
 #endif
     
-    BOOL updated = (self.keyBackupBanner != keyBackupBanner);
+    BOOL updated = (self.secureBackupBannerDisplay != secureBackupBanner);
     
-    self.keyBackupBanner = keyBackupBanner;
+    self.secureBackupBannerDisplay = secureBackupBanner;
     
     return updated;
 }
 
-- (void)hideKeyBackupBanner:(KeyBackupBanner)keyBackupBanner
+- (void)hideKeyBackupBannerWithDisplay:(SecureBackupBannerDisplay)secureBackupBannerDisplay
 {
-    KeyBackupBannerPreferences *keyBackupBannersPreferences = KeyBackupBannerPreferences.shared;
+    SecureBackupBannerPreferences *keyBackupBannersPreferences = SecureBackupBannerPreferences.shared;
     
-    switch (keyBackupBanner) {
-        case KeyBackupBannerSetup:
+    switch (secureBackupBannerDisplay) {
+        case SecureBackupBannerDisplaySetup:
             keyBackupBannersPreferences.hideSetupBanner = YES;
-            break;
-        case KeyBackupBannerRecover:
-        {
-            NSString *keyBackupVersion = self.mxSession.crypto.backup.keyBackupVersion.version;
-            if (keyBackupVersion)
-            {
-                [keyBackupBannersPreferences hideRecoverBannerFor:keyBackupVersion];
-            }
-        }
             break;
         default:
             break;
     }
     
-    [self updateKeyBackupBanner];
+    [self updateSecureBackupBanner];
     [self forceRefresh];
+}
+
+#pragma mark - Cross-signing setup banner
+
+- (void)refreshCrossSigningBannerDisplay
+{
+    CrossSigningBannerPreferences *crossSigningBannerPreferences = CrossSigningBannerPreferences.shared;
+    
+    if (!crossSigningBannerPreferences.hideSetupBanner)
+    {
+        [self.crossSigningService canSetupCrossSigningFor:self.mxSession success:^(BOOL canSetupCrossSigning) {
+
+            CrossSigningBannerDisplay crossSigningBannerDisplay = canSetupCrossSigning ? CrossSigningBannerDisplaySetup : CrossSigningBannerDisplayNone;
+            
+            [self updateCrossSigningBannerDisplay:crossSigningBannerDisplay];
+            
+        } failure:^(NSError * _Nonnull error) {
+            NSLog(@"[RecentsDataSource] refreshCrossSigningBannerDisplay: Fail to verify if cross signing banner can be displayed");
+        }];
+    }
+    else
+    {
+        [self updateCrossSigningBannerDisplay:CrossSigningBannerDisplayNone];
+    }
+}
+
+- (void)updateCrossSigningBannerDisplay:(CrossSigningBannerDisplay)crossSigningBannerDisplay
+{
+    if (self.crossSigningBannerDisplay == crossSigningBannerDisplay)
+    {
+        return;
+    }
+    
+    self.crossSigningBannerDisplay = crossSigningBannerDisplay;
+    [self forceRefresh];
+}
+
+
+- (void)hideCrossSigningBannerWithDisplay:(CrossSigningBannerDisplay)crossSigningBannerDisplay
+{
+    CrossSigningBannerPreferences *crossSigningBannerPreferences = CrossSigningBannerPreferences.shared;
+    
+    switch (crossSigningBannerDisplay) {
+        case CrossSigningBannerDisplaySetup:
+            crossSigningBannerPreferences.hideSetupBanner = YES;
+            break;
+        default:
+            break;
+    }
+    
+    [self refreshCrossSigningBannerDisplay];
 }
 
 
@@ -269,11 +288,15 @@
     // Check whether all data sources are ready before rendering recents
     if (self.state == MXKDataSourceStateReady)
     {
-        keyBackupBannerSection = conversationSection = invitesSection = -1;
+        crossSigningBannerSection = secureBackupBannerSection = conversationSection = invitesSection = -1;
         
-        if (self.keyBackupBanner != KeyBackupBannerNone)
+        if (self.crossSigningBannerDisplay != CrossSigningBannerDisplayNone)
         {
-            self.keyBackupBannerSection = sectionsCount++;
+            crossSigningBannerSection = sectionsCount++;
+        }
+        else if (self.secureBackupBannerDisplay != SecureBackupBannerDisplayNone)
+        {
+            secureBackupBannerSection = sectionsCount++;
         }
         
         if (invitesCellDataArray.count > 0)
@@ -292,7 +315,11 @@
 {
     NSUInteger count = 0;
     
-    if (section == self.keyBackupBannerSection && self.keyBackupBanner != KeyBackupBannerNone)
+    if (section == self.crossSigningBannerSection && self.crossSigningBannerDisplay != CrossSigningBannerDisplayNone)
+    {
+        count = 1;
+    }
+    else if (section == self.secureBackupBannerSection && self.secureBackupBannerDisplay != SecureBackupBannerDisplayNone)
     {
         count = 1;
     }
@@ -310,7 +337,7 @@
 
 - (CGFloat)heightForHeaderInSection:(NSInteger)section
 {
-    if (section == self.keyBackupBannerSection)
+    if (section == self.secureBackupBannerSection || section == self.crossSigningBannerSection)
     {
         return 0.0;
     }
@@ -363,7 +390,7 @@
 - (UIView *)viewForHeaderInSection:(NSInteger)section withFrame:(CGRect)frame
 {
     // No header view in key backup banner section
-    if (section == self.keyBackupBannerSection)
+    if (section == self.secureBackupBannerSection || section == self.crossSigningBannerSection)
     {
         return nil;
     }
@@ -436,10 +463,16 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == self.keyBackupBannerSection)
+    if (indexPath.section == self.crossSigningBannerSection)
     {
-        KeyBackupBannerCell* keyBackupBannerCell = [tableView dequeueReusableCellWithIdentifier:KeyBackupBannerCell.defaultReuseIdentifier forIndexPath:indexPath];
-        [keyBackupBannerCell configureFor:self.keyBackupBanner];
+        CrossSigningSetupBannerCell* crossSigningSetupBannerCell = [tableView dequeueReusableCellWithIdentifier:CrossSigningSetupBannerCell.defaultReuseIdentifier forIndexPath:indexPath];
+        crossSigningSetupBannerCell.delegate = self;
+        return crossSigningSetupBannerCell;
+    }
+    else if (indexPath.section == self.secureBackupBannerSection)
+    {
+        SecureBackupBannerCell* keyBackupBannerCell = [tableView dequeueReusableCellWithIdentifier:SecureBackupBannerCell.defaultReuseIdentifier forIndexPath:indexPath];
+        [keyBackupBannerCell configureFor:self.secureBackupBannerDisplay];
         keyBackupBannerCell.delegate = self;
         return keyBackupBannerCell;
     }
@@ -588,7 +621,7 @@
     
     _missedConversationsCount = _missedHighlightConversationsCount = 0;
     
-    keyBackupBannerSection = conversationSection = invitesSection = -1;
+    crossSigningBannerSection = secureBackupBannerSection = conversationSection = invitesSection = -1;
     
     if (displayedRecentsDataSourceArray.count > 0)
     {
@@ -696,11 +729,18 @@
     }
 }
 
-#pragma mark - KeyBackupSetupBannerCellDelegate
+#pragma mark - SecureBackupSetupBannerCellDelegate
 
-- (void)keyBackupBannerCellDidTapCloseAction:(KeyBackupBannerCell * _Nonnull)cell
+- (void)secureBackupBannerCellDidTapCloseAction:(SecureBackupBannerCell * _Nonnull)cell
 {
-    [self hideKeyBackupBanner:self.keyBackupBanner];
+    [self hideKeyBackupBannerWithDisplay:self.secureBackupBannerDisplay];
+}
+
+#pragma mark - CrossSigningSetupBannerCellDelegate
+
+- (void)crossSigningSetupBannerCellDidTapCloseAction:(CrossSigningSetupBannerCell *)cell
+{
+    [self hideCrossSigningBannerWithDisplay:self.crossSigningBannerDisplay];
 }
 
 @end

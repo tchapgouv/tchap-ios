@@ -1,5 +1,5 @@
 /*
- Copyright 2018 Vector Creations Ltd
+ Copyright 2018-2020 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -17,13 +17,21 @@
 #import <MatrixKit/MatrixKit.h>
 
 /**
- List the different key backup banners that could be displayed.
+ List the different secure backup banners that could be displayed.
  */
-typedef NS_ENUM(NSInteger, KeyBackupBanner)
+typedef NS_ENUM(NSInteger, SecureBackupBannerDisplay)
 {
-    KeyBackupBannerNone,
-    KeyBackupBannerSetup,
-    KeyBackupBannerRecover
+    SecureBackupBannerDisplayNone,
+    SecureBackupBannerDisplaySetup
+};
+
+/**
+ List the different cross-signing banners that could be displayed.
+ */
+typedef NS_ENUM(NSInteger, CrossSigningBannerDisplay)
+{
+    CrossSigningBannerDisplayNone,
+    CrossSigningBannerDisplaySetup
 };
 
 /**
@@ -39,14 +47,16 @@ extern NSString *const kRoomsDataSourceTapOnDirectoryServerChange;
  */
 @interface RoomsDataSource : MXKInterleavedRecentsDataSource
 
-@property (nonatomic) NSInteger keyBackupBannerSection;
+@property (nonatomic) NSInteger crossSigningBannerSection;
+@property (nonatomic) NSInteger secureBackupBannerSection;
 @property (nonatomic) NSInteger invitesSection;
 @property (nonatomic) NSInteger conversationSection;
 
 @property (nonatomic, readonly) NSArray* invitesCellDataArray;
 @property (nonatomic, readonly) NSArray* conversationCellDataArray;
 
-@property (nonatomic, readonly) KeyBackupBanner keyBackupBanner;
+@property (nonatomic, readonly) SecureBackupBannerDisplay secureBackupBannerDisplay;
+@property (nonatomic, readonly) CrossSigningBannerDisplay crossSigningBannerDisplay;
 
 /**
  Refresh the rooms data source and notify its delegate.
