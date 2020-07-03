@@ -40,7 +40,7 @@ final class SecureBackupSetupCoordinator: SecureBackupSetupCoordinatorType {
     // MARK: - Setup
     
     init(session: MXSession) {
-        self.navigationRouter = NavigationRouter(navigationController: RiotNavigationController())
+        self.navigationRouter = NavigationRouter(navigationController: TCNavigationController())
         self.session = session
         self.recoveryService = session.crypto.recoveryService
         self.keyBackup = session.crypto.backup

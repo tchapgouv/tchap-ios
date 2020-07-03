@@ -113,7 +113,7 @@ final class SecretsSetupRecoveryKeyViewController: UIViewController {
         
         self.navigationItem.rightBarButtonItem = cancelBarButtonItem
         
-        self.vc_removeBackTitle()                
+        self.tc_removeBackTitle()                
         
         self.title = VectorL10n.secretsSetupRecoveryKeyTitle
         

@@ -66,7 +66,7 @@ final class SecureBackupSetupIntroViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.vc_removeBackTitle()
+        self.tc_removeBackTitle()
         
         self.setupViews()
         self.activityIndicatorPresenter = ActivityIndicatorPresenter()
