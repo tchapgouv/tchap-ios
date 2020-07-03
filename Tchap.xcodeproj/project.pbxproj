@@ -853,6 +853,14 @@
 		02C3F21524AF75100086ACA5 /* SecureBackupBannerPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F20224AF750F0086ACA5 /* SecureBackupBannerPreferences.swift */; };
 		02C3F21624AF75100086ACA5 /* SecureBackupBannerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02C3F20324AF750F0086ACA5 /* SecureBackupBannerCell.xib */; };
 		02C3F21724AF75100086ACA5 /* SecureBackupBannerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02C3F20324AF750F0086ACA5 /* SecureBackupBannerCell.xib */; };
+		02C3F22224AFD3880086ACA5 /* CrossSigningService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F21D24AFD3870086ACA5 /* CrossSigningService.swift */; };
+		02C3F22324AFD3880086ACA5 /* CrossSigningService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F21D24AFD3870086ACA5 /* CrossSigningService.swift */; };
+		02C3F22424AFD3880086ACA5 /* CrossSigningSetupBannerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02C3F21F24AFD3870086ACA5 /* CrossSigningSetupBannerCell.xib */; };
+		02C3F22524AFD3880086ACA5 /* CrossSigningSetupBannerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02C3F21F24AFD3870086ACA5 /* CrossSigningSetupBannerCell.xib */; };
+		02C3F22624AFD3880086ACA5 /* CrossSigningBannerPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F22024AFD3880086ACA5 /* CrossSigningBannerPreferences.swift */; };
+		02C3F22724AFD3880086ACA5 /* CrossSigningBannerPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F22024AFD3880086ACA5 /* CrossSigningBannerPreferences.swift */; };
+		02C3F22824AFD3880086ACA5 /* CrossSigningSetupBannerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F22124AFD3880086ACA5 /* CrossSigningSetupBannerCell.swift */; };
+		02C3F22924AFD3880086ACA5 /* CrossSigningSetupBannerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F22124AFD3880086ACA5 /* CrossSigningSetupBannerCell.swift */; };
 		02C4BE842252278400F7BB0E /* DiscussionFinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C4BE832252278400F7BB0E /* DiscussionFinder.swift */; };
 		02C4BE852252278400F7BB0E /* DiscussionFinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C4BE832252278400F7BB0E /* DiscussionFinder.swift */; };
 		02C4BE88225231ED00F7BB0E /* InviteService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C4BE87225231ED00F7BB0E /* InviteService.swift */; };
@@ -2432,6 +2440,10 @@
 		02C3F20124AF750F0086ACA5 /* SecureBackupBannerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecureBackupBannerCell.swift; sourceTree = "<group>"; };
 		02C3F20224AF750F0086ACA5 /* SecureBackupBannerPreferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecureBackupBannerPreferences.swift; sourceTree = "<group>"; };
 		02C3F20324AF750F0086ACA5 /* SecureBackupBannerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SecureBackupBannerCell.xib; sourceTree = "<group>"; };
+		02C3F21D24AFD3870086ACA5 /* CrossSigningService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CrossSigningService.swift; sourceTree = "<group>"; };
+		02C3F21F24AFD3870086ACA5 /* CrossSigningSetupBannerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CrossSigningSetupBannerCell.xib; sourceTree = "<group>"; };
+		02C3F22024AFD3880086ACA5 /* CrossSigningBannerPreferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CrossSigningBannerPreferences.swift; sourceTree = "<group>"; };
+		02C3F22124AFD3880086ACA5 /* CrossSigningSetupBannerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CrossSigningSetupBannerCell.swift; sourceTree = "<group>"; };
 		02C4BE832252278400F7BB0E /* DiscussionFinder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscussionFinder.swift; sourceTree = "<group>"; };
 		02C4BE87225231ED00F7BB0E /* InviteService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InviteService.swift; sourceTree = "<group>"; };
 		02C4BE8A22523D2200F7BB0E /* DiscussionFinderType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionFinderType.swift; sourceTree = "<group>"; };
@@ -4194,6 +4206,7 @@
 		02BEE14E2125BBF800098505 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				02C3F21C24AFD3870086ACA5 /* CrossSigning */,
 				02C3F1F624AF750F0086ACA5 /* SecureBackup */,
 				020579FB24A9D7D100C96719 /* QRCode */,
 				02388EC124A2AF9B00F3B485 /* SecretsRecovery */,
@@ -4335,6 +4348,25 @@
 				02C3F20124AF750F0086ACA5 /* SecureBackupBannerCell.swift */,
 				02C3F20224AF750F0086ACA5 /* SecureBackupBannerPreferences.swift */,
 				02C3F20324AF750F0086ACA5 /* SecureBackupBannerCell.xib */,
+			);
+			path = Banners;
+			sourceTree = "<group>";
+		};
+		02C3F21C24AFD3870086ACA5 /* CrossSigning */ = {
+			isa = PBXGroup;
+			children = (
+				02C3F21D24AFD3870086ACA5 /* CrossSigningService.swift */,
+				02C3F21E24AFD3870086ACA5 /* Banners */,
+			);
+			path = CrossSigning;
+			sourceTree = "<group>";
+		};
+		02C3F21E24AFD3870086ACA5 /* Banners */ = {
+			isa = PBXGroup;
+			children = (
+				02C3F21F24AFD3870086ACA5 /* CrossSigningSetupBannerCell.xib */,
+				02C3F22024AFD3880086ACA5 /* CrossSigningBannerPreferences.swift */,
+				02C3F22124AFD3880086ACA5 /* CrossSigningSetupBannerCell.swift */,
 			);
 			path = Banners;
 			sourceTree = "<group>";
@@ -6299,6 +6331,7 @@
 				020DF96D214BE467003DFBA4 /* RoomOutgoingEncryptedTextMsgWithoutSenderInfoBubbleCell.xib in Resources */,
 				0250C5692122B68000034691 /* CallViewController.xib in Resources */,
 				B1C4645721B68257005F4D53 /* SelectableContactCell.xib in Resources */,
+				02C3F22424AFD3880086ACA5 /* CrossSigningSetupBannerCell.xib in Resources */,
 				02FAE58A23B4C41500DE73D8 /* ContextualMenuItemView.xib in Resources */,
 				020DF96A214BE467003DFBA4 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleBubbleCell.xib in Resources */,
 				020DF985214BE467003DFBA4 /* RoomIncomingAttachmentWithPaginationTitleBubbleCell.xib in Resources */,
@@ -6595,6 +6628,7 @@
 				02DFECB621C07370009B6F15 /* RoomIncomingEncryptedTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
 				02DFECB721C07370009B6F15 /* RoomAttachmentAntivirusScanStatusCellContentView.xib in Resources */,
 				02DFECB821C07370009B6F15 /* MediaAlbumContentViewController.xib in Resources */,
+				02C3F22524AFD3880086ACA5 /* CrossSigningSetupBannerCell.xib in Resources */,
 				02DFECB921C07370009B6F15 /* RoomMembershipBubbleCell.xib in Resources */,
 				02FAE4DF23B4B61700DE73D8 /* KeyBackupRecoverSuccessViewController.storyboard in Resources */,
 				02388F1D24A2B73F00F3B485 /* KeyBackupRecoverFromPrivateKeyViewController.storyboard in Resources */,
@@ -7117,6 +7151,7 @@
 				02FAE5F223B4C41600DE73D8 /* ReactionHistoryViewModel.swift in Sources */,
 				02388DF124A2AF7900F3B485 /* UserVerificationSessionStatusCoordinator.swift in Sources */,
 				B1BC6A032135E2A600D32F8E /* ActivityIndicatorView.swift in Sources */,
+				02C3F22624AFD3880086ACA5 /* CrossSigningBannerPreferences.swift in Sources */,
 				02388E8724A2AF7A00F3B485 /* KeyVerificationSelfVerifyWaitViewModelType.swift in Sources */,
 				B122099B23854EF2004D069C /* TchapDefaults.swift in Sources */,
 				02388EBD24A2AF7A00F3B485 /* DeviceVerificationIncomingViewModelType.swift in Sources */,
@@ -7222,6 +7257,7 @@
 				020DF95E214BE467003DFBA4 /* RoomIncomingEncryptedTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
 				B1C4645321B67F41005F4D53 /* ContactsPickerCoordinatorType.swift in Sources */,
 				B1892E7B21306ADC00742348 /* FormTextViewModel.swift in Sources */,
+				02C3F22824AFD3880086ACA5 /* CrossSigningSetupBannerCell.swift in Sources */,
 				B1322FEA213002440054A9DD /* FormTextField.swift in Sources */,
 				02388E6F24A2AF7A00F3B485 /* KeyVerificationCoordinatorBridgePresenter.swift in Sources */,
 				0290609321527A3F005FE3C1 /* RoomDetailsCoordinatorType.swift in Sources */,
@@ -7371,6 +7407,7 @@
 				020DF981214BE467003DFBA4 /* RoomIncomingTextMsgWithoutSenderNameBubbleCell.m in Sources */,
 				0250C4F62122B68000034691 /* DeviceTableViewCell.m in Sources */,
 				B1BC6A1F2136C9A800D32F8E /* Variant2Style.swift in Sources */,
+				02C3F22224AFD3880086ACA5 /* CrossSigningService.swift in Sources */,
 				02FAE41F23B29EBD00DE73D8 /* ServiceTermsModalScreenCoordinatorType.swift in Sources */,
 				02FAE41323B29EBD00DE73D8 /* ServiceTermsModalCoordinator.swift in Sources */,
 				02FAE41923B29EBD00DE73D8 /* ServiceTermsModalScreenViewController.swift in Sources */,
@@ -7900,6 +7937,7 @@
 				02FAE5F323B4C41600DE73D8 /* ReactionHistoryViewModel.swift in Sources */,
 				02388DF224A2AF7900F3B485 /* UserVerificationSessionStatusCoordinator.swift in Sources */,
 				02ECA88122E0C5BA00ECDA5E /* MXRoomSummary.swift in Sources */,
+				02C3F22724AFD3880086ACA5 /* CrossSigningBannerPreferences.swift in Sources */,
 				02388E8824A2AF7A00F3B485 /* KeyVerificationSelfVerifyWaitViewModelType.swift in Sources */,
 				02DFEBAF21C07370009B6F15 /* MXRoom+Riot.m in Sources */,
 				02388EBE24A2AF7A00F3B485 /* DeviceVerificationIncomingViewModelType.swift in Sources */,
@@ -8005,6 +8043,7 @@
 				0234A9A4225BD0D000E8E489 /* FormCheckBoxModelType.swift in Sources */,
 				02DFEBDD21C07370009B6F15 /* GlobalSearchBar.swift in Sources */,
 				02DFEBDE21C07370009B6F15 /* RoomsDataSource.m in Sources */,
+				02C3F22924AFD3880086ACA5 /* CrossSigningSetupBannerCell.swift in Sources */,
 				02DFEBDF21C07370009B6F15 /* RoomEncryptedDataBubbleCell.m in Sources */,
 				02388E7024A2AF7A00F3B485 /* KeyVerificationCoordinatorBridgePresenter.swift in Sources */,
 				02DFEBE021C07370009B6F15 /* RoomIncomingEncryptedTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
@@ -8154,6 +8193,7 @@
 				02DFEC1021C07370009B6F15 /* RoomTitleViewModelBuilder.swift in Sources */,
 				B1C0EE662375B78C00E8BB88 /* ChangePasswordCoordinatorType.swift in Sources */,
 				02DFEC1121C07370009B6F15 /* FormTextViewModelType.swift in Sources */,
+				02C3F22324AFD3880086ACA5 /* CrossSigningService.swift in Sources */,
 				02FAE42023B29EBD00DE73D8 /* ServiceTermsModalScreenCoordinatorType.swift in Sources */,
 				02FAE41423B29EBD00DE73D8 /* ServiceTermsModalCoordinator.swift in Sources */,
 				02FAE41A23B29EBD00DE73D8 /* ServiceTermsModalScreenViewController.swift in Sources */,
