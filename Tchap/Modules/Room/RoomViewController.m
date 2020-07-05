@@ -3982,7 +3982,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
 
 - (NSUInteger)missedDiscussionsCount
 {
-    return [self.mainSession riot_missedDiscussionsCount];
+    return [self.mainSession vc_missedDiscussionsCount];
 }
 
 - (NSUInteger)missedHighlightDiscussionsCount

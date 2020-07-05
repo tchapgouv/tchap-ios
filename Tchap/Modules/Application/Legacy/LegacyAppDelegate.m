@@ -243,6 +243,28 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     [self.pushNotificationService registerForRemoteNotificationsWithCompletion:completion];
 }
 
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
+    [self.pushNotificationService didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
+    
+    NSString * deviceTokenString = [[[[deviceToken description]
+                                      stringByReplacingOccurrencesOfString: @"<" withString: @""]
+                                     stringByReplacingOccurrencesOfString: @">" withString: @""]
+                                    stringByReplacingOccurrencesOfString: @" " withString: @""];
+    
+    NSLog(@"The generated device token string is : %@",deviceTokenString);
+}
+
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
+{
+    [self.pushNotificationService didFailToRegisterForRemoteNotificationsWithError:error];
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
+{
+    [self.pushNotificationService didReceiveRemoteNotification:userInfo fetchCompletionHandler:completionHandler];
+}
+
 #pragma mark -
 
 - (NSString*)appVersion
@@ -414,6 +436,9 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 //    [MXSDKOptions sharedInstance].analyticsDelegate = [Analytics sharedInstance];
 //    [DecryptionFailureTracker sharedInstance].delegate = [Analytics sharedInstance];
 //    [[Analytics sharedInstance] start];
+    
+    // Disable CallKit
+    [MXKAppSettings standardAppSettings].enableCallKit = NO;
 
     self.pushNotificationService = [PushNotificationService new];
     self.pushNotificationService.delegate = (id<PushNotificationServiceDelegate>)[UIApplication sharedApplication];
@@ -848,7 +873,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     // Considering all the current sessions.
     for (MXSession *session in mxSessionArray)
     {
-        roomCount += [session riot_missedDiscussionsCount];
+        roomCount += [session vc_missedDiscussionsCount];
     }
     
     return roomCount;
@@ -960,9 +985,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
             // A new call observer may be added here
             [self addMatrixCallObserver];
             
-            // Enable local notifications
-            [self.pushNotificationService enableLocalNotificationsFromMatrixSession:mxSession];
-            
             // Clean the storage by removing expired data
             [mxSession tc_removeExpiredMessages];
             
@@ -980,11 +1002,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         else if (mxSession.state == MXSessionStateClosed)
         {
             [self removeMatrixSession:mxSession];
-        }
-        // Consider here the case where the app is running in background.
-        else if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateBackground)
-        {
-            [self.pushNotificationService handleSessionStateChangesInBackgroundFor:mxSession];
         }
         else if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive)
         {
@@ -1021,7 +1038,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
             if (isPushRegistered)
             {
                 // Enable push notifications by default on new added account
-                [account enablePushKitNotifications:YES success:nil failure:nil];
+                [account enablePushNotifications:YES success:nil failure:nil];
             }
             else
             {
@@ -1072,14 +1089,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     
     // Use MXFileStore as MXStore to permanently store events.
     accountManager.storeClass = [MXFileStore class];
-    
-    // Disable APNS use.
-    if (accountManager.apnsDeviceToken)
-    {
-        // We use now Pushkit, unregister for all remote notifications received via Apple Push Notification service.
-        [[UIApplication sharedApplication] unregisterForRemoteNotifications];
-        [accountManager setApnsDeviceToken:nil];
-    }
     
     // Observers have been defined, we can start a matrix session for each enabled accounts.
     NSLog(@"[AppDelegate] initMatrixSessions: prepareSessionForActiveAccounts (app state: %tu)", [[UIApplication sharedApplication] applicationState]);
@@ -1143,8 +1152,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         // Do the one time check on device id
         [self checkDeviceId:mxSession];
 
-        [self.pushNotificationService addMatrixSession:mxSession];
-
         // Enable listening of incoming key share requests
         [self enableRoomKeyRequestObserver:mxSession];
 
@@ -1162,17 +1169,12 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     
     // If any, disable the no VoIP support workaround
     [self disableNoVoIPOnMatrixSession:mxSession];
-    
-    // Disable local notifications from this session
-    [self.pushNotificationService disableLocalNotificationsFromMatrixSession:mxSession];
 
     // Disable listening of incoming key share requests
     [self disableRoomKeyRequestObserver:mxSession];
 
     // Disable listening of incoming key verification requests
     [self disableIncomingKeyVerificationObserver:mxSession];
-
-    [self.pushNotificationService removeMatrixSession:mxSession];
     
     [mxSessionArray removeObject:mxSession];
     
@@ -1282,7 +1284,10 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     [MXMediaManager clearCache];
     
     // Reset key backup banner preferences
-    [KeyBackupBannerPreferences.shared reset];
+    [SecureBackupBannerPreferences.shared reset];
+    
+    // Reset key verification banner preferences
+    [CrossSigningBannerPreferences.shared reset];
     
     // Reset key verification banner preferences
     [CrossSigningBannerPreferences.shared reset];
@@ -3135,6 +3140,15 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     if (!RiotSettings.shared.isUserDefaultsMigrated)
     {
         [RiotSettings.shared migrate];
+    }
+    
+    // Now use RiotSettings and NSUserDefaults to store `showDecryptedContentInNotifications` setting option
+    // Migrate this information from main MXKAccount to RiotSettings, if value is not in UserDefaults
+    
+    if (!RiotSettings.shared.isShowDecryptedContentInNotificationsHasBeenSetOnce)
+    {
+        MXKAccount *currentAccount = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+        RiotSettings.shared.showDecryptedContentInNotifications = currentAccount.showDecryptedContentInNotifications;
     }
 }
 

@@ -899,6 +899,8 @@
 		02C3F2A224AFDEFF0086ACA5 /* SecretsRecoveryCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F25624AFDEFF0086ACA5 /* SecretsRecoveryCoordinator.swift */; };
 		02C3F2A424AFE13E0086ACA5 /* MXRecoveryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F2A324AFE13E0086ACA5 /* MXRecoveryService.swift */; };
 		02C3F2A524AFE13E0086ACA5 /* MXRecoveryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F2A324AFE13E0086ACA5 /* MXRecoveryService.swift */; };
+		02C3F2A824AFE32B0086ACA5 /* AuthenticatedSessionViewControllerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F2A724AFE32B0086ACA5 /* AuthenticatedSessionViewControllerFactory.swift */; };
+		02C3F2A924AFE32B0086ACA5 /* AuthenticatedSessionViewControllerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F2A724AFE32B0086ACA5 /* AuthenticatedSessionViewControllerFactory.swift */; };
 		02C4BE842252278400F7BB0E /* DiscussionFinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C4BE832252278400F7BB0E /* DiscussionFinder.swift */; };
 		02C4BE852252278400F7BB0E /* DiscussionFinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C4BE832252278400F7BB0E /* DiscussionFinder.swift */; };
 		02C4BE88225231ED00F7BB0E /* InviteService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C4BE87225231ED00F7BB0E /* InviteService.swift */; };
@@ -2501,6 +2503,7 @@
 		02C3F25524AFDEFF0086ACA5 /* SecretsRecoveryCoordinatorBridgePresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsRecoveryCoordinatorBridgePresenter.swift; sourceTree = "<group>"; };
 		02C3F25624AFDEFF0086ACA5 /* SecretsRecoveryCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsRecoveryCoordinator.swift; sourceTree = "<group>"; };
 		02C3F2A324AFE13E0086ACA5 /* MXRecoveryService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MXRecoveryService.swift; sourceTree = "<group>"; };
+		02C3F2A724AFE32B0086ACA5 /* AuthenticatedSessionViewControllerFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticatedSessionViewControllerFactory.swift; sourceTree = "<group>"; };
 		02C4BE832252278400F7BB0E /* DiscussionFinder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscussionFinder.swift; sourceTree = "<group>"; };
 		02C4BE87225231ED00F7BB0E /* InviteService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InviteService.swift; sourceTree = "<group>"; };
 		02C4BE8A22523D2200F7BB0E /* DiscussionFinderType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionFinderType.swift; sourceTree = "<group>"; };
@@ -4220,6 +4223,7 @@
 		02BEE14E2125BBF800098505 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				02C3F2A624AFE32B0086ACA5 /* AuthenticatedSession */,
 				02C3F22A24AFDEFF0086ACA5 /* Secrets */,
 				02C3F21C24AFD3870086ACA5 /* CrossSigning */,
 				02C3F1F624AF750F0086ACA5 /* SecureBackup */,
@@ -4476,6 +4480,14 @@
 				02C3F25324AFDEFF0086ACA5 /* SecretsRecoveryWithKeyViewState.swift */,
 			);
 			path = RecoverWithKey;
+			sourceTree = "<group>";
+		};
+		02C3F2A624AFE32B0086ACA5 /* AuthenticatedSession */ = {
+			isa = PBXGroup;
+			children = (
+				02C3F2A724AFE32B0086ACA5 /* AuthenticatedSessionViewControllerFactory.swift */,
+			);
+			path = AuthenticatedSession;
 			sourceTree = "<group>";
 		};
 		02C4BE86225231ED00F7BB0E /* Invite */ = {
@@ -7376,6 +7388,7 @@
 				B1C4645321B67F41005F4D53 /* ContactsPickerCoordinatorType.swift in Sources */,
 				B1892E7B21306ADC00742348 /* FormTextViewModel.swift in Sources */,
 				02C3F22824AFD3880086ACA5 /* CrossSigningSetupBannerCell.swift in Sources */,
+				02C3F2A824AFE32B0086ACA5 /* AuthenticatedSessionViewControllerFactory.swift in Sources */,
 				B1322FEA213002440054A9DD /* FormTextField.swift in Sources */,
 				02388E6F24A2AF7A00F3B485 /* KeyVerificationCoordinatorBridgePresenter.swift in Sources */,
 				0290609321527A3F005FE3C1 /* RoomDetailsCoordinatorType.swift in Sources */,
@@ -8179,6 +8192,7 @@
 				02DFEBDD21C07370009B6F15 /* GlobalSearchBar.swift in Sources */,
 				02DFEBDE21C07370009B6F15 /* RoomsDataSource.m in Sources */,
 				02C3F22924AFD3880086ACA5 /* CrossSigningSetupBannerCell.swift in Sources */,
+				02C3F2A924AFE32B0086ACA5 /* AuthenticatedSessionViewControllerFactory.swift in Sources */,
 				02DFEBDF21C07370009B6F15 /* RoomEncryptedDataBubbleCell.m in Sources */,
 				02388E7024A2AF7A00F3B485 /* KeyVerificationCoordinatorBridgePresenter.swift in Sources */,
 				02DFEBE021C07370009B6F15 /* RoomIncomingEncryptedTextMsgWithoutSenderInfoBubbleCell.m in Sources */,

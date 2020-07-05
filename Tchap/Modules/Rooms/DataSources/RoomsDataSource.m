@@ -116,13 +116,13 @@
 
 - (void)keyBackupStateDidChangeNotification:(NSNotification*)notification
 {
-    if ([self updateKeyBackupBanner])
+    if ([self updateSecureBackupBanner])
     {
         [self forceRefresh];
     }
 }
 
-- (BOOL)updateKeyBackupBanner
+- (BOOL)updateSecureBackupBanner
 {
     SecureBackupBannerDisplay secureBackupBanner = SecureBackupBannerDisplayNone;
     
@@ -162,6 +162,7 @@
 
 - (void)refreshCrossSigningBannerDisplay
 {
+#ifdef SUPPORT_CROSSSIGNING
     CrossSigningBannerPreferences *crossSigningBannerPreferences = CrossSigningBannerPreferences.shared;
     
     if (!crossSigningBannerPreferences.hideSetupBanner)
@@ -177,6 +178,7 @@
         }];
     }
     else
+#endif
     {
         [self updateCrossSigningBannerDisplay:CrossSigningBannerDisplayNone];
     }

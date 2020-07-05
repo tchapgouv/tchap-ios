@@ -23,7 +23,7 @@
 
 @interface RoomsViewController ()
 #ifdef SUPPORT_KEYS_BACKUP
-<KeyBackupSetupCoordinatorBridgePresenterDelegate, KeyBackupRecoverCoordinatorBridgePresenterDelegate>
+<SecureBackupSetupCoordinatorBridgePresenterDelegate>
 #endif
 {
     RoomsDataSource *roomsDataSource;
@@ -33,8 +33,13 @@
 }
 
 #ifdef SUPPORT_KEYS_BACKUP
-@property (nonatomic, strong) KeyBackupSetupCoordinatorBridgePresenter *keyBackupSetupCoordinatorBridgePresenter;
-@property (nonatomic, strong) KeyBackupRecoverCoordinatorBridgePresenter *keyBackupRecoverCoordinatorBridgePresenter;
+@property (nonatomic, strong) SecureBackupSetupCoordinatorBridgePresenter *secureBackupSetupCoordinatorBridgePresenter;
+@property (nonatomic, strong) SecureBackupBannerCell *secureBackupBannerPrototypeCell;
+#endif
+
+#ifdef SUPPORT_CROSSSIGNING
+@property (nonatomic, strong) CrossSigningSetupBannerCell *keyVerificationSetupBannerPrototypeCell;
+@property (nonatomic, strong) AuthenticatedSessionViewControllerFactory *authenticatedSessionViewControllerFactory;
 #endif
 
 @end
@@ -66,7 +71,10 @@
     self.recentsTableView.estimatedRowHeight = 80;
     
     // Register key backup banner cells
-    [self.recentsTableView registerNib:KeyBackupBannerCell.nib forCellReuseIdentifier:KeyBackupBannerCell.defaultReuseIdentifier];
+    [self.recentsTableView registerNib:SecureBackupBannerCell.nib forCellReuseIdentifier:SecureBackupBannerCell.defaultReuseIdentifier];
+    
+    // Register key verification banner cells
+    [self.recentsTableView registerNib:CrossSigningSetupBannerCell.nib forCellReuseIdentifier:CrossSigningSetupBannerCell.defaultReuseIdentifier];
     
     self.enableStickyHeaders = YES;
 }
@@ -96,33 +104,37 @@
 }
 
 #ifdef SUPPORT_KEYS_BACKUP
-
 #pragma mark - Key backup
 
-- (void)presentKeyBackupSetup
+- (SecureBackupBannerCell *)secureBackupBannerPrototypeCell
 {
-    KeyBackupSetupCoordinatorBridgePresenter *keyBackupSetupCoordinatorBridgePresenter = [[KeyBackupSetupCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
-    keyBackupSetupCoordinatorBridgePresenter.delegate = self;
-    
-    [keyBackupSetupCoordinatorBridgePresenter presentFrom:self animated:YES];
-    
-    self.keyBackupSetupCoordinatorBridgePresenter = keyBackupSetupCoordinatorBridgePresenter;
-}
-
-- (void)presentKeyBackupRecover
-{
-    MXKeyBackupVersion *keyBackupVersion = self.mainSession.crypto.backup.keyBackupVersion;
-    if (keyBackupVersion)
+    if (!_secureBackupBannerPrototypeCell)
     {
-        KeyBackupRecoverCoordinatorBridgePresenter *keyBackupRecoverCoordinatorBridgePresenter = [[KeyBackupRecoverCoordinatorBridgePresenter alloc] initWithSession:self.mainSession keyBackupVersion:keyBackupVersion];
-        keyBackupRecoverCoordinatorBridgePresenter.delegate = self;
-        
-        [keyBackupRecoverCoordinatorBridgePresenter presentFrom:self animated:YES];
-        
-        self.keyBackupRecoverCoordinatorBridgePresenter = keyBackupRecoverCoordinatorBridgePresenter;
+        _secureBackupBannerPrototypeCell = [self.recentsTableView dequeueReusableCellWithIdentifier:SecureBackupBannerCell.defaultReuseIdentifier];
     }
+    return _secureBackupBannerPrototypeCell;
 }
 
+- (void)presentSecureBackupSetup
+{
+    SecureBackupSetupCoordinatorBridgePresenter *keyBackupSetupCoordinatorBridgePresenter = [[SecureBackupSetupCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
+    keyBackupSetupCoordinatorBridgePresenter.delegate = self;
+
+    [keyBackupSetupCoordinatorBridgePresenter presentFrom:self animated:YES];
+
+    self.secureBackupSetupCoordinatorBridgePresenter = keyBackupSetupCoordinatorBridgePresenter;
+}
+#endif
+
+#ifdef SUPPORT_CROSSSIGNING
+- (CrossSigningSetupBannerCell *)keyVerificationSetupBannerPrototypeCell
+{
+    if (!_keyVerificationSetupBannerPrototypeCell)
+    {
+        _keyVerificationSetupBannerPrototypeCell = [self.recentsTableView dequeueReusableCellWithIdentifier:CrossSigningSetupBannerCell.defaultReuseIdentifier];
+    }
+    return _keyVerificationSetupBannerPrototypeCell;
+}
 #endif
 
 #pragma mark - Override RecentsViewController
@@ -203,18 +215,22 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 #ifdef SUPPORT_KEYS_BACKUP
-    if (indexPath.section == roomsDataSource.keyBackupBannerSection)
+    if (indexPath.section == recentsDataSource.secureBackupBannerSection)
     {
-        switch (roomsDataSource.keyBackupBanner) {
-            case KeyBackupBannerSetup:
-                [self presentKeyBackupSetup];
-                break;
-            case KeyBackupBannerRecover:
-                [self presentKeyBackupRecover];
+        switch (recentsDataSource.secureBackupBannerDisplay) {
+            case SecureBackupBannerDisplaySetup:
+                [self presentSecureBackupSetup];
                 break;
             default:
                 break;
         }
+    }
+    else
+#endif
+#ifdef SUPPORT_CROSSSIGNING
+    if (indexPath.section == recentsDataSource.crossSigningBannerSection)
+    {
+        [self showCrossSigningSetup];
     }
     else
 #endif
@@ -236,31 +252,100 @@
 }
 
 #ifdef SUPPORT_KEYS_BACKUP
+#pragma mark - SecureBackupSetupCoordinatorBridgePresenterDelegate
 
-#pragma mark - KeyBackupSetupCoordinatorBridgePresenterDelegate
-
-- (void)keyBackupSetupCoordinatorBridgePresenterDelegateDidCancel:(KeyBackupSetupCoordinatorBridgePresenter * _Nonnull)keyBackupSetupCoordinatorBridgePresenter
+- (void)secureBackupSetupCoordinatorBridgePresenterDelegateDidComplete:(SecureBackupSetupCoordinatorBridgePresenter *)coordinatorBridgePresenter
 {
-    [keyBackupSetupCoordinatorBridgePresenter dismissWithAnimated:YES];
-    self.keyBackupSetupCoordinatorBridgePresenter = nil;
+    [self.secureBackupSetupCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    self.secureBackupSetupCoordinatorBridgePresenter = nil;
 }
 
-- (void)keyBackupSetupCoordinatorBridgePresenterDelegateDidSetupRecoveryKey:(KeyBackupSetupCoordinatorBridgePresenter * _Nonnull)keyBackupSetupCoordinatorBridgePresenter
+- (void)secureBackupSetupCoordinatorBridgePresenterDelegateDidCancel:(SecureBackupSetupCoordinatorBridgePresenter *)coordinatorBridgePresenter
 {
-    [keyBackupSetupCoordinatorBridgePresenter dismissWithAnimated:YES];
-    self.keyBackupSetupCoordinatorBridgePresenter = nil;
+    [self.secureBackupSetupCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    self.secureBackupSetupCoordinatorBridgePresenter = nil;
+}
+#endif
+
+#ifdef SUPPORT_CROSSSIGNING
+#pragma mark - Cross-signing setup
+
+- (void)showCrossSigningSetup
+{
+    [self setupCrossSigningWithTitle:NSLocalizedStringFromTable(@"cross_signing_setup_banner_title", @"Vector", nil) message:NSLocalizedStringFromTable(@"security_settings_user_password_description", @"Vector", nil) success:^{
+        
+    } failure:^(NSError *error) {
+        
+    }];
 }
 
-- (void)keyBackupRecoverCoordinatorBridgePresenterDidCancel:(KeyBackupRecoverCoordinatorBridgePresenter * _Nonnull)keyBackupRecoverCoordinatorBridgePresenter {
-    [keyBackupRecoverCoordinatorBridgePresenter dismissWithAnimated:YES];
-    self.keyBackupRecoverCoordinatorBridgePresenter = nil;
+- (void)setupCrossSigningWithTitle:(NSString*)title
+                           message:(NSString*)message
+                           success:(void (^)(void))success
+                           failure:(void (^)(NSError *error))failure
+{
+    __block UIViewController *viewController;
+    [self startActivityIndicator];
+    self.view.userInteractionEnabled = NO;
+    
+    void (^animationCompletion)(void) = ^void () {
+        [self stopActivityIndicator];
+        self.view.userInteractionEnabled = YES;
+    };
+    
+    // Get credentials to set up cross-signing
+    NSString *path = [NSString stringWithFormat:@"%@/keys/device_signing/upload", kMXAPIPrefixPathUnstable];
+    self.authenticatedSessionViewControllerFactory = [[AuthenticatedSessionViewControllerFactory alloc] initWithSession:self.mainSession];
+    [self.authenticatedSessionViewControllerFactory viewControllerForPath:path
+                                                           httpMethod:@"POST"
+                                                                title:title
+                                                              message:message
+                                                     onViewController:^(UIViewController * _Nonnull theViewController)
+     {
+         viewController = theViewController;
+         [self presentViewController:viewController animated:YES completion:nil];
+         
+     } onAuthenticated:^(NSDictionary * _Nonnull authParams) {
+         
+         [viewController dismissViewControllerAnimated:NO completion:nil];
+         viewController = nil;
+         
+         MXCrossSigning *crossSigning = self.mainSession.crypto.crossSigning;
+         if (crossSigning)
+         {
+             [crossSigning setupWithAuthParams:authParams success:^{
+                 animationCompletion();
+                 
+                 // TODO: Remove this line and refresh key verification setup banner by listening to a local notification cross-signing state change (Add this behavior into the SDK).
+                 [self->recentsDataSource setDelegate:self andRecentsDataSourceMode:RecentsDataSourceModeHome];
+                 
+                 [self refreshRecentsTable];
+                 success();
+             } failure:^(NSError * _Nonnull error) {
+                 animationCompletion();
+                 [self refreshRecentsTable];
+                 
+                 [[AppDelegate theDelegate] showErrorAsAlert:error];
+                 failure(error);
+             }];
+         }
+         
+     } onCancelled:^{
+         animationCompletion();
+         
+         [viewController dismissViewControllerAnimated:NO completion:nil];
+         viewController = nil;
+         failure(nil);
+     } onFailure:^(NSError * _Nonnull error) {
+         
+         animationCompletion();
+         [[AppDelegate theDelegate] showErrorAsAlert:error];
+         
+         [viewController dismissViewControllerAnimated:NO completion:nil];
+         viewController = nil;
+         failure(error);
+     }];
 }
-
-- (void)keyBackupRecoverCoordinatorBridgePresenterDidRecover:(KeyBackupRecoverCoordinatorBridgePresenter * _Nonnull)keyBackupRecoverCoordinatorBridgePresenter {
-    [keyBackupRecoverCoordinatorBridgePresenter dismissWithAnimated:YES];
-    self.keyBackupRecoverCoordinatorBridgePresenter = nil;
-}
-
 #endif
 
 @end
