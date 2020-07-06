@@ -70,6 +70,7 @@ extern NSString *const kRoomsDataSourceTapOnDirectoryServerChange;
 
 - (void)registerKeyBackupStateDidChangeNotification;
 - (void)unregisterKeyBackupStateDidChangeNotification;
+- (void)refreshCrossSigningBannerDisplay;
 
 /**
  Get the sticky header view for the specified section.

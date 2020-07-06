@@ -84,6 +84,7 @@
     [super viewWillAppear:animated];
     
     [roomsDataSource registerKeyBackupStateDidChangeNotification];
+    [roomsDataSource refreshCrossSigningBannerDisplay];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -215,9 +216,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 #ifdef SUPPORT_KEYS_BACKUP
-    if (indexPath.section == recentsDataSource.secureBackupBannerSection)
+    if (indexPath.section == roomsDataSource.secureBackupBannerSection)
     {
-        switch (recentsDataSource.secureBackupBannerDisplay) {
+        switch (roomsDataSource.secureBackupBannerDisplay) {
             case SecureBackupBannerDisplaySetup:
                 [self presentSecureBackupSetup];
                 break;
@@ -228,7 +229,7 @@
     else
 #endif
 #ifdef SUPPORT_CROSSSIGNING
-    if (indexPath.section == recentsDataSource.crossSigningBannerSection)
+    if (indexPath.section == roomsDataSource.crossSigningBannerSection)
     {
         [self showCrossSigningSetup];
     }
@@ -316,8 +317,7 @@
              [crossSigning setupWithAuthParams:authParams success:^{
                  animationCompletion();
                  
-                 // TODO: Remove this line and refresh key verification setup banner by listening to a local notification cross-signing state change (Add this behavior into the SDK).
-                 [self->recentsDataSource setDelegate:self andRecentsDataSourceMode:RecentsDataSourceModeHome];
+                 // TODO: Refresh key verification setup banner by listening to a local notification cross-signing state change (Add this behavior into the SDK).
                  
                  [self refreshRecentsTable];
                  success();
