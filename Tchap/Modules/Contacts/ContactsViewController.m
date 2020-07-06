@@ -147,7 +147,7 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
         
         // For unknown reason, we have to force here the UISearchBar search text color again.
         // The value set by [updateWithStyle:] call is ignored.
-        UITextField *searchBarTextField = [searchBar valueForKey:@"_searchField"];
+        UITextField *searchBarTextField = searchBar.vc_searchTextField;
         searchBarTextField.textColor = searchBar.tintColor;
     }
 }
@@ -393,7 +393,7 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
             searchBar.tintColor = style.primarySubTextColor;
         }
         
-        UITextField *searchBarTextField = [searchBar valueForKey:@"_searchField"];
+        UITextField *searchBarTextField = searchBar.vc_searchTextField;
         searchBarTextField.textColor = searchBar.tintColor;
     }
     

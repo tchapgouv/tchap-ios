@@ -1758,7 +1758,7 @@
     // FIXME: this all seems incredibly fragile and tied to gutwrenching the current UISearchBar internals.
     
     // text color
-    UITextField *searchBarTextField = [searchBar valueForKey:@"_searchField"];
+    UITextField *searchBarTextField = searchBar.vc_searchTextField;
     searchBarTextField.textColor = self.currentStyle.barSubTitleColor;
     
     // Magnifying glass icon.
