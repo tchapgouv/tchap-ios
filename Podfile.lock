@@ -157,7 +157,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   MatrixKit:
-    :commit: 6d847b7a6ab2af5f559bc5aa491fd35d3a668ee4
+    :commit: cd38042c95c6e437d0d3b717b8106ec262c61c2c
     :git: https://github.com/matrix-org/matrix-ios-kit.git
   MatrixSDK:
     :commit: ecfbdd2d50fceb73a60c246a98d201c7c67cd2d1
@@ -188,6 +188,6 @@ SPEC CHECKSUMS:
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: 4fb4150d18bea363864574eed802a1e1310861ae
+PODFILE CHECKSUM: c0f3625dfae48817a8d3ef1b4e5c51d40072ab58
 
 COCOAPODS: 1.9.3

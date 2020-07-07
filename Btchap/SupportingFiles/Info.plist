@@ -28,6 +28,8 @@
 	<string>5e095efd-c456-4a30-913b-04aef5564344</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCalendarsUsageDescription</key>
+	<string>See your scheduled meetings in the app.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>This allows you to take pictures or videos with the camera and send them in your conversations. You can also use the camera to set your profile picture.</string>
 	<key>NSContactsUsageDescription</key>
@@ -36,12 +38,9 @@
 	<string>The microphone is used when you record videos with the camera.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>This allows you to select pictures or videos from the photo library, and send them in your conversations. You can also use one of these pictures to set your profile picture.</string>
-	<key>NSCalendarsUsageDescription</key>
-	<string>See your scheduled meetings in the app.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>
-		<string>voip</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

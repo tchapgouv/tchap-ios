@@ -136,16 +136,6 @@ post_install do |installer|
         target.build_configurations.each do |config|
             config.build_settings['ENABLE_BITCODE'] = 'NO'
             
-            # Force the min IOS deployment target for matrixKit
-            if target.name.include? 'MatrixKit'
-                config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '10.0'
-            end
-            
-            # Force the min IOS deployment target for matrixSDK
-            if target.name.include? 'MatrixSDK'
-                config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '10.0'
-            end
-            
             # Force SwiftUTI Swift version to 5.0 (as there is no code changes to perform for SwiftUTI fork using Swift 4.2)
             if target.name.include? 'SwiftUTI'
                 config.build_settings['SWIFT_VERSION'] = '5.0'
