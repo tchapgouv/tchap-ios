@@ -441,7 +441,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     [MXKAppSettings standardAppSettings].enableCallKit = NO;
 
     self.pushNotificationService = [PushNotificationService new];
-    self.pushNotificationService.delegate = (id<PushNotificationServiceDelegate>)[UIApplication sharedApplication];
+    self.pushNotificationService.delegate = (id<PushNotificationServiceDelegate>)[UIApplication sharedApplication].delegate;
     
     // Add matrix observers, and initialize matrix sessions if the app is not launched in background.
     [self initMatrixSessions];
@@ -1191,6 +1191,11 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     {
         [session markAllMessagesAsRead];
     }
+}
+
+- (void)removeDeliveredNotificationsWithRoomId:(NSString*)roomId completion:(dispatch_block_t)completion;
+{
+    [self.pushNotificationService removeDeliveredNotificationsWithRoomId:roomId completion:completion];
 }
 
 - (void)logoutWithConfirmation:(BOOL)askConfirmation completion:(void (^)(BOOL isLoggedOut))completion

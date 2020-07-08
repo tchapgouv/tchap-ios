@@ -110,7 +110,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PushNotificationServiceDe
         self.legacyAppDelegate.application(application, didReceiveRemoteNotification: userInfo, fetchCompletionHandler: completionHandler)
     }
     
-    func pushNotificationService(_ pushNotificationService: PushNotificationService, shouldNavigateToRoomWithId roomId: String) {
+    @objc func pushNotificationService(_ pushNotificationService: PushNotificationService, shouldNavigateToRoomWithId roomId: String) {
         _ = self.appCoordinator.resumeBySelectingRoom(with: roomId)
     }
 }
