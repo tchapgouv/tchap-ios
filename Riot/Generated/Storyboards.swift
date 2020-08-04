@@ -112,6 +112,11 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Riot.KeyVerificationVerifyByScanningViewController>(storyboard: KeyVerificationVerifyByScanningViewController.self)
   }
+  internal enum MajorUpdateViewController: StoryboardType {
+    internal static let storyboardName = "MajorUpdateViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.MajorUpdateViewController>(storyboard: MajorUpdateViewController.self)
+  }
   internal enum QRCodeReaderViewController: StoryboardType {
     internal static let storyboardName = "QRCodeReaderViewController"
 
@@ -136,6 +141,21 @@ internal enum StoryboardScene {
     internal static let storyboardName = "SecretsRecoveryWithPassphraseViewController"
 
     internal static let initialScene = InitialSceneType<Riot.SecretsRecoveryWithPassphraseViewController>(storyboard: SecretsRecoveryWithPassphraseViewController.self)
+  }
+  internal enum SecretsSetupRecoveryKeyViewController: StoryboardType {
+    internal static let storyboardName = "SecretsSetupRecoveryKeyViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.SecretsSetupRecoveryKeyViewController>(storyboard: SecretsSetupRecoveryKeyViewController.self)
+  }
+  internal enum SecretsSetupRecoveryPassphraseViewController: StoryboardType {
+    internal static let storyboardName = "SecretsSetupRecoveryPassphraseViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.SecretsSetupRecoveryPassphraseViewController>(storyboard: SecretsSetupRecoveryPassphraseViewController.self)
+  }
+  internal enum SecureBackupSetupIntroViewController: StoryboardType {
+    internal static let storyboardName = "SecureBackupSetupIntroViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.SecureBackupSetupIntroViewController>(storyboard: SecureBackupSetupIntroViewController.self)
   }
   internal enum ServiceTermsModalScreenViewController: StoryboardType {
     internal static let storyboardName = "ServiceTermsModalScreenViewController"

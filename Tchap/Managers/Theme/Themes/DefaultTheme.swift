@@ -40,6 +40,7 @@ class DefaultTheme: NSObject, Theme {
 
     var tintColor: UIColor = UIColor(rgb: 0x162d58)   //
     var tintBackgroundColor: UIColor = UIColor(rgb: 0xEEFDFF) //
+    var tabBarUnselectedItemTintColor: UIColor = UIColor(rgb: 0xC1C6CD)
     var unreadRoomIndentColor: UIColor = UIColor(rgb: 0x2E3648)
     var lineBreakColor: UIColor = UIColor(rgb: 0xEEEFEF) // 0xF2F2F2
     

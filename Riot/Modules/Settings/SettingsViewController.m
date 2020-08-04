@@ -131,8 +131,7 @@ enum
 
 enum
 {
-    LABS_USE_ROOM_MEMBERS_LAZY_LOADING_INDEX = 0,
-    LABS_USE_JITSI_WIDGET_INDEX,
+    LABS_USE_JITSI_WIDGET_INDEX = 0,
     LABS_COUNT
 };
 
@@ -457,9 +456,6 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     // Screen tracking
     [[Analytics sharedInstance] trackScreen:@"Settings"];
     
-    // Release the potential pushed view controller
-    [self releasePushedViewController];
-    
     // Refresh display
     [self refreshSettings];
 
@@ -479,6 +475,9 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    // Release the potential pushed view controller
+    [self releasePushedViewController];
     
     [self.settingsDiscoveryTableViewSection reload];
 }
@@ -1486,8 +1485,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                 newEmailCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_add_email_address", @"Vector", nil);
                 newEmailCell.mxkTextField.text = nil;
                 newEmailCell.mxkTextField.userInteractionEnabled = NO;
-                
-                newEmailCell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"plus_icon"]];
+                newEmailCell.accessoryView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"plus_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.textPrimaryColor]];
             }
             else
             {
@@ -1522,7 +1520,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                     newEmailTextField = newEmailCell.mxkTextField;
                 }
                 
-                UIImage *accessoryViewImage = [MXKTools paintImage:[UIImage imageNamed:@"plus_icon"] withColor:ThemeService.shared.theme.tintColor];
+                UIImage *accessoryViewImage = [[UIImage imageNamed:@"plus_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.tintColor];
                 newEmailCell.accessoryView = [[UIImageView alloc] initWithImage:accessoryViewImage];
             }
             
@@ -1551,7 +1549,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                 newPhoneCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_add_phone_number", @"Vector", nil);
                 newPhoneCell.mxkTextField.text = nil;
                 newPhoneCell.mxkTextField.userInteractionEnabled = NO;
-                newPhoneCell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"plus_icon"]];
+                newPhoneCell.accessoryView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"plus_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.textPrimaryColor]];
                 
                 cell = newPhoneCell;
             }
@@ -1614,7 +1612,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                     newPhoneNumberCell = newPhoneCell;
                 }
                 
-                UIImage *accessoryViewImage = [MXKTools paintImage:[UIImage imageNamed:@"plus_icon"] withColor:ThemeService.shared.theme.tintColor];
+                UIImage *accessoryViewImage = [[UIImage imageNamed:@"plus_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.tintColor];
                 newPhoneCell.accessoryView = [[UIImageView alloc] initWithImage:accessoryViewImage];
                 
                 cell = newPhoneCell;
@@ -1660,7 +1658,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             nightModeCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_night_mode", @"Vector", nil);
             nightModeCell.mxkTextField.userInteractionEnabled = NO;
             nightModeCell.mxkTextField.text = NSLocalizedStringFromTable(@"off", @"Vector", nil);
-            nightModeCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            [nightModeCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
             cell = nightModeCell;
         }
     }
@@ -1776,7 +1774,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                 {
                     isCell.textLabel.text = NSLocalizedStringFromTable(@"settings_identity_server_no_is", @"Vector", nil);
                 }
-                isCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                [isCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
                 cell = isCell;
                 break;
             }
@@ -1868,7 +1866,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             cell.textLabel.text = NSLocalizedStringFromTable(@"settings_ui_language", @"Vector", nil);
             cell.detailTextLabel.text = languageDescription;
 
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            [cell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
         }
         else if (row == USER_INTERFACE_THEME_INDEX)
@@ -1905,7 +1903,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             cell.textLabel.text = NSLocalizedStringFromTable(@"settings_ui_theme", @"Vector", nil);
             cell.detailTextLabel.text = i18nTheme;
 
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            [cell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
         }
     }
@@ -1954,7 +1952,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             cell.textLabel.text = NSLocalizedStringFromTable(@"settings_contacts_phonebook_country", @"Vector", nil);
             cell.detailTextLabel.text = countryName;
             
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            [cell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
         }
     }
@@ -2000,7 +1998,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 
             termAndConditionCell.textLabel.text = NSLocalizedStringFromTable(@"settings_term_conditions", @"Vector", nil);
             
-            termAndConditionCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            [termAndConditionCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
             
             cell = termAndConditionCell;
         }
@@ -2010,7 +2008,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 
             copyrightCell.textLabel.text = NSLocalizedStringFromTable(@"settings_copyright", @"Vector", nil);
             
-            copyrightCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            [copyrightCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
             
             cell = copyrightCell;
         }
@@ -2020,7 +2018,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             
             privacyPolicyCell.textLabel.text = NSLocalizedStringFromTable(@"settings_privacy_policy", @"Vector", nil);
             
-            privacyPolicyCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            [privacyPolicyCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
             
             cell = privacyPolicyCell;
         }
@@ -2030,7 +2028,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             
             thirdPartyCell.textLabel.text = NSLocalizedStringFromTable(@"settings_third_party_notices", @"Vector", nil);
             
-            thirdPartyCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            [thirdPartyCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
             
             cell = thirdPartyCell;
         }
@@ -2136,21 +2134,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     }
     else if (section == SETTINGS_SECTION_LABS_INDEX)
     {
-        if (row == LABS_USE_ROOM_MEMBERS_LAZY_LOADING_INDEX)
-        {
-            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-
-            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_room_members_lazy_loading", @"Vector", nil);
-
-            MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-            labelAndSwitchCell.mxkSwitch.on = account.mxSession.syncWithLazyLoadOfRoomMembers;
-            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
-
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleSyncWithLazyLoadOfRoomMembers:) forControlEvents:UIControlEventTouchUpInside];
-
-            cell = labelAndSwitchCell;
-        }
-        else if (row == LABS_USE_JITSI_WIDGET_INDEX)
+        if (row == LABS_USE_JITSI_WIDGET_INDEX)
         {
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
 
@@ -2196,7 +2180,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             case SECURITY_BUTTON_INDEX:
                 cell = [self getDefaultTableViewCell:tableView];
                 cell.textLabel.text = NSLocalizedStringFromTable(@"security_settings_title", @"Vector", nil);
-                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                [cell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
                 break;
         }
     }
@@ -2471,8 +2455,18 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
         }
         else if (section == SETTINGS_SECTION_USER_SETTINGS_INDEX && row == userSettingsThreePidsInformation)
         {
-            NSIndexPath *discoveryIndexPath = [NSIndexPath indexPathForRow:0 inSection:SETTINGS_SECTION_DISCOVERY_INDEX];
-            [tableView scrollToRowAtIndexPath:discoveryIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+            // settingsDiscoveryTableViewSection is a dynamic section, so check number of rows before scroll to avoid crashes
+            if (self.settingsDiscoveryTableViewSection.numberOfRows > 0)
+            {
+                NSIndexPath *discoveryIndexPath = [NSIndexPath indexPathForRow:0 inSection:SETTINGS_SECTION_DISCOVERY_INDEX];
+                [tableView scrollToRowAtIndexPath:discoveryIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+            }
+            else
+            {
+                //  this won't be precise in scroll location, but seems the best option for now
+                NSIndexPath *discoveryIndexPath = [NSIndexPath indexPathForRow:0 inSection:SETTINGS_SECTION_DISCOVERY_INDEX + 1];
+                [tableView scrollToRowAtIndexPath:discoveryIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+            }
         }
         else if (section == SETTINGS_SECTION_DISCOVERY_INDEX)
         {
@@ -2556,7 +2550,8 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
         {
             if (row == OTHER_COPYRIGHT_INDEX)
             {
-                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:NSLocalizedStringFromTable(@"settings_copyright_url", @"Vector", nil)];
+                NSString *copyrightUrlString = [[NSUserDefaults standardUserDefaults] objectForKey:@"settingsCopyrightUrl"];
+                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:copyrightUrlString];
                 
                 webViewViewController.title = NSLocalizedStringFromTable(@"settings_copyright", @"Vector", nil);
                 
@@ -2564,7 +2559,8 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             }
             else if (row == OTHER_TERM_CONDITIONS_INDEX)
             {
-                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:NSLocalizedStringFromTable(@"settings_term_conditions_url", @"Vector", nil)];
+                NSString *termsConditionsUrlString = [[NSUserDefaults standardUserDefaults] objectForKey:@"settingsTermsConditionsUrl"];
+                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:termsConditionsUrlString];
                 
                 webViewViewController.title = NSLocalizedStringFromTable(@"settings_term_conditions", @"Vector", nil);
                 
@@ -2572,7 +2568,8 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             }
             else if (row == OTHER_PRIVACY_INDEX)
             {
-                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:NSLocalizedStringFromTable(@"settings_privacy_policy_url", @"Vector", nil)];
+                NSString *privacyPolicyUrlString = [[NSUserDefaults standardUserDefaults] objectForKey:@"settingsPrivacyPolicyUrl"];
+                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:privacyPolicyUrlString];
                 
                 webViewViewController.title = NSLocalizedStringFromTable(@"settings_privacy_policy", @"Vector", nil);
                 
@@ -2941,66 +2938,6 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
         [self.tableView reloadData];
     }
 }
-
-- (void)toggleSyncWithLazyLoadOfRoomMembers:(id)sender
-{
-    if (sender && [sender isKindOfClass:UISwitch.class])
-    {
-        UISwitch *switchButton = (UISwitch*)sender;
-
-        if (!switchButton.isOn)
-        {
-            // Disable LL and reload
-            [MXKAppSettings standardAppSettings].syncWithLazyLoadOfRoomMembers = NO;
-            [self launchClearCache];
-        }
-        else
-        {
-            switchButton.enabled = NO;
-            [self startActivityIndicator];
-
-            // Check the user homeserver supports lazy-loading
-            MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-
-            MXWeakify(self);
-            [account supportLazyLoadOfRoomMembers:^(BOOL supportLazyLoadOfRoomMembers) {
-                MXStrongifyAndReturnIfNil(self);
-
-                if (supportLazyLoadOfRoomMembers)
-                {
-                    // Lazy-loading is fully supported, enable it
-                    [MXKAppSettings standardAppSettings].syncWithLazyLoadOfRoomMembers = YES;
-                    [self launchClearCache];
-                }
-                else
-                {
-                    [switchButton setOn:NO animated:YES];
-                    switchButton.enabled = YES;
-                    [self stopActivityIndicator];
-
-                    // No support of lazy-loading, do not engage it and warn the user
-                    [self->currentAlert dismissViewControllerAnimated:NO completion:nil];
-
-                    self->currentAlert = [UIAlertController alertControllerWithTitle:nil
-                                                                             message:NSLocalizedStringFromTable(@"settings_labs_room_members_lazy_loading_error_message", @"Vector", nil)
-                                                                      preferredStyle:UIAlertControllerStyleAlert];
-
-                    MXWeakify(self);
-                    [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
-                                                                           style:UIAlertActionStyleDefault
-                                                                         handler:^(UIAlertAction * action) {
-                                                                             MXStrongifyAndReturnIfNil(self);
-                                                                             self->currentAlert = nil;
-                                                                         }]];
-
-                    [self->currentAlert mxk_setAccessibilityIdentifier: @"SettingsVCNoHSSupportOfLazyLoading"];
-                    [self presentViewController:self->currentAlert animated:YES completion:nil];
-                }
-            }];
-        }
-    }
-}
-
 
 - (void)toggleJitsiForConference:(id)sender
 {

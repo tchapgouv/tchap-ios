@@ -439,6 +439,9 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     
     // Disable CallKit
     [MXKAppSettings standardAppSettings].enableCallKit = NO;
+    
+    // Enforce lazy loading
+    [MXKAppSettings standardAppSettings].syncWithLazyLoadOfRoomMembers = YES;
 
     self.pushNotificationService = [PushNotificationService new];
     self.pushNotificationService.delegate = (id<PushNotificationServiceDelegate>)[UIApplication sharedApplication].delegate;
@@ -1290,9 +1293,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     
     // Reset key backup banner preferences
     [SecureBackupBannerPreferences.shared reset];
-    
-    // Reset key verification banner preferences
-    [CrossSigningBannerPreferences.shared reset];
     
     // Reset key verification banner preferences
     [CrossSigningBannerPreferences.shared reset];

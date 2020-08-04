@@ -201,6 +201,16 @@
         [[NSNotificationCenter defaultCenter] removeObserver:self.keyVerificationTransactionDidChangeNotificationObserver];
     }
     
+    if (self.keyVerificationRequestDidChangeNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:self.keyVerificationRequestDidChangeNotificationObserver];
+    }
+    
+    if (self.keyVerificationTransactionDidChangeNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:self.keyVerificationTransactionDidChangeNotificationObserver];
+    }
+    
     [super destroy];
 }
 

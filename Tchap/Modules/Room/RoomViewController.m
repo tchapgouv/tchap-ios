@@ -182,6 +182,9 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
 
     // Homeserver notices
     MXServerNotices *serverNotices;
+    
+    // Formatted body parser for events
+    FormattedBodyParser *formattedBodyParser;
 }
 
 // The preview header
@@ -298,6 +301,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     // Setup `MXKViewControllerHandling` properties
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
+    formattedBodyParser = [FormattedBodyParser new];
     
     _showMissedDiscussionsBadge = NO;
     
@@ -2906,6 +2910,40 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                             shouldDoAction = NO;
                             break;
                         default:
+                        {
+                            MXEvent *tappedEvent = userInfo[kMXKRoomBubbleCellEventKey];
+                            NSString *format = tappedEvent.content[@"format"];
+                            NSString *formattedBody = tappedEvent.content[@"formatted_body"];
+                            //  if an html formatted body exists
+                            if ([format isEqualToString:kMXRoomMessageFormatHTML] && formattedBody)
+                            {
+                                NSURL *visibleURL = [formattedBodyParser getVisibleURLForURL:url inFormattedBody:formattedBody];
+                                
+                                if (visibleURL && ![url isEqual:visibleURL])
+                                {
+                                    //  urls are different, show confirmation alert
+                                    NSString *formatStr = NSLocalizedStringFromTable(@"external_link_confirmation_message", @"Vector", nil);
+                                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"external_link_confirmation_title", @"Vector", nil) message:[NSString stringWithFormat:formatStr, visibleURL.absoluteString, url.absoluteString] preferredStyle:UIAlertControllerStyleAlert];
+                                    
+                                    UIAlertAction *continueAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"continue", @"Vector", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                                        // Try to open the link
+                                        [[UIApplication sharedApplication] vc_open:url completionHandler:^(BOOL success) {
+                                            if (!success)
+                                            {
+                                                [self showUnableToOpenLinkErrorAlert];
+                                            }
+                                        }];
+                                    }];
+                                    
+                                    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"cancel", @"Vector", nil) style:UIAlertActionStyleCancel handler:nil];
+                                    
+                                    [alert addAction:continueAction];
+                                    [alert addAction:cancelAction];
+                                    
+                                    [self presentViewController:alert animated:YES completion:nil];
+                                    return NO;
+                                }
+                            }
                             // Try to open the link
                             [[UIApplication sharedApplication] vc_open:url completionHandler:^(BOOL success) {
                                 if (!success)
@@ -2915,6 +2953,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                             }];
                             shouldDoAction = NO;
                             break;
+                        }
                     }                                        
                 }
                     break;

@@ -70,12 +70,6 @@
     self.recentsTableView.rowHeight = UITableViewAutomaticDimension;
     self.recentsTableView.estimatedRowHeight = 80;
     
-    // Register key backup banner cells
-    [self.recentsTableView registerNib:SecureBackupBannerCell.nib forCellReuseIdentifier:SecureBackupBannerCell.defaultReuseIdentifier];
-    
-    // Register key verification banner cells
-    [self.recentsTableView registerNib:CrossSigningSetupBannerCell.nib forCellReuseIdentifier:CrossSigningSetupBannerCell.defaultReuseIdentifier];
-    
     self.enableStickyHeaders = YES;
 }
 

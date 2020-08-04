@@ -1291,6 +1291,10 @@
 		02F0FF4022268D5F00066908 /* PublicRoomsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F0FF3E22268D5F00066908 /* PublicRoomsCell.swift */; };
 		02F0FF452226F82600066908 /* RoomIDComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F0FF442226F82600066908 /* RoomIDComponents.swift */; };
 		02F0FF462226F82600066908 /* RoomIDComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F0FF442226F82600066908 /* RoomIDComponents.swift */; };
+		02F1B87224D8C09600A73E63 /* FormattedBodyParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F1B87124D8C09600A73E63 /* FormattedBodyParser.swift */; };
+		02F1B87324D8C09600A73E63 /* FormattedBodyParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F1B87124D8C09600A73E63 /* FormattedBodyParser.swift */; };
+		02F1B87524D8C1A000A73E63 /* UITableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F1B87424D8C19F00A73E63 /* UITableViewCell.swift */; };
+		02F1B87624D8C1A000A73E63 /* UITableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F1B87424D8C19F00A73E63 /* UITableViewCell.swift */; };
 		02FAE23423B2489200DE73D8 /* CameraPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE23323B2489200DE73D8 /* CameraPresenter.swift */; };
 		02FAE23523B2489200DE73D8 /* CameraPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE23323B2489200DE73D8 /* CameraPresenter.swift */; };
 		02FAE23823B25C8400DE73D8 /* Vector_Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FAE23723B25C8400DE73D8 /* Vector_Strings.swift */; };
@@ -2528,6 +2532,8 @@
 		02ECA87F22E0C5BA00ECDA5E /* MXRoomSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MXRoomSummary.swift; sourceTree = "<group>"; };
 		02F0FF3E22268D5F00066908 /* PublicRoomsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicRoomsCell.swift; sourceTree = "<group>"; };
 		02F0FF442226F82600066908 /* RoomIDComponents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomIDComponents.swift; sourceTree = "<group>"; };
+		02F1B87124D8C09600A73E63 /* FormattedBodyParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormattedBodyParser.swift; sourceTree = "<group>"; };
+		02F1B87424D8C19F00A73E63 /* UITableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITableViewCell.swift; sourceTree = "<group>"; };
 		02FAE23323B2489200DE73D8 /* CameraPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraPresenter.swift; sourceTree = "<group>"; };
 		02FAE23723B25C8400DE73D8 /* Vector_Strings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vector_Strings.swift; sourceTree = "<group>"; };
 		02FAE30123B26BEA00DE73D8 /* WidgetManagerConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WidgetManagerConfig.swift; sourceTree = "<group>"; };
@@ -6039,6 +6045,7 @@
 		F083BBE41E7009EC00A9B29C /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				02F1B87424D8C19F00A73E63 /* UITableViewCell.swift */,
 				02C3F2A324AFE13E0086ACA5 /* MXRecoveryService.swift */,
 				02E9144524AE090300DC0B97 /* UNUserNotificationCenter.swift */,
 				02057A0624AA8CC100C96719 /* UIDevice.swift */,
@@ -6091,6 +6098,7 @@
 		F083BC0F1E7009EC00A9B29C /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				02F1B87124D8C09600A73E63 /* FormattedBodyParser.swift */,
 				02D0FC8824AE2DDA008DD5BB /* Constants.swift */,
 				02D0FC8924AE2DDA008DD5BB /* DataProtectionHelper.swift */,
 				02D0FC8B24AE2DDA008DD5BB /* EncryptionTrustLevelBadgeImageHelper.swift */,
@@ -7357,6 +7365,7 @@
 				02C3F29D24AFDEFF0086ACA5 /* SecretsRecoveryCoordinatorType.swift in Sources */,
 				B12FD6A92146BA45001B7F28 /* RegistrationService.swift in Sources */,
 				02388E5124A2AF7900F3B485 /* KeyVerificationVerifyBySASViewState.swift in Sources */,
+				02F1B87224D8C09600A73E63 /* FormattedBodyParser.swift in Sources */,
 				02F0FF452226F82600066908 /* RoomIDComponents.swift in Sources */,
 				B15AB2A0215BF20E007F5405 /* ForgotPasswordCoordinatorType.swift in Sources */,
 				024518F423A19676006873DF /* Themable.swift in Sources */,
@@ -7568,6 +7577,7 @@
 				020DF991214BE467003DFBA4 /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				02388E1B24A2AF7900F3B485 /* UserVerificationSessionsStatusCoordinator.swift in Sources */,
 				02FAE30223B26BEA00DE73D8 /* WidgetManagerConfig.swift in Sources */,
+				02F1B87524D8C1A000A73E63 /* UITableViewCell.swift in Sources */,
 				0250C4FF2122B68000034691 /* RecentsViewController.m in Sources */,
 				02388F0624A2B21D00F3B485 /* RoundedButton.swift in Sources */,
 				B15FE5EC23858B8200D2A5B2 /* AppVersionUpdateCoordinatorType.swift in Sources */,
@@ -8161,6 +8171,7 @@
 				02C3F29E24AFDEFF0086ACA5 /* SecretsRecoveryCoordinatorType.swift in Sources */,
 				02DFEBCE21C07370009B6F15 /* ContactsViewController.m in Sources */,
 				02388E5224A2AF7900F3B485 /* KeyVerificationVerifyBySASViewState.swift in Sources */,
+				02F1B87324D8C09600A73E63 /* FormattedBodyParser.swift in Sources */,
 				02DFEBCF21C07370009B6F15 /* AvatarImageShape.swift in Sources */,
 				02DFEBD021C07370009B6F15 /* RoomIncomingTextMsgBubbleCell.m in Sources */,
 				024518F523A19676006873DF /* Themable.swift in Sources */,
@@ -8372,6 +8383,7 @@
 				02DFEC1721C07370009B6F15 /* Variant2Style.swift in Sources */,
 				02388E1C24A2AF7900F3B485 /* UserVerificationSessionsStatusCoordinator.swift in Sources */,
 				02FAE30323B26BEA00DE73D8 /* WidgetManagerConfig.swift in Sources */,
+				02F1B87624D8C1A000A73E63 /* UITableViewCell.swift in Sources */,
 				B15FE5ED23858B8200D2A5B2 /* AppVersionUpdateCoordinatorType.swift in Sources */,
 				02388F0724A2B21D00F3B485 /* RoundedButton.swift in Sources */,
 				02DFEC1821C07370009B6F15 /* RoomPreviewData.m in Sources */,
