@@ -32,19 +32,12 @@
 #pragma mark - Universal link
 
 /**
- The url of the Vector web application.
+ @return YES if the URL is a Tchap permalink.
  */
-+ (NSString*)webAppUrl;
++ (BOOL)isPermaLink:(NSURL*)url;
 
 /**
- Detect if a URL is a universal link for the application.
-
- @return YES if the URL can be handled by the app.
- */
-+ (BOOL)isUniversalLink:(NSURL*)url;
-
-/**
- Fix a http://vector.im or http://vector.im path url.
+ Fix a http path url.
 
  This method fixes the issue with iOS which handles URL badly when there are several hash
  keys ('%23') in the link.
@@ -77,5 +70,24 @@
  * Convert a duration in ms to a number of days.
  */
 + (uint)numberOfDaysFromDurationInMs:(uint64_t)duration;
+
+#pragma mark - Tchap permalink
+
+/*
+ Return a permalink to a room.
+ 
+ @param roomIdOrAlias the id or the alias of the room to link to.
+ @return the Tchap permalink.
+ */
++ (NSString*)permalinkToRoom:(NSString*)roomIdOrAlias;
+
+/*
+ Return a permalink to an event.
+ 
+ @param eventId the id of the event to link to.
+ @param roomIdOrAlias the room the event belongs to.
+ @return the Tchap permalink.
+ */
++ (NSString*)permalinkToEvent:(NSString*)eventId inRoom:(NSString*)roomIdOrAlias;
 
 @end

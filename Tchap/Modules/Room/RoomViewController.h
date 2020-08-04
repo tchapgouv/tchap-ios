@@ -124,4 +124,13 @@
  */
 - (void)roomViewControllerPreviewDidTapCancel:(nonnull RoomViewController *)roomViewController;
 
+/**
+ Handle the fragment of a permalink.
+ 
+ @param roomViewController the `RoomViewController` instance.
+ @param fragment the permalink fragment
+ @return true to indicate that the fragment has been handled, or false when the fragment is not supported.
+ */
+- (BOOL)roomViewController:(nonnull RoomViewController *)roomViewController handlePermalinkFragment:(nonnull NSString*)fragment;
+
 @end

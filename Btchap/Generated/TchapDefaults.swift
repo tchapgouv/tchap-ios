@@ -25,6 +25,8 @@ internal enum TchapDefaults {
   internal static let matrixApps: Bool = _document["matrixApps"]
   internal static let maxAllowedMediaCacheSize: Int = _document["maxAllowedMediaCacheSize"]
   internal static let otherIdentityServerNames: [String] = _document["otherIdentityServerNames"]
+  internal static let permalinkPrefix: String = _document["permalinkPrefix"]
+  internal static let permalinkSupportedHosts: [String] = _document["permalinkSupportedHosts"]
   internal static let preferredIdentityServerNames: [String] = _document["preferredIdentityServerNames"]
   internal static let pushGatewayURL: String = _document["pushGatewayURL"]
   internal static let pushKitAppIdProd: String = _document["pushKitAppIdProd"]
@@ -39,9 +41,6 @@ internal enum TchapDefaults {
   internal static let sortRoomMembersUsingLastSeenTime: Bool = _document["sortRoomMembersUsingLastSeenTime"]
   internal static let syncLocalContacts: Bool = _document["syncLocalContacts"]
   internal static let tacURL: String = _document["tacURL"]
-  internal static let webAppUrl: String = _document["webAppUrl"]
-  internal static let webAppUrlBeta: String = _document["webAppUrlBeta"]
-  internal static let webAppUrlDev: String = _document["webAppUrlDev"]
 }
 // swiftlint:enable identifier_name line_length type_body_length
 

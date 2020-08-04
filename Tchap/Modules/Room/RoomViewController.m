@@ -2556,31 +2556,30 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
         }
 #endif
         
-        // Tchap: Disable permalink for the moment
-//        [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_permalink", @"Vector", nil)
-//                                                         style:UIAlertActionStyleDefault
-//                                                       handler:^(UIAlertAction * action) {
-//
-//                                                           if (weakSelf)
-//                                                           {
-//                                                               typeof(self) self = weakSelf;
-//
-//                                                               [self cancelEventSelection];
-//
-//                                                               // Create a matrix.to permalink that is common to all matrix clients
-//                                                               NSString *permalink = [MXTools permalinkToEvent:selectedEvent.eventId inRoom:selectedEvent.roomId];
-//
-//                                                               if (permalink)
-//                                                               {
-//                                                                   [[UIPasteboard generalPasteboard] setString:permalink];
-//                                                               }
-//                                                               else
-//                                                               {
-//                                                                   NSLog(@"[RoomViewController] Contextual menu permalink action failed. Permalink is nil room id/event id: %@/%@", selectedEvent.roomId, selectedEvent.eventId);
-//                                                               }
-//                                                           }
-//
-//                                                       }]];
+        [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_permalink", @"Vector", nil)
+                                                         style:UIAlertActionStyleDefault
+                                                       handler:^(UIAlertAction * action) {
+                                                           
+                                                           if (weakSelf)
+                                                           {
+                                                               typeof(self) self = weakSelf;
+                                                               
+                                                               [self cancelEventSelection];
+                                                               
+                                                               // Create a Tchap permalink
+                                                               NSString *permalink = [Tools permalinkToEvent:selectedEvent.eventId inRoom:selectedEvent.roomId];
+                                                               if (permalink)
+                                                               {
+                                                                   [[UIPasteboard generalPasteboard] setString:permalink];
+                                                               }
+                                                               else
+                                                               {
+                                                                   NSLog(@"[RoomViewController] Contextual menu permalink action failed. Permalink is nil room id/event id: %@/%@", selectedEvent.roomId, selectedEvent.eventId);
+                                                               }
+                                                               
+                                                           }
+                                                           
+                                                       }]];
         
         // Add reaction history if event contains reactions
         if (roomBubbleTableViewCell.bubbleData.reactions[selectedEvent.eventId].aggregatedReactionsWithNonZeroCount)
@@ -2814,20 +2813,23 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
         // to be able to convert it into a legal URL string.
         NSString *absoluteURLString = [url.absoluteString stringByRemovingPercentEncoding];
         
-        // If the link can be open it by the app, let it do
-        // Note: Universal links are not supported by Tchap. [Tools isUniversalLink:] returns NO for the moment.
-        // TODO use the UniversalLinkService
-//        if ([Tools isUniversalLink:url])
-//        {
-//            shouldDoAction = NO;
-//
-//            // iOS Patch: fix vector.im urls before using it
-//            NSURL *fixedURL = [Tools fixURLWithSeveralHashKeys:url];
-//
-//            [[AppDelegate theDelegate] handleUniversalLinkFragment:fixedURL.fragment];
-//        }
+        // Check whether this is a permalink to handle it directly into the app
+        if ([Tools isPermaLink:url])
+        {
+            // Patch: catch up all the permalinks even if they are not all supported by Tchap for the moment,
+            // like the permalinks with a userid.
+            shouldDoAction = NO;
+            
+            // iOS Patch: fix urls before using it
+            NSURL *fixedURL = [Tools fixURLWithSeveralHashKeys:url];
+            NSString *fragment = fixedURL.fragment;
+            if (fragment && self.delegate)
+            {
+                [self.delegate roomViewController:self handlePermalinkFragment:fragment];
+            }
+        }
         // Open a detail screen about the clicked user
-        if ([MXTools isMatrixUserIdentifier:absoluteURLString])
+        else if ([MXTools isMatrixUserIdentifier:absoluteURLString])
         {
             // We display details only for the room members
             NSString *userId = absoluteURLString;
