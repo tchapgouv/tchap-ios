@@ -32,6 +32,7 @@
 #import "CountryPickerViewController.h"
 #import "LanguagePickerViewController.h"
 #import "DeactivateAccountViewController.h"
+#import "SecurityViewController.h"
 
 #import "NBPhoneNumberUtil.h"
 #import "RageShakeManager.h"
@@ -51,6 +52,7 @@ enum
 {
     SETTINGS_SECTION_SIGN_OUT_INDEX = 0,
     SETTINGS_SECTION_USER_SETTINGS_INDEX,
+    SETTINGS_SECTION_SECURITY_INDEX,
     SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX,
     SETTINGS_SECTION_CALLS_INDEX,
     SETTINGS_SECTION_DISCOVERY_INDEX,
@@ -62,9 +64,6 @@ enum
     SETTINGS_SECTION_ADVANCED_INDEX,
     SETTINGS_SECTION_OTHER_INDEX,
     SETTINGS_SECTION_LABS_INDEX,
-    SETTINGS_SECTION_CRYPTOGRAPHY_INDEX,
-    SETTINGS_SECTION_KEYBACKUP_INDEX,
-    SETTINGS_SECTION_DEVICES_INDEX,
     SETTINGS_SECTION_FLAIR_INDEX,
     SETTINGS_SECTION_DEACTIVATE_ACCOUNT_INDEX,
     SETTINGS_SECTION_COUNT
@@ -88,9 +87,7 @@ enum
 
 enum
 {
-    CALLS_ENABLE_CALLKIT_INDEX = 0,
-    CALLS_CALLKIT_DESCRIPTION_INDEX,
-    CALLS_ENABLE_STUN_SERVER_FALLBACK_INDEX,
+    CALLS_ENABLE_STUN_SERVER_FALLBACK_INDEX=0,
     CALLS_STUN_SERVER_FALLBACK_DESCRIPTION_INDEX,
     CALLS_COUNT
 };
@@ -134,25 +131,14 @@ enum
 
 enum
 {
-    LABS_USE_ROOM_MEMBERS_LAZY_LOADING_INDEX = 0,
-    LABS_USE_JITSI_WIDGET_INDEX,
-    LABS_CRYPTO_INDEX,
-    LABS_COUNT,     // TODO: Remove it once features exist
-    LABS_DM_KEY_VERIFICATION_INDEX,
-    LABS_CROSS_SIGNING_INDEX,
-//    LABS_COUNT
-};
-
-enum {
-    CRYPTOGRAPHY_INFO_INDEX = 0,
-    CRYPTOGRAPHY_BLACKLIST_UNVERIFIED_DEVICES_INDEX,
-    CRYPTOGRAPHY_EXPORT_INDEX,
-    CRYPTOGRAPHY_COUNT
+    LABS_USE_JITSI_WIDGET_INDEX = 0,
+    LABS_COUNT
 };
 
 enum
 {
-    DEVICES_DESCRIPTION_INDEX = 0
+    SECURITY_BUTTON_INDEX = 0,
+    SECURITY_COUNT
 };
 
 #define SECTION_TITLE_PADDING_WHEN_HIDDEN 0.01f
@@ -161,10 +147,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 
 
 @interface SettingsViewController () <DeactivateAccountViewControllerDelegate,
-SettingsKeyBackupTableViewSectionDelegate,
-MXKEncryptionInfoViewDelegate,
-KeyBackupSetupCoordinatorBridgePresenterDelegate,
-KeyBackupRecoverCoordinatorBridgePresenterDelegate,
+SecureBackupSetupCoordinatorBridgePresenterDelegate,
 SignOutAlertPresenterDelegate,
 SingleImagePickerPresenterDelegate,
 SettingsDiscoveryTableViewSectionDelegate, SettingsDiscoveryViewModelCoordinatorDelegate,
@@ -223,10 +206,6 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     NSInteger localContactsSyncIndex;
     NSInteger localContactsPhoneBookCountryIndex;
     
-    // Devices
-    NSMutableArray<MXDevice *> *devicesArray;
-    DeviceView *deviceView;
-    
     // Flair: the groups data source
     GroupsDataSource *groupsDataSource;
     
@@ -244,24 +223,12 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     
     //
     UIAlertController *resetPwdAlertController;
-
-    // The view used to export e2e keys
-    MXKEncryptionKeysExportView *exportView;
-
-    // The document interaction Controller used to export e2e keys
-    UIDocumentInteractionController *documentInteractionController;
-    NSURL *keyExportsFile;
-    NSTimer *keyExportsFileDeletionTimer;
     
     BOOL keepNewEmailEditing;
     BOOL keepNewPhoneNumberEditing;
     
     // The current pushed view controller
     UIViewController *pushedViewController;
-
-    SettingsKeyBackupTableViewSection *keyBackupSection;
-    KeyBackupSetupCoordinatorBridgePresenter *keyBackupSetupCoordinatorBridgePresenter;
-    KeyBackupRecoverCoordinatorBridgePresenter *keyBackupRecoverCoordinatorBridgePresenter;
 
     SettingsIdentityServerCoordinatorBridgePresenter *identityServerSettingsCoordinatorBridgePresenter;
 }
@@ -285,9 +252,19 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 @property (nonatomic, strong) SettingsDiscoveryTableViewSection *settingsDiscoveryTableViewSection;
 @property (nonatomic, strong) SettingsDiscoveryThreePidDetailsCoordinatorBridgePresenter *discoveryThreePidDetailsPresenter;
 
+@property (nonatomic, strong) SecureBackupSetupCoordinatorBridgePresenter *secureBackupSetupCoordinatorBridgePresenter;
+@property (nonatomic, strong) AuthenticatedSessionViewControllerFactory *authenticatedSessionViewControllerFactory;
+
 @end
 
 @implementation SettingsViewController
+
++ (instancetype)instantiate
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+    SettingsViewController *settingsViewController = [storyboard instantiateViewControllerWithIdentifier:@"SettingsViewController"];
+    return settingsViewController;
+}
 
 - (void)finalizeInit
 {
@@ -344,7 +321,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     }];
     
     // Add observer to push settings
-    pushInfoUpdateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountPushKitActivityDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    pushInfoUpdateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountAPNSActivityDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         [self stopActivityIndicator];
         
@@ -359,18 +336,6 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     for (MXSession *mxSession in sessions)
     {
         [self addMatrixSession:mxSession];
-    }
-
-    if (self.mainSession.crypto.backup)
-    {
-        MXDeviceInfo *deviceInfo = [self.mainSession.crypto.deviceList storedDevice:self.mainSession.matrixRestClient.credentials.userId
-                                                                           deviceId:self.mainSession.matrixRestClient.credentials.deviceId];
-
-        if (deviceInfo)
-        {
-            keyBackupSection = [[SettingsKeyBackupTableViewSection alloc] initWithKeyBackup:self.mainSession.crypto.backup userDevice:deviceInfo];
-            keyBackupSection.delegate = self;
-        }
     }
     
     [self setupDiscoverySection];
@@ -410,6 +375,8 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     {
         [self refreshSettings];
     }
+
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -434,13 +401,6 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     
     // Release the potential pushed view controller
     [self releasePushedViewController];
-    
-    if (documentInteractionController)
-    {
-        [documentInteractionController dismissPreviewAnimated:NO];
-        [documentInteractionController dismissMenuAnimated:NO];
-        documentInteractionController = nil;
-    }
     
     if (kThemeServiceDidChangeThemeNotificationObserver)
     {
@@ -469,8 +429,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
         [super destroy];
     }
 
-    keyBackupSetupCoordinatorBridgePresenter = nil;
-    keyBackupRecoverCoordinatorBridgePresenter = nil;
+    _secureBackupSetupCoordinatorBridgePresenter = nil;
     identityServerSettingsCoordinatorBridgePresenter = nil;
 }
 
@@ -497,21 +456,12 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     // Screen tracking
     [[Analytics sharedInstance] trackScreen:@"Settings"];
     
-    // Release the potential pushed view controller
-    [self releasePushedViewController];
-    
     // Refresh display
     [self refreshSettings];
 
     // Refresh linked emails and phone numbers in parallel
     [self loadAccount3PIDs];
-    
-    // Refresh the current device information in parallel
-    [self loadCurrentDeviceInformation];
-    
-    // Refresh devices in parallel
-    [self loadDevices];
-    
+        
     // Observe kAppDelegateDidTapStatusBarNotificationObserver.
     kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
@@ -525,6 +475,9 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    // Release the potential pushed view controller
+    [self releasePushedViewController];
     
     [self.settingsDiscoveryTableViewSection reload];
 }
@@ -640,12 +593,6 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     onReadyToDestroyHandler = nil;
-    
-    if (deviceView)
-    {
-        [deviceView removeFromSuperview];
-        deviceView = nil;
-    }
 }
 
 -(void)setNewEmailEditingEnabled:(BOOL)newEmailEditingEnabled
@@ -994,171 +941,6 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     }];
 }
 
-- (void)loadCurrentDeviceInformation
-{
-    // Refresh the current device information
-    MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-    [account loadDeviceInformation:^{
-        
-        // Refresh all the table (A slide down animation is observed when we limit the refresh to the concerned section).
-        // Note: The use of 'reloadData' handles the case where the account has been logged out.
-        [self refreshSettings];
-        
-    } failure:nil];
-}
-
-- (NSAttributedString*)cryptographyInformation
-{
-    // TODO Handle multi accounts
-    MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-    
-    // Crypto information
-    NSMutableAttributedString *cryptoInformationString = [[NSMutableAttributedString alloc]
-                                                          initWithString:NSLocalizedStringFromTable(@"settings_crypto_device_name", @"Vector", nil)
-                                                          attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
-                                                                       NSFontAttributeName: [UIFont systemFontOfSize:17]}];
-    [cryptoInformationString appendAttributedString:[[NSMutableAttributedString alloc]
-                                                     initWithString:account.device.displayName ? account.device.displayName : @""
-                                                     attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
-                                                                  NSFontAttributeName: [UIFont systemFontOfSize:17]}]];
-    
-    [cryptoInformationString appendAttributedString:[[NSMutableAttributedString alloc]
-                                                     initWithString:NSLocalizedStringFromTable(@"settings_crypto_device_id", @"Vector", nil)
-                                                     attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
-                                                                  NSFontAttributeName: [UIFont systemFontOfSize:17]}]];
-    [cryptoInformationString appendAttributedString:[[NSMutableAttributedString alloc]
-                                                     initWithString:account.device.deviceId ? account.device.deviceId : @""
-                                                     attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
-                                                                  NSFontAttributeName: [UIFont systemFontOfSize:17]}]];
-    
-    [cryptoInformationString appendAttributedString:[[NSMutableAttributedString alloc]
-                                                     initWithString:NSLocalizedStringFromTable(@"settings_crypto_device_key", @"Vector", nil)
-                                                     attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
-                                                                  NSFontAttributeName: [UIFont systemFontOfSize:17]}]];
-    NSString *fingerprint = account.mxSession.crypto.deviceEd25519Key;
-    if (fingerprint)
-    {
-        fingerprint = [MXTools addWhiteSpacesToString:fingerprint every:4];
-    }
-    [cryptoInformationString appendAttributedString:[[NSMutableAttributedString alloc]
-                                                     initWithString:fingerprint ? fingerprint : @""
-                                                     attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
-                                                                  NSFontAttributeName: [UIFont boldSystemFontOfSize:17]}]];
-    
-    return cryptoInformationString;
-}
-
-- (void)loadDevices
-{
-    // Refresh the account devices list
-    MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-    [account.mxRestClient devices:^(NSArray<MXDevice *> *devices) {
-        
-        if (devices)
-        {
-            devicesArray = [NSMutableArray arrayWithArray:devices];
-            
-            // Sort devices according to the last seen date.
-            NSComparator comparator = ^NSComparisonResult(MXDevice *deviceA, MXDevice *deviceB) {
-                
-                if (deviceA.lastSeenTs > deviceB.lastSeenTs)
-                {
-                    return NSOrderedAscending;
-                }
-                if (deviceA.lastSeenTs < deviceB.lastSeenTs)
-                {
-                    return NSOrderedDescending;
-                }
-                
-                return NSOrderedSame;
-            };
-            
-            // Sort devices list
-            [devicesArray sortUsingComparator:comparator];
-        }
-        else
-        {
-            devicesArray = nil;
-
-        }
-        
-        // Refresh all the table (A slide down animation is observed when we limit the refresh to the concerned section).
-        // Note: The use of 'reloadData' handles the case where the account has been logged out.
-        [self refreshSettings];
-        
-    } failure:^(NSError *error) {
-        
-        // Display the data that has been loaded last time
-        // Note: The use of 'reloadData' handles the case where the account has been logged out.
-        [self refreshSettings];
-        
-    }];
-}
-
-- (void)showDeviceDetails:(MXDevice *)device
-{
-    [self dismissKeyboard];
-    
-    deviceView = [[DeviceView alloc] initWithDevice:device andMatrixSession:self.mainSession];
-    deviceView.delegate = self;
-
-    // Add the view and define edge constraints
-    [self.tableView.superview addSubview:deviceView];
-    [self.tableView.superview bringSubviewToFront:deviceView];
-    
-    NSLayoutConstraint *topConstraint = [NSLayoutConstraint constraintWithItem:deviceView
-                                                                     attribute:NSLayoutAttributeTop
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:self.tableView
-                                                                     attribute:NSLayoutAttributeTop
-                                                                    multiplier:1.0f
-                                                                      constant:0.0f];
-    
-    NSLayoutConstraint *leftConstraint = [NSLayoutConstraint constraintWithItem:deviceView
-                                                                      attribute:NSLayoutAttributeLeft
-                                                                      relatedBy:NSLayoutRelationEqual
-                                                                         toItem:self.tableView
-                                                                      attribute:NSLayoutAttributeLeft
-                                                                     multiplier:1.0f
-                                                                       constant:0.0f];
-    
-    NSLayoutConstraint *widthConstraint = [NSLayoutConstraint constraintWithItem:deviceView
-                                                                       attribute:NSLayoutAttributeWidth
-                                                                       relatedBy:NSLayoutRelationEqual
-                                                                          toItem:self.tableView
-                                                                       attribute:NSLayoutAttributeWidth
-                                                                      multiplier:1.0f
-                                                                        constant:0.0f];
-    
-    NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:deviceView
-                                                                        attribute:NSLayoutAttributeHeight
-                                                                        relatedBy:NSLayoutRelationEqual
-                                                                           toItem:self.tableView
-                                                                        attribute:NSLayoutAttributeHeight
-                                                                       multiplier:1.0f
-                                                                         constant:0.0f];
-    
-    [NSLayoutConstraint activateConstraints:@[topConstraint, leftConstraint, widthConstraint, heightConstraint]];
-}
-
-- (void)deviceView:(DeviceView*)theDeviceView presentAlertController:(UIAlertController *)alert
-{
-    [self dismissKeyboard];
-    
-    [self presentViewController:alert animated:YES completion:nil];
-}
-
-- (void)dismissDeviceView:(MXKDeviceView *)theDeviceView didUpdate:(BOOL)isUpdated
-{
-    [deviceView removeFromSuperview];
-    deviceView = nil;
-    
-    if (isUpdated)
-    {
-        [self loadDevices];
-    }
-}
-
 - (void)editNewEmailTextField
 {
     if (newEmailTextField && ![newEmailTextField becomeFirstResponder])
@@ -1457,35 +1239,15 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             }
         }
     }
-    else if (section == SETTINGS_SECTION_DEVICES_INDEX)
-    {
-        count = devicesArray.count;
-        if (count)
-        {
-            // For some description (DEVICES_DESCRIPTION_INDEX)
-            count++;
-        }
-    }
-    else if (section == SETTINGS_SECTION_CRYPTOGRAPHY_INDEX)
-    {
-        // Check whether this section is visible.
-        if (self.mainSession.crypto)
-        {
-            count = CRYPTOGRAPHY_COUNT;
-        }
-    }
-    else if (section == SETTINGS_SECTION_KEYBACKUP_INDEX)
-    {
-        // Check whether this section is visible.
-        if (self.mainSession.crypto)
-        {
-            count = keyBackupSection.numberOfRows;
-        }
-    }
     else if (section == SETTINGS_SECTION_DEACTIVATE_ACCOUNT_INDEX)
     {
         count = 1;
     }
+    else if (section == SETTINGS_SECTION_SECURITY_INDEX)
+    {
+        count = SECURITY_COUNT;
+    }
+
     return count;
 }
 
@@ -1493,7 +1255,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 {
     MXKTableViewCellWithLabelAndTextField *cell = [tableview dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndTextField defaultReuseIdentifier] forIndexPath:indexPath];
     
-    cell.mxkLabelLeadingConstraint.constant = cell.separatorInset.left;
+    cell.mxkLabelLeadingConstraint.constant = cell.vc_separatorInset.left;
     cell.mxkTextFieldLeadingConstraint.constant = 16;
     cell.mxkTextFieldTrailingConstraint.constant = 15;
     
@@ -1521,7 +1283,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 {
     MXKTableViewCellWithLabelAndSwitch *cell = [tableview dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndSwitch defaultReuseIdentifier] forIndexPath:indexPath];
     
-    cell.mxkLabelLeadingConstraint.constant = cell.separatorInset.left;
+    cell.mxkLabelLeadingConstraint.constant = cell.vc_separatorInset.left;
     cell.mxkSwitchTrailingConstraint.constant = 15;
     
     cell.mxkLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
@@ -1563,8 +1325,8 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     textViewCell.mxkTextView.textColor = ThemeService.shared.theme.textPrimaryColor;
     textViewCell.mxkTextView.font = [UIFont systemFontOfSize:17];
     textViewCell.mxkTextView.backgroundColor = [UIColor clearColor];
-    textViewCell.mxkTextViewLeadingConstraint.constant = tableView.separatorInset.left;
-    textViewCell.mxkTextViewTrailingConstraint.constant = tableView.separatorInset.right;
+    textViewCell.mxkTextViewLeadingConstraint.constant = tableView.vc_separatorInset.left;
+    textViewCell.mxkTextViewTrailingConstraint.constant = tableView.vc_separatorInset.right;
     textViewCell.mxkTextView.accessibilityIdentifier = nil;
     
     return textViewCell;
@@ -1624,7 +1386,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
         {
             MXKTableViewCellWithLabelAndMXKImageView *profileCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithLabelAndMXKImageView defaultReuseIdentifier] forIndexPath:indexPath];
             
-            profileCell.mxkLabelLeadingConstraint.constant = profileCell.separatorInset.left;
+            profileCell.mxkLabelLeadingConstraint.constant = profileCell.vc_separatorInset.left;
             profileCell.mxkImageViewTrailingConstraint.constant = 10;
             
             profileCell.mxkImageViewWidthConstraint.constant = profileCell.mxkImageViewHeightConstraint.constant = 30;
@@ -1723,8 +1485,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                 newEmailCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_add_email_address", @"Vector", nil);
                 newEmailCell.mxkTextField.text = nil;
                 newEmailCell.mxkTextField.userInteractionEnabled = NO;
-                
-                newEmailCell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"plus_icon"]];
+                newEmailCell.accessoryView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"plus_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.textPrimaryColor]];
             }
             else
             {
@@ -1759,7 +1520,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                     newEmailTextField = newEmailCell.mxkTextField;
                 }
                 
-                UIImage *accessoryViewImage = [MXKTools paintImage:[UIImage imageNamed:@"plus_icon"] withColor:ThemeService.shared.theme.tintColor];
+                UIImage *accessoryViewImage = [[UIImage imageNamed:@"plus_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.tintColor];
                 newEmailCell.accessoryView = [[UIImageView alloc] initWithImage:accessoryViewImage];
             }
             
@@ -1788,7 +1549,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                 newPhoneCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_add_phone_number", @"Vector", nil);
                 newPhoneCell.mxkTextField.text = nil;
                 newPhoneCell.mxkTextField.userInteractionEnabled = NO;
-                newPhoneCell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"plus_icon"]];
+                newPhoneCell.accessoryView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"plus_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.textPrimaryColor]];
                 
                 cell = newPhoneCell;
             }
@@ -1801,6 +1562,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                 newPhoneCell.countryCodeButton.accessibilityIdentifier = @"SettingsVCPhoneCountryButton";
                 
                 newPhoneCell.mxkLabel.font = newPhoneCell.mxkTextField.font = [UIFont systemFontOfSize:16];
+                newPhoneCell.mxkTextField.textColor = ThemeService.shared.theme.textSecondaryColor;                
                 
                 newPhoneCell.mxkTextField.userInteractionEnabled = YES;
                 newPhoneCell.mxkTextField.keyboardType = UIKeyboardTypePhonePad;
@@ -1850,7 +1612,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                     newPhoneNumberCell = newPhoneCell;
                 }
                 
-                UIImage *accessoryViewImage = [MXKTools paintImage:[UIImage imageNamed:@"plus_icon"] withColor:ThemeService.shared.theme.tintColor];
+                UIImage *accessoryViewImage = [[UIImage imageNamed:@"plus_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.tintColor];
                 newPhoneCell.accessoryView = [[UIImageView alloc] initWithImage:accessoryViewImage];
                 
                 cell = newPhoneCell;
@@ -1896,7 +1658,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             nightModeCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_night_mode", @"Vector", nil);
             nightModeCell.mxkTextField.userInteractionEnabled = NO;
             nightModeCell.mxkTextField.text = NSLocalizedStringFromTable(@"off", @"Vector", nil);
-            nightModeCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            [nightModeCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
             cell = nightModeCell;
         }
     }
@@ -1907,7 +1669,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
     
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_enable_push_notif", @"Vector", nil);
-            labelAndSwitchCell.mxkSwitch.on = account.isPushKitNotificationActive;
+            labelAndSwitchCell.mxkSwitch.on = account.pushNotificationServiceIsActive;
             labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
             labelAndSwitchCell.mxkSwitch.enabled = YES;
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(togglePushNotifications:) forControlEvents:UIControlEventTouchUpInside];
@@ -1921,7 +1683,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_show_decrypted_content", @"Vector", nil);
             labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.showDecryptedContentInNotifications;
             labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
-            labelAndSwitchCell.mxkSwitch.enabled = account.isPushKitNotificationActive;
+            labelAndSwitchCell.mxkSwitch.enabled = account.pushNotificationServiceIsActive;
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleShowDecodedContent:) forControlEvents:UIControlEventTouchUpInside];
             
             
@@ -1967,39 +1729,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     }
     else if (section == SETTINGS_SECTION_CALLS_INDEX)
     {
-        if (row == CALLS_ENABLE_CALLKIT_INDEX)
-        {
-            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_enable_callkit", @"Vector", nil);
-            labelAndSwitchCell.mxkSwitch.on = [MXKAppSettings standardAppSettings].isCallKitEnabled;
-            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
-            labelAndSwitchCell.mxkSwitch.enabled = YES;
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleCallKit:) forControlEvents:UIControlEventTouchUpInside];
-
-            if (![MXCallKitAdapter callKitAvailable])
-            {
-                labelAndSwitchCell.mxkSwitch.on = NO;
-                labelAndSwitchCell.mxkSwitch.enabled = NO;
-                labelAndSwitchCell.mxkLabel.enabled = NO;
-            }
-
-            cell = labelAndSwitchCell;
-        }
-        else if (row == CALLS_CALLKIT_DESCRIPTION_INDEX)
-        {
-            MXKTableViewCell *globalInfoCell = [self getDefaultTableViewCell:tableView];
-            globalInfoCell.textLabel.text = NSLocalizedStringFromTable(@"settings_callkit_info", @"Vector", nil);
-            globalInfoCell.textLabel.numberOfLines = 0;
-            globalInfoCell.selectionStyle = UITableViewCellSelectionStyleNone;
-
-            if (![MXCallKitAdapter callKitAvailable])
-            {
-                globalInfoCell.textLabel.enabled = NO;
-            }
-
-            cell = globalInfoCell;
-        }
-        else if (row == CALLS_ENABLE_STUN_SERVER_FALLBACK_INDEX)
+        if (row == CALLS_ENABLE_STUN_SERVER_FALLBACK_INDEX)
         {
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_calls_stun_server_fallback_button", @"Vector", nil);
@@ -2044,7 +1774,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                 {
                     isCell.textLabel.text = NSLocalizedStringFromTable(@"settings_identity_server_no_is", @"Vector", nil);
                 }
-                isCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                [isCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
                 cell = isCell;
                 break;
             }
@@ -2136,7 +1866,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             cell.textLabel.text = NSLocalizedStringFromTable(@"settings_ui_language", @"Vector", nil);
             cell.detailTextLabel.text = languageDescription;
 
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            [cell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
         }
         else if (row == USER_INTERFACE_THEME_INDEX)
@@ -2173,7 +1903,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             cell.textLabel.text = NSLocalizedStringFromTable(@"settings_ui_theme", @"Vector", nil);
             cell.detailTextLabel.text = i18nTheme;
 
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            [cell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
         }
     }
@@ -2222,7 +1952,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             cell.textLabel.text = NSLocalizedStringFromTable(@"settings_contacts_phonebook_country", @"Vector", nil);
             cell.detailTextLabel.text = countryName;
             
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            [cell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
         }
     }
@@ -2268,7 +1998,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 
             termAndConditionCell.textLabel.text = NSLocalizedStringFromTable(@"settings_term_conditions", @"Vector", nil);
             
-            termAndConditionCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            [termAndConditionCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
             
             cell = termAndConditionCell;
         }
@@ -2278,7 +2008,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 
             copyrightCell.textLabel.text = NSLocalizedStringFromTable(@"settings_copyright", @"Vector", nil);
             
-            copyrightCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            [copyrightCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
             
             cell = copyrightCell;
         }
@@ -2288,7 +2018,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             
             privacyPolicyCell.textLabel.text = NSLocalizedStringFromTable(@"settings_privacy_policy", @"Vector", nil);
             
-            privacyPolicyCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            [privacyPolicyCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
             
             cell = privacyPolicyCell;
         }
@@ -2298,7 +2028,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             
             thirdPartyCell.textLabel.text = NSLocalizedStringFromTable(@"settings_third_party_notices", @"Vector", nil);
             
-            thirdPartyCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            [thirdPartyCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
             
             cell = thirdPartyCell;
         }
@@ -2404,21 +2134,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     }
     else if (section == SETTINGS_SECTION_LABS_INDEX)
     {
-        if (row == LABS_USE_ROOM_MEMBERS_LAZY_LOADING_INDEX)
-        {
-            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-
-            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_room_members_lazy_loading", @"Vector", nil);
-
-            MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-            labelAndSwitchCell.mxkSwitch.on = account.mxSession.syncWithLazyLoadOfRoomMembers;
-            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
-
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleSyncWithLazyLoadOfRoomMembers:) forControlEvents:UIControlEventTouchUpInside];
-
-            cell = labelAndSwitchCell;
-        }
-        else if (row == LABS_USE_JITSI_WIDGET_INDEX)
+        if (row == LABS_USE_JITSI_WIDGET_INDEX)
         {
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
 
@@ -2428,50 +2144,6 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleJitsiForConference:) forControlEvents:UIControlEventTouchUpInside];
 
-            cell = labelAndSwitchCell;
-        }        
-        else if (row == LABS_CRYPTO_INDEX)
-        {
-            MXSession* session = [AppDelegate theDelegate].mxSessions[0];
-
-            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-
-            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_e2e_encryption", @"Vector", nil);
-            labelAndSwitchCell.mxkSwitch.on = (nil != session.crypto);
-            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
-
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleLabsEndToEndEncryption:) forControlEvents:UIControlEventTouchUpInside];
-
-            if (session.crypto)
-            {
-                // Once crypto is enabled, it is enabled
-                labelAndSwitchCell.mxkSwitch.enabled = NO;
-            }
-
-            cell = labelAndSwitchCell;
-        }
-        else if (row == LABS_DM_KEY_VERIFICATION_INDEX)
-        {
-            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-            
-            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_dm_key_verification", @"Vector", nil);
-            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.enableDMKeyVerification;
-            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
-            
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleLabsDMKeyVerification:) forControlEvents:UIControlEventTouchUpInside];
-            
-            cell = labelAndSwitchCell;
-        }
-        else if (row == LABS_CROSS_SIGNING_INDEX)
-        {
-            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-            
-            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_cross_signing", @"Vector", nil);
-            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.enableCrossSigning;
-            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
-            
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleLabsCrossSigning:) forControlEvents:UIControlEventTouchUpInside];
-            
             cell = labelAndSwitchCell;
         }
     }
@@ -2501,93 +2173,16 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             [groupWithSwitchCell.toggleButton addTarget:self action:@selector(toggleCommunityFlair:) forControlEvents:UIControlEventTouchUpInside];
         }
     }
-    else if (section == SETTINGS_SECTION_DEVICES_INDEX)
+    else if (section == SETTINGS_SECTION_SECURITY_INDEX)
     {
-        if (row == DEVICES_DESCRIPTION_INDEX)
+        switch (row)
         {
-            MXKTableViewCell *descriptionCell = [self getDefaultTableViewCell:tableView];
-            descriptionCell.textLabel.text = NSLocalizedStringFromTable(@"settings_devices_description", @"Vector", nil);
-            descriptionCell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
-            descriptionCell.textLabel.font = [UIFont systemFontOfSize:15];
-            descriptionCell.textLabel.numberOfLines = 0;
-            descriptionCell.contentView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
-            descriptionCell.selectionStyle = UITableViewCellSelectionStyleNone;
-
-            cell = descriptionCell;
+            case SECURITY_BUTTON_INDEX:
+                cell = [self getDefaultTableViewCell:tableView];
+                cell.textLabel.text = NSLocalizedStringFromTable(@"security_settings_title", @"Vector", nil);
+                [cell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
+                break;
         }
-        else
-        {
-            NSUInteger deviceIndex = row - 1;
-
-            MXKTableViewCell *deviceCell = [self getDefaultTableViewCell:tableView];
-            if (deviceIndex < devicesArray.count)
-            {
-                NSString *name = devicesArray[deviceIndex].displayName;
-                NSString *deviceId = devicesArray[deviceIndex].deviceId;
-                deviceCell.textLabel.text = (name.length ? [NSString stringWithFormat:@"%@ (%@)", name, deviceId] : [NSString stringWithFormat:@"(%@)", deviceId]);
-                deviceCell.textLabel.numberOfLines = 0;
-
-                if ([deviceId isEqualToString:self.mainSession.matrixRestClient.credentials.deviceId])
-                {
-                    deviceCell.textLabel.font = [UIFont boldSystemFontOfSize:17];
-                }
-            }
-
-            cell = deviceCell;
-        }
-
-    }
-    else if (section == SETTINGS_SECTION_CRYPTOGRAPHY_INDEX)
-    {
-        if (row == CRYPTOGRAPHY_INFO_INDEX)
-        {
-            MXKTableViewCellWithTextView *cryptoCell = [self textViewCellForTableView:tableView atIndexPath:indexPath];
-            
-            cryptoCell.mxkTextView.attributedText = [self cryptographyInformation];
-
-            cell = cryptoCell;
-        }
-        else if (row == CRYPTOGRAPHY_BLACKLIST_UNVERIFIED_DEVICES_INDEX)
-        {
-            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-
-            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_crypto_blacklist_unverified_devices", @"Vector", nil);
-            labelAndSwitchCell.mxkSwitch.on = account.mxSession.crypto.globalBlacklistUnverifiedDevices;
-            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
-            labelAndSwitchCell.mxkSwitch.enabled = YES;
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleBlacklistUnverifiedDevices:) forControlEvents:UIControlEventTouchUpInside];
-
-            cell = labelAndSwitchCell;
-        }
-        else if (row == CRYPTOGRAPHY_EXPORT_INDEX)
-        {
-            MXKTableViewCellWithButton *exportKeysBtnCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
-            if (!exportKeysBtnCell)
-            {
-                exportKeysBtnCell = [[MXKTableViewCellWithButton alloc] init];
-            }
-            else
-            {
-                // Fix https://github.com/vector-im/riot-ios/issues/1354
-                exportKeysBtnCell.mxkButton.titleLabel.text = nil;
-            }
-
-            NSString *btnTitle = NSLocalizedStringFromTable(@"settings_crypto_export", @"Vector", nil);
-            [exportKeysBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
-            [exportKeysBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
-            [exportKeysBtnCell.mxkButton setTintColor:ThemeService.shared.theme.tintColor];
-            exportKeysBtnCell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
-
-            [exportKeysBtnCell.mxkButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
-            [exportKeysBtnCell.mxkButton addTarget:self action:@selector(exportEncryptionKeys:) forControlEvents:UIControlEventTouchUpInside];
-            exportKeysBtnCell.mxkButton.accessibilityIdentifier = nil;
-
-            cell = exportKeysBtnCell;
-        }
-    }
-    else if (section == SETTINGS_SECTION_KEYBACKUP_INDEX)
-    {
-        cell = [keyBackupSection cellForRowAtRow:row];
     }
     else if (section == SETTINGS_SECTION_DEACTIVATE_ACCOUNT_INDEX)
     {
@@ -2685,35 +2280,15 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             return NSLocalizedStringFromTable(@"settings_flair", @"Vector", nil);
         }
     }
-    else if (section == SETTINGS_SECTION_DEVICES_INDEX)
+    else if (section == SETTINGS_SECTION_SECURITY_INDEX)
     {
-        // Check whether this section is visible
-        if (devicesArray.count > 0)
-        {
-            return NSLocalizedStringFromTable(@"settings_devices", @"Vector", nil);
-        }
-    }
-    else if (section == SETTINGS_SECTION_CRYPTOGRAPHY_INDEX)
-    {
-        // Check whether this section is visible
-        if (self.mainSession.crypto)
-        {
-            return NSLocalizedStringFromTable(@"settings_cryptography", @"Vector", nil);
-        }
-    }
-    else if (section == SETTINGS_SECTION_KEYBACKUP_INDEX)
-    {
-        // Check whether this section is visible
-        if (self.mainSession.crypto)
-        {
-            return NSLocalizedStringFromTable(@"settings_key_backup", @"Vector", nil);
-        }
+        return NSLocalizedStringFromTable(@"settings_security", @"Vector", nil);
     }
     else if (section == SETTINGS_SECTION_DEACTIVATE_ACCOUNT_INDEX)
     {
         return NSLocalizedStringFromTable(@"settings_deactivate_my_account", @"Vector", nil);
     }
-    
+
     return nil;
 }
 
@@ -2880,8 +2455,18 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
         }
         else if (section == SETTINGS_SECTION_USER_SETTINGS_INDEX && row == userSettingsThreePidsInformation)
         {
-            NSIndexPath *discoveryIndexPath = [NSIndexPath indexPathForRow:0 inSection:SETTINGS_SECTION_DISCOVERY_INDEX];
-            [tableView scrollToRowAtIndexPath:discoveryIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+            // settingsDiscoveryTableViewSection is a dynamic section, so check number of rows before scroll to avoid crashes
+            if (self.settingsDiscoveryTableViewSection.numberOfRows > 0)
+            {
+                NSIndexPath *discoveryIndexPath = [NSIndexPath indexPathForRow:0 inSection:SETTINGS_SECTION_DISCOVERY_INDEX];
+                [tableView scrollToRowAtIndexPath:discoveryIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+            }
+            else
+            {
+                //  this won't be precise in scroll location, but seems the best option for now
+                NSIndexPath *discoveryIndexPath = [NSIndexPath indexPathForRow:0 inSection:SETTINGS_SECTION_DISCOVERY_INDEX + 1];
+                [tableView scrollToRowAtIndexPath:discoveryIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+            }
         }
         else if (section == SETTINGS_SECTION_DISCOVERY_INDEX)
         {
@@ -2965,7 +2550,8 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
         {
             if (row == OTHER_COPYRIGHT_INDEX)
             {
-                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:NSLocalizedStringFromTable(@"settings_copyright_url", @"Vector", nil)];
+                NSString *copyrightUrlString = [[NSUserDefaults standardUserDefaults] objectForKey:@"settingsCopyrightUrl"];
+                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:copyrightUrlString];
                 
                 webViewViewController.title = NSLocalizedStringFromTable(@"settings_copyright", @"Vector", nil);
                 
@@ -2973,7 +2559,8 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             }
             else if (row == OTHER_TERM_CONDITIONS_INDEX)
             {
-                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:NSLocalizedStringFromTable(@"settings_term_conditions_url", @"Vector", nil)];
+                NSString *termsConditionsUrlString = [[NSUserDefaults standardUserDefaults] objectForKey:@"settingsTermsConditionsUrl"];
+                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:termsConditionsUrlString];
                 
                 webViewViewController.title = NSLocalizedStringFromTable(@"settings_term_conditions", @"Vector", nil);
                 
@@ -2981,7 +2568,8 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
             }
             else if (row == OTHER_PRIVACY_INDEX)
             {
-                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:NSLocalizedStringFromTable(@"settings_privacy_policy_url", @"Vector", nil)];
+                NSString *privacyPolicyUrlString = [[NSUserDefaults standardUserDefaults] objectForKey:@"settingsPrivacyPolicyUrl"];
+                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:privacyPolicyUrlString];
                 
                 webViewViewController.title = NSLocalizedStringFromTable(@"settings_privacy_policy", @"Vector", nil);
                 
@@ -3033,17 +2621,6 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                 }
             }
         }
-        else if (section == SETTINGS_SECTION_DEVICES_INDEX)
-        {
-            if (row > DEVICES_DESCRIPTION_INDEX)
-            {
-                NSUInteger deviceIndex = row - 1;
-                if (deviceIndex < devicesArray.count)
-                {
-                    [self showDeviceDetails:devicesArray[deviceIndex]];
-                }
-            }
-        }
         else if (section == SETTINGS_SECTION_CONTACTS_INDEX)
         {
             if (row == localContactsPhoneBookCountryIndex)
@@ -3053,6 +2630,19 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                 countryPicker.delegate = self;
                 countryPicker.showCountryCallingCode = YES;
                 [self pushViewController:countryPicker];
+            }
+        }
+        else if (section == SETTINGS_SECTION_SECURITY_INDEX)
+        {
+            switch (row)
+            {
+                case SECURITY_BUTTON_INDEX:
+                {
+                    SecurityViewController *securityViewController = [SecurityViewController instantiateWithMatrixSession:self.mainSession];
+
+                    [self pushViewController:securityViewController];
+                    break;
+                }
             }
         }
         
@@ -3223,10 +2813,10 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
         
         MXKAccountManager *accountManager = [MXKAccountManager sharedManager];
         MXKAccount* account = accountManager.activeAccounts.firstObject;
-        
-        if (accountManager.pushDeviceToken)
+
+        if (accountManager.apnsDeviceToken)
         {
-            [account enablePushKitNotifications:!account.isPushKitNotificationActive success:^{
+            [account enablePushNotifications:!account.pushNotificationServiceIsActive success:^{
                 [self stopActivityIndicator];
             } failure:^(NSError *error) {
                 [self stopActivityIndicator];
@@ -3243,7 +2833,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
                 }
                 else
                 {
-                    [account enablePushKitNotifications:YES success:^{
+                    [account enablePushNotifications:YES success:^{
                         [self stopActivityIndicator];
                     } failure:^(NSError *error) {
                         [self stopActivityIndicator];
@@ -3349,66 +2939,6 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     }
 }
 
-- (void)toggleSyncWithLazyLoadOfRoomMembers:(id)sender
-{
-    if (sender && [sender isKindOfClass:UISwitch.class])
-    {
-        UISwitch *switchButton = (UISwitch*)sender;
-
-        if (!switchButton.isOn)
-        {
-            // Disable LL and reload
-            [MXKAppSettings standardAppSettings].syncWithLazyLoadOfRoomMembers = NO;
-            [self launchClearCache];
-        }
-        else
-        {
-            switchButton.enabled = NO;
-            [self startActivityIndicator];
-
-            // Check the user homeserver supports lazy-loading
-            MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-
-            MXWeakify(self);
-            [account supportLazyLoadOfRoomMembers:^(BOOL supportLazyLoadOfRoomMembers) {
-                MXStrongifyAndReturnIfNil(self);
-
-                if (supportLazyLoadOfRoomMembers)
-                {
-                    // Lazy-loading is fully supported, enable it
-                    [MXKAppSettings standardAppSettings].syncWithLazyLoadOfRoomMembers = YES;
-                    [self launchClearCache];
-                }
-                else
-                {
-                    [switchButton setOn:NO animated:YES];
-                    switchButton.enabled = YES;
-                    [self stopActivityIndicator];
-
-                    // No support of lazy-loading, do not engage it and warn the user
-                    [self->currentAlert dismissViewControllerAnimated:NO completion:nil];
-
-                    self->currentAlert = [UIAlertController alertControllerWithTitle:nil
-                                                                             message:NSLocalizedStringFromTable(@"settings_labs_room_members_lazy_loading_error_message", @"Vector", nil)
-                                                                      preferredStyle:UIAlertControllerStyleAlert];
-
-                    MXWeakify(self);
-                    [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
-                                                                           style:UIAlertActionStyleDefault
-                                                                         handler:^(UIAlertAction * action) {
-                                                                             MXStrongifyAndReturnIfNil(self);
-                                                                             self->currentAlert = nil;
-                                                                         }]];
-
-                    [self->currentAlert mxk_setAccessibilityIdentifier: @"SettingsVCNoHSSupportOfLazyLoading"];
-                    [self presentViewController:self->currentAlert animated:YES completion:nil];
-                }
-            }];
-        }
-    }
-}
-
-
 - (void)toggleJitsiForConference:(id)sender
 {
     if (sender && [sender isKindOfClass:UISwitch.class])
@@ -3419,134 +2949,6 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 
         [self.tableView reloadData];
     }
-}
-
-- (void)toggleLabsEndToEndEncryption:(id)sender
-{
-    if (sender && [sender isKindOfClass:UISwitch.class])
-    {
-        UISwitch *switchButton = (UISwitch*)sender;
-        MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-        
-        if (switchButton.isOn && !account.mxCredentials.deviceId.length)
-        {
-            // Prompt the user to log in again when no device id is available.
-            __weak typeof(self) weakSelf = self;
-            
-            // Prompt user
-            NSString *msg = NSLocalizedStringFromTable(@"settings_labs_e2e_encryption_prompt_message", @"Vector", nil);
-            
-            [currentAlert dismissViewControllerAnimated:NO completion:nil];
-            
-            currentAlert = [UIAlertController alertControllerWithTitle:nil message:msg preferredStyle:UIAlertControllerStyleAlert];
-            
-            [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"later"]
-                                                             style:UIAlertActionStyleDefault
-                                                           handler:^(UIAlertAction * action) {
-                                                               
-                                                               if (weakSelf)
-                                                               {
-                                                                   typeof(self) self = weakSelf;
-                                                                   self->currentAlert = nil;
-                                                               }
-                                                               
-                                                               // Reset toggle button
-                                                               [switchButton setOn:NO animated:YES];
-                                                               
-                                                           }]];
-            
-            [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
-                                                             style:UIAlertActionStyleDefault
-                                                           handler:^(UIAlertAction * action) {
-                                                               
-                                                               if (weakSelf)
-                                                               {
-                                                                   typeof(self) self = weakSelf;
-                                                                   self->currentAlert = nil;
-                                                                   
-                                                                   switchButton.enabled = NO;
-                                                                   [self startActivityIndicator];
-                                                                   
-                                                                   dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-                                                                       
-                                                                       [[AppDelegate theDelegate] logoutWithConfirmation:NO completion:nil];
-                                                                       
-                                                                   });
-                                                               }
-                                                               
-                                                           }]];
-            
-            [currentAlert mxk_setAccessibilityIdentifier:@"SettingsVCEnableEncryptionAlert"];
-            [self presentViewController:currentAlert animated:YES completion:nil];
-        }
-        else
-        {
-            [self startActivityIndicator];
-            
-            MXSession* session = [AppDelegate theDelegate].mxSessions[0];
-            [session enableCrypto:switchButton.isOn success:^{
-
-                // When disabling crypto, reset the current device id as it cannot be reused.
-                // This means that the user will need to log in again if he wants to re-enable e2e.
-                if (!switchButton.isOn)
-                {
-                    [account resetDeviceId];
-                }
-                
-                // Reload all data source of encrypted rooms
-                MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:session];
-                
-                for (MXRoom *room in session.rooms)
-                {
-                    if (room.summary.isEncrypted)
-                    {
-                        [roomDataSourceManager roomDataSourceForRoom:room.roomId create:NO onComplete:^(MXKRoomDataSource *roomDataSource) {
-                            [roomDataSource reload];
-                        }];
-                    }
-                }
-                
-                // Once crypto is enabled, it is enabled
-                switchButton.enabled = NO;
-                
-                [self stopActivityIndicator];
-                
-                // Refresh table view to add cryptography information.
-                [self.tableView reloadData];
-                
-            } failure:^(NSError *error) {
-                
-                [self stopActivityIndicator];
-                
-                // Come back to previous state button
-                [switchButton setOn:!switchButton.isOn animated:YES];
-            }];
-        }
-    }
-}
-    
-- (void)toggleLabsDMKeyVerification:(id)sender
-{
-    UISwitch *switchButton = (UISwitch*)sender;
-    
-    RiotSettings.shared.enableDMKeyVerification = switchButton.isOn;
-}
-    
-- (void)toggleLabsCrossSigning:(id)sender
-{
-    UISwitch *switchButton = (UISwitch*)sender;
-    
-    RiotSettings.shared.enableCrossSigning = switchButton.isOn;
-}
-
-- (void)toggleBlacklistUnverifiedDevices:(id)sender
-{
-    UISwitch *switchButton = (UISwitch*)sender;
-
-    MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-    account.mxSession.crypto.globalBlacklistUnverifiedDevices = switchButton.on;
-
-    [self.tableView reloadData];
 }
 
 - (void)togglePinRoomsWithMissedNotif:(id)sender
@@ -4145,69 +3547,6 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     self.imagePickerPresenter = singleImagePickerPresenter;
 }
 
-- (void)exportEncryptionKeys:(UITapGestureRecognizer *)recognizer
-{
-    [currentAlert dismissViewControllerAnimated:NO completion:nil];
-
-    exportView = [[MXKEncryptionKeysExportView alloc] initWithMatrixSession:self.mainSession];
-    currentAlert = exportView.alertController;
-
-    // Use a temporary file for the export
-    keyExportsFile = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:@"riot-keys.txt"]];
-
-    // Make sure the file is empty
-    [self deleteKeyExportFile];
-
-    // Show the export dialog
-    __weak typeof(self) weakSelf = self;
-    [exportView showInViewController:self toExportKeysToFile:keyExportsFile onComplete:^(BOOL success) {
-
-        if (weakSelf)
-        {
-             typeof(self) self = weakSelf;
-            self->currentAlert = nil;
-            self->exportView = nil;
-
-            if (success)
-            {
-                // Let another app handling this file
-                self->documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:keyExportsFile];
-                [self->documentInteractionController setDelegate:self];
-
-                if ([self->documentInteractionController presentOptionsMenuFromRect:self.view.bounds inView:self.view animated:YES])
-                {
-                    // We want to delete the temp keys file after it has been processed by the other app.
-                    // We use [UIDocumentInteractionControllerDelegate didEndSendingToApplication] for that
-                    // but it is not reliable for all cases (see http://stackoverflow.com/a/21867096).
-                    // So, arm a timer to auto delete the file after 10mins.
-                    keyExportsFileDeletionTimer = [NSTimer scheduledTimerWithTimeInterval:600 target:self selector:@selector(deleteKeyExportFile) userInfo:self repeats:NO];
-                }
-                else
-                {
-                    self->documentInteractionController = nil;
-                    [self deleteKeyExportFile];
-                }
-            }
-        }
-    }];
-}
-
-- (void)deleteKeyExportFile
-{
-    // Cancel the deletion timer if it is still here
-    if (keyExportsFileDeletionTimer)
-    {
-        [keyExportsFileDeletionTimer invalidate];
-        keyExportsFileDeletionTimer = nil;
-    }
-
-    // And delete the file
-    if (keyExportsFile && [[NSFileManager defaultManager] fileExistsAtPath:keyExportsFile.path])
-    {
-        [[NSFileManager defaultManager] removeItemAtPath:keyExportsFile.path error:nil];
-    }
-}
-
 - (void)showThemePicker
 {
     __weak typeof(self) weakSelf = self;
@@ -4305,7 +3644,7 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
 {
     DeactivateAccountViewController *deactivateAccountViewController = [DeactivateAccountViewController instantiateWithMatrixSession:self.mainSession];
     
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:deactivateAccountViewController];
+    UINavigationController *navigationController = [[RiotNavigationController alloc] initWithRootViewController:deactivateAccountViewController];
     navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
     
     [self presentViewController:navigationController animated:YES completion:nil];
@@ -4569,18 +3908,6 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     [self presentViewController:resetPwdAlertController animated:YES completion:nil];
 }
 
-#pragma mark - UIDocumentInteractionControllerDelegate
-
-- (void)documentInteractionController:(UIDocumentInteractionController *)controller didEndSendingToApplication:(NSString *)application
-{
-    // If iOS wants to call this method, this is the right time to remove the file
-    [self deleteKeyExportFile];
-}
-
-- (void)documentInteractionControllerDidDismissOptionsMenu:(UIDocumentInteractionController *)controller
-{
-    documentInteractionController = nil;
-}
 
 #pragma mark - MXKCountryPickerViewControllerDelegate
 
@@ -4664,145 +3991,72 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
     [deactivateAccountViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
-#pragma mark - SettingsKeyBackupTableViewSectionDelegate
+#pragma mark - SecureBackupSetupCoordinatorBridgePresenter
 
-- (void)settingsKeyBackupTableViewSectionDidUpdate:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection
+- (void)showSecureBackupSetupFromSignOutFlow
 {
-    [self.tableView reloadData];
-}
-
-- (MXKTableViewCellWithTextView *)settingsKeyBackupTableViewSection:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection textCellForRow:(NSInteger)textCellForRow
-{
-    return [self textViewCellForTableView:self.tableView atIndexPath:[NSIndexPath indexPathForRow:textCellForRow inSection:SETTINGS_SECTION_KEYBACKUP_INDEX]];
-}
-
-- (MXKTableViewCellWithButton *)settingsKeyBackupTableViewSection:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection buttonCellForRow:(NSInteger)buttonCellForRow
-{
-    MXKTableViewCellWithButton *cell = [self.tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
-
-    if (!cell)
+    if (self.canSetupSecureBackup)
     {
-        cell = [[MXKTableViewCellWithButton alloc] init];
+        [self setupSecureBackup2];
     }
     else
     {
-        // Fix https://github.com/vector-im/riot-ios/issues/1354
-        cell.mxkButton.titleLabel.text = nil;
-    }
-
-    cell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
-    [cell.mxkButton setTintColor:ThemeService.shared.theme.tintColor];
-
-    return cell;
-}
-
-- (void)settingsKeyBackupTableViewSectionShowKeyBackupSetup:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection
-{
-    [self showKeyBackupSetupFromSignOutFlow:NO];
-}
-
-- (void)settingsKeyBackup:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection showKeyBackupRecover:(MXKeyBackupVersion *)keyBackupVersion
-{
-    [self showKeyBackupRecover:keyBackupVersion];
-}
-
-- (void)settingsKeyBackup:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection showKeyBackupDeleteConfirm:(MXKeyBackupVersion *)keyBackupVersion
-{
-    MXWeakify(self);
-    [currentAlert dismissViewControllerAnimated:NO completion:nil];
-
-    currentAlert =
-    [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"settings_key_backup_delete_confirmation_prompt_title", @"Vector", nil)
-                                        message:NSLocalizedStringFromTable(@"settings_key_backup_delete_confirmation_prompt_msg", @"Vector", nil)
-                                 preferredStyle:UIAlertControllerStyleAlert];
-
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
-                                                     style:UIAlertActionStyleCancel
-                                                   handler:^(UIAlertAction * action) {
-                                                       MXStrongifyAndReturnIfNil(self);
-                                                       self->currentAlert = nil;
-                                                   }]];
-
-    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"settings_key_backup_button_delete", @"Vector", nil)
-                                                     style:UIAlertActionStyleDefault
-                                                   handler:^(UIAlertAction * action) {
-                                                       MXStrongifyAndReturnIfNil(self);
-                                                       self->currentAlert = nil;
-
-                                                       [self->keyBackupSection deleteWithKeyBackupVersion:keyBackupVersion];
-                                                   }]];
-
-    [currentAlert mxk_setAccessibilityIdentifier: @"SettingsVCDeleteKeyBackup"];
-    [self presentViewController:currentAlert animated:YES completion:nil];
-}
-
-- (void)settingsKeyBackup:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection showActivityIndicator:(BOOL)show
-{
-    if (show)
-    {
-        [self startActivityIndicator];
-    }
-    else
-    {
-        [self stopActivityIndicator];
+        // Set up cross-signing first
+        [self setupCrossSigningWithTitle:NSLocalizedStringFromTable(@"secure_key_backup_setup_intro_title", @"Vector", nil)
+                                 message:NSLocalizedStringFromTable(@"security_settings_user_password_description", @"Vector", nil)
+                                 success:^{
+                                     [self setupSecureBackup2];
+                                 } failure:^(NSError *error) {
+                                 }];
     }
 }
 
-- (void)settingsKeyBackup:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection showError:(NSError *)error
+- (void)setupSecureBackup2
 {
-    [[AppDelegate theDelegate] showErrorAsAlert:error];
-}
-
-#pragma mark - KeyBackupRecoverCoordinatorBridgePresenter
-
-- (void)showKeyBackupSetupFromSignOutFlow:(BOOL)showFromSignOutFlow
-{
-    keyBackupSetupCoordinatorBridgePresenter = [[KeyBackupSetupCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
+    SecureBackupSetupCoordinatorBridgePresenter *secureBackupSetupCoordinatorBridgePresenter = [[SecureBackupSetupCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
+    secureBackupSetupCoordinatorBridgePresenter.delegate = self;
     
-    [keyBackupSetupCoordinatorBridgePresenter presentFrom:self
-                                     isStartedFromSignOut:showFromSignOutFlow
-                                                 animated:true];
+    [secureBackupSetupCoordinatorBridgePresenter presentFrom:self animated:YES];
     
-    keyBackupSetupCoordinatorBridgePresenter.delegate = self;
+    self.secureBackupSetupCoordinatorBridgePresenter = secureBackupSetupCoordinatorBridgePresenter;
 }
 
-- (void)keyBackupSetupCoordinatorBridgePresenterDelegateDidCancel:(KeyBackupSetupCoordinatorBridgePresenter *)bridgePresenter {
-    [keyBackupSetupCoordinatorBridgePresenter dismissWithAnimated:true];
-    keyBackupSetupCoordinatorBridgePresenter = nil;
-}
-
-- (void)keyBackupSetupCoordinatorBridgePresenterDelegateDidSetupRecoveryKey:(KeyBackupSetupCoordinatorBridgePresenter *)bridgePresenter {
-    [keyBackupSetupCoordinatorBridgePresenter dismissWithAnimated:true];
-    keyBackupSetupCoordinatorBridgePresenter = nil;
-
-    [keyBackupSection reload];
-}
-
-#pragma mark - KeyBackupRecoverCoordinatorBridgePresenter
-
-- (void)showKeyBackupRecover:(MXKeyBackupVersion*)keyBackupVersion
+- (BOOL)canSetupSecureBackup
 {
-    keyBackupRecoverCoordinatorBridgePresenter = [[KeyBackupRecoverCoordinatorBridgePresenter alloc] initWithSession:self.mainSession keyBackupVersion:keyBackupVersion];
-
-    [keyBackupRecoverCoordinatorBridgePresenter presentFrom:self animated:true];
-    keyBackupRecoverCoordinatorBridgePresenter.delegate = self;
+    // Accept to create a setup only if we have the 3 cross-signing keys
+    // This is the path to have a sane state
+    // TODO: What about missing MSK that was not gossiped before?
+    
+    MXRecoveryService *recoveryService = self.mainSession.crypto.recoveryService;
+    
+    NSArray *crossSigningServiceSecrets = @[
+                                            MXSecretId.crossSigningMaster,
+                                            MXSecretId.crossSigningSelfSigning,
+                                            MXSecretId.crossSigningUserSigning];
+    
+    return ([recoveryService.secretsStoredLocally mx_intersectArray:crossSigningServiceSecrets].count
+            == crossSigningServiceSecrets.count);
 }
 
-- (void)keyBackupRecoverCoordinatorBridgePresenterDidCancel:(KeyBackupRecoverCoordinatorBridgePresenter *)bridgePresenter {
-    [keyBackupRecoverCoordinatorBridgePresenter dismissWithAnimated:true];
-    keyBackupRecoverCoordinatorBridgePresenter = nil;
+#pragma mark - SecureBackupSetupCoordinatorBridgePresenterDelegate
+
+- (void)secureBackupSetupCoordinatorBridgePresenterDelegateDidComplete:(SecureBackupSetupCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [self.secureBackupSetupCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    self.secureBackupSetupCoordinatorBridgePresenter = nil;
 }
 
-- (void)keyBackupRecoverCoordinatorBridgePresenterDidRecover:(KeyBackupRecoverCoordinatorBridgePresenter *)bridgePresenter {
-    [keyBackupRecoverCoordinatorBridgePresenter dismissWithAnimated:true];
-    keyBackupRecoverCoordinatorBridgePresenter = nil;
+- (void)secureBackupSetupCoordinatorBridgePresenterDelegateDidCancel:(SecureBackupSetupCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [self.secureBackupSetupCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    self.secureBackupSetupCoordinatorBridgePresenter = nil;
 }
 
 #pragma mark - SignOutAlertPresenterDelegate
 
 - (void)signOutAlertPresenterDidTapBackupAction:(SignOutAlertPresenter * _Nonnull)presenter
 {
-    [self showKeyBackupSetupFromSignOutFlow:YES];
+    [self showSecureBackupSetupFromSignOutFlow];
 }
 
 - (void)signOutAlertPresenterDidTapSignOutAction:(SignOutAlertPresenter * _Nonnull)presenter
@@ -4825,6 +4079,63 @@ SettingsIdentityServerCoordinatorBridgePresenterDelegate>
         self.signOutButton.enabled = YES;
     }];
 }
+
+- (void)setupCrossSigningWithTitle:(NSString*)title
+                           message:(NSString*)message
+                           success:(void (^)(void))success
+                           failure:(void (^)(NSError *error))failure
+{
+    __block UIViewController *viewController;
+    [self startActivityIndicator];
+    
+    // Get credentials to set up cross-signing
+    NSString *path = [NSString stringWithFormat:@"%@/keys/device_signing/upload", kMXAPIPrefixPathUnstable];
+    _authenticatedSessionViewControllerFactory = [[AuthenticatedSessionViewControllerFactory alloc] initWithSession:self.mainSession];
+    [_authenticatedSessionViewControllerFactory viewControllerForPath:path
+                                                           httpMethod:@"POST"
+                                                                title:title
+                                                              message:message
+                                                     onViewController:^(UIViewController * _Nonnull theViewController)
+     {
+         viewController = theViewController;
+         [self presentViewController:viewController animated:YES completion:nil];
+         
+     } onAuthenticated:^(NSDictionary * _Nonnull authParams) {
+         
+         [viewController dismissViewControllerAnimated:NO completion:nil];
+         viewController = nil;
+         
+         MXCrossSigning *crossSigning = self.mainSession.crypto.crossSigning;
+         if (crossSigning)
+         {
+             [crossSigning setupWithAuthParams:authParams success:^{
+                 [self stopActivityIndicator];
+                 success();
+             } failure:^(NSError * _Nonnull error) {
+                 [self stopActivityIndicator];
+                 
+                 [[AppDelegate theDelegate] showErrorAsAlert:error];
+                 failure(error);
+             }];
+         }
+         
+     } onCancelled:^{
+         [self stopActivityIndicator];
+         
+         [viewController dismissViewControllerAnimated:NO completion:nil];
+         viewController = nil;
+         failure(nil);
+     } onFailure:^(NSError * _Nonnull error) {
+         
+         [self stopActivityIndicator];
+         [[AppDelegate theDelegate] showErrorAsAlert:error];
+         
+         [viewController dismissViewControllerAnimated:NO completion:nil];
+         viewController = nil;
+         failure(error);
+     }];
+}
+
 
 #pragma mark - SingleImagePickerPresenterDelegate
 

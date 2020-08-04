@@ -123,7 +123,7 @@
 
 NSString *const RoomErrorDomain = @"RoomErrorDomain";
 
-@interface RoomViewController () <UIGestureRecognizerDelegate, Stylable, RoomTitleViewDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate, ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate, ReactionHistoryCoordinatorBridgePresenterDelegate, CameraPresenterDelegate, MediaPickerCoordinatorBridgePresenterDelegate>
+@interface RoomViewController () <UIGestureRecognizerDelegate, Stylable, UIScrollViewAccessibilityDelegate, RoomTitleViewDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate, ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate, ReactionHistoryCoordinatorBridgePresenterDelegate, CameraPresenterDelegate, MediaPickerCoordinatorBridgePresenterDelegate, RoomDataSourceDelegate>
 {
     // The preview header
     PreviewView *previewHeader;
@@ -182,6 +182,9 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
 
     // Homeserver notices
     MXServerNotices *serverNotices;
+    
+    // Formatted body parser for events
+    FormattedBodyParser *formattedBodyParser;
 }
 
 // The preview header
@@ -298,6 +301,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     // Setup `MXKViewControllerHandling` properties
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
+    formattedBodyParser = [FormattedBodyParser new];
     
     _showMissedDiscussionsBadge = NO;
     
@@ -378,6 +382,12 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     [self.bubblesTableView registerNib:RoomEncryptedAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.nib forCellReuseIdentifier:RoomEncryptedAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
     [self.bubblesTableView registerNib:RoomEncryptedAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.nib forCellReuseIdentifier:RoomEncryptedAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.defaultReuseIdentifier];
     
+    [self.bubblesTableView registerClass:KeyVerificationIncomingRequestApprovalBubbleCell.class forCellReuseIdentifier:KeyVerificationIncomingRequestApprovalBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:KeyVerificationIncomingRequestApprovalWithPaginationTitleBubbleCell.class forCellReuseIdentifier:KeyVerificationIncomingRequestApprovalWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:KeyVerificationRequestStatusBubbleCell.class forCellReuseIdentifier:KeyVerificationRequestStatusBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:KeyVerificationRequestStatusWithPaginationTitleBubbleCell.class forCellReuseIdentifier:KeyVerificationRequestStatusWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:KeyVerificationConclusionBubbleCell.class forCellReuseIdentifier:KeyVerificationConclusionBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:KeyVerificationConclusionWithPaginationTitleBubbleCell.class forCellReuseIdentifier:KeyVerificationConclusionWithPaginationTitleBubbleCell.defaultReuseIdentifier];
     
     // Replace the default input toolbar view.
     // Note: this operation will force the layout of subviews. That is why cell view classes must be registered before.
@@ -464,6 +474,8 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     {
         [self.bubblesTableView reloadData];
     }
+    
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -566,7 +578,10 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
         }
     }];
     [self refreshMissedDiscussionsCount:YES];
+    
     [self refreshRoomTitle];
+    
+    self.keyboardHeight = MAX(self.keyboardHeight, 0);
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -1461,6 +1476,11 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     return self.discussionTargetUser != nil;
 }
 
+- (BOOL)isEncryptionEnabled
+{
+    return self.roomDataSource.room.summary.isEncrypted && self.mainSession.crypto != nil;
+}
+
 - (void)refreshRoomTitle
 {
     MXSession *session = self.mainSession;
@@ -1550,12 +1570,8 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
             roomInputToolbarView.supportCallOption &= ([[AppDelegate theDelegate] callStatusBarWindow] == nil);
         }
         
-        // Check whether the encryption is enabled in the room
-        if (self.roomDataSource.room.summary.isEncrypted)
-        {
-            // Encrypt the user's messages as soon as the user supports the encryption?
-            roomInputToolbarView.isEncryptionEnabled = (self.mainSession.crypto != nil);
-        }
+        // Update encryption decoration if needed
+        [self updateEncryptionDecorationForRoomInputToolbar:roomInputToolbarView];
     }
     else if (self.inputToolbarView && [self.inputToolbarView isKindOfClass:DisabledRoomInputToolbarView.class])
     {
@@ -1606,6 +1622,40 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     [UIView setAnimationsEnabled:NO];
     [self roomInputToolbarView:self.inputToolbarView heightDidChanged:height completion:nil];
     [UIView setAnimationsEnabled:YES];
+}
+
+- (UIImage*)roomEncryptionBadgeImage
+{
+    UIImage *encryptionIcon;
+    
+    if (self.isEncryptionEnabled)
+    {
+        encryptionIcon = [UIImage imageNamed:@"e2e_verified"];
+//        RoomEncryptionTrustLevel roomEncryptionTrustLevel = ((RoomDataSource*)self.roomDataSource).encryptionTrustLevel;
+//
+//        encryptionIcon = [EncryptionTrustLevelBadgeImageHelper roomBadgeImageFor:roomEncryptionTrustLevel];
+    }
+    else
+    {
+        encryptionIcon = [UIImage imageNamed:@"e2e_unencrypted"];
+    }
+    
+    return encryptionIcon;
+}
+
+- (void)updateInputToolbarEncryptionDecoration
+{
+    if (self.inputToolbarView && [self.inputToolbarView isKindOfClass:RoomInputToolbarView.class])
+    {
+        RoomInputToolbarView *roomInputToolbarView = (RoomInputToolbarView*)self.inputToolbarView;
+        [self updateEncryptionDecorationForRoomInputToolbar:roomInputToolbarView];
+    }
+}
+
+- (void)updateEncryptionDecorationForRoomInputToolbar:(RoomInputToolbarView*)roomInputToolbarView
+{
+    roomInputToolbarView.isEncryptionEnabled = self.isEncryptionEnabled;
+    roomInputToolbarView.encryptedRoomIcon.image = self.roomEncryptionBadgeImage;
 }
 
 - (void)handleLongPressFromCell:(id<MXKCellRendering>)cell withTappedEvent:(MXEvent*)event
@@ -1725,6 +1775,8 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
             self.previewHeaderContainer.hidden = YES;
         }
     }
+
+    self.navigationController.navigationBar.translucent = isVisible;
 }
 
 - (void)onJoinPressed:(id)sender
@@ -1781,27 +1833,35 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
 - (Class<MXKCellRendering>)cellViewClassForCellData:(MXKCellData*)cellData
 {
     Class cellViewClass = nil;
-    BOOL isEncryptedRoom = self.roomDataSource.room.summary.isEncrypted;
+    BOOL showEncryptionBadge = NO;
     
     // Sanity check
     if ([cellData conformsToProtocol:@protocol(MXKRoomBubbleCellDataStoring)])
     {
         id<MXKRoomBubbleCellDataStoring> bubbleData = (id<MXKRoomBubbleCellDataStoring>)cellData;
         
+        // Tchap: We hide all encryption icons in all bubbles for the moment (-> we don't use RoomxxxEncryptedxxxBubbleCell cell)
+//        MXKRoomBubbleCellData *roomBubbleCellData;
+//        if ([bubbleData isKindOfClass:MXKRoomBubbleCellData.class])
+//        {
+//            roomBubbleCellData = (MXKRoomBubbleCellData*)bubbleData;
+//            showEncryptionBadge = roomBubbleCellData.containsBubbleComponentWithEncryptionBadge;
+//        }
+        
         // Select the suitable table view cell class
         if (bubbleData.showAntivirusScanStatus)
         {
             if (bubbleData.isPaginationFirstBubble)
             {
-                cellViewClass = isEncryptedRoom ? RoomEncryptedAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.class : RoomAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.class;
+                cellViewClass = showEncryptionBadge ? RoomEncryptedAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.class : RoomAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.class;
             }
             else if (bubbleData.shouldHideSenderInformation)
             {
-                cellViewClass = isEncryptedRoom ? RoomEncryptedAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.class : RoomAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.class;
+                cellViewClass = showEncryptionBadge ? RoomEncryptedAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.class : RoomAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.class;
             }
             else
             {
-                cellViewClass = isEncryptedRoom ? RoomEncryptedAttachmentAntivirusScanStatusBubbleCell.class : RoomAttachmentAntivirusScanStatusBubbleCell.class;
+                cellViewClass = showEncryptionBadge ? RoomEncryptedAttachmentAntivirusScanStatusBubbleCell.class : RoomAttachmentAntivirusScanStatusBubbleCell.class;
             }
         }
         else if (bubbleData.hasNoDisplay)
@@ -1811,6 +1871,18 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
         else if (bubbleData.tag == RoomBubbleCellDataTagRoomCreateWithPredecessor)
         {
             cellViewClass = RoomPredecessorBubbleCell.class;
+        }
+        else if (bubbleData.tag == RoomBubbleCellDataTagKeyVerificationRequestIncomingApproval)
+        {
+            cellViewClass = bubbleData.isPaginationFirstBubble ? KeyVerificationIncomingRequestApprovalWithPaginationTitleBubbleCell.class : KeyVerificationIncomingRequestApprovalBubbleCell.class;
+        }
+        else if (bubbleData.tag == RoomBubbleCellDataTagKeyVerificationRequest)
+        {
+            cellViewClass = bubbleData.isPaginationFirstBubble ? KeyVerificationRequestStatusWithPaginationTitleBubbleCell.class : KeyVerificationRequestStatusBubbleCell.class;
+        }
+        else if (bubbleData.tag == RoomBubbleCellDataTagKeyVerificationConclusion)
+        {
+            cellViewClass = bubbleData.isPaginationFirstBubble ? KeyVerificationConclusionWithPaginationTitleBubbleCell.class : KeyVerificationConclusionBubbleCell.class;
         }
         else if (bubbleData.tag == RoomBubbleCellDataTagMembership)
         {
@@ -1852,15 +1924,15 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                 }
                 else if (bubbleData.isPaginationFirstBubble)
                 {
-                    cellViewClass = isEncryptedRoom ? RoomIncomingEncryptedAttachmentWithPaginationTitleBubbleCell.class : RoomIncomingAttachmentWithPaginationTitleBubbleCell.class;
+                    cellViewClass = showEncryptionBadge ? RoomIncomingEncryptedAttachmentWithPaginationTitleBubbleCell.class : RoomIncomingAttachmentWithPaginationTitleBubbleCell.class;
                 }
                 else if (bubbleData.shouldHideSenderInformation)
                 {
-                    cellViewClass = isEncryptedRoom ? RoomIncomingEncryptedAttachmentWithoutSenderInfoBubbleCell.class : RoomIncomingAttachmentWithoutSenderInfoBubbleCell.class;
+                    cellViewClass = showEncryptionBadge ? RoomIncomingEncryptedAttachmentWithoutSenderInfoBubbleCell.class : RoomIncomingAttachmentWithoutSenderInfoBubbleCell.class;
                 }
                 else
                 {
-                    cellViewClass = isEncryptedRoom ? RoomIncomingEncryptedAttachmentBubbleCell.class : RoomIncomingAttachmentBubbleCell.class;
+                    cellViewClass = showEncryptionBadge ? RoomIncomingEncryptedAttachmentBubbleCell.class : RoomIncomingAttachmentBubbleCell.class;
                 }
             }
             else
@@ -1869,24 +1941,24 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                 {
                     if (bubbleData.shouldHideSenderName)
                     {
-                        cellViewClass = isEncryptedRoom ? RoomIncomingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.class : RoomIncomingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.class;
+                        cellViewClass = showEncryptionBadge ? RoomIncomingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.class : RoomIncomingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.class;
                     }
                     else
                     {
-                        cellViewClass = isEncryptedRoom ? RoomIncomingEncryptedTextMsgWithPaginationTitleBubbleCell.class : RoomIncomingTextMsgWithPaginationTitleBubbleCell.class;
+                        cellViewClass = showEncryptionBadge ? RoomIncomingEncryptedTextMsgWithPaginationTitleBubbleCell.class : RoomIncomingTextMsgWithPaginationTitleBubbleCell.class;
                     }
                 }
                 else if (bubbleData.shouldHideSenderInformation)
                 {
-                    cellViewClass = isEncryptedRoom ? RoomIncomingEncryptedTextMsgWithoutSenderInfoBubbleCell.class : RoomIncomingTextMsgWithoutSenderInfoBubbleCell.class;
+                    cellViewClass = showEncryptionBadge ? RoomIncomingEncryptedTextMsgWithoutSenderInfoBubbleCell.class : RoomIncomingTextMsgWithoutSenderInfoBubbleCell.class;
                 }
                 else if (bubbleData.shouldHideSenderName)
                 {
-                    cellViewClass = isEncryptedRoom ? RoomIncomingEncryptedTextMsgWithoutSenderNameBubbleCell.class : RoomIncomingTextMsgWithoutSenderNameBubbleCell.class;
+                    cellViewClass = showEncryptionBadge ? RoomIncomingEncryptedTextMsgWithoutSenderNameBubbleCell.class : RoomIncomingTextMsgWithoutSenderNameBubbleCell.class;
                 }
                 else
                 {
-                    cellViewClass = isEncryptedRoom ? RoomIncomingEncryptedTextMsgBubbleCell.class : RoomIncomingTextMsgBubbleCell.class;
+                    cellViewClass = showEncryptionBadge ? RoomIncomingEncryptedTextMsgBubbleCell.class : RoomIncomingTextMsgBubbleCell.class;
                 }
             }
         }
@@ -1902,15 +1974,15 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                 }
                 else if (bubbleData.isPaginationFirstBubble)
                 {
-                    cellViewClass = isEncryptedRoom ? RoomOutgoingEncryptedAttachmentWithPaginationTitleBubbleCell.class :RoomOutgoingAttachmentWithPaginationTitleBubbleCell.class;
+                    cellViewClass = showEncryptionBadge ? RoomOutgoingEncryptedAttachmentWithPaginationTitleBubbleCell.class :RoomOutgoingAttachmentWithPaginationTitleBubbleCell.class;
                 }
                 else if (bubbleData.shouldHideSenderInformation)
                 {
-                    cellViewClass = isEncryptedRoom ? RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.class : RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.class;
+                    cellViewClass = showEncryptionBadge ? RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.class : RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.class;
                 }
                 else
                 {
-                    cellViewClass = isEncryptedRoom ? RoomOutgoingEncryptedAttachmentBubbleCell.class : RoomOutgoingAttachmentBubbleCell.class;
+                    cellViewClass = showEncryptionBadge ? RoomOutgoingEncryptedAttachmentBubbleCell.class : RoomOutgoingAttachmentBubbleCell.class;
                 }
             }
             else
@@ -1919,24 +1991,24 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                 {
                     if (bubbleData.shouldHideSenderName)
                     {
-                        cellViewClass = isEncryptedRoom ? RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.class : RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.class;
+                        cellViewClass = showEncryptionBadge ? RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.class : RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.class;
                     }
                     else
                     {
-                        cellViewClass = isEncryptedRoom ? RoomOutgoingEncryptedTextMsgWithPaginationTitleBubbleCell.class : RoomOutgoingTextMsgWithPaginationTitleBubbleCell.class;
+                        cellViewClass = showEncryptionBadge ? RoomOutgoingEncryptedTextMsgWithPaginationTitleBubbleCell.class : RoomOutgoingTextMsgWithPaginationTitleBubbleCell.class;
                     }
                 }
                 else if (bubbleData.shouldHideSenderInformation)
                 {
-                    cellViewClass = isEncryptedRoom ? RoomOutgoingEncryptedTextMsgWithoutSenderInfoBubbleCell.class :RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.class;
+                    cellViewClass = showEncryptionBadge ? RoomOutgoingEncryptedTextMsgWithoutSenderInfoBubbleCell.class :RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.class;
                 }
                 else if (bubbleData.shouldHideSenderName)
                 {
-                    cellViewClass = isEncryptedRoom ? RoomOutgoingEncryptedTextMsgWithoutSenderNameBubbleCell.class : RoomOutgoingTextMsgWithoutSenderNameBubbleCell.class;
+                    cellViewClass = showEncryptionBadge ? RoomOutgoingEncryptedTextMsgWithoutSenderNameBubbleCell.class : RoomOutgoingTextMsgWithoutSenderNameBubbleCell.class;
                 }
                 else
                 {
-                    cellViewClass = isEncryptedRoom ? RoomOutgoingEncryptedTextMsgBubbleCell.class : RoomOutgoingTextMsgBubbleCell.class;
+                    cellViewClass = showEncryptionBadge ? RoomOutgoingEncryptedTextMsgBubbleCell.class : RoomOutgoingTextMsgBubbleCell.class;
                 }
             }
         }
@@ -2031,6 +2103,30 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
             {
                 [self showContextualMenuForEvent:selectedEvent fromSingleTapGesture:YES cell:cell animated:YES];
             }
+        }
+        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellKeyVerificationIncomingRequestAcceptPressed])
+        {
+            NSString *eventId = userInfo[kMXKRoomBubbleCellEventIdKey];
+            
+            RoomDataSource *roomDataSource = (RoomDataSource*)self.roomDataSource;
+            
+            [roomDataSource acceptVerificationRequestForEventId:eventId success:^{
+
+            } failure:^(NSError *error) {
+                [[AppDelegate theDelegate] showErrorAsAlert:error];
+            }];
+        }
+        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed])
+        {
+            NSString *eventId = userInfo[kMXKRoomBubbleCellEventIdKey];
+            
+            RoomDataSource *roomDataSource = (RoomDataSource*)self.roomDataSource;
+            
+            [roomDataSource declineVerificationRequestForEventId:eventId success:^{
+                
+            } failure:^(NSError *error) {
+                [[AppDelegate theDelegate] showErrorAsAlert:error];
+            }];
         }
         else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnAttachmentView])
         {
@@ -2814,6 +2910,40 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                             shouldDoAction = NO;
                             break;
                         default:
+                        {
+                            MXEvent *tappedEvent = userInfo[kMXKRoomBubbleCellEventKey];
+                            NSString *format = tappedEvent.content[@"format"];
+                            NSString *formattedBody = tappedEvent.content[@"formatted_body"];
+                            //  if an html formatted body exists
+                            if ([format isEqualToString:kMXRoomMessageFormatHTML] && formattedBody)
+                            {
+                                NSURL *visibleURL = [formattedBodyParser getVisibleURLForURL:url inFormattedBody:formattedBody];
+                                
+                                if (visibleURL && ![url isEqual:visibleURL])
+                                {
+                                    //  urls are different, show confirmation alert
+                                    NSString *formatStr = NSLocalizedStringFromTable(@"external_link_confirmation_message", @"Vector", nil);
+                                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"external_link_confirmation_title", @"Vector", nil) message:[NSString stringWithFormat:formatStr, visibleURL.absoluteString, url.absoluteString] preferredStyle:UIAlertControllerStyleAlert];
+                                    
+                                    UIAlertAction *continueAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"continue", @"Vector", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                                        // Try to open the link
+                                        [[UIApplication sharedApplication] vc_open:url completionHandler:^(BOOL success) {
+                                            if (!success)
+                                            {
+                                                [self showUnableToOpenLinkErrorAlert];
+                                            }
+                                        }];
+                                    }];
+                                    
+                                    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"cancel", @"Vector", nil) style:UIAlertActionStyleCancel handler:nil];
+                                    
+                                    [alert addAction:continueAction];
+                                    [alert addAction:cancelAction];
+                                    
+                                    [self presentViewController:alert animated:YES completion:nil];
+                                    return NO;
+                                }
+                            }
                             // Try to open the link
                             [[UIApplication sharedApplication] vc_open:url completionHandler:^(BOOL success) {
                                 if (!success)
@@ -2823,6 +2953,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                             }];
                             shouldDoAction = NO;
                             break;
+                        }
                     }                                        
                 }
                     break;
@@ -2934,6 +3065,14 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     }
     
     return roomInputToolbarView;
+}
+
+
+#pragma mark - RoomDataSourceDelegate
+
+- (void)roomDataSource:(RoomDataSource *)roomDataSource didUpdateEncryptionTrustLevel:(RoomEncryptionTrustLevel)roomEncryptionTrustLevel
+{
+    [self updateInputToolbarEncryptionDecoration];
 }
 
 #pragma mark - RoomInputToolbarViewDelegate
@@ -3601,7 +3740,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
 
 - (NSUInteger)widgetsCount:(BOOL)includeUserWidgets
 {
-    NSUInteger widgetsCount = [[WidgetManager sharedManager] widgetsNotOfTypes:@[kWidgetTypeJitsi]
+    NSUInteger widgetsCount = [[WidgetManager sharedManager] widgetsNotOfTypes:@[kWidgetTypeJitsiV1, kWidgetTypeJitsiV2]
                                                                         inRoom:self.roomDataSource.room
                                                                  withRoomState:self.roomDataSource.roomState].count;
     if (includeUserWidgets)
@@ -3882,7 +4021,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
 
 - (NSUInteger)missedDiscussionsCount
 {
-    return [self.mainSession riot_missedDiscussionsCount];
+    return [self.mainSession vc_missedDiscussionsCount];
 }
 
 - (NSUInteger)missedHighlightDiscussionsCount
@@ -4582,8 +4721,36 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     
     // Copy action
     
+    BOOL isCopyActionEnabled = !attachment || attachment.type != MXKAttachmentTypeSticker;
+    
+    if (isCopyActionEnabled)
+    {
+        switch (event.eventType) {
+            case MXEventTypeRoomMessage:
+            {
+                NSString *messageType = event.content[@"msgtype"];
+                
+                if ([messageType isEqualToString:kMXMessageTypeKeyVerificationRequest])
+                {
+                    isCopyActionEnabled = NO;
+                }
+                break;
+            }
+            case MXEventTypeKeyVerificationStart:
+            case MXEventTypeKeyVerificationAccept:
+            case MXEventTypeKeyVerificationKey:
+            case MXEventTypeKeyVerificationMac:
+            case MXEventTypeKeyVerificationDone:
+            case MXEventTypeKeyVerificationCancel:
+                isCopyActionEnabled = NO;
+                break;
+            default:
+                break;
+        }
+    }
+    
     RoomContextualMenuItem *copyMenuItem = [[RoomContextualMenuItem alloc] initWithMenuAction:RoomContextualMenuActionCopy];
-    copyMenuItem.isEnabled = !attachment || attachment.type != MXKAttachmentTypeSticker;
+    copyMenuItem.isEnabled = isCopyActionEnabled;
     copyMenuItem.action = ^{
         MXStrongifyAndReturnIfNil(self);
         

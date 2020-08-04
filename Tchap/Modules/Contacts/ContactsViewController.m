@@ -139,7 +139,13 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
     UISearchBar *searchBar = self.searchController.searchBar;
     if (searchBar)
     {
-        if (@available(iOS 11.0, *))
+        if (@available(iOS 13.0, *))
+        {
+            // iOS 13 issue: When the search bar is shown, the navigation bar color is replaced with the background color of the TableView
+            // Patch: Always show the search bar on iOS 13
+            self.navigationItem.hidesSearchBarWhenScrolling = NO;
+        }
+        else
         {
             // Enable to hide search bar on scrolling after first time view appear
             self.navigationItem.hidesSearchBarWhenScrolling = YES;
@@ -147,7 +153,7 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
         
         // For unknown reason, we have to force here the UISearchBar search text color again.
         // The value set by [updateWithStyle:] call is ignored.
-        UITextField *searchBarTextField = [searchBar valueForKey:@"_searchField"];
+        UITextField *searchBarTextField = searchBar.vc_searchTextField;
         searchBarTextField.textColor = searchBar.tintColor;
     }
 }
@@ -223,16 +229,9 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
     searchController.searchBar.placeholder = NSLocalizedStringFromTable(@"contacts_search_bar_placeholder", @"Tchap", nil);
     searchController.hidesNavigationBarDuringPresentation = NO;
     
-    if (@available(iOS 11.0, *))
-    {
-        self.navigationItem.searchController = searchController;
-        // Make the search bar visible on first view appearance
-        self.navigationItem.hidesSearchBarWhenScrolling = NO;
-    }
-    else
-    {
-        self.tableView.tableHeaderView = searchController.searchBar;
-    }
+    self.navigationItem.searchController = searchController;
+    // Make the search bar visible on first view appearance
+    self.navigationItem.hidesSearchBarWhenScrolling = NO;
     
     self.definesPresentationContext = YES;
     
@@ -384,16 +383,9 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
     
     if (searchBar)
     {
-        if (@available(iOS 11.0, *))
-        {
-            searchBar.tintColor = style.barActionColor;
-        }
-        else
-        {
-            searchBar.tintColor = style.primarySubTextColor;
-        }
+        searchBar.tintColor = style.barActionColor;
         
-        UITextField *searchBarTextField = [searchBar valueForKey:@"_searchField"];
+        UITextField *searchBarTextField = searchBar.vc_searchTextField;
         searchBarTextField.textColor = searchBar.tintColor;
     }
     
@@ -401,6 +393,8 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
     {
         [self refreshContactsTable];
     }
+    
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 #pragma mark - MXKDataSourceDelegate

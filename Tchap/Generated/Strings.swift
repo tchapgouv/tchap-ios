@@ -134,6 +134,10 @@ internal enum TchapL10n {
   internal static let conversationsTabTitle = TchapL10n.tr("Tchap", "conversations_tab_title")
   /// Nouvelle discussion
   internal static let createNewDiscussionTitle = TchapL10n.tr("Tchap", "create_new_discussion_title")
+  /// Vérifier l’appareil
+  internal static let deviceVerificationTitle = TchapL10n.tr("Tchap", "device_verification_title")
+  /// Vous avez bien vérifié cet appareil.\n\nLe partage des clés va s'effectuer progressivement. Les messages se déchiffreront au fur à mesure. Cela peut prendre quelques minutes.
+  internal static let deviceVerificationVerifiedDescription = TchapL10n.tr("Tchap", "device_verification_verified_description")
   /// Une erreur est survenue, veuillez réessayer ultérieurement
   internal static let errorMessageDefault = TchapL10n.tr("Tchap", "error_message_default")
   /// Erreur

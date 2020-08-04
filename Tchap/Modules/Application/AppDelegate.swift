@@ -18,7 +18,7 @@ import UIKit
 import PushKit
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, PushNotificationServiceDelegate {
     
     // MARK: - Properties
     
@@ -96,35 +96,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         return self.appCoordinator.handleUserActivity(userActivity, application: application)
     }
     
-    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        let actionIdentifier = response.actionIdentifier
-        if actionIdentifier == UNNotificationDefaultActionIdentifier,
-            let roomId = response.notification.request.content.userInfo["room_id"] as? String {
-            _ = self.appCoordinator.resumeBySelectingRoom(with: roomId)
-            completionHandler()
-        } else {
-            self.legacyAppDelegate.userNotificationCenter(center, didReceive: response, withCompletionHandler: completionHandler)
-        }
+    // MARK: - Push Notifications
+    
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        self.legacyAppDelegate.application(application, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
     }
     
-    // iOS 10+, this is called when a notification is about to display in foreground.
-    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        completionHandler([])
-    }
-}
-
-// MARK: - PKPushRegistryDelegate
-extension AppDelegate: PKPushRegistryDelegate {
-    
-    func pushRegistry(_ registry: PKPushRegistry, didUpdate pushCredentials: PKPushCredentials, for type: PKPushType) {
-        self.legacyAppDelegate.pushRegistry(registry, didUpdate: pushCredentials, for: type)
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        self.legacyAppDelegate.application(application, didFailToRegisterForRemoteNotificationsWithError: error)
     }
     
-    func pushRegistry(_ registry: PKPushRegistry, didInvalidatePushTokenFor type: PKPushType) {
-        self.legacyAppDelegate.pushRegistry(registry, didInvalidatePushTokenFor: type)
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        self.legacyAppDelegate.application(application, didReceiveRemoteNotification: userInfo, fetchCompletionHandler: completionHandler)
     }
     
-    func pushRegistry(_ registry: PKPushRegistry, didReceiveIncomingPushWith payload: PKPushPayload, for type: PKPushType) {
-        self.legacyAppDelegate.pushRegistry(registry, didReceiveIncomingPushWith: payload, for: type)
-    }        
+    @objc func pushNotificationService(_ pushNotificationService: PushNotificationService, shouldNavigateToRoomWithId roomId: String) {
+        _ = self.appCoordinator.resumeBySelectingRoom(with: roomId)
+    }
 }

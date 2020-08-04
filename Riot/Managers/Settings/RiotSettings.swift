@@ -32,11 +32,16 @@ final class RiotSettings: NSObject {
         static let showProfileUpdateEvents = "showProfileUpdateEvents"
         static let allowStunServerFallback = "allowStunServerFallback"
         static let stunServerFallback = "stunServerFallback"
-        static let enableCrossSigning = "enableCrossSigning"
-        static let enableDMKeyVerification = "enableDMKeyVerification"
+        static let hideVerifyThisSessionAlert = "hideVerifyThisSessionAlert"
+        static let hideReviewSessionsAlert = "hideReviewSessionsAlert"
     }
     
     static let shared = RiotSettings()
+    
+    /// UserDefaults to be used on reads and writes.
+    private lazy var defaults: UserDefaults = {
+        return UserDefaults(suiteName: TchapDefaults.appGroupId)!
+    }()
     
     // MARK: - Public
     
@@ -44,15 +49,32 @@ final class RiotSettings: NSObject {
     
     /// Indicate if `showDecryptedContentInNotifications` settings has been set once.
     var isShowDecryptedContentInNotificationsHasBeenSetOnce: Bool {
-        return UserDefaults.standard.object(forKey: UserDefaultsKeys.notificationsShowDecryptedContent) != nil
+        return defaults.object(forKey: UserDefaultsKeys.notificationsShowDecryptedContent) != nil
+    }
+    
+    /// Indicate if UserDefaults suite has been migrated once.
+    var isUserDefaultsMigrated: Bool {
+        return defaults.object(forKey: UserDefaultsKeys.notificationsShowDecryptedContent) != nil
+    }
+    
+    func migrate() {
+        //  read all values from standard
+        let dictionary = UserDefaults.standard.dictionaryRepresentation()
+        
+        //  write values to suite
+        //  remove redundant values from standard
+        for (key, value) in dictionary {
+            defaults.set(value, forKey: key)
+            UserDefaults.standard.removeObject(forKey: key)
+        }
     }
     
     /// Indicate if encrypted messages content should be displayed in notifications.
     var showDecryptedContentInNotifications: Bool {
         get {
-            return UserDefaults.standard.bool(forKey: UserDefaultsKeys.notificationsShowDecryptedContent)
+            return defaults.bool(forKey: UserDefaultsKeys.notificationsShowDecryptedContent)
         } set {
-            UserDefaults.standard.set(newValue, forKey: UserDefaultsKeys.notificationsShowDecryptedContent)
+            defaults.set(newValue, forKey: UserDefaultsKeys.notificationsShowDecryptedContent)
         }
     }
     
@@ -60,9 +82,9 @@ final class RiotSettings: NSObject {
     /// (No by default)
     var showJoinLeaveEvents: Bool {
         get {
-            return UserDefaults.standard.bool(forKey: UserDefaultsKeys.showJoinLeaveEvents)
+            return defaults.bool(forKey: UserDefaultsKeys.showJoinLeaveEvents)
         } set {
-            UserDefaults.standard.set(newValue, forKey: UserDefaultsKeys.showJoinLeaveEvents)
+            defaults.set(newValue, forKey: UserDefaultsKeys.showJoinLeaveEvents)
         }
     }
     
@@ -70,9 +92,9 @@ final class RiotSettings: NSObject {
     /// (No by default)
     var showProfileUpdateEvents: Bool {
         get {
-            return UserDefaults.standard.bool(forKey: UserDefaultsKeys.showProfileUpdateEvents)
+            return defaults.bool(forKey: UserDefaultsKeys.showProfileUpdateEvents)
         } set {
-            UserDefaults.standard.set(newValue, forKey: UserDefaultsKeys.showProfileUpdateEvents)
+            defaults.set(newValue, forKey: UserDefaultsKeys.showProfileUpdateEvents)
         }
     }
     
@@ -80,9 +102,9 @@ final class RiotSettings: NSObject {
     
     var userInterfaceTheme: String? {
         get {
-            return UserDefaults.standard.string(forKey: UserDefaultsKeys.userInterfaceTheme)
+            return defaults.string(forKey: UserDefaultsKeys.userInterfaceTheme)
         } set {
-            UserDefaults.standard.set(newValue, forKey: UserDefaultsKeys.userInterfaceTheme)
+            defaults.set(newValue, forKey: UserDefaultsKeys.userInterfaceTheme)
         }
     }
     
@@ -90,22 +112,22 @@ final class RiotSettings: NSObject {
     
     /// Indicate if `enableCrashReport` settings has been set once.
     var isEnableCrashReportHasBeenSetOnce: Bool {
-        return UserDefaults.standard.object(forKey: UserDefaultsKeys.enableCrashReport) != nil
+        return defaults.object(forKey: UserDefaultsKeys.enableCrashReport) != nil
     }
     
     var enableCrashReport: Bool {
         get {
-            return UserDefaults.standard.bool(forKey: UserDefaultsKeys.enableCrashReport)
+            return defaults.bool(forKey: UserDefaultsKeys.enableCrashReport)
         } set {
-            UserDefaults.standard.set(newValue, forKey: UserDefaultsKeys.enableCrashReport)
+            defaults.set(newValue, forKey: UserDefaultsKeys.enableCrashReport)
         }
     }
     
     var enableRageShake: Bool {
         get {
-            return UserDefaults.standard.bool(forKey: UserDefaultsKeys.enableRageShake)
+            return defaults.bool(forKey: UserDefaultsKeys.enableRageShake)
         } set {
-            UserDefaults.standard.set(newValue, forKey: UserDefaultsKeys.enableRageShake)
+            defaults.set(newValue, forKey: UserDefaultsKeys.enableRageShake)
         }
     }
     
@@ -113,25 +135,9 @@ final class RiotSettings: NSObject {
     
     var createConferenceCallsWithJitsi: Bool {
         get {
-            return UserDefaults.standard.bool(forKey: UserDefaultsKeys.createConferenceCallsWithJitsi)
+            return defaults.bool(forKey: UserDefaultsKeys.createConferenceCallsWithJitsi)
         } set {
-            UserDefaults.standard.set(newValue, forKey: UserDefaultsKeys.createConferenceCallsWithJitsi)
-        }
-    }
-    
-    var enableDMKeyVerification: Bool {
-        get {
-            return UserDefaults.standard.bool(forKey: UserDefaultsKeys.enableDMKeyVerification)
-        } set {
-            UserDefaults.standard.set(newValue, forKey: UserDefaultsKeys.enableDMKeyVerification)
-        }
-    }
-
-    var enableCrossSigning: Bool {
-        get {
-            return UserDefaults.standard.bool(forKey: UserDefaultsKeys.enableCrossSigning)
-        } set {
-            UserDefaults.standard.set(newValue, forKey: UserDefaultsKeys.enableCrossSigning)
+            defaults.set(newValue, forKey: UserDefaultsKeys.createConferenceCallsWithJitsi)
         }
     }
 
@@ -139,18 +145,36 @@ final class RiotSettings: NSObject {
 
     /// Indicate if `allowStunServerFallback` settings has been set once.
     var isAllowStunServerFallbackHasBeenSetOnce: Bool {
-        return UserDefaults.standard.object(forKey: UserDefaultsKeys.allowStunServerFallback) != nil
+        return defaults.object(forKey: UserDefaultsKeys.allowStunServerFallback) != nil
     }
 
     var allowStunServerFallback: Bool {
         get {
-            return UserDefaults.standard.bool(forKey: UserDefaultsKeys.allowStunServerFallback)
+            return defaults.bool(forKey: UserDefaultsKeys.allowStunServerFallback)
         } set {
-            UserDefaults.standard.set(newValue, forKey: UserDefaultsKeys.allowStunServerFallback)
+            defaults.set(newValue, forKey: UserDefaultsKeys.allowStunServerFallback)
         }
     }
 
     var stunServerFallback: String? {
-        return UserDefaults.standard.string(forKey: UserDefaultsKeys.stunServerFallback)
+        return defaults.string(forKey: UserDefaultsKeys.stunServerFallback)
+    }
+    
+    // MARK: Key verification
+    
+    var hideVerifyThisSessionAlert: Bool {
+        get {
+            return defaults.bool(forKey: UserDefaultsKeys.hideVerifyThisSessionAlert)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.hideVerifyThisSessionAlert)
+        }
+    }
+    
+    var hideReviewSessionsAlert: Bool {
+        get {
+            return defaults.bool(forKey: UserDefaultsKeys.hideReviewSessionsAlert)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.hideReviewSessionsAlert)
+        }
     }
 }

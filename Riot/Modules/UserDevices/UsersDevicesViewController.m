@@ -22,14 +22,14 @@
 #import "Analytics.h"
 #import "GeneratedInterface-Swift.h"
 
-@interface UsersDevicesViewController () <DeviceVerificationCoordinatorBridgePresenterDelegate>
+@interface UsersDevicesViewController () <KeyVerificationCoordinatorBridgePresenterDelegate>
 {
     MXUsersDevicesMap<MXDeviceInfo*> *usersDevices;
     MXSession *mxSession;
 
     void (^onCompleteBlock)(BOOL doneButtonPressed);
 
-    DeviceVerificationCoordinatorBridgePresenter *deviceVerificationCoordinatorBridgePresenter;
+    KeyVerificationCoordinatorBridgePresenter *keyVerificationCoordinatorBridgePresenter;
     
     // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
     id kThemeServiceDidChangeThemeNotificationObserver;
@@ -98,6 +98,8 @@
     {
         [self.tableView reloadData];
     }
+
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -217,10 +219,10 @@
     if (verificationStatus == MXDeviceVerified)
     {
         // Prompt the user before marking as verified the device.
-        deviceVerificationCoordinatorBridgePresenter = [[DeviceVerificationCoordinatorBridgePresenter alloc] initWithSession:mxSession];
-        deviceVerificationCoordinatorBridgePresenter.delegate = self;
+        keyVerificationCoordinatorBridgePresenter = [[KeyVerificationCoordinatorBridgePresenter alloc] initWithSession:mxSession];
+        keyVerificationCoordinatorBridgePresenter.delegate = self;
 
-        [deviceVerificationCoordinatorBridgePresenter presentFrom:self otherUserId:deviceTableViewCell.deviceInfo.userId otherDeviceId:deviceTableViewCell.deviceInfo.deviceId animated:YES];
+        [keyVerificationCoordinatorBridgePresenter presentFrom:self otherUserId:deviceTableViewCell.deviceInfo.userId otherDeviceId:deviceTableViewCell.deviceInfo.deviceId animated:YES];
     }
     else
     {
@@ -228,36 +230,46 @@
                                       forDevice:deviceTableViewCell.deviceInfo.deviceId
                                          ofUser:deviceTableViewCell.deviceInfo.userId
                                         success:^{
-
-                                            deviceTableViewCell.deviceInfo.verified = verificationStatus;
-                                            [self.tableView reloadData];
-
+                                            [self reloadDataforUser:deviceTableViewCell.deviceInfo.userId andDevice:deviceTableViewCell.deviceInfo.deviceId];
                                         } failure:nil];
     }
 }
 
+- (void)reloadDataforUser:(NSString *)userId andDevice:(NSString *)deviceId
+{
+    // Refresh data
+    MXDeviceInfo *device = [mxSession.crypto deviceWithDeviceId:deviceId ofUser:userId];
+    [usersDevices setObject:device forUser:userId andDevice:deviceId];
+
+    // and reload
+    [self.tableView reloadData];
+}
+
 #pragma mark - DeviceVerificationCoordinatorBridgePresenterDelegate
 
-- (void)deviceVerificationCoordinatorBridgePresenterDelegateDidComplete:(DeviceVerificationCoordinatorBridgePresenter *)coordinatorBridgePresenter otherUserId:(NSString * _Nonnull)otherUserId otherDeviceId:(NSString * _Nonnull)otherDeviceId
+- (void)keyVerificationCoordinatorBridgePresenterDelegateDidComplete:(KeyVerificationCoordinatorBridgePresenter *)coordinatorBridgePresenter otherUserId:(NSString * _Nonnull)otherUserId otherDeviceId:(NSString * _Nonnull)otherDeviceId
 {
-    [deviceVerificationCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
-    deviceVerificationCoordinatorBridgePresenter = nil;
-
     // Update our map
-    MXWeakify(self);
-    [mxSession.crypto downloadKeys:@[otherUserId] forceDownload:NO success:^(MXUsersDevicesMap<MXDeviceInfo *> *usersDevicesInfoMap) {
-        MXStrongifyAndReturnIfNil(self);
-
-        MXDeviceInfo *deviceInfo = [usersDevicesInfoMap objectForDevice:otherDeviceId forUser:otherUserId];
-
-        MXDeviceInfo *device = [self->usersDevices objectForDevice:otherDeviceId forUser:otherUserId];
-        device.verified = deviceInfo.verified;
-
-        [self.tableView reloadData];
-
+    [mxSession.crypto downloadKeys:@[otherUserId] forceDownload:NO success:^(MXUsersDevicesMap<MXDeviceInfo *> *usersDevicesInfoMap, NSDictionary<NSString *,MXCrossSigningInfo *> *crossSigningKeysMap) {
+        
+        [self reloadDataforUser:otherUserId andDevice:otherDeviceId];
+        
     } failure:^(NSError *error) {
         // Should not happen (the device is in the crypto db)
     }];
+    
+    [self dismissKeyVerificationCoordinatorBridgePresenter];
+}
+
+- (void)keyVerificationCoordinatorBridgePresenterDelegateDidCancel:(KeyVerificationCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter
+{
+    [self dismissKeyVerificationCoordinatorBridgePresenter];
+}
+
+- (void)dismissKeyVerificationCoordinatorBridgePresenter
+{
+    [keyVerificationCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    keyVerificationCoordinatorBridgePresenter = nil;
 }
 
 

@@ -80,6 +80,13 @@
     
     // @TODO Design the activvity indicator for Tchap
     self.activityIndicator.backgroundColor = style.overlayBackgroundColor;
+
+    [self setNeedsStatusBarAppearanceUpdate];
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return self.currentStyle.statusBarStyle;
 }
 
 - (void)viewWillAppear:(BOOL)animated

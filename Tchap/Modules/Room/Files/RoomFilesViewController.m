@@ -103,11 +103,6 @@
     
     [self setNavBarButtons];
     
-    // Update the inputToolBar height (This will trigger a layout refresh)
-    [UIView setAnimationsEnabled:NO];
-    [self roomInputToolbarView:self.inputToolbarView heightDidChanged:0 completion:nil];
-    [UIView setAnimationsEnabled:YES];
-    
     // Observe user interface theme change.
     kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
@@ -115,6 +110,16 @@
         
     }];
     [self userInterfaceThemeDidChange];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+
+    // Update the inputToolBar height (This will trigger a layout refresh)
+    [UIView setAnimationsEnabled:NO];
+    [self roomInputToolbarView:self.inputToolbarView heightDidChanged:0 completion:nil];
+    [UIView setAnimationsEnabled:YES];
 }
 
 - (void)userInterfaceThemeDidChange
@@ -143,6 +148,8 @@
     {
         [self.bubblesTableView reloadData];
     }
+
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle

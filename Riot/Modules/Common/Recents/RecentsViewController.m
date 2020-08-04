@@ -105,6 +105,12 @@
     [self.recentsTableView registerNib:RoomsRoomCell.nib forCellReuseIdentifier:RoomsRoomCell.defaultReuseIdentifier];
     [self.recentsTableView registerNib:RoomsInviteCell.nib forCellReuseIdentifier:RoomsInviteCell.defaultReuseIdentifier];
     
+    // Register key backup banner cells
+    [self.recentsTableView registerNib:SecureBackupBannerCell.nib forCellReuseIdentifier:SecureBackupBannerCell.defaultReuseIdentifier];
+
+    // Register key verification banner cells
+    [self.recentsTableView registerNib:CrossSigningSetupBannerCell.nib forCellReuseIdentifier:CrossSigningSetupBannerCell.defaultReuseIdentifier];
+    
     // Hide line separators of empty cells
     self.recentsTableView.tableFooterView = [[UIView alloc] init];
     
@@ -152,6 +158,8 @@
         // Force table refresh
         [self cancelEditionMode:YES];
     }
+
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -688,93 +696,105 @@
 
 #pragma mark - Swipe actions
 
-- (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSMutableArray* actions = [[NSMutableArray alloc] init];
-    MXRoom* room = [self.dataSource getRoomAtIndexPath:indexPath];
-    
-    if (room)
-    {
-        // Display no action for the invited room
-        if (room.summary.membership == MXMembershipInvite)
-        {
-            return actions;
-        }
-        
-        // Store the identifier of the room related to the edited cell.
-        editedRoomId = room.roomId;
-        
-        NSString* title = @"      ";
-        
-        // Notification toggle
-        BOOL isMuted = room.isMute || room.isMentionsOnly;
-        
-        UITableViewRowAction *muteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:title handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
-            
-            [self muteEditedRoomNotifications:!isMuted];
-            
-        }];
-        
-        UIImage *actionIcon = isMuted ? [UIImage imageNamed:@"notifications"] : [UIImage imageNamed:@"notificationsOff"];
-        muteAction.backgroundColor = [MXKTools convertImageToPatternColor:isMuted ? @"notifications" : @"notificationsOff" backgroundColor:ThemeService.shared.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
-        [actions insertObject:muteAction atIndex:0];
-        
-        // Favorites management
-        MXRoomTag* currentTag = nil;
-        
-        // Get the room tag (use only the first one).
-        if (room.accountData.tags)
-        {
-            NSArray<MXRoomTag*>* tags = room.accountData.tags.allValues;
-            if (tags.count)
-            {
-                currentTag = tags[0];
-            }
-        }
-        
-        if (currentTag && [kMXRoomTagFavourite isEqualToString:currentTag.name])
-        {
-            UITableViewRowAction* action = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:title handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
-                
-                [self updateEditedRoomTag:nil];
-                
-            }];
-            
-            actionIcon = [UIImage imageNamed:@"unpin"];
-            action.backgroundColor = [MXKTools convertImageToPatternColor:@"unpin" backgroundColor:ThemeService.shared.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
-            [actions insertObject:action atIndex:0];
-        }
-        else
-        {
-            UITableViewRowAction* action = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:title handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
-                
-                [self updateEditedRoomTag:kMXRoomTagFavourite];
-                
-            }];
-            
-            actionIcon = [UIImage imageNamed:@"pin"];
-            action.backgroundColor = [MXKTools convertImageToPatternColor:@"pin" backgroundColor:ThemeService.shared.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
-            [actions insertObject:action atIndex:0];
-        }
-        
-        UITableViewRowAction *leaveAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive title:title  handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
-            
-            [self leaveEditedRoom];
-            
-        }];
-        
-        actionIcon = [UIImage imageNamed:@"leave"];
-        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"leave" backgroundColor:ThemeService.shared.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:actionIcon.size];
-        
-        [actions insertObject:leaveAction atIndex:0];
-    }
-    
-    return actions;
-}
-
 - (void)tableView:(UITableView*)tableView didEndEditingRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [self cancelEditionMode:isRefreshPending];
+}
+
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return UITableViewCellEditingStyleNone;
+}
+
+- (nullable UISwipeActionsConfiguration *)tableView:(UITableView *)tableView trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    MXRoom *room = [self.dataSource getRoomAtIndexPath:indexPath];
+    
+    if (!room)
+    {
+        return nil;
+    }
+    
+    // Display no action for the invited room
+    if (room.summary.membership == MXMembershipInvite)
+    {
+        return nil;
+    }
+    
+    // Store the identifier of the room related to the edited cell.
+    editedRoomId = room.roomId;
+    
+    UIColor *actionBackgroundColor = ThemeService.shared.theme.baseColor;
+    
+    NSString* title = @"      ";
+    
+    // Notification toggle
+
+    BOOL isMuted = room.isMute || room.isMentionsOnly;
+    
+    UIContextualAction *muteAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleNormal
+                                                                             title:title
+                                                                           handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
+        [self muteEditedRoomNotifications:!isMuted];
+        completionHandler(YES);
+    }];
+    muteAction.backgroundColor = actionBackgroundColor;
+    
+    UIImage *notificationImage = isMuted ? [UIImage imageNamed:@"notifications"] : [UIImage imageNamed:@"notificationsOff"];
+    muteAction.image = notificationImage;
+    
+    // Favorites management
+    
+    MXRoomTag* currentTag = nil;
+    
+    // Get the room tag (use only the first one).
+    if (room.accountData.tags)
+    {
+        NSArray<MXRoomTag*>* tags = room.accountData.tags.allValues;
+        if (tags.count)
+        {
+            currentTag = tags[0];
+        }
+    }
+    
+    BOOL isFavourite = (currentTag && [kMXRoomTagFavourite isEqualToString:currentTag.name]);
+    
+    UIContextualAction *favouriteAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleNormal
+                                                                             title:title
+                                                                           handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
+        NSString *favouriteTag = isFavourite ? nil : kMXRoomTagFavourite;
+        [self updateEditedRoomTag:favouriteTag];
+        completionHandler(YES);
+    }];
+    favouriteAction.backgroundColor = actionBackgroundColor;
+    
+    UIImage *favouriteImage = isFavourite ? [UIImage imageNamed:@"unpin"] : [UIImage imageNamed:@"pin"];
+    favouriteAction.image = favouriteImage;
+    
+    // Leave action
+    
+    UIContextualAction *leaveAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive
+                                                                                   title:title
+                                                                                 handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
+        [self leaveEditedRoom];
+        completionHandler(YES);
+    }];
+    leaveAction.backgroundColor = actionBackgroundColor;
+    
+    UIImage *leaveImage = [UIImage imageNamed:@"leave"];
+    leaveAction.image = leaveImage;
+        
+    // Create swipe action configuration
+    
+    NSArray<UIContextualAction*> *actions = @[
+        leaveAction,
+        favouriteAction,
+        muteAction
+    ];
+    
+    UISwipeActionsConfiguration *swipeActionConfiguration = [UISwipeActionsConfiguration configurationWithActions:actions];
+    swipeActionConfiguration.performsFirstActionWithFullSwipe = NO;
+    return swipeActionConfiguration;
 }
 
 - (void)leaveEditedRoom

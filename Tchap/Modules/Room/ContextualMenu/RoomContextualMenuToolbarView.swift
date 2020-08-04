@@ -44,7 +44,6 @@ final class RoomContextualMenuToolbarView: MXKRoomInputToolbarView, NibOwnerLoad
         self.theme = theme
         self.backgroundColor = theme.backgroundColor
         self.tintColor = theme.tintColor
-        self.separatorView.backgroundColor = theme.lineBreakColor
         
         for menuItemView in self.menuItemViews {
             menuItemView.titleColor = theme.tintColor
@@ -53,7 +52,7 @@ final class RoomContextualMenuToolbarView: MXKRoomInputToolbarView, NibOwnerLoad
     }
     
     @objc func fill(contextualMenuItems: [RoomContextualMenuItem]) {
-        self.menuItemsStackView.vc_removeAllSubviews()
+        self.menuItemsStackView.vc_removeAllArrangedSubviews()
         self.menuItemViews.removeAll()
         
         for menuItem in contextualMenuItems {
@@ -74,6 +73,7 @@ final class RoomContextualMenuToolbarView: MXKRoomInputToolbarView, NibOwnerLoad
     // MARK: - Setup
     
     private func commonInit() {
+        self.separatorView.isHidden = true
     }
     
     convenience init() {
