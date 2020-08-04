@@ -2816,6 +2816,8 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
         // Check whether this is a permalink to handle it directly into the app
         if ([Tools isPermaLink:url])
         {
+            // Patch: catch up all the permalinks even if they are not all supported by Tchap for the moment,
+            // like the permalinks with a userid.
             shouldDoAction = NO;
             
             // iOS Patch: fix urls before using it
