@@ -729,6 +729,7 @@
 		026A466523B21AFF0058D80B /* UISearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026A466123B21AFF0058D80B /* UISearchBar.swift */; };
 		026D887021C1C4F40085BED8 /* TchapSharedImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 026D886F21C1C4F40085BED8 /* TchapSharedImages.xcassets */; };
 		026D887221C1C5490085BED8 /* BtchapSharedImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 026D887121C1C5490085BED8 /* BtchapSharedImages.xcassets */; };
+		0276C17524D989070097CA0A /* tchap.gouv.fr.cer in Resources */ = {isa = PBXBuildFile; fileRef = 0276C17424D989070097CA0A /* tchap.gouv.fr.cer */; };
 		027DCAC521B14F68000DD05E /* ContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 027DCAC321B14F68000DD05E /* ContactCell.xib */; };
 		027DCAC621B14F68000DD05E /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027DCAC421B14F68000DD05E /* ContactCell.swift */; };
 		0287985624AE7EFA004FC7AE /* BtchapNSE.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 0287984F24AE7EFA004FC7AE /* BtchapNSE.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -2398,6 +2399,7 @@
 		026A466123B21AFF0058D80B /* UISearchBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UISearchBar.swift; sourceTree = "<group>"; };
 		026D886F21C1C4F40085BED8 /* TchapSharedImages.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = TchapSharedImages.xcassets; sourceTree = "<group>"; };
 		026D887121C1C5490085BED8 /* BtchapSharedImages.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = BtchapSharedImages.xcassets; sourceTree = "<group>"; };
+		0276C17424D989070097CA0A /* tchap.gouv.fr.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = tchap.gouv.fr.cer; sourceTree = "<group>"; };
 		027DCAC321B14F68000DD05E /* ContactCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactCell.xib; sourceTree = "<group>"; };
 		027DCAC421B14F68000DD05E /* ContactCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
 		0287984F24AE7EFA004FC7AE /* BtchapNSE.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BtchapNSE.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -4157,6 +4159,7 @@
 				02CEE1DD23312C370085ACF0 /* matrix.agent.externe.tchap.gouv.fr2.cer */,
 				0234DEF222C5129300EBBBC5 /* matrix.agent.externe.tchap.gouv.fr.cer */,
 				028B50B6228EB2C2005DB9B6 /* www.tchap.gouv.fr.cer */,
+				0276C17424D989070097CA0A /* tchap.gouv.fr.cer */,
 				028B50B4228E2931005DB9B6 /* matrix.agent.tchap.gouv.fr.cer */,
 			);
 			path = Certificates;
@@ -6465,6 +6468,7 @@
 				02C3F22424AFD3880086ACA5 /* CrossSigningSetupBannerCell.xib in Resources */,
 				02FAE58A23B4C41500DE73D8 /* ContextualMenuItemView.xib in Resources */,
 				020DF96A214BE467003DFBA4 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleBubbleCell.xib in Resources */,
+				0276C17524D989070097CA0A /* tchap.gouv.fr.cer in Resources */,
 				020DF985214BE467003DFBA4 /* RoomIncomingAttachmentWithPaginationTitleBubbleCell.xib in Resources */,
 				02CEE1DE23312C370085ACF0 /* matrix.agent.externe.tchap.gouv.fr2.cer in Resources */,
 				020DF97B214BE467003DFBA4 /* RoomIncomingTextMsgWithoutSenderInfoBubbleCell.xib in Resources */,
