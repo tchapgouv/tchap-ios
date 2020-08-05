@@ -700,7 +700,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         }
         else
         {
-            title = [NSBundle mxk_localizedStringForKey:@"error"];
+            title = NSLocalizedStringFromTable(@"error_message_default", @"Tchap", nil);
         }
     }
     

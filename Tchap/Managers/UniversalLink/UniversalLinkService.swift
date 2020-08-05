@@ -22,7 +22,8 @@ final class UniversalLinkService: UniversalLinkServiceType {
     // MARK: - Constants
     
     private enum Constants {
-        static let emailValidationURLPath = "/_matrix/identity/api/v1/validate/email/submitToken"
+        static let emailValidationURLPath = "/_matrix/client/unstable/registration/email/submit_token"
+        static let legacyEmailValidationURLPath = "/_matrix/identity/api/v1/validate/email/submitToken"
         static let emailValidationTokenKey = "token"
         static let emailValidationClientSecretKey = "client_secret"
         static let emailValidationSidKey = "sid"
@@ -43,9 +44,9 @@ final class UniversalLinkService: UniversalLinkServiceType {
         }
         
         // Check whether this is an email validation link.
-        if url.path == Constants.emailValidationURLPath {
+        if url.path == Constants.legacyEmailValidationURLPath {
             let fragment = url.absoluteString
-            NSLog("[UniversalLinkService] handleUserActivity: detect an email validation link")
+            NSLog("[UniversalLinkService] handleUserActivity: detect a legacy email validation link")
             
             // Extract required parameters from the link
             let params = self.parseFragment(fragment)
@@ -96,6 +97,39 @@ final class UniversalLinkService: UniversalLinkServiceType {
                     }
                 }
             }
+            return true
+        } else if url.path == Constants.emailValidationURLPath {
+            NSLog("[UniversalLinkService] handleUserActivity: detect an email validation link")
+            
+            // We just need to ping the link.
+            let urlSession = URLSession(configuration: URLSessionConfiguration.default)
+            let task = urlSession.dataTask(with: url) { (data, response, error) in
+                if let httpURLResponse = response as? HTTPURLResponse, httpURLResponse.statusCode == 200 {
+                    NSLog("[UniversalLinkService] handleUserActivity. Email successfully validated.")
+                    // Check whether a fragment is available in the returned url, this may be the pending register request
+                    // (= nextLink)
+                    if let url = httpURLResponse.url, let fragment = url.fragment {
+                        // Continue the registration with the passed fragment
+                        NSLog("[UniversalLinkService] handleUserActivity. Complete registration with nextLink")
+                        DispatchQueue.main.async {
+                            _ = self.handleFragment(fragment, completion: completion)
+                        }
+                    } else {
+                        // No nextLink means validation for binding a new email
+                        NSLog("[UniversalLinkService] handleUserActivity. TODO: Complete email binding")
+                    }
+                } else {
+                    NSLog("[UniversalLinkService] handleUserActivity. Error: submitToken failed")
+                    DispatchQueue.main.async {
+                        let defaultError = NSError(domain: "UniversalLinkServiceErrorDomain", code: 0, userInfo: [NSLocalizedFailureReasonErrorKey: TchapL10n.registrationEmailValidationFailedTitle, NSLocalizedDescriptionKey: TchapL10n.registrationEmailValidationFailedMsg])
+                        completion(MXResponse.failure(error ?? defaultError))
+                    }
+                }
+                
+                if let data = data {
+                    NSLog("[UniversalLinkService] handleUserActivity: Link validation Data: \(String(data: data, encoding: String.Encoding.utf8) ?? "empty")")
+                }}
+            task.resume()
             return true
         } else if let fragment = url.fragment {
             return self.handleFragment(fragment, completion: completion)
