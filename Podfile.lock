@@ -16,18 +16,18 @@ PODS:
     - AFNetworking/NSURLSession
   - cmark (0.24.1)
   - DGCollectionViewLeftAlignFlowLayout (1.0.4)
-  - DTCoreText (1.6.23):
-    - DTCoreText/Core (= 1.6.23)
+  - DTCoreText (1.6.24):
+    - DTCoreText/Core (= 1.6.24)
     - DTFoundation/Core (~> 1.7.5)
     - DTFoundation/DTAnimatedGIF (~> 1.7.5)
     - DTFoundation/DTHTMLParser (~> 1.7.5)
     - DTFoundation/UIKit (~> 1.7.5)
-  - DTCoreText/Core (1.6.23):
+  - DTCoreText/Core (1.6.24):
     - DTFoundation/Core (~> 1.7.5)
     - DTFoundation/DTAnimatedGIF (~> 1.7.5)
     - DTFoundation/DTHTMLParser (~> 1.7.5)
     - DTFoundation/UIKit (~> 1.7.5)
-  - DTCoreText/Extension (1.6.23):
+  - DTCoreText/Extension (1.6.24):
     - DTFoundation/Core (~> 1.7.5)
     - DTFoundation/DTAnimatedGIF (~> 1.7.5)
     - DTFoundation/DTHTMLParser (~> 1.7.5)
@@ -50,38 +50,38 @@ PODS:
   - MatomoTracker (7.2.0):
     - MatomoTracker/Core (= 7.2.0)
   - MatomoTracker/Core (7.2.0)
-  - MatrixKit (0.12.7):
+  - MatrixKit (0.12.11):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.23)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixKit/Core (= 0.12.7)
-    - MatrixSDK (= 0.16.6)
-  - MatrixKit/AppExtension (0.12.7):
+    - MatrixKit/Core (= 0.12.11)
+    - MatrixSDK (= 0.16.10)
+  - MatrixKit/AppExtension (0.12.11):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.23)
     - DTCoreText/Extension
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixSDK (= 0.16.6)
-  - MatrixKit/Core (0.12.7):
+    - MatrixSDK (= 0.16.10)
+  - MatrixKit/Core (0.12.11):
     - cmark (~> 0.24.1)
     - DTCoreText (~> 1.6.23)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixSDK (= 0.16.6)
-  - MatrixSDK (0.16.6):
-    - MatrixSDK/Core (= 0.16.6)
-  - MatrixSDK/Core (0.16.6):
+    - MatrixSDK (= 0.16.10)
+  - MatrixSDK (0.16.10):
+    - MatrixSDK/Core (= 0.16.10)
+  - MatrixSDK/Core (0.16.10):
     - AFNetworking (~> 4.0.0)
     - GZIP (~> 1.2.2)
     - libbase58 (~> 0.1.4)
     - OLMKit (~> 3.1.0)
     - Realm (~> 4.4.0)
-  - MatrixSDK/JingleCallStack (0.16.6):
+  - MatrixSDK/JingleCallStack (0.16.10):
     - JitsiMeetSDK (~> 2.8.1)
     - MatrixSDK/Core
-  - MatrixSDK/SwiftSupport (0.16.6):
+  - MatrixSDK/SwiftSupport (0.16.10):
     - MatrixSDK/Core
   - OLMKit (3.1.0):
     - OLMKit/olmc (= 3.1.0)
@@ -157,17 +157,17 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   MatrixKit:
-    :commit: ea1929375c433d4be5043cdd328acd50e4530a80
+    :commit: fccdc331a25859b70c019fded6dcdd8091d8f666
     :git: https://github.com/matrix-org/matrix-ios-kit.git
   MatrixSDK:
-    :commit: ecfbdd2d50fceb73a60c246a98d201c7c67cd2d1
+    :commit: df241b5c63b8ebf26bda44d0c27d2b4a7e4d304a
     :git: https://github.com/matrix-org/matrix-ios-sdk.git
 
 SPEC CHECKSUMS:
   AFNetworking: 7864c38297c79aaca1500c33288e429c3451fdce
   cmark: 1d9ad0375e3b9fa281732e992467903606015520
   DGCollectionViewLeftAlignFlowLayout: a0fa58797373ded039cafba8133e79373d048399
-  DTCoreText: 67023bb51b26711d5f640c851f4845aea14c24c9
+  DTCoreText: 0298d372ccc137e51f27b3ec1af65fd4af5d173a
   DTFoundation: 25aa19bb7c6e225b1dfae195604fb8cf1da0ab4c
   GBDeviceInfo: a3f39dba1a04dcb630abff65d6f7e8fbf319eadd
   GZIP: af5c90ef903776a7e9afe6ebebd794a84a2929d4
@@ -177,8 +177,8 @@ SPEC CHECKSUMS:
   libbase58: 7c040313537b8c44b6e2d15586af8e21f7354efd
   libPhoneNumber-iOS: 0a32a9525cf8744fe02c5206eb30d571e38f7d75
   MatomoTracker: 6f89e2561083685a360e223fb663e9ccd57c1d1a
-  MatrixKit: 12c75de764ebecf5dd0fab75136e731744902834
-  MatrixSDK: 7fbf33d3e9ff389027b50bddbc23f95888d16539
+  MatrixKit: 6c5ba4a7673475eca2ad38bbfa02122a502fd03c
+  MatrixSDK: a9793d20448ee7cbe8acd8650fa319ea0b11d273
   OLMKit: 4ee0159d63feeb86d836fdcfefe418e163511639
   Realm: 4eb04d7487bd43c0581256f40b424eafb711deff
   Reusable: 82be188f29d96dc5eff0db7b2393bcc08d2cdd5b
@@ -188,6 +188,6 @@ SPEC CHECKSUMS:
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: c0f3625dfae48817a8d3ef1b4e5c51d40072ab58
+PODFILE CHECKSUM: 795690827ff3032792e7d4174ee29fa277a3fe1e
 
 COCOAPODS: 1.9.3

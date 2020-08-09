@@ -109,7 +109,7 @@ abstract_target 'TchapPods' do
     end
     
     target "BtchapShareExtension" do
-      import_MatrixKitAppExtension
+        import_MatrixKitAppExtension
     end
     
     target "TchapTests" do
