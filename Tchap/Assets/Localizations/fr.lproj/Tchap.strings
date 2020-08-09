@@ -77,6 +77,8 @@
 "registration_email_sent_instructions" = "Merci de cliquer sur le lien proposé dans cet email afin de terminer la création de votre compte. Vous pourrez alors vous connecter en allant sur l'écran de connexion.";
 "registration_email_login_action" = "Aller à l'écran de connexion";
 "registration_email_not_received_action" = "Je n'ai pas reçu l'email !";
+"registration_email_validation_failed_title" = "La validation de l'email a échouée";
+"registration_email_validation_failed_msg" = "Le lien a expiré, ou il n'est pas valide";
 
 "password_policy_too_short_pwd_error" = "Mot de passe trop court";
 "password_policy_too_short_pwd_detailed_error" = "Mot de passe trop court (min %d)";
