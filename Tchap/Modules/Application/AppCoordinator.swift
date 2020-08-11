@@ -37,6 +37,7 @@ final class AppCoordinator: AppCoordinatorType {
     private let appVersionChecker: AppVersionChecker
     private var registrationService: RegistrationServiceType?
     private var pendingCheckAppVersionOperation: MXHTTPOperation?
+    private let activityIndicatorPresenter: ActivityIndicatorPresenterType
     
 //    private weak var splitViewCoordinator: SplitViewCoordinatorType?
     private weak var homeCoordinator: HomeCoordinatorType?
@@ -64,6 +65,7 @@ final class AppCoordinator: AppCoordinatorType {
         let appVersionCheckerStore = AppVersionCheckerStore()
         self.appVersionChecker = AppVersionChecker(clientConfigurationService: clientConfigurationService, appVersionCheckerStore: appVersionCheckerStore)
         self.appVersionCheckerStore = appVersionCheckerStore
+        self.activityIndicatorPresenter = ActivityIndicatorPresenter()
     }
     
     // MARK: - Public methods
@@ -87,7 +89,9 @@ final class AppCoordinator: AppCoordinatorType {
     
     func handleUserActivity(_ userActivity: NSUserActivity, application: UIApplication) -> Bool {
         if userActivity.activityType == NSUserActivityTypeBrowsingWeb {
+            self.presentActivityIndicator()
             return self.universalLinkService.handleUserActivity(userActivity, completion: { (response) in
+                self.removeActivityIndicator()
                 switch response {
                 case .success(let parsingResult):
                     switch parsingResult {
@@ -377,6 +381,7 @@ final class AppCoordinator: AppCoordinatorType {
         }
         
         // Create a rest client
+        self.presentActivityIndicator()
         let restClientBuilder = RestClientBuilder()
         restClientBuilder.build(fromHomeServer: homeserver) { (restClientBuilderResult) in
             switch restClientBuilderResult {
@@ -400,6 +405,7 @@ final class AppCoordinator: AppCoordinatorType {
                 
                 registrationService.register(withEmailCredentials: threePIDCredentials, sessionId: sessionId, password: nil, deviceDisplayName: deviceDisplayName) { (registrationResult) in
                     self.registrationService = nil
+                    self.removeActivityIndicator()
                     switch registrationResult {
                     case .success:
                         print("[AppCoordinator] handleRegisterAfterEmailValidation: success")
@@ -410,9 +416,22 @@ final class AppCoordinator: AppCoordinatorType {
                 }
                 self.registrationService = registrationService
             case .failure(let error):
+                self.removeActivityIndicator()
                 self.showError(error)
             }
         }
+    }
+    
+    private func presentActivityIndicator() {
+        let rootViewController = AppDelegate.theDelegate().window.rootViewController
+        
+        if let view = rootViewController?.presentedViewController?.view ?? rootViewController?.view {
+            self.activityIndicatorPresenter.presentActivityIndicator(on: view, animated: true)
+        }
+    }
+    
+    private func removeActivityIndicator() {
+        self.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
     }
     
     private func showError(_ error: Error) {
