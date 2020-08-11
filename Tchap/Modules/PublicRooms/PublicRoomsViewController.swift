@@ -113,13 +113,9 @@ final class PublicRoomsViewController: UITableViewController {
         searchController.searchBar.placeholder = TchapL10n.publicRoomsSearchBarPlaceholder
         searchController.hidesNavigationBarDuringPresentation = false
         
-        if #available(iOS 11.0, *) {
-            self.navigationItem.searchController = searchController
-            // Make the search bar visible on first view appearance
-            self.navigationItem.hidesSearchBarWhenScrolling = false
-        } else {
-            self.tableView.tableHeaderView = searchController.searchBar
-        }
+        self.navigationItem.searchController = searchController
+        // Make the search bar visible on first view appearance
+        self.navigationItem.hidesSearchBarWhenScrolling = false
         
         self.definesPresentationContext = true
         
