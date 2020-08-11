@@ -383,10 +383,7 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
     
     if (searchBar)
     {
-        searchBar.tintColor = style.barActionColor;
-        
-        UITextField *searchBarTextField = searchBar.vc_searchTextField;
-        searchBarTextField.textColor = searchBar.tintColor;
+        [style applyStyleOnSearchBar:searchBar];
     }
     
     if (self.tableView.dataSource)
