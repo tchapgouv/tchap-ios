@@ -46,6 +46,9 @@ final class AppCoordinator: AppCoordinatorType {
     private weak var expiredAccountAlertController: UIAlertController?
     private var accountValidityService: AccountValidityServiceType?
     
+    private var pendingRoomIdOrAlias: String?
+    private var pendingEventId: String?
+    
     /// Main user Matrix session
     private var mainSession: MXSession? {
         return MXKAccountManager.shared().activeAccounts.first?.mxSession
@@ -206,16 +209,22 @@ final class AppCoordinator: AppCoordinatorType {
     }
     
     func showRoom(with roomIdOrAlias: String, onEventID eventID: String? = nil) -> Bool {
-        guard let account = MXKAccountManager.shared().accountKnowingRoom(withRoomIdOrAlias: roomIdOrAlias),
-            let homeCoordinator = self.homeCoordinator else {
+        guard let homeCoordinator = self.homeCoordinator else {
                 return false
         }
+        
+        self.cancelPendingRoomSelection()
         
         let roomID: String?
         
         if roomIdOrAlias.hasPrefix("#") {
             // Translate the alias into the room id
-            if let room = account.mxSession.room(withAlias: roomIdOrAlias) {
+            // Postpone the action if the session didn't loaded the data from the store yet
+            if let session = self.mainSession, session.state.rawValue < MXSessionStateStoreDataReady.rawValue {
+                self.postponeRoomSelection(with: roomIdOrAlias, onEventID: eventID)
+                roomID = nil
+            } else if let account = MXKAccountManager.shared().accountKnowingRoom(withRoomIdOrAlias: roomIdOrAlias),
+                let room = account.mxSession.room(withAlias: roomIdOrAlias) {
                 roomID = room.roomId
             } else {
                 roomID = nil
@@ -304,6 +313,7 @@ final class AppCoordinator: AppCoordinatorType {
         self.unregisterIgnoredUsersDidChangeNotification()
         self.unregisterDidCorruptDataNotification()
         self.unregisterTrackedServerErrorNotification()
+        self.cancelPendingRoomSelection()
         
         if let accounts = MXKAccountManager.shared().activeAccounts, !accounts.isEmpty {
             for account in accounts {
@@ -357,6 +367,36 @@ final class AppCoordinator: AppCoordinatorType {
     
     private func unregisterTrackedServerErrorNotification() {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.mxhttpClientMatrixError, object: nil)
+    }
+    
+    private func registerSessionStateNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(sessionStateDidChange), name: NSNotification.Name.mxSessionStateDidChange, object: nil)
+    }
+    
+    private func unregisterSessionStateNotification() {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.mxSessionStateDidChange, object: nil)
+    }
+    
+    private func postponeRoomSelection(with roomIdOrAlias: String, onEventID eventID: String? = nil) {
+        self.pendingRoomIdOrAlias = roomIdOrAlias
+        self.pendingEventId = eventID
+        self.registerSessionStateNotification()
+    }
+    
+    private func cancelPendingRoomSelection() {
+        self.unregisterSessionStateNotification()
+        self.pendingRoomIdOrAlias = nil
+        self.pendingEventId = nil
+    }
+    
+    @objc private func sessionStateDidChange() {
+        // Check whether the session has at least loaded the data from the store
+        if let session = self.mainSession, session.state.rawValue >= MXSessionStateStoreDataReady.rawValue {
+            self.unregisterSessionStateNotification()
+            if let roomIdOrAlias = self.pendingRoomIdOrAlias {
+                _ = showRoom(with: roomIdOrAlias, onEventID: self.pendingEventId)
+            }
+        }
     }
     
     private func handleRegisterAfterEmailValidation(_ registerParams: [String: String]) {
@@ -461,6 +501,7 @@ final class AppCoordinator: AppCoordinatorType {
         self.unregisterIgnoredUsersDidChangeNotification()
         self.unregisterDidCorruptDataNotification()
         self.unregisterTrackedServerErrorNotification()
+        self.cancelPendingRoomSelection()
         
         self.showWelcome()
         
