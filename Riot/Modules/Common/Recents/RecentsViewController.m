@@ -741,7 +741,7 @@
     muteAction.backgroundColor = actionBackgroundColor;
     
     UIImage *notificationImage = isMuted ? [UIImage imageNamed:@"notifications"] : [UIImage imageNamed:@"notificationsOff"];
-    muteAction.image = notificationImage;
+    muteAction.image = [notificationImage vc_notRenderedImage];
     
     // Favorites management
     
@@ -769,7 +769,7 @@
     favouriteAction.backgroundColor = actionBackgroundColor;
     
     UIImage *favouriteImage = isFavourite ? [UIImage imageNamed:@"unpin"] : [UIImage imageNamed:@"pin"];
-    favouriteAction.image = favouriteImage;
+    favouriteAction.image = [favouriteImage vc_notRenderedImage];
     
     // Leave action
     
@@ -782,7 +782,7 @@
     leaveAction.backgroundColor = actionBackgroundColor;
     
     UIImage *leaveImage = [UIImage imageNamed:@"leave"];
-    leaveAction.image = leaveImage;
+    leaveAction.image = [leaveImage vc_notRenderedImage];
         
     // Create swipe action configuration
     
