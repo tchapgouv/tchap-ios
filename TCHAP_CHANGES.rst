@@ -8,6 +8,7 @@ Features/Improvements:
     - Get all changes from Riot until the commit: 'eb444a0' (https://github.com/dinsic-pim/tchap-ios/commit/a1fe3a645f57454033c0f36846564b4bbb60e6e2)
  * Set up the permalink option #272
  * Handle the new email validation links from homeserver during a registration PR #311
+ * Update deployment target to iOS 11.0
  
 Bug Fixes:
  * Terms and Conditions are unavailable
