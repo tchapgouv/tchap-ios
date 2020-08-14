@@ -1,3 +1,19 @@
+Changes in Tchap 1.0.24 (2020-08-14)
+===================================================
+
+Features/Improvements:
+ * Add Notification Service Extension for Tchap and Btchap
+ * Update the project to build with Xcode11
+ * Rebase onto vector-im/riot-ios
+    - Get all changes from Riot until the commit: 'eb444a0' (https://github.com/dinsic-pim/tchap-ios/commit/a1fe3a645f57454033c0f36846564b4bbb60e6e2)
+ * Set up the permalink option #272
+ * Handle the new email validation links from homeserver during a registration PR #311
+ 
+Bug Fixes:
+ * Terms and Conditions are unavailable
+ * Present an activity indicator when the app is resumed on universal links PR #313
+ * The room of a permalink is not opened during a cold launch PR #314
+ 
 Changes in Tchap 1.0.23 (2020-06-10)
 ===================================================
 
