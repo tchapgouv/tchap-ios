@@ -102,6 +102,8 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
     }
     
     func showRoom(with roomID: String, onEventID eventID: String? = nil) {
+        AppDelegate.theDelegate().removeDeliveredNotifications(withRoomId: roomID, completion: nil)
+        
         let roomCoordinator = RoomCoordinator(router: self.navigationRouter, session: self.session, roomID: roomID, eventID: eventID)
         roomCoordinator.start()
         roomCoordinator.delegate = self

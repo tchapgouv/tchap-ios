@@ -234,7 +234,6 @@ final class AppCoordinator: AppCoordinatorType {
         }
         
         if let finalRoomID = roomID {
-            AppDelegate.theDelegate().removeDeliveredNotifications(withRoomId: finalRoomID, completion: nil)
             homeCoordinator.showRoom(with: finalRoomID, onEventID: eventID)
             return true
         } else {
