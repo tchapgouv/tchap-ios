@@ -1,3 +1,10 @@
+Changes in Tchap 1.0.25 (2020-08-14)
+===================================================
+ 
+Bug Fixes:
+ * Remove delivered notifications when the user opens the related room
+ * Permalink error: "Echec du chargement de la position dans l'historique" #315
+
 Changes in Tchap 1.0.24 (2020-08-14)
 ===================================================
 
