@@ -134,6 +134,10 @@ internal enum TchapL10n {
   internal static let conversationsTabTitle = TchapL10n.tr("Tchap", "conversations_tab_title")
   /// Nouvelle discussion
   internal static let createNewDiscussionTitle = TchapL10n.tr("Tchap", "create_new_discussion_title")
+  /// Vérifier l’appareil
+  internal static let deviceVerificationTitle = TchapL10n.tr("Tchap", "device_verification_title")
+  /// Vous avez bien vérifié cet appareil.\n\nLe partage des clés va s'effectuer progressivement. Les messages se déchiffreront au fur à mesure. Cela peut prendre quelques minutes.
+  internal static let deviceVerificationVerifiedDescription = TchapL10n.tr("Tchap", "device_verification_verified_description")
   /// Une erreur est survenue, veuillez réessayer ultérieurement
   internal static let errorMessageDefault = TchapL10n.tr("Tchap", "error_message_default")
   /// Erreur
@@ -218,6 +222,10 @@ internal enum TchapL10n {
   internal static let registrationEmailSentInfo = TchapL10n.tr("Tchap", "registration_email_sent_info")
   /// Merci de cliquer sur le lien proposé dans cet email afin de terminer la création de votre compte. Vous pourrez alors vous connecter en allant sur l'écran de connexion.
   internal static let registrationEmailSentInstructions = TchapL10n.tr("Tchap", "registration_email_sent_instructions")
+  /// Le lien a expiré, ou il n'est pas valide
+  internal static let registrationEmailValidationFailedMsg = TchapL10n.tr("Tchap", "registration_email_validation_failed_msg")
+  /// La validation de l'email a échouée
+  internal static let registrationEmailValidationFailedTitle = TchapL10n.tr("Tchap", "registration_email_validation_failed_title")
   /// Les mots de passe ne correspondent pas
   internal static let registrationErrorPasswordsDontMatch = TchapL10n.tr("Tchap", "registration_error_passwords_dont_match")
   /// Vous devez accepter les Conditions Générales d'Utilisation

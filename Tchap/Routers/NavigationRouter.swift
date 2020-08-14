@@ -1,5 +1,5 @@
 /*
- Copyright 2018 New Vector Ltd
+ Copyright 2018-2020 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -24,10 +24,13 @@ final class NavigationRouter: NSObject, NavigationRouterType {
     // MARK: Private
     
     private var completions: [UIViewController : () -> Void]
+    private let navigationController: UINavigationController
     
     // MARK: Public
     
-    private let navigationController: UINavigationController
+    var modules: [Presentable] {
+        return navigationController.viewControllers
+    }
     
     // MARK: - Setup
     

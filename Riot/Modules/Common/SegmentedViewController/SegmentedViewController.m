@@ -217,6 +217,8 @@
     
     // @TODO Design the activvity indicator for Tchap
     self.activityIndicator.backgroundColor = style.overlayBackgroundColor;
+
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -227,6 +229,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+
+    [self userInterfaceThemeDidChange];
 
     if (_selectedViewController)
     {

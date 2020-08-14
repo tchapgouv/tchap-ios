@@ -2,6 +2,13 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>permalinkSupportedHosts</key>
+	<array>
+		<string>beta.tchap.gouv.fr</string>
+		<string>www.beta.tchap.gouv.fr</string>
+	</array>
+	<key>permalinkPrefix</key>
+	<string>https://beta.tchap.gouv.fr</string>
 	<key>clientConfigURL</key>
 	<string>https://www.tchap.gouv.fr/client/config/preprod/ios</string>
 	<key>tacURL</key>
@@ -14,7 +21,7 @@
 	<string>https://matrix.</string>
 	<key>preferredIdentityServerNames</key>
 	<array>
-		<string>a.tchap.gouv.fr</string>
+		<string>i.tchap.gouv.fr</string>
 	</array>
 	<key>otherIdentityServerNames</key>
 	<array>
@@ -28,12 +35,6 @@
 	<string>fr.gouv.btchap.ios.prod</string>
 	<key>pushKitAppIdProd</key>
 	<string>fr.gouv.btchap.ios.voip.prod</string>
-	<key>webAppUrlDev</key>
-	<string>https://riot.im/develop</string>
-	<key>webAppUrlBeta</key>
-	<string>https://riot.im/beta</string>
-	<key>webAppUrl</key>
-	<string>https://riot.im/app</string>
 	<key>matrixApps</key>
 	<false/>
 	<key>integrationsUiUrl</key>
@@ -61,12 +62,12 @@
 	<key>bugReportEndpointUrlSuffix</key>
 	<string>/bugreports</string>
 	<key>bugReportDefaultHost</key>
-	<string>a.tchap.gouv.fr</string>
+	<string>i.tchap.gouv.fr</string>
 	<key>bugReportApp</key>
 	<string>btchap-ios</string>
 	<key>roomDirectoryServers</key>
 	<array>
-		<string>a.tchap.gouv.fr</string>
+		<string>i.tchap.gouv.fr</string>
 	</array>
 </dict>
 </plist>

@@ -116,7 +116,7 @@
     }
     
     // Adjust Top and Bottom constraints to take into account potential navBar and tabBar.
-    [NSLayoutConstraint deactivateConstraints:@[_searchBarTopConstraint, _tableViewBottomConstraint]];
+    [NSLayoutConstraint deactivateConstraints:@[_searchBarTopConstraint]];
     
     _searchBarTopConstraint = [NSLayoutConstraint constraintWithItem:self.topLayoutGuide
                                                            attribute:NSLayoutAttributeBottom
@@ -126,15 +126,7 @@
                                                           multiplier:1.0f
                                                             constant:0.0f];
     
-    _tableViewBottomConstraint = [NSLayoutConstraint constraintWithItem:self.bottomLayoutGuide
-                                                              attribute:NSLayoutAttributeTop
-                                                              relatedBy:NSLayoutRelationEqual
-                                                                 toItem:self.tableView
-                                                              attribute:NSLayoutAttributeBottom
-                                                             multiplier:1.0f
-                                                               constant:0.0f];
-    
-    [NSLayoutConstraint activateConstraints:@[_searchBarTopConstraint, _tableViewBottomConstraint]];
+    [NSLayoutConstraint activateConstraints:@[_searchBarTopConstraint]];
     
     self.navigationItem.title = NSLocalizedStringFromTable(@"room_participants_title", @"Vector", nil);
     
@@ -204,6 +196,8 @@
     {
         [self.tableView reloadData];
     }
+
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -1764,7 +1758,7 @@
     // FIXME: this all seems incredibly fragile and tied to gutwrenching the current UISearchBar internals.
     
     // text color
-    UITextField *searchBarTextField = [searchBar valueForKey:@"_searchField"];
+    UITextField *searchBarTextField = searchBar.vc_searchTextField;
     searchBarTextField.textColor = self.currentStyle.barSubTitleColor;
     
     // Magnifying glass icon.

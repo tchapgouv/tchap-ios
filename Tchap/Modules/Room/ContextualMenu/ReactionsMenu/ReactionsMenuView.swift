@@ -59,10 +59,7 @@ final class ReactionsMenuView: UIView, Themable, NibLoadable {
         super.awakeFromNib()
         
         self.reactionsBackgroundView.layer.masksToBounds = true
-        
-        let moreReactionsImage = Asset.Images.moreReactions.image.withRenderingMode(.alwaysTemplate)
-        self.moreReactionsButton.setImage(moreReactionsImage, for: .normal)
-        
+        self.moreReactionsButton.setImage(Asset.Images.moreReactions.image, for: .normal)
         self.update(theme: ThemeService.shared().theme)
     }
     
@@ -78,7 +75,7 @@ final class ReactionsMenuView: UIView, Themable, NibLoadable {
     func update(theme: Theme) {
         self.reactionsBackgroundView.backgroundColor = theme.headerBackgroundColor
         self.moreReactionsBackgroundView.backgroundColor = theme.headerBackgroundColor
-        self.moreReactionsButton.tintColor = theme.textPrimaryColor
+        self.moreReactionsButton.tintColor = theme.tintColor
     }
     
     func selectionAnimationInstructionPart1() {
@@ -103,13 +100,13 @@ final class ReactionsMenuView: UIView, Themable, NibLoadable {
     private func fill(reactionsMenuViewDatas: [ReactionMenuItemViewData]) {
         self.reactionViewDatas = reactionsMenuViewDatas
         
-        self.reactionsStackView.vc_removeAllSubviews()
+        self.reactionsStackView.vc_removeAllArrangedSubviews()
         
         let reactionsStackViewCount = self.reactionsStackView.arrangedSubviews.count
         
         // Remove all menu buttons if reactions count has changed
         if reactionsStackViewCount != self.reactionViewDatas.count {
-            self.reactionsStackView.vc_removeAllSubviews()
+            self.reactionsStackView.vc_removeAllArrangedSubviews()
         }
         
         var index = 0

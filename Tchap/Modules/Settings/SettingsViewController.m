@@ -52,7 +52,6 @@ enum
     SETTINGS_SECTION_SIGN_OUT_INDEX = 0,
     SETTINGS_SECTION_USER_SETTINGS_INDEX,
     SETTINGS_SECTION_NOTIFICATIONS_SETTINGS_INDEX,
-    //SETTINGS_SECTION_CALLS_INDEX, // Tchap: voip call are disabled for the moment.
     SETTINGS_SECTION_IGNORED_USERS_INDEX,
     SETTINGS_SECTION_CONTACTS_INDEX,
     SETTINGS_SECTION_PREFERENCES_INDEX,
@@ -78,13 +77,6 @@ enum
     //NOTIFICATION_SETTINGS_PEOPLE_LEAVE_JOIN_INDEX,
     //NOTIFICATION_SETTINGS_CALL_INVITATION_INDEX,
     NOTIFICATION_SETTINGS_COUNT
-};
-
-enum
-{
-    CALLS_ENABLE_CALLKIT_INDEX = 0,
-    CALLS_DESCRIPTION_INDEX,
-    CALLS_COUNT
 };
 
 enum
@@ -344,6 +336,8 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     // Check the table view style to select its bg color.
     self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? style.backgroundColor : style.secondaryBackgroundColor);
     self.view.backgroundColor = self.tableView.backgroundColor;
+    
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -738,13 +732,6 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     {
         count = NOTIFICATION_SETTINGS_COUNT;
     }
-//    else if (section == SETTINGS_SECTION_CALLS_INDEX)
-//    {
-//        if ([MXCallKitAdapter callKitAvailable])
-//        {
-//            count = CALLS_COUNT;
-//        }
-//    }
     else if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
     {
         MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
@@ -1099,7 +1086,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
     
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_enable_push_notif", @"Vector", nil);
-            labelAndSwitchCell.mxkSwitch.on = account.isPushKitNotificationActive;
+            labelAndSwitchCell.mxkSwitch.on = account.pushNotificationServiceIsActive;
             labelAndSwitchCell.mxkSwitch.enabled = YES;
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(togglePushNotifications:) forControlEvents:UIControlEventTouchUpInside];
             
@@ -1111,7 +1098,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
             
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_show_decrypted_content", @"Vector", nil);
             labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.showDecryptedContentInNotifications;
-            labelAndSwitchCell.mxkSwitch.enabled = account.isPushKitNotificationActive;
+            labelAndSwitchCell.mxkSwitch.enabled = account.pushNotificationServiceIsActive;
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleShowDecodedContent:) forControlEvents:UIControlEventTouchUpInside];
             
             cell = labelAndSwitchCell;
@@ -1130,28 +1117,6 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
             cell = globalInfoCell;
         }
     }
-//    else if (section == SETTINGS_SECTION_CALLS_INDEX)
-//    {
-//        if (row == CALLS_ENABLE_CALLKIT_INDEX)
-//        {
-//            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-//            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_enable_callkit", @"Vector", nil);
-//            labelAndSwitchCell.mxkSwitch.on = [MXKAppSettings standardAppSettings].isCallKitEnabled;
-//            labelAndSwitchCell.mxkSwitch.enabled = YES;
-//            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleCallKit:) forControlEvents:UIControlEventTouchUpInside];
-//
-//            cell = labelAndSwitchCell;
-//        }
-//        else if (row == CALLS_DESCRIPTION_INDEX)
-//        {
-//            MXKTableViewCell *globalInfoCell = [self getDefaultTableViewCell:tableView];
-//            globalInfoCell.textLabel.text = NSLocalizedStringFromTable(@"settings_callkit_info", @"Vector", nil);
-//            globalInfoCell.textLabel.numberOfLines = 0;
-//            globalInfoCell.selectionStyle = UITableViewCellSelectionStyleNone;
-//
-//            cell = globalInfoCell;
-//        }
-//    }
     else if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
     {
         MXKTableViewCell *ignoredUserCell = [self getDefaultTableViewCell:tableView];
@@ -1469,13 +1434,6 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     {
         return NSLocalizedStringFromTable(@"settings_notifications_settings", @"Vector", nil);
     }
-//    else if (section == SETTINGS_SECTION_CALLS_INDEX)
-//    {
-//        if ([MXCallKitAdapter callKitAvailable])
-//        {
-//            return NSLocalizedStringFromTable(@"settings_calls_settings", @"Vector", nil);
-//        }
-//    }
     else if (section == SETTINGS_SECTION_IGNORED_USERS_INDEX)
     {
         // Check whether this section is visible
@@ -1593,13 +1551,6 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
             return SECTION_TITLE_PADDING_WHEN_HIDDEN;
         }
     }
-//    else if (section == SETTINGS_SECTION_CALLS_INDEX)
-//    {
-//        if (![MXCallKitAdapter callKitAvailable])
-//        {
-//            return SECTION_TITLE_PADDING_WHEN_HIDDEN;
-//        }
-//    }
     
     return 24;
 }
@@ -1616,13 +1567,6 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
             return SECTION_TITLE_PADDING_WHEN_HIDDEN;
         }
     }
-//    else if (section == SETTINGS_SECTION_CALLS_INDEX)
-//    {
-//        if (![MXCallKitAdapter callKitAvailable])
-//        {
-//            return SECTION_TITLE_PADDING_WHEN_HIDDEN;
-//        }
-//    }
 
     return 24;
 }
@@ -1830,9 +1774,9 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         MXKAccountManager *accountManager = [MXKAccountManager sharedManager];
         MXKAccount* account = accountManager.activeAccounts.firstObject;
         
-        if (accountManager.pushDeviceToken)
+        if (accountManager.apnsDeviceToken)
         {
-            [account enablePushKitNotifications:!account.isPushKitNotificationActive success:^{
+            [account enablePushNotifications:!account.pushNotificationServiceIsActive success:^{
                 [self stopActivityIndicator];
             } failure:^(NSError *error) {
                 [self stopActivityIndicator];
@@ -1849,7 +1793,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
                 }
                 else
                 {
-                    [account enablePushKitNotifications:YES success:^{
+                    [account enablePushNotifications:YES success:^{
                         [self stopActivityIndicator];
                     } failure:^(NSError *error) {
                         [self stopActivityIndicator];
@@ -1858,12 +1802,6 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
             }];
         }
     }
-}
-
-- (void)toggleCallKit:(id)sender
-{
-    UISwitch *switchButton = (UISwitch*)sender;
-    [MXKAppSettings standardAppSettings].enableCallKit = switchButton.isOn;
 }
 
 - (void)toggleShowDecodedContent:(id)sender

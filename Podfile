@@ -1,5 +1,5 @@
 # Uncomment this line to define a global platform for your project
-platform :ios, '10.0'
+platform :ios, '11.0'
 
 # Use frameworks to allow usage of pod written in Swift (like MatomoTracker)
 use_frameworks!
@@ -7,9 +7,9 @@ use_frameworks!
 
 # Different flavours of pods to MatrixKit
 # The current MatrixKit pod version
-#$matrixKitVersion = '0.11.3'
+#$matrixKitVersion = '0.12.8'
 
-# The develop branch version
+# The specific branch version (supported: develop)
 #$matrixKitVersion = 'develop'
 
 # The develop branch version
@@ -29,16 +29,16 @@ def import_MatrixKit
         pod 'MatrixKit', :path => '../matrix-ios-kit/MatrixKit.podspec'
     else
         if $matrixKitVersion == 'develop'
-            pod 'MatrixSDK', :git => 'https://github.com/matrix-org/matrix-ios-sdk.git', :branch => 'develop'
-            pod 'MatrixSDK/SwiftSupport', :git => 'https://github.com/matrix-org/matrix-ios-sdk.git', :branch => 'develop'
-            pod 'MatrixSDK/JingleCallStack', :git => 'https://github.com/matrix-org/matrix-ios-sdk.git', :branch => 'develop'
-            pod 'MatrixKit', :git => 'https://github.com/matrix-org/matrix-ios-kit.git', :branch => 'develop'
+            pod 'MatrixSDK', :git => 'https://github.com/matrix-org/matrix-ios-sdk.git', :branch => $matrixKitVersion
+            pod 'MatrixSDK/SwiftSupport', :git => 'https://github.com/matrix-org/matrix-ios-sdk.git', :branch => $matrixKitVersion
+            pod 'MatrixSDK/JingleCallStack', :git => 'https://github.com/matrix-org/matrix-ios-sdk.git', :branch => $matrixKitVersion
+            pod 'MatrixKit', :git => 'https://github.com/matrix-org/matrix-ios-kit.git', :branch => $matrixKitVersion
         else
             if $matrixKitVersion == 'dinum'
                 pod 'MatrixSDK', :git => 'https://github.com/matrix-org/matrix-ios-sdk.git', :branch => 'dinum'
                 pod 'MatrixSDK/SwiftSupport', :git => 'https://github.com/matrix-org/matrix-ios-sdk.git', :branch => 'dinum'
                 pod 'MatrixSDK/JingleCallStack', :git => 'https://github.com/matrix-org/matrix-ios-sdk.git', :branch => 'dinum'
-                pod 'MatrixKit', :git => 'https://github.com/matrix-org/matrix-ios-kit.git', :branch => 'dinum'
+                pod 'MatrixKit', :git => 'https://github.com/matrix-org/matrix-ios-kit.git', :branch => 'develop'
             else
                 pod 'MatrixKit', $matrixKitVersion
                 pod 'MatrixSDK/SwiftSupport'
@@ -56,14 +56,14 @@ def import_MatrixKitAppExtension
         pod 'MatrixKit/AppExtension', :path => '../matrix-ios-kit/MatrixKit.podspec'
     else
         if $matrixKitVersion == 'develop'
-            pod 'MatrixSDK', :git => 'https://github.com/matrix-org/matrix-ios-sdk.git', :branch => 'develop'
-            pod 'MatrixSDK/SwiftSupport', :git => 'https://github.com/matrix-org/matrix-ios-sdk.git', :branch => 'develop'
-            pod 'MatrixKit/AppExtension', :git => 'https://github.com/matrix-org/matrix-ios-kit.git', :branch => 'develop'
+            pod 'MatrixSDK', :git => 'https://github.com/matrix-org/matrix-ios-sdk.git', :branch => $matrixKitVersion
+            pod 'MatrixSDK/SwiftSupport', :git => 'https://github.com/matrix-org/matrix-ios-sdk.git', :branch => $matrixKitVersion
+            pod 'MatrixKit/AppExtension', :git => 'https://github.com/matrix-org/matrix-ios-kit.git', :branch => $matrixKitVersion
         else
             if $matrixKitVersion == 'dinum'
                 pod 'MatrixSDK', :git => 'https://github.com/matrix-org/matrix-ios-sdk.git', :branch => 'dinum'
                 pod 'MatrixSDK/SwiftSupport', :git => 'https://github.com/matrix-org/matrix-ios-sdk.git', :branch => 'dinum'
-                pod 'MatrixKit/AppExtension', :git => 'https://github.com/matrix-org/matrix-ios-kit.git', :branch => 'dinum'
+                pod 'MatrixKit/AppExtension', :git => 'https://github.com/matrix-org/matrix-ios-kit.git', :branch => 'develop'
             else
                 pod 'MatrixKit/AppExtension', $matrixKitVersion
                 pod 'MatrixSDK/SwiftSupport'
@@ -76,8 +76,6 @@ abstract_target 'TchapPods' do
 
     pod 'GBDeviceInfo', '~> 6.3.0'
     pod 'Reusable', '~> 4.1'
-    pod 'SwiftUTI', :git => 'https://github.com/speramusinc/SwiftUTI.git', :branch => 'master'
-
     # Matomo for analytics
     pod 'MatomoTracker', '~> 7.2.0'
     
@@ -95,11 +93,15 @@ abstract_target 'TchapPods' do
     target "Tchap" do
         import_MatrixKit
         pod 'DGCollectionViewLeftAlignFlowLayout', '~> 1.0.4'
+        pod 'KTCenterFlowLayout', '~> 1.3.1'
+        pod 'ZXingObjC', '~> 3.6.5'
     end
 	
     target "Btchap" do
         import_MatrixKit
         pod 'DGCollectionViewLeftAlignFlowLayout', '~> 1.0.4'
+        pod 'KTCenterFlowLayout', '~> 1.3.1'
+        pod 'ZXingObjC', '~> 3.6.5'
     end
     
     target "TchapShareExtension" do
@@ -107,11 +109,19 @@ abstract_target 'TchapPods' do
     end
     
     target "BtchapShareExtension" do
-      import_MatrixKitAppExtension
+        import_MatrixKitAppExtension
     end
     
     target "TchapTests" do
         import_MatrixKit
+    end
+    
+    target "TchapNSE" do
+        import_MatrixKitAppExtension
+    end
+
+    target "BtchapNSE" do
+        import_MatrixKitAppExtension
     end
     
 end
@@ -125,16 +135,6 @@ post_install do |installer|
         # Plus the app does not enable it
         target.build_configurations.each do |config|
             config.build_settings['ENABLE_BITCODE'] = 'NO'
-            
-            # Force the min IOS deployment target for matrixKit
-            if target.name.include? 'MatrixKit'
-                config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '10.0'
-            end
-            
-            # Force the min IOS deployment target for matrixSDK
-            if target.name.include? 'MatrixSDK'
-                config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '10.0'
-            end
             
             # Force SwiftUTI Swift version to 5.0 (as there is no code changes to perform for SwiftUTI fork using Swift 4.2)
             if target.name.include? 'SwiftUTI'

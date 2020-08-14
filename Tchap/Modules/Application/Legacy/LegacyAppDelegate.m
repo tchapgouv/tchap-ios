@@ -37,6 +37,8 @@
 
 #import "AFNetworkReachabilityManager.h"
 
+#import "PushNotificationService.h"
+
 #import <AudioToolbox/AudioToolbox.h>
 
 #include <MatrixSDK/MXUIKitBackgroundModeHandler.h>
@@ -67,7 +69,6 @@
 #endif
 #ifdef CALL_STACK_JINGLE
 #import <MatrixSDK/MXJingleCallStack.h>
-#import <UserNotifications/UserNotifications.h>
 
 #endif
 
@@ -80,7 +81,7 @@ NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateN
 NSString *const kLegacyAppDelegateDidLogoutNotification = @"kLegacyAppDelegateDidLogoutNotification";
 NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDidLoginNotification";
 
-@interface LegacyAppDelegate () <GDPRConsentViewControllerDelegate, DeviceVerificationCoordinatorBridgePresenterDelegate, ServiceTermsModalCoordinatorBridgePresenterDelegate>
+@interface LegacyAppDelegate () <GDPRConsentViewControllerDelegate, KeyVerificationCoordinatorBridgePresenterDelegate, ServiceTermsModalCoordinatorBridgePresenterDelegate>
 {
     /**
      Reachability observer
@@ -126,14 +127,14 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     BOOL isCheckPendingKeyRequestsInProgress;
 
     /**
-     Incoming device verification requests observers
+     Incoming key verification requests observers
      */
-    id incomingDeviceVerificationObserver;
+    id incomingKeyVerificationObserver;
 
     /**
-     If any the currently displayed device verification dialog
+     If any the currently displayed key verification dialog
      */
-    DeviceVerificationCoordinatorBridgePresenter *deviceVerificationCoordinatorBridgePresenter;
+    KeyVerificationCoordinatorBridgePresenter *keyVerificationCoordinatorBridgePresenter;
 
     /**
      Account picker used in case of multiple account.
@@ -156,26 +157,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
      The key is an identifier of the MXSession. The value, the listener.
      */
     NSMutableDictionary *callEventsListeners;
-    
-    /**
-     The notification listener blocks.
-     There is one block per MXSession.
-     The key is an identifier of the MXSession. The value, the listener block.
-     */
-    NSMutableDictionary <NSNumber *, MXOnNotification> *notificationListenerBlocks;
-    
-    /**
-     The list of the events which need to be notified at the end of the background sync.
-     There is one list per MXSession.
-     The key is an identifier of the MXSession. The value, an array of dictionaries (eventId, roomId... for each event).
-     */
-    NSMutableDictionary <NSNumber *, NSMutableArray <NSDictionary *> *> *eventsToNotify;
-
-    /**
-     Cache for payloads received with incoming push notifications.
-     The key is the event id. The value, the payload.
-     */
-    NSMutableDictionary <NSString*, NSDictionary*> *incomingPushPayloads;
 
     /**
      Currently displayed "Call not supported" alert.
@@ -204,14 +185,18 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 @property (weak, nonatomic) UIAlertController *gdprConsentNotGivenAlertController;
 @property (weak, nonatomic) UIViewController *gdprConsentController;
 
+@property (weak, nonatomic) UIAlertController *incomingKeyVerificationRequestAlertController;
+
 @property (nonatomic, strong) ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter;
 @property (nonatomic, strong) SlidingModalPresenter *slidingModalPresenter;
 
-@property (nonatomic, nullable, copy) void (^registrationForRemoteNotificationsCompletion)(NSError *);
+@property (nonatomic, weak) id userDidSignInOnNewDeviceObserver;
+@property (weak, nonatomic) UIAlertController *userNewSignInAlertController;
 
-
-@property (nonatomic, strong) PKPushRegistry *pushRegistry;
-@property (nonatomic) NSMutableDictionary <NSNumber *, NSMutableArray <NSString *> *> *incomingPushEventIds;
+/**
+ Related push notification service instance. Will be created when launch finished.
+ */
+@property (nonatomic, strong) PushNotificationService *pushNotificationService;
 
 @end
 
@@ -228,11 +213,12 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     // Set the App Group identifier.
     MXSDKOptions *sdkOptions = [MXSDKOptions sharedInstance];
     sdkOptions.applicationGroupIdentifier = [[NSUserDefaults standardUserDefaults] objectForKey:@"appGroupId"];
+    //sdkOptions.computeE2ERoomSummaryTrust = YES; //Tchap: keep using the default value (NO) for this option
 
     // Redirect NSLogs to files only if we are not debugging
     if (!isatty(STDERR_FILENO))
     {
-        [MXLogger redirectNSLogToFiles:YES];
+        [MXLogger redirectNSLogToFiles:YES numberOfFiles:50];
     }
 
     NSLog(@"[AppDelegate] initialize: Done");
@@ -248,6 +234,35 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     });
     
     return sharedInstance;
+}
+
+#pragma mark - Push Notifications
+
+- (void)registerForRemoteNotificationsWithCompletion:(nullable void (^)(NSError *))completion
+{
+    [self.pushNotificationService registerForRemoteNotificationsWithCompletion:completion];
+}
+
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
+    [self.pushNotificationService didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
+    
+    NSString * deviceTokenString = [[[[deviceToken description]
+                                      stringByReplacingOccurrencesOfString: @"<" withString: @""]
+                                     stringByReplacingOccurrencesOfString: @">" withString: @""]
+                                    stringByReplacingOccurrencesOfString: @" " withString: @""];
+    
+    NSLog(@"The generated device token string is : %@",deviceTokenString);
+}
+
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
+{
+    [self.pushNotificationService didFailToRegisterForRemoteNotificationsWithError:error];
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
+{
+    [self.pushNotificationService didReceiveRemoteNotification:userInfo fetchCompletionHandler:completionHandler];
 }
 
 #pragma mark -
@@ -412,11 +427,9 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     
     mxSessionArray = [NSMutableArray array];
     callEventsListeners = [NSMutableDictionary dictionary];
-    notificationListenerBlocks = [NSMutableDictionary dictionary];
-    eventsToNotify = [NSMutableDictionary dictionary];
-    incomingPushPayloads = [NSMutableDictionary dictionary];
     
     _isAppForeground = NO;
+    _handleSelfVerificationRequest = YES;
     
     // Tchap: Disable analytics use for the moment.
 //    // Configure our analytics. It will indeed start if the option is enabled
@@ -424,8 +437,14 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 //    [DecryptionFailureTracker sharedInstance].delegate = [Analytics sharedInstance];
 //    [[Analytics sharedInstance] start];
     
-    // Prepare Pushkit handling
-    _incomingPushEventIds = [NSMutableDictionary dictionary];
+    // Disable CallKit
+    [MXKAppSettings standardAppSettings].enableCallKit = NO;
+    
+    // Enforce lazy loading
+    [MXKAppSettings standardAppSettings].syncWithLazyLoadOfRoomMembers = YES;
+
+    self.pushNotificationService = [PushNotificationService new];
+    self.pushNotificationService.delegate = (id<PushNotificationServiceDelegate>)[UIApplication sharedApplication].delegate;
     
     // Add matrix observers, and initialize matrix sessions if the app is not launched in background.
     [self initMatrixSessions];
@@ -532,14 +551,10 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     NSLog(@"[AppDelegate] applicationWillEnterForeground");
     
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-    
-    // Flush all the pending push notifications.
-    for (NSMutableArray *array in self.incomingPushEventIds.allValues)
-    {
-        [array removeAllObjects];
-    }
-    [incomingPushPayloads removeAllObjects];
-    
+
+    // Notify push notification service
+    [self.pushNotificationService applicationWillEnterForeground];
+
     // Force each session to refresh here their publicised groups by user dictionary.
     // When these publicised groups are retrieved for a user, they are cached and reused until the app is backgrounded and enters in the foreground again
     for (MXSession *session in mxSessionArray)
@@ -685,7 +700,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         }
         else
         {
-            title = [NSBundle mxk_localizedStringForKey:@"error"];
+            title = NSLocalizedStringFromTable(@"error_message_default", @"Tchap", nil);
         }
     }
     
@@ -721,18 +736,9 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 
 - (void)showNotificationAlert:(UIAlertController*)alert
 {
-    if (self.window.rootViewController.presentedViewController)
-    {
-        [alert popoverPresentationController].sourceView = self.window.rootViewController.presentedViewController.view;
-        [alert popoverPresentationController].sourceRect = self.window.rootViewController.presentedViewController.view.bounds;
-        [self.window.rootViewController.presentedViewController presentViewController:alert animated:YES completion:nil];
-    }
-    else
-    {
-        [alert popoverPresentationController].sourceView = self.window.rootViewController.view;
-        [alert popoverPresentationController].sourceRect = self.window.rootViewController.view.bounds;
-        [self.window.rootViewController presentViewController:alert animated:YES completion:nil];
-    }
+    [alert popoverPresentationController].sourceView = self.presentedViewController.view;
+    [alert popoverPresentationController].sourceRect = self.presentedViewController.view.bounds;
+    [self.presentedViewController presentViewController:alert animated:YES completion:nil];
 }
 
 - (void)onSessionCryptoDidCorruptData:(NSNotification *)notification
@@ -851,787 +857,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     }
 }
 
-#pragma mark - Push notifications
-
-- (void)registerUserNotificationSettings
-{
-    NSLog(@"[AppDelegate][Push] registerUserNotificationSettings: isPushRegistered: %@", @(isPushRegistered));
-
-    if (!isPushRegistered)
-    {
-        UNTextInputNotificationAction *quickReply = [UNTextInputNotificationAction
-                                                     actionWithIdentifier:@"inline-reply"
-                                                     title:NSLocalizedStringFromTable(@"room_message_short_placeholder", @"Vector", nil)
-                                                     options:UNNotificationActionOptionAuthenticationRequired
-                                                     ];
-        
-        UNNotificationCategory *quickReplyCategory = [UNNotificationCategory
-                                                      categoryWithIdentifier:@"QUICK_REPLY"
-                                                      actions:@[quickReply]
-                                                      intentIdentifiers:@[]
-                                                      options:UNNotificationCategoryOptionNone];
-        
-        UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
-        [center setNotificationCategories:[[NSSet alloc] initWithArray:@[quickReplyCategory]]];
-        [center setDelegate:self]; // commenting this out will fall back to using the same AppDelegate methods as the iOS 9 way of doing this
-        
-        UNAuthorizationOptions authorizationOptions = (UNAuthorizationOptionAlert | UNAuthorizationOptionSound | UNAuthorizationOptionBadge);
-        
-        [center requestAuthorizationWithOptions:authorizationOptions
-                              completionHandler:^(BOOL granted, NSError *error)
-         { // code here is equivalent to self:application:didRegisterUserNotificationSettings:
-             if (granted) {
-                 [self registerForRemoteNotificationsWithCompletion:nil];
-             }
-             else
-             {
-                 // Clear existing token
-                 [self clearPushNotificationToken];
-             }
-         }];
-    }
-}
-
-- (void)registerForRemoteNotificationsWithCompletion:(nullable void (^)(NSError *))completion
-{
-    NSLog(@"[AppDelegate][Push] registerForRemoteNotificationsWithCompletion");
-
-    self.registrationForRemoteNotificationsCompletion = completion;
-    
-    self.pushRegistry = [[PKPushRegistry alloc] initWithQueue:nil];
-    self.pushRegistry.delegate = self;
-    self.pushRegistry.desiredPushTypes = [NSSet setWithObject:PKPushTypeVoIP];
-}
-
-// iOS 10+, see application:handleActionWithIdentifier:forLocalNotification:withResponseInfo:completionHandler:
-- (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler
-{
-    UNNotification *notification = response.notification;
-    UNNotificationContent *content = notification.request.content;
-    NSString *actionIdentifier = [response actionIdentifier];
-    NSString *roomId = content.userInfo[@"room_id"];
-
-    if ([actionIdentifier isEqualToString:@"inline-reply"])
-    {
-        if ([response isKindOfClass:[UNTextInputNotificationResponse class]])
-        {
-            UNTextInputNotificationResponse *textInputNotificationResponse = (UNTextInputNotificationResponse *)response;
-            NSString *responseText = [textInputNotificationResponse userText];
-
-            [self handleNotificationInlineReplyForRoomId:roomId withResponseText:responseText success:^(NSString *eventId) {
-                completionHandler();
-            } failure:^(NSError *error) {
-
-                UNMutableNotificationContent *failureNotificationContent = [[UNMutableNotificationContent alloc] init];
-                failureNotificationContent.userInfo = content.userInfo;
-                failureNotificationContent.body = NSLocalizedStringFromTable(@"room_event_failed_to_send", @"Vector", nil);
-                failureNotificationContent.threadIdentifier = roomId;
-
-                NSString *uuid = [[NSUUID UUID] UUIDString];
-                UNNotificationRequest *failureNotificationRequest = [UNNotificationRequest requestWithIdentifier:uuid
-                                                                                                         content:failureNotificationContent
-                                                                                                         trigger:nil];
-
-                [center addNotificationRequest:failureNotificationRequest withCompletionHandler:nil];
-                NSLog(@"[AppDelegate][Push] didReceiveNotificationResponse: error sending text message: %@", error);
-
-                completionHandler();
-            }];
-        }
-        else
-        {
-            NSLog(@"[AppDelegate][Push] didReceiveNotificationResponse: error, expect a response of type UNTextInputNotificationResponse");
-            completionHandler();
-        }
-    }
-    else
-    {
-        NSLog(@"[AppDelegate][Push] didReceiveNotificationResponse: unhandled identifier %@", actionIdentifier);
-        completionHandler();
-    }
-}
-
-- (void)pushRegistry:(PKPushRegistry *)registry didUpdatePushCredentials:(PKPushCredentials *)credentials forType:(PKPushType)type
-{
-    NSData *token = credentials.token;
-
-    NSLog(@"[AppDelegate][Push] didUpdatePushCredentials: Got Push token: %@. Type: %@", [MXKTools logForPushToken:token], type);
-    
-    MXKAccountManager* accountManager = [MXKAccountManager sharedManager];
-    [accountManager setPushDeviceToken:token withPushOptions:@{@"format": @"event_id_only"}];
-    
-    isPushRegistered = YES;
-    
-    if (self.registrationForRemoteNotificationsCompletion)
-    {
-        self.registrationForRemoteNotificationsCompletion(nil);
-        self.registrationForRemoteNotificationsCompletion = nil;
-    }
-}
-
-- (void)pushRegistry:(PKPushRegistry *)registry didInvalidatePushTokenForType:(PKPushType)type
-{
-    NSLog(@"[AppDelegate][Push] didInvalidatePushTokenForType: Type: %@", type);
-
-    [self clearPushNotificationToken];
-}
-
-- (void)pushRegistry:(PKPushRegistry *)registry didReceiveIncomingPushWithPayload:(PKPushPayload *)payload forType:(PKPushType)type
-{
-    NSLog(@"[AppDelegate][Push] didReceiveIncomingPushWithPayload: applicationState: %tu - type: %@ - payload: %@", [UIApplication sharedApplication].applicationState, payload.type, payload.dictionaryPayload);
-
-    // Display local notifications only when the app is running in background.
-    if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground)
-    {
-        NSLog(@"[AppDelegate][Push] didReceiveIncomingPushWithPayload while app is in background");
-        
-        // Check whether an event id is provided.
-        NSString *eventId = payload.dictionaryPayload[@"event_id"];
-        if (eventId)
-        {
-            // Add this event identifier in the pending push array for each session.
-            for (NSMutableArray *array in self.incomingPushEventIds.allValues)
-            {
-                [array addObject:eventId];
-            }
-
-            // Cache payload for further usage
-            incomingPushPayloads[eventId] = payload.dictionaryPayload;
-        }
-        else
-        {
-            NSLog(@"[AppDelegate][Push] didReceiveIncomingPushWithPayload - Unexpected payload %@", payload.dictionaryPayload);
-        }
-        
-        // Trigger a background sync to handle notifications.
-        [self launchBackgroundSync];
-    }
-}
-
-- (void)launchBackgroundSync
-{
-    // Launch a background sync for all existing matrix sessions
-    NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
-    for (MXKAccount *account in mxAccounts)
-    {
-        // Check the current session state
-        if (account.mxSession.state == MXSessionStatePaused)
-        {
-            NSLog(@"[AppDelegate][Push] launchBackgroundSync");
-            __weak typeof(self) weakSelf = self;
-
-            NSMutableArray<NSString *> *incomingPushEventIds = self.incomingPushEventIds[@(account.mxSession.hash)];
-            NSMutableArray<NSString *> *incomingPushEventIdsCopy = [incomingPushEventIds copy];
-            
-            // Flush all the pending push notifications for this session.
-            [incomingPushEventIds removeAllObjects];
-            
-            [account backgroundSync:20000 success:^{
-                
-                // Sanity check
-                if (!weakSelf)
-                {
-                    return;
-                }
-                typeof(self) self = weakSelf;
-                
-                NSLog(@"[AppDelegate][Push] launchBackgroundSync: the background sync succeeds");
-                
-                // Trigger local notifcations
-                [self handleLocalNotificationsForAccount:account];
-                
-                // Update app icon badge number
-                [self refreshApplicationIconBadgeNumber];
-                
-            } failure:^(NSError *error) {
-                
-                NSLog(@"[AppDelegate][Push] launchBackgroundSync: the background sync failed. Error: %@ (%@). incomingPushEventIdsCopy: %@ - self.incomingPushEventIds: %@", error.domain, @(error.code), incomingPushEventIdsCopy, incomingPushEventIds);
-
-                // Trigger limited local notifications when the sync with HS fails
-                [self handleLimitedLocalNotifications:account.mxSession events:incomingPushEventIdsCopy];
-
-                // Update app icon badge number
-                [self refreshApplicationIconBadgeNumber];
-
-            }];
-        }
-    }
-}
-
-- (void)handleLocalNotificationsForAccount:(MXKAccount*)account
-{
-    NSString *userId = account.mxCredentials.userId;
-    
-    NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: %@", userId);
-    NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: eventsToNotify: %@", eventsToNotify[@(account.mxSession.hash)]);
-    NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: incomingPushEventIds: %@", self.incomingPushEventIds[@(account.mxSession.hash)]);
-    
-    __block NSUInteger scheduledNotifications = 0;
-    
-    // The call invite are handled here only when the callkit is not active.
-    BOOL isCallKitActive = [MXCallKitAdapter callKitAvailable] && [MXKAppSettings standardAppSettings].isCallKitEnabled;
-    
-    NSMutableArray *eventsArray = eventsToNotify[@(account.mxSession.hash)];
-    
-    NSMutableArray<NSString*> *redactedEventIds = [NSMutableArray array];
-    
-    // Display a local notification for each event retrieved by the bg sync.
-    for (NSUInteger index = 0; index < eventsArray.count; index++)
-    {
-        NSDictionary *eventDict = eventsArray[index];
-        NSString *eventId = eventDict[@"event_id"];
-        NSString *roomId = eventDict[@"room_id"];
-        BOOL checkReadEvent = YES;
-        MXEvent *event;
-        
-        if (eventId && roomId)
-        {
-            event = [account.mxSession.store eventWithEventId:eventId inRoom:roomId];
-        }
-        
-        if (event)
-        {
-            if (event.isRedactedEvent)
-            {
-                // Collect redacted event ids to remove possible delivered redacted notifications
-                [redactedEventIds addObject:eventId];
-                continue;
-            }
-            
-            // Consider here the call invites
-            if (event.eventType == MXEventTypeCallInvite)
-            {
-                // Ignore call invite when callkit is active.
-                if (isCallKitActive)
-                {
-                    NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Skip call event. Event id: %@", eventId);
-                    continue;
-                }
-                else
-                {
-                    // Retrieve the current call state from the call manager
-                    MXCallInviteEventContent *callInviteEventContent = [MXCallInviteEventContent modelFromJSON:event.content];
-                    MXCall *call = [account.mxSession.callManager callWithCallId:callInviteEventContent.callId];
-                    
-                    if (call.state <= MXCallStateRinging)
-                    {
-                        // Keep display a local notification even if the event has been read on another device.
-                        checkReadEvent = NO;
-                    }
-                }
-            }
-            
-            if (checkReadEvent)
-            {
-                // Ignore event which has been read on another device.
-                MXReceiptData *readReceipt = [account.mxSession.store getReceiptInRoom:roomId forUserId:userId];
-                if (readReceipt)
-                {
-                    MXEvent *readReceiptEvent = [account.mxSession.store eventWithEventId:readReceipt.eventId inRoom:roomId];
-                    if (event.originServerTs <= readReceiptEvent.originServerTs)
-                    {
-                        NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Skip already read event. Event id: %@", eventId);
-                        continue;
-                    }
-                }
-            }
-            
-            // Prepare the local notification
-            MXPushRule *rule = eventDict[@"push_rule"];
-            
-            [self notificationContentForEvent:event pushRule:rule inAccount:account onComplete:^(UNNotificationContent * _Nullable notificationContent) {
-                
-                if (notificationContent)
-                {
-                    UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:eventId
-                                                                                          content:notificationContent
-                                                                                          trigger:nil];
-                    
-                    [[UNUserNotificationCenter currentNotificationCenter] addNotificationRequest:request withCompletionHandler:^(NSError * _Nullable error) {
-                        
-                        if (error)
-                        {
-                            NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Fail to display notification for event %@ with error: %@", eventId, error);
-                        }
-                        else
-                        {
-                            NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Display notification for event %@", eventId);
-                        }
-                    }];
-                    
-                    scheduledNotifications++;
-                }
-                else
-                {
-                    NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Skip event with empty generated content. Event id: %@", eventId);
-                }
-            }];
-        }
-    }
-    
-    // Remove possible pending and delivered notifications having a redacted event id
-    if (redactedEventIds.count)
-    {
-        NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Remove possible notification with redacted event ids: %@", redactedEventIds);
-        
-        [[UNUserNotificationCenter currentNotificationCenter] removePendingNotificationRequestsWithIdentifiers:redactedEventIds];
-        [[UNUserNotificationCenter currentNotificationCenter] removeDeliveredNotificationsWithIdentifiers:redactedEventIds];
-    }
-    
-    NSLog(@"[AppDelegate][Push] handleLocalNotificationsForAccount: Sent %tu local notifications for %tu events", scheduledNotifications, eventsArray.count);
-    
-    [eventsArray removeAllObjects];
-}
-
-- (NSString*)notificationSoundNameFromPushRule:(MXPushRule*)pushRule
-{
-    NSString *soundName;
-    
-    // Set sound name based on the value provided in action of MXPushRule
-    for (MXPushRuleAction *action in pushRule.actions)
-    {
-        if (action.actionType == MXPushRuleActionTypeSetTweak)
-        {
-            if ([action.parameters[@"set_tweak"] isEqualToString:@"sound"])
-            {
-                soundName = action.parameters[@"value"];
-                if ([soundName isEqualToString:@"default"])
-                {
-                    soundName = @"message.caf";
-                }
-            }
-        }
-    }
-    
-    return soundName;
-}
-
-- (NSString*)notificationCategoryIdentifierForEvent:(MXEvent*)event
-{
-    BOOL isNotificationContentShown = !event.isEncrypted || RiotSettings.shared.showDecryptedContentInNotifications;
-    
-    NSString *categoryIdentifier;
-    
-    if ((event.eventType == MXEventTypeRoomMessage || event.eventType == MXEventTypeRoomEncrypted) && isNotificationContentShown)
-    {
-        categoryIdentifier = @"QUICK_REPLY";
-    }
-    
-    return categoryIdentifier;
-}
-
-- (NSDictionary*)notificationUserInfoForEvent:(MXEvent*)event andUserId:(NSString*)userId
-{
-    NSDictionary *notificationUserInfo = @{
-                                           @"type": @"full",
-                                           @"room_id": event.roomId,
-                                           @"event_id": event.eventId,
-                                           @"user_id": userId
-                                           };
-    return notificationUserInfo;
-}
-
-- (void)notificationBodyForEvent:(MXEvent *)event pushRule:(MXPushRule*)rule inAccount:(MXKAccount*)account onComplete:(void (^)(NSString * _Nullable notificationBody))onComplete;
-{
-    if (!event.content || !event.content.count)
-    {
-        NSLog(@"[AppDelegate][Push] notificationBodyForEvent: empty event content");
-        onComplete (nil);
-        return;
-    }
-    
-    MXRoom *room = [account.mxSession roomWithRoomId:event.roomId];
-    if (!room)
-    {
-        NSLog(@"[AppDelegate][Push] notificationBodyForEvent: Unknown room");
-        onComplete (nil);
-        return;
-    }
-
-    [room state:^(MXRoomState *roomState) {
-
-        NSString *notificationBody;
-        NSString *eventSenderName = [roomState.members memberName:event.sender];
-
-        if (event.eventType == MXEventTypeRoomMessage || event.eventType == MXEventTypeRoomEncrypted)
-        {
-            if (room.isMentionsOnly)
-            {
-                // A local notification will be displayed only for highlighted notification.
-                BOOL isHighlighted = NO;
-
-                // Check whether is there an highlight tweak on it
-                for (MXPushRuleAction *ruleAction in rule.actions)
-                {
-                    if (ruleAction.actionType == MXPushRuleActionTypeSetTweak)
-                    {
-                        if ([ruleAction.parameters[@"set_tweak"] isEqualToString:@"highlight"])
-                        {
-                            // Check the highlight tweak "value"
-                            // If not present, highlight. Else check its value before highlighting
-                            if (nil == ruleAction.parameters[@"value"] || YES == [ruleAction.parameters[@"value"] boolValue])
-                            {
-                                isHighlighted = YES;
-                                break;
-                            }
-                        }
-                    }
-                }
-
-                if (!isHighlighted)
-                {
-                    // Ignore this notif.
-                    NSLog(@"[AppDelegate][Push] notificationBodyForEvent: Ignore non highlighted notif in mentions only room");
-                    onComplete(nil);
-                    return;
-                }
-            }
-
-            NSString *msgType = event.content[@"msgtype"];
-            NSString *content = event.content[@"body"];
-
-            if (event.isEncrypted && !RiotSettings.shared.showDecryptedContentInNotifications)
-            {
-                // Hide the content
-                msgType = nil;
-            }
-
-            NSString *roomDisplayName = room.summary.displayname;
-
-            // Display the room name only if it is different than the sender name
-            if (roomDisplayName.length && ![roomDisplayName isEqualToString:eventSenderName])
-            {
-                if ([msgType isEqualToString:@"m.text"])
-                    notificationBody = [NSString stringWithFormat:NSLocalizedString(@"MSG_FROM_USER_IN_ROOM_WITH_CONTENT", nil), eventSenderName,roomDisplayName, content];
-                else if ([msgType isEqualToString:@"m.emote"])
-                    notificationBody = [NSString stringWithFormat:NSLocalizedString(@"ACTION_FROM_USER_IN_ROOM", nil), roomDisplayName, eventSenderName, content];
-                else if ([msgType isEqualToString:@"m.image"])
-                    notificationBody = [NSString stringWithFormat:NSLocalizedString(@"IMAGE_FROM_USER_IN_ROOM", nil), eventSenderName, content, roomDisplayName];
-                else
-                    // Encrypted messages falls here
-                    notificationBody = [NSString stringWithFormat:NSLocalizedString(@"MSG_FROM_USER_IN_ROOM", nil), eventSenderName, roomDisplayName];
-            }
-            else
-            {
-                if ([msgType isEqualToString:@"m.text"])
-                    notificationBody = [NSString stringWithFormat:NSLocalizedString(@"MSG_FROM_USER_WITH_CONTENT", nil), eventSenderName, content];
-                else if ([msgType isEqualToString:@"m.emote"])
-                    notificationBody = [NSString stringWithFormat:NSLocalizedString(@"ACTION_FROM_USER", nil), eventSenderName, content];
-                else if ([msgType isEqualToString:@"m.image"])
-                    notificationBody = [NSString stringWithFormat:NSLocalizedString(@"IMAGE_FROM_USER", nil), eventSenderName, content];
-                else
-                    // Encrypted messages falls here
-                    notificationBody = [NSString stringWithFormat:NSLocalizedString(@"MSG_FROM_USER", nil), eventSenderName];
-            }
-        }
-        else if (event.eventType == MXEventTypeCallInvite)
-        {
-            NSString *sdp = event.content[@"offer"][@"sdp"];
-            BOOL isVideoCall = [sdp rangeOfString:@"m=video"].location != NSNotFound;
-
-            if (!isVideoCall)
-                notificationBody = [NSString stringWithFormat:NSLocalizedString(@"VOICE_CALL_FROM_USER", nil), eventSenderName];
-            else
-                notificationBody = [NSString stringWithFormat:NSLocalizedString(@"VIDEO_CALL_FROM_USER", nil), eventSenderName];
-        }
-        else if (event.eventType == MXEventTypeRoomMember)
-        {
-            NSString *roomDisplayName = room.summary.displayname;
-
-            if (roomDisplayName.length && ![roomDisplayName isEqualToString:eventSenderName])
-                notificationBody = [NSString stringWithFormat:NSLocalizedString(@"USER_INVITE_TO_NAMED_ROOM", nil), eventSenderName, roomDisplayName];
-            else
-                notificationBody = [NSString stringWithFormat:NSLocalizedString(@"USER_INVITE_TO_CHAT", nil), eventSenderName];
-        }
-        else if (event.eventType == MXEventTypeSticker)
-        {
-            NSString *roomDisplayName = room.summary.displayname;
-
-            if (roomDisplayName.length && ![roomDisplayName isEqualToString:eventSenderName])
-                notificationBody = [NSString stringWithFormat:NSLocalizedString(@"MSG_FROM_USER_IN_ROOM", nil), eventSenderName, roomDisplayName];
-            else
-                notificationBody = [NSString stringWithFormat:NSLocalizedString(@"MSG_FROM_USER", nil), eventSenderName];
-        }
-
-        onComplete(notificationBody);
-    }];
-}
-
-// iOS 10+, does the same thing as notificationBodyForEvent:pushRule:inAccount:onComplete:, except with more features
-- (void)notificationContentForEvent:(MXEvent *)event pushRule:(MXPushRule *)rule inAccount:(MXKAccount *)account onComplete:(void (^)(UNNotificationContent * _Nullable notificationContent))onComplete;
-{
-    if (!event.content || !event.content.count)
-    {
-        NSLog(@"[AppDelegate][Push] notificationContentForEvent: empty event content");
-        onComplete (nil);
-        return;
-    }
-
-    MXRoom *room = [account.mxSession roomWithRoomId:event.roomId];
-    if (!room)
-    {
-        NSLog(@"[AppDelegate][Push] notificationBodyForEvent: Unknown room");
-        onComplete (nil);
-        return;
-    }
-
-    [room state:^(MXRoomState *roomState) {
-
-        NSString *notificationTitle;
-        NSString *notificationBody;
-
-        NSString *threadIdentifier = room.roomId;
-        NSString *eventSenderName = [roomState.members memberName:event.sender];
-
-        if (event.eventType == MXEventTypeRoomMessage || event.eventType == MXEventTypeRoomEncrypted)
-        {
-            if (room.isMentionsOnly)
-            {
-                // A local notification will be displayed only for highlighted notification.
-                BOOL isHighlighted = NO;
-
-                // Check whether is there an highlight tweak on it
-                for (MXPushRuleAction *ruleAction in rule.actions)
-                {
-                    if (ruleAction.actionType == MXPushRuleActionTypeSetTweak)
-                    {
-                        if ([ruleAction.parameters[@"set_tweak"] isEqualToString:@"highlight"])
-                        {
-                            // Check the highlight tweak "value"
-                            // If not present, highlight. Else check its value before highlighting
-                            if (nil == ruleAction.parameters[@"value"] || YES == [ruleAction.parameters[@"value"] boolValue])
-                            {
-                                isHighlighted = YES;
-                                break;
-                            }
-                        }
-                    }
-                }
-
-                if (!isHighlighted)
-                {
-                    // Ignore this notif.
-                    NSLog(@"[AppDelegate][Push] notificationBodyForEvent: Ignore non highlighted notif in mentions only room");
-                    onComplete(nil);
-                    return;
-                }
-            }
-            
-            NSString *msgType = event.content[@"msgtype"];
-            NSString *messageContent = event.content[@"body"];
-            
-            if (event.isEncrypted && !RiotSettings.shared.showDecryptedContentInNotifications)
-            {
-                // Hide the content
-                msgType = nil;
-            }
-            
-            NSString *roomDisplayName = room.summary.displayname;
-            
-            // Display the room name only if it is different than the sender name
-            if (roomDisplayName.length && ![roomDisplayName isEqualToString:eventSenderName])
-            {
-                notificationTitle = [NSString localizedUserNotificationStringForKey:@"MSG_FROM_USER_IN_ROOM_TITLE" arguments:@[eventSenderName, roomDisplayName]];
-                
-                if ([msgType isEqualToString:@"m.text"])
-                {
-                    notificationBody = messageContent;
-                }
-                else if ([msgType isEqualToString:@"m.emote"])
-                {
-                    notificationBody = [NSString localizedUserNotificationStringForKey:@"ACTION_FROM_USER" arguments:@[eventSenderName, messageContent]];
-                }
-                else if ([msgType isEqualToString:@"m.image"])
-                {
-                    notificationBody = [NSString localizedUserNotificationStringForKey:@"IMAGE_FROM_USER" arguments:@[eventSenderName, messageContent]];
-                }
-                else
-                {
-                    // Encrypted messages falls here
-                    notificationBody = [NSString localizedUserNotificationStringForKey:@"MSG_FROM_USER" arguments:@[eventSenderName]];
-                }
-            }
-            else
-            {
-                notificationTitle = eventSenderName;
-                
-                if ([msgType isEqualToString:@"m.text"])
-                {
-                    notificationBody = messageContent;
-                }
-                else if ([msgType isEqualToString:@"m.emote"])
-                {
-                    notificationBody = [NSString localizedUserNotificationStringForKey:@"ACTION_FROM_USER" arguments:@[eventSenderName, messageContent]];
-                }
-                else if ([msgType isEqualToString:@"m.image"])
-                {
-                    notificationBody = [NSString localizedUserNotificationStringForKey:@"IMAGE_FROM_USER" arguments:@[eventSenderName, messageContent]];
-                }
-                else
-                {
-                    // Encrypted messages falls here
-                    notificationBody = [NSString localizedUserNotificationStringForKey:@"MSG_FROM_USER" arguments:@[eventSenderName]];
-                }
-            }
-        }
-        else if (event.eventType == MXEventTypeCallInvite)
-        {
-            NSString *sdp = event.content[@"offer"][@"sdp"];
-            BOOL isVideoCall = [sdp rangeOfString:@"m=video"].location != NSNotFound;
-            
-            if (!isVideoCall)
-            {
-                notificationBody = [NSString localizedUserNotificationStringForKey:@"VOICE_CALL_FROM_USER" arguments:@[eventSenderName]];
-            }
-            else
-            {
-                notificationBody = [NSString localizedUserNotificationStringForKey:@"VIDEO_CALL_FROM_USER" arguments:@[eventSenderName]];
-            }
-            
-            // call notifications should stand out from normal messages, so we don't stack them
-            threadIdentifier = nil;
-        }
-        else if (event.eventType == MXEventTypeRoomMember)
-        {
-            NSString *roomDisplayName = room.summary.displayname;
-            
-            if (roomDisplayName.length && ![roomDisplayName isEqualToString:eventSenderName])
-            {
-                notificationBody = [NSString localizedUserNotificationStringForKey:@"USER_INVITE_TO_NAMED_ROOM" arguments:@[eventSenderName, roomDisplayName]];
-            }
-            else
-            {
-                notificationBody = [NSString localizedUserNotificationStringForKey:@"USER_INVITE_TO_CHAT" arguments:@[eventSenderName]];
-            }
-        }
-        else if (event.eventType == MXEventTypeSticker)
-        {
-            NSString *roomDisplayName = room.summary.displayname;
-            
-            if (roomDisplayName.length && ![roomDisplayName isEqualToString:eventSenderName])
-            {
-                notificationTitle = [NSString localizedUserNotificationStringForKey:@"MSG_FROM_USER_IN_ROOM_TITLE" arguments:@[eventSenderName, roomDisplayName]];
-            }
-            else
-            {
-                notificationTitle = eventSenderName;
-            }
-            
-            notificationBody = [NSString localizedUserNotificationStringForKey:@"STICKER_FROM_USER" arguments:@[eventSenderName]];
-        }
-        
-        UNMutableNotificationContent *notificationContent = [[UNMutableNotificationContent alloc] init];
-        
-        NSDictionary *notificationUserInfo = [self notificationUserInfoForEvent:event andUserId:account.mxCredentials.userId];
-        NSString *notificationSoundName = [self notificationSoundNameFromPushRule:rule];
-        NSString *categoryIdentifier = [self notificationCategoryIdentifierForEvent:event];
-        
-        notificationContent.title = notificationTitle;        
-        notificationContent.body = notificationBody;
-        notificationContent.threadIdentifier = threadIdentifier;
-        notificationContent.userInfo = notificationUserInfo;
-        notificationContent.categoryIdentifier = categoryIdentifier;
-        
-        if (notificationSoundName)
-        {
-            notificationContent.sound = [UNNotificationSound soundNamed:notificationSoundName];
-        }
-        
-        onComplete([notificationContent copy]);
-    }];
-}
-
-/**
- Display "limited" notifications for events the app was not able to get data
- (because of /sync failure).
-
- In this situation, we are only able to display "You received a message in %@".
-
- @param mxSession the matrix session where the /sync failed.
- @param events the list of events id we did not get data.
- */
-- (void)handleLimitedLocalNotifications:(MXSession*)mxSession events:(NSArray<NSString *> *)events
-{
-    NSString *userId = mxSession.matrixRestClient.credentials.userId;
-
-    NSLog(@"[AppDelegate][Push] handleLocalNotificationsForFailedSync: %@", userId);
-    NSLog(@"[AppDelegate][Push] handleLocalNotificationsForFailedSync: eventsToNotify: %@", eventsToNotify[@(mxSession.hash)]);
-    NSLog(@"[AppDelegate][Push] handleLocalNotificationsForFailedSync: incomingPushEventIds: %@", self.incomingPushEventIds[@(mxSession.hash)]);
-    NSLog(@"[AppDelegate][Push] handleLocalNotificationsForFailedSync: events: %@", events);
-
-    if (!events.count)
-    {
-        return;
-    }
-
-    for (NSString *eventId in events)
-    {
-        // Build notification user info
-        NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithDictionary:@{
-                                                                                        @"type": @"limited",
-                                                                                        @"event_id": eventId,
-                                                                                        @"user_id": userId
-                                                                                        }];
-
-        // Add the room_id so that user will open the room when tapping on the notif
-        NSDictionary *payload = incomingPushPayloads[eventId];
-        NSString *roomId = payload[@"room_id"];
-        if (roomId)
-        {
-            userInfo[@"room_id"] = roomId;
-        }
-        else
-        {
-            NSLog(@"[AppDelegate][Push] handleLocalNotificationsForFailedSync: room_id is missing for event %@ in payload %@", eventId, payload);
-        }
-
-        UNMutableNotificationContent *localNotificationContentForFailedSync = [[UNMutableNotificationContent alloc] init];
-        localNotificationContentForFailedSync.userInfo = userInfo;
-        localNotificationContentForFailedSync.body = [self limitedNotificationBodyForEvent:eventId inMatrixSession:mxSession];
-        localNotificationContentForFailedSync.threadIdentifier = roomId;
-        
-        UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:eventId content:localNotificationContentForFailedSync trigger:nil];
-        
-        NSLog(@"[AppDelegate][Push] handleLocalNotificationsForFailedSync: Display notification for event %@", eventId);
-        [[UNUserNotificationCenter currentNotificationCenter] addNotificationRequest:request withCompletionHandler:nil];
-    }
-}
-
-/**
- Build the body for the "limited" notification to display to the user.
-
- @param eventId the id of the event the app failed to get data.
- @param mxSession the matrix session where the /sync failed.
- @return the string to display in the local notification.
- */
-- (nullable NSString *)limitedNotificationBodyForEvent:(NSString *)eventId inMatrixSession:(MXSession*)mxSession
-{
-    NSString *notificationBody;
-
-    NSString *roomDisplayName;
-
-    NSDictionary *payload = incomingPushPayloads[eventId];
-    NSString *roomId = payload[@"room_id"];
-    if (roomId)
-    {
-        MXRoomSummary *roomSummary = [mxSession roomSummaryWithRoomId:roomId];
-        if (roomSummary)
-        {
-            roomDisplayName = roomSummary.displayname;
-        }
-    }
-
-    if (roomDisplayName.length)
-    {
-        notificationBody = [NSString stringWithFormat:NSLocalizedString(@"SINGLE_UNREAD_IN_ROOM", nil), roomDisplayName];
-    }
-    else
-    {
-        notificationBody = NSLocalizedString(@"SINGLE_UNREAD", nil);
-    }
-
-    return notificationBody;
-}
+#pragma mark - Badge Count
 
 - (void)refreshApplicationIconBadgeNumber
 {
@@ -1650,102 +876,10 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     // Considering all the current sessions.
     for (MXSession *session in mxSessionArray)
     {
-        roomCount += [session riot_missedDiscussionsCount];
+        roomCount += [session vc_missedDiscussionsCount];
     }
     
     return roomCount;
-}
-
-- (void)handleNotificationInlineReplyForRoomId:(NSString*)roomId
-                              withResponseText:(NSString*)responseText
-                                       success:(void(^)(NSString *eventId))success
-                                       failure:(void(^)(NSError *error))failure
-{
-    if (!roomId.length)
-    {
-        failure(nil);
-        return;
-    }
-
-    NSArray* mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
-
-    MXKRoomDataSourceManager* manager;
-
-    for (MXKAccount* account in mxAccounts)
-    {
-        MXRoom* room = [account.mxSession roomWithRoomId:roomId];
-        if (room)
-        {
-            manager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:account.mxSession];
-            if (manager)
-            {
-                break;
-            }
-        }
-    }
-
-    if (manager == nil)
-    {
-        NSLog(@"[AppDelegate][Push] didReceiveNotificationResponse: room with id %@ not found", roomId);
-        failure(nil);
-    }
-    else
-    {
-        [manager roomDataSourceForRoom:roomId create:YES onComplete:^(MXKRoomDataSource *roomDataSource) {
-            if (responseText != nil && responseText.length != 0)
-            {
-                NSLog(@"[AppDelegate][Push] didReceiveNotificationResponse: sending message to room: %@", roomId);
-                [roomDataSource sendTextMessage:responseText success:^(NSString* eventId) {
-                    success(eventId);
-                } failure:^(NSError* error) {
-                    failure(error);
-                }];
-            }
-            else
-            {
-                failure(nil);
-            }
-        }];
-    }
-}
-
-- (void)clearPushNotificationToken
-{
-    NSLog(@"[AppDelegate][Push] clearPushNotificationToken: Clear existing token");
-    
-    // Clear existing token
-    MXKAccountManager* accountManager = [MXKAccountManager sharedManager];
-    [accountManager setPushDeviceToken:nil withPushOptions:nil];
-}
-
-// Remove delivred notifications for a given room id except call notifications
-- (void)removeDeliveredNotificationsWithRoomId:(NSString*)roomId completion:(dispatch_block_t)completion
-{
-    NSLog(@"[AppDelegate][Push] removeDeliveredNotificationsWithRoomId: Remove potential delivered notifications for room id: %@", roomId);
-    
-    NSMutableArray<NSString*> *notificationRequestIdentifiersToRemove = [NSMutableArray new];
-    
-    UNUserNotificationCenter *notificationCenter = [UNUserNotificationCenter currentNotificationCenter];
-    
-    [notificationCenter getDeliveredNotificationsWithCompletionHandler:^(NSArray<UNNotification *> * _Nonnull notifications) {
-        
-        for (UNNotification *notification in notifications)
-        {
-            NSString *threadIdentifier = notification.request.content.threadIdentifier;
-            
-            if ([threadIdentifier isEqualToString:roomId])
-            {
-                [notificationRequestIdentifiersToRemove addObject:notification.request.identifier];
-            }
-        }
-        
-        [notificationCenter removeDeliveredNotificationsWithIdentifiers:notificationRequestIdentifiersToRemove];
-        
-        if (completion)
-        {
-            completion();
-        }
-    }];
 }
 
 #pragma mark - Matrix sessions handling
@@ -1770,6 +904,9 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 
     // Get modular widget events in rooms histories
     [[MXKAppSettings standardAppSettings] addSupportedEventTypes:@[kWidgetMatrixEventTypeString, kWidgetModularEventTypeString]];
+    
+    // Hide undecryptable messages that were sent while the user was not in the room
+    [MXKAppSettings standardAppSettings].hidePreJoinedUndecryptableEvents = YES;
     
     // Tchap: remove some state events from the rooms histories: the history access, encryption
     [[MXKAppSettings standardAppSettings] removeSupportedEventTypes:@[kMXEventTypeStringRoomHistoryVisibility, kMXEventTypeStringRoomEncryption]];
@@ -1851,63 +988,23 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
             // A new call observer may be added here
             [self addMatrixCallObserver];
             
-            // Enable local notifications
-            [self enableLocalNotificationsFromMatrixSession:mxSession];
-            
             // Clean the storage by removing expired data
             [mxSession tc_removeExpiredMessages];
+            
+            // Do not warn for unknown devices. We have cross-signing now
+            mxSession.crypto.warnOnUnknowDevices = NO;
+            
+//            // Register to user new device sign in notification
+//            [self registerUserDidSignInOnNewDeviceNotificationForSession:mxSession];
+//
+//            // Register to new key verification request
+//            [self registerNewRequestNotificationForSession:mxSession];
+//
+//            [self checkLocalPrivateKeysInSession:mxSession];
         }
         else if (mxSession.state == MXSessionStateClosed)
         {
             [self removeMatrixSession:mxSession];
-        }
-        // Consider here the case where the app is running in background.
-        else if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateBackground)
-        {
-            NSLog(@"[AppDelegate][Push] MXSession state changed while in background. mxSession.state: %tu - incomingPushEventIds: %@", mxSession.state, self.incomingPushEventIds[@(mxSession.hash)]);
-            if (mxSession.state == MXSessionStateRunning)
-            {
-                // Pause the session in background task
-                NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
-                for (MXKAccount *account in mxAccounts)
-                {
-                    if (account.mxSession == mxSession)
-                    {
-                        [account pauseInBackgroundTask];
-                        
-                        // Trigger local notifcations (Indeed the app finishs here an initial sync in background, the user has missed some notifcations)
-                        [self handleLocalNotificationsForAccount:account];
-                        
-                        // Update app icon badge number
-                        [self refreshApplicationIconBadgeNumber];
-                        
-                        break;
-                    }
-                }
-            }
-            else if (mxSession.state == MXSessionStatePaused)
-            {
-                // Check whether some push notifications are pending for this session.
-                if (self.incomingPushEventIds[@(mxSession.hash)].count)
-                {
-                    NSLog(@"[AppDelegate][Push] relaunch a background sync for %tu kMXSessionStateDidChangeNotification pending incoming pushes", self.incomingPushEventIds[@(mxSession.hash)].count);
-                    [self launchBackgroundSync];
-                }
-            }
-            else if (mxSession.state == MXSessionStateInitialSyncFailed)
-            {
-                // Display failure sync notifications for pending events if any
-                if (self.incomingPushEventIds[@(mxSession.hash)].count)
-                {
-                    NSLog(@"[AppDelegate][Push] initial sync failed with %tu pending incoming pushes", self.incomingPushEventIds[@(mxSession.hash)].count);
-
-                    // Trigger limited local notifications when the sync with HS fails
-                    [self handleLimitedLocalNotifications:mxSession events:self.incomingPushEventIds[@(mxSession.hash)]];
-
-                    // Update app icon badge number
-                    [self refreshApplicationIconBadgeNumber];
-                }
-             }
         }
         else if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive)
         {
@@ -1915,7 +1012,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
             {
                 // Check if we need to display a key share dialog
                 [self checkPendingRoomKeyRequests];
-                [self checkPendingIncomingDeviceVerificationsInSession:mxSession];
+                [self checkPendingIncomingKeyVerificationsInSession:mxSession];
             }
         }
         
@@ -1937,17 +1034,19 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
             // Set the push gateway URL.
             account.pushGatewayURL = [[NSUserDefaults standardUserDefaults] objectForKey:@"pushGatewayURL"];
 
+            BOOL isPushRegistered = self.pushNotificationService.isPushRegistered;
+
             NSLog(@"[AppDelegate][Push] didAddAccountNotification: isPushRegistered: %@", @(isPushRegistered));
 
             if (isPushRegistered)
             {
                 // Enable push notifications by default on new added account
-                [account enablePushKitNotifications:YES success:nil failure:nil];
+                [account enablePushNotifications:YES success:nil failure:nil];
             }
             else
             {
                 // Set up push notifications
-                [self registerUserNotificationSettings];
+                [self.pushNotificationService registerUserNotificationSettings];
             }
         }
         
@@ -1994,14 +1093,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     // Use MXFileStore as MXStore to permanently store events.
     accountManager.storeClass = [MXFileStore class];
     
-    // Disable APNS use.
-    if (accountManager.apnsDeviceToken)
-    {
-        // We use now Pushkit, unregister for all remote notifications received via Apple Push Notification service.
-        [[UIApplication sharedApplication] unregisterForRemoteNotifications];
-        [accountManager setApnsDeviceToken:nil];
-    }
-    
     // Observers have been defined, we can start a matrix session for each enabled accounts.
     NSLog(@"[AppDelegate] initMatrixSessions: prepareSessionForActiveAccounts (app state: %tu)", [[UIApplication sharedApplication] applicationState]);
     [accountManager prepareSessionForActiveAccounts];
@@ -2026,7 +1117,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         }
         
         // Set up push notifications
-        [self registerUserNotificationSettings];
+        [self.pushNotificationService registerUserNotificationSettings];
     }
 }
 
@@ -2063,15 +1154,12 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         
         // Do the one time check on device id
         [self checkDeviceId:mxSession];
-        
-        // Add an array to handle incoming push
-        self.incomingPushEventIds[@(mxSession.hash)] = [NSMutableArray array];
 
         // Enable listening of incoming key share requests
         [self enableRoomKeyRequestObserver:mxSession];
 
-        // Enable listening of incoming device verification requests
-        [self enableIncomingDeviceVerificationObserver:mxSession];
+        // Enable listening of incoming key verification requests
+        [self enableIncomingKeyVerificationObserver:mxSession];
     }
 }
 
@@ -2084,15 +1172,12 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     
     // If any, disable the no VoIP support workaround
     [self disableNoVoIPOnMatrixSession:mxSession];
-    
-    // Disable local notifications from this session
-    [self disableLocalNotificationsFromMatrixSession:mxSession];
 
     // Disable listening of incoming key share requests
     [self disableRoomKeyRequestObserver:mxSession];
 
-    // Disable listening of incoming device verification requests
-    [self disableIncomingDeviceVerificationObserver:mxSession];
+    // Disable listening of incoming key verification requests
+    [self disableIncomingKeyVerificationObserver:mxSession];
     
     [mxSessionArray removeObject:mxSession];
     
@@ -2101,8 +1186,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         [[NSNotificationCenter defaultCenter] removeObserver:matrixCallObserver];
         matrixCallObserver = nil;
     }
-    
-    [self.incomingPushEventIds removeObjectForKey:@(mxSession.hash)];
 }
 
 - (void)markAllMessagesAsRead
@@ -2111,6 +1194,11 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     {
         [session markAllMessagesAsRead];
     }
+}
+
+- (void)removeDeliveredNotificationsWithRoomId:(NSString*)roomId completion:(dispatch_block_t)completion;
+{
+    [self.pushNotificationService removeDeliveredNotificationsWithRoomId:roomId completion:completion];
 }
 
 - (void)logoutWithConfirmation:(BOOL)askConfirmation completion:(void (^)(BOOL isLoggedOut))completion
@@ -2198,14 +1286,16 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 - (void)logoutSendingRequestServer:(BOOL)sendLogoutServerRequest
                         completion:(void (^)(BOOL isLoggedOut))completion
 {
-    self.pushRegistry = nil;
-    isPushRegistered = NO;
-    
+    [self.pushNotificationService deregisterRemoteNotifications];
+
     // Clear cache
     [MXMediaManager clearCache];
     
     // Reset key backup banner preferences
-    [KeyBackupBannerPreferences.shared reset];
+    [SecureBackupBannerPreferences.shared reset];
+    
+    // Reset key verification banner preferences
+    [CrossSigningBannerPreferences.shared reset];
     
 #ifdef MX_CALL_STACK_ENDPOINT
     // Erase all created certificates and private keys by MXEndpointCallStack
@@ -2253,25 +1343,29 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         return;
     }
     
+    MXWeakify(self);
+    
     // Register call observer in order to handle incoming calls
     matrixCallObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXCallManagerNewCall
                                                                            object:nil
                                                                             queue:[NSOperationQueue mainQueue]
                                                                        usingBlock:^(NSNotification *notif)
     {
+        MXStrongifyAndReturnIfNil(self);
+        
         // Ignore the call if a call is already in progress
-        if (!currentCallViewController && !_jitsiViewController)
+        if (!self->currentCallViewController && !self->_jitsiViewController)
         {
             MXCall *mxCall = (MXCall*)notif.object;
             
             BOOL isCallKitEnabled = [MXCallKitAdapter callKitAvailable] && [MXKAppSettings standardAppSettings].isCallKitEnabled;
             
             // Prepare the call view controller
-            currentCallViewController = [CallViewController callViewController:nil];
-            currentCallViewController.playRingtone = !isCallKitEnabled;
-            currentCallViewController.mxCall = mxCall;
-            currentCallViewController.delegate = self;
-            
+            self->currentCallViewController = [CallViewController callViewController:nil];
+            self->currentCallViewController.playRingtone = !isCallKitEnabled;
+            self->currentCallViewController.mxCall = mxCall;
+            self->currentCallViewController.delegate = self;
+
             UIApplicationState applicationState = UIApplication.sharedApplication.applicationState;
             
             // App has been woken by PushKit notification in the background
@@ -2283,18 +1377,24 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
                 id<MXBackgroundModeHandler> handler = [MXSDKOptions sharedInstance].backgroundModeHandler;
                 id<MXBackgroundTask> callBackgroundTask = [handler startBackgroundTaskWithName:@"[AppDelegate] addMatrixCallObserver" expirationHandler:nil];
                 
+                MXWeakify(self);
+                
                 // Start listening for call state change notifications
                 __weak NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
                 __block id token = [[NSNotificationCenter defaultCenter] addObserverForName:kMXCallStateDidChange
                                                                                      object:mxCall
                                                                                       queue:nil
                                                                                  usingBlock:^(NSNotification * _Nonnull note) {
+                                                        
+                                                                                     MXStrongifyAndReturnIfNil(self);
+                    
                                                                                      MXCall *call = (MXCall *)note.object;
                                                                                      
                                                                                      if (call.state == MXCallStateEnded)
                                                                                      {
                                                                                          // Set call vc to nil to let our app handle new incoming calls even it wasn't killed by the system
-                                                                                         currentCallViewController = nil;
+                                                                                         [self->currentCallViewController destroy];
+                                                                                         self->currentCallViewController = nil;
                                                                                          [notificationCenter removeObserver:token];
                                                                                          [callBackgroundTask stop];
                                                                                      }
@@ -2303,6 +1403,8 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
             
             if (mxCall.isIncoming && isCallKitEnabled)
             {
+                MXWeakify(self);
+                
                 // Let's CallKit display the system incoming call screen
                 // Show the callVC only after the user answered the call
                 __weak NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
@@ -2310,6 +1412,9 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
                                                                                      object:mxCall
                                                                                       queue:nil
                                                                                  usingBlock:^(NSNotification * _Nonnull note) {
+                    
+                                                                                     MXStrongifyAndReturnIfNil(self);
+                    
                                                                                      MXCall *call = (MXCall *)note.object;
                                                                                      
                                                                                      NSLog(@"[AppDelegate] call.state: %@", call);
@@ -2320,6 +1425,13 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
                                                                                          
                                                                                          NSLog(@"[AppDelegate] presentCallViewController");
                                                                                          [self presentCallViewController:NO completion:nil];
+                                                                                     }
+                                                                                     else if (call.state == MXCallStateEnded)
+                                                                                     {
+                                                                                         [notificationCenter removeObserver:token];
+                                                                                         
+                                                                                         // Set call vc to nil to let our app handle new incoming calls even it wasn't killed by the system
+                                                                                         [self dismissCallViewController:self->currentCallViewController completion:nil];
                                                                                      }
                                                                                  }];
             }
@@ -2417,64 +1529,30 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     }
 }
 
-- (void)enableLocalNotificationsFromMatrixSession:(MXSession*)mxSession
+- (void)checkLocalPrivateKeysInSession:(MXSession*)mxSession
 {
-    // Prepare listener block.
-    MXWeakify(self);
-    MXOnNotification notificationListenerBlock = ^(MXEvent *event, MXRoomState *roomState, MXPushRule *rule) {
-        MXStrongifyAndReturnIfNil(self);
-        
-        // Ignore this event if the app is not running in background.
-        if ([[UIApplication sharedApplication] applicationState] != UIApplicationStateBackground)
-        {
-            return;
-        }
-
-        // If the app is doing an initial sync, ignore all events from which we
-        // did not receive a notification from APNS/PushKit
-        if (!mxSession.isEventStreamInitialised && !self->incomingPushPayloads[event.eventId])
-        {
-            NSLog(@"[AppDelegate][Push] enableLocalNotificationsFromMatrixSession: Initial sync in progress. Ignore event %@", event.eventId);
-            return;
-        }
-
-        // Sanity check
-        if (event.eventId && event.roomId && rule)
-        {
-            NSLog(@"[AppDelegate][Push] enableLocalNotificationsFromMatrixSession: got event %@ to notify", event.eventId);
-
-            // Check whether this event corresponds to a pending push for this session.
-            NSUInteger index = [self.incomingPushEventIds[@(mxSession.hash)] indexOfObject:event.eventId];
-            if (index != NSNotFound)
-            {
-                // Remove it from the pending list.
-                [self.incomingPushEventIds[@(mxSession.hash)] removeObjectAtIndex:index];
-            }
-            
-            // Add it to the list of the events to notify.
-            [self->eventsToNotify[@(mxSession.hash)] addObject:@{
-                                                           @"event_id": event.eventId,
-                                                           @"room_id": event.roomId,
-                                                           @"push_rule": rule
-                                                           }];
-        }
-        else
-        {
-            NSLog(@"[AppDelegate][Push] enableLocalNotificationsFromMatrixSession: WARNING: wrong event to notify %@ %@ %@", event, event.roomId, rule);
-        }
-    };
+    id<MXCryptoStore> cryptoStore = mxSession.crypto.store;
+    NSUInteger keysCount = 0;
+    if ([cryptoStore secretWithSecretId:MXSecretId.keyBackup])
+    {
+        keysCount++;
+    }
+    if ([cryptoStore secretWithSecretId:MXSecretId.crossSigningUserSigning])
+    {
+        keysCount++;
+    }
+    if ([cryptoStore secretWithSecretId:MXSecretId.crossSigningSelfSigning])
+    {
+        keysCount++;
+    }
     
-    eventsToNotify[@(mxSession.hash)] = [NSMutableArray array];
-    [mxSession.notificationCenter listenToNotifications:notificationListenerBlock];
-    notificationListenerBlocks[@(mxSession.hash)] = notificationListenerBlock;
-}
-
-- (void)disableLocalNotificationsFromMatrixSession:(MXSession*)mxSession
-{
-    // Stop listening to notification of this session
-    [mxSession.notificationCenter removeListener:notificationListenerBlocks[@(mxSession.hash)]];
-    [notificationListenerBlocks removeObjectForKey:@(mxSession.hash)];
-    [eventsToNotify removeObjectForKey:@(mxSession.hash)];
+    if ((keysCount > 0 && keysCount < 3)
+        || (mxSession.crypto.crossSigning.canTrustCrossSigning && !mxSession.crypto.crossSigning.canCrossSign))
+    {
+        // We should have 3 of them. If not, request them again as mitigation
+        NSLog(@"[AppDelegate] checkLocalPrivateKeysInSession: request keys because keysCount = %@", @(keysCount));
+        [mxSession.crypto requestAllPrivateKeys];
+    }
 }
 
 #pragma mark -
@@ -2533,6 +1611,18 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
             [self showNotificationAlert:_errorNotification];
         }
     }
+}
+
+- (void)presentViewController:(UIViewController*)viewController
+                     animated:(BOOL)animated
+                   completion:(void (^)(void))completion
+{
+    [self.presentedViewController presentViewController:viewController animated:animated completion:completion];
+}
+
+- (UIViewController*)presentedViewController
+{
+    return self.window.rootViewController.presentedViewController ?: self.window.rootViewController;
 }
 
 #pragma mark - Matrix Accounts handling
@@ -2627,13 +1717,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
             {
                 [MXKAppSettings standardAppSettings].syncLocalContactsPermissionRequested = YES;
                 
-                UIViewController *viewController = self.window.rootViewController.presentedViewController;
-                if (!viewController)
-                {
-                    viewController = self.window.rootViewController;
-                }
-                
-                [MXKContactManager requestUserConfirmationForLocalContactsSyncInViewController:viewController completionHandler:^(BOOL granted) {
+                [MXKContactManager requestUserConfirmationForLocalContactsSyncInViewController:self.presentedViewController completionHandler:^(BOOL granted) {
                     
                     if (granted)
                     {
@@ -2712,6 +1796,12 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
                 [self dismissCallViewController:currentCallViewController completion:completion];
                 
             }];
+        }
+        else
+        {
+            // Release properly
+            [currentCallViewController destroy];
+            currentCallViewController = nil;
         }
     }
 }
@@ -2804,14 +1894,12 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 
     if (_jitsiViewController)
     {
-        if (self.window.rootViewController.presentedViewController)
+        if (@available(iOS 13.0, *))
         {
-            [self.window.rootViewController.presentedViewController presentViewController:_jitsiViewController animated:YES completion:completion];
+            _jitsiViewController.modalPresentationStyle = UIModalPresentationFullScreen;
         }
-        else
-        {
-            [self.window.rootViewController presentViewController:_jitsiViewController animated:YES completion:completion];
-        }
+
+        [self presentViewController:_jitsiViewController animated:YES completion:completion];
     }
 }
 
@@ -2953,10 +2041,8 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         }];
     };
     
-    UIViewController *presentingViewController = self.window.rootViewController.presentedViewController ?: self.window.rootViewController;
-    
     [self.slidingModalPresenter present:widgetPermissionViewController
-                                   from:presentingViewController
+                                   from:self.presentedViewController
                                animated:YES
                              completion:nil];
 }
@@ -2964,11 +2050,26 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 
 #pragma mark - Call status handling
 
+/// Returns a suitable height for call status bar. Considers safe area insets if available and notch status.
+- (CGFloat)calculateCallStatusBarHeight
+{
+    CGFloat result = CALL_STATUS_BAR_HEIGHT;
+    if (@available(iOS 11.0, *))
+    {
+        if (UIDevice.currentDevice.hasNotch)
+        {
+            //  this device has a notch (iPhone X +)
+            result += UIApplication.sharedApplication.keyWindow.safeAreaInsets.top;
+        }
+    }
+    return result;
+}
+
 - (void)addCallStatusBar:(NSString*)buttonTitle
 {
     // Add a call status bar
-    CGSize topBarSize = CGSizeMake([[UIScreen mainScreen] bounds].size.width, CALL_STATUS_BAR_HEIGHT);
-    
+    CGSize topBarSize = CGSizeMake([[UIScreen mainScreen] bounds].size.width, [self calculateCallStatusBarHeight]);
+
     _callStatusBarWindow = [[UIWindow alloc] initWithFrame:CGRectMake(0, 0, topBarSize.width, topBarSize.height)];
     _callStatusBarWindow.windowLevel = UIWindowLevelStatusBar;
     
@@ -2978,7 +2079,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     
     [_callStatusBarButton setTitle:buttonTitle forState:UIControlStateNormal];
     [_callStatusBarButton setTitle:buttonTitle forState:UIControlStateHighlighted];
-    _callStatusBarButton.titleLabel.textColor = kVariant2PrimaryTextColor;
+    _callStatusBarButton.titleLabel.textColor = ThemeService.shared.theme.backgroundColor;
     _callStatusBarButton.titleLabel.font = [UIFont systemFontOfSize:17 weight:UIFontWeightMedium];
     [_callStatusBarButton setBackgroundColor:kVariant2PrimaryBgColor];
     [_callStatusBarButton addTarget:self action:@selector(onCallStatusBarButtonPressed) forControlEvents:UIControlEventTouchUpInside];
@@ -3052,14 +2153,12 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     
     if (currentCallViewController)
     {
-        if (self.window.rootViewController.presentedViewController)
+        if (@available(iOS 13.0, *))
         {
-            [self.window.rootViewController.presentedViewController presentViewController:currentCallViewController animated:animated completion:completion];
+            currentCallViewController.modalPresentationStyle = UIModalPresentationFullScreen;
         }
-        else
-        {
-            [self.window.rootViewController presentViewController:currentCallViewController animated:animated completion:completion];
-        }
+
+        [self presentViewController:currentCallViewController animated:animated completion:completion];
     }
 }
 
@@ -3070,36 +2169,52 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     
     // Refresh the root view controller frame
     CGRect rootControllerFrame = [[UIScreen mainScreen] bounds];
-    
+
     if (_callStatusBarWindow)
     {
+        CGFloat callStatusBarHeight = [self calculateCallStatusBarHeight];
+
         UIInterfaceOrientation statusBarOrientation = [UIApplication sharedApplication].statusBarOrientation;
         
         switch (statusBarOrientation)
         {
             case UIInterfaceOrientationLandscapeLeft:
             {
-                _callStatusBarWindow.frame = CGRectMake(-rootControllerFrame.size.width / 2, -CALL_STATUS_BAR_HEIGHT / 2, rootControllerFrame.size.width, CALL_STATUS_BAR_HEIGHT);
-                _callStatusBarWindow.transform = CGAffineTransformMake(0, -1, 1, 0, CALL_STATUS_BAR_HEIGHT / 2, rootControllerFrame.size.width / 2);
+                _callStatusBarWindow.frame = CGRectMake(-rootControllerFrame.size.width / 2, -callStatusBarHeight / 2, rootControllerFrame.size.width, callStatusBarHeight);
+                _callStatusBarWindow.transform = CGAffineTransformMake(0, -1, 1, 0, callStatusBarHeight / 2, rootControllerFrame.size.width / 2);
                 break;
             }
             case UIInterfaceOrientationLandscapeRight:
             {
-                _callStatusBarWindow.frame = CGRectMake(-rootControllerFrame.size.width / 2, -CALL_STATUS_BAR_HEIGHT / 2, rootControllerFrame.size.width, CALL_STATUS_BAR_HEIGHT);
-                _callStatusBarWindow.transform = CGAffineTransformMake(0, 1, -1, 0, rootControllerFrame.size.height - CALL_STATUS_BAR_HEIGHT / 2, rootControllerFrame.size.width / 2);
+                _callStatusBarWindow.frame = CGRectMake(-rootControllerFrame.size.width / 2, -callStatusBarHeight / 2, rootControllerFrame.size.width, callStatusBarHeight);
+                _callStatusBarWindow.transform = CGAffineTransformMake(0, 1, -1, 0, rootControllerFrame.size.height - callStatusBarHeight / 2, rootControllerFrame.size.width / 2);
                 break;
             }
             default:
             {
                 _callStatusBarWindow.transform = CGAffineTransformIdentity;
-                _callStatusBarWindow.frame = CGRectMake(0, 0, rootControllerFrame.size.width, CALL_STATUS_BAR_HEIGHT);
+                _callStatusBarWindow.frame = CGRectMake(0, 0, rootControllerFrame.size.width, callStatusBarHeight);
                 break;
             }
         }
+
+        UIEdgeInsets callBarButtonContentEdgeInsets = UIEdgeInsetsZero;
+
+        if (@available(iOS 11.0, *))
+        {
+            callBarButtonContentEdgeInsets = UIApplication.sharedApplication.keyWindow.safeAreaInsets;
+            //  should override top inset
+            callBarButtonContentEdgeInsets.top = callStatusBarHeight - CALL_STATUS_BAR_HEIGHT;
+            //  should ignore bottom inset
+            callBarButtonContentEdgeInsets.bottom = 0.0;
+            //  should keep left, and right insets as original
+        }
+
+        _callStatusBarButton.contentEdgeInsets = callBarButtonContentEdgeInsets;
         
         // Apply the vertical offset due to call status bar
-        rootControllerFrame.origin.y = CALL_STATUS_BAR_HEIGHT;
-        rootControllerFrame.size.height -= CALL_STATUS_BAR_HEIGHT;
+        rootControllerFrame.origin.y = callStatusBarHeight;
+        rootControllerFrame.size.height -= callStatusBarHeight;
     }
     
     rootController.view.frame = rootControllerFrame;
@@ -3317,13 +2432,13 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 
             // Give the client a chance to refresh the device list
             MXWeakify(self);
-            [mxSession.crypto downloadKeys:@[userId] forceDownload:NO success:^(MXUsersDevicesMap<MXDeviceInfo *> *usersDevicesInfoMap) {
+            [mxSession.crypto downloadKeys:@[userId] forceDownload:NO success:^(MXUsersDevicesMap<MXDeviceInfo *> *usersDevicesInfoMap, NSDictionary<NSString *,MXCrossSigningInfo *> *crossSigningKeysMap) {
 
                 MXStrongifyAndReturnIfNil(self);
                 MXDeviceInfo *deviceInfo = [usersDevicesInfoMap objectForDevice:deviceId forUser:userId];
                 if (deviceInfo)
                 {
-                    BOOL wasNewDevice = (deviceInfo.verified == MXDeviceUnknown);
+                    BOOL wasNewDevice = (deviceInfo.trustLevel.localVerificationStatus == MXDeviceUnknown);
                     
                     MXWeakify(self);
                     void (^openDialog)(void) = ^void()
@@ -3388,54 +2503,54 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     }
 }
 
-#pragma mark - Incoming device verification requests handling
+#pragma mark - Incoming key verification handling
 
-- (void)enableIncomingDeviceVerificationObserver:(MXSession*)mxSession
+- (void)enableIncomingKeyVerificationObserver:(MXSession*)mxSession
 {
-    incomingDeviceVerificationObserver =
-    [[NSNotificationCenter defaultCenter] addObserverForName:MXDeviceVerificationManagerNewTransactionNotification
-                                                      object:mxSession.crypto.deviceVerificationManager
+    incomingKeyVerificationObserver =
+    [[NSNotificationCenter defaultCenter] addObserverForName:MXKeyVerificationManagerNewTransactionNotification
+                                                      object:mxSession.crypto.keyVerificationManager
                                                        queue:[NSOperationQueue mainQueue]
                                                   usingBlock:^(NSNotification *notif)
      {
-         NSObject *object = notif.userInfo[MXDeviceVerificationManagerNotificationTransactionKey];
+         NSObject *object = notif.userInfo[MXKeyVerificationManagerNotificationTransactionKey];
          if ([object isKindOfClass:MXIncomingSASTransaction.class])
          {
-             [self checkPendingIncomingDeviceVerificationsInSession:mxSession];
+             [self checkPendingIncomingKeyVerificationsInSession:mxSession];
          }
      }];
 }
 
-- (void)disableIncomingDeviceVerificationObserver:(MXSession*)mxSession
+- (void)disableIncomingKeyVerificationObserver:(MXSession*)mxSession
 {
-    if (incomingDeviceVerificationObserver)
+    if (incomingKeyVerificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:incomingDeviceVerificationObserver];
-        incomingDeviceVerificationObserver = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:incomingKeyVerificationObserver];
+        incomingKeyVerificationObserver = nil;
     }
 }
 
-// Check if an incoming device verification dialog must be displayed for the given session
-- (void)checkPendingIncomingDeviceVerificationsInSession:(MXSession*)mxSession
+// Check if an incoming key verification dialog must be displayed for the given session
+- (void)checkPendingIncomingKeyVerificationsInSession:(MXSession*)mxSession
 {
     if ([UIApplication sharedApplication].applicationState != UIApplicationStateActive)
     {
-        NSLog(@"[AppDelegate][MXKeyVerification] checkPendingIncomingDeviceVerificationsInSession: called while the app is not active. Ignore it.");
+        NSLog(@"[AppDelegate][MXKeyVerification] checkPendingIncomingKeyVerificationsInSession: called while the app is not active. Ignore it.");
         return;
     }
 
-    [mxSession.crypto.deviceVerificationManager transactions:^(NSArray<MXDeviceVerificationTransaction *> * _Nonnull transactions) {
+    [mxSession.crypto.keyVerificationManager transactions:^(NSArray<MXKeyVerificationTransaction *> * _Nonnull transactions) {
 
-        NSLog(@"[AppDelegate][MXKeyVerification] checkPendingIncomingDeviceVerificationsInSession: transactions: %@", transactions);
+        NSLog(@"[AppDelegate][MXKeyVerification] checkPendingIncomingKeyVerificationsInSession: transactions: %@", transactions);
 
-        for (MXDeviceVerificationTransaction *transaction in transactions)
+        for (MXKeyVerificationTransaction *transaction in transactions)
         {
             if (transaction.isIncoming)
             {
                 MXIncomingSASTransaction *incomingTransaction = (MXIncomingSASTransaction*)transaction;
                 if (incomingTransaction.state == MXSASTransactionStateIncomingShowAccept)
                 {
-                    [self presentIncomingDeviceVerification:incomingTransaction inSession:mxSession];
+                    [self presentIncomingKeyVerification:incomingTransaction inSession:mxSession];
                     break;
                 }
             }
@@ -3443,45 +2558,420 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     }];
 }
 
-// Check all opened MXSessions for incoming device verification dialog
-- (void)checkPendingIncomingDeviceVerifications
+// Check all opened MXSessions for incoming key verification dialog
+- (void)checkPendingIncomingKeyVerifications
 {
     for (MXSession *mxSession in mxSessionArray)
     {
-        [self checkPendingIncomingDeviceVerificationsInSession:mxSession];
+        [self checkPendingIncomingKeyVerificationsInSession:mxSession];
     }
 }
 
-- (BOOL)presentIncomingDeviceVerification:(MXIncomingSASTransaction*)transaction inSession:(MXSession*)mxSession
+- (BOOL)presentIncomingKeyVerificationRequest:(MXKeyVerificationRequest*)incomingKeyVerificationRequest
+                                    inSession:(MXSession*)session
 {
-    NSLog(@"[AppDelegate][MXKeyVerification] presentIncomingDeviceVerification: %@", transaction);
+    BOOL presented = NO;
+    
+    if (!keyVerificationCoordinatorBridgePresenter.isPresenting)
+    {
+        NSLog(@"[AppDelegate] presentIncomingKeyVerificationRequest");
+        
+        keyVerificationCoordinatorBridgePresenter = [[KeyVerificationCoordinatorBridgePresenter alloc] initWithSession:session];
+        keyVerificationCoordinatorBridgePresenter.delegate = self;
+        
+        [keyVerificationCoordinatorBridgePresenter presentFrom:self.presentedViewController incomingKeyVerificationRequest:incomingKeyVerificationRequest animated:YES];
+        
+        presented = YES;
+    }
+    else
+    {
+        NSLog(@"[AppDelegate][MXKeyVerification] presentIncomingKeyVerificationRequest: Controller already presented.");
+    }
+    
+    return presented;
+}
+
+- (BOOL)presentIncomingKeyVerification:(MXIncomingSASTransaction*)transaction inSession:(MXSession*)mxSession
+{
+    NSLog(@"[AppDelegate][MXKeyVerification] presentIncomingKeyVerification: %@", transaction);
 
     BOOL presented = NO;
-    if (!deviceVerificationCoordinatorBridgePresenter)
+    if (!keyVerificationCoordinatorBridgePresenter.isPresenting)
     {
-        UIViewController *presentingViewController = self.window.rootViewController.presentedViewController ?: self.window.rootViewController;
+        keyVerificationCoordinatorBridgePresenter = [[KeyVerificationCoordinatorBridgePresenter alloc] initWithSession:mxSession];
+        keyVerificationCoordinatorBridgePresenter.delegate = self;
 
-        deviceVerificationCoordinatorBridgePresenter = [[DeviceVerificationCoordinatorBridgePresenter alloc] initWithSession:mxSession];
-        deviceVerificationCoordinatorBridgePresenter.delegate = self;
-
-        [deviceVerificationCoordinatorBridgePresenter presentFrom:presentingViewController incomingTransaction:transaction animated:YES];
+        [keyVerificationCoordinatorBridgePresenter presentFrom:self.presentedViewController incomingTransaction:transaction animated:YES];
 
         presented = YES;
     }
     else
     {
-        NSLog(@"[AppDelegate][MXKeyVerification] presentIncomingDeviceVerification: Controller already presented.");
+        NSLog(@"[AppDelegate][MXKeyVerification] presentIncomingKeyVerification: Controller already presented.");
     }
     return presented;
 }
 
-- (void)deviceVerificationCoordinatorBridgePresenterDelegateDidComplete:(DeviceVerificationCoordinatorBridgePresenter *)coordinatorBridgePresenter otherUserId:(NSString * _Nonnull)otherUserId otherDeviceId:(NSString * _Nonnull)otherDeviceId
+- (BOOL)presentUserVerificationForRoomMember:(MXRoomMember*)roomMember session:(MXSession*)mxSession
 {
-    [deviceVerificationCoordinatorBridgePresenter dismissWithAnimated:YES completion:^{
-        [self checkPendingIncomingDeviceVerifications];
+    NSLog(@"[AppDelegate][MXKeyVerification] presentUserVerificationForRoomMember: %@", roomMember);
+    
+    BOOL presented = NO;
+    if (!keyVerificationCoordinatorBridgePresenter.isPresenting)
+    {
+        keyVerificationCoordinatorBridgePresenter = [[KeyVerificationCoordinatorBridgePresenter alloc] initWithSession:mxSession];
+        keyVerificationCoordinatorBridgePresenter.delegate = self;
+        
+        [keyVerificationCoordinatorBridgePresenter presentFrom:self.presentedViewController roomMember:roomMember animated:YES];
+        
+        presented = YES;
+    }
+    else
+    {
+        NSLog(@"[AppDelegate][MXKeyVerification] presentUserVerificationForRoomMember: Controller already presented.");
+    }
+    return presented;
+}
+
+- (BOOL)presentSelfVerificationForOtherDeviceId:(NSString*)deviceId inSession:(MXSession*)mxSession
+{
+    NSLog(@"[AppDelegate][MXKeyVerification] presentSelfVerificationForOtherDeviceId: %@", deviceId);
+    
+    BOOL presented = NO;
+    if (!keyVerificationCoordinatorBridgePresenter.isPresenting)
+    {
+        keyVerificationCoordinatorBridgePresenter = [[KeyVerificationCoordinatorBridgePresenter alloc] initWithSession:mxSession];
+        keyVerificationCoordinatorBridgePresenter.delegate = self;
+        
+        [keyVerificationCoordinatorBridgePresenter presentFrom:self.presentedViewController otherUserId:mxSession.myUser.userId otherDeviceId:deviceId animated:YES];
+        
+        presented = YES;
+    }
+    else
+    {
+        NSLog(@"[AppDelegate][MXKeyVerification] presentUserVerificationForRoomMember: Controller already presented.");
+    }
+    return presented;
+}
+
+- (void)keyVerificationCoordinatorBridgePresenterDelegateDidComplete:(KeyVerificationCoordinatorBridgePresenter *)coordinatorBridgePresenter otherUserId:(NSString * _Nonnull)otherUserId otherDeviceId:(NSString * _Nonnull)otherDeviceId
+{
+    [self dismissKeyVerificationCoordinatorBridgePresenter];
+}
+
+- (void)keyVerificationCoordinatorBridgePresenterDelegateDidCancel:(KeyVerificationCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter
+{
+    [self dismissKeyVerificationCoordinatorBridgePresenter];
+}
+
+- (void)dismissKeyVerificationCoordinatorBridgePresenter
+{
+    [keyVerificationCoordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+        [self checkPendingIncomingKeyVerifications];
     }];
     
-    deviceVerificationCoordinatorBridgePresenter = nil;
+    keyVerificationCoordinatorBridgePresenter = nil;
+}
+
+#pragma mark - New request
+
+- (void)registerNewRequestNotificationForSession:(MXSession*)session
+{
+    MXKeyVerificationManager *keyverificationManager = session.crypto.keyVerificationManager;
+    
+    if (!keyverificationManager)
+    {
+        return;
+    }
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyVerificationNewRequestNotification:) name:MXKeyVerificationManagerNewRequestNotification object:keyverificationManager];
+}
+
+- (void)keyVerificationNewRequestNotification:(NSNotification *)notification
+{
+    if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateBackground)
+    {
+        return;
+    }
+    
+    NSDictionary *userInfo = notification.userInfo;
+    
+    MXKeyVerificationRequest *keyVerificationRequest = userInfo[MXKeyVerificationManagerNotificationRequestKey];
+    
+    if ([keyVerificationRequest isKindOfClass:MXKeyVerificationByDMRequest.class])
+    {
+        MXKeyVerificationByDMRequest *keyVerificationByDMRequest = (MXKeyVerificationByDMRequest*)keyVerificationRequest;
+        
+        if (!keyVerificationByDMRequest.isFromMyUser && keyVerificationByDMRequest.state == MXKeyVerificationRequestStatePending)
+        {
+            MXKAccount *currentAccount = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+            MXSession *session = currentAccount.mxSession;
+            MXRoom *room = [currentAccount.mxSession roomWithRoomId:keyVerificationByDMRequest.roomId];
+            if (!room)
+            {
+                NSLog(@"[AppDelegate][KeyVerification] keyVerificationRequestDidChangeNotification: Unknown room");
+                return;
+            }
+            
+            NSString *sender = keyVerificationByDMRequest.otherUser;
+
+            [room state:^(MXRoomState *roomState) {
+
+                NSString *senderName = [roomState.members memberName:sender];
+                
+                [self presentNewKeyVerificationRequestAlertForSession:session senderName:senderName senderId:sender request:keyVerificationByDMRequest];
+            }];
+        }
+    }
+    else if ([keyVerificationRequest isKindOfClass:MXKeyVerificationByToDeviceRequest.class])
+    {
+        MXKeyVerificationByToDeviceRequest *keyVerificationByToDeviceRequest = (MXKeyVerificationByToDeviceRequest*)keyVerificationRequest;
+        
+        if (!keyVerificationByToDeviceRequest.isFromMyDevice
+            && keyVerificationByToDeviceRequest.state == MXKeyVerificationRequestStatePending)
+        {
+            if (keyVerificationByToDeviceRequest.isFromMyUser)
+            {
+                // Self verification
+                NSLog(@"[AppDelegate][KeyVerification] keyVerificationNewRequestNotification: Self verification from %@", keyVerificationByToDeviceRequest.otherDevice);
+                
+                if (!self.handleSelfVerificationRequest)
+                {
+                    NSLog(@"[AppDelegate][KeyVerification] keyVerificationNewRequestNotification: Self verification handled elsewhere");
+                    return;
+                }
+                      
+                NSString *myUserId = keyVerificationByToDeviceRequest.otherUser;
+                MXKAccount *account = [[MXKAccountManager sharedManager] accountForUserId:myUserId];
+                if (account)
+                {
+                    MXSession *session = account.mxSession;
+                    MXUser *user = [session userWithUserId:myUserId];
+                    
+                    [self presentNewKeyVerificationRequestAlertForSession:session senderName:user.displayname senderId:user.userId request:keyVerificationRequest];
+                }
+            }
+            else
+            {
+                // Device verification from other user
+                // This happens when they or our user do not have cross-signing enabled
+                NSLog(@"[AppDelegate][KeyVerification] keyVerificationNewRequestNotification: Device verification from other user %@:%@", keyVerificationByToDeviceRequest.otherUser, keyVerificationByToDeviceRequest.otherDevice);
+                
+                NSString *myUserId = keyVerificationByToDeviceRequest.to;
+                NSString *userId = keyVerificationByToDeviceRequest.otherUser;
+                MXKAccount *account = [[MXKAccountManager sharedManager] accountForUserId:myUserId];
+                if (account)
+                {
+                    MXSession *session = account.mxSession;
+                    MXUser *user = [session userWithUserId:userId];
+                    
+                    [self presentNewKeyVerificationRequestAlertForSession:session senderName:user.displayname senderId:user.userId request:keyVerificationRequest];
+                }
+            }
+        }
+        else
+        {
+            NSLog(@"[AppDelegate][KeyVerification] keyVerificationNewRequestNotification. Bad request state: %@", keyVerificationByToDeviceRequest);
+        }
+    }
+}
+
+- (void)presentNewKeyVerificationRequestAlertForSession:(MXSession*)session
+                                             senderName:(NSString*)senderName
+                                               senderId:(NSString*)senderId
+                                                request:(MXKeyVerificationRequest*)keyVerificationRequest
+{
+    if (keyVerificationRequest.state != MXKeyVerificationRequestStatePending)
+    {
+        NSLog(@"[AppDelegate] presentNewKeyVerificationRequest: Request already accepted. Do not display it");
+        return;
+    }
+    
+    if (self.incomingKeyVerificationRequestAlertController)
+    {
+        [self.incomingKeyVerificationRequestAlertController dismissViewControllerAnimated:NO completion:nil];
+    }
+    
+    NSString *senderInfo;
+    
+    if (senderName)
+    {
+        senderInfo = [NSString stringWithFormat:@"%@ (%@)", senderName, senderId];
+    }
+    else
+    {
+        senderInfo = senderId;
+    }
+
+    
+    __block id observer;
+    void (^removeObserver)(void) = ^() {
+        if (observer)
+        {
+            [[NSNotificationCenter defaultCenter] removeObserver:observer];
+            observer = nil;
+        }
+    };
+
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"key_verification_tile_request_incoming_title", @"Vector", nil)
+                                                                                             message:senderInfo
+                                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"key_verification_tile_request_incoming_approval_accept", @"Vector", nil)
+                                                                                           style:UIAlertActionStyleDefault
+                                                                                         handler:^(UIAlertAction * action)
+                                                                   {
+                                                                       removeObserver();
+                                                                       [self presentIncomingKeyVerificationRequest:keyVerificationRequest inSession:session];
+                                                                   }]];
+    
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"key_verification_tile_request_incoming_approval_decline", @"Vector", nil)
+                                                                                           style:UIAlertActionStyleDestructive
+                                                                                         handler:^(UIAlertAction * action)
+                                                                   {
+                                                                       removeObserver();
+                                                                       [keyVerificationRequest cancelWithCancelCode:MXTransactionCancelCode.user success:^{
+                                                                           
+                                                                       } failure:^(NSError * _Nonnull error) {
+                                                                           NSLog(@"[AppDelegate][KeyVerification] Fail to cancel incoming key verification request with error: %@", error);
+                                                                       }];
+                                                                   }]];
+    
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"later", @"Vector", nil)
+                                                                                           style:UIAlertActionStyleCancel
+                                                                                         handler:^(UIAlertAction * action)
+                                                                   {
+                                                                       removeObserver();
+                                                                   }]];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
+    self.incomingKeyVerificationRequestAlertController = alertController;
+    
+    observer = [[NSNotificationCenter defaultCenter] addObserverForName:MXKeyVerificationRequestDidChangeNotification
+                                                                 object:keyVerificationRequest
+                                                                  queue:[NSOperationQueue mainQueue]
+                                                             usingBlock:^(NSNotification * _Nonnull note)
+                {
+                    if (keyVerificationRequest.state != MXKeyVerificationRequestStatePending)
+                    {
+                        if (self.incomingKeyVerificationRequestAlertController == alertController)
+                        {
+                            [self.incomingKeyVerificationRequestAlertController dismissViewControllerAnimated:NO completion:nil];
+                            removeObserver();
+                        }
+                    }
+                }];
+}
+
+#pragma mark - New Sign In
+
+- (void)registerUserDidSignInOnNewDeviceNotificationForSession:(MXSession*)session
+{
+    MXCrossSigning *crossSigning = session.crypto.crossSigning;
+    
+    if (!crossSigning)
+    {
+        return;
+    }
+    
+    self.userDidSignInOnNewDeviceObserver = [NSNotificationCenter.defaultCenter addObserverForName:MXCrossSigningMyUserDidSignInOnNewDeviceNotification
+                                                    object:crossSigning
+                                                     queue:[NSOperationQueue mainQueue]
+                                                usingBlock:^(NSNotification *notification)
+     {
+         NSArray<NSString*> *deviceIds = notification.userInfo[MXCrossSigningNotificationDeviceIdsKey];
+         
+         [session.matrixRestClient devices:^(NSArray<MXDevice *> *devices) {
+             
+             NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.deviceId IN %@", deviceIds];
+             NSArray<MXDevice*> *newDevices = [devices filteredArrayUsingPredicate:predicate];
+             
+             NSArray *sortedDevices = [newDevices sortedArrayUsingComparator:^NSComparisonResult(MXDevice * _Nonnull device1, MXDevice *  _Nonnull device2) {
+                 
+                 if (device1.lastSeenTs == device2.lastSeenTs)
+                 {
+                     return NSOrderedSame;
+                 }
+                 
+                 return device1.lastSeenTs > device2.lastSeenTs ? NSOrderedDescending : NSOrderedAscending;
+             }];
+             
+             MXDevice *mostRecentDevice = sortedDevices.lastObject;
+             
+             if (mostRecentDevice)
+             {
+                 [self presentNewSignInAlertForDevice:mostRecentDevice inSession:session];
+             }
+             
+         } failure:^(NSError *error) {
+             NSLog(@"[AppDelegate][NewSignIn] Fail to fetch devices");
+         }];
+     }];
+}
+
+- (void)presentNewSignInAlertForDevice:(MXDevice*)device inSession:(MXSession*)session
+{
+    if (self.userNewSignInAlertController)
+    {
+        return;
+    }
+    
+    NSString *deviceInfo;
+    
+    if (device.displayName)
+    {
+        deviceInfo = [NSString stringWithFormat:@"%@ (%@)", device.displayName, device.deviceId];
+    }
+    else
+    {
+        deviceInfo = device.deviceId;
+    }
+    
+    NSString *alertMessage = [NSString stringWithFormat:NSLocalizedStringFromTable(@"device_verification_self_verify_alert_message", @"Vector", nil), deviceInfo];
+    
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"device_verification_self_verify_alert_title", @"Vector", nil)
+                                                                   message:alertMessage
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    
+    [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"device_verification_self_verify_alert_validate_action", @"Vector", nil)
+                                              style:UIAlertActionStyleDefault
+                                            handler:^(UIAlertAction * action) {
+                                                
+                                                [self presentSelfVerificationForOtherDeviceId:device.deviceId inSession:session];
+                                            }]];
+    
+    [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"later", @"Vector", nil)
+                                               style:UIAlertActionStyleCancel
+                                             handler:nil]];
+     
+    [self presentViewController:alert animated:YES completion:nil];
+    
+    self.userNewSignInAlertController = alert;
+}
+
+#pragma mark - Complete security
+
+- (BOOL)presentCompleteSecurityForSession:(MXSession*)mxSession
+{
+    NSLog(@"[AppDelegate][MXKeyVerification] presentCompleteSecurityForSession");
+    
+    BOOL presented = NO;
+    if (!keyVerificationCoordinatorBridgePresenter.isPresenting)
+    {
+        keyVerificationCoordinatorBridgePresenter = [[KeyVerificationCoordinatorBridgePresenter alloc] initWithSession:mxSession];
+        keyVerificationCoordinatorBridgePresenter.delegate = self;
+        
+        [keyVerificationCoordinatorBridgePresenter presentCompleteSecurityFrom:self.presentedViewController isNewSignIn:NO animated:YES];
+        
+        presented = YES;
+    }
+    else
+    {
+        NSLog(@"[AppDelegate][MXKeyVerification] presentCompleteSecurityForSession: Controller already presented.");
+    }
+    return presented;
 }
 
 #pragma mark - GDPR consent
@@ -3502,8 +2992,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
             self.gdprConsentNotGivenAlertController = nil;
             self.gdprConsentController = nil;
             
-            UIViewController *presentingViewController = self.window.rootViewController.presentedViewController ?: self.window.rootViewController;
-            
             __weak typeof(self) weakSelf = self;
             
             NSString *alertMessage = NSLocalizedStringFromTable(@"gdpr_consent_not_given_alert_message", @"Tchap", nil);
@@ -3520,7 +3008,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
                                                         
                                                         if (strongSelf)
                                                         {
-                                                            [strongSelf presentGDPRConsentFromViewController:presentingViewController consentURI:consentURI];
+                                                            [strongSelf presentGDPRConsentFromViewController:self.presentedViewController consentURI:consentURI];
                                                         }
                                                     }]];
             
@@ -3528,7 +3016,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
                                                       style:UIAlertActionStyleCancel
                                                     handler:nil]];
             
-            [presentingViewController presentViewController:alert animated:YES completion:nil];
+            [self presentViewController:alert animated:YES completion:nil];
             
             self.gdprConsentNotGivenAlertController = alert;
         }
@@ -3606,9 +3094,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     
     serviceTermsModalCoordinatorBridgePresenter.delegate = self;
     
-    UIViewController *presentingViewController = self.window.rootViewController.presentedViewController ?: self.window.rootViewController;
-    
-    [serviceTermsModalCoordinatorBridgePresenter presentFrom:presentingViewController animated:YES];
+    [serviceTermsModalCoordinatorBridgePresenter presentFrom:self.presentedViewController animated:YES];
     self.serviceTermsModalCoordinatorBridgePresenter = serviceTermsModalCoordinatorBridgePresenter;
 }
 
@@ -3655,6 +3141,20 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     NSString *defaultsPathFromApp = [[NSBundle mainBundle] pathForResource:userDefaults ofType:@"plist"];
     NSDictionary *defaults = [NSDictionary dictionaryWithContentsOfFile:defaultsPathFromApp];
     [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
+    
+    if (!RiotSettings.shared.isUserDefaultsMigrated)
+    {
+        [RiotSettings.shared migrate];
+    }
+    
+    // Now use RiotSettings and NSUserDefaults to store `showDecryptedContentInNotifications` setting option
+    // Migrate this information from main MXKAccount to RiotSettings, if value is not in UserDefaults
+    
+    if (!RiotSettings.shared.isShowDecryptedContentInNotificationsHasBeenSetOnce)
+    {
+        MXKAccount *currentAccount = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+        RiotSettings.shared.showDecryptedContentInNotifications = currentAccount.showDecryptedContentInNotifications;
+    }
 }
 
 @end

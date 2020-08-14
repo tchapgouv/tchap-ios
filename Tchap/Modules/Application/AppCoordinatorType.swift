@@ -27,6 +27,13 @@ protocol AppCoordinatorType: Coordinator {
     /// - Returns: true to indicate that the activity has been handled, or false to let iOS handle the activity.
     func handleUserActivity(_ userActivity: NSUserActivity, application: UIApplication) -> Bool
     
+    /// Handle the fragment of a Tchap permalink.
+    ///
+    /// - Parameters:
+    ///   - fragment: The url fragment to handle.
+    /// - Returns: true to indicate that the fragment has been handled, or false when the fragment is not supported.
+    func handlePermalinkFragment(_ fragment: String) -> Bool
+    
     /// Resume the application by selecting a room.
     ///
     /// - Parameters:

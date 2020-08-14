@@ -18,6 +18,7 @@ import Foundation
 
 protocol HomeCoordinatorDelegate: class {
     func homeCoordinator(_ coordinator: HomeCoordinatorType, reloadMatrixSessionsByClearingCache clearCache: Bool)
+    func homeCoordinator(_ coordinator: HomeCoordinatorType, handlePermalinkFragment fragment: String) -> Bool
 }
 
 final class HomeCoordinator: NSObject, HomeCoordinatorType {
@@ -330,6 +331,13 @@ extension HomeCoordinator: RoomCoordinatorDelegate {
     
     func roomCoordinator(_ coordinator: RoomCoordinatorType, didSelectUserID userID: String) {
         self.startDiscussion(with: userID)
+    }
+    
+    func roomCoordinator(_ coordinator: RoomCoordinatorType, handlePermalinkFragment fragment: String) -> Bool {
+        guard let delegate = self.delegate else {
+            return false
+        }
+        return delegate.homeCoordinator(self, handlePermalinkFragment: fragment)
     }
 }
         

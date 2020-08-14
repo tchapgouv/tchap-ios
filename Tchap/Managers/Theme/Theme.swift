@@ -38,6 +38,8 @@ import UIKit
 
     var tintColor: UIColor { get }
     var tintBackgroundColor: UIColor { get }
+    
+    var tabBarUnselectedItemTintColor: UIColor { get }
 
     var unreadRoomIndentColor: UIColor { get }
 

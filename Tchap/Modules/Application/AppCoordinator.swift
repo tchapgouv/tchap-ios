@@ -37,6 +37,7 @@ final class AppCoordinator: AppCoordinatorType {
     private let appVersionChecker: AppVersionChecker
     private var registrationService: RegistrationServiceType?
     private var pendingCheckAppVersionOperation: MXHTTPOperation?
+    private let activityIndicatorPresenter: ActivityIndicatorPresenterType
     
 //    private weak var splitViewCoordinator: SplitViewCoordinatorType?
     private weak var homeCoordinator: HomeCoordinatorType?
@@ -44,6 +45,9 @@ final class AppCoordinator: AppCoordinatorType {
     
     private weak var expiredAccountAlertController: UIAlertController?
     private var accountValidityService: AccountValidityServiceType?
+    
+    private var pendingRoomIdOrAlias: String?
+    private var pendingEventId: String?
     
     /// Main user Matrix session
     private var mainSession: MXSession? {
@@ -64,6 +68,7 @@ final class AppCoordinator: AppCoordinatorType {
         let appVersionCheckerStore = AppVersionCheckerStore()
         self.appVersionChecker = AppVersionChecker(clientConfigurationService: clientConfigurationService, appVersionCheckerStore: appVersionCheckerStore)
         self.appVersionCheckerStore = appVersionCheckerStore
+        self.activityIndicatorPresenter = ActivityIndicatorPresenter()
     }
     
     // MARK: - Public methods
@@ -87,7 +92,9 @@ final class AppCoordinator: AppCoordinatorType {
     
     func handleUserActivity(_ userActivity: NSUserActivity, application: UIApplication) -> Bool {
         if userActivity.activityType == NSUserActivityTypeBrowsingWeb {
+            self.presentActivityIndicator()
             return self.universalLinkService.handleUserActivity(userActivity, completion: { (response) in
+                self.removeActivityIndicator()
                 switch response {
                 case .success(let parsingResult):
                     switch parsingResult {
@@ -169,6 +176,24 @@ final class AppCoordinator: AppCoordinatorType {
         return false
     }
     
+    func handlePermalinkFragment(_ fragment: String) -> Bool {
+        // Handle the permalink fragment with the universal link service
+        return self.universalLinkService.handleFragment(fragment, completion: { (response) in
+            switch response {
+            case .success(let parsingResult):
+                switch parsingResult {
+                case .registrationLink:
+                    // We don't expect a registration link from a permalink, we ignore this case here.
+                    NSLog("[AppCoordinator] handlePermalinkFragment: unexpected fragment (registration link)")
+                case .roomLink(let roomIdOrAlias, let eventID):
+                    _ = self.showRoom(with: roomIdOrAlias, onEventID: eventID)
+                }
+            case .failure(let error):
+                self.showError(error)
+            }
+        })
+    }
+    
     func resumeBySelectingRoom(with roomId: String) {
         guard let account = MXKAccountManager.shared().accountKnowingRoom(withRoomIdOrAlias: roomId),
             let homeCoordinator = self.homeCoordinator,
@@ -184,16 +209,22 @@ final class AppCoordinator: AppCoordinatorType {
     }
     
     func showRoom(with roomIdOrAlias: String, onEventID eventID: String? = nil) -> Bool {
-        guard let account = MXKAccountManager.shared().accountKnowingRoom(withRoomIdOrAlias: roomIdOrAlias),
-            let homeCoordinator = self.homeCoordinator else {
+        guard let homeCoordinator = self.homeCoordinator else {
                 return false
         }
+        
+        self.cancelPendingRoomSelection()
         
         let roomID: String?
         
         if roomIdOrAlias.hasPrefix("#") {
             // Translate the alias into the room id
-            if let room = account.mxSession.room(withAlias: roomIdOrAlias) {
+            // Postpone the action if the session didn't loaded the data from the store yet
+            if let session = self.mainSession, session.state.rawValue < MXSessionStateStoreDataReady.rawValue {
+                self.postponeRoomSelection(with: roomIdOrAlias, onEventID: eventID)
+                roomID = nil
+            } else if let account = MXKAccountManager.shared().accountKnowingRoom(withRoomIdOrAlias: roomIdOrAlias),
+                let room = account.mxSession.room(withAlias: roomIdOrAlias) {
                 roomID = room.roomId
             } else {
                 roomID = nil
@@ -282,6 +313,7 @@ final class AppCoordinator: AppCoordinatorType {
         self.unregisterIgnoredUsersDidChangeNotification()
         self.unregisterDidCorruptDataNotification()
         self.unregisterTrackedServerErrorNotification()
+        self.cancelPendingRoomSelection()
         
         if let accounts = MXKAccountManager.shared().activeAccounts, !accounts.isEmpty {
             for account in accounts {
@@ -337,6 +369,36 @@ final class AppCoordinator: AppCoordinatorType {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.mxhttpClientMatrixError, object: nil)
     }
     
+    private func registerSessionStateNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(sessionStateDidChange), name: NSNotification.Name.mxSessionStateDidChange, object: nil)
+    }
+    
+    private func unregisterSessionStateNotification() {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.mxSessionStateDidChange, object: nil)
+    }
+    
+    private func postponeRoomSelection(with roomIdOrAlias: String, onEventID eventID: String? = nil) {
+        self.pendingRoomIdOrAlias = roomIdOrAlias
+        self.pendingEventId = eventID
+        self.registerSessionStateNotification()
+    }
+    
+    private func cancelPendingRoomSelection() {
+        self.unregisterSessionStateNotification()
+        self.pendingRoomIdOrAlias = nil
+        self.pendingEventId = nil
+    }
+    
+    @objc private func sessionStateDidChange() {
+        // Check whether the session has at least loaded the data from the store
+        if let session = self.mainSession, session.state.rawValue >= MXSessionStateStoreDataReady.rawValue {
+            self.unregisterSessionStateNotification()
+            if let roomIdOrAlias = self.pendingRoomIdOrAlias {
+                _ = showRoom(with: roomIdOrAlias, onEventID: self.pendingEventId)
+            }
+        }
+    }
+    
     private func handleRegisterAfterEmailValidation(_ registerParams: [String: String]) {
         // Check required parameters
         guard let homeserver = registerParams["hs_url"],
@@ -359,6 +421,7 @@ final class AppCoordinator: AppCoordinatorType {
         }
         
         // Create a rest client
+        self.presentActivityIndicator()
         let restClientBuilder = RestClientBuilder()
         restClientBuilder.build(fromHomeServer: homeserver) { (restClientBuilderResult) in
             switch restClientBuilderResult {
@@ -382,6 +445,7 @@ final class AppCoordinator: AppCoordinatorType {
                 
                 registrationService.register(withEmailCredentials: threePIDCredentials, sessionId: sessionId, password: nil, deviceDisplayName: deviceDisplayName) { (registrationResult) in
                     self.registrationService = nil
+                    self.removeActivityIndicator()
                     switch registrationResult {
                     case .success:
                         print("[AppCoordinator] handleRegisterAfterEmailValidation: success")
@@ -392,9 +456,22 @@ final class AppCoordinator: AppCoordinatorType {
                 }
                 self.registrationService = registrationService
             case .failure(let error):
+                self.removeActivityIndicator()
                 self.showError(error)
             }
         }
+    }
+    
+    private func presentActivityIndicator() {
+        let rootViewController = AppDelegate.theDelegate().window.rootViewController
+        
+        if let view = rootViewController?.presentedViewController?.view ?? rootViewController?.view {
+            self.activityIndicatorPresenter.presentActivityIndicator(on: view, animated: true)
+        }
+    }
+    
+    private func removeActivityIndicator() {
+        self.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
     }
     
     private func showError(_ error: Error) {
@@ -424,6 +501,7 @@ final class AppCoordinator: AppCoordinatorType {
         self.unregisterIgnoredUsersDidChangeNotification()
         self.unregisterDidCorruptDataNotification()
         self.unregisterTrackedServerErrorNotification()
+        self.cancelPendingRoomSelection()
         
         self.showWelcome()
         
@@ -573,6 +651,10 @@ extension AppCoordinator: WelcomeCoordinatorDelegate {
 extension AppCoordinator: HomeCoordinatorDelegate {
     func homeCoordinator(_ coordinator: HomeCoordinatorType, reloadMatrixSessionsByClearingCache clearCache: Bool) {
         self.reloadSession(clearCache: clearCache)
+    }
+    
+    func homeCoordinator(_ coordinator: HomeCoordinatorType, handlePermalinkFragment fragment: String) -> Bool {
+        return self.handlePermalinkFragment(fragment)
     }
 }
 

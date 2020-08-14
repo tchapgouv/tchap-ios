@@ -32,6 +32,12 @@ extension UIView {
         }
     }
     
+    func tc_removeAllSubviews() {
+        for subView in self.subviews {
+            subView.removeFromSuperview()
+        }
+    }
+    
     func tc_mask(withPath path: UIBezierPath, inverse: Bool = false) {
         let path = path
         let maskLayer = CAShapeLayer()
