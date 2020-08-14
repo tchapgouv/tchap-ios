@@ -2822,7 +2822,9 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
             
             // iOS Patch: fix urls before using it
             NSURL *fixedURL = [Tools fixURLWithSeveralHashKeys:url];
-            NSString *fragment = fixedURL.fragment;
+            // In some cases (for example when the url has multiple '#'), the '%' character has been espaced twice in the provided url (we got %2524 for '$').
+            // We decided to remove percent encoding on all the fragment here. A second attempt will take place during the parameters parsing.
+            NSString *fragment = [fixedURL.fragment stringByRemovingPercentEncoding];
             if (fragment && self.delegate)
             {
                 [self.delegate roomViewController:self handlePermalinkFragment:fragment];
