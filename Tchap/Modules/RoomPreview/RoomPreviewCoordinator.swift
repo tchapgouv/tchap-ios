@@ -94,7 +94,9 @@ final class RoomPreviewCoordinator: NSObject, RoomPreviewCoordinatorType {
         let signURL: URL?
         
         // We promote here join by room alias instead of room id when an alias is available, in order to handle federated room.
-        if let firstRoomAlias = roomPreviewData.roomAliases?.first {
+        if let canonicalAlias = roomPreviewData.roomCanonicalAlias {
+            roomIdOrAlias = canonicalAlias
+        } else if let firstRoomAlias = roomPreviewData.roomAliases?.first {
             roomIdOrAlias = firstRoomAlias
         } else {
             roomIdOrAlias = roomPreviewData.roomId
