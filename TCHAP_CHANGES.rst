@@ -1,3 +1,9 @@
+Changes in Tchap 1.0.XX (2020-xx-xx)
+===================================================
+ 
+Bug Fixes:
+ * Join a federated room failed PR #318
+
 Changes in Tchap 1.0.25 (2020-08-14)
 ===================================================
  
