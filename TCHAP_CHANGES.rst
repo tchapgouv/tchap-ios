@@ -1,3 +1,11 @@
+Changes in Tchap 1.0.26 (2020-08-21)
+===================================================
+ 
+Bug Fixes:
+ * Join a federated room failed PR #318
+ * The public room preview header is displayed under the navigation bar
+ * Room members count displayed in the title is wrong #291
+
 Changes in Tchap 1.0.25 (2020-08-14)
 ===================================================
  
