@@ -3,6 +3,7 @@ Changes in Tchap 1.0.XX (2020-xx-xx)
  
 Bug Fixes:
  * Join a federated room failed PR #318
+ * The public room preview header is displayed under the navigation bar
 
 Changes in Tchap 1.0.25 (2020-08-14)
 ===================================================
