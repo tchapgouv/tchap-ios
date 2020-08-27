@@ -214,6 +214,8 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     MXSDKOptions *sdkOptions = [MXSDKOptions sharedInstance];
     sdkOptions.applicationGroupIdentifier = [[NSUserDefaults standardUserDefaults] objectForKey:@"appGroupId"];
     //sdkOptions.computeE2ERoomSummaryTrust = YES; //Tchap: keep using the default value (NO) for this option
+    
+    [LegacyAppDelegate setupAppSettings];
 
     // Redirect NSLogs to files only if we are not debugging
     if (!isatty(STDERR_FILENO))
@@ -3141,7 +3143,10 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     NSString *defaultsPathFromApp = [[NSBundle mainBundle] pathForResource:userDefaults ofType:@"plist"];
     NSDictionary *defaults = [NSDictionary dictionaryWithContentsOfFile:defaultsPathFromApp];
     [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
-    
+}
+
++ (void)setupAppSettings
+{
     if (!RiotSettings.shared.isUserDefaultsMigrated)
     {
         [RiotSettings.shared migrate];
