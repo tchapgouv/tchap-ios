@@ -1,3 +1,9 @@
+Changes in Tchap 1.0.27 (2020-08-28)
+===================================================
+ 
+Bug Fix:
+ * The user is requested to login again after the application update #320
+
 Changes in Tchap 1.0.26 (2020-08-21)
 ===================================================
  
