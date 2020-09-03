@@ -1,3 +1,9 @@
+Changes in Tchap 1.0.28 (2020-09-03)
+===================================================
+ 
+Bug Fix:
+ * Application may crash after the application update #321
+
 Changes in Tchap 1.0.27 (2020-08-28)
 ===================================================
  
