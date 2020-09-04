@@ -180,7 +180,7 @@
 "room_settings_tab_title" = "Paramètres";
 "room_settings_remove_from_rooms_directory" = "Retirer ce salon de la liste des salons publics";
 "room_settings_remove_from_rooms_directory_prompt" = "Cette action est irréversible.\nVoulez-vous vraiment retirer ce salon des salons publics ?";
-"room_settings_room_access_title" = "Information complémentaire :";
+"room_settings_room_access_title" = "Gestion des comptes externes";
 "room_settings_room_access_restricted" = "Les externes ne sont pas autorisés à rejoindre ce salon";
 "room_settings_room_access_unrestricted" = "Les externes sont autorisés à rejoindre ce salon";
 "room_settings_allow_external_users_to_join" = "Autoriser l’accès aux externes à ce salon";
@@ -189,6 +189,10 @@
 "room_settings_retention_period_one_day" = "1 jour";
 "room_settings_retention_period_in_days" = "%d jours";
 "room_settings_fail_to_update_retention_period" = "Échec de mise à jour de la durée de l'historique";
+"room_settings_leave_room" = "Quitter ce salon";
+"room_settings_room_access_by_link_title" = "Accès par lien";
+"room_settings_room_access_by_link_disabled" = "Ce salon n’est pas accessible par lien";
+"room_settings_room_access_by_link_enabled" = "Ce salon est accessible par lien";
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Room Attachment Antivirus Scan

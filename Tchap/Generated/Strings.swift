@@ -306,6 +306,8 @@ internal enum TchapL10n {
   internal static let roomSettingsAllowExternalUsersToJoinPromptMsg = TchapL10n.tr("Tchap", "room_settings_allow_external_users_to_join_prompt_msg")
   /// Échec de mise à jour de la durée de l'historique
   internal static let roomSettingsFailToUpdateRetentionPeriod = TchapL10n.tr("Tchap", "room_settings_fail_to_update_retention_period")
+  /// Quitter ce salon
+  internal static let roomSettingsLeaveRoom = TchapL10n.tr("Tchap", "room_settings_leave_room")
   /// Retirer ce salon de la liste des salons publics
   internal static let roomSettingsRemoveFromRoomsDirectory = TchapL10n.tr("Tchap", "room_settings_remove_from_rooms_directory")
   /// Cette action est irréversible.\nVoulez-vous vraiment retirer ce salon des salons publics ?
@@ -318,9 +320,15 @@ internal enum TchapL10n {
   internal static let roomSettingsRetentionPeriodOneDay = TchapL10n.tr("Tchap", "room_settings_retention_period_one_day")
   /// Limitation de l’historique
   internal static let roomSettingsRetentionTitle = TchapL10n.tr("Tchap", "room_settings_retention_title")
+  /// Ce salon n’est pas accessible par lien
+  internal static let roomSettingsRoomAccessByLinkDisabled = TchapL10n.tr("Tchap", "room_settings_room_access_by_link_disabled")
+  /// Ce salon est accessible par lien
+  internal static let roomSettingsRoomAccessByLinkEnabled = TchapL10n.tr("Tchap", "room_settings_room_access_by_link_enabled")
+  /// Accès par lien
+  internal static let roomSettingsRoomAccessByLinkTitle = TchapL10n.tr("Tchap", "room_settings_room_access_by_link_title")
   /// Les externes ne sont pas autorisés à rejoindre ce salon
   internal static let roomSettingsRoomAccessRestricted = TchapL10n.tr("Tchap", "room_settings_room_access_restricted")
-  /// Information complémentaire :
+  /// Gestion des comptes externes
   internal static let roomSettingsRoomAccessTitle = TchapL10n.tr("Tchap", "room_settings_room_access_title")
   /// Les externes sont autorisés à rejoindre ce salon
   internal static let roomSettingsRoomAccessUnrestricted = TchapL10n.tr("Tchap", "room_settings_room_access_unrestricted")
