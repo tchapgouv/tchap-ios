@@ -80,6 +80,7 @@ typedef enum : NSUInteger
 @protected
     // Section indexes
     NSInteger inviteToTchapButtonSection;
+    NSInteger inviteByLinkButtonSection;
     NSInteger addEmailButtonSection;
     NSInteger filteredLocalContactsSection;
     NSInteger filteredMatrixContactsSection;
@@ -100,6 +101,14 @@ typedef enum : NSUInteger
  @return YES if the indexPath is the invite button one
  */
 -(BOOL)isInviteButtonIndexPath:(NSIndexPath*)indexPath;
+
+/**
+Check whether the invite by link button is located to the given index path.
+
+@param indexPath the index of the cell
+@return YES if the indexPath is the invite by link button one
+*/
+-(BOOL)isInviteByLinkButtonIndexPath:(NSIndexPath*)indexPath;
 
 /**
  Check whether the add email button is located to the given index path.
@@ -238,6 +247,14 @@ typedef enum : NSUInteger
  Tell whether the invite to Tchap button is displayed at the top of the contacts list (NO by default).
  */
 @property (nonatomic) BOOL showInviteToTchapButton;
+
+/**
+ Tell whether the user is allowed to invite by sharing a link (NO by default).
+ */
+@property (nonatomic, readonly) BOOL showInviteByLinkButton;
+@property (nonatomic, readonly) NSString *inviteByLinkRoomId;
+- (void)showInviteByLinkButtonForRoomId:(NSString *)roomId;
+- (void)hideInviteByLinkButton;
 
 /**
  Tell whether the user is allowed to add some email addresses to the list (NO by default).

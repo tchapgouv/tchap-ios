@@ -475,6 +475,15 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
         return;
     }
     
+    // Check whether the user wants to invite people by sharing a link to the room
+    if ([self.contactsDataSource isInviteByLinkButtonIndexPath:indexPath])
+    {
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        RoomAccessByLinkViewController *roomAccessByLinkViewController = [RoomAccessByLinkViewController instantiateWithSession:self.contactsDataSource.mxSession roomId:self.contactsDataSource.inviteByLinkRoomId];
+        [self.navigationController pushViewController:roomAccessByLinkViewController animated:YES];
+        return;
+    }
+    
     // Check whether the user wants to add manually some email into the list
     if ([self.contactsDataSource isAddEmailButtonIndexPath:indexPath])
     {

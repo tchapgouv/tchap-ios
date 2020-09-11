@@ -55,6 +55,7 @@
     // Tell whether the user is allowed to invite other users
     BOOL isUserAllowedToInvite;
     BOOL isUserAllowedToKick;
+    BOOL isUserAllowedToInviteByLink;
     
     // Display a gradient view above the screen.
     CAGradientLayer* tableViewMaskLayer;
@@ -709,6 +710,14 @@
     [contactsDataSource finalizeInitialization];
     contactsDataSource.areSectionsShrinkable = YES;
     contactsDataSource.showAddEmailButton = YES;
+    if (isUserAllowedToInviteByLink)
+    {
+        [contactsDataSource showInviteByLinkButtonForRoomId:self.mxRoom.roomId];
+    }
+    else
+    {
+        [contactsDataSource hideInviteByLinkButton];
+    }
     if (isFederated)
     {
         if ([roomAccessRule isEqualToString:RoomService.roomAccessRuleRestricted])
@@ -779,6 +788,7 @@
             MXRoomPowerLevels *powerLevels = [roomState powerLevels];
             self->isUserAllowedToInvite = ([powerLevels powerLevelOfUserWithUserID:userId] >= powerLevels.invite);
             self->isUserAllowedToKick = ([powerLevels powerLevelOfUserWithUserID:userId] >= powerLevels.kick);
+            self->isUserAllowedToInviteByLink = ([powerLevels powerLevelOfUserWithUserID:userId] >= RoomPowerLevelAdmin || roomState.isJoinRulePublic);
             self->addParticipantButtonImageView.hidden = self->tableViewMaskLayer.hidden = !self->isUserAllowedToInvite;
             
             [self finalizeParticipantsList:roomState completion:completion];

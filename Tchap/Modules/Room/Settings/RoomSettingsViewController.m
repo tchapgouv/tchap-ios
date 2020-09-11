@@ -1544,7 +1544,7 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
                 else if (indexPath.row == roomAccessByLinkIndex)
                 {
                     RoomAccessByLinkViewController *roomAccessByLinkViewController = [RoomAccessByLinkViewController instantiateWithSession:self.mainSession roomId:self.roomId];
-                    [self.parentViewController.navigationController pushViewController:roomAccessByLinkViewController animated:NO];
+                    [self.parentViewController.navigationController pushViewController:roomAccessByLinkViewController animated:YES];
                 }
             }
         }
