@@ -188,7 +188,17 @@ final class RoomAccessByLinkViewController: UIViewController {
     }
     
     @IBAction private func shareLinkButtonAction(_ sender: Any) {
-        //TODO
+        guard let link = self.roomLinkLabel.text, !link.isEmpty else {
+            print("[RoomAccessByLinkViewController] shareLinkButtonAction: no link to share")
+            return
+        }
+        
+        let activityViewController = UIActivityViewController(activityItems: [link], applicationActivities: nil)
+        activityViewController.modalTransitionStyle = .coverVertical
+        activityViewController.popoverPresentationController?.sourceView = self.shareLinkButton
+        activityViewController.popoverPresentationController?.sourceRect = self.shareLinkButton.bounds
+        
+        self.present(activityViewController, animated: true, completion: nil)
     }
     
     private func setupRoomLinkTapGestureRecognizer() {
