@@ -304,6 +304,12 @@ internal enum TchapL10n {
   internal static let roomSettingsAllowExternalUsersToJoin = TchapL10n.tr("Tchap", "room_settings_allow_external_users_to_join")
   /// Cette action est irréversible.\nVoulez-vous vraiment autoriser les externes à rejoindre ce salon ?
   internal static let roomSettingsAllowExternalUsersToJoinPromptMsg = TchapL10n.tr("Tchap", "room_settings_allow_external_users_to_join_prompt_msg")
+  /// Activer l’accès au salon par lien
+  internal static let roomSettingsEnableRoomAccessByLink = TchapL10n.tr("Tchap", "room_settings_enable_room_access_by_link")
+  /// Les autres utilisateurs seront autorisés à rejoindre ce salon à partir d’un lien
+  internal static let roomSettingsEnableRoomAccessByLinkInfoOff = TchapL10n.tr("Tchap", "room_settings_enable_room_access_by_link_info_off")
+  /// Les autres utilisateurs peuvent rejoindre ce salon à partir du lien suivant :
+  internal static let roomSettingsEnableRoomAccessByLinkInfoOn = TchapL10n.tr("Tchap", "room_settings_enable_room_access_by_link_info_on")
   /// Échec de mise à jour de la durée de l'historique
   internal static let roomSettingsFailToUpdateRetentionPeriod = TchapL10n.tr("Tchap", "room_settings_fail_to_update_retention_period")
   /// Quitter ce salon
@@ -324,6 +330,12 @@ internal enum TchapL10n {
   internal static let roomSettingsRoomAccessByLinkDisabled = TchapL10n.tr("Tchap", "room_settings_room_access_by_link_disabled")
   /// Ce salon est accessible par lien
   internal static let roomSettingsRoomAccessByLinkEnabled = TchapL10n.tr("Tchap", "room_settings_room_access_by_link_enabled")
+  /// Ce changement n’est pas supporté actuellement car les externes sont autorisés à rejoindre ce salon. Il sera supporté prochainement
+  internal static let roomSettingsRoomAccessByLinkForbidden = TchapL10n.tr("Tchap", "room_settings_room_access_by_link_forbidden")
+  /// lien invalide
+  internal static let roomSettingsRoomAccessByLinkInvalid = TchapL10n.tr("Tchap", "room_settings_room_access_by_link_invalid")
+  /// Partager le lien
+  internal static let roomSettingsRoomAccessByLinkShare = TchapL10n.tr("Tchap", "room_settings_room_access_by_link_share")
   /// Accès par lien
   internal static let roomSettingsRoomAccessByLinkTitle = TchapL10n.tr("Tchap", "room_settings_room_access_by_link_title")
   /// Les externes ne sont pas autorisés à rejoindre ce salon

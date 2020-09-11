@@ -28,6 +28,7 @@ UIColor *kColorGreyishPurple;
 UIColor *kColorWarmGrey;
 UIColor *kColorLightGrey;
 UIColor *kColorDarkGrey;
+UIColor *kColorPaleGrey;
 
 #pragma mark Variant 1
 
@@ -121,6 +122,7 @@ UIColor *kVariant2OverlayBackgroundColor;
     kColorWarmGrey = [[UIColor alloc] initWithRgb:0x858585];
     kColorLightGrey = [[UIColor alloc] initWithRgb:0xf0f0f0];
     kColorDarkGrey = [[UIColor alloc] initWithRgb:0xcccccc];
+    kColorPaleGrey = [[UIColor alloc] initWithRgb:0xf2f5f8];
     
     // Observe user interface theme change.
     [[NSUserDefaults standardUserDefaults] addObserver:[DesignValues sharedInstance] forKeyPath:@"userInterfaceTheme" options:0 context:nil];

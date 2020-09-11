@@ -178,7 +178,7 @@ final class RoomService: NSObject, RoomServiceType {
             historyVisibility = .worldReadable
             // In case of a public room, the room alias is mandatory.
             // That's why, we deduce the room alias from the room name.
-            alias = self.defaultAlias(for: name)
+            alias = RoomService.defaultAliasName(for: name)
         } else {
             preset = .privateChat
             historyVisibility = .invited
@@ -289,20 +289,20 @@ final class RoomService: NSObject, RoomServiceType {
         })
     }
     
-    private func defaultAlias(for roomName: String) -> String {
+    static func defaultAliasName(for roomName: String) -> String {
         var alias = roomName.trimmingCharacters(in: .whitespacesAndNewlines).filter { "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".contains($0) }
         
         if alias.isEmpty {
-            alias = self.randomString(length: 7)
+            alias = randomString(length: 7)
         } else {
-            alias.append(self.randomString(length: 7))
+            alias.append(randomString(length: 7))
         }
         
         return alias
     }
     
-    private func randomString(length: Int) -> String {
-        let letters = Set("ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890")
+    private static func randomString(length: Int) -> String {
+        let letters = Set("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890")
         return String((0..<length).map { _ in
             return letters.randomElement() ?? Character("A")
         })

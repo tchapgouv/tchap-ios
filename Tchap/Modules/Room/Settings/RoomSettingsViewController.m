@@ -1543,7 +1543,8 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
                 }
                 else if (indexPath.row == roomAccessByLinkIndex)
                 {
-                    //TODO open specific screen "Access by link"
+                    RoomAccessByLinkViewController *roomAccessByLinkViewController = [RoomAccessByLinkViewController instantiateWithSession:self.mainSession roomId:self.roomId];
+                    [self.parentViewController.navigationController pushViewController:roomAccessByLinkViewController animated:NO];
                 }
             }
         }
