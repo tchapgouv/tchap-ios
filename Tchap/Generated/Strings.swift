@@ -302,6 +302,8 @@ internal enum TchapL10n {
   }
   /// Membres
   internal static let roomMembersTabTitle = TchapL10n.tr("Tchap", "room_members_tab_title")
+  /// Ce changement n’est pas supporté actuellement car le salon est accessible par lien. Il sera supporté prochainement
+  internal static let roomSettingsAllowExternalUsersForbidden = TchapL10n.tr("Tchap", "room_settings_allow_external_users_forbidden")
   /// Autoriser l’accès aux externes à ce salon
   internal static let roomSettingsAllowExternalUsersToJoin = TchapL10n.tr("Tchap", "room_settings_allow_external_users_to_join")
   /// Cette action est irréversible.\nVoulez-vous vraiment autoriser les externes à rejoindre ce salon ?

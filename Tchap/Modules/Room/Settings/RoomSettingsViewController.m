@@ -1348,11 +1348,10 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
             // Check whether the current user is room admin
             BOOL isAdmin = (oneSelfPowerLevel >= RoomPowerLevelAdmin);
             
-            // The room admin is able to open a "private room" to the external users
-            // (We name "private rooms" those which require an invite to be joined)
+            // The room admin is allowed to open a room to the external users, except if the room is published to the rooms directory.
             if ([roomAccessRule isEqualToString:RoomService.roomAccessRuleRestricted]
                 && isAdmin
-                && [mxRoomState.joinRule isEqualToString:kMXRoomJoinRuleInvite]) {
+                && actualDirectoryVisibility && ![actualDirectoryVisibility isEqualToString:kMXRoomDirectoryVisibilityPublic]) {
                 MXKTableViewCellWithLabelAndSwitch *allowExternalMembersCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
                 
                 allowExternalMembersCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_settings_allow_external_users_to_join", @"Tchap", nil);
@@ -1839,6 +1838,22 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
                                                       self->pendingOperation = nil;
                                                       [self stopActivityIndicator];
                                                       // Alert user
+                                                      NSDictionary *dict = error.userInfo;
+                                                      if (dict)
+                                                      {
+                                                          NSString* errCode = [dict valueForKey:@"errcode"];
+                                                          if (errCode)
+                                                          {
+                                                              if ([errCode isEqualToString:kMXErrCodeStringForbidden] && ![self->mxRoomState.joinRuleisEqualToString:kMXRoomJoinRuleInvite])
+                                                              {
+                                                                  NSMutableDictionary *customInfo = [NSMutableDictionary dictionaryWithDictionary:dict];
+                                                                  customInfo[NSLocalizedFailureReasonErrorKey] = NSLocalizedStringFromTable(@"error_title_default", @"Tchap", nil);
+                                                                  customInfo[NSLocalizedDescriptionKey] = NSLocalizedStringFromTable(@"room_settings_allow_external_users_forbidden", @"Tchap", nil);
+                                                                  NSError *customError = [NSError errorWithDomain:error.domain code:error.code userInfo:customInfo];
+                                                                  error = customError;
+                                                             }
+                                                         }
+                                                      }
                                                       [[AppDelegate theDelegate] showErrorAsAlert:error];
                                                       [self refreshRoomSettings];
                                                       

@@ -199,6 +199,7 @@
 "room_settings_enable_room_access_by_link_info_on" = "Les autres utilisateurs peuvent rejoindre ce salon à partir du lien suivant\U00A0:";
 "room_settings_room_access_by_link_share" = "Partager le lien";
 "room_settings_room_access_by_link_forbidden" = "Ce changement n’est pas supporté actuellement car les externes sont autorisés à rejoindre ce salon. Il sera supporté prochainement";
+"room_settings_allow_external_users_forbidden" = "Ce changement n’est pas supporté actuellement car le salon est accessible par lien. Il sera supporté prochainement";
 "room_settings_room_access_by_link_invalid" = "lien invalide";
 
 ////////////////////////////////////////////////////////////////////////////////
