@@ -1844,7 +1844,7 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
                                                           NSString* errCode = [dict valueForKey:@"errcode"];
                                                           if (errCode)
                                                           {
-                                                              if ([errCode isEqualToString:kMXErrCodeStringForbidden] && ![self->mxRoomState.joinRuleisEqualToString:kMXRoomJoinRuleInvite])
+                                                              if ([errCode isEqualToString:kMXErrCodeStringForbidden] && ![self->mxRoomState.joinRule isEqualToString:kMXRoomJoinRuleInvite])
                                                               {
                                                                   NSMutableDictionary *customInfo = [NSMutableDictionary dictionaryWithDictionary:dict];
                                                                   customInfo[NSLocalizedFailureReasonErrorKey] = NSLocalizedStringFromTable(@"error_title_default", @"Tchap", nil);
