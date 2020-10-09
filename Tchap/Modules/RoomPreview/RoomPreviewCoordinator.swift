@@ -28,7 +28,8 @@ final class RoomPreviewCoordinator: NSObject, RoomPreviewCoordinatorType {
     // MARK: Private
     
     private let session: MXSession
-    private let publicRoom: MXPublicRoom
+    private let publicRoom: MXPublicRoom?
+    private let roomPreviewData: RoomPreviewData
     
     private let roomViewController: RoomViewController
     private let activityIndicatorPresenter: ActivityIndicatorPresenterType
@@ -45,6 +46,19 @@ final class RoomPreviewCoordinator: NSObject, RoomPreviewCoordinatorType {
     init(session: MXSession, publicRoom: MXPublicRoom) {
         self.session = session
         self.publicRoom = publicRoom
+        self.roomPreviewData = RoomPreviewData(publicRoom: publicRoom, andSession: self.session)
+        
+        self.roomViewController = RoomViewController.instantiate()
+        self.activityIndicatorPresenter = ActivityIndicatorPresenter()
+        self.roomsErrorPresenter = AlertErrorPresenter(viewControllerPresenter: roomViewController)
+        
+        super.init()
+    }
+    
+    init(session: MXSession, roomPreviewData: RoomPreviewData) {
+        self.session = session
+        self.publicRoom = nil
+        self.roomPreviewData = roomPreviewData
         
         self.roomViewController = RoomViewController.instantiate()
         self.activityIndicatorPresenter = ActivityIndicatorPresenter()
@@ -58,17 +72,20 @@ final class RoomPreviewCoordinator: NSObject, RoomPreviewCoordinatorType {
     func start() {
         self.roomViewController.tc_removeBackTitle()
         
-        let roomPreviewData: RoomPreviewData = RoomPreviewData(publicRoom: publicRoom, andSession: self.session)
-        let roomName = roomPreviewData.roomName
-        
-        if publicRoom.worldReadable {
-            // Try to get more information about the room
+        let roomName: String? = roomPreviewData.roomName
+
+        // Try to get more information about the room
+        if publicRoom?.worldReadable ?? false {
             roomPreviewData.peek(inRoom: { [weak self] succeeded in
+                guard let sself = self else {
+                    return
+                }
+
                 if succeeded {
-                    self?.roomViewController.displayRoomPreview(roomPreviewData)
+                    sself.roomViewController.displayRoomPreview(sself.roomPreviewData)
                 } else if roomName != nil {
                     // Restore the room name which has been overwritten with the roomId
-                    roomPreviewData.roomName = roomName
+                    sself.roomPreviewData.roomName = roomName
                 }
             })
         }
@@ -134,17 +151,21 @@ final class RoomPreviewCoordinator: NSObject, RoomPreviewCoordinatorType {
         
         let nsError = error as NSError
         
-        if let message = nsError.userInfo[NSLocalizedDescriptionKey] as? String {
-            
-            if message == "No known servers" {
-                // minging kludge until https://matrix.org/jira/browse/SYN-678 is fixed
-                // 'Error when trying to join an empty room should be more explicit'
-                errorMessage = Bundle.mxk_localizedString(forKey: "room_error_join_failed_empty_room")
-            } else {
-                errorMessage = message
-            }
+        if MXError(nsError: nsError).errcode == kMXErrCodeStringForbidden {
+            errorMessage = TchapL10n.tchapRoomAccessUnauthorized
         } else {
-            errorMessage = TchapL10n.errorMessageDefault
+            if let message = nsError.userInfo[NSLocalizedDescriptionKey] as? String {
+    
+                if message == "No known servers" {
+                    // minging kludge until https://matrix.org/jira/browse/SYN-678 is fixed
+                    // 'Error when trying to join an empty room should be more explicit'
+                    errorMessage = Bundle.mxk_localizedString(forKey: "room_error_join_failed_empty_room")
+                } else {
+                    errorMessage = message
+                }
+            } else {
+                errorMessage = TchapL10n.errorMessageDefault
+            }
         }
         
         return ErrorPresentableImpl(title: errorTitle, message: errorMessage)
