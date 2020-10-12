@@ -185,9 +185,6 @@ final class RoomService: NSObject, RoomServiceType {
             alias = nil
         }
         
-        // A Tchap room member must be moderator to invite
-        let powerLevelContentOverride = ["invite": RoomPowerLevel.moderator.rawValue]
-        
         let roomCreationParameters = RoomCreationParameters(visibility: visibility,
                                                             accessRule: accessRule,
                                                             preset: preset,
@@ -198,7 +195,7 @@ final class RoomService: NSObject, RoomServiceType {
                                                             retentionPeriod: retentionPeriod,
                                                             isFederated: isFederated,
                                                             historyVisibility: historyVisibility,
-                                                            powerLevelContentOverride: powerLevelContentOverride,
+                                                            powerLevelContentOverride: nil,
                                                             isDirect: false)
         
         return self.createRoom(with: roomCreationParameters, completion: completion)
