@@ -374,8 +374,12 @@ internal enum TchapL10n {
   internal static let shareExtensionFailedToShareInEmptyDiscussion = TchapL10n.tr("Tchap", "share_extension_failed_to_share_in_empty_discussion")
   /// Votre correspondant a quitté définitivement cette discussion.\nVous devez en créer une nouvelle pour le recontacter, s'il est toujours joignable sur Tchap.
   internal static let tchapCannotInviteDeactivatedAccountUser = TchapL10n.tr("Tchap", "tchap_cannot_invite_deactivated_account_user")
+  /// Vous n'êtes pas autorisé à rejoindre cette conversation. Une invitation est nécessaire.
+  internal static let tchapRoomAccessUnauthorized = TchapL10n.tr("Tchap", "tchap_room_access_unauthorized")
   /// Voulez-vous vraiment quitter cette conversation ?\n\nElle ne sera plus administrée, et vous risquez de ne plus pouvoir la joindre de nouveau.
   internal static let tchapRoomAdminLeavePromptMsg = TchapL10n.tr("Tchap", "tchap_room_admin_leave_prompt_msg")
+  /// Ce lien n'est pas valide
+  internal static let tchapRoomInvalidLink = TchapL10n.tr("Tchap", "tchap_room_invalid_link")
   /// Attention
   internal static let warningTitle = TchapL10n.tr("Tchap", "warning_title")
   /// J'ai un compte
