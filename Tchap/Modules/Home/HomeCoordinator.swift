@@ -126,7 +126,7 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
                 switch response {
                 case .success(let roomId):
                     let roomPreviewData: RoomPreviewData = RoomPreviewData(roomId: roomId, andSession: sself.session)
-                    roomPreviewData.roomName = roomName != nil ? roomName : roomId
+                    roomPreviewData.roomName = roomName != nil ? roomName : roomIdOrAlias
                     
                     sself.showRoomPreview(with: roomPreviewData, onEventID: eventID)
                 case .failure(let error):
