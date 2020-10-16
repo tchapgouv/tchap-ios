@@ -47,6 +47,7 @@ internal enum Asset {
     internal static let startChat = ImageAsset(name: "start_chat")
     internal static let tchapIcAddBymail = ImageAsset(name: "tchap_ic_add_bymail")
     internal static let tchapIcAddContact = ImageAsset(name: "tchap_ic_add_contact")
+    internal static let tchapIcInviteByLink = ImageAsset(name: "tchap_ic_invite_by_link")
     internal static let e2eBlocked = ImageAsset(name: "e2e_blocked")
     internal static let e2eUnencrypted = ImageAsset(name: "e2e_unencrypted")
     internal static let e2eWarning = ImageAsset(name: "e2e_warning")

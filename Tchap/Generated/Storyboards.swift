@@ -177,6 +177,11 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Tchap.RegistrationFormViewController>(storyboard: RegistrationFormViewController.self)
   }
+  internal enum RoomAccessByLinkViewController: StoryboardType {
+    internal static let storyboardName = "RoomAccessByLinkViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.RoomAccessByLinkViewController>(storyboard: RoomAccessByLinkViewController.self)
+  }
   internal enum RoomContextualMenuViewController: StoryboardType {
     internal static let storyboardName = "RoomContextualMenuViewController"
 

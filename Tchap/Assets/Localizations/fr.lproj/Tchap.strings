@@ -109,6 +109,7 @@
 "contacts_user_directory_offline_section" = "Répertoire Tchap (hors-ligne)";
 "contacts_search_bar_placeholder" = "Rechercher";
 "contacts_invite_to_tchap_button" = "Inviter des contacts dans Tchap";
+"contacts_invite_by_link_button" = "Inviter en partageant un lien";
 "contacts_invite_by_email_button" = "Envoyer une invitation par email";
 "contacts_invite_by_email_title" = "Envoyer une invitation";
 "contacts_invite_by_email_message" = "Veuillez saisir l'adresse email de la personne à inviter\U00A0:\U00A0";
@@ -182,7 +183,7 @@
 "room_settings_tab_title" = "Paramètres";
 "room_settings_remove_from_rooms_directory" = "Retirer ce salon de la liste des salons publics";
 "room_settings_remove_from_rooms_directory_prompt" = "Cette action est irréversible.\nVoulez-vous vraiment retirer ce salon des salons publics ?";
-"room_settings_room_access_title" = "Information complémentaire :";
+"room_settings_room_access_title" = "Gestion des comptes externes";
 "room_settings_room_access_restricted" = "Les externes ne sont pas autorisés à rejoindre ce salon";
 "room_settings_room_access_unrestricted" = "Les externes sont autorisés à rejoindre ce salon";
 "room_settings_allow_external_users_to_join" = "Autoriser l’accès aux externes à ce salon";
@@ -191,6 +192,17 @@
 "room_settings_retention_period_one_day" = "1 jour";
 "room_settings_retention_period_in_days" = "%d jours";
 "room_settings_fail_to_update_retention_period" = "Échec de mise à jour de la durée de l'historique";
+"room_settings_leave_room" = "Quitter ce salon";
+"room_settings_room_access_by_link_title" = "Accès par lien";
+"room_settings_room_access_by_link_disabled" = "Ce salon n’est pas accessible par lien";
+"room_settings_room_access_by_link_enabled" = "Ce salon est accessible par lien";
+"room_settings_enable_room_access_by_link" = "Activer l’accès au salon par lien";
+"room_settings_enable_room_access_by_link_info_off" = "Les autres utilisateurs seront autorisés à rejoindre ce salon à partir d’un lien";
+"room_settings_enable_room_access_by_link_info_on" = "Les autres utilisateurs peuvent rejoindre ce salon à partir du lien suivant\U00A0:";
+"room_settings_room_access_by_link_share" = "Partager le lien";
+"room_settings_room_access_by_link_forbidden" = "Ce changement n’est pas supporté actuellement car les externes sont autorisés à rejoindre ce salon. Il sera supporté prochainement";
+"room_settings_allow_external_users_forbidden" = "Ce changement n’est pas supporté actuellement car le salon est accessible par lien. Il sera supporté prochainement";
+"room_settings_room_access_by_link_invalid" = "lien invalide";
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Room Attachment Antivirus Scan

@@ -148,13 +148,13 @@
 + (NSString *)permalinkToRoom:(NSString *)roomIdOrAlias
 {
     NSString *urlPrefix = [[NSUserDefaults standardUserDefaults] objectForKey:@"permalinkPrefix"];
-    return [NSString stringWithFormat:@"%@/#/room/%@", urlPrefix, [MXTools encodeURIComponent:roomIdOrAlias]];
+    return [NSString stringWithFormat:@"%@/#/room/%@", urlPrefix, roomIdOrAlias];
 }
 
 + (NSString *)permalinkToEvent:(NSString *)eventId inRoom:(NSString *)roomIdOrAlias
 {
     NSString *urlPrefix = [[NSUserDefaults standardUserDefaults] objectForKey:@"permalinkPrefix"];
-    return [NSString stringWithFormat:@"%@/#/room/%@/%@", urlPrefix, [MXTools encodeURIComponent:roomIdOrAlias], [MXTools encodeURIComponent:eventId]];
+    return [NSString stringWithFormat:@"%@/#/room/%@/%@", urlPrefix, roomIdOrAlias, eventId];
 }
 
 @end

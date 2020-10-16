@@ -90,6 +90,7 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
     MXHTTPOperation* actualDirectoryVisibilityRequest;
     
     // Room Access items
+    NSInteger roomAccessByLinkIndex;
     NSInteger roomAccessRuleIndex;
     
     // The potential image loader
@@ -1035,7 +1036,6 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
         avatarIndex = count++;
         nameIndex = count++;
         topicIndex = count++;
-        notificationsIndex = count++;
 #ifdef ENABLE_ROOM_RETENTION
         retentionIndex = count++;
         retentionPeriodPickerIndex = isRetentionEdited ? count++ : -1;
@@ -1043,8 +1043,6 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
         retentionIndex = -1;
         retentionPeriodPickerIndex = -1;
 #endif
-        leaveActionIndex = count++;
-        
         directoryVisibilityIndex = -1;
         // Add a toggle when the room is listed in the rooms directory (public rooms) to let the user remove it from this list.
         // Check whether the room visibility is known, and if the room is public
@@ -1058,8 +1056,10 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
                 directoryVisibilityIndex = count++;
             }
         }
-        
+        roomAccessByLinkIndex = count++;
         roomAccessRuleIndex = count++;
+        notificationsIndex = count++;
+        leaveActionIndex = count++;
     }
     else if (section == ROOM_SETTINGS_BANNED_USERS_SECTION_INDEX)
     {
@@ -1318,7 +1318,7 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
         {
             MXKTableViewCellWithButton *leaveCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier] forIndexPath:indexPath];
             
-            NSString* title = NSLocalizedStringFromTable(@"leave", @"Vector", nil);
+            NSString* title = NSLocalizedStringFromTable(@"room_settings_leave_room", @"Tchap", nil);
             
             [leaveCell.mxkButton setTitle:title forState:UIControlStateNormal];
             [leaveCell.mxkButton setTitle:title forState:UIControlStateHighlighted];
@@ -1348,11 +1348,10 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
             // Check whether the current user is room admin
             BOOL isAdmin = (oneSelfPowerLevel >= RoomPowerLevelAdmin);
             
-            // The room admin is able to open a "private room" to the external users
-            // (We name "private rooms" those which require an invite to be joined)
+            // The room admin is allowed to open a room to the external users, except if the room is published to the rooms directory.
             if ([roomAccessRule isEqualToString:RoomService.roomAccessRuleRestricted]
                 && isAdmin
-                && [mxRoomState.joinRule isEqualToString:kMXRoomJoinRuleInvite]) {
+                && actualDirectoryVisibility && ![actualDirectoryVisibility isEqualToString:kMXRoomDirectoryVisibilityPublic]) {
                 MXKTableViewCellWithLabelAndSwitch *allowExternalMembersCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
                 
                 allowExternalMembersCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_settings_allow_external_users_to_join", @"Tchap", nil);
@@ -1385,6 +1384,42 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
                 
                 cell = roomAccessInfo;
             }
+        }
+        else if (indexPath.row == roomAccessByLinkIndex)
+        {
+            // Check whether the current user is room admin
+            BOOL isAdmin = (oneSelfPowerLevel >= RoomPowerLevelAdmin);
+            BOOL isRoomAccessByLinkEnabled = [mxRoomState.joinRule isEqualToString:kMXRoomJoinRulePublic];
+            
+            MXKTableViewCell *roomAccessByLink = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier] forIndexPath:indexPath];
+            NSString *title = NSLocalizedStringFromTable(@"room_settings_room_access_by_link_title", @"Tchap", nil);
+            NSString *summary = isRoomAccessByLinkEnabled ? NSLocalizedStringFromTable(@"room_settings_room_access_by_link_enabled", @"Tchap", nil) : NSLocalizedStringFromTable(@"room_settings_room_access_by_link_disabled", @"Tchap", nil);
+            NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString: title
+                                                                                               attributes:@{NSForegroundColorAttributeName : self.currentStyle.primaryTextColor,
+                                                                                                            NSFontAttributeName: [UIFont systemFontOfSize:17.0]}];
+            [attributedText appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n\n" attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:4]}]];
+            [attributedText appendAttributedString:[[NSMutableAttributedString alloc] initWithString: summary
+                                                                                          attributes:@{NSForegroundColorAttributeName : self.currentStyle.secondaryTextColor,
+                                                                                                       NSFontAttributeName: [UIFont systemFontOfSize:14.0]}]];
+            
+            roomAccessByLink.textLabel.numberOfLines = 0;
+            roomAccessByLink.textLabel.attributedText = attributedText;
+            
+            // The room admin is allowed to enable/disable the room access by link
+            // The other members are allowed to forward/share the link when the access by link is enabled
+            if (isAdmin || isRoomAccessByLinkEnabled) {
+                roomAccessByLink.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                roomAccessByLink.selectionStyle = UITableViewCellSelectionStyleDefault;
+                roomAccessByLink.userInteractionEnabled = YES;
+            }
+            else
+            {
+                roomAccessByLink.accessoryType = UITableViewCellAccessoryNone;
+                roomAccessByLink.selectionStyle = UITableViewCellSelectionStyleNone;
+                roomAccessByLink.userInteractionEnabled = NO;
+            }
+            
+            cell = roomAccessByLink;
         }
     }
     else if (indexPath.section == ROOM_SETTINGS_BANNED_USERS_SECTION_INDEX)
@@ -1504,6 +1539,11 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
                     {
                         [self editRoomTopic];
                     }
+                }
+                else if (indexPath.row == roomAccessByLinkIndex)
+                {
+                    RoomAccessByLinkViewController *roomAccessByLinkViewController = [RoomAccessByLinkViewController instantiateWithSession:self.mainSession roomId:self.roomId];
+                    [self.parentViewController.navigationController pushViewController:roomAccessByLinkViewController animated:YES];
                 }
             }
         }
@@ -1798,6 +1838,22 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
                                                       self->pendingOperation = nil;
                                                       [self stopActivityIndicator];
                                                       // Alert user
+                                                      NSDictionary *dict = error.userInfo;
+                                                      if (dict)
+                                                      {
+                                                          NSString* errCode = [dict valueForKey:@"errcode"];
+                                                          if (errCode)
+                                                          {
+                                                              if ([errCode isEqualToString:kMXErrCodeStringForbidden] && ![self->mxRoomState.joinRule isEqualToString:kMXRoomJoinRuleInvite])
+                                                              {
+                                                                  NSMutableDictionary *customInfo = [NSMutableDictionary dictionaryWithDictionary:dict];
+                                                                  customInfo[NSLocalizedFailureReasonErrorKey] = NSLocalizedStringFromTable(@"error_title_default", @"Tchap", nil);
+                                                                  customInfo[NSLocalizedDescriptionKey] = NSLocalizedStringFromTable(@"room_settings_allow_external_users_forbidden", @"Tchap", nil);
+                                                                  NSError *customError = [NSError errorWithDomain:error.domain code:error.code userInfo:customInfo];
+                                                                  error = customError;
+                                                             }
+                                                         }
+                                                      }
                                                       [[AppDelegate theDelegate] showErrorAsAlert:error];
                                                       [self refreshRoomSettings];
                                                       

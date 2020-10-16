@@ -8,7 +8,7 @@
 		<string>www.beta.tchap.gouv.fr</string>
 	</array>
 	<key>permalinkPrefix</key>
-	<string>https://beta.tchap.gouv.fr</string>
+	<string>https://www.beta.tchap.gouv.fr</string>
 	<key>clientConfigURL</key>
 	<string>https://www.tchap.gouv.fr/client/config/preprod/ios</string>
 	<key>tacURL</key>
