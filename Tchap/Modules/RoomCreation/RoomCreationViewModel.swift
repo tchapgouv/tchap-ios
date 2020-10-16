@@ -29,10 +29,8 @@ final class RoomCreationViewModel: RoomCreationViewModelType {
     
     let roomNameFormTextViewModel: FormTextViewModel
     var retentionPeriodInDays: uint
-    var isRestricted: Bool
-    var isPublic: Bool
-    var isFederated: Bool
     let homeServerDomain: String
+    var selectedRoomType: RoomType
     
     // MARK: - Setup
     
@@ -50,9 +48,7 @@ final class RoomCreationViewModel: RoomCreationViewModelType {
         
         // Other properties
         self.retentionPeriodInDays = Constants.roomRetentionPeriodDefault
-        self.isRestricted = true
-        self.isPublic = false
-        self.isFederated = true
         self.homeServerDomain = homeServerDomain
+        self.selectedRoomType = .privateRestricted()
     }
 }

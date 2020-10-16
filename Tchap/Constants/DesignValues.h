@@ -33,6 +33,10 @@ extern UIColor *kColorWarmGrey;
 extern UIColor *kColorLightGrey;
 extern UIColor *kColorDarkGrey;
 extern UIColor *kColorPaleGrey;
+extern UIColor *kColorCoral;
+extern UIColor *kColorPumpkinOrange;
+extern UIColor *kColorJadeGreen;
+extern UIColor *kColorGreyishBrown;
 
 #pragma mark - Tchap Theme Colors
 
@@ -68,6 +72,8 @@ extern UIColor *kVariant1SecondaryTextColor;
 extern UIColor *kVariant1WarnTextColor;
 extern UIColor *kVariant1PresenceIndicatorOnlineColor;
 extern UIColor *kVariant1OverlayBackgroundColor;
+extern UIColor *kVariant1BoxBgColor;
+extern UIColor *kVariant1BoxTextColor;
 
 #pragma mark Variant 2
 
@@ -101,6 +107,8 @@ extern UIColor *kVariant2SecondaryTextColor;
 extern UIColor *kVariant2WarnTextColor;
 extern UIColor *kVariant2PresenceIndicatorOnlineColor;
 extern UIColor *kVariant2OverlayBackgroundColor;
+extern UIColor *kVariant2BoxBgColor;
+extern UIColor *kVariant2BoxTextColor;
 
 /**
  `DesignValues` class manages the Tchap design parameters
