@@ -1,3 +1,14 @@
+Changes in Tchap 1.0.xx (2020-xx-xx)
+===================================================
+
+Features/Improvements:
+ * Private rooms: turn on the option to join on room’s link #293
+ * Room preview: we have to support the preview on shared room link #323
+ * [Room creation] Do not override the power levels anymore #326
+
+Bug Fixes:
+ * 
+ 
 Changes in Tchap 1.0.28 (2020-09-03)
 ===================================================
  
