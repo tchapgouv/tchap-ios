@@ -140,12 +140,23 @@ final class RoomAccessByLinkViewModel: RoomAccessByLinkViewModelType {
         self.isEditable = isAdmin && (self.isForum != nil && self.isForum == false)
         if roomState.joinRule == .public {
             let link: String
+            let isUnrestrictedRoom: Bool
             if let alias = roomState.canonicalAlias {
                 link = Tools.permalink(toRoom: alias)
+                if let room = self.session.room(withRoomId: roomId), let summary = room.summary {
+                    if case RoomAccessRule.unrestricted = summary.tc_roomAccessRule() {
+                        isUnrestrictedRoom = true
+                    } else {
+                        isUnrestrictedRoom = false
+                    }
+                } else {
+                    isUnrestrictedRoom = false
+                }
             } else {
                 link = TchapL10n.roomSettingsRoomAccessByLinkInvalid
+                isUnrestrictedRoom = false
             }
-            self.update(viewState: .enabled(roomLink: link, editable: self.isEditable))
+            self.update(viewState: .enabled(roomLink: link, editable: self.isEditable, isUnrestrictedRoom: isUnrestrictedRoom))
         } else {
             self.update(viewState: .disabled(editable: self.isEditable))
         }
@@ -246,12 +257,19 @@ final class RoomAccessByLinkViewModel: RoomAccessByLinkViewModelType {
         }
         
         room.setJoinRule(.public) { (response) in
+            let rule = room.summary.tc_roomAccessRule()
             switch response {
             case .success:
-                self.update(viewState: .enabled(roomLink: Tools.permalink(toRoom: roomState.canonicalAlias), editable: self.isEditable))
+                let link: String = Tools.permalink(toRoom: roomState.canonicalAlias)
+                let isUnrestrictedRoom: Bool
+                if case .unrestricted = rule {
+                    isUnrestrictedRoom = true
+                } else {
+                    isUnrestrictedRoom = false
+                }
+                self.update(viewState: .enabled(roomLink: link, editable: self.isEditable, isUnrestrictedRoom: isUnrestrictedRoom))
             case .failure(let error):
-                let rule = room.summary.tc_roomAccessRule()
-                if let mxError = MXError(nsError: error), mxError.errcode == kMXErrCodeStringForbidden, case RoomAccessRule.unrestricted = rule {
+                if let mxError = MXError(nsError: error), mxError.errcode == kMXErrCodeStringForbidden, case .unrestricted = rule {
                     let customError = NSError(domain: "RoomAccessByLinkViewModelErrorDomain", code: 0, userInfo: [NSLocalizedDescriptionKey: TchapL10n.roomSettingsRoomAccessByLinkForbidden])
                     self.update(viewState: .error(customError))
                 } else {
