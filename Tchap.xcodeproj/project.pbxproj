@@ -5856,9 +5856,9 @@
 				B1C4644121B67F1C005F4D53 /* RoomCreationAvatarView.xib */,
 				B1C4643F21B67F1C005F4D53 /* RoomCreationCoordinator.swift */,
 				B1C4644621B67F1C005F4D53 /* RoomCreationCoordinatorType.swift */,
-				B1C4644221B67F1C005F4D53 /* RoomCreationViewController.storyboard */,
 				B1C4644021B67F1C005F4D53 /* RoomCreationViewController.swift */,
 				B1C4644521B67F1C005F4D53 /* RoomCreationViewModel.swift */,
+				B1C4644221B67F1C005F4D53 /* RoomCreationViewController.storyboard */,
 				B1C4644321B67F1C005F4D53 /* RoomCreationViewModelType.swift */,
 			);
 			path = RoomCreation;

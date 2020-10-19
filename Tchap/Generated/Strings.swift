@@ -270,24 +270,34 @@ internal enum TchapL10n {
   internal static let roomAttachmentScanStatusUnavailableTitle = TchapL10n.tr("Tchap", "room_attachment_scan_status_unavailable_title")
   /// Ajouter une photo
   internal static let roomCreationAddAvatarAction = TchapL10n.tr("Tchap", "room_creation_add_avatar_action")
+  /// Accessible à tous les utilisateurs et aux invités externes sur invitation d’un administrateur.
+  internal static let roomCreationExternRoomInfo = TchapL10n.tr("Tchap", "room_creation_extern_room_info")
+  /// Salon privé ouvert aux externes
+  internal static let roomCreationExternRoomTitle = TchapL10n.tr("Tchap", "room_creation_extern_room_title")
+  /// Accessible à tous les utilisateurs à partir de la liste des forums ou d’un lien partagé.
+  internal static let roomCreationForumRoomInfo = TchapL10n.tr("Tchap", "room_creation_forum_room_info")
+  /// Salon forum
+  internal static let roomCreationForumRoomTitle = TchapL10n.tr("Tchap", "room_creation_forum_room_title")
   /// Nommer le salon
   internal static let roomCreationNamePlaceholder = TchapL10n.tr("Tchap", "room_creation_name_placeholder")
+  /// Accessible à tous les utilisateurs sur invitation d’un administrateur.
+  internal static let roomCreationPrivateRoomInfo = TchapL10n.tr("Tchap", "room_creation_private_room_info")
+  /// Salon privé
+  internal static let roomCreationPrivateRoomTitle = TchapL10n.tr("Tchap", "room_creation_private_room_title")
   /// Limiter l'accès à ce salon aux membres du domaine "%@"
   internal static func roomCreationPublicRoomFederationTitle(_ p1: String) -> String {
     return TchapL10n.tr("Tchap", "room_creation_public_room_federation_title", p1)
   }
-  /// Un salon public peut être rejoint par n'importe quel membre de la communauté Tchap, il ne doit contenir aucune donnée sensible.
+  /// Un forum peut être rejoint par tous les utilisateurs excepté les invités externes. Il ne doit contenir aucune donnée sensible.
   internal static let roomCreationPublicVisibilityInfo = TchapL10n.tr("Tchap", "room_creation_public_visibility_info")
-  /// Rendre ce salon public
-  internal static let roomCreationPublicVisibilityTitle = TchapL10n.tr("Tchap", "room_creation_public_visibility_title")
-  /// Autoriser l’accès aux externes à ce salon
-  internal static let roomCreationRoomAccessTitle = TchapL10n.tr("Tchap", "room_creation_room_access_title")
   /// Limiter l’historique du salon à %d jours
   internal static func roomCreationRoomRetentionPeriodDays(_ p1: Int) -> String {
     return TchapL10n.tr("Tchap", "room_creation_room_retention_period_days", p1)
   }
   /// Limiter l’historique du salon à 1 jour
   internal static let roomCreationRoomRetentionPeriodOneDay = TchapL10n.tr("Tchap", "room_creation_room_retention_period_one_day")
+  /// Type de salon
+  internal static let roomCreationRoomTypeTitle = TchapL10n.tr("Tchap", "room_creation_room_type_title")
   /// Nouveau salon
   internal static let roomCreationTitle = TchapL10n.tr("Tchap", "room_creation_title")
   /// Fichiers

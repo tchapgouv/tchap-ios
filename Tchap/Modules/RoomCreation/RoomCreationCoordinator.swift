@@ -118,11 +118,24 @@ final class RoomCreationCoordinator: NSObject, RoomCreationCoordinatorType {
     
     private func showContactsPicker() {
         // Check whether the federation has been disabled to limit the invitation to the non federated users
-        let showFederatedUsers = self.roomCreationFormResult?.isFederated ?? true
+        let showFederatedUsers: Bool
+        let isRestricted: Bool
+        
+        switch self.roomCreationFormResult?.roomType {
+        case .privateRestricted, .none:
+            isRestricted = true
+            showFederatedUsers = true
+        case .privateUnrestricted:
+            isRestricted = false
+            showFederatedUsers = true
+        case .forum(let isFederated):
+            isRestricted = true
+            showFederatedUsers = isFederated
+        }
+
         let filter: ContactsDataSourceTchapFilter
         if showFederatedUsers {
             // Check the room access rule
-            let isRestricted = self.roomCreationFormResult?.isRestricted ?? true
             if isRestricted {
                 filter = ContactsDataSourceTchapFilterTchapUsersOnlyWithoutExternals
             } else {
@@ -209,15 +222,32 @@ final class RoomCreationCoordinator: NSObject, RoomCreationCoordinatorType {
     }
     
     private func createRoom(roomCreationFormResult: RoomCreationFormResult, avatarUrl: String?, userIDs: [String]) -> Single<String> {
-        let roomVisibility: MXRoomDirectoryVisibility = roomCreationFormResult.isPublic ? .public : .private
-        let roomAccessRule: RoomAccessRule = roomCreationFormResult.isRestricted ? .restricted: .unrestricted
+        let roomVisibility: MXRoomDirectoryVisibility
+        let roomAccessRule: RoomAccessRule
+        let isFederated: Bool
+        
+        switch roomCreationFormResult.roomType {
+        case .privateRestricted:
+            roomVisibility = .private
+            roomAccessRule = .restricted
+            isFederated = true
+        case .privateUnrestricted:
+            roomVisibility = .private
+            roomAccessRule = .unrestricted
+            isFederated = true
+        case .forum(let isFed):
+            roomVisibility = .public
+            roomAccessRule = .restricted
+            isFederated = isFed
+        }
+
         let retentionPeriodInMS = Tools.durationInMs(fromDays: roomCreationFormResult.retentionPeriodInDays)
         return self.roomService.createRoom(visibility: roomVisibility,
                                            name: roomCreationFormResult.name,
                                            avatarURL: avatarUrl,
                                            inviteUserIds: userIDs,
                                            rententionPeriodInMs: retentionPeriodInMS,
-                                           isFederated: roomCreationFormResult.isFederated,
+                                           isFederated: isFederated,
                                            accessRule: roomAccessRule)
     }
 }

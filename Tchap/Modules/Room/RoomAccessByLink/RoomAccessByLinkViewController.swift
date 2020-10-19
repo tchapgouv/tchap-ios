@@ -240,8 +240,8 @@ extension RoomAccessByLinkViewController: Stylable {
         
         self.roomAccessByLinkStatusLabel.textColor = style.primarySubTextColor
         self.roomLinkInfoLabel.textColor = style.secondaryTextColor
-        self.roomLinkLabel.textColor = style.primaryTextColor
-        self.roomLinkBackgroundView.backgroundColor = kColorPaleGrey
+        self.roomLinkLabel.textColor = style.boxTextColor
+        self.roomLinkBackgroundView.backgroundColor = style.boxBackgroundColor
         
         style.applyStyle(onButton: self.shareLinkButton)
         style.applyStyle(onSwitch: self.roomAccessByLinkSwitch)
