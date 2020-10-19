@@ -184,6 +184,11 @@ final class RoomCreationViewController: UIViewController, RetentionPeriodInDaysP
     }
     
     private func setupRoomType() {
+        self.disablePrivateRoom()
+        self.disableExternRoom()
+        self.disableForumRoom()
+        self.hideRetentionPeriodPicker(true)
+        
         switch self.viewModel.selectedRoomType {
         case .privateRestricted:
             self.enablePrivateRoom()
@@ -376,25 +381,16 @@ final class RoomCreationViewController: UIViewController, RetentionPeriodInDaysP
     }
     
     @IBAction private func privateRoomViewTapGestureRecognizer(_ sender: UITapGestureRecognizer) {
-        self.disableExternRoom()
-        self.disableForumRoom()
-        
         self.viewModel.selectedRoomType = .privateRestricted()
         self.setupRoomType()
     }
     
     @IBAction private func externRoomViewTapGestureRecognizer(_ sender: UITapGestureRecognizer) {
-        self.disablePrivateRoom()
-        self.disableForumRoom()
-        
         self.viewModel.selectedRoomType = .privateUnrestricted()
         self.setupRoomType()
     }
     
     @IBAction private func forumRoomViewTapGestureRecognizer(_ sender: UITapGestureRecognizer) {
-        self.disablePrivateRoom()
-        self.disableExternRoom()
-        
         self.viewModel.selectedRoomType = .forum()
         self.setupRoomType()
     }
