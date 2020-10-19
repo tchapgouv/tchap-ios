@@ -314,6 +314,8 @@ internal enum TchapL10n {
   internal static let roomSettingsEnableRoomAccessByLinkInfoOff = TchapL10n.tr("Tchap", "room_settings_enable_room_access_by_link_info_off")
   /// Les autres utilisateurs peuvent rejoindre ce salon à partir du lien suivant :
   internal static let roomSettingsEnableRoomAccessByLinkInfoOn = TchapL10n.tr("Tchap", "room_settings_enable_room_access_by_link_info_on")
+  /// Les autres utilisateurs peuvent rejoindre ce salon à partir du lien suivant (une invitation reste nécessaire pour les externes) :
+  internal static let roomSettingsEnableRoomAccessByLinkInfoOnWithLimitation = TchapL10n.tr("Tchap", "room_settings_enable_room_access_by_link_info_on_with_limitation")
   /// Échec de mise à jour de la durée de l'historique
   internal static let roomSettingsFailToUpdateRetentionPeriod = TchapL10n.tr("Tchap", "room_settings_fail_to_update_retention_period")
   /// Quitter ce salon

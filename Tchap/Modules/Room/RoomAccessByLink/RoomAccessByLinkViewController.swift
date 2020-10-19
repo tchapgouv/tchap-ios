@@ -115,8 +115,8 @@ final class RoomAccessByLinkViewController: UIViewController {
         switch viewState {
         case .loading:
             self.renderLoading()
-        case .enabled(let roomLink, let editable):
-            self.renderEnabled(roomLink: roomLink, isEditable: editable)
+        case .enabled(let roomLink, let editable, let isUnrestrictedRoom):
+            self.renderEnabled(roomLink: roomLink, isEditable: editable, isUnrestrictedRoom: isUnrestrictedRoom)
         case .disabled(let editable):
             self.renderDisabled(isEditable: editable)
         case .error(let error):
@@ -128,7 +128,7 @@ final class RoomAccessByLinkViewController: UIViewController {
         self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
     }
     
-    private func renderEnabled(roomLink: String, isEditable: Bool) {
+    private func renderEnabled(roomLink: String, isEditable: Bool, isUnrestrictedRoom: Bool) {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
         
         roomAccessByLinkStatusLabel.isHidden = false
@@ -142,7 +142,11 @@ final class RoomAccessByLinkViewController: UIViewController {
         }
         
         roomLinkInfoLabel.isHidden = false
-        roomLinkInfoLabel.text = TchapL10n.roomSettingsEnableRoomAccessByLinkInfoOn
+        if isUnrestrictedRoom {
+            roomLinkInfoLabel.text = TchapL10n.roomSettingsEnableRoomAccessByLinkInfoOnWithLimitation
+        } else {
+            roomLinkInfoLabel.text = TchapL10n.roomSettingsEnableRoomAccessByLinkInfoOn
+        }
         roomLinkBackgroundView.isHidden = false
         roomLinkLabel.text = roomLink
         shareLinkButton.isHidden = false

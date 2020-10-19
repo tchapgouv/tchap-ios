@@ -19,7 +19,7 @@ import Foundation
 /// RoomAccessByLinkViewController view state
 enum RoomAccessByLinkViewState {
     case loading
-    case enabled(roomLink: String, editable: Bool)
+    case enabled(roomLink: String, editable: Bool, isUnrestrictedRoom: Bool)
     case disabled(editable: Bool)
     case error(Error)
 }
