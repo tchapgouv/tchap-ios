@@ -290,11 +290,6 @@ final class RoomCreationViewController: UIViewController, RetentionPeriodInDaysP
         self.roomRetentionLabel.attributedText = attributedTextLabel
     }
     
-    private func enablePublicVisibility(_ publicVisibilityEnabled: Bool) {
-        self.publicVisibilityInfoLabel.isHidden = !publicVisibilityEnabled
-        self.publicRoomFederationStackView.isHidden = !publicVisibilityEnabled
-    }
-    
     private func roomNameDidChange(with text: String?) {
         let enableNextButton: Bool
         
@@ -343,13 +338,15 @@ final class RoomCreationViewController: UIViewController, RetentionPeriodInDaysP
         self.forumRoomView.layer.borderColor = kColorJadeGreen.withAlphaComponent(Constants.borderColorAlpha).cgColor
         self.roomTypeImage.image = Asset.Images.forumAvatarIconHr.image
         
-        self.enablePublicVisibility(true)
+        self.publicVisibilityInfoLabel.isHidden = false
+        self.publicRoomFederationStackView.isHidden = false
         self.disablePublicRoomFederationSwitch.isOn = !isFederated
     }
     
     private func disableForumRoom() {
         self.forumRoomView.layer.borderWidth = 0
-        self.enablePublicVisibility(false)
+        self.publicVisibilityInfoLabel.isHidden = true
+        self.publicRoomFederationStackView.isHidden = true
     }
     
     // MARK: - Actions
