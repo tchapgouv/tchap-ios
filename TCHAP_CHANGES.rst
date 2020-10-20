@@ -7,6 +7,7 @@ Features/Improvements:
  * Apply the new room creation design #317
  * [Room creation] Do not override the power levels anymore #326
  * [Room access] Improve the wordings related to the room link access #335
+ * Rename "Salon public" with "Salon forum" #333
 
 Bug Fixes:
  * 

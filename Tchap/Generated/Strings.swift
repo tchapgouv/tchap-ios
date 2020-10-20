@@ -114,11 +114,11 @@ internal enum TchapL10n {
   internal static let contactsUserDirectoryOfflineSection = TchapL10n.tr("Tchap", "contacts_user_directory_offline_section")
   /// Répertoire Tchap
   internal static let contactsUserDirectorySection = TchapL10n.tr("Tchap", "contacts_user_directory_section")
-  /// Accéder à un salon public
+  /// Accéder à un salon forum
   internal static let conversationsAccessToPublicRoomsAction = TchapL10n.tr("Tchap", "conversations_access_to_public_rooms_action")
   /// Nouveau salon
   internal static let conversationsCreateRoomAction = TchapL10n.tr("Tchap", "conversations_create_room_action")
-  /// Salons publics
+  /// Salons forums
   internal static let conversationsDirectorySection = TchapL10n.tr("Tchap", "conversations_directory_section")
   /// Rejeter
   internal static let conversationsInviteDecline = TchapL10n.tr("Tchap", "conversations_invite_decline")
@@ -212,7 +212,7 @@ internal enum TchapL10n {
   internal static let publicRoomsLoadingInProgress = TchapL10n.tr("Tchap", "public_rooms_loading_in_progress")
   /// Rechercher
   internal static let publicRoomsSearchBarPlaceholder = TchapL10n.tr("Tchap", "public_rooms_search_bar_placeholder")
-  /// Accéder à un salon
+  /// Accéder à un forum
   internal static let publicRoomsTitle = TchapL10n.tr("Tchap", "public_rooms_title")
   /// Confirmer le mot de passe
   internal static let registrationConfirmPasswordPlaceholder = TchapL10n.tr("Tchap", "registration_confirm_password_placeholder")
@@ -330,9 +330,9 @@ internal enum TchapL10n {
   internal static let roomSettingsFailToUpdateRetentionPeriod = TchapL10n.tr("Tchap", "room_settings_fail_to_update_retention_period")
   /// Quitter ce salon
   internal static let roomSettingsLeaveRoom = TchapL10n.tr("Tchap", "room_settings_leave_room")
-  /// Retirer ce salon de la liste des salons publics
+  /// Retirer ce salon de la liste des forums
   internal static let roomSettingsRemoveFromRoomsDirectory = TchapL10n.tr("Tchap", "room_settings_remove_from_rooms_directory")
-  /// Cette action est irréversible.\nVoulez-vous vraiment retirer ce salon des salons publics ?
+  /// Cette action est irréversible.\nVoulez-vous vraiment retirer ce salon de la liste des forums ?
   internal static let roomSettingsRemoveFromRoomsDirectoryPrompt = TchapL10n.tr("Tchap", "room_settings_remove_from_rooms_directory_prompt")
   /// %d jours
   internal static func roomSettingsRetentionPeriodInDays(_ p1: Int) -> String {

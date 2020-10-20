@@ -90,11 +90,11 @@
 "conversations_tab_title" = "Conversations";
 "conversations_invites_section" = "Invitations";
 "conversations_main_section" = "Conversations";
-"conversations_directory_section" = "Salons publics";
+"conversations_directory_section" = "Salons forums";
 "conversations_no_conversation" = "Aucune conversation";
 "conversations_start_chat_action" = "Nouvelle discussion";
 "conversations_create_room_action" = "Nouveau salon";
-"conversations_access_to_public_rooms_action" = "Accéder à un salon public";
+"conversations_access_to_public_rooms_action" = "Accéder à un salon forum";
 "conversations_invite_join" = "Rejoindre";
 "conversations_invite_decline" = "Rejeter";
 
@@ -181,8 +181,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Room Settings
 "room_settings_tab_title" = "Paramètres";
-"room_settings_remove_from_rooms_directory" = "Retirer ce salon de la liste des salons publics";
-"room_settings_remove_from_rooms_directory_prompt" = "Cette action est irréversible.\nVoulez-vous vraiment retirer ce salon des salons publics ?";
+"room_settings_remove_from_rooms_directory" = "Retirer ce salon de la liste des forums";
+"room_settings_remove_from_rooms_directory_prompt" = "Cette action est irréversible.\nVoulez-vous vraiment retirer ce salon de la liste des forums ?";
 "room_settings_room_access_title" = "Gestion des comptes externes";
 "room_settings_room_access_restricted" = "Les externes ne sont pas autorisés à rejoindre ce salon";
 "room_settings_room_access_unrestricted" = "Les externes sont autorisés à rejoindre ce salon";
@@ -214,7 +214,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Public rooms
-"public_rooms_title" = "Accéder à un salon";
+"public_rooms_title" = "Accéder à un forum";
 "public_rooms_search_bar_placeholder" = "Rechercher";
 "public_rooms_loading_in_progress" = "Chargement en cours…";
 
