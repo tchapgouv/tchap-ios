@@ -290,9 +290,9 @@ final class RoomService: NSObject, RoomServiceType {
         var alias = roomName.trimmingCharacters(in: .whitespacesAndNewlines).filter { "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".contains($0) }
         
         if alias.isEmpty {
-            alias = randomString(length: 7)
+            alias = randomString(length: 11)
         } else {
-            alias.append(randomString(length: 7))
+            alias.append(randomString(length: 11))
         }
         
         return alias
