@@ -10,6 +10,7 @@ Features/Improvements:
  * [Room access] Improve the wordings related to the room link access #335
  * Rename "Salon public" with "Salon forum" #333
  * [Room alias] Harden the room aliases #328
+ * Force a clear cache on application update
 
 Bug Fixes:
  * 
