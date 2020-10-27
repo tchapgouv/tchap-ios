@@ -278,18 +278,12 @@ internal enum TchapL10n {
   internal static let roomCreationAddAvatarAction = TchapL10n.tr("Tchap", "room_creation_add_avatar_action")
   /// Accessible à tous les utilisateurs et aux invités externes sur invitation d’un administrateur.
   internal static let roomCreationExternRoomInfo = TchapL10n.tr("Tchap", "room_creation_extern_room_info")
-  /// Salon privé ouvert aux externes
-  internal static let roomCreationExternRoomTitle = TchapL10n.tr("Tchap", "room_creation_extern_room_title")
   /// Accessible à tous les utilisateurs à partir de la liste des forums ou d’un lien partagé.
   internal static let roomCreationForumRoomInfo = TchapL10n.tr("Tchap", "room_creation_forum_room_info")
-  /// Salon forum
-  internal static let roomCreationForumRoomTitle = TchapL10n.tr("Tchap", "room_creation_forum_room_title")
   /// Nommer le salon
   internal static let roomCreationNamePlaceholder = TchapL10n.tr("Tchap", "room_creation_name_placeholder")
   /// Accessible à tous les utilisateurs sur invitation d’un administrateur.
   internal static let roomCreationPrivateRoomInfo = TchapL10n.tr("Tchap", "room_creation_private_room_info")
-  /// Salon privé
-  internal static let roomCreationPrivateRoomTitle = TchapL10n.tr("Tchap", "room_creation_private_room_title")
   /// Limiter l'accès à ce salon aux membres du domaine "%@"
   internal static func roomCreationPublicRoomFederationTitle(_ p1: String) -> String {
     return TchapL10n.tr("Tchap", "room_creation_public_room_federation_title", p1)
