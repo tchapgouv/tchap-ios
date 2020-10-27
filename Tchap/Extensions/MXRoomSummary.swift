@@ -20,6 +20,14 @@ extension Notification.Name {
     static let roomSummaryDidRemoveExpiredDataFromStore = Notification.Name(MXRoomSummary.roomSummaryDidRemoveExpiredDataFromStore)
 }
 
+enum RoomCategory {
+    case directChat
+    case restrictedPrivateRoom
+    case unrestrictedPrivateRoom
+    case forum
+    case unknown
+}
+
 @objc extension MXRoomSummary {
     
     static let roomSummaryDidRemoveExpiredDataFromStore = "roomSummaryDidRemoveExpiredDataFromStore"
@@ -82,11 +90,32 @@ extension Notification.Name {
             return RoomAccessRule(identifier: rule)
         } else if self.isDirect {
             // TODO add the right state event to this discussion
-            return RoomAccessRule.direct
+            return .direct
         } else {
             // The room is considered as restricted by default
-            return RoomAccessRule.restricted
+            return .restricted
         }
+    }
+    
+    /// Get the room category
+    @nonobjc func tc_roomCategory() -> RoomCategory {
+        let isJoinRulePublic = self.others["mxkEventFormatterisJoinRulePublic"] as? Bool ?? false
+        let category: RoomCategory
+        if self.isDirect {
+            category = .directChat
+        } else if self.isEncrypted {
+            if case .restricted = self.tc_roomAccessRule() {
+                category = .restrictedPrivateRoom
+            } else {
+                category = .unrestrictedPrivateRoom
+            }
+        } else if isJoinRulePublic {
+            // Tchap: we consider as forum all the unencrypted rooms with a public join_rule
+            category = .forum
+        } else {
+            category = .unknown
+        }
+        return category
     }
     
     /// Get the current room access rule of the room

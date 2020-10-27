@@ -20,11 +20,11 @@ import Foundation
 final class RoomTitleViewModel: NSObject {
     
     let title: String
-    let subtitle: String?
+    let subtitle: NSAttributedString?
     let roomInfo: String?
     let avatarImageViewModel: AvatarImageViewModel?
     
-    init(title: String, subtitle: String?, roomInfo: String?, avatarImageViewModel: AvatarImageViewModel?) {
+    init(title: String, subtitle: NSAttributedString?, roomInfo: String?, avatarImageViewModel: AvatarImageViewModel?) {
         self.title = title
         self.subtitle = subtitle
         self.roomInfo = roomInfo

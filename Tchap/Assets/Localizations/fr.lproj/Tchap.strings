@@ -152,6 +152,9 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Room title
+"room_title_private_room" = "Salon privé";
+"room_title_extern_room" = "Salon privé ouvert aux externes";
+"room_title_forum_room" = "Salon forum";
 "room_title_room_members_count" = "%d membre(s)";
 "room_title_unrestricted_room" = "Salon accessible aux externes";
 "room_title_retention_info_one_day" = "Historique limité à 1 jour";
@@ -159,6 +162,9 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Room
+"room_category_private_room" = "Privé";
+"room_category_extern_room" = "Externes";
+"room_category_forum_room" = "Forum";
 "tchap_cannot_invite_deactivated_account_user" = "Votre correspondant a quitté définitivement cette discussion.\nVous devez en créer une nouvelle pour le recontacter, s'il est toujours joignable sur Tchap.";
 "tchap_room_admin_leave_prompt_msg" = "Voulez-vous vraiment quitter cette conversation ?\n\nElle ne sera plus administrée, et vous risquez de ne plus pouvoir la joindre de nouveau.";
 "tchap_room_invalid_link" = "Ce lien n'est pas valide";
@@ -232,9 +238,6 @@
 "room_creation_room_retention_period_one_day" = "Limiter l’historique du salon à 1 jour";
 "room_creation_room_retention_period_days" = "Limiter l’historique du salon à %d jours";
 "room_creation_room_type_title" = "Type de salon";
-"room_creation_private_room_title" = "Salon privé";
-"room_creation_extern_room_title" = "Salon privé ouvert aux externes";
-"room_creation_forum_room_title" = "Salon forum";
 "room_creation_private_room_info" = "Accessible à tous les utilisateurs sur invitation d’un administrateur.";
 "room_creation_extern_room_info" = "Accessible à tous les utilisateurs et aux invités externes sur invitation d’un administrateur.";
 "room_creation_forum_room_info" = "Accessible à tous les utilisateurs à partir de la liste des forums ou d’un lien partagé.";

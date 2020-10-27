@@ -24,6 +24,7 @@ class RoomsRoomCell: RoomsCell {
         static let hexagonImageBorderWidthUnrestricted: CGFloat = 5.0
     }
     
+    @IBOutlet private weak var roomCategory: UILabel!
     @IBOutlet private weak var lastEventSenderName: UILabel!
     
     override func layoutSubviews() {
@@ -36,6 +37,7 @@ class RoomsRoomCell: RoomsCell {
         super.render(cellData)
         
         self.lastEventSenderName.text = nil
+        self.roomCategory.isHidden = true
         
         guard let session = self.roomCellData?.recentsDataSource?.mxSession, session.matrixRestClient != nil else {
             return
@@ -54,6 +56,25 @@ class RoomsRoomCell: RoomsCell {
             }
             let displayNameComponents = DisplayNameComponents(displayName: senderUser.displayName)
             self.lastEventSenderName.text = displayNameComponents.name
+        }
+        
+        if let category = self.roomCellData?.roomSummary.tc_roomCategory() {
+            switch category {
+            case .restrictedPrivateRoom:
+                self.roomCategory.text = TchapL10n.roomCategoryPrivateRoom
+                self.roomCategory.textColor = kColorCoral
+                self.roomCategory.isHidden = false
+            case .unrestrictedPrivateRoom:
+                self.roomCategory.text = TchapL10n.roomCategoryExternRoom
+                self.roomCategory.textColor = kColorPumpkinOrange
+                self.roomCategory.isHidden = false
+            case .forum:
+                self.roomCategory.text = TchapL10n.roomCategoryForumRoom
+                self.roomCategory.textColor = kColorJadeGreen
+                self.roomCategory.isHidden = false
+            default:
+                break
+            }
         }
         
         // Set the right avatar border

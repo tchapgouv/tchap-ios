@@ -173,13 +173,13 @@ final class RoomCreationViewController: UIViewController, RetentionPeriodInDaysP
         
         self.roomTypeTitleLabel.text = TchapL10n.roomCreationRoomTypeTitle.uppercased()
     
-        self.privateRoomTitleLabel.text = TchapL10n.roomCreationPrivateRoomTitle
+        self.privateRoomTitleLabel.text = TchapL10n.roomTitlePrivateRoom
         self.privateRoomInfoLabel.text = TchapL10n.roomCreationPrivateRoomInfo
         
-        self.externRoomTitleLabel.text = TchapL10n.roomCreationExternRoomTitle
+        self.externRoomTitleLabel.text = TchapL10n.roomTitleExternRoom
         self.externRoomInfoLabel.text = TchapL10n.roomCreationExternRoomInfo
         
-        self.forumRoomTitleLabel.text = TchapL10n.roomCreationForumRoomTitle
+        self.forumRoomTitleLabel.text = TchapL10n.roomTitleForumRoom
         self.forumRoomInfoLabel.text = TchapL10n.roomCreationForumRoomInfo
     }
     

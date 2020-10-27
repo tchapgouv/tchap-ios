@@ -22,21 +22,21 @@
 /**
  Posted when the user interface theme has been changed.
  */
-extern NSString *const kDesignValuesDidChangeThemeNotification;
+extern NSString * _Nonnull const kDesignValuesDidChangeThemeNotification;
 
 #pragma mark - Tchap Colors
-extern UIColor *kColorDarkBlue;
-extern UIColor *kColorDarkGreyBlue;
-extern UIColor *kColorLightNavy;
-extern UIColor *kColorGreyishPurple;
-extern UIColor *kColorWarmGrey;
-extern UIColor *kColorLightGrey;
-extern UIColor *kColorDarkGrey;
-extern UIColor *kColorPaleGrey;
-extern UIColor *kColorCoral;
-extern UIColor *kColorPumpkinOrange;
-extern UIColor *kColorJadeGreen;
-extern UIColor *kColorGreyishBrown;
+extern UIColor * _Nonnull kColorDarkBlue;
+extern UIColor * _Nonnull kColorDarkGreyBlue;
+extern UIColor * _Nonnull kColorLightNavy;
+extern UIColor * _Nonnull kColorGreyishPurple;
+extern UIColor * _Nonnull kColorWarmGrey;
+extern UIColor * _Nonnull kColorLightGrey;
+extern UIColor * _Nonnull kColorDarkGrey;
+extern UIColor * _Nonnull kColorPaleGrey;
+extern UIColor * _Nonnull kColorCoral;
+extern UIColor * _Nonnull kColorPumpkinOrange;
+extern UIColor * _Nonnull kColorJadeGreen;
+extern UIColor * _Nonnull kColorGreyishBrown;
 
 #pragma mark - Tchap Theme Colors
 
@@ -48,32 +48,32 @@ extern UIStatusBarStyle kVariant1StatusBarStyle;
 
 // Bar
 
-extern UIColor *kVariant1BarBgColor;
-extern UIColor *kVariant1BarTitleColor;
-extern UIColor *kVariant1BarSubTitleColor;
-extern UIColor *kVariant1BarActionColor;
+extern UIColor * _Nonnull kVariant1BarBgColor;
+extern UIColor * _Nonnull kVariant1BarTitleColor;
+extern UIColor * _Nonnull kVariant1BarSubTitleColor;
+extern UIColor * _Nonnull kVariant1BarActionColor;
 
 // Button
 
-extern UIColor *kVariant1ButtonBorderedTitleColor;
-extern UIColor *kVariant1ButtonBorderedBgColor;
-extern UIColor *kVariant1ButtonPlainTitleColor;
-extern UIColor *kVariant1ButtonPlainBgColor;
+extern UIColor * _Nonnull kVariant1ButtonBorderedTitleColor;
+extern UIColor * _Nonnull kVariant1ButtonBorderedBgColor;
+extern UIColor * _Nonnull kVariant1ButtonPlainTitleColor;
+extern UIColor * _Nonnull kVariant1ButtonPlainBgColor;
 
 // Body
 
-extern UIColor *kVariant1PrimaryBgColor;
-extern UIColor *kVariant1PrimaryTextColor;
-extern UIColor *kVariant1PrimarySubTextColor;
-extern UIColor *kVariant1PlaceholderTextColor;
-extern UIColor *kVariant1SeparatorColor;
-extern UIColor *kVariant1SecondaryBgColor;
-extern UIColor *kVariant1SecondaryTextColor;
-extern UIColor *kVariant1WarnTextColor;
-extern UIColor *kVariant1PresenceIndicatorOnlineColor;
-extern UIColor *kVariant1OverlayBackgroundColor;
-extern UIColor *kVariant1BoxBgColor;
-extern UIColor *kVariant1BoxTextColor;
+extern UIColor * _Nonnull kVariant1PrimaryBgColor;
+extern UIColor * _Nonnull kVariant1PrimaryTextColor;
+extern UIColor * _Nonnull kVariant1PrimarySubTextColor;
+extern UIColor * _Nonnull kVariant1PlaceholderTextColor;
+extern UIColor * _Nonnull kVariant1SeparatorColor;
+extern UIColor * _Nonnull kVariant1SecondaryBgColor;
+extern UIColor * _Nonnull kVariant1SecondaryTextColor;
+extern UIColor * _Nonnull kVariant1WarnTextColor;
+extern UIColor * _Nonnull kVariant1PresenceIndicatorOnlineColor;
+extern UIColor * _Nonnull kVariant1OverlayBackgroundColor;
+extern UIColor * _Nonnull kVariant1BoxBgColor;
+extern UIColor * _Nonnull kVariant1BoxTextColor;
 
 #pragma mark Variant 2
 
@@ -83,32 +83,32 @@ extern UIStatusBarStyle kVariant2StatusBarStyle;
 
 // Bar
 
-extern UIColor *kVariant2BarBgColor;
-extern UIColor *kVariant2BarTitleColor;
-extern UIColor *kVariant2BarSubTitleColor;
-extern UIColor *kVariant2BarActionColor;
+extern UIColor * _Nonnull kVariant2BarBgColor;
+extern UIColor * _Nonnull kVariant2BarTitleColor;
+extern UIColor * _Nonnull kVariant2BarSubTitleColor;
+extern UIColor * _Nonnull kVariant2BarActionColor;
 
 // Button
 
-extern UIColor *kVariant2ButtonBorderedTitleColor;
-extern UIColor *kVariant2ButtonBorderedBgColor;
-extern UIColor *kVariant2ButtonPlainTitleColor;
-extern UIColor *kVariant2ButtonPlainBgColor;
+extern UIColor * _Nonnull kVariant2ButtonBorderedTitleColor;
+extern UIColor * _Nonnull kVariant2ButtonBorderedBgColor;
+extern UIColor * _Nonnull kVariant2ButtonPlainTitleColor;
+extern UIColor * _Nonnull kVariant2ButtonPlainBgColor;
 
 // Body
 
-extern UIColor *kVariant2PrimaryBgColor;
-extern UIColor *kVariant2PrimaryTextColor;
-extern UIColor *kVariant2PrimarySubTextColor;
-extern UIColor *kVariant2PlaceholderTextColor;
-extern UIColor *kVariant2SeparatorColor;
-extern UIColor *kVariant2SecondaryBgColor;
-extern UIColor *kVariant2SecondaryTextColor;
-extern UIColor *kVariant2WarnTextColor;
-extern UIColor *kVariant2PresenceIndicatorOnlineColor;
-extern UIColor *kVariant2OverlayBackgroundColor;
-extern UIColor *kVariant2BoxBgColor;
-extern UIColor *kVariant2BoxTextColor;
+extern UIColor * _Nonnull kVariant2PrimaryBgColor;
+extern UIColor * _Nonnull kVariant2PrimaryTextColor;
+extern UIColor * _Nonnull kVariant2PrimarySubTextColor;
+extern UIColor * _Nonnull kVariant2PlaceholderTextColor;
+extern UIColor * _Nonnull kVariant2SeparatorColor;
+extern UIColor * _Nonnull kVariant2SecondaryBgColor;
+extern UIColor * _Nonnull kVariant2SecondaryTextColor;
+extern UIColor * _Nonnull kVariant2WarnTextColor;
+extern UIColor * _Nonnull kVariant2PresenceIndicatorOnlineColor;
+extern UIColor * _Nonnull kVariant2OverlayBackgroundColor;
+extern UIColor * _Nonnull kVariant2BoxBgColor;
+extern UIColor * _Nonnull kVariant2BoxTextColor;
 
 /**
  `DesignValues` class manages the Tchap design parameters
