@@ -79,8 +79,14 @@
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a7B-bJ-KEo">
-                                        <rect key="frame" x="54" y="0.0" width="473" height="20"/>
+                                        <rect key="frame" x="54" y="0.0" width="434" height="20"/>
                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Private" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z7F-VR-iEu">
+                                        <rect key="frame" x="492" y="0.0" width="35" height="20"/>
+                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="10"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -142,6 +148,7 @@
                 <outlet property="missedNotifAndUnreadBadgeContainerView" destination="FHh-1v-6OU" id="HEv-JH-Ucs"/>
                 <outlet property="missedNotifAndUnreadBadgeLabel" destination="Xb7-ZS-bl2" id="jzI-xm-Bhw"/>
                 <outlet property="pinView" destination="mqD-9e-3lZ" id="aFr-m2-PLU"/>
+                <outlet property="roomCategory" destination="Z7F-VR-iEu" id="Xhu-53-2p5"/>
                 <outlet property="titleLabel" destination="a7B-bJ-KEo" id="uet-Q0-GTU"/>
             </connections>
             <point key="canvasLocation" x="-185.59999999999999" y="88.605697151424295"/>

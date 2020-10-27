@@ -75,6 +75,7 @@
             // Consider the room aliases to define a default room name.
             _roomName = _roomAliases.firstObject;
         }
+        _wasInitializedWithPublicRoom = YES;
     }
     return self;
 }

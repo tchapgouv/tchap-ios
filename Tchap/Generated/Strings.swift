@@ -268,6 +268,12 @@ internal enum TchapL10n {
   internal static let roomAttachmentScanStatusInfectedTitle = TchapL10n.tr("Tchap", "room_attachment_scan_status_infected_title")
   /// Analyse indisponible
   internal static let roomAttachmentScanStatusUnavailableTitle = TchapL10n.tr("Tchap", "room_attachment_scan_status_unavailable_title")
+  /// Externes
+  internal static let roomCategoryExternRoom = TchapL10n.tr("Tchap", "room_category_extern_room")
+  /// Forum
+  internal static let roomCategoryForumRoom = TchapL10n.tr("Tchap", "room_category_forum_room")
+  /// Privé
+  internal static let roomCategoryPrivateRoom = TchapL10n.tr("Tchap", "room_category_private_room")
   /// Ajouter une photo
   internal static let roomCreationAddAvatarAction = TchapL10n.tr("Tchap", "room_creation_add_avatar_action")
   /// Accessible à tous les utilisateurs et aux invités externes sur invitation d’un administrateur.
@@ -362,6 +368,12 @@ internal enum TchapL10n {
   internal static let roomSettingsRoomAccessUnrestricted = TchapL10n.tr("Tchap", "room_settings_room_access_unrestricted")
   /// Paramètres
   internal static let roomSettingsTabTitle = TchapL10n.tr("Tchap", "room_settings_tab_title")
+  /// Salon privé ouvert aux externes
+  internal static let roomTitleExternRoom = TchapL10n.tr("Tchap", "room_title_extern_room")
+  /// Salon forum
+  internal static let roomTitleForumRoom = TchapL10n.tr("Tchap", "room_title_forum_room")
+  /// Salon privé
+  internal static let roomTitlePrivateRoom = TchapL10n.tr("Tchap", "room_title_private_room")
   /// Historique limité à %d jours
   internal static func roomTitleRetentionInfoInDays(_ p1: Int) -> String {
     return TchapL10n.tr("Tchap", "room_title_retention_info_in_days", p1)

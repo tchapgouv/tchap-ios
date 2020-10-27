@@ -239,7 +239,7 @@
 "room_preview_invitation_format" = "Vous avez été invité(e) à rejoindre ce salon par %@";
 "room_preview_subtitle" = "Ceci est un aperçu du salon. Les interactions avec le salon sont désactivées.";
 "room_preview_unlinked_email_warning" = "Cette invitation a été envoyée à %@, qui n'est pas associé à ce compte. Vous pouvez vous identifier avec un compte différent ou ajouter cette adresse e-mail à votre compte.";
-"room_preview_try_join_an_unknown_room" = "Vous essayez d'accéder à %@. Voulez-vous rejoindre la discussion afin d'y participer ?";
+"room_preview_try_join_an_unknown_room" = "Vous essayez d'accéder à %@. Souhaitez-vous rejoindre la conversation pour y participer ?";
 "room_preview_try_join_an_unknown_room_default" = "un salon";
 // Settings
 "settings_title" = "Paramètres";
