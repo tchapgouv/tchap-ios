@@ -37,6 +37,7 @@ import Reusable
     @IBOutlet private weak var roomInfoLabel: UILabel!
     @IBOutlet private weak var titlesStackView: UIStackView!
     @IBOutlet private weak var imageView: MXKImageView!
+    @IBOutlet private weak var roomImageMarker: UIImageView!
     
     private var style: Style!
     
@@ -107,7 +108,7 @@ import Reusable
     
     @objc func fill(roomTitleViewModel: RoomTitleViewModel) {
         self.titleLabel.text = roomTitleViewModel.title
-        self.subTitleLabel.text = roomTitleViewModel.subtitle
+        self.subTitleLabel.attributedText = roomTitleViewModel.subtitle
         self.roomInfoLabel.text = roomTitleViewModel.roomInfo
         if let avatarImageViewModel = roomTitleViewModel.avatarImageViewModel {
             self.imageView.isHidden = false
@@ -134,9 +135,16 @@ import Reusable
             if let borderWidth = avatarImageViewModel.borderWidth {
                 self.imageBorderWidth = borderWidth
             }
+            if let marker = avatarImageViewModel.marker {
+                self.roomImageMarker.image = marker
+                self.roomImageMarker.isHidden = false
+            } else {
+                self.roomImageMarker.isHidden = true
+            }
             self.updateAvatarView()
         } else {
             self.imageView.isHidden = true
+            self.roomImageMarker.isHidden = true
         }
     }
     

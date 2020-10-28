@@ -20,9 +20,7 @@ import UIKit
 struct RoomCreationFormResult {
     let name: String
     let retentionPeriodInDays: uint
-    let isRestricted: Bool
-    let isPublic: Bool
-    let isFederated: Bool
+    let roomType: RoomType
 }
 
 protocol RoomCreationViewControllerDelegate: class {
@@ -39,6 +37,8 @@ final class RoomCreationViewController: UIViewController, RetentionPeriodInDaysP
         static let animationDuration: TimeInterval = 0.3
         static let hexagonBorderWidthDefault: CGFloat = 1.0
         static let hexagonBorderWidthUnrestricted: CGFloat = 10.0
+        static let borderColorAlpha: CGFloat = 0.7
+        static let borderWidth: CGFloat = 4.0
     }
 
     // MARK: - Properties
@@ -53,17 +53,28 @@ final class RoomCreationViewController: UIViewController, RetentionPeriodInDaysP
     @IBOutlet private weak var roomRetentionLabel: UILabel!
     @IBOutlet private weak var retentionPeriodInDaysPicker: RetentionPeriodInDaysPickerContentView!
     
-    @IBOutlet private weak var roomAccessTitleLabel: UILabel!
-    @IBOutlet private weak var roomAccessSwitch: UISwitch!
-    
-    @IBOutlet private weak var publicVisibilityTitleLabel: UILabel!
-    @IBOutlet private weak var publicVisibilitySwitch: UISwitch!
-    
     @IBOutlet private weak var publicVisibilityInfoLabel: UILabel!
     
     @IBOutlet private weak var publicRoomFederationStackView: UIStackView!
     @IBOutlet private weak var publicRoomFederationTitleLabel: UILabel!
     @IBOutlet private weak var disablePublicRoomFederationSwitch: UISwitch!
+    
+    @IBOutlet private weak var privateRoomView: UIView!
+    @IBOutlet private weak var privateRoomTitleLabel: UILabel!
+    @IBOutlet private weak var privateRoomImage: UIImageView!
+    @IBOutlet private weak var privateRoomInfoLabel: UILabel!
+    
+    @IBOutlet private weak var externRoomView: UIView!
+    @IBOutlet private weak var externRoomImage: UIImageView!
+    @IBOutlet private weak var externRoomTitleLabel: UILabel!
+    @IBOutlet private weak var externRoomInfoLabel: UILabel!
+    
+    @IBOutlet private weak var forumRoomView: UIView!
+    @IBOutlet private weak var forumRoomTitleLabel: UILabel!
+    @IBOutlet private weak var forumRoomInfoLabel: UILabel!
+    
+    @IBOutlet private weak var roomTypeTitleLabel: UILabel!
+    @IBOutlet private weak var roomTypeImage: UIImageView!
     
     // MARK: Private
     
@@ -143,6 +154,9 @@ final class RoomCreationViewController: UIViewController, RetentionPeriodInDaysP
         
         self.setupRoomAvatarCreationView()
         self.setupRoomNameFormTextField()
+        self.setupPrivateRoomView()
+        self.setupExternRoomView()
+        self.setupForumRoomView()
         
         #if ENABLE_ROOM_RETENTION
         self.setupRoomRetentionLabel()
@@ -152,18 +166,39 @@ final class RoomCreationViewController: UIViewController, RetentionPeriodInDaysP
         self.roomRetentionLabel.isHidden = true
         #endif
         
-        self.roomAccessSwitch.isOn = !self.viewModel.isRestricted
-        self.roomAccessTitleLabel.text = TchapL10n.roomCreationRoomAccessTitle
+        self.setupRoomType()
         
-        self.publicVisibilitySwitch.isOn = self.viewModel.isPublic
-        self.enablePublicVisibility(self.viewModel.isPublic)
-        
-        self.publicVisibilityTitleLabel.text = TchapL10n.roomCreationPublicVisibilityTitle
         self.publicVisibilityInfoLabel.text = TchapL10n.roomCreationPublicVisibilityInfo
-        
-        self.disablePublicRoomFederationSwitch.isOn = !self.viewModel.isFederated
-        
         self.publicRoomFederationTitleLabel.text = TchapL10n.roomCreationPublicRoomFederationTitle(self.viewModel.homeServerDomain)
+        
+        self.roomTypeTitleLabel.text = TchapL10n.roomCreationRoomTypeTitle.uppercased()
+    
+        self.privateRoomTitleLabel.text = TchapL10n.roomTitlePrivateRoom
+        self.privateRoomInfoLabel.text = TchapL10n.roomCreationPrivateRoomInfo
+        
+        self.externRoomTitleLabel.text = TchapL10n.roomTitleExternRoom
+        self.externRoomInfoLabel.text = TchapL10n.roomCreationExternRoomInfo
+        
+        self.forumRoomTitleLabel.text = TchapL10n.roomTitleForumRoom
+        self.forumRoomInfoLabel.text = TchapL10n.roomCreationForumRoomInfo
+    }
+    
+    private func setupRoomType() {
+        self.disablePrivateRoom()
+        self.disableExternRoom()
+        self.disableForumRoom()
+        self.hideRetentionPeriodPicker(true)
+        
+        switch self.viewModel.selectedRoomType {
+        case .privateRestricted:
+            self.enablePrivateRoom()
+        case .privateUnrestricted:
+            self.enableExternRoom()
+        case .forum(let isFederated):
+            self.enableForumRoom(isFederated)
+        }
+        
+        self.refreshAvatarView()
     }
     
     private func setupNavigationBar() {
@@ -212,35 +247,39 @@ final class RoomCreationViewController: UIViewController, RetentionPeriodInDaysP
         self.view.addGestureRecognizer(tapGestureRecognizer)
     }
     
-    private func highlightPublicVisibilityInfoLabel(_ highlight: Bool) {
-        self.publicVisibilityInfoLabel.textColor = highlight ? self.currentStyle.warnTextColor : self.currentStyle.secondaryTextColor
+    private func setupPrivateRoomView() {
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(privateRoomViewTapGestureRecognizer(_:)))
+        tapGestureRecognizer.numberOfTapsRequired = 1
+        tapGestureRecognizer.numberOfTouchesRequired = 1
+        self.privateRoomView.addGestureRecognizer(tapGestureRecognizer)
+        self.privateRoomView.isUserInteractionEnabled = true
     }
     
-    private func enableRoomAccessOption(_ isEnabled: Bool) {
-        self.roomAccessTitleLabel.textColor = isEnabled ? self.currentStyle.primarySubTextColor : self.currentStyle.secondaryTextColor
-        self.roomAccessSwitch.isEnabled = isEnabled
-        
-        if !isEnabled {
-            self.roomAccessSwitch.isOn = false
-            self.viewModel.isRestricted = true
-            self.roomCreationAvatarView?.setAvatarBorder(color: kColorDarkBlue, width: Constants.hexagonBorderWidthDefault)
-        }
+    private func setupExternRoomView() {
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(externRoomViewTapGestureRecognizer(_:)))
+        tapGestureRecognizer.numberOfTapsRequired = 1
+        tapGestureRecognizer.numberOfTouchesRequired = 1
+        self.externRoomView.addGestureRecognizer(tapGestureRecognizer)
+        self.externRoomView.isUserInteractionEnabled = true
     }
     
-    private func allowExternalUsers(_ isUnrestricted: Bool) {
-        self.viewModel.isRestricted = !isUnrestricted
-        refreshAvatarView()
+    private func setupForumRoomView() {
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(forumRoomViewTapGestureRecognizer))
+        tapGestureRecognizer.numberOfTapsRequired = 1
+        tapGestureRecognizer.numberOfTouchesRequired = 1
+        self.forumRoomView.addGestureRecognizer(tapGestureRecognizer)
+        self.forumRoomView.isUserInteractionEnabled = true
     }
     
     private func refreshAvatarView() {
         let borderColor: UIColor
         let borderWidth: CGFloat
-        if self.viewModel.isRestricted {
-            borderColor = kColorDarkBlue
-            borderWidth = Constants.hexagonBorderWidthDefault
-        } else {
+        if case .privateUnrestricted = self.viewModel.selectedRoomType {
             borderColor = kColorDarkGrey
             borderWidth = Constants.hexagonBorderWidthUnrestricted
+        } else {
+            borderColor = kColorDarkBlue
+            borderWidth = Constants.hexagonBorderWidthDefault
         }
         self.roomCreationAvatarView?.setAvatarBorder(color: borderColor, width: borderWidth)
     }
@@ -254,27 +293,6 @@ final class RoomCreationViewController: UIViewController, RetentionPeriodInDaysP
         let underlineRange = NSRange(location: range.location, length: textLabel.count - range.location)
         attributedTextLabel.addAttribute(.underlineStyle, value: NSUnderlineStyle.single.rawValue, range: underlineRange)
         self.roomRetentionLabel.attributedText = attributedTextLabel
-    }
-    
-    private func enablePublicVisibility(_ publicVisibilityEnabled: Bool) {
-        self.enableRoomAccessOption(!publicVisibilityEnabled)
-        self.publicRoomFederationStackView.isHidden = !publicVisibilityEnabled
-        self.viewModel.isPublic = publicVisibilityEnabled
-        self.highlightPublicVisibilityInfoLabel(publicVisibilityEnabled)
-        
-        if publicVisibilityEnabled == false {
-            // Private rooms are all federated
-            self.disableRoomFederation(false)
-            self.disablePublicRoomFederationSwitch.isOn = false
-        } else {
-            // Public rooms are not federated by default
-            self.disableRoomFederation(true)
-            self.disablePublicRoomFederationSwitch.isOn = true
-        }
-    }
-    
-    private func disableRoomFederation(_ roomFederationDisabled: Bool) {
-        self.viewModel.isFederated = !roomFederationDisabled
     }
     
     private func roomNameDidChange(with text: String?) {
@@ -300,6 +318,42 @@ final class RoomCreationViewController: UIViewController, RetentionPeriodInDaysP
         }
     }
     
+    private func enablePrivateRoom() {
+        self.privateRoomView.layer.borderWidth = Constants.borderWidth
+        self.privateRoomView.layer.borderColor = kColorCoral.withAlphaComponent(Constants.borderColorAlpha).cgColor
+        self.roomTypeImage.image = Asset.Images.privateAvatarIconHr.image
+    }
+    
+    private func disablePrivateRoom() {
+        self.privateRoomView.layer.borderWidth = 0
+    }
+    
+    private func enableExternRoom() {
+        self.externRoomView.layer.borderWidth = Constants.borderWidth
+        self.externRoomView.layer.borderColor = kColorPumpkinOrange.withAlphaComponent(Constants.borderColorAlpha).cgColor
+        self.roomTypeImage.image = Asset.Images.privateAvatarIconHr.image
+    }
+    
+    private func disableExternRoom() {
+        self.externRoomView.layer.borderWidth = 0
+    }
+    
+    private func enableForumRoom(_ isFederated: Bool) {
+        self.forumRoomView.layer.borderWidth = Constants.borderWidth
+        self.forumRoomView.layer.borderColor = kColorJadeGreen.withAlphaComponent(Constants.borderColorAlpha).cgColor
+        self.roomTypeImage.image = Asset.Images.forumAvatarIconHr.image
+        
+        self.publicVisibilityInfoLabel.isHidden = false
+        self.publicRoomFederationStackView.isHidden = false
+        self.disablePublicRoomFederationSwitch.isOn = !isFederated
+    }
+    
+    private func disableForumRoom() {
+        self.forumRoomView.layer.borderWidth = 0
+        self.publicVisibilityInfoLabel.isHidden = true
+        self.publicRoomFederationStackView.isHidden = true
+    }
+    
     // MARK: - Actions
     
     private func nextButtonAction() {
@@ -308,9 +362,7 @@ final class RoomCreationViewController: UIViewController, RetentionPeriodInDaysP
         if let roomName = self.viewModel.roomNameFormTextViewModel.value {
             let roomCreationFormResult = RoomCreationFormResult(name: roomName,
                                                                 retentionPeriodInDays: self.viewModel.retentionPeriodInDays,
-                                                                isRestricted: self.viewModel.isRestricted,
-                                                                isPublic: self.viewModel.isPublic,
-                                                                isFederated: self.viewModel.isFederated)
+                                                                roomType: self.viewModel.selectedRoomType)
             self.delegate?.roomCreationViewController(self, didTapNextButtonWith: roomCreationFormResult)
         }
     }
@@ -328,17 +380,25 @@ final class RoomCreationViewController: UIViewController, RetentionPeriodInDaysP
         self.hideRetentionPeriodPicker(true)
     }
     
-    @IBAction private func roomAccessSwitchAction(_ sender: UISwitch) {
-        self.allowExternalUsers(sender.isOn)
+    @IBAction private func privateRoomViewTapGestureRecognizer(_ sender: UITapGestureRecognizer) {
+        self.viewModel.selectedRoomType = .privateRestricted()
+        self.setupRoomType()
     }
     
-    @IBAction private func publicVisibilitySwitchAction(_ sender: UISwitch) {
-        self.enablePublicVisibility(sender.isOn)
+    @IBAction private func externRoomViewTapGestureRecognizer(_ sender: UITapGestureRecognizer) {
+        self.viewModel.selectedRoomType = .privateUnrestricted()
+        self.setupRoomType()
+    }
+    
+    @IBAction private func forumRoomViewTapGestureRecognizer(_ sender: UITapGestureRecognizer) {
+        self.viewModel.selectedRoomType = .forum()
+        self.setupRoomType()
     }
     
     @IBAction private func disablePublicRoomFederationSwitchAction(_ sender: UISwitch) {
-        self.disableRoomFederation(sender.isOn)
+        self.viewModel.selectedRoomType = .forum(isFederated: !sender.isOn)
     }
+
 }
 
 // MARK: - Stylable
@@ -355,14 +415,29 @@ extension RoomCreationViewController: Stylable {
         self.roomNameFormTextField.update(style: style)
         self.roomRetentionLabel.textColor = style.primarySubTextColor
         self.retentionPeriodInDaysPicker.update(style: style)
-        self.enableRoomAccessOption(!self.viewModel.isPublic)
-        self.publicVisibilityTitleLabel.textColor = style.primarySubTextColor
-        self.highlightPublicVisibilityInfoLabel(self.viewModel.isPublic)
-        self.publicRoomFederationTitleLabel.textColor = style.primarySubTextColor
+        self.publicVisibilityInfoLabel.textColor = style.boxTextColor
+        self.publicRoomFederationTitleLabel.textColor = style.boxTextColor
+
+        let padLockimage = Asset.SharedImages.e2eVerified.image.withRenderingMode(.alwaysTemplate)
         
-        style.applyStyle(onSwitch: self.roomAccessSwitch)
-        style.applyStyle(onSwitch: self.publicVisibilitySwitch)
-        style.applyStyle(onSwitch: self.disablePublicRoomFederationSwitch)
+        self.privateRoomView.backgroundColor = kColorPaleGrey
+        self.privateRoomTitleLabel.textColor = kColorCoral
+        self.privateRoomImage.image = padLockimage
+        self.privateRoomImage.tintColor = kColorCoral
+        self.privateRoomInfoLabel.textColor = style.boxTextColor
+        
+        self.externRoomView.backgroundColor = kColorPaleGrey
+        self.externRoomTitleLabel.textColor = kColorPumpkinOrange
+        self.externRoomImage.image = padLockimage
+        self.externRoomImage.tintColor = kColorPumpkinOrange
+        self.externRoomInfoLabel.textColor = style.boxTextColor
+        
+        self.forumRoomView.backgroundColor = kColorPaleGrey
+        self.forumRoomTitleLabel.textColor = kColorJadeGreen
+        self.forumRoomInfoLabel.textColor = style.boxTextColor
+        self.roomTypeTitleLabel.textColor = style.boxTextColor
+        
+        self.disablePublicRoomFederationSwitch.onTintColor = kColorJadeGreen
     }
 }
 

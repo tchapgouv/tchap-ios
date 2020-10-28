@@ -45,6 +45,7 @@ final class Variant1Style: NSObject, Style {
     
     let backgroundColor: UIColor = kVariant1PrimaryBgColor
     let secondaryBackgroundColor: UIColor = kVariant1SecondaryBgColor
+    let boxBackgroundColor: UIColor = kVariant1BoxBgColor
     
     let separatorColor: UIColor = kVariant1SeparatorColor
     
@@ -52,6 +53,7 @@ final class Variant1Style: NSObject, Style {
     let primarySubTextColor: UIColor = kVariant1PrimarySubTextColor
     let secondaryTextColor: UIColor = kVariant1SecondaryTextColor
     let warnTextColor: UIColor = kVariant1WarnTextColor
+    let boxTextColor: UIColor = kVariant1BoxTextColor
     
     let presenceIndicatorOnlineColor: UIColor = kVariant1PresenceIndicatorOnlineColor
     

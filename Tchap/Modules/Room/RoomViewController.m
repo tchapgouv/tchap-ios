@@ -1630,7 +1630,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     
     if (self.isEncryptionEnabled)
     {
-        encryptionIcon = [UIImage imageNamed:@"e2e_verified"];
+        encryptionIcon = [UIImage imageNamed:@"private_room"];
 //        RoomEncryptionTrustLevel roomEncryptionTrustLevel = ((RoomDataSource*)self.roomDataSource).encryptionTrustLevel;
 //
 //        encryptionIcon = [EncryptionTrustLevelBadgeImageHelper roomBadgeImageFor:roomEncryptionTrustLevel];

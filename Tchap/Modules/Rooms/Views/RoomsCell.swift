@@ -121,7 +121,17 @@ import UIKit
             }
         }
         
-        self.encryptedIcon?.isHidden = !roomCellData.roomSummary.isEncrypted
+        let category = roomCellData.roomSummary.tc_roomCategory()
+        switch category {
+        case .directChat, .restrictedPrivateRoom, .unrestrictedPrivateRoom:
+            self.encryptedIcon?.image = UIImage(named: "private_avatar_icon")
+            self.encryptedIcon?.isHidden = false
+        case .forum:
+            self.encryptedIcon?.image = UIImage(named: "forum_avatar_icon")
+            self.encryptedIcon?.isHidden = false
+        case .unknown:
+            self.encryptedIcon?.isHidden = true
+        }
         
         roomCellData.roomSummary?.setRoomAvatarImageIn(self.avatarView)
         

@@ -116,6 +116,52 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
         }
     }
     
+    func showRoomPreview(with roomIdOrAlias: String, roomName: String?, onEventID eventID: String? = nil) {
+        if roomIdOrAlias.hasPrefix("#") {
+            self.session.matrixRestClient.roomId(forRoomAlias: roomIdOrAlias) { [weak self] (response) in
+                guard let sself = self else {
+                    return
+                }
+                
+                switch response {
+                case .success(let roomId):
+                    let roomPreviewData: RoomPreviewData = RoomPreviewData(roomId: roomId, andSession: sself.session)
+                    roomPreviewData.roomName = roomName != nil ? roomName : roomIdOrAlias
+                    
+                    sself.showRoomPreview(with: roomPreviewData, onEventID: eventID)
+                case .failure(let error):
+                    let errorMessage: String
+                    
+                    if MXError(nsError: error).errcode == kMXErrCodeStringNotFound {
+                        errorMessage = TchapL10n.tchapRoomInvalidLink
+                    } else {
+                        errorMessage = TchapL10n.errorMessageDefault
+                    }
+                    
+                    let errorPresentable = ErrorPresentableImpl(title: TchapL10n.errorTitleDefault, message: errorMessage)
+                    sself.errorPresenter?.present(errorPresentable: errorPresentable)
+                }
+            }
+        } else {
+            let roomPreviewData: RoomPreviewData = RoomPreviewData(roomId: roomIdOrAlias, andSession: self.session)
+            roomPreviewData.roomName = roomName != nil ? roomName : roomIdOrAlias
+            
+            self.showRoomPreview(with: roomPreviewData, onEventID: eventID)
+        }
+    }
+    
+    func showRoomPreview(with roomPreviewData: RoomPreviewData, onEventID eventID: String? = nil) {
+        let roomPreviewCoordinator = RoomPreviewCoordinator(session: self.session, roomPreviewData: roomPreviewData)
+            roomPreviewCoordinator.start()
+            roomPreviewCoordinator.delegate = self
+            
+            self.add(childCoordinator: roomPreviewCoordinator)
+            
+            self.navigationRouter.push(roomPreviewCoordinator, animated: true) { [weak self] in
+                self?.remove(childCoordinator: roomPreviewCoordinator)
+            }
+    }
+    
     func scrollToRoom(with roomID: String, animated: Bool) {
         self.homeViewController?.setSelectedTabIndex(0)
         self.roomsCoordinator?.scrollToRoom(with: roomID, animated: animated)
@@ -403,6 +449,21 @@ extension HomeCoordinator: RoomCreationCoordinatorDelegate {
     }
     
     func roomCreationCoordinator(_ coordinator: RoomCreationCoordinatorType, didCreateRoomWithID roomID: String) {
+        self.navigationRouter.dismissModule(animated: true) { [weak self] in
+            self?.remove(childCoordinator: coordinator)
+            self?.showRoom(with: roomID)
+        }
+    }
+}
+
+// MARK: - RoomPreviewCoordinatorDelegate
+extension HomeCoordinator: RoomPreviewCoordinatorDelegate {
+    
+    func roomPreviewCoordinatorDidCancel(_ coordinator: RoomPreviewCoordinatorType) {
+        self.navigationRouter.popModule(animated: true)
+    }
+    
+    func roomPreviewCoordinator(_ coordinator: RoomPreviewCoordinatorType, didJoinRoomWithId roomID: String, onEventId eventId: String?) {
         self.navigationRouter.dismissModule(animated: true) { [weak self] in
             self?.remove(childCoordinator: coordinator)
             self?.showRoom(with: roomID)

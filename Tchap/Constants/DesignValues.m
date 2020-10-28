@@ -28,6 +28,11 @@ UIColor *kColorGreyishPurple;
 UIColor *kColorWarmGrey;
 UIColor *kColorLightGrey;
 UIColor *kColorDarkGrey;
+UIColor *kColorPaleGrey;
+UIColor *kColorCoral;
+UIColor *kColorPumpkinOrange;
+UIColor *kColorJadeGreen;
+UIColor *kColorGreyishBrown;
 
 #pragma mark Variant 1
 
@@ -61,6 +66,8 @@ UIColor *kVariant1SecondaryTextColor;
 UIColor *kVariant1WarnTextColor;
 UIColor *kVariant1PresenceIndicatorOnlineColor;
 UIColor *kVariant1OverlayBackgroundColor;
+UIColor *kVariant1BoxBgColor;
+UIColor *kVariant1BoxTextColor;
 
 #pragma mark Variant 2
 
@@ -94,6 +101,8 @@ UIColor *kVariant2SecondaryTextColor;
 UIColor *kVariant2WarnTextColor;
 UIColor *kVariant2PresenceIndicatorOnlineColor;
 UIColor *kVariant2OverlayBackgroundColor;
+UIColor *kVariant2BoxBgColor;
+UIColor *kVariant2BoxTextColor;
 
 @implementation DesignValues
 
@@ -121,6 +130,11 @@ UIColor *kVariant2OverlayBackgroundColor;
     kColorWarmGrey = [[UIColor alloc] initWithRgb:0x858585];
     kColorLightGrey = [[UIColor alloc] initWithRgb:0xf0f0f0];
     kColorDarkGrey = [[UIColor alloc] initWithRgb:0xcccccc];
+    kColorPaleGrey = [[UIColor alloc] initWithRgb:0xf2f5f8];
+    kColorCoral = [[UIColor alloc] initWithRgb:0xeb5757];
+    kColorPumpkinOrange = [[UIColor alloc] initWithRgb:0xf07a12];
+    kColorJadeGreen = [[UIColor alloc] initWithRgb:0x27ae60];
+    kColorGreyishBrown = [[UIColor alloc] initWithRgb:0x4f4f4f];
     
     // Observe user interface theme change.
     [[NSUserDefaults standardUserDefaults] addObserver:[DesignValues sharedInstance] forKeyPath:@"userInterfaceTheme" options:0 context:nil];
@@ -178,6 +192,8 @@ UIColor *kVariant2OverlayBackgroundColor;
     kVariant1SecondaryBgColor = kColorLightGrey;
     kVariant1SecondaryTextColor = kColorWarmGrey;
     kVariant1WarnTextColor = [UIColor redColor];
+    kVariant1BoxBgColor = kColorPaleGrey;
+    kVariant1BoxTextColor = kColorGreyishBrown;
     
     kVariant1PresenceIndicatorOnlineColor = [[UIColor alloc] initWithRgb:0x60ad0d];
     kVariant1OverlayBackgroundColor = [UIColor colorWithWhite:0.7 alpha:0.5];
@@ -213,6 +229,8 @@ UIColor *kVariant2OverlayBackgroundColor;
     kVariant2SecondaryBgColor = kColorLightGrey;
     kVariant2SecondaryTextColor = kColorWarmGrey;
     kVariant2WarnTextColor = [UIColor redColor];
+    kVariant2BoxBgColor = kColorPaleGrey;
+    kVariant2BoxTextColor = kColorGreyishBrown;
     
     kVariant2PresenceIndicatorOnlineColor = [[UIColor alloc] initWithRgb:0x60ad0d];
     kVariant2OverlayBackgroundColor = [UIColor colorWithWhite:0.7 alpha:0.5];

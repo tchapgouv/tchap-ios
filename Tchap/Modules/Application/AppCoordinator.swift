@@ -23,7 +23,7 @@ final class AppCoordinator: AppCoordinatorType {
     
     private enum Constants {
         static let expiredAccountError: String = "ORG_MATRIX_EXPIRED_ACCOUNT"
-        static let lastAppVersionWhichRequiresCacheClearing: AppVersion = AppVersion(bundleShortVersion: "1.0.23", bundleVersion: "1")
+        static let lastAppVersionWhichRequiresCacheClearing: AppVersion = AppVersion(bundleShortVersion: "1.0.29", bundleVersion: "1")
     }
     
     // MARK: - Properties
@@ -209,36 +209,29 @@ final class AppCoordinator: AppCoordinatorType {
     }
     
     func showRoom(with roomIdOrAlias: String, onEventID eventID: String? = nil) -> Bool {
-        guard let homeCoordinator = self.homeCoordinator else {
+        guard let homeCoordinator = self.homeCoordinator, let session = self.mainSession else {
                 return false
         }
         
         self.cancelPendingRoomSelection()
         
-        let roomID: String?
-        
-        if roomIdOrAlias.hasPrefix("#") {
-            // Translate the alias into the room id
-            // Postpone the action if the session didn't loaded the data from the store yet
-            if let session = self.mainSession, session.state.rawValue < MXSessionStateStoreDataReady.rawValue {
-                self.postponeRoomSelection(with: roomIdOrAlias, onEventID: eventID)
-                roomID = nil
-            } else if let account = MXKAccountManager.shared().accountKnowingRoom(withRoomIdOrAlias: roomIdOrAlias),
-                let room = account.mxSession.room(withAlias: roomIdOrAlias) {
-                roomID = room.roomId
-            } else {
-                roomID = nil
-            }
-        } else {
-            roomID = roomIdOrAlias
-        }
-        
-        if let finalRoomID = roomID {
-            homeCoordinator.showRoom(with: finalRoomID, onEventID: eventID)
-            return true
-        } else {
+        // Postpone the action if the session didn't loaded the data from the store yet
+        if session.state.rawValue < MXSessionStateStoreDataReady.rawValue {
+            self.postponeRoomSelection(with: roomIdOrAlias, onEventID: eventID)
             return false
         }
+        
+        // Check whether the room is known by the current user.
+        let room: MXRoom? = roomIdOrAlias.hasPrefix("#") ? session.room(withAlias: roomIdOrAlias) : session.room(withRoomId: roomIdOrAlias)
+        
+        if let room = room, room.summary.membership == .join {
+            homeCoordinator.showRoom(with: room.roomId, onEventID: eventID)
+        } else {
+            // Try to preview the unknown room.
+            homeCoordinator.showRoomPreview(with: roomIdOrAlias, roomName: room?.summary.displayname, onEventID: eventID)
+        }
+        
+        return true
     }
     
     func checkMinAppVersionRequirements() {

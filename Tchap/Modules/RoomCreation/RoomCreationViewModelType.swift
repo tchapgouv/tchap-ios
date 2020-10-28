@@ -16,13 +16,17 @@
 
 import Foundation
 
+enum RoomType {
+    case privateRestricted(isFederated: Bool = true)
+    case privateUnrestricted(isFederated: Bool = true)
+    case forum(isFederated: Bool = false)
+}
+
 /// Protocol describing the view model used by RoomCreationViewController
 protocol RoomCreationViewModelType {
     
     var roomNameFormTextViewModel: FormTextViewModel { get }
     var retentionPeriodInDays: uint { get set }
-    var isRestricted: Bool { get set }
-    var isPublic: Bool { get set }
-    var isFederated: Bool { get set }
     var homeServerDomain: String { get }
+    var selectedRoomType: RoomType { get set }
 }

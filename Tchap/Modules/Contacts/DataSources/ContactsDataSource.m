@@ -89,6 +89,7 @@
         hideNonMatrixEnabledContacts = NO;
         
         _showInviteToTchapButton = NO;
+        _showInviteByLinkButton = NO;
         _showAddEmailButton = NO;
         
         forceDirectContactsRefresh = YES;
@@ -403,8 +404,29 @@
 - (void)setShowInviteToTchapButton:(BOOL)showInviteButton
 {
    if (_showInviteToTchapButton != showInviteButton)
+   {
+       _showInviteToTchapButton = showInviteButton;
+       
+       [self forceRefresh];
+   }
+}
+
+- (void)showInviteByLinkButtonForRoomId:(NSString *)roomId
+{
+    self.showInviteByLinkButton = YES;
+    _inviteByLinkRoomId = roomId;
+}
+
+- (void)hideInviteByLinkButton
+{
+    self.showInviteByLinkButton = NO;
+}
+
+- (void)setShowInviteByLinkButton:(BOOL)showInviteByLinkButton
+{
+    if (_showInviteByLinkButton != showInviteByLinkButton)
     {
-        _showInviteToTchapButton = showInviteButton;
+        _showInviteByLinkButton = showInviteByLinkButton;
         
         [self forceRefresh];
     }
@@ -960,11 +982,16 @@
 {
     NSInteger count = 0;
     
-    inviteToTchapButtonSection = addEmailButtonSection = filteredLocalContactsSection = filteredMatrixContactsSection = -1;
+    inviteToTchapButtonSection = inviteByLinkButtonSection = addEmailButtonSection = filteredLocalContactsSection = filteredMatrixContactsSection = -1;
     
     if (_showInviteToTchapButton)
     {
         inviteToTchapButtonSection = count++;
+    }
+    
+    if (_showInviteByLinkButton)
+    {
+        inviteByLinkButtonSection = count++;
     }
     
     if (_showAddEmailButton)
@@ -1002,6 +1029,10 @@
     NSInteger count = 0;
     
     if (section == inviteToTchapButtonSection)
+    {
+        count = 1;
+    }
+    else if (section == inviteByLinkButtonSection)
     {
         count = 1;
     }
@@ -1045,6 +1076,17 @@
         ContactButtonView *buttonView = [tableView dequeueReusableCellWithIdentifier:ContactButtonView.defaultReuseIdentifier forIndexPath:indexPath];
         ContactButtonViewModel *buttonModel = [[ContactButtonViewModel alloc] initWithIcon: [UIImage imageNamed:@"tchap_ic_add_contact"]
                                                                                     action: NSLocalizedStringFromTable(@"contacts_invite_to_tchap_button", @"Tchap", nil)];
+        [buttonView renderWithModel:buttonModel];
+        
+        return buttonView;
+    }
+    
+    // Check whether the user is allowed to invite by link
+    if (indexPath.section == inviteByLinkButtonSection)
+    {
+        ContactButtonView *buttonView = [tableView dequeueReusableCellWithIdentifier:ContactButtonView.defaultReuseIdentifier forIndexPath:indexPath];
+        ContactButtonViewModel *buttonModel = [[ContactButtonViewModel alloc] initWithIcon: [UIImage imageNamed:@"tchap_ic_invite_by_link"]
+                                                                                    action: NSLocalizedStringFromTable(@"contacts_invite_by_link_button", @"Tchap", nil)];
         [buttonView renderWithModel:buttonModel];
         
         return buttonView;
@@ -1178,6 +1220,11 @@
 -(BOOL)isInviteButtonIndexPath:(NSIndexPath*)indexPath
 {
     return (indexPath.section == inviteToTchapButtonSection);
+}
+
+-(BOOL)isInviteByLinkButtonIndexPath:(NSIndexPath*)indexPath
+{
+    return (indexPath.section == inviteByLinkButtonSection);
 }
 
 -(BOOL)isAddEmailButtonIndexPath:(NSIndexPath*)indexPath

@@ -732,6 +732,18 @@
 		0276C17524D989070097CA0A /* tchap.gouv.fr.cer in Resources */ = {isa = PBXBuildFile; fileRef = 0276C17424D989070097CA0A /* tchap.gouv.fr.cer */; };
 		027DCAC521B14F68000DD05E /* ContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 027DCAC321B14F68000DD05E /* ContactCell.xib */; };
 		027DCAC621B14F68000DD05E /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027DCAC421B14F68000DD05E /* ContactCell.swift */; };
+		028624D9250269F100CFE83D /* RoomAccessByLinkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028624D5250269F000CFE83D /* RoomAccessByLinkViewController.swift */; };
+		028624DA250269F100CFE83D /* RoomAccessByLinkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028624D5250269F000CFE83D /* RoomAccessByLinkViewController.swift */; };
+		028624DB250269F100CFE83D /* RoomAccessByLinkViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028624D6250269F100CFE83D /* RoomAccessByLinkViewModel.swift */; };
+		028624DC250269F100CFE83D /* RoomAccessByLinkViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028624D6250269F100CFE83D /* RoomAccessByLinkViewModel.swift */; };
+		028624DD250269F100CFE83D /* RoomAccessByLinkViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 028624D7250269F100CFE83D /* RoomAccessByLinkViewController.storyboard */; };
+		028624DE250269F100CFE83D /* RoomAccessByLinkViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 028624D7250269F100CFE83D /* RoomAccessByLinkViewController.storyboard */; };
+		028624DF250269F100CFE83D /* RoomAccessByLinkViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028624D8250269F100CFE83D /* RoomAccessByLinkViewModelType.swift */; };
+		028624E0250269F100CFE83D /* RoomAccessByLinkViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028624D8250269F100CFE83D /* RoomAccessByLinkViewModelType.swift */; };
+		028624E2250279C300CFE83D /* RoomAccessByLinkViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028624E1250279C300CFE83D /* RoomAccessByLinkViewState.swift */; };
+		028624E3250279C300CFE83D /* RoomAccessByLinkViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028624E1250279C300CFE83D /* RoomAccessByLinkViewState.swift */; };
+		028624E525027B0600CFE83D /* RoomAccessByLinkViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028624E425027B0500CFE83D /* RoomAccessByLinkViewAction.swift */; };
+		028624E625027B0600CFE83D /* RoomAccessByLinkViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028624E425027B0500CFE83D /* RoomAccessByLinkViewAction.swift */; };
 		0287985624AE7EFA004FC7AE /* BtchapNSE.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 0287984F24AE7EFA004FC7AE /* BtchapNSE.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		0287986624AE80C8004FC7AE /* TchapNSE.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 0287985F24AE80C8004FC7AE /* TchapNSE.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		0287986E24AE8404004FC7AE /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0287986C24AE8404004FC7AE /* NotificationService.swift */; };
@@ -2402,6 +2414,12 @@
 		0276C17424D989070097CA0A /* tchap.gouv.fr.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = tchap.gouv.fr.cer; sourceTree = "<group>"; };
 		027DCAC321B14F68000DD05E /* ContactCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactCell.xib; sourceTree = "<group>"; };
 		027DCAC421B14F68000DD05E /* ContactCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
+		028624D5250269F000CFE83D /* RoomAccessByLinkViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomAccessByLinkViewController.swift; sourceTree = "<group>"; };
+		028624D6250269F100CFE83D /* RoomAccessByLinkViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomAccessByLinkViewModel.swift; sourceTree = "<group>"; };
+		028624D7250269F100CFE83D /* RoomAccessByLinkViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = RoomAccessByLinkViewController.storyboard; sourceTree = "<group>"; };
+		028624D8250269F100CFE83D /* RoomAccessByLinkViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomAccessByLinkViewModelType.swift; sourceTree = "<group>"; };
+		028624E1250279C300CFE83D /* RoomAccessByLinkViewState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomAccessByLinkViewState.swift; sourceTree = "<group>"; };
+		028624E425027B0500CFE83D /* RoomAccessByLinkViewAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomAccessByLinkViewAction.swift; sourceTree = "<group>"; };
 		0287984F24AE7EFA004FC7AE /* BtchapNSE.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BtchapNSE.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		0287985324AE7EFA004FC7AE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0287985A24AE807F004FC7AE /* BtchapNSE.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BtchapNSE.entitlements; sourceTree = "<group>"; };
@@ -3197,6 +3215,7 @@
 				020DF85F214BE467003DFBA4 /* RoomViewController.h */,
 				020DF87D214BE467003DFBA4 /* RoomViewController.m */,
 				020DF870214BE467003DFBA4 /* RoomViewController.xib */,
+				028624D42502652400CFE83D /* RoomAccessByLink */,
 				02FAE50C23B4C41500DE73D8 /* BubbleReactions */,
 				02FAE51623B4C41500DE73D8 /* ContextualMenu */,
 				02FAE54523B4C41500DE73D8 /* EditHistory */,
@@ -4114,6 +4133,19 @@
 				026155BE2398F8210045459E /* Info.plist */,
 			);
 			path = SupportingFiles;
+			sourceTree = "<group>";
+		};
+		028624D42502652400CFE83D /* RoomAccessByLink */ = {
+			isa = PBXGroup;
+			children = (
+				028624E425027B0500CFE83D /* RoomAccessByLinkViewAction.swift */,
+				028624E1250279C300CFE83D /* RoomAccessByLinkViewState.swift */,
+				028624D8250269F100CFE83D /* RoomAccessByLinkViewModelType.swift */,
+				028624D6250269F100CFE83D /* RoomAccessByLinkViewModel.swift */,
+				028624D5250269F000CFE83D /* RoomAccessByLinkViewController.swift */,
+				028624D7250269F100CFE83D /* RoomAccessByLinkViewController.storyboard */,
+			);
+			path = RoomAccessByLink;
 			sourceTree = "<group>";
 		};
 		0287985024AE7EFA004FC7AE /* BtchapNSE */ = {
@@ -5824,9 +5856,9 @@
 				B1C4644121B67F1C005F4D53 /* RoomCreationAvatarView.xib */,
 				B1C4643F21B67F1C005F4D53 /* RoomCreationCoordinator.swift */,
 				B1C4644621B67F1C005F4D53 /* RoomCreationCoordinatorType.swift */,
-				B1C4644221B67F1C005F4D53 /* RoomCreationViewController.storyboard */,
 				B1C4644021B67F1C005F4D53 /* RoomCreationViewController.swift */,
 				B1C4644521B67F1C005F4D53 /* RoomCreationViewModel.swift */,
+				B1C4644221B67F1C005F4D53 /* RoomCreationViewController.storyboard */,
 				B1C4644321B67F1C005F4D53 /* RoomCreationViewModelType.swift */,
 			);
 			path = RoomCreation;
@@ -6583,6 +6615,7 @@
 				0250C59F2122B68000034691 /* MediaAlbumTableCell.xib in Resources */,
 				02C3F28724AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseViewController.storyboard in Resources */,
 				02FAE4E023B4B61700DE73D8 /* KeyBackupRecoverFromRecoveryKeyViewController.storyboard in Resources */,
+				028624DD250269F100CFE83D /* RoomAccessByLinkViewController.storyboard in Resources */,
 				02FAE45C23B4AB3300DE73D8 /* WidgetPermissionViewController.storyboard in Resources */,
 				02FAE46423B4AB3300DE73D8 /* JitsiViewController.xib in Resources */,
 				020DF938214BE467003DFBA4 /* TableViewCellWithCheckBoxAndLabel.xib in Resources */,
@@ -6692,6 +6725,7 @@
 				02388E0424A2AF7900F3B485 /* UserVerificationStartViewController.storyboard in Resources */,
 				02FAE59323B4C41600DE73D8 /* RoomContextualMenuToolbarView.xib in Resources */,
 				02DFEC7F21C07370009B6F15 /* SharedImages.xcassets in Resources */,
+				028624DE250269F100CFE83D /* RoomAccessByLinkViewController.storyboard in Resources */,
 				02FAE5F123B4C41600DE73D8 /* ReactionHistoryViewController.storyboard in Resources */,
 				02DFEC8021C07370009B6F15 /* RoomMembershipExpandedBubbleCell.xib in Resources */,
 				02388E7424A2AF7A00F3B485 /* KeyVerificationSelfVerifyStartViewController.storyboard in Resources */,
@@ -7434,9 +7468,11 @@
 				02C3F20E24AF75100086ACA5 /* SecureBackupSetupCoordinator.swift in Sources */,
 				02388EA924A2AF7A00F3B485 /* DeviceVerificationStartViewController.swift in Sources */,
 				B1F2AA92212AEC830077FDC0 /* SplitViewCoordinator.swift in Sources */,
+				028624DB250269F100CFE83D /* RoomAccessByLinkViewModel.swift in Sources */,
 				B1680D062152AA28009B5F92 /* PublicRoomServiceType.swift in Sources */,
 				020DF9AC214BE467003DFBA4 /* RoomInputToolbarView.m in Sources */,
 				02FAE4E423B4B61700DE73D8 /* KeyBackupRecoverFromRecoveryKeyCoordinatorType.swift in Sources */,
+				028624DF250269F100CFE83D /* RoomAccessByLinkViewModelType.swift in Sources */,
 				02FAE4C423B4B61700DE73D8 /* PasswordStrengthView.swift in Sources */,
 				02FAE41D23B29EBD00DE73D8 /* ServiceTermsModalScreenViewModelType.swift in Sources */,
 				020DF954214BE467003DFBA4 /* RoomEncryptedAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.m in Sources */,
@@ -7450,6 +7486,7 @@
 				02BEE1562125BBF800098505 /* RoomsViewController.m in Sources */,
 				025E36F8229548C000C9D9AE /* ThirdPartyIDResolver.swift in Sources */,
 				020DF94A214BE467003DFBA4 /* RoomParticipantsViewController.m in Sources */,
+				028624E525027B0600CFE83D /* RoomAccessByLinkViewAction.swift in Sources */,
 				0250C4E62122B68000034691 /* MXRoomSummary+Riot.m in Sources */,
 				02FAE59823B4C41600DE73D8 /* EmojiPickerViewState.swift in Sources */,
 				02520307224EBD4800262433 /* ContactButtonViewModelType.swift in Sources */,
@@ -7460,6 +7497,7 @@
 				0290607A21501D16005FE3C1 /* PreviewView.m in Sources */,
 				B15B868B2135C4DE002782BE /* AuthenticationFormValidationResult.swift in Sources */,
 				02388DE724A2AF7900F3B485 /* UserVerificationSessionStatusCoordinatorType.swift in Sources */,
+				028624E2250279C300CFE83D /* RoomAccessByLinkViewState.swift in Sources */,
 				B1C4646121B6DD42005F4D53 /* RoomServiceType.swift in Sources */,
 				0215542322B24058004663A6 /* AccountValidityServiceType.swift in Sources */,
 				02FAE46823B4AB3300DE73D8 /* WidgetViewController.m in Sources */,
@@ -7682,6 +7720,7 @@
 				B15B866E21353C8D002782BE /* TextInputProperties.swift in Sources */,
 				B1322FFC21301B5D0054A9DD /* AuthenticationServiceError.swift in Sources */,
 				B1C4644D21B67F1E005F4D53 /* RoomCreationViewModel.swift in Sources */,
+				028624D9250269F100CFE83D /* RoomAccessByLinkViewController.swift in Sources */,
 				02388E6724A2AF7900F3B485 /* KeyVerificationScanConfirmationCoordinator.swift in Sources */,
 				B12209C923854F92004D069C /* ClientConfigurationService.swift in Sources */,
 				02388E7124A2AF7A00F3B485 /* KeyVerificationSelfVerifyStartViewModelType.swift in Sources */,
@@ -8240,9 +8279,11 @@
 				02C3F20F24AF75100086ACA5 /* SecureBackupSetupCoordinator.swift in Sources */,
 				02388EAA24A2AF7A00F3B485 /* DeviceVerificationStartViewController.swift in Sources */,
 				B1C0EE992375B92100E8BB88 /* ChangePasswordCoordinatorBridgePresenter.swift in Sources */,
+				028624DC250269F100CFE83D /* RoomAccessByLinkViewModel.swift in Sources */,
 				02DFEBE721C07370009B6F15 /* RegistrationCoordinatorType.swift in Sources */,
 				02DFEBE821C07370009B6F15 /* AppDelegate.swift in Sources */,
 				02FAE4E523B4B61700DE73D8 /* KeyBackupRecoverFromRecoveryKeyCoordinatorType.swift in Sources */,
+				028624E0250269F100CFE83D /* RoomAccessByLinkViewModelType.swift in Sources */,
 				02FAE4C523B4B61700DE73D8 /* PasswordStrengthView.swift in Sources */,
 				02FAE41E23B29EBD00DE73D8 /* ServiceTermsModalScreenViewModelType.swift in Sources */,
 				02DFEBE921C07370009B6F15 /* EventFormatter.m in Sources */,
@@ -8256,6 +8297,7 @@
 				02DFEBEA21C07370009B6F15 /* SplitViewCoordinator.swift in Sources */,
 				02DFEBEB21C07370009B6F15 /* PublicRoomServiceType.swift in Sources */,
 				02DFEBEC21C07370009B6F15 /* RoomInputToolbarView.m in Sources */,
+				028624E625027B0600CFE83D /* RoomAccessByLinkViewAction.swift in Sources */,
 				02DFEBED21C07370009B6F15 /* RoomEncryptedAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.m in Sources */,
 				02FAE59923B4C41600DE73D8 /* EmojiPickerViewState.swift in Sources */,
 				02DFEBEE21C07370009B6F15 /* ActivityIndicatorPresenterType.swift in Sources */,
@@ -8266,6 +8308,7 @@
 				025E36F9229548C000C9D9AE /* ThirdPartyIDResolver.swift in Sources */,
 				02DFEBF021C07370009B6F15 /* RoomParticipantsViewController.m in Sources */,
 				02388DE824A2AF7900F3B485 /* UserVerificationSessionStatusCoordinatorType.swift in Sources */,
+				028624E3250279C300CFE83D /* RoomAccessByLinkViewState.swift in Sources */,
 				02DFEBF121C07370009B6F15 /* MXRoomSummary+Riot.m in Sources */,
 				02520308224EBD4800262433 /* ContactButtonViewModelType.swift in Sources */,
 				02FAE46923B4AB3300DE73D8 /* WidgetViewController.m in Sources */,
@@ -8488,6 +8531,7 @@
 				02DFEC4221C07370009B6F15 /* UsersDevicesViewController.m in Sources */,
 				02DFEC4321C07370009B6F15 /* UserService.swift in Sources */,
 				02C4BE922252502900F7BB0E /* InviteServiceType.swift in Sources */,
+				028624DA250269F100CFE83D /* RoomAccessByLinkViewController.swift in Sources */,
 				02388E6824A2AF7900F3B485 /* KeyVerificationScanConfirmationCoordinator.swift in Sources */,
 				02DFEC4421C07370009B6F15 /* Stylable.swift in Sources */,
 				02388E7224A2AF7A00F3B485 /* KeyVerificationSelfVerifyStartViewModelType.swift in Sources */,
@@ -9333,7 +9377,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.0.28;
+				MARKETING_VERSION = 1.0.29;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -9385,7 +9429,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.0.28;
+				MARKETING_VERSION = 1.0.29;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;

@@ -65,6 +65,7 @@
 @property (nonatomic, readonly) NSString *roomCanonicalAlias;
 @property (nonatomic, readonly) NSArray<NSString*> *roomAliases;
 @property (nonatomic, readonly) NSInteger numJoinedMembers; // -1 if unknown.
+@property (nonatomic, readonly) BOOL wasInitializedWithPublicRoom;
 
 /**
  The RoomDataSource to peek into the room. 

@@ -47,6 +47,7 @@ internal enum Asset {
     internal static let startChat = ImageAsset(name: "start_chat")
     internal static let tchapIcAddBymail = ImageAsset(name: "tchap_ic_add_bymail")
     internal static let tchapIcAddContact = ImageAsset(name: "tchap_ic_add_contact")
+    internal static let tchapIcInviteByLink = ImageAsset(name: "tchap_ic_invite_by_link")
     internal static let e2eBlocked = ImageAsset(name: "e2e_blocked")
     internal static let e2eUnencrypted = ImageAsset(name: "e2e_unencrypted")
     internal static let e2eWarning = ImageAsset(name: "e2e_warning")
@@ -84,6 +85,10 @@ internal enum Asset {
     internal static let sendIcon = ImageAsset(name: "send_icon")
     internal static let uploadIcon = ImageAsset(name: "upload_icon")
     internal static let voiceCallIcon = ImageAsset(name: "voice_call_icon")
+    internal static let forumAvatarIconHr = ImageAsset(name: "forum_avatar_icon_hr")
+    internal static let forumRoom = ImageAsset(name: "forum_room")
+    internal static let privateAvatarIconHr = ImageAsset(name: "private_avatar_icon_hr")
+    internal static let privateRoom = ImageAsset(name: "private_room")
     internal static let addParticipant = ImageAsset(name: "add_participant")
     internal static let appsIcon = ImageAsset(name: "apps-icon")
     internal static let editIcon = ImageAsset(name: "edit_icon")
@@ -106,6 +111,8 @@ internal enum Asset {
   internal enum SharedImages {
     internal static let cancel = ImageAsset(name: "cancel")
     internal static let e2eVerified = ImageAsset(name: "e2e_verified")
+    internal static let forumAvatarIcon = ImageAsset(name: "forum_avatar_icon")
+    internal static let privateAvatarIcon = ImageAsset(name: "private_avatar_icon")
   }
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name

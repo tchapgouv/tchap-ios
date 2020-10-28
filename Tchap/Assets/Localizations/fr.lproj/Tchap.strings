@@ -90,11 +90,11 @@
 "conversations_tab_title" = "Conversations";
 "conversations_invites_section" = "Invitations";
 "conversations_main_section" = "Conversations";
-"conversations_directory_section" = "Salons publics";
+"conversations_directory_section" = "Salons forums";
 "conversations_no_conversation" = "Aucune conversation";
 "conversations_start_chat_action" = "Nouvelle discussion";
 "conversations_create_room_action" = "Nouveau salon";
-"conversations_access_to_public_rooms_action" = "Accéder à un salon public";
+"conversations_access_to_public_rooms_action" = "Accéder à un salon forum";
 "conversations_invite_join" = "Rejoindre";
 "conversations_invite_decline" = "Rejeter";
 
@@ -109,6 +109,7 @@
 "contacts_user_directory_offline_section" = "Répertoire Tchap (hors-ligne)";
 "contacts_search_bar_placeholder" = "Rechercher";
 "contacts_invite_to_tchap_button" = "Inviter des contacts dans Tchap";
+"contacts_invite_by_link_button" = "Inviter en partageant un lien";
 "contacts_invite_by_email_button" = "Envoyer une invitation par email";
 "contacts_invite_by_email_title" = "Envoyer une invitation";
 "contacts_invite_by_email_message" = "Veuillez saisir l'adresse email de la personne à inviter\U00A0:\U00A0";
@@ -151,6 +152,9 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Room title
+"room_title_private_room" = "Salon privé";
+"room_title_extern_room" = "Salon privé ouvert aux externes";
+"room_title_forum_room" = "Salon forum";
 "room_title_room_members_count" = "%d membre(s)";
 "room_title_unrestricted_room" = "Salon accessible aux externes";
 "room_title_retention_info_one_day" = "Historique limité à 1 jour";
@@ -158,8 +162,13 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Room
+"room_category_private_room" = "Privé";
+"room_category_extern_room" = "Externes";
+"room_category_forum_room" = "Forum";
 "tchap_cannot_invite_deactivated_account_user" = "Votre correspondant a quitté définitivement cette discussion.\nVous devez en créer une nouvelle pour le recontacter, s'il est toujours joignable sur Tchap.";
 "tchap_room_admin_leave_prompt_msg" = "Voulez-vous vraiment quitter cette conversation ?\n\nElle ne sera plus administrée, et vous risquez de ne plus pouvoir la joindre de nouveau.";
+"tchap_room_invalid_link" = "Ce lien n'est pas valide";
+"tchap_room_access_unauthorized" = "Vous n'êtes pas autorisé à rejoindre cette conversation. Une invitation est nécessaire.";
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Room Members
@@ -178,9 +187,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Room Settings
 "room_settings_tab_title" = "Paramètres";
-"room_settings_remove_from_rooms_directory" = "Retirer ce salon de la liste des salons publics";
-"room_settings_remove_from_rooms_directory_prompt" = "Cette action est irréversible.\nVoulez-vous vraiment retirer ce salon des salons publics ?";
-"room_settings_room_access_title" = "Information complémentaire :";
+"room_settings_remove_from_rooms_directory" = "Retirer ce salon de la liste des forums";
+"room_settings_remove_from_rooms_directory_prompt" = "Cette action est irréversible.\nVoulez-vous vraiment retirer ce salon de la liste des forums ?";
+"room_settings_room_access_title" = "Gestion des comptes externes";
 "room_settings_room_access_restricted" = "Les externes ne sont pas autorisés à rejoindre ce salon";
 "room_settings_room_access_unrestricted" = "Les externes sont autorisés à rejoindre ce salon";
 "room_settings_allow_external_users_to_join" = "Autoriser l’accès aux externes à ce salon";
@@ -189,6 +198,18 @@
 "room_settings_retention_period_one_day" = "1 jour";
 "room_settings_retention_period_in_days" = "%d jours";
 "room_settings_fail_to_update_retention_period" = "Échec de mise à jour de la durée de l'historique";
+"room_settings_leave_room" = "Quitter ce salon";
+"room_settings_room_access_by_link_title" = "Accès par lien";
+"room_settings_room_access_by_link_disabled" = "Ce salon n’est pas accessible par lien";
+"room_settings_room_access_by_link_enabled" = "Ce salon est accessible par lien";
+"room_settings_enable_room_access_by_link" = "Activer l’accès au salon par lien";
+"room_settings_enable_room_access_by_link_info_off" = "Les autres utilisateurs seront autorisés à rejoindre ce salon à partir d’un lien";
+"room_settings_enable_room_access_by_link_info_on" = "Les autres utilisateurs peuvent rejoindre ce salon à partir du lien suivant\U00A0:";
+"room_settings_enable_room_access_by_link_info_on_with_limitation" = "Les autres utilisateurs peuvent rejoindre ce salon à partir du lien suivant (une invitation reste nécessaire pour les externes)\U00A0:";
+"room_settings_room_access_by_link_share" = "Partager le lien";
+"room_settings_room_access_by_link_forbidden" = "Ce changement n’est pas supporté actuellement car les externes sont autorisés à rejoindre ce salon. Il sera supporté prochainement";
+"room_settings_allow_external_users_forbidden" = "Ce changement n’est pas supporté actuellement car le salon est accessible par lien. Il sera supporté prochainement";
+"room_settings_room_access_by_link_invalid" = "lien invalide";
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Room Attachment Antivirus Scan
@@ -199,7 +220,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Public rooms
-"public_rooms_title" = "Accéder à un salon";
+"public_rooms_title" = "Accéder à un forum";
 "public_rooms_search_bar_placeholder" = "Rechercher";
 "public_rooms_loading_in_progress" = "Chargement en cours…";
 
@@ -211,13 +232,15 @@
 // MARK: Room creation
 "room_creation_title" = "Nouveau salon";
 "room_creation_name_placeholder" = "Nommer le salon";
-"room_creation_public_visibility_title" = "Rendre ce salon public";
-"room_creation_public_visibility_info" = "Un salon public peut être rejoint par n'importe quel membre de la communauté Tchap, il ne doit contenir aucune donnée sensible.";
+"room_creation_public_visibility_info" = "Un forum peut être rejoint par tous les utilisateurs excepté les invités externes. Il ne doit contenir aucune donnée sensible.";
 "room_creation_public_room_federation_title" = "Limiter l'accès à ce salon aux membres du domaine \"%@\"";
 "room_creation_add_avatar_action" = "Ajouter une photo";
-"room_creation_room_access_title" = "Autoriser l’accès aux externes à ce salon";
 "room_creation_room_retention_period_one_day" = "Limiter l’historique du salon à 1 jour";
 "room_creation_room_retention_period_days" = "Limiter l’historique du salon à %d jours";
+"room_creation_room_type_title" = "Type de salon";
+"room_creation_private_room_info" = "Accessible à tous les utilisateurs sur invitation d’un administrateur.";
+"room_creation_extern_room_info" = "Accessible à tous les utilisateurs et aux invités externes sur invitation d’un administrateur.";
+"room_creation_forum_room_info" = "Accessible à tous les utilisateurs à partir de la liste des forums ou d’un lien partagé.";
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Room creation

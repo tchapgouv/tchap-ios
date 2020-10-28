@@ -42,6 +42,7 @@ import UIKit
     
     var backgroundColor: UIColor { get }
     var secondaryBackgroundColor: UIColor { get }
+    var boxBackgroundColor: UIColor { get }
     
     var separatorColor: UIColor { get }
     
@@ -49,6 +50,7 @@ import UIKit
     var primarySubTextColor: UIColor { get }
     var secondaryTextColor: UIColor { get }
     var warnTextColor: UIColor { get }
+    var boxTextColor: UIColor { get }
     
     var presenceIndicatorOnlineColor: UIColor { get }
     
