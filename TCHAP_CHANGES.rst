@@ -1,19 +1,16 @@
-Changes in Tchap 1.0.xx (2020-xx-xx)
+Changes in Tchap 1.0.29 (2020-10-28)
 ===================================================
 
 Features/Improvements:
  * Private rooms: turn on the option to join on room’s link #293
- * Room preview: we have to support the preview on shared room link #323
+ * Room preview: support the preview on shared room link #323
  * Apply the new room creation design #317
  * Apply the new design on the room avatar and name #332
  * [Room creation] Do not override the power levels anymore #326
- * [Room access] Improve the wordings related to the room link access #335
+ * [Room access] Improve the wordings related to the room link access #329
  * Rename "Salon public" with "Salon forum" #333
  * [Room alias] Harden the room aliases #328
  * Force a clear cache on application update
-
-Bug Fixes:
- * 
  
 Changes in Tchap 1.0.28 (2020-09-03)
 ===================================================
