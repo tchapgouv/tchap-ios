@@ -1,3 +1,9 @@
+Changes in Tchap 1.x.x (2020-xx-xx)
+===================================================
+
+Bug Fix:
+ * Tchap is stuck on the room preview whereas I joined with success the room #337
+
 Changes in Tchap 1.0.29 (2020-10-28)
 ===================================================
 

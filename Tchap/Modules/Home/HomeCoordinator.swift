@@ -464,9 +464,7 @@ extension HomeCoordinator: RoomPreviewCoordinatorDelegate {
     }
     
     func roomPreviewCoordinator(_ coordinator: RoomPreviewCoordinatorType, didJoinRoomWithId roomID: String, onEventId eventId: String?) {
-        self.navigationRouter.dismissModule(animated: true) { [weak self] in
-            self?.remove(childCoordinator: coordinator)
-            self?.showRoom(with: roomID)
-        }
+        self.navigationRouter.popModule(animated: true)
+        self.showRoom(with: roomID, onEventID: eventId)
     }
 }
