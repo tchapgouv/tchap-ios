@@ -788,7 +788,11 @@
             MXRoomPowerLevels *powerLevels = [roomState powerLevels];
             self->isUserAllowedToInvite = ([powerLevels powerLevelOfUserWithUserID:userId] >= powerLevels.invite);
             self->isUserAllowedToKick = ([powerLevels powerLevelOfUserWithUserID:userId] >= powerLevels.kick);
+#ifdef ENABLE_JOIN_BY_LINK
             self->isUserAllowedToInviteByLink = ([powerLevels powerLevelOfUserWithUserID:userId] >= RoomPowerLevelAdmin || roomState.isJoinRulePublic);
+#else
+            self->isUserAllowedToInviteByLink = NO;
+#endif
             self->addParticipantButtonImageView.hidden = self->tableViewMaskLayer.hidden = !self->isUserAllowedToInvite;
             
             [self finalizeParticipantsList:roomState completion:completion];

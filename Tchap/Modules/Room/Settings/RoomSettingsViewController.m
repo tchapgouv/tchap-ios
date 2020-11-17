@@ -1056,7 +1056,11 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
                 directoryVisibilityIndex = count++;
             }
         }
+#ifdef ENABLE_JOIN_BY_LINK
         roomAccessByLinkIndex = count++;
+#else
+        roomAccessByLinkIndex = -1;
+#endif
         roomAccessRuleIndex = count++;
         notificationsIndex = count++;
         leaveActionIndex = count++;

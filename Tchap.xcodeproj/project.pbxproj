@@ -9184,6 +9184,7 @@
 					"ENABLE_ROOM_RETENTION=1",
 					"ENABLE_REACTIONS=1",
 					"ENABLE_EDITION=1",
+					"ENABLE_JOIN_BY_LINK=1",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Btchap/SupportingFiles/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -9237,6 +9238,7 @@
 					"ENABLE_ROOM_RETENTION=1",
 					"ENABLE_REACTIONS=1",
 					"ENABLE_EDITION=1",
+					"ENABLE_JOIN_BY_LINK=1",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Btchap/SupportingFiles/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
