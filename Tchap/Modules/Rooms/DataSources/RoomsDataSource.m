@@ -102,16 +102,20 @@
 
 - (void)registerKeyBackupStateDidChangeNotification
 {
+#ifdef SUPPORT_KEYS_BACKUP
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyBackupStateDidChangeNotification:) name:kMXKeyBackupDidStateChangeNotification object:nil];
     [self keyBackupStateDidChangeNotification:nil];
     
     // Check homeserver update in background
     [self.mxSession.crypto.backup forceRefresh:nil failure:nil];
+#endif
 }
 
 - (void)unregisterKeyBackupStateDidChangeNotification
 {
+#ifdef SUPPORT_KEYS_BACKUP
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXKeyBackupDidStateChangeNotification object:nil];
+#endif
 }
 
 - (void)keyBackupStateDidChangeNotification:(NSNotification*)notification

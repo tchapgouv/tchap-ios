@@ -910,8 +910,12 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     // Hide undecryptable messages that were sent while the user was not in the room
     [MXKAppSettings standardAppSettings].hidePreJoinedUndecryptableEvents = YES;
     
-    // Tchap: remove some state events from the rooms histories: the history access, encryption
-    [[MXKAppSettings standardAppSettings] removeSupportedEventTypes:@[kMXEventTypeStringRoomHistoryVisibility, kMXEventTypeStringRoomEncryption]];
+    // Tchap: remove some state events from the rooms histories: creation, the history access, encryption, join rules
+    [[MXKAppSettings standardAppSettings] removeSupportedEventTypes:@[kMXEventTypeStringRoomCreate,
+                                                                      kMXEventTypeStringRoomHistoryVisibility,
+                                                                      kMXEventTypeStringRoomEncryption,
+                                                                      kMXEventTypeStringRoomGuestAccess,
+                                                                      kMXEventTypeStringRoomJoinRules]];
     
     // Enable long press on event in bubble cells
     [MXKRoomBubbleTableViewCell disableLongPressGestureOnEvent:NO];

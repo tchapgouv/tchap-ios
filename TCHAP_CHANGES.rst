@@ -1,3 +1,15 @@
+Changes in Tchap 1.0.30 (2020-11-17)
+===================================================
+
+Features/Improvements:
+ * Update MatrixKit and MatrixSDK
+ * The room access by link is enabled only on Btchap
+
+Bug Fixes:
+ * Tchap is stuck on the room preview whereas I joined with success the room #337
+ * E2EE: One time keys upload can try to upload the same key again (vector-im#3721)
+ * Fix unexpected 404 errors PR #344
+
 Changes in Tchap 1.0.29 (2020-10-28)
 ===================================================
 
