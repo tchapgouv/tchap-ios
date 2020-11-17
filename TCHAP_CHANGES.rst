@@ -1,8 +1,12 @@
 Changes in Tchap 1.x.x (2020-xx-xx)
 ===================================================
 
+Improvement:
+ * Update MatrixKit and MatrixSDK
+
 Bug Fix:
  * Tchap is stuck on the room preview whereas I joined with success the room #337
+ * E2EE: One time keys upload can try to upload the same key again (vector-im#3721)
 
 Changes in Tchap 1.0.29 (2020-10-28)
 ===================================================
