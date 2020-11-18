@@ -19,12 +19,13 @@
 
 @implementation RoomPreviewData
 
-- (instancetype)initWithRoomId:(NSString *)roomId andSession:(MXSession *)mxSession
+- (instancetype)initWithRoomId:(NSString *)roomId roomAlias:(NSString*)roomAlias andSession:(MXSession *)mxSession
 {
     self = [super init];
     if (self)
     {
         _roomId = roomId;
+        _roomCanonicalAlias = roomAlias;
         _mxSession = mxSession;
         _numJoinedMembers = -1;
     }
@@ -33,7 +34,7 @@
 
 - (instancetype)initWithRoomId:(NSString *)roomId emailInvitationParams:(NSDictionary *)emailInvitationParams andSession:(MXSession *)mxSession
 {
-    self = [self initWithRoomId:roomId andSession:mxSession];
+    self = [self initWithRoomId:roomId roomAlias:nil andSession:mxSession];
     if (self)
     {
         _emailInvitation = [[RoomEmailInvitation alloc] initWithParams:emailInvitationParams];
@@ -47,14 +48,13 @@
 
 - (instancetype)initWithPublicRoom:(MXPublicRoom*)publicRoom andSession:(MXSession*)mxSession
 {
-    self = [self initWithRoomId:publicRoom.roomId andSession:mxSession];
+    self = [self initWithRoomId:publicRoom.roomId roomAlias:publicRoom.canonicalAlias andSession:mxSession];
     if (self)
     {
         // Report public room data
         _roomName = publicRoom.displayname;
         _roomAvatarUrl = publicRoom.avatarUrl;
         _roomTopic = publicRoom.topic;
-        _roomCanonicalAlias = publicRoom.canonicalAlias;
         _roomAliases = publicRoom.aliases;
         _numJoinedMembers = publicRoom.numJoinedMembers;
         
