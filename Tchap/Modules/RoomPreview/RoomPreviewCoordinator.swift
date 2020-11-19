@@ -161,7 +161,7 @@ final class RoomPreviewCoordinator: NSObject, RoomPreviewCoordinatorType {
                     // 'Error when trying to join an empty room should be more explicit'
                     errorMessage = Bundle.mxk_localizedString(forKey: "room_error_join_failed_empty_room")
                 } else {
-                    errorMessage = message
+                    errorMessage = TchapL10n.tchapRoomAccessUnauthorized
                 }
             } else {
                 errorMessage = TchapL10n.errorMessageDefault
