@@ -1,3 +1,10 @@
+Changes in Tchap 1.1.0 (2020-11-19)
+===================================================
+
+Bug Fixes:
+ * [Room Preview] unexpected failure on join: "Not possible to join an empty room" #346
+ * Wrong error message displayed to the external users when they try to join a room by link
+
 Changes in Tchap 1.0.30 (2020-11-17)
 ===================================================
 
