@@ -16,7 +16,9 @@
 
 #import "JitsiViewController.h"
 #import "JitsiWidgetData.h"
+#import "GeneratedInterface-Swift.h"
 
+#if __has_include(<MatrixSDK/MXJingleCallStack.h>)
 @import JitsiMeet;
 
 static const NSString *kJitsiDataErrorKey = @"error";
@@ -28,6 +30,7 @@ static const NSString *kJitsiDataErrorKey = @"error";
 
 @property (nonatomic, strong) NSString *conferenceId;
 @property (nonatomic, strong) NSURL *serverUrl;
+@property (nonatomic, strong) NSString *jwtToken;
 @property (nonatomic) BOOL startWithVideo;
 
 @end
@@ -86,31 +89,63 @@ static const NSString *kJitsiDataErrorKey = @"error";
         MXStrongifyAndReturnIfNil(self);
         
         // Use widget data from Matrix Widget API v2 first
-        [self extractWidgetDataFromWidget:widget];
+        JitsiWidgetData *jitsiWidgetData = [JitsiWidgetData modelFromJSON:widget.data];
         
-        if (!self.conferenceId)
-        {
-            // Else try v1
-            [self extractWidgetDataFromUrlString:widgetUrl];
-        }
+        [self fillWithWidgetData:jitsiWidgetData];
         
-        if (self.conferenceId)
-        {
-            if (success)
+        JitsiService *jitsiService = JitsiService.shared;
+        
+        void (^verifyConferenceId)(void) = ^() {
+            if (!self.conferenceId)
             {
-                success();
+                // Else try v1
+                [self extractWidgetDataFromUrlString:widgetUrl];
             }
+            
+            if (self.conferenceId)
+            {
+                if (success)
+                {
+                    success();
+                }
+            }
+            else
+            {
+                NSLog(@"[JitsiVC] Failed to load widget: %@. Widget event: %@", widget, widget.widgetEvent);
+                
+                if (failure)
+                {
+                    failure(nil);
+                }
+            }
+        };
+        
+        // Check if the widget requires authentication
+        if ([jitsiService isOpenIdJWTAuthenticationRequiredFor:jitsiWidgetData])
+        {
+            NSString *roomId = self.widget.roomId;
+            MXSession *session = self.widget.mxSession;
+            
+            MXWeakify(self);
+            
+            // Retrieve the OpenID token and generate the JWT token
+            [jitsiService getOpenIdJWTTokenWithJitsiServerDomain:jitsiWidgetData.domain
+                                                          roomId:roomId matrixSession:session success:^(NSString * _Nonnull jwtToken) {
+                MXStrongifyAndReturnIfNil(self);
+                
+                self.jwtToken = jwtToken;
+                verifyConferenceId();
+            } failure:^(NSError * _Nonnull error) {
+                if (failure)
+                {
+                    failure(error);
+                }
+            }];
         }
         else
         {
-            NSLog(@"[JitsiVC] Failed to load widget: %@. Widget event: %@", widget, widget.widgetEvent);
-
-            if (failure)
-            {
-                failure(nil);
-            }
+            verifyConferenceId();
         }
-
     } failure:^(NSError * _Nonnull error) {
 
         NSLog(@"[JitsiVC] Failed to load widget 2: %@. Widget event: %@", widget, widget.widgetEvent);
@@ -129,10 +164,9 @@ static const NSString *kJitsiDataErrorKey = @"error";
 
 #pragma mark - Private
 
-// Extract data based on Matrix Widget V2 widget data
-- (void)extractWidgetDataFromWidget:(Widget*)widget
+// Fill Jitsi data based on Matrix Widget V2 widget data
+- (void)fillWithWidgetData:(JitsiWidgetData*)jitsiWidgetData
 {
-    JitsiWidgetData *jitsiWidgetData = [JitsiWidgetData modelFromJSON:widget.data];
     if (jitsiWidgetData)
     {
         self.conferenceId = jitsiWidgetData.conferenceId;
@@ -185,26 +219,27 @@ static const NSString *kJitsiDataErrorKey = @"error";
         MXRoom *room = [session roomWithRoomId:self.widget.roomId];
         MXRoomMember *roomMember = [room.dangerousSyncState.members memberWithUserId:session.myUser.userId];
 
-//        NSString *userDisplayName = roomMember.displayname;
-//        NSString *avatar = [session.mediaManager urlOfContent:roomMember.avatarUrl];
-//        NSURL *avatarUrl = [NSURL URLWithString:avatar];
-//
-//        JitsiMeetConferenceOptions *jitsiMeetConferenceOptions = [JitsiMeetConferenceOptions fromBuilder:^(JitsiMeetConferenceOptionsBuilder * _Nonnull builder) {
-//
-//            if (serverUrl)
-//            {
-//                builder.serverURL = serverUrl;
-//            }
-//            builder.room = conferenceId;
-//            builder.videoMuted = !self.startWithVideo;
-//
-//            builder.subject = roomSummary.displayname;
-//            builder.userInfo = [[JitsiMeetUserInfo alloc] initWithDisplayName:userDisplayName
-//                                                                     andEmail:nil
-//                                                                    andAvatar:avatarUrl];
-//        }];
-//
-//        [self.jitsiMeetView join:jitsiMeetConferenceOptions];
+        NSString *userDisplayName = roomMember.displayname;
+        NSString *avatar = [session.mediaManager urlOfContent:roomMember.avatarUrl];
+        NSURL *avatarUrl = [NSURL URLWithString:avatar];
+
+        JitsiMeetConferenceOptions *jitsiMeetConferenceOptions = [JitsiMeetConferenceOptions fromBuilder:^(JitsiMeetConferenceOptionsBuilder * _Nonnull builder) {
+
+            if (serverUrl)
+            {
+                builder.serverURL = serverUrl;
+            }
+            builder.room = conferenceId;
+            builder.videoMuted = !self.startWithVideo;
+
+            builder.subject = roomSummary.displayname;
+            builder.userInfo = [[JitsiMeetUserInfo alloc] initWithDisplayName:userDisplayName
+                                                                     andEmail:nil
+                                                                    andAvatar:avatarUrl];
+            builder.token = self.jwtToken;
+        }];
+
+        [self.jitsiMeetView join:jitsiMeetConferenceOptions];
     }
 }
 
@@ -212,10 +247,12 @@ static const NSString *kJitsiDataErrorKey = @"error";
 
 - (void)conferenceWillJoin:(NSDictionary *)data
 {
+    // Nothing to do
 }
 
 - (void)conferenceJoined:(NSDictionary *)data
 {
+    // Nothing to do
 }
 
 - (void)conferenceTerminated:(NSDictionary *)data
@@ -251,3 +288,5 @@ static const NSString *kJitsiDataErrorKey = @"error";
 }
 
 @end
+
+#endif

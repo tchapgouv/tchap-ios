@@ -2411,6 +2411,7 @@
 		026A466123B21AFF0058D80B /* UISearchBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UISearchBar.swift; sourceTree = "<group>"; };
 		026D886F21C1C4F40085BED8 /* TchapSharedImages.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = TchapSharedImages.xcassets; sourceTree = "<group>"; };
 		026D887121C1C5490085BED8 /* BtchapSharedImages.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = BtchapSharedImages.xcassets; sourceTree = "<group>"; };
+		026DCFDE256FD32600D5A2B7 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		0276C17424D989070097CA0A /* tchap.gouv.fr.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = tchap.gouv.fr.cer; sourceTree = "<group>"; };
 		027DCAC321B14F68000DD05E /* ContactCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactCell.xib; sourceTree = "<group>"; };
 		027DCAC421B14F68000DD05E /* ContactCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
@@ -2729,7 +2730,6 @@
 		3267EFB320E379FD00FF1CAA /* CHANGES.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGES.rst; sourceTree = "<group>"; };
 		3267EFB420E379FD00FF1CAA /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; fileEncoding = 4; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		3267EFB520E379FD00FF1CAA /* AUTHORS.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AUTHORS.rst; sourceTree = "<group>"; };
-		3267EFB620E379FD00FF1CAA /* README.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.rst; sourceTree = "<group>"; };
 		3284A35020A07C210044F922 /* postMessageAPI.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = postMessageAPI.js; sourceTree = "<group>"; };
 		36D255B2C1E174D71079370D /* Pods_TchapPods_TchapNSE.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TchapPods_TchapNSE.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		42D17E495E890C4E93B6454C /* Pods_TchapPods_Btchap.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TchapPods_Btchap.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -6150,7 +6150,7 @@
 		F094A9991B78D8F000B1FBBF = {
 			isa = PBXGroup;
 			children = (
-				3267EFB620E379FD00FF1CAA /* README.rst */,
+				026DCFDE256FD32600D5A2B7 /* README.md */,
 				3267EFB320E379FD00FF1CAA /* CHANGES.rst */,
 				3267EFB520E379FD00FF1CAA /* AUTHORS.rst */,
 				3267EFB420E379FD00FF1CAA /* Podfile */,

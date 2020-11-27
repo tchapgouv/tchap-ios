@@ -19,7 +19,6 @@
 #import "GroupTableViewCell.h"
 #import "GroupInviteTableViewCell.h"
 
-#import "AppDelegate.h"
 #import "Riot-Swift.h"
 
 @interface GroupsViewController ()
@@ -103,7 +102,9 @@
     self.groupsSearchBar.placeholder = NSLocalizedStringFromTable(@"search_default_placeholder", @"Vector", nil);
     
     // @TODO: Add programmatically the (+) button.
-    //[self addPlusButton];
+//    plusButtonImageView = [self vc_addFABWithImage:[UIImage imageNamed:@"plus_floating_action"]
+//                                            target:self
+//                                            action:@selector(onPlusButtonPressed)];
     
     // Observe user interface theme change.
     kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
@@ -550,63 +551,6 @@
 
 #pragma mark - Room handling
 
-- (void)addPlusButton
-{
-    // Add room options button
-    plusButtonImageView = [[UIImageView alloc] init];
-    [plusButtonImageView setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [self.view addSubview:plusButtonImageView];
-    
-    plusButtonImageView.backgroundColor = [UIColor clearColor];
-    plusButtonImageView.contentMode = UIViewContentModeCenter;
-    plusButtonImageView.image = [UIImage imageNamed:@"plus_floating_action"];
-    plusButtonImageView.layer.shadowOpacity = 0.3;
-    plusButtonImageView.layer.shadowOffset = CGSizeMake(0, 3);
-    
-    CGFloat side = 78.0f;
-    NSLayoutConstraint* widthConstraint = [NSLayoutConstraint constraintWithItem:plusButtonImageView
-                                                                       attribute:NSLayoutAttributeWidth
-                                                                       relatedBy:NSLayoutRelationEqual
-                                                                          toItem:nil
-                                                                       attribute:NSLayoutAttributeNotAnAttribute
-                                                                      multiplier:1
-                                                                        constant:side];
-    
-    NSLayoutConstraint* heightConstraint = [NSLayoutConstraint constraintWithItem:plusButtonImageView
-                                                                        attribute:NSLayoutAttributeHeight
-                                                                        relatedBy:NSLayoutRelationEqual
-                                                                           toItem:nil
-                                                                        attribute:NSLayoutAttributeNotAnAttribute
-                                                                       multiplier:1
-                                                                         constant:side];
-    
-    NSLayoutConstraint* trailingConstraint = [NSLayoutConstraint constraintWithItem:plusButtonImageView
-                                                                          attribute:NSLayoutAttributeTrailing
-                                                                          relatedBy:NSLayoutRelationEqual
-                                                                             toItem:self.view
-                                                                          attribute:NSLayoutAttributeTrailing
-                                                                         multiplier:1
-                                                                           constant:0];
-    
-    NSLayoutConstraint* bottomConstraint = [NSLayoutConstraint constraintWithItem:self.bottomLayoutGuide
-                                                                        attribute:NSLayoutAttributeTop
-                                                                        relatedBy:NSLayoutRelationEqual
-                                                                           toItem:plusButtonImageView
-                                                                        attribute:NSLayoutAttributeBottom
-                                                                       multiplier:1
-                                                                         constant:9];
-    
-    [NSLayoutConstraint activateConstraints:@[widthConstraint, heightConstraint, trailingConstraint, bottomConstraint]];
-    
-    plusButtonImageView.userInteractionEnabled = YES;
-    
-    // Handle tap gesture
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onPlusButtonPressed)];
-    [tap setNumberOfTouchesRequired:1];
-    [tap setNumberOfTapsRequired:1];
-    [plusButtonImageView addGestureRecognizer:tap];
-}
-
 - (void)onPlusButtonPressed
 {
     __weak typeof(self) weakSelf = self;
@@ -614,48 +558,6 @@
     [currentAlert dismissViewControllerAnimated:NO completion:nil];
     
     currentAlert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-    
-//    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_recents_start_chat_with", @"Vector", nil)
-//                                                     style:UIAlertActionStyleDefault
-//                                                   handler:^(UIAlertAction * action) {
-//
-//                                                       if (weakSelf)
-//                                                       {
-//                                                           typeof(self) self = weakSelf;
-//                                                           self->currentAlert = nil;
-//
-//                                                           [self performSegueWithIdentifier:@"presentStartChat" sender:self];
-//                                                       }
-//
-//                                                   }]];
-//
-//    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_recents_create_empty_room", @"Vector", nil)
-//                                                     style:UIAlertActionStyleDefault
-//                                                   handler:^(UIAlertAction * action) {
-//
-//                                                       if (weakSelf)
-//                                                       {
-//                                                           typeof(self) self = weakSelf;
-//                                                           self->currentAlert = nil;
-//
-//                                                           [self createAnEmptyRoom];
-//                                                       }
-//
-//                                                   }]];
-//
-//    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_recents_join_room", @"Vector", nil)
-//                                                     style:UIAlertActionStyleDefault
-//                                                   handler:^(UIAlertAction * action) {
-//
-//                                                       if (weakSelf)
-//                                                       {
-//                                                           typeof(self) self = weakSelf;
-//                                                           self->currentAlert = nil;
-//
-//                                                           [self joinARoom];
-//                                                       }
-//
-//                                                   }]];
     
     [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
                                                      style:UIAlertActionStyleDefault
@@ -675,76 +577,6 @@
     [currentAlert mxk_setAccessibilityIdentifier:@"GroupsVCCreateRoomAlert"];
     [self presentViewController:currentAlert animated:YES completion:nil];
 }
-
-//- (void)joinARoom
-//{
-//    [currentAlert dismissViewControllerAnimated:NO completion:nil];
-//
-//    __weak typeof(self) weakSelf = self;
-//
-//    // Prompt the user to type a room id or room alias
-//    currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"room_recents_join_room_title", @"Vector", nil)
-//                                                       message:NSLocalizedStringFromTable(@"room_recents_join_room_prompt", @"Vector", nil)
-//                                                preferredStyle:UIAlertControllerStyleAlert];
-//
-//    [currentAlert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-//
-//        textField.secureTextEntry = NO;
-//        textField.placeholder = nil;
-//        textField.keyboardType = UIKeyboardTypeDefault;
-//    }];
-//
-//    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
-//                                                     style:UIAlertActionStyleDefault
-//                                                   handler:^(UIAlertAction * action) {
-//
-//                                                       if (weakSelf)
-//                                                       {
-//                                                           typeof(self) self = weakSelf;
-//                                                           self->currentAlert = nil;
-//                                                       }
-//
-//                                                   }]];
-//
-//    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"join", @"Vector", nil)
-//                                                     style:UIAlertActionStyleDefault
-//                                                   handler:^(UIAlertAction * action) {
-//
-//                                                       if (weakSelf)
-//                                                       {
-//                                                           typeof(self) self = weakSelf;
-//
-//                                                           NSString *roomAliasOrId = [self->currentAlert textFields].firstObject.text;
-//
-//                                                           self->currentAlert = nil;
-//
-//                                                           [self.activityIndicator startAnimating];
-//
-//                                                           self->currentRequest = [self.mainSession joinRoom:roomAliasOrId success:^(MXRoom *room) {
-//
-//                                                               self->currentRequest = nil;
-//                                                               [self.activityIndicator stopAnimating];
-//
-//                                                               // Show the room
-//                                                               [[AppDelegate theDelegate] showRoom:room.roomId andEventId:nil withMatrixSession:self.mainSession];
-//
-//                                                           } failure:^(NSError *error) {
-//
-//                                                               NSLog(@"[RecentsViewController] Join joinARoom (%@) failed", roomAliasOrId);
-//
-//                                                               self->currentRequest = nil;
-//                                                               [self.activityIndicator stopAnimating];
-//
-//                                                               // Alert user
-//                                                               [[AppDelegate theDelegate] showErrorAsAlert:error];
-//                                                           }];
-//                                                       }
-//
-//                                                   }]];
-//
-//    [currentAlert mxk_setAccessibilityIdentifier:@"RecentsVCJoinARoomAlert"];
-//    [self presentViewController:currentAlert animated:YES completion:nil];
-//}
 
 #pragma mark - Table view scrolling
 

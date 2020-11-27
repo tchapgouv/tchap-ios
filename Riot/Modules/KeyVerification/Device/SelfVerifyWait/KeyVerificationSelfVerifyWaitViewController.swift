@@ -33,14 +33,13 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
     @IBOutlet private weak var informationLabel: UILabel!
     
     @IBOutlet private weak var desktopClientImageView: UIImageView!
-    @IBOutlet private weak var desktopClientLabel: UILabel!
-    
     @IBOutlet private weak var mobileClientImageView: UIImageView!
-    @IBOutlet private weak var mobileClientLabel: UILabel!
     
     @IBOutlet private weak var additionalInformationLabel: UILabel!
     
-    
+    @IBOutlet private weak var recoverSecretsAvailabilityLoadingContainerView: UIView!
+    @IBOutlet private weak var recoverSecretsAvailabilityLoadingLabel: UILabel!
+    @IBOutlet private weak var recoverSecretsAvailabilityActivityIndicatorView: UIActivityIndicatorView!
     @IBOutlet private weak var recoverSecretsContainerView: UIView!
     @IBOutlet private weak var recoverSecretsButton: RoundedButton!
     @IBOutlet private weak var recoverSecretsAdditionalInformationLabel: UILabel!
@@ -97,11 +96,11 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
         }
         
         self.informationLabel.textColor = theme.textPrimaryColor
-        self.desktopClientLabel.textColor = theme.textPrimaryColor
         self.desktopClientImageView.tintColor = theme.tintColor
-        self.mobileClientLabel.textColor = theme.textPrimaryColor
         self.mobileClientImageView.tintColor = theme.tintColor
-        self.additionalInformationLabel.textColor = theme.textSecondaryColor
+        self.additionalInformationLabel.textColor = theme.textPrimaryColor
+        self.recoverSecretsAvailabilityLoadingLabel.textColor = theme.textSecondaryColor
+        self.recoverSecretsAvailabilityActivityIndicatorView.color = theme.tintColor
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -125,9 +124,6 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
         self.title = VectorL10n.deviceVerificationSelfVerifyWaitTitle
         
         self.informationLabel.text = VectorL10n.deviceVerificationSelfVerifyWaitInformation
-        self.desktopClientLabel.vc_setText("\(VectorL10n.clientWebName)\n\(VectorL10n.clientDesktopName)", withLineSpacing: Constants.clientNamesLineSpacing, alignement: .center)
-        self.mobileClientLabel.vc_setText("\(VectorL10n.clientIosName)\n\(VectorL10n.clientAndroidName)",
-            withLineSpacing: Constants.clientNamesLineSpacing, alignement: .center)
         
         self.desktopClientImageView.image = Asset.Images.monitor.image.withRenderingMode(.alwaysTemplate)
         self.mobileClientImageView.image = Asset.Images.smartphone.image.withRenderingMode(.alwaysTemplate)
@@ -141,6 +137,8 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
         switch viewState {
         case .loading:
             self.renderLoading()
+        case .secretsRecoveryCheckingAvailability(let text):
+            self.renderSecretsRecoveryCheckingAvailability(withText: text)
         case .loaded(let viewData):
             self.renderLoaded(viewData: viewData)
         case .cancelled(let reason):
@@ -154,6 +152,13 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
     
     private func renderLoading() {
         self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
+    }
+    
+    private func renderSecretsRecoveryCheckingAvailability(withText text: String?) {
+        self.recoverSecretsAvailabilityLoadingLabel.text = text
+        self.recoverSecretsAvailabilityActivityIndicatorView.startAnimating()
+        self.recoverSecretsAvailabilityLoadingContainerView.isHidden = false
+        self.recoverSecretsContainerView.isHidden = true
     }
     
     private func renderLoaded(viewData: KeyVerificationSelfVerifyWaitViewData) {
@@ -180,6 +185,8 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
             }
         }
         
+        self.recoverSecretsAvailabilityLoadingContainerView.isHidden = true
+        self.recoverSecretsAvailabilityActivityIndicatorView.stopAnimating()
         self.recoverSecretsContainerView.isHidden = hideRecoverSecrets
         self.recoverSecretsButton.setTitle(recoverSecretsButtonTitle, for: .normal)
     }

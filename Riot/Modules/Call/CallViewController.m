@@ -18,7 +18,6 @@
 
 #import "CallViewController.h"
 
-#import "RageShakeManager.h"
 #import "GeneratedInterface-Swift.h"
 
 #import "AvatarGenerator.h"
@@ -221,10 +220,6 @@
     [super viewWillDisappear:animated];
 }
 
-- (void)dealloc
-{
-}
-
 #pragma mark - override MXKViewController
 
 - (void)destroy
@@ -243,30 +238,7 @@
 
 - (UIView *)createIncomingCallView
 {
-    NSString *callInfo;
-    if (self.mxCall.isVideoCall)
-        callInfo = NSLocalizedStringFromTable(@"call_incoming_video", @"Vector", nil);
-    else
-        callInfo = NSLocalizedStringFromTable(@"call_incoming_voice", @"Vector", nil);
-    
-    IncomingCallView *incomingCallView = [[IncomingCallView alloc] initWithCallerAvatar:self.peer.avatarUrl
-                                                                           mediaManager:self.mainSession.mediaManager
-                                                                       placeholderImage:self.picturePlaceholder
-                                                                             callerName:self.peer.displayname
-                                                                               callInfo:callInfo];
-    
-    // Incoming call is retained by call vc so use weak to avoid retain cycle
-    __weak typeof(self) weakSelf = self;
-    
-    incomingCallView.onAnswer = ^{
-        [weakSelf onButtonPressed:weakSelf.answerCallButton];
-    };
-    
-    incomingCallView.onReject = ^{
-        [weakSelf onButtonPressed:weakSelf.rejectCallButton];
-    };
-    
-    return incomingCallView;
+    return nil;
 }
 
 #pragma mark - MXCallDelegate
@@ -410,7 +382,7 @@
 {
     // Detect if we should display the prompt to fallback to the STUN server defined
     // in the app plist if the homeserver does not provide STUN or TURN servers.
-    // We should if the call ends while we were in connecting state
+    // We should display it if the call ends while we were in connecting state
     if (!self.mainSession.callManager.turnServers
         && !self.mainSession.callManager.fallbackSTUNServer
         && !RiotSettings.shared.isAllowStunServerFallbackHasBeenSetOnce)
@@ -432,6 +404,7 @@
                 }
 
             default:
+                // There is nothing to do for other states
                 break;
         }
     }

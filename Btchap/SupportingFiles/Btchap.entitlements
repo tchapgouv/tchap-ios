@@ -30,5 +30,9 @@
 	<array>
 		<string>group.fr.gouv.btchap</string>
 	</array>
+	<key>keychain-access-groups</key>
+	<array>
+		<string>$(KEYCHAIN_ACCESS_GROUP)</string>
+	</array>
 </dict>
 </plist>

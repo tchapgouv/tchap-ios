@@ -6,7 +6,7 @@ import Foundation
 import UIKit
 
 // swiftlint:disable superfluous_disable_command
-// swiftlint:disable file_length
+// swiftlint:disable file_length implicit_return
 
 // MARK: - Storyboard Scenes
 
@@ -31,6 +31,16 @@ internal enum StoryboardScene {
     internal static let storyboardName = "EmojiPickerViewController"
 
     internal static let initialScene = InitialSceneType<Riot.EmojiPickerViewController>(storyboard: EmojiPickerViewController.self)
+  }
+  internal enum EnterNewRoomDetailsViewController: StoryboardType {
+    internal static let storyboardName = "EnterNewRoomDetailsViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.EnterNewRoomDetailsViewController>(storyboard: EnterNewRoomDetailsViewController.self)
+  }
+  internal enum EnterPinCodeViewController: StoryboardType {
+    internal static let storyboardName = "EnterPinCodeViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.EnterPinCodeViewController>(storyboard: EnterPinCodeViewController.self)
   }
   internal enum KeyBackupRecoverFromPassphraseViewController: StoryboardType {
     internal static let storyboardName = "KeyBackupRecoverFromPassphraseViewController"
@@ -132,6 +142,16 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Riot.RoomContextualMenuViewController>(storyboard: RoomContextualMenuViewController.self)
   }
+  internal enum RoomCreationEventsModalViewController: StoryboardType {
+    internal static let storyboardName = "RoomCreationEventsModalViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.RoomCreationEventsModalViewController>(storyboard: RoomCreationEventsModalViewController.self)
+  }
+  internal enum RoomInfoListViewController: StoryboardType {
+    internal static let storyboardName = "RoomInfoListViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.RoomInfoListViewController>(storyboard: RoomInfoListViewController.self)
+  }
   internal enum SecretsRecoveryWithKeyViewController: StoryboardType {
     internal static let storyboardName = "SecretsRecoveryWithKeyViewController"
 
@@ -141,6 +161,11 @@ internal enum StoryboardScene {
     internal static let storyboardName = "SecretsRecoveryWithPassphraseViewController"
 
     internal static let initialScene = InitialSceneType<Riot.SecretsRecoveryWithPassphraseViewController>(storyboard: SecretsRecoveryWithPassphraseViewController.self)
+  }
+  internal enum SecretsResetViewController: StoryboardType {
+    internal static let storyboardName = "SecretsResetViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.SecretsResetViewController>(storyboard: SecretsResetViewController.self)
   }
   internal enum SecretsSetupRecoveryKeyViewController: StoryboardType {
     internal static let storyboardName = "SecretsSetupRecoveryKeyViewController"
@@ -171,6 +196,18 @@ internal enum StoryboardScene {
     internal static let storyboardName = "SettingsIdentityServerViewController"
 
     internal static let initialScene = InitialSceneType<Riot.SettingsIdentityServerViewController>(storyboard: SettingsIdentityServerViewController.self)
+  }
+  internal enum SetupBiometricsViewController: StoryboardType {
+    internal static let storyboardName = "SetupBiometricsViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.SetupBiometricsViewController>(storyboard: SetupBiometricsViewController.self)
+  }
+  internal enum ShowDirectoryViewController: StoryboardType {
+    internal static let storyboardName = "ShowDirectoryViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.ShowDirectoryViewController>(storyboard: ShowDirectoryViewController.self)
+
+    internal static let searchableDirectoryViewController = SceneType<Riot.ShowDirectoryViewController>(storyboard: ShowDirectoryViewController.self, identifier: "SearchableDirectoryViewController")
   }
   internal enum SimpleScreenTemplateViewController: StoryboardType {
     internal static let storyboardName = "SimpleScreenTemplateViewController"
@@ -214,7 +251,7 @@ internal protocol StoryboardType {
 internal extension StoryboardType {
   static var storyboard: UIStoryboard {
     let name = self.storyboardName
-    return UIStoryboard(name: name, bundle: Bundle(for: BundleToken.self))
+    return UIStoryboard(name: name, bundle: BundleToken.bundle)
   }
 }
 
@@ -229,6 +266,11 @@ internal struct SceneType<T: UIViewController> {
     }
     return controller
   }
+
+  @available(iOS 13.0, tvOS 13.0, *)
+  internal func instantiate(creator block: @escaping (NSCoder) -> T?) -> T {
+    return storyboard.storyboard.instantiateViewController(identifier: identifier, creator: block)
+  }
 }
 
 internal struct InitialSceneType<T: UIViewController> {
@@ -240,6 +282,24 @@ internal struct InitialSceneType<T: UIViewController> {
     }
     return controller
   }
+
+  @available(iOS 13.0, tvOS 13.0, *)
+  internal func instantiate(creator block: @escaping (NSCoder) -> T?) -> T {
+    guard let controller = storyboard.storyboard.instantiateInitialViewController(creator: block) else {
+      fatalError("Storyboard \(storyboard.storyboardName) does not have an initial scene.")
+    }
+    return controller
+  }
 }
 
-private final class BundleToken {}
+// swiftlint:disable convenience_type
+private final class BundleToken {
+  static let bundle: Bundle = {
+    #if SWIFT_PACKAGE
+    return Bundle.module
+    #else
+    return Bundle(for: BundleToken.self)
+    #endif
+  }()
+}
+// swiftlint:enable convenience_type

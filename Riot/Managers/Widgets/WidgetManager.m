@@ -256,12 +256,13 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     return operation;
 }
 
-
 - (MXHTTPOperation *)createJitsiWidgetInRoom:(MXRoom*)room
                                    withVideo:(BOOL)video
                                      success:(void (^)(Widget *jitsiWidget))success
                                      failure:(void (^)(NSError *error))failure
 {
+    MXHTTPOperation *operation = [MXHTTPOperation new];
+    
     NSString *userId = room.mxSession.myUser.userId;
     WidgetManagerConfig *config = [self configForUser:userId];
     if (!config.hasUrls)
@@ -278,56 +279,33 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
         failure(self.errorForDisabledIntegrationManager);
         return nil;
     }
-
+    
     // Build data for a jitsi widget
     // Riot-Web still uses V1 type
     NSString *widgetId = [NSString stringWithFormat:@"%@_%@_%@", kWidgetTypeJitsiV1, room.mxSession.myUser.userId, @((uint64_t)([[NSDate date] timeIntervalSince1970] * 1000))];
+    
+    NSURL *preferredJitsiServerUrl = BuildSettings.jitsiServerUrl;
 
-    // Create a random enough jitsi conference id
-    // Note: the jitsi server automatically creates conference when the conference
-    // id does not exist yet
-    NSString *widgetSessionId = [[[[NSProcessInfo processInfo] globallyUniqueString] substringToIndex:7] lowercaseString];
-    NSString *confId = [room.roomId substringWithRange:NSMakeRange(1, [room.roomId rangeOfString:@":"].location - 1)];
-    confId = [confId stringByAppendingString:widgetSessionId];
-
+    JitsiService *jitsiService = JitsiService.shared;
     
-    // Build widget url
-    // Riot-iOS does not directly use it but extracts params from it (see `[JitsiViewController openWidget:withVideo:]`)
-    // This url can be used as is inside a web container (like iframe for Riot-web)
+    operation = [jitsiService createJitsiWidgetContentWithJitsiServerURL:preferredJitsiServerUrl roomID:room.roomId isAudioOnly:!video success:^(NSDictionary * _Nonnull widgetContent) {
+        
+        MXHTTPOperation *operation2 = [self createWidget:widgetId
+                                             withContent:widgetContent
+                                                  inRoom:room
+                                                 success:success
+                                                 failure:failure];
+        
+        [operation mutateTo:operation2];
+        
+    } failure:^(NSError * _Nonnull error) {
+        if (failure)
+        {
+            failure(error);
+        }
+    }];
     
-    // Build it from the riot-web app
-    NSString *appUrlString = [[NSUserDefaults standardUserDefaults] objectForKey:@"webAppUrl"];
-    
-    // We mix v1 and v2 param for backward compability
-    NSString *v1Params = [NSString stringWithFormat:@"confId=%@&isAudioConf=%@&displayName=$matrix_display_name&avatarUrl=$matrix_avatar_url&email=$matrix_user_id", confId, video ? @"false" : @"true"];
-    NSString *v2Params = [NSString stringWithFormat:@"conferenceDomain=$domain&conferenceId=$conferenceId&isAudioOnly=$isAudioOnly&displayName=$matrix_display_name&avatarUrl=$matrix_avatar_url&userId=$matrix_user_id"];
-    
-    NSString *url = [NSString stringWithFormat:@"%@/widgets/jitsi.html?%@#%@", appUrlString, v1Params, v2Params];
-
-    
-    // Build widget data
-    // We mix v1 and v2 widget data for backward compability
-    NSString *preferredJitsiServerUrlString = [[NSUserDefaults standardUserDefaults] objectForKey:@"jitsiServerURL"];
-    NSURL *preferredJitsiServerUrl = [NSURL URLWithString:preferredJitsiServerUrlString];
-    
-    JitsiWidgetData *jitsiWidgetData = [JitsiWidgetData new];
-    jitsiWidgetData.domain = preferredJitsiServerUrl.host;
-    jitsiWidgetData.conferenceId = confId;
-    jitsiWidgetData.isAudioOnly = !video;
-    NSDictionary *v2WidgetData = jitsiWidgetData.JSONDictionary;
-    
-    NSMutableDictionary *v1AndV2WidgetData = [v2WidgetData mutableCopy];
-    v1AndV2WidgetData[@"widgetSessionId"] = widgetSessionId;
-    
-    return [self createWidget:widgetId
-                  withContent:@{
-                                @"url": url,
-                                @"type": kWidgetTypeJitsiV1,
-                                @"data": v1AndV2WidgetData
-                                }
-                       inRoom:room
-                      success:success
-                      failure:failure];
+    return operation;
 }
 
 - (MXHTTPOperation *)closeWidget:(NSString *)widgetId inRoom:(MXRoom *)room success:(void (^)(void))success failure:(void (^)(NSError *))failure
@@ -524,10 +502,8 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
 
 - (WidgetManagerConfig*)createWidgetManagerConfigWithAppSettings
 {
-    NSString *apiUrl = [[NSUserDefaults standardUserDefaults] objectForKey:@"integrationsRestUrl"];
-    NSString *uiUrl = [[NSUserDefaults standardUserDefaults] objectForKey:@"integrationsUiUrl"];
-
-    return [[WidgetManagerConfig alloc] initWithApiUrl:apiUrl uiUrl:uiUrl];
+    return [[WidgetManagerConfig alloc] initWithApiUrl:BuildSettings.integrationsRestApiUrlString
+                                                 uiUrl:BuildSettings.integrationsUiUrlString];
 }
 
 #pragma mark - Modular interface
@@ -744,7 +720,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     BOOL isScalarUrl = NO;
 
     // TODO: Do we need to add `integrationsWidgetsUrls` to `WidgetManagerConfig`?
-    NSArray<NSString*> *scalarUrlStrings = [[NSUserDefaults standardUserDefaults] objectForKey:@"integrationsWidgetsUrls"];
+    NSArray<NSString*> *scalarUrlStrings = BuildSettings.integrationsScalarWidgetsPaths;
     if (scalarUrlStrings.count == 0)
     {
         NSString *apiUrl = [self configForUser:userId].apiUrl;

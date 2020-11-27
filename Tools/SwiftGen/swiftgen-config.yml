@@ -28,9 +28,22 @@ plist:
       output: Tchap/Generated/TchapDefaults.swift
       params:
         enumName: TchapDefaults
-  - inputs: BTchap/Assets/Btchap-Defaults.plist
+  - inputs: Btchap/Assets/Btchap-Defaults.plist
     outputs:
       templateName: runtime-swift4
-      output: BTchap/Generated/TchapDefaults.swift
+      output: Btchap/Generated/TchapDefaults.swift
       params:
         enumName: TchapDefaults
+plist:
+- inputs: Tchap/SupportingFiles/Info.plist
+    outputs:
+      templateName: runtime-swift4
+      output: Tchap/Generated/InfoPlist.swift
+      params:
+        enumName: InfoPlist
+  - inputs: Btchap/SupportingFiles/Info.plist
+    outputs:
+      templateName: runtime-swift4
+      output: Btchap/Generated/InfoPlist.swift
+      params:
+        enumName: InfoPlist

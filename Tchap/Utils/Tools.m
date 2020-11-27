@@ -66,6 +66,7 @@
 {
     BOOL isPermaLink = NO;
     
+    // TODO: Use BuildSettings.permalinkSupportedHosts
     NSArray<NSString*> *supportedHosts = [[NSUserDefaults standardUserDefaults] objectForKey:@"permalinkSupportedHosts"];
 
     if (NSNotFound != [supportedHosts indexOfObject:url.host])

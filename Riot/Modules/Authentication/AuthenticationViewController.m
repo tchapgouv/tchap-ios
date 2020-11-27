@@ -18,7 +18,6 @@
 
 #import "AuthenticationViewController.h"
 
-#import "AppDelegate.h"
 #import "Riot-Swift.h"
 #import "MXSession+Riot.h"
 
@@ -26,7 +25,9 @@
 #import "ForgotPasswordInputsView.h"
 #import "AuthFallBackViewController.h"
 
-@interface AuthenticationViewController () <AuthFallBackViewControllerDelegate, KeyVerificationCoordinatorBridgePresenterDelegate>
+#import "Riot-Swift.h"
+
+@interface AuthenticationViewController () <AuthFallBackViewControllerDelegate, KeyVerificationCoordinatorBridgePresenterDelegate, SetPinCoordinatorBridgePresenterDelegate>
 {
     /**
      The default country code used to initialize the mobile phone number input.
@@ -49,10 +50,18 @@
     MXAutoDiscovery *autoDiscovery;
 
     AuthFallBackViewController *authFallBackViewController;
+    
+    // successful login credentials
+    MXCredentials *loginCredentials;
+    
+    // Check false display of this screen only once
+    BOOL didCheckFalseAuthScreenDisplay;
 }
 
 @property (nonatomic, readonly) BOOL isIdentityServerConfigured;
 @property (nonatomic, strong) KeyVerificationCoordinatorBridgePresenter *keyVerificationCoordinatorBridgePresenter;
+@property (nonatomic, strong) SetPinCoordinatorBridgePresenter *setPinCoordinatorBridgePresenter;
+@property (nonatomic, strong) KeyboardAvoider *keyboardAvoider;
 
 @end
 
@@ -83,6 +92,8 @@
     // Set a default country code
     // Note: this value is used only when no MCC and no local country code is available.
     defaultCountryCode = @"GB";
+    
+    didCheckFalseAuthScreenDisplay = NO;
 }
 
 - (void)viewDidLoad
@@ -92,9 +103,9 @@
     self.mainNavigationItem.title = nil;
     self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"auth_register", @"Vector", nil);
     
-    self.defaultHomeServerUrl = [[NSUserDefaults standardUserDefaults] objectForKey:@"homeserverurl"];
+    self.defaultHomeServerUrl = RiotSettings.shared.homeserverUrlString;
     
-    self.defaultIdentityServerUrl = [[NSUserDefaults standardUserDefaults] objectForKey:@"identityserverurl"];
+    self.defaultIdentityServerUrl = RiotSettings.shared.identityServerUrlString;
     
     self.welcomeImageView.image = [UIImage imageNamed:@"horizontal_logo"];
     
@@ -112,6 +123,13 @@
     
     [self.customServersTickButton setImage:[UIImage imageNamed:@"selection_untick"] forState:UIControlStateNormal];
     [self.customServersTickButton setImage:[UIImage imageNamed:@"selection_untick"] forState:UIControlStateHighlighted];
+    
+    if (!BuildSettings.authScreenShowRegister)
+    {
+        self.rightBarButtonItem.enabled = NO;
+        self.rightBarButtonItem.title = nil;
+    }
+    self.serverOptionsContainer.hidden = !BuildSettings.authScreenShowCustomServerOptions;
     
     [self hideCustomServers:YES];
 
@@ -155,6 +173,8 @@
 
     [self userInterfaceThemeDidChange];
     [self updateUniversalLink];
+    
+    _keyboardAvoider = [[KeyboardAvoider alloc] initWithScrollViewContainerView:self.view scrollView:self.authenticationScrollView];
 }
 
 - (void)userInterfaceThemeDidChange
@@ -258,6 +278,8 @@
 
     // Screen tracking
     [[Analytics sharedInstance] trackScreen:@"Authentication"];
+    
+    [_keyboardAvoider startAvoiding];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -274,13 +296,25 @@
     // This bug rarely happens (https://github.com/vector-im/riot-ios/issues/1643)
     // but it invites the user to log in again. They will then lose all their
     // e2e messages.
-    NSLog(@"[AuthenticationVC] viewDidAppear: Checking false logout");
-    [[MXKAccountManager sharedManager] forceReloadAccounts];
-    if ([MXKAccountManager sharedManager].activeAccounts.count)
+    if (!didCheckFalseAuthScreenDisplay)
     {
-        // For now, we do not have better solution than forcing the user to restart the app
-        [NSException raise:@"False logout. Kill the app" format:@"AuthenticationViewController has been displayed whereas there is an existing account"];
+        didCheckFalseAuthScreenDisplay = YES;
+        
+        NSLog(@"[AuthenticationVC] viewDidAppear: Checking false logout");
+        [[MXKAccountManager sharedManager] forceReloadAccounts];
+        if ([MXKAccountManager sharedManager].activeAccounts.count)
+        {
+            // For now, we do not have better solution than forcing the user to restart the app
+            [NSException raise:@"False logout. Kill the app" format:@"AuthenticationViewController has been displayed whereas there is an existing account"];
+        }
     }
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [_keyboardAvoider stopAvoiding];
+    
+    [super viewDidDisappear:animated];
 }
 
 - (void)destroy
@@ -301,6 +335,7 @@
 
     autoDiscovery = nil;
     _keyVerificationCoordinatorBridgePresenter = nil;
+    _keyboardAvoider = nil;
 }
 
 - (BOOL)isIdentityServerConfigured
@@ -422,7 +457,9 @@
         // The right bar button is used to switch the authentication type.
         if (self.authType == MXKAuthenticationTypeLogin)
         {
-            if (!authInputsview.isSingleSignOnRequired && !self.softLogoutCredentials)
+            if (!authInputsview.isSingleSignOnRequired
+                && !self.softLogoutCredentials
+                && BuildSettings.authScreenShowRegister)
             {
                 self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"auth_register", @"Vector", nil);
             }
@@ -483,6 +520,11 @@
     {
         // Dismiss on successful login
         [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    }
+    
+    if (self.authVCDelegate)
+    {
+        [self.authVCDelegate authenticationViewControllerDidDismiss:self];
     }
 }
 
@@ -879,6 +921,64 @@
 
 - (void)onSuccessfulLogin:(MXCredentials*)credentials
 {
+    //  Is pin protection forced?
+    if ([PinCodePreferences shared].forcePinProtection)
+    {
+        loginCredentials = credentials;
+        
+        SetPinCoordinatorViewMode viewMode = SetPinCoordinatorViewModeSetPin;
+        switch (self.authType) {
+            case MXKAuthenticationTypeLogin:
+                viewMode = SetPinCoordinatorViewModeSetPinAfterLogin;
+                break;
+            case MXKAuthenticationTypeRegister:
+                viewMode = SetPinCoordinatorViewModeSetPinAfterRegister;
+                break;
+            default:
+                break;
+        }
+        
+        SetPinCoordinatorBridgePresenter *presenter = [[SetPinCoordinatorBridgePresenter alloc] initWithSession:nil viewMode:viewMode];
+        presenter.delegate = self;
+        [presenter presentFrom:self animated:YES];
+        self.setPinCoordinatorBridgePresenter = presenter;
+        return;
+    }
+    
+    [self afterSetPinFlowCompletedWithCredentials:credentials];
+}
+
+- (void)updateForgotPwdButtonVisibility
+{
+    AuthInputsView *authInputsview;
+    if ([self.authInputsView isKindOfClass:AuthInputsView.class])
+    {
+        authInputsview = (AuthInputsView*)self.authInputsView;
+    }
+    
+    BOOL showForgotPasswordButton = NO;
+
+    if (BuildSettings.authScreenShowForgotPassword)
+    {
+        showForgotPasswordButton = (self.authType == MXKAuthenticationTypeLogin) && !authInputsview.isSingleSignOnRequired;
+    }
+    
+    self.forgotPasswordButton.hidden = !showForgotPasswordButton;
+    
+    // Adjust minimum leading constraint of the submit button
+    if (self.forgotPasswordButton.isHidden)
+    {
+        self.submitButtonMinLeadingConstraint.constant = 19;
+    }
+    else
+    {
+        CGRect frame = self.forgotPasswordButton.frame;
+        self.submitButtonMinLeadingConstraint.constant =  frame.origin.x + frame.size.width + 10;
+    }
+}
+
+- (void)afterSetPinFlowCompletedWithCredentials:(MXCredentials*)credentials
+{
     // Check whether a third party identifiers has not been used
     if ([self.authInputsView isKindOfClass:AuthInputsView.class])
     {
@@ -897,7 +997,7 @@
                                                              style:UIAlertActionStyleDefault
                                                            handler:^(UIAlertAction * action) {
                                                                
-                                                               [super onSuccessfulLogin:credentials];
+                [super onSuccessfulLogin:credentials];
                                                                
                                                            }]];
             
@@ -909,35 +1009,27 @@
     [super onSuccessfulLogin:credentials];
 }
 
-- (void)updateForgotPwdButtonVisibility
-{
-    AuthInputsView *authInputsview;
-    if ([self.authInputsView isKindOfClass:AuthInputsView.class])
-    {
-        authInputsview = (AuthInputsView*)self.authInputsView;
-    }
-
-    self.forgotPasswordButton.hidden = (self.authType != MXKAuthenticationTypeLogin) || authInputsview.isSingleSignOnRequired;
-    
-    // Adjust minimum leading constraint of the submit button
-    if (self.forgotPasswordButton.isHidden)
-    {
-        self.submitButtonMinLeadingConstraint.constant = 19;
-    }
-    else
-    {
-        CGRect frame = self.forgotPasswordButton.frame;
-        self.submitButtonMinLeadingConstraint.constant =  frame.origin.x + frame.size.width + 10;
-    }
-}
-
 #pragma mark -
 
 - (void)updateRegistrationScreenWithThirdPartyIdentifiersHidden:(BOOL)thirdPartyIdentifiersHidden
 {
     self.skipButton.hidden = thirdPartyIdentifiersHidden;
     
-    self.serverOptionsContainer.hidden = !thirdPartyIdentifiersHidden;
+    // Do not display the skip button if the 3PID is mandatory
+    if (!thirdPartyIdentifiersHidden)
+    {
+        if ([self.authInputsView isKindOfClass:AuthInputsView.class])
+        {
+            AuthInputsView *authInputsview = (AuthInputsView*)self.authInputsView;
+            if (authInputsview.isThirdPartyIdentifierRequired)
+            {
+                self.skipButton.hidden = YES;
+            }
+        }
+    }
+    
+    self.serverOptionsContainer.hidden = !thirdPartyIdentifiersHidden
+                                            || !BuildSettings.authScreenShowCustomServerOptions;
     [self refreshContentViewHeightConstraint];
     
     if (thirdPartyIdentifiersHidden)
@@ -974,6 +1066,10 @@
             if (!self.customServersContainer.isHidden)
             {
                 constant += customServersContainerFrame.size.height;
+            }
+            else
+            {
+                constant += self.customServersTickButton.frame.size.height;
             }
         }
     }
@@ -1065,17 +1161,22 @@
 {
     NSLog(@"[AuthenticationVC] showResourceLimitExceededError");
 
-    [self showResourceLimitExceededError:errorDict onAdminContactTapped:^(NSURL *adminContact) {
+    [self showResourceLimitExceededError:errorDict onAdminContactTapped:^(NSURL *adminContactURL) {
 
-        if ([[UIApplication sharedApplication] canOpenURL:adminContact])
-        {
-            [[UIApplication sharedApplication] openURL:adminContact];
-        }
-        else
-        {
-            NSLog(@"[AuthenticationVC] adminContact(%@) cannot be opened", adminContact);
-        }
+        [[UIApplication sharedApplication] vc_open:adminContactURL completionHandler:^(BOOL success) {
+           if (!success)
+           {
+               NSLog(@"[AuthenticationVC] adminContact(%@) cannot be opened", adminContactURL);
+           }
+        }];
     }];
+}
+
+#pragma mark - UITextFieldDelegate
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    [self.authenticationScrollView vc_scrollTo:textField with:UIEdgeInsetsMake(-20, 0, -20, 0) animated:YES];
 }
 
 #pragma mark - KVO
@@ -1141,7 +1242,7 @@
 {
     MXSession *session = (MXSession*)notification.object;
     
-    if (session.state >= MXSessionStateStoreDataReady)
+    if (session.state == MXSessionStateRunning)
     {
         [self unregisterSessionStateChangeNotification];
         
@@ -1370,6 +1471,29 @@
     [coordinatorBridgePresenter.session.crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
     
     [self dismiss];
+}
+
+#pragma mark - SetPinCoordinatorBridgePresenterDelegate
+
+- (void)setPinCoordinatorBridgePresenterDelegateDidComplete:(SetPinCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    self.setPinCoordinatorBridgePresenter = nil;
+
+    [self afterSetPinFlowCompletedWithCredentials:loginCredentials];
+}
+
+- (void)setPinCoordinatorBridgePresenterDelegateDidCancel:(SetPinCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    //  enable the view again
+    [self setUserInteractionEnabled:YES];
+    
+    //  stop the spinner
+    [self.authenticationActivityIndicator stopAnimating];
+    
+    //  then, just close the enter pin screen
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    self.setPinCoordinatorBridgePresenter = nil;
 }
 
 @end

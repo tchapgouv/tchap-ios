@@ -31,16 +31,19 @@ final class RiotSettings: NSObject {
         static let showJoinLeaveEvents = "showJoinLeaveEvents"
         static let showProfileUpdateEvents = "showProfileUpdateEvents"
         static let allowStunServerFallback = "allowStunServerFallback"
-        static let stunServerFallback = "stunServerFallback"
         static let hideVerifyThisSessionAlert = "hideVerifyThisSessionAlert"
         static let hideReviewSessionsAlert = "hideReviewSessionsAlert"
+        static let matrixApps = "matrixApps"
     }
     
     static let shared = RiotSettings()
     
     /// UserDefaults to be used on reads and writes.
     private lazy var defaults: UserDefaults = {
-        return UserDefaults(suiteName: TchapDefaults.appGroupId)!
+        guard let userDefaults = UserDefaults(suiteName: BuildSettings.applicationGroupIdentifier) else {
+            fatalError("[RiotSettings] Fail to load shared UserDefaults")
+        }
+        return userDefaults
     }()
     
     // MARK: - Public
@@ -155,10 +158,6 @@ final class RiotSettings: NSObject {
             defaults.set(newValue, forKey: UserDefaultsKeys.allowStunServerFallback)
         }
     }
-
-    var stunServerFallback: String? {
-        return defaults.string(forKey: UserDefaultsKeys.stunServerFallback)
-    }
     
     // MARK: Key verification
     
@@ -175,6 +174,14 @@ final class RiotSettings: NSObject {
             return defaults.bool(forKey: UserDefaultsKeys.hideReviewSessionsAlert)
         } set {
             defaults.set(newValue, forKey: UserDefaultsKeys.hideReviewSessionsAlert)
+        }
+    }
+    
+    var matrixApps: Bool {
+        get {
+            return defaults.bool(forKey: UserDefaultsKeys.matrixApps)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.matrixApps)
         }
     }
 }

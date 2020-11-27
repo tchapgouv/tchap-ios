@@ -298,18 +298,20 @@
     else
     {
         // Use the default one
+        // TODO: move this parameter in BuildSettings
         NSString *urlPrefix = [[NSUserDefaults standardUserDefaults] objectForKey:@"serverUrlPrefix"];
         NSString *host = [[NSUserDefaults standardUserDefaults] objectForKey:@"bugReportDefaultHost"];
         bugReportEndpoint = [NSString stringWithFormat:@"%@%@", urlPrefix, host];
     }
     
+    // TODO: move this urlSuffix in BuildSettings: BuildSettings.bugReportEndpointUrlSuffix
     NSString *urlSuffix = [[NSUserDefaults standardUserDefaults] objectForKey:@"bugReportEndpointUrlSuffix"];
     NSString *url = [NSString stringWithFormat:@"%@%@", bugReportEndpoint, urlSuffix];
     
     bugReportRestClient = [[MXBugReportRestClient alloc] initWithBugReportEndpoint:url];
 
     // App info
-    bugReportRestClient.appName = [[NSUserDefaults standardUserDefaults] objectForKey:@"bugReportApp"]; // Use the name allocated by the bug report server
+    bugReportRestClient.appName = BuildSettings.bugReportApplicationId;
     bugReportRestClient.version = [AppDelegate theDelegate].appVersion;
     bugReportRestClient.build = [AppDelegate theDelegate].build;
 

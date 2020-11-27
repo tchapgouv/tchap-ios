@@ -22,6 +22,7 @@
 #import "AvatarGenerator.h"
 #import "Tools.h"
 #import "GeneratedInterface-Swift.h"
+#import "BubbleReactionsViewSizer.h"
 
 static NSAttributedString *timestampVerticalWhitespace = nil;
 
@@ -73,6 +74,21 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
                 
                 // Collapse them by default
                 self.collapsed = YES;
+                
+//                //  find the room create event in stateEvents
+//                MXEvent *roomCreateEvent = [roomState.stateEvents filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"wireType == %@", kMXEventTypeStringRoomCreate]].firstObject;
+//                NSString *creatorUserId = [MXRoomCreateContent modelFromJSON:roomCreateEvent.content].creatorUserId;
+//                if (creatorUserId)
+//                {
+//                    MXRoomMemberEventContent *content = [MXRoomMemberEventContent modelFromJSON:event.content];
+//                    if ([kMXMembershipStringJoin isEqualToString:content.membership] &&
+//                        [creatorUserId isEqualToString:event.sender])
+//                    {
+//                        //  join event of the room creator
+//                        //  group it with room creation events
+//                        self.tag = RoomBubbleCellDataTagRoomCreateConfiguration;
+//                    }
+//                }
             }
                 break;
             case MXEventTypeRoomCreate:
@@ -83,8 +99,35 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
                 {
                     self.tag = RoomBubbleCellDataTagRoomCreateWithPredecessor;
                 }
+//                else
+//                {
+//                    self.tag = RoomBubbleCellDataTagRoomCreateConfiguration;
+//                }
+//
+//                // Membership events can be collapsed together
+//                self.collapsable = YES;
+//
+//                // Collapse them by default
+//                self.collapsed = YES;
             }
                 break;
+//            case MXEventTypeRoomTopic:
+//            case MXEventTypeRoomName:
+//            case MXEventTypeRoomEncryption:
+//            case MXEventTypeRoomHistoryVisibility:
+//            case MXEventTypeRoomGuestAccess:
+//            case MXEventTypeRoomAvatar:
+//            case MXEventTypeRoomJoinRules:
+//            {
+//                self.tag = RoomBubbleCellDataTagRoomCreateConfiguration;
+//
+//                // Membership events can be collapsed together
+//                self.collapsable = YES;
+//
+//                // Collapse them by default
+//                self.collapsed = YES;
+//            }
+//                break;
             default:
                 if ([self isNoticeEvent:event])
                 {
@@ -190,6 +233,10 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
         }
 
         return NO;
+    }
+    else if (self.tag == RoomBubbleCellDataTagRoomCreateConfiguration && cellData.tag == RoomBubbleCellDataTagRoomCreateConfiguration)
+    {
+        return YES;
     }
     
     if (self.tag == RoomBubbleCellDataTagRoomCreateWithPredecessor || cellData.tag == RoomBubbleCellDataTagRoomCreateWithPredecessor)
@@ -411,42 +458,16 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
 
 - (void)addVerticalWhitespaceToString:(NSMutableAttributedString *)attributedString forEvent:(NSString *)eventId
 {
-    // Add vertical whitespace in case of read receipts.
-    NSUInteger reactionCount = self.reactions[eventId].reactions.count;
+    CGFloat additionalVerticalHeight = 0;
     
-    MXAggregatedReactions *aggregatedReactions = self.reactions[eventId];
-    
-    if (reactionCount)
-    {
-        CGFloat bubbleReactionsViewWidth = self.maxTextViewWidth - 4;
-        
-        CGSize fittingSize = UILayoutFittingCompressedSize;
-        fittingSize.width = bubbleReactionsViewWidth;
-        
-        static BubbleReactionsView *bubbleReactionsView;
-        
-        static dispatch_once_t onceToken;
-        dispatch_once(&onceToken, ^{
-            bubbleReactionsView = [BubbleReactionsView new];
-        });
-
-        BOOL showAllReactions = [self.eventsToShowAllReactions containsObject:eventId];
-        
-        bubbleReactionsView.frame = CGRectMake(0, 0, bubbleReactionsViewWidth, 1.0);
-        BubbleReactionsViewModel *viemModel = [[BubbleReactionsViewModel alloc] initWithAggregatedReactions:aggregatedReactions eventId:eventId showAll:showAllReactions];
-        bubbleReactionsView.viewModel = viemModel;
-        [bubbleReactionsView setNeedsLayout];
-        [bubbleReactionsView layoutIfNeeded];
-        
-        CGFloat height = [bubbleReactionsView systemLayoutSizeFittingSize:fittingSize].height + RoomBubbleCellLayout.reactionsViewTopMargin;
-        
-        [attributedString appendAttributedString:[RoomBubbleCellData verticalWhitespaceForHeight: height]];
-    }
-
+    // Add vertical whitespace in case of reactions.
+    additionalVerticalHeight+= [self reactionHeightForEventId:eventId];
     // Add vertical whitespace in case of read receipts.
-    if (self.readReceipts[eventId].count)
+    additionalVerticalHeight+= [self readReceiptHeightForEventId:eventId];
+    
+    if (additionalVerticalHeight)
     {
-        [attributedString appendAttributedString:[RoomBubbleCellData verticalWhitespaceForHeight:RoomBubbleCellLayout.readReceiptsViewHeight + RoomBubbleCellLayout.readReceiptsViewTopMargin]];
+        [attributedString appendAttributedString:[RoomBubbleCellData verticalWhitespaceForHeight: additionalVerticalHeight]];
     }
 }
 
@@ -509,25 +530,16 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
     {
         CGFloat bubbleReactionsViewWidth = self.maxTextViewWidth - 4;
         
-        CGSize fittingSize = UILayoutFittingCompressedSize;
-        fittingSize.width = bubbleReactionsViewWidth;
-        
-        static BubbleReactionsView *bubbleReactionsView;
+        static BubbleReactionsViewSizer *bubbleReactionsViewSizer;
         
         static dispatch_once_t onceToken;
         dispatch_once(&onceToken, ^{
-            bubbleReactionsView = [BubbleReactionsView new];
+            bubbleReactionsViewSizer = [BubbleReactionsViewSizer new];
         });
 
         BOOL showAllReactions = [self.eventsToShowAllReactions containsObject:eventId];
-        
-        bubbleReactionsView.frame = CGRectMake(0, 0, bubbleReactionsViewWidth, 1.0);
         BubbleReactionsViewModel *viemModel = [[BubbleReactionsViewModel alloc] initWithAggregatedReactions:aggregatedReactions eventId:eventId showAll:showAllReactions];
-        bubbleReactionsView.viewModel = viemModel;
-        [bubbleReactionsView setNeedsLayout];
-        [bubbleReactionsView layoutIfNeeded];
-        
-        height = [bubbleReactionsView systemLayoutSizeFittingSize:fittingSize].height + RoomBubbleCellLayout.reactionsViewTopMargin;
+        height = [bubbleReactionsViewSizer heightForViewModel:viemModel fittingWidth:bubbleReactionsViewWidth] + RoomBubbleCellLayout.reactionsViewTopMargin;
     }
     
     return height;
@@ -714,6 +726,9 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
             // We do not want to merge "notice"" event cells with other cell types
             shouldAddEvent = NO;
             break;
+        case RoomBubbleCellDataTagRoomCreateConfiguration:
+            shouldAddEvent = NO;
+            break;
         default:
             break;
     }
@@ -744,6 +759,15 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
                 shouldAddEvent = NO;
                 break;
             case MXEventTypeRoomCreate:
+                shouldAddEvent = NO;
+                break;
+            case MXEventTypeRoomTopic:
+            case MXEventTypeRoomName:
+            case MXEventTypeRoomEncryption:
+            case MXEventTypeRoomHistoryVisibility:
+            case MXEventTypeRoomGuestAccess:
+            case MXEventTypeRoomAvatar:
+            case MXEventTypeRoomJoinRules:
                 shouldAddEvent = NO;
                 break;
             default:
