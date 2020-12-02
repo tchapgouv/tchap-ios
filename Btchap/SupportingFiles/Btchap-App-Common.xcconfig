@@ -17,6 +17,6 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
-#include "Tchap/Config/Tchap-Common.xcconfig"
+#include "Btchap/Config/Btchap-Common.xcconfig"
 
-PRODUCT_BUNDLE_IDENTIFIER = $(BASE_BUNDLE_IDENTIFIER).shareExtension
+PRODUCT_BUNDLE_IDENTIFIER = $(BASE_BUNDLE_IDENTIFIER)

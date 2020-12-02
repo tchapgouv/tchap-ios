@@ -16,7 +16,6 @@
 
 import Foundation
 
-import Foundation
 import MatrixKit
 
 /// Configurable expose settings app and its entensions must use.

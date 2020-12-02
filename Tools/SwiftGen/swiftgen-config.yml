@@ -35,7 +35,7 @@ plist:
       params:
         enumName: TchapDefaults
 plist:
-- inputs: Tchap/SupportingFiles/Info.plist
+  - inputs: Tchap/SupportingFiles/Info.plist
     outputs:
       templateName: runtime-swift4
       output: Tchap/Generated/InfoPlist.swift

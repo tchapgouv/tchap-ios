@@ -17,6 +17,13 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
-#include "Tchap/Config/Tchap-Common.xcconfig"
+BUNDLE_DISPLAY_NAME = Tchap
 
-PRODUCT_BUNDLE_IDENTIFIER = $(BASE_BUNDLE_IDENTIFIER).shareExtension
+BASE_BUNDLE_IDENTIFIER = fr.gouv.tchap
+
+APPLICATION_GROUP_IDENTIFIER = group.$(BASE_BUNDLE_IDENTIFIER)
+
+KEYCHAIN_ACCESS_GROUP = $(AppIdentifierPrefix)$(BASE_BUNDLE_IDENTIFIER).keychain.shared
+
+//Make Xcode 12 and fastlane(xcodebuild) happy while some pods are not updated
+EXCLUDED_ARCHS[sdk=iphonesimulator*] = arm64

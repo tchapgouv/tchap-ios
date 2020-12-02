@@ -43,12 +43,12 @@ final class UserService: NSObject, UserServiceType {
     // MARK: - Setup
     
     init(session: MXSession) {
-        guard let serverUrlPrefix = UserDefaults.standard.string(forKey: "serverUrlPrefix"),
-            let homeServer = session.matrixRestClient.credentials.homeServer,
+        guard let homeServer = session.matrixRestClient.credentials.homeServer,
             let accessToken = session.matrixRestClient.credentials.accessToken else {
-            fatalError("serverUrlPrefix and credentials should be defined")
+            fatalError("credentials should be defined")
         }
         self.session = session
+        let serverUrlPrefix = BuildSettings.serverUrlPrefix
         let identityServerURLs = IdentityServersURLGetter(currentIdentityServerURL: session.matrixRestClient?.identityServer).identityServerUrls
         self.thirdPartyIDPlatformInfoResolver = ThirdPartyIDPlatformInfoResolver(identityServerUrls: identityServerURLs, serverPrefixURL: serverUrlPrefix)
         

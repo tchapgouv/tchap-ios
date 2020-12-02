@@ -11,10 +11,10 @@ use_frameworks!
 # - `{ {kit spec hash} => {sdk spec hash}` to depend on specific pod options (:git => …, :podspec => …) for each repo. Used by Fastfile during CI
 #
 # Warning: our internal tooling depends on the name of this variable name, so be sure not to change it
-$matrixKitVersion = '= 0.13.1'
+# $matrixKitVersion = '= 0.13.1'
 # $matrixKitVersion = :local
 # $matrixKitVersion = {'develop' => 'develop'}
-# $matrixKitVersion = {'develop' => 'dinum2'}
+$matrixKitVersion = {'develop' => 'dinum'}
 
 ########################################
 

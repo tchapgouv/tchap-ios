@@ -1646,7 +1646,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         {
             if (row == OTHER_TERM_CONDITIONS_INDEX)
             {
-                NSString *tac_url = [[MXKAppSettings standardAppSettings].sharedUserDefaults objectForKey:@"tacURL"];
+                NSString *tac_url = BuildSettings.applicationTermsConditionsUrlString;
                 WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:tac_url];
                 
                 webViewViewController.title = NSLocalizedStringFromTable(@"settings_term_conditions", @"Vector", nil);

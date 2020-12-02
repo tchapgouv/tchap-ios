@@ -17,11 +17,11 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
-BUNDLE_DISPLAY_NAME = Element
+BUNDLE_DISPLAY_NAME = Btchap
 
-APPLICATION_GROUP_IDENTIFIER = group.im.vector
+BASE_BUNDLE_IDENTIFIER = fr.gouv.btchap
 
-BASE_BUNDLE_IDENTIFIER = im.vector.app
+APPLICATION_GROUP_IDENTIFIER = group.$(BASE_BUNDLE_IDENTIFIER)
 
 KEYCHAIN_ACCESS_GROUP = $(AppIdentifierPrefix)$(BASE_BUNDLE_IDENTIFIER).keychain.shared
 

@@ -159,10 +159,10 @@ final class RegistrationCoordinator: RegistrationCoordinatorType {
     }
     
     private func isExternalRestClient(_ restClient: MXRestClient) -> Bool {
-        guard let serverUrlPrefix = UserDefaults.standard.string(forKey: "serverUrlPrefix"), let homeserver = restClient.homeserver else {
+        guard let homeserver = restClient.homeserver else {
             return false
         }
-        
+        let serverUrlPrefix = BuildSettings.serverUrlPrefix
         let host = homeserver.replacingOccurrences(of: serverUrlPrefix, with: "")
         return UserService.isExternalServer(host)
     }
@@ -225,7 +225,8 @@ final class RegistrationCoordinator: RegistrationCoordinatorType {
     }
     
     private func showTermsAndConditions() {
-        if let tacURL = UserDefaults.standard.string(forKey: "tacURL"), let tacViewController = WebViewViewController(url: tacURL) {
+        let tacURL = BuildSettings.applicationTermsConditionsUrlString
+        if let tacViewController = WebViewViewController(url: tacURL) {
             tacViewController.applyVariant2Style()
             tacViewController.tc_removeBackTitle()
             tacViewController.title = TchapL10n.registrationTermsAndConditionsTitle

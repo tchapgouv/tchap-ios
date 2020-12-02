@@ -17,6 +17,8 @@
 
 #import "Tools.h"
 
+#import "GeneratedInterface-Swift.h"
+
 @implementation Tools
 
 + (NSString *)presenceText:(MXUser *)user
@@ -66,8 +68,7 @@
 {
     BOOL isPermaLink = NO;
     
-    // TODO: Use BuildSettings.permalinkSupportedHosts
-    NSArray<NSString*> *supportedHosts = [[NSUserDefaults standardUserDefaults] objectForKey:@"permalinkSupportedHosts"];
+    NSArray<NSString*> *supportedHosts = BuildSettings.permalinkSupportedHosts;
 
     if (NSNotFound != [supportedHosts indexOfObject:url.host])
     {
@@ -148,13 +149,13 @@
 
 + (NSString *)permalinkToRoom:(NSString *)roomIdOrAlias
 {
-    NSString *urlPrefix = [[NSUserDefaults standardUserDefaults] objectForKey:@"permalinkPrefix"];
+    NSString *urlPrefix = BuildSettings.permalinkPrefix;
     return [NSString stringWithFormat:@"%@/#/room/%@", urlPrefix, roomIdOrAlias];
 }
 
 + (NSString *)permalinkToEvent:(NSString *)eventId inRoom:(NSString *)roomIdOrAlias
 {
-    NSString *urlPrefix = [[NSUserDefaults standardUserDefaults] objectForKey:@"permalinkPrefix"];
+    NSString *urlPrefix = BuildSettings.permalinkPrefix;
     return [NSString stringWithFormat:@"%@/#/room/%@/%@", urlPrefix, roomIdOrAlias, eventId];
 }
 

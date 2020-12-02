@@ -37,24 +37,21 @@ final class IdentityServersURLGetter {
             identityServerUrls.append(currentIdentityServerURL)
         }
         
-        if let identityServerPrefixURL = UserDefaults.standard.string(forKey: "serverUrlPrefix") {
-            if var preferredKnownHosts = UserDefaults.standard.stringArray(forKey: "preferredIdentityServerNames") {
-                // Add randomly the preferred known ISes
-                while preferredKnownHosts.count > 0 {
-                    let index = Int(arc4random_uniform(UInt32(preferredKnownHosts.count)))
-                    identityServerUrls.append("\(identityServerPrefixURL)\(preferredKnownHosts[index])")
-                    preferredKnownHosts.remove(at: index)
-                }
-            }
-            
-            if var otherKnownHosts = UserDefaults.standard.stringArray(forKey: "otherIdentityServerNames") {
-                // Add randomly the other known ISes
-                while otherKnownHosts.count > 0 {
-                    let index = Int(arc4random_uniform(UInt32(otherKnownHosts.count)))
-                    identityServerUrls.append("\(identityServerPrefixURL)\(otherKnownHosts[index])")
-                    otherKnownHosts.remove(at: index)
-                }
-            }
+        let identityServerPrefixURL = BuildSettings.serverUrlPrefix
+        var preferredKnownHosts = BuildSettings.preferredIdentityServerNames
+        // Add randomly the preferred known ISes
+        while preferredKnownHosts.count > 0 {
+            let index = Int(arc4random_uniform(UInt32(preferredKnownHosts.count)))
+            identityServerUrls.append("\(identityServerPrefixURL)\(preferredKnownHosts[index])")
+            preferredKnownHosts.remove(at: index)
+        }
+        
+        var otherKnownHosts = BuildSettings.otherIdentityServerNames
+        // Add randomly the other known ISes
+        while otherKnownHosts.count > 0 {
+            let index = Int(arc4random_uniform(UInt32(otherKnownHosts.count)))
+            identityServerUrls.append("\(identityServerPrefixURL)\(otherKnownHosts[index])")
+            otherKnownHosts.remove(at: index)
         }
         
         self.identityServerUrls = identityServerUrls

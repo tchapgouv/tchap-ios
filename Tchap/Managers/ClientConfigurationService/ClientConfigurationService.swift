@@ -30,7 +30,7 @@ final class ClientConfigurationService: ClientConfigurationServiceType {
     // MARK: - Setup
     
     init() {
-        self.httpClient = MXHTTPClient (baseURL: TchapDefaults.clientConfigURL, andOnUnrecognizedCertificateBlock: nil)
+        self.httpClient = MXHTTPClient(baseURL: BuildSettings.clientConfigURL, andOnUnrecognizedCertificateBlock: nil)
         self.serializationService = SerializationService()
     }
     

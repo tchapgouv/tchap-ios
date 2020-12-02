@@ -298,14 +298,12 @@
     else
     {
         // Use the default one
-        // TODO: move this parameter in BuildSettings
-        NSString *urlPrefix = [[NSUserDefaults standardUserDefaults] objectForKey:@"serverUrlPrefix"];
-        NSString *host = [[NSUserDefaults standardUserDefaults] objectForKey:@"bugReportDefaultHost"];
+        NSString *urlPrefix = BuildSettings.serverUrlPrefix;
+        NSString *host = BuildSettings.bugReportDefaultHost;
         bugReportEndpoint = [NSString stringWithFormat:@"%@%@", urlPrefix, host];
     }
     
-    // TODO: move this urlSuffix in BuildSettings: BuildSettings.bugReportEndpointUrlSuffix
-    NSString *urlSuffix = [[NSUserDefaults standardUserDefaults] objectForKey:@"bugReportEndpointUrlSuffix"];
+    NSString *urlSuffix = BuildSettings.bugReportEndpointUrlSuffix;
     NSString *url = [NSString stringWithFormat:@"%@%@", bugReportEndpoint, urlSuffix];
     
     bugReportRestClient = [[MXBugReportRestClient alloc] initWithBugReportEndpoint:url];

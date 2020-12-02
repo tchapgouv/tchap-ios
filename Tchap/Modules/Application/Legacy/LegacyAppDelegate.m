@@ -1,7 +1,7 @@
 /*
  Copyright 2014 OpenMarket Ltd
  Copyright 2017 Vector Creations Ltd
- Copyright 2018 New Vector Ltd
+ Copyright 2018-2020 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -189,6 +189,8 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 
 @property (nonatomic, strong) ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter;
 @property (nonatomic, strong) SlidingModalPresenter *slidingModalPresenter;
+//@property (nonatomic, strong) SetPinCoordinatorBridgePresenter *setPinCoordinatorBridgePresenter;
+
 
 @property (nonatomic, weak) id userDidSignInOnNewDeviceObserver;
 @property (weak, nonatomic) UIAlertController *userNewSignInAlertController;
@@ -197,6 +199,8 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
  Related push notification service instance. Will be created when launch finished.
  */
 @property (nonatomic, strong) PushNotificationService *pushNotificationService;
+@property (nonatomic, strong) PushNotificationStore *pushNotificationStore;
+//@property (nonatomic, strong) LocalAuthenticationService *localAuthenticationService;
 
 @end
 
@@ -209,11 +213,9 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     NSLog(@"[AppDelegate] initialize");
     
     [LegacyAppDelegate setupUserDefaults];
-
-    // Set the App Group identifier.
-    MXSDKOptions *sdkOptions = [MXSDKOptions sharedInstance];
-    sdkOptions.applicationGroupIdentifier = [[NSUserDefaults standardUserDefaults] objectForKey:@"appGroupId"];
-    //sdkOptions.computeE2ERoomSummaryTrust = YES; //Tchap: keep using the default value (NO) for this option
+    
+    // Set static application settings
+    [[AppConfiguration new] setupSettings];
     
     [LegacyAppDelegate setupAppSettings];
 
@@ -337,27 +339,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     }
 }
 
-- (UINavigationController*)secondaryNavigationController
-{
-    UIViewController* rootViewController = self.window.rootViewController;
-    
-    if ([rootViewController isKindOfClass:[UISplitViewController class]])
-    {
-        UISplitViewController *splitViewController = (UISplitViewController *)rootViewController;
-        if (splitViewController.viewControllers.count == 2)
-        {
-            UIViewController *secondViewController = [splitViewController.viewControllers lastObject];
-            
-            if ([secondViewController isKindOfClass:[UINavigationController class]])
-            {
-                return (UINavigationController*)secondViewController;
-            }
-        }
-    }
-    
-    return nil;
-}
-
 #pragma mark - UIApplicationDelegate
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(nullable NSDictionary *)launchOptions
@@ -389,6 +370,8 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 #endif
 
     NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: isProtectedDataAvailable: %@", @([application isProtectedDataAvailable]));
+    
+    _configuration = [AppConfiguration new];
 
     // Log app information
     NSString *appDisplayName = [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
@@ -424,9 +407,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     [NSBundle mxk_setLanguage:language];
     [NSBundle mxk_setFallbackLanguage:@"fr"];
     
-    // Customize the localized string table
-    [NSBundle mxk_customizeLocalizedStringTableName:@"Vector"];
-    
     mxSessionArray = [NSMutableArray array];
     callEventsListeners = [NSMutableDictionary dictionary];
     
@@ -434,35 +414,38 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     _handleSelfVerificationRequest = YES;
     
     // Tchap: Disable analytics use for the moment.
-//    // Configure our analytics. It will indeed start if the option is enabled
-//    [MXSDKOptions sharedInstance].analyticsDelegate = [Analytics sharedInstance];
+    // Configure our analytics. It will indeed start if the option is enabled
+//    Analytics *analytics = [Analytics sharedInstance];
+//    [MXSDKOptions sharedInstance].analyticsDelegate = analytics;
 //    [DecryptionFailureTracker sharedInstance].delegate = [Analytics sharedInstance];
-//    [[Analytics sharedInstance] start];
+//
+//    MXBaseProfiler *profiler = [MXBaseProfiler new];
+//    profiler.analytics = analytics;
+//    [MXSDKOptions sharedInstance].profiler = profiler;
+//
+//    [analytics start];
     
-    // Disable CallKit
-    [MXKAppSettings standardAppSettings].enableCallKit = NO;
-    
-    // Enforce lazy loading
-    [MXKAppSettings standardAppSettings].syncWithLazyLoadOfRoomMembers = YES;
+//    self.localAuthenticationService = [[LocalAuthenticationService alloc] initWithPinCodePreferences:[PinCodePreferences shared]];
 
-    self.pushNotificationService = [PushNotificationService new];
+    self.pushNotificationStore = [PushNotificationStore new];
+    self.pushNotificationService = [[PushNotificationService alloc] initWithPushNotificationStore:self.pushNotificationStore];
     self.pushNotificationService.delegate = (id<PushNotificationServiceDelegate>)[UIApplication sharedApplication].delegate;
     
     // Add matrix observers, and initialize matrix sessions if the app is not launched in background.
     [self initMatrixSessions];
     
+#ifdef CALL_STACK_JINGLE
     // Setup Jitsi
-// Tchap: JitsiService is not supported
-//    NSString *jitsiServerStringURL = [[NSUserDefaults standardUserDefaults] objectForKey:@"jitsiServerURL"];
-//    if (jitsiServerStringURL) {
-//        NSURL *jitsiServerURL = [NSURL URLWithString:jitsiServerStringURL];
-//
-//        [JitsiService.shared configureDefaultConferenceOptionsWith:jitsiServerURL];
-//
-//        [JitsiService.shared application:application didFinishLaunchingWithOptions:launchOptions];
-//    }
+    [JitsiService.shared configureDefaultConferenceOptionsWith:BuildSettings.jitsiServerUrl];
+
+    [JitsiService.shared application:application didFinishLaunchingWithOptions:launchOptions];
+#endif
 
     NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: Done in %.0fms", [[NSDate date] timeIntervalSinceDate:startDate] * 1000);
+    
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//        [self configurePinCodeScreenFor:application createIfRequired:YES];
+//    });
 
     return YES;
 }
@@ -473,6 +456,8 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+    
+    [self.pushNotificationService applicationWillResignActive];
     
     // Release MatrixKit error observer
     if (matrixKitErrorObserver)
@@ -510,6 +495,19 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         [wrongBackupVersionAlert dismissViewControllerAnimated:NO completion:nil];
         wrongBackupVersionAlert = nil;
     }
+    
+//    if ([self.localAuthenticationService isProtectionSet] && ![BiometricsAuthenticationPresenter isPresenting])
+//    {
+//        if (self.setPinCoordinatorBridgePresenter)
+//        {
+//            //  it's already on screen, convert the viewMode
+//            self.setPinCoordinatorBridgePresenter.viewMode = SetPinCoordinatorViewModeInactive;
+//            return;
+//        }
+//        self.setPinCoordinatorBridgePresenter = [[SetPinCoordinatorBridgePresenter alloc] initWithSession:mxSessionArray.firstObject viewMode:SetPinCoordinatorViewModeInactive];
+//        self.setPinCoordinatorBridgePresenter.delegate = self;
+//        [self.setPinCoordinatorBridgePresenter presentIn:self.window];
+//    }
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
@@ -531,6 +529,9 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     // check if some media must be released to reduce the cache size
     [MXMediaManager reduceCacheSizeToInsert:0];
     
+//    // Discard any process on pending universal link
+//    [self resetPendingUniversalLink];
+    
     // Suspend all running matrix sessions
     NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
     for (MXKAccount *account in mxAccounts)
@@ -543,6 +544,11 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     
     _isAppForeground = NO;
     
+    [self.pushNotificationService applicationDidEnterBackground];
+    
+    // Pause profiling
+    [MXSDKOptions.sharedInstance.profiler pause];
+    
     // Analytics: Force to send the pending actions
     [[DecryptionFailureTracker sharedInstance] dispatch];
     [[Analytics sharedInstance] dispatch];
@@ -553,9 +559,8 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     NSLog(@"[AppDelegate] applicationWillEnterForeground");
     
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-
-    // Notify push notification service
-    [self.pushNotificationService applicationWillEnterForeground];
+    
+    [MXSDKOptions.sharedInstance.profiler resume];
 
     // Force each session to refresh here their publicised groups by user dictionary.
     // When these publicised groups are retrieved for a user, they are cached and reused until the app is backgrounded and enters in the foreground again
@@ -565,11 +570,48 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     }
     
     _isAppForeground = YES;
+    
+//    [self configurePinCodeScreenFor:application createIfRequired:NO];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     NSLog(@"[AppDelegate] applicationDidBecomeActive");
+    
+    [self.pushNotificationService applicationDidBecomeActive];
+    
+//    [self configurePinCodeScreenFor:application createIfRequired:NO];
+//}
+//
+//- (void)configurePinCodeScreenFor:(UIApplication *)application
+//                 createIfRequired:(BOOL)createIfRequired
+//{
+//    if ([self.localAuthenticationService shouldShowPinCode])
+//    {
+//        if (self.setPinCoordinatorBridgePresenter)
+//        {
+//            //  it's already on screen, convert the viewMode
+//            self.setPinCoordinatorBridgePresenter.viewMode = SetPinCoordinatorViewModeUnlock;
+//            return;
+//        }
+//        if (createIfRequired)
+//        {
+//            self.setPinCoordinatorBridgePresenter = [[SetPinCoordinatorBridgePresenter alloc] initWithSession:mxSessionArray.firstObject viewMode:SetPinCoordinatorViewModeUnlock];
+//            self.setPinCoordinatorBridgePresenter.delegate = self;
+//            [self.setPinCoordinatorBridgePresenter presentIn:self.window];
+//        }
+//    }
+//    else
+//    {
+//        [self.setPinCoordinatorBridgePresenter dismiss];
+//        self.setPinCoordinatorBridgePresenter = nil;
+//        [self afterAppUnlockedByPin:application];
+//    }
+//}
+//
+//- (void)afterAppUnlockedByPin:(UIApplication *)application
+//{
+//    NSLog(@"[AppDelegate] afterAppUnlockedByPin");
     
     // Check if there is crash log to send
     if (RiotSettings.shared.enableCrashReport)
@@ -890,36 +932,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 {
     NSLog(@"[AppDelegate] initMatrixSessions");
     
-    MXSDKOptions *sdkOptions = [MXSDKOptions sharedInstance];
-    
-    // Define the media cache version
-    sdkOptions.mediaCacheAppVersion = 0;
-    
-    // Enable e2e encryption for newly created MXSession
-    sdkOptions.enableCryptoWhenStartingMXSession = YES;
-    
-    // Disable identicon use
-    sdkOptions.disableIdenticonUseForUserAvatar = YES;
-    
-    // Use UIKit BackgroundTask for handling background tasks in the SDK
-    sdkOptions.backgroundModeHandler = [[MXUIKitBackgroundModeHandler alloc] init];
-
-    // Get modular widget events in rooms histories
-    [[MXKAppSettings standardAppSettings] addSupportedEventTypes:@[kWidgetMatrixEventTypeString, kWidgetModularEventTypeString]];
-    
-    // Hide undecryptable messages that were sent while the user was not in the room
-    [MXKAppSettings standardAppSettings].hidePreJoinedUndecryptableEvents = YES;
-    
-    // Tchap: remove some state events from the rooms histories: creation, the history access, encryption, join rules
-    [[MXKAppSettings standardAppSettings] removeSupportedEventTypes:@[kMXEventTypeStringRoomCreate,
-                                                                      kMXEventTypeStringRoomHistoryVisibility,
-                                                                      kMXEventTypeStringRoomEncryption,
-                                                                      kMXEventTypeStringRoomGuestAccess,
-                                                                      kMXEventTypeStringRoomJoinRules]];
-    
-    // Enable long press on event in bubble cells
-    [MXKRoomBubbleTableViewCell disableLongPressGestureOnEvent:NO];
-    
     // Set first RoomDataSource class used in Vector
     [MXKRoomDataSourceManager registerRoomDataSourceClass:RoomDataSource.class];
     
@@ -933,61 +945,9 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
             // Store this new session
             [self addMatrixSession:mxSession];
             
-            // Set the VoIP call stack (if supported).
-            id<MXCallStack> callStack;
+            [self configureCallManagerIfRequiredForSession:mxSession];
             
-#ifdef MX_CALL_STACK_OPENWEBRTC
-            callStack = [[MXOpenWebRTCCallStack alloc] init];
-#endif
-#ifdef MX_CALL_STACK_ENDPOINT
-            callStack = [[MXEndpointCallStack alloc] initWithMatrixId:mxSession.myUser.userId];
-#endif
-#ifdef CALL_STACK_JINGLE
-            callStack = [[MXJingleCallStack alloc] init];
-#endif
-            if (callStack)
-            {
-                [mxSession enableVoIPWithCallStack:callStack];
-
-                // Let's call invite be valid for 1 minute
-                mxSession.callManager.inviteLifetime = 60000;
-
-                if (RiotSettings.shared.allowStunServerFallback)
-                {
-                    mxSession.callManager.fallbackSTUNServer = RiotSettings.shared.stunServerFallback;
-                }
-
-                // Setup CallKit
-                if ([MXCallKitAdapter callKitAvailable])
-                {
-                    BOOL isCallKitEnabled = [MXKAppSettings standardAppSettings].isCallKitEnabled;
-                    [self enableCallKit:isCallKitEnabled forCallManager:mxSession.callManager];
-                    
-                    // Register for changes performed by the user
-                    [[MXKAppSettings standardAppSettings] addObserver:self
-                                                           forKeyPath:@"enableCallKit"
-                                                              options:NSKeyValueObservingOptionNew
-                                                              context:NULL];
-                }
-                else
-                {
-                    [self enableCallKit:NO forCallManager:mxSession.callManager];
-                }
-            }
-            else
-            {
-                // When there is no call stack, display alerts on call invites
-                [self enableNoVoIPOnMatrixSession:mxSession];
-            }
-            
-            // Each room member will be considered as a potential contact.
-            [MXKContactManager sharedManager].contactManagerMXRoomSource = MXKContactManagerMXRoomSourceAll;
-
-            // Send read receipts for widgets events too
-            NSMutableArray<MXEventTypeString> *acknowledgableEventTypes = [NSMutableArray arrayWithArray:mxSession.acknowledgableEventTypes];
-            [acknowledgableEventTypes addObject:kWidgetMatrixEventTypeString];
-            [acknowledgableEventTypes addObject:kWidgetModularEventTypeString];
-            mxSession.acknowledgableEventTypes = acknowledgableEventTypes;
+            [self.configuration setupSettingsFor:mxSession];
         }
         else if (mxSession.state == MXSessionStateStoreDataReady)
         {
@@ -997,16 +957,19 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
             // Clean the storage by removing expired data
             [mxSession tc_removeExpiredMessages];
             
-            // Do not warn for unknown devices. We have cross-signing now
-            mxSession.crypto.warnOnUnknowDevices = NO;
+            [self.configuration setupSettingsWhenLoadedFor:mxSession];
             
 //            // Register to user new device sign in notification
 //            [self registerUserDidSignInOnNewDeviceNotificationForSession:mxSession];
-//
+//            
+//            [self registerDidChangeCrossSigningKeysNotificationForSession:mxSession];
+//            
 //            // Register to new key verification request
 //            [self registerNewRequestNotificationForSession:mxSession];
-//
+//            
 //            [self checkLocalPrivateKeysInSession:mxSession];
+            
+            [self.pushNotificationService checkPushKitPushersInSession:mxSession];
         }
         else if (mxSession.state == MXSessionStateClosed)
         {
@@ -1496,6 +1459,55 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         // Such information should be the same on all platforms
         
         [launchScreenContainerView removeFromSuperview];
+    }
+}
+
+- (void)configureCallManagerIfRequiredForSession:(MXSession *)mxSession
+{
+    if (mxSession.callManager)
+    {
+        //  already configured
+        return;
+    }
+    
+    // Set the VoIP call stack (if supported).
+    id<MXCallStack> callStack;
+    
+#ifdef MX_CALL_STACK_OPENWEBRTC
+    callStack = [[MXOpenWebRTCCallStack alloc] init];
+#endif
+#ifdef MX_CALL_STACK_ENDPOINT
+    callStack = [[MXEndpointCallStack alloc] initWithMatrixId:mxSession.myUser.userId];
+#endif
+#ifdef CALL_STACK_JINGLE
+    callStack = [[MXJingleCallStack alloc] init];
+#endif
+    
+    if (callStack)
+    {
+        [mxSession enableVoIPWithCallStack:callStack];
+        
+        // Setup CallKit
+        if ([MXCallKitAdapter callKitAvailable])
+        {
+            BOOL isCallKitEnabled = [MXKAppSettings standardAppSettings].isCallKitEnabled;
+            [self enableCallKit:isCallKitEnabled forCallManager:mxSession.callManager];
+            
+            // Register for changes performed by the user
+            [[MXKAppSettings standardAppSettings] addObserver:self
+                                                   forKeyPath:@"enableCallKit"
+                                                      options:NSKeyValueObservingOptionNew
+                                                      context:NULL];
+        }
+        else
+        {
+            [self enableCallKit:NO forCallManager:mxSession.callManager];
+        }
+    }
+    else
+    {
+        // When there is no call stack, display alerts on call invites
+        [self enableNoVoIPOnMatrixSession:mxSession];
     }
 }
 
@@ -3145,7 +3157,14 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     // Register "Tchap-Defaults.plist" default values
     NSString* userDefaults = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"UserDefaults"];
     NSString *defaultsPathFromApp = [[NSBundle mainBundle] pathForResource:userDefaults ofType:@"plist"];
-    NSDictionary *defaults = [NSDictionary dictionaryWithContentsOfFile:defaultsPathFromApp];
+    NSMutableDictionary *defaults = [[NSDictionary dictionaryWithContentsOfFile:defaultsPathFromApp] mutableCopy];
+    
+    //  add pusher ids, as they don't belong to plist anymore
+    defaults[@"pushKitAppIdProd"] = BuildSettings.pushKitAppIdProd;
+    defaults[@"pushKitAppIdDev"] = BuildSettings.pushKitAppIdDev;
+    defaults[@"pusherAppIdProd"] = BuildSettings.pusherAppIdProd;
+    defaults[@"pusherAppIdDev"] = BuildSettings.pusherAppIdDev;
+    
     [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
 }
 

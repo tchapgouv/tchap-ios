@@ -87,28 +87,14 @@ final class BuildSettings: NSObject {
     // Tchap servers
     static let serverUrlPrefix = "https://matrix."
     static let preferredIdentityServerNames = [
-        "agent.externe.tchap.gouv.fr",
-        "agent.collectivites.tchap.gouv.fr",
-        "agent.tchap.gouv.fr",
-        "agent.elysee.tchap.gouv.fr",
-        "agent.pm.tchap.gouv.fr",
-        "agent.ssi.tchap.gouv.fr",
-        "agent.finances.tchap.gouv.fr",
-        "agent.social.tchap.gouv.fr",
-        "agent.interieur.tchap.gouv.fr",
-        "agent.agriculture.tchap.gouv.fr",
-        "agent.justice.tchap.gouv.fr",
-        "agent.diplomatie.tchap.gouv.fr",
-        "agent.intradef.tchap.gouv.fr",
-        "agent.dinum.tchap.gouv.fr",
-        "agent.culture.tchap.gouv.fr",
-        "agent.dev-durable.tchap.gouv.fr",
-        "agent.education.tchap.gouv.fr"
+        "i.tchap.gouv.fr"
     ]
-    static let otherIdentityServerNames: [String] = []
+    static let otherIdentityServerNames: [String] = [
+        "e.tchap.gouv.fr"
+    ]
     
     // Tchap-Web instance for the app
-    static let applicationWebAppUrlString = "https://www.tchap.gouv.fr"
+    static let applicationWebAppUrlString = "https://www.beta.tchap.gouv.fr"
     
     
     // MARK: - Server configuration
@@ -118,15 +104,15 @@ final class BuildSettings: NSObject {
     
     // MARK: - Legal URLs
     static let applicationTermsConditionsUrlString = "https://www.tchap.gouv.fr/tac.html"
-    static let clientConfigURL = "https://www.tchap.gouv.fr/client/config/agent/ios"
+    static let clientConfigURL = "https://www.tchap.gouv.fr/client/config/preprod/ios"
     
     
     // MARk: - Matrix permalinks
     static let permalinkSupportedHosts: [String] = [
-        "tchap.gouv.fr",
-        "www.tchap.gouv.fr"
+        "beta.tchap.gouv.fr",
+        "www.beta.tchap.gouv.fr"
     ]
-    static let permalinkPrefix = "https://tchap.gouv.fr"
+    static let permalinkPrefix = "https://www.beta.tchap.gouv.fr"
     
     
     // MARK: - VoIP
@@ -143,22 +129,7 @@ final class BuildSettings: NSObject {
     // MARK: -  Public rooms Directory
     // List of homeservers for the public rooms directory
     static let publicRoomsDirectoryServers = [
-        "agent.collectivites.tchap.gouv.fr",
-        "agent.tchap.gouv.fr",
-        "agent.elysee.tchap.gouv.fr",
-        "agent.pm.tchap.gouv.fr",
-        "agent.ssi.tchap.gouv.fr",
-        "agent.finances.tchap.gouv.fr",
-        "agent.social.tchap.gouv.fr",
-        "agent.interieur.tchap.gouv.fr",
-        "agent.agriculture.tchap.gouv.fr",
-        "agent.justice.tchap.gouv.fr",
-        "agent.diplomatie.tchap.gouv.fr",
-        "agent.intradef.tchap.gouv.fr",
-        "agent.dinum.tchap.gouv.fr",
-        "agent.culture.tchap.gouv.fr",
-        "agent.dev-durable.tchap.gouv.fr",
-        "agent.education.tchap.gouv.fr"
+        "i.tchap.gouv.fr"
     ]
     
     
@@ -168,10 +139,10 @@ final class BuildSettings: NSObject {
     
     
     // MARK: - Bug report
-    static let bugReportDefaultHost = "agent.tchap.gouv.fr"
+    static let bugReportDefaultHost = "i.tchap.gouv.fr"
     static let bugReportEndpointUrlSuffix = "/bugreports"
     // Use the name allocated by the bug report server
-    static let bugReportApplicationId = "tchap-ios"
+    static let bugReportApplicationId = "btchap-ios"
     
     
     // MARK: - Integrations

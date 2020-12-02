@@ -29,10 +29,7 @@ final class PublicRoomService: PublicRoomServiceType {
     
     init(homeServersStringURL: [String], session: MXSession) {
         
-        guard let serverUrlPrefix = UserDefaults.standard.string(forKey: "serverUrlPrefix") else {
-            fatalError("serverUrlPrefix should be defined")
-        }
-        
+        let serverUrlPrefix = BuildSettings.serverUrlPrefix
         let currentHomeServer = session.matrixRestClient.homeserver.replacingOccurrences(of: serverUrlPrefix, with: "")
         
         // Remove current homeserver from the list

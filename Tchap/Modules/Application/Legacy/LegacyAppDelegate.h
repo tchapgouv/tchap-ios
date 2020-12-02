@@ -26,6 +26,8 @@
 
 #import "DesignValues.h"
 
+@protocol Configurable;
+
 #pragma mark - Notifications
 
 /**
@@ -76,6 +78,9 @@ extern NSString *const kLegacyAppDelegateDidLoginNotification;
 
 // New message sound id.
 @property (nonatomic, readonly) SystemSoundID messageSound;
+
+// Build Settings
+@property (nonatomic, readonly) id<Configurable> configuration;
 
 // List here the server error codes which must be ignored by `[showErrorAsAlert:]`
 @property (nonatomic) NSSet<NSString *> *ignoredServerErrorCodes;

@@ -29,7 +29,18 @@ class AppConfiguration: CommonConfiguration {
     
     private func setupAppSettings() {
         // Enable CallKit for app
-        MXKAppSettings.standard()?.isCallKitEnabled = true
+        //MXKAppSettings.standard()?.isCallKitEnabled = true
+        
+        // Get modular widget events in rooms histories
+        MXKAppSettings.standard()?.addSupportedEventTypes([kWidgetMatrixEventTypeString,
+                                                           kWidgetModularEventTypeString])
+        
+        // Tchap: remove some state events from the rooms histories: creation, the history access, encryption, join rules
+        MXKAppSettings.standard()?.removeSupportedEventTypes([kMXEventTypeStringRoomCreate,
+                                                              kMXEventTypeStringRoomHistoryVisibility,
+                                                              kMXEventTypeStringRoomEncryption,
+                                                              kMXEventTypeStringRoomGuestAccess,
+                                                              kMXEventTypeStringRoomJoinRules])
         
         // Hide undecryptable messages that were sent while the user was not in the room
         MXKAppSettings.standard()?.hidePreJoinedUndecryptableEvents = true
@@ -40,8 +51,10 @@ class AppConfiguration: CommonConfiguration {
         // Each room member will be considered as a potential contact.
         MXKContactManager.shared().contactManagerMXRoomSource = MXKContactManagerMXRoomSource.all
         
+        #if SUPPORT_KEYS_BACKUP
         // Enable key backup on app
         MXSDKOptions.sharedInstance().enableKeyBackupWhenStartingMXCrypto = true
+        #endif
     }
     
     
