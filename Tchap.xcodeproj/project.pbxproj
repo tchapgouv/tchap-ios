@@ -773,6 +773,22 @@
 		026D887021C1C4F40085BED8 /* TchapSharedImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 026D886F21C1C4F40085BED8 /* TchapSharedImages.xcassets */; };
 		026D887221C1C5490085BED8 /* BtchapSharedImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 026D887121C1C5490085BED8 /* BtchapSharedImages.xcassets */; };
 		0276C17524D989070097CA0A /* tchap.gouv.fr.cer in Resources */ = {isa = PBXBuildFile; fileRef = 0276C17424D989070097CA0A /* tchap.gouv.fr.cer */; };
+		0278619E2577A8D900266B09 /* JitsiJWTTokenBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0278619A2577A8D900266B09 /* JitsiJWTTokenBuilder.swift */; };
+		0278619F2577A8D900266B09 /* JitsiJWTTokenBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0278619A2577A8D900266B09 /* JitsiJWTTokenBuilder.swift */; };
+		027861A02577A8D900266B09 /* JitsiWellKnown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0278619B2577A8D900266B09 /* JitsiWellKnown.swift */; };
+		027861A12577A8D900266B09 /* JitsiWellKnown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0278619B2577A8D900266B09 /* JitsiWellKnown.swift */; };
+		027861A22577A8D900266B09 /* JitsiJWTPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0278619C2577A8D900266B09 /* JitsiJWTPayload.swift */; };
+		027861A32577A8D900266B09 /* JitsiJWTPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0278619C2577A8D900266B09 /* JitsiJWTPayload.swift */; };
+		027861A42577A8D900266B09 /* JitsiAuthenticationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0278619D2577A8D900266B09 /* JitsiAuthenticationType.swift */; };
+		027861A52577A8D900266B09 /* JitsiAuthenticationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0278619D2577A8D900266B09 /* JitsiAuthenticationType.swift */; };
+		0278620C2579075B00266B09 /* Base32Coder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0278620B2579075B00266B09 /* Base32Coder.swift */; };
+		0278620D2579075B00266B09 /* Base32Coder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0278620B2579075B00266B09 /* Base32Coder.swift */; };
+		02786246257996E500266B09 /* RoomIdComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02786245257996E500266B09 /* RoomIdComponents.swift */; };
+		02786247257996E500266B09 /* RoomIdComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02786245257996E500266B09 /* RoomIdComponents.swift */; };
+		0278627B2579983800266B09 /* SpanningSlidingModalContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027862792579983700266B09 /* SpanningSlidingModalContainerView.swift */; };
+		0278627C2579983800266B09 /* SpanningSlidingModalContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027862792579983700266B09 /* SpanningSlidingModalContainerView.swift */; };
+		0278627D2579983800266B09 /* SpanningSlidingModalContainerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0278627A2579983700266B09 /* SpanningSlidingModalContainerView.xib */; };
+		0278627E2579983800266B09 /* SpanningSlidingModalContainerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0278627A2579983700266B09 /* SpanningSlidingModalContainerView.xib */; };
 		027DCAC521B14F68000DD05E /* ContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 027DCAC321B14F68000DD05E /* ContactCell.xib */; };
 		027DCAC621B14F68000DD05E /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027DCAC421B14F68000DD05E /* ContactCell.swift */; };
 		028624D9250269F100CFE83D /* RoomAccessByLinkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028624D5250269F000CFE83D /* RoomAccessByLinkViewController.swift */; };
@@ -2482,6 +2498,14 @@
 		026D887121C1C5490085BED8 /* BtchapSharedImages.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = BtchapSharedImages.xcassets; sourceTree = "<group>"; };
 		026DCFDE256FD32600D5A2B7 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		0276C17424D989070097CA0A /* tchap.gouv.fr.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = tchap.gouv.fr.cer; sourceTree = "<group>"; };
+		0278619A2577A8D900266B09 /* JitsiJWTTokenBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JitsiJWTTokenBuilder.swift; sourceTree = "<group>"; };
+		0278619B2577A8D900266B09 /* JitsiWellKnown.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JitsiWellKnown.swift; sourceTree = "<group>"; };
+		0278619C2577A8D900266B09 /* JitsiJWTPayload.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JitsiJWTPayload.swift; sourceTree = "<group>"; };
+		0278619D2577A8D900266B09 /* JitsiAuthenticationType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JitsiAuthenticationType.swift; sourceTree = "<group>"; };
+		0278620B2579075B00266B09 /* Base32Coder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Base32Coder.swift; sourceTree = "<group>"; };
+		02786245257996E500266B09 /* RoomIdComponents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomIdComponents.swift; sourceTree = "<group>"; };
+		027862792579983700266B09 /* SpanningSlidingModalContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpanningSlidingModalContainerView.swift; sourceTree = "<group>"; };
+		0278627A2579983700266B09 /* SpanningSlidingModalContainerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SpanningSlidingModalContainerView.xib; sourceTree = "<group>"; };
 		027DCAC321B14F68000DD05E /* ContactCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactCell.xib; sourceTree = "<group>"; };
 		027DCAC421B14F68000DD05E /* ContactCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
 		028624D5250269F000CFE83D /* RoomAccessByLinkViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomAccessByLinkViewController.swift; sourceTree = "<group>"; };
@@ -4235,6 +4259,41 @@
 			path = SupportingFiles;
 			sourceTree = "<group>";
 		};
+		027861972577A8D900266B09 /* Integrations */ = {
+			isa = PBXGroup;
+			children = (
+				027861982577A8D900266B09 /* Widgets */,
+			);
+			path = Integrations;
+			sourceTree = "<group>";
+		};
+		027861982577A8D900266B09 /* Widgets */ = {
+			isa = PBXGroup;
+			children = (
+				027861992577A8D900266B09 /* Jitsi */,
+			);
+			path = Widgets;
+			sourceTree = "<group>";
+		};
+		027861992577A8D900266B09 /* Jitsi */ = {
+			isa = PBXGroup;
+			children = (
+				0278619A2577A8D900266B09 /* JitsiJWTTokenBuilder.swift */,
+				0278619B2577A8D900266B09 /* JitsiWellKnown.swift */,
+				0278619C2577A8D900266B09 /* JitsiJWTPayload.swift */,
+				0278619D2577A8D900266B09 /* JitsiAuthenticationType.swift */,
+			);
+			path = Jitsi;
+			sourceTree = "<group>";
+		};
+		02786244257996E500266B09 /* Room */ = {
+			isa = PBXGroup;
+			children = (
+				02786245257996E500266B09 /* RoomIdComponents.swift */,
+			);
+			path = Room;
+			sourceTree = "<group>";
+		};
 		028624D42502652400CFE83D /* RoomAccessByLink */ = {
 			isa = PBXGroup;
 			children = (
@@ -4770,6 +4829,8 @@
 		02FAE42523B2B98900DE73D8 /* SlidingModal */ = {
 			isa = PBXGroup;
 			children = (
+				027862792579983700266B09 /* SpanningSlidingModalContainerView.swift */,
+				0278627A2579983700266B09 /* SpanningSlidingModalContainerView.xib */,
 				02FAE42623B2B98900DE73D8 /* SlidingModalPresentationAnimator.swift */,
 				02FAE42723B2B98900DE73D8 /* SlidingModalEmptyViewController.swift */,
 				02FAE42823B2B98900DE73D8 /* SlidingModalPresenter.swift */,
@@ -5624,6 +5685,7 @@
 		B1B5567620EE6C4C00210D55 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				027861972577A8D900266B09 /* Integrations */,
 				02FAE23223B2489200DE73D8 /* Camera */,
 				B17982FD2119FEA7001FD722 /* GDPR */,
 				B1B5570C20EE6C4C00210D55 /* GlobalSearch */,
@@ -5828,6 +5890,7 @@
 		B1B5597C20EFC3DF00210D55 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				02786244257996E500266B09 /* Room */,
 				025CB2542493BEAC009A4B10 /* PushNotification */,
 				02FAE60B23B4E70600DE73D8 /* RoomMessageLinkParser */,
 				024518E623A150D4006873DF /* PasswordStrength */,
@@ -6244,6 +6307,7 @@
 		F083BC0F1E7009EC00A9B29C /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				0278620B2579075B00266B09 /* Base32Coder.swift */,
 				02F1B87124D8C09600A73E63 /* FormattedBodyParser.swift */,
 				02D0FC8824AE2DDA008DD5BB /* Constants.swift */,
 				02D0FC8924AE2DDA008DD5BB /* DataProtectionHelper.swift */,
@@ -6616,6 +6680,7 @@
 				02CEE1DE23312C370085ACF0 /* matrix.agent.externe.tchap.gouv.fr2.cer in Resources */,
 				020DF97B214BE467003DFBA4 /* RoomIncomingTextMsgWithoutSenderInfoBubbleCell.xib in Resources */,
 				02FAE5C423B4C41600DE73D8 /* EmojiPickerHeaderView.xib in Resources */,
+				0278627D2579983800266B09 /* SpanningSlidingModalContainerView.xib in Resources */,
 				02B3453B219CA8CB00110EC8 /* RoomsDiscussionCell.xib in Resources */,
 				0250C56A2122B68000034691 /* ringback.mp3 in Resources */,
 				02388E1924A2AF7900F3B485 /* UserVerificationSessionStatusCell.xib in Resources */,
@@ -6937,6 +7002,7 @@
 				02FAE5D923B4C41600DE73D8 /* EditHistoryCell.xib in Resources */,
 				02DFECBC21C07370009B6F15 /* RoomIncomingTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
 				02DFECBD21C07370009B6F15 /* BugReportViewController.xib in Resources */,
+				0278627E2579983800266B09 /* SpanningSlidingModalContainerView.xib in Resources */,
 				02DFECBE21C07370009B6F15 /* ContactCell.xib in Resources */,
 				02DFECC021C07370009B6F15 /* TableViewCellWithLabelAndLargeTextView.xib in Resources */,
 				02FAE41C23B29EBD00DE73D8 /* ServiceTermsModalScreenViewController.storyboard in Resources */,
@@ -7479,6 +7545,7 @@
 				02BEE18C212AB23A00098505 /* ThirdPartyIDPlatformInfoType.swift in Sources */,
 				02388E9924A2AF7A00F3B485 /* KeyVerificationManuallyVerifyViewModelType.swift in Sources */,
 				02C3F2A424AFE13E0086ACA5 /* MXRecoveryService.swift in Sources */,
+				027861A22577A8D900266B09 /* JitsiJWTPayload.swift in Sources */,
 				022B48D4257156E300427BEC /* Configurable.swift in Sources */,
 				0250C4BC2122B68000034691 /* MediaPickerViewController.m in Sources */,
 				020DF95C214BE467003DFBA4 /* RoomEncryptedAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.m in Sources */,
@@ -7721,6 +7788,7 @@
 				020DF981214BE467003DFBA4 /* RoomIncomingTextMsgWithoutSenderNameBubbleCell.m in Sources */,
 				0250C4F62122B68000034691 /* DeviceTableViewCell.m in Sources */,
 				B1BC6A1F2136C9A800D32F8E /* Variant2Style.swift in Sources */,
+				02786246257996E500266B09 /* RoomIdComponents.swift in Sources */,
 				02C3F22224AFD3880086ACA5 /* CrossSigningService.swift in Sources */,
 				02FAE41F23B29EBD00DE73D8 /* ServiceTermsModalScreenCoordinatorType.swift in Sources */,
 				02FAE41323B29EBD00DE73D8 /* ServiceTermsModalCoordinator.swift in Sources */,
@@ -7745,6 +7813,7 @@
 				020DF991214BE467003DFBA4 /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				02388E1B24A2AF7900F3B485 /* UserVerificationSessionsStatusCoordinator.swift in Sources */,
 				02FAE30223B26BEA00DE73D8 /* WidgetManagerConfig.swift in Sources */,
+				027861A02577A8D900266B09 /* JitsiWellKnown.swift in Sources */,
 				02F1B87524D8C1A000A73E63 /* UITableViewCell.swift in Sources */,
 				0250C4FF2122B68000034691 /* RecentsViewController.m in Sources */,
 				02388F0624A2B21D00F3B485 /* RoundedButton.swift in Sources */,
@@ -7763,6 +7832,7 @@
 				02C3F26524AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyCoordinator.swift in Sources */,
 				B1680CFD2152A9E6009B5F92 /* PublicRoomsCoordinator.swift in Sources */,
 				026A466223B21AFF0058D80B /* UISearchBar.swift in Sources */,
+				0278627B2579983800266B09 /* SpanningSlidingModalContainerView.swift in Sources */,
 				B15AB2A7215BF55B007F5405 /* ForgotPasswordFormViewModel.swift in Sources */,
 				02FAE46223B4AB3300DE73D8 /* JitsiService.swift in Sources */,
 				02B34546219E383800110EC8 /* RoomsInviteCell.swift in Sources */,
@@ -7860,6 +7930,7 @@
 				02FAE30B23B26C0B00DE73D8 /* RiotSettingAllowedWidgets.swift in Sources */,
 				020DF93E214BE467003DFBA4 /* AttachmentsViewController.m in Sources */,
 				02FAE5F823B4C41600DE73D8 /* ReactionHistoryViewAction.swift in Sources */,
+				0278619E2577A8D900266B09 /* JitsiJWTTokenBuilder.swift in Sources */,
 				02388E3924A2AF7900F3B485 /* KeyVerificationVerifyByScanningCoordinator.swift in Sources */,
 				02388E2724A2AF7900F3B485 /* KeyVerificationDataLoadingCoordinator.swift in Sources */,
 				020DF97D214BE467003DFBA4 /* RoomSelectedStickerBubbleCell.m in Sources */,
@@ -7937,6 +8008,7 @@
 				B12209A923854F32004D069C /* AppVersionUpdateViewController.swift in Sources */,
 				B1F2AA97212AEC830077FDC0 /* AppCoordinator.swift in Sources */,
 				0252030D224EBD4800262433 /* ContactButtonViewModel.swift in Sources */,
+				027861A42577A8D900266B09 /* JitsiAuthenticationType.swift in Sources */,
 				B15B867421355A7A002782BE /* ErrorPresenter.swift in Sources */,
 				020DF989214BE467003DFBA4 /* RoomOutgoingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				B1C4644721B67F1E005F4D53 /* RoomCreationCoordinator.swift in Sources */,
@@ -7970,6 +8042,7 @@
 				B1C4646321BACEB3005F4D53 /* UserIDComponents.swift in Sources */,
 				02388F2A24A2BA8100F3B485 /* CameraAccessManager.swift in Sources */,
 				02FAE56223B4C41500DE73D8 /* BubbleReactionsView.swift in Sources */,
+				0278620C2579075B00266B09 /* Base32Coder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8311,6 +8384,7 @@
 				02DFEBB821C07370009B6F15 /* RoomMembershipWithPaginationTitleBubbleCell.m in Sources */,
 				024CD94A25744E8D00629DAA /* BuildSettings.swift in Sources */,
 				02388E9A24A2AF7A00F3B485 /* KeyVerificationManuallyVerifyViewModelType.swift in Sources */,
+				027861A32577A8D900266B09 /* JitsiJWTPayload.swift in Sources */,
 				02C3F2A524AFE13E0086ACA5 /* MXRecoveryService.swift in Sources */,
 				B1C0EE8C2375B7F400E8BB88 /* ChangePasswordNewPasswordViewAction.swift in Sources */,
 				02DFEBB921C07370009B6F15 /* Analytics.m in Sources */,
@@ -8553,6 +8627,7 @@
 				02C3F21324AF75100086ACA5 /* SecureBackupBannerCell.swift in Sources */,
 				02DFEC1021C07370009B6F15 /* RoomTitleViewModelBuilder.swift in Sources */,
 				B1C0EE662375B78C00E8BB88 /* ChangePasswordCoordinatorType.swift in Sources */,
+				02786247257996E500266B09 /* RoomIdComponents.swift in Sources */,
 				02DFEC1121C07370009B6F15 /* FormTextViewModelType.swift in Sources */,
 				02C3F22324AFD3880086ACA5 /* CrossSigningService.swift in Sources */,
 				02FAE42023B29EBD00DE73D8 /* ServiceTermsModalScreenCoordinatorType.swift in Sources */,
@@ -8577,6 +8652,7 @@
 				02DFEC1621C07370009B6F15 /* DeviceTableViewCell.m in Sources */,
 				02DFEC1721C07370009B6F15 /* Variant2Style.swift in Sources */,
 				02388E1C24A2AF7900F3B485 /* UserVerificationSessionsStatusCoordinator.swift in Sources */,
+				027861A12577A8D900266B09 /* JitsiWellKnown.swift in Sources */,
 				02FAE30323B26BEA00DE73D8 /* WidgetManagerConfig.swift in Sources */,
 				02F1B87624D8C1A000A73E63 /* UITableViewCell.swift in Sources */,
 				B15FE5ED23858B8200D2A5B2 /* AppVersionUpdateCoordinatorType.swift in Sources */,
@@ -8595,6 +8671,7 @@
 				02C3F26624AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyCoordinator.swift in Sources */,
 				B1C0EE722375B7A000E8BB88 /* ChangePasswordCurrentPasswordViewState.swift in Sources */,
 				02DFEC1E21C07370009B6F15 /* RoomPreviewCoordinatorType.swift in Sources */,
+				0278627C2579983800266B09 /* SpanningSlidingModalContainerView.swift in Sources */,
 				026A466323B21AFF0058D80B /* UISearchBar.swift in Sources */,
 				02FAE46323B4AB3300DE73D8 /* JitsiService.swift in Sources */,
 				02DFEC1F21C07370009B6F15 /* RestClientBuilderError.swift in Sources */,
@@ -8692,6 +8769,7 @@
 				02FAE41223B29EBD00DE73D8 /* ServiceTermsModalCoordinatorBridgePresenter.swift in Sources */,
 				02FAE30C23B26C0B00DE73D8 /* RiotSettingAllowedWidgets.swift in Sources */,
 				02DFEC4621C07370009B6F15 /* AuthenticationServiceError.swift in Sources */,
+				0278619F2577A8D900266B09 /* JitsiJWTTokenBuilder.swift in Sources */,
 				02FAE5F923B4C41600DE73D8 /* ReactionHistoryViewAction.swift in Sources */,
 				02388E3A24A2AF7900F3B485 /* KeyVerificationVerifyByScanningCoordinator.swift in Sources */,
 				02388E2824A2AF7900F3B485 /* KeyVerificationDataLoadingCoordinator.swift in Sources */,
@@ -8769,6 +8847,7 @@
 				02DFEC6721C07370009B6F15 /* AppCoordinator.swift in Sources */,
 				0252030E224EBD4800262433 /* ContactButtonViewModel.swift in Sources */,
 				02DFEC6821C07370009B6F15 /* ErrorPresenter.swift in Sources */,
+				027861A52577A8D900266B09 /* JitsiAuthenticationType.swift in Sources */,
 				02DFEC6921C07370009B6F15 /* RoomOutgoingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				02DFEC6A21C07370009B6F15 /* RoomCreationCoordinator.swift in Sources */,
 				B12209BA23854F91004D069C /* ClientConfigurationServiceType.swift in Sources */,
@@ -8802,6 +8881,7 @@
 				02DFEC7421C07370009B6F15 /* UserIDComponents.swift in Sources */,
 				02388F2B24A2BA8100F3B485 /* CameraAccessManager.swift in Sources */,
 				02FAE56323B4C41500DE73D8 /* BubbleReactionsView.swift in Sources */,
+				0278620D2579075B00266B09 /* Base32Coder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

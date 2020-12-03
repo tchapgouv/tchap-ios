@@ -71,7 +71,7 @@ final class PublicRoomService: PublicRoomServiceType {
             .flatMap({ (publicRooms) -> Observable<MXPublicRoom> in // Get one public rooms request response, i.e. [MXPublicRoom], and emits one MXPublicRoom for each item of the array.
                 return Observable.from(publicRooms)
             })
-            .toArray() // Accumulate previous MXPublicRoom items in one array. Emits one array of MXPublicRoom when all requests complete.
+            .toArray().asObservable() // Accumulate previous MXPublicRoom items in one array. Emits one array of MXPublicRoom when all requests complete.
     }
     
     // MARK: - Private

@@ -14,7 +14,7 @@ use_frameworks!
 # $matrixKitVersion = '= 0.13.1'
 # $matrixKitVersion = :local
 # $matrixKitVersion = {'develop' => 'develop'}
-$matrixKitVersion = {'develop' => 'dinum'}
+$matrixKitVersion = {'dinum' => 'dinum'}
 
 ########################################
 
@@ -75,6 +75,8 @@ abstract_target 'TchapPods' do
     pod 'DGCollectionViewLeftAlignFlowLayout', '~> 1.0.4'
     pod 'KTCenterFlowLayout', '~> 1.3.1'
     pod 'ZXingObjC', '~> 3.6.5'
+    pod 'SwiftBase32', '~> 0.9.0'
+    pod 'SwiftJWT', '~> 3.5.3'
   end
 
   target "Btchap" do
@@ -82,6 +84,8 @@ abstract_target 'TchapPods' do
     pod 'DGCollectionViewLeftAlignFlowLayout', '~> 1.0.4'
     pod 'KTCenterFlowLayout', '~> 1.3.1'
     pod 'ZXingObjC', '~> 3.6.5'
+    pod 'SwiftBase32', '~> 0.9.0'
+    pod 'SwiftJWT', '~> 3.5.3'
   end
     
   target "TchapShareExtension" do
