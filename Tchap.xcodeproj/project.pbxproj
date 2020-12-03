@@ -789,6 +789,8 @@
 		0278627C2579983800266B09 /* SpanningSlidingModalContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027862792579983700266B09 /* SpanningSlidingModalContainerView.swift */; };
 		0278627D2579983800266B09 /* SpanningSlidingModalContainerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0278627A2579983700266B09 /* SpanningSlidingModalContainerView.xib */; };
 		0278627E2579983800266B09 /* SpanningSlidingModalContainerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0278627A2579983700266B09 /* SpanningSlidingModalContainerView.xib */; };
+		027862882579A8CB00266B09 /* BubbleReactionsViewSizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 027862852579A8CB00266B09 /* BubbleReactionsViewSizer.m */; };
+		027862892579A8CB00266B09 /* BubbleReactionsViewSizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 027862852579A8CB00266B09 /* BubbleReactionsViewSizer.m */; };
 		027DCAC521B14F68000DD05E /* ContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 027DCAC321B14F68000DD05E /* ContactCell.xib */; };
 		027DCAC621B14F68000DD05E /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027DCAC421B14F68000DD05E /* ContactCell.swift */; };
 		028624D9250269F100CFE83D /* RoomAccessByLinkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028624D5250269F000CFE83D /* RoomAccessByLinkViewController.swift */; };
@@ -2506,6 +2508,8 @@
 		02786245257996E500266B09 /* RoomIdComponents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomIdComponents.swift; sourceTree = "<group>"; };
 		027862792579983700266B09 /* SpanningSlidingModalContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpanningSlidingModalContainerView.swift; sourceTree = "<group>"; };
 		0278627A2579983700266B09 /* SpanningSlidingModalContainerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SpanningSlidingModalContainerView.xib; sourceTree = "<group>"; };
+		027862852579A8CB00266B09 /* BubbleReactionsViewSizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BubbleReactionsViewSizer.m; sourceTree = "<group>"; };
+		027862862579A8CB00266B09 /* BubbleReactionsViewSizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BubbleReactionsViewSizer.h; sourceTree = "<group>"; };
 		027DCAC321B14F68000DD05E /* ContactCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactCell.xib; sourceTree = "<group>"; };
 		027DCAC421B14F68000DD05E /* ContactCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
 		028624D5250269F000CFE83D /* RoomAccessByLinkViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomAccessByLinkViewController.swift; sourceTree = "<group>"; };
@@ -4294,6 +4298,16 @@
 			path = Room;
 			sourceTree = "<group>";
 		};
+		027862842579A8CB00266B09 /* BubbleReactions */ = {
+			isa = PBXGroup;
+			children = (
+				027862852579A8CB00266B09 /* BubbleReactionsViewSizer.m */,
+				027862862579A8CB00266B09 /* BubbleReactionsViewSizer.h */,
+			);
+			name = BubbleReactions;
+			path = Room/BubbleReactions;
+			sourceTree = "<group>";
+		};
 		028624D42502652400CFE83D /* RoomAccessByLink */ = {
 			isa = PBXGroup;
 			children = (
@@ -5685,6 +5699,7 @@
 		B1B5567620EE6C4C00210D55 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				027862842579A8CB00266B09 /* BubbleReactions */,
 				027861972577A8D900266B09 /* Integrations */,
 				02FAE23223B2489200DE73D8 /* Camera */,
 				B17982FD2119FEA7001FD722 /* GDPR */,
@@ -7709,6 +7724,7 @@
 				B1F2AA95212AEC830077FDC0 /* SettingsCoordinatorType.swift in Sources */,
 				0252030B224EBD4800262433 /* ContactButtonView.swift in Sources */,
 				02FAE5E023B4C41600DE73D8 /* EditHistoryCell.swift in Sources */,
+				027862882579A8CB00266B09 /* BubbleReactionsViewSizer.m in Sources */,
 				B15FE5DD238583AB00D2A5B2 /* AppVersionCheckerStore.swift in Sources */,
 				02388E6124A2AF7900F3B485 /* KeyVerificationScanConfirmationViewModel.swift in Sources */,
 				020DF971214BE467003DFBA4 /* RoomIncomingAttachmentBubbleCell.m in Sources */,
@@ -8548,6 +8564,7 @@
 				02FAE42223B29EBD00DE73D8 /* ServiceTermsModalScreenViewAction.swift in Sources */,
 				0215542422B24058004663A6 /* AccountValidityServiceType.swift in Sources */,
 				02DFEBF521C07370009B6F15 /* RoomAttachmentAntivirusScanStatusCellContentView.swift in Sources */,
+				027862892579A8CB00266B09 /* BubbleReactionsViewSizer.m in Sources */,
 				02FAE5E123B4C41600DE73D8 /* EditHistoryCell.swift in Sources */,
 				02DFEBF621C07370009B6F15 /* RoomsCell.swift in Sources */,
 				02388E6224A2AF7900F3B485 /* KeyVerificationScanConfirmationViewModel.swift in Sources */,
