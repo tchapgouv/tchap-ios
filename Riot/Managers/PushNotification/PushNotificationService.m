@@ -138,10 +138,11 @@ Matrix session observer used to detect new opened sessions.
 
     _isPushRegistered = YES;
     
-    if (!_pushNotificationStore.pushKitToken)
-    {
-        [self configurePushKit];
-    }
+    // Tchap: Do not configure pushKit for the moment
+//    if (!_pushNotificationStore.pushKitToken)
+//    {
+//        [self configurePushKit];
+//    }
 
     if (self.registrationForRemoteNotificationsCompletion)
     {

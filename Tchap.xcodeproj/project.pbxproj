@@ -823,6 +823,22 @@
 		0287987B24AE873D004FC7AE /* TchapDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = B122099723854EF2004D069C /* TchapDefaults.swift */; };
 		028B50B5228E2931005DB9B6 /* matrix.agent.tchap.gouv.fr.cer in Resources */ = {isa = PBXBuildFile; fileRef = 028B50B4228E2931005DB9B6 /* matrix.agent.tchap.gouv.fr.cer */; };
 		028B50B7228EB2C3005DB9B6 /* www.tchap.gouv.fr.cer in Resources */ = {isa = PBXBuildFile; fileRef = 028B50B6228EB2C2005DB9B6 /* www.tchap.gouv.fr.cer */; };
+		028BA9B4257A436300C71A91 /* PushNotificationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028BA9B3257A436300C71A91 /* PushNotificationStore.swift */; };
+		028BA9B5257A436300C71A91 /* PushNotificationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028BA9B3257A436300C71A91 /* PushNotificationStore.swift */; };
+		028BA9B6257A436300C71A91 /* PushNotificationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028BA9B3257A436300C71A91 /* PushNotificationStore.swift */; };
+		028BA9B7257A436300C71A91 /* PushNotificationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028BA9B3257A436300C71A91 /* PushNotificationStore.swift */; };
+		028BA9C7257A459300C71A91 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028BA9C0257A459300C71A91 /* Keychain.swift */; };
+		028BA9C8257A459300C71A91 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028BA9C0257A459300C71A91 /* Keychain.swift */; };
+		028BA9C9257A459300C71A91 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028BA9C0257A459300C71A91 /* Keychain.swift */; };
+		028BA9CA257A459300C71A91 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028BA9C0257A459300C71A91 /* Keychain.swift */; };
+		028BA9CB257A459300C71A91 /* KeychainStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028BA9C1257A459300C71A91 /* KeychainStore.swift */; };
+		028BA9CC257A459300C71A91 /* KeychainStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028BA9C1257A459300C71A91 /* KeychainStore.swift */; };
+		028BA9CD257A459300C71A91 /* KeychainStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028BA9C1257A459300C71A91 /* KeychainStore.swift */; };
+		028BA9CE257A459300C71A91 /* KeychainStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028BA9C1257A459300C71A91 /* KeychainStore.swift */; };
+		028BA9CF257A459300C71A91 /* KeyValueStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028BA9C2257A459300C71A91 /* KeyValueStore.swift */; };
+		028BA9D0257A459300C71A91 /* KeyValueStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028BA9C2257A459300C71A91 /* KeyValueStore.swift */; };
+		028BA9D1257A459300C71A91 /* KeyValueStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028BA9C2257A459300C71A91 /* KeyValueStore.swift */; };
+		028BA9D2257A459300C71A91 /* KeyValueStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028BA9C2257A459300C71A91 /* KeyValueStore.swift */; };
 		02906073214FD0E1005FE3C1 /* RoomCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02906071214FD0E0005FE3C1 /* RoomCoordinatorType.swift */; };
 		02906074214FD0E1005FE3C1 /* RoomCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02906072214FD0E0005FE3C1 /* RoomCoordinator.swift */; };
 		0290607921501D16005FE3C1 /* PreviewView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0290607621501D16005FE3C1 /* PreviewView.xib */; };
@@ -2528,6 +2544,10 @@
 		0287986D24AE8404004FC7AE /* NSEMemoryStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSEMemoryStore.swift; sourceTree = "<group>"; };
 		028B50B4228E2931005DB9B6 /* matrix.agent.tchap.gouv.fr.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = matrix.agent.tchap.gouv.fr.cer; sourceTree = "<group>"; };
 		028B50B6228EB2C2005DB9B6 /* www.tchap.gouv.fr.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = www.tchap.gouv.fr.cer; sourceTree = "<group>"; };
+		028BA9B3257A436300C71A91 /* PushNotificationStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushNotificationStore.swift; sourceTree = "<group>"; };
+		028BA9C0257A459300C71A91 /* Keychain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
+		028BA9C1257A459300C71A91 /* KeychainStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainStore.swift; sourceTree = "<group>"; };
+		028BA9C2257A459300C71A91 /* KeyValueStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyValueStore.swift; sourceTree = "<group>"; };
 		02906071214FD0E0005FE3C1 /* RoomCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomCoordinatorType.swift; sourceTree = "<group>"; };
 		02906072214FD0E0005FE3C1 /* RoomCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomCoordinator.swift; sourceTree = "<group>"; };
 		0290607621501D16005FE3C1 /* PreviewView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PreviewView.xib; sourceTree = "<group>"; };
@@ -4116,6 +4136,7 @@
 		025CB2542493BEAC009A4B10 /* PushNotification */ = {
 			isa = PBXGroup;
 			children = (
+				028BA9B3257A436300C71A91 /* PushNotificationStore.swift */,
 				025CB2552493BEAC009A4B10 /* PushNotificationService.h */,
 				025CB2562493BEAC009A4B10 /* PushNotificationService.m */,
 			);
@@ -4374,6 +4395,24 @@
 				028B50B4228E2931005DB9B6 /* matrix.agent.tchap.gouv.fr.cer */,
 			);
 			path = Certificates;
+			sourceTree = "<group>";
+		};
+		028BA9BD257A459300C71A91 /* KeyValueStorage */ = {
+			isa = PBXGroup;
+			children = (
+				028BA9BF257A459300C71A91 /* Extensions */,
+				028BA9C1257A459300C71A91 /* KeychainStore.swift */,
+				028BA9C2257A459300C71A91 /* KeyValueStore.swift */,
+			);
+			path = KeyValueStorage;
+			sourceTree = "<group>";
+		};
+		028BA9BF257A459300C71A91 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				028BA9C0257A459300C71A91 /* Keychain.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		0290607521501D16005FE3C1 /* Preview */ = {
@@ -5905,6 +5944,7 @@
 		B1B5597C20EFC3DF00210D55 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				028BA9BD257A459300C71A91 /* KeyValueStorage */,
 				02786244257996E500266B09 /* Room */,
 				025CB2542493BEAC009A4B10 /* PushNotification */,
 				02FAE60B23B4E70600DE73D8 /* RoomMessageLinkParser */,
@@ -7926,6 +7966,7 @@
 				02057A2B24AA8EFA00C96719 /* KeyVerificationRequestStatusViewData.swift in Sources */,
 				B109EF182170DFEB0018FA06 /* UserService.swift in Sources */,
 				02FAE5EE23B4C41600DE73D8 /* ReactionHistoryViewData.swift in Sources */,
+				028BA9B4257A436300C71A91 /* PushNotificationStore.swift in Sources */,
 				02C4BE912252502900F7BB0E /* InviteServiceType.swift in Sources */,
 				B1BC6A212136CA7F00D32F8E /* Stylable.swift in Sources */,
 				02D0FC8D24AE2DDA008DD5BB /* Constants.swift in Sources */,
@@ -7935,6 +7976,7 @@
 				B1C4644D21B67F1E005F4D53 /* RoomCreationViewModel.swift in Sources */,
 				028624D9250269F100CFE83D /* RoomAccessByLinkViewController.swift in Sources */,
 				02388E6724A2AF7900F3B485 /* KeyVerificationScanConfirmationCoordinator.swift in Sources */,
+				028BA9CB257A459300C71A91 /* KeychainStore.swift in Sources */,
 				B12209C923854F92004D069C /* ClientConfigurationService.swift in Sources */,
 				02388E7124A2AF7A00F3B485 /* KeyVerificationSelfVerifyStartViewModelType.swift in Sources */,
 				02FAE4EE23B4B61700DE73D8 /* KeyBackupRecoverFromRecoveryKeyViewController.swift in Sources */,
@@ -7957,6 +7999,7 @@
 				B12209A623854F32004D069C /* AppVersionUpdateCoordinator.swift in Sources */,
 				02A7900023E0DD5A00F17374 /* UserStatusInfoType.swift in Sources */,
 				B1680D012152A9F6009B5F92 /* TCNavigationController.swift in Sources */,
+				028BA9C7257A459300C71A91 /* Keychain.swift in Sources */,
 				020DF9AD214BE467003DFBA4 /* DisabledRoomInputToolbarView.m in Sources */,
 				B1BC6A242136D75B00D32F8E /* WelcomeViewController.swift in Sources */,
 				020DF970214BE467003DFBA4 /* RoomIncomingEncryptedTextMsgBubbleCell.m in Sources */,
@@ -7983,6 +8026,7 @@
 				02FAE57223B4C41500DE73D8 /* BubbleReactionActionViewCell.swift in Sources */,
 				026A465D23B215900058D80B /* SingleImagePickerPresenter.swift in Sources */,
 				02FAE5DC23B4C41600DE73D8 /* EditHistorySection.swift in Sources */,
+				028BA9CF257A459300C71A91 /* KeyValueStore.swift in Sources */,
 				02FAE5D223B4C41600DE73D8 /* EditHistoryHeaderView.swift in Sources */,
 				02C3F28524AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseViewState.swift in Sources */,
 				02FAE46B23B4ACA000DE73D8 /* UIButton.swift in Sources */,
@@ -8183,16 +8227,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				0287986E24AE8404004FC7AE /* NotificationService.swift in Sources */,
+				028BA9D1257A459300C71A91 /* KeyValueStore.swift in Sources */,
 				022B48E62571A00000427BEC /* Bundle.swift in Sources */,
+				028BA9B6257A436300C71A91 /* PushNotificationStore.swift in Sources */,
 				0287987224AE846D004FC7AE /* RiotSettings.swift in Sources */,
 				0287987024AE8404004FC7AE /* NSEMemoryStore.swift in Sources */,
 				0287987624AE850F004FC7AE /* DataProtectionHelper.swift in Sources */,
 				024CD94F25744F0300629DAA /* BuildSettings.swift in Sources */,
 				024CD94625744C4600629DAA /* CommonConfiguration.swift in Sources */,
+				028BA9CD257A459300C71A91 /* KeychainStore.swift in Sources */,
 				0287987A24AE872C004FC7AE /* TchapDefaults.swift in Sources */,
 				024CD942257447C500629DAA /* Configurable.swift in Sources */,
 				0287987424AE84FF004FC7AE /* Constants.swift in Sources */,
 				0287987824AE8683004FC7AE /* UNUserNotificationCenter.swift in Sources */,
+				028BA9C9257A459300C71A91 /* Keychain.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8201,16 +8249,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				0287986F24AE8404004FC7AE /* NotificationService.swift in Sources */,
+				028BA9D2257A459300C71A91 /* KeyValueStore.swift in Sources */,
 				0287987324AE846D004FC7AE /* RiotSettings.swift in Sources */,
+				028BA9B7257A436300C71A91 /* PushNotificationStore.swift in Sources */,
 				0287987124AE8404004FC7AE /* NSEMemoryStore.swift in Sources */,
 				0287987724AE8510004FC7AE /* DataProtectionHelper.swift in Sources */,
 				0287987B24AE873D004FC7AE /* TchapDefaults.swift in Sources */,
 				022B48DF2571570F00427BEC /* CommonConfiguration.swift in Sources */,
 				0287987524AE8500004FC7AE /* Constants.swift in Sources */,
+				028BA9CE257A459300C71A91 /* KeychainStore.swift in Sources */,
 				022B48DC2571570600427BEC /* Configurable.swift in Sources */,
 				022B48E72571A00000427BEC /* Bundle.swift in Sources */,
 				0287987924AE8683004FC7AE /* UNUserNotificationCenter.swift in Sources */,
 				022B48D8257156F600427BEC /* BuildSettings.swift in Sources */,
+				028BA9CA257A459300C71A91 /* Keychain.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8766,6 +8818,7 @@
 				02D0FC9024AE2DDA008DD5BB /* DataProtectionHelper.swift in Sources */,
 				02057A2C24AA8EFA00C96719 /* KeyVerificationRequestStatusViewData.swift in Sources */,
 				02DFEC3F21C07370009B6F15 /* RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
+				028BA9B5257A436300C71A91 /* PushNotificationStore.swift in Sources */,
 				02FAE5EF23B4C41600DE73D8 /* ReactionHistoryViewData.swift in Sources */,
 				02DFEC4021C07370009B6F15 /* MXSession+Riot.m in Sources */,
 				02DFEC4121C07370009B6F15 /* ThirdPartyIDPlatformInfoResolver.swift in Sources */,
@@ -8775,6 +8828,7 @@
 				02DFEC4321C07370009B6F15 /* UserService.swift in Sources */,
 				02C4BE922252502900F7BB0E /* InviteServiceType.swift in Sources */,
 				028624DA250269F100CFE83D /* RoomAccessByLinkViewController.swift in Sources */,
+				028BA9CC257A459300C71A91 /* KeychainStore.swift in Sources */,
 				02388E6824A2AF7900F3B485 /* KeyVerificationScanConfirmationCoordinator.swift in Sources */,
 				02DFEC4421C07370009B6F15 /* Stylable.swift in Sources */,
 				02388E7224A2AF7A00F3B485 /* KeyVerificationSelfVerifyStartViewModelType.swift in Sources */,
@@ -8797,6 +8851,7 @@
 				02FAE5AD23B4C41600DE73D8 /* EmojiPickerViewCell.swift in Sources */,
 				02DFEC4A21C07370009B6F15 /* CountryPickerViewController.m in Sources */,
 				02A7900123E0DD5A00F17374 /* UserStatusInfoType.swift in Sources */,
+				028BA9C8257A459300C71A91 /* Keychain.swift in Sources */,
 				02DFEC4B21C07370009B6F15 /* KeyboardGrowingTextView.m in Sources */,
 				02DFEC4C21C07370009B6F15 /* TCNavigationController.swift in Sources */,
 				B12209DC238550FE004D069C /* AppVersionUpdateViewController.swift in Sources */,
@@ -8823,6 +8878,7 @@
 				B1C0EE652375B78C00E8BB88 /* ChangePasswordCoordinator.swift in Sources */,
 				02FAE57323B4C41500DE73D8 /* BubbleReactionActionViewCell.swift in Sources */,
 				026A465E23B215900058D80B /* SingleImagePickerPresenter.swift in Sources */,
+				028BA9D0257A459300C71A91 /* KeyValueStore.swift in Sources */,
 				02FAE5DD23B4C41600DE73D8 /* EditHistorySection.swift in Sources */,
 				02FAE5D323B4C41600DE73D8 /* EditHistoryHeaderView.swift in Sources */,
 				02C3F28624AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseViewState.swift in Sources */,
