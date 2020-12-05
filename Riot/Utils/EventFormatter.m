@@ -22,7 +22,7 @@
 
 #import "WidgetManager.h"
 
-#import "DecryptionFailureTracker.h"
+//#import "DecryptionFailureTracker.h"
 
 #import "GeneratedInterface-Swift.h"
 
@@ -222,10 +222,10 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
     if (event.sentState == MXEventSentStateSent
         && [event.decryptionError.domain isEqualToString:MXDecryptingErrorDomain])
     {
-        // Track e2e failures
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[DecryptionFailureTracker sharedInstance] reportUnableToDecryptErrorForEvent:event withRoomState:roomState myUser:mxSession.myUser.userId];
-        });
+//        // Track e2e failures
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            [[DecryptionFailureTracker sharedInstance] reportUnableToDecryptErrorForEvent:event withRoomState:roomState myUser:mxSession.myUser.userId];
+//        });
 
         if (event.decryptionError.code == MXDecryptingErrorUnknownInboundSessionIdCode)
         {

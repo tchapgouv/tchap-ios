@@ -65,6 +65,12 @@ extern NSString *const kLegacyAppDelegateDidLoginNotification;
 @property (nonatomic) BOOL isOffline;
 
 /**
+ Last navigated room's identifier from a push notification.
+ */
+// TODO: This property is introduced to fix #3672. Remove it when a better solution revealed to the problem.
+@property (nonatomic, copy) NSString *lastNavigatedRoomIdFromPush;
+
+/**
  Let the AppDelegate handle and display self verification requests.
  Default is YES;
  */
@@ -151,6 +157,8 @@ extern NSString *const kLegacyAppDelegateDidLoginNotification;
 //- (BOOL)presentUserVerificationForRoomMember:(MXRoomMember*)roomMember session:(MXSession*)mxSession;
 //
 //- (BOOL)presentCompleteSecurityForSession:(MXSession*)mxSession;
+
+- (void)configureCallManagerIfRequiredForSession:(MXSession *)mxSession;
 
 #pragma mark - Matrix Accounts handling
 

@@ -12,43 +12,24 @@ import Foundation
 internal enum TchapDefaults {
   private static let _document = PlistDocument(path: "Btchap-Defaults.plist")
 
-  internal static let appGroupId: String = _document["appGroupId"]
   internal static let appLanguage: String = _document["appLanguage"]
-  internal static let bugReportApp: String = _document["bugReportApp"]
-  internal static let bugReportDefaultHost: String = _document["bugReportDefaultHost"]
-  internal static let bugReportEndpointUrlSuffix: String = _document["bugReportEndpointUrlSuffix"]
-  internal static let clientConfigURL: String = _document["clientConfigURL"]
   internal static let createConferenceCallsWithJitsi: Bool = _document["createConferenceCallsWithJitsi"]
   internal static let enableRageShake: Bool = _document["enableRageShake"]
-  internal static let integrationsRestUrl: String = _document["integrationsRestUrl"]
-  internal static let integrationsUiUrl: String = _document["integrationsUiUrl"]
   internal static let matrixApps: Bool = _document["matrixApps"]
   internal static let maxAllowedMediaCacheSize: Int = _document["maxAllowedMediaCacheSize"]
-  internal static let otherIdentityServerNames: [String] = _document["otherIdentityServerNames"]
-  internal static let permalinkPrefix: String = _document["permalinkPrefix"]
-  internal static let permalinkSupportedHosts: [String] = _document["permalinkSupportedHosts"]
-  internal static let preferredIdentityServerNames: [String] = _document["preferredIdentityServerNames"]
-  internal static let pushGatewayURL: String = _document["pushGatewayURL"]
-  internal static let pushKitAppIdProd: String = _document["pushKitAppIdProd"]
-  internal static let pusherAppIdDev: String = _document["pusherAppIdDev"]
-  internal static let pusherAppIdProd: String = _document["pusherAppIdProd"]
-  internal static let roomDirectoryServers: [String] = _document["roomDirectoryServers"]
-  internal static let serverUrlPrefix: String = _document["serverUrlPrefix"]
   internal static let showAllEventsInRoomHistory: Bool = _document["showAllEventsInRoomHistory"]
   internal static let showLeftMembersInRoomMemberList: Bool = _document["showLeftMembersInRoomMemberList"]
   internal static let showRedactionsInRoomHistory: Bool = _document["showRedactionsInRoomHistory"]
   internal static let showUnsupportedEventsInRoomHistory: Bool = _document["showUnsupportedEventsInRoomHistory"]
   internal static let sortRoomMembersUsingLastSeenTime: Bool = _document["sortRoomMembersUsingLastSeenTime"]
   internal static let syncLocalContacts: Bool = _document["syncLocalContacts"]
-  internal static let tacURL: String = _document["tacURL"]
 }
 // swiftlint:enable identifier_name line_length type_body_length
 
 // MARK: - Implementation Details
 
 private func arrayFromPlist<T>(at path: String) -> [T] {
-  let bundle = Bundle(for: BundleToken.self)
-  guard let url = bundle.url(forResource: path, withExtension: nil),
+  guard let url = BundleToken.bundle.url(forResource: path, withExtension: nil),
     let data = NSArray(contentsOf: url) as? [T] else {
     fatalError("Unable to load PLIST at path: \(path)")
   }
@@ -59,8 +40,7 @@ private struct PlistDocument {
   let data: [String: Any]
 
   init(path: String) {
-    let bundle = Bundle(for: BundleToken.self)
-    guard let url = bundle.url(forResource: path, withExtension: nil),
+    guard let url = BundleToken.bundle.url(forResource: path, withExtension: nil),
       let data = NSDictionary(contentsOf: url) as? [String: Any] else {
         fatalError("Unable to load PLIST at path: \(path)")
     }
@@ -75,4 +55,14 @@ private struct PlistDocument {
   }
 }
 
-private final class BundleToken {}
+// swiftlint:disable convenience_type
+private final class BundleToken {
+  static let bundle: Bundle = {
+    #if SWIFT_PACKAGE
+    return Bundle.module
+    #else
+    return Bundle(for: BundleToken.self)
+    #endif
+  }()
+}
+// swiftlint:enable convenience_type

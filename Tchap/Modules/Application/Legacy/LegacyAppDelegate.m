@@ -550,7 +550,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     [MXSDKOptions.sharedInstance.profiler pause];
     
     // Analytics: Force to send the pending actions
-    [[DecryptionFailureTracker sharedInstance] dispatch];
+    //[[DecryptionFailureTracker sharedInstance] dispatch];
     [[Analytics sharedInstance] dispatch];
 }
 
@@ -692,7 +692,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         [application keyWindow].accessibilityIgnoresInvertColors = YES;
     }
     
-    [self handleLaunchAnimation];
+    [self handleAppState];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -975,17 +975,8 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         {
             [self removeMatrixSession:mxSession];
         }
-        else if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive)
-        {
-            if (mxSession.state == MXSessionStateRunning)
-            {
-                // Check if we need to display a key share dialog
-                [self checkPendingRoomKeyRequests];
-                [self checkPendingIncomingKeyVerificationsInSession:mxSession];
-            }
-        }
         
-        [self handleLaunchAnimation];
+        [self handleAppState];
     }];
     
     // Register an observer in order to handle new account
@@ -1001,7 +992,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
             account.mxSession.roomSummaryUpdateDelegate = eventFormatter;
             
             // Set the push gateway URL.
-            account.pushGatewayURL = [[NSUserDefaults standardUserDefaults] objectForKey:@"pushGatewayURL"];
+            account.pushGatewayURL = BuildSettings.serverConfigSygnalAPIUrlString;
 
             BOOL isPushRegistered = self.pushNotificationService.isPushRegistered;
 
@@ -1081,7 +1072,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
             // Set this url in the existing accounts when it is undefined.
             if (!account.pushGatewayURL)
             {
-                account.pushGatewayURL = [[NSUserDefaults standardUserDefaults] objectForKey:@"pushGatewayURL"];
+                account.pushGatewayURL = BuildSettings.serverConfigSygnalAPIUrlString;
             }
         }
         
@@ -1123,12 +1114,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         
         // Do the one time check on device id
         [self checkDeviceId:mxSession];
-
-        // Enable listening of incoming key share requests
-        [self enableRoomKeyRequestObserver:mxSession];
-
-        // Enable listening of incoming key verification requests
-        [self enableIncomingKeyVerificationObserver:mxSession];
     }
 }
 
@@ -1412,7 +1397,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     }];
 }
 
-- (void)handleLaunchAnimation
+- (void)handleAppState
 {
     MXSession *mainSession = self.mxSessions.firstObject;
     
@@ -1434,29 +1419,71 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
                 break;
         }
         
+        NSLog(@"[AppDelegate] handleAppState: isLaunching: %@", isLaunching ? @"YES" : @"NO");
+        
         if (isLaunching)
         {
-            UIWindow *window = [[UIApplication sharedApplication] keyWindow];
-            if (!launchScreenContainerView.superview && window)
-            {
-                [window addSubview:launchScreenContainerView];
-                launchAnimationStart = [NSDate date];
-            }
-            
+            NSLog(@"[AppDelegate] handleAppState: LaunchLoadingView");
+            [self showLaunchAnimation];
             return;
         }
+
+        [self hideLaunchAnimation];
+        
+//        if (self.setPinCoordinatorBridgePresenter)
+//        {
+//            NSLog(@"[AppDelegate] handleAppState: PIN code is presented. Do not go further");
+//            return;
+//        }
+        
+        // This is the time to check existing requests
+        NSLog(@"[AppDelegate] handleAppState: Check pending verification requests");
+        [self checkPendingRoomKeyRequests];
+        [self checkPendingIncomingKeyVerificationsInSession:mainSession];
+            
+        // TODO: When we will have an application state, we will do all of this in a dedicated initialisation state
+        // For the moment, reuse an existing boolean to avoid register things several times
+        if (!incomingKeyVerificationObserver)
+        {
+            NSLog(@"[AppDelegate] handleAppState: Set up observers for the crypto module");
+            
+            // Enable listening of incoming key share requests
+            [self enableRoomKeyRequestObserver:mainSession];
+            
+            // Enable listening of incoming key verification requests
+            [self enableIncomingKeyVerificationObserver:mainSession];
+        }
     }
-    
+}
+
+- (void)showLaunchAnimation
+{
+    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+    if (!launchScreenContainerView.superview && window)
+    {
+        [window addSubview:launchScreenContainerView];
+        launchAnimationStart = [NSDate date];
+        
+//        [MXSDKOptions.sharedInstance.profiler startMeasuringTaskWithName:kMXAnalyticsStartupLaunchScreen
+//                                                        category:kMXAnalyticsStartupCategory];
+    }
+}
+
+- (void)hideLaunchAnimation
+{
     if (launchScreenContainerView.superview)
     {
+//        id<MXProfiler> profiler = MXSDKOptions.sharedInstance.profiler;
+//        MXTaskProfile *launchTaskProfile = [profiler taskProfileWithName:kMXAnalyticsStartupLaunchScreen category:kMXAnalyticsStartupCategory];
+//        if (launchTaskProfile)
+//        {
+//            [profiler stopMeasuringTaskWithProfile:launchTaskProfile];
+//
+//            NSLog(@"[AppDelegate] hideLaunchAnimation: LaunchAnimation was shown for %.3fms", launchTaskProfile.duration * 1000);
+//        }
+        
         NSTimeInterval duration = [[NSDate date] timeIntervalSinceDate:launchAnimationStart];
-        NSLog(@"[AppDelegate] LaunchScreen was shown for %.3fms", duration * 1000);
-
-        // Track it on our analytics
-        [[Analytics sharedInstance] trackLaunchScreenDisplayDuration:duration];
-
-        // TODO: Send durationMs to Piwik
-        // Such information should be the same on all platforms
+        NSLog(@"[LegacyAppDelegate] LaunchScreen was shown for %.3fms", duration * 1000);
         
         [launchScreenContainerView removeFromSuperview];
     }
@@ -1828,7 +1855,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 {
     [_errorNotification dismissViewControllerAnimated:NO completion:nil];
 
-    NSString *stunFallbackHost = RiotSettings.shared.stunServerFallback;
+    NSString *stunFallbackHost = BuildSettings.stunServerFallbackUrlString;
     // Remove "stun:"
     stunFallbackHost = [stunFallbackHost componentsSeparatedByString:@":"].lastObject;
 
@@ -1848,7 +1875,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
                                                          handler:^(UIAlertAction * action) {
 
                                                              RiotSettings.shared.allowStunServerFallback = YES;
-                                                             mainSession.callManager.fallbackSTUNServer = RiotSettings.shared.stunServerFallback;
+                                                             mainSession.callManager.fallbackSTUNServer = BuildSettings.stunServerFallbackUrlString;
 
                                                              [AppDelegate theDelegate].errorNotification = nil;
                                                          }]];

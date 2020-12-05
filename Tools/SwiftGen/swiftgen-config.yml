@@ -34,7 +34,6 @@ plist:
       output: Btchap/Generated/TchapDefaults.swift
       params:
         enumName: TchapDefaults
-plist:
   - inputs: Tchap/SupportingFiles/Info.plist
     outputs:
       templateName: runtime-swift4

@@ -511,12 +511,12 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     
     [self userInterfaceThemeDidChange];
     
-    if ([self.roomDataSource.roomId isEqualToString:[LegacyAppDelegate theDelegate].lastNavigatedRoomIdFromPush])
+    if ([self.roomDataSource.roomId isEqualToString:[AppDelegate theDelegate].lastNavigatedRoomIdFromPush])
     {
         [self startActivityIndicator];
         [self.roomDataSource reload];
-        [LegacyAppDelegate theDelegate].lastNavigatedRoomIdFromPush = nil;
     }
+    [AppDelegate theDelegate].lastNavigatedRoomIdFromPush = nil;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
