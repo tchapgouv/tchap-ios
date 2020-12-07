@@ -209,6 +209,8 @@
 "room_event_action_more" = "Plus";
 "room_event_action_share" = "Partager";
 "room_event_action_permalink" = "Créer et copier un lien";
+"room_event_action_favourite" = "Mettre en favoris";
+"room_event_action_remove_favourite" = "Retirer des favoris";
 "room_event_action_view_source" = "Voir la source";
 "room_event_action_report" = "Signaler le contenu";
 "room_event_action_report_prompt_reason" = "Raison pour le signalement du contenu";

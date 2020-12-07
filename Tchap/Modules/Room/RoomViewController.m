@@ -2581,6 +2581,60 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
         }
 #endif
         
+        NSString *titleKey;
+        if (![self.roomDataSource.room.accountData getTaggedEvent:selectedEvent.eventId withTag:kMXRoomTagFavourite])
+        {
+            titleKey = @"room_event_action_favourite";
+        }
+        else
+        {
+            titleKey = @"room_event_action_remove_favourite";
+        }
+        [currentAlert addAction:[UIAlertAction actionWithTitle: NSLocalizedStringFromTable(titleKey, @"Vector", nil)
+          style:UIAlertActionStyleDefault
+        handler:^(UIAlertAction * action) {
+            
+            if (weakSelf)
+            {
+                typeof(self) self = weakSelf;
+                
+                [self cancelEventSelection];
+                
+                [self startActivityIndicator];
+                
+                if ([titleKey isEqual:@"room_event_action_favourite"])
+                {
+                    [self.roomDataSource.room tagEvent:selectedEvent withTag:kMXTaggedEventFavourite andKeywords:nil success:^{
+                        __strong __typeof(weakSelf)self = weakSelf;
+                        [self stopActivityIndicator];
+                    } failure:^(NSError *error) {
+                        __strong __typeof(weakSelf)self = weakSelf;
+                        [self stopActivityIndicator];
+                        
+                        NSLog(@"[RoomVC] Tag event (%@) failed", selectedEvent.eventId);
+                        //Alert user
+                        [[AppDelegate theDelegate] showErrorAsAlert:error];
+                    }];
+                }
+                else
+                {
+                    [self.roomDataSource.room untagEvent:selectedEvent withTag:kMXTaggedEventFavourite success:^{
+                        __strong __typeof(weakSelf)self = weakSelf;
+                        [self stopActivityIndicator];
+                    } failure:^(NSError *error) {
+                        __strong __typeof(weakSelf)self = weakSelf;
+                        [self stopActivityIndicator];
+                        
+                        NSLog(@"[RoomVC] Tag event (%@) failed", selectedEvent.eventId);
+                        //Alert user
+                        [[AppDelegate theDelegate] showErrorAsAlert:error];
+                    }];
+                }
+                
+            }
+            
+        }]];
+        
         [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_permalink", @"Vector", nil)
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * action) {
