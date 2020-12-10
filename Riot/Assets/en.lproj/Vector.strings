@@ -54,15 +54,13 @@
 "sending" = "Sending";
 "close" = "Close";
 "skip" = "Skip";
+"joined" = "Joined";
+"switch" = "Switch";
+"more" = "More";
+"less" = "Less";
 
 // Accessibility
 "accessibility_checkbox_label" = "checkbox";
-
-// MARK: Clients
-"client_desktop_name" = "Riot Desktop";
-"client_web_name" = "Riot Web";
-"client_ios_name" = "Riot iOS";
-"client_android_name" = "Riot X for Android";
 
 // Authentication
 "auth_login" = "Log in";
@@ -210,7 +208,7 @@
 "contacts_address_book_no_identity_server" = "No identity server configured";
 "contacts_address_book_no_contact" = "No local contacts";
 "contacts_address_book_permission_required" = "Permission required to access local contacts";
-"contacts_address_book_permission_denied" = "You didn't allow Riot to access your local contacts";
+"contacts_address_book_permission_denied" = "You didn't allow Tchap to access your local contacts";
 "contacts_user_directory_section" = "USER DIRECTORY";
 "contacts_user_directory_offline_section" = "USER DIRECTORY (offline)";
 
@@ -220,7 +218,9 @@
 "room_participants_one_participant" = "1 participant";
 "room_participants_multi_participants" = "%d participants";
 "room_participants_leave_prompt_title" = "Leave room";
+"room_participants_leave_prompt_title_for_dm" = "Leave";
 "room_participants_leave_prompt_msg" = "Are you sure you want to leave the room?";
+"room_participants_leave_prompt_msg_for_dm" = "Are you sure you want to leave?";
 "room_participants_remove_prompt_title" = "Confirmation";
 "room_participants_remove_prompt_msg" = "Are you sure you want to remove %@ from this chat?";
 "room_participants_remove_third_party_invite_prompt_msg" = "Are you sure you want to revoke this invite?";
@@ -228,6 +228,7 @@
 "room_participants_invite_prompt_title" = "Confirmation";
 "room_participants_invite_prompt_msg" = "Are you sure you want to invite %@ to this chat?";
 "room_participants_filter_room_members" = "Filter room members";
+"room_participants_filter_room_members_for_dm" = "Filter members";
 "room_participants_invite_another_user" = "Search / invite by User ID, Name or email";
 "room_participants_invite_malformed_id_title" = "Invite Error";
 "room_participants_invite_malformed_id" = "Malformed ID. Should be an email address or a Matrix ID like '@localpart:domain'";
@@ -269,7 +270,9 @@
 
 "room_participants_security_loading" = "Loading…";
 "room_participants_security_information_room_not_encrypted" = "Messages in this room are not end-to-end encrypted.";
+"room_participants_security_information_room_not_encrypted_for_dm" = "Messages here are not end-to-end encrypted.";
 "room_participants_security_information_room_encrypted" = "Messages in this room are end-to-end encrypted.\n\nYour messages are secured with locks and only you and the recipient have the unique keys to unlock them.";
+"room_participants_security_information_room_encrypted_for_dm" = "Messages here are end-to-end encrypted.\n\nYour messages are secured with locks and only you and the recipient have the unique keys to unlock them.";
 
 "room_member_power_level_admin_in" = "Admin in %@";
 "room_member_power_level_moderator_in" = "Moderator in %@";
@@ -458,7 +461,7 @@
 //"settings_call_invitations" = "Call invitations";
 
 "settings_enable_callkit" = "Integrated calling";
-"settings_callkit_info" = "Receive incoming calls on your lock screen. See your Riot calls in the system's call history. If iCloud is enabled, this call history will be shared with Apple.";
+"settings_callkit_info" = "Receive incoming calls on your lock screen. See your Tchap calls in the system's call history. If iCloud is enabled, this call history will be shared with Apple.";
 "settings_calls_stun_server_fallback_button" = "Allow fallback call assist server";
 "settings_calls_stun_server_fallback_description" = "Allow fallback call assist server %@ when your homeserver does not offer one (your IP address would be shared during a call).";
 
@@ -596,7 +599,7 @@
 "security_settings_complete_security_alert_title" = "Complete security";
 "security_settings_complete_security_alert_message" = "You should complete security on your current session first.";
 
-"security_settings_coming_soon" = "Sorry. This action is not available on Riot-iOS yet. Please use another Matrix client to set it up. Riot-iOS will use it.";
+"security_settings_coming_soon" = "Sorry. This action is not available on Tchap-iOS yet. Please use another Matrix client to set it up. Tchap-iOS will use it.";
 "security_settings_user_password_description" = "Confirm your identity by entering your account password";
 
 // Manage session
@@ -642,22 +645,29 @@
 
 // Room Details
 "room_details_title" = "Room Details";
+"room_details_title_for_dm" = "Details";
 "room_details_people" = "Members";
-"room_details_files" = "Files";
+"room_details_files" = "Uploads";
 "room_details_settings" = "Settings";
 "room_details_photo" = "Room Photo";
+"room_details_photo_for_dm" = "Photo";
 "room_details_room_name" = "Room Name";
+"room_details_room_name_for_dm" = "Name";
 "room_details_topic" = "Topic";
 "room_details_favourite_tag" = "Favourite";
 "room_details_low_priority_tag" = "Low priority";
 "room_details_mute_notifs" = "Mute notifications";
 "room_details_direct_chat" = "Direct Chat";
 "room_details_access_section"="Who can access this room?";
+"room_details_access_section_for_dm"="Who can access this?";
 "room_details_access_section_invited_only"="Only people who have been invited";
 "room_details_access_section_anyone_apart_from_guest"="Anyone who knows the room's link, apart from guests";
+"room_details_access_section_anyone_apart_from_guest_for_dm"="Anyone who knows the link, apart from guests";
 "room_details_access_section_anyone"="Anyone who knows the room's link, including guests";
+"room_details_access_section_anyone_for_dm"="Anyone who knows the link, including guests";
 "room_details_access_section_no_address_warning" = "To link to a room it must have an address";
 "room_details_access_section_directory_toggle"="List this room in room directory";
+"room_details_access_section_directory_toggle_for_dm"="List in room directory";
 "room_details_history_section"="Who can read history?";
 "room_details_history_section_anyone"="Anyone";
 "room_details_history_section_members_only"="Members only (since the point in time of selecting this option)";
@@ -667,6 +677,7 @@
 "room_details_history_section_prompt_msg" = "Changes to who can read history will only apply to future messages in this room. The visibility of existing history will be unchanged.";
 "room_details_addresses_section"="Addresses";
 "room_details_no_local_addresses" = "This room has no local addresses";
+"room_details_no_local_addresses_for_dm" = "This has no local addresses";
 "room_details_new_address" = "Add new address";
 "room_details_new_address_placeholder" = "Add new address (e.g. #foo%@)";
 "room_details_addresses_invalid_address_prompt_title" = "Invalid alias format";
@@ -680,9 +691,12 @@
 "room_details_banned_users_section"="Banned users";
 "room_details_advanced_section"="Advanced";
 "room_details_advanced_room_id"="Room ID:";
+"room_details_advanced_room_id_for_dm"="ID:";
 "room_details_advanced_enable_e2e_encryption"="Enable encryption (warning: cannot be disabled again!)";
 "room_details_advanced_e2e_encryption_enabled"="Encryption is enabled in this room";
+"room_details_advanced_e2e_encryption_enabled_for_dm"="Encryption is enabled here";
 "room_details_advanced_e2e_encryption_disabled"="Encryption is not enabled in this room.";
+"room_details_advanced_e2e_encryption_disabled_for_dm"="Encryption is not enabled here.";
 "room_details_advanced_e2e_encryption_blacklist_unverified_devices"="Encrypt to verified sessions only";
 "room_details_fail_to_update_avatar" = "Fail to update the room photo";
 "room_details_fail_to_update_room_name" = "Fail to update the room name";
@@ -809,7 +823,7 @@
 "google_analytics_use_prompt" = "Would you like to help improve %@ by automatically reporting anonymous crash reports and usage data?";
 
 // Crypto
-"e2e_enabling_on_app_update" = "Riot now supports end-to-end encryption but you need to log in again to enable it.\n\nYou can do it now or later from the application settings.";
+"e2e_enabling_on_app_update" = "Tchap now supports end-to-end encryption but you need to log in again to enable it.\n\nYou can do it now or later from the application settings.";
 "e2e_need_log_in_again" = "You need to log back in to generate end-to-end encryption keys for this session and submit the public key to your homeserver.\nThis is a once off; sorry for the inconvenience.";
 
 // Key backup wrong version
@@ -927,7 +941,7 @@
 
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Request Sent";
-"rerequest_keys_alert_message" = "Please launch Riot on another device that can decrypt the message so it can send the keys to this session.";
+"rerequest_keys_alert_message" = "Please launch Tchap on another device that can decrypt the message so it can send the keys to this session.";
 
 // MARK: Secure backup setup
 
@@ -1081,7 +1095,7 @@
 // MARK: Start
 "device_verification_start_title" = "Verify by comparing a short text string";
 "device_verification_start_wait_partner" = "Waiting for partner to accept…";
-"device_verification_start_use_legacy" = "Nothing appearing? Not all clients supports interactive verification yet. Use legacy verification.";
+"device_verification_start_use_legacy" = "Nothing appearing? Not all clients support interactive verification yet. Use legacy verification.";
 "device_verification_start_verify_button" = "Begin Verifying";
 "device_verification_start_use_legacy_action" = "Use Legacy Verification";
 
@@ -1112,11 +1126,12 @@
 
 "device_verification_self_verify_wait_title" = "Complete security";
 "device_verification_self_verify_wait_new_sign_in_title" = "Verify this login";
-"device_verification_self_verify_wait_information" = "Verify this session from one of your other sessions, granting it access to encrypted messages.\n\nUse the latest Riot on your other devices:";
-"device_verification_self_verify_wait_additional_information" = "or another cross-signing capable Matrix client";
+"device_verification_self_verify_wait_information" = "Verify this session from one of your other sessions, granting it access to encrypted messages.\n\nUse the latest Tchap on your other devices:";
+"device_verification_self_verify_wait_additional_information" = "This works with Tchap and other cross-signing capable Matrix cients.";
 "device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Use Recovery Key";
 "device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Use Recovery Passphrase or Key";
-"device_verification_self_verify_wait_recover_secrets_additional_information" = "If you can't accessing an existing session";
+"device_verification_self_verify_wait_recover_secrets_additional_information" = "If you can't access an existing session";
+"device_verification_self_verify_wait_recover_secrets_checking_availability" = "Checking for other verification capabilities ...";
 
 // MARK: Verify
 
@@ -1343,6 +1358,9 @@
 
 // MARK: - Secrets recovery
 
+"secrets_recovery_reset_action_part_1" = "Forgot or lost all recovery options? ";
+"secrets_recovery_reset_action_part_2" = "Reset everything";
+
 // Recover with passphrase
 
 "secrets_recovery_with_passphrase_title" = "Recovery Passphrase";
@@ -1398,9 +1416,104 @@
 "key_backup_setup_passphrase_confirm_passphrase_valid" = "Great!";
 "key_backup_setup_passphrase_confirm_passphrase_invalid" = "Passphrase doesn’t match";
 
+"secrets_setup_recovery_passphrase_summary_title" = "Save your Security Phrase";
+"secrets_setup_recovery_passphrase_summary_information" = "Remember your Security Phrase. It can be used to unlock your encrypted messages & data.";
+
+// MARK: - Secrets reset
+
+"secrets_reset_title" = "Reset everything";
+"secrets_reset_information" = "Only do this if you have no other device you can verify this device with.";
+"secrets_reset_warning_title" = "If you reset everything";
+"secrets_reset_warning_message" = "You will restart with no history, no messages, trusted devices or trusted users.";
+"secrets_reset_reset_action" = "Reset";
+"secrets_reset_authentication_message" = "Enter your account password to confirm";
+
 // MARK: - Cross-signing
 
 // Banner
 
 "cross_signing_setup_banner_title" = "Set up encryption";
 "cross_signing_setup_banner_subtitle" = "Verify your other devices easier";
+
+// MARK: - Major update
+
+"major_update_title" = "Riot is now Element";
+"major_update_information" = "We're excited to announce we've changed name! Your app is up to date and you're signed in to your account.";
+"major_update_learn_more_action" = "Learn more";
+"major_update_done_action" = "Got it";
+
+// MARK: - PIN Protection
+
+"pin_protection_choose_pin_welcome_after_login" = "Welcome back.";
+"pin_protection_choose_pin_welcome_after_register" = "Welcome.";
+"pin_protection_choose_pin" = "Create a PIN for security";
+"pin_protection_confirm_pin" = "Confirm your PIN";
+"pin_protection_confirm_pin_to_disable" = "Confirm PIN to disable PIN";
+"pin_protection_enter_pin" = "Enter your PIN";
+"pin_protection_forgot_pin" = "Forgot PIN";
+"pin_protection_reset_alert_title" = "Reset PIN";
+"pin_protection_reset_alert_message" = "To reset your PIN, you'll need to re-login and create a new one";
+"pin_protection_reset_alert_action_reset" = "Reset";
+"pin_protection_mismatch_error_title" = "PINs don't match";
+"pin_protection_mismatch_error_message" = "Please try again";
+"pin_protection_mismatch_too_many_times_error_message" = "If you can't remember your PIN, tap the forgot PIN button.";
+"pin_protection_settings_section_header_x" = "PIN & %@";
+"pin_protection_settings_section_footer" = "To reset your PIN, you'll need to re-login and create a new one.";
+"pin_protection_settings_enabled_forced" = "PIN enabled";
+"pin_protection_settings_enable_pin" = "Enable PIN";
+"pin_protection_not_allowed_pin" = "For security reasons, this PIN isn’t available. Please try another PIN";
+"pin_protection_explanatory" = "Setting up a PIN lets you protect data like messages and contacts, so only you can access them by entering the PIN at the start of the app.";
+"pin_protection_kick_user_alert_message" = "Too many errors, you've been logged out";
+
+// MARK: - Biometrics Protection
+
+"biometrics_mode_touch_id" = "Touch ID";
+"biometrics_mode_face_id" = "Face ID";
+"biometrics_settings_enable_x" = "Enable %@";
+"biometrics_setup_title_x" = "Enable %@";
+"biometrics_setup_enable_button_title_x" = "Enable %@";
+"biometrics_setup_subtitle" = "Save yourself time";
+
+"biometrics_desetup_title_x" = "Disable %@";
+"biometrics_desetup_disable_button_title_x" = "Disable %@";
+
+"biometrics_usage_reason" = "Authentication is needed to access your app";
+"biometrics_cant_unlocked_alert_title" = "Can't unlock app";
+"biometrics_cant_unlocked_alert_message_x" = "To unlock, use %@ or log back in and enable %@ again";
+"biometrics_cant_unlocked_alert_message_login" = "Log back in";
+"biometrics_cant_unlocked_alert_message_retry" = "Retry";
+
+// MARK: - Searchable Directory View Controller
+
+"searchable_directory_create_new_room" = "Create a new room";
+"searchable_directory_x_network" = "%@ Network";
+"searchable_directory_search_placeholder" = "Name or ID";
+
+// MARK: - Create Room
+
+"create_room_title" = "New Room";
+"create_room_section_header_name" = "Room name";
+"create_room_placeholder_name" = "Name";
+"create_room_section_header_topic" = "Room topic (optional)";
+"create_room_placeholder_topic" = "Topic";
+"create_room_section_header_encryption" = "Room encryption";
+"create_room_enable_encryption" = "Enable Encryption";
+"create_room_section_footer_encryption" = "Encryption can’t be disabled afterwards.";
+"create_room_section_header_type" = "Room type";
+"create_room_type_private" = "Private Room";
+"create_room_type_public" = "Public Room";
+"create_room_section_footer_type" = "People join a private room only with the room invitation.";
+"create_room_show_in_directory" = "Show the room in the directory";
+"create_room_section_header_address" = "Room address";
+"create_room_placeholder_address" = "#testroom:matrix.org";
+
+// MARK: - Room Info
+
+"room_info_list_one_member" = "1 member";
+"room_info_list_several_members" = "%@ members";
+"room_info_list_section_other" = "Other";
+
+// MARK: - Home
+
+"home_empty_view_title" = "Welcome to Element,\n%@";
+"home_empty_view_information" = "The all-in-one secure chat app for teams, friends and organisations. Tap the \"+\" button below to add people and rooms.";

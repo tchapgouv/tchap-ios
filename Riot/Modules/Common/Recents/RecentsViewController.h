@@ -118,6 +118,8 @@
  */
 - (void)cancelEditionModeAndForceTableViewRefreshIfNeeded;
 
+- (void)userInterfaceThemeDidChange;
+
 #pragma mark - Room handling
 
 /**

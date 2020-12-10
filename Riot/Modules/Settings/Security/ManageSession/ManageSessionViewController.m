@@ -20,7 +20,6 @@
 
 #import <OLMKit/OLMKit.h>
 
-#import "AppDelegate.h"
 #import "AvatarGenerator.h"
 
 #import "ThemeService.h"
@@ -115,6 +114,8 @@ enum {
         
     }];
     [self userInterfaceThemeDidChange];
+    
+    [self registerDeviceChangesNotification];
 }
 
 - (void)userInterfaceThemeDidChange
@@ -248,6 +249,29 @@ enum {
 }
 
 
+#pragma mark - Data update
+
+- (void)registerDeviceChangesNotification
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(onDeviceInfoTrustLevelDidChangeNotification:)
+                                                 name:MXDeviceInfoTrustLevelDidChangeNotification
+                                               object:nil];
+}
+
+- (void)onDeviceInfoTrustLevelDidChangeNotification:(NSNotification*)notification
+{
+    MXDeviceInfo *deviceInfo = notification.object;
+    
+    NSString *deviceId = deviceInfo.deviceId;
+    if ([deviceId isEqualToString:device.deviceId])
+    {
+        [self reloadDeviceWithCompletion:^{
+        }];
+    }
+}
+
+
 #pragma mark - Segues
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -319,7 +343,7 @@ enum {
 
     cell.mxkLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
 
-    [cell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+    [cell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventValueChanged];
 
     // Force layout before reusing a cell (fix switch displayed outside the screen)
     [cell layoutIfNeeded];
@@ -732,7 +756,6 @@ enum {
         {
             NSLog(@"[ManageSessionVC] Delete device (%@) failed, auth session flow type is not supported", self->device.deviceId);
             [self.activityIndicator stopAnimating];
-            //[[AppDelegate theDelegate] showErrorAsAlert:error];
         }
         
     } failure:^(NSError *error) {

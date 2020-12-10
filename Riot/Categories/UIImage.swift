@@ -65,7 +65,7 @@ extension UIImage {
         }
         return self
     }
-
+    
     //  inline class to disable rendering
     private class NotRenderedImage: UIImage {
         override func withRenderingMode(_ renderingMode: UIImage.RenderingMode) -> UIImage {

@@ -30,3 +30,4 @@
 #import "UserEncryptionTrustLevel.h"
 #import "RoomBubbleCellData.h"
 #import "MXKRoomBubbleTableViewCell+Riot.h"
+#import "JitsiWidgetData.h"

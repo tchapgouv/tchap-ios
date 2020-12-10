@@ -28,7 +28,7 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
     private let keyVerificationService: KeyVerificationService
     private let verificationManager: MXKeyVerificationManager
     private let isNewSignIn: Bool
-    private let secretsRecoveryAvailability: SecretsRecoveryAvailability
+    private var secretsRecoveryAvailability: SecretsRecoveryAvailability
     private var keyVerificationRequest: MXKeyVerificationRequest?
     
     // MARK: Public
@@ -62,7 +62,8 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
             switch self.secretsRecoveryAvailability {
             case .notAvailable:
                 fatalError("Should not happen: When recovery is not available button is hidden")
-            case .available(let secretsRecoveryMode):                self.coordinatorDelegate?.keyVerificationSelfVerifyWaitViewModel(self, wantsToRecoverSecretsWith: secretsRecoveryMode)
+            case .available(let secretsRecoveryMode):
+                self.coordinatorDelegate?.keyVerificationSelfVerifyWaitViewModel(self, wantsToRecoverSecretsWith: secretsRecoveryMode)
             }
         }
     }
@@ -85,7 +86,31 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
             }, failure: { [weak self] error in
                 self?.update(viewState: .error(error))
             })
+            
+            continueLoadData()
+        } else {
+            //  be sure that session has completed its first sync
+            if session.state.rawValue >= MXSessionStateRunning.rawValue {
+                continueLoadData()
+            } else {
+                //  show loader
+                self.update(viewState: .secretsRecoveryCheckingAvailability(VectorL10n.deviceVerificationSelfVerifyWaitRecoverSecretsCheckingAvailability))
+                NotificationCenter.default.addObserver(self, selector: #selector(sessionStateChanged), name: .mxSessionStateDidChange, object: session)
+            }
         }
+    }
+    
+    @objc
+    private func sessionStateChanged() {
+        if session.state.rawValue >= MXSessionStateRunning.rawValue {
+            NotificationCenter.default.removeObserver(self, name: .mxSessionStateDidChange, object: session)
+            continueLoadData()
+        }
+    }
+    
+    private func continueLoadData() {
+        //  update availability again
+        self.secretsRecoveryAvailability = session.crypto.recoveryService.vc_availability
         
         let viewData = KeyVerificationSelfVerifyWaitViewData(isNewSignIn: self.isNewSignIn, secretsRecoveryAvailability: self.secretsRecoveryAvailability)
         
@@ -115,7 +140,6 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
                 return
             }
             
-            self.unregisterKeyVerificationManagerNewRequestNotification()
             self.coordinatorDelegate?.keyVerificationSelfVerifyWaitViewModel(self, didAcceptKeyVerificationRequest: keyVerificationRequest)
             
             }, failure: { [weak self] (error) in
@@ -175,8 +199,6 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
     private func sasTransactionDidStateChange(_ transaction: MXIncomingSASTransaction) {
         switch transaction.state {
         case MXSASTransactionStateIncomingShowAccept:
-            // Stop listening for incoming request
-            self.unregisterKeyVerificationManagerNewRequestNotification()
             transaction.accept()
         case MXSASTransactionStateShowSAS:
             self.unregisterTransactionDidStateChangeNotification()

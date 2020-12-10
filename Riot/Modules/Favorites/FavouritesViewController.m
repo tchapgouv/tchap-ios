@@ -16,8 +16,6 @@
 
 #import "FavouritesViewController.h"
 
-#import "AppDelegate.h"
-
 #import "RecentsDataSource.h"
 #import "Riot-Swift.h"
 
@@ -64,11 +62,6 @@
         recentsDataSource.areSectionsShrinkable = NO;
         [recentsDataSource setDelegate:self andRecentsDataSourceMode:RecentsDataSourceModeFavourites];
     }
-}
-
-- (void)dealloc
-{
-    
 }
 
 - (void)destroy

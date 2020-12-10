@@ -15,6 +15,7 @@
  */
 
 #import "WebViewViewController.h"
+#import "GeneratedInterface-Swift.h"
 
 #import "RageShakeManager.h"
 #import "ThemeService.h"

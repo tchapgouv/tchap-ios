@@ -16,21 +16,22 @@
 
 #import "RoomsViewController.h"
 
-#import "AppDelegate.h"
-
 #import "RecentsDataSource.h"
 
 #import "DirectoryServerPickerViewController.h"
 
 #import "Riot-Swift.h"
 
-@interface RoomsViewController ()
+@interface RoomsViewController ()<RoomsDirectoryCoordinatorBridgePresenterDelegate>
 {
     RecentsDataSource *recentsDataSource;
 
     // The animated view displayed at the table view bottom when paginating the room directory
     UIView* footerSpinnerView;
 }
+
+@property (nonatomic, strong) RoomsDirectoryCoordinatorBridgePresenter *roomsDirectoryCoordinatorBridgePresenter;
+
 @end
 
 @implementation RoomsViewController
@@ -54,7 +55,9 @@
     self.recentsTableView.tag = RecentsDataSourceModeRooms;
     
     // Add the (+) button programmatically
-    [self addPlusButton];
+    plusButtonImageView = [self vc_addFABWithImage:[UIImage imageNamed:@"rooms_floating_action"]
+                                            target:self
+                                            action:@selector(onPlusButtonPressed)];
     
     self.enableStickyHeaders = YES;
 }
@@ -82,11 +85,6 @@
             [recentsDataSource.publicRoomsDirectoryDataSource paginate:nil failure:nil];
         }
     }
-}
-
-- (void)dealloc
-{
-    
 }
 
 - (void)destroy
@@ -128,6 +126,13 @@
     }
 }
 
+- (void)onPlusButtonPressed
+{
+    self.roomsDirectoryCoordinatorBridgePresenter = [[RoomsDirectoryCoordinatorBridgePresenter alloc] initWithSession:self.mainSession dataSource:[recentsDataSource.publicRoomsDirectoryDataSource copy]];
+    self.roomsDirectoryCoordinatorBridgePresenter.delegate = self;
+    [self.roomsDirectoryCoordinatorBridgePresenter presentFrom:self animated:YES];
+}
+
 #pragma mark - 
 
 - (void)scrollToNextRoomWithMissedNotifications
@@ -155,9 +160,8 @@
         MXKDirectoryServersDataSource *directoryServersDataSource = [[MXKDirectoryServersDataSource alloc] initWithMatrixSession:recentsDataSource.publicRoomsDirectoryDataSource.mxSession];
         [directoryServersDataSource finalizeInitialization];
 
-        // Add directory servers from the app settings plist
-        NSArray<NSString*> *roomDirectoryServers = [[NSUserDefaults standardUserDefaults] objectForKey:@"roomDirectoryServers"];
-        directoryServersDataSource.roomDirectoryServers = roomDirectoryServers;
+        // Add directory servers from the app settings
+        directoryServersDataSource.roomDirectoryServers = BuildSettings.publicRoomsDirectoryServers;
 
         __weak typeof(self) weakSelf = self;
 
@@ -255,7 +259,12 @@
 - (void)openPublicRoomAtIndexPath:(NSIndexPath *)indexPath
 {
     MXPublicRoom *publicRoom = [recentsDataSource.publicRoomsDirectoryDataSource roomAtIndexPath:indexPath];
+    
+    [self openPublicRoom:publicRoom];
+}
 
+- (void)openPublicRoom:(MXPublicRoom *)publicRoom
+{
     // Check whether the user has already joined the selected public room
     if ([recentsDataSource.publicRoomsDirectoryDataSource.mxSession roomWithRoomId:publicRoom.roomId])
     {
@@ -340,6 +349,30 @@
         // Hide line separators of empty cells
         self.recentsTableView.tableFooterView = [[UIView alloc] init];;
     }
+}
+
+#pragma mark - RoomsDirectoryCoordinatorBridgePresenterDelegate
+
+- (void)roomsDirectoryCoordinatorBridgePresenterDelegateDidComplete:(RoomsDirectoryCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    self.roomsDirectoryCoordinatorBridgePresenter = nil;
+}
+
+- (void)roomsDirectoryCoordinatorBridgePresenterDelegate:(RoomsDirectoryCoordinatorBridgePresenter *)coordinatorBridgePresenter didSelectRoom:(MXPublicRoom *)room
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+        [self openPublicRoom:room];
+    }];
+    self.roomsDirectoryCoordinatorBridgePresenter = nil;
+}
+
+- (void)roomsDirectoryCoordinatorBridgePresenterDelegateDidTapCreateNewRoom:(RoomsDirectoryCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+        [self createNewRoom];
+    }];
+    self.roomsDirectoryCoordinatorBridgePresenter = nil;
 }
 
 @end

@@ -88,14 +88,6 @@
         return NO;
     }
     
-    // Tchap: display the banner even if there is no new key to backup,
-    // in order to let the user recover an existing backup (if any)
-//    if (!self.crypto.backup.hasKeysToBackup)
-//    {
-//        // Do not create secure key backup if they are no keys to backup.
-//        return NO;
-//    }
-    
     // Accept to create a setup only if we have the 3 cross-signing keys
     // This is the path to have a sane state
     // TODO: What about missing MSK that was not gossiped before?

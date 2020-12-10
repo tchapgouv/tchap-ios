@@ -23,7 +23,7 @@ final class PublicRoomsDataSource: NSObject {
     // MARK: - Constants
     
     private enum Constants {
-        static let searchTriggerTimeInterval: TimeInterval = 0.3
+        static let searchTriggerTimeInterval: RxTimeInterval = DispatchTimeInterval.milliseconds(300)
     }
     
     // MARK: - Properties

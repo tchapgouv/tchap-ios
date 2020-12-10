@@ -28,7 +28,11 @@
 	<string>$(TeamIdentifierPrefix)$(CFBundleIdentifier)</string>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>group.fr.gouv.btchap</string>
+		<string>$(APPLICATION_GROUP_IDENTIFIER)</string>
+	</array>
+	<key>keychain-access-groups</key>
+	<array>
+		<string>$(KEYCHAIN_ACCESS_GROUP)</string>
 	</array>
 </dict>
 </plist>

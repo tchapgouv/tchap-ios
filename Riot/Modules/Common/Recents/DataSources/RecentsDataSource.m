@@ -26,8 +26,6 @@
 #import "MXRoom+Riot.h"
 #import "MXSession+Riot.h"
 
-#import "AppDelegate.h"
-
 #import "Riot-Swift.h"
 
 #define RECENTSDATASOURCE_SECTION_DIRECTORY     0x01
@@ -191,7 +189,10 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     {
         SecureBackupBannerPreferences *secureBackupBannersPreferences = SecureBackupBannerPreferences.shared;
         
-        if (!secureBackupBannersPreferences.hideSetupBanner && [self.mxSession vc_canSetupSecureBackup])
+        // Display the banner if only we can set up 4S and if there are messages keys to backup
+        if (!secureBackupBannersPreferences.hideSetupBanner
+            && [self.mxSession vc_canSetupSecureBackup]
+            && self.mxSession.crypto.backup.hasKeysToBackup)
         {
             secureBackupBanner = SecureBackupBannerDisplaySetup;
         }
@@ -424,7 +425,8 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             conversationSection = sectionsCount++;
         }
         
-        if (_recentsDataSourceMode == RecentsDataSourceModeRooms)
+        if (_recentsDataSourceMode == RecentsDataSourceModeRooms
+            && BuildSettings.publicRoomsShowDirectory)
         {
             // Add the directory section after "ROOMS"
             directorySection = sectionsCount++;
@@ -512,7 +514,9 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     {
         return 0.0;
     }
-    else if (section == directorySection && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_DIRECTORY))
+    else if (section == directorySection
+             && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_DIRECTORY)
+             && BuildSettings.publicRoomsAllowServerChange)
     {
         return RECENTSDATASOURCE_DIRECTORY_SECTION_HEADER_HEIGHT;
     }
@@ -760,7 +764,10 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     [sectionHeader addSubview:headerLabel];
     sectionHeader.headerLabel = headerLabel;
 
-    if (section == directorySection && _recentsDataSourceMode == RecentsDataSourceModeRooms && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_DIRECTORY))
+    if (section == directorySection
+        && _recentsDataSourceMode == RecentsDataSourceModeRooms
+        && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_DIRECTORY)
+        && BuildSettings.publicRoomsAllowServerChange)
     {
         if (!directorySectionContainer)
         {
