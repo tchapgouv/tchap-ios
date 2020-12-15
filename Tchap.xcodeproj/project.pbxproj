@@ -8791,6 +8791,10 @@
 					"\"${PODS_ROOT}/WebRTC\"",
 					"\"$(PROJECT_DIR)/Riot/libs/jitsi-meet\"",
 				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"ENABLE_JOIN_BY_LINK=1",
+				);
 				INFOPLIST_FILE = "$(SRCROOT)/Tchap/SupportingFiles/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -8835,6 +8839,10 @@
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/libPhoneNumber-iOS\"",
 					"\"${PODS_ROOT}/WebRTC\"",
 					"\"$(PROJECT_DIR)/Riot/libs/jitsi-meet\"",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"ENABLE_JOIN_BY_LINK=1",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Tchap/SupportingFiles/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
