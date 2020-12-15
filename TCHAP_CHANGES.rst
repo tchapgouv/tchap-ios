@@ -4,6 +4,9 @@ Changes in Tchap 1.1.1 (2020-12-15)
 Features/Improvements:
  * Enable the room access by link
 
+Bug Fix:
+ * [Room history] The text input must be hidden when the user is not allowed to use it #348
+
 Changes in Tchap 1.1.0 (2020-11-19)
 ===================================================
 
