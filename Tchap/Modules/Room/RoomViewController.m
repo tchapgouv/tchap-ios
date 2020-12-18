@@ -851,12 +851,8 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
         if (self.roomDataSource)
         {
             // Restore tool bar view and room activities view if none
-            if (!self.inputToolbarView)
-            {
-                [self updateRoomInputToolbarViewClassIfNeeded];
-                
-                [self refreshRoomInputToolbar];
-            }
+            [self updateRoomInputToolbarViewClassIfNeeded];
+            [self refreshRoomInputToolbar];
             
             if (!self.activitiesView)
             {
@@ -4728,6 +4724,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
 
             // update inputToolbarView
             [self updateRoomInputToolbarViewClassIfNeeded];
+            [self refreshRoomInputToolbar];
         }
     }];
 }
