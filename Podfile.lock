@@ -14,7 +14,6 @@ PODS:
   - AFNetworking/Serialization (4.0.1)
   - AFNetworking/UIKit (4.0.1):
     - AFNetworking/NSURLSession
-  - cmark (0.24.1)
   - DGCollectionViewLeftAlignFlowLayout (1.0.4)
   - Down (0.9.4)
   - DTCoreText (1.6.25):
@@ -106,7 +105,6 @@ PODS:
   - ZXingObjC/All (3.6.5)
 
 DEPENDENCIES:
-  - cmark
   - DGCollectionViewLeftAlignFlowLayout (~> 1.0.4)
   - GBDeviceInfo (~> 6.3.0)
   - KTCenterFlowLayout (~> 1.3.1)
@@ -127,7 +125,6 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - AFNetworking
-    - cmark
     - DGCollectionViewLeftAlignFlowLayout
     - Down
     - DTCoreText
@@ -167,7 +164,6 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   AFNetworking: 7864c38297c79aaca1500c33288e429c3451fdce
-  cmark: 1d9ad0375e3b9fa281732e992467903606015520
   DGCollectionViewLeftAlignFlowLayout: a0fa58797373ded039cafba8133e79373d048399
   Down: 276f2c3eeeaf30345873bdad25f44b2640fcfa3a
   DTCoreText: e92f4cf6b36d9d71ce4436d12cf089d74ab0596b
@@ -191,6 +187,6 @@ SPEC CHECKSUMS:
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: 1ba9e84f088e64fb89683e4f228ed89cdf33127e
+PODFILE CHECKSUM: e44a5c0b3f4224ef8b3417eaede1a1bd37789573
 
-COCOAPODS: 1.9.3
+COCOAPODS: 1.10.0

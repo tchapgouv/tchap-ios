@@ -8791,6 +8791,10 @@
 					"\"${PODS_ROOT}/WebRTC\"",
 					"\"$(PROJECT_DIR)/Riot/libs/jitsi-meet\"",
 				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"ENABLE_JOIN_BY_LINK=1",
+				);
 				INFOPLIST_FILE = "$(SRCROOT)/Tchap/SupportingFiles/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -8835,6 +8839,10 @@
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/libPhoneNumber-iOS\"",
 					"\"${PODS_ROOT}/WebRTC\"",
 					"\"$(PROJECT_DIR)/Riot/libs/jitsi-meet\"",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"ENABLE_JOIN_BY_LINK=1",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Tchap/SupportingFiles/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -9379,7 +9387,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.1.0;
+				MARKETING_VERSION = 1.1.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -9431,7 +9439,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.1.0;
+				MARKETING_VERSION = 1.1.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
