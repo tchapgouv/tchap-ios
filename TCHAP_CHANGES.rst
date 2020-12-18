@@ -1,4 +1,4 @@
-Changes in Tchap 1.1.1 (2020-12-15)
+Changes in Tchap 1.1.1 (2020-12-18)
 ===================================================
 
 Features/Improvements:
