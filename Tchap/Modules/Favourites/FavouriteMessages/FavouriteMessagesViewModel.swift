@@ -1,0 +1,180 @@
+// File created from ScreenTemplate
+// $ createScreen.sh Favourites/FavouriteMessages FavouriteMessages
+/*
+ Copyright 2020 New Vector Ltd
+ 
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.apache.org/licenses/LICENSE-2.0
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ */
+
+import Foundation
+
+struct FavouriteEvent {
+    let roomId: String
+    let eventId: String
+    let eventInfo: MXTaggedEventInfo
+}
+
+final class FavouriteMessagesViewModel: FavouriteMessagesViewModelType {
+    
+    // MARK: - Constants
+    
+    private enum Constants {
+        static let paginationLimit: Int = 20
+    }
+    
+    // MARK: - Properties
+    
+    // MARK: Private
+
+    private let session: MXSession
+    private let favouriteMessagesQueue: DispatchQueue
+    
+    private var sortedFavouriteEvents: [FavouriteEvent] = []
+    private var favouriteMessagesViewDataList: [FavouriteMessagesViewData] = []
+    private var favouriteMessagesCache: Set<FavouriteMessagesViewData> = []
+    private var favouriteEventIndex = 0
+    private var isPaginating = false
+    private var paginationId = 0
+    private var viewState: FavouriteMessagesViewState?
+    
+    // MARK: Public
+
+    weak var viewDelegate: FavouriteMessagesViewModelViewDelegate?
+    weak var coordinatorDelegate: FavouriteMessagesViewModelCoordinatorDelegate?
+    
+    // MARK: - Setup
+    
+    init(session: MXSession) {
+        self.session = session
+        self.favouriteMessagesQueue = DispatchQueue(label: "\(type(of: self)).favouriteMessagesQueue")
+    }
+    
+    // MARK: - Public
+    
+    func process(viewAction: FavouriteMessagesViewAction) {
+        switch viewAction {
+        case .loadData:
+            self.loadData()
+        case .cancel:
+            self.coordinatorDelegate?.favouriteMessagesViewModelDidCancel(self)
+        }
+    }
+    
+    // MARK: - Private
+    
+    private func canLoadData() -> Bool {
+        guard let viewState = self.viewState else {
+            return true
+        }
+        
+        let canLoadData: Bool
+        
+        switch viewState {
+        case .loading:
+            canLoadData = false
+        case .loaded(reactionHistoryViewDataList: _):
+            canLoadData = self.favouriteMessagesViewDataList.count < self.sortedFavouriteEvents.count
+        default:
+            canLoadData = true
+        }
+        
+        return canLoadData
+    }
+    
+    private func loadData() {
+        guard self.canLoadData() else {
+            print("[FavouriteMessagesViewModel] loadData: pending loading or all data loaded")
+            return
+        }
+
+        self.update(viewState: .loading)
+        
+        if self.sortedFavouriteEvents.isEmpty {
+            var favouriteEvents: [FavouriteEvent] = []
+            for room in self.session.rooms {
+                if let eventIds = room.accountData.getTaggedEventsIds(kMXTaggedEventFavourite) {
+                    for eventId in eventIds {
+                        if let eventInfo = room.accountData.getTaggedEventInfo(eventId, withTag: kMXTaggedEventFavourite) {
+                            if eventInfo.originServerTs == kMXUndefinedTimestamp || eventInfo.originServerTs >= room.summary.tc_mininumTimestamp() {
+                                favouriteEvents.append(FavouriteEvent(roomId: room.roomId, eventId: eventId, eventInfo: eventInfo))
+                            }
+                        }
+                    }
+                }
+            }
+            
+            self.sortedFavouriteEvents = favouriteEvents.sorted { $0.eventInfo.originServerTs > $1.eventInfo.originServerTs }
+        }
+        
+        if !self.sortedFavouriteEvents.isEmpty {
+            let limit = min(self.favouriteEventIndex + Constants.paginationLimit, self.sortedFavouriteEvents.count - 1)
+            
+            for i in self.favouriteEventIndex...limit {
+                let favouriteEvent = self.sortedFavouriteEvents[i]
+                self.favouriteEventIndex += 1
+
+                //  attempt to fetch the event
+                self.session.event(withEventId: favouriteEvent.eventId, inRoom: favouriteEvent.roomId, success: { [weak self] (event) in
+                    guard let self = self else {
+                        NSLog("[FavouriteMessagesViewModel] fetchEvent: MXSession.event method returned too late successfully.")
+                        return
+                    }
+
+                    guard let event = event else {
+                        NSLog("[FavouriteMessagesViewModel] fetchEvent: MXSession.event method returned successfully with no event.")
+                        return
+                    }
+
+                    //  handle encryption for this event
+                    if event.isEncrypted && event.clear == nil {
+                        if self.session.decryptEvent(event, inTimeline: nil) == false {
+                            print("[FavouriteMessagesViewModel] processEditEvent: Fail to decrypt event: \(event.eventId ?? "")")
+                        }
+                    }
+
+                    self.process(favouriteMessagesViewData: FavouriteMessagesViewData(event: event))
+                }, failure: { [weak self] error in
+                    guard let self = self else {
+                        return
+                    }
+                    self.update(viewState: .error(error!))
+                })
+            }
+        }
+    }
+    
+    private func process(favouriteMessagesViewData: FavouriteMessagesViewData) {
+        self.favouriteMessagesQueue.async {
+            let nextEventId = self.sortedFavouriteEvents[self.favouriteMessagesViewDataList.count].eventId
+            
+            if favouriteMessagesViewData.event.eventId == nextEventId {
+                self.favouriteMessagesViewDataList.append(favouriteMessagesViewData)
+                DispatchQueue.main.async {
+                    self.update(viewState: .loaded(self.favouriteMessagesViewDataList))
+                }
+                
+                self.favouriteMessagesCache.remove(favouriteMessagesViewData)
+                for favouriteMessagesCacheItem in self.favouriteMessagesCache {
+                    self.process(favouriteMessagesViewData: favouriteMessagesCacheItem)
+                }
+            } else {
+                self.favouriteMessagesCache.insert(favouriteMessagesViewData)
+            }
+        }
+    }
+    
+    private func update(viewState: FavouriteMessagesViewState) {
+        self.viewState = viewState
+        self.viewDelegate?.favouriteMessagesViewModel(self, didUpdateViewState: viewState)
+    }
+}

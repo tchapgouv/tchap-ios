@@ -2582,7 +2582,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
 #endif
         
         NSString *titleKey;
-        if (![self.roomDataSource.room.accountData getTaggedEvent:selectedEvent.eventId withTag:kMXRoomTagFavourite])
+        if (![self.roomDataSource.room.accountData getTaggedEventInfo:selectedEvent.eventId withTag:kMXRoomTagFavourite])
         {
             titleKey = @"room_event_action_favourite";
         }

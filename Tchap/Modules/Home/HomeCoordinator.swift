@@ -211,6 +211,15 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
         }
     }
     
+    private func showFavourites(animated: Bool) {
+        let favouritesCoordinator = FavouritesCoordinator(session: self.session)
+        favouritesCoordinator.start()
+        
+        self.add(childCoordinator: favouritesCoordinator)
+        self.navigationRouter.present(favouritesCoordinator, animated: animated)
+        favouritesCoordinator.delegate = self
+    }
+    
     private func createHomeViewController(with viewControllers: [UIViewController], viewControllersTitles: [String], globalSearchBar: GlobalSearchBar) -> HomeViewController {
         let homeViewController = HomeViewController.instantiate(with: viewControllers, viewControllersTitles: viewControllersTitles, globalSearchBar: globalSearchBar)
         
@@ -226,6 +235,13 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
                 return
             }
             sself.showSettings(animated: true)
+        })
+        
+        homeViewController.navigationItem.rightBarButtonItem = MXKBarButtonItem(image: #imageLiteral(resourceName: "icon_page_favoris"), style: .plain, action: { [weak self] in
+            guard let sself = self else {
+                return
+            }
+            sself.showFavourites(animated: true)
         })
         
         return homeViewController
@@ -466,5 +482,12 @@ extension HomeCoordinator: RoomPreviewCoordinatorDelegate {
     func roomPreviewCoordinator(_ coordinator: RoomPreviewCoordinatorType, didJoinRoomWithId roomID: String, onEventId eventId: String?) {
         self.navigationRouter.popModule(animated: true)
         self.showRoom(with: roomID, onEventID: eventId)
+    }
+}
+
+// MARK: - FavouriteMessagesCoordinatorDelegate
+extension HomeCoordinator: FavouritesCoordinatorDelegate {
+    func favouritesCoordinatorDidComplete(_ coordinator: FavouritesCoordinatorType) {
+    
     }
 }

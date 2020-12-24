@@ -1725,6 +1725,20 @@
 		323BD4C6148B554408CDD950 /* Pods_TchapPods_BtchapShareExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EFEE7E56697557ECD04FEDAE /* Pods_TchapPods_BtchapShareExtension.framework */; };
 		3758AAFA0E62019A0A322926 /* Pods_TchapPods_Tchap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6969DC25D5C9C2BB6A87FF16 /* Pods_TchapPods_Tchap.framework */; };
 		88D99D182A4DAA23DCFAEFC1 /* Pods_TchapPods_Btchap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42D17E495E890C4E93B6454C /* Pods_TchapPods_Btchap.framework */; };
+		8E6603BA2590EB16008D5547 /* FavouriteMessagesViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E6603B92590EB16008D5547 /* FavouriteMessagesViewCell.swift */; };
+		8E6603BC2590EC15008D5547 /* FavouriteMessagesViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8E6603BB2590EC15008D5547 /* FavouriteMessagesViewCell.xib */; };
+		8E99022D2583BDAB00D0456B /* FavouritesCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9902212583BDAB00D0456B /* FavouritesCoordinator.swift */; };
+		8E99022E2583BDAB00D0456B /* FavouritesCoordinatorBridgePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9902222583BDAB00D0456B /* FavouritesCoordinatorBridgePresenter.swift */; };
+		8E99022F2583BDAB00D0456B /* FavouritesCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9902232583BDAB00D0456B /* FavouritesCoordinatorType.swift */; };
+		8E9902302583BDAB00D0456B /* FavouriteMessagesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9902252583BDAB00D0456B /* FavouriteMessagesViewModel.swift */; };
+		8E9902312583BDAB00D0456B /* FavouriteMessagesViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9902262583BDAB00D0456B /* FavouriteMessagesViewState.swift */; };
+		8E9902322583BDAB00D0456B /* FavouriteMessagesViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8E9902272583BDAB00D0456B /* FavouriteMessagesViewController.storyboard */; };
+		8E9902332583BDAB00D0456B /* FavouriteMessagesCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9902282583BDAB00D0456B /* FavouriteMessagesCoordinator.swift */; };
+		8E9902342583BDAB00D0456B /* FavouriteMessagesCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9902292583BDAB00D0456B /* FavouriteMessagesCoordinatorType.swift */; };
+		8E9902352583BDAB00D0456B /* FavouriteMessagesViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E99022A2583BDAB00D0456B /* FavouriteMessagesViewAction.swift */; };
+		8E9902362583BDAB00D0456B /* FavouriteMessagesViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E99022B2583BDAB00D0456B /* FavouriteMessagesViewModelType.swift */; };
+		8E9902372583BDAB00D0456B /* FavouriteMessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E99022C2583BDAB00D0456B /* FavouriteMessagesViewController.swift */; };
+		8EB09498258B5286003782CC /* FavouriteMessagesViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EB09497258B5286003782CC /* FavouriteMessagesViewData.swift */; };
 		9BB56DCE73301826A61AB27C /* Pods_TchapPods_TchapTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86EB8C3A36242C8A56747B11 /* Pods_TchapPods_TchapTests.framework */; };
 		AF9665A83D61A89EF70F9739 /* Pods_TchapPods_TchapNSE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36D255B2C1E174D71079370D /* Pods_TchapPods_TchapNSE.framework */; };
 		B104AA1D215D3EE800B2C452 /* ForgotPasswordService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B104AA1C215D3EE800B2C452 /* ForgotPasswordService.swift */; };
@@ -2863,6 +2877,20 @@
 		8582197A7D3C5D692C381218 /* Pods_TchapPods_TchapShareExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TchapPods_TchapShareExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		86EB8C3A36242C8A56747B11 /* Pods_TchapPods_TchapTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TchapPods_TchapTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B24EBDB14F52DD337C40E49 /* Pods-TchapPods-TchapTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TchapPods-TchapTests.debug.xcconfig"; path = "Target Support Files/Pods-TchapPods-TchapTests/Pods-TchapPods-TchapTests.debug.xcconfig"; sourceTree = "<group>"; };
+		8E6603B92590EB16008D5547 /* FavouriteMessagesViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouriteMessagesViewCell.swift; sourceTree = "<group>"; };
+		8E6603BB2590EC15008D5547 /* FavouriteMessagesViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FavouriteMessagesViewCell.xib; sourceTree = "<group>"; };
+		8E9902212583BDAB00D0456B /* FavouritesCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavouritesCoordinator.swift; sourceTree = "<group>"; };
+		8E9902222583BDAB00D0456B /* FavouritesCoordinatorBridgePresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavouritesCoordinatorBridgePresenter.swift; sourceTree = "<group>"; };
+		8E9902232583BDAB00D0456B /* FavouritesCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavouritesCoordinatorType.swift; sourceTree = "<group>"; };
+		8E9902252583BDAB00D0456B /* FavouriteMessagesViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavouriteMessagesViewModel.swift; sourceTree = "<group>"; };
+		8E9902262583BDAB00D0456B /* FavouriteMessagesViewState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavouriteMessagesViewState.swift; sourceTree = "<group>"; };
+		8E9902272583BDAB00D0456B /* FavouriteMessagesViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = FavouriteMessagesViewController.storyboard; sourceTree = "<group>"; };
+		8E9902282583BDAB00D0456B /* FavouriteMessagesCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavouriteMessagesCoordinator.swift; sourceTree = "<group>"; };
+		8E9902292583BDAB00D0456B /* FavouriteMessagesCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavouriteMessagesCoordinatorType.swift; sourceTree = "<group>"; };
+		8E99022A2583BDAB00D0456B /* FavouriteMessagesViewAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavouriteMessagesViewAction.swift; sourceTree = "<group>"; };
+		8E99022B2583BDAB00D0456B /* FavouriteMessagesViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavouriteMessagesViewModelType.swift; sourceTree = "<group>"; };
+		8E99022C2583BDAB00D0456B /* FavouriteMessagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavouriteMessagesViewController.swift; sourceTree = "<group>"; };
+		8EB09497258B5286003782CC /* FavouriteMessagesViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouriteMessagesViewData.swift; sourceTree = "<group>"; };
 		926FA53D1F4C132000F826C2 /* MXSession+Riot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MXSession+Riot.h"; sourceTree = "<group>"; };
 		926FA53E1F4C132000F826C2 /* MXSession+Riot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MXSession+Riot.m"; sourceTree = "<group>"; };
 		92726A501F587410004AD26F /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
@@ -4514,6 +4542,7 @@
 				B12DDA9D21701FA90093172C /* Avatar */,
 				B165252021779F7300146F80 /* CreateNewDiscussion */,
 				B1C4643E21B67F1C005F4D53 /* RoomCreation */,
+				8E9902202583BDAB00D0456B /* Favourites */,
 				B1322FE6213002430054A9DD /* Common */,
 			);
 			path = Modules;
@@ -5260,6 +5289,35 @@
 				36D255B2C1E174D71079370D /* Pods_TchapPods_TchapNSE.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8E9902202583BDAB00D0456B /* Favourites */ = {
+			isa = PBXGroup;
+			children = (
+				8E9902212583BDAB00D0456B /* FavouritesCoordinator.swift */,
+				8E9902222583BDAB00D0456B /* FavouritesCoordinatorBridgePresenter.swift */,
+				8E9902232583BDAB00D0456B /* FavouritesCoordinatorType.swift */,
+				8E9902242583BDAB00D0456B /* FavouriteMessages */,
+			);
+			path = Favourites;
+			sourceTree = "<group>";
+		};
+		8E9902242583BDAB00D0456B /* FavouriteMessages */ = {
+			isa = PBXGroup;
+			children = (
+				8E9902252583BDAB00D0456B /* FavouriteMessagesViewModel.swift */,
+				8E9902262583BDAB00D0456B /* FavouriteMessagesViewState.swift */,
+				8E9902272583BDAB00D0456B /* FavouriteMessagesViewController.storyboard */,
+				8E9902282583BDAB00D0456B /* FavouriteMessagesCoordinator.swift */,
+				8E9902292583BDAB00D0456B /* FavouriteMessagesCoordinatorType.swift */,
+				8E99022A2583BDAB00D0456B /* FavouriteMessagesViewAction.swift */,
+				8E99022B2583BDAB00D0456B /* FavouriteMessagesViewModelType.swift */,
+				8E99022C2583BDAB00D0456B /* FavouriteMessagesViewController.swift */,
+				8EB09497258B5286003782CC /* FavouriteMessagesViewData.swift */,
+				8E6603B92590EB16008D5547 /* FavouriteMessagesViewCell.swift */,
+				8E6603BB2590EC15008D5547 /* FavouriteMessagesViewCell.xib */,
+			);
+			path = FavouriteMessages;
 			sourceTree = "<group>";
 		};
 		B1073D5B21A7F90D00E36CFA /* Encrypted */ = {
@@ -6770,6 +6828,7 @@
 				B146D52221A7453900D8C2C6 /* RoomAttachmentAntivirusScanStatusCellContentView.xib in Resources */,
 				02388EB124A2AF7A00F3B485 /* DeviceVerificationIncomingViewController.storyboard in Resources */,
 				0250C57E2122B68000034691 /* MediaAlbumContentViewController.xib in Resources */,
+				8E9902322583BDAB00D0456B /* FavouriteMessagesViewController.storyboard in Resources */,
 				026154DB236C7D930045459E /* agent.justice_2019_10.cer in Resources */,
 				026154EA236C7D930045459E /* agent_2019_10.cer in Resources */,
 				02FAE59223B4C41600DE73D8 /* RoomContextualMenuToolbarView.xib in Resources */,
@@ -6780,6 +6839,7 @@
 				0234A9AC225BE42D00E8E489 /* FormCheckBox.xib in Resources */,
 				02FAE4AE23B4B61700DE73D8 /* KeyBackupSetupSuccessFromRecoveryKeyViewController.storyboard in Resources */,
 				020DF986214BE467003DFBA4 /* RoomIncomingTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
+				8E6603BC2590EC15008D5547 /* FavouriteMessagesViewCell.xib in Resources */,
 				0250C5812122B68000034691 /* BugReportViewController.xib in Resources */,
 				027DCAC521B14F68000DD05E /* ContactCell.xib in Resources */,
 				020DF93B214BE467003DFBA4 /* TableViewCellWithLabelAndLargeTextView.xib in Resources */,
@@ -7423,6 +7483,7 @@
 				02FAE5BE23B4C41600DE73D8 /* EmojiItem.swift in Sources */,
 				B11C80132139442700CC6F2F /* RegistrationFormViewModel.swift in Sources */,
 				0250C4932122B68000034691 /* MediaAlbumTableCell.m in Sources */,
+				8E99022E2583BDAB00D0456B /* FavouritesCoordinatorBridgePresenter.swift in Sources */,
 				020DF93C214BE467003DFBA4 /* TableViewCellWithCheckBoxAndLabel.m in Sources */,
 				02388EAD24A2AF7A00F3B485 /* DeviceVerificationStartViewState.swift in Sources */,
 				020DF967214BE467003DFBA4 /* RoomOutgoingEncryptedTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
@@ -7459,6 +7520,7 @@
 				02388E4F24A2AF7900F3B485 /* KeyVerificationVerifyBySASCoordinator.swift in Sources */,
 				0250C49F2122B68000034691 /* MediaAlbumContentViewController.m in Sources */,
 				02FAE45E23B4AB3300DE73D8 /* WidgetPermissionViewModel.swift in Sources */,
+				8EB09498258B5286003782CC /* FavouriteMessagesViewData.swift in Sources */,
 				026A465923B215900058D80B /* MediaPickerCoordinator.swift in Sources */,
 				020DF963214BE467003DFBA4 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
 				02FAE5D023B4C41600DE73D8 /* EditHistoryCoordinator.swift in Sources */,
@@ -7503,6 +7565,7 @@
 				024F786723C8E38D008EC68F /* SettingsKeyBackupViewModel.swift in Sources */,
 				0250C4A92122B68000034691 /* CallViewController.m in Sources */,
 				022B48D5257156E300427BEC /* CommonConfiguration.swift in Sources */,
+				8E9902312583BDAB00D0456B /* FavouriteMessagesViewState.swift in Sources */,
 				02388E1324A2AF7900F3B485 /* UserVerificationSessionsStatusViewState.swift in Sources */,
 				0234A9A6225BDA4E00E8E489 /* FormCheckBox.swift in Sources */,
 				B15B867B21359145002782BE /* KeyboardNotification.swift in Sources */,
@@ -7547,6 +7610,7 @@
 				020DF95B214BE467003DFBA4 /* RoomEncryptedAttachmentAntivirusScanStatusBubbleCell.m in Sources */,
 				022B48D1257156E300427BEC /* BuildSettings.swift in Sources */,
 				02C3F27F24AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseViewAction.swift in Sources */,
+				8E99022F2583BDAB00D0456B /* FavouritesCoordinatorType.swift in Sources */,
 				0250C5CB2122E63900034691 /* empty.mm in Sources */,
 				B12209C523854F92004D069C /* MinimumClientVersion.swift in Sources */,
 				B1892E782130528600742348 /* ErrorPresentable.swift in Sources */,
@@ -7574,6 +7638,7 @@
 				02388DF124A2AF7900F3B485 /* UserVerificationSessionStatusCoordinator.swift in Sources */,
 				B1BC6A032135E2A600D32F8E /* ActivityIndicatorView.swift in Sources */,
 				02C3F22624AFD3880086ACA5 /* CrossSigningBannerPreferences.swift in Sources */,
+				8E99022D2583BDAB00D0456B /* FavouritesCoordinator.swift in Sources */,
 				02388E8724A2AF7A00F3B485 /* KeyVerificationSelfVerifyWaitViewModelType.swift in Sources */,
 				02C3F28924AFDEFF0086ACA5 /* SecretsRecoveryGoal.swift in Sources */,
 				B122099B23854EF2004D069C /* TchapDefaults.swift in Sources */,
@@ -7586,6 +7651,7 @@
 				B15AB2AA215BF63A007F5405 /* ForgotPasswordFormViewModelType.swift in Sources */,
 				02388E7524A2AF7A00F3B485 /* KeyVerificationSelfVerifyStartCoordinator.swift in Sources */,
 				020DF978214BE467003DFBA4 /* RoomMembershipExpandedBubbleCell.m in Sources */,
+				8E9902362583BDAB00D0456B /* FavouriteMessagesViewModelType.swift in Sources */,
 				02FAE43023B2B98900DE73D8 /* SlidingModalEmptyViewController.swift in Sources */,
 				020DF977214BE467003DFBA4 /* RoomMembershipWithPaginationTitleBubbleCell.m in Sources */,
 				02388E2524A2AF7900F3B485 /* KeyVerificationDataLoadingCoordinatorType.swift in Sources */,
@@ -7783,6 +7849,7 @@
 				B1F2AAA5212AED840077FDC0 /* Coordinator.swift in Sources */,
 				02388E2B24A2AF7900F3B485 /* KeyVerificationDataLoadingViewModel.swift in Sources */,
 				B1C0EE6F2375B7A000E8BB88 /* ChangePasswordCurrentPasswordCoordinator.swift in Sources */,
+				8E9902342583BDAB00D0456B /* FavouriteMessagesCoordinatorType.swift in Sources */,
 				02388E8324A2AF7A00F3B485 /* KeyVerificationSelfVerifyWaitCoordinatorType.swift in Sources */,
 				B1680CFB2152A9E6009B5F92 /* PublicRoomsCoordinatorType.swift in Sources */,
 				02C3F26124AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyViewController.swift in Sources */,
@@ -7802,6 +7869,7 @@
 				020DF98F214BE467003DFBA4 /* RoomPredecessorBubbleCell.m in Sources */,
 				02FAE57E23B4C41500DE73D8 /* ReactionsMenuViewModelType.swift in Sources */,
 				02388F1824A2B73F00F3B485 /* KeyBackupRecoverFromPrivateKeyCoordinatorType.swift in Sources */,
+				8E9902352583BDAB00D0456B /* FavouriteMessagesViewAction.swift in Sources */,
 				B1BC6A022135E2A600D32F8E /* ActivityIndicatorPresenter.swift in Sources */,
 				020DF98D214BE467003DFBA4 /* RoomOutgoingTextMsgWithoutSenderNameBubbleCell.m in Sources */,
 				B1C4644B21B67F1E005F4D53 /* RoomCreationViewModelType.swift in Sources */,
@@ -7928,6 +7996,7 @@
 				0250C5142122B68000034691 /* GDPRConsentViewController.swift in Sources */,
 				02C4BE8E2252456000F7BB0E /* ThirdPartyIDPlatformInfoResolverType.swift in Sources */,
 				02388E2D24A2AF7900F3B485 /* KeyVerificationDataLoadingViewModelType.swift in Sources */,
+				8E9902372583BDAB00D0456B /* FavouriteMessagesViewController.swift in Sources */,
 				02FAE60D23B4E70600DE73D8 /* RoomMessageURLParser.swift in Sources */,
 				B1F2AA99212AEC830077FDC0 /* LegacyAppDelegate.m in Sources */,
 				02FAE4F823B4B61700DE73D8 /* KeyBackupRecoverFromPassphraseViewState.swift in Sources */,
@@ -8014,6 +8083,7 @@
 				02388E7924A2AF7A00F3B485 /* KeyVerificationSelfVerifyStartViewModel.swift in Sources */,
 				020DF956214BE467003DFBA4 /* RoomIncomingEncryptedTextMsgWithoutSenderNameBubbleCell.m in Sources */,
 				025CB2572493BEAC009A4B10 /* PushNotificationService.m in Sources */,
+				8E9902302583BDAB00D0456B /* FavouriteMessagesViewModel.swift in Sources */,
 				02FAE4FE23B4B61700DE73D8 /* KeyBackupRecoverFromPassphraseViewController.swift in Sources */,
 				B1C0EE632375B77F00E8BB88 /* ChangePasswordCoordinator.swift in Sources */,
 				02388E5D24A2AF7900F3B485 /* KeyVerificationScanConfirmationViewController.swift in Sources */,
@@ -8038,6 +8108,7 @@
 				B1F2AA9B212AEC830077FDC0 /* ContactsCoordinatorType.swift in Sources */,
 				B15FE5E6238584B800D2A5B2 /* AppVersionCheckerResult+Codable.swift in Sources */,
 				02388E5724A2AF7900F3B485 /* KeyVerificationVerifyBySASViewModel.swift in Sources */,
+				8E9902332583BDAB00D0456B /* FavouriteMessagesCoordinator.swift in Sources */,
 				B1322FF82130032B0054A9DD /* AuthenticationService.swift in Sources */,
 				020DF984214BE467003DFBA4 /* RoomOutgoingAttachmentWithPaginationTitleBubbleCell.m in Sources */,
 				0250C52D2122B68000034691 /* FilesSearchCellData.m in Sources */,
@@ -8064,6 +8135,7 @@
 				02FAE5F423B4C41600DE73D8 /* ReactionHistoryViewModelType.swift in Sources */,
 				02388E1724A2AF7900F3B485 /* UserVerificationSessionsStatusViewController.swift in Sources */,
 				B12209A923854F32004D069C /* AppVersionUpdateViewController.swift in Sources */,
+				8E6603BA2590EB16008D5547 /* FavouriteMessagesViewCell.swift in Sources */,
 				B1F2AA97212AEC830077FDC0 /* AppCoordinator.swift in Sources */,
 				0252030D224EBD4800262433 /* ContactButtonViewModel.swift in Sources */,
 				027861A42577A8D900266B09 /* JitsiAuthenticationType.swift in Sources */,

@@ -52,6 +52,11 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Tchap.EmojiPickerViewController>(storyboard: EmojiPickerViewController.self)
   }
+  internal enum FavouriteMessagesViewController: StoryboardType {
+    internal static let storyboardName = "FavouriteMessagesViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.FavouriteMessagesViewController>(storyboard: FavouriteMessagesViewController.self)
+  }
   internal enum ForgotPasswordCheckedEmailViewController: StoryboardType {
     internal static let storyboardName = "ForgotPasswordCheckedEmailViewController"
 
