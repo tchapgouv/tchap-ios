@@ -21,6 +21,6 @@ import Foundation
 /// FavouriteMessagesViewController view state
 enum FavouriteMessagesViewState {
     case loading
-    case loaded(_ favouriteMessagesViewDataList: [FavouriteMessagesViewData])
+    case loaded(_ roomBubbleCellDataList: [RoomBubbleCellData])
     case error(Error)
 }

@@ -19,7 +19,6 @@
 import Foundation
 
 protocol FavouriteMessagesCoordinatorDelegate: class {
-    func favouriteMessagesCoordinator(_ coordinator: FavouriteMessagesCoordinatorType, didCompleteWithUserDisplayName userDisplayName: String?)
     func favouriteMessagesCoordinatorDidCancel(_ coordinator: FavouriteMessagesCoordinatorType)
 }
 

@@ -27,8 +27,8 @@ final class FavouriteMessagesViewCell: UITableViewCell, NibReusable, Themable {
     
     // MARK: - Public
     
-    func fill(with viewData: FavouriteMessagesViewData) {
-        self.reactionLabel.text = viewData.event.eventId
+    func fill(with viewData: RoomBubbleCellData) {
+        self.reactionLabel.text = viewData.events[0].eventId
 //        self.userDisplayNameLabel.text = viewData.userDisplayName
 //        self.timestampLabel.text = viewData.dateString
     }

@@ -40,8 +40,8 @@ final class FavouriteMessagesViewModel: FavouriteMessagesViewModelType {
     private let favouriteMessagesQueue: DispatchQueue
     
     private var sortedFavouriteEvents: [FavouriteEvent] = []
-    private var favouriteMessagesViewDataList: [FavouriteMessagesViewData] = []
-    private var favouriteMessagesCache: Set<FavouriteMessagesViewData> = []
+    private var roomBubbleCellDataList: [RoomBubbleCellData] = []
+    private var favouriteMessagesCache: Set<RoomBubbleCellData> = []
     private var favouriteEventIndex = 0
     private var isPaginating = false
     private var paginationId = 0
@@ -83,7 +83,7 @@ final class FavouriteMessagesViewModel: FavouriteMessagesViewModelType {
         case .loading:
             canLoadData = false
         case .loaded(reactionHistoryViewDataList: _):
-            canLoadData = self.favouriteMessagesViewDataList.count < self.sortedFavouriteEvents.count
+            canLoadData = self.roomBubbleCellDataList.count < self.sortedFavouriteEvents.count
         default:
             canLoadData = true
         }
@@ -118,31 +118,40 @@ final class FavouriteMessagesViewModel: FavouriteMessagesViewModelType {
         
         if !self.sortedFavouriteEvents.isEmpty {
             let limit = min(self.favouriteEventIndex + Constants.paginationLimit, self.sortedFavouriteEvents.count - 1)
+            let roomDataSourceManager = MXKRoomDataSourceManager.sharedManager(forMatrixSession: self.session)
+            
+            //            dispatch_group_t group = dispatch_group_create();
             
             for i in self.favouriteEventIndex...limit {
                 let favouriteEvent = self.sortedFavouriteEvents[i]
                 self.favouriteEventIndex += 1
-
+                
                 //  attempt to fetch the event
                 self.session.event(withEventId: favouriteEvent.eventId, inRoom: favouriteEvent.roomId, success: { [weak self] (event) in
                     guard let self = self else {
                         NSLog("[FavouriteMessagesViewModel] fetchEvent: MXSession.event method returned too late successfully.")
                         return
                     }
-
+                    
                     guard let event = event else {
                         NSLog("[FavouriteMessagesViewModel] fetchEvent: MXSession.event method returned successfully with no event.")
                         return
                     }
-
+                    
                     //  handle encryption for this event
                     if event.isEncrypted && event.clear == nil {
                         if self.session.decryptEvent(event, inTimeline: nil) == false {
                             print("[FavouriteMessagesViewModel] processEditEvent: Fail to decrypt event: \(event.eventId ?? "")")
                         }
                     }
-
-                    self.process(favouriteMessagesViewData: FavouriteMessagesViewData(event: event))
+                    
+                    // Check whether the user knows this room to create the room data source if it doesn't exist.
+                    roomDataSourceManager?.roomDataSource(forRoom: favouriteEvent.roomId, create: (self.session.room(withRoomId: favouriteEvent.roomId) != nil), onComplete: { roomDataSource in
+                        
+                        if roomDataSource != nil, let cellData = RoomBubbleCellData(event: event, andRoomState: roomDataSource?.roomState, andRoomDataSource: roomDataSource) {
+                            self.process(cellData: cellData)
+                        }
+                    })
                 }, failure: { [weak self] error in
                     guard let self = self else {
                         return
@@ -153,22 +162,22 @@ final class FavouriteMessagesViewModel: FavouriteMessagesViewModelType {
         }
     }
     
-    private func process(favouriteMessagesViewData: FavouriteMessagesViewData) {
+    private func process(cellData: RoomBubbleCellData) {
         self.favouriteMessagesQueue.async {
-            let nextEventId = self.sortedFavouriteEvents[self.favouriteMessagesViewDataList.count].eventId
+            let nextEventId = self.sortedFavouriteEvents[min(self.roomBubbleCellDataList.count, self.sortedFavouriteEvents.count - 1)].eventId
             
-            if favouriteMessagesViewData.event.eventId == nextEventId {
-                self.favouriteMessagesViewDataList.append(favouriteMessagesViewData)
+            if cellData.events[0].eventId == nextEventId {
+                self.roomBubbleCellDataList.append(cellData)
                 DispatchQueue.main.async {
-                    self.update(viewState: .loaded(self.favouriteMessagesViewDataList))
+                    self.update(viewState: .loaded(self.roomBubbleCellDataList))
                 }
                 
-                self.favouriteMessagesCache.remove(favouriteMessagesViewData)
+                self.favouriteMessagesCache.remove(cellData)
                 for favouriteMessagesCacheItem in self.favouriteMessagesCache {
-                    self.process(favouriteMessagesViewData: favouriteMessagesCacheItem)
+                    self.process(cellData: favouriteMessagesCacheItem)
                 }
             } else {
-                self.favouriteMessagesCache.insert(favouriteMessagesViewData)
+                self.favouriteMessagesCache.insert(cellData)
             }
         }
     }

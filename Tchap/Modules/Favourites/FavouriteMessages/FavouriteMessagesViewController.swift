@@ -42,7 +42,7 @@ final class FavouriteMessagesViewController: UIViewController {
     private var activityPresenter: ActivityIndicatorPresenter!
     private var isViewAppearedOnce: Bool = false
     
-    private var favouriteMessagesViewDataList: [FavouriteMessagesViewData] = []
+    private var roomBubbleCellDataList: [RoomBubbleCellData] = []
 
     // MARK: - Setup
     
@@ -141,8 +141,8 @@ final class FavouriteMessagesViewController: UIViewController {
         switch viewState {
         case .loading:
             self.renderLoading()
-        case .loaded(favouriteMessagesViewDataList: let favouriteMessagesViewDataList):
-            self.renderLoaded(favouriteMessagesViewDataList: favouriteMessagesViewDataList)
+        case .loaded(roomBubbleCellDataList: let roomBubbleCellDataList):
+            self.renderLoaded(roomBubbleCellDataList: roomBubbleCellDataList)
         case .error(let error):
             self.render(error: error)
         }
@@ -152,9 +152,9 @@ final class FavouriteMessagesViewController: UIViewController {
         self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
     }
     
-    private func renderLoaded(favouriteMessagesViewDataList: [FavouriteMessagesViewData]) {
+    private func renderLoaded(roomBubbleCellDataList: [RoomBubbleCellData]) {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-        self.favouriteMessagesViewDataList = favouriteMessagesViewDataList
+        self.roomBubbleCellDataList = roomBubbleCellDataList
         self.tableView.reloadData()
     }
     
@@ -185,16 +185,16 @@ extension FavouriteMessagesViewController: FavouriteMessagesViewModelViewDelegat
 extension FavouriteMessagesViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.favouriteMessagesViewDataList.count
+        return self.roomBubbleCellDataList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let favouriteMessagesCell = tableView.dequeueReusableCell(for: indexPath, cellType: FavouriteMessagesViewCell.self)
 
-        let favouriteMessagesViewData = self.favouriteMessagesViewDataList[indexPath.row]
+        let roomBubbleCellData = self.roomBubbleCellDataList[indexPath.row]
 
         favouriteMessagesCell.update(theme: self.theme)
-        favouriteMessagesCell.fill(with: favouriteMessagesViewData)
+        favouriteMessagesCell.fill(with: roomBubbleCellData)
 
         return favouriteMessagesCell
     }

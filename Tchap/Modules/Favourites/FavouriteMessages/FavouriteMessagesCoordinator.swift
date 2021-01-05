@@ -60,11 +60,6 @@ final class FavouriteMessagesCoordinator: FavouriteMessagesCoordinatorType {
 
 // MARK: - FavouriteMessagesViewModelCoordinatorDelegate
 extension FavouriteMessagesCoordinator: FavouriteMessagesViewModelCoordinatorDelegate {
-    
-    func favouriteMessagesViewModel(_ viewModel: FavouriteMessagesViewModelType, didCompleteWithUserDisplayName userDisplayName: String?) {
-        self.delegate?.favouriteMessagesCoordinator(self, didCompleteWithUserDisplayName: userDisplayName)
-    }
-    
     func favouriteMessagesViewModelDidCancel(_ viewModel: FavouriteMessagesViewModelType) {
         self.delegate?.favouriteMessagesCoordinatorDidCancel(self)
     }

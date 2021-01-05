@@ -23,7 +23,6 @@ protocol FavouriteMessagesViewModelViewDelegate: class {
 }
 
 protocol FavouriteMessagesViewModelCoordinatorDelegate: class {
-    func favouriteMessagesViewModel(_ viewModel: FavouriteMessagesViewModelType, didCompleteWithUserDisplayName userDisplayName: String?)
     func favouriteMessagesViewModelDidCancel(_ viewModel: FavouriteMessagesViewModelType)
 }
 

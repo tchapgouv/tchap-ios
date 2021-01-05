@@ -70,10 +70,6 @@ final class FavouritesCoordinator: FavouritesCoordinatorType {
 
 // MARK: - FavouriteMessagesCoordinatorDelegate
 extension FavouritesCoordinator: FavouriteMessagesCoordinatorDelegate {
-    func favouriteMessagesCoordinator(_ coordinator: FavouriteMessagesCoordinatorType, didCompleteWithUserDisplayName userDisplayName: String?) {
-        self.delegate?.favouritesCoordinatorDidComplete(self)
-    }
-    
     func favouriteMessagesCoordinatorDidCancel(_ coordinator: FavouriteMessagesCoordinatorType) {
         self.delegate?.favouritesCoordinatorDidComplete(self)
     }
