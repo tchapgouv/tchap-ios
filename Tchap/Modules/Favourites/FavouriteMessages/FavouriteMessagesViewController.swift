@@ -17,6 +17,7 @@
  */
 
 import UIKit
+import Reusable
 
 final class FavouriteMessagesViewController: UIViewController {
     
@@ -122,7 +123,8 @@ final class FavouriteMessagesViewController: UIViewController {
         
         self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.estimatedRowHeight = Constants.estimatedRowHeight
-        self.tableView.register(cellType: FavouriteMessagesViewCell.self)
+        self.tableView.register(cellType: FavouriteIncomingTextMsgBubbleCell.self)
+        self.tableView.register(cellType: FavouriteIncomingAttachmentBubbleCell.self)
         
         self.tableView.tableFooterView = UIView()
     }
@@ -178,6 +180,10 @@ extension FavouriteMessagesViewController: FavouriteMessagesViewModelViewDelegat
     func favouriteMessagesViewModel(_ viewModel: FavouriteMessagesViewModelType, didUpdateViewState viewSate: FavouriteMessagesViewState) {
         self.render(viewState: viewSate)
     }
+    
+    func favouriteMessagesViewModelDidUpdateDataSource(_ viewModel: FavouriteMessagesViewModelType) {
+        self.tableView.reloadData()
+    }
 }
 
 
@@ -189,14 +195,45 @@ extension FavouriteMessagesViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let favouriteMessagesCell = tableView.dequeueReusableCell(for: indexPath, cellType: FavouriteMessagesViewCell.self)
-
-        let roomBubbleCellData = self.roomBubbleCellDataList[indexPath.row]
+        let favouriteMessagesCell: MXKRoomBubbleTableViewCell & NibReusable & Themable
+//        let showEncryptionBadge = false
+        
+        let cellData = self.roomBubbleCellDataList[indexPath.row]
+        
+        // Sanity check
+        if cellData.conforms(to: MXKRoomBubbleCellDataStoring.self) {
+//            id<MXKRoomBubbleCellDataStoring> bubbleData = (id<MXKRoomBubbleCellDataStoring>)cellData;
+//            if (bubbleData.showAntivirusScanStatus)
+//            {
+            
+            if cellData.isAttachmentWithThumbnail {
+                favouriteMessagesCell = tableView.dequeueReusableCell(for: indexPath, cellType: FavouriteIncomingAttachmentBubbleCell.self)
+            } else {
+                favouriteMessagesCell = tableView.dequeueReusableCell(for: indexPath, cellType: FavouriteIncomingTextMsgBubbleCell.self)
+            }
+            
+            
+        } else {
+            favouriteMessagesCell = tableView.dequeueReusableCell(for: indexPath, cellType: FavouriteIncomingTextMsgBubbleCell.self)
+        }
+        
 
         favouriteMessagesCell.update(theme: self.theme)
-        favouriteMessagesCell.fill(with: roomBubbleCellData)
+        favouriteMessagesCell.render(cellData)
 
         return favouriteMessagesCell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let cellData = self.roomBubbleCellDataList[indexPath.row]
+        
+        if cellData.isAttachmentWithThumbnail {
+            return FavouriteIncomingAttachmentBubbleCell.height(for: cellData, withMaximumWidth: tableView.frame.size.width)
+        } else {
+            return FavouriteIncomingTextMsgBubbleCell.height(for: cellData, withMaximumWidth: tableView.frame.size.width)
+        }
+        
+        return 200
     }
 }
 

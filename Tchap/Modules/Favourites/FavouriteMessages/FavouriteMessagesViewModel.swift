@@ -24,7 +24,7 @@ struct FavouriteEvent {
     let eventInfo: MXTaggedEventInfo
 }
 
-final class FavouriteMessagesViewModel: FavouriteMessagesViewModelType {
+final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType {
     
     // MARK: - Constants
     
@@ -186,4 +186,26 @@ final class FavouriteMessagesViewModel: FavouriteMessagesViewModelType {
         self.viewState = viewState
         self.viewDelegate?.favouriteMessagesViewModel(self, didUpdateViewState: viewState)
     }
+}
+
+// MARK: - MXKDataSourceDelegate
+
+extension FavouriteMessagesViewModel: MXKDataSourceDelegate {
+    
+    func cellViewClass(for cellData: MXKCellData!) -> MXKCellRendering.Type! {
+        return nil
+    }
+    
+    func cellReuseIdentifier(for cellData: MXKCellData!) -> String! {
+        return nil
+    }
+    
+    func dataSource(_ dataSource: MXKDataSource!, didCellChange changes: Any!) {
+        
+    }
+    
+    func dataSource(_ dataSource: MXKDataSource!, didStateChange state: MXKDataSourceState) {
+        self.viewDelegate?.favouriteMessagesViewModelDidUpdateDataSource(self)
+    }
+    
 }
