@@ -62,6 +62,7 @@ final class FavouriteMessagesViewController: UIViewController {
         // Do any additional setup after loading the view.
         
         self.setupViews()
+        self.setupLongPressGestureRecognizer()
         self.activityPresenter = ActivityIndicatorPresenter()
         self.errorPresenter = MXKErrorAlertPresentation()
         
@@ -164,6 +165,19 @@ final class FavouriteMessagesViewController: UIViewController {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
         self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
     }
+    
+    private func setupLongPressGestureRecognizer() {
+        let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
+        gestureRecognizer.delaysTouchesBegan = true
+        self.tableView.addGestureRecognizer(gestureRecognizer)
+    }
+    
+    @objc private func handleLongPress(_ gestureRecognizer: UILongPressGestureRecognizer){
+        guard gestureRecognizer.state == .began else {
+            return
+        }
+        self.viewModel?.process(viewAction: .longPress)
+    }
 
     
     // MARK: - Actions
@@ -176,9 +190,12 @@ final class FavouriteMessagesViewController: UIViewController {
 
 // MARK: - FavouriteMessagesViewModelViewDelegate
 extension FavouriteMessagesViewController: FavouriteMessagesViewModelViewDelegate {
-
-    func favouriteMessagesViewModel(_ viewModel: FavouriteMessagesViewModelType, didUpdateViewState viewSate: FavouriteMessagesViewState) {
-        self.render(viewState: viewSate)
+    func favouriteMessagesViewModel(_ viewModel: FavouriteMessagesViewModelType, didUpdateViewState viewState: FavouriteMessagesViewState) {
+        self.render(viewState: viewState)
+    }
+    
+    func favouriteMessagesViewModel(_ viewModel: FavouriteMessagesViewModelType, didLongPressForEventId eventId: String) {
+        print(eventId)
     }
     
     func favouriteMessagesViewModelDidUpdateDataSource(_ viewModel: FavouriteMessagesViewModelType) {
@@ -229,11 +246,9 @@ extension FavouriteMessagesViewController: UITableViewDataSource {
         
         if cellData.isAttachmentWithThumbnail {
             return FavouriteIncomingAttachmentBubbleCell.height(for: cellData, withMaximumWidth: tableView.frame.size.width)
-        } else {
-            return FavouriteIncomingTextMsgBubbleCell.height(for: cellData, withMaximumWidth: tableView.frame.size.width)
         }
         
-        return 200
+        return UITableView.automaticDimension
     }
 }
 

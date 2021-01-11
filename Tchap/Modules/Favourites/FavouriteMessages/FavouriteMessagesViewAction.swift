@@ -21,6 +21,6 @@ import Foundation
 /// FavouriteMessagesViewController view actions exposed to view model
 enum FavouriteMessagesViewAction {
     case loadData
-//    case complete
+    case longPress
     case cancel
 }

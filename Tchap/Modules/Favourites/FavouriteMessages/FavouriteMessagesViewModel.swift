@@ -43,9 +43,9 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
     private var roomBubbleCellDataList: [RoomBubbleCellData] = []
     private var favouriteMessagesCache: Set<RoomBubbleCellData> = []
     private var favouriteEventIndex = 0
-    private var isPaginating = false
-    private var paginationId = 0
     private var viewState: FavouriteMessagesViewState?
+    private var extraEventsListener: Any?
+    private var eventId: String = ""
     
     // MARK: Public
 
@@ -65,6 +65,8 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
         switch viewAction {
         case .loadData:
             self.loadData()
+        case .longPress:
+            self.viewDelegate?.favouriteMessagesViewModel(self, didLongPressForEventId: self.eventId)
         case .cancel:
             self.coordinatorDelegate?.favouriteMessagesViewModelDidCancel(self)
         }
@@ -82,8 +84,8 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
         switch viewState {
         case .loading:
             canLoadData = false
-        case .loaded(reactionHistoryViewDataList: _):
-            canLoadData = self.roomBubbleCellDataList.count < self.sortedFavouriteEvents.count
+        case .loaded(roomBubbleCellDataList: _):
+            canLoadData = self.roomBubbleCellDataList.count < self.sortedFavouriteEvents.count || self.sortedFavouriteEvents.isEmpty
         default:
             canLoadData = true
         }
@@ -114,6 +116,7 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
             }
             
             self.sortedFavouriteEvents = favouriteEvents.sorted { $0.eventInfo.originServerTs > $1.eventInfo.originServerTs }
+            self.addEventsListener()
         }
         
         if !self.sortedFavouriteEvents.isEmpty {
@@ -185,6 +188,25 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
     private func update(viewState: FavouriteMessagesViewState) {
         self.viewState = viewState
         self.viewDelegate?.favouriteMessagesViewModel(self, didUpdateViewState: viewState)
+    }
+    
+    private func addEventsListener() {
+        if self.extraEventsListener == nil {
+            self.extraEventsListener = self.session.listenToEvents([.taggedEvents]) { (event, direction, roomState) in
+                self.sortedFavouriteEvents.removeAll()
+                self.roomBubbleCellDataList.removeAll()
+                self.favouriteMessagesCache.removeAll()
+                self.favouriteEventIndex = 0
+                
+                self.loadData()
+            }
+        }
+    }
+    
+    private func removeEventsListener() {
+        if self.extraEventsListener != nil {
+            self.extraEventsListener = nil
+        }
     }
 }
 
