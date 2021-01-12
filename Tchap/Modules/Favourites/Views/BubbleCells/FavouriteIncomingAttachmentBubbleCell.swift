@@ -22,10 +22,8 @@ final class FavouriteIncomingAttachmentBubbleCell: MXKRoomIncomingAttachmentBubb
     // MARK: - Public
     
     func update(theme: Theme) {
-        super.customizeRendering()
-        
-        self.userNameLabel.textColor = theme.userNameColors[0]
-        self.messageTextView?.tintColor = theme.tintColor
+        self.userNameLabel.textColor = ThemeService.shared().theme.userNameColors[0]
+        self.messageTextView?.tintColor = ThemeService.shared().theme.tintColor
     }
     
     override class func height(for cellData: MXKCellData!, withMaximumWidth maxWidth: CGFloat) -> CGFloat {
@@ -40,5 +38,12 @@ final class FavouriteIncomingAttachmentBubbleCell: MXKRoomIncomingAttachmentBubb
     
     override class func nib() -> UINib! {
         return UINib(nibName: String(describing: self), bundle: Bundle.main)
+    }
+    
+    override func customizeRendering() {
+        super.customizeRendering()
+        
+        let theme = ThemeService.shared().theme
+        self.update(theme: theme)
     }
 }

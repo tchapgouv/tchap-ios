@@ -151,6 +151,16 @@ internal enum TchapL10n {
   internal static let expiredAccountRequestRenewalEmailButton = TchapL10n.tr("Tchap", "expired_account_request_renewal_email_button")
   /// J’ai renouvelé mon compte
   internal static let expiredAccountResumeButton = TchapL10n.tr("Tchap", "expired_account_resume_button")
+  /// %d messages
+  internal static func favouriteMessagesMultipleSubtitle(_ p1: Int) -> String {
+    return TchapL10n.tr("Tchap", "favourite_messages_multiple_subtitle", p1)
+  }
+  /// %d message
+  internal static func favouriteMessagesOneSubtitle(_ p1: Int) -> String {
+    return TchapL10n.tr("Tchap", "favourite_messages_one_subtitle", p1)
+  }
+  /// Messages favoris
+  internal static let favouriteMessagesTitle = TchapL10n.tr("Tchap", "favourite_messages_title")
   /// Retourner à l'écran de connexion
   internal static let forgotPasswordCheckedEmailDoneAction = TchapL10n.tr("Tchap", "forgot_password_checked_email_done_action")
   /// Votre mot de passe a été réinitialisé. Vous avez été déconnecté de tous les appareils et ne recevez plus de notifications. Pour réactiver les notifications, reconnectez-vous sur chaque appareil.

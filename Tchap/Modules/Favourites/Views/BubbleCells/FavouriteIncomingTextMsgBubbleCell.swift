@@ -22,13 +22,18 @@ final class FavouriteIncomingTextMsgBubbleCell: MXKRoomIncomingTextMsgBubbleCell
     // MARK: - Public
     
     func update(theme: Theme) {
-        super.customizeRendering()
-        
         self.userNameLabel.textColor = theme.userNameColors[0]
         self.messageTextView.tintColor = theme.tintColor
     }
     
     override class func nib() -> UINib! {
         return UINib(nibName: String(describing: self), bundle: Bundle.main)
+    }
+    
+    override func customizeRendering() {
+        super.customizeRendering()
+        
+        let theme = ThemeService.shared().theme
+        self.update(theme: theme)
     }
 }

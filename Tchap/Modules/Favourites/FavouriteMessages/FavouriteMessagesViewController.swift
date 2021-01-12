@@ -37,20 +37,21 @@ final class FavouriteMessagesViewController: UIViewController {
     // MARK: Private
 
     private var viewModel: FavouriteMessagesViewModelType!
-    private var theme: Theme!
+    private var currentStyle: Style!
     private var keyboardAvoider: KeyboardAvoider?
     private var errorPresenter: MXKErrorPresentation!
     private var activityPresenter: ActivityIndicatorPresenter!
     private var isViewAppearedOnce: Bool = false
+    private var titleView: RoomTitleView!
     
     private var roomBubbleCellDataList: [RoomBubbleCellData] = []
 
     // MARK: - Setup
     
-    class func instantiate(with viewModel: FavouriteMessagesViewModelType) -> FavouriteMessagesViewController {
+    class func instantiate(with viewModel: FavouriteMessagesViewModelType, style: Style = Variant1Style.shared) -> FavouriteMessagesViewController {
         let viewController = StoryboardScene.FavouriteMessagesViewController.initialScene.instantiate()
         viewController.viewModel = viewModel
-        viewController.theme = ThemeService.shared().theme
+        viewController.currentStyle = style
         return viewController
     }
     
@@ -60,14 +61,13 @@ final class FavouriteMessagesViewController: UIViewController {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        
+        // Remove back bar button title when pushing a view controller
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+            
         self.setupViews()
         self.setupLongPressGestureRecognizer()
         self.activityPresenter = ActivityIndicatorPresenter()
         self.errorPresenter = MXKErrorAlertPresentation()
-        
-        self.registerThemeServiceDidChangeThemeNotification()
-        self.update(theme: self.theme)
         
         self.viewModel.viewDelegate = self
 
@@ -77,6 +77,7 @@ final class FavouriteMessagesViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        self.userThemeDidChange()
         self.keyboardAvoider?.startAvoiding()
     }
     
@@ -95,28 +96,23 @@ final class FavouriteMessagesViewController: UIViewController {
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.theme.statusBarStyle
+        return self.currentStyle.statusBarStyle
     }
     
     // MARK: - Private
     
-    private func update(theme: Theme) {
-        self.theme = theme
+    private func update(style: Style) {
+        self.currentStyle = style
         
-        self.view.backgroundColor = theme.headerBackgroundColor
-        self.tableView.backgroundColor = theme.backgroundColor
+        self.view.backgroundColor = style.backgroundColor
         
         if let navigationBar = self.navigationController?.navigationBar {
-            theme.applyStyle(onNavigationBar: navigationBar)
+            style.applyStyle(onNavigationBar: navigationBar)
         }
     }
-    
-    private func registerThemeServiceDidChangeThemeNotification() {
-        NotificationCenter.default.addObserver(self, selector: #selector(themeDidChange), name: .themeServiceDidChangeTheme, object: nil)
-    }
-    
-    @objc private func themeDidChange() {
-        self.update(theme: ThemeService.shared().theme)
+
+    private func userThemeDidChange() {
+        self.update(style: self.currentStyle)
     }
     
     private func setupTableView() {
@@ -135,8 +131,9 @@ final class FavouriteMessagesViewController: UIViewController {
             self?.cancelButtonAction()
         }
         
-        self.navigationItem.rightBarButtonItem = cancelBarButtonItem
+        self.navigationItem.leftBarButtonItem = cancelBarButtonItem
         
+        self.setupTitleView()
         self.setupTableView()
     }
 
@@ -144,6 +141,8 @@ final class FavouriteMessagesViewController: UIViewController {
         switch viewState {
         case .loading:
             self.renderLoading()
+        case .sorted:
+            self.updateTitleInfo()
         case .loaded(roomBubbleCellDataList: let roomBubbleCellDataList):
             self.renderLoaded(roomBubbleCellDataList: roomBubbleCellDataList)
         case .error(let error):
@@ -166,13 +165,24 @@ final class FavouriteMessagesViewController: UIViewController {
         self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
     }
     
+    private func setupTitleView() {
+        // Build title view
+        self.titleView = RoomTitleView.instantiate(style: self.currentStyle)
+        self.titleView.fill(roomTitleViewModel: self.viewModel.titleViewModel)
+        self.navigationItem.titleView = titleView
+    }
+    
+    private func updateTitleInfo() {
+        self.titleView.fill(roomTitleViewModel: self.viewModel.titleViewModel)
+    }
+    
     private func setupLongPressGestureRecognizer() {
         let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
         gestureRecognizer.delaysTouchesBegan = true
         self.tableView.addGestureRecognizer(gestureRecognizer)
     }
     
-    @objc private func handleLongPress(_ gestureRecognizer: UILongPressGestureRecognizer){
+    @objc private func handleLongPress(_ gestureRecognizer: UILongPressGestureRecognizer) {
         guard gestureRecognizer.state == .began else {
             return
         }
@@ -234,8 +244,6 @@ extension FavouriteMessagesViewController: UITableViewDataSource {
             favouriteMessagesCell = tableView.dequeueReusableCell(for: indexPath, cellType: FavouriteIncomingTextMsgBubbleCell.self)
         }
         
-
-        favouriteMessagesCell.update(theme: self.theme)
         favouriteMessagesCell.render(cellData)
 
         return favouriteMessagesCell

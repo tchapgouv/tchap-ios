@@ -488,6 +488,8 @@ extension HomeCoordinator: RoomPreviewCoordinatorDelegate {
 // MARK: - FavouriteMessagesCoordinatorDelegate
 extension HomeCoordinator: FavouritesCoordinatorDelegate {
     func favouritesCoordinatorDidComplete(_ coordinator: FavouritesCoordinatorType) {
-    
+        self.navigationRouter.dismissModule(animated: true) { [weak self] in
+            self?.remove(childCoordinator: coordinator)
+        }
     }
 }

@@ -33,6 +33,7 @@ protocol FavouriteMessagesViewModelType {
         
     var viewDelegate: FavouriteMessagesViewModelViewDelegate? { get set }
     var coordinatorDelegate: FavouriteMessagesViewModelCoordinatorDelegate? { get set }
+    var titleViewModel: RoomTitleViewModel { get }
     
     func process(viewAction: FavouriteMessagesViewAction)
 }

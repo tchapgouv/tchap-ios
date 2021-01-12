@@ -47,6 +47,8 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
     private var extraEventsListener: Any?
     private var eventId: String = ""
     
+    var titleViewModel: RoomTitleViewModel
+    
     // MARK: Public
 
     weak var viewDelegate: FavouriteMessagesViewModelViewDelegate?
@@ -57,6 +59,9 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
     init(session: MXSession) {
         self.session = session
         self.favouriteMessagesQueue = DispatchQueue(label: "\(type(of: self)).favouriteMessagesQueue")
+        
+        let subtitle = NSAttributedString(string: TchapL10n.favouriteMessagesOneSubtitle(0), attributes: [.foregroundColor: kColorWarmGrey])
+        self.titleViewModel = RoomTitleViewModel(title: TchapL10n.favouriteMessagesTitle, subtitle: subtitle, roomInfo: nil, avatarImageViewModel: nil)
     }
     
     // MARK: - Public
@@ -118,6 +123,17 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
             self.sortedFavouriteEvents = favouriteEvents.sorted { $0.eventInfo.originServerTs > $1.eventInfo.originServerTs }
             self.addEventsListener()
         }
+        
+        let subtitle: String
+        if self.sortedFavouriteEvents.count > 0 {
+            subtitle = TchapL10n.favouriteMessagesMultipleSubtitle(self.sortedFavouriteEvents.count)
+        } else {
+            subtitle = TchapL10n.favouriteMessagesOneSubtitle(self.sortedFavouriteEvents.count)
+        }
+        
+        self.titleViewModel = RoomTitleViewModel(title: TchapL10n.favouriteMessagesTitle, subtitle: NSAttributedString(string: subtitle, attributes: [.foregroundColor: kColorWarmGrey]), roomInfo: nil, avatarImageViewModel: nil)
+        
+        self.update(viewState: .sorted)
         
         if !self.sortedFavouriteEvents.isEmpty {
             let limit = min(self.favouriteEventIndex + Constants.paginationLimit, self.sortedFavouriteEvents.count - 1)
