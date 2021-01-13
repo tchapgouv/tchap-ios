@@ -73,4 +73,8 @@ extension FavouritesCoordinator: FavouriteMessagesCoordinatorDelegate {
     func favouriteMessagesCoordinatorDidCancel(_ coordinator: FavouriteMessagesCoordinatorType) {
         self.delegate?.favouritesCoordinatorDidComplete(self)
     }
+
+    func favouriteMessagesCoordinator(_ coordinator: FavouriteMessagesCoordinatorType, didShowRoomWithId roomId: String, onEventId eventId: String) {
+        self.delegate?.favouritesCoordinator(self, didShowRoomWithId: roomId, onEventId: eventId)
+    }
 }

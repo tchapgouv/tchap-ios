@@ -21,11 +21,11 @@ import Foundation
 protocol FavouriteMessagesViewModelViewDelegate: class {
     func favouriteMessagesViewModel(_ viewModel: FavouriteMessagesViewModelType, didUpdateViewState viewState: FavouriteMessagesViewState)
     func favouriteMessagesViewModel(_ viewModel: FavouriteMessagesViewModelType, didLongPressForEventId eventId: String)
-    func favouriteMessagesViewModelDidUpdateDataSource(_ viewModel: FavouriteMessagesViewModelType)
 }
 
 protocol FavouriteMessagesViewModelCoordinatorDelegate: class {
     func favouriteMessagesViewModelDidCancel(_ viewModel: FavouriteMessagesViewModelType)
+    func favouriteMessagesViewModel(_ viewModel: FavouriteMessagesViewModelType, didShowRoomWithId roomId: String, onEventId eventId: String)
 }
 
 /// Protocol describing the view model used by `FavouriteMessagesViewController`

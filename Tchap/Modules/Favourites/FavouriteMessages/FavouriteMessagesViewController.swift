@@ -61,11 +61,8 @@ final class FavouriteMessagesViewController: UIViewController {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        // Remove back bar button title when pushing a view controller
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
             
         self.setupViews()
-        self.setupLongPressGestureRecognizer()
         self.activityPresenter = ActivityIndicatorPresenter()
         self.errorPresenter = MXKErrorAlertPresentation()
         
@@ -176,20 +173,6 @@ final class FavouriteMessagesViewController: UIViewController {
         self.titleView.fill(roomTitleViewModel: self.viewModel.titleViewModel)
     }
     
-    private func setupLongPressGestureRecognizer() {
-        let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
-        gestureRecognizer.delaysTouchesBegan = true
-        self.tableView.addGestureRecognizer(gestureRecognizer)
-    }
-    
-    @objc private func handleLongPress(_ gestureRecognizer: UILongPressGestureRecognizer) {
-        guard gestureRecognizer.state == .began else {
-            return
-        }
-        self.viewModel?.process(viewAction: .longPress)
-    }
-
-    
     // MARK: - Actions
 
     private func cancelButtonAction() {
@@ -206,10 +189,6 @@ extension FavouriteMessagesViewController: FavouriteMessagesViewModelViewDelegat
     
     func favouriteMessagesViewModel(_ viewModel: FavouriteMessagesViewModelType, didLongPressForEventId eventId: String) {
         print(eventId)
-    }
-    
-    func favouriteMessagesViewModelDidUpdateDataSource(_ viewModel: FavouriteMessagesViewModelType) {
-        self.tableView.reloadData()
     }
 }
 
@@ -245,6 +224,7 @@ extension FavouriteMessagesViewController: UITableViewDataSource {
         }
         
         favouriteMessagesCell.render(cellData)
+        favouriteMessagesCell.delegate = self
 
         return favouriteMessagesCell
     }
@@ -264,15 +244,34 @@ extension FavouriteMessagesViewController: UITableViewDataSource {
 extension FavouriteMessagesViewController: UITableViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        
+
         guard self.isViewAppearedOnce else {
             return
         }
-        
+
         // Check if a scroll beyond scroll view content occurs
         let distanceFromBottom = scrollView.contentSize.height - scrollView.contentOffset.y
         if distanceFromBottom < scrollView.frame.size.height {
             self.viewModel.process(viewAction: .loadData)
         }
+    }
+}
+
+extension FavouriteMessagesViewController: MXKCellRenderingDelegate {
+    func cell(_ cell: MXKCellRendering!, didRecognizeAction actionIdentifier: String!, userInfo: [AnyHashable: Any]! = [:]) {
+        if let favouriteMessagesCell = cell as? MXKRoomBubbleTableViewCell {
+            let cellData = favouriteMessagesCell.bubbleData
+
+            switch actionIdentifier {
+            case kMXKRoomBubbleCellLongPressOnEvent:
+                print("longpress")
+            default:
+                self.viewModel.process(viewAction: .tapEvent(roomId: (cellData?.roomId)!, eventId: (cellData?.events[0].eventId)!))
+            }
+        }
+    }
+    
+    func cell(_ cell: MXKCellRendering!, shouldDoAction actionIdentifier: String!, userInfo: [AnyHashable: Any]! = [:], defaultValue: Bool) -> Bool {
+        return defaultValue;
     }
 }

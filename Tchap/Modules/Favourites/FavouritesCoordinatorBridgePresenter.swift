@@ -20,6 +20,7 @@ import Foundation
 
 @objc protocol FavouritesCoordinatorBridgePresenterDelegate {
     func favouritesCoordinatorBridgePresenterDelegateDidComplete(_ coordinatorBridgePresenter: FavouritesCoordinatorBridgePresenter)
+    func favouritesCoordinatorBridgePresenterDelegate(_ coordinatorBridgePresenter: FavouritesCoordinatorBridgePresenter, didShowRoomWithId roomId: String, onEventId eventId: String)
 }
 
 /// FavouritesCoordinatorBridgePresenter enables to start FavouritesCoordinator from a view controller.
@@ -80,5 +81,9 @@ final class FavouritesCoordinatorBridgePresenter: NSObject {
 extension FavouritesCoordinatorBridgePresenter: FavouritesCoordinatorDelegate {
     func favouritesCoordinatorDidComplete(_ coordinator: FavouritesCoordinatorType) {
         self.delegate?.favouritesCoordinatorBridgePresenterDelegateDidComplete(self)
+    }
+    
+    func favouritesCoordinator(_ coordinator: FavouritesCoordinatorType, didShowRoomWithId roomId: String, onEventId eventId: String) {
+        self.delegate?.favouritesCoordinatorBridgePresenterDelegate(self, didShowRoomWithId: roomId, onEventId: eventId)
     }
 }

@@ -212,14 +212,16 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
     }
     
     private func showFavourites(animated: Bool) {
-        let favouritesCoordinator = FavouritesCoordinator(session: self.session)
-        favouritesCoordinator.start()
+        let favouriteMessagesCoordinator = FavouriteMessagesCoordinator(session: self.session)
+        favouriteMessagesCoordinator.start()
+        favouriteMessagesCoordinator.delegate = self
         
-        self.add(childCoordinator: favouritesCoordinator)
-        self.navigationRouter.present(favouritesCoordinator, animated: animated)
-        favouritesCoordinator.delegate = self
+        self.add(childCoordinator: favouriteMessagesCoordinator)
+        self.navigationRouter.push(favouriteMessagesCoordinator, animated: animated) {
+            self.remove(childCoordinator: favouriteMessagesCoordinator)
+        }
     }
-    
+
     private func createHomeViewController(with viewControllers: [UIViewController], viewControllersTitles: [String], globalSearchBar: GlobalSearchBar) -> HomeViewController {
         let homeViewController = HomeViewController.instantiate(with: viewControllers, viewControllersTitles: viewControllersTitles, globalSearchBar: globalSearchBar)
         
@@ -486,10 +488,13 @@ extension HomeCoordinator: RoomPreviewCoordinatorDelegate {
 }
 
 // MARK: - FavouriteMessagesCoordinatorDelegate
-extension HomeCoordinator: FavouritesCoordinatorDelegate {
-    func favouritesCoordinatorDidComplete(_ coordinator: FavouritesCoordinatorType) {
-        self.navigationRouter.dismissModule(animated: true) { [weak self] in
-            self?.remove(childCoordinator: coordinator)
-        }
+extension HomeCoordinator: FavouriteMessagesCoordinatorDelegate {
+    func favouriteMessagesCoordinatorDidCancel(_ coordinator: FavouriteMessagesCoordinatorType) {
+        self.navigationRouter.popModule(animated: true)
+    }
+    
+    func favouriteMessagesCoordinator(_ coordinator: FavouriteMessagesCoordinatorType, didShowRoomWithId roomId: String, onEventId eventId: String) {
+        self.navigationRouter.popModule(animated: true)
+        self.showRoom(with: roomId, onEventID: eventId)
     }
 }

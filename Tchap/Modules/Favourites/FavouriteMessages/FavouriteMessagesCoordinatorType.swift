@@ -20,6 +20,7 @@ import Foundation
 
 protocol FavouriteMessagesCoordinatorDelegate: class {
     func favouriteMessagesCoordinatorDidCancel(_ coordinator: FavouriteMessagesCoordinatorType)
+    func favouriteMessagesCoordinator(_ coordinator: FavouriteMessagesCoordinatorType, didShowRoomWithId roomId: String, onEventId eventId: String)
 }
 
 /// `FavouriteMessagesCoordinatorType` is a protocol describing a Coordinator that handle key backup setup passphrase navigation flow.

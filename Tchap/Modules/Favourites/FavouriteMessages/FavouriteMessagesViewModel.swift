@@ -45,7 +45,6 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
     private var favouriteEventIndex = 0
     private var viewState: FavouriteMessagesViewState?
     private var extraEventsListener: Any?
-    private var eventId: String = ""
     
     var titleViewModel: RoomTitleViewModel
     
@@ -71,7 +70,9 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
         case .loadData:
             self.loadData()
         case .longPress:
-            self.viewDelegate?.favouriteMessagesViewModel(self, didLongPressForEventId: self.eventId)
+            self.viewDelegate?.favouriteMessagesViewModel(self, didLongPressForEventId: "")
+        case .tapEvent(let roomId, let eventId):
+            self.coordinatorDelegate?.favouriteMessagesViewModel(self, didShowRoomWithId: roomId, onEventId: eventId)
         case .cancel:
             self.coordinatorDelegate?.favouriteMessagesViewModelDidCancel(self)
         }
@@ -224,26 +225,4 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
             self.extraEventsListener = nil
         }
     }
-}
-
-// MARK: - MXKDataSourceDelegate
-
-extension FavouriteMessagesViewModel: MXKDataSourceDelegate {
-    
-    func cellViewClass(for cellData: MXKCellData!) -> MXKCellRendering.Type! {
-        return nil
-    }
-    
-    func cellReuseIdentifier(for cellData: MXKCellData!) -> String! {
-        return nil
-    }
-    
-    func dataSource(_ dataSource: MXKDataSource!, didCellChange changes: Any!) {
-        
-    }
-    
-    func dataSource(_ dataSource: MXKDataSource!, didStateChange state: MXKDataSourceState) {
-        self.viewDelegate?.favouriteMessagesViewModelDidUpdateDataSource(self)
-    }
-    
 }
