@@ -124,12 +124,6 @@ final class FavouriteMessagesViewController: UIViewController {
     }
     
     private func setupViews() {
-        let cancelBarButtonItem = MXKBarButtonItem(title: VectorL10n.cancel, style: .plain) { [weak self] in
-            self?.cancelButtonAction()
-        }
-        
-        self.navigationItem.leftBarButtonItem = cancelBarButtonItem
-        
         self.setupTitleView()
         self.setupTableView()
     }
@@ -165,7 +159,7 @@ final class FavouriteMessagesViewController: UIViewController {
     private func setupTitleView() {
         // Build title view
         self.titleView = RoomTitleView.instantiate(style: self.currentStyle)
-        self.titleView.fill(roomTitleViewModel: self.viewModel.titleViewModel)
+        self.updateTitleInfo()
         self.navigationItem.titleView = titleView
     }
     
@@ -186,10 +180,6 @@ extension FavouriteMessagesViewController: FavouriteMessagesViewModelViewDelegat
     func favouriteMessagesViewModel(_ viewModel: FavouriteMessagesViewModelType, didUpdateViewState viewState: FavouriteMessagesViewState) {
         self.render(viewState: viewState)
     }
-    
-    func favouriteMessagesViewModel(_ viewModel: FavouriteMessagesViewModelType, didLongPressForEventId eventId: String) {
-        print(eventId)
-    }
 }
 
 
@@ -202,23 +192,11 @@ extension FavouriteMessagesViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let favouriteMessagesCell: MXKRoomBubbleTableViewCell & NibReusable & Themable
-//        let showEncryptionBadge = false
         
         let cellData = self.roomBubbleCellDataList[indexPath.row]
         
-        // Sanity check
-        if cellData.conforms(to: MXKRoomBubbleCellDataStoring.self) {
-//            id<MXKRoomBubbleCellDataStoring> bubbleData = (id<MXKRoomBubbleCellDataStoring>)cellData;
-//            if (bubbleData.showAntivirusScanStatus)
-//            {
-            
-            if cellData.isAttachmentWithThumbnail {
-                favouriteMessagesCell = tableView.dequeueReusableCell(for: indexPath, cellType: FavouriteIncomingAttachmentBubbleCell.self)
-            } else {
-                favouriteMessagesCell = tableView.dequeueReusableCell(for: indexPath, cellType: FavouriteIncomingTextMsgBubbleCell.self)
-            }
-            
-            
+        if cellData.isAttachmentWithThumbnail {
+            favouriteMessagesCell = tableView.dequeueReusableCell(for: indexPath, cellType: FavouriteIncomingAttachmentBubbleCell.self)
         } else {
             favouriteMessagesCell = tableView.dequeueReusableCell(for: indexPath, cellType: FavouriteIncomingTextMsgBubbleCell.self)
         }

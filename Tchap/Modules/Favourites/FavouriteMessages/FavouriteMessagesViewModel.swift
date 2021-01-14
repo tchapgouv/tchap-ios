@@ -69,8 +69,6 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
         switch viewAction {
         case .loadData:
             self.loadData()
-        case .longPress:
-            self.viewDelegate?.favouriteMessagesViewModel(self, didLongPressForEventId: "")
         case .tapEvent(let roomId, let eventId):
             self.coordinatorDelegate?.favouriteMessagesViewModel(self, didShowRoomWithId: roomId, onEventId: eventId)
         case .cancel:

@@ -2581,34 +2581,34 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
         }
 #endif
         
-        NSString *titleKey;
-        if (![self.roomDataSource.room.accountData getTaggedEventInfo:selectedEvent.eventId withTag:kMXRoomTagFavourite])
+        if (!selectedEvent.isState)
         {
-            titleKey = @"room_event_action_favourite";
-        }
-        else
-        {
-            titleKey = @"room_event_action_remove_favourite";
-        }
-        [currentAlert addAction:[UIAlertAction actionWithTitle: NSLocalizedStringFromTable(titleKey, @"Vector", nil)
-          style:UIAlertActionStyleDefault
-        handler:^(UIAlertAction * action) {
-            
-            if (weakSelf)
+            NSString *titleKey;
+            if (![self.roomDataSource.room.accountData getTaggedEventInfo:selectedEvent.eventId withTag:kMXRoomTagFavourite])
             {
-                typeof(self) self = weakSelf;
+                titleKey = @"room_event_action_favourite";
+            }
+            else
+            {
+                titleKey = @"room_event_action_remove_favourite";
+            }
+            [currentAlert addAction:[UIAlertAction actionWithTitle: NSLocalizedStringFromTable(titleKey, @"Vector", nil)
+              style:UIAlertActionStyleDefault
+            handler:^(UIAlertAction * action) {
                 
+                MXWeakify(self);
+                    
                 [self cancelEventSelection];
                 
                 [self startActivityIndicator];
                 
-                if ([titleKey isEqual:@"room_event_action_favourite"])
+                if ([titleKey isEqualToString:@"room_event_action_favourite"])
                 {
                     [self.roomDataSource.room tagEvent:selectedEvent withTag:kMXTaggedEventFavourite andKeywords:nil success:^{
-                        __strong __typeof(weakSelf)self = weakSelf;
+                        MXStrongifyAndReturnIfNil(self);
                         [self stopActivityIndicator];
                     } failure:^(NSError *error) {
-                        __strong __typeof(weakSelf)self = weakSelf;
+                        MXStrongifyAndReturnIfNil(self);
                         [self stopActivityIndicator];
                         
                         NSLog(@"[RoomVC] Tag event (%@) failed", selectedEvent.eventId);
@@ -2619,10 +2619,10 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                 else
                 {
                     [self.roomDataSource.room untagEvent:selectedEvent withTag:kMXTaggedEventFavourite success:^{
-                        __strong __typeof(weakSelf)self = weakSelf;
+                        MXStrongifyAndReturnIfNil(self);
                         [self stopActivityIndicator];
                     } failure:^(NSError *error) {
-                        __strong __typeof(weakSelf)self = weakSelf;
+                        MXStrongifyAndReturnIfNil(self);
                         [self stopActivityIndicator];
                         
                         NSLog(@"[RoomVC] Tag event (%@) failed", selectedEvent.eventId);
@@ -2630,10 +2630,8 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                         [[AppDelegate theDelegate] showErrorAsAlert:error];
                     }];
                 }
-                
-            }
-            
-        }]];
+            }]];
+        }
         
         [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_permalink", @"Vector", nil)
                                                          style:UIAlertActionStyleDefault

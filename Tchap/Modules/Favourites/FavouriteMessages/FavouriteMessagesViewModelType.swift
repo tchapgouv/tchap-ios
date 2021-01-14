@@ -20,7 +20,6 @@ import Foundation
 
 protocol FavouriteMessagesViewModelViewDelegate: class {
     func favouriteMessagesViewModel(_ viewModel: FavouriteMessagesViewModelType, didUpdateViewState viewState: FavouriteMessagesViewState)
-    func favouriteMessagesViewModel(_ viewModel: FavouriteMessagesViewModelType, didLongPressForEventId eventId: String)
 }
 
 protocol FavouriteMessagesViewModelCoordinatorDelegate: class {
