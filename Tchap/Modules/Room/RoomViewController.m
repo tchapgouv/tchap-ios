@@ -2592,43 +2592,47 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
             {
                 titleKey = @"room_event_action_remove_favourite";
             }
-            [currentAlert addAction:[UIAlertAction actionWithTitle: NSLocalizedStringFromTable(titleKey, @"Vector", nil)
+            [currentAlert addAction:[UIAlertAction actionWithTitle: NSLocalizedStringFromTable(titleKey, @"Tchap", nil)
               style:UIAlertActionStyleDefault
             handler:^(UIAlertAction * action) {
                 
-                MXWeakify(self);
+                if (weakSelf)
+                {
+                    typeof(self) self = weakSelf;
                     
-                [self cancelEventSelection];
-                
-                [self startActivityIndicator];
-                
-                if ([titleKey isEqualToString:@"room_event_action_favourite"])
-                {
-                    [self.roomDataSource.room tagEvent:selectedEvent withTag:kMXTaggedEventFavourite andKeywords:nil success:^{
-                        MXStrongifyAndReturnIfNil(self);
-                        [self stopActivityIndicator];
-                    } failure:^(NSError *error) {
-                        MXStrongifyAndReturnIfNil(self);
-                        [self stopActivityIndicator];
-                        
-                        NSLog(@"[RoomVC] Tag event (%@) failed", selectedEvent.eventId);
-                        //Alert user
-                        [[AppDelegate theDelegate] showErrorAsAlert:error];
-                    }];
-                }
-                else
-                {
-                    [self.roomDataSource.room untagEvent:selectedEvent withTag:kMXTaggedEventFavourite success:^{
-                        MXStrongifyAndReturnIfNil(self);
-                        [self stopActivityIndicator];
-                    } failure:^(NSError *error) {
-                        MXStrongifyAndReturnIfNil(self);
-                        [self stopActivityIndicator];
-                        
-                        NSLog(@"[RoomVC] Tag event (%@) failed", selectedEvent.eventId);
-                        //Alert user
-                        [[AppDelegate theDelegate] showErrorAsAlert:error];
-                    }];
+                    [self cancelEventSelection];
+                    
+                    [self startActivityIndicator];
+                    
+                    MXWeakify(self);
+                    if ([titleKey isEqualToString:@"room_event_action_favourite"])
+                    {
+                        [self.roomDataSource.room tagEvent:selectedEvent withTag:kMXTaggedEventFavourite andKeywords:nil success:^{
+                            MXStrongifyAndReturnIfNil(self);
+                            [self stopActivityIndicator];
+                        } failure:^(NSError *error) {
+                            MXStrongifyAndReturnIfNil(self);
+                            [self stopActivityIndicator];
+                            
+                            NSLog(@"[RoomVC] Tag event (%@) failed", selectedEvent.eventId);
+                            //Alert user
+                            [[AppDelegate theDelegate] showErrorAsAlert:error];
+                        }];
+                    }
+                    else
+                    {
+                        [self.roomDataSource.room untagEvent:selectedEvent withTag:kMXTaggedEventFavourite success:^{
+                            MXStrongifyAndReturnIfNil(self);
+                            [self stopActivityIndicator];
+                        } failure:^(NSError *error) {
+                            MXStrongifyAndReturnIfNil(self);
+                            [self stopActivityIndicator];
+                            
+                            NSLog(@"[RoomVC] Tag event (%@) failed", selectedEvent.eventId);
+                            //Alert user
+                            [[AppDelegate theDelegate] showErrorAsAlert:error];
+                        }];
+                    }
                 }
             }]];
         }

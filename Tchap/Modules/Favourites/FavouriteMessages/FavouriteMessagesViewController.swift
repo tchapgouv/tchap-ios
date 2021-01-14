@@ -203,6 +203,7 @@ extension FavouriteMessagesViewController: UITableViewDataSource {
         
         favouriteMessagesCell.render(cellData)
         favouriteMessagesCell.delegate = self
+        favouriteMessagesCell.addTimestampLabel(forComponent: UInt(cellData.mostRecentComponentIndex))
 
         return favouriteMessagesCell
     }

@@ -309,6 +309,10 @@ internal enum TchapL10n {
   internal static let roomCreationRoomTypeTitle = TchapL10n.tr("Tchap", "room_creation_room_type_title")
   /// Nouveau salon
   internal static let roomCreationTitle = TchapL10n.tr("Tchap", "room_creation_title")
+  /// Mettre en favoris
+  internal static let roomEventActionFavourite = TchapL10n.tr("Tchap", "room_event_action_favourite")
+  /// Retirer des favoris
+  internal static let roomEventActionRemoveFavourite = TchapL10n.tr("Tchap", "room_event_action_remove_favourite")
   /// Fichiers
   internal static let roomFilesTabTitle = TchapL10n.tr("Tchap", "room_files_tab_title")
   /// Envoyer un message

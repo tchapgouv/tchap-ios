@@ -315,8 +315,6 @@
 "room_event_action_more" = "More";
 "room_event_action_share" = "Share";
 "room_event_action_permalink" = "Permalink";
-"room_event_action_favourite" = "Favourite";
-"room_event_action_remove_favourite" = "Remove favourite";
 "room_event_action_view_source" = "View Source";
 "room_event_action_view_decrypted_source" = "View Decrypted Source";
 "room_event_action_report" = "Report content";
