@@ -293,3 +293,8 @@
 // MARK: - Device Verification
 "device_verification_title" = "Vérifier l’appareil";
 "device_verification_verified_description" = "Vous avez bien vérifié cet appareil.\n\nLe partage des clés va s'effectuer progressivement. Les messages se déchiffreront au fur à mesure. Cela peut prendre quelques minutes.";
+
+// Favourite messages screen
+"favourite_messages_title" = "Messages favoris";
+"favourite_messages_one_subtitle" = "%d message";
+"favourite_messages_multiple_subtitle" = "%d messages";

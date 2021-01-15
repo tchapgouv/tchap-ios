@@ -151,6 +151,16 @@ internal enum TchapL10n {
   internal static let expiredAccountRequestRenewalEmailButton = TchapL10n.tr("Tchap", "expired_account_request_renewal_email_button")
   /// J’ai renouvelé mon compte
   internal static let expiredAccountResumeButton = TchapL10n.tr("Tchap", "expired_account_resume_button")
+  /// %d messages
+  internal static func favouriteMessagesMultipleSubtitle(_ p1: Int) -> String {
+    return TchapL10n.tr("Tchap", "favourite_messages_multiple_subtitle", p1)
+  }
+  /// %d message
+  internal static func favouriteMessagesOneSubtitle(_ p1: Int) -> String {
+    return TchapL10n.tr("Tchap", "favourite_messages_one_subtitle", p1)
+  }
+  /// Messages favoris
+  internal static let favouriteMessagesTitle = TchapL10n.tr("Tchap", "favourite_messages_title")
   /// Retourner à l'écran de connexion
   internal static let forgotPasswordCheckedEmailDoneAction = TchapL10n.tr("Tchap", "forgot_password_checked_email_done_action")
   /// Votre mot de passe a été réinitialisé. Vous avez été déconnecté de tous les appareils et ne recevez plus de notifications. Pour réactiver les notifications, reconnectez-vous sur chaque appareil.
@@ -299,6 +309,10 @@ internal enum TchapL10n {
   internal static let roomCreationRoomTypeTitle = TchapL10n.tr("Tchap", "room_creation_room_type_title")
   /// Nouveau salon
   internal static let roomCreationTitle = TchapL10n.tr("Tchap", "room_creation_title")
+  /// Mettre en favoris
+  internal static let roomEventActionFavourite = TchapL10n.tr("Tchap", "room_event_action_favourite")
+  /// Retirer des favoris
+  internal static let roomEventActionRemoveFavourite = TchapL10n.tr("Tchap", "room_event_action_remove_favourite")
   /// Fichiers
   internal static let roomFilesTabTitle = TchapL10n.tr("Tchap", "room_files_tab_title")
   /// Envoyer un message

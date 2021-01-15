@@ -60,6 +60,7 @@ internal enum Asset {
     internal static let notificationsOff = ImageAsset(name: "notificationsOff")
     internal static let pin = ImageAsset(name: "pin")
     internal static let unpin = ImageAsset(name: "unpin")
+    internal static let iconPageFavoris = ImageAsset(name: "icon_page_favoris")
     internal static let closeBanner = ImageAsset(name: "close_banner")
     internal static let importFilesButton = ImageAsset(name: "import_files_button")
     internal static let keyBackupLogo = ImageAsset(name: "key_backup_logo")
