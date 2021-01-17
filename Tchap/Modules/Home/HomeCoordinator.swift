@@ -60,7 +60,7 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
         self.userService = UserService(session: self.session)
         self.inviteService = InviteService(session: self.session)
         self.thirdPartyIDResolver = ThirdPartyIDResolver(credentials: session.matrixRestClient.credentials)
-        self.identityServer = self.session.matrixRestClient.identityServer
+        self.identityServer = session.matrixRestClient.identityServer ?? session.matrixRestClient.homeserver
         self.activityIndicatorPresenter = ActivityIndicatorPresenter()
     }
     
