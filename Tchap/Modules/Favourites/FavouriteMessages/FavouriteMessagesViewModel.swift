@@ -40,8 +40,8 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
     private let favouriteMessagesQueue: DispatchQueue
     
     private var sortedFavouriteEvents: [FavouriteEvent] = []
-    private var roomBubbleCellDataList: [RoomBubbleCellData] = []
-    private var favouriteMessagesCache: Set<RoomBubbleCellData> = []
+    private var favouriteMessagesDataList: [FavouriteMessagesBubbleCellData] = []
+    private var favouriteMessagesCache: Set<FavouriteMessagesBubbleCellData> = []
     private var favouriteEventIndex = 0
     private var viewState: FavouriteMessagesViewState?
     private var extraEventsListener: Any?
@@ -89,7 +89,7 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
         case .loading:
             canLoadData = false
         case .loaded(roomBubbleCellDataList: _):
-            canLoadData = self.roomBubbleCellDataList.count < self.sortedFavouriteEvents.count || self.sortedFavouriteEvents.isEmpty
+            canLoadData = self.favouriteMessagesDataList.count < self.sortedFavouriteEvents.count || self.sortedFavouriteEvents.isEmpty
         default:
             canLoadData = true
         }
@@ -137,9 +137,7 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
         if !self.sortedFavouriteEvents.isEmpty {
             let limit = min(self.favouriteEventIndex + Constants.paginationLimit, self.sortedFavouriteEvents.count - 1)
             let roomDataSourceManager = MXKRoomDataSourceManager.sharedManager(forMatrixSession: self.session)
-            
-            //            dispatch_group_t group = dispatch_group_create();
-            
+
             for i in self.favouriteEventIndex...limit {
                 let favouriteEvent = self.sortedFavouriteEvents[i]
                 self.favouriteEventIndex += 1
@@ -166,7 +164,7 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
                     // Check whether the user knows this room to create the room data source if it doesn't exist.
                     roomDataSourceManager?.roomDataSource(forRoom: favouriteEvent.roomId, create: (self.session.room(withRoomId: favouriteEvent.roomId) != nil), onComplete: { roomDataSource in
                         
-                        if roomDataSource != nil, let cellData = RoomBubbleCellData(event: event, andRoomState: roomDataSource?.roomState, andRoomDataSource: roomDataSource) {
+                        if roomDataSource != nil, let cellData = FavouriteMessagesBubbleCellData(event: event, andRoomState: roomDataSource?.roomState, andRoomDataSource: roomDataSource) {
                             self.process(cellData: cellData)
                         }
                     })
@@ -180,14 +178,14 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
         }
     }
     
-    private func process(cellData: RoomBubbleCellData) {
+    private func process(cellData: FavouriteMessagesBubbleCellData) {
         self.favouriteMessagesQueue.async {
-            let nextEventId = self.sortedFavouriteEvents[min(self.roomBubbleCellDataList.count, self.sortedFavouriteEvents.count - 1)].eventId
+            let nextEventId = self.sortedFavouriteEvents[min(self.favouriteMessagesDataList.count, self.sortedFavouriteEvents.count - 1)].eventId
             
             if cellData.events[0].eventId == nextEventId {
-                self.roomBubbleCellDataList.append(cellData)
+                self.favouriteMessagesDataList.append(cellData)
                 DispatchQueue.main.async {
-                    self.update(viewState: .loaded(self.roomBubbleCellDataList))
+                    self.update(viewState: .loaded(self.favouriteMessagesDataList))
                 }
                 
                 self.favouriteMessagesCache.remove(cellData)
@@ -209,7 +207,7 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
         if self.extraEventsListener == nil {
             self.extraEventsListener = self.session.listenToEvents([.taggedEvents]) { (event, direction, roomState) in
                 self.sortedFavouriteEvents.removeAll()
-                self.roomBubbleCellDataList.removeAll()
+                self.favouriteMessagesDataList.removeAll()
                 self.favouriteMessagesCache.removeAll()
                 self.favouriteEventIndex = 0
                 

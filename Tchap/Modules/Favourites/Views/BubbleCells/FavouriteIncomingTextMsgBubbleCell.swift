@@ -19,11 +19,20 @@ import Reusable
 
 final class FavouriteIncomingTextMsgBubbleCell: MXKRoomIncomingTextMsgBubbleCell, NibReusable, Themable {
     
+    // MARK: Outlets
+    
+    @IBOutlet private weak var titleView: UIView!
+    @IBOutlet private weak var roomLabel: UILabel!
+    @IBOutlet private weak var dateLabel: UILabel!
+    @IBOutlet private weak var separatorView: UIView!
+    
     // MARK: - Public
     
     func update(theme: Theme) {
-        self.userNameLabel.textColor = theme.userNameColors[0]
-        self.messageTextView.tintColor = theme.tintColor
+        self.userNameLabel?.textColor = theme.userNameColors[0]
+        self.dateLabel?.textColor = theme.tintColor
+        self.separatorView?.backgroundColor = theme.tintColor
+        self.messageTextView?.tintColor = theme.tintColor
     }
     
     override class func nib() -> UINib! {
@@ -35,5 +44,16 @@ final class FavouriteIncomingTextMsgBubbleCell: MXKRoomIncomingTextMsgBubbleCell
         
         let theme = ThemeService.shared().theme
         self.update(theme: theme)
+    }
+    
+    override func render(_ cellData: MXKCellData!) {
+        super.render(cellData)
+        
+        guard let favouriteMessagesData = bubbleData as? FavouriteMessagesBubbleCellData else {
+            fatalError("FavouriteMessagesBubbleCellData is not of the expected class")
+        }
+        
+        self.roomLabel.text = favouriteMessagesData.roomDisplayname
+        self.dateLabel.text = favouriteMessagesData.eventFormatter.dateString(from: bubbleData.date, withTime: false)?.uppercased()
     }
 }

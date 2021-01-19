@@ -1743,6 +1743,8 @@
 		8E021F6B25A77B2F00E3F983 /* FavouriteMessagesViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E99022A2583BDAB00D0456B /* FavouriteMessagesViewAction.swift */; };
 		8E021F6C25A77B3200E3F983 /* FavouriteMessagesViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E99022B2583BDAB00D0456B /* FavouriteMessagesViewModelType.swift */; };
 		8E021F6D25A77B3500E3F983 /* FavouriteMessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E99022C2583BDAB00D0456B /* FavouriteMessagesViewController.swift */; };
+		8E0E456025B64684002A66D6 /* FavouriteMessagesBubbleCellData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0E455F25B64684002A66D6 /* FavouriteMessagesBubbleCellData.swift */; };
+		8E0E456125B64684002A66D6 /* FavouriteMessagesBubbleCellData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0E455F25B64684002A66D6 /* FavouriteMessagesBubbleCellData.swift */; };
 		8E99022D2583BDAB00D0456B /* FavouritesCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9902212583BDAB00D0456B /* FavouritesCoordinator.swift */; };
 		8E99022E2583BDAB00D0456B /* FavouritesCoordinatorBridgePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9902222583BDAB00D0456B /* FavouritesCoordinatorBridgePresenter.swift */; };
 		8E99022F2583BDAB00D0456B /* FavouritesCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9902232583BDAB00D0456B /* FavouritesCoordinatorType.swift */; };
@@ -2896,6 +2898,7 @@
 		8E021F5425A60E6400E3F983 /* FavouriteIncomingTextMsgBubbleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouriteIncomingTextMsgBubbleCell.swift; sourceTree = "<group>"; };
 		8E021F5A25A7482400E3F983 /* FavouriteIncomingAttachmentBubbleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouriteIncomingAttachmentBubbleCell.swift; sourceTree = "<group>"; };
 		8E021F5C25A7483D00E3F983 /* FavouriteIncomingAttachmentBubbleCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FavouriteIncomingAttachmentBubbleCell.xib; sourceTree = "<group>"; };
+		8E0E455F25B64684002A66D6 /* FavouriteMessagesBubbleCellData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouriteMessagesBubbleCellData.swift; sourceTree = "<group>"; };
 		8E9902212583BDAB00D0456B /* FavouritesCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavouritesCoordinator.swift; sourceTree = "<group>"; };
 		8E9902222583BDAB00D0456B /* FavouritesCoordinatorBridgePresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavouritesCoordinatorBridgePresenter.swift; sourceTree = "<group>"; };
 		8E9902232583BDAB00D0456B /* FavouritesCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavouritesCoordinatorType.swift; sourceTree = "<group>"; };
@@ -5349,6 +5352,7 @@
 				8E99022A2583BDAB00D0456B /* FavouriteMessagesViewAction.swift */,
 				8E99022B2583BDAB00D0456B /* FavouriteMessagesViewModelType.swift */,
 				8E99022C2583BDAB00D0456B /* FavouriteMessagesViewController.swift */,
+				8E0E455F25B64684002A66D6 /* FavouriteMessagesBubbleCellData.swift */,
 			);
 			path = FavouriteMessages;
 			sourceTree = "<group>";
@@ -7727,6 +7731,7 @@
 				B12209D623855059004D069C /* SerializationService.swift in Sources */,
 				02FAE59A23B4C41600DE73D8 /* EmojiPickerCoordinator.swift in Sources */,
 				02FAE4AC23B4B61700DE73D8 /* KeyBackupSetupSuccessFromRecoveryKeyViewController.swift in Sources */,
+				8E0E456025B64684002A66D6 /* FavouriteMessagesBubbleCellData.swift in Sources */,
 				02FAE4C223B4B61700DE73D8 /* KeyBackupSetupPassphraseViewModelType.swift in Sources */,
 				B1C4646021B6DD42005F4D53 /* RoomService.swift in Sources */,
 				B1104DBF237B124600687B3A /* ChangePasswordService.swift in Sources */,
@@ -8594,6 +8599,7 @@
 				02DFEBC321C07370009B6F15 /* RoomOutgoingEncryptedAttachmentWithPaginationTitleBubbleCell.m in Sources */,
 				02FAE59B23B4C41600DE73D8 /* EmojiPickerCoordinator.swift in Sources */,
 				02FAE4AD23B4B61700DE73D8 /* KeyBackupSetupSuccessFromRecoveryKeyViewController.swift in Sources */,
+				8E0E456125B64684002A66D6 /* FavouriteMessagesBubbleCellData.swift in Sources */,
 				02DFEBC421C07370009B6F15 /* RoomOutgoingTextMsgBubbleCell.m in Sources */,
 				02FAE4C323B4B61700DE73D8 /* KeyBackupSetupPassphraseViewModelType.swift in Sources */,
 				02DFEBC521C07370009B6F15 /* RoomIncomingEncryptedAttachmentWithPaginationTitleBubbleCell.m in Sources */,
