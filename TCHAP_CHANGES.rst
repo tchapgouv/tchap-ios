@@ -1,3 +1,12 @@
+Changes in Tchap 1.2.0 (2021-xx-xx)
+===================================================
+
+Improvements:
+ *
+
+Bug Fixes:
+ * Crash on missing identity server information #357
+
 Changes in Tchap 1.1.1 (2020-12-18)
 ===================================================
 
