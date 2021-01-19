@@ -1745,6 +1745,10 @@
 		8E021F6D25A77B3500E3F983 /* FavouriteMessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E99022C2583BDAB00D0456B /* FavouriteMessagesViewController.swift */; };
 		8E0E456025B64684002A66D6 /* FavouriteMessagesBubbleCellData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0E455F25B64684002A66D6 /* FavouriteMessagesBubbleCellData.swift */; };
 		8E0E456125B64684002A66D6 /* FavouriteMessagesBubbleCellData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0E455F25B64684002A66D6 /* FavouriteMessagesBubbleCellData.swift */; };
+		8E0E457325B71367002A66D6 /* FavouriteAttachmentAntivirusScanStatusBubbleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0E457225B71367002A66D6 /* FavouriteAttachmentAntivirusScanStatusBubbleCell.swift */; };
+		8E0E457425B71367002A66D6 /* FavouriteAttachmentAntivirusScanStatusBubbleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0E457225B71367002A66D6 /* FavouriteAttachmentAntivirusScanStatusBubbleCell.swift */; };
+		8E0E457625B7138D002A66D6 /* FavouriteAttachmentAntivirusScanStatusBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8E0E457525B7138D002A66D6 /* FavouriteAttachmentAntivirusScanStatusBubbleCell.xib */; };
+		8E0E457725B7138D002A66D6 /* FavouriteAttachmentAntivirusScanStatusBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8E0E457525B7138D002A66D6 /* FavouriteAttachmentAntivirusScanStatusBubbleCell.xib */; };
 		8E99022D2583BDAB00D0456B /* FavouritesCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9902212583BDAB00D0456B /* FavouritesCoordinator.swift */; };
 		8E99022E2583BDAB00D0456B /* FavouritesCoordinatorBridgePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9902222583BDAB00D0456B /* FavouritesCoordinatorBridgePresenter.swift */; };
 		8E99022F2583BDAB00D0456B /* FavouritesCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9902232583BDAB00D0456B /* FavouritesCoordinatorType.swift */; };
@@ -2899,6 +2903,8 @@
 		8E021F5A25A7482400E3F983 /* FavouriteIncomingAttachmentBubbleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouriteIncomingAttachmentBubbleCell.swift; sourceTree = "<group>"; };
 		8E021F5C25A7483D00E3F983 /* FavouriteIncomingAttachmentBubbleCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FavouriteIncomingAttachmentBubbleCell.xib; sourceTree = "<group>"; };
 		8E0E455F25B64684002A66D6 /* FavouriteMessagesBubbleCellData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouriteMessagesBubbleCellData.swift; sourceTree = "<group>"; };
+		8E0E457225B71367002A66D6 /* FavouriteAttachmentAntivirusScanStatusBubbleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouriteAttachmentAntivirusScanStatusBubbleCell.swift; sourceTree = "<group>"; };
+		8E0E457525B7138D002A66D6 /* FavouriteAttachmentAntivirusScanStatusBubbleCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FavouriteAttachmentAntivirusScanStatusBubbleCell.xib; sourceTree = "<group>"; };
 		8E9902212583BDAB00D0456B /* FavouritesCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavouritesCoordinator.swift; sourceTree = "<group>"; };
 		8E9902222583BDAB00D0456B /* FavouritesCoordinatorBridgePresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavouritesCoordinatorBridgePresenter.swift; sourceTree = "<group>"; };
 		8E9902232583BDAB00D0456B /* FavouritesCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavouritesCoordinatorType.swift; sourceTree = "<group>"; };
@@ -5325,6 +5331,8 @@
 				8E021F5225A60C9200E3F983 /* FavouriteIncomingTextMsgBubbleCell.xib */,
 				8E021F5A25A7482400E3F983 /* FavouriteIncomingAttachmentBubbleCell.swift */,
 				8E021F5C25A7483D00E3F983 /* FavouriteIncomingAttachmentBubbleCell.xib */,
+				8E0E457225B71367002A66D6 /* FavouriteAttachmentAntivirusScanStatusBubbleCell.swift */,
+				8E0E457525B7138D002A66D6 /* FavouriteAttachmentAntivirusScanStatusBubbleCell.xib */,
 			);
 			path = BubbleCells;
 			sourceTree = "<group>";
@@ -6839,6 +6847,7 @@
 				026154DF236C7D930045459E /* agent.elysee_2019_10.cer in Resources */,
 				B1C4644A21B67F1E005F4D53 /* RoomCreationViewController.storyboard in Resources */,
 				020DF999214BE467003DFBA4 /* RoomOutgoingAttachmentBubbleCell.xib in Resources */,
+				8E0E457625B7138D002A66D6 /* FavouriteAttachmentAntivirusScanStatusBubbleCell.xib in Resources */,
 				0250C5752122B68000034691 /* third_party_licenses.html in Resources */,
 				02FAE43623B2B98900DE73D8 /* SlidingModalContainerView.xib in Resources */,
 				02FAE5E223B4C41600DE73D8 /* EditHistoryHeaderView.xib in Resources */,
@@ -7089,6 +7098,7 @@
 				02DFEC8C21C07370009B6F15 /* WelcomeViewController.storyboard in Resources */,
 				02DFEC8D21C07370009B6F15 /* PreviewView.xib in Resources */,
 				02C3F20D24AF75100086ACA5 /* SecureBackupSetupIntroViewController.storyboard in Resources */,
+				8E0E457725B7138D002A66D6 /* FavouriteAttachmentAntivirusScanStatusBubbleCell.xib in Resources */,
 				02DFEC8E21C07370009B6F15 /* RoomOutgoingEncryptedTextMsgBubbleCell.xib in Resources */,
 				02DFEC8F21C07370009B6F15 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.xib in Resources */,
 				02FAE5E323B4C41600DE73D8 /* EditHistoryHeaderView.xib in Resources */,
@@ -7690,6 +7700,7 @@
 				B15AB2AA215BF63A007F5405 /* ForgotPasswordFormViewModelType.swift in Sources */,
 				02388E7524A2AF7A00F3B485 /* KeyVerificationSelfVerifyStartCoordinator.swift in Sources */,
 				020DF978214BE467003DFBA4 /* RoomMembershipExpandedBubbleCell.m in Sources */,
+				8E0E457325B71367002A66D6 /* FavouriteAttachmentAntivirusScanStatusBubbleCell.swift in Sources */,
 				8E9902362583BDAB00D0456B /* FavouriteMessagesViewModelType.swift in Sources */,
 				02FAE43023B2B98900DE73D8 /* SlidingModalEmptyViewController.swift in Sources */,
 				020DF977214BE467003DFBA4 /* RoomMembershipWithPaginationTitleBubbleCell.m in Sources */,
@@ -8558,6 +8569,7 @@
 				8E021F6725A77B2400E3F983 /* FavouriteMessagesViewModel.swift in Sources */,
 				02DFEBB421C07370009B6F15 /* ActivityIndicatorView.swift in Sources */,
 				02FAE43123B2B98900DE73D8 /* SlidingModalEmptyViewController.swift in Sources */,
+				8E0E457425B71367002A66D6 /* FavouriteAttachmentAntivirusScanStatusBubbleCell.swift in Sources */,
 				B12209DD23855102004D069C /* AppVersionUpdateViewModel.swift in Sources */,
 				02388E2624A2AF7900F3B485 /* KeyVerificationDataLoadingCoordinatorType.swift in Sources */,
 				024CD940257447A300629DAA /* Configurable.swift in Sources */,

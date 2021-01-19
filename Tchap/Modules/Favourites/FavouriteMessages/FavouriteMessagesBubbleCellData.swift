@@ -33,6 +33,13 @@ class FavouriteMessagesBubbleCellData: RoomBubbleCellData {
         if !roomDataSource.room.isDirect || roomDataSource.mxSession.myUserId == event.sender {
             self.roomDisplayname = roomDataSource.room.summary.displayname
         }
+        
+        for bubbleComponent in self.bubbleComponents {
+            if let scanManager = self.mxSession.scanManager, event.isContentScannable() {
+                scanManager.scanEventIfNeeded(event)
+                bubbleComponent.eventScan = scanManager.eventScan(withId: event.eventId)
+            }
+        }
     }
 
 }

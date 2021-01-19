@@ -119,6 +119,7 @@ final class FavouriteMessagesViewController: UIViewController {
         self.tableView.estimatedRowHeight = Constants.estimatedRowHeight
         self.tableView.register(cellType: FavouriteIncomingTextMsgBubbleCell.self)
         self.tableView.register(cellType: FavouriteIncomingAttachmentBubbleCell.self)
+        self.tableView.register(cellType: FavouriteAttachmentAntivirusScanStatusBubbleCell.self)
         
         self.tableView.tableFooterView = UIView()
     }
@@ -195,7 +196,9 @@ extension FavouriteMessagesViewController: UITableViewDataSource {
         
         let cellData = self.roomBubbleCellDataList[indexPath.row]
         
-        if cellData.isAttachmentWithThumbnail {
+        if cellData.showAntivirusScanStatus {
+            favouriteMessagesCell = tableView.dequeueReusableCell(for: indexPath, cellType: FavouriteAttachmentAntivirusScanStatusBubbleCell.self)
+        } else if cellData.isAttachmentWithThumbnail {
             favouriteMessagesCell = tableView.dequeueReusableCell(for: indexPath, cellType: FavouriteIncomingAttachmentBubbleCell.self)
         } else {
             favouriteMessagesCell = tableView.dequeueReusableCell(for: indexPath, cellType: FavouriteIncomingTextMsgBubbleCell.self)
