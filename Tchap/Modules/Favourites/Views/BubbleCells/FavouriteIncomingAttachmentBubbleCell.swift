@@ -30,6 +30,7 @@ class FavouriteIncomingAttachmentBubbleCell: MXKRoomIncomingAttachmentBubbleCell
     
     func update(theme: Theme) {
         self.userNameLabel.textColor = ThemeService.shared().theme.userNameColors[0]
+        self.roomLabel?.textColor = theme.textSecondaryColor
         self.dateLabel?.textColor = theme.tintColor
         self.separatorView?.backgroundColor = theme.tintColor
         self.messageTextView?.tintColor = ThemeService.shared().theme.tintColor

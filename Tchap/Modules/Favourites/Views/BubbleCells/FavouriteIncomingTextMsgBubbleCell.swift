@@ -30,6 +30,7 @@ final class FavouriteIncomingTextMsgBubbleCell: MXKRoomIncomingTextMsgBubbleCell
     
     func update(theme: Theme) {
         self.userNameLabel?.textColor = theme.userNameColors[0]
+        self.roomLabel?.textColor = theme.textSecondaryColor
         self.dateLabel?.textColor = theme.tintColor
         self.separatorView?.backgroundColor = theme.tintColor
         self.messageTextView?.tintColor = theme.tintColor

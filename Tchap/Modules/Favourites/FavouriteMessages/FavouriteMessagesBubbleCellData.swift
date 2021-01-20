@@ -1,5 +1,5 @@
 // 
-// Copyright 2020 New Vector Ltd
+// Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -34,10 +34,12 @@ class FavouriteMessagesBubbleCellData: RoomBubbleCellData {
             self.roomDisplayname = roomDataSource.room.summary.displayname
         }
         
-        for bubbleComponent in self.bubbleComponents {
-            if let scanManager = self.mxSession.scanManager, event.isContentScannable() {
-                scanManager.scanEventIfNeeded(event)
-                bubbleComponent.eventScan = scanManager.eventScan(withId: event.eventId)
+        if let scanManager = self.mxSession.scanManager {
+            for bubbleComponent in self.bubbleComponents {
+                if event.isContentScannable() {
+                    scanManager.scanEventIfNeeded(event)
+                    bubbleComponent.eventScan = scanManager.eventScan(withId: event.eventId)
+                }
             }
         }
     }
