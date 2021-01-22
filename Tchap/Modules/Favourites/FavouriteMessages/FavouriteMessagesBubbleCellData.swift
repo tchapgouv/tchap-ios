@@ -19,9 +19,11 @@ import Foundation
 class FavouriteMessagesBubbleCellData: RoomBubbleCellData {
     
     
-    // MARK: Public
+    // MARK: - Public
     
     var roomDisplayname: String?
+    
+    // MARK: - Setup
     
     override init() {
         super.init()
@@ -30,17 +32,8 @@ class FavouriteMessagesBubbleCellData: RoomBubbleCellData {
     required init!(event: MXEvent!, andRoomState roomState: MXRoomState!, andRoomDataSource roomDataSource: MXKRoomDataSource!) {
         super.init(event: event, andRoomState: roomState, andRoomDataSource: roomDataSource)
         
-        if !roomDataSource.room.isDirect || roomDataSource.mxSession.myUserId == event.sender {
+        if !roomDataSource.room.isDirect || self.mxSession.myUserId == event.sender {
             self.roomDisplayname = roomDataSource.room.summary.displayname
-        }
-        
-        if let scanManager = self.mxSession.scanManager {
-            for bubbleComponent in self.bubbleComponents {
-                if event.isContentScannable() {
-                    scanManager.scanEventIfNeeded(event)
-                    bubbleComponent.eventScan = scanManager.eventScan(withId: event.eventId)
-                }
-            }
         }
     }
 

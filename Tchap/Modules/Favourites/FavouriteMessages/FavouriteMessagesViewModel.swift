@@ -42,7 +42,7 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
     private var sortedFavouriteEvents: [FavouriteEvent] = []
     private var favouriteMessagesDataList: [FavouriteMessagesBubbleCellData] = []
     private var favouriteEventIndex = 0
-    private var completeOperations = 0
+    private var pendingOperations = 0
     private var viewState: FavouriteMessagesViewState?
     private var extraEventsListener: Any?
     
@@ -136,7 +136,7 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
             let limit = min(self.favouriteEventIndex + Constants.paginationLimit, self.sortedFavouriteEvents.count - 1)
             let roomDataSourceManager = MXKRoomDataSourceManager.sharedManager(forMatrixSession: self.session)
             
-            self.completeOperations = self.favouriteEventIndex
+            self.pendingOperations = limit - self.favouriteEventIndex + 1
             var favouriteMessagesCache: [FavouriteMessagesBubbleCellData] = []
 
             for i in self.favouriteEventIndex...limit {
@@ -151,7 +151,7 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
                     }
                     
                     guard let event = event else {
-                        self.process(cellDatas: favouriteMessagesCache, limit: limit)
+                        self.process(cellDatas: favouriteMessagesCache)
                         NSLog("[FavouriteMessagesViewModel] fetchEvent: MXSession.event method returned successfully with no event.")
                         return
                     }
@@ -168,25 +168,24 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
                             favouriteMessagesCache.append(cellData)
                         }
                         
-                        self.process(cellDatas: favouriteMessagesCache, limit: limit)
+                        self.process(cellDatas: favouriteMessagesCache)
                     })
                 }, failure: { [weak self] error in
                     guard let self = self else {
                         return
                     }
                     
-                    self.process(cellDatas: favouriteMessagesCache, limit: limit)
+                    self.process(cellDatas: favouriteMessagesCache)
                 })
             }
         }
     }
     
-    private func process(cellDatas: [FavouriteMessagesBubbleCellData], limit: Int) {
-        if self.completeOperations == limit, !cellDatas.isEmpty {
+    private func process(cellDatas: [FavouriteMessagesBubbleCellData]) {
+        self.pendingOperations -= 1
+        if self.pendingOperations == 0, !cellDatas.isEmpty {
             self.favouriteMessagesDataList.append(contentsOf: cellDatas.sorted { $0.events[0].originServerTs > $1.events[0].originServerTs })
             self.update(viewState: .loaded(self.favouriteMessagesDataList))
-        } else {
-            self.completeOperations += 1
         }
     }
     

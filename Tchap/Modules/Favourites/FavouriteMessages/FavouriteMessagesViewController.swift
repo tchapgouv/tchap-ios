@@ -168,6 +168,17 @@ final class FavouriteMessagesViewController: UIViewController {
         self.titleView.fill(roomTitleViewModel: self.viewModel.titleViewModel)
     }
     
+    private func scanBubbleDataIfNeeded(cellData: RoomBubbleCellData) {
+        if let scanManager = cellData.mxSession.scanManager {
+            for bubbleComponent in cellData.bubbleComponents {
+                if let event = bubbleComponent.event, event.isContentScannable() {
+                    scanManager.scanEventIfNeeded(event)
+                    bubbleComponent.eventScan = scanManager.eventScan(withId: event.eventId)
+                }
+            }
+        }
+    }
+    
     // MARK: - Actions
 
     private func cancelButtonAction() {
@@ -195,6 +206,9 @@ extension FavouriteMessagesViewController: UITableViewDataSource {
         let favouriteMessagesCell: MXKRoomBubbleTableViewCell & NibReusable & Themable
         
         let cellData = self.roomBubbleCellDataList[indexPath.row]
+
+        // Launch an antivirus scan on events contained in bubble data if needed
+        self.scanBubbleDataIfNeeded(cellData: cellData)
         
         if cellData.showAntivirusScanStatus {
             favouriteMessagesCell = tableView.dequeueReusableCell(for: indexPath, cellType: FavouriteAttachmentAntivirusScanStatusBubbleCell.self)
