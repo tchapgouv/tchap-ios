@@ -42,6 +42,7 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
     private var sortedFavouriteEvents: [FavouriteEvent] = []
     private var favouriteMessagesDataList: [FavouriteMessagesBubbleCellData] = []
     private var favouriteEventIndex = 0
+    private var completeOperations = 0
     private var viewState: FavouriteMessagesViewState?
     private var extraEventsListener: Any?
     
@@ -85,7 +86,7 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
         let canLoadData: Bool
         
         switch viewState {
-        case .loading:
+        case .loading, .sorted:
             canLoadData = false
         case .loaded(roomBubbleCellDataList: _):
             canLoadData = self.favouriteMessagesDataList.count < self.sortedFavouriteEvents.count || self.sortedFavouriteEvents.isEmpty
@@ -135,7 +136,7 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
             let limit = min(self.favouriteEventIndex + Constants.paginationLimit, self.sortedFavouriteEvents.count - 1)
             let roomDataSourceManager = MXKRoomDataSourceManager.sharedManager(forMatrixSession: self.session)
             
-            var completeOperations = self.favouriteEventIndex
+            self.completeOperations = self.favouriteEventIndex
             var favouriteMessagesCache: [FavouriteMessagesBubbleCellData] = []
 
             for i in self.favouriteEventIndex...limit {
@@ -150,6 +151,7 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
                     }
                     
                     guard let event = event else {
+                        self.process(cellDatas: favouriteMessagesCache, limit: limit)
                         NSLog("[FavouriteMessagesViewModel] fetchEvent: MXSession.event method returned successfully with no event.")
                         return
                     }
@@ -166,30 +168,26 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
                             favouriteMessagesCache.append(cellData)
                         }
                         
-                        if completeOperations == limit {
-                            self.process(cellDatas: favouriteMessagesCache)
-                        } else {
-                            completeOperations += 1
-                        }
+                        self.process(cellDatas: favouriteMessagesCache, limit: limit)
                     })
                 }, failure: { [weak self] error in
                     guard let self = self else {
                         return
                     }
                     
-                    if completeOperations == limit {
-                        self.process(cellDatas: favouriteMessagesCache)
-                    } else {
-                        completeOperations += 1
-                    }
+                    self.process(cellDatas: favouriteMessagesCache, limit: limit)
                 })
             }
         }
     }
     
-    private func process(cellDatas: [FavouriteMessagesBubbleCellData]) {
-        self.favouriteMessagesDataList.append(contentsOf: cellDatas.sorted { $0.events[0].originServerTs > $1.events[0].originServerTs })
-        self.update(viewState: .loaded(self.favouriteMessagesDataList))
+    private func process(cellDatas: [FavouriteMessagesBubbleCellData], limit: Int) {
+        if self.completeOperations == limit, !cellDatas.isEmpty {
+            self.favouriteMessagesDataList.append(contentsOf: cellDatas.sorted { $0.events[0].originServerTs > $1.events[0].originServerTs })
+            self.update(viewState: .loaded(self.favouriteMessagesDataList))
+        } else {
+            self.completeOperations += 1
+        }
     }
     
     private func update(viewState: FavouriteMessagesViewState) {
