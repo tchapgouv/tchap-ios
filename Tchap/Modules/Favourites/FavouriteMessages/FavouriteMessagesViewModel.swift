@@ -40,9 +40,9 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
     private let favouriteMessagesQueue: DispatchQueue
     
     private var sortedFavouriteEvents: [FavouriteEvent] = []
-    private var roomBubbleCellDataList: [RoomBubbleCellData] = []
-    private var favouriteMessagesCache: Set<RoomBubbleCellData> = []
+    private var favouriteMessagesDataList: [FavouriteMessagesBubbleCellData] = []
     private var favouriteEventIndex = 0
+    private var pendingOperations = 0
     private var viewState: FavouriteMessagesViewState?
     private var extraEventsListener: Any?
     
@@ -86,10 +86,10 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
         let canLoadData: Bool
         
         switch viewState {
-        case .loading:
+        case .loading, .sorted:
             canLoadData = false
         case .loaded(roomBubbleCellDataList: _):
-            canLoadData = self.roomBubbleCellDataList.count < self.sortedFavouriteEvents.count || self.sortedFavouriteEvents.isEmpty
+            canLoadData = self.favouriteMessagesDataList.count < self.sortedFavouriteEvents.count || self.sortedFavouriteEvents.isEmpty
         default:
             canLoadData = true
         }
@@ -110,10 +110,8 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
             for room in self.session.rooms {
                 if let eventIds = room.accountData.getTaggedEventsIds(kMXTaggedEventFavourite) {
                     for eventId in eventIds {
-                        if let eventInfo = room.accountData.getTaggedEventInfo(eventId, withTag: kMXTaggedEventFavourite) {
-                            if eventInfo.originServerTs == kMXUndefinedTimestamp || eventInfo.originServerTs >= room.summary.tc_mininumTimestamp() {
-                                favouriteEvents.append(FavouriteEvent(roomId: room.roomId, eventId: eventId, eventInfo: eventInfo))
-                            }
+                        if let eventInfo = room.accountData.getTaggedEventInfo(eventId, withTag: kMXTaggedEventFavourite), eventInfo.originServerTs == kMXUndefinedTimestamp || eventInfo.originServerTs >= room.summary.tc_mininumTimestamp() {
+                            favouriteEvents.append(FavouriteEvent(roomId: room.roomId, eventId: eventId, eventInfo: eventInfo))
                         }
                     }
                 }
@@ -138,8 +136,9 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
             let limit = min(self.favouriteEventIndex + Constants.paginationLimit, self.sortedFavouriteEvents.count - 1)
             let roomDataSourceManager = MXKRoomDataSourceManager.sharedManager(forMatrixSession: self.session)
             
-            //            dispatch_group_t group = dispatch_group_create();
-            
+            self.pendingOperations = limit - self.favouriteEventIndex + 1
+            var favouriteMessagesCache: [FavouriteMessagesBubbleCellData] = []
+
             for i in self.favouriteEventIndex...limit {
                 let favouriteEvent = self.sortedFavouriteEvents[i]
                 self.favouriteEventIndex += 1
@@ -152,51 +151,41 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
                     }
                     
                     guard let event = event else {
+                        self.process(cellDatas: favouriteMessagesCache)
                         NSLog("[FavouriteMessagesViewModel] fetchEvent: MXSession.event method returned successfully with no event.")
                         return
                     }
                     
                     //  handle encryption for this event
-                    if event.isEncrypted && event.clear == nil {
-                        if self.session.decryptEvent(event, inTimeline: nil) == false {
-                            print("[FavouriteMessagesViewModel] processEditEvent: Fail to decrypt event: \(event.eventId ?? "")")
-                        }
+                    if event.isEncrypted && event.clear == nil && self.session.decryptEvent(event, inTimeline: nil) == false {
+                        print("[FavouriteMessagesViewModel] processEditEvent: Fail to decrypt event: \(event.eventId ?? "")")
                     }
                     
                     // Check whether the user knows this room to create the room data source if it doesn't exist.
                     roomDataSourceManager?.roomDataSource(forRoom: favouriteEvent.roomId, create: (self.session.room(withRoomId: favouriteEvent.roomId) != nil), onComplete: { roomDataSource in
                         
-                        if roomDataSource != nil, let cellData = RoomBubbleCellData(event: event, andRoomState: roomDataSource?.roomState, andRoomDataSource: roomDataSource) {
-                            self.process(cellData: cellData)
+                        if roomDataSource != nil, let cellData = FavouriteMessagesBubbleCellData(event: event, andRoomState: roomDataSource?.roomState, andRoomDataSource: roomDataSource) {
+                            favouriteMessagesCache.append(cellData)
                         }
+                        
+                        self.process(cellDatas: favouriteMessagesCache)
                     })
                 }, failure: { [weak self] error in
                     guard let self = self else {
                         return
                     }
-                    self.update(viewState: .error(error!))
+                    
+                    self.process(cellDatas: favouriteMessagesCache)
                 })
             }
         }
     }
     
-    private func process(cellData: RoomBubbleCellData) {
-        self.favouriteMessagesQueue.async {
-            let nextEventId = self.sortedFavouriteEvents[min(self.roomBubbleCellDataList.count, self.sortedFavouriteEvents.count - 1)].eventId
-            
-            if cellData.events[0].eventId == nextEventId {
-                self.roomBubbleCellDataList.append(cellData)
-                DispatchQueue.main.async {
-                    self.update(viewState: .loaded(self.roomBubbleCellDataList))
-                }
-                
-                self.favouriteMessagesCache.remove(cellData)
-                for favouriteMessagesCacheItem in self.favouriteMessagesCache {
-                    self.process(cellData: favouriteMessagesCacheItem)
-                }
-            } else {
-                self.favouriteMessagesCache.insert(cellData)
-            }
+    private func process(cellDatas: [FavouriteMessagesBubbleCellData]) {
+        self.pendingOperations -= 1
+        if self.pendingOperations == 0, !cellDatas.isEmpty {
+            self.favouriteMessagesDataList.append(contentsOf: cellDatas.sorted { $0.events[0].originServerTs > $1.events[0].originServerTs })
+            self.update(viewState: .loaded(self.favouriteMessagesDataList))
         }
     }
     
@@ -209,8 +198,7 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
         if self.extraEventsListener == nil {
             self.extraEventsListener = self.session.listenToEvents([.taggedEvents]) { (event, direction, roomState) in
                 self.sortedFavouriteEvents.removeAll()
-                self.roomBubbleCellDataList.removeAll()
-                self.favouriteMessagesCache.removeAll()
+                self.favouriteMessagesDataList.removeAll()
                 self.favouriteEventIndex = 0
                 
                 self.loadData()

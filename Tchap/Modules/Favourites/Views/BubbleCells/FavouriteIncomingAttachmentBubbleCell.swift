@@ -17,12 +17,22 @@
 import UIKit
 import Reusable
 
-final class FavouriteIncomingAttachmentBubbleCell: MXKRoomIncomingAttachmentBubbleCell, NibReusable, Themable {
+class FavouriteIncomingAttachmentBubbleCell: MXKRoomIncomingAttachmentBubbleCell, NibReusable, Themable {
+    
+    // MARK: Outlets
+    
+    @IBOutlet private weak var titleView: UIView!
+    @IBOutlet private weak var separatorView: UIView!
+    @IBOutlet weak var roomLabel: UILabel!
+    @IBOutlet weak var dateLabel: UILabel!
     
     // MARK: - Public
     
     func update(theme: Theme) {
         self.userNameLabel.textColor = ThemeService.shared().theme.userNameColors[0]
+        self.roomLabel?.textColor = theme.textSecondaryColor
+        self.dateLabel?.textColor = theme.tintColor
+        self.separatorView?.backgroundColor = theme.tintColor
         self.messageTextView?.tintColor = ThemeService.shared().theme.tintColor
     }
     
@@ -45,5 +55,16 @@ final class FavouriteIncomingAttachmentBubbleCell: MXKRoomIncomingAttachmentBubb
         
         let theme = ThemeService.shared().theme
         self.update(theme: theme)
+    }
+    
+    override func render(_ cellData: MXKCellData!) {
+        super.render(cellData)
+        
+        guard let favouriteMessagesData = bubbleData as? FavouriteMessagesBubbleCellData else {
+            fatalError("FavouriteMessagesBubbleCellData is not of the expected class")
+        }
+        
+        self.roomLabel.text = favouriteMessagesData.roomDisplayname
+        self.dateLabel.text = favouriteMessagesData.eventFormatter.dateString(from: bubbleData.date, withTime: false)?.uppercased()
     }
 }

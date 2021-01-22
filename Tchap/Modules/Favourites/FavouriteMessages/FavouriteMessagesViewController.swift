@@ -119,6 +119,7 @@ final class FavouriteMessagesViewController: UIViewController {
         self.tableView.estimatedRowHeight = Constants.estimatedRowHeight
         self.tableView.register(cellType: FavouriteIncomingTextMsgBubbleCell.self)
         self.tableView.register(cellType: FavouriteIncomingAttachmentBubbleCell.self)
+        self.tableView.register(cellType: FavouriteAttachmentAntivirusScanStatusBubbleCell.self)
         
         self.tableView.tableFooterView = UIView()
     }
@@ -167,6 +168,17 @@ final class FavouriteMessagesViewController: UIViewController {
         self.titleView.fill(roomTitleViewModel: self.viewModel.titleViewModel)
     }
     
+    private func scanBubbleDataIfNeeded(cellData: RoomBubbleCellData) {
+        if let scanManager = cellData.mxSession.scanManager {
+            for bubbleComponent in cellData.bubbleComponents {
+                if let event = bubbleComponent.event, event.isContentScannable() {
+                    scanManager.scanEventIfNeeded(event)
+                    bubbleComponent.eventScan = scanManager.eventScan(withId: event.eventId)
+                }
+            }
+        }
+    }
+    
     // MARK: - Actions
 
     private func cancelButtonAction() {
@@ -194,8 +206,13 @@ extension FavouriteMessagesViewController: UITableViewDataSource {
         let favouriteMessagesCell: MXKRoomBubbleTableViewCell & NibReusable & Themable
         
         let cellData = self.roomBubbleCellDataList[indexPath.row]
+
+        // Launch an antivirus scan on events contained in bubble data if needed
+        self.scanBubbleDataIfNeeded(cellData: cellData)
         
-        if cellData.isAttachmentWithThumbnail {
+        if cellData.showAntivirusScanStatus {
+            favouriteMessagesCell = tableView.dequeueReusableCell(for: indexPath, cellType: FavouriteAttachmentAntivirusScanStatusBubbleCell.self)
+        } else if cellData.isAttachmentWithThumbnail {
             favouriteMessagesCell = tableView.dequeueReusableCell(for: indexPath, cellType: FavouriteIncomingAttachmentBubbleCell.self)
         } else {
             favouriteMessagesCell = tableView.dequeueReusableCell(for: indexPath, cellType: FavouriteIncomingTextMsgBubbleCell.self)
