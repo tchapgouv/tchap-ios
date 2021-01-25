@@ -45,6 +45,9 @@ final class FavouriteMessagesViewController: UIViewController {
     private var titleView: RoomTitleView!
     
     private var roomBubbleCellDataList: [RoomBubbleCellData] = []
+    private var roomMessageURLParser: RoomMessageURLParser!
+    private var mxEventDidDecryptNotificationObserver: Any!
+    private var currentAlert: UIAlertController!
 
     // MARK: - Setup
     
@@ -53,6 +56,11 @@ final class FavouriteMessagesViewController: UIViewController {
         viewController.viewModel = viewModel
         viewController.currentStyle = style
         return viewController
+    }
+    
+    deinit {
+        self.viewModel.process(viewAction: .cancel)
+        self.unregisterEventDidDecryptNotification()
     }
     
     // MARK: - Life cycle
@@ -65,6 +73,7 @@ final class FavouriteMessagesViewController: UIViewController {
         self.setupViews()
         self.activityPresenter = ActivityIndicatorPresenter()
         self.errorPresenter = MXKErrorAlertPresentation()
+        self.roomMessageURLParser = RoomMessageURLParser()
         
         self.viewModel.viewDelegate = self
 
@@ -179,6 +188,47 @@ final class FavouriteMessagesViewController: UIViewController {
         }
     }
     
+    private func showUnableToOpenLinkErrorAlert() {
+        //TODO show alert
+//        [[AppDelegate theDelegate] showAlertWithTitle:[NSBundle mxk_localizedStringForKey:@"error"]
+//                                              message:NSLocalizedStringFromTable(@"room_message_unable_open_link_error_message", @"Vector", nil)];
+    }
+    
+    private func showExplanationAlert(event: MXEvent) {
+        // Observe kMXEventDidDecryptNotification to remove automatically the dialog
+        // if the user has shared the keys from another device
+        let alert = UIAlertController(title: VectorL10n.rerequestKeysAlertTitle, message: VectorL10n.rerequestKeysAlertMessage, preferredStyle: .alert)
+        
+        self.mxEventDidDecryptNotificationObserver = NotificationCenter.default.addObserver(forName: NSNotification.Name.mxEventDidDecrypt, object: nil, queue: .main) { (notif) in
+            if let decryptedEvent = notif.object as? MXEvent, decryptedEvent.eventId == event.eventId {
+                self.unregisterEventDidDecryptNotification()
+                
+                if self.currentAlert == alert {
+                    self.currentAlert.dismiss(animated: true, completion: nil)
+                    self.currentAlert = nil
+                }
+            }
+        }
+        
+        self.currentAlert = alert
+        
+        alert.addAction(UIAlertAction(title: Bundle.mxk_localizedString(forKey: "ok"), style: .default, handler: { (action) in
+            self.unregisterEventDidDecryptNotification()
+            self.currentAlert = nil
+        }))
+        
+        self.present(self.currentAlert, animated: true, completion: nil)
+    }
+    
+    private func unregisterEventDidDecryptNotification() {
+        guard let observer = self.mxEventDidDecryptNotificationObserver else {
+            return
+        }
+        
+        NotificationCenter.default.removeObserver(observer)
+        self.mxEventDidDecryptNotificationObserver = nil
+    }
+    
     // MARK: - Actions
 
     private func cancelButtonAction() {
@@ -255,19 +305,141 @@ extension FavouriteMessagesViewController: UITableViewDelegate {
 
 extension FavouriteMessagesViewController: MXKCellRenderingDelegate {
     func cell(_ cell: MXKCellRendering!, didRecognizeAction actionIdentifier: String!, userInfo: [AnyHashable: Any]! = [:]) {
-        if let favouriteMessagesCell = cell as? MXKRoomBubbleTableViewCell {
-            let cellData = favouriteMessagesCell.bubbleData
-
+        if let favouriteMessagesCell = cell as? MXKRoomBubbleTableViewCell, let cellData = favouriteMessagesCell.bubbleData {
+            
             switch actionIdentifier {
             case kMXKRoomBubbleCellLongPressOnEvent:
                 print("longpress")
             default:
-                self.viewModel.process(viewAction: .tapEvent(roomId: (cellData?.roomId)!, eventId: (cellData?.events[0].eventId)!))
+                self.viewModel.process(viewAction: .tapEvent(roomId: (cellData.roomId), eventId: (cellData.events[0].eventId)))
             }
         }
     }
     
     func cell(_ cell: MXKCellRendering!, shouldDoAction actionIdentifier: String!, userInfo: [AnyHashable: Any]! = [:], defaultValue: Bool) -> Bool {
-        return defaultValue;
+        var shouldDoAction = defaultValue
+        
+        guard let favouriteMessagesCell = cell as? MXKRoomBubbleTableViewCell else {
+            fatalError("MXKRoomBubbleTableViewCell is not of the expected class")
+        }
+        
+        guard let cellData = favouriteMessagesCell.bubbleData as? FavouriteMessagesBubbleCellData else {
+            fatalError("FavouriteMessagesBubbleCellData is not of the expected class")
+        }
+        
+        // Try to catch universal link supported by the app
+        if actionIdentifier == kMXKRoomBubbleCellShouldInteractWithURL, let url = userInfo[kMXKRoomBubbleCellUrl] as? URL {
+            
+            // Check whether this is a permalink to handle it directly into the app
+            if Tools.isPermaLink(url) {
+                // Patch: catch up all the permalinks even if they are not all supported by Tchap for the moment,
+                // like the permalinks with a userid.
+                shouldDoAction = false
+                
+                // iOS Patch: fix urls before using it
+                let fixedURL = Tools.fixURL(withSeveralHashKeys: url)
+                // In some cases (for example when the url has multiple '#'), the '%' character has been espaced twice in the provided url (we got %2524 for '$').
+                // We decided to remove percent encoding on all the fragment here. A second attempt will take place during the parameters parsing.
+                if let fragment = fixedURL?.fragment?.removingPercentEncoding {
+                    self.viewModel.process(viewAction: .tapAction(fragment: fragment))
+                }
+            
+            // When a link refers to a room alias/id, a user id or an event id, the non-ASCII characters (like '#' in room alias) has been escaped
+            // to be able to convert it into a legal URL string.
+            } else if let absoluteURLString = url.absoluteString.removingPercentEncoding {
+                
+                // Open a detail screen about the clicked user
+                if MXTools.isMatrixUserIdentifier(absoluteURLString) {
+                    print("[FavouriteMessagesViewController] showMemberDetails: Do nothing: \(absoluteURLString)")
+                
+                // Open the clicked room
+                } else if MXTools.isMatrixRoomIdentifier(absoluteURLString) || MXTools.isMatrixRoomAlias(absoluteURLString) {
+                    shouldDoAction = false
+                    self.viewModel.process(viewAction: .tapAction(fragment: absoluteURLString))
+                } else if absoluteURLString.hasPrefix(EventFormatterOnReRequestKeysLinkAction) {
+                    let arguments = absoluteURLString.components(separatedBy: EventFormatterLinkActionSeparator)
+                    if arguments.count > 1 {
+                        let eventId = arguments[1]
+                        
+                        for event in cellData.events where eventId == event.eventId {
+                            // Make the re-request
+                            cellData.mxSession.crypto.reRequestRoomKey(for: event)
+                            self.showExplanationAlert(event: event)
+                            break
+                        }
+                    }
+                }
+                
+            // Retrieve the type of interaction expected with the URL (See UITextItemInteraction)
+            } else if let urlItemInteractionValue = userInfo[kMXKRoomBubbleCellUrlItemInteraction] {
+                // Fallback case for external links
+                switch urlItemInteractionValue {
+                case UITextItemInteraction.invokeDefaultAction:
+                    let roomMessageURLType = self.roomMessageURLParser.parseURL(url)
+                    
+                    switch roomMessageURLType {
+                    case .appleDataDetector:
+                        // Keep the default OS behavior on single tap when UITextView data detector detect a known type.
+                        shouldDoAction = true
+                    case .dummy:
+                        // Do nothing for dummy links
+                        shouldDoAction = false
+                    default:
+                        if let tappedEvent = userInfo[kMXKRoomBubbleCellEventKey] as? MXEvent, let format = tappedEvent.content["format"] as? String {
+                            
+                            //  if an html formatted body exists
+                            if format == kMXRoomMessageFormatHTML, let formattedBody = tappedEvent.content["formatted_body"] as? String {
+                                if let visibleURL = FormattedBodyParser().getVisibleURL(forURL: url, inFormattedBody: formattedBody), url != visibleURL {
+                                    //  urls are different, show confirmation alert
+                                    let message = VectorL10n.externalLinkConfirmationMessage(visibleURL.absoluteString, url.absoluteString)
+                                    
+                                    let alert = UIAlertController(title: VectorL10n.externalLinkConfirmationTitle, message: message, preferredStyle: .alert)
+                                    
+                                    let continueAction = UIAlertAction(title: VectorL10n.continue, style: .default) { (action) in
+                                        UIApplication.shared.vc_open(url) { (success) in
+                                            if !success {
+                                                self.showUnableToOpenLinkErrorAlert()
+                                            }
+                                        }
+                                    }
+                                    
+                                    let cancelAction = UIAlertAction(title: VectorL10n.cancel, style: .cancel, handler: nil)
+                                    
+                                    alert.addAction(continueAction)
+                                    alert.addAction(cancelAction)
+                                    
+                                    self.present(alert, animated: true, completion: nil)
+                                    return false
+                                }
+                            }
+                        }
+                        UIApplication.shared.vc_open(url) { (success) in
+                            if !success {
+                                self.showUnableToOpenLinkErrorAlert()
+                            }
+                        }
+                        shouldDoAction = false
+                }
+                case UITextItemInteraction.presentActions:
+                    // Retrieve the tapped event
+                    if let tappedEvent = userInfo[kMXKRoomBubbleCellEventKey] {
+                        // Long press on link, present room contextual menu.
+                        //TODO show contextual menu
+                        print("[self showContextualMenuForEvent:tappedEvent fromSingleTapGesture:NO cell:cell animated:YES];")
+                    }
+                    
+                    shouldDoAction = false
+                case UITextItemInteraction.preview:
+                    // Force touch on link, let MXKRoomBubbleTableViewCell UITextView use default peek and pop behavior.
+                    break
+                default:
+                    break
+                }
+            }
+        } else {
+            self.showUnableToOpenLinkErrorAlert()
+        }
+        
+        return shouldDoAction
     }
 }

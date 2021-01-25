@@ -41,7 +41,21 @@ final class FavouriteMessagesCoordinator: FavouriteMessagesCoordinatorType {
     init(session: MXSession) {
         self.session = session
         
-        let favouriteMessagesViewModel = FavouriteMessagesViewModel(session: self.session)
+        guard let formatter = EventFormatter(matrixSession: session) else {
+            fatalError("[FavouriteMessagesCoordinatorDelegate] init: Cannot build formatter")
+        }
+
+        // Use the same event formatter settings as RoomDataSource
+        formatter.treatMatrixUserIdAsLink = true
+        formatter.treatMatrixRoomIdAsLink = true
+        formatter.treatMatrixRoomAliasAsLink = true
+        formatter.treatMatrixGroupIdAsLink = true
+        formatter.eventTypesFilterForMessages = MXKAppSettings.standard()?.eventsFilterForMessages
+
+        // But do not display "...(Edited)"
+        formatter.showEditionMention = false
+        
+        let favouriteMessagesViewModel = FavouriteMessagesViewModel(session: self.session, formatter: formatter)
         let favouriteMessagesViewController = FavouriteMessagesViewController.instantiate(with: favouriteMessagesViewModel)
         self.favouriteMessagesViewModel = favouriteMessagesViewModel
         self.favouriteMessagesViewController = favouriteMessagesViewController
@@ -66,5 +80,12 @@ extension FavouriteMessagesCoordinator: FavouriteMessagesViewModelCoordinatorDel
     
     func favouriteMessagesViewModelDidCancel(_ viewModel: FavouriteMessagesViewModelType) {
         self.delegate?.favouriteMessagesCoordinatorDidCancel(self)
+    }
+    
+    func favouriteMessagesViewModel(_ viewModel: FavouriteMessagesViewModelType, handlePermalinkFragment fragment: String) -> Bool {
+        guard let delegate = self.delegate else {
+            return false
+        }
+        return delegate.favouriteMessagesCoordinator(self, handlePermalinkFragment: fragment)
     }
 }

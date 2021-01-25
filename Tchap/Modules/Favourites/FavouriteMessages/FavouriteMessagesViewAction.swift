@@ -22,5 +22,6 @@ import Foundation
 enum FavouriteMessagesViewAction {
     case loadData
     case tapEvent(roomId: String, eventId: String)
+    case tapAction(fragment: String)
     case cancel
 }
