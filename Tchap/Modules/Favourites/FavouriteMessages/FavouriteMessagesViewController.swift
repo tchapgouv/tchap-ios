@@ -330,6 +330,12 @@ extension FavouriteMessagesViewController: MXKCellRenderingDelegate {
         // Try to catch universal link supported by the app
         if actionIdentifier == kMXKRoomBubbleCellShouldInteractWithURL, let url = userInfo[kMXKRoomBubbleCellUrl] as? URL {
             
+            // When a link refers to a room alias/id, a user id or an event id, the non-ASCII characters (like '#' in room alias) has been escaped
+            // to be able to convert it into a legal URL string.
+            guard let absoluteURLString = url.absoluteString.removingPercentEncoding else {
+                fatalError("absoluteURLString should be defined")
+            }
+            
             // Check whether this is a permalink to handle it directly into the app
             if Tools.isPermaLink(url) {
                 // Patch: catch up all the permalinks even if they are not all supported by Tchap for the moment,
@@ -344,37 +350,32 @@ extension FavouriteMessagesViewController: MXKCellRenderingDelegate {
                     self.viewModel.process(viewAction: .tapAction(fragment: fragment))
                 }
             
-            // When a link refers to a room alias/id, a user id or an event id, the non-ASCII characters (like '#' in room alias) has been escaped
-            // to be able to convert it into a legal URL string.
-            } else if let absoluteURLString = url.absoluteString.removingPercentEncoding {
-                
-                // Open a detail screen about the clicked user
-                if MXTools.isMatrixUserIdentifier(absoluteURLString) {
+            // Click on a member. Do nothing in favourites case.
+            } else if MXTools.isMatrixUserIdentifier(absoluteURLString) {
                     print("[FavouriteMessagesViewController] showMemberDetails: Do nothing: \(absoluteURLString)")
                 
-                // Open the clicked room
-                } else if MXTools.isMatrixRoomIdentifier(absoluteURLString) || MXTools.isMatrixRoomAlias(absoluteURLString) {
-                    shouldDoAction = false
-                    self.viewModel.process(viewAction: .tapAction(fragment: absoluteURLString))
-                } else if absoluteURLString.hasPrefix(EventFormatterOnReRequestKeysLinkAction) {
-                    let arguments = absoluteURLString.components(separatedBy: EventFormatterLinkActionSeparator)
-                    if arguments.count > 1 {
-                        let eventId = arguments[1]
-                        
-                        for event in cellData.events where eventId == event.eventId {
-                            // Make the re-request
-                            cellData.mxSession.crypto.reRequestRoomKey(for: event)
-                            self.showExplanationAlert(event: event)
-                            break
-                        }
+            // Open the clicked room
+            } else if MXTools.isMatrixRoomIdentifier(absoluteURLString) || MXTools.isMatrixRoomAlias(absoluteURLString) {
+                shouldDoAction = false
+                self.viewModel.process(viewAction: .tapAction(fragment: absoluteURLString))
+            } else if absoluteURLString.hasPrefix(EventFormatterOnReRequestKeysLinkAction) {
+                let arguments = absoluteURLString.components(separatedBy: EventFormatterLinkActionSeparator)
+                if arguments.count > 1 {
+                    let eventId = arguments[1]
+                    
+                    for event in cellData.events where eventId == event.eventId {
+                        // Make the re-request
+                        cellData.mxSession.crypto.reRequestRoomKey(for: event)
+                        self.showExplanationAlert(event: event)
+                        break
                     }
                 }
                 
             // Retrieve the type of interaction expected with the URL (See UITextItemInteraction)
-            } else if let urlItemInteractionValue = userInfo[kMXKRoomBubbleCellUrlItemInteraction] {
+            } else if let urlItemInteractionValue = userInfo[kMXKRoomBubbleCellUrlItemInteraction] as? Int {
                 // Fallback case for external links
-                switch urlItemInteractionValue {
-                case UITextItemInteraction.invokeDefaultAction:
+                switch UITextItemInteraction(rawValue: urlItemInteractionValue) {
+                case .invokeDefaultAction:
                     let roomMessageURLType = self.roomMessageURLParser.parseURL(url)
                     
                     switch roomMessageURLType {
@@ -420,7 +421,7 @@ extension FavouriteMessagesViewController: MXKCellRenderingDelegate {
                         }
                         shouldDoAction = false
                 }
-                case UITextItemInteraction.presentActions:
+                case .presentActions:
                     // Retrieve the tapped event
                     if let tappedEvent = userInfo[kMXKRoomBubbleCellEventKey] {
                         // Long press on link, present room contextual menu.
@@ -429,7 +430,7 @@ extension FavouriteMessagesViewController: MXKCellRenderingDelegate {
                     }
                     
                     shouldDoAction = false
-                case UITextItemInteraction.preview:
+                case .preview:
                     // Force touch on link, let MXKRoomBubbleTableViewCell UITextView use default peek and pop behavior.
                     break
                 default:
