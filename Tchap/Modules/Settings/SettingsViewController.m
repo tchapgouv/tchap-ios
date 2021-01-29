@@ -101,6 +101,7 @@ enum
 
 enum {
     CRYPTOGRAPHY_INFO_INDEX = 0,
+    CRYPTOGRAPHY_IMPORT_INDEX,
     CRYPTOGRAPHY_EXPORT_INDEX,
     CRYPTOGRAPHY_COUNT
 };
@@ -124,7 +125,8 @@ MXKDeviceViewDelegate,
 UIDocumentInteractionControllerDelegate,
 MXKCountryPickerViewControllerDelegate,
 Stylable,
-ChangePasswordCoordinatorBridgePresenterDelegate>
+ChangePasswordCoordinatorBridgePresenterDelegate,
+UIDocumentPickerDelegate>
 {
     // Current alert (if any).
     UIAlertController *currentAlert;
@@ -166,6 +168,11 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     NSURL *keyExportsFile;
     NSTimer *keyExportsFileDeletionTimer;
     
+    /**
+     The view to import e2e keys.
+     */
+    MXKEncryptionKeysImportView *importView;
+
 #ifdef SUPPORT_KEYS_BACKUP
     SettingsKeyBackupTableViewSection *keyBackupSection;
     KeyBackupSetupCoordinatorBridgePresenter *keyBackupSetupCoordinatorBridgePresenter;
@@ -1387,6 +1394,31 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 
             cell = exportKeysBtnCell;
         }
+        else if (row == CRYPTOGRAPHY_IMPORT_INDEX)
+        {
+            MXKTableViewCellWithButton *exportKeysBtnCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
+            if (!exportKeysBtnCell)
+            {
+                exportKeysBtnCell = [[MXKTableViewCellWithButton alloc] init];
+            }
+            else
+            {
+                // Fix https://github.com/vector-im/riot-ios/issues/1354
+                exportKeysBtnCell.mxkButton.titleLabel.text = nil;
+            }
+
+            NSString *btnTitle = NSLocalizedStringFromTable(@"settings_crypto_import", @"Vector", nil);
+            [exportKeysBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
+            [exportKeysBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
+            [exportKeysBtnCell.mxkButton setTintColor:self.currentStyle.buttonPlainTitleColor];
+            exportKeysBtnCell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
+
+            [exportKeysBtnCell.mxkButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+            [exportKeysBtnCell.mxkButton addTarget:self action:@selector(importEncryptionKeys:) forControlEvents:UIControlEventTouchUpInside];
+            exportKeysBtnCell.mxkButton.accessibilityIdentifier = nil;
+
+            cell = exportKeysBtnCell;
+        }
     }
 #ifdef SUPPORT_KEYS_BACKUP
     else if (section == SETTINGS_SECTION_KEYBACKUP_INDEX)
@@ -2128,6 +2160,16 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     self.imagePickerPresenter = singleImagePickerPresenter;
 }
 
+- (void)importEncryptionKeys:(UITapGestureRecognizer *)recognizer
+{
+    self->currentAlert = nil;
+
+    UIDocumentPickerViewController *documentPicker = [[UIDocumentPickerViewController alloc] initWithDocumentTypes:@[(NSString *)kUTTypeData] inMode:UIDocumentPickerModeOpen];
+    documentPicker.delegate = self;
+    documentPicker.allowsMultipleSelection = NO;
+    [self presentViewController:documentPicker animated:YES completion:nil];
+}
+
 - (void)exportEncryptionKeys:(UITapGestureRecognizer *)recognizer
 {
     [currentAlert dismissViewControllerAnimated:NO completion:nil];
@@ -2660,5 +2702,30 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 }
 
 #endif
+
+#pragma mark - UIDocumentPickerDelegate
+
+- (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentsAtURLs:(NSArray <NSURL *>*)urls
+{
+    self->currentAlert = nil;
+
+    if ([MXMegolmExportEncryption isMegolmKeyFile:urls.firstObject])
+    {
+        // Show the keys import dialog
+        self->importView = [[MXKEncryptionKeysImportView alloc] initWithMatrixSession:self.mainSession];
+        self->currentAlert = self->importView.alertController;
+        // WARNING: SettingsViewController should extends MXKViewController
+        // It's working because SettingsViewController has startActivityIndicator and
+        // stopActivityIndicator methods
+        [self->importView showInViewController:self toImportKeys:urls.firstObject onComplete:^{
+            self->currentAlert = nil;
+            [[AppDelegate theDelegate] showAlertWithTitle: NSLocalizedStringFromTable(@"settings_crypto_import", @"Vector", nil) message: NSLocalizedStringFromTable(@"settings_crypto_import_success", @"Vector", nil)];
+        }];
+    }
+    else
+    {
+        [[AppDelegate theDelegate] showAlertWithTitle: NSLocalizedStringFromTable(@"settings_crypto_import", @"Vector", nil) message: NSLocalizedStringFromTable(@"settings_crypto_import_invalid_file", @"Vector", nil)];
+    }
+}
 
 @end
