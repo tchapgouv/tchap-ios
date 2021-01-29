@@ -2586,7 +2586,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
             NSString *titleKey;
             if (![self.roomDataSource.room.accountData getTaggedEventInfo:selectedEvent.eventId withTag:kMXRoomTagFavourite])
             {
-                titleKey = @"room_event_action_favourite";
+                titleKey = @"room_event_action_add_favourite";
             }
             else
             {
@@ -2605,7 +2605,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                     [self startActivityIndicator];
                     
                     MXWeakify(self);
-                    if ([titleKey isEqualToString:@"room_event_action_favourite"])
+                    if ([titleKey isEqualToString:@"room_event_action_add_favourite"])
                     {
                         [self.roomDataSource.room tagEvent:selectedEvent withTag:kMXTaggedEventFavourite andKeywords:nil success:^{
                             MXStrongifyAndReturnIfNil(self);
@@ -2959,6 +2959,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
 //            NSString *fragment = [NSString stringWithFormat:@"/group/%@", [absoluteURLString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
 //            [[AppDelegate theDelegate] handleUniversalLinkFragment:fragment];
 //        }
+        // ReRequest keys
         else if ([absoluteURLString hasPrefix:EventFormatterOnReRequestKeysLinkAction])
         {
             NSArray<NSString*> *arguments = [absoluteURLString componentsSeparatedByString:EventFormatterLinkActionSeparator];
@@ -2972,6 +2973,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                     [self reRequestKeysAndShowExplanationAlert:event];
                 }
             }
+            shouldDoAction = NO;
         }
         else if ([absoluteURLString hasPrefix:EventFormatterEditedEventLinkAction])
         {

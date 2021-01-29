@@ -33,6 +33,7 @@ final class FavouriteMessagesViewController: UIViewController {
     // MARK: Outlets
 
     @IBOutlet private weak var tableView: UITableView!
+    @IBOutlet private weak var overlayContainerView: UIView!
     
     // MARK: Private
 
@@ -46,8 +47,13 @@ final class FavouriteMessagesViewController: UIViewController {
     
     private var roomBubbleCellDataList: [RoomBubbleCellData] = []
     private var roomMessageURLParser: RoomMessageURLParser!
+    private var roomContextualMenuPresenter: RoomContextualMenuPresenter!
+    private var roomContextualMenuViewController: RoomContextualMenuViewController!
+    private var documentInteractionController: UIDocumentInteractionController!
+    private var currentSharedAttachment: MXKAttachment!
     private var mxEventDidDecryptNotificationObserver: Any!
     private var currentAlert: UIAlertController!
+    private var isEventSelected: Bool = false
 
     // MARK: - Setup
     
@@ -74,6 +80,7 @@ final class FavouriteMessagesViewController: UIViewController {
         self.activityPresenter = ActivityIndicatorPresenter()
         self.errorPresenter = MXKErrorAlertPresentation()
         self.roomMessageURLParser = RoomMessageURLParser()
+        self.roomContextualMenuPresenter = RoomContextualMenuPresenter()
         
         self.viewModel.viewDelegate = self
 
@@ -146,6 +153,12 @@ final class FavouriteMessagesViewController: UIViewController {
             self.updateTitleInfo()
         case .loaded(roomBubbleCellDataList: let roomBubbleCellDataList):
             self.renderLoaded(roomBubbleCellDataList: roomBubbleCellDataList)
+        case .updated:
+            self.tableView.reloadData()
+        case .selectedEvent:
+            self.renderSelectedEvent()
+        case .cancelledSelection:
+            self.renderCancelledSelection()
         case .error(let error):
             self.render(error: error)
         }
@@ -158,6 +171,19 @@ final class FavouriteMessagesViewController: UIViewController {
     private func renderLoaded(roomBubbleCellDataList: [RoomBubbleCellData]) {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
         self.roomBubbleCellDataList = roomBubbleCellDataList
+        self.tableView.reloadData()
+    }
+    
+    private func renderSelectedEvent() {
+        self.renderSelected(isSelected: true)
+    }
+    
+    private func renderCancelledSelection() {
+        self.renderSelected(isSelected: false)
+    }
+    
+    private func renderSelected(isSelected: Bool) {
+        self.isEventSelected = isSelected
         self.tableView.reloadData()
     }
     
@@ -189,9 +215,7 @@ final class FavouriteMessagesViewController: UIViewController {
     }
     
     private func showUnableToOpenLinkErrorAlert() {
-        //TODO show alert
-//        [[AppDelegate theDelegate] showAlertWithTitle:[NSBundle mxk_localizedStringForKey:@"error"]
-//                                              message:NSLocalizedStringFromTable(@"room_message_unable_open_link_error_message", @"Vector", nil)];
+        AppDelegate.theDelegate().showAlert(withTitle: Bundle.mxk_localizedString(forKey: "error"), message: VectorL10n.roomMessageUnableOpenLinkErrorMessage)
     }
     
     private func showExplanationAlert(event: MXEvent) {
@@ -229,6 +253,313 @@ final class FavouriteMessagesViewController: UIViewController {
         self.mxEventDidDecryptNotificationObserver = nil
     }
     
+    // MARK: -  Contextual Menu
+    
+    private func contextualMenuItems(event: MXEvent, cell: MXKRoomBubbleTableViewCell) -> Array<RoomContextualMenuItem> {
+        
+        let attachment = cell.bubbleData.attachment
+        
+        // Favourite action
+
+        let favouriteMenuItem = RoomContextualMenuItem(menuAction: .favourite)
+        favouriteMenuItem.isEnabled = true
+        favouriteMenuItem.action = {
+            self.hideContextualMenu(animated: true)
+            self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
+            
+            cell.bubbleData.mxSession.room(withRoomId: event.roomId)?.untagEvent(event, withTag: kMXTaggedEventFavourite, success: {
+                self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+            }, failure: { [weak self] (error) in
+                guard let self = self, let error = error else {
+                    return
+                }
+                
+                NSLog("[FavouriteMessagesViewController] Tag event (%@) failed", event.eventId)
+                //Alert user
+                self.render(error: error)
+            })
+        }
+        
+        // Copy action
+        
+        var isCopyActionEnabled = attachment == nil || attachment?.type != MXKAttachmentTypeSticker
+        
+        if attachment != nil && !BuildSettings.messageDetailsAllowCopyMedia {
+            isCopyActionEnabled = false
+        }
+        
+        if isCopyActionEnabled {
+            switch event.eventType {
+            case .roomMessage:
+                if let messageType = event.content["msgtype"] as? String, messageType == kMXMessageTypeKeyVerificationRequest {
+                    isCopyActionEnabled = false
+                }
+            case .keyVerificationStart, .keyVerificationAccept, .keyVerificationKey, .keyVerificationMac, .keyVerificationDone, .keyVerificationCancel:
+                isCopyActionEnabled = false
+            default:
+                break
+            }
+        }
+        
+        let copyMenuItem = RoomContextualMenuItem(menuAction: .copy)
+        copyMenuItem.isEnabled = isCopyActionEnabled
+        copyMenuItem.action = {
+            if attachment == nil {
+                if let selectedComponent = cell.bubbleData.bubbleComponents.first(where: {$0.event.eventId == event.eventId}) {
+                    if let textMessage = selectedComponent.textMessage {
+                        MXKPasteboardManager.shared.pasteboard.string = textMessage
+                    } else {
+                        NSLog("[RoomViewController] Contextual menu copy failed. Text is nil for room id/event id: %@/%@", selectedComponent.event.roomId, selectedComponent.event.eventId)
+                    }
+                }
+                
+                self.hideContextualMenu(animated: true)
+            } else if attachment?.type != MXKAttachmentTypeSticker {
+                self.hideContextualMenu(animated: true) {
+                    self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
+                    
+                    attachment?.copy({
+                        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+                    }, failure: { [weak self] (error) in
+                        guard let self = self, let error = error else {
+                            return
+                        }
+                        
+                        //Alert user
+                        self.render(error: error)
+                    })
+                    
+                    // Start animation in case of download during attachment preparing
+                    cell.startProgressUI()
+                }
+            }
+        }
+        
+        // share action
+
+        let shareMenuItem = RoomContextualMenuItem(menuAction: .share)
+        shareMenuItem.isEnabled = true
+        shareMenuItem.action = {
+            if attachment == nil {
+                if let selectedComponent = cell.bubbleData.bubbleComponents.first(where: {$0.event.eventId == event.eventId}) {
+                    if let textMessage = selectedComponent.textMessage {
+                        let activityViewController = UIActivityViewController(activityItems: [textMessage], applicationActivities: nil)
+                        
+                        activityViewController.modalTransitionStyle = UIModalTransitionStyle.coverVertical
+                        activityViewController.popoverPresentationController?.sourceView = cell
+                        activityViewController.popoverPresentationController?.sourceRect = cell.bounds
+                        
+                        self.present(activityViewController, animated: true, completion: nil)
+                        
+                    } else {
+                        NSLog("[RoomViewController] Contextual menu share failed. Text is nil for room id/event id: %@/%@", selectedComponent.event.roomId, selectedComponent.event.eventId)
+                    }
+                }
+                
+                self.hideContextualMenu(animated: true)
+            } else if attachment?.type != MXKAttachmentTypeSticker {
+                
+                self.hideContextualMenu(animated: true)
+                
+                attachment?.prepareShare({ [weak self] (fileURL) in
+                    guard let self = self, let fileURL = fileURL else {
+                        return
+                    }
+
+                    self.documentInteractionController = UIDocumentInteractionController(url: fileURL)
+                    self.documentInteractionController.delegate = self
+                    
+                    self.currentSharedAttachment = attachment
+                    
+                    if !self.documentInteractionController.presentOptionsMenu(from: self.view.frame, in: self.view, animated: true) {
+                        self.documentInteractionController = nil
+                        attachment?.onShareEnded()
+                        self.currentSharedAttachment = nil
+                    }
+                }, failure: { [weak self] (error) in
+                    guard let self = self, let error = error else {
+                        return
+                    }
+                    
+                    //Alert user
+                    self.render(error: error)
+                })
+         
+                // Start animation in case of download during attachment preparing
+                cell.startProgressUI()
+            }
+            
+        }
+        
+        // More action
+
+        let moreMenuItem = RoomContextualMenuItem(menuAction: .more)
+        moreMenuItem.action = {
+            self.hideContextualMenu(animated: true)
+            self.showAdditionalActionsMenu(selectedEvent: event, inCell: cell, animated: true)
+        }
+
+        // Actions list
+
+        let actionItems = [favouriteMenuItem, copyMenuItem, shareMenuItem, moreMenuItem]
+        
+        return actionItems
+    }
+    
+    // Display the additiontal event actions menu
+    private func showAdditionalActionsMenu(selectedEvent: MXEvent, inCell: MXKRoomBubbleTableViewCell, animated: Bool) {
+        
+        if self.currentAlert != nil {
+            self.currentAlert.dismiss(animated: false, completion: nil)
+            self.currentAlert = nil
+        }
+        
+        self.currentAlert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        // Add action for attachment
+        if let attachment = inCell.bubbleData.attachment, BuildSettings.messageDetailsAllowSave {
+            if attachment.type == MXKAttachmentTypeImage || attachment.type == MXKAttachmentTypeVideo {
+                self.currentAlert.addAction(UIAlertAction(title: VectorL10n.roomEventActionSave, style: .default, handler: { [weak self] (action) in
+                    guard let self = self else {
+                        return
+                    }
+                        
+                    self.hideContextualMenu(animated: true)
+                    
+                    self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
+                    
+                    attachment.save { [weak self] in
+                        guard let self = self else {
+                            return
+                        }
+                        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+                    } failure: { [weak self] (error) in
+                        guard let self = self, let error = error else {
+                            return
+                        }
+                        
+                        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+                                
+                        //Alert user
+                        self.render(error: error)
+                    }
+
+                    // Start animation in case of download during attachment preparing
+                    inCell.startProgressUI()
+                }))
+            }
+        }
+        
+        // Check status of the selected event
+        if selectedEvent.sentState == MXEventSentStateSent {
+            self.currentAlert.addAction(UIAlertAction(title: VectorL10n.roomEventActionPermalink, style: .default, handler: { [weak self] (action) in
+                guard let self = self else {
+                    return
+                }
+                
+                self.hideContextualMenu(animated: true)
+                
+                // Create a Tchap permalink
+                if let permalink = Tools.permalink(toEvent: selectedEvent.eventId, inRoom: selectedEvent.roomId) {
+                    MXKPasteboardManager.shared.pasteboard.string = permalink
+                } else {
+                    NSLog("[FavouriteMessagesViewController] Contextual menu permalink action failed. Permalink is nil room id/event id: %@/%@", selectedEvent.roomId, selectedEvent.eventId)
+                }
+            }))
+        }
+        
+        self.currentAlert.addAction(UIAlertAction(title: VectorL10n.cancel, style: .cancel, handler: { [weak self] (action) in
+            guard let self = self else {
+                return
+            }
+            
+            self.hideContextualMenu(animated: true)
+        }))
+        
+        // Do not display empty action sheet
+        if currentAlert.actions.count > 1 {
+            let bubbleComponentIndex = inCell.bubbleData.bubbleComponentIndex(forEventId: selectedEvent.eventId)
+            
+            let sourceRect = inCell.componentFrameInContentView(for: bubbleComponentIndex)
+            
+            self.currentAlert.mxk_setAccessibilityIdentifier("RoomVCEventMenuAlert")
+            self.currentAlert.popoverPresentationController?.sourceView = inCell
+            self.currentAlert.popoverPresentationController?.sourceRect = sourceRect
+            self.present(self.currentAlert, animated: animated, completion: nil)
+        } else {
+            self.currentAlert = nil
+        }
+    }
+
+    private func showContextualMenu(event: MXEvent, singleTapGesture: Bool, cell: MXKRoomBubbleTableViewCell, animated: Bool) {
+        guard !self.roomContextualMenuPresenter.isPresenting else {
+            return
+        }
+        
+        guard let cellData = cell.bubbleData as? FavouriteMessagesBubbleCellData else {
+            fatalError("FavouriteMessagesBubbleCellData is not of the expected class")
+        }
+        
+        let contextualMenuItems = self.contextualMenuItems(event: event, cell: cell)
+        let bubbleComponentFrameInOverlayView = CGRect.null
+        
+        if self.roomContextualMenuViewController == nil {
+            self.roomContextualMenuViewController = RoomContextualMenuViewController.instantiate()
+            self.roomContextualMenuViewController.delegate = self
+        }
+        
+        self.roomContextualMenuViewController.update(contextualMenuItems: contextualMenuItems, reactionsMenuViewModel: nil)
+        
+        self.enableOverlayContainerUserInteractions(enable: true)
+        
+        self.roomContextualMenuPresenter.present(
+            roomContextualMenuViewController: self.roomContextualMenuViewController,
+            from: self,
+            on: self.overlayContainerView,
+            contentToReactFrame: bubbleComponentFrameInOverlayView,
+            fromSingleTapGesture: singleTapGesture,
+            animated: animated) {
+            self.viewModel.process(viewAction: .selectEvent(event: event, cellData: cellData))
+        }
+    }
+        
+    private func hideContextualMenu(animated: Bool, completion: (() -> Void)? = nil) {
+        self.hideContextualMenu(animated: animated, cancelEventSelection: true, completion: completion)
+    }
+    
+    private func hideContextualMenu(animated: Bool, cancelEventSelection: Bool, completion: (() -> Void)? = nil) {
+        guard self.roomContextualMenuPresenter.isPresenting else {
+            return
+        }
+        
+        if cancelEventSelection {
+            self.cancelEventSelection()
+        }
+        
+        self.roomContextualMenuPresenter.hideContextualMenu(animated: animated) {
+            self.enableOverlayContainerUserInteractions(enable: false)
+            
+            if let completion = completion {
+                completion()
+            }
+        }
+    }
+    
+    private func cancelEventSelection() {
+        
+        if self.currentAlert != nil {
+            self.currentAlert.dismiss(animated: false, completion: nil)
+            self.currentAlert = nil
+        }
+        
+        self.viewModel.process(viewAction: .cancelSelection)
+    }
+
+    private func enableOverlayContainerUserInteractions(enable: Bool) {
+        self.tableView.scrollsToTop = !enable
+        self.overlayContainerView.isUserInteractionEnabled = enable
+    }
+    
     // MARK: - Actions
 
     private func cancelButtonAction() {
@@ -239,6 +570,7 @@ final class FavouriteMessagesViewController: UIViewController {
 
 // MARK: - FavouriteMessagesViewModelViewDelegate
 extension FavouriteMessagesViewController: FavouriteMessagesViewModelViewDelegate {
+    
     func favouriteMessagesViewModel(_ viewModel: FavouriteMessagesViewModelType, didUpdateViewState viewState: FavouriteMessagesViewState) {
         self.render(viewState: viewState)
     }
@@ -271,6 +603,16 @@ extension FavouriteMessagesViewController: UITableViewDataSource {
         favouriteMessagesCell.render(cellData)
         favouriteMessagesCell.delegate = self
         favouriteMessagesCell.addTimestampLabel(forComponent: UInt(cellData.mostRecentComponentIndex))
+        
+        // Check whether an event is currently selected: the other messages are then blurred
+        if self.isEventSelected {
+            // Check whether the selected event belongs to this bubble
+            if cellData.selectedComponentIndex != NSNotFound {
+                favouriteMessagesCell.selectComponent(UInt(cellData.selectedComponentIndex), showEditButton: false, showTimestamp: cellData.showTimestampForSelectedComponent)
+            } else {
+                favouriteMessagesCell.blurred = true
+            }
+        }
 
         return favouriteMessagesCell
     }
@@ -303,16 +645,25 @@ extension FavouriteMessagesViewController: UITableViewDelegate {
     }
 }
 
+// MARK: - MXKCellRenderingDelegate
 extension FavouriteMessagesViewController: MXKCellRenderingDelegate {
     func cell(_ cell: MXKCellRendering!, didRecognizeAction actionIdentifier: String!, userInfo: [AnyHashable: Any]! = [:]) {
-        if let favouriteMessagesCell = cell as? MXKRoomBubbleTableViewCell, let cellData = favouriteMessagesCell.bubbleData {
-            
-            switch actionIdentifier {
-            case kMXKRoomBubbleCellLongPressOnEvent:
-                print("longpress")
-            default:
-                self.viewModel.process(viewAction: .tapEvent(roomId: (cellData.roomId), eventId: (cellData.events[0].eventId)))
-            }
+        guard let favouriteMessagesCell = cell as? MXKRoomBubbleTableViewCell else {
+            return
+        }
+        
+        let tappedEvent: MXEvent
+        if userInfo != nil, let info = userInfo[kMXKRoomBubbleCellEventKey] as? MXEvent {
+            tappedEvent = info
+        } else {
+            tappedEvent = favouriteMessagesCell.bubbleData.events[0]
+        }
+
+        switch actionIdentifier {
+        case kMXKRoomBubbleCellLongPressOnEvent:
+            self.showContextualMenu(event: tappedEvent, singleTapGesture: false, cell: favouriteMessagesCell, animated: true)
+        default:
+            self.viewModel.process(viewAction: .tapEvent(roomId: (tappedEvent.roomId), eventId: (tappedEvent.eventId)))
         }
     }
     
@@ -347,7 +698,7 @@ extension FavouriteMessagesViewController: MXKCellRenderingDelegate {
                 // In some cases (for example when the url has multiple '#'), the '%' character has been espaced twice in the provided url (we got %2524 for '$').
                 // We decided to remove percent encoding on all the fragment here. A second attempt will take place during the parameters parsing.
                 if let fragment = fixedURL?.fragment?.removingPercentEncoding {
-                    self.viewModel.process(viewAction: .tapAction(fragment: fragment))
+                    self.viewModel.process(viewAction: .handlePermalinkFragment(fragment: fragment))
                 }
             
             // Click on a member. Do nothing in favourites case.
@@ -357,7 +708,9 @@ extension FavouriteMessagesViewController: MXKCellRenderingDelegate {
             // Open the clicked room
             } else if MXTools.isMatrixRoomIdentifier(absoluteURLString) || MXTools.isMatrixRoomAlias(absoluteURLString) {
                 shouldDoAction = false
-                self.viewModel.process(viewAction: .tapAction(fragment: absoluteURLString))
+                self.viewModel.process(viewAction: .handlePermalinkFragment(fragment: absoluteURLString))
+            
+            // ReRequest keys
             } else if absoluteURLString.hasPrefix(EventFormatterOnReRequestKeysLinkAction) {
                 let arguments = absoluteURLString.components(separatedBy: EventFormatterLinkActionSeparator)
                 if arguments.count > 1 {
@@ -370,6 +723,7 @@ extension FavouriteMessagesViewController: MXKCellRenderingDelegate {
                         break
                     }
                 }
+                shouldDoAction = false
                 
             // Retrieve the type of interaction expected with the URL (See UITextItemInteraction)
             } else if let urlItemInteractionValue = userInfo[kMXKRoomBubbleCellUrlItemInteraction] as? Int {
@@ -423,10 +777,9 @@ extension FavouriteMessagesViewController: MXKCellRenderingDelegate {
                 }
                 case .presentActions:
                     // Retrieve the tapped event
-                    if let tappedEvent = userInfo[kMXKRoomBubbleCellEventKey] {
+                    if let favouriteMessagesCell = cell as? MXKRoomBubbleTableViewCell, let tappedEvent = userInfo[kMXKRoomBubbleCellEventKey] as? MXEvent {
                         // Long press on link, present room contextual menu.
-                        //TODO show contextual menu
-                        print("[self showContextualMenuForEvent:tappedEvent fromSingleTapGesture:NO cell:cell animated:YES];")
+                        self.showContextualMenu(event: tappedEvent, singleTapGesture: false, cell: favouriteMessagesCell, animated: true)
                     }
                     
                     shouldDoAction = false
@@ -443,4 +796,17 @@ extension FavouriteMessagesViewController: MXKCellRenderingDelegate {
         
         return shouldDoAction
     }
+}
+
+// MARK: - RoomContextualMenuViewControllerDelegate
+extension FavouriteMessagesViewController: RoomContextualMenuViewControllerDelegate {
+    
+    func roomContextualMenuViewControllerDidTapBackgroundOverlay(_ viewController: RoomContextualMenuViewController) {
+        self.hideContextualMenu(animated: true)
+    }
+}
+
+// MARK: - UIDocumentInteractionControllerDelegate
+extension FavouriteMessagesViewController: UIDocumentInteractionControllerDelegate {
+    //TODO implement delegate func
 }

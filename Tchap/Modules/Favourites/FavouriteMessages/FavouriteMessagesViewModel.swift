@@ -45,6 +45,7 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
     private var pendingOperations = 0
     private var viewState: FavouriteMessagesViewState?
     private var extraEventsListener: Any?
+    private var selectedBubbleCellData: FavouriteMessagesBubbleCellData!
     
     var titleViewModel: RoomTitleViewModel
     
@@ -75,8 +76,12 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
             self.loadData()
         case .tapEvent(let roomId, let eventId):
             self.coordinatorDelegate?.favouriteMessagesViewModel(self, didShowRoomWithId: roomId, onEventId: eventId)
-        case .tapAction(let fragment):
+        case .handlePermalinkFragment(let fragment):
             self.coordinatorDelegate?.favouriteMessagesViewModel(self, handlePermalinkFragment: fragment)
+        case .selectEvent(let event, let cellData):
+            self.selectEvent(event: event, cellData: cellData)
+        case .cancelSelection:
+            self.cancelSelection()
         case .cancel:
             self.releaseData()
             self.coordinatorDelegate?.favouriteMessagesViewModelDidCancel(self)
@@ -95,7 +100,7 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
         switch viewState {
         case .loading, .sorted:
             canLoadData = false
-        case .loaded(roomBubbleCellDataList: _):
+        case .loaded(roomBubbleCellDataList: _), .updated, .selectedEvent, .cancelledSelection:
             canLoadData = self.favouriteMessagesDataList.count < self.sortedFavouriteEvents.count || self.sortedFavouriteEvents.isEmpty
         default:
             canLoadData = true
@@ -201,6 +206,18 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
         }
     }
     
+    private func selectEvent(event: MXEvent, cellData: FavouriteMessagesBubbleCellData) {
+        cellData.selectedEventId = event.eventId
+        self.selectedBubbleCellData = cellData
+        self.update(viewState: .selectedEvent)
+    }
+    
+    private func cancelSelection() {
+        self.selectedBubbleCellData.selectedEventId = nil
+        self.selectedBubbleCellData = nil
+        self.update(viewState: .cancelledSelection)
+    }
+    
     private func releaseData() {
         self.removeEventsListener()
         self.unregisterEventDidDecryptNotification()
@@ -246,7 +263,7 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
         
         for cellData in self.favouriteMessagesDataList where cellData.events[0].eventId == decryptedEvent.eventId {
             cellData.updateEvent(decryptedEvent.eventId, with: decryptedEvent)
-            self.update(viewState: .loaded(self.favouriteMessagesDataList))
+            self.update(viewState: .updated)
             break
         }
     }

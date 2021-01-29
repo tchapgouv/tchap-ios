@@ -165,8 +165,9 @@
 "room_category_private_room" = "Privé";
 "room_category_extern_room" = "Externes";
 "room_category_forum_room" = "Forum";
-"room_event_action_favourite" = "Mettre en favoris";
+"room_event_action_add_favourite" = "Mettre en favoris";
 "room_event_action_remove_favourite" = "Retirer des favoris";
+"room_event_action_favourite" = "Favoris";
 "tchap_cannot_invite_deactivated_account_user" = "Votre correspondant a quitté définitivement cette discussion.\nVous devez en créer une nouvelle pour le recontacter, s'il est toujours joignable sur Tchap.";
 "tchap_room_admin_leave_prompt_msg" = "Voulez-vous vraiment quitter cette conversation ?\n\nElle ne sera plus administrée, et vous risquez de ne plus pouvoir la joindre de nouveau.";
 "tchap_room_invalid_link" = "Ce lien n'est pas valide";

@@ -310,6 +310,8 @@ internal enum TchapL10n {
   /// Nouveau salon
   internal static let roomCreationTitle = TchapL10n.tr("Tchap", "room_creation_title")
   /// Mettre en favoris
+  internal static let roomEventActionAddFavourite = TchapL10n.tr("Tchap", "room_event_action_add_favourite")
+  /// Favoris
   internal static let roomEventActionFavourite = TchapL10n.tr("Tchap", "room_event_action_favourite")
   /// Retirer des favoris
   internal static let roomEventActionRemoveFavourite = TchapL10n.tr("Tchap", "room_event_action_remove_favourite")
