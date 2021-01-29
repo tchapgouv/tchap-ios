@@ -126,7 +126,7 @@ UIDocumentInteractionControllerDelegate,
 MXKCountryPickerViewControllerDelegate,
 Stylable,
 ChangePasswordCoordinatorBridgePresenterDelegate,
-UIDocumentPickerDelegate>
+MXKDocumentPickerPresenterDelegate>
 {
     // Current alert (if any).
     UIAlertController *currentAlert;
@@ -200,6 +200,8 @@ UIDocumentPickerDelegate>
 @property (nonatomic, weak) id accountUserInfoObserver;
 @property (nonatomic, weak) id pushInfoUpdateObserver;
 @property (nonatomic, weak) id sessionAccountDataDidChangeNotificationObserver;
+
+@property (nonatomic, strong) MXKDocumentPickerPresenter *documentPickerPresenter;
 
 @end
 
@@ -2163,11 +2165,14 @@ UIDocumentPickerDelegate>
 - (void)importEncryptionKeys:(UITapGestureRecognizer *)recognizer
 {
     self->currentAlert = nil;
-
-    UIDocumentPickerViewController *documentPicker = [[UIDocumentPickerViewController alloc] initWithDocumentTypes:@[(NSString *)kUTTypeData] inMode:UIDocumentPickerModeOpen];
-    documentPicker.delegate = self;
-    documentPicker.allowsMultipleSelection = NO;
-    [self presentViewController:documentPicker animated:YES completion:nil];
+    
+    MXKDocumentPickerPresenter *documentPickerPresenter = [MXKDocumentPickerPresenter new];
+    documentPickerPresenter.delegate = self;
+                                      
+    NSArray<MXKUTI*> *allowedUTIs = @[MXKUTI.data];
+    [documentPickerPresenter presentDocumentPickerWith:allowedUTIs from:self animated:YES completion:nil];
+    
+    self.documentPickerPresenter = documentPickerPresenter;
 }
 
 - (void)exportEncryptionKeys:(UITapGestureRecognizer *)recognizer
@@ -2703,13 +2708,18 @@ UIDocumentPickerDelegate>
 
 #endif
 
-#pragma mark - UIDocumentPickerDelegate
+#pragma mark - MXKDocumentPickerPresenterDelegate
 
-- (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentsAtURLs:(NSArray <NSURL *>*)urls
+- (void)documentPickerPresenterWasCancelled:(MXKDocumentPickerPresenter *)presenter
 {
-    self->currentAlert = nil;
+    self.documentPickerPresenter = nil;
+}
 
-    if ([MXMegolmExportEncryption isMegolmKeyFile:urls.firstObject])
+- (void)documentPickerPresenter:(MXKDocumentPickerPresenter *)presenter didPickDocumentsAt:(NSURL *)url
+{
+    self.documentPickerPresenter = nil;
+    
+    if ([MXMegolmExportEncryption isMegolmKeyFile:url])
     {
         // Show the keys import dialog
         self->importView = [[MXKEncryptionKeysImportView alloc] initWithMatrixSession:self.mainSession];
@@ -2717,7 +2727,7 @@ UIDocumentPickerDelegate>
         // WARNING: SettingsViewController should extends MXKViewController
         // It's working because SettingsViewController has startActivityIndicator and
         // stopActivityIndicator methods
-        [self->importView showInViewController:self toImportKeys:urls.firstObject onComplete:^{
+        [self->importView showInViewController:self toImportKeys:url onComplete:^{
             self->currentAlert = nil;
             [[AppDelegate theDelegate] showAlertWithTitle: NSLocalizedStringFromTable(@"settings_crypto_import", @"Vector", nil) message: NSLocalizedStringFromTable(@"settings_crypto_import_success", @"Vector", nil)];
         }];
