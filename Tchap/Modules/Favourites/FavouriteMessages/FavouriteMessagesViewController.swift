@@ -544,16 +544,6 @@ final class FavouriteMessagesViewController: UIViewController {
             }
         }
     }
-    
-    private func cancelEventSelection() {
-        
-        if self.currentAlert != nil {
-            self.currentAlert.dismiss(animated: false, completion: nil)
-            self.currentAlert = nil
-        }
-        
-        self.viewModel.process(viewAction: .cancelSelection)
-    }
 
     private func enableOverlayContainerUserInteractions(enable: Bool) {
         self.tableView.scrollsToTop = !enable
@@ -564,6 +554,25 @@ final class FavouriteMessagesViewController: UIViewController {
 
     private func cancelButtonAction() {
         self.viewModel.process(viewAction: .cancel)
+    }
+    
+    private func cancelEventSelection() {
+        
+        if self.currentAlert != nil {
+            self.currentAlert.dismiss(animated: false, completion: nil)
+            self.currentAlert = nil
+        }
+        
+        self.viewModel.process(viewAction: .cancelSelection)
+    }
+    
+    private func cancelImageSharing() {
+        self.documentInteractionController = nil
+        
+        if self.currentSharedAttachment != nil {
+            self.currentSharedAttachment.onShareEnded()
+            self.currentSharedAttachment = nil
+        }
     }
 }
 
@@ -808,5 +817,25 @@ extension FavouriteMessagesViewController: RoomContextualMenuViewControllerDeleg
 
 // MARK: - UIDocumentInteractionControllerDelegate
 extension FavouriteMessagesViewController: UIDocumentInteractionControllerDelegate {
-    //TODO implement delegate func
+
+    func documentInteractionControllerViewControllerForPreview(_ controller: UIDocumentInteractionController) -> UIViewController {
+        return self
+    }
+    
+    // Preview presented/dismissed on document.  Use to set up any HI underneath.
+    func documentInteractionControllerWillBeginPreview(_ controller: UIDocumentInteractionController) {
+        self.documentInteractionController = controller
+    }
+
+    func documentInteractionControllerDidEndPreview(_ controller: UIDocumentInteractionController) {
+        self.cancelImageSharing()
+    }
+
+    func documentInteractionControllerDidDismissOptionsMenu(_ controller: UIDocumentInteractionController) {
+        self.cancelImageSharing()
+    }
+
+    func documentInteractionControllerDidDismissOpenInMenu(_ controller: UIDocumentInteractionController) {
+        self.cancelImageSharing()
+    }
 }
