@@ -78,6 +78,8 @@ final class RoomCreationViewController: UIViewController, RetentionPeriodInDaysP
     
     // MARK: Private
     
+    private let agentServerDomain: String = "Agent"
+    
     private var currentStyle: Style!
     private var viewModel: RoomCreationViewModelType!
     private var keyboardAvoider: KeyboardAvoider?
@@ -344,7 +346,7 @@ final class RoomCreationViewController: UIViewController, RetentionPeriodInDaysP
         self.roomTypeImage.image = Asset.Images.forumAvatarIconHr.image
         
         self.publicVisibilityInfoLabel.isHidden = false
-        self.publicRoomFederationStackView.isHidden = false
+        self.publicRoomFederationStackView.isHidden = self.viewModel.homeServerDomain == self.agentServerDomain
         self.disablePublicRoomFederationSwitch.isOn = !isFederated
     }
     
@@ -391,7 +393,7 @@ final class RoomCreationViewController: UIViewController, RetentionPeriodInDaysP
     }
     
     @IBAction private func forumRoomViewTapGestureRecognizer(_ sender: UITapGestureRecognizer) {
-        self.viewModel.selectedRoomType = .forum()
+        self.viewModel.selectedRoomType = .forum(isFederated: self.viewModel.homeServerDomain == self.agentServerDomain)
         self.setupRoomType()
     }
     
