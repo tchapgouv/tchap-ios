@@ -25,6 +25,7 @@ protocol FavouriteMessagesViewModelViewDelegate: class {
 protocol FavouriteMessagesViewModelCoordinatorDelegate: class {
     func favouriteMessagesViewModelDidCancel(_ viewModel: FavouriteMessagesViewModelType)
     func favouriteMessagesViewModel(_ viewModel: FavouriteMessagesViewModelType, didShowRoomWithId roomId: String, onEventId eventId: String)
+    func favouriteMessagesViewModel(_ viewModel: FavouriteMessagesViewModelType, handlePermalinkFragment fragment: String) -> Bool
 }
 
 /// Protocol describing the view model used by `FavouriteMessagesViewController`

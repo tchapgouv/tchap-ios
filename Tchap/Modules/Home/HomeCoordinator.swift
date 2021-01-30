@@ -497,4 +497,11 @@ extension HomeCoordinator: FavouriteMessagesCoordinatorDelegate {
         self.navigationRouter.popModule(animated: true)
         self.showRoom(with: roomId, onEventID: eventId)
     }
+    
+    func favouriteMessagesCoordinator(_ coordinator: FavouriteMessagesCoordinatorType, handlePermalinkFragment fragment: String) -> Bool {
+        guard let delegate = self.delegate else {
+            return false
+        }
+        return delegate.homeCoordinator(self, handlePermalinkFragment: fragment)
+    }
 }

@@ -37,7 +37,7 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
     // MARK: Private
 
     private let session: MXSession
-    private let favouriteMessagesQueue: DispatchQueue
+    private let formatter: EventFormatter
     
     private var sortedFavouriteEvents: [FavouriteEvent] = []
     private var favouriteMessagesDataList: [FavouriteMessagesBubbleCellData] = []
@@ -45,6 +45,7 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
     private var pendingOperations = 0
     private var viewState: FavouriteMessagesViewState?
     private var extraEventsListener: Any?
+    private var selectedBubbleCellData: FavouriteMessagesBubbleCellData!
     
     var titleViewModel: RoomTitleViewModel
     
@@ -55,12 +56,16 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
     
     // MARK: - Setup
     
-    init(session: MXSession) {
+    init(session: MXSession, formatter: EventFormatter) {
         self.session = session
-        self.favouriteMessagesQueue = DispatchQueue(label: "\(type(of: self)).favouriteMessagesQueue")
+        self.formatter = formatter
         
         let subtitle = NSAttributedString(string: TchapL10n.favouriteMessagesOneSubtitle(0), attributes: [.foregroundColor: kColorWarmGrey])
         self.titleViewModel = RoomTitleViewModel(title: TchapL10n.favouriteMessagesTitle, subtitle: subtitle, roomInfo: nil, avatarImageViewModel: nil)
+    }
+    
+    deinit {
+        self.releaseData()
     }
     
     // MARK: - Public
@@ -71,7 +76,14 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
             self.loadData()
         case .tapEvent(let roomId, let eventId):
             self.coordinatorDelegate?.favouriteMessagesViewModel(self, didShowRoomWithId: roomId, onEventId: eventId)
+        case .handlePermalinkFragment(let fragment):
+            self.coordinatorDelegate?.favouriteMessagesViewModel(self, handlePermalinkFragment: fragment)
+        case .selectEvent(let event, let cellData):
+            self.selectEvent(event: event, cellData: cellData)
+        case .cancelSelection:
+            self.cancelSelection()
         case .cancel:
+            self.releaseData()
             self.coordinatorDelegate?.favouriteMessagesViewModelDidCancel(self)
         }
     }
@@ -88,7 +100,7 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
         switch viewState {
         case .loading, .sorted:
             canLoadData = false
-        case .loaded(roomBubbleCellDataList: _):
+        case .loaded(roomBubbleCellDataList: _), .updated, .selectedEvent, .cancelledSelection:
             canLoadData = self.favouriteMessagesDataList.count < self.sortedFavouriteEvents.count || self.sortedFavouriteEvents.isEmpty
         default:
             canLoadData = true
@@ -104,6 +116,7 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
         }
 
         self.update(viewState: .loading)
+        self.unregisterEventDidDecryptNotification()
         
         if self.sortedFavouriteEvents.isEmpty {
             var favouriteEvents: [FavouriteEvent] = []
@@ -164,8 +177,11 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
                     // Check whether the user knows this room to create the room data source if it doesn't exist.
                     roomDataSourceManager?.roomDataSource(forRoom: favouriteEvent.roomId, create: (self.session.room(withRoomId: favouriteEvent.roomId) != nil), onComplete: { roomDataSource in
                         
-                        if roomDataSource != nil, let cellData = FavouriteMessagesBubbleCellData(event: event, andRoomState: roomDataSource?.roomState, andRoomDataSource: roomDataSource) {
-                            favouriteMessagesCache.append(cellData)
+                        if let roomDataSource = roomDataSource {
+                            roomDataSource.eventFormatter = self.formatter
+                            if let cellData = FavouriteMessagesBubbleCellData(event: event, andRoomState: roomDataSource.roomState, andRoomDataSource: roomDataSource) {
+                                favouriteMessagesCache.append(cellData)
+                            }
                         }
                         
                         self.process(cellDatas: favouriteMessagesCache)
@@ -186,7 +202,25 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
         if self.pendingOperations == 0, !cellDatas.isEmpty {
             self.favouriteMessagesDataList.append(contentsOf: cellDatas.sorted { $0.events[0].originServerTs > $1.events[0].originServerTs })
             self.update(viewState: .loaded(self.favouriteMessagesDataList))
+            self.registerEventDidDecryptNotification()
         }
+    }
+    
+    private func selectEvent(event: MXEvent, cellData: FavouriteMessagesBubbleCellData) {
+        cellData.selectedEventId = event.eventId
+        self.selectedBubbleCellData = cellData
+        self.update(viewState: .selectedEvent)
+    }
+    
+    private func cancelSelection() {
+        self.selectedBubbleCellData.selectedEventId = nil
+        self.selectedBubbleCellData = nil
+        self.update(viewState: .cancelledSelection)
+    }
+    
+    private func releaseData() {
+        self.removeEventsListener()
+        self.unregisterEventDidDecryptNotification()
     }
     
     private func update(viewState: FavouriteMessagesViewState) {
@@ -209,6 +243,28 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
     private func removeEventsListener() {
         if self.extraEventsListener != nil {
             self.extraEventsListener = nil
+        }
+    }
+    
+    // MARK: - mxEventDidDecrypt
+    
+    private func registerEventDidDecryptNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(eventDidDecrypt(notification:)), name: .mxEventDidDecrypt, object: nil)
+    }
+    
+    private func unregisterEventDidDecryptNotification() {
+        NotificationCenter.default.removeObserver(self, name: .mxEventDidDecrypt, object: nil)
+    }
+    
+    @objc private func eventDidDecrypt(notification: Notification) {
+        guard let decryptedEvent = notification.object as? MXEvent else {
+            return
+        }
+        
+        for cellData in self.favouriteMessagesDataList where cellData.events[0].eventId == decryptedEvent.eventId {
+            cellData.updateEvent(decryptedEvent.eventId, with: decryptedEvent)
+            self.update(viewState: .updated)
+            break
         }
     }
 }
