@@ -305,9 +305,6 @@
 "settings_crypto_device_id" = "\nIdentifiant de l'appareil : ";
 "settings_crypto_device_key" = "\nClé de l’appareil :\n";
 "settings_crypto_export" = "Exporter les clés";
-"settings_crypto_import" = "Importer les clés";
-"settings_crypto_import_invalid_file" = "Fichier de clés invalide.";
-"settings_crypto_import_success" = "Clés importées avec succès.";
 "settings_crypto_blacklist_unverified_devices" = "Chiffrer uniquement vers les appareils vérifiés";
 // Room Details
 "room_details_title" = "Détails du salon";

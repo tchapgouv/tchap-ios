@@ -513,9 +513,6 @@
 "settings_crypto_device_id" = "\nSession ID: ";
 "settings_crypto_device_key" = "\nSession key:\n";
 "settings_crypto_export" = "Export keys";
-"settings_crypto_import" = "Import keys";
-"settings_crypto_import_invalid_file" = "Invalid key file.";
-"settings_crypto_import_success" = "Keys imported successfully.";
 "settings_crypto_blacklist_unverified_devices" = "Encrypt to verified sessions only";
 
 "settings_deactivate_my_account" = "Deactivate my account";

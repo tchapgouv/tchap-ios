@@ -1409,7 +1409,7 @@ MXKDocumentPickerPresenterDelegate>
                 exportKeysBtnCell.mxkButton.titleLabel.text = nil;
             }
 
-            NSString *btnTitle = NSLocalizedStringFromTable(@"settings_crypto_import", @"Vector", nil);
+            NSString *btnTitle = NSLocalizedStringFromTable(@"settings_crypto_import", @"Tchap", nil);
             [exportKeysBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
             [exportKeysBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
             [exportKeysBtnCell.mxkButton setTintColor:self.currentStyle.buttonPlainTitleColor];
@@ -2729,12 +2729,12 @@ MXKDocumentPickerPresenterDelegate>
         // stopActivityIndicator methods
         [self->importView showInViewController:self toImportKeys:url onComplete:^{
             self->currentAlert = nil;
-            [[AppDelegate theDelegate] showAlertWithTitle: NSLocalizedStringFromTable(@"settings_crypto_import", @"Vector", nil) message: NSLocalizedStringFromTable(@"settings_crypto_import_success", @"Vector", nil)];
+            [[AppDelegate theDelegate] showAlertWithTitle: NSLocalizedStringFromTable(@"settings_crypto_import", @"Tchap", nil) message: NSLocalizedStringFromTable(@"settings_crypto_import_success", @"Tchap", nil)];
         }];
     }
     else
     {
-        [[AppDelegate theDelegate] showAlertWithTitle: NSLocalizedStringFromTable(@"settings_crypto_import", @"Vector", nil) message: NSLocalizedStringFromTable(@"settings_crypto_import_invalid_file", @"Vector", nil)];
+        [[AppDelegate theDelegate] showAlertWithTitle: NSLocalizedStringFromTable(@"settings_crypto_import", @"Tchap", nil) message: NSLocalizedStringFromTable(@"settings_crypto_import_invalid_file", @"Tchap", nil)];
     }
 }
 

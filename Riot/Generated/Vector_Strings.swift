@@ -3742,18 +3742,6 @@ internal enum VectorL10n {
   internal static var settingsCryptoExport: String { 
     return VectorL10n.tr("Vector", "settings_crypto_export") 
   }
-  /// Export keys
-  internal static var settingsCryptoImport: String {
-    return VectorL10n.tr("Vector", "settings_crypto_import")
-  }
-  /// Invalid key file.
-  internal static var settingsCryptoImportInvalidFile: String {
-    return VectorL10n.tr("Vector", "settings_crypto_import_invalid_file")
-  }
-  /// Keys imported successfully.
-  internal static var settingsCryptoImportSuccess: String {
-    return VectorL10n.tr("Vector", "settings_crypto_import_success")
-  }
   /// CRYPTOGRAPHY
   internal static var settingsCryptography: String { 
     return VectorL10n.tr("Vector", "settings_cryptography") 
