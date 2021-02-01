@@ -18,8 +18,11 @@ import Foundation
 
 class FavouriteMessagesBubbleCellData: RoomBubbleCellData {
     
+    // MARK: - Properties
     
-    // MARK: - Public
+    // MARK: Private
+    
+    // MARK: Public
     
     var roomDisplayname: String?
     

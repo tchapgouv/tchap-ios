@@ -70,6 +70,13 @@ final class FavouritesCoordinator: FavouritesCoordinatorType {
 
 // MARK: - FavouriteMessagesCoordinatorDelegate
 extension FavouritesCoordinator: FavouriteMessagesCoordinatorDelegate {
+    func favouriteMessagesCoordinator(_ coordinator: FavouriteMessagesCoordinatorType, handlePermalinkFragment fragment: String) -> Bool {
+        guard let delegate = self.delegate else {
+            return false
+        }
+        return delegate.favouritesCoordinator(self, handlePermalinkFragment: fragment)
+    }
+    
     func favouriteMessagesCoordinatorDidCancel(_ coordinator: FavouriteMessagesCoordinatorType) {
         self.delegate?.favouritesCoordinatorDidComplete(self)
     }

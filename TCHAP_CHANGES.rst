@@ -6,6 +6,7 @@ Improvements:
 
 Bug Fixes:
  * Crash on missing identity server information #357
+ * A discussion (1:1) is displayed by mistake as a private room opened to extern #356
 
 Changes in Tchap 1.1.1 (2020-12-18)
 ===================================================

@@ -22,5 +22,8 @@ import Foundation
 enum FavouriteMessagesViewAction {
     case loadData
     case tapEvent(roomId: String, eventId: String)
+    case handlePermalinkFragment(fragment: String)
+    case selectEvent(event: MXEvent, cellData: FavouriteMessagesBubbleCellData)
+    case cancelSelection
     case cancel
 }

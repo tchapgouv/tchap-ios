@@ -23,5 +23,8 @@ enum FavouriteMessagesViewState {
     case loading
     case sorted
     case loaded(_ roomBubbleCellDataList: [RoomBubbleCellData])
+    case updated
+    case selectedEvent
+    case cancelledSelection
     case error(Error)
 }

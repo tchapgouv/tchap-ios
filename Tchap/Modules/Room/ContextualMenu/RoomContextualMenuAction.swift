@@ -24,6 +24,8 @@ import Foundation
 #else
     case redact
 #endif
+    case favourite
+    case share
     case more
     
     // MARK: - Properties
@@ -43,6 +45,10 @@ import Foundation
         case .redact:
             title = VectorL10n.roomEventActionRedact
 #endif
+        case .favourite:
+            title = TchapL10n.roomEventActionFavourite
+        case .share:
+            title = VectorL10n.roomEventActionShare
         case .more:
             title = VectorL10n.roomEventActionMore
         }
@@ -65,6 +71,10 @@ import Foundation
         case .redact:
             image = Asset.Images.roomContextMenuRedact.image
 #endif
+        case .favourite:
+            image = Asset.Images.roomContextMenuFav.image
+        case .share:
+            image = Asset.Images.roomContextMenuShare.image
         case .more:
             image = Asset.Images.roomContextMenuMore.image
         default:
