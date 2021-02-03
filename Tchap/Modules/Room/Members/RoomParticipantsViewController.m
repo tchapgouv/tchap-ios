@@ -1008,8 +1008,6 @@
         }
     };
     
-    // FIXME: Check expired account by using a bulk version of the userinfo API
-    // Until this bulk version is available we skip this step, and sort directly the array.
     // Check whether some accounts have expired
     MXWeakify(self);
     [self checkExpiredAccounts:^{
@@ -1026,18 +1024,6 @@
             completion();
         }
     }];
-    // Sort each participants list in alphabetical order
-//    [actualParticipants sortUsingComparator:comparator];
-//    [invitedParticipants sortUsingComparator:comparator];
-//
-//    // Reload search result if any
-//    [self reloadSearchResult];
-//
-//    if (completion)
-//    {
-//        completion();
-//    }
-    // ENDFIXME Check expired account by using a bulk version of the userinfo API
 }
 
 - (Contact*)getContactAtIndexPath:(NSIndexPath *)indexPath
