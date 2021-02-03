@@ -902,36 +902,39 @@
     dispatch_group_t requestsGroup = dispatch_group_create();
     self.userService = [[UserService alloc] initWithSession:self.mxRoom.mxSession];
     MXHTTPOperation *op;
-    for (Contact *contact in actualParticipants)
+    
+    NSArray<Contact*> *participants = [actualParticipants arrayByAddingObjectsFromArray:invitedParticipants];
+    NSMutableArray *contactIds = [NSMutableArray new];
+    for (Contact *contact in participants)
     {
         if (contact.mxMember.userId)
         {
-            dispatch_group_enter(requestsGroup);
-            op = [self.userService isAccountExpiredFor:contact.mxMember.userId
-                                          success:^(BOOL isExpired) {
-                                              contact.isExpired = isExpired;
-                                              dispatch_group_leave(requestsGroup);
-                                          } failure:^(NSError * _Nonnull error) {
-                                              contact.isExpired = false;
-                                              dispatch_group_leave(requestsGroup);
-                                          }];
+            [contactIds addObject:contact.mxMember.userId];
         }
     }
-    for (Contact *contact in invitedParticipants)
-    {
-        if (contact.mxMember.userId)
+    
+    dispatch_group_enter(requestsGroup);
+    op = [self.userService getUsersInfoFor:contactIds success:^(NSDictionary<NSString *,id> * _Nonnull usersInfo) {
+        for (Contact *contact in participants)
         {
-            dispatch_group_enter(requestsGroup);
-            op = [self.userService isAccountExpiredFor:contact.mxMember.userId
-                                          success:^(BOOL isExpired) {
-                                              contact.isExpired = isExpired;
-                                              dispatch_group_leave(requestsGroup);
-                                          } failure:^(NSError * _Nonnull error) {
-                                              contact.isExpired = false;
-                                              dispatch_group_leave(requestsGroup);
-                                          }];
+            UserStatusInfo *userInfo = [usersInfo objectForKey:contact.mxMember.userId];
+            if (userInfo)
+            {
+                contact.isExpired = userInfo.expired;
+            }
+            else
+            {
+                contact.isExpired = false;
+            }
         }
-    }
+        dispatch_group_leave(requestsGroup);
+    } failure:^(NSError * _Nonnull error) {
+        for (Contact *contact in participants)
+        {
+            contact.isExpired = false;
+        }
+        dispatch_group_leave(requestsGroup);
+    }];
     
     dispatch_group_notify(requestsGroup, dispatch_get_main_queue(), ^{
         self.userService = nil;
@@ -1007,33 +1010,33 @@
     
     // FIXME: Check expired account by using a bulk version of the userinfo API
     // Until this bulk version is available we skip this step, and sort directly the array.
-//    // Check whether some accounts have expired
-//    MXWeakify(self);
-//    [self checkExpiredAccounts:^{
-//        MXStrongifyAndReturnIfNil(self);
-//        // Sort each participants list in alphabetical order
-//        [self->actualParticipants sortUsingComparator:comparator];
-//        [self->invitedParticipants sortUsingComparator:comparator];
-//
-//        // Reload search result if any
-//        [self reloadSearchResult];
-//
-//        if (completion)
-//        {
-//            completion();
-//        }
-//    }];
+    // Check whether some accounts have expired
+    MXWeakify(self);
+    [self checkExpiredAccounts:^{
+        MXStrongifyAndReturnIfNil(self);
+        // Sort each participants list in alphabetical order
+        [self->actualParticipants sortUsingComparator:comparator];
+        [self->invitedParticipants sortUsingComparator:comparator];
+
+        // Reload search result if any
+        [self reloadSearchResult];
+
+        if (completion)
+        {
+            completion();
+        }
+    }];
     // Sort each participants list in alphabetical order
-    [actualParticipants sortUsingComparator:comparator];
-    [invitedParticipants sortUsingComparator:comparator];
-    
-    // Reload search result if any
-    [self reloadSearchResult];
-    
-    if (completion)
-    {
-        completion();
-    }
+//    [actualParticipants sortUsingComparator:comparator];
+//    [invitedParticipants sortUsingComparator:comparator];
+//
+//    // Reload search result if any
+//    [self reloadSearchResult];
+//
+//    if (completion)
+//    {
+//        completion();
+//    }
     // ENDFIXME Check expired account by using a bulk version of the userinfo API
 }
 

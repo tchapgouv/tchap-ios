@@ -55,14 +55,14 @@ protocol UserServiceType {
     /// - returns: a `MXHTTPOperation` instance.
     func isAccountDeactivated(for userId: String, completion: @escaping ((MXResponse<Bool>) -> Void)) -> MXHTTPOperation?
     
-    /// Check whether the account associated to the provided userId has expired.
+    /// Check whether the accounts associated to the provided userIds have expired.
     ///
     /// - Parameters:
-    ///   - userId: The Matrix user id.
+    ///   - userIds: The Matrix user ids.
     ///   - completion: A closure called when the operation completes. Provide the answer or an error.
     ///
     /// - returns: a `MXHTTPOperation` instance.
-    func isAccountExpired(for userId: String, completion: @escaping ((MXResponse<Bool>) -> Void)) -> MXHTTPOperation?
+    func getUsersInfo(for userIds: [String], completion: @escaping (Result<[String: UserStatusInfoType], Error>) -> Void) -> MXHTTPOperation?
     
     /// Tells whether a Matrix identifier corresponds to an external Tchap user.
     /// Note: invalid identifier will be considered as external.

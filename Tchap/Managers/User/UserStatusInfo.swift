@@ -17,7 +17,12 @@
 import Foundation
 
 /// Structure use to store expiration and deactivation information about a given user.
-struct UserStatusInfo: UserStatusInfoType {
+@objc class UserStatusInfo: NSObject, UserStatusInfoType {
     let expired: Bool
     let deactivated: Bool
+    
+    init(expired: Bool, deactivated: Bool) {
+        self.expired = expired
+        self.deactivated = deactivated
+    }
 }

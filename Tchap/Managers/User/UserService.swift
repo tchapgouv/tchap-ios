@@ -53,7 +53,7 @@ final class UserService: NSObject, UserServiceType {
         self.thirdPartyIDPlatformInfoResolver = ThirdPartyIDPlatformInfoResolver(identityServerUrls: identityServerURLs, serverPrefixURL: serverUrlPrefix)
         
         /// The current HttpClient
-        self.httpClient = MXHTTPClient(baseURL: "\(homeServer)/\(kMXAPIPrefixPathR0)", accessToken: accessToken, andOnUnrecognizedCertificateBlock: nil)
+        self.httpClient = MXHTTPClient(baseURL: "\(homeServer)/\(kMXAPIPrefixPathUnstable)", accessToken: accessToken, andOnUnrecognizedCertificateBlock: nil)
         
         super.init()
     }
@@ -109,21 +109,14 @@ final class UserService: NSObject, UserServiceType {
     }
     
     func isAccountDeactivated(for userId: String, completion: @escaping ((MXResponse<Bool>) -> Void)) -> MXHTTPOperation? {
-        return self.getUserInfo(for: userId) { (response) in
+        return self.getUsersInfo(for: [userId]) { (response) in
             switch response {
-            case .success(let userInfo):
-                completion(.success(userInfo.deactivated))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
-    }
-    
-    func isAccountExpired(for userId: String, completion: @escaping ((MXResponse<Bool>) -> Void)) -> MXHTTPOperation? {
-        return self.getUserInfo(for: userId) { (response) in
-            switch response {
-            case .success(let userInfo):
-                completion(.success(userInfo.expired))
+            case .success(let usersInfo):
+                if let deactivated = usersInfo[userId]?.deactivated {
+                    completion(.success(deactivated))
+                } else {
+                    completion(.success(false))
+                }
             case .failure(let error):
                 completion(.failure(error))
             }
@@ -133,16 +126,6 @@ final class UserService: NSObject, UserServiceType {
     // Temporary version used in ObjectiveC.
     func isAccountDeactivated(for userId: String, success: @escaping ((Bool) -> Void), failure: ((Error) -> Void)?) -> MXHTTPOperation? {
         return self.isAccountDeactivated(for: userId) { (response) in
-            switch response {
-            case .success(let value):
-                success(value)
-            case .failure(let error):
-                failure?(error)
-            }
-        }
-    }
-    func isAccountExpired(for userId: String, success: @escaping ((Bool) -> Void), failure: ((Error) -> Void)?) -> MXHTTPOperation? {
-        return self.isAccountExpired(for: userId) { (response) in
             switch response {
             case .success(let value):
                 success(value)
@@ -270,6 +253,46 @@ final class UserService: NSObject, UserServiceType {
         return HomeServerComponents(hostname: hostname).displayName
     }
     
+    // Temporary version used in ObjectiveC.
+    func getUsersInfo(for userIds: [String], success: @escaping ((Dictionary<String, UserStatusInfoType>) -> Void), failure: ((Error) -> Void)?) -> MXHTTPOperation? {
+        return self.getUsersInfo(for: userIds) { (response) in
+            switch response {
+            case .success(let value):
+                success(value)
+            case .failure(let error):
+                failure?(error)
+            }
+        }
+    }
+    
+    func getUsersInfo(for userIds: [String], completion: @escaping (Result<[String: UserStatusInfoType], Error>) -> Void) -> MXHTTPOperation? {
+        return httpClient.request(withMethod: "POST",
+                                  path: "users/info",
+                                  parameters: ["user_ids": userIds],
+                                  success: { (response: [AnyHashable: Any]?) in
+                                    NSLog("[UserService] users info resquest succeeded")
+                                    guard let response = response as? [String: [String: Bool]] else {
+                                        completion(.failure(UserServiceError.unknown))
+                                        return
+                                    }
+                                    
+                                    let usersInfo = response.mapValues {
+                                        UserStatusInfo(expired: $0[Constants.userInfoKeyExpired] ?? false,
+                                                       deactivated: $0[Constants.userInfoKeyDeactivated] ?? false)
+                                    }
+                                    
+                                    completion(.success(usersInfo))
+        },
+                                  failure: { (error: Error?) in
+                                    NSLog("[UserService] users info resquest failed")
+                                    if let error = error {
+                                        completion(.failure(error))
+                                    } else {
+                                        completion(.failure(UserServiceError.unknown))
+                                    }
+        })
+    }
+    
     // MARK: - Private
     
     private func buildUser(from mxUser: MXUser) -> User {
@@ -284,32 +307,5 @@ final class UserService: NSObject, UserServiceType {
         }
         
         return User(userId: userId, displayName: displayName, avatarStringURL: mxUser.avatarUrl)
-    }
-    
-    private func getUserInfo(for userId: String, completion: @escaping ((MXResponse<UserStatusInfoType>) -> Void)) -> MXHTTPOperation? {
-        let path = "user/" + MXTools.encodeURIComponent(userId) + "/info"
-        return httpClient.request(withMethod: "GET",
-                                  path: path,
-                                  parameters: nil,
-                                  success: { (response: [AnyHashable: Any]?) in
-                                    NSLog("[UserService] user info resquest succeeded")
-                                    guard let response = response else {
-                                        completion(.success(UserStatusInfo(expired: false, deactivated: false)))
-                                        return
-                                    }
-                                    
-                                    let expired = response[Constants.userInfoKeyExpired] as? Bool ?? false
-                                    let deactivated = response[Constants.userInfoKeyDeactivated] as? Bool ?? false
-                                    let userInfo = UserStatusInfo(expired: expired, deactivated: deactivated)
-                                    completion(.success(userInfo))
-        },
-                                  failure: { (error: Error?) in
-                                    NSLog("[UserService] user info resquest failed")
-                                    if let error = error {
-                                        completion(.failure(error))
-                                    } else {
-                                        completion(.failure(UserServiceError.unknown))
-                                    }
-        })
     }
 }
