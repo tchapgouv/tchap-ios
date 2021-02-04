@@ -101,8 +101,8 @@ enum
 
 enum {
     CRYPTOGRAPHY_INFO_INDEX = 0,
-    CRYPTOGRAPHY_IMPORT_INDEX,
     CRYPTOGRAPHY_EXPORT_INDEX,
+    CRYPTOGRAPHY_IMPORT_INDEX,
     CRYPTOGRAPHY_COUNT
 };
 
@@ -1398,28 +1398,28 @@ MXKDocumentPickerPresenterDelegate>
         }
         else if (row == CRYPTOGRAPHY_IMPORT_INDEX)
         {
-            MXKTableViewCellWithButton *exportKeysBtnCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
-            if (!exportKeysBtnCell)
+            MXKTableViewCellWithButton *importKeysBtnCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
+            if (!importKeysBtnCell)
             {
-                exportKeysBtnCell = [[MXKTableViewCellWithButton alloc] init];
+                importKeysBtnCell = [[MXKTableViewCellWithButton alloc] init];
             }
             else
             {
                 // Fix https://github.com/vector-im/riot-ios/issues/1354
-                exportKeysBtnCell.mxkButton.titleLabel.text = nil;
+                importKeysBtnCell.mxkButton.titleLabel.text = nil;
             }
 
             NSString *btnTitle = NSLocalizedStringFromTable(@"settings_crypto_import", @"Tchap", nil);
-            [exportKeysBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
-            [exportKeysBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
-            [exportKeysBtnCell.mxkButton setTintColor:self.currentStyle.buttonPlainTitleColor];
-            exportKeysBtnCell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
+            [importKeysBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
+            [importKeysBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
+            [importKeysBtnCell.mxkButton setTintColor:self.currentStyle.buttonPlainTitleColor];
+            importKeysBtnCell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
 
-            [exportKeysBtnCell.mxkButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
-            [exportKeysBtnCell.mxkButton addTarget:self action:@selector(importEncryptionKeys:) forControlEvents:UIControlEventTouchUpInside];
-            exportKeysBtnCell.mxkButton.accessibilityIdentifier = nil;
+            [importKeysBtnCell.mxkButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+            [importKeysBtnCell.mxkButton addTarget:self action:@selector(importEncryptionKeys:) forControlEvents:UIControlEventTouchUpInside];
+            importKeysBtnCell.mxkButton.accessibilityIdentifier = nil;
 
-            cell = exportKeysBtnCell;
+            cell = importKeysBtnCell;
         }
     }
 #ifdef SUPPORT_KEYS_BACKUP
