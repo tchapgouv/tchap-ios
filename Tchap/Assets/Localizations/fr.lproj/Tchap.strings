@@ -172,6 +172,8 @@
 "tchap_room_admin_leave_prompt_msg" = "Voulez-vous vraiment quitter cette conversation ?\n\nElle ne sera plus administrée, et vous risquez de ne plus pouvoir la joindre de nouveau.";
 "tchap_room_invalid_link" = "Ce lien n'est pas valide";
 "tchap_room_access_unauthorized" = "Vous n'êtes pas autorisé à rejoindre cette conversation. Une invitation est nécessaire.";
+"room_event_action_forward" = "Transférer";
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Room Members

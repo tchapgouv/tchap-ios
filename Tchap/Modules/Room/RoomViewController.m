@@ -118,6 +118,7 @@
 
 #import "MXSession+Riot.h"
 #import "RoomPreviewData.h"
+#import "ShareViewController.h"
 
 #import "GeneratedInterface-Swift.h"
 
@@ -2360,19 +2361,24 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                     NSArray *activityItems = @[selectedComponent.textMessage];
                     
                     UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
-                    
+
                     if (activityViewController)
                     {
                         activityViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
                         activityViewController.popoverPresentationController.sourceView = roomBubbleTableViewCell;
                         activityViewController.popoverPresentationController.sourceRect = roomBubbleTableViewCell.bounds;
-                        
+
                         [self presentViewController:activityViewController animated:YES completion:nil];
                     }
                 }
                 
             }]];
         }
+        
+        [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_forward", @"Tchap", nil)
+                                                         style:UIAlertActionStyleDefault
+                                                       handler:^(UIAlertAction * action) {
+            [self.delegate roomViewController:self forwardMessage:selectedComponent.textMessage];                                                       }]];
     }
     else // Add action for attachment
     {
@@ -2500,6 +2506,27 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                     
                 }]];
             }
+            
+            [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_forward", @"Tchap", nil)
+                                                             style:UIAlertActionStyleDefault
+                                                           handler:^(UIAlertAction * action) {
+                [self cancelEventSelection];
+                
+                [attachment prepareShare:^(NSURL *fileURL) {
+                    
+                    __strong __typeof(weakSelf)self = weakSelf;
+                    [self.delegate roomViewController:self forwardFile:fileURL];
+
+                } failure:^(NSError *error) {
+                    
+                    //Alert user
+                    [[AppDelegate theDelegate] showErrorAsAlert:error];
+                    
+                }];
+                
+                // Start animation in case of download during attachment preparing
+                [roomBubbleTableViewCell startProgressUI];
+            }]];
         }
     }
     

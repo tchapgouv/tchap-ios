@@ -72,6 +72,11 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Tchap.ForgotPasswordVerifyEmailViewController>(storyboard: ForgotPasswordVerifyEmailViewController.self)
   }
+  internal enum ForwardViewController: StoryboardType {
+    internal static let storyboardName = "ForwardViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.ForwardViewController>(storyboard: ForwardViewController.self)
+  }
   internal enum HomeViewController: StoryboardType {
     internal static let storyboardName = "HomeViewController"
 

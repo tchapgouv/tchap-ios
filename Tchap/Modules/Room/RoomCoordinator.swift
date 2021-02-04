@@ -33,7 +33,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorType {
     private let roomID: String?
     private let eventID: String?
     private let discussionTargetUserID: String?
-    
+
     private let userService: UserServiceType
     private var foundDiscussionTargetUser: User?
     private let roomViewController: RoomViewController
@@ -304,6 +304,20 @@ extension RoomCoordinator: RoomViewControllerDelegate {
             return false
         }
         return delegate.roomCoordinator(self, handlePermalinkFragment: fragment)
+    }
+    
+    func roomViewController(_ roomViewController: RoomViewController, forwardMessage messageText: String) {
+        let coordinator = ForwardCoordinator(session: self.session, messageText: messageText, fileUrl: nil)
+        coordinator.start()
+        self.router.present(coordinator, animated: true)
+        self.add(childCoordinator: coordinator)
+    }
+    
+    func roomViewController(_ roomViewController: RoomViewController, forwardFile url: URL) {
+        let coordinator = ForwardCoordinator(session: self.session, messageText: nil, fileUrl: url)
+        coordinator.start()
+        self.router.present(coordinator, animated: true)
+        self.add(childCoordinator: coordinator)
     }
 }
 

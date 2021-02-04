@@ -1724,6 +1724,14 @@
 		2246FD2FAB52E3C6490FD4BA /* Pods_TchapPods_BtchapNSE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01A24A7FB32EBE89014DD918 /* Pods_TchapPods_BtchapNSE.framework */; };
 		323BD4C6148B554408CDD950 /* Pods_TchapPods_BtchapShareExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EFEE7E56697557ECD04FEDAE /* Pods_TchapPods_BtchapShareExtension.framework */; };
 		3758AAFA0E62019A0A322926 /* Pods_TchapPods_Tchap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6969DC25D5C9C2BB6A87FF16 /* Pods_TchapPods_Tchap.framework */; };
+		3A74C72D25CB2FE900E3D171 /* ForwardCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A74C72C25CB2FE900E3D171 /* ForwardCoordinatorType.swift */; };
+		3A74C73925CB31B300E3D171 /* ForwardCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A74C73825CB31B300E3D171 /* ForwardCoordinator.swift */; };
+		3A74C73A25CB31B300E3D171 /* ForwardCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A74C73825CB31B300E3D171 /* ForwardCoordinator.swift */; };
+		3A74C74125CB327B00E3D171 /* ForwardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A74C74025CB327B00E3D171 /* ForwardViewController.swift */; };
+		3A74C74225CB327B00E3D171 /* ForwardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A74C74025CB327B00E3D171 /* ForwardViewController.swift */; };
+		3A74C74825CB328600E3D171 /* ForwardCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A74C72C25CB2FE900E3D171 /* ForwardCoordinatorType.swift */; };
+		3A74C74F25CB32A100E3D171 /* ForwardViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A74C74E25CB32A100E3D171 /* ForwardViewController.storyboard */; };
+		3A74C75025CB32A100E3D171 /* ForwardViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A74C74E25CB32A100E3D171 /* ForwardViewController.storyboard */; };
 		88D99D182A4DAA23DCFAEFC1 /* Pods_TchapPods_Btchap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42D17E495E890C4E93B6454C /* Pods_TchapPods_Btchap.framework */; };
 		8E021F5325A60C9200E3F983 /* FavouriteIncomingTextMsgBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8E021F5225A60C9200E3F983 /* FavouriteIncomingTextMsgBubbleCell.xib */; };
 		8E021F5525A60E6400E3F983 /* FavouriteIncomingTextMsgBubbleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E021F5425A60E6400E3F983 /* FavouriteIncomingTextMsgBubbleCell.swift */; };
@@ -2889,6 +2897,10 @@
 		3267EFB520E379FD00FF1CAA /* AUTHORS.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AUTHORS.rst; sourceTree = "<group>"; };
 		3284A35020A07C210044F922 /* postMessageAPI.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = postMessageAPI.js; sourceTree = "<group>"; };
 		36D255B2C1E174D71079370D /* Pods_TchapPods_TchapNSE.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TchapPods_TchapNSE.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3A74C72C25CB2FE900E3D171 /* ForwardCoordinatorType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForwardCoordinatorType.swift; sourceTree = "<group>"; };
+		3A74C73825CB31B300E3D171 /* ForwardCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForwardCoordinator.swift; sourceTree = "<group>"; };
+		3A74C74025CB327B00E3D171 /* ForwardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForwardViewController.swift; sourceTree = "<group>"; };
+		3A74C74E25CB32A100E3D171 /* ForwardViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ForwardViewController.storyboard; sourceTree = "<group>"; };
 		42D17E495E890C4E93B6454C /* Pods_TchapPods_Btchap.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TchapPods_Btchap.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		456A8484841ECDA7F54D5999 /* Pods-TchapPods-TchapTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TchapPods-TchapTests.release.xcconfig"; path = "Target Support Files/Pods-TchapPods-TchapTests/Pods-TchapPods-TchapTests.release.xcconfig"; sourceTree = "<group>"; };
 		56D1C658F955BD97CBA30525 /* Pods-TchapPods-Tchap.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TchapPods-Tchap.debug.xcconfig"; path = "Target Support Files/Pods-TchapPods-Tchap/Pods-TchapPods-Tchap.debug.xcconfig"; sourceTree = "<group>"; };
@@ -4538,6 +4550,7 @@
 		02BEE14E2125BBF800098505 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				3A74C72B25CB2F9E00E3D171 /* Forward */,
 				02C3F2A624AFE32B0086ACA5 /* AuthenticatedSession */,
 				02C3F22A24AFDEFF0086ACA5 /* Secrets */,
 				02C3F21C24AFD3870086ACA5 /* CrossSigning */,
@@ -5299,6 +5312,17 @@
 				3284A35020A07C210044F922 /* postMessageAPI.js */,
 			);
 			path = js;
+			sourceTree = "<group>";
+		};
+		3A74C72B25CB2F9E00E3D171 /* Forward */ = {
+			isa = PBXGroup;
+			children = (
+				3A74C72C25CB2FE900E3D171 /* ForwardCoordinatorType.swift */,
+				3A74C73825CB31B300E3D171 /* ForwardCoordinator.swift */,
+				3A74C74025CB327B00E3D171 /* ForwardViewController.swift */,
+				3A74C74E25CB32A100E3D171 /* ForwardViewController.storyboard */,
+			);
+			path = Forward;
 			sourceTree = "<group>";
 		};
 		5FC42FA41F5186AFFB6A2404 /* Frameworks */ = {
@@ -6818,6 +6842,7 @@
 				020DF96F214BE467003DFBA4 /* RoomIncomingEncryptedTextMsgWithPaginationTitleBubbleCell.xib in Resources */,
 				0250C5672122B68000034691 /* MediaPickerViewController.xib in Resources */,
 				026154E0236C7D930045459E /* agent.social_2019_10.cer in Resources */,
+				3A74C74F25CB32A100E3D171 /* ForwardViewController.storyboard in Resources */,
 				02388E7324A2AF7A00F3B485 /* KeyVerificationSelfVerifyStartViewController.storyboard in Resources */,
 				B11C80192139484900CC6F2F /* RegistrationEmailSentViewController.storyboard in Resources */,
 				020DF93F214BE467003DFBA4 /* RoomViewController.xib in Resources */,
@@ -7091,6 +7116,7 @@
 				02DFEC8721C07370009B6F15 /* RoomMembershipWithPaginationTitleBubbleCell.xib in Resources */,
 				026D887221C1C5490085BED8 /* BtchapSharedImages.xcassets in Resources */,
 				02DFEC8821C07370009B6F15 /* Localizable.strings in Resources */,
+				3A74C75025CB32A100E3D171 /* ForwardViewController.storyboard in Resources */,
 				02FAE4E123B4B61700DE73D8 /* KeyBackupRecoverFromRecoveryKeyViewController.storyboard in Resources */,
 				02DFEC8921C07370009B6F15 /* InfoPlist.strings in Resources */,
 				02DFEC8A21C07370009B6F15 /* RoomIncomingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib in Resources */,
@@ -7703,6 +7729,7 @@
 				8E0E457325B71367002A66D6 /* FavouriteAttachmentAntivirusScanStatusBubbleCell.swift in Sources */,
 				8E9902362583BDAB00D0456B /* FavouriteMessagesViewModelType.swift in Sources */,
 				02FAE43023B2B98900DE73D8 /* SlidingModalEmptyViewController.swift in Sources */,
+				3A74C72D25CB2FE900E3D171 /* ForwardCoordinatorType.swift in Sources */,
 				020DF977214BE467003DFBA4 /* RoomMembershipWithPaginationTitleBubbleCell.m in Sources */,
 				02388E2524A2AF7900F3B485 /* KeyVerificationDataLoadingCoordinatorType.swift in Sources */,
 				B1C0EE8B2375B7F400E8BB88 /* ChangePasswordNewPasswordViewAction.swift in Sources */,
@@ -7730,6 +7757,7 @@
 				02388E8124A2AF7A00F3B485 /* KeyVerificationSelfVerifyWaitCoordinator.swift in Sources */,
 				020DF973214BE467003DFBA4 /* RoomOutgoingTextMsgBubbleCell.m in Sources */,
 				024518F823A19676006873DF /* Theme.swift in Sources */,
+				3A74C74125CB327B00E3D171 /* ForwardViewController.swift in Sources */,
 				02057A1124AA8EE500C96719 /* BubbleCellContentView.swift in Sources */,
 				B1073D6621A8096F00E36CFA /* RoomIncomingEncryptedAttachmentWithPaginationTitleBubbleCell.m in Sources */,
 				02388E2324A2AF7900F3B485 /* KeyVerificationDataLoadingViewAction.swift in Sources */,
@@ -7790,6 +7818,7 @@
 				B1F2AAB0212AED900077FDC0 /* NavigationRouterType.swift in Sources */,
 				02FAE23423B2489200DE73D8 /* CameraPresenter.swift in Sources */,
 				02FAE47123B4B3C500DE73D8 /* RoomBubbleCellLayout.swift in Sources */,
+				3A74C73925CB31B300E3D171 /* ForwardCoordinator.swift in Sources */,
 				02388E1F24A2AF7900F3B485 /* KeyVerificationCoordinatorType.swift in Sources */,
 				02C4BE842252278400F7BB0E /* DiscussionFinder.swift in Sources */,
 				B1322FF3213002580054A9DD /* AuthenticationErrorPresentableMaker.swift in Sources */,
@@ -8550,6 +8579,7 @@
 				02DFEBA921C07370009B6F15 /* ErrorPresentable.swift in Sources */,
 				02DFEBAA21C07370009B6F15 /* ContactsDataSource.m in Sources */,
 				02DFEBAC21C07370009B6F15 /* Variant1Style.swift in Sources */,
+				3A74C74225CB327B00E3D171 /* ForwardViewController.swift in Sources */,
 				B1C0EE7C2375B7A000E8BB88 /* ChangePasswordCurrentPasswordViewAction.swift in Sources */,
 				02FAE5F323B4C41600DE73D8 /* ReactionHistoryViewModel.swift in Sources */,
 				02388DF224A2AF7900F3B485 /* UserVerificationSessionStatusCoordinator.swift in Sources */,
@@ -8595,6 +8625,7 @@
 				02DFEBBC21C07370009B6F15 /* ContactsPickerCoordinator.swift in Sources */,
 				02388E7824A2AF7A00F3B485 /* KeyVerificationSelfVerifyStartCoordinatorType.swift in Sources */,
 				02DFEBBD21C07370009B6F15 /* ThirdPartyIDPlatformInfoType.swift in Sources */,
+				3A74C73A25CB31B300E3D171 /* ForwardCoordinator.swift in Sources */,
 				02DFEBBE21C07370009B6F15 /* MediaPickerViewController.m in Sources */,
 				02388E8224A2AF7A00F3B485 /* KeyVerificationSelfVerifyWaitCoordinator.swift in Sources */,
 				02DFEBBF21C07370009B6F15 /* RoomEncryptedAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.m in Sources */,
@@ -8773,6 +8804,7 @@
 				02388E2C24A2AF7900F3B485 /* KeyVerificationDataLoadingViewModel.swift in Sources */,
 				02DFEBFB21C07370009B6F15 /* EncryptionInfoView.m in Sources */,
 				02388E8424A2AF7A00F3B485 /* KeyVerificationSelfVerifyWaitCoordinatorType.swift in Sources */,
+				3A74C74825CB328600E3D171 /* ForwardCoordinatorType.swift in Sources */,
 				0259328922AFE8A500C93762 /* PasswordPolicyServiceType.swift in Sources */,
 				02C3F26224AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyViewController.swift in Sources */,
 				02057A0824AA8CC100C96719 /* UIDevice.swift in Sources */,

@@ -198,4 +198,10 @@ extension RoomPreviewCoordinator: RoomViewControllerDelegate {
     func roomViewController(_ roomViewController: RoomViewController, handlePermalinkFragment fragment: String) -> Bool {
         return false
     }
+    
+    func roomViewController(_ roomViewController: RoomViewController, forwardMessage messageText: String) {
+    }
+    
+    func roomViewController(_ roomViewController: RoomViewController, forwardFile url: URL) {
+    }
 }
