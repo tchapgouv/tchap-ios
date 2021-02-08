@@ -2724,9 +2724,9 @@ MXKDocumentPickerPresenterDelegate>
         // Show the keys import dialog
         self->importView = [[MXKEncryptionKeysImportView alloc] initWithMatrixSession:self.mainSession];
         self->currentAlert = self->importView.alertController;
-        // WARNING: SettingsViewController should extends MXKViewController
-        // It's working because SettingsViewController has startActivityIndicator and
-        // stopActivityIndicator methods
+        // We have to change the signature of MXKEncryptionKeysImportView:showInViewController:toImportKeys:onComplete in the Kit,
+        // - The first param must be UIViewController <MXKViewControllerHandling> instead of MXKViewController
+        // - The onComplete block should return the error (nullable) to let the application handle it
         [self->importView showInViewController:self toImportKeys:url onComplete:^{
             self->currentAlert = nil;
         }];
