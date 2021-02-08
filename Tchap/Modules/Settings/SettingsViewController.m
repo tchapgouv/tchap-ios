@@ -2729,7 +2729,6 @@ MXKDocumentPickerPresenterDelegate>
         // stopActivityIndicator methods
         [self->importView showInViewController:self toImportKeys:url onComplete:^{
             self->currentAlert = nil;
-            [[AppDelegate theDelegate] showAlertWithTitle: NSLocalizedStringFromTable(@"settings_crypto_import", @"Tchap", nil) message: NSLocalizedStringFromTable(@"settings_crypto_import_success", @"Tchap", nil)];
         }];
     }
     else

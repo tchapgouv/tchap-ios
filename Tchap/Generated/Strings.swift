@@ -417,8 +417,6 @@ internal enum TchapL10n {
   internal static let settingsCryptoImport = TchapL10n.tr("Tchap", "settings_crypto_import")
   /// Fichier de clés invalide.
   internal static let settingsCryptoImportInvalidFile = TchapL10n.tr("Tchap", "settings_crypto_import_invalid_file")
-  /// Clés importées avec succès.
-  internal static let settingsCryptoImportSuccess = TchapL10n.tr("Tchap", "settings_crypto_import_success")
   /// Les autres utilisateurs ne pourront pas découvrir mon compte lors de leurs recherches
   internal static let settingsHideFromUsersDirectorySummary = TchapL10n.tr("Tchap", "settings_hide_from_users_directory_summary")
   /// Inscrire mon compte sur liste rouge

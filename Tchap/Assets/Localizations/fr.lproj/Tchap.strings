@@ -146,7 +146,6 @@
 "settings_show_profile_changes_messages_title" = "Afficher les changements d’avatar";
 "settings_crypto_import" = "Importer les clés";
 "settings_crypto_import_invalid_file" = "Fichier de clés invalide.";
-"settings_crypto_import_success" = "Clés importées avec succès.";
 
 
 ////////////////////////////////////////////////////////////////////////////////
