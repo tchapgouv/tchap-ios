@@ -118,7 +118,6 @@
 
 #import "MXSession+Riot.h"
 #import "RoomPreviewData.h"
-#import "ShareViewController.h"
 
 #import "GeneratedInterface-Swift.h"
 
