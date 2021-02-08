@@ -17,7 +17,20 @@
 import Foundation
 
 protocol ForwardCoordinatorDelegate: class {
-    func forwardCoordinator(_ coordinator: ForwardCoordinatorType, didSelectRoomWithID: String)
+    /**
+     Called once the coordinator finished forward process
+     
+     @param coordinator caller of this method
+     @param roomID ID of the room the event has been forwarded to
+     @param error instance of the error if an error occured. Nil otherwise
+     */
+    func forwardCoordinator(_ coordinator: ForwardCoordinatorType, didForwardTo roomID: String, error: Error?)
+    
+    /**
+     Called if the coordinator canceled event forwarding process
+     
+     @param coordinator caller of this method
+     */
     func forwardCoordinatorDidCancel(_ coordinator: ForwardCoordinatorType)
 }
 
@@ -92,32 +105,35 @@ extension ForwardCoordinator: UISearchBarDelegate {
 
 extension ForwardCoordinator: RoomsCoordinatorDelegate {
     func roomsCoordinator(_ coordinator: RoomsCoordinatorType, didSelectRoomID roomID: String) {
-        if let selectedRoom = MXRoom.load(from: self.session.store, withRoomId: roomID, matrixSession: self.session) as? MXRoom {
-            if let text = self.messageText {
-                var echo: MXEvent?
+        MXKRoomDataSourceManager.sharedManager(forMatrixSession: session)?.roomDataSource(forRoom: roomID, create: true, onComplete: { (dataSource) in
+            if let dataSource = dataSource {
                 self.forwardViewController.startActivityIndicator()
-                selectedRoom.sendTextMessage(text, localEcho: &echo) { (response) in
-                    self.forwardViewController.stopActivityIndicator()
-                    print("\(response)")
-                    self.router.dismissModule(animated: true) {
-                        self.delegate?.forwardCoordinator(self, didSelectRoomWithID: roomID)
+                if let text = self.messageText {
+                    dataSource.sendTextMessage(text) { (response) in
+                        self.didForwardTo(roomID: roomID, response: response)
+                    } failure: { (error) in
+                        self.didForwardTo(roomID: roomID, error: error)
                     }
-                }
-            } else if let url = self.fileUrl,
-                      let mimeType = MXKUTI(localFileURL: url)?.mimeType {
-                var echo: MXEvent?
-                self.forwardViewController.startActivityIndicator()
-                selectedRoom.sendFile(localURL: url, mimeType: mimeType, localEcho: &echo) { (response) in
-                    print("\(response)")
-                    self.router.dismissModule(animated: true) {
-                        self.delegate?.forwardCoordinator(self, didSelectRoomWithID: roomID)
+                } else if let url = self.fileUrl,
+                          let mimeType = MXKUTI(localFileURL: url)?.mimeType {
+                    dataSource.sendFile(url, mimeType: mimeType) { (response) in
+                        self.didForwardTo(roomID: roomID, response: response)
+                    } failure: { (error) in
+                        self.didForwardTo(roomID: roomID, error: error)
                     }
                 }
             } else {
                 self.router.dismissModule(animated: true) {
-                    self.delegate?.forwardCoordinator(self, didSelectRoomWithID: roomID)
+                    self.delegate?.forwardCoordinatorDidCancel(self)
                 }
             }
+        })
+    }
+    
+    private func didForwardTo(roomID: String, response: String? = nil, error: Error? = nil) {
+        self.forwardViewController.stopActivityIndicator()
+        self.router.dismissModule(animated: true) {
+            self.delegate?.forwardCoordinator(self, didForwardTo: roomID, error: error)
         }
     }
 }
