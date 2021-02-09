@@ -299,12 +299,6 @@ internal enum TchapL10n {
   }
   /// Un forum peut être rejoint par tous les utilisateurs excepté les invités externes. Il ne doit contenir aucune donnée sensible.
   internal static let roomCreationPublicVisibilityInfo = TchapL10n.tr("Tchap", "room_creation_public_visibility_info")
-  /// Limiter l’historique du salon à %d jours
-  internal static func roomCreationRoomRetentionPeriodDays(_ p1: Int) -> String {
-    return TchapL10n.tr("Tchap", "room_creation_room_retention_period_days", p1)
-  }
-  /// Limiter l’historique du salon à 1 jour
-  internal static let roomCreationRoomRetentionPeriodOneDay = TchapL10n.tr("Tchap", "room_creation_room_retention_period_one_day")
   /// Type de salon
   internal static let roomCreationRoomTypeTitle = TchapL10n.tr("Tchap", "room_creation_room_type_title")
   /// Nouveau salon
