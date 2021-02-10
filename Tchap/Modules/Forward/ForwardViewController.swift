@@ -16,11 +16,22 @@
 
 import Foundation
 
+protocol ForwardViewControllerDelegate: class {
+    func forwardController(_ viewController: ForwardViewController, searchBar: UISearchBar, textDidChange searchText: String)
+    func forwardController(_ viewController: ForwardViewController, searchBarCancelButtonClicked searchBar: UISearchBar)
+    func forwardControllerCancelButtonClicked(_ viewController: ForwardViewController)
+}
+
 class ForwardViewController: MXKViewController {
-    @IBOutlet var containerView: UIView?
+    @IBOutlet weak var titleLabel: UILabel?
+    @IBOutlet weak var titleContentView: UIView?
+    @IBOutlet weak var cancelButton: UIButton?
+    @IBOutlet weak var contentView: UIView?
+    @IBOutlet weak var searchBar: UISearchBar?
     
+    weak var delegate: ForwardViewControllerDelegate?
+
     private var currentStyle: Style!
-    var searchBar: UISearchBar!
     
     weak var roomsViewController: UIViewController? {
         willSet {
@@ -42,8 +53,6 @@ class ForwardViewController: MXKViewController {
     static func instantiate(with style: Style) -> ForwardViewController {
         let viewController = StoryboardScene.ForwardViewController.initialScene.instantiate()
         viewController.currentStyle = style
-        viewController.searchBar = UISearchBar()
-        viewController.navigationItem.prompt = TchapL10n.roomEventActionForward
         return viewController
     }
     
@@ -56,18 +65,30 @@ class ForwardViewController: MXKViewController {
             addRoomsControllerView(roomsViewController)
         }
 
-        setupGlobalSearchBar()
+        self.navigationController?.isNavigationBarHidden = true
+        configureViews()
+        self.searchBar?.delegate = self
+    }
+    
+    // MARK: - Actions
+    
+    @IBAction private func cancelPressed(sender: UIButton) {
+        self.delegate?.forwardControllerCancelButtonClicked(self)
     }
     
     // MARK: - Private
     
-    private func setupGlobalSearchBar() {
-        self.navigationItem.titleView = searchBar
-        self.currentStyle.applyStyle(onSearchBar: searchBar)
+    private func configureViews() {
+        self.titleLabel?.text = TchapL10n.roomEventActionForward
+        self.titleLabel?.textColor = kVariant1BarTitleColor
+        self.titleContentView?.backgroundColor = kVariant1BarBgColor
+        self.cancelButton?.tintColor = kVariant1BarActionColor
+        self.searchBar?.backgroundColor = kVariant1BarBgColor
+        self.searchBar?.barTintColor = kVariant1BarBgColor
     }
-    
+
     private func addRoomsControllerView(_ roomsViewController: UIViewController) {
-        guard let containerView = self.containerView else {
+        guard let containerView = self.contentView else {
             return
         }
         
@@ -75,6 +96,18 @@ class ForwardViewController: MXKViewController {
         containerView.addSubview(roomsViewController.view)
         addChild(roomsViewController)
         roomsViewController.didMove(toParent: self)
+    }
+}
+
+// MARK: - UISearchBarDelegate
+
+extension ForwardViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        self.delegate?.forwardController(self, searchBar: searchBar, textDidChange: searchText)
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        self.delegate?.forwardController(self, searchBarCancelButtonClicked: searchBar)
     }
 }
 

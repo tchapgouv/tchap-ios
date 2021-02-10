@@ -18,6 +18,5 @@ import Foundation
 
 /// `ForwardCoordinatorType` is a protocol describing a Coordinator that handle Forward navigation flow.
 protocol ForwardCoordinatorType: Coordinator, Presentable {
-    
-    var delegate: ForwardCoordinatorDelegate? { get set }
+
 }

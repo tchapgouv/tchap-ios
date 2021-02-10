@@ -16,27 +16,8 @@
 
 import Foundation
 
-protocol ForwardCoordinatorDelegate: class {
-    /**
-     Called once the coordinator finished forward process
-     
-     @param coordinator caller of this method
-     @param roomID ID of the room the event has been forwarded to
-     @param error instance of the error if an error occured. Nil otherwise
-     */
-    func forwardCoordinator(_ coordinator: ForwardCoordinatorType, didForwardTo roomID: String, error: Error?)
-    
-    /**
-     Called if the coordinator canceled event forwarding process
-     
-     @param coordinator caller of this method
-     */
-    func forwardCoordinatorDidCancel(_ coordinator: ForwardCoordinatorType)
-}
-
 final class ForwardCoordinator: NSObject, ForwardCoordinatorType {
     
-    weak var delegate: ForwardCoordinatorDelegate?
     private let router: NavigationRouterType
     private let forwardViewController: ForwardViewController
     private let session: MXSession
@@ -59,10 +40,7 @@ final class ForwardCoordinator: NSObject, ForwardCoordinatorType {
         
         super.init()
         
-        viewController.searchBar.delegate = self
-        self.forwardViewController.navigationItem.leftBarButtonItem = MXKBarButtonItem(title: TchapL10n.actionCancel, style: .plain) { [weak self] in
-            self?.cancel()
-        }
+        viewController.delegate = self
     }
     
     // MARK: - Public
@@ -83,21 +61,23 @@ final class ForwardCoordinator: NSObject, ForwardCoordinatorType {
     func toPresentable() -> UIViewController {
         return self.router.toPresentable()
     }
-    
-    // MARK: - Private
-    
-    private func cancel() {
-        self.router.dismissModule(animated: true) {
-            self.delegate?.forwardCoordinatorDidCancel(self)
-        }
-    }
 }
 
-// MARK: - UISearchBarDelegate
+// MARK: - ForwardViewControllerDelegate
 
-extension ForwardCoordinator: UISearchBarDelegate {
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+extension ForwardCoordinator: ForwardViewControllerDelegate {
+    func forwardControllerCancelButtonClicked(_ viewController: ForwardViewController) {
+        self.router.dismissModule(animated: true, completion: nil)
+    }
+    
+    func forwardController(_ viewController: ForwardViewController, searchBar: UISearchBar, textDidChange searchText: String) {
         self.roomsCoordinator?.updateSearchText(searchText)
+    }
+    
+    func forwardController(_ viewController: ForwardViewController, searchBarCancelButtonClicked searchBar: UISearchBar) {
+        searchBar.text = ""
+        self.roomsCoordinator?.updateSearchText(searchBar.text)
+        searchBar.resignFirstResponder()
     }
 }
 
@@ -123,17 +103,13 @@ extension ForwardCoordinator: RoomsCoordinatorDelegate {
                     }
                 }
             } else {
-                self.router.dismissModule(animated: true) {
-                    self.delegate?.forwardCoordinatorDidCancel(self)
-                }
+                self.router.dismissModule(animated: true, completion: nil)
             }
         })
     }
     
     private func didForwardTo(roomID: String, response: String? = nil, error: Error? = nil) {
         self.forwardViewController.stopActivityIndicator()
-        self.router.dismissModule(animated: true) {
-            self.delegate?.forwardCoordinator(self, didForwardTo: roomID, error: error)
-        }
+        self.router.dismissModule(animated: true, completion: nil)
     }
 }
