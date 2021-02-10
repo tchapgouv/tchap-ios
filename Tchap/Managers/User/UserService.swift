@@ -115,7 +115,7 @@ final class UserService: NSObject, UserServiceType {
                 if let deactivated = usersInfo[userId]?.deactivated {
                     completion(.success(deactivated))
                 } else {
-                    completion(.success(false))
+                    completion(.failure(UserServiceError.unknown))
                 }
             case .failure(let error):
                 completion(.failure(error))
@@ -131,6 +131,21 @@ final class UserService: NSObject, UserServiceType {
                 success(value)
             case .failure(let error):
                 failure?(error)
+            }
+        }
+    }
+    
+    func isAccountExpired(for userId: String, completion: @escaping ((MXResponse<Bool>) -> Void)) -> MXHTTPOperation? {
+        return self.getUsersInfo(for: [userId]) { (response) in
+            switch response {
+            case .success(let usersInfo):
+                if let expired = usersInfo[userId]?.expired {
+                    completion(.success(expired))
+                } else {
+                    completion(.failure(UserServiceError.unknown))
+                }
+            case .failure(let error):
+                completion(.failure(error))
             }
         }
     }

@@ -899,7 +899,6 @@
 
 - (void)checkExpiredAccounts:(void (^)(void))completion
 {
-    dispatch_group_t requestsGroup = dispatch_group_create();
     self.userService = [[UserService alloc] initWithSession:self.mxRoom.mxSession];
     MXHTTPOperation *op;
     
@@ -913,36 +912,44 @@
         }
     }
     
-    dispatch_group_enter(requestsGroup);
     op = [self.userService getUsersInfoFor:contactIds success:^(NSDictionary<NSString *,id> * _Nonnull usersInfo) {
         for (Contact *contact in participants)
         {
-            UserStatusInfo *userInfo = [usersInfo objectForKey:contact.mxMember.userId];
-            if (userInfo)
+            if (contact.mxMember.userId)
             {
-                contact.isExpired = userInfo.expired;
+                UserStatusInfo *userInfo = [usersInfo objectForKey:contact.mxMember.userId];
+                if (userInfo)
+                {
+                    contact.isExpired = userInfo.expired;
+                }
+                else
+                {
+                    contact.isExpired = false;
+                }
             }
             else
             {
                 contact.isExpired = false;
             }
         }
-        dispatch_group_leave(requestsGroup);
-    } failure:^(NSError * _Nonnull error) {
-        for (Contact *contact in participants)
-        {
-            contact.isExpired = false;
-        }
-        dispatch_group_leave(requestsGroup);
-    }];
-    
-    dispatch_group_notify(requestsGroup, dispatch_get_main_queue(), ^{
+        
         self.userService = nil;
         if (completion)
         {
             completion();
         }
-    });
+    } failure:^(NSError * _Nonnull error) {
+        for (Contact *contact in participants)
+        {
+            contact.isExpired = false;
+        }
+        
+        self.userService = nil;
+        if (completion)
+        {
+            completion();
+        }
+    }];
 }
 
 - (void)finalizeParticipantsList:(MXRoomState*)roomState completion:(void (^)(void))completion
