@@ -175,7 +175,7 @@
 "tchap_room_invalid_link" = "Ce lien n'est pas valide";
 "tchap_room_access_unauthorized" = "Vous n'êtes pas autorisé à rejoindre cette conversation. Une invitation est nécessaire.";
 "room_event_action_forward" = "Transférer";
-
+"room_event_forward_internal_error" = "Une erreur interne s'est produite";
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Room Members

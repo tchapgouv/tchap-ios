@@ -24,6 +24,7 @@ final class ForwardCoordinator: NSObject, ForwardCoordinatorType {
     private let messageText: String?
     private let fileUrl: URL?
     private weak var roomsCoordinator: RoomsCoordinatorType?
+    private var errorPresenter: MXKErrorPresentation!
 
     var childCoordinators: [Coordinator] = []
 
@@ -34,7 +35,8 @@ final class ForwardCoordinator: NSObject, ForwardCoordinatorType {
         self.session = session
         self.messageText = messageText
         self.fileUrl = fileUrl
-        
+        self.errorPresenter = MXKErrorAlertPresentation()
+
         let viewController = ForwardViewController.instantiate(with: Variant1Style.shared)
         self.forwardViewController = viewController
         
@@ -103,13 +105,21 @@ extension ForwardCoordinator: RoomsCoordinatorDelegate {
                     }
                 }
             } else {
-                self.router.dismissModule(animated: true, completion: nil)
+                let error = NSError(domain: "ForwardCoordinatorErrorDomain", code: 0, userInfo: [NSLocalizedFailureReasonErrorKey: TchapL10n.roomEventActionForward, NSLocalizedDescriptionKey: TchapL10n.roomEventForwardInternalError])
+                self.didForwardTo(roomID: roomID, error: error)
             }
         })
     }
     
     private func didForwardTo(roomID: String, response: String? = nil, error: Error? = nil) {
         self.forwardViewController.stopActivityIndicator()
-        self.router.dismissModule(animated: true, completion: nil)
+
+        if let error = error {
+            self.errorPresenter.presentError(from: forwardViewController, forError: error, animated: true) {
+                self.router.dismissModule(animated: true, completion: nil)
+            }
+        } else {
+            self.router.dismissModule(animated: true, completion: nil)
+        }
     }
 }
