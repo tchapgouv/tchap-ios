@@ -4,6 +4,7 @@ Changes in Tchap 1.2.0 (2021-xx-xx)
 Features/Improvements:
  * Design and implement favorite messages #292
  * Public room creation: improve UI for agent.agent users #319
+ * Add the option to import the encryption keys in the Tchap settings #360
 
 Bug Fixes:
  * Crash on missing identity server information #357

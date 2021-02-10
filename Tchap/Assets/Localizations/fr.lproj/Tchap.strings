@@ -144,6 +144,8 @@
 "settings_show_join_leave_messages_title" = "Afficher les notifications d’arrivée et de départ";
 "settings_show_join_leave_messages_summary" = "Les invitations, expulsions et bannissements ne sont pas concernés";
 "settings_show_profile_changes_messages_title" = "Afficher les changements d’avatar";
+"settings_crypto_import" = "Importer les clés";
+"settings_crypto_import_invalid_file" = "Fichier de clés invalide.";
 
 
 ////////////////////////////////////////////////////////////////////////////////

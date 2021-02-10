@@ -413,6 +413,10 @@ internal enum TchapL10n {
   internal static let settingsChangePwdNonExistingKeyBackupAlertTitle = TchapL10n.tr("Tchap", "settings_change_pwd_non_existing_key_backup_alert_title")
   /// Utiliser les adresses emails pour retrouver des utilisateurs
   internal static let settingsContactsDiscoverMatrixUsers = TchapL10n.tr("Tchap", "settings_contacts_discover_matrix_users")
+  /// Importer les clés
+  internal static let settingsCryptoImport = TchapL10n.tr("Tchap", "settings_crypto_import")
+  /// Fichier de clés invalide.
+  internal static let settingsCryptoImportInvalidFile = TchapL10n.tr("Tchap", "settings_crypto_import_invalid_file")
   /// Les autres utilisateurs ne pourront pas découvrir mon compte lors de leurs recherches
   internal static let settingsHideFromUsersDirectorySummary = TchapL10n.tr("Tchap", "settings_hide_from_users_directory_summary")
   /// Inscrire mon compte sur liste rouge
