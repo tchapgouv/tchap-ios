@@ -5,6 +5,7 @@ Features/Improvements:
  * Design and implement favorite messages #292
  * Public room creation: improve UI for agent.agent users #319
  * Add a shortcut "forward" in the selected message options #353
+ * Add the option to import the encryption keys in the Tchap settings #360
 
 Bug Fixes:
  * Crash on missing identity server information #357

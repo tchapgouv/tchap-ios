@@ -102,6 +102,7 @@ enum
 enum {
     CRYPTOGRAPHY_INFO_INDEX = 0,
     CRYPTOGRAPHY_EXPORT_INDEX,
+    CRYPTOGRAPHY_IMPORT_INDEX,
     CRYPTOGRAPHY_COUNT
 };
 
@@ -124,7 +125,8 @@ MXKDeviceViewDelegate,
 UIDocumentInteractionControllerDelegate,
 MXKCountryPickerViewControllerDelegate,
 Stylable,
-ChangePasswordCoordinatorBridgePresenterDelegate>
+ChangePasswordCoordinatorBridgePresenterDelegate,
+MXKDocumentPickerPresenterDelegate>
 {
     // Current alert (if any).
     UIAlertController *currentAlert;
@@ -166,6 +168,11 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     NSURL *keyExportsFile;
     NSTimer *keyExportsFileDeletionTimer;
     
+    /**
+     The view to import e2e keys.
+     */
+    MXKEncryptionKeysImportView *importView;
+
 #ifdef SUPPORT_KEYS_BACKUP
     SettingsKeyBackupTableViewSection *keyBackupSection;
     KeyBackupSetupCoordinatorBridgePresenter *keyBackupSetupCoordinatorBridgePresenter;
@@ -193,6 +200,8 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 @property (nonatomic, weak) id accountUserInfoObserver;
 @property (nonatomic, weak) id pushInfoUpdateObserver;
 @property (nonatomic, weak) id sessionAccountDataDidChangeNotificationObserver;
+
+@property (nonatomic, strong) MXKDocumentPickerPresenter *documentPickerPresenter;
 
 @end
 
@@ -1387,6 +1396,31 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 
             cell = exportKeysBtnCell;
         }
+        else if (row == CRYPTOGRAPHY_IMPORT_INDEX)
+        {
+            MXKTableViewCellWithButton *importKeysBtnCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
+            if (!importKeysBtnCell)
+            {
+                importKeysBtnCell = [[MXKTableViewCellWithButton alloc] init];
+            }
+            else
+            {
+                // Fix https://github.com/vector-im/riot-ios/issues/1354
+                importKeysBtnCell.mxkButton.titleLabel.text = nil;
+            }
+
+            NSString *btnTitle = NSLocalizedStringFromTable(@"settings_crypto_import", @"Tchap", nil);
+            [importKeysBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
+            [importKeysBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
+            [importKeysBtnCell.mxkButton setTintColor:self.currentStyle.buttonPlainTitleColor];
+            importKeysBtnCell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
+
+            [importKeysBtnCell.mxkButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
+            [importKeysBtnCell.mxkButton addTarget:self action:@selector(importEncryptionKeys:) forControlEvents:UIControlEventTouchUpInside];
+            importKeysBtnCell.mxkButton.accessibilityIdentifier = nil;
+
+            cell = importKeysBtnCell;
+        }
     }
 #ifdef SUPPORT_KEYS_BACKUP
     else if (section == SETTINGS_SECTION_KEYBACKUP_INDEX)
@@ -2128,6 +2162,19 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     self.imagePickerPresenter = singleImagePickerPresenter;
 }
 
+- (void)importEncryptionKeys:(UITapGestureRecognizer *)recognizer
+{
+    self->currentAlert = nil;
+    
+    MXKDocumentPickerPresenter *documentPickerPresenter = [MXKDocumentPickerPresenter new];
+    documentPickerPresenter.delegate = self;
+                                      
+    NSArray<MXKUTI*> *allowedUTIs = @[MXKUTI.data];
+    [documentPickerPresenter presentDocumentPickerWith:allowedUTIs from:self animated:YES completion:nil];
+    
+    self.documentPickerPresenter = documentPickerPresenter;
+}
+
 - (void)exportEncryptionKeys:(UITapGestureRecognizer *)recognizer
 {
     [currentAlert dismissViewControllerAnimated:NO completion:nil];
@@ -2660,5 +2707,34 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 }
 
 #endif
+
+#pragma mark - MXKDocumentPickerPresenterDelegate
+
+- (void)documentPickerPresenterWasCancelled:(MXKDocumentPickerPresenter *)presenter
+{
+    self.documentPickerPresenter = nil;
+}
+
+- (void)documentPickerPresenter:(MXKDocumentPickerPresenter *)presenter didPickDocumentsAt:(NSURL *)url
+{
+    self.documentPickerPresenter = nil;
+    
+    if ([MXMegolmExportEncryption isMegolmKeyFile:url])
+    {
+        // Show the keys import dialog
+        self->importView = [[MXKEncryptionKeysImportView alloc] initWithMatrixSession:self.mainSession];
+        self->currentAlert = self->importView.alertController;
+        // We have to change the signature of MXKEncryptionKeysImportView:showInViewController:toImportKeys:onComplete in the Kit,
+        // - The first param must be UIViewController <MXKViewControllerHandling> instead of MXKViewController
+        // - The onComplete block should return the error (nullable) to let the application handle it
+        [self->importView showInViewController:self toImportKeys:url onComplete:^{
+            self->currentAlert = nil;
+        }];
+    }
+    else
+    {
+        [[AppDelegate theDelegate] showAlertWithTitle: NSLocalizedStringFromTable(@"settings_crypto_import", @"Tchap", nil) message: NSLocalizedStringFromTable(@"settings_crypto_import_invalid_file", @"Tchap", nil)];
+    }
+}
 
 @end
