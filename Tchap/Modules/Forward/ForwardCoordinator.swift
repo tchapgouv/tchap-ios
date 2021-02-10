@@ -24,7 +24,7 @@ final class ForwardCoordinator: NSObject, ForwardCoordinatorType {
     private let messageText: String?
     private let fileUrl: URL?
     private weak var roomsCoordinator: RoomsCoordinatorType?
-    private var errorPresenter: MXKErrorPresentation!
+    private var errorPresenter: ErrorPresenter!
 
     var childCoordinators: [Coordinator] = []
 
@@ -35,11 +35,12 @@ final class ForwardCoordinator: NSObject, ForwardCoordinatorType {
         self.session = session
         self.messageText = messageText
         self.fileUrl = fileUrl
-        self.errorPresenter = MXKErrorAlertPresentation()
 
         let viewController = ForwardViewController.instantiate(with: Variant1Style.shared)
         self.forwardViewController = viewController
         
+        self.errorPresenter = AlertErrorPresenter(viewControllerPresenter: viewController)
+
         super.init()
         
         viewController.delegate = self
@@ -62,6 +63,23 @@ final class ForwardCoordinator: NSObject, ForwardCoordinatorType {
     
     func toPresentable() -> UIViewController {
         return self.router.toPresentable()
+    }
+    
+    // MARK: - Private
+    
+    private func errorPresentable(from error: Error) -> ErrorPresentable {
+        let errorTitle: String = TchapL10n.errorTitleDefault
+        let errorMessage: String
+        
+        let nsError = error as NSError
+        
+        if let message = nsError.userInfo[NSLocalizedDescriptionKey] as? String {
+            errorMessage = message
+        } else {
+            errorMessage = TchapL10n.errorMessageDefault
+        }
+        
+        return ErrorPresentableImpl(title: errorTitle, message: errorMessage)
     }
 }
 
@@ -105,7 +123,7 @@ extension ForwardCoordinator: RoomsCoordinatorDelegate {
                     }
                 }
             } else {
-                let error = NSError(domain: "ForwardCoordinatorErrorDomain", code: 0, userInfo: [NSLocalizedFailureReasonErrorKey: TchapL10n.roomEventActionForward, NSLocalizedDescriptionKey: TchapL10n.roomEventForwardInternalError])
+                let error = NSError(domain: "ForwardCoordinatorErrorDomain", code: 0)
                 self.didForwardTo(roomID: roomID, error: error)
             }
         })
@@ -115,9 +133,7 @@ extension ForwardCoordinator: RoomsCoordinatorDelegate {
         self.forwardViewController.stopActivityIndicator()
 
         if let error = error {
-            self.errorPresenter.presentError(from: forwardViewController, forError: error, animated: true) {
-                self.router.dismissModule(animated: true, completion: nil)
-            }
+            self.errorPresenter.present(errorPresentable: errorPresentable(from: error), animated: true)
         } else {
             self.router.dismissModule(animated: true, completion: nil)
         }

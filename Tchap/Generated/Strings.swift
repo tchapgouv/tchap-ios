@@ -317,8 +317,6 @@ internal enum TchapL10n {
   internal static let roomEventActionForward = TchapL10n.tr("Tchap", "room_event_action_forward")
   /// Retirer des favoris
   internal static let roomEventActionRemoveFavourite = TchapL10n.tr("Tchap", "room_event_action_remove_favourite")
-  /// Une erreur interne s'est produite
-  internal static let roomEventForwardInternalError = TchapL10n.tr("Tchap", "room_event_forward_internal_error")
   /// Fichiers
   internal static let roomFilesTabTitle = TchapL10n.tr("Tchap", "room_files_tab_title")
   /// Envoyer un message
