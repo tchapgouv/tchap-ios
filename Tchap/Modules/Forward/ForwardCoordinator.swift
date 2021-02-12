@@ -23,8 +23,8 @@ final class ForwardCoordinator: NSObject, ForwardCoordinatorType {
     private let session: MXSession
     private let messageText: String?
     private let fileUrl: URL?
-    private weak var roomsCoordinator: RoomsCoordinatorType?
     private var errorPresenter: ErrorPresenter!
+    private var recentsViewController: ForwardRecentListViewController!
 
     var childCoordinators: [Coordinator] = []
 
@@ -35,6 +35,9 @@ final class ForwardCoordinator: NSObject, ForwardCoordinatorType {
         self.session = session
         self.messageText = messageText
         self.fileUrl = fileUrl
+        let recentsViewController = ForwardRecentListViewController()
+        recentsViewController.displayList(MXKRecentsDataSource(matrixSession: session))
+        self.recentsViewController = recentsViewController
 
         let viewController = ForwardViewController.instantiate(with: Variant1Style.shared)
         self.forwardViewController = viewController
@@ -44,21 +47,15 @@ final class ForwardCoordinator: NSObject, ForwardCoordinatorType {
         super.init()
         
         viewController.delegate = self
+        recentsViewController.delegate = self
     }
     
     // MARK: - Public
     
     func start() {
-        let roomsCoordinator = RoomsCoordinator(router: self.router, session: self.session)
-        roomsCoordinator.delegate = self
-        self.add(childCoordinator: roomsCoordinator)
-        
-        self.forwardViewController.roomsViewController = roomsCoordinator.toPresentable()
+        self.forwardViewController.recentsViewController = self.recentsViewController
         
         self.router.setRootModule(forwardViewController)
-
-        roomsCoordinator.start()
-        self.roomsCoordinator = roomsCoordinator
     }
     
     func toPresentable() -> UIViewController {
@@ -91,45 +88,46 @@ extension ForwardCoordinator: ForwardViewControllerDelegate {
     }
     
     func forwardController(_ viewController: ForwardViewController, searchBar: UISearchBar, textDidChange searchText: String) {
-        self.roomsCoordinator?.updateSearchText(searchText)
+        let patterns = searchText.isEmpty ? nil : [searchText]
+        self.recentsViewController.dataSource.search(withPatterns: patterns)
     }
     
     func forwardController(_ viewController: ForwardViewController, searchBarCancelButtonClicked searchBar: UISearchBar) {
         searchBar.text = ""
-        self.roomsCoordinator?.updateSearchText(searchBar.text)
+        self.recentsViewController.dataSource.search(withPatterns: nil)
         searchBar.resignFirstResponder()
     }
 }
 
-// MARK: - RoomsCoordinatorDelegate
+// MARK: - MXKRecentListViewControllerDelegate
 
-extension ForwardCoordinator: RoomsCoordinatorDelegate {
-    func roomsCoordinator(_ coordinator: RoomsCoordinatorType, didSelectRoomID roomID: String) {
-        MXKRoomDataSourceManager.sharedManager(forMatrixSession: session)?.roomDataSource(forRoom: roomID, create: true, onComplete: { (dataSource) in
+extension ForwardCoordinator: MXKRecentListViewControllerDelegate {
+    func recentListViewController(_ recentListViewController: MXKRecentListViewController!, didSelectRoom roomId: String!, inMatrixSession mxSession: MXSession!) {
+        MXKRoomDataSourceManager.sharedManager(forMatrixSession: session)?.roomDataSource(forRoom: roomId, create: true, onComplete: { (dataSource) in
             if let dataSource = dataSource {
                 self.forwardViewController.startActivityIndicator()
                 if let text = self.messageText {
                     dataSource.sendTextMessage(text) { (response) in
-                        self.didForwardTo(roomID: roomID, response: response)
+                        self.didForwardTo(roomId, response: response)
                     } failure: { (error) in
-                        self.didForwardTo(roomID: roomID, error: error)
+                        self.didForwardTo(roomId, error: error)
                     }
                 } else if let url = self.fileUrl,
                           let mimeType = MXKUTI(localFileURL: url)?.mimeType {
                     dataSource.sendFile(url, mimeType: mimeType) { (response) in
-                        self.didForwardTo(roomID: roomID, response: response)
+                        self.didForwardTo(roomId, response: response)
                     } failure: { (error) in
-                        self.didForwardTo(roomID: roomID, error: error)
+                        self.didForwardTo(roomId, error: error)
                     }
                 }
             } else {
                 let error = NSError(domain: "ForwardCoordinatorErrorDomain", code: 0)
-                self.didForwardTo(roomID: roomID, error: error)
+                self.didForwardTo(roomId, error: error)
             }
         })
     }
     
-    private func didForwardTo(roomID: String, response: String? = nil, error: Error? = nil) {
+    private func didForwardTo(_ roomId: String, response: String? = nil, error: Error? = nil) {
         self.forwardViewController.stopActivityIndicator()
 
         if let error = error {

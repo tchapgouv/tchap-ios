@@ -16,7 +16,7 @@
 
 import UIKit
 
-class RoomsRoomCell: RoomsCell {
+class ShareRoomsRoomCell: RoomsCell {
     // MARK: - Constants
     
     private enum Constants {
@@ -66,5 +66,9 @@ class RoomsRoomCell: RoomsCell {
         }
         
         self.avatarView.tc_makeHexagon(borderWidth: avatarBorderWidth, borderColor: avatarBorderColor)
+    }
+    
+    func renderedCellData() -> MXKCellData! {
+        return (roomCellData as! MXKCellData)
     }
 }

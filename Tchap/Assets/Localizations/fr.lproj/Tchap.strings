@@ -304,3 +304,7 @@
 "favourite_messages_title" = "Messages favoris";
 "favourite_messages_one_subtitle" = "%d message";
 "favourite_messages_multiple_subtitle" = "%d messages";
+
+////////////////////////////////////////////////////////////////////////////////
+// MARK: Forward
+"forward_screen_title" = "Transférer à";

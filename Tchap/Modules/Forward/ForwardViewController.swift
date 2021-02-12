@@ -33,19 +33,19 @@ class ForwardViewController: MXKViewController {
 
     private var currentStyle: Style!
     
-    weak var roomsViewController: UIViewController? {
+    weak var recentsViewController: UIViewController? {
         willSet {
-            guard let roomsViewController = self.roomsViewController else {
+            guard let recentsViewController = self.recentsViewController else {
                 return
             }
-            
-            roomsViewController.willMove(toParent: nil)
-            roomsViewController.removeFromParent()
-            roomsViewController.view.removeFromSuperview()
+
+            recentsViewController.willMove(toParent: nil)
+            recentsViewController.removeFromParent()
+            recentsViewController.view.removeFromSuperview()
         }
         didSet {
-            if let roomsViewController = self.roomsViewController {
-                addRoomsControllerView(roomsViewController)
+            if let recentsViewController = self.recentsViewController {
+                addRoomsControllerView(recentsViewController)
             }
         }
     }
@@ -61,8 +61,8 @@ class ForwardViewController: MXKViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let roomsViewController = self.roomsViewController {
-            addRoomsControllerView(roomsViewController)
+        if let recentsViewController = self.recentsViewController {
+            addRoomsControllerView(recentsViewController)
         }
 
         self.navigationController?.isNavigationBarHidden = true
@@ -79,7 +79,7 @@ class ForwardViewController: MXKViewController {
     // MARK: - Private
     
     private func configureViews() {
-        self.titleLabel?.text = TchapL10n.roomEventActionForward
+        self.titleLabel?.text = TchapL10n.forwardScreenTitle
         self.titleLabel?.textColor = kVariant1BarTitleColor
         self.titleContentView?.backgroundColor = kVariant1BarBgColor
         self.cancelButton?.tintColor = kVariant1BarActionColor
