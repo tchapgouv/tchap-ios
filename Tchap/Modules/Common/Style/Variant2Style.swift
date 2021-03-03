@@ -98,7 +98,7 @@ final class Variant2Style: NSObject, Style {
     }
     
     func applyStyle(onSearchBar searchBar: UISearchBar) {
-        searchBar.barStyle = .default
+        searchBar.barStyle = .black
         searchBar.tintColor = self.barActionColor
         searchBar.barTintColor = self.barBackgroundColor
         

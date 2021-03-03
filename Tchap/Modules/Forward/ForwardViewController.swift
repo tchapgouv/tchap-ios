@@ -70,6 +70,16 @@ class ForwardViewController: MXKViewController {
         self.searchBar?.delegate = self
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.update(style: self.currentStyle)
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return self.currentStyle.statusBarStyle
+    }
+    
     // MARK: - Actions
     
     @IBAction private func cancelPressed(sender: UIButton) {
@@ -80,22 +90,17 @@ class ForwardViewController: MXKViewController {
     
     private func configureViews() {
         self.titleLabel?.text = TchapL10n.forwardScreenTitle
-        self.titleLabel?.textColor = kVariant1BarTitleColor
-        self.titleContentView?.backgroundColor = kVariant1BarBgColor
-        self.cancelButton?.tintColor = kVariant1BarActionColor
-        self.searchBar?.backgroundColor = kVariant1BarBgColor
-        self.searchBar?.barTintColor = kVariant1BarBgColor
     }
 
-    private func addRoomsControllerView(_ roomsViewController: UIViewController) {
+    private func addRoomsControllerView(_ viewController: UIViewController) {
         guard let containerView = self.contentView else {
             return
         }
         
-        roomsViewController.view.frame = containerView.bounds
-        containerView.addSubview(roomsViewController.view)
-        addChild(roomsViewController)
-        roomsViewController.didMove(toParent: self)
+        viewController.view.frame = containerView.bounds
+        containerView.addSubview(viewController.view)
+        addChild(viewController)
+        viewController.didMove(toParent: self)
     }
 }
 
@@ -117,10 +122,18 @@ extension ForwardViewController: Stylable {
     func update(style: Style) {
         self.currentStyle = style
         
+        self.titleLabel?.textColor = style.barTitleColor
+        self.titleContentView?.backgroundColor = style.barBackgroundColor
+        self.cancelButton?.tintColor = self.currentStyle.barActionColor
+        
         self.view.backgroundColor = style.backgroundColor
         
         if let navigationBar = self.navigationController?.navigationBar {
             style.applyStyle(onNavigationBar: navigationBar)
+        }
+        
+        if let searchBar = self.searchBar {
+            style.applyStyle(onSearchBar: searchBar)
         }
     }
 }
