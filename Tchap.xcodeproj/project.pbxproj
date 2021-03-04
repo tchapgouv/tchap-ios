@@ -601,6 +601,8 @@
 		025CB2532493B1D0009A4B10 /* JitsiWidgetData.m in Sources */ = {isa = PBXBuildFile; fileRef = 025CB2512493B1D0009A4B10 /* JitsiWidgetData.m */; };
 		025CB2572493BEAC009A4B10 /* PushNotificationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 025CB2562493BEAC009A4B10 /* PushNotificationService.m */; };
 		025CB2582493BEAC009A4B10 /* PushNotificationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 025CB2562493BEAC009A4B10 /* PushNotificationService.m */; };
+		025DCA1925F03BDB00C014C5 /* ForwardDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025DCA1825F03BDB00C014C5 /* ForwardDataSource.swift */; };
+		025DCA1A25F03BDB00C014C5 /* ForwardDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025DCA1825F03BDB00C014C5 /* ForwardDataSource.swift */; };
 		025E36F5229546A000C9D9AE /* ThirdPartyIDResolverType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025E36F4229546A000C9D9AE /* ThirdPartyIDResolverType.swift */; };
 		025E36F6229546A000C9D9AE /* ThirdPartyIDResolverType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025E36F4229546A000C9D9AE /* ThirdPartyIDResolverType.swift */; };
 		025E36F8229548C000C9D9AE /* ThirdPartyIDResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025E36F7229548C000C9D9AE /* ThirdPartyIDResolver.swift */; };
@@ -2507,6 +2509,7 @@
 		025CB2512493B1D0009A4B10 /* JitsiWidgetData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JitsiWidgetData.m; sourceTree = "<group>"; };
 		025CB2552493BEAC009A4B10 /* PushNotificationService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PushNotificationService.h; sourceTree = "<group>"; };
 		025CB2562493BEAC009A4B10 /* PushNotificationService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PushNotificationService.m; sourceTree = "<group>"; };
+		025DCA1825F03BDB00C014C5 /* ForwardDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForwardDataSource.swift; sourceTree = "<group>"; };
 		025E36F4229546A000C9D9AE /* ThirdPartyIDResolverType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThirdPartyIDResolverType.swift; sourceTree = "<group>"; };
 		025E36F7229548C000C9D9AE /* ThirdPartyIDResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThirdPartyIDResolver.swift; sourceTree = "<group>"; };
 		026154C6235123410045459E /* IdentityServiceBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentityServiceBuilder.swift; sourceTree = "<group>"; };
@@ -5333,6 +5336,7 @@
 				3A74C74025CB327B00E3D171 /* ForwardViewController.swift */,
 				3A74C74E25CB32A100E3D171 /* ForwardViewController.storyboard */,
 				3AA1921C25D56A2700F1A52C /* ForwardRecentListViewController.swift */,
+				025DCA1825F03BDB00C014C5 /* ForwardDataSource.swift */,
 			);
 			path = Forward;
 			sourceTree = "<group>";
@@ -8176,6 +8180,7 @@
 				B1892E792130528600742348 /* ErrorPresentableImpl.swift in Sources */,
 				02FAE4C823B4B61700DE73D8 /* KeyBackupSetupPassphraseViewModel.swift in Sources */,
 				B12DDA9F21701FC40093172C /* AvatarImageViewModel.swift in Sources */,
+				025DCA1925F03BDB00C014C5 /* ForwardDataSource.swift in Sources */,
 				02C3F27724AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseInputMode.swift in Sources */,
 				02FAE43223B2B98900DE73D8 /* SlidingModalPresenter.swift in Sources */,
 				02388EAB24A2AF7A00F3B485 /* DeviceVerificationStartCoordinator.swift in Sources */,
@@ -9051,6 +9056,7 @@
 				02DFEC4E21C07370009B6F15 /* WelcomeViewController.swift in Sources */,
 				02FAE4C923B4B61700DE73D8 /* KeyBackupSetupPassphraseViewModel.swift in Sources */,
 				02DFEC4F21C07370009B6F15 /* RoomIncomingEncryptedTextMsgBubbleCell.m in Sources */,
+				025DCA1A25F03BDB00C014C5 /* ForwardDataSource.swift in Sources */,
 				02C3F27824AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseInputMode.swift in Sources */,
 				02FAE43323B2B98900DE73D8 /* SlidingModalPresenter.swift in Sources */,
 				02388EAC24A2AF7A00F3B485 /* DeviceVerificationStartCoordinator.swift in Sources */,

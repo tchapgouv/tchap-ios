@@ -36,7 +36,7 @@ final class ForwardCoordinator: NSObject, ForwardCoordinatorType {
         self.messageText = messageText
         self.fileUrl = fileUrl
         let recentsViewController = ForwardRecentListViewController()
-        recentsViewController.displayList(MXKRecentsDataSource(matrixSession: session))
+        recentsViewController.displayList(ForwardDataSource(matrixSession: session))
         self.recentsViewController = recentsViewController
 
         let viewController = ForwardViewController.instantiate(with: Variant2Style.shared)
