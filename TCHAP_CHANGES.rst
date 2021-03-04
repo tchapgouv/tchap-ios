@@ -5,6 +5,7 @@ Features/Improvements:
  * Design and implement favorite messages #292
  * Public room creation: improve UI for agent.agent users #319
  * Room members: gray out the expired users #273
+ * Add the option to import the encryption keys in the Tchap settings #360
 
 Bug Fixes:
  * Crash on missing identity server information #357
