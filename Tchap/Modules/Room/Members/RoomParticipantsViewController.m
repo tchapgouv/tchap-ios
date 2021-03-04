@@ -435,9 +435,7 @@
                 if (self.mxRoom.mxSession == room.mxSession && [self.mxRoom.roomId isEqualToString:room.roomId])
                 {
                     // The existing room history has been flushed during server sync. Take into account the updated room members list.
-                    [self refreshParticipantsFromRoomMembers:^{
-                        [self refreshTableView];
-                    }];
+                    [self refreshParticipantsFromRoomMembers:nil];
                 }
 
             }];
@@ -476,9 +474,7 @@
 
                                         [self handleRoomMember:mxMember];
 
-                                        [self finalizeParticipantsList:liveTimeline.state completion:^{
-                                            [self refreshTableView];
-                                        }];
+                                        [self finalizeParticipantsList:liveTimeline.state completion:nil];
                                     }
                                 }
 
@@ -494,17 +490,13 @@
                                     
                                     [self addRoomThirdPartyInviteToParticipants:thirdPartyInvite roomState:liveTimeline.state];
 
-                                    [self finalizeParticipantsList:liveTimeline.state completion:^{
-                                        [self refreshTableView];
-                                    }];
+                                    [self finalizeParticipantsList:liveTimeline.state completion:nil];
                                 }
                                 break;
                             }
                             case MXEventTypeRoomPowerLevels:
                             {
-                                [self refreshParticipantsFromRoomMembers:^{
-                                    [self refreshTableView];
-                                }];
+                                [self refreshParticipantsFromRoomMembers:nil];
                                 break;
                             }
                             default:
@@ -521,9 +513,7 @@
         }
                                  
         // Refresh the members list.
-        [self refreshParticipantsFromRoomMembers:^{
-            [self refreshTableView];
-        }];
+        [self refreshParticipantsFromRoomMembers:nil];
     }];
 }
 
@@ -831,7 +821,7 @@
     }
 }
 
-- (void)reloadSearchResult
+- (void)refreshTableViewByApplyingSearchIfAny
 {
     if (currentSearchText.length)
     {
@@ -839,6 +829,10 @@
         currentSearchText = nil;
         
         [self searchBar:_searchBarView textDidChange:searchText];
+    }
+    else
+    {
+        [self refreshTableView];
     }
 }
 
@@ -1015,16 +1009,23 @@
         }
     };
     
+    // Sort each participants list in alphabetical order
+    [actualParticipants sortUsingComparator:comparator];
+    [invitedParticipants sortUsingComparator:comparator];
+
+    // Refresh the tableview by reloading the search result (if any)
+    [self refreshTableViewByApplyingSearchIfAny];
+    
     // Check whether some accounts have expired
     MXWeakify(self);
     [self checkExpiredAccounts:^{
         MXStrongifyAndReturnIfNil(self);
-        // Sort each participants list in alphabetical order
+        // Sort each participants list in alphabetical order by moving at the bottom the expired accounts
         [self->actualParticipants sortUsingComparator:comparator];
         [self->invitedParticipants sortUsingComparator:comparator];
-
-        // Reload search result if any
-        [self reloadSearchResult];
+        
+        // Refresh the tableview by reloading the search result (if any)
+        [self refreshTableViewByApplyingSearchIfAny];
 
         if (completion)
         {
