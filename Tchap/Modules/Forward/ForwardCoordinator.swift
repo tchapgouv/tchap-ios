@@ -21,8 +21,7 @@ final class ForwardCoordinator: NSObject, ForwardCoordinatorType {
     private let router: NavigationRouterType
     private let forwardViewController: ForwardViewController
     private let session: MXSession
-    private let messageText: String?
-    private let fileUrl: URL?
+    private let content: [AnyHashable: Any]
     private var errorPresenter: ErrorPresenter!
     private var recentsViewController: ForwardRecentListViewController!
 
@@ -30,11 +29,10 @@ final class ForwardCoordinator: NSObject, ForwardCoordinatorType {
 
     // MARK: - Setup
     
-    init(session: MXSession, messageText: String?, fileUrl: URL?) {
+    init(session: MXSession, content: [AnyHashable: Any]) {
         self.router = NavigationRouter(navigationController: TCNavigationController())
         self.session = session
-        self.messageText = messageText
-        self.fileUrl = fileUrl
+        self.content = content
         let recentsViewController = ForwardRecentListViewController()
         recentsViewController.displayList(ForwardDataSource(matrixSession: session))
         self.recentsViewController = recentsViewController
@@ -106,20 +104,11 @@ extension ForwardCoordinator: MXKRecentListViewControllerDelegate {
         MXKRoomDataSourceManager.sharedManager(forMatrixSession: session)?.roomDataSource(forRoom: roomId, create: true, onComplete: { (dataSource) in
             if let dataSource = dataSource {
                 self.forwardViewController.startActivityIndicator()
-                if let text = self.messageText {
-                    dataSource.sendTextMessage(text) { (response) in
+                dataSource.sendMessage(withContent: self.content) { (response) in
                         self.didForwardTo(roomId, response: response)
                     } failure: { (error) in
                         self.didForwardTo(roomId, error: error)
                     }
-                } else if let url = self.fileUrl,
-                          let mimeType = MXKUTI(localFileURL: url)?.mimeType {
-                    dataSource.sendFile(url, mimeType: mimeType) { (response) in
-                        self.didForwardTo(roomId, response: response)
-                    } failure: { (error) in
-                        self.didForwardTo(roomId, error: error)
-                    }
-                }
             } else {
                 let error = NSError(domain: "ForwardCoordinatorErrorDomain", code: 0)
                 self.didForwardTo(roomId, error: error)

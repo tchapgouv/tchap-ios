@@ -199,9 +199,6 @@ extension RoomPreviewCoordinator: RoomViewControllerDelegate {
         return false
     }
     
-    func roomViewController(_ roomViewController: RoomViewController, forwardMessage messageText: String) {
-    }
-    
-    func roomViewController(_ roomViewController: RoomViewController, forwardFile url: URL) {
+    func roomViewController(_ roomViewController: RoomViewController, forwardContent content: [AnyHashable : Any]) {
     }
 }

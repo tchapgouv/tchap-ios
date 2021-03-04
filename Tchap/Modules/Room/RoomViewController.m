@@ -2344,6 +2344,17 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                                                            }
                                                            
                                                        }]];
+        
+        [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_forward", @"Tchap", nil)
+                                                         style:UIAlertActionStyleDefault
+                                                       handler:^(UIAlertAction * action) {
+            if (weakSelf)
+            {
+                typeof(self) self = weakSelf;
+                [self.delegate roomViewController:self forwardContent:selectedEvent.content];
+            }
+            
+        }]];
 
         if (BuildSettings.messageDetailsAllowShare)
         {
@@ -2373,11 +2384,6 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                 
             }]];
         }
-        
-        [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_forward", @"Tchap", nil)
-                                                         style:UIAlertActionStyleDefault
-                                                       handler:^(UIAlertAction * action) {
-            [self.delegate roomViewController:self forwardMessage:selectedComponent.textMessage];                                                       }]];
     }
     else // Add action for attachment
     {
@@ -2466,6 +2472,17 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
 
         if (attachment.type != MXKAttachmentTypeSticker)
         {
+            [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_forward", @"Tchap", nil)
+                                                             style:UIAlertActionStyleDefault
+                                                           handler:^(UIAlertAction * action) {
+                if (weakSelf)
+                {
+                    typeof(self) self = weakSelf;
+                    [self.delegate roomViewController:self forwardContent:selectedEvent.content];
+                }
+                
+            }]];
+            
             if (BuildSettings.messageDetailsAllowShare)
             {
                 [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_share", @"Vector", nil)
@@ -2505,27 +2522,6 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                     
                 }]];
             }
-            
-            [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_forward", @"Tchap", nil)
-                                                             style:UIAlertActionStyleDefault
-                                                           handler:^(UIAlertAction * action) {
-                [self cancelEventSelection];
-                
-                [attachment prepareShare:^(NSURL *fileURL) {
-                    
-                    __strong __typeof(weakSelf)self = weakSelf;
-                    [self.delegate roomViewController:self forwardFile:fileURL];
-
-                } failure:^(NSError *error) {
-                    
-                    //Alert user
-                    [[AppDelegate theDelegate] showErrorAsAlert:error];
-                    
-                }];
-                
-                // Start animation in case of download during attachment preparing
-                [roomBubbleTableViewCell startProgressUI];
-            }]];
         }
     }
     

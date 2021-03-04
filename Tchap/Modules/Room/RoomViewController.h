@@ -133,8 +133,6 @@
  */
 - (BOOL)roomViewController:(nonnull RoomViewController *)roomViewController handlePermalinkFragment:(nonnull NSString*)fragment;
 
-- (void)roomViewController:(nonnull RoomViewController *)roomViewController forwardMessage:(nonnull NSString *)messageText;
-
-- (void)roomViewController:(nonnull RoomViewController *)roomViewController forwardFile:(nonnull NSURL *)url;
+- (void)roomViewController:(nonnull RoomViewController *)roomViewController forwardContent:(nonnull NSDictionary *)content;
 
 @end

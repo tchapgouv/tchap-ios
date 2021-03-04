@@ -306,15 +306,8 @@ extension RoomCoordinator: RoomViewControllerDelegate {
         return delegate.roomCoordinator(self, handlePermalinkFragment: fragment)
     }
     
-    func roomViewController(_ roomViewController: RoomViewController, forwardMessage messageText: String) {
-        let coordinator = ForwardCoordinator(session: self.session, messageText: messageText, fileUrl: nil)
-        coordinator.start()
-        self.router.present(coordinator, animated: true)
-        self.add(childCoordinator: coordinator)
-    }
-    
-    func roomViewController(_ roomViewController: RoomViewController, forwardFile url: URL) {
-        let coordinator = ForwardCoordinator(session: self.session, messageText: nil, fileUrl: url)
+    func roomViewController(_ roomViewController: RoomViewController, forwardContent content: [AnyHashable: Any]) {
+        let coordinator = ForwardCoordinator(session: self.session, content: content)
         coordinator.start()
         self.router.present(coordinator, animated: true)
         self.add(childCoordinator: coordinator)
