@@ -435,9 +435,7 @@
                 if (self.mxRoom.mxSession == room.mxSession && [self.mxRoom.roomId isEqualToString:room.roomId])
                 {
                     // The existing room history has been flushed during server sync. Take into account the updated room members list.
-                    [self refreshParticipantsFromRoomMembers:^{
-                        [self refreshTableView];
-                    }];
+                    [self refreshParticipantsFromRoomMembers:nil];
                 }
 
             }];
@@ -476,9 +474,7 @@
 
                                         [self handleRoomMember:mxMember];
 
-                                        [self finalizeParticipantsList:liveTimeline.state completion:^{
-                                            [self refreshTableView];
-                                        }];
+                                        [self finalizeParticipantsList:liveTimeline.state completion:nil];
                                     }
                                 }
 
@@ -494,17 +490,13 @@
                                     
                                     [self addRoomThirdPartyInviteToParticipants:thirdPartyInvite roomState:liveTimeline.state];
 
-                                    [self finalizeParticipantsList:liveTimeline.state completion:^{
-                                        [self refreshTableView];
-                                    }];
+                                    [self finalizeParticipantsList:liveTimeline.state completion:nil];
                                 }
                                 break;
                             }
                             case MXEventTypeRoomPowerLevels:
                             {
-                                [self refreshParticipantsFromRoomMembers:^{
-                                    [self refreshTableView];
-                                }];
+                                [self refreshParticipantsFromRoomMembers:nil];
                                 break;
                             }
                             default:
@@ -521,9 +513,7 @@
         }
                                  
         // Refresh the members list.
-        [self refreshParticipantsFromRoomMembers:^{
-            [self refreshTableView];
-        }];
+        [self refreshParticipantsFromRoomMembers:nil];
     }];
 }
 
@@ -831,7 +821,7 @@
     }
 }
 
-- (void)reloadSearchResult
+- (void)refreshTableViewByApplyingSearchIfAny
 {
     if (currentSearchText.length)
     {
@@ -839,6 +829,10 @@
         currentSearchText = nil;
         
         [self searchBar:_searchBarView textDidChange:searchText];
+    }
+    else
+    {
+        [self refreshTableView];
     }
 }
 
@@ -899,47 +893,57 @@
 
 - (void)checkExpiredAccounts:(void (^)(void))completion
 {
-    dispatch_group_t requestsGroup = dispatch_group_create();
     self.userService = [[UserService alloc] initWithSession:self.mxRoom.mxSession];
     MXHTTPOperation *op;
-    for (Contact *contact in actualParticipants)
+    
+    NSArray<Contact*> *participants = [actualParticipants arrayByAddingObjectsFromArray:invitedParticipants];
+    NSMutableArray *contactIds = [NSMutableArray new];
+    for (Contact *contact in participants)
     {
         if (contact.mxMember.userId)
         {
-            dispatch_group_enter(requestsGroup);
-            op = [self.userService isAccountExpiredFor:contact.mxMember.userId
-                                          success:^(BOOL isExpired) {
-                                              contact.isExpired = isExpired;
-                                              dispatch_group_leave(requestsGroup);
-                                          } failure:^(NSError * _Nonnull error) {
-                                              contact.isExpired = false;
-                                              dispatch_group_leave(requestsGroup);
-                                          }];
-        }
-    }
-    for (Contact *contact in invitedParticipants)
-    {
-        if (contact.mxMember.userId)
-        {
-            dispatch_group_enter(requestsGroup);
-            op = [self.userService isAccountExpiredFor:contact.mxMember.userId
-                                          success:^(BOOL isExpired) {
-                                              contact.isExpired = isExpired;
-                                              dispatch_group_leave(requestsGroup);
-                                          } failure:^(NSError * _Nonnull error) {
-                                              contact.isExpired = false;
-                                              dispatch_group_leave(requestsGroup);
-                                          }];
+            [contactIds addObject:contact.mxMember.userId];
         }
     }
     
-    dispatch_group_notify(requestsGroup, dispatch_get_main_queue(), ^{
+    op = [self.userService getUsersInfoFor:contactIds success:^(NSDictionary<NSString *,id> * _Nonnull usersInfo) {
+        for (Contact *contact in participants)
+        {
+            if (contact.mxMember.userId)
+            {
+                UserStatusInfo *userInfo = [usersInfo objectForKey:contact.mxMember.userId];
+                if (userInfo)
+                {
+                    contact.isExpired = userInfo.expired;
+                }
+                else
+                {
+                    contact.isExpired = false;
+                }
+            }
+            else
+            {
+                contact.isExpired = false;
+            }
+        }
+        
         self.userService = nil;
         if (completion)
         {
             completion();
         }
-    });
+    } failure:^(NSError * _Nonnull error) {
+        for (Contact *contact in participants)
+        {
+            contact.isExpired = false;
+        }
+        
+        self.userService = nil;
+        if (completion)
+        {
+            completion();
+        }
+    }];
 }
 
 - (void)finalizeParticipantsList:(MXRoomState*)roomState completion:(void (^)(void))completion
@@ -1005,36 +1009,29 @@
         }
     };
     
-    // FIXME: Check expired account by using a bulk version of the userinfo API
-    // Until this bulk version is available we skip this step, and sort directly the array.
-//    // Check whether some accounts have expired
-//    MXWeakify(self);
-//    [self checkExpiredAccounts:^{
-//        MXStrongifyAndReturnIfNil(self);
-//        // Sort each participants list in alphabetical order
-//        [self->actualParticipants sortUsingComparator:comparator];
-//        [self->invitedParticipants sortUsingComparator:comparator];
-//
-//        // Reload search result if any
-//        [self reloadSearchResult];
-//
-//        if (completion)
-//        {
-//            completion();
-//        }
-//    }];
     // Sort each participants list in alphabetical order
     [actualParticipants sortUsingComparator:comparator];
     [invitedParticipants sortUsingComparator:comparator];
+
+    // Refresh the tableview by reloading the search result (if any)
+    [self refreshTableViewByApplyingSearchIfAny];
     
-    // Reload search result if any
-    [self reloadSearchResult];
-    
-    if (completion)
-    {
-        completion();
-    }
-    // ENDFIXME Check expired account by using a bulk version of the userinfo API
+    // Check whether some accounts have expired
+    MXWeakify(self);
+    [self checkExpiredAccounts:^{
+        MXStrongifyAndReturnIfNil(self);
+        // Sort each participants list in alphabetical order by moving at the bottom the expired accounts
+        [self->actualParticipants sortUsingComparator:comparator];
+        [self->invitedParticipants sortUsingComparator:comparator];
+        
+        // Refresh the tableview by reloading the search result (if any)
+        [self refreshTableViewByApplyingSearchIfAny];
+
+        if (completion)
+        {
+            completion();
+        }
+    }];
 }
 
 - (Contact*)getContactAtIndexPath:(NSIndexPath *)indexPath
