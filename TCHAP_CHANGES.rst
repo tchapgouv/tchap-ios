@@ -4,6 +4,7 @@ Changes in Tchap 1.2.0 (2021-xx-xx)
 Features/Improvements:
  * Design and implement favorite messages #292
  * Public room creation: improve UI for agent.agent users #319
+ * Add a shortcut "forward" in the selected message options #353
  * Room members: gray out the expired users #273
  * Add the option to import the encryption keys in the Tchap settings #360
 

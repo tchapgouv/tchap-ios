@@ -187,6 +187,8 @@ internal enum TchapL10n {
   internal static func forgotPasswordVerifyEmailInstructions(_ p1: Any) -> String {
     return TchapL10n.tr("Tchap", "forgot_password_verify_email_instructions", String(describing: p1))
   }
+  /// Transférer à
+  internal static let forwardScreenTitle = TchapL10n.tr("Tchap", "forward_screen_title")
   /// Pour continuer à utiliser Tchap, vous devez lire et accepter les conditions générales.
   internal static let gdprConsentNotGivenAlertMessage = TchapL10n.tr("Tchap", "gdpr_consent_not_given_alert_message")
   /// Information
@@ -313,6 +315,8 @@ internal enum TchapL10n {
   internal static let roomEventActionAddFavourite = TchapL10n.tr("Tchap", "room_event_action_add_favourite")
   /// Favoris
   internal static let roomEventActionFavourite = TchapL10n.tr("Tchap", "room_event_action_favourite")
+  /// Transférer
+  internal static let roomEventActionForward = TchapL10n.tr("Tchap", "room_event_action_forward")
   /// Retirer des favoris
   internal static let roomEventActionRemoveFavourite = TchapL10n.tr("Tchap", "room_event_action_remove_favourite")
   /// Fichiers
