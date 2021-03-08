@@ -19,16 +19,9 @@ import UIKit
 /// The view model used by RoomCreationViewController
 final class RoomCreationViewModel: RoomCreationViewModelType {
     
-    // MARK: - Constants
-    
-    private enum Constants {
-        static let roomRetentionPeriodDefault: uint = 365
-    }
-    
     // MARK: - Properties
     
     let roomNameFormTextViewModel: FormTextViewModel
-    var retentionPeriodInDays: uint
     let homeServerDomain: String
     var selectedRoomType: RoomType
     
@@ -47,7 +40,6 @@ final class RoomCreationViewModel: RoomCreationViewModelType {
         self.roomNameFormTextViewModel = roomNameFormTextViewModel
         
         // Other properties
-        self.retentionPeriodInDays = Constants.roomRetentionPeriodDefault
         self.homeServerDomain = homeServerDomain
         self.selectedRoomType = .privateRestricted()
     }

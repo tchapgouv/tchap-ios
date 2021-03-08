@@ -82,7 +82,6 @@ final class RoomService: NSObject, RoomServiceType {
     }
     
     func createDiscussionWithThirdPartyID(_ thirdPartyID: MXInvite3PID, completion: @escaping (MXResponse<String>) -> Void) -> MXHTTPOperation {
-        let retentionPeriod = Tools.durationInMs(fromDays: 365)
         let roomCreationParameters = RoomCreationParameters(visibility: .private,
                                                             accessRule: .direct,
                                                             preset: .trustedPrivateChat,
@@ -90,7 +89,7 @@ final class RoomService: NSObject, RoomServiceType {
                                                             alias: nil,
                                                             inviteUserIDs: nil,
                                                             inviteThirdPartyIDs: [thirdPartyID],
-                                                            retentionPeriod: retentionPeriod,
+                                                            retentionPeriod: nil,
                                                             isFederated: true,
                                                             historyVisibility: nil,
                                                             powerLevelContentOverride: nil,
@@ -99,7 +98,6 @@ final class RoomService: NSObject, RoomServiceType {
     }
     
     @objc func createDiscussion(with userID: String, success: @escaping ((String) -> Void), failure: @escaping ((Error) -> Void)) -> MXHTTPOperation {
-        let retentionPeriod = Tools.durationInMs(fromDays: 365)
         let roomCreationParameters = RoomCreationParameters(visibility: .private,
                                                             accessRule: .direct,
                                                             preset: .trustedPrivateChat,
@@ -107,7 +105,7 @@ final class RoomService: NSObject, RoomServiceType {
                                                             alias: nil,
                                                             inviteUserIDs: [userID],
                                                             inviteThirdPartyIDs: nil,
-                                                            retentionPeriod: retentionPeriod,
+                                                            retentionPeriod: nil,
                                                             isFederated: true,
                                                             historyVisibility: nil,
                                                             powerLevelContentOverride: nil,
@@ -238,7 +236,7 @@ final class RoomService: NSObject, RoomServiceType {
             initialStates.append(historyVisibilityStateEvent.jsonDictionary())
         }
         
-        if let retentionPeriod = roomCreationParameters.retentionPeriod {
+        if let retentionPeriod = roomCreationParameters.retentionPeriod, retentionPeriod != RetentionConstants.undefinedRetentionValue {
             let roomRetentionStateEvent = self.roomRetentionStateEvent(with: retentionPeriod)
             initialStates.append(roomRetentionStateEvent.jsonDictionary())
         }

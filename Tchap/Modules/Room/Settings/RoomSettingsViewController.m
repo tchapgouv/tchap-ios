@@ -1186,6 +1186,7 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
                 displayedRetentionPeriod = ((NSNumber*)[updatedItemsDict objectForKey:kRoomSettingsRetentionKey]).unsignedIntValue;
             }
             
+            //TODO: handle the case where there is no retention: displayedRetentionPeriod = MXRoomSummary.undefinedRetentionValueInDays
             if (displayedRetentionPeriod == 1)
             {
                 cell.detailTextLabel.text = NSLocalizedStringFromTable(@"room_settings_retention_period_one_day", @"Tchap", nil);

@@ -184,6 +184,7 @@
 		0215542422B24058004663A6 /* AccountValidityServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0215542222B24058004663A6 /* AccountValidityServiceType.swift */; };
 		0215542622B2406B004663A6 /* AccountValidityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0215542522B2406B004663A6 /* AccountValidityService.swift */; };
 		0215542722B2406B004663A6 /* AccountValidityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0215542522B2406B004663A6 /* AccountValidityService.swift */; };
+		021D62F225F6BE5900F7F055 /* FavouriteMessagesViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8E9902272583BDAB00D0456B /* FavouriteMessagesViewController.storyboard */; };
 		0223EFA72227095100B9EA34 /* PublicRoomsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0223EFA62227095100B9EA34 /* PublicRoomsCell.xib */; };
 		0223EFA82227095800B9EA34 /* PublicRoomsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0223EFA62227095100B9EA34 /* PublicRoomsCell.xib */; };
 		0223EFAB2227E41B00B9EA34 /* HomeServerComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0223EFAA2227E41B00B9EA34 /* HomeServerComponents.swift */; };
@@ -7257,6 +7258,7 @@
 				024518E523A1467A006873DF /* message.caf in Resources */,
 				02DFECDD21C07370009B6F15 /* DeviceTableViewCell.xib in Resources */,
 				02388EB224A2AF7A00F3B485 /* DeviceVerificationIncomingViewController.storyboard in Resources */,
+				021D62F225F6BE5900F7F055 /* FavouriteMessagesViewController.storyboard in Resources */,
 				02FAE57123B4C41500DE73D8 /* BubbleReactionsView.xib in Resources */,
 				02DFECDE21C07370009B6F15 /* RoomsCell.xib in Resources */,
 				02DFECDF21C07370009B6F15 /* RoomEncryptedAttachmentAntivirusScanStatusBubbleCell.xib in Resources */,
