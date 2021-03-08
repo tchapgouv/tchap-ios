@@ -28,9 +28,16 @@ enum RoomCategory {
     case unknown
 }
 
+enum RetentionConstants {
+    static let undefinedRetentionValue = UInt64.max
+    static let undefinedRetentionValueInDays = uint.max
+}
+
 @objc extension MXRoomSummary {
     
     static let roomSummaryDidRemoveExpiredDataFromStore = "roomSummaryDidRemoveExpiredDataFromStore"
+    
+    static let undefinedRetentionValueInDays = RetentionConstants.undefinedRetentionValueInDays
     
     // MARK: - Constants
     
@@ -124,26 +131,29 @@ enum RoomCategory {
     }
     
     /// Get the room messages retention period in days
+    /// Return RetentionConstants.undefinedRetentionValueInDays if no retention period is defined for the room.
     func tc_roomRetentionPeriodInDays() -> uint {
         if let period = self.others[Constants.roomRetentionInDaysKey] as? uint {
             return period
         } else {
-            return uint.max
+            return RetentionConstants.undefinedRetentionValueInDays
         }
     }
     
-    /// Get the timestamp below which the received messages must be removed from the store, and the display
-    func tc_mininumTimestamp() -> UInt64 {
+    /// Get the timestamp below which the received messages must be removed from the store, and the display.
+    /// Return kMXUndefinedTimestamp if no retention period is defined for the room.
+    func tc_mininumMessageTimestamp() -> UInt64 {
+        let minimumTimestamp: UInt64
         let retentionPeriodInDays = self.tc_roomRetentionPeriodInDays()
-        
-        if retentionPeriodInDays < uint.max {
+        if retentionPeriodInDays != RetentionConstants.undefinedRetentionValueInDays {
             let periodInMs = Tools.durationInMs(fromDays: retentionPeriodInDays)
             let currentTs = (UInt64)(Date().timeIntervalSince1970 * 1000)
-            return (currentTs - periodInMs)
+            minimumTimestamp = (currentTs - periodInMs)
         } else {
-            return UInt64.min
+            minimumTimestamp = kMXUndefinedTimestamp
         }
         
+        return minimumTimestamp
     }
     
     /// Remove the expired messages from the store.
@@ -152,9 +162,8 @@ enum RoomCategory {
     ///
     /// Provide a boolean telling whether some data have been removed.
     func tc_removeExpiredRoomContentsFromStore() -> Bool {
-        let minimumTimestamp = self.tc_mininumTimestamp()
-        
-        if minimumTimestamp > UInt64.min {
+        let minimumTimestamp = self.tc_mininumMessageTimestamp()
+        if minimumTimestamp != kMXUndefinedTimestamp {
             let ret = self.mxSession.store.removeAllMessagesSent(before: minimumTimestamp, inRoom: roomId)
             if ret {
                 NotificationCenter.default.post(name: .roomSummaryDidRemoveExpiredDataFromStore, object: self)

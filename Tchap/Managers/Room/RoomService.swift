@@ -89,7 +89,7 @@ final class RoomService: NSObject, RoomServiceType {
                                                             alias: nil,
                                                             inviteUserIDs: nil,
                                                             inviteThirdPartyIDs: [thirdPartyID],
-                                                            retentionPeriod: UInt64.max,
+                                                            retentionPeriod: nil,
                                                             isFederated: true,
                                                             historyVisibility: nil,
                                                             powerLevelContentOverride: nil,
@@ -105,7 +105,7 @@ final class RoomService: NSObject, RoomServiceType {
                                                             alias: nil,
                                                             inviteUserIDs: [userID],
                                                             inviteThirdPartyIDs: nil,
-                                                            retentionPeriod: UInt64.max,
+                                                            retentionPeriod: nil,
                                                             isFederated: true,
                                                             historyVisibility: nil,
                                                             powerLevelContentOverride: nil,
@@ -236,7 +236,7 @@ final class RoomService: NSObject, RoomServiceType {
             initialStates.append(historyVisibilityStateEvent.jsonDictionary())
         }
         
-        if let retentionPeriod = roomCreationParameters.retentionPeriod, retentionPeriod < UInt64.max {
+        if let retentionPeriod = roomCreationParameters.retentionPeriod, retentionPeriod != RetentionConstants.undefinedRetentionValue {
             let roomRetentionStateEvent = self.roomRetentionStateEvent(with: retentionPeriod)
             initialStates.append(roomRetentionStateEvent.jsonDictionary())
         }

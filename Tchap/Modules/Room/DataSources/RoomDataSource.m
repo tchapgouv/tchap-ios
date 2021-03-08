@@ -1036,27 +1036,32 @@
 
 - (void)roomSummaryDidRemoveExpiredDataFromStore
 {
-    // Check whether the first cell data refers to an expired event (this may be a state event
-    MXEvent *firstMessageEvent;
-    for (id<MXKRoomBubbleCellDataStoring> cellData in bubbles)
+    // Check first if a retention period is defined for this room
+    UInt64 mininumMessageTimestamp = self.room.summary.tc_mininumMessageTimestamp;
+    if (mininumMessageTimestamp != kMXUndefinedTimestamp)
     {
-        for (MXEvent *event in cellData.events)
+        // Check whether the first cell data refers to an expired event (this may be a state event)
+        MXEvent *firstMessageEvent;
+        for (id<MXKRoomBubbleCellDataStoring> cellData in bubbles)
         {
-            if (!event.isState) {
-                firstMessageEvent = event;
+            for (MXEvent *event in cellData.events)
+            {
+                if (!event.isState) {
+                    firstMessageEvent = event;
+                    break;
+                }
+            }
+            
+            if (firstMessageEvent)
+            {
                 break;
             }
         }
         
-        if (firstMessageEvent)
+        if (firstMessageEvent && firstMessageEvent.originServerTs < mininumMessageTimestamp)
         {
-            break;
+            [self reload];
         }
-    }
-    
-    if (firstMessageEvent && firstMessageEvent.originServerTs < self.room.summary.tc_mininumTimestamp)
-    {
-        [self reload];
     }
 }
 
