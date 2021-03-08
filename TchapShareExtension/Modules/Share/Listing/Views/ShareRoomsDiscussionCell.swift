@@ -16,7 +16,7 @@
 
 import UIKit
 
-@objcMembers class RoomsDiscussionCell: RoomsCell {
+@objcMembers class ShareRoomsDiscussionCell: RoomsCell {
 
     @IBOutlet private weak var domainLabel: UILabel!
     
@@ -39,5 +39,9 @@ import UIKit
     override func update(style: Style) {
         super.update(style: style)
         self.domainLabel.textColor = style.primarySubTextColor
+    }
+    
+    func renderedCellData() -> MXKCellData! {
+        return (roomCellData as! MXKCellData)
     }
 }

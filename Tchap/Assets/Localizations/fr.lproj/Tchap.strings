@@ -144,6 +144,8 @@
 "settings_show_join_leave_messages_title" = "Afficher les notifications d’arrivée et de départ";
 "settings_show_join_leave_messages_summary" = "Les invitations, expulsions et bannissements ne sont pas concernés";
 "settings_show_profile_changes_messages_title" = "Afficher les changements d’avatar";
+"settings_crypto_import" = "Importer les clés";
+"settings_crypto_import_invalid_file" = "Fichier de clés invalide.";
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -172,6 +174,7 @@
 "tchap_room_admin_leave_prompt_msg" = "Voulez-vous vraiment quitter cette conversation ?\n\nElle ne sera plus administrée, et vous risquez de ne plus pouvoir la joindre de nouveau.";
 "tchap_room_invalid_link" = "Ce lien n'est pas valide";
 "tchap_room_access_unauthorized" = "Vous n'êtes pas autorisé à rejoindre cette conversation. Une invitation est nécessaire.";
+"room_event_action_forward" = "Transférer";
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Room Members
@@ -299,3 +302,7 @@
 "favourite_messages_title" = "Messages favoris";
 "favourite_messages_one_subtitle" = "%d message";
 "favourite_messages_multiple_subtitle" = "%d messages";
+
+////////////////////////////////////////////////////////////////////////////////
+// MARK: Forward
+"forward_screen_title" = "Transférer à";

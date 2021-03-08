@@ -18,7 +18,7 @@ import Foundation
 
 
 /// Protocol use to store expiration and deactivation information about a given user.
-protocol UserStatusInfoType {
+@objc protocol UserStatusInfoType {
     /// Tell whether the account has expired.
     var expired: Bool { get }
     

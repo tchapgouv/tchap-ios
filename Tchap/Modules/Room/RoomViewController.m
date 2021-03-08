@@ -2344,6 +2344,17 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                                                            }
                                                            
                                                        }]];
+        
+        [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_forward", @"Tchap", nil)
+                                                         style:UIAlertActionStyleDefault
+                                                       handler:^(UIAlertAction * action) {
+            if (weakSelf)
+            {
+                typeof(self) self = weakSelf;
+                [self.delegate roomViewController:self forwardContent:selectedEvent.content];
+            }
+            
+        }]];
 
         if (BuildSettings.messageDetailsAllowShare)
         {
@@ -2360,13 +2371,13 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                     NSArray *activityItems = @[selectedComponent.textMessage];
                     
                     UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
-                    
+
                     if (activityViewController)
                     {
                         activityViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
                         activityViewController.popoverPresentationController.sourceView = roomBubbleTableViewCell;
                         activityViewController.popoverPresentationController.sourceRect = roomBubbleTableViewCell.bounds;
-                        
+
                         [self presentViewController:activityViewController animated:YES completion:nil];
                     }
                 }
@@ -2461,6 +2472,17 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
 
         if (attachment.type != MXKAttachmentTypeSticker)
         {
+            [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_forward", @"Tchap", nil)
+                                                             style:UIAlertActionStyleDefault
+                                                           handler:^(UIAlertAction * action) {
+                if (weakSelf)
+                {
+                    typeof(self) self = weakSelf;
+                    [self.delegate roomViewController:self forwardContent:selectedEvent.content];
+                }
+                
+            }]];
+            
             if (BuildSettings.messageDetailsAllowShare)
             {
                 [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_share", @"Vector", nil)
