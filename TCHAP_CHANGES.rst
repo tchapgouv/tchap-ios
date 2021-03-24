@@ -1,4 +1,4 @@
-Changes in Tchap 1.2.0 (2021-xx-xx)
+Changes in Tchap 1.2.0 (2021-03-24)
 ===================================================
 
 Features/Improvements:
