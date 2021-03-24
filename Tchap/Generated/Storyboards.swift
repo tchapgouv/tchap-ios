@@ -6,7 +6,7 @@ import Foundation
 import UIKit
 
 // swiftlint:disable superfluous_disable_command
-// swiftlint:disable file_length
+// swiftlint:disable file_length implicit_return
 
 // MARK: - Storyboard Scenes
 
@@ -52,6 +52,11 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Tchap.EmojiPickerViewController>(storyboard: EmojiPickerViewController.self)
   }
+  internal enum FavouriteMessagesViewController: StoryboardType {
+    internal static let storyboardName = "FavouriteMessagesViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.FavouriteMessagesViewController>(storyboard: FavouriteMessagesViewController.self)
+  }
   internal enum ForgotPasswordCheckedEmailViewController: StoryboardType {
     internal static let storyboardName = "ForgotPasswordCheckedEmailViewController"
 
@@ -66,6 +71,11 @@ internal enum StoryboardScene {
     internal static let storyboardName = "ForgotPasswordVerifyEmailViewController"
 
     internal static let initialScene = InitialSceneType<Tchap.ForgotPasswordVerifyEmailViewController>(storyboard: ForgotPasswordVerifyEmailViewController.self)
+  }
+  internal enum ForwardViewController: StoryboardType {
+    internal static let storyboardName = "ForwardViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.ForwardViewController>(storyboard: ForwardViewController.self)
   }
   internal enum HomeViewController: StoryboardType {
     internal static let storyboardName = "HomeViewController"
@@ -259,7 +269,7 @@ internal protocol StoryboardType {
 internal extension StoryboardType {
   static var storyboard: UIStoryboard {
     let name = self.storyboardName
-    return UIStoryboard(name: name, bundle: Bundle(for: BundleToken.self))
+    return UIStoryboard(name: name, bundle: BundleToken.bundle)
   }
 }
 
@@ -274,6 +284,11 @@ internal struct SceneType<T: UIViewController> {
     }
     return controller
   }
+
+  @available(iOS 13.0, tvOS 13.0, *)
+  internal func instantiate(creator block: @escaping (NSCoder) -> T?) -> T {
+    return storyboard.storyboard.instantiateViewController(identifier: identifier, creator: block)
+  }
 }
 
 internal struct InitialSceneType<T: UIViewController> {
@@ -285,6 +300,24 @@ internal struct InitialSceneType<T: UIViewController> {
     }
     return controller
   }
+
+  @available(iOS 13.0, tvOS 13.0, *)
+  internal func instantiate(creator block: @escaping (NSCoder) -> T?) -> T {
+    guard let controller = storyboard.storyboard.instantiateInitialViewController(creator: block) else {
+      fatalError("Storyboard \(storyboard.storyboardName) does not have an initial scene.")
+    }
+    return controller
+  }
 }
 
-private final class BundleToken {}
+// swiftlint:disable convenience_type
+private final class BundleToken {
+  static let bundle: Bundle = {
+    #if SWIFT_PACKAGE
+    return Bundle.module
+    #else
+    return Bundle(for: BundleToken.self)
+    #endif
+  }()
+}
+// swiftlint:enable convenience_type

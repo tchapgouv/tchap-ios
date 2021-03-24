@@ -26,7 +26,6 @@ enum RoomType {
 protocol RoomCreationViewModelType {
     
     var roomNameFormTextViewModel: FormTextViewModel { get }
-    var retentionPeriodInDays: uint { get set }
     var homeServerDomain: String { get }
     var selectedRoomType: RoomType { get set }
 }

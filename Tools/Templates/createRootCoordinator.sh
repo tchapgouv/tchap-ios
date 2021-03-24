@@ -6,13 +6,13 @@ if [ ! $# -eq 2 ] && [ ! $# -eq 3 ] ; then
 fi 
 
 
-OUTPUT_DIR="../../Riot/Modules"/$1
+OUTPUT_DIR="../../Tchap/Modules"/$1
 COORDINATOR_NAME=$2
 COORDINATOR_VAR_NAME=`echo $COORDINATOR_NAME | awk '{ print tolower(substr($0, 1, 1)) substr($0, 2) }'`
 SCREEN_NAME=$3
 SCREEN_VAR_NAME=`echo $SCREEN_NAME | awk '{ print tolower(substr($0, 1, 1)) substr($0, 2) }'`
     
-MODULE_DIR="../../Riot/Modules"
+MODULE_DIR="../../Tchap/Modules"
 
 echo "Create folder ${OUTPUT_DIR}"
 

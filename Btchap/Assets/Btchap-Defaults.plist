@@ -2,45 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>permalinkSupportedHosts</key>
-	<array>
-		<string>beta.tchap.gouv.fr</string>
-		<string>www.beta.tchap.gouv.fr</string>
-	</array>
-	<key>permalinkPrefix</key>
-	<string>https://www.beta.tchap.gouv.fr</string>
-	<key>clientConfigURL</key>
-	<string>https://www.tchap.gouv.fr/client/config/preprod/ios</string>
-	<key>tacURL</key>
-	<string>https://www.tchap.gouv.fr/tac.html</string>
-	<key>appGroupId</key>
-	<string>group.fr.gouv.btchap</string>
 	<key>appLanguage</key>
 	<string>fr</string>
-	<key>serverUrlPrefix</key>
-	<string>https://matrix.</string>
-	<key>preferredIdentityServerNames</key>
-	<array>
-		<string>i.tchap.gouv.fr</string>
-	</array>
-	<key>otherIdentityServerNames</key>
-	<array>
-		<string>e.tchap.gouv.fr</string>
-	</array>
-	<key>pushGatewayURL</key>
-	<string>https://matrix.org/_matrix/push/v1/notify</string>
-	<key>pusherAppIdDev</key>
-	<string>fr.gouv.btchap.ios.dev</string>
-	<key>pusherAppIdProd</key>
-	<string>fr.gouv.btchap.ios.prod</string>
-	<key>pushKitAppIdProd</key>
-	<string>fr.gouv.btchap.ios.voip.prod</string>
 	<key>matrixApps</key>
 	<false/>
-	<key>integrationsUiUrl</key>
-	<string>https://scalar-staging.riot.im/scalar-web/</string>
-	<key>integrationsRestUrl</key>
-	<string>https://scalar-staging.riot.im/scalar/api</string>
 	<key>showAllEventsInRoomHistory</key>
 	<false/>
 	<key>showRedactionsInRoomHistory</key>
@@ -48,7 +13,7 @@
 	<key>showUnsupportedEventsInRoomHistory</key>
 	<false/>
 	<key>sortRoomMembersUsingLastSeenTime</key>
-	<true/>
+	<false/>
 	<key>showLeftMembersInRoomMemberList</key>
 	<false/>
 	<key>syncLocalContacts</key>
@@ -59,15 +24,5 @@
 	<false/>
 	<key>maxAllowedMediaCacheSize</key>
 	<integer>1073741824</integer>
-	<key>bugReportEndpointUrlSuffix</key>
-	<string>/bugreports</string>
-	<key>bugReportDefaultHost</key>
-	<string>i.tchap.gouv.fr</string>
-	<key>bugReportApp</key>
-	<string>btchap-ios</string>
-	<key>roomDirectoryServers</key>
-	<array>
-		<string>i.tchap.gouv.fr</string>
-	</array>
 </dict>
 </plist>

@@ -117,8 +117,12 @@ final class RoomTitleViewModelBuilder: NSObject {
         
         #if ENABLE_ROOM_RETENTION
         let retentionPeriod = roomSummary.tc_roomRetentionPeriodInDays()
-        let retentionInfo = retentionPeriod == 1 ? TchapL10n.roomTitleRetentionInfoOneDay : TchapL10n.roomTitleRetentionInfoInDays(Int(retentionPeriod))
-        roomInfo = retentionInfo
+        if retentionPeriod != RetentionConstants.undefinedRetentionValueInDays {
+            let retentionInfo = retentionPeriod == 1 ? TchapL10n.roomTitleRetentionInfoOneDay : TchapL10n.roomTitleRetentionInfoInDays(Int(retentionPeriod))
+            roomInfo = retentionInfo
+        } else {
+            roomInfo = nil
+        }
         #else
         roomInfo = nil
         #endif

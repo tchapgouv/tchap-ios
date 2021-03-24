@@ -17,7 +17,6 @@
 
 #import "HomeViewController.h"
 
-#import "AppDelegate.h"
 #import "Riot-Swift.h"
 
 #import "RecentsDataSource.h"
@@ -47,6 +46,8 @@
 @property (nonatomic, strong) CrossSigningSetupBannerCell *keyVerificationSetupBannerPrototypeCell;
 @property (nonatomic, strong) AuthenticatedSessionViewControllerFactory *authenticatedSessionViewControllerFactory;
 
+@property (nonatomic, weak) HomeEmptyView *homeEmptyView;
+
 @end
 
 @implementation HomeViewController
@@ -74,7 +75,9 @@
     self.recentsTableView.tag = RecentsDataSourceModeHome;
     
     // Add the (+) button programmatically
-    [self addPlusButton];
+    plusButtonImageView = [self vc_addFABWithImage:[UIImage imageNamed:@"plus_floating_action"]
+                                            target:self
+                                            action:@selector(onPlusButtonPressed)];
     
     // Register table view cell used for rooms collection.
     [self.recentsTableView registerClass:TableViewCellWithCollectionView.class forCellReuseIdentifier:TableViewCellWithCollectionView.defaultReuseIdentifier];
@@ -99,6 +102,8 @@
         recentsDataSource.areSectionsShrinkable = NO;
         [recentsDataSource setDelegate:self andRecentsDataSourceMode:RecentsDataSourceModeHome];
     }
+    
+    [self updateEmptyViewDisplayName];
 
     [self moveAllCollectionsToLeft];
 }
@@ -112,11 +117,6 @@
     }
     
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
-}
-
-- (void)dealloc
-{
-    
 }
 
 - (void)destroy
@@ -277,12 +277,32 @@
     }
 }
 
+- (void)onMatrixSessionChange
+{
+    [super onMatrixSessionChange];
+    
+    [self updateEmptyViewDisplayName];
+}
+
+- (void)userInterfaceThemeDidChange
+{
+    [super userInterfaceThemeDidChange];
+    
+    [self.homeEmptyView updateWithTheme:ThemeService.shared.theme];
+}
+
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+    NSInteger numberOfSections = [recentsDataSource numberOfSectionsInTableView:tableView];
+    
+    BOOL showEmptyView = [self shouldShowEmptyView];
+    
+    [self showEmptyView:showEmptyView];
+    
     // Return the actual number of sections prepared in recents dataSource.
-    return [recentsDataSource numberOfSectionsInTableView:tableView];
+    return numberOfSections;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -405,14 +425,7 @@
         
         CGSize fittingSize = UILayoutFittingCompressedSize;
         CGFloat tableViewWidth = CGRectGetWidth(tableView.frame);
-        CGFloat safeAreaWidth;
-        
-        if (@available(iOS 11.0, *)) {
-            // Take safe area into account
-            safeAreaWidth = MAX(tableView.safeAreaInsets.left, tableView.safeAreaInsets.right);
-        } else {
-            safeAreaWidth = 0;
-        }
+        CGFloat safeAreaWidth = MAX(tableView.safeAreaInsets.left, tableView.safeAreaInsets.right);        
         
         fittingSize.width = tableViewWidth - safeAreaWidth;
         
@@ -802,6 +815,74 @@
          viewController = nil;
          failure(error);
      }];
+}
+
+#pragma mark - Empty view management
+
+- (void)showEmptyView:(BOOL)show
+{
+    if (show && !self.homeEmptyView)
+    {
+        HomeEmptyView *homeEmptyView = [HomeEmptyView instantiate];
+        [homeEmptyView updateWithTheme:ThemeService.shared.theme];
+        [self addEmptyView:homeEmptyView];
+        
+        self.homeEmptyView = homeEmptyView;
+        
+        [self updateEmptyViewDisplayName];
+    }
+    else if (!show)
+    {
+        [self.homeEmptyView removeFromSuperview];
+    }
+    
+    self.recentsTableView.hidden = show;
+}
+
+- (void)updateEmptyViewDisplayName
+{
+    MXUser *myUser = self.mainSession.myUser;
+    NSString *displayName = myUser.displayname ?: myUser.userId;
+    
+    [self.homeEmptyView fillWith:displayName ?: @""];
+}
+
+- (void)addEmptyView:(UIView*)emptyView
+{
+    [self.view insertSubview:emptyView belowSubview:plusButtonImageView];
+
+    emptyView.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [NSLayoutConstraint activateConstraints:@[
+        [emptyView.topAnchor constraintEqualToAnchor:emptyView.superview.topAnchor],
+        [emptyView.leftAnchor constraintEqualToAnchor:emptyView.superview.leftAnchor],
+        [emptyView.rightAnchor constraintEqualToAnchor:emptyView.superview.rightAnchor],
+        [emptyView.bottomAnchor constraintEqualToAnchor:plusButtonImageView.topAnchor]
+    ]];
+}
+
+// By default on fresh account
+- (BOOL)shouldShowEmptyView
+{
+    // Check if some banners should be displayed
+    if (recentsDataSource.secureBackupBannerSection != -1 || recentsDataSource.crossSigningBannerSection != -1)
+    {
+        return NO;
+    }
+    
+    // Otherwise check the number of items to display
+    return [self totalItemCounts] == 0;
+}
+
+// Total items to display on the screen
+- (NSUInteger)totalItemCounts
+{
+    return recentsDataSource.invitesCellDataArray.count
+    + recentsDataSource.favoriteCellDataArray.count
+    + recentsDataSource.peopleCellDataArray.count
+    + recentsDataSource.conversationCellDataArray.count
+    + recentsDataSource.lowPriorityCellDataArray.count
+    + recentsDataSource.serverNoticeCellDataArray.count;
 }
 
 @end

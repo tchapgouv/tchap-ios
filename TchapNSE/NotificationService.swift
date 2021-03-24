@@ -16,6 +16,7 @@
 
 import UserNotifications
 import MatrixKit
+import MatrixSDK
 
 class NotificationService: UNNotificationServiceExtension {
     
@@ -28,14 +29,23 @@ class NotificationService: UNNotificationServiceExtension {
     /// Cached events. Keys are eventId's
     var cachedEvents: [String: MXEvent] = [:]
     static var mxSession: MXSession?
-    lazy var showDecryptedContentInNotifications: Bool = {
+    var showDecryptedContentInNotifications: Bool {
         return RiotSettings.shared.showDecryptedContentInNotifications
+    }
+    lazy var configuration: Configurable = {
+        return CommonConfiguration()
     }()
     static var isLoggerInitialized: Bool = false
+    private lazy var pushGatewayRestClient: MXPushGatewayRestClient = {
+        let url = URL(string: BuildSettings.serverConfigSygnalAPIUrlString)!
+        return MXPushGatewayRestClient(pushGateway: url.scheme! + "://" + url.host!, andOnUnrecognizedCertificateBlock: nil)
+    }()
+    private var pushNotificationStore: PushNotificationStore = PushNotificationStore()
+//    private let localAuthenticationService = LocalAuthenticationService(pinCodePreferences: .shared)
     
     override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
-        //  set app-group identifier first
-        MXSDKOptions.sharedInstance().applicationGroupIdentifier = TchapDefaults.appGroupId
+        // Set static application settings
+        configuration.setupSettings()
         
         if DataProtectionHelper.isDeviceInRebootedAndLockedState(appGroupIdentifier: MXSDKOptions.sharedInstance().applicationGroupIdentifier) {
             //  kill the process in this state, this leads for the notification to be displayed as came from APNS
@@ -100,13 +110,6 @@ class NotificationService: UNNotificationServiceExtension {
     }
     
     func setup(withRoomId roomId: String, eventId: String, completion: @escaping () -> Void) {
-        let sdkOptions = MXSDKOptions.sharedInstance()
-        sdkOptions.disableIdenticonUseForUserAvatar = true
-        sdkOptions.enableCryptoWhenStartingMXSession = true
-        sdkOptions.enableKeyBackupWhenStartingMXCrypto = false
-        sdkOptions.backgroundModeHandler = MXUIKitBackgroundModeHandler()
-        Bundle.mxk_customizeLocalizedStringTableName("Vector")
-        
         if let userAccount = MXKAccountManager.shared()?.activeAccounts.first {
             if NotificationService.mxSession == nil {
                 let store = NSEMemoryStore(withCredentials: userAccount.mxCredentials)
@@ -137,6 +140,10 @@ class NotificationService: UNNotificationServiceExtension {
     ///   - eventId: Event identifier to mutate best attempt content
     ///   - roomId: Room identifier to fetch display name
     func preprocessPayload(forEventId eventId: String, roomId: String) {
+//        if localAuthenticationService.isProtectionSet {
+//            NSLog("[NotificationService] preprocessPayload: Do not preprocess because app protection is set")
+//            return
+//        }
         guard let session = NotificationService.mxSession else { return }
         guard let roomDisplayName = session.store.summary?(ofRoom: roomId)?.displayname else { return }
         let isDirect = session.directUserId(inRoom: roomId) != nil
@@ -147,12 +154,23 @@ class NotificationService: UNNotificationServiceExtension {
         }
     }
     
-    func fetchEvent(withEventId eventId: String, roomId: String) {
+    func fetchEvent(withEventId eventId: String, roomId: String, allowSync: Bool = true) {
         guard let mxSession = NotificationService.mxSession else {
             //  there is something wrong, do not change the content
             NSLog("[NotificationService] fetchEvent: Either originalContent or mxSession is missing.")
             fallbackToBestAttemptContent(forEventId: eventId)
             return
+        }
+        
+        /// Inline function to handle decryption failure
+        func handleDecryptionFailure() {
+            if allowSync {
+                NSLog("[NotificationService] fetchEvent: Launch a background sync.")
+                self.launchBackgroundSync(forEventId: eventId, roomId: roomId)
+            } else {
+                NSLog("[NotificationService] fetchEvent: Do not sync anymore.")
+                self.fallbackToBestAttemptContent(forEventId: eventId)
+            }
         }
 
         /// Inline function to handle encryption for event, either from cache or from the backend
@@ -166,14 +184,6 @@ class NotificationService: UNNotificationServiceExtension {
             }
             
             //  encrypted
-            if !self.showDecryptedContentInNotifications {
-                //  do not show decrypted content in notification
-                NSLog("[NotificationService] fetchEvent: Do not show decrypted content in notifications, no need to attempt to decrypt it.")
-                self.processEvent(event)
-                return
-            }
-            
-            //  should show decrypted content in notification
             if event.clear != nil {
                 //  already decrypted
                 NSLog("[NotificationService] fetchEvent: Event already decrypted.")
@@ -182,14 +192,22 @@ class NotificationService: UNNotificationServiceExtension {
             }
             
             //  should decrypt it first
-            if mxSession.decryptEvent(event, inTimeline: nil) {
-                //  decryption succeeded
-                NSLog("[NotificationService] fetchEvent: Event decrypted successfully.")
-                self.processEvent(event)
+            if mxSession.crypto.hasKeys(toDecryptEvent: event) {
+                //  we have keys to decrypt the event
+                NSLog("[NotificationService] fetchEvent: Event needs to be decrpyted, and we have the keys to decrypt it.")
+                if mxSession.decryptEvent(event, inTimeline: nil) {
+                    //  decryption succeeded
+                    NSLog("[NotificationService] fetchEvent: Event decrypted successfully.")
+                    self.processEvent(event)
+                } else {
+                    //  decryption failed
+                    NSLog("[NotificationService] fetchEvent: Decryption failed even crypto claimed it has the keys.")
+                    handleDecryptionFailure()
+                }
             } else {
-                //  decryption failed
-                NSLog("[NotificationService] fetchEvent: Event needs to be decrpyted, but we don't have the keys to decrypt it. Launching a background sync.")
-                self.launchBackgroundSync(forEventId: eventId, roomId: roomId)
+                //  we don't have keys to decrypt the event
+                NSLog("[NotificationService] fetchEvent: Event needs to be decrpyted, but we don't have the keys to decrypt it.")
+                handleDecryptionFailure()
             }
         }
         
@@ -242,7 +260,8 @@ class NotificationService: UNNotificationServiceExtension {
                     NSLog("[NotificationService] launchBackgroundSync: MXSession.initialBackgroundSync returned too late successfully")
                     return
                 }
-                self.fetchEvent(withEventId: eventId, roomId: roomId)
+                //  do not allow to sync anymore
+                self.fetchEvent(withEventId: eventId, roomId: roomId, allowSync: false)
                 break
             case .failure(let error):
                 guard let self = self else {
@@ -327,6 +346,20 @@ class NotificationService: UNNotificationServiceExtension {
             let pushRule = session.notificationCenter.rule(matching: event, roomState: roomState)
             
             switch event.eventType {
+            case .callInvite:
+                let offer = event.content["offer"] as? [AnyHashable: Any]
+                let sdp = offer?["sdp"] as? String
+                let isVideoCall = sdp?.contains("m=video") ?? false
+                
+                if isVideoCall {
+                    notificationBody = NSString.localizedUserNotificationString(forKey: "VIDEO_CALL_FROM_USER", arguments: [eventSenderName as Any])
+                } else {
+                    notificationBody = NSString.localizedUserNotificationString(forKey: "VOICE_CALL_FROM_USER", arguments: [eventSenderName as Any])
+                }
+                
+                // call notifications should stand out from normal messages, so we don't stack them
+                threadIdentifier = nil
+                self.sendVoipPush(forEvent: event)
             case .roomMessage, .roomEncrypted:
                 if room.isMentionsOnly {
                     // A local notification will be displayed only for highlighted notification.
@@ -421,19 +454,6 @@ class NotificationService: UNNotificationServiceExtension {
                     }
                 }
                 break
-            case .callInvite:
-                let offer = event.content["offer"] as? [AnyHashable: Any]
-                let sdp = offer?["sdp"] as? String
-                let isVideoCall = sdp?.contains("m=video") ?? false
-                
-                if isVideoCall {
-                    notificationBody = NSString.localizedUserNotificationString(forKey: "VIDEO_CALL_FROM_USER", arguments: [eventSenderName as Any])
-                } else {
-                    notificationBody = NSString.localizedUserNotificationString(forKey: "VOICE_CALL_FROM_USER", arguments: [eventSenderName as Any])
-                }
-                
-                // call notifications should stand out from normal messages, so we don't stack them
-                threadIdentifier = nil
             case .roomMember:
                 let roomDisplayName = room.summary.displayname
                 
@@ -455,6 +475,12 @@ class NotificationService: UNNotificationServiceExtension {
             default:
                 break
             }
+            
+//            if self.localAuthenticationService.isProtectionSet {
+//                NSLog("[NotificationService] notificationContentForEvent: Resetting title and body because app protection is set")
+//                notificationBody = NSString.localizedUserNotificationString(forKey: "MESSAGE_PROTECTED", arguments: [])
+//                notificationTitle = nil
+//            }
             
             guard notificationBody != nil else {
                 NSLog("[NotificationService] notificationContentForEvent: notificationBody is nil")
@@ -534,17 +560,40 @@ class NotificationService: UNNotificationServiceExtension {
     }
     
     func notificationCategoryIdentifier(forEvent event: MXEvent) -> String? {
-        let isNotificationContentShown = !event.isEncrypted || self.showDecryptedContentInNotifications
+        let isNotificationContentShown = (!event.isEncrypted || self.showDecryptedContentInNotifications)
+            /*&& !localAuthenticationService.isProtectionSet*/
         
         guard isNotificationContentShown else {
-            return nil
+            return Constants.toBeRemovedNotificationCategoryIdentifier
+        }
+        
+        if event.eventType == .callInvite {
+            return Constants.callInviteNotificationCategoryIdentifier
         }
         
         guard event.eventType == .roomMessage || event.eventType == .roomEncrypted else {
-            return nil
+            return Constants.toBeRemovedNotificationCategoryIdentifier
         }
         
         return "QUICK_REPLY"
+    }
+    
+    /// Attempts to send trigger a VoIP push for the given event
+    /// - Parameter event: The call invite event.
+    private func sendVoipPush(forEvent event: MXEvent) {
+        guard let token = pushNotificationStore.pushKitToken else {
+            return
+        }
+        
+        pushNotificationStore.lastCallInvite = event
+        
+        let appId = BuildSettings.pushKitAppId
+        
+        pushGatewayRestClient.notifyApp(withId: appId, pushToken: token, eventId: event.eventId, roomId: event.roomId, eventType: nil, sender: event.sender, success: { (rejected) in
+            NSLog("[NotificationService] sendVoipPush succeeded, rejected tokens: \(rejected)")
+        }) { (error) in
+            NSLog("[NotificationService] sendVoipPush failed with error: \(error)")
+        }
     }
     
 }

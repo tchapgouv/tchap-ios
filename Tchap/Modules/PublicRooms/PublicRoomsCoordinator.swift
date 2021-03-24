@@ -76,10 +76,7 @@ final class PublicRoomsCoordinator: NSObject, PublicRoomsCoordinatorType {
     }
     
     private static func getPublicRoomServers() -> [String] {
-        guard let publicRoomServers = UserDefaults.standard.stringArray(forKey: "roomDirectoryServers") else {
-            return []
-        }        
-        return publicRoomServers
+        return BuildSettings.publicRoomsDirectoryServers
     }
     
     private func showRoomPreview(with publicRoom: MXPublicRoom) {

@@ -3,8 +3,7 @@
 
 import Foundation
 
-// swiftlint:disable superfluous_disable_command
-// swiftlint:disable file_length
+// swiftlint:disable superfluous_disable_command file_length implicit_return
 
 // MARK: - Strings
 
@@ -101,8 +100,8 @@ internal enum TchapL10n {
   /// Les externes ne sont pas autorisés à rejoindre ce salon
   internal static let contactsPickerUnauthorizedEmailMessageRestrictedRoom = TchapL10n.tr("Tchap", "contacts_picker_unauthorized_email_message_restricted_room")
   /// Seuls les membres du domaine %@ sont autorisés
-  internal static func contactsPickerUnauthorizedEmailMessageUnfederatedRoom(_ p1: String) -> String {
-    return TchapL10n.tr("Tchap", "contacts_picker_unauthorized_email_message_unfederated_room", p1)
+  internal static func contactsPickerUnauthorizedEmailMessageUnfederatedRoom(_ p1: Any) -> String {
+    return TchapL10n.tr("Tchap", "contacts_picker_unauthorized_email_message_unfederated_room", String(describing: p1))
   }
   /// L'invitation de cet email est refusée
   internal static let contactsPickerUnauthorizedEmailTitle = TchapL10n.tr("Tchap", "contacts_picker_unauthorized_email_title")
@@ -152,6 +151,16 @@ internal enum TchapL10n {
   internal static let expiredAccountRequestRenewalEmailButton = TchapL10n.tr("Tchap", "expired_account_request_renewal_email_button")
   /// J’ai renouvelé mon compte
   internal static let expiredAccountResumeButton = TchapL10n.tr("Tchap", "expired_account_resume_button")
+  /// %d messages
+  internal static func favouriteMessagesMultipleSubtitle(_ p1: Int) -> String {
+    return TchapL10n.tr("Tchap", "favourite_messages_multiple_subtitle", p1)
+  }
+  /// %d message
+  internal static func favouriteMessagesOneSubtitle(_ p1: Int) -> String {
+    return TchapL10n.tr("Tchap", "favourite_messages_one_subtitle", p1)
+  }
+  /// Messages favoris
+  internal static let favouriteMessagesTitle = TchapL10n.tr("Tchap", "favourite_messages_title")
   /// Retourner à l'écran de connexion
   internal static let forgotPasswordCheckedEmailDoneAction = TchapL10n.tr("Tchap", "forgot_password_checked_email_done_action")
   /// Votre mot de passe a été réinitialisé. Vous avez été déconnecté de tous les appareils et ne recevez plus de notifications. Pour réactiver les notifications, reconnectez-vous sur chaque appareil.
@@ -175,24 +184,26 @@ internal enum TchapL10n {
   /// Impossible de vérifier l'adresse email : assurez-vous d'avoir cliqué sur le lien dans l'email
   internal static let forgotPasswordVerifyEmailErrorEmailNotVerified = TchapL10n.tr("Tchap", "forgot_password_verify_email_error_email_not_verified")
   /// Si un compte Tchap existe, un email a été envoyé à l'adresse : %@. Une fois que vous aurez suivi le lien qu'il contient, cliquez ci-dessous.
-  internal static func forgotPasswordVerifyEmailInstructions(_ p1: String) -> String {
-    return TchapL10n.tr("Tchap", "forgot_password_verify_email_instructions", p1)
+  internal static func forgotPasswordVerifyEmailInstructions(_ p1: Any) -> String {
+    return TchapL10n.tr("Tchap", "forgot_password_verify_email_instructions", String(describing: p1))
   }
+  /// Transférer à
+  internal static let forwardScreenTitle = TchapL10n.tr("Tchap", "forward_screen_title")
   /// Pour continuer à utiliser Tchap, vous devez lire et accepter les conditions générales.
   internal static let gdprConsentNotGivenAlertMessage = TchapL10n.tr("Tchap", "gdpr_consent_not_given_alert_message")
   /// Information
   internal static let infoTitle = TchapL10n.tr("Tchap", "info_title")
   /// Vous avez déjà envoyé une invitation à %@.
-  internal static func inviteAlreadySentByEmail(_ p1: String) -> String {
-    return TchapL10n.tr("Tchap", "invite_already_sent_by_email", p1)
+  internal static func inviteAlreadySentByEmail(_ p1: Any) -> String {
+    return TchapL10n.tr("Tchap", "invite_already_sent_by_email", String(describing: p1))
   }
   /// Information
   internal static let inviteInformationTitle = TchapL10n.tr("Tchap", "invite_information_title")
   /// Ce contact utilise déjà Tchap, vous pouvez dès à présent lui envoyer un message.
   internal static let inviteNotSentForDiscoveredUser = TchapL10n.tr("Tchap", "invite_not_sent_for_discovered_user")
   /// %@ n’est pas joignable pour l’instant par Tchap.
-  internal static func inviteNotSentForUnauthorizedEmail(_ p1: String) -> String {
-    return TchapL10n.tr("Tchap", "invite_not_sent_for_unauthorized_email", p1)
+  internal static func inviteNotSentForUnauthorizedEmail(_ p1: Any) -> String {
+    return TchapL10n.tr("Tchap", "invite_not_sent_for_unauthorized_email", String(describing: p1))
   }
   /// Echec de l’envoi de l’invitation
   internal static let inviteSendingFailedTitle = TchapL10n.tr("Tchap", "invite_sending_failed_title")
@@ -247,8 +258,8 @@ internal enum TchapL10n {
   /// Lire les conditions générales d'utilisation
   internal static let registrationTermsLabelAccessibility = TchapL10n.tr("Tchap", "registration_terms_label_accessibility")
   /// J'accepte les %@
-  internal static func registrationTermsLabelFormat(_ p1: String) -> String {
-    return TchapL10n.tr("Tchap", "registration_terms_label_format", p1)
+  internal static func registrationTermsLabelFormat(_ p1: Any) -> String {
+    return TchapL10n.tr("Tchap", "registration_terms_label_format", String(describing: p1))
   }
   /// Conditions Générales d'Utilisation
   internal static let registrationTermsLabelLink = TchapL10n.tr("Tchap", "registration_terms_label_link")
@@ -261,8 +272,8 @@ internal enum TchapL10n {
   /// Analyse antivirus
   internal static let roomAttachmentScanStatusInProgressTitle = TchapL10n.tr("Tchap", "room_attachment_scan_status_in_progress_title")
   /// Le document %@ a été filtré par le politique de sécurité
-  internal static func roomAttachmentScanStatusInfectedFileInfo(_ p1: String) -> String {
-    return TchapL10n.tr("Tchap", "room_attachment_scan_status_infected_file_info", p1)
+  internal static func roomAttachmentScanStatusInfectedFileInfo(_ p1: Any) -> String {
+    return TchapL10n.tr("Tchap", "room_attachment_scan_status_infected_file_info", String(describing: p1))
   }
   /// Fichier bloqué
   internal static let roomAttachmentScanStatusInfectedTitle = TchapL10n.tr("Tchap", "room_attachment_scan_status_infected_title")
@@ -285,21 +296,23 @@ internal enum TchapL10n {
   /// Accessible à tous les utilisateurs sur invitation d’un administrateur.
   internal static let roomCreationPrivateRoomInfo = TchapL10n.tr("Tchap", "room_creation_private_room_info")
   /// Limiter l'accès à ce salon aux membres du domaine "%@"
-  internal static func roomCreationPublicRoomFederationTitle(_ p1: String) -> String {
-    return TchapL10n.tr("Tchap", "room_creation_public_room_federation_title", p1)
+  internal static func roomCreationPublicRoomFederationTitle(_ p1: Any) -> String {
+    return TchapL10n.tr("Tchap", "room_creation_public_room_federation_title", String(describing: p1))
   }
   /// Un forum peut être rejoint par tous les utilisateurs excepté les invités externes. Il ne doit contenir aucune donnée sensible.
   internal static let roomCreationPublicVisibilityInfo = TchapL10n.tr("Tchap", "room_creation_public_visibility_info")
-  /// Limiter l’historique du salon à %d jours
-  internal static func roomCreationRoomRetentionPeriodDays(_ p1: Int) -> String {
-    return TchapL10n.tr("Tchap", "room_creation_room_retention_period_days", p1)
-  }
-  /// Limiter l’historique du salon à 1 jour
-  internal static let roomCreationRoomRetentionPeriodOneDay = TchapL10n.tr("Tchap", "room_creation_room_retention_period_one_day")
   /// Type de salon
   internal static let roomCreationRoomTypeTitle = TchapL10n.tr("Tchap", "room_creation_room_type_title")
   /// Nouveau salon
   internal static let roomCreationTitle = TchapL10n.tr("Tchap", "room_creation_title")
+  /// Mettre en favoris
+  internal static let roomEventActionAddFavourite = TchapL10n.tr("Tchap", "room_event_action_add_favourite")
+  /// Favoris
+  internal static let roomEventActionFavourite = TchapL10n.tr("Tchap", "room_event_action_favourite")
+  /// Transférer
+  internal static let roomEventActionForward = TchapL10n.tr("Tchap", "room_event_action_forward")
+  /// Retirer des favoris
+  internal static let roomEventActionRemoveFavourite = TchapL10n.tr("Tchap", "room_event_action_remove_favourite")
   /// Fichiers
   internal static let roomFilesTabTitle = TchapL10n.tr("Tchap", "room_files_tab_title")
   /// Envoyer un message
@@ -307,8 +320,8 @@ internal enum TchapL10n {
   /// Fichiers partagés
   internal static let roomMemberDetailsFiles = TchapL10n.tr("Tchap", "room_member_details_files")
   /// Voulez-vous vraiment retirer %@ de ce salon ?
-  internal static func roomMembersRemovePromptMsg(_ p1: String) -> String {
-    return TchapL10n.tr("Tchap", "room_members_remove_prompt_msg", p1)
+  internal static func roomMembersRemovePromptMsg(_ p1: Any) -> String {
+    return TchapL10n.tr("Tchap", "room_members_remove_prompt_msg", String(describing: p1))
   }
   /// Membres
   internal static let roomMembersTabTitle = TchapL10n.tr("Tchap", "room_members_tab_title")
@@ -398,6 +411,10 @@ internal enum TchapL10n {
   internal static let settingsChangePwdNonExistingKeyBackupAlertTitle = TchapL10n.tr("Tchap", "settings_change_pwd_non_existing_key_backup_alert_title")
   /// Utiliser les adresses emails pour retrouver des utilisateurs
   internal static let settingsContactsDiscoverMatrixUsers = TchapL10n.tr("Tchap", "settings_contacts_discover_matrix_users")
+  /// Importer les clés
+  internal static let settingsCryptoImport = TchapL10n.tr("Tchap", "settings_crypto_import")
+  /// Fichier de clés invalide.
+  internal static let settingsCryptoImportInvalidFile = TchapL10n.tr("Tchap", "settings_crypto_import_invalid_file")
   /// Les autres utilisateurs ne pourront pas découvrir mon compte lors de leurs recherches
   internal static let settingsHideFromUsersDirectorySummary = TchapL10n.tr("Tchap", "settings_hide_from_users_directory_summary")
   /// Inscrire mon compte sur liste rouge
@@ -437,10 +454,19 @@ internal enum TchapL10n {
 
 extension TchapL10n {
   private static func tr(_ table: String, _ key: String, _ args: CVarArg...) -> String {
-    // swiftlint:disable:next nslocalizedstring_key
-    let format = NSLocalizedString(key, tableName: table, bundle: Bundle(for: BundleToken.self), comment: "")
+    let format = BundleToken.bundle.localizedString(forKey: key, value: nil, table: table)
     return String(format: format, locale: Locale.current, arguments: args)
   }
 }
 
-private final class BundleToken {}
+// swiftlint:disable convenience_type
+private final class BundleToken {
+  static let bundle: Bundle = {
+    #if SWIFT_PACKAGE
+    return Bundle.module
+    #else
+    return Bundle(for: BundleToken.self)
+    #endif
+  }()
+}
+// swiftlint:enable convenience_type

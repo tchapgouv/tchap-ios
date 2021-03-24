@@ -60,7 +60,7 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
         self.userService = UserService(session: self.session)
         self.inviteService = InviteService(session: self.session)
         self.thirdPartyIDResolver = ThirdPartyIDResolver(credentials: session.matrixRestClient.credentials)
-        self.identityServer = self.session.matrixRestClient.identityServer
+        self.identityServer = session.matrixRestClient.identityServer ?? session.matrixRestClient.homeserver
         self.activityIndicatorPresenter = ActivityIndicatorPresenter()
     }
     
@@ -211,6 +211,17 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
         }
     }
     
+    private func showFavourites(animated: Bool) {
+        let favouriteMessagesCoordinator = FavouriteMessagesCoordinator(session: self.session)
+        favouriteMessagesCoordinator.start()
+        favouriteMessagesCoordinator.delegate = self
+        
+        self.add(childCoordinator: favouriteMessagesCoordinator)
+        self.navigationRouter.push(favouriteMessagesCoordinator, animated: animated) {
+            self.remove(childCoordinator: favouriteMessagesCoordinator)
+        }
+    }
+
     private func createHomeViewController(with viewControllers: [UIViewController], viewControllersTitles: [String], globalSearchBar: GlobalSearchBar) -> HomeViewController {
         let homeViewController = HomeViewController.instantiate(with: viewControllers, viewControllersTitles: viewControllersTitles, globalSearchBar: globalSearchBar)
         
@@ -226,6 +237,13 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
                 return
             }
             sself.showSettings(animated: true)
+        })
+        
+        homeViewController.navigationItem.rightBarButtonItem = MXKBarButtonItem(image: #imageLiteral(resourceName: "icon_page_favoris"), style: .plain, action: { [weak self] in
+            guard let sself = self else {
+                return
+            }
+            sself.showFavourites(animated: true)
         })
         
         return homeViewController
@@ -466,5 +484,24 @@ extension HomeCoordinator: RoomPreviewCoordinatorDelegate {
     func roomPreviewCoordinator(_ coordinator: RoomPreviewCoordinatorType, didJoinRoomWithId roomID: String, onEventId eventId: String?) {
         self.navigationRouter.popModule(animated: true)
         self.showRoom(with: roomID, onEventID: eventId)
+    }
+}
+
+// MARK: - FavouriteMessagesCoordinatorDelegate
+extension HomeCoordinator: FavouriteMessagesCoordinatorDelegate {
+    func favouriteMessagesCoordinatorDidCancel(_ coordinator: FavouriteMessagesCoordinatorType) {
+        self.navigationRouter.popModule(animated: true)
+    }
+    
+    func favouriteMessagesCoordinator(_ coordinator: FavouriteMessagesCoordinatorType, didShowRoomWithId roomId: String, onEventId eventId: String) {
+        self.navigationRouter.popModule(animated: true)
+        self.showRoom(with: roomId, onEventID: eventId)
+    }
+    
+    func favouriteMessagesCoordinator(_ coordinator: FavouriteMessagesCoordinatorType, handlePermalinkFragment fragment: String) -> Bool {
+        guard let delegate = self.delegate else {
+            return false
+        }
+        return delegate.homeCoordinator(self, handlePermalinkFragment: fragment)
     }
 }

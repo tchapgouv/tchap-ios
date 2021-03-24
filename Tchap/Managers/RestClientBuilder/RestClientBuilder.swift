@@ -76,9 +76,7 @@ final class RestClientBuilder {
     }
     
     private func createThirdPartyIDPlatformInfoResolver() -> ThirdPartyIDPlatformInfoResolver {
-        guard let serverUrlPrefix = UserDefaults.standard.string(forKey: "serverUrlPrefix") else {
-            fatalError("serverUrlPrefix should be defined")
-        }
+        let serverUrlPrefix = BuildSettings.serverUrlPrefix
         let identityServerURLs = IdentityServersURLGetter(currentIdentityServerURL: nil).identityServerUrls
         let thirdPartyIDPlatformInfoResolver = ThirdPartyIDPlatformInfoResolver(identityServerUrls: identityServerURLs, serverPrefixURL: serverUrlPrefix)
         return thirdPartyIDPlatformInfoResolver

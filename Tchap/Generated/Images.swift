@@ -1,18 +1,19 @@
 // swiftlint:disable all
 // Generated using SwiftGen — https://github.com/SwiftGen/SwiftGen
 
-#if os(OSX)
-  import AppKit.NSImage
-  internal typealias AssetColorTypeAlias = NSColor
-  internal typealias AssetImageTypeAlias = NSImage
-#elseif os(iOS) || os(tvOS) || os(watchOS)
-  import UIKit.UIImage
-  internal typealias AssetColorTypeAlias = UIColor
-  internal typealias AssetImageTypeAlias = UIImage
+#if os(macOS)
+  import AppKit
+#elseif os(iOS)
+  import UIKit
+#elseif os(tvOS) || os(watchOS)
+  import UIKit
 #endif
 
-// swiftlint:disable superfluous_disable_command
-// swiftlint:disable file_length
+// Deprecated typealiases
+@available(*, deprecated, renamed: "ImageAsset.Image", message: "This typealias will be removed in SwiftGen 7.0")
+internal typealias AssetImageTypeAlias = ImageAsset.Image
+
+// swiftlint:disable superfluous_disable_command file_length implicit_return
 
 // MARK: - Asset Catalogs
 
@@ -59,6 +60,7 @@ internal enum Asset {
     internal static let notificationsOff = ImageAsset(name: "notificationsOff")
     internal static let pin = ImageAsset(name: "pin")
     internal static let unpin = ImageAsset(name: "unpin")
+    internal static let iconPageFavoris = ImageAsset(name: "icon_page_favoris")
     internal static let closeBanner = ImageAsset(name: "close_banner")
     internal static let importFilesButton = ImageAsset(name: "import_files_button")
     internal static let keyBackupLogo = ImageAsset(name: "key_backup_logo")
@@ -79,9 +81,11 @@ internal enum Asset {
     internal static let attachmentScanStatusUnavailable = ImageAsset(name: "attachment_scan_status_unavailable")
     internal static let roomContextMenuCopy = ImageAsset(name: "room_context_menu_copy")
     internal static let roomContextMenuEdit = ImageAsset(name: "room_context_menu_edit")
+    internal static let roomContextMenuFav = ImageAsset(name: "room_context_menu_fav")
     internal static let roomContextMenuMore = ImageAsset(name: "room_context_menu_more")
     internal static let roomContextMenuRedact = ImageAsset(name: "room_context_menu_redact")
     internal static let roomContextMenuReply = ImageAsset(name: "room_context_menu_reply")
+    internal static let roomContextMenuShare = ImageAsset(name: "room_context_menu_share")
     internal static let sendIcon = ImageAsset(name: "send_icon")
     internal static let uploadIcon = ImageAsset(name: "upload_icon")
     internal static let voiceCallIcon = ImageAsset(name: "voice_call_icon")
@@ -119,80 +123,40 @@ internal enum Asset {
 
 // MARK: - Implementation Details
 
-internal struct ColorAsset {
-  internal fileprivate(set) var name: String
-
-  @available(iOS 11.0, tvOS 11.0, watchOS 4.0, OSX 10.13, *)
-  internal var color: AssetColorTypeAlias {
-    return AssetColorTypeAlias(asset: self)
-  }
-}
-
-internal extension AssetColorTypeAlias {
-  @available(iOS 11.0, tvOS 11.0, watchOS 4.0, OSX 10.13, *)
-  convenience init!(asset: ColorAsset) {
-    let bundle = Bundle(for: BundleToken.self)
-    #if os(iOS) || os(tvOS)
-    self.init(named: asset.name, in: bundle, compatibleWith: nil)
-    #elseif os(OSX)
-    self.init(named: NSColor.Name(asset.name), bundle: bundle)
-    #elseif os(watchOS)
-    self.init(named: asset.name)
-    #endif
-  }
-}
-
-internal struct DataAsset {
-  internal fileprivate(set) var name: String
-
-  #if os(iOS) || os(tvOS) || os(OSX)
-  @available(iOS 9.0, tvOS 9.0, OSX 10.11, *)
-  internal var data: NSDataAsset {
-    return NSDataAsset(asset: self)
-  }
-  #endif
-}
-
-#if os(iOS) || os(tvOS) || os(OSX)
-@available(iOS 9.0, tvOS 9.0, OSX 10.11, *)
-internal extension NSDataAsset {
-  convenience init!(asset: DataAsset) {
-    let bundle = Bundle(for: BundleToken.self)
-    #if os(iOS) || os(tvOS)
-    self.init(name: asset.name, bundle: bundle)
-    #elseif os(OSX)
-    self.init(name: NSDataAsset.Name(asset.name), bundle: bundle)
-    #endif
-  }
-}
-#endif
-
 internal struct ImageAsset {
   internal fileprivate(set) var name: String
 
-  internal var image: AssetImageTypeAlias {
-    let bundle = Bundle(for: BundleToken.self)
+  #if os(macOS)
+  internal typealias Image = NSImage
+  #elseif os(iOS) || os(tvOS) || os(watchOS)
+  internal typealias Image = UIImage
+  #endif
+
+  internal var image: Image {
+    let bundle = BundleToken.bundle
     #if os(iOS) || os(tvOS)
-    let image = AssetImageTypeAlias(named: name, in: bundle, compatibleWith: nil)
-    #elseif os(OSX)
-    let image = bundle.image(forResource: NSImage.Name(name))
+    let image = Image(named: name, in: bundle, compatibleWith: nil)
+    #elseif os(macOS)
+    let name = NSImage.Name(self.name)
+    let image = (bundle == .main) ? NSImage(named: name) : bundle.image(forResource: name)
     #elseif os(watchOS)
-    let image = AssetImageTypeAlias(named: name)
+    let image = Image(named: name)
     #endif
-    guard let result = image else { fatalError("Unable to load image named \(name).") }
+    guard let result = image else {
+      fatalError("Unable to load image named \(name).")
+    }
     return result
   }
 }
 
-internal extension AssetImageTypeAlias {
-  @available(iOS 1.0, tvOS 1.0, watchOS 1.0, *)
-  @available(OSX, deprecated,
+internal extension ImageAsset.Image {
+  @available(macOS, deprecated,
     message: "This initializer is unsafe on macOS, please use the ImageAsset.image property")
   convenience init!(asset: ImageAsset) {
     #if os(iOS) || os(tvOS)
-    let bundle = Bundle(for: BundleToken.self)
+    let bundle = BundleToken.bundle
     self.init(named: asset.name, in: bundle, compatibleWith: nil)
-    #elseif os(OSX)
+    #elseif os(macOS)
     self.init(named: NSImage.Name(asset.name))
     #elseif os(watchOS)
     self.init(named: asset.name)
@@ -200,4 +164,14 @@ internal extension AssetImageTypeAlias {
   }
 }
 
-private final class BundleToken {}
+// swiftlint:disable convenience_type
+private final class BundleToken {
+  static let bundle: Bundle = {
+    #if SWIFT_PACKAGE
+    return Bundle.module
+    #else
+    return Bundle(for: BundleToken.self)
+    #endif
+  }()
+}
+// swiftlint:enable convenience_type

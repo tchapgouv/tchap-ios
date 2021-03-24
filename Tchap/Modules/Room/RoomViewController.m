@@ -448,13 +448,14 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     
     // @TODO Design the activvity indicator for Tchap
     self.activityIndicator.backgroundColor = style.overlayBackgroundColor;
+
+    //[self.inputToolbarView customizeViewRendering];
     
     // Prepare jump to last unread banner
     self.jumpToLastUnreadBannerContainer.backgroundColor = style.secondaryBackgroundColor;
     self.jumpToLastUnreadLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_jump_to_first_unread", @"Vector", nil) attributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle), NSUnderlineColorAttributeName:style.secondaryTextColor, NSForegroundColorAttributeName:style.secondaryTextColor}];
     
     self.jumpToLastUnreadBannerSeparatorView.backgroundColor = style.secondaryBackgroundColor;
-    
     
     self.previewHeaderContainer.backgroundColor = style.backgroundColor;
     if (previewHeader)
@@ -509,6 +510,13 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     [self listenMXSessionStateChangeNotifications];
     
     [self userInterfaceThemeDidChange];
+    
+    if ([self.roomDataSource.roomId isEqualToString:[AppDelegate theDelegate].lastNavigatedRoomIdFromPush])
+    {
+        [self startActivityIndicator];
+        [self.roomDataSource reload];
+    }
+    [AppDelegate theDelegate].lastNavigatedRoomIdFromPush = nil;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -642,7 +650,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
             eventDetailsView = nil;
         }
     }
-    
+
     // Check whether the preview header is visible
     if (previewHeader)
     {
@@ -1548,7 +1556,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
         RoomInputToolbarView *roomInputToolbarView = (RoomInputToolbarView*)self.inputToolbarView;
         
         // Check whether the call option is supported
-        roomInputToolbarView.supportCallOption = self.roomDataSource.mxSession.callManager && self.roomDataSource.room.summary.membersCount.joined >= 2;
+        roomInputToolbarView.supportCallOption = BuildSettings.allowVoIPUsage && self.roomDataSource.mxSession.callManager && self.roomDataSource.room.summary.membersCount.joined >= 2;
         
         // Show the hangup button if there is an active call or an active jitsi
         // conference call in the current room
@@ -2069,6 +2077,18 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                         // Show predecessor room
                         [self.delegate roomViewController:self showRoom:predecessorRoomId];
                     }
+//                    else
+//                    {
+//                        // Show contextual menu on single tap if bubble is not collapsed
+//                        if (bubbleData.collapsed)
+//                        {
+//                            [self showRoomCreationModalWithBubbleData:bubbleData];
+//                        }
+//                        else
+//                        {
+//                            [self showContextualMenuForEvent:tappedEvent fromSingleTapGesture:YES cell:cell animated:YES];
+//                        }
+//                    }
                 }
                 else
                 {
@@ -2324,69 +2344,86 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                                                            }
                                                            
                                                        }]];
-
-        [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_share", @"Vector", nil)
+        
+        [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_forward", @"Tchap", nil)
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * action) {
-                                                           
-                                                           if (weakSelf)
-                                                           {
-                                                               typeof(self) self = weakSelf;
-                                                               
-                                                               [self cancelEventSelection];
-                                                               
-                                                               NSArray *activityItems = @[selectedComponent.textMessage];
-                                                               
-                                                               UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
-                                                               
-                                                               if (activityViewController)
-                                                               {
-                                                                   activityViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-                                                                   activityViewController.popoverPresentationController.sourceView = roomBubbleTableViewCell;
-                                                                   activityViewController.popoverPresentationController.sourceRect = roomBubbleTableViewCell.bounds;
-                                                                   
-                                                                   [self presentViewController:activityViewController animated:YES completion:nil];
-                                                               }
-                                                           }
-                                                           
-                                                       }]];
+            if (weakSelf)
+            {
+                typeof(self) self = weakSelf;
+                [self.delegate roomViewController:self forwardContent:selectedEvent.content];
+            }
+            
+        }]];
+
+        if (BuildSettings.messageDetailsAllowShare)
+        {
+            [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_share", @"Vector", nil)
+                                                             style:UIAlertActionStyleDefault
+                                                           handler:^(UIAlertAction * action) {
+                
+                if (weakSelf)
+                {
+                    typeof(self) self = weakSelf;
+                    
+                    [self cancelEventSelection];
+                    
+                    NSArray *activityItems = @[selectedComponent.textMessage];
+                    
+                    UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
+
+                    if (activityViewController)
+                    {
+                        activityViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+                        activityViewController.popoverPresentationController.sourceView = roomBubbleTableViewCell;
+                        activityViewController.popoverPresentationController.sourceRect = roomBubbleTableViewCell.bounds;
+
+                        [self presentViewController:activityViewController animated:YES completion:nil];
+                    }
+                }
+                
+            }]];
+        }
     }
     else // Add action for attachment
     {
-        if (attachment.type == MXKAttachmentTypeImage || attachment.type == MXKAttachmentTypeVideo)
+        if (BuildSettings.messageDetailsAllowSave)
         {
-            [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_save", @"Vector", nil)
-                                                             style:UIAlertActionStyleDefault
-                                                           handler:^(UIAlertAction * action) {
-                                                               
-                                                               if (weakSelf)
-                                                               {
-                                                                   typeof(self) self = weakSelf;
-                                                                   
-                                                                   [self cancelEventSelection];
-                                                                   
-                                                                   [self startActivityIndicator];
-                                                                   
-                                                                   [attachment save:^{
-                                                                       
-                                                                       __strong __typeof(weakSelf)self = weakSelf;
-                                                                       [self stopActivityIndicator];
-                                                                       
-                                                                   } failure:^(NSError *error) {
-                                                                       
-                                                                       __strong __typeof(weakSelf)self = weakSelf;
-                                                                       [self stopActivityIndicator];
-                                                                       
-                                                                       //Alert user
-                                                                       [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                                       
-                                                                   }];
-                                                                   
-                                                                   // Start animation in case of download during attachment preparing
-                                                                   [roomBubbleTableViewCell startProgressUI];
-                                                               }
-                                                               
-                                                           }]];
+            if (attachment.type == MXKAttachmentTypeImage || attachment.type == MXKAttachmentTypeVideo)
+            {
+                [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_save", @"Vector", nil)
+                                                                 style:UIAlertActionStyleDefault
+                                                               handler:^(UIAlertAction * action) {
+                    
+                    if (weakSelf)
+                    {
+                        typeof(self) self = weakSelf;
+                        
+                        [self cancelEventSelection];
+                        
+                        [self startActivityIndicator];
+                        
+                        [attachment save:^{
+                            
+                            __strong __typeof(weakSelf)self = weakSelf;
+                            [self stopActivityIndicator];
+                            
+                        } failure:^(NSError *error) {
+                            
+                            __strong __typeof(weakSelf)self = weakSelf;
+                            [self stopActivityIndicator];
+                            
+                            //Alert user
+                            [[AppDelegate theDelegate] showErrorAsAlert:error];
+                            
+                        }];
+                        
+                        // Start animation in case of download during attachment preparing
+                        [roomBubbleTableViewCell startProgressUI];
+                    }
+                    
+                }]];
+            }
         }
             
         // Check status of the selected event
@@ -2435,42 +2472,56 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
 
         if (attachment.type != MXKAttachmentTypeSticker)
         {
-            [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_share", @"Vector", nil)
+            [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_forward", @"Tchap", nil)
                                                              style:UIAlertActionStyleDefault
                                                            handler:^(UIAlertAction * action) {
-                                                               
-                                                               if (weakSelf)
-                                                               {
-                                                                   typeof(self) self = weakSelf;
-                                                                   
-                                                                   [self cancelEventSelection];
-                                                                   
-                                                                   [attachment prepareShare:^(NSURL *fileURL) {
-                                                                       
-                                                                       __strong __typeof(weakSelf)self = weakSelf;
-                                                                       self->documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:fileURL];
-                                                                       [self->documentInteractionController setDelegate:self];
-                                                                       self->currentSharedAttachment = attachment;
-                                                                       
-                                                                       if (![self->documentInteractionController presentOptionsMenuFromRect:self.view.frame inView:self.view animated:YES])
-                                                                       {
-                                                                           self->documentInteractionController = nil;
-                                                                           [attachment onShareEnded];
-                                                                           self->currentSharedAttachment = nil;
-                                                                       }
-                                                                       
-                                                                   } failure:^(NSError *error) {
-                                                                       
-                                                                       //Alert user
-                                                                       [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                                       
-                                                                   }];
-                                                                   
-                                                                   // Start animation in case of download during attachment preparing
-                                                                   [roomBubbleTableViewCell startProgressUI];
-                                                               }
-                                                               
-                                                           }]];
+                if (weakSelf)
+                {
+                    typeof(self) self = weakSelf;
+                    [self.delegate roomViewController:self forwardContent:selectedEvent.content];
+                }
+                
+            }]];
+            
+            if (BuildSettings.messageDetailsAllowShare)
+            {
+                [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_share", @"Vector", nil)
+                                                                 style:UIAlertActionStyleDefault
+                                                               handler:^(UIAlertAction * action) {
+                    
+                    if (weakSelf)
+                    {
+                        typeof(self) self = weakSelf;
+                        
+                        [self cancelEventSelection];
+                        
+                        [attachment prepareShare:^(NSURL *fileURL) {
+                            
+                            __strong __typeof(weakSelf)self = weakSelf;
+                            self->documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:fileURL];
+                            [self->documentInteractionController setDelegate:self];
+                            self->currentSharedAttachment = attachment;
+                            
+                            if (![self->documentInteractionController presentOptionsMenuFromRect:self.view.frame inView:self.view animated:YES])
+                            {
+                                self->documentInteractionController = nil;
+                                [attachment onShareEnded];
+                                self->currentSharedAttachment = nil;
+                            }
+                            
+                        } failure:^(NSError *error) {
+                            
+                            //Alert user
+                            [[AppDelegate theDelegate] showErrorAsAlert:error];
+                            
+                        }];
+                        
+                        // Start animation in case of download during attachment preparing
+                        [roomBubbleTableViewCell startProgressUI];
+                    }
+                    
+                }]];
+            }
         }
     }
     
@@ -2552,6 +2603,62 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
         }
 #endif
         
+        if (!selectedEvent.isState)
+        {
+            NSString *titleKey;
+            if (![self.roomDataSource.room.accountData getTaggedEventInfo:selectedEvent.eventId withTag:kMXRoomTagFavourite])
+            {
+                titleKey = @"room_event_action_add_favourite";
+            }
+            else
+            {
+                titleKey = @"room_event_action_remove_favourite";
+            }
+            [currentAlert addAction:[UIAlertAction actionWithTitle: NSLocalizedStringFromTable(titleKey, @"Tchap", nil)
+              style:UIAlertActionStyleDefault
+            handler:^(UIAlertAction * action) {
+                
+                if (weakSelf)
+                {
+                    typeof(self) self = weakSelf;
+                    
+                    [self cancelEventSelection];
+                    
+                    [self startActivityIndicator];
+                    
+                    MXWeakify(self);
+                    if ([titleKey isEqualToString:@"room_event_action_add_favourite"])
+                    {
+                        [self.roomDataSource.room tagEvent:selectedEvent withTag:kMXTaggedEventFavourite andKeywords:nil success:^{
+                            MXStrongifyAndReturnIfNil(self);
+                            [self stopActivityIndicator];
+                        } failure:^(NSError *error) {
+                            MXStrongifyAndReturnIfNil(self);
+                            [self stopActivityIndicator];
+                            
+                            NSLog(@"[RoomVC] Tag event (%@) failed", selectedEvent.eventId);
+                            //Alert user
+                            [[AppDelegate theDelegate] showErrorAsAlert:error];
+                        }];
+                    }
+                    else
+                    {
+                        [self.roomDataSource.room untagEvent:selectedEvent withTag:kMXTaggedEventFavourite success:^{
+                            MXStrongifyAndReturnIfNil(self);
+                            [self stopActivityIndicator];
+                        } failure:^(NSError *error) {
+                            MXStrongifyAndReturnIfNil(self);
+                            [self stopActivityIndicator];
+                            
+                            NSLog(@"[RoomVC] Tag event (%@) failed", selectedEvent.eventId);
+                            //Alert user
+                            [[AppDelegate theDelegate] showErrorAsAlert:error];
+                        }];
+                    }
+                }
+            }]];
+        }
+        
         [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_permalink", @"Vector", nil)
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * action) {
@@ -2591,153 +2698,157 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                                                            }]];
         }
         
-//        [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_view_source", @"Vector", nil)
-//                                                         style:UIAlertActionStyleDefault
-//                                                       handler:^(UIAlertAction * action) {
-//
-//                                                           if (weakSelf)
-//                                                           {
-//                                                               typeof(self) self = weakSelf;
-//
-//                                                               [self cancelEventSelection];
-//
-//                                                               // Display event details
-//                                                               [self showEventDetails:selectedEvent];
-//                                                           }
-//
-//                                                       }]];
-//
-//        // Add "View Decrypted Source" for e2ee event we can decrypt
-//        if (selectedEvent.isEncrypted && selectedEvent.clearEvent)
-//        {
-//            [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_view_decrypted_source", @"Vector", nil)
-//                                                             style:UIAlertActionStyleDefault
-//                                                           handler:^(UIAlertAction * action) {
-//
-//                                                               if (weakSelf)
-//                                                               {
-//                                                                   typeof(self) self = weakSelf;
-//
-//                                                                   [self cancelEventSelection];
-//
-//                                                                   // Display clear event details
-//                                                                   [self showEventDetails:selectedEvent.clearEvent];
-//                                                               }
-//
-//                                                           }]];
-//        }
+        if (BuildSettings.messageDetailsAllowViewSource)
+        {
+            [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_view_source", @"Vector", nil)
+                                                             style:UIAlertActionStyleDefault
+                                                           handler:^(UIAlertAction * action) {
+                
+                if (weakSelf)
+                {
+                    typeof(self) self = weakSelf;
+                    
+                    [self cancelEventSelection];
+                    
+                    // Display event details
+                    [self showEventDetails:selectedEvent];
+                }
+                
+            }]];
         
 
+            // Add "View Decrypted Source" for e2ee event we can decrypt
+            if (selectedEvent.isEncrypted && selectedEvent.clearEvent)
+            {
+                [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_view_decrypted_source", @"Vector", nil)
+                                                                 style:UIAlertActionStyleDefault
+                                                               handler:^(UIAlertAction * action) {
+                    
+                    if (weakSelf)
+                    {
+                        typeof(self) self = weakSelf;
+                        
+                        [self cancelEventSelection];
+                        
+                        // Display clear event details
+                        [self showEventDetails:selectedEvent.clearEvent];
+                    }
+                    
+                }]];
+            }
+        }
+        
         if (![selectedEvent.sender isEqualToString:self.mainSession.myUser.userId])
         {
             [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_report", @"Vector", nil)
                                                              style:UIAlertActionStyleDefault
                                                            handler:^(UIAlertAction * action) {
-                                                               
-                                                               if (weakSelf)
-                                                               {
-                                                                   typeof(self) self = weakSelf;
-                                                                   
-                                                                   [self cancelEventSelection];
-                                                                   
-                                                                   // Prompt user to enter a description of the problem content.
-                                                                   self->currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"room_event_action_report_prompt_reason", @"Vector", nil)  message:nil preferredStyle:UIAlertControllerStyleAlert];
-                                                                   
-                                                                   [self->currentAlert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-                                                                       textField.secureTextEntry = NO;
-                                                                       textField.placeholder = nil;
-                                                                       textField.keyboardType = UIKeyboardTypeDefault;
-                                                                   }];
-                                                                   
-                                                                   [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-                                                                       
-                                                                       if (weakSelf)
-                                                                       {
-                                                                           typeof(self) self = weakSelf;
-                                                                           NSString *text = [self->currentAlert textFields].firstObject.text;
-                                                                           self->currentAlert = nil;
-                                                                           
-                                                                           [self startActivityIndicator];
-                                                                           
-                                                                           [self.roomDataSource.room reportEvent:selectedEvent.eventId score:-100 reason:text success:^{
-                                                                               
-                                                                               __strong __typeof(weakSelf)self = weakSelf;
-                                                                               [self stopActivityIndicator];
-                                                                               
-                                                                               // Prompt user to ignore content from this user
-                                                                               self->currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"room_event_action_report_prompt_ignore_user", @"Vector", nil)  message:nil preferredStyle:UIAlertControllerStyleAlert];
-                                                                               
-                                                                               [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"yes"] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-                                                                                   
-                                                                                   if (weakSelf)
-                                                                                   {
-                                                                                       typeof(self) self = weakSelf;
-                                                                                       self->currentAlert = nil;
-                                                                                       
-                                                                                       [self startActivityIndicator];
-                                                                                       
-                                                                                       // Add the user to the blacklist: ignored users
-                                                                                       [self.mainSession ignoreUsers:@[selectedEvent.sender] success:^{
-                                                                                           
-                                                                                           __strong __typeof(weakSelf)self = weakSelf;
-                                                                                           [self stopActivityIndicator];
-                                                                                           
-                                                                                       } failure:^(NSError *error) {
-                                                                                           
-                                                                                           __strong __typeof(weakSelf)self = weakSelf;
-                                                                                           [self stopActivityIndicator];
-                                                                                           
-                                                                                           NSLog(@"[RoomVC] Ignore user (%@) failed", selectedEvent.sender);
-                                                                                           //Alert user
-                                                                                           [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                                                           
-                                                                                       }];
-                                                                                   }
-                                                                                   
-                                                                               }]];
-                                                                               
-                                                                               [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"no"] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-                                                                                   
-                                                                                   if (weakSelf)
-                                                                                   {
-                                                                                       typeof(self) self = weakSelf;
-                                                                                       self->currentAlert = nil;
-                                                                                   }
-                                                                                   
-                                                                               }]];
-                                                                               
-                                                                               [self presentViewController:self->currentAlert animated:YES completion:nil];
-                                                                               
-                                                                           } failure:^(NSError *error) {
-                                                                               
-                                                                               __strong __typeof(weakSelf)self = weakSelf;
-                                                                               [self stopActivityIndicator];
-                                                                               
-                                                                               NSLog(@"[RoomVC] Report event (%@) failed", selectedEvent.eventId);
-                                                                               //Alert user
-                                                                               [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                                               
-                                                                           }];
-                                                                       }
-                                                                       
-                                                                   }]];
-                                                                   
-                                                                   [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
-                                                                       
-                                                                       if (weakSelf)
-                                                                       {
-                                                                           typeof(self) self = weakSelf;
-                                                                           self->currentAlert = nil;
-                                                                       }
-                                                                       
-                                                                   }]];
-                                                                   
-                                                                   [self presentViewController:self->currentAlert animated:YES completion:nil];
-                                                               }
-                                                               
-                                                           }]];
-        }
+                
+                if (weakSelf)
+                {
+                    typeof(self) self = weakSelf;
+                    
+                    [self cancelEventSelection];
+                    
+                    // Prompt user to enter a description of the problem content.
+                    self->currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"room_event_action_report_prompt_reason", @"Vector", nil)  message:nil preferredStyle:UIAlertControllerStyleAlert];
+                    
+                    [self->currentAlert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+                        textField.secureTextEntry = NO;
+                        textField.placeholder = nil;
+                        textField.keyboardType = UIKeyboardTypeDefault;
+                    }];
+                    
+                    [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                        
+                        if (weakSelf)
+                        {
+                            typeof(self) self = weakSelf;
+                            NSString *text = [self->currentAlert textFields].firstObject.text;
+                            self->currentAlert = nil;
+                            
+                            [self startActivityIndicator];
+                            
+                            [self.roomDataSource.room reportEvent:selectedEvent.eventId score:-100 reason:text success:^{
+                                
+                                __strong __typeof(weakSelf)self = weakSelf;
+                                [self stopActivityIndicator];
+                                
+                                // Prompt user to ignore content from this user
+                                self->currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"room_event_action_report_prompt_ignore_user", @"Vector", nil)  message:nil preferredStyle:UIAlertControllerStyleAlert];
+                                
+                                [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"yes"] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                    
+                                    if (weakSelf)
+                                    {
+                                        typeof(self) self = weakSelf;
+                                        self->currentAlert = nil;
+                                        
+                                        [self startActivityIndicator];
+                                        
+                                        // Add the user to the blacklist: ignored users
+                                        [self.mainSession ignoreUsers:@[selectedEvent.sender] success:^{
+                                            
+                                            __strong __typeof(weakSelf)self = weakSelf;
+                                            [self stopActivityIndicator];
+                                            
+                                        } failure:^(NSError *error) {
+                                            
+                                            __strong __typeof(weakSelf)self = weakSelf;
+                                            [self stopActivityIndicator];
+                                            
+                                            NSLog(@"[RoomVC] Ignore user (%@) failed", selectedEvent.sender);
+                                            //Alert user
+                                            [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                            
+                                        }];
+                                    }
+                                    
+                                }]];
+                                
+                                [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"no"] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                    
+                                    if (weakSelf)
+                                    {
+                                        typeof(self) self = weakSelf;
+                                        self->currentAlert = nil;
+                                    }
+                                    
+                                }]];
+                                
+                                [self presentViewController:self->currentAlert animated:YES completion:nil];
+                                
+                            } failure:^(NSError *error) {
+                                
+                                __strong __typeof(weakSelf)self = weakSelf;
+                                [self stopActivityIndicator];
+                                
+                                NSLog(@"[RoomVC] Report event (%@) failed", selectedEvent.eventId);
+                                //Alert user
+                                [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                
+                            }];
+                        }
+                        
+                    }]];
+                    
+                    [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
+                        
+                        if (weakSelf)
+                        {
+                            typeof(self) self = weakSelf;
+                            self->currentAlert = nil;
+                        }
+                        
+                    }]];
+                    
+                    [self presentViewController:self->currentAlert animated:YES completion:nil];
+                }
+                
+            }]];
 
+        }
+                
 //        if (self.roomDataSource.room.summary.isEncrypted)
 //        {
 //            [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_view_encryption", @"Vector", nil)
@@ -2870,6 +2981,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
 //            NSString *fragment = [NSString stringWithFormat:@"/group/%@", [absoluteURLString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
 //            [[AppDelegate theDelegate] handleUniversalLinkFragment:fragment];
 //        }
+        // ReRequest keys
         else if ([absoluteURLString hasPrefix:EventFormatterOnReRequestKeysLinkAction])
         {
             NSArray<NSString*> *arguments = [absoluteURLString componentsSeparatedByString:EventFormatterLinkActionSeparator];
@@ -2883,6 +2995,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                     [self reRequestKeysAndShowExplanationAlert:event];
                 }
             }
+            shouldDoAction = NO;
         }
         else if ([absoluteURLString hasPrefix:EventFormatterEditedEventLinkAction])
         {
@@ -3769,15 +3882,13 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
 
         if ([self.roomDataSource.mxSession.syncError.errcode isEqualToString:kMXErrCodeStringResourceLimitExceeded])
         {
-            [roomActivitiesView showResourceLimitExceededError:self.roomDataSource.mxSession.syncError.userInfo onAdminContactTapped:^(NSURL *adminContact) {
-                if ([[UIApplication sharedApplication] canOpenURL:adminContact])
-                {
-                    [[UIApplication sharedApplication] openURL:adminContact];
-                }
-                else
-                {
-                    NSLog(@"[RoomVC] refreshActivitiesViewDisplay: adminContact(%@) cannot be opened", adminContact);
-                }
+            [roomActivitiesView showResourceLimitExceededError:self.roomDataSource.mxSession.syncError.userInfo onAdminContactTapped:^(NSURL *adminContactURL) {
+                [[UIApplication sharedApplication] vc_open:adminContactURL completionHandler:^(BOOL success) {
+                   if (!success)
+                   {
+                        NSLog(@"[RoomVC] refreshActivitiesViewDisplay: adminContact(%@) cannot be opened", adminContactURL);
+                   }
+                }];
             }];
         }
         else if ([AppDelegate theDelegate].isOffline)
@@ -3947,16 +4058,13 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
             }
             else if (serverNotices.usageLimit && serverNotices.usageLimit.isServerNoticeUsageLimit)
             {
-                [roomActivitiesView showResourceUsageLimitNotice:serverNotices.usageLimit onAdminContactTapped:^(NSURL *adminContact) {
-
-                    if ([[UIApplication sharedApplication] canOpenURL:adminContact])
-                    {
-                        [[UIApplication sharedApplication] openURL:adminContact];
-                    }
-                    else
-                    {
-                        NSLog(@"[RoomVC] refreshActivitiesViewDisplay: adminContact(%@) cannot be opened", adminContact);
-                    }
+                [roomActivitiesView showResourceUsageLimitNotice:serverNotices.usageLimit onAdminContactTapped:^(NSURL *adminContactURL) {                    
+                    [[UIApplication sharedApplication] vc_open:adminContactURL completionHandler:^(BOOL success) {
+                       if (!success)
+                       {
+                            NSLog(@"[RoomVC] refreshActivitiesViewDisplay: adminContact(%@) cannot be opened", adminContactURL);
+                       }
+                    }];
                 }];
             }
             else
@@ -4724,6 +4832,11 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     
     BOOL isCopyActionEnabled = !attachment || attachment.type != MXKAttachmentTypeSticker;
     
+    if (attachment && !BuildSettings.messageDetailsAllowCopyMedia)
+    {
+        isCopyActionEnabled = NO;
+    }
+    
     if (isCopyActionEnabled)
     {
         switch (event.eventType) {
@@ -4771,7 +4884,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
             
             if (textMessage)
             {
-                [UIPasteboard generalPasteboard].string = textMessage;
+                MXKPasteboardManager.shared.pasteboard.string = textMessage;
             }
             else
             {
@@ -5192,7 +5305,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     RoomInputToolbarView *roomInputToolbarView = [self inputToolbarViewAsRoomInputToolbarView];
     if (roomInputToolbarView)
     {
-        [roomInputToolbarView sendSelectedImage:imageData withMimeType:uti.mimeType andCompressionMode:MXKRoomInputToolbarCompressionModePrompt isPhotoLibraryAsset:NO];
+        [roomInputToolbarView sendSelectedImage:imageData withMimeType:uti.mimeType andCompressionMode:BuildSettings.roomInputToolbarCompressionMode isPhotoLibraryAsset:NO];
     }
 }
 
@@ -5224,7 +5337,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     RoomInputToolbarView *roomInputToolbarView = [self inputToolbarViewAsRoomInputToolbarView];
     if (roomInputToolbarView)
     {
-        [roomInputToolbarView sendSelectedImage:imageData withMimeType:uti.mimeType andCompressionMode:MXKRoomInputToolbarCompressionModePrompt isPhotoLibraryAsset:YES];
+        [roomInputToolbarView sendSelectedImage:imageData withMimeType:uti.mimeType andCompressionMode:BuildSettings.roomInputToolbarCompressionMode isPhotoLibraryAsset:YES];
     }
 }
 
@@ -5248,7 +5361,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     RoomInputToolbarView *roomInputToolbarView = [self inputToolbarViewAsRoomInputToolbarView];
     if (roomInputToolbarView)
     {
-        [roomInputToolbarView sendSelectedAssets:assets withCompressionMode:MXKRoomInputToolbarCompressionModePrompt];
+        [roomInputToolbarView sendSelectedAssets:assets withCompressionMode:BuildSettings.roomInputToolbarCompressionMode];
     }
 }
 

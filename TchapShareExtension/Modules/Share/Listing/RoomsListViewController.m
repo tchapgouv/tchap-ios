@@ -76,8 +76,8 @@
 {
     [super viewDidLoad];
     
-    [self.recentsTableView registerNib:[RoomsDiscussionCell nib] forCellReuseIdentifier:[RoomsDiscussionCell defaultReuseIdentifier]];
-    [self.recentsTableView registerNib:[RoomsRoomCell nib] forCellReuseIdentifier:[RoomsRoomCell defaultReuseIdentifier]];
+    [self.recentsTableView registerNib:[ShareRoomsDiscussionCell nib] forCellReuseIdentifier:[ShareRoomsDiscussionCell defaultReuseIdentifier]];
+    [self.recentsTableView registerNib:[ShareRoomsRoomCell nib] forCellReuseIdentifier:[ShareRoomsRoomCell defaultReuseIdentifier]];
     
     // Enable self-sizing cells.
     self.recentsTableView.rowHeight = UITableViewAutomaticDimension;
@@ -335,11 +335,11 @@
     {
         if (((RecentCellData*)cellData).roomSummary.isDirect)
         {
-            return [RoomsDiscussionCell class];
+            return [ShareRoomsDiscussionCell class];
         }
         else
         {
-            return [RoomsRoomCell class];
+            return [ShareRoomsRoomCell class];
         }
     }
     return nil;
@@ -351,11 +351,11 @@
     {
         if (((RecentCellData*)cellData).roomSummary.isDirect)
         {
-            return [RoomsDiscussionCell defaultReuseIdentifier];
+            return [ShareRoomsDiscussionCell defaultReuseIdentifier];
         }
         else
         {
-            return [RoomsRoomCell defaultReuseIdentifier];
+            return [ShareRoomsRoomCell defaultReuseIdentifier];
         }
     }
     return nil;

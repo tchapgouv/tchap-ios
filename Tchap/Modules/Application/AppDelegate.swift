@@ -111,6 +111,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PushNotificationServiceDe
     }
     
     @objc func pushNotificationService(_ pushNotificationService: PushNotificationService, shouldNavigateToRoomWithId roomId: String) {
+        self.legacyAppDelegate.lastNavigatedRoomIdFromPush = roomId
         _ = self.appCoordinator.resumeBySelectingRoom(with: roomId)
     }
 }

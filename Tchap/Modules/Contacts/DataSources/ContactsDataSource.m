@@ -690,8 +690,10 @@
                 }
             };
             
+            // Tchap: Consider the homeserver if the identity server is missing (this was the old behavior in Riot)
+            NSString *identityServer = self.mxSession.matrixRestClient.identityServer ? self.mxSession.matrixRestClient.identityServer : self.mxSession.matrixRestClient.homeserver;
             self->lookup3pidsOperation = [thirdPartyIDResolver bulkLookupWithThreepids:lookup3pidsArray
-                                                                        identityServer:self.mxSession.matrixRestClient.identityServer
+                                                                        identityServer:identityServer
                                                                                success:success
                                                                                failure:^(NSError *error) {
                                                                                    NSLog(@"[ContactsDataSource] lookup3pids failed");

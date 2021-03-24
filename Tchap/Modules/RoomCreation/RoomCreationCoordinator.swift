@@ -241,12 +241,11 @@ final class RoomCreationCoordinator: NSObject, RoomCreationCoordinatorType {
             isFederated = isFed
         }
 
-        let retentionPeriodInMS = Tools.durationInMs(fromDays: roomCreationFormResult.retentionPeriodInDays)
         return self.roomService.createRoom(visibility: roomVisibility,
                                            name: roomCreationFormResult.name,
                                            avatarURL: avatarUrl,
                                            inviteUserIds: userIDs,
-                                           rententionPeriodInMs: retentionPeriodInMS,
+                                           rententionPeriodInMs: nil,
                                            isFederated: isFederated,
                                            accessRule: roomAccessRule)
     }

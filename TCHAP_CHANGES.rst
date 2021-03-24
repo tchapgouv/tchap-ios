@@ -1,3 +1,19 @@
+Changes in Tchap 1.2.0 (2021-03-24)
+===================================================
+
+Features/Improvements:
+ * Design and implement favorite messages #292
+ * Public room creation: improve UI for agent.agent users #319
+ * [Room retention] Support unlimited room history (PR #367)
+ * Update the version used to trigger a clear cache during the application update (PR #367)
+ * Add a shortcut "forward" in the selected message options #353
+ * Room members: gray out the expired users #273
+ * Add the option to import the encryption keys in the Tchap settings #360
+
+Bug Fixes:
+ * Crash on missing identity server information #357
+ * A discussion (1:1) is displayed by mistake as a private room opened to extern #356
+
 Changes in Tchap 1.1.1 (2020-12-18)
 ===================================================
 

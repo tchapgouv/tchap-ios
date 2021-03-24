@@ -17,7 +17,6 @@
 
 #import "HomeFilesSearchViewController.h"
 
-#import "AppDelegate.h"
 #import "Riot-Swift.h"
 
 #import "HomeViewController.h"
@@ -189,7 +188,9 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
     // Make the master tabBar view controller open the RoomViewController
-    [[AppDelegate theDelegate].masterTabBarController performSegueWithIdentifier:@"showRoomDetails" sender:self];
+    [[AppDelegate theDelegate].masterTabBarController selectRoomWithId:cellData.roomId
+                                                            andEventId:_selectedEvent.eventId
+                                                       inMatrixSession:self.mainSession];
 
     // Reset the selected event. HomeViewController got it when here
     _selectedEvent = nil;

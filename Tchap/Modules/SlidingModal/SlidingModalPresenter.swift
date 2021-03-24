@@ -34,9 +34,14 @@ final class SlidingModalPresenter: NSObject {
     // swiftlint:enable weak_delegate
     private weak var presentingViewController: UIViewController?
     
+    /// Is content view spanning the screen width and to the bottom
+    var isSpanning: Bool = false
+    
     // MARK: - Public
     
     @objc func present(_ viewController: SlidingModalPresentable.ViewControllerType, from presentingViewController: UIViewController, animated: Bool, completion: (() -> Void)?) {
+        
+        NSLog("[SlidingModalPresenter] present \(type(of: viewController))")
         
         if UIDevice.current.userInterfaceIdiom == .pad {
             viewController.modalPresentationStyle = .formSheet
@@ -45,7 +50,7 @@ final class SlidingModalPresenter: NSObject {
             
             viewController.preferredContentSize = CGSize(width: TabletContentSize.preferred.width, height: preferredHeight)
         } else {
-            let transitionDelegate = SlidingModalPresentationDelegate()
+            let transitionDelegate = SlidingModalPresentationDelegate(isSpanning: isSpanning)
             
             viewController.modalPresentationStyle = .custom
             viewController.transitioningDelegate = transitionDelegate
@@ -62,6 +67,9 @@ final class SlidingModalPresenter: NSObject {
     }
     
     @objc func presentView(_ view: SlidingModalPresentable.ViewType, from viewControllerPresenter: UIViewController, animated: Bool, completion: (() -> Void)?) {
+        
+        NSLog("[SlidingModalPresenter] presentView \(type(of: view))")
+        
         let viewController = SlidingModalEmptyViewController.instantiate(with: view)
         self.present(viewController, from: viewControllerPresenter, animated: animated, completion: completion)
     }

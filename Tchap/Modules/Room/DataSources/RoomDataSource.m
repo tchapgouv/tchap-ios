@@ -366,7 +366,7 @@
                     BubbleReactionsView *reactionsView;
                     
                     if (!component.event.isRedactedEvent && reactions && !isCollapsableCellCollapsed)
-                    {                        
+                    {
                         BOOL showAllReactions = [cellData showAllReactionsForEvent:componentEventId];
                         BubbleReactionsViewModel *bubbleReactionsViewModel = [[BubbleReactionsViewModel alloc] initWithAggregatedReactions:reactions
                                                                                                                                    eventId:componentEventId
@@ -376,12 +376,9 @@
                         reactionsView.viewModel = bubbleReactionsViewModel;
                         [reactionsView updateWithTheme:ThemeService.shared.theme];
                         
-                        [temporaryViews addObject:reactionsView];
-                        
                         bubbleReactionsViewModel.viewModelDelegate = self;
                         
-                        reactionsView.translatesAutoresizingMaskIntoConstraints = NO;
-                        [bubbleCell.contentView addSubview:reactionsView];
+                        [temporaryViews addObject:reactionsView];
                         
                         if (!bubbleCell.tmpSubviews)
                         {
@@ -389,23 +386,34 @@
                         }
                         [bubbleCell.tmpSubviews addObject:reactionsView];
                         
-                        CGFloat leftMargin = RoomBubbleCellLayout.reactionsViewLeftMargin;
-                        
-                        if (roomBubbleCellData.containsBubbleComponentWithEncryptionBadge)
+//                        if ([[bubbleCell class] conformsToProtocol:@protocol(BubbleCellReactionsDisplayable)])
+//                        {
+//                            id<BubbleCellReactionsDisplayable> reactionsDisplayable = (id<BubbleCellReactionsDisplayable>)bubbleCell;
+//                            [reactionsDisplayable addReactionsView:reactionsView];
+//                        }
+//                        else
                         {
-                            leftMargin+= RoomBubbleCellLayout.encryptedContentLeftMargin;
+                            reactionsView.translatesAutoresizingMaskIntoConstraints = NO;
+                            [bubbleCell.contentView addSubview:reactionsView];
+                            
+                            CGFloat leftMargin = RoomBubbleCellLayout.reactionsViewLeftMargin;
+                            
+                            if (roomBubbleCellData.containsBubbleComponentWithEncryptionBadge)
+                            {
+                                leftMargin+= RoomBubbleCellLayout.encryptedContentLeftMargin;
+                            }
+                            
+                            // Force receipts container size
+                            [NSLayoutConstraint activateConstraints:
+                             @[
+                               [reactionsView.leadingAnchor constraintEqualToAnchor:reactionsView.superview.leadingAnchor constant:leftMargin],
+                               [reactionsView.trailingAnchor constraintEqualToAnchor:reactionsView.superview.trailingAnchor constant:-RoomBubbleCellLayout.reactionsViewRightMargin],
+                               [reactionsView.topAnchor constraintEqualToAnchor:reactionsView.superview.topAnchor constant:bottomPositionY + RoomBubbleCellLayout.reactionsViewTopMargin]
+                               ]];
                         }
-                        
-                        // Force receipts container size
-                        [NSLayoutConstraint activateConstraints:
-                         @[
-                           [reactionsView.leadingAnchor constraintEqualToAnchor:reactionsView.superview.leadingAnchor constant:leftMargin],
-                           [reactionsView.trailingAnchor constraintEqualToAnchor:reactionsView.superview.trailingAnchor constant:-RoomBubbleCellLayout.reactionsViewRightMargin],
-                           [reactionsView.topAnchor constraintEqualToAnchor:reactionsView.superview.topAnchor constant:bottomPositionY + RoomBubbleCellLayout.reactionsViewTopMargin]
-                           ]];
                     }
                     
-                    MXKReceiptSendersContainer* avatarsContainer;                    
+                    MXKReceiptSendersContainer* avatarsContainer;
                     
                     // Handle read receipts (if any)
                     if (self.showBubbleReceipts && cellData.readReceipts.count && !isCollapsableCellCollapsed)
@@ -1028,27 +1036,32 @@
 
 - (void)roomSummaryDidRemoveExpiredDataFromStore
 {
-    // Check whether the first cell data refers to an expired event (this may be a state event
-    MXEvent *firstMessageEvent;
-    for (id<MXKRoomBubbleCellDataStoring> cellData in bubbles)
+    // Check first if a retention period is defined for this room
+    UInt64 mininumMessageTimestamp = self.room.summary.tc_mininumMessageTimestamp;
+    if (mininumMessageTimestamp != kMXUndefinedTimestamp)
     {
-        for (MXEvent *event in cellData.events)
+        // Check whether the first cell data refers to an expired event (this may be a state event)
+        MXEvent *firstMessageEvent;
+        for (id<MXKRoomBubbleCellDataStoring> cellData in bubbles)
         {
-            if (!event.isState) {
-                firstMessageEvent = event;
+            for (MXEvent *event in cellData.events)
+            {
+                if (!event.isState) {
+                    firstMessageEvent = event;
+                    break;
+                }
+            }
+            
+            if (firstMessageEvent)
+            {
                 break;
             }
         }
         
-        if (firstMessageEvent)
+        if (firstMessageEvent && firstMessageEvent.originServerTs < mininumMessageTimestamp)
         {
-            break;
+            [self reload];
         }
-    }
-    
-    if (firstMessageEvent && firstMessageEvent.originServerTs < self.room.summary.tc_mininumTimestamp)
-    {
-        [self reload];
     }
 }
 

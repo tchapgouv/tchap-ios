@@ -144,6 +144,8 @@
 "settings_show_join_leave_messages_title" = "Afficher les notifications d’arrivée et de départ";
 "settings_show_join_leave_messages_summary" = "Les invitations, expulsions et bannissements ne sont pas concernés";
 "settings_show_profile_changes_messages_title" = "Afficher les changements d’avatar";
+"settings_crypto_import" = "Importer les clés";
+"settings_crypto_import_invalid_file" = "Fichier de clés invalide.";
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -165,10 +167,14 @@
 "room_category_private_room" = "Privé";
 "room_category_extern_room" = "Externes";
 "room_category_forum_room" = "Forum";
+"room_event_action_add_favourite" = "Mettre en favoris";
+"room_event_action_remove_favourite" = "Retirer des favoris";
+"room_event_action_favourite" = "Favoris";
 "tchap_cannot_invite_deactivated_account_user" = "Votre correspondant a quitté définitivement cette discussion.\nVous devez en créer une nouvelle pour le recontacter, s'il est toujours joignable sur Tchap.";
 "tchap_room_admin_leave_prompt_msg" = "Voulez-vous vraiment quitter cette conversation ?\n\nElle ne sera plus administrée, et vous risquez de ne plus pouvoir la joindre de nouveau.";
 "tchap_room_invalid_link" = "Ce lien n'est pas valide";
 "tchap_room_access_unauthorized" = "Vous n'êtes pas autorisé à rejoindre cette conversation. Une invitation est nécessaire.";
+"room_event_action_forward" = "Transférer";
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Room Members
@@ -235,8 +241,6 @@
 "room_creation_public_visibility_info" = "Un forum peut être rejoint par tous les utilisateurs excepté les invités externes. Il ne doit contenir aucune donnée sensible.";
 "room_creation_public_room_federation_title" = "Limiter l'accès à ce salon aux membres du domaine \"%@\"";
 "room_creation_add_avatar_action" = "Ajouter une photo";
-"room_creation_room_retention_period_one_day" = "Limiter l’historique du salon à 1 jour";
-"room_creation_room_retention_period_days" = "Limiter l’historique du salon à %d jours";
 "room_creation_room_type_title" = "Type de salon";
 "room_creation_private_room_info" = "Accessible à tous les utilisateurs sur invitation d’un administrateur.";
 "room_creation_extern_room_info" = "Accessible à tous les utilisateurs et aux invités externes sur invitation d’un administrateur.";
@@ -293,3 +297,12 @@
 // MARK: - Device Verification
 "device_verification_title" = "Vérifier l’appareil";
 "device_verification_verified_description" = "Vous avez bien vérifié cet appareil.\n\nLe partage des clés va s'effectuer progressivement. Les messages se déchiffreront au fur à mesure. Cela peut prendre quelques minutes.";
+
+// Favourite messages screen
+"favourite_messages_title" = "Messages favoris";
+"favourite_messages_one_subtitle" = "%d message";
+"favourite_messages_multiple_subtitle" = "%d messages";
+
+////////////////////////////////////////////////////////////////////////////////
+// MARK: Forward
+"forward_screen_title" = "Transférer à";

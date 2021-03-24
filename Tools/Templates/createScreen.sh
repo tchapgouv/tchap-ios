@@ -5,11 +5,11 @@ if [ ! $# -eq 2 ]; then
     exit 1
 fi 
 
-OUTPUT_DIR="../../Riot/Modules"/$1
+OUTPUT_DIR="../../Tchap/Modules"/$1
 SCREEN_NAME=$2
 SCREEN_VAR_NAME=`echo $SCREEN_NAME | awk '{ print tolower(substr($0, 1, 1)) substr($0, 2) }'`
 
-MODULE_DIR="../../Riot/Modules"
+MODULE_DIR="../../Tchap/Modules"
 
 if [ -e $OUTPUT_DIR ]; then
     echo "Error: Folder ${OUTPUT_DIR} already exists"
