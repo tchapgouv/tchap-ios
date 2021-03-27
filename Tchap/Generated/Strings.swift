@@ -351,9 +351,19 @@ internal enum TchapL10n {
   internal static func roomSettingsRetentionPeriodInDays(_ p1: Int) -> String {
     return TchapL10n.tr("Tchap", "room_settings_retention_period_in_days", p1)
   }
+  /// Illimitée
+  internal static let roomSettingsRetentionPeriodInfinite = TchapL10n.tr("Tchap", "room_settings_retention_period_infinite")
   /// 1 jour
   internal static let roomSettingsRetentionPeriodOneDay = TchapL10n.tr("Tchap", "room_settings_retention_period_one_day")
-  /// Limitation de l’historique
+  /// 1 mois
+  internal static let roomSettingsRetentionPeriodOneMonth = TchapL10n.tr("Tchap", "room_settings_retention_period_one_month")
+  /// 1 semaine
+  internal static let roomSettingsRetentionPeriodOneWeek = TchapL10n.tr("Tchap", "room_settings_retention_period_one_week")
+  /// 1 an
+  internal static let roomSettingsRetentionPeriodOneYear = TchapL10n.tr("Tchap", "room_settings_retention_period_one_year")
+  /// 6 mois
+  internal static let roomSettingsRetentionPeriodSixMonths = TchapL10n.tr("Tchap", "room_settings_retention_period_six_months")
+  /// Durée historique
   internal static let roomSettingsRetentionTitle = TchapL10n.tr("Tchap", "room_settings_retention_title")
   /// Ce salon n’est pas accessible par lien
   internal static let roomSettingsRoomAccessByLinkDisabled = TchapL10n.tr("Tchap", "room_settings_room_access_by_link_disabled")

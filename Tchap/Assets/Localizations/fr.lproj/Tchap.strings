@@ -200,7 +200,12 @@
 "room_settings_room_access_unrestricted" = "Les externes sont autorisés à rejoindre ce salon";
 "room_settings_allow_external_users_to_join" = "Autoriser l’accès aux externes à ce salon";
 "room_settings_allow_external_users_to_join_prompt_msg" = "Cette action est irréversible.\nVoulez-vous vraiment autoriser les externes à rejoindre ce salon ?";
-"room_settings_retention_title" = "Limitation de l’historique";
+"room_settings_retention_title" = "Durée historique";
+"room_settings_retention_period_infinite" = "Illimitée";
+"room_settings_retention_period_one_year" = "1 an";
+"room_settings_retention_period_six_months" = "6 mois";
+"room_settings_retention_period_one_month" = "1 mois";
+"room_settings_retention_period_one_week" = "1 semaine";
 "room_settings_retention_period_one_day" = "1 jour";
 "room_settings_retention_period_in_days" = "%d jours";
 "room_settings_fail_to_update_retention_period" = "Échec de mise à jour de la durée de l'historique";

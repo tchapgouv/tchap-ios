@@ -15,14 +15,14 @@
 		02018F9D22006200008D68BE /* UniversalLinkParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02018F9B22006200008D68BE /* UniversalLinkParameters.swift */; };
 		02018F9F22006282008D68BE /* UniversalLinkParametersType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02018F9E22006282008D68BE /* UniversalLinkParametersType.swift */; };
 		02018FA022006282008D68BE /* UniversalLinkParametersType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02018F9E22006282008D68BE /* UniversalLinkParametersType.swift */; };
-		02040CCC23D7622200DE0690 /* RetentionPeriodInDaysPickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02040CCB23D7622200DE0690 /* RetentionPeriodInDaysPickerCell.swift */; };
-		02040CCD23D7622200DE0690 /* RetentionPeriodInDaysPickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02040CCB23D7622200DE0690 /* RetentionPeriodInDaysPickerCell.swift */; };
-		02040CD823D76A7F00DE0690 /* RetentionPeriodInDaysPickerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02040CD723D76A7F00DE0690 /* RetentionPeriodInDaysPickerCell.xib */; };
-		02040CD923D76A7F00DE0690 /* RetentionPeriodInDaysPickerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02040CD723D76A7F00DE0690 /* RetentionPeriodInDaysPickerCell.xib */; };
-		02040CDC23D88D7700DE0690 /* RetentionPeriodInDaysPickerContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02040CDB23D88D7700DE0690 /* RetentionPeriodInDaysPickerContentView.swift */; };
-		02040CDD23D88D7700DE0690 /* RetentionPeriodInDaysPickerContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02040CDB23D88D7700DE0690 /* RetentionPeriodInDaysPickerContentView.swift */; };
-		02040CE523D8938400DE0690 /* RetentionPeriodInDaysPickerContentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02040CE423D8938400DE0690 /* RetentionPeriodInDaysPickerContentView.xib */; };
-		02040CE623D8938400DE0690 /* RetentionPeriodInDaysPickerContentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02040CE423D8938400DE0690 /* RetentionPeriodInDaysPickerContentView.xib */; };
+		02040CCC23D7622200DE0690 /* RetentionPeriodPickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02040CCB23D7622200DE0690 /* RetentionPeriodPickerCell.swift */; };
+		02040CCD23D7622200DE0690 /* RetentionPeriodPickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02040CCB23D7622200DE0690 /* RetentionPeriodPickerCell.swift */; };
+		02040CD823D76A7F00DE0690 /* RetentionPeriodPickerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02040CD723D76A7F00DE0690 /* RetentionPeriodPickerCell.xib */; };
+		02040CD923D76A7F00DE0690 /* RetentionPeriodPickerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02040CD723D76A7F00DE0690 /* RetentionPeriodPickerCell.xib */; };
+		02040CDC23D88D7700DE0690 /* RetentionPeriodPickerContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02040CDB23D88D7700DE0690 /* RetentionPeriodPickerContentView.swift */; };
+		02040CDD23D88D7700DE0690 /* RetentionPeriodPickerContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02040CDB23D88D7700DE0690 /* RetentionPeriodPickerContentView.swift */; };
+		02040CE523D8938400DE0690 /* RetentionPeriodPickerContentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02040CE423D8938400DE0690 /* RetentionPeriodPickerContentView.xib */; };
+		02040CE623D8938400DE0690 /* RetentionPeriodPickerContentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02040CE423D8938400DE0690 /* RetentionPeriodPickerContentView.xib */; };
 		02040CF223DA17DC00DE0690 /* MXSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02040CF123DA17DC00DE0690 /* MXSession.swift */; };
 		02040CF323DA17DC00DE0690 /* MXSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02040CF123DA17DC00DE0690 /* MXSession.swift */; };
 		02057A0024A9D7D200C96719 /* QRCodeReaderViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 020579FD24A9D7D100C96719 /* QRCodeReaderViewController.storyboard */; };
@@ -2122,10 +2122,10 @@
 		02018F9822004417008D68BE /* UniversalLinkServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniversalLinkServiceType.swift; sourceTree = "<group>"; };
 		02018F9B22006200008D68BE /* UniversalLinkParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniversalLinkParameters.swift; sourceTree = "<group>"; };
 		02018F9E22006282008D68BE /* UniversalLinkParametersType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniversalLinkParametersType.swift; sourceTree = "<group>"; };
-		02040CCB23D7622200DE0690 /* RetentionPeriodInDaysPickerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetentionPeriodInDaysPickerCell.swift; sourceTree = "<group>"; };
-		02040CD723D76A7F00DE0690 /* RetentionPeriodInDaysPickerCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RetentionPeriodInDaysPickerCell.xib; sourceTree = "<group>"; };
-		02040CDB23D88D7700DE0690 /* RetentionPeriodInDaysPickerContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetentionPeriodInDaysPickerContentView.swift; sourceTree = "<group>"; };
-		02040CE423D8938400DE0690 /* RetentionPeriodInDaysPickerContentView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RetentionPeriodInDaysPickerContentView.xib; sourceTree = "<group>"; };
+		02040CCB23D7622200DE0690 /* RetentionPeriodPickerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetentionPeriodPickerCell.swift; sourceTree = "<group>"; };
+		02040CD723D76A7F00DE0690 /* RetentionPeriodPickerCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RetentionPeriodPickerCell.xib; sourceTree = "<group>"; };
+		02040CDB23D88D7700DE0690 /* RetentionPeriodPickerContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetentionPeriodPickerContentView.swift; sourceTree = "<group>"; };
+		02040CE423D8938400DE0690 /* RetentionPeriodPickerContentView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RetentionPeriodPickerContentView.xib; sourceTree = "<group>"; };
 		02040CF123DA17DC00DE0690 /* MXSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MXSession.swift; sourceTree = "<group>"; };
 		020579FD24A9D7D100C96719 /* QRCodeReaderViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = QRCodeReaderViewController.storyboard; sourceTree = "<group>"; };
 		020579FE24A9D7D100C96719 /* QRCodeReaderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeReaderViewController.swift; sourceTree = "<group>"; };
@@ -3327,8 +3327,8 @@
 		02040CDA23D88D3300DE0690 /* RetentionPeriodPicker */ = {
 			isa = PBXGroup;
 			children = (
-				02040CDB23D88D7700DE0690 /* RetentionPeriodInDaysPickerContentView.swift */,
-				02040CE423D8938400DE0690 /* RetentionPeriodInDaysPickerContentView.xib */,
+				02040CDB23D88D7700DE0690 /* RetentionPeriodPickerContentView.swift */,
+				02040CE423D8938400DE0690 /* RetentionPeriodPickerContentView.xib */,
 			);
 			path = RetentionPeriodPicker;
 			sourceTree = "<group>";
@@ -3471,8 +3471,8 @@
 				020DF86A214BE467003DFBA4 /* TableViewCellWithCheckBoxAndLabel.m */,
 				020DF86B214BE467003DFBA4 /* TableViewCellWithCheckBoxes.m */,
 				020DF86C214BE467003DFBA4 /* TableViewCellWithLabelAndLargeTextView.h */,
-				02040CCB23D7622200DE0690 /* RetentionPeriodInDaysPickerCell.swift */,
-				02040CD723D76A7F00DE0690 /* RetentionPeriodInDaysPickerCell.xib */,
+				02040CCB23D7622200DE0690 /* RetentionPeriodPickerCell.swift */,
+				02040CD723D76A7F00DE0690 /* RetentionPeriodPickerCell.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -6993,7 +6993,7 @@
 				02388E8D24A2AF7A00F3B485 /* KeyVerificationSelfVerifyWaitViewController.storyboard in Resources */,
 				B1073D6721A8096F00E36CFA /* RoomIncomingEncryptedAttachmentWithoutSenderInfoBubbleCell.xib in Resources */,
 				026154E1236C7D930045459E /* agent.dinum_2019_10.cer in Resources */,
-				02040CD823D76A7F00DE0690 /* RetentionPeriodInDaysPickerCell.xib in Resources */,
+				02040CD823D76A7F00DE0690 /* RetentionPeriodPickerCell.xib in Resources */,
 				0250C59F2122B68000034691 /* MediaAlbumTableCell.xib in Resources */,
 				02C3F28724AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseViewController.storyboard in Resources */,
 				02FAE4E023B4B61700DE73D8 /* KeyBackupRecoverFromRecoveryKeyViewController.storyboard in Resources */,
@@ -7013,7 +7013,7 @@
 				020DF96B214BE467003DFBA4 /* RoomEncryptedAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.xib in Resources */,
 				02BEE1A4212C717F00098505 /* Images.xcassets in Resources */,
 				020DF964214BE467003DFBA4 /* RoomEncryptedAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.xib in Resources */,
-				02040CE523D8938400DE0690 /* RetentionPeriodInDaysPickerContentView.xib in Resources */,
+				02040CE523D8938400DE0690 /* RetentionPeriodPickerContentView.xib in Resources */,
 				026154E8236C7D930045459E /* agent.interieur_2019_10.cer in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -7241,8 +7241,8 @@
 				02DFECD321C07370009B6F15 /* RoomIncomingAttachmentWithoutSenderInfoBubbleCell.xib in Resources */,
 				02DFECD421C07370009B6F15 /* LaunchScreen.storyboard in Resources */,
 				02FAE5AB23B4C41600DE73D8 /* EmojiPickerViewCell.xib in Resources */,
-				02040CD923D76A7F00DE0690 /* RetentionPeriodInDaysPickerCell.xib in Resources */,
-				02040CE623D8938400DE0690 /* RetentionPeriodInDaysPickerContentView.xib in Resources */,
+				02040CD923D76A7F00DE0690 /* RetentionPeriodPickerCell.xib in Resources */,
+				02040CE623D8938400DE0690 /* RetentionPeriodPickerContentView.xib in Resources */,
 				02DFECD521C07370009B6F15 /* DeactivateAccountViewController.storyboard in Resources */,
 				02FAE56B23B4C41500DE73D8 /* BubbleReactionActionViewCell.xib in Resources */,
 				02DFECD621C07370009B6F15 /* ForgotPasswordFormViewController.storyboard in Resources */,
@@ -7609,7 +7609,7 @@
 				02C3F21424AF75100086ACA5 /* SecureBackupBannerPreferences.swift in Sources */,
 				02FAE4FA23B4B61700DE73D8 /* KeyBackupRecoverFromPassphraseViewAction.swift in Sources */,
 				02057A3524AA8EFA00C96719 /* KeyVerificationIncomingRequestApprovalViewData.swift in Sources */,
-				02040CDC23D88D7700DE0690 /* RetentionPeriodInDaysPickerContentView.swift in Sources */,
+				02040CDC23D88D7700DE0690 /* RetentionPeriodPickerContentView.swift in Sources */,
 				02906074214FD0E1005FE3C1 /* RoomCoordinator.swift in Sources */,
 				B1C0EE8F2375B7F400E8BB88 /* ChangePasswordNewPasswordViewController.swift in Sources */,
 				02388DE524A2AF7900F3B485 /* UserVerificationCoordinator.swift in Sources */,
@@ -7964,7 +7964,7 @@
 				02FAE45823B4AB3300DE73D8 /* WidgetPickerViewController.m in Sources */,
 				020DF93D214BE467003DFBA4 /* TableViewCellWithCheckBoxes.m in Sources */,
 				B109EF1B2170F3B90018FA06 /* User.swift in Sources */,
-				02040CCC23D7622200DE0690 /* RetentionPeriodInDaysPickerCell.swift in Sources */,
+				02040CCC23D7622200DE0690 /* RetentionPeriodPickerCell.swift in Sources */,
 				02388E0124A2AF7900F3B485 /* UserVerificationStartViewModel.swift in Sources */,
 				02057A0224A9D7D200C96719 /* QRCodeReaderViewController.swift in Sources */,
 				020DF945214BE467003DFBA4 /* RoomFilesViewController.m in Sources */,
@@ -8485,7 +8485,7 @@
 				02C3F21524AF75100086ACA5 /* SecureBackupBannerPreferences.swift in Sources */,
 				02FAE4FB23B4B61700DE73D8 /* KeyBackupRecoverFromPassphraseViewAction.swift in Sources */,
 				02057A3624AA8EFA00C96719 /* KeyVerificationIncomingRequestApprovalViewData.swift in Sources */,
-				02040CDD23D88D7700DE0690 /* RetentionPeriodInDaysPickerContentView.swift in Sources */,
+				02040CDD23D88D7700DE0690 /* RetentionPeriodPickerContentView.swift in Sources */,
 				02DFEB7F21C07370009B6F15 /* RecentCellData.m in Sources */,
 				02DFEB8021C07370009B6F15 /* Presentable.swift in Sources */,
 				02388DE624A2AF7900F3B485 /* UserVerificationCoordinator.swift in Sources */,
@@ -8842,7 +8842,7 @@
 				02FAE45923B4AB3300DE73D8 /* WidgetPickerViewController.m in Sources */,
 				02DFEBFD21C07370009B6F15 /* HomeViewController.swift in Sources */,
 				02DFEBFE21C07370009B6F15 /* Coordinator.swift in Sources */,
-				02040CCD23D7622200DE0690 /* RetentionPeriodInDaysPickerCell.swift in Sources */,
+				02040CCD23D7622200DE0690 /* RetentionPeriodPickerCell.swift in Sources */,
 				02388E0224A2AF7900F3B485 /* UserVerificationStartViewModel.swift in Sources */,
 				02057A0324A9D7D200C96719 /* QRCodeReaderViewController.swift in Sources */,
 				B1C0EE702375B7A000E8BB88 /* ChangePasswordCurrentPasswordCoordinator.swift in Sources */,

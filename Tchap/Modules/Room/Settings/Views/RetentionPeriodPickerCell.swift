@@ -16,24 +16,24 @@
 
 import UIKit
 
-@objc protocol RetentionPeriodInDaysPickerCellDelegate: class {
-    func retentionPeriodInDaysPickerCell(_ cell: RetentionPeriodInDaysPickerCell, didSelect period: uint)
+@objc protocol RetentionPeriodPickerCellDelegate: class {
+    func retentionPeriodPickerCell(_ cell: RetentionPeriodPickerCell, didSelect periodInDays: uint)
 }
 
-@objcMembers class RetentionPeriodInDaysPickerCell: UITableViewCell, Stylable, RetentionPeriodInDaysPickerContentViewDelegate {
+@objcMembers class RetentionPeriodPickerCell: UITableViewCell, Stylable, RetentionPeriodPickerContentViewDelegate {
     
-    @IBOutlet private weak var retentionPeriodInDaysPickerContentView: RetentionPeriodInDaysPickerContentView!
+    @IBOutlet private weak var retentionPeriodPickerContentView: RetentionPeriodPickerContentView!
     
     private(set) var style: Style!
     
-    weak var delegate: RetentionPeriodInDaysPickerCellDelegate?
+    weak var delegate: RetentionPeriodPickerCellDelegate?
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
         self.update(style: Variant2Style.shared)
         
-        self.retentionPeriodInDaysPickerContentView.delegate = self
+        self.retentionPeriodPickerContentView.delegate = self
     }
     
     static func nib() -> UINib {
@@ -46,14 +46,14 @@ import UIKit
     
     func update(style: Style) {
         self.style = style
-        self.retentionPeriodInDaysPickerContentView.update(style: style)
+        self.retentionPeriodPickerContentView.update(style: style)
     }
     
-    func scrollTo(retentionPeriodInDays: uint, animated: Bool) {
-        self.retentionPeriodInDaysPickerContentView.scrollTo(retentionPeriodInDays: retentionPeriodInDays, animated: animated)
+    func updatePickerWith(retentionPeriodInDays: uint, animated: Bool) {
+        self.retentionPeriodPickerContentView.updatePickerWith(retentionPeriodInDays: retentionPeriodInDays, animated: animated)
     }
     
-    func retentionPeriodInDaysPickerContentView(_ view: RetentionPeriodInDaysPickerContentView, didSelect period: uint) {
-        self.delegate?.retentionPeriodInDaysPickerCell(self, didSelect: period)
+    func retentionPeriodPickerContentView(_ view: RetentionPeriodPickerContentView, didSelect periodInDays: uint) {
+        self.delegate?.retentionPeriodPickerCell(self, didSelect: periodInDays)
     }
 }
