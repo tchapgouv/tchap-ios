@@ -1070,7 +1070,7 @@
 - (void)addRoomRetentionEventListener
 {
     // Register a listener to handle the room retention in live timelines
-    retentionListener = [self.timeline listenToEventsOfTypes:@[RoomService.roomRetentionStateEventType] onEvent:^(MXEvent *redactionEvent, MXTimelineDirection direction, MXRoomState *roomState) {
+    retentionListener = [self.timeline listenToEventsOfTypes:@[kMXEventTypeStringRoomRetention] onEvent:^(MXEvent *redactionEvent, MXTimelineDirection direction, MXRoomState *roomState) {
         
         // Consider only live events
         if (direction == MXTimelineDirectionForwards)

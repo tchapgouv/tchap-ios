@@ -38,6 +38,16 @@ enum RoomServiceError: Error {
     case directRoomCreationFailed
 }
 
+enum RetentionConstants {
+    static let undefinedRetentionValue = UInt64.max
+    static let undefinedRetentionValueInDays = uint.max
+    static let oneDay: uint = 1
+    static let oneWeek: uint = 7
+    static let oneMonth: uint = 30
+    static let sixMonths: uint = 180
+    static let oneYear: uint = 365
+}
+
 /// `RoomService` implementation of `RoomServiceType` is used to perform room operations.
 final class RoomService: NSObject, RoomServiceType {
     
@@ -50,9 +60,15 @@ final class RoomService: NSObject, RoomServiceType {
     @objc static let roomAccessRulesStateEventType = "im.vector.room.access_rules"
     @objc static let roomAccessRulesContentRuleKey = "rule"
     
-    @objc static let roomRetentionStateEventType = "m.room.retention"
     @objc static let roomRetentionContentMaxLifetimeKey = "max_lifetime"
     @objc static let roomRetentionContentExpireOnClientsKey = "expire_on_clients"
+    
+    @objc static let undefinedRetentionValueInDays = RetentionConstants.undefinedRetentionValueInDays
+    @objc static let roomRetentionPeriodOneDay = RetentionConstants.oneDay
+    @objc static let roomRetentionPeriodOneWeek = RetentionConstants.oneWeek
+    @objc static let roomRetentionPeriodOneMonth = RetentionConstants.oneMonth
+    @objc static let roomRetentionPeriodSixMonths = RetentionConstants.sixMonths
+    @objc static let roomRetentionPeriodOneYear = RetentionConstants.oneYear
     
     // MARK: - Properties
     
@@ -118,6 +134,26 @@ final class RoomService: NSObject, RoomServiceType {
                 failure(error)
             }
         })
+    }
+    
+    @objc static func getDisplayLabel(forRetentionPeriodInDays periodInDays: uint) -> String {
+        let label: String
+        if periodInDays == RetentionConstants.undefinedRetentionValueInDays {
+            label = TchapL10n.roomSettingsRetentionPeriodInfinite
+        } else if periodInDays == RetentionConstants.oneYear {
+            label = TchapL10n.roomSettingsRetentionPeriodOneYear
+        } else if periodInDays == RetentionConstants.sixMonths {
+            label = TchapL10n.roomSettingsRetentionPeriodSixMonths
+        } else if periodInDays == RetentionConstants.oneMonth {
+            label = TchapL10n.roomSettingsRetentionPeriodOneMonth
+        } else if periodInDays == RetentionConstants.oneWeek {
+            label = TchapL10n.roomSettingsRetentionPeriodOneWeek
+        } else if periodInDays == RetentionConstants.oneDay {
+            label = TchapL10n.roomSettingsRetentionPeriodOneDay
+        } else {
+            label = TchapL10n.roomSettingsRetentionPeriodInDays(Int(periodInDays))
+        }
+        return label
     }
     
     // MARK: - Private
@@ -304,15 +340,26 @@ final class RoomService: NSObject, RoomServiceType {
     }
     
     private func roomRetentionStateEvent(with retentionPeriod: UInt64) -> MXEvent {
-        let stateEventJSON: [AnyHashable: Any] = [
-            "state_key": "",
-            "type": RoomService.roomRetentionStateEventType,
-            "content": [
-                RoomService.roomRetentionContentMaxLifetimeKey: retentionPeriod,
-                RoomService.roomRetentionContentExpireOnClientsKey: true
-            ]
-        ]
+        let stateEventJSON: [AnyHashable: Any]
         
+        if retentionPeriod != RetentionConstants.undefinedRetentionValue {
+            stateEventJSON = [
+                "state_key": "",
+                "type": MXEventType.roomRetention.identifier,
+                "content": [
+                    RoomService.roomRetentionContentMaxLifetimeKey: retentionPeriod,
+                    RoomService.roomRetentionContentExpireOnClientsKey: true
+                ]
+            ]
+        } else {
+            stateEventJSON = [
+                "state_key": "",
+                "type": MXEventType.roomRetention.identifier,
+                "content": [
+                ]
+            ]
+        }
+            
         guard let stateEvent = MXEvent(fromJSON: stateEventJSON) else {
             fatalError("[RoomService] retention event could not be created")
         }

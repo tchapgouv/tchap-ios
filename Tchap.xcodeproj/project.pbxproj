@@ -866,6 +866,8 @@
 		029CC69121772F4200DCC8B3 /* TableViewCellWithPhoneNumberTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 029CC68721772F4200DCC8B3 /* TableViewCellWithPhoneNumberTextField.m */; };
 		029CC69221772F4200DCC8B3 /* DeviceView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 029CC68921772F4200DCC8B3 /* DeviceView.xib */; };
 		029CC69321772F4200DCC8B3 /* TableViewCellWithPhoneNumberTextField.xib in Resources */ = {isa = PBXBuildFile; fileRef = 029CC68A21772F4200DCC8B3 /* TableViewCellWithPhoneNumberTextField.xib */; };
+		02A514C926100CDA007164AD /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B122099623854EF2004D069C /* Strings.swift */; };
+		02A514CA26100CDB007164AD /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B122099623854EF2004D069C /* Strings.swift */; };
 		02A7900023E0DD5A00F17374 /* UserStatusInfoType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A78FFF23E0DD5A00F17374 /* UserStatusInfoType.swift */; };
 		02A7900123E0DD5A00F17374 /* UserStatusInfoType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A78FFF23E0DD5A00F17374 /* UserStatusInfoType.swift */; };
 		02A7900323E0DEB400F17374 /* UserStatusInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A7900223E0DEB400F17374 /* UserStatusInfo.swift */; };
@@ -8328,6 +8330,7 @@
 				0261555A23972E1F0045459E /* MXRoomSummary.swift in Sources */,
 				026155402395CCA00045459E /* Variant1Style.swift in Sources */,
 				0261556823972F670045459E /* UserServiceType.swift in Sources */,
+				02A514C926100CDA007164AD /* Strings.swift in Sources */,
 				0261556323972F060045459E /* ThirdPartyIDPlatformInfoType.swift in Sources */,
 				0261556023972ECB0045459E /* IdentityServersURLGetter.swift in Sources */,
 				026155B12398F7420045459E /* RoomsListViewController.m in Sources */,
@@ -8387,6 +8390,7 @@
 				026155C32398F9430045459E /* UIBezierPath.swift in Sources */,
 				026155E6239907000045459E /* TchapDefaults.swift in Sources */,
 				026155E42399027C0045459E /* RecentCellData.m in Sources */,
+				02A514CA26100CDB007164AD /* Strings.swift in Sources */,
 				026155CB2398F9870045459E /* UserServiceType.swift in Sources */,
 				026155E2239901730045459E /* RiotSettings.swift in Sources */,
 				026155B62398F7420045459E /* ShareRoomsDiscussionCell.swift in Sources */,

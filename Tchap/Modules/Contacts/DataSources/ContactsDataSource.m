@@ -216,7 +216,7 @@
     
     // The external users are not allowed to search in users directory.
     NSString *myUserId = self.mxSession.myUser.userId;
-    hsUserDirectory &= (myUserId && ![self.userService isExternalUserFor:myUserId]);
+    hsUserDirectory &= (myUserId && ![UserService isExternalUserFor:myUserId]);
     
     [self searchWithPattern:searchText forceReset:forceRefresh hsUserDirectory:hsUserDirectory];
 }
@@ -767,7 +767,7 @@
                         // Compute the most suitable display name for this contact.
                         NSString *displayName;
                         NSArray *emails = contact.emailAddresses;
-                        if ([self.userService isExternalUserFor:matrixId] && emails.count)
+                        if ([UserService isExternalUserFor:matrixId] && emails.count)
                         {
                             // External user display name is their email address (Only one email is available here).
                             MXKEmail *email = emails.firstObject;
@@ -957,12 +957,12 @@
     // Check the conditions to ignore this Tchap user.
     // Note: the external users are not allowed to start chat with another external user.
     // So we ignore here the external users when the current user is external.
-    BOOL shouldIgnore = _ignoredContactsByMatrixId[matrixId] || ([self.userService isExternalUserFor:myUserId] && [self.userService isExternalUserFor:matrixId]);
+    BOOL shouldIgnore = _ignoredContactsByMatrixId[matrixId] || ([UserService isExternalUserFor:myUserId] && [UserService isExternalUserFor:matrixId]);
     
     switch (_contactsFilter) {
         case ContactsDataSourceTchapFilterAllWithoutExternals:
         case ContactsDataSourceTchapFilterTchapUsersOnlyWithoutExternals:
-            shouldIgnore |= [self.userService isExternalUserFor:matrixId];
+            shouldIgnore |= [UserService isExternalUserFor:matrixId];
             break;
         case ContactsDataSourceTchapFilterAllWithoutFederation:
         case ContactsDataSourceTchapFilterTchapUsersOnlyWithoutFederation:
@@ -1295,7 +1295,7 @@
     {
         // The contacts search is only local for an external user (hide the online/offline info)
         NSString *myUserId = self.mxSession.myUser.userId;
-        if (myUserId && [self.userService isExternalUserFor:self.mxSession.myUser.userId])
+        if (myUserId && [UserService isExternalUserFor:self.mxSession.myUser.userId])
         {
             title = NSLocalizedStringFromTable(@"contacts_user_directory_section", @"Tchap", nil);
         }

@@ -23,20 +23,6 @@ protocol RetentionPeriodPickerContentViewDelegate: class {
 
 final class RetentionPeriodPickerContentView: UIView, NibOwnerLoadable, Stylable, UIPickerViewDataSource, UIPickerViewDelegate {
     
-    private enum RoomRetentionPeriod {
-        static let oneDay: uint = 1
-        static let oneWeek: uint = 7
-        static let oneMonth: uint = 30
-        static let sixMonths: uint = 180
-        static let oneYear: uint = 365
-    }
-    
-    @objc static let roomRetentionPeriodOneDay = RoomRetentionPeriod.oneDay
-    @objc static let roomRetentionPeriodOneWeek = RoomRetentionPeriod.oneWeek
-    @objc static let roomRetentionPeriodOneMonth = RoomRetentionPeriod.oneMonth
-    @objc static let roomRetentionPeriodSixMonths = RoomRetentionPeriod.sixMonths
-    @objc static let roomRetentionPeriodOneYear = RoomRetentionPeriod.oneYear
-    
     // MARK: - Properties
     
     @IBOutlet private weak var pickerView: UIPickerView!
@@ -109,35 +95,35 @@ final class RetentionPeriodPickerContentView: UIView, NibOwnerLoadable, Stylable
         let periodInDays: uint
         switch level {
         case 0:
-            periodInDays = MXRoomSummary.undefinedRetentionValueInDays
+            periodInDays = RetentionConstants.undefinedRetentionValueInDays
         case 1:
-            periodInDays = RoomRetentionPeriod.oneYear
+            periodInDays = RetentionConstants.oneYear
         case 2:
-            periodInDays = RoomRetentionPeriod.sixMonths
+            periodInDays = RetentionConstants.sixMonths
         case 3:
-            periodInDays = RoomRetentionPeriod.oneMonth
+            periodInDays = RetentionConstants.oneMonth
         case 4:
-            periodInDays = RoomRetentionPeriod.oneWeek
+            periodInDays = RetentionConstants.oneWeek
         case 5:
-            periodInDays = RoomRetentionPeriod.oneDay
+            periodInDays = RetentionConstants.oneDay
         default:
             // unexpected case
-            periodInDays = MXRoomSummary.undefinedRetentionValueInDays
+            periodInDays = RetentionConstants.undefinedRetentionValueInDays
         }
         self.delegate?.retentionPeriodPickerContentView(self, didSelect: periodInDays)
     }
     
     func updatePickerWith(retentionPeriodInDays: uint, animated: Bool) {
         let row: Int
-        if retentionPeriodInDays <= RoomRetentionPeriod.oneDay {
+        if retentionPeriodInDays <= RetentionConstants.oneDay {
             row = 5
-        } else if retentionPeriodInDays <= RoomRetentionPeriod.oneWeek {
+        } else if retentionPeriodInDays <= RetentionConstants.oneWeek {
             row = 4
-        } else if retentionPeriodInDays <= RoomRetentionPeriod.oneMonth {
+        } else if retentionPeriodInDays <= RetentionConstants.oneMonth {
             row = 3
-        } else if retentionPeriodInDays <= RoomRetentionPeriod.sixMonths {
+        } else if retentionPeriodInDays <= RetentionConstants.sixMonths {
             row = 2
-        } else if retentionPeriodInDays <= RoomRetentionPeriod.oneYear {
+        } else if retentionPeriodInDays <= RetentionConstants.oneYear {
             row = 1
         } else {
             row = 0

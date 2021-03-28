@@ -804,8 +804,7 @@
         NSString *displayName = mxMember.displayname;
         if (!displayName.length && mxMember.userId)
         {
-            UserService *userService = [[UserService alloc] initWithSession:self.mxRoom.mxSession];
-            displayName = [userService displayNameFrom:mxMember.userId];
+            displayName = [UserService displayNameFrom:mxMember.userId];
         }
         Contact *contact = [[Contact alloc] initMatrixContactWithDisplayName:displayName andMatrixID:mxMember.userId];
         contact.mxMember = mxMember;

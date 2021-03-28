@@ -209,6 +209,20 @@ internal enum TchapL10n {
   internal static let inviteSendingFailedTitle = TchapL10n.tr("Tchap", "invite_sending_failed_title")
   /// L'invitation a bien été envoyée.\nVous recevrez une notification lorsque\nvotre invité rejoindra la communauté Tchap.
   internal static let inviteSendingSucceeded = TchapL10n.tr("Tchap", "invite_sending_succeeded")
+  /// %@ a limité la durée de l’historique à %@
+  internal static func noticeRoomRetentionChanged(_ p1: Any, _ p2: Any) -> String {
+    return TchapL10n.tr("Tchap", "notice_room_retention_changed", String(describing: p1), String(describing: p2))
+  }
+  /// Vous avez limité la durée de l’historique à %@
+  internal static func noticeRoomRetentionChangedByYou(_ p1: Any) -> String {
+    return TchapL10n.tr("Tchap", "notice_room_retention_changed_by_you", String(describing: p1))
+  }
+  /// %@ a rendu illimitée la durée de l’historique
+  internal static func noticeRoomRetentionRemoved(_ p1: Any) -> String {
+    return TchapL10n.tr("Tchap", "notice_room_retention_removed", String(describing: p1))
+  }
+  /// Vous avez rendu illimitée la durée de l’historique
+  internal static let noticeRoomRetentionRemovedByYou = TchapL10n.tr("Tchap", "notice_room_retention_removed_by_you")
   /// Ce mot de passe a été trouvé dans un dictionnaire, il n’est pas autorisé
   internal static let passwordPolicyPwdInDictError = TchapL10n.tr("Tchap", "password_policy_pwd_in_dict_error")
   /// Mot de passe trop court (min %d)

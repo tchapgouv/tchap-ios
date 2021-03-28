@@ -951,12 +951,20 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
             if ([updatedItemsDict objectForKey:kRoomSettingsRetentionKey])
             {
                 uint periodInDays = ((NSNumber*)[updatedItemsDict objectForKey:kRoomSettingsRetentionKey]).unsignedIntValue;
-                UInt64 periodInMs = [Tools durationInMsFromDays:periodInDays];
-                pendingOperation = [mxRoom sendStateEventOfType:RoomService.roomRetentionStateEventType
-                                                        content:@{
-                                                                  RoomService.roomRetentionContentMaxLifetimeKey: @(periodInMs),
-                                                                  RoomService.roomRetentionContentExpireOnClientsKey: @(YES)
-                                                                  }
+                NSDictionary *content;
+                if (periodInDays != RoomService.undefinedRetentionValueInDays)
+                {
+                    content = @{
+                        RoomService.roomRetentionContentMaxLifetimeKey: @([Tools durationInMsFromDays:periodInDays]),
+                        RoomService.roomRetentionContentExpireOnClientsKey: @(YES)
+                    };
+                }
+                else
+                {
+                    content = @{};
+                }
+                pendingOperation = [mxRoom sendStateEventOfType:kMXEventTypeStringRoomRetention
+                                                        content:content
                                                        stateKey:@""
                                                         success:^(NSString *eventId) {
                                                             
@@ -1185,34 +1193,8 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
                 displayedRetentionPeriod = ((NSNumber*)[updatedItemsDict objectForKey:kRoomSettingsRetentionKey]).unsignedIntValue;
             }
             
-            if (displayedRetentionPeriod == MXRoomSummary.undefinedRetentionValueInDays)
-            {
-                cell.detailTextLabel.text = NSLocalizedStringFromTable(@"room_settings_retention_period_infinite", @"Tchap", nil);
-            }
-            else if (displayedRetentionPeriod == RetentionPeriodPickerContentView.roomRetentionPeriodOneYear)
-            {
-                cell.detailTextLabel.text = NSLocalizedStringFromTable(@"room_settings_retention_period_one_year", @"Tchap", nil);
-            }
-            else if (displayedRetentionPeriod == RetentionPeriodPickerContentView.roomRetentionPeriodSixMonths)
-            {
-                cell.detailTextLabel.text = NSLocalizedStringFromTable(@"room_settings_retention_period_six_months", @"Tchap", nil);
-            }
-            else if (displayedRetentionPeriod == RetentionPeriodPickerContentView.roomRetentionPeriodOneMonth)
-            {
-                cell.detailTextLabel.text = NSLocalizedStringFromTable(@"room_settings_retention_period_one_month", @"Tchap", nil);
-            }
-            else if (displayedRetentionPeriod == RetentionPeriodPickerContentView.roomRetentionPeriodOneWeek)
-            {
-                cell.detailTextLabel.text = NSLocalizedStringFromTable(@"room_settings_retention_period_one_week", @"Tchap", nil);
-            }
-            else if (displayedRetentionPeriod == RetentionPeriodPickerContentView.roomRetentionPeriodOneDay)
-            {
-                cell.detailTextLabel.text = NSLocalizedStringFromTable(@"room_settings_retention_period_one_day", @"Tchap", nil);
-            }
-            else
-            {
-                cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_settings_retention_period_in_days", @"Tchap", nil), displayedRetentionPeriod];
-            }
+            cell.detailTextLabel.text = [RoomService getDisplayLabelForRetentionPeriodInDays:displayedRetentionPeriod];
+            
             cell.detailTextLabel.textColor = isRetentionEdited ? self.currentStyle.warnTextColor : self.currentStyle.secondaryTextColor;
             
             cell.accessoryView = nil;
@@ -1474,7 +1456,7 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
             else
             {
                 // If the display name is unknown, build a temporary name from the user id.
-                displayName = [userService displayNameFrom:bannedMember.userId];
+                displayName = [UserService displayNameFrom:bannedMember.userId];
             }
         }
         
