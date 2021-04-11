@@ -39,6 +39,8 @@ import UIKit
     override func update(style: Style) {
         super.update(style: style)
         self.domainLabel.textColor = style.primarySubTextColor
+        
+        self.contentView.backgroundColor = style.backgroundColor
     }
     
     func renderedCellData() -> MXKCellData! {

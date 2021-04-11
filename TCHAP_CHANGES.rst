@@ -6,6 +6,8 @@ Features/Improvements:
 
 Bug Fixes:
  * Crash when the user selects "forward" on a selected message
+ * Favorite messages are not readable in dark mode
+ * Share extension: the rooms list are not readable in dark mode
 
 Changes in Tchap 1.2.0 (2021-03-24)
 ===================================================
