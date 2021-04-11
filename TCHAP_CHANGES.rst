@@ -1,8 +1,5 @@
-Changes in Tchap 1.2.1 (2021-xx-xx)
+Changes in Tchap 1.2.1 (2021-04-12)
 ===================================================
-
-Features/Improvements:
- * 
 
 Bug Fixes:
  * Crash when the user selects "forward" on a selected message
