@@ -36,7 +36,7 @@ class ForwardDataSource: MXKRecentsDataSource {
                     continue
                 }
                 
-                if let recentCellData = MXKRecentCellData(roomSummary: summary, andRecentListDataSource: nil) {
+                if let recentCellData = MXKRecentCellData(roomSummary: summary, andRecentListDataSource: nil), recentCellData.roomDisplayname != nil {
                     self.cellDataArray.append(recentCellData)
                 }
             }
