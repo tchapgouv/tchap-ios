@@ -196,7 +196,7 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
             uint periodInDays = RoomService.undefinedRetentionValueInDays;
             if (event.content[RoomService.roomRetentionContentMaxLifetimeKey])
             {
-                UInt64 maxLifetime = -1;
+                UInt64 maxLifetime = UINT64_MAX;
                 MXJSONModelSetUInt64(maxLifetime, event.content[RoomService.roomRetentionContentMaxLifetimeKey]);
                 periodInDays = [Tools numberOfDaysFromDurationInMs:maxLifetime];
             }
