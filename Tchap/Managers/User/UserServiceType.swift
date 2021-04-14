@@ -73,14 +73,6 @@ protocol UserServiceType {
     /// - returns: a `MXHTTPOperation` instance.
     func getUsersInfo(for userIds: [String], completion: @escaping (Result<[String: UserStatusInfoType], Error>) -> Void) -> MXHTTPOperation?
     
-    /// Tells whether a Matrix identifier corresponds to an external Tchap user.
-    /// Note: invalid identifier will be considered as external.
-    ///
-    /// - Parameters:
-    ///   - userId: The Matrix user id.
-    /// - Returns: true if the user is external.
-    func isExternalUser(for userId: String) -> Bool
-    
     /// Tells whether the Tchap registration with the provided email address is allowed.
     ///
     /// - Parameters:
@@ -102,16 +94,6 @@ protocol UserServiceType {
     ///   - hostName: the host name to consider.
     ///   - completion: A closure called when the operation completes. Provide the answer or an error.
     func isEmailBound(_ email: String, to hostName: String, completion: @escaping (MXResponse<Bool>) -> Void)
-    
-    /// Build a display name from the tchap user identifier.
-    /// We don't extract the domain for the moment in order to not display unexpected information.
-    /// For example in case of "@jean.martin-modernisation.fr:matrix.org", this will return "Jean Martin".
-    /// In case of an external user identifier, we return the local part of the id which corresponds to their email.
-    ///
-    /// - Parameter
-    ///   - userId: The user id to parse
-    /// - Returns: displayName without domain, an empty string if the id is not valid.
-    func displayName(from userId: String) -> String
     
     /// Returns the host name for a Matrix user id.
     ///

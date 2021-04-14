@@ -169,52 +169,119 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
         }
     }
     
-    if (event.eventType == MXEventTypeRoomCreate)
+    switch (event.eventType)
     {
-        MXRoomCreateContent *createContent = [MXRoomCreateContent modelFromJSON:event.content];
-        
-        NSString *roomPredecessorId = createContent.roomPredecessorInfo.roomId;
-        
-        if (roomPredecessorId)
+        case MXEventTypeRoomCreate:
         {
-            return [self roomCreatePredecessorAttributedStringWithPredecessorRoomId:roomPredecessorId];
-        }
-        else
-        {
-            NSAttributedString *string = [super attributedStringFromEvent:event withRoomState:roomState error:error];
-            NSMutableAttributedString *result = [[NSMutableAttributedString alloc] initWithString:@"· "];
-            [result appendAttributedString:string];
-            return result;
-        }
-    }
-    
-    if (event.eventType == MXEventTypeRoomMember)
-    {
-        if (event.isUserProfileChange)
-        {
-            // Check whether the profile change must be hidden or not
-            if (!RiotSettings.shared.showProfileUpdateEvents)
+            MXRoomCreateContent *createContent = [MXRoomCreateContent modelFromJSON:event.content];
+            
+            NSString *roomPredecessorId = createContent.roomPredecessorInfo.roomId;
+            
+            if (roomPredecessorId)
             {
+                return [self roomCreatePredecessorAttributedStringWithPredecessorRoomId:roomPredecessorId];
+            }
+            else
+            {
+                NSAttributedString *string = [super attributedStringFromEvent:event withRoomState:roomState error:error];
+                NSMutableAttributedString *result = [[NSMutableAttributedString alloc] initWithString:@"· "];
+                [result appendAttributedString:string];
+                return result;
+            }
+        }
+            break;
+        case MXEventTypeRoomRetention:
+        {
+            // Check whether a retention period is defined
+            uint periodInDays = RoomService.undefinedRetentionValueInDays;
+            if (event.content[RoomService.roomRetentionContentMaxLifetimeKey])
+            {
+                UInt64 maxLifetime = UINT64_MAX;
+                MXJSONModelSetUInt64(maxLifetime, event.content[RoomService.roomRetentionContentMaxLifetimeKey]);
+                periodInDays = [Tools numberOfDaysFromDurationInMs:maxLifetime];
+            }
+            
+            NSString *displayText = nil;
+            if ([event.sender isEqualToString:mxSession.myUserId])
+            {
+                if (periodInDays != RoomService.undefinedRetentionValueInDays)
+                {
+                    NSString *period = [RoomService getDisplayLabelForRetentionPeriodInDays:periodInDays];
+                    displayText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"notice_room_retention_changed_by_you", @"Tchap", nil), period];
+                }
+                else
+                {
+                    displayText = NSLocalizedStringFromTable(@"notice_room_retention_removed_by_you", @"Tchap", nil);
+                }
+            }
+            else
+            {
+                NSString *displayName = roomState ? [roomState.members memberName:event.sender] : [UserService displayNameFrom:event.sender];
+                if (periodInDays != RoomService.undefinedRetentionValueInDays)
+                {
+                    NSString *period = [RoomService getDisplayLabelForRetentionPeriodInDays:periodInDays];
+                    displayText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"notice_room_retention_changed", @"Tchap", nil), displayName, period];
+                }
+                else
+                {
+                    displayText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"notice_room_retention_removed", @"Tchap", nil), displayName];
+                }
+            }
+            
+            // Build the attributed string with the right font and color for the events
+            return [self renderString:displayText forEvent:event];
+        }
+            break;
+        case MXEventTypeRoomMember:
+        {
+            if (event.isUserProfileChange)
+            {
+                // Check whether the profile change must be hidden or not
+                if (!RiotSettings.shared.showProfileUpdateEvents)
+                {
+                    return nil;
+                }
+            }
+            else if (!RiotSettings.shared.showJoinLeaveEvents)
+            {
+                // Hide the join and leave events
+                NSString* membership;
+                MXJSONModelSetString(membership, event.content[@"membership"]);
+                if ([membership isEqualToString:kMXMembershipStringJoin] || [membership isEqualToString:kMXMembershipStringLeave])
+                {
+                    return nil;
+                }
+            }
+        }
+            break;
+        case MXEventTypeCallCandidates:
+        case MXEventTypeCallAnswer:
+        //case MXEventTypeCallSelectAnswer:
+        case MXEventTypeCallHangup:
+        //case MXEventTypeCallNegotiate:
+        //case MXEventTypeCallReplaces:
+        //case MXEventTypeCallRejectReplacement:
+            //  Do not show call events except invite and reject in timeline
+            return nil;
+        case MXEventTypeCallInvite:
+        {
+            MXCallInviteEventContent *content = [MXCallInviteEventContent modelFromJSON:event.content];
+            MXCall *call = [mxSession.callManager callWithCallId:content.callId];
+            if (call && call.isIncoming && call.state == MXCallStateRinging)
+            {
+                //  incoming call UI will be handled by CallKit (or incoming call screen if CallKit disabled)
+                //  do not show a bubble for this case
                 return nil;
             }
         }
-        else if (!RiotSettings.shared.showJoinLeaveEvents)
-        {
-            // Hide the join and leave events
-            NSString* membership;
-            MXJSONModelSetString(membership, event.content[@"membership"]);
-            if ([membership isEqualToString:kMXMembershipStringJoin] || [membership isEqualToString:kMXMembershipStringLeave])
-            {
-                return nil;
-            }
-        }
-    }
-        
-    // Make event types MXEventTypeKeyVerificationCancel and MXEventTypeKeyVerificationDone visible in timeline.
-    // TODO: Find another way to keep them visible and avoid instantiate empty NSMutableAttributedString.
-    if (event.eventType == MXEventTypeKeyVerificationCancel || event.eventType == MXEventTypeKeyVerificationDone)
-    {
-        return [NSMutableAttributedString new];
+            break;
+        case MXEventTypeKeyVerificationCancel:
+        case MXEventTypeKeyVerificationDone:
+            // Make event types MXEventTypeKeyVerificationCancel and MXEventTypeKeyVerificationDone visible in timeline.
+            // TODO: Find another way to keep them visible and avoid instantiate empty NSMutableAttributedString.
+            return [NSMutableAttributedString new];
+        default:
+            break;
     }
     
     NSAttributedString *attributedString = [super attributedStringFromEvent:event withRoomState:roomState error:error];
@@ -546,8 +613,7 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
         // We change it here with a more friendly string
         if ([MXTools isMatrixUserIdentifier:summary.displayname])
         {
-            UserService *userService = [[UserService alloc] initWithSession:session];
-            summary.displayname = [userService displayNameFrom:summary.displayname];
+            summary.displayname = [UserService displayNameFrom:summary.displayname];
         }
     }
     else

@@ -188,7 +188,7 @@ CHECKOUT OPTIONS:
     :commit: 98839c1b1184931ff59d97a99aaff32068e53d7f
     :git: https://github.com/matrix-org/matrix-ios-kit.git
   MatrixSDK:
-    :commit: 93d2d4e67f6ec433d6fcd66f8a81cabd50df844a
+    :commit: a4b2a8718105c1674254da80ed8172facc0de0da
     :git: https://github.com/matrix-org/matrix-ios-sdk.git
 
 SPEC CHECKSUMS:

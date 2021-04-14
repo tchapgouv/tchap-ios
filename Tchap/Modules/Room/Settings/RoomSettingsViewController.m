@@ -60,7 +60,7 @@ NSString *const kRoomSettingsTopicCellViewIdentifier = @"kRoomSettingsTopicCellV
 NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBannedUserCellViewIdentifier";
 NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetentionCellViewIdentifier";
 
-@interface RoomSettingsViewController () <Stylable, SingleImagePickerPresenterDelegate, RetentionPeriodInDaysPickerCellDelegate>
+@interface RoomSettingsViewController () <Stylable, SingleImagePickerPresenterDelegate, RetentionPeriodPickerCellDelegate>
 {
     // The updated user data
     NSMutableDictionary<NSString*, id> *updatedItemsDict;
@@ -77,7 +77,6 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
     
     // Room retention
     NSInteger retentionIndex;
-    uint displayedRetentionPeriod;
     BOOL isRetentionEdited;
     NSInteger retentionPeriodPickerIndex;
     
@@ -196,7 +195,7 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
     [self.tableView registerClass:MXKTableViewCellWithButton.class forCellReuseIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
     [self.tableView registerClass:MXKTableViewCell.class forCellReuseIdentifier:[MXKTableViewCell defaultReuseIdentifier]];
     
-    [self.tableView registerNib:RetentionPeriodInDaysPickerCell.nib forCellReuseIdentifier:RetentionPeriodInDaysPickerCell.defaultReuseIdentifier];
+    [self.tableView registerNib:RetentionPeriodPickerCell.nib forCellReuseIdentifier:RetentionPeriodPickerCell.defaultReuseIdentifier];
     
     // Enable self sizing cells
     self.tableView.rowHeight = UITableViewAutomaticDimension;
@@ -952,12 +951,20 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
             if ([updatedItemsDict objectForKey:kRoomSettingsRetentionKey])
             {
                 uint periodInDays = ((NSNumber*)[updatedItemsDict objectForKey:kRoomSettingsRetentionKey]).unsignedIntValue;
-                UInt64 periodInMs = [Tools durationInMsFromDays:periodInDays];
-                pendingOperation = [mxRoom sendStateEventOfType:RoomService.roomRetentionStateEventType
-                                                        content:@{
-                                                                  RoomService.roomRetentionContentMaxLifetimeKey: @(periodInMs),
-                                                                  RoomService.roomRetentionContentExpireOnClientsKey: @(YES)
-                                                                  }
+                NSDictionary *content;
+                if (periodInDays != RoomService.undefinedRetentionValueInDays)
+                {
+                    content = @{
+                        RoomService.roomRetentionContentMaxLifetimeKey: @([Tools durationInMsFromDays:periodInDays]),
+                        RoomService.roomRetentionContentExpireOnClientsKey: @(YES)
+                    };
+                }
+                else
+                {
+                    content = @{};
+                }
+                pendingOperation = [mxRoom sendStateEventOfType:kMXEventTypeStringRoomRetention
+                                                        content:content
                                                        stateKey:@""
                                                         success:^(NSString *eventId) {
                                                             
@@ -1036,13 +1043,6 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
         avatarIndex = count++;
         nameIndex = count++;
         topicIndex = count++;
-#ifdef ENABLE_ROOM_RETENTION
-        retentionIndex = count++;
-        retentionPeriodPickerIndex = isRetentionEdited ? count++ : -1;
-#else
-        retentionIndex = -1;
-        retentionPeriodPickerIndex = -1;
-#endif
         directoryVisibilityIndex = -1;
         // Add a toggle when the room is listed in the rooms directory (public rooms) to let the user remove it from this list.
         // Check whether the room visibility is known, and if the room is public
@@ -1063,6 +1063,13 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
 #endif
         roomAccessRuleIndex = count++;
         notificationsIndex = count++;
+#ifdef ENABLE_ROOM_RETENTION
+        retentionIndex = count++;
+        retentionPeriodPickerIndex = isRetentionEdited ? count++ : -1;
+#else
+        retentionIndex = -1;
+        retentionPeriodPickerIndex = -1;
+#endif
         leaveActionIndex = count++;
     }
     else if (section == ROOM_SETTINGS_BANNED_USERS_SECTION_INDEX)
@@ -1180,21 +1187,14 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
             cell.textLabel.textColor = self.currentStyle.primaryTextColor;
             cell.textLabel.text = NSLocalizedStringFromTable(@"room_settings_retention_title", @"Tchap", nil);
             
-            displayedRetentionPeriod = [mxRoom.summary tc_roomRetentionPeriodInDays];
+            uint displayedRetentionPeriod = [mxRoom.summary tc_roomRetentionPeriodInDays];
             if ([updatedItemsDict objectForKey:kRoomSettingsRetentionKey])
             {
                 displayedRetentionPeriod = ((NSNumber*)[updatedItemsDict objectForKey:kRoomSettingsRetentionKey]).unsignedIntValue;
             }
             
-            //TODO: handle the case where there is no retention: displayedRetentionPeriod = MXRoomSummary.undefinedRetentionValueInDays
-            if (displayedRetentionPeriod == 1)
-            {
-                cell.detailTextLabel.text = NSLocalizedStringFromTable(@"room_settings_retention_period_one_day", @"Tchap", nil);
-            }
-            else
-            {
-                cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_settings_retention_period_in_days", @"Tchap", nil), displayedRetentionPeriod];
-            }
+            cell.detailTextLabel.text = [RoomService getDisplayLabelForRetentionPeriodInDays:displayedRetentionPeriod];
+            
             cell.detailTextLabel.textColor = isRetentionEdited ? self.currentStyle.warnTextColor : self.currentStyle.secondaryTextColor;
             
             cell.accessoryView = nil;
@@ -1203,10 +1203,15 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
         }
         else if (row == retentionPeriodPickerIndex)
         {
-            RetentionPeriodInDaysPickerCell *pickerCell = [tableView dequeueReusableCellWithIdentifier:[RetentionPeriodInDaysPickerCell defaultReuseIdentifier] forIndexPath:indexPath];
+            RetentionPeriodPickerCell *pickerCell = [tableView dequeueReusableCellWithIdentifier:[RetentionPeriodPickerCell defaultReuseIdentifier] forIndexPath:indexPath];
             
             pickerCell.delegate = self;
-            [pickerCell scrollToRetentionPeriodInDays:displayedRetentionPeriod animated:NO];
+            uint displayedRetentionPeriod = [mxRoom.summary tc_roomRetentionPeriodInDays];
+            if ([updatedItemsDict objectForKey:kRoomSettingsRetentionKey])
+            {
+                displayedRetentionPeriod = ((NSNumber*)[updatedItemsDict objectForKey:kRoomSettingsRetentionKey]).unsignedIntValue;
+            }
+            [pickerCell updatePickerWithRetentionPeriodInDays:displayedRetentionPeriod animated:NO];
             
             cell = pickerCell;
         }
@@ -1451,7 +1456,7 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
             else
             {
                 // If the display name is unknown, build a temporary name from the user id.
-                displayName = [userService displayNameFrom:bannedMember.userId];
+                displayName = [UserService displayNameFrom:bannedMember.userId];
             }
         }
         
@@ -1889,16 +1894,16 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
     }
 }
 
-#pragma mark - RetentionPeriodInDaysPickerCellDelegate
+#pragma mark - RetentionPeriodPickerCellDelegate
 
-- (void)retentionPeriodInDaysPickerCell:(RetentionPeriodInDaysPickerCell *)cell didSelect:(uint)period
+- (void)retentionPeriodPickerCell:(RetentionPeriodPickerCell *)cell didSelect:(uint)periodInDays
 {
     uint currentPeriod = [mxRoom.summary tc_roomRetentionPeriodInDays];
     
     // Check whether the topic has been actually changed
-    if (currentPeriod != period)
+    if (currentPeriod != periodInDays)
     {
-        [updatedItemsDict setObject:@(period) forKey:kRoomSettingsRetentionKey];
+        [updatedItemsDict setObject:@(periodInDays) forKey:kRoomSettingsRetentionKey];
     }
     else
     {

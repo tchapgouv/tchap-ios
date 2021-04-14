@@ -265,7 +265,7 @@
                 else
                 {
                     // If the display name is unknown, build a temporary name from the user id.
-                    memberDisplayName = [userService displayNameFrom:memberUserId];
+                    memberDisplayName = [UserService displayNameFrom:memberUserId];
                 }
             }
             User *user = [[User alloc] initWithUserId:memberUserId displayName:memberDisplayName avatarStringURL:self.mxRoomMember.avatarUrl];
@@ -420,8 +420,6 @@
     }
     else
     {
-        UserService *userService = [[UserService alloc] initWithSession:self.mainSession];
-        
         // Enumerate admin actions
         switch (self.mxRoomMember.membership)
         {
@@ -493,7 +491,7 @@
         
         // Note the external users are not allowed to start chat with another external user.
         // Hide the option "envoyer un message" for the external users when the current user is external too.
-        if (![userService isExternalUserFor:myUserId] || ![userService isExternalUserFor:roomMemberId])
+        if (![UserService isExternalUserFor:myUserId] || ![UserService isExternalUserFor:roomMemberId])
         {
             // Use the action startChat to open the current discussion with this member.
             [otherActionsArray addObject:@(MXKRoomMemberDetailsActionStartChat)];

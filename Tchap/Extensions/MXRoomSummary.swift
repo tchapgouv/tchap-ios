@@ -28,16 +28,9 @@ enum RoomCategory {
     case unknown
 }
 
-enum RetentionConstants {
-    static let undefinedRetentionValue = UInt64.max
-    static let undefinedRetentionValueInDays = uint.max
-}
-
 @objc extension MXRoomSummary {
     
     static let roomSummaryDidRemoveExpiredDataFromStore = "roomSummaryDidRemoveExpiredDataFromStore"
-    
-    static let undefinedRetentionValueInDays = RetentionConstants.undefinedRetentionValueInDays
     
     // MARK: - Constants
     
@@ -72,11 +65,13 @@ enum RetentionConstants {
                         self.others[Constants.roomAccessRuleKey] = rule
                         updated = true
                     }
-                } else if type == RoomService.roomRetentionStateEventType {
+                } else if type == MXEventType.roomRetention.identifier {
                     if let maxLifetime = event.content[RoomService.roomRetentionContentMaxLifetimeKey] as? UInt64 {
                         self.others[Constants.roomRetentionInDaysKey] = Tools.numberOfDaysFromDuration(inMs: maxLifetime)
-                        updated = true
+                    } else {
+                        self.others[Constants.roomRetentionInDaysKey] = RetentionConstants.undefinedRetentionValueInDays
                     }
+                    updated = true
                 }
             }
         }

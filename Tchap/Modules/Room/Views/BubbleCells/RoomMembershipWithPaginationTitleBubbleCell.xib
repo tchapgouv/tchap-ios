@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -20,10 +17,10 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CMu-2c-5JU" userLabel="Pagination Title View">
-                        <rect key="frame" x="64" y="18" width="518" height="24"/>
+                        <rect key="frame" x="72" y="21" width="502" height="24"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eV5-VM-9yG" userLabel="Pagination Label">
-                                <rect key="frame" x="0.0" y="0.0" width="508" height="18"/>
+                                <rect key="frame" x="0.0" y="0.0" width="492" height="18"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="18" id="QKr-1m-XfW"/>
                                 </constraints>
@@ -32,7 +29,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ceg-Ey-9E7" userLabel="Pagination Separator View">
-                                <rect key="frame" x="0.0" y="23" width="518" height="1"/>
+                                <rect key="frame" x="0.0" y="23" width="502" height="1"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                         </subviews>
@@ -59,7 +56,7 @@
                         </constraints>
                     </view>
                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="text message" translatesAutoresizingMaskIntoConstraints="NO" id="HTH-5n-MSU">
-                        <rect key="frame" x="71" y="54" width="102" height="33.5"/>
+                        <rect key="frame" x="79" y="54" width="102" height="34"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                         <accessibility key="accessibilityConfiguration" identifier="MessageTextView"/>
                         <constraints>
@@ -71,7 +68,7 @@
                         <dataDetectorType key="dataDetectorTypes" link="YES"/>
                     </textView>
                     <view hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IOg-Kt-8vW">
-                        <rect key="frame" x="515" y="54" width="70" height="33.5"/>
+                        <rect key="frame" x="515" y="54" width="70" height="34"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                         <accessibility key="accessibilityConfiguration" identifier="BubbleInfoContainer"/>
                         <constraints>
@@ -79,7 +76,7 @@
                         </constraints>
                     </view>
                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="stw-MD-khQ">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="87.5"/>
+                        <rect key="frame" x="8" y="3" width="584" height="82"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                 </subviews>
@@ -91,7 +88,7 @@
                     <constraint firstAttribute="bottomMargin" secondItem="stw-MD-khQ" secondAttribute="bottom" constant="-8" id="8Lj-ay-d6E"/>
                     <constraint firstAttribute="trailingMargin" secondItem="CMu-2c-5JU" secondAttribute="trailing" constant="10" id="GDp-Is-b4z"/>
                     <constraint firstItem="stw-MD-khQ" firstAttribute="top" secondItem="ef1-Tq-U3Z" secondAttribute="topMargin" constant="-8" id="JXb-n4-O4S"/>
-                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="HTH-5n-MSU" secondAttribute="trailing" constant="15" id="Shz-6S-kGd"/>
+                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="HTH-5n-MSU" secondAttribute="trailing" constant="50" id="Shz-6S-kGd"/>
                     <constraint firstItem="HTH-5n-MSU" firstAttribute="leading" secondItem="ef1-Tq-U3Z" secondAttribute="leadingMargin" constant="63" id="cxO-Px-nau"/>
                     <constraint firstAttribute="bottom" secondItem="IOg-Kt-8vW" secondAttribute="bottom" id="f24-Fr-D4j"/>
                     <constraint firstItem="CMu-2c-5JU" firstAttribute="leading" secondItem="ef1-Tq-U3Z" secondAttribute="leadingMargin" constant="56" id="iMx-ii-5q6"/>
@@ -122,6 +119,7 @@
                 <outlet property="pictureView" destination="hgp-Z5-rAj" id="rKM-QG-RJN"/>
                 <outlet property="pictureViewTopConstraint" destination="2Ih-ga-N9s" id="rpQ-bN-moE"/>
             </connections>
+            <point key="canvasLocation" x="-216" y="131"/>
         </tableViewCell>
     </objects>
 </document>
