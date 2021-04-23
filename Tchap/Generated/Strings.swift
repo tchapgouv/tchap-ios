@@ -399,19 +399,17 @@ internal enum TchapL10n {
   internal static let roomSettingsRoomAccessUnrestricted = TchapL10n.tr("Tchap", "room_settings_room_access_unrestricted")
   /// Paramètres
   internal static let roomSettingsTabTitle = TchapL10n.tr("Tchap", "room_settings_tab_title")
-  /// Salon privé ouvert aux externes
+  /// Privé avec externes
   internal static let roomTitleExternRoom = TchapL10n.tr("Tchap", "room_title_extern_room")
-  /// Salon forum
+  /// Forum
   internal static let roomTitleForumRoom = TchapL10n.tr("Tchap", "room_title_forum_room")
-  /// Salon privé
+  /// Privé
   internal static let roomTitlePrivateRoom = TchapL10n.tr("Tchap", "room_title_private_room")
-  /// Historique limité à %d jours
+  /// %d j
   internal static func roomTitleRetentionInfoInDays(_ p1: Int) -> String {
     return TchapL10n.tr("Tchap", "room_title_retention_info_in_days", p1)
   }
-  /// Historique limité à 1 jour
-  internal static let roomTitleRetentionInfoOneDay = TchapL10n.tr("Tchap", "room_title_retention_info_one_day")
-  /// %d membre(s)
+  /// %d
   internal static func roomTitleRoomMembersCount(_ p1: Int) -> String {
     return TchapL10n.tr("Tchap", "room_title_room_members_count", p1)
   }

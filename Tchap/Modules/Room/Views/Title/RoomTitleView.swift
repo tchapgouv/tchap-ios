@@ -33,9 +33,19 @@ import Reusable
     // MARK: - Properties
     
     @IBOutlet private weak var titleLabel: UILabel!
+    @IBOutlet private weak var subTitleFirstView: UIView!
+    @IBOutlet private weak var subTitleRoomTypeImageView: UIImageView!
     @IBOutlet private weak var subTitleLabel: UILabel!
-    @IBOutlet private weak var roomInfoLabel: UILabel!
+    @IBOutlet private weak var subTitleMembersView: UIView!
+    @IBOutlet private weak var subTitleMembersSeparatorLabel: UILabel!
+    @IBOutlet private weak var subTitleMembersImageView: UIImageView!
+    @IBOutlet private weak var subTitleMembersLabel: UILabel!
+    @IBOutlet private weak var subTitleRetentionView: UIView!
+    @IBOutlet private weak var subTitleRetentionSeparatorLabel: UILabel!
+    @IBOutlet private weak var subTitleRetentionImageView: UIImageView!
+    @IBOutlet private weak var subTitleRetentionLabel: UILabel!
     @IBOutlet private weak var titlesStackView: UIStackView!
+    @IBOutlet private weak var subTitleStackView: UIStackView!
     @IBOutlet private weak var imageView: MXKImageView!
     @IBOutlet private weak var roomImageMarker: UIImageView!
     
@@ -73,31 +83,21 @@ import Reusable
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        // Update frame only for iOS 10 and below
-        if #available(iOS 11.0, *) {} else {
-            self.updateFrameFromSuperview()
-        }
-        
-        self.updateAvatarView()
-    }
-    
-    override func updateConstraints() {
-        
         if #available(iOS 11.0, *) {
             if self.titlesStackViewCenterXConstraint == nil {
-                
+
                 // Center horizontally titles with superview if possible to avoid offset
                 if let superView = self.superview {
                     self.titlesStackViewCenterXConstraint = self.titlesStackView.centerXAnchor.constraint(equalTo: superView.centerXAnchor)
                 } else {
                     self.titlesStackViewCenterXConstraint = self.titlesStackView.centerXAnchor.constraint(equalTo: self.centerXAnchor)
                 }
-                
+
                 self.titlesStackViewCenterXConstraint?.isActive = true
             }
         }
         
-        super.updateConstraints()
+        self.updateAvatarView()
     }
     
     override var intrinsicContentSize: CGSize {
@@ -108,8 +108,28 @@ import Reusable
     
     @objc func fill(roomTitleViewModel: RoomTitleViewModel) {
         self.titleLabel.text = roomTitleViewModel.title
+        if let roomTypeImage = roomTitleViewModel.roomTypeImage {
+            self.subTitleRoomTypeImageView.isHidden = false
+            self.subTitleRoomTypeImageView.image = roomTypeImage
+            if let tintColor = roomTitleViewModel.roomTypeImageTintColor {
+                self.subTitleRoomTypeImageView.tintColor = tintColor
+            }
+        } else {
+            self.subTitleRoomTypeImageView.isHidden = true
+        }
         self.subTitleLabel.attributedText = roomTitleViewModel.subtitle
-        self.roomInfoLabel.text = roomTitleViewModel.roomInfo
+        if let roomMembersCount = roomTitleViewModel.roomMembersCount {
+            self.subTitleMembersView.isHidden = false
+            self.subTitleMembersLabel.text = roomMembersCount
+        } else {
+            self.subTitleMembersView.isHidden = true
+        }
+        if let roomRetentionInfo = roomTitleViewModel.roomRetentionInfo {
+            self.subTitleRetentionView.isHidden = false
+            self.subTitleRetentionLabel.text = roomRetentionInfo
+        } else {
+            self.subTitleRetentionView.isHidden = true
+        }
         if let avatarImageViewModel = roomTitleViewModel.avatarImageViewModel {
             self.imageView.isHidden = false
             if let thumbnailSize = avatarImageViewModel.thumbnailSize, let thumbnailingMethod = avatarImageViewModel.thumbnailingMethod {
@@ -152,7 +172,10 @@ import Reusable
         self.style = style
         self.titleLabel.textColor = style.barTitleColor
         self.subTitleLabel.textColor = style.barSubTitleColor
-        self.roomInfoLabel.textColor = style.secondaryTextColor
+        self.subTitleMembersSeparatorLabel.textColor = style.secondaryTextColor
+        self.subTitleMembersLabel.textColor = style.secondaryTextColor
+        self.subTitleRetentionSeparatorLabel.textColor = style.secondaryTextColor
+        self.subTitleRetentionLabel.textColor = style.secondaryTextColor
         
         self.imageView?.defaultBackgroundColor = UIColor.clear
     }
@@ -163,27 +186,6 @@ import Reusable
         self.isUserInteractionEnabled = true
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleBackgroundTap(_:)))
         self.addGestureRecognizer(tapGestureRecognizer)
-    }
-    
-    // Update view frame according superview only for iOS 10 and below
-    // This is a workaround, prefer update RoomTitleView frame from outside to get more control and avoid introspection
-    private func updateFrameFromSuperview() {
-        guard let superView = self.superview as? UINavigationBar else {
-            return
-        }
-        
-        // Handle presence of backBarButtonItem with hardcoded margin
-        let leftMargin: CGFloat = superView.backItem != nil ? Constants.backBarButtonItemRightPosition : 0
-        let rightargin: CGFloat = 0
-        
-        let titleViewWidth: CGFloat = superView.frame.size.width - leftMargin - rightargin
-        let titleViewHeight: CGFloat = superView.frame.size.height
-        
-        self.frame = CGRect(x: leftMargin, y: 0, width: titleViewWidth, height: titleViewHeight)
-        
-        // Center horizontally titles with superview
-        self.titlesStackViewCenterXConstraint = self.titlesStackView.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: -leftMargin/2)
-        self.titlesStackViewCenterXConstraint?.isActive = true
     }
     
     private func updateAvatarView () {
