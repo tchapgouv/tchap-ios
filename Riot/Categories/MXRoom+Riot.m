@@ -20,20 +20,9 @@
 
 #import "AvatarGenerator.h"
 
-#import "GeneratedInterface-Swift.h"
-
 #import <objc/runtime.h>
 
 @implementation MXRoom (Riot)
-
-#pragma mark - Direct chats handling
-
-- (BOOL)isDirect
-{
-    // Check whether this room is tagged as direct for one of the room members.
-    // The room Tchap Info is displayed as a direct
-    return (self.directUserId != nil || self.tc_isServerNotice);
-}
 
 #pragma mark - Room tags
 

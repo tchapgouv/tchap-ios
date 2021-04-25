@@ -18,6 +18,8 @@
 #import "ShareDataSource.h"
 #import "ShareExtensionManager.h"
 
+#import "GeneratedInterface-Swift.h"
+
 @interface ShareDataSource ()
 
 @property (nonatomic, readwrite) ShareDataSourceMode dataSourceMode;
@@ -67,7 +69,9 @@
                 && roomSummary.membership != MXMembershipInvite)
             {
                 // Hide the rooms created to invite some non-tchap contact by email.
-                if (roomSummary.isDirect && [MXTools isEmailAddress:roomSummary.directUserId])
+                // and hide Tchap Info
+                if ((roomSummary.isDirect && [MXTools isEmailAddress:roomSummary.directUserId])
+                    || roomSummary.tc_isServerNotice)
                 {
                     continue;
                 }

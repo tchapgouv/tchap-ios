@@ -19,16 +19,7 @@
 
 #import "AvatarGenerator.h"
 
-#import "GeneratedInterface-Swift.h"
-
 @implementation MXRoomSummary (Riot)
-
-- (BOOL)isDirect
-{
-    // Check whether this room is tagged as direct for one of the room members.
-    // The room Tchap Info is displayed as a direct
-    return (self.directUserId != nil || self.tc_isServerNotice);
-}
 
 - (void)setRoomAvatarImageIn:(MXKImageView*)mxkImageView
 {
