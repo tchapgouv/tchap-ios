@@ -40,6 +40,13 @@ enum RoomCategory {
         static let roomRetentionInDaysKey = "roomRetentionInDays"
     }
     
+    func tc_isServerNotice() -> Bool {
+        guard let tags = self.room?.accountData.tags else {
+            return false
+        }
+        return tags[kMXRoomTagServerNotice] != nil
+    }
+    
     /// Called to update the room summary on received state events.
     /// Store in the summary some additional information required for Tchap.
     ///
@@ -90,7 +97,7 @@ enum RoomCategory {
     @nonobjc func tc_roomAccessRule() -> RoomAccessRule {
         if let rule = self.others[Constants.roomAccessRuleKey] as? String {
             return RoomAccessRule(identifier: rule)
-        } else if self.isDirect {
+        } else if self.isDirect || tc_isServerNotice(){
             // TODO add the right state event to this discussion
             return .direct
         } else {
@@ -103,7 +110,7 @@ enum RoomCategory {
     @nonobjc func tc_roomCategory() -> RoomCategory {
         let isJoinRulePublic = self.others["mxkEventFormatterisJoinRulePublic"] as? Bool ?? false
         let category: RoomCategory
-        if self.isDirect {
+        if self.isDirect || tc_isServerNotice(){
             category = .directChat
         } else if self.isEncrypted {
             if case .restricted = self.tc_roomAccessRule() {

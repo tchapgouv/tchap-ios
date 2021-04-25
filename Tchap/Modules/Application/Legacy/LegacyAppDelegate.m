@@ -735,6 +735,10 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 
     NSString *title = [error.userInfo valueForKey:NSLocalizedFailureReasonErrorKey];
     NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
+    if (msg)
+    {
+        msg = NSLocalizedStringFromTable(msg, @"Tchap", nil);
+    }
     if (!title)
     {
         if (msg)
@@ -746,6 +750,10 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         {
             title = NSLocalizedStringFromTable(@"error_message_default", @"Tchap", nil);
         }
+    }
+    else
+    {
+        title = NSLocalizedStringFromTable(title, @"Tchap", nil);
     }
     
     // Switch in offline mode in case of network reachability error

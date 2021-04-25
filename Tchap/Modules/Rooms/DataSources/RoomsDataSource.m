@@ -635,6 +635,7 @@
         MXKSessionRecentsDataSource *recentsDataSource = [displayedRecentsDataSourceArray objectAtIndex:0];
         
         NSInteger count = recentsDataSource.numberOfCells;
+        NSInteger infoRoomIndex = 0;
         NSInteger pinnedRoomIndex = 0;
         
         for (int index = 0; index < count; index++)
@@ -652,6 +653,19 @@
             if (room.summary.membership == MXMembershipInvite)
             {
                 [invitesCellDataArray addObject:recentCellDataStoring];
+            }
+            else if (room.tc_isServerNotice)
+            {
+                // Display in first position the unread Tchap info room
+                if (room.summary.localUnreadEventCount) {
+                    [conversationCellDataArray insertObject:recentCellDataStoring atIndex:infoRoomIndex++];
+                    pinnedRoomIndex++;
+                }
+                else
+                {
+                    // Let this room at its position
+                    [conversationCellDataArray addObject:recentCellDataStoring];
+                }
             }
             else if (room.accountData.tags[kMXRoomTagFavourite])
             {

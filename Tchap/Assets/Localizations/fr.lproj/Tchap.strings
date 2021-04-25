@@ -14,6 +14,7 @@
 "info_title" = "Information";
 "error_title_default" = "Erreur";
 "error_message_default" = "Une erreur est survenue, veuillez réessayer ultérieurement";
+"You cannot reject this invite" = "Vous ne pouvez pas rejeter cette invitation";
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Welcome
@@ -167,6 +168,7 @@
 "room_category_private_room" = "Privé";
 "room_category_extern_room" = "Externes";
 "room_category_forum_room" = "Forum";
+"room_category_info_room" = "Info";
 "room_event_action_add_favourite" = "Mettre en favoris";
 "room_event_action_remove_favourite" = "Retirer des favoris";
 "room_event_action_favourite" = "Favoris";
