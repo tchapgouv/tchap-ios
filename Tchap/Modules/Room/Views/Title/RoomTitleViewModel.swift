@@ -20,14 +20,20 @@ import Foundation
 final class RoomTitleViewModel: NSObject {
     
     let title: String
+    let roomTypeImage: UIImage?
+    let roomTypeImageTintColor: UIColor?
     let subtitle: NSAttributedString?
-    let roomInfo: String?
+    let roomMembersCount: String?
+    let roomRetentionInfo: String?
     let avatarImageViewModel: AvatarImageViewModel?
     
-    init(title: String, subtitle: NSAttributedString?, roomInfo: String?, avatarImageViewModel: AvatarImageViewModel?) {
+    init(title: String, roomTypeImage: UIImage?, roomTypeImageTintColor: UIColor?, subtitle: NSAttributedString?, roomMembersCount: String?, roomRetentionInfo: String?, avatarImageViewModel: AvatarImageViewModel?) {
         self.title = title
+        self.roomTypeImage = roomTypeImage
+        self.roomTypeImageTintColor = roomTypeImageTintColor
         self.subtitle = subtitle
-        self.roomInfo = roomInfo
+        self.roomMembersCount = roomMembersCount
+        self.roomRetentionInfo = roomRetentionInfo
         self.avatarImageViewModel = avatarImageViewModel
     }
 }

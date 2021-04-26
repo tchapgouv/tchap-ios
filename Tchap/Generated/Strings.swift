@@ -377,7 +377,7 @@ internal enum TchapL10n {
   internal static let roomSettingsRetentionPeriodOneYear = TchapL10n.tr("Tchap", "room_settings_retention_period_one_year")
   /// 6 mois
   internal static let roomSettingsRetentionPeriodSixMonths = TchapL10n.tr("Tchap", "room_settings_retention_period_six_months")
-  /// Durée historique
+  /// Durée de l'historique
   internal static let roomSettingsRetentionTitle = TchapL10n.tr("Tchap", "room_settings_retention_title")
   /// Ce salon n’est pas accessible par lien
   internal static let roomSettingsRoomAccessByLinkDisabled = TchapL10n.tr("Tchap", "room_settings_room_access_by_link_disabled")
@@ -399,19 +399,17 @@ internal enum TchapL10n {
   internal static let roomSettingsRoomAccessUnrestricted = TchapL10n.tr("Tchap", "room_settings_room_access_unrestricted")
   /// Paramètres
   internal static let roomSettingsTabTitle = TchapL10n.tr("Tchap", "room_settings_tab_title")
-  /// Salon privé ouvert aux externes
+  /// Privé avec externes
   internal static let roomTitleExternRoom = TchapL10n.tr("Tchap", "room_title_extern_room")
-  /// Salon forum
+  /// Forum
   internal static let roomTitleForumRoom = TchapL10n.tr("Tchap", "room_title_forum_room")
-  /// Salon privé
+  /// Privé
   internal static let roomTitlePrivateRoom = TchapL10n.tr("Tchap", "room_title_private_room")
-  /// Historique limité à %d jours
+  /// %d j
   internal static func roomTitleRetentionInfoInDays(_ p1: Int) -> String {
     return TchapL10n.tr("Tchap", "room_title_retention_info_in_days", p1)
   }
-  /// Historique limité à 1 jour
-  internal static let roomTitleRetentionInfoOneDay = TchapL10n.tr("Tchap", "room_title_retention_info_one_day")
-  /// %d membre(s)
+  /// %d
   internal static func roomTitleRoomMembersCount(_ p1: Int) -> String {
     return TchapL10n.tr("Tchap", "room_title_room_members_count", p1)
   }
