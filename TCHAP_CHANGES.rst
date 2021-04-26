@@ -2,7 +2,8 @@ Changes in Tchap 1.x.x (2021-xx-xx)
 ===================================================
 
 Features/Improvements:
- * 
+ * Apply the new design of the Room header PR #383
+ * Apply the design for the specific Tchap Info room #384
 
 Bug Fixes:
  * 
