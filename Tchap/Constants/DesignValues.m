@@ -33,6 +33,8 @@ UIColor *kColorCoral;
 UIColor *kColorPumpkinOrange;
 UIColor *kColorJadeGreen;
 UIColor *kColorGreyishBrown;
+UIColor *kColorVerySoftBlue;
+UIColor *kColorLightBlue;
 
 #pragma mark Variant 1
 
@@ -135,6 +137,8 @@ UIColor *kVariant2BoxTextColor;
     kColorPumpkinOrange = [[UIColor alloc] initWithRgb:0xf07a12];
     kColorJadeGreen = [[UIColor alloc] initWithRgb:0x27ae60];
     kColorGreyishBrown = [[UIColor alloc] initWithRgb:0x4f4f4f];
+    kColorVerySoftBlue = [[UIColor alloc] initWithRgb:0x498fcf];
+    kColorLightBlue = [[UIColor alloc] initWithRgb:0xe8edf2];
     
     // Observe user interface theme change.
     [[NSUserDefaults standardUserDefaults] addObserver:[DesignValues sharedInstance] forKeyPath:@"userInterfaceTheme" options:0 context:nil];

@@ -35,6 +35,9 @@ class ForwardDataSource: MXKRecentsDataSource {
                 if summary.isDirect && MXTools.isEmailAddress(summary.directUserId) {
                     continue
                 }
+                if summary.tc_isServerNotice() {
+                    continue
+                }
                 
                 if let recentCellData = MXKRecentCellData(roomSummary: summary, andRecentListDataSource: nil), recentCellData.roomDisplayname != nil {
                     self.cellDataArray.append(recentCellData)

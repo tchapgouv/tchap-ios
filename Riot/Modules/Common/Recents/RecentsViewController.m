@@ -104,6 +104,7 @@
     [self.recentsTableView registerNib:RoomsDiscussionCell.nib forCellReuseIdentifier:RoomsDiscussionCell.defaultReuseIdentifier];
     [self.recentsTableView registerNib:RoomsRoomCell.nib forCellReuseIdentifier:RoomsRoomCell.defaultReuseIdentifier];
     [self.recentsTableView registerNib:RoomsInviteCell.nib forCellReuseIdentifier:RoomsInviteCell.defaultReuseIdentifier];
+    [self.recentsTableView registerNib:RoomsTchapInfoCell.nib forCellReuseIdentifier:RoomsTchapInfoCell.defaultReuseIdentifier];
     
     // Register key backup banner cells
     [self.recentsTableView registerNib:SecureBackupBannerCell.nib forCellReuseIdentifier:SecureBackupBannerCell.defaultReuseIdentifier];
@@ -671,6 +672,10 @@
     if (cellDataStoring.roomSummary.room.summary.membership == MXMembershipInvite)
     {
         return RoomsInviteCell.class;
+    }
+    else if (cellDataStoring.roomSummary.tc_isServerNotice)
+    {
+        return RoomsTchapInfoCell.class;
     }
     else if (cellDataStoring.roomSummary.isDirect)
     {

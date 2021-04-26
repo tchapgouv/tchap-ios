@@ -38,6 +38,26 @@ enum RoomCategory {
         static let isFederatedKey = "isFederated"
         static let roomAccessRuleKey = "roomAccessRule"
         static let roomRetentionInDaysKey = "roomRetentionInDays"
+        static let isServerNotice = "isServerNotice"
+    }
+    
+    func tc_isServerNotice() -> Bool {
+        if let isServerNotice = self.others[Constants.isServerNotice] as? Bool {
+            return isServerNotice
+        }
+        
+        guard let tags = self.room?.accountData.tags else {
+            return false
+        }
+        let isServerNotice = tags[kMXRoomTagServerNotice] != nil
+        // In order to hide the Tchap Info room in the Share extension, we have to store this value in the summary.
+        // Indeed the room is not available in the summary there.
+        // We save this flag only when it is true (= server notice)
+        if isServerNotice {
+            self.others[Constants.isServerNotice] = isServerNotice
+            self.save(true)
+        }
+        return isServerNotice
     }
     
     /// Called to update the room summary on received state events.
@@ -90,7 +110,7 @@ enum RoomCategory {
     @nonobjc func tc_roomAccessRule() -> RoomAccessRule {
         if let rule = self.others[Constants.roomAccessRuleKey] as? String {
             return RoomAccessRule(identifier: rule)
-        } else if self.isDirect {
+        } else if self.isDirect || tc_isServerNotice(){
             // TODO add the right state event to this discussion
             return .direct
         } else {
@@ -103,7 +123,7 @@ enum RoomCategory {
     @nonobjc func tc_roomCategory() -> RoomCategory {
         let isJoinRulePublic = self.others["mxkEventFormatterisJoinRulePublic"] as? Bool ?? false
         let category: RoomCategory
-        if self.isDirect {
+        if self.isDirect || tc_isServerNotice(){
             category = .directChat
         } else if self.isEncrypted {
             if case .restricted = self.tc_roomAccessRule() {

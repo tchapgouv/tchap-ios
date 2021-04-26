@@ -37,6 +37,8 @@ extern UIColor * _Nonnull kColorCoral;
 extern UIColor * _Nonnull kColorPumpkinOrange;
 extern UIColor * _Nonnull kColorJadeGreen;
 extern UIColor * _Nonnull kColorGreyishBrown;
+extern UIColor * _Nonnull kColorLightBlue;
+extern UIColor * _Nonnull kColorVerySoftBlue;
 
 #pragma mark - Tchap Theme Colors
 

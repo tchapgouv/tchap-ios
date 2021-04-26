@@ -18,6 +18,13 @@ import Foundation
 
 @objc extension MXRoom {
     
+    func tc_isServerNotice() -> Bool {
+        guard let tags = self.accountData.tags else {
+            return false
+        }
+        return tags[kMXRoomTagServerNotice] != nil
+    }
+    
     /// Check whether the current user is the last administrator of the room.
     ///
     /// - Parameters:

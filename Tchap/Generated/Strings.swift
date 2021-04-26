@@ -297,6 +297,8 @@ internal enum TchapL10n {
   internal static let roomCategoryExternRoom = TchapL10n.tr("Tchap", "room_category_extern_room")
   /// Forum
   internal static let roomCategoryForumRoom = TchapL10n.tr("Tchap", "room_category_forum_room")
+  /// Info
+  internal static let roomCategoryInfoRoom = TchapL10n.tr("Tchap", "room_category_info_room")
   /// Privé
   internal static let roomCategoryPrivateRoom = TchapL10n.tr("Tchap", "room_category_private_room")
   /// Ajouter une photo
@@ -469,6 +471,8 @@ internal enum TchapL10n {
   internal static let welcomeRegisterAction = TchapL10n.tr("Tchap", "welcome_register_action")
   /// Bienvenue dans Tchap
   internal static let welcomeTitle = TchapL10n.tr("Tchap", "welcome_title")
+  /// Vous ne pouvez pas rejeter cette invitation
+  internal static let youCannotRejectThisInvite = TchapL10n.tr("Tchap", "You cannot reject this invite")
 }
 // swiftlint:enable function_parameter_count identifier_name line_length type_body_length
 
