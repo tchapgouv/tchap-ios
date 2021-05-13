@@ -616,7 +616,7 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
             summary.displayname = [UserService displayNameFrom:summary.displayname];
         }
     }
-    else
+    else if (!summary.tc_isServerNotice)
     {
         // Remove the potential member avatar used as the room avatar
         if (!roomState.avatar && summary.avatar)

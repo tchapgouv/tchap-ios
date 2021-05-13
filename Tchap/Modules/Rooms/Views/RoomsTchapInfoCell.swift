@@ -36,6 +36,8 @@ import UIKit
         
         if let cellData = self.roomCellData, cellData.hasUnread {
             self.contentView.backgroundColor = kColorLightBlue
+        } else {
+            self.contentView.backgroundColor = nil
         }
     }
     

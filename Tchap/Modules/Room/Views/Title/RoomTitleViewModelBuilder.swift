@@ -79,6 +79,17 @@ final class RoomTitleViewModelBuilder: NSObject {
             avatarBorderColor = nil
             avatarBorderWidth = nil
             avatarMarker = Asset.SharedImages.privateAvatarIcon.image
+        } else if case .serverNotice = roomCategory {
+            title = displayName
+            subtitle = nil
+            roomTypeImage = nil
+            roomTypeImageTintColor = nil
+            roomMembersCount = nil
+            roomRetentionInfo = nil
+            avatarImageShape = .circle
+            avatarBorderColor = nil
+            avatarBorderWidth = nil
+            avatarMarker = nil
         } else {
             title = displayName
             avatarImageShape = .hexagon
