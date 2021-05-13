@@ -179,7 +179,7 @@ UIColor *kVariant2BoxTextColor;
     kVariant1BarSubTitleColor = [UIColor whiteColor];
     kVariant1BarActionColor = [UIColor whiteColor];
     
-    // Button
+    // Button, Badge
     
     kVariant1ButtonBorderedTitleColor = [UIColor whiteColor];
     kVariant1ButtonBorderedBgColor = kColorLightNavy;
@@ -216,7 +216,7 @@ UIColor *kVariant2BoxTextColor;
     kVariant2BarSubTitleColor = kColorDarkBlue;
     kVariant2BarActionColor = kColorLightNavy;
     
-    // Button
+    // Button, Badge
     
     kVariant2ButtonBorderedTitleColor = [UIColor whiteColor];
     kVariant2ButtonBorderedBgColor = kColorDarkBlue;

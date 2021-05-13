@@ -74,6 +74,7 @@ final class RoomTitleViewModelBuilder: NSObject {
                 subtitle = nil
             }
             roomMembersCount = nil
+            roomRetentionInfo = nil
             avatarImageShape = .circle
             avatarBorderColor = nil
             avatarBorderWidth = nil
@@ -118,18 +119,18 @@ final class RoomTitleViewModelBuilder: NSObject {
             }
             
             roomMembersCount = TchapL10n.roomTitleRoomMembersCount(Int(roomSummary.membersCount.joined))
-        }
-        
-        #if ENABLE_ROOM_RETENTION
-        let retentionPeriod = roomSummary.tc_roomRetentionPeriodInDays()
-        if retentionPeriod != RetentionConstants.undefinedRetentionValueInDays {
-            roomRetentionInfo = TchapL10n.roomTitleRetentionInfoInDays(Int(retentionPeriod))
-        } else {
+            
+            #if ENABLE_ROOM_RETENTION
+            let retentionPeriod = roomSummary.tc_roomRetentionPeriodInDays()
+            if retentionPeriod != RetentionConstants.undefinedRetentionValueInDays {
+                roomRetentionInfo = TchapL10n.roomTitleRetentionInfoInDays(Int(retentionPeriod))
+            } else {
+                roomRetentionInfo = nil
+            }
+            #else
             roomRetentionInfo = nil
+            #endif
         }
-        #else
-        roomRetentionInfo = nil
-        #endif
         
         let placeholderImage: UIImage = AvatarGenerator.generateAvatar(forText: displayName)
         
