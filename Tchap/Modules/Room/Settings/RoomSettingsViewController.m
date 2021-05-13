@@ -1471,6 +1471,7 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
         NSLog(@"[RoomSettingsViewController] cellForRowAtIndexPath: invalid indexPath");
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     }
+    cell.contentView.backgroundColor = self.currentStyle.backgroundColor;
     
     return cell;
 }
