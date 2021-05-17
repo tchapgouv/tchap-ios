@@ -111,7 +111,7 @@ enum RoomCategory {
     @nonobjc func tc_roomAccessRule() -> RoomAccessRule {
         if let rule = self.others[Constants.roomAccessRuleKey] as? String {
             return RoomAccessRule(identifier: rule)
-        } else if self.isDirect || tc_isServerNotice() {
+        } else if self.isDirect {
             // TODO add the right state event to this discussion
             return .direct
         } else {
@@ -124,18 +124,19 @@ enum RoomCategory {
     @nonobjc func tc_roomCategory() -> RoomCategory {
         let isJoinRulePublic = self.others["mxkEventFormatterisJoinRulePublic"] as? Bool ?? false
         let category: RoomCategory
-        if self.isDirect {
-            category = .directChat
-        } else if tc_isServerNotice() {
+        
+        if tc_isServerNotice() {
             category = .serverNotice
         } else if self.isEncrypted {
-            if case .restricted = self.tc_roomAccessRule() {
-                category = .restrictedPrivateRoom
-            } else {
-                category = .unrestrictedPrivateRoom
+            switch self.tc_roomAccessRule() {
+            case .direct: category = .directChat
+            case .restricted: category = .restrictedPrivateRoom
+            case .unrestricted: category = .unrestrictedPrivateRoom
+            default: category = .unknown
             }
-        } else if isJoinRulePublic {
+        } else if isJoinRulePublic && self.membership != .invite {
             // Tchap: we consider as forum all the unencrypted rooms with a public join_rule
+            // We exclude invitation here because the full room state is not available (we don't know if encryption is enabled or not)
             category = .forum
         } else {
             category = .unknown
