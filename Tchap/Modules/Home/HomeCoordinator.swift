@@ -29,8 +29,6 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
     
     private let navigationRouter: NavigationRouterType
     private let session: MXSession
-    
-    private let userService: UserServiceType
     private let inviteService: InviteServiceType
     private let thirdPartyIDResolver: ThirdPartyIDResolverType
     private let identityServer: String
@@ -57,7 +55,6 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
     init(session: MXSession) {
         self.navigationRouter = NavigationRouter(navigationController: TCNavigationController())
         self.session = session
-        self.userService = UserService(session: self.session)
         self.inviteService = InviteService(session: self.session)
         self.thirdPartyIDResolver = ThirdPartyIDResolver(credentials: session.matrixRestClient.credentials)
         self.identityServer = session.matrixRestClient.identityServer ?? session.matrixRestClient.homeserver
@@ -196,7 +193,7 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
         // Check whether the current user id is available
         if let myUserId = self.session.myUser?.userId {
             self.unregisterSessionStateNotification()
-            self.homeViewController?.setExternalUseMode(self.userService.isExternalUser(for: myUserId))
+            self.homeViewController?.setExternalUseMode(UserService.isExternalUser(for: myUserId))
         }
     }
     
@@ -227,7 +224,7 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
         
         // Check whether the current user is available
         if let myUserId = self.session.myUser?.userId {
-            homeViewController.setExternalUseMode(self.userService.isExternalUser(for: myUserId))
+            homeViewController.setExternalUseMode(UserService.isExternalUser(for: myUserId))
         } else {
             registerSessionStateNotification()
         }

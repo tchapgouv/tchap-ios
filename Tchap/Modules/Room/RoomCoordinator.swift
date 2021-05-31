@@ -219,12 +219,14 @@ final class RoomCoordinator: NSObject, RoomCoordinatorType {
     }
     
     private func showRoomDetails(animated: Bool) {
-        guard let roomID = self.currentRoomID() else {
+        guard let roomDataSource = self.roomViewController.roomDataSource,
+              !roomDataSource.room.tc_isServerNotice(),
+              let roomID = self.currentRoomID() else {
             return
         }
         
         let detailsCoordinator: RoomDetailsCoordinatorType
-        if let roomDataSource = self.roomViewController.roomDataSource, roomDataSource.room.isDirect {
+        if roomDataSource.room.isDirect {
             detailsCoordinator = DiscussionDetailsCoordinator(router: self.router, session: self.session, roomID: roomID)
         } else {
             let roomDetailsCoordinator = RoomDetailsCoordinator(router: self.router, session: self.session, roomID: roomID)

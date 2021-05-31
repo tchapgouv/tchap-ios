@@ -2455,8 +2455,7 @@ MXKDocumentPickerPresenterDelegate>
     {
         // The external users must be prompted before showing them to the users directory
         BOOL isHidden = switchButton.on;
-        UserService *userService = [[UserService alloc] initWithSession:session];
-        if (!isHidden && [userService isExternalUserFor:session.myUser.userId])
+        if (!isHidden && [UserService isExternalUserFor:session.myUser.userId])
         {
             MXWeakify(self);
             [currentAlert dismissViewControllerAnimated:NO completion:nil];

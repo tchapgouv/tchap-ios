@@ -25,19 +25,13 @@ enum RoomCategory {
     case restrictedPrivateRoom
     case unrestrictedPrivateRoom
     case forum
+    case serverNotice
     case unknown
-}
-
-enum RetentionConstants {
-    static let undefinedRetentionValue = UInt64.max
-    static let undefinedRetentionValueInDays = uint.max
 }
 
 @objc extension MXRoomSummary {
     
     static let roomSummaryDidRemoveExpiredDataFromStore = "roomSummaryDidRemoveExpiredDataFromStore"
-    
-    static let undefinedRetentionValueInDays = RetentionConstants.undefinedRetentionValueInDays
     
     // MARK: - Constants
     
@@ -45,6 +39,26 @@ enum RetentionConstants {
         static let isFederatedKey = "isFederated"
         static let roomAccessRuleKey = "roomAccessRule"
         static let roomRetentionInDaysKey = "roomRetentionInDays"
+        static let isServerNotice = "isServerNotice"
+    }
+    
+    func tc_isServerNotice() -> Bool {
+        if let isServerNotice = self.others[Constants.isServerNotice] as? Bool {
+            return isServerNotice
+        }
+        
+        guard let tags = self.room?.accountData.tags else {
+            return false
+        }
+        let isServerNotice = tags[kMXRoomTagServerNotice] != nil
+        // In order to hide the Tchap Info room in the Share extension, we have to store this value in the summary.
+        // Indeed the room is not available in the summary there.
+        // We save this flag only when it is true (= server notice)
+        if isServerNotice {
+            self.others[Constants.isServerNotice] = isServerNotice
+            self.save(true)
+        }
+        return isServerNotice
     }
     
     /// Called to update the room summary on received state events.
@@ -72,11 +86,13 @@ enum RetentionConstants {
                         self.others[Constants.roomAccessRuleKey] = rule
                         updated = true
                     }
-                } else if type == RoomService.roomRetentionStateEventType {
+                } else if type == MXEventType.roomRetention.identifier {
                     if let maxLifetime = event.content[RoomService.roomRetentionContentMaxLifetimeKey] as? UInt64 {
                         self.others[Constants.roomRetentionInDaysKey] = Tools.numberOfDaysFromDuration(inMs: maxLifetime)
-                        updated = true
+                    } else {
+                        self.others[Constants.roomRetentionInDaysKey] = RetentionConstants.undefinedRetentionValueInDays
                     }
+                    updated = true
                 }
             }
         }
@@ -108,16 +124,19 @@ enum RetentionConstants {
     @nonobjc func tc_roomCategory() -> RoomCategory {
         let isJoinRulePublic = self.others["mxkEventFormatterisJoinRulePublic"] as? Bool ?? false
         let category: RoomCategory
-        if self.isDirect {
-            category = .directChat
+        
+        if tc_isServerNotice() {
+            category = .serverNotice
         } else if self.isEncrypted {
-            if case .restricted = self.tc_roomAccessRule() {
-                category = .restrictedPrivateRoom
-            } else {
-                category = .unrestrictedPrivateRoom
+            switch self.tc_roomAccessRule() {
+            case .direct: category = .directChat
+            case .restricted: category = .restrictedPrivateRoom
+            case .unrestricted: category = .unrestrictedPrivateRoom
+            default: category = .unknown
             }
-        } else if isJoinRulePublic {
+        } else if isJoinRulePublic && self.membership != .invite {
             // Tchap: we consider as forum all the unencrypted rooms with a public join_rule
+            // We exclude invitation here because the full room state is not available (we don't know if encryption is enabled or not)
             category = .forum
         } else {
             category = .unknown

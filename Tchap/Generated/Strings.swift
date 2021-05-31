@@ -209,6 +209,20 @@ internal enum TchapL10n {
   internal static let inviteSendingFailedTitle = TchapL10n.tr("Tchap", "invite_sending_failed_title")
   /// L'invitation a bien été envoyée.\nVous recevrez une notification lorsque\nvotre invité rejoindra la communauté Tchap.
   internal static let inviteSendingSucceeded = TchapL10n.tr("Tchap", "invite_sending_succeeded")
+  /// %@ a limité la durée de l’historique à %@
+  internal static func noticeRoomRetentionChanged(_ p1: Any, _ p2: Any) -> String {
+    return TchapL10n.tr("Tchap", "notice_room_retention_changed", String(describing: p1), String(describing: p2))
+  }
+  /// Vous avez limité la durée de l’historique à %@
+  internal static func noticeRoomRetentionChangedByYou(_ p1: Any) -> String {
+    return TchapL10n.tr("Tchap", "notice_room_retention_changed_by_you", String(describing: p1))
+  }
+  /// %@ a rendu illimitée la durée de l’historique
+  internal static func noticeRoomRetentionRemoved(_ p1: Any) -> String {
+    return TchapL10n.tr("Tchap", "notice_room_retention_removed", String(describing: p1))
+  }
+  /// Vous avez rendu illimitée la durée de l’historique
+  internal static let noticeRoomRetentionRemovedByYou = TchapL10n.tr("Tchap", "notice_room_retention_removed_by_you")
   /// Ce mot de passe a été trouvé dans un dictionnaire, il n’est pas autorisé
   internal static let passwordPolicyPwdInDictError = TchapL10n.tr("Tchap", "password_policy_pwd_in_dict_error")
   /// Mot de passe trop court (min %d)
@@ -283,6 +297,8 @@ internal enum TchapL10n {
   internal static let roomCategoryExternRoom = TchapL10n.tr("Tchap", "room_category_extern_room")
   /// Forum
   internal static let roomCategoryForumRoom = TchapL10n.tr("Tchap", "room_category_forum_room")
+  /// Info
+  internal static let roomCategoryInfoRoom = TchapL10n.tr("Tchap", "room_category_info_room")
   /// Privé
   internal static let roomCategoryPrivateRoom = TchapL10n.tr("Tchap", "room_category_private_room")
   /// Ajouter une photo
@@ -351,9 +367,19 @@ internal enum TchapL10n {
   internal static func roomSettingsRetentionPeriodInDays(_ p1: Int) -> String {
     return TchapL10n.tr("Tchap", "room_settings_retention_period_in_days", p1)
   }
+  /// Illimitée
+  internal static let roomSettingsRetentionPeriodInfinite = TchapL10n.tr("Tchap", "room_settings_retention_period_infinite")
   /// 1 jour
   internal static let roomSettingsRetentionPeriodOneDay = TchapL10n.tr("Tchap", "room_settings_retention_period_one_day")
-  /// Limitation de l’historique
+  /// 1 mois
+  internal static let roomSettingsRetentionPeriodOneMonth = TchapL10n.tr("Tchap", "room_settings_retention_period_one_month")
+  /// 1 semaine
+  internal static let roomSettingsRetentionPeriodOneWeek = TchapL10n.tr("Tchap", "room_settings_retention_period_one_week")
+  /// 1 an
+  internal static let roomSettingsRetentionPeriodOneYear = TchapL10n.tr("Tchap", "room_settings_retention_period_one_year")
+  /// 6 mois
+  internal static let roomSettingsRetentionPeriodSixMonths = TchapL10n.tr("Tchap", "room_settings_retention_period_six_months")
+  /// Durée de l'historique
   internal static let roomSettingsRetentionTitle = TchapL10n.tr("Tchap", "room_settings_retention_title")
   /// Ce salon n’est pas accessible par lien
   internal static let roomSettingsRoomAccessByLinkDisabled = TchapL10n.tr("Tchap", "room_settings_room_access_by_link_disabled")
@@ -375,19 +401,17 @@ internal enum TchapL10n {
   internal static let roomSettingsRoomAccessUnrestricted = TchapL10n.tr("Tchap", "room_settings_room_access_unrestricted")
   /// Paramètres
   internal static let roomSettingsTabTitle = TchapL10n.tr("Tchap", "room_settings_tab_title")
-  /// Salon privé ouvert aux externes
+  /// Privé avec externes
   internal static let roomTitleExternRoom = TchapL10n.tr("Tchap", "room_title_extern_room")
-  /// Salon forum
+  /// Forum
   internal static let roomTitleForumRoom = TchapL10n.tr("Tchap", "room_title_forum_room")
-  /// Salon privé
+  /// Privé
   internal static let roomTitlePrivateRoom = TchapL10n.tr("Tchap", "room_title_private_room")
-  /// Historique limité à %d jours
+  /// %d j
   internal static func roomTitleRetentionInfoInDays(_ p1: Int) -> String {
     return TchapL10n.tr("Tchap", "room_title_retention_info_in_days", p1)
   }
-  /// Historique limité à 1 jour
-  internal static let roomTitleRetentionInfoOneDay = TchapL10n.tr("Tchap", "room_title_retention_info_one_day")
-  /// %d membre(s)
+  /// %d
   internal static func roomTitleRoomMembersCount(_ p1: Int) -> String {
     return TchapL10n.tr("Tchap", "room_title_room_members_count", p1)
   }
@@ -447,6 +471,8 @@ internal enum TchapL10n {
   internal static let welcomeRegisterAction = TchapL10n.tr("Tchap", "welcome_register_action")
   /// Bienvenue dans Tchap
   internal static let welcomeTitle = TchapL10n.tr("Tchap", "welcome_title")
+  /// Vous ne pouvez pas rejeter cette invitation
+  internal static let youCannotRejectThisInvite = TchapL10n.tr("Tchap", "You cannot reject this invite")
 }
 // swiftlint:enable function_parameter_count identifier_name line_length type_body_length
 

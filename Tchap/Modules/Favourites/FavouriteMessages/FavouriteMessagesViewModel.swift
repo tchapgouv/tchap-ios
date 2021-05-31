@@ -61,7 +61,13 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
         self.formatter = formatter
         
         let subtitle = NSAttributedString(string: TchapL10n.favouriteMessagesOneSubtitle(0), attributes: [.foregroundColor: kColorWarmGrey])
-        self.titleViewModel = RoomTitleViewModel(title: TchapL10n.favouriteMessagesTitle, subtitle: subtitle, roomInfo: nil, avatarImageViewModel: nil)
+        self.titleViewModel = RoomTitleViewModel(title: TchapL10n.favouriteMessagesTitle,
+                                                 roomTypeImage: nil,
+                                                 roomTypeImageTintColor: nil,
+                                                 subtitle: subtitle,
+                                                 roomMembersCount: nil,
+                                                 roomRetentionInfo: nil,
+                                                 avatarImageViewModel: nil)
     }
     
     deinit {
@@ -143,7 +149,13 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
             subtitle = TchapL10n.favouriteMessagesOneSubtitle(self.sortedFavouriteEvents.count)
         }
         
-        self.titleViewModel = RoomTitleViewModel(title: TchapL10n.favouriteMessagesTitle, subtitle: NSAttributedString(string: subtitle, attributes: [.foregroundColor: kColorWarmGrey]), roomInfo: nil, avatarImageViewModel: nil)
+        self.titleViewModel = RoomTitleViewModel(title: TchapL10n.favouriteMessagesTitle,
+                                                 roomTypeImage: nil,
+                                                 roomTypeImageTintColor: nil,
+                                                 subtitle: NSAttributedString(string: subtitle, attributes: [.foregroundColor: kColorWarmGrey]),
+                                                 roomMembersCount: nil,
+                                                 roomRetentionInfo: nil,
+                                                 avatarImageViewModel: nil)
         
         self.update(viewState: .sorted)
         

@@ -1,3 +1,11 @@
+Changes in Tchap 1.3.0 (2021-05-31)
+===================================================
+
+Features/Improvements:
+ * Enable the room retention feature in Tchap (Prod)
+ * Apply the new design of the Room header PR #383
+ * Apply the design for the specific Tchap Info room #384
+
 Changes in Tchap 1.2.1 (2021-04-12)
 ===================================================
 

@@ -129,7 +129,7 @@ import UIKit
         case .forum:
             self.encryptedIcon?.image = UIImage(named: "forum_avatar_icon")
             self.encryptedIcon?.isHidden = false
-        case .unknown:
+        case .serverNotice, .unknown:
             self.encryptedIcon?.isHidden = true
         }
         

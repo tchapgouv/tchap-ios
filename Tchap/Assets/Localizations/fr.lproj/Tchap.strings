@@ -14,6 +14,7 @@
 "info_title" = "Information";
 "error_title_default" = "Erreur";
 "error_message_default" = "Une erreur est survenue, veuillez réessayer ultérieurement";
+"You cannot reject this invite" = "Vous ne pouvez pas rejeter cette invitation";
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Welcome
@@ -154,19 +155,19 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Room title
-"room_title_private_room" = "Salon privé";
-"room_title_extern_room" = "Salon privé ouvert aux externes";
-"room_title_forum_room" = "Salon forum";
-"room_title_room_members_count" = "%d membre(s)";
+"room_title_private_room" = "Privé";
+"room_title_extern_room" = "Privé avec externes";
+"room_title_forum_room" = "Forum";
+"room_title_room_members_count" = "%d";
 "room_title_unrestricted_room" = "Salon accessible aux externes";
-"room_title_retention_info_one_day" = "Historique limité à 1 jour";
-"room_title_retention_info_in_days" = "Historique limité à %d jours";
+"room_title_retention_info_in_days" = "%d j";
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Room
 "room_category_private_room" = "Privé";
 "room_category_extern_room" = "Externes";
 "room_category_forum_room" = "Forum";
+"room_category_info_room" = "Info";
 "room_event_action_add_favourite" = "Mettre en favoris";
 "room_event_action_remove_favourite" = "Retirer des favoris";
 "room_event_action_favourite" = "Favoris";
@@ -175,6 +176,13 @@
 "tchap_room_invalid_link" = "Ce lien n'est pas valide";
 "tchap_room_access_unauthorized" = "Vous n'êtes pas autorisé à rejoindre cette conversation. Une invitation est nécessaire.";
 "room_event_action_forward" = "Transférer";
+
+////////////////////////////////////////////////////////////////////////////////
+// MARK: Room Messages
+"notice_room_retention_changed_by_you" = "Vous avez limité la durée de l’historique à %@";
+"notice_room_retention_removed_by_you" = "Vous avez rendu illimitée la durée de l’historique";
+"notice_room_retention_changed" = "%@ a limité la durée de l’historique à %@";
+"notice_room_retention_removed" = "%@ a rendu illimitée la durée de l’historique";
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Room Members
@@ -200,7 +208,12 @@
 "room_settings_room_access_unrestricted" = "Les externes sont autorisés à rejoindre ce salon";
 "room_settings_allow_external_users_to_join" = "Autoriser l’accès aux externes à ce salon";
 "room_settings_allow_external_users_to_join_prompt_msg" = "Cette action est irréversible.\nVoulez-vous vraiment autoriser les externes à rejoindre ce salon ?";
-"room_settings_retention_title" = "Limitation de l’historique";
+"room_settings_retention_title" = "Durée de l'historique";
+"room_settings_retention_period_infinite" = "Illimitée";
+"room_settings_retention_period_one_year" = "1 an";
+"room_settings_retention_period_six_months" = "6 mois";
+"room_settings_retention_period_one_month" = "1 mois";
+"room_settings_retention_period_one_week" = "1 semaine";
 "room_settings_retention_period_one_day" = "1 jour";
 "room_settings_retention_period_in_days" = "%d jours";
 "room_settings_fail_to_update_retention_period" = "Échec de mise à jour de la durée de l'historique";
@@ -259,16 +272,12 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Change password
-
 // Current password
-
 "change_password_current_password_title" = "Mot de passe actuel";
 "change_password_current_password_instructions" = "Veuillez saisir votre mot de passe actuel.";
 "change_password_current_password_password_placeholder" = "Mot de passe actuel";
 "change_password_current_password_validate_action" = "Valider";
-
 // New password
-
 "change_password_new_password_title" = "Nouveau mot de passe";
 "change_password_new_password_instructions" = "Votre nouveau mot de passe doit contenir au moins 8 caractères, avec au moins un caractère de chaque type\U00A0:\U00A0majuscule, minuscule, chiffre, caractère spécial.";
 "change_password_new_password_password_placeholder" = "Nouveau mot de passe";
@@ -278,10 +287,8 @@
 "change_password_new_password_success_message" = "Votre mot de passe a été changé avec succès.\nVous ne recevrez plus de notifications sur vos autres appareils tant que vous ne vous y reconnecterez pas.";
 "change_password_new_password_invalid_old_password" = "Votre ancien mot de passe est invalide, souhaitez-vous le modifier ?";
 
-
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: App version update
-
 "app_version_update_critical_update_message_fallback" = "Une nouvelle version est disponible. Pour des raisons de sécurité, veuillez mettre à jour votre application avant de poursuivre son utilisation.";
 "app_version_update_mandatory_update_message_fallback" = "Une nouvelle version est disponible, veuillez mettre à jour votre application.";
 "app_version_update_info_update_message_fallback" = "Une nouvelle version est disponible. Nous vous invitons à  mettre à jour votre application.";
@@ -290,15 +297,16 @@
 "app_version_update_open_app_store_action" = "Ouvrir l'App Store";
 
 ////////////////////////////////////////////////////////////////////////////////
-// Share extension
+// Mark: Share extension
 "share_extension_failed_to_share_in_empty_discussion" = "Échec d'envoi. Veuillez renouveler cet envoi depuis l'application";
 
 ////////////////////////////////////////////////////////////////////////////////
-// MARK: - Device Verification
+// MARK: Device Verification
 "device_verification_title" = "Vérifier l’appareil";
 "device_verification_verified_description" = "Vous avez bien vérifié cet appareil.\n\nLe partage des clés va s'effectuer progressivement. Les messages se déchiffreront au fur à mesure. Cela peut prendre quelques minutes.";
 
-// Favourite messages screen
+////////////////////////////////////////////////////////////////////////////////
+// MARK: Favourite messages screen
 "favourite_messages_title" = "Messages favoris";
 "favourite_messages_one_subtitle" = "%d message";
 "favourite_messages_multiple_subtitle" = "%d messages";

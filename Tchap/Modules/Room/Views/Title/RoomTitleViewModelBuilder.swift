@@ -49,8 +49,11 @@ final class RoomTitleViewModelBuilder: NSObject {
     func build(fromRoomSummary roomSummary: MXRoomSummary) -> RoomTitleViewModel {
         
         let title: String
+        let roomTypeImage: UIImage?
+        let roomTypeImageTintColor: UIColor?
         let subtitle: NSAttributedString?
-        let roomInfo: String?
+        let roomMembersCount: String?
+        let roomRetentionInfo: String?
         let avatarImageShape: AvatarImageShape
         let avatarBorderColor: UIColor?
         let avatarBorderWidth: CGFloat?
@@ -63,69 +66,82 @@ final class RoomTitleViewModelBuilder: NSObject {
         if case .directChat = roomCategory {
             let displayNameComponents = DisplayNameComponents(displayName: displayName)
             title = displayNameComponents.name
+            roomTypeImage = nil
+            roomTypeImageTintColor = nil
             if let domain = displayNameComponents.domain {
                 subtitle = NSAttributedString(string: domain)
             } else {
                 subtitle = nil
             }
+            roomMembersCount = nil
+            roomRetentionInfo = nil
             avatarImageShape = .circle
             avatarBorderColor = nil
             avatarBorderWidth = nil
             avatarMarker = Asset.SharedImages.privateAvatarIcon.image
+        } else if case .serverNotice = roomCategory {
+            title = displayName
+            subtitle = nil
+            roomTypeImage = nil
+            roomTypeImageTintColor = nil
+            roomMembersCount = nil
+            roomRetentionInfo = nil
+            avatarImageShape = .circle
+            avatarBorderColor = nil
+            avatarBorderWidth = nil
+            avatarMarker = nil
         } else {
             title = displayName
             avatarImageShape = .hexagon
             
             // Customize the avatar border and the room subtitle
-            let mutableSubtitle: NSMutableAttributedString?
             switch roomCategory {
             case .restrictedPrivateRoom:
+                roomTypeImage = Asset.Images.roomTypePrivate.image.withRenderingMode(.alwaysTemplate)
+                roomTypeImageTintColor = kColorCoral
                 avatarBorderColor = kColorDarkBlue
                 avatarBorderWidth = Constants.hexagonImageBorderWidthDefault
                 avatarMarker = Asset.SharedImages.privateAvatarIcon.image
-                mutableSubtitle = NSMutableAttributedString(string: TchapL10n.roomTitlePrivateRoom,
-                                                        attributes: [.foregroundColor: kColorCoral])
+                subtitle = NSAttributedString(string: TchapL10n.roomTitlePrivateRoom,
+                                              attributes: [.foregroundColor: kColorCoral])
             case .unrestrictedPrivateRoom:
+                roomTypeImage = Asset.Images.roomTypePrivate.image.withRenderingMode(.alwaysTemplate)
+                roomTypeImageTintColor = kColorPumpkinOrange
                 avatarBorderColor = kColorDarkGrey
                 avatarBorderWidth = Constants.hexagonImageBorderWidthUnrestricted
                 avatarMarker = Asset.SharedImages.privateAvatarIcon.image
-                mutableSubtitle = NSMutableAttributedString(string: TchapL10n.roomTitleExternRoom,
-                                                        attributes: [.foregroundColor: kColorPumpkinOrange])
+                subtitle = NSAttributedString(string: TchapL10n.roomTitleExternRoom,
+                                              attributes: [.foregroundColor: kColorPumpkinOrange])
             case .forum:
+                roomTypeImage = Asset.Images.roomTypeForum.image.withRenderingMode(.alwaysTemplate)
+                roomTypeImageTintColor = kColorJadeGreen
                 avatarBorderColor = kColorDarkBlue
                 avatarBorderWidth = Constants.hexagonImageBorderWidthDefault
                 avatarMarker = Asset.SharedImages.forumAvatarIcon.image
-                mutableSubtitle = NSMutableAttributedString(string: TchapL10n.roomTitleForumRoom,
-                                                        attributes: [.foregroundColor: kColorJadeGreen])
+                subtitle = NSAttributedString(string: TchapL10n.roomTitleForumRoom,
+                                              attributes: [.foregroundColor: kColorJadeGreen])
             default:
+                roomTypeImage = nil
+                roomTypeImageTintColor = nil
                 avatarBorderColor = UIColor.clear
                 avatarBorderWidth = Constants.hexagonImageBorderWidthDefault
                 avatarMarker = nil
-                mutableSubtitle = nil
+                subtitle = nil
             }
             
-            let roomMemberCount = Int(roomSummary.membersCount.joined)
-            if let mutableSubtitle = mutableSubtitle {
-                mutableSubtitle.append(NSAttributedString(string: "・" + TchapL10n.roomTitleRoomMembersCount(roomMemberCount),
-                                                      attributes: [.foregroundColor: kColorWarmGrey]))
-                subtitle = mutableSubtitle
+            roomMembersCount = TchapL10n.roomTitleRoomMembersCount(Int(roomSummary.membersCount.joined))
+            
+            #if ENABLE_ROOM_RETENTION
+            let retentionPeriod = roomSummary.tc_roomRetentionPeriodInDays()
+            if retentionPeriod != RetentionConstants.undefinedRetentionValueInDays {
+                roomRetentionInfo = TchapL10n.roomTitleRetentionInfoInDays(Int(retentionPeriod))
             } else {
-                subtitle = NSAttributedString(string: TchapL10n.roomTitleRoomMembersCount(roomMemberCount),
-                                              attributes: [.foregroundColor: kColorWarmGrey])
+                roomRetentionInfo = nil
             }
+            #else
+            roomRetentionInfo = nil
+            #endif
         }
-        
-        #if ENABLE_ROOM_RETENTION
-        let retentionPeriod = roomSummary.tc_roomRetentionPeriodInDays()
-        if retentionPeriod != RetentionConstants.undefinedRetentionValueInDays {
-            let retentionInfo = retentionPeriod == 1 ? TchapL10n.roomTitleRetentionInfoOneDay : TchapL10n.roomTitleRetentionInfoInDays(Int(retentionPeriod))
-            roomInfo = retentionInfo
-        } else {
-            roomInfo = nil
-        }
-        #else
-        roomInfo = nil
-        #endif
         
         let placeholderImage: UIImage = AvatarGenerator.generateAvatar(forText: displayName)
         
@@ -139,7 +155,13 @@ final class RoomTitleViewModelBuilder: NSObject {
                                                         borderWidth: avatarBorderWidth,
                                                         marker: avatarMarker)
         
-        return RoomTitleViewModel(title: title, subtitle: subtitle, roomInfo: roomInfo, avatarImageViewModel: avatarImageViewModel)
+        return RoomTitleViewModel(title: title,
+                                  roomTypeImage: roomTypeImage,
+                                  roomTypeImageTintColor: roomTypeImageTintColor,
+                                  subtitle: subtitle,
+                                  roomMembersCount: roomMembersCount,
+                                  roomRetentionInfo: roomRetentionInfo,
+                                  avatarImageViewModel: avatarImageViewModel)
     }
     
     func build(fromRoomPreviewData roomPreviewData: RoomPreviewData) -> RoomTitleViewModel {
@@ -178,7 +200,13 @@ final class RoomTitleViewModelBuilder: NSObject {
                                                         borderWidth: Constants.hexagonImageBorderWidthDefault,
                                                         marker: marker)
         
-        return RoomTitleViewModel(title: title, subtitle: subtitle, roomInfo: nil, avatarImageViewModel: avatarImageViewModel)
+        return RoomTitleViewModel(title: title,
+                                  roomTypeImage: nil,
+                                  roomTypeImageTintColor: nil,
+                                  subtitle: subtitle,
+                                  roomMembersCount: nil,
+                                  roomRetentionInfo: nil,
+                                  avatarImageViewModel: avatarImageViewModel)
     }
     
     func build(fromUser user: User) -> RoomTitleViewModel {
@@ -208,7 +236,13 @@ final class RoomTitleViewModelBuilder: NSObject {
                                                         borderWidth: nil,
                                                         marker: Asset.SharedImages.privateAvatarIcon.image)
         
-        return RoomTitleViewModel(title: title, subtitle: subtitle, roomInfo: nil, avatarImageViewModel: avatarImageViewModel)
+        return RoomTitleViewModel(title: title,
+                                  roomTypeImage: nil,
+                                  roomTypeImageTintColor: nil,
+                                  subtitle: subtitle,
+                                  roomMembersCount: nil,
+                                  roomRetentionInfo: nil,
+                                  avatarImageViewModel: avatarImageViewModel)
     }
     
     func buildWithoutAvatar(fromUser user: User) -> RoomTitleViewModel {
@@ -223,6 +257,12 @@ final class RoomTitleViewModelBuilder: NSObject {
             subtitle = nil
         }
         
-        return RoomTitleViewModel(title: title, subtitle: subtitle, roomInfo: nil, avatarImageViewModel: nil)
+        return RoomTitleViewModel(title: title,
+                                  roomTypeImage: nil,
+                                  roomTypeImageTintColor: nil,
+                                  subtitle: subtitle,
+                                  roomMembersCount: nil,
+                                  roomRetentionInfo: nil,
+                                  avatarImageViewModel: nil)
     }
 }

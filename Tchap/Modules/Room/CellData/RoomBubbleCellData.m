@@ -118,6 +118,7 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
 //            case MXEventTypeRoomGuestAccess:
 //            case MXEventTypeRoomAvatar:
 //            case MXEventTypeRoomJoinRules:
+//            case MXEventTypeRoomRetention:
 //            {
 //                self.tag = RoomBubbleCellDataTagRoomCreateConfiguration;
 //
@@ -768,6 +769,7 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
             case MXEventTypeRoomGuestAccess:
             case MXEventTypeRoomAvatar:
             case MXEventTypeRoomJoinRules:
+            case MXEventTypeRoomRetention:
                 shouldAddEvent = NO;
                 break;
             default:
@@ -805,6 +807,7 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
         case MXEventTypeCallCandidates:
         case MXEventTypeCallAnswer:
         case MXEventTypeCallHangup:
+        case MXEventTypeRoomRetention:
             isNotice = YES;
             break;
         default:

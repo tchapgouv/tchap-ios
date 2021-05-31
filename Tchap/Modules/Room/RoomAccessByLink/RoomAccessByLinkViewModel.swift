@@ -58,7 +58,13 @@ final class RoomAccessByLinkViewModel: RoomAccessByLinkViewModelType {
         } else {
             avatarImageViewModel = nil
         }
-        self.titleViewModel = RoomTitleViewModel(title: TchapL10n.roomSettingsRoomAccessByLinkTitle, subtitle: nil, roomInfo: nil, avatarImageViewModel: avatarImageViewModel)
+        self.titleViewModel = RoomTitleViewModel(title: TchapL10n.roomSettingsRoomAccessByLinkTitle,
+                                                 roomTypeImage: nil,
+                                                 roomTypeImageTintColor: nil,
+                                                 subtitle: nil,
+                                                 roomMembersCount: nil,
+                                                 roomRetentionInfo: nil,
+                                                 avatarImageViewModel: avatarImageViewModel)
     }
     
     // MARK: - Public
