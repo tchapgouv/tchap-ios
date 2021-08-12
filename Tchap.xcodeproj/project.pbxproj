@@ -966,6 +966,8 @@
 		029F3F9226C55BFE00B5049E /* KeyBackupSetupSuccessFromSecureBackupViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 029F3F8F26C55BFE00B5049E /* KeyBackupSetupSuccessFromSecureBackupViewController.storyboard */; };
 		029F3F9326C55BFE00B5049E /* KeyBackupSetupSuccessFromSecureBackupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F9026C55BFE00B5049E /* KeyBackupSetupSuccessFromSecureBackupViewController.swift */; };
 		029F3F9426C55BFE00B5049E /* KeyBackupSetupSuccessFromSecureBackupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F9026C55BFE00B5049E /* KeyBackupSetupSuccessFromSecureBackupViewController.swift */; };
+		029F3FB926C5713B00B5049E /* MXSessionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3FB826C5713B00B5049E /* MXSessionState.swift */; };
+		029F3FBA26C5713B00B5049E /* MXSessionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3FB826C5713B00B5049E /* MXSessionState.swift */; };
 		02A514C926100CDA007164AD /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B122099623854EF2004D069C /* Strings.swift */; };
 		02A514CA26100CDB007164AD /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B122099623854EF2004D069C /* Strings.swift */; };
 		02A7900023E0DD5A00F17374 /* UserStatusInfoType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A78FFF23E0DD5A00F17374 /* UserStatusInfoType.swift */; };
@@ -2737,6 +2739,7 @@
 		029F3F2D26C557E500B5049E /* SecretsRecoveryCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsRecoveryCoordinator.swift; sourceTree = "<group>"; };
 		029F3F8F26C55BFE00B5049E /* KeyBackupSetupSuccessFromSecureBackupViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = KeyBackupSetupSuccessFromSecureBackupViewController.storyboard; sourceTree = "<group>"; };
 		029F3F9026C55BFE00B5049E /* KeyBackupSetupSuccessFromSecureBackupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyBackupSetupSuccessFromSecureBackupViewController.swift; sourceTree = "<group>"; };
+		029F3FB826C5713B00B5049E /* MXSessionState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MXSessionState.swift; sourceTree = "<group>"; };
 		02A78FFF23E0DD5A00F17374 /* UserStatusInfoType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStatusInfoType.swift; sourceTree = "<group>"; };
 		02A7900223E0DEB400F17374 /* UserStatusInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStatusInfo.swift; sourceTree = "<group>"; };
 		02B34538219CA8CB00110EC8 /* RoomsDiscussionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomsDiscussionCell.swift; sourceTree = "<group>"; };
@@ -6560,6 +6563,7 @@
 		F083BBE41E7009EC00A9B29C /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				029F3FB826C5713B00B5049E /* MXSessionState.swift */,
 				02D5E40C26C5497900114F3D /* UIViewController.swift */,
 				02D5E34A26C5139700114F3D /* UIView.swift */,
 				022B48E02571A00000427BEC /* Bundle.swift */,
@@ -7717,6 +7721,7 @@
 				02388E4F24A2AF7900F3B485 /* KeyVerificationVerifyBySASCoordinator.swift in Sources */,
 				0250C49F2122B68000034691 /* MediaAlbumContentViewController.m in Sources */,
 				02FAE45E23B4AB3300DE73D8 /* WidgetPermissionViewModel.swift in Sources */,
+				029F3FB926C5713B00B5049E /* MXSessionState.swift in Sources */,
 				026A465923B215900058D80B /* MediaPickerCoordinator.swift in Sources */,
 				020DF963214BE467003DFBA4 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
 				02FAE5D023B4C41600DE73D8 /* EditHistoryCoordinator.swift in Sources */,
@@ -8624,6 +8629,7 @@
 				02388E5024A2AF7900F3B485 /* KeyVerificationVerifyBySASCoordinator.swift in Sources */,
 				02DFEB8221C07370009B6F15 /* AuthenticationViewModel.swift in Sources */,
 				02FAE45F23B4AB3300DE73D8 /* WidgetPermissionViewModel.swift in Sources */,
+				029F3FBA26C5713B00B5049E /* MXSessionState.swift in Sources */,
 				026A465A23B215900058D80B /* MediaPickerCoordinator.swift in Sources */,
 				02DFEB8321C07370009B6F15 /* RoomCoordinator.swift in Sources */,
 				02FAE5D123B4C41600DE73D8 /* EditHistoryCoordinator.swift in Sources */,

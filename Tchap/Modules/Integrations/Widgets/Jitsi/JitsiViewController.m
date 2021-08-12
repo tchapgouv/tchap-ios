@@ -36,7 +36,8 @@ static NSString * _Nonnull kRCTTextViewClassName = @"RCTTextView";
  */
 static NSString * _Nonnull kJitsiFeatureFlagChatEnabled = @"chat.enabled";
 
-@interface JitsiViewController () <PictureInPicturable, JitsiMeetViewDelegate>
+// TODO: Tchap: Jitsi support
+@interface JitsiViewController () </*PictureInPicturable,*/ JitsiMeetViewDelegate>
 
 // The jitsi-meet SDK view
 @property (nonatomic, weak) IBOutlet JitsiMeetView *jitsiMeetView;
