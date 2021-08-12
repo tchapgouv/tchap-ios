@@ -218,12 +218,18 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     [[AppConfiguration new] setupSettings];
     
     [LegacyAppDelegate setupAppSettings];
+    
+    MXLogConfiguration *configuration = [[MXLogConfiguration alloc] init];
+    configuration.logLevel = MXLogLevelVerbose;
+    configuration.logFilesSizeLimit = 100 * 1024 * 1024; // 100MB
+    configuration.maxLogFilesCount = 50;
 
-    // Redirect MXLogDebugs to files only if we are not debugging
-    if (!isatty(STDERR_FILENO))
-    {
-        [MXLogger redirectMXLogDebugToFiles:YES numberOfFiles:50];
+    // Redirect NSLogs to files only if we are not debugging
+    if (!isatty(STDERR_FILENO)) {
+        configuration.redirectLogsToFiles = YES;
     }
+    
+    [MXLog configure:configuration];
 
     MXLogDebug(@"[AppDelegate] initialize: Done");
 }

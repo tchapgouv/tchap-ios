@@ -968,6 +968,18 @@
 		029F3F9426C55BFE00B5049E /* KeyBackupSetupSuccessFromSecureBackupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F9026C55BFE00B5049E /* KeyBackupSetupSuccessFromSecureBackupViewController.swift */; };
 		029F3FB926C5713B00B5049E /* MXSessionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3FB826C5713B00B5049E /* MXSessionState.swift */; };
 		029F3FBA26C5713B00B5049E /* MXSessionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3FB826C5713B00B5049E /* MXSessionState.swift */; };
+		029F3FBF26C57D1D00B5049E /* HomeserverConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3FBC26C57D1D00B5049E /* HomeserverConfiguration.swift */; };
+		029F3FC026C57D1D00B5049E /* HomeserverConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3FBC26C57D1D00B5049E /* HomeserverConfiguration.swift */; };
+		029F3FC126C57D1D00B5049E /* HomeserverConfigurationBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3FBD26C57D1D00B5049E /* HomeserverConfigurationBuilder.swift */; };
+		029F3FC226C57D1D00B5049E /* HomeserverConfigurationBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3FBD26C57D1D00B5049E /* HomeserverConfigurationBuilder.swift */; };
+		029F3FC326C57D1D00B5049E /* HomeserverJitsiConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3FBE26C57D1D00B5049E /* HomeserverJitsiConfiguration.swift */; };
+		029F3FC426C57D1D00B5049E /* HomeserverJitsiConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3FBE26C57D1D00B5049E /* HomeserverJitsiConfiguration.swift */; };
+		029F3FC826C57F5400B5049E /* VectorWellKnown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3FC626C57F5400B5049E /* VectorWellKnown.swift */; };
+		029F3FC926C57F5400B5049E /* VectorWellKnown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3FC626C57F5400B5049E /* VectorWellKnown.swift */; };
+		029F3FCA26C57F5400B5049E /* VectorWellKnownParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3FC726C57F5400B5049E /* VectorWellKnownParser.swift */; };
+		029F3FCB26C57F5400B5049E /* VectorWellKnownParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3FC726C57F5400B5049E /* VectorWellKnownParser.swift */; };
+		029F416326C5820300B5049E /* CircleProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F407026C5820100B5049E /* CircleProgressView.swift */; };
+		029F416426C5820300B5049E /* CircleProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F407026C5820100B5049E /* CircleProgressView.swift */; };
 		02A514C926100CDA007164AD /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B122099623854EF2004D069C /* Strings.swift */; };
 		02A514CA26100CDB007164AD /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B122099623854EF2004D069C /* Strings.swift */; };
 		02A7900023E0DD5A00F17374 /* UserStatusInfoType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A78FFF23E0DD5A00F17374 /* UserStatusInfoType.swift */; };
@@ -2740,6 +2752,12 @@
 		029F3F8F26C55BFE00B5049E /* KeyBackupSetupSuccessFromSecureBackupViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = KeyBackupSetupSuccessFromSecureBackupViewController.storyboard; sourceTree = "<group>"; };
 		029F3F9026C55BFE00B5049E /* KeyBackupSetupSuccessFromSecureBackupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyBackupSetupSuccessFromSecureBackupViewController.swift; sourceTree = "<group>"; };
 		029F3FB826C5713B00B5049E /* MXSessionState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MXSessionState.swift; sourceTree = "<group>"; };
+		029F3FBC26C57D1D00B5049E /* HomeserverConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeserverConfiguration.swift; sourceTree = "<group>"; };
+		029F3FBD26C57D1D00B5049E /* HomeserverConfigurationBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeserverConfigurationBuilder.swift; sourceTree = "<group>"; };
+		029F3FBE26C57D1D00B5049E /* HomeserverJitsiConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeserverJitsiConfiguration.swift; sourceTree = "<group>"; };
+		029F3FC626C57F5400B5049E /* VectorWellKnown.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VectorWellKnown.swift; sourceTree = "<group>"; };
+		029F3FC726C57F5400B5049E /* VectorWellKnownParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VectorWellKnownParser.swift; sourceTree = "<group>"; };
+		029F407026C5820100B5049E /* CircleProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleProgressView.swift; sourceTree = "<group>"; };
 		02A78FFF23E0DD5A00F17374 /* UserStatusInfoType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStatusInfoType.swift; sourceTree = "<group>"; };
 		02A7900223E0DEB400F17374 /* UserStatusInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStatusInfo.swift; sourceTree = "<group>"; };
 		02B34538219CA8CB00110EC8 /* RoomsDiscussionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomsDiscussionCell.swift; sourceTree = "<group>"; };
@@ -4722,6 +4740,49 @@
 			path = RecoverWithKey;
 			sourceTree = "<group>";
 		};
+		029F3FBB26C57D1D00B5049E /* HomeserverConfiguration */ = {
+			isa = PBXGroup;
+			children = (
+				029F3FBC26C57D1D00B5049E /* HomeserverConfiguration.swift */,
+				029F3FBD26C57D1D00B5049E /* HomeserverConfigurationBuilder.swift */,
+				029F3FBE26C57D1D00B5049E /* HomeserverJitsiConfiguration.swift */,
+			);
+			path = HomeserverConfiguration;
+			sourceTree = "<group>";
+		};
+		029F3FC526C57F5400B5049E /* WellKnown */ = {
+			isa = PBXGroup;
+			children = (
+				029F3FC626C57F5400B5049E /* VectorWellKnown.swift */,
+				029F3FC726C57F5400B5049E /* VectorWellKnownParser.swift */,
+			);
+			path = WellKnown;
+			sourceTree = "<group>";
+		};
+		029F3FD426C5820000B5049E /* Room */ = {
+			isa = PBXGroup;
+			children = (
+				029F402026C5820100B5049E /* Views */,
+			);
+			path = Room;
+			sourceTree = "<group>";
+		};
+		029F402026C5820100B5049E /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				029F406F26C5820100B5049E /* CircleProgressView */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		029F406F26C5820100B5049E /* CircleProgressView */ = {
+			isa = PBXGroup;
+			children = (
+				029F407026C5820100B5049E /* CircleProgressView.swift */,
+			);
+			path = CircleProgressView;
+			sourceTree = "<group>";
+		};
 		02B34537219CA68800110EC8 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -5994,6 +6055,7 @@
 		B1B5567620EE6C4C00210D55 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				029F3FD426C5820000B5049E /* Room */,
 				027862842579A8CB00266B09 /* BubbleReactions */,
 				027861972577A8D900266B09 /* Integrations */,
 				02FAE23223B2489200DE73D8 /* Camera */,
@@ -6600,6 +6662,8 @@
 		F083BBF21E7009EC00A9B29C /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				029F3FC526C57F5400B5049E /* WellKnown */,
+				029F3FBB26C57D1D00B5049E /* HomeserverConfiguration */,
 				B169330420F3C9B000746532 /* Contact */,
 				F083BBF61E7009EC00A9B29C /* Room */,
 			);
@@ -7823,6 +7887,7 @@
 				02388E6924A2AF7900F3B485 /* KeyVerificationScanConfirmationCoordinatorType.swift in Sources */,
 				02388E9B24A2AF7A00F3B485 /* KeyVerificationManuallyVerifyViewModel.swift in Sources */,
 				B1C0EE7B2375B7A000E8BB88 /* ChangePasswordCurrentPasswordViewAction.swift in Sources */,
+				029F3FBF26C57D1D00B5049E /* HomeserverConfiguration.swift in Sources */,
 				02388E9F24A2AF7A00F3B485 /* KeyVerificationManuallyVerifyViewState.swift in Sources */,
 				02ECA88022E0C5BA00ECDA5E /* MXRoomSummary.swift in Sources */,
 				02D5E3F026C53F8300114F3D /* ThemeService.swift in Sources */,
@@ -7844,6 +7909,7 @@
 				02C3F22624AFD3880086ACA5 /* CrossSigningBannerPreferences.swift in Sources */,
 				8E99022D2583BDAB00D0456B /* FavouritesCoordinator.swift in Sources */,
 				029F3F7A26C557E600B5049E /* SecretsRecoveryWithKeyViewModel.swift in Sources */,
+				029F3FC326C57D1D00B5049E /* HomeserverJitsiConfiguration.swift in Sources */,
 				02388E8724A2AF7A00F3B485 /* KeyVerificationSelfVerifyWaitViewModelType.swift in Sources */,
 				B122099B23854EF2004D069C /* TchapDefaults.swift in Sources */,
 				02388EBD24A2AF7A00F3B485 /* DeviceVerificationIncomingViewModelType.swift in Sources */,
@@ -7928,6 +7994,7 @@
 				020DF994214BE467003DFBA4 /* RoomIncomingTextMsgBubbleCell.m in Sources */,
 				029F3F5626C557E600B5049E /* SecretsSetupRecoveryPassphraseViewState.swift in Sources */,
 				B12FD6A92146BA45001B7F28 /* RegistrationService.swift in Sources */,
+				029F416326C5820300B5049E /* CircleProgressView.swift in Sources */,
 				02388E5124A2AF7900F3B485 /* KeyVerificationVerifyBySASViewState.swift in Sources */,
 				02F1B87224D8C09600A73E63 /* FormattedBodyParser.swift in Sources */,
 				02F0FF452226F82600066908 /* RoomIDComponents.swift in Sources */,
@@ -8213,6 +8280,7 @@
 				02FAE56823B4C41500DE73D8 /* BubbleReactionsViewModelType.swift in Sources */,
 				B12209C123854F92004D069C /* ClientVersionInfoMessage.swift in Sources */,
 				0250C5142122B68000034691 /* GDPRConsentViewController.swift in Sources */,
+				029F3FC126C57D1D00B5049E /* HomeserverConfigurationBuilder.swift in Sources */,
 				02C4BE8E2252456000F7BB0E /* ThirdPartyIDPlatformInfoResolverType.swift in Sources */,
 				02388E2D24A2AF7900F3B485 /* KeyVerificationDataLoadingViewModelType.swift in Sources */,
 				8E9902372583BDAB00D0456B /* FavouriteMessagesViewController.swift in Sources */,
@@ -8289,6 +8357,7 @@
 				020DF9AB214BE467003DFBA4 /* KeyboardGrowingTextView.m in Sources */,
 				02FAE5AC23B4C41600DE73D8 /* EmojiPickerViewCell.swift in Sources */,
 				B12209A623854F32004D069C /* AppVersionUpdateCoordinator.swift in Sources */,
+				029F3FCA26C57F5400B5049E /* VectorWellKnownParser.swift in Sources */,
 				02D5E3EC26C53F8300114F3D /* Themable.swift in Sources */,
 				02A7900023E0DD5A00F17374 /* UserStatusInfoType.swift in Sources */,
 				B1680D012152A9F6009B5F92 /* TCNavigationController.swift in Sources */,
@@ -8315,6 +8384,7 @@
 				02388E5D24A2AF7900F3B485 /* KeyVerificationScanConfirmationViewController.swift in Sources */,
 				B15FE5EF23858BDC00D2A5B2 /* AppVersionUpdateViewModelType.swift in Sources */,
 				020DF99B214BE467003DFBA4 /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.m in Sources */,
+				029F3FC826C57F5400B5049E /* VectorWellKnown.swift in Sources */,
 				B12DDA9A216FB2370093172C /* UIBezierPath.swift in Sources */,
 				02FAE57223B4C41500DE73D8 /* BubbleReactionActionViewCell.swift in Sources */,
 				026A465D23B215900058D80B /* SingleImagePickerPresenter.swift in Sources */,
@@ -8731,6 +8801,7 @@
 				02388E9C24A2AF7A00F3B485 /* KeyVerificationManuallyVerifyViewModel.swift in Sources */,
 				02DFEBA721C07370009B6F15 /* RoomEncryptedAttachmentAntivirusScanStatusBubbleCell.m in Sources */,
 				02388EA024A2AF7A00F3B485 /* KeyVerificationManuallyVerifyViewState.swift in Sources */,
+				029F3FC026C57D1D00B5049E /* HomeserverConfiguration.swift in Sources */,
 				02DFEBA821C07370009B6F15 /* empty.mm in Sources */,
 				02388F1724A2B73F00F3B485 /* KeyBackupRecoverFromPrivateKeyViewController.swift in Sources */,
 				02D5E3F126C53F8300114F3D /* ThemeService.swift in Sources */,
@@ -8752,6 +8823,7 @@
 				02C3F22724AFD3880086ACA5 /* CrossSigningBannerPreferences.swift in Sources */,
 				02388E8824A2AF7A00F3B485 /* KeyVerificationSelfVerifyWaitViewModelType.swift in Sources */,
 				029F3F7B26C557E600B5049E /* SecretsRecoveryWithKeyViewModel.swift in Sources */,
+				029F3FC426C57D1D00B5049E /* HomeserverJitsiConfiguration.swift in Sources */,
 				02DFEBAF21C07370009B6F15 /* MXRoom+Riot.m in Sources */,
 				02388EBE24A2AF7A00F3B485 /* DeviceVerificationIncomingViewModelType.swift in Sources */,
 				02DFEBB021C07370009B6F15 /* RoomAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.m in Sources */,
@@ -8836,6 +8908,7 @@
 				02DFEBCD21C07370009B6F15 /* TableViewCellWithPhoneNumberTextField.m in Sources */,
 				029F3F5726C557E600B5049E /* SecretsSetupRecoveryPassphraseViewState.swift in Sources */,
 				02DFEBCE21C07370009B6F15 /* ContactsViewController.m in Sources */,
+				029F416426C5820300B5049E /* CircleProgressView.swift in Sources */,
 				02388E5224A2AF7900F3B485 /* KeyVerificationVerifyBySASViewState.swift in Sources */,
 				02F1B87324D8C09600A73E63 /* FormattedBodyParser.swift in Sources */,
 				02DFEBCF21C07370009B6F15 /* AvatarImageShape.swift in Sources */,
@@ -9121,6 +9194,7 @@
 				02388F1F24A2B73F00F3B485 /* KeyBackupRecoverFromPrivateKeyViewModel.swift in Sources */,
 				02388E1024A2AF7900F3B485 /* UserVerificationSessionsStatusCoordinatorType.swift in Sources */,
 				02FAE56923B4C41500DE73D8 /* BubbleReactionsViewModelType.swift in Sources */,
+				029F3FC226C57D1D00B5049E /* HomeserverConfigurationBuilder.swift in Sources */,
 				B1C0EE7E2375B7A000E8BB88 /* ChangePasswordCurrentPasswordViewModel.swift in Sources */,
 				02C4BE8C22523D2200F7BB0E /* DiscussionFinderType.swift in Sources */,
 				02388E2E24A2AF7900F3B485 /* KeyVerificationDataLoadingViewModelType.swift in Sources */,
@@ -9197,6 +9271,7 @@
 				02DFEC4921C07370009B6F15 /* RoomSelectedStickerBubbleCell.m in Sources */,
 				02FAE5AD23B4C41600DE73D8 /* EmojiPickerViewCell.swift in Sources */,
 				02DFEC4A21C07370009B6F15 /* CountryPickerViewController.m in Sources */,
+				029F3FCB26C57F5400B5049E /* VectorWellKnownParser.swift in Sources */,
 				02D5E3ED26C53F8300114F3D /* Themable.swift in Sources */,
 				02A7900123E0DD5A00F17374 /* UserStatusInfoType.swift in Sources */,
 				028BA9C8257A459300C71A91 /* Keychain.swift in Sources */,
@@ -9223,6 +9298,7 @@
 				02DFEC5321C07370009B6F15 /* DeviceView.m in Sources */,
 				02DFEC5421C07370009B6F15 /* RoomIncomingEncryptedTextMsgWithoutSenderNameBubbleCell.m in Sources */,
 				B1C0EE652375B78C00E8BB88 /* ChangePasswordCoordinator.swift in Sources */,
+				029F3FC926C57F5400B5049E /* VectorWellKnown.swift in Sources */,
 				02FAE57323B4C41500DE73D8 /* BubbleReactionActionViewCell.swift in Sources */,
 				026A465E23B215900058D80B /* SingleImagePickerPresenter.swift in Sources */,
 				028BA9D0257A459300C71A91 /* KeyValueStore.swift in Sources */,

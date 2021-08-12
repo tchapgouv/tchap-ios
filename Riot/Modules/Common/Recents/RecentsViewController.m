@@ -30,7 +30,7 @@
 
 #import "GeneratedInterface-Swift.h"
 
-@interface RecentsViewController () </*CreateRoomCoordinatorBridgePresenterDelegate, RoomsDirectoryCoordinatorBridgePresenterDelegate,*/ RoomNotificationSettingsCoordinatorBridgePresenterDelegate>
+@interface RecentsViewController () /*<CreateRoomCoordinatorBridgePresenterDelegate, RoomsDirectoryCoordinatorBridgePresenterDelegate, RoomNotificationSettingsCoordinatorBridgePresenterDelegate>*/
 {
     // Tell whether a recents refresh is pending (suspended during editing mode).
     BOOL isRefreshPending;
@@ -159,7 +159,7 @@
         [self cancelEditionMode:YES];
     }
     
-    [self.emptyView updateWithTheme:ThemeService.shared.theme];
+//    [self.emptyView updateWithTheme:ThemeService.shared.theme];
 
     [self setNeedsStatusBarAppearanceUpdate];
 }
@@ -664,17 +664,17 @@
     self.view.userInteractionEnabled = userInteractionEnabled;
 }
 
-- (RecentsDataSource*)recentsDataSource
-{
-    RecentsDataSource* recentsDataSource = nil;
-    
-    if ([self.dataSource isKindOfClass:[RecentsDataSource class]])
-    {
-        recentsDataSource = (RecentsDataSource*)self.dataSource;
-    }
-    
-    return recentsDataSource;
-}
+//- (RecentsDataSource*)recentsDataSource
+//{
+//    RecentsDataSource* recentsDataSource = nil;
+//    
+//    if ([self.dataSource isKindOfClass:[RecentsDataSource class]])
+//    {
+//        recentsDataSource = (RecentsDataSource*)self.dataSource;
+//    }
+//    
+//    return recentsDataSource;
+//}
 
 //- (void)showSpaceInviteNotAvailable
 //{
@@ -752,6 +752,8 @@
     // Store the identifier of the room related to the edited cell.
     editedRoomId = room.roomId;
     
+    UIColor *selectedColor = ThemeService.shared.theme.tintColor;
+    UIColor *unselectedColor = ThemeService.shared.theme.tabBarUnselectedItemTintColor;
     UIColor *actionBackgroundColor = ThemeService.shared.theme.baseColor;
     
     NSString* title = @"      ";
@@ -976,19 +978,20 @@
 
 - (void)changeEditedRoomNotificationSettings
 {
-    if (editedRoomId)
-    {
-        // Check whether the user didn't leave the room
-        MXRoom *room = [self.mainSession roomWithRoomId:editedRoomId];
-        if (room)
-        {
-           // navigate
-            self.roomNotificationSettingsCoordinatorBridgePresenter = [[RoomNotificationSettingsCoordinatorBridgePresenter alloc] initWithRoom:room];
-            self.roomNotificationSettingsCoordinatorBridgePresenter.delegate = self;
-            [self.roomNotificationSettingsCoordinatorBridgePresenter presentFrom:self animated:YES];
-        }
-        [self cancelEditionMode:isRefreshPending];
-    }
+    // TODO: Tchap: support the new RoomNotificationSettings
+//    if (editedRoomId)
+//    {
+//        // Check whether the user didn't leave the room
+//        MXRoom *room = [self.mainSession roomWithRoomId:editedRoomId];
+//        if (room)
+//        {
+//           // navigate
+//            self.roomNotificationSettingsCoordinatorBridgePresenter = [[RoomNotificationSettingsCoordinatorBridgePresenter alloc] initWithRoom:room];
+//            self.roomNotificationSettingsCoordinatorBridgePresenter.delegate = self;
+//            [self.roomNotificationSettingsCoordinatorBridgePresenter presentFrom:self animated:YES];
+//        }
+//        [self cancelEditionMode:isRefreshPending];
+//    }
 }
 
 - (void)muteEditedRoomNotifications:(BOOL)mute
@@ -1228,82 +1231,82 @@
 
 - (void)showEmptyViewIfNeeded
 {
-    [self showEmptyView:[self shouldShowEmptyView]];
+    //[self showEmptyView:[self shouldShowEmptyView]];
 }
 
-- (void)showEmptyView:(BOOL)show
-{
-    if (!self.viewIfLoaded)
-    {
-        return;
-    }
-    
-    if (show && !self.emptyView)
-    {
-        RootTabEmptyView *emptyView = [RootTabEmptyView instantiate];
-        [emptyView updateWithTheme:ThemeService.shared.theme];
-        [self addEmptyView:emptyView];
-        
-        self.emptyView = emptyView;
-        
-        [self updateEmptyView];
-    }
-    else if (!show)
-    {
-        [self.emptyView removeFromSuperview];
-    }
-    
-    self.recentsTableView.hidden = show;
-    self.stickyHeadersTopContainer.hidden = show;
-    self.stickyHeadersBottomContainer.hidden = show;
-}
-
-- (void)updateEmptyView
-{
-    
-}
-
-- (void)addEmptyView:(RootTabEmptyView*)emptyView
-{
-    if (!self.isViewLoaded)
-    {
-        return;
-    }
-    
-    NSLayoutConstraint *emptyViewBottomConstraint;
-    NSLayoutConstraint *contentViewBottomConstraint;
-    
-    if (plusButtonImageView && plusButtonImageView.isHidden == NO)
-    {
-        [self.view insertSubview:emptyView belowSubview:plusButtonImageView];
-        
-        contentViewBottomConstraint = [NSLayoutConstraint constraintWithItem:emptyView.contentView
-                                                                   attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationLessThanOrEqual toItem:plusButtonImageView
-                                                                   attribute:NSLayoutAttributeTop
-                                                                  multiplier:1.0
-                                                                    constant:0];
-    }
-    else
-    {
-        [self.view addSubview:emptyView];
-    }
-    
-    emptyViewBottomConstraint = [emptyView.bottomAnchor constraintEqualToAnchor:emptyView.superview.bottomAnchor];
-    
-    emptyView.translatesAutoresizingMaskIntoConstraints = NO;
-    
-    [NSLayoutConstraint activateConstraints:@[
-        [emptyView.topAnchor constraintEqualToAnchor:emptyView.superview.topAnchor],
-        [emptyView.leftAnchor constraintEqualToAnchor:emptyView.superview.leftAnchor],
-        [emptyView.rightAnchor constraintEqualToAnchor:emptyView.superview.rightAnchor],
-        emptyViewBottomConstraint
-    ]];
-    
-    if (contentViewBottomConstraint)
-    {
-        contentViewBottomConstraint.active = YES;
-    }
-}
+//- (void)showEmptyView:(BOOL)show
+//{
+//    if (!self.viewIfLoaded)
+//    {
+//        return;
+//    }
+//
+//    if (show && !self.emptyView)
+//    {
+//        RootTabEmptyView *emptyView = [RootTabEmptyView instantiate];
+//        [emptyView updateWithTheme:ThemeService.shared.theme];
+//        [self addEmptyView:emptyView];
+//
+//        self.emptyView = emptyView;
+//
+//        [self updateEmptyView];
+//    }
+//    else if (!show)
+//    {
+//        [self.emptyView removeFromSuperview];
+//    }
+//
+//    self.recentsTableView.hidden = show;
+//    self.stickyHeadersTopContainer.hidden = show;
+//    self.stickyHeadersBottomContainer.hidden = show;
+//}
+//
+//- (void)updateEmptyView
+//{
+//
+//}
+//
+//- (void)addEmptyView:(RootTabEmptyView*)emptyView
+//{
+//    if (!self.isViewLoaded)
+//    {
+//        return;
+//    }
+//
+//    NSLayoutConstraint *emptyViewBottomConstraint;
+//    NSLayoutConstraint *contentViewBottomConstraint;
+//
+//    if (plusButtonImageView && plusButtonImageView.isHidden == NO)
+//    {
+//        [self.view insertSubview:emptyView belowSubview:plusButtonImageView];
+//
+//        contentViewBottomConstraint = [NSLayoutConstraint constraintWithItem:emptyView.contentView
+//                                                                   attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationLessThanOrEqual toItem:plusButtonImageView
+//                                                                   attribute:NSLayoutAttributeTop
+//                                                                  multiplier:1.0
+//                                                                    constant:0];
+//    }
+//    else
+//    {
+//        [self.view addSubview:emptyView];
+//    }
+//
+//    emptyViewBottomConstraint = [emptyView.bottomAnchor constraintEqualToAnchor:emptyView.superview.bottomAnchor];
+//
+//    emptyView.translatesAutoresizingMaskIntoConstraints = NO;
+//
+//    [NSLayoutConstraint activateConstraints:@[
+//        [emptyView.topAnchor constraintEqualToAnchor:emptyView.superview.topAnchor],
+//        [emptyView.leftAnchor constraintEqualToAnchor:emptyView.superview.leftAnchor],
+//        [emptyView.rightAnchor constraintEqualToAnchor:emptyView.superview.rightAnchor],
+//        emptyViewBottomConstraint
+//    ]];
+//
+//    if (contentViewBottomConstraint)
+//    {
+//        contentViewBottomConstraint.active = YES;
+//    }
+//}
 
 - (BOOL)shouldShowEmptyView
 {
@@ -1380,11 +1383,11 @@
 //    }
 //}
 
-#pragma mark - RoomNotificationSettingsCoordinatorBridgePresenterDelegate
--(void)roomNotificationSettingsCoordinatorBridgePresenterDelegateDidComplete:(RoomNotificationSettingsCoordinatorBridgePresenter *)coordinatorBridgePresenter
-{
-    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
-    self.roomNotificationSettingsCoordinatorBridgePresenter = nil;
-}
+//#pragma mark - RoomNotificationSettingsCoordinatorBridgePresenterDelegate
+//-(void)roomNotificationSettingsCoordinatorBridgePresenterDelegateDidComplete:(RoomNotificationSettingsCoordinatorBridgePresenter *)coordinatorBridgePresenter
+//{
+//    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+//    self.roomNotificationSettingsCoordinatorBridgePresenter = nil;
+//}
 
 @end
