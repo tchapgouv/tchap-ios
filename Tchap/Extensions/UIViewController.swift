@@ -32,7 +32,7 @@ extension UIViewController {
         self.addChild(viewController)
         
         viewController.view.frame = view.bounds
-        view.tc_addSubViewMatchingParent(viewController.view)
+        view.vc_addSubViewMatchingParent(viewController.view)
         viewController.didMove(toParent: self)
     }
     
