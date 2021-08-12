@@ -49,7 +49,7 @@ final class RegistrationCoordinator: RegistrationCoordinatorType {
         
         let registrationViewModel = RegistrationFormViewModel()
         let registrationFormViewController = RegistrationFormViewController.instantiate(viewModel: registrationViewModel)
-        registrationFormViewController.tc_removeBackTitle()
+        registrationFormViewController.vc_removeBackTitle()
         self.registrationFormViewController = registrationFormViewController
         
         self.activityIndicatorPresenter = ActivityIndicatorPresenter()
@@ -228,7 +228,7 @@ final class RegistrationCoordinator: RegistrationCoordinatorType {
         let tacURL = BuildSettings.applicationTermsConditionsUrlString
         if let tacViewController = WebViewViewController(url: tacURL) {
             tacViewController.applyVariant2Style()
-            tacViewController.tc_removeBackTitle()
+            tacViewController.vc_removeBackTitle()
             tacViewController.title = TchapL10n.registrationTermsAndConditionsTitle
             self.navigationRouter.push(tacViewController, animated: true, popCompletion: nil)
         }

@@ -103,7 +103,7 @@ final class HomeViewController: UIViewController {
             return
         }
         segmentedViewController.initWithTitles(self.segmentViewControllersTitles, viewControllers: self.segmentViewControllers, defaultSelected: 0)
-        self.tc_addChildViewController(viewController: segmentedViewController, onView: self.segmentedViewControllerContainerView)
+        self.vc_addChildViewController(viewController: segmentedViewController, onView: self.segmentedViewControllerContainerView)
         self.segmentedViewController = segmentedViewController
     }
     

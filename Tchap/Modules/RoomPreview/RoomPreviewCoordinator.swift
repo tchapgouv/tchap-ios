@@ -70,7 +70,7 @@ final class RoomPreviewCoordinator: NSObject, RoomPreviewCoordinatorType {
     // MARK: - Public methods
     
     func start() {
-        self.roomViewController.tc_removeBackTitle()
+        self.roomViewController.vc_removeBackTitle()
         
         let roomName: String? = roomPreviewData.roomName
 

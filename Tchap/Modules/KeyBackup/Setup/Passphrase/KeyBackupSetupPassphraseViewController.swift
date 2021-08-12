@@ -85,7 +85,7 @@ final class KeyBackupSetupPassphraseViewController: UIViewController {
         // Do any additional setup after loading the view.
         
         self.title = VectorL10n.keyBackupSetupTitle
-        self.tc_removeBackTitle()
+        self.vc_removeBackTitle()
         
         self.setupViews()
         self.keyboardAvoider = KeyboardAvoider(scrollViewContainerView: self.view, scrollView: self.scrollView)

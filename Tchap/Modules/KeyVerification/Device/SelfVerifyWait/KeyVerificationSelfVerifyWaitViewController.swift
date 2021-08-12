@@ -116,7 +116,7 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
             self?.cancelButtonAction()
         }
         
-        self.tc_removeBackTitle()
+        self.vc_removeBackTitle()
         
         self.navigationItem.rightBarButtonItem = cancelBarButtonItem
         self.cancelBarButtonItem = cancelBarButtonItem

@@ -1,3 +1,5 @@
+// File created from ScreenTemplate
+// $ createScreen.sh Secrets/Reset SecretsReset
 /*
  Copyright 2020 New Vector Ltd
  
@@ -16,9 +18,9 @@
 
 import Foundation
 
-/// SecretsRecoveryWithKeyViewController view actions exposed to view model
-enum SecretsRecoveryWithKeyViewAction {
-    case recover
-    case resetSecrets
-    case cancel
+/// SecretsResetViewController view state
+enum SecretsResetViewState {
+    case resetting
+    case resetDone
+    case error(Error)
 }

@@ -54,7 +54,7 @@ final class ChangePasswordCurrentPasswordViewController: UIViewController {
         
         self.title = TchapL10n.changePasswordCurrentPasswordTitle
         
-        self.tc_removeBackTitle()
+        self.vc_removeBackTitle()
         
         self.setupViews()
         self.keyboardAvoider = KeyboardAvoider(scrollViewContainerView: self.view, scrollView: self.scrollView)

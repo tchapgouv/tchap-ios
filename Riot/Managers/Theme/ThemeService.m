@@ -18,11 +18,7 @@
 
 #import "ThemeService.h"
 
-#ifdef IS_SHARE_EXTENSION
-#import "RiotShareExtension-Swift.h"
-#else
-#import "Riot-Swift.h"
-#endif
+#import "GeneratedInterface-Swift.h"
 
 NSString *const kThemeServiceDidChangeThemeNotification = @"kThemeServiceDidChangeThemeNotification";
 
@@ -78,15 +74,15 @@ NSString *const kThemeServiceDidChangeThemeNotification = @"kThemeServiceDidChan
         }
     }
 
-    if ([themeId isEqualToString:@"dark"])
-    {
-        theme = [DarkTheme new];
-    }
-    else if ([themeId isEqualToString:@"black"])
-    {
-        theme = [BlackTheme new];
-    }
-    else
+//    if ([themeId isEqualToString:@"dark"])
+//    {
+//        theme = [DarkTheme new];
+//    }
+//    else if ([themeId isEqualToString:@"black"])
+//    {
+//        theme = [BlackTheme new];
+//    }
+//    else
     {
         // Use light theme by default
         theme = [DefaultTheme new];

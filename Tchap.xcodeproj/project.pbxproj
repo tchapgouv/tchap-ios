@@ -487,20 +487,6 @@
 		024518EA23A150D5006873DF /* PasswordStrength.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024518E723A150D4006873DF /* PasswordStrength.swift */; };
 		024518EB23A150D5006873DF /* PasswordStrengthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024518E823A150D4006873DF /* PasswordStrengthManager.swift */; };
 		024518EC23A150D5006873DF /* PasswordStrengthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024518E823A150D4006873DF /* PasswordStrengthManager.swift */; };
-		024518F423A19676006873DF /* Themable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024518EE23A19675006873DF /* Themable.swift */; };
-		024518F523A19676006873DF /* Themable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024518EE23A19675006873DF /* Themable.swift */; };
-		024518F623A19676006873DF /* ThemeService.m in Sources */ = {isa = PBXBuildFile; fileRef = 024518EF23A19675006873DF /* ThemeService.m */; };
-		024518F723A19676006873DF /* ThemeService.m in Sources */ = {isa = PBXBuildFile; fileRef = 024518EF23A19675006873DF /* ThemeService.m */; };
-		024518F823A19676006873DF /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024518F023A19675006873DF /* Theme.swift */; };
-		024518F923A19676006873DF /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024518F023A19675006873DF /* Theme.swift */; };
-		024518FA23A19676006873DF /* DefaultTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024518F223A19675006873DF /* DefaultTheme.swift */; };
-		024518FB23A19676006873DF /* DefaultTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024518F223A19675006873DF /* DefaultTheme.swift */; };
-		024518FC23A19680006873DF /* ThemeService.m in Sources */ = {isa = PBXBuildFile; fileRef = 024518EF23A19675006873DF /* ThemeService.m */; };
-		024518FD23A19681006873DF /* ThemeService.m in Sources */ = {isa = PBXBuildFile; fileRef = 024518EF23A19675006873DF /* ThemeService.m */; };
-		024518FE23A19685006873DF /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024518F023A19675006873DF /* Theme.swift */; };
-		024518FF23A19686006873DF /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024518F023A19675006873DF /* Theme.swift */; };
-		0245190023A1968B006873DF /* DefaultTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024518F223A19675006873DF /* DefaultTheme.swift */; };
-		0245190123A1968C006873DF /* DefaultTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024518F223A19675006873DF /* DefaultTheme.swift */; };
 		024732C523EA23FD008CD543 /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = 024732C323EA23FC008CD543 /* Tools.m */; };
 		024732C623EA23FD008CD543 /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = 024732C323EA23FC008CD543 /* Tools.m */; };
 		024732C723EA23FD008CD543 /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = 024732C323EA23FC008CD543 /* Tools.m */; };
@@ -880,6 +866,102 @@
 		029CC69121772F4200DCC8B3 /* TableViewCellWithPhoneNumberTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 029CC68721772F4200DCC8B3 /* TableViewCellWithPhoneNumberTextField.m */; };
 		029CC69221772F4200DCC8B3 /* DeviceView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 029CC68921772F4200DCC8B3 /* DeviceView.xib */; };
 		029CC69321772F4200DCC8B3 /* TableViewCellWithPhoneNumberTextField.xib in Resources */ = {isa = PBXBuildFile; fileRef = 029CC68A21772F4200DCC8B3 /* TableViewCellWithPhoneNumberTextField.xib */; };
+		029F3EF426C555C900B5049E /* SecureBackupSetupIntroViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3EF226C555C900B5049E /* SecureBackupSetupIntroViewModelType.swift */; };
+		029F3EF526C555C900B5049E /* SecureBackupSetupIntroViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3EF226C555C900B5049E /* SecureBackupSetupIntroViewModelType.swift */; };
+		029F3EF626C555C900B5049E /* SecureBackupSetupIntroViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3EF326C555C900B5049E /* SecureBackupSetupIntroViewModel.swift */; };
+		029F3EF726C555C900B5049E /* SecureBackupSetupIntroViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3EF326C555C900B5049E /* SecureBackupSetupIntroViewModel.swift */; };
+		029F3F2E26C557E500B5049E /* SecretsResetCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3EFA26C557E500B5049E /* SecretsResetCoordinator.swift */; };
+		029F3F2F26C557E500B5049E /* SecretsResetCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3EFA26C557E500B5049E /* SecretsResetCoordinator.swift */; };
+		029F3F3026C557E500B5049E /* SecretsResetViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3EFB26C557E500B5049E /* SecretsResetViewModelType.swift */; };
+		029F3F3126C557E500B5049E /* SecretsResetViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3EFB26C557E500B5049E /* SecretsResetViewModelType.swift */; };
+		029F3F3226C557E500B5049E /* SecretsResetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3EFC26C557E500B5049E /* SecretsResetViewController.swift */; };
+		029F3F3326C557E500B5049E /* SecretsResetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3EFC26C557E500B5049E /* SecretsResetViewController.swift */; };
+		029F3F3426C557E500B5049E /* SecretsResetCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3EFD26C557E500B5049E /* SecretsResetCoordinatorType.swift */; };
+		029F3F3526C557E500B5049E /* SecretsResetCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3EFD26C557E500B5049E /* SecretsResetCoordinatorType.swift */; };
+		029F3F3626C557E500B5049E /* SecretsResetViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 029F3EFE26C557E500B5049E /* SecretsResetViewController.storyboard */; };
+		029F3F3726C557E500B5049E /* SecretsResetViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 029F3EFE26C557E500B5049E /* SecretsResetViewController.storyboard */; };
+		029F3F3826C557E500B5049E /* SecretsResetViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3EFF26C557E500B5049E /* SecretsResetViewState.swift */; };
+		029F3F3926C557E500B5049E /* SecretsResetViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3EFF26C557E500B5049E /* SecretsResetViewState.swift */; };
+		029F3F3A26C557E500B5049E /* SecretsResetViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F0026C557E500B5049E /* SecretsResetViewAction.swift */; };
+		029F3F3B26C557E500B5049E /* SecretsResetViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F0026C557E500B5049E /* SecretsResetViewAction.swift */; };
+		029F3F3C26C557E500B5049E /* SecretsResetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F0126C557E500B5049E /* SecretsResetViewModel.swift */; };
+		029F3F3D26C557E500B5049E /* SecretsResetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F0126C557E500B5049E /* SecretsResetViewModel.swift */; };
+		029F3F3E26C557E500B5049E /* SecretsSetupRecoveryKeyViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F0426C557E500B5049E /* SecretsSetupRecoveryKeyViewModelType.swift */; };
+		029F3F3F26C557E500B5049E /* SecretsSetupRecoveryKeyViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F0426C557E500B5049E /* SecretsSetupRecoveryKeyViewModelType.swift */; };
+		029F3F4026C557E500B5049E /* SecretsSetupRecoveryKeyCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F0526C557E500B5049E /* SecretsSetupRecoveryKeyCoordinatorType.swift */; };
+		029F3F4126C557E500B5049E /* SecretsSetupRecoveryKeyCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F0526C557E500B5049E /* SecretsSetupRecoveryKeyCoordinatorType.swift */; };
+		029F3F4226C557E500B5049E /* SecretsSetupRecoveryKeyViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F0626C557E500B5049E /* SecretsSetupRecoveryKeyViewState.swift */; };
+		029F3F4326C557E500B5049E /* SecretsSetupRecoveryKeyViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F0626C557E500B5049E /* SecretsSetupRecoveryKeyViewState.swift */; };
+		029F3F4426C557E600B5049E /* SecretsSetupRecoveryKeyViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 029F3F0726C557E500B5049E /* SecretsSetupRecoveryKeyViewController.storyboard */; };
+		029F3F4526C557E600B5049E /* SecretsSetupRecoveryKeyViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 029F3F0726C557E500B5049E /* SecretsSetupRecoveryKeyViewController.storyboard */; };
+		029F3F4626C557E600B5049E /* SecretsSetupRecoveryKeyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F0826C557E500B5049E /* SecretsSetupRecoveryKeyViewModel.swift */; };
+		029F3F4726C557E600B5049E /* SecretsSetupRecoveryKeyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F0826C557E500B5049E /* SecretsSetupRecoveryKeyViewModel.swift */; };
+		029F3F4826C557E600B5049E /* SecretsSetupRecoveryKeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F0926C557E500B5049E /* SecretsSetupRecoveryKeyViewController.swift */; };
+		029F3F4926C557E600B5049E /* SecretsSetupRecoveryKeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F0926C557E500B5049E /* SecretsSetupRecoveryKeyViewController.swift */; };
+		029F3F4A26C557E600B5049E /* SecretsSetupRecoveryKeyViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F0A26C557E500B5049E /* SecretsSetupRecoveryKeyViewAction.swift */; };
+		029F3F4B26C557E600B5049E /* SecretsSetupRecoveryKeyViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F0A26C557E500B5049E /* SecretsSetupRecoveryKeyViewAction.swift */; };
+		029F3F4C26C557E600B5049E /* SecretsSetupRecoveryKeyCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F0B26C557E500B5049E /* SecretsSetupRecoveryKeyCoordinator.swift */; };
+		029F3F4D26C557E600B5049E /* SecretsSetupRecoveryKeyCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F0B26C557E500B5049E /* SecretsSetupRecoveryKeyCoordinator.swift */; };
+		029F3F4E26C557E600B5049E /* SecretsSetupRecoveryPassphraseViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 029F3F0D26C557E500B5049E /* SecretsSetupRecoveryPassphraseViewController.storyboard */; };
+		029F3F4F26C557E600B5049E /* SecretsSetupRecoveryPassphraseViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 029F3F0D26C557E500B5049E /* SecretsSetupRecoveryPassphraseViewController.storyboard */; };
+		029F3F5026C557E600B5049E /* SecretsSetupRecoveryPassphraseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F0E26C557E500B5049E /* SecretsSetupRecoveryPassphraseViewModel.swift */; };
+		029F3F5126C557E600B5049E /* SecretsSetupRecoveryPassphraseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F0E26C557E500B5049E /* SecretsSetupRecoveryPassphraseViewModel.swift */; };
+		029F3F5226C557E600B5049E /* SecretsSetupRecoveryPassphraseCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F0F26C557E500B5049E /* SecretsSetupRecoveryPassphraseCoordinatorType.swift */; };
+		029F3F5326C557E600B5049E /* SecretsSetupRecoveryPassphraseCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F0F26C557E500B5049E /* SecretsSetupRecoveryPassphraseCoordinatorType.swift */; };
+		029F3F5426C557E600B5049E /* SecretsSetupRecoveryPassphraseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F1026C557E500B5049E /* SecretsSetupRecoveryPassphraseViewController.swift */; };
+		029F3F5526C557E600B5049E /* SecretsSetupRecoveryPassphraseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F1026C557E500B5049E /* SecretsSetupRecoveryPassphraseViewController.swift */; };
+		029F3F5626C557E600B5049E /* SecretsSetupRecoveryPassphraseViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F1126C557E500B5049E /* SecretsSetupRecoveryPassphraseViewState.swift */; };
+		029F3F5726C557E600B5049E /* SecretsSetupRecoveryPassphraseViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F1126C557E500B5049E /* SecretsSetupRecoveryPassphraseViewState.swift */; };
+		029F3F5826C557E600B5049E /* SecretsSetupRecoveryPassphraseViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F1226C557E500B5049E /* SecretsSetupRecoveryPassphraseViewAction.swift */; };
+		029F3F5926C557E600B5049E /* SecretsSetupRecoveryPassphraseViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F1226C557E500B5049E /* SecretsSetupRecoveryPassphraseViewAction.swift */; };
+		029F3F5A26C557E600B5049E /* SecretsSetupRecoveryPassphraseViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F1326C557E500B5049E /* SecretsSetupRecoveryPassphraseViewModelType.swift */; };
+		029F3F5B26C557E600B5049E /* SecretsSetupRecoveryPassphraseViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F1326C557E500B5049E /* SecretsSetupRecoveryPassphraseViewModelType.swift */; };
+		029F3F5C26C557E600B5049E /* SecretsSetupRecoveryPassphraseCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F1426C557E500B5049E /* SecretsSetupRecoveryPassphraseCoordinator.swift */; };
+		029F3F5D26C557E600B5049E /* SecretsSetupRecoveryPassphraseCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F1426C557E500B5049E /* SecretsSetupRecoveryPassphraseCoordinator.swift */; };
+		029F3F5E26C557E600B5049E /* SecretsSetupRecoveryPassphraseInputMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F1526C557E500B5049E /* SecretsSetupRecoveryPassphraseInputMode.swift */; };
+		029F3F5F26C557E600B5049E /* SecretsSetupRecoveryPassphraseInputMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F1526C557E500B5049E /* SecretsSetupRecoveryPassphraseInputMode.swift */; };
+		029F3F6026C557E600B5049E /* SecretsRecoveryWithPassphraseCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F1826C557E500B5049E /* SecretsRecoveryWithPassphraseCoordinator.swift */; };
+		029F3F6126C557E600B5049E /* SecretsRecoveryWithPassphraseCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F1826C557E500B5049E /* SecretsRecoveryWithPassphraseCoordinator.swift */; };
+		029F3F6226C557E600B5049E /* SecretsRecoveryWithPassphraseCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F1926C557E500B5049E /* SecretsRecoveryWithPassphraseCoordinatorType.swift */; };
+		029F3F6326C557E600B5049E /* SecretsRecoveryWithPassphraseCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F1926C557E500B5049E /* SecretsRecoveryWithPassphraseCoordinatorType.swift */; };
+		029F3F6426C557E600B5049E /* SecretsRecoveryWithPassphraseViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F1A26C557E500B5049E /* SecretsRecoveryWithPassphraseViewModelType.swift */; };
+		029F3F6526C557E600B5049E /* SecretsRecoveryWithPassphraseViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F1A26C557E500B5049E /* SecretsRecoveryWithPassphraseViewModelType.swift */; };
+		029F3F6626C557E600B5049E /* SecretsRecoveryWithPassphraseViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F1B26C557E500B5049E /* SecretsRecoveryWithPassphraseViewAction.swift */; };
+		029F3F6726C557E600B5049E /* SecretsRecoveryWithPassphraseViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F1B26C557E500B5049E /* SecretsRecoveryWithPassphraseViewAction.swift */; };
+		029F3F6826C557E600B5049E /* SecretsRecoveryWithPassphraseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F1C26C557E500B5049E /* SecretsRecoveryWithPassphraseViewModel.swift */; };
+		029F3F6926C557E600B5049E /* SecretsRecoveryWithPassphraseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F1C26C557E500B5049E /* SecretsRecoveryWithPassphraseViewModel.swift */; };
+		029F3F6A26C557E600B5049E /* SecretsRecoveryWithPassphraseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F1D26C557E500B5049E /* SecretsRecoveryWithPassphraseViewController.swift */; };
+		029F3F6B26C557E600B5049E /* SecretsRecoveryWithPassphraseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F1D26C557E500B5049E /* SecretsRecoveryWithPassphraseViewController.swift */; };
+		029F3F6C26C557E600B5049E /* SecretsRecoveryWithPassphraseViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F1E26C557E500B5049E /* SecretsRecoveryWithPassphraseViewState.swift */; };
+		029F3F6D26C557E600B5049E /* SecretsRecoveryWithPassphraseViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F1E26C557E500B5049E /* SecretsRecoveryWithPassphraseViewState.swift */; };
+		029F3F6E26C557E600B5049E /* SecretsRecoveryWithPassphraseViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 029F3F1F26C557E500B5049E /* SecretsRecoveryWithPassphraseViewController.storyboard */; };
+		029F3F6F26C557E600B5049E /* SecretsRecoveryWithPassphraseViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 029F3F1F26C557E500B5049E /* SecretsRecoveryWithPassphraseViewController.storyboard */; };
+		029F3F7026C557E600B5049E /* SecretsRecoveryGoal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F2026C557E500B5049E /* SecretsRecoveryGoal.swift */; };
+		029F3F7126C557E600B5049E /* SecretsRecoveryGoal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F2026C557E500B5049E /* SecretsRecoveryGoal.swift */; };
+		029F3F7226C557E600B5049E /* SecretsRecoveryMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F2126C557E500B5049E /* SecretsRecoveryMode.swift */; };
+		029F3F7326C557E600B5049E /* SecretsRecoveryMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F2126C557E500B5049E /* SecretsRecoveryMode.swift */; };
+		029F3F7426C557E600B5049E /* SecretsRecoveryWithKeyViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 029F3F2326C557E500B5049E /* SecretsRecoveryWithKeyViewController.storyboard */; };
+		029F3F7526C557E600B5049E /* SecretsRecoveryWithKeyViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 029F3F2326C557E500B5049E /* SecretsRecoveryWithKeyViewController.storyboard */; };
+		029F3F7626C557E600B5049E /* SecretsRecoveryWithKeyCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F2426C557E500B5049E /* SecretsRecoveryWithKeyCoordinator.swift */; };
+		029F3F7726C557E600B5049E /* SecretsRecoveryWithKeyCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F2426C557E500B5049E /* SecretsRecoveryWithKeyCoordinator.swift */; };
+		029F3F7826C557E600B5049E /* SecretsRecoveryWithKeyCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F2526C557E500B5049E /* SecretsRecoveryWithKeyCoordinatorType.swift */; };
+		029F3F7926C557E600B5049E /* SecretsRecoveryWithKeyCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F2526C557E500B5049E /* SecretsRecoveryWithKeyCoordinatorType.swift */; };
+		029F3F7A26C557E600B5049E /* SecretsRecoveryWithKeyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F2626C557E500B5049E /* SecretsRecoveryWithKeyViewModel.swift */; };
+		029F3F7B26C557E600B5049E /* SecretsRecoveryWithKeyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F2626C557E500B5049E /* SecretsRecoveryWithKeyViewModel.swift */; };
+		029F3F7C26C557E600B5049E /* SecretsRecoveryWithKeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F2726C557E500B5049E /* SecretsRecoveryWithKeyViewController.swift */; };
+		029F3F7D26C557E600B5049E /* SecretsRecoveryWithKeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F2726C557E500B5049E /* SecretsRecoveryWithKeyViewController.swift */; };
+		029F3F7E26C557E600B5049E /* SecretsRecoveryWithKeyViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F2826C557E500B5049E /* SecretsRecoveryWithKeyViewAction.swift */; };
+		029F3F7F26C557E600B5049E /* SecretsRecoveryWithKeyViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F2826C557E500B5049E /* SecretsRecoveryWithKeyViewAction.swift */; };
+		029F3F8026C557E600B5049E /* SecretsRecoveryWithKeyViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F2926C557E500B5049E /* SecretsRecoveryWithKeyViewModelType.swift */; };
+		029F3F8126C557E600B5049E /* SecretsRecoveryWithKeyViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F2926C557E500B5049E /* SecretsRecoveryWithKeyViewModelType.swift */; };
+		029F3F8226C557E600B5049E /* SecretsRecoveryWithKeyViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F2A26C557E500B5049E /* SecretsRecoveryWithKeyViewState.swift */; };
+		029F3F8326C557E600B5049E /* SecretsRecoveryWithKeyViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F2A26C557E500B5049E /* SecretsRecoveryWithKeyViewState.swift */; };
+		029F3F8426C557E600B5049E /* SecretsRecoveryCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F2B26C557E500B5049E /* SecretsRecoveryCoordinatorType.swift */; };
+		029F3F8526C557E600B5049E /* SecretsRecoveryCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F2B26C557E500B5049E /* SecretsRecoveryCoordinatorType.swift */; };
+		029F3F8626C557E600B5049E /* SecretsRecoveryCoordinatorBridgePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F2C26C557E500B5049E /* SecretsRecoveryCoordinatorBridgePresenter.swift */; };
+		029F3F8726C557E600B5049E /* SecretsRecoveryCoordinatorBridgePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F2C26C557E500B5049E /* SecretsRecoveryCoordinatorBridgePresenter.swift */; };
+		029F3F8826C557E600B5049E /* SecretsRecoveryCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F2D26C557E500B5049E /* SecretsRecoveryCoordinator.swift */; };
+		029F3F8926C557E600B5049E /* SecretsRecoveryCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029F3F2D26C557E500B5049E /* SecretsRecoveryCoordinator.swift */; };
 		02A514C926100CDA007164AD /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B122099623854EF2004D069C /* Strings.swift */; };
 		02A514CA26100CDB007164AD /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B122099623854EF2004D069C /* Strings.swift */; };
 		02A7900023E0DD5A00F17374 /* UserStatusInfoType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A78FFF23E0DD5A00F17374 /* UserStatusInfoType.swift */; };
@@ -935,82 +1017,6 @@
 		02C3F22724AFD3880086ACA5 /* CrossSigningBannerPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F22024AFD3880086ACA5 /* CrossSigningBannerPreferences.swift */; };
 		02C3F22824AFD3880086ACA5 /* CrossSigningSetupBannerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F22124AFD3880086ACA5 /* CrossSigningSetupBannerCell.swift */; };
 		02C3F22924AFD3880086ACA5 /* CrossSigningSetupBannerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F22124AFD3880086ACA5 /* CrossSigningSetupBannerCell.swift */; };
-		02C3F25724AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F22D24AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyViewModelType.swift */; };
-		02C3F25824AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F22D24AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyViewModelType.swift */; };
-		02C3F25924AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F22E24AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyCoordinatorType.swift */; };
-		02C3F25A24AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F22E24AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyCoordinatorType.swift */; };
-		02C3F25B24AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F22F24AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyViewState.swift */; };
-		02C3F25C24AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F22F24AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyViewState.swift */; };
-		02C3F25D24AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02C3F23024AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyViewController.storyboard */; };
-		02C3F25E24AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02C3F23024AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyViewController.storyboard */; };
-		02C3F25F24AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F23124AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyViewModel.swift */; };
-		02C3F26024AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F23124AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyViewModel.swift */; };
-		02C3F26124AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F23224AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyViewController.swift */; };
-		02C3F26224AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F23224AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyViewController.swift */; };
-		02C3F26324AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F23324AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyViewAction.swift */; };
-		02C3F26424AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F23324AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyViewAction.swift */; };
-		02C3F26524AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F23424AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyCoordinator.swift */; };
-		02C3F26624AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F23424AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyCoordinator.swift */; };
-		02C3F26724AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02C3F23624AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseViewController.storyboard */; };
-		02C3F26824AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02C3F23624AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseViewController.storyboard */; };
-		02C3F26924AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F23724AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseViewModel.swift */; };
-		02C3F26A24AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F23724AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseViewModel.swift */; };
-		02C3F26B24AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F23824AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseCoordinatorType.swift */; };
-		02C3F26C24AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F23824AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseCoordinatorType.swift */; };
-		02C3F26D24AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F23924AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseViewController.swift */; };
-		02C3F26E24AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F23924AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseViewController.swift */; };
-		02C3F26F24AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F23A24AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseViewState.swift */; };
-		02C3F27024AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F23A24AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseViewState.swift */; };
-		02C3F27124AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F23B24AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseViewAction.swift */; };
-		02C3F27224AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F23B24AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseViewAction.swift */; };
-		02C3F27324AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F23C24AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseViewModelType.swift */; };
-		02C3F27424AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F23C24AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseViewModelType.swift */; };
-		02C3F27524AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F23D24AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseCoordinator.swift */; };
-		02C3F27624AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F23D24AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseCoordinator.swift */; };
-		02C3F27724AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseInputMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F23E24AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseInputMode.swift */; };
-		02C3F27824AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseInputMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F23E24AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseInputMode.swift */; };
-		02C3F27924AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F24124AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseCoordinator.swift */; };
-		02C3F27A24AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F24124AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseCoordinator.swift */; };
-		02C3F27B24AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F24224AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseCoordinatorType.swift */; };
-		02C3F27C24AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F24224AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseCoordinatorType.swift */; };
-		02C3F27D24AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F24324AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseViewModelType.swift */; };
-		02C3F27E24AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F24324AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseViewModelType.swift */; };
-		02C3F27F24AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F24424AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseViewAction.swift */; };
-		02C3F28024AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F24424AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseViewAction.swift */; };
-		02C3F28124AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F24524AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseViewModel.swift */; };
-		02C3F28224AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F24524AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseViewModel.swift */; };
-		02C3F28324AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F24624AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseViewController.swift */; };
-		02C3F28424AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F24624AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseViewController.swift */; };
-		02C3F28524AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F24724AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseViewState.swift */; };
-		02C3F28624AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F24724AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseViewState.swift */; };
-		02C3F28724AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02C3F24824AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseViewController.storyboard */; };
-		02C3F28824AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02C3F24824AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseViewController.storyboard */; };
-		02C3F28924AFDEFF0086ACA5 /* SecretsRecoveryGoal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F24924AFDEFF0086ACA5 /* SecretsRecoveryGoal.swift */; };
-		02C3F28A24AFDEFF0086ACA5 /* SecretsRecoveryGoal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F24924AFDEFF0086ACA5 /* SecretsRecoveryGoal.swift */; };
-		02C3F28B24AFDEFF0086ACA5 /* SecretsRecoveryMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F24A24AFDEFF0086ACA5 /* SecretsRecoveryMode.swift */; };
-		02C3F28C24AFDEFF0086ACA5 /* SecretsRecoveryMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F24A24AFDEFF0086ACA5 /* SecretsRecoveryMode.swift */; };
-		02C3F28D24AFDEFF0086ACA5 /* SecretsRecoveryWithKeyViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02C3F24C24AFDEFF0086ACA5 /* SecretsRecoveryWithKeyViewController.storyboard */; };
-		02C3F28E24AFDEFF0086ACA5 /* SecretsRecoveryWithKeyViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02C3F24C24AFDEFF0086ACA5 /* SecretsRecoveryWithKeyViewController.storyboard */; };
-		02C3F28F24AFDEFF0086ACA5 /* SecretsRecoveryWithKeyCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F24D24AFDEFF0086ACA5 /* SecretsRecoveryWithKeyCoordinator.swift */; };
-		02C3F29024AFDEFF0086ACA5 /* SecretsRecoveryWithKeyCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F24D24AFDEFF0086ACA5 /* SecretsRecoveryWithKeyCoordinator.swift */; };
-		02C3F29124AFDEFF0086ACA5 /* SecretsRecoveryWithKeyCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F24E24AFDEFF0086ACA5 /* SecretsRecoveryWithKeyCoordinatorType.swift */; };
-		02C3F29224AFDEFF0086ACA5 /* SecretsRecoveryWithKeyCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F24E24AFDEFF0086ACA5 /* SecretsRecoveryWithKeyCoordinatorType.swift */; };
-		02C3F29324AFDEFF0086ACA5 /* SecretsRecoveryWithKeyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F24F24AFDEFF0086ACA5 /* SecretsRecoveryWithKeyViewModel.swift */; };
-		02C3F29424AFDEFF0086ACA5 /* SecretsRecoveryWithKeyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F24F24AFDEFF0086ACA5 /* SecretsRecoveryWithKeyViewModel.swift */; };
-		02C3F29524AFDEFF0086ACA5 /* SecretsRecoveryWithKeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F25024AFDEFF0086ACA5 /* SecretsRecoveryWithKeyViewController.swift */; };
-		02C3F29624AFDEFF0086ACA5 /* SecretsRecoveryWithKeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F25024AFDEFF0086ACA5 /* SecretsRecoveryWithKeyViewController.swift */; };
-		02C3F29724AFDEFF0086ACA5 /* SecretsRecoveryWithKeyViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F25124AFDEFF0086ACA5 /* SecretsRecoveryWithKeyViewAction.swift */; };
-		02C3F29824AFDEFF0086ACA5 /* SecretsRecoveryWithKeyViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F25124AFDEFF0086ACA5 /* SecretsRecoveryWithKeyViewAction.swift */; };
-		02C3F29924AFDEFF0086ACA5 /* SecretsRecoveryWithKeyViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F25224AFDEFF0086ACA5 /* SecretsRecoveryWithKeyViewModelType.swift */; };
-		02C3F29A24AFDEFF0086ACA5 /* SecretsRecoveryWithKeyViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F25224AFDEFF0086ACA5 /* SecretsRecoveryWithKeyViewModelType.swift */; };
-		02C3F29B24AFDEFF0086ACA5 /* SecretsRecoveryWithKeyViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F25324AFDEFF0086ACA5 /* SecretsRecoveryWithKeyViewState.swift */; };
-		02C3F29C24AFDEFF0086ACA5 /* SecretsRecoveryWithKeyViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F25324AFDEFF0086ACA5 /* SecretsRecoveryWithKeyViewState.swift */; };
-		02C3F29D24AFDEFF0086ACA5 /* SecretsRecoveryCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F25424AFDEFF0086ACA5 /* SecretsRecoveryCoordinatorType.swift */; };
-		02C3F29E24AFDEFF0086ACA5 /* SecretsRecoveryCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F25424AFDEFF0086ACA5 /* SecretsRecoveryCoordinatorType.swift */; };
-		02C3F29F24AFDEFF0086ACA5 /* SecretsRecoveryCoordinatorBridgePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F25524AFDEFF0086ACA5 /* SecretsRecoveryCoordinatorBridgePresenter.swift */; };
-		02C3F2A024AFDEFF0086ACA5 /* SecretsRecoveryCoordinatorBridgePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F25524AFDEFF0086ACA5 /* SecretsRecoveryCoordinatorBridgePresenter.swift */; };
-		02C3F2A124AFDEFF0086ACA5 /* SecretsRecoveryCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F25624AFDEFF0086ACA5 /* SecretsRecoveryCoordinator.swift */; };
-		02C3F2A224AFDEFF0086ACA5 /* SecretsRecoveryCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F25624AFDEFF0086ACA5 /* SecretsRecoveryCoordinator.swift */; };
 		02C3F2A424AFE13E0086ACA5 /* MXRecoveryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F2A324AFE13E0086ACA5 /* MXRecoveryService.swift */; };
 		02C3F2A524AFE13E0086ACA5 /* MXRecoveryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F2A324AFE13E0086ACA5 /* MXRecoveryService.swift */; };
 		02C3F2A824AFE32B0086ACA5 /* AuthenticatedSessionViewControllerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C3F2A724AFE32B0086ACA5 /* AuthenticatedSessionViewControllerFactory.swift */; };
@@ -1042,6 +1048,32 @@
 		02D5E34C26C5139700114F3D /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D5E34A26C5139700114F3D /* UIView.swift */; };
 		02D5E34D26C53D8100114F3D /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D5E34A26C5139700114F3D /* UIView.swift */; };
 		02D5E34E26C53D8100114F3D /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D5E34A26C5139700114F3D /* UIView.swift */; };
+		02D5E3EC26C53F8300114F3D /* Themable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D5E3E226C53F8300114F3D /* Themable.swift */; };
+		02D5E3ED26C53F8300114F3D /* Themable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D5E3E226C53F8300114F3D /* Themable.swift */; };
+		02D5E3EE26C53F8300114F3D /* Themable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D5E3E226C53F8300114F3D /* Themable.swift */; };
+		02D5E3EF26C53F8300114F3D /* Themable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D5E3E226C53F8300114F3D /* Themable.swift */; };
+		02D5E3F026C53F8300114F3D /* ThemeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D5E3E326C53F8300114F3D /* ThemeService.swift */; };
+		02D5E3F126C53F8300114F3D /* ThemeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D5E3E326C53F8300114F3D /* ThemeService.swift */; };
+		02D5E3F226C53F8300114F3D /* ThemeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D5E3E326C53F8300114F3D /* ThemeService.swift */; };
+		02D5E3F326C53F8300114F3D /* ThemeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D5E3E326C53F8300114F3D /* ThemeService.swift */; };
+		02D5E3F426C53F8300114F3D /* ThemeService.m in Sources */ = {isa = PBXBuildFile; fileRef = 02D5E3E426C53F8300114F3D /* ThemeService.m */; };
+		02D5E3F526C53F8300114F3D /* ThemeService.m in Sources */ = {isa = PBXBuildFile; fileRef = 02D5E3E426C53F8300114F3D /* ThemeService.m */; };
+		02D5E3F626C53F8300114F3D /* ThemeService.m in Sources */ = {isa = PBXBuildFile; fileRef = 02D5E3E426C53F8300114F3D /* ThemeService.m */; };
+		02D5E3F726C53F8300114F3D /* ThemeService.m in Sources */ = {isa = PBXBuildFile; fileRef = 02D5E3E426C53F8300114F3D /* ThemeService.m */; };
+		02D5E3F826C53F8300114F3D /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D5E3E526C53F8300114F3D /* Theme.swift */; };
+		02D5E3F926C53F8300114F3D /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D5E3E526C53F8300114F3D /* Theme.swift */; };
+		02D5E3FA26C53F8300114F3D /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D5E3E526C53F8300114F3D /* Theme.swift */; };
+		02D5E3FB26C53F8300114F3D /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D5E3E526C53F8300114F3D /* Theme.swift */; };
+		02D5E3FC26C53F8300114F3D /* DefaultTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D5E3E726C53F8300114F3D /* DefaultTheme.swift */; };
+		02D5E3FD26C53F8300114F3D /* DefaultTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D5E3E726C53F8300114F3D /* DefaultTheme.swift */; };
+		02D5E3FE26C53F8300114F3D /* DefaultTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D5E3E726C53F8300114F3D /* DefaultTheme.swift */; };
+		02D5E3FF26C53F8300114F3D /* DefaultTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D5E3E726C53F8300114F3D /* DefaultTheme.swift */; };
+		02D5E40826C53F8300114F3D /* ThemeIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D5E3EA26C53F8300114F3D /* ThemeIdentifier.swift */; };
+		02D5E40926C53F8300114F3D /* ThemeIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D5E3EA26C53F8300114F3D /* ThemeIdentifier.swift */; };
+		02D5E40A26C53F8300114F3D /* ThemeIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D5E3EA26C53F8300114F3D /* ThemeIdentifier.swift */; };
+		02D5E40B26C53F8300114F3D /* ThemeIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D5E3EA26C53F8300114F3D /* ThemeIdentifier.swift */; };
+		02D5E40D26C5497900114F3D /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D5E40C26C5497900114F3D /* UIViewController.swift */; };
+		02D5E40E26C5497900114F3D /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D5E40C26C5497900114F3D /* UIViewController.swift */; };
 		02DC4F4B221C46E500B551EE /* RoomPowerLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DC4F4A221C46E500B551EE /* RoomPowerLevel.swift */; };
 		02DC4F4C221C46E500B551EE /* RoomPowerLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DC4F4A221C46E500B551EE /* RoomPowerLevel.swift */; };
 		02DFEB7421C07370009B6F15 /* RoomAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B146D50C21A5EAE600D8C2C6 /* RoomAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.m */; };
@@ -1223,7 +1255,6 @@
 		02DFEC3121C07370009B6F15 /* AlertErrorPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15B867521357514002782BE /* AlertErrorPresenter.swift */; };
 		02DFEC3221C07370009B6F15 /* DisplayNameComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1454B96216BA84000365A86 /* DisplayNameComponents.swift */; };
 		02DFEC3321C07370009B6F15 /* RoomKeyRequestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556FE20EE6C4C00210D55 /* RoomKeyRequestViewController.m */; };
-		02DFEC3421C07370009B6F15 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AAB5212AFDBA0077FDC0 /* UIViewController.swift */; };
 		02DFEC3521C07370009B6F15 /* RoomActivitiesView.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF930214BE467003DFBA4 /* RoomActivitiesView.m */; };
 		02DFEC3621C07370009B6F15 /* RoomMemberDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 020DF885214BE467003DFBA4 /* RoomMemberDetailsViewController.m */; };
 		02DFEC3721C07370009B6F15 /* GDPRConsentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17982FE2119FED2001FD722 /* GDPRConsentViewController.swift */; };
@@ -2046,7 +2077,6 @@
 		B1F2AAAE212AED900077FDC0 /* RootRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AAA9212AED900077FDC0 /* RootRouter.swift */; };
 		B1F2AAAF212AED900077FDC0 /* Presentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AAAA212AED900077FDC0 /* Presentable.swift */; };
 		B1F2AAB0212AED900077FDC0 /* NavigationRouterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AAAB212AED900077FDC0 /* NavigationRouterType.swift */; };
-		B1F2AAB6212AFDBA0077FDC0 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F2AAB5212AFDBA0077FDC0 /* UIViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -2487,11 +2517,6 @@
 		024518E323A1467A006873DF /* message.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = message.caf; sourceTree = "<group>"; };
 		024518E723A150D4006873DF /* PasswordStrength.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordStrength.swift; sourceTree = "<group>"; };
 		024518E823A150D4006873DF /* PasswordStrengthManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordStrengthManager.swift; sourceTree = "<group>"; };
-		024518EE23A19675006873DF /* Themable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Themable.swift; sourceTree = "<group>"; };
-		024518EF23A19675006873DF /* ThemeService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThemeService.m; sourceTree = "<group>"; };
-		024518F023A19675006873DF /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
-		024518F223A19675006873DF /* DefaultTheme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultTheme.swift; sourceTree = "<group>"; };
-		024518F323A19675006873DF /* ThemeService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThemeService.h; sourceTree = "<group>"; };
 		024732C323EA23FC008CD543 /* Tools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tools.m; sourceTree = "<group>"; };
 		024732C423EA23FC008CD543 /* Tools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tools.h; sourceTree = "<group>"; };
 		024CD92B257443FC00629DAA /* App-Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "App-Debug.xcconfig"; sourceTree = "<group>"; };
@@ -2658,6 +2683,54 @@
 		029CC68821772F4200DCC8B3 /* DeviceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceView.h; sourceTree = "<group>"; };
 		029CC68921772F4200DCC8B3 /* DeviceView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DeviceView.xib; sourceTree = "<group>"; };
 		029CC68A21772F4200DCC8B3 /* TableViewCellWithPhoneNumberTextField.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TableViewCellWithPhoneNumberTextField.xib; sourceTree = "<group>"; };
+		029F3EF226C555C900B5049E /* SecureBackupSetupIntroViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecureBackupSetupIntroViewModelType.swift; sourceTree = "<group>"; };
+		029F3EF326C555C900B5049E /* SecureBackupSetupIntroViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecureBackupSetupIntroViewModel.swift; sourceTree = "<group>"; };
+		029F3EFA26C557E500B5049E /* SecretsResetCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsResetCoordinator.swift; sourceTree = "<group>"; };
+		029F3EFB26C557E500B5049E /* SecretsResetViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsResetViewModelType.swift; sourceTree = "<group>"; };
+		029F3EFC26C557E500B5049E /* SecretsResetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsResetViewController.swift; sourceTree = "<group>"; };
+		029F3EFD26C557E500B5049E /* SecretsResetCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsResetCoordinatorType.swift; sourceTree = "<group>"; };
+		029F3EFE26C557E500B5049E /* SecretsResetViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SecretsResetViewController.storyboard; sourceTree = "<group>"; };
+		029F3EFF26C557E500B5049E /* SecretsResetViewState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsResetViewState.swift; sourceTree = "<group>"; };
+		029F3F0026C557E500B5049E /* SecretsResetViewAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsResetViewAction.swift; sourceTree = "<group>"; };
+		029F3F0126C557E500B5049E /* SecretsResetViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsResetViewModel.swift; sourceTree = "<group>"; };
+		029F3F0426C557E500B5049E /* SecretsSetupRecoveryKeyViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsSetupRecoveryKeyViewModelType.swift; sourceTree = "<group>"; };
+		029F3F0526C557E500B5049E /* SecretsSetupRecoveryKeyCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsSetupRecoveryKeyCoordinatorType.swift; sourceTree = "<group>"; };
+		029F3F0626C557E500B5049E /* SecretsSetupRecoveryKeyViewState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsSetupRecoveryKeyViewState.swift; sourceTree = "<group>"; };
+		029F3F0726C557E500B5049E /* SecretsSetupRecoveryKeyViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SecretsSetupRecoveryKeyViewController.storyboard; sourceTree = "<group>"; };
+		029F3F0826C557E500B5049E /* SecretsSetupRecoveryKeyViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsSetupRecoveryKeyViewModel.swift; sourceTree = "<group>"; };
+		029F3F0926C557E500B5049E /* SecretsSetupRecoveryKeyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsSetupRecoveryKeyViewController.swift; sourceTree = "<group>"; };
+		029F3F0A26C557E500B5049E /* SecretsSetupRecoveryKeyViewAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsSetupRecoveryKeyViewAction.swift; sourceTree = "<group>"; };
+		029F3F0B26C557E500B5049E /* SecretsSetupRecoveryKeyCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsSetupRecoveryKeyCoordinator.swift; sourceTree = "<group>"; };
+		029F3F0D26C557E500B5049E /* SecretsSetupRecoveryPassphraseViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SecretsSetupRecoveryPassphraseViewController.storyboard; sourceTree = "<group>"; };
+		029F3F0E26C557E500B5049E /* SecretsSetupRecoveryPassphraseViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsSetupRecoveryPassphraseViewModel.swift; sourceTree = "<group>"; };
+		029F3F0F26C557E500B5049E /* SecretsSetupRecoveryPassphraseCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsSetupRecoveryPassphraseCoordinatorType.swift; sourceTree = "<group>"; };
+		029F3F1026C557E500B5049E /* SecretsSetupRecoveryPassphraseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsSetupRecoveryPassphraseViewController.swift; sourceTree = "<group>"; };
+		029F3F1126C557E500B5049E /* SecretsSetupRecoveryPassphraseViewState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsSetupRecoveryPassphraseViewState.swift; sourceTree = "<group>"; };
+		029F3F1226C557E500B5049E /* SecretsSetupRecoveryPassphraseViewAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsSetupRecoveryPassphraseViewAction.swift; sourceTree = "<group>"; };
+		029F3F1326C557E500B5049E /* SecretsSetupRecoveryPassphraseViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsSetupRecoveryPassphraseViewModelType.swift; sourceTree = "<group>"; };
+		029F3F1426C557E500B5049E /* SecretsSetupRecoveryPassphraseCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsSetupRecoveryPassphraseCoordinator.swift; sourceTree = "<group>"; };
+		029F3F1526C557E500B5049E /* SecretsSetupRecoveryPassphraseInputMode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsSetupRecoveryPassphraseInputMode.swift; sourceTree = "<group>"; };
+		029F3F1826C557E500B5049E /* SecretsRecoveryWithPassphraseCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsRecoveryWithPassphraseCoordinator.swift; sourceTree = "<group>"; };
+		029F3F1926C557E500B5049E /* SecretsRecoveryWithPassphraseCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsRecoveryWithPassphraseCoordinatorType.swift; sourceTree = "<group>"; };
+		029F3F1A26C557E500B5049E /* SecretsRecoveryWithPassphraseViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsRecoveryWithPassphraseViewModelType.swift; sourceTree = "<group>"; };
+		029F3F1B26C557E500B5049E /* SecretsRecoveryWithPassphraseViewAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsRecoveryWithPassphraseViewAction.swift; sourceTree = "<group>"; };
+		029F3F1C26C557E500B5049E /* SecretsRecoveryWithPassphraseViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsRecoveryWithPassphraseViewModel.swift; sourceTree = "<group>"; };
+		029F3F1D26C557E500B5049E /* SecretsRecoveryWithPassphraseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsRecoveryWithPassphraseViewController.swift; sourceTree = "<group>"; };
+		029F3F1E26C557E500B5049E /* SecretsRecoveryWithPassphraseViewState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsRecoveryWithPassphraseViewState.swift; sourceTree = "<group>"; };
+		029F3F1F26C557E500B5049E /* SecretsRecoveryWithPassphraseViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SecretsRecoveryWithPassphraseViewController.storyboard; sourceTree = "<group>"; };
+		029F3F2026C557E500B5049E /* SecretsRecoveryGoal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsRecoveryGoal.swift; sourceTree = "<group>"; };
+		029F3F2126C557E500B5049E /* SecretsRecoveryMode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsRecoveryMode.swift; sourceTree = "<group>"; };
+		029F3F2326C557E500B5049E /* SecretsRecoveryWithKeyViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SecretsRecoveryWithKeyViewController.storyboard; sourceTree = "<group>"; };
+		029F3F2426C557E500B5049E /* SecretsRecoveryWithKeyCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsRecoveryWithKeyCoordinator.swift; sourceTree = "<group>"; };
+		029F3F2526C557E500B5049E /* SecretsRecoveryWithKeyCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsRecoveryWithKeyCoordinatorType.swift; sourceTree = "<group>"; };
+		029F3F2626C557E500B5049E /* SecretsRecoveryWithKeyViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsRecoveryWithKeyViewModel.swift; sourceTree = "<group>"; };
+		029F3F2726C557E500B5049E /* SecretsRecoveryWithKeyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsRecoveryWithKeyViewController.swift; sourceTree = "<group>"; };
+		029F3F2826C557E500B5049E /* SecretsRecoveryWithKeyViewAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsRecoveryWithKeyViewAction.swift; sourceTree = "<group>"; };
+		029F3F2926C557E500B5049E /* SecretsRecoveryWithKeyViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsRecoveryWithKeyViewModelType.swift; sourceTree = "<group>"; };
+		029F3F2A26C557E500B5049E /* SecretsRecoveryWithKeyViewState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsRecoveryWithKeyViewState.swift; sourceTree = "<group>"; };
+		029F3F2B26C557E500B5049E /* SecretsRecoveryCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsRecoveryCoordinatorType.swift; sourceTree = "<group>"; };
+		029F3F2C26C557E500B5049E /* SecretsRecoveryCoordinatorBridgePresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsRecoveryCoordinatorBridgePresenter.swift; sourceTree = "<group>"; };
+		029F3F2D26C557E500B5049E /* SecretsRecoveryCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsRecoveryCoordinator.swift; sourceTree = "<group>"; };
 		02A78FFF23E0DD5A00F17374 /* UserStatusInfoType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStatusInfoType.swift; sourceTree = "<group>"; };
 		02A7900223E0DEB400F17374 /* UserStatusInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStatusInfo.swift; sourceTree = "<group>"; };
 		02B34538219CA8CB00110EC8 /* RoomsDiscussionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomsDiscussionCell.swift; sourceTree = "<group>"; };
@@ -2694,44 +2767,6 @@
 		02C3F21F24AFD3870086ACA5 /* CrossSigningSetupBannerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CrossSigningSetupBannerCell.xib; sourceTree = "<group>"; };
 		02C3F22024AFD3880086ACA5 /* CrossSigningBannerPreferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CrossSigningBannerPreferences.swift; sourceTree = "<group>"; };
 		02C3F22124AFD3880086ACA5 /* CrossSigningSetupBannerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CrossSigningSetupBannerCell.swift; sourceTree = "<group>"; };
-		02C3F22D24AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsSetupRecoveryKeyViewModelType.swift; sourceTree = "<group>"; };
-		02C3F22E24AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsSetupRecoveryKeyCoordinatorType.swift; sourceTree = "<group>"; };
-		02C3F22F24AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyViewState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsSetupRecoveryKeyViewState.swift; sourceTree = "<group>"; };
-		02C3F23024AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SecretsSetupRecoveryKeyViewController.storyboard; sourceTree = "<group>"; };
-		02C3F23124AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsSetupRecoveryKeyViewModel.swift; sourceTree = "<group>"; };
-		02C3F23224AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsSetupRecoveryKeyViewController.swift; sourceTree = "<group>"; };
-		02C3F23324AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyViewAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsSetupRecoveryKeyViewAction.swift; sourceTree = "<group>"; };
-		02C3F23424AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsSetupRecoveryKeyCoordinator.swift; sourceTree = "<group>"; };
-		02C3F23624AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SecretsSetupRecoveryPassphraseViewController.storyboard; sourceTree = "<group>"; };
-		02C3F23724AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsSetupRecoveryPassphraseViewModel.swift; sourceTree = "<group>"; };
-		02C3F23824AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsSetupRecoveryPassphraseCoordinatorType.swift; sourceTree = "<group>"; };
-		02C3F23924AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsSetupRecoveryPassphraseViewController.swift; sourceTree = "<group>"; };
-		02C3F23A24AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseViewState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsSetupRecoveryPassphraseViewState.swift; sourceTree = "<group>"; };
-		02C3F23B24AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseViewAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsSetupRecoveryPassphraseViewAction.swift; sourceTree = "<group>"; };
-		02C3F23C24AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsSetupRecoveryPassphraseViewModelType.swift; sourceTree = "<group>"; };
-		02C3F23D24AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsSetupRecoveryPassphraseCoordinator.swift; sourceTree = "<group>"; };
-		02C3F23E24AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseInputMode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsSetupRecoveryPassphraseInputMode.swift; sourceTree = "<group>"; };
-		02C3F24124AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsRecoveryWithPassphraseCoordinator.swift; sourceTree = "<group>"; };
-		02C3F24224AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsRecoveryWithPassphraseCoordinatorType.swift; sourceTree = "<group>"; };
-		02C3F24324AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsRecoveryWithPassphraseViewModelType.swift; sourceTree = "<group>"; };
-		02C3F24424AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseViewAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsRecoveryWithPassphraseViewAction.swift; sourceTree = "<group>"; };
-		02C3F24524AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsRecoveryWithPassphraseViewModel.swift; sourceTree = "<group>"; };
-		02C3F24624AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsRecoveryWithPassphraseViewController.swift; sourceTree = "<group>"; };
-		02C3F24724AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseViewState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsRecoveryWithPassphraseViewState.swift; sourceTree = "<group>"; };
-		02C3F24824AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SecretsRecoveryWithPassphraseViewController.storyboard; sourceTree = "<group>"; };
-		02C3F24924AFDEFF0086ACA5 /* SecretsRecoveryGoal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsRecoveryGoal.swift; sourceTree = "<group>"; };
-		02C3F24A24AFDEFF0086ACA5 /* SecretsRecoveryMode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsRecoveryMode.swift; sourceTree = "<group>"; };
-		02C3F24C24AFDEFF0086ACA5 /* SecretsRecoveryWithKeyViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SecretsRecoveryWithKeyViewController.storyboard; sourceTree = "<group>"; };
-		02C3F24D24AFDEFF0086ACA5 /* SecretsRecoveryWithKeyCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsRecoveryWithKeyCoordinator.swift; sourceTree = "<group>"; };
-		02C3F24E24AFDEFF0086ACA5 /* SecretsRecoveryWithKeyCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsRecoveryWithKeyCoordinatorType.swift; sourceTree = "<group>"; };
-		02C3F24F24AFDEFF0086ACA5 /* SecretsRecoveryWithKeyViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsRecoveryWithKeyViewModel.swift; sourceTree = "<group>"; };
-		02C3F25024AFDEFF0086ACA5 /* SecretsRecoveryWithKeyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsRecoveryWithKeyViewController.swift; sourceTree = "<group>"; };
-		02C3F25124AFDEFF0086ACA5 /* SecretsRecoveryWithKeyViewAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsRecoveryWithKeyViewAction.swift; sourceTree = "<group>"; };
-		02C3F25224AFDEFF0086ACA5 /* SecretsRecoveryWithKeyViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsRecoveryWithKeyViewModelType.swift; sourceTree = "<group>"; };
-		02C3F25324AFDEFF0086ACA5 /* SecretsRecoveryWithKeyViewState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsRecoveryWithKeyViewState.swift; sourceTree = "<group>"; };
-		02C3F25424AFDEFF0086ACA5 /* SecretsRecoveryCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsRecoveryCoordinatorType.swift; sourceTree = "<group>"; };
-		02C3F25524AFDEFF0086ACA5 /* SecretsRecoveryCoordinatorBridgePresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsRecoveryCoordinatorBridgePresenter.swift; sourceTree = "<group>"; };
-		02C3F25624AFDEFF0086ACA5 /* SecretsRecoveryCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretsRecoveryCoordinator.swift; sourceTree = "<group>"; };
 		02C3F2A324AFE13E0086ACA5 /* MXRecoveryService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MXRecoveryService.swift; sourceTree = "<group>"; };
 		02C3F2A724AFE32B0086ACA5 /* AuthenticatedSessionViewControllerFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticatedSessionViewControllerFactory.swift; sourceTree = "<group>"; };
 		02C4BE832252278400F7BB0E /* DiscussionFinder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscussionFinder.swift; sourceTree = "<group>"; };
@@ -2748,6 +2783,14 @@
 		02D0FC8B24AE2DDA008DD5BB /* EncryptionTrustLevelBadgeImageHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptionTrustLevelBadgeImageHelper.swift; sourceTree = "<group>"; };
 		02D0FC8C24AE2DDA008DD5BB /* EventFormatter+DTCoreTextFix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EventFormatter+DTCoreTextFix.h"; sourceTree = "<group>"; };
 		02D5E34A26C5139700114F3D /* UIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
+		02D5E3E226C53F8300114F3D /* Themable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Themable.swift; sourceTree = "<group>"; };
+		02D5E3E326C53F8300114F3D /* ThemeService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeService.swift; sourceTree = "<group>"; };
+		02D5E3E426C53F8300114F3D /* ThemeService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThemeService.m; sourceTree = "<group>"; };
+		02D5E3E526C53F8300114F3D /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		02D5E3E726C53F8300114F3D /* DefaultTheme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultTheme.swift; sourceTree = "<group>"; };
+		02D5E3EA26C53F8300114F3D /* ThemeIdentifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeIdentifier.swift; sourceTree = "<group>"; };
+		02D5E3EB26C53F8300114F3D /* ThemeService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThemeService.h; sourceTree = "<group>"; };
+		02D5E40C26C5497900114F3D /* UIViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		02DC4F4A221C46E500B551EE /* RoomPowerLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomPowerLevel.swift; sourceTree = "<group>"; };
 		02DFECF521C07370009B6F15 /* Btchap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Btchap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		02DFECF921C0771C009B6F15 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -3247,7 +3290,6 @@
 		B1F2AAA9212AED900077FDC0 /* RootRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootRouter.swift; sourceTree = "<group>"; };
 		B1F2AAAA212AED900077FDC0 /* Presentable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Presentable.swift; sourceTree = "<group>"; };
 		B1F2AAAB212AED900077FDC0 /* NavigationRouterType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationRouterType.swift; sourceTree = "<group>"; };
-		B1F2AAB5212AFDBA0077FDC0 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		B2DB622F345CC7F58E3EFC2C /* Pods-TchapPods-BtchapShareExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TchapPods-BtchapShareExtension.debug.xcconfig"; path = "Target Support Files/Pods-TchapPods-BtchapShareExtension/Pods-TchapPods-BtchapShareExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		B53EBE04EF6E755A4CB0505C /* Pods-TchapPods-TchapShareExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TchapPods-TchapShareExtension.debug.xcconfig"; path = "Target Support Files/Pods-TchapPods-TchapShareExtension/Pods-TchapPods-TchapShareExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		CDBBDA3F49689725FAC83694 /* Pods-TchapPods-Btchap.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TchapPods-Btchap.release.xcconfig"; path = "Target Support Files/Pods-TchapPods-Btchap/Pods-TchapPods-Btchap.release.xcconfig"; sourceTree = "<group>"; };
@@ -4105,26 +4147,6 @@
 			path = PasswordStrength;
 			sourceTree = "<group>";
 		};
-		024518ED23A19675006873DF /* Theme */ = {
-			isa = PBXGroup;
-			children = (
-				024518EE23A19675006873DF /* Themable.swift */,
-				024518F323A19675006873DF /* ThemeService.h */,
-				024518EF23A19675006873DF /* ThemeService.m */,
-				024518F023A19675006873DF /* Theme.swift */,
-				024518F123A19675006873DF /* Themes */,
-			);
-			path = Theme;
-			sourceTree = "<group>";
-		};
-		024518F123A19675006873DF /* Themes */ = {
-			isa = PBXGroup;
-			children = (
-				024518F223A19675006873DF /* DefaultTheme.swift */,
-			);
-			path = Themes;
-			sourceTree = "<group>";
-		};
 		024732C223EA23FC008CD543 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
@@ -4582,6 +4604,115 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		029F3EF826C557E500B5049E /* Secrets */ = {
+			isa = PBXGroup;
+			children = (
+				029F3EF926C557E500B5049E /* Reset */,
+				029F3F0226C557E500B5049E /* Setup */,
+				029F3F1626C557E500B5049E /* Recover */,
+			);
+			path = Secrets;
+			sourceTree = "<group>";
+		};
+		029F3EF926C557E500B5049E /* Reset */ = {
+			isa = PBXGroup;
+			children = (
+				029F3EFA26C557E500B5049E /* SecretsResetCoordinator.swift */,
+				029F3EFB26C557E500B5049E /* SecretsResetViewModelType.swift */,
+				029F3EFC26C557E500B5049E /* SecretsResetViewController.swift */,
+				029F3EFD26C557E500B5049E /* SecretsResetCoordinatorType.swift */,
+				029F3EFE26C557E500B5049E /* SecretsResetViewController.storyboard */,
+				029F3EFF26C557E500B5049E /* SecretsResetViewState.swift */,
+				029F3F0026C557E500B5049E /* SecretsResetViewAction.swift */,
+				029F3F0126C557E500B5049E /* SecretsResetViewModel.swift */,
+			);
+			path = Reset;
+			sourceTree = "<group>";
+		};
+		029F3F0226C557E500B5049E /* Setup */ = {
+			isa = PBXGroup;
+			children = (
+				029F3F0326C557E500B5049E /* RecoveryKey */,
+				029F3F0C26C557E500B5049E /* RecoveryPassphrase */,
+			);
+			path = Setup;
+			sourceTree = "<group>";
+		};
+		029F3F0326C557E500B5049E /* RecoveryKey */ = {
+			isa = PBXGroup;
+			children = (
+				029F3F0426C557E500B5049E /* SecretsSetupRecoveryKeyViewModelType.swift */,
+				029F3F0526C557E500B5049E /* SecretsSetupRecoveryKeyCoordinatorType.swift */,
+				029F3F0626C557E500B5049E /* SecretsSetupRecoveryKeyViewState.swift */,
+				029F3F0726C557E500B5049E /* SecretsSetupRecoveryKeyViewController.storyboard */,
+				029F3F0826C557E500B5049E /* SecretsSetupRecoveryKeyViewModel.swift */,
+				029F3F0926C557E500B5049E /* SecretsSetupRecoveryKeyViewController.swift */,
+				029F3F0A26C557E500B5049E /* SecretsSetupRecoveryKeyViewAction.swift */,
+				029F3F0B26C557E500B5049E /* SecretsSetupRecoveryKeyCoordinator.swift */,
+			);
+			path = RecoveryKey;
+			sourceTree = "<group>";
+		};
+		029F3F0C26C557E500B5049E /* RecoveryPassphrase */ = {
+			isa = PBXGroup;
+			children = (
+				029F3F0D26C557E500B5049E /* SecretsSetupRecoveryPassphraseViewController.storyboard */,
+				029F3F0E26C557E500B5049E /* SecretsSetupRecoveryPassphraseViewModel.swift */,
+				029F3F0F26C557E500B5049E /* SecretsSetupRecoveryPassphraseCoordinatorType.swift */,
+				029F3F1026C557E500B5049E /* SecretsSetupRecoveryPassphraseViewController.swift */,
+				029F3F1126C557E500B5049E /* SecretsSetupRecoveryPassphraseViewState.swift */,
+				029F3F1226C557E500B5049E /* SecretsSetupRecoveryPassphraseViewAction.swift */,
+				029F3F1326C557E500B5049E /* SecretsSetupRecoveryPassphraseViewModelType.swift */,
+				029F3F1426C557E500B5049E /* SecretsSetupRecoveryPassphraseCoordinator.swift */,
+				029F3F1526C557E500B5049E /* SecretsSetupRecoveryPassphraseInputMode.swift */,
+			);
+			path = RecoveryPassphrase;
+			sourceTree = "<group>";
+		};
+		029F3F1626C557E500B5049E /* Recover */ = {
+			isa = PBXGroup;
+			children = (
+				029F3F1726C557E500B5049E /* RecoverWithPassphrase */,
+				029F3F2026C557E500B5049E /* SecretsRecoveryGoal.swift */,
+				029F3F2126C557E500B5049E /* SecretsRecoveryMode.swift */,
+				029F3F2226C557E500B5049E /* RecoverWithKey */,
+				029F3F2B26C557E500B5049E /* SecretsRecoveryCoordinatorType.swift */,
+				029F3F2C26C557E500B5049E /* SecretsRecoveryCoordinatorBridgePresenter.swift */,
+				029F3F2D26C557E500B5049E /* SecretsRecoveryCoordinator.swift */,
+			);
+			path = Recover;
+			sourceTree = "<group>";
+		};
+		029F3F1726C557E500B5049E /* RecoverWithPassphrase */ = {
+			isa = PBXGroup;
+			children = (
+				029F3F1826C557E500B5049E /* SecretsRecoveryWithPassphraseCoordinator.swift */,
+				029F3F1926C557E500B5049E /* SecretsRecoveryWithPassphraseCoordinatorType.swift */,
+				029F3F1A26C557E500B5049E /* SecretsRecoveryWithPassphraseViewModelType.swift */,
+				029F3F1B26C557E500B5049E /* SecretsRecoveryWithPassphraseViewAction.swift */,
+				029F3F1C26C557E500B5049E /* SecretsRecoveryWithPassphraseViewModel.swift */,
+				029F3F1D26C557E500B5049E /* SecretsRecoveryWithPassphraseViewController.swift */,
+				029F3F1E26C557E500B5049E /* SecretsRecoveryWithPassphraseViewState.swift */,
+				029F3F1F26C557E500B5049E /* SecretsRecoveryWithPassphraseViewController.storyboard */,
+			);
+			path = RecoverWithPassphrase;
+			sourceTree = "<group>";
+		};
+		029F3F2226C557E500B5049E /* RecoverWithKey */ = {
+			isa = PBXGroup;
+			children = (
+				029F3F2326C557E500B5049E /* SecretsRecoveryWithKeyViewController.storyboard */,
+				029F3F2426C557E500B5049E /* SecretsRecoveryWithKeyCoordinator.swift */,
+				029F3F2526C557E500B5049E /* SecretsRecoveryWithKeyCoordinatorType.swift */,
+				029F3F2626C557E500B5049E /* SecretsRecoveryWithKeyViewModel.swift */,
+				029F3F2726C557E500B5049E /* SecretsRecoveryWithKeyViewController.swift */,
+				029F3F2826C557E500B5049E /* SecretsRecoveryWithKeyViewAction.swift */,
+				029F3F2926C557E500B5049E /* SecretsRecoveryWithKeyViewModelType.swift */,
+				029F3F2A26C557E500B5049E /* SecretsRecoveryWithKeyViewState.swift */,
+			);
+			path = RecoverWithKey;
+			sourceTree = "<group>";
+		};
 		02B34537219CA68800110EC8 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -4602,9 +4733,9 @@
 		02BEE14E2125BBF800098505 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				029F3EF826C557E500B5049E /* Secrets */,
 				3A74C72B25CB2F9E00E3D171 /* Forward */,
 				02C3F2A624AFE32B0086ACA5 /* AuthenticatedSession */,
-				02C3F22A24AFDEFF0086ACA5 /* Secrets */,
 				02C3F21C24AFD3870086ACA5 /* CrossSigning */,
 				02C3F1F624AF750F0086ACA5 /* SecureBackup */,
 				020579FB24A9D7D100C96719 /* QRCode */,
@@ -4663,7 +4794,6 @@
 		02BEE184212AB23A00098505 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				024518ED23A19675006873DF /* Theme */,
 				B12209D323855059004D069C /* Serialization */,
 				B12209AE23854F91004D069C /* ClientConfigurationService */,
 				B12209AA23854F6A004D069C /* AppVersionChecker */,
@@ -4733,6 +4863,8 @@
 		02C3F1F924AF750F0086ACA5 /* Intro */ = {
 			isa = PBXGroup;
 			children = (
+				029F3EF326C555C900B5049E /* SecureBackupSetupIntroViewModel.swift */,
+				029F3EF226C555C900B5049E /* SecureBackupSetupIntroViewModelType.swift */,
 				02C3F1FA24AF750F0086ACA5 /* SecureBackupSetupIntroCell.xib */,
 				02C3F1FB24AF750F0086ACA5 /* SecureBackupSetupIntroViewController.swift */,
 				02C3F1FC24AF750F0086ACA5 /* SecureBackupSetupIntroCell.swift */,
@@ -4770,99 +4902,6 @@
 			path = Banners;
 			sourceTree = "<group>";
 		};
-		02C3F22A24AFDEFF0086ACA5 /* Secrets */ = {
-			isa = PBXGroup;
-			children = (
-				02C3F22B24AFDEFF0086ACA5 /* Setup */,
-				02C3F23F24AFDEFF0086ACA5 /* Recover */,
-			);
-			path = Secrets;
-			sourceTree = "<group>";
-		};
-		02C3F22B24AFDEFF0086ACA5 /* Setup */ = {
-			isa = PBXGroup;
-			children = (
-				02C3F22C24AFDEFF0086ACA5 /* RecoveryKey */,
-				02C3F23524AFDEFF0086ACA5 /* RecoveryPassphrase */,
-			);
-			path = Setup;
-			sourceTree = "<group>";
-		};
-		02C3F22C24AFDEFF0086ACA5 /* RecoveryKey */ = {
-			isa = PBXGroup;
-			children = (
-				02C3F22D24AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyViewModelType.swift */,
-				02C3F22E24AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyCoordinatorType.swift */,
-				02C3F22F24AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyViewState.swift */,
-				02C3F23024AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyViewController.storyboard */,
-				02C3F23124AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyViewModel.swift */,
-				02C3F23224AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyViewController.swift */,
-				02C3F23324AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyViewAction.swift */,
-				02C3F23424AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyCoordinator.swift */,
-			);
-			path = RecoveryKey;
-			sourceTree = "<group>";
-		};
-		02C3F23524AFDEFF0086ACA5 /* RecoveryPassphrase */ = {
-			isa = PBXGroup;
-			children = (
-				02C3F23624AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseViewController.storyboard */,
-				02C3F23724AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseViewModel.swift */,
-				02C3F23824AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseCoordinatorType.swift */,
-				02C3F23924AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseViewController.swift */,
-				02C3F23A24AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseViewState.swift */,
-				02C3F23B24AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseViewAction.swift */,
-				02C3F23C24AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseViewModelType.swift */,
-				02C3F23D24AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseCoordinator.swift */,
-				02C3F23E24AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseInputMode.swift */,
-			);
-			path = RecoveryPassphrase;
-			sourceTree = "<group>";
-		};
-		02C3F23F24AFDEFF0086ACA5 /* Recover */ = {
-			isa = PBXGroup;
-			children = (
-				02C3F24024AFDEFF0086ACA5 /* RecoverWithPassphrase */,
-				02C3F24924AFDEFF0086ACA5 /* SecretsRecoveryGoal.swift */,
-				02C3F24A24AFDEFF0086ACA5 /* SecretsRecoveryMode.swift */,
-				02C3F24B24AFDEFF0086ACA5 /* RecoverWithKey */,
-				02C3F25424AFDEFF0086ACA5 /* SecretsRecoveryCoordinatorType.swift */,
-				02C3F25524AFDEFF0086ACA5 /* SecretsRecoveryCoordinatorBridgePresenter.swift */,
-				02C3F25624AFDEFF0086ACA5 /* SecretsRecoveryCoordinator.swift */,
-			);
-			path = Recover;
-			sourceTree = "<group>";
-		};
-		02C3F24024AFDEFF0086ACA5 /* RecoverWithPassphrase */ = {
-			isa = PBXGroup;
-			children = (
-				02C3F24124AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseCoordinator.swift */,
-				02C3F24224AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseCoordinatorType.swift */,
-				02C3F24324AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseViewModelType.swift */,
-				02C3F24424AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseViewAction.swift */,
-				02C3F24524AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseViewModel.swift */,
-				02C3F24624AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseViewController.swift */,
-				02C3F24724AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseViewState.swift */,
-				02C3F24824AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseViewController.storyboard */,
-			);
-			path = RecoverWithPassphrase;
-			sourceTree = "<group>";
-		};
-		02C3F24B24AFDEFF0086ACA5 /* RecoverWithKey */ = {
-			isa = PBXGroup;
-			children = (
-				02C3F24C24AFDEFF0086ACA5 /* SecretsRecoveryWithKeyViewController.storyboard */,
-				02C3F24D24AFDEFF0086ACA5 /* SecretsRecoveryWithKeyCoordinator.swift */,
-				02C3F24E24AFDEFF0086ACA5 /* SecretsRecoveryWithKeyCoordinatorType.swift */,
-				02C3F24F24AFDEFF0086ACA5 /* SecretsRecoveryWithKeyViewModel.swift */,
-				02C3F25024AFDEFF0086ACA5 /* SecretsRecoveryWithKeyViewController.swift */,
-				02C3F25124AFDEFF0086ACA5 /* SecretsRecoveryWithKeyViewAction.swift */,
-				02C3F25224AFDEFF0086ACA5 /* SecretsRecoveryWithKeyViewModelType.swift */,
-				02C3F25324AFDEFF0086ACA5 /* SecretsRecoveryWithKeyViewState.swift */,
-			);
-			path = RecoverWithKey;
-			sourceTree = "<group>";
-		};
 		02C3F2A624AFE32B0086ACA5 /* AuthenticatedSession */ = {
 			isa = PBXGroup;
 			children = (
@@ -4886,6 +4925,28 @@
 				02CEE1E42338C5B10085ACF0 /* AppVersion.swift */,
 			);
 			path = AppVersion;
+			sourceTree = "<group>";
+		};
+		02D5E3E126C53F8300114F3D /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+				02D5E3E226C53F8300114F3D /* Themable.swift */,
+				02D5E3E326C53F8300114F3D /* ThemeService.swift */,
+				02D5E3E426C53F8300114F3D /* ThemeService.m */,
+				02D5E3E526C53F8300114F3D /* Theme.swift */,
+				02D5E3E626C53F8300114F3D /* Themes */,
+				02D5E3EA26C53F8300114F3D /* ThemeIdentifier.swift */,
+				02D5E3EB26C53F8300114F3D /* ThemeService.h */,
+			);
+			path = Theme;
+			sourceTree = "<group>";
+		};
+		02D5E3E626C53F8300114F3D /* Themes */ = {
+			isa = PBXGroup;
+			children = (
+				02D5E3E726C53F8300114F3D /* DefaultTheme.swift */,
+			);
+			path = Themes;
 			sourceTree = "<group>";
 		};
 		02DFECF721C074CC009B6F15 /* Btchap */ = {
@@ -6128,6 +6189,7 @@
 		B1B5597C20EFC3DF00210D55 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				02D5E3E126C53F8300114F3D /* Theme */,
 				028BA9BD257A459300C71A91 /* KeyValueStorage */,
 				02786244257996E500266B09 /* Room */,
 				025CB2542493BEAC009A4B10 /* PushNotification */,
@@ -6416,7 +6478,6 @@
 		B1F2AAB4212AFD9D0077FDC0 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				B1F2AAB5212AFDBA0077FDC0 /* UIViewController.swift */,
 				B12DDA99216FB2370093172C /* UIBezierPath.swift */,
 				02ECA87F22E0C5BA00ECDA5E /* MXRoomSummary.swift */,
 				029C927622E21F5900E62D27 /* MXRoom.swift */,
@@ -6491,6 +6552,7 @@
 		F083BBE41E7009EC00A9B29C /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				02D5E40C26C5497900114F3D /* UIViewController.swift */,
 				02D5E34A26C5139700114F3D /* UIView.swift */,
 				022B48E02571A00000427BEC /* Bundle.swift */,
 				02F1B87424D8C19F00A73E63 /* UITableViewCell.swift */,
@@ -6879,7 +6941,6 @@
 				020DF99D214BE467003DFBA4 /* RoomMembershipWithPaginationTitleBubbleCell.xib in Resources */,
 				0250C5502122B68000034691 /* Localizable.strings in Resources */,
 				02FAE4C023B4B61700DE73D8 /* PasswordStrengthView.xib in Resources */,
-				02C3F28D24AFDEFF0086ACA5 /* SecretsRecoveryWithKeyViewController.storyboard in Resources */,
 				02C3F21624AF75100086ACA5 /* SecureBackupBannerCell.xib in Resources */,
 				0250C5522122B68000034691 /* InfoPlist.strings in Resources */,
 				020DF968214BE467003DFBA4 /* RoomIncomingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib in Resources */,
@@ -6904,13 +6965,13 @@
 				B11C80192139484900CC6F2F /* RegistrationEmailSentViewController.storyboard in Resources */,
 				020DF93F214BE467003DFBA4 /* RoomViewController.xib in Resources */,
 				0223EFA72227095100B9EA34 /* PublicRoomsCell.xib in Resources */,
-				02C3F25D24AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyViewController.storyboard in Resources */,
 				020DF975214BE467003DFBA4 /* RoomIncomingTextMsgBubbleCell.xib in Resources */,
 				B1C0EE872375B7F400E8BB88 /* ChangePasswordNewPasswordViewController.storyboard in Resources */,
 				020DF98A214BE467003DFBA4 /* RoomOutgoingTextMsgBubbleCell.xib in Resources */,
 				020DF96D214BE467003DFBA4 /* RoomOutgoingEncryptedTextMsgWithoutSenderInfoBubbleCell.xib in Resources */,
 				0250C5692122B68000034691 /* CallViewController.xib in Resources */,
 				B1C4645721B68257005F4D53 /* SelectableContactCell.xib in Resources */,
+				029F3F6E26C557E600B5049E /* SecretsRecoveryWithPassphraseViewController.storyboard in Resources */,
 				02C3F22424AFD3880086ACA5 /* CrossSigningSetupBannerCell.xib in Resources */,
 				02FAE58A23B4C41500DE73D8 /* ContextualMenuItemView.xib in Resources */,
 				020DF96A214BE467003DFBA4 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleBubbleCell.xib in Resources */,
@@ -6919,6 +6980,7 @@
 				02CEE1DE23312C370085ACF0 /* matrix.agent.externe.tchap.gouv.fr2.cer in Resources */,
 				020DF97B214BE467003DFBA4 /* RoomIncomingTextMsgWithoutSenderInfoBubbleCell.xib in Resources */,
 				02FAE5C423B4C41600DE73D8 /* EmojiPickerHeaderView.xib in Resources */,
+				029F3F7426C557E600B5049E /* SecretsRecoveryWithKeyViewController.storyboard in Resources */,
 				0278627D2579983800266B09 /* SpanningSlidingModalContainerView.xib in Resources */,
 				02B3453B219CA8CB00110EC8 /* RoomsDiscussionCell.xib in Resources */,
 				0250C56A2122B68000034691 /* ringback.mp3 in Resources */,
@@ -6981,6 +7043,7 @@
 				B1322FDC212FF7480054A9DD /* Tchap.strings in Resources */,
 				020DF960214BE467003DFBA4 /* RoomOutgoingEncryptedAttachmentWithPaginationTitleBubbleCell.xib in Resources */,
 				020DF9AF214BE467003DFBA4 /* DisabledRoomInputToolbarView.xib in Resources */,
+				029F3F3626C557E500B5049E /* SecretsResetViewController.storyboard in Resources */,
 				B1BC6A012135E2A600D32F8E /* ActivityIndicatorView.xib in Resources */,
 				020DF993214BE467003DFBA4 /* RoomMembershipExpandedWithPaginationTitleBubbleCell.xib in Resources */,
 				0250C58D2122B68000034691 /* RecentsViewController.xib in Resources */,
@@ -7017,10 +7080,10 @@
 				020DF95D214BE467003DFBA4 /* RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.xib in Resources */,
 				B15AB29E215BF20E007F5405 /* ForgotPasswordCheckedEmailViewController.storyboard in Resources */,
 				020DF97E214BE467003DFBA4 /* RoomOutgoingTextMsgWithPaginationTitleBubbleCell.xib in Resources */,
+				029F3F4E26C557E600B5049E /* SecretsSetupRecoveryPassphraseViewController.storyboard in Resources */,
 				02FAE5E823B4C41600DE73D8 /* ReactionHistoryViewCell.xib in Resources */,
 				026D887021C1C4F40085BED8 /* TchapSharedImages.xcassets in Resources */,
 				02FAE4DE23B4B61700DE73D8 /* KeyBackupRecoverSuccessViewController.storyboard in Resources */,
-				02C3F26724AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseViewController.storyboard in Resources */,
 				02C3F20624AF75100086ACA5 /* SecureBackupSetupIntroCell.xib in Resources */,
 				026154E5236C7D930045459E /* agent.externe_2019_10.cer in Resources */,
 				02B34547219E383800110EC8 /* RoomsInviteCell.xib in Resources */,
@@ -7035,7 +7098,7 @@
 				026154E1236C7D930045459E /* agent.dinum_2019_10.cer in Resources */,
 				02040CD823D76A7F00DE0690 /* RetentionPeriodPickerCell.xib in Resources */,
 				0250C59F2122B68000034691 /* MediaAlbumTableCell.xib in Resources */,
-				02C3F28724AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseViewController.storyboard in Resources */,
+				029F3F4426C557E600B5049E /* SecretsSetupRecoveryKeyViewController.storyboard in Resources */,
 				02FAE4E023B4B61700DE73D8 /* KeyBackupRecoverFromRecoveryKeyViewController.storyboard in Resources */,
 				028624DD250269F100CFE83D /* RoomAccessByLinkViewController.storyboard in Resources */,
 				02FAE45C23B4AB3300DE73D8 /* WidgetPermissionViewController.storyboard in Resources */,
@@ -7145,8 +7208,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				029F3F4F26C557E600B5049E /* SecretsSetupRecoveryPassphraseViewController.storyboard in Resources */,
 				02DFEC7921C07370009B6F15 /* ring.mp3 in Resources */,
 				02DFEC7A21C07370009B6F15 /* RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib in Resources */,
+				029F3F4526C557E600B5049E /* SecretsSetupRecoveryKeyViewController.storyboard in Resources */,
+				029F3F7526C557E600B5049E /* SecretsRecoveryWithKeyViewController.storyboard in Resources */,
 				02DFEC7B21C07370009B6F15 /* TableViewCellWithCheckBoxes.xib in Resources */,
 				02DFEC7C21C07370009B6F15 /* RoomMemberTitleView.xib in Resources */,
 				02DFEC7D21C07370009B6F15 /* ContactsViewController.storyboard in Resources */,
@@ -7155,12 +7221,12 @@
 				02FAE58F23B4C41500DE73D8 /* RoomContextualMenuViewController.storyboard in Resources */,
 				02388E0424A2AF7900F3B485 /* UserVerificationStartViewController.storyboard in Resources */,
 				02FAE59323B4C41600DE73D8 /* RoomContextualMenuToolbarView.xib in Resources */,
+				029F3F6F26C557E600B5049E /* SecretsRecoveryWithPassphraseViewController.storyboard in Resources */,
 				02DFEC7F21C07370009B6F15 /* SharedImages.xcassets in Resources */,
 				028624DE250269F100CFE83D /* RoomAccessByLinkViewController.storyboard in Resources */,
 				02FAE5F123B4C41600DE73D8 /* ReactionHistoryViewController.storyboard in Resources */,
 				02DFEC8021C07370009B6F15 /* RoomMembershipExpandedBubbleCell.xib in Resources */,
 				02388E7424A2AF7A00F3B485 /* KeyVerificationSelfVerifyStartViewController.storyboard in Resources */,
-				02C3F28E24AFDEFF0086ACA5 /* SecretsRecoveryWithKeyViewController.storyboard in Resources */,
 				02FAE4F323B4B61700DE73D8 /* KeyBackupRecoverFromPassphraseViewController.storyboard in Resources */,
 				02DFEC8121C07370009B6F15 /* EncryptionInfoView.xib in Resources */,
 				02DFEC8221C07370009B6F15 /* RoomPredecessorBubbleCell.xib in Resources */,
@@ -7171,7 +7237,6 @@
 				02DFECFC21C07792009B6F15 /* Btchap-Defaults.plist in Resources */,
 				02DFEC8621C07370009B6F15 /* RegistrationFormViewController.storyboard in Resources */,
 				02388E5624A2AF7900F3B485 /* KeyVerificationVerifyBySASViewController.storyboard in Resources */,
-				02C3F25E24AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyViewController.storyboard in Resources */,
 				02DFEC8721C07370009B6F15 /* RoomMembershipWithPaginationTitleBubbleCell.xib in Resources */,
 				3A75975425D67B8D00B2686F /* ShareRoomsDiscussionCell.xib in Resources */,
 				026D887221C1C5490085BED8 /* BtchapSharedImages.xcassets in Resources */,
@@ -7219,7 +7284,6 @@
 				02FAE4B723B4B61700DE73D8 /* KeyBackupSetupIntroViewController.storyboard in Resources */,
 				024518E223A135FC006873DF /* apple_emojis_data.json in Resources */,
 				02DFECA521C07370009B6F15 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib in Resources */,
-				02C3F26824AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseViewController.storyboard in Resources */,
 				02DFECA721C07370009B6F15 /* RoomCreationViewController.storyboard in Resources */,
 				B1C0EE882375B7F400E8BB88 /* ChangePasswordNewPasswordViewController.storyboard in Resources */,
 				02DFECA821C07370009B6F15 /* RoomOutgoingAttachmentBubbleCell.xib in Resources */,
@@ -7264,7 +7328,6 @@
 				02DFECC521C07370009B6F15 /* RoomAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.xib in Resources */,
 				02DFECC621C07370009B6F15 /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.xib in Resources */,
 				02DFECC721C07370009B6F15 /* Tchap.strings in Resources */,
-				02C3F28824AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseViewController.storyboard in Resources */,
 				02DFECC821C07370009B6F15 /* RoomOutgoingEncryptedAttachmentWithPaginationTitleBubbleCell.xib in Resources */,
 				02DFECC921C07370009B6F15 /* DisabledRoomInputToolbarView.xib in Resources */,
 				02DFECCA21C07370009B6F15 /* ActivityIndicatorView.xib in Resources */,
@@ -7280,6 +7343,7 @@
 				02FAE5E923B4C41600DE73D8 /* ReactionHistoryViewCell.xib in Resources */,
 				02DFECD121C07370009B6F15 /* RoomIncomingAttachmentBubbleCell.xib in Resources */,
 				02DFECD321C07370009B6F15 /* RoomIncomingAttachmentWithoutSenderInfoBubbleCell.xib in Resources */,
+				029F3F3726C557E500B5049E /* SecretsResetViewController.storyboard in Resources */,
 				02DFECD421C07370009B6F15 /* LaunchScreen.storyboard in Resources */,
 				02FAE5AB23B4C41600DE73D8 /* EmojiPickerViewCell.xib in Resources */,
 				02040CD923D76A7F00DE0690 /* RetentionPeriodPickerCell.xib in Resources */,
@@ -7603,8 +7667,10 @@
 				02388E8924A2AF7A00F3B485 /* KeyVerificationSelfVerifyWaitViewModel.swift in Sources */,
 				02388E7B24A2AF7A00F3B485 /* KeyVerificationSelfVerifyStartViewController.swift in Sources */,
 				02FAE5BE23B4C41600DE73D8 /* EmojiItem.swift in Sources */,
+				029F3F3A26C557E500B5049E /* SecretsResetViewAction.swift in Sources */,
 				B11C80132139442700CC6F2F /* RegistrationFormViewModel.swift in Sources */,
 				0250C4932122B68000034691 /* MediaAlbumTableCell.m in Sources */,
+				029F3F6226C557E600B5049E /* SecretsRecoveryWithPassphraseCoordinatorType.swift in Sources */,
 				8E99022E2583BDAB00D0456B /* FavouritesCoordinatorBridgePresenter.swift in Sources */,
 				020DF93C214BE467003DFBA4 /* TableViewCellWithCheckBoxAndLabel.m in Sources */,
 				02388EAD24A2AF7A00F3B485 /* DeviceVerificationStartViewState.swift in Sources */,
@@ -7619,23 +7685,22 @@
 				02FAE46623B4AB3300DE73D8 /* JitsiViewController.m in Sources */,
 				0250C4992122B68000034691 /* BugReportViewController.m in Sources */,
 				0250C49B2122B68000034691 /* RecentCellData.m in Sources */,
-				02C3F27924AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseCoordinator.swift in Sources */,
 				B1F2AAAF212AED900077FDC0 /* Presentable.swift in Sources */,
-				02C3F27D24AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseViewModelType.swift in Sources */,
 				B104AA1D215D3EE800B2C452 /* ForgotPasswordService.swift in Sources */,
 				02FAE58023B4C41500DE73D8 /* ReactionsMenuViewState.swift in Sources */,
 				B15FE5E32385848F00D2A5B2 /* AppVersionCheckerResult.swift in Sources */,
 				B15B867021354FF5002782BE /* AuthenticationViewModel.swift in Sources */,
-				02C3F28124AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseViewModel.swift in Sources */,
 				02057A0424A9D7D200C96719 /* QRCodeGenerator.swift in Sources */,
 				02FAE50423B4B61700DE73D8 /* KeyBackupRecoverCoordinatorBridgePresenter.swift in Sources */,
 				02C3F21424AF75100086ACA5 /* SecureBackupBannerPreferences.swift in Sources */,
 				02FAE4FA23B4B61700DE73D8 /* KeyBackupRecoverFromPassphraseViewAction.swift in Sources */,
 				02057A3524AA8EFA00C96719 /* KeyVerificationIncomingRequestApprovalViewData.swift in Sources */,
 				02040CDC23D88D7700DE0690 /* RetentionPeriodPickerContentView.swift in Sources */,
+				029F3F7E26C557E600B5049E /* SecretsRecoveryWithKeyViewAction.swift in Sources */,
 				02906074214FD0E1005FE3C1 /* RoomCoordinator.swift in Sources */,
 				B1C0EE8F2375B7F400E8BB88 /* ChangePasswordNewPasswordViewController.swift in Sources */,
 				02388DE524A2AF7900F3B485 /* UserVerificationCoordinator.swift in Sources */,
+				029F3F3826C557E500B5049E /* SecretsResetViewState.swift in Sources */,
 				02FAE41723B29EBD00DE73D8 /* ServiceTermsModalScreenViewModel.swift in Sources */,
 				027DCAC621B14F68000DD05E /* ContactCell.swift in Sources */,
 				02388E4F24A2AF7900F3B485 /* KeyVerificationVerifyBySASCoordinator.swift in Sources */,
@@ -7647,8 +7712,10 @@
 				02FAE43F23B2BBF200DE73D8 /* FloatingPoint.swift in Sources */,
 				020DF987214BE467003DFBA4 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				0259329122B00E4300C93762 /* PasswordPolicy.swift in Sources */,
+				029F3F4226C557E500B5049E /* SecretsSetupRecoveryKeyViewState.swift in Sources */,
 				02057A3124AA8EFA00C96719 /* KeyVerificationRequestStatusWithPaginationTitleBubbleCell.swift in Sources */,
 				B12FD6AC2146BA45001B7F28 /* RegistrationServiceType.swift in Sources */,
+				029F3F7C26C557E600B5049E /* SecretsRecoveryWithKeyViewController.swift in Sources */,
 				B1C0EE892375B7F400E8BB88 /* ChangePasswordNewPasswordCoordinatorType.swift in Sources */,
 				02FAE5B623B4C41600DE73D8 /* EmojiMartService.swift in Sources */,
 				02388E3724A2AF7900F3B485 /* KeyVerificationVerifyByScanningViewController.swift in Sources */,
@@ -7681,11 +7748,13 @@
 				0250C4A72122B68000034691 /* Widget.m in Sources */,
 				02388EB524A2AF7A00F3B485 /* DeviceVerificationIncomingViewState.swift in Sources */,
 				B1680CFC2152A9E6009B5F92 /* PublicRoomsDataSource.swift in Sources */,
+				029F3F7026C557E600B5049E /* SecretsRecoveryGoal.swift in Sources */,
 				02FAE4B423B4B61700DE73D8 /* KeyBackupSetupIntroViewController.swift in Sources */,
 				024F786723C8E38D008EC68F /* SettingsKeyBackupViewModel.swift in Sources */,
 				0250C4A92122B68000034691 /* CallViewController.m in Sources */,
 				022B48D5257156E300427BEC /* CommonConfiguration.swift in Sources */,
 				8E9902312583BDAB00D0456B /* FavouriteMessagesViewState.swift in Sources */,
+				029F3F5226C557E600B5049E /* SecretsSetupRecoveryPassphraseCoordinatorType.swift in Sources */,
 				02388E1324A2AF7900F3B485 /* UserVerificationSessionsStatusViewState.swift in Sources */,
 				0234A9A6225BDA4E00E8E489 /* FormCheckBox.swift in Sources */,
 				B15B867B21359145002782BE /* KeyboardNotification.swift in Sources */,
@@ -7694,7 +7763,6 @@
 				02388E2124A2AF7900F3B485 /* KeyVerificationService.swift in Sources */,
 				02388E9524A2AF7A00F3B485 /* KeyVerificationManuallyVerifyViewController.swift in Sources */,
 				020DF97C214BE467003DFBA4 /* RoomIncomingAttachmentWithPaginationTitleBubbleCell.m in Sources */,
-				02C3F27324AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseViewModelType.swift in Sources */,
 				B15AB2A1215BF20E007F5405 /* ForgotPasswordCheckedMailViewController.swift in Sources */,
 				026154C7235123410045459E /* IdentityServiceBuilder.swift in Sources */,
 				02388E5924A2AF7900F3B485 /* KeyVerificationFlow.swift in Sources */,
@@ -7705,14 +7773,11 @@
 				02388EBB24A2AF7A00F3B485 /* DeviceVerificationIncomingCoordinatorType.swift in Sources */,
 				02388F2C24A2BA8100F3B485 /* CameraAccessAlertPresenter.swift in Sources */,
 				02018F9C22006200008D68BE /* UniversalLinkParameters.swift in Sources */,
-				02C3F26B24AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseCoordinatorType.swift in Sources */,
 				B165252421779FB900146F80 /* CreateNewDiscussionCoordinatorType.swift in Sources */,
 				B1C0EE752375B7A000E8BB88 /* ChangePasswordCurrentPasswordViewModelType.swift in Sources */,
 				B1C0EE912375B7F400E8BB88 /* ChangePasswordNewPasswordViewState.swift in Sources */,
-				02C3F26F24AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseViewState.swift in Sources */,
 				02388E9124A2AF7A00F3B485 /* KeyVerificationManuallyVerifyViewAction.swift in Sources */,
 				B146D50E21A5EAE800D8C2C6 /* RoomAttachmentAntivirusScanStatusBubbleCell.m in Sources */,
-				02C3F26D24AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseViewController.swift in Sources */,
 				B1F2AA94212AEC830077FDC0 /* HomeCoordinator.swift in Sources */,
 				02FAE45623B4AB3300DE73D8 /* IntegrationManagerViewController.m in Sources */,
 				B1322FFA2130146D0054A9DD /* AuthenticationServiceType.swift in Sources */,
@@ -7728,15 +7793,14 @@
 				02C3F21024AF75100086ACA5 /* SecureBackupSetupCoordinatorType.swift in Sources */,
 				B1073D6B21A8096F00E36CFA /* RoomIncomingEncryptedAttachmentBubbleCell.m in Sources */,
 				020DF95B214BE467003DFBA4 /* RoomEncryptedAttachmentAntivirusScanStatusBubbleCell.m in Sources */,
+				029F3EF426C555C900B5049E /* SecureBackupSetupIntroViewModelType.swift in Sources */,
 				022B48D1257156E300427BEC /* BuildSettings.swift in Sources */,
-				02C3F27F24AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseViewAction.swift in Sources */,
 				8E99022F2583BDAB00D0456B /* FavouritesCoordinatorType.swift in Sources */,
 				0250C5CB2122E63900034691 /* empty.mm in Sources */,
 				B12209C523854F92004D069C /* MinimumClientVersion.swift in Sources */,
 				B1892E782130528600742348 /* ErrorPresentable.swift in Sources */,
 				02388E1524A2AF7900F3B485 /* UserVerificationSessionStatusCell.swift in Sources */,
 				02FAE60923B4D38F00DE73D8 /* UITouch.swift in Sources */,
-				02C3F2A124AFDEFF0086ACA5 /* SecretsRecoveryCoordinator.swift in Sources */,
 				02098F352131FE9E00F25086 /* ContactsDataSource.m in Sources */,
 				02388F2424A2B73F00F3B485 /* KeyBackupRecoverFromPrivateKeyCoordinator.swift in Sources */,
 				B1BC6A1D2136C99F00D32F8E /* Variant1Style.swift in Sources */,
@@ -7745,8 +7809,10 @@
 				B1C0EE7B2375B7A000E8BB88 /* ChangePasswordCurrentPasswordViewAction.swift in Sources */,
 				02388E9F24A2AF7A00F3B485 /* KeyVerificationManuallyVerifyViewState.swift in Sources */,
 				02ECA88022E0C5BA00ECDA5E /* MXRoomSummary.swift in Sources */,
+				02D5E3F026C53F8300114F3D /* ThemeService.swift in Sources */,
 				02388F1624A2B73F00F3B485 /* KeyBackupRecoverFromPrivateKeyViewController.swift in Sources */,
 				02FAE46E23B4ACCB00DE73D8 /* UIImage.swift in Sources */,
+				02D5E3F826C53F8300114F3D /* Theme.swift in Sources */,
 				02FAE4F623B4B61700DE73D8 /* KeyBackupRecoverFromPassphraseCoordinator.swift in Sources */,
 				0250C4B22122B68000034691 /* MXRoom+Riot.m in Sources */,
 				02FAE4DA23B4B61700DE73D8 /* EncryptionKeysExportPresenter.swift in Sources */,
@@ -7758,10 +7824,11 @@
 				02388DF124A2AF7900F3B485 /* UserVerificationSessionStatusCoordinator.swift in Sources */,
 				02259C5C26C47F300084BF95 /* RoundedButton.swift in Sources */,
 				B1BC6A032135E2A600D32F8E /* ActivityIndicatorView.swift in Sources */,
+				029F3F8226C557E600B5049E /* SecretsRecoveryWithKeyViewState.swift in Sources */,
 				02C3F22624AFD3880086ACA5 /* CrossSigningBannerPreferences.swift in Sources */,
 				8E99022D2583BDAB00D0456B /* FavouritesCoordinator.swift in Sources */,
+				029F3F7A26C557E600B5049E /* SecretsRecoveryWithKeyViewModel.swift in Sources */,
 				02388E8724A2AF7A00F3B485 /* KeyVerificationSelfVerifyWaitViewModelType.swift in Sources */,
-				02C3F28924AFDEFF0086ACA5 /* SecretsRecoveryGoal.swift in Sources */,
 				B122099B23854EF2004D069C /* TchapDefaults.swift in Sources */,
 				02388EBD24A2AF7A00F3B485 /* DeviceVerificationIncomingViewModelType.swift in Sources */,
 				B12209D823855059004D069C /* SerializationServiceType.swift in Sources */,
@@ -7772,10 +7839,12 @@
 				B15AB2AA215BF63A007F5405 /* ForgotPasswordFormViewModelType.swift in Sources */,
 				02388E7524A2AF7A00F3B485 /* KeyVerificationSelfVerifyStartCoordinator.swift in Sources */,
 				020DF978214BE467003DFBA4 /* RoomMembershipExpandedBubbleCell.m in Sources */,
+				029F3F4C26C557E600B5049E /* SecretsSetupRecoveryKeyCoordinator.swift in Sources */,
 				8E0E457325B71367002A66D6 /* FavouriteAttachmentAntivirusScanStatusBubbleCell.swift in Sources */,
 				8E9902362583BDAB00D0456B /* FavouriteMessagesViewModelType.swift in Sources */,
 				02FAE43023B2B98900DE73D8 /* SlidingModalEmptyViewController.swift in Sources */,
 				3A74C72D25CB2FE900E3D171 /* ForwardCoordinatorType.swift in Sources */,
+				029F3F5A26C557E600B5049E /* SecretsSetupRecoveryPassphraseViewModelType.swift in Sources */,
 				020DF977214BE467003DFBA4 /* RoomMembershipWithPaginationTitleBubbleCell.m in Sources */,
 				02388E2524A2AF7900F3B485 /* KeyVerificationDataLoadingCoordinatorType.swift in Sources */,
 				B1C0EE8B2375B7F400E8BB88 /* ChangePasswordNewPasswordViewAction.swift in Sources */,
@@ -7803,8 +7872,8 @@
 				020DF951214BE467003DFBA4 /* RoomOutgoingEncryptedAttachmentWithPaginationTitleBubbleCell.m in Sources */,
 				02388E8124A2AF7A00F3B485 /* KeyVerificationSelfVerifyWaitCoordinator.swift in Sources */,
 				020DF973214BE467003DFBA4 /* RoomOutgoingTextMsgBubbleCell.m in Sources */,
-				024518F823A19676006873DF /* Theme.swift in Sources */,
 				3A74C74125CB327B00E3D171 /* ForwardViewController.swift in Sources */,
+				02D5E40826C53F8300114F3D /* ThemeIdentifier.swift in Sources */,
 				02057A1124AA8EE500C96719 /* BubbleCellContentView.swift in Sources */,
 				B1073D6621A8096F00E36CFA /* RoomIncomingEncryptedAttachmentWithPaginationTitleBubbleCell.m in Sources */,
 				02388E2324A2AF7900F3B485 /* KeyVerificationDataLoadingViewAction.swift in Sources */,
@@ -7815,6 +7884,8 @@
 				02388E4524A2AF7900F3B485 /* KeyVerificationVerifyByScanningViewState.swift in Sources */,
 				025E36F5229546A000C9D9AE /* ThirdPartyIDResolverType.swift in Sources */,
 				B12209D623855059004D069C /* SerializationService.swift in Sources */,
+				029F3F6C26C557E600B5049E /* SecretsRecoveryWithPassphraseViewState.swift in Sources */,
+				029F3F3E26C557E500B5049E /* SecretsSetupRecoveryKeyViewModelType.swift in Sources */,
 				02FAE59A23B4C41600DE73D8 /* EmojiPickerCoordinator.swift in Sources */,
 				02FAE4AC23B4B61700DE73D8 /* KeyBackupSetupSuccessFromRecoveryKeyViewController.swift in Sources */,
 				8E0E456025B64684002A66D6 /* FavouriteMessagesBubbleCellData.swift in Sources */,
@@ -7822,8 +7893,8 @@
 				B1C4646021B6DD42005F4D53 /* RoomService.swift in Sources */,
 				B1104DBF237B124600687B3A /* ChangePasswordService.swift in Sources */,
 				02C4BE88225231ED00F7BB0E /* InviteService.swift in Sources */,
+				029F3F3426C557E500B5049E /* SecretsResetCoordinatorType.swift in Sources */,
 				02388EBF24A2AF7A00F3B485 /* DeviceVerificationIncomingCoordinator.swift in Sources */,
-				02C3F29124AFDEFF0086ACA5 /* SecretsRecoveryWithKeyCoordinatorType.swift in Sources */,
 				02FAE57823B4C41500DE73D8 /* ReactionsMenuView.swift in Sources */,
 				0250C4CA2122B68000034691 /* WebViewViewController.m in Sources */,
 				B1680CFE2152A9E6009B5F92 /* PublicRoomsViewController.swift in Sources */,
@@ -7839,13 +7910,12 @@
 				02FAE4BC23B4B61700DE73D8 /* KeyBackupSetupPassphraseViewController.swift in Sources */,
 				B12209A723854F32004D069C /* AppVersionUpdateViewModel.swift in Sources */,
 				020DF994214BE467003DFBA4 /* RoomIncomingTextMsgBubbleCell.m in Sources */,
-				02C3F29D24AFDEFF0086ACA5 /* SecretsRecoveryCoordinatorType.swift in Sources */,
+				029F3F5626C557E600B5049E /* SecretsSetupRecoveryPassphraseViewState.swift in Sources */,
 				B12FD6A92146BA45001B7F28 /* RegistrationService.swift in Sources */,
 				02388E5124A2AF7900F3B485 /* KeyVerificationVerifyBySASViewState.swift in Sources */,
 				02F1B87224D8C09600A73E63 /* FormattedBodyParser.swift in Sources */,
 				02F0FF452226F82600066908 /* RoomIDComponents.swift in Sources */,
 				B15AB2A0215BF20E007F5405 /* ForgotPasswordCoordinatorType.swift in Sources */,
-				024518F423A19676006873DF /* Themable.swift in Sources */,
 				029C927722E21F5900E62D27 /* MXRoom.swift in Sources */,
 				02388E7F24A2AF7A00F3B485 /* KeyVerificationSelfVerifyStartViewState.swift in Sources */,
 				B11C80122139442700CC6F2F /* RegistrationFormViewModelType.swift in Sources */,
@@ -7855,7 +7925,6 @@
 				02BEE18D212AB23A00098505 /* ThirdPartyIDPlatformInfo.swift in Sources */,
 				0250C4D62122B68000034691 /* TableViewCellWithButton.m in Sources */,
 				029CC68C21772F4200DCC8B3 /* SettingsViewController.m in Sources */,
-				02C3F29F24AFDEFF0086ACA5 /* SecretsRecoveryCoordinatorBridgePresenter.swift in Sources */,
 				02FAE5E623B4C41600DE73D8 /* ReactionHistoryBridgeCoordinatorPresenter.swift in Sources */,
 				02FAE60323B4D35200DE73D8 /* String.swift in Sources */,
 				B15AB2A3215BF20E007F5405 /* ForgotPasswordFormViewController.swift in Sources */,
@@ -7877,6 +7946,7 @@
 				020DF965214BE467003DFBA4 /* RoomEncryptedDataBubbleCell.m in Sources */,
 				020DF95E214BE467003DFBA4 /* RoomIncomingEncryptedTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
 				B1C4645321B67F41005F4D53 /* ContactsPickerCoordinatorType.swift in Sources */,
+				029F3F5E26C557E600B5049E /* SecretsSetupRecoveryPassphraseInputMode.swift in Sources */,
 				B1892E7B21306ADC00742348 /* FormTextViewModel.swift in Sources */,
 				02C3F22824AFD3880086ACA5 /* CrossSigningSetupBannerCell.swift in Sources */,
 				02C3F2A824AFE32B0086ACA5 /* AuthenticatedSessionViewControllerFactory.swift in Sources */,
@@ -7890,12 +7960,12 @@
 				02CEE1E52338C5B20085ACF0 /* AppVersion.swift in Sources */,
 				02388DF924A2AF7900F3B485 /* UserVerificationStartViewModelType.swift in Sources */,
 				02FAE43423B2B98900DE73D8 /* SlidingModalPresentable.swift in Sources */,
-				02C3F29924AFDEFF0086ACA5 /* SecretsRecoveryWithKeyViewModelType.swift in Sources */,
 				02057A2F24AA8EFA00C96719 /* SizingViewHeight.swift in Sources */,
 				02FAE59423B4C41600DE73D8 /* RoomContextualMenuToolbarView.swift in Sources */,
 				02906073214FD0E1005FE3C1 /* RoomCoordinatorType.swift in Sources */,
 				02388F2024A2B73F00F3B485 /* KeyBackupRecoverFromPrivateKeyViewState.swift in Sources */,
 				B1C0EE982375B92100E8BB88 /* ChangePasswordCoordinatorBridgePresenter.swift in Sources */,
+				029F3EF626C555C900B5049E /* SecureBackupSetupIntroViewModel.swift in Sources */,
 				02FAE5FA23B4C41600DE73D8 /* ReactionHistoryViewState.swift in Sources */,
 				B11C800121393E5D00CC6F2F /* RegistrationCoordinatorType.swift in Sources */,
 				02388DF724A2AF7900F3B485 /* UserVerificationCoordinatorType.swift in Sources */,
@@ -7913,7 +7983,9 @@
 				020DF9AC214BE467003DFBA4 /* RoomInputToolbarView.m in Sources */,
 				02FAE4E423B4B61700DE73D8 /* KeyBackupRecoverFromRecoveryKeyCoordinatorType.swift in Sources */,
 				028624DF250269F100CFE83D /* RoomAccessByLinkViewModelType.swift in Sources */,
+				029F3F4A26C557E600B5049E /* SecretsSetupRecoveryKeyViewAction.swift in Sources */,
 				028443972635E32600BE295F /* RoomsTchapInfoCell.swift in Sources */,
+				029F3F8026C557E600B5049E /* SecretsRecoveryWithKeyViewModelType.swift in Sources */,
 				02FAE4C423B4B61700DE73D8 /* PasswordStrengthView.swift in Sources */,
 				02FAE41D23B29EBD00DE73D8 /* ServiceTermsModalScreenViewModelType.swift in Sources */,
 				020DF954214BE467003DFBA4 /* RoomEncryptedAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.m in Sources */,
@@ -7922,7 +7994,6 @@
 				02388E4124A2AF7900F3B485 /* KeyVerificationVerifyByScanningViewModel.swift in Sources */,
 				02057A2324AA8EFA00C96719 /* KeyVerificationBaseBubbleCell.swift in Sources */,
 				B1BC6A072135EA2800D32F8E /* ActivityIndicatorPresenterType.swift in Sources */,
-				02C3F27524AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseCoordinator.swift in Sources */,
 				02388EB924A2AF7A00F3B485 /* DeviceVerificationIncomingViewModel.swift in Sources */,
 				02BEE1562125BBF800098505 /* RoomsViewController.m in Sources */,
 				025E36F8229548C000C9D9AE /* ThirdPartyIDResolver.swift in Sources */,
@@ -7943,7 +8014,6 @@
 				0215542322B24058004663A6 /* AccountValidityServiceType.swift in Sources */,
 				02FAE46823B4AB3300DE73D8 /* WidgetViewController.m in Sources */,
 				B146D52121A7453900D8C2C6 /* RoomAttachmentAntivirusScanStatusCellContentView.swift in Sources */,
-				02C3F29724AFDEFF0086ACA5 /* SecretsRecoveryWithKeyViewAction.swift in Sources */,
 				02FAE43C23B2B98900DE73D8 /* SlidingModalPresentationController.swift in Sources */,
 				02057A2124AA8EFA00C96719 /* KeyVerificationCellInnerContentView.swift in Sources */,
 				02FAE58C23B4C41500DE73D8 /* RoomContextualMenuPresenter.swift in Sources */,
@@ -7952,7 +8022,6 @@
 				02388E4B24A2AF7900F3B485 /* KeyVerificationVerifyBySASCoordinatorType.swift in Sources */,
 				B1C4644C21B67F1E005F4D53 /* RoomCreationAvatarView.swift in Sources */,
 				02FAE5A223B4C41600DE73D8 /* EmojiPickerViewModelType.swift in Sources */,
-				02C3F25F24AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyViewModel.swift in Sources */,
 				02FAE42123B29EBD00DE73D8 /* ServiceTermsModalScreenViewAction.swift in Sources */,
 				B1F2AA95212AEC830077FDC0 /* SettingsCoordinatorType.swift in Sources */,
 				0252030B224EBD4800262433 /* ContactButtonView.swift in Sources */,
@@ -7973,7 +8042,6 @@
 				B18D18C42153E68A003677D1 /* HomeViewController.swift in Sources */,
 				02388DE924A2AF7900F3B485 /* UserVerificationSessionStatusViewAction.swift in Sources */,
 				02FAE60023B4D14C00DE73D8 /* UIGestureRecognizer.swift in Sources */,
-				02C3F28B24AFDEFF0086ACA5 /* SecretsRecoveryMode.swift in Sources */,
 				02FAE57A23B4C41500DE73D8 /* ReactionsMenuViewAction.swift in Sources */,
 				B1F2AAA5212AED840077FDC0 /* Coordinator.swift in Sources */,
 				02388E2B24A2AF7900F3B485 /* KeyVerificationDataLoadingViewModel.swift in Sources */,
@@ -7981,7 +8049,6 @@
 				8E9902342583BDAB00D0456B /* FavouriteMessagesCoordinatorType.swift in Sources */,
 				02388E8324A2AF7A00F3B485 /* KeyVerificationSelfVerifyWaitCoordinatorType.swift in Sources */,
 				B1680CFB2152A9E6009B5F92 /* PublicRoomsCoordinatorType.swift in Sources */,
-				02C3F26124AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyViewController.swift in Sources */,
 				02057A0724AA8CC100C96719 /* UIDevice.swift in Sources */,
 				02D0FC9124AE2DDA008DD5BB /* EventFormatter+DTCoreTextFix.m in Sources */,
 				B146D52421A7453900D8C2C6 /* RoomAttachmentAntivirusScanStatusViewModelBuilder.swift in Sources */,
@@ -7989,14 +8056,17 @@
 				02388E0524A2AF7900F3B485 /* UserVerificationStartViewController.swift in Sources */,
 				02FAE45823B4AB3300DE73D8 /* WidgetPickerViewController.m in Sources */,
 				020DF93D214BE467003DFBA4 /* TableViewCellWithCheckBoxes.m in Sources */,
+				029F3F8626C557E600B5049E /* SecretsRecoveryCoordinatorBridgePresenter.swift in Sources */,
 				B109EF1B2170F3B90018FA06 /* User.swift in Sources */,
 				02040CCC23D7622200DE0690 /* RetentionPeriodPickerCell.swift in Sources */,
 				02388E0124A2AF7900F3B485 /* UserVerificationStartViewModel.swift in Sources */,
 				02057A0224A9D7D200C96719 /* QRCodeReaderViewController.swift in Sources */,
 				020DF945214BE467003DFBA4 /* RoomFilesViewController.m in Sources */,
 				02259C5F26C47F870084BF95 /* CustomRoundedButton.swift in Sources */,
+				029F3F7226C557E600B5049E /* SecretsRecoveryMode.swift in Sources */,
 				B1C4644821B67F1E005F4D53 /* RoomCreationViewController.swift in Sources */,
 				020DF98F214BE467003DFBA4 /* RoomPredecessorBubbleCell.m in Sources */,
+				029F3F5C26C557E600B5049E /* SecretsSetupRecoveryPassphraseCoordinator.swift in Sources */,
 				02FAE57E23B4C41500DE73D8 /* ReactionsMenuViewModelType.swift in Sources */,
 				02388F1824A2B73F00F3B485 /* KeyBackupRecoverFromPrivateKeyCoordinatorType.swift in Sources */,
 				8E9902352583BDAB00D0456B /* FavouriteMessagesViewAction.swift in Sources */,
@@ -8010,19 +8080,20 @@
 				B12DDAA421708F4F0093172C /* RoomTitleViewModel.swift in Sources */,
 				B1F2AAA2212AED170077FDC0 /* RoomsCoordinatorType.swift in Sources */,
 				0250C4F22122B68000034691 /* SegmentedViewController.m in Sources */,
-				024518F623A19676006873DF /* ThemeService.m in Sources */,
 				02FAE4B223B4B61700DE73D8 /* KeyBackupSetupSuccessFromPassphraseViewController.swift in Sources */,
 				02388E0D24A2AF7900F3B485 /* UserVerificationSessionsStatusViewAction.swift in Sources */,
 				02FAE4DC23B4B61700DE73D8 /* KeyBackupRecoverSuccessViewController.swift in Sources */,
 				B1073D6921A8096F00E36CFA /* RoomIncomingEncryptedAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				02057A3724AA8EFA00C96719 /* KeyVerificationConclusionBubbleCell.swift in Sources */,
 				02FAE4D023B4B61700DE73D8 /* KeyBackupSetupCoordinatorType.swift in Sources */,
+				02D5E3FC26C53F8300114F3D /* DefaultTheme.swift in Sources */,
 				0215542622B2406B004663A6 /* AccountValidityService.swift in Sources */,
 				B1680D082152AA61009B5F92 /* Appearance.swift in Sources */,
 				B12209BB23854F92004D069C /* ClientConfiguration.swift in Sources */,
 				02388E4724A2AF7900F3B485 /* KeyVerificationVerifyBySASViewAction.swift in Sources */,
 				B12DDAA521708F4F0093172C /* RoomTitleViewModelBuilder.swift in Sources */,
 				02FAE4E623B4B61700DE73D8 /* KeyBackupRecoverFromRecoveryKeyViewState.swift in Sources */,
+				029F3F4626C557E600B5049E /* SecretsSetupRecoveryKeyViewModel.swift in Sources */,
 				B1C0EE642375B77F00E8BB88 /* ChangePasswordCoordinatorType.swift in Sources */,
 				02388E6B24A2AF7900F3B485 /* KeyVerificationCoordinator.swift in Sources */,
 				B15B866C21353A41002782BE /* FormTextViewModelType.swift in Sources */,
@@ -8033,9 +8104,9 @@
 				0250C4F52122B68000034691 /* MXKRoomBubbleTableViewCell+Riot.m in Sources */,
 				02388E1D24A2AF7900F3B485 /* UserVerificationCoordinatorBridgePresenter.swift in Sources */,
 				02388DEF24A2AF7900F3B485 /* UserVerificationSessionStatusViewState.swift in Sources */,
-				02C3F27B24AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseCoordinatorType.swift in Sources */,
 				024F787623CC6602008EC68F /* ChangePasswordAlertPresenter.swift in Sources */,
 				B1C4645C21B6DD28005F4D53 /* MediaService.swift in Sources */,
+				029F3F4026C557E500B5049E /* SecretsSetupRecoveryKeyCoordinatorType.swift in Sources */,
 				02C3F21224AF75100086ACA5 /* SecureBackupBannerCell.swift in Sources */,
 				020DF981214BE467003DFBA4 /* RoomIncomingTextMsgWithoutSenderNameBubbleCell.m in Sources */,
 				0250C4F62122B68000034691 /* DeviceTableViewCell.m in Sources */,
@@ -8046,7 +8117,7 @@
 				02FAE41323B29EBD00DE73D8 /* ServiceTermsModalCoordinator.swift in Sources */,
 				02FAE41923B29EBD00DE73D8 /* ServiceTermsModalScreenViewController.swift in Sources */,
 				02D0FC9324AE2DDA008DD5BB /* EncryptionTrustLevelBadgeImageHelper.swift in Sources */,
-				02C3F29B24AFDEFF0086ACA5 /* SecretsRecoveryWithKeyViewState.swift in Sources */,
+				029F3F5826C557E600B5049E /* SecretsSetupRecoveryPassphraseViewAction.swift in Sources */,
 				02388EA524A2AF7A00F3B485 /* DeviceVerificationStartViewAction.swift in Sources */,
 				0250C4F92122B68000034691 /* RoomPreviewData.m in Sources */,
 				B15FE5E92385871A00D2A5B2 /* AppVersionCheckerType.swift in Sources */,
@@ -8057,9 +8128,7 @@
 				020DF99A214BE467003DFBA4 /* RoomIncomingTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
 				B122099C23854EF2004D069C /* Storyboards.swift in Sources */,
 				024732C523EA23FD008CD543 /* Tools.m in Sources */,
-				02C3F26924AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseViewModel.swift in Sources */,
 				02FAE61023B4E7AA00DE73D8 /* UIApplication.swift in Sources */,
-				02C3F27124AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseViewAction.swift in Sources */,
 				02388E3124A2AF7900F3B485 /* KeyVerificationDataLoadingViewState.swift in Sources */,
 				B1BC6A262136D77A00D32F8E /* WelcomeCoordinatorType.swift in Sources */,
 				020DF991214BE467003DFBA4 /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
@@ -8080,7 +8149,6 @@
 				02388DF524A2AF7900F3B485 /* UserVerificationSessionStatusViewModel.swift in Sources */,
 				B12FD6AB2146BA45001B7F28 /* ThreePIDCredentials.swift in Sources */,
 				B15B86892135C284002782BE /* AuthenticationViewModelType.swift in Sources */,
-				02C3F26524AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyCoordinator.swift in Sources */,
 				02D5E34B26C5139700114F3D /* UIView.swift in Sources */,
 				B1680CFD2152A9E6009B5F92 /* PublicRoomsCoordinator.swift in Sources */,
 				026A466223B21AFF0058D80B /* UISearchBar.swift in Sources */,
@@ -8089,6 +8157,7 @@
 				02FAE46223B4AB3300DE73D8 /* JitsiService.swift in Sources */,
 				02B34546219E383800110EC8 /* RoomsInviteCell.swift in Sources */,
 				B1C4645621B68257005F4D53 /* SelectableContactCell.swift in Sources */,
+				029F3F8426C557E600B5049E /* SecretsRecoveryCoordinatorType.swift in Sources */,
 				020DF98E214BE467003DFBA4 /* RoomMembershipBubbleCell.m in Sources */,
 				B104AA1F215E163000B2C452 /* ForgotPasswordServiceType.swift in Sources */,
 				020DF957214BE467003DFBA4 /* RoomIncomingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
@@ -8105,17 +8174,20 @@
 				02FAE5E423B4C41600DE73D8 /* ReactionHistoryCoordinatorType.swift in Sources */,
 				B12FD6AA2146BA45001B7F28 /* RegistrationServiceError.swift in Sources */,
 				02388E9D24A2AF7A00F3B485 /* KeyVerificationManuallyVerifyCoordinatorType.swift in Sources */,
+				029F3F6A26C557E600B5049E /* SecretsRecoveryWithPassphraseViewController.swift in Sources */,
 				B15B867621357514002782BE /* AlertErrorPresenter.swift in Sources */,
 				B1454B97216BA84100365A86 /* DisplayNameComponents.swift in Sources */,
 				02FAE5C223B4C41600DE73D8 /* EmojiStore.swift in Sources */,
 				02FAE50223B4B61700DE73D8 /* KeyBackupRecoverCoordinator.swift in Sources */,
+				029F3F7626C557E600B5049E /* SecretsRecoveryWithKeyCoordinator.swift in Sources */,
+				029F3F3C26C557E500B5049E /* SecretsResetViewModel.swift in Sources */,
 				0250C50B2122B68000034691 /* RoomKeyRequestViewController.m in Sources */,
 				B1C0EE7D2375B7A000E8BB88 /* ChangePasswordCurrentPasswordViewModel.swift in Sources */,
 				02C4BE8B22523D2200F7BB0E /* DiscussionFinderType.swift in Sources */,
 				02057A3324AA8EFA00C96719 /* KeyVerificationConclusionWithPaginationTitleBubbleCell.swift in Sources */,
 				02040CF223DA17DC00DE0690 /* MXSession.swift in Sources */,
-				B1F2AAB6212AFDBA0077FDC0 /* UIViewController.swift in Sources */,
 				024F786B23C8E38D008EC68F /* SettingsKeyBackupViewAction.swift in Sources */,
+				029F3F8826C557E600B5049E /* SecretsRecoveryCoordinator.swift in Sources */,
 				02FAE5CC23B4C41600DE73D8 /* EditHistoryViewModel.swift in Sources */,
 				020DF9B1214BE467003DFBA4 /* RoomActivitiesView.m in Sources */,
 				020DF946214BE467003DFBA4 /* RoomMemberDetailsViewController.m in Sources */,
@@ -8131,16 +8203,17 @@
 				02FAE60D23B4E70600DE73D8 /* RoomMessageURLParser.swift in Sources */,
 				B1F2AA99212AEC830077FDC0 /* LegacyAppDelegate.m in Sources */,
 				02FAE4F823B4B61700DE73D8 /* KeyBackupRecoverFromPassphraseViewState.swift in Sources */,
-				024518FA23A19676006873DF /* DefaultTheme.swift in Sources */,
 				02C3F20A24AF75100086ACA5 /* SecureBackupSetupIntroCell.swift in Sources */,
+				029F3F4826C557E600B5049E /* SecretsSetupRecoveryKeyViewController.swift in Sources */,
 				B15AB2A4215BF20E007F5405 /* ForgotPasswordCoordinator.swift in Sources */,
 				029CC68D21772F4200DCC8B3 /* DeactivateAccountViewController.m in Sources */,
+				029F3F6426C557E600B5049E /* SecretsRecoveryWithPassphraseViewModelType.swift in Sources */,
 				026A465F23B215900058D80B /* MediaPickerCoordinatorBridgePresenter.swift in Sources */,
 				0223EFAB2227E41B00B9EA34 /* HomeServerComponents.swift in Sources */,
 				026A465123B20E510058D80B /* UIColor.swift in Sources */,
-				02C3F26324AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyViewAction.swift in Sources */,
 				02388E5324A2AF7900F3B485 /* VerifyEmojiCollectionViewCell.swift in Sources */,
 				8E021F5B25A7482400E3F983 /* FavouriteIncomingAttachmentBubbleCell.swift in Sources */,
+				029F3F6826C557E600B5049E /* SecretsRecoveryWithPassphraseViewModel.swift in Sources */,
 				02FAE42323B29EBD00DE73D8 /* ServiceTermsModalScreenCoordinator.swift in Sources */,
 				0234A9A0225BD08A00E8E489 /* FormCheckBoxModel.swift in Sources */,
 				B12FD69F2146B3EB001B7F28 /* RestClientBuilder.swift in Sources */,
@@ -8153,6 +8226,7 @@
 				02FAE40F23B29EBD00DE73D8 /* ServiceTermsModalCoordinatorType.swift in Sources */,
 				02FAE5DE23B4C41600DE73D8 /* EditHistoryCoordinatorBridgePresenter.swift in Sources */,
 				02B3453A219CA8CB00110EC8 /* RoomsDiscussionCell.swift in Sources */,
+				02D5E3F426C53F8300114F3D /* ThemeService.m in Sources */,
 				020DF95F214BE467003DFBA4 /* RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.m in Sources */,
 				0250C5192122B68000034691 /* MXSession+Riot.m in Sources */,
 				02388F0924A2B54C00F3B485 /* UILabel.swift in Sources */,
@@ -8199,9 +8273,11 @@
 				020DF9AB214BE467003DFBA4 /* KeyboardGrowingTextView.m in Sources */,
 				02FAE5AC23B4C41600DE73D8 /* EmojiPickerViewCell.swift in Sources */,
 				B12209A623854F32004D069C /* AppVersionUpdateCoordinator.swift in Sources */,
+				02D5E3EC26C53F8300114F3D /* Themable.swift in Sources */,
 				02A7900023E0DD5A00F17374 /* UserStatusInfoType.swift in Sources */,
 				B1680D012152A9F6009B5F92 /* TCNavigationController.swift in Sources */,
 				028BA9C7257A459300C71A91 /* Keychain.swift in Sources */,
+				029F3F5026C557E600B5049E /* SecretsSetupRecoveryPassphraseViewModel.swift in Sources */,
 				020DF9AD214BE467003DFBA4 /* DisabledRoomInputToolbarView.m in Sources */,
 				B1BC6A242136D75B00D32F8E /* WelcomeViewController.swift in Sources */,
 				020DF970214BE467003DFBA4 /* RoomIncomingEncryptedTextMsgBubbleCell.m in Sources */,
@@ -8209,11 +8285,10 @@
 				B1892E792130528600742348 /* ErrorPresentableImpl.swift in Sources */,
 				02FAE4C823B4B61700DE73D8 /* KeyBackupSetupPassphraseViewModel.swift in Sources */,
 				B12DDA9F21701FC40093172C /* AvatarImageViewModel.swift in Sources */,
+				029F3F5426C557E600B5049E /* SecretsSetupRecoveryPassphraseViewController.swift in Sources */,
 				025DCA1925F03BDB00C014C5 /* ForwardDataSource.swift in Sources */,
-				02C3F27724AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseInputMode.swift in Sources */,
 				02FAE43223B2B98900DE73D8 /* SlidingModalPresenter.swift in Sources */,
 				02388EAB24A2AF7A00F3B485 /* DeviceVerificationStartCoordinator.swift in Sources */,
-				02C3F25724AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyViewModelType.swift in Sources */,
 				029CC69021772F4200DCC8B3 /* DeviceView.m in Sources */,
 				02388E7924A2AF7A00F3B485 /* KeyVerificationSelfVerifyStartViewModel.swift in Sources */,
 				020DF956214BE467003DFBA4 /* RoomIncomingEncryptedTextMsgWithoutSenderNameBubbleCell.m in Sources */,
@@ -8222,9 +8297,7 @@
 				02FAE4FE23B4B61700DE73D8 /* KeyBackupRecoverFromPassphraseViewController.swift in Sources */,
 				B1C0EE632375B77F00E8BB88 /* ChangePasswordCoordinator.swift in Sources */,
 				02388E5D24A2AF7900F3B485 /* KeyVerificationScanConfirmationViewController.swift in Sources */,
-				02C3F25B24AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyViewState.swift in Sources */,
 				B15FE5EF23858BDC00D2A5B2 /* AppVersionUpdateViewModelType.swift in Sources */,
-				02C3F29324AFDEFF0086ACA5 /* SecretsRecoveryWithKeyViewModel.swift in Sources */,
 				020DF99B214BE467003DFBA4 /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.m in Sources */,
 				B12DDA9A216FB2370093172C /* UIBezierPath.swift in Sources */,
 				02FAE57223B4C41500DE73D8 /* BubbleReactionActionViewCell.swift in Sources */,
@@ -8232,14 +8305,14 @@
 				02FAE5DC23B4C41600DE73D8 /* EditHistorySection.swift in Sources */,
 				028BA9CF257A459300C71A91 /* KeyValueStore.swift in Sources */,
 				02FAE5D223B4C41600DE73D8 /* EditHistoryHeaderView.swift in Sources */,
-				02C3F28524AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseViewState.swift in Sources */,
+				029F3F3226C557E500B5049E /* SecretsResetViewController.swift in Sources */,
 				02FAE46B23B4ACA000DE73D8 /* UIButton.swift in Sources */,
 				B1F2AA9E212AEC830077FDC0 /* AuthenticationCoordinatorType.swift in Sources */,
 				02FAE45A23B4AB3300DE73D8 /* WidgetPermissionViewController.swift in Sources */,
 				02388EB724A2AF7A00F3B485 /* DeviceVerificationIncomingViewAction.swift in Sources */,
-				02C3F29524AFDEFF0086ACA5 /* SecretsRecoveryWithKeyViewController.swift in Sources */,
 				02FAE59023B4C41500DE73D8 /* RoomContextualMenuViewController.swift in Sources */,
 				B1F2AAAE212AED900077FDC0 /* RootRouter.swift in Sources */,
+				029F3F7826C557E600B5049E /* SecretsRecoveryWithKeyCoordinatorType.swift in Sources */,
 				B1F2AA9B212AEC830077FDC0 /* ContactsCoordinatorType.swift in Sources */,
 				B15FE5E6238584B800D2A5B2 /* AppVersionCheckerResult+Codable.swift in Sources */,
 				02388E5724A2AF7900F3B485 /* KeyVerificationVerifyBySASViewModel.swift in Sources */,
@@ -8258,7 +8331,6 @@
 				02018F9F22006282008D68BE /* UniversalLinkParametersType.swift in Sources */,
 				B1BC6A1B21369C8F00D32F8E /* Style.swift in Sources */,
 				B1F2AA98212AEC830077FDC0 /* AppCoordinatorType.swift in Sources */,
-				02C3F28324AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseViewController.swift in Sources */,
 				020DF944214BE467003DFBA4 /* RoomViewController.m in Sources */,
 				020DF94D214BE467003DFBA4 /* ReadReceiptsViewController.m in Sources */,
 				020DF935214BE467003DFBA4 /* RoomDataSource.m in Sources */,
@@ -8273,9 +8345,11 @@
 				B1F2AA97212AEC830077FDC0 /* AppCoordinator.swift in Sources */,
 				0252030D224EBD4800262433 /* ContactButtonViewModel.swift in Sources */,
 				027861A42577A8D900266B09 /* JitsiAuthenticationType.swift in Sources */,
+				029F3F2E26C557E500B5049E /* SecretsResetCoordinator.swift in Sources */,
 				B15B867421355A7A002782BE /* ErrorPresenter.swift in Sources */,
 				020DF989214BE467003DFBA4 /* RoomOutgoingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				B1C4644721B67F1E005F4D53 /* RoomCreationCoordinator.swift in Sources */,
+				029F3F6626C557E600B5049E /* SecretsRecoveryWithPassphraseViewAction.swift in Sources */,
 				02FAE61B23B5587200DE73D8 /* AutosizedCollectionView.swift in Sources */,
 				02FAE58423B4C41500DE73D8 /* ReactionsMenuViewModel.swift in Sources */,
 				0290609221527A3F005FE3C1 /* RoomDetailsCoordinator.swift in Sources */,
@@ -8288,7 +8362,6 @@
 				B15B867F2135BA96002782BE /* AuthenticationViewController.swift in Sources */,
 				02388EAF24A2AF7A00F3B485 /* DeviceVerificationStartViewModel.swift in Sources */,
 				0250C53B2122B68000034691 /* CircleButton.m in Sources */,
-				02C3F25924AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyCoordinatorType.swift in Sources */,
 				020DF972214BE467003DFBA4 /* RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
 				02FAE58223B4C41500DE73D8 /* ReactionMenuItemViewData.swift in Sources */,
 				02FAE30D23B26C0B00DE73D8 /* RiotSharedSettings.swift in Sources */,
@@ -8296,8 +8369,9 @@
 				B11C80112139442700CC6F2F /* RegistrationFormViewController.swift in Sources */,
 				02FAE5A423B4C41600DE73D8 /* EmojiPickerViewAction.swift in Sources */,
 				02388E3D24A2AF7900F3B485 /* KeyVerificationVerifyByScanningCoordinatorType.swift in Sources */,
+				029F3F3026C557E500B5049E /* SecretsResetViewModelType.swift in Sources */,
+				02D5E40D26C5497900114F3D /* UIViewController.swift in Sources */,
 				020DF936214BE467003DFBA4 /* RoomBubbleCellData.m in Sources */,
-				02C3F28F24AFDEFF0086ACA5 /* SecretsRecoveryWithKeyCoordinator.swift in Sources */,
 				02057A2924AA8EFA00C96719 /* KeyVerificationRequestStatusBubbleCell.swift in Sources */,
 				B1C0EE952375B7F400E8BB88 /* ChangePasswordNewPasswordViewModelType.swift in Sources */,
 				B1F2AA9C212AEC830077FDC0 /* ContactsCoordinator.swift in Sources */,
@@ -8306,6 +8380,7 @@
 				B1C4646321BACEB3005F4D53 /* UserIDComponents.swift in Sources */,
 				02388F2A24A2BA8100F3B485 /* CameraAccessManager.swift in Sources */,
 				02FAE56223B4C41500DE73D8 /* BubbleReactionsView.swift in Sources */,
+				029F3F6026C557E600B5049E /* SecretsRecoveryWithPassphraseCoordinator.swift in Sources */,
 				0278620C2579075B00266B09 /* Base32Coder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -8317,6 +8392,7 @@
 				0261554E239675060045459E /* MXRoomSummary+Riot.m in Sources */,
 				022B48E42571A00000427BEC /* Bundle.swift in Sources */,
 				024732C723EA23FD008CD543 /* Tools.m in Sources */,
+				02D5E3F226C53F8300114F3D /* ThemeService.swift in Sources */,
 				0261553E2395C8E80045459E /* Stylable.swift in Sources */,
 				026155AD2398F7420045459E /* ShareViewController.m in Sources */,
 				0261555C23972E5A0045459E /* UserService.swift in Sources */,
@@ -8331,9 +8407,11 @@
 				02A7900723E0E60E00F17374 /* UserStatusInfo.swift in Sources */,
 				026155B92398F7420045459E /* ShareRoomsRoomCell.swift in Sources */,
 				0261556223972EF30045459E /* ThirdPartyIDPlatformInfo.swift in Sources */,
-				024518FC23A19680006873DF /* ThemeService.m in Sources */,
 				024CD941257447A700629DAA /* Configurable.swift in Sources */,
 				0261556523972F300045459E /* RoomServiceType.swift in Sources */,
+				02D5E3EE26C53F8300114F3D /* Themable.swift in Sources */,
+				02D5E3FE26C53F8300114F3D /* DefaultTheme.swift in Sources */,
+				02D5E40A26C53F8300114F3D /* ThemeIdentifier.swift in Sources */,
 				026155452395DC130045459E /* RecentCellData.m in Sources */,
 				026A466423B21AFF0058D80B /* UISearchBar.swift in Sources */,
 				024CD94E25744EFF00629DAA /* BuildSettings.swift in Sources */,
@@ -8343,17 +8421,17 @@
 				02259C4226C470D50084BF95 /* Character.swift in Sources */,
 				026155412395CCA80045459E /* Variant2Style.swift in Sources */,
 				026155EA239926F00045459E /* TchapDefaults.swift in Sources */,
-				0245190023A1968B006873DF /* DefaultTheme.swift in Sources */,
 				026155A72398F7420045459E /* SharePresentingViewController.m in Sources */,
 				02A7900523E0E60A00F17374 /* UserStatusInfoType.swift in Sources */,
 				0261556723972F5A0045459E /* ThirdPartyIDPlatformInfoResolverType.swift in Sources */,
 				0261556923972F730045459E /* RoomPowerLevel.swift in Sources */,
 				02D5E34D26C53D8100114F3D /* UIView.swift in Sources */,
-				024518FE23A19685006873DF /* Theme.swift in Sources */,
 				026A465323B20E510058D80B /* UIColor.swift in Sources */,
 				026155472395DC650045459E /* AvatarGenerator.m in Sources */,
+				02D5E3FA26C53F8300114F3D /* Theme.swift in Sources */,
 				0261555B23972E400045459E /* UIBezierPath.swift in Sources */,
 				0261555A23972E1F0045459E /* MXRoomSummary.swift in Sources */,
+				02D5E3F626C53F8300114F3D /* ThemeService.m in Sources */,
 				026155402395CCA00045459E /* Variant1Style.swift in Sources */,
 				0261556823972F670045459E /* UserServiceType.swift in Sources */,
 				02A514C926100CDA007164AD /* Strings.swift in Sources */,
@@ -8378,6 +8456,7 @@
 				026155EB239936490045459E /* MXRoomSummary+Riot.m in Sources */,
 				024732C823EA23FD008CD543 /* Tools.m in Sources */,
 				026155C72398F9680045459E /* DisplayNameComponents.swift in Sources */,
+				02D5E3F326C53F8300114F3D /* ThemeService.swift in Sources */,
 				026155C52398F94E0045459E /* User.swift in Sources */,
 				026155CA2398F9830045459E /* UserService.swift in Sources */,
 				026155DB239900B60045459E /* RoomServiceType.swift in Sources */,
@@ -8392,9 +8471,11 @@
 				02A7900823E0E60F00F17374 /* UserStatusInfo.swift in Sources */,
 				026155E1239901250045459E /* ThirdPartyIDPlatformInfo.swift in Sources */,
 				026155DC239900C20045459E /* ThirdPartyIDPlatformInfoResolverType.swift in Sources */,
-				024518FD23A19681006873DF /* ThemeService.m in Sources */,
 				022B48DB2571570400427BEC /* Configurable.swift in Sources */,
 				026155DF239900E70045459E /* ThirdPartyIDPlatformInfoResolver.swift in Sources */,
+				02D5E3EF26C53F8300114F3D /* Themable.swift in Sources */,
+				02D5E3FF26C53F8300114F3D /* DefaultTheme.swift in Sources */,
+				02D5E40B26C53F8300114F3D /* ThemeIdentifier.swift in Sources */,
 				026A466523B21AFF0058D80B /* UISearchBar.swift in Sources */,
 				026155A22398F7420045459E /* ShareExtensionManager.m in Sources */,
 				026155D52398FA630045459E /* Stylable.swift in Sources */,
@@ -8404,17 +8485,17 @@
 				02259C4326C470D50084BF95 /* Character.swift in Sources */,
 				026155C42398F9460045459E /* MXRoomSummary.swift in Sources */,
 				026155DD239900CF0045459E /* IdentityServersURLGetter.swift in Sources */,
-				0245190123A1968C006873DF /* DefaultTheme.swift in Sources */,
 				026155AE2398F7420045459E /* ShareViewController.m in Sources */,
 				02A7900623E0E60A00F17374 /* UserStatusInfoType.swift in Sources */,
 				026155D62398FAAB0045459E /* SegmentedViewController.m in Sources */,
 				022B48D7257156F400427BEC /* BuildSettings.swift in Sources */,
 				02D5E34E26C53D8100114F3D /* UIView.swift in Sources */,
 				026155A82398F7420045459E /* SharePresentingViewController.m in Sources */,
-				024518FF23A19686006873DF /* Theme.swift in Sources */,
 				026A465423B20E510058D80B /* UIColor.swift in Sources */,
+				02D5E3FB26C53F8300114F3D /* Theme.swift in Sources */,
 				026155ED239936E40045459E /* AvatarGenerator.m in Sources */,
 				026155C32398F9430045459E /* UIBezierPath.swift in Sources */,
+				02D5E3F726C53F8300114F3D /* ThemeService.m in Sources */,
 				026155E6239907000045459E /* TchapDefaults.swift in Sources */,
 				026155E42399027C0045459E /* RecentCellData.m in Sources */,
 				02A514CA26100CDB007164AD /* Strings.swift in Sources */,
@@ -8492,8 +8573,10 @@
 				02388E8A24A2AF7A00F3B485 /* KeyVerificationSelfVerifyWaitViewModel.swift in Sources */,
 				02388E7C24A2AF7A00F3B485 /* KeyVerificationSelfVerifyStartViewController.swift in Sources */,
 				02FAE5BF23B4C41600DE73D8 /* EmojiItem.swift in Sources */,
+				029F3F3B26C557E500B5049E /* SecretsResetViewAction.swift in Sources */,
 				02DFEB7521C07370009B6F15 /* RegistrationFormViewModel.swift in Sources */,
 				B12209D723855059004D069C /* SerializationService.swift in Sources */,
+				029F3F6326C557E600B5049E /* SecretsRecoveryWithPassphraseCoordinatorType.swift in Sources */,
 				02DFEB7621C07370009B6F15 /* MediaAlbumTableCell.m in Sources */,
 				02388EAE24A2AF7A00F3B485 /* DeviceVerificationStartViewState.swift in Sources */,
 				02DFEB7821C07370009B6F15 /* TableViewCellWithCheckBoxAndLabel.m in Sources */,
@@ -8507,24 +8590,23 @@
 				02FAE46723B4AB3300DE73D8 /* JitsiViewController.m in Sources */,
 				02DFEB7C21C07370009B6F15 /* RoomsRoomCell.swift in Sources */,
 				B12209AD23854F6B004D069C /* AppVersionChecker.swift in Sources */,
-				02C3F27A24AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseCoordinator.swift in Sources */,
 				02DFEB7D21C07370009B6F15 /* ForgotPasswordVerifyEmailViewController.swift in Sources */,
-				02C3F27E24AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseViewModelType.swift in Sources */,
 				02DFEB7E21C07370009B6F15 /* BugReportViewController.m in Sources */,
 				02FAE58123B4C41500DE73D8 /* ReactionsMenuViewState.swift in Sources */,
 				B15FE5E42385848F00D2A5B2 /* AppVersionCheckerResult.swift in Sources */,
 				8E021F6C25A77B3200E3F983 /* FavouriteMessagesViewModelType.swift in Sources */,
 				B12209C223854F92004D069C /* ClientVersionInfoMessage.swift in Sources */,
-				02C3F28224AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseViewModel.swift in Sources */,
 				02057A0524A9D7D200C96719 /* QRCodeGenerator.swift in Sources */,
 				02FAE50523B4B61700DE73D8 /* KeyBackupRecoverCoordinatorBridgePresenter.swift in Sources */,
 				02C3F21524AF75100086ACA5 /* SecureBackupBannerPreferences.swift in Sources */,
 				02FAE4FB23B4B61700DE73D8 /* KeyBackupRecoverFromPassphraseViewAction.swift in Sources */,
 				02057A3624AA8EFA00C96719 /* KeyVerificationIncomingRequestApprovalViewData.swift in Sources */,
 				02040CDD23D88D7700DE0690 /* RetentionPeriodPickerContentView.swift in Sources */,
+				029F3F7F26C557E600B5049E /* SecretsRecoveryWithKeyViewAction.swift in Sources */,
 				02DFEB7F21C07370009B6F15 /* RecentCellData.m in Sources */,
 				02DFEB8021C07370009B6F15 /* Presentable.swift in Sources */,
 				02388DE624A2AF7900F3B485 /* UserVerificationCoordinator.swift in Sources */,
+				029F3F3926C557E500B5049E /* SecretsResetViewState.swift in Sources */,
 				02FAE41823B29EBD00DE73D8 /* ServiceTermsModalScreenViewModel.swift in Sources */,
 				02DFEB8121C07370009B6F15 /* ForgotPasswordService.swift in Sources */,
 				02388E5024A2AF7900F3B485 /* KeyVerificationVerifyBySASCoordinator.swift in Sources */,
@@ -8536,8 +8618,10 @@
 				02FAE44023B2BBF200DE73D8 /* FloatingPoint.swift in Sources */,
 				B1C0EE902375B7F400E8BB88 /* ChangePasswordNewPasswordViewController.swift in Sources */,
 				02DFEB8421C07370009B6F15 /* ContactCell.swift in Sources */,
+				029F3F4326C557E500B5049E /* SecretsSetupRecoveryKeyViewState.swift in Sources */,
 				8E021F6225A77B0F00E3F983 /* FavouriteIncomingAttachmentBubbleCell.swift in Sources */,
 				02057A3224AA8EFA00C96719 /* KeyVerificationRequestStatusWithPaginationTitleBubbleCell.swift in Sources */,
+				029F3F7D26C557E600B5049E /* SecretsRecoveryWithKeyViewController.swift in Sources */,
 				02DFEB8521C07370009B6F15 /* MediaAlbumContentViewController.m in Sources */,
 				02DFEB8621C07370009B6F15 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
 				02FAE5B723B4C41600DE73D8 /* EmojiMartService.swift in Sources */,
@@ -8570,11 +8654,13 @@
 				02DFEB9221C07370009B6F15 /* IdentityServersURLGetter.swift in Sources */,
 				02DFEB9321C07370009B6F15 /* RoomEmptyBubbleCell.m in Sources */,
 				02388EB624A2AF7A00F3B485 /* DeviceVerificationIncomingViewState.swift in Sources */,
+				029F3F7126C557E600B5049E /* SecretsRecoveryGoal.swift in Sources */,
 				02DFEB9421C07370009B6F15 /* RoomOutgoingEncryptedTextMsgBubbleCell.m in Sources */,
 				02FAE4B523B4B61700DE73D8 /* KeyBackupSetupIntroViewController.swift in Sources */,
 				024F786823C8E38D008EC68F /* SettingsKeyBackupViewModel.swift in Sources */,
 				02DFEB9521C07370009B6F15 /* RoomIncomingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.m in Sources */,
 				024CD94425744C4500629DAA /* CommonConfiguration.swift in Sources */,
+				029F3F5326C557E600B5049E /* SecretsSetupRecoveryPassphraseCoordinatorType.swift in Sources */,
 				02388E1424A2AF7900F3B485 /* UserVerificationSessionsStatusViewState.swift in Sources */,
 				02DFEB9621C07370009B6F15 /* Widget.m in Sources */,
 				02DFEB9721C07370009B6F15 /* PublicRoomsDataSource.swift in Sources */,
@@ -8583,7 +8669,6 @@
 				02388E2224A2AF7900F3B485 /* KeyVerificationService.swift in Sources */,
 				02388E9624A2AF7A00F3B485 /* KeyVerificationManuallyVerifyViewController.swift in Sources */,
 				0234A9A7225BDA4E00E8E489 /* FormCheckBox.swift in Sources */,
-				02C3F27424AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseViewModelType.swift in Sources */,
 				02DFEB9921C07370009B6F15 /* KeyboardNotification.swift in Sources */,
 				02DFEB9A21C07370009B6F15 /* MediaServiceType.swift in Sources */,
 				8E021F6425A77B1500E3F983 /* FavouritesCoordinator.swift in Sources */,
@@ -8595,14 +8680,11 @@
 				02388EBC24A2AF7A00F3B485 /* DeviceVerificationIncomingCoordinatorType.swift in Sources */,
 				02388F2D24A2BA8100F3B485 /* CameraAccessAlertPresenter.swift in Sources */,
 				B122099E23854F01004D069C /* Strings.swift in Sources */,
-				02C3F26C24AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseCoordinatorType.swift in Sources */,
 				02DFEB9C21C07370009B6F15 /* ForgotPasswordCheckedMailViewController.swift in Sources */,
 				B12209A023854F14004D069C /* Storyboards.swift in Sources */,
 				026154C8235123410045459E /* IdentityServiceBuilder.swift in Sources */,
-				02C3F27024AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseViewState.swift in Sources */,
 				02388E9224A2AF7A00F3B485 /* KeyVerificationManuallyVerifyViewAction.swift in Sources */,
 				02DFEB9E21C07370009B6F15 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleBubbleCell.m in Sources */,
-				02C3F26E24AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseViewController.swift in Sources */,
 				02018F9D22006200008D68BE /* UniversalLinkParameters.swift in Sources */,
 				02FAE45723B4AB3300DE73D8 /* IntegrationManagerViewController.m in Sources */,
 				02DFEB9F21C07370009B6F15 /* CreateNewDiscussionCoordinatorType.swift in Sources */,
@@ -8617,14 +8699,13 @@
 				02DFEBA121C07370009B6F15 /* HomeCoordinator.swift in Sources */,
 				02C3F21124AF75100086ACA5 /* SecureBackupSetupCoordinatorType.swift in Sources */,
 				02DFEBA221C07370009B6F15 /* AuthenticationServiceType.swift in Sources */,
+				029F3EF526C555C900B5049E /* SecureBackupSetupIntroViewModelType.swift in Sources */,
 				02DFEBA321C07370009B6F15 /* TableViewCellWithLabelAndLargeTextView.m in Sources */,
-				02C3F28024AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseViewAction.swift in Sources */,
 				B12209C023854F92004D069C /* ClientVersionInfo+Codable.swift in Sources */,
 				02C4BE95225502DD00F7BB0E /* DiscussionDetailsCoordinator.swift in Sources */,
 				02DFEBA421C07370009B6F15 /* FormRules.swift in Sources */,
 				02388E1624A2AF7900F3B485 /* UserVerificationSessionStatusCell.swift in Sources */,
 				02FAE60A23B4D38F00DE73D8 /* UITouch.swift in Sources */,
-				02C3F2A224AFDEFF0086ACA5 /* SecretsRecoveryCoordinator.swift in Sources */,
 				02DFEBA521C07370009B6F15 /* RoomIncomingEncryptedTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				02388F2524A2B73F00F3B485 /* KeyBackupRecoverFromPrivateKeyCoordinator.swift in Sources */,
 				02DFEBA621C07370009B6F15 /* RoomIncomingEncryptedAttachmentBubbleCell.m in Sources */,
@@ -8634,8 +8715,10 @@
 				02388EA024A2AF7A00F3B485 /* KeyVerificationManuallyVerifyViewState.swift in Sources */,
 				02DFEBA821C07370009B6F15 /* empty.mm in Sources */,
 				02388F1724A2B73F00F3B485 /* KeyBackupRecoverFromPrivateKeyViewController.swift in Sources */,
+				02D5E3F126C53F8300114F3D /* ThemeService.swift in Sources */,
 				02FAE46F23B4ACCB00DE73D8 /* UIImage.swift in Sources */,
 				02FAE4F723B4B61700DE73D8 /* KeyBackupRecoverFromPassphraseCoordinator.swift in Sources */,
+				02D5E3F926C53F8300114F3D /* Theme.swift in Sources */,
 				B12209DE23855105004D069C /* AppVersionUpdateCoordinator.swift in Sources */,
 				02FAE4DB23B4B61700DE73D8 /* EncryptionKeysExportPresenter.swift in Sources */,
 				02DFEBA921C07370009B6F15 /* ErrorPresentable.swift in Sources */,
@@ -8647,9 +8730,10 @@
 				02388DF224A2AF7900F3B485 /* UserVerificationSessionStatusCoordinator.swift in Sources */,
 				02259C5D26C47F300084BF95 /* RoundedButton.swift in Sources */,
 				02ECA88122E0C5BA00ECDA5E /* MXRoomSummary.swift in Sources */,
+				029F3F8326C557E600B5049E /* SecretsRecoveryWithKeyViewState.swift in Sources */,
 				02C3F22724AFD3880086ACA5 /* CrossSigningBannerPreferences.swift in Sources */,
 				02388E8824A2AF7A00F3B485 /* KeyVerificationSelfVerifyWaitViewModelType.swift in Sources */,
-				02C3F28A24AFDEFF0086ACA5 /* SecretsRecoveryGoal.swift in Sources */,
+				029F3F7B26C557E600B5049E /* SecretsRecoveryWithKeyViewModel.swift in Sources */,
 				02DFEBAF21C07370009B6F15 /* MXRoom+Riot.m in Sources */,
 				02388EBE24A2AF7A00F3B485 /* DeviceVerificationIncomingViewModelType.swift in Sources */,
 				02DFEBB021C07370009B6F15 /* RoomAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.m in Sources */,
@@ -8661,10 +8745,12 @@
 				02388E7624A2AF7A00F3B485 /* KeyVerificationSelfVerifyStartCoordinator.swift in Sources */,
 				8E021F6725A77B2400E3F983 /* FavouriteMessagesViewModel.swift in Sources */,
 				02DFEBB421C07370009B6F15 /* ActivityIndicatorView.swift in Sources */,
+				029F3F4D26C557E600B5049E /* SecretsSetupRecoveryKeyCoordinator.swift in Sources */,
 				02FAE43123B2B98900DE73D8 /* SlidingModalEmptyViewController.swift in Sources */,
 				8E0E457425B71367002A66D6 /* FavouriteAttachmentAntivirusScanStatusBubbleCell.swift in Sources */,
 				B12209DD23855102004D069C /* AppVersionUpdateViewModel.swift in Sources */,
 				02388E2624A2AF7900F3B485 /* KeyVerificationDataLoadingCoordinatorType.swift in Sources */,
+				029F3F5B26C557E600B5049E /* SecretsSetupRecoveryPassphraseViewModelType.swift in Sources */,
 				024CD940257447A300629DAA /* Configurable.swift in Sources */,
 				02018F9722003F76008D68BE /* UniversalLinkService.swift in Sources */,
 				02388EB424A2AF7A00F3B485 /* DeviceVerificationIncomingViewController.swift in Sources */,
@@ -8693,7 +8779,7 @@
 				02DFEBBE21C07370009B6F15 /* MediaPickerViewController.m in Sources */,
 				02388E8224A2AF7A00F3B485 /* KeyVerificationSelfVerifyWaitCoordinator.swift in Sources */,
 				02DFEBBF21C07370009B6F15 /* RoomEncryptedAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.m in Sources */,
-				024518F923A19676006873DF /* Theme.swift in Sources */,
+				02D5E40926C53F8300114F3D /* ThemeIdentifier.swift in Sources */,
 				02057A1224AA8EE500C96719 /* BubbleCellContentView.swift in Sources */,
 				02DFEBC021C07370009B6F15 /* RageShakeManager.m in Sources */,
 				02388E2424A2AF7900F3B485 /* KeyVerificationDataLoadingViewAction.swift in Sources */,
@@ -8704,6 +8790,8 @@
 				02388E4624A2AF7900F3B485 /* KeyVerificationVerifyByScanningViewState.swift in Sources */,
 				02DC4F4C221C46E500B551EE /* RoomPowerLevel.swift in Sources */,
 				02DFEBC321C07370009B6F15 /* RoomOutgoingEncryptedAttachmentWithPaginationTitleBubbleCell.m in Sources */,
+				029F3F6D26C557E600B5049E /* SecretsRecoveryWithPassphraseViewState.swift in Sources */,
+				029F3F3F26C557E500B5049E /* SecretsSetupRecoveryKeyViewModelType.swift in Sources */,
 				02FAE59B23B4C41600DE73D8 /* EmojiPickerCoordinator.swift in Sources */,
 				02FAE4AD23B4B61700DE73D8 /* KeyBackupSetupSuccessFromRecoveryKeyViewController.swift in Sources */,
 				8E0E456125B64684002A66D6 /* FavouriteMessagesBubbleCellData.swift in Sources */,
@@ -8711,8 +8799,8 @@
 				02FAE4C323B4B61700DE73D8 /* KeyBackupSetupPassphraseViewModelType.swift in Sources */,
 				02DFEBC521C07370009B6F15 /* RoomIncomingEncryptedAttachmentWithPaginationTitleBubbleCell.m in Sources */,
 				B1104DBD237B123400687B3A /* ChangePasswordServiceType.swift in Sources */,
+				029F3F3526C557E500B5049E /* SecretsResetCoordinatorType.swift in Sources */,
 				02388EC024A2AF7A00F3B485 /* DeviceVerificationIncomingCoordinator.swift in Sources */,
-				02C3F29224AFDEFF0086ACA5 /* SecretsRecoveryWithKeyCoordinatorType.swift in Sources */,
 				025E36F6229546A000C9D9AE /* ThirdPartyIDResolverType.swift in Sources */,
 				02FAE57923B4C41500DE73D8 /* ReactionsMenuView.swift in Sources */,
 				02DFEBC821C07370009B6F15 /* RoomService.swift in Sources */,
@@ -8728,13 +8816,12 @@
 				02FAE4BD23B4B61700DE73D8 /* KeyBackupSetupPassphraseViewController.swift in Sources */,
 				02DFEBCC21C07370009B6F15 /* KeyboardAvoider.swift in Sources */,
 				02DFEBCD21C07370009B6F15 /* TableViewCellWithPhoneNumberTextField.m in Sources */,
-				02C3F29E24AFDEFF0086ACA5 /* SecretsRecoveryCoordinatorType.swift in Sources */,
+				029F3F5726C557E600B5049E /* SecretsSetupRecoveryPassphraseViewState.swift in Sources */,
 				02DFEBCE21C07370009B6F15 /* ContactsViewController.m in Sources */,
 				02388E5224A2AF7900F3B485 /* KeyVerificationVerifyBySASViewState.swift in Sources */,
 				02F1B87324D8C09600A73E63 /* FormattedBodyParser.swift in Sources */,
 				02DFEBCF21C07370009B6F15 /* AvatarImageShape.swift in Sources */,
 				02DFEBD021C07370009B6F15 /* RoomIncomingTextMsgBubbleCell.m in Sources */,
-				024518F523A19676006873DF /* Themable.swift in Sources */,
 				02DFEBD121C07370009B6F15 /* RegistrationService.swift in Sources */,
 				02388E8024A2AF7A00F3B485 /* KeyVerificationSelfVerifyStartViewState.swift in Sources */,
 				02F0FF462226F82600066908 /* RoomIDComponents.swift in Sources */,
@@ -8744,7 +8831,6 @@
 				02DFEBD321C07370009B6F15 /* RegistrationFormViewModelType.swift in Sources */,
 				02DFEBD421C07370009B6F15 /* SettingsCoordinator.swift in Sources */,
 				02DFEBD521C07370009B6F15 /* HomeCoordinatorType.swift in Sources */,
-				02C3F2A024AFDEFF0086ACA5 /* SecretsRecoveryCoordinatorBridgePresenter.swift in Sources */,
 				02FAE5E723B4C41600DE73D8 /* ReactionHistoryBridgeCoordinatorPresenter.swift in Sources */,
 				02FAE60423B4D35200DE73D8 /* String.swift in Sources */,
 				B12209C623854F92004D069C /* MinimumClientVersion.swift in Sources */,
@@ -8766,6 +8852,7 @@
 				B1C0EE742375B7A000E8BB88 /* ChangePasswordCurrentPasswordCoordinatorType.swift in Sources */,
 				0234A9A4225BD0D000E8E489 /* FormCheckBoxModelType.swift in Sources */,
 				02DFEBDD21C07370009B6F15 /* GlobalSearchBar.swift in Sources */,
+				029F3F5F26C557E600B5049E /* SecretsSetupRecoveryPassphraseInputMode.swift in Sources */,
 				02DFEBDE21C07370009B6F15 /* RoomsDataSource.m in Sources */,
 				02C3F22924AFD3880086ACA5 /* CrossSigningSetupBannerCell.swift in Sources */,
 				02C3F2A924AFE32B0086ACA5 /* AuthenticatedSessionViewControllerFactory.swift in Sources */,
@@ -8780,11 +8867,11 @@
 				02DFEBE221C07370009B6F15 /* FormTextViewModel.swift in Sources */,
 				02388DFA24A2AF7900F3B485 /* UserVerificationStartViewModelType.swift in Sources */,
 				02FAE43523B2B98900DE73D8 /* SlidingModalPresentable.swift in Sources */,
-				02C3F29A24AFDEFF0086ACA5 /* SecretsRecoveryWithKeyViewModelType.swift in Sources */,
 				02057A3024AA8EFA00C96719 /* SizingViewHeight.swift in Sources */,
 				02FAE59523B4C41600DE73D8 /* RoomContextualMenuToolbarView.swift in Sources */,
 				02DFEBE321C07370009B6F15 /* FormTextField.swift in Sources */,
 				02388F2124A2B73F00F3B485 /* KeyBackupRecoverFromPrivateKeyViewState.swift in Sources */,
+				029F3EF726C555C900B5049E /* SecureBackupSetupIntroViewModel.swift in Sources */,
 				02DFEBE421C07370009B6F15 /* RoomDetailsCoordinatorType.swift in Sources */,
 				02FAE5FB23B4C41600DE73D8 /* ReactionHistoryViewState.swift in Sources */,
 				02DFEBE521C07370009B6F15 /* RoomAttachmentAntivirusScanStatusViewModel.swift in Sources */,
@@ -8802,7 +8889,9 @@
 				028624DC250269F100CFE83D /* RoomAccessByLinkViewModel.swift in Sources */,
 				02DFEBE721C07370009B6F15 /* RegistrationCoordinatorType.swift in Sources */,
 				02DFEBE821C07370009B6F15 /* AppDelegate.swift in Sources */,
+				029F3F4B26C557E600B5049E /* SecretsSetupRecoveryKeyViewAction.swift in Sources */,
 				028443982635E32600BE295F /* RoomsTchapInfoCell.swift in Sources */,
+				029F3F8126C557E600B5049E /* SecretsRecoveryWithKeyViewModelType.swift in Sources */,
 				02FAE4E523B4B61700DE73D8 /* KeyBackupRecoverFromRecoveryKeyCoordinatorType.swift in Sources */,
 				028624E0250269F100CFE83D /* RoomAccessByLinkViewModelType.swift in Sources */,
 				02FAE4C523B4B61700DE73D8 /* PasswordStrengthView.swift in Sources */,
@@ -8813,7 +8902,6 @@
 				02388E4224A2AF7900F3B485 /* KeyVerificationVerifyByScanningViewModel.swift in Sources */,
 				02057A2424AA8EFA00C96719 /* KeyVerificationBaseBubbleCell.swift in Sources */,
 				029C927E22E7044200E62D27 /* RoomAccessRule.swift in Sources */,
-				02C3F27624AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseCoordinator.swift in Sources */,
 				02388EBA24A2AF7A00F3B485 /* DeviceVerificationIncomingViewModel.swift in Sources */,
 				02DFEBEA21C07370009B6F15 /* SplitViewCoordinator.swift in Sources */,
 				02DFEBEB21C07370009B6F15 /* PublicRoomServiceType.swift in Sources */,
@@ -8834,7 +8922,6 @@
 				02520308224EBD4800262433 /* ContactButtonViewModelType.swift in Sources */,
 				02FAE46923B4AB3300DE73D8 /* WidgetViewController.m in Sources */,
 				02018F9A22004417008D68BE /* UniversalLinkServiceType.swift in Sources */,
-				02C3F29824AFDEFF0086ACA5 /* SecretsRecoveryWithKeyViewAction.swift in Sources */,
 				02FAE43D23B2B98900DE73D8 /* SlidingModalPresentationController.swift in Sources */,
 				02057A2224AA8EFA00C96719 /* KeyVerificationCellInnerContentView.swift in Sources */,
 				02FAE58D23B4C41500DE73D8 /* RoomContextualMenuPresenter.swift in Sources */,
@@ -8843,7 +8930,6 @@
 				02388E4C24A2AF7900F3B485 /* KeyVerificationVerifyBySASCoordinatorType.swift in Sources */,
 				02DFEBF421C07370009B6F15 /* RoomServiceType.swift in Sources */,
 				02FAE5A323B4C41600DE73D8 /* EmojiPickerViewModelType.swift in Sources */,
-				02C3F26024AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyViewModel.swift in Sources */,
 				02FAE42223B29EBD00DE73D8 /* ServiceTermsModalScreenViewAction.swift in Sources */,
 				0215542422B24058004663A6 /* AccountValidityServiceType.swift in Sources */,
 				02DFEBF521C07370009B6F15 /* RoomAttachmentAntivirusScanStatusCellContentView.swift in Sources */,
@@ -8864,7 +8950,6 @@
 				02DFEBFA21C07370009B6F15 /* RoomIncomingAttachmentBubbleCell.m in Sources */,
 				02388DEA24A2AF7900F3B485 /* UserVerificationSessionStatusViewAction.swift in Sources */,
 				02FAE60123B4D14C00DE73D8 /* UIGestureRecognizer.swift in Sources */,
-				02C3F28C24AFDEFF0086ACA5 /* SecretsRecoveryMode.swift in Sources */,
 				02FAE57B23B4C41500DE73D8 /* ReactionsMenuViewAction.swift in Sources */,
 				0259328C22AFEF5700C93762 /* PasswordPolicyService.swift in Sources */,
 				02388E2C24A2AF7900F3B485 /* KeyVerificationDataLoadingViewModel.swift in Sources */,
@@ -8872,20 +8957,22 @@
 				02388E8424A2AF7A00F3B485 /* KeyVerificationSelfVerifyWaitCoordinatorType.swift in Sources */,
 				3A74C74825CB328600E3D171 /* ForwardCoordinatorType.swift in Sources */,
 				0259328922AFE8A500C93762 /* PasswordPolicyServiceType.swift in Sources */,
-				02C3F26224AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyViewController.swift in Sources */,
 				02057A0824AA8CC100C96719 /* UIDevice.swift in Sources */,
 				02D0FC9224AE2DDA008DD5BB /* EventFormatter+DTCoreTextFix.m in Sources */,
 				02DFEBFC21C07370009B6F15 /* TextInputHandler.swift in Sources */,
 				02388DFE24A2AF7900F3B485 /* UserVerificationStartCoordinator.swift in Sources */,
 				02388E0624A2AF7900F3B485 /* UserVerificationStartViewController.swift in Sources */,
+				029F3F8726C557E600B5049E /* SecretsRecoveryCoordinatorBridgePresenter.swift in Sources */,
 				02FAE45923B4AB3300DE73D8 /* WidgetPickerViewController.m in Sources */,
 				02DFEBFD21C07370009B6F15 /* HomeViewController.swift in Sources */,
 				02DFEBFE21C07370009B6F15 /* Coordinator.swift in Sources */,
 				02040CCD23D7622200DE0690 /* RetentionPeriodPickerCell.swift in Sources */,
 				02388E0224A2AF7900F3B485 /* UserVerificationStartViewModel.swift in Sources */,
 				02259C6026C47F870084BF95 /* CustomRoundedButton.swift in Sources */,
+				029F3F7326C557E600B5049E /* SecretsRecoveryMode.swift in Sources */,
 				02057A0324A9D7D200C96719 /* QRCodeReaderViewController.swift in Sources */,
 				B1C0EE702375B7A000E8BB88 /* ChangePasswordCurrentPasswordCoordinator.swift in Sources */,
+				029F3F5D26C557E600B5049E /* SecretsSetupRecoveryPassphraseCoordinator.swift in Sources */,
 				B122099F23854F11004D069C /* Images.swift in Sources */,
 				02DFEBFF21C07370009B6F15 /* PublicRoomsCoordinatorType.swift in Sources */,
 				02FAE57F23B4C41500DE73D8 /* ReactionsMenuViewModelType.swift in Sources */,
@@ -8900,18 +8987,19 @@
 				02DFEC0421C07370009B6F15 /* RoomCreationViewController.swift in Sources */,
 				02DFEC0521C07370009B6F15 /* RoomPredecessorBubbleCell.m in Sources */,
 				02DFEC0621C07370009B6F15 /* ActivityIndicatorPresenter.swift in Sources */,
-				024518F723A19676006873DF /* ThemeService.m in Sources */,
 				02DFEC0721C07370009B6F15 /* RoomOutgoingTextMsgWithoutSenderNameBubbleCell.m in Sources */,
 				02FAE4B323B4B61700DE73D8 /* KeyBackupSetupSuccessFromPassphraseViewController.swift in Sources */,
 				02388E0E24A2AF7900F3B485 /* UserVerificationSessionsStatusViewAction.swift in Sources */,
 				02FAE4DD23B4B61700DE73D8 /* KeyBackupRecoverSuccessViewController.swift in Sources */,
 				02DFEC0821C07370009B6F15 /* RoomCreationViewModelType.swift in Sources */,
+				02D5E3FD26C53F8300114F3D /* DefaultTheme.swift in Sources */,
 				02057A3824AA8EFA00C96719 /* KeyVerificationConclusionBubbleCell.swift in Sources */,
 				02FAE4D123B4B61700DE73D8 /* KeyBackupSetupCoordinatorType.swift in Sources */,
 				02DFEC0921C07370009B6F15 /* FilesSearchTableViewCell.m in Sources */,
 				02DFEC0A21C07370009B6F15 /* RoomTitleViewModel.swift in Sources */,
 				B122099423854ED3004D069C /* TchapDefaults.swift in Sources */,
 				02388E4824A2AF7900F3B485 /* KeyVerificationVerifyBySASViewAction.swift in Sources */,
+				029F3F4726C557E600B5049E /* SecretsSetupRecoveryKeyViewModel.swift in Sources */,
 				02DFEC0B21C07370009B6F15 /* RoomsCoordinatorType.swift in Sources */,
 				02FAE4E723B4B61700DE73D8 /* KeyBackupRecoverFromRecoveryKeyViewState.swift in Sources */,
 				02DFEC0C21C07370009B6F15 /* SegmentedViewController.m in Sources */,
@@ -8923,8 +9011,8 @@
 				0215542722B2406B004663A6 /* AccountValidityService.swift in Sources */,
 				02388E1E24A2AF7900F3B485 /* UserVerificationCoordinatorBridgePresenter.swift in Sources */,
 				02388DF024A2AF7900F3B485 /* UserVerificationSessionStatusViewState.swift in Sources */,
-				02C3F27C24AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseCoordinatorType.swift in Sources */,
 				024F787723CC6602008EC68F /* ChangePasswordAlertPresenter.swift in Sources */,
+				029F3F4126C557E500B5049E /* SecretsSetupRecoveryKeyCoordinatorType.swift in Sources */,
 				02DFEC0F21C07370009B6F15 /* Appearance.swift in Sources */,
 				02C3F21324AF75100086ACA5 /* SecureBackupBannerCell.swift in Sources */,
 				02DFEC1021C07370009B6F15 /* RoomTitleViewModelBuilder.swift in Sources */,
@@ -8935,8 +9023,8 @@
 				02FAE42023B29EBD00DE73D8 /* ServiceTermsModalScreenCoordinatorType.swift in Sources */,
 				02FAE41423B29EBD00DE73D8 /* ServiceTermsModalCoordinator.swift in Sources */,
 				02FAE41A23B29EBD00DE73D8 /* ServiceTermsModalScreenViewController.swift in Sources */,
+				029F3F5926C557E600B5049E /* SecretsSetupRecoveryPassphraseViewAction.swift in Sources */,
 				02D0FC9424AE2DDA008DD5BB /* EncryptionTrustLevelBadgeImageHelper.swift in Sources */,
-				02C3F29C24AFDEFF0086ACA5 /* SecretsRecoveryWithKeyViewState.swift in Sources */,
 				02388EA624A2AF7A00F3B485 /* DeviceVerificationStartViewAction.swift in Sources */,
 				B15FE5EA2385871A00D2A5B2 /* AppVersionCheckerType.swift in Sources */,
 				02DFEC1221C07370009B6F15 /* RoomOutgoingEncryptedTextMsgWithoutSenderNameBubbleCell.m in Sources */,
@@ -8947,9 +9035,7 @@
 				02DFEC1421C07370009B6F15 /* MediaService.swift in Sources */,
 				02DFEC1521C07370009B6F15 /* RoomIncomingTextMsgWithoutSenderNameBubbleCell.m in Sources */,
 				024732C623EA23FD008CD543 /* Tools.m in Sources */,
-				02C3F26A24AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseViewModel.swift in Sources */,
 				02FAE61123B4E7AA00DE73D8 /* UIApplication.swift in Sources */,
-				02C3F27224AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseViewAction.swift in Sources */,
 				02388E3224A2AF7900F3B485 /* KeyVerificationDataLoadingViewState.swift in Sources */,
 				02DFEC1621C07370009B6F15 /* DeviceTableViewCell.m in Sources */,
 				02DFEC1721C07370009B6F15 /* Variant2Style.swift in Sources */,
@@ -8969,7 +9055,6 @@
 				02388DF624A2AF7900F3B485 /* UserVerificationSessionStatusViewModel.swift in Sources */,
 				02DFEC1C21C07370009B6F15 /* RoomIncomingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
 				02DFEC1D21C07370009B6F15 /* RecentsViewController.m in Sources */,
-				02C3F26624AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyCoordinator.swift in Sources */,
 				02D5E34C26C5139700114F3D /* UIView.swift in Sources */,
 				B1C0EE722375B7A000E8BB88 /* ChangePasswordCurrentPasswordViewState.swift in Sources */,
 				02DFEC1E21C07370009B6F15 /* RoomPreviewCoordinatorType.swift in Sources */,
@@ -8978,6 +9063,7 @@
 				02FAE46323B4AB3300DE73D8 /* JitsiService.swift in Sources */,
 				02DFEC1F21C07370009B6F15 /* RestClientBuilderError.swift in Sources */,
 				02DFEC2021C07370009B6F15 /* ThreePIDCredentials.swift in Sources */,
+				029F3F8526C557E600B5049E /* SecretsRecoveryCoordinatorType.swift in Sources */,
 				02DFEC2221C07370009B6F15 /* AuthenticationViewModelType.swift in Sources */,
 				02DFEC2321C07370009B6F15 /* PublicRoomsCoordinator.swift in Sources */,
 				02DFEC2421C07370009B6F15 /* ForgotPasswordFormViewModel.swift in Sources */,
@@ -8994,16 +9080,20 @@
 				02FAE5E523B4C41600DE73D8 /* ReactionHistoryCoordinatorType.swift in Sources */,
 				02388E9E24A2AF7A00F3B485 /* KeyVerificationManuallyVerifyCoordinatorType.swift in Sources */,
 				02DFEC2B21C07370009B6F15 /* RoomSettingsViewController.m in Sources */,
+				029F3F6B26C557E600B5049E /* SecretsRecoveryWithPassphraseViewController.swift in Sources */,
 				02DFEC2C21C07370009B6F15 /* LanguagePickerViewController.m in Sources */,
 				8E021F6025A77B0400E3F983 /* FavouriteIncomingTextMsgBubbleCell.swift in Sources */,
 				02DFEC2D21C07370009B6F15 /* RoomOutgoingEncryptedAttachmentBubbleCell.m in Sources */,
 				02FAE5C323B4C41600DE73D8 /* EmojiStore.swift in Sources */,
+				029F3F7726C557E600B5049E /* SecretsRecoveryWithKeyCoordinator.swift in Sources */,
+				029F3F3D26C557E500B5049E /* SecretsResetViewModel.swift in Sources */,
 				02FAE50323B4B61700DE73D8 /* KeyBackupRecoverCoordinator.swift in Sources */,
 				02DFEC2F21C07370009B6F15 /* WelcomeCoordinator.swift in Sources */,
 				02DFEC3021C07370009B6F15 /* RegistrationServiceError.swift in Sources */,
 				02057A3424AA8EFA00C96719 /* KeyVerificationConclusionWithPaginationTitleBubbleCell.swift in Sources */,
 				02040CF323DA17DC00DE0690 /* MXSession.swift in Sources */,
 				02DFEC3121C07370009B6F15 /* AlertErrorPresenter.swift in Sources */,
+				029F3F8926C557E600B5049E /* SecretsRecoveryCoordinator.swift in Sources */,
 				024F786C23C8E38D008EC68F /* SettingsKeyBackupViewAction.swift in Sources */,
 				02FAE5CD23B4C41600DE73D8 /* EditHistoryViewModel.swift in Sources */,
 				02DFEC3221C07370009B6F15 /* DisplayNameComponents.swift in Sources */,
@@ -9015,21 +9105,21 @@
 				02FAE56923B4C41500DE73D8 /* BubbleReactionsViewModelType.swift in Sources */,
 				B1C0EE7E2375B7A000E8BB88 /* ChangePasswordCurrentPasswordViewModel.swift in Sources */,
 				02C4BE8C22523D2200F7BB0E /* DiscussionFinderType.swift in Sources */,
-				02DFEC3421C07370009B6F15 /* UIViewController.swift in Sources */,
 				02388E2E24A2AF7900F3B485 /* KeyVerificationDataLoadingViewModelType.swift in Sources */,
 				02FAE60E23B4E70600DE73D8 /* RoomMessageURLParser.swift in Sources */,
 				02DFEC3521C07370009B6F15 /* RoomActivitiesView.m in Sources */,
 				02FAE4F923B4B61700DE73D8 /* KeyBackupRecoverFromPassphraseViewState.swift in Sources */,
-				024518FB23A19676006873DF /* DefaultTheme.swift in Sources */,
 				02C3F20B24AF75100086ACA5 /* SecureBackupSetupIntroCell.swift in Sources */,
+				029F3F4926C557E600B5049E /* SecretsSetupRecoveryKeyViewController.swift in Sources */,
 				02DFEC3621C07370009B6F15 /* RoomMemberDetailsViewController.m in Sources */,
 				02DFEC3721C07370009B6F15 /* GDPRConsentViewController.swift in Sources */,
+				029F3F6526C557E600B5049E /* SecretsRecoveryWithPassphraseViewModelType.swift in Sources */,
 				026A466023B215900058D80B /* MediaPickerCoordinatorBridgePresenter.swift in Sources */,
 				02C4BE8F2252456000F7BB0E /* ThirdPartyIDPlatformInfoResolverType.swift in Sources */,
 				026A465223B20E510058D80B /* UIColor.swift in Sources */,
-				02C3F26424AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyViewAction.swift in Sources */,
 				02388E5424A2AF7900F3B485 /* VerifyEmojiCollectionViewCell.swift in Sources */,
 				02FAE42423B29EBD00DE73D8 /* ServiceTermsModalScreenCoordinator.swift in Sources */,
+				029F3F6926C557E600B5049E /* SecretsRecoveryWithPassphraseViewModel.swift in Sources */,
 				02DFEC3821C07370009B6F15 /* LegacyAppDelegate.m in Sources */,
 				02DFEC3921C07370009B6F15 /* ForgotPasswordCoordinator.swift in Sources */,
 				02FAE5D523B4C41600DE73D8 /* EditHistoryViewAction.swift in Sources */,
@@ -9042,6 +9132,7 @@
 				02FAE41023B29EBD00DE73D8 /* ServiceTermsModalCoordinatorType.swift in Sources */,
 				02FAE5DF23B4C41600DE73D8 /* EditHistoryCoordinatorBridgePresenter.swift in Sources */,
 				B12209CA23854F92004D069C /* ClientConfigurationService.swift in Sources */,
+				02D5E3F526C53F8300114F3D /* ThemeService.m in Sources */,
 				02DFEC3B21C07370009B6F15 /* RestClientBuilder.swift in Sources */,
 				02DFEC3C21C07370009B6F15 /* SplitViewCoordinatorType.swift in Sources */,
 				02388F0A24A2B54C00F3B485 /* UILabel.swift in Sources */,
@@ -9088,9 +9179,11 @@
 				02DFEC4921C07370009B6F15 /* RoomSelectedStickerBubbleCell.m in Sources */,
 				02FAE5AD23B4C41600DE73D8 /* EmojiPickerViewCell.swift in Sources */,
 				02DFEC4A21C07370009B6F15 /* CountryPickerViewController.m in Sources */,
+				02D5E3ED26C53F8300114F3D /* Themable.swift in Sources */,
 				02A7900123E0DD5A00F17374 /* UserStatusInfoType.swift in Sources */,
 				028BA9C8257A459300C71A91 /* Keychain.swift in Sources */,
 				02DFEC4B21C07370009B6F15 /* KeyboardGrowingTextView.m in Sources */,
+				029F3F5126C557E600B5049E /* SecretsSetupRecoveryPassphraseViewModel.swift in Sources */,
 				02DFEC4C21C07370009B6F15 /* TCNavigationController.swift in Sources */,
 				B12209DC238550FE004D069C /* AppVersionUpdateViewController.swift in Sources */,
 				02DFEC4D21C07370009B6F15 /* DisabledRoomInputToolbarView.m in Sources */,
@@ -9098,11 +9191,10 @@
 				02DFEC4E21C07370009B6F15 /* WelcomeViewController.swift in Sources */,
 				02FAE4C923B4B61700DE73D8 /* KeyBackupSetupPassphraseViewModel.swift in Sources */,
 				02DFEC4F21C07370009B6F15 /* RoomIncomingEncryptedTextMsgBubbleCell.m in Sources */,
+				029F3F5526C557E600B5049E /* SecretsSetupRecoveryPassphraseViewController.swift in Sources */,
 				025DCA1A25F03BDB00C014C5 /* ForwardDataSource.swift in Sources */,
-				02C3F27824AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseInputMode.swift in Sources */,
 				02FAE43323B2B98900DE73D8 /* SlidingModalPresenter.swift in Sources */,
 				02388EAC24A2AF7A00F3B485 /* DeviceVerificationStartCoordinator.swift in Sources */,
-				02C3F25824AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyViewModelType.swift in Sources */,
 				02DFEC5021C07370009B6F15 /* ErrorPresentableImpl.swift in Sources */,
 				02388E7A24A2AF7A00F3B485 /* KeyVerificationSelfVerifyStartViewModel.swift in Sources */,
 				02DFEC5121C07370009B6F15 /* AvatarImageViewModel.swift in Sources */,
@@ -9110,9 +9202,7 @@
 				02FAE4FF23B4B61700DE73D8 /* KeyBackupRecoverFromPassphraseViewController.swift in Sources */,
 				B15FE5F023858BDC00D2A5B2 /* AppVersionUpdateViewModelType.swift in Sources */,
 				02388E5E24A2AF7900F3B485 /* KeyVerificationScanConfirmationViewController.swift in Sources */,
-				02C3F25C24AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyViewState.swift in Sources */,
 				02DFEC5321C07370009B6F15 /* DeviceView.m in Sources */,
-				02C3F29424AFDEFF0086ACA5 /* SecretsRecoveryWithKeyViewModel.swift in Sources */,
 				02DFEC5421C07370009B6F15 /* RoomIncomingEncryptedTextMsgWithoutSenderNameBubbleCell.m in Sources */,
 				B1C0EE652375B78C00E8BB88 /* ChangePasswordCoordinator.swift in Sources */,
 				02FAE57323B4C41500DE73D8 /* BubbleReactionActionViewCell.swift in Sources */,
@@ -9120,15 +9210,15 @@
 				028BA9D0257A459300C71A91 /* KeyValueStore.swift in Sources */,
 				02FAE5DD23B4C41600DE73D8 /* EditHistorySection.swift in Sources */,
 				02FAE5D323B4C41600DE73D8 /* EditHistoryHeaderView.swift in Sources */,
-				02C3F28624AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseViewState.swift in Sources */,
 				02FAE46C23B4ACA000DE73D8 /* UIButton.swift in Sources */,
+				029F3F3326C557E500B5049E /* SecretsResetViewController.swift in Sources */,
 				8E021F6525A77B1900E3F983 /* FavouritesCoordinatorBridgePresenter.swift in Sources */,
 				02DFEC5521C07370009B6F15 /* RoomMembershipCollapsedWithPaginationTitleBubbleCell.m in Sources */,
 				02FAE45B23B4AB3300DE73D8 /* WidgetPermissionViewController.swift in Sources */,
 				02388EB824A2AF7A00F3B485 /* DeviceVerificationIncomingViewAction.swift in Sources */,
-				02C3F29624AFDEFF0086ACA5 /* SecretsRecoveryWithKeyViewController.swift in Sources */,
 				02FAE59123B4C41500DE73D8 /* RoomContextualMenuViewController.swift in Sources */,
 				02DFEC5621C07370009B6F15 /* UIBezierPath.swift in Sources */,
+				029F3F7926C557E600B5049E /* SecretsRecoveryWithKeyCoordinatorType.swift in Sources */,
 				B15FE5E7238584B800D2A5B2 /* AppVersionCheckerResult+Codable.swift in Sources */,
 				02DFEC5721C07370009B6F15 /* AuthenticationCoordinatorType.swift in Sources */,
 				8E021F6925A77B2A00E3F983 /* FavouriteMessagesCoordinator.swift in Sources */,
@@ -9146,7 +9236,6 @@
 				02018FA022006282008D68BE /* UniversalLinkParametersType.swift in Sources */,
 				02DFEC6121C07370009B6F15 /* Style.swift in Sources */,
 				02DFEC6221C07370009B6F15 /* AppCoordinatorType.swift in Sources */,
-				02C3F28424AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseViewController.swift in Sources */,
 				02DFEC6321C07370009B6F15 /* RoomViewController.m in Sources */,
 				02DFEC6421C07370009B6F15 /* ReadReceiptsViewController.m in Sources */,
 				02DFEC6521C07370009B6F15 /* RoomDataSource.m in Sources */,
@@ -9162,9 +9251,11 @@
 				02DFEC6821C07370009B6F15 /* ErrorPresenter.swift in Sources */,
 				027861A52577A8D900266B09 /* JitsiAuthenticationType.swift in Sources */,
 				02DFEC6921C07370009B6F15 /* RoomOutgoingTextMsgWithPaginationTitleBubbleCell.m in Sources */,
+				029F3F2F26C557E500B5049E /* SecretsResetCoordinator.swift in Sources */,
 				02DFEC6A21C07370009B6F15 /* RoomCreationCoordinator.swift in Sources */,
 				B12209BA23854F91004D069C /* ClientConfigurationServiceType.swift in Sources */,
 				02FAE61C23B5587200DE73D8 /* AutosizedCollectionView.swift in Sources */,
+				029F3F6726C557E600B5049E /* SecretsRecoveryWithPassphraseViewAction.swift in Sources */,
 				02FAE58523B4C41500DE73D8 /* ReactionsMenuViewModel.swift in Sources */,
 				02DFEC6B21C07370009B6F15 /* RoomDetailsCoordinator.swift in Sources */,
 				02388E4A24A2AF7900F3B485 /* KeyVerificationVerifyBySASViewModelType.swift in Sources */,
@@ -9176,7 +9267,6 @@
 				02DFEC6C21C07370009B6F15 /* AuthenticationViewController.swift in Sources */,
 				02388EB024A2AF7A00F3B485 /* DeviceVerificationStartViewModel.swift in Sources */,
 				02DFEC6D21C07370009B6F15 /* CircleButton.m in Sources */,
-				02C3F25A24AFDEFF0086ACA5 /* SecretsSetupRecoveryKeyCoordinatorType.swift in Sources */,
 				02DFEC6E21C07370009B6F15 /* RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.m in Sources */,
 				02FAE58323B4C41500DE73D8 /* ReactionMenuItemViewData.swift in Sources */,
 				02FAE30E23B26C0B00DE73D8 /* RiotSharedSettings.swift in Sources */,
@@ -9185,7 +9275,8 @@
 				02FAE5A523B4C41600DE73D8 /* EmojiPickerViewAction.swift in Sources */,
 				02388E3E24A2AF7900F3B485 /* KeyVerificationVerifyByScanningCoordinatorType.swift in Sources */,
 				02DFEC7021C07370009B6F15 /* RoomBubbleCellData.m in Sources */,
-				02C3F29024AFDEFF0086ACA5 /* SecretsRecoveryWithKeyCoordinator.swift in Sources */,
+				029F3F3126C557E500B5049E /* SecretsResetViewModelType.swift in Sources */,
+				02D5E40E26C5497900114F3D /* UIViewController.swift in Sources */,
 				02057A2A24AA8EFA00C96719 /* KeyVerificationRequestStatusBubbleCell.swift in Sources */,
 				B1C0EE962375B7F400E8BB88 /* ChangePasswordNewPasswordViewModelType.swift in Sources */,
 				02DFEC7221C07370009B6F15 /* ContactsCoordinator.swift in Sources */,
@@ -9195,6 +9286,7 @@
 				8E021F6A25A77B2D00E3F983 /* FavouriteMessagesCoordinatorType.swift in Sources */,
 				02388F2B24A2BA8100F3B485 /* CameraAccessManager.swift in Sources */,
 				02FAE56323B4C41500DE73D8 /* BubbleReactionsView.swift in Sources */,
+				029F3F6126C557E600B5049E /* SecretsRecoveryWithPassphraseCoordinator.swift in Sources */,
 				0278620D2579075B00266B09 /* Base32Coder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

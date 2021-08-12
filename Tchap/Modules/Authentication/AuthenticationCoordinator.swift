@@ -45,7 +45,7 @@ final class AuthenticationCoordinator: AuthenticationCoordinatorType {
         self.authenticationService = AuthenticationService(accountManager: MXKAccountManager.shared())
         let authenticationViewModel = AuthenticationViewModel()
         let authenticationViewController = AuthenticationViewController.instantiate(viewModel: authenticationViewModel)
-        authenticationViewController.tc_removeBackTitle()
+        authenticationViewController.vc_removeBackTitle()
         self.authenticationViewController = authenticationViewController
         self.activityIndicatorPresenter = ActivityIndicatorPresenter()
         self.authenticationErrorPresenter = AlertErrorPresenter(viewControllerPresenter: authenticationViewController)

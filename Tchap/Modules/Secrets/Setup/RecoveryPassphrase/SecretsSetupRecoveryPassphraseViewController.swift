@@ -125,7 +125,7 @@ final class SecretsSetupRecoveryPassphraseViewController: UIViewController {
         
         self.navigationItem.rightBarButtonItem = cancelBarButtonItem
         
-        self.tc_removeBackTitle()
+        self.vc_removeBackTitle()
         
         self.title = VectorL10n.secretsSetupRecoveryPassphraseTitle
         

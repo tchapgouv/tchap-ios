@@ -80,7 +80,7 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
         globalSearchBar.delegate = self
         
         let segmentedViewController = self.createHomeViewController(with: viewControllers, viewControllersTitles: viewControllersTitles, globalSearchBar: globalSearchBar)
-        segmentedViewController.tc_removeBackTitle()
+        segmentedViewController.vc_removeBackTitle()
         segmentedViewController.delegate = self
         
         self.navigationRouter.setRootModule(segmentedViewController)

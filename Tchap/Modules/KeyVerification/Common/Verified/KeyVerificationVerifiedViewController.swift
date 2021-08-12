@@ -58,7 +58,7 @@ final class KeyVerificationVerifiedViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         
-        self.tc_removeBackTitle()
+        self.vc_removeBackTitle()
         
         self.setupViews()
         self.registerThemeServiceDidChangeThemeNotification()

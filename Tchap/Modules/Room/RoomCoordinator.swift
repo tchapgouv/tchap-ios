@@ -237,7 +237,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorType {
         detailsCoordinator.start()
         self.add(childCoordinator: detailsCoordinator)
         
-        self.roomViewController.tc_removeBackTitle()
+        self.roomViewController.vc_removeBackTitle()
         
         self.router.push(detailsCoordinator, animated: animated, popCompletion: { [weak self] in
             self?.remove(childCoordinator: detailsCoordinator)
@@ -255,7 +255,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorType {
         
         roomMemberDetailsViewController.display(member, withMatrixRoom: session.room(withRoomId: self.roomID))
         
-        self.roomViewController.tc_removeBackTitle()
+        self.roomViewController.vc_removeBackTitle()
         
         self.router.push(roomMemberDetailsViewController, animated: animated, popCompletion: nil)
     }

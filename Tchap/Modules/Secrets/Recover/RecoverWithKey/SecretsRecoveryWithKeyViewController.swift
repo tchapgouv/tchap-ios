@@ -36,6 +36,8 @@ final class SecretsRecoveryWithKeyViewController: UIViewController {
     @IBOutlet private weak var importFileButton: UIButton!
         
     @IBOutlet private weak var recoverButton: RoundedButton!
+
+    @IBOutlet private weak var resetSecretsButton: UIButton!
     
     // MARK: Private
     
@@ -64,7 +66,7 @@ final class SecretsRecoveryWithKeyViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.tc_removeBackTitle()
+        self.vc_removeBackTitle()
         
         self.setupViews()
         self.keyboardAvoider = KeyboardAvoider(scrollViewContainerView: self.view, scrollView: self.scrollView)
@@ -101,6 +103,8 @@ final class SecretsRecoveryWithKeyViewController: UIViewController {
         switch self.viewModel.recoveryGoal {
         case .default, .keyBackup, .restoreSecureBackup:
             informationText = VectorL10n.secretsRecoveryWithKeyInformationDefault
+        case .unlockSecureBackup(_):
+            informationText = VectorL10n.secretsRecoveryWithKeyInformationUnlockSecureBackupWithKey
         case .verifyDevice:
             informationText = VectorL10n.secretsRecoveryWithKeyInformationVerifyDevice
         }
@@ -117,6 +121,10 @@ final class SecretsRecoveryWithKeyViewController: UIViewController {
         self.recoverButton.setTitle(VectorL10n.secretsRecoveryWithKeyRecoverAction, for: .normal)
         
         self.updateRecoverButton()
+        
+        self.resetSecretsButton.vc_enableMultiLinesTitle()
+        
+        self.resetSecretsButton.isHidden = !RiotSettings.shared.secretsRecoveryAllowReset
     }
     
     private func update(theme: Theme) {
@@ -140,6 +148,15 @@ final class SecretsRecoveryWithKeyViewController: UIViewController {
         theme.applyStyle(onButton: self.importFileButton)
         
         self.recoverButton.update(theme: theme)
+        
+        // Reset secrets button
+        
+        let resetSecretsAttributedString = NSMutableAttributedString(string: VectorL10n.secretsRecoveryResetActionPart1, attributes: [.foregroundColor: self.theme.textPrimaryColor])
+        let resetSecretsAttributedStringPart2 = NSAttributedString(string: VectorL10n.secretsRecoveryResetActionPart2, attributes: [.foregroundColor: self.theme.warningColor])
+        
+        resetSecretsAttributedString.append(resetSecretsAttributedStringPart2)
+        
+        self.resetSecretsButton.setAttributedTitle(resetSecretsAttributedString, for: .normal)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -241,6 +258,10 @@ final class SecretsRecoveryWithKeyViewController: UIViewController {
     @IBAction private func recoverButtonAction(_ sender: Any) {
         self.viewModel.process(viewAction: .recover)
     }
+    
+    @IBAction private func resetSecretsAction(_ sender: Any) {
+        self.viewModel.process(viewAction: .resetSecrets)
+    }    
 }
 
 // MARK: - UITextFieldDelegate

@@ -83,6 +83,7 @@ extension UIView {
         layer.shadowColor = UIColor.clear.cgColor
     }
     
+    /// Tchap categories
     func tc_mask(withPath path: UIBezierPath, inverse: Bool = false) {
         let path = path
         let maskLayer = CAShapeLayer()

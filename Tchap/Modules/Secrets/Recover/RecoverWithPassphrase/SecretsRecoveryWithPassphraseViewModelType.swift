@@ -16,14 +16,15 @@
 
 import Foundation
 
-protocol SecretsRecoveryWithPassphraseViewModelViewDelegate: class {
+protocol SecretsRecoveryWithPassphraseViewModelViewDelegate: AnyObject {
     func secretsRecoveryWithPassphraseViewModel(_ viewModel: SecretsRecoveryWithPassphraseViewModelType, didUpdateViewState viewSate: SecretsRecoveryWithPassphraseViewState)
 }
 
-protocol SecretsRecoveryWithPassphraseViewModelCoordinatorDelegate: class {
+protocol SecretsRecoveryWithPassphraseViewModelCoordinatorDelegate: AnyObject {
     func secretsRecoveryWithPassphraseViewModelDidRecover(_ viewModel: SecretsRecoveryWithPassphraseViewModelType)
     func secretsRecoveryWithPassphraseViewModelDidCancel(_ viewModel: SecretsRecoveryWithPassphraseViewModelType)
     func secretsRecoveryWithPassphraseViewModelWantsToRecoverByKey(_ viewModel: SecretsRecoveryWithPassphraseViewModelType)
+    func secretsRecoveryWithPassphraseViewModelWantsToResetSecrets(_ viewModel: SecretsRecoveryWithPassphraseViewModelType)
 }
 
 /// Protocol describing the view model used by `SecretsRecoveryWithPassphraseViewController`

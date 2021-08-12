@@ -16,7 +16,8 @@
 
 import Foundation
 import UIKit
-import DesignKit
+// TODO: Tchap: add DesignKit in Tchap project
+//import DesignKit
 
 /// Color constants for the default theme
 @objcMembers
@@ -149,12 +150,12 @@ class DefaultTheme: NSObject, Theme {
     }
     
     ///  MARK: - Theme v2
-    
-    lazy var colors: Colors = {
-        return LightColors()
-    }()
-    
-    lazy var fonts: Fonts = {
-        return ElementFonts()
-    }()
+    // TODO: Tchap: add DesignKit in Tchap project
+//    lazy var colors: Colors = {
+//        return LightColors()
+//    }()
+//
+//    lazy var fonts: Fonts = {
+//        return ElementFonts()
+//    }()
 }
