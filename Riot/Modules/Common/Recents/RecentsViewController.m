@@ -28,10 +28,9 @@
 #import "DesignValues.h"
 #import "Analytics.h"
 
-#import "ThemeService.h"
 #import "GeneratedInterface-Swift.h"
 
-@interface RecentsViewController ()
+@interface RecentsViewController () </*CreateRoomCoordinatorBridgePresenterDelegate, RoomsDirectoryCoordinatorBridgePresenterDelegate,*/ RoomNotificationSettingsCoordinatorBridgePresenterDelegate>
 {
     // Tell whether a recents refresh is pending (suspended during editing mode).
     BOOL isRefreshPending;
@@ -159,6 +158,8 @@
         // Force table refresh
         [self cancelEditionMode:YES];
     }
+    
+    [self.emptyView updateWithTheme:ThemeService.shared.theme];
 
     [self setNeedsStatusBarAppearanceUpdate];
 }
@@ -663,6 +664,28 @@
     self.view.userInteractionEnabled = userInteractionEnabled;
 }
 
+- (RecentsDataSource*)recentsDataSource
+{
+    RecentsDataSource* recentsDataSource = nil;
+    
+    if ([self.dataSource isKindOfClass:[RecentsDataSource class]])
+    {
+        recentsDataSource = (RecentsDataSource*)self.dataSource;
+    }
+    
+    return recentsDataSource;
+}
+
+//- (void)showSpaceInviteNotAvailable
+//{
+//    if (!self.spaceFeatureUnavailablePresenter)
+//    {
+//        self.spaceFeatureUnavailablePresenter = [SpaceFeatureUnavailablePresenter new];
+//    }
+//    
+//    [self.spaceFeatureUnavailablePresenter presentUnavailableFeatureFrom:self animated:YES];
+//}
+
 #pragma mark - MXKDataSourceDelegate
 
 - (Class<MXKCellRendering>)cellViewClassForCellData:(MXKCellData*)cellData
@@ -740,12 +763,32 @@
     UIContextualAction *muteAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleNormal
                                                                              title:title
                                                                            handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
-        [self muteEditedRoomNotifications:!isMuted];
+        
+        if ([BuildSettings roomSettingsScreenShowNotificationsV2])
+        {
+            [self changeEditedRoomNotificationSettings];
+        }
+        else
+        {
+            [self muteEditedRoomNotifications:!isMuted];
+        }
+        
+        
         completionHandler(YES);
     }];
     muteAction.backgroundColor = actionBackgroundColor;
     
-    UIImage *notificationImage = isMuted ? [UIImage imageNamed:@"notifications"] : [UIImage imageNamed:@"notificationsOff"];
+    UIImage *notificationImage;
+    if([BuildSettings roomSettingsScreenShowNotificationsV2])
+    {
+        notificationImage = isMuted ? [UIImage imageNamed:@"room_action_notification_muted"] : [UIImage imageNamed:@"room_action_notification"];
+    }
+    else
+    {
+        notificationImage = [UIImage imageNamed:@"room_action_notification"];
+    }
+
+    notificationImage = [notificationImage vc_tintedImageUsingColor:isMuted ? unselectedColor : selectedColor];
     muteAction.image = [notificationImage vc_notRenderedImage];
     
     // Favorites management
@@ -773,7 +816,8 @@
     }];
     favouriteAction.backgroundColor = actionBackgroundColor;
     
-    UIImage *favouriteImage = isFavourite ? [UIImage imageNamed:@"unpin"] : [UIImage imageNamed:@"pin"];
+    UIImage *favouriteImage = [UIImage imageNamed:@"pin"];
+    favouriteImage = [favouriteImage vc_tintedImageUsingColor:isFavourite ? selectedColor : unselectedColor];
     favouriteAction.image = [favouriteImage vc_notRenderedImage];
     
     // Leave action
@@ -786,7 +830,8 @@
     }];
     leaveAction.backgroundColor = actionBackgroundColor;
     
-    UIImage *leaveImage = [UIImage imageNamed:@"leave"];
+    UIImage *leaveImage = [UIImage imageNamed:@"room_action_leave"];
+    leaveImage = [leaveImage vc_tintedImageUsingColor:unselectedColor];
     leaveAction.image = [leaveImage vc_notRenderedImage];
         
     // Create swipe action configuration
@@ -926,6 +971,23 @@
             // Leave editing mode
             [self cancelEditionMode:isRefreshPending];
         }
+    }
+}
+
+- (void)changeEditedRoomNotificationSettings
+{
+    if (editedRoomId)
+    {
+        // Check whether the user didn't leave the room
+        MXRoom *room = [self.mainSession roomWithRoomId:editedRoomId];
+        if (room)
+        {
+           // navigate
+            self.roomNotificationSettingsCoordinatorBridgePresenter = [[RoomNotificationSettingsCoordinatorBridgePresenter alloc] initWithRoom:room];
+            self.roomNotificationSettingsCoordinatorBridgePresenter.delegate = self;
+            [self.roomNotificationSettingsCoordinatorBridgePresenter presentFrom:self animated:YES];
+        }
+        [self cancelEditionMode:isRefreshPending];
     }
 }
 
@@ -1144,6 +1206,185 @@
 
 - (void)recentListViewController:(MXKRecentListViewController *)recentListViewController didSelectRoom:(NSString *)roomId inMatrixSession:(MXSession *)matrixSession
 {
+}
+
+//#pragma mark - CreateRoomCoordinatorBridgePresenterDelegate
+//
+//- (void)createRoomCoordinatorBridgePresenterDelegate:(CreateRoomCoordinatorBridgePresenter *)coordinatorBridgePresenter didCreateNewRoom:(MXRoom *)room
+//{
+//    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+//        [[AppDelegate theDelegate] showRoom:room.roomId andEventId:nil withMatrixSession:self.mainSession restoreInitialDisplay:NO];
+//    }];
+//    coordinatorBridgePresenter = nil;
+//}
+//
+//- (void)createRoomCoordinatorBridgePresenterDelegateDidCancel:(CreateRoomCoordinatorBridgePresenter *)coordinatorBridgePresenter
+//{
+//    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+//    coordinatorBridgePresenter = nil;
+//}
+
+#pragma mark - Empty view management
+
+- (void)showEmptyViewIfNeeded
+{
+    [self showEmptyView:[self shouldShowEmptyView]];
+}
+
+- (void)showEmptyView:(BOOL)show
+{
+    if (!self.viewIfLoaded)
+    {
+        return;
+    }
+    
+    if (show && !self.emptyView)
+    {
+        RootTabEmptyView *emptyView = [RootTabEmptyView instantiate];
+        [emptyView updateWithTheme:ThemeService.shared.theme];
+        [self addEmptyView:emptyView];
+        
+        self.emptyView = emptyView;
+        
+        [self updateEmptyView];
+    }
+    else if (!show)
+    {
+        [self.emptyView removeFromSuperview];
+    }
+    
+    self.recentsTableView.hidden = show;
+    self.stickyHeadersTopContainer.hidden = show;
+    self.stickyHeadersBottomContainer.hidden = show;
+}
+
+- (void)updateEmptyView
+{
+    
+}
+
+- (void)addEmptyView:(RootTabEmptyView*)emptyView
+{
+    if (!self.isViewLoaded)
+    {
+        return;
+    }
+    
+    NSLayoutConstraint *emptyViewBottomConstraint;
+    NSLayoutConstraint *contentViewBottomConstraint;
+    
+    if (plusButtonImageView && plusButtonImageView.isHidden == NO)
+    {
+        [self.view insertSubview:emptyView belowSubview:plusButtonImageView];
+        
+        contentViewBottomConstraint = [NSLayoutConstraint constraintWithItem:emptyView.contentView
+                                                                   attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationLessThanOrEqual toItem:plusButtonImageView
+                                                                   attribute:NSLayoutAttributeTop
+                                                                  multiplier:1.0
+                                                                    constant:0];
+    }
+    else
+    {
+        [self.view addSubview:emptyView];
+    }
+    
+    emptyViewBottomConstraint = [emptyView.bottomAnchor constraintEqualToAnchor:emptyView.superview.bottomAnchor];
+    
+    emptyView.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [NSLayoutConstraint activateConstraints:@[
+        [emptyView.topAnchor constraintEqualToAnchor:emptyView.superview.topAnchor],
+        [emptyView.leftAnchor constraintEqualToAnchor:emptyView.superview.leftAnchor],
+        [emptyView.rightAnchor constraintEqualToAnchor:emptyView.superview.rightAnchor],
+        emptyViewBottomConstraint
+    ]];
+    
+    if (contentViewBottomConstraint)
+    {
+        contentViewBottomConstraint.active = YES;
+    }
+}
+
+- (BOOL)shouldShowEmptyView
+{
+    return NO;
+}
+
+//#pragma mark - RoomsDirectoryCoordinatorBridgePresenterDelegate
+//
+//- (void)roomsDirectoryCoordinatorBridgePresenterDelegateDidComplete:(RoomsDirectoryCoordinatorBridgePresenter *)coordinatorBridgePresenter
+//{
+//    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+//    self.roomsDirectoryCoordinatorBridgePresenter = nil;
+//}
+//
+//- (void)roomsDirectoryCoordinatorBridgePresenterDelegate:(RoomsDirectoryCoordinatorBridgePresenter *)coordinatorBridgePresenter didSelectRoom:(MXPublicRoom *)room
+//{
+//    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+//        [self openPublicRoom:room];
+//    }];
+//    self.roomsDirectoryCoordinatorBridgePresenter = nil;
+//}
+//
+//- (void)roomsDirectoryCoordinatorBridgePresenterDelegateDidTapCreateNewRoom:(RoomsDirectoryCoordinatorBridgePresenter *)coordinatorBridgePresenter
+//{
+//    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+//        [self createNewRoom];
+//    }];
+//    self.roomsDirectoryCoordinatorBridgePresenter = nil;
+//}
+//
+//- (void)roomsDirectoryCoordinatorBridgePresenterDelegate:(RoomsDirectoryCoordinatorBridgePresenter *)coordinatorBridgePresenter didSelectRoomWithIdOrAlias:(NSString * _Nonnull)roomIdOrAlias
+//{
+//    MXRoom *room = [self.mainSession vc_roomWithIdOrAlias:roomIdOrAlias];
+//
+//    if (room)
+//    {
+//        // Room is known show it directly
+//        [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+//            [[AppDelegate theDelegate] showRoom:room.roomId andEventId:nil withMatrixSession:self.mainSession restoreInitialDisplay:NO];
+//        }];
+//        coordinatorBridgePresenter = nil;
+//    }
+//    else if ([MXTools isMatrixRoomAlias:roomIdOrAlias])
+//    {
+//        // Room preview doesn't support room alias
+//        [[AppDelegate theDelegate] showAlertWithTitle:[NSBundle mxk_localizedStringForKey:@"error"] message:NSLocalizedStringFromTable(@"room_recents_unknown_room_error_message", @"Vector", nil)];
+//    }
+//    else
+//    {
+//        // Try to preview the room from his id
+//        RoomPreviewData *roomPreviewData = [[RoomPreviewData alloc] initWithRoomId:roomIdOrAlias
+//                                                                        andSession:self.mainSession];
+//
+//        [self startActivityIndicator];
+//
+//        // Try to get more information about the room before opening its preview
+//        MXWeakify(self);
+//
+//        [roomPreviewData peekInRoom:^(BOOL succeeded) {
+//
+//            MXStrongifyAndReturnIfNil(self);
+//
+//            [self stopActivityIndicator];
+//
+//            if (succeeded) {
+//                [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+//                    [[AppDelegate theDelegate].masterTabBarController showRoomPreview:roomPreviewData];
+//                }];
+//                self.roomsDirectoryCoordinatorBridgePresenter = nil;
+//            } else {
+//                [[AppDelegate theDelegate] showAlertWithTitle:[NSBundle mxk_localizedStringForKey:@"error"] message:NSLocalizedStringFromTable(@"room_recents_unknown_room_error_message", @"Vector", nil)];
+//            }
+//        }];
+//    }
+//}
+
+#pragma mark - RoomNotificationSettingsCoordinatorBridgePresenterDelegate
+-(void)roomNotificationSettingsCoordinatorBridgePresenterDelegateDidComplete:(RoomNotificationSettingsCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    self.roomNotificationSettingsCoordinatorBridgePresenter = nil;
 }
 
 @end

@@ -54,7 +54,7 @@ class KeyVerificationRequestStatusBubbleCell: KeyVerificationBaseBubbleCell {
         guard let keyVerificationCellInnerContentView = self.keyVerificationCellInnerContentView,
             let roomBubbleCellData = self.bubbleData as? RoomBubbleCellData,
             let viewData = self.viewData(from: roomBubbleCellData) else {
-                NSLog("[KeyVerificationRequestStatusBubbleCell] Fail to render \(String(describing: cellData))")
+                MXLog.debug("[KeyVerificationRequestStatusBubbleCell] Fail to render \(String(describing: cellData))")
                 return
         }
         

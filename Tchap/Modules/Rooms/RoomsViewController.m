@@ -182,7 +182,7 @@
             
         } failure:^(NSError *error) {
             
-            NSLog(@"[RoomsViewController] Failed to reject an invited room (%@)", invitedRoom.roomId);
+            MXLogDebug(@"[RoomsViewController] Failed to reject an invited room (%@)", invitedRoom.roomId);
             [[AppDelegate theDelegate] showErrorAsAlert:error];
             
         }];

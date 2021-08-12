@@ -18,11 +18,12 @@
 
 import Foundation
 
-protocol SecretsResetViewModelViewDelegate: class {
+protocol SecretsResetViewModelViewDelegate: AnyObject {
     func secretsResetViewModel(_ viewModel: SecretsResetViewModelType, didUpdateViewState viewState: SecretsResetViewState)
 }
 
-protocol SecretsResetViewModelCoordinatorDelegate: class {
+protocol SecretsResetViewModelCoordinatorDelegate: AnyObject {
+    func secretsResetViewModel(_ viewModel: SecretsResetViewModelType, needsToAuthenticateWith request: AuthenticatedEndpointRequest)
     func secretsResetViewModelDidResetSecrets(_ viewModel: SecretsResetViewModelType)
     func secretsResetViewModelDidCancel(_ viewModel: SecretsResetViewModelType)
 }
@@ -33,5 +34,6 @@ protocol SecretsResetViewModelType {
     var viewDelegate: SecretsResetViewModelViewDelegate? { get set }
     var coordinatorDelegate: SecretsResetViewModelCoordinatorDelegate? { get set }
     
+    func update(viewState: SecretsResetViewState)    
     func process(viewAction: SecretsResetViewAction)
 }

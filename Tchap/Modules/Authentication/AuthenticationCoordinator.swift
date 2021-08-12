@@ -96,7 +96,7 @@ final class AuthenticationCoordinator: AuthenticationCoordinatorType {
             switch response {
             case .success:
                 // NOTE: Do not call delegate directly for the moment, wait for NSNotification.Name.legacyAppDelegateDidLogin
-                print("[AuthenticationCoordinator] User did authenticate with success")
+                MXLog.debug("[AuthenticationCoordinator] User did authenticate with success")
             case .failure(let error):
                 // Display error on AuthenticationViewController
                 let authenticationErrorPresentableMaker = AuthenticationErrorPresentableMaker()

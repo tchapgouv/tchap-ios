@@ -45,7 +45,7 @@ final class AuthenticationErrorPresentableMaker {
         
         // Ignore connection cancellation error
         if nsError.domain == NSURLErrorDomain && nsError.code == NSURLErrorCancelled {
-            print("[AuthenticationErrorPresentableMaker] Auth request cancelled")
+            MXLog.debug("[AuthenticationErrorPresentableMaker] Auth request cancelled")
             return nil
         }
         

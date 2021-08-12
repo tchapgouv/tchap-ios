@@ -29,6 +29,8 @@
 
 @protocol Configurable;
 @protocol LegacyAppDelegateDelegate;
+@class CallBar;
+@class CallPresenter;
 
 #pragma mark - Notifications
 /**
@@ -50,7 +52,11 @@ extern NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey;
  */
 extern NSString *const AppDelegateUniversalLinkDidChangeNotification;
 
-@interface LegacyAppDelegate : UIResponder <UIApplicationDelegate, MXKCallViewControllerDelegate, UISplitViewControllerDelegate, UINavigationControllerDelegate, JitsiViewControllerDelegate>
+@interface LegacyAppDelegate : UIResponder <
+UIApplicationDelegate,
+UISplitViewControllerDelegate,
+UINavigationControllerDelegate
+>
 {
     // background sync management
     void (^_completionHandler)(UIBackgroundFetchResult);
@@ -112,6 +118,11 @@ extern NSString *const AppDelegateUniversalLinkDidChangeNotification;
 // Build Settings
 @property (nonatomic, readonly) id<Configurable> configuration;
 
+/**
+ Call presenter instance. May be nil unless at least one session initialized.
+ */
+@property (nonatomic, strong, readonly) CallPresenter *callPresenter;
+
 + (instancetype)theDelegate;
 
 #pragma mark - Push Notifications
@@ -162,7 +173,7 @@ extern NSString *const AppDelegateUniversalLinkDidChangeNotification;
  Log out all the accounts without confirmation.
  Show the authentication screen on successful logout.
 
- @param sendLogoutRequest Indicate whether send logout request to homeserver.
+ @param sendLogoutServerRequest Indicate whether send logout request to homeserver.
  @param completion the block to execute at the end of the operation.
  */
 - (void)logoutSendingRequestServer:(BOOL)sendLogoutServerRequest
@@ -172,7 +183,7 @@ extern NSString *const AppDelegateUniversalLinkDidChangeNotification;
  Present incoming key verification request to accept.
 
  @param incomingKeyVerificationRequest The incoming key verification request.
- @param The matrix session.
+ @param session The matrix session.
  @return Indicate NO if the key verification screen could not be presented.
  */
 - (BOOL)presentIncomingKeyVerificationRequest:(MXKeyVerificationRequest*)incomingKeyVerificationRequest
@@ -213,6 +224,23 @@ extern NSString *const AppDelegateUniversalLinkDidChangeNotification;
  */
 - (BOOL)handleUniversalLinkFragment:(NSString*)fragment;
 
+/**
+ Process the fragment part of a vector.im link.
+
+ @param fragment the fragment part of the universal link.
+ @param universalLinkURL the unprocessed the universal link URL (optional).
+ @return YES in case of processing success.
+ */
+- (BOOL)handleUniversalLinkFragment:(NSString*)fragment fromURL:(NSURL*)universalLinkURL;
+
+/**
+ Process the URL of a vector.im link.
+
+ @param universalLinkURL the universal link URL.
+ @return YES in case of processing success.
+ */
+- (BOOL)handleUniversalLinkURL:(NSURL*)universalLinkURL;
+
 #pragma mark - Jitsi call
 
 /**
@@ -228,14 +256,6 @@ extern NSString *const AppDelegateUniversalLinkDidChangeNotification;
  */
 @property (nonatomic, readonly) JitsiViewController *jitsiViewController;
 
-#pragma mark - Call status handling
-
-/**
- Call status window displayed when user goes back to app during a call.
- */
-@property (nonatomic, readonly) UIWindow* callStatusBarWindow;
-@property (nonatomic, readonly) UIButton* callStatusBarButton;
-
 #pragma mark - App version management
 
 /**
@@ -243,11 +263,27 @@ extern NSString *const AppDelegateUniversalLinkDidChangeNotification;
 */
 - (void)checkAppVersion;
 
+#pragma mark - Authentication
+
+/// When SSO login succeeded, when SFSafariViewController is used, continue login with success parameters.
+/// @param loginToken The login token provided when SSO succeeded.
+/// @param txnId transaction id generated during SSO page presentation.
+/// returns YES if the SSO login can be continued.
+- (BOOL)continueSSOLoginWithToken:(NSString*)loginToken txnId:(NSString*)txnId;
+
 @end
 
 @protocol LegacyAppDelegateDelegate <NSObject>
 
 - (void)legacyAppDelegate:(LegacyAppDelegate*)legacyAppDelegate wantsToPopToHomeViewControllerAnimated:(BOOL)animated completion:(void (^)(void))completion;
 - (void)legacyAppDelegateRestoreEmptyDetailsViewController:(LegacyAppDelegate*)legacyAppDelegate;
+
+- (void)legacyAppDelegate:(LegacyAppDelegate*)legacyAppDelegate didAddMatrixSession:(MXSession*)session;
+
+- (void)legacyAppDelegate:(LegacyAppDelegate*)legacyAppDelegate didRemoveMatrixSession:(MXSession*)session;
+
+- (void)legacyAppDelegate:(LegacyAppDelegate*)legacyAppDelegate didAddAccount:(MXKAccount*)account;
+
+- (void)legacyAppDelegate:(LegacyAppDelegate*)legacyAppDelegate didRemoveAccount:(MXKAccount*)account;
 
 @end

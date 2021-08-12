@@ -524,15 +524,18 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     [sectionMain addRowWithTag:ROOM_SETTINGS_MAIN_SECTION_ROW_NAME];
     [sectionMain addRowWithTag:ROOM_SETTINGS_MAIN_SECTION_ROW_TOPIC];
     [sectionMain addRowWithTag:ROOM_SETTINGS_MAIN_SECTION_ROW_TAG];
-    if (BuildSettings.roomSettingsScreenShowDirectChatOption)
+    if (RiotSettings.shared.roomSettingsScreenShowDirectChatOption)
     {
         [sectionMain addRowWithTag:ROOM_SETTINGS_MAIN_SECTION_ROW_DIRECT_CHAT];
     }
-    [sectionMain addRowWithTag:ROOM_SETTINGS_MAIN_SECTION_ROW_MUTE_NOTIFICATIONS];
+    if (!BuildSettings.roomSettingsScreenShowNotificationsV2)
+    {
+        [sectionMain addRowWithTag:ROOM_SETTINGS_MAIN_SECTION_ROW_MUTE_NOTIFICATIONS];
+    }
     [sectionMain addRowWithTag:ROOM_SETTINGS_MAIN_SECTION_ROW_LEAVE];
     [tmpSections addObject:sectionMain];
     
-    if (BuildSettings.roomSettingsScreenAllowChangingAccessSettings)
+    if (RiotSettings.shared.roomSettingsScreenAllowChangingAccessSettings)
     {
         Section *sectionAccess = [Section sectionWithTag:SECTION_TAG_ACCESS];
         [sectionAccess addRowWithTag:ROOM_SETTINGS_ROOM_ACCESS_SECTION_ROW_INVITED_ONLY];
@@ -565,7 +568,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         [tmpSections addObject:sectionAccess];
     }
     
-    if (BuildSettings.roomSettingsScreenAllowChangingHistorySettings)
+    if (RiotSettings.shared.roomSettingsScreenAllowChangingHistorySettings)
     {
         Section *sectionHistory = [Section sectionWithTag:SECTION_TAG_HISTORY];
         [sectionHistory addRowWithTag:ROOM_SETTINGS_HISTORY_VISIBILITY_SECTION_ROW_ANYONE];
@@ -576,7 +579,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         [tmpSections addObject:sectionHistory];
     }
     
-    if (BuildSettings.roomSettingsScreenShowAddressSettings)
+    if (RiotSettings.shared.roomSettingsScreenShowAddressSettings)
     {
         Section *sectionAddresses = [Section sectionWithTag:SECTION_TAG_ADDRESSES];
         if (localAddressesCount)
@@ -595,7 +598,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         [tmpSections addObject:sectionAddresses];
     }
     
-    if (BuildSettings.roomSettingsScreenShowFlairSettings)
+    if (RiotSettings.shared.roomSettingsScreenShowFlairSettings)
     {
         Section *sectionFlair = [Section sectionWithTag:SECTION_TAG_FLAIR];
         
@@ -636,7 +639,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         [tmpSections addObject:sectionBannedUsers];
     }
     
-    if (BuildSettings.roomSettingsScreenShowAdvancedSettings)
+    if (RiotSettings.shared.roomSettingsScreenShowAdvancedSettings)
     {
         Section *sectionAdvanced = [Section sectionWithTag:SECTION_TAG_BANNED_ADVANCED];
         
@@ -645,7 +648,10 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         {
             if (mxRoom.summary.isEncrypted)
             {
-                [sectionAdvanced addRowWithTag:ROOM_SETTINGS_ADVANCED_ENCRYPT_TO_VERIFIED];
+                if (RiotSettings.shared.roomSettingsScreenAdvancedShowEncryptToVerifiedOption)
+                {
+                    [sectionAdvanced addRowWithTag:ROOM_SETTINGS_ADVANCED_ENCRYPT_TO_VERIFIED];
+                }
                 [sectionAdvanced addRowWithTag:ROOM_SETTINGS_ADVANCED_ENCRYPTION_ENABLED];
             }
             else
@@ -902,7 +908,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                                                                }
                                                                else
                                                                {
-                                                                   NSLog(@"[RoomSettingsViewController] Copy room id failed. Room id is nil");
+                                                                   MXLogDebug(@"[RoomSettingsViewController] Copy room id failed. Room id is nil");
                                                                }
                                                            }
                                                            
@@ -1010,7 +1016,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                                                                }
                                                                else
                                                                {
-                                                                   NSLog(@"[RoomSettingsViewController] Copy room address failed. Room address is nil");
+                                                                   MXLogDebug(@"[RoomSettingsViewController] Copy room address failed. Room address is nil");
                                                                }
                                                            }
                                                            
@@ -1035,7 +1041,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                                                                }
                                                                else
                                                                {
-                                                                   NSLog(@"[RoomSettingsViewController] Copy room URL failed. Room URL is nil");
+                                                                   MXLogDebug(@"[RoomSettingsViewController] Copy room URL failed. Room URL is nil");
                                                                }
                                                            }
                                                            
@@ -1117,7 +1123,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         
     } failure:^(NSError *error) {
         
-        NSLog(@"[RoomSettingsViewController] request to get directory visibility failed");
+        MXLogDebug(@"[RoomSettingsViewController] request to get directory visibility failed");
         
         if (weakSelf)
         {
@@ -1461,7 +1467,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                     
                 } failure:^(NSError *error) {
                     
-                    NSLog(@"[RoomSettingsViewController] Image upload failed");
+                    MXLogDebug(@"[RoomSettingsViewController] Image upload failed");
                     
                     if (weakSelf)
                     {
@@ -1502,7 +1508,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                     
                 } failure:^(NSError *error) {
                     
-                    NSLog(@"[RoomSettingsViewController] Failed to update the room avatar");
+                    MXLogDebug(@"[RoomSettingsViewController] Failed to update the room avatar");
                     
                     if (weakSelf)
                     {
@@ -1544,7 +1550,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                     
                 } failure:^(NSError *error) {
                     
-                    NSLog(@"[RoomSettingsViewController] Rename room failed");
+                    MXLogDebug(@"[RoomSettingsViewController] Rename room failed");
                     
                     if (weakSelf)
                     {
@@ -1586,7 +1592,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                     
                 } failure:^(NSError *error) {
                     
-                    NSLog(@"[RoomSettingsViewController] Rename topic failed");
+                    MXLogDebug(@"[RoomSettingsViewController] Rename topic failed");
                     
                     if (weakSelf)
                     {
@@ -1628,7 +1634,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                     
                 } failure:^(NSError *error) {
                     
-                    NSLog(@"[RoomSettingsViewController] Update guest access failed");
+                    MXLogDebug(@"[RoomSettingsViewController] Update guest access failed");
                     
                     if (weakSelf)
                     {
@@ -1670,7 +1676,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                     
                 } failure:^(NSError *error) {
                     
-                    NSLog(@"[RoomSettingsViewController] Update join rule failed");
+                    MXLogDebug(@"[RoomSettingsViewController] Update join rule failed");
                     
                     if (weakSelf)
                     {
@@ -1712,7 +1718,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                     
                 } failure:^(NSError *error) {
                     
-                    NSLog(@"[RoomSettingsViewController] Update history visibility failed");
+                    MXLogDebug(@"[RoomSettingsViewController] Update history visibility failed");
                     
                     if (weakSelf)
                     {
@@ -1766,7 +1772,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                     
                 } failure:^(NSError *error) {
                     
-                    NSLog(@"[RoomSettingsViewController] Add room aliases failed");
+                    MXLogDebug(@"[RoomSettingsViewController] Add room aliases failed");
                     
                     if (weakSelf)
                     {
@@ -1819,7 +1825,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                     
                 } failure:^(NSError *error) {
                     
-                    NSLog(@"[RoomSettingsViewController] Remove room aliases failed");
+                    MXLogDebug(@"[RoomSettingsViewController] Remove room aliases failed");
                     
                     if (weakSelf)
                     {
@@ -1860,7 +1866,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                     
                 } failure:^(NSError *error) {
                     
-                    NSLog(@"[RoomSettingsViewController] Update canonical alias failed");
+                    MXLogDebug(@"[RoomSettingsViewController] Update canonical alias failed");
                     
                     if (weakSelf)
                     {
@@ -1906,7 +1912,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                     
                 } failure:^(NSError *error) {
                     
-                    NSLog(@"[RoomSettingsViewController] Update room communities failed");
+                    MXLogDebug(@"[RoomSettingsViewController] Update room communities failed");
                     
                     if (weakSelf)
                     {
@@ -2004,7 +2010,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                 
             }                              failure:^(NSError *error) {
                 
-                NSLog(@"[RoomSettingsViewController] Altering DMness failed");
+                MXLogDebug(@"[RoomSettingsViewController] Altering DMness failed");
                 
                 if (weakSelf)
                 {
@@ -2044,7 +2050,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                 
             } failure:^(NSError *error) {
                 
-                NSLog(@"[RoomSettingsViewController] Update room directory visibility failed");
+                MXLogDebug(@"[RoomSettingsViewController] Update room directory visibility failed");
                 
                 if (weakSelf)
                 {
@@ -2086,7 +2092,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                 
             } failure:^(NSError *error) {
                 
-                NSLog(@"[RoomSettingsViewController] Enabling encrytion failed. Error: %@", error);
+                MXLogDebug(@"[RoomSettingsViewController] Enabling encrytion failed. Error: %@", error);
                 
                 if (weakSelf)
                 {
@@ -2153,6 +2159,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         UITableViewHeaderFooterView *tableViewHeaderFooterView = (UITableViewHeaderFooterView*)view;
         tableViewHeaderFooterView.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
         tableViewHeaderFooterView.textLabel.font = [UIFont systemFontOfSize:15];
+        tableViewHeaderFooterView.contentView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
     }
 }
 
@@ -2351,7 +2358,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         }
         else if (row == ROOM_SETTINGS_MAIN_SECTION_ROW_TAG)
         {
-            if (BuildSettings.roomSettingsScreenShowLowPriorityOption)
+            if (RiotSettings.shared.roomSettingsScreenShowLowPriorityOption)
             {
                 //  show a muti-checkbox cell
                 roomTagCell = [tableView dequeueReusableCellWithIdentifier:[TableViewCellWithCheckBoxes defaultReuseIdentifier] forIndexPath:indexPath];
@@ -2908,7 +2915,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     // Sanity check
     if (!cell)
     {
-        NSLog(@"[RoomSettingsViewController] cellForRowAtIndexPath: invalid indexPath");
+        MXLogDebug(@"[RoomSettingsViewController] cellForRowAtIndexPath: invalid indexPath");
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     }
     
@@ -3493,7 +3500,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                                                                
                                                                [self stopActivityIndicator];
                                                                
-                                                               NSLog(@"[RoomSettingsViewController] Leave room failed");
+                                                               MXLogDebug(@"[RoomSettingsViewController] Leave room failed");
                                                                // Alert user
                                                                [[AppDelegate theDelegate] showErrorAsAlert:error];
                                                                

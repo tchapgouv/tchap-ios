@@ -275,7 +275,7 @@ final class FavouriteMessagesViewController: UIViewController {
                     return
                 }
                 
-                NSLog("[FavouriteMessagesViewController] Tag event (%@) failed", event.eventId)
+                MXLog.debug("[FavouriteMessagesViewController] Tag event (%@) failed", event.eventId)
                 //Alert user
                 self.render(error: error)
             })
@@ -310,7 +310,7 @@ final class FavouriteMessagesViewController: UIViewController {
                     if let textMessage = selectedComponent.textMessage {
                         MXKPasteboardManager.shared.pasteboard.string = textMessage
                     } else {
-                        NSLog("[RoomViewController] Contextual menu copy failed. Text is nil for room id/event id: %@/%@", selectedComponent.event.roomId, selectedComponent.event.eventId)
+                        MXLog.debug("[RoomViewController] Contextual menu copy failed. Text is nil for room id/event id: %@/%@", selectedComponent.event.roomId, selectedComponent.event.eventId)
                     }
                 }
                 
@@ -353,7 +353,7 @@ final class FavouriteMessagesViewController: UIViewController {
                         self.present(activityViewController, animated: true, completion: nil)
                         
                     } else {
-                        NSLog("[RoomViewController] Contextual menu share failed. Text is nil for room id/event id: %@/%@", selectedComponent.event.roomId, selectedComponent.event.eventId)
+                        MXLog.debug("[RoomViewController] Contextual menu share failed. Text is nil for room id/event id: %@/%@", selectedComponent.event.roomId, selectedComponent.event.eventId)
                     }
                 }
                 
@@ -464,7 +464,7 @@ final class FavouriteMessagesViewController: UIViewController {
                 if let permalink = Tools.permalink(toEvent: selectedEvent.eventId, inRoom: selectedEvent.roomId) {
                     MXKPasteboardManager.shared.pasteboard.string = permalink
                 } else {
-                    NSLog("[FavouriteMessagesViewController] Contextual menu permalink action failed. Permalink is nil room id/event id: %@/%@", selectedEvent.roomId, selectedEvent.eventId)
+                    MXLog.debug("[FavouriteMessagesViewController] Contextual menu permalink action failed. Permalink is nil room id/event id: %@/%@", selectedEvent.roomId, selectedEvent.eventId)
                 }
             }))
         }
@@ -713,7 +713,7 @@ extension FavouriteMessagesViewController: MXKCellRenderingDelegate {
             
             // Click on a member. Do nothing in favourites case.
             } else if MXTools.isMatrixUserIdentifier(absoluteURLString) {
-                    print("[FavouriteMessagesViewController] showMemberDetails: Do nothing: \(absoluteURLString)")
+                MXLog.debug("[FavouriteMessagesViewController] showMemberDetails: Do nothing: \(absoluteURLString)")
                 
             // Open the clicked room
             } else if MXTools.isMatrixRoomIdentifier(absoluteURLString) || MXTools.isMatrixRoomAlias(absoluteURLString) {

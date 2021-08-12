@@ -17,11 +17,11 @@
 import Foundation
 
 /// `SlidingModalPresentationDelegate` handle a custom sliding UIViewController transition.
-public class SlidingModalPresentationDelegate: NSObject {
-    private let isSpanning: Bool
+class SlidingModalPresentationDelegate: NSObject {
+    private let options: SlidingModalOption
     
-    public init(isSpanning: Bool) {
-        self.isSpanning = isSpanning
+    init(options: SlidingModalOption) {
+        self.options = options
         super.init()
     }
 }
@@ -30,11 +30,11 @@ public class SlidingModalPresentationDelegate: NSObject {
 extension SlidingModalPresentationDelegate: UIViewControllerTransitioningDelegate {
     
     public func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return SlidingModalPresentationAnimator(isPresenting: true, isSpanning: isSpanning)
+        return SlidingModalPresentationAnimator(isPresenting: true, options: options)
     }
     
     public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return SlidingModalPresentationAnimator(isPresenting: false, isSpanning: isSpanning)
+        return SlidingModalPresentationAnimator(isPresenting: false, options: options)
     }
     
     public func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {

@@ -80,7 +80,7 @@ NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed =
 {
     if (!self.bubbleInfoContainer)
     {
-        NSLog(@"[MXKRoomBubbleTableViewCell+Riot] bubbleInfoContainer property is missing for cell class: %@", NSStringFromClass(self.class));
+        MXLogDebug(@"[MXKRoomBubbleTableViewCell+Riot] bubbleInfoContainer property is missing for cell class: %@", NSStringFromClass(self.class));
         return;
     }
     
@@ -397,7 +397,7 @@ NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed =
         }
         
         // Move this view in front
-        [self.contentView bringSubviewToFront:self.bubbleOverlayContainer];
+        [self.bubbleOverlayContainer.superview bringSubviewToFront:self.bubbleOverlayContainer];
     }
     else
     {
@@ -449,6 +449,16 @@ NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed =
 -(UIView *)markerView
 {
     return objc_getAssociatedObject(self, @selector(markerView));
+}
+
+- (void)setMessageStatusViews:(NSArray *)arrayOfViews
+{
+    objc_setAssociatedObject(self, @selector(messageStatusViews), arrayOfViews, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+-(NSArray *)messageStatusViews
+{
+    return objc_getAssociatedObject(self, @selector(messageStatusViews));
 }
 
 - (void)updateUserNameColor
@@ -658,6 +668,82 @@ NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed =
     return rowHeight;
 }
 
+- (void)updateTickViewWithFailedEventIds:(NSSet *)failedEventIds
+{
+    for (UIView *tickView in self.messageStatusViews)
+    {
+        [tickView removeFromSuperview];
+    }
+    self.messageStatusViews = nil;
+    
+    NSMutableArray *statusViews = [NSMutableArray new];
+    UIView *tickView = nil;
+
+    if ([bubbleData isKindOfClass:RoomBubbleCellData.class]
+        && ((RoomBubbleCellData*)bubbleData).componentIndexOfSentMessageTick >= 0)
+    {
+        UIImage *image = [UIImage imageNamed:@"sent_message_tick"];
+        image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        tickView = [[UIImageView alloc] initWithImage:image];
+        tickView.tintColor = ThemeService.shared.theme.textTertiaryColor;
+        [statusViews addObject:tickView];
+        [self addTickView:tickView atIndex:((RoomBubbleCellData*)bubbleData).componentIndexOfSentMessageTick];
+    }
+    
+    NSInteger index = bubbleData.bubbleComponents.count;
+    while (index--)
+    {
+        MXKRoomBubbleComponent *component = bubbleData.bubbleComponents[index];
+        NSArray<MXReceiptData*> *receipts = bubbleData.readReceipts[component.event.eventId];
+        if (receipts.count == 0) {
+            if (component.event.sentState == MXEventSentStateUploading
+                || component.event.sentState == MXEventSentStateEncrypting
+                || component.event.sentState == MXEventSentStatePreparing
+                || component.event.sentState == MXEventSentStateSending)
+            {
+                if ([failedEventIds containsObject:component.event.eventId] || (bubbleData.attachment && component.event.sentState != MXEventSentStateSending))
+                {
+                    UIView *progressContentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
+                    CircleProgressView *progressView = [[CircleProgressView alloc] initWithFrame:CGRectMake(24, 24, 16, 16)];
+                    progressView.lineColor = ThemeService.shared.theme.textTertiaryColor;
+                    [progressContentView addSubview:progressView];
+                    self.progressChartView = progressView;
+
+                    tickView = progressContentView;
+
+                    [progressView startAnimating];
+                    
+                    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onProgressLongPressGesture:)];
+                    [tickView addGestureRecognizer:longPress];
+                }
+                else
+                {
+                    UIImage *image = [UIImage imageNamed:@"sending_message_tick"];
+                    image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+                    tickView = [[UIImageView alloc] initWithImage:image];
+                    tickView.tintColor = ThemeService.shared.theme.textTertiaryColor;
+                }
+
+                [statusViews addObject:tickView];
+                [self addTickView:tickView atIndex:index];
+            }
+        }
+        
+        if (component.event.sentState == MXEventSentStateFailed)
+        {
+            tickView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"error_message_tick"]];
+            [statusViews addObject:tickView];
+            [self addTickView:tickView atIndex:index];
+        }
+    }
+    
+    
+    if (statusViews.count)
+    {
+        self.messageStatusViews = statusViews;
+    }
+}
+
 #pragma mark - User actions
 
 - (IBAction)onEditButtonPressed:(id)sender
@@ -692,6 +778,15 @@ NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed =
 }
 
 #pragma mark - Internals
+
+- (void)addTickView:(UIView *)tickView atIndex:(NSInteger)index
+{
+    CGRect componentFrame = [self componentFrameInContentViewForIndex: index];
+
+    tickView.frame = CGRectMake(self.contentView.bounds.size.width - tickView.frame.size.width - 2 * RoomBubbleCellLayout.readReceiptsViewRightMargin, CGRectGetMaxY(componentFrame) - tickView.frame.size.height, tickView.frame.size.width, tickView.frame.size.height);
+
+    [self.contentView addSubview:tickView];
+}
 
 - (void)addEditButtonForComponent:(NSUInteger)componentIndex completion:(void (^ __nullable)(BOOL finished))completion
 {
@@ -755,6 +850,14 @@ NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed =
     
     // Store the created button
     self.editButton = editButton;
+}
+
+- (IBAction)onProgressLongPressGesture:(UILongPressGestureRecognizer*)recognizer
+{
+    if (recognizer.state == UIGestureRecognizerStateBegan && self.delegate)
+    {
+        [self.delegate cell:self didRecognizeAction:kMXKRoomBubbleCellLongPressOnProgressView userInfo:nil];
+    }
 }
 
 @end

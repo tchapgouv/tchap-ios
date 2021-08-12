@@ -303,7 +303,7 @@ final class RoomService: NSObject, RoomServiceType {
                         }
                         self.createdRoom = nil
                     }, failure: { (error) in
-                        NSLog("[RoomService] setIsDirect failed")
+                        MXLog.debug("[RoomService] setIsDirect failed")
                         if let error = error {
                             completion(.failure(error))
                         } else {

@@ -106,6 +106,8 @@ final class SecretsRecoveryWithPassphraseViewController: UIViewController {
         switch self.viewModel.recoveryGoal {
         case .default, .keyBackup, .restoreSecureBackup:
             informationText = VectorL10n.secretsRecoveryWithPassphraseInformationDefault
+        case .unlockSecureBackup(_):
+            informationText = VectorL10n.secretsRecoveryWithKeyInformationUnlockSecureBackupWithPhrase
         case .verifyDevice:
             informationText = VectorL10n.secretsRecoveryWithPassphraseInformationVerifyDevice
         }
@@ -123,6 +125,8 @@ final class SecretsRecoveryWithPassphraseViewController: UIViewController {
         self.updateRecoverButton()
                 
         self.resetSecretsButton.vc_enableMultiLinesTitle()
+        
+        self.resetSecretsButton.isHidden = !RiotSettings.shared.secretsRecoveryAllowReset
     }
     
     private func update(theme: Theme) {

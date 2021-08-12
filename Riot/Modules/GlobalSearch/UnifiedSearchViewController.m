@@ -57,6 +57,13 @@
 
 @implementation UnifiedSearchViewController
 
++ (instancetype)instantiate
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+    UnifiedSearchViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"UnifiedSearchViewController"];
+    return viewController;
+}
+
 - (void)finalizeInit
 {
     [super finalizeInit];
@@ -148,6 +155,8 @@
     
     // Reset searches
     [recentsDataSource searchWithPatterns:nil];
+    // TODO: Notify RiotSettings.shared.showNSFWPublicRooms change for iPad as viewWillAppear may not be called
+    recentsDataSource.publicRoomsDirectoryDataSource.showNSFWRooms = RiotSettings.shared.showNSFWPublicRooms;
     
     [self updateSearch];
 }

@@ -159,7 +159,7 @@ final class RoomCreationCoordinator: NSObject, RoomCreationCoordinatorType {
     
     private func createRoom(with userIDs: [String]) {
         guard let roomCreationFormResult = self.roomCreationFormResult, let contactsPickerCoordinator = self.contactsPickerCoordinator else {
-            print("[RoomCreationCoordinator] Fail to create room")
+            MXLog.debug("[RoomCreationCoordinator] Fail to create room")
             return
         }
 

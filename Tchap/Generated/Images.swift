@@ -29,6 +29,8 @@ internal enum Asset {
     internal static let callVideoMuteOffIcon = ImageAsset(name: "call_video_mute_off_icon")
     internal static let callVideoMuteOnIcon = ImageAsset(name: "call_video_mute_on_icon")
     internal static let cameraSwitch = ImageAsset(name: "camera_switch")
+    internal static let roomContextMenuDelete = ImageAsset(name: "room_context_menu_delete")
+    internal static let roomContextMenuRetry = ImageAsset(name: "room_context_menu_retry")
     internal static let tchapIconCallkit = ImageAsset(name: "tchap_icon_callkit")
     internal static let adminIcon = ImageAsset(name: "admin_icon")
     internal static let backIcon = ImageAsset(name: "back_icon")

@@ -20,7 +20,7 @@
 #import "Riot-Swift.h"
 #import "MXSession+Riot.h"
 
-@interface StartChatViewController () <UITableViewDataSource, UISearchBarDelegate, ContactsTableViewControllerDelegate>
+@interface StartChatViewController () <UITableViewDataSource, UISearchBarDelegate, ContactsTableViewControllerDelegate, InviteFriendsHeaderViewDelegate>
 {
     // The contact used to describe the current user.
     MXKContact *userContact;
@@ -45,6 +45,9 @@
 @property (weak, nonatomic) IBOutlet UIView *searchBarHeader;
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBarView;
 @property (weak, nonatomic) IBOutlet UIView *searchBarHeaderBorder;
+
+@property (nonatomic, strong) InviteFriendsPresenter *inviteFriendsPresenter;
+@property (nonatomic, weak) InviteFriendsHeaderView *inviteFriendsHeaderView;
 
 @end
 
@@ -124,6 +127,38 @@
     
     // Redirect table data source
     self.contactsTableView.dataSource = self;
+    
+    [self setupInviteFriendsHeaderView];
+}
+
+- (void)setupInviteFriendsHeaderView
+{
+    if (!RiotSettings.shared.allowInviteExernalUsers)
+    {
+        self.contactsTableView.tableHeaderView = nil;
+        return;
+    }
+    
+    InviteFriendsHeaderView *inviteFriendsHeaderView = [InviteFriendsHeaderView instantiate];
+    inviteFriendsHeaderView.delegate = self;
+    self.contactsTableView.tableHeaderView = inviteFriendsHeaderView;
+    
+    self.inviteFriendsHeaderView = inviteFriendsHeaderView;
+}
+
+- (void)showInviteFriendsHeaderView:(BOOL)show
+{
+    if (show)
+    {
+        if (!self.inviteFriendsHeaderView)
+        {
+            [self setupInviteFriendsHeaderView];
+        }
+    }
+    else
+    {
+        self.contactsTableView.tableHeaderView = nil;
+    }
 }
 
 - (void)userInterfaceThemeDidChange
@@ -143,6 +178,8 @@
     {
         [self.contactsTableView reloadData];
     }
+    
+    [self.inviteFriendsHeaderView updateWithTheme:ThemeService.shared.theme];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -203,6 +240,12 @@
     [self searchBarCancelButtonClicked:_searchBarView];
 }
 
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    [self.contactsTableView vc_relayoutHeaderView];
+}
+
 #pragma mark -
 
 - (void)setIsAddParticipantSearchBarEditing:(BOOL)isAddParticipantSearchBarEditing
@@ -259,15 +302,37 @@
     
     if (userContact)
     {
-        contactsDataSource.ignoredContactsByMatrixId[self.mainSession.myUser.userId] = userContact;
+        if (self.mainSession.myUser.userId)
+        {
+            contactsDataSource.ignoredContactsByMatrixId[self.mainSession.myUser.userId] = userContact;
+        }
     }
 }
+
+- (void)showInviteFriendsFromSourceView:(UIView*)sourceView
+{
+    if (!self.inviteFriendsPresenter)
+    {
+        self.inviteFriendsPresenter = [InviteFriendsPresenter new];
+    }
+    
+    NSString *userId = self.mainSession.myUser.userId;
+    
+    [self.inviteFriendsPresenter presentFor:userId
+                                       from:self
+                                 sourceView:sourceView
+                                   animated:YES];
+}
+
 
 #pragma mark - UITableView data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     NSInteger count = 0;
+    
+    // Do not show invite friends action when a participant is selected
+    [self showInviteFriendsHeaderView:!participants.count];
     
     if (_isAddParticipantSearchBarEditing)
     {
@@ -505,7 +570,7 @@
                     // The identity server must be defined
                     if (!self.mainSession.matrixRestClient.identityServer)
                     {
-                        NSLog(@"[StartChatViewController] Invite %@ failed", participantId);
+                        MXLogDebug(@"[StartChatViewController] Invite %@ failed", participantId);
                         continue;
                     }
                     
@@ -538,9 +603,8 @@
         if (isDirect && inviteArray.count)
         {
             [[AppDelegate theDelegate] startDirectChatWithUserId:inviteArray.firstObject completion:^{
-                
+                self->createBarButtonItem.enabled = YES;
                 [self stopActivityIndicator];
-                
             }];
         }
         else
@@ -557,10 +621,10 @@
                 self->roomCreationRequest = nil;
                 [self stopActivityIndicator];
 
-                NSLog(@"[StartChatViewController] Create room failed");
+                MXLogDebug(@"[StartChatViewController] Create room failed");
 
                 // Alert user
-                [[AppDelegate theDelegate] showErrorAsAlert:error];
+                [[AppDelegate theDelegate] showAlertWithTitle:nil message:NSLocalizedStringFromTable(@"room_creation_dm_error", @"Vector", nil)];
             };
 
             [self.mainSession vc_canEnableE2EByDefaultInNewRoomWithUsers:inviteArray success:^(BOOL canEnableE2E) {
@@ -689,7 +753,7 @@
         
         if ([MXTools isEmailAddress:participantId])
         {
-            NSLog(@"[StartChatViewController] No identity server is configured, do not add participant with email");
+            MXLogDebug(@"[StartChatViewController] No identity server is configured, do not add participant with email");
             
             [contactsTableViewController refreshCurrentSelectedCell:YES];
             
@@ -711,6 +775,14 @@
     
     // Refresh display by leaving search session
     [self searchBarCancelButtonClicked:_searchBarView];
+}
+
+#pragma mark - InviteFriendsHeaderViewDelegate
+
+- (void)inviteFriendsHeaderView:(InviteFriendsHeaderView *)headerView didTapButton:(UIButton *)button
+
+{
+    [self showInviteFriendsFromSourceView:button];
 }
 
 @end

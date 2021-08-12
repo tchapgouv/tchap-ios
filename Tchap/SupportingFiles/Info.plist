@@ -35,7 +35,7 @@
 	<key>NSFaceIDUsageDescription</key>
 	<string>Face ID is used to access your app.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>The microphone is used when you record videos with the camera.</string>
+	<string>Tchap needs to access your microphone to take videos, and record voice messages.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>This allows you to select pictures or videos from the photo library, and send them in your conversations. You can also use one of these pictures to set your profile picture.</string>
 	<key>NSCalendarsUsageDescription</key>

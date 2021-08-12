@@ -14,7 +14,7 @@ use_frameworks!
 # $matrixKitVersion = '= 0.13.1'
 # $matrixKitVersion = :local
 # $matrixKitVersion = {'develop' => 'develop'}
-$matrixKitVersion = {'develop' => 'dinum'}
+$matrixKitVersion = {'develop' => 'dinum_dev'}
 
 ########################################
 
@@ -33,31 +33,23 @@ $matrixKitVersionSpec = $matrixKitVersion
 $matrixSDKVersionSpec = {}
 end
 
-# Method to import the right MatrixKit flavour
+# Method to import the MatrixKit
 def import_MatrixKit
   pod 'MatrixSDK', $matrixSDKVersionSpec
-  pod 'MatrixSDK/SwiftSupport', $matrixSDKVersionSpec
   pod 'MatrixSDK/JingleCallStack', $matrixSDKVersionSpec
   pod 'MatrixKit', $matrixKitVersionSpec
-end
-
-# Method to import the right MatrixKit/AppExtension flavour
-def import_MatrixKitAppExtension
-  pod 'MatrixSDK', $matrixSDKVersionSpec
-  pod 'MatrixSDK/SwiftSupport', $matrixSDKVersionSpec
-  pod 'MatrixKit/AppExtension', $matrixKitVersionSpec
 end
 
 ########################################
 
 abstract_target 'TchapPods' do
 
-  pod 'GBDeviceInfo', '~> 6.4.0'
+  pod 'GBDeviceInfo', '~> 6.6.0'
   pod 'Reusable', '~> 4.1'
-  pod 'KeychainAccess', '~> 4.2.1'
+  pod 'KeychainAccess', '~> 4.2.2'
  
   # Piwik for analytics
-  pod 'MatomoTracker', '~> 7.2.2'
+  pod 'MatomoTracker', '~> 7.4.1'
 
   pod 'RxSwift', '~> 5.1.1'
 
@@ -68,15 +60,26 @@ abstract_target 'TchapPods' do
 
   # Tools
   pod 'SwiftGen', '~> 6.3'
-  pod 'SwiftLint', '~> 0.40.3'
+  pod 'SwiftLint', '~> 0.43.0'
 
   target "Tchap" do
     import_MatrixKit
     pod 'DGCollectionViewLeftAlignFlowLayout', '~> 1.0.4'
     pod 'KTCenterFlowLayout', '~> 1.3.1'
     pod 'ZXingObjC', '~> 3.6.5'
+    pod 'FlowCommoniOS', '~> 1.10.0'
+    pod 'ReadMoreTextView', '~> 3.0.1'
     pod 'SwiftBase32', '~> 0.9.0'
-    pod 'SwiftJWT', '~> 3.5.3'
+    pod 'SwiftJWT', '~> 3.6.200'
+    pod 'SideMenu', '~> 6.5'
+    pod 'DSWaveformImage', '~> 6.1.1'
+    pod 'ffmpeg-kit-ios-audio', '~> 4.4.LTS'
+
+    pod 'FLEX', '~> 4.4.1', :configurations => ['Debug']
+
+    target 'TchapTests' do
+      inherit! :search_paths
+    end
   end
 
   target "Btchap" do
@@ -84,28 +87,31 @@ abstract_target 'TchapPods' do
     pod 'DGCollectionViewLeftAlignFlowLayout', '~> 1.0.4'
     pod 'KTCenterFlowLayout', '~> 1.3.1'
     pod 'ZXingObjC', '~> 3.6.5'
+    pod 'FlowCommoniOS', '~> 1.10.0'
+    pod 'ReadMoreTextView', '~> 3.0.1'
     pod 'SwiftBase32', '~> 0.9.0'
-    pod 'SwiftJWT', '~> 3.5.3'
+    pod 'SwiftJWT', '~> 3.6.200'
+    pod 'SideMenu', '~> 6.5'
+    pod 'DSWaveformImage', '~> 6.1.1'
+    pod 'ffmpeg-kit-ios-audio', '~> 4.4.LTS'
+
+    pod 'FLEX', '~> 4.4.1', :configurations => ['Debug']
   end
     
   target "TchapShareExtension" do
-      import_MatrixKitAppExtension
+    import_MatrixKit
   end
   
   target "BtchapShareExtension" do
-      import_MatrixKitAppExtension
-  end
-
-  target "TchapTests" do
     import_MatrixKit
   end
   
   target "TchapNSE" do
-      import_MatrixKitAppExtension
+    import_MatrixKit
   end
 
   target "BtchapNSE" do
-      import_MatrixKitAppExtension
+    import_MatrixKit
   end
 end
 
@@ -118,6 +124,17 @@ post_install do |installer|
       # Because the WebRTC pod (included by the JingleCallStack pod) does not support it.
       # Plus the app does not enable it
       config.build_settings['ENABLE_BITCODE'] = 'NO'
+
+      # Make fastlane(xcodebuild) happy by preventing it from building for arm64 simulator 
+      config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
+
+      # Force ReadMoreTextView to use Swift 5.2 version (as there is no code changes to perform)
+      if target.name.include? 'ReadMoreTextView'
+        config.build_settings['SWIFT_VERSION'] = '5.2'
+      end
+
+      # Stop Xcode 12 complaining about old IPHONEOS_DEPLOYMENT_TARGET from pods 
+      config.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET'
     end
   end
 end

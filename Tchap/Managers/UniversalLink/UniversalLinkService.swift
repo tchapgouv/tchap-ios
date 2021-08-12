@@ -46,7 +46,7 @@ final class UniversalLinkService: UniversalLinkServiceType {
         // Check whether this is an email validation link.
         if url.path == Constants.legacyEmailValidationURLPath {
             let fragment = url.absoluteString
-            NSLog("[UniversalLinkService] handleUserActivity: detect a legacy email validation link")
+            MXLog.debug("[UniversalLinkService] handleUserActivity: detect a legacy email validation link")
             
             // Extract required parameters from the link
             let params = self.parseFragment(fragment)
@@ -73,21 +73,21 @@ final class UniversalLinkService: UniversalLinkServiceType {
                                                                                      completion: { (response) in
                                                                                         switch response {
                                                                                         case .success:
-                                                                                            NSLog("[UniversalLinkService] handleUserActivity. Email successfully validated.")
+                                                                                            MXLog.debug("[UniversalLinkService] handleUserActivity. Email successfully validated.")
                                                                                             
                                                                                             if let nextLink = params.queryParams?[Constants.emailValidationNextLinkKey] {
                                                                                                 // Continue the registration with the passed nextLink
-                                                                                                NSLog("[UniversalLinkService] handleUserActivity. Complete registration with nextLink")
+                                                                                                MXLog.debug("[UniversalLinkService] handleUserActivity. Complete registration with nextLink")
                                                                                                 let nextLinkURL = URL(string: nextLink)
                                                                                                 if let fragment = nextLinkURL?.fragment {
                                                                                                     _ = self.handleFragment(fragment, completion: completion)
                                                                                                 }
                                                                                             } else {
                                                                                                 // No nextLink means validation for binding a new email
-                                                                                                NSLog("[UniversalLinkService] handleUserActivity. TODO: Complete email binding")
+                                                                                                MXLog.debug("[UniversalLinkService] handleUserActivity. TODO: Complete email binding")
                                                                                             }
                                                                                         case .failure(let error):
-                                                                                            NSLog("[UniversalLinkService] handleUserActivity. Error: submitToken failed")
+                                                                                            MXLog.debug("[UniversalLinkService] handleUserActivity. Error: submitToken failed")
                                                                                             completion(MXResponse.failure(error))
                                                                                         }
                         })
@@ -99,27 +99,27 @@ final class UniversalLinkService: UniversalLinkServiceType {
             }
             return true
         } else if url.path == Constants.emailValidationURLPath {
-            NSLog("[UniversalLinkService] handleUserActivity: detect an email validation link")
+            MXLog.debug("[UniversalLinkService] handleUserActivity: detect an email validation link")
             
             // We just need to ping the link.
             let urlSession = URLSession(configuration: URLSessionConfiguration.default)
             let task = urlSession.dataTask(with: url) { (data, response, error) in
                 if let httpURLResponse = response as? HTTPURLResponse, httpURLResponse.statusCode == 200 {
-                    NSLog("[UniversalLinkService] handleUserActivity. Email successfully validated.")
+                    MXLog.debug("[UniversalLinkService] handleUserActivity. Email successfully validated.")
                     // Check whether a fragment is available in the returned url, this may be the pending register request
                     // (= nextLink)
                     if let url = httpURLResponse.url, let fragment = url.fragment {
                         // Continue the registration with the passed fragment
-                        NSLog("[UniversalLinkService] handleUserActivity. Complete registration with nextLink")
+                        MXLog.debug("[UniversalLinkService] handleUserActivity. Complete registration with nextLink")
                         DispatchQueue.main.async {
                             _ = self.handleFragment(fragment, completion: completion)
                         }
                     } else {
                         // No nextLink means validation for binding a new email
-                        NSLog("[UniversalLinkService] handleUserActivity. TODO: Complete email binding")
+                        MXLog.debug("[UniversalLinkService] handleUserActivity. TODO: Complete email binding")
                     }
                 } else {
-                    NSLog("[UniversalLinkService] handleUserActivity. Error: submitToken failed")
+                    MXLog.debug("[UniversalLinkService] handleUserActivity. Error: submitToken failed")
                     DispatchQueue.main.async {
                         let defaultError = NSError(domain: "UniversalLinkServiceErrorDomain", code: 0, userInfo: [NSLocalizedFailureReasonErrorKey: TchapL10n.registrationEmailValidationFailedTitle, NSLocalizedDescriptionKey: TchapL10n.registrationEmailValidationFailedMsg])
                         completion(MXResponse.failure(error ?? defaultError))
@@ -127,7 +127,7 @@ final class UniversalLinkService: UniversalLinkServiceType {
                 }
                 
                 if let data = data {
-                    NSLog("[UniversalLinkService] handleUserActivity: Link validation Data: \(String(data: data, encoding: String.Encoding.utf8) ?? "empty")")
+                    MXLog.debug("[UniversalLinkService] handleUserActivity: Link validation Data: \(String(data: data, encoding: String.Encoding.utf8) ?? "empty")")
                 }}
             task.resume()
             return true
@@ -138,12 +138,12 @@ final class UniversalLinkService: UniversalLinkServiceType {
     }
     
     func handleFragment(_ fragment: String, completion: @escaping (MXResponse<UniversalLinkServiceParsingResult>) -> Void) -> Bool {
-        NSLog("[UniversalLinkService] handleFragment: \(fragment)")
+        MXLog.debug("[UniversalLinkService] handleFragment: \(fragment)")
         
         // Extract required parameters from the link
         let params = parseFragment(fragment)
         guard params.pathParams.isEmpty == false else {
-            NSLog("[UniversalLinkService] handleFragment: Error: No path parameters")
+            MXLog.debug("[UniversalLinkService] handleFragment: Error: No path parameters")
             return false
         }
         
@@ -151,11 +151,11 @@ final class UniversalLinkService: UniversalLinkServiceType {
         
         // Check whether this is a registration links.
         if params.pathParams[0] == Constants.registerPathParam, let registerParams = params.queryParams {
-            NSLog("[UniversalLinkService] handleFragment: link with registration parameters")
+            MXLog.debug("[UniversalLinkService] handleFragment: link with registration parameters")
             completion(MXResponse.success(.registrationLink(params: registerParams)))
             isSupported = true
         } else if params.pathParams[0] == Constants.roomPermalinkPathParam, params.pathParams.count >= 2 {
-            NSLog("[UniversalLinkService] handleFragment: link with room parameters")
+            MXLog.debug("[UniversalLinkService] handleFragment: link with room parameters")
             // The link is the form of "/room/[roomIdOrAlias]" or "/room/[roomIdOrAlias]/[eventId]"
             let roomIdOrAlias = params.pathParams[1]
             var eventId: String?
@@ -168,7 +168,7 @@ final class UniversalLinkService: UniversalLinkServiceType {
             completion(MXResponse.success(.roomLink(roomIdOrAlias, eventID: eventId)))
             isSupported = true
         } else if params.pathParams[0].hasPrefix("#") || params.pathParams[0].hasPrefix("!") {
-            NSLog("[UniversalLinkService] handleFragment: link with room parameters")
+            MXLog.debug("[UniversalLinkService] handleFragment: link with room parameters")
             // The link is the form of "/[roomIdOrAlias]" or "/[roomIdOrAlias]/[eventId]"
             // Such links come from matrix.to permalinks
             let roomIdOrAlias = params.pathParams[0]
@@ -181,7 +181,7 @@ final class UniversalLinkService: UniversalLinkServiceType {
             completion(MXResponse.success(.roomLink(roomIdOrAlias, eventID: eventId)))
             isSupported = true
         } else {
-            NSLog("[UniversalLinkService] handleFragment: Do not know what to do with the link arguments: %@", params.pathParams)
+            MXLog.debug("[UniversalLinkService] handleFragment: Do not know what to do with the link arguments: %@", params.pathParams[0])
             isSupported = false
         }
         

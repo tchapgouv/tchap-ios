@@ -24,6 +24,8 @@
  */
 @interface RoomsViewController : RecentsViewController
 
++ (instancetype)instantiate;
+
 /**
  The delegate for the view controller.
  */

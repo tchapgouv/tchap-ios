@@ -95,6 +95,16 @@ NSString *const kThemeServiceDidChangeThemeNotification = @"kThemeServiceDidChan
     return theme;
 }
 
+- (BOOL)isCurrentThemeDark
+{
+    if ([self.theme.identifier isEqualToString:@"dark"] || [self.theme.identifier isEqualToString:@"black"])
+    {
+        return YES;
+    }
+    
+    return NO;
+}
+
 #pragma mark - Private methods
 
 - (instancetype)init
@@ -145,6 +155,9 @@ NSString *const kThemeServiceDidChangeThemeNotification = @"kThemeServiceDidChan
     
     // Define the UISearchBar cancel button color
     [[UIBarButtonItem appearanceWhenContainedInInstancesOfClasses:@[[UISearchBar class]]] setTitleTextAttributes:@{ NSForegroundColorAttributeName : self.theme.tintColor }                                                                                                        forState: UIControlStateNormal];
+    
+    [[UIStackView appearanceWhenContainedInInstancesOfClasses:@[[UINavigationBar class]]] setSpacing:-7];
+    [[UIStackView appearanceWhenContainedInInstancesOfClasses:@[[UINavigationBar class]]] setDistribution:UIStackViewDistributionEqualCentering];
 }
 
 @end

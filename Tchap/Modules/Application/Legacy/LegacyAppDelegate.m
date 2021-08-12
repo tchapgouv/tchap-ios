@@ -210,7 +210,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 
 + (void)initialize
 {
-    NSLog(@"[AppDelegate] initialize");
+    MXLogDebug(@"[AppDelegate] initialize");
     
     [LegacyAppDelegate setupUserDefaults];
     
@@ -219,13 +219,13 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     
     [LegacyAppDelegate setupAppSettings];
 
-    // Redirect NSLogs to files only if we are not debugging
+    // Redirect MXLogDebugs to files only if we are not debugging
     if (!isatty(STDERR_FILENO))
     {
-        [MXLogger redirectNSLogToFiles:YES numberOfFiles:50];
+        [MXLogger redirectMXLogDebugToFiles:YES numberOfFiles:50];
     }
 
-    NSLog(@"[AppDelegate] initialize: Done");
+    MXLogDebug(@"[AppDelegate] initialize: Done");
 }
 
 + (instancetype)theDelegate
@@ -256,7 +256,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
                                      stringByReplacingOccurrencesOfString: @">" withString: @""]
                                     stringByReplacingOccurrencesOfString: @" " withString: @""];
     
-    NSLog(@"The generated device token string is : %@",deviceTokenString);
+    MXLogDebug(@"The generated device token string is : %@",deviceTokenString);
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
@@ -353,7 +353,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     launchScreenContainerView = launchScreenVC.view;
     launchScreenContainerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
-    NSLog(@"[AppDelegate] willFinishLaunchingWithOptions: Done");
+    MXLogDebug(@"[AppDelegate] willFinishLaunchingWithOptions: Done");
 
     return YES;
 }
@@ -364,12 +364,12 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     
 #ifdef DEBUG
     // log the full launchOptions only in DEBUG
-    NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: %@", launchOptions);
+    MXLogDebug(@"[AppDelegate] didFinishLaunchingWithOptions: %@", launchOptions);
 #else
-    NSLog(@"[AppDelegate] didFinishLaunchingWithOptions");
+    MXLogDebug(@"[AppDelegate] didFinishLaunchingWithOptions");
 #endif
 
-    NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: isProtectedDataAvailable: %@", @([application isProtectedDataAvailable]));
+    MXLogDebug(@"[AppDelegate] didFinishLaunchingWithOptions: isProtectedDataAvailable: %@", @([application isProtectedDataAvailable]));
     
     _configuration = [AppConfiguration new];
 
@@ -378,13 +378,13 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     NSString* appVersion = [AppDelegate theDelegate].appVersion;
     NSString* build = [AppDelegate theDelegate].build;
     
-    NSLog(@"------------------------------");
-    NSLog(@"Application info:");
-    NSLog(@"%@ version: %@", appDisplayName, appVersion);
-    NSLog(@"MatrixKit version: %@", MatrixKitVersion);
-    NSLog(@"MatrixSDK version: %@", MatrixSDKVersion);
-    NSLog(@"Build: %@\n", build);
-    NSLog(@"------------------------------\n");
+    MXLogDebug(@"------------------------------");
+    MXLogDebug(@"Application info:");
+    MXLogDebug(@"%@ version: %@", appDisplayName, appVersion);
+    MXLogDebug(@"MatrixKit version: %@", MatrixKitVersion);
+    MXLogDebug(@"MatrixSDK version: %@", MatrixSDKVersion);
+    MXLogDebug(@"Build: %@\n", build);
+    MXLogDebug(@"------------------------------\n");
 
     // Set up theme
     ThemeService.shared.themeId = RiotSettings.shared.userInterfaceTheme;
@@ -441,7 +441,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     [JitsiService.shared application:application didFinishLaunchingWithOptions:launchOptions];
 #endif
 
-    NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: Done in %.0fms", [[NSDate date] timeIntervalSinceDate:startDate] * 1000);
+    MXLogDebug(@"[AppDelegate] didFinishLaunchingWithOptions: Done in %.0fms", [[NSDate date] timeIntervalSinceDate:startDate] * 1000);
     
 //    dispatch_async(dispatch_get_main_queue(), ^{
 //        [self configurePinCodeScreenFor:application createIfRequired:YES];
@@ -452,7 +452,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
-    NSLog(@"[AppDelegate] applicationWillResignActive");
+    MXLogDebug(@"[AppDelegate] applicationWillResignActive");
     
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
@@ -512,7 +512,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    NSLog(@"[AppDelegate] applicationDidEnterBackground");
+    MXLogDebug(@"[AppDelegate] applicationDidEnterBackground");
     
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
@@ -556,7 +556,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
-    NSLog(@"[AppDelegate] applicationWillEnterForeground");
+    MXLogDebug(@"[AppDelegate] applicationWillEnterForeground");
     
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     
@@ -576,7 +576,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-    NSLog(@"[AppDelegate] applicationDidBecomeActive");
+    MXLogDebug(@"[AppDelegate] applicationDidBecomeActive");
     
     [self.pushNotificationService applicationDidBecomeActive];
     
@@ -611,7 +611,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 //
 //- (void)afterAppUnlockedByPin:(UIApplication *)application
 //{
-//    NSLog(@"[AppDelegate] afterAppUnlockedByPin");
+//    MXLogDebug(@"[AppDelegate] afterAppUnlockedByPin");
     
     // Check if there is crash log to send
     if (RiotSettings.shared.enableCrashReport)
@@ -697,13 +697,13 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-    NSLog(@"[AppDelegate] applicationWillTerminate");
+    MXLogDebug(@"[AppDelegate] applicationWillTerminate");
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application
 {
-    NSLog(@"[AppDelegate] applicationDidReceiveMemoryWarning");
+    MXLogDebug(@"[AppDelegate] applicationDidReceiveMemoryWarning");
 }
 
 #pragma mark - Application layout handling
@@ -902,7 +902,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
                                                             usedEncoding:nil
                                                                    error:nil];
         
-        NSLog(@"[AppDelegate] Promt user to report crash:\n%@", description);
+        MXLogDebug(@"[AppDelegate] Promt user to report crash:\n%@", description);
 
         // Ask the user to send a crash report
         [[RageShakeManager sharedManager] promptCrashReportInViewController:self.window.rootViewController];
@@ -916,7 +916,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     // Consider the total number of missed discussions including the invites.
     NSUInteger count = [self missedDiscussionsCount];
     
-    NSLog(@"[AppDelegate] refreshApplicationIconBadgeNumber: %tu", count);
+    MXLogDebug(@"[AppDelegate] refreshApplicationIconBadgeNumber: %tu", count);
     
     [UIApplication sharedApplication].applicationIconBadgeNumber = count;
 }
@@ -938,7 +938,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 
 - (void)initMatrixSessions
 {
-    NSLog(@"[AppDelegate] initMatrixSessions");
+    MXLogDebug(@"[AppDelegate] initMatrixSessions");
     
     // Set first RoomDataSource class used in Vector
     [MXKRoomDataSourceManager registerRoomDataSourceClass:RoomDataSource.class];
@@ -1004,7 +1004,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 
             BOOL isPushRegistered = self.pushNotificationService.isPushRegistered;
 
-            NSLog(@"[AppDelegate][Push] didAddAccountNotification: isPushRegistered: %@", @(isPushRegistered));
+            MXLogDebug(@"[AppDelegate][Push] didAddAccountNotification: isPushRegistered: %@", @(isPushRegistered));
 
             if (isPushRegistered)
             {
@@ -1062,7 +1062,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     accountManager.storeClass = [MXFileStore class];
     
     // Observers have been defined, we can start a matrix session for each enabled accounts.
-    NSLog(@"[AppDelegate] initMatrixSessions: prepareSessionForActiveAccounts (app state: %tu)", [[UIApplication sharedApplication] applicationState]);
+    MXLogDebug(@"[AppDelegate] initMatrixSessions: prepareSessionForActiveAccounts (app state: %tu)", [[UIApplication sharedApplication] applicationState]);
     [accountManager prepareSessionForActiveAccounts];
     
     // Check whether we're already logged in
@@ -1379,13 +1379,13 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
                     
                                                                                      MXCall *call = (MXCall *)note.object;
                                                                                      
-                                                                                     NSLog(@"[AppDelegate] call.state: %@", call);
+                                                                                     MXLogDebug(@"[AppDelegate] call.state: %@", call);
                                                                                      
                                                                                      if (call.state == MXCallStateCreateAnswer)
                                                                                      {
                                                                                          [notificationCenter removeObserver:token];
                                                                                          
-                                                                                         NSLog(@"[AppDelegate] presentCallViewController");
+                                                                                         MXLogDebug(@"[AppDelegate] presentCallViewController");
                                                                                          [self presentCallViewController:NO completion:nil];
                                                                                      }
                                                                                      else if (call.state == MXCallStateEnded)
@@ -1427,11 +1427,11 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
                 break;
         }
         
-        NSLog(@"[AppDelegate] handleAppState: isLaunching: %@", isLaunching ? @"YES" : @"NO");
+        MXLogDebug(@"[AppDelegate] handleAppState: isLaunching: %@", isLaunching ? @"YES" : @"NO");
         
         if (isLaunching)
         {
-            NSLog(@"[AppDelegate] handleAppState: LaunchLoadingView");
+            MXLogDebug(@"[AppDelegate] handleAppState: LaunchLoadingView");
             [self showLaunchAnimation];
             return;
         }
@@ -1440,12 +1440,12 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         
 //        if (self.setPinCoordinatorBridgePresenter)
 //        {
-//            NSLog(@"[AppDelegate] handleAppState: PIN code is presented. Do not go further");
+//            MXLogDebug(@"[AppDelegate] handleAppState: PIN code is presented. Do not go further");
 //            return;
 //        }
         
         // This is the time to check existing requests
-        NSLog(@"[AppDelegate] handleAppState: Check pending verification requests");
+        MXLogDebug(@"[AppDelegate] handleAppState: Check pending verification requests");
         [self checkPendingRoomKeyRequests];
         [self checkPendingIncomingKeyVerificationsInSession:mainSession];
             
@@ -1453,7 +1453,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         // For the moment, reuse an existing boolean to avoid register things several times
         if (!incomingKeyVerificationObserver)
         {
-            NSLog(@"[AppDelegate] handleAppState: Set up observers for the crypto module");
+            MXLogDebug(@"[AppDelegate] handleAppState: Set up observers for the crypto module");
             
             // Enable listening of incoming key share requests
             [self enableRoomKeyRequestObserver:mainSession];
@@ -1487,11 +1487,11 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 //        {
 //            [profiler stopMeasuringTaskWithProfile:launchTaskProfile];
 //
-//            NSLog(@"[AppDelegate] hideLaunchAnimation: LaunchAnimation was shown for %.3fms", launchTaskProfile.duration * 1000);
+//            MXLogDebug(@"[AppDelegate] hideLaunchAnimation: LaunchAnimation was shown for %.3fms", launchTaskProfile.duration * 1000);
 //        }
         
         NSTimeInterval duration = [[NSDate date] timeIntervalSinceDate:launchAnimationStart];
-        NSLog(@"[LegacyAppDelegate] LaunchScreen was shown for %.3fms", duration * 1000);
+        MXLogDebug(@"[LegacyAppDelegate] LaunchScreen was shown for %.3fms", duration * 1000);
         
         [launchScreenContainerView removeFromSuperview];
     }
@@ -1603,7 +1603,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         || (mxSession.crypto.crossSigning.canTrustCrossSigning && !mxSession.crypto.crossSigning.canCrossSign))
     {
         // We should have 3 of them. If not, request them again as mitigation
-        NSLog(@"[AppDelegate] checkLocalPrivateKeysInSession: request keys because keysCount = %@", @(keysCount));
+        MXLogDebug(@"[AppDelegate] checkLocalPrivateKeysInSession: request keys because keysCount = %@", @(keysCount));
         [mxSession.crypto requestAllPrivateKeys];
     }
 }
@@ -1625,7 +1625,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         // Check if there is a device id
         if (!mxSession.matrixRestClient.credentials.deviceId)
         {
-            NSLog(@"WARNING: The user has no device. Prompt for login again");
+            MXLogDebug(@"WARNING: The user has no device. Prompt for login again");
             
             NSString *msg = NSLocalizedStringFromTable(@"e2e_enabling_on_app_update", @"Vector", nil);
             
@@ -1805,7 +1805,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         else if (callViewController.presentingViewController)
         {
             BOOL callIsEnded = (callViewController.mxCall.state == MXCallStateEnded);
-            NSLog(@"Call view controller is dismissed (%d)", callIsEnded);
+            MXLogDebug(@"Call view controller is dismissed (%d)", callIsEnded);
             
             [callViewController dismissViewControllerAnimated:YES completion:^{
                 
@@ -1840,7 +1840,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         else if (_callStatusBarWindow)
         {
             // Here the call view controller was not presented.
-            NSLog(@"Call view controller was not presented");
+            MXLogDebug(@"Call view controller was not presented");
             
             // Workaround to manage the "back to call" banner: present temporarily the call screen.
             // This will correctly manage the navigation bar layout.
@@ -2020,7 +2020,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
              }
                                   failure:^(NSError * _Nullable error)
              {
-                 NSLog(@"[WidgetVC] setPermissionForWidget failed. Error: %@", error);
+                 MXLogDebug(@"[WidgetVC] setPermissionForWidget failed. Error: %@", error);
                  sharedSettings = nil;
              }];
             
@@ -2355,7 +2355,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
                                                                                                                                 };
                                                                                                       
                                                                                                       [mxSession.matrixRestClient sendEventToRoom:event.roomId eventType:kMXEventTypeStringCallHangup content:content txnId:nil success:nil failure:^(NSError *error) {
-                                                                                                          NSLog(@"[AppDelegate] enableNoVoIPOnMatrixSession: ERROR: Cannot send m.call.hangup event.");
+                                                                                                          MXLogDebug(@"[AppDelegate] enableNoVoIPOnMatrixSession: ERROR: Cannot send m.call.hangup event.");
                                                                                                       }];
                                                                                                       
                                                                                                       if (weakSelf)
@@ -2439,13 +2439,13 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 {
     if ([UIApplication sharedApplication].applicationState != UIApplicationStateActive)
     {
-        NSLog(@"[AppDelegate] checkPendingRoomKeyRequestsInSession called while the app is not active. Ignore it.");
+        MXLogDebug(@"[AppDelegate] checkPendingRoomKeyRequestsInSession called while the app is not active. Ignore it.");
         return;
     }
     
     if (isCheckPendingKeyRequestsInProgress)
     {
-        NSLog(@"[AppDelegate] checkPendingRoomKeyRequestsInSession called while a check is already in progress. Ignore it.");
+        MXLogDebug(@"[AppDelegate] checkPendingRoomKeyRequestsInSession called while a check is already in progress. Ignore it.");
         return;
     }
     
@@ -2454,7 +2454,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     [mxSession.crypto pendingKeyRequests:^(MXUsersDevicesMap<NSArray<MXIncomingRoomKeyRequest *> *> *pendingKeyRequests) {
 
         MXStrongifyAndReturnIfNil(self);
-        NSLog(@"[AppDelegate] checkPendingRoomKeyRequestsInSession: pendingKeyRequests.count: %@. Already displayed: %@",
+        MXLogDebug(@"[AppDelegate] checkPendingRoomKeyRequestsInSession: pendingKeyRequests.count: %@. Already displayed: %@",
               @(pendingKeyRequests.count),
               self->roomKeyRequestViewController ? @"YES" : @"NO");
 
@@ -2469,7 +2469,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 
             if (currentMXSession == mxSession && currentPendingRequest.count == 0)
             {
-                NSLog(@"[AppDelegate] checkPendingRoomKeyRequestsInSession: Cancel current dialog");
+                MXLogDebug(@"[AppDelegate] checkPendingRoomKeyRequestsInSession: Cancel current dialog");
 
                 // The key request has been probably cancelled, remove the popup
                 [self->roomKeyRequestViewController hide];
@@ -2497,7 +2497,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
                     void (^openDialog)(void) = ^void()
                     {
                         MXStrongifyAndReturnIfNil(self);
-                        NSLog(@"[AppDelegate] checkPendingRoomKeyRequestsInSession: Open dialog for %@", deviceInfo);
+                        MXLogDebug(@"[AppDelegate] checkPendingRoomKeyRequestsInSession: Open dialog for %@", deviceInfo);
 
                         self->roomKeyRequestViewController = [[RoomKeyRequestViewController alloc] initWithDeviceInfo:deviceInfo wasNewDevice:wasNewDevice andMatrixSession:mxSession onComplete:^{
 
@@ -2523,7 +2523,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
                 }
                 else
                 {
-                    NSLog(@"[AppDelegate] checkPendingRoomKeyRequestsInSession: No details found for device %@:%@", userId, deviceId);
+                    MXLogDebug(@"[AppDelegate] checkPendingRoomKeyRequestsInSession: No details found for device %@:%@", userId, deviceId);
                     self->isCheckPendingKeyRequestsInProgress = NO;
                     // Ignore this device to avoid to loop on it
                     [mxSession.crypto ignoreAllPendingKeyRequestsFromUser:userId andDevice:deviceId onComplete:^{
@@ -2536,7 +2536,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
                 // Retry
                 MXStrongifyAndReturnIfNil(self);
                 self->isCheckPendingKeyRequestsInProgress = NO;
-                NSLog(@"[AppDelegate] checkPendingRoomKeyRequestsInSession: Failed to download device keys. Retry");
+                MXLogDebug(@"[AppDelegate] checkPendingRoomKeyRequestsInSession: Failed to download device keys. Retry");
                 [self checkPendingRoomKeyRequests];
             }];
         }
@@ -2588,13 +2588,13 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 {
     if ([UIApplication sharedApplication].applicationState != UIApplicationStateActive)
     {
-        NSLog(@"[AppDelegate][MXKeyVerification] checkPendingIncomingKeyVerificationsInSession: called while the app is not active. Ignore it.");
+        MXLogDebug(@"[AppDelegate][MXKeyVerification] checkPendingIncomingKeyVerificationsInSession: called while the app is not active. Ignore it.");
         return;
     }
 
     [mxSession.crypto.keyVerificationManager transactions:^(NSArray<MXKeyVerificationTransaction *> * _Nonnull transactions) {
 
-        NSLog(@"[AppDelegate][MXKeyVerification] checkPendingIncomingKeyVerificationsInSession: transactions: %@", transactions);
+        MXLogDebug(@"[AppDelegate][MXKeyVerification] checkPendingIncomingKeyVerificationsInSession: transactions: %@", transactions);
 
         for (MXKeyVerificationTransaction *transaction in transactions)
         {
@@ -2627,7 +2627,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     
     if (!keyVerificationCoordinatorBridgePresenter.isPresenting)
     {
-        NSLog(@"[AppDelegate] presentIncomingKeyVerificationRequest");
+        MXLogDebug(@"[AppDelegate] presentIncomingKeyVerificationRequest");
         
         keyVerificationCoordinatorBridgePresenter = [[KeyVerificationCoordinatorBridgePresenter alloc] initWithSession:session];
         keyVerificationCoordinatorBridgePresenter.delegate = self;
@@ -2638,7 +2638,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     }
     else
     {
-        NSLog(@"[AppDelegate][MXKeyVerification] presentIncomingKeyVerificationRequest: Controller already presented.");
+        MXLogDebug(@"[AppDelegate][MXKeyVerification] presentIncomingKeyVerificationRequest: Controller already presented.");
     }
     
     return presented;
@@ -2646,7 +2646,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 
 - (BOOL)presentIncomingKeyVerification:(MXIncomingSASTransaction*)transaction inSession:(MXSession*)mxSession
 {
-    NSLog(@"[AppDelegate][MXKeyVerification] presentIncomingKeyVerification: %@", transaction);
+    MXLogDebug(@"[AppDelegate][MXKeyVerification] presentIncomingKeyVerification: %@", transaction);
 
     BOOL presented = NO;
     if (!keyVerificationCoordinatorBridgePresenter.isPresenting)
@@ -2660,14 +2660,14 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     }
     else
     {
-        NSLog(@"[AppDelegate][MXKeyVerification] presentIncomingKeyVerification: Controller already presented.");
+        MXLogDebug(@"[AppDelegate][MXKeyVerification] presentIncomingKeyVerification: Controller already presented.");
     }
     return presented;
 }
 
 - (BOOL)presentUserVerificationForRoomMember:(MXRoomMember*)roomMember session:(MXSession*)mxSession
 {
-    NSLog(@"[AppDelegate][MXKeyVerification] presentUserVerificationForRoomMember: %@", roomMember);
+    MXLogDebug(@"[AppDelegate][MXKeyVerification] presentUserVerificationForRoomMember: %@", roomMember);
     
     BOOL presented = NO;
     if (!keyVerificationCoordinatorBridgePresenter.isPresenting)
@@ -2681,14 +2681,14 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     }
     else
     {
-        NSLog(@"[AppDelegate][MXKeyVerification] presentUserVerificationForRoomMember: Controller already presented.");
+        MXLogDebug(@"[AppDelegate][MXKeyVerification] presentUserVerificationForRoomMember: Controller already presented.");
     }
     return presented;
 }
 
 - (BOOL)presentSelfVerificationForOtherDeviceId:(NSString*)deviceId inSession:(MXSession*)mxSession
 {
-    NSLog(@"[AppDelegate][MXKeyVerification] presentSelfVerificationForOtherDeviceId: %@", deviceId);
+    MXLogDebug(@"[AppDelegate][MXKeyVerification] presentSelfVerificationForOtherDeviceId: %@", deviceId);
     
     BOOL presented = NO;
     if (!keyVerificationCoordinatorBridgePresenter.isPresenting)
@@ -2702,7 +2702,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     }
     else
     {
-        NSLog(@"[AppDelegate][MXKeyVerification] presentUserVerificationForRoomMember: Controller already presented.");
+        MXLogDebug(@"[AppDelegate][MXKeyVerification] presentUserVerificationForRoomMember: Controller already presented.");
     }
     return presented;
 }
@@ -2762,7 +2762,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
             MXRoom *room = [currentAccount.mxSession roomWithRoomId:keyVerificationByDMRequest.roomId];
             if (!room)
             {
-                NSLog(@"[AppDelegate][KeyVerification] keyVerificationRequestDidChangeNotification: Unknown room");
+                MXLogDebug(@"[AppDelegate][KeyVerification] keyVerificationRequestDidChangeNotification: Unknown room");
                 return;
             }
             
@@ -2786,11 +2786,11 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
             if (keyVerificationByToDeviceRequest.isFromMyUser)
             {
                 // Self verification
-                NSLog(@"[AppDelegate][KeyVerification] keyVerificationNewRequestNotification: Self verification from %@", keyVerificationByToDeviceRequest.otherDevice);
+                MXLogDebug(@"[AppDelegate][KeyVerification] keyVerificationNewRequestNotification: Self verification from %@", keyVerificationByToDeviceRequest.otherDevice);
                 
                 if (!self.handleSelfVerificationRequest)
                 {
-                    NSLog(@"[AppDelegate][KeyVerification] keyVerificationNewRequestNotification: Self verification handled elsewhere");
+                    MXLogDebug(@"[AppDelegate][KeyVerification] keyVerificationNewRequestNotification: Self verification handled elsewhere");
                     return;
                 }
                       
@@ -2808,7 +2808,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
             {
                 // Device verification from other user
                 // This happens when they or our user do not have cross-signing enabled
-                NSLog(@"[AppDelegate][KeyVerification] keyVerificationNewRequestNotification: Device verification from other user %@:%@", keyVerificationByToDeviceRequest.otherUser, keyVerificationByToDeviceRequest.otherDevice);
+                MXLogDebug(@"[AppDelegate][KeyVerification] keyVerificationNewRequestNotification: Device verification from other user %@:%@", keyVerificationByToDeviceRequest.otherUser, keyVerificationByToDeviceRequest.otherDevice);
                 
                 NSString *myUserId = keyVerificationByToDeviceRequest.to;
                 NSString *userId = keyVerificationByToDeviceRequest.otherUser;
@@ -2824,7 +2824,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         }
         else
         {
-            NSLog(@"[AppDelegate][KeyVerification] keyVerificationNewRequestNotification. Bad request state: %@", keyVerificationByToDeviceRequest);
+            MXLogDebug(@"[AppDelegate][KeyVerification] keyVerificationNewRequestNotification. Bad request state: %@", keyVerificationByToDeviceRequest);
         }
     }
 }
@@ -2836,7 +2836,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 {
     if (keyVerificationRequest.state != MXKeyVerificationRequestStatePending)
     {
-        NSLog(@"[AppDelegate] presentNewKeyVerificationRequest: Request already accepted. Do not display it");
+        MXLogDebug(@"[AppDelegate] presentNewKeyVerificationRequest: Request already accepted. Do not display it");
         return;
     }
     
@@ -2887,7 +2887,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
                                                                        [keyVerificationRequest cancelWithCancelCode:MXTransactionCancelCode.user success:^{
                                                                            
                                                                        } failure:^(NSError * _Nonnull error) {
-                                                                           NSLog(@"[AppDelegate][KeyVerification] Fail to cancel incoming key verification request with error: %@", error);
+                                                                           MXLogDebug(@"[AppDelegate][KeyVerification] Fail to cancel incoming key verification request with error: %@", error);
                                                                        }];
                                                                    }]];
     
@@ -2958,7 +2958,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
              }
              
          } failure:^(NSError *error) {
-             NSLog(@"[AppDelegate][NewSignIn] Fail to fetch devices");
+             MXLogDebug(@"[AppDelegate][NewSignIn] Fail to fetch devices");
          }];
      }];
 }
@@ -3008,7 +3008,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 
 - (BOOL)presentCompleteSecurityForSession:(MXSession*)mxSession
 {
-    NSLog(@"[AppDelegate][MXKeyVerification] presentCompleteSecurityForSession");
+    MXLogDebug(@"[AppDelegate][MXKeyVerification] presentCompleteSecurityForSession");
     
     BOOL presented = NO;
     if (!keyVerificationCoordinatorBridgePresenter.isPresenting)
@@ -3022,7 +3022,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     }
     else
     {
-        NSLog(@"[AppDelegate][MXKeyVerification] presentCompleteSecurityForSession: Controller already presented.");
+        MXLogDebug(@"[AppDelegate][MXKeyVerification] presentCompleteSecurityForSession: Controller already presented.");
     }
     return presented;
 }
@@ -3119,7 +3119,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 
 - (void)handleIdentityServiceTermsNotSignedNotification:(NSNotification*)notification
 {
-    NSLog(@"[AppDelegate] IS Terms: handleIdentityServiceTermsNotSignedNotification.");
+    MXLogDebug(@"[AppDelegate] IS Terms: handleIdentityServiceTermsNotSignedNotification.");
     
     NSString *baseURL;
     NSString *accessToken;
@@ -3161,14 +3161,14 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 
 - (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidDecline:(ServiceTermsModalCoordinatorBridgePresenter *)coordinatorBridgePresenter session:(MXSession *)session
 {
-    NSLog(@"[AppDelegate] IS Terms: User has declined the use of the default IS.");
+    MXLogDebug(@"[AppDelegate] IS Terms: User has declined the use of the default IS.");
     
     // The user does not want to use the proposed IS.
     // Disable IS feature on user's account
     [session setIdentityServer:nil andAccessToken:nil];
     [session setAccountDataIdentityServer:nil success:^{
     } failure:^(NSError *error) {
-        NSLog(@"[AppDelegate] IS Terms: Error: %@", error);
+        MXLogDebug(@"[AppDelegate] IS Terms: Error: %@", error);
     }];
     
     [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{

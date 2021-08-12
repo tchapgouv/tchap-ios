@@ -34,7 +34,7 @@
 @interface MasterTabBarController () <AuthenticationViewControllerDelegate>
 {
     // Array of `MXSession` instances.
-    NSMutableArray *mxSessionArray;    
+    NSMutableArray<MXSession*> *mxSessionArray;    
     
     // Tell whether the authentication screen is preparing.
     BOOL isAuthViewControllerPreparing;
@@ -49,10 +49,7 @@
     
     // The recents data source shared between all the view controllers of the tab bar.
     RecentsDataSource *recentsDataSource;
-    
-    // The current unified search screen if any
-    UnifiedSearchViewController *unifiedSearchViewController;
-    
+        
     // Current alert (if any).
     UIAlertController *currentAlert;
     
@@ -74,6 +71,35 @@
 
 @implementation MasterTabBarController
 
+#pragma mark - Properties override
+
+- (HomeViewController *)homeViewController
+{
+    return (HomeViewController*)[self viewControllerForClass:HomeViewController.class];
+}
+
+- (FavouritesViewController *)favouritesViewController
+{
+    return (FavouritesViewController*)[self viewControllerForClass:FavouritesViewController.class];
+}
+
+- (PeopleViewController *)peopleViewController
+{
+    return (PeopleViewController*)[self viewControllerForClass:PeopleViewController.class];
+}
+
+- (RoomsViewController *)roomsViewController
+{
+    return (RoomsViewController*)[self viewControllerForClass:RoomsViewController.class];
+}
+
+- (GroupsViewController *)groupsViewController
+{
+    return (GroupsViewController*)[self viewControllerForClass:GroupsViewController.class];
+}
+
+#pragma mark - Life cycle
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -83,53 +109,8 @@
     
     // Note: UITabBarViewController shoud not be embed in a UINavigationController (https://github.com/vector-im/riot-ios/issues/3086)
     [self vc_removeBackTitle];
-
-    // Retrieve the all view controllers
-    _homeViewController = self.viewControllers[TABBAR_HOME_INDEX];
-    _favouritesViewController = self.viewControllers[TABBAR_FAVOURITES_INDEX];
-    _peopleViewController = self.viewControllers[TABBAR_PEOPLE_INDEX];
-    _roomsViewController = self.viewControllers[TABBAR_ROOMS_INDEX];
-    _groupsViewController = self.viewControllers[TABBAR_GROUPS_INDEX];
-    
-    // Set the accessibility labels for all buttons #1842
-    [_settingsBarButtonItem setAccessibilityLabel:NSLocalizedStringFromTable(@"settings_title", @"Vector", nil)];
-    [_searchBarButtonIem setAccessibilityLabel:NSLocalizedStringFromTable(@"search_default_placeholder", @"Vector", nil)];
-    [_homeViewController setAccessibilityLabel:NSLocalizedStringFromTable(@"title_home", @"Vector", nil)];
-    [_favouritesViewController setAccessibilityLabel:NSLocalizedStringFromTable(@"title_favourites", @"Vector", nil)];
-    [_peopleViewController setAccessibilityLabel:NSLocalizedStringFromTable(@"title_people", @"Vector", nil)];
-    [_roomsViewController setAccessibilityLabel:NSLocalizedStringFromTable(@"title_rooms", @"Vector", nil)];
-    [_groupsViewController setAccessibilityLabel:NSLocalizedStringFromTable(@"title_groups", @"Vector", nil)];
-    
-    // Sanity check
-    NSAssert(_homeViewController && _favouritesViewController && _peopleViewController && _roomsViewController && _groupsViewController, @"Something wrong in Main.storyboard");
-
-    // Adjust the display of the icons in the tabbar.
-    for (UITabBarItem *tabBarItem in self.tabBar.items)
-    {
-        if (@available(iOS 13.0, *))
-        {
-            // Fix iOS 13 misalignment tab bar images. Some titles are nil and other empty strings. Nil title behaves as if a non-empty title was set.
-            // Note: However no need to modify imageInsets property on iOS 13.
-            tabBarItem.title = @"";            
-        }
-        else
-        {
-            tabBarItem.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
-        }
-    }
     
     childViewControllers = [NSMutableArray array];
-    
-    // Initialize here the data sources if a matrix session has been already set.
-    [self initializeDataSources];
-    
-    // Observe user interface theme change.
-    kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-        
-        [self userInterfaceThemeDidChange];
-        
-    }];
-    [self userInterfaceThemeDidChange];
 }
 
 - (void)userInterfaceThemeDidChange
@@ -159,11 +140,22 @@
     
     // Show the tab bar view controller content only when a user is logged in.
     self.hidden = ([MXKAccountManager sharedManager].accounts.count == 0);
+    
+    if (!kThemeServiceDidChangeThemeNotificationObserver)
+    {
+        // Observe user interface theme change.
+        kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+            
+            [self userInterfaceThemeDidChange];
+            
+        }];
+        [self userInterfaceThemeDidChange];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    NSLog(@"[MasterTabBarController] viewDidAppear");
+    MXLogDebug(@"[MasterTabBarController] viewDidAppear");
     [super viewDidAppear:animated];
     
     // Check whether we're not logged in
@@ -224,10 +216,10 @@
         [[AppDelegate theDelegate] checkAppVersion];
     }
     
-    if (unifiedSearchViewController)
+    if (self.unifiedSearchViewController)
     {
-        [unifiedSearchViewController destroy];
-        unifiedSearchViewController = nil;
+        [self.unifiedSearchViewController destroy];
+        self.unifiedSearchViewController = nil;
     }
 }
 
@@ -239,12 +231,6 @@
 - (void)dealloc
 {
     mxSessionArray = nil;
-    
-    _homeViewController = nil;
-    _favouritesViewController = nil;
-    _peopleViewController = nil;
-    _roomsViewController = nil;
-    _groupsViewController = nil;
     
     if (currentAlert)
     {
@@ -272,9 +258,33 @@
     childViewControllers = nil;
 }
 
+#pragma mark - Public
+
+- (void)updateViewControllers:(NSArray<UIViewController*>*)viewControllers
+{
+    self.viewControllers = viewControllers;
+    
+    [self initializeDataSources];
+    
+    // Adjust the display of the icons in the tabbar.
+    for (UITabBarItem *tabBarItem in self.tabBar.items)
+    {
+        if (@available(iOS 13.0, *))
+        {
+            // Fix iOS 13 misalignment tab bar images. Some titles are nil and other empty strings. Nil title behaves as if a non-empty title was set.
+            // Note: However no need to modify imageInsets property on iOS 13.
+            tabBarItem.title = @"";
+        }
+        else
+        {
+            tabBarItem.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
+        }
+    }
+}
+
 #pragma mark -
 
-- (NSArray*)mxSessions
+- (NSArray<MXSession*>*)mxSessions
 {
     return [NSArray arrayWithArray:mxSessionArray];
 }
@@ -285,33 +295,36 @@
     
     if (mainSession)
     {
-        NSLog(@"[MasterTabBarController] initializeDataSources");
+        MXLogDebug(@"[MasterTabBarController] initializeDataSources");
         
         // Init the recents data source
         recentsDataSource = [[RecentsDataSource alloc] initWithMatrixSession:mainSession];
         
-        [_homeViewController displayList:recentsDataSource];
-        [_favouritesViewController displayList:recentsDataSource];
-        [_peopleViewController displayList:recentsDataSource];
-        [_roomsViewController displayList:recentsDataSource];
+        [self.homeViewController displayList:recentsDataSource];
+        [self.favouritesViewController displayList:recentsDataSource];
+        [self.peopleViewController displayList:recentsDataSource];
+        [self.roomsViewController displayList:recentsDataSource];
         
         // Restore the right delegate of the shared recent data source.
-        id<MXKDataSourceDelegate> recentsDataSourceDelegate = _homeViewController;
+        id<MXKDataSourceDelegate> recentsDataSourceDelegate = self.homeViewController;
         RecentsDataSourceMode recentsDataSourceMode = RecentsDataSourceModeHome;
-        switch (self.selectedIndex)
+        
+        NSInteger tabItemTag = self.tabBar.items[self.selectedIndex].tag;
+        
+        switch (tabItemTag)
         {
             case TABBAR_HOME_INDEX:
                 break;
             case TABBAR_FAVOURITES_INDEX:
-                recentsDataSourceDelegate = _favouritesViewController;
+                recentsDataSourceDelegate = self.favouritesViewController;
                 recentsDataSourceMode = RecentsDataSourceModeFavourites;
                 break;
             case TABBAR_PEOPLE_INDEX:
-                recentsDataSourceDelegate = _peopleViewController;
+                recentsDataSourceDelegate = self.peopleViewController;
                 recentsDataSourceMode = RecentsDataSourceModePeople;
                 break;
             case TABBAR_ROOMS_INDEX:
-                recentsDataSourceDelegate = _roomsViewController;
+                recentsDataSourceDelegate = self.roomsViewController;
                 recentsDataSourceMode = RecentsDataSourceModeRooms;
                 break;
                 
@@ -323,10 +336,10 @@
         // Init the recents data source
         groupsDataSource = [[GroupsDataSource alloc] initWithMatrixSession:mainSession];
         [groupsDataSource finalizeInitialization];
-        [_groupsViewController displayList:groupsDataSource];
+        [self.groupsViewController displayList:groupsDataSource];
         
         // Check whether there are others sessions
-        NSArray* mxSessions = self.mxSessions;
+        NSArray<MXSession*>* mxSessions = self.mxSessions;
         if (mxSessions.count > 1)
         {
             for (MXSession *mxSession in mxSessions)
@@ -343,8 +356,14 @@
 
 - (void)addMatrixSession:(MXSession *)mxSession
 {
+    if ([mxSessionArray containsObject:mxSession])
+    {
+        MXLogDebug(@"MasterTabBarController already has %@ in mxSessionArray", mxSession)
+        return;
+    }
+    
     // Check whether the controller's view is loaded into memory.
-    if (_homeViewController)
+    if (self.homeViewController)
     {
         // Check whether the data sources have been initialized.
         if (!recentsDataSource)
@@ -381,6 +400,12 @@
 
 - (void)removeMatrixSession:(MXSession *)mxSession
 {
+    if (![mxSessionArray containsObject:mxSession])
+    {
+        MXLogDebug(@"MasterTabBarController does not contain %@ in mxSessionArray", mxSession)
+        return;
+    }
+    
     [recentsDataSource removeMatrixSession:mxSession];
     
     // Check whether there are others sessions
@@ -389,10 +414,10 @@
         // Remove matrix sessions observer
         [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXSessionStateDidChangeNotification object:nil];
         
-        [_homeViewController displayList:nil];
-        [_favouritesViewController displayList:nil];
-        [_peopleViewController displayList:nil];
-        [_roomsViewController displayList:nil];
+        [self.homeViewController displayList:nil];
+        [self.favouritesViewController displayList:nil];
+        [self.peopleViewController displayList:nil];
+        [self.roomsViewController displayList:nil];
         
         [recentsDataSource destroy];
         recentsDataSource = nil;
@@ -408,9 +433,56 @@
     [self refreshTabBarBadges];
 }
 
+// TODO: Move authentication presentation in an AuthenticationCoordinator managed at AppCoordinator level
+- (void)presentAuthenticationViewController
+{
+    AuthenticationViewController *authenticationViewController = [AuthenticationViewController authenticationViewController];
+    
+    authenticationViewController.modalPresentationStyle = UIModalPresentationFullScreen;
+    
+    [self presentViewController:authenticationViewController animated:YES completion:nil];
+    
+    // Keep ref on the authentification view controller while it is displayed
+    // ie until we get the notification about a new account
+    _authViewController = authenticationViewController;
+    isAuthViewControllerPreparing = NO;
+    
+    // Listen to the end of the authentication flow
+    _authViewController.authVCDelegate = self;
+    
+    authViewControllerObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidAddAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        _authViewController = nil;
+        
+        [[NSNotificationCenter defaultCenter] removeObserver:authViewControllerObserver];
+        authViewControllerObserver = nil;
+    }];
+    
+    authViewRemovedAccountObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidRemoveAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        // The user has cleared data for their soft logged out account
+        _authViewController = nil;
+        
+        [[NSNotificationCenter defaultCenter] removeObserver:authViewRemovedAccountObserver];
+        authViewRemovedAccountObserver = nil;
+    }];
+    
+    // Forward parameters if any
+    if (authViewControllerRegistrationParameters)
+    {
+        _authViewController.externalRegistrationParameters = authViewControllerRegistrationParameters;
+        authViewControllerRegistrationParameters = nil;
+    }
+    if (softLogoutCredentials)
+    {
+        _authViewController.softLogoutCredentials = softLogoutCredentials;
+        softLogoutCredentials = nil;
+    }
+}
+
 - (void)showAuthenticationScreen
 {
-    NSLog(@"[MasterTabBarController] showAuthenticationScreen");
+    MXLogDebug(@"[MasterTabBarController] showAuthenticationScreen");
     
     // Check whether an authentication screen is not already shown or preparing
     if (!self.authViewController && !isAuthViewControllerPreparing)
@@ -421,9 +493,8 @@
         [self resetReviewSessionsFlags];
         
         [[AppDelegate theDelegate] restoreInitialDisplay:^{
-            
-            [self performSegueWithIdentifier:@"showAuth" sender:self];
-            
+                        
+            [self presentAuthenticationViewController];
         }];
     }
 }
@@ -432,12 +503,12 @@
 {
     if (self.authViewController)
     {
-        NSLog(@"[MasterTabBarController] Universal link: Forward registration parameter to the existing AuthViewController");
+        MXLogDebug(@"[MasterTabBarController] Universal link: Forward registration parameter to the existing AuthViewController");
         self.authViewController.externalRegistrationParameters = parameters;
     }
     else
     {
-        NSLog(@"[MasterTabBarController] Universal link: Prompt to logout current sessions and open AuthViewController to complete the registration");
+        MXLogDebug(@"[MasterTabBarController] Universal link: Prompt to logout current sessions and open AuthViewController to complete the registration");
         
         // Keep a ref on the params
         authViewControllerRegistrationParameters = parameters;
@@ -455,7 +526,7 @@
 
 - (void)showAuthenticationScreenAfterSoftLogout:(MXCredentials*)credentials;
 {
-    NSLog(@"[MasterTabBarController] showAuthenticationScreenAfterSoftLogout");
+    MXLogDebug(@"[MasterTabBarController] showAuthenticationScreenAfterSoftLogout");
 
     softLogoutCredentials = credentials;
 
@@ -467,8 +538,7 @@
 
         [[AppDelegate theDelegate] restoreInitialDisplay:^{
 
-            [self performSegueWithIdentifier:@"showAuth" sender:self];
-
+            [self presentAuthenticationViewController];
         }];
     }
 }
@@ -644,18 +714,6 @@
     [self releaseCurrentDetailsViewController];
 }
 
-- (void)dismissUnifiedSearch:(BOOL)animated completion:(void (^)(void))completion
-{
-    if (unifiedSearchViewController)
-    {
-        [self.navigationController dismissViewControllerAnimated:animated completion:completion];
-    }
-    else if (completion)
-    {
-        completion();
-    }
-}
-
 - (NSUInteger)missedDiscussionsCount
 {
     NSUInteger roomCount = 0;
@@ -681,65 +739,28 @@
     return roomCount;
 }
 
-#pragma mark -
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+- (UIViewController*)viewControllerForClass:(Class)klass
 {
-    // Keep ref on destinationViewController
-    [childViewControllers addObject:segue.destinationViewController];
+    UIViewController *foundViewController;
     
-    if ([[segue identifier] isEqualToString:@"showAuth"])
+    NSInteger viewControllerIndex = [self.viewControllers indexOfObjectPassingTest:^BOOL(__kindof UIViewController * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if ([obj isKindOfClass:klass])
+        {
+            *stop = YES;
+            return YES;
+        }
+        return NO;
+    }];
+    
+    if (viewControllerIndex != NSNotFound)
     {
-        // Keep ref on the authentification view controller while it is displayed
-        // ie until we get the notification about a new account
-        _authViewController = segue.destinationViewController;
-        isAuthViewControllerPreparing = NO;
-        
-        // Listen to the end of the authentication flow
-        _authViewController.authVCDelegate = self;
-        
-        authViewControllerObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidAddAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-            
-            _authViewController = nil;
-            
-            [[NSNotificationCenter defaultCenter] removeObserver:authViewControllerObserver];
-            authViewControllerObserver = nil;
-        }];
-        
-        authViewRemovedAccountObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidRemoveAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-            
-            // The user has cleared data for their soft logged out account
-            _authViewController = nil;
-            
-            [[NSNotificationCenter defaultCenter] removeObserver:authViewRemovedAccountObserver];
-            authViewRemovedAccountObserver = nil;
-        }];
-        
-        // Forward parameters if any
-        if (authViewControllerRegistrationParameters)
-        {
-            _authViewController.externalRegistrationParameters = authViewControllerRegistrationParameters;
-            authViewControllerRegistrationParameters = nil;
-        }
-        if (softLogoutCredentials)
-        {
-            _authViewController.softLogoutCredentials = softLogoutCredentials;
-            softLogoutCredentials = nil;
-        }
-    }
-    else if ([[segue identifier] isEqualToString:@"showUnifiedSearch"])
-    {
-        unifiedSearchViewController= segue.destinationViewController;
-        
-        for (MXSession *session in mxSessionArray)
-        {
-            [unifiedSearchViewController addMatrixSession:session];
-        }
+        foundViewController = self.viewControllers[viewControllerIndex];
     }
     
-    // Hide back button title
-    self.navigationController.topViewController.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    return foundViewController;
 }
+
+#pragma mark -
 
 /**
  Load the data source of the room to open.
@@ -749,8 +770,8 @@
 - (void)dataSourceOfRoomToDisplay:(void (^)(MXKRoomDataSource *roomDataSource))onComplete
 {
     // Check whether an event has been selected from messages or files search tab.
-    MXEvent *selectedSearchEvent = unifiedSearchViewController.selectedSearchEvent;
-    MXSession *selectedSearchEventSession = unifiedSearchViewController.selectedSearchEventSession;
+    MXEvent *selectedSearchEvent = self.unifiedSearchViewController.selectedSearchEvent;
+    MXSession *selectedSearchEventSession = self.unifiedSearchViewController.selectedSearchEventSession;
 
     if (!selectedSearchEvent)
     {
@@ -883,56 +904,95 @@
 - (void)refreshTabBarBadges
 {
     // Use a middle dot to signal missed notif in favourites
-    [self setMissedDiscussionsMark:(recentsDataSource.missedFavouriteDiscussionsCount? @"\u00B7": nil)
-                      onTabBarItem:TABBAR_FAVOURITES_INDEX
-                    withBadgeColor:(recentsDataSource.missedHighlightFavouriteDiscussionsCount ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor)];
+    if (RiotSettings.shared.homeScreenShowFavouritesTab)
+    {
+        [self setMissedDiscussionsMark:(recentsDataSource.missedFavouriteDiscussionsCount? @"\u00B7": nil)
+                          onTabBarItem:TABBAR_FAVOURITES_INDEX
+                        withBadgeColor:(recentsDataSource.missedHighlightFavouriteDiscussionsCount ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor)];
+    }
     
     // Update the badge on People and Rooms tabs
-    [self setMissedDiscussionsCount:recentsDataSource.missedDirectDiscussionsCount
-                       onTabBarItem:TABBAR_PEOPLE_INDEX
-                     withBadgeColor:(recentsDataSource.missedHighlightDirectDiscussionsCount ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor)];
-    [self setMissedDiscussionsCount:recentsDataSource.missedGroupDiscussionsCount
-                       onTabBarItem:TABBAR_ROOMS_INDEX
-                     withBadgeColor:(recentsDataSource.missedHighlightGroupDiscussionsCount ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor)];
+    if (RiotSettings.shared.homeScreenShowPeopleTab)
+    {
+        if (recentsDataSource.unsentMessagesDirectDiscussionsCount)
+        {
+            [self setBadgeValue:@"!"
+                               onTabBarItem:TABBAR_PEOPLE_INDEX
+                             withBadgeColor:ThemeService.shared.theme.noticeColor];
+        }
+        else
+        {
+            [self setMissedDiscussionsCount:recentsDataSource.missedDirectDiscussionsCount
+                               onTabBarItem:TABBAR_PEOPLE_INDEX
+                             withBadgeColor:(recentsDataSource.missedHighlightDirectDiscussionsCount ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor)];
+        }
+    }
+    
+    if (RiotSettings.shared.homeScreenShowRoomsTab)
+    {
+        if (recentsDataSource.unsentMessagesGroupDiscussionsCount)
+        {
+            [self setMissedDiscussionsCount:recentsDataSource.unsentMessagesGroupDiscussionsCount
+                               onTabBarItem:TABBAR_ROOMS_INDEX
+                             withBadgeColor:ThemeService.shared.theme.noticeColor];
+        }
+        else
+        {
+            [self setMissedDiscussionsCount:recentsDataSource.missedGroupDiscussionsCount
+                               onTabBarItem:TABBAR_ROOMS_INDEX
+                             withBadgeColor:(recentsDataSource.missedHighlightGroupDiscussionsCount ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor)];
+        }
+    }
 }
 
 - (void)setMissedDiscussionsCount:(NSUInteger)count onTabBarItem:(NSUInteger)index withBadgeColor:(UIColor*)badgeColor
 {
-    if (count)
+    [self setBadgeValue:count ? [self tabBarBadgeStringValue:count] : nil onTabBarItem:index withBadgeColor:badgeColor];
+}
+
+- (void)setBadgeValue:(NSString *)value onTabBarItem:(NSUInteger)index withBadgeColor:(UIColor*)badgeColor
+{
+    NSInteger itemIndex = [self indexOfTabItemWithTag:index];
+    if (itemIndex != NSNotFound)
     {
-        NSString *badgeValue = [self tabBarBadgeStringValue:count];
-        
-        self.tabBar.items[index].badgeValue = badgeValue;
-        
-        self.tabBar.items[index].badgeColor = badgeColor;
-        
-        [self.tabBar.items[index] setBadgeTextAttributes:@{
-                                                           NSForegroundColorAttributeName: ThemeService.shared.theme.baseTextPrimaryColor
-                                                           }
-                                                forState:UIControlStateNormal];
-    }
-    else
-    {
-        self.tabBar.items[index].badgeValue = nil;
+        if (value)
+        {
+            self.tabBar.items[itemIndex].badgeValue = value;
+            
+            self.tabBar.items[itemIndex].badgeColor = badgeColor;
+            
+            [self.tabBar.items[itemIndex] setBadgeTextAttributes:@{
+                                                               NSForegroundColorAttributeName: ThemeService.shared.theme.baseTextPrimaryColor
+                                                               }
+                                                    forState:UIControlStateNormal];
+        }
+        else
+        {
+            self.tabBar.items[itemIndex].badgeValue = nil;
+        }
     }
 }
 
 - (void)setMissedDiscussionsMark:(NSString*)mark onTabBarItem:(NSUInteger)index withBadgeColor:(UIColor*)badgeColor
 {
-    if (mark)
+    NSInteger itemIndex = [self indexOfTabItemWithTag:index];
+    if (itemIndex != NSNotFound)
     {
-        self.tabBar.items[index].badgeValue = mark;
-                
-        self.tabBar.items[index].badgeColor = badgeColor;
-        
-        [self.tabBar.items[index] setBadgeTextAttributes:@{
-                                                           NSForegroundColorAttributeName: ThemeService.shared.theme.baseTextPrimaryColor
-                                                           }
-                                                forState:UIControlStateNormal];
-    }
-    else
-    {
-        self.tabBar.items[index].badgeValue = nil;
+        if (mark)
+        {
+            self.tabBar.items[itemIndex].badgeValue = mark;
+                    
+            self.tabBar.items[itemIndex].badgeColor = badgeColor;
+            
+            [self.tabBar.items[itemIndex] setBadgeTextAttributes:@{
+                                                               NSForegroundColorAttributeName: ThemeService.shared.theme.baseTextPrimaryColor
+                                                               }
+                                                    forState:UIControlStateNormal];
+        }
+        else
+        {
+            self.tabBar.items[itemIndex].badgeValue = nil;
+        }
     }
 }
 
@@ -953,11 +1013,24 @@
     return badgeValue;
 }
 
+- (NSInteger)indexOfTabItemWithTag:(NSUInteger)tag
+{
+    for (int i = 0 ; i < self.tabBar.items.count ; i++)
+    {
+        if (self.tabBar.items[i].tag == tag)
+        {
+            return i;
+        }
+    }
+    
+    return NSNotFound;
+}
+
 #pragma mark -
 
 - (void)promptUserBeforeUsingAnalytics
 {
-    NSLog(@"[MasterTabBarController]: Invite the user to send crash reports");
+    MXLogDebug(@"[MasterTabBarController]: Invite the user to send crash reports");
     
     __weak typeof(self) weakSelf = self;
     
@@ -1018,7 +1091,7 @@
 
 - (void)presentVerifyCurrentSessionAlertWithSession:(MXSession*)session
 {
-    NSLog(@"[MasterTabBarController] presentVerifyCurrentSessionAlertWithSession");
+    MXLogDebug(@"[MasterTabBarController] presentVerifyCurrentSessionAlertWithSession");
     
     [currentAlert dismissViewControllerAnimated:NO completion:nil];
     
@@ -1077,7 +1150,7 @@
 
 - (void)presentReviewUnverifiedSessionsAlertWithSession:(MXSession*)session
 {
-    NSLog(@"[MasterTabBarController] presentReviewUnverifiedSessionsAlertWithSession");
+    MXLogDebug(@"[MasterTabBarController] presentReviewUnverifiedSessionsAlertWithSession");
     
     [currentAlert dismissViewControllerAnimated:NO completion:nil];
     

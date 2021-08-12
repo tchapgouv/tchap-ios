@@ -29,4 +29,6 @@ limitations under the License.
  */
 + (instancetype)instantiate;
 
+@property (nonatomic) BOOL showCancelBarButtonItem;
+
 @end

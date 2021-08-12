@@ -114,7 +114,7 @@ internal enum VectorL10n {
   internal static var authLogin: String { 
     return VectorL10n.tr("Vector", "auth_login") 
   }
-  /// Sign in with single sign-on
+  /// Sign In
   internal static var authLoginSingleSignOn: String { 
     return VectorL10n.tr("Vector", "auth_login_single_sign_on") 
   }
@@ -378,6 +378,10 @@ internal enum VectorL10n {
   internal static var bugCrashReportTitle: String { 
     return VectorL10n.tr("Vector", "bug_crash_report_title") 
   }
+  /// Continue in background
+  internal static var bugReportBackgroundMode: String { 
+    return VectorL10n.tr("Vector", "bug_report_background_mode") 
+  }
   /// Please describe the bug. What did you do? What did you expect to happen? What actually happened?
   internal static var bugReportDescription: String { 
     return VectorL10n.tr("Vector", "bug_report_description") 
@@ -413,6 +417,10 @@ internal enum VectorL10n {
   /// Bug Report
   internal static var bugReportTitle: String { 
     return VectorL10n.tr("Vector", "bug_report_title") 
+  }
+  /// Resume
+  internal static var callActionsUnhold: String { 
+    return VectorL10n.tr("Vector", "call_actions_unhold") 
   }
   /// There is already a call in progress.
   internal static var callAlreadyDisplayed: String { 
@@ -453,6 +461,62 @@ internal enum VectorL10n {
   /// Try using %@
   internal static func callNoStunServerErrorUseFallbackButton(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "call_no_stun_server_error_use_fallback_button", p1)
+  }
+  /// All
+  internal static var callTransferContactsAll: String { 
+    return VectorL10n.tr("Vector", "call_transfer_contacts_all") 
+  }
+  /// Recent
+  internal static var callTransferContactsRecent: String { 
+    return VectorL10n.tr("Vector", "call_transfer_contacts_recent") 
+  }
+  /// Dial pad
+  internal static var callTransferDialpad: String { 
+    return VectorL10n.tr("Vector", "call_transfer_dialpad") 
+  }
+  /// Call transfer failed
+  internal static var callTransferErrorMessage: String { 
+    return VectorL10n.tr("Vector", "call_transfer_error_message") 
+  }
+  /// Error
+  internal static var callTransferErrorTitle: String { 
+    return VectorL10n.tr("Vector", "call_transfer_error_title") 
+  }
+  /// Transfer
+  internal static var callTransferTitle: String { 
+    return VectorL10n.tr("Vector", "call_transfer_title") 
+  }
+  /// Users
+  internal static var callTransferUsers: String { 
+    return VectorL10n.tr("Vector", "call_transfer_users") 
+  }
+  /// 1 active call (%@) · %@ paused calls
+  internal static func callbarActiveAndMultiplePaused(_ p1: String, _ p2: String) -> String {
+    return VectorL10n.tr("Vector", "callbar_active_and_multiple_paused", p1, p2)
+  }
+  /// 1 active call (%@) · 1 paused call
+  internal static func callbarActiveAndSinglePaused(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "callbar_active_and_single_paused", p1)
+  }
+  /// %@ paused calls
+  internal static func callbarOnlyMultiplePaused(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "callbar_only_multiple_paused", p1)
+  }
+  /// Tap to return to the call (%@)
+  internal static func callbarOnlySingleActive(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "callbar_only_single_active", p1)
+  }
+  /// Tap to Join the group call (%@)
+  internal static func callbarOnlySingleActiveGroup(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "callbar_only_single_active_group", p1)
+  }
+  /// Paused call
+  internal static var callbarOnlySinglePaused: String { 
+    return VectorL10n.tr("Vector", "callbar_only_single_paused") 
+  }
+  /// Return
+  internal static var callbarReturn: String { 
+    return VectorL10n.tr("Vector", "callbar_return") 
   }
   /// Camera
   internal static var camera: String { 
@@ -950,7 +1014,7 @@ internal enum VectorL10n {
   internal static var deviceVerificationSelfVerifyStartWaiting: String { 
     return VectorL10n.tr("Vector", "device_verification_self_verify_start_waiting") 
   }
-  /// This works with Element and other cross-signing capable Matrix cients.
+  /// This works with Element and other cross-signing capable Matrix clients.
   internal static var deviceVerificationSelfVerifyWaitAdditionalInformation: String { 
     return VectorL10n.tr("Vector", "device_verification_self_verify_wait_additional_information") 
   }
@@ -970,11 +1034,11 @@ internal enum VectorL10n {
   internal static var deviceVerificationSelfVerifyWaitRecoverSecretsCheckingAvailability: String { 
     return VectorL10n.tr("Vector", "device_verification_self_verify_wait_recover_secrets_checking_availability") 
   }
-  /// Use Recovery Passphrase or Key
+  /// Use Security Phrase or Key
   internal static var deviceVerificationSelfVerifyWaitRecoverSecretsWithPassphrase: String { 
     return VectorL10n.tr("Vector", "device_verification_self_verify_wait_recover_secrets_with_passphrase") 
   }
-  /// Use Recovery Key
+  /// Use Security Key
   internal static var deviceVerificationSelfVerifyWaitRecoverSecretsWithoutPassphrase: String { 
     return VectorL10n.tr("Vector", "device_verification_self_verify_wait_recover_secrets_without_passphrase") 
   }
@@ -1013,6 +1077,10 @@ internal enum VectorL10n {
   /// Waiting for partner to confirm…
   internal static var deviceVerificationVerifyWaitPartner: String { 
     return VectorL10n.tr("Vector", "device_verification_verify_wait_partner") 
+  }
+  /// Dial pad
+  internal static var dialpadTitle: String { 
+    return VectorL10n.tr("Vector", "dialpad_title") 
   }
   /// %tu rooms
   internal static func directoryCellDescription(_ p1: Int) -> String {
@@ -1074,7 +1142,7 @@ internal enum VectorL10n {
   internal static var e2eEnablingOnAppUpdate: String { 
     return VectorL10n.tr("Vector", "e2e_enabling_on_app_update") 
   }
-  /// A new secure message key backup has been detected.\n\nIf this wasn’t you, set a new passphrase in Settings.
+  /// A new secure message key backup has been detected.\n\nIf this wasn’t you, set a new Security Phrase in Settings.
   internal static var e2eKeyBackupWrongVersion: String { 
     return VectorL10n.tr("Vector", "e2e_key_backup_wrong_version") 
   }
@@ -1174,6 +1242,90 @@ internal enum VectorL10n {
   internal static var errorUserAlreadyLoggedIn: String { 
     return VectorL10n.tr("Vector", "error_user_already_logged_in") 
   }
+  /// Active video call
+  internal static var eventFormatterCallActiveVideo: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_active_video") 
+  }
+  /// Active voice call
+  internal static var eventFormatterCallActiveVoice: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_active_voice") 
+  }
+  /// Answer
+  internal static var eventFormatterCallAnswer: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_answer") 
+  }
+  /// Call back
+  internal static var eventFormatterCallBack: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_back") 
+  }
+  /// Connecting…
+  internal static var eventFormatterCallConnecting: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_connecting") 
+  }
+  /// Connection failed
+  internal static var eventFormatterCallConnectionFailed: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_connection_failed") 
+  }
+  /// Decline
+  internal static var eventFormatterCallDecline: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_decline") 
+  }
+  /// End call
+  internal static var eventFormatterCallEndCall: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_end_call") 
+  }
+  /// Call ended
+  internal static var eventFormatterCallHasEnded: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_has_ended") 
+  }
+  /// Call ended • %@
+  internal static func eventFormatterCallHasEndedWithTime(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "event_formatter_call_has_ended_with_time", p1)
+  }
+  /// Incoming video call
+  internal static var eventFormatterCallIncomingVideo: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_incoming_video") 
+  }
+  /// Incoming voice call
+  internal static var eventFormatterCallIncomingVoice: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_incoming_voice") 
+  }
+  /// Missed video call
+  internal static var eventFormatterCallMissedVideo: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_missed_video") 
+  }
+  /// Missed voice call
+  internal static var eventFormatterCallMissedVoice: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_missed_voice") 
+  }
+  /// Retry
+  internal static var eventFormatterCallRetry: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_retry") 
+  }
+  /// Ringing…
+  internal static var eventFormatterCallRinging: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_ringing") 
+  }
+  /// Call declined
+  internal static var eventFormatterCallYouDeclined: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_you_declined") 
+  }
+  /// Group call
+  internal static var eventFormatterGroupCall: String { 
+    return VectorL10n.tr("Vector", "event_formatter_group_call") 
+  }
+  /// %@ in %@
+  internal static func eventFormatterGroupCallIncoming(_ p1: String, _ p2: String) -> String {
+    return VectorL10n.tr("Vector", "event_formatter_group_call_incoming", p1, p2)
+  }
+  /// Join
+  internal static var eventFormatterGroupCallJoin: String { 
+    return VectorL10n.tr("Vector", "event_formatter_group_call_join") 
+  }
+  /// Leave
+  internal static var eventFormatterGroupCallLeave: String { 
+    return VectorL10n.tr("Vector", "event_formatter_group_call_leave") 
+  }
   /// VoIP conference added by %@
   internal static func eventFormatterJitsiWidgetAdded(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "event_formatter_jitsi_widget_added", p1)
@@ -1229,6 +1381,14 @@ internal enum VectorL10n {
   /// Double-check this link
   internal static var externalLinkConfirmationTitle: String { 
     return VectorL10n.tr("Vector", "external_link_confirmation_title") 
+  }
+  /// You can favourite a few ways - the quickest is just to press and hold. Tap the star and they’ll automatically appear here for safe keeping.
+  internal static var favouritesEmptyViewInformation: String { 
+    return VectorL10n.tr("Vector", "favourites_empty_view_information") 
+  }
+  /// Favourite rooms and people
+  internal static var favouritesEmptyViewTitle: String { 
+    return VectorL10n.tr("Vector", "favourites_empty_view_title") 
   }
   /// File upload
   internal static var fileUploadErrorTitle: String { 
@@ -1346,13 +1506,13 @@ internal enum VectorL10n {
   internal static var groupSection: String { 
     return VectorL10n.tr("Vector", "group_section") 
   }
-  /// The all-in-one secure chat app for teams, friends and organisations. Tap the "+" button below to add people and rooms.
+  /// The all-in-one secure chat app for teams, friends and organisations. Tap the + button below to add people and rooms.
   internal static var homeEmptyViewInformation: String { 
     return VectorL10n.tr("Vector", "home_empty_view_information") 
   }
-  /// Welcome to Element,\n%@
-  internal static func homeEmptyViewTitle(_ p1: String) -> String {
-    return VectorL10n.tr("Vector", "home_empty_view_title", p1)
+  /// Welcome to %@,\n%@
+  internal static func homeEmptyViewTitle(_ p1: String, _ p2: String) -> String {
+    return VectorL10n.tr("Vector", "home_empty_view_title", p1, p2)
   }
   /// Could not connect to the homeserver.
   internal static var homeserverConnectionLost: String { 
@@ -1418,7 +1578,7 @@ internal enum VectorL10n {
   internal static var identityServerSettingsDisconnect: String { 
     return VectorL10n.tr("Vector", "identity_server_settings_disconnect") 
   }
-  /// Disconnecting from your identity server will mean you won’t be discoverable by other users and  be able to invite others by email or phone.
+  /// Disconnecting from your identity server will mean you won’t be discoverable by other users and be able to invite others by email or phone.
   internal static var identityServerSettingsDisconnectInfo: String { 
     return VectorL10n.tr("Vector", "identity_server_settings_disconnect_info") 
   }
@@ -1446,6 +1606,14 @@ internal enum VectorL10n {
   internal static var invite: String { 
     return VectorL10n.tr("Vector", "invite") 
   }
+  /// Invite friends to %@
+  internal static func inviteFriendsAction(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "invite_friends_action", p1)
+  }
+  /// Hey, talk to me on %@: %@
+  internal static func inviteFriendsShareText(_ p1: String, _ p2: String) -> String {
+    return VectorL10n.tr("Vector", "invite_friends_share_text", p1, p2)
+  }
   /// Join
   internal static var join: String { 
     return VectorL10n.tr("Vector", "join") 
@@ -1458,15 +1626,15 @@ internal enum VectorL10n {
   internal static var keyBackupRecoverDoneAction: String { 
     return VectorL10n.tr("Vector", "key_backup_recover_done_action") 
   }
-  /// Use your recovery passphrase to unlock your secure message history
+  /// Use your Security Phrase to unlock your secure message history
   internal static var keyBackupRecoverFromPassphraseInfo: String { 
     return VectorL10n.tr("Vector", "key_backup_recover_from_passphrase_info") 
   }
-  /// Don’t know your recovery passphrase? You can 
+  /// Don’t know your Security Phrase? You can 
   internal static var keyBackupRecoverFromPassphraseLostPassphraseActionPart1: String { 
     return VectorL10n.tr("Vector", "key_backup_recover_from_passphrase_lost_passphrase_action_part1") 
   }
-  /// use your recovery key
+  /// use your Security Key
   internal static var keyBackupRecoverFromPassphraseLostPassphraseActionPart2: String { 
     return VectorL10n.tr("Vector", "key_backup_recover_from_passphrase_lost_passphrase_action_part2") 
   }
@@ -1474,7 +1642,7 @@ internal enum VectorL10n {
   internal static var keyBackupRecoverFromPassphraseLostPassphraseActionPart3: String { 
     return VectorL10n.tr("Vector", "key_backup_recover_from_passphrase_lost_passphrase_action_part3") 
   }
-  /// Enter Passphrase
+  /// Enter Phrase
   internal static var keyBackupRecoverFromPassphrasePassphrasePlaceholder: String { 
     return VectorL10n.tr("Vector", "key_backup_recover_from_passphrase_passphrase_placeholder") 
   }
@@ -1490,11 +1658,11 @@ internal enum VectorL10n {
   internal static var keyBackupRecoverFromPrivateKeyInfo: String { 
     return VectorL10n.tr("Vector", "key_backup_recover_from_private_key_info") 
   }
-  /// Use your recovery key to unlock your secure message history
+  /// Use your Security Key to unlock your secure message history
   internal static var keyBackupRecoverFromRecoveryKeyInfo: String { 
     return VectorL10n.tr("Vector", "key_backup_recover_from_recovery_key_info") 
   }
-  /// Lost your recovery key? You can set up a new one in settings.
+  /// Lost your Security Key You can set up a new one in settings.
   internal static var keyBackupRecoverFromRecoveryKeyLostRecoveryKeyAction: String { 
     return VectorL10n.tr("Vector", "key_backup_recover_from_recovery_key_lost_recovery_key_action") 
   }
@@ -1502,7 +1670,7 @@ internal enum VectorL10n {
   internal static var keyBackupRecoverFromRecoveryKeyRecoverAction: String { 
     return VectorL10n.tr("Vector", "key_backup_recover_from_recovery_key_recover_action") 
   }
-  /// Enter Recovery Key
+  /// Enter Security Key
   internal static var keyBackupRecoverFromRecoveryKeyRecoveryKeyPlaceholder: String { 
     return VectorL10n.tr("Vector", "key_backup_recover_from_recovery_key_recovery_key_placeholder") 
   }
@@ -1510,19 +1678,19 @@ internal enum VectorL10n {
   internal static var keyBackupRecoverFromRecoveryKeyRecoveryKeyTitle: String { 
     return VectorL10n.tr("Vector", "key_backup_recover_from_recovery_key_recovery_key_title") 
   }
-  /// Backup could not be decrypted with this passphrase: please verify that you entered the correct recovery passphrase.
+  /// Backup could not be decrypted with this phrase: please verify that you entered the correct Security Phrase.
   internal static var keyBackupRecoverInvalidPassphrase: String { 
     return VectorL10n.tr("Vector", "key_backup_recover_invalid_passphrase") 
   }
-  /// Incorrect Recovery Passphrase
+  /// Incorrect Security Phrase
   internal static var keyBackupRecoverInvalidPassphraseTitle: String { 
     return VectorL10n.tr("Vector", "key_backup_recover_invalid_passphrase_title") 
   }
-  /// Backup could not be decrypted with this key: please verify that you entered the correct recovery key.
+  /// Backup could not be decrypted with this key: please verify that you entered the correct Security Key.
   internal static var keyBackupRecoverInvalidRecoveryKey: String { 
     return VectorL10n.tr("Vector", "key_backup_recover_invalid_recovery_key") 
   }
-  /// Recovery Key Mismatch
+  /// Security Key Mismatch
   internal static var keyBackupRecoverInvalidRecoveryKeyTitle: String { 
     return VectorL10n.tr("Vector", "key_backup_recover_invalid_recovery_key_title") 
   }
@@ -1558,11 +1726,11 @@ internal enum VectorL10n {
   internal static var keyBackupSetupIntroTitle: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_intro_title") 
   }
-  /// Passphrase doesn’t match
+  /// Phrase doesn’t match
   internal static var keyBackupSetupPassphraseConfirmPassphraseInvalid: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_passphrase_confirm_passphrase_invalid") 
   }
-  /// Confirm passphrase
+  /// Confirm phrase
   internal static var keyBackupSetupPassphraseConfirmPassphrasePlaceholder: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_passphrase_confirm_passphrase_placeholder") 
   }
@@ -1574,7 +1742,7 @@ internal enum VectorL10n {
   internal static var keyBackupSetupPassphraseConfirmPassphraseValid: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_passphrase_confirm_passphrase_valid") 
   }
-  /// We'll store an encrypted copy of your keys on our server. Protect your backup with a passphrase to keep it secure.\n\nFor maximum security, this should be different from your account password.
+  /// We'll store an encrypted copy of your keys on our server. Protect your backup with a phrase to keep it secure.\n\nFor maximum security, this should be different from your account password.
   internal static var keyBackupSetupPassphraseInfo: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_passphrase_info") 
   }
@@ -1582,7 +1750,7 @@ internal enum VectorL10n {
   internal static var keyBackupSetupPassphrasePassphraseInvalid: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_passphrase_passphrase_invalid") 
   }
-  /// Enter passphrase
+  /// Enter phrase
   internal static var keyBackupSetupPassphrasePassphrasePlaceholder: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_passphrase_passphrase_placeholder") 
   }
@@ -1594,19 +1762,19 @@ internal enum VectorL10n {
   internal static var keyBackupSetupPassphrasePassphraseValid: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_passphrase_passphrase_valid") 
   }
-  /// Set Passphrase
+  /// Set Phrase
   internal static var keyBackupSetupPassphraseSetPassphraseAction: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_passphrase_set_passphrase_action") 
   }
-  /// (Advanced) Set up with Recovery Key
+  /// (Advanced) Set up with Security Key
   internal static var keyBackupSetupPassphraseSetupRecoveryKeyAction: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_passphrase_setup_recovery_key_action") 
   }
-  /// Or, secure your backup with a Recovery Key, saving it somewhere safe.
+  /// Or, secure your backup with a Security Key, saving it somewhere safe.
   internal static var keyBackupSetupPassphraseSetupRecoveryKeyInfo: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_passphrase_setup_recovery_key_info") 
   }
-  /// Secure your backup with a Passphrase
+  /// Secure your backup with a Security Phrase
   internal static var keyBackupSetupPassphraseTitle: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_passphrase_title") 
   }
@@ -1626,15 +1794,15 @@ internal enum VectorL10n {
   internal static var keyBackupSetupSuccessFromPassphraseDoneAction: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_success_from_passphrase_done_action") 
   }
-  /// Your keys are being backed up.\n\nYour recovery key is a safety net - you can use it to restore access to your encrypted messages if you forget your passphrase.\n\nKeep your recovery key somewhere very secure, like a password manager (or a safe).
+  /// Your keys are being backed up.\n\nYour Security Key is a safety net - you can use it to restore access to your encrypted messages if you forget your passphrase.\n\nKeep your Security Key somewhere very secure, like a password manager (or a safe).
   internal static var keyBackupSetupSuccessFromPassphraseInfo: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_success_from_passphrase_info") 
   }
-  /// Save Recovery Key
+  /// Save Security Key
   internal static var keyBackupSetupSuccessFromPassphraseSaveRecoveryKeyAction: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_success_from_passphrase_save_recovery_key_action") 
   }
-  /// Your keys are being backed up.\n\nMake a copy of this recovery key and keep it safe.
+  /// Your keys are being backed up.\n\nMake a copy of this Security Key and keep it safe.
   internal static var keyBackupSetupSuccessFromRecoveryKeyInfo: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_success_from_recovery_key_info") 
   }
@@ -1646,9 +1814,13 @@ internal enum VectorL10n {
   internal static var keyBackupSetupSuccessFromRecoveryKeyMakeCopyAction: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_success_from_recovery_key_make_copy_action") 
   }
-  /// Recovery Key
+  /// Security Key
   internal static var keyBackupSetupSuccessFromRecoveryKeyRecoveryKeyTitle: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_success_from_recovery_key_recovery_key_title") 
+  }
+  /// Your keys are being backed up.
+  internal static var keyBackupSetupSuccessFromSecureBackupInfo: String { 
+    return VectorL10n.tr("Vector", "key_backup_setup_success_from_secure_backup_info") 
   }
   /// Success!
   internal static var keyBackupSetupSuccessTitle: String { 
@@ -1854,6 +2026,10 @@ internal enum VectorL10n {
   internal static var keyVerificationVerifyQrCodeScanCodeAction: String { 
     return VectorL10n.tr("Vector", "key_verification_verify_qr_code_scan_code_action") 
   }
+  /// Scan with this device
+  internal static var keyVerificationVerifyQrCodeScanCodeOtherDeviceAction: String { 
+    return VectorL10n.tr("Vector", "key_verification_verify_qr_code_scan_code_other_device_action") 
+  }
   /// QR code has been successfully validated.
   internal static var keyVerificationVerifyQrCodeScanOtherCodeSuccessMessage: String { 
     return VectorL10n.tr("Vector", "key_verification_verify_qr_code_scan_other_code_success_message") 
@@ -2018,6 +2194,14 @@ internal enum VectorL10n {
   internal static var peopleConversationSection: String { 
     return VectorL10n.tr("Vector", "people_conversation_section") 
   }
+  /// Chat securely with anyone.\nTap the + to start adding people.
+  internal static var peopleEmptyViewInformation: String { 
+    return VectorL10n.tr("Vector", "people_empty_view_information") 
+  }
+  /// People
+  internal static var peopleEmptyViewTitle: String { 
+    return VectorL10n.tr("Vector", "people_empty_view_title") 
+  }
   /// INVITES
   internal static var peopleInvitesSection: String { 
     return VectorL10n.tr("Vector", "people_invites_section") 
@@ -2045,6 +2229,10 @@ internal enum VectorL10n {
   /// Confirm your PIN
   internal static var pinProtectionConfirmPin: String { 
     return VectorL10n.tr("Vector", "pin_protection_confirm_pin") 
+  }
+  /// Confirm PIN to change PIN
+  internal static var pinProtectionConfirmPinToChange: String { 
+    return VectorL10n.tr("Vector", "pin_protection_confirm_pin_to_change") 
   }
   /// Confirm PIN to disable PIN
   internal static var pinProtectionConfirmPinToDisable: String { 
@@ -2093,6 +2281,10 @@ internal enum VectorL10n {
   /// Reset PIN
   internal static var pinProtectionResetAlertTitle: String { 
     return VectorL10n.tr("Vector", "pin_protection_reset_alert_title") 
+  }
+  /// Change PIN
+  internal static var pinProtectionSettingsChangePin: String { 
+    return VectorL10n.tr("Vector", "pin_protection_settings_change_pin") 
   }
   /// Enable PIN
   internal static var pinProtectionSettingsEnablePin: String { 
@@ -2174,6 +2366,10 @@ internal enum VectorL10n {
   internal static var roomAccessibilityUpload: String { 
     return VectorL10n.tr("Vector", "room_accessibility_upload") 
   }
+  /// Video Call
+  internal static var roomAccessibilityVideoCall: String { 
+    return VectorL10n.tr("Vector", "room_accessibility_video_call") 
+  }
   /// Scroll to bottom
   internal static var roomAccessiblityScrollToBottom: String { 
     return VectorL10n.tr("Vector", "room_accessiblity_scroll_to_bottom") 
@@ -2198,6 +2394,14 @@ internal enum VectorL10n {
   internal static var roomActionSendSticker: String { 
     return VectorL10n.tr("Vector", "room_action_send_sticker") 
   }
+  /// Change room avatar
+  internal static var roomAvatarViewAccessibilityHint: String { 
+    return VectorL10n.tr("Vector", "room_avatar_view_accessibility_hint") 
+  }
+  /// avatar
+  internal static var roomAvatarViewAccessibilityLabel: String { 
+    return VectorL10n.tr("Vector", "room_avatar_view_accessibility_label") 
+  }
   /// You need permission to manage conference call in this room
   internal static var roomConferenceCallNoPower: String { 
     return VectorL10n.tr("Vector", "room_conference_call_no_power") 
@@ -2217,6 +2421,10 @@ internal enum VectorL10n {
   /// Chat picture (optional)
   internal static var roomCreationAppearancePicture: String { 
     return VectorL10n.tr("Vector", "room_creation_appearance_picture") 
+  }
+  /// We couldn't create your DM. Please check the users you want to invite and try again.
+  internal static var roomCreationDmError: String { 
+    return VectorL10n.tr("Vector", "room_creation_dm_error") 
   }
   /// No identity server is configured so you cannot add a participant with an email.
   internal static var roomCreationErrorInviteUserByEmailWithoutIdentityServer: String { 
@@ -2486,6 +2694,10 @@ internal enum VectorL10n {
   internal static var roomDetailsHistorySectionPromptTitle: String { 
     return VectorL10n.tr("Vector", "room_details_history_section_prompt_title") 
   }
+  /// Integrations
+  internal static var roomDetailsIntegrations: String { 
+    return VectorL10n.tr("Vector", "room_details_integrations") 
+  }
   /// Low priority
   internal static var roomDetailsLowPriorityTag: String { 
     return VectorL10n.tr("Vector", "room_details_low_priority_tag") 
@@ -2514,6 +2726,10 @@ internal enum VectorL10n {
   internal static var roomDetailsNoLocalAddressesForDm: String { 
     return VectorL10n.tr("Vector", "room_details_no_local_addresses_for_dm") 
   }
+  /// Notifications
+  internal static var roomDetailsNotifs: String { 
+    return VectorL10n.tr("Vector", "room_details_notifs") 
+  }
   /// Members
   internal static var roomDetailsPeople: String { 
     return VectorL10n.tr("Vector", "room_details_people") 
@@ -2537,6 +2753,10 @@ internal enum VectorL10n {
   /// Do you want to save changes?
   internal static var roomDetailsSaveChangesPrompt: String { 
     return VectorL10n.tr("Vector", "room_details_save_changes_prompt") 
+  }
+  /// Search room
+  internal static var roomDetailsSearch: String { 
+    return VectorL10n.tr("Vector", "room_details_search") 
   }
   /// Set as Main Address
   internal static var roomDetailsSetMainAddress: String { 
@@ -2593,6 +2813,14 @@ internal enum VectorL10n {
   /// Delete
   internal static var roomEventActionDelete: String { 
     return VectorL10n.tr("Vector", "room_event_action_delete") 
+  }
+  /// Are you sure you want to delete this unsent message?
+  internal static var roomEventActionDeleteConfirmationMessage: String { 
+    return VectorL10n.tr("Vector", "room_event_action_delete_confirmation_message") 
+  }
+  /// Delete unsent message
+  internal static var roomEventActionDeleteConfirmationTitle: String { 
+    return VectorL10n.tr("Vector", "room_event_action_delete_confirmation_title") 
   }
   /// Edit
   internal static var roomEventActionEdit: String { 
@@ -2686,7 +2914,51 @@ internal enum VectorL10n {
   internal static func roomInfoListSeveralMembers(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "room_info_list_several_members", p1)
   }
-  /// Jump to first unread message
+  /// Add people
+  internal static var roomIntroCellAddParticipantsAction: String { 
+    return VectorL10n.tr("Vector", "room_intro_cell_add_participants_action") 
+  }
+  /// This is the beginning of your direct message with 
+  internal static var roomIntroCellInformationDmSentence1Part1: String { 
+    return VectorL10n.tr("Vector", "room_intro_cell_information_dm_sentence1_part1") 
+  }
+  /// . 
+  internal static var roomIntroCellInformationDmSentence1Part3: String { 
+    return VectorL10n.tr("Vector", "room_intro_cell_information_dm_sentence1_part3") 
+  }
+  /// Only the two of you are in this conversation, no one else can join.
+  internal static var roomIntroCellInformationDmSentence2: String { 
+    return VectorL10n.tr("Vector", "room_intro_cell_information_dm_sentence2") 
+  }
+  /// Only you are in this conversation, unless any of you invites someone to join.
+  internal static var roomIntroCellInformationMultipleDmSentence2: String { 
+    return VectorL10n.tr("Vector", "room_intro_cell_information_multiple_dm_sentence2") 
+  }
+  /// This is the beginning of 
+  internal static var roomIntroCellInformationRoomSentence1Part1: String { 
+    return VectorL10n.tr("Vector", "room_intro_cell_information_room_sentence1_part1") 
+  }
+  /// . 
+  internal static var roomIntroCellInformationRoomSentence1Part3: String { 
+    return VectorL10n.tr("Vector", "room_intro_cell_information_room_sentence1_part3") 
+  }
+  /// Topic: %@
+  internal static func roomIntroCellInformationRoomWithTopicSentence2(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "room_intro_cell_information_room_with_topic_sentence2", p1)
+  }
+  /// Add a topic
+  internal static var roomIntroCellInformationRoomWithoutTopicSentence2Part1: String { 
+    return VectorL10n.tr("Vector", "room_intro_cell_information_room_without_topic_sentence2_part1") 
+  }
+  ///  to let people know what this room is about.
+  internal static var roomIntroCellInformationRoomWithoutTopicSentence2Part2: String { 
+    return VectorL10n.tr("Vector", "room_intro_cell_information_room_without_topic_sentence2_part2") 
+  }
+  /// Join
+  internal static var roomJoinGroupCall: String { 
+    return VectorL10n.tr("Vector", "room_join_group_call") 
+  }
+  /// Jump to unread
   internal static var roomJumpToFirstUnread: String { 
     return VectorL10n.tr("Vector", "room_jump_to_first_unread") 
   }
@@ -2718,6 +2990,10 @@ internal enum VectorL10n {
   internal static var roomMemberPowerLevelShortModerator: String { 
     return VectorL10n.tr("Vector", "room_member_power_level_short_moderator") 
   }
+  /// Editing
+  internal static var roomMessageEditing: String { 
+    return VectorL10n.tr("Vector", "room_message_editing") 
+  }
   /// Message edits
   internal static var roomMessageEditsHistoryTitle: String { 
     return VectorL10n.tr("Vector", "room_message_edits_history_title") 
@@ -2734,6 +3010,10 @@ internal enum VectorL10n {
   internal static var roomMessageReplyToShortPlaceholder: String { 
     return VectorL10n.tr("Vector", "room_message_reply_to_short_placeholder") 
   }
+  /// Replying to %@
+  internal static func roomMessageReplyingTo(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "room_message_replying_to", p1)
+  }
   /// Send a message…
   internal static var roomMessageShortPlaceholder: String { 
     return VectorL10n.tr("Vector", "room_message_short_placeholder") 
@@ -2742,6 +3022,10 @@ internal enum VectorL10n {
   internal static var roomMessageUnableOpenLinkErrorMessage: String { 
     return VectorL10n.tr("Vector", "room_message_unable_open_link_error_message") 
   }
+  /// %@ and others
+  internal static func roomMultipleTypingNotification(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "room_multiple_typing_notification", p1)
+  }
   /// %d new message
   internal static func roomNewMessageNotification(_ p1: Int) -> String {
     return VectorL10n.tr("Vector", "room_new_message_notification", p1)
@@ -2749,6 +3033,46 @@ internal enum VectorL10n {
   /// %d new messages
   internal static func roomNewMessagesNotification(_ p1: Int) -> String {
     return VectorL10n.tr("Vector", "room_new_messages_notification", p1)
+  }
+  /// You need to be an admin or a moderator to start a call.
+  internal static var roomNoPrivilegesToCreateGroupCall: String { 
+    return VectorL10n.tr("Vector", "room_no_privileges_to_create_group_call") 
+  }
+  /// Account settings
+  internal static var roomNotifsSettingsAccountSettings: String { 
+    return VectorL10n.tr("Vector", "room_notifs_settings_account_settings") 
+  }
+  /// All Messages
+  internal static var roomNotifsSettingsAllMessages: String { 
+    return VectorL10n.tr("Vector", "room_notifs_settings_all_messages") 
+  }
+  /// Cancel
+  internal static var roomNotifsSettingsCancelAction: String { 
+    return VectorL10n.tr("Vector", "room_notifs_settings_cancel_action") 
+  }
+  /// Done
+  internal static var roomNotifsSettingsDoneAction: String { 
+    return VectorL10n.tr("Vector", "room_notifs_settings_done_action") 
+  }
+  /// Please note that mentions & keyword notifications are not available in encrypted rooms on mobile.
+  internal static var roomNotifsSettingsEncryptedRoomNotice: String { 
+    return VectorL10n.tr("Vector", "room_notifs_settings_encrypted_room_notice") 
+  }
+  /// You can manage notifications in %@
+  internal static func roomNotifsSettingsManageNotifications(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "room_notifs_settings_manage_notifications", p1)
+  }
+  /// Mentions and Keywords only
+  internal static var roomNotifsSettingsMentionsAndKeywords: String { 
+    return VectorL10n.tr("Vector", "room_notifs_settings_mentions_and_keywords") 
+  }
+  /// None
+  internal static var roomNotifsSettingsNone: String { 
+    return VectorL10n.tr("Vector", "room_notifs_settings_none") 
+  }
+  /// Notify me for
+  internal static var roomNotifsSettingsNotifyMeFor: String { 
+    return VectorL10n.tr("Vector", "room_notifs_settings_notify_me_for") 
   }
   /// Connectivity to the server has been lost.
   internal static var roomOfflineNotification: String { 
@@ -2769,6 +3093,10 @@ internal enum VectorL10n {
   /// Ongoing conference call. Join as %@ or %@. %@ it.
   internal static func roomOngoingConferenceCallWithClose(_ p1: String, _ p2: String, _ p3: String) -> String {
     return VectorL10n.tr("Vector", "room_ongoing_conference_call_with_close", p1, p2, p3)
+  }
+  /// Dial pad
+  internal static var roomOpenDialpad: String { 
+    return VectorL10n.tr("Vector", "room_open_dialpad") 
   }
   /// Ban from this room
   internal static var roomParticipantsActionBan: String { 
@@ -2990,6 +3318,10 @@ internal enum VectorL10n {
   internal static var roomParticipantsUnknown: String { 
     return VectorL10n.tr("Vector", "room_participants_unknown") 
   }
+  /// Voice call
+  internal static var roomPlaceVoiceCall: String { 
+    return VectorL10n.tr("Vector", "room_place_voice_call") 
+  }
   /// This room is a continuation of another conversation.
   internal static var roomPredecessorInformation: String { 
     return VectorL10n.tr("Vector", "room_predecessor_information") 
@@ -3038,10 +3370,6 @@ internal enum VectorL10n {
   internal static var roomRecentsDirectorySection: String { 
     return VectorL10n.tr("Vector", "room_recents_directory_section") 
   }
-  /// Network
-  internal static var roomRecentsDirectorySectionNetwork: String { 
-    return VectorL10n.tr("Vector", "room_recents_directory_section_network") 
-  }
   /// FAVOURITES
   internal static var roomRecentsFavouritesSection: String { 
     return VectorL10n.tr("Vector", "room_recents_favourites_section") 
@@ -3081,6 +3409,10 @@ internal enum VectorL10n {
   /// Start chat
   internal static var roomRecentsStartChatWith: String { 
     return VectorL10n.tr("Vector", "room_recents_start_chat_with") 
+  }
+  /// Can't find this room. Make sure it exists
+  internal static var roomRecentsUnknownRoomErrorMessage: String { 
+    return VectorL10n.tr("Vector", "room_recents_unknown_room_error_message") 
   }
   /// This room has been replaced and is no longer active.
   internal static var roomReplacementInformation: String { 
@@ -3122,6 +3454,10 @@ internal enum VectorL10n {
   internal static var roomResourceUsageLimitReachedMessageContact3: String { 
     return VectorL10n.tr("Vector", "room_resource_usage_limit_reached_message_contact_3") 
   }
+  /// Slide to end the call for everyone
+  internal static var roomSlideToEndGroupCall: String { 
+    return VectorL10n.tr("Vector", "room_slide_to_end_group_call") 
+  }
   /// Invite members
   internal static var roomTitleInviteMembers: String { 
     return VectorL10n.tr("Vector", "room_title_invite_members") 
@@ -3150,13 +3486,21 @@ internal enum VectorL10n {
   internal static func roomTwoUsersAreTyping(_ p1: String, _ p2: String) -> String {
     return VectorL10n.tr("Vector", "room_two_users_are_typing", p1, p2)
   }
-  /// Messages not sent. %@ or %@ now?
-  internal static func roomUnsentMessagesNotification(_ p1: String, _ p2: String) -> String {
-    return VectorL10n.tr("Vector", "room_unsent_messages_notification", p1, p2)
+  /// Are you sure you want to delete all unsent messages in this room?
+  internal static var roomUnsentMessagesCancelMessage: String { 
+    return VectorL10n.tr("Vector", "room_unsent_messages_cancel_message") 
   }
-  /// Message not sent due to unknown sessions being present. %@ or %@ now?
-  internal static func roomUnsentMessagesUnknownDevicesNotification(_ p1: String, _ p2: String) -> String {
-    return VectorL10n.tr("Vector", "room_unsent_messages_unknown_devices_notification", p1, p2)
+  /// Delete unsent messages
+  internal static var roomUnsentMessagesCancelTitle: String { 
+    return VectorL10n.tr("Vector", "room_unsent_messages_cancel_title") 
+  }
+  /// Messages failed to send.
+  internal static var roomUnsentMessagesNotification: String { 
+    return VectorL10n.tr("Vector", "room_unsent_messages_notification") 
+  }
+  /// Message failed to send due to unknown sessions being present.
+  internal static var roomUnsentMessagesUnknownDevicesNotification: String { 
+    return VectorL10n.tr("Vector", "room_unsent_messages_unknown_devices_notification") 
   }
   /// End-to-end encryption is in beta and may not be reliable.\n\nYou should not yet trust it to secure data.\n\nDevices will not yet be able to decrypt history from before they joined the room.\n\nEncrypted messages will not be visible on clients that do not yet implement encryption.
   internal static var roomWarningAboutEncryption: String { 
@@ -3201,6 +3545,14 @@ internal enum VectorL10n {
   /// Widget ID
   internal static var roomWidgetPermissionWidgetIdPermission: String { 
     return VectorL10n.tr("Vector", "room_widget_permission_widget_id_permission") 
+  }
+  /// Rooms are great for any group chat, private or public. Tap the + to find existing rooms, or make new ones.
+  internal static var roomsEmptyViewInformation: String { 
+    return VectorL10n.tr("Vector", "rooms_empty_view_information") 
+  }
+  /// Rooms
+  internal static var roomsEmptyViewTitle: String { 
+    return VectorL10n.tr("Vector", "rooms_empty_view_title") 
   }
   /// Save
   internal static var save: String { 
@@ -3258,15 +3610,23 @@ internal enum VectorL10n {
   internal static var secretsRecoveryResetActionPart2: String { 
     return VectorL10n.tr("Vector", "secrets_recovery_reset_action_part_2") 
   }
-  /// Access your secure message history and your cross-signing identity for verifying other sessions by entering your recovery key.
+  /// Access your secure message history and your cross-signing identity for verifying other sessions by entering your Security Key.
   internal static var secretsRecoveryWithKeyInformationDefault: String { 
     return VectorL10n.tr("Vector", "secrets_recovery_with_key_information_default") 
   }
-  /// Use your Recovery Key to verify this device.
+  /// Enter your Security Key to continue.
+  internal static var secretsRecoveryWithKeyInformationUnlockSecureBackupWithKey: String { 
+    return VectorL10n.tr("Vector", "secrets_recovery_with_key_information_unlock_secure_backup_with_key") 
+  }
+  /// Enter your Security Phrase to continue.
+  internal static var secretsRecoveryWithKeyInformationUnlockSecureBackupWithPhrase: String { 
+    return VectorL10n.tr("Vector", "secrets_recovery_with_key_information_unlock_secure_backup_with_phrase") 
+  }
+  /// Use your Security Key to verify this device.
   internal static var secretsRecoveryWithKeyInformationVerifyDevice: String { 
     return VectorL10n.tr("Vector", "secrets_recovery_with_key_information_verify_device") 
   }
-  /// Please verify that you entered the correct recovery key.
+  /// Please verify that you entered the correct Security Key.
   internal static var secretsRecoveryWithKeyInvalidRecoveryKeyMessage: String { 
     return VectorL10n.tr("Vector", "secrets_recovery_with_key_invalid_recovery_key_message") 
   }
@@ -3278,7 +3638,7 @@ internal enum VectorL10n {
   internal static var secretsRecoveryWithKeyRecoverAction: String { 
     return VectorL10n.tr("Vector", "secrets_recovery_with_key_recover_action") 
   }
-  /// Enter Recovery Key
+  /// Enter Security Key
   internal static var secretsRecoveryWithKeyRecoveryKeyPlaceholder: String { 
     return VectorL10n.tr("Vector", "secrets_recovery_with_key_recovery_key_placeholder") 
   }
@@ -3286,19 +3646,19 @@ internal enum VectorL10n {
   internal static var secretsRecoveryWithKeyRecoveryKeyTitle: String { 
     return VectorL10n.tr("Vector", "secrets_recovery_with_key_recovery_key_title") 
   }
-  /// Recovery Key
+  /// Security Key
   internal static var secretsRecoveryWithKeyTitle: String { 
     return VectorL10n.tr("Vector", "secrets_recovery_with_key_title") 
   }
-  /// Access your secure message history and your cross-signing identity for verifying other sessions by entering your recovery passphrase.
+  /// Access your secure message history and your cross-signing identity for verifying other sessions by entering your Security Phrase.
   internal static var secretsRecoveryWithPassphraseInformationDefault: String { 
     return VectorL10n.tr("Vector", "secrets_recovery_with_passphrase_information_default") 
   }
-  /// Use your Recovery Passphrase to verify this device.
+  /// Use your Security Phrase to verify this device.
   internal static var secretsRecoveryWithPassphraseInformationVerifyDevice: String { 
     return VectorL10n.tr("Vector", "secrets_recovery_with_passphrase_information_verify_device") 
   }
-  /// Please verify that you entered the correct recovery passphrase.
+  /// Please verify that you entered the correct Security Phrase.
   internal static var secretsRecoveryWithPassphraseInvalidPassphraseMessage: String { 
     return VectorL10n.tr("Vector", "secrets_recovery_with_passphrase_invalid_passphrase_message") 
   }
@@ -3306,11 +3666,11 @@ internal enum VectorL10n {
   internal static var secretsRecoveryWithPassphraseInvalidPassphraseTitle: String { 
     return VectorL10n.tr("Vector", "secrets_recovery_with_passphrase_invalid_passphrase_title") 
   }
-  /// Don’t know your recovery passphrase? You can 
+  /// Don’t know your Security Phrase? You can 
   internal static var secretsRecoveryWithPassphraseLostPassphraseActionPart1: String { 
     return VectorL10n.tr("Vector", "secrets_recovery_with_passphrase_lost_passphrase_action_part1") 
   }
-  /// use your recovery key
+  /// use your Security Key
   internal static var secretsRecoveryWithPassphraseLostPassphraseActionPart2: String { 
     return VectorL10n.tr("Vector", "secrets_recovery_with_passphrase_lost_passphrase_action_part2") 
   }
@@ -3318,7 +3678,7 @@ internal enum VectorL10n {
   internal static var secretsRecoveryWithPassphraseLostPassphraseActionPart3: String { 
     return VectorL10n.tr("Vector", "secrets_recovery_with_passphrase_lost_passphrase_action_part3") 
   }
-  /// Enter Recovery Passphrase
+  /// Enter Security Phrase
   internal static var secretsRecoveryWithPassphrasePassphrasePlaceholder: String { 
     return VectorL10n.tr("Vector", "secrets_recovery_with_passphrase_passphrase_placeholder") 
   }
@@ -3326,11 +3686,11 @@ internal enum VectorL10n {
   internal static var secretsRecoveryWithPassphrasePassphraseTitle: String { 
     return VectorL10n.tr("Vector", "secrets_recovery_with_passphrase_passphrase_title") 
   }
-  /// Use Passphrase
+  /// Use Phrase
   internal static var secretsRecoveryWithPassphraseRecoverAction: String { 
     return VectorL10n.tr("Vector", "secrets_recovery_with_passphrase_recover_action") 
   }
-  /// Recovery Passphrase
+  /// Security Phrase
   internal static var secretsRecoveryWithPassphraseTitle: String { 
     return VectorL10n.tr("Vector", "secrets_recovery_with_passphrase_title") 
   }
@@ -3366,7 +3726,7 @@ internal enum VectorL10n {
   internal static var secretsSetupRecoveryKeyExportAction: String { 
     return VectorL10n.tr("Vector", "secrets_setup_recovery_key_export_action") 
   }
-  /// Store your Recovery Key somewhere safe. It can be used to unlock your encrypted messages & data.
+  /// Store your Security Key somewhere safe. It can be used to unlock your encrypted messages & data.
   internal static var secretsSetupRecoveryKeyInformation: String { 
     return VectorL10n.tr("Vector", "secrets_setup_recovery_key_information") 
   }
@@ -3394,7 +3754,7 @@ internal enum VectorL10n {
   internal static var secretsSetupRecoveryPassphraseConfirmInformation: String { 
     return VectorL10n.tr("Vector", "secrets_setup_recovery_passphrase_confirm_information") 
   }
-  /// Confirm passphrase
+  /// Confirm phrase
   internal static var secretsSetupRecoveryPassphraseConfirmPassphrasePlaceholder: String { 
     return VectorL10n.tr("Vector", "secrets_setup_recovery_passphrase_confirm_passphrase_placeholder") 
   }
@@ -3474,7 +3834,7 @@ internal enum VectorL10n {
   internal static var secureKeyBackupSetupIntroUseSecurityPassphraseInfo: String { 
     return VectorL10n.tr("Vector", "secure_key_backup_setup_intro_use_security_passphrase_info") 
   }
-  /// Use a Security Passphrase
+  /// Use a Security Phrase
   internal static var secureKeyBackupSetupIntroUseSecurityPassphraseTitle: String { 
     return VectorL10n.tr("Vector", "secure_key_backup_setup_intro_use_security_passphrase_title") 
   }
@@ -3510,7 +3870,7 @@ internal enum VectorL10n {
   internal static var securitySettingsCrosssigning: String { 
     return VectorL10n.tr("Vector", "security_settings_crosssigning") 
   }
-  /// Bootstrap cross-signing
+  /// Set up
   internal static var securitySettingsCrosssigningBootstrap: String { 
     return VectorL10n.tr("Vector", "security_settings_crosssigning_bootstrap") 
   }
@@ -3526,7 +3886,7 @@ internal enum VectorL10n {
   internal static var securitySettingsCrosssigningInfoNotBootstrapped: String { 
     return VectorL10n.tr("Vector", "security_settings_crosssigning_info_not_bootstrapped") 
   }
-  /// Cross-signing is enabled.
+  /// Cross-signing is ready for use.
   internal static var securitySettingsCrosssigningInfoOk: String { 
     return VectorL10n.tr("Vector", "security_settings_crosssigning_info_ok") 
   }
@@ -3534,7 +3894,7 @@ internal enum VectorL10n {
   internal static var securitySettingsCrosssigningInfoTrusted: String { 
     return VectorL10n.tr("Vector", "security_settings_crosssigning_info_trusted") 
   }
-  /// Reset cross-signing
+  /// Reset
   internal static var securitySettingsCrosssigningReset: String { 
     return VectorL10n.tr("Vector", "security_settings_crosssigning_reset") 
   }
@@ -3562,21 +3922,33 @@ internal enum VectorL10n {
   internal static var securitySettingsSecureBackup: String { 
     return VectorL10n.tr("Vector", "security_settings_secure_backup") 
   }
-  /// Delete
+  /// Delete Backup
   internal static var securitySettingsSecureBackupDelete: String { 
     return VectorL10n.tr("Vector", "security_settings_secure_backup_delete") 
   }
-  /// Safeguard against losing access to encrypted messages & data by backing up encryption keys on your server.
+  /// Back up your encryption keys with your account data in case you lose access to your sessions. Your keys will be secured with a unique Security Key.
   internal static var securitySettingsSecureBackupDescription: String { 
     return VectorL10n.tr("Vector", "security_settings_secure_backup_description") 
+  }
+  /// Checking…
+  internal static var securitySettingsSecureBackupInfoChecking: String { 
+    return VectorL10n.tr("Vector", "security_settings_secure_backup_info_checking") 
+  }
+  /// This session is backing up your keys.
+  internal static var securitySettingsSecureBackupInfoValid: String { 
+    return VectorL10n.tr("Vector", "security_settings_secure_backup_info_valid") 
+  }
+  /// Reset
+  internal static var securitySettingsSecureBackupReset: String { 
+    return VectorL10n.tr("Vector", "security_settings_secure_backup_reset") 
+  }
+  /// Restore from Backup
+  internal static var securitySettingsSecureBackupRestore: String { 
+    return VectorL10n.tr("Vector", "security_settings_secure_backup_restore") 
   }
   /// Set up
   internal static var securitySettingsSecureBackupSetup: String { 
     return VectorL10n.tr("Vector", "security_settings_secure_backup_setup") 
-  }
-  /// Synchronise
-  internal static var securitySettingsSecureBackupSynchronise: String { 
-    return VectorL10n.tr("Vector", "security_settings_secure_backup_synchronise") 
   }
   /// Security
   internal static var securitySettingsTitle: String { 
@@ -3634,7 +4006,7 @@ internal enum VectorL10n {
   internal static var serviceTermsModalTitleIdentityServer: String { 
     return VectorL10n.tr("Vector", "service_terms_modal_title_identity_server") 
   }
-  /// Invalid password
+  /// Invalid credentials
   internal static var settingsAdd3pidInvalidPasswordMessage: String { 
     return VectorL10n.tr("Vector", "settings_add_3pid_invalid_password_message") 
   }
@@ -3753,6 +4125,10 @@ internal enum VectorL10n {
   /// Deactivate my account
   internal static var settingsDeactivateMyAccount: String { 
     return VectorL10n.tr("Vector", "settings_deactivate_my_account") 
+  }
+  /// Device notifications
+  internal static var settingsDeviceNotifications: String { 
+    return VectorL10n.tr("Vector", "settings_device_notifications") 
   }
   /// SESSIONS
   internal static var settingsDevices: String { 
@@ -3954,7 +4330,7 @@ internal enum VectorL10n {
   internal static var settingsKeyBackupInfoProgressDone: String { 
     return VectorL10n.tr("Vector", "settings_key_backup_info_progress_done") 
   }
-  /// Connect this session to key backup before signing out to avoid losing any keys that may only be on this device.
+  /// Back up your keys before signing out to avoid losing them.
   internal static var settingsKeyBackupInfoSignoutWarning: String { 
     return VectorL10n.tr("Vector", "settings_key_backup_info_signout_warning") 
   }
@@ -4006,9 +4382,17 @@ internal enum VectorL10n {
   internal static var settingsLabsE2eEncryptionPromptMessage: String { 
     return VectorL10n.tr("Vector", "settings_labs_e2e_encryption_prompt_message") 
   }
+  /// Ring for group calls
+  internal static var settingsLabsEnableRingingForGroupCalls: String { 
+    return VectorL10n.tr("Vector", "settings_labs_enable_ringing_for_group_calls") 
+  }
   /// React to messages with emoji
   internal static var settingsLabsMessageReaction: String { 
     return VectorL10n.tr("Vector", "settings_labs_message_reaction") 
+  }
+  /// Voice messages
+  internal static var settingsLabsVoiceMessages: String { 
+    return VectorL10n.tr("Vector", "settings_labs_voice_messages") 
   }
   /// Mark all messages as read
   internal static var settingsMarkAllAsRead: String { 
@@ -4022,6 +4406,14 @@ internal enum VectorL10n {
   internal static var settingsNightMode: String { 
     return VectorL10n.tr("Vector", "settings_night_mode") 
   }
+  /// To enable notifications, go to your device settings.
+  internal static var settingsNotificationsDisabledAlertMessage: String { 
+    return VectorL10n.tr("Vector", "settings_notifications_disabled_alert_message") 
+  }
+  /// Notifications disabled
+  internal static var settingsNotificationsDisabledAlertTitle: String { 
+    return VectorL10n.tr("Vector", "settings_notifications_disabled_alert_title") 
+  }
   /// NOTIFICATION SETTINGS
   internal static var settingsNotificationsSettings: String { 
     return VectorL10n.tr("Vector", "settings_notifications_settings") 
@@ -4033,10 +4425,6 @@ internal enum VectorL10n {
   /// Olm Version %@
   internal static func settingsOlmVersion(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "settings_olm_version", p1)
-  }
-  /// Notifications are denied for %@, please allow them in your device settings
-  internal static func settingsOnDeniedNotification(_ p1: String) -> String {
-    return VectorL10n.tr("Vector", "settings_on_denied_notification", p1)
   }
   /// OTHER
   internal static var settingsOther: String { 
@@ -4093,6 +4481,10 @@ internal enum VectorL10n {
   /// Show decrypted content
   internal static var settingsShowDecryptedContent: String { 
     return VectorL10n.tr("Vector", "settings_show_decrypted_content") 
+  }
+  /// Show NSFW public rooms
+  internal static var settingsShowNSFWPublicRooms: String { 
+    return VectorL10n.tr("Vector", "settings_show_NSFW_public_rooms") 
   }
   /// Sign Out
   internal static var settingsSignOut: String { 
@@ -4158,9 +4550,13 @@ internal enum VectorL10n {
   internal static var settingsUiThemeLight: String { 
     return VectorL10n.tr("Vector", "settings_ui_theme_light") 
   }
-  /// "Auto" uses your device "Invert Colours" settings
-  internal static var settingsUiThemePickerMessage: String { 
-    return VectorL10n.tr("Vector", "settings_ui_theme_picker_message") 
+  /// "Auto" uses your device's "Invert Colours" settings
+  internal static var settingsUiThemePickerMessageInvertColours: String { 
+    return VectorL10n.tr("Vector", "settings_ui_theme_picker_message_invert_colours") 
+  }
+  /// "Auto" matches your device's system theme
+  internal static var settingsUiThemePickerMessageMatchSystemTheme: String { 
+    return VectorL10n.tr("Vector", "settings_ui_theme_picker_message_match_system_theme") 
   }
   /// Select a theme
   internal static var settingsUiThemePickerTitle: String { 
@@ -4189,6 +4585,30 @@ internal enum VectorL10n {
   /// Failed to send. Check in the main app the encryption settings for this room
   internal static var shareExtensionFailedToEncrypt: String { 
     return VectorL10n.tr("Vector", "share_extension_failed_to_encrypt") 
+  }
+  /// Feedback
+  internal static var sideMenuActionFeedback: String { 
+    return VectorL10n.tr("Vector", "side_menu_action_feedback") 
+  }
+  /// Help
+  internal static var sideMenuActionHelp: String { 
+    return VectorL10n.tr("Vector", "side_menu_action_help") 
+  }
+  /// Invite friends
+  internal static var sideMenuActionInviteFriends: String { 
+    return VectorL10n.tr("Vector", "side_menu_action_invite_friends") 
+  }
+  /// Settings
+  internal static var sideMenuActionSettings: String { 
+    return VectorL10n.tr("Vector", "side_menu_action_settings") 
+  }
+  /// Version %@
+  internal static func sideMenuAppVersion(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "side_menu_app_version", p1)
+  }
+  /// Left panel
+  internal static var sideMenuRevealActionAccessibilityLabel: String { 
+    return VectorL10n.tr("Vector", "side_menu_reveal_action_accessibility_label") 
   }
   /// Sign out
   internal static var signOutExistingKeyBackupAlertSignOutAction: String { 
@@ -4241,6 +4661,58 @@ internal enum VectorL10n {
   /// Skip
   internal static var skip: String { 
     return VectorL10n.tr("Vector", "skip") 
+  }
+  /// Continue with %@
+  internal static func socialLoginButtonTitleContinue(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "social_login_button_title_continue", p1)
+  }
+  /// Sign In with %@
+  internal static func socialLoginButtonTitleSignIn(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "social_login_button_title_sign_in", p1)
+  }
+  /// Sign Up with %@
+  internal static func socialLoginButtonTitleSignUp(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "social_login_button_title_sign_up", p1)
+  }
+  /// Continue with
+  internal static var socialLoginListTitleContinue: String { 
+    return VectorL10n.tr("Vector", "social_login_list_title_continue") 
+  }
+  /// Or
+  internal static var socialLoginListTitleSignIn: String { 
+    return VectorL10n.tr("Vector", "social_login_list_title_sign_in") 
+  }
+  /// Or
+  internal static var socialLoginListTitleSignUp: String { 
+    return VectorL10n.tr("Vector", "social_login_list_title_sign_up") 
+  }
+  /// BETA
+  internal static var spaceBetaAnnounceBadge: String { 
+    return VectorL10n.tr("Vector", "space_beta_announce_badge") 
+  }
+  /// Spaces are a new way to group rooms and people. They’re not on iOS yet, but you can use them now on Web and Desktop.
+  internal static var spaceBetaAnnounceInformation: String { 
+    return VectorL10n.tr("Vector", "space_beta_announce_information") 
+  }
+  /// The new version of communities
+  internal static var spaceBetaAnnounceSubtitle: String { 
+    return VectorL10n.tr("Vector", "space_beta_announce_subtitle") 
+  }
+  /// Spaces are coming soon
+  internal static var spaceBetaAnnounceTitle: String { 
+    return VectorL10n.tr("Vector", "space_beta_announce_title") 
+  }
+  /// Spaces are a new way to group rooms and people.\n\nThey’ll be here soon. For now, if you join one on another platform, you will be able to access any rooms you join here.
+  internal static var spaceFeatureUnavailableInformation: String { 
+    return VectorL10n.tr("Vector", "space_feature_unavailable_information") 
+  }
+  /// Spaces aren't on iOS yet, but you can use them now on Web and Desktop
+  internal static var spaceFeatureUnavailableSubtitle: String { 
+    return VectorL10n.tr("Vector", "space_feature_unavailable_subtitle") 
+  }
+  /// Spaces aren’t here yet
+  internal static var spaceFeatureUnavailableTitle: String { 
+    return VectorL10n.tr("Vector", "space_feature_unavailable_title") 
   }
   /// Start
   internal static var start: String { 
@@ -4313,6 +4785,14 @@ internal enum VectorL10n {
   /// Verify…
   internal static var unknownDevicesVerify: String { 
     return VectorL10n.tr("Vector", "unknown_devices_verify") 
+  }
+  /// Change user avatar
+  internal static var userAvatarViewAccessibilityHint: String { 
+    return VectorL10n.tr("Vector", "user_avatar_view_accessibility_hint") 
+  }
+  /// avatar
+  internal static var userAvatarViewAccessibilityLabel: String { 
+    return VectorL10n.tr("Vector", "user_avatar_view_accessibility_label") 
   }
   /// If you didn’t sign in to this session, your account may be compromised.
   internal static var userVerificationSessionDetailsAdditionalInformationUntrustedCurrentUser: String { 
@@ -4421,6 +4901,22 @@ internal enum VectorL10n {
   /// Voice
   internal static var voice: String { 
     return VectorL10n.tr("Vector", "voice") 
+  }
+  /// Voice message
+  internal static var voiceMessageLockScreenPlaceholder: String { 
+    return VectorL10n.tr("Vector", "voice_message_lock_screen_placeholder") 
+  }
+  /// Hold to record, release to send
+  internal static var voiceMessageReleaseToSend: String { 
+    return VectorL10n.tr("Vector", "voice_message_release_to_send") 
+  }
+  /// %@s left
+  internal static func voiceMessageRemainingRecordingTime(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "voice_message_remaining_recording_time", p1)
+  }
+  /// Tap on your recording to stop or listen
+  internal static var voiceMessageStopLockedModeRecording: String { 
+    return VectorL10n.tr("Vector", "voice_message_stop_locked_mode_recording") 
   }
   /// Warning
   internal static var warning: String { 

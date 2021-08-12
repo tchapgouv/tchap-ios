@@ -123,7 +123,7 @@ final class JitsiService: NSObject {
                     failure(JitsiServiceError.widgetContentCreationFailed)
                 }
             case .failure(let error):
-                NSLog("[JitsiService] Fail to get Jitsi Well Known with error: \(error)")
+                MXLog.debug("[JitsiService] Fail to get Jitsi Well Known with error: \(error)")
                 failure(error)
             }
         }
@@ -208,7 +208,7 @@ final class JitsiService: NSObject {
                                           roomID: String,
                                           isAudioOnly: Bool) -> [String: Any]? {
         guard MXTools.isMatrixRoomIdentifier(roomID) else {
-            NSLog("[JitsiService] createJitsiWidgetContent the roomID is not valid")
+            MXLog.debug("[JitsiService] createJitsiWidgetContent the roomID is not valid")
             return nil
         }
         

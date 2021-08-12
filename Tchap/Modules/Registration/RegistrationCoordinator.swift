@@ -85,11 +85,11 @@ final class RegistrationCoordinator: RegistrationCoordinatorType {
             switch registrationResult {
             case .success:
                 // NOTE: Do not call delegate directly for the moment, wait for NSNotification.Name.legacyAppDelegateDidLogin
-                print("[RegistrationCoordinator] User did authenticate with success")
+                MXLog.debug("[RegistrationCoordinator] User did authenticate with success")
             case .failure(let error):
                 // Ignore unauthorized error
                 if let mxError = MXError(nsError: error), mxError.errcode == kMXErrCodeStringUnauthorized {
-                    print("[RegistrationCoordinator] The email validation is pending")
+                    MXLog.debug("[RegistrationCoordinator] The email validation is pending")
                     
                     let registrationEmailSentViewController = RegistrationEmailSentViewController.instantiate(userEmail: userEmail)
                     registrationEmailSentViewController.delegate = self

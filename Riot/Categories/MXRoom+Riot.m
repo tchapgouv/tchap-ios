@@ -43,7 +43,7 @@
     
     NSString* tagOrder = [self.mxSession tagOrderToBeAtIndex:0 from:NSNotFound withTag:tag];
     
-    NSLog(@"[MXRoom+Riot] Update the room %@ tag from %@ to %@ with tag order %@", self.roomId, oldTag, tag, tagOrder);
+    MXLogDebug(@"[MXRoom+Riot] Update the room %@ tag from %@ to %@ with tag order %@", self.roomId, oldTag, tag, tagOrder);
     
     [self replaceTag:oldTag
                byTag:tag
@@ -57,7 +57,7 @@
                  
              } failure:^(NSError *error) {
                  
-                 NSLog(@"[MXRoom+Riot] Failed to update the tag %@ of room (%@)", tag, self.roomId);
+                 MXLogDebug(@"[MXRoom+Riot] Failed to update the tag %@ of room (%@)", tag, self.roomId);
                  NSString *userId = self.mxSession.myUser.userId;
                  
                  // Notify user
@@ -166,7 +166,7 @@
         // Check whether there is no pending update for this room
         if (self.notificationCenterDidUpdateObserver)
         {
-            NSLog(@"[MXRoom+Riot] Request in progress: ignore push rule update");
+            MXLogDebug(@"[MXRoom+Riot] Request in progress: ignore push rule update");
             if (completion)
             {
                 completion();
@@ -244,7 +244,7 @@
         // Check whether there is no pending update for this room
         if (self.notificationCenterDidUpdateObserver)
         {
-            NSLog(@"[MXRoom+Riot] Request in progress: ignore push rule update");
+            MXLogDebug(@"[MXRoom+Riot] Request in progress: ignore push rule update");
             if (completion)
             {
                 completion();
@@ -654,6 +654,32 @@
 - (id)notificationCenterDidUpdateObserver
 {
     return objc_getAssociatedObject(self, @selector(notificationCenterDidUpdateObserver));
+}
+
+#pragma mark - Unread messages
+
+- (RoomSentStatus)sentStatus
+{
+    RoomSentStatus status = RoomSentStatusOk;
+    NSArray<MXEvent*> *outgoingMsgs = self.outgoingMessages;
+
+    for (MXEvent *event in outgoingMsgs)
+    {
+        if (event.sentState == MXEventSentStateFailed)
+        {
+            status = RoomSentStatusSentFailed;
+
+            // Check if the error is due to unknown devices
+            if ([event.sentError.domain isEqualToString:MXEncryptingErrorDomain]
+                && event.sentError.code == MXEncryptingErrorUnknownDeviceCode)
+            {
+                status = RoomSentStatusSentFailedDueToUnknownDevices;
+                break;
+            }
+        }
+    }
+    
+    return status;
 }
 
 @end

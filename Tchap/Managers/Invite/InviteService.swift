@@ -96,7 +96,7 @@ final class InviteService: InviteServiceType {
                                 break
                             }
                         case .failure(let error):
-                            NSLog("[InviteService] sendEmailInvite failed")
+                            MXLog.debug("[InviteService] sendEmailInvite failed")
                             completion(MXResponse.failure(error))
                         }
                     }
@@ -115,7 +115,7 @@ final class InviteService: InviteServiceType {
            let lookup3pidsOperation = self.thirdPartyIDResolver.lookup(address: email, medium: .email, identityServer: identityServer, completion: completion) {
             lookup3pidsOperation.maxRetriesTime = 0
         } else {
-            NSLog("[InviteService] discoverUser failed")
+            MXLog.debug("[InviteService] discoverUser failed")
             completion(MXResponse.failure(InviteServiceError.unknown))
         }
     }
@@ -141,7 +141,7 @@ final class InviteService: InviteServiceType {
                         case .success(let roomID):
                             completion(.success(.inviteHasBeenSent(roomID: roomID)))
                         case .failure(let error):
-                            NSLog("[InviteService] createDiscussion failed")
+                            MXLog.debug("[InviteService] createDiscussion failed")
                             completion(MXResponse.failure(error))
                         }
                     })
@@ -157,7 +157,7 @@ final class InviteService: InviteServiceType {
     
     private func revokePendingInviteAndLeave(_ roomID: String, completion: @escaping (MXResponse<Void>) -> Void) {
         guard let room = self.session.room(withRoomId: roomID) else {
-            NSLog("[InviteService] unable to revoke invite")
+            MXLog.debug("[InviteService] unable to revoke invite")
             completion(.failure(InviteServiceError.unknown))
             return
         }
@@ -186,7 +186,7 @@ final class InviteService: InviteServiceType {
                     self.roomInProcess = nil
                 }
             } else {
-                NSLog("[InviteService] unable to revoke invite (no pending invite)")
+                MXLog.debug("[InviteService] unable to revoke invite (no pending invite)")
                 self.session.leaveRoom(roomID, completion: completion)
                 self.roomInProcess = nil
             }

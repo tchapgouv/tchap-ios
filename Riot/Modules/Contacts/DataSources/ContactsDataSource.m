@@ -221,7 +221,7 @@
                 if ((![error.domain isEqualToString:NSURLErrorDomain] || error.code != NSURLErrorCancelled))
                 {
                     // But for other errors, launch a local search
-                    NSLog(@"[ContactsDataSource] [MXRestClient searchUsers] returns an error. Do a search on local known contacts");
+                    MXLogDebug(@"[ContactsDataSource] [MXRestClient searchUsers] returns an error. Do a search on local known contacts");
                     [self searchWithPattern:searchText forceReset:forceRefresh hsUserDirectory:NO];
                 }
             }];
@@ -499,7 +499,7 @@
     
     if (section == searchInputSection)
     {
-        count = 1;
+        count = RiotSettings.shared.allowInviteExernalUsers ? 1 : 0;
     }
     else if (section == filteredLocalContactsSection && !(shrinkedSectionsBitMask & CONTACTSDATASOURCE_LOCALCONTACTS_BITWISE))
     {
@@ -688,12 +688,16 @@
     NSUInteger index = [filteredLocalContacts indexOfObject:contact];
     if (index != NSNotFound)
     {
-        indexPath = [NSIndexPath indexPathForRow:index inSection:filteredLocalContactsSection];
+        // if local section is collapsed there is no cell
+        if (!(shrinkedSectionsBitMask & CONTACTSDATASOURCE_LOCALCONTACTS_BITWISE)) {
+            indexPath = [NSIndexPath indexPathForRow:index inSection:filteredLocalContactsSection];
+        }
     }
     else
     {
         index = [filteredMatrixContacts indexOfObject:contact];
-        if (index != NSNotFound)
+        // if matrix section is collapsed or we are not showing the matrix section(as with empty query) there is no cell
+        if (index != NSNotFound && !(shrinkedSectionsBitMask & CONTACTSDATASOURCE_USERDIRECTORY_BITWISE) && filteredMatrixContactsSection != -1)
         {
             indexPath = [NSIndexPath indexPathForRow:index inSection:filteredMatrixContactsSection];
         }

@@ -117,7 +117,7 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
     
     private func loadData() {
         guard self.canLoadData() else {
-            print("[FavouriteMessagesViewModel] loadData: pending loading or all data loaded")
+            MXLog.debug("[FavouriteMessagesViewModel] loadData: pending loading or all data loaded")
             return
         }
 
@@ -173,19 +173,19 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
                 //  attempt to fetch the event
                 self.session.event(withEventId: favouriteEvent.eventId, inRoom: favouriteEvent.roomId, success: { [weak self] (event) in
                     guard let self = self else {
-                        NSLog("[FavouriteMessagesViewModel] fetchEvent: MXSession.event method returned too late successfully.")
+                        MXLog.debug("[FavouriteMessagesViewModel] fetchEvent: MXSession.event method returned too late successfully.")
                         return
                     }
                     
                     guard let event = event else {
                         self.process(cellDatas: favouriteMessagesCache)
-                        NSLog("[FavouriteMessagesViewModel] fetchEvent: MXSession.event method returned successfully with no event.")
+                        MXLog.debug("[FavouriteMessagesViewModel] fetchEvent: MXSession.event method returned successfully with no event.")
                         return
                     }
                     
                     //  handle encryption for this event
                     if event.isEncrypted && event.clear == nil && self.session.decryptEvent(event, inTimeline: nil) == false {
-                        print("[FavouriteMessagesViewModel] processEditEvent: Fail to decrypt event: \(event.eventId ?? "")")
+                        MXLog.debug("[FavouriteMessagesViewModel] processEditEvent: Fail to decrypt event: \(event.eventId ?? "")")
                     }
                     
                     // Check whether the user knows this room to create the room data source if it doesn't exist.

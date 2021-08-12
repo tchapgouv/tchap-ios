@@ -78,18 +78,21 @@
         }
 
         // Link to the integration manager
-        alertAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"widget_picker_manage_integrations", @"Vector", nil)
-                                               style:UIAlertActionStyleDefault
-                                             handler:^(UIAlertAction * _Nonnull action)
-                       {
-                           IntegrationManagerViewController *modularVC = [[IntegrationManagerViewController alloc] initForMXSession:self->mxSession
-                                                                                                                             inRoom:self->roomId
-                                                                                                                             screen:kIntegrationManagerMainScreen
-                                                                                                                           widgetId:nil];
+        if (RiotSettings.shared.roomInfoScreenShowIntegrations)
+        {
+            alertAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"widget_picker_manage_integrations", @"Vector", nil)
+                                                   style:UIAlertActionStyleDefault
+                                                 handler:^(UIAlertAction * _Nonnull action)
+                           {
+                               IntegrationManagerViewController *modularVC = [[IntegrationManagerViewController alloc] initForMXSession:self->mxSession
+                                                                                                                                 inRoom:self->roomId
+                                                                                                                                 screen:kIntegrationManagerMainScreen
+                                                                                                                               widgetId:nil];
 
-                           [mxkViewController presentViewController:modularVC animated:NO completion:nil];
-                       }];
-        [self.alertController addAction:alertAction];
+                               [mxkViewController presentViewController:modularVC animated:NO completion:nil];
+                           }];
+            [self.alertController addAction:alertAction];
+        }
 
         // Cancel
         alertAction = [UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
@@ -118,7 +121,7 @@
         
     } failure:^(NSError * _Nonnull error) {
         
-        NSLog(@"[WidgetPickerVC] Get widget URL failed with error: %@", error);
+        MXLogDebug(@"[WidgetPickerVC] Get widget URL failed with error: %@", error);
         
         if (canPresentServiceTerms
             && [error.domain isEqualToString:WidgetManagerErrorDomain]
@@ -144,7 +147,7 @@
     
     WidgetManagerConfig *config =  [[WidgetManager sharedManager] configForUser:widget.mxSession.myUser.userId];
     
-    NSLog(@"[WidgetVC] presentTerms for %@", config.baseUrl);
+    MXLogDebug(@"[WidgetVC] presentTerms for %@", config.baseUrl);
     
     ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter = [[ServiceTermsModalCoordinatorBridgePresenter alloc] initWithSession:widget.mxSession baseUrl:config.baseUrl
                                                                                                                                                         serviceType:MXServiceTypeIntegrationManager

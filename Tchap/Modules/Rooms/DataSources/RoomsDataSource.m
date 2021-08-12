@@ -133,7 +133,11 @@
 #ifdef SUPPORT_KEYS_BACKUP
     SecureBackupBannerPreferences *secureBackupBannersPreferences = SecureBackupBannerPreferences.shared;
     
-    if (!secureBackupBannersPreferences.hideSetupBanner && [self.mxSession vc_canSetupSecureBackup])
+    // Display the banner only if we can set up 4S, if there are messages keys to backup and key backup is disabled
+    if (!secureBackupBannersPreferences.hideSetupBanner
+        && [self.mxSession vc_canSetupSecureBackup]
+        && self.mxSession.crypto.backup.hasKeysToBackup
+        && self.mxSession.crypto.backup.state == MXKeyBackupStateDisabled)
     {
         secureBackupBanner = SecureBackupBannerDisplaySetup;
     }
@@ -178,7 +182,7 @@
             [self updateCrossSigningBannerDisplay:crossSigningBannerDisplay];
             
         } failure:^(NSError * _Nonnull error) {
-            NSLog(@"[RecentsDataSource] refreshCrossSigningBannerDisplay: Fail to verify if cross signing banner can be displayed");
+            MXLogDebug(@"[RecentsDataSource] refreshCrossSigningBannerDisplay: Fail to verify if cross signing banner can be displayed");
         }];
     }
     else

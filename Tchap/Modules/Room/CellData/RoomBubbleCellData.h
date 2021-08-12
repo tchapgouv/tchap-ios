@@ -27,7 +27,10 @@ typedef NS_ENUM(NSInteger, RoomBubbleCellDataTag)
     RoomBubbleCellDataTagKeyVerificationNoDisplay,
     RoomBubbleCellDataTagKeyVerificationRequestIncomingApproval,
     RoomBubbleCellDataTagKeyVerificationRequest,
-    RoomBubbleCellDataTagKeyVerificationConclusion
+    RoomBubbleCellDataTagKeyVerificationConclusion,
+    RoomBubbleCellDataTagCall,
+    RoomBubbleCellDataTagGroupCall,
+    RoomBubbleCellDataTagRoomCreationIntro
 };
 
 /**
@@ -85,6 +88,11 @@ typedef NS_ENUM(NSInteger, RoomBubbleCellDataTag)
  Indicate if there is a pending operation that updates `keyVerification` property.
  */
 @property(nonatomic) BOOL isKeyVerificationOperationPending;
+
+/**
+ Index of the component which needs a sent tick displayed. -1 if none.
+ */
+@property(nonatomic) NSInteger componentIndexOfSentMessageTick;
 
 /**
  Indicate to update additional content height.

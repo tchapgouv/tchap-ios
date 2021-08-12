@@ -82,6 +82,7 @@
     // Enable self-sizing cells.
     self.recentsTableView.rowHeight = UITableViewAutomaticDimension;
     self.recentsTableView.estimatedRowHeight = 56;
+    self.recentsTableView.backgroundColor = ThemeService.shared.theme.backgroundColor;
     
     [self configureSearchBar];
 }
@@ -110,6 +111,7 @@
     self.recentsSearchBar.searchBarStyle = UISearchBarStyleMinimal;
     self.recentsSearchBar.placeholder = NSLocalizedStringFromTable(@"search_default_placeholder", @"Vector", nil);
     self.recentsSearchBar.tintColor = ThemeService.shared.theme.tintColor;
+    self.recentsSearchBar.backgroundColor = ThemeService.shared.theme.baseColor;
     
     _tableSearchBar.tintColor = self.recentsSearchBar.tintColor;
 }
@@ -138,6 +140,13 @@
         self.recentsTableView.tableHeaderView = nil;
         self.recentsTableView.contentInset = UIEdgeInsetsZero;
     }
+}
+
+- (void)setKeyboardHeight:(CGFloat)keyboardHeight
+{
+    // Bypass inherited keyboard handling to fix layout when searching.
+    // There are no sticky headers to worry about updating.
+    return;
 }
 
 #pragma mark - Private
@@ -199,7 +208,7 @@
 
         } failure:^(NSError *error) {
 
-            NSLog(@"[RoomsListViewController] failed to prepare matrix session]");
+            MXLogDebug(@"[RoomsListViewController] failed to prepare matrix session]");
 
         }];
     }];
@@ -416,6 +425,12 @@
                 
                 // Refresh display
                 [self refreshRecentsTable];
+            }
+            
+            // Dismiss the keyboard when scrolling to match the behaviour of the main app.
+            if (self.recentsSearchBar.isFirstResponder)
+            {
+                [self.recentsSearchBar resignFirstResponder];
             }
         }
     }

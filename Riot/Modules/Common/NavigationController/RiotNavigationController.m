@@ -14,6 +14,8 @@
  limitations under the License.
  */
 
+@import MatrixSDK;
+
 #import "RiotNavigationController.h"
 
 @implementation RiotNavigationController
@@ -53,6 +55,16 @@
         return self.topViewController.preferredInterfaceOrientationForPresentation;
     }
     return [super preferredInterfaceOrientationForPresentation];
+}
+
+- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    if ([self.viewControllers indexOfObject:viewController] != NSNotFound)
+    {
+        MXLogDebug(@"[RiotNavigationController] pushViewController: is pushing same view controller %@\n%@", viewController, [NSThread callStackSymbols]);
+        return;
+    }
+    [super pushViewController:viewController animated:animated];
 }
 
 @end

@@ -193,7 +193,7 @@ final class RoomAccessByLinkViewController: UIViewController {
     
     @IBAction private func shareLinkButtonAction(_ sender: Any) {
         guard let link = self.roomLinkLabel.text, !link.isEmpty else {
-            print("[RoomAccessByLinkViewController] shareLinkButtonAction: no link to share")
+            MXLog.debug("[RoomAccessByLinkViewController] shareLinkButtonAction: no link to share")
             return
         }
         
