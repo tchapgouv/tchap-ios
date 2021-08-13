@@ -56,9 +56,6 @@ import Reusable
     
     private weak var titlesStackViewCenterXConstraint: NSLayoutConstraint?
     
-    // Left margin from superView, used only for iOS 10 and below
-    private var leftMargin: CGFloat = 0
-    
     private var imageShape: AvatarImageShape = .circle
     
     @objc weak var delegate: RoomTitleViewDelegate?
