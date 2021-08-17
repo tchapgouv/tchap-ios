@@ -22,7 +22,7 @@ struct RoomCreationFormResult {
     let roomType: RoomType
 }
 
-protocol RoomCreationViewControllerDelegate: class {
+protocol RoomCreationViewControllerDelegate: AnyObject {
     func roomCreationViewControllerDidTapAddAvatarButton(_ roomCreationViewController: RoomCreationViewController)
     func roomCreationViewController(_ roomCreationViewController: RoomCreationViewController, didTapNextButtonWith roomCreationFormResult: RoomCreationFormResult)
 }

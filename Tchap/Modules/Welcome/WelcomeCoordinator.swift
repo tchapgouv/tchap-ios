@@ -16,7 +16,7 @@
 
 import Foundation
 
-protocol WelcomeCoordinatorDelegate: class {
+protocol WelcomeCoordinatorDelegate: AnyObject {
     func welcomeCoordinatorUserDidAuthenticate(_ coordinator: WelcomeCoordinatorType)
 }
 

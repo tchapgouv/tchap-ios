@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-protocol PublicRoomsViewControllerDelegate: class {
+protocol PublicRoomsViewControllerDelegate: AnyObject {
     func publicRoomsViewController(_ publicRoomsViewController: PublicRoomsViewController, didSelect publicRoom: MXPublicRoom)
 }
 

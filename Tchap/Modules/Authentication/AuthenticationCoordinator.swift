@@ -16,7 +16,7 @@
 
 import Foundation
 
-protocol AuthenticationCoordinatorDelegate: class {
+protocol AuthenticationCoordinatorDelegate: AnyObject {
     func authenticationCoordinator(coordinator: AuthenticationCoordinatorType, didAuthenticateWithUserId userId: String)
 }
 

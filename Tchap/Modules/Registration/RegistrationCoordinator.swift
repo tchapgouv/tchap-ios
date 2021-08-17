@@ -16,7 +16,7 @@
 
 import Foundation
 
-protocol RegistrationCoordinatorDelegate: class {
+protocol RegistrationCoordinatorDelegate: AnyObject {
     func registrationCoordinatorDidRegisterUser(_ coordinator: RegistrationCoordinatorType)
     func registrationCoordinatorShowAuthentication(_ coordinator: RegistrationCoordinatorType)
 }

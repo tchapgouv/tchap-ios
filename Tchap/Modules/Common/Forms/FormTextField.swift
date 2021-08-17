@@ -17,7 +17,7 @@
 import Foundation
 import Reusable
 
-protocol FormTextFieldDelegate: class {
+protocol FormTextFieldDelegate: AnyObject {
     func formTextFieldShouldReturn(_ formTextField: FormTextField) -> Bool
 }
 

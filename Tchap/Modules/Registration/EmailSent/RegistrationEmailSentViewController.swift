@@ -16,7 +16,7 @@
 
 import Foundation
 
-protocol RegistrationEmailSentViewControllerDelegate: class {
+protocol RegistrationEmailSentViewControllerDelegate: AnyObject {
     func registrationEmailSentViewControllerDidTapGoToLoginButton(_ registrationEmailSentViewController: RegistrationEmailSentViewController)
     func registrationEmailSentViewControllerDidTapEmailNotReceivedButton(_ registrationEmailSentViewController: RegistrationEmailSentViewController)
 }

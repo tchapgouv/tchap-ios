@@ -17,7 +17,7 @@
 import UIKit
 import Reusable
 
-protocol RoomCreationAvatarViewDelegate: class {
+protocol RoomCreationAvatarViewDelegate: AnyObject {
     func roomCreationAvatarViewDidTapAddPhotoButton(_ roomCreationAvatarView: RoomCreationAvatarView)
 }
 

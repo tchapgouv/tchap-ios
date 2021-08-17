@@ -16,7 +16,7 @@
 
 import Foundation
 
-protocol ForgotPasswordCoordinatorDelegate: class {
+protocol ForgotPasswordCoordinatorDelegate: AnyObject {
     func forgotPasswordCoordinatorDidComplete(_ forgotPasswordCoordinator: ForgotPasswordCoordinator)
 }
 

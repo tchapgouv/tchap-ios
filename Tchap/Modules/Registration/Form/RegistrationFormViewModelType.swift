@@ -16,7 +16,7 @@
 
 import Foundation
 
-protocol RegistrationFormViewModelDelegate: class {
+protocol RegistrationFormViewModelDelegate: AnyObject {
     func registrationFormViewModel(_ viewModel: RegistrationFormViewModelType, shouldHideConfirmPasswordTextField isHidden: Bool)
 }
 

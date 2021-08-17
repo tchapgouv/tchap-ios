@@ -16,7 +16,7 @@
 
 import Foundation
 
-protocol ContactsCoordinatorDelegate: class {
+protocol ContactsCoordinatorDelegate: AnyObject {
     func contactsCoordinator(_ coordinator: ContactsCoordinatorType, didSelectUserID userID: String)
     func contactsCoordinator(_ coordinator: ContactsCoordinatorType, sendEmailInviteTo email: String)
 }

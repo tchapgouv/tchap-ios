@@ -16,7 +16,7 @@
 
 import UIKit
 
-protocol AppVersionUpdateViewControllerDelegate: class {
+protocol AppVersionUpdateViewControllerDelegate: AnyObject {
     func appVersionUpdateViewControllerDidTapCancelAction(_ appVersionUpdateViewController: AppVersionUpdateViewController)
     func appVersionUpdateViewControllerDidTapOpenAppStoreAction(_ appVersionUpdateViewController: AppVersionUpdateViewController)
 }

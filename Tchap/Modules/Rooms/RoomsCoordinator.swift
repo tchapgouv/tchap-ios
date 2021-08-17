@@ -16,7 +16,7 @@
 
 import UIKit
 
-protocol RoomsCoordinatorDelegate: class {
+protocol RoomsCoordinatorDelegate: AnyObject {
     func roomsCoordinator(_ coordinator: RoomsCoordinatorType, didSelectRoomID roomID: String)
 }
 

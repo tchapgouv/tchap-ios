@@ -16,7 +16,7 @@
 
 import UIKit
 
-protocol RoomCoordinatorDelegate: class {
+protocol RoomCoordinatorDelegate: AnyObject {
     func roomCoordinator(_ coordinator: RoomCoordinatorType, didSelectUserID userID: String)
     func roomCoordinator(_ coordinator: RoomCoordinatorType, didSelectRoomID roomID: String)
     func roomCoordinator(_ coordinator: RoomCoordinatorType, handlePermalinkFragment fragment: String) -> Bool

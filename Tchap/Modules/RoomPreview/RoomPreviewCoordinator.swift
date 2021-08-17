@@ -16,7 +16,7 @@
 
 import UIKit
 
-protocol RoomPreviewCoordinatorDelegate: class {
+protocol RoomPreviewCoordinatorDelegate: AnyObject {
     func roomPreviewCoordinatorDidCancel(_ coordinator: RoomPreviewCoordinatorType)
     func roomPreviewCoordinator(_ coordinator: RoomPreviewCoordinatorType, didJoinRoomWithId roomID: String, onEventId evenId: String?)
 }
@@ -199,6 +199,6 @@ extension RoomPreviewCoordinator: RoomViewControllerDelegate {
         return false
     }
     
-    func roomViewController(_ roomViewController: RoomViewController, forwardContent content: [AnyHashable : Any]) {
+    func roomViewController(_ roomViewController: RoomViewController, forwardContent content: [AnyHashable: Any]) {
     }
 }

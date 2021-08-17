@@ -179,7 +179,7 @@ final class InviteService: InviteServiceType {
                     case .success:
                         // Leave now the room
                         self.session.leaveRoom(roomID, completion: completion)
-                    case .failure (let error):
+                    case .failure(let error):
                         completion(.failure(error))
                     }
                     

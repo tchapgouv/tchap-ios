@@ -16,7 +16,7 @@
 
 import Foundation
 
-protocol RoomDetailsCoordinatorDelegate: class {
+protocol RoomDetailsCoordinatorDelegate: AnyObject {
     func roomDetailsCoordinator(_ coordinator: RoomDetailsCoordinatorType, mention member: MXRoomMember)
     func roomDetailsCoordinator(_ coordinator: RoomDetailsCoordinatorType, didSelectRoomID roomID: String)
     func roomDetailsCoordinator(_ coordinator: RoomDetailsCoordinatorType, didSelectUserID userID: String)

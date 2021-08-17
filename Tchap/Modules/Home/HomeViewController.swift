@@ -16,7 +16,7 @@
 
 import UIKit
 
-protocol HomeViewControllerDelegate: class {
+protocol HomeViewControllerDelegate: AnyObject {
     func homeViewControllerDidTapStartChatButton(_ homeViewController: HomeViewController)
     func homeViewControllerDidTapCreateRoomButton(_ homeViewController: HomeViewController)
     func homeViewControllerDidTapPublicRoomsAccessButton(_ homeViewController: HomeViewController)

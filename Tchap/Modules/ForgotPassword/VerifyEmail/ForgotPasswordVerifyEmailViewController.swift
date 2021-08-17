@@ -16,7 +16,7 @@
 
 import Foundation
 
-protocol ForgotPasswordVerifyEmailViewControllerDelegate: class {
+protocol ForgotPasswordVerifyEmailViewControllerDelegate: AnyObject {
     func forgotPasswordVerifyEmailViewControllerDidTapConfirmationButton(_ forgotPasswordVerifyEmailViewController: ForgotPasswordVerifyEmailViewController)
 }
 

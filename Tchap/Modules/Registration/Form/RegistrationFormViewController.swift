@@ -16,7 +16,7 @@
 
 import Foundation
 
-protocol RegistrationFormViewControllerDelegate: class {
+protocol RegistrationFormViewControllerDelegate: AnyObject {
     func registrationFormViewController(_ registrationFormViewController: RegistrationFormViewController, didTapNextButtonWith mail: String, password: String)
     func registrationFormViewControllerShowTermsAndConditions(_ registrationFormViewController: RegistrationFormViewController)
 }
