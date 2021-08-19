@@ -35,8 +35,8 @@ targets:
     - sdk: Intents.framework
 
     configFiles:
-      Debug: Debug.xcconfig
-      Release: Release.xcconfig
+      Debug: SiriIntents-Debug.xcconfig
+      Release: SiriIntents-Release.xcconfig
 
     sources:
     - path: .
