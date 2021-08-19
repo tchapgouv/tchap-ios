@@ -1,14 +1,14 @@
-name: RiotNSE
+name: BtchapNSE
 
 schemes:
-  RiotNSE:
+  BtchapNSE:
     analyze:
       config: Debug
     archive:
       config: Release
     build:
       targets:
-        RiotNSE:
+        BtchapNSE:
         - running
         - testing
         - profiling
@@ -27,20 +27,20 @@ schemes:
       disableMainThreadChecker: true
 
 targets:
-  RiotNSE:
+  BtchapNSE:
     platform: iOS
     type: app-extension
 
     configFiles:
-      Debug: Debug.xcconfig
-      Release: Release.xcconfig
+      Debug: Btchap-NSE-Debug.xcconfig
+      Release: Btchap-NSE-Release.xcconfig
 
     sources: 
     - path: .
     - path: ../Riot/Managers/Settings/RiotSettings.swift
-    - path: ../Config/BuildSettings.swift
+    - path: ../Tchap/Config/BuildSettings.swift
     - path: ../Riot/Utils/DataProtectionHelper.swift
-    - path: ../Config/CommonConfiguration.swift
+    - path: ../Tchap/Config/CommonConfiguration.swift
     - path: ../Riot/Managers/PushNotification/PushNotificationStore.swift
     - path: ../Riot/Modules/SetPinCode/PinCodePreferences.swift
     - path: ../Riot/Generated/InfoPlist.swift
@@ -50,9 +50,11 @@ targets:
     - path: ../Riot/Managers/KeyValueStorage/KeyValueStore.swift
     - path: ../Riot/Managers/EncryptionKeyManager/EncryptionKeyManager.swift
     - path: ../Riot/Categories/Bundle.swift
+    - path: ../Tchap/Generated/Strings.swift
+    - path: ../Tchap/Generated/Images.swift
     - path: ../Riot/Managers/KeyValueStorage/KeychainStore.swift
     - path: ../Riot/Managers/LocalAuthentication/LocalAuthenticationService.swift
-    - path: ../Config/Configurable.swift
+    - path: ../Tchap/Config/Configurable.swift
     - path: ../Riot/Utils/Constants.swift
     - path: ../Riot/Categories/String.swift
     - path: ../Riot/Categories/Character.swift

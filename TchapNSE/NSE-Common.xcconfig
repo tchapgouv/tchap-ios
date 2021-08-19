@@ -20,3 +20,4 @@
 #include "Tchap/Config/Tchap-Common.xcconfig"
 
 PRODUCT_BUNDLE_IDENTIFIER = $(BASE_BUNDLE_IDENTIFIER).nse
+SWIFT_OBJC_INTERFACE_HEADER_NAME = GeneratedInterface-Swift.h

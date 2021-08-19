@@ -1,14 +1,14 @@
-name: Riot
+name: Btchap
 
 schemes:
-  Riot:
+  Btchap:
     analyze:
       config: Debug
     archive:
       config: Release
     build:
       targets:
-        Riot:
+        Btchap:
         - running
         - testing
         - profiling
@@ -22,21 +22,23 @@ schemes:
     test:
       config: Debug
       disableMainThreadChecker: true
-
+      targets:
+      - TchapTests
+      
 targets:
-  Riot:
+  Btchap:
     type: application
     platform: iOS
 
     dependencies:
-    - target: RiotShareExtension
+    - target: BtchapShareExtension
     - target: SiriIntents
-    - target: RiotNSE
+    - target: BtchapNSE
     - target: DesignKit
 
     configFiles:
-      Debug: Debug.xcconfig
-      Release: Release.xcconfig
+      Debug: SupportingFiles/Btchap-App-Debug.xcconfig
+      Release: SupportingFiles/Btchap-App-Release.xcconfig
 
     preBuildScripts:
     - name: ⚠️ SwiftLint
@@ -48,13 +50,18 @@ targets:
       shell: /bin/sh
       script: "\"${PODS_ROOT}/SwiftGen/bin/swiftgen\" config run --config \"Tools/SwiftGen/swiftgen-config.yml\"\n"
 
+    settings:
+      base:
+        GCC_PREPROCESSOR_DEFINITIONS: $(inherited) ENABLE_ROOM_RETENTION=1 ENABLE_REACTIONS=1 ENABLE_EDITION=1 ENABLE_JOIN_BY_LINK=1
+        OTHER_SWIFT_FLAGS: $(inherited) -D ENABLE_ROOM_RETENTION -D ENABLE_REACTIONS -D ENABLE_EDITION
+
     sources:
     - path: ../Tools
       excludes:
         - "Logs"
         - "Release"
         - "Templates/*.sh"
-    - path: ../Config
+    - path: ../Btchap/Config
     - path: .
       excludes:
         - "Modules/Room/EmojiPicker/Data/EmojiMart/EmojiJSONStore.swift"
