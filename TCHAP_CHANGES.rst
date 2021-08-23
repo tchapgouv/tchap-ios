@@ -1,3 +1,9 @@
+Changes in Tchap 1.3.1 (2021-08-23)
+===================================================
+
+Features:
+ * Disable the room retention feature in Tchap (Prod) - It was enabled only in beta test program
+ 
 Changes in Tchap 1.3.0 (2021-05-31)
 ===================================================
 
