@@ -218,7 +218,6 @@
 		0234A9A7225BDA4E00E8E489 /* FormCheckBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0234A9A5225BDA4E00E8E489 /* FormCheckBox.swift */; };
 		0234A9AC225BE42D00E8E489 /* FormCheckBox.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0234A9AB225BE42D00E8E489 /* FormCheckBox.xib */; };
 		0234A9AD225BE42D00E8E489 /* FormCheckBox.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0234A9AB225BE42D00E8E489 /* FormCheckBox.xib */; };
-		0234DEF322C5129300EBBBC5 /* matrix.agent.externe.tchap.gouv.fr.cer in Resources */ = {isa = PBXBuildFile; fileRef = 0234DEF222C5129300EBBBC5 /* matrix.agent.externe.tchap.gouv.fr.cer */; };
 		02388DE524A2AF7900F3B485 /* UserVerificationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02388D6624A2AF7900F3B485 /* UserVerificationCoordinator.swift */; };
 		02388DE624A2AF7900F3B485 /* UserVerificationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02388D6624A2AF7900F3B485 /* UserVerificationCoordinator.swift */; };
 		02388DE724A2AF7900F3B485 /* UserVerificationSessionStatusCoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02388D6824A2AF7900F3B485 /* UserVerificationSessionStatusCoordinatorType.swift */; };
@@ -610,23 +609,6 @@
 		025E36F9229548C000C9D9AE /* ThirdPartyIDResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025E36F7229548C000C9D9AE /* ThirdPartyIDResolver.swift */; };
 		026154C7235123410045459E /* IdentityServiceBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026154C6235123410045459E /* IdentityServiceBuilder.swift */; };
 		026154C8235123410045459E /* IdentityServiceBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026154C6235123410045459E /* IdentityServiceBuilder.swift */; };
-		026154DA236C7D930045459E /* agent.agriculture_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154C9236C7D910045459E /* agent.agriculture_2019_10.cer */; };
-		026154DB236C7D930045459E /* agent.justice_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154CA236C7D910045459E /* agent.justice_2019_10.cer */; };
-		026154DC236C7D930045459E /* agent.finances_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154CB236C7D920045459E /* agent.finances_2019_10.cer */; };
-		026154DD236C7D930045459E /* agent.education_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154CC236C7D920045459E /* agent.education_2019_10.cer */; };
-		026154DE236C7D930045459E /* agent.intradef_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154CD236C7D920045459E /* agent.intradef_2019_10.cer */; };
-		026154DF236C7D930045459E /* agent.elysee_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154CE236C7D920045459E /* agent.elysee_2019_10.cer */; };
-		026154E0236C7D930045459E /* agent.social_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154CF236C7D920045459E /* agent.social_2019_10.cer */; };
-		026154E1236C7D930045459E /* agent.dinum_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154D0236C7D920045459E /* agent.dinum_2019_10.cer */; };
-		026154E2236C7D930045459E /* agent.pm_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154D1236C7D920045459E /* agent.pm_2019_10.cer */; };
-		026154E3236C7D930045459E /* agent.diplomatie_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154D2236C7D920045459E /* agent.diplomatie_2019_10.cer */; };
-		026154E4236C7D930045459E /* agent.dev-durable_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154D3236C7D920045459E /* agent.dev-durable_2019_10.cer */; };
-		026154E5236C7D930045459E /* agent.externe_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154D4236C7D920045459E /* agent.externe_2019_10.cer */; };
-		026154E6236C7D930045459E /* agent.culture_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154D5236C7D920045459E /* agent.culture_2019_10.cer */; };
-		026154E7236C7D930045459E /* agent.collectivites_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154D6236C7D930045459E /* agent.collectivites_2019_10.cer */; };
-		026154E8236C7D930045459E /* agent.interieur_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154D7236C7D930045459E /* agent.interieur_2019_10.cer */; };
-		026154E9236C7D930045459E /* agent.ssi_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154D8236C7D930045459E /* agent.ssi_2019_10.cer */; };
-		026154EA236C7D930045459E /* agent_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154D9236C7D930045459E /* agent_2019_10.cer */; };
 		0261550D239507000045459E /* BtchapShareExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 02615502239507000045459E /* BtchapShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		0261553C2395C03F0045459E /* SegmentedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1B556D720EE6C4C00210D55 /* SegmentedViewController.m */; };
 		0261553E2395C8E80045459E /* Stylable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1BC6A202136CA7F00D32F8E /* Stylable.swift */; };
@@ -703,7 +685,6 @@
 		026155CA2398F9830045459E /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B109EF172170DFEB0018FA06 /* UserService.swift */; };
 		026155CB2398F9870045459E /* UserServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B165250D217502A700146F80 /* UserServiceType.swift */; };
 		026155CC2398F98A0045459E /* UserIDComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C4646221BACEB3005F4D53 /* UserIDComponents.swift */; };
-		026155CD2398F9C40045459E /* agent_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154D9236C7D930045459E /* agent_2019_10.cer */; };
 		026155CE2398F9CE0045459E /* Tchap.strings in Resources */ = {isa = PBXBuildFile; fileRef = B1322FDE212FF7480054A9DD /* Tchap.strings */; };
 		026155CF2398F9D20045459E /* Tchap.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = B12DDA98216F4EBC0093172C /* Tchap.stringsdict */; };
 		026155D02398F9DC0045459E /* SharedImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02BEE1A1212C717E00098505 /* SharedImages.xcassets */; };
@@ -732,24 +713,6 @@
 		026155EA239926F00045459E /* TchapDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = B122099323854ED2004D069C /* TchapDefaults.swift */; };
 		026155EB239936490045459E /* MXRoomSummary+Riot.m in Sources */ = {isa = PBXBuildFile; fileRef = F0D2ADA01F6AA5FD00A7097D /* MXRoomSummary+Riot.m */; };
 		026155ED239936E40045459E /* AvatarGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = F083BC111E7009EC00A9B29C /* AvatarGenerator.m */; };
-		026155EE239939A90045459E /* agent.agriculture_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154C9236C7D910045459E /* agent.agriculture_2019_10.cer */; };
-		026155EF239939AC0045459E /* agent.collectivites_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154D6236C7D930045459E /* agent.collectivites_2019_10.cer */; };
-		026155F0239939AF0045459E /* agent.culture_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154D5236C7D920045459E /* agent.culture_2019_10.cer */; };
-		026155F1239939B60045459E /* agent.dev-durable_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154D3236C7D920045459E /* agent.dev-durable_2019_10.cer */; };
-		026155F2239939B90045459E /* agent.dinum_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154D0236C7D920045459E /* agent.dinum_2019_10.cer */; };
-		026155F3239939C10045459E /* agent.diplomatie_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154D2236C7D920045459E /* agent.diplomatie_2019_10.cer */; };
-		026155F4239939C40045459E /* agent.education_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154CC236C7D920045459E /* agent.education_2019_10.cer */; };
-		026155F5239939C70045459E /* agent.elysee_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154CE236C7D920045459E /* agent.elysee_2019_10.cer */; };
-		026155F6239939CA0045459E /* agent.externe_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154D4236C7D920045459E /* agent.externe_2019_10.cer */; };
-		026155F7239939CC0045459E /* agent.finances_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154CB236C7D920045459E /* agent.finances_2019_10.cer */; };
-		026155F8239939CF0045459E /* agent.interieur_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154D7236C7D930045459E /* agent.interieur_2019_10.cer */; };
-		026155F9239939D30045459E /* agent.intradef_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154CD236C7D920045459E /* agent.intradef_2019_10.cer */; };
-		026155FA239939D60045459E /* agent.justice_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154CA236C7D910045459E /* agent.justice_2019_10.cer */; };
-		026155FB239939D80045459E /* agent.pm_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154D1236C7D920045459E /* agent.pm_2019_10.cer */; };
-		026155FC239939DB0045459E /* agent.social_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154CF236C7D920045459E /* agent.social_2019_10.cer */; };
-		026155FD239939DE0045459E /* agent.ssi_2019_10.cer in Resources */ = {isa = PBXBuildFile; fileRef = 026154D8236C7D930045459E /* agent.ssi_2019_10.cer */; };
-		026155FE23993A3B0045459E /* www.tchap.gouv.fr.cer in Resources */ = {isa = PBXBuildFile; fileRef = 028B50B6228EB2C2005DB9B6 /* www.tchap.gouv.fr.cer */; };
-		026155FF23993A460045459E /* matrix.agent.tchap.gouv.fr.cer in Resources */ = {isa = PBXBuildFile; fileRef = 028B50B4228E2931005DB9B6 /* matrix.agent.tchap.gouv.fr.cer */; };
 		026A465123B20E510058D80B /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026A465023B20E510058D80B /* UIColor.swift */; };
 		026A465223B20E510058D80B /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026A465023B20E510058D80B /* UIColor.swift */; };
 		026A465323B20E510058D80B /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026A465023B20E510058D80B /* UIColor.swift */; };
@@ -771,7 +734,6 @@
 		026BFD5D257634E3006B0B6A /* Btchap-ShareExtension-Common.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 026BFD5A257634E2006B0B6A /* Btchap-ShareExtension-Common.xcconfig */; };
 		026D887021C1C4F40085BED8 /* TchapSharedImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 026D886F21C1C4F40085BED8 /* TchapSharedImages.xcassets */; };
 		026D887221C1C5490085BED8 /* BtchapSharedImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 026D887121C1C5490085BED8 /* BtchapSharedImages.xcassets */; };
-		0276C17524D989070097CA0A /* tchap.gouv.fr.cer in Resources */ = {isa = PBXBuildFile; fileRef = 0276C17424D989070097CA0A /* tchap.gouv.fr.cer */; };
 		0278619E2577A8D900266B09 /* JitsiJWTTokenBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0278619A2577A8D900266B09 /* JitsiJWTTokenBuilder.swift */; };
 		0278619F2577A8D900266B09 /* JitsiJWTTokenBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0278619A2577A8D900266B09 /* JitsiJWTTokenBuilder.swift */; };
 		027861A02577A8D900266B09 /* JitsiWellKnown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0278619B2577A8D900266B09 /* JitsiWellKnown.swift */; };
@@ -824,8 +786,6 @@
 		0287987924AE8683004FC7AE /* UNUserNotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E9144524AE090300DC0B97 /* UNUserNotificationCenter.swift */; };
 		0287987A24AE872C004FC7AE /* TchapDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = B122099323854ED2004D069C /* TchapDefaults.swift */; };
 		0287987B24AE873D004FC7AE /* TchapDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = B122099723854EF2004D069C /* TchapDefaults.swift */; };
-		028B50B5228E2931005DB9B6 /* matrix.agent.tchap.gouv.fr.cer in Resources */ = {isa = PBXBuildFile; fileRef = 028B50B4228E2931005DB9B6 /* matrix.agent.tchap.gouv.fr.cer */; };
-		028B50B7228EB2C3005DB9B6 /* www.tchap.gouv.fr.cer in Resources */ = {isa = PBXBuildFile; fileRef = 028B50B6228EB2C2005DB9B6 /* www.tchap.gouv.fr.cer */; };
 		028BA9B4257A436300C71A91 /* PushNotificationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028BA9B3257A436300C71A91 /* PushNotificationStore.swift */; };
 		028BA9B5257A436300C71A91 /* PushNotificationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028BA9B3257A436300C71A91 /* PushNotificationStore.swift */; };
 		028BA9B6257A436300C71A91 /* PushNotificationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028BA9B3257A436300C71A91 /* PushNotificationStore.swift */; };
@@ -1015,7 +975,6 @@
 		02C4BE922252502900F7BB0E /* InviteServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C4BE902252502900F7BB0E /* InviteServiceType.swift */; };
 		02C4BE94225502DD00F7BB0E /* DiscussionDetailsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C4BE93225502DD00F7BB0E /* DiscussionDetailsCoordinator.swift */; };
 		02C4BE95225502DD00F7BB0E /* DiscussionDetailsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C4BE93225502DD00F7BB0E /* DiscussionDetailsCoordinator.swift */; };
-		02CEE1DE23312C370085ACF0 /* matrix.agent.externe.tchap.gouv.fr2.cer in Resources */ = {isa = PBXBuildFile; fileRef = 02CEE1DD23312C370085ACF0 /* matrix.agent.externe.tchap.gouv.fr2.cer */; };
 		02CEE1E52338C5B20085ACF0 /* AppVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CEE1E42338C5B10085ACF0 /* AppVersion.swift */; };
 		02CEE1E62338C5B20085ACF0 /* AppVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02CEE1E42338C5B10085ACF0 /* AppVersion.swift */; };
 		02D0FC8D24AE2DDA008DD5BB /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D0FC8824AE2DDA008DD5BB /* Constants.swift */; };
@@ -2341,7 +2300,6 @@
 		0234A9A2225BD0D000E8E489 /* FormCheckBoxModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCheckBoxModelType.swift; sourceTree = "<group>"; };
 		0234A9A5225BDA4E00E8E489 /* FormCheckBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCheckBox.swift; sourceTree = "<group>"; };
 		0234A9AB225BE42D00E8E489 /* FormCheckBox.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FormCheckBox.xib; sourceTree = "<group>"; };
-		0234DEF222C5129300EBBBC5 /* matrix.agent.externe.tchap.gouv.fr.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = matrix.agent.externe.tchap.gouv.fr.cer; sourceTree = "<group>"; };
 		02388D6624A2AF7900F3B485 /* UserVerificationCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserVerificationCoordinator.swift; sourceTree = "<group>"; };
 		02388D6824A2AF7900F3B485 /* UserVerificationSessionStatusCoordinatorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserVerificationSessionStatusCoordinatorType.swift; sourceTree = "<group>"; };
 		02388D6924A2AF7900F3B485 /* UserVerificationSessionStatusViewAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserVerificationSessionStatusViewAction.swift; sourceTree = "<group>"; };
@@ -2518,23 +2476,6 @@
 		025E36F4229546A000C9D9AE /* ThirdPartyIDResolverType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThirdPartyIDResolverType.swift; sourceTree = "<group>"; };
 		025E36F7229548C000C9D9AE /* ThirdPartyIDResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThirdPartyIDResolver.swift; sourceTree = "<group>"; };
 		026154C6235123410045459E /* IdentityServiceBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentityServiceBuilder.swift; sourceTree = "<group>"; };
-		026154C9236C7D910045459E /* agent.agriculture_2019_10.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = agent.agriculture_2019_10.cer; sourceTree = "<group>"; };
-		026154CA236C7D910045459E /* agent.justice_2019_10.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = agent.justice_2019_10.cer; sourceTree = "<group>"; };
-		026154CB236C7D920045459E /* agent.finances_2019_10.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = agent.finances_2019_10.cer; sourceTree = "<group>"; };
-		026154CC236C7D920045459E /* agent.education_2019_10.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = agent.education_2019_10.cer; sourceTree = "<group>"; };
-		026154CD236C7D920045459E /* agent.intradef_2019_10.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = agent.intradef_2019_10.cer; sourceTree = "<group>"; };
-		026154CE236C7D920045459E /* agent.elysee_2019_10.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = agent.elysee_2019_10.cer; sourceTree = "<group>"; };
-		026154CF236C7D920045459E /* agent.social_2019_10.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = agent.social_2019_10.cer; sourceTree = "<group>"; };
-		026154D0236C7D920045459E /* agent.dinum_2019_10.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = agent.dinum_2019_10.cer; sourceTree = "<group>"; };
-		026154D1236C7D920045459E /* agent.pm_2019_10.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = agent.pm_2019_10.cer; sourceTree = "<group>"; };
-		026154D2236C7D920045459E /* agent.diplomatie_2019_10.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = agent.diplomatie_2019_10.cer; sourceTree = "<group>"; };
-		026154D3236C7D920045459E /* agent.dev-durable_2019_10.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = "agent.dev-durable_2019_10.cer"; sourceTree = "<group>"; };
-		026154D4236C7D920045459E /* agent.externe_2019_10.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = agent.externe_2019_10.cer; sourceTree = "<group>"; };
-		026154D5236C7D920045459E /* agent.culture_2019_10.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = agent.culture_2019_10.cer; sourceTree = "<group>"; };
-		026154D6236C7D930045459E /* agent.collectivites_2019_10.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = agent.collectivites_2019_10.cer; sourceTree = "<group>"; };
-		026154D7236C7D930045459E /* agent.interieur_2019_10.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = agent.interieur_2019_10.cer; sourceTree = "<group>"; };
-		026154D8236C7D930045459E /* agent.ssi_2019_10.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = agent.ssi_2019_10.cer; sourceTree = "<group>"; };
-		026154D9236C7D930045459E /* agent_2019_10.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = agent_2019_10.cer; sourceTree = "<group>"; };
 		02615502239507000045459E /* BtchapShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BtchapShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		02615513239547880045459E /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0261553A239548E20045459E /* BtchapShareExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BtchapShareExtension.entitlements; sourceTree = "<group>"; };
@@ -2579,7 +2520,6 @@
 		026D886F21C1C4F40085BED8 /* TchapSharedImages.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = TchapSharedImages.xcassets; sourceTree = "<group>"; };
 		026D887121C1C5490085BED8 /* BtchapSharedImages.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = BtchapSharedImages.xcassets; sourceTree = "<group>"; };
 		026DCFDE256FD32600D5A2B7 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		0276C17424D989070097CA0A /* tchap.gouv.fr.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = tchap.gouv.fr.cer; sourceTree = "<group>"; };
 		0278619A2577A8D900266B09 /* JitsiJWTTokenBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JitsiJWTTokenBuilder.swift; sourceTree = "<group>"; };
 		0278619B2577A8D900266B09 /* JitsiWellKnown.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JitsiWellKnown.swift; sourceTree = "<group>"; };
 		0278619C2577A8D900266B09 /* JitsiJWTPayload.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JitsiJWTPayload.swift; sourceTree = "<group>"; };
@@ -2608,8 +2548,6 @@
 		0287986A24AE8142004FC7AE /* TchapNSE.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TchapNSE.entitlements; sourceTree = "<group>"; };
 		0287986C24AE8404004FC7AE /* NotificationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		0287986D24AE8404004FC7AE /* NSEMemoryStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSEMemoryStore.swift; sourceTree = "<group>"; };
-		028B50B4228E2931005DB9B6 /* matrix.agent.tchap.gouv.fr.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = matrix.agent.tchap.gouv.fr.cer; sourceTree = "<group>"; };
-		028B50B6228EB2C2005DB9B6 /* www.tchap.gouv.fr.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = www.tchap.gouv.fr.cer; sourceTree = "<group>"; };
 		028BA9B3257A436300C71A91 /* PushNotificationStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushNotificationStore.swift; sourceTree = "<group>"; };
 		028BA9C0257A459300C71A91 /* Keychain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
 		028BA9C1257A459300C71A91 /* KeychainStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainStore.swift; sourceTree = "<group>"; };
@@ -2722,7 +2660,6 @@
 		02C4BE8D2252456000F7BB0E /* ThirdPartyIDPlatformInfoResolverType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThirdPartyIDPlatformInfoResolverType.swift; sourceTree = "<group>"; };
 		02C4BE902252502900F7BB0E /* InviteServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteServiceType.swift; sourceTree = "<group>"; };
 		02C4BE93225502DD00F7BB0E /* DiscussionDetailsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionDetailsCoordinator.swift; sourceTree = "<group>"; };
-		02CEE1DD23312C370085ACF0 /* matrix.agent.externe.tchap.gouv.fr2.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = matrix.agent.externe.tchap.gouv.fr2.cer; sourceTree = "<group>"; };
 		02CEE1E42338C5B10085ACF0 /* AppVersion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppVersion.swift; sourceTree = "<group>"; };
 		02D0FC8824AE2DDA008DD5BB /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		02D0FC8924AE2DDA008DD5BB /* DataProtectionHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataProtectionHelper.swift; sourceTree = "<group>"; };
@@ -4179,7 +4116,6 @@
 		0250C5CC2123146A00034691 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
-				028B50B3228E2931005DB9B6 /* Certificates */,
 				B1322FD9212FF4A30054A9DD /* Localizations */,
 				02BEE1A2212C717F00098505 /* Images.xcassets */,
 				02BEE1A1212C717E00098505 /* SharedImages.xcassets */,
@@ -4453,35 +4389,6 @@
 				0287986324AE80C8004FC7AE /* Info.plist */,
 			);
 			path = TchapNSE;
-			sourceTree = "<group>";
-		};
-		028B50B3228E2931005DB9B6 /* Certificates */ = {
-			isa = PBXGroup;
-			children = (
-				026154D9236C7D930045459E /* agent_2019_10.cer */,
-				026154C9236C7D910045459E /* agent.agriculture_2019_10.cer */,
-				026154D6236C7D930045459E /* agent.collectivites_2019_10.cer */,
-				026154D5236C7D920045459E /* agent.culture_2019_10.cer */,
-				026154D3236C7D920045459E /* agent.dev-durable_2019_10.cer */,
-				026154D0236C7D920045459E /* agent.dinum_2019_10.cer */,
-				026154D2236C7D920045459E /* agent.diplomatie_2019_10.cer */,
-				026154CC236C7D920045459E /* agent.education_2019_10.cer */,
-				026154CE236C7D920045459E /* agent.elysee_2019_10.cer */,
-				026154D4236C7D920045459E /* agent.externe_2019_10.cer */,
-				026154CB236C7D920045459E /* agent.finances_2019_10.cer */,
-				026154D7236C7D930045459E /* agent.interieur_2019_10.cer */,
-				026154CD236C7D920045459E /* agent.intradef_2019_10.cer */,
-				026154CA236C7D910045459E /* agent.justice_2019_10.cer */,
-				026154D1236C7D920045459E /* agent.pm_2019_10.cer */,
-				026154CF236C7D920045459E /* agent.social_2019_10.cer */,
-				026154D8236C7D930045459E /* agent.ssi_2019_10.cer */,
-				02CEE1DD23312C370085ACF0 /* matrix.agent.externe.tchap.gouv.fr2.cer */,
-				0234DEF222C5129300EBBBC5 /* matrix.agent.externe.tchap.gouv.fr.cer */,
-				028B50B6228EB2C2005DB9B6 /* www.tchap.gouv.fr.cer */,
-				0276C17424D989070097CA0A /* tchap.gouv.fr.cer */,
-				028B50B4228E2931005DB9B6 /* matrix.agent.tchap.gouv.fr.cer */,
-			);
-			path = Certificates;
 			sourceTree = "<group>";
 		};
 		028BA9BD257A459300C71A91 /* KeyValueStorage */ = {
@@ -6819,12 +6726,10 @@
 				020DF99C214BE467003DFBA4 /* RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib in Resources */,
 				02057A0D24AA8EE500C96719 /* BubbleCellContentView.xib in Resources */,
 				020DF93A214BE467003DFBA4 /* TableViewCellWithCheckBoxes.xib in Resources */,
-				026154DC236C7D930045459E /* agent.finances_2019_10.cer in Resources */,
 				020DF949214BE467003DFBA4 /* RoomMemberTitleView.xib in Resources */,
 				B165251D21775B0D00146F80 /* ContactsViewController.storyboard in Resources */,
 				0250C5462122B68000034691 /* TableViewCellWithButton.xib in Resources */,
 				02FAE58623B4C41500DE73D8 /* ReactionsMenuView.xib in Resources */,
-				028B50B5228E2931005DB9B6 /* matrix.agent.tchap.gouv.fr.cer in Resources */,
 				02BEE1A3212C717F00098505 /* SharedImages.xcassets in Resources */,
 				02FAE5AA23B4C41600DE73D8 /* EmojiPickerViewCell.xib in Resources */,
 				02388DF324A2AF7900F3B485 /* UserVerificationSessionStatusViewController.storyboard in Resources */,
@@ -6832,7 +6737,6 @@
 				02FAE41B23B29EBD00DE73D8 /* ServiceTermsModalScreenViewController.storyboard in Resources */,
 				0250C54C2122B68000034691 /* EncryptionInfoView.xib in Resources */,
 				020DF97A214BE467003DFBA4 /* RoomPredecessorBubbleCell.xib in Resources */,
-				026154E9236C7D930045459E /* agent.ssi_2019_10.cer in Resources */,
 				02388E3324A2AF7900F3B485 /* KeyVerificationVerifiedViewController.storyboard in Resources */,
 				029CC69321772F4200DCC8B3 /* TableViewCellWithPhoneNumberTextField.xib in Resources */,
 				02388EA124A2AF7A00F3B485 /* DeviceVerificationStartViewController.storyboard in Resources */,
@@ -6855,9 +6759,7 @@
 				020DF955214BE467003DFBA4 /* RoomIncomingEncryptedTextMsgBubbleCell.xib in Resources */,
 				B1BC6A2A2136DCCE00D32F8E /* WelcomeViewController.storyboard in Resources */,
 				0290607921501D16005FE3C1 /* PreviewView.xib in Resources */,
-				0234DEF322C5129300EBBBC5 /* matrix.agent.externe.tchap.gouv.fr.cer in Resources */,
 				020DF958214BE467003DFBA4 /* RoomOutgoingEncryptedTextMsgBubbleCell.xib in Resources */,
-				026154DE236C7D930045459E /* agent.intradef_2019_10.cer in Resources */,
 				020DF99F214BE467003DFBA4 /* RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.xib in Resources */,
 				B1322FEB213002440054A9DD /* FormTextField.xib in Resources */,
 				02B3453F219CA8EE00110EC8 /* RoomsRoomCell.xib in Resources */,
@@ -6867,7 +6769,6 @@
 				020DF98B214BE467003DFBA4 /* RoomIncomingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib in Resources */,
 				020DF96F214BE467003DFBA4 /* RoomIncomingEncryptedTextMsgWithPaginationTitleBubbleCell.xib in Resources */,
 				0250C5672122B68000034691 /* MediaPickerViewController.xib in Resources */,
-				026154E0236C7D930045459E /* agent.social_2019_10.cer in Resources */,
 				3A74C74F25CB32A100E3D171 /* ForwardViewController.storyboard in Resources */,
 				02388E7324A2AF7A00F3B485 /* KeyVerificationSelfVerifyStartViewController.storyboard in Resources */,
 				B11C80192139484900CC6F2F /* RegistrationEmailSentViewController.storyboard in Resources */,
@@ -6883,9 +6784,7 @@
 				02C3F22424AFD3880086ACA5 /* CrossSigningSetupBannerCell.xib in Resources */,
 				02FAE58A23B4C41500DE73D8 /* ContextualMenuItemView.xib in Resources */,
 				020DF96A214BE467003DFBA4 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleBubbleCell.xib in Resources */,
-				0276C17524D989070097CA0A /* tchap.gouv.fr.cer in Resources */,
 				020DF985214BE467003DFBA4 /* RoomIncomingAttachmentWithPaginationTitleBubbleCell.xib in Resources */,
-				02CEE1DE23312C370085ACF0 /* matrix.agent.externe.tchap.gouv.fr2.cer in Resources */,
 				020DF97B214BE467003DFBA4 /* RoomIncomingTextMsgWithoutSenderInfoBubbleCell.xib in Resources */,
 				02FAE5C423B4C41600DE73D8 /* EmojiPickerHeaderView.xib in Resources */,
 				0278627D2579983800266B09 /* SpanningSlidingModalContainerView.xib in Resources */,
@@ -6894,8 +6793,6 @@
 				02388E1924A2AF7900F3B485 /* UserVerificationSessionStatusCell.xib in Resources */,
 				02FAE5D823B4C41600DE73D8 /* EditHistoryCell.xib in Resources */,
 				020DF969214BE467003DFBA4 /* RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.xib in Resources */,
-				026154DA236C7D930045459E /* agent.agriculture_2019_10.cer in Resources */,
-				026154DF236C7D930045459E /* agent.elysee_2019_10.cer in Resources */,
 				B1C4644A21B67F1E005F4D53 /* RoomCreationViewController.storyboard in Resources */,
 				020DF999214BE467003DFBA4 /* RoomOutgoingAttachmentBubbleCell.xib in Resources */,
 				8E0E457625B7138D002A66D6 /* FavouriteAttachmentAntivirusScanStatusBubbleCell.xib in Resources */,
@@ -6904,13 +6801,11 @@
 				02FAE5E223B4C41600DE73D8 /* EditHistoryHeaderView.xib in Resources */,
 				B18D18C62153EA32003677D1 /* HomeViewController.storyboard in Resources */,
 				0250C57A2122B68000034691 /* Vector.strings in Resources */,
-				028B50B7228EB2C3005DB9B6 /* www.tchap.gouv.fr.cer in Resources */,
 				02FAE4B623B4B61700DE73D8 /* KeyBackupSetupIntroViewController.storyboard in Resources */,
 				B15AB2A5215BF20E007F5405 /* ForgotPasswordVerifyEmailViewController.storyboard in Resources */,
 				02388E2924A2AF7900F3B485 /* KeyVerificationDataLoadingViewController.storyboard in Resources */,
 				020DF94E214BE467003DFBA4 /* RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.xib in Resources */,
 				020DF947214BE467003DFBA4 /* RoomMemberDetailsViewController.xib in Resources */,
-				026154E4236C7D930045459E /* agent.dev-durable_2019_10.cer in Resources */,
 				0250C5CE212314B300034691 /* Tchap-Defaults.plist in Resources */,
 				B1073D6A21A8096F00E36CFA /* RoomIncomingEncryptedAttachmentWithPaginationTitleBubbleCell.xib in Resources */,
 				02FAE5F023B4C41600DE73D8 /* ReactionHistoryViewController.storyboard in Resources */,
@@ -6926,8 +6821,6 @@
 				02388EB124A2AF7A00F3B485 /* DeviceVerificationIncomingViewController.storyboard in Resources */,
 				0250C57E2122B68000034691 /* MediaAlbumContentViewController.xib in Resources */,
 				8E9902322583BDAB00D0456B /* FavouriteMessagesViewController.storyboard in Resources */,
-				026154DB236C7D930045459E /* agent.justice_2019_10.cer in Resources */,
-				026154EA236C7D930045459E /* agent_2019_10.cer in Resources */,
 				02FAE59223B4C41600DE73D8 /* RoomContextualMenuToolbarView.xib in Resources */,
 				020DF94F214BE467003DFBA4 /* RoomMembershipBubbleCell.xib in Resources */,
 				02FAE4CA23B4B61700DE73D8 /* KeyBackupSetupPassphraseViewController.storyboard in Resources */,
@@ -6956,8 +6849,6 @@
 				024CD93D2574454600629DAA /* Tchap-Common.xcconfig in Resources */,
 				020DF952214BE467003DFBA4 /* RoomOutgoingEncryptedTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
 				02388E6524A2AF7900F3B485 /* KeyVerificationScanConfirmationViewController.storyboard in Resources */,
-				026154E2236C7D930045459E /* agent.pm_2019_10.cer in Resources */,
-				026154E6236C7D930045459E /* agent.culture_2019_10.cer in Resources */,
 				02FAE4F223B4B61700DE73D8 /* KeyBackupRecoverFromPassphraseViewController.storyboard in Resources */,
 				02388E0324A2AF7900F3B485 /* UserVerificationStartViewController.storyboard in Resources */,
 				024CD930257443FC00629DAA /* App-Common.xcconfig in Resources */,
@@ -6965,18 +6856,15 @@
 				024518E423A1467A006873DF /* message.caf in Resources */,
 				029CC69221772F4200DCC8B3 /* DeviceView.xib in Resources */,
 				B12209A823854F32004D069C /* AppVersionUpdateViewController.storyboard in Resources */,
-				026154E7236C7D930045459E /* agent.collectivites_2019_10.cer in Resources */,
 				02057A0024A9D7D200C96719 /* QRCodeReaderViewController.storyboard in Resources */,
 				020DF995214BE467003DFBA4 /* RoomOutgoingTextMsgWithoutSenderNameBubbleCell.xib in Resources */,
 				020DF953214BE467003DFBA4 /* RoomIncomingEncryptedTextMsgWithoutSenderInfoBubbleCell.xib in Resources */,
 				020DF992214BE467003DFBA4 /* RoomIncomingAttachmentBubbleCell.xib in Resources */,
 				020DF990214BE467003DFBA4 /* RoomIncomingAttachmentWithoutSenderInfoBubbleCell.xib in Resources */,
-				026154E3236C7D930045459E /* agent.diplomatie_2019_10.cer in Resources */,
 				0250C5972122B68000034691 /* LaunchScreen.storyboard in Resources */,
 				029CC68E21772F4200DCC8B3 /* DeactivateAccountViewController.storyboard in Resources */,
 				02FAE57023B4C41500DE73D8 /* BubbleReactionsView.xib in Resources */,
 				B15AB29F215BF20E007F5405 /* ForgotPasswordFormViewController.storyboard in Resources */,
-				026154DD236C7D930045459E /* agent.education_2019_10.cer in Resources */,
 				3A75975725D67F4000B2686F /* ShareRoomsRoomCell.xib in Resources */,
 				02388E0924A2AF7900F3B485 /* UserVerificationSessionsStatusViewController.storyboard in Resources */,
 				02388E4324A2AF7900F3B485 /* KeyVerificationVerifyByScanningViewController.storyboard in Resources */,
@@ -6991,7 +6879,6 @@
 				02FAE4DE23B4B61700DE73D8 /* KeyBackupRecoverSuccessViewController.storyboard in Resources */,
 				02C3F26724AFDEFF0086ACA5 /* SecretsSetupRecoveryPassphraseViewController.storyboard in Resources */,
 				02C3F20624AF75100086ACA5 /* SecureBackupSetupIntroCell.xib in Resources */,
-				026154E5236C7D930045459E /* agent.externe_2019_10.cer in Resources */,
 				02B34547219E383800110EC8 /* RoomsInviteCell.xib in Resources */,
 				0250C59E2122B68000034691 /* DeviceTableViewCell.xib in Resources */,
 				02B34543219E100100110EC8 /* RoomsCell.xib in Resources */,
@@ -7001,7 +6888,6 @@
 				B1C4644921B67F1E005F4D53 /* RoomCreationAvatarView.xib in Resources */,
 				02388E8D24A2AF7A00F3B485 /* KeyVerificationSelfVerifyWaitViewController.storyboard in Resources */,
 				B1073D6721A8096F00E36CFA /* RoomIncomingEncryptedAttachmentWithoutSenderInfoBubbleCell.xib in Resources */,
-				026154E1236C7D930045459E /* agent.dinum_2019_10.cer in Resources */,
 				02040CD823D76A7F00DE0690 /* RetentionPeriodPickerCell.xib in Resources */,
 				0250C59F2122B68000034691 /* MediaAlbumTableCell.xib in Resources */,
 				02C3F28724AFDEFF0086ACA5 /* SecretsRecoveryWithPassphraseViewController.storyboard in Resources */,
@@ -7023,7 +6909,6 @@
 				02BEE1A4212C717F00098505 /* Images.xcassets in Resources */,
 				020DF964214BE467003DFBA4 /* RoomEncryptedAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.xib in Resources */,
 				02040CE523D8938400DE0690 /* RetentionPeriodPickerContentView.xib in Resources */,
-				026154E8236C7D930045459E /* agent.interieur_2019_10.cer in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7055,38 +6940,19 @@
 			files = (
 				024CD936257444BA00629DAA /* ShareExtension-Common.xcconfig in Resources */,
 				026155D02398F9DC0045459E /* SharedImages.xcassets in Resources */,
-				026155F7239939CC0045459E /* agent.finances_2019_10.cer in Resources */,
 				026155B42398F7420045459E /* ShareRoomsDiscussionCell.xib in Resources */,
 				026155B02398F7420045459E /* RoomsListViewController.xib in Resources */,
 				026155D72398FAB40045459E /* SegmentedViewController.xib in Resources */,
-				026155F3239939C10045459E /* agent.diplomatie_2019_10.cer in Resources */,
-				026155CD2398F9C40045459E /* agent_2019_10.cer in Resources */,
 				026155D92398FAD40045459E /* RoomsCell.xib in Resources */,
 				026155B82398F7420045459E /* ShareRoomsRoomCell.xib in Resources */,
 				026155CE2398F9CE0045459E /* Tchap.strings in Resources */,
-				026155FC239939DB0045459E /* agent.social_2019_10.cer in Resources */,
-				026155FF23993A460045459E /* matrix.agent.tchap.gouv.fr.cer in Resources */,
 				026155E52399031B0045459E /* Vector.strings in Resources */,
-				026155F2239939B90045459E /* agent.dinum_2019_10.cer in Resources */,
-				026155EF239939AC0045459E /* agent.collectivites_2019_10.cer in Resources */,
-				026155FB239939D80045459E /* agent.pm_2019_10.cer in Resources */,
-				026155F1239939B60045459E /* agent.dev-durable_2019_10.cer in Resources */,
 				026155E82399252E0045459E /* Tchap-Defaults.plist in Resources */,
-				026155F0239939AF0045459E /* agent.culture_2019_10.cer in Resources */,
-				026155FA239939D60045459E /* agent.justice_2019_10.cer in Resources */,
 				026155AC2398F7420045459E /* ShareViewController.xib in Resources */,
 				026155A42398F7420045459E /* FallbackViewController.xib in Resources */,
 				026155D12398F9E10045459E /* TchapSharedImages.xcassets in Resources */,
-				026155FD239939DE0045459E /* agent.ssi_2019_10.cer in Resources */,
-				026155F6239939CA0045459E /* agent.externe_2019_10.cer in Resources */,
 				026155CF2398F9D20045459E /* Tchap.stringsdict in Resources */,
-				026155F5239939C70045459E /* agent.elysee_2019_10.cer in Resources */,
 				024CD93E2574455100629DAA /* Tchap-Common.xcconfig in Resources */,
-				026155F4239939C40045459E /* agent.education_2019_10.cer in Resources */,
-				026155FE23993A3B0045459E /* www.tchap.gouv.fr.cer in Resources */,
-				026155EE239939A90045459E /* agent.agriculture_2019_10.cer in Resources */,
-				026155F8239939CF0045459E /* agent.interieur_2019_10.cer in Resources */,
-				026155F9239939D30045459E /* agent.intradef_2019_10.cer in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9886,7 +9752,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.3.1;
+				MARKETING_VERSION = 1.3.2;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -9938,7 +9804,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				MARKETING_VERSION = 1.3.1;
+				MARKETING_VERSION = 1.3.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
