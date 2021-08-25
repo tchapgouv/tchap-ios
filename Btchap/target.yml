@@ -32,7 +32,7 @@ targets:
 
     dependencies:
     - target: BtchapShareExtension
-    - target: SiriIntents
+    - target: BSiriIntents
     - target: BtchapNSE
     - target: DesignKit
 
@@ -56,13 +56,97 @@ targets:
         OTHER_SWIFT_FLAGS: $(inherited) -D ENABLE_ROOM_RETENTION -D ENABLE_REACTIONS -D ENABLE_EDITION
 
     sources:
-    - path: ../Tools
-      excludes:
-        - "Logs"
-        - "Release"
-        - "Templates/*.sh"
     - path: ../Btchap/Config
     - path: .
       excludes:
+        - "**/*.strings" # Exclude all strings files
+    - path: ../Tchap
+      excludes:
+        - "target.yml"
+        - "TchapTools"
+        - "Config/BuildSettings.swift"
+        - "Generated/InfoPlist.swift"
+        - "Generated/TchapDefaults.swift"
+        - "SupportingFiles/Info.plist"
+        - "Modules/KeyBackup/Setup/RecoveryKey"
+        - "Modules/KeyBackup/Recover/Loading"
         - "Modules/Room/EmojiPicker/Data/EmojiMart/EmojiJSONStore.swift"
         - "**/*.strings" # Exclude all strings files
+
+    # Add separately localizable files
+    - path: ../Tchap/Assets/Localizations/fr.lproj/Tchap.strings
+    - path: ../Tchap/Assets/Localizations/fr.lproj/Tchap.stringsdict
+    
+    # Riot
+    - path: ../Riot/Assets
+    - path: ../Riot/Categories
+    - path: ../Riot/Generated/Vector_Strings.swift
+    - path: ../Riot/Managers/Analytics
+    - path: ../Riot/Managers/BugReport
+    - path: ../Riot/Managers/EncryptionKeyManager/EncryptionKeyManager.swift
+    - path: ../Riot/Managers/KeyValueStorage
+    - path: ../Riot/Managers/Room/RoomIdComponents.swift
+    - path: ../Riot/Managers/RoomMessageLinkParser/RoomMessageURLParser.swift
+    - path: ../Riot/Managers/PasswordStrength
+    - path: ../Riot/Managers/PushNotification
+    - path: ../Riot/Managers/Settings/RiotSettings.swift
+    - path: ../Riot/Managers/Settings/Shared
+    - path: ../Riot/Managers/Theme
+    - path: ../Riot/Managers/Widgets
+    - path: ../Riot/Model/Contact
+    - path: ../Riot/Model/HomeserverConfiguration
+    - path: ../Riot/Model/Room/RoomEmailInvitation.h
+    - path: ../Riot/Model/Room/RoomEmailInvitation.m
+    - path: ../Riot/Model/Room/RoomPreviewData.h
+    - path: ../Riot/Model/Room/RoomPreviewData.m
+    - path: ../Riot/Model/WellKnown
+    - path: ../Riot/Modules/BugReport/BugReportViewController.h
+    - path: ../Riot/Modules/BugReport/BugReportViewController.m
+    - path: ../Riot/Modules/Call/CallViewController.h
+    - path: ../Riot/Modules/Call/CallViewController.m
+    - path: ../Riot/Modules/Call/Views/CircleButton.h
+    - path: ../Riot/Modules/Call/Views/CircleButton.m
+    - path: ../Riot/Modules/Call/Views/IncomingCallView.h
+    - path: ../Riot/Modules/Call/Views/IncomingCallView.m
+    - path: ../Riot/Modules/Camera
+    - path: ../Riot/Modules/Common/Buttons
+    - path: ../Riot/Modules/Common/Cells/TableViewCellWithButton.h
+    - path: ../Riot/Modules/Common/Cells/TableViewCellWithButton.m
+    - path: ../Riot/Modules/Common/Recents/CellData/RecentCellData.h
+    - path: ../Riot/Modules/Common/Recents/CellData/RecentCellData.m
+    - path: ../Riot/Modules/Common/Recents/RecentsViewController.h
+    - path: ../Riot/Modules/Common/Recents/RecentsViewController.m
+    - path: ../Riot/Modules/Common/SegmentedViewController/SegmentedViewController.h
+    - path: ../Riot/Modules/Common/SegmentedViewController/SegmentedViewController.m
+    - path: ../Riot/Modules/Common/WebViewController
+    - path: ../Riot/Modules/EncryptionInfo/EncryptionInfoView.h
+    - path: ../Riot/Modules/EncryptionInfo/EncryptionInfoView.m
+    - path: ../Riot/Modules/GDPR
+    - path: ../Riot/Modules/GlobalSearch/Files/Views/FilesSearchTableViewCell.h
+    - path: ../Riot/Modules/GlobalSearch/Files/Views/FilesSearchTableViewCell.m
+    - path: ../Riot/Modules/Integrations/Widgets/Jitsi/JitsiAuthenticationType.swift
+    - path: ../Riot/Modules/Integrations/Widgets/Jitsi/JitsiJWTPayload.swift
+    - path: ../Riot/Modules/Integrations/Widgets/Jitsi/JitsiJWTTokenBuilder.swift
+    - path: ../Riot/Modules/Integrations/Widgets/Jitsi/JitsiWellKnown.swift
+    - path: ../Riot/Modules/MediaPicker
+    - path: ../Riot/Modules/Room/BubbleReactions
+    - path: ../Riot/Modules/Room/Views/CircleProgressView/CircleProgressView.swift
+    - path: ../Riot/Modules/RoomKeyRequest/RoomKeyRequestViewController.h
+    - path: ../Riot/Modules/RoomKeyRequest/RoomKeyRequestViewController.m
+    - path: ../Riot/Modules/UserDevices/UsersDevicesViewController.h
+    - path: ../Riot/Modules/UserDevices/UsersDevicesViewController.m
+    - path: ../Riot/Modules/UserDevices/Views/DeviceTableViewCell.h
+    - path: ../Riot/Modules/UserDevices/Views/DeviceTableViewCell.m
+    - path: ../Riot/Utils
+
+    # Share extension
+    - path: ../TchapShareExtension/Modules/Share/Listing/Views
+
+    # Tchap
+    - path: ../Tchap/Config/AppConfiguration.swift
+    - path: ../Tchap/Config/CommonConfiguration.swift
+    - path: ../Tchap/Config/Configurable.swift
+    
+    # Resources
+    - path: ../Riot/Modules/Common/SegmentedViewController/SegmentedViewController.xib
+      buildPhase: resources

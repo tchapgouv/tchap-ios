@@ -33,14 +33,12 @@ options:
 
 include:
   - path: Tchap/target.yml
-  - path: TchapTests/target.yml
   - path: TchapShareExtension/target.yml
-  - path: SiriIntents/target.yml
   - path: TchapNSE/target.yml
+  - path: TchapTests/target.yml
+  - path: SiriIntents/target.yml
   - path: Btchap/target.yml
   - path: BtchapShareExtension/target.yml
   - path: BtchapNSE/target.yml
+  - path: BSiriIntents/target.yml
   - path: DesignKit/target.yml
-  - path: Riot/target.yml
-  - path: RiotShareExtension/target.yml
-  - path: RiotNSE/target.yml

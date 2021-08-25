@@ -8,16 +8,16 @@
       runPostActionsOnFailure = "NO">
       <BuildActionEntries>
          <BuildActionEntry
-            buildForTesting = "YES"
+            buildForTesting = "NO"
             buildForRunning = "YES"
             buildForProfiling = "YES"
             buildForArchiving = "YES"
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "3728F1A681573951FEE6945D"
-               BuildableName = "Tchap.app"
-               BlueprintName = "Tchap"
+               BlueprintIdentifier = "31C3DB17CFC96B7F5E36BC8C"
+               BuildableName = "DesignKit.framework"
+               BlueprintName = "DesignKit"
                ReferencedContainer = "container:Tchap.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -28,31 +28,18 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       onlyGenerateCoverageForSpecifiedTargets = "NO"
-      shouldUseLaunchSchemeArgsEnv = "YES"
-      disableMainThreadChecker = "YES">
+      shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "80FD62AA56BACC821BEB07B4"
-               BuildableName = "TchapTests.xctest"
-               BlueprintName = "TchapTests"
-               ReferencedContainer = "container:Tchap.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "3728F1A681573951FEE6945D"
-            BuildableName = "Tchap.app"
-            BlueprintName = "Tchap"
+            BlueprintIdentifier = "31C3DB17CFC96B7F5E36BC8C"
+            BuildableName = "DesignKit.framework"
+            BlueprintName = "DesignKit"
             ReferencedContainer = "container:Tchap.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
-      <CommandLineArguments>
-      </CommandLineArguments>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"
@@ -65,16 +52,15 @@
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES"
       disableMainThreadChecker = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "3728F1A681573951FEE6945D"
-            BuildableName = "Tchap.app"
-            BlueprintName = "Tchap"
+            BlueprintIdentifier = "31C3DB17CFC96B7F5E36BC8C"
+            BuildableName = "DesignKit.framework"
+            BlueprintName = "DesignKit"
             ReferencedContainer = "container:Tchap.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
       <CommandLineArguments>
       </CommandLineArguments>
    </LaunchAction>
@@ -88,9 +74,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "3728F1A681573951FEE6945D"
-            BuildableName = "Tchap.app"
-            BlueprintName = "Tchap"
+            BlueprintIdentifier = "31C3DB17CFC96B7F5E36BC8C"
+            BuildableName = "DesignKit.framework"
+            BlueprintName = "DesignKit"
             ReferencedContainer = "container:Tchap.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

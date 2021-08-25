@@ -15,9 +15,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "3728F1A681573951FEE6945D"
-               BuildableName = "Tchap.app"
-               BlueprintName = "Tchap"
+               BlueprintIdentifier = "80FD62AA56BACC821BEB07B4"
+               BuildableName = "TchapTests.xctest"
+               BlueprintName = "TchapTests"
                ReferencedContainer = "container:Tchap.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,9 +45,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "3728F1A681573951FEE6945D"
-            BuildableName = "Tchap.app"
-            BlueprintName = "Tchap"
+            BlueprintIdentifier = "80FD62AA56BACC821BEB07B4"
+            BuildableName = "TchapTests.xctest"
+            BlueprintName = "TchapTests"
             ReferencedContainer = "container:Tchap.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -65,16 +65,15 @@
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES"
       disableMainThreadChecker = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "3728F1A681573951FEE6945D"
-            BuildableName = "Tchap.app"
-            BlueprintName = "Tchap"
+            BlueprintIdentifier = "80FD62AA56BACC821BEB07B4"
+            BuildableName = "TchapTests.xctest"
+            BlueprintName = "TchapTests"
             ReferencedContainer = "container:Tchap.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
       <CommandLineArguments>
       </CommandLineArguments>
    </LaunchAction>
@@ -88,9 +87,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "3728F1A681573951FEE6945D"
-            BuildableName = "Tchap.app"
-            BlueprintName = "Tchap"
+            BlueprintIdentifier = "80FD62AA56BACC821BEB07B4"
+            BuildableName = "TchapTests.xctest"
+            BlueprintName = "TchapTests"
             ReferencedContainer = "container:Tchap.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

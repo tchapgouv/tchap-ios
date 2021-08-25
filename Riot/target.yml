@@ -1,28 +1,5 @@
 name: Riot
 
-schemes:
-  Riot:
-    analyze:
-      config: Debug
-    archive:
-      config: Release
-    build:
-      targets:
-        Riot:
-        - running
-        - testing
-        - profiling
-        - analyzing
-        - archiving
-    profile:
-      config: Release
-    run:
-      config: Debug
-      disableMainThreadChecker: true
-    test:
-      config: Debug
-      disableMainThreadChecker: true
-
 targets:
   Riot:
     type: application
@@ -59,3 +36,36 @@ targets:
       excludes:
         - "Modules/Room/EmojiPicker/Data/EmojiMart/EmojiJSONStore.swift"
         - "**/*.strings" # Exclude all strings files
+        - "Modules/Application"
+        - "Modules/Authentication"
+        - "Modules/BadgeLabel"
+        - "Modules/CallTransfer"
+        - "Modules/Communities"
+        - "Modules/Contacts"
+        - "Modules/CreateRoom"
+        - "Modules/CrossSigning"
+        - "Modules/DeepLink"
+        - "Modules/DotsView"
+        - "Modules/Favorites"
+        - "Modules/Home"
+        - "Modules/KeyBackup"
+        - "Modules/LaunchLoading"
+        - "Modules/MajorUpdate"
+        - "Modules/People"
+        - "Modules/PublicRoomList"
+        - "Modules/QRCode"
+        - "Modules/Reauthentication"
+        - "Modules/Room/RoomViewController.h"
+        - "Modules/Rooms"
+        - "Modules/Secrets"
+        - "Modules/SecureBackup"
+        - "Modules/SetPinCode"
+        - "Modules/Settings"
+        - "Modules/SideMenu"
+        - "Modules/SlidingModal"
+        - "Modules/Spaces"
+        - "Modules/SplitView"
+        - "Modules/StartChat"
+        - "Modules/TabBar"
+        - "Modules/User"
+        - "Modules/UserInteractiveAuthentication"

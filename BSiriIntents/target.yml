@@ -1,14 +1,14 @@
-name: SiriIntents
+name: BSiriIntents
 
 schemes:
-  SiriIntents:
+  BSiriIntents:
     analyze:
       config: Debug
     archive:
       config: Release
     build:
       targets:
-        SiriIntents:
+        BSiriIntents:
         - running
         - testing
         - profiling
@@ -27,7 +27,7 @@ schemes:
       disableMainThreadChecker: true
 
 targets:
-  SiriIntents:
+  BSiriIntents:
     platform: iOS
     type: app-extension
 

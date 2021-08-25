@@ -37,7 +37,8 @@ targets:
 
     sources:
     - path: .
-    - path: ../Riot/Modules/Common/SegmentedViewController/SegmentedViewController.m
+
+    # Riot
     - path: ../Riot/Categories/Bundle.swift
     - path: ../Riot/Categories/Character.swift
     - path: ../Riot/Categories/MXRoom+Riot.m
@@ -45,12 +46,17 @@ targets:
     - path: ../Riot/Categories/UISearchBar.swift
     - path: ../Riot/Categories/UIView.swift
     - path: ../Riot/Categories/String.swift
+    - path: ../Riot/Categories/MXRoomSummary+Riot.h
     - path: ../Riot/Categories/MXRoomSummary+Riot.m
     - path: ../Riot/Managers/EncryptionKeyManager/EncryptionKeyManager.swift
     - path: ../Riot/Managers/KeyValueStorage
     - path: ../Riot/Managers/Settings/RiotSettings.swift
-    - path: ../Riot/Managers/Theme/
+    - path: ../Riot/Managers/Theme
+    - path: ../Riot/Modules/Common/Recents/CellData/RecentCellData.h
     - path: ../Riot/Modules/Common/Recents/CellData/RecentCellData.m
+    - path: ../Riot/Modules/Common/SegmentedViewController/SegmentedViewController.h
+    - path: ../Riot/Modules/Common/SegmentedViewController/SegmentedViewController.m
+    - path: ../Riot/Utils/AvatarGenerator.h
     - path: ../Riot/Utils/AvatarGenerator.m
     - path: ../Riot/Utils/UserNameColorGenerator.swift
     
@@ -58,6 +64,7 @@ targets:
     - path: ../Tchap/Config/BuildSettings.swift
     - path: ../Tchap/Config/CommonConfiguration.swift
     - path: ../Tchap/Config/Configurable.swift
+    - path: ../Tchap/Constants
     - path: ../Tchap/Extensions
     - path: ../Tchap/Generated/InfoPlist.swift
     - path: ../Tchap/Generated/Strings.swift
@@ -69,13 +76,18 @@ targets:
     - path: ../Tchap/Modules/Common/Style
     - path: ../Tchap/Modules/Rooms/Views
     - path: ../Tchap/Model
+    - path: ../Tchap/Utils
     
     # Resources
     - path: ../Riot/Modules/Common/SegmentedViewController/SegmentedViewController.xib
       buildPhase: resources
-    - path: ../Riot/Assets/en.lproj/Vector.strings
+    - path: ../Riot/Assets/en.lproj
+      buildPhase: resources
+    - path: ../Riot/Assets/fr.lproj
       buildPhase: resources
     - path: ../Tchap/Assets/SharedImages.xcassets
+      buildPhase: resources
+    - path: ../Tchap/Assets/TchapSharedImages.xcassets
       buildPhase: resources
     - path: ../Tchap/Assets/Certificates
       buildPhase: resources

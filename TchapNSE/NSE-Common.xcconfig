@@ -19,5 +19,6 @@
 
 #include "Tchap/Config/Tchap-Common.xcconfig"
 
+SWIFT_OBJC_BRIDGING_HEADER = $(SRCROOT)/TchapNSE/SupportingFiles/TchapNSE-Bridging-Header.h
 PRODUCT_BUNDLE_IDENTIFIER = $(BASE_BUNDLE_IDENTIFIER).nse
 SWIFT_OBJC_INTERFACE_HEADER_NAME = GeneratedInterface-Swift.h

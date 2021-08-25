@@ -33,9 +33,9 @@ targets:
     dependencies:
     - target: Tchap
 
-#    configFiles:
-#      Debug: Debug.xcconfig
-#      Release: Release.xcconfig
+    configFiles:
+      Debug: Debug.xcconfig
+      Release: Release.xcconfig
 
     settings:
       base:

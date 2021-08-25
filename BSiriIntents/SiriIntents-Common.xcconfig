@@ -19,20 +19,14 @@
 
 #include "Btchap/Config/Btchap-Common.xcconfig"
 
-PRODUCT_BUNDLE_IDENTIFIER = $(BASE_BUNDLE_IDENTIFIER)
+PRODUCT_NAME = SiriIntents
+PRODUCT_BUNDLE_IDENTIFIER = $(BASE_BUNDLE_IDENTIFIER).SiriIntents
 
-INFOPLIST_FILE = Btchap/SupportingFiles/Info.plist
-ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon
+INFOPLIST_FILE = SiriIntents/Info.plist
 
-CODE_SIGN_ENTITLEMENTS = Btchap/SupportingFiles/Btchap.entitlements
+CODE_SIGN_ENTITLEMENTS = SiriIntents/SiriIntents.entitlements
 
-SWIFT_OBJC_BRIDGING_HEADER = $(SRCROOT)/Tchap/SupportingFiles/Tchap-Bridging-Header.h
-LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/Frameworks
+LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/Frameworks @executable_path/../../Frameworks
+SKIP_INSTALL = YES
+
 SWIFT_OBJC_INTERFACE_HEADER_NAME = GeneratedInterface-Swift.h
-
-CODE_SIGN_STYLE = Automatic
-DEVELOPMENT_TEAM = DINSIC
-PROVISIONING_PROFILE_SPECIFIER = Automatic
-
-CURRENT_PROJECT_VERSION = 1
-MARKETING_VERSION = 1.3.0

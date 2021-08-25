@@ -33,5 +33,7 @@ ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon
 
 CODE_SIGN_ENTITLEMENTS = Btchap/SupportingFiles/Btchap.entitlements
 
-SWIFT_OBJC_BRIDGING_HEADER = $(SRCROOT)/$(PRODUCT_NAME)/SupportingFiles/Btchap-Bridging-Header.h
+SWIFT_OBJC_BRIDGING_HEADER = $(SRCROOT)/Tchap/SupportingFiles/Tchap-Bridging-Header.h
 LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/Frameworks
+
+SWIFT_OBJC_INTERFACE_HEADER_NAME = GeneratedInterface-Swift.h
