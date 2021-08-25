@@ -1,3 +1,9 @@
+Changes in Tchap 1.3.2 (2021-08-25)
+===================================================
+
+Features/Improvements:
+ * Make certificates checking mode more flexible 
+
 Changes in Tchap 1.3.1 (2021-08-23)
 ===================================================
 
@@ -11,6 +17,12 @@ Features/Improvements:
  * Enable the room retention feature in Tchap (Prod)
  * Apply the new design of the Room header PR #383
  * Apply the design for the specific Tchap Info room #384
+
+Changes in Tchap 1.2.2 (2021-08-25)
+===================================================
+
+Features/Improvements:
+ * Make certificates checking mode more flexible 
 
 Changes in Tchap 1.2.1 (2021-04-12)
 ===================================================
