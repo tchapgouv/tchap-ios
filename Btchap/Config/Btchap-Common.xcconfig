@@ -37,3 +37,6 @@ SWIFT_OBJC_BRIDGING_HEADER = $(SRCROOT)/Tchap/SupportingFiles/Tchap-Bridging-Hea
 LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/Frameworks
 
 SWIFT_OBJC_INTERFACE_HEADER_NAME = GeneratedInterface-Swift.h
+
+CURRENT_PROJECT_VERSION = 1
+MARKETING_VERSION = 1.3.0
