@@ -70,7 +70,12 @@ targets:
     - path: Assets/Localizations/fr.lproj/Tchap.stringsdict
     
     # Riot
-    - path: ../Riot/Assets
+    - path: ../Riot/Assets/apple_emojis_data.json
+    - path: ../Riot/Assets/Base.lproj/LaunchScreen.storyboard
+    - path: ../Riot/Assets/Base.lproj/Main.storyboard
+    - path: ../Riot/Assets/js
+    - path: ../Riot/Assets/Sounds
+    - path: ../Riot/Assets/third_party_licenses.html
     - path: ../Riot/Categories
     - path: ../Riot/Generated/Vector_Strings.swift
     - path: ../Riot/Managers/Analytics
