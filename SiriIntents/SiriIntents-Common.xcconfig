@@ -30,3 +30,6 @@ LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/Frameworks @executable_p
 SKIP_INSTALL = YES
 
 SWIFT_OBJC_INTERFACE_HEADER_NAME = GeneratedInterface-Swift.h
+
+CODE_SIGN_STYLE = Automatic
+DEVELOPMENT_TEAM = NVMQD635C6

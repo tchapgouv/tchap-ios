@@ -20,3 +20,6 @@
 #include "Pods/Target Support Files/Pods-TchapTests/Pods-TchapTests.release.xcconfig"
 
 SWIFT_OBJC_INTERFACE_HEADER_NAME = GeneratedInterface-Swift.h
+
+CODE_SIGN_STYLE = Automatic
+DEVELOPMENT_TEAM = NVMQD635C6
