@@ -36,13 +36,6 @@
  */
 - (void)scrollToNextRoomWithMissedNotifications;
 
-/**
- Creates and returns a new `RoomsViewController` object.
- 
- @return An initialized `RoomsViewController` object.
- */
-+ (instancetype)instantiate;
-
 @end
 
 @protocol RoomsViewControllerDelegate <NSObject>

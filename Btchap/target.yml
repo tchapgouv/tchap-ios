@@ -63,14 +63,15 @@ targets:
     - path: ../Tchap
       excludes:
         - "target.yml"
-        - "TchapTools"
+        - "Assets/TchapSharedImages.xcassets"
         - "Config/BuildSettings.swift"
         - "Generated/InfoPlist.swift"
         - "Generated/TchapDefaults.swift"
-        - "SupportingFiles/Info.plist"
         - "Modules/KeyBackup/Setup/RecoveryKey"
         - "Modules/KeyBackup/Recover/Loading"
         - "Modules/Room/EmojiPicker/Data/EmojiMart/EmojiJSONStore.swift"
+        - "SupportingFiles/Info.plist"
+        - "TchapTools"
         - "**/*.strings" # Exclude all strings files
 
     # Add separately localizable files
