@@ -140,6 +140,10 @@ targets:
     - path: ../TchapShareExtension/Modules/Share/Listing/Views
     
     # Resources
+    - path: ../Riot/Assets/en.lproj
+      buildPhase: resources
+    - path: ../Riot/Assets/fr.lproj
+      buildPhase: resources
     - path: ../Riot/Modules/BugReport/BugReportViewController.xib
       buildPhase: resources
     - path: ../Riot/Modules/Call/CallViewController.xib
