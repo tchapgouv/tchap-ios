@@ -40,5 +40,4 @@ include:
   - path: Btchap/target.yml
   - path: BtchapShareExtension/target.yml
   - path: BtchapNSE/target.yml
-  - path: BSiriIntents/target.yml
   - path: DesignKit/target.yml

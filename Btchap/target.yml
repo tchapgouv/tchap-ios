@@ -32,7 +32,6 @@ targets:
 
     dependencies:
     - target: BtchapShareExtension
-    - target: BSiriIntents
     - target: BtchapNSE
     - target: DesignKit
 

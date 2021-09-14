@@ -117,10 +117,6 @@ abstract_target 'TchapPods' do
   target "SiriIntents" do
     import_MatrixKit
   end
-  
-  target "BSiriIntents" do
-    import_MatrixKit
-  end
 end
 
 
