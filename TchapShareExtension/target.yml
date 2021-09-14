@@ -81,9 +81,17 @@ targets:
     # Resources
     - path: ../Riot/Modules/Common/SegmentedViewController/SegmentedViewController.xib
       buildPhase: resources
-    - path: ../Riot/Assets/en.lproj
+    - path: ../Riot/Assets/en.lproj/InfoPlist.strings
       buildPhase: resources
-    - path: ../Riot/Assets/fr.lproj
+    - path: ../Riot/Assets/en.lproj/Localizable.strings
+      buildPhase: resources
+    - path: ../Riot/Assets/en.lproj/Vector.strings
+      buildPhase: resources
+    - path: ../Riot/Assets/fr.lproj/InfoPlist.strings
+      buildPhase: resources
+    - path: ../Riot/Assets/fr.lproj/Localizable.strings
+      buildPhase: resources
+    - path: ../Riot/Assets/fr.lproj/Vector.strings
       buildPhase: resources
     - path: ../Tchap/Assets/SharedImages.xcassets
       buildPhase: resources
