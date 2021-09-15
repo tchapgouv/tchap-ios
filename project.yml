@@ -17,7 +17,6 @@ fileGroups:
     - README.md
     - CHANGES.md
     - AUTHORS.rst
-    - Podfile
     - project.yml
 
 configFiles:
