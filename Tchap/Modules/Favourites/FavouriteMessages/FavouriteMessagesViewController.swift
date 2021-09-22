@@ -117,7 +117,7 @@ final class FavouriteMessagesViewController: UIViewController {
     private func update(style: Style) {
         self.currentStyle = style
         
-        self.tableView.backgroundColor = style.backgroundColor;
+        self.tableView.backgroundColor = style.backgroundColor
         self.view.backgroundColor = style.backgroundColor
         
         if let navigationBar = self.navigationController?.navigationBar {

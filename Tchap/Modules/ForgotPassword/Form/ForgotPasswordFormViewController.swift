@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-protocol ForgotPasswordFormViewControllerDelegate: class {
+protocol ForgotPasswordFormViewControllerDelegate: AnyObject {
     func forgotPasswordFormViewControllerDidTap(_ forgotPasswordFormViewController: ForgotPasswordFormViewController, didTapSendEmailButtonWith email: String, password: String)
 }
 

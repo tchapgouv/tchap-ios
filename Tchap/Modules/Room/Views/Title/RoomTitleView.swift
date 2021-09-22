@@ -17,7 +17,7 @@
 import UIKit
 import Reusable
 
-@objc protocol RoomTitleViewDelegate: class {
+@objc protocol RoomTitleViewDelegate: AnyObject {
     func roomTitleViewDidTapped(_ roomTitleView: RoomTitleView)
 }
 

@@ -16,7 +16,7 @@
 
 import UIKit
 
-protocol AuthenticationViewControllerDelegate: class {
+protocol AuthenticationViewControllerDelegate: AnyObject {
     func authenticationViewController(_ authenticationViewController: AuthenticationViewController, didTapNextButtonWith mail: String, password: String)
     func authenticationViewControllerDidTapForgotPasswordButton(_ authenticationViewController: AuthenticationViewController)
 }

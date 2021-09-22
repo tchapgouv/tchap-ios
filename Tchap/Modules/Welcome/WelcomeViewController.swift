@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-protocol WelcomeViewControllerDelegate: class {
+protocol WelcomeViewControllerDelegate: AnyObject {
     func welcomeViewControllerDidTapLoginButton(_ welcomeViewController: WelcomeViewController)
     func welcomeViewControllerDidTapRegisterButton(_ welcomeViewController: WelcomeViewController)
 }

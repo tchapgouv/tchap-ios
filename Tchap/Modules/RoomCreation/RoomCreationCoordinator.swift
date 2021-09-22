@@ -18,7 +18,7 @@ import UIKit
 import MobileCoreServices
 import RxSwift
 
-protocol RoomCreationCoordinatorDelegate: class {
+protocol RoomCreationCoordinatorDelegate: AnyObject {
     func roomCreationCoordinatorDidCancel(_ coordinator: RoomCreationCoordinatorType)
     func roomCreationCoordinator(_ coordinator: RoomCreationCoordinatorType, didCreateRoomWithID roomID: String)
 }

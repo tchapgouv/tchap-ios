@@ -16,7 +16,7 @@
 
 import Foundation
 
-protocol HomeCoordinatorDelegate: class {
+protocol HomeCoordinatorDelegate: AnyObject {
     func homeCoordinator(_ coordinator: HomeCoordinatorType, reloadMatrixSessionsByClearingCache clearCache: Bool)
     func homeCoordinator(_ coordinator: HomeCoordinatorType, handlePermalinkFragment fragment: String) -> Bool
 }

@@ -35,16 +35,16 @@ targets:
     - sdk: Intents.framework
 
     configFiles:
-      Debug: Debug.xcconfig
-      Release: Release.xcconfig
+      Debug: SiriIntents-Debug.xcconfig
+      Release: SiriIntents-Release.xcconfig
 
     sources:
     - path: .
-    - path: ../Riot/Generated/InfoPlist.swift
-    - path: ../Riot/Categories/Bundle.swift
-    - path: ../Config/CommonConfiguration.swift
     - path: ../Config/BuildSettings.swift
+    - path: ../Config/CommonConfiguration.swift
     - path: ../Config/Configurable.swift
-    - path: ../Riot/Managers/Settings/RiotSettings.swift
+    - path: ../Riot/Categories/Bundle.swift
+    - path: ../Riot/Generated/InfoPlist.swift
     - path: ../Riot/Managers/EncryptionKeyManager/EncryptionKeyManager.swift
     - path: ../Riot/Managers/KeyValueStorage
+    - path: ../Riot/Managers/Settings/RiotSettings.swift

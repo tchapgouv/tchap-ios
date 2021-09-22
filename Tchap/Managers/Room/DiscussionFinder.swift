@@ -130,7 +130,7 @@ final class DiscussionFinder: DiscussionFinderType {
                 if autoJoin {
                     self.joinPendingInvite(receivedInvites, completion: { (response) in
                         switch response {
-                        case .success (let roomID):
+                        case .success(let roomID):
                             MXLog.debug("[DiscussionFinder] user: \(userID) join a pending invite")
                             completion(.success(.joinedDiscussion(roomID: roomID)))
                         case .failure(let error):

@@ -1,6 +1,13 @@
-name: Riot
+name: Tchap
 attributes:
-  ORGANIZATIONNAME: matrix.org
+  ORGANIZATIONNAME: DINSIC
+  
+options:
+  deploymentTarget:
+    iOS: "11.0"
+    watchOS: '4.0'
+    tvOS: "11.0"
+    macOS: "10.15"
 
 configs:
   Debug: debug
@@ -10,7 +17,6 @@ fileGroups:
     - README.md
     - CHANGES.md
     - AUTHORS.rst
-    - Podfile
     - project.yml
 
 configFiles:
@@ -18,17 +24,19 @@ configFiles:
   Release: Config/Project-Release.xcconfig
 
 options:
-  defaultConfig: Release
+  defaultConfig: Debug
   groupSortPosition: bottom
   transitivelyLinkDependencies: false
   createIntermediateGroups: true
   useBaseInternationalization: true
-  postGenCommand: sh Tools/XcodeGen/postGenCommand.sh
 
 include:
-  - path: Riot/target.yml
-  - path: RiotTests/target.yml
-  - path: RiotShareExtension/target.yml
+  - path: Tchap/target.yml
+  - path: TchapShareExtension/target.yml
+  - path: TchapNSE/target.yml
+  - path: TchapTests/target.yml
   - path: SiriIntents/target.yml
-  - path: RiotNSE/target.yml
+  - path: Btchap/target.yml
+  - path: BtchapShareExtension/target.yml
+  - path: BtchapNSE/target.yml
   - path: DesignKit/target.yml

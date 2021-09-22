@@ -16,7 +16,7 @@
 
 import UIKit
 
-protocol PublicRoomsCoordinatorDelegate: class {
+protocol PublicRoomsCoordinatorDelegate: AnyObject {
     func publicRoomsCoordinatorDidCancel(_ publicRoomsCoordinator: PublicRoomsCoordinator)
     func publicRoomsCoordinator(_ publicRoomsCoordinator: PublicRoomsCoordinator, showRoomWithId roomId: String, onEventId eventId: String?)
 }

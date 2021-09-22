@@ -16,7 +16,7 @@
 
 import UIKit
 
-@objc protocol RetentionPeriodPickerCellDelegate: class {
+@objc protocol RetentionPeriodPickerCellDelegate: AnyObject {
     func retentionPeriodPickerCell(_ cell: RetentionPeriodPickerCell, didSelect periodInDays: uint)
 }
 

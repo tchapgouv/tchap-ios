@@ -16,7 +16,7 @@
 
 import Foundation
 
-protocol CreateNewDiscussionCoordinatorDelegate: class {
+protocol CreateNewDiscussionCoordinatorDelegate: AnyObject {
     func createNewDiscussionCoordinator(_ coordinator: CreateNewDiscussionCoordinatorType, didSelectUserID userID: String)
     func createNewDiscussionCoordinatorDidCancel(_ coordinator: CreateNewDiscussionCoordinatorType)
 }
