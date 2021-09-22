@@ -95,7 +95,7 @@ class DefaultTheme: NSObject, Theme {
     
     // Note: We are not using UINavigationBarAppearance on iOS 13+ atm because of UINavigationBar directly include UISearchBar on their titleView that cause crop issues with UINavigationController pop.
     func applyStyle(onNavigationBar navigationBar: UINavigationBar) {
-        navigationBar.tintColor = self.baseTextPrimaryColor
+        navigationBar.tintColor = self.tintColor
         navigationBar.titleTextAttributes = [
             NSAttributedString.Key.foregroundColor: self.baseTextPrimaryColor
         ]
@@ -108,30 +108,21 @@ class DefaultTheme: NSObject, Theme {
     }
 
     func applyStyle(onSearchBar searchBar: UISearchBar) {
-        searchBar.barStyle = .default
-        searchBar.tintColor = self.searchPlaceholderColor
-        searchBar.barTintColor = self.headerBackgroundColor
+        searchBar.searchBarStyle = .default
+        searchBar.barTintColor = self.baseColor
+        searchBar.isTranslucent = false
+        searchBar.backgroundImage = UIImage() // Remove top and bottom shadow
+        searchBar.tintColor = self.tintColor
         
-        if let searchBarTextField = searchBar.vc_searchTextField {
-            searchBarTextField.textColor = searchBar.tintColor
+        if #available(iOS 13.0, *) {
+            searchBar.searchTextField.backgroundColor = self.searchBackgroundColor
+            searchBar.searchTextField.textColor = self.searchPlaceholderColor
+        } else {
+            if let searchBarTextField = searchBar.vc_searchTextField {
+                searchBarTextField.textColor = self.searchPlaceholderColor
+            }
         }
     }
-//    func applyStyle(onSearchBar searchBar: UISearchBar) {
-//        searchBar.searchBarStyle = .default
-//        searchBar.barTintColor = self.baseColor
-//        searchBar.isTranslucent = false
-//        searchBar.backgroundImage = UIImage() // Remove top and bottom shadow
-//        searchBar.tintColor = self.tintColor
-//        
-//        if #available(iOS 13.0, *) {
-//            searchBar.searchTextField.backgroundColor = self.searchBackgroundColor
-//            searchBar.searchTextField.textColor = self.searchPlaceholderColor
-//        } else {
-//            if let searchBarTextField = searchBar.vc_searchTextField {
-//                searchBarTextField.textColor = self.searchPlaceholderColor
-//            }
-//        }
-//    }
     
     func applyStyle(onTextField texField: UITextField) {
         texField.textColor = self.textPrimaryColor

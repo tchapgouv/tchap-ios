@@ -34,7 +34,6 @@ final class HomeViewController: UIViewController {
     // MARK: Private
     
     private var globalSearchBar: GlobalSearchBar!
-    private var currentStyle: Style!
     private var segmentedViewController: SegmentedViewController?
     private var segmentViewControllers: [UIViewController] = []
     private var segmentViewControllersTitles: [String] = []
@@ -48,12 +47,13 @@ final class HomeViewController: UIViewController {
     
     // MARK: - Setup
     
-    class func instantiate(with viewControllers: [UIViewController], viewControllersTitles: [String], globalSearchBar: GlobalSearchBar, style: Style = Variant1Style.shared) -> HomeViewController {
+    class func instantiate(with viewControllers: [UIViewController],
+                           viewControllersTitles: [String],
+                           globalSearchBar: GlobalSearchBar) -> HomeViewController {
         let viewController = StoryboardScene.HomeViewController.initialScene.instantiate()
         viewController.segmentViewControllers = viewControllers
         viewController.segmentViewControllersTitles = viewControllersTitles
         viewController.globalSearchBar = globalSearchBar
-        viewController.currentStyle = style
         return viewController
     }
     
@@ -62,6 +62,7 @@ final class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.setupTheme()
         self.setupGlobalSearchBar()
         self.setupSegmentedViewController()
         self.setupPlusButton()
@@ -74,7 +75,7 @@ final class HomeViewController: UIViewController {
     }
         
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.currentStyle.statusBarStyle
+        return ThemeService.shared().theme.statusBarStyle
     }
     
     func setExternalUseMode(_ isExternal: Bool) {
@@ -144,15 +145,13 @@ final class HomeViewController: UIViewController {
     }
 }
 
-// MARK: - Stylable
-extension HomeViewController: Stylable {
-    func update(style: Style) {
-        self.currentStyle = style
-        
-        self.view.backgroundColor = style.backgroundColor
+// MARK: - Theme
+private extension HomeViewController {
+    func setupTheme() {
+        self.view.backgroundColor = ThemeService.shared().theme.backgroundColor
         
         if let navigationBar = self.navigationController?.navigationBar {
-            style.applyStyle(onNavigationBar: navigationBar)
+            ThemeService.shared().theme.applyStyle(onNavigationBar: navigationBar)
         }
     }
 }
