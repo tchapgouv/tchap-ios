@@ -22,7 +22,7 @@ struct RoomCreationFormResult {
     let roomType: RoomType
 }
 
-protocol RoomCreationViewControllerDelegate: class {
+protocol RoomCreationViewControllerDelegate: AnyObject {
     func roomCreationViewControllerDidTapAddAvatarButton(_ roomCreationViewController: RoomCreationViewController)
     func roomCreationViewController(_ roomCreationViewController: RoomCreationViewController, didTapNextButtonWith roomCreationFormResult: RoomCreationFormResult)
 }
@@ -195,7 +195,7 @@ final class RoomCreationViewController: UIViewController {
     private func setupRoomAvatarCreationView() {
         let roomCreationAvatarView = RoomCreationAvatarView.loadFromNib()
         roomCreationAvatarView.delegate = self
-        self.avatarContentView.tc_addSubViewMatchingParent(roomCreationAvatarView)
+        self.avatarContentView.vc_addSubViewMatchingParent(roomCreationAvatarView)
         self.roomCreationAvatarView = roomCreationAvatarView
         refreshAvatarView()
     }

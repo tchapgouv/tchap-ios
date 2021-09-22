@@ -88,6 +88,8 @@
  */
 @property (nonatomic) BOOL enableMention;
 
+@property (nonatomic) BOOL showCancelBarButtonItem;
+
 /**
  The delegate for the view controller.
  */

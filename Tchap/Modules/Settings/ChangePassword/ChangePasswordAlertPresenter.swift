@@ -16,7 +16,7 @@
 
 import UIKit
 
-@objc protocol ChangePasswordAlertPresenterDelegate: class {
+@objc protocol ChangePasswordAlertPresenterDelegate: AnyObject {
     func changePasswordAlertPresenterDidTapChangePasswordAction(_ presenter: ChangePasswordAlertPresenter)
     func changePasswordAlertPresenterDidTapBackupAction(_ presenter: ChangePasswordAlertPresenter)
 }

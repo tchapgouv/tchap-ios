@@ -37,10 +37,10 @@ final class AccountValidityService: AccountValidityServiceType {
     
     func requestRenewalEmail(completion: @escaping (MXResponse<Void>) -> Void) -> MXHTTPOperation? {
         return httpClient.request(withMethod: "POST", path: "account_validity/send_mail", parameters: nil, success: { (response: [AnyHashable: Any]?) in
-            NSLog("[AccountValidityService] request renewal email succeeded")
+            MXLog.debug("[AccountValidityService] request renewal email succeeded")
             completion(.success(Void()))
         }, failure: { (error: Error?) in
-            NSLog("[AccountValidityService] request renewal email failed")
+            MXLog.debug("[AccountValidityService] request renewal email failed")
             if let error = error {
                 completion(.failure(error))
             } else {

@@ -156,16 +156,16 @@ final class RegistrationFormViewModel: RegistrationFormViewModelType {
         var errorMessage: String?
         
         if !MXTools.isEmailAddress(mail) {
-            print("[RegistrationViewModel] Invalid email")
+            MXLog.debug("[RegistrationViewModel] Invalid email")
             errorMessage = TchapL10n.authenticationErrorInvalidEmail
         } else if actualPassword.isEmpty {
-            print("[RegistrationViewModel] Missing Password")
+            MXLog.debug("[RegistrationViewModel] Missing Password")
             errorMessage = TchapL10n.authenticationErrorMissingPassword
         } else if actualPassword.count < FormRules.passwordMinLength {
-            print("[RegistrationViewModel] Invalid Password")
+            MXLog.debug("[RegistrationViewModel] Invalid Password")
             errorMessage = TchapL10n.passwordPolicyTooShortPwdDetailedError(FormRules.passwordMinLength)
         } else if doPasswordsMatch == false {
-            print("[RegistrationViewModel] Passwords don't match")
+            MXLog.debug("[RegistrationViewModel] Passwords don't match")
             errorMessage = TchapL10n.registrationErrorPasswordsDontMatch
         }
         

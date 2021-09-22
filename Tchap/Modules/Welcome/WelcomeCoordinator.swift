@@ -16,7 +16,7 @@
 
 import Foundation
 
-protocol WelcomeCoordinatorDelegate: class {
+protocol WelcomeCoordinatorDelegate: AnyObject {
     func welcomeCoordinatorUserDidAuthenticate(_ coordinator: WelcomeCoordinatorType)
 }
 
@@ -43,7 +43,7 @@ final class WelcomeCoordinator: WelcomeCoordinatorType {
         self.navigationRouter = NavigationRouter(navigationController: TCNavigationController())
         
         let welcomeViewController = WelcomeViewController.instantiate()
-        welcomeViewController.tc_removeBackTitle()
+        welcomeViewController.vc_removeBackTitle()
         self.welcomeViewController = welcomeViewController        
     }
     

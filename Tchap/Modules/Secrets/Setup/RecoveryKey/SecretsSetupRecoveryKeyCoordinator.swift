@@ -37,8 +37,11 @@ final class SecretsSetupRecoveryKeyCoordinator: SecretsSetupRecoveryKeyCoordinat
     
     // MARK: - Setup
     
-    init(recoveryService: MXRecoveryService, passphrase: String?) {        
-        let secretsSetupRecoveryKeyViewModel = SecretsSetupRecoveryKeyViewModel(recoveryService: recoveryService, passphrase: passphrase)
+    init(recoveryService: MXRecoveryService,
+         passphrase: String?,
+         passphraseOnly: Bool,
+         allowOverwrite: Bool = false) {
+        let secretsSetupRecoveryKeyViewModel = SecretsSetupRecoveryKeyViewModel(recoveryService: recoveryService, passphrase: passphrase, passphraseOnly: passphraseOnly, allowOverwrite: allowOverwrite)
         let secretsSetupRecoveryKeyViewController = SecretsSetupRecoveryKeyViewController.instantiate(with: secretsSetupRecoveryKeyViewModel)
         self.secretsSetupRecoveryKeyViewModel = secretsSetupRecoveryKeyViewModel
         self.secretsSetupRecoveryKeyViewController = secretsSetupRecoveryKeyViewController

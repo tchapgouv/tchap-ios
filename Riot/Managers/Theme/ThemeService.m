@@ -18,11 +18,7 @@
 
 #import "ThemeService.h"
 
-#ifdef IS_SHARE_EXTENSION
-#import "RiotShareExtension-Swift.h"
-#else
-#import "Riot-Swift.h"
-#endif
+#import "GeneratedInterface-Swift.h"
 
 NSString *const kThemeServiceDidChangeThemeNotification = @"kThemeServiceDidChangeThemeNotification";
 
@@ -78,21 +74,31 @@ NSString *const kThemeServiceDidChangeThemeNotification = @"kThemeServiceDidChan
         }
     }
 
-    if ([themeId isEqualToString:@"dark"])
-    {
-        theme = [DarkTheme new];
-    }
-    else if ([themeId isEqualToString:@"black"])
-    {
-        theme = [BlackTheme new];
-    }
-    else
+//    if ([themeId isEqualToString:@"dark"])
+//    {
+//        theme = [DarkTheme new];
+//    }
+//    else if ([themeId isEqualToString:@"black"])
+//    {
+//        theme = [BlackTheme new];
+//    }
+//    else
     {
         // Use light theme by default
         theme = [DefaultTheme new];
     }
 
     return theme;
+}
+
+- (BOOL)isCurrentThemeDark
+{
+    if ([self.theme.identifier isEqualToString:@"dark"] || [self.theme.identifier isEqualToString:@"black"])
+    {
+        return YES;
+    }
+    
+    return NO;
 }
 
 #pragma mark - Private methods
@@ -145,6 +151,9 @@ NSString *const kThemeServiceDidChangeThemeNotification = @"kThemeServiceDidChan
     
     // Define the UISearchBar cancel button color
     [[UIBarButtonItem appearanceWhenContainedInInstancesOfClasses:@[[UISearchBar class]]] setTitleTextAttributes:@{ NSForegroundColorAttributeName : self.theme.tintColor }                                                                                                        forState: UIControlStateNormal];
+    
+    [[UIStackView appearanceWhenContainedInInstancesOfClasses:@[[UINavigationBar class]]] setSpacing:-7];
+    [[UIStackView appearanceWhenContainedInInstancesOfClasses:@[[UINavigationBar class]]] setDistribution:UIStackViewDistributionEqualCentering];
 }
 
 @end

@@ -17,7 +17,7 @@
 import UIKit
 import Reusable
 
-protocol SlidingModalContainerViewDelegate: class {
+protocol SlidingModalContainerViewDelegate: AnyObject {
     func slidingModalContainerViewDidTapBackground(_ view: SlidingModalContainerView)
 }
 
@@ -38,6 +38,25 @@ class SlidingModalContainerView: UIView, Themable, NibLoadable {
     }
     
     // MARK: - Properties
+    
+    private weak var blurView: UIVisualEffectView?
+    var blurBackground: Bool = false {
+        didSet {
+            if blurBackground {
+                let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
+                blurView.frame = self.dimmingView.bounds
+                blurView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+                self.dimmingView.addSubview(blurView)
+                self.blurView = blurView
+                self.dimmingView.backgroundColor = .clear
+            } else {
+                self.blurView?.removeFromSuperview()
+                self.dimmingView.backgroundColor = UIColor.black.withAlphaComponent(Constants.dimmingColorAlpha)
+            }
+        }
+    }
+    
+    var centerInScreen: Bool = false
     
     // MARK: Outlets
     
@@ -60,6 +79,9 @@ class SlidingModalContainerView: UIView, Themable, NibLoadable {
         
         return -(self.contentViewHeightConstraint.constant + bottomSafeAreaHeight)
     }
+    
+    // used to avoid changing constraint during animations
+    private var lastBounds: CGRect?
     
     // MARK: Public
     
@@ -92,12 +114,30 @@ class SlidingModalContainerView: UIView, Themable, NibLoadable {
         super.layoutSubviews()
         
         self.contentView.layer.cornerRadius = Constants.cornerRadius
+        
+        guard lastBounds != nil else {
+            lastBounds = bounds
+            return
+        }
+        
+        if UIDevice.current.userInterfaceIdiom == .pad && lastBounds != bounds {
+            lastBounds = bounds
+            self.contentViewBottomConstraint.constant = (UIScreen.main.bounds.height + self.dismissContentViewBottomConstant) / 2
+        }
     }
     
     // MARK: - Public
     
     func preparePresentAnimation() {
-        self.contentViewBottomConstraint.constant = 0
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            self.contentViewBottomConstraint.constant = (UIScreen.main.bounds.height + self.dismissContentViewBottomConstant) / 2
+        } else {
+            if centerInScreen {
+                contentViewBottomConstraint.constant = (bounds.height - contentViewHeightConstraint.constant)/2
+            } else {
+                contentViewBottomConstraint.constant = 0
+            }
+        }
     }
     
     func prepareDismissAnimation() {
@@ -120,7 +160,7 @@ class SlidingModalContainerView: UIView, Themable, NibLoadable {
         for subView in self.contentView.subviews {
             subView.removeFromSuperview()
         }
-        self.contentView.tc_addSubViewMatchingParent(contentView)
+        self.contentView.vc_addSubViewMatchingParent(contentView)
     }
     
     func updateDimmingViewAlpha(_ alpha: CGFloat) {

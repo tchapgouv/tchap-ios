@@ -18,23 +18,23 @@
 
 #import "RecentsDataSource.h"
 
-#import "DirectoryServerPickerViewController.h"
-
 #import "Riot-Swift.h"
 
-@interface RoomsViewController ()<RoomsDirectoryCoordinatorBridgePresenterDelegate>
+@interface RoomsViewController ()
 {
     RecentsDataSource *recentsDataSource;
-
-    // The animated view displayed at the table view bottom when paginating the room directory
-    UIView* footerSpinnerView;
 }
-
-@property (nonatomic, strong) RoomsDirectoryCoordinatorBridgePresenter *roomsDirectoryCoordinatorBridgePresenter;
 
 @end
 
 @implementation RoomsViewController
+
++ (instancetype)instantiate
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+    RoomsViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"RoomsViewController"];
+    return viewController;
+}
 
 - (void)finalizeInit
 {
@@ -58,8 +58,6 @@
     plusButtonImageView = [self vc_addFABWithImage:[UIImage imageNamed:@"rooms_floating_action"]
                                             target:self
                                             action:@selector(onPlusButtonPressed)];
-    
-    self.enableStickyHeaders = YES;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -71,19 +69,10 @@
     
     if ([self.dataSource isKindOfClass:RecentsDataSource.class])
     {
-        BOOL isFirstTime = (recentsDataSource != self.dataSource);
-
         // Take the lead on the shared data source.
         recentsDataSource = (RecentsDataSource*)self.dataSource;
         recentsDataSource.areSectionsShrinkable = NO;
         [recentsDataSource setDelegate:self andRecentsDataSourceMode:RecentsDataSourceModeRooms];
-
-        if (isFirstTime)
-        {
-            // The first time the screen is displayed, make publicRoomsDirectoryDataSource
-            // start loading data
-            [recentsDataSource.publicRoomsDirectoryDataSource paginate:nil failure:nil];
-        }
     }
 }
 
@@ -105,32 +94,17 @@
     [super refreshCurrentSelectedCell:forceVisible];
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForStickyHeaderInSection:(NSInteger)section
-{
-    CGRect frame = [tableView rectForHeaderInSection:section];
-    frame.size.height = self.stickyHeaderHeight;
-    
-    return [recentsDataSource viewForHeaderInSection:section withFrame:frame];
-}
-
-- (void)dataSource:(MXKDataSource *)dataSource didRecognizeAction:(NSString *)actionIdentifier inCell:(id<MXKCellRendering>)cell userInfo:(NSDictionary *)userInfo
-{
-    if ([actionIdentifier isEqualToString:kRecentsDataSourceTapOnDirectoryServerChange])
-    {
-        // Show the directory server picker
-        [self performSegueWithIdentifier:@"presentDirectoryServerPicker" sender:self];
-    }
-    else
-    {
-        [super dataSource:dataSource didRecognizeAction:actionIdentifier inCell:cell userInfo:userInfo];
-    }
-}
-
 - (void)onPlusButtonPressed
 {
-    self.roomsDirectoryCoordinatorBridgePresenter = [[RoomsDirectoryCoordinatorBridgePresenter alloc] initWithSession:self.mainSession dataSource:[recentsDataSource.publicRoomsDirectoryDataSource copy]];
-    self.roomsDirectoryCoordinatorBridgePresenter.delegate = self;
-    [self.roomsDirectoryCoordinatorBridgePresenter presentFrom:self animated:YES];
+    [self showRoomDirectory];
+}
+
+#pragma mark - UITableView delegate
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    // Hide the header to merge Invites and Rooms into a single list.
+    return 0.0;
 }
 
 #pragma mark - 
@@ -144,235 +118,44 @@
     }
 }
 
-#pragma mark - Navigation
+#pragma mark - Empty view management
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+- (void)updateEmptyView
 {
-    [super prepareForSegue:segue sender:sender];
-
-    UIViewController *pushedViewController = [segue destinationViewController];
-
-    if ([[segue identifier] isEqualToString:@"presentDirectoryServerPicker"])
-    {
-        UINavigationController *pushedNavigationViewController = (UINavigationController*)pushedViewController;
-        DirectoryServerPickerViewController* directoryServerPickerViewController = (DirectoryServerPickerViewController*)pushedNavigationViewController.viewControllers.firstObject;
-
-        MXKDirectoryServersDataSource *directoryServersDataSource = [[MXKDirectoryServersDataSource alloc] initWithMatrixSession:recentsDataSource.publicRoomsDirectoryDataSource.mxSession];
-        [directoryServersDataSource finalizeInitialization];
-
-        // Add directory servers from the app settings
-        directoryServersDataSource.roomDirectoryServers = BuildSettings.publicRoomsDirectoryServers;
-
-        __weak typeof(self) weakSelf = self;
-
-        [directoryServerPickerViewController displayWithDataSource:directoryServersDataSource onComplete:^(id<MXKDirectoryServerCellDataStoring> cellData) {
-            if (weakSelf && cellData)
-            {
-                typeof(self) self = weakSelf;
-
-                // Use the selected directory server
-                if (cellData.thirdPartyProtocolInstance)
-                {
-                    self->recentsDataSource.publicRoomsDirectoryDataSource.thirdpartyProtocolInstance = cellData.thirdPartyProtocolInstance;
-                }
-                else if (cellData.homeserver)
-                {
-                    self->recentsDataSource.publicRoomsDirectoryDataSource.includeAllNetworks = cellData.includeAllNetworks;
-                    self->recentsDataSource.publicRoomsDirectoryDataSource.homeserver = cellData.homeserver;
-                }
-
-                // Refresh data
-                [self addSpinnerFooterView];
-
-                [self->recentsDataSource.publicRoomsDirectoryDataSource paginate:^(NSUInteger roomsAdded) {
-
-                    if (weakSelf)
-                    {
-                        typeof(self) self = weakSelf;
-
-                        // The table view is automatically filled
-                        [self removeSpinnerFooterView];
-
-                        // Make the directory section appear full-page
-                        [self.recentsTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:self->recentsDataSource.directorySection] atScrollPosition:UITableViewScrollPositionTop animated:YES];
-                    }
-
-                } failure:^(NSError *error) {
-
-                    if (weakSelf)
-                    {
-                        typeof(self) self = weakSelf;
-                        [self removeSpinnerFooterView];
-                    }
-                }];
-            }
-        }];
-
-        // Hide back button title
-        pushedViewController.navigationController.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-    }
+    [self.emptyView fillWith:[self emptyViewArtwork]
+                       title:NSLocalizedStringFromTable(@"rooms_empty_view_title", @"Vector", nil)
+             informationText:NSLocalizedStringFromTable(@"rooms_empty_view_information", @"Vector", nil)];
 }
 
-#pragma mark - UITableView delegate
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+- (UIImage*)emptyViewArtwork
 {
-    if (section == recentsDataSource.directorySection)
+    if (ThemeService.shared.isCurrentThemeDark)
     {
-        // Let the recents dataSource provide the height of this section header
-        return [recentsDataSource heightForHeaderInSection:section];
-    }
-
-    return [super tableView:tableView heightForHeaderInSection:section];
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (indexPath.section == recentsDataSource.directorySection)
-    {
-        // Sanity check
-        MXPublicRoom *publicRoom = [recentsDataSource.publicRoomsDirectoryDataSource roomAtIndexPath:indexPath];
-        if (publicRoom)
-        {
-            [self openPublicRoomAtIndexPath:indexPath];
-        }
+        return [UIImage imageNamed:@"rooms_empty_screen_artwork_dark"];
     }
     else
     {
-        [super tableView:tableView didSelectRowAtIndexPath:indexPath];
+        return [UIImage imageNamed:@"rooms_empty_screen_artwork"];
     }
 }
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+- (BOOL)shouldShowEmptyView
 {
-        // Trigger inconspicuous pagination on directy when user scrolls down
-    if ((scrollView.contentSize.height - scrollView.contentOffset.y - scrollView.frame.size.height) < 300)
+    // Do not present empty screen while searching
+    if (recentsDataSource.searchPatternsList.count)
     {
-        [self triggerDirectoryPagination];
+        return NO;
     }
     
-    [super scrollViewDidScroll:scrollView];
+    // Otherwise check the number of items to display
+    return [self totalItemCounts] == 0;
 }
 
-#pragma mark - Private methods
-
-- (void)openPublicRoomAtIndexPath:(NSIndexPath *)indexPath
+// Total items to display on the screen
+- (NSUInteger)totalItemCounts
 {
-    MXPublicRoom *publicRoom = [recentsDataSource.publicRoomsDirectoryDataSource roomAtIndexPath:indexPath];
-    
-    [self openPublicRoom:publicRoom];
-}
-
-- (void)openPublicRoom:(MXPublicRoom *)publicRoom
-{
-    // Check whether the user has already joined the selected public room
-    if ([recentsDataSource.publicRoomsDirectoryDataSource.mxSession roomWithRoomId:publicRoom.roomId])
-    {
-        // Open the public room
-        [[AppDelegate theDelegate] showRoom:publicRoom.roomId andEventId:nil withMatrixSession:recentsDataSource.publicRoomsDirectoryDataSource.mxSession restoreInitialDisplay:NO];
-    }
-    else
-    {
-        // Preview the public room
-        if (publicRoom.worldReadable)
-        {
-            RoomPreviewData *roomPreviewData = [[RoomPreviewData alloc] initWithPublicRoom:publicRoom andSession:recentsDataSource.publicRoomsDirectoryDataSource.mxSession];
-            
-            [self startActivityIndicator];
-
-            // Try to get more information about the room before opening its preview
-            [roomPreviewData peekInRoom:^(BOOL succeeded) {
-                [self stopActivityIndicator];
-
-                [[AppDelegate theDelegate].masterTabBarController showRoomPreview:roomPreviewData];
-            }];
-        }
-        else
-        {
-            RoomPreviewData *roomPreviewData = [[RoomPreviewData alloc] initWithPublicRoom:publicRoom andSession:recentsDataSource.publicRoomsDirectoryDataSource.mxSession];
-            [[AppDelegate theDelegate].masterTabBarController showRoomPreview:roomPreviewData];
-        }
-    }
-}
-
-- (void)triggerDirectoryPagination
-{
-    if (!recentsDataSource
-        || recentsDataSource.state == MXKDataSourceStateUnknown
-        || recentsDataSource.publicRoomsDirectoryDataSource.hasReachedPaginationEnd
-        || footerSpinnerView)
-    {
-        // We are not yet ready or being killed or we got all public rooms or we are already paginating
-        // Do nothing
-        return;
-    }
-
-    [self addSpinnerFooterView];
-
-    [recentsDataSource.publicRoomsDirectoryDataSource paginate:^(NSUInteger roomsAdded) {
-
-        // The table view is automatically filled
-        [self removeSpinnerFooterView];
-
-    } failure:^(NSError *error) {
-
-        [self removeSpinnerFooterView];
-    }];
-}
-
-- (void)addSpinnerFooterView
-{
-    if (!footerSpinnerView)
-    {
-        UIActivityIndicatorView* spinner  = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-        spinner.transform = CGAffineTransformMakeScale(0.75f, 0.75f);
-        CGRect frame = spinner.frame;
-        frame.size.height = 80; // 80 * 0.75 = 60
-        spinner.bounds = frame;
-
-        spinner.color = [UIColor darkGrayColor];
-        spinner.hidesWhenStopped = NO;
-        spinner.backgroundColor = [UIColor clearColor];
-        [spinner startAnimating];
-
-        // No need to manage constraints here, iOS defines them
-        self.recentsTableView.tableFooterView = footerSpinnerView = spinner;
-    }
-}
-
-- (void)removeSpinnerFooterView
-{
-    if (footerSpinnerView)
-    {
-        footerSpinnerView = nil;
-
-        // Hide line separators of empty cells
-        self.recentsTableView.tableFooterView = [[UIView alloc] init];;
-    }
-}
-
-#pragma mark - RoomsDirectoryCoordinatorBridgePresenterDelegate
-
-- (void)roomsDirectoryCoordinatorBridgePresenterDelegateDidComplete:(RoomsDirectoryCoordinatorBridgePresenter *)coordinatorBridgePresenter
-{
-    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
-    self.roomsDirectoryCoordinatorBridgePresenter = nil;
-}
-
-- (void)roomsDirectoryCoordinatorBridgePresenterDelegate:(RoomsDirectoryCoordinatorBridgePresenter *)coordinatorBridgePresenter didSelectRoom:(MXPublicRoom *)room
-{
-    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
-        [self openPublicRoom:room];
-    }];
-    self.roomsDirectoryCoordinatorBridgePresenter = nil;
-}
-
-- (void)roomsDirectoryCoordinatorBridgePresenterDelegateDidTapCreateNewRoom:(RoomsDirectoryCoordinatorBridgePresenter *)coordinatorBridgePresenter
-{
-    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
-        [self createNewRoom];
-    }];
-    self.roomsDirectoryCoordinatorBridgePresenter = nil;
+    return recentsDataSource.conversationCellDataArray.count
+    + recentsDataSource.invitesCellDataArray.count;
 }
 
 @end

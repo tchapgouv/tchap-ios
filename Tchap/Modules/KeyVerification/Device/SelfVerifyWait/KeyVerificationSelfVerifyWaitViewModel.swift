@@ -73,7 +73,7 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
     private func loadData() {
         
         if !self.isNewSignIn {
-            print("[KeyVerificationSelfVerifyWaitViewModel] loadData: Send a verification request to all devices")
+            MXLog.debug("[KeyVerificationSelfVerifyWaitViewModel] loadData: Send a verification request to all devices")
             
             let keyVerificationService = KeyVerificationService()
             self.verificationManager.requestVerificationByToDevice(withUserId: self.session.myUserId, deviceIds: nil, methods: keyVerificationService.supportedKeyVerificationMethods(), success: { [weak self] (keyVerificationRequest) in
@@ -90,7 +90,22 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
             continueLoadData()
         } else {
             //  be sure that session has completed its first sync
-            if session.state.rawValue >= MXSessionStateRunning.rawValue {
+            if session.state >= MXSessionStateRunning {
+                
+                // Always send request instead of waiting for an incoming one as per recent EW changes
+                MXLog.debug("[KeyVerificationSelfVerifyWaitViewModel] loadData: Send a verification request to all devices instead of waiting")
+                
+                let keyVerificationService = KeyVerificationService()
+                self.verificationManager.requestVerificationByToDevice(withUserId: self.session.myUserId, deviceIds: nil, methods: keyVerificationService.supportedKeyVerificationMethods(), success: { [weak self] (keyVerificationRequest) in
+                    guard let self = self else {
+                        return
+                    }
+                    
+                    self.keyVerificationRequest = keyVerificationRequest
+                    
+                }, failure: { [weak self] error in
+                    self?.update(viewState: .error(error))
+                })
                 continueLoadData()
             } else {
                 //  show loader
@@ -102,7 +117,7 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
     
     @objc
     private func sessionStateChanged() {
-        if session.state.rawValue >= MXSessionStateRunning.rawValue {
+        if session.state >= MXSessionStateRunning {
             NotificationCenter.default.removeObserver(self, name: .mxSessionStateDidChange, object: session)
             continueLoadData()
         }
@@ -117,9 +132,11 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
         self.registerKeyVerificationManagerNewRequestNotification(for: self.verificationManager)
         self.update(viewState: .loaded(viewData))
         self.registerTransactionDidStateChangeNotification()
+        self.registerKeyVerificationRequestChangeNotification()
     }
     
     private func cancel() {
+        self.unregisterKeyVerificationRequestChangeNotification()
         self.unregisterKeyVerificationManagerNewRequestNotification()
         self.cancelKeyVerificationRequest()
         self.coordinatorDelegate?.keyVerificationSelfVerifyWaitViewModelDidCancel(self)
@@ -176,6 +193,42 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
         
         self.unregisterTransactionDidStateChangeNotification()
         self.acceptKeyVerificationRequest(keyVerificationRequest)
+    }
+    
+    // MARK: MXKeyVerificationRequestDidChangeNotification
+    
+    private func registerKeyVerificationRequestChangeNotification() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyVerificationRequestChangeNotification(notification:)),
+                                               name: .MXKeyVerificationRequestDidChange,
+                                               object: nil)
+    }
+    
+    private func unregisterKeyVerificationRequestChangeNotification() {
+        NotificationCenter.default.removeObserver(self,
+                                                  name: .MXKeyVerificationRequestDidChange,
+                                                  object: nil)
+    }
+    
+    @objc private func keyVerificationRequestChangeNotification(notification: Notification) {
+        guard let request = notification.object as? MXKeyVerificationRequest else {
+            return
+        }
+        guard let keyVerificationRequest = keyVerificationRequest,
+              keyVerificationRequest.requestId == request.requestId else {
+            return
+        }
+        
+        guard keyVerificationRequest.isFromMyUser,
+              keyVerificationRequest.isFromMyDevice else {
+            return
+        }
+        
+        if keyVerificationRequest.state == MXKeyVerificationRequestStateReady {
+            self.unregisterKeyVerificationRequestChangeNotification()
+            self.coordinatorDelegate?.keyVerificationSelfVerifyWaitViewModel(self,
+                                                                             didAcceptKeyVerificationRequest: keyVerificationRequest)
+        }
     }
     
     // MARK: MXKeyVerificationTransactionDidChange

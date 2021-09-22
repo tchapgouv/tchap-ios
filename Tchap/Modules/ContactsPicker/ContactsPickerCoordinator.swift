@@ -16,7 +16,7 @@
 
 import Foundation
 
-protocol ContactsPickerCoordinatorDelegate: class {
+protocol ContactsPickerCoordinatorDelegate: AnyObject {
     // Two types of identifiers are supported here: Matrix ids and email addresses.
     func contactsPickerCoordinator(_ coordinator: ContactsPickerCoordinatorType, didSelectContactIdentifiers identifiers: [String])
 }

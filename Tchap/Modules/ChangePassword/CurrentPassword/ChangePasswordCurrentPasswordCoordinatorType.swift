@@ -16,7 +16,7 @@
 
 import Foundation
 
-protocol ChangePasswordCurrentPasswordCoordinatorDelegate: class {
+protocol ChangePasswordCurrentPasswordCoordinatorDelegate: AnyObject {
     func changePasswordCurrentPasswordCoordinator(_ coordinator: ChangePasswordCurrentPasswordCoordinatorType, didCompleteWithCurrentPassword currentPasword: String)
     func changePasswordCurrentPasswordCoordinatorDidCancel(_ coordinator: ChangePasswordCurrentPasswordCoordinatorType)
 }

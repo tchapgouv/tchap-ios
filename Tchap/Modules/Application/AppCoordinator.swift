@@ -184,7 +184,7 @@ final class AppCoordinator: AppCoordinatorType {
                 switch parsingResult {
                 case .registrationLink:
                     // We don't expect a registration link from a permalink, we ignore this case here.
-                    NSLog("[AppCoordinator] handlePermalinkFragment: unexpected fragment (registration link)")
+                    MXLog.debug("[AppCoordinator] handlePermalinkFragment: unexpected fragment (registration link)")
                 case .roomLink(let roomIdOrAlias, let eventID):
                     _ = self.showRoom(with: roomIdOrAlias, onEventID: eventID)
                 }
@@ -244,7 +244,7 @@ final class AppCoordinator: AppCoordinatorType {
             case .upToDate, .unknown:
                 break
             case .shouldUpdate(versionInfo: let versionInfo):
-                print("[AppCoordinator] App should be upated with \(versionInfo)")
+                MXLog.debug("[AppCoordinator] App should be upated with \(versionInfo)")
                 self.presentApplicationUpdate(with: versionInfo)
             }
             self.pendingCheckAppVersionOperation = nil
@@ -397,13 +397,13 @@ final class AppCoordinator: AppCoordinatorType {
             let sessionId = registerParams["session_id"],
             let clientSecret = registerParams["client_secret"],
             let sid = registerParams["sid"] else {
-                NSLog("[AppCoordinator] handleRegisterAfterEmailValidation: failed, missing parameters")
+                MXLog.debug("[AppCoordinator] handleRegisterAfterEmailValidation: failed, missing parameters")
                 return
         }
         
         // Check whether there is already an active account
         if self.mainSession != nil {
-            NSLog("[AppCoordinator] handleRegisterAfterEmailValidation: Prompt to logout current sessions to complete the registration")
+            MXLog.debug("[AppCoordinator] handleRegisterAfterEmailValidation: Prompt to logout current sessions to complete the registration")
             AppDelegate.theDelegate().logout(withConfirmation: true) { (isLoggedOut) in
                 if isLoggedOut {
                     self.handleRegisterAfterEmailValidation(registerParams)
@@ -440,7 +440,7 @@ final class AppCoordinator: AppCoordinatorType {
                     self.removeActivityIndicator()
                     switch registrationResult {
                     case .success:
-                        print("[AppCoordinator] handleRegisterAfterEmailValidation: success")
+                        MXLog.debug("[AppCoordinator] handleRegisterAfterEmailValidation: success")
                         _ = self.userDidLogin()
                     case .failure(let error):
                         self.showError(error)
@@ -479,7 +479,7 @@ final class AppCoordinator: AppCoordinatorType {
             self.showHome(session: mainSession)
             success = true
         } else {
-            NSLog("[AppCoordinator] Did not find session for current user")
+            MXLog.debug("[AppCoordinator] Did not find session for current user")
             success = false
             // TODO: Present an error on
             // coordinator.toPresentable()
@@ -519,7 +519,7 @@ final class AppCoordinator: AppCoordinatorType {
     }
     
     private func handleExpiredAccount() {
-        NSLog("[AppCoordinator] expired account")
+        MXLog.debug("[AppCoordinator] expired account")
         // Suspend the app by closing all the sessions (presently only one session is supported)
         if let accounts = MXKAccountManager.shared().activeAccounts, !accounts.isEmpty {
             for account in accounts {
@@ -604,16 +604,16 @@ final class AppCoordinator: AppCoordinatorType {
     
     private func presentApplicationUpdate(with versionInfo: ClientVersionInfo) {
         guard self.appVersionUpdateCoordinator == nil else {
-            print("[AppCoordinor] AppVersionUpdateCoordinator already presented")
+            MXLog.debug("[AppCoordinor] AppVersionUpdateCoordinator already presented")
             return
         }
         
         // Update should be display once and has already been dislayed, do not display again
         if versionInfo.displayOnlyOnce && self.appVersionChecker.isClientVersionInfoAlreadyDisplayed(versionInfo) {
-            print("[AppCoordinor] AppVersionUpdateCoordinator already presented for versionInfo: \(versionInfo)")
+            MXLog.debug("[AppCoordinor] AppVersionUpdateCoordinator already presented for versionInfo: \(versionInfo)")
             return
         } else if versionInfo.allowOpeningApp && self.appVersionChecker.isClientVersionInfoAlreadyDisplayedToday(versionInfo) {
-            print("[AppCoordinor] AppVersionUpdateCoordinator already presented today for versionInfo: \(versionInfo)")
+            MXLog.debug("[AppCoordinor] AppVersionUpdateCoordinator already presented today for versionInfo: \(versionInfo)")
             return
         }
         

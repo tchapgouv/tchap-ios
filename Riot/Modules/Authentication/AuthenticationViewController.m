@@ -27,7 +27,12 @@
 
 #import "Riot-Swift.h"
 
-@interface AuthenticationViewController () <AuthFallBackViewControllerDelegate, KeyVerificationCoordinatorBridgePresenterDelegate, SetPinCoordinatorBridgePresenterDelegate>
+static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
+
+@interface AuthenticationViewController () <AuthFallBackViewControllerDelegate, KeyVerificationCoordinatorBridgePresenterDelegate, SetPinCoordinatorBridgePresenterDelegate,
+    SocialLoginListViewDelegate,
+    SSOAuthenticationPresenterDelegate
+>
 {
     /**
      The default country code used to initialize the mobile phone number input.
@@ -63,6 +68,23 @@
 @property (nonatomic, strong) SetPinCoordinatorBridgePresenter *setPinCoordinatorBridgePresenter;
 @property (nonatomic, strong) KeyboardAvoider *keyboardAvoider;
 
+@property (weak, nonatomic) IBOutlet UIView *socialLoginContainerView;
+@property (nonatomic, weak) SocialLoginListView *socialLoginListView;
+
+@property (nonatomic, strong) SSOAuthenticationPresenter *ssoAuthenticationPresenter;
+
+// Current SSO flow containing Identity Providers. Used for `socialLoginListView`
+@property (nonatomic, strong) MXLoginSSOFlow *currentLoginSSOFlow;
+
+// Current SSO transaction id used to identify and validate the SSO authentication callback
+@property (nonatomic, strong) NSString *ssoCallbackTxnId;
+
+@property (nonatomic, strong) CrossSigningService *crossSigningService;
+
+@property (nonatomic, getter = isFirstViewAppearing) BOOL firstViewAppearing;
+
+@property (nonatomic, strong) MXKErrorAlertPresentation *errorPresenter;
+
 @end
 
 @implementation AuthenticationViewController
@@ -94,6 +116,11 @@
     defaultCountryCode = @"GB";
     
     didCheckFalseAuthScreenDisplay = NO;
+    
+    _firstViewAppearing = YES;
+    
+    self.crossSigningService = [CrossSigningService new];
+    self.errorPresenter = [MXKErrorAlertPresentation new];
 }
 
 - (void)viewDidLoad
@@ -146,6 +173,12 @@
     
     self.homeServerTextField.placeholder = NSLocalizedStringFromTable(@"auth_home_server_placeholder", @"Vector", nil);
     self.identityServerTextField.placeholder = NSLocalizedStringFromTable(@"auth_identity_server_placeholder", @"Vector", nil);
+    
+    self.authenticationActivityIndicatorContainerView.layer.cornerRadius = 5;
+    [self.authenticationActivityIndicator addObserver:self
+                                           forKeyPath:@"hidden"
+                                              options:0
+                                              context:nil];
     
     // Custom used authInputsView
     [self registerAuthInputsViewClass:AuthInputsView.class forAuthType:MXKAuthenticationTypeLogin];
@@ -215,6 +248,8 @@
     self.submitButton.backgroundColor = ThemeService.shared.theme.tintColor;
     self.skipButton.backgroundColor = ThemeService.shared.theme.tintColor;
     
+    self.authenticationActivityIndicator.color = ThemeService.shared.theme.textSecondaryColor;
+    self.authenticationActivityIndicatorContainerView.backgroundColor = ThemeService.shared.theme.baseColor;
     self.noFlowLabel.textColor = ThemeService.shared.theme.warningColor;
     
     NSMutableAttributedString *forgotPasswordTitle = [[NSMutableAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"auth_forgot_password", @"Vector", nil)];
@@ -286,6 +321,11 @@
 {
     [super viewDidAppear:animated];
     
+    if (self.isFirstViewAppearing)
+    {
+        self.firstViewAppearing = NO;
+    }
+    
     if (self.keyVerificationCoordinatorBridgePresenter)
     {
         return;
@@ -300,7 +340,7 @@
     {
         didCheckFalseAuthScreenDisplay = YES;
         
-        NSLog(@"[AuthenticationVC] viewDidAppear: Checking false logout");
+        MXLogDebug(@"[AuthenticationVC] viewDidAppear: Checking false logout");
         [[MXKAccountManager sharedManager] forceReloadAccounts];
         if ([MXKAccountManager sharedManager].activeAccounts.count)
         {
@@ -315,6 +355,16 @@
     [_keyboardAvoider stopAvoiding];
     
     [super viewDidDisappear:animated];
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    
+    if (self.isFirstViewAppearing)
+    {
+        [self refreshContentViewHeightConstraint];
+    }
 }
 
 - (void)destroy
@@ -332,6 +382,8 @@
         [[NSNotificationCenter defaultCenter] removeObserver:universalLinkDidChangeNotificationObserver];
         universalLinkDidChangeNotificationObserver = nil;
     }
+    
+    [self.authenticationActivityIndicator removeObserver:self forKeyPath:@"hidden"];
 
     autoDiscovery = nil;
     _keyVerificationCoordinatorBridgePresenter = nil;
@@ -377,8 +429,10 @@
         }
     }
     
+    [self updateAuthInputViewVisibility];
     [self updateForgotPwdButtonVisibility];
     [self updateSoftLogoutClearDataContainerVisibility];
+    [self updateSocialLoginViewVisibility];
 }
 
 - (void)setAuthInputsView:(MXKAuthInputsView *)authInputsView
@@ -420,6 +474,24 @@
     // Restore here the actual content view height.
     // Indeed this height has been modified according to the authInputsView height in the default implementation of MXKAuthenticationViewController.
     [self refreshContentViewHeightConstraint];
+    
+    // the authentication indicator should be the front most view
+    [self.authInputsContainerView bringSubviewToFront:self.authenticationActivityIndicatorContainerView];
+}
+
+- (void)updateAuthInputViewVisibility
+{
+    BOOL hideAuthInputView = NO;
+    
+    // Hide input view when there is only social login actions to present
+    if ((self.authType == MXKAuthenticationTypeLogin || self.authType == MXKAuthenticationTypeRegister)
+        && self.currentLoginSSOFlow
+        && !self.isAuthSessionContainsPasswordFlow)
+    {
+        hideAuthInputView = YES;
+    }
+    
+    self.authInputsView.hidden = hideAuthInputView;
 }
 
 - (void)setUserInteractionEnabled:(BOOL)userInteractionEnabled
@@ -526,6 +598,21 @@
     {
         [self.authVCDelegate authenticationViewControllerDidDismiss:self];
     }
+}
+
+- (BOOL)continueSSOLoginWithToken:(NSString*)loginToken txnId:(NSString*)txnId
+{
+    // Check if transaction id is the same as expected
+    if (loginToken &&
+        txnId && self.ssoCallbackTxnId
+        && [txnId isEqualToString:self.ssoCallbackTxnId])
+    {
+        [self loginWithToken:loginToken];
+        return YES;
+    }
+        
+    MXLogDebug(@"[AuthenticationVC] Fail to continue SSO login");
+    return NO;
 }
 
 #pragma mark - Fallback URL display
@@ -676,11 +763,11 @@
 
 - (void)clearDataAfterSoftLogout
 {
-    NSLog(@"[AuthenticationVC] clearDataAfterSoftLogout %@", self.softLogoutCredentials.userId);
+    MXLogDebug(@"[AuthenticationVC] clearDataAfterSoftLogout %@", self.softLogoutCredentials.userId);
 
     // Use AppDelegate so that we reset app settings and this auth screen
     [[AppDelegate theDelegate] logoutSendingRequestServer:YES completion:^(BOOL isLoggedOut) {
-        NSLog(@"[AuthenticationVC] Complete. isLoggedOut: %@", @(isLoggedOut));
+        MXLogDebug(@"[AuthenticationVC] Complete. isLoggedOut: %@", @(isLoggedOut));
     }];
 }
 
@@ -692,7 +779,8 @@
  */
 - (MXAuthenticationSession*)handleSupportedFlowsInAuthenticationSession:(MXAuthenticationSession *)authSession
 {
-    MXLoginFlow *ssoFlow;
+    MXLoginSSOFlow *ssoFlow;
+    MXLoginFlow *passwordFlow;
     NSMutableArray *supportedFlows = [NSMutableArray array];
 
     for (MXLoginFlow *flow in authSession.flows)
@@ -700,24 +788,34 @@
         // Remove known flows we do not support
         if (![flow.type isEqualToString:kMXLoginFlowTypeToken])
         {
-            NSLog(@"[AuthenticationVC] handleSupportedFlowsInAuthenticationSession: Filter out flow %@", flow.type);
+            MXLogDebug(@"[AuthenticationVC] handleSupportedFlowsInAuthenticationSession: Filter out flow %@", flow.type);
             [supportedFlows addObject:flow];
         }
 
-        // Prioritise SSO over other flows
-        if ([flow.type isEqualToString:kMXLoginFlowTypeSSO]
-            || [flow.type isEqualToString:kMXLoginFlowTypeCAS])
+        if ([flow.type isEqualToString:kMXLoginFlowTypePassword])
         {
-            NSLog(@"[AuthenticationVC] handleSupportedFlowsInAuthenticationSession: Prioritise flow %@", flow.type);
-            ssoFlow = flow;
-            break;
+            passwordFlow = flow;
+        }
+
+        if ([flow isKindOfClass:MXLoginSSOFlow.class])
+        {
+            MXLogDebug(@"[AuthenticationVC] handleSupportedFlowsInAuthenticationSession: Prioritise flow %@", flow.type);
+            ssoFlow = (MXLoginSSOFlow *)flow;
         }
     }
 
+    // Prioritise SSO over other flows
     if (ssoFlow)
     {
         [supportedFlows removeAllObjects];
         [supportedFlows addObject:ssoFlow];
+
+        // If the SSO contains Identity Providers list and password
+        // Display both social login and password input
+        if (ssoFlow.identityProviders.count && passwordFlow)
+        {
+            [supportedFlows addObject:passwordFlow];
+        }
     }
 
     if (supportedFlows.count != authSession.flows.count)
@@ -740,7 +838,12 @@
     authSession = [self handleSupportedFlowsInAuthenticationSession:authSession];
     
     [super handleAuthenticationSession:authSession];
-
+    
+    self.currentLoginSSOFlow = [self logginSSOFlowWithProvidersFromFlows:authSession.flows];
+    
+    [self updateAuthInputViewVisibility];
+    [self updateSocialLoginViewVisibility];
+        
     AuthInputsView *authInputsview;
     if ([self.authInputsView isKindOfClass:AuthInputsView.class])
     {
@@ -752,7 +855,7 @@
     [self updateForgotPwdButtonVisibility];
     [self updateSoftLogoutClearDataContainerVisibility];
 
-    self.submitButton.hidden = authInputsview.isSingleSignOnRequired;
+    self.submitButton.hidden = authInputsview.isSingleSignOnRequired || authInputsview.isHidden;
 
     // Bind ssoButton again if self.authInputsView has changed
     [authInputsview.ssoButton addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
@@ -763,6 +866,54 @@
         // That makes softLogoutClearDataContainer appear upper in the screen
         [self.submitButton removeFromSuperview];
     }
+    
+    [self refreshContentViewHeightConstraint];
+}
+
+- (BOOL)isAuthSessionContainsPasswordFlow
+{
+    BOOL containsPassword = NO;
+    
+    if (self.authInputsView.authSession)
+    {
+        containsPassword = [self containsPasswordFlowInFlows:self.authInputsView.authSession.flows];
+    }
+    
+    return containsPassword;
+}
+
+- (BOOL)containsPasswordFlowInFlows:(NSArray<MXLoginFlow*>*)loginFlows
+{
+    for (MXLoginFlow *loginFlow in loginFlows)
+    {
+        if ([loginFlow.type isEqualToString:kMXLoginFlowTypePassword])
+        {
+            return YES;
+        }
+    }
+    
+    return NO;
+}
+
+- (MXLoginSSOFlow*)logginSSOFlowWithProvidersFromFlows:(NSArray<MXLoginFlow*>*)loginFlows
+{
+    MXLoginSSOFlow *ssoFlowWithProviders;
+    
+    for (MXLoginFlow *loginFlow in loginFlows)
+    {
+        if ([loginFlow isKindOfClass:MXLoginSSOFlow.class])
+        {
+            MXLoginSSOFlow *ssoFlow = (MXLoginSSOFlow *)loginFlow;
+            
+            if (ssoFlow.identityProviders.count)
+            {
+                ssoFlowWithProviders = ssoFlow;
+                break;
+            }
+        }
+    }
+    
+    return ssoFlowWithProviders;
 }
 
 - (IBAction)onButtonPressed:(id)sender
@@ -851,7 +1002,7 @@
                             //   - the username is not already in use
                             if ([mxError.errcode isEqualToString:kMXErrCodeStringUserInUse])
                             {
-                                NSLog(@"[AuthenticationVC] User name is already use");
+                                MXLogDebug(@"[AuthenticationVC] User name is already use");
                                 [self onFailureDuringAuthRequest:[NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[NSBundle mxk_localizedStringForKey:@"auth_username_in_use"]}]];
                             }
                             //   - the server quota limits is not reached
@@ -890,9 +1041,8 @@
         [super onButtonPressed:self.submitButton];
     }
     else if (sender == ((AuthInputsView*)self.authInputsView).ssoButton)
-    {
-        // Do SSO using the fallback URL
-        [self showAuthenticationFallBackView];
+    {        
+        [self presentDefaultSSOAuthentication];
     }
     else if (sender == self.softLogoutClearDataButton)
     {
@@ -958,7 +1108,7 @@
     
     BOOL showForgotPasswordButton = NO;
 
-    if (BuildSettings.authScreenShowForgotPassword)
+    if (BuildSettings.authScreenShowForgotPassword && authInputsview.isHidden == NO)
     {
         showForgotPasswordButton = (self.authType == MXKAuthenticationTypeLogin) && !authInputsview.isSingleSignOnRequired;
     }
@@ -1051,8 +1201,33 @@
 
 - (void)refreshContentViewHeightConstraint
 {
+    [self.view layoutIfNeeded];
+    
     // Refresh content view height by considering the options container display.
     CGFloat constant = self.optionsContainer.frame.origin.y + 10;
+    
+    if (self.authInputsView.isHidden == NO)
+    {
+        self.authInputContainerViewMinHeightConstraint.constant = kAuthInputContainerViewMinHeightConstraintConstant;
+        self.authInputContainerViewHeightConstraint.constant = self.authInputsView.viewHeightConstraint.constant;
+    }
+    else
+    {
+        self.authInputContainerViewMinHeightConstraint.constant = 0;
+        self.authInputContainerViewHeightConstraint.constant = 0;
+    }
+        
+    // FIX: When authInputsView present recaptcha the height is not taken into account, add it manually here.
+    AuthInputsView *authInputsview;
+    if ([self.authInputsView isKindOfClass:AuthInputsView.class])
+    {
+        authInputsview = (AuthInputsView*)self.authInputsView;
+        
+        if (!authInputsview.recaptchaContainer.hidden)
+        {
+            constant+=authInputsview.frame.size.height;
+        }
+    }
     
     if (!self.optionsContainer.isHidden)
     {
@@ -1079,8 +1254,15 @@
         // The soft logout clear data section adds more height
         constant += self.softLogoutClearDataContainer.frame.size.height;
     }
+    
+    if (self.isSocialLoginViewShown)
+    {
+        constant += [self socialLoginViewHeightFittingWidth:self.contentView.frame.size.width];
+    }
 
     self.contentViewHeightConstraint.constant = constant;
+    
+    [self.view layoutIfNeeded];
 }
 
 - (void)hideCustomServers:(BOOL)hidden
@@ -1148,7 +1330,7 @@
         self.customServersContainer.hidden = NO;
         
         // Refresh content view height
-        self.contentViewHeightConstraint.constant += self.customServersContainer.frame.size.height;
+        [self refreshContentViewHeightConstraint];
 
         // Scroll to display server options
         CGPoint offset = self.authenticationScrollView.contentOffset;
@@ -1159,14 +1341,14 @@
 
 - (void)showResourceLimitExceededError:(NSDictionary *)errorDict
 {
-    NSLog(@"[AuthenticationVC] showResourceLimitExceededError");
+    MXLogDebug(@"[AuthenticationVC] showResourceLimitExceededError");
 
     [self showResourceLimitExceededError:errorDict onAdminContactTapped:^(NSURL *adminContactURL) {
 
         [[UIApplication sharedApplication] vc_open:adminContactURL completionHandler:^(BOOL success) {
            if (!success)
            {
-               NSLog(@"[AuthenticationVC] adminContact(%@) cannot be opened", adminContactURL);
+               MXLogDebug(@"[AuthenticationVC] adminContact(%@) cannot be opened", adminContactURL);
            }
         }];
     }];
@@ -1186,13 +1368,13 @@
     // Override here the handling of the authInputsView height change.
     if ([@"viewHeightConstraint.constant" isEqualToString:keyPath])
     {
-        self.authInputContainerViewHeightConstraint.constant = self.authInputsView.viewHeightConstraint.constant;
-        
-        // Force to render the view
-        [self.view layoutIfNeeded];
-        
         // Refresh content view height by considering the updated frame of the options container.
         [self refreshContentViewHeightConstraint];
+    }
+    else if ([@"hidden" isEqualToString:keyPath])
+    {
+        UIActivityIndicatorView *indicator = (UIActivityIndicatorView*)object;
+        [self.authenticationActivityIndicatorContainerView setHidden:indicator.hidden];
     }
     else
     {
@@ -1220,7 +1402,7 @@
     {
         MXRoomCreationParameters *roomCreationParameters = [MXRoomCreationParameters parametersForDirectRoomWithUser:@"@riot-bot:matrix.org"];
         [session createRoomWithParameters:roomCreationParameters success:nil failure:^(NSError *error) {
-            NSLog(@"[AuthenticationVC] Create chat with riot-bot failed");
+            MXLogDebug(@"[AuthenticationVC] Create chat with riot-bot failed");
         }];
     }
     
@@ -1241,21 +1423,26 @@
 - (void)sessionStateDidChangeNotification:(NSNotification*)notification
 {
     MXSession *session = (MXSession*)notification.object;
-    
-    if (session.state == MXSessionStateRunning)
+
+    if (session.state == MXSessionStateStoreDataReady)
     {
-        [self unregisterSessionStateChangeNotification];
-        
         if (session.crypto.crossSigning)
         {
             // Do not make key share requests while the "Complete security" is not complete.
             // If the device is self-verified, the SDK will restore the existing key backup.
             // Then, it  will re-enable outgoing key share requests
             [session.crypto setOutgoingKeyRequestsEnabled:NO onComplete:nil];
-            
+        }
+    }
+    else if (session.state == MXSessionStateRunning)
+    {
+        [self unregisterSessionStateChangeNotification];
+        
+        if (session.crypto.crossSigning)
+        {
             [session.crypto.crossSigning refreshStateWithSuccess:^(BOOL stateUpdated) {
 
-                NSLog(@"[AuthenticationVC] sessionStateDidChange: crossSigning.state: %@", @(session.crypto.crossSigning.state));
+                MXLogDebug(@"[AuthenticationVC] sessionStateDidChange: crossSigning.state: %@", @(session.crypto.crossSigning.state));
 
                 switch (session.crypto.crossSigning.state)
                 {
@@ -1264,29 +1451,34 @@
                         // TODO: This is still not sure we want to disable the automatic cross-signing bootstrap
                         // if the admin disabled e2e by default.
                         // Do like riot-web for the moment
-                        if (session.vc_isE2EByDefaultEnabledByHSAdmin)
+                        if ([session vc_homeserverConfiguration].isE2EEByDefaultEnabled)
                         {
                             // Bootstrap cross-signing on user's account
                             // We do it for both registration and new login as long as cross-signing does not exist yet
                             if (self.authInputsView.password.length)
                             {
-                                NSLog(@"[AuthenticationVC] sessionStateDidChange: Bootstrap with password");
+                                MXLogDebug(@"[AuthenticationVC] sessionStateDidChange: Bootstrap with password");
                                 
                                 [session.crypto.crossSigning setupWithPassword:self.authInputsView.password success:^{
-                                    NSLog(@"[AuthenticationVC] sessionStateDidChange: Bootstrap succeeded");
+                                    MXLogDebug(@"[AuthenticationVC] sessionStateDidChange: Bootstrap succeeded");
                                     [self dismiss];
                                 } failure:^(NSError * _Nonnull error) {
-                                    NSLog(@"[AuthenticationVC] sessionStateDidChange: Bootstrap failed. Error: %@", error);
+                                    MXLogDebug(@"[AuthenticationVC] sessionStateDidChange: Bootstrap failed. Error: %@", error);
                                     [session.crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
                                     [self dismiss];
                                 }];
                             }
                             else
                             {
-                                NSLog(@"[AuthenticationVC] sessionStateDidChange: Do not know how to bootstrap cross-signing. Skip it.");
-                                
-                                [session.crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
-                                [self dismiss];
+                                // Try to setup cross-signing without authentication parameters in case if a grace period is enabled
+                                [self.crossSigningService setupCrossSigningWithoutAuthenticationFor:session success:^{
+                                    MXLogDebug(@"[AuthenticationVC] sessionStateDidChange: Bootstrap succeeded without credentials");
+                                    [self dismiss];
+                                } failure:^(NSError * _Nonnull error) {
+                                    MXLogDebug(@"[AuthenticationVC] sessionStateDidChange: Do not know how to bootstrap cross-signing. Skip it.");
+                                    [session.crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
+                                    [self dismiss];
+                                }];
                             }
                         }
                         else
@@ -1298,7 +1490,7 @@
                     }
                     case MXCrossSigningStateCrossSigningExists:
                     {
-                        NSLog(@"[AuthenticationVC] sessionStateDidChange: Complete security");
+                        MXLogDebug(@"[AuthenticationVC] sessionStateDidChange: Complete security");
                         
                         // Ask the user to verify this session
                         self.userInteractionEnabled = YES;
@@ -1309,7 +1501,7 @@
                     }
                         
                     default:
-                        NSLog(@"[AuthenticationVC] sessionStateDidChange: Nothing to do");
+                        MXLogDebug(@"[AuthenticationVC] sessionStateDidChange: Nothing to do");
                         
                         [session.crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
                         [self dismiss];
@@ -1317,7 +1509,7 @@
                 }
                 
             } failure:^(NSError * _Nonnull error) {
-                NSLog(@"[AuthenticationVC] sessionStateDidChange: Fail to refresh crypto state with error: %@", error);
+                MXLogDebug(@"[AuthenticationVC] sessionStateDidChange: Fail to refresh crypto state with error: %@", error);
                 [session.crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
                 [self dismiss];
             }];
@@ -1462,14 +1654,17 @@
 
 - (void)keyVerificationCoordinatorBridgePresenterDelegateDidComplete:(KeyVerificationCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter otherUserId:(NSString * _Nonnull)otherUserId otherDeviceId:(NSString * _Nonnull)otherDeviceId
 {
+    MXCrypto *crypto = coordinatorBridgePresenter.session.crypto;
+    if (!crypto.backup.hasPrivateKeyInCryptoStore || !crypto.backup.enabled)
+    {
+        MXLogDebug(@"[AuthenticationVC][MXKeyVerification] requestAllPrivateKeys: Request key backup private keys");
+        [crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
+    }
     [self dismiss];
 }
 
 - (void)keyVerificationCoordinatorBridgePresenterDelegateDidCancel:(KeyVerificationCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter
 {
-    // Set outgoing key requests back
-    [coordinatorBridgePresenter.session.crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
-    
     [self dismiss];
 }
 
@@ -1494,6 +1689,162 @@
     //  then, just close the enter pin screen
     [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
     self.setPinCoordinatorBridgePresenter = nil;
+}
+
+#pragma mark - Social login view management
+
+- (BOOL)isSocialLoginViewShown
+{
+    return self.socialLoginListView.superview
+    && !self.socialLoginListView.isHidden
+    && self.currentLoginSSOFlow.identityProviders.count;
+}
+
+- (CGFloat)socialLoginViewHeightFittingWidth:(CGFloat)width
+{
+    NSArray<MXLoginSSOIdentityProvider*> *identityProviders =  self.currentLoginSSOFlow.identityProviders;
+    
+    if (!identityProviders.count && self.socialLoginListView)
+    {
+        return 0.0;
+    }
+    
+    return [SocialLoginListView contentViewHeightWithIdentityProviders:identityProviders mode:self.socialLoginListView.mode fitting:self.contentView.frame.size.width];
+}
+
+- (void)showSocialLoginViewWithLoginSSOFlow:(MXLoginSSOFlow*)loginSSOFlow andMode:(SocialLoginButtonMode)mode
+{
+    SocialLoginListView *listView = self.socialLoginListView;
+    
+    if (!listView)
+    {
+        listView = [SocialLoginListView instantiate];
+        [self.socialLoginContainerView vc_addSubViewMatchingParent:listView];
+        self.socialLoginListView = listView;
+        listView.delegate = self;
+    }
+    
+    [listView updateWith:loginSSOFlow.identityProviders mode:mode];
+    
+    [self refreshContentViewHeightConstraint];
+}
+
+- (void)hideSocialLoginView
+{
+    [self.socialLoginListView removeFromSuperview];
+    [self refreshContentViewHeightConstraint];
+}
+
+- (void)updateSocialLoginViewVisibility
+{
+    SocialLoginButtonMode socialLoginButtonMode = SocialLoginButtonModeContinue;
+    
+    BOOL showSocialLoginView = self.currentLoginSSOFlow ? YES : NO;
+    
+    switch (self.authType)
+    {
+        case MXKAuthenticationTypeForgotPassword:
+            showSocialLoginView = NO;
+            break;
+        case MXKAuthenticationTypeRegister:
+            socialLoginButtonMode = SocialLoginButtonModeSignUp;
+            break;
+        case MXKAuthenticationTypeLogin:
+            if (((AuthInputsView*)self.authInputsView).isSingleSignOnRequired)
+            {
+                socialLoginButtonMode = SocialLoginButtonModeContinue;
+            }
+            else
+            {
+                socialLoginButtonMode = SocialLoginButtonModeSignIn;
+            }
+            break;
+        default:
+            break;
+    }
+    
+    if (showSocialLoginView)
+    {
+        [self showSocialLoginViewWithLoginSSOFlow:self.currentLoginSSOFlow andMode:socialLoginButtonMode];
+    }
+    else
+    {
+        [self hideSocialLoginView];
+    }
+}
+
+#pragma mark - SocialLoginListViewDelegate
+
+- (void)socialLoginListView:(SocialLoginListView *)socialLoginListView didTapSocialButtonWithIdentifier:(NSString *)identifier
+{
+    [self presentSSOAuthenticationForIdentityProviderIdentifier:identifier];
+}
+
+#pragma mark - SSOIdentityProviderAuthenticationPresenter
+
+- (void)presentSSOAuthenticationForIdentityProviderIdentifier:(NSString*)identityProviderIdentifier
+{
+    NSString *homeServerStringURL = self.homeServerTextField.text;
+    
+    if (!homeServerStringURL)
+    {
+        return;
+    }
+    
+    SSOAuthenticationService *ssoAuthenticationService = [[SSOAuthenticationService alloc] initWithHomeserverStringURL:homeServerStringURL];
+    
+    SSOAuthenticationPresenter *presenter = [[SSOAuthenticationPresenter alloc] initWithSsoAuthenticationService:ssoAuthenticationService];
+    
+    presenter.delegate = self;
+    
+    // Generate a unique identifier that will identify the success callback URL
+    NSString *transactionId = [MXTools generateTransactionId];
+    
+    [presenter presentForIdentityProviderIdentifier:identityProviderIdentifier with: transactionId from:self animated:YES];
+    
+    self.ssoCallbackTxnId = transactionId;
+    self.ssoAuthenticationPresenter = presenter;
+}
+
+- (void)presentDefaultSSOAuthentication
+{
+    [self presentSSOAuthenticationForIdentityProviderIdentifier:nil];
+}
+
+- (void)dismissSSOAuthenticationPresenter
+{
+    [self.ssoAuthenticationPresenter dismissWithAnimated:YES completion:nil];
+    self.ssoAuthenticationPresenter = nil;
+}
+
+// TODO: Move to SDK
+- (void)loginWithToken:(NSString*)loginToken
+{
+    NSDictionary *parameters = @{
+        @"type" : kMXLoginFlowTypeToken,
+        @"token": loginToken
+    };
+    
+    [self loginWithParameters:parameters];
+}
+
+#pragma mark - SSOAuthenticationPresenterDelegate
+
+- (void)ssoAuthenticationPresenterDidCancel:(SSOAuthenticationPresenter *)presenter
+{
+    [self dismissSSOAuthenticationPresenter];
+}
+
+- (void)ssoAuthenticationPresenter:(SSOAuthenticationPresenter *)presenter authenticationDidFailWithError:(NSError *)error
+{
+    [self dismissSSOAuthenticationPresenter];
+    [self.errorPresenter presentErrorFromViewController:self forError:error animated:YES handler:nil];
+}
+
+- (void)ssoAuthenticationPresenter:(SSOAuthenticationPresenter *)presenter authenticationSucceededWithToken:(NSString *)token
+{
+    [self dismissSSOAuthenticationPresenter];
+    [self loginWithToken:token];
 }
 
 @end

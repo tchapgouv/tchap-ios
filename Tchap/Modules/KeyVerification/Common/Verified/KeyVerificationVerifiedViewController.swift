@@ -18,7 +18,7 @@
 
 import UIKit
 
-protocol KeyVerificationVerifiedViewControllerDelegate: class {
+protocol KeyVerificationVerifiedViewControllerDelegate: AnyObject {
     func keyVerificationVerifiedViewControllerDidTapSetupAction(_ viewController: KeyVerificationVerifiedViewController)
     func keyVerificationVerifiedViewControllerDidCancel(_ viewController: KeyVerificationVerifiedViewController)
 }
@@ -58,7 +58,7 @@ final class KeyVerificationVerifiedViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         
-        self.tc_removeBackTitle()
+        self.vc_removeBackTitle()
         
         self.setupViews()
         self.registerThemeServiceDidChangeThemeNotification()

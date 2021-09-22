@@ -38,6 +38,8 @@ final class SecretsRecoveryWithPassphraseViewController: UIViewController {
         
     @IBOutlet private weak var recoverButton: RoundedButton!
     
+    @IBOutlet private weak var resetSecretsButton: UIButton!
+    
     // MARK: Private
     
     private var viewModel: SecretsRecoveryWithPassphraseViewModelType!
@@ -64,7 +66,7 @@ final class SecretsRecoveryWithPassphraseViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         
-        self.tc_removeBackTitle()
+        self.vc_removeBackTitle()
         
         self.setupViews()
         self.keyboardAvoider = KeyboardAvoider(scrollViewContainerView: self.view, scrollView: self.scrollView)
@@ -104,6 +106,8 @@ final class SecretsRecoveryWithPassphraseViewController: UIViewController {
         switch self.viewModel.recoveryGoal {
         case .default, .keyBackup, .restoreSecureBackup:
             informationText = VectorL10n.secretsRecoveryWithPassphraseInformationDefault
+        case .unlockSecureBackup(_):
+            informationText = VectorL10n.secretsRecoveryWithKeyInformationUnlockSecureBackupWithPhrase
         case .verifyDevice:
             informationText = VectorL10n.secretsRecoveryWithPassphraseInformationVerifyDevice
         }
@@ -119,6 +123,10 @@ final class SecretsRecoveryWithPassphraseViewController: UIViewController {
         self.recoverButton.setTitle(VectorL10n.secretsRecoveryWithPassphraseRecoverAction, for: .normal)
         
         self.updateRecoverButton()
+                
+        self.resetSecretsButton.vc_enableMultiLinesTitle()
+        
+        self.resetSecretsButton.isHidden = !RiotSettings.shared.secretsRecoveryAllowReset
     }
     
     private func update(theme: Theme) {
@@ -144,6 +152,8 @@ final class SecretsRecoveryWithPassphraseViewController: UIViewController {
         
         self.recoverButton.update(theme: theme)
         
+        // Use recovery key button
+        
         let useRecoveryKeyAttributedString = NSMutableAttributedString(string: VectorL10n.secretsRecoveryWithPassphraseLostPassphraseActionPart1, attributes: [.foregroundColor: self.theme.textPrimaryColor])
         let unknownRecoveryKeyAttributedStringPart2 = NSAttributedString(string: VectorL10n.secretsRecoveryWithPassphraseLostPassphraseActionPart2, attributes: [.foregroundColor: self.theme.tintColor])
         let unknownRecoveryKeyAttributedStringPart3 = NSAttributedString(string: VectorL10n.secretsRecoveryWithPassphraseLostPassphraseActionPart3, attributes: [.foregroundColor: self.theme.textPrimaryColor])
@@ -152,6 +162,15 @@ final class SecretsRecoveryWithPassphraseViewController: UIViewController {
         useRecoveryKeyAttributedString.append(unknownRecoveryKeyAttributedStringPart3)
         
         self.useRecoveryKeyButton.setAttributedTitle(useRecoveryKeyAttributedString, for: .normal)
+        
+        // Reset secrets button
+        
+        let resetSecretsAttributedString = NSMutableAttributedString(string: VectorL10n.secretsRecoveryResetActionPart1, attributes: [.foregroundColor: self.theme.textPrimaryColor])
+        let resetSecretsAttributedStringPart2 = NSAttributedString(string: VectorL10n.secretsRecoveryResetActionPart2, attributes: [.foregroundColor: self.theme.warningColor])
+        
+        resetSecretsAttributedString.append(resetSecretsAttributedStringPart2)
+        
+        self.resetSecretsButton.setAttributedTitle(resetSecretsAttributedString, for: .normal)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -221,6 +240,11 @@ final class SecretsRecoveryWithPassphraseViewController: UIViewController {
     
     @IBAction private func useRecoveryKeyButtonAction(_ sender: Any) {
         self.viewModel.process(viewAction: .useRecoveryKey)
+    }
+    
+    
+    @IBAction private func resetSecretsAction(_ sender: Any) {
+        self.viewModel.process(viewAction: .resetSecrets)
     }
 }
 

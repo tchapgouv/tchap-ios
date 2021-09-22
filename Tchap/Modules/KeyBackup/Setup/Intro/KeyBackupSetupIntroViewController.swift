@@ -16,7 +16,7 @@
 
 import UIKit
 
-protocol KeyBackupSetupIntroViewControllerDelegate: class {
+protocol KeyBackupSetupIntroViewControllerDelegate: AnyObject {
     func keyBackupSetupIntroViewControllerDidTapSetupAction(_ keyBackupSetupIntroViewController: KeyBackupSetupIntroViewController)
     func keyBackupSetupIntroViewControllerDidCancel(_ keyBackupSetupIntroViewController: KeyBackupSetupIntroViewController)
 }
@@ -70,7 +70,7 @@ final class KeyBackupSetupIntroViewController: UIViewController {
         // Do any additional setup after loading the view.
         
         self.title = VectorL10n.keyBackupSetupTitle
-        self.tc_removeBackTitle()
+        self.vc_removeBackTitle()
         
         self.setupViews()
         self.registerThemeServiceDidChangeThemeNotification()

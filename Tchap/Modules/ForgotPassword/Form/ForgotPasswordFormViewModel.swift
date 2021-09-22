@@ -147,16 +147,16 @@ final class ForgotPasswordFormViewModel: ForgotPasswordFormViewModelType {
         var errorMessage: String?
         
         if !MXTools.isEmailAddress(mail) {
-            print("[ForgotPasswordFormViewModel] Invalid email")
+            MXLog.debug("[ForgotPasswordFormViewModel] Invalid email")
             errorMessage = TchapL10n.authenticationErrorInvalidEmail
         } else if actualPassword.isEmpty {
-            print("[ForgotPasswordFormViewModel] Missing Password")
+            MXLog.debug("[ForgotPasswordFormViewModel] Missing Password")
             errorMessage = TchapL10n.authenticationErrorMissingPassword
         } else if actualPassword.count < FormRules.passwordMinLength {
-            print("[ForgotPasswordFormViewModel] Invalid Password")
+            MXLog.debug("[ForgotPasswordFormViewModel] Invalid Password")
             errorMessage = TchapL10n.passwordPolicyTooShortPwdDetailedError(FormRules.passwordMinLength)
         } else if doPasswordsMatch == false {
-            print("[ForgotPasswordFormViewModel] Passwords don't match")
+            MXLog.debug("[ForgotPasswordFormViewModel] Passwords don't match")
             errorMessage = TchapL10n.registrationErrorPasswordsDontMatch
         }
         

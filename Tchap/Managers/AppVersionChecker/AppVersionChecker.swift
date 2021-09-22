@@ -133,7 +133,7 @@ final class AppVersionChecker: AppVersionCheckerType {
                     let fetchResult = AppVersionCheckerFetchResult.remote(result: versionResult)
                     completion(fetchResult)
                 case .failure(let error):
-                    print("[AppVersionChecker] Fail to get client configuration with error: \(error)")
+                    MXLog.debug("[AppVersionChecker] Fail to get client configuration with error: \(error)")
                     let fetchResult = AppVersionCheckerFetchResult.error(error)
                     completion(fetchResult)
                 }

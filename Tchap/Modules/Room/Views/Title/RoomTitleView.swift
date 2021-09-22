@@ -17,7 +17,7 @@
 import UIKit
 import Reusable
 
-@objc protocol RoomTitleViewDelegate: class {
+@objc protocol RoomTitleViewDelegate: AnyObject {
     func roomTitleViewDidTapped(_ roomTitleView: RoomTitleView)
 }
 
@@ -55,9 +55,6 @@ import Reusable
     private var imageBorderWidth: CGFloat = Constants.hexagonImageBorderWidth
     
     private weak var titlesStackViewCenterXConstraint: NSLayoutConstraint?
-    
-    // Left margin from superView, used only for iOS 10 and below
-    private var leftMargin: CGFloat = 0
     
     private var imageShape: AvatarImageShape = .circle
     

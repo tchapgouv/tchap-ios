@@ -20,3 +20,15 @@
 #include "Tchap/Config/Tchap-Common.xcconfig"
 
 PRODUCT_BUNDLE_IDENTIFIER = $(BASE_BUNDLE_IDENTIFIER)
+
+INFOPLIST_FILE = Tchap/SupportingFiles/Info.plist
+ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon
+
+CODE_SIGN_ENTITLEMENTS = Tchap/SupportingFiles/Tchap.entitlements
+
+SWIFT_OBJC_BRIDGING_HEADER = $(SRCROOT)/$(PRODUCT_NAME)/SupportingFiles/Tchap-Bridging-Header.h
+LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/Frameworks
+SWIFT_OBJC_INTERFACE_HEADER_NAME = GeneratedInterface-Swift.h
+
+CODE_SIGN_STYLE = Automatic
+DEVELOPMENT_TEAM = NVMQD635C6

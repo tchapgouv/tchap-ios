@@ -88,7 +88,7 @@ final class UserService: NSObject, UserServiceType {
                         completion(nil)
                     }
                 case .failure(let error):
-                    print("Get profile failed for user id \(userId) with error: \(error)")
+                    MXLog.debug("Get profile failed for user id \(userId) with error: \(error)")
                     completion(nil)
                 }
             }
@@ -299,7 +299,7 @@ final class UserService: NSObject, UserServiceType {
                                   path: "users/info",
                                   parameters: ["user_ids": userIds],
                                   success: { (response: [AnyHashable: Any]?) in
-                                    NSLog("[UserService] users info resquest succeeded")
+                                    MXLog.debug("[UserService] users info resquest succeeded")
                                     guard let response = response as? [String: [String: Bool]] else {
                                         completion(.failure(UserServiceError.unknown))
                                         return
@@ -313,7 +313,7 @@ final class UserService: NSObject, UserServiceType {
                                     completion(.success(usersInfo))
         },
                                   failure: { (error: Error?) in
-                                    NSLog("[UserService] users info resquest failed")
+                                    MXLog.debug("[UserService] users info resquest failed")
                                     if let error = error {
                                         completion(.failure(error))
                                     } else {

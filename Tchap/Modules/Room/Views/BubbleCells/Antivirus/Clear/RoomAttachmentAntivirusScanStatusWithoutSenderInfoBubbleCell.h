@@ -21,4 +21,6 @@
  */
 @interface RoomAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell : RoomIncomingAttachmentWithoutSenderInfoBubbleCell
 
++ (instancetype)instantiate;
+
 @end

@@ -16,7 +16,7 @@
 
 import Foundation
 
-protocol ForwardViewControllerDelegate: class {
+protocol ForwardViewControllerDelegate: AnyObject {
     func forwardController(_ viewController: ForwardViewController, searchBar: UISearchBar, textDidChange searchText: String)
     func forwardController(_ viewController: ForwardViewController, searchBarCancelButtonClicked searchBar: UISearchBar)
     func forwardControllerCancelButtonClicked(_ viewController: ForwardViewController)

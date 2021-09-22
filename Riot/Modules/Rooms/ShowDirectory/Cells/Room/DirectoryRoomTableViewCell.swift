@@ -17,7 +17,7 @@
 import UIKit
 import Reusable
 
-protocol DirectoryRoomTableViewCellDelegate: class {
+protocol DirectoryRoomTableViewCellDelegate: AnyObject {
     func directoryRoomTableViewCellDidTapJoin(_ cell: DirectoryRoomTableViewCell)
 }
 
@@ -28,6 +28,8 @@ class DirectoryRoomTableViewCell: UITableViewCell {
             avatarImageView.layer.cornerRadius = avatarImageView.frame.width/2
         }
     }
+    
+    @IBOutlet private weak var numberOfUsersIcon: UIImageView!
     @IBOutlet private weak var displaynameLabel: UILabel!
     @IBOutlet private weak var numberOfUsersLabel: UILabel!
     @IBOutlet private weak var topicLabel: UILabel!
@@ -51,12 +53,11 @@ class DirectoryRoomTableViewCell: UITableViewCell {
         
         displaynameLabel.text = viewModel.title
         
-        if viewModel.numberOfUsers > 0 {
-            numberOfUsersLabel.isHidden = false
-            numberOfUsersLabel.text = String(viewModel.numberOfUsers)
-        } else {
-            numberOfUsersLabel.isHidden = true
-        }
+        let canShowNumberOfUsers = viewModel.numberOfUsers > 0
+        
+        numberOfUsersLabel.text = canShowNumberOfUsers ? String(viewModel.numberOfUsers) : nil
+        numberOfUsersLabel.isHidden = !canShowNumberOfUsers
+        numberOfUsersIcon.isHidden = !canShowNumberOfUsers
         
         if let subtitle = viewModel.subtitle {
             topicLabel.text = subtitle
@@ -97,7 +98,7 @@ extension DirectoryRoomTableViewCell: Themable {
         numberOfUsersLabel.textColor = theme.textSecondaryColor
         topicLabel.textColor = theme.textSecondaryColor
         
-        if viewModel.isJoined {
+        if let viewModel = viewModel, viewModel.isJoined {
             joinButton.backgroundColor = theme.backgroundColor
             joinButton.tintColor = theme.textSecondaryColor
             joinButton.layer.borderWidth = 1.0

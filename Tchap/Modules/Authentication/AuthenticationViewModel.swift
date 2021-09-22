@@ -79,10 +79,10 @@ final class AuthenticationViewModel: AuthenticationViewModelType {
         var errorMessage: String?
         
         if !MXTools.isEmailAddress(mail) {
-            print("[AuthenticationViewModel] Invalid email")
+            MXLog.debug("[AuthenticationViewModel] Invalid email")
             errorMessage = TchapL10n.authenticationErrorInvalidEmail
         } else if password.isEmpty {
-            print("[AuthenticationViewModel] Missing Password")
+            MXLog.debug("[AuthenticationViewModel] Missing Password")
             errorMessage = TchapL10n.authenticationErrorMissingPassword
         }
         

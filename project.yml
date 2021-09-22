@@ -1,0 +1,42 @@
+name: Tchap
+attributes:
+  ORGANIZATIONNAME: DINSIC
+  
+options:
+  deploymentTarget:
+    iOS: "11.0"
+    watchOS: '4.0'
+    tvOS: "11.0"
+    macOS: "10.15"
+
+configs:
+  Debug: debug
+  Release: release
+
+fileGroups:
+    - README.md
+    - CHANGES.md
+    - AUTHORS.rst
+    - project.yml
+
+configFiles:
+  Debug: Config/Project-Debug.xcconfig
+  Release: Config/Project-Release.xcconfig
+
+options:
+  defaultConfig: Debug
+  groupSortPosition: bottom
+  transitivelyLinkDependencies: false
+  createIntermediateGroups: true
+  useBaseInternationalization: true
+
+include:
+  - path: Tchap/target.yml
+  - path: TchapShareExtension/target.yml
+  - path: TchapNSE/target.yml
+  - path: TchapTests/target.yml
+  - path: SiriIntents/target.yml
+  - path: Btchap/target.yml
+  - path: BtchapShareExtension/target.yml
+  - path: BtchapNSE/target.yml
+  - path: DesignKit/target.yml

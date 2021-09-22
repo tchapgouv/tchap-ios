@@ -103,6 +103,8 @@ final class SecretsRecoveryWithKeyViewController: UIViewController {
         switch self.viewModel.recoveryGoal {
         case .default, .keyBackup, .restoreSecureBackup:
             informationText = VectorL10n.secretsRecoveryWithKeyInformationDefault
+        case .unlockSecureBackup(_):
+            informationText = VectorL10n.secretsRecoveryWithKeyInformationUnlockSecureBackupWithKey
         case .verifyDevice:
             informationText = VectorL10n.secretsRecoveryWithKeyInformationVerifyDevice
         }
@@ -121,6 +123,8 @@ final class SecretsRecoveryWithKeyViewController: UIViewController {
         self.updateRecoverButton()
         
         self.resetSecretsButton.vc_enableMultiLinesTitle()
+        
+        self.resetSecretsButton.isHidden = !RiotSettings.shared.secretsRecoveryAllowReset
     }
     
     private func update(theme: Theme) {
@@ -229,7 +233,7 @@ final class SecretsRecoveryWithKeyViewController: UIViewController {
         do {
             documentContent = try String(contentsOf: documentURL)
         } catch {
-            print("[SecretsRecoveryWithKeyViewController] Error: \(error)")
+            MXLog.debug("[SecretsRecoveryWithKeyViewController] Error: \(error)")
             documentContent = nil
         }
         

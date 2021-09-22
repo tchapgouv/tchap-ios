@@ -16,7 +16,7 @@
 
 import Foundation
 
-protocol AppVersionUpdateCoordinatorDelegate: class {
+protocol AppVersionUpdateCoordinatorDelegate: AnyObject {
     func appVersionUpdateCoordinatorDidCancel(_ coordinator: AppVersionUpdateCoordinatorType)
 }
 

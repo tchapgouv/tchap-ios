@@ -1,0 +1,64 @@
+name: TchapNSE
+
+schemes:
+  TchapNSE:
+    analyze:
+      config: Debug
+    archive:
+      config: Release
+    build:
+      targets:
+        TchapNSE:
+        - running
+        - testing
+        - profiling
+        - analyzing
+        - archiving
+    profile:
+      config: Release
+    run:
+      askForAppToLaunch: true
+      config: Debug
+      debugEnabled: false
+      disableMainThreadChecker: true
+      launchAutomaticallySubstyle: 2
+    test:
+      config: Debug
+      disableMainThreadChecker: true
+
+targets:
+  TchapNSE:
+    platform: iOS
+    type: app-extension
+    
+    configFiles:
+      Debug: NSE-Debug.xcconfig
+      Release: NSE-Release.xcconfig
+
+    sources: 
+    - path: .
+    
+    # Riot
+    - path: ../Riot/Categories/Bundle.swift
+    - path: ../Riot/Categories/Character.swift
+    - path: ../Riot/Categories/String.swift
+    - path: ../Riot/Categories/UNUserNotificationCenter.swift
+    - path: ../Riot/Generated/InfoPlist.swift
+    - path: ../Riot/Generated/Vector_Strings.swift
+    - path: ../Riot/Managers/EncryptionKeyManager/EncryptionKeyManager.swift
+    - path: ../Riot/Managers/KeyValueStorage/Extensions/Keychain.swift
+    - path: ../Riot/Managers/KeyValueStorage/KeychainStore.swift
+    - path: ../Riot/Managers/KeyValueStorage/KeyValueStore.swift
+    - path: ../Riot/Managers/PushNotification/PushNotificationStore.swift
+    - path: ../Riot/Managers/Settings/RiotSettings.swift
+    - path: ../Riot/Managers/Widgets/WidgetConstants.h
+    - path: ../Riot/Managers/Widgets/WidgetConstants.m
+    - path: ../Riot/Utils/Constants.swift
+    - path: ../Riot/Utils/DataProtectionHelper.swift
+    
+    # Tchap
+    - path: ../Tchap/Config/BuildSettings.swift
+    - path: ../Tchap/Config/CommonConfiguration.swift
+    - path: ../Tchap/Config/Configurable.swift
+    - path: ../Tchap/Generated/Strings.swift
+    - path: ../Tchap/Generated/Images.swift

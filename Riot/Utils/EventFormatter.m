@@ -27,6 +27,7 @@
 #import "GeneratedInterface-Swift.h"
 
 #import "EventFormatter+DTCoreTextFix.h"
+#import <MatrixSDK/MatrixSDK.h>
 
 #pragma mark - Constants definitions
 
@@ -127,14 +128,7 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
                                 || [activeWidget.type isEqualToString:kWidgetTypeJitsiV2])
                             {
                                 // This was a jitsi widget
-                                if (isEventSenderMyUser)
-                                {
-                                    displayText = NSLocalizedStringFromTable(@"event_formatter_jitsi_widget_removed_by_you", @"Vector", nil);
-                                }
-                                else
-                                {
-                                    displayText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"event_formatter_jitsi_widget_removed", @"Vector", nil), senderDisplayName];
-                                }
+                                return nil;
                             }
                             else
                             {
@@ -255,12 +249,10 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
         }
             break;
         case MXEventTypeCallCandidates:
-        case MXEventTypeCallAnswer:
-        //case MXEventTypeCallSelectAnswer:
-        case MXEventTypeCallHangup:
-        //case MXEventTypeCallNegotiate:
-        //case MXEventTypeCallReplaces:
-        //case MXEventTypeCallRejectReplacement:
+//        case MXEventTypeCallSelectAnswer:
+//        case MXEventTypeCallNegotiate:
+//        case MXEventTypeCallReplaces:
+//        case MXEventTypeCallRejectReplacement:
             //  Do not show call events except invite and reject in timeline
             return nil;
         case MXEventTypeCallInvite:
@@ -354,6 +346,8 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
     if (events.count)
     {
         MXEvent *roomCreateEvent = [events filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"type == %@", kMXEventTypeStringRoomCreate]].firstObject;
+
+        MXEvent *callInviteEvent = [events filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"type == %@", kMXEventTypeStringCallInvite]].firstObject;
         
         if (roomCreateEvent)
         {
@@ -376,6 +370,11 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
             }];
             [result appendAttributedString:linkMore];
             return result;
+        }
+        else if (callInviteEvent)
+        {
+            //  return a non-nil value
+            return [NSMutableAttributedString new];
         }
         else if (events[0].eventType == MXEventTypeRoomMember)
         {
@@ -417,9 +416,9 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
         self.subTitleTextColor = ThemeService.shared.theme.textSecondaryColor;
         self.prefixTextColor = ThemeService.shared.theme.textSecondaryColor;
         self.bingTextColor = ThemeService.shared.theme.noticeColor;
-        self.encryptingTextColor = ThemeService.shared.theme.tintColor;
-        self.sendingTextColor = ThemeService.shared.theme.textSecondaryColor;
-        self.errorTextColor = ThemeService.shared.theme.warningColor;
+        self.encryptingTextColor = ThemeService.shared.theme.textPrimaryColor;
+        self.sendingTextColor = ThemeService.shared.theme.textPrimaryColor;
+        self.errorTextColor = ThemeService.shared.theme.textPrimaryColor;
         self.showEditionMention = YES;
         self.editionMentionTextColor = ThemeService.shared.theme.textSecondaryColor;
         
@@ -431,6 +430,11 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
         self.encryptedMessagesTextFont = [UIFont italicSystemFontOfSize:15];
         self.emojiOnlyTextFont = [UIFont systemFontOfSize:48];
         self.editionMentionTextFont = [UIFont systemFontOfSize:12];
+        
+        // Handle space room type, enables to show space in room list
+        defaultRoomSummaryUpdater.showRoomTypeStrings = @[
+            MXRoomTypeStringSpace
+        ];
     }
     return self;
 }

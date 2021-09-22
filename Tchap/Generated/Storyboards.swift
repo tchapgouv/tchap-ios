@@ -122,6 +122,11 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Tchap.KeyBackupSetupSuccessFromRecoveryKeyViewController>(storyboard: KeyBackupSetupSuccessFromRecoveryKeyViewController.self)
   }
+  internal enum KeyBackupSetupSuccessFromSecureBackupViewController: StoryboardType {
+    internal static let storyboardName = "KeyBackupSetupSuccessFromSecureBackupViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.KeyBackupSetupSuccessFromSecureBackupViewController>(storyboard: KeyBackupSetupSuccessFromSecureBackupViewController.self)
+  }
   internal enum KeyVerificationDataLoadingViewController: StoryboardType {
     internal static let storyboardName = "KeyVerificationDataLoadingViewController"
 
@@ -211,6 +216,11 @@ internal enum StoryboardScene {
     internal static let storyboardName = "SecretsRecoveryWithPassphraseViewController"
 
     internal static let initialScene = InitialSceneType<Tchap.SecretsRecoveryWithPassphraseViewController>(storyboard: SecretsRecoveryWithPassphraseViewController.self)
+  }
+  internal enum SecretsResetViewController: StoryboardType {
+    internal static let storyboardName = "SecretsResetViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.SecretsResetViewController>(storyboard: SecretsResetViewController.self)
   }
   internal enum SecretsSetupRecoveryKeyViewController: StoryboardType {
     internal static let storyboardName = "SecretsSetupRecoveryKeyViewController"

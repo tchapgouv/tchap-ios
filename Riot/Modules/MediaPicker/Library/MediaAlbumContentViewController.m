@@ -17,10 +17,6 @@
 
 #import "MediaAlbumContentViewController.h"
 
-#import "RageShakeManager.h"
-#import "ThemeService.h"
-#import "Analytics.h"
-
 #import <MobileCoreServices/MobileCoreServices.h>
 
 #import "GeneratedInterface-Swift.h"
@@ -222,7 +218,7 @@
         
         assets = [PHAsset fetchAssetsInAssetCollection:assetsCollection options:options];
         
-        NSLog(@"[MediaAlbumVC] lists %tu assets", assets.count);
+        MXLogDebug(@"[MediaAlbumVC] lists %tu assets", assets.count);
     }
     else
     {

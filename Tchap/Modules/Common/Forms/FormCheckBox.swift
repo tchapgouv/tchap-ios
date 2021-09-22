@@ -17,7 +17,7 @@
 import Foundation
 import Reusable
 
-protocol FormCheckBoxDelegate: class {
+protocol FormCheckBoxDelegate: AnyObject {
     func formCheckBoxDidSelectLabelLink(_ formCheckBox: FormCheckBox)
 }
 

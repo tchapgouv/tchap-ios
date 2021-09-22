@@ -27,3 +27,16 @@ KEYCHAIN_ACCESS_GROUP = $(AppIdentifierPrefix)$(BASE_BUNDLE_IDENTIFIER).keychain
 
 //Make Xcode 12 and fastlane(xcodebuild) happy while some pods are not updated
 EXCLUDED_ARCHS[sdk=iphonesimulator*] = arm64
+
+INFOPLIST_FILE = Btchap/SupportingFiles/Info.plist
+ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon
+
+CODE_SIGN_ENTITLEMENTS = Btchap/SupportingFiles/Btchap.entitlements
+
+SWIFT_OBJC_BRIDGING_HEADER = $(SRCROOT)/Tchap/SupportingFiles/Tchap-Bridging-Header.h
+LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/Frameworks
+
+SWIFT_OBJC_INTERFACE_HEADER_NAME = GeneratedInterface-Swift.h
+
+CURRENT_PROJECT_VERSION = 1
+MARKETING_VERSION = 1.3.0

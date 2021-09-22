@@ -16,7 +16,7 @@
 
 import Foundation
 
-protocol ForgotPasswordCheckedEmailViewControllerDelegate: class {
+protocol ForgotPasswordCheckedEmailViewControllerDelegate: AnyObject {
     func forgotPasswordCheckedEmailViewControllerDidTapDoneButton(_ forgotPasswordCheckedEmailViewController: ForgotPasswordCheckedEmailViewController)
 }
 

@@ -16,13 +16,14 @@
 
 import Foundation
 
-protocol SecretsRecoveryWithKeyViewModelViewDelegate: class {
+protocol SecretsRecoveryWithKeyViewModelViewDelegate: AnyObject {
     func secretsRecoveryWithKeyViewModel(_ viewModel: SecretsRecoveryWithKeyViewModelType, didUpdateViewState viewSate: SecretsRecoveryWithKeyViewState)
 }
 
-protocol SecretsRecoveryWithKeyViewModelCoordinatorDelegate: class {
+protocol SecretsRecoveryWithKeyViewModelCoordinatorDelegate: AnyObject {
     func secretsRecoveryWithKeyViewModelDidRecover(_ viewModel: SecretsRecoveryWithKeyViewModelType)
     func secretsRecoveryWithKeyViewModelDidCancel(_ viewModel: SecretsRecoveryWithKeyViewModelType)
+    func secretsRecoveryWithKeyViewModelWantsToResetSecrets(_ viewModel: SecretsRecoveryWithKeyViewModelType)
 }
 
 /// Protocol describing the view model used by `SecretsRecoveryWithPassphraseViewController`

@@ -18,7 +18,7 @@ import UIKit
 import MobileCoreServices
 import RxSwift
 
-protocol RoomCreationCoordinatorDelegate: class {
+protocol RoomCreationCoordinatorDelegate: AnyObject {
     func roomCreationCoordinatorDidCancel(_ coordinator: RoomCreationCoordinatorType)
     func roomCreationCoordinator(_ coordinator: RoomCreationCoordinatorType, didCreateRoomWithID roomID: String)
 }
@@ -63,7 +63,7 @@ final class RoomCreationCoordinator: NSObject, RoomCreationCoordinatorType {
         
         let roomCreationViewModel = RoomCreationViewModel(homeServerDomain: homeServerDomain)
         let roomCreationViewController = RoomCreationViewController.instantiate(viewModel: roomCreationViewModel, style: Variant1Style.shared)
-        roomCreationViewController.tc_removeBackTitle()
+        roomCreationViewController.vc_removeBackTitle()
         self.roomCreationViewController = roomCreationViewController
         
         super.init()
@@ -159,7 +159,7 @@ final class RoomCreationCoordinator: NSObject, RoomCreationCoordinatorType {
     
     private func createRoom(with userIDs: [String]) {
         guard let roomCreationFormResult = self.roomCreationFormResult, let contactsPickerCoordinator = self.contactsPickerCoordinator else {
-            print("[RoomCreationCoordinator] Fail to create room")
+            MXLog.debug("[RoomCreationCoordinator] Fail to create room")
             return
         }
 

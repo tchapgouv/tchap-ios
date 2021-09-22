@@ -42,7 +42,7 @@ final class ThirdPartyIDResolver: NSObject, ThirdPartyIDResolverType {
         }
         
         return httpClient.request(withMethod: "GET", path: "account/3pid/lookup", parameters: ["address": address, "medium": medium.identifier, "id_server": identityServerHost], success: { (response: [AnyHashable: Any]?) in
-            NSLog("[ThirdPartyIDResolver] lookup resquest succeeded")
+            MXLog.debug("[ThirdPartyIDResolver] lookup resquest succeeded")
             guard let response = response else {
                 completion(.success(.unbound))
                 return
@@ -53,7 +53,7 @@ final class ThirdPartyIDResolver: NSObject, ThirdPartyIDResolverType {
                 completion(.success(.unbound))
             }
         }, failure: { (error: Error?) in
-            NSLog("[ThirdPartyIDResolver] lookup resquest failed")
+            MXLog.debug("[ThirdPartyIDResolver] lookup resquest failed")
             if let error = error {
                 completion(.failure(error))
             } else {
@@ -98,7 +98,7 @@ final class ThirdPartyIDResolver: NSObject, ThirdPartyIDResolverType {
                                   timeout: -1,
                                   uploadProgress: nil,
                                   success: { (response: [AnyHashable: Any]?) in
-                                    NSLog("[ThirdPartyIDResolver] bulk_lookup resquest succeeded")
+                                    MXLog.debug("[ThirdPartyIDResolver] bulk_lookup resquest succeeded")
                                     guard let response = response else {
                                         failure(ThirdPartyIDResolverError.unknown)
                                         return

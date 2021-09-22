@@ -44,7 +44,7 @@ class RoomsRoomCell: RoomsCell {
         }
         
         // Adjust last sender name
-        if let senderId = self.roomCellData?.lastEvent?.sender {
+        if let senderId = self.roomCellData?.roomSummary?.lastMessage?.sender {
             // Try to find user in local session
             let senderUser: User
             let userService = UserService(session: session)

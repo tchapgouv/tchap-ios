@@ -17,7 +17,7 @@
 import UIKit
 import Reusable
 
-protocol RetentionPeriodPickerContentViewDelegate: class {
+protocol RetentionPeriodPickerContentViewDelegate: AnyObject {
     func retentionPeriodPickerContentView(_ view: RetentionPeriodPickerContentView, didSelect periodInDays: uint)
 }
 

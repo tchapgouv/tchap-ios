@@ -27,6 +27,8 @@ import Foundation
     case favourite
     case share
     case more
+    case resend
+    case delete
     
     // MARK: - Properties
     
@@ -51,6 +53,10 @@ import Foundation
             title = VectorL10n.roomEventActionShare
         case .more:
             title = VectorL10n.roomEventActionMore
+        case .resend:
+            title = VectorL10n.retry
+        case .delete:
+            title = VectorL10n.roomEventActionDelete
         }
         
         return title
@@ -77,6 +83,10 @@ import Foundation
             image = Asset.Images.roomContextMenuShare.image
         case .more:
             image = Asset.Images.roomContextMenuMore.image
+        case .resend:
+            image = Asset.Images.roomContextMenuRetry.image
+        case .delete:
+            image = Asset.Images.roomContextMenuDelete.image
         default:
             image = nil
         }

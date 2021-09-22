@@ -93,10 +93,15 @@
                                      success:(void(^)(void))success
                                      failure:(void(^)(NSError*))failure;
 
+- (void)resetTypingNotification;
+
 @end
 
 @protocol RoomDataSourceDelegate <MXKDataSourceDelegate>
 
 - (void)roomDataSource:(RoomDataSource*)roomDataSource didUpdateEncryptionTrustLevel:(RoomEncryptionTrustLevel)roomEncryptionTrustLevel;
+
+- (void)roomDataSource:(RoomDataSource*)roomDataSource didCancel:(MXEvent *)event;
+
 
 @end

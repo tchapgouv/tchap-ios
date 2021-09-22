@@ -17,9 +17,6 @@
 
 #import "MediaPickerViewController.h"
 
-#import "ThemeService.h"
-#import "RageShakeManager.h"
-#import "Analytics.h"
 #import "GeneratedInterface-Swift.h"
 
 #import <Photos/Photos.h>
@@ -286,7 +283,7 @@
                                                     }
                                                     else
                                                     {
-                                                        NSLog(@"[MediaPickerVC] Fails to open settings");
+                                                        MXLogDebug(@"[MediaPickerVC] Fails to open settings");
                                                     }
                                                 }];
                                             }]];
@@ -367,7 +364,7 @@
         PHAssetCollection *assetCollection = smartAlbums[0];
         recentCaptures = [PHAsset fetchAssetsInAssetCollection:assetCollection options:options];
         
-        NSLog(@"[MediaPickerVC] lists %tu assets that were recently added to the photo library", recentCaptures.count);
+        MXLogDebug(@"[MediaPickerVC] lists %tu assets that were recently added to the photo library", recentCaptures.count);
     }
     else
     {
@@ -430,7 +427,7 @@
         [albums enumerateObjectsUsingBlock:^(PHAssetCollection *collection, NSUInteger idx, BOOL *stop) {
             
             PHFetchResult *assets = [PHAsset fetchAssetsInAssetCollection:collection options:options];
-            NSLog(@"album title %@, estimatedAssetCount %tu", collection.localizedTitle, assets.count);
+            MXLogDebug(@"album title %@, estimatedAssetCount %tu", collection.localizedTitle, assets.count);
             
             if (assets.count)
             {
@@ -542,7 +539,7 @@
                             
                             if (imageData)
                             {
-                                NSLog(@"[MediaPickerVC] didSelectAsset: Got image data");
+                                MXLogDebug(@"[MediaPickerVC] didSelectAsset: Got image data");
                                 
                                 CFStringRef uti = (__bridge CFStringRef)dataUTI;
                                 NSString *mimeType = (__bridge_transfer NSString *) UTTypeCopyPreferredTagWithClass(uti, kUTTagClassMIMEType);
@@ -552,7 +549,7 @@
                             }
                             else
                             {
-                                NSLog(@"[MediaPickerVC] didSelectAsset: Failed to get image data for asset");
+                                MXLogDebug(@"[MediaPickerVC] didSelectAsset: Failed to get image data for asset");
                                 
                                 // Alert user
                                 NSError *error = info[@"PHImageErrorKey"];
@@ -571,7 +568,7 @@
             }
             else
             {
-                NSLog(@"[MediaPickerVC] didSelectAsset: Failed to get image for asset");
+                MXLogDebug(@"[MediaPickerVC] didSelectAsset: Failed to get image for asset");
                 self->isValidationInProgress = NO;
                 
                 // Alert user
@@ -611,34 +608,23 @@
                 
                 if (asset)
                 {
-                    if ([asset isKindOfClass:[AVURLAsset class]])
-                    {
-                        NSLog(@"[MediaPickerVC] didSelectAsset: Got AVAsset for video");
-                        AVURLAsset *avURLAsset = (AVURLAsset*)asset;
+                    MXLogDebug(@"[MediaPickerVC] didSelectAsset: Got AVAsset for video");
+                    
+                    // Validate first the selected video
+                    [self validateSelectedVideo:asset responseHandler:^(BOOL isValidated) {
                         
-                        // Validate first the selected video
-                        MXWeakify(self);
-                        [self validateSelectedVideo:[avURLAsset URL] responseHandler:^(BOOL isValidated) {
-                            
-                            MXStrongifyAndReturnIfNil(self);
-                            if (isValidated)
-                            {
-                                [self.delegate mediaPickerController:self didSelectVideo:[avURLAsset URL]];
-                            }
-                            
-                            self->isValidationInProgress = NO;
-                            
-                        }];
-                    }
-                    else
-                    {
-                        NSLog(@"[MediaPickerVC] Selected video asset is not initialized from an URL!");
+                        if (isValidated)
+                        {
+                            [self.delegate mediaPickerController:self didSelectVideo:asset];
+                        }
+                        
                         self->isValidationInProgress = NO;
-                    }
+                        
+                    }];
                 }
                 else
                 {
-                    NSLog(@"[MediaPickerVC] didSelectAsset: Failed to get image for asset");
+                    MXLogDebug(@"[MediaPickerVC] didSelectAsset: Failed to get image for asset");
                     self->isValidationInProgress = NO;
                     
                     // Alert user
@@ -655,7 +641,7 @@
     }
     else
     {
-        NSLog(@"[MediaPickerVC] didSelectAsset: Unexpected media type");
+        MXLogDebug(@"[MediaPickerVC] didSelectAsset: Unexpected media type");
     }
 }
 
@@ -697,7 +683,7 @@
     [self setNeedsStatusBarAppearanceUpdate];
 }
 
-- (void)validateSelectedVideo:(NSURL*)selectedVideoURL responseHandler:(void (^)(BOOL isValidated))handler
+- (void)validateSelectedVideo:(AVAsset*)selectedVideo responseHandler:(void (^)(BOOL isValidated))handler
 {
     [self dismissImageValidationView];
     
@@ -730,15 +716,16 @@
     videoPlayer = [[AVPlayerViewController alloc] init];
     if (videoPlayer)
     {
+        AVPlayerItem *item = [AVPlayerItem playerItemWithAsset:selectedVideo];
         videoPlayer.allowsPictureInPicturePlayback = NO;
         videoPlayer.updatesNowPlayingInfoCenter = NO;
-        videoPlayer.player = [AVPlayer playerWithURL:selectedVideoURL];
+        videoPlayer.player = [AVPlayer playerWithPlayerItem:item];
         videoPlayer.videoGravity = AVLayerVideoGravityResizeAspect;
         videoPlayer.showsPlaybackControls = NO;
 
         //  create a thumbnail for the first frame
-        AVAsset *asset = [AVAsset assetWithURL:selectedVideoURL];
-        AVAssetImageGenerator *generator = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
+        AVAssetImageGenerator *generator = [AVAssetImageGenerator assetImageGeneratorWithAsset:selectedVideo];
+        generator.appliesPreferredTrackTransform = YES;
         CGImageRef thumbnailRef = [generator copyCGImageAtTime:kCMTimeZero actualTime:nil error:nil];
 
         //  set thumbnail on validationView

@@ -16,7 +16,7 @@
 
 import UIKit
 
-protocol RoomCoordinatorDelegate: class {
+protocol RoomCoordinatorDelegate: AnyObject {
     func roomCoordinator(_ coordinator: RoomCoordinatorType, didSelectUserID userID: String)
     func roomCoordinator(_ coordinator: RoomCoordinatorType, didSelectRoomID roomID: String)
     func roomCoordinator(_ coordinator: RoomCoordinatorType, handlePermalinkFragment fragment: String) -> Bool
@@ -237,7 +237,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorType {
         detailsCoordinator.start()
         self.add(childCoordinator: detailsCoordinator)
         
-        self.roomViewController.tc_removeBackTitle()
+        self.roomViewController.vc_removeBackTitle()
         
         self.router.push(detailsCoordinator, animated: animated, popCompletion: { [weak self] in
             self?.remove(childCoordinator: detailsCoordinator)
@@ -255,7 +255,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorType {
         
         roomMemberDetailsViewController.display(member, withMatrixRoom: session.room(withRoomId: self.roomID))
         
-        self.roomViewController.tc_removeBackTitle()
+        self.roomViewController.vc_removeBackTitle()
         
         self.router.push(roomMemberDetailsViewController, animated: animated, popCompletion: nil)
     }

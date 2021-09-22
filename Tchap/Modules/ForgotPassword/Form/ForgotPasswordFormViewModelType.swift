@@ -16,7 +16,7 @@
 
 import Foundation
 
-protocol ForgotPasswordFormViewModelDelegate: class {
+protocol ForgotPasswordFormViewModelDelegate: AnyObject {
     func forgotPasswordFormViewModel(_ viewModel: ForgotPasswordFormViewModelType, shouldHideConfirmPasswordTextField isHidden: Bool)
 }
 

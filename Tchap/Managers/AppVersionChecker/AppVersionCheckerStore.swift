@@ -33,7 +33,7 @@ final class AppVersionCheckerStore: AppVersionCheckerStoreType {
             let appVersionCheckerResultData = try JSONEncoder().encode(appVersionCheckerResult)
             UserDefaults.standard.set(appVersionCheckerResultData, forKey: UserDefaultsKeys.lastAppVersionCheckerResult)
         } catch {
-            print("[AppVersionCheckerStore] Fail to save \(appVersionCheckerResult) with error: \(error)")
+            MXLog.debug("[AppVersionCheckerStore] Fail to save \(appVersionCheckerResult) with error: \(error)")
         }
     }
     
@@ -49,7 +49,7 @@ final class AppVersionCheckerStore: AppVersionCheckerStoreType {
             let appVersionInfoData = try JSONEncoder().encode(versionInfo)
             UserDefaults.standard.set(appVersionInfoData, forKey: UserDefaultsKeys.lastDisplayedClientVersionInfo)
         } catch {
-            print("[AppVersionCheckerStore] Fail to save \(versionInfo) with error: \(error)")
+            MXLog.debug("[AppVersionCheckerStore] Fail to save \(versionInfo) with error: \(error)")
         }
     }
     

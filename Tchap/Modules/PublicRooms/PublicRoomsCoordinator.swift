@@ -16,7 +16,7 @@
 
 import UIKit
 
-protocol PublicRoomsCoordinatorDelegate: class {
+protocol PublicRoomsCoordinatorDelegate: AnyObject {
     func publicRoomsCoordinatorDidCancel(_ publicRoomsCoordinator: PublicRoomsCoordinator)
     func publicRoomsCoordinator(_ publicRoomsCoordinator: PublicRoomsCoordinator, showRoomWithId roomId: String, onEventId eventId: String?)
 }
@@ -56,7 +56,7 @@ final class PublicRoomsCoordinator: NSObject, PublicRoomsCoordinatorType {
     // MARK: - Public methods
     
     func start() {
-        self.publicRoomsViewController.tc_removeBackTitle()
+        self.publicRoomsViewController.vc_removeBackTitle()
         self.router.setRootModule(self.publicRoomsViewController)
         self.publicRoomsViewController.delegate = self
         

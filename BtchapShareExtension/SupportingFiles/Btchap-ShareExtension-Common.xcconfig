@@ -20,3 +20,6 @@
 #include "Btchap/Config/Btchap-Common.xcconfig"
 
 PRODUCT_BUNDLE_IDENTIFIER = $(BASE_BUNDLE_IDENTIFIER).shareExtension
+
+CODE_SIGN_STYLE = Automatic
+DEVELOPMENT_TEAM = NVMQD635C6

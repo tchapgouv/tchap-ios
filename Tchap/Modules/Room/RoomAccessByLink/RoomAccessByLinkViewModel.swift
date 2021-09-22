@@ -86,7 +86,7 @@ final class RoomAccessByLinkViewModel: RoomAccessByLinkViewModelType {
     
     private func loadData() {
         guard let room = self.session.room(withRoomId: roomId) else {
-            print("[RoomAccessByLinkViewModel] loadData: unknown room")
+            MXLog.debug("[RoomAccessByLinkViewModel] loadData: unknown room")
             self.update(viewState: .error(RoomAccessByLinkViewModelError.roomNotFound))
             return
         }
@@ -126,7 +126,7 @@ final class RoomAccessByLinkViewModel: RoomAccessByLinkViewModelType {
                 self.addRoomStateListener()
                 self.updateRoomState(timeline.state)
             } else {
-                print("[RoomAccessByLinkViewModel] loadRoomLiveTimeline: unknown error")
+                MXLog.debug("[RoomAccessByLinkViewModel] loadRoomLiveTimeline: unknown error")
                 self.update(viewState: .error(RoomAccessByLinkViewModelError.unknown))
             }
         })
@@ -135,7 +135,7 @@ final class RoomAccessByLinkViewModel: RoomAccessByLinkViewModelType {
     private func updateRoomState(_ roomState: MXRoomState) {
         guard let powerLevels = roomState.powerLevels,
             let userId = session.myUser.userId else {
-                print("[RoomAccessByLinkViewModel] updateRoomState: unknown error")
+                MXLog.debug("[RoomAccessByLinkViewModel] updateRoomState: unknown error")
                 self.update(viewState: .error(RoomAccessByLinkViewModelError.unknown))
                 return
             }
@@ -170,7 +170,7 @@ final class RoomAccessByLinkViewModel: RoomAccessByLinkViewModelType {
     
     private func disable() {
         guard let room = self.session.room(withRoomId: roomId)  else {
-            print("[RoomAccessByLinkViewModel] disable: unknown room")
+            MXLog.debug("[RoomAccessByLinkViewModel] disable: unknown room")
             self.update(viewState: .error(RoomAccessByLinkViewModelError.roomNotFound))
             return
         }
@@ -190,7 +190,7 @@ final class RoomAccessByLinkViewModel: RoomAccessByLinkViewModelType {
     
     private func enable() {
         guard let room = self.session.room(withRoomId: roomId)  else {
-            print("[RoomAccessByLinkViewModel] enable: unknown room")
+            MXLog.debug("[RoomAccessByLinkViewModel] enable: unknown room")
             self.update(viewState: .error(RoomAccessByLinkViewModelError.roomNotFound))
             return
         }
@@ -202,7 +202,7 @@ final class RoomAccessByLinkViewModel: RoomAccessByLinkViewModelType {
     
     private func forbidGuestAccessToEnableAccessByLink(_ room: MXRoom) {
         guard let roomState = self.liveTimeline?.state else {
-            print("[RoomAccessByLinkViewModel] forbidGuestAccessToEnableAccessByLink: no timeline")
+            MXLog.debug("[RoomAccessByLinkViewModel] forbidGuestAccessToEnableAccessByLink: no timeline")
             self.update(viewState: .error(RoomAccessByLinkViewModelError.unknown))
             return
         }
@@ -223,7 +223,7 @@ final class RoomAccessByLinkViewModel: RoomAccessByLinkViewModelType {
     
     private func checkCanonicalAliasToEnableAccessByLink(_ room: MXRoom) {
         guard let roomState = self.liveTimeline?.state else {
-            print("[RoomAccessByLinkViewModel] checkCanonicalAliasToEnableAccessByLink: no timeline")
+            MXLog.debug("[RoomAccessByLinkViewModel] checkCanonicalAliasToEnableAccessByLink: no timeline")
             self.update(viewState: .error(RoomAccessByLinkViewModelError.unknown))
             return
         }
@@ -247,7 +247,7 @@ final class RoomAccessByLinkViewModel: RoomAccessByLinkViewModelType {
                     }
                 }
             } else {
-                print("[RoomAccessByLinkViewModel] checkCanonicalAliasToEnableAccessByLink: failed to set room alias")
+                MXLog.debug("[RoomAccessByLinkViewModel] checkCanonicalAliasToEnableAccessByLink: failed to set room alias")
                 self.update(viewState: .error(RoomAccessByLinkViewModelError.unknown))
             }
         } else {
@@ -257,7 +257,7 @@ final class RoomAccessByLinkViewModel: RoomAccessByLinkViewModelType {
     
     private func enableAccessByLink(_ room: MXRoom) {
         guard let roomState = self.liveTimeline?.state else {
-            print("[RoomAccessByLinkViewModel] enableAccessByLink: no timeline")
+            MXLog.debug("[RoomAccessByLinkViewModel] enableAccessByLink: no timeline")
             self.update(viewState: .error(RoomAccessByLinkViewModelError.unknown))
             return
         }
@@ -297,7 +297,7 @@ final class RoomAccessByLinkViewModel: RoomAccessByLinkViewModelType {
     
     private func addRoomStateListener() {
         guard let timeline = self.liveTimeline else {
-            print("[RoomAccessByLinkViewModel] addRoomStateListener: no timeline")
+            MXLog.debug("[RoomAccessByLinkViewModel] addRoomStateListener: no timeline")
             return
         }
         self.roomStateListener = timeline.listenToEvents([.roomCanonicalAlias, .roomJoinRules], { (event, direction, roomState) in
@@ -310,7 +310,7 @@ final class RoomAccessByLinkViewModel: RoomAccessByLinkViewModelType {
     
     private func removeRoomStateListener() {
         guard let timeline = self.liveTimeline, let roomStateListener = self.roomStateListener else {
-            print("[RoomAccessByLinkViewModel] removeRoomListener: nothing to do")
+            MXLog.debug("[RoomAccessByLinkViewModel] removeRoomListener: nothing to do")
             return
         }
         timeline.removeListener(roomStateListener)

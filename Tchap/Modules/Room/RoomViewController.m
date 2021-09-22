@@ -988,7 +988,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                 
             } failure:^(NSError *error) {
                 
-                NSLog(@"[RoomVC] Join roomAlias (%@) failed", roomAlias);
+                MXLogDebug(@"[RoomVC] Join roomAlias (%@) failed", roomAlias);
                 //Alert user
                 [[AppDelegate theDelegate] showErrorAsAlert:error];
                 
@@ -1061,14 +1061,14 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
             {
                 [self.roomDataSource sendReplyToEventWithId:self->customizedRoomDataSource.selectedEventId withTextMessage:msgTxt success:nil failure:^(NSError *error) {
                     // Just log the error. The message will be displayed in red in the room history
-                    NSLog(@"[RoomViewController] sendTextMessage failed.");
+                    MXLogDebug(@"[RoomViewController] sendTextMessage failed.");
                 }];
             }
             else if (self.inputToolBarSendMode == RoomInputToolbarViewSendModeEdit && self->customizedRoomDataSource.selectedEventId)
             {
                 [self.roomDataSource replaceTextMessageForEventWithId:self->customizedRoomDataSource.selectedEventId withTextMessage:msgTxt success:nil failure:^(NSError *error) {
                     // Just log the error. The message will be displayed in red
-                    NSLog(@"[RoomViewController] sendTextMessage failed.");
+                    MXLogDebug(@"[RoomViewController] sendTextMessage failed.");
                 }];
             }
             else
@@ -1077,7 +1077,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                 [self.roomDataSource sendTextMessage:msgTxt success:nil failure:^(NSError *error)
                  {
                      // Just log the error. The message will be displayed in red in the room history
-                     NSLog(@"[RoomViewController] sendTextMessage failed.");
+                     MXLogDebug(@"[RoomViewController] sendTextMessage failed.");
                  }];
             }
         }
@@ -1100,7 +1100,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                                    success:nil
                                    failure:^(NSError *error) {
                                        // Nothing to do. The image is marked as unsent in the room history by the datasource
-                                       NSLog(@"[RoomViewController] sendImage with mimetype failed.");
+                                       MXLogDebug(@"[RoomViewController] sendImage with mimetype failed.");
                                    }];
         }
     }];
@@ -1119,7 +1119,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                                                     success:nil
                                                     failure:^(NSError *error) {
                                                         // Nothing to do. The video is marked as unsent in the room history by the datasource
-                                                        NSLog(@"[RoomViewController] sendVideo failed.");
+                                                        MXLogDebug(@"[RoomViewController] sendVideo failed.");
                                                     }];
         }
     }];
@@ -1139,7 +1139,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                                   success:nil
                                   failure:^(NSError *error) {
                                       // Nothing to do. The file is marked as unsent in the room history by the datasource
-                                      NSLog(@"[RoomViewController] sendFile failed.");
+                                      MXLogDebug(@"[RoomViewController] sendFile failed.");
                                   }];
         }
     }];
@@ -1190,7 +1190,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     if (previewHeader)
     {
         // Here [destroy] is called before [viewWillDisappear:]
-        NSLog(@"[RoomVC] destroyed whereas it is still visible");
+        MXLogDebug(@"[RoomVC] destroyed whereas it is still visible");
         
         [previewHeader removeFromSuperview];
         previewHeader = nil;
@@ -1241,11 +1241,11 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                 }
                 else
                 {
-                    NSLog(@"[RoomViewController] isEmptyDirectChat: the direct user has disappeared");
+                    MXLogDebug(@"[RoomViewController] isEmptyDirectChat: the direct user has disappeared");
                     onComplete(YES);
                 }
             } failure:^(NSError *error) {
-                NSLog(@"[RoomViewController] isEmptyDirectChat: cannot get all room members");
+                MXLogDebug(@"[RoomViewController] isEmptyDirectChat: cannot get all room members");
                 onComplete(NO);
             }];
             return;
@@ -1271,12 +1271,12 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
             self.userService = [[UserService alloc] initWithSession:self.mainSession];
             MXHTTPOperation * operation;
             MXWeakify(self);
-            NSLog(@"[RoomViewController] restoreDiscussionIfNeed: check left member %@", directUserId);
+            MXLogDebug(@"[RoomViewController] restoreDiscussionIfNeed: check left member %@", directUserId);
             
             operation = [self.userService isAccountDeactivatedFor:directUserId success:^(BOOL isDeactivated) {
                 if (isDeactivated)
                 {
-                    NSLog(@"[RoomViewController] restoreDiscussionIfNeed: the left member has deactivated his account");
+                    MXLogDebug(@"[RoomViewController] restoreDiscussionIfNeed: the left member has deactivated his account");
                     NSError *error = [NSError errorWithDomain:RoomErrorDomain
                                                          code:0
                                                      userInfo:@{NSLocalizedDescriptionKey: NSLocalizedStringFromTable(@"tchap_cannot_invite_deactivated_account_user", @"Tchap", nil)}];
@@ -1287,14 +1287,14 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                 {
                     // Invite again the direct user
                     MXStrongifyAndReturnIfNil(self);
-                    NSLog(@"[RoomViewController] restoreDiscussionIfNeed: invite again %@", directUserId);
+                    MXLogDebug(@"[RoomViewController] restoreDiscussionIfNeed: invite again %@", directUserId);
                     [self.roomDataSource.room inviteUser:directUserId success:^{
                         // Delay the completion in order to display the invite before the local echo of the new message.
                         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                             onComplete(YES);
                         });
                     } failure:^(NSError *error) {
-                        NSLog(@"[RoomViewController] restoreDiscussionIfNeed: invite failed");
+                        MXLogDebug(@"[RoomViewController] restoreDiscussionIfNeed: invite failed");
                         // Alert user
                         [[AppDelegate theDelegate] showErrorAsAlert:error];
                         onComplete(NO);
@@ -1302,7 +1302,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                 }
                 self.userService = nil;
             } failure:^(NSError *error) {
-                NSLog(@"[RoomViewController] restoreDiscussionIfNeed: check member status failed");
+                MXLogDebug(@"[RoomViewController] restoreDiscussionIfNeed: check member status failed");
                 // Alert user
                 [[AppDelegate theDelegate] showErrorAsAlert:error];
                 onComplete(NO);
@@ -1342,7 +1342,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
             if (roomDataSource.room.summary.isDirect == NO)
             {
                 // TODO: Display an error, and retry to set room as direct otherwise quit the room
-                NSLog(@"[RoomViewController] Fail to create room as direct chat");
+                MXLogDebug(@"[RoomViewController] Fail to create room as direct chat");
             }
             //            else
             //            {
@@ -2158,7 +2158,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                 }
                 else
                 {
-                    NSLog(@"[RoomViewController] didRecognizeAction:inCell:userInfo tap on attachment with event state MXEventSentStateFailed. Selected event is nil for event id %@", eventId);
+                    MXLogDebug(@"[RoomViewController] didRecognizeAction:inCell:userInfo tap on attachment with event state MXEventSentStateFailed. Selected event is nil for event id %@", eventId);
                 }
             }
             else if (((MXKRoomBubbleTableViewCell*)cell).bubbleData.attachment.type == MXKAttachmentTypeSticker)
@@ -2591,7 +2591,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                                                                            __strong __typeof(weakSelf)self = weakSelf;
                                                                            [self stopActivityIndicator];
                                                                            
-                                                                           NSLog(@"[RoomVC] Redact event (%@) failed", selectedEvent.eventId);
+                                                                           MXLogDebug(@"[RoomVC] Redact event (%@) failed", selectedEvent.eventId);
                                                                            //Alert user
                                                                            [[AppDelegate theDelegate] showErrorAsAlert:error];
                                                                            
@@ -2636,7 +2636,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                             MXStrongifyAndReturnIfNil(self);
                             [self stopActivityIndicator];
                             
-                            NSLog(@"[RoomVC] Tag event (%@) failed", selectedEvent.eventId);
+                            MXLogDebug(@"[RoomVC] Tag event (%@) failed", selectedEvent.eventId);
                             //Alert user
                             [[AppDelegate theDelegate] showErrorAsAlert:error];
                         }];
@@ -2650,7 +2650,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                             MXStrongifyAndReturnIfNil(self);
                             [self stopActivityIndicator];
                             
-                            NSLog(@"[RoomVC] Tag event (%@) failed", selectedEvent.eventId);
+                            MXLogDebug(@"[RoomVC] Tag event (%@) failed", selectedEvent.eventId);
                             //Alert user
                             [[AppDelegate theDelegate] showErrorAsAlert:error];
                         }];
@@ -2677,7 +2677,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                                                                }
                                                                else
                                                                {
-                                                                   NSLog(@"[RoomViewController] Contextual menu permalink action failed. Permalink is nil room id/event id: %@/%@", selectedEvent.roomId, selectedEvent.eventId);
+                                                                   MXLogDebug(@"[RoomViewController] Contextual menu permalink action failed. Permalink is nil room id/event id: %@/%@", selectedEvent.roomId, selectedEvent.eventId);
                                                                }
                                                                
                                                            }
@@ -2797,7 +2797,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                                             __strong __typeof(weakSelf)self = weakSelf;
                                             [self stopActivityIndicator];
                                             
-                                            NSLog(@"[RoomVC] Ignore user (%@) failed", selectedEvent.sender);
+                                            MXLogDebug(@"[RoomVC] Ignore user (%@) failed", selectedEvent.sender);
                                             //Alert user
                                             [[AppDelegate theDelegate] showErrorAsAlert:error];
                                             
@@ -2823,7 +2823,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                                 __strong __typeof(weakSelf)self = weakSelf;
                                 [self stopActivityIndicator];
                                 
-                                NSLog(@"[RoomVC] Report event (%@) failed", selectedEvent.eventId);
+                                MXLogDebug(@"[RoomVC] Report event (%@) failed", selectedEvent.eventId);
                                 //Alert user
                                 [[AppDelegate theDelegate] showErrorAsAlert:error];
                                 
@@ -3207,7 +3207,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
             [self.navigationController pushViewController:stickerPickerVC animated:YES];
         } failure:^(NSError * _Nonnull error) {
 
-            NSLog(@"[RoomVC] Cannot display widget %@", widget);
+            MXLogDebug(@"[RoomVC] Cannot display widget %@", widget);
             [[AppDelegate theDelegate] showErrorAsAlert:error];
         }];
     }
@@ -3298,7 +3298,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                }
                else
                {
-                   NSLog(@"RoomViewController: Warning: The application does not have the perssion to place the call");
+                   MXLogDebug(@"RoomViewController: Warning: The application does not have the perssion to place the call");
                }
            }
        }];
@@ -3316,8 +3316,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     }
 
     // If enabled, create the conf using jitsi widget and open it directly
-    else if (RiotSettings.shared.createConferenceCallsWithJitsi
-             && self.roomDataSource.room.summary.membersCount.joined > 2)
+    else if (self.roomDataSource.room.summary.membersCount.joined > 2)
     {
         [self startActivityIndicator];
 
@@ -3886,7 +3885,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                 [[UIApplication sharedApplication] vc_open:adminContactURL completionHandler:^(BOOL success) {
                    if (!success)
                    {
-                        NSLog(@"[RoomVC] refreshActivitiesViewDisplay: adminContact(%@) cannot be opened", adminContactURL);
+                        MXLogDebug(@"[RoomVC] refreshActivitiesViewDisplay: adminContact(%@) cannot be opened", adminContactURL);
                    }
                 }];
             }];
@@ -3914,7 +3913,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                     else
                     {
                         // Else auto join it via the server that sent the event
-                        NSLog(@"[RoomVC] Auto join an upgraded room: %@ -> %@. Sender: %@",                              self->customizedRoomDataSource.roomState.roomId,
+                        MXLogDebug(@"[RoomVC] Auto join an upgraded room: %@ -> %@. Sender: %@",                              self->customizedRoomDataSource.roomState.roomId,
                               replacementRoomId, stoneTombEvent.sender);
                         
                         NSString *viaSenderServer = [MXTools serverNameInMatrixIdentifier:stoneTombEvent.sender];
@@ -3930,7 +3929,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                             } failure:^(NSError *error) {
                                 [self stopActivityIndicator];
                                 
-                                NSLog(@"[RoomVC] Failed to join an upgraded room. Error: %@",
+                                MXLogDebug(@"[RoomVC] Failed to join an upgraded room. Error: %@",
                                       error);
                                 [[AppDelegate theDelegate] showErrorAsAlert:error];
                             }];
@@ -3954,7 +3953,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
             {
                 [roomActivitiesView displayOngoingConferenceCall:^(BOOL video) {
                     
-                    NSLog(@"[RoomVC] onOngoingConferenceCallPressed");
+                    MXLogDebug(@"[RoomVC] onOngoingConferenceCallPressed");
                     
                     // Make sure there is not yet a call
                     if (![customizedRoomDataSource.mxSession.callManager callInRoom:customizedRoomDataSource.roomId])
@@ -3980,7 +3979,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
             {
                 [roomActivitiesView displayOngoingConferenceCall:^(BOOL video) {
 
-                    NSLog(@"[RoomVC] onOngoingConferenceCallPressed (jitsi)");
+                    MXLogDebug(@"[RoomVC] onOngoingConferenceCallPressed (jitsi)");
 
                     __weak __typeof(self) weakSelf = self;
                     NSString *appDisplayName = [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
@@ -4000,7 +3999,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                                }
                                else
                                {
-                                   NSLog(@"[RoomVC] onOngoingConferenceCallPressed: Warning: The application does not have the perssion to join the call");
+                                   MXLogDebug(@"[RoomVC] onOngoingConferenceCallPressed: Warning: The application does not have the perssion to join the call");
                                }
                            }
                        }];
@@ -4062,7 +4061,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                     [[UIApplication sharedApplication] vc_open:adminContactURL completionHandler:^(BOOL success) {
                        if (!success)
                        {
-                            NSLog(@"[RoomVC] refreshActivitiesViewDisplay: adminContact(%@) cannot be opened", adminContactURL);
+                            MXLogDebug(@"[RoomVC] refreshActivitiesViewDisplay: adminContact(%@) cannot be opened", adminContactURL);
                        }
                     }];
                 }];
@@ -4453,7 +4452,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
 
     if ([customizedRoomDataSource.selectedEventId isEqualToString:previousId])
     {
-        NSLog(@"[RoomVC] eventDidChangeIdentifier: Update selectedEventId");
+        MXLogDebug(@"[RoomVC] eventDidChangeIdentifier: Update selectedEventId");
         customizedRoomDataSource.selectedEventId = event.eventId;
     }
 }
@@ -4888,7 +4887,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
             }
             else
             {
-                NSLog(@"[RoomViewController] Contextual menu copy failed. Text is nil for room id/event id: %@/%@", selectedComponent.event.roomId, selectedComponent.event.eventId);
+                MXLogDebug(@"[RoomViewController] Contextual menu copy failed. Text is nil for room id/event id: %@/%@", selectedComponent.event.roomId, selectedComponent.event.eventId);
             }
             
             [self hideContextualMenuAnimated:YES];
@@ -4964,7 +4963,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
             MXStrongifyAndReturnIfNil(self);
             [self stopActivityIndicator];
             
-            NSLog(@"[RoomVC] Redact event (%@) failed", eventId);
+            MXLogDebug(@"[RoomVC] Redact event (%@) failed", eventId);
             //Alert user
             [[AppDelegate theDelegate] showErrorAsAlert:error];
             
@@ -5232,7 +5231,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     }
     else
     {
-        NSLog(@"[RoomViewController] File upload using MIME type %@ is not supported.", mimeType);
+        MXLogDebug(@"[RoomViewController] File upload using MIME type %@ is not supported.", mimeType);
         
         [[AppDelegate theDelegate] showAlertWithTitle:NSLocalizedStringFromTable(@"file_upload_error_title", @"Vector", nil)
                                               message:NSLocalizedStringFromTable(@"file_upload_error_unsupported_file_type_message", @"Vector", nil)];
