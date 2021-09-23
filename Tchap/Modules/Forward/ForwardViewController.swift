@@ -30,8 +30,6 @@ class ForwardViewController: MXKViewController {
     @IBOutlet weak var searchBar: UISearchBar?
     
     weak var delegate: ForwardViewControllerDelegate?
-
-    private var currentStyle: Style!
     
     weak var recentsViewController: UIViewController? {
         willSet {
@@ -50,10 +48,8 @@ class ForwardViewController: MXKViewController {
         }
     }
     
-    static func instantiate(with style: Style) -> ForwardViewController {
-        let viewController = StoryboardScene.ForwardViewController.initialScene.instantiate()
-        viewController.currentStyle = style
-        return viewController
+    static func instantiate() -> ForwardViewController {
+        return StoryboardScene.ForwardViewController.initialScene.instantiate()
     }
     
     // MARK: - Life cycle
@@ -73,11 +69,11 @@ class ForwardViewController: MXKViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.update(style: self.currentStyle)
+        self.updateTheme()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.currentStyle.statusBarStyle
+        return ThemeService.shared().theme.statusBarStyle
     }
     
     // MARK: - Actions
@@ -116,24 +112,22 @@ extension ForwardViewController: UISearchBarDelegate {
     }
 }
 
-// MARK: - Stylable
+// MARK: - Theme
 
-extension ForwardViewController: Stylable {
-    func update(style: Style) {
-        self.currentStyle = style
+private extension ForwardViewController {
+    func updateTheme() {
+        self.titleLabel?.textColor = ThemeService.shared().theme.headerTextPrimaryColor
+        self.titleContentView?.backgroundColor = ThemeService.shared().theme.headerBackgroundColor
+        self.cancelButton?.tintColor = ThemeService.shared().theme.tintColor
         
-        self.titleLabel?.textColor = style.barTitleColor
-        self.titleContentView?.backgroundColor = style.barBackgroundColor
-        self.cancelButton?.tintColor = self.currentStyle.barActionColor
-        
-        self.view.backgroundColor = style.backgroundColor
+        self.view.backgroundColor = ThemeService.shared().theme.backgroundColor
         
         if let navigationBar = self.navigationController?.navigationBar {
-            style.applyStyle(onNavigationBar: navigationBar)
+            ThemeService.shared().theme.applyStyle(onNavigationBar: navigationBar)
         }
         
         if let searchBar = self.searchBar {
-            style.applyStyle(onSearchBar: searchBar)
+            ThemeService.shared().theme.applyStyle(onSearchBar: searchBar)
         }
     }
 }

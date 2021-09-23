@@ -37,7 +37,7 @@ final class ForwardCoordinator: NSObject, ForwardCoordinatorType {
         recentsViewController.displayList(ForwardDataSource(matrixSession: session))
         self.recentsViewController = recentsViewController
 
-        let viewController = ForwardViewController.instantiate(with: Variant2Style.shared)
+        let viewController = ForwardViewController.instantiate()
         self.forwardViewController = viewController
         
         self.errorPresenter = AlertErrorPresenter(viewControllerPresenter: viewController)

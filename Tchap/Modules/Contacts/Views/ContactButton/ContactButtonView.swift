@@ -16,19 +16,18 @@
 
 import UIKit
 
-@objcMembers class ContactButtonView: UITableViewCell, Stylable {
+@objcMembers class ContactButtonView: UITableViewCell {
     
     @IBOutlet private(set) weak var iconView: UIImageView!
     @IBOutlet private(set) weak var actionLabel: UILabel!
     
-    private(set) var style: Style!
     private(set) var viewModel: ContactButtonViewModelType!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
         
-        self.update(style: Variant2Style.shared)
+        self.updateTheme()
     }
     
     class func nib() -> UINib {
@@ -39,10 +38,8 @@ import UIKit
         return String(describing: self)
     }
     
-    func update(style: Style) {
-        self.style = style
-        
-        self.actionLabel.textColor = style.buttonPlainTitleColor
+    func updateTheme() {
+        self.actionLabel.textColor = ThemeService.shared().theme.headerTextPrimaryColor
         self.actionLabel.font = UIFont.systemFont(ofSize: 15, weight: .regular)
     }
     

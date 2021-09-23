@@ -22,7 +22,7 @@
 
 #import "GeneratedInterface-Swift.h"
 
-@interface SegmentedViewController () <Stylable>
+@interface SegmentedViewController ()
 {
     // Tell whether the segmented view is appeared (see viewWillAppear/viewWillDisappear).
     BOOL isViewAppeared;
@@ -50,8 +50,6 @@
     id kThemeServiceDidChangeThemeNotificationObserver;
 }
 
-@property (nonatomic, strong) id<Style> currentStyle;
-
 @end
 
 @implementation SegmentedViewController
@@ -68,7 +66,6 @@
 {
     SegmentedViewController *segmentedViewController = [[[self class] alloc] initWithNibName:NSStringFromClass([SegmentedViewController class])
                                           bundle:[NSBundle bundleForClass:[SegmentedViewController class]]];
-    segmentedViewController.currentStyle = Variant1Style.shared;
     return segmentedViewController;
 }
 
@@ -197,33 +194,31 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    [self updateWithStyle:self.currentStyle];
+    [self updateTheme];
 }
 
-- (void)updateWithStyle:(id<Style>)style
+- (void)updateTheme
 {
-    self.currentStyle = style;
-    
-    self.sectionHeaderTintColor = style.barActionColor;
+    self.sectionHeaderTintColor = ThemeService.shared.theme.tintColor;
     
     UINavigationBar *navigationBar = self.navigationController.navigationBar;
     
     if (navigationBar)
     {
-        [style applyStyleOnNavigationBar:navigationBar];
+        [ThemeService.shared.theme applyStyleOnNavigationBar:navigationBar];
     }
     
-    self.view.backgroundColor = style.backgroundColor;
+    self.view.backgroundColor = ThemeService.shared.theme.backgroundColor;
     
     // @TODO Design the activvity indicator for Tchap
-    self.activityIndicator.backgroundColor = style.overlayBackgroundColor;
+    self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
 
     [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return self.currentStyle.statusBarStyle;
+    return ThemeService.shared.theme.statusBarStyle;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -294,7 +289,7 @@
         label.font = [UIFont systemFontOfSize:17];
         label.textAlignment = NSTextAlignmentCenter;
         label.textColor = _sectionHeaderTintColor;
-        label.backgroundColor = self.currentStyle.barBackgroundColor;
+        label.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
         label.accessibilityIdentifier = [NSString stringWithFormat:@"SegmentedVCSectionLabel%tu", index];
         
         // the constraint defines the label frame
