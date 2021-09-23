@@ -31,18 +31,14 @@ final class ForgotPasswordCheckedEmailViewController: UIViewController {
     
     // MARK: Private
     
-    private var currentStyle: Style!
-    
     // MARK: Public
     
     weak var delegate: ForgotPasswordCheckedEmailViewControllerDelegate?
     
     // MARK: - Setup
     
-    class func instantiate(style: Style = Variant2Style.shared) -> ForgotPasswordCheckedEmailViewController {
-        let viewController = StoryboardScene.ForgotPasswordCheckedEmailViewController.initialScene.instantiate()
-        viewController.currentStyle = style
-        return viewController
+    class func instantiate() -> ForgotPasswordCheckedEmailViewController {
+        return StoryboardScene.ForgotPasswordCheckedEmailViewController.initialScene.instantiate()
     }
     
     // MARK: - Life cycle
@@ -65,7 +61,7 @@ final class ForgotPasswordCheckedEmailViewController: UIViewController {
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.currentStyle.statusBarStyle
+        return ThemeService.shared().theme.statusBarStyle
     }
     
     // MARK: - Private

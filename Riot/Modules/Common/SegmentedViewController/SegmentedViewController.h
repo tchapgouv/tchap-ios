@@ -91,8 +91,8 @@ limitations under the License.
 - (void)userInterfaceThemeDidChange;
 
 /**
- Update the current style.
+ Update the current theme.
  */
-- (void)updateWithStyle:(id<Style>)style;
+- (void)updateTheme;
 
 @end

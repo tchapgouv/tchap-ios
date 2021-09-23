@@ -118,7 +118,7 @@ final class RoomDetailsCoordinator: NSObject, RoomDetailsCoordinatorType {
         
         self.segmentedViewController.initWithTitles(titles, viewControllers: viewControllers, defaultSelected: 0)
         self.segmentedViewController.addMatrixSession(self.session)
-        self.segmentedViewController.update(with: Variant2Style.shared)
+        self.segmentedViewController.updateTheme()
         
         let titleView = RoomTitleView.instantiate()
         self.segmentedViewController.navigationItem.titleView = titleView

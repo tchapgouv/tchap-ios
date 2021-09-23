@@ -678,7 +678,7 @@
 - (void)onAddParticipantButtonPressed
 {
     // Push the contacts picker.
-    contactsPickerViewController = [ContactsViewController instantiateWithStyle:Variant2Style.shared showSearchBar:YES enableMultipleSelection:YES];
+    contactsPickerViewController = [ContactsViewController instantiateWithShowSearchBar:YES enableMultipleSelection:YES];
     contactsPickerViewController.title = NSLocalizedStringFromTable(@"contacts_picker_title", @"Tchap", nil);
     
     // Set delegate to handle action on member (start chat, mention)

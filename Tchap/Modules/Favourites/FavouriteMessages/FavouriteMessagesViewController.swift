@@ -38,7 +38,6 @@ final class FavouriteMessagesViewController: UIViewController {
     // MARK: Private
 
     private var viewModel: FavouriteMessagesViewModelType!
-    private var currentStyle: Style!
     private var keyboardAvoider: KeyboardAvoider?
     private var errorPresenter: MXKErrorPresentation!
     private var activityPresenter: ActivityIndicatorPresenter!
@@ -57,10 +56,9 @@ final class FavouriteMessagesViewController: UIViewController {
 
     // MARK: - Setup
     
-    class func instantiate(with viewModel: FavouriteMessagesViewModelType, style: Style = Variant1Style.shared) -> FavouriteMessagesViewController {
+    class func instantiate(with viewModel: FavouriteMessagesViewModelType) -> FavouriteMessagesViewController {
         let viewController = StoryboardScene.FavouriteMessagesViewController.initialScene.instantiate()
         viewController.viewModel = viewModel
-        viewController.currentStyle = style
         return viewController
     }
     
@@ -109,24 +107,22 @@ final class FavouriteMessagesViewController: UIViewController {
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.currentStyle.statusBarStyle
+        return ThemeService.shared().theme.statusBarStyle
     }
     
     // MARK: - Private
     
-    private func update(style: Style) {
-        self.currentStyle = style
-        
-        self.tableView.backgroundColor = style.backgroundColor
-        self.view.backgroundColor = style.backgroundColor
+    private func updateTheme() {
+        self.tableView.backgroundColor = ThemeService.shared().theme.backgroundColor
+        self.view.backgroundColor = ThemeService.shared().theme.backgroundColor
         
         if let navigationBar = self.navigationController?.navigationBar {
-            style.applyStyle(onNavigationBar: navigationBar)
+            ThemeService.shared().theme.applyStyle(onNavigationBar: navigationBar)
         }
     }
 
     private func userThemeDidChange() {
-        self.update(style: self.currentStyle)
+        self.updateTheme()
     }
     
     private func setupTableView() {

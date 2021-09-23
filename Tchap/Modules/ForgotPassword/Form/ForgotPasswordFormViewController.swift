@@ -36,7 +36,6 @@ final class ForgotPasswordFormViewController: UIViewController {
     private var viewModel: ForgotPasswordFormViewModelType!
     private var errorPresenter: ErrorPresenter?
     private var keyboardAvoider: KeyboardAvoider?
-    private var currentStyle: Style!
     private var formTextFields: [FormTextField] = []
     
     // MARK: Public
@@ -45,10 +44,9 @@ final class ForgotPasswordFormViewController: UIViewController {
     
     // MARK: - Setup
     
-    class func instantiate(viewModel: ForgotPasswordFormViewModelType, style: Style = Variant2Style.shared) -> ForgotPasswordFormViewController {
+    class func instantiate(viewModel: ForgotPasswordFormViewModelType) -> ForgotPasswordFormViewController {
         let viewController = StoryboardScene.ForgotPasswordFormViewController.initialScene.instantiate()
         viewController.viewModel = viewModel
-        viewController.currentStyle = style
         return viewController
     }
     
@@ -80,7 +78,7 @@ final class ForgotPasswordFormViewController: UIViewController {
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.currentStyle.statusBarStyle
+        return ThemeService.shared().theme.statusBarStyle
     }
     
     // MARK: - Public
