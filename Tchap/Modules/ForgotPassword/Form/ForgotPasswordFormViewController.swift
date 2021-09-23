@@ -121,7 +121,7 @@ final class ForgotPasswordFormViewController: UIViewController {
     }
     
     private func userThemeDidChange() {
-        self.update(style: self.currentStyle)
+        self.updateTheme()
     }
     
     private func hideConfirmPasswordTextField(_ hide: Bool) {
@@ -151,23 +151,21 @@ final class ForgotPasswordFormViewController: UIViewController {
     }
 }
 
-// MARK: - Stylable
-extension ForgotPasswordFormViewController: Stylable {
-    func update(style: Style) {
-        self.currentStyle = style
-        
-        self.view.backgroundColor = style.backgroundColor
-        self.instructionsLabel.textColor = style.secondaryTextColor
+// MARK: - Theme
+private extension ForgotPasswordFormViewController {
+    func updateTheme() {
+        self.view.backgroundColor = ThemeService.shared().theme.backgroundColor
+        self.instructionsLabel.textColor = ThemeService.shared().theme.textSecondaryColor
         
         if let navigationBar = self.navigationController?.navigationBar {
-            style.applyStyle(onNavigationBar: navigationBar)
+            ThemeService.shared().theme.applyStyle(onNavigationBar: navigationBar)
         }
         
         for formTextField in self.formTextFields {
             formTextField.updateTheme()
         }
         
-        style.applyStyle(onButton: self.sendEmailButton)
+        ThemeService.shared().theme.applyStyle(onButton: self.sendEmailButton)
     }
 }
 
