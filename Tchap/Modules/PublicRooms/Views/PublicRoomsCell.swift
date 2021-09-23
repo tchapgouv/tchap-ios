@@ -33,7 +33,7 @@ import Reusable
         super.awakeFromNib()
         // Initialization code
         
-        self.updateTheme()
+        self.update(theme: ThemeService.shared().theme)
         
         self.avatarView.enableInMemoryCache = true
     }
@@ -99,12 +99,12 @@ import Reusable
 }
 
 // MARK: - Theme
-private extension PublicRoomsCell {
-    func updateTheme() {
-        self.roomDisplayName.textColor = ThemeService.shared().theme.textPrimaryColor
-        self.roomTopic.textColor = ThemeService.shared().theme.textSecondaryColor
-        self.memberCount.textColor = ThemeService.shared().theme.textSecondaryColor
-        self.domainLabel.textColor = ThemeService.shared().theme.textTertiaryColor
+extension PublicRoomsCell: Themable {
+    func update(theme: Theme) {
+        self.roomDisplayName.textColor = theme.textPrimaryColor
+        self.roomTopic.textColor = theme.textSecondaryColor
+        self.memberCount.textColor = theme.textSecondaryColor
+        self.domainLabel.textColor = theme.textTertiaryColor
         
         self.avatarView?.defaultBackgroundColor = UIColor.clear
     }

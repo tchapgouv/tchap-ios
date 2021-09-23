@@ -145,8 +145,8 @@ private extension AuthenticationViewController {
             ThemeService.shared().theme.applyStyle(onNavigationBar: navigationBar)
         }
         
-        self.loginFormTextField.updateTheme()
-        self.passwordFormTextField.updateTheme()
+        self.loginFormTextField.update(theme: ThemeService.shared().theme)
+        self.passwordFormTextField.update(theme: ThemeService.shared().theme)
     }
 }
 

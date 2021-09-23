@@ -36,11 +36,11 @@ import UIKit
         }
     }
     
-    override func updateTheme() {
-        super.updateTheme()
-        self.domainLabel.textColor = ThemeService.shared().theme.textTertiaryColor
+    override func update(theme: Theme) {
+        super.update(theme: theme)
         
-        self.contentView.backgroundColor = ThemeService.shared().theme.backgroundColor
+        self.domainLabel.textColor = theme.textTertiaryColor
+        self.contentView.backgroundColor = theme.backgroundColor
     }
     
     func renderedCellData() -> MXKCellData! {

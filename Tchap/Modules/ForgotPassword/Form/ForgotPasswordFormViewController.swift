@@ -160,7 +160,7 @@ private extension ForgotPasswordFormViewController {
         }
         
         for formTextField in self.formTextFields {
-            formTextField.updateTheme()
+            formTextField.update(theme: ThemeService.shared().theme)
         }
         
         ThemeService.shared().theme.applyStyle(onButton: self.sendEmailButton)

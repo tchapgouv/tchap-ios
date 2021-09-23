@@ -35,7 +35,7 @@ final class RetentionPeriodPickerContentView: UIView, NibOwnerLoadable, UIPicker
     
     private func commonInit() {
         retentionPeriodValuesNb = 6
-        self.updateTheme()
+        self.update(theme: ThemeService.shared().theme)
     }
     
     convenience init() {
@@ -128,11 +128,12 @@ final class RetentionPeriodPickerContentView: UIView, NibOwnerLoadable, UIPicker
         }
         self.pickerView.selectRow(row + self.retentionPeriodValuesNb, inComponent: 0, animated: animated)
     }
+}
     
-    // MARK: - Theme
-    
-    func updateTheme() {
-        self.pickerView.backgroundColor = ThemeService.shared().theme.backgroundColor
-        self.pickerView.tintColor = ThemeService.shared().theme.textPrimaryColor
+// MARK: - Theme
+extension RetentionPeriodPickerContentView: Themable {
+    func update(theme: Theme) {
+        self.pickerView.backgroundColor = theme.backgroundColor
+        self.pickerView.tintColor = theme.textPrimaryColor
     }
 }

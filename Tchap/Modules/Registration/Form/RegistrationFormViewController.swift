@@ -167,10 +167,10 @@ private extension RegistrationFormViewController {
         }
         
         for formTextField in self.formTextFields {
-            formTextField.updateTheme()
+            formTextField.update(theme: ThemeService.shared().theme)
         }
         
-        self.termsFormCheckBox.updateTheme()
+        self.termsFormCheckBox.update(theme: ThemeService.shared().theme)
     }
 }
 

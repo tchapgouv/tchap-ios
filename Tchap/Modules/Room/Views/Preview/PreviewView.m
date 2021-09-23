@@ -20,6 +20,9 @@
 
 #import "GeneratedInterface-Swift.h"
 
+@interface PreviewView() <Themable>
+@end
+
 @implementation PreviewView
 
 + (UINib *)nib
@@ -31,7 +34,7 @@
 + (instancetype)instantiate
 {
     PreviewView *previewView = [[[self class] nib] instantiateWithOwner:nil options:nil].firstObject;
-    [previewView updateTheme];
+    [previewView updateWithTheme:ThemeService.shared.theme];
     return previewView;
 }
 
@@ -61,22 +64,7 @@
     [self.rightButton.layer setCornerRadius:5];
     self.rightButton.clipsToBounds = YES;
     
-    [self updateTheme];
-}
-
-- (void)updateTheme
-{
-    self.backgroundColor = ThemeService.shared.theme.backgroundColor;
-    
-    self.previewLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
-    self.subNoticeLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
-    self.bottomBorderView.backgroundColor = ThemeService.shared.theme.headerBorderColor;
-    
-    self.leftButton.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
-    self.leftButton.titleLabel.textColor = ThemeService.shared.theme.headerTextPrimaryColor;
-    
-    self.rightButton.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
-    self.rightButton.titleLabel.textColor = ThemeService.shared.theme.headerTextPrimaryColor;
+    [self updateWithTheme:ThemeService.shared.theme];
 }
 
 - (void)refreshDisplay
@@ -106,6 +94,23 @@
 {
     _roomName = roomName;
     [self refreshDisplay];
+}
+
+#pragma mark - Theme
+
+- (void)updateWithTheme:(id<Theme> _Nonnull)theme
+{
+    self.backgroundColor = theme.backgroundColor;
+    
+    self.previewLabel.textColor = theme.textPrimaryColor;
+    self.subNoticeLabel.textColor = theme.textSecondaryColor;
+    self.bottomBorderView.backgroundColor = theme.headerBorderColor;
+    
+    self.leftButton.backgroundColor = theme.headerBackgroundColor;
+    self.leftButton.titleLabel.textColor = theme.headerTextPrimaryColor;
+    
+    self.rightButton.backgroundColor = theme.headerBackgroundColor;
+    self.rightButton.titleLabel.textColor = theme.headerTextPrimaryColor;
 }
 
 @end

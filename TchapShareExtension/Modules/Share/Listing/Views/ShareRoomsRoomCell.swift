@@ -39,10 +39,10 @@ class ShareRoomsRoomCell: RoomsCell {
         self.updateAvatarView()
     }
     
-    override func updateTheme() {
-        super.updateTheme()
-        
-        self.contentView.backgroundColor = ThemeService.shared().theme.backgroundColor
+    override func update(theme: Theme) {
+        super.update(theme: theme)
+
+        self.contentView.backgroundColor = theme.backgroundColor
     }
     
     private func updateAvatarView () {

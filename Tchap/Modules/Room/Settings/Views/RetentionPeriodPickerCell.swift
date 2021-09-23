@@ -29,7 +29,7 @@ import UIKit
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        self.updateTheme()
+        self.update(theme: ThemeService.shared().theme)
         
         self.retentionPeriodPickerContentView.delegate = self
     }
@@ -42,10 +42,6 @@ import UIKit
         return String(describing: self)
     }
     
-    func updateTheme() {
-        self.retentionPeriodPickerContentView.updateTheme()
-    }
-    
     func updatePickerWith(retentionPeriodInDays: uint, animated: Bool) {
         self.retentionPeriodPickerContentView.updatePickerWith(retentionPeriodInDays: retentionPeriodInDays, animated: animated)
     }
@@ -54,3 +50,11 @@ import UIKit
         self.delegate?.retentionPeriodPickerCell(self, didSelect: periodInDays)
     }
 }
+
+// MARK: - Theme
+extension RetentionPeriodPickerCell: Themable {
+    func update(theme: Theme) {
+        self.retentionPeriodPickerContentView.update(theme: theme)
+    }
+}
+

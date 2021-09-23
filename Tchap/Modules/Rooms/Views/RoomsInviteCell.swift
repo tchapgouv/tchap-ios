@@ -74,13 +74,13 @@ import UIKit
         }
     }
     
-    override func updateTheme() {
-        super.updateTheme()
-        self.domainLabel.textColor = ThemeService.shared().theme.textTertiaryColor
-        self.leftButton.backgroundColor = ThemeService.shared().theme.headerBackgroundColor
-        self.leftButton.setTitleColor(ThemeService.shared().theme.headerTextPrimaryColor, for: .normal)
-        self.rightButton.backgroundColor = ThemeService.shared().theme.headerBackgroundColor
-        self.rightButton.setTitleColor(ThemeService.shared().theme.headerTextPrimaryColor, for: .normal)
+    override func update(theme: Theme) {
+        super.update(theme: theme)
+        self.domainLabel.textColor = theme.textTertiaryColor
+        self.leftButton.backgroundColor = theme.headerBackgroundColor
+        self.leftButton.setTitleColor(theme.headerTextPrimaryColor, for: .normal)
+        self.rightButton.backgroundColor = theme.headerBackgroundColor
+        self.rightButton.setTitleColor(theme.headerTextPrimaryColor, for: .normal)
     }
     
     @IBAction private func onLeftPressed(_ sender: Any) {

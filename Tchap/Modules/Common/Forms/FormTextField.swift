@@ -169,11 +169,11 @@ final class FormTextField: UIView, NibOwnerLoadable {
 }
 
 // MARK: - Theme
-extension FormTextField {
-    func updateTheme() {
-        ThemeService.shared().theme.applyStyle(onTextField: self.textField)
-        self.separatorView.backgroundColor = ThemeService.shared().theme.lineBreakColor
-        self.additionalInfoLabel.textColor = ThemeService.shared().theme.textSecondaryColor
+extension FormTextField: Themable {
+    func update(theme: Theme) {
+        theme.applyStyle(onTextField: self.textField)
+        self.separatorView.backgroundColor = theme.lineBreakColor
+        self.additionalInfoLabel.textColor = theme.textSecondaryColor
     }
 }
 

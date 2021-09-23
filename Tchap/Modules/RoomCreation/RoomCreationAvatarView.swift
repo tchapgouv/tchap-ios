@@ -52,7 +52,7 @@ final class RoomCreationAvatarView: UIView, NibLoadable {
 
         self.updateAddButtonTextVisibility()
 
-        self.updateTheme()
+        self.update(theme: ThemeService.shared().theme)
     }
     
     override func layoutSubviews() {
@@ -101,9 +101,9 @@ final class RoomCreationAvatarView: UIView, NibLoadable {
 }
 
 // MARK: - Theme
-private extension RoomCreationAvatarView {
-    func updateTheme() {
-        self.backgroundView.backgroundColor = ThemeService.shared().theme.selectedBackgroundColor
-        self.addButton.setTitleColor(ThemeService.shared().theme.textTertiaryColor, for: .normal)
+extension RoomCreationAvatarView: Themable {
+    func update(theme: Theme) {
+        self.backgroundView.backgroundColor = theme.selectedBackgroundColor
+        self.addButton.setTitleColor(theme.textTertiaryColor, for: .normal)
     }
 }

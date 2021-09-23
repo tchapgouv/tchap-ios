@@ -89,7 +89,7 @@ final class ChangePasswordCurrentPasswordViewController: UIViewController {
         }
                 
         self.instructionsLabel.textColor = ThemeService.shared().theme.textSecondaryColor
-        self.passwordFormTextField.updateTheme()
+        self.passwordFormTextField.update(theme: ThemeService.shared().theme)
         
         ThemeService.shared().theme.applyStyle(onButton: self.validateButton)
     }

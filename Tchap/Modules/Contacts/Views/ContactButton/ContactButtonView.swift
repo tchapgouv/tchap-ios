@@ -25,9 +25,8 @@ import UIKit
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
         
-        self.updateTheme()
+        self.update(theme: ThemeService.shared().theme)
     }
     
     class func nib() -> UINib {
@@ -38,15 +37,18 @@ import UIKit
         return String(describing: self)
     }
     
-    func updateTheme() {
-        self.actionLabel.textColor = ThemeService.shared().theme.headerTextPrimaryColor
-        self.actionLabel.font = UIFont.systemFont(ofSize: 15, weight: .regular)
-    }
-    
     func render(model: ContactButtonViewModelType) {
         self.viewModel = model
         
         self.iconView.image = model.iconImage
         self.actionLabel.text = model.action
+    }
+}
+
+// MARK: - Theme
+extension ContactButtonView: Themable {
+    func update(theme: Theme) {
+        self.actionLabel.textColor = theme.headerTextPrimaryColor
+        self.actionLabel.font = UIFont.systemFont(ofSize: 15, weight: .regular)
     }
 }

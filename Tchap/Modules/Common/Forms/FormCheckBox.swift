@@ -114,8 +114,8 @@ final class FormCheckBox: UIView, NibOwnerLoadable {
 }
 
 // MARK: - Theme
-extension FormCheckBox {
-    func updateTheme() {
-        self.label.textColor = ThemeService.shared().theme.textSecondaryColor
+extension FormCheckBox: Themable {
+    func update(theme: Theme) {
+        self.label.textColor = theme.textSecondaryColor
     }
 }

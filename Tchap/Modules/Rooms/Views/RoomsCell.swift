@@ -41,7 +41,7 @@ import UIKit
         super.awakeFromNib()
         // Initialization code
         
-        self.updateTheme()
+        self.update(theme: ThemeService.shared().theme)
         
         self.avatarView.enableInMemoryCache = true
     }
@@ -148,13 +148,16 @@ import UIKit
         // The RoomsCell instances support the self-sizing mode, return a default value
         return 80
     }
+}
 
-    func updateTheme() {
-        self.titleLabel.textColor = ThemeService.shared().theme.textPrimaryColor
-        self.lastEventDescription?.textColor = ThemeService.shared().theme.textSecondaryColor
-        self.lastEventDate?.textColor = ThemeService.shared().theme.textSecondaryColor
-        self.missedNotifAndUnreadBadgeBgView?.backgroundColor = ThemeService.shared().theme.headerBackgroundColor
-        self.missedNotifAndUnreadBadgeLabel?.textColor = ThemeService.shared().theme.headerTextPrimaryColor
+// MARK: - Theme
+extension RoomsCell: Themable {
+    func update(theme: Theme) {
+        self.titleLabel.textColor = theme.textPrimaryColor
+        self.lastEventDescription?.textColor = theme.textSecondaryColor
+        self.lastEventDate?.textColor = theme.textSecondaryColor
+        self.missedNotifAndUnreadBadgeBgView?.backgroundColor = theme.headerBackgroundColor
+        self.missedNotifAndUnreadBadgeLabel?.textColor = theme.headerTextPrimaryColor
         
         self.avatarView?.defaultBackgroundColor = UIColor.clear
         

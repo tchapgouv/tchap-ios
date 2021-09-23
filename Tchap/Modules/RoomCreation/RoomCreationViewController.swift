@@ -336,7 +336,7 @@ private extension RoomCreationViewController {
             ThemeService.shared().theme.applyStyle(onNavigationBar: navigationBar)
         }
         
-        self.roomNameFormTextField.updateTheme()
+        self.roomNameFormTextField.update(theme: ThemeService.shared().theme)
         self.publicVisibilityInfoLabel.textColor = ThemeService.shared().theme.headerTextPrimaryColor
         self.publicRoomFederationTitleLabel.textColor = ThemeService.shared().theme.headerTextPrimaryColor
 

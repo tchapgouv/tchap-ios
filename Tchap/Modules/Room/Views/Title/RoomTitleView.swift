@@ -61,7 +61,10 @@ import Reusable
     // MARK: Setup
     
     @objc class func instantiate() -> RoomTitleView {
-        return RoomTitleView.loadFromNib()
+        let roomTitleView = RoomTitleView.loadFromNib()
+        roomTitleView.update(theme: ThemeService.shared().theme)
+        return roomTitleView
+
     }
     
     // MARK: Life cycle
@@ -161,17 +164,6 @@ import Reusable
         }
     }
     
-    @objc func updateTheme() {
-        self.titleLabel.textColor = ThemeService.shared().theme.headerTextPrimaryColor
-        self.subTitleLabel.textColor = ThemeService.shared().theme.headerTextSecondaryColor
-        self.subTitleMembersSeparatorLabel.textColor = ThemeService.shared().theme.textSecondaryColor
-        self.subTitleMembersLabel.textColor = ThemeService.shared().theme.textSecondaryColor
-        self.subTitleRetentionSeparatorLabel.textColor = ThemeService.shared().theme.textSecondaryColor
-        self.subTitleRetentionLabel.textColor = ThemeService.shared().theme.textSecondaryColor
-        
-        self.imageView?.defaultBackgroundColor = UIColor.clear
-    }
-    
     // MARK: - Private
     
     private func setupTapGestureRecognizer() {
@@ -193,5 +185,19 @@ import Reusable
     
     @objc private func handleBackgroundTap(_ sender: UITapGestureRecognizer) {
         self.delegate?.roomTitleViewDidTapped(self)
+    }
+}
+
+// MARK: - Theme
+extension RoomTitleView: Themable {
+    @objc func update(theme: Theme) {
+        self.titleLabel.textColor = theme.headerTextPrimaryColor
+        self.subTitleLabel.textColor = theme.headerTextSecondaryColor
+        self.subTitleMembersSeparatorLabel.textColor = theme.textSecondaryColor
+        self.subTitleMembersLabel.textColor = theme.textSecondaryColor
+        self.subTitleRetentionSeparatorLabel.textColor = theme.textSecondaryColor
+        self.subTitleRetentionLabel.textColor = theme.textSecondaryColor
+
+        self.imageView?.defaultBackgroundColor = UIColor.clear
     }
 }

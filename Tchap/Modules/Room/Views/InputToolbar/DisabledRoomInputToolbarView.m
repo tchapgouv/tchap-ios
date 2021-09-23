@@ -20,6 +20,9 @@
 
 #import "GeneratedInterface-Swift.h"
 
+@interface DisabledRoomInputToolbarView() <Themable>
+@end
+
 @implementation DisabledRoomInputToolbarView
 
 + (UINib *)nib
@@ -41,8 +44,7 @@
         inputToolbarView = [[self alloc] init];
     }
     
-
-    [inputToolbarView updateTheme];
+    [inputToolbarView updateWithTheme:ThemeService.shared.theme];
     return inputToolbarView;
 }
 
@@ -51,21 +53,7 @@
 -(void)customizeViewRendering
 {
     [super customizeViewRendering];
-    [self updateTheme];
-}
-
-- (void)updateTheme
-{
-    // Remove default toolbar background color
-    self.backgroundColor = [UIColor clearColor];
-    
-    self.separatorView.backgroundColor = ThemeService.shared.theme.selectedBackgroundColor;
-    
-    self.disabledReasonTextView.font = [UIFont systemFontOfSize:15];
-    self.disabledReasonTextView.textColor = ThemeService.shared.theme.textPrimaryColor;
-    self.disabledReasonTextView.tintColor = ThemeService.shared.theme.textSecondaryColor;
-    self.disabledReasonTextView.editable = NO;
-    self.disabledReasonTextView.scrollEnabled = NO;
+    [self updateWithTheme:ThemeService.shared.theme];
 }
 
 #pragma mark -
@@ -73,6 +61,21 @@
 - (void)setDisabledReason:(NSString *)reason
 {
     self.disabledReasonTextView.text = reason;
+}
+
+#pragma mark - Theme
+
+- (void)updateWithTheme:(id<Theme> _Nonnull)theme {
+    // Remove default toolbar background color
+    self.backgroundColor = [UIColor clearColor];
+    
+    self.separatorView.backgroundColor = theme.selectedBackgroundColor;
+    
+    self.disabledReasonTextView.font = [UIFont systemFontOfSize:15];
+    self.disabledReasonTextView.textColor = theme.textPrimaryColor;
+    self.disabledReasonTextView.tintColor = theme.textSecondaryColor;
+    self.disabledReasonTextView.editable = NO;
+    self.disabledReasonTextView.scrollEnabled = NO;
 }
 
 @end

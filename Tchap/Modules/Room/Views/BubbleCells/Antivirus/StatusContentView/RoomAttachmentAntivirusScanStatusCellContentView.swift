@@ -28,7 +28,7 @@ import Reusable
     // MARK: - Setup
     
     private func commonInit() {
-        self.updateTheme()
+        self.update(theme: ThemeService.shared().theme)
     }
     
     convenience init() {
@@ -57,9 +57,9 @@ import Reusable
 }
 
 // MARK: - Theme
-private extension RoomAttachmentAntivirusScanStatusCellContentView {
-    func updateTheme() {
-        self.titleLabel.textColor = ThemeService.shared().theme.textPrimaryColor
-        self.fileInfoLabel.textColor = ThemeService.shared().theme.textPrimaryColor
+extension RoomAttachmentAntivirusScanStatusCellContentView: Themable {
+    func update(theme: Theme) {
+        self.titleLabel.textColor = theme.textPrimaryColor
+        self.fileInfoLabel.textColor = theme.textPrimaryColor
     }
 }

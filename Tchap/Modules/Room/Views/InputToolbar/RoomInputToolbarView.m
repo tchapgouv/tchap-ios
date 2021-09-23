@@ -27,7 +27,7 @@
 
 #import "GeneratedInterface-Swift.h"
 
-@interface RoomInputToolbarView()
+@interface RoomInputToolbarView() <Themable>
 {
     // The intermediate action sheet
     UIAlertController *actionSheet;
@@ -56,7 +56,7 @@
         inputToolbarView = [[self alloc] init];
     }
     
-    [inputToolbarView updateTheme];
+    [inputToolbarView updateWithTheme:ThemeService.shared.theme];
     return inputToolbarView;
 }
 
@@ -83,39 +83,7 @@
 -(void)customizeViewRendering
 {
     [super customizeViewRendering];
-    [self updateTheme];
-}
-
-- (void)updateTheme
-{
-    // Remove default toolbar background color
-    self.backgroundColor = [UIColor clearColor];
-    
-    self.separatorView.backgroundColor = ThemeService.shared.theme.selectedBackgroundColor;
-    
-    // Custom the growingTextView display
-    growingTextView.layer.cornerRadius = 0;
-    growingTextView.layer.borderWidth = 0;
-    growingTextView.backgroundColor = [UIColor clearColor];
-    
-    growingTextView.font = [UIFont systemFontOfSize:15];
-    growingTextView.textColor = ThemeService.shared.theme.textPrimaryColor;
-    growingTextView.tintColor = ThemeService.shared.theme.textSecondaryColor;
-    
-    growingTextView.internalTextView.keyboardAppearance = ThemeService.shared.theme.keyboardAppearance;
-    if (growingTextView.isFirstResponder)
-    {
-        [growingTextView resignFirstResponder];
-        [growingTextView becomeFirstResponder];
-    }
-
-    self.attachMediaButton.accessibilityLabel = NSLocalizedStringFromTable(@"room_accessibility_upload", @"Vector", nil);
-    self.voiceCallButton.accessibilityLabel = NSLocalizedStringFromTable(@"room_accessibility_call", @"Vector", nil);
-    self.hangupCallButton.accessibilityLabel = NSLocalizedStringFromTable(@"room_accessibility_hangup", @"Vector", nil);
-    
-//    self.hangupCallButton.tintColor = ThemeService.shared.theme.noticeColor;
-//    self.voiceCallButton.tintColor = ThemeService.shared.theme.tintColor;
-//    self.attachMediaButton.tintColor = ThemeService.shared.theme.tintColor;
+    [self updateWithTheme:ThemeService.shared.theme];
 }
 
 #pragma mark -
@@ -464,6 +432,40 @@
     // TODO Custom here the validation screen for each available item
     
     [super paste:sender];
+}
+
+#pragma mark - Theme
+
+- (void)updateWithTheme:(id<Theme> _Nonnull)theme
+{
+    // Remove default toolbar background color
+    self.backgroundColor = [UIColor clearColor];
+    
+    self.separatorView.backgroundColor = theme.selectedBackgroundColor;
+    
+    // Custom the growingTextView display
+    growingTextView.layer.cornerRadius = 0;
+    growingTextView.layer.borderWidth = 0;
+    growingTextView.backgroundColor = [UIColor clearColor];
+    
+    growingTextView.font = [UIFont systemFontOfSize:15];
+    growingTextView.textColor = theme.textPrimaryColor;
+    growingTextView.tintColor = theme.textSecondaryColor;
+    
+    growingTextView.internalTextView.keyboardAppearance = theme.keyboardAppearance;
+    if (growingTextView.isFirstResponder)
+    {
+        [growingTextView resignFirstResponder];
+        [growingTextView becomeFirstResponder];
+    }
+
+    self.attachMediaButton.accessibilityLabel = NSLocalizedStringFromTable(@"room_accessibility_upload", @"Vector", nil);
+    self.voiceCallButton.accessibilityLabel = NSLocalizedStringFromTable(@"room_accessibility_call", @"Vector", nil);
+    self.hangupCallButton.accessibilityLabel = NSLocalizedStringFromTable(@"room_accessibility_hangup", @"Vector", nil);
+    
+//    self.hangupCallButton.tintColor = theme.noticeColor;
+//    self.voiceCallButton.tintColor = theme.tintColor;
+//    self.attachMediaButton.tintColor = theme.tintColor;
 }
 
 @end

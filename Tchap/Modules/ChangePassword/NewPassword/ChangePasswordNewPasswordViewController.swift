@@ -95,7 +95,7 @@ final class ChangePasswordNewPasswordViewController: UIViewController {
         
         self.instructionsLabel.textColor = ThemeService.shared().theme.textSecondaryColor
         for formTextField in self.formTextFields {
-            formTextField.updateTheme()
+            formTextField.update(theme: ThemeService.shared().theme)
         }
         
         self.validateButton.backgroundColor = ThemeService.shared().theme.backgroundColor

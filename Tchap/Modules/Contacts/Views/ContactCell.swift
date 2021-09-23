@@ -37,7 +37,7 @@ import UIKit
         super.awakeFromNib()
         // Initialization code
         
-        self.updateTheme()
+        self.update(theme: ThemeService.shared().theme)
         
         self.thumbnailView.enableInMemoryCache = true
     }
@@ -113,17 +113,6 @@ import UIKit
         unregisterContactPresenceNotification()
         self.delegate = nil
         self.contact = nil
-    }
-    
-    func updateTheme() {
-        self.contactDisplayNameLabel.textColor = self.isExpiredUser ? ThemeService.shared().theme.textSecondaryColor : ThemeService.shared().theme.textPrimaryColor
-        self.contactDomainLabel.textColor = self.isExpiredUser ? ThemeService.shared().theme.textSecondaryColor : ThemeService.shared().theme.textTertiaryColor
-        self.contactEmailLabel.textColor = ThemeService.shared().theme.textSecondaryColor
-        
-        // Clear the default background color of a MXKImageView instance
-        self.thumbnailView?.defaultBackgroundColor = UIColor.clear
-        
-        self.presenceView?.backgroundColor = ThemeService.shared().theme.headerBackgroundColor
     }
     
     private func refreshContactThumbnail() {
@@ -205,5 +194,19 @@ import UIKit
         }
         
         refreshContactPresence()
+    }
+}
+
+// MARK: - Theme
+extension ContactCell: Themable {
+    func update(theme: Theme) {
+        self.contactDisplayNameLabel.textColor = self.isExpiredUser ? theme.textSecondaryColor : theme.textPrimaryColor
+        self.contactDomainLabel.textColor = self.isExpiredUser ? theme.textSecondaryColor : theme.textTertiaryColor
+        self.contactEmailLabel.textColor = theme.textSecondaryColor
+        
+        // Clear the default background color of a MXKImageView instance
+        self.thumbnailView?.defaultBackgroundColor = UIColor.clear
+        
+        self.presenceView?.backgroundColor = theme.headerBackgroundColor
     }
 }
