@@ -73,7 +73,6 @@ targets:
     - path: ../Tchap/Managers/ThirdPartyIDPlatformInfoResolver
     - path: ../Tchap/Managers/User
     - path: ../Tchap/Managers/DisplayName
-    - path: ../Tchap/Modules/Common/Style
     - path: ../Tchap/Modules/Rooms/Views
     - path: ../Tchap/Model
     - path: ../Tchap/Utils
