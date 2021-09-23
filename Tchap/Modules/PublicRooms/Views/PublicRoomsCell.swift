@@ -17,7 +17,7 @@
 import UIKit
 import Reusable
 
-@objcMembers class PublicRoomsCell: UITableViewCell, Stylable, NibReusable {
+@objcMembers class PublicRoomsCell: UITableViewCell, NibReusable {
     
     private enum Constants {
         static let hexagonImageBorderWidth: CGFloat = 1.0
@@ -29,13 +29,11 @@ import Reusable
     @IBOutlet private(set) weak var memberCount: UILabel!
     @IBOutlet private(set) weak var domainLabel: UILabel!
     
-    private(set) var style: Style!
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
         
-        self.update(style: Variant2Style.shared)
+        self.updateTheme()
         
         self.avatarView.enableInMemoryCache = true
     }
@@ -91,21 +89,23 @@ import Reusable
         self.memberCount.text = membersLabel
     }
     
-    func update(style: Style) {
-        self.style = style
-        self.roomDisplayName.textColor = style.primaryTextColor
-        self.roomTopic.textColor = style.secondaryTextColor
-        self.memberCount.textColor = style.secondaryTextColor
-        self.domainLabel.textColor = style.primarySubTextColor
-        
-        self.avatarView?.defaultBackgroundColor = UIColor.clear
-    }
-    
     private static func homeServerDisplayName(from publicRoomId: String) -> String? {
         guard let matrixIDComponents = RoomIDComponents(matrixID: publicRoomId) else {
             return nil
         }
         
         return HomeServerComponents(hostname: matrixIDComponents.homeServer).displayName
+    }
+}
+
+// MARK: - Theme
+private extension PublicRoomsCell {
+    func updateTheme() {
+        self.roomDisplayName.textColor = ThemeService.shared().theme.textPrimaryColor
+        self.roomTopic.textColor = ThemeService.shared().theme.textSecondaryColor
+        self.memberCount.textColor = ThemeService.shared().theme.textSecondaryColor
+        self.domainLabel.textColor = ThemeService.shared().theme.textTertiaryColor
+        
+        self.avatarView?.defaultBackgroundColor = UIColor.clear
     }
 }

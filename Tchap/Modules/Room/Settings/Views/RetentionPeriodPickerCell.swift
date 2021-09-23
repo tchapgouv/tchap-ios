@@ -20,18 +20,16 @@ import UIKit
     func retentionPeriodPickerCell(_ cell: RetentionPeriodPickerCell, didSelect periodInDays: uint)
 }
 
-@objcMembers class RetentionPeriodPickerCell: UITableViewCell, Stylable, RetentionPeriodPickerContentViewDelegate {
+@objcMembers class RetentionPeriodPickerCell: UITableViewCell, RetentionPeriodPickerContentViewDelegate {
     
     @IBOutlet private weak var retentionPeriodPickerContentView: RetentionPeriodPickerContentView!
-    
-    private(set) var style: Style!
     
     weak var delegate: RetentionPeriodPickerCellDelegate?
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        self.update(style: Variant2Style.shared)
+        self.updateTheme()
         
         self.retentionPeriodPickerContentView.delegate = self
     }
@@ -44,9 +42,8 @@ import UIKit
         return String(describing: self)
     }
     
-    func update(style: Style) {
-        self.style = style
-        self.retentionPeriodPickerContentView.update(style: style)
+    func updateTheme() {
+        self.retentionPeriodPickerContentView.updateTheme()
     }
     
     func updatePickerWith(retentionPeriodInDays: uint, animated: Bool) {

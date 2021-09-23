@@ -76,7 +76,6 @@ final class RoomCreationViewController: UIViewController {
     
     private let agentServerDomain: String = "Agent"
     
-    private var currentStyle: Style!
     private var viewModel: RoomCreationViewModelType!
     private var keyboardAvoider: KeyboardAvoider?
     
@@ -89,9 +88,8 @@ final class RoomCreationViewController: UIViewController {
     
     // MARK: - Setup
     
-    class func instantiate(viewModel: RoomCreationViewModelType, style: Style = Variant1Style.shared) -> RoomCreationViewController {
+    class func instantiate(viewModel: RoomCreationViewModelType) -> RoomCreationViewController {
         let viewController = StoryboardScene.RoomCreationViewController.initialScene.instantiate()
-        viewController.currentStyle = style
         viewController.viewModel = viewModel
         return viewController
     }
@@ -111,7 +109,7 @@ final class RoomCreationViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.update(style: self.currentStyle)
+        self.updateTheme()
         self.keyboardAvoider?.startAvoiding()
     }
     
@@ -127,7 +125,7 @@ final class RoomCreationViewController: UIViewController {
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.currentStyle.statusBarStyle
+        return ThemeService.shared().theme.statusBarStyle
     }
     
     // MARK: - Public
@@ -329,20 +327,18 @@ final class RoomCreationViewController: UIViewController {
 
 }
 
-// MARK: - Stylable
-extension RoomCreationViewController: Stylable {
-    func update(style: Style) {
-        self.currentStyle = style
-        
-        self.view.backgroundColor = style.backgroundColor
+// MARK: - Theme
+private extension RoomCreationViewController {
+    func updateTheme() {
+        self.view.backgroundColor = ThemeService.shared().theme.backgroundColor
         
         if let navigationBar = self.navigationController?.navigationBar {
-            style.applyStyle(onNavigationBar: navigationBar)
+            ThemeService.shared().theme.applyStyle(onNavigationBar: navigationBar)
         }
         
         self.roomNameFormTextField.updateTheme()
-        self.publicVisibilityInfoLabel.textColor = style.boxTextColor
-        self.publicRoomFederationTitleLabel.textColor = style.boxTextColor
+        self.publicVisibilityInfoLabel.textColor = ThemeService.shared().theme.headerTextPrimaryColor
+        self.publicRoomFederationTitleLabel.textColor = ThemeService.shared().theme.headerTextPrimaryColor
 
         let padLockimage = Asset.SharedImages.e2eVerified.image.withRenderingMode(.alwaysTemplate)
         
@@ -350,18 +346,18 @@ extension RoomCreationViewController: Stylable {
         self.privateRoomTitleLabel.textColor = kColorCoral
         self.privateRoomImage.image = padLockimage
         self.privateRoomImage.tintColor = kColorCoral
-        self.privateRoomInfoLabel.textColor = style.boxTextColor
+        self.privateRoomInfoLabel.textColor = ThemeService.shared().theme.headerTextPrimaryColor
         
         self.externRoomView.backgroundColor = kColorPaleGrey
         self.externRoomTitleLabel.textColor = kColorPumpkinOrange
         self.externRoomImage.image = padLockimage
         self.externRoomImage.tintColor = kColorPumpkinOrange
-        self.externRoomInfoLabel.textColor = style.boxTextColor
+        self.externRoomInfoLabel.textColor = ThemeService.shared().theme.headerTextPrimaryColor
         
         self.forumRoomView.backgroundColor = kColorPaleGrey
         self.forumRoomTitleLabel.textColor = kColorJadeGreen
-        self.forumRoomInfoLabel.textColor = style.boxTextColor
-        self.roomTypeTitleLabel.textColor = style.boxTextColor
+        self.forumRoomInfoLabel.textColor = ThemeService.shared().theme.headerTextPrimaryColor
+        self.roomTypeTitleLabel.textColor = ThemeService.shared().theme.headerTextPrimaryColor
         
         self.disablePublicRoomFederationSwitch.onTintColor = kColorJadeGreen
     }

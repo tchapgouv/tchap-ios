@@ -50,7 +50,7 @@ import UIKit
         if isDirectChat {
             self.avatarView.tc_makeCircle()
         } else {
-            self.avatarView.tc_makeHexagon(borderWidth: Constants.hexagonImageBorderWidth, borderColor: self.style.secondaryTextColor)
+            self.avatarView.tc_makeHexagon(borderWidth: Constants.hexagonImageBorderWidth, borderColor: ThemeService.shared().theme.textSecondaryColor)
         }
     }
     
@@ -74,13 +74,13 @@ import UIKit
         }
     }
     
-    override func update(style: Style) {
-        super.update(style: style)
-        self.domainLabel.textColor = style.primarySubTextColor
-        self.leftButton.backgroundColor = style.buttonBorderedBackgroundColor
-        self.leftButton.setTitleColor(style.buttonBorderedTitleColor, for: .normal)
-        self.rightButton.backgroundColor = style.buttonBorderedBackgroundColor
-        self.rightButton.setTitleColor(style.buttonBorderedTitleColor, for: .normal)
+    override func updateTheme() {
+        super.updateTheme()
+        self.domainLabel.textColor = ThemeService.shared().theme.textTertiaryColor
+        self.leftButton.backgroundColor = ThemeService.shared().theme.headerBackgroundColor
+        self.leftButton.setTitleColor(ThemeService.shared().theme.headerTextPrimaryColor, for: .normal)
+        self.rightButton.backgroundColor = ThemeService.shared().theme.headerBackgroundColor
+        self.rightButton.setTitleColor(ThemeService.shared().theme.headerTextPrimaryColor, for: .normal)
     }
     
     @IBAction private func onLeftPressed(_ sender: Any) {

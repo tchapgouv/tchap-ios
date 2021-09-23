@@ -27,13 +27,11 @@
 
 #import "GeneratedInterface-Swift.h"
 
-@interface RoomInputToolbarView() <Stylable>
+@interface RoomInputToolbarView()
 {
     // The intermediate action sheet
     UIAlertController *actionSheet;
 }
-
-@property (nonatomic, strong) id<Style> currentStyle;
 
 @end
 
@@ -58,7 +56,7 @@
         inputToolbarView = [[self alloc] init];
     }
     
-    [inputToolbarView updateWithStyle:Variant2Style.shared];
+    [inputToolbarView updateTheme];
     return inputToolbarView;
 }
 
@@ -85,17 +83,15 @@
 -(void)customizeViewRendering
 {
     [super customizeViewRendering];
-    [self updateWithStyle:self.currentStyle];
+    [self updateTheme];
 }
 
-- (void)updateWithStyle:(id<Style>)style
+- (void)updateTheme
 {
-    self.currentStyle = style;
-    
     // Remove default toolbar background color
     self.backgroundColor = [UIColor clearColor];
     
-    self.separatorView.backgroundColor = style.separatorColor;
+    self.separatorView.backgroundColor = ThemeService.shared.theme.selectedBackgroundColor;
     
     // Custom the growingTextView display
     growingTextView.layer.cornerRadius = 0;
@@ -103,8 +99,8 @@
     growingTextView.backgroundColor = [UIColor clearColor];
     
     growingTextView.font = [UIFont systemFontOfSize:15];
-    growingTextView.textColor = style.primaryTextColor;
-    growingTextView.tintColor = style.secondaryTextColor;
+    growingTextView.textColor = ThemeService.shared.theme.textPrimaryColor;
+    growingTextView.tintColor = ThemeService.shared.theme.textSecondaryColor;
     
     growingTextView.internalTextView.keyboardAppearance = ThemeService.shared.theme.keyboardAppearance;
     if (growingTextView.isFirstResponder)

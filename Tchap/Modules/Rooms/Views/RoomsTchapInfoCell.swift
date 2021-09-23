@@ -41,8 +41,8 @@ import UIKit
         }
     }
     
-    override func update(style: Style) {
-        super.update(style: style)
+    override func updateTheme() {
+        super.updateTheme()
         self.domainLabel.textColor = kColorVerySoftBlue
     }
 }

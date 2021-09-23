@@ -31,7 +31,7 @@
 #define TABLEVIEW_SECTION_HEADER_HEIGHT   28
 #define TABLEVIEW_SECTION_HEADER_HEIGHT_WHEN_HIDDEN 0.01f
 
-@interface RoomMemberDetailsViewController () <Stylable> // , DeviceVerificationCoordinatorBridgePresenterDelegate>
+@interface RoomMemberDetailsViewController () // <DeviceVerificationCoordinatorBridgePresenterDelegate>
 {
     RoomTitleView* memberTitleView;
     
@@ -70,8 +70,6 @@
     RoomFilesViewController *filesViewController;
 }
 
-@property (nonatomic, strong) id<Style> currentStyle;
-
 @end
 
 @implementation RoomMemberDetailsViewController
@@ -88,8 +86,6 @@
 {
     RoomMemberDetailsViewController *roomMemberDetailsViewController = [[[self class] alloc] initWithNibName:NSStringFromClass(self.class)
                                           bundle:[NSBundle bundleForClass:self.class]];
-    
-    roomMemberDetailsViewController.currentStyle = Variant2Style.shared;
     return roomMemberDetailsViewController;
 }
 
@@ -113,7 +109,7 @@
 - (void)setupTitleView {
     
     if (!memberTitleView) {
-        RoomTitleView *titleView = [RoomTitleView instantiateWithStyle:Variant2Style.shared];
+        RoomTitleView *titleView = [RoomTitleView instantiate];
         self.navigationItem.titleView = titleView;
         memberTitleView = titleView;
     }
@@ -155,27 +151,25 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    [self updateWithStyle:self.currentStyle];
+    [self updateTheme];
 }
 
-- (void)updateWithStyle:(id<Style>)style
+- (void)updateTheme
 {
-    self.currentStyle = style;
-    
     UINavigationBar *navigationBar = self.navigationController.navigationBar;
     
     if (navigationBar)
     {
-        [style applyStyleOnNavigationBar:navigationBar];
+        [ThemeService.shared.theme applyStyleOnNavigationBar:navigationBar];
     }
     
-    //TODO Design the activvity indicator for Tchap
-    self.activityIndicator.backgroundColor = style.overlayBackgroundColor;
+    //TODO Design the activity indicator for Tchap
+    self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     
-    self.memberHeaderView.backgroundColor = style.backgroundColor;
-    self.roomMemberStatusLabel.textColor = style.primaryTextColor;
+    self.memberHeaderView.backgroundColor = ThemeService.shared.theme.backgroundColor;
+    self.roomMemberStatusLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
     
-    self.tableView.backgroundColor = style.secondaryBackgroundColor;
+    self.tableView.backgroundColor = ThemeService.shared.theme.selectedBackgroundColor;
     self.view.backgroundColor = self.tableView.backgroundColor;
     
     if (self.tableView.dataSource)
@@ -186,7 +180,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return self.currentStyle.statusBarStyle;
+    return ThemeService.shared.theme.statusBarStyle;
 }
 
 - (BOOL)prefersStatusBarHidden

@@ -134,4 +134,8 @@ class DefaultTheme: NSObject, Theme {
         button.tintColor = self.tintColor
         button.setTitleColor(self.tintColor, for: .normal)
     }
+    
+    func applyStyle(onSwitch uiSwitch: UISwitch) {
+        uiSwitch.onTintColor = self.headerBackgroundColor
+    }
 }

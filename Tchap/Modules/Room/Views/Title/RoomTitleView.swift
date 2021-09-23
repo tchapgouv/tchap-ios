@@ -21,7 +21,7 @@ import Reusable
     func roomTitleViewDidTapped(_ roomTitleView: RoomTitleView)
 }
 
-@objc final class RoomTitleView: UIView, NibLoadable, Stylable {
+@objc final class RoomTitleView: UIView, NibLoadable {
     
     // MARK: - Constants
     
@@ -49,8 +49,6 @@ import Reusable
     @IBOutlet private weak var imageView: MXKImageView!
     @IBOutlet private weak var roomImageMarker: UIImageView!
     
-    private var style: Style!
-    
     private var imageBorderColor: UIColor = UIColor.clear
     private var imageBorderWidth: CGFloat = Constants.hexagonImageBorderWidth
     
@@ -62,10 +60,8 @@ import Reusable
     
     // MARK: Setup
     
-    @objc class func instantiate(style: Style = Variant2Style.shared) -> RoomTitleView {
-        let roomTitleView = RoomTitleView.loadFromNib()
-        roomTitleView.update(style: style)
-        return roomTitleView
+    @objc class func instantiate() -> RoomTitleView {
+        return RoomTitleView.loadFromNib()
     }
     
     // MARK: Life cycle
@@ -165,14 +161,13 @@ import Reusable
         }
     }
     
-    @objc func update(style: Style) {
-        self.style = style
-        self.titleLabel.textColor = style.barTitleColor
-        self.subTitleLabel.textColor = style.barSubTitleColor
-        self.subTitleMembersSeparatorLabel.textColor = style.secondaryTextColor
-        self.subTitleMembersLabel.textColor = style.secondaryTextColor
-        self.subTitleRetentionSeparatorLabel.textColor = style.secondaryTextColor
-        self.subTitleRetentionLabel.textColor = style.secondaryTextColor
+    @objc func updateTheme() {
+        self.titleLabel.textColor = ThemeService.shared().theme.headerTextPrimaryColor
+        self.subTitleLabel.textColor = ThemeService.shared().theme.headerTextSecondaryColor
+        self.subTitleMembersSeparatorLabel.textColor = ThemeService.shared().theme.textSecondaryColor
+        self.subTitleMembersLabel.textColor = ThemeService.shared().theme.textSecondaryColor
+        self.subTitleRetentionSeparatorLabel.textColor = ThemeService.shared().theme.textSecondaryColor
+        self.subTitleRetentionLabel.textColor = ThemeService.shared().theme.textSecondaryColor
         
         self.imageView?.defaultBackgroundColor = UIColor.clear
     }

@@ -24,15 +24,13 @@
 
 #import "AttachmentsViewController.h"
 
-@interface RoomFilesViewController () <Stylable>
+@interface RoomFilesViewController ()
 {
     /**
      Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
      */
     id kThemeServiceDidChangeThemeNotificationObserver;
 }
-
-@property (nonatomic, strong) id<Style> currentStyle;
 
 @end
 
@@ -42,9 +40,7 @@
 
 + (instancetype)instantiate
 {
-    RoomFilesViewController *roomFilesViewController = [RoomFilesViewController roomViewController];
-    roomFilesViewController.currentStyle = Variant2Style.shared;
-    return roomFilesViewController;
+    return [RoomFilesViewController roomViewController];
 }
 
 - (instancetype)initWithNibName:(nullable NSString *)nibNameOrNil bundle:(nullable NSBundle *)nibBundleOrNil
@@ -124,24 +120,22 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    [self updateWithStyle:self.currentStyle];
+    [self updateTheme];
 }
 
-- (void)updateWithStyle:(id<Style>)style
+- (void)updateTheme
 {
-    self.currentStyle = style;
-    
     UINavigationBar *navigationBar = self.navigationController.navigationBar;
     
     if (navigationBar)
     {
-        [style applyStyleOnNavigationBar:navigationBar];
+        [ThemeService.shared.theme applyStyleOnNavigationBar:navigationBar];
     }
     
-    //TODO Design the activvity indicator for Tchap
-    self.activityIndicator.backgroundColor = style.overlayBackgroundColor;
+    //TODO Design the activity indicator for Tchap
+    self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     
-    self.bubblesTableView.backgroundColor = style.backgroundColor;
+    self.bubblesTableView.backgroundColor = ThemeService.shared.theme.backgroundColor;
     self.view.backgroundColor = self.bubblesTableView.backgroundColor;
     
     if (self.bubblesTableView.dataSource)
@@ -154,7 +148,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return self.currentStyle.statusBarStyle;
+    return ThemeService.shared.theme.statusBarStyle;
 }
 
 - (void)destroy

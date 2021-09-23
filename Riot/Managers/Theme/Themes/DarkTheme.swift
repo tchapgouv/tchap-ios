@@ -141,6 +141,10 @@ class DarkTheme: NSObject, Theme {
         button.setTitleColor(self.tintColor, for: .normal)
     }
     
+    func applyStyle(onSwitch uiSwitch: UISwitch) {
+        uiSwitch.onTintColor = self.headerBackgroundColor
+    }
+    
     ///  MARK: - Theme v2
     
     lazy var colors: Colors = {

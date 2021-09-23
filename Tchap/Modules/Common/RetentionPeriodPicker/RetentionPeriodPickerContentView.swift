@@ -21,7 +21,7 @@ protocol RetentionPeriodPickerContentViewDelegate: AnyObject {
     func retentionPeriodPickerContentView(_ view: RetentionPeriodPickerContentView, didSelect periodInDays: uint)
 }
 
-final class RetentionPeriodPickerContentView: UIView, NibOwnerLoadable, Stylable, UIPickerViewDataSource, UIPickerViewDelegate {
+final class RetentionPeriodPickerContentView: UIView, NibOwnerLoadable, UIPickerViewDataSource, UIPickerViewDelegate {
     
     // MARK: - Properties
     
@@ -29,15 +29,13 @@ final class RetentionPeriodPickerContentView: UIView, NibOwnerLoadable, Stylable
     
     private var retentionPeriodValuesNb: Int!
     
-    private var style: Style!
-    
     weak var delegate: RetentionPeriodPickerContentViewDelegate?
     
     // MARK: - Setup
     
     private func commonInit() {
         retentionPeriodValuesNb = 6
-        self.update(style: Variant2Style.shared)
+        self.updateTheme()
     }
     
     convenience init() {
@@ -131,12 +129,10 @@ final class RetentionPeriodPickerContentView: UIView, NibOwnerLoadable, Stylable
         self.pickerView.selectRow(row + self.retentionPeriodValuesNb, inComponent: 0, animated: animated)
     }
     
-    // MARK: - Stylable
+    // MARK: - Theme
     
-    func update(style: Style) {
-        self.style = style
-        
-        self.pickerView.backgroundColor = self.style.backgroundColor
-        self.pickerView.tintColor = self.style.primaryTextColor
+    func updateTheme() {
+        self.pickerView.backgroundColor = ThemeService.shared().theme.backgroundColor
+        self.pickerView.tintColor = ThemeService.shared().theme.textPrimaryColor
     }
 }

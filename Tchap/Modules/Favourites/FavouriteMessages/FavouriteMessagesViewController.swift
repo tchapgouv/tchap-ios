@@ -195,7 +195,7 @@ final class FavouriteMessagesViewController: UIViewController {
     
     private func setupTitleView() {
         // Build title view
-        self.titleView = RoomTitleView.instantiate(style: self.currentStyle)
+        self.titleView = RoomTitleView.instantiate()
         self.updateTitleInfo()
         self.navigationItem.titleView = titleView
     }

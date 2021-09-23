@@ -20,12 +20,6 @@
 
 #import "GeneratedInterface-Swift.h"
 
-@interface PreviewView() <Stylable>
-
-@property (nonatomic, strong) id<Style> currentStyle;
-
-@end
-
 @implementation PreviewView
 
 + (UINib *)nib
@@ -37,7 +31,7 @@
 + (instancetype)instantiate
 {
     PreviewView *previewView = [[[self class] nib] instantiateWithOwner:nil options:nil].firstObject;
-    [previewView updateWithStyle:Variant2Style.shared];
+    [previewView updateTheme];
     return previewView;
 }
 
@@ -67,24 +61,22 @@
     [self.rightButton.layer setCornerRadius:5];
     self.rightButton.clipsToBounds = YES;
     
-    [self updateWithStyle:self.currentStyle];
+    [self updateTheme];
 }
 
-- (void)updateWithStyle:(id<Style>)style
+- (void)updateTheme
 {
-    self.currentStyle = style;
+    self.backgroundColor = ThemeService.shared.theme.backgroundColor;
     
-    self.backgroundColor = style.backgroundColor;
+    self.previewLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.subNoticeLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
+    self.bottomBorderView.backgroundColor = ThemeService.shared.theme.headerBorderColor;
     
-    self.previewLabel.textColor = style.primaryTextColor;
-    self.subNoticeLabel.textColor = style.secondaryTextColor;
-    self.bottomBorderView.backgroundColor = style.secondaryBackgroundColor;
+    self.leftButton.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
+    self.leftButton.titleLabel.textColor = ThemeService.shared.theme.headerTextPrimaryColor;
     
-    self.leftButton.backgroundColor = style.buttonBorderedBackgroundColor;
-    self.leftButton.titleLabel.textColor = style.buttonBorderedTitleColor;
-    
-    self.rightButton.backgroundColor = style.buttonBorderedBackgroundColor;
-    self.rightButton.titleLabel.textColor = style.buttonBorderedTitleColor;
+    self.rightButton.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
+    self.rightButton.titleLabel.textColor = ThemeService.shared.theme.headerTextPrimaryColor;
 }
 
 - (void)refreshDisplay

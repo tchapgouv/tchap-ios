@@ -26,7 +26,7 @@
 
 #import "RageShakeManager.h"
 
-@interface RoomParticipantsViewController () <Stylable>
+@interface RoomParticipantsViewController ()
 {
     // Search result
     NSString *currentSearchText;
@@ -70,7 +70,6 @@
     id kThemeServiceDidChangeThemeNotificationObserver;
 }
 
-@property (nonatomic, strong) id<Style> currentStyle;
 @property (nonatomic, nullable, strong) UserService *userService;
 
 @end
@@ -89,7 +88,6 @@
 {
     RoomParticipantsViewController *roomParticipantsViewController = [[[self class] alloc] initWithNibName:NSStringFromClass([RoomParticipantsViewController class])
                                           bundle:[NSBundle bundleForClass:[RoomParticipantsViewController class]]];
-    roomParticipantsViewController.currentStyle = Variant2Style.shared;
     return roomParticipantsViewController;
 }
 
@@ -164,33 +162,31 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    [self updateWithStyle:self.currentStyle];
+    [self updateTheme];
 }
 
-- (void)updateWithStyle:(id<Style>)style
+- (void)updateTheme
 {
-    self.currentStyle = style;
-    
     UINavigationBar *navigationBar = self.navigationController.navigationBar;
     if (navigationBar)
     {
-        [style applyStyleOnNavigationBar:navigationBar];
+        [ThemeService.shared.theme applyStyleOnNavigationBar:navigationBar];
     }
     
     [self refreshSearchBarItemsColor:_searchBarView];
     _searchBarHeaderBorder.backgroundColor = ThemeService.shared.theme.headerBorderColor;
     
-    //TODO Design the activvity indicator for Tchap
-    self.activityIndicator.backgroundColor = style.overlayBackgroundColor;
+    //TODO Design the activity indicator for Tchap
+    self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     
     // Update the gradient view above the screen
     CGFloat white = 1.0;
-    [style.backgroundColor getWhite:&white alpha:nil];
+    [ThemeService.shared.theme.backgroundColor getWhite:&white alpha:nil];
     CGColorRef opaqueWhiteColor = [UIColor colorWithWhite:white alpha:1.0].CGColor;
     CGColorRef transparentWhiteColor = [UIColor colorWithWhite:white alpha:0].CGColor;
     tableViewMaskLayer.colors = @[(__bridge id) transparentWhiteColor, (__bridge id) transparentWhiteColor, (__bridge id) opaqueWhiteColor];
     
-    self.tableView.backgroundColor = style.backgroundColor;
+    self.tableView.backgroundColor = ThemeService.shared.theme.backgroundColor;
     self.view.backgroundColor = self.tableView.backgroundColor;
     
     if (self.tableView.dataSource)
@@ -203,7 +199,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return self.currentStyle.statusBarStyle;
+    return ThemeService.shared.theme.statusBarStyle;
 }
 
 // This method is called when the viewcontroller is added or removed from a container view controller.
@@ -1763,18 +1759,18 @@
 - (void)refreshSearchBarItemsColor:(UISearchBar *)searchBar
 {
     // bar tint color
-    searchBar.barTintColor = searchBar.tintColor = self.currentStyle.barSubTitleColor;
+    searchBar.barTintColor = searchBar.tintColor = ThemeService.shared.theme.headerTextSecondaryColor;
     
     // FIXME: this all seems incredibly fragile and tied to gutwrenching the current UISearchBar internals.
     
     // text color
     UITextField *searchBarTextField = searchBar.vc_searchTextField;
-    searchBarTextField.textColor = self.currentStyle.barSubTitleColor;
+    searchBarTextField.textColor = ThemeService.shared.theme.headerTextSecondaryColor;
     
     // Magnifying glass icon.
     UIImageView *leftImageView = (UIImageView *)searchBarTextField.leftView;
     leftImageView.image = [leftImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    leftImageView.tintColor = self.currentStyle.buttonBorderedBackgroundColor;
+    leftImageView.tintColor = ThemeService.shared.theme.tintColor;
     
     // remove the gray background color
     UIView *effectBackgroundTop =  [searchBarTextField valueForKey:@"_effectBackgroundTop"];
@@ -1785,8 +1781,8 @@
     // place holder
     searchBarTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:searchBarTextField.placeholder
                                                                                attributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle),
-                                                                                            NSUnderlineColorAttributeName: self.currentStyle.barSubTitleColor,
-                                                                                            NSForegroundColorAttributeName: self.currentStyle.barSubTitleColor}];
+                                                                                            NSUnderlineColorAttributeName: ThemeService.shared.theme.headerTextSecondaryColor,
+                                                                                            NSForegroundColorAttributeName: ThemeService.shared.theme.headerTextSecondaryColor}];
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
