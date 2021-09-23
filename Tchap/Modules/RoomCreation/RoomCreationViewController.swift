@@ -340,7 +340,7 @@ extension RoomCreationViewController: Stylable {
             style.applyStyle(onNavigationBar: navigationBar)
         }
         
-        self.roomNameFormTextField.update(style: style)
+        self.roomNameFormTextField.updateTheme()
         self.publicVisibilityInfoLabel.textColor = style.boxTextColor
         self.publicRoomFederationTitleLabel.textColor = style.boxTextColor
 

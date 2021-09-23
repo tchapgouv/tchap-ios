@@ -93,7 +93,7 @@ final class ChangePasswordCurrentPasswordViewController: UIViewController {
         }
                 
         self.instructionsLabel.textColor = style.secondaryTextColor
-        self.passwordFormTextField.update(style: style)
+        self.passwordFormTextField.updateTheme()
         
         style.applyStyle(onButton: self.validateButton)
     }

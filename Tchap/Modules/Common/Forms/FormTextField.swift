@@ -168,12 +168,12 @@ final class FormTextField: UIView, NibOwnerLoadable {
     }
 }
 
-// MARK: - Stylable
-extension FormTextField: Stylable {
-    func update(style: Style) {
-        style.applyStyle(onTextField: self.textField)
-        self.separatorView.backgroundColor = style.separatorColor
-        self.additionalInfoLabel.textColor = style.secondaryTextColor
+// MARK: - Theme
+extension FormTextField {
+    func updateTheme() {
+        ThemeService.shared().theme.applyStyle(onTextField: self.textField)
+        self.separatorView.backgroundColor = ThemeService.shared().theme.lineBreakColor
+        self.additionalInfoLabel.textColor = ThemeService.shared().theme.textSecondaryColor
     }
 }
 

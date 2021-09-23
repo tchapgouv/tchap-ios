@@ -163,8 +163,8 @@ extension ForgotPasswordFormViewController: Stylable {
             style.applyStyle(onNavigationBar: navigationBar)
         }
         
-        for formTextield in self.formTextFields {
-            formTextield.update(style: style)
+        for formTextField in self.formTextFields {
+            formTextField.updateTheme()
         }
         
         style.applyStyle(onButton: self.sendEmailButton)
