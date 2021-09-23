@@ -60,9 +60,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PushNotificationServiceDe
         self.appCoordinator = AppCoordinator(router: self.rootRouter)
         self.appCoordinator.start()
         
-        // Setup default UIAppearance
-        Appearance.setup()
-        
         return true
     }
     
