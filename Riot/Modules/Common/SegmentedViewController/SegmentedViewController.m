@@ -212,6 +212,12 @@
     
     // @TODO Design the activvity indicator for Tchap
     self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
+    
+    for (UIView* subview in self.selectionContainer.subviews) {
+        [subview removeFromSuperview];
+    }
+    
+    [self createSegmentedViews];
 
     [self setNeedsStatusBarAppearanceUpdate];
 }
