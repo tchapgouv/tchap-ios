@@ -79,6 +79,8 @@
 	<true/>
 	<key>UserDefaults</key>
 	<string>${PRODUCT_NAME}-Defaults</string>
+    <key>UIUserInterfaceStyle</key>
+    <string>Light</string>
 	<key>applicationGroupIdentifier</key>
 	<string>$(APPLICATION_GROUP_IDENTIFIER)</string>
 	<key>baseBundleIdentifier</key>
