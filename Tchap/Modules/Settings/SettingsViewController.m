@@ -1159,6 +1159,7 @@ MXKDocumentPickerPresenterDelegate>
             NSString *countryName = [local displayNameForKey:NSLocaleCountryCode value:countryCode];
             
             cell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+            cell.detailTextLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
             
             cell.textLabel.text = NSLocalizedStringFromTable(@"settings_contacts_phonebook_country", @"Vector", nil);
             cell.detailTextLabel.text = countryName;
