@@ -139,6 +139,7 @@ targets:
     - path: ../Riot/Modules/Room/Views/CircleProgressView/CircleProgressView.swift
     - path: ../Riot/Modules/RoomKeyRequest/RoomKeyRequestViewController.h
     - path: ../Riot/Modules/RoomKeyRequest/RoomKeyRequestViewController.m
+    - path: ../Riot/Modules/ServiceTerms
     - path: ../Riot/Modules/UserDevices/UsersDevicesViewController.h
     - path: ../Riot/Modules/UserDevices/UsersDevicesViewController.m
     - path: ../Riot/Modules/UserDevices/Views/DeviceTableViewCell.h
