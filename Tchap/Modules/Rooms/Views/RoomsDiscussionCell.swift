@@ -36,8 +36,8 @@ import UIKit
         }
     }
     
-    override func update(style: Style) {
-        super.update(style: style)
-        self.domainLabel.textColor = style.primarySubTextColor
+    override func update(theme: Theme) {
+        super.update(theme: theme)
+        self.domainLabel.textColor = theme.textTertiaryColor
     }
 }

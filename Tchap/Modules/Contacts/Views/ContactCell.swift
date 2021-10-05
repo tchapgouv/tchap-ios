@@ -16,7 +16,7 @@
 
 import UIKit
 
-@objcMembers class ContactCell: UITableViewCell, MXKCellRendering, Stylable {
+@objcMembers class ContactCell: UITableViewCell, MXKCellRendering {
 
     @IBOutlet private(set) weak var thumbnailBadgeView: UIImageView!
     @IBOutlet private(set) weak var thumbnailView: MXKImageView!
@@ -24,8 +24,6 @@ import UIKit
     @IBOutlet private(set) weak var contactDisplayNameLabel: UILabel!
     @IBOutlet private(set) weak var contactDomainLabel: UILabel!
     @IBOutlet private(set) weak var contactEmailLabel: UILabel!
-    
-    private(set) var style: Style!
     
     /// The current displayed contact.
     private var contact: MXKContact?
@@ -39,7 +37,7 @@ import UIKit
         super.awakeFromNib()
         // Initialization code
         
-        self.update(style: Variant2Style.shared)
+        self.update(theme: ThemeService.shared().theme)
         
         self.thumbnailView.enableInMemoryCache = true
     }
@@ -117,18 +115,6 @@ import UIKit
         self.contact = nil
     }
     
-    func update(style: Style) {
-        self.style = style
-        self.contactDisplayNameLabel.textColor = self.isExpiredUser ? style.secondaryTextColor : style.primaryTextColor
-        self.contactDomainLabel.textColor = self.isExpiredUser ? style.secondaryTextColor : style.primarySubTextColor
-        self.contactEmailLabel.textColor = style.secondaryTextColor
-        
-        // Clear the default background color of a MXKImageView instance
-        self.thumbnailView?.defaultBackgroundColor = UIColor.clear
-        
-        self.presenceView?.backgroundColor = style.presenceIndicatorOnlineColor
-    }
-    
     private func refreshContactThumbnail() {
         if let image = self.contact?.thumbnail(withPreferedSize: self.thumbnailView.frame.size) {
             self.thumbnailView.image = image
@@ -147,8 +133,8 @@ import UIKit
             self.contactDomainLabel.text = nil
         }
         
-        self.contactDisplayNameLabel.textColor = self.isExpiredUser ? style.secondaryTextColor : style.primaryTextColor
-        self.contactDomainLabel.textColor = self.isExpiredUser ? style.secondaryTextColor : style.primarySubTextColor
+        self.contactDisplayNameLabel.textColor = self.isExpiredUser ? ThemeService.shared().theme.textSecondaryColor : ThemeService.shared().theme.textPrimaryColor
+        self.contactDomainLabel.textColor = self.isExpiredUser ? ThemeService.shared().theme.textSecondaryColor : ThemeService.shared().theme.textTertiaryColor
     }
     
     private func refreshContactPresence() {
@@ -208,5 +194,19 @@ import UIKit
         }
         
         refreshContactPresence()
+    }
+}
+
+// MARK: - Theme
+extension ContactCell: Themable {
+    func update(theme: Theme) {
+        self.contactDisplayNameLabel.textColor = self.isExpiredUser ? theme.textSecondaryColor : theme.textPrimaryColor
+        self.contactDomainLabel.textColor = self.isExpiredUser ? theme.textSecondaryColor : theme.textTertiaryColor
+        self.contactEmailLabel.textColor = theme.textSecondaryColor
+        
+        // Clear the default background color of a MXKImageView instance
+        self.thumbnailView?.defaultBackgroundColor = UIColor.clear
+        
+        self.presenceView?.backgroundColor = theme.headerBackgroundColor
     }
 }

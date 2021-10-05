@@ -123,7 +123,7 @@
 
 NSString *const RoomErrorDomain = @"RoomErrorDomain";
 
-@interface RoomViewController () <UIGestureRecognizerDelegate, Stylable, UIScrollViewAccessibilityDelegate, RoomTitleViewDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate, ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate, ReactionHistoryCoordinatorBridgePresenterDelegate, CameraPresenterDelegate, MediaPickerCoordinatorBridgePresenterDelegate, RoomDataSourceDelegate>
+@interface RoomViewController () <UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate, ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate, ReactionHistoryCoordinatorBridgePresenterDelegate, CameraPresenterDelegate, MediaPickerCoordinatorBridgePresenterDelegate, RoomDataSourceDelegate>
 {
     // The preview header
     PreviewView *previewHeader;
@@ -201,7 +201,6 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
 @property (weak, nonatomic) IBOutlet UIView *jumpToLastUnreadBannerSeparatorView;
 
 @property (nonatomic, weak) RoomTitleView *roomTitleView;
-@property (nonatomic, strong) id<Style> currentStyle;
 
 // Direct chat target user when create a discussion without associated room
 @property (nonatomic, nullable, strong) User *discussionTargetUser;
@@ -248,7 +247,6 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
 {
     RoomViewController *roomViewController = [[[self class] alloc] initWithNibName:NSStringFromClass(self.class)
                                                                             bundle:[NSBundle bundleForClass:self.class]];
-    roomViewController.currentStyle = Variant2Style.shared;
     return roomViewController;
 }
 
@@ -314,7 +312,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
 - (void)setupRoomTitleView {
     
     if (!self.roomTitleView) {
-        RoomTitleView *roomTitleView = [RoomTitleView instantiateWithStyle:Variant2Style.shared];
+        RoomTitleView *roomTitleView = [RoomTitleView instantiate];
         roomTitleView.delegate = self;
         self.navigationItem.titleView = roomTitleView;
         self.roomTitleView = roomTitleView;
@@ -432,43 +430,40 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
 
 - (void)userInterfaceThemeDidChange
 {
-    [self updateWithStyle:self.currentStyle];
+    [self updateTheme];
 }
 
-- (void)updateWithStyle:(id<Style>)style
+- (void)updateTheme
 {
-    self.currentStyle = style;
-    
     UINavigationBar *navigationBar = self.navigationController.navigationBar;
-    
     if (navigationBar)
     {
-        [style applyStyleOnNavigationBar:navigationBar];
+        [ThemeService.shared.theme applyStyleOnNavigationBar:navigationBar];
     }
     
-    // @TODO Design the activvity indicator for Tchap
-    self.activityIndicator.backgroundColor = style.overlayBackgroundColor;
+    // @TODO Design the activity indicator for Tchap
+    self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
 
     //[self.inputToolbarView customizeViewRendering];
     
     // Prepare jump to last unread banner
-    self.jumpToLastUnreadBannerContainer.backgroundColor = style.secondaryBackgroundColor;
-    self.jumpToLastUnreadLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_jump_to_first_unread", @"Vector", nil) attributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle), NSUnderlineColorAttributeName:style.secondaryTextColor, NSForegroundColorAttributeName:style.secondaryTextColor}];
+    self.jumpToLastUnreadBannerContainer.backgroundColor = ThemeService.shared.theme.selectedBackgroundColor;
+    self.jumpToLastUnreadLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_jump_to_first_unread", @"Vector", nil) attributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle), NSUnderlineColorAttributeName:ThemeService.shared.theme.textSecondaryColor, NSForegroundColorAttributeName:ThemeService.shared.theme.textSecondaryColor}];
     
-    self.jumpToLastUnreadBannerSeparatorView.backgroundColor = style.secondaryBackgroundColor;
+    self.jumpToLastUnreadBannerSeparatorView.backgroundColor = ThemeService.shared.theme.selectedBackgroundColor;
     
-    self.previewHeaderContainer.backgroundColor = style.backgroundColor;
+    self.previewHeaderContainer.backgroundColor = ThemeService.shared.theme.backgroundColor;
     if (previewHeader)
     {
         [previewHeader customizeViewRendering];
     }
     
-    missedDiscussionsBadgeLabel.textColor = style.primaryTextColor;
+    missedDiscussionsBadgeLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
     missedDiscussionsBadgeLabel.font = [UIFont boldSystemFontOfSize:14];
     missedDiscussionsBadgeLabel.backgroundColor = [UIColor clearColor];
     
     // Check the table view style to select its bg color.
-    self.bubblesTableView.backgroundColor = style.backgroundColor;
+    self.bubblesTableView.backgroundColor = ThemeService.shared.theme.backgroundColor;
     self.view.backgroundColor = self.bubblesTableView.backgroundColor;
     
     if (self.bubblesTableView.dataSource)
@@ -481,7 +476,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return self.currentStyle.statusBarStyle;
+    return ThemeService.shared.theme.statusBarStyle;
 }
 
 - (void)didReceiveMemoryWarning
@@ -3500,7 +3495,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    cell.backgroundColor = self.currentStyle.backgroundColor;
+    cell.backgroundColor = ThemeService.shared.theme.backgroundColor;
     
     // Update the selected background view
     if (ThemeService.shared.theme.selectedBackgroundColor)

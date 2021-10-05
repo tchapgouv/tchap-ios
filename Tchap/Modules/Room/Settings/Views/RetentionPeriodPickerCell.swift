@@ -20,18 +20,16 @@ import UIKit
     func retentionPeriodPickerCell(_ cell: RetentionPeriodPickerCell, didSelect periodInDays: uint)
 }
 
-@objcMembers class RetentionPeriodPickerCell: UITableViewCell, Stylable, RetentionPeriodPickerContentViewDelegate {
+@objcMembers class RetentionPeriodPickerCell: UITableViewCell, RetentionPeriodPickerContentViewDelegate {
     
     @IBOutlet private weak var retentionPeriodPickerContentView: RetentionPeriodPickerContentView!
-    
-    private(set) var style: Style!
     
     weak var delegate: RetentionPeriodPickerCellDelegate?
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        self.update(style: Variant2Style.shared)
+        self.update(theme: ThemeService.shared().theme)
         
         self.retentionPeriodPickerContentView.delegate = self
     }
@@ -44,11 +42,6 @@ import UIKit
         return String(describing: self)
     }
     
-    func update(style: Style) {
-        self.style = style
-        self.retentionPeriodPickerContentView.update(style: style)
-    }
-    
     func updatePickerWith(retentionPeriodInDays: uint, animated: Bool) {
         self.retentionPeriodPickerContentView.updatePickerWith(retentionPeriodInDays: retentionPeriodInDays, animated: animated)
     }
@@ -57,3 +50,11 @@ import UIKit
         self.delegate?.retentionPeriodPickerCell(self, didSelect: periodInDays)
     }
 }
+
+// MARK: - Theme
+extension RetentionPeriodPickerCell: Themable {
+    func update(theme: Theme) {
+        self.retentionPeriodPickerContentView.update(theme: theme)
+    }
+}
+

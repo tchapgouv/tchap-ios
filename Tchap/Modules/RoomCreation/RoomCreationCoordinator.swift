@@ -62,7 +62,7 @@ final class RoomCreationCoordinator: NSObject, RoomCreationCoordinatorType {
         let homeServerDomain = RoomCreationCoordinator.getHomeServerDomain(from: session)
         
         let roomCreationViewModel = RoomCreationViewModel(homeServerDomain: homeServerDomain)
-        let roomCreationViewController = RoomCreationViewController.instantiate(viewModel: roomCreationViewModel, style: Variant1Style.shared)
+        let roomCreationViewController = RoomCreationViewController.instantiate(viewModel: roomCreationViewModel)
         roomCreationViewController.vc_removeBackTitle()
         self.roomCreationViewController = roomCreationViewController
         

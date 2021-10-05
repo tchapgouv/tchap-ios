@@ -81,9 +81,9 @@ class RoomsRoomCell: RoomsCell {
         self.updateAvatarView()
     }
     
-    override func update(style: Style) {
-        super.update(style: style)
-        self.lastEventSenderName.textColor = style.primaryTextColor
+    override func update(theme: Theme) {
+        super.update(theme: theme)
+        self.lastEventSenderName.textColor = theme.textPrimaryColor
     }
     
     private func updateAvatarView () {

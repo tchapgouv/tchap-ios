@@ -126,4 +126,9 @@ import UIKit
     ///
     /// - Parameter button: The button to customise.
     func applyStyle(onButton button: UIButton)
+    
+    /// Apply the theme on a switch.
+    ///
+    /// - Parameter switch: The switch to customise.
+    func applyStyle(onSwitch uiSwitch: UISwitch)
 }

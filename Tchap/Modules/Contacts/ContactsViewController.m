@@ -25,10 +25,9 @@
 
 NSString *const ContactErrorDomain = @"ContactErrorDomain";
 
-@interface ContactsViewController () <MXKDataSourceDelegate, Stylable, UISearchResultsUpdating>
+@interface ContactsViewController () <MXKDataSourceDelegate, UISearchResultsUpdating>
 
 @property (strong, nonatomic) ContactsDataSource *contactsDataSource;
-@property (nonatomic, strong) id<Style> currentStyle;
 
 @property (nonatomic) BOOL showSearchBar;
 @property (nonatomic, strong) UISearchController *searchController;
@@ -49,17 +48,18 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
 
 #pragma mark - Setup
 
-+ (instancetype)instantiateWithStyle:(id<Style>)style
++ (instancetype)instantiate
 {
-    return [self instantiateWithStyle:style showSearchBar:NO enableMultipleSelection:NO];
+    return [self instantiateWithShowSearchBar:NO enableMultipleSelection:NO];
 }
 
-+ (instancetype)instantiateWithStyle:(id<Style>)style showSearchBar:(BOOL)showSearchBar enableMultipleSelection:(BOOL)enableMultipleSelection
++ (instancetype)instantiateWithShowSearchBar:(BOOL)showSearchBar
+                     enableMultipleSelection:(BOOL)enableMultipleSelection
 {
     ContactsViewController *viewController = [[UIStoryboard storyboardWithName:NSStringFromClass([ContactsViewController class]) bundle:[NSBundle mainBundle]] instantiateInitialViewController];
     viewController.showSearchBar = showSearchBar;
     viewController.enableMultipleSelection = enableMultipleSelection;
-    [viewController updateWithStyle:style];
+    [viewController updateTheme];
     viewController.screenName = @"ContactsTable";
     return viewController;
 }
@@ -110,7 +110,7 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return self.currentStyle.statusBarStyle;
+    return ThemeService.shared.theme.statusBarStyle;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -129,7 +129,7 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
         [MXKAppSettings standardAppSettings].syncLocalContacts = YES;
     }
     
-    [self updateWithStyle:self.currentStyle];
+    [self updateTheme];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -360,30 +360,28 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
     }
 }
 
-#pragma mark - Stylable
+#pragma mark - Theme
 
-- (void)updateWithStyle:(id<Style>)style
+- (void)updateTheme
 {
-    self.currentStyle = style;
-    
     UINavigationBar *navigationBar = self.navigationController.navigationBar;
     
     if (navigationBar)
     {
-        [style applyStyleOnNavigationBar:navigationBar];
+        [ThemeService.shared.theme applyStyleOnNavigationBar:navigationBar];
     }
     
-    self.tableView.backgroundColor = style.backgroundColor;
-    self.view.backgroundColor = style.backgroundColor;
+    self.tableView.backgroundColor = ThemeService.shared.theme.backgroundColor;
+    self.view.backgroundColor = ThemeService.shared.theme.backgroundColor;
     
-    //TODO Design the activvity indicator for Tchap
-    self.activityIndicator.backgroundColor = style.overlayBackgroundColor;
+    //TODO Design the activity indicator for Tchap
+    self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     
     UISearchBar *searchBar = self.searchController.searchBar;
     
     if (searchBar)
     {
-        [style applyStyleOnSearchBar:searchBar];
+        [ThemeService.shared.theme applyStyleOnSearchBar:searchBar];
     }
     
     if (self.tableView.dataSource)
@@ -443,14 +441,14 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    cell.backgroundColor = self.currentStyle.backgroundColor;
+    cell.backgroundColor = ThemeService.shared.theme.backgroundColor;
     
     if (!cell.selectedBackgroundView)
     {
         cell.selectedBackgroundView = [[UIView alloc] init];
     }
     
-    cell.selectedBackgroundView.backgroundColor = self.currentStyle.secondaryBackgroundColor;
+    cell.selectedBackgroundView.backgroundColor = ThemeService.shared.theme.selectedBackgroundColor;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section

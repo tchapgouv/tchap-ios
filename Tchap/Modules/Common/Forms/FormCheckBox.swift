@@ -113,9 +113,9 @@ final class FormCheckBox: UIView, NibOwnerLoadable {
     }
 }
 
-// MARK: - Stylable
-extension FormCheckBox: Stylable {
-    func update(style: Style) {
-        self.label.textColor = style.buttonPlainTitleColor
+// MARK: - Theme
+extension FormCheckBox: Themable {
+    func update(theme: Theme) {
+        self.label.textColor = theme.textSecondaryColor
     }
 }

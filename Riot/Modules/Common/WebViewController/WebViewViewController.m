@@ -22,9 +22,7 @@
 
 #import "GeneratedInterface-Swift.h"
 
-@interface WebViewViewController () <Stylable>
-
-@property (nonatomic, strong) id<Style> currentStyle;
+@interface WebViewViewController ()
 
 // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
 @property (nonatomic, weak) id kThemeServiceDidChangeThemeNotificationObserver;
@@ -36,10 +34,6 @@
 - (instancetype)init
 {
     self = [super init];
-    if (self)
-    {
-        self.currentStyle = Variant1Style.shared;
-    }
     return self;
 }
 
@@ -75,37 +69,35 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    [self updateWithStyle:self.currentStyle];
+    [self updateTheme];
 }
 
 - (void)applyVariant2Style
 {
-    [self updateWithStyle:Variant2Style.shared];
+    [self updateTheme];
 }
 
-- (void)updateWithStyle:(id<Style>)style
+- (void)updateTheme
 {
-    self.currentStyle = style;
-    
     UINavigationBar *navigationBar = self.navigationController.navigationBar;
     
     if (navigationBar)
     {
-        [style applyStyleOnNavigationBar:navigationBar];
+        [ThemeService.shared.theme applyStyleOnNavigationBar:navigationBar];
     }
     
     // @TODO Design the activvity indicator for Tchap
-    self.activityIndicator.backgroundColor = style.overlayBackgroundColor;
+    self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     
-    self.view.backgroundColor = style.backgroundColor;
-    webView.backgroundColor = style.backgroundColor;
+    self.view.backgroundColor = ThemeService.shared.theme.backgroundColor;
+    webView.backgroundColor = ThemeService.shared.theme.backgroundColor;
 
     [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return self.currentStyle.statusBarStyle;
+    return ThemeService.shared.theme.statusBarStyle;
 }
 
 - (void)dealloc

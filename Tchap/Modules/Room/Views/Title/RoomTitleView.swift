@@ -21,7 +21,7 @@ import Reusable
     func roomTitleViewDidTapped(_ roomTitleView: RoomTitleView)
 }
 
-@objc final class RoomTitleView: UIView, NibLoadable, Stylable {
+@objc final class RoomTitleView: UIView, NibLoadable {
     
     // MARK: - Constants
     
@@ -49,8 +49,6 @@ import Reusable
     @IBOutlet private weak var imageView: MXKImageView!
     @IBOutlet private weak var roomImageMarker: UIImageView!
     
-    private var style: Style!
-    
     private var imageBorderColor: UIColor = UIColor.clear
     private var imageBorderWidth: CGFloat = Constants.hexagonImageBorderWidth
     
@@ -62,10 +60,11 @@ import Reusable
     
     // MARK: Setup
     
-    @objc class func instantiate(style: Style = Variant2Style.shared) -> RoomTitleView {
+    @objc class func instantiate() -> RoomTitleView {
         let roomTitleView = RoomTitleView.loadFromNib()
-        roomTitleView.update(style: style)
+        roomTitleView.update(theme: ThemeService.shared().theme)
         return roomTitleView
+
     }
     
     // MARK: Life cycle
@@ -165,18 +164,6 @@ import Reusable
         }
     }
     
-    @objc func update(style: Style) {
-        self.style = style
-        self.titleLabel.textColor = style.barTitleColor
-        self.subTitleLabel.textColor = style.barSubTitleColor
-        self.subTitleMembersSeparatorLabel.textColor = style.secondaryTextColor
-        self.subTitleMembersLabel.textColor = style.secondaryTextColor
-        self.subTitleRetentionSeparatorLabel.textColor = style.secondaryTextColor
-        self.subTitleRetentionLabel.textColor = style.secondaryTextColor
-        
-        self.imageView?.defaultBackgroundColor = UIColor.clear
-    }
-    
     // MARK: - Private
     
     private func setupTapGestureRecognizer() {
@@ -198,5 +185,19 @@ import Reusable
     
     @objc private func handleBackgroundTap(_ sender: UITapGestureRecognizer) {
         self.delegate?.roomTitleViewDidTapped(self)
+    }
+}
+
+// MARK: - Theme
+extension RoomTitleView: Themable {
+    @objc func update(theme: Theme) {
+        self.titleLabel.textColor = theme.headerTextPrimaryColor
+        self.subTitleLabel.textColor = theme.headerTextSecondaryColor
+        self.subTitleMembersSeparatorLabel.textColor = theme.textSecondaryColor
+        self.subTitleMembersLabel.textColor = theme.textSecondaryColor
+        self.subTitleRetentionSeparatorLabel.textColor = theme.textSecondaryColor
+        self.subTitleRetentionLabel.textColor = theme.textSecondaryColor
+
+        self.imageView?.defaultBackgroundColor = UIColor.clear
     }
 }
