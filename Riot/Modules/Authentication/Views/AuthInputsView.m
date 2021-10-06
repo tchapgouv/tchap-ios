@@ -24,8 +24,6 @@
 #import "CountryPickerViewController.h"
 #import "NBPhoneNumberUtil.h"
 
-#import "RiotNavigationController.h"
-
 @interface AuthInputsView ()
 {
     /**
@@ -1314,7 +1312,7 @@
         phoneNumberCountryPicker.delegate = self;
         phoneNumberCountryPicker.showCountryCallingCode = YES;
         
-        phoneNumberPickerNavigationController = [[RiotNavigationController alloc] init];
+        phoneNumberPickerNavigationController = [[TCNavigationController alloc] init];
         
         // Set Riot navigation bar colors
         [ThemeService.shared.theme applyStyleOnNavigationBar:phoneNumberPickerNavigationController.navigationBar];

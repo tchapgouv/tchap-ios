@@ -3,6 +3,7 @@
 //
 
 @import MatrixSDK;
+@import DTCoreText;
 #import "WebViewViewController.h"
 #import "LegacyAppDelegate.h"
 #import "SegmentedViewController.h"
@@ -31,3 +32,4 @@
 #import "RoomBubbleCellData.h"
 #import "MXKRoomBubbleTableViewCell+Riot.h"
 #import "JitsiWidgetData.h"
+#import "AuthFallBackViewController.h"

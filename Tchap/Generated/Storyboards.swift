@@ -87,11 +87,6 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Tchap.KeyBackupRecoverFromPassphraseViewController>(storyboard: KeyBackupRecoverFromPassphraseViewController.self)
   }
-  internal enum KeyBackupRecoverFromPrivateKeyViewController: StoryboardType {
-    internal static let storyboardName = "KeyBackupRecoverFromPrivateKeyViewController"
-
-    internal static let initialScene = InitialSceneType<Tchap.KeyBackupRecoverFromPrivateKeyViewController>(storyboard: KeyBackupRecoverFromPrivateKeyViewController.self)
-  }
   internal enum KeyBackupRecoverFromRecoveryKeyViewController: StoryboardType {
     internal static let storyboardName = "KeyBackupRecoverFromRecoveryKeyViewController"
 
@@ -121,11 +116,6 @@ internal enum StoryboardScene {
     internal static let storyboardName = "KeyBackupSetupSuccessFromRecoveryKeyViewController"
 
     internal static let initialScene = InitialSceneType<Tchap.KeyBackupSetupSuccessFromRecoveryKeyViewController>(storyboard: KeyBackupSetupSuccessFromRecoveryKeyViewController.self)
-  }
-  internal enum KeyBackupSetupSuccessFromSecureBackupViewController: StoryboardType {
-    internal static let storyboardName = "KeyBackupSetupSuccessFromSecureBackupViewController"
-
-    internal static let initialScene = InitialSceneType<Tchap.KeyBackupSetupSuccessFromSecureBackupViewController>(storyboard: KeyBackupSetupSuccessFromSecureBackupViewController.self)
   }
   internal enum KeyVerificationDataLoadingViewController: StoryboardType {
     internal static let storyboardName = "KeyVerificationDataLoadingViewController"
@@ -172,11 +162,6 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Tchap.PublicRoomsViewController>(storyboard: PublicRoomsViewController.self)
   }
-  internal enum QRCodeReaderViewController: StoryboardType {
-    internal static let storyboardName = "QRCodeReaderViewController"
-
-    internal static let initialScene = InitialSceneType<Tchap.QRCodeReaderViewController>(storyboard: QRCodeReaderViewController.self)
-  }
   internal enum ReactionHistoryViewController: StoryboardType {
     internal static let storyboardName = "ReactionHistoryViewController"
 
@@ -207,36 +192,6 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Tchap.RoomCreationViewController>(storyboard: RoomCreationViewController.self)
   }
-  internal enum SecretsRecoveryWithKeyViewController: StoryboardType {
-    internal static let storyboardName = "SecretsRecoveryWithKeyViewController"
-
-    internal static let initialScene = InitialSceneType<Tchap.SecretsRecoveryWithKeyViewController>(storyboard: SecretsRecoveryWithKeyViewController.self)
-  }
-  internal enum SecretsRecoveryWithPassphraseViewController: StoryboardType {
-    internal static let storyboardName = "SecretsRecoveryWithPassphraseViewController"
-
-    internal static let initialScene = InitialSceneType<Tchap.SecretsRecoveryWithPassphraseViewController>(storyboard: SecretsRecoveryWithPassphraseViewController.self)
-  }
-  internal enum SecretsResetViewController: StoryboardType {
-    internal static let storyboardName = "SecretsResetViewController"
-
-    internal static let initialScene = InitialSceneType<Tchap.SecretsResetViewController>(storyboard: SecretsResetViewController.self)
-  }
-  internal enum SecretsSetupRecoveryKeyViewController: StoryboardType {
-    internal static let storyboardName = "SecretsSetupRecoveryKeyViewController"
-
-    internal static let initialScene = InitialSceneType<Tchap.SecretsSetupRecoveryKeyViewController>(storyboard: SecretsSetupRecoveryKeyViewController.self)
-  }
-  internal enum SecretsSetupRecoveryPassphraseViewController: StoryboardType {
-    internal static let storyboardName = "SecretsSetupRecoveryPassphraseViewController"
-
-    internal static let initialScene = InitialSceneType<Tchap.SecretsSetupRecoveryPassphraseViewController>(storyboard: SecretsSetupRecoveryPassphraseViewController.self)
-  }
-  internal enum SecureBackupSetupIntroViewController: StoryboardType {
-    internal static let storyboardName = "SecureBackupSetupIntroViewController"
-
-    internal static let initialScene = InitialSceneType<Tchap.SecureBackupSetupIntroViewController>(storyboard: SecureBackupSetupIntroViewController.self)
-  }
   internal enum UserVerificationSessionStatusViewController: StoryboardType {
     internal static let storyboardName = "UserVerificationSessionStatusViewController"
 
@@ -256,11 +211,6 @@ internal enum StoryboardScene {
     internal static let storyboardName = "WelcomeViewController"
 
     internal static let initialScene = InitialSceneType<Tchap.WelcomeViewController>(storyboard: WelcomeViewController.self)
-  }
-  internal enum WidgetPermissionViewController: StoryboardType {
-    internal static let storyboardName = "WidgetPermissionViewController"
-
-    internal static let initialScene = InitialSceneType<Tchap.WidgetPermissionViewController>(storyboard: WidgetPermissionViewController.self)
   }
 }
 // swiftlint:enable explicit_type_interface identifier_name line_length type_body_length type_name
