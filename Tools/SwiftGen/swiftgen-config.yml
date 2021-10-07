@@ -1,12 +1,27 @@
 input_dir: ../../
 output_dir: ../../
 ib:  
-  inputs: 
-    - Tchap/Modules/
-  filter: ^((?!DeactivateAccountViewController|ContactsViewController).)*\.(storyboard)
-  outputs:
-    - templateName: scenes-swift4
-      output: Tchap/Generated/Storyboards.swift
+  - inputs: 
+      - Tchap/Modules/
+    filter: ^((?!DeactivateAccountViewController|ContactsViewController).)*\.(storyboard)
+    outputs:
+      - templateName: scenes-swift4
+        output: Tchap/Generated/Storyboards.swift
+  - inputs: 
+      - Riot/Modules/AuthenticatedSession
+      - Riot/Modules/CrossSigning
+      - Riot/Modules/Integrations
+      - Riot/Modules/KeyBackup
+      - Riot/Modules/KeyVerification
+      - Riot/Modules/QRCode
+      - Riot/Modules/Reauthentication
+      - Riot/Modules/Secrets
+      - Riot/Modules/SecureBackup
+      - Riot/Modules/ServiceTerms
+      - Riot/Modules/SlidingModal
+    outputs:
+      - templatePath: Templates/IB/scenes-riot-swift4.stencil
+        output: Tchap/Generated/Storyboards_Riot.swift
 strings:
   inputs: Tchap/Assets/Localizations/fr.lproj/Tchap.strings
   outputs:

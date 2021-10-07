@@ -18,14 +18,12 @@
 
 #import "AuthenticationViewController.h"
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 #import "MXSession+Riot.h"
 
 #import "AuthInputsView.h"
 #import "ForgotPasswordInputsView.h"
 #import "AuthFallBackViewController.h"
-
-#import "Riot-Swift.h"
 
 static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 
@@ -650,7 +648,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 
     authFallBackViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismissFallBackViewController:)];
 
-    UINavigationController *navigationController = [[RiotNavigationController alloc] initWithRootViewController:authFallBackViewController];
+    UINavigationController *navigationController = [[TCNavigationController alloc] initWithRootViewController:authFallBackViewController];
     [self presentViewController:navigationController animated:YES completion:nil];
 }
 

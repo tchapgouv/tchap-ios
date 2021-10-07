@@ -60,8 +60,6 @@ targets:
     - path: .
       excludes:
         - "Tools"
-        - "Modules/KeyBackup/Setup/RecoveryKey"
-        - "Modules/KeyBackup/Recover/Loading"
         - "Modules/Room/EmojiPicker/Data/EmojiMart/EmojiJSONStore.swift"
         - "**/*.strings" # Exclude all strings files
 
@@ -97,6 +95,9 @@ targets:
     - path: ../Riot/Model/Room/RoomPreviewData.h
     - path: ../Riot/Model/Room/RoomPreviewData.m
     - path: ../Riot/Model/WellKnown
+    - path: ../Riot/Modules/AuthenticatedSession
+    - path: ../Riot/Modules/Authentication/SSO
+    - path: ../Riot/Modules/Authentication/Views
     - path: ../Riot/Modules/BugReport/BugReportViewController.h
     - path: ../Riot/Modules/BugReport/BugReportViewController.m
     - path: ../Riot/Modules/Call/CallViewController.h
@@ -116,24 +117,33 @@ targets:
     - path: ../Riot/Modules/Common/SegmentedViewController/SegmentedViewController.h
     - path: ../Riot/Modules/Common/SegmentedViewController/SegmentedViewController.m
     - path: ../Riot/Modules/Common/WebViewController
+    - path: ../Riot/Modules/CrossSigning
+    - path: ../Riot/Modules/DeepLink
     - path: ../Riot/Modules/EncryptionInfo/EncryptionInfoView.h
     - path: ../Riot/Modules/EncryptionInfo/EncryptionInfoView.m
+    - path: ../Riot/Modules/Home/Fallback
     - path: ../Riot/Modules/GDPR
     - path: ../Riot/Modules/GlobalSearch/Files/Views/FilesSearchTableViewCell.h
     - path: ../Riot/Modules/GlobalSearch/Files/Views/FilesSearchTableViewCell.m
-    - path: ../Riot/Modules/Integrations/Widgets/Jitsi/JitsiAuthenticationType.swift
-    - path: ../Riot/Modules/Integrations/Widgets/Jitsi/JitsiJWTPayload.swift
-    - path: ../Riot/Modules/Integrations/Widgets/Jitsi/JitsiJWTTokenBuilder.swift
-    - path: ../Riot/Modules/Integrations/Widgets/Jitsi/JitsiWellKnown.swift
+    - path: ../Riot/Modules/Integrations
+    - path: ../Riot/Modules/KeyBackup
+    - path: ../Riot/Modules/KeyVerification
     - path: ../Riot/Modules/MediaPicker
+    - path: ../Riot/Modules/QRCode
+    - path: ../Riot/Modules/Reauthentication
     - path: ../Riot/Modules/Room/BubbleReactions
     - path: ../Riot/Modules/Room/Views/CircleProgressView/CircleProgressView.swift
     - path: ../Riot/Modules/RoomKeyRequest/RoomKeyRequestViewController.h
     - path: ../Riot/Modules/RoomKeyRequest/RoomKeyRequestViewController.m
+    - path: ../Riot/Modules/Secrets
+    - path: ../Riot/Modules/SecureBackup
+    - path: ../Riot/Modules/ServiceTerms
+    - path: ../Riot/Modules/SlidingModal
     - path: ../Riot/Modules/UserDevices/UsersDevicesViewController.h
     - path: ../Riot/Modules/UserDevices/UsersDevicesViewController.m
     - path: ../Riot/Modules/UserDevices/Views/DeviceTableViewCell.h
     - path: ../Riot/Modules/UserDevices/Views/DeviceTableViewCell.m
+    - path: ../Riot/Modules/UserInteractiveAuthentication
     - path: ../Riot/Utils
 
     # Share extension
