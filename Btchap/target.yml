@@ -176,3 +176,20 @@ targets:
       buildPhase: resources
     - path: ../Riot/Assets/fr.lproj/Vector.strings
       buildPhase: resources
+    - path: ../Riot/Modules/BugReport/BugReportViewController.xib
+      buildPhase: resources
+    - path: ../Riot/Modules/Call/CallViewController.xib
+      buildPhase: resources
+    - path: ../Riot/Modules/Common/Cells/TableViewCellWithButton.xib
+      buildPhase: resources
+    - path: ../Riot/Modules/Common/Recents/RecentsViewController.xib
+      buildPhase: resources
+    - path: ../Riot/Modules/Common/SegmentedViewController/SegmentedViewController.xib
+      buildPhase: resources
+    - path: ../Riot/Modules/EncryptionInfo/EncryptionInfoView.xib
+      buildPhase: resources
+    - path: ../Riot/Modules/GlobalSearch/Files/Views/FilesSearchTableViewCell.xib
+      buildPhase: resources
+    - path: ../Riot/Modules/UserDevices/Views/DeviceTableViewCell.xib
+      buildPhase: resources
+
