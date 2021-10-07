@@ -43,7 +43,7 @@ final class ReactionHistoryCoordinator: ReactionHistoryCoordinatorType {
         self.session = session
         self.roomId = roomId
         self.eventId = eventId
-        self.router = NavigationRouter(navigationController: TCNavigationController())
+        self.router = NavigationRouter(navigationController: RiotNavigationController())
     }
     
     // MARK: - Public methods

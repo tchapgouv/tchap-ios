@@ -110,6 +110,8 @@ targets:
     - path: ../Riot/Modules/Common/Buttons
     - path: ../Riot/Modules/Common/Cells/TableViewCellWithButton.h
     - path: ../Riot/Modules/Common/Cells/TableViewCellWithButton.m
+    - path: ../Riot/Modules/Common/NavigationController/RiotNavigationController.h
+    - path: ../Riot/Modules/Common/NavigationController/RiotNavigationController.m
     - path: ../Riot/Modules/Common/Recents/CellData/RecentCellData.h
     - path: ../Riot/Modules/Common/Recents/CellData/RecentCellData.m
     - path: ../Riot/Modules/Common/Recents/RecentsViewController.h

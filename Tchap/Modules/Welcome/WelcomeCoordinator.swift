@@ -40,7 +40,7 @@ final class WelcomeCoordinator: WelcomeCoordinatorType {
     
     init(router: RootRouterType) {
         self.rootRouter = router
-        self.navigationRouter = NavigationRouter(navigationController: TCNavigationController())
+        self.navigationRouter = NavigationRouter(navigationController: RiotNavigationController())
         
         let welcomeViewController = WelcomeViewController.instantiate()
         welcomeViewController.vc_removeBackTitle()

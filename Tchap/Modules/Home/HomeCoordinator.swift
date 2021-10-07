@@ -53,7 +53,7 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
     // MARK: - Setup
     
     init(session: MXSession) {
-        self.navigationRouter = NavigationRouter(navigationController: TCNavigationController())
+        self.navigationRouter = NavigationRouter(navigationController: RiotNavigationController())
         self.session = session
         self.inviteService = InviteService(session: self.session)
         self.thirdPartyIDResolver = ThirdPartyIDResolver(credentials: session.matrixRestClient.credentials)
