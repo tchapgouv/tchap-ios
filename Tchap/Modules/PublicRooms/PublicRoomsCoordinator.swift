@@ -41,7 +41,7 @@ final class PublicRoomsCoordinator: NSObject, PublicRoomsCoordinatorType {
     // MARK: - Setup
     
     init(session: MXSession) {
-        self.router = NavigationRouter(navigationController: TCNavigationController())
+        self.router = NavigationRouter(navigationController: RiotNavigationController())
         self.session = session
         
         let publicRoomServers = PublicRoomsCoordinator.getPublicRoomServers()

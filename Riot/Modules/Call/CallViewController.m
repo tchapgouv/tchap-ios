@@ -346,7 +346,7 @@ CallAudioRouteMenuViewDelegate> */
                                                                }];
                                                                
                                                                // Show this screen within a navigation controller
-                                                               UINavigationController *usersDevicesNavigationController = [[TCNavigationController alloc] init];
+                                                               UINavigationController *usersDevicesNavigationController = [[RiotNavigationController alloc] init];
                                                                
                                                                // Set Riot navigation bar colors
                                                                [ThemeService.shared.theme applyStyleOnNavigationBar:usersDevicesNavigationController.navigationBar];
@@ -645,7 +645,7 @@ CallAudioRouteMenuViewDelegate> */
 //    CallTransferMainViewController *controller = [CallTransferMainViewController instantiateWithSession:self.mainSession ignoredUserIds:@[self.peer.userId]];
 //    controller.delegate = self;
 //
-//    UINavigationController *navController = [[TCNavigationController alloc] initWithRootViewController:controller];
+//    UINavigationController *navController = [[RiotNavigationController alloc] initWithRootViewController:controller];
 //    [self presentViewController:navController animated:YES completion:nil];
 //}
 //

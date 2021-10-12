@@ -30,7 +30,7 @@ final class ForwardCoordinator: NSObject, ForwardCoordinatorType {
     // MARK: - Setup
     
     init(session: MXSession, content: [AnyHashable: Any]) {
-        self.router = NavigationRouter(navigationController: TCNavigationController())
+        self.router = NavigationRouter(navigationController: RiotNavigationController())
         self.session = session
         self.content = content
         let recentsViewController = ForwardRecentListViewController()

@@ -53,7 +53,7 @@ final class RoomCreationCoordinator: NSObject, RoomCreationCoordinatorType {
     // MARK: - Setup
     
     init(session: MXSession) {
-        self.router = NavigationRouter(navigationController: TCNavigationController())
+        self.router = NavigationRouter(navigationController: RiotNavigationController())
         self.session = session
         self.mediaService = MediaService(session: session)
         self.roomService = RoomService(session: session)

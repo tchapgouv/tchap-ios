@@ -41,7 +41,7 @@ final class CreateNewDiscussionCoordinator: NSObject, CreateNewDiscussionCoordin
     // MARK: - Setup
     
     init(session: MXSession) {
-        self.router = NavigationRouter(navigationController: TCNavigationController())
+        self.router = NavigationRouter(navigationController: RiotNavigationController())
         self.session = session
         
         let contactsViewController = ContactsViewController.instantiate(withShowSearchBar: true, enableMultipleSelection: false)

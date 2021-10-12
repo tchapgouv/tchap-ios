@@ -1,5 +1,5 @@
 /*
- Copyright 2018 New Vector Ltd
+ Copyright 2017 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -14,16 +14,13 @@
  limitations under the License.
  */
 
-import Foundation
+#import <UIKit/UIKit.h>
 
-/// Subclass of UINavigationController to handle view controller based status bar style with view controller containment
-final class TCNavigationController: UINavigationController {
-    
-    override var childForStatusBarStyle: UIViewController? {
-        return self.topViewController
-    }
-    
-    override var childForStatusBarHidden: UIViewController? {
-        return self.topViewController
-    }
-}
+/**
+ RiotNavigationController extends UINavigationController to handle status bar display.
+ */
+
+@interface RiotNavigationController : UINavigationController
+
+@end
+
