@@ -33,3 +33,4 @@
 #import "MXKRoomBubbleTableViewCell+Riot.h"
 #import "JitsiWidgetData.h"
 #import "AuthFallBackViewController.h"
+#import "RiotNavigationController.h"
