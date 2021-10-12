@@ -163,7 +163,7 @@ final class ReauthenticationCoordinator: ReauthenticationCoordinatorType {
             self.delegate?.reauthenticationCoordinatorDidComplete(self, withAuthenticationParameters: authenticationParameters)
         }
         
-        let navigationController = TCNavigationController(rootViewController: reauthFallbackViewController)
+        let navigationController = RiotNavigationController(rootViewController: reauthFallbackViewController)
         
         self.presentingViewController.present(navigationController, animated: true)
     }

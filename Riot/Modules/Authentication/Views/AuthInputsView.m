@@ -1312,7 +1312,7 @@
         phoneNumberCountryPicker.delegate = self;
         phoneNumberCountryPicker.showCountryCallingCode = YES;
         
-        phoneNumberPickerNavigationController = [[TCNavigationController alloc] init];
+        phoneNumberPickerNavigationController = [[RiotNavigationController alloc] init];
         
         // Set Riot navigation bar colors
         [ThemeService.shared.theme applyStyleOnNavigationBar:phoneNumberPickerNavigationController.navigationBar];

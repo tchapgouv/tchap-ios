@@ -8,7 +8,7 @@
         <!--HomeNav-->
         <scene sceneID="pY4-Hu-kfo">
             <objects>
-                <navigationController id="RMx-3f-FxP" userLabel="HomeNav" customClass="TCNavigationController" sceneMemberID="viewController">
+                <navigationController id="RMx-3f-FxP" userLabel="HomeNav" customClass="RiotNavigationController" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="Pmd-2v-anx">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -375,7 +375,7 @@
         <!--RoomNav-->
         <scene sceneID="r7l-gg-dq7">
             <objects>
-                <navigationController title="RoomNav" id="vC3-pB-5Vb" customClass="TCNavigationController" sceneMemberID="viewController">
+                <navigationController title="RoomNav" id="vC3-pB-5Vb" customClass="RiotNavigationController" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="DjV-YW-jjY">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -468,10 +468,10 @@
             </objects>
             <point key="canvasLocation" x="1929" y="-2049"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Riot Navigation Controller-->
         <scene sceneID="Fbq-8h-gyk">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="WDS-Ip-RQ9" customClass="TCNavigationController" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="WDS-Ip-RQ9" customClass="RiotNavigationController" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="CtR-n9-ztG">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
@@ -505,10 +505,10 @@
             </objects>
             <point key="canvasLocation" x="3610" y="-3761"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Riot Navigation Controller-->
         <scene sceneID="Qyz-FA-hw5">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ZZb-IS-a1F" customClass="TCNavigationController" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ZZb-IS-a1F" customClass="RiotNavigationController" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="MHE-SG-tnL">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>

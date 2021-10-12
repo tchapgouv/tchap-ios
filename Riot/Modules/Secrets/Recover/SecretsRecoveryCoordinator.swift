@@ -43,7 +43,7 @@ final class SecretsRecoveryCoordinator: SecretsRecoveryCoordinatorType {
         if let navigationRouter = navigationRouter {
             self.navigationRouter = navigationRouter
         } else {
-            self.navigationRouter = NavigationRouter(navigationController: TCNavigationController())
+            self.navigationRouter = NavigationRouter(navigationController: RiotNavigationController())
         }
     }
     
