@@ -102,7 +102,7 @@ extension ServiceTermsModalCoordinatorBridgePresenter: ServiceTermsModalCoordina
         self.delegate?.serviceTermsModalCoordinatorBridgePresenterDelegateDidAccept(self)
         
         if serviceType == MXServiceTypeIdentityService {
-            Analytics.sharedInstance().trackValue(1, category: MXKAnalyticsCategory.contacts.rawValue, name: AnalyticsContactsIdentityServerAccepted)
+            Analytics.sharedInstance().trackValue(1, category: kMXKAnalyticsContactsCategory, name: AnalyticsContactsIdentityServerAccepted)
         }
     }
 
@@ -110,7 +110,7 @@ extension ServiceTermsModalCoordinatorBridgePresenter: ServiceTermsModalCoordina
         self.delegate?.serviceTermsModalCoordinatorBridgePresenterDelegateDidDecline(self, session: self.session)
 
         if serviceType == MXServiceTypeIdentityService {
-            Analytics.sharedInstance().trackValue(0, category: MXKAnalyticsCategory.contacts.rawValue, name: AnalyticsContactsIdentityServerAccepted)
+            Analytics.sharedInstance().trackValue(0, category: kMXKAnalyticsContactsCategory, name: AnalyticsContactsIdentityServerAccepted)
         }
     }
 
@@ -118,7 +118,7 @@ extension ServiceTermsModalCoordinatorBridgePresenter: ServiceTermsModalCoordina
         self.delegate?.serviceTermsModalCoordinatorBridgePresenterDelegateDidCancel(self)
         
         if serviceType == MXServiceTypeIdentityService {
-            Analytics.sharedInstance().trackValue(0, category: MXKAnalyticsCategory.contacts.rawValue, name: AnalyticsContactsIdentityServerAccepted)
+            Analytics.sharedInstance().trackValue(0, category: kMXKAnalyticsContactsCategory, name: AnalyticsContactsIdentityServerAccepted)
         }
     }
 }
@@ -129,7 +129,7 @@ extension ServiceTermsModalCoordinatorBridgePresenter: UIAdaptivePresentationCon
         self.delegate?.serviceTermsModalCoordinatorBridgePresenterDelegateDidCancel(self)
         
         if serviceType == MXServiceTypeIdentityService {
-            Analytics.sharedInstance().trackValue(0, category: MXKAnalyticsCategory.contacts.rawValue, name: AnalyticsContactsIdentityServerAccepted)
+            Analytics.sharedInstance().trackValue(0, category: kMXKAnalyticsContactsCategory, name: AnalyticsContactsIdentityServerAccepted)
         }
     }
 }

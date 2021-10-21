@@ -16,7 +16,7 @@ use_frameworks!
 #$matrixKitVersion = '= 0.16.6'
 # $matrixKitVersion = :local
 # $matrixKitVersion = {'develop' => 'develop'}
-$matrixKitVersion = {'develop' => 'dinum_dev'}
+$matrixKitVersion = {'v0.16.7' => 'dinum_dev'}
 
 ########################################
 

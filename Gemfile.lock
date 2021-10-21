@@ -1,14 +1,6 @@
 GEM
   remote: https://rubygems.org/
   specs:
-<<<<<<< HEAD
-    CFPropertyList (3.0.2)
-    activesupport (5.2.4.5)
-      concurrent-ruby (~> 1.0, >= 1.0.2)
-      i18n (>= 0.7, < 2)
-      minitest (~> 5.1)
-      tzinfo (~> 1.1)
-=======
     CFPropertyList (3.0.4)
       rexml
     activesupport (6.1.4.1)
@@ -17,7 +9,6 @@ GEM
       minitest (>= 5.1)
       tzinfo (~> 2.0)
       zeitwerk (~> 2.3)
->>>>>>> v1.6.4
     addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
     algoliasearch (1.27.5)
@@ -25,36 +16,13 @@ GEM
       json (>= 1.5.1)
     artifactory (3.0.15)
     atomos (0.1.3)
-<<<<<<< HEAD
-    aws-eventstream (1.1.0)
-    aws-partitions (1.393.0)
-    aws-sdk-core (3.109.2)
-=======
     aws-eventstream (1.2.0)
     aws-partitions (1.510.0)
     aws-sdk-core (3.121.1)
->>>>>>> v1.6.4
       aws-eventstream (~> 1, >= 1.0.2)
       aws-partitions (~> 1, >= 1.239.0)
       aws-sigv4 (~> 1.1)
       jmespath (~> 1.0)
-<<<<<<< HEAD
-    aws-sdk-kms (1.39.0)
-      aws-sdk-core (~> 3, >= 3.109.0)
-      aws-sigv4 (~> 1.1)
-    aws-sdk-s3 (1.84.1)
-      aws-sdk-core (~> 3, >= 3.109.0)
-      aws-sdk-kms (~> 1)
-      aws-sigv4 (~> 1.1)
-    aws-sigv4 (1.2.2)
-      aws-eventstream (~> 1, >= 1.0.2)
-    babosa (1.0.4)
-    claide (1.0.3)
-    cocoapods (1.10.1)
-      addressable (~> 2.6)
-      claide (>= 1.0.2, < 2.0)
-      cocoapods-core (= 1.10.1)
-=======
     aws-sdk-kms (1.48.0)
       aws-sdk-core (~> 3, >= 3.120.0)
       aws-sigv4 (~> 1.1)
@@ -70,7 +38,6 @@ GEM
       addressable (~> 2.8)
       claide (>= 1.0.2, < 2.0)
       cocoapods-core (= 1.11.2)
->>>>>>> v1.6.4
       cocoapods-deintegrate (>= 1.0.3, < 2.0)
       cocoapods-downloader (>= 1.4.0, < 2.0)
       cocoapods-plugins (>= 1.0.0, < 2.0)
@@ -83,34 +50,16 @@ GEM
       gh_inspector (~> 1.0)
       molinillo (~> 0.8.0)
       nap (~> 1.0)
-<<<<<<< HEAD
-      ruby-macho (~> 1.4)
-      xcodeproj (>= 1.19.0, < 2.0)
-    cocoapods-core (1.10.1)
-      activesupport (> 5.0, < 6)
-      addressable (~> 2.6)
-=======
       ruby-macho (>= 1.0, < 3.0)
       xcodeproj (>= 1.21.0, < 2.0)
     cocoapods-core (1.11.2)
       activesupport (>= 5.0, < 7)
       addressable (~> 2.8)
->>>>>>> v1.6.4
       algoliasearch (~> 1.0)
       concurrent-ruby (~> 1.1)
       fuzzy_match (~> 2.0.4)
       nap (~> 1.0)
       netrc (~> 0.11)
-<<<<<<< HEAD
-      public_suffix
-      typhoeus (~> 1.0)
-    cocoapods-deintegrate (1.0.4)
-    cocoapods-downloader (1.4.0)
-    cocoapods-plugins (1.0.0)
-      nap
-    cocoapods-search (1.0.0)
-    cocoapods-trunk (1.5.0)
-=======
       public_suffix (~> 4.0)
       typhoeus (~> 1.0)
     cocoapods-deintegrate (1.0.5)
@@ -119,32 +68,11 @@ GEM
       nap
     cocoapods-search (1.0.1)
     cocoapods-trunk (1.6.0)
->>>>>>> v1.6.4
       nap (>= 0.8, < 2.0)
       netrc (~> 0.11)
     cocoapods-try (1.2.0)
     colored (1.2)
     colored2 (3.1.2)
-<<<<<<< HEAD
-    commander-fastlane (4.4.6)
-      highline (~> 1.7.2)
-    concurrent-ruby (1.1.8)
-    declarative (0.0.20)
-    declarative-option (0.1.0)
-    digest-crc (0.6.1)
-      rake (~> 13.0)
-    domain_name (0.5.20190701)
-      unf (>= 0.0.5, < 1.0.0)
-    dotenv (2.7.6)
-    emoji_regex (3.2.1)
-    escape (0.0.4)
-    ethon (0.12.0)
-      ffi (>= 1.3.0)
-    excon (0.78.0)
-    faraday (1.1.0)
-      multipart-post (>= 1.2, < 3)
-      ruby2_keywords
-=======
     commander (4.6.0)
       highline (~> 2.0.0)
     concurrent-ruby (1.1.9)
@@ -170,7 +98,6 @@ GEM
       faraday-rack (~> 1.0)
       multipart-post (>= 1.2, < 3)
       ruby2_keywords (>= 0.0.4)
->>>>>>> v1.6.4
     faraday-cookie_jar (0.0.7)
       faraday (>= 0.8.0)
       http-cookie (~> 1.0.0)
@@ -184,13 +111,8 @@ GEM
     faraday-rack (1.0.0)
     faraday_middleware (1.1.0)
       faraday (~> 1.0)
-<<<<<<< HEAD
-    fastimage (2.2.0)
-    fastlane (2.167.0)
-=======
     fastimage (2.2.5)
     fastlane (2.195.0)
->>>>>>> v1.6.4
       CFPropertyList (>= 2.3, < 4.0.0)
       addressable (>= 2.8, < 3.0.0)
       artifactory (~> 3.0)
@@ -230,19 +152,12 @@ GEM
       xcpretty (~> 0.3.0)
       xcpretty-travis-formatter (>= 0.0.3)
     fastlane-plugin-brew (0.1.1)
-<<<<<<< HEAD
-    fastlane-plugin-versioning (0.4.4)
-    fastlane-plugin-xcodegen (1.0.0)
-      fastlane-plugin-brew (~> 0.1.1)
-    ffi (1.13.1)
-=======
     fastlane-plugin-diawi (2.1.0)
       rest-client (>= 2.0.0)
     fastlane-plugin-versioning (0.5.0)
     fastlane-plugin-xcodegen (1.1.0)
       fastlane-plugin-brew (~> 0.1.1)
     ffi (1.15.4)
->>>>>>> v1.6.4
     fourflusher (2.3.1)
     fuzzy_match (2.0.4)
     gh_inspector (1.1.3)
@@ -266,17 +181,10 @@ GEM
     google-cloud-core (1.6.0)
       google-cloud-env (~> 1.0)
       google-cloud-errors (~> 1.0)
-<<<<<<< HEAD
-    google-cloud-env (1.4.0)
-      faraday (>= 0.17.3, < 2.0)
-    google-cloud-errors (1.0.1)
-    google-cloud-storage (1.29.1)
-=======
     google-cloud-env (1.5.0)
       faraday (>= 0.17.3, < 2.0)
     google-cloud-errors (1.2.0)
     google-cloud-storage (1.34.1)
->>>>>>> v1.6.4
       addressable (~> 2.5)
       digest-crc (~> 0.4)
       google-apis-iamcredentials_v1 (~> 0.1)
@@ -284,11 +192,7 @@ GEM
       google-cloud-core (~> 1.6)
       googleauth (>= 0.16.2, < 2.a)
       mini_mime (~> 1.0)
-<<<<<<< HEAD
-    googleauth (0.14.0)
-=======
     googleauth (1.0.0)
->>>>>>> v1.6.4
       faraday (>= 0.17.3, < 2.0)
       jwt (>= 1.4, < 3.0)
       memoist (~> 0.16)
@@ -300,18 +204,6 @@ GEM
     http-cookie (1.0.4)
       domain_name (~> 0.5)
     httpclient (2.8.3)
-<<<<<<< HEAD
-    i18n (1.8.9)
-      concurrent-ruby (~> 1.0)
-    jmespath (1.4.0)
-    json (2.3.1)
-    jwt (2.2.2)
-    memoist (0.16.2)
-    mini_magick (4.11.0)
-    mini_mime (1.0.2)
-    minitest (5.14.4)
-    molinillo (0.6.6)
-=======
     i18n (1.8.10)
       concurrent-ruby (~> 1.0)
     jmespath (1.4.0)
@@ -325,27 +217,18 @@ GEM
     mini_mime (1.1.1)
     minitest (5.14.4)
     molinillo (0.8.0)
->>>>>>> v1.6.4
     multi_json (1.15.0)
     multipart-post (2.0.0)
     nanaimo (0.3.0)
     nap (1.1.0)
     naturally (2.2.1)
     netrc (0.11.0)
-<<<<<<< HEAD
-    os (1.1.1)
-    plist (3.5.0)
-    public_suffix (4.0.6)
-    rake (13.0.1)
-    representable (3.0.4)
-=======
     optparse (0.1.1)
     os (1.1.1)
     plist (3.6.0)
     public_suffix (4.0.6)
     rake (13.0.6)
     representable (3.1.1)
->>>>>>> v1.6.4
       declarative (< 0.1.0)
       trailblazer-option (>= 0.1.1, < 0.2.0)
       uber (< 0.2.0)
@@ -357,15 +240,9 @@ GEM
     retriable (3.1.2)
     rexml (3.2.5)
     rouge (2.0.7)
-<<<<<<< HEAD
-    ruby-macho (1.4.0)
-    ruby2_keywords (0.0.2)
-    rubyzip (2.3.0)
-=======
     ruby-macho (2.5.1)
     ruby2_keywords (0.0.5)
     rubyzip (2.3.2)
->>>>>>> v1.6.4
     security (0.1.3)
     signet (0.16.0)
       addressable (~> 2.8)
@@ -385,13 +262,8 @@ GEM
       tty-cursor (~> 0.7)
     typhoeus (1.4.0)
       ethon (>= 0.9.0)
-<<<<<<< HEAD
-    tzinfo (1.2.9)
-      thread_safe (~> 0.1)
-=======
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
->>>>>>> v1.6.4
     uber (0.1.0)
     unf (0.1.4)
       unf_ext
@@ -399,26 +271,16 @@ GEM
     unicode-display_width (1.8.0)
     webrick (1.7.0)
     word_wrap (1.0.0)
-<<<<<<< HEAD
-    xcode-install (2.6.7)
-      claide (>= 0.9.1, < 1.1.0)
-      fastlane (>= 2.1.0, < 3.0.0)
-    xcodeproj (1.19.0)
-=======
     xcode-install (2.8.0)
       claide (>= 0.9.1, < 1.1.0)
       fastlane (>= 2.1.0, < 3.0.0)
     xcodeproj (1.21.0)
->>>>>>> v1.6.4
       CFPropertyList (>= 2.3.3, < 4.0)
       atomos (~> 0.1.3)
       claide (>= 1.0.2, < 2.0)
       colored2 (~> 3.1)
       nanaimo (~> 0.3.0)
-<<<<<<< HEAD
-=======
       rexml (~> 3.2.4)
->>>>>>> v1.6.4
     xcpretty (0.3.0)
       rouge (~> 2.0.7)
     xcpretty-travis-formatter (1.0.1)
@@ -429,11 +291,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-<<<<<<< HEAD
-  cocoapods (~> 1.10.1)
-=======
   cocoapods (~> 1.11.2)
->>>>>>> v1.6.4
   fastlane
   fastlane-plugin-diawi
   fastlane-plugin-versioning
@@ -441,8 +299,4 @@ DEPENDENCIES
   xcode-install
 
 BUNDLED WITH
-<<<<<<< HEAD
-   2.2.21
-=======
    2.2.28
->>>>>>> v1.6.4
