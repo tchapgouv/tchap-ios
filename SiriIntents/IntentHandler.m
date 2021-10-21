@@ -18,7 +18,7 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-#import "GeneratedInterface-Swift.h"
+//#import "GeneratedInterface-Swift.h"
 
 #if __has_include(<MatrixSDK/MXJingleCallStack.h>)
 #define CALL_STACK_JINGLE
@@ -27,7 +27,7 @@
 @interface IntentHandler () <INStartAudioCallIntentHandling, INStartVideoCallIntentHandling, INSendMessageIntentHandling>
 
 // Build Settings
-@property (nonatomic) id<Configurable> configuration;
+//@property (nonatomic) id<Configurable> configuration;
 
 @end
 
@@ -38,23 +38,23 @@
     self = [super init];
     if (self)
     {
-        // Set static application settings
-        _configuration = [CommonConfiguration new];
-        [_configuration setupSettings];
-
-        // NSLog -> console.log file when not debugging the app
-        MXLogConfiguration *configuration = [[MXLogConfiguration alloc] init];
-        configuration.logLevel = MXLogLevelVerbose;
-        configuration.logFilesSizeLimit = 0;
-        configuration.maxLogFilesCount = 10;
-        configuration.subLogName = @"siri";
-        
-        // Redirect NSLogs to files only if we are not debugging
-        if (!isatty(STDERR_FILENO)) {
-            configuration.redirectLogsToFiles = YES;
-        }
-        
-        [MXLog configure:configuration];
+//        // Set static application settings
+//        _configuration = [CommonConfiguration new];
+//        [_configuration setupSettings];
+//
+//        // NSLog -> console.log file when not debugging the app
+//        MXLogConfiguration *configuration = [[MXLogConfiguration alloc] init];
+//        configuration.logLevel = MXLogLevelVerbose;
+//        configuration.logFilesSizeLimit = 0;
+//        configuration.maxLogFilesCount = 10;
+//        configuration.subLogName = @"siri";
+//        
+//        // Redirect NSLogs to files only if we are not debugging
+//        if (!isatty(STDERR_FILENO)) {
+//            configuration.redirectLogsToFiles = YES;
+//        }
+//        
+//        [MXLog configure:configuration];
     }
     return self;
 }

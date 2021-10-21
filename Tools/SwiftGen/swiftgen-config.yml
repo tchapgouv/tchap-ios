@@ -8,7 +8,6 @@ ib:
       - templateName: scenes-swift4
         output: Tchap/Generated/Storyboards.swift
   - inputs: 
-      - Riot/Modules/AuthenticatedSession
       - Riot/Modules/CrossSigning
       - Riot/Modules/Integrations
       - Riot/Modules/KeyBackup

@@ -1,13 +1,13 @@
 /*
  Copyright 2015 OpenMarket Ltd
  Copyright 2017 Vector Creations Ltd
- 
+
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
- 
+
  http://www.apache.org/licenses/LICENSE-2.0
- 
+
  Unless required by applicable law or agreed to in writing, software
  distributed under the License is distributed on an "AS IS" BASIS,
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -58,6 +58,8 @@
 "switch" = "Switch";
 "more" = "More";
 "less" = "Less";
+"open" = "Open";
+"done" = "Done";
 
 // Call Bar
 "callbar_only_single_active" = "Tap to return to the call (%@)";
@@ -184,6 +186,7 @@
 "room_recents_low_priority_section" = "LOW PRIORITY";
 "room_recents_server_notice_section" = "SYSTEM ALERTS";
 "room_recents_invites_section" = "INVITES";
+"room_recents_suggested_rooms_section" = "SUGGESTED ROOMS";
 "room_recents_start_chat_with" = "Start chat";
 "room_recents_create_empty_room" = "Create room";
 "room_recents_join_room" = "Join room";
@@ -235,7 +238,7 @@ Tap the + to start adding people.";
 "contacts_address_book_no_identity_server" = "No identity server configured";
 "contacts_address_book_no_contact" = "No local contacts";
 "contacts_address_book_permission_required" = "Permission required to access local contacts";
-"contacts_address_book_permission_denied" = "You didn't allow Tchap to access your local contacts";
+"contacts_address_book_permission_denied" = "You didn't allow %@ to access your local contacts";
 "contacts_user_directory_section" = "USER DIRECTORY";
 "contacts_user_directory_offline_section" = "USER DIRECTORY (offline)";
 
@@ -446,7 +449,9 @@ Tap the + to start adding people.";
 "settings_config_user_id" = "Logged in as %@";
 
 "settings_user_settings" = "USER SETTINGS";
-"settings_notifications_settings" = "NOTIFICATION SETTINGS";
+"settings_sending_media" = "SENDING IMAGES AND VIDEOS";
+"settings_links" = "LINKS";
+"settings_notifications" = "NOTIFICATIONS";
 "settings_calls_settings" = "CALLS";
 "settings_discovery_settings" = "DISCOVERY";
 "settings_identity_server_settings" = "IDENTITY SERVER";
@@ -485,6 +490,9 @@ Tap the + to start adding people.";
 "settings_three_pids_management_information_part2" = "Discovery";
 "settings_three_pids_management_information_part3" = ".";
 
+"settings_confirm_media_size" = "Confirm size when sending";
+"settings_confirm_media_size_description" = "When this is on, you’ll be asked to confirm what size images and videos will be sent as.";
+
 "settings_security" = "SECURITY";
 
 "settings_enable_push_notif" = "Notifications on this device";
@@ -495,21 +503,33 @@ Tap the + to start adding people.";
 "settings_pin_rooms_with_unread" = "Pin rooms with unread messages";
 "settings_notifications_disabled_alert_title" = "Notifications disabled";
 "settings_notifications_disabled_alert_message" = "To enable notifications, go to your device settings.";
-//"settings_enable_all_notif" = "Enable all notifications";
-//"settings_messages_my_display_name" = "Msg containing my display name";
-//"settings_messages_my_user_name" = "Msg containing my user name";
-//"settings_messages_sent_to_me" = "Messages sent to me";
-//"settings_invited_to_room" = "When i'm invited to a room";
-//"settings_join_leave_rooms" = "When people join or leave rooms";
-//"settings_call_invitations" = "Call invitations";
+"settings_default" = "Default Notifications";
+"settings_mentions_and_keywords" = "Mentions and Keywords";
+"settings_other" = "Other";
+"settings_notify_me_for" = "Notify me for";
+"settings_direct_messages" = "Direct messages";
+"settings_encrypted_direct_messages" = "Encrypted direct messages";
+"settings_group_messages" = "Group messages";
+"settings_encrypted_group_messages" = "Encrypted group messages";
+"settings_messages_containing_display_name" = "My display name";
+"settings_messages_containing_user_name" = "My username";
+"settings_messages_containing_at_room" = "@room";
+"settings_messages_containing_keywords" = "Keywords";
+"settings_room_invitations" = "Room invitations";
+"settings_call_invitations" = "Call invitations";
+"settings_messages_by_a_bot" = "Messages by a bot";
+"settings_room_upgrades" = "Room upgrades";
+"settings_your_keywords" = "Your Keywords";
+"settings_new_keyword" = "Add new Keyword";
+"settings_mentions_and_keywords_encryption_notice" = "You won’t get notifications for mentions & keywords in encrypted rooms on mobile.";
 
 "settings_enable_callkit" = "Integrated calling";
-"settings_callkit_info" = "Receive incoming calls on your lock screen. See your Tchap calls in the system's call history. If iCloud is enabled, this call history will be shared with Apple.";
+"settings_callkit_info" = "Receive incoming calls on your lock screen. See your %@ calls in the system's call history. If iCloud is enabled, this call history will be shared with Apple.";
 "settings_calls_stun_server_fallback_button" = "Allow fallback call assist server";
 "settings_calls_stun_server_fallback_description" = "Allow fallback call assist server %@ when your homeserver does not offer one (your IP address would be shared during a call).";
 
 "settings_integrations_allow_button" = "Manage integrations";
-"settings_integrations_allow_description" = "Use an Integration Manager (%@) to manage bots, bridges, widgets and sticker packs.\n\nIntegration Managers receive configuration data, and can modify widgets, send room invites and set power levels on your behalf.";
+"settings_integrations_allow_description" = "Use an integration manager (%@) to manage bots, bridges, widgets and sticker packs.\n\nIntegration managers receive configuration data, and can modify widgets, send room invites and set power levels on your behalf.";
 
 "settings_ui_language" = "Language";
 "settings_ui_theme" = "Theme";
@@ -520,6 +540,9 @@ Tap the + to start adding people.";
 "settings_ui_theme_picker_title" = "Select a theme";
 "settings_ui_theme_picker_message_invert_colours" = "\"Auto\" uses your device's \"Invert Colours\" settings";
 "settings_ui_theme_picker_message_match_system_theme" = "\"Auto\" matches your device's system theme";
+
+"settings_show_url_previews" = "Show website preview";
+"settings_show_url_previews_description" = "Previews will only be shown in unencrypted rooms.";
 
 "settings_unignore_user" = "Show all messages from %@?";
 
@@ -550,7 +573,7 @@ Tap the + to start adding people.";
 "settings_fail_to_update_password" = "Fail to update password";
 "settings_password_updated" = "Your password has been updated";
 
-"settings_add_3pid_password_title_email" = "Add email adress";
+"settings_add_3pid_password_title_email" = "Add email address";
 "settings_add_3pid_password_title_msidsn" = "Add phone number";
 "settings_add_3pid_password_message" = "To continue, please enter your password";
 "settings_add_3pid_invalid_password_message" = "Invalid credentials";
@@ -591,7 +614,7 @@ Tap the + to start adding people.";
 "settings_devices_description" = "A session's public name is visible to people you communicate with";
 
 "settings_discovery_no_identity_server" = "You are not currently using an identity server. To be discoverable by existing contacts you known, add one.";
-"settings_discovery_terms_not_signed" = "Agree to the Identity Server (%@) Terms of Service to allow yourself to be discoverable by email address or phone number.";
+"settings_discovery_terms_not_signed" = "Agree to the identity server (%@) Terms of Service to allow yourself to be discoverable by email address or phone number.";
 "settings_discovery_three_pids_management_information_part1" = "Manage which email addresses or phone numbers other users can use to discover you and use to invite you to rooms. Add or remove email addresses or phone numbers from this list in ";
 "settings_discovery_three_pids_management_information_part2" = "User Settings";
 "settings_discovery_three_pids_management_information_part3" = ".";
@@ -649,7 +672,7 @@ Tap the + to start adding people.";
 "security_settings_complete_security_alert_title" = "Complete security";
 "security_settings_complete_security_alert_message" = "You should complete security on your current session first.";
 
-"security_settings_coming_soon" = "Sorry. This action is not available on Tchap-iOS yet. Please use another Matrix client to set it up. Tchap-iOS will use it.";
+"security_settings_coming_soon" = "Sorry. This action is not available on %@ iOS yet. Please use another Matrix client to set it up. %@ iOS will use it.";
 "security_settings_user_password_description" = "Confirm your identity by entering your account password";
 
 // Manage session
@@ -664,7 +687,7 @@ Tap the + to start adding people.";
 "authenticated_session_flow_not_supported" = "This app does not support the authentication mechanism on your homeserver.";
 
 // Identity server settings
-"identity_server_settings_title" = "Identity Server";
+"identity_server_settings_title" = "Identity server";
 
 "identity_server_settings_description" = "You are currently using %@ to discover and be discoverable by existing contacts you know.";
 "identity_server_settings_no_is_description" = "You are not currently using an identity server. To discover and be discoverable by existing contacts, add one above.";
@@ -910,7 +933,7 @@ Tap the + to start adding people.";
 "google_analytics_use_prompt" = "Would you like to help improve %@ by automatically reporting anonymous crash reports and usage data?";
 
 // Crypto
-"e2e_enabling_on_app_update" = "Tchap now supports end-to-end encryption but you need to log in again to enable it.\n\nYou can do it now or later from the application settings.";
+"e2e_enabling_on_app_update" = "%@ now supports end-to-end encryption but you need to log in again to enable it.\n\nYou can do it now or later from the application settings.";
 "e2e_need_log_in_again" = "You need to log back in to generate end-to-end encryption keys for this session and submit the public key to your homeserver.\nThis is a once off; sorry for the inconvenience.";
 
 // Key backup wrong version
@@ -955,7 +978,7 @@ Tap the + to start adding people.";
 "widget_integration_missing_room_id" = "Missing room_id in request.";
 "widget_integration_missing_user_id" = "Missing user_id in request.";
 "widget_integration_room_not_visible" = "Room %@ is not visible.";
-"widget_integration_manager_disabled" = "You need to enable Integration Manager in settings";
+"widget_integration_manager_disabled" = "You need to enable integration manager in settings";
 
 // Widget Picker
 "widget_picker_title" = "Integrations";
@@ -1029,7 +1052,7 @@ Tap the + to start adding people.";
 
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Request Sent";
-"rerequest_keys_alert_message" = "Please launch Tchap on another device that can decrypt the message so it can send the keys to this session.";
+"rerequest_keys_alert_message" = "Please launch %@ on another device that can decrypt the message so it can send the keys to this session.";
 
 // MARK: Secure backup setup
 
@@ -1217,8 +1240,8 @@ Tap the + to start adding people.";
 
 "device_verification_self_verify_wait_title" = "Complete security";
 "device_verification_self_verify_wait_new_sign_in_title" = "Verify this login";
-"device_verification_self_verify_wait_information" = "Verify this session from one of your other sessions, granting it access to encrypted messages.\n\nUse the latest Tchap on your other devices:";
-"device_verification_self_verify_wait_additional_information" = "This works with Tchap and other cross-signing capable Matrix cients.";
+"device_verification_self_verify_wait_information" = "Verify this session from one of your other sessions, granting it access to encrypted messages.\n\nUse the latest %@ on your other devices:";
+"device_verification_self_verify_wait_additional_information" = "This works with %@ and other cross-signing capable Matrix clients.";
 "device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Use Security Key";
 "device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Use Security Phrase or Key";
 "device_verification_self_verify_wait_recover_secrets_additional_information" = "If you can't access an existing session";
@@ -1522,18 +1545,6 @@ Tap the + to start adding people.";
 "secrets_reset_reset_action" = "Reset";
 "secrets_reset_authentication_message" = "Enter your account password to confirm";
 
-"secrets_setup_recovery_passphrase_summary_title" = "Save your Security Phrase";
-"secrets_setup_recovery_passphrase_summary_information" = "Remember your Security Phrase. It can be used to unlock your encrypted messages & data.";
-
-// MARK: - Secrets reset
-
-"secrets_reset_title" = "Reset everything";
-"secrets_reset_information" = "Only do this if you have no other device you can verify this device with.";
-"secrets_reset_warning_title" = "If you reset everything";
-"secrets_reset_warning_message" = "You will restart with no history, no messages, trusted devices or trusted users.";
-"secrets_reset_reset_action" = "Reset";
-"secrets_reset_authentication_message" = "Enter your account password to confirm";
-
 // MARK: - Cross-signing
 
 // Banner
@@ -1543,7 +1554,7 @@ Tap the + to start adding people.";
 
 // MARK: - Major update
 
-"major_update_title" = "Riot is now Element";
+"major_update_title" = "Riot is now %@";
 "major_update_information" = "We're excited to announce we've changed name! Your app is up to date and you're signed in to your account.";
 "major_update_learn_more_action" = "Learn more";
 "major_update_done_action" = "Got it";
@@ -1564,7 +1575,8 @@ Tap the + to start adding people.";
 "pin_protection_mismatch_error_title" = "PINs don't match";
 "pin_protection_mismatch_error_message" = "Please try again";
 "pin_protection_mismatch_too_many_times_error_message" = "If you can't remember your PIN, tap the forgot PIN button.";
-"pin_protection_settings_section_header_x" = "PIN & %@";
+"pin_protection_settings_section_header" = "PIN";
+"pin_protection_settings_section_header_with_biometrics" = "PIN & %@";
 "pin_protection_settings_section_footer" = "To reset your PIN, you'll need to re-login and create a new one.";
 "pin_protection_settings_enabled_forced" = "PIN enabled";
 "pin_protection_settings_enable_pin" = "Enable PIN";
@@ -1681,6 +1693,36 @@ Tap the + to start adding people.";
 "space_beta_announce_subtitle" = "The new version of communities";
 "space_beta_announce_information" = "Spaces are a new way to group rooms and people. They’re not on iOS yet, but you can use them now on Web and Desktop.";
 
+"spaces_home_space_title" = "Home";
+"spaces_left_panel_title" = "Spaces";
+"leave_space_title" = "Leave %@";
+"leave_space_message" = "Are you sure you want to leave %@? Do you also want to leave all rooms and spaces of this space?";
+"leave_space_message_admin_warning" = "You are admin of this space, ensure that you have transferred admin right to another member before leaving.";
+"leave_space_only_action" = "Don't leave any rooms";
+"leave_space_and_all_rooms_action" = "Leave all rooms and spaces";
+"spaces_explore_rooms" = "Explore rooms";
+"spaces_suggested_room" = "Suggested";
+"space_tag" = "space";
+"spaces_empty_space_title" = "This space has no rooms (yet)";
+"spaces_empty_space_detail" = "Some rooms may be hidden because they’re private and you need an invite.";
+"spaces_no_result_found_title" = "No results found";
+"spaces_no_room_found_detail" = "Some results may be hidden because they’re private and you need an invite to join them.";
+"spaces_no_member_found_detail" = "Looking for someone not in %@? For now, you can invite them on web or desktop.";
+"spaces_coming_soon_title" = "Coming soon";
+"spaces_add_rooms_coming_soon_title" = "Adding rooms coming soon";
+"spaces_invites_coming_soon_title" = "Invites coming soon";
+"spaces_coming_soon_detail" = "This feature hasn’t been implemented here, but it’s on the way. For now, you can do that with Element on your computer.";
+"space_participants_action_remove" = "Remove from this space";
+"space_participants_action_ban" = "Ban from this space";
+
+"space_private_join_rule" = "Private space";
+"space_public_join_rule" = "Public space";
+
+// Mark: Avatar
+
+"space_avatar_view_accessibility_label" = "avatar";
+"space_avatar_view_accessibility_hint" = "Change space avatar";
+
 // Mark: - User avatar view
 
 "user_avatar_view_accessibility_label" = "avatar";
@@ -1701,3 +1743,19 @@ Tap the + to start adding people.";
 "voice_message_remaining_recording_time" = "%@s left";
 "voice_message_stop_locked_mode_recording" = "Tap on your recording to stop or listen";
 "voice_message_lock_screen_placeholder" = "Voice message";
+
+// Mark: - Version check
+
+"version_check_banner_title_supported" = "We’re ending support for iOS %@";
+"version_check_banner_subtitle_supported" = "We will soon be ending support for %@ on iOS %@. To continue using %@ to its full potential, we advise you to upgrade your version of iOS.";
+
+"version_check_banner_title_deprecated" = "We’re no longer supporting iOS %@";
+"version_check_banner_subtitle_deprecated" = "We are no longer supporting %@ on iOS %@. To continue using %@ to its full potential, we advise you to upgrade your version of iOS.";
+
+"version_check_modal_title_supported" = "We’re ending support for iOS %@";
+"version_check_modal_subtitle_supported" = "We've been working on enhancing %@ for a faster and more polished experience. Unfortunately your current version of iOS is not compatible with some of those fixes and will no longer be supported.\nWe're advising you to upgrade your operating system to use %@ to its full potential.";
+"version_check_modal_action_title_supported" = "Got it";
+
+"version_check_modal_title_deprecated" = "We’re no longer supporting iOS %@";
+"version_check_modal_subtitle_deprecated" = "We've been working on enhancing %@ for a faster and more polished experience. Unfortunately your current version of iOS is not  compatible with some of those fixes and is no longer supported.\nWe're advising you to upgrade your operating system to use %@ to its full potential.";
+"version_check_modal_action_title_deprecated" = "Find out how";

@@ -48,6 +48,7 @@ targets:
     - path: ../Riot/Categories/String.swift
     - path: ../Riot/Categories/MXRoomSummary+Riot.h
     - path: ../Riot/Categories/MXRoomSummary+Riot.m
+    - path: ../Riot/Generated/Vector_Strings.swift
     - path: ../Riot/Managers/EncryptionKeyManager/EncryptionKeyManager.swift
     - path: ../Riot/Managers/KeyValueStorage
     - path: ../Riot/Managers/Settings/RiotSettings.swift
@@ -56,6 +57,7 @@ targets:
     - path: ../Riot/Modules/Common/Recents/CellData/RecentCellData.m
     - path: ../Riot/Modules/Common/SegmentedViewController/SegmentedViewController.h
     - path: ../Riot/Modules/Common/SegmentedViewController/SegmentedViewController.m
+    - path: ../Riot/PropertyWrappers
     - path: ../Riot/Utils/AvatarGenerator.h
     - path: ../Riot/Utils/AvatarGenerator.m
     - path: ../Riot/Utils/UserNameColorGenerator.swift

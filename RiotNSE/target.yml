@@ -1,5 +1,31 @@
 name: RiotNSE
 
+schemes:
+  RiotNSE:
+    analyze:
+      config: Debug
+    archive:
+      config: Release
+    build:
+      targets:
+        RiotNSE:
+        - running
+        - testing
+        - profiling
+        - analyzing
+        - archiving
+    profile:
+      config: Release
+    run:
+      askForAppToLaunch: true
+      config: Debug
+      debugEnabled: false
+      disableMainThreadChecker: true
+      launchAutomaticallySubstyle: 2
+    test:
+      config: Debug
+      disableMainThreadChecker: true
+
 targets:
   RiotNSE:
     platform: iOS
@@ -18,16 +44,20 @@ targets:
     - path: ../Riot/Categories/Character.swift
     - path: ../Riot/Categories/String.swift
     - path: ../Riot/Categories/UNUserNotificationCenter.swift
+    - path: ../Riot/Generated/Images.swift
     - path: ../Riot/Generated/InfoPlist.swift
     - path: ../Riot/Managers/EncryptionKeyManager/EncryptionKeyManager.swift
     - path: ../Riot/Managers/KeyValueStorage/Extensions/Keychain.swift
     - path: ../Riot/Managers/KeyValueStorage/KeychainStore.swift
     - path: ../Riot/Managers/KeyValueStorage/KeyValueStore.swift
     - path: ../Riot/Managers/LocalAuthentication/LocalAuthenticationService.swift
+    - path: ../Riot/Managers/Locale/LocaleProvider.swift
+    - path: ../Riot/Managers/Locale/LocaleProviderType.swift
     - path: ../Riot/Managers/PushNotification/PushNotificationStore.swift
     - path: ../Riot/Modules/SetPinCode/PinCodePreferences.swift
     - path: ../Riot/Modules/SetPinCode/SetupBiometrics/BiometricsAuthenticationPresenter.swift
     - path: ../Riot/Managers/Settings/RiotSettings.swift
     - path: ../Riot/Managers/Widgets/WidgetConstants.m
+    - path: ../Riot/PropertyWrappers/UserDefaultsBackedPropertyWrapper.swift
     - path: ../Riot/Utils/Constants.swift
     - path: ../Riot/Utils/DataProtectionHelper.swift

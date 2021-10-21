@@ -23,6 +23,9 @@
 #import "ShareExtensionManager.h"
 #import "DesignValues.h"
 
+#import "ThemeService.h"
+#import "GeneratedInterface-Swift.h"
+
 
 @interface ShareViewController ()
 
@@ -47,6 +50,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.view.tintColor = ThemeService.shared.theme.tintColor;
+    self.titleLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.masterContainerView.backgroundColor = ThemeService.shared.theme.baseColor;
     
     self.shareExtensionManagerDidUpdateAccountDataObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kShareExtensionManagerDidUpdateAccountDataNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
@@ -100,7 +107,7 @@
     
     if ([ShareExtensionManager sharedManager].userAccount)
     {
-        self.titleLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"send_to", @"Vector", nil), @""];
+        self.titleLabel.text = [VectorL10n sendTo:@""];
         self.titleLabel.textColor = kVariant1BarTitleColor;
         self.titleContentView.backgroundColor = kVariant1BarBgColor;
         self.cancelButton.tintColor = kVariant1BarActionColor;
@@ -119,7 +126,7 @@
 {
     self.segmentedViewController = [SegmentedViewController instantiate];
     
-    NSArray *titles = @[NSLocalizedStringFromTable(@"conversations_tab_title", @"Tchap", nil) , NSLocalizedStringFromTable(@"contacts_tab_title", @"Tchap", nil)];
+    NSArray *titles = @[[VectorL10n titleRooms], [VectorL10n titlePeople]];
     
     void (^failureBlock)(void) = ^void() {
         [self dismissViewControllerAnimated:YES completion:^{

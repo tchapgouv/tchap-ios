@@ -125,4 +125,8 @@ extension ForwardCoordinator: MXKRecentListViewControllerDelegate {
             self.router.dismissModule(animated: true, completion: nil)
         }
     }
+    
+    func recentListViewController(_ recentListViewController: MXKRecentListViewController!, didSelectSuggestedRoom childInfo: MXSpaceChildInfo!) {
+        // FIXME: Missing implementation
+    }
 }

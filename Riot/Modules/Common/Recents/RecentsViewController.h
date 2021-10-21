@@ -19,6 +19,11 @@
 
 @class RootTabEmptyView;
 
+/**
+ Notification to be posted when recents data is ready. Notification object will be the RecentsViewController instance.
+ */
+FOUNDATION_EXPORT NSString *const RecentsViewControllerDataReadyNotification;
+
 @interface RecentsViewController : MXKRecentListViewController <MXKRecentListViewControllerDelegate>
 {
 @protected
@@ -130,6 +135,22 @@
 #pragma mark - Room handling
 
 /**
+ Action triggered when the user taps on the (+) button.
+ Create an empty room by default.
+ */
+- (void)onPlusButtonPressed;
+
+/**
+ Open screen to create a new room.
+ */
+- (void)createNewRoom;
+
+/**
+ Join a room by alias or id.
+ */
+- (void)joinARoom;
+
+/**
  Leave the selected room.
  */
 - (void)leaveEditedRoom;
@@ -140,14 +161,29 @@
 - (void)updateEditedRoomTag:(NSString*)tag;
 
 /**
- Enable/disable the notifications for the selected room.
+ Enable/disable the direct flag of the selected room.
  */
+- (void)makeDirectEditedRoom:(BOOL)isDirect;
+
+/**
+Enable/disable the notifications for the selected room.
+*/
 - (void)muteEditedRoomNotifications:(BOOL)mute;
 
 /**
  Edit notification settings for the selected room.
  */
 - (void)changeEditedRoomNotificationSettings;
+
+/**
+ Show room directory.
+ */
+- (void)showRoomDirectory;
+
+/**
+ Show a public room.
+ */
+- (void)openPublicRoom:(MXPublicRoom *)publicRoom;
 
 #pragma mark - Scrolling
 

@@ -216,7 +216,7 @@ final class AppCoordinator: AppCoordinatorType {
         self.cancelPendingRoomSelection()
         
         // Postpone the action if the session didn't loaded the data from the store yet
-        if session.state.rawValue < MXSessionStateStoreDataReady.rawValue {
+        if session.state.rawValue < MXSessionState.storeDataReady.rawValue {
             self.postponeRoomSelection(with: roomIdOrAlias, onEventID: eventID)
             return false
         }
@@ -383,7 +383,7 @@ final class AppCoordinator: AppCoordinatorType {
     
     @objc private func sessionStateDidChange() {
         // Check whether the session has at least loaded the data from the store
-        if let session = self.mainSession, session.state.rawValue >= MXSessionStateStoreDataReady.rawValue {
+        if let session = self.mainSession, session.state.rawValue >= MXSessionState.storeDataReady.rawValue {
             self.unregisterSessionStateNotification()
             if let roomIdOrAlias = self.pendingRoomIdOrAlias {
                 _ = showRoom(with: roomIdOrAlias, onEventID: self.pendingEventId)

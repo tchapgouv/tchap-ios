@@ -25,11 +25,11 @@ final class AppInfo: NSObject {
     /// Current application information
     static var current: AppInfo {
         let appDisplayName = BuildSettings.bundleDisplayName
-        let buildInfo: BuildInfo = BuildInfo()
+//        let buildInfo: BuildInfo = BuildInfo()
         
         return AppInfo(displayName: appDisplayName,
-                       appVersion: AppVersion.current,
-                       buildInfo: buildInfo)
+                       appVersion: AppVersion.current/*,
+                       buildInfo: buildInfo*/)
     }
     
     // MARK: - Properties
@@ -41,15 +41,15 @@ final class AppInfo: NSObject {
     let appVersion: AppVersion?
     
     /// Compilation build info
-    let buildInfo: BuildInfo
+//    let buildInfo: BuildInfo
     
     // MARK: - Setup
     
     init(displayName: String,
-         appVersion: AppVersion?,
-         buildInfo: BuildInfo) {
+         appVersion: AppVersion?/*,
+         buildInfo: BuildInfo*/) {
         self.displayName = displayName
         self.appVersion = appVersion
-        self.buildInfo = buildInfo
+//        self.buildInfo = buildInfo
     }
 }

@@ -52,6 +52,7 @@ targets:
     - path: ../Riot/Managers/Settings/RiotSettings.swift
     - path: ../Riot/Managers/Widgets/WidgetConstants.h
     - path: ../Riot/Managers/Widgets/WidgetConstants.m
+    - path: ../Riot/PropertyWrappers
     - path: ../Riot/Utils/Constants.swift
     - path: ../Riot/Utils/DataProtectionHelper.swift
     

@@ -18,7 +18,7 @@ import UIKit
 import RxSwift
 
 // Internal structure used to store room creation parameters
-private struct RoomCreationParameters {
+struct RoomCreationParameters {
     let visibility: MXRoomDirectoryVisibility
     let accessRule: RoomAccessRule
     let preset: MXRoomPreset

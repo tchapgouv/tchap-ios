@@ -16,8 +16,7 @@
 
 import Foundation
 import UIKit
-// TODO: Tchap: add DesignKit in Tchap project
-//import DesignKit
+import DesignKit
 
 /// Color constants for the default theme
 @objcMembers
@@ -68,7 +67,6 @@ class DefaultTheme: NSObject, Theme {
     var scrollBarStyle: UIScrollView.IndicatorStyle = .default
     var keyboardAppearance: UIKeyboardAppearance = .light
     
-    @available(iOS 12.0, *)
     var userInterfaceStyle: UIUserInterfaceStyle {
         return .light
     }
@@ -138,4 +136,9 @@ class DefaultTheme: NSObject, Theme {
     func applyStyle(onSwitch uiSwitch: UISwitch) {
         uiSwitch.onTintColor = self.headerBackgroundColor
     }
+    
+    ///  MARK: - Theme v2
+    var colors: ColorsUIKit = LightColors.uiKit
+
+    var fonts: FontsUIKit = FontsUIKit(values: ElementFonts())
 }

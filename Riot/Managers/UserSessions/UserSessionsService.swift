@@ -34,6 +34,10 @@ extension UserSessionsService {
 @objcMembers
 class UserSessionsService: NSObject {
     
+    // MARK: - Singleton
+    
+    static public let shared: UserSessionsService = UserSessionsService()
+    
     // MARK: - Properties
     
     // MARK: Private
@@ -151,7 +155,7 @@ class UserSessionsService: NSObject {
         let isSessionStateValid: Bool
         
         switch mxSession.state {
-        case MXSessionStateClosed, MXSessionStateUnknownToken:
+        case .closed, .unknownToken:
             isSessionStateValid = false
         default:
             isSessionStateValid = true

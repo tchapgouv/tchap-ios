@@ -60,15 +60,11 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    [self updateTheme];
-}
+    [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
-- (void)updateTheme
-{
-    if (self.navigationBar)
-    {
-        [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationBar];
-    }
+    self.view.backgroundColor = ThemeService.shared.theme.backgroundColor;
+    self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
+    
     self.backButton.tintColor = ThemeService.shared.theme.tintColor;
     
     self.view.backgroundColor = [UIColor blackColor];

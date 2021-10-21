@@ -50,6 +50,7 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Fl-yZ-dZB">
                             <rect key="frame" x="94" y="7" width="317" height="30"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <gestureRecognizers/>
                         </view>
                     </subviews>
                     <constraints>
@@ -83,7 +84,7 @@
         </view>
     </objects>
     <resources>
-        <image name="voice_message_play_button" width="12.5" height="15"/>
+        <image name="voice_message_play_button" width="15.5" height="15"/>
         <image name="voice_message_record_icon" width="10" height="10"/>
     </resources>
 </document>

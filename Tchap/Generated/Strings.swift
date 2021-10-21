@@ -69,7 +69,8 @@ internal enum TchapL10n {
   internal static let changePasswordNewPasswordInvalidOldPassword = TchapL10n.tr("Tchap", "change_password_new_password_invalid_old_password")
   /// Nouveau mot de passe
   internal static let changePasswordNewPasswordPasswordPlaceholder = TchapL10n.tr("Tchap", "change_password_new_password_password_placeholder")
-  /// Votre mot de passe a été changé avec succès.\nVous ne recevrez plus de notifications sur vos autres appareils tant que vous ne vous y reconnecterez pas.
+  /// Votre mot de passe a été changé avec succès.
+  /// Vous ne recevrez plus de notifications sur vos autres appareils tant que vous ne vous y reconnecterez pas.
   internal static let changePasswordNewPasswordSuccessMessage = TchapL10n.tr("Tchap", "change_password_new_password_success_message")
   /// Succès
   internal static let changePasswordNewPasswordSuccessTitle = TchapL10n.tr("Tchap", "change_password_new_password_success_title")
@@ -137,7 +138,9 @@ internal enum TchapL10n {
   internal static let createNewDiscussionTitle = TchapL10n.tr("Tchap", "create_new_discussion_title")
   /// Vérifier l’appareil
   internal static let deviceVerificationTitle = TchapL10n.tr("Tchap", "device_verification_title")
-  /// Vous avez bien vérifié cet appareil.\n\nLe partage des clés va s'effectuer progressivement. Les messages se déchiffreront au fur à mesure. Cela peut prendre quelques minutes.
+  /// Vous avez bien vérifié cet appareil.
+  /// 
+  /// Le partage des clés va s'effectuer progressivement. Les messages se déchiffreront au fur à mesure. Cela peut prendre quelques minutes.
   internal static let deviceVerificationVerifiedDescription = TchapL10n.tr("Tchap", "device_verification_verified_description")
   /// Une erreur est survenue, veuillez réessayer ultérieurement
   internal static let errorMessageDefault = TchapL10n.tr("Tchap", "error_message_default")
@@ -207,7 +210,9 @@ internal enum TchapL10n {
   }
   /// Echec de l’envoi de l’invitation
   internal static let inviteSendingFailedTitle = TchapL10n.tr("Tchap", "invite_sending_failed_title")
-  /// L'invitation a bien été envoyée.\nVous recevrez une notification lorsque\nvotre invité rejoindra la communauté Tchap.
+  /// L'invitation a bien été envoyée.
+  /// Vous recevrez une notification lorsque
+  /// votre invité rejoindra la communauté Tchap.
   internal static let inviteSendingSucceeded = TchapL10n.tr("Tchap", "invite_sending_succeeded")
   /// %@ a limité la durée de l’historique à %@
   internal static func noticeRoomRetentionChanged(_ p1: Any, _ p2: Any) -> String {
@@ -345,7 +350,8 @@ internal enum TchapL10n {
   internal static let roomSettingsAllowExternalUsersForbidden = TchapL10n.tr("Tchap", "room_settings_allow_external_users_forbidden")
   /// Autoriser l’accès aux externes à ce salon
   internal static let roomSettingsAllowExternalUsersToJoin = TchapL10n.tr("Tchap", "room_settings_allow_external_users_to_join")
-  /// Cette action est irréversible.\nVoulez-vous vraiment autoriser les externes à rejoindre ce salon ?
+  /// Cette action est irréversible.
+  /// Voulez-vous vraiment autoriser les externes à rejoindre ce salon ?
   internal static let roomSettingsAllowExternalUsersToJoinPromptMsg = TchapL10n.tr("Tchap", "room_settings_allow_external_users_to_join_prompt_msg")
   /// Activer l’accès au salon par lien
   internal static let roomSettingsEnableRoomAccessByLink = TchapL10n.tr("Tchap", "room_settings_enable_room_access_by_link")
@@ -361,7 +367,8 @@ internal enum TchapL10n {
   internal static let roomSettingsLeaveRoom = TchapL10n.tr("Tchap", "room_settings_leave_room")
   /// Retirer ce salon de la liste des forums
   internal static let roomSettingsRemoveFromRoomsDirectory = TchapL10n.tr("Tchap", "room_settings_remove_from_rooms_directory")
-  /// Cette action est irréversible.\nVoulez-vous vraiment retirer ce salon de la liste des forums ?
+  /// Cette action est irréversible.
+  /// Voulez-vous vraiment retirer ce salon de la liste des forums ?
   internal static let roomSettingsRemoveFromRoomsDirectoryPrompt = TchapL10n.tr("Tchap", "room_settings_remove_from_rooms_directory_prompt")
   /// %d jours
   internal static func roomSettingsRetentionPeriodInDays(_ p1: Int) -> String {
@@ -455,11 +462,14 @@ internal enum TchapL10n {
   internal static let settingsShowProfileChangesMessagesTitle = TchapL10n.tr("Tchap", "settings_show_profile_changes_messages_title")
   /// Échec d'envoi. Veuillez renouveler cet envoi depuis l'application
   internal static let shareExtensionFailedToShareInEmptyDiscussion = TchapL10n.tr("Tchap", "share_extension_failed_to_share_in_empty_discussion")
-  /// Votre correspondant a quitté définitivement cette discussion.\nVous devez en créer une nouvelle pour le recontacter, s'il est toujours joignable sur Tchap.
+  /// Votre correspondant a quitté définitivement cette discussion.
+  /// Vous devez en créer une nouvelle pour le recontacter, s'il est toujours joignable sur Tchap.
   internal static let tchapCannotInviteDeactivatedAccountUser = TchapL10n.tr("Tchap", "tchap_cannot_invite_deactivated_account_user")
   /// Vous n'êtes pas autorisé à rejoindre cette conversation. Une invitation est nécessaire.
   internal static let tchapRoomAccessUnauthorized = TchapL10n.tr("Tchap", "tchap_room_access_unauthorized")
-  /// Voulez-vous vraiment quitter cette conversation ?\n\nElle ne sera plus administrée, et vous risquez de ne plus pouvoir la joindre de nouveau.
+  /// Voulez-vous vraiment quitter cette conversation ?
+  /// 
+  /// Elle ne sera plus administrée, et vous risquez de ne plus pouvoir la joindre de nouveau.
   internal static let tchapRoomAdminLeavePromptMsg = TchapL10n.tr("Tchap", "tchap_room_admin_leave_prompt_msg")
   /// Ce lien n'est pas valide
   internal static let tchapRoomInvalidLink = TchapL10n.tr("Tchap", "tchap_room_invalid_link")

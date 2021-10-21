@@ -24,6 +24,8 @@
 
 #import "Contact.h"
 
+#import "MXCallManager.h"
+
 #import "RageShakeManager.h"
 
 @interface RoomParticipantsViewController ()
@@ -46,8 +48,6 @@
     id roomDidFlushDataNotificationObserver;
     
     RoomMemberDetailsViewController *memberDetailsViewController;
-    
-    // Contacts picker and its resources
     ContactsViewController *contactsPickerViewController;
     ContactsDataSource *contactsDataSource;
     UIBarButtonItem *validateBarButtonItem;
@@ -100,6 +100,7 @@
     // Setup `MXKViewControllerHandling` properties
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
+    self.showParticipantCustomAccessoryView = YES;
 }
 
 - (void)viewDidLoad
@@ -127,9 +128,20 @@
     
     [NSLayoutConstraint activateConstraints:@[_searchBarTopConstraint]];
     
-    self.navigationItem.title = NSLocalizedStringFromTable(@"room_participants_title", @"Vector", nil);
+    self.navigationItem.title = [VectorL10n roomParticipantsTitle];
     
-    _searchBarView.placeholder = NSLocalizedStringFromTable(@"room_participants_filter_room_members", @"Vector", nil);
+    if (self.mxRoom.summary.roomType == MXRoomTypeSpace)
+    {
+        _searchBarView.placeholder = [VectorL10n searchDefaultPlaceholder];
+    }
+    else if (self.mxRoom.isDirect)
+    {
+        _searchBarView.placeholder = [VectorL10n roomParticipantsFilterRoomMembersForDm];
+    }
+    else
+    {
+        _searchBarView.placeholder = [VectorL10n roomParticipantsFilterRoomMembers];
+    }
     _searchBarView.returnKeyType = UIReturnKeyDone;
     _searchBarView.autocapitalizationType = UITextAutocapitalizationTypeNone;
     
@@ -151,29 +163,22 @@
     [self addAddParticipantButton];
     
     // Observe user interface theme change.
-    MXWeakify(self);
     kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
-        MXStrongifyAndReturnIfNil(self);
         [self userInterfaceThemeDidChange];
         
     }];
+    [self userInterfaceThemeDidChange];
 }
 
 - (void)userInterfaceThemeDidChange
 {
-    [self updateTheme];
-}
+    [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
-- (void)updateTheme
-{
-    UINavigationBar *navigationBar = self.navigationController.navigationBar;
-    if (navigationBar)
-    {
-        [ThemeService.shared.theme applyStyleOnNavigationBar:navigationBar];
-    }
+    self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     
     [self refreshSearchBarItemsColor:_searchBarView];
+    
     _searchBarHeaderBorder.backgroundColor = ThemeService.shared.theme.headerBorderColor;
     
     //TODO Design the activity indicator for Tchap
@@ -269,6 +274,14 @@
     // Screen tracking
     [[Analytics sharedInstance] trackScreen:@"RoomParticipants"];
     
+    // Refresh display
+    [self refreshTableView];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+
     if (memberDetailsViewController)
     {
         [memberDetailsViewController destroy];
@@ -286,11 +299,6 @@
     
     // Refresh display
     [self refreshTableView];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
     
     // For unknown reason, we have to force here the UISearchBar search text color again.
     // The value set by [updateWithStyle:] call is ignored.
@@ -405,6 +413,19 @@
         if (self.mxRoom)
         {
             self.searchBarHeader.hidden = NO;
+            
+            if (self.mxRoom.summary.roomType == MXRoomTypeSpace)
+            {
+                self.searchBarView.placeholder = [VectorL10n searchDefaultPlaceholder];
+            }
+            else if (self.mxRoom.isDirect)
+            {
+                self.searchBarView.placeholder = [VectorL10n roomParticipantsFilterRoomMembersForDm];
+            }
+            else
+            {
+                self.searchBarView.placeholder = [VectorL10n roomParticipantsFilterRoomMembers];
+            }
 
             // Update the current matrix session.
             [self addMatrixSession:self.mxRoom.mxSession];
@@ -431,7 +452,9 @@
                 if (self.mxRoom.mxSession == room.mxSession && [self.mxRoom.roomId isEqualToString:room.roomId])
                 {
                     // The existing room history has been flushed during server sync. Take into account the updated room members list.
-                    [self refreshParticipantsFromRoomMembers:nil];
+                    [self refreshParticipantsFromRoomMembers];
+
+                    [self refreshTableView];
                 }
 
             }];
@@ -470,7 +493,9 @@
 
                                         [self handleRoomMember:mxMember];
 
-                                        [self finalizeParticipantsList:liveTimeline.state completion:nil];
+                                        [self finalizeParticipantsList:liveTimeline.state];
+
+                                        [self refreshTableView];
                                     }
                                 }
 
@@ -486,13 +511,17 @@
                                     
                                     [self addRoomThirdPartyInviteToParticipants:thirdPartyInvite roomState:liveTimeline.state];
 
-                                    [self finalizeParticipantsList:liveTimeline.state completion:nil];
+                                    [self finalizeParticipantsList:liveTimeline.state];
+
+                                    [self refreshTableView];
                                 }
                                 break;
                             }
                             case MXEventTypeRoomPowerLevels:
                             {
-                                [self refreshParticipantsFromRoomMembers:nil];
+                                [self refreshParticipantsFromRoomMembers];
+
+                                [self refreshTableView];
                                 break;
                             }
                             default:
@@ -507,9 +536,11 @@
             // Search bar header is hidden when no room is provided
             self.searchBarHeader.hidden = YES;
         }
-                                 
+
         // Refresh the members list.
-        [self refreshParticipantsFromRoomMembers:nil];
+        [self refreshParticipantsFromRoomMembers];
+
+        [self refreshTableView];
     }];
 }
 
@@ -732,10 +763,18 @@
             contactsDataSource.ignoredContactsByMatrixId[contact.mxMember.userId] = contact;
         }
     }
+    if (userParticipant)
+    {
+        contactsDataSource.ignoredContactsByMatrixId[userParticipant.mxMember.userId] = userParticipant;
+    }
+    
+//    [contactsPickerViewController showSearch:YES];
+//    contactsPickerViewController.searchBar.placeholder = [VectorL10n roomParticipantsInviteAnotherUser];
     
     // Apply the search pattern if any
     if (currentSearchText)
     {
+//        contactsPickerViewController.searchBar.text = currentSearchText;
         [contactsDataSource searchWithPattern:currentSearchText forceReset:YES];
     }
     
@@ -744,7 +783,7 @@
     [self pushViewController:contactsPickerViewController];
 }
 
-- (void)refreshParticipantsFromRoomMembers:(void (^)(void))completion
+- (void)refreshParticipantsFromRoomMembers
 {
     actualParticipants = [NSMutableArray array];
     invitedParticipants = [NSMutableArray array];
@@ -762,7 +801,22 @@
 
             for (MXRoomMember *mxMember in members)
             {
-                [self handleRoomMember:mxMember];
+                // Update the current participants list
+                if ([mxMember.userId isEqualToString:userId])
+                {
+                    if (mxMember.membership == MXMembershipJoin || mxMember.membership == MXMembershipInvite)
+                    {
+                        // The user is in this room
+                        NSString *displayName = [VectorL10n you];
+
+                        self->userParticipant = [[Contact alloc] initMatrixContactWithDisplayName:displayName andMatrixID:userId];
+                        self->userParticipant.mxMember = [roomState.members memberWithUserId:userId];
+                    }
+                }
+                else
+                {
+                    [self handleRoomMember:mxMember];
+                }
             }
 
             for (MXRoomThirdPartyInvite *roomThirdPartyInvite in roomThirdPartyInvites)
@@ -781,12 +835,8 @@
 #endif
             self->addParticipantButtonImageView.hidden = self->tableViewMaskLayer.hidden = !self->isUserAllowedToInvite;
             
-            [self finalizeParticipantsList:roomState completion:completion];
+            [self finalizeParticipantsList:roomState];
         }];
-    }
-    else if (completion)
-    {
-        completion();
     }
 }
 
@@ -800,8 +850,19 @@
         NSString *displayName = mxMember.displayname;
         if (!displayName.length && mxMember.userId)
         {
-            displayName = [UserService displayNameFrom:mxMember.userId];
+            // Look for the corresponding MXUser in matrix session
+            MXUser *mxUser = [self.mxRoom.mxSession userWithUserId:mxMember.userId];
+            if (mxUser)
+            {
+                displayName = ((mxUser.displayname.length > 0) ? mxUser.displayname : mxMember.userId);
+            }
+            else
+            {
+                displayName = mxMember.userId;
+            }
         }
+        
+        // Create the contact related to this member
         Contact *contact = [[Contact alloc] initMatrixContactWithDisplayName:displayName andMatrixID:mxMember.userId];
         contact.mxMember = mxMember;
         
@@ -813,6 +874,17 @@
         {
             [actualParticipants addObject:contact];
         }
+    }
+}
+
+- (void)reloadSearchResult
+{
+    if (currentSearchText.length)
+    {
+        NSString *searchText = currentSearchText;
+        currentSearchText = nil;
+        
+        [self searchBar:_searchBarView textDidChange:searchText];
     }
 }
 
@@ -941,7 +1013,7 @@
     }];
 }
 
-- (void)finalizeParticipantsList:(MXRoomState*)roomState completion:(void (^)(void))completion
+- (void)finalizeParticipantsList:(MXRoomState*)roomState
 {
     // Sort contacts by power
     // ...and then alphabetically.
@@ -949,84 +1021,82 @@
     // We could tiebreak instead by "last recently spoken in this room" if we wanted to.
     NSComparator comparator = ^NSComparisonResult(Contact *contactA, Contact *contactB) {
         
-        NSString *userIdA = contactA.mxMember.userId;
-        NSString *userIdB = contactB.mxMember.userId;
+        MXUser *userA = [self.mxRoom.mxSession userWithUserId:contactA.mxMember.userId];
+        MXUser *userB = [self.mxRoom.mxSession userWithUserId:contactB.mxMember.userId];
         
-        if (!userIdA && !userIdB)
+        if (!userA && !userB)
         {
             return [contactA.sortingDisplayName compare:contactB.sortingDisplayName options:NSCaseInsensitiveSearch];
         }
-        if (userIdA && !userIdB)
-        {
-            return contactA.isExpired ? NSOrderedDescending : NSOrderedAscending;
-        }
-        if (!userIdA && userIdB)
-        {
-            return contactB.isExpired ? NSOrderedAscending : NSOrderedDescending;
-        }
-        if (contactA.isExpired)
-        {
-            if (!contactB.isExpired)
-            {
-                return NSOrderedDescending;
-            }
-        }
-        else if (contactB.isExpired)
+        if (userA && !userB)
         {
             return NSOrderedAscending;
         }
-        
-        // Order first by power levels (admins then moderators then others)
-        MXRoomPowerLevels *powerLevels = [roomState powerLevels];
-        NSInteger powerLevelA = [powerLevels powerLevelOfUserWithUserID:userIdA];
-        NSInteger powerLevelB = [powerLevels powerLevelOfUserWithUserID:userIdB];
-        
-        if (powerLevelA == powerLevelB)
+        if (!userA && userB)
         {
-            // Then order by name
-            if (contactA.sortingDisplayName.length && contactB.sortingDisplayName.length)
+            return NSOrderedDescending;
+        }
+        
+        if (userA.currentlyActive && userB.currentlyActive)
+        {
+            // Order first by power levels (admins then moderators then others)
+            MXRoomPowerLevels *powerLevels = [roomState powerLevels];
+            NSInteger powerLevelA = [powerLevels powerLevelOfUserWithUserID:contactA.mxMember.userId];
+            NSInteger powerLevelB = [powerLevels powerLevelOfUserWithUserID:contactB.mxMember.userId];
+            
+            if (powerLevelA == powerLevelB)
             {
-                return [contactA.sortingDisplayName compare:contactB.sortingDisplayName options:NSCaseInsensitiveSearch];
+                // Then order by name
+                if (contactA.sortingDisplayName.length && contactB.sortingDisplayName.length)
+                {
+                    return [contactA.sortingDisplayName compare:contactB.sortingDisplayName options:NSCaseInsensitiveSearch];
+                }
+                else if (contactA.sortingDisplayName.length)
+                {
+                    return NSOrderedAscending;
+                }
+                else if (contactB.sortingDisplayName.length)
+                {
+                    return NSOrderedDescending;
+                }
+                return [contactA.displayName compare:contactB.displayName options:NSCaseInsensitiveSearch];
             }
-            else if (contactA.sortingDisplayName.length)
+            else
             {
-                return NSOrderedAscending;
+                return powerLevelB - powerLevelA;
             }
-            else if (contactB.sortingDisplayName.length)
-            {
-                return NSOrderedDescending;
-            }
-            return [contactA.displayName compare:contactB.displayName options:NSCaseInsensitiveSearch];
+            
+        }
+        
+        if (userA.currentlyActive && !userB.currentlyActive)
+        {
+            return NSOrderedAscending;
+        }
+        if (!userA.currentlyActive && userB.currentlyActive)
+        {
+            return NSOrderedDescending;
+        }
+        
+        // Finally, compare the lastActiveAgo
+        NSUInteger lastActiveAgoA = userA.lastActiveAgo;
+        NSUInteger lastActiveAgoB = userB.lastActiveAgo;
+        
+        if (lastActiveAgoA == lastActiveAgoB)
+        {
+            return NSOrderedSame;
         }
         else
         {
-            return powerLevelB - powerLevelA;
+            return ((lastActiveAgoA > lastActiveAgoB) ? NSOrderedDescending : NSOrderedAscending);
         }
     };
     
     // Sort each participants list in alphabetical order
     [actualParticipants sortUsingComparator:comparator];
     [invitedParticipants sortUsingComparator:comparator];
-
-    // Refresh the tableview by reloading the search result (if any)
-    [self refreshTableViewByApplyingSearchIfAny];
     
-    // Check whether some accounts have expired
-    MXWeakify(self);
-    [self checkExpiredAccounts:^{
-        MXStrongifyAndReturnIfNil(self);
-        // Sort each participants list in alphabetical order by moving at the bottom the expired accounts
-        [self->actualParticipants sortUsingComparator:comparator];
-        [self->invitedParticipants sortUsingComparator:comparator];
-        
-        // Refresh the tableview by reloading the search result (if any)
-        [self refreshTableViewByApplyingSearchIfAny];
-
-        if (completion)
-        {
-            completion();
-        }
-    }];
+    // Reload search result if any
+    [self reloadSearchResult];
 }
 
 - (Contact*)getContactAtIndexPath:(NSIndexPath *)indexPath
@@ -1139,6 +1209,19 @@
     }
 }
 
+- (void)showDetailFor:(MXRoomMember* _Nonnull)member from:(UIView* _Nullable)sourceView {
+    memberDetailsViewController = [RoomMemberDetailsViewController roomMemberDetailsViewController];
+    
+    // Set delegate to handle action on member (start chat, mention)
+    memberDetailsViewController.delegate = self;
+    memberDetailsViewController.enableMention = _enableMention;
+    memberDetailsViewController.enableVoipCall = NO;
+    
+    [memberDetailsViewController displayRoomMember:member withMatrixRoom:self.mxRoom];
+    
+    [self pushViewController:memberDetailsViewController];
+}
+
 #pragma mark - UITableView data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -1213,6 +1296,7 @@
     {
         ContactCell* participantCell = [tableView dequeueReusableCellWithIdentifier:ContactCell.defaultReuseIdentifier forIndexPath:indexPath];
         participantCell.selectionStyle = UITableViewCellSelectionStyleNone;
+//        participantCell.showCustomAccessoryView = self.showParticipantCustomAccessoryView;
         
         Contact *contact = [self getContactAtIndexPath:indexPath];
         if (contact)
@@ -1337,7 +1421,7 @@
         headerLabel.font = [UIFont boldSystemFontOfSize:15.0];
         headerLabel.backgroundColor = [UIColor clearColor];
         
-        headerLabel.text = NSLocalizedStringFromTable(@"room_participants_invited_section", @"Vector", nil);
+        headerLabel.text = [VectorL10n roomParticipantsInvitedSection];
         
         [sectionHeader addSubview:headerLabel];
     }
@@ -1510,6 +1594,11 @@
     }
 }
 
+- (void)onCancel:(id)sender
+{
+    [self withdrawViewControllerAnimated:YES completion:nil];
+}
+
 #pragma mark -
 
 - (void)leaveRoom
@@ -1594,7 +1683,7 @@
                                                        message:promptMsg
                                                 preferredStyle:UIAlertControllerStyleAlert];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
                                                      style:UIAlertActionStyleCancel
                                                    handler:^(UIAlertAction * action) {
                                                        

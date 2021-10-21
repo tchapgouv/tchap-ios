@@ -218,7 +218,7 @@ final class FavouriteMessagesViewController: UIViewController {
     private func showExplanationAlert(event: MXEvent) {
         // Observe kMXEventDidDecryptNotification to remove automatically the dialog
         // if the user has shared the keys from another device
-        let alert = UIAlertController(title: VectorL10n.rerequestKeysAlertTitle, message: VectorL10n.rerequestKeysAlertMessage, preferredStyle: .alert)
+        let alert = UIAlertController(title: VectorL10n.rerequestKeysAlertTitle, message: VectorL10n.rerequestKeysAlertMessage(AppInfo.current.displayName), preferredStyle: .alert)
         
         self.mxEventDidDecryptNotificationObserver = NotificationCenter.default.addObserver(forName: NSNotification.Name.mxEventDidDecrypt, object: nil, queue: .main) { (notif) in
             if let decryptedEvent = notif.object as? MXEvent, decryptedEvent.eventId == event.eventId {
