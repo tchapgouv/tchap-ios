@@ -21,8 +21,9 @@
 
 #import "AvatarGenerator.h"
 #import "Tools.h"
-#import "GeneratedInterface-Swift.h"
 #import "BubbleReactionsViewSizer.h"
+
+#import "GeneratedInterface-Swift.h"
 #import <MatrixKit/MXKSwiftHeader.h>
 
 static NSAttributedString *timestampVerticalWhitespace = nil;

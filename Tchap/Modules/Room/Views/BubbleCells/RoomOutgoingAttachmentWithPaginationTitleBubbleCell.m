@@ -19,6 +19,7 @@
 
 #import "ThemeService.h"
 #import "GeneratedInterface-Swift.h"
+#import "MXKRoomBubbleTableViewCell+Riot.h"
 
 @implementation RoomOutgoingAttachmentWithPaginationTitleBubbleCell
 

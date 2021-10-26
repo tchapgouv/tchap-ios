@@ -18,14 +18,16 @@
 
 #import "RoomMemberDetailsViewController.h"
 
-#import "Analytics.h"
+#import "GeneratedInterface-Swift.h"
+
+#import "RoomMemberTitleView.h"
 
 #import "AvatarGenerator.h"
 #import "Tools.h"
 
 #import "TableViewCellWithButton.h"
-
-#import "GeneratedInterface-Swift.h"
+#import "RoomTableViewCell.h"
+#import "MXRoom+Riot.h"
 
 #define TABLEVIEW_ROW_CELL_HEIGHT         46
 #define TABLEVIEW_SECTION_HEADER_HEIGHT   28

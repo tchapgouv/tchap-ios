@@ -16,6 +16,8 @@
 
 #import "MatrixContactsDataSource.h"
 
+#import "GeneratedInterface-Swift.h"
+
 @implementation MatrixContactsDataSource
 
 - (instancetype)init

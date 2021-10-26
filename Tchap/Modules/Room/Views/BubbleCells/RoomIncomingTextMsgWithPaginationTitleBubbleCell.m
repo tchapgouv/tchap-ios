@@ -18,8 +18,8 @@
 #import "RoomIncomingTextMsgWithPaginationTitleBubbleCell.h"
 
 #import "ThemeService.h"
-
 #import "GeneratedInterface-Swift.h"
+#import "MXKRoomBubbleTableViewCell+Riot.h"
 
 @implementation RoomIncomingTextMsgWithPaginationTitleBubbleCell
 

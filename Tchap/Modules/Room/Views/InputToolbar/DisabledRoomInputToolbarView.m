@@ -17,7 +17,6 @@
 #import "DisabledRoomInputToolbarView.h"
 
 #import "ThemeService.h"
-
 #import "GeneratedInterface-Swift.h"
 
 @interface DisabledRoomInputToolbarView() <Themable>

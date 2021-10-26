@@ -17,9 +17,6 @@
 
 #import "UsersDevicesViewController.h"
 
-#import "RageShakeManager.h"
-#import "ThemeService.h"
-#import "Analytics.h"
 #import "GeneratedInterface-Swift.h"
 
 @interface UsersDevicesViewController () <KeyVerificationCoordinatorBridgePresenterDelegate>

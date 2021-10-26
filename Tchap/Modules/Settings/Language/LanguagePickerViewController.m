@@ -16,8 +16,6 @@
 
 #import "LanguagePickerViewController.h"
 
-#import "RageShakeManager.h"
-#import "Analytics.h"
 #import "GeneratedInterface-Swift.h"
 
 @interface LanguagePickerViewController ()
