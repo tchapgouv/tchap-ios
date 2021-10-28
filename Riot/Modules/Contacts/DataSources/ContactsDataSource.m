@@ -196,21 +196,25 @@
                 [hsUserDirectoryOperation cancel];
                 hsUserDirectoryOperation = nil;
             }
+            
+            MXWeakify(self);
 
             hsUserDirectoryOperation = [self.mxSession.matrixRestClient searchUsers:searchText limit:50 success:^(MXUserSearchResponse *userSearchResponse) {
-
-                filteredMatrixContacts = [NSMutableArray arrayWithCapacity:userSearchResponse.results.count];
+                
+                MXStrongifyAndReturnIfNil(self);
+                
+                self->filteredMatrixContacts = [NSMutableArray arrayWithCapacity:userSearchResponse.results.count];
 
                 // Keep the response order as the hs ordered users by relevance
                 for (MXUser *mxUser in userSearchResponse.results)
                 {
                     MXKContact *contact = [[MXKContact alloc] initMatrixContactWithDisplayName:mxUser.displayname andMatrixID:mxUser.userId];
-                    [filteredMatrixContacts addObject:contact];
+                    [self->filteredMatrixContacts addObject:contact];
                 }
 
-                hsUserDirectoryOperation = nil;
+                self->hsUserDirectoryOperation = nil;
 
-                _userDirectoryState = userSearchResponse.limited ? ContactsDataSourceUserDirectoryStateLoadedButLimited : ContactsDataSourceUserDirectoryStateLoaded;
+                self->_userDirectoryState = userSearchResponse.limited ? ContactsDataSourceUserDirectoryStateLoadedButLimited : ContactsDataSourceUserDirectoryStateLoaded;
 
                 // And inform the delegate about the update
                 [self.delegate dataSource:self didCellChange:nil];
@@ -230,28 +234,32 @@
         // Disclose the sections
         shrinkedSectionsBitMask = 0;
     }
+    
+    MXWeakify(self);
 
     dispatch_async(searchProcessingQueue, ^{
+        
+        MXStrongifyAndReturnIfNil(self);
         
         // Reset the current arrays if it is required
         if (!searchText.length)
         {
-            searchProcessingLocalContacts = nil;
-            searchProcessingMatrixContacts = nil;
+            self->searchProcessingLocalContacts = nil;
+            self->searchProcessingMatrixContacts = nil;
         }
         else if (unfilteredLocalContacts)
         {
-            searchProcessingLocalContacts = unfilteredLocalContacts;
-            searchProcessingMatrixContacts = unfilteredMatrixContacts;
+            self->searchProcessingLocalContacts = unfilteredLocalContacts;
+            self->searchProcessingMatrixContacts = unfilteredMatrixContacts;
         }
         
-        for (NSUInteger index = 0; index < searchProcessingLocalContacts.count;)
+        for (NSUInteger index = 0; index < self->searchProcessingLocalContacts.count;)
         {
-            MXKContact* contact = searchProcessingLocalContacts[index];
+            MXKContact* contact = self->searchProcessingLocalContacts[index];
             
             if (![contact hasPrefix:searchText])
             {
-                [searchProcessingLocalContacts removeObjectAtIndex:index];
+                [self->searchProcessingLocalContacts removeObjectAtIndex:index];
             }
             else
             {
@@ -260,13 +268,13 @@
             }
         }
         
-        for (NSUInteger index = 0; index < searchProcessingMatrixContacts.count;)
+        for (NSUInteger index = 0; index < self->searchProcessingMatrixContacts.count;)
         {
-            MXKContact* contact = searchProcessingMatrixContacts[index];
+            MXKContact* contact = self->searchProcessingMatrixContacts[index];
             
             if (![contact hasPrefix:searchText])
             {
-                [searchProcessingMatrixContacts removeObjectAtIndex:index];
+                [self->searchProcessingMatrixContacts removeObjectAtIndex:index];
             }
             else
             {
@@ -276,42 +284,41 @@
         }
         
         // Sort the refreshed list of the invitable contacts
-        [[MXKContactManager sharedManager] sortAlphabeticallyContacts:searchProcessingLocalContacts];
-        [[MXKContactManager sharedManager] sortContactsByLastActiveInformation:searchProcessingMatrixContacts];
+        [[MXKContactManager sharedManager] sortAlphabeticallyContacts:self->searchProcessingLocalContacts];
+        [[MXKContactManager sharedManager] sortContactsByLastActiveInformation:self->searchProcessingMatrixContacts];
         
-        searchProcessingText = searchText;
+        self->searchProcessingText = searchText;
+        
+        MXWeakify(self);
         
         dispatch_sync(dispatch_get_main_queue(), ^{
             
             // Sanity check: check whether self has been destroyed.
-            if (!searchProcessingQueue)
-            {
-                return;
-            }
+            MXStrongifyAndReturnIfNil(self);
             
             // Render the search result only if there is no other search in progress.
-            searchProcessingCount --;
+            self->searchProcessingCount --;
             
-            if (!searchProcessingCount)
+            if (!self->searchProcessingCount)
             {
-                if (!forceSearchResultRefresh)
+                if (!self->forceSearchResultRefresh)
                 {
                     // Update the filtered contacts.
-                    currentSearchText = searchProcessingText;
-                    filteredLocalContacts = searchProcessingLocalContacts;
+                    self->currentSearchText = self->searchProcessingText;
+                    self->filteredLocalContacts = self->searchProcessingLocalContacts;
 
                     if (!hsUserDirectory)
                     {
-                        filteredMatrixContacts = searchProcessingMatrixContacts;
-                        _userDirectoryState = ContactsDataSourceUserDirectoryStateOfflineLoaded;
+                        self->filteredMatrixContacts = self->searchProcessingMatrixContacts;
+                        self->_userDirectoryState = ContactsDataSourceUserDirectoryStateOfflineLoaded;
                     }
                     
                     if (!self.forceMatrixIdInDisplayName)
                     {
-                        [isMultiUseNameByDisplayName removeAllObjects];
-                        for (MXKContact* contact in filteredMatrixContacts)
+                        [self->isMultiUseNameByDisplayName removeAllObjects];
+                        for (MXKContact* contact in self->filteredMatrixContacts)
                         {
-                            isMultiUseNameByDisplayName[contact.displayName] = (isMultiUseNameByDisplayName[contact.displayName] ? @(YES) : @(NO));
+                            self->isMultiUseNameByDisplayName[contact.displayName] = (self->isMultiUseNameByDisplayName[contact.displayName] ? @(YES) : @(NO));
                         }
                     }
                     
@@ -321,8 +328,8 @@
                 else
                 {
                     // Launch a new search
-                    forceSearchResultRefresh = NO;
-                    [self searchWithPattern:searchProcessingText forceReset:YES];
+                    self->forceSearchResultRefresh = NO;
+                    [self searchWithPattern:self->searchProcessingText forceReset:YES];
                 }
             }
         });
@@ -608,11 +615,11 @@
             if (indexPath.section == filteredMatrixContactsSection &&
                 (_userDirectoryState == ContactsDataSourceUserDirectoryStateLoading || _userDirectoryState == ContactsDataSourceUserDirectoryStateOfflineLoading))
             {
-                tableViewCell.textLabel.text = [NSBundle mxk_localizedStringForKey:@"search_searching"];
+                tableViewCell.textLabel.text = [MatrixKitL10n searchSearching];
             }
             else
             {
-                tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"search_no_result", @"Vector", nil);
+                tableViewCell.textLabel.text = [VectorL10n searchNoResult];
             }
         }
         else if (indexPath.section == filteredLocalContactsSection)
@@ -626,25 +633,25 @@
                     if (hideNonMatrixEnabledContacts && !self.mxSession.identityService)
                     {
                         // Because we cannot make lookups with no IS
-                        tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"contacts_address_book_no_identity_server", @"Vector", nil);
+                        tableViewCell.textLabel.text = [VectorL10n contactsAddressBookNoIdentityServer];
                     }
                     else
                     {
                         // Because there is no contacts on the device
-                        tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"contacts_address_book_no_contact", @"Vector", nil);
+                        tableViewCell.textLabel.text = [VectorL10n contactsAddressBookNoContact];
                     }
                     break;
 
                 case CNAuthorizationStatusNotDetermined:
                     // Because the user have not granted the permission yet
                     // (The permission request popup is displayed at the same time)
-                    tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"contacts_address_book_permission_required", @"Vector", nil);
+                    tableViewCell.textLabel.text = [VectorL10n contactsAddressBookPermissionRequired];
                     break;
 
                 default:
                 {
                     // Because the user didn't allow the app to access local contacts
-                    tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"contacts_address_book_permission_denied", @"Vector", nil);
+                    tableViewCell.textLabel.text = [VectorL10n contactsAddressBookPermissionDenied:AppInfo.current.displayName];
                     break;
                 }
             }
@@ -728,7 +735,7 @@
     if (section == filteredLocalContactsSection)
     {
         count = filteredLocalContacts.count;
-        title = NSLocalizedStringFromTable(@"contacts_address_book_section", @"Vector", nil);
+        title = [VectorL10n contactsAddressBookSection];
     }
     else //if (section == filteredMatrixContactsSection)
     {
@@ -736,11 +743,11 @@
         {
             case ContactsDataSourceUserDirectoryStateOfflineLoading:
             case ContactsDataSourceUserDirectoryStateOfflineLoaded:
-                title = NSLocalizedStringFromTable(@"contacts_user_directory_offline_section", @"Vector", nil);
+                title = [VectorL10n contactsUserDirectoryOfflineSection];
                 break;
 
             default:
-                title = NSLocalizedStringFromTable(@"contacts_user_directory_section", @"Vector", nil);
+                title = [VectorL10n contactsUserDirectorySection];
                 break;
         }
         
@@ -850,7 +857,7 @@
             
             checkboxLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 30)];
             checkboxLabel.font = [UIFont systemFontOfSize:16.0];
-            checkboxLabel.text = NSLocalizedStringFromTable(@"contacts_address_book_matrix_users_toggle", @"Vector", nil);
+            checkboxLabel.text = [VectorL10n contactsAddressBookMatrixUsersToggle];
             [localContactsCheckboxContainer addSubview:checkboxLabel];
             localContactsCheckboxContainer.checkboxLabel = checkboxLabel;
             

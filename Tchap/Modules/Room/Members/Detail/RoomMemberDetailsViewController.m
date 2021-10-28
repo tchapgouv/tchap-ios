@@ -154,6 +154,7 @@
     [self updateTheme];
 }
 
+    //TODO Design the activity indicator for Tchap
 - (void)updateTheme
 {
     UINavigationBar *navigationBar = self.navigationController.navigationBar;
@@ -570,7 +571,7 @@
 {
     if (section == adminToolsIndex)
     {
-        return NSLocalizedStringFromTable(@"room_participants_action_section_admin_tools", @"Vector", nil);
+        return [VectorL10n roomParticipantsActionSectionAdminTools];
     }
 //    else if (section == devicesIndex)
 //    {
@@ -587,46 +588,60 @@
     switch (action)
     {
         case MXKRoomMemberDetailsActionInvite:
-            title = NSLocalizedStringFromTable(@"room_participants_action_invite", @"Vector", nil);
+            title = [VectorL10n roomParticipantsActionInvite];
             break;
         case MXKRoomMemberDetailsActionLeave:
-            title = NSLocalizedStringFromTable(@"room_participants_action_leave", @"Vector", nil);
+            title = [VectorL10n roomParticipantsActionLeave];
             break;
         case MXKRoomMemberDetailsActionKick:
-            title = NSLocalizedStringFromTable(@"room_participants_action_remove", @"Vector", nil);
+            if (self.mxRoom.summary.roomType == MXRoomTypeSpace)
+            {
+                title = [VectorL10n spaceParticipantsActionRemove];
+            }
+            else
+            {
+                title = [VectorL10n roomParticipantsActionRemove];
+            }
             break;
         case MXKRoomMemberDetailsActionBan:
-            title = NSLocalizedStringFromTable(@"room_participants_action_ban", @"Vector", nil);
+            if (self.mxRoom.summary.roomType == MXRoomTypeSpace)
+            {
+                title = [VectorL10n spaceParticipantsActionBan];
+            }
+            else
+            {
+                title = [VectorL10n roomParticipantsActionBan];
+            }
             break;
         case MXKRoomMemberDetailsActionUnban:
-            title = NSLocalizedStringFromTable(@"room_participants_action_unban", @"Vector", nil);
+            title = [VectorL10n roomParticipantsActionUnban];
             break;
         case MXKRoomMemberDetailsActionIgnore:
-            title = NSLocalizedStringFromTable(@"room_participants_action_ignore", @"Vector", nil);
+            title = [VectorL10n roomParticipantsActionIgnore];
             break;
         case MXKRoomMemberDetailsActionUnignore:
-            title = NSLocalizedStringFromTable(@"room_participants_action_unignore", @"Vector", nil);
+            title = [VectorL10n roomParticipantsActionUnignore];
             break;
         case MXKRoomMemberDetailsActionSetDefaultPowerLevel:
-            title = NSLocalizedStringFromTable(@"room_participants_action_set_default_power_level", @"Vector", nil);
+            title = [VectorL10n roomParticipantsActionSetDefaultPowerLevel];
             break;
         case MXKRoomMemberDetailsActionSetModerator:
-            title = NSLocalizedStringFromTable(@"room_participants_action_set_moderator", @"Vector", nil);
+            title = [VectorL10n roomParticipantsActionSetModerator];
             break;
         case MXKRoomMemberDetailsActionSetAdmin:
-            title = NSLocalizedStringFromTable(@"room_participants_action_set_admin", @"Vector", nil);
+            title = [VectorL10n roomParticipantsActionSetAdmin];
             break;
         case MXKRoomMemberDetailsActionStartChat:
-            title = NSLocalizedStringFromTable(@"room_member_details_action_chat", @"Tchap", nil);
+            title = [VectorL10n roomParticipantsActionStartNewChat];
             break;
         case MXKRoomMemberDetailsActionStartVoiceCall:
-            title = NSLocalizedStringFromTable(@"room_participants_action_start_voice_call", @"Vector", nil);
+            title = [VectorL10n roomParticipantsActionStartVoiceCall];
             break;
         case MXKRoomMemberDetailsActionStartVideoCall:
-            title = NSLocalizedStringFromTable(@"room_participants_action_start_video_call", @"Vector", nil);
+            title = [VectorL10n roomParticipantsActionStartVideoCall];
             break;
         case MXKRoomMemberDetailsActionMention:
-            title = NSLocalizedStringFromTable(@"room_participants_action_mention", @"Vector", nil);
+            title = [VectorL10n roomParticipantsActionMention];
             break;
         default:
             break;
@@ -834,7 +849,7 @@
                 __weak typeof(self) weakSelf = self;
                 
                 // Ban
-                currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"room_event_action_ban_prompt_reason", @"Vector", nil)
+                currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n roomEventActionBanPromptReason]
                                                                    message:nil
                                                             preferredStyle:UIAlertControllerStyleAlert];
                 
@@ -844,7 +859,7 @@
                     textField.keyboardType = UIKeyboardTypeDefault;
                 }];
                 
-                [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
                                                                  style:UIAlertActionStyleDefault
                                                                handler:^(UIAlertAction * action) {
                                                                    
@@ -856,7 +871,7 @@
                                                                    
                                                                }]];
                 
-                [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ban"]
+                [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ban]
                                                                  style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
                                                                      
                                                                      if (weakSelf)
@@ -880,7 +895,7 @@
                                                                              __strong __typeof(weakSelf)self = weakSelf;
                                                                              [self stopActivityIndicator];
                                                                              
-                                                                             NSLog(@"[RoomMemberDetailVC] Ban user (%@) failed", self.mxRoomMember.userId);
+                                                                             MXLogDebug(@"[RoomMemberDetailVC] Ban user (%@) failed", self.mxRoomMember.userId);
                                                                              //Alert user
                                                                              [[AppDelegate theDelegate] showErrorAsAlert:error];
                                                                              
@@ -898,7 +913,7 @@
                 __weak typeof(self) weakSelf = self;
                 
                 // Kick
-                currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"room_event_action_kick_prompt_reason", @"Vector", nil)
+                currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n roomEventActionKickPromptReason]
                                                                    message:nil
                                                             preferredStyle:UIAlertControllerStyleAlert];
                 
@@ -908,7 +923,7 @@
                     textField.keyboardType = UIKeyboardTypeDefault;
                 }];
                 
-                [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
                                                                  style:UIAlertActionStyleDefault
                                                                handler:^(UIAlertAction * action) {
                                                                    
@@ -920,7 +935,7 @@
                                                                    
                                                                }]];
                 
-                [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"remove", @"Vector", nil)
+                [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n remove]
                                                                  style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
                                                                    
                                                                    if (weakSelf)
@@ -944,7 +959,7 @@
                                                                            __strong __typeof(weakSelf)self = weakSelf;
                                                                            [self stopActivityIndicator];
                                                                            
-                                                                           NSLog(@"[RoomMemberDetailVC] Removing user (%@) failed", self.mxRoomMember.userId);
+                                                                           MXLogDebug(@"[RoomMemberDetailVC] Removing user (%@) failed", self.mxRoomMember.userId);
                                                                            //Alert user
                                                                            [[AppDelegate theDelegate] showErrorAsAlert:error];
                                                                            

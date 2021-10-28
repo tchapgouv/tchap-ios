@@ -123,6 +123,7 @@ final class BuildSettings: NSObject {
     
     
     // MARK: - Server configuration
+    
     // TODO: replace m.org with https://sygnal.tchap.gouv.fr
     static let serverConfigSygnalAPIUrlString = "https://matrix.org/_matrix/push/v1/notify"
     
@@ -176,7 +177,7 @@ final class BuildSettings: NSObject {
     static let roomsAllowToJoinPublicRooms: Bool = true
     
     // MARK: - Analytics
-    static let analyticsServerUrl: String? = nil
+    static let analyticsServerUrl: URL? = URL(string: "")
     static let analyticsAppId: String? = nil
     
     
@@ -221,6 +222,9 @@ final class BuildSettings: NSObject {
     
     static let enableSideMenu: Bool = true
     
+    /// Whether to read the `io.element.functional_members` state event and exclude any service members when computing a room's name and avatar.
+    static let supportFunctionalMembers: Bool = true
+    
     // MARK: - Feature Specifics
     
     /// Not allowed pin codes. User won't be able to select one of the pin in the list.
@@ -237,6 +241,8 @@ final class BuildSettings: NSObject {
     
     /// Indicates should the app log out the user when number of biometrics failures reaches `maxAllowedNumberOfBiometricsFailures`. Defaults to `false`
     static let logOutUserWhenBiometricsFailuresExceeded: Bool = false
+    
+    static let showNotificationsV2: Bool = false
     
     // MARK: - Main Tabs
     

@@ -40,10 +40,10 @@
                                     </constraints>
                                 </imageView>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QsB-3y-xaO">
-                                    <rect key="frame" x="86.5" y="0.0" width="29.5" height="16"/>
+                                    <rect key="frame" x="86.5" y="0.0" width="31.5" height="16"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Privé" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E2h-1c-jqD">
-                                            <rect key="frame" x="0.0" y="0.5" width="29.5" height="14.5"/>
+                                            <rect key="frame" x="0.0" y="0.5" width="31.5" height="14.5"/>
                                             <fontDescription key="fontDescription" type="system" weight="medium" pointSize="12"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -57,23 +57,23 @@
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ke4-Xj-H6W">
-                                    <rect key="frame" x="116" y="0.0" width="48" height="16"/>
+                                    <rect key="frame" x="118" y="0.0" width="46" height="16"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="・" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FBH-jl-0gX">
-                                            <rect key="frame" x="0.0" y="-3" width="20.5" height="21.5"/>
+                                            <rect key="frame" x="0.0" y="-3" width="18.5" height="21.5"/>
                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="room_header_members" translatesAutoresizingMaskIntoConstraints="NO" id="EVF-la-ECn">
-                                            <rect key="frame" x="20.5" y="0.0" width="16" height="16"/>
+                                            <rect key="frame" x="18.5" y="0.0" width="16" height="16"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="16" id="JF4-5Z-xdP"/>
                                                 <constraint firstAttribute="width" secondItem="EVF-la-ECn" secondAttribute="height" multiplier="1:1" id="tnG-Lu-OGo"/>
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pSP-8F-4FY">
-                                            <rect key="frame" x="40.5" y="0.5" width="7.5" height="14.5"/>
+                                            <rect key="frame" x="38.5" y="0.5" width="7.5" height="14.5"/>
                                             <fontDescription key="fontDescription" type="system" weight="medium" pointSize="12"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>

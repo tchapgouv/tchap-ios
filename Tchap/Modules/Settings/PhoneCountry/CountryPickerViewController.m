@@ -24,13 +24,15 @@
 @interface CountryPickerViewController ()
 {
     /**
+     Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
+     */
+    id kThemeServiceDidChangeThemeNotificationObserver;
+    
+    /**
      The fake top view displayed in case of vertical bounce.
      */
     UIView *topview;
 }
-
-// Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
-@property (nonatomic, weak) id kThemeServiceDidChangeThemeNotificationObserver;
 
 @end
 
@@ -65,7 +67,7 @@
 
     // Observe user interface theme change.
     MXWeakify(self);
-    _kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         MXStrongifyAndReturnIfNil(self);
         [self userInterfaceThemeDidChange];
@@ -130,9 +132,9 @@
     [topview removeFromSuperview];
     topview = nil;
     
-    if (_kThemeServiceDidChangeThemeNotificationObserver)
+    if (kThemeServiceDidChangeThemeNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:_kThemeServiceDidChangeThemeNotificationObserver];
+        [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
     }
 }
 

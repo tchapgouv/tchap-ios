@@ -24,11 +24,12 @@ configFiles:
   Release: Config/Project-Release.xcconfig
 
 options:
-  defaultConfig: Debug
+  defaultConfig: Release
   groupSortPosition: bottom
   transitivelyLinkDependencies: false
   createIntermediateGroups: true
   useBaseInternationalization: true
+  postGenCommand: sh Tools/XcodeGen/postGenCommand.sh
 
 include:
   - path: Tchap/target.yml

@@ -126,7 +126,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     [super viewDidLoad];
     
     self.mainNavigationItem.title = nil;
-    self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"auth_register", @"Vector", nil);
+    self.rightBarButtonItem.title = [VectorL10n authRegister];
     
     self.defaultHomeServerUrl = RiotSettings.shared.homeserverUrlString;
     
@@ -136,14 +136,14 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     
     [self.submitButton.layer setCornerRadius:5];
     self.submitButton.clipsToBounds = YES;
-    [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_login", @"Vector", nil) forState:UIControlStateNormal];
-    [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_login", @"Vector", nil) forState:UIControlStateHighlighted];
+    [self.submitButton setTitle:[VectorL10n authLogin] forState:UIControlStateNormal];
+    [self.submitButton setTitle:[VectorL10n authLogin] forState:UIControlStateHighlighted];
     self.submitButton.enabled = YES;
     
     [self.skipButton.layer setCornerRadius:5];
     self.skipButton.clipsToBounds = YES;
-    [self.skipButton setTitle:NSLocalizedStringFromTable(@"auth_skip", @"Vector", nil) forState:UIControlStateNormal];
-    [self.skipButton setTitle:NSLocalizedStringFromTable(@"auth_skip", @"Vector", nil) forState:UIControlStateHighlighted];
+    [self.skipButton setTitle:[VectorL10n authSkip] forState:UIControlStateNormal];
+    [self.skipButton setTitle:[VectorL10n authSkip] forState:UIControlStateHighlighted];
     self.skipButton.enabled = YES;
     
     [self.customServersTickButton setImage:[UIImage imageNamed:@"selection_untick"] forState:UIControlStateNormal];
@@ -161,16 +161,16 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     // Soft logout section
     self.softLogoutClearDataButton.layer.cornerRadius = 5;
     self.softLogoutClearDataButton.clipsToBounds = YES;
-    [self.softLogoutClearDataButton setTitle:NSLocalizedStringFromTable(@"auth_softlogout_clear_data_button", @"Vector", nil) forState:UIControlStateNormal];
-    [self.softLogoutClearDataButton setTitle:NSLocalizedStringFromTable(@"auth_softlogout_clear_data_button", @"Vector", nil) forState:UIControlStateHighlighted];
+    [self.softLogoutClearDataButton setTitle:[VectorL10n authSoftlogoutClearDataButton] forState:UIControlStateNormal];
+    [self.softLogoutClearDataButton setTitle:[VectorL10n authSoftlogoutClearDataButton] forState:UIControlStateHighlighted];
     self.softLogoutClearDataButton.enabled = YES;
     self.softLogoutClearDataContainer.hidden = YES;
     
     // The view controller dismiss itself on successful login.
     self.delegate = self;
     
-    self.homeServerTextField.placeholder = NSLocalizedStringFromTable(@"auth_home_server_placeholder", @"Vector", nil);
-    self.identityServerTextField.placeholder = NSLocalizedStringFromTable(@"auth_identity_server_placeholder", @"Vector", nil);
+    self.homeServerTextField.placeholder = [VectorL10n authHomeServerPlaceholder];
+    self.identityServerTextField.placeholder = [VectorL10n authIdentityServerPlaceholder];
     
     self.authenticationActivityIndicatorContainerView.layer.cornerRadius = 5;
     [self.authenticationActivityIndicator addObserver:self
@@ -250,7 +250,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     self.authenticationActivityIndicatorContainerView.backgroundColor = ThemeService.shared.theme.baseColor;
     self.noFlowLabel.textColor = ThemeService.shared.theme.warningColor;
     
-    NSMutableAttributedString *forgotPasswordTitle = [[NSMutableAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"auth_forgot_password", @"Vector", nil)];
+    NSMutableAttributedString *forgotPasswordTitle = [[NSMutableAttributedString alloc] initWithString:[VectorL10n authForgotPassword]];
     [forgotPasswordTitle addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:NSMakeRange(0, forgotPasswordTitle.length)];
     [forgotPasswordTitle addAttribute:NSForegroundColorAttributeName value:ThemeService.shared.theme.tintColor range:NSMakeRange(0, forgotPasswordTitle.length)];
     [self.forgotPasswordButton setAttributedTitle:forgotPasswordTitle forState:UIControlStateNormal];
@@ -262,7 +262,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     
     [self updateForgotPwdButtonVisibility];
     
-    NSAttributedString *serverOptionsTitle = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"auth_use_server_options", @"Vector", nil) attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textSecondaryColor, NSFontAttributeName: [UIFont systemFontOfSize:14]}];
+    NSAttributedString *serverOptionsTitle = [[NSAttributedString alloc] initWithString:[VectorL10n authUseServerOptions] attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textSecondaryColor, NSFontAttributeName: [UIFont systemFontOfSize:14]}];
     [self.customServersTickButton setAttributedTitle:serverOptionsTitle forState:UIControlStateNormal];
     [self.customServersTickButton setAttributedTitle:serverOptionsTitle forState:UIControlStateHighlighted];
     
@@ -405,25 +405,25 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 
     if (authType == MXKAuthenticationTypeLogin)
     {
-        [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_login", @"Vector", nil) forState:UIControlStateNormal];
-        [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_login", @"Vector", nil) forState:UIControlStateHighlighted];
+        [self.submitButton setTitle:[VectorL10n authLogin] forState:UIControlStateNormal];
+        [self.submitButton setTitle:[VectorL10n authLogin] forState:UIControlStateHighlighted];
     }
     else if (authType == MXKAuthenticationTypeRegister)
     {
-        [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_register", @"Vector", nil) forState:UIControlStateNormal];
-        [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_register", @"Vector", nil) forState:UIControlStateHighlighted];
+        [self.submitButton setTitle:[VectorL10n authRegister] forState:UIControlStateNormal];
+        [self.submitButton setTitle:[VectorL10n authRegister] forState:UIControlStateHighlighted];
     }
     else if (authType == MXKAuthenticationTypeForgotPassword)
     {
         if (isPasswordReseted)
         {
-            [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_return_to_login", @"Vector", nil) forState:UIControlStateNormal];
-            [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_return_to_login", @"Vector", nil) forState:UIControlStateHighlighted];
+            [self.submitButton setTitle:[VectorL10n authReturnToLogin] forState:UIControlStateNormal];
+            [self.submitButton setTitle:[VectorL10n authReturnToLogin] forState:UIControlStateHighlighted];
         }
         else
         {
-            [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_send_reset_email", @"Vector", nil) forState:UIControlStateNormal];
-            [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_send_reset_email", @"Vector", nil) forState:UIControlStateHighlighted];
+            [self.submitButton setTitle:[VectorL10n authSendResetEmail] forState:UIControlStateNormal];
+            [self.submitButton setTitle:[VectorL10n authSendResetEmail] forState:UIControlStateHighlighted];
         }
     }
     
@@ -511,7 +511,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     if (!userInteractionEnabled)
     {
         // The right bar button is used to cancel the running request.
-        self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"cancel", @"Vector", nil);
+        self.rightBarButtonItem.title = [VectorL10n cancel];
 
         // Remove the potential back button.
         self.mainNavigationItem.leftBarButtonItem = nil;
@@ -531,7 +531,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
                 && !self.softLogoutCredentials
                 && BuildSettings.authScreenShowRegister)
             {
-                self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"auth_register", @"Vector", nil);
+                self.rightBarButtonItem.title = [VectorL10n authRegister];
             }
             else
             {
@@ -542,7 +542,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
         }
         else if (self.authType == MXKAuthenticationTypeRegister)
         {
-            self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"auth_login", @"Vector", nil);
+            self.rightBarButtonItem.title = [VectorL10n authLogin];
             
             // Restore the back button
             if (authInputsview)
@@ -553,7 +553,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
         else if (self.authType == MXKAuthenticationTypeForgotPassword)
         {
             // The right bar button is used to return to login.
-            self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"cancel", @"Vector", nil);
+            self.rightBarButtonItem.title = [VectorL10n cancel];
         }
     }
 }
@@ -648,7 +648,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 
     authFallBackViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismissFallBackViewController:)];
 
-    UINavigationController *navigationController = [[TCNavigationController alloc] initWithRootViewController:authFallBackViewController];
+    UINavigationController *navigationController = [[RiotNavigationController alloc] initWithRootViewController:authFallBackViewController];
     [self presentViewController:navigationController animated:YES completion:nil];
 }
 
@@ -687,23 +687,23 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     // Customise the screen for soft logout
     self.customServersTickButton.hidden = YES;
     self.rightBarButtonItem.title = nil;
-    self.mainNavigationItem.title = NSLocalizedStringFromTable(@"auth_softlogout_signed_out", @"Vector", nil);
+    self.mainNavigationItem.title = [VectorL10n authSoftlogoutSignedOut];
 
     [self showSoftLogoutClearDataContainer];
 }
 
 - (void)showSoftLogoutClearDataContainer
 {
-    NSMutableAttributedString *message = [[NSMutableAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"auth_softlogout_clear_data", @"Vector", nil)
+    NSMutableAttributedString *message = [[NSMutableAttributedString alloc] initWithString:[VectorL10n authSoftlogoutClearData]
                                                                                 attributes:@{
                                                                                              NSFontAttributeName: [UIFont boldSystemFontOfSize:14]
                                                                                              }];
-
+    
     [message appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n\n"]];
-
+    
     NSString *string = [NSString stringWithFormat:@"%@\n\n%@",
-                        NSLocalizedStringFromTable(@"auth_softlogout_clear_data_message_1", @"Vector", nil),
-                        NSLocalizedStringFromTable(@"auth_softlogout_clear_data_message_2", @"Vector", nil)];
+                        [VectorL10n authSoftlogoutClearDataMessage1],
+                        [VectorL10n authSoftlogoutClearDataMessage2]];
     
     [message appendAttributedString:[[NSAttributedString alloc] initWithString:string
                                                                     attributes:@{
@@ -736,19 +736,20 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
         [alert dismissViewControllerAnimated:NO completion:nil];
     }
 
-    alert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"auth_softlogout_clear_data_sign_out_title", @"Vector", nil)
-                                                message:NSLocalizedStringFromTable(@"auth_softlogout_clear_data_sign_out_msg", @"Vector", nil)
+    alert = [UIAlertController alertControllerWithTitle:[VectorL10n authSoftlogoutClearDataSignOutTitle]
+                                                message:[VectorL10n authSoftlogoutClearDataSignOutMsg]
                                          preferredStyle:UIAlertControllerStyleAlert];
 
 
-    [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"auth_softlogout_clear_data_sign_out", @"Vector", nil)                                              style:UIAlertActionStyleDestructive
+    [alert addAction:[UIAlertAction actionWithTitle:[VectorL10n authSoftlogoutClearDataSignOut]
+                                              style:UIAlertActionStyleDestructive
                                             handler:^(UIAlertAction * action)
                       {
                           [self clearDataAfterSoftLogout];
                       }]];
 
     MXWeakify(self);
-    [alert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+    [alert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
                                               style:UIAlertActionStyleDefault
                                             handler:^(UIAlertAction * action)
                       {
@@ -924,10 +925,10 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     {
         if (!self.isIdentityServerConfigured)
         {
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"error"]
-                                                                           message:NSLocalizedStringFromTable(@"auth_forgot_password_error_no_configured_identity_server", @"Vector", nil)
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:[MatrixKitL10n error]
+                                                                           message:[VectorL10n authForgotPasswordErrorNoConfiguredIdentityServer]
                                                                     preferredStyle:UIAlertControllerStyleAlert];
-            [alert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:UIAlertActionStyleDefault handler:nil]];
+            [alert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok] style:UIAlertActionStyleDefault handler:nil]];
             [self presentViewController:alert animated:YES completion:nil];
             
             return;
@@ -949,12 +950,12 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
         else if (self.authType == MXKAuthenticationTypeLogin)
         {
             self.authType = MXKAuthenticationTypeRegister;
-            self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"auth_login", @"Vector", nil);
+            self.rightBarButtonItem.title = [VectorL10n authLogin];
         }
         else
         {
             self.authType = MXKAuthenticationTypeLogin;
-            self.rightBarButtonItem.title = NSLocalizedStringFromTable(@"auth_register", @"Vector", nil);
+            self.rightBarButtonItem.title = [VectorL10n authRegister];
         }
     }
     else if (sender == self.mainNavigationItem.leftBarButtonItem)
@@ -1001,7 +1002,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
                             if ([mxError.errcode isEqualToString:kMXErrCodeStringUserInUse])
                             {
                                 MXLogDebug(@"[AuthenticationVC] User name is already use");
-                                [self onFailureDuringAuthRequest:[NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[NSBundle mxk_localizedStringForKey:@"auth_username_in_use"]}]];
+                                [self onFailureDuringAuthRequest:[NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[VectorL10n authUsernameInUse]}]];
                             }
                             //   - the server quota limits is not reached
                             else if ([mxError.errcode isEqualToString:kMXErrCodeStringResourceLimitExceeded])
@@ -1139,9 +1140,9 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
                 [alert dismissViewControllerAnimated:NO completion:nil];
             }
             
-            alert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"warning", @"Vector", nil) message:NSLocalizedStringFromTable(@"auth_add_email_and_phone_warning", @"Vector", nil) preferredStyle:UIAlertControllerStyleAlert];
+            alert = [UIAlertController alertControllerWithTitle:[VectorL10n warning] message:[VectorL10n authAddEmailAndPhoneWarning] preferredStyle:UIAlertControllerStyleAlert];
             
-            [alert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+            [alert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
                                                              style:UIAlertActionStyleDefault
                                                            handler:^(UIAlertAction * action) {
                                                                
@@ -1182,15 +1183,15 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     
     if (thirdPartyIdentifiersHidden)
     {
-        [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_register", @"Vector", nil) forState:UIControlStateNormal];
-        [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_register", @"Vector", nil) forState:UIControlStateHighlighted];
+        [self.submitButton setTitle:[VectorL10n authRegister] forState:UIControlStateNormal];
+        [self.submitButton setTitle:[VectorL10n authRegister] forState:UIControlStateHighlighted];
         
         self.mainNavigationItem.leftBarButtonItem = nil;
     }
     else
     {
-        [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_submit", @"Vector", nil) forState:UIControlStateNormal];
-        [self.submitButton setTitle:NSLocalizedStringFromTable(@"auth_submit", @"Vector", nil) forState:UIControlStateHighlighted];
+        [self.submitButton setTitle:[VectorL10n authSubmit] forState:UIControlStateNormal];
+        [self.submitButton setTitle:[VectorL10n authSubmit] forState:UIControlStateHighlighted];
         
         UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back_icon"] style:UIBarButtonItemStylePlain target:self action:@selector(onButtonPressed:)];
         self.mainNavigationItem.leftBarButtonItem = leftBarButtonItem;
@@ -1564,11 +1565,11 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
                     [self->alert dismissViewControllerAnimated:NO completion:nil];
                 }
 
-                self->alert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"auth_autodiscover_invalid_response", @"Vector", nil)
+                self->alert = [UIAlertController alertControllerWithTitle:[VectorL10n authAutodiscoverInvalidResponse]
                                                                   message:nil
                                                            preferredStyle:UIAlertControllerStyleAlert];
 
-                [self->alert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                [self->alert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
                                                                 style:UIAlertActionStyleDefault
                                                               handler:^(UIAlertAction * action) {
 

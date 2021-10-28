@@ -24,6 +24,8 @@
 
 #import "UsersDevicesViewController.h"
 
+#import "RiotNavigationController.h"
+
 #import "IncomingCallView.h"
 
 // TODO: Tchap: VoIP support
@@ -204,9 +206,9 @@ CallAudioRouteMenuViewDelegate> */
     
     NSString *callInfo;
     if (self.mxCall.isVideoCall)
-        callInfo = NSLocalizedStringFromTable(@"call_incoming_video", @"Vector", nil);
+        callInfo = [VectorL10n callIncomingVideo];
     else
-        callInfo = NSLocalizedStringFromTable(@"call_incoming_voice", @"Vector", nil);
+        callInfo = [VectorL10n callIncomingVoice];
     
     IncomingCallView *incomingCallView = [[IncomingCallView alloc] initWithCallerAvatar:self.peer.avatarUrl
                                                                            mediaManager:self.mainSession.mediaManager
@@ -307,11 +309,11 @@ CallAudioRouteMenuViewDelegate> */
         
         [currentAlert dismissViewControllerAnimated:NO completion:nil];
         
-        currentAlert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"unknown_devices_alert_title"]
-                                                           message:[NSBundle mxk_localizedStringForKey:@"unknown_devices_alert"]
+        currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n unknownDevicesAlertTitle]
+                                                           message:[VectorL10n unknownDevicesAlert]
                                                     preferredStyle:UIAlertControllerStyleAlert];
         
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"unknown_devices_verify"]
+        [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n unknownDevicesVerify]
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * action) {
                                                            
@@ -361,7 +363,7 @@ CallAudioRouteMenuViewDelegate> */
                                                        }]];
         
         
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:(call.isIncoming ? @"unknown_devices_answer_anyway":@"unknown_devices_call_anyway")]
+        [currentAlert addAction:[UIAlertAction actionWithTitle:(call.isIncoming ? [VectorL10n unknownDevicesAnswerAnyway] : [VectorL10n unknownDevicesCallAnyway])
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * action) {
                                                            
@@ -433,6 +435,142 @@ CallAudioRouteMenuViewDelegate> */
         }
     }
 }
+
+
+#pragma mark - Properties
+
+- (id<Theme>)overriddenTheme
+{
+    if (_overriddenTheme == nil)
+    {
+        _overriddenTheme = [DarkTheme new];
+    }
+    return _overriddenTheme;
+}
+
+//- (CallPiPView *)pipView
+//{
+//    if (_pipView == nil)
+//    {
+//        _pipView = [CallPiPView instantiateWithSession:self.mainSession];
+//        [_pipView updateWithTheme:self.overriddenTheme];
+//    }
+//    return _pipView;
+//}
+
+- (void)setMxCallOnHold:(MXCall *)mxCallOnHold
+{
+    [super setMxCallOnHold:mxCallOnHold];
+    
+//    [self configurePiPView];
+}
+
+- (UIImage*)picturePlaceholder
+{
+    CGFloat fontSize = floor(self.callerImageViewWidthConstraint.constant * 0.7);
+    
+    if (self.peer)
+    {
+        // Use the vector style placeholder
+        return [AvatarGenerator generateAvatarForMatrixItem:self.peer.userId
+                                            withDisplayName:self.peer.displayname
+                                                       size:self.callerImageViewWidthConstraint.constant
+                                                andFontSize:fontSize];
+    }
+    else if (self.mxCall.room)
+    {
+        return [AvatarGenerator generateAvatarForMatrixItem:self.mxCall.room.roomId
+                                            withDisplayName:self.mxCall.room.summary.displayname
+                                                       size:self.callerImageViewWidthConstraint.constant
+                                                andFontSize:fontSize];
+    }
+    
+    return [MXKTools paintImage:[UIImage imageNamed:@"placeholder"]
+                      withColor:self.overriddenTheme.tintColor];
+}
+
+- (void)updatePeerInfoDisplay
+{
+    [super updatePeerInfoDisplay];
+    
+    NSString *peerAvatarURL;
+
+    if (self.peer)
+    {
+        peerAvatarURL = self.peer.avatarUrl;
+    }
+    else if (self.mxCall.isConferenceCall)
+    {
+        peerAvatarURL = self.mxCall.room.summary.avatar;
+    }
+
+    self.blurredCallerImageView.contentMode = UIViewContentModeScaleAspectFill;
+    self.callerImageView.contentMode = UIViewContentModeScaleAspectFill;
+    if (peerAvatarURL)
+    {
+        // Retrieve the avatar in full resolution
+        [self.blurredCallerImageView setImageURI:peerAvatarURL
+                                        withType:nil
+                             andImageOrientation:UIImageOrientationUp
+                                    previewImage:self.picturePlaceholder
+                                    mediaManager:self.mainSession.mediaManager];
+
+        // Retrieve the avatar in full resolution
+        [self.callerImageView setImageURI:peerAvatarURL
+                                 withType:nil
+                      andImageOrientation:UIImageOrientationUp
+                             previewImage:self.picturePlaceholder
+                             mediaManager:self.mainSession.mediaManager];
+    }
+    else
+    {
+        self.blurredCallerImageView.image = self.picturePlaceholder;
+        self.callerImageView.image = self.picturePlaceholder;
+    }
+}
+
+#pragma mark - Sounds
+
+- (NSURL*)audioURLWithName:(NSString*)soundName
+{
+    NSURL *audioUrl;
+    
+    NSString *path = [[NSBundle mainBundle] pathForResource:soundName ofType:@"mp3"];
+    if (path)
+    {
+        audioUrl = [NSURL fileURLWithPath:path];
+    }
+    
+    // Use by default the matrix kit sounds.
+    if (!audioUrl)
+    {
+        audioUrl = [super audioURLWithName:soundName];
+    }
+    
+    return audioUrl;
+}
+
+#pragma mark - Actions
+
+//- (IBAction)onButtonPressed:(id)sender
+//{
+//    if (sender == _chatButton)
+//    {
+//        if (self.delegate)
+//        {
+//            // Dismiss the view controller whereas the call is still running
+//            [self.delegate dismissCallViewController:self completion:^{
+//                
+//                if (self.mxCall.room)
+//                {
+//                    // Open the room page
+//                    [[AppDelegate theDelegate] showRoom:self.mxCall.room.roomId andEventId:nil withMatrixSession:self.mxCall.room.mxSession];
+//                }
+//                
+//            }];
+//        }
+//    }
+//}
 
 
 //#pragma mark - Properties

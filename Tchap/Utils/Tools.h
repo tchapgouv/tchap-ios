@@ -37,6 +37,13 @@
 + (BOOL)isPermaLink:(NSURL*)url;
 
 /**
+ Detect if a URL is a universal link for the application.
+
+ @return YES if the URL can be handled by the app.
+ */
++ (BOOL)isUniversalLink:(NSURL*)url;
+
+/**
  Fix a http path url.
 
  This method fixes the issue with iOS which handles URL badly when there are several hash

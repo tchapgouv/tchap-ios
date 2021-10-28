@@ -69,6 +69,7 @@ targets:
         - "Modules/Room/EmojiPicker/Data/EmojiMart/EmojiJSONStore.swift"
         - "SupportingFiles/Info.plist"
         - "TchapTools"
+        - "Managers/AppVersion/AppVersion.swift"
         - "**/*.strings" # Exclude all strings files
         - "**/*.cer"
 
@@ -86,6 +87,7 @@ targets:
     - path: ../Riot/Categories
     - path: ../Riot/Generated/Vector_Strings.swift
     - path: ../Riot/Managers/Analytics
+    - path: ../Riot/Managers/AppInfo
     - path: ../Riot/Managers/BugReport
     - path: ../Riot/Managers/EncryptionKeyManager/EncryptionKeyManager.swift
     - path: ../Riot/Managers/KeyValueStorage
@@ -96,6 +98,7 @@ targets:
     - path: ../Riot/Managers/Settings/RiotSettings.swift
     - path: ../Riot/Managers/Settings/Shared
     - path: ../Riot/Managers/Theme
+    - path: ../Riot/Managers/URLPreviews
     - path: ../Riot/Managers/Widgets
     - path: ../Riot/Model/Contact
     - path: ../Riot/Model/HomeserverConfiguration
@@ -104,7 +107,6 @@ targets:
     - path: ../Riot/Model/Room/RoomPreviewData.h
     - path: ../Riot/Model/Room/RoomPreviewData.m
     - path: ../Riot/Model/WellKnown
-    - path: ../Riot/Modules/AuthenticatedSession
     - path: ../Riot/Modules/Authentication/SSO
     - path: ../Riot/Modules/Authentication/Views
     - path: ../Riot/Modules/BugReport/BugReportViewController.h
@@ -117,19 +119,21 @@ targets:
     - path: ../Riot/Modules/Call/Views/IncomingCallView.m
     - path: ../Riot/Modules/Camera
     - path: ../Riot/Modules/Common/Buttons
-    - path: ../Riot/Modules/Common/Cells/TableViewCellWithButton.h
-    - path: ../Riot/Modules/Common/Cells/TableViewCellWithButton.m
+    - path: ../Riot/Modules/Common/Cells
     - path: ../Riot/Modules/Common/NavigationController/RiotNavigationController.h
     - path: ../Riot/Modules/Common/NavigationController/RiotNavigationController.m
     - path: ../Riot/Modules/Common/Recents/CellData/RecentCellData.h
     - path: ../Riot/Modules/Common/Recents/CellData/RecentCellData.m
     - path: ../Riot/Modules/Common/Recents/RecentsViewController.h
     - path: ../Riot/Modules/Common/Recents/RecentsViewController.m
+    - path: ../Riot/Modules/Common/SectionHeaders
     - path: ../Riot/Modules/Common/SegmentedViewController/SegmentedViewController.h
     - path: ../Riot/Modules/Common/SegmentedViewController/SegmentedViewController.m
+    - path: ../Riot/Modules/Common/Views
     - path: ../Riot/Modules/Common/WebViewController
     - path: ../Riot/Modules/CrossSigning
     - path: ../Riot/Modules/DeepLink
+    - path: ../Riot/Modules/DotsView
     - path: ../Riot/Modules/EncryptionInfo/EncryptionInfoView.h
     - path: ../Riot/Modules/EncryptionInfo/EncryptionInfoView.m
     - path: ../Riot/Modules/Home/Fallback
@@ -143,7 +147,11 @@ targets:
     - path: ../Riot/Modules/QRCode
     - path: ../Riot/Modules/Reauthentication
     - path: ../Riot/Modules/Room/BubbleReactions
+    - path: ../Riot/Modules/Room/DataSources
+    - path: ../Riot/Modules/Room/Views/BubbleCells/BaseBubbleCell/BubbleCellReactionsDisplayable.swift
+    - path: ../Riot/Modules/Room/Views/BubbleCells/RoomTypingBubbleCell.swift
     - path: ../Riot/Modules/Room/Views/CircleProgressView/CircleProgressView.swift
+    - path: ../Riot/Modules/Room/Views/URLPreviews
     - path: ../Riot/Modules/RoomKeyRequest/RoomKeyRequestViewController.h
     - path: ../Riot/Modules/RoomKeyRequest/RoomKeyRequestViewController.m
     - path: ../Riot/Modules/Secrets
@@ -155,6 +163,7 @@ targets:
     - path: ../Riot/Modules/UserDevices/Views/DeviceTableViewCell.h
     - path: ../Riot/Modules/UserDevices/Views/DeviceTableViewCell.m
     - path: ../Riot/Modules/UserInteractiveAuthentication
+    - path: ../Riot/PropertyWrappers
     - path: ../Riot/Utils
 
     # Share extension
@@ -193,5 +202,7 @@ targets:
     - path: ../Riot/Modules/GlobalSearch/Files/Views/FilesSearchTableViewCell.xib
       buildPhase: resources
     - path: ../Riot/Modules/UserDevices/Views/DeviceTableViewCell.xib
+      buildPhase: resources
+    - path: ../Riot/Modules/Room/Views/BubbleCells/RoomTypingBubbleCell.xib
       buildPhase: resources
 

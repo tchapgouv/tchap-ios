@@ -67,6 +67,7 @@ targets:
     - path: ../Riot/Managers/Settings/RiotSettings.swift
     - path: ../Riot/Managers/EncryptionKeyManager/EncryptionKeyManager.swift
     - path: ../Riot/Managers/KeyValueStorage/
+    - path: ../Riot/PropertyWrappers
 
     # Tests
     - path: SupportingFiles/Info.plist

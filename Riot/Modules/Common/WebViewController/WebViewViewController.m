@@ -20,12 +20,11 @@
 #import "RageShakeManager.h"
 #import "ThemeService.h"
 
-#import "GeneratedInterface-Swift.h"
-
 @interface WebViewViewController ()
-
-// Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
-@property (nonatomic, weak) id kThemeServiceDidChangeThemeNotificationObserver;
+{
+    // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
+    id kThemeServiceDidChangeThemeNotificationObserver;
+}
 
 @end
 
@@ -52,7 +51,7 @@
     
     // Observe user interface theme change.
     MXWeakify(self);
-    _kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         MXStrongifyAndReturnIfNil(self);
         [self userInterfaceThemeDidChange];
@@ -102,9 +101,9 @@
 
 - (void)dealloc
 {
-    if (_kThemeServiceDidChangeThemeNotificationObserver)
+    if (kThemeServiceDidChangeThemeNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:_kThemeServiceDidChangeThemeNotificationObserver];
+        [[NSNotificationCenter defaultCenter] removeObserver: kThemeServiceDidChangeThemeNotificationObserver];
     }
 }
 

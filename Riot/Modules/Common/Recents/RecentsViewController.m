@@ -47,6 +47,18 @@
     id kThemeServiceDidChangeThemeNotificationObserver;
 }
 
+//@property (nonatomic, strong) CreateRoomCoordinatorBridgePresenter *createRoomCoordinatorBridgePresenter;
+//
+//@property (nonatomic, strong) RoomsDirectoryCoordinatorBridgePresenter *roomsDirectoryCoordinatorBridgePresenter;
+//
+//@property (nonatomic, strong) ExploreRoomCoordinatorBridgePresenter *exploreRoomsCoordinatorBridgePresenter;
+//
+//@property (nonatomic, strong) SpaceFeatureUnavailablePresenter *spaceFeatureUnavailablePresenter;
+//
+//@property (nonatomic, strong) CustomSizedPresentationController *customSizedPresentationController;
+//
+//@property (nonatomic, strong) RoomNotificationSettingsCoordinatorBridgePresenter *roomNotificationSettingsCoordinatorBridgePresenter;
+
 @end
 
 @implementation RecentsViewController
@@ -84,7 +96,7 @@
     _enableDragging = NO;
     
     _enableStickyHeaders = NO;
-    _stickyHeaderHeight = 30.0;    
+    _stickyHeaderHeight = 30.0;
     
     displayedSectionHeaders = [NSMutableArray array];
     
@@ -570,7 +582,7 @@
             }
             
             // Look for the lowest section index visible in the bottom sticky headers.
-            CGFloat maxVisiblePosY = self.recentsTableView.contentOffset.y + self.recentsTableView.frame.size.height - self.recentsTableView.mxk_adjustedContentInset.bottom;
+            CGFloat maxVisiblePosY = self.recentsTableView.contentOffset.y + self.recentsTableView.frame.size.height - self.recentsTableView.adjustedContentInset.bottom;
             UIView *lastDisplayedSectionHeader = displayedSectionHeaders.lastObject;
             
             for (UIView *header in _stickyHeadersBottomContainer.subviews)
@@ -766,7 +778,7 @@
                                                                              title:title
                                                                            handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
         
-        if ([BuildSettings roomSettingsScreenShowNotificationsV2])
+        if ([BuildSettings showNotificationsV2])
         {
             [self changeEditedRoomNotificationSettings];
         }
@@ -781,7 +793,7 @@
     muteAction.backgroundColor = actionBackgroundColor;
     
     UIImage *notificationImage;
-    if([BuildSettings roomSettingsScreenShowNotificationsV2])
+    if([BuildSettings showNotificationsV2])
     {
         notificationImage = isMuted ? [UIImage imageNamed:@"room_action_notification_muted"] : [UIImage imageNamed:@"room_action_notification"];
     }
@@ -869,18 +881,18 @@
             [self stopActivityIndicator];
             
             // confirm leave
-            NSString *promptMessage = NSLocalizedStringFromTable(@"room_participants_leave_prompt_msg", @"Vector", nil);
+            NSString *promptMessage = [VectorL10n roomParticipantsLeavePromptMsg];
             if (isLastAdmin)
             {
                 promptMessage = NSLocalizedStringFromTable(@"tchap_room_admin_leave_prompt_msg", @"Tchap", nil);
             }
             
             MXWeakify(self);
-            self->currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"room_participants_leave_prompt_title", @"Vector", nil)
+            self->currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n roomParticipantsLeavePromptTitle]
                                                                      message:promptMessage
                                                               preferredStyle:UIAlertControllerStyleAlert];
             
-            [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+            [self->currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
                                                                    style:UIAlertActionStyleCancel
                                                                  handler:^(UIAlertAction * action) {
                                                                      
@@ -889,7 +901,7 @@
                                                                      
                                                                  }]];
             
-            [self->currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"leave", @"Vector", nil)
+            [self->currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n leave]
                                                                    style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
                                                                        
                                                                        MXStrongifyAndReturnIfNil(self);
@@ -978,7 +990,7 @@
 
 - (void)changeEditedRoomNotificationSettings
 {
-    // TODO: Tchap: support the new RoomNotificationSettings
+    // TODO: Tchap: support and test the new RoomNotificationSettings
 //    if (editedRoomId)
 //    {
 //        // Check whether the user didn't leave the room
@@ -1003,27 +1015,27 @@
         if (room)
         {
             [self startActivityIndicator];
-            
+
             if (mute)
             {
                 [room mentionsOnly:^{
-                    
+
                     [self stopActivityIndicator];
-                    
+
                     // Leave editing mode
-                    [self cancelEditionMode:isRefreshPending];
-                    
+                    [self cancelEditionMode:self->isRefreshPending];
+
                 }];
             }
             else
             {
                 [room allMessages:^{
-                    
+
                     [self stopActivityIndicator];
-                    
+
                     // Leave editing mode
-                    [self cancelEditionMode:isRefreshPending];
-                    
+                    [self cancelEditionMode:self->isRefreshPending];
+
                 }];
             }
         }
@@ -1152,7 +1164,7 @@
 
 - (void)scrollToTop:(BOOL)animated
 {
-    [self.recentsTableView setContentOffset:CGPointMake(-self.recentsTableView.mxk_adjustedContentInset.left, -self.recentsTableView.mxk_adjustedContentInset.top) animated:animated];
+    [self.recentsTableView setContentOffset:CGPointMake(-self.recentsTableView.adjustedContentInset.left, -self.recentsTableView.adjustedContentInset.top) animated:animated];
 }
 
 - (void)scrollToTheTopTheNextRoomWithMissedNotificationsInSection:(NSInteger)section
@@ -1211,8 +1223,8 @@
 {
 }
 
-//#pragma mark - CreateRoomCoordinatorBridgePresenterDelegate
-//
+#pragma mark - CreateRoomCoordinatorBridgePresenterDelegate
+
 //- (void)createRoomCoordinatorBridgePresenterDelegate:(CreateRoomCoordinatorBridgePresenter *)coordinatorBridgePresenter didCreateNewRoom:(MXRoom *)room
 //{
 //    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
@@ -1231,7 +1243,7 @@
 
 - (void)showEmptyViewIfNeeded
 {
-    //[self showEmptyView:[self shouldShowEmptyView]];
+//    [self showEmptyView:[self shouldShowEmptyView]];
 }
 
 //- (void)showEmptyView:(BOOL)show
@@ -1313,8 +1325,8 @@
     return NO;
 }
 
-//#pragma mark - RoomsDirectoryCoordinatorBridgePresenterDelegate
-//
+#pragma mark - RoomsDirectoryCoordinatorBridgePresenterDelegate
+
 //- (void)roomsDirectoryCoordinatorBridgePresenterDelegateDidComplete:(RoomsDirectoryCoordinatorBridgePresenter *)coordinatorBridgePresenter
 //{
 //    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
@@ -1352,7 +1364,7 @@
 //    else if ([MXTools isMatrixRoomAlias:roomIdOrAlias])
 //    {
 //        // Room preview doesn't support room alias
-//        [[AppDelegate theDelegate] showAlertWithTitle:[NSBundle mxk_localizedStringForKey:@"error"] message:NSLocalizedStringFromTable(@"room_recents_unknown_room_error_message", @"Vector", nil)];
+//        [[AppDelegate theDelegate] showAlertWithTitle:[MatrixKitL10n error] message:[VectorL10n roomRecentsUnknownRoomErrorMessage]];
 //    }
 //    else
 //    {
@@ -1377,13 +1389,23 @@
 //                }];
 //                self.roomsDirectoryCoordinatorBridgePresenter = nil;
 //            } else {
-//                [[AppDelegate theDelegate] showAlertWithTitle:[NSBundle mxk_localizedStringForKey:@"error"] message:NSLocalizedStringFromTable(@"room_recents_unknown_room_error_message", @"Vector", nil)];
+//                [[AppDelegate theDelegate] showAlertWithTitle:[MatrixKitL10n error] message:[VectorL10n roomRecentsUnknownRoomErrorMessage]];
 //            }
 //        }];
 //    }
 //}
 
-//#pragma mark - RoomNotificationSettingsCoordinatorBridgePresenterDelegate
+#pragma mark - ExploreRoomCoordinatorBridgePresenterDelegate
+
+//- (void)exploreRoomCoordinatorBridgePresenterDelegateDidComplete:(ExploreRoomCoordinatorBridgePresenter *)coordinatorBridgePresenter {
+//    MXWeakify(self);
+//    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+//        MXStrongifyAndReturnIfNil(self);
+//        self.exploreRoomsCoordinatorBridgePresenter = nil;
+//    }];
+//}
+
+#pragma mark - RoomNotificationSettingsCoordinatorBridgePresenterDelegate
 //-(void)roomNotificationSettingsCoordinatorBridgePresenterDelegateDidComplete:(RoomNotificationSettingsCoordinatorBridgePresenter *)coordinatorBridgePresenter
 //{
 //    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];

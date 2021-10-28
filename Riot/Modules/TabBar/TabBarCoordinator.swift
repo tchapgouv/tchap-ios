@@ -37,7 +37,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     
     // MARK: Private
     
-    let parameters: TabBarCoordinatorParameters
+    private let parameters: TabBarCoordinatorParameters
     
     /// Completion called when `popToHomeAnimated:` has been completed.
     private var popToHomeViewControllerCompletion: (() -> Void)?
@@ -49,6 +49,13 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     // TODO: Embed UINavigationController in each tab like recommended by Apple and remove these properties. UITabBarViewController shoud not be embed in a UINavigationController (https://github.com/vector-im/riot-ios/issues/3086).
     private let navigationRouter: NavigationRouterType
     private let masterNavigationController: UINavigationController
+    
+    private var currentSpaceId: String?
+    private var homeViewControllerWrapperViewController: HomeViewControllerWithBannerWrapperViewController?
+    
+    private var currentMatrixSession: MXSession? {
+        return parameters.userSessionsService.mainUserSession?.matrixSession
+    }
     
     // MARK: Public
 
@@ -67,26 +74,48 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         let masterNavigationController = RiotNavigationController()
         self.navigationRouter = NavigationRouter(navigationController: masterNavigationController)
         self.masterNavigationController = masterNavigationController
-    }    
+    }
     
     // MARK: - Public methods
     
     func start() {
-        let masterTabBarController = self.createMasterTabBarController()
-        masterTabBarController.masterTabBarDelegate = self
-        self.masterTabBarController = masterTabBarController
-        self.navigationRouter.setRootModule(masterTabBarController)
+        self.start(with: nil)
+    }
         
-        // Add existing Matrix sessions if any
-        for userSession in self.parameters.userSessionsService.userSessions {
-            self.addMatrixSessionToMasterTabBarController(userSession.matrixSession)
-        }
+    func start(with spaceId: String?) {
+        self.currentSpaceId = spaceId
         
-        if BuildSettings.enableSideMenu {
-            self.setupSideMenuGestures()
+        // If start has been done once do setup view controllers again
+        if self.masterTabBarController == nil {
+            let masterTabBarController = self.createMasterTabBarController()
+            masterTabBarController.masterTabBarDelegate = self
+            self.masterTabBarController = masterTabBarController
+            self.navigationRouter.setRootModule(masterTabBarController)
+            
+            // Add existing Matrix sessions if any
+            for userSession in self.parameters.userSessionsService.userSessions {
+                self.addMatrixSessionToMasterTabBarController(userSession.matrixSession)
+            }
+            
+            if BuildSettings.enableSideMenu {
+                self.setupSideMenuGestures()
+            }
+            
+            self.registerUserSessionsServiceNotifications()
         }
+                
+        self.updateMasterTabBarController(with: spaceId)
         
         self.registerUserSessionsServiceNotifications()
+        self.registerSessionChange()
+        
+        if let homeViewController = homeViewControllerWrapperViewController {
+            let versionCheckCoordinator = VersionCheckCoordinator(rootViewController: masterTabBarController,
+                                                              bannerPresenter: homeViewController,
+                                                              themeService: ThemeService.shared())
+            versionCheckCoordinator.start()
+            add(childCoordinator: versionCheckCoordinator)
+        }
     }
     
     func toPresentable() -> UIViewController {
@@ -105,7 +134,11 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
             popToHomeViewControllerCompletion = completion
             masterNavigationController.delegate = self
 
-            masterNavigationController.popToViewController(masterTabBarController, animated: animated)
+            if masterNavigationController.viewControllers.last == masterTabBarController {
+                self.navigationController(masterNavigationController, didShow: masterTabBarController, animated: false)
+            } else {
+                masterNavigationController.popToViewController(masterTabBarController, animated: animated)
+            }
         } else {
             // Select the Home tab
             masterTabBarController.selectedIndex = Int(TABBAR_HOME_INDEX)
@@ -161,41 +194,20 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         
         tabBarController.navigationItem.rightBarButtonItem = searchBarButtonItem
         
-        var viewControllers: [UIViewController] = []
-                
-        let homeViewController = self.createHomeViewController()
-        viewControllers.append(homeViewController)
-        
-        if RiotSettings.shared.homeScreenShowFavouritesTab {
-            let favouritesViewController = self.createFavouritesViewController()
-            viewControllers.append(favouritesViewController)
-        }
-        
-        if RiotSettings.shared.homeScreenShowPeopleTab {
-            let peopleViewController = self.createPeopleViewController()
-            viewControllers.append(peopleViewController)
-        }
-        
-        if RiotSettings.shared.homeScreenShowRoomsTab {
-            let roomsViewController = self.createRoomsViewController()
-            viewControllers.append(roomsViewController)
-        }
-        
-        if RiotSettings.shared.homeScreenShowCommunitiesTab {
-            let groupsViewController = self.createGroupsViewController()
-            viewControllers.append(groupsViewController)
-        }
-        
-        tabBarController.updateViewControllers(viewControllers)
+        self.updateTabControllers(for: tabBarController, showCommunities: true)
         
         return tabBarController
     }
     
-    private func createHomeViewController() -> HomeViewController {
+    private func createHomeViewController() -> UIViewController {
         let homeViewController: HomeViewController = HomeViewController.instantiate()
         homeViewController.tabBarItem.tag = Int(TABBAR_HOME_INDEX)
+        homeViewController.tabBarItem.image = homeViewController.tabBarItem.image
         homeViewController.accessibilityLabel = VectorL10n.titleHome
-        return homeViewController
+        
+        let wrapperViewController = HomeViewControllerWithBannerWrapperViewController(viewController: homeViewController)
+        homeViewControllerWrapperViewController = wrapperViewController
+        return wrapperViewController
     }
     
     private func createFavouritesViewController() -> FavouritesViewController {
@@ -245,9 +257,43 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     }
     
     private func setupSideMenuGestures() {
-        if let rootViewController = self.masterNavigationController.viewControllers.first {
-            self.parameters.appNavigator.sideMenu.addScreenEdgePanGesturesToPresent(to: rootViewController.view)
+        let gesture = self.parameters.appNavigator.sideMenu.addScreenEdgePanGesturesToPresent(to: masterTabBarController.view)
+        gesture.delegate = self
+    }
+    
+    private func updateMasterTabBarController(with spaceId: String?) {
+                
+        self.updateTabControllers(for: self.masterTabBarController, showCommunities: spaceId == nil)
+        self.masterTabBarController.filterRooms(withParentId: spaceId, inMatrixSession: self.currentMatrixSession)
+    }
+    
+    private func updateTabControllers(for tabBarController: MasterTabBarController, showCommunities: Bool) {
+        var viewControllers: [UIViewController] = []
+                
+        let homeViewController = self.createHomeViewController()
+        viewControllers.append(homeViewController)
+        
+        if RiotSettings.shared.homeScreenShowFavouritesTab {
+            let favouritesViewController = self.createFavouritesViewController()
+            viewControllers.append(favouritesViewController)
         }
+        
+        if RiotSettings.shared.homeScreenShowPeopleTab {
+            let peopleViewController = self.createPeopleViewController()
+            viewControllers.append(peopleViewController)
+        }
+        
+        if RiotSettings.shared.homeScreenShowRoomsTab {
+            let roomsViewController = self.createRoomsViewController()
+            viewControllers.append(roomsViewController)
+        }
+        
+        if RiotSettings.shared.homeScreenShowCommunitiesTab && !(self.currentMatrixSession?.groups().isEmpty ?? false) && showCommunities {
+            let groupsViewController = self.createGroupsViewController()
+            viewControllers.append(groupsViewController)
+        }
+        
+        tabBarController.updateViewControllers(viewControllers)
     }
     
     // MARK: Navigation
@@ -304,6 +350,10 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         }
         
         self.addMatrixSessionToMasterTabBarController(userSession.matrixSession)
+        
+        if let matrixSession = self.currentMatrixSession, matrixSession.groups().isEmpty {
+            self.masterTabBarController.removeTab(at: .groups)
+        }
     }
     
     @objc private func userSessionsServiceWillRemoveUserSession(_ notification: Notification) {
@@ -324,6 +374,16 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     private func removeMatrixSessionFromMasterTabBarController(_ matrixSession: MXSession) {
         MXLog.debug("[TabBarCoordinator] masterTabBarController.removeMatrixSession")
         self.masterTabBarController.removeMatrixSession(matrixSession)
+    }
+    
+    private func registerSessionChange() {
+        NotificationCenter.default.addObserver(self, selector: #selector(sessionDidSync(_:)), name: NSNotification.Name.mxSessionDidSync, object: nil)
+    }
+    
+    @objc private func sessionDidSync(_ notification: Notification) {
+        if self.currentMatrixSession?.groups().isEmpty ?? true {
+            self.masterTabBarController.removeTab(at: .groups)
+        }
     }
 }
 
@@ -366,5 +426,39 @@ extension TabBarCoordinator: MasterTabBarControllerDelegate {
     func masterTabBarController(_ masterTabBarController: MasterTabBarController!, wantsToDisplayDetailViewController detailViewController: UIViewController!) {
         
         self.splitViewMasterPresentableDelegate?.splitViewMasterPresentable(self, wantsToDisplay: detailViewController)
+    }
+    
+    func masterTabBarController(_ masterTabBarController: MasterTabBarController!, needsSideMenuIconWithNotification displayNotification: Bool) {
+        let image = displayNotification ? Asset.Images.sideMenuNotifIcon.image : Asset.Images.sideMenuIcon.image
+        let sideMenuBarButtonItem: MXKBarButtonItem = MXKBarButtonItem(image: image, style: .plain) { [weak self] in
+            self?.showSideMenu()
+        }
+        sideMenuBarButtonItem.accessibilityLabel = VectorL10n.sideMenuRevealActionAccessibilityLabel
+        
+        self.masterTabBarController.navigationItem.leftBarButtonItem = sideMenuBarButtonItem
+    }
+}
+
+// MARK: - UIGestureRecognizerDelegate
+
+/**
+ Prevent the side menu gesture from clashing with other gestures like the home screen horizontal scroll views.
+ Also make sure that it doesn't cancel out UINavigationController backwards swiping
+ */
+extension TabBarCoordinator: UIGestureRecognizerDelegate {
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return false
+    }
+    
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
+    
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        if otherGestureRecognizer.isKind(of: UIScreenEdgePanGestureRecognizer.self) {
+            return false
+        } else {
+            return true
+        }
     }
 }

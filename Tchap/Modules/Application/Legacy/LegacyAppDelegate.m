@@ -3222,7 +3222,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     if (!RiotSettings.shared.isShowDecryptedContentInNotificationsHasBeenSetOnce)
     {
         MXKAccount *currentAccount = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-        RiotSettings.shared.showDecryptedContentInNotifications = currentAccount.showDecryptedContentInNotifications;
+        RiotSettings.shared.showDecryptedContentInNotifications = BuildSettings.decryptNotificationsByDefault;//currentAccount.showDecryptedContentInNotifications;
     }
 }
 

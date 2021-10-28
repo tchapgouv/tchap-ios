@@ -27,9 +27,9 @@
 
 #import "MXRoom+Riot.h"
 
+const CGFloat kTypingCellHeight = 24;
 
-
-@interface RoomDataSource() <BubbleReactionsViewModelDelegate>
+@interface RoomDataSource() <BubbleReactionsViewModelDelegate, URLPreviewViewDelegate>
 {
     // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
     id kThemeServiceDidChangeThemeNotificationObserver;
@@ -51,6 +51,14 @@
 
 @property(nonatomic, readwrite) RoomEncryptionTrustLevel encryptionTrustLevel;
 
+@property (nonatomic, strong) NSMutableSet *failedEventIds;
+
+@property (nonatomic) RoomBubbleCellData *roomCreationCellData;
+
+@property (nonatomic) BOOL showRoomCreationCell;
+
+@property (nonatomic) NSInteger typingCellIndex;
+
 @end
 
 @implementation RoomDataSource
@@ -66,7 +74,7 @@
         // Replace the event formatter
         [self updateEventFormatter];
 
-        // Handle timestamp and read receips display at Vector app level (see [tableView: cellForRowAtIndexPath:])
+        // Handle timestamp and read receipts display at Vector app level (see [tableView: cellForRowAtIndexPath:])
         self.useCustomDateTimeLabel = YES;
         self.useCustomReceipts = YES;
         self.useCustomUnsentButton = YES;
@@ -106,18 +114,20 @@
     if (![self.mxSession.store hasLoadedAllRoomMembersForRoom:self.roomId])
     {
         [self.room members:^(MXRoomMembers *roomMembers) {
-            NSLog(@"[MXKRoomDataSource] finalizeRoomDataSource: All room members have been retrieved");
+            MXLogDebug(@"[MXKRoomDataSource] finalizeRoomDataSource: All room members have been retrieved");
 
             // Refresh the full table
             [self.delegate dataSource:self didCellChange:nil];
 
         } failure:^(NSError *error) {
-            NSLog(@"[MXKRoomDataSource] finalizeRoomDataSource: Cannot retrieve all room members");
+            MXLogDebug(@"[MXKRoomDataSource] finalizeRoomDataSource: Cannot retrieve all room members");
         }];
     }
 
     if (self.room.summary.isEncrypted)
     {
+        // Make sure we have the trust shield value
+        [self.room.summary enableTrustTracking:YES];
         [self fetchEncryptionTrustedLevel];
     }
 }
@@ -228,6 +238,16 @@
     [self setNeedsUpdateAdditionalContentHeightForCellData:cellData];
 }
 
+- (CGFloat)cellHeightAtIndex:(NSInteger)index withMaximumWidth:(CGFloat)maxWidth
+{
+    if (index == self.typingCellIndex)
+    {
+        return kTypingCellHeight;
+    }
+    
+    return [super cellHeightAtIndex:index withMaximumWidth:maxWidth];
+}
+
 - (void)setNeedsUpdateAdditionalContentHeightForCellData:(id<MXKRoomBubbleCellDataStoring>)cellData
 {
     RoomBubbleCellData *roomBubbleCellData;
@@ -255,6 +275,7 @@
     }
     
     [self fetchEncryptionTrustedLevel];
+    [self enableRoomCreationIntroCellDisplayIfNeeded];
 }
 
 - (void)fetchEncryptionTrustedLevel
@@ -263,6 +284,10 @@
     [self.roomDataSourceDelegate roomDataSource:self didUpdateEncryptionTrustLevel:self.encryptionTrustLevel];
 }
 
+- (void)roomDidSet
+{
+    [self enableRoomCreationIntroCellDisplayIfNeeded];
+}
 
 #pragma  mark -
 
@@ -275,10 +300,13 @@
         // Enable the containsLastMessage flag for the cell data which contains the last message.
         @synchronized(bubbles)
         {
+            [self insertRoomCreationIntroCellDataIfNeeded];
+            
             // Reset first all cell data
             for (RoomBubbleCellData *cellData in bubbles)
             {
                 cellData.containsLastMessage = NO;
+                cellData.componentIndexOfSentMessageTick = -1;
             }
 
             // The cell containing the last message is the last one with an actual display.
@@ -292,14 +320,44 @@
                     break;
                 }
             }
+            
+            [self updateStatusInfo];
         }
+        
+        if (!self.currentTypingUsers)
+        {
+            self.typingCellIndex = -1;
+            
+            //  we may have changed the number of bubbles in this block, consider that change
+            return bubbles.count;
+        }
+        
+        self.typingCellIndex = bubbles.count;
+        return bubbles.count + 1;
     }
     
-    return count;
+    if (!self.currentTypingUsers)
+    {
+        self.typingCellIndex = -1;
+
+        //  leave it as is, if coming as 0 from super
+        return count;
+    }
+    
+    self.typingCellIndex = count;
+    return count + 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (indexPath.row == self.typingCellIndex)
+    {
+        RoomTypingBubbleCell *cell = [tableView dequeueReusableCellWithIdentifier:RoomTypingBubbleCell.defaultReuseIdentifier forIndexPath:indexPath];
+        [cell updateWithTheme:ThemeService.shared.theme];
+        [cell updateTypingUsers:_currentTypingUsers mediaManager:self.mxSession.mediaManager];
+        return cell;
+    }
+    
     // Do cell data customization that needs to be done before [MXKRoomBubbleTableViewCell render]
     RoomBubbleCellData *roomBubbleCellData = [self cellDataAtIndex:indexPath.row];
 
@@ -335,7 +393,7 @@
         // Handle read receipts and read marker display.
         // Ignore the read receipts on the bubble without actual display.
         // Ignore the read receipts on collapsed bubbles
-        if ((((self.showBubbleReceipts && cellData.readReceipts.count) || cellData.reactions.count) && !isCollapsableCellCollapsed) || self.showReadMarker)
+        if ((((self.showBubbleReceipts && cellData.readReceipts.count) || cellData.reactions.count || cellData.hasLink) && !isCollapsableCellCollapsed) || self.showReadMarker)
         {
             // Read receipts container are inserted here on the right side into the content view.
             // Some vertical whitespaces are added in message text view (see RoomBubbleCellData class) to insert correctly multiple receipts.
@@ -360,7 +418,41 @@
                     {
                         continue;
                     }
-                
+                    
+                    URLPreviewView *urlPreviewView;
+                    
+                    // Show a URL preview if the component has a link that should be previewed.
+                    if (component.showURLPreview)
+                    {
+                        urlPreviewView = [URLPreviewView instantiate];
+                        urlPreviewView.preview = component.urlPreviewData;
+                        urlPreviewView.delegate = self;
+                        
+                        [temporaryViews addObject:urlPreviewView];
+                        
+                        if (!bubbleCell.tmpSubviews)
+                        {
+                            bubbleCell.tmpSubviews = [NSMutableArray array];
+                        }
+                        [bubbleCell.tmpSubviews addObject:urlPreviewView];
+                        
+                        urlPreviewView.translatesAutoresizingMaskIntoConstraints = NO;
+                        urlPreviewView.availableWidth = cellData.maxTextViewWidth;
+                        [bubbleCell.contentView addSubview:urlPreviewView];
+                        
+                        CGFloat leftMargin = RoomBubbleCellLayout.reactionsViewLeftMargin;
+                        if (roomBubbleCellData.containsBubbleComponentWithEncryptionBadge)
+                        {
+                            leftMargin+= RoomBubbleCellLayout.encryptedContentLeftMargin;
+                        }
+                        
+                        // Set the preview view's origin
+                        [NSLayoutConstraint activateConstraints: @[
+                            [urlPreviewView.leadingAnchor constraintEqualToAnchor:urlPreviewView.superview.leadingAnchor constant:leftMargin],
+                            [urlPreviewView.topAnchor constraintEqualToAnchor:urlPreviewView.superview.topAnchor constant:bottomPositionY + RoomBubbleCellLayout.urlPreviewViewTopMargin + RoomBubbleCellLayout.reactionsViewTopMargin],
+                        ]];
+                    }
+                    
                     MXAggregatedReactions* reactions = cellData.reactions[componentEventId].aggregatedReactionsWithNonZeroCount;
                     
                     BubbleReactionsView *reactionsView;
@@ -403,12 +495,23 @@
                                 leftMargin+= RoomBubbleCellLayout.encryptedContentLeftMargin;
                             }
                             
+                            // The top constraint may need to include the URL preview view
+                            NSLayoutConstraint *topConstraint;
+                            if (urlPreviewView)
+                            {
+                                topConstraint = [reactionsView.topAnchor constraintEqualToAnchor:urlPreviewView.bottomAnchor constant:RoomBubbleCellLayout.reactionsViewTopMargin];
+                            }
+                            else
+                            {
+                                topConstraint = [reactionsView.topAnchor constraintEqualToAnchor:reactionsView.superview.topAnchor constant:bottomPositionY + RoomBubbleCellLayout.reactionsViewTopMargin];
+                            }
+                            
                             // Force receipts container size
                             [NSLayoutConstraint activateConstraints:
                              @[
                                [reactionsView.leadingAnchor constraintEqualToAnchor:reactionsView.superview.leadingAnchor constant:leftMargin],
                                [reactionsView.trailingAnchor constraintEqualToAnchor:reactionsView.superview.trailingAnchor constant:-RoomBubbleCellLayout.reactionsViewRightMargin],
-                               [reactionsView.topAnchor constraintEqualToAnchor:reactionsView.superview.topAnchor constant:bottomPositionY + RoomBubbleCellLayout.reactionsViewTopMargin]
+                               topConstraint
                                ]];
                         }
                     }
@@ -514,11 +617,15 @@
                                                                                                      multiplier:1.0
                                                                                                        constant:-RoomBubbleCellLayout.readReceiptsViewRightMargin];
                                 
-                                // At the bottom, we have reactions or nothing
+                                // At the bottom, we either have reactions, a URL preview or nothing
                                 NSLayoutConstraint *topConstraint;
                                 if (reactionsView)
                                 {
                                     topConstraint = [avatarsContainer.topAnchor constraintEqualToAnchor:reactionsView.bottomAnchor constant:RoomBubbleCellLayout.readReceiptsViewTopMargin];
+                                }
+                                else if (urlPreviewView)
+                                {
+                                    topConstraint = [avatarsContainer.topAnchor constraintEqualToAnchor:urlPreviewView.bottomAnchor constant:RoomBubbleCellLayout.readReceiptsViewTopMargin];
                                 }
                                 else
                                 {
@@ -648,8 +755,16 @@
         
         // Auto animate the sticker in case of animated gif
         bubbleCell.isAutoAnimatedGif = (cellData.attachment && cellData.attachment.type == MXKAttachmentTypeSticker);
+        
+        [self applyMaskToAttachmentViewOfBubbleCell: bubbleCell];
 
         [self setupAccessibilityForCell:bubbleCell withCellData:cellData];
+        
+        // We are interested only by outgoing messages
+        if ([cellData.senderId isEqualToString: self.mxSession.credentials.userId])
+        {
+            [bubbleCell updateTickViewWithFailedEventIds:self.failedEventIds];
+        }
     }
 
     return cell;
@@ -814,7 +929,7 @@
                                               
                                           } failure:^(NSError * _Nonnull error) {
                                               
-                                              NSLog(@"[RoomDataSource] updateKeyVerificationIfNeededForRoomBubbleCellData; keyVerificationFromKeyVerificationEvent fails with error: %@", error);
+                                              MXLogDebug(@"[RoomDataSource] updateKeyVerificationIfNeededForRoomBubbleCellData; keyVerificationFromKeyVerificationEvent fails with error: %@", error);
                                               
                                               bubbleCellData.isKeyVerificationOperationPending = NO;
                                           }];
@@ -840,7 +955,9 @@
         
         cellData.showTimestampForSelectedComponent = self.showBubbleDateTimeOnSelection;
 
-        if (cellData.collapsed && cellData.nextCollapsableCellData)
+        if (cellData.collapsed
+            && cellData.nextCollapsableCellData
+            && cellData.tag != RoomBubbleCellDataTagCall)
         {
             // Select nothing for a collased cell but open it
             [self collapseRoomBubble:cellData collapsed:NO];
@@ -869,8 +986,10 @@
           success:(void (^)(NSString *eventId))success
           failure:(void (^)(NSError *error))failure
 {
+    AVURLAsset *videoAsset = [AVURLAsset assetWithURL:videoLocalURL];
     UIImage *videoThumbnail = [MXKVideoThumbnailGenerator.shared generateThumbnailFrom:videoLocalURL];
-    [self sendVideo:videoLocalURL withThumbnail:videoThumbnail success:success failure:failure];
+    
+    [self sendVideoAsset:videoAsset withThumbnail:videoThumbnail success:success failure:failure];
 }
 
 - (void)acceptVerificationRequestForEventId:(NSString*)eventId success:(void(^)(void))success failure:(void(^)(NSError*))failure
@@ -934,6 +1053,10 @@
             failure(error);
         }
     }];
+}
+
+- (void)resetTypingNotification {
+    self.currentTypingUsers = nil;
 }
 
 #pragma - Accessibility
@@ -1011,6 +1134,172 @@
 - (void)bubbleReactionsViewModel:(BubbleReactionsViewModel *)viewModel didLongPressForEventId:(NSString *)eventId
 {
     [self.delegate dataSource:self didRecognizeAction:kMXKRoomBubbleCellLongPressOnReactionView inCell:nil userInfo:@{ kMXKRoomBubbleCellEventIdKey: eventId }];
+}
+
+- (void)applyMaskToAttachmentViewOfBubbleCell:(MXKRoomBubbleTableViewCell *)cell
+{
+    if (cell.attachmentView)
+    {
+        cell.attachmentView.layer.cornerRadius = 6;
+        cell.attachmentView.layer.masksToBounds = YES;
+    }
+}
+
+#pragma mark - Message status management
+
+- (void)updateStatusInfo
+{
+    if (!self.failedEventIds)
+    {
+        self.failedEventIds = [NSMutableSet new];
+    }
+
+    NSInteger bubbleIndex = bubbles.count;
+    while (bubbleIndex--)
+    {
+        RoomBubbleCellData *cellData = bubbles[bubbleIndex];
+        
+        NSInteger componentIndex = cellData.bubbleComponents.count;
+        while (componentIndex--) {
+            MXKRoomBubbleComponent *component = cellData.bubbleComponents[componentIndex];
+            MXEventSentState eventState = component.event.sentState;
+            
+            if (eventState == MXEventSentStateFailed)
+            {
+                [self.failedEventIds addObject:component.event.eventId];
+                continue;
+            }
+            
+            NSArray<MXReceiptData*> *receipts = cellData.readReceipts[component.event.eventId];
+            if (receipts.count)
+            {
+                return;
+            }
+            
+            if (eventState == MXEventSentStateSent)
+            {
+                cellData.componentIndexOfSentMessageTick = componentIndex;
+                return;
+            }
+        }
+    }
+}
+
+#pragma mark - Room creation intro cell
+
+- (BOOL)canShowRoomCreationIntroCell
+{
+    NSString* userId = self.mxSession.myUser.userId;
+
+    if (!userId || !self.isLive || self.isPeeking)
+    {
+        return NO;
+    }
+    
+    // Room creation cell is only shown for the creator
+    return [self.room.summary.creatorUserId isEqualToString:userId];
+}
+
+- (void)enableRoomCreationIntroCellDisplayIfNeeded
+{
+    self.showRoomCreationCell = [self canShowRoomCreationIntroCell];
+}
+
+// Insert the room creation intro cell at the begining
+- (void)insertRoomCreationIntroCellDataIfNeeded
+{
+    @synchronized(bubbles)
+    {
+        NSUInteger existingRoomCreationCellDataIndex = [self roomBubbleDataIndexWithTag:RoomBubbleCellDataTagRoomCreationIntro];
+        
+        if (existingRoomCreationCellDataIndex != NSNotFound)
+        {
+            [bubbles removeObjectAtIndex:existingRoomCreationCellDataIndex];
+        }
+        
+        if (self.showRoomCreationCell)
+        {
+            NSUInteger roomCreationConfigCellDataIndex = [self roomBubbleDataIndexWithTag:RoomBubbleCellDataTagRoomCreateConfiguration];
+            
+            // Only add room creation intro cell if `bubbles` array contains the room creation event
+            if (roomCreationConfigCellDataIndex != NSNotFound)
+            {
+                if (!self.roomCreationCellData)
+                {
+                    MXEvent *event = [MXEvent new];
+                    MXRoomState *roomState = [MXRoomState new];
+                    RoomBubbleCellData *roomBubbleCellData = [[RoomBubbleCellData alloc] initWithEvent:event andRoomState:roomState andRoomDataSource:self];
+                    roomBubbleCellData.tag = RoomBubbleCellDataTagRoomCreationIntro;
+                    
+                    self.roomCreationCellData = roomBubbleCellData;
+                }
+                
+                [bubbles insertObject:self.roomCreationCellData atIndex:0];
+            }
+        }
+        else
+        {
+            self.roomCreationCellData = nil;
+        }
+    }
+}
+
+- (NSUInteger)roomBubbleDataIndexWithTag:(RoomBubbleCellDataTag)tag
+{
+    @synchronized(bubbles)
+    {
+        return [bubbles indexOfObjectPassingTest:^BOOL(id<MXKRoomBubbleCellDataStoring>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            if ([obj isKindOfClass:RoomBubbleCellData.class])
+            {
+                RoomBubbleCellData *roomBubbleCellData = (RoomBubbleCellData*)obj;
+                if (roomBubbleCellData.tag == tag)
+                {
+                    return YES;
+                }
+            }
+            return NO;
+        }];
+    }
+}
+
+#pragma mark - URLPreviewViewDelegate
+
+- (void)didOpenURLFromPreviewView:(URLPreviewView *)previewView for:(NSString *)eventID in:(NSString *)roomID
+{
+    // Use the link stored in the bubble component when opening the URL as we only
+    // store the sanitized URL in the preview data which may differ to the message content.
+    RoomBubbleCellData *cellData = [self cellDataOfEventWithEventId:eventID];
+    MXKRoomBubbleComponent *component = [cellData bubbleComponentWithLinkForEventId:eventID];
+    if (!component)
+    {
+        MXLogError(@"[RoomDataSource] Failed to open link: Unable to find bubble component.")
+        return;
+    }
+    
+    [UIApplication.sharedApplication vc_open:component.link completionHandler:nil];
+}
+
+- (void)didCloseURLPreviewView:(URLPreviewView *)previewView for:(NSString *)eventID in:(NSString *)roomID
+{
+    // Remember that the user closed the preview so it isn't shown again.
+    [URLPreviewService.shared closePreviewFor:eventID in:roomID];
+    
+    // Get the component to remove the URL preview from.
+    RoomBubbleCellData *cellData = [self cellDataOfEventWithEventId:eventID];
+    MXKRoomBubbleComponent *component = [cellData bubbleComponentWithLinkForEventId:eventID];
+    if (!component)
+    {
+        MXLogError(@"[RoomDataSource] Failed to close URL preview: Unable to find bubble component.")
+        return;
+    }
+    
+    // Hide the preview, remove its data and refresh the cells.
+    component.showURLPreview = NO;
+    component.urlPreviewData = nil;
+    
+    [cellData invalidateLayout];
+    
+    [self refreshCells];
 }
 
 #pragma mark - roomSummaryDidRemoveExpiredDataFromStore notifications
@@ -1092,4 +1381,5 @@
         retentionListener = nil;
     }
 }
+
 @end

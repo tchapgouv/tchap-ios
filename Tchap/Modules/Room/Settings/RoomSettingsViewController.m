@@ -108,10 +108,10 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
     
     // A copy of the banned members
     NSArray<MXRoomMember*> *bannedMembers;
+    
+    // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
+    id kThemeServiceDidChangeThemeNotificationObserver;
 }
-
-// Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
-@property (nonatomic, weak) id kThemeServiceDidChangeThemeNotificationObserver;
 
 @property (nonatomic, strong) SingleImagePickerPresenter *imagePickerPresenter;
 
@@ -202,7 +202,7 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
     
     // Observe user interface theme change.
     MXWeakify(self);
-    _kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         MXStrongifyAndReturnIfNil(self);
         [self userInterfaceThemeDidChange];
@@ -329,9 +329,9 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
         actualDirectoryVisibilityRequest = nil;
     }
     
-    if (_kThemeServiceDidChangeThemeNotificationObserver)
+    if (kThemeServiceDidChangeThemeNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:_kThemeServiceDidChangeThemeNotificationObserver];
+        [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
     }
     
     updatedItemsDict = nil;

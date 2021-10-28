@@ -262,7 +262,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     WidgetManagerConfig *config = [self configForUser:userId];
     if (!config.hasUrls)
     {
-        MXLogDebug(@"[WidgetManager] createJitsiWidgetInRoom: Error: no Integrations Manager API URL for user %@", userId);
+        MXLogDebug(@"[WidgetManager] createJitsiWidgetInRoom: Error: no integration manager API URL for user %@", userId);
         failure(self.errorForNonConfiguredIntegrationManager);
         return nil;
     }
@@ -359,7 +359,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
             error = [NSError errorWithDomain:WidgetManagerErrorDomain
                                         code:WidgetManagerErrorCodeNotEnoughPower
                                     userInfo:@{
-                                               NSLocalizedDescriptionKey: NSLocalizedStringFromTable(@"widget_no_power_to_manage", @"Vector", nil)
+                                               NSLocalizedDescriptionKey: [VectorL10n widgetNoPowerToManage]
                                                }];
         }
 
@@ -420,7 +420,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
                     NSError *error = [NSError errorWithDomain:WidgetManagerErrorDomain
                                                          code:WidgetManagerErrorCodeCreationFailed
                                                      userInfo:@{
-                                                                NSLocalizedDescriptionKey: NSLocalizedStringFromTable(@"widget_creation_failure", @"Vector", nil)
+                                                                NSLocalizedDescriptionKey: [VectorL10n widgetCreationFailure]
                                                                 }];
 
                     self->failureBlockForWidgetCreation[hash][widgetId](error);
@@ -575,7 +575,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     WidgetManagerConfig *config = [self configForUser:userId];
     if (!config.hasUrls)
     {
-        MXLogDebug(@"[WidgetManager] registerForScalarToken: Error: no Integrations Manager API URL for user %@", mxSession.myUser.userId);
+        MXLogDebug(@"[WidgetManager] registerForScalarToken: Error: no integration manager API URL for user %@", mxSession.myUser.userId);
         failure(self.errorForNonConfiguredIntegrationManager);
         return nil;
     }
@@ -625,7 +625,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
                  NSError *error = [NSError errorWithDomain:WidgetManagerErrorDomain
                                                       code:WidgetManagerErrorCodeFailedToConnectToIntegrationsServer
                                                   userInfo:@{
-                                                             NSLocalizedDescriptionKey: NSLocalizedStringFromTable(@"widget_integrations_server_failed_to_connect", @"Vector", nil)
+                                                             NSLocalizedDescriptionKey: [VectorL10n widgetIntegrationsServerFailedToConnect]
                                                              }];
 
                  failure(error);
@@ -655,7 +655,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     WidgetManagerConfig *config = [self configForUser:userId];
     if (!config.hasUrls)
     {
-        MXLogDebug(@"[WidgetManager] validateScalarToken: Error: no Integrations Manager API URL for user %@", mxSession.myUser.userId);
+        MXLogDebug(@"[WidgetManager] validateScalarToken: Error: no integration manager API URL for user %@", mxSession.myUser.userId);
         failure(self.errorForNonConfiguredIntegrationManager);
         return nil;
     }
@@ -798,14 +798,14 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
 {
     return [NSError errorWithDomain:WidgetManagerErrorDomain
                                code:WidgetManagerErrorCodeNoIntegrationsServerConfigured
-                           userInfo:@{NSLocalizedDescriptionKey: NSLocalizedStringFromTable(@"widget_no_integrations_server_configured", @"Vector", nil)}];
+                           userInfo:@{NSLocalizedDescriptionKey: [VectorL10n widgetNoIntegrationsServerConfigured]}];
 }
 
 - (NSError*)errorForDisabledIntegrationManager
 {
     return [NSError errorWithDomain:WidgetManagerErrorDomain
                                code:WidgetManagerErrorCodeDisabledIntegrationsServer
-                           userInfo:@{NSLocalizedDescriptionKey: NSLocalizedStringFromTable(@"widget_integration_manager_disabled", @"Vector", nil)}];
+                           userInfo:@{NSLocalizedDescriptionKey: [VectorL10n widgetIntegrationManagerDisabled]}];
 }
 
 @end

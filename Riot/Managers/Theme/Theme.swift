@@ -15,13 +15,11 @@
  */
 
 import UIKit
-// TODO: Tchap: add DesignKit in Tchap project
-//import DesignKit
+import DesignKit
 
 /// Provide color constant values defined by the designer
 /// https://app.zeplin.io/project/5c122fa790c5b4241ffa6be7/screen/5c619592daff2f1241d82e75
-// TODO: Tchap: add DesignKit in Tchap project to support ThemeV2
-@objc protocol Theme/*: ThemeV2*/ {
+@objc protocol Theme: ThemeV2 {
     
     var identifier: String { get }
 
@@ -82,7 +80,6 @@ import UIKit
 
     var keyboardAppearance: UIKeyboardAppearance { get }
     
-    @available(iOS 12.0, *)
     var userInterfaceStyle: UIUserInterfaceStyle { get }
 
 

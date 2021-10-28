@@ -2,4 +2,5 @@
 
 # This script is invoked by xcodegen for running post commands
 
-cp IDETemplateMacros.plist Riot.xcodeproj/xcshareddata/
+# Move file header template in project shared data folder
+cp IDETemplateMacros.plist Tchap.xcodeproj/xcshareddata/

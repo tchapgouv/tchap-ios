@@ -21,6 +21,7 @@
 
 NSString *const AnalyticsNoficationsCategory = @"notifications";
 NSString *const AnalyticsNoficationsTimeToDisplayContent = @"timelineDisplay";
+NSString *const AnalyticsContactsIdentityServerAccepted = @"identityServerAccepted";
 
 
 // Duration data will be visible under the Piwik category called "Performance".
@@ -58,15 +59,10 @@ NSString *const kAnalyticsMetricsCategory = @"Metrics";
     self = [super init];
     if (self)
     {
-        // Note analytics are disabled for the moment in Tchap
-        if (BuildSettings.analyticsAppId && BuildSettings.analyticsServerUrl)
-        {
-            matomoTracker = [[MatomoTracker alloc] initWithSiteId:BuildSettings.analyticsAppId
-                                                          baseURL:BuildSettings.analyticsServerUrl
-                                                        userAgent:@"iOSMatomoTracker"];
-            [self migrateFromFourPointFourSharedInstance];
-        }
-        
+//        matomoTracker = [[MatomoTracker alloc] initWithSiteId:BuildSettings.analyticsAppId
+//                                                      baseURL:BuildSettings.analyticsServerUrl
+//                                                    userAgent:@"iOSMatomoTracker"];
+//        [self migrateFromFourPointFourSharedInstance];
     }
     return self;
 }

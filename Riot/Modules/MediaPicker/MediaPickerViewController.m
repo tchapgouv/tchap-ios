@@ -34,6 +34,11 @@
 @interface MediaPickerViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, MediaAlbumContentViewControllerDelegate>
 
 {
+    /**
+     Observe UIApplicationWillEnterForegroundNotification to refresh captures collection when app leaves the background state.
+     */
+    id UIApplicationWillEnterForegroundNotificationObserver;
+    
     PHFetchResult *recentCaptures;
     
     /**
@@ -50,6 +55,11 @@
     BOOL isValidationInProgress;
     
     /**
+     Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
+     */
+    id kThemeServiceDidChangeThemeNotificationObserver;
+    
+    /**
      The current visibility of the status bar in this view controller.
      */
     BOOL isStatusBarHidden;
@@ -57,14 +67,10 @@
 
 @property (weak, nonatomic) IBOutlet UIScrollView *mainScrollView;
 
-//Observe UIApplicationWillEnterForegroundNotification to refresh captures collection when app leaves the background state.
-@property (nonatomic, weak) id UIApplicationWillEnterForegroundNotificationObserver;
 @property (weak, nonatomic) IBOutlet UIView *recentCapturesCollectionContainerView;
 @property (weak, nonatomic) IBOutlet UICollectionView *recentCapturesCollectionView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *recentCapturesCollectionContainerViewHeightConstraint;
 
-// Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
-@property (nonatomic, weak) id kThemeServiceDidChangeThemeNotificationObserver;
 @property (weak, nonatomic) IBOutlet UIView *libraryViewContainer;
 @property (weak, nonatomic) IBOutlet UITableView *userAlbumsTableView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *libraryViewContainerViewHeightConstraint;
@@ -97,14 +103,16 @@
 
 - (void)dealloc
 {
-    if (_kThemeServiceDidChangeThemeNotificationObserver)
+    if (kThemeServiceDidChangeThemeNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:_kThemeServiceDidChangeThemeNotificationObserver];
+        [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
+        kThemeServiceDidChangeThemeNotificationObserver = nil;
     }
     
-    if (_UIApplicationWillEnterForegroundNotificationObserver)
+    if (UIApplicationWillEnterForegroundNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:_UIApplicationWillEnterForegroundNotificationObserver];
+        [[NSNotificationCenter defaultCenter] removeObserver:UIApplicationWillEnterForegroundNotificationObserver];
+        UIApplicationWillEnterForegroundNotificationObserver = nil;
     }
     
     [self dismissImageValidationView];
@@ -118,11 +126,11 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    self.title = NSLocalizedStringFromTable(@"media_picker_title", @"Vector", nil);
+    self.title = [VectorL10n mediaPickerTitle];
     
     MXWeakify(self);
     
-    UIBarButtonItem *closeBarButtonItem = [[MXKBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"cancel", @"Vector", nil) style:UIBarButtonItemStylePlain action:^{
+    UIBarButtonItem *closeBarButtonItem = [[MXKBarButtonItem alloc] initWithTitle:[VectorL10n cancel] style:UIBarButtonItemStylePlain action:^{
         MXStrongifyAndReturnIfNil(self);
         [self.delegate mediaPickerControllerDidCancel:self];
     }];
@@ -143,7 +151,7 @@
     [self checkPhotoLibraryAuthorizationStatus];
     
     // Observe UIApplicationWillEnterForegroundNotification to refresh captures collection when app leaves the background state.
-    _UIApplicationWillEnterForegroundNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillEnterForegroundNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    UIApplicationWillEnterForegroundNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillEnterForegroundNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         MXStrongifyAndReturnIfNil(self);
 
@@ -153,7 +161,7 @@
     }];
 
     // Observe user interface theme change.
-    _kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         MXStrongifyAndReturnIfNil(self);
 
@@ -259,13 +267,13 @@
 {
     NSString *appDisplayName = [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
     
-    NSString *message = [NSString stringWithFormat:NSLocalizedStringFromTable(@"photo_library_access_not_granted", @"Vector", nil), appDisplayName];
+    NSString *message = [VectorL10n photoLibraryAccessNotGranted:appDisplayName];
     
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"media_picker_title", @"Vector", nil)
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:[VectorL10n mediaPickerTitle]
                                                                    message:message
                                                             preferredStyle:UIAlertControllerStyleAlert];
     
-    [alert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+    [alert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
                                               style:UIAlertActionStyleCancel
                                             handler:^(UIAlertAction * action) {
                                                 [self.delegate mediaPickerControllerDidCancel:self];
@@ -273,7 +281,7 @@
     
     NSURL *settingsURL = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
     
-    [alert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"settings"]
+    [alert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n settings]
                                               style:UIAlertActionStyleDefault
                                             handler:^(UIAlertAction * action) {
                                                 [UIApplication.sharedApplication openURL:settingsURL options:@{} completionHandler:^(BOOL success) {
@@ -503,10 +511,8 @@
             [topVC startActivityIndicator];
         }
 
-        MXWeakify(self);
         [[PHImageManager defaultManager] requestImageForAsset:asset targetSize:self.view.frame.size contentMode:PHImageContentModeAspectFill options:options resultHandler:^(UIImage *result, NSDictionary *info) {
 
-            MXStrongifyAndReturnIfNil(self);
             if ([topVC respondsToSelector:@selector(stopActivityIndicator)])
             {
                 [topVC stopActivityIndicator];
@@ -515,10 +521,8 @@
             if (result)
             {
                 // Validate the selection
-                MXWeakify(self);
                 [self validateSelectedImage:result responseHandler:^(BOOL isValidated) {
                     
-                    MXStrongifyAndReturnIfNil(self);
                     if (isValidated)
                     {
                         // Note we can use `options.progressHandler` to display an animation during the potential download.
@@ -528,10 +532,8 @@
                             [topVC startActivityIndicator];
                         }
                         
-                        MXWeakify(self);
                         [[PHImageManager defaultManager] requestImageDataForAsset:asset options:options resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
                             
-                            MXStrongifyAndReturnIfNil(self);
                             if ([topVC respondsToSelector:@selector(stopActivityIndicator)])
                             {
                                 [topVC stopActivityIndicator];
@@ -595,10 +597,8 @@
             [topVC startActivityIndicator];
         }
         
-        MXWeakify(self);
         [[PHImageManager defaultManager] requestAVAssetForVideo:asset options:options resultHandler:^(AVAsset * _Nullable asset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info) {
             
-            MXStrongifyAndReturnIfNil(self);
             dispatch_async(dispatch_get_main_queue(), ^{
                 
                 if ([topVC respondsToSelector:@selector(stopActivityIndicator)])
@@ -650,26 +650,27 @@
     [self dismissImageValidationView];
     
     // Add a preview to let the user validates his selection
-    MXWeakify(self);
+    __weak typeof(self) weakSelf = self;
+    
     validationView = [[MXKImageView alloc] initWithFrame:CGRectZero];
     validationView.stretchable = YES;
     
     // the user validates the image
-    [validationView setRightButtonTitle:[NSBundle mxk_localizedStringForKey:@"ok"] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
+    [validationView setRightButtonTitle:[MatrixKitL10n ok] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
+        __strong __typeof(weakSelf)strongSelf = weakSelf;
         
         // Dismiss the image view
-        MXStrongifyAndReturnIfNil(self);
-        [self dismissImageValidationView];
+        [strongSelf dismissImageValidationView];
         
         handler (YES);
     }];
     
     // the user wants to use an other image
-    [validationView setLeftButtonTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
+    [validationView setLeftButtonTitle:[MatrixKitL10n cancel] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
+        __strong __typeof(weakSelf)strongSelf = weakSelf;
         
         // dismiss the image view
-        MXStrongifyAndReturnIfNil(self);
-        [self dismissImageValidationView];
+        [strongSelf dismissImageValidationView];
         
         handler (NO);
     }];
@@ -688,26 +689,27 @@
     [self dismissImageValidationView];
     
     // Add a preview to let the user validates his selection
-    MXWeakify(self);
+    __weak typeof(self) weakSelf = self;
+    
     validationView = [[MXKImageView alloc] initWithFrame:CGRectZero];
     validationView.stretchable = NO;
     
     // the user validates the image
-    [validationView setRightButtonTitle:[NSBundle mxk_localizedStringForKey:@"ok"] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
+    [validationView setRightButtonTitle:[MatrixKitL10n ok] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
+        __strong __typeof(weakSelf)strongSelf = weakSelf;
         
         // Dismiss the image view
-        MXStrongifyAndReturnIfNil(self);
-        [self dismissImageValidationView];
+        [strongSelf dismissImageValidationView];
         
         handler (YES);
     }];
     
     // the user wants to use an other image
-    [validationView setLeftButtonTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
+    [validationView setLeftButtonTitle:[MatrixKitL10n cancel] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
+        __strong __typeof(weakSelf)strongSelf = weakSelf;
         
         // dismiss the image view
-        MXStrongifyAndReturnIfNil(self);
-        [self dismissImageValidationView];
+        [strongSelf dismissImageValidationView];
         
         handler (NO);
     }];
