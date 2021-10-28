@@ -1,5 +1,5 @@
-name: Bug report for the Element iOS app
-description: Report any issues that you have found with the Element app. Please [check open issues](https://github.com/vector-im/element-ios/issues) first, in case it has already been reported.
+name: Bug report for the Tchap iOS app
+description: Report any issues that you have found with the Tchap app. Please [check open issues](https://github.com/tchapgouv/tchap-ios/issues) first, in case it has already been reported.
 labels: [T-Defect]
 body:
   - type: markdown
@@ -50,7 +50,7 @@ body:
     attributes:
       label: Application version
       description: You can find the version information in Settings -> Help & About. 
-      placeholder: e.g. Element version 1.5.2
+      placeholder: e.g. Tchap version 1.5.2
     validations:
       required: false
   - type: input
