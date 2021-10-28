@@ -17,9 +17,6 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
-#include "Btchap/Config/Btchap-Common.xcconfig"
+#include "Btchap/SupportingFiles/Btchap-App-Common.xcconfig"
 
 PRODUCT_BUNDLE_IDENTIFIER = $(BASE_BUNDLE_IDENTIFIER).nse
-
-CODE_SIGN_STYLE = Automatic
-DEVELOPMENT_TEAM = NVMQD635C6

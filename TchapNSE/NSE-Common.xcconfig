@@ -17,11 +17,16 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
-#include "Tchap/Config/Tchap-Common.xcconfig"
+#include "Tchap/SupportingFiles/App-Common.xcconfig"
 
-SWIFT_OBJC_BRIDGING_HEADER = $(SRCROOT)/TchapNSE/SupportingFiles/TchapNSE-Bridging-Header.h
+PRODUCT_NAME = TchapNSE
 PRODUCT_BUNDLE_IDENTIFIER = $(BASE_BUNDLE_IDENTIFIER).nse
-SWIFT_OBJC_INTERFACE_HEADER_NAME = GeneratedInterface-Swift.h
 
-CODE_SIGN_STYLE = Automatic
-DEVELOPMENT_TEAM = NVMQD635C6
+INFOPLIST_FILE = TchapNSE/Info.plist
+
+CODE_SIGN_ENTITLEMENTS = TchapNSE/TchapNSE.entitlements
+
+SKIP_INSTALL = YES
+SWIFT_OBJC_BRIDGING_HEADER = $(SRCROOT)/$(PRODUCT_NAME)/SupportingFiles/TchapNSE-Bridging-Header.h
+
+SWIFT_OBJC_INTERFACE_HEADER_NAME = GeneratedInterface-Swift.h
