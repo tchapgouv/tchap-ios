@@ -59,14 +59,6 @@ final class RiotSettings: NSObject {
         }
     }
     
-    // MARK: Servers
-    
-    @UserDefault(key: "homeserverurl", defaultValue: BuildSettings.serverConfigDefaultHomeserverUrlString, storage: defaults)
-    var homeserverUrlString
-    
-    @UserDefault(key: "identityserverurl", defaultValue: BuildSettings.serverConfigDefaultIdentityServerUrlString, storage: defaults)
-    var identityServerUrlString
-    
     // MARK: Notifications
     
     /// Indicate if `showDecryptedContentInNotifications` settings has been set once.
@@ -170,7 +162,7 @@ final class RiotSettings: NSObject {
     @UserDefault(key: "roomScreenAllowFilesAction", defaultValue: BuildSettings.roomScreenAllowFilesAction, storage: defaults)
     var roomScreenAllowFilesAction
     
-    @UserDefault(key: "roomScreenShowsURLPreviews", defaultValue: true, storage: defaults)
+    @UserDefault(key: "roomScreenShowsURLPreviews", defaultValue: false, storage: defaults)
     var roomScreenShowsURLPreviews
     
     // MARK: - Room Contextual Menu

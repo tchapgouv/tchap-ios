@@ -18,7 +18,7 @@
 // https://help.apple.com/xcode/#/dev745c5c974
 
 #include "Common.xcconfig"
-#include "Pods/Target Support Files/Pods-RiotPods-SiriIntents/Pods-RiotPods-SiriIntents.release.xcconfig"
+#include "Pods/Target Support Files/Pods-TchapPods-SiriIntents/Pods-TchapPods-SiriIntents.release.xcconfig"
 
 PROVISIONING_PROFILE = $(SIRI_INTENTS_PROVISIONING_PROFILE)
 PROVISIONING_PROFILE_SPECIFIER = $(SIRI_INTENTS_PROVISIONING_PROFILE_SPECIFIER)
