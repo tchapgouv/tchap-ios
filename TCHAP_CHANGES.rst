@@ -1,3 +1,9 @@
+Changes in Tchap 1.x.x (2021-xx-xx)
+===================================================
+
+Features/Improvements:
+ * Update pinned certificates 
+
 Changes in Tchap 1.3.2 (2021-08-25)
 ===================================================
 
