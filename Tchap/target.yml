@@ -57,6 +57,8 @@ targets:
 
     sources:
     - path: ../Tchap/Config
+    - path: ../Config/Project.xcconfig
+    - path: ../Config/Project-Warnings.xcconfig
     - path: .
       excludes:
         - "Tools"
