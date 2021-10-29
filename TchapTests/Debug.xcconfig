@@ -18,8 +18,3 @@
 // https://help.apple.com/xcode/#/dev745c5c974
 
 #include "Pods/Target Support Files/Pods-TchapTests/Pods-TchapTests.debug.xcconfig"
-
-SWIFT_OBJC_INTERFACE_HEADER_NAME = GeneratedInterface-Swift.h
-
-CODE_SIGN_STYLE = Automatic
-DEVELOPMENT_TEAM = NVMQD635C6

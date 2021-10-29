@@ -17,8 +17,11 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
-#include "Tchap/Config/Tchap-Common.xcconfig"
 #include "Config/AppIdentifiers.xcconfig"
+#include "Config/AppVersion.xcconfig"
+
+BASE_BUNDLE_IDENTIFIER = fr.gouv.tchap
+APPLICATION_GROUP_IDENTIFIER = group.$(BASE_BUNDLE_IDENTIFIER)
 
 PRODUCT_NAME = DesignKit
 PRODUCT_BUNDLE_IDENTIFIER = $(BASE_BUNDLE_IDENTIFIER).designkit
@@ -26,5 +29,3 @@ PRODUCT_BUNDLE_IDENTIFIER = $(BASE_BUNDLE_IDENTIFIER).designkit
 INFOPLIST_FILE = DesignKit/Info.plist
 
 SKIP_INSTALL = YES
-
-SWIFT_OBJC_INTERFACE_HEADER_NAME = GeneratedInterface-Swift.h
