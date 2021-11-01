@@ -3,7 +3,7 @@ source 'https://cdn.cocoapods.org/'
 # Uncomment this line to define a global platform for your project
 platform :ios, '12.1'
 
-# Use frameworks to allow usage of pod written in Swift (like MatomoTracker)
+# Use frameworks to allow usage of pod written in Swift (like PiwikTracker)
 use_frameworks!
 
 # Different flavours of pods to MatrixKit. Can be one of:
@@ -45,6 +45,10 @@ end
 
 ########################################
 
+def import_SwiftUI_pods
+    pod 'Introspect', '~> 0.1'
+end
+
 abstract_target 'TchapPods' do
 
   pod 'GBDeviceInfo', '~> 6.6.0'
@@ -67,6 +71,9 @@ abstract_target 'TchapPods' do
 
   target "Tchap" do
     import_MatrixKit
+
+    import_SwiftUI_pods
+
     pod 'DGCollectionViewLeftAlignFlowLayout', '~> 1.0.4'
     pod 'KTCenterFlowLayout', '~> 1.3.1'
     pod 'ZXingObjC', '~> 3.6.5'
@@ -77,7 +84,7 @@ abstract_target 'TchapPods' do
     pod 'SideMenu', '~> 6.5'
     pod 'DSWaveformImage', '~> 6.1.1'
     pod 'ffmpeg-kit-ios-audio', '~> 4.5'
-
+    
     pod 'FLEX', '~> 4.5.0', :configurations => ['Debug']
 
     target 'TchapTests' do
@@ -87,6 +94,9 @@ abstract_target 'TchapPods' do
 
   target "Btchap" do
     import_MatrixKit
+
+    import_SwiftUI_pods
+
     pod 'DGCollectionViewLeftAlignFlowLayout', '~> 1.0.4'
     pod 'KTCenterFlowLayout', '~> 1.3.1'
     pod 'ZXingObjC', '~> 3.6.5'
@@ -104,7 +114,15 @@ abstract_target 'TchapPods' do
   target "RiotShareExtension" do
     import_MatrixKit
   end
-    
+
+  target "RiotSwiftUI" do
+    import_SwiftUI_pods
+  end 
+
+  target "RiotSwiftUITests" do
+    import_SwiftUI_pods
+  end
+
   target "RiotNSE" do
     import_MatrixKit
   end
