@@ -108,11 +108,7 @@ abstract_target 'TchapPods' do
     import_MatrixKit
   end
   
-  target "TchapNSE" do
-    import_MatrixKit
-  end
-
-  target "BtchapNSE" do
+  target "RiotNSE" do
     import_MatrixKit
   end
   
