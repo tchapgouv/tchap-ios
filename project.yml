@@ -33,9 +33,8 @@ options:
 
 include:
   - path: Tchap/target.yml
-  - path: TchapShareExtension/target.yml
+  - path: RiotShareExtension/target.yml
   - path: RiotNSE/target.yml
   - path: TchapTests/target.yml
   - path: Btchap/target.yml
-  - path: BtchapShareExtension/target.yml
   - path: DesignKit/target.yml

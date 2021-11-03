@@ -100,14 +100,10 @@ abstract_target 'TchapPods' do
     pod 'FLEX', '~> 4.5.0', :configurations => ['Debug']
   end
     
-  target "TchapShareExtension" do
+  target "RiotShareExtension" do
     import_MatrixKit
   end
-  
-  target "BtchapShareExtension" do
-    import_MatrixKit
-  end
-  
+    
   target "RiotNSE" do
     import_MatrixKit
   end
