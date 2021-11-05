@@ -42,7 +42,8 @@ import Reusable
         super.layoutSubviews()
         
         // All the public rooms are restricted
-        self.avatarView.tc_makeHexagon(borderWidth: Constants.hexagonImageBorderWidth, borderColor: kColorDarkBlue)
+        self.avatarView.tc_makeHexagon(borderWidth: Constants.hexagonImageBorderWidth,
+                                       borderColor: ThemeService.shared().theme.borderMain)
     }
     
     func render(publicRoom: MXPublicRoom, using mediaManager: MXMediaManager) {

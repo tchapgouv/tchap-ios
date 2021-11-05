@@ -16,8 +16,6 @@
 
 #import "PreviewView.h"
 
-#import "DesignValues.h"
-
 #import "GeneratedInterface-Swift.h"
 
 @interface PreviewView() <Themable>

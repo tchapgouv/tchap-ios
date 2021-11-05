@@ -2140,7 +2140,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     [_callStatusBarButton setTitle:buttonTitle forState:UIControlStateHighlighted];
     _callStatusBarButton.titleLabel.textColor = ThemeService.shared.theme.backgroundColor;
     _callStatusBarButton.titleLabel.font = [UIFont systemFontOfSize:17 weight:UIFontWeightMedium];
-    [_callStatusBarButton setBackgroundColor:kVariant2PrimaryBgColor];
+    [_callStatusBarButton setBackgroundColor:ThemeService.shared.theme.backgroundSecondary];
     [_callStatusBarButton addTarget:self action:@selector(onCallStatusBarButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     
     // Place button into the new window

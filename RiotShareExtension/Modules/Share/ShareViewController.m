@@ -21,7 +21,6 @@
 #import "FallbackViewController.h"
 #import "ShareDataSource.h"
 #import "ShareExtensionManager.h"
-#import "DesignValues.h"
 
 #import "ThemeService.h"
 #import "GeneratedInterface-Swift.h"
@@ -108,9 +107,9 @@
     if ([ShareExtensionManager sharedManager].userAccount)
     {
         self.titleLabel.text = [VectorL10n sendTo:@""];
-        self.titleLabel.textColor = kVariant1BarTitleColor;
-        self.titleContentView.backgroundColor = kVariant1BarBgColor;
-        self.cancelButton.tintColor = kVariant1BarActionColor;
+        self.titleLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+        self.titleContentView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
+        self.cancelButton.tintColor = ThemeService.shared.theme.textPrimaryColor;
         [self configureSegmentedViewController];
     }
     else

@@ -62,15 +62,15 @@ class RoomsRoomCell: RoomsCell {
             switch category {
             case .restrictedPrivateRoom:
                 self.roomCategory.text = TchapL10n.roomCategoryPrivateRoom
-                self.roomCategory.textColor = kColorCoral
+                self.roomCategory.textColor = ThemeService.shared().theme.roomTypeRestricted
                 self.roomCategory.isHidden = false
             case .unrestrictedPrivateRoom:
                 self.roomCategory.text = TchapL10n.roomCategoryExternRoom
-                self.roomCategory.textColor = kColorPumpkinOrange
+                self.roomCategory.textColor = ThemeService.shared().theme.roomTypeUnrestricted
                 self.roomCategory.isHidden = false
             case .forum:
                 self.roomCategory.text = TchapL10n.roomCategoryForumRoom
-                self.roomCategory.textColor = kColorJadeGreen
+                self.roomCategory.textColor = ThemeService.shared().theme.roomTypePublic
                 self.roomCategory.isHidden = false
             default:
                 break
@@ -94,10 +94,10 @@ class RoomsRoomCell: RoomsCell {
         if let accessRule = self.roomCellData?.roomSummary.tc_roomAccessRule() {
             switch accessRule {
             case .restricted:
-                avatarBorderColor = kColorDarkBlue
+                avatarBorderColor = ThemeService.shared().theme.borderMain
                 avatarBorderWidth = Constants.hexagonImageBorderWidthDefault
             case .unrestricted:
-                avatarBorderColor = kColorDarkGrey
+                avatarBorderColor = ThemeService.shared().theme.borderSecondary
                 avatarBorderWidth = Constants.hexagonImageBorderWidthUnrestricted
             default:
                 avatarBorderColor = UIColor.clear

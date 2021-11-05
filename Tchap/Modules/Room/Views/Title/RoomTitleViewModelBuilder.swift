@@ -98,28 +98,28 @@ final class RoomTitleViewModelBuilder: NSObject {
             switch roomCategory {
             case .restrictedPrivateRoom:
                 roomTypeImage = Asset.Images.roomTypePrivate.image.withRenderingMode(.alwaysTemplate)
-                roomTypeImageTintColor = kColorCoral
-                avatarBorderColor = kColorDarkBlue
+                roomTypeImageTintColor = ThemeService.shared().theme.roomTypeRestricted
+                avatarBorderColor = ThemeService.shared().theme.borderMain
                 avatarBorderWidth = Constants.hexagonImageBorderWidthDefault
                 avatarMarker = Asset.SharedImages.privateAvatarIcon.image
                 subtitle = NSAttributedString(string: TchapL10n.roomTitlePrivateRoom,
-                                              attributes: [.foregroundColor: kColorCoral])
+                                              attributes: [.foregroundColor: ThemeService.shared().theme.roomTypeRestricted])
             case .unrestrictedPrivateRoom:
                 roomTypeImage = Asset.Images.roomTypePrivate.image.withRenderingMode(.alwaysTemplate)
-                roomTypeImageTintColor = kColorPumpkinOrange
-                avatarBorderColor = kColorDarkGrey
+                roomTypeImageTintColor = ThemeService.shared().theme.roomTypeUnrestricted
+                avatarBorderColor = ThemeService.shared().theme.borderSecondary
                 avatarBorderWidth = Constants.hexagonImageBorderWidthUnrestricted
                 avatarMarker = Asset.SharedImages.privateAvatarIcon.image
                 subtitle = NSAttributedString(string: TchapL10n.roomTitleExternRoom,
-                                              attributes: [.foregroundColor: kColorPumpkinOrange])
+                                              attributes: [.foregroundColor: ThemeService.shared().theme.roomTypeUnrestricted])
             case .forum:
                 roomTypeImage = Asset.Images.roomTypeForum.image.withRenderingMode(.alwaysTemplate)
-                roomTypeImageTintColor = kColorJadeGreen
-                avatarBorderColor = kColorDarkBlue
+                roomTypeImageTintColor = ThemeService.shared().theme.roomTypePublic
+                avatarBorderColor = ThemeService.shared().theme.borderMain
                 avatarBorderWidth = Constants.hexagonImageBorderWidthDefault
                 avatarMarker = Asset.SharedImages.forumAvatarIcon.image
                 subtitle = NSAttributedString(string: TchapL10n.roomTitleForumRoom,
-                                              attributes: [.foregroundColor: kColorJadeGreen])
+                                              attributes: [.foregroundColor: ThemeService.shared().theme.roomTypePublic])
             default:
                 roomTypeImage = nil
                 roomTypeImageTintColor = nil
@@ -182,7 +182,7 @@ final class RoomTitleViewModelBuilder: NSObject {
         let marker: UIImage?
         if roomPreviewData.wasInitializedWithPublicRoom {
             // The public rooms (forums) are restricted (external users can not join them)
-            avatarBorderColor = kColorDarkBlue
+            avatarBorderColor = ThemeService.shared().theme.borderMain
             marker = Asset.SharedImages.forumAvatarIcon.image
         } else {
             // We don't have information to customize the room avatar

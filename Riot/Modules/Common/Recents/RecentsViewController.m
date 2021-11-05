@@ -25,7 +25,6 @@
 #import "RoomViewController.h"
 
 #import "RageShakeManager.h"
-#import "DesignValues.h"
 #import "Analytics.h"
 
 #import "GeneratedInterface-Swift.h"

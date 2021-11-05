@@ -34,3 +34,4 @@
 #import "JitsiWidgetData.h"
 #import "AuthFallBackViewController.h"
 #import "RiotNavigationController.h"
+#import "ThemeService.h"

@@ -84,6 +84,15 @@ class DefaultTheme: NSObject, Theme {
     
     var shadowColor: UIColor = UIColor(rgb: 0x000000)
     
+    var roomTypeRestricted: UIColor = UIColor(rgb:0xEB5757)
+    var roomTypeUnrestricted: UIColor = UIColor(rgb:0xF07A12)
+    var roomTypePublic: UIColor = UIColor(rgb:0x27AE60)
+    var borderMain: UIColor = UIColor(rgb:0x162D58)
+    var borderSecondary: UIColor = UIColor(rgb:0xCCCCCC)
+    var backgroundSecondary: UIColor = UIColor(rgb:0xF2F5F8)
+    var domainLabel: UIColor = UIColor(rgb:0x498FCF)
+    var unreadBackground: UIColor = UIColor(rgb:0xE8EDF2)
+    
     func applyStyle(onTabBar tabBar: UITabBar) {
         tabBar.unselectedItemTintColor = self.tabBarUnselectedItemTintColor
         tabBar.tintColor = self.tintColor
