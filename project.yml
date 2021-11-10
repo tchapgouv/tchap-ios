@@ -36,7 +36,6 @@ include:
   - path: TchapShareExtension/target.yml
   - path: RiotNSE/target.yml
   - path: TchapTests/target.yml
-  - path: SiriIntents/target.yml
   - path: Btchap/target.yml
   - path: BtchapShareExtension/target.yml
   - path: DesignKit/target.yml

@@ -111,10 +111,6 @@ abstract_target 'TchapPods' do
   target "RiotNSE" do
     import_MatrixKit
   end
-  
-  target "SiriIntents" do
-    import_MatrixKit
-  end
 end
 
 

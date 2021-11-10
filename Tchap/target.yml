@@ -32,7 +32,6 @@ targets:
 
     dependencies:
     - target: TchapShareExtension
-    - target: SiriIntents
     - target: RiotNSE
     - target: DesignKit
 
