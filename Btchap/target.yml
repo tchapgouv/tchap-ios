@@ -62,6 +62,7 @@ targets:
     - path: ../Btchap/Config
     - path: ../Config/Project.xcconfig
     - path: ../Config/Project-Warnings.xcconfig
+    - path: ../Config/AppIdentifiers.xcconfig
     - path: .
       excludes:
         - "**/*.strings" # Exclude all strings files

@@ -63,6 +63,7 @@ targets:
     - path: ../Tchap/Config
     - path: ../Config/Project.xcconfig
     - path: ../Config/Project-Warnings.xcconfig
+    - path: ../Config/AppIdentifiers.xcconfig
     - path: .
       excludes:
         - "Tools"

@@ -32,6 +32,3 @@ CODE_SIGN_ENTITLEMENTS = Btchap/SupportingFiles/Btchap.entitlements
 
 SWIFT_OBJC_BRIDGING_HEADER = $(SRCROOT)/Tchap/SupportingFiles/Tchap-Bridging-Header.h
 LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/Frameworks
-
-CODE_SIGN_STYLE = Automatic
-DEVELOPMENT_TEAM = NVMQD635C6
