@@ -19,3 +19,6 @@
 
 #include "Btchap-App-Common.xcconfig"
 #include "Pods/Target Support Files/Pods-TchapPods-Btchap/Pods-TchapPods-Btchap.release.xcconfig"
+
+PROVISIONING_PROFILE = $(TCHAP_PROVISIONING_PROFILE)
+PROVISIONING_PROFILE_SPECIFIER = $(TCHAP_PROVISIONING_PROFILE_SPECIFIER)
