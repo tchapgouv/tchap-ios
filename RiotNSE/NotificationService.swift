@@ -53,6 +53,12 @@ class NotificationService: UNNotificationServiceExtension {
     private lazy var configuration: Configurable = {
         return CommonConfiguration()
     }()
+    private lazy var mxRestClient: MXRestClient? = {
+        guard let userAccount = userAccount else {
+            return nil
+        }
+        return MXRestClient(credentials: userAccount.mxCredentials, unrecognizedCertificateHandler: nil)
+    }()
     private static var isLoggerInitialized: Bool = false
     private lazy var pushGatewayRestClient: MXPushGatewayRestClient = {
         let url = URL(string: BuildSettings.serverConfigSygnalAPIUrlString)!
@@ -222,7 +228,7 @@ class NotificationService: UNNotificationServiceExtension {
             return
         }
         
-        self.notificationContent(forEvent: event, forAccount: userAccount) { (notificationContent) in
+        self.notificationContent(forEvent: event, forAccount: userAccount) { (notificationContent, ignoreBadgeUpdate) in
             var isUnwantedNotification = false
             
             // Modify the notification content here...
@@ -240,10 +246,14 @@ class NotificationService: UNNotificationServiceExtension {
                 isUnwantedNotification = true
             }
             
-            //  modify the best attempt content, to be able to use in future
-            self.bestAttemptContents[event.eventId] = content
+            if ignoreBadgeUpdate {
+                content.badge = nil
+            }
             
             if self.ongoingVoIPPushRequests[event.eventId] == true {
+                //  modify the best attempt content, to be able to use in the future
+                self.bestAttemptContents[event.eventId] = content
+                
                 //  There is an ongoing VoIP Push request for this event, wait for it to be completed.
                 //  When it completes, it'll continue with the bestAttemptContent.
                 return
@@ -279,10 +289,10 @@ class NotificationService: UNNotificationServiceExtension {
         MXLog.debug("--------------------------------------------------------------------------------")
     }
     
-    private func notificationContent(forEvent event: MXEvent, forAccount account: MXKAccount, onComplete: @escaping (UNNotificationContent?) -> Void) {
+    private func notificationContent(forEvent event: MXEvent, forAccount account: MXKAccount, onComplete: @escaping (UNNotificationContent?, Bool) -> Void) {
         guard let content = event.content, content.count > 0 else {
             MXLog.debug("[NotificationService] notificationContentForEvent: empty event content")
-            onComplete(nil)
+            onComplete(nil, false)
             return
         }
         
@@ -298,7 +308,7 @@ class NotificationService: UNNotificationServiceExtension {
                     var notificationTitle: String?
                     var notificationBody: String?
                     var additionalUserInfo: [AnyHashable: Any]?
-                    
+                    var ignoreBadgeUpdate = false
                     var threadIdentifier: String? = roomId
                     let currentUserId = account.mxCredentials.userId
                     let roomDisplayName = roomSummary?.displayname
@@ -322,11 +332,18 @@ class NotificationService: UNNotificationServiceExtension {
                             if let callInviteContent = MXCallInviteEventContent(fromJSON: event.content),
                                callInviteContent.lifetime > event.age,
                                (callInviteContent.lifetime - event.age) > UInt(NSE.Constants.timeNeededToSendVoIPPushes * MSEC_PER_SEC) {
+                                if BuildSettings.ignoreBadgeUpdatesForVirtualRooms {
+                                    self.sendReadReceipt(forEvent: event)
+                                    ignoreBadgeUpdate = true
+                                }
                                 self.sendVoipPush(forEvent: event)
                             } else {
                                 MXLog.debug("[NotificationService] notificationContent: Do not attempt to send a VoIP push, there is not enough time to process it.")
                             }
-                        case .roomMessage, .roomEncrypted:
+                        case .roomEncrypted:
+                            // If unable to decrypt the event, use the fallback.
+                            break
+                        case .roomMessage:
                             if isRoomMentionsOnly {
                                 // A local notification will be displayed only for highlighted notification.
                                 var isHighlighted = false
@@ -345,9 +362,10 @@ class NotificationService: UNNotificationServiceExtension {
                                 }
                                 
                                 if !isHighlighted {
+                                    #warning("In practice, this only hides the notification's content. An empty notification may be less useful in this instance?")
                                     // Ignore this notif.
                                     MXLog.debug("[NotificationService] notificationContentForEvent: Ignore non highlighted notif in mentions only room")
-                                    onComplete(nil)
+                                    onComplete(nil, false)
                                     return
                                 }
                             }
@@ -436,7 +454,7 @@ class NotificationService: UNNotificationServiceExtension {
                     
                     guard notificationBody != nil else {
                         MXLog.debug("[NotificationService] notificationContentForEvent: notificationBody is nil")
-                        onComplete(nil)
+                        onComplete(nil, false)
                         return
                     }
                     
@@ -449,10 +467,10 @@ class NotificationService: UNNotificationServiceExtension {
                                                                        additionalInfo: additionalUserInfo)
                     
                     MXLog.debug("[NotificationService] notificationContentForEvent: Calling onComplete.")
-                    onComplete(notificationContent)
+                    onComplete(notificationContent, ignoreBadgeUpdate)
                 case .failure(let error):
                     MXLog.debug("[NotificationService] notificationContentForEvent: error: \(error)")
-                    onComplete(nil)
+                    onComplete(nil, false)
             }
         })
     }
@@ -640,4 +658,23 @@ class NotificationService: UNNotificationServiceExtension {
         }
     }
     
+    private func sendReadReceipt(forEvent event: MXEvent) {
+        guard let mxRestClient = mxRestClient else {
+            MXLog.error("[NotificationService] sendVoipReadReceipt: Missing mxRestClient for read receipt request.")
+            return
+        }
+        guard let eventId = event.eventId,
+              let roomId = event.roomId else {
+            MXLog.error("[NotificationService] sendVoipReadReceipt: Event information missing for read receipt request.")
+            return
+        }
+        
+        mxRestClient.sendReadReceipt(toRoom: roomId, forEvent: eventId) { response in
+            if response.isSuccess {
+                MXLog.debug("[NotificationService] sendVoipReadReceipt: Read receipt send successfully.")
+            } else if let error = response.error {
+                MXLog.error("[NotificationService] sendVoipReadReceipt: Read receipt send failed with error \(error).")
+            }
+        }
+    }
 }
