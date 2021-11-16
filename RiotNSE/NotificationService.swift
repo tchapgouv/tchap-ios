@@ -332,11 +332,25 @@ class NotificationService: UNNotificationServiceExtension {
                             if let callInviteContent = MXCallInviteEventContent(fromJSON: event.content),
                                callInviteContent.lifetime > event.age,
                                (callInviteContent.lifetime - event.age) > UInt(NSE.Constants.timeNeededToSendVoIPPushes * MSEC_PER_SEC) {
-                                if BuildSettings.ignoreBadgeUpdatesForVirtualRooms {
-                                    self.sendReadReceipt(forEvent: event)
-                                    ignoreBadgeUpdate = true
+                                NotificationService.backgroundSyncService.roomAccountData(forRoomId: roomId) { response in
+                                    if let accountData = response.value, accountData.virtualRoomInfo.isVirtual {
+                                        self.sendReadReceipt(forEvent: event)
+                                        ignoreBadgeUpdate = true
+                                    }
+                                    self.sendVoipPush(forEvent: event)
+                                    self.validateNotificationContentAndComplete(
+                                        notificationTitle: notificationTitle,
+                                        notificationBody: notificationBody,
+                                        additionalUserInfo: additionalUserInfo,
+                                        ignoreBadgeUpdate: ignoreBadgeUpdate,
+                                        threadIdentifier: threadIdentifier,
+                                        currentUserId: currentUserId,
+                                        event: event,
+                                        pushRule: pushRule,
+                                        onComplete: onComplete
+                                    )
                                 }
-                                self.sendVoipPush(forEvent: event)
+                                return
                             } else {
                                 MXLog.debug("[NotificationService] notificationContent: Do not attempt to send a VoIP push, there is not enough time to process it.")
                             }
@@ -458,21 +472,84 @@ class NotificationService: UNNotificationServiceExtension {
                         return
                     }
                     
-                    let notificationContent = self.notificationContent(withTitle: notificationTitle,
-                                                                       body: notificationBody,
-                                                                       threadIdentifier: threadIdentifier,
-                                                                       userId: currentUserId,
-                                                                       event: event,
-                                                                       pushRule: pushRule,
-                                                                       additionalInfo: additionalUserInfo)
                     
-                    MXLog.debug("[NotificationService] notificationContentForEvent: Calling onComplete.")
-                    onComplete(notificationContent, ignoreBadgeUpdate)
+                    self.validateNotificationContentAndComplete(
+                        notificationTitle: notificationTitle,
+                        notificationBody: notificationBody,
+                        additionalUserInfo: additionalUserInfo,
+                        ignoreBadgeUpdate: ignoreBadgeUpdate,
+                        threadIdentifier: threadIdentifier,
+                        currentUserId: currentUserId,
+                        event: event,
+                        pushRule: pushRule,
+                        onComplete: onComplete
+                    )
                 case .failure(let error):
                     MXLog.debug("[NotificationService] notificationContentForEvent: error: \(error)")
                     onComplete(nil, false)
             }
         })
+    }
+    
+    private func validateNotificationContentAndComplete(
+        notificationTitle: String?,
+        notificationBody: String?,
+        additionalUserInfo: [AnyHashable: Any]?,
+        ignoreBadgeUpdate: Bool,
+        threadIdentifier: String?,
+        currentUserId: String?,
+        event: MXEvent,
+        pushRule: MXPushRule?,
+        onComplete: @escaping (UNNotificationContent?, Bool) -> Void
+    ) {
+        
+        var validatedNotificationBody: String? = notificationBody
+        var validatedNotificationTitle: String? = notificationTitle
+        if self.localAuthenticationService.isProtectionSet {
+            MXLog.debug("[NotificationService] notificationContentForEvent: Resetting title and body because app protection is set")
+            validatedNotificationBody = NSString.localizedUserNotificationString(forKey: "MESSAGE_PROTECTED", arguments: [])
+            validatedNotificationTitle = nil
+        }
+        
+        guard notificationBody != nil else {
+            MXLog.debug("[NotificationService] notificationContentForEvent: notificationBody is nil")
+            onComplete(nil, false)
+            return
+        }
+        
+        let notificationContent = self.notificationContent(withTitle: validatedNotificationTitle,
+                                                           body: validatedNotificationBody,
+                                                           threadIdentifier: threadIdentifier,
+                                                           userId: currentUserId,
+                                                           event: event,
+                                                           pushRule: pushRule,
+                                                           additionalInfo: additionalUserInfo)
+        
+        MXLog.debug("[NotificationService] notificationContentForEvent: Calling onComplete.")
+        onComplete(notificationContent, ignoreBadgeUpdate)
+    }
+    
+    /// Returns the default title for message notifications.
+    /// - Parameters:
+    ///   - eventSenderName: The displayname of the sender.
+    ///   - roomDisplayName: The displayname of the room the message was sent in.
+    /// - Returns: A string to be used for the notification's title.
+    private func messageTitle(for eventSenderName: String, in roomDisplayName: String?) -> String {
+        // Display the room name only if it is different than the sender name
+        if let roomDisplayName = roomDisplayName, roomDisplayName != eventSenderName {
+            return NSString.localizedUserNotificationString(forKey: "MSG_FROM_USER_IN_ROOM_TITLE", arguments: [eventSenderName, roomDisplayName])
+        } else {
+            return eventSenderName
+        }
+    }
+    
+    private func replyTitle(for eventSenderName: String, in roomDisplayName: String?) -> String {
+        // Display the room name only if it is different than the sender name
+        if let roomDisplayName = roomDisplayName, roomDisplayName != eventSenderName {
+            return NSString.localizedUserNotificationString(forKey: "REPLY_FROM_USER_IN_ROOM_TITLE", arguments: [eventSenderName, roomDisplayName])
+        } else {
+            return NSString.localizedUserNotificationString(forKey: "REPLY_FROM_USER_TITLE", arguments: [eventSenderName])
+        }
     }
     
     /// Get the context of an event.
