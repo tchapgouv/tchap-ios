@@ -486,7 +486,7 @@ CallAudioRouteMenuViewDelegate> */
     }
     
     return [MXKTools paintImage:[UIImage imageNamed:@"placeholder"]
-                      withColor:self.overriddenTheme.tintColor];
+                      withColor:ThemeService.shared.theme.tintColor];
 }
 
 - (void)updatePeerInfoDisplay
