@@ -1,5 +1,6 @@
 /*
- Copyright 2017 Aram Sargsyan
+ Copyright 2017 Vector Creations Ltd
+ Copyright 2019 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -21,7 +22,7 @@
 #import "objc/runtime.h"
 #include <MatrixSDK/MXUIKitBackgroundModeHandler.h>
 #import <mach/mach.h>
-#import "RiotShareExtension-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 NSString *const kShareExtensionManagerDidUpdateAccountDataNotification = @"kShareExtensionManagerDidUpdateAccountDataNotification";
 
@@ -77,20 +78,13 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         // Set static application settings
         sharedInstance->_configuration = [CommonConfiguration new];
         [sharedInstance.configuration setupSettings];
-        
+
         // NSLog -> console.log file when not debugging the app
-        MXLogConfiguration *configuration = [[MXLogConfiguration alloc] init];
-        configuration.logLevel = MXLogLevelVerbose;
-        configuration.logFilesSizeLimit = 0;
-        configuration.maxLogFilesCount = 10;
-        configuration.subLogName = @"share";
-        
-        // Redirect NSLogs to files only if we are not debugging
-        if (!isatty(STDERR_FILENO)) {
-            configuration.redirectLogsToFiles = YES;
+        if (!isatty(STDERR_FILENO))
+        {
+            [MXLogger setSubLogName:@"share"];
+            [MXLogger redirectNSLogToFiles:YES];
         }
-        
-        [MXLog configure:configuration];
     });
     return sharedInstance;
 }
@@ -146,7 +140,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     NSUserDefaults *sharedUserDefaults = [MXKAppSettings standardAppSettings].sharedUserDefaults;
     NSString *language = [sharedUserDefaults objectForKey:@"appLanguage"];
     [NSBundle mxk_setLanguage:language];
-    [NSBundle mxk_setFallbackLanguage:@"en"];
+    [NSBundle mxk_setFallbackLanguage:@"fr"];
     
     // Check the current matrix user.
     [self checkUserAccount];
@@ -319,12 +313,11 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                          }
                          else
                          {
-                             MXLogDebug(@"[ShareExtensionManager] sendContentToRoom: failed to loadItemForTypeIdentifier. Error: %@", error);
+                             NSLog(@"[ShareExtensionManager] sendContentToRoom: failed to loadItemForTypeIdentifier. Error: %@", error);
                              dispatch_group_leave(requestsGroup);
                          }
                          
-                         // Only prompt for image resize if all items are images
-                         // Ignore showMediaCompressionPrompt setting due to memory constraints with full size images.
+                         // Only prompt for image resize only if all items are images
                          if (areAllAttachmentsImages)
                          {
                              if ([self areAttachmentsFullyLoaded])
@@ -511,15 +504,13 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     {
         __weak typeof(self) weakSelf = self;
         
-        compressionPrompt = [UIAlertController alertControllerWithTitle:[MatrixKitL10n attachmentSizePromptTitle]
-                                                                message:[MatrixKitL10n attachmentSizePromptMessage]
-                                                         preferredStyle:UIAlertControllerStyleActionSheet];
+        compressionPrompt = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"attachment_size_prompt"] message:nil preferredStyle:UIAlertControllerStyleActionSheet];
         
         if (compressionSizes.small.fileSize)
         {
-            NSString *fileSizeString = [MXTools fileSizeToString:compressionSizes.small.fileSize];
+            NSString *resolution = [NSString stringWithFormat:@"%@ (%d x %d)", [MXTools fileSizeToString:compressionSizes.small.fileSize round:NO], (int)compressionSizes.small.imageSize.width, (int)compressionSizes.small.imageSize.height];
             
-            NSString *title = [MatrixKitL10n attachmentSmall:fileSizeString];
+            NSString *title = [NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"attachment_small"], resolution];
             
             [compressionPrompt addAction:[UIAlertAction actionWithTitle:title
                                                                   style:UIAlertActionStyleDefault
@@ -545,9 +536,9 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         
         if (compressionSizes.medium.fileSize)
         {
-            NSString *fileSizeString = [MXTools fileSizeToString:compressionSizes.medium.fileSize];
+            NSString *resolution = [NSString stringWithFormat:@"%@ (%d x %d)", [MXTools fileSizeToString:compressionSizes.medium.fileSize round:NO], (int)compressionSizes.medium.imageSize.width, (int)compressionSizes.medium.imageSize.height];
             
-            NSString *title = [MatrixKitL10n attachmentMedium:fileSizeString];
+            NSString *title = [NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"attachment_medium"], resolution];
             
             [compressionPrompt addAction:[UIAlertAction actionWithTitle:title
                                                                   style:UIAlertActionStyleDefault
@@ -575,9 +566,9 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         // TODO: Remove this condition when issue https://github.com/vector-im/riot-ios/issues/2341 will be fixed.
         if (compressionSizes.large.fileSize && (MAX(compressionSizes.large.imageSize.width, compressionSizes.large.imageSize.height) <= kLargeImageSizeMaxDimension))
         {
-            NSString *fileSizeString = [MXTools fileSizeToString:compressionSizes.large.fileSize];
+            NSString *resolution = [NSString stringWithFormat:@"%@ (%d x %d)", [MXTools fileSizeToString:compressionSizes.large.fileSize round:NO], (int)compressionSizes.large.imageSize.width, (int)compressionSizes.large.imageSize.height];
             
-            NSString *title = [MatrixKitL10n attachmentLarge:fileSizeString];
+            NSString *title = [NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"attachment_large"], resolution];
             
             [compressionPrompt addAction:[UIAlertAction actionWithTitle:title
                                                                   style:UIAlertActionStyleDefault
@@ -605,9 +596,9 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         // To limit memory consumption, we suggest the original resolution only if the image orientation is up, or if the image size is moderate
         if (!isAPendingImageNotOrientedUp || !compressionSizes.large.fileSize)
         {
-            NSString *fileSizeString = [MXTools fileSizeToString:compressionSizes.original.fileSize];
+            NSString *resolution = [NSString stringWithFormat:@"%@ (%d x %d)", [MXTools fileSizeToString:compressionSizes.original.fileSize round:NO], (int)compressionSizes.original.imageSize.width, (int)compressionSizes.original.imageSize.height];
             
-            NSString *title = [MatrixKitL10n attachmentOriginal:fileSizeString];
+            NSString *title = [NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"attachment_original"], resolution];
             
             [compressionPrompt addAction:[UIAlertAction actionWithTitle:title
                                                                   style:UIAlertActionStyleDefault
@@ -629,7 +620,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                                                                 }]];
         }
         
-        [compressionPrompt addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+        [compressionPrompt addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
                                                               style:UIAlertActionStyleCancel
                                                             handler:nil]];
         
@@ -646,7 +637,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
             self.imageCompressionMode = ImageCompressionModeNone;
         }
         
-        MXLogDebug(@"[ShareExtensionManager] Send %lu image(s) without compression prompt using compression mode: %ld", (unsigned long)self.pendingImages.count, (long)self.imageCompressionMode);
+        NSLog(@"[ShareExtensionManager] Send %lu image(s) without compression prompt using compression mode: %ld", (unsigned long)self.pendingImages.count, (long)self.imageCompressionMode);
         
         if (shareBlock)
         {
@@ -840,8 +831,8 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     NSUInteger imageWidth = compressionSize.imageSize.width;
     NSUInteger imageHeight = compressionSize.imageSize.height;
     
-    MXLogDebug(@"[ShareExtensionManager] User choose image compression with output size %lu x %lu (output file size: %@)", (unsigned long)imageWidth, (unsigned long)imageHeight, fileSize);
-    MXLogDebug(@"[ShareExtensionManager] Number of images to send: %lu", (unsigned long)self.pendingImages.count);
+    NSLog(@"[ShareExtensionManager] User choose image compression with output size %lu x %lu (output file size: %@)", (unsigned long)imageWidth, (unsigned long)imageHeight, fileSize);
+    NSLog(@"[ShareExtensionManager] Number of images to send: %lu", (unsigned long)self.pendingImages.count);
 }
 
 // Log memory usage.
@@ -860,11 +851,11 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     
     if (kerr == KERN_SUCCESS)
     {
-        MXLogDebug(@"[ShareExtensionManager] Memory in use (in MB): %f", memoryUsedInMegabytes);
+        NSLog(@"[ShareExtensionManager] Memory in use (in MB): %f", memoryUsedInMegabytes);
     }
     else
     {
-        MXLogDebug(@"[ShareExtensionManager] Error with task_info(): %s", mach_error_string(kerr));
+        NSLog(@"[ShareExtensionManager] Error with task_info(): %s", mach_error_string(kerr));
     }
 }
 
@@ -900,7 +891,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
 
 - (void)didReceiveMemoryWarning:(NSNotification*)notification
 {
-    MXLogDebug(@"[ShareExtensionManager] Did receive memory warning");
+    NSLog(@"[ShareExtensionManager] Did receive memory warning");
     [self logMemoryUsage];
 }
 
@@ -911,7 +902,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     [self didStartSendingToRoom:room];
     if (!text)
     {
-        MXLogDebug(@"[ShareExtensionManager] loadItemForTypeIdentifier: failed.");
+        NSLog(@"[ShareExtensionManager] loadItemForTypeIdentifier: failed.");
         if (failureBlock)
         {
             failureBlock(nil);
@@ -925,7 +916,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
             successBlock();
         }
     } failure:^(NSError *error) {
-        MXLogDebug(@"[ShareExtensionManager] sendTextMessage failed.");
+        NSLog(@"[ShareExtensionManager] sendTextMessage failed.");
         if (failureBlock)
         {
             failureBlock(error);
@@ -938,7 +929,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     [self didStartSendingToRoom:room];
     if (!fileUrl)
     {
-        MXLogDebug(@"[ShareExtensionManager] loadItemForTypeIdentifier: failed.");
+        NSLog(@"[ShareExtensionManager] loadItemForTypeIdentifier: failed.");
         if (failureBlock)
         {
             failureBlock(nil);
@@ -957,7 +948,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
             successBlock();
         }
     } failure:^(NSError *error) {
-        MXLogDebug(@"[ShareExtensionManager] sendFile failed.");
+        NSLog(@"[ShareExtensionManager] sendFile failed.");
         if (failureBlock)
         {
             failureBlock(error);
@@ -995,7 +986,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     // Sanity check
     if (!mimeType)
     {
-        MXLogDebug(@"[ShareExtensionManager] sendImage failed. Cannot determine MIME type of %@", itemProvider);
+        NSLog(@"[ShareExtensionManager] sendImage failed. Cannot determine MIME type of %@", itemProvider);
         if (failureBlock)
         {
             failureBlock(nil);
@@ -1082,7 +1073,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         }
     } failure:^(NSError *error) {
         
-        MXLogDebug(@"[ShareExtensionManager] sendImage failed.");
+        NSLog(@"[ShareExtensionManager] sendImage failed.");
         if (failureBlock)
         {
             failureBlock(error);
@@ -1095,7 +1086,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
 {
     if (imageDatas.count == 0 || imageDatas.count != itemProviders.count)
     {
-        MXLogDebug(@"[ShareExtensionManager] sendImages: no images to send.");
+        NSLog(@"[ShareExtensionManager] sendImages: no images to send.");
         
         if (failureBlock)
         {
@@ -1156,58 +1147,39 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
 
 - (void)sendVideo:(NSURL *)videoLocalUrl toRoom:(MXRoom *)room successBlock:(dispatch_block_t)successBlock failureBlock:(void(^)(NSError *error))failureBlock
 {
-    AVURLAsset *videoAsset = [[AVURLAsset alloc] initWithURL:videoLocalUrl options:nil];
-    
-    MXWeakify(self);
-    
-    // Ignore showMediaCompressionPrompt setting due to memory constraints when encrypting large videos.
-    UIAlertController *compressionPrompt = [MXKTools videoConversionPromptForVideoAsset:videoAsset withCompletion:^(NSString * _Nullable presetName) {
-        MXStrongifyAndReturnIfNil(self);
-        
-        // If the preset name is nil, the user cancelled.
-        if (!presetName)
+    [self didStartSendingToRoom:room];
+    if (!videoLocalUrl)
+    {
+        NSLog(@"[ShareExtensionManager] loadItemForTypeIdentifier: failed.");
+        if (failureBlock)
         {
-            return;
+            failureBlock(nil);
         }
-        
-        // Set the chosen video conversion preset.
-        [MXSDKOptions sharedInstance].videoConversionPresetName = presetName;
-        
-        [self didStartSendingToRoom:room];
-        if (!videoLocalUrl)
+        return;
+    }
+    
+    // Retrieve the video frame at 1 sec to define the video thumbnail
+    AVURLAsset *urlAsset = [[AVURLAsset alloc] initWithURL:videoLocalUrl options:nil];
+    AVAssetImageGenerator *assetImageGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:urlAsset];
+    assetImageGenerator.appliesPreferredTrackTransform = YES;
+    CMTime time = CMTimeMake(1, 1);
+    CGImageRef imageRef = [assetImageGenerator copyCGImageAtTime:time actualTime:NULL error:nil];
+    // Finalize video attachment
+    UIImage *videoThumbnail = [[UIImage alloc] initWithCGImage:imageRef];
+    CFRelease(imageRef);
+    
+    [room sendVideo:videoLocalUrl withThumbnail:videoThumbnail localEcho:nil success:^(NSString *eventId) {
+        if (successBlock)
         {
-            MXLogDebug(@"[ShareExtensionManager] loadItemForTypeIdentifier: failed.");
-            if (failureBlock)
-            {
-                failureBlock(nil);
-            }
-            return;
+            successBlock();
         }
-        
-        // Retrieve the video frame at 1 sec to define the video thumbnail
-        AVAssetImageGenerator *assetImageGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:videoAsset];
-        assetImageGenerator.appliesPreferredTrackTransform = YES;
-        CMTime time = CMTimeMake(1, 1);
-        CGImageRef imageRef = [assetImageGenerator copyCGImageAtTime:time actualTime:NULL error:nil];
-        // Finalize video attachment
-        UIImage *videoThumbnail = [[UIImage alloc] initWithCGImage:imageRef];
-        CFRelease(imageRef);
-        
-        [room sendVideoAsset:videoAsset withThumbnail:videoThumbnail localEcho:nil success:^(NSString *eventId) {
-            if (successBlock)
-            {
-                successBlock();
-            }
-        } failure:^(NSError *error) {
-            MXLogDebug(@"[ShareExtensionManager] sendVideo failed.");
-            if (failureBlock)
-            {
-                failureBlock(error);
-            }
-        }];
+    } failure:^(NSError *error) {
+        NSLog(@"[ShareExtensionManager] sendVideo failed.");
+        if (failureBlock)
+        {
+            failureBlock(error);
+        }
     }];
-    
-    [self.delegate shareExtensionManager:self showImageCompressionPrompt:compressionPrompt];
 }
 
 

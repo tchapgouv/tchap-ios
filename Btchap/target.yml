@@ -31,7 +31,7 @@ targets:
     platform: iOS
 
     dependencies:
-    - target: BtchapShareExtension
+    - target: RiotShareExtension
     - target: RiotNSE
     - target: DesignKit
 
@@ -174,7 +174,7 @@ targets:
     - path: ../Riot/Utils
 
     # Share extension
-    - path: ../TchapShareExtension/Modules/Share/Listing/Views
+    - path: ../RiotShareExtension/Modules/Share/Listing/Views
 
     # Tchap
     - path: ../Tchap/Config/AppConfiguration.swift

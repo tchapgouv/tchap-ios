@@ -18,7 +18,7 @@
 // https://help.apple.com/xcode/#/dev745c5c974
 
 #include "Common.xcconfig"
-#include "Pods/Target Support Files/Pods-RiotPods-RiotShareExtension/Pods-RiotPods-RiotShareExtension.release.xcconfig"
+#include "Pods/Target Support Files/Pods-TchapPods-RiotShareExtension/Pods-TchapPods-RiotShareExtension.release.xcconfig"
 
 PROVISIONING_PROFILE = $(SHARE_EXTENSION_PROVISIONING_PROFILE)
 PROVISIONING_PROFILE_SPECIFIER = $(SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER)
