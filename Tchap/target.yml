@@ -32,8 +32,7 @@ targets:
 
     dependencies:
     - target: TchapShareExtension
-    - target: SiriIntents
-    - target: TchapNSE
+    - target: RiotNSE
     - target: DesignKit
 
     configFiles:
@@ -41,6 +40,10 @@ targets:
       Release: SupportingFiles/App-Release.xcconfig
 
     preBuildScripts:
+    - name: 🛠 Environment
+      runOnlyWhenInstalling: false
+      shell: /bin/sh
+      script: "\"Tools/installfiles.sh\"\n"
     - name: ⚠️ SwiftLint
       runOnlyWhenInstalling: false
       shell: /bin/sh
@@ -59,6 +62,7 @@ targets:
     - path: ../Tchap/Config
     - path: ../Config/Project.xcconfig
     - path: ../Config/Project-Warnings.xcconfig
+    - path: ../Config/AppIdentifiers.xcconfig
     - path: .
       excludes:
         - "Tools"

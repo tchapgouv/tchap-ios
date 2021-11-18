@@ -32,7 +32,7 @@ targets:
 
     dependencies:
     - target: BtchapShareExtension
-    - target: BtchapNSE
+    - target: RiotNSE
     - target: DesignKit
 
     configFiles:
@@ -40,6 +40,10 @@ targets:
       Release: SupportingFiles/Btchap-App-Release.xcconfig
 
     preBuildScripts:
+    - name: 🛠 Environment
+      runOnlyWhenInstalling: false
+      shell: /bin/sh
+      script: "\"Tools/installfiles.sh\"\n"
     - name: ⚠️ SwiftLint
       runOnlyWhenInstalling: false
       shell: /bin/sh
@@ -58,6 +62,7 @@ targets:
     - path: ../Btchap/Config
     - path: ../Config/Project.xcconfig
     - path: ../Config/Project-Warnings.xcconfig
+    - path: ../Config/AppIdentifiers.xcconfig
     - path: .
       excludes:
         - "**/*.strings" # Exclude all strings files

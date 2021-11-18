@@ -4,3 +4,5 @@
 
 # Move file header template in project shared data folder
 cp IDETemplateMacros.plist Tchap.xcodeproj/xcshareddata/
+
+arch -x86_64 pod install

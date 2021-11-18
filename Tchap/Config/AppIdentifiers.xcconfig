@@ -1,5 +1,5 @@
 // 
-// Copyright 2020 Vector Creations Ltd
+// Copyright 2021 Vector Creations Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,9 +14,15 @@
 // limitations under the License.
 //
 
-// Configuration settings file format documentation can be found at:
-// https://help.apple.com/xcode/#/dev745c5c974
+// Team
+DEVELOPMENT_TEAM = NVMQD635C6
 
-#include "Btchap/SupportingFiles/Btchap-App-Common.xcconfig"
+// Provisioning profiles
+TCHAP_PROVISIONING_PROFILE_SPECIFIER = Tchap App Store
+TCHAP_PROVISIONING_PROFILE = a582ec5f-a978-4fa9-934d-ee86c9033810
 
-PRODUCT_BUNDLE_IDENTIFIER = $(BASE_BUNDLE_IDENTIFIER).nse
+NSE_PROVISIONING_PROFILE_SPECIFIER = Tchap NSE App Store
+NSE_PROVISIONING_PROFILE = 1470f574-9873-42cf-9e7e-864907334457
+
+SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER = Tchap Share Extension App Store
+SHARE_EXTENSION_PROVISIONING_PROFILE = b455f0f8-cf06-4b54-a0e7-8cd651840d40
