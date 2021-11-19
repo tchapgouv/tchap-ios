@@ -263,6 +263,11 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
         return NO;
     }
     
+    if (self.tag == RoomBubbleCellDataTagPoll)
+    {
+        return NO;
+    }
+    
     return [super hasNoDisplay];
 }
 
@@ -421,7 +426,9 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
 {
     __block NSInteger firstVisibleComponentIndex = NSNotFound;
     
-    if (self.attachment && self.bubbleComponents.count)
+    BOOL isPoll = (self.events.firstObject.eventType == MXEventTypePollStart);
+    
+    if ((isPoll || self.attachment) && self.bubbleComponents.count)
     {
         firstVisibleComponentIndex = 0;
     }
@@ -886,6 +893,9 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
             case MXEventTypeCallAnswer:
             case MXEventTypeCallHangup:
             case MXEventTypeCallReject:
+                shouldAddEvent = NO;
+                break;
+            case MXEventTypePollStart:
                 shouldAddEvent = NO;
                 break;
             case MXEventTypeCustom:

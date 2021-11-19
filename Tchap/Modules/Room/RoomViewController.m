@@ -389,6 +389,32 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     [self.bubblesTableView registerClass:KeyVerificationConclusionBubbleCell.class forCellReuseIdentifier:KeyVerificationConclusionBubbleCell.defaultReuseIdentifier];
     [self.bubblesTableView registerClass:KeyVerificationConclusionWithPaginationTitleBubbleCell.class forCellReuseIdentifier:KeyVerificationConclusionWithPaginationTitleBubbleCell.defaultReuseIdentifier];
     
+//    [self.bubblesTableView registerClass:RoomCreationCollapsedBubbleCell.class forCellReuseIdentifier:RoomCreationCollapsedBubbleCell.defaultReuseIdentifier];
+//    [self.bubblesTableView registerClass:RoomCreationWithPaginationCollapsedBubbleCell.class forCellReuseIdentifier:RoomCreationWithPaginationCollapsedBubbleCell.defaultReuseIdentifier];
+    
+    //  call cells
+//    [self.bubblesTableView registerClass:RoomDirectCallStatusBubbleCell.class forCellReuseIdentifier:RoomDirectCallStatusBubbleCell.defaultReuseIdentifier];
+//    [self.bubblesTableView registerClass:RoomGroupCallStatusBubbleCell.class forCellReuseIdentifier:RoomGroupCallStatusBubbleCell.defaultReuseIdentifier];
+    
+//    [self.bubblesTableView registerClass:RoomCreationIntroCell.class forCellReuseIdentifier:RoomCreationIntroCell.defaultReuseIdentifier];
+    
+//    [self.bubblesTableView registerNib:RoomTypingBubbleCell.nib forCellReuseIdentifier:RoomTypingBubbleCell.defaultReuseIdentifier];
+    
+//    [self.bubblesTableView registerClass:VoiceMessageBubbleCell.class forCellReuseIdentifier:VoiceMessageBubbleCell.defaultReuseIdentifier];
+//    [self.bubblesTableView registerClass:VoiceMessageWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:VoiceMessageWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
+//    [self.bubblesTableView registerClass:VoiceMessageWithPaginationTitleBubbleCell.class forCellReuseIdentifier:VoiceMessageWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+    
+//    [self.bubblesTableView registerClass:PollBubbleCell.class forCellReuseIdentifier:PollBubbleCell.defaultReuseIdentifier];
+//    [self.bubblesTableView registerClass:PollWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:PollWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
+//    [self.bubblesTableView registerClass:PollWithPaginationTitleBubbleCell.class forCellReuseIdentifier:PollWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+    
+//    [self vc_removeBackTitle];
+    
+    // Display leftBarButtonItems or leftBarButtonItem to the right of the Back button
+//    self.navigationItem.leftItemsSupplementBackButton = YES;
+    
+//    [self setupRemoveJitsiWidgetRemoveView];
+    
     // Replace the default input toolbar view.
     // Note: this operation will force the layout of subviews. That is why cell view classes must be registered before.
     [self updateRoomInputToolbarViewClassIfNeeded];
@@ -1848,180 +1874,210 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     BOOL showEncryptionBadge = NO;
     
     // Sanity check
-    if ([cellData conformsToProtocol:@protocol(MXKRoomBubbleCellDataStoring)])
+    if (![cellData conformsToProtocol:@protocol(MXKRoomBubbleCellDataStoring)])
     {
-        id<MXKRoomBubbleCellDataStoring> bubbleData = (id<MXKRoomBubbleCellDataStoring>)cellData;
+        return nil;
+    }
         
-        // Tchap: We hide all encryption icons in all bubbles for the moment (-> we don't use RoomxxxEncryptedxxxBubbleCell cell)
-//        MXKRoomBubbleCellData *roomBubbleCellData;
-//        if ([bubbleData isKindOfClass:MXKRoomBubbleCellData.class])
-//        {
-//            roomBubbleCellData = (MXKRoomBubbleCellData*)bubbleData;
-//            showEncryptionBadge = roomBubbleCellData.containsBubbleComponentWithEncryptionBadge;
-//        }
-        
-        // Select the suitable table view cell class
-        if (bubbleData.showAntivirusScanStatus)
+    id<MXKRoomBubbleCellDataStoring> bubbleData = (id<MXKRoomBubbleCellDataStoring>)cellData;
+    
+    // Tchap: We hide all encryption icons in all bubbles for the moment (-> we don't use RoomxxxEncryptedxxxBubbleCell cell)
+//    MXKRoomBubbleCellData *roomBubbleCellData;
+    
+//    if ([bubbleData isKindOfClass:MXKRoomBubbleCellData.class])
+//    {
+//        roomBubbleCellData = (MXKRoomBubbleCellData*)bubbleData;
+//        showEncryptionBadge = roomBubbleCellData.containsBubbleComponentWithEncryptionBadge;
+//    }
+    
+    // Select the suitable table view cell class, by considering first the empty bubble cell.
+    if (bubbleData.hasNoDisplay)
+    {
+        cellViewClass = RoomEmptyBubbleCell.class;
+    }
+    else if (bubbleData.tag == RoomBubbleCellDataTagRoomCreationIntro)
+    {
+        cellViewClass = RoomCreationIntroCell.class;
+    }
+    else if (bubbleData.tag == RoomBubbleCellDataTagRoomCreateWithPredecessor)
+    {
+        cellViewClass = RoomPredecessorBubbleCell.class;
+    }
+    else if (bubbleData.tag == RoomBubbleCellDataTagKeyVerificationRequestIncomingApproval)
+    {
+        cellViewClass = bubbleData.isPaginationFirstBubble ? KeyVerificationIncomingRequestApprovalWithPaginationTitleBubbleCell.class : KeyVerificationIncomingRequestApprovalBubbleCell.class;
+    }
+    else if (bubbleData.tag == RoomBubbleCellDataTagKeyVerificationRequest)
+    {
+        cellViewClass = bubbleData.isPaginationFirstBubble ? KeyVerificationRequestStatusWithPaginationTitleBubbleCell.class : KeyVerificationRequestStatusBubbleCell.class;
+    }
+    else if (bubbleData.tag == RoomBubbleCellDataTagKeyVerificationConclusion)
+    {
+        cellViewClass = bubbleData.isPaginationFirstBubble ? KeyVerificationConclusionWithPaginationTitleBubbleCell.class : KeyVerificationConclusionBubbleCell.class;
+    }
+    else if (bubbleData.tag == RoomBubbleCellDataTagMembership)
+    {
+        if (bubbleData.collapsed)
         {
-            if (bubbleData.isPaginationFirstBubble)
+            if (bubbleData.nextCollapsableCellData)
             {
-                cellViewClass = showEncryptionBadge ? RoomEncryptedAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.class : RoomAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.class;
-            }
-            else if (bubbleData.shouldHideSenderInformation)
-            {
-                cellViewClass = showEncryptionBadge ? RoomEncryptedAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.class : RoomAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.class;
+                cellViewClass = bubbleData.isPaginationFirstBubble ? RoomMembershipCollapsedWithPaginationTitleBubbleCell.class : RoomMembershipCollapsedBubbleCell.class;
             }
             else
             {
-                cellViewClass = showEncryptionBadge ? RoomEncryptedAttachmentAntivirusScanStatusBubbleCell.class : RoomAttachmentAntivirusScanStatusBubbleCell.class;
-            }
-        }
-        else if (bubbleData.hasNoDisplay)
-        {
-            cellViewClass = RoomEmptyBubbleCell.class;
-        }
-        else if (bubbleData.tag == RoomBubbleCellDataTagRoomCreateWithPredecessor)
-        {
-            cellViewClass = RoomPredecessorBubbleCell.class;
-        }
-        else if (bubbleData.tag == RoomBubbleCellDataTagKeyVerificationRequestIncomingApproval)
-        {
-            cellViewClass = bubbleData.isPaginationFirstBubble ? KeyVerificationIncomingRequestApprovalWithPaginationTitleBubbleCell.class : KeyVerificationIncomingRequestApprovalBubbleCell.class;
-        }
-        else if (bubbleData.tag == RoomBubbleCellDataTagKeyVerificationRequest)
-        {
-            cellViewClass = bubbleData.isPaginationFirstBubble ? KeyVerificationRequestStatusWithPaginationTitleBubbleCell.class : KeyVerificationRequestStatusBubbleCell.class;
-        }
-        else if (bubbleData.tag == RoomBubbleCellDataTagKeyVerificationConclusion)
-        {
-            cellViewClass = bubbleData.isPaginationFirstBubble ? KeyVerificationConclusionWithPaginationTitleBubbleCell.class : KeyVerificationConclusionBubbleCell.class;
-        }
-        else if (bubbleData.tag == RoomBubbleCellDataTagMembership)
-        {
-            if (bubbleData.collapsed)
-            {
-                if (bubbleData.nextCollapsableCellData)
-                {
-                    cellViewClass = bubbleData.isPaginationFirstBubble ? RoomMembershipCollapsedWithPaginationTitleBubbleCell.class : RoomMembershipCollapsedBubbleCell.class;
-                }
-                else
-                {
-                    // Use a normal membership cell for a single membership event
-                    cellViewClass = bubbleData.isPaginationFirstBubble ? RoomMembershipWithPaginationTitleBubbleCell.class : RoomMembershipBubbleCell.class;
-                }
-            }
-            else if (bubbleData.collapsedAttributedTextMessage)
-            {
-                // The cell (and its series) is not collapsed but this cell is the first
-                // of the series. So, use the cell with the "collapse" button.
-                cellViewClass = bubbleData.isPaginationFirstBubble ? RoomMembershipExpandedWithPaginationTitleBubbleCell.class : RoomMembershipExpandedBubbleCell.class;
-            }
-            else
-            {
+                // Use a normal membership cell for a single membership event
                 cellViewClass = bubbleData.isPaginationFirstBubble ? RoomMembershipWithPaginationTitleBubbleCell.class : RoomMembershipBubbleCell.class;
             }
         }
-        else if (bubbleData.tag == RoomBubbleCellDataTagNotice)
+        else if (bubbleData.collapsedAttributedTextMessage)
+        {
+            // The cell (and its series) is not collapsed but this cell is the first
+            // of the series. So, use the cell with the "collapse" button.
+            cellViewClass = bubbleData.isPaginationFirstBubble ? RoomMembershipExpandedWithPaginationTitleBubbleCell.class : RoomMembershipExpandedBubbleCell.class;
+        }
+        else
         {
             cellViewClass = bubbleData.isPaginationFirstBubble ? RoomMembershipWithPaginationTitleBubbleCell.class : RoomMembershipBubbleCell.class;
         }
-        else if (bubbleData.isIncoming)
+    }
+    else if (bubbleData.tag == RoomBubbleCellDataTagRoomCreateConfiguration)
+    {
+        cellViewClass = bubbleData.isPaginationFirstBubble ? RoomCreationWithPaginationCollapsedBubbleCell.class : RoomCreationCollapsedBubbleCell.class;
+    }
+    else if (bubbleData.tag == RoomBubbleCellDataTagCall)
+    {
+        cellViewClass = RoomDirectCallStatusBubbleCell.class;
+    }
+    else if (bubbleData.tag == RoomBubbleCellDataTagGroupCall)
+    {
+        cellViewClass = RoomGroupCallStatusBubbleCell.class;
+    }
+    else if (bubbleData.attachment.type == MXKAttachmentTypeVoiceMessage || bubbleData.attachment.type == MXKAttachmentTypeAudio)
+    {
+        if (bubbleData.isPaginationFirstBubble)
         {
-            if (bubbleData.isAttachmentWithThumbnail)
+            cellViewClass = VoiceMessageWithPaginationTitleBubbleCell.class;
+        }
+        else if (bubbleData.shouldHideSenderInformation)
+        {
+            cellViewClass = VoiceMessageWithoutSenderInfoBubbleCell.class;
+        }
+        else
+        {
+            cellViewClass = VoiceMessageBubbleCell.class;
+        }
+    }
+    else if (bubbleData.tag == RoomBubbleCellDataTagPoll)
+    {
+        if (bubbleData.isPaginationFirstBubble)
+        {
+            cellViewClass = PollWithPaginationTitleBubbleCell.class;
+        }
+        else if (bubbleData.shouldHideSenderInformation)
+        {
+            cellViewClass = PollWithoutSenderInfoBubbleCell.class;
+        }
+        else
+        {
+            cellViewClass = PollBubbleCell.class;
+        }
+    }
+    else if (bubbleData.isIncoming)
+    {
+        if (bubbleData.isAttachmentWithThumbnail)
+        {
+            // Check whether the provided celldata corresponds to a selected sticker
+            if (customizedRoomDataSource.selectedEventId && (bubbleData.attachment.type == MXKAttachmentTypeSticker) && [bubbleData.attachment.eventId isEqualToString:customizedRoomDataSource.selectedEventId])
             {
-                // Check whether the provided celldata corresponds to a selected sticker
-                if (customizedRoomDataSource.selectedEventId && (bubbleData.attachment.type == MXKAttachmentTypeSticker) && [bubbleData.attachment.eventId isEqualToString:customizedRoomDataSource.selectedEventId])
-                {
-                    cellViewClass = RoomSelectedStickerBubbleCell.class;
-                }
-                else if (bubbleData.isPaginationFirstBubble)
-                {
-                    cellViewClass = showEncryptionBadge ? RoomIncomingEncryptedAttachmentWithPaginationTitleBubbleCell.class : RoomIncomingAttachmentWithPaginationTitleBubbleCell.class;
-                }
-                else if (bubbleData.shouldHideSenderInformation)
-                {
-                    cellViewClass = showEncryptionBadge ? RoomIncomingEncryptedAttachmentWithoutSenderInfoBubbleCell.class : RoomIncomingAttachmentWithoutSenderInfoBubbleCell.class;
-                }
-                else
-                {
-                    cellViewClass = showEncryptionBadge ? RoomIncomingEncryptedAttachmentBubbleCell.class : RoomIncomingAttachmentBubbleCell.class;
-                }
+                cellViewClass = RoomSelectedStickerBubbleCell.class;
+            }
+            else if (bubbleData.isPaginationFirstBubble)
+            {
+                cellViewClass = showEncryptionBadge ? RoomIncomingEncryptedAttachmentWithPaginationTitleBubbleCell.class : RoomIncomingAttachmentWithPaginationTitleBubbleCell.class;
+            }
+            else if (bubbleData.shouldHideSenderInformation)
+            {
+                cellViewClass = showEncryptionBadge ? RoomIncomingEncryptedAttachmentWithoutSenderInfoBubbleCell.class : RoomIncomingAttachmentWithoutSenderInfoBubbleCell.class;
             }
             else
             {
-                if (bubbleData.isPaginationFirstBubble)
-                {
-                    if (bubbleData.shouldHideSenderName)
-                    {
-                        cellViewClass = showEncryptionBadge ? RoomIncomingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.class : RoomIncomingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.class;
-                    }
-                    else
-                    {
-                        cellViewClass = showEncryptionBadge ? RoomIncomingEncryptedTextMsgWithPaginationTitleBubbleCell.class : RoomIncomingTextMsgWithPaginationTitleBubbleCell.class;
-                    }
-                }
-                else if (bubbleData.shouldHideSenderInformation)
-                {
-                    cellViewClass = showEncryptionBadge ? RoomIncomingEncryptedTextMsgWithoutSenderInfoBubbleCell.class : RoomIncomingTextMsgWithoutSenderInfoBubbleCell.class;
-                }
-                else if (bubbleData.shouldHideSenderName)
-                {
-                    cellViewClass = showEncryptionBadge ? RoomIncomingEncryptedTextMsgWithoutSenderNameBubbleCell.class : RoomIncomingTextMsgWithoutSenderNameBubbleCell.class;
-                }
-                else
-                {
-                    cellViewClass = showEncryptionBadge ? RoomIncomingEncryptedTextMsgBubbleCell.class : RoomIncomingTextMsgBubbleCell.class;
-                }
+                cellViewClass = showEncryptionBadge ? RoomIncomingEncryptedAttachmentBubbleCell.class : RoomIncomingAttachmentBubbleCell.class;
             }
         }
         else
         {
-            // Handle here outgoing bubbles
-            if (bubbleData.isAttachmentWithThumbnail)
+            if (bubbleData.isPaginationFirstBubble)
             {
-                // Check whether the provided celldata corresponds to a selected sticker
-                if (customizedRoomDataSource.selectedEventId && (bubbleData.attachment.type == MXKAttachmentTypeSticker) && [bubbleData.attachment.eventId isEqualToString:customizedRoomDataSource.selectedEventId])
+                if (bubbleData.shouldHideSenderName)
                 {
-                    cellViewClass = RoomSelectedStickerBubbleCell.class;
-                }
-                else if (bubbleData.isPaginationFirstBubble)
-                {
-                    cellViewClass = showEncryptionBadge ? RoomOutgoingEncryptedAttachmentWithPaginationTitleBubbleCell.class :RoomOutgoingAttachmentWithPaginationTitleBubbleCell.class;
-                }
-                else if (bubbleData.shouldHideSenderInformation)
-                {
-                    cellViewClass = showEncryptionBadge ? RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.class : RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.class;
+                    cellViewClass = showEncryptionBadge ? RoomIncomingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.class : RoomIncomingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.class;
                 }
                 else
                 {
-                    cellViewClass = showEncryptionBadge ? RoomOutgoingEncryptedAttachmentBubbleCell.class : RoomOutgoingAttachmentBubbleCell.class;
+                    cellViewClass = showEncryptionBadge ? RoomIncomingEncryptedTextMsgWithPaginationTitleBubbleCell.class : RoomIncomingTextMsgWithPaginationTitleBubbleCell.class;
                 }
+            }
+            else if (bubbleData.shouldHideSenderInformation)
+            {
+                cellViewClass = showEncryptionBadge ? RoomIncomingEncryptedTextMsgWithoutSenderInfoBubbleCell.class : RoomIncomingTextMsgWithoutSenderInfoBubbleCell.class;
+            }
+            else if (bubbleData.shouldHideSenderName)
+            {
+                cellViewClass = showEncryptionBadge ? RoomIncomingEncryptedTextMsgWithoutSenderNameBubbleCell.class : RoomIncomingTextMsgWithoutSenderNameBubbleCell.class;
             }
             else
             {
-                if (bubbleData.isPaginationFirstBubble)
+                cellViewClass = showEncryptionBadge ? RoomIncomingEncryptedTextMsgBubbleCell.class : RoomIncomingTextMsgBubbleCell.class;
+            }
+        }
+    }
+    else
+    {
+        // Handle here outgoing bubbles
+        if (bubbleData.isAttachmentWithThumbnail)
+        {
+            // Check whether the provided celldata corresponds to a selected sticker
+            if (customizedRoomDataSource.selectedEventId && (bubbleData.attachment.type == MXKAttachmentTypeSticker) && [bubbleData.attachment.eventId isEqualToString:customizedRoomDataSource.selectedEventId])
+            {
+                cellViewClass = RoomSelectedStickerBubbleCell.class;
+            }
+            else if (bubbleData.isPaginationFirstBubble)
+            {
+                cellViewClass = showEncryptionBadge ? RoomOutgoingEncryptedAttachmentWithPaginationTitleBubbleCell.class :RoomOutgoingAttachmentWithPaginationTitleBubbleCell.class;
+            }
+            else if (bubbleData.shouldHideSenderInformation)
+            {
+                cellViewClass = showEncryptionBadge ? RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.class : RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.class;
+            }
+            else
+            {
+                cellViewClass = showEncryptionBadge ? RoomOutgoingEncryptedAttachmentBubbleCell.class : RoomOutgoingAttachmentBubbleCell.class;
+            }
+        }
+        else
+        {
+            if (bubbleData.isPaginationFirstBubble)
+            {
+                if (bubbleData.shouldHideSenderName)
                 {
-                    if (bubbleData.shouldHideSenderName)
-                    {
-                        cellViewClass = showEncryptionBadge ? RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.class : RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.class;
-                    }
-                    else
-                    {
-                        cellViewClass = showEncryptionBadge ? RoomOutgoingEncryptedTextMsgWithPaginationTitleBubbleCell.class : RoomOutgoingTextMsgWithPaginationTitleBubbleCell.class;
-                    }
-                }
-                else if (bubbleData.shouldHideSenderInformation)
-                {
-                    cellViewClass = showEncryptionBadge ? RoomOutgoingEncryptedTextMsgWithoutSenderInfoBubbleCell.class :RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.class;
-                }
-                else if (bubbleData.shouldHideSenderName)
-                {
-                    cellViewClass = showEncryptionBadge ? RoomOutgoingEncryptedTextMsgWithoutSenderNameBubbleCell.class : RoomOutgoingTextMsgWithoutSenderNameBubbleCell.class;
+                    cellViewClass = showEncryptionBadge ? RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.class : RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.class;
                 }
                 else
                 {
-                    cellViewClass = showEncryptionBadge ? RoomOutgoingEncryptedTextMsgBubbleCell.class : RoomOutgoingTextMsgBubbleCell.class;
+                    cellViewClass = showEncryptionBadge ? RoomOutgoingEncryptedTextMsgWithPaginationTitleBubbleCell.class : RoomOutgoingTextMsgWithPaginationTitleBubbleCell.class;
                 }
+            }
+            else if (bubbleData.shouldHideSenderInformation)
+            {
+                cellViewClass = showEncryptionBadge ? RoomOutgoingEncryptedTextMsgWithoutSenderInfoBubbleCell.class :RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.class;
+            }
+            else if (bubbleData.shouldHideSenderName)
+            {
+                cellViewClass = showEncryptionBadge ? RoomOutgoingEncryptedTextMsgWithoutSenderNameBubbleCell.class : RoomOutgoingTextMsgWithoutSenderNameBubbleCell.class;
+            }
+            else
+            {
+                cellViewClass = showEncryptionBadge ? RoomOutgoingEncryptedTextMsgBubbleCell.class : RoomOutgoingTextMsgBubbleCell.class;
             }
         }
     }
@@ -5134,6 +5190,211 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     self.inputToolbarView.editable = !enableOverlayContainerUserInteractions;
     self.bubblesTableView.scrollsToTop = !enableOverlayContainerUserInteractions;
     self.overlayContainerView.userInteractionEnabled = enableOverlayContainerUserInteractions;
+}
+
+- (RoomContextualMenuItem *)resendMenuItemWithEvent:(MXEvent*)event
+{
+    MXWeakify(self);
+    
+    RoomContextualMenuItem *resendMenuItem = [[RoomContextualMenuItem alloc] initWithMenuAction:RoomContextualMenuActionResend];
+    resendMenuItem.action = ^{
+        MXStrongifyAndReturnIfNil(self);
+        [self hideContextualMenuAnimated:YES cancelEventSelection:NO completion:nil];
+        [self cancelEventSelection];
+        [self.roomDataSource resendEventWithEventId:event.eventId success:nil failure:nil];
+    };
+    
+    return resendMenuItem;
+}
+
+- (RoomContextualMenuItem *)deleteMenuItemWithEvent:(MXEvent*)event
+{
+    MXWeakify(self);
+    
+    RoomContextualMenuItem *deleteMenuItem = [[RoomContextualMenuItem alloc] initWithMenuAction:RoomContextualMenuActionDelete];
+    deleteMenuItem.action = ^{
+        MXStrongifyAndReturnIfNil(self);
+        
+        MXWeakify(self);
+        [self hideContextualMenuAnimated:YES cancelEventSelection:YES completion:^{
+            MXStrongifyAndReturnIfNil(self);
+            
+            UIAlertController *deleteConfirmation = [UIAlertController alertControllerWithTitle:[VectorL10n roomEventActionDeleteConfirmationTitle]
+                                                                                        message:[VectorL10n roomEventActionDeleteConfirmationMessage]
+                                                                                 preferredStyle:UIAlertControllerStyleAlert];
+            
+            [deleteConfirmation addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+            }]];
+            
+            [deleteConfirmation addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n delete] style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
+                [self.roomDataSource removeEventWithEventId:event.eventId];
+            }]];
+            
+            [self presentViewController:deleteConfirmation animated:YES completion:nil];
+            self->currentAlert = deleteConfirmation;
+        }];
+    };
+    
+    return deleteMenuItem;
+}
+
+- (RoomContextualMenuItem *)editMenuItemWithEvent:(MXEvent*)event
+{
+    MXWeakify(self);
+    
+    RoomContextualMenuItem *editMenuItem = [[RoomContextualMenuItem alloc] initWithMenuAction:RoomContextualMenuActionEdit];
+    editMenuItem.action = ^{
+        MXStrongifyAndReturnIfNil(self);
+        [self hideContextualMenuAnimated:YES cancelEventSelection:NO completion:nil];
+        [self editEventContentWithId:event.eventId];
+        
+        // And display the keyboard
+        [self.inputToolbarView becomeFirstResponder];
+    };
+    
+    editMenuItem.isEnabled = [self.roomDataSource canEditEventWithId:event.eventId];
+    
+    return editMenuItem;
+}
+
+- (RoomContextualMenuItem *)copyMenuItemWithEvent:(MXEvent*)event andCell:(id<MXKCellRendering>)cell
+{
+    MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell *)cell;
+    MXKAttachment *attachment = roomBubbleTableViewCell.bubbleData.attachment;
+    
+    MXWeakify(self);
+    
+    BOOL isCopyActionEnabled = (event.eventType != MXEventTypePollStart && (!attachment || attachment.type != MXKAttachmentTypeSticker));
+    
+    if (attachment && !BuildSettings.messageDetailsAllowCopyMedia)
+    {
+        isCopyActionEnabled = NO;
+    }
+    
+    if (isCopyActionEnabled)
+    {
+        switch (event.eventType) {
+            case MXEventTypeRoomMessage:
+            {
+                NSString *messageType = event.content[@"msgtype"];
+                
+                if ([messageType isEqualToString:kMXMessageTypeKeyVerificationRequest])
+                {
+                    isCopyActionEnabled = NO;
+                }
+                break;
+            }
+            case MXEventTypeKeyVerificationStart:
+            case MXEventTypeKeyVerificationAccept:
+            case MXEventTypeKeyVerificationKey:
+            case MXEventTypeKeyVerificationMac:
+            case MXEventTypeKeyVerificationDone:
+            case MXEventTypeKeyVerificationCancel:
+                isCopyActionEnabled = NO;
+                break;
+            case MXEventTypeCustom:
+                if ([event.type isEqualToString:kWidgetMatrixEventTypeString]
+                    || [event.type isEqualToString:kWidgetModularEventTypeString])
+                {
+                    Widget *widget = [[Widget alloc] initWithWidgetEvent:event inMatrixSession:self.roomDataSource.mxSession];
+                    if ([widget.type isEqualToString:kWidgetTypeJitsiV1] ||
+                        [widget.type isEqualToString:kWidgetTypeJitsiV2])
+                    {
+                        isCopyActionEnabled = NO;
+                    }
+                }
+            default:
+                break;
+        }
+    }
+    
+    RoomContextualMenuItem *copyMenuItem = [[RoomContextualMenuItem alloc] initWithMenuAction:RoomContextualMenuActionCopy];
+    copyMenuItem.isEnabled = isCopyActionEnabled;
+    copyMenuItem.action = ^{
+        MXStrongifyAndReturnIfNil(self);
+        
+        if (!attachment)
+        {
+            NSArray *components = roomBubbleTableViewCell.bubbleData.bubbleComponents;
+            MXKRoomBubbleComponent *selectedComponent;
+            for (selectedComponent in components)
+            {
+                if ([selectedComponent.event.eventId isEqualToString:event.eventId])
+                {
+                    break;
+                }
+                selectedComponent = nil;
+            }
+            NSString *textMessage = selectedComponent.textMessage;
+            
+            if (textMessage)
+            {
+                MXKPasteboardManager.shared.pasteboard.string = textMessage;
+            }
+            else
+            {
+                MXLogDebug(@"[RoomViewController] Contextual menu copy failed. Text is nil for room id/event id: %@/%@", selectedComponent.event.roomId, selectedComponent.event.eventId);
+            }
+            
+            [self hideContextualMenuAnimated:YES];
+        }
+        else if (attachment.type != MXKAttachmentTypeSticker)
+        {
+            [self hideContextualMenuAnimated:YES completion:^{
+                [self startActivityIndicator];
+                
+                [attachment copy:^{
+                    
+                    [self stopActivityIndicator];
+                    
+                } failure:^(NSError *error) {
+                    
+                    [self stopActivityIndicator];
+                    
+                    //Alert user
+                    [self showError:error];
+                }];
+                
+                // Start animation in case of download during attachment preparing
+                [roomBubbleTableViewCell startProgressUI];
+            }];
+        }
+    };
+    
+    return copyMenuItem;
+}
+
+- (RoomContextualMenuItem *)replyMenuItemWithEvent:(MXEvent*)event
+{
+    MXWeakify(self);
+    
+    RoomContextualMenuItem *replyMenuItem = [[RoomContextualMenuItem alloc] initWithMenuAction:RoomContextualMenuActionReply];
+    replyMenuItem.isEnabled = [self.roomDataSource canReplyToEventWithId:event.eventId] && !self.voiceMessageController.isRecordingAudio;
+    replyMenuItem.action = ^{
+        MXStrongifyAndReturnIfNil(self);
+        
+        [self hideContextualMenuAnimated:YES cancelEventSelection:NO completion:nil];
+        [self selectEventWithId:event.eventId inputToolBarSendMode:RoomInputToolbarViewSendModeReply showTimestamp:NO];
+        
+        // And display the keyboard
+        [self.inputToolbarView becomeFirstResponder];
+    };
+    
+    return replyMenuItem;
+}
+
+- (RoomContextualMenuItem *)moreMenuItemWithEvent:(MXEvent*)event andCell:(id<MXKCellRendering>)cell
+{
+    MXWeakify(self);
+    
+    RoomContextualMenuItem *moreMenuItem = [[RoomContextualMenuItem alloc] initWithMenuAction:RoomContextualMenuActionMore];
+    moreMenuItem.action = ^{
+        MXStrongifyAndReturnIfNil(self);
+        [self hideContextualMenuAnimated:YES completion:nil];
+        [self showAdditionalActionsMenuForEvent:event inCell:cell animated:YES];
+    };
+    
+    return moreMenuItem;
 }
 
 #pragma mark - RoomContextualMenuViewControllerDelegate

@@ -457,6 +457,9 @@ class NotificationService: UNNotificationServiceExtension {
                                     additionalUserInfo = [Constants.userInfoKeyPresentNotificationOnForeground: true]
                                 }
                             }
+                        case .pollStart:
+                            notificationTitle = self.messageTitle(for: eventSenderName, in: roomDisplayName)
+                            notificationBody = MXEventContentPollStart(fromJSON: event.content)?.question
                         default:
                             break
                     }
