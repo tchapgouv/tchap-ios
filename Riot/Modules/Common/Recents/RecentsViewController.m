@@ -791,17 +791,7 @@
     }];
     muteAction.backgroundColor = actionBackgroundColor;
     
-    UIImage *notificationImage;
-    if([BuildSettings showNotificationsV2])
-    {
-        notificationImage = isMuted ? [UIImage imageNamed:@"room_action_notification_muted"] : [UIImage imageNamed:@"room_action_notification"];
-    }
-    else
-    {
-        notificationImage = [UIImage imageNamed:@"room_action_notification"];
-    }
-
-    notificationImage = [notificationImage vc_tintedImageUsingColor:isMuted ? unselectedColor : selectedColor];
+    UIImage *notificationImage = isMuted ? [UIImage imageNamed:@"notificationsOff"] : [UIImage imageNamed:@"notifications"];
     muteAction.image = [notificationImage vc_notRenderedImage];
     
     // Favorites management
@@ -829,8 +819,7 @@
     }];
     favouriteAction.backgroundColor = actionBackgroundColor;
     
-    UIImage *favouriteImage = [UIImage imageNamed:@"pin"];
-    favouriteImage = [favouriteImage vc_tintedImageUsingColor:isFavourite ? selectedColor : unselectedColor];
+    UIImage *favouriteImage = isFavourite ? [UIImage imageNamed:@"pin"] : [UIImage imageNamed:@"unpin"];
     favouriteAction.image = [favouriteImage vc_notRenderedImage];
     
     // Leave action
@@ -843,8 +832,8 @@
     }];
     leaveAction.backgroundColor = actionBackgroundColor;
     
-    UIImage *leaveImage = [UIImage imageNamed:@"room_action_leave"];
-    leaveImage = [leaveImage vc_tintedImageUsingColor:unselectedColor];
+    UIImage *leaveImage = [UIImage imageNamed:@"leave"];
+    leaveImage = [leaveImage vc_tintedImageUsingColor:selectedColor];
     leaveAction.image = [leaveImage vc_notRenderedImage];
         
     // Create swipe action configuration
