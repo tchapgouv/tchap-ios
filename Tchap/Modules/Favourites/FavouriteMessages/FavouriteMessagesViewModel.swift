@@ -60,7 +60,7 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
         self.session = session
         self.formatter = formatter
         
-        let subtitle = NSAttributedString(string: TchapL10n.favouriteMessagesOneSubtitle(0), attributes: [.foregroundColor: kColorWarmGrey])
+        let subtitle = NSAttributedString(string: TchapL10n.favouriteMessagesOneSubtitle(0), attributes: [.foregroundColor: ThemeService.shared().theme.headerTextPrimaryColor])
         self.titleViewModel = RoomTitleViewModel(title: TchapL10n.favouriteMessagesTitle,
                                                  roomTypeImage: nil,
                                                  roomTypeImageTintColor: nil,
@@ -152,7 +152,7 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
         self.titleViewModel = RoomTitleViewModel(title: TchapL10n.favouriteMessagesTitle,
                                                  roomTypeImage: nil,
                                                  roomTypeImageTintColor: nil,
-                                                 subtitle: NSAttributedString(string: subtitle, attributes: [.foregroundColor: kColorWarmGrey]),
+                                                 subtitle: NSAttributedString(string: subtitle, attributes: [.foregroundColor: ThemeService.shared().theme.headerTextPrimaryColor]),
                                                  roomMembersCount: nil,
                                                  roomRetentionInfo: nil,
                                                  avatarImageViewModel: nil)

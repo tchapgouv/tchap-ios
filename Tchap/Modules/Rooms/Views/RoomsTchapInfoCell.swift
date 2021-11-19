@@ -35,7 +35,7 @@ import UIKit
         self.domainLabel.text = TchapL10n.roomCategoryInfoRoom
         
         if let cellData = self.roomCellData, cellData.hasUnread {
-            self.contentView.backgroundColor = kColorLightBlue
+            self.contentView.backgroundColor = ThemeService.shared().theme.unreadBackground
         } else {
             self.contentView.backgroundColor = nil
         }
@@ -43,6 +43,6 @@ import UIKit
     
     override func update(theme: Theme) {
         super.update(theme: theme)
-        self.domainLabel.textColor = kColorVerySoftBlue
+        self.domainLabel.textColor = ThemeService.shared().theme.domainLabel
     }
 }

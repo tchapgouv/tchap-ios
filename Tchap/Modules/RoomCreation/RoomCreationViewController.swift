@@ -237,10 +237,10 @@ final class RoomCreationViewController: UIViewController {
         let borderColor: UIColor
         let borderWidth: CGFloat
         if case .privateUnrestricted = self.viewModel.selectedRoomType {
-            borderColor = kColorDarkGrey
+            borderColor = ThemeService.shared().theme.borderSecondary
             borderWidth = Constants.hexagonBorderWidthUnrestricted
         } else {
-            borderColor = kColorDarkBlue
+            borderColor = ThemeService.shared().theme.borderMain
             borderWidth = Constants.hexagonBorderWidthDefault
         }
         self.roomCreationAvatarView?.setAvatarBorder(color: borderColor, width: borderWidth)
@@ -260,7 +260,7 @@ final class RoomCreationViewController: UIViewController {
     
     private func enablePrivateRoom() {
         self.privateRoomView.layer.borderWidth = Constants.borderWidth
-        self.privateRoomView.layer.borderColor = kColorCoral.withAlphaComponent(Constants.borderColorAlpha).cgColor
+        self.privateRoomView.layer.borderColor = ThemeService.shared().theme.roomTypeRestricted.withAlphaComponent(Constants.borderColorAlpha).cgColor
         self.roomTypeImage.image = Asset.Images.privateAvatarIconHr.image
     }
     
@@ -270,7 +270,7 @@ final class RoomCreationViewController: UIViewController {
     
     private func enableExternRoom() {
         self.externRoomView.layer.borderWidth = Constants.borderWidth
-        self.externRoomView.layer.borderColor = kColorPumpkinOrange.withAlphaComponent(Constants.borderColorAlpha).cgColor
+        self.externRoomView.layer.borderColor = ThemeService.shared().theme.roomTypeUnrestricted.withAlphaComponent(Constants.borderColorAlpha).cgColor
         self.roomTypeImage.image = Asset.Images.privateAvatarIconHr.image
     }
     
@@ -280,7 +280,7 @@ final class RoomCreationViewController: UIViewController {
     
     private func enableForumRoom(_ isFederated: Bool) {
         self.forumRoomView.layer.borderWidth = Constants.borderWidth
-        self.forumRoomView.layer.borderColor = kColorJadeGreen.withAlphaComponent(Constants.borderColorAlpha).cgColor
+        self.forumRoomView.layer.borderColor = ThemeService.shared().theme.roomTypePublic.withAlphaComponent(Constants.borderColorAlpha).cgColor
         self.roomTypeImage.image = Asset.Images.forumAvatarIconHr.image
         
         self.publicVisibilityInfoLabel.isHidden = false
@@ -342,24 +342,24 @@ private extension RoomCreationViewController {
 
         let padLockimage = Asset.SharedImages.e2eVerified.image.withRenderingMode(.alwaysTemplate)
         
-        self.privateRoomView.backgroundColor = kColorPaleGrey
-        self.privateRoomTitleLabel.textColor = kColorCoral
+        self.privateRoomView.backgroundColor = ThemeService.shared().theme.backgroundSecondary
+        self.privateRoomTitleLabel.textColor = ThemeService.shared().theme.roomTypeRestricted
         self.privateRoomImage.image = padLockimage
-        self.privateRoomImage.tintColor = kColorCoral
+        self.privateRoomImage.tintColor = ThemeService.shared().theme.roomTypeRestricted
         self.privateRoomInfoLabel.textColor = ThemeService.shared().theme.headerTextPrimaryColor
         
-        self.externRoomView.backgroundColor = kColorPaleGrey
-        self.externRoomTitleLabel.textColor = kColorPumpkinOrange
+        self.externRoomView.backgroundColor = ThemeService.shared().theme.backgroundSecondary
+        self.externRoomTitleLabel.textColor = ThemeService.shared().theme.roomTypeUnrestricted
         self.externRoomImage.image = padLockimage
-        self.externRoomImage.tintColor = kColorPumpkinOrange
+        self.externRoomImage.tintColor = ThemeService.shared().theme.roomTypeUnrestricted
         self.externRoomInfoLabel.textColor = ThemeService.shared().theme.headerTextPrimaryColor
         
-        self.forumRoomView.backgroundColor = kColorPaleGrey
-        self.forumRoomTitleLabel.textColor = kColorJadeGreen
+        self.forumRoomView.backgroundColor = ThemeService.shared().theme.backgroundSecondary
+        self.forumRoomTitleLabel.textColor = ThemeService.shared().theme.roomTypePublic
         self.forumRoomInfoLabel.textColor = ThemeService.shared().theme.headerTextPrimaryColor
         self.roomTypeTitleLabel.textColor = ThemeService.shared().theme.headerTextPrimaryColor
         
-        self.disablePublicRoomFederationSwitch.onTintColor = kColorJadeGreen
+        self.disablePublicRoomFederationSwitch.onTintColor = ThemeService.shared().theme.roomTypePublic
     }
 }
 

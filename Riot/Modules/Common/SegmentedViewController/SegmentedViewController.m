@@ -18,9 +18,9 @@
 
 #import "SegmentedViewController.h"
 
-#import "DesignValues.h"
-
 #import "GeneratedInterface-Swift.h"
+
+#import "ThemeService.h"
 
 @interface SegmentedViewController ()
 {

@@ -96,6 +96,19 @@ import DesignKit
     /// Color to use in shadows. Should be contrast to `backgroundColor`.
     var shadowColor: UIColor { get }
     
+    // MARK: - Tchap colors
+    
+    var roomTypeRestricted: UIColor { get }
+    var roomTypeUnrestricted: UIColor { get }
+    var roomTypePublic: UIColor { get }
+    
+    var borderMain: UIColor { get }
+    var borderSecondary: UIColor { get }
+    var backgroundSecondary: UIColor { get }
+    
+    var domainLabel: UIColor { get }
+    var unreadBackground: UIColor { get }
+    
     // MARK: - Customisation methods
 
     

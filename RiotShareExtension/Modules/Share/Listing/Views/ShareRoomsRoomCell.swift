@@ -53,10 +53,10 @@ class ShareRoomsRoomCell: RoomsCell {
         if let accessRule = self.roomCellData?.roomSummary.tc_roomAccessRule() {
             switch accessRule {
             case .restricted:
-                avatarBorderColor = kColorDarkBlue
+                avatarBorderColor = ThemeService.shared().theme.borderMain
                 avatarBorderWidth = Constants.hexagonImageBorderWidthDefault
             case .unrestricted:
-                avatarBorderColor = kColorDarkGrey
+                avatarBorderColor = ThemeService.shared().theme.borderSecondary
                 avatarBorderWidth = Constants.hexagonImageBorderWidthUnrestricted
             default:
                 avatarBorderColor = UIColor.clear

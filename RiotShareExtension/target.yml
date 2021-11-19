@@ -73,7 +73,6 @@ targets:
     - path: ../RiotShareExtension/BuildSettings.swift
     - path: ../Tchap/Config/CommonConfiguration.swift
     - path: ../Tchap/Config/Configurable.swift
-    - path: ../Tchap/Constants
     - path: ../Tchap/Extensions
     - path: ../Tchap/Generated/InfoPlist.swift
     - path: ../Tchap/Generated/Strings.swift

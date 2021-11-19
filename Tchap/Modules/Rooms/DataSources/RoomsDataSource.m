@@ -18,8 +18,6 @@
 
 #import "RecentCellData.h"
 
-#import "DesignValues.h"
-
 #import "MXRoom+Riot.h"
 
 #import "GeneratedInterface-Swift.h"

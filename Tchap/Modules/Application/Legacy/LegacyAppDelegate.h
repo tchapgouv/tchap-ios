@@ -24,8 +24,6 @@
 #import "RageShakeManager.h"
 #import "Analytics.h"
 
-#import "DesignValues.h"
-
 @protocol Configurable;
 
 #pragma mark - Notifications
