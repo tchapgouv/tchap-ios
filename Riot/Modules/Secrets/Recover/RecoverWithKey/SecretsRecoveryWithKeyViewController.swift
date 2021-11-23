@@ -114,7 +114,7 @@ final class SecretsRecoveryWithKeyViewController: UIViewController {
         self.recoveryKeyTitleLabel.text = VectorL10n.secretsRecoveryWithKeyRecoveryKeyTitle
         self.recoveryKeyTextField.addTarget(self, action: #selector(recoveryKeyTextFieldDidChange(_:)), for: .editingChanged)
         
-        let importFileImage = Asset.Images.importFilesButton.image.withRenderingMode(.alwaysTemplate)
+        let importFileImage = Asset.Images_tchap.importFilesButton.image.withRenderingMode(.alwaysTemplate)
         self.importFileButton.setImage(importFileImage, for: .normal)
                 
         self.recoverButton.vc_enableMultiLinesTitle()

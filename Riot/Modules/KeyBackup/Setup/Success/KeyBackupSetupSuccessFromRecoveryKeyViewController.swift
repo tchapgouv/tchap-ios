@@ -90,7 +90,7 @@ final class KeyBackupSetupSuccessFromRecoveryKeyViewController: UIViewController
     
     private func setupViews() {
         
-        let keybackupLogoImage = Asset.Images.keyBackupLogo.image.withRenderingMode(.alwaysTemplate)
+        let keybackupLogoImage = Asset.Images_tchap.keyBackupLogo.image.withRenderingMode(.alwaysTemplate)
         self.keyBackupLogoImageView.image = keybackupLogoImage
         
         self.titleLabel.text = VectorL10n.keyBackupSetupSuccessTitle

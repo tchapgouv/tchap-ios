@@ -63,3 +63,4 @@ targets:
     - path: ../Tchap/Config/Configurable.swift
     - path: ../Tchap/Generated/Strings.swift
     - path: ../Tchap/Generated/Images.swift
+    - path: ../Tchap/Generated/Images_Riot.swift

@@ -67,26 +67,26 @@ import Foundation
         
         switch self {
         case .copy:
-            image = Asset.Images.roomContextMenuCopy.image
+            image = Asset.Images_tchap.roomContextMenuCopy.image
         case .reply:
-            image = Asset.Images.roomContextMenuReply.image
+            image = Asset.Images_tchap.roomContextMenuReply.image
 #if ENABLE_EDITION
         case .edit:
-            image = Asset.Images.roomContextMenuEdit.image
+            image = Asset.Images_tchap.roomContextMenuEdit.image
 #else
         case .redact:
             image = Asset.Images.roomContextMenuRedact.image
 #endif
         case .favourite:
-            image = Asset.Images.roomContextMenuFav.image
+            image = Asset.Images_tchap.roomContextMenuFav.image
         case .share:
-            image = Asset.Images.roomContextMenuShare.image
+            image = Asset.Images_tchap.roomContextMenuShare.image
         case .more:
-            image = Asset.Images.roomContextMenuMore.image
+            image = Asset.Images_tchap.roomContextMenuMore.image
         case .resend:
-            image = Asset.Images.roomContextMenuRetry.image
+            image = Asset.Images_tchap.roomContextMenuRetry.image
         case .delete:
-            image = Asset.Images.roomContextMenuDelete.image
+            image = Asset.Images_tchap.roomContextMenuDelete.image
         default:
             image = nil
         }
