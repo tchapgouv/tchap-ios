@@ -120,6 +120,7 @@ internal enum Asset {
     internal static let roomContextMenuDelete = ImageAsset(name: "room_context_menu_delete")
     internal static let roomContextMenuEdit = ImageAsset(name: "room_context_menu_edit")
     internal static let roomContextMenuMore = ImageAsset(name: "room_context_menu_more")
+    internal static let roomContextMenuRedact = ImageAsset(name: "room_context_menu_redact")
     internal static let roomContextMenuReply = ImageAsset(name: "room_context_menu_reply")
     internal static let roomContextMenuRetry = ImageAsset(name: "room_context_menu_retry")
     internal static let inputCloseIcon = ImageAsset(name: "input_close_icon")
@@ -181,6 +182,7 @@ internal enum Asset {
   internal enum SharedImages {
     internal static let cancel = ImageAsset(name: "cancel")
     internal static let e2eVerified = ImageAsset(name: "e2e_verified")
+    internal static let tchapLogo = ImageAsset(name: "TchapLogo")
     internal static let horizontalLogo = ImageAsset(name: "horizontal_logo")
   }
 }

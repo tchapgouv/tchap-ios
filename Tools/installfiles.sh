@@ -19,4 +19,8 @@ installFile "BuildSettings.swift" $PRODUCT_MODULE_NAME"/Config" "RiotShareExtens
 echo "Install AppIdentifiers Config file"
 installFile "AppIdentifiers.xcconfig" $PRODUCT_MODULE_NAME"/Config" "/Config"
 
+echo "Install AppIcon files"
+installFile "AppIcon.appiconset" $PRODUCT_MODULE_NAME"/Assets/"$PRODUCT_MODULE_NAME"SharedImages.xcassets/" "/Riot/Assets/SharedImages.xcassets/"
+installFile "TchapLogo.appiconset" $PRODUCT_MODULE_NAME"/Assets/"$PRODUCT_MODULE_NAME"SharedImages.xcassets/" "/Riot/Assets/SharedImages.xcassets/"
+
 cd -
