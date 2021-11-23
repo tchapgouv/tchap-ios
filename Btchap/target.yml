@@ -89,6 +89,7 @@ targets:
     - path: ../Riot/Assets/Base.lproj/LaunchScreen.storyboard
     - path: ../Riot/Assets/Base.lproj/Main.storyboard
     - path: ../Riot/Assets/Images.xcassets
+    - path: ../Riot/Assets/SharedImages.xcassets
     - path: ../Riot/Assets/js
     - path: ../Riot/Assets/Sounds
     - path: ../Riot/Assets/third_party_licenses.html

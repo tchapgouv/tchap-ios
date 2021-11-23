@@ -10,8 +10,6 @@ import UIKit
 // swiftlint:disable identifier_name line_length nesting type_body_length type_name
 internal extension Asset {
   internal enum Images_tchap {
-    internal static let roomContextMenuDelete = ImageAsset(name: "room_context_menu_delete")
-    internal static let roomContextMenuRetry = ImageAsset(name: "room_context_menu_retry")
     internal static let adminIcon = ImageAsset(name: "admin_icon")
     internal static let backIcon = ImageAsset(name: "back_icon")
     internal static let createRoom = ImageAsset(name: "create_room")
@@ -38,12 +36,7 @@ internal extension Asset {
     internal static let attachmentScanStatusInProgress = ImageAsset(name: "attachment_scan_status_in_progress")
     internal static let attachmentScanStatusInfected = ImageAsset(name: "attachment_scan_status_infected")
     internal static let attachmentScanStatusUnavailable = ImageAsset(name: "attachment_scan_status_unavailable")
-    internal static let roomContextMenuCopy = ImageAsset(name: "room_context_menu_copy")
-    internal static let roomContextMenuEdit = ImageAsset(name: "room_context_menu_edit")
     internal static let roomContextMenuFav = ImageAsset(name: "room_context_menu_fav")
-    internal static let roomContextMenuMore = ImageAsset(name: "room_context_menu_more")
-    internal static let roomContextMenuRedact = ImageAsset(name: "room_context_menu_redact")
-    internal static let roomContextMenuReply = ImageAsset(name: "room_context_menu_reply")
     internal static let roomContextMenuShare = ImageAsset(name: "room_context_menu_share")
     internal static let roomHeaderHistory = ImageAsset(name: "room_header_history")
     internal static let roomHeaderMembers = ImageAsset(name: "room_header_members")
@@ -65,8 +58,6 @@ internal extension Asset {
     internal static let fileVideoIcon = ImageAsset(name: "file_video_icon")
   }
   internal enum SharedImages_tchap {
-    internal static let cancel = ImageAsset(name: "cancel")
-    internal static let e2eVerified = ImageAsset(name: "e2e_verified")
     internal static let forumAvatarIcon = ImageAsset(name: "forum_avatar_icon")
     internal static let privateAvatarIcon = ImageAsset(name: "private_avatar_icon")
   }
