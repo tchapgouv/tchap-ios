@@ -656,7 +656,7 @@
     
     addParticipantButtonImageView.backgroundColor = [UIColor clearColor];
     addParticipantButtonImageView.contentMode = UIViewContentModeCenter;
-    addParticipantButtonImageView.image = [UIImage imageNamed:@"add_participant"];
+    addParticipantButtonImageView.image = [[UIImage imageNamed:@"add_participant"] vc_tintedImageUsingColor:ThemeService.shared.theme.tintColor];
     
     CGFloat side = 78.0f;
     NSLayoutConstraint* widthConstraint = [NSLayoutConstraint constraintWithItem:addParticipantButtonImageView
@@ -1455,27 +1455,30 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-- (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
+- (nullable UISwipeActionsConfiguration *)tableView:(UITableView *)tableView trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSMutableArray* actions;
+    NSMutableArray<UIContextualAction*> *actions = [[NSMutableArray alloc] init];
     
     // add the swipe to delete only on participants sections
     if (indexPath.section == participantsSection || indexPath.section == invitedSection)
     {
-        actions = [[NSMutableArray alloc] init];
-        
-        // Patch: Force the width of the button by adding whitespace characters into the title string.
-        UITableViewRowAction *leaveAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive title:@"        "  handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
-            
+        UIContextualAction *leaveAction =
+        [UIContextualAction contextualActionWithStyle:UIContextualActionStyleNormal
+                                                title:nil
+                                              handler:^(UIContextualAction * _Nonnull action,
+                                                        __kindof UIView * _Nonnull sourceView,
+                                                        void (^ _Nonnull completionHandler)(BOOL)) {
             [self onDeleteAt:indexPath];
-            
         }];
         
-        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon" backgroundColor:ThemeService.shared.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(24, 24)];
+        leaveAction.image = [[UIImage imageNamed:@"remove_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.tintColor];
+        
         [actions insertObject:leaveAction atIndex:0];
     }
     
-    return actions;
+    UISwipeActionsConfiguration *swipeActionConfiguration = [UISwipeActionsConfiguration configurationWithActions:actions];
+    swipeActionConfiguration.performsFirstActionWithFullSwipe = NO;
+    return swipeActionConfiguration;
 }
 
 #pragma mark - MXKRoomMemberDetailsViewControllerDelegate

@@ -463,9 +463,10 @@
     self.voiceCallButton.accessibilityLabel = NSLocalizedStringFromTable(@"room_accessibility_call", @"Vector", nil);
     self.hangupCallButton.accessibilityLabel = NSLocalizedStringFromTable(@"room_accessibility_hangup", @"Vector", nil);
     
-//    self.hangupCallButton.tintColor = theme.noticeColor;
-//    self.voiceCallButton.tintColor = theme.tintColor;
-//    self.attachMediaButton.tintColor = theme.tintColor;
+    self.hangupCallButton.tintColor = theme.noticeColor;
+    self.voiceCallButton.tintColor = theme.tintColor;
+    self.attachMediaButton.tintColor = theme.tintColor;
+    self.rightInputToolbarButton.tintColor = theme.tintColor;
 }
 
 @end

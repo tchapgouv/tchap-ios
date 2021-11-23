@@ -48,6 +48,7 @@ final class SelectableContactCell: ContactCell {
     // MARK: - Private
     
     private func toggleCheckmarkImage() {
-        self.checkMarkImageView.image = self.checkmarkEnabled ? Asset.Images.selectionTick.image : Asset.Images.selectionUntick.image
+        let image = self.checkmarkEnabled ? UIImage(named: "selection_tick") : UIImage(named: "selection_untick")
+        self.checkMarkImageView.image = image?.vc_tintedImage(usingColor: ThemeService.shared().theme.tintColor)
     }
 }

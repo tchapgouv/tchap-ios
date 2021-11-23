@@ -78,9 +78,9 @@ import Foundation
             image = Asset.Images.roomContextMenuRedact.image
 #endif
         case .favourite:
-            image = Asset.Images.roomContextMenuFav.image
+            image = Asset.Images_tchap.roomContextMenuFav.image
         case .share:
-            image = Asset.Images.roomContextMenuShare.image
+            image = Asset.Images_tchap.roomContextMenuShare.image
         case .more:
             image = Asset.Images.roomContextMenuMore.image
         case .resend:

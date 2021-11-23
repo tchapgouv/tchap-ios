@@ -46,6 +46,7 @@ final class FormCheckBox: UIView, NibOwnerLoadable {
         self.label.text = nil
         
         self.checkBoxButton.accessibilityLabel = TchapL10n.registrationTermsCheckboxAccessibility
+        self.checkBoxButton.tintColor = ThemeService.shared().theme.tintColor
         self.label.accessibilityLabel = TchapL10n.registrationTermsLabelAccessibility
         
         self.isUserInteractionEnabled = true
