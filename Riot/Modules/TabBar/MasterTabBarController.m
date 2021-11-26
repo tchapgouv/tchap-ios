@@ -1027,7 +1027,7 @@
         return;
     }
     
-    NSArray<MXDeviceInfo*> *devices = [session.crypto.store devicesForUser:session.myUserId].allValues;
+    NSArray<MXDeviceInfo*> *devices = [session.crypto devicesForUser:session.myUserId].allValues;
     
     BOOL isUserHasOneUnverifiedDevice = NO;
     
