@@ -16,7 +16,6 @@
 
 import Foundation
 import MobileCoreServices
-import MatrixKit
 
 // FIXME: Temporary added here to fix missing values in Tchap specific version of MatrixKit.
 extension MXKUTI {
