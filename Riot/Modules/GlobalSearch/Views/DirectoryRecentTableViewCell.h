@@ -16,20 +16,30 @@
 
 #import "MatrixKit.h"
 
-@interface PublicRoomTableViewCell : MXKPublicRoomTableViewCell
+@class PublicRoomsDirectoryDataSource;
 
 /**
- Configure the cell in order to display the public room.
-
- @param publicRoom the public room to render.
+ The `DirectoryRecentTableViewCell` cell displays information about the search on the public
+ rooms directory.
+ 
+ It acts as a button to go into the public rooms directory screen.
  */
-- (void)render:(MXPublicRoom*)publicRoom withMatrixSession:(MXSession*)mxSession;
+@interface DirectoryRecentTableViewCell : MXKTableViewCell
 
-@property (weak, nonatomic) IBOutlet MXKImageView *roomAvatar;
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *chevronImageView;
+
+/**
+ Update the information displayed by the cell.
+
+ @param publicRoomsDirectoryDataSource the data to render.
+ */
+- (void)render:(PublicRoomsDirectoryDataSource *)publicRoomsDirectoryDataSource;
 
 /**
  Get the cell height.
- 
+
  @return the cell height.
  */
 + (CGFloat)cellHeight;

@@ -15,8 +15,6 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
-
 #import "RoomsListViewController.h"
 #import "NSBundle+MatrixKit.h"
 #import "RecentCellData.h"

@@ -117,7 +117,6 @@
 #import "StickerPickerViewController.h"
 
 #import "EventFormatter.h"
-#import <MatrixKit/MXKSlashCommands.h>
 
 #import "MXSession+Riot.h"
 #import "RoomPreviewData.h"
