@@ -36,14 +36,22 @@ $matrixKitVersionSpec = $matrixKitVersion
 $matrixSDKVersionSpec = {}
 end
 
-# Method to import the MatrixKit
-def import_MatrixKit
+# Method to import the MatrixSDK
+def import_MatrixSDK
   pod 'MatrixSDK', $matrixSDKVersionSpec
   pod 'MatrixSDK/JingleCallStack', $matrixSDKVersionSpec
-  pod 'MatrixKit', $matrixKitVersionSpec
+  # pod 'MatrixKit', $matrixKitVersionSpec
 end
 
 ########################################
+
+def import_MatrixKit_pods
+  pod 'HPGrowingTextView', '~> 1.1'  
+  pod 'libPhoneNumber-iOS', '~> 0.9.13'  
+  pod 'DTCoreText', '~> 1.6.25'
+  #pod 'DTCoreText/Extension', '~> 1.6.25'
+  pod 'Down', '~> 0.11.0'
+end
 
 def import_SwiftUI_pods
     pod 'Introspect', '~> 0.1'
@@ -70,7 +78,7 @@ abstract_target 'TchapPods' do
   pod 'SwiftLint', '~> 0.44.0'
 
   target "Tchap" do
-    import_MatrixKit
+    import_MatrixSDK
 
     import_SwiftUI_pods
 
@@ -93,7 +101,7 @@ abstract_target 'TchapPods' do
   end
 
   target "Btchap" do
-    import_MatrixKit
+    import_MatrixSDK
 
     import_SwiftUI_pods
 
@@ -112,7 +120,8 @@ abstract_target 'TchapPods' do
   end
     
   target "RiotShareExtension" do
-    import_MatrixKit
+    import_MatrixSDK
+    import_MatrixKit_pods
   end
 
   target "RiotSwiftUI" do
@@ -121,10 +130,16 @@ abstract_target 'TchapPods' do
 
   target "RiotSwiftUITests" do
     import_SwiftUI_pods
+  end 
+
+  target "SiriIntents" do
+    import_MatrixSDK
+    import_MatrixKit_pods
   end
 
   target "RiotNSE" do
-    import_MatrixKit
+    import_MatrixSDK
+    import_MatrixKit_pods
   end
 end
 
