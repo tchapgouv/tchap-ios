@@ -77,6 +77,7 @@ abstract_target 'TchapPods' do
 
   target "Tchap" do
     import_MatrixSDK
+    import_MatrixKit_pods
 
     import_SwiftUI_pods
 
