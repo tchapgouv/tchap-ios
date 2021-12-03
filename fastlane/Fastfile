@@ -26,16 +26,6 @@ platform :ios do
 
   #### Public ####
 
-  desc "Builds an adhoc ipa"
-  lane :adhoc do |options|
-    options[:adhoc] = true
-    if !options.has_key?(:build_number)
-      build_number = generate_build_number()
-      options = { build_number: build_number }.merge(options)
-    end
-    build_release(options)
-  end
-
   desc "Builds an ipa for the App Store"
   lane :app_store do |options|
     if !options.has_key?(:build_number)
@@ -43,44 +33,6 @@ platform :ios do
       options = { build_number: build_number }.merge(options)
     end
     build_release(options)
-  end
-
-  desc "Builds an Alpha ipa for pull request branches"
-  lane :alpha do
-    UI.user_error!("'DIAWI_API_TOKEN' environment variable should be set to use this lane") unless !ENV["DIAWI_API_TOKEN"].to_s.empty?
-            
-    # Generate the "Alpha" app variant    
-    setup_app_variant(name: "Alpha")    
-    # Builds an Ad Hoc IPA
-    adhoc
-    # Upload to Diawi
-    upload_to_diawi
-  end
-
-  desc "Upload IPA to Diawi"
-  lane :upload_to_diawi do
-    UI.user_error!("'DIAWI_API_TOKEN' environment variable should be set to use this lane") unless !ENV["DIAWI_API_TOKEN"].to_s.empty?
-
-    # Upload to Diawi
-    diawi(
-      token: ENV["DIAWI_API_TOKEN"],
-      wall_of_apps: false
-    )
-
-    # Get the Diawi link from Diawi action shared value
-    diawi_link = lane_context[SharedValues::UPLOADED_FILE_LINK_TO_DIAWI]
-    UI.command_output("Diawi link: " + diawi_link.to_s)
-
-    # Generate the Diawi QR code file link
-    diawi_app_id = URI(diawi_link).path.split('/').last
-    diawi_qr_code_link = "https://www.diawi.com/qrcode/link/#{diawi_app_id}"
-    UI.command_output("Diawi QR code link: " + diawi_qr_code_link.to_s)
-
-    # Set "DIAWI_FILE_LINK" to GitHub environment variables for Github actions
-    if is_ci 
-      sh("echo DIAWI_FILE_LINK=#{diawi_link} >> $GITHUB_ENV")
-      sh("echo DIAWI_QR_CODE_LINK=#{diawi_qr_code_link} >> $GITHUB_ENV")
-    end
   end
 
   desc "Builds the ipa for the AppStore, then uploads it"
@@ -94,28 +46,6 @@ platform :ios do
     # UI.message("IPA is available at path '#{ENV['IPA_OUTPUT_PATH']}'. Please upload manually using Application Loader.")
     # UI.confirm("Have you uploaded the IPA to the AppStore now?")
     #
-  end
-
-
-  desc "Point MatrixKit and MatrixSDK to the related branches if such ones exist"
-  lane :point_dependencies_to_related_branches do
-    current_branch = mx_git_branch
-    UI.message("Current branch: #{current_branch}")
-    if current_branch.start_with?("release/")
-        point_dependencies_to_pending_releases
-    else
-        point_dependencies_to_same_feature
-    end
-  end
-
-  desc "Point MatrixKit and MatrixSDK to their respective release/*/release branch if they exist, master otherwise"
-  lane :point_dependencies_to_pending_releases do
-    edit_podfile(branch_pattern: "release/*/release", default_branch: "master")
-  end
-
-  desc "Point MatrixKit and MatrixSDK to the branch with the same name as the current branch if such one exist, develop otherwise"
-  lane :point_dependencies_to_same_feature do
-    edit_podfile(branch_pattern: mx_git_branch) unless mx_git_branch.to_s.empty?
   end
 
   desc "Use an app variant. An app variant overwrite default project configuration or ressource files with custom values"
