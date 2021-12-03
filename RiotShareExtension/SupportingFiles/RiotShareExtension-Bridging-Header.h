@@ -5,3 +5,4 @@
 #import "ThemeService.h"
 #import "MXRoomSummary+Riot.h"
 #import "Tools.h"
+#import "AvatarGenerator.h"

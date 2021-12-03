@@ -3148,7 +3148,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter = [[ServiceTermsModalCoordinatorBridgePresenter alloc] initWithSession:mxSession
                                                                                                                                                             baseUrl:baseURL
                                                                                                                                                         serviceType:MXServiceTypeIdentityService
-                                                                                                                                                       outOfContext:YES
+                                                                                                                                                       //outOfContext:YES
                                                                                                                                                         accessToken:accessToken];
     
     serviceTermsModalCoordinatorBridgePresenter.delegate = self;

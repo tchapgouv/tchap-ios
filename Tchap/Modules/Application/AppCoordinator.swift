@@ -32,7 +32,6 @@ final class AppCoordinator: AppCoordinatorType {
     
     private let rootRouter: RootRouterType
     
-    private let universalLinkService: UniversalLinkService
     private let appVersionCheckerStore: AppVersionCheckerStoreType
     private let appVersionChecker: AppVersionChecker
     private var registrationService: RegistrationServiceType?
@@ -62,7 +61,6 @@ final class AppCoordinator: AppCoordinatorType {
     
     init(router: RootRouterType) {
         self.rootRouter = router
-        self.universalLinkService = UniversalLinkService()
         
         let clientConfigurationService = ClientConfigurationService()
         let appVersionCheckerStore = AppVersionCheckerStore()
@@ -91,107 +89,108 @@ final class AppCoordinator: AppCoordinatorType {
     }
     
     func handleUserActivity(_ userActivity: NSUserActivity, application: UIApplication) -> Bool {
-        if userActivity.activityType == NSUserActivityTypeBrowsingWeb {
-            self.presentActivityIndicator()
-            return self.universalLinkService.handleUserActivity(userActivity, completion: { (response) in
-                self.removeActivityIndicator()
-                switch response {
-                case .success(let parsingResult):
-                    switch parsingResult {
-                    case .registrationLink(let registerParams):
-                        self.handleRegisterAfterEmailValidation(registerParams)
-                    case .roomLink(let roomIdOrAlias, let eventID):
-                        _ = self.showRoom(with: roomIdOrAlias, onEventID: eventID)
-                    }
-                case .failure(let error):
-                    self.showError(error)
-                }
-            })
-        } else if userActivity.activityType == INStartAudioCallIntentIdentifier ||
-        userActivity.activityType == INStartVideoCallIntentIdentifier {
-            // Check whether a session is available (Ignore multi-accounts FTM)
-            guard let account = MXKAccountManager.shared()?.activeAccounts.first else {
-                return false
-            }
-            guard let session = account.mxSession else {
-                return false
-            }
-            let interaction = userActivity.interaction
-            
-            let finalRoomID: String?
-            // Check roomID provided by Siri intent
-            if let roomID = userActivity.userInfo?["roomID"] as? String {
-                finalRoomID = roomID
-            } else {
-                // We've launched from calls history list
-                let person: INPerson?
-                
-                if let audioCallIntent = interaction?.intent as? INStartAudioCallIntent {
-                    person = audioCallIntent.contacts?.first
-                } else if let videoCallIntent = interaction?.intent as? INStartVideoCallIntent {
-                    person = videoCallIntent.contacts?.first
-                } else {
-                    person = nil
-                }
-                
-                finalRoomID = person?.personHandle?.value
-            }
-            
-            if let roomID = finalRoomID {
-                let isVideoCall = userActivity.activityType == INStartVideoCallIntentIdentifier
-                var backgroundTaskIdentifier: UIBackgroundTaskIdentifier?
-                
-                // Start background task since we need time for MXSession preparation because our app can be launched in the background
-                if application.applicationState == .background {
-                    backgroundTaskIdentifier = application.beginBackgroundTask(expirationHandler: nil)
-                }
-                
-                session.callManager.placeCall(inRoom: roomID, withVideo: isVideoCall, success: { (call) in
-                    if application.applicationState == .background {
-                        let center = NotificationCenter.default
-                        var token: NSObjectProtocol?
-                        token = center.addObserver(forName: Notification.Name(kMXCallStateDidChange), object: call, queue: nil, using: { [weak center] (note) in
-                            if call.state == .ended {
-                                if let bgTaskIdentifier = backgroundTaskIdentifier {
-                                    application.endBackgroundTask(bgTaskIdentifier)
-                                }
-                                if let obsToken = token {
-                                    center?.removeObserver(obsToken)
-                                }
-                            }
-                        })
-                    }
-                }, failure: { (error) in
-                    if let bgTaskIdentifier = backgroundTaskIdentifier {
-                        application.endBackgroundTask(bgTaskIdentifier)
-                    }
-                })
-            } else {
-                let error = NSError(domain: MXKAuthErrorDomain, code: 0, userInfo: [NSLocalizedDescriptionKey: TchapL10n.errorMessageDefault])
-                self.showError(error)
-            }
-            
-            return true
-        }
+//        if userActivity.activityType == NSUserActivityTypeBrowsingWeb {
+//            self.presentActivityIndicator()
+//            return self.universalLinkService.handleUserActivity(userActivity, completion: { (response) in
+//                self.removeActivityIndicator()
+//                switch response {
+//                case .success(let parsingResult):
+//                    switch parsingResult {
+//                    case .registrationLink(let registerParams):
+//                        self.handleRegisterAfterEmailValidation(registerParams)
+//                    case .roomLink(let roomIdOrAlias, let eventID):
+//                        _ = self.showRoom(with: roomIdOrAlias, onEventID: eventID)
+//                    }
+//                case .failure(let error):
+//                    self.showError(error)
+//                }
+//            })
+//        } else if userActivity.activityType == INStartAudioCallIntentIdentifier ||
+//        userActivity.activityType == INStartVideoCallIntentIdentifier {
+//            // Check whether a session is available (Ignore multi-accounts FTM)
+//            guard let account = MXKAccountManager.shared()?.activeAccounts.first else {
+//                return false
+//            }
+//            guard let session = account.mxSession else {
+//                return false
+//            }
+//            let interaction = userActivity.interaction
+//
+//            let finalRoomID: String?
+//            // Check roomID provided by Siri intent
+//            if let roomID = userActivity.userInfo?["roomID"] as? String {
+//                finalRoomID = roomID
+//            } else {
+//                // We've launched from calls history list
+//                let person: INPerson?
+//
+//                if let audioCallIntent = interaction?.intent as? INStartAudioCallIntent {
+//                    person = audioCallIntent.contacts?.first
+//                } else if let videoCallIntent = interaction?.intent as? INStartVideoCallIntent {
+//                    person = videoCallIntent.contacts?.first
+//                } else {
+//                    person = nil
+//                }
+//
+//                finalRoomID = person?.personHandle?.value
+//            }
+//
+//            if let roomID = finalRoomID {
+//                let isVideoCall = userActivity.activityType == INStartVideoCallIntentIdentifier
+//                var backgroundTaskIdentifier: UIBackgroundTaskIdentifier?
+//
+//                // Start background task since we need time for MXSession preparation because our app can be launched in the background
+//                if application.applicationState == .background {
+//                    backgroundTaskIdentifier = application.beginBackgroundTask(expirationHandler: nil)
+//                }
+//
+//                session.callManager.placeCall(inRoom: roomID, withVideo: isVideoCall, success: { (call) in
+//                    if application.applicationState == .background {
+//                        let center = NotificationCenter.default
+//                        var token: NSObjectProtocol?
+//                        token = center.addObserver(forName: Notification.Name(kMXCallStateDidChange), object: call, queue: nil, using: { [weak center] (note) in
+//                            if call.state == .ended {
+//                                if let bgTaskIdentifier = backgroundTaskIdentifier {
+//                                    application.endBackgroundTask(bgTaskIdentifier)
+//                                }
+//                                if let obsToken = token {
+//                                    center?.removeObserver(obsToken)
+//                                }
+//                            }
+//                        })
+//                    }
+//                }, failure: { (error) in
+//                    if let bgTaskIdentifier = backgroundTaskIdentifier {
+//                        application.endBackgroundTask(bgTaskIdentifier)
+//                    }
+//                })
+//            } else {
+//                let error = NSError(domain: MXKAuthErrorDomain, code: 0, userInfo: [NSLocalizedDescriptionKey: TchapL10n.errorMessageDefault])
+//                self.showError(error)
+//            }
+//
+//            return true
+//        }
         return false
     }
-    
+
     func handlePermalinkFragment(_ fragment: String) -> Bool {
-        // Handle the permalink fragment with the universal link service
-        return self.universalLinkService.handleFragment(fragment, completion: { (response) in
-            switch response {
-            case .success(let parsingResult):
-                switch parsingResult {
-                case .registrationLink:
-                    // We don't expect a registration link from a permalink, we ignore this case here.
-                    MXLog.debug("[AppCoordinator] handlePermalinkFragment: unexpected fragment (registration link)")
-                case .roomLink(let roomIdOrAlias, let eventID):
-                    _ = self.showRoom(with: roomIdOrAlias, onEventID: eventID)
-                }
-            case .failure(let error):
-                self.showError(error)
-            }
-        })
+//        // Handle the permalink fragment with the universal link service
+//        return self.universalLinkService.handleFragment(fragment, completion: { (response) in
+//            switch response {
+//            case .success(let parsingResult):
+//                switch parsingResult {
+//                case .registrationLink:
+//                    // We don't expect a registration link from a permalink, we ignore this case here.
+//                    MXLog.debug("[AppCoordinator] handlePermalinkFragment: unexpected fragment (registration link)")
+//                case .roomLink(let roomIdOrAlias, let eventID):
+//                    _ = self.showRoom(with: roomIdOrAlias, onEventID: eventID)
+//                }
+//            case .failure(let error):
+//                self.showError(error)
+//            }
+//        })
+        return false
     }
     
     func resumeBySelectingRoom(with roomId: String) {

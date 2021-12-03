@@ -80,6 +80,9 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
         self.setupLogger()
         self.setupTheme()
         
+        // Setup navigation router store
+        _ = NavigationRouterStore.shared
+        
         if BuildSettings.enableSideMenu {
             self.addSideMenu()
         }
@@ -225,7 +228,7 @@ extension AppCoordinator: LegacyAppDelegateDelegate {
     }
     
     func legacyAppDelegateRestoreEmptyDetailsViewController(_ legacyAppDelegate: LegacyAppDelegate!) {
-        self.splitViewCoordinator?.restorePlaceholderDetails()
+        self.splitViewCoordinator?.resetDetails(animated: false)
     }
     
     func legacyAppDelegate(_ legacyAppDelegate: LegacyAppDelegate!, didAddMatrixSession session: MXSession!) {

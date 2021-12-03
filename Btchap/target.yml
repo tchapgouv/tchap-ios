@@ -77,6 +77,7 @@ targets:
         - "SupportingFiles/Info.plist"
         - "TchapTools"
         - "Managers/AppVersion/AppVersion.swift"
+        - "Managers/UniversalLink"
         - "**/*.strings" # Exclude all strings files
         - "**/*.cer"
 
@@ -116,6 +117,7 @@ targets:
     - path: ../Riot/Model/Room/RoomPreviewData.h
     - path: ../Riot/Model/Room/RoomPreviewData.m
     - path: ../Riot/Model/WellKnown
+    - path: ../Riot/Modules/Application/ScreenNavigation
     - path: ../Riot/Modules/Authentication/SSO
     - path: ../Riot/Modules/Authentication/Views
     - path: ../Riot/Modules/BugReport/BugReportViewController.h
@@ -131,8 +133,8 @@ targets:
     - path: ../Riot/Modules/Common/Cells
     - path: ../Riot/Modules/Common/NavigationController/RiotNavigationController.h
     - path: ../Riot/Modules/Common/NavigationController/RiotNavigationController.m
-    - path: ../Riot/Modules/Common/Recents/CellData/RecentCellData.h
-    - path: ../Riot/Modules/Common/Recents/CellData/RecentCellData.m
+    - path: ../Riot/Modules/Common/Recents/Model/RecentCellData.h
+    - path: ../Riot/Modules/Common/Recents/Model/RecentCellData.m
     - path: ../Riot/Modules/Common/Recents/RecentsViewController.h
     - path: ../Riot/Modules/Common/Recents/RecentsViewController.m
     - path: ../Riot/Modules/Common/SectionHeaders
@@ -176,7 +178,7 @@ targets:
     - path: ../Riot/Utils
 
     # Share extension
-    - path: ../RiotShareExtension/Modules/Share/Listing/Views
+    - path: ../RiotShareExtension/Shared
 
     # Tchap
     - path: ../Tchap/Config/AppConfiguration.swift
