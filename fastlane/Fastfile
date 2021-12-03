@@ -134,7 +134,7 @@ platform :ios do
     xcodegen(spec: "project.yml")
     cocoapods
 
-    app_name = "Riot"
+    app_name = "Tchap"
     build_app(
       clean: true,
       scheme: app_name,
@@ -152,8 +152,8 @@ platform :ios do
     cocoapods
 
     run_tests(
-      workspace: "Riot.xcworkspace",
-      scheme: "Riot",
+      workspace: "Tchap.xcworkspace",
+      scheme: "Tchap",
       code_coverage: true,
       # Test result configuration
       result_bundle: true,
