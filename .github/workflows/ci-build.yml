@@ -42,16 +42,18 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gems-
 
-      # Make sure we use the latest version of MatrixKit
-      - name: Reset MatrixKit pod
-        run: rm -rf Pods/MatrixKit
-        
+      # Make sure we use the latest version of MatrixSDK
+      - name: Reset MatrixSDK pod
+        run: rm -rf Pods/MatrixSDK
+
       # Common setup
       # Note: GH actions do not support yaml anchor yet. We need to duplicate this for every job
       - name: Bundle install
         run: |
           bundle config path vendor/bundle
-          bundle install --jobs 4 --retry 3
+          bundle install --jobs 4 --retry 3    
+      - name: Use right MatrixSDK versions
+        run: bundle exec fastlane point_dependencies_to_related_branches
 
       # Main step
       - name: Build iOS simulator
