@@ -59,29 +59,16 @@ PODS:
   - MatomoTracker (7.4.1):
     - MatomoTracker/Core (= 7.4.1)
   - MatomoTracker/Core (7.4.1)
-  - MatrixKit (0.16.7):
-    - Down (~> 0.11.0)
-    - DTCoreText (~> 1.6.25)
-    - HPGrowingTextView (~> 1.1)
-    - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixKit/Core (= 0.16.7)
-    - MatrixSDK (= 0.20.15)
-  - MatrixKit/Core (0.16.7):
-    - Down (~> 0.11.0)
-    - DTCoreText (~> 1.6.25)
-    - HPGrowingTextView (~> 1.1)
-    - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixSDK (= 0.20.15)
-  - MatrixSDK (0.20.15):
-    - MatrixSDK/Core (= 0.20.15)
-  - MatrixSDK/Core (0.20.15):
+  - MatrixSDK (0.20.13):
+    - MatrixSDK/Core (= 0.20.13)
+  - MatrixSDK/Core (0.20.13):
     - AFNetworking (~> 4.0.0)
     - GZIP (~> 1.3.0)
     - libbase58 (~> 0.1.4)
     - OLMKit (~> 3.2.5)
     - Realm (= 10.16.0)
     - SwiftyBeaver (= 1.9.5)
-  - MatrixSDK/JingleCallStack (0.20.15):
+  - MatrixSDK/JingleCallStack (0.20.13):
     - JitsiMeetSDK (= 3.10.2)
     - MatrixSDK/Core
   - OLMKit (3.2.5):
@@ -118,16 +105,19 @@ PODS:
 
 DEPENDENCIES:
   - DGCollectionViewLeftAlignFlowLayout (~> 1.0.4)
+  - Down (~> 0.11.0)
   - DSWaveformImage (~> 6.1.1)
+  - DTCoreText (~> 1.6.25)
   - ffmpeg-kit-ios-audio (~> 4.5)
   - FLEX (~> 4.5.0)
   - FlowCommoniOS (~> 1.12.0)
   - GBDeviceInfo (~> 6.6.0)
+  - HPGrowingTextView (~> 1.1)
   - Introspect (~> 0.1)
   - KeychainAccess (~> 4.2.2)
   - KTCenterFlowLayout (~> 1.3.1)
+  - libPhoneNumber-iOS (~> 0.9.13)
   - MatomoTracker (~> 7.4.1)
-  - MatrixKit (from `LocalPods/MatrixKit/MatrixKit.podspec`)
   - MatrixSDK (from `https://github.com/matrix-org/matrix-ios-sdk.git`, branch `dinum_v0.20.15`)
   - MatrixSDK/JingleCallStack (from `https://github.com/matrix-org/matrix-ios-sdk.git`, branch `dinum_v0.20.15`)
   - OLMKit
@@ -170,6 +160,7 @@ SPEC REPOS:
     - LoggerAPI
     - Logging
     - MatomoTracker
+    - MatrixSDK
     - OLMKit
     - ReadMoreTextView
     - Realm
@@ -186,8 +177,6 @@ SPEC REPOS:
     - ZXingObjC
 
 EXTERNAL SOURCES:
-  MatrixKit:
-    :path: LocalPods/MatrixKit/MatrixKit.podspec
   MatrixSDK:
     :branch: dinum_v0.20.15
     :git: https://github.com/matrix-org/matrix-ios-sdk.git
@@ -223,7 +212,6 @@ SPEC CHECKSUMS:
   LoggerAPI: ad9c4a6f1e32f518fdb43a1347ac14d765ab5e3d
   Logging: beeb016c9c80cf77042d62e83495816847ef108b
   MatomoTracker: 24a846c9d3aa76933183fe9d47fd62c9efa863fb
-  MatrixKit: 2ba1743fd19e8a5fbc3d37884e25e5f4c765f705
   MatrixSDK: 2f4d3aacb1c53e2785f0be71d24b8e62e5c5c056
   OLMKit: 9fb4799c4a044dd2c06bda31ec31a12191ad30b5
   ReadMoreTextView: 19147adf93abce6d7271e14031a00303fe28720d
@@ -240,6 +228,6 @@ SPEC CHECKSUMS:
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: 56547a5087a419eb4461b0fb59380381194392dc
+PODFILE CHECKSUM: f58da67b86ec3b34619f1c61a33ce9a8ed35e28f
 
 COCOAPODS: 1.11.2
