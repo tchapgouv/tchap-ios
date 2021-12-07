@@ -16,6 +16,8 @@
  limitations under the License.
  */
 
+@import MobileCoreServices;
+
 #import "RoomViewController.h"
 
 #import "RoomDataSource.h"
@@ -101,6 +103,7 @@
 #import "AvatarGenerator.h"
 #import "Tools.h"
 #import "WidgetManager.h"
+#import "ShareManager.h"
 
 #import "GBDeviceInfo_iOS.h"
 
@@ -135,7 +138,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     NSArray *currentTypingUsers;
     
     // Typing notifications listener.
-    id typingNotifListener;
+    __weak id typingNotifListener;
     
     // Missed discussions badge
     NSUInteger missedDiscussionsCount;
@@ -146,30 +149,30 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     UIView  *missedDiscussionsBarButtonCustomView;
     
     // Potential encryption details view.
-    EncryptionInfoView *encryptionInfoView;
+    __weak EncryptionInfoView *encryptionInfoView;
     
     // The list of unknown devices that prevent outgoing messages from being sent
     MXUsersDevicesMap<MXDeviceInfo*> *unknownDevices;
     
     // Observe kAppDelegateNetworkStatusDidChangeNotification to handle network status change.
-    id kAppDelegateNetworkStatusDidChangeNotificationObserver;
+    __weak id kAppDelegateNetworkStatusDidChangeNotificationObserver;
 
     // Observers to manage MXSession state (and sync errors)
-    id kMXSessionStateDidChangeObserver;
+    __weak id kMXSessionStateDidChangeObserver;
 
     // Observers to manage ongoing conference call banner
-    id kMXCallStateDidChangeObserver;
-    id kMXCallManagerConferenceStartedObserver;
-    id kMXCallManagerConferenceFinishedObserver;
+    __weak id kMXCallStateDidChangeObserver;
+    __weak id kMXCallManagerConferenceStartedObserver;
+    __weak id kMXCallManagerConferenceFinishedObserver;
 
     // Observers to manage widgets
-    id kMXKWidgetManagerDidUpdateWidgetObserver;
+    __weak id kMXKWidgetManagerDidUpdateWidgetObserver;
     
     // Observer kMXRoomSummaryDidChangeNotification to keep updated the missed discussion count
-    id mxRoomSummaryDidChangeObserver;
+    __weak id mxRoomSummaryDidChangeObserver;
 
     // Observer for removing the re-request explanation/waiting dialog
-    id mxEventDidDecryptNotificationObserver;
+    __weak id mxEventDidDecryptNotificationObserver;
     
     // The table view cell in which the read marker is displayed (nil by default).
     MXKRoomBubbleTableViewCell *readMarkerTableViewCell;
@@ -178,10 +181,10 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     BOOL isAppeared;
     
     // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
-    id kThemeServiceDidChangeThemeNotificationObserver;
+    __weak id kThemeServiceDidChangeThemeNotificationObserver;
     
     // Listener for `m.room.tombstone` event type
-    id tombstoneEventNotificationsListener;
+    __weak id tombstoneEventNotificationsListener;
 
     // Homeserver notices
     MXServerNotices *serverNotices;
@@ -399,7 +402,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     
     // Custom the event details view
     [self setEventDetailsViewClass:EventDetailsView.class];
-
+    
     // Prepare missed dicussion badge (if any)
     self.showMissedDiscussionsBadge = _showMissedDiscussionsBadge;
     
@@ -423,9 +426,12 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         MXStrongifyAndReturnIfNil(self);
+        
         [self userInterfaceThemeDidChange];
         
     }];
+    
+    [self userInterfaceThemeDidChange];
 }
 
 - (void)userInterfaceThemeDidChange
@@ -488,7 +494,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
+    
     // Screen tracking
     [[Analytics sharedInstance] trackScreen:@"ChatRoom"];
     
@@ -560,8 +566,12 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
         [AppDelegate theDelegate].visibleRoomId = self.roomDataSource.roomId;
     }
     
+    MXWeakify(self);
+    
     // Observe network reachability
     kAppDelegateNetworkStatusDidChangeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateNetworkStatusDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        MXStrongifyAndReturnIfNil(self);
         
         [self refreshActivitiesViewDisplay];
         
@@ -571,9 +581,11 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     
     // Observe missed notifications
     mxRoomSummaryDidChangeObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXRoomSummaryDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-
+        
+        MXStrongifyAndReturnIfNil(self);
+        
         MXRoomSummary *roomSummary = notif.object;
-
+        
         if ([roomSummary.roomId isEqualToString:self.roomDataSource.roomId])
         {
             [self refreshMissedDiscussionsCount:NO];
@@ -608,7 +620,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
         [[NSNotificationCenter defaultCenter] removeObserver:mxRoomSummaryDidChangeObserver];
         mxRoomSummaryDidChangeObserver = nil;
     }
-
+    
     if (mxEventDidDecryptNotificationObserver)
     {
         [[NSNotificationCenter defaultCenter] removeObserver:mxEventDidDecryptNotificationObserver];
@@ -645,14 +657,14 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
             eventDetailsView = nil;
         }
     }
-
+    
     // Check whether the preview header is visible
     if (previewHeader)
     {
         // Adjust the top constraint of the bubbles table
         CGRect frame = previewHeader.bottomBorderView.frame;
         self.previewHeaderContainerHeightConstraint.constant = frame.origin.y + frame.size.height;
-
+        
         self.bubblesTableViewTopConstraint.constant = self.previewHeaderContainerHeightConstraint.constant - self.bubblesTableView.adjustedContentInset.top;
         self.jumpToLastUnreadBannerContainerTopConstraint.constant = self.previewHeaderContainerHeightConstraint.constant;
     }
@@ -673,25 +685,25 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
 - (BOOL)accessibilityScroll:(UIAccessibilityScrollDirection)direction
 {
     BOOL canScroll = YES;
-
+    
     // Scroll by one page
     CGFloat tableViewHeight = self.bubblesTableView.frame.size.height;
-
+    
     CGPoint offset = self.bubblesTableView.contentOffset;
     switch (direction)
     {
         case UIAccessibilityScrollDirectionUp:
             offset.y -= tableViewHeight;
             break;
-
+            
         case UIAccessibilityScrollDirectionDown:
             offset.y += tableViewHeight;
             break;
-
+            
         default:
             break;
     }
-
+    
     if (offset.y < 0 && ![self.roomDataSource.timeline canPaginate:MXTimelineDirectionBackwards])
     {
         // Can't paginate more. Let's stick on the first item
@@ -711,9 +723,9 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     {
         // Disable VoiceOver while scrolling
         self.bubblesTableView.accessibilityElementsHidden = YES;
-
+        
         [self setBubbleTableViewContentOffset:offset animated:NO];
-
+        
         NSEnumerator<UITableViewCell*> *cells;
         if (direction == UIAccessibilityScrollDirectionUp)
         {
@@ -724,13 +736,13 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
             cells = self.bubblesTableView.visibleCells.reverseObjectEnumerator;
         }
         UIView *cell = [self firstCellWithAccessibilityDataInCells:cells];
-
+        
         self.bubblesTableView.accessibilityElementsHidden = NO;
-
+        
         // Force VoiceOver to focus on a visible item
         UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, cell);
     }
-
+    
     // If we cannot scroll, let VoiceOver indicates the border
     return canScroll;
 }
@@ -738,7 +750,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
 - (UIView*)firstCellWithAccessibilityDataInCells:(NSEnumerator<UITableViewCell*>*)cells
 {
     UIView *view;
-
+    
     for (UITableViewCell *cell in cells)
     {
         if (![cell isKindOfClass:[RoomEmptyBubbleCell class]])
@@ -747,9 +759,10 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
             break;
         }
     }
-
+    
     return view;
 }
+
 
 #pragma mark - Override MXKRoomViewController
 
@@ -794,7 +807,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
         }
         
         [self listenToServerNotices];
-
+        
         self.eventsAcknowledgementEnabled = YES;
         
         // Set room title view
@@ -922,7 +935,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
 - (CGFloat)inputToolbarHeight
 {
     CGFloat height = 0;
-
+    
     if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class])
     {
         height = ((RoomInputToolbarView*)self.inputToolbarView).mainToolbarHeightConstraint.constant;
@@ -931,7 +944,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     {
         height = ((DisabledRoomInputToolbarView*)self.inputToolbarView).mainToolbarMinHeightConstraint.constant;
     }
-
+    
     return height;
 }
 
@@ -955,6 +968,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     }
     
     // Override the default behavior for `/join` command in order to open automatically the joined room
+    
     if ([string hasPrefix:kMXKSlashCmdJoinRoom])
     {
         // Join a room
@@ -1181,7 +1195,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     [self removeTombstoneEventNotificationsListener];
     [self removeMXSessionStateChangeNotificationsListener];
     [self removeServerNoticesListener];
-
+    
     if (previewHeader)
     {
         // Here [destroy] is called before [viewWillDisappear:]
@@ -1598,7 +1612,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
         RoomInputToolbarView *roomInputToolbarView = (RoomInputToolbarView*)self.inputToolbarView;
         sendMode = roomInputToolbarView.sendMode;
     }
-
+    
     return sendMode;
 }
 
@@ -1685,7 +1699,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     CameraPresenter *cameraPresenter = [CameraPresenter new];
     cameraPresenter.delegate = self;
     [cameraPresenter presentCameraFrom:self with:@[MXKUTI.image, MXKUTI.movie] animated:YES];
-
+    
     self.cameraPresenter = cameraPresenter;
 }
 
@@ -1707,7 +1721,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     {
         sourceView = self.inputToolbarView;
     }
-
+    
     [mediaPickerPresenter presentFrom:self sourceView:sourceView sourceRect:sourceView.bounds animated:YES];
     
     self.mediaPickerPresenter = mediaPickerPresenter;
@@ -2122,7 +2136,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
             RoomDataSource *roomDataSource = (RoomDataSource*)self.roomDataSource;
             
             [roomDataSource acceptVerificationRequestForEventId:eventId success:^{
-
+                
             } failure:^(NSError *error) {
                 [[AppDelegate theDelegate] showErrorAsAlert:error];
             }];
@@ -2295,7 +2309,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
             selectedComponent = nil;
         }
         
-
+        
         // Check status of the selected event
         if (selectedEvent.sentState == MXEventSentStatePreparing ||
             selectedEvent.sentState == MXEventSentStateEncrypting ||
@@ -2366,13 +2380,13 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                     NSArray *activityItems = @[selectedComponent.textMessage];
                     
                     UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
-
+                    
                     if (activityViewController)
                     {
                         activityViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
                         activityViewController.popoverPresentationController.sourceView = roomBubbleTableViewCell;
                         activityViewController.popoverPresentationController.sourceRect = roomBubbleTableViewCell.bounds;
-
+                        
                         [self presentViewController:activityViewController animated:YES completion:nil];
                     }
                 }
@@ -2420,7 +2434,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                 }]];
             }
         }
-            
+        
         // Check status of the selected event
         if (selectedEvent.sentState == MXEventSentStatePreparing ||
             selectedEvent.sentState == MXEventSentStateEncrypting ||
@@ -2651,6 +2665,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                         }];
                     }
                 }
+                
             }]];
         }
         
@@ -2710,8 +2725,8 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                 }
                 
             }]];
-        
-
+            
+            
             // Add "View Decrypted Source" for e2ee event we can decrypt
             if (selectedEvent.isEncrypted && selectedEvent.clearEvent)
             {
@@ -2937,6 +2952,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
         {
             // We display details only for the room members
             NSString *userId = absoluteURLString;
+            
             MXRoomMember* member = [self.roomDataSource.roomState.members memberWithUserId:userId];
             if (member && self.delegate)
             {
@@ -2984,7 +3000,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
             {
                 NSString *eventId = arguments[1];
                 MXEvent *event = [self.roomDataSource eventWithEventId:eventId];
-
+                
                 if (event)
                 {
                     [self reRequestKeysAndShowExplanationAlert:event];
@@ -3062,7 +3078,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                             shouldDoAction = NO;
                             break;
                         }
-                    }                                        
+                    }
                 }
                     break;
                 case UITextItemInteractionPresentActions:
@@ -3175,7 +3191,6 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     return roomInputToolbarView;
 }
 
-
 #pragma mark - RoomDataSourceDelegate
 
 - (void)roomDataSource:(RoomDataSource *)roomDataSource didUpdateEncryptionTrustLevel:(RoomEncryptionTrustLevel)roomEncryptionTrustLevel
@@ -3262,7 +3277,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
 - (void)roomInputToolbarView:(MXKRoomInputToolbarView*)toolbarView isTyping:(BOOL)typing
 {
     [super roomInputToolbarView:toolbarView isTyping:typing];
-
+    
     // Cancel potential selected event (to leave edition mode)
     NSString *selectedEventId = customizedRoomDataSource.selectedEventId;
     if (typing && selectedEventId && ![self.roomDataSource canReplyToEventWithId:selectedEventId])
@@ -3465,18 +3480,18 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     {
         // Dismiss potential keyboard.
         [self dismissKeyboard];
-
+        
         // Jump to the last unread event by using a temporary room data source initialized with the last unread event id.
         MXWeakify(self);
         [RoomDataSource loadRoomDataSourceWithRoomId:self.roomDataSource.roomId initialEventId:self.roomDataSource.room.accountData.readMarkerEventId andMatrixSession:self.mainSession onComplete:^(id roomDataSource) {
             MXStrongifyAndReturnIfNil(self);
-
+            
             [roomDataSource finalizeInitialization];
-
+            
             // Center the bubbles table content on the bottom of the read marker event in order to display correctly the read marker view.
             self.centerBubblesTableViewContentOnTheInitialEventBottom = YES;
             [self displayRoom:roomDataSource];
-
+            
             // Give the data source ownership to the room view controller.
             self.hasRoomDataSourceOwnership = YES;
         }];
@@ -3620,7 +3635,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
             MXWeakify(self);
             [self.roomDataSource.room liveTimeline:^(MXEventTimeline *liveTimeline) {
                 MXStrongifyAndReturnIfNil(self);
-
+                
                 [liveTimeline removeListener:self->typingNotifListener];
                 self->typingNotifListener = nil;
             }];
@@ -3638,7 +3653,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
         MXWeakify(self);
         self->typingNotifListener = [self.roomDataSource.room listenToEventsOfTypes:@[kMXEventTypeStringTypingNotification] onEvent:^(MXEvent *event, MXTimelineDirection direction, MXRoomState *roomState) {
             MXStrongifyAndReturnIfNil(self);
-
+            
             // Handle only live events
             if (direction == MXTimelineDirectionForwards)
             {
@@ -3650,7 +3665,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                 {
                     [typingUsers removeObjectAtIndex:index];
                 }
-
+                
                 // Ignore this notification if both arrays are empty
                 if (self->currentTypingUsers.count || typingUsers.count)
                 {
@@ -3659,7 +3674,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                 }
             }
         }];
-
+        
         // Retrieve the current typing users list
         NSMutableArray *typingUsers = [NSMutableArray arrayWithArray:self.roomDataSource.room.typingUsers];
         // Remove typing info for the current user
@@ -3747,10 +3762,14 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
 
 - (void)listenCallNotifications
 {
+    MXWeakify(self);
+    
     kMXCallStateDidChangeObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXCallStateDidChange object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
+        MXStrongifyAndReturnIfNil(self);
+        
         MXCall *call = notif.object;
-        if ([call.room.roomId isEqualToString:customizedRoomDataSource.roomId])
+        if ([call.room.roomId isEqualToString:self->customizedRoomDataSource.roomId])
         {
             [self refreshActivitiesViewDisplay];
             [self refreshRoomInputToolbar];
@@ -3758,16 +3777,20 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     }];
     kMXCallManagerConferenceStartedObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXCallManagerConferenceStarted object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
+        MXStrongifyAndReturnIfNil(self);
+        
         NSString *roomId = notif.object;
-        if ([roomId isEqualToString:customizedRoomDataSource.roomId])
+        if ([roomId isEqualToString:self->customizedRoomDataSource.roomId])
         {
             [self refreshActivitiesViewDisplay];
         }
     }];
     kMXCallManagerConferenceFinishedObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXCallManagerConferenceFinished object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
+        MXStrongifyAndReturnIfNil(self);
+        
         NSString *roomId = notif.object;
-        if ([roomId isEqualToString:customizedRoomDataSource.roomId])
+        if ([roomId isEqualToString:self->customizedRoomDataSource.roomId])
         {
             [self refreshActivitiesViewDisplay];
             [self refreshRoomInputToolbar];
@@ -3814,11 +3837,15 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
 
 - (void)listenWidgetNotifications
 {
+    MXWeakify(self);
+    
     kMXKWidgetManagerDidUpdateWidgetObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kWidgetManagerDidUpdateWidgetNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-
+        
+        MXStrongifyAndReturnIfNil(self);
+        
         Widget *widget = notif.object;
         if (widget.mxSession == self.roomDataSource.mxSession
-            && [widget.roomId isEqualToString:customizedRoomDataSource.roomId])
+            && [widget.roomId isEqualToString:self->customizedRoomDataSource.roomId])
         {
             // Jitsi conference widget existence is shown in the bottom bar
             // Update the bar
@@ -3840,7 +3867,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                                            NSLocalizedDescriptionKey: NSLocalizedStringFromTable(@"room_conference_call_no_power", @"Vector", nil)
                                            }];
     }
-
+    
     // Alert user
     [[AppDelegate theDelegate] showErrorAsAlert:error];
 }
@@ -3854,7 +3881,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     {
         widgetsCount += [[WidgetManager sharedManager] userWidgets:self.roomDataSource.room.mxSession].count;
     }
-
+    
     return widgetsCount;
 }
 
@@ -3865,7 +3892,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     if ([self.activitiesView isKindOfClass:RoomActivitiesView.class])
     {
         RoomActivitiesView *roomActivitiesView = (RoomActivitiesView*)self.activitiesView;
-
+        
         // Reset gesture recognizers
         while (roomActivitiesView.gestureRecognizers.count)
         {
@@ -4094,22 +4121,22 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     {
         // Switch back to the room live timeline managed by MXKRoomDataSourceManager
         MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:self.mainSession];
-
+        
         MXWeakify(self);
         [roomDataSourceManager roomDataSourceForRoom:self.roomDataSource.roomId create:YES onComplete:^(MXKRoomDataSource *roomDataSource) {
             MXStrongifyAndReturnIfNil(self);
-
+            
             // Scroll to bottom the bubble history on the display refresh.
             self->shouldScrollToBottomOnTableRefresh = YES;
-
+            
             [self displayRoom:roomDataSource];
-
+            
             // The room view controller do not have here the data source ownership.
             self.hasRoomDataSourceOwnership = NO;
-
+            
             [self refreshActivitiesViewDisplay];
             [self refreshJumpToLastUnreadBannerDisplay];
-
+            
             if (self.saveProgressTextInput)
             {
                 // Restore the potential message partially typed before jump to last unread messages.
@@ -4281,6 +4308,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
             NSLocalizedStringFromTable(@"room_unsent_messages_unknown_devices_notification", @"Vector", nil) :
             NSLocalizedStringFromTable(@"room_unsent_messages_notification", @"Vector", nil);
             
+            MXWeakify(self);
             RoomActivitiesView *roomActivitiesView = (RoomActivitiesView*) self.activitiesView;
             [roomActivitiesView displayUnsentMessagesNotification:notification withResendLink:^{
                 
@@ -4291,22 +4319,23 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                 [self cancelAllUnsentMessages];
                 
             } andIconTapGesture:^{
+                MXStrongifyAndReturnIfNil(self);
                 
-                if (currentAlert)
+                if (self->currentAlert)
                 {
-                    [currentAlert dismissViewControllerAnimated:NO completion:nil];
+                    [self->currentAlert dismissViewControllerAnimated:NO completion:nil];
                 }
                 
-                __weak __typeof(self) weakSelf = self;
+                MXWeakify(self);
                 currentAlert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
                 
                 [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_resend_unsent_messages", @"Vector", nil)
                                                                  style:UIAlertActionStyleDefault
                                                                handler:^(UIAlertAction * action) {
                                                                    
-                                                                   if (weakSelf)
+                    if (weakself)
                                                                    {
-                                                                       typeof(self) self = weakSelf;
+                                                                       MXStrongifyAndReturnIfNil(self);
                                                                        [self resendAllUnsentMessages];
                                                                        self->currentAlert = nil;
                                                                    }
@@ -4317,9 +4346,9 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                                                                  style:UIAlertActionStyleDefault
                                                                handler:^(UIAlertAction * action) {
                                                                    
-                                                                   if (weakSelf)
+                    if (weakself)
                                                                    {
-                                                                       typeof(self) self = weakSelf;
+                                                                       MXStrongifyAndReturnIfNil(self);
                                                                        [self cancelAllUnsentMessages];
                                                                        self->currentAlert = nil;
                                                                    }
@@ -4330,9 +4359,9 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                                                                  style:UIAlertActionStyleCancel
                                                                handler:^(UIAlertAction * action) {
                                                                    
-                                                                   if (weakSelf)
+                    if (weakself)
                                                                    {
-                                                                       typeof(self) self = weakSelf;
+                                                                       MXStrongifyAndReturnIfNil(self);
                                                                        self->currentAlert = nil;
                                                                    }
                                                                    
@@ -4444,7 +4473,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
 {
     MXEvent *event = notif.object;
     NSString *previousId = notif.userInfo[kMXEventIdentifierKey];
-
+    
     if ([customizedRoomDataSource.selectedEventId isEqualToString:previousId])
     {
         MXLogDebug(@"[RoomVC] eventDidChangeIdentifier: Update selectedEventId");
@@ -4625,21 +4654,21 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                 
                 [UIView animateWithDuration:1.5 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
                                  animations:^{
-                                     
-                                     readMarkerTableViewCell.readMarkerViewLeadingConstraint.constant = readMarkerTableViewCell.readMarkerViewTrailingConstraint.constant = readMarkerTableViewCell.bubbleOverlayContainer.frame.size.width / 2;
-                                     readMarkerTableViewCell.readMarkerView.alpha = 0;
-                                     
-                                     // Force to render the view
-                                     [readMarkerTableViewCell.bubbleOverlayContainer layoutIfNeeded];
-                                     
-                                 }
+                    
+                    readMarkerTableViewCell.readMarkerViewLeadingConstraint.constant = readMarkerTableViewCell.readMarkerViewTrailingConstraint.constant = readMarkerTableViewCell.bubbleOverlayContainer.frame.size.width / 2;
+                    readMarkerTableViewCell.readMarkerView.alpha = 0;
+                    
+                    // Force to render the view
+                    [readMarkerTableViewCell.bubbleOverlayContainer layoutIfNeeded];
+                    
+                }
                                  completion:^(BOOL finished){
-                                     
-                                     readMarkerTableViewCell.readMarkerView.hidden = YES;
-                                     readMarkerTableViewCell.readMarkerView.alpha = 1;
-                                     
-                                     readMarkerTableViewCell = nil;
-                                 }];
+                    
+                    readMarkerTableViewCell.readMarkerView.hidden = YES;
+                    readMarkerTableViewCell.readMarkerView.alpha = 1;
+                    
+                    readMarkerTableViewCell = nil;
+                }];
                 
             });
         }
@@ -4696,7 +4725,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
         }
     }
 }
-                                     
+
 #pragma mark - Re-request encryption keys
 
 - (void)reRequestKeysAndShowExplanationAlert:(MXEvent*)event
@@ -4706,19 +4735,19 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
 
     // Make the re-request
     [self.mainSession.crypto reRequestRoomKeyForEvent:event];
-
+    
     // Observe kMXEventDidDecryptNotification to remove automatically the dialog
     // if the user has shared the keys from another device
     mxEventDidDecryptNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXEventDidDecryptNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         MXStrongifyAndReturnIfNil(self);
-
+        
         MXEvent *decryptedEvent = notif.object;
-
+        
         if ([decryptedEvent.eventId isEqualToString:event.eventId])
         {
             [[NSNotificationCenter defaultCenter] removeObserver:self->mxEventDidDecryptNotificationObserver];
             self->mxEventDidDecryptNotificationObserver = nil;
-
+            
             if (self->currentAlert == alert)
             {
                 [self->currentAlert dismissViewControllerAnimated:YES completion:nil];
@@ -4726,7 +4755,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
             }
         }
     }];
-
+    
     // Show the explanation dialog
     alert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"rerequest_keys_alert_title", @"Vector", nil)
                                                        message:NSLocalizedStringFromTable(@"rerequest_keys_alert_message", @"Vector", nil)
@@ -4789,13 +4818,17 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
 
 - (void)listenMXSessionStateChangeNotifications
 {
+    MXWeakify(self);
+    
     kMXSessionStateDidChangeObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionStateDidChangeNotification object:self.roomDataSource.mxSession queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-
+        
+        MXStrongifyAndReturnIfNil(self);
+        
         if (self.roomDataSource.mxSession.state == MXSessionStateSyncError
             || self.roomDataSource.mxSession.state == MXSessionStateRunning)
         {
             [self refreshActivitiesViewDisplay];
-
+            
             // update inputToolbarView
             [self updateRoomInputToolbarViewClassIfNeeded];
             [self refreshRoomInputToolbar];
@@ -5055,10 +5088,10 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                                                              fromSingleTapGesture:usedSingleTapGesture
                                                                          animated:animated
                                                                        completion:^{
-                                                                       }];
+    }];
     
     preventBubblesTableViewScroll = YES;
-    [self selectEventWithId:selectedEventId];    
+    [self selectEventWithId:selectedEventId];
 }
 
 - (void)hideContextualMenuAnimated:(BOOL)animated
@@ -5158,7 +5191,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
     
     if (cellRow >= 0)
     {
-        NSIndexPath *cellIndexPath = [NSIndexPath indexPathForRow:cellRow inSection:0];        
+        NSIndexPath *cellIndexPath = [NSIndexPath indexPathForRow:cellRow inSection:0];
         UITableViewCell *cell = [self.bubblesTableView cellForRowAtIndexPath:cellIndexPath];
         sourceView = cell;
         

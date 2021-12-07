@@ -21,7 +21,7 @@ platform :ios do
 
   before_all do
     # Ensure used Xcode version
-    xcversion(version: "~> 12.4")
+    xcversion(version: "~> 12.5")
   end
 
   #### Public ####
@@ -102,6 +102,9 @@ platform :ios do
     build_number = options[:build_number]
     UI.user_error!("'build_number' parameter is missing") unless !build_number.to_s.empty?
 
+    # ad-hoc or app-store?
+    adhoc = options.fetch(:adhoc, false)
+
     # Extract git information to show within the app
     git_branch_name = options[:git_tag]
     if git_branch_name.to_s.empty?
@@ -132,7 +135,7 @@ platform :ios do
     clear_derived_data(derived_data_path: ENV["DERIVED_DATA_PATH"])
 
     # Setup project provisioning profiles
-    download_provisioning_profiles(adhoc: false)
+    download_provisioning_profiles(adhoc: adhoc)
     disable_automatic_code_signing
     update_project_provisioning_profiles
 
@@ -142,12 +145,21 @@ platform :ios do
     # Perform a pod install
     cocoapods(repo_update: true)
 
-    # Config
-    export_method = "app-store"
-    main_provisioning_profile = ENV["APPSTORE_MAIN_PROVISIONING_PROFILE_SPECIFIER"]
-    share_extension_provisioning_profile = ENV["APPSTORE_SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"]
-    nse_provisioning_profile = ENV["APPSTORE_NSE_PROVISIONING_PROFILE_SPECIFIER"]
-    
+    # Select a config
+    if adhoc
+      export_method = "ad-hoc"
+      main_provisioning_profile = ENV["ADHOC_MAIN_PROVISIONING_PROFILE_SPECIFIER"]
+      share_extension_provisioning_profile = ENV["ADHOC_SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"]
+      siri_intents_provisioning_profile = ENV["ADHOC_SIRI_INTENTS_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"]
+      nse_provisioning_profile = ENV["ADHOC_NSE_PROVISIONING_PROFILE_SPECIFIER"]
+    else
+      export_method = "app-store"
+      main_provisioning_profile = ENV["APPSTORE_MAIN_PROVISIONING_PROFILE_SPECIFIER"]
+      share_extension_provisioning_profile = ENV["APPSTORE_SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"]
+      siri_intents_provisioning_profile = ENV["APPSTORE_SIRI_INTENTS_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"]
+      nse_provisioning_profile = ENV["APPSTORE_NSE_PROVISIONING_PROFILE_SPECIFIER"]
+    end
+
     # Build app and create ipa
     build_app(
       clean: true,
@@ -170,6 +182,7 @@ platform :ios do
           ENV["MAIN_BUNDLE_ID"] => main_provisioning_profile,
           ENV["SHARE_EXTENSION_BUNDLE_ID"] => share_extension_provisioning_profile,
           ENV["NSE_BUNDLE_ID"] => nse_provisioning_profile,
+          ENV["SIRI_INTENTS_EXTENSION_BUNDLE_ID"] => siri_intents_provisioning_profile,
         },
         iCloudContainerEnvironment: "Production",
       },
@@ -180,19 +193,22 @@ platform :ios do
 
   desc "Download App Store or Ad-Hoc provisioning profiles"
   private_lane :download_provisioning_profiles do |options|
+    adhoc = options.fetch(:adhoc, false)
+
     output_path = ENV["PROVISIONING_PROFILES_PATH"]
     skip_certificate_verification = false
 
-    main_provisioning_name = ENV["APPSTORE_MAIN_PROVISIONING_PROFILE_SPECIFIER"]
-    share_extension_provisioning_name = ENV["APPSTORE_SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"]
-    notification_service_extension_provisioning_name = ENV["APPSTORE_NSE_PROVISIONING_PROFILE_SPECIFIER"]
+    main_provisioning_name = adhoc ? ENV["ADHOC_MAIN_PROVISIONING_PROFILE_SPECIFIER"] : ENV["APPSTORE_MAIN_PROVISIONING_PROFILE_SPECIFIER"]
+    share_extension_provisioning_name = adhoc ? ENV["ADHOC_SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"] : ENV["APPSTORE_SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"]
+    siri_intents_provisioning_name = adhoc ? ENV["ADHOC_SIRI_INTENTS_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"] : ENV["APPSTORE_SIRI_INTENTS_EXTENSION_PROVISIONING_PROFILE_SPECIFIER"]
+    notification_service_extension_provisioning_name = adhoc ? ENV["ADHOC_NSE_PROVISIONING_PROFILE_SPECIFIER"] : ENV["APPSTORE_NSE_PROVISIONING_PROFILE_SPECIFIER"]
 
     # Main application
     get_provisioning_profile(
       app_identifier: ENV["MAIN_BUNDLE_ID"],
       provisioning_name: main_provisioning_name,
       ignore_profiles_with_different_name: true,
-      adhoc: false,
+      adhoc: adhoc,
       skip_certificate_verification: skip_certificate_verification,
       output_path: output_path,
       filename: ENV["MAIN_PROVISIONING_PROFILE_FILENAME"],
@@ -203,10 +219,21 @@ platform :ios do
       app_identifier: ENV["SHARE_EXTENSION_BUNDLE_ID"],
       provisioning_name: share_extension_provisioning_name,
       ignore_profiles_with_different_name: true,
-      adhoc: false,
+      adhoc: adhoc,
       skip_certificate_verification: skip_certificate_verification,
       output_path: output_path,
       filename: ENV["SHARE_EXTENSION_PROVISIONING_PROFILE_FILENAME"],
+      readonly: true,
+    )
+    # Siri Intents extension
+    get_provisioning_profile(
+      app_identifier: ENV["SIRI_INTENTS_EXTENSION_BUNDLE_ID"],
+      provisioning_name: siri_intents_provisioning_name,
+      ignore_profiles_with_different_name: true,
+      adhoc: adhoc,
+      skip_certificate_verification: skip_certificate_verification,
+      output_path: output_path,
+      filename: ENV["SIRI_INTENTS_EXTENSION_PROVISIONING_PROFILE_FILENAME"],
       readonly: true,
     )
     # NSE
@@ -214,7 +241,7 @@ platform :ios do
       app_identifier: ENV["NSE_BUNDLE_ID"],
       provisioning_name: notification_service_extension_provisioning_name,
       ignore_profiles_with_different_name: true,
-      adhoc: false,
+      adhoc: adhoc,
       skip_certificate_verification: skip_certificate_verification,
       output_path: output_path,
       filename: ENV["NSE_PROVISIONING_PROFILE_FILENAME"],
@@ -240,6 +267,13 @@ platform :ios do
       xcodeproj: xcodeproj,
       profile: "#{provisioning_profiles_path}#{ENV["SHARE_EXTENSION_PROVISIONING_PROFILE_FILENAME"]}",
       target_filter: ENV["SHARE_EXTENSION_TARGET"],
+      build_configuration: build_configuration,
+    )
+    # Siri Intents extension
+    update_project_provisioning(
+      xcodeproj: xcodeproj,
+      profile: "#{provisioning_profiles_path}#{ENV["SIRI_INTENTS_EXTENSION_PROVISIONING_PROFILE_FILENAME"]}",
+      target_filter: ENV["SIRI_INTENTS_EXTENSION_TARGET"],
       build_configuration: build_configuration,
     )
     # NSE

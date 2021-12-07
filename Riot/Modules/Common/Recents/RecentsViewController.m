@@ -35,15 +35,15 @@
     BOOL isRefreshPending;
     
     // Observe UIApplicationDidEnterBackgroundNotification to cancel editing mode when app leaves the foreground state.
-    id UIApplicationDidEnterBackgroundNotificationObserver;
+    __weak id UIApplicationDidEnterBackgroundNotificationObserver;
     
     // Observe kMXNotificationCenterDidUpdateRules to update missed messages counts.
-    id kMXNotificationCenterDidUpdateRulesObserver;
+    __weak id kMXNotificationCenterDidUpdateRulesObserver;
     
     MXHTTPOperation *currentRequest;
     
     // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
-    id kThemeServiceDidChangeThemeNotificationObserver;
+    __weak id kThemeServiceDidChangeThemeNotificationObserver;
 }
 
 //@property (nonatomic, strong) CreateRoomCoordinatorBridgePresenter *createRoomCoordinatorBridgePresenter;
@@ -128,12 +128,14 @@
     // Apply dragging settings
     self.enableDragging = _enableDragging;
     
-    // Observe UIApplicationDidEnterBackgroundNotification to refresh bubbles when app leaves the foreground state.
     MXWeakify(self);
+    
+    // Observe UIApplicationDidEnterBackgroundNotification to refresh bubbles when app leaves the foreground state.
     UIApplicationDidEnterBackgroundNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidEnterBackgroundNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
-        // Leave potential editing mode
         MXStrongifyAndReturnIfNil(self);
+        
+        // Leave potential editing mode
         [self cancelEditionMode:self->isRefreshPending];
         
     }];
@@ -142,6 +144,7 @@
     kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         MXStrongifyAndReturnIfNil(self);
+        
         [self userInterfaceThemeDidChange];
         
     }];
@@ -239,8 +242,12 @@
         [self.recentsTableView deselectRowAtIndexPath:indexPath animated:NO];
     }
     
+    MXWeakify(self);
+    
     // Observe kMXNotificationCenterDidUpdateRules to refresh missed messages counts
     kMXNotificationCenterDidUpdateRulesObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXNotificationCenterDidUpdateRules object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+        
+        MXStrongifyAndReturnIfNil(self);
         
         [self refreshRecentsTable];
         
@@ -770,7 +777,7 @@
     NSString* title = @"      ";
     
     // Notification toggle
-
+    
     BOOL isMuted = room.isMute || room.isMentionsOnly;
     
     UIContextualAction *muteAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleNormal
@@ -1216,7 +1223,7 @@
 //- (void)createRoomCoordinatorBridgePresenterDelegate:(CreateRoomCoordinatorBridgePresenter *)coordinatorBridgePresenter didCreateNewRoom:(MXRoom *)room
 //{
 //    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
-//        [[AppDelegate theDelegate] showRoom:room.roomId andEventId:nil withMatrixSession:self.mainSession restoreInitialDisplay:NO];
+//        [self showRoomWithRoomId:room.roomId inMatrixSession:self.mainSession];
 //    }];
 //    coordinatorBridgePresenter = nil;
 //}
@@ -1345,7 +1352,8 @@
 //    {
 //        // Room is known show it directly
 //        [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
-//            [[AppDelegate theDelegate] showRoom:room.roomId andEventId:nil withMatrixSession:self.mainSession restoreInitialDisplay:NO];
+//            [self showRoomWithRoomId:room.roomId
+//                     inMatrixSession:self.mainSession];
 //        }];
 //        coordinatorBridgePresenter = nil;
 //    }
@@ -1373,7 +1381,7 @@
 //
 //            if (succeeded) {
 //                [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
-//                    [[AppDelegate theDelegate].masterTabBarController showRoomPreview:roomPreviewData];
+//                    [self showRoomPreviewWithData:roomPreviewData];
 //                }];
 //                self.roomsDirectoryCoordinatorBridgePresenter = nil;
 //            } else {

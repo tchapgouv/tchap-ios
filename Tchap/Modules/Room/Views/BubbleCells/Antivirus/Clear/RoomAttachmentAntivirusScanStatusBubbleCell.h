@@ -21,4 +21,6 @@
  */
 @interface RoomAttachmentAntivirusScanStatusBubbleCell : RoomIncomingAttachmentBubbleCell
 
++ (instancetype)instantiate;
+
 @end

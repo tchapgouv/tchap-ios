@@ -90,6 +90,7 @@ targets:
         - "Modules/TabBar"
         - "Modules/User"
         - "Modules/UserInteractiveAuthentication"
+    - path: ../RiotShareExtension/Shared
 
     # Add separately localizable files
     # Once a language has enough translations (>80%), it must be declared here

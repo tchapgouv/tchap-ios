@@ -91,7 +91,8 @@ final class SpaceListViewModel: SpaceListViewModelType {
         case .moreAction(at: let indexPath, from: let sourceView):
             let section = self.sections[indexPath.section]
             switch section {
-            case .home: break
+            case .home:
+                self.coordinatorDelegate?.spaceListViewModel(self, didPressMoreForSpaceWithId: Constants.homeSpaceId, from: sourceView)
             case .spaces(let viewDataList):
                 let spaceViewData = viewDataList[indexPath.row]
                 self.coordinatorDelegate?.spaceListViewModel(self, didPressMoreForSpaceWithId: spaceViewData.spaceId, from: sourceView)
@@ -130,6 +131,9 @@ final class SpaceListViewModel: SpaceListViewModelType {
     
     private func loadData() {
         guard let session = self.userSessionsService.mainUserSession?.matrixSession else {
+            // If there is no main session, reset current selection and give an empty section list
+            // It can happen when the user make a clear cache or logout 
+            self.resetList()
             return
         }
 
@@ -241,5 +245,16 @@ final class SpaceListViewModel: SpaceListViewModelType {
             let spaceViewData = viewDataList[self.selectedIndexPath.row]
             return spaceViewData.spaceId
         }
+    }
+    
+    private func resetList() {
+        self.sections = []
+        
+        let selectedIndexPath = IndexPath(row: 0, section: 0)
+        
+        self.selectedIndexPath = selectedIndexPath
+        self.homeIndexPath = selectedIndexPath
+        
+        self.update(viewState: .loaded([]))
     }
 }

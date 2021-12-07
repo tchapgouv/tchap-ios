@@ -1,3 +1,79 @@
+## Changes in 1.6.8 (2021-11-17)
+
+🙌 Improvements
+
+- Upgrade MatrixKit version ([v0.16.10](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.16.10)).
+- Using mutable room list fetch sort options after chaning them to be a structure. ([#4384](https://github.com/vector-im/element-ios/issues/4384))
+- Share Extension: Remove the image compression prompt when the showMediaSizeSelection setting is disabled. ([#4815](https://github.com/vector-im/element-ios/issues/4815))
+- Replaced GrowingTextView with simpler, custom implementation.  Cleaned up the RoomInputToolbar header. ([#4976](https://github.com/vector-im/element-ios/issues/4976))
+- Settings: Update about section footer text. ([#5090](https://github.com/vector-im/element-ios/issues/5090))
+- MXSession: Add logs to track if E2EE is enabled by default on the current HS. ([#5129](https://github.com/vector-im/element-ios/issues/5129))
+
+🐛 Bugfixes
+
+- Fixed share extension and message forwarding room list accessory view icon. ([#5041](https://github.com/vector-im/element-ios/issues/5041))
+- Fixed message composer not following keyboard when swiping to dismiss. ([#5042](https://github.com/vector-im/element-ios/issues/5042))
+- RoomVC: Fix retain cycles that prevents `RoomViewController` to be deallocated. ([#5055](https://github.com/vector-im/element-ios/issues/5055))
+- Share Extension: Fix missing avatars and don't list spaces as rooms. ([#5057](https://github.com/vector-im/element-ios/issues/5057))
+- Fix retain cycles that prevents deallocation in several classes. ([#5058](https://github.com/vector-im/element-ios/issues/5058))
+- Fixed retain cycles between the user suggestion coordinator and the suggestion service, and in the suggestion service currentTextTrigger subject sink. ([#5063](https://github.com/vector-im/element-ios/issues/5063))
+- Ensure alerts with weak references are retained until they've been presented. ([#5071](https://github.com/vector-im/element-ios/issues/5071))
+- Message Composer: Ensure there is no text view when the user isn't allowed to send messages. ([#5079](https://github.com/vector-im/element-ios/issues/5079))
+- Home: Fix bug where favourited DM would be shown in both Favourites and People section. ([#5081](https://github.com/vector-im/element-ios/issues/5081))
+- Fix a crash when selected space is not home and a clear cache or logout is performed. ([#5082](https://github.com/vector-im/element-ios/issues/5082))
+- Room Previews: Fix room previews not loading. ([#5083](https://github.com/vector-im/element-ios/issues/5083))
+- Do not make the placeholder appearing when leaving a room on iPhone. ([#5084](https://github.com/vector-im/element-ios/issues/5084))
+- Fix room ordering when switching between Home and People/Rooms/Favourites. ([#5105](https://github.com/vector-im/element-ios/issues/5105))
+
+Others
+
+- Improve wording around rageshakes in the defect issue template. ([#4987](https://github.com/vector-im/element-ios/issues/4987))
+
+
+## Changes in 1.6.6 (2021-10-21)
+
+✨ Features
+
+- M10.4.1 Home space data filtering ([#4570](https://github.com/vector-im/element-ios/issues/4570))
+- Implemented message forwarding from within the main application. Updated the share extension designs. ([#5009](https://github.com/vector-im/element-ios/issues/5009))
+
+🙌 Improvements
+
+- Settings: Refresh the appearance of headers and footers, with a few minor tweaks to the organisation. ([#5011](https://github.com/vector-im/element-ios/pull/5011))
+- Upgrade MatrixKit version ([v0.16.9](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.16.9)).
+- RecentsDataSource: Refactorings for lazy loading room summaries. ([#4384](https://github.com/vector-im/element-ios/issues/4384))
+- Contacts Access: Request access via a button tap in the new Find Your Contacts footer instead of doing it automatically. ([#4484](https://github.com/vector-im/element-ios/issues/4484))
+- Navigation: Create RoomCoordinator. ([#4734](https://github.com/vector-im/element-ios/issues/4734))
+- Navigation: Enable room stacking. ([#4834](https://github.com/vector-im/element-ios/issues/4834))
+- SwiftUI: Add FramePreferenceKey for use in ViewFrameReader. ([#4974](https://github.com/vector-im/element-ios/issues/4974))
+- URL Previews: Stop requesting URL previews if the feature has been disabled on the homeserver. ([#5002](https://github.com/vector-im/element-ios/issues/5002))
+- VectorWellKnown: Make all properties optional. ([#5008](https://github.com/vector-im/element-ios/issues/5008))
+
+🐛 Bugfixes
+
+- Message Composer: Pasting images from Safari now pastes the image and not its URL. ([#2076](https://github.com/vector-im/element-ios/issues/2076))
+- Fixed private space invite should use lock icon instead of planet ([#4886](https://github.com/vector-im/element-ios/issues/4886))
+- Room Lists: Fix generated avatar colours not matching Element Web. ([#4978](https://github.com/vector-im/element-ios/issues/4978))
+- Contacts Sync: Move call to validateSyncLocalContactsState into MatrixKit. ([#4989](https://github.com/vector-im/element-ios/issues/4989))
+- Timeline: Selecting a message now correctly selects any reactions and URL previews too. ([#4992](https://github.com/vector-im/element-ios/issues/4992))
+
+🧱 Build
+
+- Build: Update to Xcode 12.5 in the Fastfile and macOS 11 in the GitHub actions. ([#4998](https://github.com/vector-im/element-ios/pull/4998))
+
+Others
+
+- Replaced deprecated HPGrowingTextView with GrowingTextView. ([#4976](https://github.com/vector-im/element-ios/issues/4976))
+- Move new issues into incoming column and move X-Needs-Info into Need info column on the issue triage board ([#5012](https://github.com/vector-im/element-ios/issues/5012))
+
+
+## Changes in 1.6.5 (2021-10-14)
+
+🙌 Improvements
+
+- Upgrade MatrixKit version ([v0.16.7](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.16.7)).
+
+
 ## Changes in 1.6.4 (2021-10-12)
 
 🙌 Improvements

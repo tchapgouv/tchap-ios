@@ -59,6 +59,7 @@ internal enum Asset {
     internal static let errorIcon = ImageAsset(name: "error_icon")
     internal static let faceidIcon = ImageAsset(name: "faceid_icon")
     internal static let group = ImageAsset(name: "group")
+    internal static let informationButton = ImageAsset(name: "information_button")
     internal static let monitor = ImageAsset(name: "monitor")
     internal static let placeholder = ImageAsset(name: "placeholder")
     internal static let plusIcon = ImageAsset(name: "plus_icon")
@@ -73,6 +74,7 @@ internal enum Asset {
     internal static let touchidIcon = ImageAsset(name: "touchid_icon")
     internal static let addGroupParticipant = ImageAsset(name: "add_group_participant")
     internal static let removeIconBlue = ImageAsset(name: "remove_icon_blue")
+    internal static let findYourContactsFacepile = ImageAsset(name: "find_your_contacts_facepile")
     internal static let captureAvatar = ImageAsset(name: "capture_avatar")
     internal static let e2eBlocked = ImageAsset(name: "e2e_blocked")
     internal static let e2eUnencrypted = ImageAsset(name: "e2e_unencrypted")
@@ -93,6 +95,7 @@ internal enum Asset {
     internal static let homeEmptyScreenArtworkDark = ImageAsset(name: "home_empty_screen_artwork_dark")
     internal static let homePlaceholderArtwork = ImageAsset(name: "home_placeholder_artwork")
     internal static let plusFloatingAction = ImageAsset(name: "plus_floating_action")
+    internal static let integrationManagerIconpile = ImageAsset(name: "integration_manager_iconpile")
     internal static let keyVerificationSuccessShield = ImageAsset(name: "key_verification_success_shield")
     internal static let oldLogo = ImageAsset(name: "old_logo")
     internal static let cameraPlay = ImageAsset(name: "camera_play")
@@ -172,6 +175,7 @@ internal enum Asset {
     internal static let sideMenuIcon = ImageAsset(name: "side_menu_icon")
     internal static let featureUnavaibleArtwork = ImageAsset(name: "feature_unavaible_artwork")
     internal static let featureUnavaibleArtworkDark = ImageAsset(name: "feature_unavaible_artwork_dark")
+    internal static let spacePrivateIcon = ImageAsset(name: "space_private_icon")
     internal static let tabFavourites = ImageAsset(name: "tab_favourites")
     internal static let tabGroups = ImageAsset(name: "tab_groups")
     internal static let tabHome = ImageAsset(name: "tab_home")
@@ -184,6 +188,8 @@ internal enum Asset {
     internal static let e2eVerified = ImageAsset(name: "e2e_verified")
     internal static let tchapLogo = ImageAsset(name: "TchapLogo")
     internal static let horizontalLogo = ImageAsset(name: "horizontal_logo")
+    internal static let radioButtonDefault = ImageAsset(name: "radio-button-default")
+    internal static let radioButtonSelected = ImageAsset(name: "radio-button-selected")
   }
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name

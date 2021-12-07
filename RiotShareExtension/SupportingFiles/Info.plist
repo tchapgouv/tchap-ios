@@ -45,7 +45,7 @@
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.share-services</string>
 		<key>NSExtensionPrincipalClass</key>
-		<string>SharePresentingViewController</string>
+		<string>ShareExtensionRootViewController</string>
 	</dict>
 </dict>
 </plist>
