@@ -105,11 +105,23 @@ platform :ios do
 
     run_tests(
       workspace: "Tchap.xcworkspace",
+      scheme: "RiotSwiftUI",
+      code_coverage: true,
+      # Test result configuration
+      result_bundle: true,
+      output_directory: "./build/test",
+      output_files: "riot.swiftui.unit.test.html,riot.swiftui.unit.test.report.junit.xml",
+      open_report: !is_ci?
+    )
+
+    run_tests(
+      workspace: "Tchap.xcworkspace",
       scheme: "Tchap",
       code_coverage: true,
       # Test result configuration
       result_bundle: true,
       output_directory: "./build/test",
+      output_files: "riot.unit.test.html,riot.unit.test.report.junit.xml",
       open_report: !is_ci?
     )
   end
