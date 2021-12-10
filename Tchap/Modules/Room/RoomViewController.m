@@ -2360,7 +2360,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
             if (weakSelf)
             {
                 typeof(self) self = weakSelf;
-                [self.delegate roomViewController:self forwardContent:selectedEvent.content];
+                [self.delegate roomViewController:self forwardEvent:selectedEvent];
             }
             
         }]];
@@ -2487,7 +2487,7 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                 if (weakSelf)
                 {
                     typeof(self) self = weakSelf;
-                    [self.delegate roomViewController:self forwardContent:selectedEvent.content];
+                    [self.delegate roomViewController:self forwardEvent:selectedEvent];
                 }
                 
             }]];

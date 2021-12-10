@@ -308,8 +308,8 @@ extension RoomCoordinator: RoomViewControllerDelegate {
         return delegate.roomCoordinator(self, handlePermalinkFragment: fragment)
     }
     
-    func roomViewController(_ roomViewController: RoomViewController, forwardContent content: [AnyHashable: Any]) {
-        let coordinator = ForwardCoordinator(session: self.session, content: content)
+    func roomViewController(_ roomViewController: RoomViewController, forwardEvent event: MXEvent) {
+        let coordinator = ForwardCoordinator(session: self.session, event: event)
         coordinator.start()
         self.router.present(coordinator, animated: true)
         self.add(childCoordinator: coordinator)

@@ -35,3 +35,4 @@
 #import "AuthFallBackViewController.h"
 #import "RiotNavigationController.h"
 #import "ThemeService.h"
+#import "ShareManager.h"
