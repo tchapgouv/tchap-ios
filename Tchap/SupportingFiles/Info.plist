@@ -28,6 +28,8 @@
 	<string>9ee16a62-a55e-4de2-8aaf-d697180e462f</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCalendarsUsageDescription</key>
+	<string>See your scheduled meetings in the app.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>This allows you to take pictures or videos with the camera and send them in your conversations. You can also use the camera to set your profile picture.</string>
 	<key>NSContactsUsageDescription</key>
@@ -38,8 +40,6 @@
 	<string>Tchap needs to access your microphone to take videos, and record voice messages.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>This allows you to select pictures or videos from the photo library, and send them in your conversations. You can also use one of these pictures to set your profile picture.</string>
-	<key>NSCalendarsUsageDescription</key>
-	<string>See your scheduled meetings in the app.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>
@@ -65,8 +65,6 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
@@ -75,12 +73,12 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>UIUserInterfaceStyle</key>
+	<string>Light</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
 	<key>UserDefaults</key>
 	<string>${PRODUCT_NAME}-Defaults</string>
-    <key>UIUserInterfaceStyle</key>
-    <string>Light</string>
 	<key>applicationGroupIdentifier</key>
 	<string>$(APPLICATION_GROUP_IDENTIFIER)</string>
 	<key>baseBundleIdentifier</key>
