@@ -18,6 +18,13 @@ import Foundation
 import MobileCoreServices
 import MatrixKit
 
+// FIXME: Temporary added here to fix missing values in Tchap specific version of MatrixKit.
+extension MXKUTI {
+    public static let video = MXKUTI(cfRawValue: kUTTypeVideo)!
+    public static let url = MXKUTI(cfRawValue: kUTTypeURL)!
+    public static let fileUrl = MXKUTI(cfRawValue: kUTTypeFileURL)!
+}
+
 private class ShareExtensionItem: ShareItemProtocol {
     let itemProvider: NSItemProvider
     
@@ -30,14 +37,14 @@ private class ShareExtensionItem: ShareItemProtocol {
     var type: ShareItemType {
         if itemProvider.hasItemConformingToTypeIdentifier(MXKUTI.image.rawValue) {
             return .image
-//        } else if itemProvider.hasItemConformingToTypeIdentifier(MXKUTI.video.rawValue) {
-//            return .video
+        } else if itemProvider.hasItemConformingToTypeIdentifier(MXKUTI.video.rawValue) {
+            return .video
         } else if itemProvider.hasItemConformingToTypeIdentifier(MXKUTI.movie.rawValue) {
             return .movie
-//        } else if itemProvider.hasItemConformingToTypeIdentifier(MXKUTI.fileUrl.rawValue) {
-//            return .fileURL
-//        } else if itemProvider.hasItemConformingToTypeIdentifier(MXKUTI.url.rawValue) {
-//            return .URL
+        } else if itemProvider.hasItemConformingToTypeIdentifier(MXKUTI.fileUrl.rawValue) {
+            return .fileURL
+        } else if itemProvider.hasItemConformingToTypeIdentifier(MXKUTI.url.rawValue) {
+            return .URL
         } else if itemProvider.hasItemConformingToTypeIdentifier(MXKUTI.text.rawValue) {
             return .text
         }
@@ -111,18 +118,18 @@ class ShareExtensionShareItemProvider: NSObject, ShareItemProviderProtocol	 {
         switch type {
         case .text:
             return MXKUTI.text.rawValue
-//        case .URL:
-//            return MXKUTI.url.rawValue
-//        case .fileURL:
-//            return MXKUTI.fileUrl.rawValue
+        case .URL:
+            return MXKUTI.url.rawValue
+        case .fileURL:
+            return MXKUTI.fileUrl.rawValue
         case .image:
             return MXKUTI.image.rawValue
-//        case .video:
-//            return MXKUTI.video.rawValue
+        case .video:
+            return MXKUTI.video.rawValue
         case .movie:
             return MXKUTI.movie.rawValue
-//        case .voiceMessage:
-//            return MXKUTI.fileUrl.rawValue
+        case .voiceMessage:
+            return MXKUTI.fileUrl.rawValue
         default:
             return ""
         }

@@ -37,6 +37,9 @@ targets:
 
     sources:
     - path: .
+      excludes:
+      - "Shared/View/ShareRoomsRoomCell.*"
+      - "Shared/View/ShareRoomsDiscussionCell.*"
     - path: ../Riot/Categories/Bundle.swift
     - path: ../Riot/Categories/Character.swift
     - path: ../Riot/Categories/MXKImageView.swift

@@ -21,6 +21,7 @@
 #import "NSBundle+MatrixKit.h"
 #import "RecentCellData.h"
 #import "ThemeService.h"
+#import "RecentRoomTableViewCell.h"
 
 #import "GeneratedInterface-Swift.h"
 
@@ -76,8 +77,7 @@
 {
     [super viewDidLoad];
     
-    [self.recentsTableView registerNib:[ShareRoomsDiscussionCell nib] forCellReuseIdentifier:[ShareRoomsDiscussionCell defaultReuseIdentifier]];
-    [self.recentsTableView registerNib:[ShareRoomsRoomCell nib] forCellReuseIdentifier:[ShareRoomsRoomCell defaultReuseIdentifier]];
+    [self.recentsTableView registerNib:[RecentRoomTableViewCell nib] forCellReuseIdentifier:[RecentRoomTableViewCell defaultReuseIdentifier]];
     
     // Enable self-sizing cells.
     self.recentsTableView.rowHeight = UITableViewAutomaticDimension;
@@ -284,14 +284,7 @@
 {
     if ([cellData isKindOfClass:[RecentCellData class]])
     {
-        if (((RecentCellData*)cellData).roomSummary.isDirect)
-        {
-            return [ShareRoomsDiscussionCell class];
-        }
-        else
-        {
-            return [ShareRoomsRoomCell class];
-        }
+        return [RecentRoomTableViewCell class];
     }
     return nil;
 }
@@ -300,14 +293,7 @@
 {
     if ([cellData isKindOfClass:[MXKRecentCellData class]])
     {
-        if (((RecentCellData*)cellData).roomSummary.isDirect)
-        {
-            return [ShareRoomsDiscussionCell defaultReuseIdentifier];
-        }
-        else
-        {
-            return [ShareRoomsRoomCell defaultReuseIdentifier];
-        }
+        return [RecentRoomTableViewCell defaultReuseIdentifier];
     }
     return nil;
 }
