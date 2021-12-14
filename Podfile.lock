@@ -160,6 +160,7 @@ SPEC REPOS:
     - LoggerAPI
     - Logging
     - MatomoTracker
+    - MatrixSDK
     - OLMKit
     - ReadMoreTextView
     - Realm
