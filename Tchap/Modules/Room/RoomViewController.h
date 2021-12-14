@@ -19,7 +19,7 @@
 @import MatrixKit;
 
 @protocol RoomViewControllerDelegate;
-@class RoomPreviewData, User;
+@class RoomPreviewData, User, SimpleShareItemProvider;
 
 @interface RoomViewController : MXKRoomViewController
 
@@ -133,6 +133,6 @@
  */
 - (BOOL)roomViewController:(nonnull RoomViewController *)roomViewController handlePermalinkFragment:(nonnull NSString*)fragment;
 
-- (void)roomViewController:(nonnull RoomViewController *)roomViewController forwardEvent:(nonnull MXEvent *)event;
+- (void)roomViewController:(nonnull RoomViewController *)roomViewController shareItemProvider:(nonnull SimpleShareItemProvider *)provider;
 
 @end

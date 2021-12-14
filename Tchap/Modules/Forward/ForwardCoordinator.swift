@@ -20,39 +20,35 @@ final class ForwardCoordinator: NSObject, ForwardCoordinatorType {
     
     private let router: NavigationRouterType
     private let session: MXSession
-    private let event: MXEvent
-    private var errorPresenter: ErrorPresenter?
-    private var shareManager: ShareManager?
+    private let shareItemProvider: SimpleShareItemProvider
+    private var errorPresenter: ErrorPresenter!
+    private var shareManager: ShareManager
 
     var childCoordinators: [Coordinator] = []
 
     // MARK: - Setup
     
-    init(session: MXSession, event: MXEvent) {
+    init(session: MXSession, shareItemProvider: SimpleShareItemProvider) {
         let navController = RiotNavigationController()
         navController.navigationBar.isHidden = true
         self.router = NavigationRouter(navigationController: navController)
         self.session = session
-        self.event = event
+        self.shareItemProvider = shareItemProvider
+        
+        self.shareManager = ShareManager(shareItemProvider: shareItemProvider, type: .forward)
+        
+        self.errorPresenter = AlertErrorPresenter(viewControllerPresenter: shareManager.mainViewController())
         
         super.init()
         
-        self.initShareManager()
-        
-        guard let shareManager = shareManager else {
-            return
+        self.shareManager.completionCallback = { result in
+            self.router.dismissModule(animated: true, completion: nil)
         }
-        
-        self.errorPresenter = AlertErrorPresenter(viewControllerPresenter: shareManager.mainViewController())
     }
     
     // MARK: - Public
     
     func start() {
-        guard let shareManager = shareManager else {
-            return
-        }
-        
         self.router.setRootModule(shareManager.mainViewController())
     }
     
@@ -75,30 +71,5 @@ final class ForwardCoordinator: NSObject, ForwardCoordinatorType {
         }
         
         return ErrorPresentableImpl(title: errorTitle, message: errorMessage)
-    }
-    
-    private func initShareManager() {
-        let shareItemProvider: SimpleShareItemProvider
-        guard let msgType = event.content["msgtype"] as? String else {
-            return
-        }
-        if msgType == kMXMessageTypeText {
-            guard let body = event.content["body"] as? String else {
-                return
-            }
-            shareItemProvider = SimpleShareItemProvider(withTextMessage: body)
-        } else {
-            guard let attachment = MXKAttachment(event: event,
-                                                 andMediaManager: session.mediaManager) else {
-                return
-            }
-            shareItemProvider = SimpleShareItemProvider(withAttachment: attachment)
-        }
-        
-        self.shareManager = ShareManager(shareItemProvider: shareItemProvider, type: .forward)
-        
-        self.shareManager?.completionCallback = { result in
-            self.router.dismissModule(animated: true, completion: nil)
-        }
     }
 }

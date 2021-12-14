@@ -199,6 +199,6 @@ extension RoomPreviewCoordinator: RoomViewControllerDelegate {
         return false
     }
     
-    func roomViewController(_ roomViewController: RoomViewController, forwardEvent event: MXEvent) {
+    func roomViewController(_ roomViewController: RoomViewController, shareItemProvider provider: SimpleShareItemProvider) {
     }
 }
