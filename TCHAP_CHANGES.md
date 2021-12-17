@@ -1,23 +1,23 @@
-# Changes in Tchap 1.x.x (2021-xx-xx)
+## Changes in Tchap 1.x.x (2021-xx-xx)
 
 Features/Improvements:
 
     -   Update pinned certificates
 
-# Changes in Tchap 1.3.2 (2021-08-25)
+## Changes in Tchap 1.3.2 (2021-08-25)
 
 Features/Improvements:
 
     -   Make certificates checking mode more flexible
 
-# Changes in Tchap 1.3.1 (2021-08-23)
+## Changes in Tchap 1.3.1 (2021-08-23)
 
 Features:
 
     -   Disable the room retention feature in Tchap (Prod) - It was
         enabled only in beta test program
 
-# Changes in Tchap 1.3.0 (2021-05-31)
+## Changes in Tchap 1.3.0 (2021-05-31)
 
 Features/Improvements:
 
@@ -25,13 +25,13 @@ Features/Improvements:
     -   Apply the new design of the Room header PR #383
     -   Apply the design for the specific Tchap Info room #384
 
-# Changes in Tchap 1.2.2 (2021-08-25)
+## Changes in Tchap 1.2.2 (2021-08-25)
 
 Features/Improvements:
 
     -   Make certificates checking mode more flexible
 
-# Changes in Tchap 1.2.1 (2021-04-12)
+## Changes in Tchap 1.2.1 (2021-04-12)
 
 Bug Fixes:
 
@@ -39,7 +39,7 @@ Bug Fixes:
     -   Favorite messages are not readable in dark mode
     -   Share extension: the rooms list are not readable in dark mode
 
-# Changes in Tchap 1.2.0 (2021-03-24)
+## Changes in Tchap 1.2.0 (2021-03-24)
 
 Features/Improvements:
 
@@ -59,7 +59,7 @@ Bug Fixes:
     -   A discussion (1:1) is displayed by mistake as a private room
         opened to extern #356
 
-# Changes in Tchap 1.1.1 (2020-12-18)
+## Changes in Tchap 1.1.1 (2020-12-18)
 
 Features/Improvements:
 
@@ -70,7 +70,7 @@ Bug Fix:
     -   \[Room history\] The text input must be hidden when the user is
         not allowed to use it #348
 
-# Changes in Tchap 1.1.0 (2020-11-19)
+## Changes in Tchap 1.1.0 (2020-11-19)
 
 Bug Fixes:
 
@@ -79,7 +79,7 @@ Bug Fixes:
     -   Wrong error message displayed to the external users when they
         try to join a room by link
 
-# Changes in Tchap 1.0.30 (2020-11-17)
+## Changes in Tchap 1.0.30 (2020-11-17)
 
 Features/Improvements:
 
@@ -94,7 +94,7 @@ Bug Fixes:
         (vector-im#3721)
     -   Fix unexpected 404 errors PR #344
 
-# Changes in Tchap 1.0.29 (2020-10-28)
+## Changes in Tchap 1.0.29 (2020-10-28)
 
 Features/Improvements:
 
@@ -109,20 +109,20 @@ Features/Improvements:
     -   \[Room alias\] Harden the room aliases #328
     -   Force a clear cache on application update
 
-# Changes in Tchap 1.0.28 (2020-09-03)
+## Changes in Tchap 1.0.28 (2020-09-03)
 
 Bug Fix:
 
     -   Application may crash after the application update #321
 
-# Changes in Tchap 1.0.27 (2020-08-28)
+## Changes in Tchap 1.0.27 (2020-08-28)
 
 Bug Fix:
 
     -   The user is requested to login again after the application
         update #320
 
-# Changes in Tchap 1.0.26 (2020-08-21)
+## Changes in Tchap 1.0.26 (2020-08-21)
 
 Bug Fixes:
 
@@ -131,7 +131,7 @@ Bug Fixes:
         bar
     -   Room members count displayed in the title is wrong #291
 
-# Changes in Tchap 1.0.25 (2020-08-14)
+## Changes in Tchap 1.0.25 (2020-08-14)
 
 Bug Fixes:
 
@@ -140,7 +140,7 @@ Bug Fixes:
     -   Permalink error: \"Echec du chargement de la position dans
         l\'historique\" #315
 
-# Changes in Tchap 1.0.24 (2020-08-14)
+## Changes in Tchap 1.0.24 (2020-08-14)
 
 Features/Improvements:
 
@@ -170,7 +170,7 @@ Bug Fixes:
     -   The room of a permalink is not opened during a cold launch PR
         #314
 
-# Changes in Tchap 1.0.23 (2020-06-10)
+## Changes in Tchap 1.0.23 (2020-06-10)
 
 Features/Improvements:
 
@@ -202,7 +202,7 @@ Bug Fixes:
     -   Change history_visibility when a room is removed from the rooms
         directory #278
 
-# Changes in Tchap 1.0.22 (2020-02-05)
+## Changes in Tchap 1.0.22 (2020-02-05)
 
 Features/Improvements:
 
@@ -217,7 +217,7 @@ Bug Fixes:
     -   Room settings: the banned users are listed with their id instead
         of their display name #282
 
-# Changes in Tchap 1.0.21 (2020-01-16)
+## Changes in Tchap 1.0.21 (2020-01-16)
 
 Features/Improvements:
 
@@ -225,7 +225,7 @@ Features/Improvements:
         account
     -   Update the known instances list #283
 
-# Changes in Tchap 1.0.20 (2019-12-17)
+## Changes in Tchap 1.0.20 (2019-12-17)
 
 Features/Improvements:
 
@@ -239,7 +239,7 @@ Bug Fixes:
     -   The user lands in an empty room after selecting a notification
         #274
 
-# Changes in Tchap 1.0.19 (2019-11-25)
+## Changes in Tchap 1.0.19 (2019-11-25)
 
 Bug Fixes:
 
@@ -249,7 +249,7 @@ Bug Fixes:
     -   KeyChain is not updated in case of Change Password #188
     -   Several DM invites may be sent to the same users #260
 
-# Changes in Tchap 1.0.18 (2019-11-01)
+## Changes in Tchap 1.0.18 (2019-11-01)
 
 Features/Improvements:
 
@@ -261,7 +261,7 @@ Bug Fixes:
 
     -   Room members: the states of some members are wrong #253
 
-# Changes in Tchap 1.0.17 (2019-09-23)
+## Changes in Tchap 1.0.17 (2019-09-23)
 
 Features/Improvements:
 
@@ -269,7 +269,7 @@ Features/Improvements:
         during the application update PR #252
     -   Force a cache clearing for this version
 
-# Changes in Tchap 1.0.16 (2019-09-19)
+## Changes in Tchap 1.0.16 (2019-09-19)
 
 Features/Improvements:
 
@@ -300,7 +300,7 @@ Bug Fixes:
     -   Room members: Some invited members don\'t have name.
     -   Do not use by default a member avatar for the room avatar #242
 
-# Changes in Tchap 1.0.15 (2019-09-01)
+## Changes in Tchap 1.0.15 (2019-09-01)
 
 Features/Improvements:
 
@@ -312,7 +312,7 @@ Bug Fixes:
 
     -   Handle correctly M_LIMIT_EXCEEDED error code #229
 
-# Changes in Tchap 1.0.14 (2019-08-12)
+## Changes in Tchap 1.0.14 (2019-08-12)
 
 Features/Improvements:
 
@@ -329,13 +329,13 @@ Bug Fixes:
     -   Preview on invited public room failed
     -   Error \"Profile isn\'t available\" just after logging in #219
 
-# Changes in Tchap 1.0.13 (2019-06-28)
+## Changes in Tchap 1.0.13 (2019-06-28)
 
 Features/Improvements:
 
     -   Pin the certificate of the [agent.externe]{.title-ref} instance.
 
-# Changes in Tchap 1.0.12 (2019-06-18)
+## Changes in Tchap 1.0.12 (2019-06-18)
 
 Features/Improvements:
 
@@ -349,7 +349,7 @@ Bug Fixes:
     -   Invite by email: The joined discussion is displayed like a
         \"salon\" #200
 
-# Changes in Tchap 1.0.11 (2019-05-23)
+## Changes in Tchap 1.0.11 (2019-05-23)
 
 Features/Improvements:
 
@@ -361,7 +361,7 @@ Bug Fixes:
     -   Registration - Accessibility: CGU checkbox is not accessible by
         Voiceover #194
 
-# Changes in Tchap 1.0.10 (2019-04-24)
+## Changes in Tchap 1.0.10 (2019-04-24)
 
 Features/Improvements:
 
@@ -374,14 +374,14 @@ Bug Fixes:
     -   Flickering of the notification badges #189
     -   Room history: the most recent event is not displayed #136
 
-# Changes in Tchap 1.0.9 (2019-04-09)
+## Changes in Tchap 1.0.9 (2019-04-09)
 
 Features/Improvements:
 
     -   Registration: require that users agree to terms (EULA) #186
     -   Settings: Remove the phone number option #178
 
-# Changes in Tchap 1.0.8 (2019-04-05)
+## Changes in Tchap 1.0.8 (2019-04-05)
 
 Features/Improvements:
 
@@ -392,7 +392,7 @@ Bug Fixes:
     -   Improve external users handing
     -   Fix a crash observed after a successful login
 
-# Changes in Tchap 1.0.7 (2019-04-04)
+## Changes in Tchap 1.0.7 (2019-04-04)
 
 Features/Improvements:
 
@@ -404,7 +404,7 @@ Bug Fixes:
     -   BugFix the account creation is stuck on email token submission
         PR #181
 
-# Changes in Tchap 1.0.6 (2019-03-25)
+## Changes in Tchap 1.0.6 (2019-03-25)
 
 Features/Improvements:
 
@@ -419,7 +419,7 @@ Bug Fixes:
 
     -   Bug when leaving a room #162
 
-# Changes in Tchap 1.0.5 (2019-03-08)
+## Changes in Tchap 1.0.5 (2019-03-08)
 
 Features/Improvements:
 
@@ -431,7 +431,7 @@ Bug Fixes:
     -   Room details: the attachments list is empty #151
     -   Room members: improve the contacts picker #140
 
-# Changes in Tchap 1.0.4 (2019-02-25)
+## Changes in Tchap 1.0.4 (2019-02-25)
 
 Features/Improvements:
 
@@ -446,7 +446,7 @@ Bug Fixes:
 
     -   Push Notification: Tchap is not opened on the right room #150
 
-# Changes in Tchap 1.0.3 (2019-02-08)
+## Changes in Tchap 1.0.3 (2019-02-08)
 
 Features/Improvements:
 
@@ -464,13 +464,13 @@ Bug Fixes:
     -   Fix the flickering during unread messages badge rendering PR
         #148
 
-# Changes in Tchap 1.0.2 (2019-01-30)
+## Changes in Tchap 1.0.2 (2019-01-30)
 
 Features/Improvements:
 
     -   Turn on \"ITSAppUsesNonExemptEncryption\" flag
 
-# Changes in Tchap 1.0.1 (2019-01-11)
+## Changes in Tchap 1.0.1 (2019-01-11)
 
 Features/Improvements:
 
@@ -486,7 +486,7 @@ Bug Fixes:
     -   Rename the discussions left by the other member (\"Salon vide\")
         #128
 
-# Changes in Tchap 1.0.0 (2018-12-14)
+## Changes in Tchap 1.0.0 (2018-12-14)
 
 Features/Improvements:
 
@@ -511,7 +511,7 @@ Bug Fixes:
     -   Registration is stuck in the email validation step #117
     -   Matrix name when exporting keys #112
 
-# Changes in Tchap 0.0.4 (2018-11-22)
+## Changes in Tchap 0.0.4 (2018-11-22)
 
 Features/Improvements:
 
@@ -525,7 +525,7 @@ Features/Improvements:
     -   Rebase onto vector-im/riot-ios
     -   Replace \"chat.xxx.gouv.fr\" url with \"matrix.xxx.gouv.fr\" #87
 
-# Changes in Tchap 0.0.3 (2018-10-23)
+## Changes in Tchap 0.0.3 (2018-10-23)
 
 Features/Improvements:
 
@@ -540,7 +540,7 @@ Features/Improvements:
         access, encryption) #74
     -   Room creation: start/open a discussion with a tchap contact #18
 
-# Changes in Tchap 0.0.2 (2018-09-28)
+## Changes in Tchap 0.0.2 (2018-09-28)
 
 Features/Improvements:
 
@@ -555,7 +555,7 @@ Features/Improvements:
     -   Update room ("Salon") settings #42
     -   Room History: Disable membership event redaction #43
 
-# Changes in Tchap 0.0.1 (2018-09-05)
+## Changes in Tchap 0.0.1 (2018-09-05)
 
 Features/Improvements:
 
