@@ -2360,7 +2360,8 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
             if (weakSelf)
             {
                 typeof(self) self = weakSelf;
-                [self.delegate roomViewController:self forwardContent:selectedEvent.content];
+                SimpleShareItemProvider *provider = [[SimpleShareItemProvider alloc] initWithTextMessage:selectedComponent.textMessage];
+                [self.delegate roomViewController:self shareItemProvider:provider];
             }
             
         }]];
@@ -2487,7 +2488,8 @@ NSString *const RoomErrorDomain = @"RoomErrorDomain";
                 if (weakSelf)
                 {
                     typeof(self) self = weakSelf;
-                    [self.delegate roomViewController:self forwardContent:selectedEvent.content];
+                    SimpleShareItemProvider *provider = [[SimpleShareItemProvider alloc] initWithAttachment:attachment];
+                    [self.delegate roomViewController:self shareItemProvider:provider];
                 }
                 
             }]];
