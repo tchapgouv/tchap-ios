@@ -23,7 +23,7 @@ final class ReactionHistoryViewModel: ReactionHistoryViewModelType {
     // MARK: - Constants
     
     private enum Pagination {
-        static let count: UInt = 30
+        static let count: Int = 30
     }
     
     // MARK: - Properties

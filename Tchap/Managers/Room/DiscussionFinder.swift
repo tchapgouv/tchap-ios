@@ -67,8 +67,8 @@ final class DiscussionFinder: DiscussionFinderType {
                         switch response {
                         case .success(let roomMembers):
                             // Ignore room which are not 1:1
-                            if roomMembers?.members.count == 2, let member = roomMembers?.member(withUserId: userID) {
-                                switch member.membership {
+                            if roomMembers?.members.count == 2, let member: MXRoomMember = roomMembers?.member(withUserId: userID) {
+                                switch member.__membership {
                                 case .join:
                                     if !isPendingInvite {
                                         // the other user is present in this room (join-join)

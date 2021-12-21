@@ -16,7 +16,7 @@ use_frameworks!
 #$matrixKitVersion = '= 0.16.10'
 # $matrixKitVersion = :local
 # $matrixKitVersion = {'develop' => 'develop'}
-$matrixKitVersion = {'v0.16.7' => 'dinum_dev'}
+$matrixKitVersion = {'v0.16.7' => 'dinum_v0.20.15'}
 
 ########################################
 
@@ -26,7 +26,8 @@ $matrixKitVersionSpec = { :path => '../matrix-ios-kit/MatrixKit.podspec' }
 $matrixSDKVersionSpec = { :path => '../matrix-ios-sdk/MatrixSDK.podspec' }
 when Hash # kit branch name => sdk branch name – or {kit spec Hash} => {sdk spec Hash}
 kit_spec, sdk_spec = $matrixKitVersion.first # extract first and only key/value pair; key is kit_spec, value is sdk_spec
-kit_spec = { :git => 'https://github.com/matrix-org/matrix-ios-kit.git', :branch => kit_spec.to_s } unless kit_spec.is_a?(Hash)
+#kit_spec = { :git => 'https://github.com/matrix-org/matrix-ios-kit.git', :branch => kit_spec.to_s } unless kit_spec.is_a?(Hash)
+kit_spec = { :path => 'LocalPods/MatrixKit/MatrixKit.podspec' } unless kit_spec.is_a?(Hash)
 sdk_spec = { :git => 'https://github.com/matrix-org/matrix-ios-sdk.git', :branch => sdk_spec.to_s } unless sdk_spec.is_a?(Hash)
 $matrixKitVersionSpec = kit_spec
 $matrixSDKVersionSpec = sdk_spec
