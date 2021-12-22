@@ -191,7 +191,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   MatrixSDK:
-    :commit: 449ad0bb95a9d0b1ef733eb75fc63a72811781f9
+    :commit: 9a995223eb0dc689e5770d2713d466413eab95d6
     :git: https://github.com/matrix-org/matrix-ios-sdk.git
 
 SPEC CHECKSUMS:
