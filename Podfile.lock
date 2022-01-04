@@ -64,23 +64,23 @@ PODS:
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
     - MatrixKit/Core (= 0.16.7)
-    - MatrixSDK (= 0.20.7)
+    - MatrixSDK (= 0.20.15)
   - MatrixKit/Core (0.16.7):
     - Down (~> 0.11.0)
     - DTCoreText (~> 1.6.25)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixSDK (= 0.20.7)
-  - MatrixSDK (0.20.7):
-    - MatrixSDK/Core (= 0.20.7)
-  - MatrixSDK/Core (0.20.7):
+    - MatrixSDK (= 0.20.15)
+  - MatrixSDK (0.20.15):
+    - MatrixSDK/Core (= 0.20.15)
+  - MatrixSDK/Core (0.20.15):
     - AFNetworking (~> 4.0.0)
     - GZIP (~> 1.3.0)
     - libbase58 (~> 0.1.4)
     - OLMKit (~> 3.2.5)
     - Realm (= 10.16.0)
     - SwiftyBeaver (= 1.9.5)
-  - MatrixSDK/JingleCallStack (0.20.7):
+  - MatrixSDK/JingleCallStack (0.20.15):
     - JitsiMeetSDK (= 3.10.2)
     - MatrixSDK/Core
   - OLMKit (3.2.5):
@@ -125,9 +125,9 @@ DEPENDENCIES:
   - KeychainAccess (~> 4.2.2)
   - KTCenterFlowLayout (~> 1.3.1)
   - MatomoTracker (~> 7.4.1)
-  - MatrixKit (from `https://github.com/matrix-org/matrix-ios-kit.git`, branch `v0.16.7`)
-  - MatrixSDK (from `https://github.com/matrix-org/matrix-ios-sdk.git`, branch `dinum_dev`)
-  - MatrixSDK/JingleCallStack (from `https://github.com/matrix-org/matrix-ios-sdk.git`, branch `dinum_dev`)
+  - MatrixKit (from `LocalPods/MatrixKit/MatrixKit.podspec`)
+  - MatrixSDK (from `https://github.com/matrix-org/matrix-ios-sdk.git`, branch `dinum_v0.20.15`)
+  - MatrixSDK/JingleCallStack (from `https://github.com/matrix-org/matrix-ios-sdk.git`, branch `dinum_v0.20.15`)
   - OLMKit
   - ReadMoreTextView (~> 3.0.1)
   - Reusable (~> 4.1)
@@ -184,18 +184,14 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   MatrixKit:
-    :branch: v0.16.7
-    :git: https://github.com/matrix-org/matrix-ios-kit.git
+    :path: LocalPods/MatrixKit/MatrixKit.podspec
   MatrixSDK:
-    :branch: dinum_dev
+    :branch: dinum_v0.20.15
     :git: https://github.com/matrix-org/matrix-ios-sdk.git
 
 CHECKOUT OPTIONS:
-  MatrixKit:
-    :commit: 633f562e8336b6a1823e7781c75520632e92208a
-    :git: https://github.com/matrix-org/matrix-ios-kit.git
   MatrixSDK:
-    :commit: 2ea053eafaf78ea24c562c31dbf6f3b2909573f4
+    :commit: 9a995223eb0dc689e5770d2713d466413eab95d6
     :git: https://github.com/matrix-org/matrix-ios-sdk.git
 
 SPEC CHECKSUMS:
@@ -223,8 +219,8 @@ SPEC CHECKSUMS:
   LoggerAPI: ad9c4a6f1e32f518fdb43a1347ac14d765ab5e3d
   Logging: beeb016c9c80cf77042d62e83495816847ef108b
   MatomoTracker: 24a846c9d3aa76933183fe9d47fd62c9efa863fb
-  MatrixKit: d0346f60c7d0723066f6a3e94ebee789edc1f580
-  MatrixSDK: 1d7a64d1e25f746e35157a68374b4282b5581188
+  MatrixKit: 2ba1743fd19e8a5fbc3d37884e25e5f4c765f705
+  MatrixSDK: 2f4d3aacb1c53e2785f0be71d24b8e62e5c5c056
   OLMKit: 9fb4799c4a044dd2c06bda31ec31a12191ad30b5
   ReadMoreTextView: 19147adf93abce6d7271e14031a00303fe28720d
   Realm: b6027801398f3743fc222f096faa85281b506e6c
@@ -240,6 +236,6 @@ SPEC CHECKSUMS:
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: 6cfb09160faf89ea4f3ad70083833b526ab6e73f
+PODFILE CHECKSUM: eafc9ab2d2ad624cab5044ac070538f450a3068e
 
 COCOAPODS: 1.11.2

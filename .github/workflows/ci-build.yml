@@ -39,7 +39,7 @@ jobs:
       # Make sure we use the latest version of MatrixKit
       - name: Reset MatrixKit pod
         run: rm -rf Pods/MatrixKit
-
+        
       # Common setup
       # Note: GH actions do not support yaml anchor yet. We need to duplicate this for every job
       - name: Bundle install
