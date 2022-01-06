@@ -22,6 +22,11 @@ internal extension StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Tchap.DeviceVerificationStartViewController>(storyboard: DeviceVerificationStartViewController.self)
   }
+  enum EnterNewRoomDetailsViewController: StoryboardType {
+    internal static let storyboardName = "EnterNewRoomDetailsViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.EnterNewRoomDetailsViewController>(storyboard: EnterNewRoomDetailsViewController.self)
+  }
   enum KeyBackupRecoverFromPassphraseViewController: StoryboardType {
     internal static let storyboardName = "KeyBackupRecoverFromPassphraseViewController"
 
@@ -112,6 +117,11 @@ internal extension StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Tchap.QRCodeReaderViewController>(storyboard: QRCodeReaderViewController.self)
   }
+  enum RoomNotificationSettingsViewController: StoryboardType {
+    internal static let storyboardName = "RoomNotificationSettingsViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.RoomNotificationSettingsViewController>(storyboard: RoomNotificationSettingsViewController.self)
+  }
   enum SecretsRecoveryWithKeyViewController: StoryboardType {
     internal static let storyboardName = "SecretsRecoveryWithKeyViewController"
 
@@ -146,6 +156,23 @@ internal extension StoryboardScene {
     internal static let storyboardName = "ServiceTermsModalScreenViewController"
 
     internal static let initialScene = InitialSceneType<Tchap.ServiceTermsModalScreenViewController>(storyboard: ServiceTermsModalScreenViewController.self)
+  }
+  enum ShowDirectoryViewController: StoryboardType {
+    internal static let storyboardName = "ShowDirectoryViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.ShowDirectoryViewController>(storyboard: ShowDirectoryViewController.self)
+
+    internal static let searchableDirectoryViewController = SceneType<Tchap.ShowDirectoryViewController>(storyboard: ShowDirectoryViewController.self, identifier: "SearchableDirectoryViewController")
+  }
+  enum SpaceChildRoomDetailViewController: StoryboardType {
+    internal static let storyboardName = "SpaceChildRoomDetailViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.SpaceChildRoomDetailViewController>(storyboard: SpaceChildRoomDetailViewController.self)
+  }
+  enum SpaceExploreRoomViewController: StoryboardType {
+    internal static let storyboardName = "SpaceExploreRoomViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.SpaceExploreRoomViewController>(storyboard: SpaceExploreRoomViewController.self)
   }
   enum UserVerificationSessionStatusViewController: StoryboardType {
     internal static let storyboardName = "UserVerificationSessionStatusViewController"

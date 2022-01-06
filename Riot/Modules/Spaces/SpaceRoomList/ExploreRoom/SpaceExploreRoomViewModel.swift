@@ -96,7 +96,7 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
 
         self.update(viewState: .loading)
         
-        self.currentOperation = self.session.spaceService.getSpaceChildrenForSpace(withId: self.spaceId, suggestedOnly: false, limit: nil, completion: { [weak self] response in
+        self.currentOperation = self.session.spaceService.getSpaceChildrenForSpace(withId: self.spaceId, suggestedOnly: false, limit: nil, maxDepth: nil, paginationToken: nil, completion: { [weak self] response in
             guard let self = self else {
                 return
             }
@@ -104,9 +104,9 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
             switch response {
             case .success(let spaceSummary):
                 self.itemDataList = spaceSummary.childInfos.compactMap({ childInfo in
-                    guard childInfo.parentIds.contains(self.spaceId) else {
-                        return nil
-                    }
+//                    guard childInfo.parentIds.contains(self.spaceId) else {
+//                        return nil
+//                    }
                     
                     let avatarViewData = AvatarViewData(matrixItemId: childInfo.childRoomId, displayName: childInfo.displayName, avatarUrl: childInfo.avatarUrl, mediaManager: self.session.mediaManager, fallbackImage: .matrixItem(childInfo.childRoomId, childInfo.name))
                     return SpaceExploreRoomListItemViewData(childInfo: childInfo, avatarViewData: avatarViewData)

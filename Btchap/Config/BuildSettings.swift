@@ -213,7 +213,7 @@ final class BuildSettings: NSObject {
     /// Indicates should the app log out the user when number of biometrics failures reaches `maxAllowedNumberOfBiometricsFailures`. Defaults to `false`
     static let logOutUserWhenBiometricsFailuresExceeded: Bool = false
     
-    static let showNotificationsV2: Bool = false
+    static let showNotificationsV2: Bool = true
     
     // MARK: - Main Tabs
     
@@ -289,7 +289,7 @@ final class BuildSettings: NSObject {
     static let roomSettingsScreenShowFlairSettings: Bool = true
     static let roomSettingsScreenShowAdvancedSettings: Bool = true
     static let roomSettingsScreenAdvancedShowEncryptToVerifiedOption: Bool = true
-    static let roomSettingsScreenShowNotificationsV2: Bool = false
+    static let roomSettingsScreenShowNotificationsV2: Bool = true
 
     // MARK: - Room Member Screen
     

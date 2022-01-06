@@ -26,7 +26,7 @@
 #import "MXSession+Riot.h"
 #import "NSArray+Element.h"
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 #define RECENTSDATASOURCE_SECTION_DIRECTORY     0x01
 #define RECENTSDATASOURCE_SECTION_INVITES       0x02
@@ -1003,7 +1003,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     
     if (summary)
     {
-        return [[MXKRecentCellData alloc] initWithRoomSummary:summary dataSource:self];
+        return [[MXKRecentCellData alloc] initWithRoomSummary:summary andRecentListDataSource:self];
     }
     return nil;
 }

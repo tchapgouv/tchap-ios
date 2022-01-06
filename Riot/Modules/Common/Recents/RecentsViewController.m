@@ -29,7 +29,7 @@
 
 #import "GeneratedInterface-Swift.h"
 
-@interface RecentsViewController () /*<CreateRoomCoordinatorBridgePresenterDelegate, RoomsDirectoryCoordinatorBridgePresenterDelegate, RoomNotificationSettingsCoordinatorBridgePresenterDelegate>*/
+@interface RecentsViewController () <CreateRoomCoordinatorBridgePresenterDelegate, RoomsDirectoryCoordinatorBridgePresenterDelegate, RoomNotificationSettingsCoordinatorBridgePresenterDelegate>
 {
     // Tell whether a recents refresh is pending (suspended during editing mode).
     BOOL isRefreshPending;
@@ -46,17 +46,17 @@
     __weak id kThemeServiceDidChangeThemeNotificationObserver;
 }
 
-//@property (nonatomic, strong) CreateRoomCoordinatorBridgePresenter *createRoomCoordinatorBridgePresenter;
-//
-//@property (nonatomic, strong) RoomsDirectoryCoordinatorBridgePresenter *roomsDirectoryCoordinatorBridgePresenter;
-//
-//@property (nonatomic, strong) ExploreRoomCoordinatorBridgePresenter *exploreRoomsCoordinatorBridgePresenter;
-//
+@property (nonatomic, strong) CreateRoomCoordinatorBridgePresenter *createRoomCoordinatorBridgePresenter;
+
+@property (nonatomic, strong) RoomsDirectoryCoordinatorBridgePresenter *roomsDirectoryCoordinatorBridgePresenter;
+
+@property (nonatomic, strong) ExploreRoomCoordinatorBridgePresenter *exploreRoomsCoordinatorBridgePresenter;
+
 //@property (nonatomic, strong) SpaceFeatureUnavailablePresenter *spaceFeatureUnavailablePresenter;
-//
+
 //@property (nonatomic, strong) CustomSizedPresentationController *customSizedPresentationController;
-//
-//@property (nonatomic, strong) RoomNotificationSettingsCoordinatorBridgePresenter *roomNotificationSettingsCoordinatorBridgePresenter;
+
+@property (nonatomic, strong) RoomNotificationSettingsCoordinatorBridgePresenter *roomNotificationSettingsCoordinatorBridgePresenter;
 
 @end
 
@@ -675,6 +675,24 @@
 
 #pragma mark - Internal methods
 
+- (void)showRoomWithRoomId:(NSString*)roomId inMatrixSession:(MXSession*)matrixSession
+{
+    // Avoid multiple openings of rooms
+    self.userInteractionEnabled = NO;
+
+    // Do not stack views when showing room
+    ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:NO stackAboveVisibleViews:NO];
+    
+    RoomNavigationParameters *parameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId
+                                                                                    eventId:nil
+                                                                                  mxSession:matrixSession
+                                                                     presentationParameters:presentationParameters];
+    
+//    [[AppDelegate theDelegate] showRoomWithParameters:parameters completion:^{
+//        self.userInteractionEnabled = YES;
+//    }];
+}
+
 // Disable UI interactions in this screen while we are going to open another screen.
 // Interactions on reset on viewWillAppear.
 - (void)setUserInteractionEnabled:(BOOL)userInteractionEnabled
@@ -682,17 +700,17 @@
     self.view.userInteractionEnabled = userInteractionEnabled;
 }
 
-//- (RecentsDataSource*)recentsDataSource
-//{
-//    RecentsDataSource* recentsDataSource = nil;
-//    
-//    if ([self.dataSource isKindOfClass:[RecentsDataSource class]])
-//    {
-//        recentsDataSource = (RecentsDataSource*)self.dataSource;
-//    }
-//    
-//    return recentsDataSource;
-//}
+- (RecentsDataSource*)recentsDataSource
+{
+    RecentsDataSource* recentsDataSource = nil;
+
+    if ([self.dataSource isKindOfClass:[RecentsDataSource class]])
+    {
+        recentsDataSource = (RecentsDataSource*)self.dataSource;
+    }
+
+    return recentsDataSource;
+}
 
 //- (void)showSpaceInviteNotAvailable
 //{
@@ -985,20 +1003,19 @@
 
 - (void)changeEditedRoomNotificationSettings
 {
-    // TODO: Tchap: support and test the new RoomNotificationSettings
-//    if (editedRoomId)
-//    {
-//        // Check whether the user didn't leave the room
-//        MXRoom *room = [self.mainSession roomWithRoomId:editedRoomId];
-//        if (room)
-//        {
-//           // navigate
-//            self.roomNotificationSettingsCoordinatorBridgePresenter = [[RoomNotificationSettingsCoordinatorBridgePresenter alloc] initWithRoom:room];
-//            self.roomNotificationSettingsCoordinatorBridgePresenter.delegate = self;
-//            [self.roomNotificationSettingsCoordinatorBridgePresenter presentFrom:self animated:YES];
-//        }
-//        [self cancelEditionMode:isRefreshPending];
-//    }
+    if (editedRoomId)
+    {
+        // Check whether the user didn't leave the room
+        MXRoom *room = [self.mainSession roomWithRoomId:editedRoomId];
+        if (room)
+        {
+           // navigate
+            self.roomNotificationSettingsCoordinatorBridgePresenter = [[RoomNotificationSettingsCoordinatorBridgePresenter alloc] initWithRoom:room];
+            self.roomNotificationSettingsCoordinatorBridgePresenter.delegate = self;
+            [self.roomNotificationSettingsCoordinatorBridgePresenter presentFrom:self animated:YES];
+        }
+        [self cancelEditionMode:isRefreshPending];
+    }
 }
 
 - (void)muteEditedRoomNotifications:(BOOL)mute
@@ -1220,19 +1237,19 @@
 
 #pragma mark - CreateRoomCoordinatorBridgePresenterDelegate
 
-//- (void)createRoomCoordinatorBridgePresenterDelegate:(CreateRoomCoordinatorBridgePresenter *)coordinatorBridgePresenter didCreateNewRoom:(MXRoom *)room
-//{
-//    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
-//        [self showRoomWithRoomId:room.roomId inMatrixSession:self.mainSession];
-//    }];
-//    coordinatorBridgePresenter = nil;
-//}
-//
-//- (void)createRoomCoordinatorBridgePresenterDelegateDidCancel:(CreateRoomCoordinatorBridgePresenter *)coordinatorBridgePresenter
-//{
-//    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
-//    coordinatorBridgePresenter = nil;
-//}
+- (void)createRoomCoordinatorBridgePresenterDelegate:(CreateRoomCoordinatorBridgePresenter *)coordinatorBridgePresenter didCreateNewRoom:(MXRoom *)room
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+        [self showRoomWithRoomId:room.roomId inMatrixSession:self.mainSession];
+    }];
+    coordinatorBridgePresenter = nil;
+}
+
+- (void)createRoomCoordinatorBridgePresenterDelegateDidCancel:(CreateRoomCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    coordinatorBridgePresenter = nil;
+}
 
 #pragma mark - Empty view management
 
@@ -1322,48 +1339,48 @@
 
 #pragma mark - RoomsDirectoryCoordinatorBridgePresenterDelegate
 
-//- (void)roomsDirectoryCoordinatorBridgePresenterDelegateDidComplete:(RoomsDirectoryCoordinatorBridgePresenter *)coordinatorBridgePresenter
-//{
-//    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
-//    self.roomsDirectoryCoordinatorBridgePresenter = nil;
-//}
-//
-//- (void)roomsDirectoryCoordinatorBridgePresenterDelegate:(RoomsDirectoryCoordinatorBridgePresenter *)coordinatorBridgePresenter didSelectRoom:(MXPublicRoom *)room
-//{
-//    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
-//        [self openPublicRoom:room];
-//    }];
-//    self.roomsDirectoryCoordinatorBridgePresenter = nil;
-//}
-//
-//- (void)roomsDirectoryCoordinatorBridgePresenterDelegateDidTapCreateNewRoom:(RoomsDirectoryCoordinatorBridgePresenter *)coordinatorBridgePresenter
-//{
-//    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
-//        [self createNewRoom];
-//    }];
-//    self.roomsDirectoryCoordinatorBridgePresenter = nil;
-//}
-//
-//- (void)roomsDirectoryCoordinatorBridgePresenterDelegate:(RoomsDirectoryCoordinatorBridgePresenter *)coordinatorBridgePresenter didSelectRoomWithIdOrAlias:(NSString * _Nonnull)roomIdOrAlias
-//{
-//    MXRoom *room = [self.mainSession vc_roomWithIdOrAlias:roomIdOrAlias];
-//
-//    if (room)
-//    {
-//        // Room is known show it directly
-//        [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
-//            [self showRoomWithRoomId:room.roomId
-//                     inMatrixSession:self.mainSession];
-//        }];
-//        coordinatorBridgePresenter = nil;
-//    }
-//    else if ([MXTools isMatrixRoomAlias:roomIdOrAlias])
-//    {
-//        // Room preview doesn't support room alias
-//        [[AppDelegate theDelegate] showAlertWithTitle:[MatrixKitL10n error] message:[VectorL10n roomRecentsUnknownRoomErrorMessage]];
-//    }
-//    else
-//    {
+- (void)roomsDirectoryCoordinatorBridgePresenterDelegateDidComplete:(RoomsDirectoryCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    self.roomsDirectoryCoordinatorBridgePresenter = nil;
+}
+
+- (void)roomsDirectoryCoordinatorBridgePresenterDelegate:(RoomsDirectoryCoordinatorBridgePresenter *)coordinatorBridgePresenter didSelectRoom:(MXPublicRoom *)room
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+        [self openPublicRoom:room];
+    }];
+    self.roomsDirectoryCoordinatorBridgePresenter = nil;
+}
+
+- (void)roomsDirectoryCoordinatorBridgePresenterDelegateDidTapCreateNewRoom:(RoomsDirectoryCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+        [self createNewRoom];
+    }];
+    self.roomsDirectoryCoordinatorBridgePresenter = nil;
+}
+
+- (void)roomsDirectoryCoordinatorBridgePresenterDelegate:(RoomsDirectoryCoordinatorBridgePresenter *)coordinatorBridgePresenter didSelectRoomWithIdOrAlias:(NSString * _Nonnull)roomIdOrAlias
+{
+    MXRoom *room = [self.mainSession vc_roomWithIdOrAlias:roomIdOrAlias];
+
+    if (room)
+    {
+        // Room is known show it directly
+        [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+            [self showRoomWithRoomId:room.roomId
+                     inMatrixSession:self.mainSession];
+        }];
+        coordinatorBridgePresenter = nil;
+    }
+    else if ([MXTools isMatrixRoomAlias:roomIdOrAlias])
+    {
+        // Room preview doesn't support room alias
+        [[AppDelegate theDelegate] showAlertWithTitle:[MatrixKitL10n error] message:[VectorL10n roomRecentsUnknownRoomErrorMessage]];
+    }
+    else
+    {
 //        // Try to preview the room from his id
 //        RoomPreviewData *roomPreviewData = [[RoomPreviewData alloc] initWithRoomId:roomIdOrAlias
 //                                                                        andSession:self.mainSession];
@@ -1388,24 +1405,24 @@
 //                [[AppDelegate theDelegate] showAlertWithTitle:[MatrixKitL10n error] message:[VectorL10n roomRecentsUnknownRoomErrorMessage]];
 //            }
 //        }];
-//    }
-//}
+    }
+}
 
 #pragma mark - ExploreRoomCoordinatorBridgePresenterDelegate
 
-//- (void)exploreRoomCoordinatorBridgePresenterDelegateDidComplete:(ExploreRoomCoordinatorBridgePresenter *)coordinatorBridgePresenter {
-//    MXWeakify(self);
-//    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
-//        MXStrongifyAndReturnIfNil(self);
-//        self.exploreRoomsCoordinatorBridgePresenter = nil;
-//    }];
-//}
+- (void)exploreRoomCoordinatorBridgePresenterDelegateDidComplete:(ExploreRoomCoordinatorBridgePresenter *)coordinatorBridgePresenter {
+    MXWeakify(self);
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+        MXStrongifyAndReturnIfNil(self);
+        self.exploreRoomsCoordinatorBridgePresenter = nil;
+    }];
+}
 
 #pragma mark - RoomNotificationSettingsCoordinatorBridgePresenterDelegate
-//-(void)roomNotificationSettingsCoordinatorBridgePresenterDelegateDidComplete:(RoomNotificationSettingsCoordinatorBridgePresenter *)coordinatorBridgePresenter
-//{
-//    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
-//    self.roomNotificationSettingsCoordinatorBridgePresenter = nil;
-//}
+-(void)roomNotificationSettingsCoordinatorBridgePresenterDelegateDidComplete:(RoomNotificationSettingsCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    self.roomNotificationSettingsCoordinatorBridgePresenter = nil;
+}
 
 @end

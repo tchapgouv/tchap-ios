@@ -18,7 +18,7 @@ import UIKit
 import RxSwift
 
 // Internal structure used to store room creation parameters
-struct RoomCreationParameters {
+struct RoomServiceCreationParameters {
     let visibility: MXRoomDirectoryVisibility
     let accessRule: RoomAccessRule
     let preset: MXRoomPreset
@@ -98,7 +98,7 @@ final class RoomService: NSObject, RoomServiceType {
     }
     
     func createDiscussionWithThirdPartyID(_ thirdPartyID: MXInvite3PID, completion: @escaping (MXResponse<String>) -> Void) -> MXHTTPOperation {
-        let roomCreationParameters = RoomCreationParameters(visibility: .private,
+        let roomServiceCreationParameters = RoomServiceCreationParameters(visibility: .private,
                                                             accessRule: .direct,
                                                             preset: .trustedPrivateChat,
                                                             name: nil,
@@ -110,11 +110,11 @@ final class RoomService: NSObject, RoomServiceType {
                                                             historyVisibility: nil,
                                                             powerLevelContentOverride: nil,
                                                             isDirect: true)
-        return self.createRoom(with: roomCreationParameters, completion: completion)
+        return self.createRoom(with: roomServiceCreationParameters, completion: completion)
     }
     
     @objc func createDiscussion(with userID: String, success: @escaping ((String) -> Void), failure: @escaping ((Error) -> Void)) -> MXHTTPOperation {
-        let roomCreationParameters = RoomCreationParameters(visibility: .private,
+        let roomServiceCreationParameters = RoomServiceCreationParameters(visibility: .private,
                                                             accessRule: .direct,
                                                             preset: .trustedPrivateChat,
                                                             name: nil,
@@ -126,7 +126,7 @@ final class RoomService: NSObject, RoomServiceType {
                                                             historyVisibility: nil,
                                                             powerLevelContentOverride: nil,
                                                             isDirect: true)
-        return self.createRoom(with: roomCreationParameters, completion: { (response) in
+        return self.createRoom(with: roomServiceCreationParameters, completion: { (response) in
             switch response {
             case .success(let roomID):
                 success(roomID)
@@ -219,7 +219,7 @@ final class RoomService: NSObject, RoomServiceType {
             alias = nil
         }
         
-        let roomCreationParameters = RoomCreationParameters(visibility: visibility,
+        let roomServiceCreationParameters = RoomServiceCreationParameters(visibility: visibility,
                                                             accessRule: accessRule,
                                                             preset: preset,
                                                             name: name,
@@ -232,67 +232,67 @@ final class RoomService: NSObject, RoomServiceType {
                                                             powerLevelContentOverride: nil,
                                                             isDirect: false)
         
-        return self.createRoom(with: roomCreationParameters, completion: completion)
+        return self.createRoom(with: roomServiceCreationParameters, completion: completion)
     }
     
-    private func createRoom(with roomCreationParameters: RoomCreationParameters, completion: @escaping (MXResponse<String>) -> Void) -> MXHTTPOperation {
+    private func createRoom(with roomServiceCreationParameters: RoomServiceCreationParameters, completion: @escaping (MXResponse<String>) -> Void) -> MXHTTPOperation {
         
         var parameters: [String: Any] = [:]
         
-        if let name = roomCreationParameters.name {
+        if let name = roomServiceCreationParameters.name {
             parameters["name"] = name
         }
         
-        parameters["visibility"] = roomCreationParameters.visibility.identifier
+        parameters["visibility"] = roomServiceCreationParameters.visibility.identifier
         
-        if let alias = roomCreationParameters.alias {
+        if let alias = roomServiceCreationParameters.alias {
             parameters["room_alias_name"] = alias
         }
         
-        if let inviteUserIDs = roomCreationParameters.inviteUserIDs {
+        if let inviteUserIDs = roomServiceCreationParameters.inviteUserIDs {
             parameters["invite"] = inviteUserIDs
         }
-        if let inviteThirdPartyIDs = roomCreationParameters.inviteThirdPartyIDs?.compactMap({$0.dictionary}), inviteThirdPartyIDs.isEmpty == false {
+        if let inviteThirdPartyIDs = roomServiceCreationParameters.inviteThirdPartyIDs?.compactMap({$0.dictionary}), inviteThirdPartyIDs.isEmpty == false {
             parameters["invite_3pid"] = inviteThirdPartyIDs
         }
         
-        parameters["preset"] = roomCreationParameters.preset.identifier
+        parameters["preset"] = roomServiceCreationParameters.preset.identifier
         
-        if roomCreationParameters.isFederated == false {
+        if roomServiceCreationParameters.isFederated == false {
             parameters["creation_content"] = [ "m.federate": false ]
         }
         
         var initialStates: Array<[AnyHashable: Any]> = []
         
-        let roomAccessRulesStateEvent = self.roomAccessRulesStateEvent(with: roomCreationParameters.accessRule)
+        let roomAccessRulesStateEvent = self.roomAccessRulesStateEvent(with: roomServiceCreationParameters.accessRule)
         initialStates.append(roomAccessRulesStateEvent.jsonDictionary())
         
-        if let historyVisibility = roomCreationParameters.historyVisibility {
+        if let historyVisibility = roomServiceCreationParameters.historyVisibility {
             let historyVisibilityStateEvent = self.historyVisibilityStateEvent(with: historyVisibility)
             initialStates.append(historyVisibilityStateEvent.jsonDictionary())
         }
         
-        if let retentionPeriod = roomCreationParameters.retentionPeriod, retentionPeriod != RetentionConstants.undefinedRetentionValue {
+        if let retentionPeriod = roomServiceCreationParameters.retentionPeriod, retentionPeriod != RetentionConstants.undefinedRetentionValue {
             let roomRetentionStateEvent = self.roomRetentionStateEvent(with: retentionPeriod)
             initialStates.append(roomRetentionStateEvent.jsonDictionary())
         }
         
         parameters["initial_state"] = initialStates
         
-        if let powerLevelContentOverride = roomCreationParameters.powerLevelContentOverride {
+        if let powerLevelContentOverride = roomServiceCreationParameters.powerLevelContentOverride {
             parameters["power_level_content_override"] = powerLevelContentOverride
         }
         
-        if roomCreationParameters.isDirect {
+        if roomServiceCreationParameters.isDirect {
             parameters["is_direct"] = true
         }
         
         return self.session.createRoom(parameters: parameters, completion: { (response) in
             switch response {
             case .success(let room):
-                if roomCreationParameters.isDirect,
-                    roomCreationParameters.inviteUserIDs == nil,
-                    let address = roomCreationParameters.inviteThirdPartyIDs?.first?.address {
+                if roomServiceCreationParameters.isDirect,
+                    roomServiceCreationParameters.inviteUserIDs == nil,
+                    let address = roomServiceCreationParameters.inviteThirdPartyIDs?.first?.address {
                     // Force this room to be direct for the invited 3pid, the matrix-ios-sdk don't do that by default for the moment.
                     self.createdRoom = room
                     room.setIsDirect(true, withUserId: address, success: {

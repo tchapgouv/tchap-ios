@@ -23,7 +23,7 @@
 #import "MXRoom+Riot.h"
 
 #import "ThemeService.h"
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 #import "MXRoomSummary+Riot.h"
 
@@ -124,10 +124,10 @@
             self.roomTitle.font = [UIFont systemFontOfSize:17 weight:UIFontWeightMedium];
         }
 
-        [self.roomAvatar vc_setRoomAvatarImageWith:roomCellData.avatarUrl
-                                            roomId:roomCellData.roomIdentifier
-                                       displayName:roomCellData.roomDisplayname
-                                      mediaManager:roomCellData.mxSession.mediaManager];
+//        [self.roomAvatar vc_setRoomAvatarImageWith:roomCellData.avatarUrl
+//                                            roomId:roomCellData.roomIdentifier
+//                                       displayName:roomCellData.roomDisplayname
+//                                      mediaManager:roomCellData.mxSession.mediaManager];
     }
     else
     {

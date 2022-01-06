@@ -129,19 +129,26 @@ targets:
     - path: ../Riot/Modules/Call/Views/IncomingCallView.h
     - path: ../Riot/Modules/Call/Views/IncomingCallView.m
     - path: ../Riot/Modules/Camera
+    - path: ../Riot/Modules/Common/Avatar
     - path: ../Riot/Modules/Common/Buttons
     - path: ../Riot/Modules/Common/Cells
     - path: ../Riot/Modules/Common/NavigationController/RiotNavigationController.h
     - path: ../Riot/Modules/Common/NavigationController/RiotNavigationController.m
+    - path: ../Riot/Modules/Common/Recents/DataSources/RecentsDataSource.h
+    - path: ../Riot/Modules/Common/Recents/DataSources/RecentsDataSource.m
     - path: ../Riot/Modules/Common/Recents/Model/RecentCellData.h
     - path: ../Riot/Modules/Common/Recents/Model/RecentCellData.m
     - path: ../Riot/Modules/Common/Recents/RecentsViewController.h
     - path: ../Riot/Modules/Common/Recents/RecentsViewController.m
+    - path: ../Riot/Modules/Common/Recents/Model
+    - path: ../Riot/Modules/Common/Recents/Service
+    - path: ../Riot/Modules/Common/Recents/Views
     - path: ../Riot/Modules/Common/SectionHeaders
     - path: ../Riot/Modules/Common/SegmentedViewController/SegmentedViewController.h
     - path: ../Riot/Modules/Common/SegmentedViewController/SegmentedViewController.m
     - path: ../Riot/Modules/Common/Views
     - path: ../Riot/Modules/Common/WebViewController
+    - path: ../Riot/Modules/CreateRoom
     - path: ../Riot/Modules/CrossSigning
     - path: ../Riot/Modules/DeepLink
     - path: ../Riot/Modules/DotsView
@@ -155,20 +162,33 @@ targets:
     - path: ../Riot/Modules/KeyBackup
     - path: ../Riot/Modules/KeyVerification
     - path: ../Riot/Modules/MediaPicker
+    - path: ../Riot/Modules/PublicRoomList
     - path: ../Riot/Modules/QRCode
     - path: ../Riot/Modules/Reauthentication
     - path: ../Riot/Modules/Room/BubbleReactions
     - path: ../Riot/Modules/Room/DataSources
+    - path: ../Riot/Modules/Room/NotificationSettings
+      excludes:
+        - "RoomNotificationSettingsViewAction.swift"
+        - "RoomNotificationSettingsViewStateType.swift"
+        - "RoomNotificationState.swift"
+    - path: ../Riot/Modules/Room/Views/Avatar
     - path: ../Riot/Modules/Room/Views/BubbleCells/BaseBubbleCell/BubbleCellReactionsDisplayable.swift
     - path: ../Riot/Modules/Room/Views/BubbleCells/RoomTypingBubbleCell.swift
     - path: ../Riot/Modules/Room/Views/CircleProgressView/CircleProgressView.swift
     - path: ../Riot/Modules/Room/Views/URLPreviews
     - path: ../Riot/Modules/RoomKeyRequest/RoomKeyRequestViewController.h
     - path: ../Riot/Modules/RoomKeyRequest/RoomKeyRequestViewController.m
+    - path: ../Riot/Modules/Rooms
+      excludes:
+          - "RoomsViewController.m"
+          - "RoomsViewController.h"
     - path: ../Riot/Modules/Secrets
     - path: ../Riot/Modules/SecureBackup
     - path: ../Riot/Modules/ServiceTerms
     - path: ../Riot/Modules/SlidingModal
+    - path: ../Riot/Modules/Spaces/SpaceRoomList
+    - path: ../Riot/Modules/TabBar/MainTitleView.swift
     - path: ../Riot/Modules/UserDevices/UsersDevicesViewController.h
     - path: ../Riot/Modules/UserDevices/UsersDevicesViewController.m
     - path: ../Riot/Modules/UserDevices/Views/DeviceTableViewCell.h
@@ -176,6 +196,10 @@ targets:
     - path: ../Riot/Modules/UserInteractiveAuthentication
     - path: ../Riot/PropertyWrappers
     - path: ../Riot/Utils
+
+    # Riot SwiftUI
+    - path: ../RiotSwiftUI/Modules/Common/Avatar/Model/AvatarProtocol.swift
+    - path: ../RiotSwiftUI/Modules/Room/NotificationSettings/Model
 
     # Share extension
     - path: ../RiotShareExtension/Shared
