@@ -133,6 +133,10 @@ targets:
     - path: ../Riot/Modules/Common/Recents/Model
     - path: ../Riot/Modules/Common/Recents/Service
     - path: ../Riot/Modules/Common/Recents/Views
+      excludes:
+        - "RecentTableViewCell.h"
+        - "RecentTableViewCell.m"
+        - "RecentTableViewCell.xib"
     - path: ../Riot/Modules/Common/SectionHeaders
     - path: ../Riot/Modules/Common/SegmentedViewController/SegmentedViewController.h
     - path: ../Riot/Modules/Common/SegmentedViewController/SegmentedViewController.m
