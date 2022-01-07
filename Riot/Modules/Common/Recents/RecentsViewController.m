@@ -682,17 +682,17 @@
     self.view.userInteractionEnabled = userInteractionEnabled;
 }
 
-- (RecentsDataSource*)recentsDataSource
-{
-    RecentsDataSource* recentsDataSource = nil;
-
-    if ([self.dataSource isKindOfClass:[RecentsDataSource class]])
-    {
-        recentsDataSource = (RecentsDataSource*)self.dataSource;
-    }
-
-    return recentsDataSource;
-}
+//- (RecentsDataSource*)recentsDataSource
+//{
+//    RecentsDataSource* recentsDataSource = nil;
+//
+//    if ([self.dataSource isKindOfClass:[RecentsDataSource class]])
+//    {
+//        recentsDataSource = (RecentsDataSource*)self.dataSource;
+//    }
+//
+//    return recentsDataSource;
+//}
 
 //- (void)showSpaceInviteNotAvailable
 //{

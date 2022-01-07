@@ -134,8 +134,6 @@ targets:
     - path: ../Riot/Modules/Common/Cells
     - path: ../Riot/Modules/Common/NavigationController/RiotNavigationController.h
     - path: ../Riot/Modules/Common/NavigationController/RiotNavigationController.m
-    - path: ../Riot/Modules/Common/Recents/DataSources/RecentsDataSource.h
-    - path: ../Riot/Modules/Common/Recents/DataSources/RecentsDataSource.m
     - path: ../Riot/Modules/Common/Recents/Model/RecentCellData.h
     - path: ../Riot/Modules/Common/Recents/Model/RecentCellData.m
     - path: ../Riot/Modules/Common/Recents/RecentsViewController.h

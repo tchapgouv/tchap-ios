@@ -19,14 +19,14 @@
 
 #import "GeneratedInterface-Swift.h"
 
-#import "RecentsDataSource.h"
+#import "RoomsDataSource.h"
 
 @interface RoomsViewController ()
 #ifdef SUPPORT_KEYS_BACKUP
 <SecureBackupSetupCoordinatorBridgePresenterDelegate>
 #endif
 {
-    RecentsDataSource *recentsDataSource;
+    RoomsDataSource *roomsDataSource;
 
     // The animated view displayed at the table view bottom when paginating the room directory
     UIView* footerSpinnerView;
@@ -77,15 +77,15 @@
 {
     [super viewWillAppear:animated];
     
-    [recentsDataSource registerKeyBackupStateDidChangeNotification];
-    [recentsDataSource refreshCrossSigningBannerDisplay];
+    [roomsDataSource registerKeyBackupStateDidChangeNotification];
+    [roomsDataSource refreshCrossSigningBannerDisplay];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     
-    [recentsDataSource unregisterKeyBackupStateDidChangeNotification];
+    [roomsDataSource unregisterKeyBackupStateDidChangeNotification];
 }
 
 - (void)dealloc
@@ -138,10 +138,10 @@
 {
     [super displayList:listDataSource];
     
-    if ([self.dataSource isKindOfClass:RecentsDataSource.class])
+    if ([self.dataSource isKindOfClass:RoomsDataSource.class])
     {
-        recentsDataSource = (RecentsDataSource*)self.dataSource;
-        recentsDataSource.areSectionsShrinkable = NO;
+        roomsDataSource = (RoomsDataSource*)self.dataSource;
+        roomsDataSource.areSectionsShrinkable = NO;
         
     }
 }
@@ -156,7 +156,7 @@
     CGRect frame = [tableView rectForHeaderInSection:section];
     frame.size.height = self.stickyHeaderHeight;
     
-    return [recentsDataSource viewForHeaderInSection:section withFrame:frame];
+    return [roomsDataSource viewForHeaderInSection:section withFrame:frame];
 }
 
 - (void)dataSource:(MXKDataSource *)dataSource didRecognizeAction:(NSString *)actionIdentifier inCell:(id<MXKCellRendering>)cell userInfo:(NSDictionary *)userInfo
@@ -193,7 +193,7 @@
 
 - (void)scrollToNextRoomWithMissedNotifications
 {
-    [self scrollToTheTopTheNextRoomWithMissedNotificationsInSection:recentsDataSource.conversationSection];
+    [self scrollToTheTopTheNextRoomWithMissedNotificationsInSection:roomsDataSource.conversationSection];
 }
 
 #pragma mark - UITableView delegate
@@ -205,15 +205,15 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return [recentsDataSource heightForHeaderInSection:section];
+    return [roomsDataSource heightForHeaderInSection:section];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 #ifdef SUPPORT_KEYS_BACKUP
-    if (indexPath.section == recentsDataSource.secureBackupBannerSection)
+    if (indexPath.section == roomsDataSource.secureBackupBannerSection)
     {
-        switch (recentsDataSource.secureBackupBannerDisplay) {
+        switch (roomsDataSource.secureBackupBannerDisplay) {
             case SecureBackupBannerDisplaySetup:
                 [self presentSecureBackupSetup];
                 break;
@@ -224,7 +224,7 @@
     else
 #endif
 #ifdef SUPPORT_CROSSSIGNING
-    if (indexPath.section == recentsDataSource.crossSigningBannerSection)
+    if (indexPath.section == roomsDataSource.crossSigningBannerSection)
     {
         [self showCrossSigningSetup];
     }

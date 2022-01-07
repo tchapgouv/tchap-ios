@@ -12,6 +12,7 @@
 #import "RoomPreviewData.h"
 #import "ContactsViewController.h"
 #import "ContactsDataSource.h"
+#import "RoomsDataSource.h"
 #import "SettingsViewController.h"
 #import "RoomFilesViewController.h"
 #import "RoomSettingsViewController.h"
@@ -38,4 +39,3 @@
 #import "PublicRoomsDirectoryDataSource.h"
 #import "DirectoryServerPickerViewController.h"
 #import "MXSession+Riot.h"
-#import "RecentsDataSource.h"

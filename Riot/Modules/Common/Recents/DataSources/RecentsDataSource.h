@@ -188,8 +188,4 @@ extern NSString *const kRecentsDataSourceTapOnDirectoryServerChange;
  */
 - (void)moveRoomCell:(MXRoom*)room from:(NSIndexPath*)oldPath to:(NSIndexPath*)newPath success:(void (^)(void))moveSuccess failure:(void (^)(NSError *error))moveFailure;
 
-- (void)registerKeyBackupStateDidChangeNotification;
-- (void)unregisterKeyBackupStateDidChangeNotification;
-- (void)refreshCrossSigningBannerDisplay;
-
 @end

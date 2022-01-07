@@ -30,8 +30,7 @@ final class RoomsCoordinator: NSObject, RoomsCoordinatorType {
     private let session: MXSession
     
     private let roomsViewController: RoomsViewController
-    private let recentsDataSource: RecentsDataSource
-    private let recentsListService: RecentsListService
+    private let roomsDataSource: RoomsDataSource
     private let activityIndicatorPresenter: ActivityIndicatorPresenterType
     private let roomsErrorPresenter: ErrorPresenter
     
@@ -47,9 +46,8 @@ final class RoomsCoordinator: NSObject, RoomsCoordinatorType {
         self.router = router
         self.session = session
         self.roomsViewController = RoomsViewController.instantiate()
-        self.recentsListService = RecentsListService(withSession: self.session)
-        self.recentsDataSource = RecentsDataSource(matrixSession: self.session, recentsListService: self.recentsListService)
-        self.recentsDataSource.finalizeInitialization()
+        self.roomsDataSource = RoomsDataSource(matrixSession: self.session)
+        self.roomsDataSource.finalizeInitialization()
         self.activityIndicatorPresenter = ActivityIndicatorPresenter()
         self.roomsErrorPresenter = AlertErrorPresenter(viewControllerPresenter: roomsViewController)
     }
@@ -57,7 +55,7 @@ final class RoomsCoordinator: NSObject, RoomsCoordinatorType {
     // MARK: - Public methods
     
     func start() {
-        self.roomsViewController.displayList(self.recentsDataSource)
+        self.roomsViewController.displayList(self.roomsDataSource)
         self.roomsViewController.roomsViewControllerDelegate = self
     }
     
@@ -72,11 +70,11 @@ final class RoomsCoordinator: NSObject, RoomsCoordinatorType {
         } else {
             pattern = nil
         }
-        self.recentsDataSource.search(withPatterns: pattern)
+        self.roomsDataSource.search(withPatterns: pattern)
     }
     
     func scrollToRoom(with roomID: String, animated: Bool) {
-        guard let indexPath = self.recentsDataSource.cellIndexPath(withRoomId: roomID, andMatrixSession: self.session) else {
+        guard let indexPath = self.roomsDataSource.cellIndexPath(withRoomId: roomID, andMatrixSession: self.session) else {
             return
         }
         
