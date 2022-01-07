@@ -129,7 +129,6 @@ targets:
     - path: ../Riot/Modules/Common/Recents/RecentsViewController.h
     - path: ../Riot/Modules/Common/Recents/RecentsViewController.m
     - path: ../Riot/Modules/Common/Recents/Model
-    - path: ../Riot/Modules/Common/Recents/Service
     - path: ../Riot/Modules/Common/Recents/Views
       excludes:
         - "RecentTableViewCell.h"
