@@ -8,7 +8,6 @@ ib:
       - templateName: scenes-swift4
         output: Tchap/Generated/Storyboards.swift
   - inputs: 
-      - Riot/Modules/CreateRoom
       - Riot/Modules/CrossSigning
       - Riot/Modules/Integrations
       - Riot/Modules/KeyBackup
@@ -16,12 +15,10 @@ ib:
       - Riot/Modules/QRCode
       - Riot/Modules/Reauthentication
       - Riot/Modules/Room/NotificationSettings/UIKit
-      - Riot/Modules/Rooms
       - Riot/Modules/Secrets
       - Riot/Modules/SecureBackup
       - Riot/Modules/ServiceTerms
       - Riot/Modules/SlidingModal
-      - Riot/Modules/Spaces/SpaceRoomList
     outputs:
       - templatePath: Templates/IB/scenes-riot-swift4.stencil
         output: Tchap/Generated/Storyboards_Riot.swift

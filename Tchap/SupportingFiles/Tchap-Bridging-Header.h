@@ -36,6 +36,4 @@
 #import "RiotNavigationController.h"
 #import "ThemeService.h"
 #import "ShareManager.h"
-#import "PublicRoomsDirectoryDataSource.h"
-#import "DirectoryServerPickerViewController.h"
 #import "MXSession+Riot.h"
