@@ -34,6 +34,6 @@ extension TitleHeaderView: Themable {
     func update(theme: Theme) {
         contentView.backgroundColor = theme.headerBackgroundColor
         label.textColor = theme.headerTextSecondaryColor
-        label.font = theme.fonts.body
+        label.font = theme.fonts.footnote
     }
 }
