@@ -1,14 +1,12 @@
-// File created from ScreenTemplate
-// $ createScreen.sh Room/NotificationSettings RoomNotificationSettings
 /*
- Copyright 2021 New Vector Ltd
- 
+ Copyright 2017 Vector Creations Ltd
+
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
- 
+
  http://www.apache.org/licenses/LICENSE-2.0
- 
+
  Unless required by applicable law or agreed to in writing, software
  distributed under the License is distributed on an "AS IS" BASIS,
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,11 +14,13 @@
  limitations under the License.
  */
 
-import Foundation
-/// RoomNotificationSettingsViewController view actions exposed to view model
-enum RoomNotificationSettingsViewAction {
-    case load
-    case selectNotificationState(RoomNotificationState)
-    case save
-    case cancel
-}
+#import "DirectoryServerTableViewCell.h"
+
+/**
+ The `DirectoryServerDetailTableViewCell` cell displays a homeserver .
+ */
+@interface DirectoryServerDetailTableViewCell : DirectoryServerTableViewCell
+
+@property (weak, nonatomic) IBOutlet UILabel *detailDescLabel;
+
+@end

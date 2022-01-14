@@ -129,6 +129,7 @@ targets:
     - path: ../Riot/Modules/Call/Views/IncomingCallView.h
     - path: ../Riot/Modules/Call/Views/IncomingCallView.m
     - path: ../Riot/Modules/Camera
+    - path: ../Riot/Modules/Common/Avatar
     - path: ../Riot/Modules/Common/Buttons
     - path: ../Riot/Modules/Common/Cells
     - path: ../Riot/Modules/Common/NavigationController/RiotNavigationController.h
@@ -137,6 +138,12 @@ targets:
     - path: ../Riot/Modules/Common/Recents/Model/RecentCellData.m
     - path: ../Riot/Modules/Common/Recents/RecentsViewController.h
     - path: ../Riot/Modules/Common/Recents/RecentsViewController.m
+    - path: ../Riot/Modules/Common/Recents/Model
+    - path: ../Riot/Modules/Common/Recents/Views
+      excludes:
+        - "RecentTableViewCell.h"
+        - "RecentTableViewCell.m"
+        - "RecentTableViewCell.xib"
     - path: ../Riot/Modules/Common/SectionHeaders
     - path: ../Riot/Modules/Common/SegmentedViewController/SegmentedViewController.h
     - path: ../Riot/Modules/Common/SegmentedViewController/SegmentedViewController.m
@@ -159,6 +166,8 @@ targets:
     - path: ../Riot/Modules/Reauthentication
     - path: ../Riot/Modules/Room/BubbleReactions
     - path: ../Riot/Modules/Room/DataSources
+    - path: ../Riot/Modules/Room/NotificationSettings
+    - path: ../Riot/Modules/Room/Views/Avatar
     - path: ../Riot/Modules/Room/Views/BubbleCells/BaseBubbleCell/BubbleCellReactionsDisplayable.swift
     - path: ../Riot/Modules/Room/Views/BubbleCells/RoomTypingBubbleCell.swift
     - path: ../Riot/Modules/Room/Views/CircleProgressView/CircleProgressView.swift
@@ -169,6 +178,7 @@ targets:
     - path: ../Riot/Modules/SecureBackup
     - path: ../Riot/Modules/ServiceTerms
     - path: ../Riot/Modules/SlidingModal
+    - path: ../Riot/Modules/TabBar/MainTitleView.swift
     - path: ../Riot/Modules/UserDevices/UsersDevicesViewController.h
     - path: ../Riot/Modules/UserDevices/UsersDevicesViewController.m
     - path: ../Riot/Modules/UserDevices/Views/DeviceTableViewCell.h
@@ -176,6 +186,10 @@ targets:
     - path: ../Riot/Modules/UserInteractiveAuthentication
     - path: ../Riot/PropertyWrappers
     - path: ../Riot/Utils
+
+    # Riot SwiftUI
+    - path: ../RiotSwiftUI/Modules/Common/Avatar/Model/AvatarProtocol.swift
+    - path: ../RiotSwiftUI/Modules/Room/NotificationSettings/Model
 
     # Share extension
     - path: ../RiotShareExtension/Shared

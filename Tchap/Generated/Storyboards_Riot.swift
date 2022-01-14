@@ -112,6 +112,11 @@ internal extension StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Tchap.QRCodeReaderViewController>(storyboard: QRCodeReaderViewController.self)
   }
+  enum RoomNotificationSettingsViewController: StoryboardType {
+    internal static let storyboardName = "RoomNotificationSettingsViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.RoomNotificationSettingsViewController>(storyboard: RoomNotificationSettingsViewController.self)
+  }
   enum SecretsRecoveryWithKeyViewController: StoryboardType {
     internal static let storyboardName = "SecretsRecoveryWithKeyViewController"
 

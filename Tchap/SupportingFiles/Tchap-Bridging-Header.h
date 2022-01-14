@@ -36,3 +36,4 @@
 #import "RiotNavigationController.h"
 #import "ThemeService.h"
 #import "ShareManager.h"
+#import "MXSession+Riot.h"

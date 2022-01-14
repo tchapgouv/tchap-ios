@@ -81,16 +81,6 @@ final class EnterNewRoomDetailsViewController: UIViewController {
         }
     }
 
-    private func showActivityIndicator() {
-        if self.activityPresenter.isPresenting == false {
-            self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
-        }
-    }
-
-    private func hideActivityIndicator() {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-    }
-
     private func updateSections() {
         let row_0_0 = Row(type: .avatar(image: viewModel.roomCreationParameters.avatarImage), text: nil, accessoryType: .none) {
             // open image picker

@@ -29,7 +29,7 @@
 
 #import "GeneratedInterface-Swift.h"
 
-@interface RecentsViewController () /*<CreateRoomCoordinatorBridgePresenterDelegate, RoomsDirectoryCoordinatorBridgePresenterDelegate, RoomNotificationSettingsCoordinatorBridgePresenterDelegate>*/
+@interface RecentsViewController () </*CreateRoomCoordinatorBridgePresenterDelegate, RoomsDirectoryCoordinatorBridgePresenterDelegate,*/ RoomNotificationSettingsCoordinatorBridgePresenterDelegate>
 {
     // Tell whether a recents refresh is pending (suspended during editing mode).
     BOOL isRefreshPending;
@@ -51,12 +51,12 @@
 //@property (nonatomic, strong) RoomsDirectoryCoordinatorBridgePresenter *roomsDirectoryCoordinatorBridgePresenter;
 //
 //@property (nonatomic, strong) ExploreRoomCoordinatorBridgePresenter *exploreRoomsCoordinatorBridgePresenter;
-//
+
 //@property (nonatomic, strong) SpaceFeatureUnavailablePresenter *spaceFeatureUnavailablePresenter;
-//
+
 //@property (nonatomic, strong) CustomSizedPresentationController *customSizedPresentationController;
-//
-//@property (nonatomic, strong) RoomNotificationSettingsCoordinatorBridgePresenter *roomNotificationSettingsCoordinatorBridgePresenter;
+
+@property (nonatomic, strong) RoomNotificationSettingsCoordinatorBridgePresenter *roomNotificationSettingsCoordinatorBridgePresenter;
 
 @end
 
@@ -685,12 +685,12 @@
 //- (RecentsDataSource*)recentsDataSource
 //{
 //    RecentsDataSource* recentsDataSource = nil;
-//    
+//
 //    if ([self.dataSource isKindOfClass:[RecentsDataSource class]])
 //    {
 //        recentsDataSource = (RecentsDataSource*)self.dataSource;
 //    }
-//    
+//
 //    return recentsDataSource;
 //}
 
@@ -985,20 +985,19 @@
 
 - (void)changeEditedRoomNotificationSettings
 {
-    // TODO: Tchap: support and test the new RoomNotificationSettings
-//    if (editedRoomId)
-//    {
-//        // Check whether the user didn't leave the room
-//        MXRoom *room = [self.mainSession roomWithRoomId:editedRoomId];
-//        if (room)
-//        {
-//           // navigate
-//            self.roomNotificationSettingsCoordinatorBridgePresenter = [[RoomNotificationSettingsCoordinatorBridgePresenter alloc] initWithRoom:room];
-//            self.roomNotificationSettingsCoordinatorBridgePresenter.delegate = self;
-//            [self.roomNotificationSettingsCoordinatorBridgePresenter presentFrom:self animated:YES];
-//        }
-//        [self cancelEditionMode:isRefreshPending];
-//    }
+    if (editedRoomId)
+    {
+        // Check whether the user didn't leave the room
+        MXRoom *room = [self.mainSession roomWithRoomId:editedRoomId];
+        if (room)
+        {
+           // navigate
+            self.roomNotificationSettingsCoordinatorBridgePresenter = [[RoomNotificationSettingsCoordinatorBridgePresenter alloc] initWithRoom:room];
+            self.roomNotificationSettingsCoordinatorBridgePresenter.delegate = self;
+            [self.roomNotificationSettingsCoordinatorBridgePresenter presentFrom:self animated:YES];
+        }
+        [self cancelEditionMode:isRefreshPending];
+    }
 }
 
 - (void)muteEditedRoomNotifications:(BOOL)mute
@@ -1227,7 +1226,7 @@
 //    }];
 //    coordinatorBridgePresenter = nil;
 //}
-//
+
 //- (void)createRoomCoordinatorBridgePresenterDelegateDidCancel:(CreateRoomCoordinatorBridgePresenter *)coordinatorBridgePresenter
 //{
 //    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
@@ -1327,7 +1326,7 @@
 //    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
 //    self.roomsDirectoryCoordinatorBridgePresenter = nil;
 //}
-//
+
 //- (void)roomsDirectoryCoordinatorBridgePresenterDelegate:(RoomsDirectoryCoordinatorBridgePresenter *)coordinatorBridgePresenter didSelectRoom:(MXPublicRoom *)room
 //{
 //    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
@@ -1335,7 +1334,7 @@
 //    }];
 //    self.roomsDirectoryCoordinatorBridgePresenter = nil;
 //}
-//
+
 //- (void)roomsDirectoryCoordinatorBridgePresenterDelegateDidTapCreateNewRoom:(RoomsDirectoryCoordinatorBridgePresenter *)coordinatorBridgePresenter
 //{
 //    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
@@ -1343,7 +1342,7 @@
 //    }];
 //    self.roomsDirectoryCoordinatorBridgePresenter = nil;
 //}
-//
+
 //- (void)roomsDirectoryCoordinatorBridgePresenterDelegate:(RoomsDirectoryCoordinatorBridgePresenter *)coordinatorBridgePresenter didSelectRoomWithIdOrAlias:(NSString * _Nonnull)roomIdOrAlias
 //{
 //    MXRoom *room = [self.mainSession vc_roomWithIdOrAlias:roomIdOrAlias];
@@ -1402,10 +1401,10 @@
 //}
 
 #pragma mark - RoomNotificationSettingsCoordinatorBridgePresenterDelegate
-//-(void)roomNotificationSettingsCoordinatorBridgePresenterDelegateDidComplete:(RoomNotificationSettingsCoordinatorBridgePresenter *)coordinatorBridgePresenter
-//{
-//    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
-//    self.roomNotificationSettingsCoordinatorBridgePresenter = nil;
-//}
+-(void)roomNotificationSettingsCoordinatorBridgePresenterDelegateDidComplete:(RoomNotificationSettingsCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    self.roomNotificationSettingsCoordinatorBridgePresenter = nil;
+}
 
 @end

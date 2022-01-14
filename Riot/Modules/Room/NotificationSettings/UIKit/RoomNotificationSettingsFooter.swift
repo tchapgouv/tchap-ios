@@ -56,5 +56,6 @@ extension RoomNotificationSettingsFooter: Themable {
     func update(theme: Theme) {
         contentView.backgroundColor = theme.headerBackgroundColor
         label.textColor = theme.headerTextSecondaryColor
+        label.font = theme.fonts.subheadline
     }
 }

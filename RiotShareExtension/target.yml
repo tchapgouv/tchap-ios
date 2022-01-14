@@ -59,6 +59,7 @@ targets:
     - path: ../Riot/Managers/Theme/
     - path: ../Riot/Modules/Common/Recents/Model/RecentCellData.m
     - path: ../Riot/Modules/Common/SegmentedViewController/SegmentedViewController.m
+    - path: ../Riot/Modules/CreateRoom/Models
     - path: ../Riot/PropertyWrappers/UserDefaultsBackedPropertyWrapper.swift
     - path: ../Riot/Utils/AvatarGenerator.m
     - path: ../Riot/Utils/UserNameColorGenerator.swift

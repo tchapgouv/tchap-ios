@@ -18,7 +18,7 @@
 #import "DirectoryServerTableViewCell.h"
 #import "DirectoryServerDetailTableViewCell.h"
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 @interface DirectoryServerPickerViewController ()
 {
@@ -149,7 +149,7 @@
     [[Analytics sharedInstance] trackScreen:@"DirectoryServerPicker"];
 
     // Observe kAppDelegateDidTapStatusBarNotificationObserver.
-    kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotificationObserver object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
 
         [self.tableView setContentOffset:CGPointMake(-self.tableView.adjustedContentInset.left, -self.tableView.adjustedContentInset.top) animated:YES];
 

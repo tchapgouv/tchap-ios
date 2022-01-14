@@ -67,7 +67,7 @@ final class SpaceExploreRoomViewController: UIViewController {
         let viewController = StoryboardScene.SpaceExploreRoomViewController.initialScene.instantiate()
         viewController.viewModel = viewModel
         viewController.theme = ThemeService.shared().theme
-        viewController.emptyView = RootTabEmptyView.instantiate()
+//        viewController.emptyView = RootTabEmptyView.instantiate()
         return viewController
     }
     
@@ -227,7 +227,7 @@ final class SpaceExploreRoomViewController: UIViewController {
 
     // MARK: - UISearchBarDelegate
     
-    override func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         self.viewModel.process(viewAction: .searchChanged(searchText))
     }
 }

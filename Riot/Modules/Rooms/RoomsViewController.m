@@ -18,7 +18,7 @@
 
 #import "RecentsDataSource.h"
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 @interface RoomsViewController ()
 {
@@ -64,8 +64,8 @@
 {
     [super viewWillAppear:animated];
     
-    [AppDelegate theDelegate].masterTabBarController.navigationItem.title = [VectorL10n titleRooms];
-    [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = ThemeService.shared.theme.tintColor;
+//    [AppDelegate theDelegate].masterTabBarController.navigationItem.title = [VectorL10n titleRooms];
+//    [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = ThemeService.shared.theme.tintColor;
     
     if ([self.dataSource isKindOfClass:RecentsDataSource.class])
     {

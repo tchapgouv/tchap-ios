@@ -338,9 +338,9 @@ extension ShowDirectoryViewController: UITableViewDelegate {
 
 // MARK: - UISearchBarDelegate
 
-extension ShowDirectoryViewController {
+extension ShowDirectoryViewController: UISearchBarDelegate {
     
-    override func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         viewModel.process(viewAction: .search(searchText))
     }
     
