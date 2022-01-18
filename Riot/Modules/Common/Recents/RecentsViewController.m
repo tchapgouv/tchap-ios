@@ -708,11 +708,12 @@
 {
     id<MXKRecentCellDataStoring> cellDataStoring = (id<MXKRecentCellDataStoring> )cellData;
     
-    if (cellDataStoring.roomSummary.room.summary.membership == MXMembershipInvite)
-    {
+    if ([cellDataStoring.roomSummary isKindOfClass:[MXRoomSummary class]] &&
+         ((MXRoomSummary *)cellDataStoring.roomSummary).room.summary.membership == MXMembershipInvite)    {
         return RoomsInviteCell.class;
     }
-    else if (cellDataStoring.roomSummary.tc_isServerNotice)
+    else if ([cellDataStoring.roomSummary isKindOfClass:[MXRoomSummary class]] &&
+             ((MXRoomSummary *)cellDataStoring.roomSummary).tc_isServerNotice)
     {
         return RoomsTchapInfoCell.class;
     }

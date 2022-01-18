@@ -17,13 +17,6 @@
 import Foundation
 import MobileCoreServices
 
-// FIXME: Temporary added here to fix missing values in Tchap specific version of MatrixKit.
-extension MXKUTI {
-    public static let video = MXKUTI(cfRawValue: kUTTypeVideo)!
-    public static let url = MXKUTI(cfRawValue: kUTTypeURL)!
-    public static let fileUrl = MXKUTI(cfRawValue: kUTTypeFileURL)!
-}
-
 private class ShareExtensionItem: ShareItemProtocol {
     let itemProvider: NSItemProvider
     

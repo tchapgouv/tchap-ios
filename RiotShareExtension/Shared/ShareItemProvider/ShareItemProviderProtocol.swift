@@ -1,5 +1,5 @@
 // 
-// Copyright 2020 Vector Creations Ltd
+// Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,18 +14,14 @@
 // limitations under the License.
 //
 
-// Configuration settings file format documentation can be found at:
-// https://help.apple.com/xcode/#/dev745c5c974
+import Foundation
 
-#include "Tchap/SupportingFiles/App-Common.xcconfig"
-
-PRODUCT_NAME = RiotNSE
-PRODUCT_BUNDLE_IDENTIFIER = $(BASE_BUNDLE_IDENTIFIER).nse
-
-INFOPLIST_FILE = RiotNSE/Info.plist
-
-CODE_SIGN_ENTITLEMENTS = RiotNSE/RiotNSE.entitlements
-
-SKIP_INSTALL = YES
-SWIFT_OBJC_BRIDGING_HEADER = $(SRCROOT)/$(PRODUCT_NAME)/SupportingFiles/RiotNSE-Bridging-Header.h
-
+@objc public protocol ShareItemProviderProtocol {
+    var items: [ShareItemProtocol] { get }
+    
+    func areAllItemsImages() -> Bool
+    
+    func areAllItemsLoaded() -> Bool
+    
+    func loadItem(_ item: ShareItemProtocol, completion: @escaping (Any?, Error?) -> Void)
+}

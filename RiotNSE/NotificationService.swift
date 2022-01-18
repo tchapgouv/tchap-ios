@@ -64,7 +64,7 @@ class NotificationService: UNNotificationServiceExtension {
         return MXPushGatewayRestClient(pushGateway: url.scheme! + "://" + url.host!, andOnUnrecognizedCertificateBlock: nil)
     }()
     private var pushNotificationStore: PushNotificationStore = PushNotificationStore()
-    private let localAuthenticationService = LocalAuthenticationService(pinCodePreferences: .shared)
+//    private let localAuthenticationService = LocalAuthenticationService(pinCodePreferences: .shared)
     private static let backgroundServiceInitQueue = DispatchQueue(label: "io.element.NotificationService.backgroundServiceInitQueue")
     //  MARK: - Method Overrides
     
@@ -509,11 +509,11 @@ class NotificationService: UNNotificationServiceExtension {
         
         var validatedNotificationBody: String? = notificationBody
         var validatedNotificationTitle: String? = notificationTitle
-        if self.localAuthenticationService.isProtectionSet {
-            MXLog.debug("[NotificationService] validateNotificationContentAndComplete: Resetting title and body because app protection is set")
-            validatedNotificationBody = NSString.localizedUserNotificationString(forKey: "MESSAGE_PROTECTED", arguments: [])
-            validatedNotificationTitle = nil
-        }
+//        if self.localAuthenticationService.isProtectionSet {
+//            MXLog.debug("[NotificationService] validateNotificationContentAndComplete: Resetting title and body because app protection is set")
+//            validatedNotificationBody = NSString.localizedUserNotificationString(forKey: "MESSAGE_PROTECTED", arguments: [])
+//            validatedNotificationTitle = nil
+//        }
         
         guard validatedNotificationBody != nil else {
             MXLog.debug("[NotificationService] validateNotificationContentAndComplete: notificationBody is nil")

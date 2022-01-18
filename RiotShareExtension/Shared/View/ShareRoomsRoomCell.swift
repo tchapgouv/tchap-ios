@@ -50,8 +50,8 @@ class ShareRoomsRoomCell: RoomsCell {
         let avatarBorderWidth: CGFloat
         
         // Set the right avatar border
-        if let accessRule = self.roomCellData?.roomSummary.tc_roomAccessRule() {
-            switch accessRule {
+        if let roomSummary = self.roomCellData?.roomSummary as? MXRoomSummary {
+            switch roomSummary.tc_roomAccessRule() {
             case .restricted:
                 avatarBorderColor = ThemeService.shared().theme.borderMain
                 avatarBorderWidth = Constants.hexagonImageBorderWidthDefault

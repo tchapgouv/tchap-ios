@@ -19,6 +19,7 @@
 #import "ShareItemSenderProtocol.h"
 
 @class ShareExtensionShareItemProvider;
+@class SimpleShareItemProvider;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -26,6 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithRootViewController:(UIViewController *)rootViewController
                          shareItemProvider:(ShareExtensionShareItemProvider *)shareItemProvider;
+- (instancetype)initWithShareItemProvider:(SimpleShareItemProvider *)shareItemProvider;
 
 @end
 

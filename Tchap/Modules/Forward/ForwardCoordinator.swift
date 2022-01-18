@@ -21,6 +21,7 @@ final class ForwardCoordinator: NSObject, ForwardCoordinatorType {
     private let router: NavigationRouterType
     private let session: MXSession
     private let shareItemProvider: SimpleShareItemProvider
+    private let shareItemSender: ShareItemSender
     private var errorPresenter: ErrorPresenter!
     private var shareManager: ShareManager
 
@@ -34,8 +35,9 @@ final class ForwardCoordinator: NSObject, ForwardCoordinatorType {
         self.router = NavigationRouter(navigationController: navController)
         self.session = session
         self.shareItemProvider = shareItemProvider
+        self.shareItemSender = ShareItemSender(shareItemProvider: self.shareItemProvider)
         
-        self.shareManager = ShareManager(shareItemProvider: shareItemProvider, type: .forward)
+        self.shareManager = ShareManager(shareItemSender: shareItemSender, type: .forward)
         
         self.errorPresenter = AlertErrorPresenter(viewControllerPresenter: shareManager.mainViewController())
         

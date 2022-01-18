@@ -18,7 +18,7 @@
 
 #import "SettingsViewController.h"
 
-#import <MatrixKit/MatrixKit.h>
+#import "MatrixKit.h"
 
 #import <MediaPlayer/MediaPlayer.h>
 #import <MobileCoreServices/MobileCoreServices.h>

@@ -143,6 +143,7 @@
 #import "MXKDeviceView.h"
 #import "MXKEncryptionInfoView.h"
 #import "MXKEncryptionKeysExportView.h"
+#import "MXKEncryptionKeysImportView.h"
 
 #import "MXKCountryPickerViewController.h"
 #import "MXKLanguagePickerViewController.h"

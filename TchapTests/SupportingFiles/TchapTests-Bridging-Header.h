@@ -3,3 +3,6 @@
 //
 
 #import "ThemeService.h"
+
+// MatrixKit imports
+#import "MatrixKitTests-Bridging-Header.h"

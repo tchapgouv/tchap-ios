@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-@import MatrixKit;
+#import "MatrixKit.h"
 
 @class ContactsDataSource;
 @protocol ContactsViewControllerDelegate, Style;

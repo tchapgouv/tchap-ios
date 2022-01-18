@@ -36,7 +36,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
 @interface ShareItemSender ()
 
 @property (nonatomic, strong, readonly) UIViewController *rootViewController;
-@property (nonatomic, strong, readonly) ShareExtensionShareItemProvider *shareItemProvider;
+@property (nonatomic, strong, readonly) id<ShareItemProviderProtocol> shareItemProvider;
 
 @property (nonatomic, strong, readonly) NSMutableArray<NSData *> *pendingImages;
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSString *, NSNumber *> *imageUploadProgresses;
@@ -54,6 +54,19 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
 {
     if (self = [super init]) {
         _rootViewController = rootViewController;
+        _shareItemProvider = shareItemProvider;
+        
+        _pendingImages = [NSMutableArray array];
+        _imageUploadProgresses = [NSMutableDictionary dictionary];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaLoaderStateDidChange:) name:kMXMediaLoaderStateDidChangeNotification object:nil];
+    }
+    
+    return self;
+}
+
+- (instancetype)initWithShareItemProvider:(SimpleShareItemProvider *)shareItemProvider {
+    if (self = [super init]) {
         _shareItemProvider = shareItemProvider;
         
         _pendingImages = [NSMutableArray array];

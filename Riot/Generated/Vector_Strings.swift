@@ -2244,9 +2244,9 @@ public class VectorL10n: NSObject {
     return VectorL10n.tr("Vector", "open") 
   }
   /// or
-  public static var or: String { 
-    return VectorL10n.tr("Vector", "or") 
-  }
+//  public static var or: String {
+//    return VectorL10n.tr("Vector", "or")
+//  }
   /// CONVERSATIONS
   public static var peopleConversationSection: String { 
     return VectorL10n.tr("Vector", "people_conversation_section") 

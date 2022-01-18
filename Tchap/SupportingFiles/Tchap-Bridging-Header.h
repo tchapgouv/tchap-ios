@@ -2,7 +2,10 @@
 //  Use this file to import your target's public headers that you would like to expose to Swift.
 //
 
-@import MatrixSDK;
+// MatrixKit imports
+#import "MatrixKit-Bridging-Header.h"
+#import "MXKBarButtonItem.h"
+
 @import DTCoreText;
 #import "WebViewViewController.h"
 #import "LegacyAppDelegate.h"
@@ -37,3 +40,4 @@
 #import "ThemeService.h"
 #import "ShareManager.h"
 #import "MXSession+Riot.h"
+#import "ShareItemSender.h"

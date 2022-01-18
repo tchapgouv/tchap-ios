@@ -64,11 +64,11 @@ final class RiotSettings: NSObject {
     
     // MARK: Servers
     
-    @UserDefault(key: "homeserverurl", defaultValue: BuildSettings.serverConfigDefaultHomeserverUrlString, storage: defaults)
-    var homeserverUrlString
-    
-    @UserDefault(key: "identityserverurl", defaultValue: BuildSettings.serverConfigDefaultIdentityServerUrlString, storage: defaults)
-    var identityServerUrlString
+//    @UserDefault(key: "homeserverurl", defaultValue: BuildSettings.serverConfigDefaultHomeserverUrlString, storage: defaults)
+//    var homeserverUrlString
+//    
+//    @UserDefault(key: "identityserverurl", defaultValue: BuildSettings.serverConfigDefaultIdentityServerUrlString, storage: defaults)
+//    var identityServerUrlString
     
     // MARK: Notifications
     
@@ -92,6 +92,16 @@ final class RiotSettings: NSObject {
     /// Indicate to show Not Safe For Work public rooms.
     @UserDefault(key: "showNSFWPublicRooms", defaultValue: false, storage: defaults)
     var showNSFWPublicRooms
+    
+    /// Indicate if the user wants to display the join and leave events in the room history.
+    /// (No by default)
+    @UserDefault(key: "showJoinLeaveEvents", defaultValue: false, storage: defaults)
+    var showJoinLeaveEvents
+    
+    /// Indicate if the user wants to display the profile update events (avatar / displayname) in the room history.
+    /// (No by default)
+    @UserDefault(key: "showProfileUpdateEvents", defaultValue: false, storage: defaults)
+    var showProfileUpdateEvents
     
     // MARK: User interface
     

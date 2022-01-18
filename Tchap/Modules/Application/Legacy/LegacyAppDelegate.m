@@ -30,7 +30,7 @@
 #import "BugReportViewController.h"
 #import "RoomKeyRequestViewController.h"
 
-#import <MatrixKit/MatrixKit.h>
+#import "MatrixKit.h"
 
 #import "Tools.h"
 #import "WidgetManager.h"

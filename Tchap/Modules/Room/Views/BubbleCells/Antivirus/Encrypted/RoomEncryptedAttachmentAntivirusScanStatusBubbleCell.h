@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-#import "MatrixKit.h"
+#import "RoomAttachmentAntivirusScanStatusBubbleCell.h"
 
 /**
  `RoomEncryptedAttachmentAntivirusScanStatusBubbleCell` displays room encrypted attachment antivirus scan status with sender's information.
