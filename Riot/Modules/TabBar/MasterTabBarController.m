@@ -27,7 +27,7 @@
 #import "SettingsViewController.h"
 #import "SecurityViewController.h"
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 @interface MasterTabBarController () <AuthenticationViewControllerDelegate, UITabBarControllerDelegate>
 {
@@ -1027,7 +1027,7 @@
         return;
     }
     
-    NSArray<MXDeviceInfo*> *devices = [session.crypto.store devicesForUser:session.myUserId].allValues;
+    NSArray<MXDeviceInfo*> *devices = [session.crypto devicesForUser:session.myUserId].allValues;
     
     BOOL isUserHasOneUnverifiedDevice = NO;
     

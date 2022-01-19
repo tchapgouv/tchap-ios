@@ -62,6 +62,14 @@ final class RiotSettings: NSObject {
         }
     }
     
+    // MARK: Servers
+    
+//    @UserDefault(key: "homeserverurl", defaultValue: BuildSettings.serverConfigDefaultHomeserverUrlString, storage: defaults)
+//    var homeserverUrlString
+//    
+//    @UserDefault(key: "identityserverurl", defaultValue: BuildSettings.serverConfigDefaultIdentityServerUrlString, storage: defaults)
+//    var identityServerUrlString
+    
     // MARK: Notifications
     
     /// Indicate if `showDecryptedContentInNotifications` settings has been set once.
@@ -84,7 +92,7 @@ final class RiotSettings: NSObject {
     /// Indicate to show Not Safe For Work public rooms.
     @UserDefault(key: "showNSFWPublicRooms", defaultValue: false, storage: defaults)
     var showNSFWPublicRooms
-
+    
     /// Indicate if the user wants to display the join and leave events in the room history.
     /// (No by default)
     @UserDefault(key: "showJoinLeaveEvents", defaultValue: false, storage: defaults)
@@ -145,7 +153,7 @@ final class RiotSettings: NSObject {
     @UserDefault(key: "roomsAllowToJoinPublicRooms", defaultValue: BuildSettings.roomsAllowToJoinPublicRooms, storage: defaults)
     var roomsAllowToJoinPublicRooms
     
-    @UserDefault(key: UserDefaultsKeys.showAllRoomsInHomeSpace, defaultValue: true, storage: defaults)
+    @UserDefault(key: UserDefaultsKeys.showAllRoomsInHomeSpace, defaultValue: false, storage: defaults)
     var showAllRoomsInHomeSpace
     
     // MARK: - Room Screen
@@ -168,7 +176,10 @@ final class RiotSettings: NSObject {
     @UserDefault(key: "roomScreenAllowFilesAction", defaultValue: BuildSettings.roomScreenAllowFilesAction, storage: defaults)
     var roomScreenAllowFilesAction
     
-    @UserDefault(key: "roomScreenShowsURLPreviews", defaultValue: false, storage: defaults)
+    @UserDefault(key: "roomScreenAllowPollsAction", defaultValue: false, storage: defaults)
+    var roomScreenAllowPollsAction
+        
+    @UserDefault(key: "roomScreenShowsURLPreviews", defaultValue: true, storage: defaults)
     var roomScreenShowsURLPreviews
     
     // MARK: - Room Contextual Menu

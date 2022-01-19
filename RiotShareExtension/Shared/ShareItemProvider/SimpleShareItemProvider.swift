@@ -45,8 +45,6 @@ private class SimpleShareItem: ShareItemProtocol {
             return .video
         } else if attachment.type == MXKAttachmentTypeFile {
             return .fileURL
-        } else if attachment.type == MXKAttachmentTypeVoiceMessage {
-            return .voiceMessage
         } else {
             return .unknown
         }

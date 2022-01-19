@@ -16,14 +16,6 @@
 
 import Foundation
 import MobileCoreServices
-import MatrixKit
-
-// FIXME: Temporary added here to fix missing values in Tchap specific version of MatrixKit.
-extension MXKUTI {
-    public static let video = MXKUTI(cfRawValue: kUTTypeVideo)!
-    public static let url = MXKUTI(cfRawValue: kUTTypeURL)!
-    public static let fileUrl = MXKUTI(cfRawValue: kUTTypeFileURL)!
-}
 
 private class ShareExtensionItem: ShareItemProtocol {
     let itemProvider: NSItemProvider
@@ -54,7 +46,7 @@ private class ShareExtensionItem: ShareItemProtocol {
 }
 
 @objcMembers
-class ShareExtensionShareItemProvider: NSObject, ShareItemProviderProtocol	 {
+public class ShareExtensionShareItemProvider: NSObject	 {
     
     public let items: [ShareItemProtocol]
     
@@ -73,7 +65,7 @@ class ShareExtensionShareItemProvider: NSObject, ShareItemProviderProtocol	 {
         self.items = items
     }
     
-    func areAllItemsLoaded() -> Bool {
+    public func areAllItemsLoaded() -> Bool {
         for case let item as ShareExtensionItem in self.items {
             if !item.loaded {
                 return false
@@ -128,8 +120,6 @@ class ShareExtensionShareItemProvider: NSObject, ShareItemProviderProtocol	 {
             return MXKUTI.video.rawValue
         case .movie:
             return MXKUTI.movie.rawValue
-        case .voiceMessage:
-            return MXKUTI.fileUrl.rawValue
         default:
             return ""
         }

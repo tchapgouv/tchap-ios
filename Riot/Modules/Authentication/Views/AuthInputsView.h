@@ -15,9 +15,9 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+#import "MatrixKit.h"
 
-#import "GeneratedInterface-Swift.h"
+@class TermsView;
 
 @interface AuthInputsView : MXKAuthInputsView <MXKCountryPickerViewControllerDelegate>
 

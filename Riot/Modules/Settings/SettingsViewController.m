@@ -18,8 +18,6 @@
 
 #import "SettingsViewController.h"
 
-#import <MatrixKit/MatrixKit.h>
-
 #import <OLMKit/OLMKit.h>
 
 #import "AvatarGenerator.h"
@@ -43,7 +41,9 @@
 
 #import "GBDeviceInfo_iOS.h"
 
-#import "Riot-Swift.h"
+#import "MediaPickerViewController.h"
+
+#import "GeneratedInterface-Swift.h"
 
 NSString* const kSettingsViewControllerPhoneBookCountryCellId = @"kSettingsViewControllerPhoneBookCountryCellId";
 
@@ -153,9 +153,10 @@ enum
     ABOUT_THIRD_PARTY_INDEX,
 };
 
-enum
+typedef NS_ENUM(NSUInteger, LABS_ENABLE)
 {
-    LABS_ENABLE_RINGING_FOR_GROUP_CALLS_INDEX = 0
+    LABS_ENABLE_RINGING_FOR_GROUP_CALLS_INDEX,
+    LABS_ENABLE_POLLS
 };
 
 enum
@@ -167,7 +168,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 
 #pragma mark - SettingsViewController
 
-@interface SettingsViewController () <DeactivateAccountViewControllerDelegate,
+@interface SettingsViewController () <UITextFieldDelegate, MXKCountryPickerViewControllerDelegate, MXKLanguagePickerViewControllerDelegate, MXKDataSourceDelegate, DeactivateAccountViewControllerDelegate,
 NotificationSettingsCoordinatorBridgePresenterDelegate,
 SecureBackupSetupCoordinatorBridgePresenterDelegate,
 SignOutAlertPresenterDelegate,
@@ -551,6 +552,8 @@ TableViewSectionsDelegate>
     {
         Section *sectionLabs = [Section sectionWithTag:SECTION_TAG_LABS];
         [sectionLabs addRowWithTag:LABS_ENABLE_RINGING_FOR_GROUP_CALLS_INDEX];
+        [sectionLabs addRowWithTag:LABS_ENABLE_POLLS];
+        
         sectionLabs.headerTitle = [VectorL10n settingsLabs];
         if (sectionLabs.hasAnyRows)
         {
@@ -2401,6 +2404,19 @@ TableViewSectionsDelegate>
             
             cell = labelAndSwitchCell;
         }
+        
+        if (row == LABS_ENABLE_POLLS && BuildSettings.pollsEnabled)
+        {
+            MXKTableViewCellWithLabelAndSwitch *labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+            
+            labelAndSwitchCell.mxkLabel.text = [VectorL10n settingsLabsEnabledPolls];
+            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.roomScreenAllowPollsAction;
+            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
+            
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleEnablePolls:) forControlEvents:UIControlEventValueChanged];
+            
+            cell = labelAndSwitchCell;
+        }
     }
     else if (section == SECTION_TAG_FLAIR)
     {
@@ -3133,6 +3149,11 @@ TableViewSectionsDelegate>
 - (void)toggleEnableRingingForGroupCalls:(UISwitch *)sender
 {
     RiotSettings.shared.enableRingingForGroupCalls = sender.isOn;
+}
+
+- (void)toggleEnablePolls:(UISwitch *)sender
+{
+    RiotSettings.shared.roomScreenAllowPollsAction = sender.isOn;
 }
 
 - (void)togglePinRoomsWithMissedNotif:(UISwitch *)sender

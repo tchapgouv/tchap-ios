@@ -6,3 +6,8 @@
 #import "MXRoomSummary+Riot.h"
 #import "Tools.h"
 #import "AvatarGenerator.h"
+#import "BuildInfo.h"
+#import "ShareItemSender.h"
+
+// MatrixKit imports
+#import "MatrixKit-Bridging-Header.h"

@@ -39,7 +39,7 @@ class RoomsRoomCell: RoomsCell {
         self.lastEventSenderName.text = nil
         self.roomCategory.isHidden = true
         
-        guard let session = self.roomCellData?.recentsDataSource?.mxSession, session.matrixRestClient != nil else {
+        guard let session = self.roomCellData?.mxSession, session.matrixRestClient != nil else {
             return
         }
         
@@ -58,8 +58,8 @@ class RoomsRoomCell: RoomsCell {
             self.lastEventSenderName.text = displayNameComponents.name
         }
         
-        if let category = self.roomCellData?.roomSummary.tc_roomCategory() {
-            switch category {
+        if let roomSummary = self.roomCellData?.roomSummary as? MXRoomSummary {
+            switch roomSummary.tc_roomCategory() {
             case .restrictedPrivateRoom:
                 self.roomCategory.text = TchapL10n.roomCategoryPrivateRoom
                 self.roomCategory.textColor = ThemeService.shared().theme.roomTypeRestricted
@@ -91,8 +91,8 @@ class RoomsRoomCell: RoomsCell {
         let avatarBorderWidth: CGFloat
         
         // Set the right avatar border
-        if let accessRule = self.roomCellData?.roomSummary.tc_roomAccessRule() {
-            switch accessRule {
+        if let roomSummary = self.roomCellData?.roomSummary as? MXRoomSummary {
+            switch roomSummary.tc_roomAccessRule() {
             case .restricted:
                 avatarBorderColor = ThemeService.shared().theme.borderMain
                 avatarBorderWidth = Constants.hexagonImageBorderWidthDefault

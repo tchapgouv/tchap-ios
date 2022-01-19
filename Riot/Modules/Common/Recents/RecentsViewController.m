@@ -20,8 +20,6 @@
 
 #import "MXRoom+Riot.h"
 
-#import <MatrixKit/MatrixKit.h>
-
 #import "RoomViewController.h"
 
 #import "RageShakeManager.h"
@@ -710,11 +708,12 @@
 {
     id<MXKRecentCellDataStoring> cellDataStoring = (id<MXKRecentCellDataStoring> )cellData;
     
-    if (cellDataStoring.roomSummary.room.summary.membership == MXMembershipInvite)
-    {
+    if ([cellDataStoring.roomSummary isKindOfClass:[MXRoomSummary class]] &&
+         ((MXRoomSummary *)cellDataStoring.roomSummary).room.summary.membership == MXMembershipInvite)    {
         return RoomsInviteCell.class;
     }
-    else if (cellDataStoring.roomSummary.tc_isServerNotice)
+    else if ([cellDataStoring.roomSummary isKindOfClass:[MXRoomSummary class]] &&
+             ((MXRoomSummary *)cellDataStoring.roomSummary).tc_isServerNotice)
     {
         return RoomsTchapInfoCell.class;
     }
@@ -1163,6 +1162,11 @@
 
 - (void)scrollToTheTopTheNextRoomWithMissedNotificationsInSection:(NSInteger)section
 {
+    if (section < 0)
+    {
+        return;
+    }
+    
     UITableViewCell *firstVisibleCell;
     NSIndexPath *firstVisibleCellIndexPath;
     

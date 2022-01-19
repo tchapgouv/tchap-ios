@@ -84,13 +84,17 @@ import UIKit
     }
     
     @IBAction private func onLeftPressed(_ sender: Any) {
-        if let delegate = self.delegate, let room = self.roomCellData?.roomSummary.room {
+        if let delegate = self.delegate,
+           let roomSummary = self.roomCellData?.roomSummary as? MXRoomSummary,
+           let room = roomSummary.room {
             delegate.cell(self, didRecognizeAction: RoomsInviteCell.actionJoinInvite, userInfo: [RoomsInviteCell.keyRoom: room])
         }
     }
     
     @IBAction private func onRightPressed(_ sender: Any) {
-        if let delegate = self.delegate, let room = self.roomCellData?.roomSummary.room {
+        if let delegate = self.delegate,
+           let roomSummary = self.roomCellData?.roomSummary as? MXRoomSummary,
+           let room = roomSummary.room {
             delegate.cell(self, didRecognizeAction: RoomsInviteCell.actionDeclineInvite, userInfo: [RoomsInviteCell.keyRoom: room])
         }
     }

@@ -73,8 +73,12 @@ targets:
       buildPhase: resources
     - path: ../Riot/Assets/fr.lproj/Vector.strings
       buildPhase: resources
+    - path: ../Riot/Modules/MatrixKit
+      excludes:
+        - "**/*.md" # excludes all files with the .md extension
+    - path: ../Riot/Generated/MatrixKitStrings.swift
 
-      
+
     # Tchap
     - path: ../RiotShareExtension/BuildSettings.swift
     - path: ../Tchap/Config/CommonConfiguration.swift

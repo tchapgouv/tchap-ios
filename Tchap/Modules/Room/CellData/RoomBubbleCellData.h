@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+#import "MatrixKit.h"
 
 extern NSString *const URLPreviewDidUpdateNotification;
 
@@ -32,7 +32,8 @@ typedef NS_ENUM(NSInteger, RoomBubbleCellDataTag)
     RoomBubbleCellDataTagKeyVerificationConclusion,
     RoomBubbleCellDataTagCall,
     RoomBubbleCellDataTagGroupCall,
-    RoomBubbleCellDataTagRoomCreationIntro
+    RoomBubbleCellDataTagRoomCreationIntro,
+    RoomBubbleCellDataTagPoll
 };
 
 /**

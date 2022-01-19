@@ -119,7 +119,11 @@ import UIKit
             }
         }
         
-        let category = roomCellData.roomSummary.tc_roomCategory()
+        guard let roomSummary = roomCellData.roomSummary as? MXRoomSummary else {
+            return
+        }
+        
+        let category = roomSummary.tc_roomCategory()
         switch category {
         case .directChat, .restrictedPrivateRoom, .unrestrictedPrivateRoom:
             self.encryptedIcon?.image = UIImage(named: "private_avatar_icon")
@@ -131,11 +135,11 @@ import UIKit
             self.encryptedIcon?.isHidden = true
         }
         
-        roomCellData.roomSummary?.setRoomAvatarImageIn(self.avatarView)
+        roomSummary.setRoomAvatarImageIn(self.avatarView)
         
         if let pinView = self.pinView {
             // Check whether the room is pinned
-            if roomCellData.roomSummary?.room?.accountData?.tags?[kMXRoomTagFavourite] != nil {
+            if roomSummary.room?.accountData?.tags?[kMXRoomTagFavourite] != nil {
                 pinView.backgroundColor = ThemeService.shared().theme.headerBackgroundColor
             } else {
                 pinView.backgroundColor = UIColor.clear

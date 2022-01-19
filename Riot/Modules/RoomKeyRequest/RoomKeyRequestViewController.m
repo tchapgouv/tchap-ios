@@ -16,7 +16,6 @@
 
 #import "RoomKeyRequestViewController.h"
 
-#import "EncryptionInfoView.h"
 #import "GeneratedInterface-Swift.h"
 
 @interface RoomKeyRequestViewController () <KeyVerificationCoordinatorBridgePresenterDelegate>

@@ -5,7 +5,7 @@
 [![Swift 5.x](https://img.shields.io/badge/Swift-5.x-orange)](https://developer.apple.com/swift)
 ![GitHub](https://img.shields.io/github/license/dinsic-pim/tchap-ios)
 
-Tchap iOS is an iOS [Matrix](https://matrix.org/) client. It is based on [MatrixKit](https://github.com/matrix-org/matrix-ios-kit) and [MatrixSDK](https://github.com/matrix-org/matrix-ios-sdk).
+Tchap iOS is an iOS [Matrix](https://matrix.org/) client. It is based on [MatrixSDK](https://github.com/matrix-org/matrix-ios-sdk).
 
 <p align="center">  
   <a href=https://apps.apple.com/fr/app/tchap/id1446253779?mt=8>
@@ -27,7 +27,7 @@ $ pod install               # Create the xcworkspace with all project dependenci
 $ open Tchap.xcworkspace     # Open Xcode
 ```
 
-Else, you can visit our [installation guide](./INSTALL.md). This guide also offers more details and advanced usage like using [MatrixSDK](https://github.com/matrix-org/matrix-ios-sdk) and [MatrixKit](https://github.com/matrix-org/matrix-ios-kit) in their development versions.
+Else, you can visit our [installation guide](./INSTALL.md). This guide also offers more details and advanced usage like using [MatrixSDK](https://github.com/matrix-org/matrix-ios-sdk) in its development version.
 
 ## Contributing
 

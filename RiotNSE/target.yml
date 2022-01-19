@@ -56,7 +56,11 @@ targets:
     - path: ../Riot/PropertyWrappers/UserDefaultsBackedPropertyWrapper.swift
     - path: ../Riot/Utils/Constants.swift
     - path: ../Riot/Utils/DataProtectionHelper.swift
-    
+    - path: ../Riot/Modules/MatrixKit
+      excludes:
+        - "**/*.md" # excludes all files with the .md extension
+    - path: ../Riot/Generated/MatrixKitStrings.swift
+
     # Tchap
     - path: ../RiotNSE/BuildSettings.swift
     - path: ../Tchap/Config/CommonConfiguration.swift

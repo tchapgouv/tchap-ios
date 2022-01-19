@@ -85,12 +85,14 @@ targets:
     - path: ../Riot/Assets/Sounds
     - path: ../Riot/Assets/third_party_licenses.html
     - path: ../Riot/Categories
+    - path: ../Riot/Generated/MatrixKitStrings.swift
     - path: ../Riot/Generated/Vector_Strings.swift
     - path: ../Riot/Managers/Analytics
     - path: ../Riot/Managers/AppInfo
     - path: ../Riot/Managers/BugReport
     - path: ../Riot/Managers/EncryptionKeyManager/EncryptionKeyManager.swift
     - path: ../Riot/Managers/KeyValueStorage
+    - path: ../Riot/Managers/Locale
     - path: ../Riot/Managers/Room/RoomIdComponents.swift
     - path: ../Riot/Managers/RoomMessageLinkParser/RoomMessageURLParser.swift
     - path: ../Riot/Managers/PasswordStrength
@@ -139,6 +141,7 @@ targets:
     - path: ../Riot/Modules/Common/SegmentedViewController/SegmentedViewController.m
     - path: ../Riot/Modules/Common/Views
     - path: ../Riot/Modules/Common/WebViewController
+    - path: ../Riot/Modules/Contacts/Details/Views
     - path: ../Riot/Modules/CrossSigning
     - path: ../Riot/Modules/DeepLink
     - path: ../Riot/Modules/DotsView
@@ -151,6 +154,7 @@ targets:
     - path: ../Riot/Modules/Integrations
     - path: ../Riot/Modules/KeyBackup
     - path: ../Riot/Modules/KeyVerification
+    - path: ../Riot/Modules/MatrixKit
     - path: ../Riot/Modules/MediaPicker
     - path: ../Riot/Modules/QRCode
     - path: ../Riot/Modules/Reauthentication
@@ -183,6 +187,9 @@ targets:
 
     # Share extension
     - path: ../RiotShareExtension/Shared
+    - path: ../RiotShareExtension/Sources/ShareItemProtocol.swift
+    - path: ../RiotShareExtension/Sources/ShareItemSender.h
+    - path: ../RiotShareExtension/Sources/ShareItemSender.m
     
     # Resources
     - path: ../Riot/Assets/en.lproj/InfoPlist.strings

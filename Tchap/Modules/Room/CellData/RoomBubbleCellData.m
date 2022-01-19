@@ -21,9 +21,9 @@
 
 #import "AvatarGenerator.h"
 #import "Tools.h"
-#import "GeneratedInterface-Swift.h"
 #import "BubbleReactionsViewSizer.h"
-#import <MatrixKit/MXKSwiftHeader.h>
+
+#import "GeneratedInterface-Swift.h"
 
 static NSAttributedString *timestampVerticalWhitespace = nil;
 
@@ -263,6 +263,11 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
         return NO;
     }
     
+    if (self.tag == RoomBubbleCellDataTagPoll)
+    {
+        return NO;
+    }
+    
     return [super hasNoDisplay];
 }
 
@@ -421,7 +426,9 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
 {
     __block NSInteger firstVisibleComponentIndex = NSNotFound;
     
-    if (self.attachment && self.bubbleComponents.count)
+    BOOL isPoll = (self.events.firstObject.eventType == MXEventTypePollStart);
+    
+    if ((isPoll || self.attachment) && self.bubbleComponents.count)
     {
         firstVisibleComponentIndex = 0;
     }
@@ -840,10 +847,15 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
         case RoomBubbleCellDataTagRoomCreationIntro:
             shouldAddEvent = NO;
             break;
+        case RoomBubbleCellDataTagPoll:
+            shouldAddEvent = NO;
+            break;
         default:
             break;
     }
     
+    // If the current bubbleData supports adding events then check
+    // if the incoming event can be added in
     if (shouldAddEvent)
     {
         switch (event.eventType)
@@ -886,6 +898,9 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
             case MXEventTypeCallAnswer:
             case MXEventTypeCallHangup:
             case MXEventTypeCallReject:
+                shouldAddEvent = NO;
+                break;
+            case MXEventTypePollStart:
                 shouldAddEvent = NO;
                 break;
             case MXEventTypeCustom:

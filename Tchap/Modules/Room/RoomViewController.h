@@ -16,7 +16,7 @@
  limitations under the License.
  */
 
-@import MatrixKit;
+#import "MatrixKit.h"
 
 @protocol RoomViewControllerDelegate;
 @class RoomPreviewData, User, SimpleShareItemProvider;

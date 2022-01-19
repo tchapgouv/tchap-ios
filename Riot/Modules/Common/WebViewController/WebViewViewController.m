@@ -17,9 +17,6 @@
 #import "WebViewViewController.h"
 #import "GeneratedInterface-Swift.h"
 
-#import "RageShakeManager.h"
-#import "ThemeService.h"
-
 @interface WebViewViewController ()
 {
     // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.

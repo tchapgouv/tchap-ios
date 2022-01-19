@@ -571,7 +571,8 @@
         {
             id<MXKRecentCellDataStoring> cellDataStoring = [cellDataArray objectAtIndex:index];
             
-            if ([roomId isEqualToString:cellDataStoring.roomSummary.roomId] && (matrixSession == cellDataStoring.roomSummary.room.mxSession))
+            if ([cellDataStoring.roomSummary isKindOfClass:[MXRoomSummary class]] &&
+                [roomId isEqualToString:cellDataStoring.roomSummary.roomId] && (matrixSession == ((MXRoomSummary *)cellDataStoring.roomSummary).room.mxSession))
             {
                 return index;
             }
@@ -643,7 +644,7 @@
         for (int index = 0; index < count; index++)
         {
             id<MXKRecentCellDataStoring> recentCellDataStoring = [recentsDataSource cellDataAtIndex:index];
-            MXRoom* room = recentCellDataStoring.roomSummary.room;
+            MXRoom* room = ((MXRoomSummary *)recentCellDataStoring.roomSummary).room;
             
             // Hide the rooms created to invite some non-tchap contact by email.
             if (room.isDirect && [MXTools isEmailAddress:room.directUserId])

@@ -38,8 +38,6 @@ targets:
       - "**/MatrixSDK/**"
       - "**/Coordinator/**"
       - "**/Test/**"
-    - path: ../Riot/Generated/Strings.swift
-    - path: ../Riot/Generated/Images.swift
     - path: ../Riot/Managers/Theme/ThemeIdentifier.swift
     - path: ../Riot/Managers/Locale/LocaleProviderType.swift
     - path: ../Riot/Categories/String.swift
@@ -50,6 +48,11 @@ targets:
       buildPhase: resources
     - path: ../Riot/Assets/SharedImages.xcassets
       buildPhase: resources
+
+    # Tchap
+    - path: ../Tchap/Generated/Images.swift
+    - path: ../Tchap/Generated/Strings.swift
+
     configFiles:
       Debug: Debug.xcconfig
       Release: Release.xcconfig

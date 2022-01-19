@@ -18,6 +18,7 @@
 #import "AvatarGenerator.h"
 
 #import "ThemeService.h"
+
 #import "GeneratedInterface-Swift.h"
 
 @implementation AvatarGenerator

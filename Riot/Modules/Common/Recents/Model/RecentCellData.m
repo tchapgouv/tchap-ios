@@ -18,7 +18,6 @@
 #import "RecentCellData.h"
 
 #import "MXRoom+Riot.h"
-#import "MatrixSDK-Swift.h"
 
 #import "GeneratedInterface-Swift.h"
 
@@ -47,7 +46,8 @@
 - (NSUInteger)notificationCount
 {    
     // Ignore the regular notification count if the room is in 'mentions only" mode at the Riot level.
-    if (self.roomSummary.room.isMentionsOnly)
+    if ([self.roomSummary isKindOfClass:[MXRoomSummary class]] &&
+        ((MXRoomSummary *)self.roomSummary).room.isMentionsOnly)
     {
         // Only the highlighted missed messages must be considered here.
         return self.roomSummary.highlightCount;
