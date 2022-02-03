@@ -54,6 +54,7 @@ final class PublicRoomsViewController: UITableViewController {
         
         self.setupViews()
         self.setupDataSource()
+        self.setupNavigationBar()
         
         self.publicRoomsDataSource.search(with: "")
     }
@@ -118,6 +119,18 @@ final class PublicRoomsViewController: UITableViewController {
         self.definesPresentationContext = true
         
         self.searchController = searchController
+    }
+    
+    private func setupNavigationBar() {
+        let cancelButton = UIBarButtonItem(title: TchapL10n.actionCancel,
+                                           style: .plain,
+                                           target: self,
+                                           action: #selector(didTapCancel))
+        self.navigationItem.leftBarButtonItem = cancelButton
+    }
+    
+    @objc private func didTapCancel() {
+        self.dismiss(animated: true, completion: nil)
     }
     
     private func userThemeDidChange() {
