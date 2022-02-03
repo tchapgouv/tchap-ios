@@ -86,11 +86,11 @@ final class RoomDetailsCoordinator: NSObject, RoomDetailsCoordinatorType {
             titles = [TchapL10n.roomFilesTabTitle]
         } else {
             // We add a tab for the participants list and another for the room settings
-            guard let participantsViewController = RoomParticipantsViewController.instantiate(),
-                let settingsViewController = RoomSettingsViewController.instantiate() else {
+            guard let participantsViewController = RoomParticipantsViewController.instantiate() else {
                     fatalError("[RoomDetailsCoordinator] Participants or Settings tab could not be loaded")
             }
             
+            let settingsViewController = RoomSettingsViewController()
             viewControllers = [participantsViewController, roomFilesViewController, settingsViewController]
             titles = [TchapL10n.roomMembersTabTitle, TchapL10n.roomFilesTabTitle, TchapL10n.roomSettingsTabTitle]
             
@@ -120,7 +120,7 @@ final class RoomDetailsCoordinator: NSObject, RoomDetailsCoordinatorType {
         self.segmentedViewController.addMatrixSession(self.session)
         self.segmentedViewController.updateTheme()
         
-        let titleView = RoomTitleView.instantiate()
+        let titleView = RoomTitleView()
         self.segmentedViewController.navigationItem.titleView = titleView
         self.roomDetailsTitleView = titleView
         
@@ -201,7 +201,7 @@ final class RoomDetailsCoordinator: NSObject, RoomDetailsCoordinatorType {
             return
         }
         let roomTitleViewModel = self.roomTitleViewModelBuilder.build(fromRoomSummary: roomSummary)
-        roomTitleView.fill(roomTitleViewModel: roomTitleViewModel)
+//        roomTitleView.fill(roomTitleViewModel: roomTitleViewModel)
     }
 }
 

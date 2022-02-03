@@ -37,6 +37,8 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
 
 @property (nonatomic) UIActivityIndicatorView *activityIndicator;
 
+@property (nonatomic, strong) DiscussionFinder* discussionFinder;
+
 /**
  The analytics instance screen name (Default is "ContactsTable").
  */
@@ -106,6 +108,8 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
     {
         [self setupSearchController];
     }
+    
+    self.discussionFinder = [[DiscussionFinder alloc] initWithSession:self.contactsDataSource.mxSession];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -562,7 +566,31 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
     
     if (self.delegate)
     {
-        [self.delegate contactsViewController:self didSelectContact:contact];
+        // Tchap: Check if there is already a discussion with the contact or not.
+        [self.discussionFinder hasDiscussionFor:contact.contactID completion:^(BOOL hasDiscussion) {
+            if (hasDiscussion) {
+                [self.delegate contactsViewController:self didSelectContact:contact];
+            } else {
+                // Show alert to prevent unwanted discussion creation.
+                UIAlertController* alert = [UIAlertController alertControllerWithTitle: nil
+                                                                               message: [NSString stringWithFormat:NSLocalizedStringFromTable(@"tchap_dialog_prompt_new_direct_chat", @"Tchap", nil), contact.displayName]
+                                               preferredStyle:UIAlertControllerStyleAlert];
+                
+                MXWeakify(self);
+                UIAlertAction* defaultAction = [UIAlertAction actionWithTitle: NSLocalizedStringFromTable(@"action_proceed", @"Tchap", nil) style:UIAlertActionStyleDefault
+                   handler:^(UIAlertAction * action) {
+                    MXStrongifyAndReturnIfNil(self);
+                    [self.delegate contactsViewController:self didSelectContact:contact];
+                }];
+                
+                UIAlertAction* cancelAction = [UIAlertAction actionWithTitle: NSLocalizedStringFromTable(@"action_cancel", @"Tchap", nil) style:UIAlertActionStyleDefault
+                   handler:nil];
+                
+                [alert addAction:cancelAction];
+                [alert addAction:defaultAction];
+                [self presentViewController:alert animated:YES completion:nil];
+            }
+        }];
     }
     
     if (self.enableMultipleSelection)

@@ -465,6 +465,10 @@ internal enum TchapL10n {
   /// Votre correspondant a quitté définitivement cette discussion.
   /// Vous devez en créer une nouvelle pour le recontacter, s'il est toujours joignable sur Tchap.
   internal static let tchapCannotInviteDeactivatedAccountUser = TchapL10n.tr("Tchap", "tchap_cannot_invite_deactivated_account_user")
+  /// Vous n'avez pas de message direct avec %@, voulez-vous lui envoyer une invitation ?
+  internal static func tchapDialogPromptNewDirectChat(_ p1: Any) -> String {
+    return TchapL10n.tr("Tchap", "tchap_dialog_prompt_new_direct_chat", String(describing: p1))
+  }
   /// Vous n'êtes pas autorisé à rejoindre cette conversation. Une invitation est nécessaire.
   internal static let tchapRoomAccessUnauthorized = TchapL10n.tr("Tchap", "tchap_room_access_unauthorized")
   /// Voulez-vous vraiment quitter cette conversation ?

@@ -23,7 +23,7 @@
 
 #import "RoomParticipantsViewController.h"
 
-#import "ContactsTableViewController.h"
+#import "ContactsViewController.h"
 
 #import "UIViewController+RiotSearch.h"
 
@@ -77,6 +77,12 @@ extern NSNotificationName const RoomGroupCallTileTappedNotification;
  YES by default.
  */
 @property (nonatomic) BOOL showMissedDiscussionsBadge;
+
+/**
+ Tell whether input tool bar should be hidden in every case.
+ NO by default.
+ */
+@property (nonatomic) BOOL forceHideInputToolBar;
 
 /**
  Display the preview of a room that is unknown for the user.

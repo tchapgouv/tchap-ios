@@ -1,5 +1,5 @@
 /*
- Copyright 2018 New Vector Ltd
+ Copyright 2016 OpenMarket Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -14,8 +14,10 @@
  limitations under the License.
  */
 
-import Foundation
+#import "MatrixKit.h"
 
-/// `PublicRoomsCoordinatorType` is a protocol describing a Coordinator that handle public rooms navigation flow.
-protocol PublicRoomsCoordinatorType: Coordinator, Presentable {
-}
+#import "DeviceTableViewCell.h"
+
+@interface RoomMemberDetailsViewController : MXKRoomMemberDetailsViewController
+
+@end

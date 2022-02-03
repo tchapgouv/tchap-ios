@@ -17,7 +17,7 @@
 import Foundation
 import Intents
 
-final class AppCoordinator: AppCoordinatorType {
+final class AppCoordinator: NSObject, AppCoordinatorType {
     
     // MARK: - Constants
     
@@ -653,5 +653,47 @@ extension AppCoordinator: HomeCoordinatorDelegate {
 extension AppCoordinator: AppVersionUpdateCoordinatorDelegate {
     func appVersionUpdateCoordinatorDidCancel(_ coordinator: AppVersionUpdateCoordinatorType) {
         self.remove(childCoordinator: coordinator)
+    }
+}
+
+// MARK: - LegacyAppDelegateDelegate
+extension AppCoordinator: LegacyAppDelegateDelegate {
+            
+    func legacyAppDelegate(_ legacyAppDelegate: LegacyAppDelegate!, wantsToPopToHomeViewControllerAnimated animated: Bool, completion: (() -> Void)!) {
+        
+        // Pop to root view controller
+        self.rootRouter.dismissModule(animated: true, completion: nil)
+        completion()
+        
+        // Tchap : There is no splitView in Tchap.
+//        self.splitViewCoordinator?.popToHome(animated: animated, completion: completion)
+    }
+    
+    func legacyAppDelegate(_ legacyAppDelegate: LegacyAppDelegate!, wantsToShowRoom roomID: String, completion: (() -> Void)?) {
+        _ = self.showRoom(with: roomID)
+        completion?()
+    }
+    
+    func legacyAppDelegateRestoreEmptyDetailsViewController(_ legacyAppDelegate: LegacyAppDelegate!) {
+        //
+    }
+    
+    func legacyAppDelegate(_ legacyAppDelegate: LegacyAppDelegate!, didAddMatrixSession session: MXSession!) {
+    }
+    
+    func legacyAppDelegate(_ legacyAppDelegate: LegacyAppDelegate!, didRemoveMatrixSession session: MXSession!) {
+        //
+    }
+    
+    func legacyAppDelegate(_ legacyAppDelegate: LegacyAppDelegate!, didAdd account: MXKAccount!) {
+        //
+    }
+    
+    func legacyAppDelegate(_ legacyAppDelegate: LegacyAppDelegate!, didRemove account: MXKAccount!) {
+        //
+    }
+    
+    func legacyAppDelegate(_ legacyAppDelegate: LegacyAppDelegate!, didNavigateToSpaceWithId spaceId: String!) {
+        //
     }
 }

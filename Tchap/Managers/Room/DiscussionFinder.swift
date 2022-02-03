@@ -22,15 +22,27 @@ enum DiscussionFinderError: Error {
 }
 
 /// `DiscussionFinder` is used to find the direct chat which is the most suitable discussion with a Tchap user.
-final class DiscussionFinder: DiscussionFinderType {
+@objc final class DiscussionFinder: NSObject, DiscussionFinderType {
     
     // MARK: Private
     private let session: MXSession
     
     // MARK: - Public
     
-    init(session: MXSession) {
+    @objc init(session: MXSession) {
         self.session = session
+    }
+    
+    @objc func hasDiscussion(for userID: String,
+                             completion: @escaping (Bool) -> Void) {
+        self.getDiscussionIdentifier(for: userID, includeInvite: true, autoJoin: true) { response in
+            switch response {
+            case .success(_):
+                completion(true)
+            case .failure(_):
+                completion(false)
+            }
+        }
     }
     
     func getDiscussionIdentifier(for userID: String, includeInvite: Bool = true, autoJoin: Bool = true, completion: @escaping (MXResponse<DiscussionFinderResult>) -> Void) {

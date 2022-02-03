@@ -53,6 +53,9 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
     // MARK: - Setup
     
     init(session: MXSession) {
+        // Setup navigation router store
+        _ = NavigationRouterStore.shared
+        
         self.navigationRouter = NavigationRouter(navigationController: RiotNavigationController())
         self.session = session
         self.inviteService = InviteService(session: self.session)
@@ -101,11 +104,16 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
     func showRoom(with roomID: String, onEventID eventID: String? = nil) {
         AppDelegate.theDelegate().removeDeliveredNotifications(withRoomId: roomID, completion: nil)
         
-        let roomCoordinator = RoomCoordinator(router: self.navigationRouter, session: self.session, roomID: roomID, eventID: eventID)
+        self.navigationRouter.popToRootModule(animated: false)
+        
+        let parameters = RoomCoordinatorParameters(navigationRouter: self.navigationRouter,
+                                                   navigationRouterStore: NavigationRouterStore.shared,
+                                                   session: self.session,
+                                                   roomId: roomID,
+                                                   eventId: eventID)
+        let roomCoordinator = RoomCoordinator(parameters: parameters)
         roomCoordinator.start()
         roomCoordinator.delegate = self
-        
-        self.navigationRouter.popToRootModule(animated: false)
         
         self.add(childCoordinator: roomCoordinator)
         self.navigationRouter.push(roomCoordinator, animated: true) {
@@ -247,23 +255,20 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
     }
     
     private func showPublicRooms() {
-        let publicRoomsCoordinator = PublicRoomsCoordinator(session: self.session)
-        publicRoomsCoordinator.start()
-        self.add(childCoordinator: publicRoomsCoordinator)
-        self.navigationRouter.present(publicRoomsCoordinator, animated: true)
-        publicRoomsCoordinator.delegate = self
+        let publicRoomServers = BuildSettings.publicRoomsDirectoryServers
+        let publicRoomService = PublicRoomService(homeServersStringURL: publicRoomServers, session: self.session)
+        let dataSource = PublicRoomsDataSource(session: self.session,
+                                               publicRoomService: publicRoomService)
+        let publicRoomsViewController = PublicRoomsViewController.instantiate(dataSource: dataSource)
+        publicRoomsViewController.delegate = self
+        let router = NavigationRouter(navigationController: RiotNavigationController())
+        router.setRootModule(publicRoomsViewController.toPresentable())
+        self.navigationRouter.present(router, animated: true)
     }
     
     // Prepare a new discussion with a user without associated room
     private func startDiscussion(with userID: String) {
-        let roomCoordinator = RoomCoordinator(router: self.navigationRouter, session: self.session, discussionTargetUserID: userID)
-        roomCoordinator.start()
-        
-        self.navigationRouter.push(roomCoordinator, animated: true, popCompletion: { [weak self] in
-            self?.remove(childCoordinator: roomCoordinator)
-        })
-        
-        self.add(childCoordinator: roomCoordinator)
+        AppDelegate.theDelegate().startDirectChat(withUserId: userID, completion: nil)
     }
     
     private func showCreateNewDiscussion() {
@@ -388,6 +393,22 @@ extension HomeCoordinator: ContactsCoordinatorDelegate {
 
 // MARK: - RoomCoordinatorDelegate
 extension HomeCoordinator: RoomCoordinatorDelegate {
+    func roomCoordinatorDidLeaveRoom(_ coordinator: RoomCoordinatorProtocol) {
+        //
+    }
+    
+    func roomCoordinatorDidCancelRoomPreview(_ coordinator: RoomCoordinatorProtocol) {
+        //
+    }
+    
+    func roomCoordinator(_ coordinator: RoomCoordinatorProtocol, didSelectRoomWithId roomId: String) {
+        //
+    }
+    
+    func roomCoordinatorDidDismissInteractively(_ coordinator: RoomCoordinatorProtocol) {
+        //
+    }
+    
     func roomCoordinator(_ coordinator: RoomCoordinatorType, didSelectRoomID roomID: String) {
         self.showRoom(with: roomID)
     }
@@ -401,6 +422,16 @@ extension HomeCoordinator: RoomCoordinatorDelegate {
             return false
         }
         return delegate.homeCoordinator(self, handlePermalinkFragment: fragment)
+    }
+}
+
+// MARK: - PublicRoomsViewControllerDelegate
+extension HomeCoordinator: PublicRoomsViewControllerDelegate {
+    func publicRoomsViewController(_ publicRoomsViewController: PublicRoomsViewController, didSelect publicRoom: MXPublicRoom) {
+        publicRoomsViewController.navigationController?.dismiss(animated: true, completion: { [weak self] in
+            self?.showRoomPreview(with: publicRoom.roomId,
+                                  roomName: publicRoom.name)
+        })
     }
 }
         
@@ -417,23 +448,6 @@ extension HomeCoordinator: HomeViewControllerDelegate {
     
     func homeViewControllerDidTapPublicRoomsAccessButton(_ homeViewController: HomeViewController) {
         self.showPublicRooms()
-    }
-}
-
-// MARK: - PublicRoomsCoordinatorDelegate
-extension HomeCoordinator: PublicRoomsCoordinatorDelegate {
-    
-    func publicRoomsCoordinator(_ publicRoomsCoordinator: PublicRoomsCoordinator, showRoomWithId roomId: String, onEventId eventId: String?) {
-        self.navigationRouter.dismissModule(animated: true) { [weak self] in
-            self?.remove(childCoordinator: publicRoomsCoordinator)
-            self?.showRoom(with: roomId, onEventID: eventId)
-        }
-    }
-    
-    func publicRoomsCoordinatorDidCancel(_ publicRoomsCoordinator: PublicRoomsCoordinator) {
-        self.navigationRouter.dismissModule(animated: true) { [weak self] in
-            self?.remove(childCoordinator: publicRoomsCoordinator)
-        }
     }
 }
 

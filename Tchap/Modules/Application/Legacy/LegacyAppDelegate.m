@@ -77,6 +77,7 @@
 #define MAKE_STRING(x) #x
 #define MAKE_NS_STRING(x) @MAKE_STRING(x)
 
+NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapStatusBarNotification";
 NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateNetworkStatusDidChangeNotification";
 NSString *const kLegacyAppDelegateDidLogoutNotification = @"kLegacyAppDelegateDidLogoutNotification";
 NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDidLoginNotification";
@@ -201,6 +202,8 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 @property (nonatomic, strong) PushNotificationService *pushNotificationService;
 @property (nonatomic, strong) PushNotificationStore *pushNotificationStore;
 //@property (nonatomic, strong) LocalAuthenticationService *localAuthenticationService;
+
+@property (nonatomic, strong) DiscussionFinder* discussionFinder;
 
 @end
 
@@ -452,6 +455,9 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 //    dispatch_async(dispatch_get_main_queue(), ^{
 //        [self configurePinCodeScreenFor:application createIfRequired:YES];
 //    });
+    
+    MXSession *mainSession = self.mxSessions.firstObject;
+    self.discussionFinder = [[DiscussionFinder alloc] initWithSession:mainSession];
 
     return YES;
 }
@@ -714,6 +720,72 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 
 #pragma mark - Application layout handling
 
+- (void)restoreInitialDisplay:(void (^)(void))completion
+{
+    // Suspend error notifications during navigation stack change.
+    isErrorNotificationSuspended = YES;
+    
+    // Dismiss potential view controllers that were presented modally (like the media picker).
+    if (self.window.rootViewController.presentedViewController)
+    {
+        // Do it asynchronously to avoid hasardous dispatch_async after calling restoreInitialDisplay
+        [self.window.rootViewController dismissViewControllerAnimated:NO completion:^{
+            
+            [self popToHomeViewControllerAnimated:NO completion:^{
+                
+                if (completion)
+                {
+                    completion();
+                }
+                
+                // Enable error notifications
+                isErrorNotificationSuspended = NO;
+                
+                if (noCallSupportAlert)
+                {
+                    MXLogDebug(@"[AppDelegate] restoreInitialDisplay: keep visible noCall support alert");
+                    [self showNotificationAlert:noCallSupportAlert];
+                }
+                else if (cryptoDataCorruptedAlert)
+                {
+                    MXLogDebug(@"[AppDelegate] restoreInitialDisplay: keep visible log in again");
+                    [self showNotificationAlert:cryptoDataCorruptedAlert];
+                }
+                else if (wrongBackupVersionAlert)
+                {
+                    MXLogDebug(@"[AppDelegate] restoreInitialDisplay: keep visible wrongBackupVersionAlert");
+                    [self showNotificationAlert:wrongBackupVersionAlert];
+
+                }
+                // Check whether an error notification is pending
+                else if (_errorNotification)
+                {
+                    [self showNotificationAlert:_errorNotification];
+                }
+                
+            }];
+            
+        }];
+    }
+    else
+    {
+        [self popToHomeViewControllerAnimated:NO completion:^{
+            
+            if (completion)
+            {
+                completion();
+            }
+            
+            // Enable error notification (Check whether a notification is pending)
+            isErrorNotificationSuspended = NO;
+            if (_errorNotification)
+            {
+                [self showNotificationAlert:_errorNotification];
+            }
+        }];
+    }
+}
+
 - (UIAlertController*)showErrorAsAlert:(NSError*)error
 {
     // Ignore fake error, or connection cancellation error
@@ -887,6 +959,14 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         [self showNotificationAlert:wrongBackupVersionAlert];
     }
 }
+
+#pragma mark
+
+- (void)popToHomeViewControllerAnimated:(BOOL)animated completion:(void (^)(void))completion
+{
+    [self.delegate legacyAppDelegate:self wantsToPopToHomeViewControllerAnimated:animated completion:completion];
+}
+
 
 #pragma mark - Crash handling
 
@@ -1743,6 +1823,180 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         
         [self showNotificationAlert:accountPicker];
     }
+}
+
+#pragma mark - Matrix Rooms handling
+
+- (void)showRoomWithParameters:(RoomNavigationParameters*)parameters
+{
+    [self showRoomWithParameters:parameters completion:nil];
+}
+
+- (void)showRoomWithParameters:(RoomNavigationParameters*)parameters completion:(void (^)(void))completion
+{
+    NSString *roomId = parameters.roomId;
+    MXSession *mxSession = parameters.mxSession;
+    BOOL restoreInitialDisplay = parameters.presentationParameters.restoreInitialDisplay;
+    
+    if (roomId && mxSession)
+    {
+        MXRoom *room = [mxSession roomWithRoomId:roomId];
+        
+        // Indicates that spaces are not supported
+        if (room.summary.roomType == MXRoomTypeSpace)
+        {
+            
+//            [self.spaceFeatureUnavailablePresenter presentUnavailableFeatureFrom:self.presentedViewController animated:YES];
+            
+            if (completion)
+            {
+                completion();
+            }
+            
+            return;
+        }
+    }
+    
+    void (^selectRoom)(void) = ^() {
+        // Select room to display its details (dispatch this action in order to let TabBarController end its refresh)
+        
+        // Tchap : Use delegate method instead of TabBarController one (There is no TabBar in Tchap).
+        [self.delegate legacyAppDelegate:self wantsToShowRoom:roomId completion:completion];
+        
+//        [self.masterTabBarController selectRoomWithParameters:parameters completion:^{
+//            // Remove delivered notifications for this room
+//            [self.pushNotificationService removeDeliveredNotificationsWithRoomId:roomId completion:nil];
+            
+//            if (completion)
+//            {
+//                completion();
+//            }
+//        }];
+    };
+    
+    if (restoreInitialDisplay)
+    {
+        [self restoreInitialDisplay:^{
+            selectRoom();
+        }];
+    }
+    else
+    {
+        selectRoom();
+    }
+}
+
+- (void)showRoom:(NSString*)roomId andEventId:(NSString*)eventId withMatrixSession:(MXSession*)mxSession
+{
+    // Ask to restore initial display
+    ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:YES];
+    
+    RoomNavigationParameters *parameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId
+                                                                                        eventId:eventId mxSession:mxSession presentationParameters:presentationParameters];
+    
+    [self showRoomWithParameters:parameters];
+}
+
+- (void)createDirectChatWithUserId:(NSString*)userId completion:(void (^)(void))completion
+{
+    // Handle here potential multiple accounts
+    [self selectMatrixAccount:^(MXKAccount *selectedAccount) {
+        
+        MXSession *mxSession = selectedAccount.mxSession;
+        
+        if (mxSession)
+        {
+            // Create a new room by inviting the other user only if it is defined and not oneself
+            NSArray *invite = ((userId && ![mxSession.myUser.userId isEqualToString:userId]) ? @[userId] : nil);
+
+            void (^onFailure)(NSError *) = ^(NSError *error){
+                MXLogDebug(@"[AppDelegate] Create direct chat failed");
+                //Alert user
+                [self showAlertWithTitle:nil message:[VectorL10n roomCreationDmError]];
+
+                if (completion)
+                {
+                    completion();
+                }
+            };
+
+            [mxSession vc_canEnableE2EByDefaultInNewRoomWithUsers:invite success:^(BOOL canEnableE2E) {
+                
+                MXRoomCreationParameters *roomCreationParameters = [MXRoomCreationParameters new];
+                roomCreationParameters.visibility = kMXRoomDirectoryVisibilityPrivate;
+                roomCreationParameters.inviteArray = invite;
+                roomCreationParameters.isDirect = (invite.count != 0);
+                roomCreationParameters.preset = kMXRoomPresetTrustedPrivateChat;
+
+                if (canEnableE2E)
+                {
+                    roomCreationParameters.initialStateEvents = @[
+                                                                  [MXRoomCreationParameters initialStateEventForEncryptionWithAlgorithm:kMXCryptoMegolmAlgorithm
+                                                                  ]];
+                }
+
+                [mxSession createRoomWithParameters:roomCreationParameters success:^(MXRoom *room) {
+
+                    // Open created room
+                    [self showRoom:room.roomId andEventId:nil withMatrixSession:mxSession];
+
+                    if (completion)
+                    {
+                        completion();
+                    }
+
+                } failure:onFailure];
+
+            } failure:onFailure];
+        }
+        else if (completion)
+        {
+            completion();
+        }
+        
+    }];
+}
+
+- (void)startDirectChatWithUserId:(NSString*)userId completion:(void (^)(void))completion
+{
+    // Handle here potential multiple accounts
+    [self selectMatrixAccount:^(MXKAccount *selectedAccount) {
+        
+        MXSession *mxSession = selectedAccount.mxSession;
+        
+        if (mxSession)
+        {
+            MXRoom *directRoom = [mxSession directJoinedRoomWithUserId:userId];
+            
+            // if the room exists
+            // And for Tchap : if we found a valid discussion between the current user and the one with userId.
+            if (directRoom)// && hasDiscussion)
+            {
+                // open it
+                [self.discussionFinder hasDiscussionFor:userId completion:^(BOOL hasDiscussion) {
+                    if (hasDiscussion) {
+                        [self showRoom:directRoom.roomId andEventId:nil withMatrixSession:mxSession];
+                        
+                        if (completion)
+                        {
+                            completion();
+                        }
+                    } else {
+                        [self createDirectChatWithUserId:userId completion:completion];
+                    }
+                }];
+            }
+            else
+            {
+                [self createDirectChatWithUserId:userId completion:completion];
+            }
+        }
+        else if (completion)
+        {
+            completion();
+        }
+        
+    }];
 }
 
 #pragma mark - Contacts handling

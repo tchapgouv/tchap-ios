@@ -41,7 +41,7 @@ final class DiscussionDetailsCoordinator: NSObject, RoomDetailsCoordinatorType {
         self.session = session
         self.roomID = roomID
         
-        self.memberDetailsViewController = RoomMemberDetailsViewController.instantiate()
+        self.memberDetailsViewController = RoomMemberDetailsViewController()
     }
     
     // MARK: - Public methods

@@ -174,31 +174,47 @@ final class RoomPreviewCoordinator: NSObject, RoomPreviewCoordinatorType {
 
 // MARK: - RoomViewControllerDelegate
 extension RoomPreviewCoordinator: RoomViewControllerDelegate {
-    
-    func roomViewControllerShowRoomDetails(_ roomViewController: RoomViewController!) {
+    func roomViewController(_ roomViewController: RoomViewController, showRoomWithId eventIdentifier: String) {
+        //
     }
     
-    func roomViewController(_ roomViewController: RoomViewController!, showMemberDetails roomMember: MXRoomMember!) {
+    func roomViewController(_ roomViewController: RoomViewController, endPollWithEventIdentifier eventIdentifier: String) {
+        //
     }
     
-    func roomViewController(_ roomViewController: RoomViewController!, showRoom roomID: String!) {
+    func roomViewControllerShowRoomDetails(_ roomViewController: RoomViewController) {
+        //
     }
     
-    func roomViewControllerPreviewDidTapJoin(_ roomViewController: RoomViewController!) {
-        guard let roomPreviewData = roomViewController.roomPreviewData else {
-            return
-        }
-        self.joinRoom(with: roomPreviewData)
+    func roomViewControllerDidLeaveRoom(_ roomViewController: RoomViewController) {
+        //
     }
     
-    func roomViewControllerPreviewDidTapCancel(_ roomViewController: RoomViewController!) {
+    func roomViewControllerPreviewDidTapCancel(_ roomViewController: RoomViewController) {
         self.didCancel()
     }
     
-    func roomViewController(_ roomViewController: RoomViewController, handlePermalinkFragment fragment: String) -> Bool {
+    func roomViewControllerDidRequestPollCreationFormPresentation(_ roomViewController: RoomViewController) {
+        //
+    }
+    
+    func roomViewController(_ roomViewController: RoomViewController, showMemberDetails roomMember: MXRoomMember) {
+        //
+    }
+    
+    func roomViewController(_ roomViewController: RoomViewController, startChatWithUserId userId: String, completion: @escaping () -> Void) {
+        //
+    }
+    
+    func roomViewController(_ roomViewController: RoomViewController, showCompleteSecurityFor session: MXSession) {
+        //
+    }
+    
+    func roomViewController(_ roomViewController: RoomViewController, handleUniversalLinkWith parameters: UniversalLinkParameters) -> Bool {
         return false
     }
     
-    func roomViewController(_ roomViewController: RoomViewController, shareItemProvider provider: SimpleShareItemProvider) {
+    func roomViewController(_ roomViewController: RoomViewController, canEndPollWithEventIdentifier eventIdentifier: String) -> Bool {
+        return false
     }
 }

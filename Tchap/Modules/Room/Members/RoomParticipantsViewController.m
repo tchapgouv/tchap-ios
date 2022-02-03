@@ -1440,7 +1440,7 @@
     Contact *contact = [self getContactAtIndexPath:indexPath];
     if (contact.mxMember)
     {
-        memberDetailsViewController = [RoomMemberDetailsViewController instantiate];
+        memberDetailsViewController = [RoomMemberDetailsViewController roomMemberDetailsViewController];
         
         // Set delegate to handle action on member (start chat, mention)
         memberDetailsViewController.delegate = self;

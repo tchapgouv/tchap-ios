@@ -246,6 +246,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Create new discussion
 "create_new_discussion_title" = "Nouvelle discussion";
+"tchap_dialog_prompt_new_direct_chat" = "Vous n\'avez pas de message direct avec %@, voulez-vous lui envoyer une invitation ?";
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Room creation
