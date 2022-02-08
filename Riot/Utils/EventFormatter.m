@@ -413,6 +413,9 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
 {
     BOOL updated = [super session:session updateRoomSummary:summary withStateEvents:stateEvents roomState:roomState];
     
+    // Store in the room summary some additional information
+    updated |= [summary tc_updateWithStateEvents:stateEvents];
+    
     // Customisation for EMS Functional Members in direct rooms
     if (BuildSettings.supportFunctionalMembers && summary.room.isDirect)
     {

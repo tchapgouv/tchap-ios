@@ -122,7 +122,7 @@ enum RoomCategory {
     
     /// Get the room category
     @nonobjc func tc_roomCategory() -> RoomCategory {
-        let isJoinRulePublic = self.others["mxkEventFormatterisJoinRulePublic"] as? Bool ?? false
+        let isJoinRulePublic = self.joinRule == kMXRoomJoinRulePublic
         let category: RoomCategory
         
         if tc_isServerNotice() {
