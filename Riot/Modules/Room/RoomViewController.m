@@ -406,7 +406,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 //    [self.bubblesTableView registerClass:RoomDirectCallStatusBubbleCell.class forCellReuseIdentifier:RoomDirectCallStatusBubbleCell.defaultReuseIdentifier];
 //    [self.bubblesTableView registerClass:RoomGroupCallStatusBubbleCell.class forCellReuseIdentifier:RoomGroupCallStatusBubbleCell.defaultReuseIdentifier];
 //
-//    [self.bubblesTableView registerClass:RoomCreationIntroCell.class forCellReuseIdentifier:RoomCreationIntroCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:RoomCreationIntroCell.class forCellReuseIdentifier:RoomCreationIntroCell.defaultReuseIdentifier];
     
     [self.bubblesTableView registerNib:RoomTypingBubbleCell.nib forCellReuseIdentifier:RoomTypingBubbleCell.defaultReuseIdentifier];
     
@@ -2664,10 +2664,10 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     {
         cellViewClass = RoomEmptyBubbleCell.class;
     }
-//    else if (bubbleData.tag == RoomBubbleCellDataTagRoomCreationIntro)
-//    {
-//        cellViewClass = RoomCreationIntroCell.class;
-//    }
+    else if (bubbleData.tag == RoomBubbleCellDataTagRoomCreationIntro)
+    {
+        cellViewClass = RoomCreationIntroCell.class;
+    }
     else if (bubbleData.tag == RoomBubbleCellDataTagRoomCreateWithPredecessor)
     {
         cellViewClass = RoomPredecessorBubbleCell.class;
@@ -3150,18 +3150,18 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 //            [[JitsiService shared] declineWidgetWithId:widget.widgetId];
 //            [self reloadBubblesTable:YES];
 //        }
-//        else if ([actionIdentifier isEqualToString:RoomCreationIntroCell.tapOnAvatarView])
-//        {
-//            [self showRoomAvatarChange];
-//        }
-//        else if ([actionIdentifier isEqualToString:RoomCreationIntroCell.tapOnAddParticipants])
-//        {
-//            [self showAddParticipants];
-//        }
-//        else if ([actionIdentifier isEqualToString:RoomCreationIntroCell.tapOnAddTopic])
-//        {
-//            [self showRoomTopicChange];
-//        }
+        else if ([actionIdentifier isEqualToString:RoomCreationIntroCell.tapOnAvatarView])
+        {
+            [self showRoomAvatarChange];
+        }
+        else if ([actionIdentifier isEqualToString:RoomCreationIntroCell.tapOnAddParticipants])
+        {
+            [self showAddParticipants];
+        }
+        else if ([actionIdentifier isEqualToString:RoomCreationIntroCell.tapOnAddTopic])
+        {
+            [self showRoomTopicChange];
+        }
         else
         {
             // Keep default implementation for other actions
