@@ -2397,7 +2397,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         if (isVisible && (isSizeTransitionInProgress == YES/* || !self.splitViewController*/)) // SplitViewController is currently not available in Tchap.
         {
             MXLogDebug(@"[RoomVC] Show preview header ignored");
-//            return;
+            return;
         }
         
         if (isVisible)

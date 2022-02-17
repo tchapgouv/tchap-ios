@@ -155,16 +155,26 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
         }
     }
     
+    func showRoomPreview(with publicRoom: MXPublicRoom) {
+        let roomPreviewCoordinator = RoomPreviewCoordinator(session: self.session, publicRoom: publicRoom)
+        showRoomPreview(with: roomPreviewCoordinator)
+    }
+    
     func showRoomPreview(with roomPreviewData: RoomPreviewData, onEventID eventID: String? = nil) {
         let roomPreviewCoordinator = RoomPreviewCoordinator(session: self.session, roomPreviewData: roomPreviewData)
-            roomPreviewCoordinator.start()
-            roomPreviewCoordinator.delegate = self
-            
-            self.add(childCoordinator: roomPreviewCoordinator)
-            
-            self.navigationRouter.push(roomPreviewCoordinator, animated: true) { [weak self] in
-                self?.remove(childCoordinator: roomPreviewCoordinator)
-            }
+        showRoomPreview(with: roomPreviewCoordinator)
+    }
+    
+    func showRoomPreview(with coordinator: RoomPreviewCoordinator) {
+        let roomPreviewCoordinator = coordinator
+        roomPreviewCoordinator.start()
+        roomPreviewCoordinator.delegate = self
+        
+        self.add(childCoordinator: roomPreviewCoordinator)
+        
+        self.navigationRouter.push(roomPreviewCoordinator, animated: true) { [weak self] in
+            self?.remove(childCoordinator: roomPreviewCoordinator)
+        }
     }
     
     func scrollToRoom(with roomID: String, animated: Bool) {
@@ -429,8 +439,18 @@ extension HomeCoordinator: RoomCoordinatorDelegate {
 extension HomeCoordinator: PublicRoomsViewControllerDelegate {
     func publicRoomsViewController(_ publicRoomsViewController: PublicRoomsViewController, didSelect publicRoom: MXPublicRoom) {
         publicRoomsViewController.navigationController?.dismiss(animated: true, completion: { [weak self] in
-            self?.showRoomPreview(with: publicRoom.roomId,
-                                  roomName: publicRoom.name)
+            
+            guard let roomID = publicRoom.roomId else {
+                return
+            }
+            
+            if let room: MXRoom = self?.session.room(withRoomId: roomID),
+               room.summary.membership == .join {
+                self?.showRoom(with: roomID)
+            } else {
+                // Try to preview the unknown room.
+                self?.showRoomPreview(with: publicRoom)
+            }
         })
     }
 }
