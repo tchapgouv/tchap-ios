@@ -404,7 +404,7 @@ extension HomeCoordinator: ContactsCoordinatorDelegate {
 // MARK: - RoomCoordinatorDelegate
 extension HomeCoordinator: RoomCoordinatorDelegate {
     func roomCoordinatorDidLeaveRoom(_ coordinator: RoomCoordinatorProtocol) {
-        //
+        self.navigationRouter.popToRootModule(animated: true)
     }
     
     func roomCoordinatorDidCancelRoomPreview(_ coordinator: RoomCoordinatorProtocol) {
