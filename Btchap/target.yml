@@ -134,6 +134,7 @@ targets:
     - path: ../Riot/Modules/Application/ScreenNavigation
     - path: ../Riot/Modules/Authentication/SSO
     - path: ../Riot/Modules/Authentication/Views
+    - path: ../Riot/Modules/BadgeLabel
     - path: ../Riot/Modules/BugReport/BugReportViewController.h
     - path: ../Riot/Modules/BugReport/BugReportViewController.m
     - path: ../Riot/Modules/Call/CallViewController.h

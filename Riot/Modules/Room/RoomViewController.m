@@ -1472,10 +1472,10 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         }
     }
 
-//    [UIView animateWithDuration:.2 animations:^{
-//        self.scrollToBottomBadgeLabel.alpha = (scrollToBottomHidden || !self.scrollToBottomBadgeLabel.text) ? 0 : 1;
-//        self.scrollToBottomButton.alpha = scrollToBottomHidden ? 0 : 1;
-//    }];
+    [UIView animateWithDuration:.2 animations:^{
+        self.scrollToBottomBadgeLabel.alpha = (scrollToBottomHidden || !self.scrollToBottomBadgeLabel.text) ? 0 : 1;
+        self.scrollToBottomButton.alpha = scrollToBottomHidden ? 0 : 1;
+    }];
 }
 
 - (void)setMissedDiscussionsBadgeHidden:(BOOL)missedDiscussionsBadgeHidden{
@@ -4994,13 +4994,13 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                     // Retrieve the unread messages count
                     NSUInteger unreadCount = self.roomDataSource.room.summary.localUnreadEventCount;
                     
-//                    self.scrollToBottomBadgeLabel.text = unreadCount ? [NSString stringWithFormat:@"%lu", unreadCount] : nil;
+                    self.scrollToBottomBadgeLabel.text = unreadCount ? [NSString stringWithFormat:@"%lu", unreadCount] : nil;
                     self.scrollToBottomHidden = NO;
                 }
                 else
                 {
                     //  will be here for left rooms
-//                    self.scrollToBottomBadgeLabel.text = nil;
+                    self.scrollToBottomBadgeLabel.text = nil;
                     self.scrollToBottomHidden = YES;
                 }
             }
