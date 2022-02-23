@@ -147,6 +147,7 @@ targets:
     - path: ../Riot/Modules/Common/Avatar
     - path: ../Riot/Modules/Common/Buttons
     - path: ../Riot/Modules/Common/Cells
+    - path: ../Riot/Modules/Common/CollectionView
     - path: ../Riot/Modules/Common/Models
     - path: ../Riot/Modules/Common/NavigationController/RiotNavigationController.h
     - path: ../Riot/Modules/Common/NavigationController/RiotNavigationController.m

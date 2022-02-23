@@ -480,12 +480,12 @@ const CGFloat kTypingCellHeight = 24;
                         }
                         [bubbleCell.tmpSubviews addObject:reactionsView];
                         
-//                        if ([[bubbleCell class] conformsToProtocol:@protocol(BubbleCellReactionsDisplayable)])
-//                        {
-//                            id<BubbleCellReactionsDisplayable> reactionsDisplayable = (id<BubbleCellReactionsDisplayable>)bubbleCell;
-//                            [reactionsDisplayable addReactionsView:reactionsView];
-//                        }
-//                        else
+                        if ([[bubbleCell class] conformsToProtocol:@protocol(BubbleCellReactionsDisplayable)])
+                        {
+                            id<BubbleCellReactionsDisplayable> reactionsDisplayable = (id<BubbleCellReactionsDisplayable>)bubbleCell;
+                            [reactionsDisplayable addReactionsView:reactionsView];
+                        }
+                        else
                         {
                             reactionsView.translatesAutoresizingMaskIntoConstraints = NO;
                             [bubbleCell.contentView addSubview:reactionsView];
