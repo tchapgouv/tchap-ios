@@ -102,9 +102,6 @@
 #import "RoomAttachmentAntivirusScanStatusBubbleCell.h"
 #import "RoomAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.h"
 #import "RoomAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.h"
-#import "RoomEncryptedAttachmentAntivirusScanStatusBubbleCell.h"
-#import "RoomEncryptedAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.h"
-#import "RoomEncryptedAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.h"
 
 #import "RoomSelectedStickerBubbleCell.h"
 #import "RoomPredecessorBubbleCell.h"
@@ -402,10 +399,6 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     [self.bubblesTableView registerNib:RoomAttachmentAntivirusScanStatusBubbleCell.nib forCellReuseIdentifier:RoomAttachmentAntivirusScanStatusBubbleCell.defaultReuseIdentifier];
     [self.bubblesTableView registerNib:RoomAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.nib forCellReuseIdentifier:RoomAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
     [self.bubblesTableView registerNib:RoomAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.nib forCellReuseIdentifier:RoomAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.defaultReuseIdentifier];
-    
-    [self.bubblesTableView registerNib:RoomEncryptedAttachmentAntivirusScanStatusBubbleCell.nib forCellReuseIdentifier:RoomEncryptedAttachmentAntivirusScanStatusBubbleCell.defaultReuseIdentifier];
-    [self.bubblesTableView registerNib:RoomEncryptedAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.nib forCellReuseIdentifier:RoomEncryptedAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
-    [self.bubblesTableView registerNib:RoomEncryptedAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.nib forCellReuseIdentifier:RoomEncryptedAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.defaultReuseIdentifier];
     
     [self.bubblesTableView registerClass:KeyVerificationIncomingRequestApprovalBubbleCell.class forCellReuseIdentifier:KeyVerificationIncomingRequestApprovalBubbleCell.defaultReuseIdentifier];
     [self.bubblesTableView registerClass:KeyVerificationIncomingRequestApprovalWithPaginationTitleBubbleCell.class forCellReuseIdentifier:KeyVerificationIncomingRequestApprovalWithPaginationTitleBubbleCell.defaultReuseIdentifier];
@@ -2679,15 +2672,15 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     {
         if (bubbleData.isPaginationFirstBubble)
         {
-            cellViewClass = showEncryptionBadge ? RoomEncryptedAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.class : RoomAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.class;
+            cellViewClass = RoomAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.class;
         }
         else if (bubbleData.shouldHideSenderInformation)
         {
-            cellViewClass = showEncryptionBadge ? RoomEncryptedAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.class : RoomAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.class;
+            cellViewClass = RoomAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.class;
         }
         else
         {
-            cellViewClass = showEncryptionBadge ? RoomEncryptedAttachmentAntivirusScanStatusBubbleCell.class : RoomAttachmentAntivirusScanStatusBubbleCell.class;
+            cellViewClass = RoomAttachmentAntivirusScanStatusBubbleCell.class;
         }
     }
     else if (bubbleData.hasNoDisplay)
