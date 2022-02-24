@@ -763,10 +763,6 @@
             contactsDataSource.ignoredContactsByMatrixId[contact.mxMember.userId] = contact;
         }
     }
-    if (userParticipant)
-    {
-        contactsDataSource.ignoredContactsByMatrixId[userParticipant.mxMember.userId] = userParticipant;
-    }
     
 //    [contactsPickerViewController showSearch:YES];
 //    contactsPickerViewController.searchBar.placeholder = [VectorL10n roomParticipantsInviteAnotherUser];
@@ -801,22 +797,7 @@
 
             for (MXRoomMember *mxMember in members)
             {
-                // Update the current participants list
-                if ([mxMember.userId isEqualToString:userId])
-                {
-                    if (mxMember.membership == MXMembershipJoin || mxMember.membership == MXMembershipInvite)
-                    {
-                        // The user is in this room
-                        NSString *displayName = [VectorL10n you];
-
-                        self->userParticipant = [[Contact alloc] initMatrixContactWithDisplayName:displayName andMatrixID:userId];
-                        self->userParticipant.mxMember = [roomState.members memberWithUserId:userId];
-                    }
-                }
-                else
-                {
-                    [self handleRoomMember:mxMember];
-                }
+                [self handleRoomMember:mxMember];
             }
 
             for (MXRoomThirdPartyInvite *roomThirdPartyInvite in roomThirdPartyInvites)
@@ -1021,82 +1002,79 @@
     // We could tiebreak instead by "last recently spoken in this room" if we wanted to.
     NSComparator comparator = ^NSComparisonResult(Contact *contactA, Contact *contactB) {
         
-        MXUser *userA = [self.mxRoom.mxSession userWithUserId:contactA.mxMember.userId];
-        MXUser *userB = [self.mxRoom.mxSession userWithUserId:contactB.mxMember.userId];
+        NSString *userIdA = contactA.mxMember.userId;
+        NSString *userIdB = contactB.mxMember.userId;
         
-        if (!userA && !userB)
+        if (!userIdA && !userIdB)
         {
             return [contactA.sortingDisplayName compare:contactB.sortingDisplayName options:NSCaseInsensitiveSearch];
         }
-        if (userA && !userB)
+        if (userIdA && !userIdB)
+        {
+            return contactA.isExpired ? NSOrderedDescending : NSOrderedAscending;
+        }
+        if (!userIdA && userIdB)
+        {
+            return contactB.isExpired ? NSOrderedAscending : NSOrderedDescending;
+        }
+        if (contactA.isExpired)
+        {
+            if (!contactB.isExpired)
+            {
+                return NSOrderedDescending;
+            }
+        }
+        else if (contactB.isExpired)
         {
             return NSOrderedAscending;
         }
-        if (!userA && userB)
-        {
-            return NSOrderedDescending;
-        }
         
-        if (userA.currentlyActive && userB.currentlyActive)
+        // Order first by power levels (admins then moderators then others)
+        MXRoomPowerLevels *powerLevels = [roomState powerLevels];
+        NSInteger powerLevelA = [powerLevels powerLevelOfUserWithUserID:userIdA];
+        NSInteger powerLevelB = [powerLevels powerLevelOfUserWithUserID:userIdB];
+        
+        if (powerLevelA == powerLevelB)
         {
-            // Order first by power levels (admins then moderators then others)
-            MXRoomPowerLevels *powerLevels = [roomState powerLevels];
-            NSInteger powerLevelA = [powerLevels powerLevelOfUserWithUserID:contactA.mxMember.userId];
-            NSInteger powerLevelB = [powerLevels powerLevelOfUserWithUserID:contactB.mxMember.userId];
-            
-            if (powerLevelA == powerLevelB)
+            // Then order by name
+            if (contactA.sortingDisplayName.length && contactB.sortingDisplayName.length)
             {
-                // Then order by name
-                if (contactA.sortingDisplayName.length && contactB.sortingDisplayName.length)
-                {
-                    return [contactA.sortingDisplayName compare:contactB.sortingDisplayName options:NSCaseInsensitiveSearch];
-                }
-                else if (contactA.sortingDisplayName.length)
-                {
-                    return NSOrderedAscending;
-                }
-                else if (contactB.sortingDisplayName.length)
-                {
-                    return NSOrderedDescending;
-                }
-                return [contactA.displayName compare:contactB.displayName options:NSCaseInsensitiveSearch];
+                return [contactA.sortingDisplayName compare:contactB.sortingDisplayName options:NSCaseInsensitiveSearch];
             }
-            else
+            else if (contactA.sortingDisplayName.length)
             {
-                return powerLevelB - powerLevelA;
+                return NSOrderedAscending;
             }
-            
-        }
-        
-        if (userA.currentlyActive && !userB.currentlyActive)
-        {
-            return NSOrderedAscending;
-        }
-        if (!userA.currentlyActive && userB.currentlyActive)
-        {
-            return NSOrderedDescending;
-        }
-        
-        // Finally, compare the lastActiveAgo
-        NSUInteger lastActiveAgoA = userA.lastActiveAgo;
-        NSUInteger lastActiveAgoB = userB.lastActiveAgo;
-        
-        if (lastActiveAgoA == lastActiveAgoB)
-        {
-            return NSOrderedSame;
+            else if (contactB.sortingDisplayName.length)
+            {
+                return NSOrderedDescending;
+            }
+            return [contactA.displayName compare:contactB.displayName options:NSCaseInsensitiveSearch];
         }
         else
         {
-            return ((lastActiveAgoA > lastActiveAgoB) ? NSOrderedDescending : NSOrderedAscending);
+            return powerLevelB - powerLevelA;
         }
     };
     
     // Sort each participants list in alphabetical order
     [actualParticipants sortUsingComparator:comparator];
     [invitedParticipants sortUsingComparator:comparator];
+
+    // Refresh the tableview by reloading the search result (if any)
+    [self refreshTableViewByApplyingSearchIfAny];
     
-    // Reload search result if any
-    [self reloadSearchResult];
+    // Check whether some accounts have expired
+    MXWeakify(self);
+    [self checkExpiredAccounts:^{
+        MXStrongifyAndReturnIfNil(self);
+        // Sort each participants list in alphabetical order by moving at the bottom the expired accounts
+        [self->actualParticipants sortUsingComparator:comparator];
+        [self->invitedParticipants sortUsingComparator:comparator];
+        
+        // Refresh the tableview by reloading the search result (if any)
+        [self refreshTableViewByApplyingSearchIfAny];
+    }];
 }
 
 - (Contact*)getContactAtIndexPath:(NSIndexPath *)indexPath
