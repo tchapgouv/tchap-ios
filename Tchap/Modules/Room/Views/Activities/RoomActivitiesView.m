@@ -118,64 +118,51 @@
     {
         self.messageLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
     }
+    
+    [self.resendButton.layer setCornerRadius:5];
+    self.resendButton.clipsToBounds = YES;
+    [self.resendButton setTitle:[VectorL10n retry] forState:UIControlStateNormal];
+    self.resendButton.backgroundColor = ThemeService.shared.theme.tintColor;
+    
+    UIImage *image = [[UIImage imageNamed:@"room_context_menu_delete"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [self.deleteButton setImage:image forState:UIControlStateNormal];
+    self.deleteButton.tintColor = ThemeService.shared.theme.warningColor;
+    
+    self.unsentMessageLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.unsentMessagesContentView.backgroundColor = ThemeService.shared.theme.backgroundColor;
 }
 
 #pragma mark -
 
+- (IBAction)onCancelSendingPressed:(id)sender
+{
+    void (^onCancelLinkPressed)(void) = objc_getAssociatedObject(self.deleteButton, "onCancelLinkPressed");
+    if (onCancelLinkPressed)
+    {
+        onCancelLinkPressed ();
+    }
+}
+
+- (IBAction)onResendMessagesPressed:(id)sender
+{
+    void (^onResendLinkPressed)(void) = objc_getAssociatedObject(self.resendButton, "onResendLinkPressed");
+    if (onResendLinkPressed)
+    {
+        onResendLinkPressed();
+    }
+}
+
 - (void)displayUnsentMessagesNotification:(NSString*)notification withResendLink:(void (^)(void))onResendLinkPressed andCancelLink:(void (^)(void))onCancelLinkPressed andIconTapGesture:(void (^)(void))onIconTapGesture
 {
     [self reset];
-
+    
     if (onResendLinkPressed && onCancelLinkPressed)
     {
-        NSString *resendLink = NSLocalizedStringFromTable(@"room_prompt_resend", @"Vector", nil);
-        NSString *cancelLink = NSLocalizedStringFromTable(@"room_prompt_cancel", @"Vector", nil);
-
-        NSString *notif = [NSString stringWithFormat:notification, resendLink, cancelLink];
-        NSMutableAttributedString *tappableNotif = [[NSMutableAttributedString alloc] initWithString:notif];
+        self.unsentMessagesContentView.hidden = NO;
+        self.unsentMessageLabel.text = notification;
         
-        objc_setAssociatedObject(self.messageTextView, "onResendLinkPressed", [onResendLinkPressed copy], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-        objc_setAssociatedObject(self.messageTextView, "onCancelLinkPressed", [onCancelLinkPressed copy], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-
-        NSRange range = [notif rangeOfString:resendLink];
-        [tappableNotif addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:range];
-        [tappableNotif addAttribute:NSLinkAttributeName value:@"onResendLink" range:range];
-
-        range = [notif rangeOfString:cancelLink];
-        [tappableNotif addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:range];
-        [tappableNotif addAttribute:NSLinkAttributeName value:@"onCancelLink" range:range];
-        
-        NSRange wholeString = NSMakeRange(0, tappableNotif.length);
-        [tappableNotif addAttribute:NSForegroundColorAttributeName value:ThemeService.shared.theme.warningColor range:wholeString];
-        [tappableNotif addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:15] range:wholeString];
-        
-        self.messageTextView.attributedText = tappableNotif;
-        self.messageTextView.tintColor = ThemeService.shared.theme.warningColor;
-        self.messageTextView.hidden = NO;
-        self.messageTextView.backgroundColor = [UIColor clearColor];
-    }
-    else
-    {
-        self.messageLabel.text = notification;
-        self.messageLabel.textColor = ThemeService.shared.theme.warningColor;
-        self.messageLabel.hidden = NO;
-    }
-    
-    self.iconImageView.image = [UIImage imageNamed:@"error"];
-    self.iconImageView.tintColor = ThemeService.shared.theme.noticeColor;
-    self.iconImageView.hidden = NO;
-    
-    if (onIconTapGesture)
-    {
-        objc_setAssociatedObject(self.iconImageView, "onIconTapGesture", [onIconTapGesture copy], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-        
-        // Listen to icon tap
-        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onIconTap:)];
-        [tapGesture setNumberOfTouchesRequired:1];
-        [tapGesture setNumberOfTapsRequired:1];
-        [tapGesture setDelegate:self];
-        [self.iconImageView addGestureRecognizer:tapGesture];
-        self.iconImageView.userInteractionEnabled = YES;
+        objc_setAssociatedObject(self.resendButton, "onResendLinkPressed", [onResendLinkPressed copy], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        objc_setAssociatedObject(self.deleteButton, "onCancelLinkPressed", [onCancelLinkPressed copy], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
 
     [self checkHeight:YES];
@@ -227,37 +214,32 @@
 
     if (!onOngoingConferenceCallClosePressed)
     {
-        onGoingConferenceCall = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_ongoing_conference_call", @"Vector", nil),
-                                 NSLocalizedStringFromTable(@"voice", @"Vector", nil),
-                                 NSLocalizedStringFromTable(@"video", @"Vector", nil)];
+        onGoingConferenceCall = [VectorL10n roomOngoingConferenceCall:[VectorL10n voice] :[VectorL10n video]];
     }
     else
     {
         // Display the banner with a "Close it" string
         objc_setAssociatedObject(self.messageTextView, "onOngoingConferenceCallClosePressed", [onOngoingConferenceCallClosePressed copy], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-
-        onGoingConferenceCall = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_ongoing_conference_call_with_close", @"Vector", nil),
-                                 NSLocalizedStringFromTable(@"voice", @"Vector", nil),
-                                 NSLocalizedStringFromTable(@"video", @"Vector", nil),
-                                 NSLocalizedStringFromTable(@"room_ongoing_conference_call_close", @"Vector", nil)];
+        
+        onGoingConferenceCall = [VectorL10n roomOngoingConferenceCallWithClose:[VectorL10n voice] :[VectorL10n video] :[VectorL10n roomOngoingConferenceCallClose]];
     }
 
     NSMutableAttributedString *onGoingConferenceCallAttibutedString = [[NSMutableAttributedString alloc] initWithString:onGoingConferenceCall];
 
     // Add a link on the "voice" string
-    NSRange voiceRange = [onGoingConferenceCall rangeOfString:NSLocalizedStringFromTable(@"voice", @"Vector", nil)];
+    NSRange voiceRange = [onGoingConferenceCall rangeOfString:[VectorL10n voice]];
     [onGoingConferenceCallAttibutedString addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:voiceRange];
     [onGoingConferenceCallAttibutedString addAttribute:NSLinkAttributeName value:@"onOngoingConferenceCallWithVoicePressed" range:voiceRange];
 
     // Add a link on the "video" string
-    NSRange videoRange = [onGoingConferenceCall rangeOfString:NSLocalizedStringFromTable(@"video", @"Vector", nil)];
+    NSRange videoRange = [onGoingConferenceCall rangeOfString:[VectorL10n video]];
     [onGoingConferenceCallAttibutedString addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:videoRange];
     [onGoingConferenceCallAttibutedString addAttribute:NSLinkAttributeName value:@"onOngoingConferenceCallWithVideoPressed" range:videoRange];
 
     // Add a link on the "Close" string
     if (onOngoingConferenceCallClosePressed)
     {
-        NSRange closeRange = [onGoingConferenceCall rangeOfString:NSLocalizedStringFromTable(@"room_ongoing_conference_call_close", @"Vector", nil)];
+        NSRange closeRange = [onGoingConferenceCall rangeOfString:[VectorL10n roomOngoingConferenceCallClose]];
         [onGoingConferenceCallAttibutedString addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:closeRange];
         [onGoingConferenceCallAttibutedString addAttribute:NSLinkAttributeName value:@"onOngoingConferenceCallClosePressed" range:closeRange];
     }
@@ -277,58 +259,6 @@
 
     // Hide the separator to display correctly the red pink conf call banner
     self.separatorView.hidden = YES;
-
-    [self checkHeight:YES];
-}
-
-- (void)displayScrollToBottomIcon:(NSUInteger)newMessagesCount onIconTapGesture:(void (^)(void))onIconTapGesture
-{
-    if (newMessagesCount)
-    {
-        [self reset];
-        
-        self.iconImageView.image = [UIImage imageNamed:@"newmessages"];
-        
-        NSString *notification;
-        if (newMessagesCount > 1)
-        {
-            notification = NSLocalizedStringFromTable(@"room_new_messages_notification", @"Vector", nil);
-        }
-        else
-        {
-            notification = NSLocalizedStringFromTable(@"room_new_message_notification", @"Vector", nil);
-        }
-        self.messageLabel.text = [NSString stringWithFormat:notification, newMessagesCount];
-        self.messageLabel.textColor = ThemeService.shared.theme.warningColor;
-        self.messageLabel.hidden = NO;
-    }
-    else
-    {
-        // We keep the current message if any
-        [self resetIcon];
-        
-        self.iconImageView.image = [UIImage imageNamed:@"scrolldown"];
-        self.iconImageView.tintColor = ThemeService.shared.theme.textPrimaryColor;
-    }
-    self.iconImageView.hidden = NO;
-
-    // Make VoiceOver consider it as a button
-    self.iconImageView.accessibilityLabel = NSLocalizedStringFromTable(@"room_accessiblity_scroll_to_bottom", @"Vector", nil);
-    self.iconImageView.isAccessibilityElement = YES;
-    self.iconImageView.accessibilityTraits = UIAccessibilityTraitButton;
-    
-    if (onIconTapGesture)
-    {
-        objc_setAssociatedObject(self.iconImageView, "onIconTapGesture", [onIconTapGesture copy], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-        
-        // Listen to icon tap
-        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onIconTap:)];
-        [tapGesture setNumberOfTouchesRequired:1];
-        [tapGesture setNumberOfTapsRequired:1];
-        [tapGesture setDelegate:self];
-        [self.iconImageView addGestureRecognizer:tapGesture];
-        self.iconImageView.userInteractionEnabled = YES;
-    }
 
     [self checkHeight:YES];
 }
@@ -355,11 +285,11 @@
         
         NSMutableAttributedString *roomReplacementAttributedString = [NSMutableAttributedString new];
         
-        NSString *roomReplacementReasonString = [NSString stringWithFormat:@"%@\n", NSLocalizedStringFromTable(@"room_replacement_information", @"Vector", nil)];
+        NSString *roomReplacementReasonString = [NSString stringWithFormat:@"%@\n", [VectorL10n roomReplacementInformation]];
         
         NSAttributedString *roomReplacementReasonAttributedString = [[NSAttributedString alloc] initWithString:roomReplacementReasonString attributes:roomReplacementReasonAttributes];
         
-        NSString *roomLinkString = NSLocalizedStringFromTable(@"room_replacement_link", @"Vector", nil);
+                                                 NSString *roomLinkString = [VectorL10n roomReplacementLink];
         NSAttributedString *roomLinkAttributedString = [[NSAttributedString alloc] initWithString:roomLinkString attributes:roomLinkAttributes];
         
         [roomReplacementAttributedString appendAttributedString:roomReplacementReasonAttributedString];
@@ -372,7 +302,7 @@
     }
     else
     {
-        self.messageTextView.text = NSLocalizedStringFromTable(@"room_replacement_information", @"Vector", nil);
+        self.messageTextView.text = [VectorL10n roomReplacementInformation];
     }
     
     self.messageTextView.tintColor = ThemeService.shared.theme.textPrimaryColor;
@@ -422,29 +352,29 @@
         // Reuse MatrixKit as is for the beginning of hardLimit
         if ([limitType isEqualToString:kMXErrorResourceLimitExceededLimitTypeMonthlyActiveUserValue])
         {
-            [message appendString:[NSBundle mxk_localizedStringForKey:@"login_error_resource_limit_exceeded_message_monthly_active_user"]];
+            [message appendString:[MatrixKitL10n loginErrorResourceLimitExceededMessageMonthlyActiveUser]];
         }
         else
         {
-            [message appendString:[NSBundle mxk_localizedStringForKey:@"login_error_resource_limit_exceeded_message_default"]];
+            [message appendString:[MatrixKitL10n loginErrorResourceLimitExceededMessageDefault]];
         }
     }
     else
     {
         if ([limitType isEqualToString:kMXErrorResourceLimitExceededLimitTypeMonthlyActiveUserValue])
         {
-            [message appendString:NSLocalizedStringFromTable(@"room_resource_usage_limit_reached_message_1_monthly_active_user", @"Vector", nil)];
+            [message appendString:[VectorL10n roomResourceUsageLimitReachedMessage1MonthlyActiveUser]];
         }
         else
         {
-            [message appendString:NSLocalizedStringFromTable(@"room_resource_usage_limit_reached_message_1_default", @"Vector", nil)];
+            [message appendString:[VectorL10n roomResourceUsageLimitReachedMessage1Default]];
         }
-
-        message2 = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_resource_usage_limit_reached_message_2", @"Vector", nil)
+        
+        message2 = [[NSAttributedString alloc] initWithString:[VectorL10n roomResourceUsageLimitReachedMessage2]
                                                    attributes:@{
-                                                                NSFontAttributeName: [UIFont boldSystemFontOfSize:fontSize],
-                                                                NSForegroundColorAttributeName: ThemeService.shared.theme.backgroundColor
-                                                                }];
+                                                       NSFontAttributeName: [UIFont boldSystemFontOfSize:fontSize],
+                                                       NSForegroundColorAttributeName: ThemeService.shared.theme.backgroundColor
+                                                   }];
     }
 
     NSDictionary *attributes = @{
@@ -471,16 +401,16 @@
         messageContact2LinkAttributes = attributes;
     }
 
-    NSAttributedString *messageContact1 = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_resource_limit_exceeded_message_contact_1", @"Vector", nil) attributes:attributes];
-    NSAttributedString *messageContact2Link =  [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_resource_limit_exceeded_message_contact_2_link", @"Vector", nil) attributes:messageContact2LinkAttributes];
+    NSAttributedString *messageContact1 = [[NSAttributedString alloc] initWithString:[VectorL10n roomResourceLimitExceededMessageContact1] attributes:attributes];
+    NSAttributedString *messageContact2Link =  [[NSAttributedString alloc] initWithString:[VectorL10n roomResourceLimitExceededMessageContact2Link] attributes:messageContact2LinkAttributes];
     NSAttributedString *messageContact3;
     if (hardLimit)
     {
-        messageContact3 = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_resource_limit_exceeded_message_contact_3", @"Vector", nil) attributes:attributes];
+        messageContact3 = [[NSAttributedString alloc] initWithString:[VectorL10n roomResourceLimitExceededMessageContact3] attributes:attributes];
     }
     else
     {
-        messageContact3 = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_resource_usage_limit_reached_message_contact_3", @"Vector", nil) attributes:attributes];
+        messageContact3 = [[NSAttributedString alloc] initWithString:[VectorL10n roomResourceUsageLimitReachedMessageContact3] attributes:attributes];
     }
 
     NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:message attributes:attributes];
@@ -503,8 +433,8 @@
     }
     else
     {
-        self.backgroundColor = ThemeService.shared.theme.tintBackgroundColor;
-        self.messageTextView.backgroundColor = ThemeService.shared.theme.tintBackgroundColor;
+        self.backgroundColor = ThemeService.shared.riotColorCuriousBlue;
+        self.messageTextView.backgroundColor = ThemeService.shared.riotColorCuriousBlue;
     }
 
     // Hide the separator to display correctly the banner
@@ -516,6 +446,7 @@
 - (void)reset
 {
     self.separatorView.hidden = NO;
+    self.unsentMessagesContentView.hidden = YES;
 
     self.backgroundColor = UIColor.clearColor;
 

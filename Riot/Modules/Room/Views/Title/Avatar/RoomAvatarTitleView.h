@@ -1,5 +1,5 @@
 /*
- Copyright 2018 New Vector Ltd
+ Copyright 2016 OpenMarket Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -14,13 +14,11 @@
  limitations under the License.
  */
 
-#import "RoomAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.h"
+#import "MatrixKit.h"
 
-/**
- `RoomEncryptedAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell` displays room encrypted attachment antivirus scan status bubbles with sender's information and a pagination title.
- */
-@interface RoomEncryptedAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell : RoomAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell
+@interface RoomAvatarTitleView : MXKRoomTitleView
 
-@property (weak, nonatomic) IBOutlet UIImageView *encryptionStatusView;
+@property (weak, nonatomic) IBOutlet UIView *roomAvatarMask;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *roomAvatarMaskCenterXConstraint;
 
 @end

@@ -146,8 +146,6 @@ final class FavouriteMessagesViewController: UIViewController {
         switch viewState {
         case .loading:
             self.renderLoading()
-        case .sorted:
-            self.updateTitleInfo()
         case .loaded(roomBubbleCellDataList: let roomBubbleCellDataList):
             self.renderLoaded(roomBubbleCellDataList: roomBubbleCellDataList)
         case .updated:
@@ -158,6 +156,9 @@ final class FavouriteMessagesViewController: UIViewController {
             self.renderCancelledSelection()
         case .error(let error):
             self.render(error: error)
+        default:
+            break
+            // Do nothing
         }
     }
     
@@ -191,13 +192,8 @@ final class FavouriteMessagesViewController: UIViewController {
     
     private func setupTitleView() {
         // Build title view
-        self.titleView = RoomTitleView.instantiate()
-        self.updateTitleInfo()
+        self.titleView = RoomTitleView()
         self.navigationItem.titleView = titleView
-    }
-    
-    private func updateTitleInfo() {
-        self.titleView.fill(roomTitleViewModel: self.viewModel.titleViewModel)
     }
     
     private func scanBubbleDataIfNeeded(cellData: RoomBubbleCellData) {

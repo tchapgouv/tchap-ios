@@ -109,6 +109,7 @@
 "room_displayname_empty_room" = "Salon vide";
 "room_displayname_two_members" = "%@ et %@";
 "room_displayname_more_than_two_members" = "%@ et %u autres";
+"room_displayname_all_other_members_left" = "%@ (Quitté)";
 // Settings
 "settings" = "Paramètres";
 "settings_enable_inapp_notifications" = "Activer les notifications dans l’application";

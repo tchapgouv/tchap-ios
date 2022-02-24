@@ -55,8 +55,8 @@ targets:
 
     settings:
       base:
-        GCC_PREPROCESSOR_DEFINITIONS: $(inherited) ENABLE_JOIN_BY_LINK=1 ENABLE_ROOM_RETENTION=1
-        OTHER_SWIFT_FLAGS: $(inherited) -D ENABLE_ROOM_RETENTION
+        GCC_PREPROCESSOR_DEFINITIONS: $(inherited) ENABLE_JOIN_BY_LINK=1 ENABLE_REACTIONS=1 ENABLE_ROOM_RETENTION=1 ENABLE_EDITION=1
+        OTHER_SWIFT_FLAGS: $(inherited) -D ENABLE_ROOM_RETENTION -D ENABLE_REACTIONS -D ENABLE_EDITION
 
     sources:
     - path: ../Tchap/Config
@@ -67,8 +67,19 @@ targets:
       excludes:
         - "Tools"
         - "Modules/Room/EmojiPicker/Data/EmojiMart/EmojiJSONStore.swift"
+        - "Modules/Room/Views/Title/RoomTitleView.*"
+        - "Modules/Room/RoomCoordinator.swift"
+        - "Modules/Room/Views/BubbleCells/KeyVerification"
+        - "Modules/Room/Members/Detail/Views/RoomMemberTitleView.*"
+        - "Modules/Room/Members/Detail/RoomMemberDetailsViewController.xib"
+        - "Modules/Room/Settings/RoomSettingsViewController.*"
+        - "Modules/Room/RoomViewController.*"
+        - "Modules/Room/Views/InputToolbar/RoomInputToolbarView.*"
+        - "Modules/Room/Views/Preview"
+        - "Modules/Room/Views/Title/RoomTitleView.*"
         - "Managers/AppVersion/AppVersion.swift"
         - "Managers/UniversalLink"
+        - "Routers"
         - "**/*.strings" # Exclude all strings files
 
     # Add separately localizable files
@@ -106,12 +117,14 @@ targets:
     - path: ../Riot/Model/HomeserverConfiguration
     - path: ../Riot/Model/Room/RoomEmailInvitation.h
     - path: ../Riot/Model/Room/RoomEmailInvitation.m
+    - path: ../Riot/Model/Room/RoomPowerLevel.swift
     - path: ../Riot/Model/Room/RoomPreviewData.h
     - path: ../Riot/Model/Room/RoomPreviewData.m
     - path: ../Riot/Model/WellKnown
     - path: ../Riot/Modules/Application/ScreenNavigation
     - path: ../Riot/Modules/Authentication/SSO
     - path: ../Riot/Modules/Authentication/Views
+    - path: ../Riot/Modules/BadgeLabel
     - path: ../Riot/Modules/BugReport/BugReportViewController.h
     - path: ../Riot/Modules/BugReport/BugReportViewController.m
     - path: ../Riot/Modules/Call/CallViewController.h
@@ -124,6 +137,8 @@ targets:
     - path: ../Riot/Modules/Common/Avatar
     - path: ../Riot/Modules/Common/Buttons
     - path: ../Riot/Modules/Common/Cells
+    - path: ../Riot/Modules/Common/CollectionView
+    - path: ../Riot/Modules/Common/Models
     - path: ../Riot/Modules/Common/NavigationController/RiotNavigationController.h
     - path: ../Riot/Modules/Common/NavigationController/RiotNavigationController.m
     - path: ../Riot/Modules/Common/Recents/Model/RecentCellData.h
@@ -149,6 +164,8 @@ targets:
     - path: ../Riot/Modules/EncryptionInfo/EncryptionInfoView.m
     - path: ../Riot/Modules/Home/Fallback
     - path: ../Riot/Modules/GDPR
+    - path: ../Riot/Modules/GlobalSearch/Files/CellData/FilesSearchCellData.h
+    - path: ../Riot/Modules/GlobalSearch/Files/CellData/FilesSearchCellData.m
     - path: ../Riot/Modules/GlobalSearch/Files/Views/FilesSearchTableViewCell.h
     - path: ../Riot/Modules/GlobalSearch/Files/Views/FilesSearchTableViewCell.m
     - path: ../Riot/Modules/Integrations
@@ -158,14 +175,12 @@ targets:
     - path: ../Riot/Modules/MediaPicker
     - path: ../Riot/Modules/QRCode
     - path: ../Riot/Modules/Reauthentication
+    - path: ../Riot/Modules/Room
+      excludes:
+        - "Views/BubbleCells/Encryption/RoomEncryptedDataBubbleCell.m"
+        - "Views/BubbleCells/KeyVerification/SizingViewHeight.swift"
+        - "Views/BubbleCells/Poll/"
     - path: ../Riot/Modules/Room/BubbleReactions
-    - path: ../Riot/Modules/Room/DataSources
-    - path: ../Riot/Modules/Room/NotificationSettings
-    - path: ../Riot/Modules/Room/Views/Avatar
-    - path: ../Riot/Modules/Room/Views/BubbleCells/BaseBubbleCell/BubbleCellReactionsDisplayable.swift
-    - path: ../Riot/Modules/Room/Views/BubbleCells/RoomTypingBubbleCell.swift
-    - path: ../Riot/Modules/Room/Views/CircleProgressView/CircleProgressView.swift
-    - path: ../Riot/Modules/Room/Views/URLPreviews
     - path: ../Riot/Modules/RoomKeyRequest/RoomKeyRequestViewController.h
     - path: ../Riot/Modules/RoomKeyRequest/RoomKeyRequestViewController.m
     - path: ../Riot/Modules/Secrets
@@ -179,6 +194,7 @@ targets:
     - path: ../Riot/Modules/UserDevices/Views/DeviceTableViewCell.m
     - path: ../Riot/Modules/UserInteractiveAuthentication
     - path: ../Riot/PropertyWrappers
+    - path: ../Riot/Routers
     - path: ../Riot/Utils
 
     # Riot SwiftUI

@@ -67,8 +67,8 @@ final class RoomAccessByLinkViewController: UIViewController {
         self.viewModel.viewDelegate = self
         
         // Build title view
-        let titleView = RoomTitleView.instantiate()
-        titleView.fill(roomTitleViewModel: self.viewModel.titleViewModel)
+        let titleView = RoomTitleView()
+//        titleView.fill(roomTitleViewModel: self.viewModel.titleViewModel)
         self.navigationItem.titleView = titleView
         
         self.activityPresenter = ActivityIndicatorPresenter()

@@ -27,8 +27,6 @@
 #import "WidgetManager.h"
 #import "IntegrationManagerViewController.h"
 
-@import GrowingTextView;
-
 const double kContextBarHeight = 24;
 const NSTimeInterval kSendModeAnimationDuration = .15;
 const NSTimeInterval kActionMenuAttachButtonAnimationDuration = .4;
@@ -38,13 +36,32 @@ const NSTimeInterval kActionMenuContentAlphaAnimationDuration = .2;
 const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
 const CGFloat kComposerContainerTrailingPadding = 12;
 
-@interface RoomInputToolbarView() <GrowingTextViewDelegate, RoomInputToolbarTextViewDelegate>
+@interface RoomInputToolbarView() <UITextViewDelegate, RoomInputToolbarTextViewDelegate>
 {
     // The intermediate action sheet
     UIAlertController *actionSheet;
 }
 
+@property (nonatomic, weak) IBOutlet UIView *mainToolbarView;
+
+@property (nonatomic, weak) IBOutlet UIButton *attachMediaButton;
+
 @property (nonatomic, weak) IBOutlet RoomInputToolbarTextView *textView;
+@property (nonatomic, weak) IBOutlet UIImageView *inputTextBackgroundView;
+
+@property (nonatomic, weak) IBOutlet UIImageView *inputContextImageView;
+@property (nonatomic, weak) IBOutlet UILabel *inputContextLabel;
+@property (nonatomic, weak) IBOutlet UIButton *inputContextButton;
+
+@property (nonatomic, weak) IBOutlet RoomActionsBar *actionsBar;
+
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *mainToolbarMinHeightConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *mainToolbarHeightConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *messageComposerContainerTrailingConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *inputContextViewHeightConstraint;
+
+@property (nonatomic, weak) UIView *voiceMessageToolbarView;
+
 @property (nonatomic, assign) CGFloat expandedMainToolbarHeight;
 
 @end
@@ -351,7 +368,7 @@ const CGFloat kComposerContainerTrailingPadding = 12;
     [self.delegate roomInputToolbarViewDidChangeTextMessage:self];
 }
 
-- (void)textViewDidChangeHeight:(GrowingTextView *)textView height:(CGFloat)height
+- (void)textView:(RoomInputToolbarTextView * _Nonnull)textView didChangeHeight:(CGFloat)height
 {
     // Update height of the main toolbar (message composer)
     CGFloat updatedHeight = height + (self.messageComposerContainerTopConstraint.constant + self.messageComposerContainerBottomConstraint.constant) + self.inputContextViewHeightConstraint.constant;
@@ -382,7 +399,7 @@ const CGFloat kComposerContainerTrailingPadding = 12;
 {
     if (button == self.attachMediaButton)
     {
-        self.actionMenuOpened = !self.isActionMenuOpened;
+        self.actionMenuOpened = !self.actionMenuOpened;
     }
 
     [super onTouchUpInside:button];
@@ -471,7 +488,7 @@ const CGFloat kComposerContainerTrailingPadding = 12;
     [super paste:sender];
 }
 
-- (void)textView:(GrowingTextView *)textView didReceivePasteForMediaFromSender:(id)sender
+- (void)textView:(RoomInputToolbarTextView *)textView didReceivePasteForMediaFromSender:(id)sender
 {
     [self paste:sender];
 }

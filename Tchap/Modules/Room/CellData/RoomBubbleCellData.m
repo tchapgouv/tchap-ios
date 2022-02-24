@@ -81,20 +81,20 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
                 // Collapse them by default
                 self.collapsed = YES;
                 
-//                //  find the room create event in stateEvents
-//                MXEvent *roomCreateEvent = [roomState.stateEvents filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"wireType == %@", kMXEventTypeStringRoomCreate]].firstObject;
-//                NSString *creatorUserId = [MXRoomCreateContent modelFromJSON:roomCreateEvent.content].creatorUserId;
-//                if (creatorUserId)
-//                {
-//                    MXRoomMemberEventContent *content = [MXRoomMemberEventContent modelFromJSON:event.content];
-//                    if ([kMXMembershipStringJoin isEqualToString:content.membership] &&
-//                        [creatorUserId isEqualToString:event.sender])
-//                    {
-//                        //  join event of the room creator
-//                        //  group it with room creation events
-//                        self.tag = RoomBubbleCellDataTagRoomCreateConfiguration;
-//                    }
-//                }
+                //  find the room create event in stateEvents
+                MXEvent *roomCreateEvent = [roomState.stateEvents filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"wireType == %@", kMXEventTypeStringRoomCreate]].firstObject;
+                NSString *creatorUserId = [MXRoomCreateContent modelFromJSON:roomCreateEvent.content].creatorUserId;
+                if (creatorUserId)
+                {
+                    MXRoomMemberEventContent *content = [MXRoomMemberEventContent modelFromJSON:event.content];
+                    if ([kMXMembershipStringJoin isEqualToString:content.membership] &&
+                        [creatorUserId isEqualToString:event.sender])
+                    {
+                        //  join event of the room creator
+                        //  group it with room creation events
+                        self.tag = RoomBubbleCellDataTagRoomCreateConfiguration;
+                    }
+                }
             }
                 break;
             case MXEventTypeRoomCreate:
@@ -105,86 +105,92 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
                 {
                     self.tag = RoomBubbleCellDataTagRoomCreateWithPredecessor;
                 }
-//                else
-//                {
-//                    self.tag = RoomBubbleCellDataTagRoomCreateConfiguration;
-//                }
-//
-//                // Membership events can be collapsed together
-//                self.collapsable = YES;
-//
-//                // Collapse them by default
-//                self.collapsed = YES;
-//            }
-//                break;
-//            case MXEventTypeRoomTopic:
-//            case MXEventTypeRoomName:
-//            case MXEventTypeRoomEncryption:
-//            case MXEventTypeRoomHistoryVisibility:
-//            case MXEventTypeRoomGuestAccess:
-//            case MXEventTypeRoomAvatar:
-//            case MXEventTypeRoomJoinRules:
-//            case MXEventTypeRoomRetention:
-//            {
-//                self.tag = RoomBubbleCellDataTagRoomCreateConfiguration;
-//
-//                // Membership events can be collapsed together
-//                self.collapsable = YES;
-//
-//                // Collapse them by default
-//                self.collapsed = YES;
-//            }
-//                break;
-//            case MXEventTypeCallInvite:
-//            case MXEventTypeCallAnswer:
-//            case MXEventTypeCallHangup:
-//            case MXEventTypeCallReject:
-//            {
-//                self.tag = RoomBubbleCellDataTagCall;
-//
-//                // Call events can be collapsed together
-//                self.collapsable = YES;
-//
-//                // Collapse them by default
-//                self.collapsed = YES;
-//
-//                // Show timestamps always on right
-//                self.displayTimestampForSelectedComponentOnLeftWhenPossible = NO;
-//            }
-//            case MXEventTypeCustom:
-//            {
-//                if ([event.type isEqualToString:kWidgetMatrixEventTypeString]
-//                    || [event.type isEqualToString:kWidgetModularEventTypeString])
-//                {
-//                    Widget *widget = [[Widget alloc] initWithWidgetEvent:event inMatrixSession:roomDataSource.mxSession];
-//                    if ([widget.type isEqualToString:kWidgetTypeJitsiV1] ||
-//                        [widget.type isEqualToString:kWidgetTypeJitsiV2])
-//                    {
-//                        self.tag = RoomBubbleCellDataTagGroupCall;
-//
-//                        // Show timestamps always on right
-//                        self.displayTimestampForSelectedComponentOnLeftWhenPossible = NO;
-//                    }
-//                }
+                else
+                {
+                    self.tag = RoomBubbleCellDataTagRoomCreateConfiguration;
+                }
+                
+                // Membership events can be collapsed together
+                self.collapsable = YES;
+                
+                // Collapse them by default
+                self.collapsed = YES;
+            }
+                break;
+            case MXEventTypeRoomTopic:
+            case MXEventTypeRoomName:
+            case MXEventTypeRoomEncryption:
+            case MXEventTypeRoomHistoryVisibility:
+            case MXEventTypeRoomGuestAccess:
+            case MXEventTypeRoomAvatar:
+            case MXEventTypeRoomJoinRules:
+            case MXEventTypeRoomRetention:
+            {
+                self.tag = RoomBubbleCellDataTagRoomCreateConfiguration;
+                
+                // Membership events can be collapsed together
+                self.collapsable = YES;
+                
+                // Collapse them by default
+                self.collapsed = YES;
+            }
+                break;
+            case MXEventTypeCallInvite:
+            case MXEventTypeCallAnswer:
+            case MXEventTypeCallHangup:
+            case MXEventTypeCallReject:
+            {
+                self.tag = RoomBubbleCellDataTagCall;
+                
+                // Call events can be collapsed together
+                self.collapsable = YES;
+                
+                // Collapse them by default
+                self.collapsed = YES;
+                
+                // Show timestamps always on right
+                self.displayTimestampForSelectedComponentOnLeftWhenPossible = NO;
+                break;
+            }
+            case MXEventTypePollStart:
+            {
+                self.tag = RoomBubbleCellDataTagPoll;
+                self.collapsable = NO;
+                self.collapsed = NO;
+                
+                break;
+            }
+            case MXEventTypeCustom:
+            {
+                if ([event.type isEqualToString:kWidgetMatrixEventTypeString]
+                    || [event.type isEqualToString:kWidgetModularEventTypeString])
+                {
+                    Widget *widget = [[Widget alloc] initWithWidgetEvent:event inMatrixSession:roomDataSource.mxSession];
+                    if ([widget.type isEqualToString:kWidgetTypeJitsiV1] ||
+                        [widget.type isEqualToString:kWidgetTypeJitsiV2])
+                    {
+                        self.tag = RoomBubbleCellDataTagGroupCall;
+                        
+                        // Show timestamps always on right
+                        self.displayTimestampForSelectedComponentOnLeftWhenPossible = NO;
+                    }
+                }
             }
                 break;
             default:
-                if ([self isNoticeEvent:event])
-                {
-                    self.tag = RoomBubbleCellDataTagNotice;
-                }
-                else
-                {
-                    [self keyVerificationDidUpdate];
-                }
                 break;
         }
+        
+        [self keyVerificationDidUpdate];
 
         // Increase maximum number of components
         self.maxComponentCount = 20;
 
-        // Reset attributedTextMessage to force reset MXKRoomCellData parameters
-        self.attributedTextMessage = nil;
+        // Indicate that the text message layout should be recomputed.
+        [self invalidateTextLayout];
+        
+        // Load a url preview if necessary.
+        [self refreshURLPreviewForEventId:event.eventId];
     }
     
     return self;
@@ -296,17 +302,17 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
     {
         return YES;
     }
-//    else if (self.tag == RoomBubbleCellDataTagCall && cellData.tag == RoomBubbleCellDataTagCall)
-//    {
-//        //  Check if the same call
-//        MXEvent * event1 = self.events.firstObject;
-//        MXCallEventContent *eventContent1 = [MXCallEventContent modelFromJSON:event1.content];
-//
-//        MXEvent * event2 = cellData.events.firstObject;
-//        MXCallEventContent *eventContent2 = [MXCallEventContent modelFromJSON:event2.content];
-//
-//        return [eventContent1.callId isEqualToString:eventContent2.callId];
-//    }
+    else if (self.tag == RoomBubbleCellDataTagCall && cellData.tag == RoomBubbleCellDataTagCall)
+    {
+        //  Check if the same call
+        MXEvent * event1 = self.events.firstObject;
+        MXCallEventContent *eventContent1 = [MXCallEventContent modelFromJSON:event1.content];
+
+        MXEvent * event2 = cellData.events.firstObject;
+        MXCallEventContent *eventContent2 = [MXCallEventContent modelFromJSON:event2.content];
+
+        return [eventContent1.callId isEqualToString:eventContent2.callId];
+    }
     
     if (self.tag == RoomBubbleCellDataTagRoomCreateWithPredecessor || cellData.tag == RoomBubbleCellDataTagRoomCreateWithPredecessor)
     {
@@ -666,7 +672,7 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
 {
     // Check whether there is something to do
     if (_selectedEventId || selectedEventId.length)
-    { 
+    {
         // Update flag
         _selectedEventId = selectedEventId;
         
@@ -801,12 +807,6 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
         // We do not want to merge room create event cells with other cell types
         return NO;
     }
-    
-    if (self.tag == RoomBubbleCellDataTagNotice || bubbleCellData.tag == RoomBubbleCellDataTagNotice)
-    {
-        // We do not want to merge "notice"" event cells with other cell types
-        return NO;
-    }
 
     return [super hasSameSenderAsBubbleCellData:bubbleCellData];
 }
@@ -829,10 +829,6 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
             break;
         case RoomBubbleCellDataTagMembership:
             // One single bubble per membership event
-            shouldAddEvent = NO;
-            break;
-        case RoomBubbleCellDataTagNotice:
-            // We do not want to merge "notice"" event cells with other cell types
             shouldAddEvent = NO;
             break;
         case RoomBubbleCellDataTagCall:
@@ -918,7 +914,6 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
                 break;
             }
             default:
-                shouldAddEvent = ![self isNoticeEvent:event];
                 break;
         }
     }
@@ -942,31 +937,6 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
     _keyVerification = keyVerification;
     
     [self keyVerificationDidUpdate];
-}
-
-- (BOOL)isNoticeEvent:(MXEvent*)event
-{
-    BOOL isNotice;
-    
-    switch (event.eventType)
-    {
-        case MXEventTypeRoomName:
-        case MXEventTypeRoomTopic:
-        case MXEventTypeRoomAvatar:
-        case MXEventTypeRoomThirdPartyInvite:
-        case MXEventTypeCallInvite:
-        case MXEventTypeCallCandidates:
-        case MXEventTypeCallAnswer:
-        case MXEventTypeCallHangup:
-        case MXEventTypeRoomRetention:
-            isNotice = YES;
-            break;
-        default:
-            isNotice = NO;
-            break;
-    }
-    
-    return isNotice;
 }
 
 - (void)keyVerificationDidUpdate

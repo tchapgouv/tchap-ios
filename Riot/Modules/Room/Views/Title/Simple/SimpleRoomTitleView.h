@@ -1,5 +1,5 @@
 /*
- Copyright 2018 New Vector Ltd
+ Copyright 2016 OpenMarket Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -14,13 +14,14 @@
  limitations under the License.
  */
 
-#import "RoomAttachmentAntivirusScanStatusBubbleCell.h"
+#import "MatrixKit.h"
 
 /**
- `RoomEncryptedAttachmentAntivirusScanStatusBubbleCell` displays room encrypted attachment antivirus scan status with sender's information.
+ This title view display the room display name only.
+ There is no user interaction in it except the back button.
  */
-@interface RoomEncryptedAttachmentAntivirusScanStatusBubbleCell : RoomAttachmentAntivirusScanStatusBubbleCell
+@interface SimpleRoomTitleView : MXKRoomTitleView <UIGestureRecognizerDelegate>
 
-@property (weak, nonatomic) IBOutlet UIImageView *encryptionStatusView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *displayNameCenterXConstraint;
 
 @end

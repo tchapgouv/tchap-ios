@@ -111,7 +111,7 @@ const CGFloat kTypingCellHeight = 24;
 
     // Sadly, we need to make sure we have fetched all room members from the HS
     // to be able to display read receipts
-    if (![self.mxSession.store hasLoadedAllRoomMembersForRoom:self.roomId])
+    if (!self.isPeeking && ![self.mxSession.store hasLoadedAllRoomMembersForRoom:self.roomId])
     {
         [self.room members:^(MXRoomMembers *roomMembers) {
             MXLogDebug(@"[MXKRoomDataSource] finalizeRoomDataSource: All room members have been retrieved");
@@ -480,12 +480,12 @@ const CGFloat kTypingCellHeight = 24;
                         }
                         [bubbleCell.tmpSubviews addObject:reactionsView];
                         
-//                        if ([[bubbleCell class] conformsToProtocol:@protocol(BubbleCellReactionsDisplayable)])
-//                        {
-//                            id<BubbleCellReactionsDisplayable> reactionsDisplayable = (id<BubbleCellReactionsDisplayable>)bubbleCell;
-//                            [reactionsDisplayable addReactionsView:reactionsView];
-//                        }
-//                        else
+                        if ([[bubbleCell class] conformsToProtocol:@protocol(BubbleCellReactionsDisplayable)])
+                        {
+                            id<BubbleCellReactionsDisplayable> reactionsDisplayable = (id<BubbleCellReactionsDisplayable>)bubbleCell;
+                            [reactionsDisplayable addReactionsView:reactionsView];
+                        }
+                        else
                         {
                             reactionsView.translatesAutoresizingMaskIntoConstraints = NO;
                             [bubbleCell.contentView addSubview:reactionsView];

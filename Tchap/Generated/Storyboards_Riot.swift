@@ -112,6 +112,16 @@ internal extension StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Tchap.QRCodeReaderViewController>(storyboard: QRCodeReaderViewController.self)
   }
+  enum RoomCreationEventsModalViewController: StoryboardType {
+    internal static let storyboardName = "RoomCreationEventsModalViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.RoomCreationEventsModalViewController>(storyboard: RoomCreationEventsModalViewController.self)
+  }
+  enum RoomInfoListViewController: StoryboardType {
+    internal static let storyboardName = "RoomInfoListViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.RoomInfoListViewController>(storyboard: RoomInfoListViewController.self)
+  }
   enum RoomNotificationSettingsViewController: StoryboardType {
     internal static let storyboardName = "RoomNotificationSettingsViewController"
 

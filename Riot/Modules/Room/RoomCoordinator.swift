@@ -30,7 +30,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
     private let activityIndicatorPresenter: ActivityIndicatorPresenterType
     private var selectedEventId: String?
     
-    private var pollEditFormCoordinator: PollEditFormCoordinator?
+//    private var pollEditFormCoordinator: PollEditFormCoordinator?
 
     private var roomDataSourceManager: MXKRoomDataSourceManager {
         return MXKRoomDataSourceManager.sharedManager(forMatrixSession: self.parameters.session)
@@ -78,7 +78,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
         self.activityIndicatorPresenter = ActivityIndicatorPresenter()
         
         if #available(iOS 14, *) {
-            PollTimelineProvider.shared.session = parameters.session
+//            PollTimelineProvider.shared.session = parameters.session
         }
         
         super.init()
@@ -229,11 +229,11 @@ extension RoomCoordinator: RoomViewControllerDelegate {
     }
     
     func roomViewController(_ roomViewController: RoomViewController, showMemberDetails roomMember: MXRoomMember) {
-        // TODO:
+        //
     }
     
     func roomViewControllerShowRoomDetails(_ roomViewController: RoomViewController) {
-        // TODO:
+        //
     }
     
     func roomViewControllerDidLeaveRoom(_ roomViewController: RoomViewController) {
@@ -245,15 +245,16 @@ extension RoomCoordinator: RoomViewControllerDelegate {
     }
     
     func roomViewController(_ roomViewController: RoomViewController, startChatWithUserId userId: String, completion: @escaping () -> Void) {
-        AppDelegate.theDelegate().createDirectChat(withUserId: userId, completion: completion)
+//        AppDelegate.theDelegate().createDirectChat(withUserId: userId, completion: completion)
     }
     
     func roomViewController(_ roomViewController: RoomViewController, showCompleteSecurityFor session: MXSession) {
-        AppDelegate.theDelegate().presentCompleteSecurity(for: session)
+//        AppDelegate.theDelegate().presentCompleteSecurity(for: session)
     }
     
     func roomViewController(_ roomViewController: RoomViewController, handleUniversalLinkWith parameters: UniversalLinkParameters) -> Bool {
-        return AppDelegate.theDelegate().handleUniversalLink(with: parameters)
+//        return AppDelegate.theDelegate().handleUniversalLink(with: parameters)
+        return false
     }
     
     func roomViewControllerDidRequestPollCreationFormPresentation(_ roomViewController: RoomViewController) {
@@ -261,10 +262,10 @@ extension RoomCoordinator: RoomViewControllerDelegate {
             return
         }
         
-        let parameters = PollEditFormCoordinatorParameters(navigationRouter: self.navigationRouter, room: roomViewController.roomDataSource.room)
-        pollEditFormCoordinator = PollEditFormCoordinator(parameters: parameters)
-        
-        pollEditFormCoordinator?.start()
+//        let parameters = PollEditFormCoordinatorParameters(navigationRouter: self.navigationRouter, room: roomViewController.roomDataSource.room)
+//        pollEditFormCoordinator = PollEditFormCoordinator(parameters: parameters)
+//
+//        pollEditFormCoordinator?.start()
     }
     
     func roomViewController(_ roomViewController: RoomViewController, canEndPollWithEventIdentifier eventIdentifier: String) -> Bool {
@@ -272,7 +273,7 @@ extension RoomCoordinator: RoomViewControllerDelegate {
             return false
         }
         
-        return PollTimelineProvider.shared.pollTimelineCoordinatorForEventIdentifier(eventIdentifier)?.canEndPoll() ?? false
+        return /*PollTimelineProvider.shared.pollTimelineCoordinatorForEventIdentifier(eventIdentifier)?.canEndPoll() ??*/ false
     }
     
     func roomViewController(_ roomViewController: RoomViewController, endPollWithEventIdentifier eventIdentifier: String) {
@@ -280,6 +281,6 @@ extension RoomCoordinator: RoomViewControllerDelegate {
             return
         }
         
-        PollTimelineProvider.shared.pollTimelineCoordinatorForEventIdentifier(eventIdentifier)?.endPoll()
+//        PollTimelineProvider.shared.pollTimelineCoordinatorForEventIdentifier(eventIdentifier)?.endPoll()
     }
 }

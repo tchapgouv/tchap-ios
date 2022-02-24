@@ -235,7 +235,7 @@
 "room_attachment_scan_status_unavailable_title" = "Analyse indisponible";
 "room_attachment_scan_status_in_progress_title" = "Analyse antivirus";
 "room_attachment_scan_status_infected_title" = "Fichier bloqué";
-"room_attachment_scan_status_infected_file_info" = "Le document %@ a été filtré par le politique de sécurité";
+"room_attachment_scan_status_infected_file_info" = "Le document %@ a été filtré par la politique de sécurité";
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Public rooms
@@ -246,6 +246,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Create new discussion
 "create_new_discussion_title" = "Nouvelle discussion";
+"tchap_dialog_prompt_new_direct_chat" = "Vous n\'avez pas de message direct avec %@, voulez-vous lui envoyer une invitation ?";
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Room creation

@@ -290,7 +290,7 @@ internal enum TchapL10n {
   internal static let registrationWarningForExternalUserTitle = TchapL10n.tr("Tchap", "registration_warning_for_external_user_title")
   /// Analyse antivirus
   internal static let roomAttachmentScanStatusInProgressTitle = TchapL10n.tr("Tchap", "room_attachment_scan_status_in_progress_title")
-  /// Le document %@ a été filtré par le politique de sécurité
+  /// Le document %@ a été filtré par la politique de sécurité
   internal static func roomAttachmentScanStatusInfectedFileInfo(_ p1: Any) -> String {
     return TchapL10n.tr("Tchap", "room_attachment_scan_status_infected_file_info", String(describing: p1))
   }
@@ -465,6 +465,10 @@ internal enum TchapL10n {
   /// Votre correspondant a quitté définitivement cette discussion.
   /// Vous devez en créer une nouvelle pour le recontacter, s'il est toujours joignable sur Tchap.
   internal static let tchapCannotInviteDeactivatedAccountUser = TchapL10n.tr("Tchap", "tchap_cannot_invite_deactivated_account_user")
+  /// Vous n'avez pas de message direct avec %@, voulez-vous lui envoyer une invitation ?
+  internal static func tchapDialogPromptNewDirectChat(_ p1: Any) -> String {
+    return TchapL10n.tr("Tchap", "tchap_dialog_prompt_new_direct_chat", String(describing: p1))
+  }
   /// Vous n'êtes pas autorisé à rejoindre cette conversation. Une invitation est nécessaire.
   internal static let tchapRoomAccessUnauthorized = TchapL10n.tr("Tchap", "tchap_room_access_unauthorized")
   /// Voulez-vous vraiment quitter cette conversation ?

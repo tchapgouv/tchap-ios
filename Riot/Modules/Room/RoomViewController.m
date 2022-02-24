@@ -33,7 +33,6 @@
 #import "EventDetailsView.h"
 
 #import "RoomAvatarTitleView.h"
-#import "ExpandedRoomTitleView.h"
 #import "SimpleRoomTitleView.h"
 #import "PreviewRoomTitleView.h"
 
@@ -100,6 +99,10 @@
 //#import "RoomCreationWithPaginationCollapsedBubbleCell.h"
 //#import "RoomCreationCollapsedBubbleCell.h"
 
+#import "RoomAttachmentAntivirusScanStatusBubbleCell.h"
+#import "RoomAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.h"
+#import "RoomAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.h"
+
 #import "RoomSelectedStickerBubbleCell.h"
 #import "RoomPredecessorBubbleCell.h"
 
@@ -139,7 +142,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 @interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
     ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate,
     ReactionHistoryCoordinatorBridgePresenterDelegate, CameraPresenterDelegate, MediaPickerCoordinatorBridgePresenterDelegate,
-    RoomDataSourceDelegate/*, RoomCreationModalCoordinatorBridgePresenterDelegate, RoomInfoCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate, VoiceMessageControllerDelegate, SpaceDetailPresenterDelegate, UserSuggestionCoordinatorBridgeDelegate*/>
+    RoomDataSourceDelegate/*, RoomCreationModalCoordinatorBridgePresenterDelegate*/, RoomInfoCoordinatorBridgePresenterDelegate/*, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate, VoiceMessageControllerDelegate, SpaceDetailPresenterDelegate, UserSuggestionCoordinatorBridgeDelegate*/>
 {
     
     // The preview header
@@ -242,7 +245,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 @property (nonatomic, strong) MediaPickerCoordinatorBridgePresenter *mediaPickerPresenter;
 @property (nonatomic, strong) RoomMessageURLParser *roomMessageURLParser;
 //@property (nonatomic, strong) RoomCreationModalCoordinatorBridgePresenter *roomCreationModalCoordinatorBridgePresenter;
-//@property (nonatomic, strong) RoomInfoCoordinatorBridgePresenter *roomInfoCoordinatorBridgePresenter;
+@property (nonatomic, strong) RoomInfoCoordinatorBridgePresenter *roomInfoCoordinatorBridgePresenter;
 //@property (nonatomic, strong) CustomSizedPresentationController *customSizedPresentationController;
 @property (nonatomic, getter=isActivitiesViewExpanded) BOOL activitiesViewExpanded;
 @property (nonatomic, getter=isScrollToBottomHidden) BOOL scrollToBottomHidden;
@@ -393,6 +396,10 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     [self.bubblesTableView registerClass:RoomSelectedStickerBubbleCell.class forCellReuseIdentifier:RoomSelectedStickerBubbleCell.defaultReuseIdentifier];
     [self.bubblesTableView registerClass:RoomPredecessorBubbleCell.class forCellReuseIdentifier:RoomPredecessorBubbleCell.defaultReuseIdentifier];
     
+    [self.bubblesTableView registerNib:RoomAttachmentAntivirusScanStatusBubbleCell.nib forCellReuseIdentifier:RoomAttachmentAntivirusScanStatusBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerNib:RoomAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.nib forCellReuseIdentifier:RoomAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerNib:RoomAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.nib forCellReuseIdentifier:RoomAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+    
     [self.bubblesTableView registerClass:KeyVerificationIncomingRequestApprovalBubbleCell.class forCellReuseIdentifier:KeyVerificationIncomingRequestApprovalBubbleCell.defaultReuseIdentifier];
     [self.bubblesTableView registerClass:KeyVerificationIncomingRequestApprovalWithPaginationTitleBubbleCell.class forCellReuseIdentifier:KeyVerificationIncomingRequestApprovalWithPaginationTitleBubbleCell.defaultReuseIdentifier];
     [self.bubblesTableView registerClass:KeyVerificationRequestStatusBubbleCell.class forCellReuseIdentifier:KeyVerificationRequestStatusBubbleCell.defaultReuseIdentifier];
@@ -407,7 +414,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 //    [self.bubblesTableView registerClass:RoomDirectCallStatusBubbleCell.class forCellReuseIdentifier:RoomDirectCallStatusBubbleCell.defaultReuseIdentifier];
 //    [self.bubblesTableView registerClass:RoomGroupCallStatusBubbleCell.class forCellReuseIdentifier:RoomGroupCallStatusBubbleCell.defaultReuseIdentifier];
 //
-//    [self.bubblesTableView registerClass:RoomCreationIntroCell.class forCellReuseIdentifier:RoomCreationIntroCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:RoomCreationIntroCell.class forCellReuseIdentifier:RoomCreationIntroCell.defaultReuseIdentifier];
     
     [self.bubblesTableView registerNib:RoomTypingBubbleCell.nib forCellReuseIdentifier:RoomTypingBubbleCell.defaultReuseIdentifier];
     
@@ -597,12 +604,12 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     MXWeakify(self);
     
     // Observe kAppDelegateDidTapStatusBarNotification.
-//    kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-//
-//        MXStrongifyAndReturnIfNil(self);
-//
-//        [self setBubbleTableViewContentOffset:CGPointMake(-self.bubblesTableView.adjustedContentInset.left, -self.bubblesTableView.adjustedContentInset.top) animated:YES];
-//    }];
+    kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+
+        MXStrongifyAndReturnIfNil(self);
+
+        [self setBubbleTableViewContentOffset:CGPointMake(-self.bubblesTableView.adjustedContentInset.left, -self.bubblesTableView.adjustedContentInset.top) animated:YES];
+    }];
     
     if ([self.roomDataSource.roomId isEqualToString:[LegacyAppDelegate theDelegate].lastNavigatedRoomIdFromPush])
     {
@@ -1473,10 +1480,10 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         }
     }
 
-//    [UIView animateWithDuration:.2 animations:^{
-//        self.scrollToBottomBadgeLabel.alpha = (scrollToBottomHidden || !self.scrollToBottomBadgeLabel.text) ? 0 : 1;
-//        self.scrollToBottomButton.alpha = scrollToBottomHidden ? 0 : 1;
-//    }];
+    [UIView animateWithDuration:.2 animations:^{
+        self.scrollToBottomBadgeLabel.alpha = (scrollToBottomHidden || !self.scrollToBottomBadgeLabel.text) ? 0 : 1;
+        self.scrollToBottomButton.alpha = scrollToBottomHidden ? 0 : 1;
+    }];
 }
 
 - (void)setMissedDiscussionsBadgeHidden:(BOOL)missedDiscussionsBadgeHidden{
@@ -1977,93 +1984,93 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (void)showRoomAvatarChange
 {
-//    [self showRoomInfoWithInitialSection:RoomInfoSectionChangeAvatar];
+    [self showRoomInfoWithInitialSection:RoomInfoSectionChangeAvatar];
 }
 
 - (void)showAddParticipants
 {
-//    [self showRoomInfoWithInitialSection:RoomInfoSectionAddParticipants];
+    [self showRoomInfoWithInitialSection:RoomInfoSectionAddParticipants];
 }
 
 - (void)showRoomTopicChange
 {
-//    [self showRoomInfoWithInitialSection:RoomInfoSectionChangeTopic];
+    [self showRoomInfoWithInitialSection:RoomInfoSectionChangeTopic];
 }
 
 - (void)showRoomInfo
 {
-//    [self showRoomInfoWithInitialSection:RoomInfoSectionNone];
+    [self showRoomInfoWithInitialSection:RoomInfoSectionNone];
 }
 
-//- (void)showRoomInfoWithInitialSection:(RoomInfoSection)roomInfoSection
-//{
-//    RoomInfoCoordinatorParameters *parameters = [[RoomInfoCoordinatorParameters alloc] initWithSession:self.roomDataSource.mxSession room:self.roomDataSource.room initialSection:roomInfoSection];
-//
-//    self.roomInfoCoordinatorBridgePresenter = [[RoomInfoCoordinatorBridgePresenter alloc] initWithParameters:parameters];
-//
-//    self.roomInfoCoordinatorBridgePresenter.delegate = self;
-//    [self.roomInfoCoordinatorBridgePresenter pushFrom:self.navigationController animated:YES];
-//}
+- (void)showRoomInfoWithInitialSection:(RoomInfoSection)roomInfoSection
+{
+    RoomInfoCoordinatorParameters *parameters = [[RoomInfoCoordinatorParameters alloc] initWithSession:self.roomDataSource.mxSession room:self.roomDataSource.room initialSection:roomInfoSection];
+
+    self.roomInfoCoordinatorBridgePresenter = [[RoomInfoCoordinatorBridgePresenter alloc] initWithParameters:parameters];
+
+    self.roomInfoCoordinatorBridgePresenter.delegate = self;
+    [self.roomInfoCoordinatorBridgePresenter pushFrom:self.navigationController animated:YES];
+}
 
 - (void)setupActions {
     if (![self.inputToolbarView isKindOfClass:RoomInputToolbarView.class]) {
         return;
     }
     
-//    RoomInputToolbarView *roomInputView = ((RoomInputToolbarView *) self.inputToolbarView);
-//    MXWeakify(self);
-//    NSMutableArray *actionItems = [NSMutableArray new];
-//    if (RiotSettings.shared.roomScreenAllowMediaLibraryAction)
-//    {
-//        [actionItems addObject:[[RoomActionItem alloc] initWithImage:[UIImage imageNamed:@"action_media_library"] andAction:^{
-//            MXStrongifyAndReturnIfNil(self);
-//            if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class]) {
-//                ((RoomInputToolbarView *) self.inputToolbarView).actionMenuOpened = NO;
-//            }
-//            [self showMediaPickerAnimated:YES];
-//        }]];
-//    }
-//    if (RiotSettings.shared.roomScreenAllowStickerAction)
-//    {
-//        [actionItems addObject:[[RoomActionItem alloc] initWithImage:[UIImage imageNamed:@"action_sticker"] andAction:^{
-//            MXStrongifyAndReturnIfNil(self);
-//            if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class]) {
-//                ((RoomInputToolbarView *) self.inputToolbarView).actionMenuOpened = NO;
-//            }
-//            [self roomInputToolbarViewPresentStickerPicker];
-//        }]];
-//    }
-//    if (RiotSettings.shared.roomScreenAllowFilesAction)
-//    {
-//        [actionItems addObject:[[RoomActionItem alloc] initWithImage:[UIImage imageNamed:@"action_file"] andAction:^{
-//            MXStrongifyAndReturnIfNil(self);
-//            if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class]) {
-//                ((RoomInputToolbarView *) self.inputToolbarView).actionMenuOpened = NO;
-//            }
-//            [self roomInputToolbarViewDidTapFileUpload];
-//        }]];
-//    }
-//    if (RiotSettings.shared.roomScreenAllowPollsAction)
-//    {
-//        [actionItems addObject:[[RoomActionItem alloc] initWithImage:[UIImage imageNamed:@"action_poll"] andAction:^{
-//            MXStrongifyAndReturnIfNil(self);
-//            if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class]) {
-//                ((RoomInputToolbarView *) self.inputToolbarView).actionMenuOpened = NO;
-//            }
-//            [self.delegate roomViewControllerDidRequestPollCreationFormPresentation:self];
-//        }]];
-//    }
-//    if (RiotSettings.shared.roomScreenAllowCameraAction)
-//    {
-//        [actionItems addObject:[[RoomActionItem alloc] initWithImage:[UIImage imageNamed:@"action_camera"] andAction:^{
-//            MXStrongifyAndReturnIfNil(self);
-//            if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class]) {
-//                ((RoomInputToolbarView *) self.inputToolbarView).actionMenuOpened = NO;
-//            }
-//            [self showCameraControllerAnimated:YES];
-//        }]];
-//    }
-//    roomInputView.actionsBar.actionItems = actionItems;
+    RoomInputToolbarView *roomInputView = ((RoomInputToolbarView *) self.inputToolbarView);
+    MXWeakify(self);
+    NSMutableArray *actionItems = [NSMutableArray new];
+    if (RiotSettings.shared.roomScreenAllowMediaLibraryAction)
+    {
+        [actionItems addObject:[[RoomActionItem alloc] initWithImage:[UIImage imageNamed:@"action_media_library"] andAction:^{
+            MXStrongifyAndReturnIfNil(self);
+            if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class]) {
+                ((RoomInputToolbarView *) self.inputToolbarView).actionMenuOpened = NO;
+            }
+            [self showMediaPickerAnimated:YES];
+        }]];
+    }
+    if (RiotSettings.shared.roomScreenAllowStickerAction)
+    {
+        [actionItems addObject:[[RoomActionItem alloc] initWithImage:[UIImage imageNamed:@"action_sticker"] andAction:^{
+            MXStrongifyAndReturnIfNil(self);
+            if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class]) {
+                ((RoomInputToolbarView *) self.inputToolbarView).actionMenuOpened = NO;
+            }
+            [self roomInputToolbarViewPresentStickerPicker];
+        }]];
+    }
+    if (RiotSettings.shared.roomScreenAllowFilesAction)
+    {
+        [actionItems addObject:[[RoomActionItem alloc] initWithImage:[UIImage imageNamed:@"action_file"] andAction:^{
+            MXStrongifyAndReturnIfNil(self);
+            if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class]) {
+                ((RoomInputToolbarView *) self.inputToolbarView).actionMenuOpened = NO;
+            }
+            [self roomInputToolbarViewDidTapFileUpload];
+        }]];
+    }
+    if (RiotSettings.shared.roomScreenAllowPollsAction)
+    {
+        [actionItems addObject:[[RoomActionItem alloc] initWithImage:[UIImage imageNamed:@"action_poll"] andAction:^{
+            MXStrongifyAndReturnIfNil(self);
+            if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class]) {
+                ((RoomInputToolbarView *) self.inputToolbarView).actionMenuOpened = NO;
+            }
+            [self.delegate roomViewControllerDidRequestPollCreationFormPresentation:self];
+        }]];
+    }
+    if (RiotSettings.shared.roomScreenAllowCameraAction)
+    {
+        [actionItems addObject:[[RoomActionItem alloc] initWithImage:[UIImage imageNamed:@"action_camera"] andAction:^{
+            MXStrongifyAndReturnIfNil(self);
+            if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class]) {
+                ((RoomInputToolbarView *) self.inputToolbarView).actionMenuOpened = NO;
+            }
+            [self showCameraControllerAnimated:YES];
+        }]];
+    }
+    roomInputView.actionsBar.actionItems = actionItems;
 }
 
 - (NSString *)textInputContextIdentifier
@@ -2395,7 +2402,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         // Check conditions before making the preview room header visible.
         // This operation is ignored if a screen rotation is in progress,
         // or if the view controller is not embedded inside a split view controller yet.
-        if (isVisible && (isSizeTransitionInProgress == YES || !self.splitViewController))
+        if (isVisible && (isSizeTransitionInProgress == YES/* || !self.splitViewController*/)) // SplitViewController is currently not available in Tchap.
         {
             MXLogDebug(@"[RoomVC] Show preview header ignored");
             return;
@@ -2462,31 +2469,31 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         {
             [previewHeader removeFromSuperview];
             previewHeader = nil;
-            
+
             self.previewHeaderContainer.hidden = YES;
-            
+
             // Consider the main navigation controller if the current view controller is embedded inside a split view controller.
             UINavigationController *mainNavigationController = self.navigationController;
             if (self.splitViewController.isCollapsed && self.splitViewController.viewControllers.count)
             {
                 mainNavigationController = self.splitViewController.viewControllers.firstObject;
             }
-            
+
             // Set a default title view class without handling tap gesture (Let [self refreshRoomTitle] refresh this view correctly).
             [self setRoomTitleViewClass:RoomTitleView.class];
-                        
+
             // Remove the shadow image used to hide the bottom border of the navigation bar when the preview header is displayed
             [mainNavigationController.navigationBar setShadowImage:nil];
             [mainNavigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
-            
+
             [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
                              animations:^{
-                
+
                 self.bubblesTableViewTopConstraint.constant = 0;
-                
+
                 // Force to render the view
                 [self forceLayoutRefresh];
-                
+
             }
                              completion:^(BOOL finished){
             }];
@@ -2661,14 +2668,29 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     }
     
     // Select the suitable table view cell class, by considering first the empty bubble cell.
-    if (bubbleData.hasNoDisplay)
+    if (bubbleData.showAntivirusScanStatus)
+    {
+        if (bubbleData.isPaginationFirstBubble)
+        {
+            cellViewClass = RoomAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.class;
+        }
+        else if (bubbleData.shouldHideSenderInformation)
+        {
+            cellViewClass = RoomAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.class;
+        }
+        else
+        {
+            cellViewClass = RoomAttachmentAntivirusScanStatusBubbleCell.class;
+        }
+    }
+    else if (bubbleData.hasNoDisplay)
     {
         cellViewClass = RoomEmptyBubbleCell.class;
     }
-//    else if (bubbleData.tag == RoomBubbleCellDataTagRoomCreationIntro)
-//    {
-//        cellViewClass = RoomCreationIntroCell.class;
-//    }
+    else if (bubbleData.tag == RoomBubbleCellDataTagRoomCreationIntro)
+    {
+        cellViewClass = RoomCreationIntroCell.class;
+    }
     else if (bubbleData.tag == RoomBubbleCellDataTagRoomCreateWithPredecessor)
     {
         cellViewClass = RoomPredecessorBubbleCell.class;
@@ -3151,18 +3173,18 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 //            [[JitsiService shared] declineWidgetWithId:widget.widgetId];
 //            [self reloadBubblesTable:YES];
 //        }
-//        else if ([actionIdentifier isEqualToString:RoomCreationIntroCell.tapOnAvatarView])
-//        {
-//            [self showRoomAvatarChange];
-//        }
-//        else if ([actionIdentifier isEqualToString:RoomCreationIntroCell.tapOnAddParticipants])
-//        {
-//            [self showAddParticipants];
-//        }
-//        else if ([actionIdentifier isEqualToString:RoomCreationIntroCell.tapOnAddTopic])
-//        {
-//            [self showRoomTopicChange];
-//        }
+        else if ([actionIdentifier isEqualToString:RoomCreationIntroCell.tapOnAvatarView])
+        {
+            [self showRoomAvatarChange];
+        }
+        else if ([actionIdentifier isEqualToString:RoomCreationIntroCell.tapOnAddParticipants])
+        {
+            [self showAddParticipants];
+        }
+        else if ([actionIdentifier isEqualToString:RoomCreationIntroCell.tapOnAddTopic])
+        {
+            [self showRoomTopicChange];
+        }
         else
         {
             // Keep default implementation for other actions
@@ -4995,13 +5017,13 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                     // Retrieve the unread messages count
                     NSUInteger unreadCount = self.roomDataSource.room.summary.localUnreadEventCount;
                     
-//                    self.scrollToBottomBadgeLabel.text = unreadCount ? [NSString stringWithFormat:@"%lu", unreadCount] : nil;
+                    self.scrollToBottomBadgeLabel.text = unreadCount ? [NSString stringWithFormat:@"%lu", unreadCount] : nil;
                     self.scrollToBottomHidden = NO;
                 }
                 else
                 {
                     //  will be here for left rooms
-//                    self.scrollToBottomBadgeLabel.text = nil;
+                    self.scrollToBottomBadgeLabel.text = nil;
                     self.scrollToBottomHidden = YES;
                 }
             }
@@ -5906,7 +5928,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         return @[
             [self resendMenuItemWithEvent:event],
             [self deleteMenuItemWithEvent:event],
-//            [self editMenuItemWithEvent:event],
+            [self editMenuItemWithEvent:event],
             [self copyMenuItemWithEvent:event andCell:cell]
         ];
     }
@@ -5918,7 +5940,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         return @[
             [self copyMenuItemWithEvent:event andCell:cell],
             [self replyMenuItemWithEvent:event],
-//            [self editMenuItemWithEvent:event],
+            [self editMenuItemWithEvent:event],
             [self moreMenuItemWithEvent:event andCell:cell]
         ];
     }
@@ -5927,7 +5949,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         return @[
             [self copyMenuItemWithEvent:event andCell:cell],
             [self replyMenuItemWithEvent:event],
-//            [self editMenuItemWithEvent:event]
+            [self editMenuItemWithEvent:event]
         ];
     }
 }
@@ -6084,24 +6106,24 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     return deleteMenuItem;
 }
 
-//- (RoomContextualMenuItem *)editMenuItemWithEvent:(MXEvent*)event
-//{
-//    MXWeakify(self);
-//
-//    RoomContextualMenuItem *editMenuItem = [[RoomContextualMenuItem alloc] initWithMenuAction:RoomContextualMenuActionEdit];
-//    editMenuItem.action = ^{
-//        MXStrongifyAndReturnIfNil(self);
-//        [self hideContextualMenuAnimated:YES cancelEventSelection:NO completion:nil];
-//        [self editEventContentWithId:event.eventId];
-//
-//        // And display the keyboard
-//        [self.inputToolbarView becomeFirstResponder];
-//    };
-//
-//    editMenuItem.isEnabled = [self.roomDataSource canEditEventWithId:event.eventId];
-//
-//    return editMenuItem;
-//}
+- (RoomContextualMenuItem *)editMenuItemWithEvent:(MXEvent*)event
+{
+    MXWeakify(self);
+
+    RoomContextualMenuItem *editMenuItem = [[RoomContextualMenuItem alloc] initWithMenuAction:RoomContextualMenuActionEdit];
+    editMenuItem.action = ^{
+        MXStrongifyAndReturnIfNil(self);
+        [self hideContextualMenuAnimated:YES cancelEventSelection:NO completion:nil];
+        [self editEventContentWithId:event.eventId];
+
+        // And display the keyboard
+        [self.inputToolbarView becomeFirstResponder];
+    };
+
+    editMenuItem.isEnabled = [self.roomDataSource canEditEventWithId:event.eventId];
+
+    return editMenuItem;
+}
 
 - (RoomContextualMenuItem *)copyMenuItemWithEvent:(MXEvent*)event andCell:(id<MXKCellRendering>)cell
 {
@@ -6215,7 +6237,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     MXWeakify(self);
     
     RoomContextualMenuItem *replyMenuItem = [[RoomContextualMenuItem alloc] initWithMenuAction:RoomContextualMenuActionReply];
-//    replyMenuItem.isEnabled = [self.roomDataSource canReplyToEventWithId:event.eventId] && !self.voiceMessageController.isRecordingAudio;
+    replyMenuItem.isEnabled = [self.roomDataSource canReplyToEventWithId:event.eventId];// && !self.voiceMessageController.isRecordingAudio;
     replyMenuItem.action = ^{
         MXStrongifyAndReturnIfNil(self);
         
@@ -6518,31 +6540,31 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 //    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
 //    self.roomCreationModalCoordinatorBridgePresenter = nil;
 //}
-//
-//#pragma mark - RoomInfoCoordinatorBridgePresenterDelegate
-//
-//- (void)roomInfoCoordinatorBridgePresenterDelegateDidComplete:(RoomInfoCoordinatorBridgePresenter *)coordinatorBridgePresenter
-//{
-//    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
-//    self.roomInfoCoordinatorBridgePresenter = nil;
-//}
-//
-//- (void)roomInfoCoordinatorBridgePresenter:(RoomInfoCoordinatorBridgePresenter *)coordinatorBridgePresenter didRequestMentionForMember:(MXRoomMember *)member
-//{
-//    [self mention:member];
-//}
-//
-//- (void)roomInfoCoordinatorBridgePresenterDelegateDidLeaveRoom:(RoomInfoCoordinatorBridgePresenter *)coordinatorBridgePresenter
-//{
-//    if (self.delegate)
-//    {
-//        [self.delegate roomViewControllerDidLeaveRoom:self];
-//    }
-//    else
-//    {
+
+#pragma mark - RoomInfoCoordinatorBridgePresenterDelegate
+
+- (void)roomInfoCoordinatorBridgePresenterDelegateDidComplete:(RoomInfoCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    self.roomInfoCoordinatorBridgePresenter = nil;
+}
+
+- (void)roomInfoCoordinatorBridgePresenter:(RoomInfoCoordinatorBridgePresenter *)coordinatorBridgePresenter didRequestMentionForMember:(MXRoomMember *)member
+{
+    [self mention:member];
+}
+
+- (void)roomInfoCoordinatorBridgePresenterDelegateDidLeaveRoom:(RoomInfoCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    if (self.delegate)
+    {
+        [self.delegate roomViewControllerDidLeaveRoom:self];
+    }
+    else
+    {
 //        [[AppDelegate theDelegate] restoreInitialDisplay:nil];
-//    }
-//}
+    }
+}
 
 #pragma mark - RemoveJitsiWidgetViewDelegate
 

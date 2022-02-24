@@ -138,7 +138,7 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
     }
     
     private func createRoomNotificationSettingsCoordinator() -> RoomNotificationSettingsCoordinator {
-        let coordinator = RoomNotificationSettingsCoordinator(room: room, presentedModally: false)
+        let coordinator = RoomNotificationSettingsCoordinator(room: room)
         coordinator.delegate = self
         return coordinator
     }
@@ -199,6 +199,10 @@ extension RoomInfoCoordinator: RoomParticipantsViewControllerDelegate {
     func roomParticipantsViewController(_ roomParticipantsViewController: RoomParticipantsViewController!, mention member: MXRoomMember!) {
         self.navigationRouter.popToRootModule(animated: true)
         self.delegate?.roomInfoCoordinator(self, didRequestMentionForMember: member)
+    }
+
+    func roomParticipantsViewController(_ roomParticipantsViewController: RoomParticipantsViewController!, startChatWithMemberId matrixId: String, completion: (() -> Void)?) {
+        
     }
     
 }

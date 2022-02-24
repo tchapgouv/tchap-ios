@@ -1,12 +1,12 @@
 /*
- Copyright 2018 New Vector Ltd
- 
+ Copyright 2015 OpenMarket Ltd
+
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
- 
+
  http://www.apache.org/licenses/LICENSE-2.0
- 
+
  Unless required by applicable law or agreed to in writing, software
  distributed under the License is distributed on an "AS IS" BASIS,
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,13 +14,17 @@
  limitations under the License.
  */
 
-#import "RoomAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.h"
+#import "MatrixKit.h"
+
+#import "SegmentedViewController.h"
+
+@interface RoomSearchViewController : SegmentedViewController
 
 /**
- `RoomIncomingEncryptedAttachmentWithoutSenderInfoBubbleCell` displays room encrypted attachment antivirus scan status bubbles without sender's information.
+ The room data source concerned by the search session.
  */
-@interface RoomEncryptedAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell : RoomAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell
+@property (nonatomic) MXKRoomDataSource *roomDataSource;
 
-@property (weak, nonatomic) IBOutlet UIImageView *encryptionStatusView;
++ (instancetype)instantiate;
 
 @end

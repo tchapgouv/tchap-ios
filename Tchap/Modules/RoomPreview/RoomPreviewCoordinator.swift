@@ -23,6 +23,12 @@ protocol RoomPreviewCoordinatorDelegate: AnyObject {
 
 final class RoomPreviewCoordinator: NSObject, RoomPreviewCoordinatorType {
     
+    // MARK: - Constants
+    
+    private enum Constants {
+        static let detailModulesCheckDelay: Double = 0.3
+    }
+    
     // MARK: - Properties
     
     // MARK: Private
@@ -34,6 +40,13 @@ final class RoomPreviewCoordinator: NSObject, RoomPreviewCoordinatorType {
     private let roomViewController: RoomViewController
     private let activityIndicatorPresenter: ActivityIndicatorPresenterType
     private let roomsErrorPresenter: ErrorPresenter
+    
+    private var canReleaseRoomDataSource: Bool {
+        // If the displayed data is not a preview, let the manager release the room data source
+        // (except if the view controller has the room data source ownership).
+        return self.roomViewController.roomDataSource != nil && self.roomViewController.hasRoomDataSourceOwnership == false
+    }
+
     
     // MARK: Public
     
@@ -76,6 +89,10 @@ final class RoomPreviewCoordinator: NSObject, RoomPreviewCoordinatorType {
 
         // Try to get more information about the room
         if publicRoom?.worldReadable ?? false {
+            DispatchQueue.main.asyncAfter(deadline: .now() + Constants.detailModulesCheckDelay, execute: { [weak self] in
+                self?.roomViewController.startActivityIndicator()
+            })
+
             roomPreviewData.peek(inRoom: { [weak self] succeeded in
                 guard let sself = self else {
                     return
@@ -92,6 +109,7 @@ final class RoomPreviewCoordinator: NSObject, RoomPreviewCoordinatorType {
         
         self.roomViewController.displayRoomPreview(roomPreviewData)
         self.roomViewController.delegate = self
+        self.registerNavigationRouterNotifications()
     }
     
     func toPresentable() -> UIViewController {
@@ -170,35 +188,79 @@ final class RoomPreviewCoordinator: NSObject, RoomPreviewCoordinatorType {
         
         return ErrorPresentableImpl(title: errorTitle, message: errorMessage)
     }
+    
+    private func releaseRoomDataSourceIfNeeded() {
+
+        guard self.canReleaseRoomDataSource,
+              let roomId = self.publicRoom?.roomId else {
+            return
+        }
+
+        let dataSourceManager = MXKRoomDataSourceManager.sharedManager(forMatrixSession: self.session)
+        dataSourceManager?.closeRoomDataSource(withRoomId: roomId, forceClose: false)
+    }
+    
+    private func registerNavigationRouterNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(navigationRouterDidPopViewController(_:)), name: NavigationRouter.didPopModule, object: nil)
+    }
+    
+    @objc private func navigationRouterDidPopViewController(_ notification: Notification) {
+        
+        guard let userInfo = notification.userInfo,
+              let poppedModule = userInfo[NavigationRouter.NotificationUserInfoKey.module] as? Presentable,
+              poppedModule is RoomPreviewCoordinatorType else {
+            return
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + Constants.detailModulesCheckDelay) {
+            self.releaseRoomDataSourceIfNeeded()
+        }
+    }
 }
 
 // MARK: - RoomViewControllerDelegate
 extension RoomPreviewCoordinator: RoomViewControllerDelegate {
-    
-    func roomViewControllerShowRoomDetails(_ roomViewController: RoomViewController!) {
+    func roomViewController(_ roomViewController: RoomViewController, showRoomWithId eventIdentifier: String) {
+        //
     }
     
-    func roomViewController(_ roomViewController: RoomViewController!, showMemberDetails roomMember: MXRoomMember!) {
+    func roomViewController(_ roomViewController: RoomViewController, endPollWithEventIdentifier eventIdentifier: String) {
+        //
     }
     
-    func roomViewController(_ roomViewController: RoomViewController!, showRoom roomID: String!) {
+    func roomViewControllerShowRoomDetails(_ roomViewController: RoomViewController) {
+        //
     }
     
-    func roomViewControllerPreviewDidTapJoin(_ roomViewController: RoomViewController!) {
-        guard let roomPreviewData = roomViewController.roomPreviewData else {
-            return
-        }
-        self.joinRoom(with: roomPreviewData)
+    func roomViewControllerDidLeaveRoom(_ roomViewController: RoomViewController) {
+        //
     }
     
-    func roomViewControllerPreviewDidTapCancel(_ roomViewController: RoomViewController!) {
+    func roomViewControllerPreviewDidTapCancel(_ roomViewController: RoomViewController) {
         self.didCancel()
     }
     
-    func roomViewController(_ roomViewController: RoomViewController, handlePermalinkFragment fragment: String) -> Bool {
+    func roomViewControllerDidRequestPollCreationFormPresentation(_ roomViewController: RoomViewController) {
+        //
+    }
+    
+    func roomViewController(_ roomViewController: RoomViewController, showMemberDetails roomMember: MXRoomMember) {
+        //
+    }
+    
+    func roomViewController(_ roomViewController: RoomViewController, startChatWithUserId userId: String, completion: @escaping () -> Void) {
+        //
+    }
+    
+    func roomViewController(_ roomViewController: RoomViewController, showCompleteSecurityFor session: MXSession) {
+        //
+    }
+    
+    func roomViewController(_ roomViewController: RoomViewController, handleUniversalLinkWith parameters: UniversalLinkParameters) -> Bool {
         return false
     }
     
-    func roomViewController(_ roomViewController: RoomViewController, shareItemProvider provider: SimpleShareItemProvider) {
+    func roomViewController(_ roomViewController: RoomViewController, canEndPollWithEventIdentifier eventIdentifier: String) -> Bool {
+        return false
     }
 }

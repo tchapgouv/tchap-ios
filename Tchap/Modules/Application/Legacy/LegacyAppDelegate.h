@@ -25,8 +25,14 @@
 #import "Analytics.h"
 
 @protocol Configurable;
+@protocol LegacyAppDelegateDelegate;
+@class RoomNavigationParameters;
 
 #pragma mark - Notifications
+/**
+ Posted when the user taps the clock status bar.
+ */
+extern NSString *const kAppDelegateDidTapStatusBarNotification;
 
 /**
  Posted when the property 'isOffline' has changed. This property is related to the network reachability status.
@@ -51,6 +57,8 @@ extern NSString *const kLegacyAppDelegateDidLoginNotification;
     // background sync management
     void (^_completionHandler)(UIBackgroundFetchResult);
 }
+
+@property (weak, nonatomic) id<LegacyAppDelegateDelegate> delegate;
 
 @property (strong, nonatomic) UIWindow *window;
 
@@ -105,6 +113,8 @@ extern NSString *const kLegacyAppDelegateDidLoginNotification;
 - (void)refreshApplicationIconBadgeNumber;
 
 #pragma mark - Application layout handling
+
+- (void)restoreInitialDisplay:(void (^)(void))completion;
 
 - (UIAlertController*)showErrorAsAlert:(NSError*)error;
 - (UIAlertController*)showAlertWithTitle:(NSString*)title message:(NSString*)message;
@@ -177,6 +187,21 @@ extern NSString *const kLegacyAppDelegateDidLoginNotification;
  */
 @property (nonatomic, readonly) JitsiViewController *jitsiViewController;
 
+#pragma mark - Matrix Room handling
+
+// Show a room and jump to the given event if event id is not nil otherwise go to last messages.
+- (void)showRoomWithParameters:(RoomNavigationParameters*)parameters completion:(void (^)(void))completion;
+
+- (void)showRoomWithParameters:(RoomNavigationParameters*)parameters;
+
+// Restore display and show the room
+- (void)showRoom:(NSString*)roomId andEventId:(NSString*)eventId withMatrixSession:(MXSession*)mxSession;
+
+// Creates a new direct chat with the provided user id
+- (void)createDirectChatWithUserId:(NSString*)userId completion:(void (^)(void))completion;
+
+- (void)startDirectChatWithUserId:(NSString*)userId completion:(void (^)(void))completion;
+
 #pragma mark - Call status handling
 
 /**
@@ -184,5 +209,24 @@ extern NSString *const kLegacyAppDelegateDidLoginNotification;
  */
 @property (nonatomic, readonly) UIWindow* callStatusBarWindow;
 @property (nonatomic, readonly) UIButton* callStatusBarButton;
+
+@end
+
+@protocol LegacyAppDelegateDelegate <NSObject>
+
+- (void)legacyAppDelegate:(LegacyAppDelegate*)legacyAppDelegate wantsToPopToHomeViewControllerAnimated:(BOOL)animated completion:(void (^)(void))completion;
+- (void)legacyAppDelegateRestoreEmptyDetailsViewController:(LegacyAppDelegate*)legacyAppDelegate;
+
+- (void)legacyAppDelegate:(LegacyAppDelegate*)legacyAppDelegate didAddMatrixSession:(MXSession*)session;
+
+- (void)legacyAppDelegate:(LegacyAppDelegate*)legacyAppDelegate didRemoveMatrixSession:(MXSession*)session;
+
+- (void)legacyAppDelegate:(LegacyAppDelegate*)legacyAppDelegate didAddAccount:(MXKAccount*)account;
+
+- (void)legacyAppDelegate:(LegacyAppDelegate*)legacyAppDelegate didRemoveAccount:(MXKAccount*)account;
+
+- (void)legacyAppDelegate:(LegacyAppDelegate*)legacyAppDelegate didNavigateToSpaceWithId:(NSString*)spaceId;
+
+- (void)legacyAppDelegate:(LegacyAppDelegate*)legacyAppDelegate wantsToShowRoom:(NSString*)roomID completion:(void (^)(void))completion;
 
 @end

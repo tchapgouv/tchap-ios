@@ -109,7 +109,7 @@ class DefaultTheme: NSObject, Theme {
         ]
         navigationBar.barTintColor = self.baseColor
         // Tchap: We keep the bottom shadow for the moment
-//        navigationBar.shadowImage = UIImage() // Remove bottom shadow
+        navigationBar.shadowImage = UIImage() // Remove bottom shadow
 
         // The navigation bar needs to be opaque so that its background color is the expected one
         navigationBar.isTranslucent = false
