@@ -1047,9 +1047,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
             // A new call observer may be added here
             [self addMatrixCallObserver];
             
-            // Clean the storage by removing expired data
-            [mxSession tc_removeExpiredMessages];
-            
             [self.configuration setupSettingsWhenLoadedFor:mxSession];
             
 //            // Register to user new device sign in notification

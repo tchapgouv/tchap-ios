@@ -24,16 +24,14 @@ final class RoomTitleViewModel: NSObject {
     let roomTypeImageTintColor: UIColor?
     let subtitle: NSAttributedString?
     let roomMembersCount: String?
-    let roomRetentionInfo: String?
     let avatarImageViewModel: AvatarImageViewModel?
     
-    init(title: String, roomTypeImage: UIImage?, roomTypeImageTintColor: UIColor?, subtitle: NSAttributedString?, roomMembersCount: String?, roomRetentionInfo: String?, avatarImageViewModel: AvatarImageViewModel?) {
+    init(title: String, roomTypeImage: UIImage?, roomTypeImageTintColor: UIColor?, subtitle: NSAttributedString?, roomMembersCount: String?, avatarImageViewModel: AvatarImageViewModel?) {
         self.title = title
         self.roomTypeImage = roomTypeImage
         self.roomTypeImageTintColor = roomTypeImageTintColor
         self.subtitle = subtitle
         self.roomMembersCount = roomMembersCount
-        self.roomRetentionInfo = roomRetentionInfo
         self.avatarImageViewModel = avatarImageViewModel
     }
 }
