@@ -46,3 +46,7 @@
 #import "BubbleReactionsViewSizer.h"
 #import "ShareItemSender.h"
 #import "RoomInputToolbarView.h"
+#import "RoomTimelineCellProvider.h"
+#import "PlainRoomTimelineCellProvider.h"
+#import "BubbleRoomTimelineCellProvider.h"
+#import "HTMLFormatter.h"

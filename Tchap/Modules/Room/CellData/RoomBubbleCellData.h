@@ -25,7 +25,6 @@ typedef NS_ENUM(NSInteger, RoomBubbleCellDataTag)
     RoomBubbleCellDataTagMembership,
     RoomBubbleCellDataTagRoomCreateConfiguration,
     RoomBubbleCellDataTagRoomCreateWithPredecessor,
-    RoomBubbleCellDataTagNotice,
     RoomBubbleCellDataTagKeyVerificationNoDisplay,
     RoomBubbleCellDataTagKeyVerificationRequestIncomingApproval,
     RoomBubbleCellDataTagKeyVerificationRequest,
@@ -33,7 +32,8 @@ typedef NS_ENUM(NSInteger, RoomBubbleCellDataTag)
     RoomBubbleCellDataTagCall,
     RoomBubbleCellDataTagGroupCall,
     RoomBubbleCellDataTagRoomCreationIntro,
-    RoomBubbleCellDataTagPoll
+    RoomBubbleCellDataTagPoll,
+    RoomBubbleCellDataTagLocation
 };
 
 /**

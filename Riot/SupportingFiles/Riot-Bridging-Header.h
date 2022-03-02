@@ -45,6 +45,10 @@
 #import "RoomInputToolbarView.h"
 #import "NSArray+Element.h"
 #import "ShareItemSender.h"
+#import "HTMLFormatter.h"
+#import "RoomTimelineCellProvider.h"
+#import "PlainRoomTimelineCellProvider.h"
+#import "BubbleRoomTimelineCellProvider.h"
 
 // MatrixKit common imports, shared with all targets
 #import "MatrixKit-Bridging-Header.h"

@@ -19,9 +19,6 @@
 #import "ThemeService.h"
 #import "GeneratedInterface-Swift.h"
 
-@interface DisabledRoomInputToolbarView() <Themable>
-@end
-
 @implementation DisabledRoomInputToolbarView
 
 + (UINib *)nib
@@ -32,19 +29,14 @@
 
 + (instancetype)roomInputToolbarView
 {
-    DisabledRoomInputToolbarView *inputToolbarView;
-    
     if ([[self class] nib])
     {
-        inputToolbarView = [[[self class] nib] instantiateWithOwner:nil options:nil].firstObject;
+        return [[[self class] nib] instantiateWithOwner:nil options:nil].firstObject;
     }
     else
     {
-        inputToolbarView = [[self alloc] init];
+        return [[self alloc] init];
     }
-    
-    [inputToolbarView updateWithTheme:ThemeService.shared.theme];
-    return inputToolbarView;
 }
 
 #pragma mark - Override MXKView
@@ -52,7 +44,17 @@
 -(void)customizeViewRendering
 {
     [super customizeViewRendering];
-    [self updateWithTheme:ThemeService.shared.theme];
+    
+    // Remove default toolbar background color
+    self.backgroundColor = [UIColor clearColor];
+    
+    self.separatorView.backgroundColor = ThemeService.shared.theme.lineBreakColor;
+
+    self.disabledReasonTextView.font = [UIFont systemFontOfSize:15];
+    self.disabledReasonTextView.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.disabledReasonTextView.tintColor = ThemeService.shared.theme.tintColor;
+    self.disabledReasonTextView.editable = NO;
+    self.disabledReasonTextView.scrollEnabled = NO;
 }
 
 #pragma mark -
@@ -60,21 +62,6 @@
 - (void)setDisabledReason:(NSString *)reason
 {
     self.disabledReasonTextView.text = reason;
-}
-
-#pragma mark - Theme
-
-- (void)updateWithTheme:(id<Theme> _Nonnull)theme {
-    // Remove default toolbar background color
-    self.backgroundColor = [UIColor clearColor];
-    
-    self.separatorView.backgroundColor = theme.selectedBackgroundColor;
-    
-    self.disabledReasonTextView.font = [UIFont systemFontOfSize:15];
-    self.disabledReasonTextView.textColor = theme.textPrimaryColor;
-    self.disabledReasonTextView.tintColor = theme.textSecondaryColor;
-    self.disabledReasonTextView.editable = NO;
-    self.disabledReasonTextView.scrollEnabled = NO;
 }
 
 @end

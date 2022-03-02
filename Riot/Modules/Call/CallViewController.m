@@ -486,7 +486,7 @@ CallAudioRouteMenuViewDelegate> */
     }
     
     return [MXKTools paintImage:[UIImage imageNamed:@"placeholder"]
-                      withColor:ThemeService.shared.theme.tintColor];
+                      withColor:self.overriddenTheme.tintColor];
 }
 
 - (void)updatePeerInfoDisplay
@@ -570,142 +570,6 @@ CallAudioRouteMenuViewDelegate> */
 //            }];
 //        }
 //    }
-//}
-
-
-//#pragma mark - Properties
-//
-//- (id<Theme>)overriddenTheme
-//{
-//    if (_overriddenTheme == nil)
-//    {
-//        _overriddenTheme = [DarkTheme new];
-//    }
-//    return _overriddenTheme;
-//}
-//
-//- (CallPiPView *)pipView
-//{
-//    if (_pipView == nil)
-//    {
-//        _pipView = [CallPiPView instantiateWithSession:self.mainSession];
-//        [_pipView updateWithTheme:self.overriddenTheme];
-//    }
-//    return _pipView;
-//}
-//
-//- (void)setMxCallOnHold:(MXCall *)mxCallOnHold
-//{
-//    [super setMxCallOnHold:mxCallOnHold];
-//
-//    [self configurePiPView];
-//}
-//
-//- (UIImage*)picturePlaceholder
-//{
-//    CGFloat fontSize = floor(self.callerImageViewWidthConstraint.constant * 0.7);
-//
-//    if (self.peer)
-//    {
-//        // Use the vector style placeholder
-//        return [AvatarGenerator generateAvatarForMatrixItem:self.peer.userId
-//                                            withDisplayName:self.peer.displayname
-//                                                       size:self.callerImageViewWidthConstraint.constant
-//                                                andFontSize:fontSize];
-//    }
-//    else if (self.mxCall.room)
-//    {
-//        return [AvatarGenerator generateAvatarForMatrixItem:self.mxCall.room.roomId
-//                                            withDisplayName:self.mxCall.room.summary.displayname
-//                                                       size:self.callerImageViewWidthConstraint.constant
-//                                                andFontSize:fontSize];
-//    }
-//
-//    return [MXKTools paintImage:[UIImage imageNamed:@"placeholder"]
-//                      withColor:self.overriddenTheme.tintColor];
-//}
-//
-//- (void)updatePeerInfoDisplay
-//{
-//    [super updatePeerInfoDisplay];
-//
-//    NSString *peerAvatarURL;
-//
-//    if (self.peer)
-//    {
-//        peerAvatarURL = self.peer.avatarUrl;
-//    }
-//    else if (self.mxCall.isConferenceCall)
-//    {
-//        peerAvatarURL = self.mxCall.room.summary.avatar;
-//    }
-//
-//    self.blurredCallerImageView.contentMode = UIViewContentModeScaleAspectFill;
-//    self.callerImageView.contentMode = UIViewContentModeScaleAspectFill;
-//    if (peerAvatarURL)
-//    {
-//        // Retrieve the avatar in full resolution
-//        [self.blurredCallerImageView setImageURI:peerAvatarURL
-//                                        withType:nil
-//                             andImageOrientation:UIImageOrientationUp
-//                                    previewImage:self.picturePlaceholder
-//                                    mediaManager:self.mainSession.mediaManager];
-//
-//        // Retrieve the avatar in full resolution
-//        [self.callerImageView setImageURI:peerAvatarURL
-//                                 withType:nil
-//                      andImageOrientation:UIImageOrientationUp
-//                             previewImage:self.picturePlaceholder
-//                             mediaManager:self.mainSession.mediaManager];
-//    }
-//    else
-//    {
-//        self.blurredCallerImageView.image = self.picturePlaceholder;
-//        self.callerImageView.image = self.picturePlaceholder;
-//    }
-//}
-//
-//#pragma mark - Sounds
-//
-//- (NSURL*)audioURLWithName:(NSString*)soundName
-//{
-//    NSURL *audioUrl;
-//
-//    NSString *path = [[NSBundle mainBundle] pathForResource:soundName ofType:@"mp3"];
-//    if (path)
-//    {
-//        audioUrl = [NSURL fileURLWithPath:path];
-//    }
-//
-//    // Use by default the matrix kit sounds.
-//    if (!audioUrl)
-//    {
-//        audioUrl = [super audioURLWithName:soundName];
-//    }
-//
-//    return audioUrl;
-//}
-//
-//#pragma mark - Actions
-//
-//- (IBAction)onButtonPressed:(id)sender
-//{
-//    if (sender == _chatButton)
-//    {
-//        if (self.delegate)
-//        {
-//            // Dismiss the view controller whereas the call is still running
-//            [self.delegate dismissCallViewController:self completion:^{
-//
-//                if (self.mxCall.room)
-//                {
-//                    // Open the room page
-//                    [[AppDelegate theDelegate] showRoom:self.mxCall.room.roomId andEventId:nil withMatrixSession:self.mxCall.room.mxSession];
-//                }
-//
-//            }];
-//        }
-//    }
 //    else
 //    {
 //        [super onButtonPressed:sender];
@@ -715,7 +579,7 @@ CallAudioRouteMenuViewDelegate> */
 //- (void)setInPiP:(BOOL)inPiP
 //{
 //    _inPiP = inPiP;
-//
+//    
 //    if (_inPiP)
 //    {
 //        self.overlayContainerView.hidden = YES;
@@ -724,7 +588,7 @@ CallAudioRouteMenuViewDelegate> */
 //        self.callStatusLabel.hidden = YES;
 //        self.localPreviewContainerView.hidden = YES;
 //        self.localPreviewActivityView.hidden = YES;
-//
+//        
 //        if (self.pipViewContainer.subviews.count == 0)
 //        {
 //            [self.pipViewContainer vc_addSubViewMatchingParent:self.pipView];
@@ -739,7 +603,7 @@ CallAudioRouteMenuViewDelegate> */
 //        self.callerImageView.hidden = self.mxCall.isVideoCall && self.mxCall.state == MXCallStateConnected;
 //        self.callerNameLabel.hidden = NO;
 //        self.callStatusLabel.hidden = NO;
-//
+//        
 //        //  show controls when coming back from PiP mode
 //        [self showOverlayContainer:YES];
 //    }
@@ -751,7 +615,7 @@ CallAudioRouteMenuViewDelegate> */
 //    {
 //        return;
 //    }
-//
+//    
 //    [super showOverlayContainer:isShown];
 //}
 //
@@ -771,7 +635,7 @@ CallAudioRouteMenuViewDelegate> */
 //    self.customSizedPresentationController = [[CustomSizedPresentationController alloc] initWithPresentedViewController:controller presentingViewController:self];
 //    self.customSizedPresentationController.dismissOnBackgroundTap = NO;
 //    self.customSizedPresentationController.cornerRadius = 16;
-//
+//    
 //    controller.transitioningDelegate = self.customSizedPresentationController;
 //    [self presentViewController:controller animated:YES completion:nil];
 //}
@@ -782,7 +646,7 @@ CallAudioRouteMenuViewDelegate> */
 //{
 //    CallTransferMainViewController *controller = [CallTransferMainViewController instantiateWithSession:self.mainSession ignoredUserIds:@[self.peer.userId]];
 //    controller.delegate = self;
-//
+//    
 //    UINavigationController *navController = [[RiotNavigationController alloc] initWithRootViewController:controller];
 //    [self presentViewController:navController animated:YES completion:nil];
 //}
@@ -801,10 +665,8 @@ CallAudioRouteMenuViewDelegate> */
 //    {
 //        return;
 //    }
-//    BOOL result = [self.mxCall sendDTMF:digit
-//                               duration:0
-//                           interToneGap:0];
-//
+//    BOOL result = [self.mxCall sendDTMF:digit];
+//    
 //    MXLogDebug(@"[CallViewController] Sending DTMF tones %@", result ? @"succeeded": @"failed");
 //}
 //
@@ -813,27 +675,27 @@ CallAudioRouteMenuViewDelegate> */
 //- (void)callTransferMainViewControllerDidComplete:(CallTransferMainViewController *)viewController consult:(BOOL)consult contact:(MXKContact *)contact phoneNumber:(NSString *)phoneNumber
 //{
 //    [viewController dismissViewControllerAnimated:YES completion:nil];
-//
+//    
 //    void(^failureBlock)(NSError *_Nullable) = ^(NSError *error) {
 //        [self->currentAlert dismissViewControllerAnimated:NO completion:nil];
-//
+//        
 //        MXWeakify(self);
-//
-//        self->currentAlert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"call_transfer_error_title"]
-//                                                                 message:[NSBundle mxk_localizedStringForKey:@"call_transfer_error_message"]
+//        
+//        self->currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n callTransferErrorTitle]
+//                                                                 message:[VectorL10n callTransferErrorMessage]
 //                                                          preferredStyle:UIAlertControllerStyleAlert];
-//
-//        [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+//        
+//        [self->currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
 //                                                               style:UIAlertActionStyleDefault
 //                                                             handler:^(UIAlertAction * action) {
-//
+//            
 //            MXStrongifyAndReturnIfNil(self);
 //            self->currentAlert = nil;
 //        }]];
-//
+//        
 //        [self presentViewController:self->currentAlert animated:YES completion:nil];
 //    };
-//
+//    
 //    void(^continueBlock)(NSString *_Nonnull) = ^(NSString *targetUserId) {
 //        MXUserModel *targetUser = [[MXUserModel alloc] initWithUserId:targetUserId
 //                                                          displayname:contact.displayName
@@ -851,7 +713,7 @@ CallAudioRouteMenuViewDelegate> */
 //            failureBlock(error);
 //        }];
 //    };
-//
+//    
 //    if (contact)
 //    {
 //        continueBlock(contact.matrixIdentifiers.firstObject);
@@ -861,7 +723,7 @@ CallAudioRouteMenuViewDelegate> */
 //        MXWeakify(self);
 //        [self.mainSession.callManager getThirdPartyUserFrom:phoneNumber success:^(MXThirdPartyUserInstance * _Nonnull user) {
 //            MXStrongifyAndReturnIfNil(self);
-//
+//            
 //            continueBlock(user.userId);
 //        } failure:^(NSError * _Nullable error) {
 //            failureBlock(error);

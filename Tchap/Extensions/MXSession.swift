@@ -21,8 +21,8 @@ import Foundation
     /// Clean the storage of a session by removing the expired contents.
     func tc_removeExpiredMessages() {
         var hasStoreChanged = false
-        for summary in self.roomsSummaries() {
-            hasStoreChanged = hasStoreChanged || summary.tc_removeExpiredRoomContentsFromStore()
+        for room in self.rooms {
+            hasStoreChanged = hasStoreChanged || room.summary.tc_removeExpiredRoomContentsFromStore()
         }
         
         if hasStoreChanged {

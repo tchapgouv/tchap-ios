@@ -16,6 +16,7 @@
 
 import Foundation
 
+<<<<<<< HEAD:Riot/Modules/Room/Views/BubbleCells/Poll/PollWithPaginationTitleBubbleCell.swift
 class PollWithPaginationTitleBubbleCell: PollBubbleCell {
     
     override func setupViews() {
@@ -24,4 +25,11 @@ class PollWithPaginationTitleBubbleCell: PollBubbleCell {
         bubbleCellContentView?.showPaginationTitle = true
     }
     
+=======
+/// Represents the room timeline style identifiers available
+@objc
+enum RoomTimelineStyleIdentifier: Int {
+    case plain
+    case bubble
+>>>>>>> v1.7.0:Riot/Modules/Room/Views/BubbleCells/Styles/RoomTimelineStyleIdentifier.swift
 }

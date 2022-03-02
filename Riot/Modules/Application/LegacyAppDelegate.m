@@ -433,16 +433,16 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     _isAppForeground = NO;
     _handleSelfVerificationRequest = YES;
     
-    // Configure our analytics. It will indeed start if the option is enabled
-    Analytics *analytics = [Analytics sharedInstance];
+    // Configure our analytics. It will start if the option is enabled
+    Analytics *analytics = Analytics.shared;
     [MXSDKOptions sharedInstance].analyticsDelegate = analytics;
-    [DecryptionFailureTracker sharedInstance].delegate = [Analytics sharedInstance];
+    [DecryptionFailureTracker sharedInstance].delegate = analytics;
     
     MXBaseProfiler *profiler = [MXBaseProfiler new];
     profiler.analytics = analytics;
     [MXSDKOptions sharedInstance].profiler = profiler;
     
-    [analytics start];
+    [analytics startIfEnabled];
 
     self.localAuthenticationService = [[LocalAuthenticationService alloc] initWithPinCodePreferences:[PinCodePreferences shared]];
     
@@ -587,7 +587,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     
     // Analytics: Force to send the pending actions
     [[DecryptionFailureTracker sharedInstance] dispatch];
-    [[Analytics sharedInstance] dispatch];
+    [Analytics.shared forceUpload];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -648,9 +648,13 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     MXLogDebug(@"[AppDelegate] afterAppUnlockedByPin");
     
     // Check if there is crash log to send
-    if (RiotSettings.shared.enableCrashReport)
+    if (RiotSettings.shared.enableAnalytics)
     {
+        #if DEBUG
+        // Don't show alerts for crashes during development.
+        #else
         [self checkExceptionToReport];
+        #endif
     }
     
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
@@ -1368,9 +1372,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             else
             {
                 void(^findRoom)(void) = ^{
-                    if ([_masterTabBarController.selectedViewController isKindOfClass:MXKActivityHandlingViewController.class])
+                    if ([_masterTabBarController.selectedViewController conformsToProtocol:@protocol(MXKViewControllerActivityHandling)])
                     {
-                        MXKActivityHandlingViewController *homeViewController = (MXKActivityHandlingViewController*)_masterTabBarController.selectedViewController;
+                        UIViewController<MXKViewControllerActivityHandling> *homeViewController = (UIViewController<MXKViewControllerActivityHandling>*)_masterTabBarController.selectedViewController;
                         
                         [homeViewController startActivityIndicator];
                         
@@ -1647,11 +1651,13 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     // Try to get more information about the room before opening its preview
     [roomPreviewData peekInRoom:^(BOOL succeeded) {
         MXStrongifyAndReturnIfNil(self);
-        
-        MXKViewController *homeViewController = (MXKViewController*)self.masterTabBarController.selectedViewController;
+        if ([self.masterTabBarController.selectedViewController conformsToProtocol:@protocol(MXKViewControllerActivityHandling)])
+        {
+            UIViewController<MXKViewControllerActivityHandling> *homeViewController = (UIViewController<MXKViewControllerActivityHandling>*)self.masterTabBarController.selectedViewController;
 
-        // Note: the activity indicator will not disappear if the session is not ready
-        [homeViewController stopActivityIndicator];
+            // Note: the activity indicator will not disappear if the session is not ready
+            [homeViewController stopActivityIndicator];
+        }
         
         // If no data is available for this room, we name it with the known room alias (if any).
         if (!succeeded && self->universalLinkFragmentPendingRoomAlias[roomIdOrAlias])
@@ -1879,6 +1885,11 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             [self checkLocalPrivateKeysInSession:mxSession];
             
             [self.pushNotificationService checkPushKitPushersInSession:mxSession];
+        }
+        else if (mxSession.state == MXSessionStateRunning)
+        {
+            // Configure analytics from the session if necessary
+            [Analytics.shared useAnalyticsSettingsFrom:mxSession];
         }
         else if (mxSession.state == MXSessionStateClosed)
         {
@@ -2225,6 +2236,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     //  Reset push notification store
     [self.pushNotificationStore reset];
     
+    // Reset analytics
+    [Analytics.shared reset];
+    
 #ifdef MX_CALL_STACK_ENDPOINT
     // Erase all created certificates and private keys by MXEndpointCallStack
     for (MXKAccount *account in MXKAccountManager.sharedManager.accounts)
@@ -2390,8 +2404,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         
         launchAnimationContainerView = launchLoadingView;
         
-        [MXSDKOptions.sharedInstance.profiler startMeasuringTaskWithName:kMXAnalyticsStartupLaunchScreen
-                                                        category:kMXAnalyticsStartupCategory];
+        [MXSDKOptions.sharedInstance.profiler startMeasuringTaskWithName:MXTaskProfileNameStartupLaunchScreen];
     }
 }
 
@@ -2400,7 +2413,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     if (launchAnimationContainerView)
     {
         id<MXProfiler> profiler = MXSDKOptions.sharedInstance.profiler;
-        MXTaskProfile *launchTaskProfile = [profiler taskProfileWithName:kMXAnalyticsStartupLaunchScreen category:kMXAnalyticsStartupCategory];
+        MXTaskProfile *launchTaskProfile = [profiler taskProfileWithName:MXTaskProfileNameStartupLaunchScreen];
         if (launchTaskProfile)
         {
             [profiler stopMeasuringTaskWithProfile:launchTaskProfile];

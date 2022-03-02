@@ -17,7 +17,6 @@
 #import "ContactsViewController.h"
 
 #import "RageShakeManager.h"
-#import "Analytics.h"
 #import "ContactsDataSource.h"
 #import "Contact.h"
 
@@ -120,9 +119,6 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    // Screen tracking
-    [[Analytics sharedInstance] trackScreen:_screenName];
 
     // Check whether the access to the local contacts has not been already asked.
     if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusNotDetermined)

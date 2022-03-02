@@ -148,7 +148,8 @@ final class BuildSettings: NSObject {
     // MARK: - Analytics
     static let analyticsServerUrl: URL? = URL(string: "")
     static let analyticsAppId: String? = nil
-    
+    static let analyticsHost: String? = nil
+    static let analyticsKey: String? = nil
     
     // MARK: - Bug report
     static let bugReportDefaultHost = "i.tchap.gouv.fr"
@@ -267,6 +268,13 @@ final class BuildSettings: NSObject {
     static let roomScreenAllowStickerAction: Bool = false
     static let roomScreenAllowFilesAction: Bool = true
     
+    // Timeline style
+    static let roomScreenAllowTimelineStyleConfiguration: Bool = false
+    static let roomScreenTimelineDefaultStyleIdentifier: RoomTimelineStyleIdentifier = .plain
+    static var roomScreenEnableMessageBubblesByDefault: Bool {
+        return self.roomScreenTimelineDefaultStyleIdentifier == .bubble
+    }
+    
     // MARK: - Room Contextual Menu
 
     static let roomContextualMenuShowMoreOptionForMessages: Bool = true
@@ -321,4 +329,25 @@ final class BuildSettings: NSObject {
     
     // MARK: - Secrets Recovery
     static let secretsRecoveryAllowReset = true
+    
+    // MARK: - Polls
+    static var pollsEnabled: Bool {
+        guard #available(iOS 14, *) else {
+            return false
+        }
+        
+        return false//true : Not available on Tchap
+    }
+    
+    // MARK: - Location Sharing
+    
+    static let tileServerMapURL = URL(string: "https://api.maptiler.com/maps/streets/style.json?key=fU3vlMsMn4Jb6dnEIFsx")!
+    
+    static var locationSharingEnabled: Bool {
+        guard #available(iOS 14, *) else {
+            return false
+        }
+        
+        return false//true : Not available on Tchap
+    }
 }

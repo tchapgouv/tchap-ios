@@ -23,9 +23,12 @@
 #import "RoomViewController.h"
 
 #import "RageShakeManager.h"
-#import "Analytics.h"
+
+#import "TableViewCellWithCollectionView.h"
 
 #import "GeneratedInterface-Swift.h"
+
+NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewControllerDataReadyNotification";
 
 @interface RecentsViewController () </*CreateRoomCoordinatorBridgePresenterDelegate, RoomsDirectoryCoordinatorBridgePresenterDelegate,*/ RoomNotificationSettingsCoordinatorBridgePresenterDelegate>
 {
@@ -34,6 +37,9 @@
     
     // Observe UIApplicationDidEnterBackgroundNotification to cancel editing mode when app leaves the foreground state.
     __weak id UIApplicationDidEnterBackgroundNotificationObserver;
+    
+    // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
+    __weak id kAppDelegateDidTapStatusBarNotificationObserver;
     
     // Observe kMXNotificationCenterDidUpdateRules to update missed messages counts.
     __weak id kMXNotificationCenterDidUpdateRulesObserver;
@@ -83,9 +89,6 @@
     // Setup `MXKViewControllerHandling` properties
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
-    
-    // Set default screen name
-    _screenName = @"RecentsScreen";
     
     // Remove the search option from the navigation bar.
     self.enableBarButtonSearch = NO;
@@ -227,9 +230,6 @@
 {
     [super viewWillAppear:animated];
 
-    // Screen tracking
-    [[Analytics sharedInstance] trackScreen:_screenName];
-
     // Reset back user interactions
     self.userInteractionEnabled = YES;
     
@@ -241,6 +241,15 @@
     }
     
     MXWeakify(self);
+    
+    // Observe kAppDelegateDidTapStatusBarNotificationObserver.
+    kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        MXStrongifyAndReturnIfNil(self);
+        
+        [self scrollToTop:YES];
+        
+    }];
     
     // Observe kMXNotificationCenterDidUpdateRules to refresh missed messages counts
     kMXNotificationCenterDidUpdateRulesObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXNotificationCenterDidUpdateRules object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
@@ -262,6 +271,12 @@
     // Leave potential editing mode
     [self cancelEditionMode:NO];
     
+    if (kAppDelegateDidTapStatusBarNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kAppDelegateDidTapStatusBarNotificationObserver];
+        kAppDelegateDidTapStatusBarNotificationObserver = nil;
+    }
+    
     if (kMXNotificationCenterDidUpdateRulesObserver)
     {
         [[NSNotificationCenter defaultCenter] removeObserver:kMXNotificationCenterDidUpdateRulesObserver];
@@ -272,13 +287,27 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-
-    [self refreshCurrentSelectedCell:YES];
+    
+    // Release the current selected item (if any) except if the second view controller is still visible.
+//    if (self.splitViewController.isCollapsed)
+//    {
+//        // Release the current selected room (if any).
+//        [[AppDelegate theDelegate].masterTabBarController releaseSelectedItem];
+//    }
+//    else
+//    {
+        // In case of split view controller where the primary and secondary view controllers are displayed side-by-side onscreen,
+        // the selected room (if any) is highlighted.
+        [self refreshCurrentSelectedCell:YES];
+//    }
+    
+    [self.screenTimer start];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
+    [self.screenTimer stop];
 }
 
 - (void)viewDidLayoutSubviews
@@ -296,6 +325,15 @@
 
 - (void)refreshRecentsTable
 {
+    // Refresh the tabBar icon badges
+//    [[AppDelegate theDelegate].masterTabBarController refreshTabBarBadges];
+    
+    // do not refresh if there is a pending recent drag and drop
+//    if (movingCellPath)
+//    {
+//        return;
+//    }
+    
     isRefreshPending = NO;
     
     if (editedRoomId)
@@ -340,11 +378,41 @@
 
 - (void)refreshCurrentSelectedCell:(BOOL)forceVisible
 {
-    NSIndexPath *indexPath = [self.recentsTableView indexPathForSelectedRow];
-    if (indexPath)
-    {
-        [self.recentsTableView deselectRowAtIndexPath:indexPath animated:NO];
-    }
+    // Update here the index of the current selected cell (if any) - Useful in landscape mode with split view controller.
+//    NSIndexPath *currentSelectedCellIndexPath = nil;
+//    MasterTabBarController *masterTabBarController = [AppDelegate theDelegate].masterTabBarController;
+//    if (masterTabBarController.selectedRoomId)
+//    {
+//        // Look for the rank of this selected room in displayed recents
+//        currentSelectedCellIndexPath = [self.dataSource cellIndexPathWithRoomId:masterTabBarController.selectedRoomId andMatrixSession:masterTabBarController.selectedRoomSession];
+//    }
+//
+//    if (currentSelectedCellIndexPath)
+//    {
+//        // Select the right row
+//        [self.recentsTableView selectRowAtIndexPath:currentSelectedCellIndexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+//
+//        if (forceVisible)
+//        {
+//            // Scroll table view to make the selected row appear at second position
+//            NSInteger topCellIndexPathRow = currentSelectedCellIndexPath.row ? currentSelectedCellIndexPath.row - 1: currentSelectedCellIndexPath.row;
+//            NSIndexPath* indexPath = [NSIndexPath indexPathForRow:topCellIndexPathRow inSection:currentSelectedCellIndexPath.section];
+//            if ([self.recentsTableView vc_hasIndexPath:indexPath])
+//            {
+//                [self.recentsTableView scrollToRowAtIndexPath:indexPath
+//                                             atScrollPosition:UITableViewScrollPositionTop
+//                                                     animated:NO];
+//            }
+//        }
+//    }
+//    else
+//    {
+        NSIndexPath *indexPath = [self.recentsTableView indexPathForSelectedRow];
+        if (indexPath)
+        {
+            [self.recentsTableView deselectRowAtIndexPath:indexPath animated:NO];
+        }
+//    }
 }
 
 - (void)cancelEditionMode:(BOOL)forceRefresh
@@ -692,15 +760,15 @@
 //    return recentsDataSource;
 //}
 
-//- (void)showSpaceInviteNotAvailable
-//{
+- (void)showSpaceInviteNotAvailable
+{
 //    if (!self.spaceFeatureUnavailablePresenter)
 //    {
 //        self.spaceFeatureUnavailablePresenter = [SpaceFeatureUnavailablePresenter new];
 //    }
 //    
 //    [self.spaceFeatureUnavailablePresenter presentUnavailableFeatureFrom:self animated:YES];
-//}
+}
 
 #pragma mark - MXKDataSourceDelegate
 
@@ -737,6 +805,101 @@
     }
     
     return nil;
+}
+
+- (void)dataSource:(MXKDataSource *)dataSource didRecognizeAction:(NSString *)actionIdentifier inCell:(id<MXKCellRendering>)cell userInfo:(NSDictionary *)userInfo
+{
+//    // Handle here user actions on recents for Riot app
+//    if ([actionIdentifier isEqualToString:kInviteRecentTableViewCellPreviewButtonPressed])
+//    {
+//        // Retrieve the invited room
+//        MXRoom *invitedRoom = userInfo[kInviteRecentTableViewCellRoomKey];
+//
+//        if (invitedRoom.summary.roomType == MXRoomTypeSpace)
+//        {
+//            // Indicates that spaces are not supported
+//            [self showSpaceInviteNotAvailable];
+//            return;
+//        }
+//
+//        // Display the room preview
+//        [self showRoomWithRoomId:invitedRoom.roomId inMatrixSession:invitedRoom.mxSession];
+//    }
+//    else if ([actionIdentifier isEqualToString:kInviteRecentTableViewCellAcceptButtonPressed])
+//    {
+//        // Retrieve the invited room
+//        MXRoom *invitedRoom = userInfo[kInviteRecentTableViewCellRoomKey];
+//
+//        if (invitedRoom.summary.roomType == MXRoomTypeSpace)
+//        {
+//            // Indicates that spaces are not supported
+//            [self showSpaceInviteNotAvailable];
+//            return;
+//        }
+//
+//        // Accept invitation
+//        [self joinRoom:invitedRoom completion:nil];
+//    }
+//    else if ([actionIdentifier isEqualToString:kInviteRecentTableViewCellDeclineButtonPressed])
+//    {
+//        // Retrieve the invited room
+//        MXRoom *invitedRoom = userInfo[kInviteRecentTableViewCellRoomKey];
+//
+//        [self cancelEditionMode:isRefreshPending];
+//
+//        // Decline the invitation
+//        [self leaveRoom:invitedRoom completion:nil];
+//    }
+//    else
+//    {
+        // Keep default implementation for other actions if any
+        if ([super respondsToSelector:@selector(cell:didRecognizeAction:userInfo:)])
+        {
+            [super dataSource:dataSource didRecognizeAction:actionIdentifier inCell:cell userInfo:userInfo];
+        }
+//    }
+}
+
+- (void)dataSource:(MXKDataSource *)dataSource didCellChange:(id)changes
+{
+    BOOL cellReloaded = NO;
+    if ([changes isKindOfClass:NSNumber.class])
+    {
+        NSInteger section = ((NSNumber *)changes).integerValue;
+        if (section >= 0)
+        {
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:section];
+            UITableViewCell *cell = [self.recentsTableView cellForRowAtIndexPath:indexPath];
+            if ([cell isKindOfClass:TableViewCellWithCollectionView.class])
+            {
+                TableViewCellWithCollectionView *collectionViewCell = (TableViewCellWithCollectionView *)cell;
+                [collectionViewCell.collectionView reloadData];
+                cellReloaded = YES;
+            }
+        }
+    }
+    
+    if (!cellReloaded)
+    {
+        [super dataSource:dataSource didCellChange:changes];
+    }
+    else
+    {
+        // Since we've enabled room list pagination, `refreshRecentsTable` not called in this case.
+        // Refresh tab bar badges separately.
+//        [[AppDelegate theDelegate].masterTabBarController refreshTabBarBadges];
+    }
+    
+    if (changes == nil)
+    {
+        [self showEmptyViewIfNeeded];
+    }
+    
+    if (dataSource.state == MXKDataSourceStateReady)
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:RecentsViewControllerDataReadyNotification
+                                                            object:self];
+    }
 }
 
 #pragma mark - Swipe actions

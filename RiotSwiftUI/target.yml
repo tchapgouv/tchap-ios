@@ -38,6 +38,8 @@ targets:
       - "**/MatrixSDK/**"
       - "**/Coordinator/**"
       - "**/Test/**"
+    - path: ../Riot/Managers/AppInfo/
+    - path: ../Riot/Categories/Bundle.swift
     - path: ../Riot/Managers/Theme/ThemeIdentifier.swift
     - path: ../Riot/Managers/Locale/LocaleProviderType.swift
     - path: ../Riot/Categories/String.swift
