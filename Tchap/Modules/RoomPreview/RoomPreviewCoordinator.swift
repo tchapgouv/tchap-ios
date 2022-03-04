@@ -260,7 +260,23 @@ extension RoomPreviewCoordinator: RoomViewControllerDelegate {
         return false
     }
     
+    func roomViewController(_ roomViewController: RoomViewController, canEditPollWithEventIdentifier eventIdentifier: String) -> Bool {
+        return false
+    }
+    
     func roomViewController(_ roomViewController: RoomViewController, canEndPollWithEventIdentifier eventIdentifier: String) -> Bool {
         return false
+    }
+    
+    func roomViewController(_ roomViewController: RoomViewController, didRequestEditForPollWithStart startEvent: MXEvent) {
+        //
+    }
+    
+    func roomViewControllerDidRequestLocationSharingFormPresentation(_ roomViewController: RoomViewController) {
+        //
+    }
+    
+    func roomViewController(_ roomViewController: RoomViewController, didRequestLocationPresentationFor event: MXEvent, bubbleData: MXKRoomBubbleCellDataStoring) {
+        //
     }
 }

@@ -100,9 +100,10 @@ final class HomeViewController: UIViewController {
     }
     
     private func setupSegmentedViewController() {
-        guard self.segmentedViewControllerContainerView.subviews.isEmpty, let segmentedViewController = SegmentedViewController.instantiate() else {
+        guard self.segmentedViewControllerContainerView.subviews.isEmpty else {
             return
         }
+        let segmentedViewController = SegmentedViewController()
         segmentedViewController.initWithTitles(self.segmentViewControllersTitles, viewControllers: self.segmentViewControllers, defaultSelected: 0)
         self.vc_addChildViewController(viewController: segmentedViewController, onView: self.segmentedViewControllerContainerView)
         self.segmentedViewController = segmentedViewController

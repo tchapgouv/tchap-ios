@@ -245,7 +245,6 @@ final class RoomCreationCoordinator: NSObject, RoomCreationCoordinatorType {
                                            name: roomCreationFormResult.name,
                                            avatarURL: avatarUrl,
                                            inviteUserIds: userIDs,
-                                           rententionPeriodInMs: nil,
                                            isFederated: isFederated,
                                            accessRule: roomAccessRule)
     }

@@ -563,7 +563,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     
     // Analytics: Force to send the pending actions
     //[[DecryptionFailureTracker sharedInstance] dispatch];
-    [[Analytics sharedInstance] dispatch];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -1047,9 +1046,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         {
             // A new call observer may be added here
             [self addMatrixCallObserver];
-            
-            // Clean the storage by removing expired data
-            [mxSession tc_removeExpiredMessages];
             
             [self.configuration setupSettingsWhenLoadedFor:mxSession];
             

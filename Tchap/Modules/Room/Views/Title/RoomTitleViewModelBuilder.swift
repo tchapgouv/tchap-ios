@@ -53,7 +53,6 @@ final class RoomTitleViewModelBuilder: NSObject {
         let roomTypeImageTintColor: UIColor?
         let subtitle: NSAttributedString?
         let roomMembersCount: String?
-        let roomRetentionInfo: String?
         let avatarImageShape: AvatarImageShape
         let avatarBorderColor: UIColor?
         let avatarBorderWidth: CGFloat?
@@ -74,7 +73,6 @@ final class RoomTitleViewModelBuilder: NSObject {
                 subtitle = nil
             }
             roomMembersCount = nil
-            roomRetentionInfo = nil
             avatarImageShape = .circle
             avatarBorderColor = nil
             avatarBorderWidth = nil
@@ -85,7 +83,6 @@ final class RoomTitleViewModelBuilder: NSObject {
             roomTypeImage = nil
             roomTypeImageTintColor = nil
             roomMembersCount = nil
-            roomRetentionInfo = nil
             avatarImageShape = .circle
             avatarBorderColor = nil
             avatarBorderWidth = nil
@@ -130,17 +127,6 @@ final class RoomTitleViewModelBuilder: NSObject {
             }
             
             roomMembersCount = TchapL10n.roomTitleRoomMembersCount(Int(roomSummary.membersCount.joined))
-            
-            #if ENABLE_ROOM_RETENTION
-            let retentionPeriod = roomSummary.tc_roomRetentionPeriodInDays()
-            if retentionPeriod != RetentionConstants.undefinedRetentionValueInDays {
-                roomRetentionInfo = TchapL10n.roomTitleRetentionInfoInDays(Int(retentionPeriod))
-            } else {
-                roomRetentionInfo = nil
-            }
-            #else
-            roomRetentionInfo = nil
-            #endif
         }
         
         let placeholderImage: UIImage = AvatarGenerator.generateAvatar(forText: displayName)
@@ -160,7 +146,6 @@ final class RoomTitleViewModelBuilder: NSObject {
                                   roomTypeImageTintColor: roomTypeImageTintColor,
                                   subtitle: subtitle,
                                   roomMembersCount: roomMembersCount,
-                                  roomRetentionInfo: roomRetentionInfo,
                                   avatarImageViewModel: avatarImageViewModel)
     }
     
@@ -205,7 +190,6 @@ final class RoomTitleViewModelBuilder: NSObject {
                                   roomTypeImageTintColor: nil,
                                   subtitle: subtitle,
                                   roomMembersCount: nil,
-                                  roomRetentionInfo: nil,
                                   avatarImageViewModel: avatarImageViewModel)
     }
     
@@ -241,7 +225,6 @@ final class RoomTitleViewModelBuilder: NSObject {
                                   roomTypeImageTintColor: nil,
                                   subtitle: subtitle,
                                   roomMembersCount: nil,
-                                  roomRetentionInfo: nil,
                                   avatarImageViewModel: avatarImageViewModel)
     }
     
@@ -262,7 +245,6 @@ final class RoomTitleViewModelBuilder: NSObject {
                                   roomTypeImageTintColor: nil,
                                   subtitle: subtitle,
                                   roomMembersCount: nil,
-                                  roomRetentionInfo: nil,
                                   avatarImageViewModel: nil)
     }
 }

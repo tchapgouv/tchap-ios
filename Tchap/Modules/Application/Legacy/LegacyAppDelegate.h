@@ -22,7 +22,6 @@
 #import "JitsiViewController.h"
 
 #import "RageShakeManager.h"
-#import "Analytics.h"
 
 @protocol Configurable;
 @protocol LegacyAppDelegateDelegate;

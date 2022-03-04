@@ -66,7 +66,6 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
                                                  roomTypeImageTintColor: nil,
                                                  subtitle: subtitle,
                                                  roomMembersCount: nil,
-                                                 roomRetentionInfo: nil,
                                                  avatarImageViewModel: nil)
     }
     
@@ -128,10 +127,9 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
             var favouriteEvents: [FavouriteEvent] = []
             for room in self.session.rooms {
                 if let eventIds = room.accountData.getTaggedEventsIds(kMXTaggedEventFavourite) {
-                    let minMessageTs = room.summary.tc_mininumMessageTimestamp()
                     for eventId in eventIds {
                         if let eventInfo = room.accountData.getTaggedEventInfo(eventId, withTag: kMXTaggedEventFavourite),
-                           eventInfo.originServerTs == kMXUndefinedTimestamp || minMessageTs == kMXUndefinedTimestamp || eventInfo.originServerTs >= minMessageTs {
+                           eventInfo.originServerTs == kMXUndefinedTimestamp {
                             favouriteEvents.append(FavouriteEvent(roomId: room.roomId, eventId: eventId, eventInfo: eventInfo))
                         }
                     }
@@ -154,7 +152,6 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
                                                  roomTypeImageTintColor: nil,
                                                  subtitle: NSAttributedString(string: subtitle, attributes: [.foregroundColor: ThemeService.shared().theme.headerTextPrimaryColor]),
                                                  roomMembersCount: nil,
-                                                 roomRetentionInfo: nil,
                                                  avatarImageViewModel: nil)
         
         self.update(viewState: .sorted)

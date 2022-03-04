@@ -15,9 +15,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#import "MatrixKit.h"
+#import <MatrixSDK/MatrixSDK.h>
 
-@protocol Style;
+#import "UIViewController+RiotSearch.h"
+#import "MatrixKit.h"
 
 /**
  This view controller manages several uiviewcontrollers like UISegmentedController manages uiTableView
@@ -52,7 +53,6 @@ limitations under the License.
  */
 @property (nonatomic, readonly) NSArray<UIViewController*> *viewControllers;
 
-
 /**
  Returns the `UINib` object initialized for a `SegmentedViewController`.
 
@@ -69,9 +69,9 @@ limitations under the License.
  Creates and returns a new `SegmentedViewController` object.
 
  @discussion This is the designated initializer for programmatic instantiation.
- @return An initialized `SegmentedViewController` object.
+ @return An initialized `SegmentedViewController` object if successful, `nil` otherwise.
  */
-+ (instancetype)instantiate;
++ (instancetype)segmentedViewController;
 
 /**
  init the segmentedViewController with a list of UIViewControllers.

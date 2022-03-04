@@ -420,9 +420,6 @@ MXKDocumentPickerPresenterDelegate>
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    // Screen tracking
-    [[Analytics sharedInstance] trackScreen:@"Settings"];
     
     // Release the potential image picker presenter
     [self dismissImagePickerPresenter];
@@ -1880,18 +1877,12 @@ MXKDocumentPickerPresenterDelegate>
 //
 //        RiotSettings.shared.enableCrashReport = NO;
 //
-//        [[Analytics sharedInstance] stop];
-//
 //        // Remove potential crash file.
 //        [MXLogger deleteCrashLog];
 //    }
 //    else
 //    {
 //        NSLog(@"[SettingsViewController] enable automatic crash report and analytics sending");
-//
-//        RiotSettings.shared.enableCrashReport = YES;
-//
-//        [[Analytics sharedInstance] start];
 //    }
 //}
 //

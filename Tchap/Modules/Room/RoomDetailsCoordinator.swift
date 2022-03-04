@@ -56,7 +56,7 @@ final class RoomDetailsCoordinator: NSObject, RoomDetailsCoordinatorType {
         self.session = session
         self.roomID = roomID
         
-        self.segmentedViewController = SegmentedViewController.instantiate()
+        self.segmentedViewController = SegmentedViewController()
         
         self.activityIndicatorPresenter = ActivityIndicatorPresenter()
         self.errorPresenter = AlertErrorPresenter(viewControllerPresenter: self.segmentedViewController)

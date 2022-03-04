@@ -19,8 +19,7 @@
 
 @class TermsView;
 
-@interface AuthInputsView : MXKAuthInputsView <MXKCountryPickerViewControllerDelegate>
-
+@interface AuthInputsView : MXKAuthInputsView
 @property (weak, nonatomic) IBOutlet UITextField *userLoginTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passWordTextField;
 @property (weak, nonatomic) IBOutlet UITextField *repeatPasswordTextField;

@@ -55,8 +55,8 @@ targets:
 
     settings:
       base:
-        GCC_PREPROCESSOR_DEFINITIONS: $(inherited) ENABLE_ROOM_RETENTION=1 ENABLE_REACTIONS=1 ENABLE_EDITION=1 ENABLE_JOIN_BY_LINK=1
-        OTHER_SWIFT_FLAGS: $(inherited) -D ENABLE_ROOM_RETENTION -D ENABLE_REACTIONS -D ENABLE_EDITION
+        GCC_PREPROCESSOR_DEFINITIONS: $(inherited) ENABLE_REACTIONS=1 ENABLE_EDITION=1 ENABLE_JOIN_BY_LINK=1
+        OTHER_SWIFT_FLAGS: $(inherited) -D ENABLE_REACTIONS -D ENABLE_EDITION
 
     sources:
     - path: ../Btchap/Config
@@ -81,6 +81,7 @@ targets:
         - "Modules/Room/Members/Detail/RoomMemberDetailsViewController.xib"
         - "Modules/Room/Settings/RoomSettingsViewController.*"
         - "Modules/Room/RoomViewController.*"
+        - "Modules/Room/Views/BubbleCells"
         - "Modules/Room/Views/InputToolbar/RoomInputToolbarView.*"
         - "Modules/Room/Views/Preview"
         - "Modules/Room/Views/Title/RoomTitleView.*"
@@ -91,6 +92,7 @@ targets:
         - "Managers/UniversalLink"
         - "**/*.strings" # Exclude all strings files
         - "**/*.cer"
+    - path: ../Tchap/Modules/Room/Views/BubbleCells/Antivirus
 
     # Add separately localizable files
     - path: ../Tchap/Assets/Localizations/fr.lproj/Tchap.strings
@@ -108,7 +110,6 @@ targets:
     - path: ../Riot/Categories
     - path: ../Riot/Generated/MatrixKitStrings.swift
     - path: ../Riot/Generated/Vector_Strings.swift
-    - path: ../Riot/Managers/Analytics
     - path: ../Riot/Managers/AppInfo
     - path: ../Riot/Managers/BugReport
     - path: ../Riot/Managers/EncryptionKeyManager/EncryptionKeyManager.swift
@@ -131,6 +132,7 @@ targets:
     - path: ../Riot/Model/Room/RoomPreviewData.h
     - path: ../Riot/Model/Room/RoomPreviewData.m
     - path: ../Riot/Model/WellKnown
+    - path: ../Riot/Modules/Analytics
     - path: ../Riot/Modules/Application/ScreenNavigation
     - path: ../Riot/Modules/Authentication/SSO
     - path: ../Riot/Modules/Authentication/Views
@@ -173,6 +175,7 @@ targets:
     - path: ../Riot/Modules/EncryptionInfo/EncryptionInfoView.h
     - path: ../Riot/Modules/EncryptionInfo/EncryptionInfoView.m
     - path: ../Riot/Modules/Home/Fallback
+    - path: ../Riot/Modules/Home/Views
     - path: ../Riot/Modules/GDPR
     - path: ../Riot/Modules/GlobalSearch/Files/CellData/FilesSearchCellData.h
     - path: ../Riot/Modules/GlobalSearch/Files/CellData/FilesSearchCellData.m
@@ -187,8 +190,9 @@ targets:
     - path: ../Riot/Modules/Reauthentication
     - path: ../Riot/Modules/Room
       excludes:
-        - "Views/BubbleCells/Encryption/RoomEncryptedDataBubbleCell.m"
+        - "Location"
         - "Views/BubbleCells/KeyVerification/SizingViewHeight.swift"
+        - "Views/BubbleCells/Location"
         - "Views/BubbleCells/Poll/"
     - path: ../Riot/Modules/Room/BubbleReactions
     - path: ../Riot/Modules/RoomKeyRequest/RoomKeyRequestViewController.h
@@ -250,7 +254,5 @@ targets:
     - path: ../Riot/Modules/GlobalSearch/Files/Views/FilesSearchTableViewCell.xib
       buildPhase: resources
     - path: ../Riot/Modules/UserDevices/Views/DeviceTableViewCell.xib
-      buildPhase: resources
-    - path: ../Riot/Modules/Room/Views/BubbleCells/RoomTypingBubbleCell.xib
       buildPhase: resources
 

@@ -16,10 +16,6 @@
 
 import Foundation
 
-extension Notification.Name {
-    static let roomSummaryDidRemoveExpiredDataFromStore = Notification.Name(MXRoomSummary.roomSummaryDidRemoveExpiredDataFromStore)
-}
-
 enum RoomCategory {
     case directChat
     case restrictedPrivateRoom
@@ -31,14 +27,11 @@ enum RoomCategory {
 
 @objc extension MXRoomSummary {
     
-    static let roomSummaryDidRemoveExpiredDataFromStore = "roomSummaryDidRemoveExpiredDataFromStore"
-    
     // MARK: - Constants
     
     private enum Constants {
         static let isFederatedKey = "isFederated"
         static let roomAccessRuleKey = "roomAccessRule"
-        static let roomRetentionInDaysKey = "roomRetentionInDays"
         static let isServerNotice = "isServerNotice"
     }
     
@@ -86,13 +79,6 @@ enum RoomCategory {
                         self.others[Constants.roomAccessRuleKey] = rule
                         updated = true
                     }
-                } else if type == MXEventType.roomRetention.identifier {
-                    if let maxLifetime = event.content[RoomService.roomRetentionContentMaxLifetimeKey] as? UInt64 {
-                        self.others[Constants.roomRetentionInDaysKey] = Tools.numberOfDaysFromDuration(inMs: maxLifetime)
-                    } else {
-                        self.others[Constants.roomRetentionInDaysKey] = RetentionConstants.undefinedRetentionValueInDays
-                    }
-                    updated = true
                 }
             }
         }
@@ -147,49 +133,5 @@ enum RoomCategory {
     /// Get the current room access rule of the room
     func tc_roomAccessRuleIdentifier() -> String {
         return tc_roomAccessRule().identifier
-    }
-    
-    /// Get the room messages retention period in days
-    /// Return RetentionConstants.undefinedRetentionValueInDays if no retention period is defined for the room.
-    func tc_roomRetentionPeriodInDays() -> uint {
-        if let period = self.others[Constants.roomRetentionInDaysKey] as? uint {
-            return period
-        } else {
-            return RetentionConstants.undefinedRetentionValueInDays
-        }
-    }
-    
-    /// Get the timestamp below which the received messages must be removed from the store, and the display.
-    /// Return kMXUndefinedTimestamp if no retention period is defined for the room.
-    func tc_mininumMessageTimestamp() -> UInt64 {
-        let minimumTimestamp: UInt64
-        let retentionPeriodInDays = self.tc_roomRetentionPeriodInDays()
-        if retentionPeriodInDays != RetentionConstants.undefinedRetentionValueInDays {
-            let periodInMs = Tools.durationInMs(fromDays: retentionPeriodInDays)
-            let currentTs = (UInt64)(Date().timeIntervalSince1970 * 1000)
-            minimumTimestamp = (currentTs - periodInMs)
-        } else {
-            minimumTimestamp = kMXUndefinedTimestamp
-        }
-        
-        return minimumTimestamp
-    }
-    
-    /// Remove the expired messages from the store.
-    /// If some data are removed, this operation posts the notification: roomSummaryDidRemoveExpiredDataFromStore.
-    /// This operation does not commit the potential change. We let the caller trigger the commit when this is the more suitable.
-    ///
-    /// Provide a boolean telling whether some data have been removed.
-    func tc_removeExpiredRoomContentsFromStore() -> Bool {
-        let minimumTimestamp = self.tc_mininumMessageTimestamp()
-        if minimumTimestamp != kMXUndefinedTimestamp {
-            let ret = self.mxSession.store.removeAllMessagesSent(before: minimumTimestamp, inRoom: roomId)
-            if ret {
-                NotificationCenter.default.post(name: .roomSummaryDidRemoveExpiredDataFromStore, object: self)
-            }
-            return ret
-        }
-        
-        return false
     }
 }

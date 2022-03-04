@@ -53,59 +53,7 @@
 #import "JitsiViewController.h"
 
 #import "RoomEmptyBubbleCell.h"
-
-#import "RoomIncomingTextMsgBubbleCell.h"
-#import "RoomIncomingTextMsgWithoutSenderInfoBubbleCell.h"
-#import "RoomIncomingTextMsgWithPaginationTitleBubbleCell.h"
-#import "RoomIncomingTextMsgWithoutSenderNameBubbleCell.h"
-#import "RoomIncomingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.h"
-#import "RoomIncomingAttachmentBubbleCell.h"
-#import "RoomIncomingAttachmentWithoutSenderInfoBubbleCell.h"
-#import "RoomIncomingAttachmentWithPaginationTitleBubbleCell.h"
-
-#import "RoomIncomingEncryptedTextMsgBubbleCell.h"
-#import "RoomIncomingEncryptedTextMsgWithoutSenderInfoBubbleCell.h"
-#import "RoomIncomingEncryptedTextMsgWithPaginationTitleBubbleCell.h"
-#import "RoomIncomingEncryptedTextMsgWithoutSenderNameBubbleCell.h"
-#import "RoomIncomingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.h"
-#import "RoomIncomingEncryptedAttachmentBubbleCell.h"
-#import "RoomIncomingEncryptedAttachmentWithoutSenderInfoBubbleCell.h"
-#import "RoomIncomingEncryptedAttachmentWithPaginationTitleBubbleCell.h"
-
-#import "RoomOutgoingTextMsgBubbleCell.h"
-#import "RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.h"
-#import "RoomOutgoingTextMsgWithPaginationTitleBubbleCell.h"
-#import "RoomOutgoingTextMsgWithoutSenderNameBubbleCell.h"
-#import "RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.h"
-#import "RoomOutgoingAttachmentBubbleCell.h"
-#import "RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.h"
-#import "RoomOutgoingAttachmentWithPaginationTitleBubbleCell.h"
-
-#import "RoomOutgoingEncryptedTextMsgBubbleCell.h"
-#import "RoomOutgoingEncryptedTextMsgWithoutSenderInfoBubbleCell.h"
-#import "RoomOutgoingEncryptedTextMsgWithPaginationTitleBubbleCell.h"
-#import "RoomOutgoingEncryptedTextMsgWithoutSenderNameBubbleCell.h"
-#import "RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.h"
-#import "RoomOutgoingEncryptedAttachmentBubbleCell.h"
-#import "RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.h"
-#import "RoomOutgoingEncryptedAttachmentWithPaginationTitleBubbleCell.h"
-
-#import "RoomMembershipBubbleCell.h"
-#import "RoomMembershipWithPaginationTitleBubbleCell.h"
-#import "RoomMembershipCollapsedBubbleCell.h"
-#import "RoomMembershipCollapsedWithPaginationTitleBubbleCell.h"
 #import "RoomMembershipExpandedBubbleCell.h"
-#import "RoomMembershipExpandedWithPaginationTitleBubbleCell.h"
-//#import "RoomCreationWithPaginationCollapsedBubbleCell.h"
-//#import "RoomCreationCollapsedBubbleCell.h"
-
-#import "RoomAttachmentAntivirusScanStatusBubbleCell.h"
-#import "RoomAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.h"
-#import "RoomAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.h"
-
-#import "RoomSelectedStickerBubbleCell.h"
-#import "RoomPredecessorBubbleCell.h"
-
 #import "MXKRoomBubbleTableViewCell+Riot.h"
 
 #import "AvatarGenerator.h"
@@ -132,6 +80,8 @@
 #import "TypingUserInfo.h"
 
 #import "MXSDKOptions.h"
+
+#import "RoomTimelineCellProvider.h"
 
 #import "GeneratedInterface-Swift.h"
 
@@ -259,6 +209,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 //@property (nonatomic, strong) UserSuggestionCoordinatorBridge *userSuggestionCoordinator;
 @property (nonatomic, weak) IBOutlet UIView *userSuggestionContainerView;
 
+@property (nonatomic) AnalyticsScreenTimer *screenTimer;
+
 @end
 
 @implementation RoomViewController
@@ -341,6 +293,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     
 //    self.voiceMessageController = [[VoiceMessageController alloc] initWithThemeService:ThemeService.shared mediaServiceProvider:VoiceMessageMediaServiceProvider.sharedProvider];
 //    self.voiceMessageController.delegate = self;
+    
+    self.screenTimer = [[AnalyticsScreenTimer alloc] initWithScreen:AnalyticsScreenRoom];
+
 }
 
 - (void)viewDidLoad
@@ -348,83 +303,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     [super viewDidLoad];
     
     // Register first customized cell view classes used to render bubbles
-    [self.bubblesTableView registerClass:RoomIncomingTextMsgBubbleCell.class forCellReuseIdentifier:RoomIncomingTextMsgBubbleCell.defaultReuseIdentifier];
-    [self.bubblesTableView registerClass:RoomIncomingTextMsgWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:RoomIncomingTextMsgWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
-    [self.bubblesTableView registerClass:RoomIncomingTextMsgWithPaginationTitleBubbleCell.class forCellReuseIdentifier:RoomIncomingTextMsgWithPaginationTitleBubbleCell.defaultReuseIdentifier];
-    [self.bubblesTableView registerClass:RoomIncomingAttachmentBubbleCell.class forCellReuseIdentifier:RoomIncomingAttachmentBubbleCell.defaultReuseIdentifier];
-    [self.bubblesTableView registerClass:RoomIncomingAttachmentWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:RoomIncomingAttachmentWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
-    [self.bubblesTableView registerClass:RoomIncomingAttachmentWithPaginationTitleBubbleCell.class forCellReuseIdentifier:RoomIncomingAttachmentWithPaginationTitleBubbleCell.defaultReuseIdentifier];
-    [self.bubblesTableView registerClass:RoomIncomingTextMsgWithoutSenderNameBubbleCell.class forCellReuseIdentifier:RoomIncomingTextMsgWithoutSenderNameBubbleCell.defaultReuseIdentifier];
-    [self.bubblesTableView registerClass:RoomIncomingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.class forCellReuseIdentifier:RoomIncomingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.defaultReuseIdentifier];
-    
-    [self.bubblesTableView registerClass:RoomIncomingEncryptedTextMsgBubbleCell.class forCellReuseIdentifier:RoomIncomingEncryptedTextMsgBubbleCell.defaultReuseIdentifier];
-    [self.bubblesTableView registerClass:RoomIncomingEncryptedTextMsgWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:RoomIncomingEncryptedTextMsgWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
-    [self.bubblesTableView registerClass:RoomIncomingEncryptedTextMsgWithPaginationTitleBubbleCell.class forCellReuseIdentifier:RoomIncomingEncryptedTextMsgWithPaginationTitleBubbleCell.defaultReuseIdentifier];
-    [self.bubblesTableView registerClass:RoomIncomingEncryptedAttachmentBubbleCell.class forCellReuseIdentifier:RoomIncomingEncryptedAttachmentBubbleCell.defaultReuseIdentifier];
-    [self.bubblesTableView registerClass:RoomIncomingEncryptedAttachmentWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:RoomIncomingEncryptedAttachmentWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
-    [self.bubblesTableView registerClass:RoomIncomingEncryptedAttachmentWithPaginationTitleBubbleCell.class forCellReuseIdentifier:RoomIncomingEncryptedAttachmentWithPaginationTitleBubbleCell.defaultReuseIdentifier];
-    [self.bubblesTableView registerClass:RoomIncomingEncryptedTextMsgWithoutSenderNameBubbleCell.class forCellReuseIdentifier:RoomIncomingEncryptedTextMsgWithoutSenderNameBubbleCell.defaultReuseIdentifier];
-    [self.bubblesTableView registerClass:RoomIncomingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.class forCellReuseIdentifier:RoomIncomingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.defaultReuseIdentifier];
-    
-    [self.bubblesTableView registerClass:RoomOutgoingAttachmentBubbleCell.class forCellReuseIdentifier:RoomOutgoingAttachmentBubbleCell.defaultReuseIdentifier];
-    [self.bubblesTableView registerClass:RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
-    [self.bubblesTableView registerClass:RoomOutgoingAttachmentWithPaginationTitleBubbleCell.class forCellReuseIdentifier:RoomOutgoingAttachmentWithPaginationTitleBubbleCell.defaultReuseIdentifier];
-    [self.bubblesTableView registerClass:RoomOutgoingTextMsgBubbleCell.class forCellReuseIdentifier:RoomOutgoingTextMsgBubbleCell.defaultReuseIdentifier];
-    [self.bubblesTableView registerClass:RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
-    [self.bubblesTableView registerClass:RoomOutgoingTextMsgWithPaginationTitleBubbleCell.class forCellReuseIdentifier:RoomOutgoingTextMsgWithPaginationTitleBubbleCell.defaultReuseIdentifier];
-    [self.bubblesTableView registerClass:RoomOutgoingTextMsgWithoutSenderNameBubbleCell.class forCellReuseIdentifier:RoomOutgoingTextMsgWithoutSenderNameBubbleCell.defaultReuseIdentifier];
-    [self.bubblesTableView registerClass:RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.class forCellReuseIdentifier:RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.defaultReuseIdentifier];
-    
-    [self.bubblesTableView registerClass:RoomOutgoingEncryptedAttachmentBubbleCell.class forCellReuseIdentifier:RoomOutgoingEncryptedAttachmentBubbleCell.defaultReuseIdentifier];
-    [self.bubblesTableView registerClass:RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
-    [self.bubblesTableView registerClass:RoomOutgoingEncryptedAttachmentWithPaginationTitleBubbleCell.class forCellReuseIdentifier:RoomOutgoingEncryptedAttachmentWithPaginationTitleBubbleCell.defaultReuseIdentifier];
-    [self.bubblesTableView registerClass:RoomOutgoingEncryptedTextMsgBubbleCell.class forCellReuseIdentifier:RoomOutgoingEncryptedTextMsgBubbleCell.defaultReuseIdentifier];
-    [self.bubblesTableView registerClass:RoomOutgoingEncryptedTextMsgWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:RoomOutgoingEncryptedTextMsgWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
-    [self.bubblesTableView registerClass:RoomOutgoingEncryptedTextMsgWithPaginationTitleBubbleCell.class forCellReuseIdentifier:RoomOutgoingEncryptedTextMsgWithPaginationTitleBubbleCell.defaultReuseIdentifier];
-    [self.bubblesTableView registerClass:RoomOutgoingEncryptedTextMsgWithoutSenderNameBubbleCell.class forCellReuseIdentifier:RoomOutgoingEncryptedTextMsgWithoutSenderNameBubbleCell.defaultReuseIdentifier];
-    [self.bubblesTableView registerClass:RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.class forCellReuseIdentifier:RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.defaultReuseIdentifier];
-    
-    [self.bubblesTableView registerClass:RoomEmptyBubbleCell.class forCellReuseIdentifier:RoomEmptyBubbleCell.defaultReuseIdentifier];
-    
-    [self.bubblesTableView registerClass:RoomMembershipBubbleCell.class forCellReuseIdentifier:RoomMembershipBubbleCell.defaultReuseIdentifier];
-    [self.bubblesTableView registerClass:RoomMembershipWithPaginationTitleBubbleCell.class forCellReuseIdentifier:RoomMembershipWithPaginationTitleBubbleCell.defaultReuseIdentifier];
-    [self.bubblesTableView registerClass:RoomMembershipCollapsedBubbleCell.class forCellReuseIdentifier:RoomMembershipCollapsedBubbleCell.defaultReuseIdentifier];
-    [self.bubblesTableView registerClass:RoomMembershipCollapsedWithPaginationTitleBubbleCell.class forCellReuseIdentifier:RoomMembershipCollapsedWithPaginationTitleBubbleCell.defaultReuseIdentifier];
-    [self.bubblesTableView registerClass:RoomMembershipExpandedBubbleCell.class forCellReuseIdentifier:RoomMembershipExpandedBubbleCell.defaultReuseIdentifier];
-    [self.bubblesTableView registerClass:RoomMembershipExpandedWithPaginationTitleBubbleCell.class forCellReuseIdentifier:RoomMembershipExpandedWithPaginationTitleBubbleCell.defaultReuseIdentifier];
-    
-    [self.bubblesTableView registerClass:RoomSelectedStickerBubbleCell.class forCellReuseIdentifier:RoomSelectedStickerBubbleCell.defaultReuseIdentifier];
-    [self.bubblesTableView registerClass:RoomPredecessorBubbleCell.class forCellReuseIdentifier:RoomPredecessorBubbleCell.defaultReuseIdentifier];
-    
-    [self.bubblesTableView registerNib:RoomAttachmentAntivirusScanStatusBubbleCell.nib forCellReuseIdentifier:RoomAttachmentAntivirusScanStatusBubbleCell.defaultReuseIdentifier];
-    [self.bubblesTableView registerNib:RoomAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.nib forCellReuseIdentifier:RoomAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
-    [self.bubblesTableView registerNib:RoomAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.nib forCellReuseIdentifier:RoomAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.defaultReuseIdentifier];
-    
-    [self.bubblesTableView registerClass:KeyVerificationIncomingRequestApprovalBubbleCell.class forCellReuseIdentifier:KeyVerificationIncomingRequestApprovalBubbleCell.defaultReuseIdentifier];
-    [self.bubblesTableView registerClass:KeyVerificationIncomingRequestApprovalWithPaginationTitleBubbleCell.class forCellReuseIdentifier:KeyVerificationIncomingRequestApprovalWithPaginationTitleBubbleCell.defaultReuseIdentifier];
-    [self.bubblesTableView registerClass:KeyVerificationRequestStatusBubbleCell.class forCellReuseIdentifier:KeyVerificationRequestStatusBubbleCell.defaultReuseIdentifier];
-    [self.bubblesTableView registerClass:KeyVerificationRequestStatusWithPaginationTitleBubbleCell.class forCellReuseIdentifier:KeyVerificationRequestStatusWithPaginationTitleBubbleCell.defaultReuseIdentifier];
-    [self.bubblesTableView registerClass:KeyVerificationConclusionBubbleCell.class forCellReuseIdentifier:KeyVerificationConclusionBubbleCell.defaultReuseIdentifier];
-    [self.bubblesTableView registerClass:KeyVerificationConclusionWithPaginationTitleBubbleCell.class forCellReuseIdentifier:KeyVerificationConclusionWithPaginationTitleBubbleCell.defaultReuseIdentifier];
-    
-//    [self.bubblesTableView registerClass:RoomCreationCollapsedBubbleCell.class forCellReuseIdentifier:RoomCreationCollapsedBubbleCell.defaultReuseIdentifier];
-//    [self.bubblesTableView registerClass:RoomCreationWithPaginationCollapsedBubbleCell.class forCellReuseIdentifier:RoomCreationWithPaginationCollapsedBubbleCell.defaultReuseIdentifier];
-    
-    //  call cells
-//    [self.bubblesTableView registerClass:RoomDirectCallStatusBubbleCell.class forCellReuseIdentifier:RoomDirectCallStatusBubbleCell.defaultReuseIdentifier];
-//    [self.bubblesTableView registerClass:RoomGroupCallStatusBubbleCell.class forCellReuseIdentifier:RoomGroupCallStatusBubbleCell.defaultReuseIdentifier];
-//
-    [self.bubblesTableView registerClass:RoomCreationIntroCell.class forCellReuseIdentifier:RoomCreationIntroCell.defaultReuseIdentifier];
-    
-    [self.bubblesTableView registerNib:RoomTypingBubbleCell.nib forCellReuseIdentifier:RoomTypingBubbleCell.defaultReuseIdentifier];
-    
-//    [self.bubblesTableView registerClass:VoiceMessageBubbleCell.class forCellReuseIdentifier:VoiceMessageBubbleCell.defaultReuseIdentifier];
-//    [self.bubblesTableView registerClass:VoiceMessageWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:VoiceMessageWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
-//    [self.bubblesTableView registerClass:VoiceMessageWithPaginationTitleBubbleCell.class forCellReuseIdentifier:VoiceMessageWithPaginationTitleBubbleCell.defaultReuseIdentifier];
-    
-//    [self.bubblesTableView registerClass:PollBubbleCell.class forCellReuseIdentifier:PollBubbleCell.defaultReuseIdentifier];
-//    [self.bubblesTableView registerClass:PollWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:PollWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
-//    [self.bubblesTableView registerClass:PollWithPaginationTitleBubbleCell.class forCellReuseIdentifier:PollWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+    [[RoomTimelineConfiguration shared].currentStyle.cellProvider registerCellsForTableView:self.bubblesTableView];
     
     [self vc_removeBackTitle];
     
@@ -574,9 +453,6 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 {
     [super viewWillAppear:animated];
     
-    // Screen tracking
-    [[Analytics sharedInstance] trackScreen:@"ChatRoom"];
-    
     // Refresh the room title view
     [self refreshRoomTitle];
     
@@ -605,9 +481,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     
     // Observe kAppDelegateDidTapStatusBarNotification.
     kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-
+        
         MXStrongifyAndReturnIfNil(self);
-
+        
         [self setBubbleTableViewContentOffset:CGPointMake(-self.bubblesTableView.adjustedContentInset.left, -self.bubblesTableView.adjustedContentInset.top) animated:YES];
     }];
     
@@ -617,8 +493,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         [self.roomDataSource reload];
         [LegacyAppDelegate theDelegate].lastNavigatedRoomIdFromPush = nil;
         
-        notificationTaskProfile = [MXSDKOptions.sharedInstance.profiler startMeasuringTaskWithName:AnalyticsNoficationsTimeToDisplayContent
-                                                                                          category:AnalyticsNoficationsCategory];
+        notificationTaskProfile = [MXSDKOptions.sharedInstance.profiler startMeasuringTaskWithName:MXTaskProfileNameNotificationsOpenEvent];
     }
 }
 
@@ -714,6 +589,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 //        hasJitsiCall = NO;
 //        [self reloadBubblesTable:YES];
 //    }
+    
+    // Screen tracking
+    [self.screenTimer start];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -749,6 +627,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 //        hasJitsiCall = YES;
 //        [self reloadBubblesTable:YES];
 //    }
+    
+    [self.screenTimer stop];
 }
 
 - (void)viewDidLayoutSubviews
@@ -2050,7 +1930,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             [self roomInputToolbarViewDidTapFileUpload];
         }]];
     }
-    if (RiotSettings.shared.roomScreenAllowPollsAction)
+    if (BuildSettings.pollsEnabled)
     {
         [actionItems addObject:[[RoomActionItem alloc] initWithImage:[UIImage imageNamed:@"action_poll"] andAction:^{
             MXStrongifyAndReturnIfNil(self);
@@ -2058,6 +1938,16 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                 ((RoomInputToolbarView *) self.inputToolbarView).actionMenuOpened = NO;
             }
             [self.delegate roomViewControllerDidRequestPollCreationFormPresentation:self];
+        }]];
+    }
+    if (RiotSettings.shared.roomScreenAllowLocationAction)
+    {
+        [actionItems addObject:[[RoomActionItem alloc] initWithImage:[UIImage imageNamed:@"action_location"] andAction:^{
+            MXStrongifyAndReturnIfNil(self);
+            if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class]) {
+                ((RoomInputToolbarView *) self.inputToolbarView).actionMenuOpened = NO;
+            }
+            [self.delegate roomViewControllerDidRequestLocationSharingFormPresentation:self];
         }]];
     }
     if (RiotSettings.shared.roomScreenAllowCameraAction)
@@ -2186,6 +2076,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             [MXSDKOptions sharedInstance].videoConversionPresetName = presetName;
             [roomInputToolbarView sendSelectedVideoAsset:videoAsset isPhotoLibraryAsset:isPhotoLibraryAsset];
         }];
+        compressionPrompt.popoverPresentationController.sourceView = roomInputToolbarView.attachMediaButton;
+        compressionPrompt.popoverPresentationController.sourceRect = roomInputToolbarView.attachMediaButton.bounds;
         
         [self presentViewController:compressionPrompt animated:YES completion:nil];
     }
@@ -2469,31 +2361,31 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         {
             [previewHeader removeFromSuperview];
             previewHeader = nil;
-
+            
             self.previewHeaderContainer.hidden = YES;
-
+            
             // Consider the main navigation controller if the current view controller is embedded inside a split view controller.
             UINavigationController *mainNavigationController = self.navigationController;
             if (self.splitViewController.isCollapsed && self.splitViewController.viewControllers.count)
             {
                 mainNavigationController = self.splitViewController.viewControllers.firstObject;
             }
-
+            
             // Set a default title view class without handling tap gesture (Let [self refreshRoomTitle] refresh this view correctly).
             [self setRoomTitleViewClass:RoomTitleView.class];
-
+                        
             // Remove the shadow image used to hide the bottom border of the navigation bar when the preview header is displayed
             [mainNavigationController.navigationBar setShadowImage:nil];
             [mainNavigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
-
+            
             [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
                              animations:^{
-
+                
                 self.bubblesTableViewTopConstraint.constant = 0;
-
+                
                 // Force to render the view
                 [self forceLayoutRefresh];
-
+                
             }
                              completion:^(BOOL finished){
             }];
@@ -2648,14 +2540,23 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (Class<MXKCellRendering>)cellViewClassForCellData:(MXKCellData*)cellData
 {
-    Class cellViewClass = nil;
-    BOOL showEncryptionBadge = NO;
+    RoomTimelineCellIdentifier cellIdentifier = [self cellIdentifierForCellData:cellData andRoomDataSource:customizedRoomDataSource];
     
+    RoomTimelineConfiguration *timelineConfiguration = [RoomTimelineConfiguration shared];
+            
+    return [timelineConfiguration.currentStyle.cellProvider cellViewClassForCellIdentifier:cellIdentifier];;
+}
+
+- (RoomTimelineCellIdentifier)cellIdentifierForCellData:(MXKCellData*)cellData andRoomDataSource:(RoomDataSource *)customizedRoomDataSource;
+{
     // Sanity check
     if (![cellData conformsToProtocol:@protocol(MXKRoomBubbleCellDataStoring)])
     {
-        return nil;
+        return RoomTimelineCellIdentifierUnknown;
     }
+    
+    BOOL showEncryptionBadge = NO;
+    RoomTimelineCellIdentifier cellIdentifier;
         
     id<MXKRoomBubbleCellDataStoring> bubbleData = (id<MXKRoomBubbleCellDataStoring>)cellData;
     
@@ -2672,40 +2573,40 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     {
         if (bubbleData.isPaginationFirstBubble)
         {
-            cellViewClass = RoomAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell.class;
+            cellIdentifier = RoomTimelineCellIdentifierAttachmentAntivirusScanStatusWithPaginationTitle;
         }
         else if (bubbleData.shouldHideSenderInformation)
         {
-            cellViewClass = RoomAttachmentAntivirusScanStatusWithoutSenderInfoBubbleCell.class;
+            cellIdentifier = RoomTimelineCellIdentifierAttachmentAntivirusScanStatusWithoutSenderInfo;
         }
         else
         {
-            cellViewClass = RoomAttachmentAntivirusScanStatusBubbleCell.class;
+            cellIdentifier = RoomTimelineCellIdentifierAttachmentAntivirusScanStatus;
         }
     }
     else if (bubbleData.hasNoDisplay)
     {
-        cellViewClass = RoomEmptyBubbleCell.class;
+        cellIdentifier = RoomTimelineCellIdentifierEmpty;
     }
     else if (bubbleData.tag == RoomBubbleCellDataTagRoomCreationIntro)
     {
-        cellViewClass = RoomCreationIntroCell.class;
+        cellIdentifier = RoomTimelineCellIdentifierRoomCreationIntro;
     }
     else if (bubbleData.tag == RoomBubbleCellDataTagRoomCreateWithPredecessor)
     {
-        cellViewClass = RoomPredecessorBubbleCell.class;
+        cellIdentifier = RoomTimelineCellIdentifierRoomPredecessor;
     }
     else if (bubbleData.tag == RoomBubbleCellDataTagKeyVerificationRequestIncomingApproval)
     {
-        cellViewClass = bubbleData.isPaginationFirstBubble ? KeyVerificationIncomingRequestApprovalWithPaginationTitleBubbleCell.class : KeyVerificationIncomingRequestApprovalBubbleCell.class;
+        cellIdentifier = bubbleData.isPaginationFirstBubble ? RoomTimelineCellIdentifierKeyVerificationIncomingRequestApprovalWithPaginationTitle : RoomTimelineCellIdentifierKeyVerificationIncomingRequestApproval;
     }
     else if (bubbleData.tag == RoomBubbleCellDataTagKeyVerificationRequest)
     {
-        cellViewClass = bubbleData.isPaginationFirstBubble ? KeyVerificationRequestStatusWithPaginationTitleBubbleCell.class : KeyVerificationRequestStatusBubbleCell.class;
+        cellIdentifier = bubbleData.isPaginationFirstBubble ? RoomTimelineCellIdentifierKeyVerificationRequestStatusWithPaginationTitle : RoomTimelineCellIdentifierKeyVerificationRequestStatus;
     }
     else if (bubbleData.tag == RoomBubbleCellDataTagKeyVerificationConclusion)
     {
-        cellViewClass = bubbleData.isPaginationFirstBubble ? KeyVerificationConclusionWithPaginationTitleBubbleCell.class : KeyVerificationConclusionBubbleCell.class;
+        cellIdentifier = bubbleData.isPaginationFirstBubble ? RoomTimelineCellIdentifierKeyVerificationConclusionWithPaginationTitle : RoomTimelineCellIdentifierKeyVerificationConclusion;
     }
     else if (bubbleData.tag == RoomBubbleCellDataTagMembership)
     {
@@ -2713,65 +2614,80 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         {
             if (bubbleData.nextCollapsableCellData)
             {
-                cellViewClass = bubbleData.isPaginationFirstBubble ? RoomMembershipCollapsedWithPaginationTitleBubbleCell.class : RoomMembershipCollapsedBubbleCell.class;
+                cellIdentifier = bubbleData.isPaginationFirstBubble ? RoomTimelineCellIdentifierMembershipCollapsedWithPaginationTitle : RoomTimelineCellIdentifierMembershipCollapsed;
             }
             else
             {
                 // Use a normal membership cell for a single membership event
-                cellViewClass = bubbleData.isPaginationFirstBubble ? RoomMembershipWithPaginationTitleBubbleCell.class : RoomMembershipBubbleCell.class;
+                cellIdentifier = bubbleData.isPaginationFirstBubble ? RoomTimelineCellIdentifierMembershipWithPaginationTitle : RoomTimelineCellIdentifierMembership;
             }
         }
         else if (bubbleData.collapsedAttributedTextMessage)
         {
             // The cell (and its series) is not collapsed but this cell is the first
             // of the series. So, use the cell with the "collapse" button.
-            cellViewClass = bubbleData.isPaginationFirstBubble ? RoomMembershipExpandedWithPaginationTitleBubbleCell.class : RoomMembershipExpandedBubbleCell.class;
+            cellIdentifier = bubbleData.isPaginationFirstBubble ? RoomTimelineCellIdentifierMembershipExpandedWithPaginationTitle : RoomTimelineCellIdentifierMembershipExpanded;
         }
         else
         {
-            cellViewClass = bubbleData.isPaginationFirstBubble ? RoomMembershipWithPaginationTitleBubbleCell.class : RoomMembershipBubbleCell.class;
+            cellIdentifier = bubbleData.isPaginationFirstBubble ? RoomTimelineCellIdentifierMembershipWithPaginationTitle : RoomTimelineCellIdentifierMembership;
         }
     }
 //    else if (bubbleData.tag == RoomBubbleCellDataTagRoomCreateConfiguration)
 //    {
-//        cellViewClass = bubbleData.isPaginationFirstBubble ? RoomCreationWithPaginationCollapsedBubbleCell.class : RoomCreationCollapsedBubbleCell.class;
+//        cellIdentifier = bubbleData.isPaginationFirstBubble ? RoomTimelineCellIdentifierRoomCreationCollapsedWithPaginationTitle : RoomTimelineCellIdentifierRoomCreationCollapsed;
 //    }
 //    else if (bubbleData.tag == RoomBubbleCellDataTagCall)
 //    {
-//        cellViewClass = RoomDirectCallStatusBubbleCell.class;
+//        cellIdentifier = RoomTimelineCellIdentifierDirectCallStatus;
 //    }
 //    else if (bubbleData.tag == RoomBubbleCellDataTagGroupCall)
 //    {
-//        cellViewClass = RoomGroupCallStatusBubbleCell.class;
+//        cellIdentifier = RoomTimelineCellIdentifierGroupCallStatus;
 //    }
 //    else if (bubbleData.attachment.type == MXKAttachmentTypeVoiceMessage || bubbleData.attachment.type == MXKAttachmentTypeAudio)
 //    {
 //        if (bubbleData.isPaginationFirstBubble)
 //        {
-//            cellViewClass = VoiceMessageWithPaginationTitleBubbleCell.class;
+//            cellIdentifier = RoomTimelineCellIdentifierVoiceMessageWithPaginationTitle;
 //        }
 //        else if (bubbleData.shouldHideSenderInformation)
 //        {
-//            cellViewClass = VoiceMessageWithoutSenderInfoBubbleCell.class;
+//            cellIdentifier = RoomTimelineCellIdentifierVoiceMessageWithoutSenderInfo;
 //        }
 //        else
 //        {
-//            cellViewClass = VoiceMessageBubbleCell.class;
+//            cellIdentifier = RoomTimelineCellIdentifierVoiceMessage;
 //        }
 //    }
 //    else if (bubbleData.tag == RoomBubbleCellDataTagPoll)
 //    {
 //        if (bubbleData.isPaginationFirstBubble)
 //        {
-//            cellViewClass = PollWithPaginationTitleBubbleCell.class;
+//            cellIdentifier = RoomTimelineCellIdentifierPollWithPaginationTitle;
 //        }
 //        else if (bubbleData.shouldHideSenderInformation)
 //        {
-//            cellViewClass = PollWithoutSenderInfoBubbleCell.class;
+//            cellIdentifier = RoomTimelineCellIdentifierPollWithoutSenderInfo;
 //        }
 //        else
 //        {
-//            cellViewClass = PollBubbleCell.class;
+//            cellIdentifier = RoomTimelineCellIdentifierPoll;
+//        }
+//    }
+//    else if (bubbleData.tag == RoomBubbleCellDataTagLocation)
+//    {
+//        if (bubbleData.isPaginationFirstBubble)
+//        {
+//            cellIdentifier = RoomTimelineCellIdentifierLocationWithPaginationTitle;
+//        }
+//        else if (bubbleData.shouldHideSenderInformation)
+//        {
+//            cellIdentifier = RoomTimelineCellIdentifierLocationWithoutSenderInfo;
+//        }
+//        else
+//        {
+//            cellIdentifier = RoomTimelineCellIdentifierLocation;
 //        }
 //    }
     else if (bubbleData.isIncoming)
@@ -2781,19 +2697,19 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             // Check whether the provided celldata corresponds to a selected sticker
             if (customizedRoomDataSource.selectedEventId && (bubbleData.attachment.type == MXKAttachmentTypeSticker) && [bubbleData.attachment.eventId isEqualToString:customizedRoomDataSource.selectedEventId])
             {
-                cellViewClass = RoomSelectedStickerBubbleCell.class;
+                cellIdentifier = RoomTimelineCellIdentifierSelectedSticker;
             }
             else if (bubbleData.isPaginationFirstBubble)
             {
-                cellViewClass = showEncryptionBadge ? RoomIncomingEncryptedAttachmentWithPaginationTitleBubbleCell.class : RoomIncomingAttachmentWithPaginationTitleBubbleCell.class;
+                cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierIncomingAttachmentEncryptedWithPaginationTitle : RoomTimelineCellIdentifierIncomingAttachmentWithPaginationTitle;
             }
             else if (bubbleData.shouldHideSenderInformation)
             {
-                cellViewClass = showEncryptionBadge ? RoomIncomingEncryptedAttachmentWithoutSenderInfoBubbleCell.class : RoomIncomingAttachmentWithoutSenderInfoBubbleCell.class;
+                cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierIncomingAttachmentEncryptedWithoutSenderInfo : RoomTimelineCellIdentifierIncomingAttachmentWithoutSenderInfo;
             }
             else
             {
-                cellViewClass = showEncryptionBadge ? RoomIncomingEncryptedAttachmentBubbleCell.class : RoomIncomingAttachmentBubbleCell.class;
+                cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierIncomingAttachmentEncrypted : RoomTimelineCellIdentifierIncomingAttachment;
             }
         }
         else
@@ -2802,24 +2718,24 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             {
                 if (bubbleData.shouldHideSenderName)
                 {
-                    cellViewClass = showEncryptionBadge ? RoomIncomingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.class : RoomIncomingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.class;
+                    cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierIncomingTextMessageEncryptedWithPaginationTitleWithoutSenderName : RoomTimelineCellIdentifierIncomingTextMessageWithPaginationTitleWithoutSenderName;
                 }
                 else
                 {
-                    cellViewClass = showEncryptionBadge ? RoomIncomingEncryptedTextMsgWithPaginationTitleBubbleCell.class : RoomIncomingTextMsgWithPaginationTitleBubbleCell.class;
+                    cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierIncomingTextMessageEncryptedWithPaginationTitle : RoomTimelineCellIdentifierIncomingTextMessageWithPaginationTitle;
                 }
             }
             else if (bubbleData.shouldHideSenderInformation)
             {
-                cellViewClass = showEncryptionBadge ? RoomIncomingEncryptedTextMsgWithoutSenderInfoBubbleCell.class : RoomIncomingTextMsgWithoutSenderInfoBubbleCell.class;
+                cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierIncomingTextMessageEncryptedWithoutSenderInfo : RoomTimelineCellIdentifierIncomingTextMessageWithoutSenderInfo;
             }
             else if (bubbleData.shouldHideSenderName)
             {
-                cellViewClass = showEncryptionBadge ? RoomIncomingEncryptedTextMsgWithoutSenderNameBubbleCell.class : RoomIncomingTextMsgWithoutSenderNameBubbleCell.class;
+                cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierIncomingTextMessageEncryptedWithoutSenderName : RoomTimelineCellIdentifierIncomingTextMessageWithoutSenderName;
             }
             else
             {
-                cellViewClass = showEncryptionBadge ? RoomIncomingEncryptedTextMsgBubbleCell.class : RoomIncomingTextMsgBubbleCell.class;
+                cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierIncomingTextMessageEncrypted : RoomTimelineCellIdentifierIncomingTextMessage;
             }
         }
     }
@@ -2831,19 +2747,19 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             // Check whether the provided celldata corresponds to a selected sticker
             if (customizedRoomDataSource.selectedEventId && (bubbleData.attachment.type == MXKAttachmentTypeSticker) && [bubbleData.attachment.eventId isEqualToString:customizedRoomDataSource.selectedEventId])
             {
-                cellViewClass = RoomSelectedStickerBubbleCell.class;
+                cellIdentifier = RoomTimelineCellIdentifierSelectedSticker;
             }
             else if (bubbleData.isPaginationFirstBubble)
             {
-                cellViewClass = showEncryptionBadge ? RoomOutgoingEncryptedAttachmentWithPaginationTitleBubbleCell.class :RoomOutgoingAttachmentWithPaginationTitleBubbleCell.class;
+                cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierOutgoingAttachmentEncryptedWithPaginationTitle : RoomTimelineCellIdentifierOutgoingAttachmentWithPaginationTitle;
             }
             else if (bubbleData.shouldHideSenderInformation)
             {
-                cellViewClass = showEncryptionBadge ? RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.class : RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.class;
+                cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierOutgoingAttachmentEncryptedWithoutSenderInfo : RoomTimelineCellIdentifierOutgoingAttachmentWithoutSenderInfo;
             }
             else
             {
-                cellViewClass = showEncryptionBadge ? RoomOutgoingEncryptedAttachmentBubbleCell.class : RoomOutgoingAttachmentBubbleCell.class;
+                cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierOutgoingAttachmentEncrypted : RoomTimelineCellIdentifierOutgoingAttachment;
             }
         }
         else
@@ -2852,29 +2768,29 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             {
                 if (bubbleData.shouldHideSenderName)
                 {
-                    cellViewClass = showEncryptionBadge ? RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.class : RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.class;
+                    cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierOutgoingTextMessageEncryptedWithPaginationTitleWithoutSenderName : RoomTimelineCellIdentifierOutgoingTextMessageWithPaginationTitleWithoutSenderName;
                 }
                 else
                 {
-                    cellViewClass = showEncryptionBadge ? RoomOutgoingEncryptedTextMsgWithPaginationTitleBubbleCell.class : RoomOutgoingTextMsgWithPaginationTitleBubbleCell.class;
+                    cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierOutgoingTextMessageEncryptedWithPaginationTitle : RoomTimelineCellIdentifierOutgoingTextMessageWithPaginationTitle;
                 }
             }
             else if (bubbleData.shouldHideSenderInformation)
             {
-                cellViewClass = showEncryptionBadge ? RoomOutgoingEncryptedTextMsgWithoutSenderInfoBubbleCell.class :RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.class;
+                cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierOutgoingTextMessageEncryptedWithoutSenderInfo : RoomTimelineCellIdentifierOutgoingTextMessageWithoutSenderInfo;
             }
             else if (bubbleData.shouldHideSenderName)
             {
-                cellViewClass = showEncryptionBadge ? RoomOutgoingEncryptedTextMsgWithoutSenderNameBubbleCell.class : RoomOutgoingTextMsgWithoutSenderNameBubbleCell.class;
+                cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierOutgoingTextMessageEncryptedWithoutSenderName : RoomTimelineCellIdentifierOutgoingTextMessageWithoutSenderName;
             }
             else
             {
-                cellViewClass = showEncryptionBadge ? RoomOutgoingEncryptedTextMsgBubbleCell.class : RoomOutgoingTextMsgBubbleCell.class;
+                cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierOutgoingTextMessageEncrypted : RoomTimelineCellIdentifierOutgoingTextMessage;
             }
         }
     }
     
-    return cellViewClass;
+    return cellIdentifier;
 }
 
 #pragma mark - MXKDataSource delegate
@@ -2974,7 +2890,11 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                     }
                     else
                     {
-                        [self showContextualMenuForEvent:tappedEvent fromSingleTapGesture:YES cell:cell animated:YES];
+                        if (tappedEvent.location) {
+                            [_delegate roomViewController:self didRequestLocationPresentationForEvent:tappedEvent bubbleData:bubbleData];
+                        } else {
+                            [self showContextualMenuForEvent:tappedEvent fromSingleTapGesture:YES cell:cell animated:YES];
+                        }
                     }
                 }
             }
@@ -3291,7 +3211,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             }]];
         }
         
-        if (selectedEvent.sentState == MXEventSentStateSent && selectedEvent.eventType != MXEventTypePollStart)
+        if (selectedEvent.sentState == MXEventSentStateSent &&
+            selectedEvent.eventType != MXEventTypePollStart &&
+            !selectedEvent.location)
         {
             [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionForward]
                                                             style:UIAlertActionStyleDefault
@@ -6109,19 +6031,37 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 - (RoomContextualMenuItem *)editMenuItemWithEvent:(MXEvent*)event
 {
     MXWeakify(self);
-
+    
     RoomContextualMenuItem *editMenuItem = [[RoomContextualMenuItem alloc] initWithMenuAction:RoomContextualMenuActionEdit];
-    editMenuItem.action = ^{
-        MXStrongifyAndReturnIfNil(self);
-        [self hideContextualMenuAnimated:YES cancelEventSelection:NO completion:nil];
-        [self editEventContentWithId:event.eventId];
-
-        // And display the keyboard
-        [self.inputToolbarView becomeFirstResponder];
-    };
-
-    editMenuItem.isEnabled = [self.roomDataSource canEditEventWithId:event.eventId];
-
+    
+    switch (event.eventType) {
+        case MXEventTypePollStart: {
+            editMenuItem.action = ^{
+                MXStrongifyAndReturnIfNil(self);
+                [self hideContextualMenuAnimated:YES cancelEventSelection:YES completion:nil];
+                [self.delegate roomViewController:self didRequestEditForPollWithStartEvent:event];
+            };
+            
+            editMenuItem.isEnabled = [self.delegate roomViewController:self canEditPollWithEventIdentifier:event.eventId];
+            
+            break;
+        }
+        default: {
+            editMenuItem.action = ^{
+                MXStrongifyAndReturnIfNil(self);
+                [self hideContextualMenuAnimated:YES cancelEventSelection:NO completion:nil];
+                [self editEventContentWithId:event.eventId];
+                
+                // And display the keyboard
+                [self.inputToolbarView becomeFirstResponder];
+            };
+            
+            editMenuItem.isEnabled = [self.roomDataSource canEditEventWithId:event.eventId];
+            
+            break;
+        }
+    }
+    
     return editMenuItem;
 }
 
@@ -6144,7 +6084,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         switch (event.eventType) {
             case MXEventTypeRoomMessage:
             {
-                NSString *messageType = event.content[@"msgtype"];
+                NSString *messageType = event.content[kMXMessageTypeKey];
                 
                 if ([messageType isEqualToString:kMXMessageTypeKeyVerificationRequest])
                 {
@@ -6665,4 +6605,3 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 //}
 
 @end
-

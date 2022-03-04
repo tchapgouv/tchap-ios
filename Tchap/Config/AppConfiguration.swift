@@ -32,8 +32,7 @@ class AppConfiguration: CommonConfiguration {
         
         // Get modular widget events in rooms histories
         MXKAppSettings.standard()?.addSupportedEventTypes([kWidgetMatrixEventTypeString,
-                                                           kWidgetModularEventTypeString,
-                                                           kMXEventTypeStringRoomRetention])
+                                                           kWidgetModularEventTypeString])
         
         // Tchap: remove some state events from the rooms histories: creation, the history access, encryption, join rules
         MXKAppSettings.standard()?.removeSupportedEventTypes([kMXEventTypeStringRoomCreate,

@@ -63,13 +63,12 @@
     [self.tableView addSubview:topview];
 
     // Observe user interface theme change.
-    MXWeakify(self);
     kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
-        MXStrongifyAndReturnIfNil(self);
         [self userInterfaceThemeDidChange];
         
     }];
+    [self userInterfaceThemeDidChange];
 }
 
 - (void)userInterfaceThemeDidChange
@@ -117,21 +116,21 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    // Screen tracking
-    [[Analytics sharedInstance] trackScreen:@"CountryPicker"];
     
     [self userInterfaceThemeDidChange];
 }
 
-- (void)dealloc
+- (void)destroy
 {
+    [super destroy];
+    
     [topview removeFromSuperview];
     topview = nil;
     
     if (kThemeServiceDidChangeThemeNotificationObserver)
     {
         [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
+        kThemeServiceDidChangeThemeNotificationObserver = nil;
     }
 }
 

@@ -63,7 +63,6 @@ final class RoomAccessByLinkViewModel: RoomAccessByLinkViewModelType {
                                                  roomTypeImageTintColor: nil,
                                                  subtitle: nil,
                                                  roomMembersCount: nil,
-                                                 roomRetentionInfo: nil,
                                                  avatarImageViewModel: avatarImageViewModel)
     }
     

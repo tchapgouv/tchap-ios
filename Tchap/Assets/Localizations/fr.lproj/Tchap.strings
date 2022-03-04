@@ -160,7 +160,6 @@
 "room_title_forum_room" = "Forum";
 "room_title_room_members_count" = "%d";
 "room_title_unrestricted_room" = "Salon accessible aux externes";
-"room_title_retention_info_in_days" = "%d j";
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Room
@@ -176,13 +175,6 @@
 "tchap_room_invalid_link" = "Ce lien n'est pas valide";
 "tchap_room_access_unauthorized" = "Vous n'êtes pas autorisé à rejoindre cette conversation. Une invitation est nécessaire.";
 "room_event_action_forward" = "Transférer";
-
-////////////////////////////////////////////////////////////////////////////////
-// MARK: Room Messages
-"notice_room_retention_changed_by_you" = "Vous avez limité la durée de l’historique à %@";
-"notice_room_retention_removed_by_you" = "Vous avez rendu illimitée la durée de l’historique";
-"notice_room_retention_changed" = "%@ a limité la durée de l’historique à %@";
-"notice_room_retention_removed" = "%@ a rendu illimitée la durée de l’historique";
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Room Members
@@ -208,15 +200,6 @@
 "room_settings_room_access_unrestricted" = "Les externes sont autorisés à rejoindre ce salon";
 "room_settings_allow_external_users_to_join" = "Autoriser l’accès aux externes à ce salon";
 "room_settings_allow_external_users_to_join_prompt_msg" = "Cette action est irréversible.\nVoulez-vous vraiment autoriser les externes à rejoindre ce salon ?";
-"room_settings_retention_title" = "Durée de l'historique";
-"room_settings_retention_period_infinite" = "Illimitée";
-"room_settings_retention_period_one_year" = "1 an";
-"room_settings_retention_period_six_months" = "6 mois";
-"room_settings_retention_period_one_month" = "1 mois";
-"room_settings_retention_period_one_week" = "1 semaine";
-"room_settings_retention_period_one_day" = "1 jour";
-"room_settings_retention_period_in_days" = "%d jours";
-"room_settings_fail_to_update_retention_period" = "Échec de mise à jour de la durée de l'historique";
 "room_settings_leave_room" = "Quitter ce salon";
 "room_settings_room_access_by_link_title" = "Accès par lien";
 "room_settings_room_access_by_link_disabled" = "Ce salon n’est pas accessible par lien";
