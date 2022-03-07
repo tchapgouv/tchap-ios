@@ -35,6 +35,7 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
     @IBOutlet private var descriptionContainerView: UIView!
     @IBOutlet private var descriptionLabel: UILabel!
     @IBOutlet private var descriptionIcon: UIImageView!
+    @IBOutlet private var attributionLabel: UILabel!
     
     private var mapView: MGLMapView!
     private var annotationView: LocationMarkerView?
@@ -54,7 +55,7 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        mapView = MGLMapView(frame: .zero, styleURL: BuildSettings.tileServerMapURL)
+        mapView = MGLMapView(frame: .zero)
         mapView.delegate = self
         mapView.logoView.isHidden = true
         mapView.attributionButton.isHidden = true
@@ -72,7 +73,11 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
     
     // MARK: - Public
     
-    public func displayLocation(_ location: CLLocationCoordinate2D, userAvatarData: AvatarViewData? = nil) {
+    public func displayLocation(_ location: CLLocationCoordinate2D,
+                                userAvatarData: AvatarViewData? = nil,
+                                mapStyleURL: URL) {
+        
+        mapView.styleURL = mapStyleURL
         
         annotationView = LocationMarkerView.loadFromNib()
         
@@ -97,6 +102,7 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
         descriptionLabel.textColor = theme.colors.primaryContent
         descriptionLabel.font = theme.fonts.footnote
         descriptionIcon.tintColor = theme.colors.accent
+        attributionLabel.textColor = theme.colors.accent
         layer.borderColor = theme.colors.quinaryContent.cgColor
     }
     

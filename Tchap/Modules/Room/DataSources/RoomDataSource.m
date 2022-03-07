@@ -29,7 +29,7 @@
 
 const CGFloat kTypingCellHeight = 24;
 
-@interface RoomDataSource() <BubbleReactionsViewModelDelegate, URLPreviewViewDelegate>
+@interface RoomDataSource() <BubbleReactionsViewModelDelegate, URLPreviewViewDelegate/*, ThreadSummaryViewDelegate, MXThreadingServiceDelegate*/>
 {
     // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
     id kThemeServiceDidChangeThemeNotificationObserver;
@@ -92,7 +92,9 @@ const CGFloat kTypingCellHeight = 24;
             [self reload];
             
         }];
-        
+
+//        [matrixSession.threadingService addDelegate:self];
+
         [self registerKeyVerificationRequestNotification];
         [self registerKeyVerificationTransactionNotification];
         [self registerTrustLevelDidChangeNotifications];
@@ -127,6 +129,8 @@ const CGFloat kTypingCellHeight = 24;
         [self.room.summary enableTrustTracking:YES];
         [self fetchEncryptionTrustedLevel];
     }
+    
+    self.showTypingRow = YES;
 }
 
 - (id<RoomDataSourceDelegate>)roomDataSourceDelegate
@@ -170,6 +174,8 @@ const CGFloat kTypingCellHeight = 24;
     {
         [[NSNotificationCenter defaultCenter] removeObserver:self.keyVerificationTransactionDidChangeNotificationObserver];
     }
+
+//    [self.mxSession.threadingService removeDelegate:self];
     
     if (self.keyVerificationRequestDidChangeNotificationObserver)
     {
@@ -251,12 +257,59 @@ const CGFloat kTypingCellHeight = 24;
 - (void)fetchEncryptionTrustedLevel
 {
     self.encryptionTrustLevel = self.room.summary.roomEncryptionTrustLevel;
-    [self.roomDataSourceDelegate roomDataSource:self didUpdateEncryptionTrustLevel:self.encryptionTrustLevel];
+    [self.roomDataSourceDelegate roomDataSourceDidUpdateEncryptionTrustLevel:self];
 }
 
 - (void)roomDidSet
 {
     [self enableRoomCreationIntroCellDisplayIfNeeded];
+}
+
+- (BOOL)shouldQueueEventForProcessing:(MXEvent *)event roomState:(MXRoomState *)roomState direction:(MXTimelineDirection)direction
+{
+    // Threads are disabled in Tchap
+//    if (self.threadId)
+//    {
+//        //  if in a thread, ignore non-root event or events from other threads
+//        if (![event.eventId isEqualToString:self.threadId] && ![event.threadId isEqualToString:self.threadId])
+//        {
+//            //  Ignore the event
+//            return NO;
+//        }
+//        //  also ignore events related to un-threaded or events from other threads
+//        if (!event.isInThread && event.relatesTo.eventId)
+//        {
+//            MXEvent *relatedEvent = [self.mxSession.store eventWithEventId:event.relatesTo.eventId
+//                                                                    inRoom:event.roomId];
+//            if (![relatedEvent.threadId isEqualToString:self.threadId])
+//            {
+//                //  ignore the event
+//                return NO;
+//            }
+//        }
+//    }
+//    else if (RiotSettings.shared.enableThreads)
+//    {
+//        //  if not in a thread, ignore all threaded events
+//        if (event.isInThread)
+//        {
+//            //  ignore the event
+//            return NO;
+//        }
+//        //  also ignore events related to threaded events
+//        if (event.relatesTo.eventId)
+//        {
+//            MXEvent *relatedEvent = [self.mxSession.store eventWithEventId:event.relatesTo.eventId
+//                                                                    inRoom:event.roomId];
+//            if (relatedEvent.isInThread)
+//            {
+//                //  ignore the event
+//                return NO;
+//            }
+//        }
+//    }
+    
+    return [super shouldQueueEventForProcessing:event roomState:roomState direction:direction];
 }
 
 #pragma  mark -
@@ -294,28 +347,30 @@ const CGFloat kTypingCellHeight = 24;
             [self updateStatusInfo];
         }
         
-        if (!self.currentTypingUsers)
+        if (self.showTypingRow && self.currentTypingUsers)
+        {
+            self.typingCellIndex = bubbles.count;
+            return bubbles.count + 1;
+        }
+        else
         {
             self.typingCellIndex = -1;
-            
-            //  we may have changed the number of bubbles in this block, consider that change
             return bubbles.count;
         }
-        
-        self.typingCellIndex = bubbles.count;
-        return bubbles.count + 1;
     }
     
-    if (!self.currentTypingUsers)
+    if (self.showTypingRow && self.currentTypingUsers)
+    {
+        self.typingCellIndex = count;
+        return count + 1;
+    }
+    else
     {
         self.typingCellIndex = -1;
-
+        
         //  leave it as is, if coming as 0 from super
         return count;
     }
-    
-    self.typingCellIndex = count;
-    return count + 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -362,7 +417,7 @@ const CGFloat kTypingCellHeight = 24;
         // Handle read receipts and read marker display.
         // Ignore the read receipts on the bubble without actual display.
         // Ignore the read receipts on collapsed bubbles
-        if ((((self.showBubbleReceipts && cellData.readReceipts.count) || cellData.reactions.count || cellData.hasLink) && !isCollapsableCellCollapsed) || self.showReadMarker)
+        if ((((self.showBubbleReceipts && cellData.readReceipts.count) || cellData.reactions.count || cellData.hasLink || cellData.hasThreadRoot) && !isCollapsableCellCollapsed) || self.showReadMarker)
         {
             // Read receipts container are inserted here on the right side into the content view.
             // Some vertical whitespaces are added in message text view (see RoomBubbleCellData class) to insert correctly multiple receipts.
@@ -399,7 +454,6 @@ const CGFloat kTypingCellHeight = 24;
                         urlPreviewView.tag = index;
                         
                         [temporaryViews addObject:urlPreviewView];
-                        
                         [cellDecorator addURLPreviewView:urlPreviewView
                                                   toCell:bubbleCell cellData:cellData contentViewPositionY:bottomPositionY];
                     }
@@ -423,10 +477,29 @@ const CGFloat kTypingCellHeight = 24;
                         bubbleReactionsViewModel.viewModelDelegate = self;
                         
                         [temporaryViews addObject:reactionsView];
-                        
                         [cellDecorator addReactionView:reactionsView toCell:bubbleCell
                                               cellData:cellData contentViewPositionY:bottomPositionY upperDecorationView:urlPreviewView];
                     }
+                    
+//                    ThreadSummaryView *threadSummaryView;
+//
+//                    //  display thread summary view if the component has a thread in the room timeline
+//                    if (RiotSettings.shared.enableThreads && component.thread && !self.threadId)
+//                    {
+//                        threadSummaryView = [[ThreadSummaryView alloc] initWithThread:component.thread
+//                                                                              session:self.mxSession];
+//                        threadSummaryView.delegate = self;
+//                        threadSummaryView.tag = index;
+//
+//                        [temporaryViews addObject:threadSummaryView];
+//                        UIView *upperDecorationView = reactionsView ?: urlPreviewView;
+//
+//                        [cellDecorator addThreadSummaryView:threadSummaryView
+//                                                     toCell:bubbleCell
+//                                                   cellData:cellData
+//                                       contentViewPositionY:bottomPositionY
+//                                        upperDecorationView:upperDecorationView];
+//                    }
                     
                     MXKReceiptSendersContainer* avatarsContainer;
                     
@@ -460,7 +533,7 @@ const CGFloat kTypingCellHeight = 24;
                         if (roomMembers.count)
                         {
                             // Define the read receipts container, positioned on the right border of the bubble cell (Note the right margin 6 pts).
-                            avatarsContainer = [[MXKReceiptSendersContainer alloc] initWithFrame:CGRectMake(bubbleCell.frame.size.width - RoomBubbleCellLayout.readReceiptsViewWidth + RoomBubbleCellLayout.readReceiptsViewRightMargin, bottomPositionY + RoomBubbleCellLayout.readReceiptsViewTopMargin, RoomBubbleCellLayout.readReceiptsViewWidth, RoomBubbleCellLayout.readReceiptsViewHeight) andMediaManager:self.mxSession.mediaManager];
+                            avatarsContainer = [[MXKReceiptSendersContainer alloc] initWithFrame:CGRectMake(bubbleCell.frame.size.width - PlainRoomCellLayoutConstants.readReceiptsViewWidth + PlainRoomCellLayoutConstants.readReceiptsViewRightMargin, bottomPositionY + PlainRoomCellLayoutConstants.readReceiptsViewTopMargin, PlainRoomCellLayoutConstants.readReceiptsViewWidth, PlainRoomCellLayoutConstants.readReceiptsViewHeight) andMediaManager:self.mxSession.mediaManager];
                             
                             // Custom avatar display
                             avatarsContainer.maxDisplayedAvatars = 5;
@@ -483,8 +556,7 @@ const CGFloat kTypingCellHeight = 24;
                             avatarsContainer.accessibilityIdentifier = @"readReceiptsContainer";
                             
                             [temporaryViews addObject:avatarsContainer];
-                            
-                            UIView *upperDecorationView = reactionsView ?: urlPreviewView;
+                            UIView *upperDecorationView = /*threadSummaryView ?:*/ (reactionsView ?: urlPreviewView);
                             
                             [cellDecorator addReadReceiptsView:avatarsContainer
                                                         toCell:bubbleCell
@@ -506,48 +578,17 @@ const CGFloat kTypingCellHeight = 24;
                         
                         if ([componentEventId isEqualToString:self.room.accountData.readMarkerEventId])
                         {
-                            bubbleCell.readMarkerView = [[UIView alloc] initWithFrame:CGRectMake(0, bottomPositionY - RoomBubbleCellLayout.readMarkerViewHeight, bubbleCell.bubbleOverlayContainer.frame.size.width, RoomBubbleCellLayout.readMarkerViewHeight)];
-                            bubbleCell.readMarkerView.backgroundColor = ThemeService.shared.theme.tintColor;
+                            UIView *readMarkerView = [[UIView alloc] initWithFrame:CGRectMake(0, bottomPositionY - PlainRoomCellLayoutConstants.readMarkerViewHeight, bubbleCell.bubbleOverlayContainer.frame.size.width, PlainRoomCellLayoutConstants.readMarkerViewHeight)];
+                            readMarkerView.backgroundColor = ThemeService.shared.theme.tintColor;
                             // Hide by default the marker, it will be shown and animated when the cell will be rendered.
-                            bubbleCell.readMarkerView.hidden = YES;
-                            bubbleCell.readMarkerView.tag = index;
+                            readMarkerView.hidden = YES;
+                            readMarkerView.tag = index;
+                            readMarkerView.accessibilityIdentifier = @"readMarker";
                             
-                            bubbleCell.readMarkerView.translatesAutoresizingMaskIntoConstraints = NO;
-                            bubbleCell.readMarkerView.accessibilityIdentifier = @"readMarker";
-                            [bubbleCell.bubbleOverlayContainer addSubview:bubbleCell.readMarkerView];
-                            
-                            // Force read marker constraints
-                            bubbleCell.readMarkerViewTopConstraint = [NSLayoutConstraint constraintWithItem:bubbleCell.readMarkerView
-                                                                                                  attribute:NSLayoutAttributeTop
-                                                                                                  relatedBy:NSLayoutRelationEqual
-                                                                                                     toItem:bubbleCell.bubbleOverlayContainer
-                                                                                                  attribute:NSLayoutAttributeTop
-                                                                                                 multiplier:1.0
-                                                                                                   constant:bottomPositionY - RoomBubbleCellLayout.readMarkerViewHeight];
-                            bubbleCell.readMarkerViewLeadingConstraint = [NSLayoutConstraint constraintWithItem:bubbleCell.readMarkerView
-                                                                                                      attribute:NSLayoutAttributeLeading
-                                                                                                      relatedBy:NSLayoutRelationEqual
-                                                                                                         toItem:bubbleCell.bubbleOverlayContainer
-                                                                                                      attribute:NSLayoutAttributeLeading
-                                                                                                     multiplier:1.0
-                                                                                                       constant:0];
-                            bubbleCell.readMarkerViewTrailingConstraint = [NSLayoutConstraint constraintWithItem:bubbleCell.bubbleOverlayContainer
-                                                                                                       attribute:NSLayoutAttributeTrailing
-                                                                                                       relatedBy:NSLayoutRelationEqual
-                                                                                                          toItem:bubbleCell.readMarkerView
-                                                                                                       attribute:NSLayoutAttributeTrailing
-                                                                                                      multiplier:1.0
-                                                                                                        constant:0];
-                            
-                            bubbleCell.readMarkerViewHeightConstraint = [NSLayoutConstraint constraintWithItem:bubbleCell.readMarkerView
-                                                                                                     attribute:NSLayoutAttributeHeight
-                                                                                                     relatedBy:NSLayoutRelationEqual
-                                                                                                        toItem:nil
-                                                                                                     attribute:NSLayoutAttributeNotAnAttribute
-                                                                                                    multiplier:1.0
-                                                                                                      constant:RoomBubbleCellLayout.readMarkerViewHeight];
-                            
-                            [NSLayoutConstraint activateConstraints:@[bubbleCell.readMarkerViewTopConstraint, bubbleCell.readMarkerViewLeadingConstraint, bubbleCell.readMarkerViewTrailingConstraint, bubbleCell.readMarkerViewHeightConstraint]];
+                            [cellDecorator addReadMarkerView:readMarkerView
+                                                      toCell:bubbleCell
+                                                    cellData:cellData
+                                        contentViewPositionY:bottomPositionY];
                         }
                     }
                 }
@@ -583,14 +624,15 @@ const CGFloat kTypingCellHeight = 24;
         }
 
         // Manage initial event (case of permalink or search result)
-        if (self.timeline.initialEventId && self.markTimelineInitialEvent)
+        if ((self.timeline.initialEventId && self.markTimelineInitialEvent) || self.highlightedEventId)
         {
             // Check if the cell contains this initial event
             for (NSUInteger index = 0; index < bubbleComponents.count; index++)
             {
                 MXKRoomBubbleComponent *component = bubbleComponents[index];
 
-                if ([component.event.eventId isEqualToString:self.timeline.initialEventId])
+                if ([component.event.eventId isEqualToString:self.timeline.initialEventId]
+                    || [component.event.eventId isEqualToString:self.highlightedEventId])
                 {
                     // If yes, mark the event
                     [bubbleCell markComponent:index];
@@ -615,6 +657,13 @@ const CGFloat kTypingCellHeight = 24;
         
         // Make extra cell layout updates if needed
         [self updateCellLayoutIfNeeded:bubbleCell withCellData:cellData];
+    }
+    
+    if ([cell conformsToProtocol:@protocol(Themable)])
+    {
+        id<Themable> cellThemable = (id<Themable>)cell;
+
+        [cellThemable updateWithTheme:ThemeService.shared.theme];
     }
 
     return cell;
@@ -839,9 +888,9 @@ const CGFloat kTypingCellHeight = 24;
     return jitsiWidget;
 }
 
-- (void)sendVideo:(NSURL*)videoLocalURL
-          success:(void (^)(NSString *eventId))success
-          failure:(void (^)(NSError *error))failure
+- (void)sendVideo:(NSURL *)videoLocalURL
+          success:(void (^)(NSString * _Nonnull))success
+          failure:(void (^)(NSError * _Nullable))failure
 {
     AVURLAsset *videoAsset = [AVURLAsset assetWithURL:videoLocalURL];
     UIImage *videoThumbnail = [MXKVideoThumbnailGenerator.shared generateThumbnailFrom:videoLocalURL];
@@ -942,6 +991,31 @@ const CGFloat kTypingCellHeight = 24;
 {
     cell.messageTextView.accessibilityLabel = nil;
     cell.attachmentView.accessibilityLabel = nil;
+}
+
+#pragma mark - MXThreadingServiceDelegate
+
+- (void)threadingService:(MXThreadingService *)service didCreateNewThread:(MXThread *)thread direction:(MXTimelineDirection)direction
+{
+    if (self.threadId)
+    {
+        //  no need to reload the thread screen
+        return;
+    }
+    if (direction == MXTimelineDirectionBackwards)
+    {
+        //  no need to reload when paginating back
+        return;
+    }
+    NSUInteger count = 0;
+    @synchronized (bubbles)
+    {
+        count = bubbles.count;
+    }
+    if (count > 0)
+    {
+        [self reload];
+    }
 }
 
 #pragma mark - BubbleReactionsViewModelDelegate
@@ -1158,5 +1232,13 @@ const CGFloat kTypingCellHeight = 24;
     
     [self refreshCells];
 }
+
+#pragma mark - ThreadSummaryViewDelegate
+
+//- (void)threadSummaryViewTapped:(ThreadSummaryView *)summaryView
+//{
+//    [self.roomDataSourceDelegate roomDataSource:self
+//                                   didTapThread:summaryView.thread];
+//}
 
 @end

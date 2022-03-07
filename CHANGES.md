@@ -1,3 +1,130 @@
+## Changes in 1.8.3 (2022-02-25)
+
+🙌 Improvements
+
+- Upgrade MatrixSDK version ([v0.22.4](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.22.4)).
+
+🐛 Bugfixes
+
+- Unified Search: Fix a bug where the room directory wasn't working. ([#5672](https://github.com/vector-im/element-ios/issues/5672))
+- Fixed crashes on implicitly unwrapped optionals in the PlainRoomTimelineCellDecorator. ([#5673](https://github.com/vector-im/element-ios/issues/5673))
+- L10n: Fix defaulting to English language ([#5674](https://github.com/vector-im/element-ios/issues/5674))
+- RoomDataSource: Do not reload room data source on back pagination for new threads. ([#5694](https://github.com/vector-im/element-ios/issues/5694))
+
+
+## Changes in 1.8.2 (2022-02-22)
+
+✨ Features
+
+- Add Onboarding Use Case selection screen after the splash screen. ([#5160](https://github.com/vector-im/element-ios/issues/5160))
+
+🙌 Improvements
+
+- Upgrade MatrixSDK version ([v0.22.2](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.22.2)).
+- ActivityCenter: Use ActivityCenter to show loading indicators on the home screen (in DEBUG builds only) ([#4829](https://github.com/vector-im/element-ios/issues/4829))
+- Enabled poll editing and undisclosed polls. Added support for unstable poll prefixes. ([#5114](https://github.com/vector-im/element-ios/issues/5114))
+- Filter: update placeholder text and icon ([#5250](https://github.com/vector-im/element-ios/issues/5250))
+- Create Room: Update avatar placeholder & add remove button ([#5251](https://github.com/vector-im/element-ios/issues/5251))
+- Search: remove bubbles background ([#5471](https://github.com/vector-im/element-ios/issues/5471))
+- Exclude all files and directories from iCloud and iTunes backup ([#5498](https://github.com/vector-im/element-ios/issues/5498))
+- ThreadListViewModel: Use new apis to fetch threads. ([#5540](https://github.com/vector-im/element-ios/issues/5540))
+- Search: Use bundled aggregations if provided. ([#5562](https://github.com/vector-im/element-ios/issues/5562))
+- MXKRoomDataSource: Stop pagination in a thread when the root event received. ([#5582](https://github.com/vector-im/element-ios/issues/5582))
+- Add support for UserProperties to analytics and capture FTUE use case selection. ([#5590](https://github.com/vector-im/element-ios/issues/5590))
+- Add attribution to location sharing maps. ([#5609](https://github.com/vector-im/element-ios/issues/5609))
+- Onboarding: Use a different green spinner during onboarding and use the one presented by the LegacyAppDelegate only when logged in. ([#5621](https://github.com/vector-im/element-ios/issues/5621))
+- MXKRoomDataSource: Enable usage of thread timelines. ([#5629](https://github.com/vector-im/element-ios/issues/5629))
+
+🐛 Bugfixes
+
+- Home Tab: Initial support for navigating through the room lists using voiceover. ([#1433](https://github.com/vector-im/element-ios/issues/1433))
+- Authent: fix phone number validation through custom URL ([#3562](https://github.com/vector-im/element-ios/issues/3562))
+- Fix registration to be compliant with the Matrix specification. This allows registering for accounts on Conduit servers. Contributed by @aaronraimist. ([#3736](https://github.com/vector-im/element-ios/issues/3736))
+- Fix proximity sensor staying on and sleep timer staying disabled after call ends ([#4103](https://github.com/vector-im/element-ios/issues/4103))
+- Fonts: Fix dynamic type only working after a fresh launch on SwiftUI views. ([#5027](https://github.com/vector-im/element-ios/issues/5027))
+- Fixed arithmetical exception errors when changing poll responses. ([#5114](https://github.com/vector-im/element-ios/issues/5114))
+- Wordings: Replace "kick" and all affiliate word by "remove" ([#5346](https://github.com/vector-im/element-ios/issues/5346))
+- Markdown/HTML: Fix HTTP links containing Markdown formatting ([#5355](https://github.com/vector-im/element-ios/issues/5355))
+- Message Bubbles: Fix read marker appearing part way thru a message. ([#5521](https://github.com/vector-im/element-ios/issues/5521))
+- HomeViewController: Refresh section badges and tab bar badges on updates. ([#5537](https://github.com/vector-im/element-ios/issues/5537))
+- Update the tintColor in ThemeV1 to sRGB to match the Compound and ThemeV2. ([#5545](https://github.com/vector-im/element-ios/issues/5545))
+- Message bubbles: Increase text message width. ([#5550](https://github.com/vector-im/element-ios/issues/5550))
+- Message bubbles: Fix edited text message `edited` link not working. ([#5553](https://github.com/vector-im/element-ios/issues/5553))
+- Message bubbles: Fix horizontal lines between messages. ([#5555](https://github.com/vector-im/element-ios/issues/5555))
+- App Launch: Fix a potential issue where the green spinner is kept on screen when the room lists are ready. ([#5559](https://github.com/vector-im/element-ios/issues/5559))
+- Authentication: Fix reCaptcha failing to indicate success. ([#5602](https://github.com/vector-im/element-ios/issues/5602))
+- Timeline: scroll to the bottom when opening a notification ([#5639](https://github.com/vector-im/element-ios/issues/5639))
+
+Others
+
+- Fixed or ignored various project warnings for better DevX ([#5513](https://github.com/vector-im/element-ios/pull/5513))
+- SwiftGen: Objective-C support for assets helpers ([#5533](https://github.com/vector-im/element-ios/pull/5533))
+- Fix introspect not being able to theme the SwiftUI navigation bars. ([#5556](https://github.com/vector-im/element-ios/pull/5556))
+- Message bubbles: Reduce sender name bottom margin for text message. ([#5634](https://github.com/vector-im/element-ios/pull/5634))
+- Message bubbles: Use layout constants instead magic numbers. ([#5409](https://github.com/vector-im/element-ios/issues/5409))
+
+
+## Changes in 1.8.1 (2022-02-16)
+
+🙌 Improvements
+
+- Upgrade MatrixSDK version ([v0.22.1](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.22.1)).
+
+🐛 Bugfixes
+
+- Settings: Fix a bug where tapping a toggle could change multiple settings. ([#5463](https://github.com/vector-im/element-ios/issues/5463))
+- Fix for images sometimes being sent unencrypted inside an encrypted room. ([#5564](https://github.com/vector-im/element-ios/issues/5564))
+
+
+## Changes in 1.8.0 (2022-02-09)
+
+✨ Features
+
+- Threads: Add `View in room` action to the thread root event. ([#5117](https://github.com/vector-im/element-ios/issues/5117))
+- Add a splash screen before authentication is shown. ([#5159](https://github.com/vector-im/element-ios/issues/5159))
+- Remove location sharing settings entry and enable it by default. Add .well-known configuration support for tile server and map styles. ([#5298](https://github.com/vector-im/element-ios/issues/5298))
+
+🙌 Improvements
+
+- Show target user avatars for collapsed membership changes ([#4148](https://github.com/vector-im/element-ios/pull/4148))
+- Updated available emojis with data from https://github.com/missive/emoji-mart/blob/master/data/apple.json ([#5517](https://github.com/vector-im/element-ios/pull/5517))
+- Upgrade MatrixSDK version ([v0.22.0](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.22.0)).
+- Permalinks: Create for thread events & handle navigations. ([#5094](https://github.com/vector-im/element-ios/issues/5094))
+- Search: Navigate to thread view for search results in threads. ([#5095](https://github.com/vector-im/element-ios/issues/5095))
+- Search: display matching pattern with a highlight color ([#5252](https://github.com/vector-im/element-ios/issues/5252))
+
+🐛 Bugfixes
+
+- Share: Handle jpeg and png UTType properly ([#3636](https://github.com/vector-im/element-ios/issues/3636))
+- Timeline: automatically scroll timeline to the bottom when opening a room or rotating device. ([#4524](https://github.com/vector-im/element-ios/issues/4524))
+- Fix bugs when building with Xcode 13: bar appearance / header padding / space avatar content size. Additionally, use UIKit context menus on the home screen. ([#4883](https://github.com/vector-im/element-ios/issues/4883))
+- joining a space seemed to noop ([#5171](https://github.com/vector-im/element-ios/issues/5171))
+- Accepting a Space Invite has shouty button labels ([#5175](https://github.com/vector-im/element-ios/issues/5175))
+- RoomDataSource: Avoid reloading of data source on thread screen itself. ([#5263](https://github.com/vector-im/element-ios/issues/5263))
+- MXKAccount: Gracefully pause the session. ([#5426](https://github.com/vector-im/element-ios/issues/5426))
+- HomeViewController: Reload section if total number of rooms changed. ([#5448](https://github.com/vector-im/element-ios/issues/5448))
+- Selecting Transfer in a call should immediately put the the other person on hold until the call connects or the Transfer is cancelled. ([#5451](https://github.com/vector-im/element-ios/issues/5451))
+- Avatar view prevents to select space in space list ([#5454](https://github.com/vector-im/element-ios/issues/5454))
+- Fixes media library freezing under iOS 15.2. ([#5465](https://github.com/vector-im/element-ios/issues/5465))
+- Room Settings: Fix incorrect header title. ([#5525](https://github.com/vector-im/element-ios/issues/5525))
+
+🗣 Translations
+
+- Localisation: Add Indonesian and Slovak languages. ([#5048](https://github.com/vector-im/element-ios/issues/5048))
+
+🧱 Build
+
+- Fix CI builds for external contributors using forked repos. ([#5496](https://github.com/vector-im/element-ios/pull/5496), [#5491](https://github.com/vector-im/element-ios/issues/5491))
+- Use Xcode 13.2 to build the project. ([#4883](https://github.com/vector-im/element-ios/issues/4883))
+
+Others
+
+- Add WIP to towncrier. ([#5446](https://github.com/vector-im/element-ios/pull/5446))
+- Add a simple screen SwiftUI template. ([#5349](https://github.com/vector-im/element-ios/issues/5349))
+- Added a new automation for FTUE and WTF Project boards ([#5493](https://github.com/vector-im/element-ios/issues/5493))
+- Fix the indentation in the project board automation file on FTU and WTF labels ([#5504](https://github.com/vector-im/element-ios/issues/5504))
+
+
 ## Changes in 1.7.0 (2022-01-25)
 
 ✨ Features

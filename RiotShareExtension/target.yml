@@ -50,9 +50,12 @@ targets:
     - path: ../Riot/Categories/UISearchBar.swift
     - path: ../Riot/Categories/UIView.swift
     - path: ../Riot/Generated/Vector_Strings.swift
+#    - path: ../Riot/Generated/Strings.swift
+#    - path: ../Riot/Generated/Images.swift
     - path: ../Riot/Managers/AppInfo/
     - path: ../Riot/Managers/KeyValueStorage
     - path: ../Riot/Managers/EncryptionKeyManager/EncryptionKeyManager.swift
+    - path: ../Riot/Managers/Locale/LocaleProviderType.swift
     - path: ../Riot/Managers/Locale/LocaleProvider.swift
     - path: ../Riot/Managers/Locale/LocaleProviderType.swift
     - path: ../Riot/Managers/Settings/RiotSettings.swift
@@ -61,6 +64,7 @@ targets:
     - path: ../Riot/Modules/Common/Recents/Model/RecentCellData.m
     - path: ../Riot/Modules/Common/SegmentedViewController/SegmentedViewController.m
     - path: ../Riot/Modules/CreateRoom/Models
+    - path: ../Riot/Modules/Room/TimelineCells/Styles/RoomTimelineStyleIdentifier.swift
     - path: ../Riot/PropertyWrappers/UserDefaultsBackedPropertyWrapper.swift
     - path: ../Riot/Utils/AvatarGenerator.m
     - path: ../Riot/Utils/UserNameColorGenerator.swift
@@ -75,10 +79,11 @@ targets:
     - path: ../Riot/Assets/fr.lproj/Vector.strings
       buildPhase: resources
     - path: ../Riot/Modules/MatrixKit
+    - path: ../Riot/Modules/Analytics
+    - path: ../Riot/Managers/UserSessions
       excludes:
         - "**/*.md" # excludes all files with the .md extension
     - path: ../Riot/Generated/MatrixKitStrings.swift
-    - path: ../Riot/Modules/Room/Views/BubbleCells/Styles/RoomTimelineStyleIdentifier.swift
 
 
     # Tchap
@@ -86,6 +91,7 @@ targets:
     - path: ../Tchap/Config/CommonConfiguration.swift
     - path: ../Tchap/Config/Configurable.swift
     - path: ../Tchap/Extensions
+    - path: ../Tchap/Generated/Images_Riot.swift
     - path: ../Tchap/Generated/InfoPlist.swift
     - path: ../Tchap/Generated/Strings.swift
     - path: ../Tchap/Managers/HomeServer
@@ -94,5 +100,7 @@ targets:
     - path: ../Tchap/Managers/User
     - path: ../Tchap/Managers/DisplayName
     - path: ../Tchap/Modules/Rooms/Views
+      excludes:
+      - "RoomsRoomCell.*"
     - path: ../Tchap/Model
     - path: ../Tchap/Utils

@@ -90,6 +90,16 @@ extern NSString *const kRoomsDataSourceTapOnDirectoryServerChange;
 - (CGFloat)heightForHeaderInSection:(NSInteger)section;
 
 /**
+ Get the view of the section header.
+ 
+ @param section the section index
+ @param frame the section frame
+ @return the header view.
+ */
+
+- (UIView *)viewForHeaderInSection:(NSInteger)section withFrame:(CGRect)frame;
+
+/**
  The current number of rooms with missed notifications, including the invites.
  */
 @property (nonatomic, readonly) NSUInteger missedConversationsCount;

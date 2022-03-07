@@ -165,7 +165,7 @@ final class RoomsCoordinator: NSObject, RoomsCoordinatorType {
             
             // Note: We don't use here `room.members` because of https://github.com/matrix-org/synapse/issues/4985
             room.liveTimeline { (eventTimeline) in
-                if let roomMembers = eventTimeline?.state.members,
+                if let roomMembers = eventTimeline?.state?.members,
                     let roomMember = roomMembers.member(withUserId: userID),
                     roomMember.thirdPartyInviteToken != nil {
                     MXLog.debug("[RoomsCoordinator] getPotentialThirdPartyInviteSenderID: The current user has accepted a third party invite for this room")

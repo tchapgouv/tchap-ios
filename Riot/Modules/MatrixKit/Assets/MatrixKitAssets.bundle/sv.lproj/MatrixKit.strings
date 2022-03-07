@@ -74,7 +74,7 @@
 "ignore" = "Ignorera";
 "unignore" = "Avignorera";
 // Events formatter
-"notice_avatar_changed_too" = "(avataren ändrades också)";
+"notice_avatar_changed_too" = "(avataren byttes också)";
 "notice_room_name_removed" = "%@ tog bort rumsnamnet";
 "notice_room_topic_removed" = "%@ tog bort ämnet";
 "notice_event_redacted" = "<dold%@>";
@@ -259,9 +259,9 @@
 "user_id_placeholder" = "t.ex.: @sven:hemserver";
 "ssl_homeserver_url" = "Hemserver-URL: %@";
 // Permissions
-"camera_access_not_granted_for_call" = "Videosamtal kräver åtkomst till kameran men %@ har inte behörighet att använda den";
-"microphone_access_not_granted_for_call" = "Samtal kräver åtkomst till mikrofonen men %@ har inte behörighet att använda den";
-"local_contacts_access_not_granted" = "Upptäckt av användare från lokala kontakter kräver åtkomst till dina kontakter men %@ har inte behörighet att komma åt dem";
+"camera_access_not_granted_for_call" = "Videosamtal kräver åtkomst till kameran men %@ är inte behörig att använda den";
+"microphone_access_not_granted_for_call" = "Samtal kräver åtkomst till mikrofonen men %@ är inte behörig att använda den";
+"local_contacts_access_not_granted" = "Upptäckt av användare från lokala kontakter kräver åtkomst till dina kontakter men %@ är inte behörig att komma åt dem";
 "local_contacts_access_discovery_warning_title" = "Användarupptäckt";
 "local_contacts_access_discovery_warning" = "För att upptäcka kontakter som redan använder Matrix kan %@ skicka e-postadresser och telefonnummer i din adressbok till din valda Matrixidentitetsserver. Där det stöds hashas personuppgifter innan de skickas - kontrollera din identitetsservers integritetspolicy för mer information.";
 // Country picker
@@ -307,7 +307,7 @@
 "notice_room_unban_by_you" = "Du avbannade %@";
 "notice_room_ban_by_you" = "Du bannade %@";
 "notice_room_withdraw_by_you" = "Du drog tillbaka inbjudan för %@";
-"notice_avatar_url_changed_by_you" = "Du ändrade din avatar";
+"notice_avatar_url_changed_by_you" = "Du bytte din avatar";
 "notice_display_name_set_by_you" = "Du bytte ditt visningsnamn till %@";
 "notice_display_name_changed_from_by_you" = "Du bytte ditt visningsnamn från %@ till %@";
 "notice_display_name_removed_by_you" = "Du tog bort ditt visningsnamn";
@@ -462,7 +462,7 @@
 "call_voice_with_user" = "Röstsamtal med %@";
 "call_ringing" = "Ringer…";
 "e2e_passphrase_too_short" = "Lösenfras för kort (den måste vara minst %d tecken långt)";
-"microphone_access_not_granted_for_voice_message" = "Röstmeddelanden kräver åtkomst till mikrofonen, men %@ har inte behörighet att använda den";
+"microphone_access_not_granted_for_voice_message" = "Röstmeddelanden kräver åtkomst till mikrofonen, men %@ är inte behörig att använda den";
 "message_reply_to_sender_sent_a_voice_message" = "skickade ett röstmeddelande.";
 "attachment_large_with_resolution" = "Stor %@ (~%@)";
 "attachment_medium_with_resolution" = "Mellan %@ (~%@)";

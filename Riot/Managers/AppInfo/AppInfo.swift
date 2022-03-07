@@ -25,8 +25,8 @@ final class AppInfo: NSObject {
     /// Current application information
     static var current: AppInfo {
         return AppInfo(displayName: self.bundleDisplayName,
-                       appVersion: AppVersion.current/*,
-                       buildInfo: BuildInfo()*/)
+                       appVersion: AppVersion.current,
+                       buildInfo: BuildInfo())
     }
     
     // MARK: - Properties
@@ -38,16 +38,16 @@ final class AppInfo: NSObject {
     let appVersion: AppVersion?
     
     /// Compilation build info
-//    let buildInfo: BuildInfo
+    let buildInfo: BuildInfo
     
     // MARK: - Setup
     
     init(displayName: String,
-         appVersion: AppVersion?/*,
-         buildInfo: BuildInfo*/) {
+         appVersion: AppVersion?,
+         buildInfo: BuildInfo) {
         self.displayName = displayName
         self.appVersion = appVersion
-//        self.buildInfo = buildInfo
+        self.buildInfo = buildInfo
     }
     
     private static var bundleDisplayName: String {

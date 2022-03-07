@@ -96,7 +96,7 @@ final class KeyBackupRecoverFromRecoveryKeyViewController: UIViewController {
         
         self.scrollView.keyboardDismissMode = .interactive
         
-        let shieldImage = Asset.Images_tchap.keyBackupLogo.image.withRenderingMode(.alwaysTemplate)
+        let shieldImage = Asset_tchap.Images.keyBackupLogo.image.withRenderingMode(.alwaysTemplate)
         self.shieldImageView.image = shieldImage
         
         self.informationLabel.text = VectorL10n.keyBackupRecoverFromRecoveryKeyInfo
@@ -104,7 +104,7 @@ final class KeyBackupRecoverFromRecoveryKeyViewController: UIViewController {
         self.recoveryKeyTitleLabel.text = VectorL10n.keyBackupRecoverFromRecoveryKeyRecoveryKeyTitle
         self.recoveryKeyTextField.addTarget(self, action: #selector(recoveryKeyTextFieldDidChange(_:)), for: .editingChanged)
         
-        let importFileImage = Asset.Images_tchap.importFilesButton.image.withRenderingMode(.alwaysTemplate)
+        let importFileImage = Asset_tchap.Images.importFilesButton.image.withRenderingMode(.alwaysTemplate)
         self.importFileButton.setImage(importFileImage, for: .normal)
         
         self.unknownRecoveryKeyButton.vc_enableMultiLinesTitle()

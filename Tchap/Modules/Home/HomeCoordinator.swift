@@ -433,6 +433,10 @@ extension HomeCoordinator: RoomCoordinatorDelegate {
         }
         return delegate.homeCoordinator(self, handlePermalinkFragment: fragment)
     }
+    
+    func roomCoordinator(_ coordinator: RoomCoordinatorProtocol, didSelectRoomWithId roomId: String, eventId: String?) {
+        //
+    }
 }
 
 // MARK: - PublicRoomsViewControllerDelegate

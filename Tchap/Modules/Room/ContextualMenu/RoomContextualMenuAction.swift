@@ -19,6 +19,7 @@ import Foundation
 @objc enum RoomContextualMenuAction: Int {
     case copy
     case reply
+    case replyInThread
 #if ENABLE_EDITION
     case edit
 #else
@@ -40,6 +41,8 @@ import Foundation
             title = VectorL10n.roomEventActionCopy
         case .reply:
             title = VectorL10n.roomEventActionReply
+        case .replyInThread:
+            title = VectorL10n.roomEventActionReplyInThread
 #if ENABLE_EDITION
         case .edit:
             title = VectorL10n.roomEventActionEdit
@@ -70,6 +73,8 @@ import Foundation
             image = Asset.Images.roomContextMenuCopy.image
         case .reply:
             image = Asset.Images.roomContextMenuReply.image
+        case .replyInThread:
+            image = Asset.Images.roomContextMenuThread.image
 #if ENABLE_EDITION
         case .edit:
             image = Asset.Images.roomContextMenuEdit.image
@@ -78,9 +83,9 @@ import Foundation
             image = Asset.Images.roomContextMenuRedact.image
 #endif
         case .favourite:
-            image = Asset.Images_tchap.roomContextMenuFav.image
+            image = Asset_tchap.Images.roomContextMenuFav.image
         case .share:
-            image = Asset.Images_tchap.roomContextMenuShare.image
+            image = Asset_tchap.Images.roomContextMenuShare.image
         case .more:
             image = Asset.Images.roomContextMenuMore.image
         case .resend:

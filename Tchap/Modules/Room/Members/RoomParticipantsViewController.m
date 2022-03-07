@@ -118,6 +118,8 @@
     // Adjust Top and Bottom constraints to take into account potential navBar and tabBar.
     [NSLayoutConstraint deactivateConstraints:@[_searchBarTopConstraint]];
     
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wdeprecated"
     _searchBarTopConstraint = [NSLayoutConstraint constraintWithItem:self.topLayoutGuide
                                                            attribute:NSLayoutAttributeBottom
                                                            relatedBy:NSLayoutRelationEqual
@@ -125,6 +127,7 @@
                                                            attribute:NSLayoutAttributeTop
                                                           multiplier:1.0f
                                                             constant:0.0f];
+    #pragma clang diagnostic pop
     
     [NSLayoutConstraint activateConstraints:@[_searchBarTopConstraint]];
     
@@ -159,8 +162,10 @@
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     self.tableView.estimatedRowHeight = 60;
     
-    // Add room creation button programmatically
-    [self addAddParticipantButton];
+    // Add invite members button programmatically
+    [self vc_addFABWithImage:AssetImages.addMemberFloatingAction.image
+                      target:self
+                      action:@selector(onAddParticipantButtonPressed)];
     
     // Observe user interface theme change.
     kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
@@ -240,7 +245,7 @@
     if (membersListener)
     {
         MXWeakify(self);
-        [self.mxRoom liveTimeline:^(MXEventTimeline *liveTimeline) {
+        [self.mxRoom liveTimeline:^(id<MXEventTimeline> liveTimeline) {
             MXStrongifyAndReturnIfNil(self);
 
             [liveTimeline removeListener:self->membersListener];
@@ -394,7 +399,7 @@
             if (self->membersListener)
             {
                 MXWeakify(self);
-                [self.mxRoom liveTimeline:^(MXEventTimeline *liveTimeline) {
+                [self.mxRoom liveTimeline:^(id<MXEventTimeline> liveTimeline) {
                     MXStrongifyAndReturnIfNil(self);
 
                     [liveTimeline removeListener:self->membersListener];
@@ -460,7 +465,7 @@
             NSArray *mxMembersEvents = @[kMXEventTypeStringRoomMember, kMXEventTypeStringRoomThirdPartyInvite, kMXEventTypeStringRoomPowerLevels];
 
             MXWeakify(self);
-            [self.mxRoom liveTimeline:^(MXEventTimeline *liveTimeline) {
+            [self.mxRoom liveTimeline:^(id<MXEventTimeline> liveTimeline) {
                 MXStrongifyAndReturnIfNil(self);
 
                 self->membersListener = [liveTimeline listenToEventsOfTypes:mxMembersEvents onEvent:^(MXEvent *event, MXTimelineDirection direction, id customObject) {
@@ -616,91 +621,15 @@
     // Check whether the view controller is currently displayed inside a segmented view controller or not.
     UIViewController* topViewController = ((self.parentViewController) ? self.parentViewController : self);
     topViewController.navigationItem.rightBarButtonItem = nil;
-    topViewController.navigationItem.leftBarButtonItem = nil;
-}
-
-- (void)addAddParticipantButton
-{
-    // Add blur mask programmatically
-    tableViewMaskLayer = [CAGradientLayer layer];
     
-    // Consider the grayscale components of the ThemeService.shared.theme.backgroundColor.
-    CGFloat white = 1.0;
-    [ThemeService.shared.theme.backgroundColor getWhite:&white alpha:nil];
-    
-    CGColorRef opaqueWhiteColor = [UIColor colorWithWhite:white alpha:1.0].CGColor;
-    CGColorRef transparentWhiteColor = [UIColor colorWithWhite:white alpha:0].CGColor;
-    
-    tableViewMaskLayer.colors = @[(__bridge id) transparentWhiteColor, (__bridge id) transparentWhiteColor, (__bridge id) opaqueWhiteColor];
-    
-    // display a gradient to the rencents bottom (20% of the bottom of the screen)
-    tableViewMaskLayer.locations = @[@0.0F,
-            @0.85F,
-            @1.0F];
-    
-    tableViewMaskLayer.bounds = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
-    tableViewMaskLayer.anchorPoint = CGPointZero;
-    
-    // CAConstraint is not supported on IOS.
-    // it seems only being supported on Mac OS.
-    // so viewDidLayoutSubviews will refresh the layout bounds.
-    [self.view.layer addSublayer:tableViewMaskLayer];
-    
-    // Add + button
-    addParticipantButtonImageView = [[UIImageView alloc] init];
-    [addParticipantButtonImageView setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [self.view addSubview:addParticipantButtonImageView];
-    
-    addParticipantButtonImageView.backgroundColor = [UIColor clearColor];
-    addParticipantButtonImageView.contentMode = UIViewContentModeCenter;
-    addParticipantButtonImageView.image = [[UIImage imageNamed:@"add_participant"] vc_tintedImageUsingColor:ThemeService.shared.theme.tintColor];
-    
-    CGFloat side = 78.0f;
-    NSLayoutConstraint* widthConstraint = [NSLayoutConstraint constraintWithItem:addParticipantButtonImageView
-                                                                       attribute:NSLayoutAttributeWidth
-                                                                       relatedBy:NSLayoutRelationEqual
-                                                                          toItem:nil
-                                                                       attribute:NSLayoutAttributeNotAnAttribute
-                                                                      multiplier:1
-                                                                        constant:side];
-    
-    NSLayoutConstraint* heightConstraint = [NSLayoutConstraint constraintWithItem:addParticipantButtonImageView
-                                                                        attribute:NSLayoutAttributeHeight
-                                                                        relatedBy:NSLayoutRelationEqual
-                                                                           toItem:nil
-                                                                        attribute:NSLayoutAttributeNotAnAttribute
-                                                                       multiplier:1
-                                                                         constant:side];
-    
-    NSLayoutConstraint* centerXConstraint = [NSLayoutConstraint constraintWithItem:addParticipantButtonImageView
-                                                                         attribute:NSLayoutAttributeCenterX
-                                                                         relatedBy:NSLayoutRelationEqual
-                                                                            toItem:self.view
-                                                                         attribute:NSLayoutAttributeCenterX
-                                                                        multiplier:1
-                                                                          constant:0];
-    
-    addParticipantButtonImageViewBottomConstraint = [NSLayoutConstraint constraintWithItem:self.view
-                                                                                 attribute:NSLayoutAttributeBottom
-                                                                                 relatedBy:NSLayoutRelationEqual
-                                                                                    toItem:addParticipantButtonImageView
-                                                                                 attribute:NSLayoutAttributeBottom
-                                                                                multiplier:1
-                                                                                  constant:self.keyboardHeight + 9];
-    
-    // Available on iOS 8 and later
-    [NSLayoutConstraint activateConstraints:@[widthConstraint, heightConstraint, centerXConstraint, addParticipantButtonImageViewBottomConstraint]];
-    
-    addParticipantButtonImageView.userInteractionEnabled = YES;
-    
-    // Handle tap gesture
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onAddParticipantButtonPressed)];
-    [tap setNumberOfTouchesRequired:1];
-    [tap setNumberOfTapsRequired:1];
-    [tap setDelegate:self];
-    [addParticipantButtonImageView addGestureRecognizer:tap];
-    
-    addParticipantButtonImageView.hidden = tableViewMaskLayer.hidden = !isUserAllowedToInvite;
+    if (self.showCancelBarButtonItem)
+    {
+        topViewController.navigationItem.leftBarButtonItem  = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onCancel:)];
+    }
+    else
+    {
+        topViewController.navigationItem.leftBarButtonItem = nil;
+    }
 }
 
 - (void)onAddParticipantButtonPressed

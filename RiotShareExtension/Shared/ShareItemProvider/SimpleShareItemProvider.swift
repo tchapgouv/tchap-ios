@@ -39,11 +39,11 @@ private class SimpleShareItem: ShareItemProtocol {
             return .unknown
         }
         
-        if attachment.type == MXKAttachmentTypeImage {
+        if attachment.type == .image {
             return .image
-        } else if attachment.type == MXKAttachmentTypeVideo {
+        } else if attachment.type == .video {
             return .video
-        } else if attachment.type == MXKAttachmentTypeFile {
+        } else if attachment.type == .file {
             return .fileURL
         } else {
             return .unknown
@@ -102,6 +102,6 @@ private class SimpleShareItem: ShareItemProtocol {
     }
     
     func areAllItemsImages() -> Bool {
-        return (attachment != nil && attachment?.type == MXKAttachmentTypeImage)
+        return (attachment != nil && attachment?.type == .image)
     }
 }

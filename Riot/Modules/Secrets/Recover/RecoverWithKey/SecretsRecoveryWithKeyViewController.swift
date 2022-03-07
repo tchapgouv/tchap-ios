@@ -103,7 +103,7 @@ final class SecretsRecoveryWithKeyViewController: UIViewController {
         switch self.viewModel.recoveryGoal {
         case .default, .keyBackup, .restoreSecureBackup:
             informationText = VectorL10n.secretsRecoveryWithKeyInformationDefault
-        case .unlockSecureBackup(_):
+        case .unlockSecureBackup:
             informationText = VectorL10n.secretsRecoveryWithKeyInformationUnlockSecureBackupWithKey
         case .verifyDevice:
             informationText = VectorL10n.secretsRecoveryWithKeyInformationVerifyDevice
@@ -114,7 +114,7 @@ final class SecretsRecoveryWithKeyViewController: UIViewController {
         self.recoveryKeyTitleLabel.text = VectorL10n.secretsRecoveryWithKeyRecoveryKeyTitle
         self.recoveryKeyTextField.addTarget(self, action: #selector(recoveryKeyTextFieldDidChange(_:)), for: .editingChanged)
         
-        let importFileImage = Asset.Images_tchap.importFilesButton.image.withRenderingMode(.alwaysTemplate)
+        let importFileImage = Asset_tchap.Images.importFilesButton.image.withRenderingMode(.alwaysTemplate)
         self.importFileButton.setImage(importFileImage, for: .normal)
                 
         self.recoverButton.vc_enableMultiLinesTitle()

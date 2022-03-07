@@ -34,13 +34,13 @@ xcassets:
       - Tchap/Assets/Images.xcassets  
       - Tchap/Assets/SharedImages.xcassets
     outputs:
-      - templatePath: Templates/Assets/riot-swift4.stencil
+      - templatePath: Templates/Assets/swift4-tchap.stencil
         output: Tchap/Generated/Images.swift
   - inputs:
       - Riot/Assets/Images.xcassets  
       - Riot/Assets/SharedImages.xcassets
     outputs:
-      - templateName: swift4
+      - templatePath: Templates/Assets/swift4-element.stencil
         output: Tchap/Generated/Images_Riot.swift
 plist:
   - inputs: Tchap/Assets/Tchap-Defaults.plist

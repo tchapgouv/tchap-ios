@@ -165,9 +165,6 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     // The pending http operation
     MXHTTPOperation* pendingOperation;
     
-    // the updating spinner
-    UIActivityIndicatorView* updatingSpinner;
-    
     UIAlertController *currentAlert;
     
     // listen to more events than the mother class
@@ -429,7 +426,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     if (extraEventsListener)
     {
         MXWeakify(self);
-        [mxRoom liveTimeline:^(MXEventTimeline *liveTimeline) {
+        [mxRoom liveTimeline:^(id<MXEventTimeline> liveTimeline) {
             MXStrongifyAndReturnIfNil(self);
 
             [liveTimeline removeListener:self->extraEventsListener];
@@ -564,7 +561,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         
         if (mxRoom.isDirect)
         {
-            sectionAccess.headerTitle = [VectorL10n roomDetailsAccessSectionAnyoneForDm];
+            sectionAccess.headerTitle = [VectorL10n roomDetailsAccessSectionForDm];
         }
         else
         {
@@ -1032,27 +1029,33 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomDetailsCopyRoomUrl]
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * action) {
-                                                           
-                                                           if (weakSelf)
-                                                           {
-                                                               typeof(self) self = weakSelf;
-                                                               self->currentAlert = nil;
-                                                               
-                                                               // Create a matrix.to permalink to the room
-                                                               
-                                                               NSString *permalink = [MXTools permalinkToRoom:roomAliasLabel.text];
-                                                               
-                                                               if (permalink)
-                                                               {
-                                                                   MXKPasteboardManager.shared.pasteboard.string = permalink;
-                                                               }
-                                                               else
-                                                               {
-                                                                   MXLogDebug(@"[RoomSettingsViewController] Copy room URL failed. Room URL is nil");
-                                                               }
-                                                           }
-                                                           
-                                                       }]];
+            
+            if (weakSelf)
+            {
+                typeof(self) self = weakSelf;
+                self->currentAlert = nil;
+                
+                // Create a matrix.to permalink to the room
+                
+                NSString *permalink = [MXTools permalinkToRoom:roomAliasLabel.text];
+                NSURL *url = [NSURL URLWithString:permalink];
+
+                if (url)
+                {
+                    MXKPasteboardManager.shared.pasteboard.URL = url;
+                    [self.view vc_toastWithMessage:VectorL10n.roomEventCopyLinkInfo
+                                             image:AssetImages.linkIcon.image
+                                          duration:2.0
+                                          position:ToastPositionBottom
+                                  additionalMargin:0.0];
+                }
+                else
+                {
+                    MXLogDebug(@"[RoomSettingsViewController] Copy room URL failed. Room URL is nil");
+                }
+            }
+            
+        }]];
         
         // The user can only delete alias they has created, even if the Admin has set it as canonical.
         // So, let the server answer if it's possible to delete an alias.
@@ -2634,7 +2637,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             addAddressCell.mxkLabel.text = nil;
             
             addAddressCell.accessoryType = UITableViewCellAccessoryNone;
-            addAddressCell.accessoryView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"plus_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.textPrimaryColor]];
+            addAddressCell.accessoryView = [[UIImageView alloc] initWithImage:[AssetImages.plusIcon.image vc_tintedImageUsingColor:ThemeService.shared.theme.textPrimaryColor]];
             
             addAddressTextField = addAddressCell.mxkTextField;
             addAddressTextField.placeholder = [VectorL10n roomDetailsNewAddressPlaceholder:self.mainSession.matrixRestClient.homeserverSuffix];
@@ -2711,7 +2714,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                 {
                     if ([alias isEqualToString:canonicalAlias])
                     {
-                        addressCell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main_alias_icon"]];
+                        addressCell.accessoryView = [[UIImageView alloc] initWithImage:AssetImages.mainAliasIcon.image];
                     }
                 }
             }
@@ -2735,7 +2738,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             addCommunityCell.mxkLabel.text = nil;
 
             addCommunityCell.accessoryType = UITableViewCellAccessoryNone;
-            addCommunityCell.accessoryView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"plus_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.textPrimaryColor]];
+            addCommunityCell.accessoryView = [[UIImageView alloc] initWithImage:[AssetImages.plusIcon.image vc_tintedImageUsingColor:ThemeService.shared.theme.textPrimaryColor]];
 
             addGroupTextField = addCommunityCell.mxkTextField;
             addGroupTextField.placeholder = [VectorL10n roomDetailsNewFlairPlaceholder:self.mainSession.matrixRestClient.homeserverSuffix];
@@ -3264,7 +3267,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             completionHandler(YES);
         }];
         removeAddressAction.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
-        removeAddressAction.image = [[UIImage imageNamed:@"remove_icon"] vc_notRenderedImage];
+        removeAddressAction.image = [AssetImages.removeIcon.image vc_notRenderedImage];
         
         // Create swipe action configuration
         
@@ -3285,7 +3288,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             completionHandler(YES);
         }];
         removeAddressAction.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
-        removeAddressAction.image = [[UIImage imageNamed:@"remove_icon"] vc_notRenderedImage];
+        removeAddressAction.image = [AssetImages.removeIcon.image vc_notRenderedImage];
         
         // Create swipe action configuration
         
