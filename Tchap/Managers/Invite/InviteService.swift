@@ -15,6 +15,7 @@
  */
 
 import Foundation
+import MatrixSDK
 
 enum InviteServiceError: Error {
     case unknown
@@ -27,7 +28,7 @@ final class InviteService: InviteServiceType {
     private let session: MXSession
     
     private let discussionFinder: DiscussionFinderType
-    private let thirdPartyIDResolver: ThirdPartyIDResolverType
+    private let identityService: MXIdentityService
     private let userService: UserServiceType
     private let roomService: RoomServiceType
     
@@ -37,9 +38,16 @@ final class InviteService: InviteServiceType {
     init(session: MXSession) {
         self.session = session
         self.discussionFinder = DiscussionFinder(session: session)
-        self.thirdPartyIDResolver = ThirdPartyIDResolver(credentials: self.session.matrixRestClient.credentials)
         self.userService = UserService(session: session)
         self.roomService = RoomService(session: session)
+        
+        let server = session.matrixRestClient.identityServer ?? session.matrixRestClient.homeserver
+        // swiftlint:disable force_unwrapping
+        let identityServerURL = URL(string: server!)!
+        // swiftlint:enable force_unwrapping
+        self.identityService = MXIdentityService(identityServer: identityServerURL,
+                                                 accessToken: nil,
+                                                 homeserverRestClient: self.session.matrixRestClient)
     }
     
     func sendEmailInvite(to email: String, completion: @escaping (MXResponse<InviteServiceResult>) -> Void) {
@@ -110,13 +118,15 @@ final class InviteService: InviteServiceType {
     // MARK: - Private
     
     // Check whether a Tchap account has been created for this email. The closure returns a nil identifier when no account exists.
-    private func discoverUser(with email: String, completion: @escaping (MXResponse<ThirdPartyIDResolveResult>) -> Void) {
-        if let identityServer = self.session.matrixRestClient.identityServer ?? self.session.matrixRestClient.homeserver,
-           let lookup3pidsOperation = self.thirdPartyIDResolver.lookup(address: email, medium: .email, identityServer: identityServer, completion: completion) {
-            lookup3pidsOperation.maxRetriesTime = 0
-        } else {
-            MXLog.debug("[InviteService] discoverUser failed")
-            completion(MXResponse.failure(InviteServiceError.unknown))
+    private func discoverUser(with email: String, completion: @escaping (MXResponse<InviteServiceDiscoverUserResult>) -> Void) {
+        let pid = MX3PID(medium: .email, address: email)
+        _ = self.identityService.lookup3PIDs([pid]) { response in
+            if let responseValue = response.value?[pid] {
+                completion(MXResponse.success(.bound(userID: responseValue)))
+            } else {
+                MXLog.debug("[InviteService] discoverUser failed")
+                completion(MXResponse.failure(InviteServiceError.unknown))
+            }
         }
     }
     
