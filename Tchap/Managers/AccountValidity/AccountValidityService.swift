@@ -25,14 +25,30 @@ final class AccountValidityService: AccountValidityServiceType {
     
     /// The current HttpClient
     private let httpClient: MXHTTPClient
+
+    /// The current credentials
+    private let credentials: MXCredentials
     
     // MARK: - Public
     init(credentials: MXCredentials) {
-        guard let homeServer = credentials.homeServer,
-            let accessToken = credentials.accessToken else {
-                fatalError("credentials should be defined")
+        guard let homeServer = credentials.homeServer else {
+            fatalError("credentials should be defined")
         }
-        self.httpClient = MXHTTPClient(baseURL: "\(homeServer)/\(kMXAPIPrefixPathUnstable)", accessToken: accessToken, andOnUnrecognizedCertificateBlock: nil)
+        
+        self.credentials = credentials
+        self.httpClient = MXHTTPClient(baseURL: "\(homeServer)/\(kMXAPIPrefixPathUnstable)",
+                                       authenticated: true,
+                                       andOnUnrecognizedCertificateBlock: nil)
+        
+        self.httpClient.tokenProviderHandler = { [weak self] (error, success, failure) in
+            // swiftlint:disable force_unwrapping
+            guard let accessToken = self?.credentials.accessToken else {
+                failure!(error)
+                return
+            }
+            success!(accessToken)
+            // swiftlint:enable force_unwrapping
+        }
     }
     
     func requestRenewalEmail(completion: @escaping (MXResponse<Void>) -> Void) -> MXHTTPOperation? {
