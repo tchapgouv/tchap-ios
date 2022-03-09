@@ -235,7 +235,9 @@
         {
             RoomsCell* tableViewCell = (RoomsCell*)cell;
             
-            [self.roomsViewControllerDelegate roomsViewController:self didSelectRoomWithID:tableViewCell.roomCellData.roomSummary.roomId];
+            if (tableViewCell.roomCellData.roomSummary.roomId != nil) {
+                [self.roomsViewControllerDelegate roomsViewController:self didSelectRoomWithID:tableViewCell.roomCellData.roomSummary.roomId];
+            }
         }
     }
 }

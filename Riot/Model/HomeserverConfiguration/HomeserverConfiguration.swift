@@ -23,13 +23,13 @@ final class HomeserverConfiguration: NSObject {
     // Note: Use an object per configuration subject when there is multiple properties related
     let jitsi: HomeserverJitsiConfiguration
     let isE2EEByDefaultEnabled: Bool
-    let tileServer: HomeserverTileServerConfiguration
+//    let tileServer: HomeserverTileServerConfiguration
     
     init(jitsi: HomeserverJitsiConfiguration,
-         isE2EEByDefaultEnabled: Bool,
-         tileServer: HomeserverTileServerConfiguration) {
+         isE2EEByDefaultEnabled: Bool/*,
+         tileServer: HomeserverTileServerConfiguration*/) {
         self.jitsi = jitsi
         self.isE2EEByDefaultEnabled = isE2EEByDefaultEnabled
-        self.tileServer = tileServer
+//        self.tileServer = tileServer
     }
 }
