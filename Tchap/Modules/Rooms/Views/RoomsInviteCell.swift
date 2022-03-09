@@ -77,10 +77,10 @@ import UIKit
     override func update(theme: Theme) {
         super.update(theme: theme)
         self.domainLabel.textColor = theme.textTertiaryColor
-        self.leftButton.backgroundColor = theme.headerBackgroundColor
-        self.leftButton.setTitleColor(theme.headerTextPrimaryColor, for: .normal)
-        self.rightButton.backgroundColor = theme.headerBackgroundColor
-        self.rightButton.setTitleColor(theme.headerTextPrimaryColor, for: .normal)
+        self.leftButton.backgroundColor = theme.tintColor
+        self.leftButton.setTitleColor(theme.headerBackgroundColor, for: .normal)
+        self.rightButton.backgroundColor = theme.tintColor
+        self.rightButton.setTitleColor(theme.headerBackgroundColor, for: .normal)
     }
     
     @IBAction private func onLeftPressed(_ sender: Any) {
