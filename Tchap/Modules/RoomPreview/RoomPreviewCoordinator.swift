@@ -61,7 +61,7 @@ final class RoomPreviewCoordinator: NSObject, RoomPreviewCoordinatorType {
         self.publicRoom = publicRoom
         self.roomPreviewData = RoomPreviewData(publicRoom: publicRoom, andSession: self.session)
         
-        self.roomViewController = RoomViewController.instantiate()
+        self.roomViewController = RoomViewController()
         self.activityIndicatorPresenter = ActivityIndicatorPresenter()
         self.roomsErrorPresenter = AlertErrorPresenter(viewControllerPresenter: roomViewController)
         
@@ -73,7 +73,7 @@ final class RoomPreviewCoordinator: NSObject, RoomPreviewCoordinatorType {
         self.publicRoom = nil
         self.roomPreviewData = roomPreviewData
         
-        self.roomViewController = RoomViewController.instantiate()
+        self.roomViewController = RoomViewController()
         self.activityIndicatorPresenter = ActivityIndicatorPresenter()
         self.roomsErrorPresenter = AlertErrorPresenter(viewControllerPresenter: roomViewController)
         
@@ -220,7 +220,7 @@ final class RoomPreviewCoordinator: NSObject, RoomPreviewCoordinatorType {
 
 // MARK: - RoomViewControllerDelegate
 extension RoomPreviewCoordinator: RoomViewControllerDelegate {
-    func roomViewController(_ roomViewController: RoomViewController, showRoomWithId eventIdentifier: String) {
+    func roomViewController(_ roomViewController: RoomViewController, showRoomWithId roomID: String, eventId eventID: String?) {
         //
     }
     
@@ -278,5 +278,9 @@ extension RoomPreviewCoordinator: RoomViewControllerDelegate {
     
     func roomViewController(_ roomViewController: RoomViewController, didRequestLocationPresentationFor event: MXEvent, bubbleData: MXKRoomBubbleCellDataStoring) {
         //
+    }
+    
+    func roomViewController(_ roomViewController: RoomViewController, locationShareActivityViewControllerFor event: MXEvent) -> UIActivityViewController? {
+        return nil
     }
 }

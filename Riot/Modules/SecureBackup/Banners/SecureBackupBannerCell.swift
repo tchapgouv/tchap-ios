@@ -61,7 +61,7 @@ final class SecureBackupBannerCell: MXKTableViewCell, Themable {
         let shieldImage = Asset.Images.secretsSetupKey.image.withRenderingMode(.alwaysTemplate)
         self.shieldImageView.image = shieldImage 
         
-        let closeImage = Asset.Images_tchap.closeBanner.image.withRenderingMode(.alwaysTemplate)
+        let closeImage = Asset_tchap.Images.closeBanner.image.withRenderingMode(.alwaysTemplate)
         self.closeButton.setImage(closeImage, for: .normal)
     }
     

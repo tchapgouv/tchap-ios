@@ -275,7 +275,7 @@ final class FavouriteMessagesViewController: UIViewController {
         
         // Copy action
         
-        var isCopyActionEnabled = attachment == nil || attachment?.type != MXKAttachmentTypeSticker
+        var isCopyActionEnabled = attachment == nil || attachment?.type != .sticker
         
         if attachment != nil && !BuildSettings.messageDetailsAllowCopyMedia {
             isCopyActionEnabled = false
@@ -307,7 +307,7 @@ final class FavouriteMessagesViewController: UIViewController {
                 }
                 
                 self.hideContextualMenu(animated: true)
-            } else if attachment?.type != MXKAttachmentTypeSticker {
+            } else if attachment?.type != .sticker {
                 self.hideContextualMenu(animated: true) {
                     self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
                     
@@ -350,7 +350,7 @@ final class FavouriteMessagesViewController: UIViewController {
                 }
                 
                 self.hideContextualMenu(animated: true)
-            } else if attachment?.type != MXKAttachmentTypeSticker {
+            } else if attachment?.type != .sticker {
                 
                 self.hideContextualMenu(animated: true)
                 
@@ -411,7 +411,7 @@ final class FavouriteMessagesViewController: UIViewController {
         
         // Add action for attachment
         if let attachment = inCell.bubbleData.attachment, BuildSettings.messageDetailsAllowSave {
-            if attachment.type == MXKAttachmentTypeImage || attachment.type == MXKAttachmentTypeVideo {
+            if attachment.type == .image || attachment.type == .video {
                 self.currentAlert.addAction(UIAlertAction(title: VectorL10n.roomEventActionSave, style: .default, handler: { [weak self] (action) in
                     guard let self = self else {
                         return

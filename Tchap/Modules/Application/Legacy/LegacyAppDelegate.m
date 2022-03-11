@@ -1888,7 +1888,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:YES];
     
     RoomNavigationParameters *parameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId
-                                                                                        eventId:eventId mxSession:mxSession presentationParameters:presentationParameters];
+                                                                                    eventId:eventId mxSession:mxSession threadParameters: nil presentationParameters:presentationParameters];
     
     [self showRoomWithParameters:parameters];
 }
@@ -2603,23 +2603,23 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
                                              [noCallSupportAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"reject_call"]
                                                                                                     style:UIAlertActionStyleDefault
                                                                                                   handler:^(UIAlertAction * action) {
-                                                                                                      
+
                                                                                                       // Reject the call by sending the hangup event
                                                                                                       NSDictionary *content = @{
                                                                                                                                 @"call_id": callInviteEventContent.callId,
                                                                                                                                 @"version": @(0)
                                                                                                                                 };
-                                                                                                      
-                                                                                                      [mxSession.matrixRestClient sendEventToRoom:event.roomId eventType:kMXEventTypeStringCallHangup content:content txnId:nil success:nil failure:^(NSError *error) {
+
+                                                 [mxSession.matrixRestClient sendEventToRoom:event.roomId threadId:nil eventType:kMXEventTypeStringCallHangup content:content txnId:nil success:nil failure:^(NSError *error) {
                                                                                                           MXLogDebug(@"[AppDelegate] enableNoVoIPOnMatrixSession: ERROR: Cannot send m.call.hangup event.");
                                                                                                       }];
-                                                                                                      
+
                                                                                                       if (weakSelf)
                                                                                                       {
                                                                                                           typeof(self) self = weakSelf;
                                                                                                           self->noCallSupportAlert = nil;
                                                                                                       }
-                                                                                                      
+
                                                                                                   }]];
                                              
                                              [self showNotificationAlert:noCallSupportAlert];

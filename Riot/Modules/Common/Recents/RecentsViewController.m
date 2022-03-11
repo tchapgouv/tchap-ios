@@ -25,12 +25,13 @@
 #import "RageShakeManager.h"
 
 #import "TableViewCellWithCollectionView.h"
+#import "SectionHeaderView.h"
 
 #import "GeneratedInterface-Swift.h"
 
 NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewControllerDataReadyNotification";
 
-@interface RecentsViewController () </*CreateRoomCoordinatorBridgePresenterDelegate, RoomsDirectoryCoordinatorBridgePresenterDelegate,*/ RoomNotificationSettingsCoordinatorBridgePresenterDelegate>
+@interface RecentsViewController () </*CreateRoomCoordinatorBridgePresenterDelegate, RoomsDirectoryCoordinatorBridgePresenterDelegate,*/ RoomNotificationSettingsCoordinatorBridgePresenterDelegate/*, DialpadViewControllerDelegate, ExploreRoomCoordinatorBridgePresenterDelegate*/>
 {
     // Tell whether a recents refresh is pending (suspended during editing mode).
     BOOL isRefreshPending;
@@ -740,6 +741,46 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 }
 
 #pragma mark - Internal methods
+
+- (void)showPublicRoomsDirectory
+{
+    // Here the recents view controller is displayed inside a unified search view controller.
+    // Sanity check
+//    if (self.parentViewController && [self.parentViewController isKindOfClass:UnifiedSearchViewController.class])
+//    {
+//        // Show the directory screen
+//        [((UnifiedSearchViewController*)self.parentViewController) showPublicRoomsDirectory];
+//    }
+}
+
+- (void)showRoomWithRoomId:(NSString*)roomId inMatrixSession:(MXSession*)matrixSession
+{
+    // Avoid multiple openings of rooms
+    self.userInteractionEnabled = NO;
+
+    // Do not stack views when showing room
+    ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:NO stackAboveVisibleViews:NO];
+    
+    RoomNavigationParameters *parameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId
+                                                                                    eventId:nil
+                                                                                  mxSession:matrixSession
+                                                                           threadParameters:nil
+                                                                     presentationParameters:presentationParameters];
+    
+    [[AppDelegate theDelegate] showRoomWithParameters:parameters completion:^{
+        self.userInteractionEnabled = YES;
+    }];
+}
+
+- (void)showRoomPreviewWithData:(RoomPreviewData*)roomPreviewData
+{
+//    // Do not stack views when showing room
+//    ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:NO stackAboveVisibleViews:NO sender:nil sourceView:nil];
+//
+//    RoomPreviewNavigationParameters *parameters = [[RoomPreviewNavigationParameters alloc] initWithPreviewData:roomPreviewData presentationParameters:presentationParameters];
+//
+//    [[AppDelegate theDelegate] showRoomPreviewWithParameters:parameters];
+}
 
 // Disable UI interactions in this screen while we are going to open another screen.
 // Interactions on reset on viewWillAppear.
@@ -1483,7 +1524,13 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 
 - (BOOL)shouldShowEmptyView
 {
-    return NO;
+    // Do not present empty screen while searching
+//    if (self.recentsDataSource.searchPatternsList.count)
+//    {
+//        return NO;
+//    }
+    
+    return NO;//self.recentsDataSource.totalVisibleItemCount == 0; Disabled in Tchap
 }
 
 #pragma mark - RoomsDirectoryCoordinatorBridgePresenterDelegate
@@ -1572,6 +1619,28 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 {
     [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
     self.roomNotificationSettingsCoordinatorBridgePresenter = nil;
+}
+
+#pragma mark - Activity Indicator
+
+- (BOOL)providesCustomActivityIndicator {
+    return NO;//self.activityPresenter != nil;
+}
+
+- (void)startActivityIndicator {
+//    if (self.activityPresenter) {
+//        [self.activityPresenter presentActivityIndicator];
+//    } else {
+        [super startActivityIndicator];
+//    }
+}
+
+- (void)stopActivityIndicator {
+//    if (self.activityPresenter) {
+//        [self.activityPresenter removeCurrentActivityIndicatorWithAnimated:YES completion:nil];
+//    } else {
+        [super stopActivityIndicator];
+//    }
 }
 
 @end

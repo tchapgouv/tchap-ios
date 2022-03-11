@@ -76,7 +76,7 @@ final class RoomTitleViewModelBuilder: NSObject {
             avatarImageShape = .circle
             avatarBorderColor = nil
             avatarBorderWidth = nil
-            avatarMarker = Asset.SharedImages_tchap.privateAvatarIcon.image
+            avatarMarker = Asset_tchap.SharedImages.privateAvatarIcon.image
         } else if case .serverNotice = roomCategory {
             title = displayName
             subtitle = nil
@@ -94,27 +94,27 @@ final class RoomTitleViewModelBuilder: NSObject {
             // Customize the avatar border and the room subtitle
             switch roomCategory {
             case .restrictedPrivateRoom:
-                roomTypeImage = Asset.Images_tchap.roomTypePrivate.image.withRenderingMode(.alwaysTemplate)
+                roomTypeImage = Asset_tchap.Images.roomTypePrivate.image.withRenderingMode(.alwaysTemplate)
                 roomTypeImageTintColor = ThemeService.shared().theme.roomTypeRestricted
                 avatarBorderColor = ThemeService.shared().theme.borderMain
                 avatarBorderWidth = Constants.hexagonImageBorderWidthDefault
-                avatarMarker = Asset.SharedImages_tchap.privateAvatarIcon.image
+                avatarMarker = Asset_tchap.SharedImages.privateAvatarIcon.image
                 subtitle = NSAttributedString(string: TchapL10n.roomTitlePrivateRoom,
                                               attributes: [.foregroundColor: ThemeService.shared().theme.roomTypeRestricted])
             case .unrestrictedPrivateRoom:
-                roomTypeImage = Asset.Images_tchap.roomTypePrivate.image.withRenderingMode(.alwaysTemplate)
+                roomTypeImage = Asset_tchap.Images.roomTypePrivate.image.withRenderingMode(.alwaysTemplate)
                 roomTypeImageTintColor = ThemeService.shared().theme.roomTypeUnrestricted
                 avatarBorderColor = ThemeService.shared().theme.borderSecondary
                 avatarBorderWidth = Constants.hexagonImageBorderWidthUnrestricted
-                avatarMarker = Asset.SharedImages_tchap.privateAvatarIcon.image
+                avatarMarker = Asset_tchap.SharedImages.privateAvatarIcon.image
                 subtitle = NSAttributedString(string: TchapL10n.roomTitleExternRoom,
                                               attributes: [.foregroundColor: ThemeService.shared().theme.roomTypeUnrestricted])
             case .forum:
-                roomTypeImage = Asset.Images_tchap.roomTypeForum.image.withRenderingMode(.alwaysTemplate)
+                roomTypeImage = Asset_tchap.Images.roomTypeForum.image.withRenderingMode(.alwaysTemplate)
                 roomTypeImageTintColor = ThemeService.shared().theme.roomTypePublic
                 avatarBorderColor = ThemeService.shared().theme.borderMain
                 avatarBorderWidth = Constants.hexagonImageBorderWidthDefault
-                avatarMarker = Asset.SharedImages_tchap.forumAvatarIcon.image
+                avatarMarker = Asset_tchap.SharedImages.forumAvatarIcon.image
                 subtitle = NSAttributedString(string: TchapL10n.roomTitleForumRoom,
                                               attributes: [.foregroundColor: ThemeService.shared().theme.roomTypePublic])
             default:
@@ -168,7 +168,7 @@ final class RoomTitleViewModelBuilder: NSObject {
         if roomPreviewData.wasInitializedWithPublicRoom {
             // The public rooms (forums) are restricted (external users can not join them)
             avatarBorderColor = ThemeService.shared().theme.borderMain
-            marker = Asset.SharedImages_tchap.forumAvatarIcon.image
+            marker = Asset_tchap.SharedImages.forumAvatarIcon.image
         } else {
             // We don't have information to customize the room avatar
             avatarBorderColor = UIColor.clear
@@ -218,7 +218,7 @@ final class RoomTitleViewModelBuilder: NSObject {
                                                         shape: avatarImageShape,
                                                         borderColor: nil,
                                                         borderWidth: nil,
-                                                        marker: Asset.SharedImages_tchap.privateAvatarIcon.image)
+                                                        marker: Asset_tchap.SharedImages.privateAvatarIcon.image)
         
         return RoomTitleViewModel(title: title,
                                   roomTypeImage: nil,

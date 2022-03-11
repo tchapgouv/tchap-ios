@@ -24,6 +24,13 @@ enum InviteServiceResult {
     case inviteIgnoredForUnauthorizedEmail
 }
 
+
+/// List the different discover user result cases
+enum InviteServiceDiscoverUserResult {
+    case bound(userID: String)
+    case unbound
+}
+
 /// Protocol describing a service used to invite someone to join Tchap.
 protocol InviteServiceType {
     

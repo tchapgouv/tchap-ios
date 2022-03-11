@@ -95,7 +95,7 @@
         forceDirectContactsRefresh = YES;
         
         discoveredTchapContacts = [NSMutableDictionary dictionary];
-        thirdPartyIDResolver = [[ThirdPartyIDResolver alloc] initWithCredentials:mxSession.matrixRestClient.credentials];
+        thirdPartyIDResolver = [[ThirdPartyIDResolver alloc] initWithSession:mxSession];
         
         _userService = [[UserService alloc] initWithSession:self.mxSession];
         

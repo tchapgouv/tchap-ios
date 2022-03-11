@@ -1379,7 +1379,7 @@
 "less" = "Moins";
 "more" = "Plus";
 "switch" = "Basculer";
-"joined" = "Rejoint";
+"joined" = "A rejoint";
 "store_promotional_text" = "Application de messagerie et collaboration respectueuse de la vie privée, sur un réseau ouvert. Décentralisée pour vous donner le contrôle. Pas d’extraction de vos données, pas de porte dérobée, pas d’accès réservé à des tiers.";
 "room_details_search" = "Rechercher dans le salon";
 "room_details_integrations" = "Intégrations";
@@ -1657,6 +1657,45 @@
 // Onboarding
 "onboarding_splash_register_button_title" = "Créer un compte";
 "ok" = "Ok";
+"poll_edit_form_poll_type_closed_description" = "Les résultats ne sont dévoilés que lorsque vous terminez le sondage";
+"poll_edit_form_poll_type_closed" = "Sondage fermé";
+"poll_edit_form_poll_type_open_description" = "Les votants voient les résultats dès qu'ils ont voté";
+"poll_edit_form_poll_type_open" = "Ouvrir le sondage";
+"poll_edit_form_update_failure_subtitle" = "Veuillez réessayer";
+"poll_edit_form_update_failure_title" = "Échec lors de la mise à jour du sondage";
+"poll_edit_form_poll_type" = "Type de sondage";
+"location_sharing_post_failure_subtitle" = "%# n’a pas pu envoyer votre localisation. Merci de réessayer plus tard.";
+"location_sharing_post_failure_title" = "Nous n’avons pas pu envoyer votre localisation";
+"home_context_menu_leave" = "Partir";
+"home_context_menu_unfavourite" = "Retirer des favoris";
+"home_context_menu_favourite" = "Mettre en favoris";
+"home_context_menu_unmute" = "Retirer la sourdine";
+"home_context_menu_mute" = "Mettre en sourdine";
+"home_context_menu_notifications" = "Notifications";
+"home_context_menu_make_room" = "Déplacer vers Salons";
+"home_context_menu_make_dm" = "Déplacer vers Personnes";
+"event_formatter_message_deleted" = "Message supprimé";
+"settings_labs_enable_threads" = "Fils de discussion";
+"message_from_a_thread" = "Depuis un fil de discussion";
+"threads_empty_show_all_threads" = "Afficher tous les fils de discussion";
+"threads_empty_tip" = "Astuce : appuyez sur un message puis sur « Fil » pour en commencer un nouveau.";
+"threads_empty_info_my" = "Répondez à un fil de discussion actif, ou appuyez sur un message et utilisez « Fil » pour en commencer un nouveau.";
+"threads_empty_info_all" = "Les fils de discussion vous permettent de centrer vos conversations sur un sujet, et de les suivre facilement.";
+"threads_empty_title" = "Gardez vos conversations organisées avec les fils de discussion";
+"threads_action_my_threads" = "Mes fils";
+"threads_action_all_threads" = "Tous les fils";
+"threads_title" = "Fils";
+"thread_copy_link_to_thread" = "Copier le lien vers le fil";
+
+// MARK: Threads
+"room_thread_title" = "Fil";
+"room_accessibility_thread_more" = "Plus";
+"room_accessibility_threads" = "Fils";
+"room_event_copy_link_info" = "Lien copié dans le presse-papier.";
+"room_event_action_reply_in_thread" = "Fil";
+"room_event_action_view_in_room" = "Afficher dans le salon";
+"home_context_menu_normal_priority" = "Priorité normale";
+"home_context_menu_low_priority" = "Basse priorité";
 
 
 // Tchap: override some MatrixKit strings

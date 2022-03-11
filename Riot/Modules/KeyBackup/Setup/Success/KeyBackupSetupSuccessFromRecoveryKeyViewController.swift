@@ -90,7 +90,7 @@ final class KeyBackupSetupSuccessFromRecoveryKeyViewController: UIViewController
     
     private func setupViews() {
         
-        let keybackupLogoImage = Asset.Images_tchap.keyBackupLogo.image.withRenderingMode(.alwaysTemplate)
+        let keybackupLogoImage = Asset_tchap.Images.keyBackupLogo.image.withRenderingMode(.alwaysTemplate)
         self.keyBackupLogoImageView.image = keybackupLogoImage
         
         self.titleLabel.text = VectorL10n.keyBackupSetupSuccessTitle
@@ -143,7 +143,7 @@ final class KeyBackupSetupSuccessFromRecoveryKeyViewController: UIViewController
     private func shareRecoveryKey() {
         
         // Set up activity view controller
-        let activityItems: [Any] = [ self.recoveryKey ]
+        let activityItems: [Any] = [ self.recoveryKey as Any ]
         let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
         
         activityViewController.completionWithItemsHandler = { (activityType, completed, returnedItems, error) in

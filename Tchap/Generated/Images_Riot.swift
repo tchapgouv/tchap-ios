@@ -18,8 +18,10 @@ internal typealias AssetImageTypeAlias = ImageAsset.Image
 // MARK: - Asset Catalogs
 
 // swiftlint:disable identifier_name line_length nesting type_body_length type_name
-internal enum Asset {
-  internal enum Images {
+@objcMembers
+internal class Asset: NSObject {
+  @objcMembers
+  @objc(AssetImages) internal class Images: NSObject {
     internal static let analyticsCheckmark = ImageAsset(name: "AnalyticsCheckmark")
     internal static let analyticsLogo = ImageAsset(name: "AnalyticsLogo")
     internal static let socialLoginButtonApple = ImageAsset(name: "social_login_button_apple")
@@ -60,6 +62,8 @@ internal enum Asset {
     internal static let disclosureIcon = ImageAsset(name: "disclosure_icon")
     internal static let errorIcon = ImageAsset(name: "error_icon")
     internal static let faceidIcon = ImageAsset(name: "faceid_icon")
+    internal static let filterOff = ImageAsset(name: "filter_off")
+    internal static let filterOn = ImageAsset(name: "filter_on")
     internal static let group = ImageAsset(name: "group")
     internal static let informationButton = ImageAsset(name: "information_button")
     internal static let monitor = ImageAsset(name: "monitor")
@@ -78,6 +82,7 @@ internal enum Asset {
     internal static let removeIconBlue = ImageAsset(name: "remove_icon_blue")
     internal static let findYourContactsFacepile = ImageAsset(name: "find_your_contacts_facepile")
     internal static let captureAvatar = ImageAsset(name: "capture_avatar")
+    internal static let deleteAvatar = ImageAsset(name: "delete_avatar")
     internal static let e2eBlocked = ImageAsset(name: "e2e_blocked")
     internal static let e2eUnencrypted = ImageAsset(name: "e2e_unencrypted")
     internal static let e2eWarning = ImageAsset(name: "e2e_warning")
@@ -104,6 +109,21 @@ internal enum Asset {
     internal static let cameraStop = ImageAsset(name: "camera_stop")
     internal static let cameraVideoCapture = ImageAsset(name: "camera_video_capture")
     internal static let videoIcon = ImageAsset(name: "video_icon")
+    internal static let onboardingSplashScreenPage1 = ImageAsset(name: "OnboardingSplashScreenPage1")
+    internal static let onboardingSplashScreenPage1Dark = ImageAsset(name: "OnboardingSplashScreenPage1Dark")
+    internal static let onboardingSplashScreenPage2 = ImageAsset(name: "OnboardingSplashScreenPage2")
+    internal static let onboardingSplashScreenPage2Dark = ImageAsset(name: "OnboardingSplashScreenPage2Dark")
+    internal static let onboardingSplashScreenPage3 = ImageAsset(name: "OnboardingSplashScreenPage3")
+    internal static let onboardingSplashScreenPage3Dark = ImageAsset(name: "OnboardingSplashScreenPage3Dark")
+    internal static let onboardingSplashScreenPage4 = ImageAsset(name: "OnboardingSplashScreenPage4")
+    internal static let onboardingSplashScreenPage4Dark = ImageAsset(name: "OnboardingSplashScreenPage4Dark")
+    internal static let onboardingUseCaseCommunity = ImageAsset(name: "onboarding_use_case_community")
+    internal static let onboardingUseCaseCommunityDark = ImageAsset(name: "onboarding_use_case_community_dark")
+    internal static let onboardingUseCaseIcon = ImageAsset(name: "onboarding_use_case_icon")
+    internal static let onboardingUseCasePersonal = ImageAsset(name: "onboarding_use_case_personal")
+    internal static let onboardingUseCasePersonalDark = ImageAsset(name: "onboarding_use_case_personal_dark")
+    internal static let onboardingUseCaseWork = ImageAsset(name: "onboarding_use_case_work")
+    internal static let onboardingUseCaseWorkDark = ImageAsset(name: "onboarding_use_case_work_dark")
     internal static let peopleEmptyScreenArtwork = ImageAsset(name: "people_empty_screen_artwork")
     internal static let peopleEmptyScreenArtworkDark = ImageAsset(name: "people_empty_screen_artwork_dark")
     internal static let peopleFloatingAction = ImageAsset(name: "people_floating_action")
@@ -130,6 +150,7 @@ internal enum Asset {
     internal static let roomContextMenuRedact = ImageAsset(name: "room_context_menu_redact")
     internal static let roomContextMenuReply = ImageAsset(name: "room_context_menu_reply")
     internal static let roomContextMenuRetry = ImageAsset(name: "room_context_menu_retry")
+    internal static let roomContextMenuThread = ImageAsset(name: "room_context_menu_thread")
     internal static let inputCloseIcon = ImageAsset(name: "input_close_icon")
     internal static let inputEditIcon = ImageAsset(name: "input_edit_icon")
     internal static let inputReplyIcon = ImageAsset(name: "input_reply_icon")
@@ -152,6 +173,9 @@ internal enum Asset {
     internal static let pollTypeCheckboxDefault = ImageAsset(name: "poll_type_checkbox_default")
     internal static let pollTypeCheckboxSelected = ImageAsset(name: "poll_type_checkbox_selected")
     internal static let pollWinnerIcon = ImageAsset(name: "poll_winner_icon")
+    internal static let threadsFilter = ImageAsset(name: "threads_filter")
+    internal static let threadsFilterApplied = ImageAsset(name: "threads_filter_applied")
+    internal static let threadsIcon = ImageAsset(name: "threads_icon")
     internal static let voiceMessageCancelGradient = ImageAsset(name: "voice_message_cancel_gradient")
     internal static let voiceMessageLockChevron = ImageAsset(name: "voice_message_lock_chevron")
     internal static let voiceMessageLockIconLocked = ImageAsset(name: "voice_message_lock_icon_locked")
@@ -166,7 +190,9 @@ internal enum Asset {
     internal static let addParticipants = ImageAsset(name: "add_participants")
     internal static let detailsIcon = ImageAsset(name: "details_icon")
     internal static let editIcon = ImageAsset(name: "edit_icon")
+    internal static let fileAttachment = ImageAsset(name: "file_attachment")
     internal static let integrationsIcon = ImageAsset(name: "integrations_icon")
+    internal static let linkIcon = ImageAsset(name: "link_icon")
     internal static let mainAliasIcon = ImageAsset(name: "main_alias_icon")
     internal static let membersListIcon = ImageAsset(name: "members_list_icon")
     internal static let modIcon = ImageAsset(name: "mod_icon")
@@ -176,7 +202,6 @@ internal enum Asset {
     internal static let roomsEmptyScreenArtworkDark = ImageAsset(name: "rooms_empty_screen_artwork_dark")
     internal static let roomsFloatingAction = ImageAsset(name: "rooms_floating_action")
     internal static let userIcon = ImageAsset(name: "user_icon")
-    internal static let searchBg = ImageAsset(name: "search_bg")
     internal static let searchIcon = ImageAsset(name: "search_icon")
     internal static let secretsRecoveryKey = ImageAsset(name: "secrets_recovery_key")
     internal static let secretsRecoveryPassphrase = ImageAsset(name: "secrets_recovery_passphrase")
@@ -200,7 +225,8 @@ internal enum Asset {
     internal static let tabRooms = ImageAsset(name: "tab_rooms")
     internal static let launchScreenLogo = ImageAsset(name: "launch_screen_logo")
   }
-  internal enum SharedImages {
+  @objcMembers
+  @objc(AssetSharedImages) internal class SharedImages: NSObject {
     internal static let cancel = ImageAsset(name: "cancel")
     internal static let e2eVerified = ImageAsset(name: "e2e_verified")
     internal static let tchapLogo = ImageAsset(name: "TchapLogo")
@@ -213,7 +239,8 @@ internal enum Asset {
 
 // MARK: - Implementation Details
 
-internal struct ImageAsset {
+@objcMembers
+internal class ImageAsset: NSObject {
   internal fileprivate(set) var name: String
 
   #if os(macOS)
@@ -237,6 +264,10 @@ internal struct ImageAsset {
       fatalError("Unable to load image asset named \(name).")
     }
     return result
+  }
+
+  internal init(name: String) {
+    self.name = name
   }
 
   #if os(iOS) || os(tvOS)
@@ -278,3 +309,4 @@ private final class BundleToken {
   }()
 }
 // swiftlint:enable convenience_type
+

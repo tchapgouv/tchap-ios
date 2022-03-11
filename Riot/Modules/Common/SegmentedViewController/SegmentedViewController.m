@@ -167,6 +167,8 @@
     // Adjust Top
     [NSLayoutConstraint deactivateConstraints:@[self.selectionContainerTopConstraint]];
     
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wdeprecated"
     // it is not possible to define a constraint to the topLayoutGuide in the xib editor
     // so do it in the code ..
     self.selectionContainerTopConstraint = [NSLayoutConstraint constraintWithItem:self.topLayoutGuide
@@ -176,6 +178,7 @@
                                                                   attribute:NSLayoutAttributeTop
                                                                  multiplier:1.0f
                                                                    constant:0.0f];
+    #pragma clang diagnostic pop
     
     [NSLayoutConstraint activateConstraints:@[self.selectionContainerTopConstraint]];
     

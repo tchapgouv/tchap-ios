@@ -43,8 +43,7 @@ final class UserService: NSObject, UserServiceType {
     // MARK: - Setup
     
     init(session: MXSession) {
-        guard let homeServer = session.matrixRestClient.credentials.homeServer,
-            let accessToken = session.matrixRestClient.credentials.accessToken else {
+        guard let homeServer = session.matrixRestClient.credentials.homeServer else {
             fatalError("credentials should be defined")
         }
         self.session = session
@@ -53,9 +52,19 @@ final class UserService: NSObject, UserServiceType {
         self.thirdPartyIDPlatformInfoResolver = ThirdPartyIDPlatformInfoResolver(identityServerUrls: identityServerURLs, serverPrefixURL: serverUrlPrefix)
         
         /// The current HttpClient
-        self.httpClient = MXHTTPClient(baseURL: "\(homeServer)/\(kMXAPIPrefixPathUnstable)", accessToken: accessToken, andOnUnrecognizedCertificateBlock: nil)
+        self.httpClient = MXHTTPClient(baseURL: "\(homeServer)/\(kMXAPIPrefixPathUnstable)", authenticated: true, andOnUnrecognizedCertificateBlock: nil)
         
         super.init()
+        
+        self.httpClient.tokenProviderHandler = { [weak self] (error, success, failure) in
+            // swiftlint:disable force_unwrapping
+            guard let accessToken = self?.session.matrixRestClient.credentials.accessToken else {
+                failure!(error)
+                return
+            }
+            success!(accessToken)
+            // swiftlint:enable force_unwrapping
+        }
     }
     
     // MARK: - Public

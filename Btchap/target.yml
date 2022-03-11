@@ -34,6 +34,7 @@ targets:
     - target: RiotShareExtension
     - target: RiotNSE
     - target: DesignKit
+    - target: CommonKit
 
     configFiles:
       Debug: SupportingFiles/Btchap-App-Debug.xcconfig
@@ -92,6 +93,7 @@ targets:
         - "Managers/UniversalLink"
         - "**/*.strings" # Exclude all strings files
         - "**/*.cer"
+    - path: ../Tchap/Generated/Images_Riot.swift
     - path: ../Tchap/Modules/Room/Views/BubbleCells/Antivirus
 
     # Add separately localizable files
@@ -112,6 +114,7 @@ targets:
     - path: ../Riot/Generated/Vector_Strings.swift
     - path: ../Riot/Managers/AppInfo
     - path: ../Riot/Managers/BugReport
+    - path: ../Riot/Managers/Call/AsyncOperation.swift
     - path: ../Riot/Managers/EncryptionKeyManager/EncryptionKeyManager.swift
     - path: ../Riot/Managers/KeyValueStorage
     - path: ../Riot/Managers/Locale
@@ -123,6 +126,7 @@ targets:
     - path: ../Riot/Managers/Settings/Shared
     - path: ../Riot/Managers/Theme
     - path: ../Riot/Managers/URLPreviews
+    - path: ../Riot/Managers/UserSessions
     - path: ../Riot/Managers/Widgets
     - path: ../Riot/Model/Contact
     - path: ../Riot/Model/HomeserverConfiguration
@@ -166,6 +170,7 @@ targets:
     - path: ../Riot/Modules/Common/SectionHeaders
     - path: ../Riot/Modules/Common/SegmentedViewController/SegmentedViewController.h
     - path: ../Riot/Modules/Common/SegmentedViewController/SegmentedViewController.m
+    - path: ../Riot/Modules/Common/Toasts
     - path: ../Riot/Modules/Common/Views
     - path: ../Riot/Modules/Common/WebViewController
     - path: ../Riot/Modules/Contacts/Details/Views
@@ -190,11 +195,17 @@ targets:
     - path: ../Riot/Modules/Reauthentication
     - path: ../Riot/Modules/Room
       excludes:
+        - "DataSources/ThreadDataSource.swift"
         - "Location"
+        - "TimelineCells/Styles/Plain/Cells/Location"
+        - "TimelineCells/Styles/Plain/Cells/Poll"
+        - "TimelineCells/Styles/Bubble/Cells/Location"
+        - "TimelineCells/Styles/Bubble/Cells/Poll"
+        - "TimelineDecorations/Threads"
         - "Views/BubbleCells/KeyVerification/SizingViewHeight.swift"
         - "Views/BubbleCells/Location"
-        - "Views/BubbleCells/Poll/"
-    - path: ../Riot/Modules/Room/BubbleReactions
+        - "Views/BubbleCells/Poll"
+        - "Views/Title/Thread"
     - path: ../Riot/Modules/RoomKeyRequest/RoomKeyRequestViewController.h
     - path: ../Riot/Modules/RoomKeyRequest/RoomKeyRequestViewController.m
     - path: ../Riot/Modules/Secrets

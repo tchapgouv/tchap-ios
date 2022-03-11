@@ -59,7 +59,7 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
         self.navigationRouter = NavigationRouter(navigationController: RiotNavigationController())
         self.session = session
         self.inviteService = InviteService(session: self.session)
-        self.thirdPartyIDResolver = ThirdPartyIDResolver(credentials: session.matrixRestClient.credentials)
+        self.thirdPartyIDResolver = ThirdPartyIDResolver(session: session)
         self.identityServer = session.matrixRestClient.identityServer ?? session.matrixRestClient.homeserver
         self.activityIndicatorPresenter = ActivityIndicatorPresenter()
     }
@@ -189,7 +189,10 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
                     return
                 }
                 
-                _ = self.thirdPartyIDResolver.bulkLookup(threepids: threepids, identityServer: self.identityServer, success: success, failure: failure)
+                _ = self.thirdPartyIDResolver.bulkLookup(threepids: threepids,
+                                                         identityServer: self.identityServer,
+                                                         success: success,
+                                                         failure: failure)
             }
         } else {
             // Remove the block provided to the contactManager to discover users
@@ -432,6 +435,10 @@ extension HomeCoordinator: RoomCoordinatorDelegate {
             return false
         }
         return delegate.homeCoordinator(self, handlePermalinkFragment: fragment)
+    }
+    
+    func roomCoordinator(_ coordinator: RoomCoordinatorProtocol, didSelectRoomWithId roomId: String, eventId: String?) {
+        //
     }
 }
 

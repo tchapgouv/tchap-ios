@@ -120,10 +120,11 @@ final class RoomAccessByLinkViewModel: RoomAccessByLinkViewModelType {
                 return
             }
             
-            if let timeline = eventTimeline {
+            if let timeline = eventTimeline,
+                let state = timeline.state {
                 self.liveTimeline = timeline
                 self.addRoomStateListener()
-                self.updateRoomState(timeline.state)
+                self.updateRoomState(state)
             } else {
                 MXLog.debug("[RoomAccessByLinkViewModel] loadRoomLiveTimeline: unknown error")
                 self.update(viewState: .error(RoomAccessByLinkViewModelError.unknown))
@@ -295,24 +296,26 @@ final class RoomAccessByLinkViewModel: RoomAccessByLinkViewModelType {
     }
     
     private func addRoomStateListener() {
-        guard let timeline = self.liveTimeline else {
-            MXLog.debug("[RoomAccessByLinkViewModel] addRoomStateListener: no timeline")
-            return
-        }
+        guard let timeline = self.liveTimeline,
+              let state = timeline.state else {
+                  MXLog.debug("[RoomAccessByLinkViewModel] addRoomStateListener: no timeline")
+                  return
+              }
         self.roomStateListener = timeline.listenToEvents([.roomCanonicalAlias, .roomJoinRules], { (event, direction, roomState) in
             // Consider only live events
             if direction == .forwards {
-                self.updateRoomState(timeline.state)
+                self.updateRoomState(state)
             }
         })
     }
     
     private func removeRoomStateListener() {
-        guard let timeline = self.liveTimeline, let roomStateListener = self.roomStateListener else {
-            MXLog.debug("[RoomAccessByLinkViewModel] removeRoomListener: nothing to do")
-            return
-        }
-        timeline.removeListener(roomStateListener)
+        guard let timeline = self.liveTimeline,
+              let roomStateListener = self.roomStateListener as? MXEventListener else {
+                  MXLog.debug("[RoomAccessByLinkViewModel] removeRoomListener: nothing to do")
+                  return
+              }
+        timeline.remove(roomStateListener)
         self.roomStateListener = nil
     }
 }

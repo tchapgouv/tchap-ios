@@ -30,7 +30,7 @@ final class PasswordPolicyService: PasswordPolicyServiceType {
     
     // MARK: - Public
     init(homeServer: String) {
-        self.httpClient = MXHTTPClient(baseURL: "\(homeServer)/\(kMXAPIPrefixPathUnstable)", accessToken: nil, andOnUnrecognizedCertificateBlock: nil)
+        self.httpClient = MXHTTPClient(baseURL: "\(homeServer)/\(kMXAPIPrefixPathUnstable)", andOnUnrecognizedCertificateBlock: nil)
     }
     
     func verifyPassword(_ passwword: String, completion: @escaping (MXResponse<PasswordPolicyVerificationResult>) -> Void) -> MXHTTPOperation? {

@@ -261,7 +261,7 @@ final class RoomCreationViewController: UIViewController {
     private func enablePrivateRoom() {
         self.privateRoomView.layer.borderWidth = Constants.borderWidth
         self.privateRoomView.layer.borderColor = ThemeService.shared().theme.roomTypeRestricted.withAlphaComponent(Constants.borderColorAlpha).cgColor
-        self.roomTypeImage.image = Asset.Images_tchap.privateAvatarIconHr.image
+        self.roomTypeImage.image = Asset_tchap.Images.privateAvatarIconHr.image
     }
     
     private func disablePrivateRoom() {
@@ -271,7 +271,7 @@ final class RoomCreationViewController: UIViewController {
     private func enableExternRoom() {
         self.externRoomView.layer.borderWidth = Constants.borderWidth
         self.externRoomView.layer.borderColor = ThemeService.shared().theme.roomTypeUnrestricted.withAlphaComponent(Constants.borderColorAlpha).cgColor
-        self.roomTypeImage.image = Asset.Images_tchap.privateAvatarIconHr.image
+        self.roomTypeImage.image = Asset_tchap.Images.privateAvatarIconHr.image
     }
     
     private func disableExternRoom() {
@@ -281,7 +281,7 @@ final class RoomCreationViewController: UIViewController {
     private func enableForumRoom(_ isFederated: Bool) {
         self.forumRoomView.layer.borderWidth = Constants.borderWidth
         self.forumRoomView.layer.borderColor = ThemeService.shared().theme.roomTypePublic.withAlphaComponent(Constants.borderColorAlpha).cgColor
-        self.roomTypeImage.image = Asset.Images_tchap.forumAvatarIconHr.image
+        self.roomTypeImage.image = Asset_tchap.Images.forumAvatarIconHr.image
         
         self.publicVisibilityInfoLabel.isHidden = false
         self.publicRoomFederationStackView.isHidden = self.viewModel.homeServerDomain == self.agentServerDomain

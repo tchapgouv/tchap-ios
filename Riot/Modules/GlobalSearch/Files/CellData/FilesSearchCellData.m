@@ -132,19 +132,19 @@
     
     if ([msgtype isEqualToString:kMXMessageTypeImage])
     {
-        return [UIImage imageNamed:@"file_photo_icon"];
+        return AssetImages_tchap.filePhotoIcon.image;
     }
     else if ([msgtype isEqualToString:kMXMessageTypeAudio])
     {
-        return [UIImage imageNamed:@"file_music_icon"];
+        return AssetImages_tchap.fileMusicIcon.image;
     }
     else if ([msgtype isEqualToString:kMXMessageTypeVideo])
     {
-       return [UIImage imageNamed:@"file_video_icon"];
+        return AssetImages_tchap.fileVideoIcon.image;
     }
     else if ([msgtype isEqualToString:kMXMessageTypeFile])
     {
-        return [UIImage imageNamed:@"file_doc_icon"];
+        return AssetImages_tchap.fileDocIcon.image;
     }
     
     return nil;
