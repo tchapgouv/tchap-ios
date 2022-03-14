@@ -1,3 +1,9 @@
+Changes in Tchap 1.2.3 (2022-03-14)
+===================================================
+
+Bug Fix:
+ * Files sent by Tchap Android 2 can't be read by Tchap iOS 1.2.2 #480 
+
 Changes in Tchap 1.2.2 (2021-08-25)
 ===================================================
 
