@@ -18,28 +18,28 @@ PODS:
   - BlueECC (1.2.5)
   - BlueRSA (1.0.34)
   - DGCollectionViewLeftAlignFlowLayout (1.0.4)
-  - Down (0.9.4)
-  - DTCoreText (1.6.25):
-    - DTCoreText/Core (= 1.6.25)
+  - Down (0.9.5)
+  - DTCoreText (1.6.26):
+    - DTCoreText/Core (= 1.6.26)
     - DTFoundation/Core (~> 1.7.5)
     - DTFoundation/DTAnimatedGIF (~> 1.7.5)
     - DTFoundation/DTHTMLParser (~> 1.7.5)
     - DTFoundation/UIKit (~> 1.7.5)
-  - DTCoreText/Core (1.6.25):
+  - DTCoreText/Core (1.6.26):
     - DTFoundation/Core (~> 1.7.5)
     - DTFoundation/DTAnimatedGIF (~> 1.7.5)
     - DTFoundation/DTHTMLParser (~> 1.7.5)
     - DTFoundation/UIKit (~> 1.7.5)
-  - DTCoreText/Extension (1.6.25):
+  - DTCoreText/Extension (1.6.26):
     - DTFoundation/Core (~> 1.7.5)
     - DTFoundation/DTAnimatedGIF (~> 1.7.5)
     - DTFoundation/DTHTMLParser (~> 1.7.5)
     - DTFoundation/UIKit (~> 1.7.5)
-  - DTFoundation/Core (1.7.16)
-  - DTFoundation/DTAnimatedGIF (1.7.16)
-  - DTFoundation/DTHTMLParser (1.7.16):
+  - DTFoundation/Core (1.7.18)
+  - DTFoundation/DTAnimatedGIF (1.7.18)
+  - DTFoundation/DTHTMLParser (1.7.18):
     - DTFoundation/Core
-  - DTFoundation/UIKit (1.7.16):
+  - DTFoundation/UIKit (1.7.18):
     - DTFoundation/Core
   - GBDeviceInfo (6.4.0):
     - GBDeviceInfo/Core (= 6.4.0)
@@ -127,8 +127,8 @@ DEPENDENCIES:
   - KeychainAccess (~> 4.2.1)
   - KTCenterFlowLayout (~> 1.3.1)
   - MatomoTracker (~> 7.2.2)
-  - MatrixKit (from `https://github.com/matrix-org/matrix-ios-kit.git`, branch `develop`)
-  - MatrixKit/AppExtension (from `https://github.com/matrix-org/matrix-ios-kit.git`, branch `develop`)
+  - MatrixKit (from `https://github.com/matrix-org/matrix-ios-kit.git`, branch `dinum_prod`)
+  - MatrixKit/AppExtension (from `https://github.com/matrix-org/matrix-ios-kit.git`, branch `dinum_prod`)
   - MatrixSDK (from `https://github.com/matrix-org/matrix-ios-sdk.git`, branch `dinum`)
   - MatrixSDK/JingleCallStack (from `https://github.com/matrix-org/matrix-ios-sdk.git`, branch `dinum`)
   - MatrixSDK/SwiftSupport (from `https://github.com/matrix-org/matrix-ios-sdk.git`, branch `dinum`)
@@ -177,7 +177,7 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   MatrixKit:
-    :branch: develop
+    :branch: dinum_prod
     :git: https://github.com/matrix-org/matrix-ios-kit.git
   MatrixSDK:
     :branch: dinum
@@ -185,10 +185,10 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   MatrixKit:
-    :commit: 98839c1b1184931ff59d97a99aaff32068e53d7f
+    :commit: 0fa09ff9da48c7564fd6e9a60f8761c9a17b17aa
     :git: https://github.com/matrix-org/matrix-ios-kit.git
   MatrixSDK:
-    :commit: a4b2a8718105c1674254da80ed8172facc0de0da
+    :commit: ff4e9e58ac2855edebc0d798dfe28fd1776b6f9f
     :git: https://github.com/matrix-org/matrix-ios-sdk.git
 
 SPEC CHECKSUMS:
@@ -197,9 +197,9 @@ SPEC CHECKSUMS:
   BlueECC: 0d18e93347d3ec6d41416de21c1ffa4d4cd3c2cc
   BlueRSA: 6f9776d62d9773502415a7db3bcbb2bbb3f71fc3
   DGCollectionViewLeftAlignFlowLayout: a0fa58797373ded039cafba8133e79373d048399
-  Down: 276f2c3eeeaf30345873bdad25f44b2640fcfa3a
-  DTCoreText: e92f4cf6b36d9d71ce4436d12cf089d74ab0596b
-  DTFoundation: e7781d9fd2f202bfd451fbbf8cab71ce83b46498
+  Down: 7321a72d0747ed0061dce948bcff518fcb6df2bd
+  DTCoreText: ec749e013f2e1f76de5e7c7634642e600a7467ce
+  DTFoundation: a53f8cda2489208cbc71c648be177f902ee17536
   GBDeviceInfo: f29249891446a392e64b9c9bbef9554aad2a6beb
   GZIP: 416858efbe66b41b206895ac6dfd5493200d95b3
   HPGrowingTextView: 88a716d97fb853bcb08a4a08e4727da17efc9b19
@@ -225,6 +225,6 @@ SPEC CHECKSUMS:
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: 48a4a7bf0569fc429c871513d07357cf1be2f6ee
+PODFILE CHECKSUM: 01c78516cc4667377c6c043997db0117890687f6
 
-COCOAPODS: 1.10.0
+COCOAPODS: 1.11.2
