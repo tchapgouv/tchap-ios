@@ -40,9 +40,9 @@ final class ThirdPartyIDResolver: NSObject, ThirdPartyIDResolverType {
         guard let identityServerURL = URL(string: identityServer) else {
             return nil
         }
-        
+        let accessToken = session.credentials.accessToken
         let identityService = MXIdentityService(identityServer: identityServerURL,
-                                                accessToken: nil,
+                                                accessToken: accessToken,
                                                 homeserverRestClient: self.session.matrixRestClient)
         let pids: [MX3PID]? = threepids.compactMap { tempPid in
             return MX3PID.threePidFromArray(tempPid)
