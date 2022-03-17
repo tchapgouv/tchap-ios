@@ -30,10 +30,11 @@ protocol ThirdPartyIDResolverType {
     ///
     /// - Parameters:
     /// - threepids: the list of 3rd party ids
-    /// - identityServer: the url of the identity server to proxy the request to if the homeserver is allowed to do so
     /// - success: A block object called when the operation succeeded.
     /// - failure: A block object called when the operation failed.
     ///
     /// - returns: a `MXHTTPOperation` instance.
-    func bulkLookup(threepids: [[String]], identityServer: String, success: @escaping (([[String]]) -> Void), failure: @escaping ((Error) -> Void)) -> MXHTTPOperation?
+    func bulkLookup(threepids: [[String]],
+                    success: @escaping (([[String]]) -> Void),
+                    failure: @escaping ((Error) -> Void)) -> MXHTTPOperation?
 }

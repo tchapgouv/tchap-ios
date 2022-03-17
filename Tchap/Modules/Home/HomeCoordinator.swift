@@ -190,7 +190,6 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
                 }
                 
                 _ = self.thirdPartyIDResolver.bulkLookup(threepids: threepids,
-                                                         identityServer: self.identityServer,
                                                          success: success,
                                                          failure: failure)
             }
