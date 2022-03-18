@@ -110,12 +110,12 @@ final class InviteService: InviteServiceType {
     
     // Check whether a Tchap account has been created for this email. The closure returns a nil identifier when no account exists.
     private func discoverUser(with email: String, completion: @escaping (MXResponse<InviteServiceDiscoverUserResult>) -> Void) {
-        let pid = MX3PID(medium: .email, address: email)
         guard let identityService = self.session.identityService else {
             MXLog.debug("[InviteService] discoverUser failed")
             completion(MXResponse.failure(InviteServiceError.unknown))
             return
         }
+        let pid = MX3PID(medium: .email, address: email)
         _ = identityService.lookup3PIDs([pid]) { response in
             if let responseValue = response.value?[pid] {
                 completion(MXResponse.success(.bound(userID: responseValue)))
