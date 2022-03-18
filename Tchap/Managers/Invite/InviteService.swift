@@ -28,7 +28,6 @@ final class InviteService: InviteServiceType {
     private let session: MXSession
     
     private let discussionFinder: DiscussionFinderType
-    private let identityService: MXIdentityService
     private let userService: UserServiceType
     private let roomService: RoomServiceType
     
@@ -40,14 +39,6 @@ final class InviteService: InviteServiceType {
         self.discussionFinder = DiscussionFinder(session: session)
         self.userService = UserService(session: session)
         self.roomService = RoomService(session: session)
-        
-        let server = session.matrixRestClient.identityServer ?? session.matrixRestClient.homeserver
-        // swiftlint:disable force_unwrapping
-        let identityServerURL = URL(string: server!)!
-        // swiftlint:enable force_unwrapping
-        self.identityService = MXIdentityService(identityServer: identityServerURL,
-                                                 accessToken: nil,
-                                                 homeserverRestClient: self.session.matrixRestClient)
     }
     
     func sendEmailInvite(to email: String, completion: @escaping (MXResponse<InviteServiceResult>) -> Void) {
@@ -119,13 +110,17 @@ final class InviteService: InviteServiceType {
     
     // Check whether a Tchap account has been created for this email. The closure returns a nil identifier when no account exists.
     private func discoverUser(with email: String, completion: @escaping (MXResponse<InviteServiceDiscoverUserResult>) -> Void) {
+        guard let identityService = self.session.identityService else {
+            MXLog.debug("[InviteService] discoverUser failed")
+            completion(MXResponse.failure(InviteServiceError.unknown))
+            return
+        }
         let pid = MX3PID(medium: .email, address: email)
-        _ = self.identityService.lookup3PIDs([pid]) { response in
+        _ = identityService.lookup3PIDs([pid]) { response in
             if let responseValue = response.value?[pid] {
                 completion(MXResponse.success(.bound(userID: responseValue)))
             } else {
-                MXLog.debug("[InviteService] discoverUser failed")
-                completion(MXResponse.failure(InviteServiceError.unknown))
+                completion(MXResponse.success(.unbound))
             }
         }
     }
