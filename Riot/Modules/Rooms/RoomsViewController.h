@@ -15,11 +15,14 @@
  */
 
 #import "RecentsViewController.h"
+@protocol RoomsViewControllerDelegate;
 
 /**
  The `RoomsViewController` screen is the view controller displayed when `Rooms` tab is selected.
  */
 @interface RoomsViewController : RecentsViewController
+
+@property (nonatomic, weak) id<RoomsViewControllerDelegate> roomsViewDelegate;
 
 + (instancetype)instantiate;
 

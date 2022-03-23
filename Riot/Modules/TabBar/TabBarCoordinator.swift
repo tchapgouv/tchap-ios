@@ -255,6 +255,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     
     private func createRoomsViewController() -> RoomsViewController {
         let roomsViewController: RoomsViewController = RoomsViewController.instantiate()
+        roomsViewController.roomsViewDelegate = self
         roomsViewController.tabBarItem.tag = Int(TABBAR_ROOMS_INDEX)
         roomsViewController.accessibilityLabel = VectorL10n.titleRooms
         return roomsViewController
@@ -454,6 +455,25 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         self.showRoom(with: roomCoordinatorParameters,
                       stackOnSplitViewDetail: roomPreviewNavigationParameters.presentationParameters.stackAboveVisibleViews,
                       completion: completion)
+    }
+    
+    private func showRoomPreview(with publicRoom: MXPublicRoom) {
+        guard let session = self.currentMatrixSession else { return }
+        
+        let roomPreviewCoordinator = RoomPreviewCoordinator(session: session, publicRoom: publicRoom)
+        self.showRoomPreview(with: roomPreviewCoordinator)
+    }
+    
+    private func showRoomPreview(with coordinator: RoomPreviewCoordinator) {
+        let roomPreviewCoordinator = coordinator
+        roomPreviewCoordinator.start()
+        roomPreviewCoordinator.delegate = self
+        
+        self.add(childCoordinator: roomPreviewCoordinator)
+        
+        self.navigationRouter.push(roomPreviewCoordinator, animated: true) { [weak self] in
+            self?.remove(childCoordinator: roomPreviewCoordinator)
+        }
     }
     
     private func showRoom(with parameters: RoomCoordinatorParameters,
@@ -780,5 +800,121 @@ extension TabBarCoordinator: WelcomeCoordinatorDelegate {
         if userDidLogin() {
             self.remove(childCoordinator: coordinator)
         }
+    }
+}
+
+// MARK: - RoomsViewControllerDelegate
+extension TabBarCoordinator: RoomsViewControllerDelegate {
+    func roomsViewControllerDidTapStartChatButton(_ roomsViewController: RoomsViewController) {
+        guard let session = self.currentMatrixSession else { return }
+        
+        let createNewDiscussionCoordinator = CreateNewDiscussionCoordinator(session: session)
+        createNewDiscussionCoordinator.delegate = self
+        createNewDiscussionCoordinator.start()
+        
+        self.navigationRouter.present(createNewDiscussionCoordinator, animated: true)
+        
+        self.add(childCoordinator: createNewDiscussionCoordinator)
+    }
+    
+    func roomsViewControllerDidTapCreateRoomButton(_ roomsViewController: RoomsViewController) {
+        guard let session = self.currentMatrixSession else { return }
+        
+        let roomCreationCoordinator = RoomCreationCoordinator(session: session)
+        roomCreationCoordinator.delegate = self
+        roomCreationCoordinator.start()
+        
+        self.navigationRouter.present(roomCreationCoordinator, animated: true)
+        
+        self.add(childCoordinator: roomCreationCoordinator)
+    }
+    
+    func roomsViewControllerDidTapPublicRoomsAccessButton(_ roomsViewController: RoomsViewController) {
+        guard let session = self.currentMatrixSession else { return }
+        
+        let publicRoomServers = BuildSettings.publicRoomsDirectoryServers
+        let publicRoomService = PublicRoomService(homeServersStringURL: publicRoomServers,
+                                                  session: session)
+        let dataSource = PublicRoomsDataSource(session: session,
+                                               publicRoomService: publicRoomService)
+        let publicRoomsViewController = PublicRoomsViewController.instantiate(dataSource: dataSource)
+        publicRoomsViewController.delegate = self
+        let router = NavigationRouter(navigationController: RiotNavigationController())
+        router.setRootModule(publicRoomsViewController.toPresentable())
+        self.navigationRouter.present(router, animated: true)
+    }
+}
+
+// MARK: - CreateNewDiscussionCoordinatorDelegate
+extension TabBarCoordinator: CreateNewDiscussionCoordinatorDelegate {
+    func createNewDiscussionCoordinator(_ coordinator: CreateNewDiscussionCoordinatorType,
+                                        didSelectUserID userID: String) {
+        self.navigationRouter.dismissModule(animated: true) { [weak self] in
+            self?.startDiscussion(with: userID)
+            self?.remove(childCoordinator: coordinator)
+        }
+    }
+    
+    func createNewDiscussionCoordinatorDidCancel(_ coordinator: CreateNewDiscussionCoordinatorType) {
+        self.navigationRouter.dismissModule(animated: true) { [weak self] in
+            self?.remove(childCoordinator: coordinator)
+        }
+    }
+    
+    // Prepare a new discussion with a user without associated room
+    private func startDiscussion(with userID: String) {
+        AppDelegate.theDelegate().startDirectChat(withUserId: userID, completion: nil)
+    }
+}
+
+// MARK: - PublicRoomsViewControllerDelegate
+extension TabBarCoordinator: PublicRoomsViewControllerDelegate {
+    func publicRoomsViewController(_ publicRoomsViewController: PublicRoomsViewController,
+                                   didSelect publicRoom: MXPublicRoom) {
+        publicRoomsViewController.navigationController?.dismiss(animated: true,
+                                                                completion: { [weak self] in
+            guard let roomID = publicRoom.roomId else {
+                return
+            }
+            
+            if let room: MXRoom = self?.currentMatrixSession?.room(withRoomId: roomID),
+               room.summary.membership == .join {
+                self?.showRoom(withId: roomID)
+            } else {
+                // Try to preview the unknown room.
+                self?.showRoomPreview(with: publicRoom)
+            }
+        })
+    }
+}
+
+// MARK: - RoomCreationCoordinatorDelegate
+extension TabBarCoordinator: RoomCreationCoordinatorDelegate {
+    func roomCreationCoordinatorDidCancel(_ coordinator: RoomCreationCoordinatorType) {
+        self.navigationRouter.dismissModule(animated: true) { [weak self] in
+            self?.remove(childCoordinator: coordinator)
+        }
+    }
+    
+    func roomCreationCoordinator(_ coordinator: RoomCreationCoordinatorType,
+                                 didCreateRoomWithID roomID: String) {
+        self.navigationRouter.dismissModule(animated: true) { [weak self] in
+            self?.remove(childCoordinator: coordinator)
+            self?.showRoom(withId: roomID)
+        }
+    }
+}
+
+// MARK: - RoomPreviewCoordinatorDelegate
+extension TabBarCoordinator: RoomPreviewCoordinatorDelegate {
+    func roomPreviewCoordinatorDidCancel(_ coordinator: RoomPreviewCoordinatorType) {
+        self.navigationRouter.popModule(animated: true)
+    }
+    
+    func roomPreviewCoordinator(_ coordinator: RoomPreviewCoordinatorType,
+                                didJoinRoomWithId roomID: String,
+                                onEventId eventId: String?) {
+        self.navigationRouter.popModule(animated: true)
+        self.showRoom(withId: roomID, eventId: eventId)
     }
 }
