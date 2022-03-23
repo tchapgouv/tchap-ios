@@ -83,6 +83,11 @@ import UIKit
         self.rightButton.setTitleColor(theme.headerBackgroundColor, for: .normal)
     }
     
+    override class func height(for cellData: MXKCellData!, withMaximumWidth maxWidth: CGFloat) -> CGFloat {
+        // The RoomsInviteCell instances support the self-sizing mode, return a default value
+        return 105.0
+    }
+    
     @IBAction private func onLeftPressed(_ sender: Any) {
         if let delegate = self.delegate,
            let roomSummary = self.roomCellData?.roomSummary as? MXRoomSummary,

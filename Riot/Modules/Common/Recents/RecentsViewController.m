@@ -818,7 +818,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     id<MXKRecentCellDataStoring> cellDataStoring = (id<MXKRecentCellDataStoring> )cellData;
     
     if ([cellDataStoring.roomSummary isKindOfClass:[MXRoomSummary class]] &&
-         ((MXRoomSummary *)cellDataStoring.roomSummary).room.summary.membership == MXMembershipInvite)    {
+         ((MXRoomSummary *)cellDataStoring.roomSummary).membership == MXMembershipInvite)    {
         return RoomsInviteCell.class;
     }
     else if ([cellDataStoring.roomSummary isKindOfClass:[MXRoomSummary class]] &&
@@ -1423,6 +1423,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 
 - (void)recentListViewController:(MXKRecentListViewController *)recentListViewController didSelectRoom:(NSString *)roomId inMatrixSession:(MXSession *)matrixSession
 {
+    [self showRoomWithRoomId:roomId inMatrixSession:matrixSession];
 }
 
 #pragma mark - CreateRoomCoordinatorBridgePresenterDelegate

@@ -99,9 +99,9 @@ final class SideMenuViewModel: SideMenuViewModelType {
         
         var sideMenuItems: [SideMenuItem] = []
         
-        if BuildSettings.sideMenuShowInviteFriends {
-            sideMenuItems += [.inviteFriends]
-        }
+//        if BuildSettings.sideMenuShowInviteFriends {
+//            sideMenuItems += [.inviteFriends]
+//        }
         
         sideMenuItems += [
             .settings,

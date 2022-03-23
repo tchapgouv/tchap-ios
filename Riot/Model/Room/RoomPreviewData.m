@@ -21,6 +21,18 @@
 
 @implementation RoomPreviewData
 
+- (instancetype)initWithRoomId:(NSString *)roomId andSession:(MXSession *)mxSession
+{
+    self = [super init];
+    if (self)
+    {
+        _roomId = roomId;
+        _mxSession = mxSession;
+        _numJoinedMembers = -1;
+    }
+    return self;
+}
+
 - (instancetype)initWithRoomId:(NSString *)roomId roomAlias:(NSString*)roomAlias andSession:(MXSession *)mxSession
 {
     self = [super init];

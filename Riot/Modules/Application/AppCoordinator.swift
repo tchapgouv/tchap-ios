@@ -45,6 +45,11 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
     fileprivate let legacyAppDelegate: LegacyAppDelegate = AppDelegate.theDelegate()
     // swiftlint:enable weak_delegate
     
+    private let appVersionCheckerStore: AppVersionCheckerStoreType
+    private let appVersionChecker: AppVersionChecker
+    private var pendingCheckAppVersionOperation: MXHTTPOperation?
+    private weak var appVersionUpdateCoordinator: AppVersionUpdateCoordinatorType?
+    
     private lazy var appNavigator: AppNavigatorProtocol = {
         return AppNavigator(appCoordinator: self)
     }()
@@ -71,6 +76,11 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
         self.rootRouter = router
         self.customSchemeURLParser = CustomSchemeURLParser()
         self.userSessionsService = UserSessionsService.shared
+        
+        let clientConfigurationService = ClientConfigurationService()
+        let appVersionCheckerStore = AppVersionCheckerStore()
+        self.appVersionChecker = AppVersionChecker(clientConfigurationService: clientConfigurationService, appVersionCheckerStore: appVersionCheckerStore)
+        self.appVersionCheckerStore = appVersionCheckerStore
         
         super.init()
         
@@ -106,6 +116,23 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
         } catch {
             MXLog.debug("[AppCoordinator] Custom scheme URL parsing failed with error: \(error)")
             return false
+        }
+    }
+    
+    func checkMinAppVersionRequirements() {
+        guard self.pendingCheckAppVersionOperation == nil else {
+            return
+        }
+        
+        self.pendingCheckAppVersionOperation = self.appVersionChecker.checkCurrentAppVersion { (versionResult) in
+            switch versionResult {
+            case .upToDate, .unknown:
+                break
+            case .shouldUpdate(versionInfo: let versionInfo):
+                MXLog.debug("[AppCoordinator] App should be upated with \(versionInfo)")
+                self.presentApplicationUpdate(with: versionInfo)
+            }
+            self.pendingCheckAppVersionOperation = nil
         }
     }
         
@@ -230,10 +257,46 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
         // Reload split view with selected space id
         self.splitViewCoordinator?.start(with: spaceId)
     }
+    
+    private func presentApplicationUpdate(with versionInfo: ClientVersionInfo) {
+        guard self.appVersionUpdateCoordinator == nil else {
+            MXLog.debug("[AppCoordinor] AppVersionUpdateCoordinator already presented")
+            return
+        }
+        
+        // Update should be display once and has already been dislayed, do not display again
+        if versionInfo.displayOnlyOnce && self.appVersionChecker.isClientVersionInfoAlreadyDisplayed(versionInfo) {
+            MXLog.debug("[AppCoordinor] AppVersionUpdateCoordinator already presented for versionInfo: \(versionInfo)")
+            return
+        } else if versionInfo.allowOpeningApp && self.appVersionChecker.isClientVersionInfoAlreadyDisplayedToday(versionInfo) {
+            MXLog.debug("[AppCoordinor] AppVersionUpdateCoordinator already presented today for versionInfo: \(versionInfo)")
+            return
+        }
+        
+        let appVersionUpdateCoordinator = AppVersionUpdateCoordinator(rootRouter: self.rootRouter, versionInfo: versionInfo)
+        appVersionUpdateCoordinator.delegate = self
+        appVersionUpdateCoordinator.start()
+        self.add(childCoordinator: appVersionUpdateCoordinator)
+        self.appVersionUpdateCoordinator = appVersionUpdateCoordinator
+        
+        self.appVersionCheckerStore.saveLastDisplayedClientVersionInfo(versionInfo)
+        self.appVersionCheckerStore.saveLastDisplayedClientVersionDate(Calendar.current.startOfDay(for: Date()))
+    }
+}
+
+// MARK: - AppVersionUpdateCoordinatorDelegate
+extension AppCoordinator: AppVersionUpdateCoordinatorDelegate {
+    func appVersionUpdateCoordinatorDidCancel(_ coordinator: AppVersionUpdateCoordinatorType) {
+        self.remove(childCoordinator: coordinator)
+    }
 }
 
 // MARK: - LegacyAppDelegateDelegate
 extension AppCoordinator: LegacyAppDelegateDelegate {
+    func legacyAppDelegate(_ legacyAppDelegate: LegacyAppDelegate!, wantsToShowRoom roomID: String!, completion: (() -> Void)!) {
+//        _ = self.showRoom(with: roomID)
+        completion?()
+    }
             
     func legacyAppDelegate(_ legacyAppDelegate: LegacyAppDelegate!, wantsToPopToHomeViewControllerAnimated animated: Bool, completion: (() -> Void)!) {
         
@@ -270,7 +333,7 @@ extension AppCoordinator: LegacyAppDelegateDelegate {
 // MARK: - SplitViewCoordinatorDelegate
 extension AppCoordinator: SplitViewCoordinatorDelegate {
     func splitViewCoordinatorDidCompleteAuthentication(_ coordinator: SplitViewCoordinatorType) {
-        self.legacyAppDelegate.authenticationDidComplete()
+//        self.legacyAppDelegate.authenticationDidComplete()
     }
 }
 

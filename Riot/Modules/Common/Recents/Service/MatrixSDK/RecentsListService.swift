@@ -35,24 +35,24 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
     private var invitedRoomListDataFetcher: MXRoomListDataFetcher?
     private var favoritedRoomListDataFetcher: MXRoomListDataFetcher?
     private var directRoomListDataFetcher: MXRoomListDataFetcher? {
-        switch mode {
-        case .home:
-            return directRoomListDataFetcherForHome
-        case .people:
+//        switch mode {
+//        case .home:
+//            return directRoomListDataFetcherForHome
+//        case .people:
             return directRoomListDataFetcherForPeople
-        default:
-            return nil
-        }
+//        default:
+//            return nil
+//        }
     }
     private var conversationRoomListDataFetcher: MXRoomListDataFetcher? {
-        switch mode {
-        case .home:
+//        switch mode {
+//        case .home:
             return conversationRoomListDataFetcherForHome
-        case .rooms:
-            return conversationRoomListDataFetcherForRooms
-        default:
-            return nil
-        }
+//        case .rooms:
+//            return conversationRoomListDataFetcherForRooms
+//        default:
+//            return nil
+//        }
     }
     private var lowPriorityRoomListDataFetcher: MXRoomListDataFetcher?
     private var serverNoticeRoomListDataFetcher: MXRoomListDataFetcher?
@@ -69,7 +69,7 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
         .home: [.invited, .favorited, .directHome, .conversationHome, .lowPriority, .serverNotice, .suggested],
         .favourites: [.favorited],
         .people: [.directPeople],
-        .rooms: [.conversationRooms, .suggested]
+        .rooms: [.all]//[.conversationRooms, .suggested]
     ]
     
     private var allFetchers: [MXRoomListDataFetcher] {
@@ -362,14 +362,16 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
     }
     
     private var shouldShowDirect: Bool {
-        switch mode {
-        case .home:
-            return fetcherTypesForMode[mode]?.contains(.directHome) ?? false
-        case .people:
-            return fetcherTypesForMode[mode]?.contains(.directPeople) ?? false
-        default:
-            return false
-        }
+        return true
+        // Tchap: Always show direct.
+//        switch mode {
+//        case .home:
+//            return fetcherTypesForMode[mode]?.contains(.directHome) ?? false
+//        case .people:
+//            return fetcherTypesForMode[mode]?.contains(.directPeople) ?? false
+//        default:
+//            return false
+//        }
     }
     
     private var shouldShowConversation: Bool {
@@ -521,9 +523,10 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
             case .home:
                 notDataTypes.insert([.invited, .favorited, .lowPriority])
                 fetcher.fetchOptions.filterOptions.notDataTypes = notDataTypes
-            case .people:
-                notDataTypes.insert([.lowPriority])
-                fetcher.fetchOptions.filterOptions.notDataTypes = notDataTypes
+                // Tchap: Show lowPriority too.
+//            case .people:
+//                notDataTypes.insert([.lowPriority])
+//                fetcher.fetchOptions.filterOptions.notDataTypes = notDataTypes
             default:
                 break
             }

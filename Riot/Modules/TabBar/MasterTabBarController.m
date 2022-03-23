@@ -18,14 +18,14 @@
 #import "MasterTabBarController.h"
 
 #import "RecentsDataSource.h"
-#import "GroupsDataSource.h"
+//#import "GroupsDataSource.h"
 
 
 #import "MXRoom+Riot.h"
 #import "MXSession+Riot.h"
 
 #import "SettingsViewController.h"
-#import "SecurityViewController.h"
+//#import "SecurityViewController.h"
 
 #import "GeneratedInterface-Swift.h"
 
@@ -47,7 +47,7 @@
     id kThemeServiceDidChangeThemeNotificationObserver;
     
     // The groups data source
-    GroupsDataSource *groupsDataSource;
+//    GroupsDataSource *groupsDataSource;
     
     // Custom title view of the navigation bar
     MainTitleView *titleView;
@@ -84,31 +84,31 @@
 
 #pragma mark - Properties override
 
-- (HomeViewController *)homeViewController
-{
-    UIViewController *wrapperVC = [self viewControllerForClass:HomeViewControllerWithBannerWrapperViewController.class];
-    return [(HomeViewControllerWithBannerWrapperViewController *)wrapperVC homeViewController];
-}
-
-- (FavouritesViewController *)favouritesViewController
-{
-    return (FavouritesViewController*)[self viewControllerForClass:FavouritesViewController.class];
-}
-
-- (PeopleViewController *)peopleViewController
-{
-    return (PeopleViewController*)[self viewControllerForClass:PeopleViewController.class];
-}
+//- (HomeViewController *)homeViewController
+//{
+//    UIViewController *wrapperVC = [self viewControllerForClass:HomeViewControllerWithBannerWrapperViewController.class];
+//    return [(HomeViewControllerWithBannerWrapperViewController *)wrapperVC homeViewController];
+//}
+//
+//- (FavouritesViewController *)favouritesViewController
+//{
+//    return (FavouritesViewController*)[self viewControllerForClass:FavouritesViewController.class];
+//}
+//
+//- (PeopleViewController *)peopleViewController
+//{
+//    return (PeopleViewController*)[self viewControllerForClass:PeopleViewController.class];
+//}
 
 - (RoomsViewController *)roomsViewController
 {
     return (RoomsViewController*)[self viewControllerForClass:RoomsViewController.class];
 }
 
-- (GroupsViewController *)groupsViewController
-{
-    return (GroupsViewController*)[self viewControllerForClass:GroupsViewController.class];
-}
+//- (GroupsViewController *)groupsViewController
+//{
+//    return (GroupsViewController*)[self viewControllerForClass:GroupsViewController.class];
+//}
 
 #pragma mark - Life cycle
 
@@ -245,7 +245,8 @@
             [childViewControllers removeAllObjects];
         }
         
-        [[AppDelegate theDelegate] checkAppVersion];
+        // Tchap: Not the same mecanism
+//        [[AppDelegate theDelegate] checkAppVersion];
     }
 }
 
@@ -358,43 +359,43 @@
         recentsDataSource = [[RecentsDataSource alloc] initWithMatrixSession:mainSession
                                                           recentsListService:recentsListService];
         
-        [self.homeViewController displayList:recentsDataSource];
-        [self.favouritesViewController displayList:recentsDataSource];
-        [self.peopleViewController displayList:recentsDataSource];
+//        [self.homeViewController displayList:recentsDataSource];
+//        [self.favouritesViewController displayList:recentsDataSource];
+//        [self.peopleViewController displayList:recentsDataSource];
         [self.roomsViewController displayList:recentsDataSource];
         
         // Restore the right delegate of the shared recent data source.
-        id<MXKDataSourceDelegate> recentsDataSourceDelegate = self.homeViewController;
-        RecentsDataSourceMode recentsDataSourceMode = RecentsDataSourceModeHome;
+        id<MXKDataSourceDelegate> recentsDataSourceDelegate = self.roomsViewController;//self.homeViewController;
+        RecentsDataSourceMode recentsDataSourceMode = RecentsDataSourceModeRooms;
         
-        NSInteger tabItemTag = self.tabBar.items[self.selectedIndex].tag;
-        
-        switch (tabItemTag)
-        {
-            case TABBAR_HOME_INDEX:
-                break;
-            case TABBAR_FAVOURITES_INDEX:
-                recentsDataSourceDelegate = self.favouritesViewController;
-                recentsDataSourceMode = RecentsDataSourceModeFavourites;
-                break;
-            case TABBAR_PEOPLE_INDEX:
-                recentsDataSourceDelegate = self.peopleViewController;
-                recentsDataSourceMode = RecentsDataSourceModePeople;
-                break;
-            case TABBAR_ROOMS_INDEX:
-                recentsDataSourceDelegate = self.roomsViewController;
-                recentsDataSourceMode = RecentsDataSourceModeRooms;
-                break;
-                
-            default:
-                break;
-        }
+//        NSInteger tabItemTag = self.tabBar.items[self.selectedIndex].tag;
+//
+//        switch (tabItemTag)
+//        {
+//            case TABBAR_HOME_INDEX:
+//                break;
+//            case TABBAR_FAVOURITES_INDEX:
+//                recentsDataSourceDelegate = self.favouritesViewController;
+//                recentsDataSourceMode = RecentsDataSourceModeFavourites;
+//                break;
+//            case TABBAR_PEOPLE_INDEX:
+//                recentsDataSourceDelegate = self.peopleViewController;
+//                recentsDataSourceMode = RecentsDataSourceModePeople;
+//                break;
+//            case TABBAR_ROOMS_INDEX:
+//                recentsDataSourceDelegate = self.roomsViewController;
+//                recentsDataSourceMode = RecentsDataSourceModeRooms;
+//                break;
+//
+//            default:
+//                break;
+//        }
         [recentsDataSource setDelegate:recentsDataSourceDelegate andRecentsDataSourceMode:recentsDataSourceMode];
         
         // Init the recents data source
-        groupsDataSource = [[GroupsDataSource alloc] initWithMatrixSession:mainSession];
-        [groupsDataSource finalizeInitialization];
-        [self.groupsViewController displayList:groupsDataSource];
+//        groupsDataSource = [[GroupsDataSource alloc] initWithMatrixSession:mainSession];
+//        [groupsDataSource finalizeInitialization];
+//        [self.groupsViewController displayList:groupsDataSource];
         
         // Check whether there are others sessions
         NSArray<MXSession*>* mxSessions = self.mxSessions;
@@ -427,8 +428,8 @@
     }
     
     // Check whether the controller's view is loaded into memory.
-    if (self.homeViewController)
-    {
+//    if (self.homeViewController)
+//    {
         // Check whether the data sources have been initialized.
         if (!recentsDataSource)
         {
@@ -448,7 +449,7 @@
             // Add the session to the existing data sources
             [recentsDataSource addMatrixSession:mxSession];
         }
-    }
+//    }
     
     if (!mxSessionArray)
     {
@@ -478,9 +479,9 @@
         // Remove matrix sessions observer
         [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXSessionStateDidChangeNotification object:nil];
         
-        [self.homeViewController displayList:nil];
-        [self.favouritesViewController displayList:nil];
-        [self.peopleViewController displayList:nil];
+//        [self.homeViewController displayList:nil];
+//        [self.favouritesViewController displayList:nil];
+//        [self.peopleViewController displayList:nil];
         [self.roomsViewController displayList:nil];
         
         [recentsDataSource destroy];
@@ -500,55 +501,55 @@
 // TODO: Manage the onboarding coordinator at the AppCoordinator level
 - (void)presentOnboardingFlow
 {
-    OnboardingCoordinatorBridgePresenterParameters *parameters = [[OnboardingCoordinatorBridgePresenterParameters alloc] init];
-    // Forward parameters if any
-    if (self.authViewControllerRegistrationParameters)
-    {
-        parameters.externalRegistrationParameters = self.authViewControllerRegistrationParameters;
-        self.authViewControllerRegistrationParameters = nil;
-    }
-    if (self.softLogoutCredentials)
-    {
-        parameters.softLogoutCredentials = self.softLogoutCredentials;
-        self.softLogoutCredentials = nil;
-    }
-    
-    MXWeakify(self);
-    OnboardingCoordinatorBridgePresenter *onboardingCoordinatorBridgePresenter = [[OnboardingCoordinatorBridgePresenter alloc] initWith:parameters];
-    onboardingCoordinatorBridgePresenter.completion = ^{
-        MXStrongifyAndReturnIfNil(self);
-        [self.onboardingCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
-        self.onboardingCoordinatorBridgePresenter = nil;
-        
-        self.isOnboardingInProgress = NO;   // Must be set before calling didCompleteAuthentication
-        [self.masterTabBarDelegate masterTabBarControllerDidCompleteAuthentication:self];
-    };
-    
-    [onboardingCoordinatorBridgePresenter presentFrom:self animated:NO];
-    
-    self.onboardingCoordinatorBridgePresenter = onboardingCoordinatorBridgePresenter;
-    self.isOnboardingCoordinatorPreparing = NO;
-    
-    self.addAccountObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidAddAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-        MXStrongifyAndReturnIfNil(self);
-
-        // What was this doing? This should probably happen elsewhere
-        // self.onboardingCoordinatorBridgePresenter = nil;
-        
-        [[NSNotificationCenter defaultCenter] removeObserver:self.addAccountObserver];
-        self.addAccountObserver = nil;
-    }];
-    
-    self.removeAccountObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidRemoveAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-        MXStrongifyAndReturnIfNil(self);
-        // The user has cleared data for their soft logged out account
-
-        // What was this doing? This should probably happen elsewhere
-        // self.onboardingCoordinatorBridgePresenter = nil;
-        
-        [[NSNotificationCenter defaultCenter] removeObserver:self.removeAccountObserver];
-        self.removeAccountObserver = nil;
-    }];
+//    OnboardingCoordinatorBridgePresenterParameters *parameters = [[OnboardingCoordinatorBridgePresenterParameters alloc] init];
+//    // Forward parameters if any
+//    if (self.authViewControllerRegistrationParameters)
+//    {
+//        parameters.externalRegistrationParameters = self.authViewControllerRegistrationParameters;
+//        self.authViewControllerRegistrationParameters = nil;
+//    }
+//    if (self.softLogoutCredentials)
+//    {
+//        parameters.softLogoutCredentials = self.softLogoutCredentials;
+//        self.softLogoutCredentials = nil;
+//    }
+//    
+//    MXWeakify(self);
+//    OnboardingCoordinatorBridgePresenter *onboardingCoordinatorBridgePresenter = [[OnboardingCoordinatorBridgePresenter alloc] initWith:parameters];
+//    onboardingCoordinatorBridgePresenter.completion = ^{
+//        MXStrongifyAndReturnIfNil(self);
+//        [self.onboardingCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+//        self.onboardingCoordinatorBridgePresenter = nil;
+//        
+//        self.isOnboardingInProgress = NO;   // Must be set before calling didCompleteAuthentication
+//        [self.masterTabBarDelegate masterTabBarControllerDidCompleteAuthentication:self];
+//    };
+//    
+//    [onboardingCoordinatorBridgePresenter presentFrom:self animated:NO];
+//    
+//    self.onboardingCoordinatorBridgePresenter = onboardingCoordinatorBridgePresenter;
+//    self.isOnboardingCoordinatorPreparing = NO;
+//    
+//    self.addAccountObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidAddAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+//        MXStrongifyAndReturnIfNil(self);
+//
+//        // What was this doing? This should probably happen elsewhere
+//        // self.onboardingCoordinatorBridgePresenter = nil;
+//        
+//        [[NSNotificationCenter defaultCenter] removeObserver:self.addAccountObserver];
+//        self.addAccountObserver = nil;
+//    }];
+//    
+//    self.removeAccountObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidRemoveAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+//        MXStrongifyAndReturnIfNil(self);
+//        // The user has cleared data for their soft logged out account
+//
+//        // What was this doing? This should probably happen elsewhere
+//        // self.onboardingCoordinatorBridgePresenter = nil;
+//        
+//        [[NSNotificationCenter defaultCenter] removeObserver:self.removeAccountObserver];
+//        self.removeAccountObserver = nil;
+//    }];
 }
 
 - (void)showOnboardingFlow
@@ -565,7 +566,8 @@
         
         [[AppDelegate theDelegate] restoreInitialDisplay:^{
                         
-            [self presentOnboardingFlow];
+//            [self presentOnboardingFlow];
+            [self.masterTabBarDelegate masterTabBarControllerShouldShowAuthenticationFlow:self];
         }];
     }
 }
@@ -577,46 +579,46 @@
 
 - (void)showOnboardingFlowWithRegistrationParameters:(NSDictionary *)parameters
 {
-    if (self.onboardingCoordinatorBridgePresenter)
-    {
-        MXLogDebug(@"[MasterTabBarController] Universal link: Forward registration parameter to the existing AuthViewController");
-        [self.onboardingCoordinatorBridgePresenter updateWithExternalRegistrationParameters:parameters];
-    }
-    else
-    {
-        MXLogDebug(@"[MasterTabBarController] Universal link: Prompt to logout current sessions and open AuthViewController to complete the registration");
-        
-        // Keep a ref on the params
-        self.authViewControllerRegistrationParameters = parameters;
-        
-        // Prompt to logout. It will then display AuthViewController if the user is logged out.
-        [[AppDelegate theDelegate] logoutWithConfirmation:YES completion:^(BOOL isLoggedOut) {
-            if (!isLoggedOut)
-            {
-                // Reset temporary params
-                self.authViewControllerRegistrationParameters = nil;
-            }
-        }];
-    }
+//    if (self.onboardingCoordinatorBridgePresenter)
+//    {
+//        MXLogDebug(@"[MasterTabBarController] Universal link: Forward registration parameter to the existing AuthViewController");
+//        [self.onboardingCoordinatorBridgePresenter updateWithExternalRegistrationParameters:parameters];
+//    }
+//    else
+//    {
+//        MXLogDebug(@"[MasterTabBarController] Universal link: Prompt to logout current sessions and open AuthViewController to complete the registration");
+//        
+//        // Keep a ref on the params
+//        self.authViewControllerRegistrationParameters = parameters;
+//        
+//        // Prompt to logout. It will then display AuthViewController if the user is logged out.
+//        [[AppDelegate theDelegate] logoutWithConfirmation:YES completion:^(BOOL isLoggedOut) {
+//            if (!isLoggedOut)
+//            {
+//                // Reset temporary params
+//                self.authViewControllerRegistrationParameters = nil;
+//            }
+//        }];
+//    }
 }
 
 - (void)showSoftLogoutOnboardingFlowWithCredentials:(MXCredentials*)credentials;
 {
     MXLogDebug(@"[MasterTabBarController] showAuthenticationScreenAfterSoftLogout");
 
-    self.softLogoutCredentials = credentials;
-
-    // Check whether an authentication screen is not already shown or preparing
-    if (!self.onboardingCoordinatorBridgePresenter && !self.isOnboardingCoordinatorPreparing)
-    {
-        self.isOnboardingCoordinatorPreparing = YES;
-        self.isOnboardingInProgress = YES;
-
-        [[AppDelegate theDelegate] restoreInitialDisplay:^{
-
-            [self presentOnboardingFlow];
-        }];
-    }
+//    self.softLogoutCredentials = credentials;
+//
+//    // Check whether an authentication screen is not already shown or preparing
+//    if (!self.onboardingCoordinatorBridgePresenter && !self.isOnboardingCoordinatorPreparing)
+//    {
+//        self.isOnboardingCoordinatorPreparing = YES;
+//        self.isOnboardingInProgress = YES;
+//
+//        [[AppDelegate theDelegate] restoreInitialDisplay:^{
+//
+//            [self presentOnboardingFlow];
+//        }];
+//    }
 }
 
 - (void)selectRoomWithParameters:(RoomNavigationParameters*)paramaters completion:(void (^)(void))completion
@@ -775,12 +777,6 @@
         {
             displayNotification = notificationState.groupMissedDiscussionsCount > 0 || notificationState.groupMissedDiscussionsHighlightedCount > 0;
         }
-        return NO;
-    }];
-    
-    if (viewControllerIndex != NSNotFound)
-    {
-        foundViewController = self.viewControllers[viewControllerIndex];
     }
     
     [self.masterTabBarDelegate masterTabBarController:self needsSideMenuIconWithNotification:displayNotification];
@@ -998,7 +994,7 @@
     [alert addAction:[UIAlertAction actionWithTitle:[VectorL10n keyVerificationSelfVerifyCurrentSessionAlertValidateAction]
                                               style:UIAlertActionStyleDefault
                                             handler:^(UIAlertAction * action) {
-                                                [[AppDelegate theDelegate] presentCompleteSecurityForSession:session];
+//                                                [[AppDelegate theDelegate] presentCompleteSecurityForSession:session];
                                             }]];
     
     [alert addAction:[UIAlertAction actionWithTitle:[VectorL10n later]
@@ -1078,13 +1074,13 @@
 
 - (void)showSettingsSecurityScreenForSession:(MXSession*)session
 {
-    SettingsViewController *settingsViewController = [SettingsViewController instantiate];
-    [settingsViewController loadViewIfNeeded];
-    SecurityViewController *securityViewController = [SecurityViewController instantiateWithMatrixSession:session];
-    
-    [[AppDelegate theDelegate] restoreInitialDisplay:^{
-        self.navigationController.viewControllers = @[self, settingsViewController, securityViewController];
-    }];
+//    SettingsViewController *settingsViewController = [SettingsViewController instantiate];
+//    [settingsViewController loadViewIfNeeded];
+//    SecurityViewController *securityViewController = [SecurityViewController instantiateWithMatrixSession:session];
+//
+//    [[AppDelegate theDelegate] restoreInitialDisplay:^{
+//        self.navigationController.viewControllers = @[self, settingsViewController, securityViewController];
+//    }];
 }
 
 - (void)resetReviewSessionsFlags
@@ -1105,14 +1101,14 @@
         if (item.tag == TABBAR_ROOMS_INDEX)
         {
             [self.roomsViewController scrollToNextRoomWithMissedNotifications];
-        }
-        else if (item.tag == TABBAR_PEOPLE_INDEX)
-        {
-            [self.peopleViewController scrollToNextRoomWithMissedNotifications];
-        }
-        else if (item.tag == TABBAR_FAVOURITES_INDEX)
-        {
-            [self.favouritesViewController scrollToNextRoomWithMissedNotifications];
+//        }
+//        else if (item.tag == TABBAR_PEOPLE_INDEX)
+//        {
+//            [self.peopleViewController scrollToNextRoomWithMissedNotifications];
+//        }
+//        else if (item.tag == TABBAR_FAVOURITES_INDEX)
+//        {
+//            [self.favouritesViewController scrollToNextRoomWithMissedNotifications];
         }
     }
 }

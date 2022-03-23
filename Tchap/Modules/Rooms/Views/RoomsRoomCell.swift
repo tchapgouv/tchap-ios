@@ -110,4 +110,10 @@ class RoomsRoomCell: RoomsCell {
         
         self.avatarView.tc_makeHexagon(borderWidth: avatarBorderWidth, borderColor: avatarBorderColor)
     }
+    
+    // swiftlint:disable force_cast
+    func renderedCellData() -> MXKCellData! {
+        return (roomCellData as! MXKCellData)
+    }
+    // swiftlint:enable force_cast
 }

@@ -347,13 +347,13 @@ extension ShowDirectoryViewController: UITableViewDelegate {
 
 // MARK: - UISearchBarDelegate
 
-extension ShowDirectoryViewController: UISearchBarDelegate {
-    
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        viewModel.process(viewAction: .search(searchText))
-    }
-    
-}
+//extension ShowDirectoryViewController: UISearchBarDelegate {
+//    
+//    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+//        viewModel.process(viewAction: .search(searchText))
+//    }
+//    
+//}
 
 // MARK: -
 

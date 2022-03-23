@@ -20,4 +20,7 @@ import Foundation
 protocol AppCoordinatorType: Coordinator {
     
     func open(url: URL, options: [UIApplication.OpenURLOptionsKey: Any]) -> Bool
+    
+    /// Check if the user should be notified of an application update.
+    func checkMinAppVersionRequirements()
 }

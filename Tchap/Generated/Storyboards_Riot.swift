@@ -162,6 +162,18 @@ internal extension StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Tchap.ServiceTermsModalScreenViewController>(storyboard: ServiceTermsModalScreenViewController.self)
   }
+  enum ShowDirectoryViewController: StoryboardType {
+    internal static let storyboardName = "ShowDirectoryViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.ShowDirectoryViewController>(storyboard: ShowDirectoryViewController.self)
+
+    internal static let searchableDirectoryViewController = SceneType<Tchap.ShowDirectoryViewController>(storyboard: ShowDirectoryViewController.self, identifier: "SearchableDirectoryViewController")
+  }
+  enum SideMenuViewController: StoryboardType {
+    internal static let storyboardName = "SideMenuViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.SideMenuViewController>(storyboard: SideMenuViewController.self)
+  }
   enum UserVerificationSessionStatusViewController: StoryboardType {
     internal static let storyboardName = "UserVerificationSessionStatusViewController"
 

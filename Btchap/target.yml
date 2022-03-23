@@ -74,6 +74,8 @@ targets:
         - "Config/BuildSettings.swift"
         - "Generated/InfoPlist.swift"
         - "Generated/TchapDefaults.swift"
+        - "Modules/Application"
+        - "Modules/Common/ActivityIndicator"
         - "Modules/Room/EmojiPicker/Data/EmojiMart/EmojiJSONStore.swift"
         - "Modules/Room/Views/Title/RoomTitleView.*"
         - "Modules/Room/RoomCoordinator.swift"
@@ -86,6 +88,7 @@ targets:
         - "Modules/Room/Views/InputToolbar/RoomInputToolbarView.*"
         - "Modules/Room/Views/Preview"
         - "Modules/Room/Views/Title/RoomTitleView.*"
+        - "Modules/Rooms"
         - "SupportingFiles/Info.plist"
         - "TchapTools"
         - "Routers"
@@ -93,8 +96,10 @@ targets:
         - "Managers/UniversalLink"
         - "**/*.strings" # Exclude all strings files
         - "**/*.cer"
+    - path: ../Tchap/Modules/Application/VersionUpdate
     - path: ../Tchap/Generated/Images_Riot.swift
     - path: ../Tchap/Modules/Room/Views/BubbleCells/Antivirus
+    - path: ../Tchap/Modules/Rooms/Views
 
     # Add separately localizable files
     - path: ../Tchap/Assets/Localizations/fr.lproj/Tchap.strings
@@ -118,6 +123,7 @@ targets:
     - path: ../Riot/Managers/EncryptionKeyManager/EncryptionKeyManager.swift
     - path: ../Riot/Managers/KeyValueStorage
     - path: ../Riot/Managers/Locale
+    - path: ../Riot/Managers/Logging
     - path: ../Riot/Managers/Room/RoomIdComponents.swift
     - path: ../Riot/Managers/RoomMessageLinkParser/RoomMessageURLParser.swift
     - path: ../Riot/Managers/PasswordStrength
@@ -137,7 +143,7 @@ targets:
     - path: ../Riot/Model/Room/RoomPreviewData.m
     - path: ../Riot/Model/WellKnown
     - path: ../Riot/Modules/Analytics
-    - path: ../Riot/Modules/Application/ScreenNavigation
+    - path: ../Riot/Modules/Application
     - path: ../Riot/Modules/Authentication/SSO
     - path: ../Riot/Modules/Authentication/Views
     - path: ../Riot/Modules/BadgeLabel
@@ -150,6 +156,7 @@ targets:
     - path: ../Riot/Modules/Call/Views/IncomingCallView.h
     - path: ../Riot/Modules/Call/Views/IncomingCallView.m
     - path: ../Riot/Modules/Camera
+    - path: ../Riot/Modules/Common/ActivityIndicator
     - path: ../Riot/Modules/Common/Avatar
     - path: ../Riot/Modules/Common/Buttons
     - path: ../Riot/Modules/Common/Cells
@@ -157,16 +164,14 @@ targets:
     - path: ../Riot/Modules/Common/Models
     - path: ../Riot/Modules/Common/NavigationController/RiotNavigationController.h
     - path: ../Riot/Modules/Common/NavigationController/RiotNavigationController.m
+    - path: ../Riot/Modules/Common/Recents/DataSources
     - path: ../Riot/Modules/Common/Recents/Model/RecentCellData.h
     - path: ../Riot/Modules/Common/Recents/Model/RecentCellData.m
     - path: ../Riot/Modules/Common/Recents/RecentsViewController.h
     - path: ../Riot/Modules/Common/Recents/RecentsViewController.m
     - path: ../Riot/Modules/Common/Recents/Model
+    - path: ../Riot/Modules/Common/Recents/Service
     - path: ../Riot/Modules/Common/Recents/Views
-      excludes:
-        - "RecentTableViewCell.h"
-        - "RecentTableViewCell.m"
-        - "RecentTableViewCell.xib"
     - path: ../Riot/Modules/Common/SectionHeaders
     - path: ../Riot/Modules/Common/SegmentedViewController/SegmentedViewController.h
     - path: ../Riot/Modules/Common/SegmentedViewController/SegmentedViewController.m
@@ -189,8 +194,10 @@ targets:
     - path: ../Riot/Modules/Integrations
     - path: ../Riot/Modules/KeyBackup
     - path: ../Riot/Modules/KeyVerification
+    - path: ../Riot/Modules/LaunchLoading
     - path: ../Riot/Modules/MatrixKit
     - path: ../Riot/Modules/MediaPicker
+    - path: ../Riot/Modules/PublicRoomList
     - path: ../Riot/Modules/QRCode
     - path: ../Riot/Modules/Reauthentication
     - path: ../Riot/Modules/Room
@@ -208,11 +215,15 @@ targets:
         - "Views/Title/Thread"
     - path: ../Riot/Modules/RoomKeyRequest/RoomKeyRequestViewController.h
     - path: ../Riot/Modules/RoomKeyRequest/RoomKeyRequestViewController.m
+    - path: ../Riot/Modules/Rooms
     - path: ../Riot/Modules/Secrets
     - path: ../Riot/Modules/SecureBackup
     - path: ../Riot/Modules/ServiceTerms
+    - path: ../Riot/Modules/SideMenu
     - path: ../Riot/Modules/SlidingModal
-    - path: ../Riot/Modules/TabBar/MainTitleView.swift
+    - path: ../Riot/Modules/SplitView
+    - path: ../Riot/Modules/TabBar
+    - path: ../Riot/Modules/User/Avatar
     - path: ../Riot/Modules/UserDevices/UsersDevicesViewController.h
     - path: ../Riot/Modules/UserDevices/UsersDevicesViewController.m
     - path: ../Riot/Modules/UserDevices/Views/DeviceTableViewCell.h
@@ -224,6 +235,8 @@ targets:
 
     # Riot SwiftUI
     - path: ../RiotSwiftUI/Modules/Common/Avatar/Model/AvatarProtocol.swift
+    - path: ../RiotSwiftUI/Modules/Common/Logging
+    - path: ../RiotSwiftUI/Modules/Common/Theme
     - path: ../RiotSwiftUI/Modules/Room/NotificationSettings/Model
 
     # Share extension
