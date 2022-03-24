@@ -524,8 +524,8 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
                 notDataTypes.insert([.invited, .favorited, .lowPriority])
                 fetcher.fetchOptions.filterOptions.notDataTypes = notDataTypes
             case .people:
-                // Tchap: Show lowPriority too, but not invitations (in this section).
-                notDataTypes.insert([.invited/*.lowPriority*/])
+                // Tchap: Show lowPriority too, but not invitations and favorited (in this section).
+                notDataTypes.insert([.invited, .favorited/*.lowPriority*/])
                 fetcher.fetchOptions.filterOptions.notDataTypes = notDataTypes
             default:
                 break
