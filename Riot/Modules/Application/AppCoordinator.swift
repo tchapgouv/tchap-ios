@@ -333,7 +333,7 @@ extension AppCoordinator: LegacyAppDelegateDelegate {
 // MARK: - SplitViewCoordinatorDelegate
 extension AppCoordinator: SplitViewCoordinatorDelegate {
     func splitViewCoordinatorDidCompleteAuthentication(_ coordinator: SplitViewCoordinatorType) {
-//        self.legacyAppDelegate.authenticationDidComplete()
+        self.legacyAppDelegate.authenticationDidComplete()
     }
 }
 
