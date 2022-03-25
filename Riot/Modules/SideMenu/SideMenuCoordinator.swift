@@ -178,6 +178,7 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
     
     private func createSettingsViewController() -> SettingsViewController {
         let viewController: SettingsViewController = SettingsViewController.instantiate()
+        viewController.delegate = self
         viewController.loadViewIfNeeded()
         return viewController
     }
@@ -386,5 +387,14 @@ extension SideMenuCoordinator: UIAdaptivePresentationControllerDelegate {
     func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
 //        self.exploreRoomCoordinator = nil
 //        self.membersCoordinator = nil
+    }
+}
+
+// MARK: - SettingsViewControllerDelegate
+extension SideMenuCoordinator: SettingsViewControllerDelegate {
+    func settingsViewController(_ settingsViewController: SettingsViewController!,
+                                reloadMatrixSessionsByClearingCache clearCache: Bool) {
+        settingsViewController.navigationController?.popToRootViewController(animated: true)
+        AppDelegate.theDelegate().reloadMatrixSessions(clearCache)
     }
 }
