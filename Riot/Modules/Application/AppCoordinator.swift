@@ -293,11 +293,6 @@ extension AppCoordinator: AppVersionUpdateCoordinatorDelegate {
 
 // MARK: - LegacyAppDelegateDelegate
 extension AppCoordinator: LegacyAppDelegateDelegate {
-    func legacyAppDelegate(_ legacyAppDelegate: LegacyAppDelegate!, wantsToShowRoom roomID: String!, completion: (() -> Void)!) {
-//        _ = self.showRoom(with: roomID)
-        completion?()
-    }
-            
     func legacyAppDelegate(_ legacyAppDelegate: LegacyAppDelegate!, wantsToPopToHomeViewControllerAnimated animated: Bool, completion: (() -> Void)!) {
         
         MXLog.debug("[AppCoordinator] wantsToPopToHomeViewControllerAnimated")
