@@ -69,7 +69,8 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
         .home: [.invited, .favorited, .directHome, .conversationHome, .lowPriority, .serverNotice, .suggested],
         .favourites: [.favorited],
         .people: [.directPeople],
-        .rooms: [.all]//[.conversationRooms, .suggested]
+        .rooms: [.conversationRooms, .suggested,
+            .invited, .favorited, .directHome, .directPeople, .conversationHome, .serverNotice]
     ]
     
     private var allFetchers: [MXRoomListDataFetcher] {
