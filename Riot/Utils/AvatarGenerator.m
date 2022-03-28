@@ -89,11 +89,11 @@ static UILabel* backgroundLabel = nil;
     if (!backgroundLabel)
     {
         backgroundLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
-        backgroundLabel.textColor = ThemeService.shared.theme.backgroundColor;
         backgroundLabel.textAlignment = NSTextAlignmentCenter;
         backgroundLabel.font = [UIFont boldSystemFontOfSize:25];
     }
     
+    backgroundLabel.textColor = ThemeService.shared.theme.backgroundColor;
     backgroundLabel.text = text;
     backgroundLabel.backgroundColor = color;
     
@@ -152,11 +152,15 @@ static UILabel* backgroundLabel = nil;
 + (UIImage*)avatarForText:(NSString*)text andColorIndex:(NSUInteger)colorIndex
 {
     NSString* firstChar = [AvatarGenerator firstChar:text];
+    NSString* mode = @"";
+    if (@available(iOS 13.0, *)) {
+        mode = UITraitCollection.currentTraitCollection.userInterfaceStyle == UIUserInterfaceStyleDark ? @"dark" : @"light";
+    }
     
     // the images are cached to avoid create them several times
     // the key is <first upper character><index in the colors array>
     // it should be smaller than using the text as a key
-    NSString* key = [NSString stringWithFormat:@"%@%tu", firstChar, colorIndex];
+    NSString* key = [NSString stringWithFormat:@"%@%tu%@", firstChar, colorIndex, mode];
     
     if (!imageByKeyDict)
     {

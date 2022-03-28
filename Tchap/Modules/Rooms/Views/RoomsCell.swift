@@ -94,6 +94,8 @@ import UIKit
         
         self.lastEventDate?.text = roomCellData.lastEventDate
         
+        self.update(theme: ThemeService.shared().theme)
+        
         // Notify unreads and bing
         if roomCellData.hasUnread {
             self.titleLabel.font = UIFont.systemFont(ofSize: 15, weight: .bold)

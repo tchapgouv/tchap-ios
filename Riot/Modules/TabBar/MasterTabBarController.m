@@ -890,7 +890,7 @@
             self.tabBar.items[itemIndex].badgeColor = badgeColor;
             
             [self.tabBar.items[itemIndex] setBadgeTextAttributes:@{
-                                                               NSForegroundColorAttributeName: ThemeService.shared.theme.baseTextPrimaryColor
+                                                               NSForegroundColorAttributeName: ThemeService.shared.theme.baseIconPrimaryColor
                                                                }
                                                     forState:UIControlStateNormal];
         }
@@ -913,7 +913,7 @@
             self.tabBar.items[itemIndex].badgeColor = badgeColor;
             
             [self.tabBar.items[itemIndex] setBadgeTextAttributes:@{
-                                                               NSForegroundColorAttributeName: ThemeService.shared.theme.baseTextPrimaryColor
+                                                               NSForegroundColorAttributeName: ThemeService.shared.theme.baseIconPrimaryColor
                                                                }
                                                     forState:UIControlStateNormal];
         }

@@ -72,6 +72,7 @@ final class RoomCreationAvatarView: UIView, NibLoadable {
         self.hexagonBorderColor = color
         self.hexagonBorderWidth = width
         self.updateBackgroundView()
+        self.update(theme: ThemeService.shared().theme)
     }
     
     // MARK: - Private

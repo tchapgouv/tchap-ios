@@ -111,10 +111,17 @@ final class RoomCreationViewController: UIViewController {
         
         self.updateTheme()
         self.keyboardAvoider?.startAvoiding()
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(updateTheme),
+                                               name: Notification.Name.themeServiceDidChangeTheme,
+                                               object: nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        NotificationCenter.default.removeObserver(self,
+                                                  name: Notification.Name.themeServiceDidChangeTheme,
+                                                  object: nil)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -329,7 +336,7 @@ final class RoomCreationViewController: UIViewController {
 
 // MARK: - Theme
 private extension RoomCreationViewController {
-    func updateTheme() {
+    @objc func updateTheme() {
         self.view.backgroundColor = ThemeService.shared().theme.backgroundColor
         
         if let navigationBar = self.navigationController?.navigationBar {
@@ -360,6 +367,8 @@ private extension RoomCreationViewController {
         self.roomTypeTitleLabel.textColor = ThemeService.shared().theme.headerTextPrimaryColor
         
         self.disablePublicRoomFederationSwitch.onTintColor = ThemeService.shared().theme.roomTypePublic
+        
+        refreshAvatarView()
     }
 }
 
