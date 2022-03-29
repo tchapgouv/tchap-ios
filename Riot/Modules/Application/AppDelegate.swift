@@ -18,7 +18,7 @@ import UIKit
 import PushKit
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, PushNotificationServiceDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // MARK: - Properties
 
@@ -124,10 +124,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PushNotificationServiceDe
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         self.legacyAppDelegate.application(application, didReceiveRemoteNotification: userInfo, fetchCompletionHandler: completionHandler)
-    }
-    
-    @objc func pushNotificationService(_ pushNotificationService: PushNotificationService, shouldNavigateToRoomWithId roomId: String) {
-        self.legacyAppDelegate.lastNavigatedRoomIdFromPush = roomId
-//        _ = self.appCoordinator.resumeBySelectingRoom(with: roomId)
     }
 }
