@@ -45,7 +45,8 @@ class DefaultTheme: NSObject, Theme {
     var textTertiaryColor: UIColor = UIColor(rgb: 0x8D99A5)
     var textQuinaryColor: UIColor = UIColor(rgb: 0xE3E8F0)
 
-    var tintColor: UIColor = UIColor(rgb: 0x162d58)   //
+    var tintColor: UIColor = UIColor(rgb: 0x000091)   // 
+    var tintContrastColor: UIColor = .white
     var tintBackgroundColor: UIColor = UIColor(rgb: 0xEEFDFF) //
     var tabBarUnselectedItemTintColor: UIColor = UIColor(rgb: 0xC1C6CD)
     var unreadRoomIndentColor: UIColor = UIColor(rgb: 0x2E3648)
@@ -62,7 +63,7 @@ class DefaultTheme: NSObject, Theme {
         UIColor(rgb: 0x8b8999)] //
     
     var userNameColors: [UIColor] = [
-        UIColor(rgb: 0x124a9d)  //
+        UIColor(rgb: 0x000091)  //
     ]
 
     var statusBarStyle: UIStatusBarStyle = .default //

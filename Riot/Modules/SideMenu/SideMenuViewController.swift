@@ -74,6 +74,7 @@ final class SideMenuViewController: UIViewController {
         self.errorPresenter = MXKErrorAlertPresentation()
         
         self.registerThemeServiceDidChangeThemeNotification()
+        self.theme = ThemeService.shared().theme
         self.update(theme: self.theme)
         
         self.viewModel.viewDelegate = self

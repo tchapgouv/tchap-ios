@@ -45,6 +45,7 @@ import DesignKit
     var textQuinaryColor: UIColor { get }
 
     var tintColor: UIColor { get }
+    var tintContrastColor: UIColor { get }
     var tintBackgroundColor: UIColor { get }
     
     var tabBarUnselectedItemTintColor: UIColor { get }

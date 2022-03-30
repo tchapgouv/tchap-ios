@@ -163,7 +163,7 @@ extension RoomsCell: Themable {
         self.lastEventDescription?.textColor = theme.textSecondaryColor
         self.lastEventDate?.textColor = theme.textSecondaryColor
         self.missedNotifAndUnreadBadgeBgView?.backgroundColor = theme.tintColor
-        self.missedNotifAndUnreadBadgeLabel?.textColor = theme.headerBackgroundColor
+        self.missedNotifAndUnreadBadgeLabel?.textColor = theme.tintContrastColor
         
         self.avatarView?.defaultBackgroundColor = UIColor.clear
         
