@@ -34,7 +34,7 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
     private let identityServer: String
     
     private weak var homeViewController: HomeViewController?
-    private weak var roomsCoordinator: RoomsCoordinatorType?
+//    private weak var roomsCoordinator: RoomsCoordinatorType?
     private weak var contactsCoordinator: ContactsCoordinatorType?
     
     private let activityIndicatorPresenter: ActivityIndicatorPresenterType
@@ -67,17 +67,17 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
     // MARK: - Public methods
     
     func start() {
-        let roomsCoordinator = RoomsCoordinator(router: self.navigationRouter, session: self.session)
+//        let roomsCoordinator = RoomsCoordinator(router: self.navigationRouter, session: self.session)
         let contactsCoordinator = ContactsCoordinator(router: self.navigationRouter, session: self.session)
         
-        roomsCoordinator.delegate = self
+//        roomsCoordinator.delegate = self
         contactsCoordinator.delegate = self
         
-        self.add(childCoordinator: roomsCoordinator)
+//        self.add(childCoordinator: roomsCoordinator)
         self.add(childCoordinator: contactsCoordinator)
         
-        let viewControllers = [roomsCoordinator.toPresentable(), contactsCoordinator.toPresentable()]
-        let viewControllersTitles = [TchapL10n.conversationsTabTitle, TchapL10n.contactsTabTitle]
+        let viewControllers = [/*roomsCoordinator.toPresentable(),*/ contactsCoordinator.toPresentable()]
+        let viewControllersTitles = [/*TchapL10n.conversationsTabTitle, */ TchapL10n.contactsTabTitle]
         
         let globalSearchBar = GlobalSearchBar.instantiate()
         globalSearchBar.delegate = self
@@ -88,10 +88,10 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
         
         self.navigationRouter.setRootModule(segmentedViewController)
         
-        roomsCoordinator.start()
+//        roomsCoordinator.start()
         contactsCoordinator.start()
         
-        self.roomsCoordinator = roomsCoordinator
+//        self.roomsCoordinator = roomsCoordinator
         self.contactsCoordinator = contactsCoordinator
         self.homeViewController = segmentedViewController
         self.errorPresenter = AlertErrorPresenter(viewControllerPresenter: segmentedViewController)
@@ -102,7 +102,7 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
     }
     
     func showRoom(with roomID: String, onEventID eventID: String? = nil) {
-        AppDelegate.theDelegate().removeDeliveredNotifications(withRoomId: roomID, completion: nil)
+//        AppDelegate.theDelegate().removeDeliveredNotifications(withRoomId: roomID, completion: nil)
         
         self.navigationRouter.popToRootModule(animated: false)
         
@@ -179,7 +179,7 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
     
     func scrollToRoom(with roomID: String, animated: Bool) {
         self.homeViewController?.setSelectedTabIndex(0)
-        self.roomsCoordinator?.scrollToRoom(with: roomID, animated: animated)
+//        self.roomsCoordinator?.scrollToRoom(with: roomID, animated: animated)
     }
     
     func overrideContactManagerUsersDiscovery(_ isOverridden: Bool) {
@@ -381,17 +381,17 @@ extension HomeCoordinator: SettingsCoordinatorDelegate {
 // MARK: - GlobalSearchBarDelegate
 extension HomeCoordinator: GlobalSearchBarDelegate {
     func globalSearchBar(_ globalSearchBar: GlobalSearchBar, textDidChange searchText: String?) {
-        self.roomsCoordinator?.updateSearchText(searchText)
+//        self.roomsCoordinator?.updateSearchText(searchText)
         self.contactsCoordinator?.updateSearchText(searchText)
     }
 }
 
 // MARK: - RoomsCoordinatorDelegate
-extension HomeCoordinator: RoomsCoordinatorDelegate {
-    func roomsCoordinator(_ coordinator: RoomsCoordinatorType, didSelectRoomID roomID: String) {
-        self.showRoom(with: roomID)
-    }
-}
+//extension HomeCoordinator: RoomsCoordinatorDelegate {
+//    func roomsCoordinator(_ coordinator: RoomsCoordinatorType, didSelectRoomID roomID: String) {
+//        self.showRoom(with: roomID)
+//    }
+//}
 
 // MARK: - ContactsCoordinatorDelegate
 extension HomeCoordinator: ContactsCoordinatorDelegate {

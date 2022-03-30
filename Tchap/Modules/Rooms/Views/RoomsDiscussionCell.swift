@@ -40,4 +40,11 @@ import UIKit
         super.update(theme: theme)
         self.domainLabel.textColor = theme.textTertiaryColor
     }
+    
+    // swiftlint:disable force_cast
+    func renderedCellData() -> MXKCellData! {
+        return (roomCellData as! MXKCellData)
+    }
+    // swiftlint:enable force_cast
+
 }

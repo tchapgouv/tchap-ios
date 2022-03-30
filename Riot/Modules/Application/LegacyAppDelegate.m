@@ -28,9 +28,9 @@
 
 #import "RoomViewController.h"
 
-#import "DirectoryViewController.h"
+//#import "DirectoryViewController.h"
 #import "SettingsViewController.h"
-#import "ContactDetailsViewController.h"
+//#import "ContactDetailsViewController.h"
 
 #import "BugReportViewController.h"
 #import "RoomKeyRequestViewController.h"
@@ -85,7 +85,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 
 NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUniversalLinkDidChangeNotification";
 
-@interface LegacyAppDelegate () <GDPRConsentViewControllerDelegate, KeyVerificationCoordinatorBridgePresenterDelegate, PushNotificationServiceDelegate, SetPinCoordinatorBridgePresenterDelegate, CallPresenterDelegate, SpaceDetailPresenterDelegate>
+@interface LegacyAppDelegate () <GDPRConsentViewControllerDelegate, KeyVerificationCoordinatorBridgePresenterDelegate, PushNotificationServiceDelegate/*, SetPinCoordinatorBridgePresenterDelegate, CallPresenterDelegate, SpaceDetailPresenterDelegate*/>
 {
     /**
      Reachability observer
@@ -200,13 +200,14 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 @property (weak, nonatomic) UIAlertController *incomingKeyVerificationRequestAlertController;
 
 @property (nonatomic, strong) SlidingModalPresenter *slidingModalPresenter;
-@property (nonatomic, strong) SetPinCoordinatorBridgePresenter *setPinCoordinatorBridgePresenter;
-@property (nonatomic, strong) SpaceDetailPresenter *spaceDetailPresenter;
+//@property (nonatomic, strong) SetPinCoordinatorBridgePresenter *setPinCoordinatorBridgePresenter;
+// Tchap: Disable Spaces
+//@property (nonatomic, strong) SpaceDetailPresenter *spaceDetailPresenter;
 
 /**
  Used to manage on boarding steps, like create DM with riot bot
  */
-@property (strong, nonatomic) OnBoardingManager *onBoardingManager;
+//@property (strong, nonatomic) OnBoardingManager *onBoardingManager;
 
 @property (nonatomic, weak) id userDidSignInOnNewDeviceObserver;
 @property (weak, nonatomic) UIAlertController *userNewSignInAlertController;
@@ -218,12 +219,13 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
  */
 @property (nonatomic, strong) PushNotificationService *pushNotificationService;
 @property (nonatomic, strong) PushNotificationStore *pushNotificationStore;
-@property (nonatomic, strong) LocalAuthenticationService *localAuthenticationService;
+//@property (nonatomic, strong) LocalAuthenticationService *localAuthenticationService;
 @property (nonatomic, strong, readwrite) CallPresenter *callPresenter;
 
-@property (nonatomic, strong) MajorUpdateManager *majorUpdateManager;
+//@property (nonatomic, strong) MajorUpdateManager *majorUpdateManager;
 
-@property (nonatomic, strong) SpaceFeatureUnavailablePresenter *spaceFeatureUnavailablePresenter;
+// Tchap: Disable Spaces
+//@property (nonatomic, strong) SpaceFeatureUnavailablePresenter *spaceFeatureUnavailablePresenter;
 
 @property (nonatomic, strong) AppInfo *appInfo;
 
@@ -455,16 +457,18 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     
     [analytics startIfEnabled];
 
-    self.localAuthenticationService = [[LocalAuthenticationService alloc] initWithPinCodePreferences:[PinCodePreferences shared]];
+//    self.localAuthenticationService = [[LocalAuthenticationService alloc] initWithPinCodePreferences:[PinCodePreferences shared]];
     
-    self.callPresenter = [[CallPresenter alloc] init];
-    self.callPresenter.delegate = self;
+    // Tchap: Disable Calls
+//    self.callPresenter = [[CallPresenter alloc] init];
+//    self.callPresenter.delegate = self;
 
     self.pushNotificationStore = [PushNotificationStore new];
     self.pushNotificationService = [[PushNotificationService alloc] initWithPushNotificationStore:self.pushNotificationStore];
     self.pushNotificationService.delegate = self;
         
-    self.spaceFeatureUnavailablePresenter = [SpaceFeatureUnavailablePresenter new];
+    // Tchap: Disable Spaces
+//    self.spaceFeatureUnavailablePresenter = [SpaceFeatureUnavailablePresenter new];
     
     // Add matrix observers, and initialize matrix sessions if the app is not launched in background.
     [self initMatrixSessions];
@@ -476,7 +480,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [JitsiService.shared application:application didFinishLaunchingWithOptions:launchOptions];
 #endif
     
-    self.majorUpdateManager = [MajorUpdateManager new];
+//    self.majorUpdateManager = [MajorUpdateManager new];
 
     MXLogDebug(@"[AppDelegate] didFinishLaunchingWithOptions: Done in %.0fms", [[NSDate date] timeIntervalSinceDate:startDate] * 1000);
 
@@ -533,18 +537,19 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         wrongBackupVersionAlert = nil;
     }
     
-    if ([self.localAuthenticationService isProtectionSet] && ![BiometricsAuthenticationPresenter isPresenting])
-    {
-        if (self.setPinCoordinatorBridgePresenter)
-        {
-            //  it's already on screen, convert the viewMode
-            self.setPinCoordinatorBridgePresenter.viewMode = SetPinCoordinatorViewModeInactive;
-            return;
-        }
-        self.setPinCoordinatorBridgePresenter = [[SetPinCoordinatorBridgePresenter alloc] initWithSession:mxSessionArray.firstObject viewMode:SetPinCoordinatorViewModeInactive];
-        self.setPinCoordinatorBridgePresenter.delegate = self;
-        [self.setPinCoordinatorBridgePresenter presentIn:self.window];
-    }
+    // Tchap: Disable Biometrics & Pin Code
+//    if ([self.localAuthenticationService isProtectionSet] && ![BiometricsAuthenticationPresenter isPresenting])
+//    {
+//        if (self.setPinCoordinatorBridgePresenter)
+//        {
+//            //  it's already on screen, convert the viewMode
+//            self.setPinCoordinatorBridgePresenter.viewMode = SetPinCoordinatorViewModeInactive;
+//            return;
+//        }
+//        self.setPinCoordinatorBridgePresenter = [[SetPinCoordinatorBridgePresenter alloc] initWithSession:mxSessionArray.firstObject viewMode:SetPinCoordinatorViewModeInactive];
+//        self.setPinCoordinatorBridgePresenter.delegate = self;
+//        [self.setPinCoordinatorBridgePresenter presentIn:self.window];
+//    }
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
@@ -631,27 +636,28 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 - (void)configurePinCodeScreenFor:(UIApplication *)application
                  createIfRequired:(BOOL)createIfRequired
 {
-    if ([self.localAuthenticationService shouldShowPinCode])
-    {
-        if (self.setPinCoordinatorBridgePresenter)
-        {
-            //  it's already on screen, convert the viewMode
-            self.setPinCoordinatorBridgePresenter.viewMode = SetPinCoordinatorViewModeUnlock;
-            return;
-        }
-        if (createIfRequired)
-        {
-            self.setPinCoordinatorBridgePresenter = [[SetPinCoordinatorBridgePresenter alloc] initWithSession:mxSessionArray.firstObject viewMode:SetPinCoordinatorViewModeUnlock];
-            self.setPinCoordinatorBridgePresenter.delegate = self;
-            [self.setPinCoordinatorBridgePresenter presentIn:self.window];
-        }
-    }
-    else
-    {
-        [self.setPinCoordinatorBridgePresenter dismiss];
-        self.setPinCoordinatorBridgePresenter = nil;
-        [self afterAppUnlockedByPin:application];
-    }
+    // Tchap: Disable Biometrics & Pin Code
+//    if ([self.localAuthenticationService shouldShowPinCode])
+//    {
+//        if (self.setPinCoordinatorBridgePresenter)
+//        {
+//            //  it's already on screen, convert the viewMode
+//            self.setPinCoordinatorBridgePresenter.viewMode = SetPinCoordinatorViewModeUnlock;
+//            return;
+//        }
+//        if (createIfRequired)
+//        {
+//            self.setPinCoordinatorBridgePresenter = [[SetPinCoordinatorBridgePresenter alloc] initWithSession:mxSessionArray.firstObject viewMode:SetPinCoordinatorViewModeUnlock];
+//            self.setPinCoordinatorBridgePresenter.delegate = self;
+//            [self.setPinCoordinatorBridgePresenter presentIn:self.window];
+//        }
+//    }
+//    else
+//    {
+//        [self.setPinCoordinatorBridgePresenter dismiss];
+//        self.setPinCoordinatorBridgePresenter = nil;
+//        [self afterAppUnlockedByPin:application];
+//    }
 }
 
 - (void)afterAppUnlockedByPin:(UIApplication *)application
@@ -1363,15 +1369,15 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 {
                     room = [account.mxSession roomWithRoomId:roomId];
                 }
-                
-                if (room.summary.roomType == MXRoomTypeSpace)
-                {
-                    SpaceNavigationParameters *spaceNavigationParameters = [[SpaceNavigationParameters alloc] initWithRoomId:room.roomId mxSession:account.mxSession presentationParameters:presentationParameters];
-                    
-                    [self showSpaceWithParameters:spaceNavigationParameters];
-                }
-                else
-                {
+                // Tchap: Disable Spaces
+//                if (room.summary.roomType == MXRoomTypeSpace)
+//                {
+//                    SpaceNavigationParameters *spaceNavigationParameters = [[SpaceNavigationParameters alloc] initWithRoomId:room.roomId mxSession:account.mxSession presentationParameters:presentationParameters];
+//
+//                    [self showSpaceWithParameters:spaceNavigationParameters];
+//                }
+//                else
+//                {
                     // Open the room page
                     if (eventId)
                     {
@@ -1433,7 +1439,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                         
                         [self showRoomWithParameters:parameters];
                     }
-                }
+//                }
                 
                 continueUserActivity = YES;
             }
@@ -1542,18 +1548,19 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                             RoomPreviewNavigationParameters *roomPreviewNavigationParameters = [[RoomPreviewNavigationParameters alloc] initWithPreviewData:roomPreviewData presentationParameters:presentationParameters];
                             
                             [account.mxSession.matrixRestClient roomSummaryWith:roomIdOrAlias via:roomPreviewData.viaServers success:^(MXPublicRoom *room) {
-                                if ([room.roomTypeString isEqualToString:MXRoomTypeStringSpace])
-                                {
-                                    [homeViewController stopActivityIndicator];
-                                    
-                                    SpacePreviewNavigationParameters *spacePreviewNavigationParameters = [[SpacePreviewNavigationParameters alloc] initWithPublicRoom:room mxSession:account.mxSession presentationParameters:presentationParameters];
-                                    
-                                    [self showSpacePreviewWithParameters:spacePreviewNavigationParameters];  
-                                }
-                                else
-                                {
+                                // Tchap: Disable Spaces
+//                                if ([room.roomTypeString isEqualToString:MXRoomTypeStringSpace])
+//                                {
+//                                    [homeViewController stopActivityIndicator];
+//
+//                                    SpacePreviewNavigationParameters *spacePreviewNavigationParameters = [[SpacePreviewNavigationParameters alloc] initWithPublicRoom:room mxSession:account.mxSession presentationParameters:presentationParameters];
+//
+//                                    [self showSpacePreviewWithParameters:spacePreviewNavigationParameters];
+//                                }
+//                                else
+//                                {
                                     [self peekInRoomWithNavigationParameters:roomPreviewNavigationParameters pathParams:pathParams];
-                                }
+//                                }
                             } failure:^(NSError *error) {
                                 [self peekInRoomWithNavigationParameters:roomPreviewNavigationParameters pathParams:pathParams];
                             }];
@@ -1841,7 +1848,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         else
         {
             [_masterTabBarController showOnboardingFlow];
-            [_masterTabBarController.onboardingCoordinatorBridgePresenter updateHomeserver:homeserver andIdentityServer:identityServer];
+//            [_masterTabBarController.onboardingCoordinatorBridgePresenter updateHomeserver:homeserver andIdentityServer:identityServer];
         }
 
         return YES;
@@ -1929,7 +1936,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         else if (mxSession.state == MXSessionStateStoreDataReady)
         {
             //  start the call service
-            [self.callPresenter start];
+            // Tchap: Disable Calls
+//            [self.callPresenter start];
             
             // Look for the account related to this session.
             NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
@@ -2122,7 +2130,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         [[WidgetManager sharedManager] addMatrixSession:mxSession];
         
         // register the session to the call service
-        [_callPresenter addMatrixSession:mxSession];
+        // Tchap: Disable Calls
+//        [_callPresenter addMatrixSession:mxSession];
         
         [mxSessionArray addObject:mxSession];
         
@@ -2138,7 +2147,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [[MXKContactManager sharedManager] removeMatrixSession:mxSession];
     
     // remove session from the call service
-    [_callPresenter removeMatrixSession:mxSession];
+    // Tchap: Disable Calls
+//    [_callPresenter removeMatrixSession:mxSession];
 
     // Update the widgets manager
     [[WidgetManager sharedManager] removeMatrixSession:mxSession]; 
@@ -2157,7 +2167,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     if (!mxSessionArray.count)
     {
         //  if no session left, stop the call service
-        [self.callPresenter stop];
+        // Tchap: Disable Calls
+//        [self.callPresenter stop];
     }
     
     [self.delegate legacyAppDelegate:self didRemoveMatrixSession:mxSession];
@@ -2302,7 +2313,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [CrossSigningBannerPreferences.shared reset];
     
     // Reset user pin code
-    [PinCodePreferences.shared reset];
+    // Tchap: Disable Biometrics & Pin Code
+//    [PinCodePreferences.shared reset];
     
     //  Reset push notification store
     [self.pushNotificationStore reset];
@@ -2432,11 +2444,12 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         void (^finishAppLaunch)(void) = ^{
             [self hideLaunchAnimation];
             
-            if (self.setPinCoordinatorBridgePresenter)
-            {
-                MXLogDebug(@"[AppDelegate] handleAppState: PIN code is presented. Do not go further");
-                return;
-            }
+            // Tchap: Disable Biometrics & Pin Code
+//            if (self.setPinCoordinatorBridgePresenter)
+//            {
+//                MXLogDebug(@"[AppDelegate] handleAppState: PIN code is presented. Do not go further");
+//                return;
+//            }
             
             MXLogDebug(@"[AppDelegate] handleAppState: Check cross-signing");
             [self checkCrossSigningForSession:mainSession];
@@ -2477,41 +2490,43 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 - (void)showLaunchAnimation
 {
-    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
-    
-    if (!launchAnimationContainerView && window)
-    {
-        MXLogDebug(@"[AppDelegate] showLaunchAnimation");
-        
-        LaunchLoadingView *launchLoadingView = [LaunchLoadingView instantiate];
-        launchLoadingView.frame = window.bounds;
-        [launchLoadingView updateWithTheme:ThemeService.shared.theme];
-        launchLoadingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        
-        [window addSubview:launchLoadingView];
-        
-        launchAnimationContainerView = launchLoadingView;
-        
-        [MXSDKOptions.sharedInstance.profiler startMeasuringTaskWithName:MXTaskProfileNameStartupLaunchScreen];
-    }
+    // Tchap: Don't show Element Launch animation.
+//    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+//
+//    if (!launchAnimationContainerView && window)
+//    {
+//        MXLogDebug(@"[AppDelegate] showLaunchAnimation");
+//
+//        LaunchLoadingView *launchLoadingView = [LaunchLoadingView instantiate];
+//        launchLoadingView.frame = window.bounds;
+//        [launchLoadingView updateWithTheme:ThemeService.shared.theme];
+//        launchLoadingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+//
+//        [window addSubview:launchLoadingView];
+//
+//        launchAnimationContainerView = launchLoadingView;
+//
+//        [MXSDKOptions.sharedInstance.profiler startMeasuringTaskWithName:MXTaskProfileNameStartupLaunchScreen];
+//    }
 }
 
 - (void)hideLaunchAnimation
 {
-    if (launchAnimationContainerView)
-    {
-        id<MXProfiler> profiler = MXSDKOptions.sharedInstance.profiler;
-        MXTaskProfile *launchTaskProfile = [profiler taskProfileWithName:MXTaskProfileNameStartupLaunchScreen];
-        if (launchTaskProfile)
-        {
-            [profiler stopMeasuringTaskWithProfile:launchTaskProfile];
-            
-            MXLogDebug(@"[AppDelegate] hideLaunchAnimation: LaunchAnimation was shown for %.3fms", launchTaskProfile.duration * 1000);
-        }
-        
-        [self->launchAnimationContainerView removeFromSuperview];
-        self->launchAnimationContainerView = nil;
-    }
+    // Tchap: Don't show Element Launch animation.
+//    if (launchAnimationContainerView)
+//    {
+//        id<MXProfiler> profiler = MXSDKOptions.sharedInstance.profiler;
+//        MXTaskProfile *launchTaskProfile = [profiler taskProfileWithName:MXTaskProfileNameStartupLaunchScreen];
+//        if (launchTaskProfile)
+//        {
+//            [profiler stopMeasuringTaskWithProfile:launchTaskProfile];
+//
+//            MXLogDebug(@"[AppDelegate] hideLaunchAnimation: LaunchAnimation was shown for %.3fms", launchTaskProfile.duration * 1000);
+//        }
+//
+//        [self->launchAnimationContainerView removeFromSuperview];
+//        self->launchAnimationContainerView = nil;
+//    }
 }
 
 - (void)configureCallManagerIfRequiredForSession:(MXSession *)mxSession
@@ -2940,7 +2955,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         if (room.summary.roomType == MXRoomTypeSpace)
         {
             
-            [self.spaceFeatureUnavailablePresenter presentUnavailableFeatureFrom:self.presentedViewController animated:YES];
+            // Tchap: Disable Spaces
+//            [self.spaceFeatureUnavailablePresenter presentUnavailableFeatureFrom:self.presentedViewController animated:YES];
             
             if (completion)
             {
@@ -3026,78 +3042,80 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 - (void)showSpacePreviewWithParameters:(SpacePreviewNavigationParameters*)parameters
 {
-    UIViewController *presentingViewController;
-    UIView *sourceView;
-    
-    if (parameters.presentationParameters.presentingViewController)
-    {
-        presentingViewController = parameters.presentationParameters.presentingViewController;
-        sourceView = parameters.presentationParameters.sourceView;
-    }
-    else
-    {
-        presentingViewController = self.masterNavigationController;
-    }
-    
-    self.spaceDetailPresenter = [SpaceDetailPresenter new];
-    self.spaceDetailPresenter.delegate = self;
-    
-    void(^showSpace)(void) = ^{
-        [self.spaceDetailPresenter presentForSpaceWithPublicRoom:parameters.publicRoom
-                                                            from:presentingViewController
-                                                      sourceView:sourceView
-                                                         session:parameters.mxSession 
-                                                        animated:YES];
-    };
-    
-    if (parameters.presentationParameters.restoreInitialDisplay)
-    {
-        [self restoreInitialDisplay:^{
-            showSpace();
-        }];
-    }
-    else
-    {
-        showSpace();
-    }
+    // Tchap: Disable Spaces
+//    UIViewController *presentingViewController;
+//    UIView *sourceView;
+//
+//    if (parameters.presentationParameters.presentingViewController)
+//    {
+//        presentingViewController = parameters.presentationParameters.presentingViewController;
+//        sourceView = parameters.presentationParameters.sourceView;
+//    }
+//    else
+//    {
+//        presentingViewController = self.masterNavigationController;
+//    }
+//
+//    self.spaceDetailPresenter = [SpaceDetailPresenter new];
+//    self.spaceDetailPresenter.delegate = self;
+//
+//    void(^showSpace)(void) = ^{
+//        [self.spaceDetailPresenter presentForSpaceWithPublicRoom:parameters.publicRoom
+//                                                            from:presentingViewController
+//                                                      sourceView:sourceView
+//                                                         session:parameters.mxSession
+//                                                        animated:YES];
+//    };
+//
+//    if (parameters.presentationParameters.restoreInitialDisplay)
+//    {
+//        [self restoreInitialDisplay:^{
+//            showSpace();
+//        }];
+//    }
+//    else
+//    {
+//        showSpace();
+//    }
 }
 
 - (void)showSpaceWithParameters:(SpaceNavigationParameters*)parameters
 {
-    UIViewController *presentingViewController;
-    UIView *sourceView;
-    
-    if (parameters.presentationParameters.presentingViewController)
-    {
-        presentingViewController = parameters.presentationParameters.presentingViewController;
-        sourceView = parameters.presentationParameters.sourceView;
-    }
-    else
-    {
-        presentingViewController = self.masterNavigationController;
-    }
-
-    self.spaceDetailPresenter = [SpaceDetailPresenter new];
-    self.spaceDetailPresenter.delegate = self;
-    
-    void(^showSpace)(void) = ^{
-        [self.spaceDetailPresenter presentForSpaceWithId:parameters.roomId
-                                                    from:presentingViewController
-                                              sourceView:sourceView
-                                                 session:parameters.mxSession
-                                                animated:YES];
-    };
-    
-    if (parameters.presentationParameters.restoreInitialDisplay)
-    {
-        [self restoreInitialDisplay:^{
-            showSpace();
-        }];
-    }
-    else
-    {
-        showSpace();
-    }
+    // Tchap: Disable Spaces
+//    UIViewController *presentingViewController;
+//    UIView *sourceView;
+//
+//    if (parameters.presentationParameters.presentingViewController)
+//    {
+//        presentingViewController = parameters.presentationParameters.presentingViewController;
+//        sourceView = parameters.presentationParameters.sourceView;
+//    }
+//    else
+//    {
+//        presentingViewController = self.masterNavigationController;
+//    }
+//
+//    self.spaceDetailPresenter = [SpaceDetailPresenter new];
+//    self.spaceDetailPresenter.delegate = self;
+//
+//    void(^showSpace)(void) = ^{
+//        [self.spaceDetailPresenter presentForSpaceWithId:parameters.roomId
+//                                                    from:presentingViewController
+//                                              sourceView:sourceView
+//                                                 session:parameters.mxSession
+//                                                animated:YES];
+//    };
+//
+//    if (parameters.presentationParameters.restoreInitialDisplay)
+//    {
+//        [self restoreInitialDisplay:^{
+//            showSpace();
+//        }];
+//    }
+//    else
+//    {
+//        showSpace();
+//    }
 }
 
 - (void)setVisibleRoomId:(NSString *)roomId
@@ -4380,20 +4398,20 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     if (botCreationEnabled)
     {
         // And create the room with riot bot in //
-        self.onBoardingManager = [[OnBoardingManager alloc] initWithSession:session];
+//        self.onBoardingManager = [[OnBoardingManager alloc] initWithSession:session];
         
         MXWeakify(self);
         void (^createRiotBotDMcompletion)(void) = ^() {
             MXStrongifyAndReturnIfNil(self);
 
-            self.onBoardingManager = nil;
+//            self.onBoardingManager = nil;
         };
         
-        [self.onBoardingManager createRiotBotDirectMessageIfNeededWithSuccess:^{
-            createRiotBotDMcompletion();
-        } failure:^(NSError * _Nonnull error) {
-            createRiotBotDMcompletion();
-        }];
+//        [self.onBoardingManager createRiotBotDirectMessageIfNeededWithSuccess:^{
+//            createRiotBotDMcompletion();
+//        } failure:^(NSError * _Nonnull error) {
+//            createRiotBotDMcompletion();
+//        }];
     }
 }
 
@@ -4440,80 +4458,83 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 - (void)checkMajorUpdate
 {
-    if (self.majorUpdateManager.shouldShowMajorUpdate)
-    {
-        // When you do not understand why the UI does not work as expected...
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self showMajorUpdate];
-        });
-    }
+    // Tchap: Disable Major Update
+//    if (self.majorUpdateManager.shouldShowMajorUpdate)
+//    {
+//        // When you do not understand why the UI does not work as expected...
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            [self showMajorUpdate];
+//        });
+//    }
 }
 
 - (void)showMajorUpdate
 {
-    if (!self.slidingModalPresenter)
-    {
-        self.slidingModalPresenter = [SlidingModalPresenter new];
-    }
-    
-    [self.slidingModalPresenter dismissWithAnimated:NO completion:nil];
-    
-    MajorUpdateViewController *majorUpdateViewController = [MajorUpdateViewController instantiate];
-    
-    MXWeakify(self);
-    
-    majorUpdateViewController.didTapLearnMoreButton = ^{
-        
-        MXStrongifyAndReturnIfNil(self);
-        
-        [[UIApplication sharedApplication] vc_open:self.majorUpdateManager.learnMoreURL completionHandler:^(BOOL success) {
-            if (!success)
-            {
-                [self showAlertWithTitle:[MatrixKitL10n error] message:[VectorL10n roomMessageUnableOpenLinkErrorMessage]];
-            }
-        }];
-        
-        [self.slidingModalPresenter dismissWithAnimated:YES completion:^{
-        }];
-    };
-    
-    majorUpdateViewController.didTapDoneButton = ^{
-        
-        MXStrongifyAndReturnIfNil(self);
-        
-        [self.slidingModalPresenter dismissWithAnimated:YES completion:^{
-        }];
-    };
-    
-    [self.slidingModalPresenter present:majorUpdateViewController
-                                   from:self.presentedViewController
-                               animated:YES
-                             completion:nil];
+    // Tchap: Disable Major Update
+//    if (!self.slidingModalPresenter)
+//    {
+//        self.slidingModalPresenter = [SlidingModalPresenter new];
+//    }
+//
+//    [self.slidingModalPresenter dismissWithAnimated:NO completion:nil];
+//
+//    MajorUpdateViewController *majorUpdateViewController = [MajorUpdateViewController instantiate];
+//
+//    MXWeakify(self);
+//
+//    majorUpdateViewController.didTapLearnMoreButton = ^{
+//
+//        MXStrongifyAndReturnIfNil(self);
+//
+//        [[UIApplication sharedApplication] vc_open:self.majorUpdateManager.learnMoreURL completionHandler:^(BOOL success) {
+//            if (!success)
+//            {
+//                [self showAlertWithTitle:[MatrixKitL10n error] message:[VectorL10n roomMessageUnableOpenLinkErrorMessage]];
+//            }
+//        }];
+//
+//        [self.slidingModalPresenter dismissWithAnimated:YES completion:^{
+//        }];
+//    };
+//
+//    majorUpdateViewController.didTapDoneButton = ^{
+//
+//        MXStrongifyAndReturnIfNil(self);
+//
+//        [self.slidingModalPresenter dismissWithAnimated:YES completion:^{
+//        }];
+//    };
+//
+//    [self.slidingModalPresenter present:majorUpdateViewController
+//                                   from:self.presentedViewController
+//                               animated:YES
+//                             completion:nil];
 }
 
 #pragma mark - SetPinCoordinatorBridgePresenterDelegate
 
-- (void)setPinCoordinatorBridgePresenterDelegateDidComplete:(SetPinCoordinatorBridgePresenter *)coordinatorBridgePresenter
-{
-    [coordinatorBridgePresenter dismiss];
-    self.setPinCoordinatorBridgePresenter = nil;
-    [self afterAppUnlockedByPin:[UIApplication sharedApplication]];
-}
-
-- (void)setPinCoordinatorBridgePresenterDelegateDidCompleteWithReset:(SetPinCoordinatorBridgePresenter *)coordinatorBridgePresenter dueToTooManyErrors:(BOOL)dueToTooManyErrors
-{
-    if (dueToTooManyErrors)
-    {
-        [self showAlertWithTitle:nil message:[VectorL10n pinProtectionKickUserAlertMessage]];
-        [self logoutWithConfirmation:NO completion:nil];
-    }
-    else
-    {
-        [coordinatorBridgePresenter dismiss];
-        self.setPinCoordinatorBridgePresenter = nil;
-        [self logoutWithConfirmation:NO completion:nil];
-    }
-}
+// Tchap: Disable Biometrics & Pin Code
+//- (void)setPinCoordinatorBridgePresenterDelegateDidComplete:(SetPinCoordinatorBridgePresenter *)coordinatorBridgePresenter
+//{
+//    [coordinatorBridgePresenter dismiss];
+//    self.setPinCoordinatorBridgePresenter = nil;
+//    [self afterAppUnlockedByPin:[UIApplication sharedApplication]];
+//}
+//
+//- (void)setPinCoordinatorBridgePresenterDelegateDidCompleteWithReset:(SetPinCoordinatorBridgePresenter *)coordinatorBridgePresenter dueToTooManyErrors:(BOOL)dueToTooManyErrors
+//{
+//    if (dueToTooManyErrors)
+//    {
+//        [self showAlertWithTitle:nil message:[VectorL10n pinProtectionKickUserAlertMessage]];
+//        [self logoutWithConfirmation:NO completion:nil];
+//    }
+//    else
+//    {
+//        [coordinatorBridgePresenter dismiss];
+//        self.setPinCoordinatorBridgePresenter = nil;
+//        [self logoutWithConfirmation:NO completion:nil];
+//    }
+//}
 
 #pragma mark - CallPresenterDelegate
 
@@ -4597,7 +4618,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         return NO;
     }
     
-    return [bridgePresenter continueSSOLoginWithToken:loginToken transactionID:txnId];
+    // Tchap:
+    return NO;//[bridgePresenter continueSSOLoginWithToken:loginToken transactionID:txnId];
 }
 
 #pragma mark - Private
@@ -4614,46 +4636,47 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 -(void)openSpaceWithId:(NSString *)spaceId
 {
-    MXSession *session = mxSessionArray.firstObject;
-    if ([session.spaceService getSpaceWithId:spaceId]) {
-        [self restoreInitialDisplay:^{
-            [self.delegate legacyAppDelegate:self didNavigateToSpaceWithId:spaceId];
-        }];
-    }
-    else
-    {
-        MXWeakify(self);
-        __block __weak id observer = [[NSNotificationCenter defaultCenter] addObserverForName:MXSpaceService.didBuildSpaceGraph object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
-            MXStrongifyAndReturnIfNil(self);
-            
-            [[NSNotificationCenter defaultCenter] removeObserver:observer];
-            
-            if ([session.spaceService getSpaceWithId:spaceId]) {
-                [self restoreInitialDisplay:^{
-                    [self.delegate legacyAppDelegate:self didNavigateToSpaceWithId:spaceId];
-                }];
-            }
-        }];
-    }
+    // Tchap: Disable Spaces
+//    MXSession *session = mxSessionArray.firstObject;
+//    if ([session.spaceService getSpaceWithId:spaceId]) {
+//        [self restoreInitialDisplay:^{
+//            [self.delegate legacyAppDelegate:self didNavigateToSpaceWithId:spaceId];
+//        }];
+//    }
+//    else
+//    {
+//        MXWeakify(self);
+//        __block __weak id observer = [[NSNotificationCenter defaultCenter] addObserverForName:MXSpaceService.didBuildSpaceGraph object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+//            MXStrongifyAndReturnIfNil(self);
+//
+//            [[NSNotificationCenter defaultCenter] removeObserver:observer];
+//
+//            if ([session.spaceService getSpaceWithId:spaceId]) {
+//                [self restoreInitialDisplay:^{
+//                    [self.delegate legacyAppDelegate:self didNavigateToSpaceWithId:spaceId];
+//                }];
+//            }
+//        }];
+//    }
 }
 
 #pragma mark - SpaceDetailPresenterDelegate
-
-- (void)spaceDetailPresenterDidComplete:(SpaceDetailPresenter *)presenter
-{
-    self.spaceDetailPresenter = nil;
-}
-
-- (void)spaceDetailPresenter:(SpaceDetailPresenter *)presenter didOpenSpaceWithId:(NSString *)spaceId
-{
-    self.spaceDetailPresenter = nil;
-    [self openSpaceWithId:spaceId];
-}
-
-- (void)spaceDetailPresenter:(SpaceDetailPresenter *)presenter didJoinSpaceWithId:(NSString *)spaceId
-{
-    self.spaceDetailPresenter = nil;
-    [self openSpaceWithId:spaceId];
-}
+// Tchap: Disable Spaces
+//- (void)spaceDetailPresenterDidComplete:(SpaceDetailPresenter *)presenter
+//{
+//    self.spaceDetailPresenter = nil;
+//}
+//
+//- (void)spaceDetailPresenter:(SpaceDetailPresenter *)presenter didOpenSpaceWithId:(NSString *)spaceId
+//{
+//    self.spaceDetailPresenter = nil;
+//    [self openSpaceWithId:spaceId];
+//}
+//
+//- (void)spaceDetailPresenter:(SpaceDetailPresenter *)presenter didJoinSpaceWithId:(NSString *)spaceId
+//{
+//    self.spaceDetailPresenter = nil;
+//    [self openSpaceWithId:spaceId];
+//}
 
 @end

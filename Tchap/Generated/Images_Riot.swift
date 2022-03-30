@@ -215,6 +215,7 @@ internal class Asset: NSObject {
     internal static let sideMenuActionIconSettings = ImageAsset(name: "side_menu_action_icon_settings")
     internal static let sideMenuActionIconShare = ImageAsset(name: "side_menu_action_icon_share")
     internal static let sideMenuIcon = ImageAsset(name: "side_menu_icon")
+    internal static let sideMenuNotifIcon = ImageAsset(name: "side_menu_notif_icon")
     internal static let featureUnavaibleArtwork = ImageAsset(name: "feature_unavaible_artwork")
     internal static let featureUnavaibleArtworkDark = ImageAsset(name: "feature_unavaible_artwork_dark")
     internal static let spacePrivateIcon = ImageAsset(name: "space_private_icon")

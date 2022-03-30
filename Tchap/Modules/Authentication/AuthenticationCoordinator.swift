@@ -65,11 +65,11 @@ final class AuthenticationCoordinator: AuthenticationCoordinatorType {
     // MARK: - Private methods
     
     private func registerLoginNotification() {
-        NotificationCenter.default.addObserver(self, selector: #selector(userDidLogin), name: NSNotification.Name.legacyAppDelegateDidLogin, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(userDidLogin), name: UserSessionsService.didAddUserSession, object: nil)
     }
     
     private func unregisterLoginNotification() {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.legacyAppDelegateDidLogin, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UserSessionsService.didAddUserSession, object: nil)
     }
     
     @objc private func userDidLogin() {

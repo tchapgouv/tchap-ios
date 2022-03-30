@@ -26,6 +26,7 @@
 }
 
 @property (nonatomic, strong) MXThrottler *tableViewPaginationThrottler;
+@property (nonatomic, weak) UIAlertController *currentAlertController;
 
 @end
 
@@ -58,7 +59,7 @@
     self.recentsTableView.tag = RecentsDataSourceModeRooms;
     
     // Add the (+) button programmatically
-    plusButtonImageView = [self vc_addFABWithImage:AssetImages.roomsFloatingAction.image
+    plusButtonImageView = [self vc_addFABWithImage:AssetImages_tchap.createRoom.image
                                             target:self
                                             action:@selector(onPlusButtonPressed)];
 }
@@ -99,7 +100,10 @@
 
 - (void)onPlusButtonPressed
 {
-    [self showRoomDirectory];
+    // Tchap: Redirect to an AlertController.
+    [self.currentAlertController dismissViewControllerAnimated:NO completion:nil];
+
+    self.currentAlertController = [self showPlusMenuFrom:self->plusButtonImageView];
 }
 
 #pragma mark - UITableView delegate

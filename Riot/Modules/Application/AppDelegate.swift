@@ -77,6 +77,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func applicationDidBecomeActive(_ application: UIApplication) {
         self.legacyAppDelegate.applicationDidBecomeActive(application)
+        
+        self.appCoordinator.checkMinAppVersionRequirements()
     }
     
     func applicationWillResignActive(_ application: UIApplication) {        
@@ -106,6 +108,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: User Activity Continuation
     
     func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
+//        return self.appCoordinator.handleUserActivity(userActivity, application: application)
         return self.legacyAppDelegate.application(application, continue: userActivity, restorationHandler: restorationHandler)
     }
     

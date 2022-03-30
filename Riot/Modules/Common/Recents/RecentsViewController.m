@@ -441,6 +441,82 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     [self cancelEditionMode:isRefreshPending];
 }
 
+- (void)joinRoom:(MXRoom*)room completion:(void(^)(BOOL succeed))completion
+{
+    [room join:^{
+        // `recentsTableView` will be reloaded `roomChangeMembershipStateDataSourceDidChangeRoomMembershipState` function
+        
+        if (completion)
+        {
+            completion(YES);
+        }
+        
+    } failure:^(NSError * _Nonnull error) {
+        MXLogDebug(@"[RecentsViewController] Failed to join an invited room (%@)", room.roomId);
+        [self presentRoomJoinFailedAlertForError:error completion:^{
+            if (completion)
+            {
+                completion(NO);
+            }
+        }];
+    }];
+}
+
+- (void)leaveRoom:(MXRoom*)room completion:(void(^)(BOOL succeed))completion
+{
+    // Decline the invitation
+    [room leave:^{
+        
+        // `recentsTableView` will be reloaded `roomChangeMembershipStateDataSourceDidChangeRoomMembershipState` function
+        
+        if (completion)
+        {
+            completion(YES);
+        }
+    } failure:^(NSError * _Nonnull error) {
+        MXLogDebug(@"[RecentsViewController] Failed to reject an invited room (%@)", room.roomId);
+        [[AppDelegate theDelegate] showErrorAsAlert:error];
+        
+        if (completion)
+        {
+            completion(NO);
+        }
+    }];
+}
+
+- (void)presentRoomJoinFailedAlertForError:(NSError*)error completion:(void(^)(void))completion
+{
+    MXWeakify(self);
+    NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
+    if ([msg isEqualToString:@"No known servers"])
+    {
+        // minging kludge until https://matrix.org/jira/browse/SYN-678 is fixed
+        // 'Error when trying to join an empty room should be more explicit'
+        msg = [MatrixKitL10n roomErrorJoinFailedEmptyRoom];
+    }
+    
+    [self->currentAlert dismissViewControllerAnimated:NO completion:nil];
+    
+    UIAlertController *errorAlert = [UIAlertController alertControllerWithTitle:[MatrixKitL10n roomErrorJoinFailedTitle]
+                                                                        message:msg
+                                                                 preferredStyle:UIAlertControllerStyleAlert];
+    
+    [errorAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
+                                                   style:UIAlertActionStyleDefault
+                                                 handler:^(UIAlertAction * action) {
+        MXStrongifyAndReturnIfNil(self);
+        self->currentAlert = nil;
+        
+        if (completion)
+        {
+            completion();
+        }
+    }]];
+    
+    [self presentViewController:errorAlert animated:YES completion:nil];
+    currentAlert = errorAlert;
+}
+
 #pragma mark - Sticky Headers
 
 - (void)setEnableStickyHeaders:(BOOL)enableStickyHeaders
@@ -818,7 +894,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     id<MXKRecentCellDataStoring> cellDataStoring = (id<MXKRecentCellDataStoring> )cellData;
     
     if ([cellDataStoring.roomSummary isKindOfClass:[MXRoomSummary class]] &&
-         ((MXRoomSummary *)cellDataStoring.roomSummary).room.summary.membership == MXMembershipInvite)    {
+         ((MXRoomSummary *)cellDataStoring.roomSummary).membership == MXMembershipInvite)    {
         return RoomsInviteCell.class;
     }
     else if ([cellDataStoring.roomSummary isKindOfClass:[MXRoomSummary class]] &&
@@ -866,39 +942,41 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 //        // Display the room preview
 //        [self showRoomWithRoomId:invitedRoom.roomId inMatrixSession:invitedRoom.mxSession];
 //    }
-//    else if ([actionIdentifier isEqualToString:kInviteRecentTableViewCellAcceptButtonPressed])
-//    {
-//        // Retrieve the invited room
-//        MXRoom *invitedRoom = userInfo[kInviteRecentTableViewCellRoomKey];
-//
-//        if (invitedRoom.summary.roomType == MXRoomTypeSpace)
-//        {
-//            // Indicates that spaces are not supported
-//            [self showSpaceInviteNotAvailable];
-//            return;
-//        }
-//
-//        // Accept invitation
-//        [self joinRoom:invitedRoom completion:nil];
-//    }
-//    else if ([actionIdentifier isEqualToString:kInviteRecentTableViewCellDeclineButtonPressed])
-//    {
-//        // Retrieve the invited room
-//        MXRoom *invitedRoom = userInfo[kInviteRecentTableViewCellRoomKey];
-//
-//        [self cancelEditionMode:isRefreshPending];
-//
-//        // Decline the invitation
-//        [self leaveRoom:invitedRoom completion:nil];
-//    }
 //    else
-//    {
+    // Tchap: Use Tchap keys here.
+    if ([actionIdentifier isEqualToString:RoomsInviteCell.actionJoinInvite])
+    {
+        // Retrieve the invited room
+        MXRoom *invitedRoom = userInfo[RoomsInviteCell.keyRoom];
+
+        if (invitedRoom.summary.roomType == MXRoomTypeSpace)
+        {
+            // Indicates that spaces are not supported
+            [self showSpaceInviteNotAvailable];
+            return;
+        }
+
+        // Accept invitation
+        [self joinRoom:invitedRoom completion:nil];
+    }
+    else if ([actionIdentifier isEqualToString:RoomsInviteCell.actionDeclineInvite])
+    {
+        // Retrieve the invited room
+        MXRoom *invitedRoom = userInfo[RoomsInviteCell.keyRoom];
+
+        [self cancelEditionMode:isRefreshPending];
+
+        // Decline the invitation
+        [self leaveRoom:invitedRoom completion:nil];
+    }
+    else
+    {
         // Keep default implementation for other actions if any
         if ([super respondsToSelector:@selector(cell:didRecognizeAction:userInfo:)])
         {
             [super dataSource:dataSource didRecognizeAction:actionIdentifier inCell:cell userInfo:userInfo];
         }
-//    }
+    }
 }
 
 - (void)dataSource:(MXKDataSource *)dataSource didCellChange:(id)changes
@@ -1423,6 +1501,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 
 - (void)recentListViewController:(MXKRecentListViewController *)recentListViewController didSelectRoom:(NSString *)roomId inMatrixSession:(MXSession *)matrixSession
 {
+    [self showRoomWithRoomId:roomId inMatrixSession:matrixSession];
 }
 
 #pragma mark - CreateRoomCoordinatorBridgePresenterDelegate

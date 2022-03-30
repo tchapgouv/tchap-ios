@@ -77,6 +77,14 @@
  Contructors.
  
  @param roomId the id of the room.
+ @param mxSession the session to open the room preview with.
+ */
+- (instancetype)initWithRoomId:(NSString*)roomId andSession:(MXSession*)mxSession;
+
+/**
+ Contructors.
+ 
+ @param roomId the id of the room.
  @param roomAlias the potential alias (we have keep it when it is available. It may be required to join federated room).
  @param mxSession the session to open the room preview with.
  */

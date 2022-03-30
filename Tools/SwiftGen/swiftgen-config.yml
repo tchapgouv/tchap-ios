@@ -15,9 +15,11 @@ ib:
       - Riot/Modules/QRCode
       - Riot/Modules/Reauthentication
       - Riot/Modules/Room
+      - Riot/Modules/Rooms
       - Riot/Modules/Secrets
       - Riot/Modules/SecureBackup
       - Riot/Modules/ServiceTerms
+      - Riot/Modules/SideMenu
       - Riot/Modules/SlidingModal
     outputs:
       - templatePath: Templates/IB/scenes-riot-swift4.stencil

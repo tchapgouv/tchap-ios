@@ -43,7 +43,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     
     private var currentSpaceId: String?
     
-    private weak var versionCheckCoordinator: VersionCheckCoordinator?
+//    private weak var versionCheckCoordinator: VersionCheckCoordinator?
     
     private var currentMatrixSession: MXSession? {
         return parameters.userSessionsService.mainUserSession?.matrixSession
@@ -106,6 +106,10 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         }
         
         self.currentSpaceId = spaceId
+        
+        if MXKAccountManager.shared().accounts.isEmpty {
+            self.showWelcome()
+        }
     }
     
     func toPresentable() -> UIViewController {
@@ -135,7 +139,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
                 self.masterTabBarController.releaseSelectedItem()
                 
                 // Select home tab
-                self.masterTabBarController.selectTab(at: .home)
+                self.masterTabBarController.selectTab(at: .rooms)
                 
                 completion?()
             }
@@ -172,7 +176,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         } else {
             // Tab bar controller is already visible
             // Select the Home tab
-            masterTabBarController.selectTab(at: .home)
+            masterTabBarController.selectTab(at: .rooms)
             completion?()
         }
     }
@@ -214,66 +218,67 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         return tabBarController
     }
     
-    private func createVersionCheckCoordinator(withRootViewController rootViewController: UIViewController, bannerPresentrer: BannerPresentationProtocol) -> VersionCheckCoordinator {
-        let versionCheckCoordinator = VersionCheckCoordinator(rootViewController: rootViewController,
-                                                              bannerPresenter: bannerPresentrer,
-                                                              themeService: ThemeService.shared()) 
-        return versionCheckCoordinator
-    }
+//    private func createVersionCheckCoordinator(withRootViewController rootViewController: UIViewController, bannerPresentrer: BannerPresentationProtocol) -> VersionCheckCoordinator {
+//        let versionCheckCoordinator = VersionCheckCoordinator(rootViewController: rootViewController,
+//                                                              bannerPresenter: bannerPresentrer,
+//                                                              themeService: ThemeService.shared())
+//        return versionCheckCoordinator
+//    }
     
-    private func createHomeViewController() -> HomeViewControllerWithBannerWrapperViewController {
-        let homeViewController: HomeViewController = HomeViewController.instantiate()
-        homeViewController.tabBarItem.tag = Int(TABBAR_HOME_INDEX)
-        homeViewController.tabBarItem.image = homeViewController.tabBarItem.image
-        homeViewController.accessibilityLabel = VectorL10n.titleHome
-        
-        if BuildSettings.appActivityIndicators {
-            homeViewController.activityPresenter = AppActivityIndicatorPresenter(appNavigator: parameters.appNavigator)
-        }
-        
-        let wrapperViewController = HomeViewControllerWithBannerWrapperViewController(viewController: homeViewController)        
-        return wrapperViewController
-    }
+//    private func createHomeViewController() -> HomeViewControllerWithBannerWrapperViewController {
+//        let homeViewController: HomeViewController = HomeViewController.instantiate()
+//        homeViewController.tabBarItem.tag = Int(TABBAR_HOME_INDEX)
+//        homeViewController.tabBarItem.image = homeViewController.tabBarItem.image
+//        homeViewController.accessibilityLabel = VectorL10n.titleHome
+//
+//        if BuildSettings.appActivityIndicators {
+//            homeViewController.activityPresenter = AppActivityIndicatorPresenter(appNavigator: parameters.appNavigator)
+//        }
+//
+//        let wrapperViewController = HomeViewControllerWithBannerWrapperViewController(viewController: homeViewController)
+//        return wrapperViewController
+//    }
     
-    private func createFavouritesViewController() -> FavouritesViewController {
-        let favouritesViewController: FavouritesViewController = FavouritesViewController.instantiate()
-        favouritesViewController.tabBarItem.tag = Int(TABBAR_FAVOURITES_INDEX)
-        favouritesViewController.accessibilityLabel = VectorL10n.titleFavourites
-        return favouritesViewController
-    }
-    
-    private func createPeopleViewController() -> PeopleViewController {
-        let peopleViewController: PeopleViewController = PeopleViewController.instantiate()
-        peopleViewController.tabBarItem.tag = Int(TABBAR_PEOPLE_INDEX)
-        peopleViewController.accessibilityLabel = VectorL10n.titlePeople
-        return peopleViewController
-    }
+//    private func createFavouritesViewController() -> FavouritesViewController {
+//        let favouritesViewController: FavouritesViewController = FavouritesViewController.instantiate()
+//        favouritesViewController.tabBarItem.tag = Int(TABBAR_FAVOURITES_INDEX)
+//        favouritesViewController.accessibilityLabel = VectorL10n.titleFavourites
+//        return favouritesViewController
+//    }
+
+//    private func createPeopleViewController() -> PeopleViewController {
+//        let peopleViewController: PeopleViewController = PeopleViewController.instantiate()
+//        peopleViewController.tabBarItem.tag = Int(TABBAR_PEOPLE_INDEX)
+//        peopleViewController.accessibilityLabel = VectorL10n.titlePeople
+//        return peopleViewController
+//    }
     
     private func createRoomsViewController() -> RoomsViewController {
         let roomsViewController: RoomsViewController = RoomsViewController.instantiate()
+        roomsViewController.roomsViewDelegate = self
         roomsViewController.tabBarItem.tag = Int(TABBAR_ROOMS_INDEX)
         roomsViewController.accessibilityLabel = VectorL10n.titleRooms
         return roomsViewController
     }
     
-    private func createGroupsViewController() -> GroupsViewController {
-        let groupsViewController: GroupsViewController = GroupsViewController.instantiate()
-        groupsViewController.tabBarItem.tag = Int(TABBAR_GROUPS_INDEX)
-        groupsViewController.accessibilityLabel = VectorL10n.titleGroups
-        return groupsViewController
-    }
-    
-    private func createUnifiedSearchController() -> UnifiedSearchViewController {
-        
-        let viewController: UnifiedSearchViewController = UnifiedSearchViewController.instantiate()
-        viewController.loadViewIfNeeded()
-        
-        for userSession in self.parameters.userSessionsService.userSessions {
-            viewController.addMatrixSession(userSession.matrixSession)
-        }
-        
-        return viewController
-    }
+//    private func createGroupsViewController() -> GroupsViewController {
+//        let groupsViewController: GroupsViewController = GroupsViewController.instantiate()
+//        groupsViewController.tabBarItem.tag = Int(TABBAR_GROUPS_INDEX)
+//        groupsViewController.accessibilityLabel = VectorL10n.titleGroups
+//        return groupsViewController
+//    }
+//
+//    private func createUnifiedSearchController() -> UnifiedSearchViewController {
+//
+//        let viewController: UnifiedSearchViewController = UnifiedSearchViewController.instantiate()
+//        viewController.loadViewIfNeeded()
+//
+//        for userSession in self.parameters.userSessionsService.userSessions {
+//            viewController.addMatrixSession(userSession.matrixSession)
+//        }
+//
+//        return viewController
+//    }
     
     private func createSettingsViewController() -> SettingsViewController {
         let viewController: SettingsViewController = SettingsViewController.instantiate()
@@ -298,31 +303,31 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     private func updateTabControllers(for tabBarController: MasterTabBarController, showCommunities: Bool) {
         var viewControllers: [UIViewController] = []
           
-        let homeViewController = self.createHomeViewController()
+//        let homeViewController = self.createHomeViewController()
         
-        viewControllers.append(homeViewController)
+//        viewControllers.append(homeViewController)
         
-        if let existingVersionCheckCoordinator = self.versionCheckCoordinator {
-            self.remove(childCoordinator: existingVersionCheckCoordinator)
-        }
+//        if let existingVersionCheckCoordinator = self.versionCheckCoordinator {
+//            self.remove(childCoordinator: existingVersionCheckCoordinator)
+//        }
         
-        if let masterTabBarController = self.masterTabBarController {
-            
-            let versionCheckCoordinator = self.createVersionCheckCoordinator(withRootViewController: masterTabBarController, bannerPresentrer: homeViewController)
-            versionCheckCoordinator.start()
-            self.add(childCoordinator: versionCheckCoordinator)
-            
-            self.versionCheckCoordinator = versionCheckCoordinator
-        }
+//        if let masterTabBarController = self.masterTabBarController {
+//
+//            let versionCheckCoordinator = self.createVersionCheckCoordinator(withRootViewController: masterTabBarController, bannerPresentrer: homeViewController)
+//            versionCheckCoordinator.start()
+//            self.add(childCoordinator: versionCheckCoordinator)
+//
+//            self.versionCheckCoordinator = versionCheckCoordinator
+//        }
         
         if RiotSettings.shared.homeScreenShowFavouritesTab {
-            let favouritesViewController = self.createFavouritesViewController()
-            viewControllers.append(favouritesViewController)
+//            let favouritesViewController = self.createFavouritesViewController()
+//            viewControllers.append(favouritesViewController)
         }
         
         if RiotSettings.shared.homeScreenShowPeopleTab {
-            let peopleViewController = self.createPeopleViewController()
-            viewControllers.append(peopleViewController)
+//            let peopleViewController = self.createPeopleViewController()
+//            viewControllers.append(peopleViewController)
         }
         
         if RiotSettings.shared.homeScreenShowRoomsTab {
@@ -331,8 +336,8 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         }
         
         if RiotSettings.shared.homeScreenShowCommunitiesTab && !(self.currentMatrixSession?.groups().isEmpty ?? false) && showCommunities {
-            let groupsViewController = self.createGroupsViewController()
-            viewControllers.append(groupsViewController)
+//            let groupsViewController = self.createGroupsViewController()
+//            viewControllers.append(groupsViewController)
         }
         
         tabBarController.updateViewControllers(viewControllers)
@@ -357,34 +362,34 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     
     // FIXME: Should be displayed per tab.
     private func showUnifiedSearch() {
-        let viewController = self.createUnifiedSearchController()
-        
-        self.navigationRouter.push(viewController, animated: true, popCompletion: nil)
+//        let viewController = self.createUnifiedSearchController()
+//
+//        self.navigationRouter.push(viewController, animated: true, popCompletion: nil)
     }
     
     // FIXME: Should be displayed from a tab.
     private func showContactDetails(with contact: MXKContact, presentationParameters: ScreenPresentationParameters) {
-        
-        let coordinatorParameters = ContactDetailsCoordinatorParameters(contact: contact)
-        let coordinator = ContactDetailsCoordinator(parameters: coordinatorParameters)
-        coordinator.start()
-        self.add(childCoordinator: coordinator)
-        
-        self.showSplitViewDetails(with: coordinator, stackedOnSplitViewDetail: presentationParameters.stackAboveVisibleViews) { [weak self] in
-            self?.remove(childCoordinator: coordinator)
-        }
+//
+//        let coordinatorParameters = ContactDetailsCoordinatorParameters(contact: contact)
+//        let coordinator = ContactDetailsCoordinator(parameters: coordinatorParameters)
+//        coordinator.start()
+//        self.add(childCoordinator: coordinator)
+//
+//        self.showSplitViewDetails(with: coordinator, stackedOnSplitViewDetail: presentationParameters.stackAboveVisibleViews) { [weak self] in
+//            self?.remove(childCoordinator: coordinator)
+//        }
     }
     
     // FIXME: Should be displayed from a tab.
     private func showGroupDetails(with group: MXGroup, for matrixSession: MXSession, presentationParameters: ScreenPresentationParameters) {
-        let coordinatorParameters = GroupDetailsCoordinatorParameters(session: matrixSession, group: group)
-        let coordinator = GroupDetailsCoordinator(parameters: coordinatorParameters)
-        coordinator.start()
-        self.add(childCoordinator: coordinator)
-        
-        self.showSplitViewDetails(with: coordinator, stackedOnSplitViewDetail: presentationParameters.stackAboveVisibleViews) { [weak self] in
-            self?.remove(childCoordinator: coordinator)
-        }
+//        let coordinatorParameters = GroupDetailsCoordinatorParameters(session: matrixSession, group: group)
+//        let coordinator = GroupDetailsCoordinator(parameters: coordinatorParameters)
+//        coordinator.start()
+//        self.add(childCoordinator: coordinator)
+//
+//        self.showSplitViewDetails(with: coordinator, stackedOnSplitViewDetail: presentationParameters.stackAboveVisibleViews) { [weak self] in
+//            self?.remove(childCoordinator: coordinator)
+//        }
     }
     
     private func showRoom(withId roomId: String, eventId: String? = nil) {
@@ -402,18 +407,18 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
             showRoomAndThread(with: roomNavigationParameters,
                               completion: completion)
         } else {
-            let threadId = roomNavigationParameters.threadParameters?.threadId
+//            let threadId = roomNavigationParameters.threadParameters?.threadId
             let displayConfig: RoomDisplayConfiguration
-            if threadId != nil {
-                displayConfig = .forThreads
-            } else {
+//            if threadId != nil {
+//                displayConfig = .forThreads
+//            } else {
                 displayConfig = .default
-            }
+//            }
             let roomCoordinatorParameters = RoomCoordinatorParameters(navigationRouterStore: NavigationRouterStore.shared,
                                                                       session: roomNavigationParameters.mxSession,
                                                                       roomId: roomNavigationParameters.roomId,
                                                                       eventId: roomNavigationParameters.eventId,
-                                                                      threadId: threadId,
+                                                                      threadId: nil, //threadId,
                                                                       displayConfiguration: displayConfig)
             
             self.showRoom(with: roomCoordinatorParameters,
@@ -450,6 +455,25 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         self.showRoom(with: roomCoordinatorParameters,
                       stackOnSplitViewDetail: roomPreviewNavigationParameters.presentationParameters.stackAboveVisibleViews,
                       completion: completion)
+    }
+    
+    private func showRoomPreview(with publicRoom: MXPublicRoom) {
+        guard let session = self.currentMatrixSession else { return }
+        
+        let roomPreviewCoordinator = RoomPreviewCoordinator(session: session, publicRoom: publicRoom)
+        self.showRoomPreview(with: roomPreviewCoordinator)
+    }
+    
+    private func showRoomPreview(with coordinator: RoomPreviewCoordinator) {
+        let roomPreviewCoordinator = coordinator
+        roomPreviewCoordinator.start()
+        roomPreviewCoordinator.delegate = self
+        
+        self.add(childCoordinator: roomPreviewCoordinator)
+        
+        self.navigationRouter.push(roomPreviewCoordinator, animated: true) { [weak self] in
+            self?.remove(childCoordinator: roomPreviewCoordinator)
+        }
     }
     
     private func showRoom(with parameters: RoomCoordinatorParameters,
@@ -512,7 +536,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
                                                                     roomId: roomNavigationParameters.roomId,
                                                                     eventId: roomNavigationParameters.eventId,
                                                                     threadId: roomNavigationParameters.threadParameters?.threadId,
-                                                                    displayConfiguration: .forThreads)
+                                                                    displayConfiguration: .default/*.forThreads*/)
 
         dispatchGroup.enter()
         let threadCoordinator = RoomCoordinator(parameters: threadCoordinatorParameters)
@@ -540,6 +564,33 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
 
             self.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
         }
+    }
+    
+    private func showWelcome(animated: Bool = false) {
+        let welcomeCoordinator = WelcomeCoordinator()
+        welcomeCoordinator.delegate = self
+        welcomeCoordinator.start()
+        self.add(childCoordinator: welcomeCoordinator)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5 , execute: { [weak self] in
+            self?.navigationRouter.present(welcomeCoordinator, animated: animated)
+        })
+    }
+    
+    private func userDidLogin() -> Bool {
+        let success: Bool
+        
+        if self.currentMatrixSession != nil {
+            // Dismiss WelcomeCoordinator
+            self.navigationRouter.dismissModule(animated: true, completion: nil)
+            success = true
+        } else {
+            MXLog.debug("[AppCoordinator] Did not find session for current user")
+            success = false
+            // TODO: Present an error on
+            // coordinator.toPresentable()
+        }
+        
+        return success
     }
     
     // MARK: Split view
@@ -577,20 +628,20 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     
     @available(iOS 14.0, *)
     private func presentAnalyticsPrompt(with session: MXSession) {
-        let parameters = AnalyticsPromptCoordinatorParameters(session: session)
-        let coordinator = AnalyticsPromptCoordinator(parameters: parameters)
-        
-        coordinator.completion = { [weak self, weak coordinator] in
-            guard let self = self, let coordinator = coordinator else { return }
-            
-            self.navigationRouter.dismissModule(animated: true, completion: nil)
-            self.remove(childCoordinator: coordinator)
-        }
-        
-        add(childCoordinator: coordinator)
-        
-        navigationRouter.present(coordinator, animated: true)
-        coordinator.start()
+//        let parameters = AnalyticsPromptCoordinatorParameters(session: session)
+//        let coordinator = AnalyticsPromptCoordinator(parameters: parameters)
+//
+//        coordinator.completion = { [weak self, weak coordinator] in
+//            guard let self = self, let coordinator = coordinator else { return }
+//
+//            self.navigationRouter.dismissModule(animated: true, completion: nil)
+//            self.remove(childCoordinator: coordinator)
+//        }
+//
+//        add(childCoordinator: coordinator)
+//
+//        navigationRouter.present(coordinator, animated: true)
+//        coordinator.start()
     }
     
     // MARK: UserSessions management
@@ -612,9 +663,9 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         
         self.addMatrixSessionToMasterTabBarController(userSession.matrixSession)
         
-        if let matrixSession = self.currentMatrixSession, matrixSession.groups().isEmpty {
-            self.masterTabBarController.removeTab(at: .groups)
-        }
+//        if let matrixSession = self.currentMatrixSession, matrixSession.groups().isEmpty {
+//            self.masterTabBarController.removeTab(at: .groups)
+//        }
     }
     
     @objc private func userSessionsServiceWillRemoveUserSession(_ notification: Notification) {
@@ -642,9 +693,9 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     }
     
     @objc private func sessionDidSync(_ notification: Notification) {
-        if self.currentMatrixSession?.groups().isEmpty ?? true {
-            self.masterTabBarController.removeTab(at: .groups)
-        }
+//        if self.currentMatrixSession?.groups().isEmpty ?? true {
+//            self.masterTabBarController.removeTab(at: .groups)
+//        }
     }
 }
 
@@ -689,6 +740,10 @@ extension TabBarCoordinator: MasterTabBarControllerDelegate {
         if #available(iOS 14.0, *) {
             presentAnalyticsPrompt(with: matrixSession)
         }
+    }
+    
+    func masterTabBarControllerShouldShowAuthenticationFlow(_ masterTabBarController: MasterTabBarController!) {
+        self.showWelcome(animated: true)
     }
 }
 
@@ -735,5 +790,131 @@ extension TabBarCoordinator: UIGestureRecognizerDelegate {
         } else {
             return true
         }
+    }
+}
+
+// MARK: - WelcomeCoordinatorDelegate
+extension TabBarCoordinator: WelcomeCoordinatorDelegate {
+    func welcomeCoordinatorUserDidAuthenticate(_ coordinator: WelcomeCoordinatorType) {
+        // Check that the new account actually exists before removing the current coordinator
+        if userDidLogin() {
+            self.remove(childCoordinator: coordinator)
+        }
+    }
+}
+
+// MARK: - RoomsViewControllerDelegate
+extension TabBarCoordinator: RoomsViewControllerDelegate {
+    func roomsViewControllerDidTapStartChatButton(_ roomsViewController: RoomsViewController) {
+        guard let session = self.currentMatrixSession else { return }
+        
+        let createNewDiscussionCoordinator = CreateNewDiscussionCoordinator(session: session)
+        createNewDiscussionCoordinator.delegate = self
+        createNewDiscussionCoordinator.start()
+        
+        self.navigationRouter.present(createNewDiscussionCoordinator, animated: true)
+        
+        self.add(childCoordinator: createNewDiscussionCoordinator)
+    }
+    
+    func roomsViewControllerDidTapCreateRoomButton(_ roomsViewController: RoomsViewController) {
+        guard let session = self.currentMatrixSession else { return }
+        
+        let roomCreationCoordinator = RoomCreationCoordinator(session: session)
+        roomCreationCoordinator.delegate = self
+        roomCreationCoordinator.start()
+        
+        self.navigationRouter.present(roomCreationCoordinator, animated: true)
+        
+        self.add(childCoordinator: roomCreationCoordinator)
+    }
+    
+    func roomsViewControllerDidTapPublicRoomsAccessButton(_ roomsViewController: RoomsViewController) {
+        guard let session = self.currentMatrixSession else { return }
+        
+        let publicRoomServers = BuildSettings.publicRoomsDirectoryServers
+        let publicRoomService = PublicRoomService(homeServersStringURL: publicRoomServers,
+                                                  session: session)
+        let dataSource = PublicRoomsDataSource(session: session,
+                                               publicRoomService: publicRoomService)
+        let publicRoomsViewController = PublicRoomsViewController.instantiate(dataSource: dataSource)
+        publicRoomsViewController.delegate = self
+        let router = NavigationRouter(navigationController: RiotNavigationController())
+        router.setRootModule(publicRoomsViewController.toPresentable())
+        self.navigationRouter.present(router, animated: true)
+    }
+}
+
+// MARK: - CreateNewDiscussionCoordinatorDelegate
+extension TabBarCoordinator: CreateNewDiscussionCoordinatorDelegate {
+    func createNewDiscussionCoordinator(_ coordinator: CreateNewDiscussionCoordinatorType,
+                                        didSelectUserID userID: String) {
+        self.navigationRouter.dismissModule(animated: true) { [weak self] in
+            self?.startDiscussion(with: userID)
+            self?.remove(childCoordinator: coordinator)
+        }
+    }
+    
+    func createNewDiscussionCoordinatorDidCancel(_ coordinator: CreateNewDiscussionCoordinatorType) {
+        self.navigationRouter.dismissModule(animated: true) { [weak self] in
+            self?.remove(childCoordinator: coordinator)
+        }
+    }
+    
+    // Prepare a new discussion with a user without associated room
+    private func startDiscussion(with userID: String) {
+        AppDelegate.theDelegate().startDirectChat(withUserId: userID, completion: nil)
+    }
+}
+
+// MARK: - PublicRoomsViewControllerDelegate
+extension TabBarCoordinator: PublicRoomsViewControllerDelegate {
+    func publicRoomsViewController(_ publicRoomsViewController: PublicRoomsViewController,
+                                   didSelect publicRoom: MXPublicRoom) {
+        publicRoomsViewController.navigationController?.dismiss(animated: true,
+                                                                completion: { [weak self] in
+            guard let roomID = publicRoom.roomId else {
+                return
+            }
+            
+            if let room: MXRoom = self?.currentMatrixSession?.room(withRoomId: roomID),
+               room.summary.membership == .join {
+                self?.showRoom(withId: roomID)
+            } else {
+                // Try to preview the unknown room.
+                self?.showRoomPreview(with: publicRoom)
+            }
+        })
+    }
+}
+
+// MARK: - RoomCreationCoordinatorDelegate
+extension TabBarCoordinator: RoomCreationCoordinatorDelegate {
+    func roomCreationCoordinatorDidCancel(_ coordinator: RoomCreationCoordinatorType) {
+        self.navigationRouter.dismissModule(animated: true) { [weak self] in
+            self?.remove(childCoordinator: coordinator)
+        }
+    }
+    
+    func roomCreationCoordinator(_ coordinator: RoomCreationCoordinatorType,
+                                 didCreateRoomWithID roomID: String) {
+        self.navigationRouter.dismissModule(animated: true) { [weak self] in
+            self?.remove(childCoordinator: coordinator)
+            self?.showRoom(withId: roomID)
+        }
+    }
+}
+
+// MARK: - RoomPreviewCoordinatorDelegate
+extension TabBarCoordinator: RoomPreviewCoordinatorDelegate {
+    func roomPreviewCoordinatorDidCancel(_ coordinator: RoomPreviewCoordinatorType) {
+        self.navigationRouter.popModule(animated: true)
+    }
+    
+    func roomPreviewCoordinator(_ coordinator: RoomPreviewCoordinatorType,
+                                didJoinRoomWithId roomID: String,
+                                onEventId eventId: String?) {
+        self.navigationRouter.popModule(animated: true)
+        self.showRoom(withId: roomID, eventId: eventId)
     }
 }

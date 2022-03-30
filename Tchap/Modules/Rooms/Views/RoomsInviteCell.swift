@@ -83,19 +83,28 @@ import UIKit
         self.rightButton.setTitleColor(theme.headerBackgroundColor, for: .normal)
     }
     
+    override class func height(for cellData: MXKCellData!, withMaximumWidth maxWidth: CGFloat) -> CGFloat {
+        // The RoomsInviteCell instances support the self-sizing mode, return a default value
+        return 105.0
+    }
+    
     @IBAction private func onLeftPressed(_ sender: Any) {
-        if let delegate = self.delegate,
-           let roomSummary = self.roomCellData?.roomSummary as? MXRoomSummary,
-           let room = roomSummary.room {
-            delegate.cell(self, didRecognizeAction: RoomsInviteCell.actionJoinInvite, userInfo: [RoomsInviteCell.keyRoom: room])
-        }
+        guard let roomId = self.roomCellData?.roomIdentifier,
+              let room = self.roomCellData?.mxSession.room(withRoomId: roomId) else {
+                  return
+              }
+        self.delegate?.cell(self,
+                            didRecognizeAction: RoomsInviteCell.actionJoinInvite,
+                            userInfo: [RoomsInviteCell.keyRoom: room])
     }
     
     @IBAction private func onRightPressed(_ sender: Any) {
-        if let delegate = self.delegate,
-           let roomSummary = self.roomCellData?.roomSummary as? MXRoomSummary,
-           let room = roomSummary.room {
-            delegate.cell(self, didRecognizeAction: RoomsInviteCell.actionDeclineInvite, userInfo: [RoomsInviteCell.keyRoom: room])
-        }
+        guard let roomId = self.roomCellData?.roomIdentifier,
+              let room = self.roomCellData?.mxSession.room(withRoomId: roomId) else {
+                  return
+              }
+        self.delegate?.cell(self,
+                            didRecognizeAction: RoomsInviteCell.actionDeclineInvite,
+                            userInfo: [RoomsInviteCell.keyRoom: room])
     }
 }
