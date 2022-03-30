@@ -35,11 +35,13 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
     private var invitedRoomListDataFetcher: MXRoomListDataFetcher?
     private var favoritedRoomListDataFetcher: MXRoomListDataFetcher?
     private var directRoomListDataFetcher: MXRoomListDataFetcher? {
+        // Tchap: Don't separate Direct and Rooms.
+        return nil
 //        switch mode {
 //        case .home:
 //            return directRoomListDataFetcherForHome
 //        case .people:
-            return directRoomListDataFetcherForPeople
+//            return directRoomListDataFetcherForPeople
 //        default:
 //            return nil
 //        }
@@ -547,7 +549,8 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
     }
     
     private func updateConversationFetcher(_ fetcher: MXRoomListDataFetcher, for mode: RecentsDataSourceMode) {
-        var notDataTypes: MXRoomSummaryDataTypes = [.hidden, .conferenceUser, .direct, .lowPriority, .serverNotice, .space]
+        // Tchap: Show Directs into conversation fetcher.
+        var notDataTypes: MXRoomSummaryDataTypes = [.hidden, .conferenceUser, /*.direct,*/ .lowPriority, .serverNotice, .space]
         switch mode {
         case .home:
             notDataTypes.insert([.invited, .favorited])
