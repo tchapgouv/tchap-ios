@@ -550,7 +550,7 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
     
     private func updateConversationFetcher(_ fetcher: MXRoomListDataFetcher, for mode: RecentsDataSourceMode) {
         // Tchap: Show Directs into conversation fetcher.
-        var notDataTypes: MXRoomSummaryDataTypes = [.hidden, .conferenceUser, /*.direct,*/ .lowPriority, .serverNotice, .space]
+        var notDataTypes: MXRoomSummaryDataTypes = [.hidden, .conferenceUser, /*.direct, .lowPriority,*/ .serverNotice, .space]
         switch mode {
         case .home:
             notDataTypes.insert([.invited, .favorited])
