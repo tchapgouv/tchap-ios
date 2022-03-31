@@ -38,7 +38,6 @@ internal enum InfoPlist {
   internal static let uiStatusBarTintParameters: [String: Any] = _document["UIStatusBarTintParameters"]
   internal static let uiSupportedInterfaceOrientations: [String] = _document["UISupportedInterfaceOrientations"]
   internal static let uiSupportedInterfaceOrientationsIpad: [String] = _document["UISupportedInterfaceOrientations~ipad"]
-  internal static let uiUserInterfaceStyle: String = _document["UIUserInterfaceStyle"]
   internal static let uiViewControllerBasedStatusBarAppearance: Bool = _document["UIViewControllerBasedStatusBarAppearance"]
   internal static let userDefaults: String = _document["UserDefaults"]
   internal static let applicationGroupIdentifier: String = _document["applicationGroupIdentifier"]

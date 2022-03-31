@@ -74,15 +74,15 @@ NSString *const kThemeServiceDidChangeThemeNotification = @"kThemeServiceDidChan
         }
     }
 
-//    if ([themeId isEqualToString:@"dark"])
-//    {
-//        theme = [DarkTheme new];
-//    }
-//    else if ([themeId isEqualToString:@"black"])
-//    {
-//        theme = [BlackTheme new];
-//    }
-//    else
+    if ([themeId isEqualToString:@"dark"])
+    {
+        theme = [DarkTheme new];
+    }
+    else if ([themeId isEqualToString:@"black"])
+    {
+        theme = [BlackTheme new];
+    }
+    else
     {
         // Use light theme by default
         theme = [DefaultTheme new];

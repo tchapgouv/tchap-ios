@@ -78,9 +78,9 @@ import UIKit
         super.update(theme: theme)
         self.domainLabel.textColor = theme.textTertiaryColor
         self.leftButton.backgroundColor = theme.tintColor
-        self.leftButton.setTitleColor(theme.headerBackgroundColor, for: .normal)
+        self.leftButton.setTitleColor(theme.tintContrastColor, for: .normal)
         self.rightButton.backgroundColor = theme.tintColor
-        self.rightButton.setTitleColor(theme.headerBackgroundColor, for: .normal)
+        self.rightButton.setTitleColor(theme.tintContrastColor, for: .normal)
     }
     
     override class func height(for cellData: MXKCellData!, withMaximumWidth maxWidth: CGFloat) -> CGFloat {
