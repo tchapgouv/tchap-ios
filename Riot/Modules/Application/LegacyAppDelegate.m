@@ -3574,6 +3574,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 - (void)checkCrossSigningForSession:(MXSession*)mxSession
 {
+// Tchap: Disable Cross Signing Managment.
+#ifdef SUPPORT_KEYS_BACKUP
     if ([UIApplication sharedApplication].applicationState != UIApplicationStateActive)
     {
         MXLogDebug(@"[AppDelegate] checkCrossSigningForSession called while the app is not active. Ignore it.");
@@ -3606,6 +3608,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             MXLogDebug(@"[AppDelegate] handleAppState: crossSigning.state: %@. Error: %@", @(mxSession.crypto.crossSigning.state), error);
         }];
     }
+#endif
 }
 
 
@@ -4248,6 +4251,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 - (void)registerDidChangeCrossSigningKeysNotificationForSession:(MXSession*)session
 {
+// Tchap: Disable Cross Signing Managment.
+#ifdef SUPPORT_KEYS_BACKUP
     MXCrossSigning *crossSigning = session.crypto.crossSigning;
     
     if (!crossSigning)
@@ -4281,6 +4286,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             [self.masterTabBarController presentVerifyCurrentSessionAlertIfNeededWithSession:session];
         }
     }];
+#endif
 }
 
 
