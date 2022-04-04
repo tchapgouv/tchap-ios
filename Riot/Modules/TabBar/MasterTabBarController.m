@@ -999,7 +999,7 @@
     [alert addAction:[UIAlertAction actionWithTitle:[VectorL10n keyVerificationSelfVerifyCurrentSessionAlertValidateAction]
                                               style:UIAlertActionStyleDefault
                                             handler:^(UIAlertAction * action) {
-//                                                [[AppDelegate theDelegate] presentCompleteSecurityForSession:session];
+                                                [[AppDelegate theDelegate] presentCompleteSecurityForSession:session];
                                             }]];
     
     [alert addAction:[UIAlertAction actionWithTitle:[VectorL10n later]
