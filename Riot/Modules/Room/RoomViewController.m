@@ -6100,12 +6100,15 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     MXWeakify(self);
     __block UIAlertController *alert;
     
+// Tchap: Disable Cross Signing Managment.
+#ifdef SUPPORT_KEYS_BACKUP
     // Force device verification if session has cross-signing activated and device is not yet verified
     if (self.mainSession.crypto.crossSigning && self.mainSession.crypto.crossSigning.state == MXCrossSigningStateCrossSigningExists)
     {
         [self presentReviewUnverifiedSessionsAlert];
         return;
     }
+#endif
     
     // Make the re-request
     [self.mainSession.crypto reRequestRoomKeyForEvent:event];
