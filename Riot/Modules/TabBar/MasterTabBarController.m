@@ -970,6 +970,8 @@
 
 - (void)presentVerifyCurrentSessionAlertIfNeededWithSession:(MXSession*)session
 {
+// Tchap: Disable Cross Signing Managment.
+#ifdef SUPPORT_KEYS_BACKUP
     if (RiotSettings.shared.hideVerifyThisSessionAlert
         || self.reviewSessionAlertHasBeenDisplayed
         || self.isOnboardingInProgress)
@@ -979,10 +981,13 @@
     
     self.reviewSessionAlertHasBeenDisplayed = YES;
     [self presentVerifyCurrentSessionAlertWithSession:session];
+#endif
 }
 
 - (void)presentVerifyCurrentSessionAlertWithSession:(MXSession*)session
 {
+// Tchap: Disable Cross Signing Managment.
+#ifdef SUPPORT_KEYS_BACKUP
     MXLogDebug(@"[MasterTabBarController] presentVerifyCurrentSessionAlertWithSession");
     
     [currentAlert dismissViewControllerAnimated:NO completion:nil];
@@ -994,7 +999,7 @@
     [alert addAction:[UIAlertAction actionWithTitle:[VectorL10n keyVerificationSelfVerifyCurrentSessionAlertValidateAction]
                                               style:UIAlertActionStyleDefault
                                             handler:^(UIAlertAction * action) {
-//                                                [[AppDelegate theDelegate] presentCompleteSecurityForSession:session];
+                                                [[AppDelegate theDelegate] presentCompleteSecurityForSession:session];
                                             }]];
     
     [alert addAction:[UIAlertAction actionWithTitle:[VectorL10n later]
@@ -1011,6 +1016,7 @@
     [self presentViewController:alert animated:YES completion:nil];
     
     currentAlert = alert;
+#endif
 }
 
 - (void)presentReviewUnverifiedSessionsAlertIfNeededWithSession:(MXSession*)session
