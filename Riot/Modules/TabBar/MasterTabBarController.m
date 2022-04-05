@@ -557,10 +557,11 @@
     MXLogDebug(@"[MasterTabBarController] showAuthenticationScreen");
     
     // Check whether an authentication screen is not already shown or preparing
-    if (!self.onboardingCoordinatorBridgePresenter && !self.isOnboardingCoordinatorPreparing)
-    {
-        self.isOnboardingCoordinatorPreparing = YES;
-        self.isOnboardingInProgress = YES;
+    // Tchap: Disable Onboarding.
+//    if (!self.onboardingCoordinatorBridgePresenter && !self.isOnboardingCoordinatorPreparing)
+//    {
+//        self.isOnboardingCoordinatorPreparing = YES;
+//        self.isOnboardingInProgress = YES;
         
         [self resetReviewSessionsFlags];
         
@@ -569,7 +570,7 @@
 //            [self presentOnboardingFlow];
             [self.masterTabBarDelegate masterTabBarControllerShouldShowAuthenticationFlow:self];
         }];
-    }
+//    }
 }
 
 /**
