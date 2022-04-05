@@ -106,6 +106,19 @@
     self.currentAlertController = [self showPlusMenuFrom:self->plusButtonImageView];
 }
 
+// Tchap: Fix dataSource for pagination.
+- (void)displayList:(MXKRecentsDataSource *)listDataSource {
+    [super displayList:listDataSource];
+    
+    if ([self.dataSource isKindOfClass:RecentsDataSource.class])
+    {
+        // Take the lead on the shared data source.
+        recentsDataSource = (RecentsDataSource*)self.dataSource;
+        recentsDataSource.areSectionsShrinkable = NO;
+        [recentsDataSource setDelegate:self andRecentsDataSourceMode:RecentsDataSourceModeRooms];
+    }
+}
+
 #pragma mark - UITableView delegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
