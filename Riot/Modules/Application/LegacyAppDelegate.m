@@ -2404,11 +2404,13 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 case MXSessionStateSyncInProgress:
                     // Stay in launching during the first server sync if the store is empty.
                     isLaunching = (mainSession.rooms.count == 0 && launchAnimationContainerView);
-                    
+// Tchap: Disable Cross Signing Managment.
+#ifdef SUPPORT_KEYS_BACKUP
                     if (mainSession.crypto.crossSigning && mainSession.crypto.crossSigning.state == MXCrossSigningStateCrossSigningExists)
                     {
                         [mainSession.crypto setOutgoingKeyRequestsEnabled:NO onComplete:nil];
                     }
+#endif
                     break;
                 case MXSessionStateRunning:
                     self.clearingCache = NO;
