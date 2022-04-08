@@ -31,7 +31,7 @@
 
 NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewControllerDataReadyNotification";
 
-@interface RecentsViewController () </*CreateRoomCoordinatorBridgePresenterDelegate, RoomsDirectoryCoordinatorBridgePresenterDelegate,*/ RoomNotificationSettingsCoordinatorBridgePresenterDelegate/*, DialpadViewControllerDelegate, ExploreRoomCoordinatorBridgePresenterDelegate*/>
+@interface RecentsViewController () </*CreateRoomCoordinatorBridgePresenterDelegate, RoomsDirectoryCoordinatorBridgePresenterDelegate,*/ RoomNotificationSettingsCoordinatorBridgePresenterDelegate/*, DialpadViewControllerDelegate, ExploreRoomCoordinatorBridgePresenterDelegate*/, SearchBarVisibilityDelegate>
 {
     // Tell whether a recents refresh is pending (suspended during editing mode).
     BOOL isRefreshPending;
@@ -46,6 +46,10 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     __weak id kMXNotificationCenterDidUpdateRulesObserver;
     
     MXHTTPOperation *currentRequest;
+    
+    // The fake search bar displayed at the top of the recents table. We switch on the actual search bar (self.recentsSearchBar)
+    // when the user selects it.
+    UISearchBar *tableSearchBar;
     
     // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
     __weak id kThemeServiceDidChangeThemeNotificationObserver;
@@ -91,13 +95,27 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
     
-    // Remove the search option from the navigation bar.
+    // Enable the search bar in the recents table, and remove the search option from the navigation bar.
+    _enableSearchBar = YES;
     self.enableBarButtonSearch = NO;
+    self.searchBarVisibilityDelegate = self;
     
     _enableDragging = NO;
     
     _enableStickyHeaders = NO;
     _stickyHeaderHeight = 30.0;
+    
+    // Tchap: Disable Fake SearchBar
+//    // Create the fake search bar
+//    tableSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 600, 44)];
+//    tableSearchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+//    tableSearchBar.showsCancelButton = NO;
+//    tableSearchBar.placeholder = [VectorL10n searchFilterPlaceholder];
+//    [tableSearchBar setImage:AssetImages.filterOff.image
+//            forSearchBarIcon:UISearchBarIconSearch
+//                       state:UIControlStateNormal];
+//
+//    tableSearchBar.delegate = self;
     
     displayedSectionHeaders = [NSMutableArray array];
     
@@ -123,6 +141,9 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 
     // Register key verification banner cells
     [self.recentsTableView registerNib:CrossSigningSetupBannerCell.nib forCellReuseIdentifier:CrossSigningSetupBannerCell.defaultReuseIdentifier];
+
+    [self.recentsTableView registerClass:SectionHeaderView.class
+      forHeaderFooterViewReuseIdentifier:SectionHeaderView.defaultReuseIdentifier];
     
     // Hide line separators of empty cells
     self.recentsTableView.tableFooterView = [[UIView alloc] init];
@@ -142,6 +163,13 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         
     }];
     
+    self.recentsSearchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    self.recentsSearchBar.placeholder = [VectorL10n searchFilterPlaceholder];
+    [self.recentsSearchBar setImage:AssetImages.filterOff.image
+                   forSearchBarIcon:UISearchBarIconSearch
+                              state:UIControlStateNormal];
+    [self.recentsSearchBar setShowsCancelButton:FALSE];
+
     // Observe user interface theme change.
     kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
@@ -161,8 +189,15 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     
     // Use the primary bg color for the recents table view in plain style.
     self.recentsTableView.backgroundColor = ThemeService.shared.theme.backgroundColor;
+    self.recentsTableView.separatorColor = ThemeService.shared.theme.lineBreakColor;
     topview.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
     self.view.backgroundColor = ThemeService.shared.theme.backgroundColor;
+
+    [ThemeService.shared.theme applyStyleOnSearchBar:tableSearchBar];
+    [ThemeService.shared.theme applyStyleOnSearchBar:self.recentsSearchBar];
+
+    // Force table refresh
+    [self.recentsTableView reloadData];
     
     if (self.recentsSearchBar)
     {
@@ -212,6 +247,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
         kThemeServiceDidChangeThemeNotificationObserver = nil;
     }
+    self.searchBarVisibilityDelegate = nil;
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
@@ -263,6 +299,9 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     
     // Apply the current theme
     [self userInterfaceThemeDidChange];
+    
+    // Tchap: Show SearchBar by default
+    [self hideSearchBar:FALSE];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -359,6 +398,15 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     
     [self.recentsTableView reloadData];
     
+    // Tchap: Disable fake search bar
+    // Check conditions to display the fake search bar into the table header
+//    if (_enableSearchBar && self.recentsSearchBar.isHidden && self.recentsTableView.tableHeaderView == nil)
+//    {
+//        // Add the search bar by hiding it by default.
+//        self.recentsTableView.tableHeaderView = tableSearchBar;
+//        self.recentsTableView.contentOffset = CGPointMake(0, self.recentsTableView.contentOffset.y + tableSearchBar.frame.size.height);
+//    }
+    
     if (_shouldScrollToTopOnRefresh)
     {
         [self scrollToTop:NO];
@@ -373,6 +421,19 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     {
         [self refreshCurrentSelectedCell:NO];
     }
+}
+
+- (void)hideSearchBar:(BOOL)hidden
+{
+    [super hideSearchBar:hidden];
+    
+    // Tchap: Disable fake search bar
+//    if (!hidden)
+//    {
+//        // Remove the fake table header view if any
+//        self.recentsTableView.tableHeaderView = nil;
+//        self.recentsTableView.contentInset = UIEdgeInsetsZero;
+//    }
 }
 
 #pragma mark -
@@ -994,6 +1055,18 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                 TableViewCellWithCollectionView *collectionViewCell = (TableViewCellWithCollectionView *)cell;
                 [collectionViewCell.collectionView reloadData];
                 cellReloaded = YES;
+
+                CGRect headerFrame = [self.recentsTableView rectForHeaderInSection:section];
+                UIView *headerView = [self.recentsTableView headerViewForSection:section];
+                UIView *updatedHeaderView = [self.dataSource viewForHeaderInSection:section withFrame:headerFrame inTableView:self.recentsTableView];
+                if ([headerView isKindOfClass:SectionHeaderView.class]
+                    && [updatedHeaderView isKindOfClass:SectionHeaderView.class])
+                {
+                    SectionHeaderView *sectionHeaderView = (SectionHeaderView *)headerView;
+                    SectionHeaderView *updatedSectionHeaderView = (SectionHeaderView *)updatedHeaderView;
+                    sectionHeaderView.headerLabel = updatedSectionHeaderView.headerLabel;
+                    sectionHeaderView.accessoryView = updatedSectionHeaderView.accessoryView;
+                }
             }
         }
     }
@@ -1433,6 +1506,22 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     });
     
     [super scrollViewDidScroll:scrollView];
+    
+    // Tchap: Disable fake search bar
+//    if (scrollView == self.recentsTableView)
+//    {
+//        if (!self.recentsSearchBar.isHidden)
+//        {
+//            if (!self.recentsSearchBar.text.length && (scrollView.contentOffset.y + scrollView.adjustedContentInset.top > self.recentsSearchBar.frame.size.height))
+//            {
+//                // Hide the search bar
+//                [self hideSearchBar:YES];
+//
+//                // Refresh display
+//                [self refreshRecentsTable];
+//            }
+//        }
+//    }
 }
 
 #pragma mark - Table view scrolling
@@ -1502,6 +1591,72 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 - (void)recentListViewController:(MXKRecentListViewController *)recentListViewController didSelectRoom:(NSString *)roomId inMatrixSession:(MXSession *)matrixSession
 {
     [self showRoomWithRoomId:roomId inMatrixSession:matrixSession];
+}
+
+- (void)recentListViewController:(MXKRecentListViewController *)recentListViewController didSelectSuggestedRoom:(MXSpaceChildInfo *)childInfo
+{
+//    RoomPreviewData *previewData = [[RoomPreviewData alloc] initWithSpaceChildInfo:childInfo andSession:self.mainSession];
+//    [self startActivityIndicator];
+//    MXWeakify(self);
+//    [previewData peekInRoom:^(BOOL succeeded) {
+//        MXStrongifyAndReturnIfNil(self);
+//        [self stopActivityIndicator];
+//        [self showRoomPreviewWithData:previewData];
+//    }];
+}
+
+#pragma mark - UISearchBarDelegate
+
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
+{
+    [super scrollViewWillEndDragging:scrollView withVelocity:velocity targetContentOffset:targetContentOffset];
+}
+
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
+{
+    // Tchap: Disable fake search bar
+//    if (searchBar == tableSearchBar)
+//    {
+//        [self hideSearchBar:NO];
+//        [self.recentsSearchBar becomeFirstResponder];
+//        return NO;
+//    }
+    
+    return YES;
+    
+}
+
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        [self.recentsSearchBar setShowsCancelButton:YES animated:NO];
+        
+    });
+}
+
+- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
+{
+    [self.recentsSearchBar setShowsCancelButton:NO animated:NO];
+}
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    [super searchBar:searchBar textDidChange:searchText];
+    
+    UIImage *filterIcon = searchText.length > 0 ? [AssetImages.filterOn.image vc_tintedImageUsingColor: ThemeService.shared.theme.tintColor] : AssetImages.filterOff.image;
+    [self.recentsSearchBar setImage:filterIcon
+                   forSearchBarIcon:UISearchBarIconSearch
+                              state:UIControlStateNormal];
+}
+
+// Tchap: Restore default icon after cancel.
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+    [super searchBarCancelButtonClicked:searchBar];
+    
+    [self.recentsSearchBar setImage:AssetImages.filterOff.image
+                   forSearchBarIcon:UISearchBarIconSearch
+                              state:UIControlStateNormal];
 }
 
 #pragma mark - CreateRoomCoordinatorBridgePresenterDelegate
@@ -1720,6 +1875,41 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 //    } else {
         [super stopActivityIndicator];
 //    }
+}
+
+#pragma mark - Search Bar
+
+- (void)toggleSearchBar {
+    if (self.recentsSearchBar.isFirstResponder) {
+        [self.recentsSearchBar resignFirstResponder];
+        [self cleanSearchAndHideSearchBar:FALSE];
+    } else {
+        BOOL willShowSearchBar = self.recentsSearchBar.hidden;
+        if (willShowSearchBar) {
+            [self hideSearchBar:FALSE];
+        } else {
+            [self cleanSearchAndHideSearchBar:TRUE];
+        }
+    }
+}
+
+- (void)cleanSearchAndHideSearchBar:(BOOL)hide {
+    // Clear SearchField content and refresh dataSource
+    self.recentsSearchBar.text = @"";
+    [self.dataSource searchWithPatterns:nil];
+    
+    // Refresh UI
+    [self refreshRecentsTable];
+    
+    // Reset icon
+    [self.recentsSearchBar setImage:AssetImages.filterOff.image
+                   forSearchBarIcon:UISearchBarIconSearch
+                              state:UIControlStateNormal];
+    
+    // Hide Search bar
+    if (hide) {
+        [self hideSearchBar:TRUE];
+    }
 }
 
 @end

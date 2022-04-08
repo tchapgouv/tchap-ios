@@ -362,6 +362,11 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     
     // FIXME: Should be displayed per tab.
     private func showUnifiedSearch() {
+        // Tchap: Show filter textField.
+        guard let vc = masterTabBarController.selectedViewController as? SearchBarVisibilityDelegate else {
+            return
+        }
+        vc.toggleSearchBar()
 //        let viewController = self.createUnifiedSearchController()
 //
 //        self.navigationRouter.push(viewController, animated: true, popCompletion: nil)
