@@ -299,9 +299,6 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     
     // Apply the current theme
     [self userInterfaceThemeDidChange];
-    
-    // Tchap: Show SearchBar by default
-    [self hideSearchBar:FALSE];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
