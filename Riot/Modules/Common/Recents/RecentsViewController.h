@@ -21,6 +21,15 @@
 @class AnalyticsScreenTimer;
 @class AppActivityIndicatorPresenter;
 
+@protocol SearchBarVisibilityDelegate <NSObject>
+
+/**
+ Will be called when the user wants to show or hide the searchBar.
+ */
+- (void)toggleSearchBar;
+
+@end
+
 /**
  Notification to be posted when recents data is ready. Notification object will be the RecentsViewController instance.
  */
@@ -67,6 +76,11 @@ FOUNDATION_EXPORT NSString *const RecentsViewControllerDataReadyNotification;
 @property (nonatomic) BOOL shouldScrollToTopOnRefresh;
 
 /**
+ Tell whether the search bar at the top of the recents table is enabled. YES by default.
+ */
+@property (nonatomic) BOOL enableSearchBar;
+
+/**
  Tell whether the drag and drop option are enabled. NO by default.
  This option is used to move a room from a section to another.
  */
@@ -96,6 +110,11 @@ FOUNDATION_EXPORT NSString *const RecentsViewControllerDataReadyNotification;
  Presenter for displaying app-wide activity / loading indicators. If not set, the view controller will use legacy activity indicators
  */
 @property (nonatomic, strong) AppActivityIndicatorPresenter *activityPresenter;
+
+/**
+ Protocol to show/hide search bar from an external component.
+ */
+@property (nonatomic) id<SearchBarVisibilityDelegate> searchBarVisibilityDelegate;
 
 /**
  Return the sticky header for the specified section of the table view

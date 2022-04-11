@@ -208,7 +208,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
             tabBarController.navigationItem.leftBarButtonItem = settingsBarButtonItem
         }
         
-        let searchBarButtonItem: MXKBarButtonItem = MXKBarButtonItem(image: Asset.Images.searchIcon.image, style: .plain) { [weak self] in
+        let searchBarButtonItem: MXKBarButtonItem = MXKBarButtonItem(image: Asset.Images.filterOff.image, style: .plain) { [weak self] in
             self?.showUnifiedSearch()
         }
         searchBarButtonItem.accessibilityLabel = VectorL10n.searchDefaultPlaceholder
@@ -257,7 +257,8 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         let roomsViewController: RoomsViewController = RoomsViewController.instantiate()
         roomsViewController.roomsViewDelegate = self
         roomsViewController.tabBarItem.tag = Int(TABBAR_ROOMS_INDEX)
-        roomsViewController.accessibilityLabel = VectorL10n.titleRooms
+        // Tchap: Update accessibility label name to `Conversations`
+        roomsViewController.accessibilityLabel = TchapL10n.conversationsTabTitle
         return roomsViewController
     }
     
@@ -362,6 +363,11 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     
     // FIXME: Should be displayed per tab.
     private func showUnifiedSearch() {
+        // Tchap: Show filter textField.
+        guard let vc = masterTabBarController.selectedViewController as? SearchBarVisibilityDelegate else {
+            return
+        }
+        vc.toggleSearchBar()
 //        let viewController = self.createUnifiedSearchController()
 //
 //        self.navigationRouter.push(viewController, animated: true, popCompletion: nil)
