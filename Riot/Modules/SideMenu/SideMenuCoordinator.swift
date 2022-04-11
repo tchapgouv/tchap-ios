@@ -201,15 +201,15 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
     }
     
     private func showHelp() {
-//        guard let helpURL = URL(string: BuildSettings.applicationHelpUrlString) else {
-//            return
-//        }
-//        
-//        let safariViewController = SFSafariViewController(url: helpURL)
-//        
-//        // Show in fullscreen to animate presentation along side menu dismiss
-//        safariViewController.modalPresentationStyle = .fullScreen
-//        self.sideMenuNavigationViewController.present(safariViewController, animated: true, completion: nil)
+        guard let helpURL = URL(string: BuildSettings.applicationHelpUrlString) else {
+            return
+        }
+        
+        let safariViewController = SFSafariViewController(url: helpURL)
+        
+        // Show in fullscreen to animate presentation along side menu dismiss
+        safariViewController.modalPresentationStyle = .fullScreen
+        self.sideMenuNavigationViewController.present(safariViewController, animated: true, completion: nil)
     }
     
     private func showExploreRooms(spaceId: String, session: MXSession) {

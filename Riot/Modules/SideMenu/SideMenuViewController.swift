@@ -134,6 +134,8 @@ final class SideMenuViewController: UIViewController {
     }
     
     private func setupViews() {
+        // Tchap: Hide userId label
+        userIdLabel.isHidden = true
     }
 
     private func render(viewState: SideMenuViewState) {
