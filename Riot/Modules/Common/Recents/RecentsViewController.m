@@ -1884,6 +1884,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         BOOL willShowSearchBar = self.recentsSearchBar.hidden;
         if (willShowSearchBar) {
             [self hideSearchBar:FALSE];
+            [self.recentsSearchBar becomeFirstResponder];
         } else {
             [self cleanSearchAndHideSearchBar:TRUE];
         }
