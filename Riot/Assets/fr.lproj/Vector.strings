@@ -123,6 +123,7 @@
 "search_people" = "Personnes";
 "search_files" = "Fichiers";
 "search_default_placeholder" = "Recherche";
+"search_filter_placeholder" = "Filtrer";
 "search_people_placeholder" = "Rechercher par identifiant, nom ou e-mail";
 "search_no_result" = "Aucun résultat";
 "search_in_progress" = "Recherche en cours…";
