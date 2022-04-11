@@ -208,7 +208,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
             tabBarController.navigationItem.leftBarButtonItem = settingsBarButtonItem
         }
         
-        let searchBarButtonItem: MXKBarButtonItem = MXKBarButtonItem(image: Asset.Images.searchIcon.image, style: .plain) { [weak self] in
+        let searchBarButtonItem: MXKBarButtonItem = MXKBarButtonItem(image: Asset.Images.filterOff.image, style: .plain) { [weak self] in
             self?.showUnifiedSearch()
         }
         searchBarButtonItem.accessibilityLabel = VectorL10n.searchDefaultPlaceholder
