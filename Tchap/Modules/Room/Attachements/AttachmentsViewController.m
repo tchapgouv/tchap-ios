@@ -19,13 +19,11 @@
 
 #import "GeneratedInterface-Swift.h"
 
-@interface AttachmentsViewController () <Stylable>
+@interface AttachmentsViewController ()
 {
     // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
     id kThemeServiceDidChangeThemeNotificationObserver;
 }
-
-@property (nonatomic, strong) id<Style> currentStyle;
 
 @end
 
@@ -40,8 +38,6 @@
     // Setup `MXKViewControllerHandling` properties.
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
-    
-    self.currentStyle = Variant1Style.shared;
 }
 
 - (void)viewDidLoad
@@ -64,37 +60,24 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    [self updateWithStyle:self.currentStyle];
-}
+    [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
-- (void)updateWithStyle:(id<Style>)style
-{
-    self.currentStyle = style;
-    if (self.navigationBar)
-    {
-        [style applyStyleOnNavigationBar:self.navigationBar];
-    }
-    self.backButton.tintColor = style.barActionColor;
+    self.view.backgroundColor = ThemeService.shared.theme.backgroundColor;
+    self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
+    
+    self.backButton.tintColor = ThemeService.shared.theme.tintColor;
     
     self.view.backgroundColor = [UIColor blackColor];
     
-    // @TODO Design the activvity indicator for Tchap
-    self.activityIndicator.backgroundColor = style.overlayBackgroundColor;
+    // @TODO Design the activity indicator for Tchap
+    self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
 
     [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return self.currentStyle.statusBarStyle;
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-
-    // Screen tracking
-    [[Analytics sharedInstance] trackScreen:@"AttachmentsViewer"];
+    return ThemeService.shared.theme.statusBarStyle;
 }
 
 - (void)destroy

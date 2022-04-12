@@ -16,7 +16,7 @@
 
 #import "TableViewCellWithCollectionView.h"
 #import "ThemeService.h"
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 static CGFloat const kEditionViewCornerRadius = 10.0;
 
@@ -30,6 +30,11 @@ static CGFloat const kEditionViewCornerRadius = 10.0;
     self.editionViewBottomConstraint.constant = 0;
     
     self.editionView.layer.masksToBounds = YES;
+    
+    // Hide both the cell and its collection view from voiceover.
+    // Instead we expose the individual cells as accessibility elements.
+    self.isAccessibilityElement = NO;
+    self.collectionView.isAccessibilityElement = NO;
 }
 
 - (void)customizeTableViewCellRendering

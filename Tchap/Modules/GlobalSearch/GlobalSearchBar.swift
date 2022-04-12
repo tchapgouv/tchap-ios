@@ -17,7 +17,7 @@
 import UIKit
 import Reusable
 
-protocol GlobalSearchBarDelegate: class {
+protocol GlobalSearchBarDelegate: AnyObject {
     func globalSearchBar(_ globalSearchBar: GlobalSearchBar, textDidChange searchText: String?)
 }
 

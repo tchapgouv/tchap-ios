@@ -17,19 +17,31 @@
 import Foundation
 
 struct DirectoryRoomTableViewCellVM {
-    var title: String?
-    var numberOfUsers: Int
-    var subtitle: String?
-    var isJoined: Bool = false
-    
-    private var roomId: String!
-    private var avatarUrl: String?
-    private var mediaManager: MXMediaManager?
-
-    func setAvatar(in avatarImageView: MXKImageView) {
-        let avatarImage = AvatarGenerator.generateAvatar(forMatrixItem: roomId, withDisplayName: title)
         
-        if let avatarUrl = avatarUrl {
+    let title: String?
+    let numberOfUsers: Int
+    let subtitle: String?
+    let isJoined: Bool
+    let roomId: String
+    let avatarViewData: AvatarViewDataProtocol
+
+    // TODO: Use AvatarView subclass in the cell view
+    func setAvatar(in avatarImageView: MXKImageView) {
+        
+        let defaultAvatarImage: UIImage?
+        var defaultAvatarImageContentMode: UIView.ContentMode = .scaleAspectFill
+        
+        switch self.avatarViewData.fallbackImage {
+        case .matrixItem(let matrixItemId, let matrixItemDisplayName):
+            defaultAvatarImage = AvatarGenerator.generateAvatar(forMatrixItem: matrixItemId, withDisplayName: matrixItemDisplayName)
+        case .image(let image, let contentMode):
+            defaultAvatarImage = image
+            defaultAvatarImageContentMode = contentMode ?? .scaleAspectFill
+        case .none:
+            defaultAvatarImage = nil
+        }
+        
+        if let avatarUrl = self.avatarViewData.avatarUrl {
             avatarImageView.enableInMemoryCache = true
 
             avatarImageView.setImageURI(avatarUrl,
@@ -37,10 +49,12 @@ struct DirectoryRoomTableViewCellVM {
                                         andImageOrientation: .up,
                                         toFitViewSize: avatarImageView.frame.size,
                                         with: MXThumbnailingMethodCrop,
-                                        previewImage: avatarImage,
-                                        mediaManager: mediaManager)
+                                        previewImage: defaultAvatarImage,
+                                        mediaManager: self.avatarViewData.mediaManager)
+            avatarImageView.contentMode = .scaleAspectFill
         } else {
-            avatarImageView.image = avatarImage
+            avatarImageView.image = defaultAvatarImage
+            avatarImageView.contentMode = defaultAvatarImageContentMode
         }
     }
     
@@ -48,16 +62,18 @@ struct DirectoryRoomTableViewCellVM {
     init(title: String?,
          numberOfUsers: Int,
          subtitle: String?,
-         isJoined: Bool,
+         isJoined: Bool = false,
          roomId: String!,
          avatarUrl: String?,
-         mediaManager: MXMediaManager?) {
+         mediaManager: MXMediaManager) {
         self.title = title
         self.numberOfUsers = numberOfUsers
         self.subtitle = subtitle
         self.isJoined = isJoined
         self.roomId = roomId
-        self.avatarUrl = avatarUrl
-        self.mediaManager = mediaManager
+        
+        let avatarViewData = RoomAvatarViewData(roomId: roomId, displayName: title, avatarUrl: avatarUrl, mediaManager: mediaManager)
+        
+        self.avatarViewData = avatarViewData
     }
 }

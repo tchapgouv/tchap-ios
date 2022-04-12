@@ -16,7 +16,7 @@
 
 import Foundation
 
-protocol ContactsPickerCoordinatorDelegate: class {
+protocol ContactsPickerCoordinatorDelegate: AnyObject {
     // Two types of identifiers are supported here: Matrix ids and email addresses.
     func contactsPickerCoordinator(_ coordinator: ContactsPickerCoordinatorType, didSelectContactIdentifiers identifiers: [String])
 }
@@ -44,7 +44,7 @@ final class ContactsPickerCoordinator: NSObject, ContactsPickerCoordinatorType {
     init(session: MXSession, contactsFilter: ContactsDataSourceTchapFilter) {
         self.session = session
         
-        let contactsViewController = ContactsViewController.instantiate(with: Variant1Style.shared, showSearchBar: true, enableMultipleSelection: true)
+        let contactsViewController = ContactsViewController.instantiate(withShowSearchBar: true, enableMultipleSelection: true)
         contactsViewController.title = TchapL10n.contactsPickerTitle
         self.contactsViewController = contactsViewController
         

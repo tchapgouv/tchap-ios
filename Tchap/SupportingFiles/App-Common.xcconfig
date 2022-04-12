@@ -17,6 +17,18 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
-#include "Tchap/Config/Tchap-Common.xcconfig"
+#include "Config/AppIdentifiers.xcconfig"
+#include "Config/AppVersion.xcconfig"
 
+BUNDLE_DISPLAY_NAME = Tchap
+BASE_BUNDLE_IDENTIFIER = fr.gouv.tchap
+APPLICATION_GROUP_IDENTIFIER = group.$(BASE_BUNDLE_IDENTIFIER)
 PRODUCT_BUNDLE_IDENTIFIER = $(BASE_BUNDLE_IDENTIFIER)
+
+INFOPLIST_FILE = Tchap/SupportingFiles/Info.plist
+ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon
+
+CODE_SIGN_ENTITLEMENTS = Tchap/SupportingFiles/Tchap.entitlements
+
+SWIFT_OBJC_BRIDGING_HEADER = $(SRCROOT)/$(PRODUCT_NAME)/SupportingFiles/Tchap-Bridging-Header.h
+LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/Frameworks

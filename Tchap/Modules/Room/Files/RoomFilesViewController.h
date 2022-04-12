@@ -14,7 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#import <MatrixKit/MatrixKit.h>
+#import "MatrixKit.h"
+
+@class AnalyticsScreenTimer;
 
 /**
  This view controller displays the attachments of a room. Only one matrix session is handled by this view controller.
@@ -28,5 +30,12 @@ limitations under the License.
  @return An initialized `RoomFilesViewController` object if successful, `nil` otherwise.
  */
 + (instancetype)instantiate;
+
+@property (nonatomic) BOOL showCancelBarButtonItem;
+
+/**
+ The screen timer used for analytics if they've been enabled. The default value is nil.
+ */
+@property (nonatomic) AnalyticsScreenTimer *screenTimer;
 
 @end

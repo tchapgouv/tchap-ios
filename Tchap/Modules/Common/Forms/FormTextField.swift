@@ -17,7 +17,7 @@
 import Foundation
 import Reusable
 
-protocol FormTextFieldDelegate: class {
+protocol FormTextFieldDelegate: AnyObject {
     func formTextFieldShouldReturn(_ formTextField: FormTextField) -> Bool
 }
 
@@ -168,12 +168,12 @@ final class FormTextField: UIView, NibOwnerLoadable {
     }
 }
 
-// MARK: - Stylable
-extension FormTextField: Stylable {
-    func update(style: Style) {
-        style.applyStyle(onTextField: self.textField)
-        self.separatorView.backgroundColor = style.separatorColor
-        self.additionalInfoLabel.textColor = style.secondaryTextColor
+// MARK: - Theme
+extension FormTextField: Themable {
+    func update(theme: Theme) {
+        theme.applyStyle(onTextField: self.textField)
+        self.separatorView.backgroundColor = theme.lineBreakColor
+        self.additionalInfoLabel.textColor = theme.textSecondaryColor
     }
 }
 

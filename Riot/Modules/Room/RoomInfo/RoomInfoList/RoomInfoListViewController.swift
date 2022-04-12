@@ -40,6 +40,7 @@ final class RoomInfoListViewController: UIViewController {
     private var errorPresenter: MXKErrorPresentation!
     private var activityPresenter: ActivityIndicatorPresenter!
     private var isRoomDirect: Bool = false
+    private var screenTimer = AnalyticsScreenTimer(screen: .roomDetails)
     
     private lazy var closeButton: CloseButton = {
         let button = CloseButton()
@@ -50,8 +51,8 @@ final class RoomInfoListViewController: UIViewController {
     
     private lazy var basicInfoView: RoomInfoBasicView = {
         let view = RoomInfoBasicView.loadFromNib()
-        view.onTopicSizeChange = { _ in
-            self.view.setNeedsLayout()
+        view.onTopicSizeChange = { [weak self] _ in
+            self?.view.setNeedsLayout()
         }
         return view
     }()
@@ -128,10 +129,20 @@ final class RoomInfoListViewController: UIViewController {
         return self.theme.statusBarStyle
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        screenTimer.start()
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
         mainTableView.vc_relayoutHeaderView()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        screenTimer.stop()
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -148,7 +159,10 @@ final class RoomInfoListViewController: UIViewController {
         var tmpSections: [Section] = []
         
         let rowSettings = Row(type: .default, icon: Asset.Images.settingsIcon.image, text: VectorL10n.roomDetailsSettings, accessoryType: .disclosureIndicator) {
-            self.viewModel.process(viewAction: .navigate(target: .settings))
+            self.viewModel.process(viewAction: .navigate(target: .settings()))
+        }
+        let roomNotifications = Row(type: .default, icon: Asset.Images.notifications.image, text: VectorL10n.roomDetailsNotifs, accessoryType: .disclosureIndicator) {
+            self.viewModel.process(viewAction: .navigate(target: .notifications))
         }
         let text = viewData.numberOfMembers == 1 ? VectorL10n.roomInfoListOneMember : VectorL10n.roomInfoListSeveralMembers(String(viewData.numberOfMembers))
         let rowMembers = Row(type: .default, icon: Asset.Images.userIcon.image, text: text, accessoryType: .disclosureIndicator) {
@@ -157,11 +171,27 @@ final class RoomInfoListViewController: UIViewController {
         let rowUploads = Row(type: .default, icon: Asset.Images.scrollup.image, text: VectorL10n.roomDetailsFiles, accessoryType: .disclosureIndicator) {
             self.viewModel.process(viewAction: .navigate(target: .uploads))
         }
+        let rowSearch = Row(type: .default, icon: Asset.Images.searchIcon.image, text: VectorL10n.roomDetailsSearch, accessoryType: .disclosureIndicator) {
+            self.viewModel.process(viewAction: .navigate(target: .search))
+        }
+        let rowIntegrations = Row(type: .default, icon: Asset.Images.integrationsIcon.image, text: VectorL10n.roomDetailsIntegrations, accessoryType: .disclosureIndicator) {
+            self.viewModel.process(viewAction: .navigate(target: .integrations))
+        }
         
+        var rows = [rowSettings]
+        
+        if BuildSettings.showNotificationsV2 {
+            rows.append(roomNotifications)
+        }
+        if RiotSettings.shared.roomInfoScreenShowIntegrations {
+            rows.append(rowIntegrations)
+        }
+        rows.append(rowMembers)
+        rows.append(rowUploads)
+        rows.append(rowSearch)
+
         let sectionSettings = Section(header: VectorL10n.roomInfoListSectionOther,
-                                      rows: [rowSettings,
-                                             rowMembers,
-                                             rowUploads],
+                                      rows: rows,
                                       footer: nil)
         
         let leaveTitle = viewData.basicInfoViewData.isDirect ?
@@ -205,7 +235,9 @@ final class RoomInfoListViewController: UIViewController {
     }
     
     private func setupViews() {
-        self.navigationItem.rightBarButtonItem = MXKBarButtonItem(customView: closeButton)
+        if navigationController?.viewControllers.count ?? 0 <= 1 {
+            self.navigationItem.rightBarButtonItem = MXKBarButtonItem(customView: closeButton)
+        }
         
         self.title = ""
         

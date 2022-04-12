@@ -20,7 +20,7 @@
 #import "GroupParticipantsViewController.h"
 #import "GroupRoomsViewController.h"
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 @interface GroupDetailsViewController ()
 {
@@ -55,7 +55,7 @@
                           bundle:[NSBundle bundleForClass:self.class]];
 }
 
-+ (instancetype)groupDetailsViewController
++ (instancetype)instantiate
 {
     return [[[self class] alloc] initWithNibName:NSStringFromClass(self.class)
                                           bundle:[NSBundle bundleForClass:self.class]];
@@ -83,7 +83,7 @@
     NSMutableArray* titles = [[NSMutableArray alloc] init];
     
     // home tab
-    [titles addObject: NSLocalizedStringFromTable(@"group_details_home", @"Vector", nil)];
+    [titles addObject:[VectorL10n groupDetailsHome]];
     groupHomeViewController = [GroupHomeViewController groupHomeViewController];
     if (_group)
     {
@@ -92,7 +92,7 @@
     [viewControllers addObject:groupHomeViewController];
     
     // People tab
-    [titles addObject: NSLocalizedStringFromTable(@"group_details_people", @"Vector", nil)];
+    [titles addObject:[VectorL10n groupDetailsPeople]];
     groupParticipantsViewController = [GroupParticipantsViewController groupParticipantsViewController];
     if (_group)
     {
@@ -101,7 +101,7 @@
     [viewControllers addObject:groupParticipantsViewController];
     
     // Rooms tab
-    [titles addObject: NSLocalizedStringFromTable(@"group_details_rooms", @"Vector", nil)];
+    [titles addObject:[VectorL10n groupDetailsRooms]];
     groupRoomsViewController = [GroupRoomsViewController groupRoomsViewController];
     if (_group)
     {
@@ -111,12 +111,15 @@
     
     if (!self.title.length)
     {
-        self.title = NSLocalizedStringFromTable(@"group_details_title", @"Vector", nil);
+        self.title = [VectorL10n groupDetailsTitle];
     }
     
     [self initWithTitles:titles viewControllers:viewControllers defaultSelected:0];
     
     [super viewDidLoad];
+    
+    // Display leftBarButtonItems or leftBarButtonItem to the right of the Back button
+    self.navigationItem.leftItemsSupplementBackButton = YES;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -133,9 +136,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    // Screen tracking
-    [[Analytics sharedInstance] trackScreen:@"GroupDetails"];
 }
 
 - (void)viewWillDisappear:(BOOL)animated

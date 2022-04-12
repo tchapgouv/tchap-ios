@@ -19,6 +19,7 @@ import Foundation
 @objc enum RoomContextualMenuAction: Int {
     case copy
     case reply
+    case replyInThread
 #if ENABLE_EDITION
     case edit
 #else
@@ -27,6 +28,8 @@ import Foundation
     case favourite
     case share
     case more
+    case resend
+    case delete
     
     // MARK: - Properties
     
@@ -38,6 +41,8 @@ import Foundation
             title = VectorL10n.roomEventActionCopy
         case .reply:
             title = VectorL10n.roomEventActionReply
+        case .replyInThread:
+            title = VectorL10n.roomEventActionReplyInThread
 #if ENABLE_EDITION
         case .edit:
             title = VectorL10n.roomEventActionEdit
@@ -51,6 +56,10 @@ import Foundation
             title = VectorL10n.roomEventActionShare
         case .more:
             title = VectorL10n.roomEventActionMore
+        case .resend:
+            title = VectorL10n.retry
+        case .delete:
+            title = VectorL10n.roomEventActionDelete
         }
         
         return title
@@ -64,6 +73,8 @@ import Foundation
             image = Asset.Images.roomContextMenuCopy.image
         case .reply:
             image = Asset.Images.roomContextMenuReply.image
+        case .replyInThread:
+            image = Asset.Images.roomContextMenuThread.image
 #if ENABLE_EDITION
         case .edit:
             image = Asset.Images.roomContextMenuEdit.image
@@ -72,11 +83,15 @@ import Foundation
             image = Asset.Images.roomContextMenuRedact.image
 #endif
         case .favourite:
-            image = Asset.Images.roomContextMenuFav.image
+            image = Asset_tchap.Images.roomContextMenuFav.image
         case .share:
-            image = Asset.Images.roomContextMenuShare.image
+            image = Asset_tchap.Images.roomContextMenuShare.image
         case .more:
             image = Asset.Images.roomContextMenuMore.image
+        case .resend:
+            image = Asset.Images.roomContextMenuRetry.image
+        case .delete:
+            image = Asset.Images.roomContextMenuDelete.image
         default:
             image = nil
         }

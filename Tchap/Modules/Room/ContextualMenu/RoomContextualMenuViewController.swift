@@ -16,7 +16,7 @@
 
 import UIKit
 
-@objc protocol RoomContextualMenuViewControllerDelegate: class {
+@objc protocol RoomContextualMenuViewControllerDelegate: AnyObject {
     func roomContextualMenuViewControllerDidTapBackgroundOverlay(_ viewController: RoomContextualMenuViewController)
 }
 
@@ -58,11 +58,7 @@ final class RoomContextualMenuViewController: UIViewController, Themable {
     private var hiddenToolbarViewBottomConstant: CGFloat {
         let bottomSafeAreaHeight: CGFloat
         
-        if #available(iOS 11.0, *) {
-            bottomSafeAreaHeight = self.view.safeAreaInsets.bottom
-        } else {
-            bottomSafeAreaHeight = self.bottomLayoutGuide.length
-        }
+        bottomSafeAreaHeight = self.view.safeAreaInsets.bottom
         
         return -(self.menuToolbarViewHeightConstraint.constant + bottomSafeAreaHeight)
     }
@@ -237,7 +233,7 @@ final class RoomContextualMenuViewController: UIViewController, Themable {
         
         if self.reactionsMenuContainerView.subviews.isEmpty {
             let reactionsMenuView = ReactionsMenuView.loadFromNib()
-            self.reactionsMenuContainerView.tc_addSubViewMatchingParent(reactionsMenuView)
+            self.reactionsMenuContainerView.vc_addSubViewMatchingParent(reactionsMenuView)
             reactionsMenuView.update(theme: self.theme)
             self.reactionsMenuView = reactionsMenuView
         }

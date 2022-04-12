@@ -17,17 +17,11 @@
 #import "WebViewViewController.h"
 #import "GeneratedInterface-Swift.h"
 
-#import "RageShakeManager.h"
-#import "ThemeService.h"
-
-#import "GeneratedInterface-Swift.h"
-
-@interface WebViewViewController () <Stylable>
-
-@property (nonatomic, strong) id<Style> currentStyle;
-
-// Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
-@property (nonatomic, weak) id kThemeServiceDidChangeThemeNotificationObserver;
+@interface WebViewViewController ()
+{
+    // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
+    id kThemeServiceDidChangeThemeNotificationObserver;
+}
 
 @end
 
@@ -36,10 +30,6 @@
 - (instancetype)init
 {
     self = [super init];
-    if (self)
-    {
-        self.currentStyle = Variant1Style.shared;
-    }
     return self;
 }
 
@@ -58,7 +48,7 @@
     
     // Observe user interface theme change.
     MXWeakify(self);
-    _kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         MXStrongifyAndReturnIfNil(self);
         [self userInterfaceThemeDidChange];
@@ -75,44 +65,42 @@
 
 - (void)userInterfaceThemeDidChange
 {
-    [self updateWithStyle:self.currentStyle];
+    [self updateTheme];
 }
 
 - (void)applyVariant2Style
 {
-    [self updateWithStyle:Variant2Style.shared];
+    [self updateTheme];
 }
 
-- (void)updateWithStyle:(id<Style>)style
+- (void)updateTheme
 {
-    self.currentStyle = style;
-    
     UINavigationBar *navigationBar = self.navigationController.navigationBar;
     
     if (navigationBar)
     {
-        [style applyStyleOnNavigationBar:navigationBar];
+        [ThemeService.shared.theme applyStyleOnNavigationBar:navigationBar];
     }
     
     // @TODO Design the activvity indicator for Tchap
-    self.activityIndicator.backgroundColor = style.overlayBackgroundColor;
+    self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     
-    self.view.backgroundColor = style.backgroundColor;
-    webView.backgroundColor = style.backgroundColor;
+    self.view.backgroundColor = ThemeService.shared.theme.backgroundColor;
+    webView.backgroundColor = ThemeService.shared.theme.backgroundColor;
 
     [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return self.currentStyle.statusBarStyle;
+    return ThemeService.shared.theme.statusBarStyle;
 }
 
 - (void)dealloc
 {
-    if (_kThemeServiceDidChangeThemeNotificationObserver)
+    if (kThemeServiceDidChangeThemeNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:_kThemeServiceDidChangeThemeNotificationObserver];
+        [[NSNotificationCenter defaultCenter] removeObserver: kThemeServiceDidChangeThemeNotificationObserver];
     }
 }
 

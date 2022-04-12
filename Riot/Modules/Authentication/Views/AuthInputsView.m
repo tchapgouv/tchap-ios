@@ -26,7 +26,9 @@
 
 #import "RiotNavigationController.h"
 
-@interface AuthInputsView ()
+#import "GeneratedInterface-Swift.h"
+
+@interface AuthInputsView () <MXKCountryPickerViewControllerDelegate>
 {
     /**
      The current email validation
@@ -71,9 +73,9 @@
     _isThirdPartyIdentifierPending = NO;
     _isSingleSignOnRequired = NO;
     
-    self.userLoginTextField.placeholder = NSLocalizedStringFromTable(@"auth_user_id_placeholder", @"Vector", nil);
-    self.repeatPasswordTextField.placeholder = NSLocalizedStringFromTable(@"auth_repeat_password_placeholder", @"Vector", nil);
-    self.passWordTextField.placeholder = NSLocalizedStringFromTable(@"auth_password_placeholder", @"Vector", nil);
+    self.userLoginTextField.placeholder = [VectorL10n authUserIdPlaceholder];
+    self.repeatPasswordTextField.placeholder = [VectorL10n authRepeatPasswordPlaceholder];
+    self.passWordTextField.placeholder = [VectorL10n authPasswordPlaceholder];
 
     // Apply placeholder color
     [self customizeViewRendering];
@@ -126,8 +128,8 @@
 
     [self.ssoButton.layer setCornerRadius:5];
     self.ssoButton.clipsToBounds = YES;
-    [self.ssoButton setTitle:NSLocalizedStringFromTable(@"auth_login_single_sign_on", @"Vector", nil) forState:UIControlStateNormal];
-    [self.ssoButton setTitle:NSLocalizedStringFromTable(@"auth_login_single_sign_on", @"Vector", nil) forState:UIControlStateHighlighted];
+    [self.ssoButton setTitle:[VectorL10n authLoginSingleSignOn] forState:UIControlStateNormal];
+    [self.ssoButton setTitle:[VectorL10n authLoginSingleSignOn] forState:UIControlStateHighlighted];
     self.ssoButton.backgroundColor = ThemeService.shared.theme.tintColor;
 
     if (self.userLoginTextField.placeholder)
@@ -209,9 +211,9 @@
                     self.passWordTextField.returnKeyType = UIReturnKeyDone;
                     self.phoneTextField.returnKeyType = UIReturnKeyNext;
 
-                    self.userLoginTextField.placeholder = NSLocalizedStringFromTable(@"auth_user_id_placeholder", @"Vector", nil);
-                    self.messageLabel.text = NSLocalizedStringFromTable(@"or", @"Vector", nil);
-                    self.phoneTextField.placeholder = NSLocalizedStringFromTable(@"auth_phone_placeholder", @"Vector", nil);
+                    self.userLoginTextField.placeholder = [VectorL10n authUserIdPlaceholder];
+//                    self.messageLabel.text = [VectorL10n or];
+                    self.phoneTextField.placeholder = [VectorL10n authPhonePlaceholder];
 
                     self.userLoginTextField.attributedPlaceholder = [[NSAttributedString alloc]
                                                                      initWithString:self.userLoginTextField.placeholder
@@ -290,13 +292,13 @@
             // Check required fields
             if ((!self.userLoginTextField.text.length && !nbPhoneNumber) || !self.passWordTextField.text.length)
             {
-                NSLog(@"[AuthInputsView] Invalid user/password");
-                errorMsg = NSLocalizedStringFromTable(@"auth_invalid_login_param", @"Vector", nil);
+                MXLogDebug(@"[AuthInputsView] Invalid user/password");
+                errorMsg = [VectorL10n authInvalidLoginParam];
             }
         }
         else
         {
-            errorMsg = [NSBundle mxk_localizedStringForKey:@"not_supported_yet"];
+            errorMsg = [MatrixKitL10n notSupportedYet];
         }
     }
     else if (type == MXKAuthenticationTypeRegister)
@@ -305,23 +307,23 @@
         {
             if (!self.userLoginTextField.text.length)
             {
-                NSLog(@"[AuthInputsView] Invalid user name");
-                errorMsg = NSLocalizedStringFromTable(@"auth_invalid_user_name", @"Vector", nil);
+                MXLogDebug(@"[AuthInputsView] Invalid user name");
+                errorMsg = [VectorL10n authInvalidUserName];
             }
             else if (!self.passWordTextField.text.length)
             {
-                NSLog(@"[AuthInputsView] Missing Passwords");
-                errorMsg = NSLocalizedStringFromTable(@"auth_missing_password", @"Vector", nil);
+                MXLogDebug(@"[AuthInputsView] Missing Passwords");
+                errorMsg = [VectorL10n authMissingPassword];
             }
             else if (self.passWordTextField.text.length < 6)
             {
-                NSLog(@"[AuthInputsView] Invalid Passwords");
-                errorMsg = NSLocalizedStringFromTable(@"auth_invalid_password", @"Vector", nil);
+                MXLogDebug(@"[AuthInputsView] Invalid Passwords");
+                errorMsg = [VectorL10n authInvalidPassword];
             }
             else if ([self.repeatPasswordTextField.text isEqualToString:self.passWordTextField.text] == NO)
             {
-                NSLog(@"[AuthInputsView] Passwords don't match");
-                errorMsg = NSLocalizedStringFromTable(@"auth_password_dont_match", @"Vector", nil);
+                MXLogDebug(@"[AuthInputsView] Passwords don't match");
+                errorMsg = [VectorL10n authPasswordDontMatch];
             }
             else
             {
@@ -331,8 +333,8 @@
                 
                 if ([regex firstMatchInString:user options:0 range:NSMakeRange(0, user.length)] == nil)
                 {
-                    NSLog(@"[AuthInputsView] Invalid user name");
-                    errorMsg = NSLocalizedStringFromTable(@"auth_invalid_user_name", @"Vector", nil);
+                    MXLogDebug(@"[AuthInputsView] Invalid user name");
+                    errorMsg = [VectorL10n authInvalidUserName];
                 }
             }
         }
@@ -343,13 +345,13 @@
             {
                 if (self.areAllThirdPartyIdentifiersRequired)
                 {
-                    NSLog(@"[AuthInputsView] Missing email");
-                    errorMsg = NSLocalizedStringFromTable(@"auth_missing_email", @"Vector", nil);
+                    MXLogDebug(@"[AuthInputsView] Missing email");
+                    errorMsg = [VectorL10n authMissingEmail];
                 }
                 else if ([self isFlowSupported:kMXLoginFlowTypeMSISDN] && !self.phoneTextField.text.length && self.isThirdPartyIdentifierRequired)
                 {
-                    NSLog(@"[AuthInputsView] Missing email or phone number");
-                    errorMsg = NSLocalizedStringFromTable(@"auth_missing_email_or_phone", @"Vector", nil);
+                    MXLogDebug(@"[AuthInputsView] Missing email or phone number");
+                    errorMsg = [VectorL10n authMissingEmailOrPhone];
                 }
             }
             
@@ -360,8 +362,8 @@
                 {
                     if (self.areAllThirdPartyIdentifiersRequired)
                     {
-                        NSLog(@"[AuthInputsView] Missing phone");
-                        errorMsg = NSLocalizedStringFromTable(@"auth_missing_phone", @"Vector", nil);
+                        MXLogDebug(@"[AuthInputsView] Missing phone");
+                        errorMsg = [VectorL10n authMissingPhone];
                     }
                 }
                 
@@ -373,8 +375,8 @@
                         // Check validity of the non empty email
                         if (![MXTools isEmailAddress:self.emailTextField.text])
                         {
-                            NSLog(@"[AuthInputsView] Invalid email");
-                            errorMsg = NSLocalizedStringFromTable(@"auth_invalid_email", @"Vector", nil);
+                            MXLogDebug(@"[AuthInputsView] Invalid email");
+                            errorMsg = [VectorL10n authInvalidEmail];
                         }
                     }
                     
@@ -383,8 +385,8 @@
                         // Check validity of the non empty phone
                         if (![[NBPhoneNumberUtil sharedInstance] isValidNumber:nbPhoneNumber])
                         {
-                            NSLog(@"[AuthInputsView] Invalid phone number");
-                            errorMsg = NSLocalizedStringFromTable(@"auth_invalid_phone", @"Vector", nil);
+                            MXLogDebug(@"[AuthInputsView] Invalid phone number");
+                            errorMsg = [VectorL10n authInvalidPhone];
                         }
                     }
                 }
@@ -403,7 +405,7 @@
         if (externalRegistrationParameters)
         {
             // We trigger here a registration based on external inputs. All the required data are handled by the session id.
-            NSLog(@"[AuthInputsView] prepareParameters: return external registration parameters");
+            MXLogDebug(@"[AuthInputsView] prepareParameters: return external registration parameters");
             callback(externalRegistrationParameters, nil);
             
             // CAUTION: Do not reset this dictionary here, it is used later to handle this registration until the end (see [updateAuthSessionWithCompletedStages:didUpdateParameters:])
@@ -423,13 +425,13 @@
                 [inputsAlert dismissViewControllerAnimated:NO completion:nil];
             }
             
-            inputsAlert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"error"] message:errorMsg preferredStyle:UIAlertControllerStyleAlert];
+            inputsAlert = [UIAlertController alertControllerWithTitle:[MatrixKitL10n error] message:errorMsg preferredStyle:UIAlertControllerStyleAlert];
             
-            [inputsAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+            [inputsAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
                                                              style:UIAlertActionStyleDefault
                                                            handler:^(UIAlertAction * action) {
                                                                
-                                                               inputsAlert = nil;
+                                                               self->inputsAlert = nil;
                                                                
                                                            }]];
             
@@ -522,7 +524,7 @@
                 // Check whether a phone number has been set, and if it is not handled yet
                 if (nbPhoneNumber && ![self isFlowCompleted:kMXLoginFlowTypeMSISDN])
                 {
-                    NSLog(@"[AuthInputsView] Prepare msisdn stage");
+                    MXLogDebug(@"[AuthInputsView] Prepare msisdn stage");
                     
                     // Retrieve the REST client from delegate
                     MXRestClient *restClient;
@@ -543,16 +545,16 @@
                                 callback(nil, [NSError errorWithDomain:MXKAuthErrorDomain
                                                                   code:0
                                                               userInfo:@{
-                                                                         NSLocalizedDescriptionKey:[NSBundle mxk_localizedStringForKey:@"auth_phone_is_required"]
+                                                                         NSLocalizedDescriptionKey:[VectorL10n authPhoneIsRequired]
                                                                          }]);
                                 return;
                             }
 
                             // Check whether a second 3pid is available
-                            _isThirdPartyIdentifierPending = (!self.emailContainer.isHidden && self.emailTextField.text.length && ![self isFlowCompleted:kMXLoginFlowTypeEmailIdentity]);
+                            self->_isThirdPartyIdentifierPending = (!self.emailContainer.isHidden && self.emailTextField.text.length && ![self isFlowCompleted:kMXLoginFlowTypeEmailIdentity]);
 
                             // Launch msisdn validation
-                            NSString *e164 = [[NBPhoneNumberUtil sharedInstance] format:nbPhoneNumber numberFormat:NBEPhoneNumberFormatE164 error:nil];
+                            NSString *e164 = [[NBPhoneNumberUtil sharedInstance] format:self->nbPhoneNumber numberFormat:NBEPhoneNumberFormatE164 error:nil];
                             NSString *msisdn;
                             if ([e164 hasPrefix:@"+"])
                             {
@@ -562,12 +564,12 @@
                             {
                                 msisdn = [e164 substringFromIndex:2];
                             }
-                            submittedMSISDN = [[MXK3PID alloc] initWithMedium:kMX3PIDMediumMSISDN andAddress:msisdn];
-
-                            [submittedMSISDN requestValidationTokenWithMatrixRestClient:restClient
-                                                                   isDuringRegistration:YES
-                                                                               nextLink:nil
-                                                                                success:^
+                            self->submittedMSISDN = [[MXK3PID alloc] initWithMedium:kMX3PIDMediumMSISDN andAddress:msisdn];
+                            
+                            [self->submittedMSISDN requestValidationTokenWithMatrixRestClient:restClient
+                                                                         isDuringRegistration:YES
+                                                                                     nextLink:nil
+                                                                                      success:^
                              {
 
                                  [self showValidationMSISDNDialogToPrepareParameters:callback];
@@ -576,7 +578,7 @@
                                                                                 failure:^(NSError *error)
                              {
 
-                                 NSLog(@"[AuthInputsView] Failed to request msisdn token");
+                                MXLogDebug(@"[AuthInputsView] Failed to request msisdn token");
 
                                  // Ignore connection cancellation error
                                  if (([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled))
@@ -602,13 +604,13 @@
 
                                      if ([mxError.errcode isEqualToString:kMXErrCodeStringThreePIDInUse])
                                      {
-                                         userInfo[NSLocalizedDescriptionKey] = NSLocalizedStringFromTable(@"auth_phone_in_use", @"Vector", nil);
-                                         userInfo[@"error"] = NSLocalizedStringFromTable(@"auth_phone_in_use", @"Vector", nil);
+                                         userInfo[NSLocalizedDescriptionKey] = [VectorL10n authPhoneInUse];
+                                         userInfo[@"error"] = [VectorL10n authPhoneInUse];
                                      }
                                      else
                                      {
-                                         userInfo[NSLocalizedDescriptionKey] = NSLocalizedStringFromTable(@"auth_untrusted_id_server", @"Vector", nil);
-                                         userInfo[@"error"] = NSLocalizedStringFromTable(@"auth_untrusted_id_server", @"Vector", nil);
+                                         userInfo[NSLocalizedDescriptionKey] = [VectorL10n authUntrustedIdServer];
+                                         userInfo[@"error"] = [VectorL10n authUntrustedIdServer];
                                      }
 
                                      error = [NSError errorWithDomain:error.domain code:error.code userInfo:userInfo];
@@ -626,12 +628,12 @@
                         // Async response
                         return;
                     }
-                    NSLog(@"[AuthInputsView] Authentication failed during the msisdn stage");
+                    MXLogDebug(@"[AuthInputsView] Authentication failed during the msisdn stage");
                 }
                 // Check whether an email has been set, and if it is not handled yet
                 else if (!self.emailContainer.isHidden && self.emailTextField.text.length && ![self isFlowCompleted:kMXLoginFlowTypeEmailIdentity])
                 {
-                    NSLog(@"[AuthInputsView] Prepare email identity stage");
+                    MXLogDebug(@"[AuthInputsView] Prepare email identity stage");
                     
                     // Retrieve the REST client from delegate
                     MXRestClient *restClient;
@@ -652,7 +654,7 @@
                                 callback(nil, [NSError errorWithDomain:MXKAuthErrorDomain
                                                             code:0
                                                         userInfo:@{
-                                                                   NSLocalizedDescriptionKey:[NSBundle mxk_localizedStringForKey:@"auth_email_is_required"]
+                                                                   NSLocalizedDescriptionKey:[VectorL10n authEmailIsRequired]
                                                                    }]);
                                 return;
                             }
@@ -693,7 +695,7 @@
 
                                  [self hideInputsContainer];
 
-                                 self.messageLabel.text = NSLocalizedStringFromTable(@"auth_email_validation_message", @"Vector", nil);
+                                self.messageLabel.text = [VectorL10n authEmailValidationMessage];
                                  self.messageLabel.hidden = NO;
 
                                  callback(parameters, nil);
@@ -702,7 +704,7 @@
                                                                                failure:^(NSError *error)
                              {
 
-                                 NSLog(@"[AuthInputsView] Failed to request email token");
+                                MXLogDebug(@"[AuthInputsView] Failed to request email token");
 
                                  // Ignore connection cancellation error
                                  if (([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled))
@@ -728,13 +730,13 @@
 
                                      if ([mxError.errcode isEqualToString:kMXErrCodeStringThreePIDInUse])
                                      {
-                                         userInfo[NSLocalizedDescriptionKey] = NSLocalizedStringFromTable(@"auth_email_in_use", @"Vector", nil);
-                                         userInfo[@"error"] = NSLocalizedStringFromTable(@"auth_email_in_use", @"Vector", nil);
+                                         userInfo[NSLocalizedDescriptionKey] = [VectorL10n authEmailInUse];
+                                         userInfo[@"error"] = [VectorL10n authEmailInUse];
                                      }
                                      else
                                      {
-                                         userInfo[NSLocalizedDescriptionKey] = NSLocalizedStringFromTable(@"auth_untrusted_id_server", @"Vector", nil);
-                                         userInfo[@"error"] = NSLocalizedStringFromTable(@"auth_untrusted_id_server", @"Vector", nil);
+                                         userInfo[NSLocalizedDescriptionKey] = [VectorL10n authUntrustedIdServer];
+                                         userInfo[@"error"] = [VectorL10n authUntrustedIdServer];
                                      }
 
                                      error = [NSError errorWithDomain:error.domain code:error.code userInfo:userInfo];
@@ -749,11 +751,11 @@
                         // Async response
                         return;
                     }
-                    NSLog(@"[AuthInputsView] Authentication failed during the email identity stage");
+                    MXLogDebug(@"[AuthInputsView] Authentication failed during the email identity stage");
                 }
                 else if ([self isFlowSupported:kMXLoginFlowTypeRecaptcha] && ![self isFlowCompleted:kMXLoginFlowTypeRecaptcha])
                 {
-                    NSLog(@"[AuthInputsView] Prepare reCaptcha stage");
+                    MXLogDebug(@"[AuthInputsView] Prepare reCaptcha stage");
                     
                     [self displayRecaptchaForm:^(NSString *response) {
                         
@@ -761,7 +763,7 @@
                         {
                             NSDictionary *parameters = @{
                                                          @"auth": @{
-                                                                 @"session":currentSession.session,
+                                                                 @"session": self->currentSession.session,
                                                                  @"response": response,
                                                                  @"type": kMXLoginFlowTypeRecaptcha
                                                                  },
@@ -773,8 +775,8 @@
                         }
                         else
                         {
-                            NSLog(@"[AuthInputsView] reCaptcha stage failed");
-                            callback(nil, [NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[NSBundle mxk_localizedStringForKey:@"not_supported_yet"]}]);
+                            MXLogDebug(@"[AuthInputsView] reCaptcha stage failed");
+                            callback(nil, [NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[MatrixKitL10n notSupportedYet]}]);
                         }
                         
                     }];
@@ -807,7 +809,7 @@
                 }
                 else if ([self isFlowSupported:kMXLoginFlowTypeTerms] && ![self isFlowCompleted:kMXLoginFlowTypeTerms])
                 {
-                    NSLog(@"[AuthInputsView] Prepare terms stage");
+                    MXLogDebug(@"[AuthInputsView] Prepare terms stage");
 
                     MXWeakify(self);
                     [self displayTermsView:^{
@@ -848,7 +850,7 @@
             // Check the supported use cases
             if (isMSISDNFlowCompleted && self.isThirdPartyIdentifierPending)
             {
-                NSLog(@"[AuthInputsView] Prepare a new third-party stage");
+                MXLogDebug(@"[AuthInputsView] Prepare a new third-party stage");
                 
                 // Here an email address is available, we add it to the authentication session.
                 [self prepareParameters:callback];
@@ -858,7 +860,7 @@
             else if ((isMSISDNFlowCompleted || isEmailFlowCompleted)
                      && [self isFlowSupported:kMXLoginFlowTypeRecaptcha] && ![self isFlowCompleted:kMXLoginFlowTypeRecaptcha])
             {
-                NSLog(@"[AuthInputsView] Display reCaptcha stage");
+                MXLogDebug(@"[AuthInputsView] Display reCaptcha stage");
 
                 if (externalRegistrationParameters)
                 {
@@ -868,14 +870,14 @@
                         {
                             // We finalize here a registration triggered from external inputs. All the required data are handled by the session id
                             NSDictionary *parameters = @{
-                                           @"auth": @{@"session": currentSession.session, @"response": response, @"type": kMXLoginFlowTypeRecaptcha},
+                                           @"auth": @{@"session": self->currentSession.session, @"response": response, @"type": kMXLoginFlowTypeRecaptcha},
                                            };
                             callback (parameters, nil);
                         }
                         else
                         {
-                            NSLog(@"[AuthInputsView] reCaptcha stage failed");
-                            callback (nil, [NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[NSBundle mxk_localizedStringForKey:@"not_supported_yet"]}]);
+                            MXLogDebug(@"[AuthInputsView] reCaptcha stage failed");
+                            callback (nil, [NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[MatrixKitL10n notSupportedYet]}]);
                         }
                     }];
                 }
@@ -888,7 +890,7 @@
             }
             else if ([self isFlowSupported:kMXLoginFlowTypeTerms] && ![self isFlowCompleted:kMXLoginFlowTypeTerms])
             {
-                NSLog(@"[AuthInputsView] Prepare a new terms stage");
+                MXLogDebug(@"[AuthInputsView] Prepare a new terms stage");
                 
                 if (externalRegistrationParameters)
                 {
@@ -912,8 +914,8 @@
             }
         }
         
-        NSLog(@"[AuthInputsView] updateAuthSessionWithCompletedStages failed");
-        callback (nil, [NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[NSBundle mxk_localizedStringForKey:@"not_supported_yet"]}]);
+        MXLogDebug(@"[AuthInputsView] updateAuthSessionWithCompletedStages failed");
+        callback (nil, [NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[MatrixKitL10n notSupportedYet]}]);
     }
 }
 
@@ -926,7 +928,7 @@
     // Check the current authentication type
     if (self.authType != MXKAuthenticationTypeRegister)
     {
-        NSLog(@"[AuthInputsView] setExternalRegistrationParameters failed: wrong auth type");
+        MXLogDebug(@"[AuthInputsView] setExternalRegistrationParameters failed: wrong auth type");
         return NO;
     }
     
@@ -947,7 +949,7 @@
             
             if ([homeserverURL isEqualToString:restClient.homeserver] == NO)
             {
-                NSLog(@"[AuthInputsView] setExternalRegistrationParameters failed: wrong homeserver URL");
+                MXLogDebug(@"[AuthInputsView] setExternalRegistrationParameters failed: wrong homeserver URL");
                 return NO;
             }
         }
@@ -960,14 +962,14 @@
             
             if ([identityURL isEqualToString:restClient.identityServer] == NO)
             {
-                NSLog(@"[AuthInputsView] setExternalRegistrationParameters failed: wrong identity server URL");
+                MXLogDebug(@"[AuthInputsView] setExternalRegistrationParameters failed: wrong identity server URL");
                 return NO;
             }
         }
     }
     else
     {
-        NSLog(@"[AuthInputsView] setExternalRegistrationParameters failed: not supported");
+        MXLogDebug(@"[AuthInputsView] setExternalRegistrationParameters failed: not supported");
         return NO;
     }
     
@@ -995,7 +997,7 @@
     // Check validity of the required parameters
     if (!homeserverURL.length || !clientSecret.length || !sid.length || !sessionId.length)
     {
-        NSLog(@"[AuthInputsView] setExternalRegistrationParameters failed: wrong parameters");
+        MXLogDebug(@"[AuthInputsView] setExternalRegistrationParameters failed: wrong parameters");
         return NO;
     }
 
@@ -1052,7 +1054,7 @@
         [self displaySoftLogoutMessageWithUserDisplayname:myUser.displayname andKeyBackupNeeded:keyBackupNeeded];
 
     } failure:^(NSError * _Nonnull error) {
-        NSLog(@"[AuthInputsView] displaySoftLogoutMessage: Cannot load displayname. Error: %@", error);
+        MXLogDebug(@"[AuthInputsView] displaySoftLogoutMessage: Cannot load displayname. Error: %@", error);
         [self displaySoftLogoutMessageWithUserDisplayname:nil andKeyBackupNeeded:keyBackupNeeded];
     }];
 }
@@ -1064,15 +1066,14 @@
     self.messageLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
     self.messageLabel.hidden = NO;
 
-    NSMutableAttributedString *message = [[NSMutableAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"auth_softlogout_sign_in", @"Vector", nil)
+    NSMutableAttributedString *message = [[NSMutableAttributedString alloc] initWithString:[VectorL10n authSoftlogoutSignIn]
                                                                     attributes:@{
                                                                                  NSFontAttributeName: [UIFont boldSystemFontOfSize:14]
                                                                                  }];
 
     [message appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n\n"]];
 
-    NSString *string = [NSString stringWithFormat:NSLocalizedStringFromTable(@"auth_softlogout_reason", @"Vector", nil),
-                        softLogoutCredentials.homeServerName, userDisplayname, softLogoutCredentials.userId];
+    NSString *string = [VectorL10n authSoftlogoutReason:softLogoutCredentials.homeServerName :userDisplayname :softLogoutCredentials.userId];
     [message appendAttributedString:[[NSAttributedString alloc] initWithString:string
                                                                     attributes:@{
                                                                                  NSFontAttributeName: [UIFont systemFontOfSize:14]
@@ -1081,7 +1082,7 @@
     if (keyBackupNeeded)
     {
         [message appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n\n"]];
-        string = NSLocalizedStringFromTable(@"auth_softlogout_recover_encryption_keys", @"Vector", nil);
+        string = [VectorL10n authSoftlogoutRecoverEncryptionKeys];
         [message appendAttributedString:[[NSAttributedString alloc] initWithString:string
                                                                         attributes:@{
                                                                                      NSFontAttributeName: [UIFont systemFontOfSize:14]
@@ -1215,7 +1216,7 @@
         self.passWordTextField.returnKeyType = UIReturnKeyNext;
 
         self.userLoginTextField.attributedPlaceholder = [[NSAttributedString alloc]
-                                                         initWithString:NSLocalizedStringFromTable(@"auth_user_name_placeholder", @"Vector", nil)
+                                                         initWithString:[VectorL10n authUserNamePlaceholder]
                                                          attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
         
         self.userLoginContainer.hidden = NO;
@@ -1232,11 +1233,11 @@
         {
             if (self.isThirdPartyIdentifierRequired)
             {
-                self.emailTextField.placeholder = NSLocalizedStringFromTable(@"auth_email_placeholder", @"Vector", nil);
+                self.emailTextField.placeholder = [VectorL10n authEmailPlaceholder];
             }
             else
             {
-                self.emailTextField.placeholder = NSLocalizedStringFromTable(@"auth_optional_email_placeholder", @"Vector", nil);
+                self.emailTextField.placeholder = [VectorL10n authOptionalEmailPlaceholder];
             }
             
             self.emailTextField.attributedPlaceholder = [[NSAttributedString alloc]
@@ -1246,7 +1247,7 @@
             self.emailContainer.hidden = NO;
             
             self.messageLabel.hidden = NO;
-            self.messageLabel.text = NSLocalizedStringFromTable(@"auth_add_email_message_2", @"Vector", nil);
+            self.messageLabel.text = [VectorL10n authAddEmailMessage2];
             
             lastViewContainer = self.emailContainer;
         }
@@ -1257,11 +1258,11 @@
             
             if (self.isThirdPartyIdentifierRequired)
             {
-                self.phoneTextField.placeholder = NSLocalizedStringFromTable(@"auth_phone_placeholder", @"Vector", nil);
+                self.phoneTextField.placeholder = [VectorL10n authPhonePlaceholder];
             }
             else
             {
-                self.phoneTextField.placeholder = NSLocalizedStringFromTable(@"auth_optional_phone_placeholder", @"Vector", nil);
+                self.phoneTextField.placeholder = [VectorL10n authOptionalPhonePlaceholder];
             }
             
             self.phoneTextField.attributedPlaceholder = [[NSAttributedString alloc]
@@ -1275,14 +1276,14 @@
                 self.emailTextField.returnKeyType = UIReturnKeyNext;
                 
                 self.phoneContainerTopConstraint.constant = 50;
-                self.messageLabel.text = NSLocalizedStringFromTable(@"auth_add_email_phone_message_2", @"Vector", nil);
+                self.messageLabel.text = [VectorL10n authAddEmailPhoneMessage2];
             }
             else
             {
                 self.phoneContainerTopConstraint.constant = 0;
                 
                 self.messageLabel.hidden = NO;
-                self.messageLabel.text = NSLocalizedStringFromTable(@"auth_add_phone_message_2", @"Vector", nil);
+                self.messageLabel.text = [VectorL10n authAddPhoneMessage2];
             }
             
             lastViewContainer = self.phoneContainer;
@@ -1321,7 +1322,7 @@
         
         [phoneNumberPickerNavigationController pushViewController:phoneNumberCountryPicker animated:NO];
         
-        UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back_icon"] style:UIBarButtonItemStylePlain target:self action:@selector(dismissCountryPicker)];
+        UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:AssetImages_tchap.backIcon.image style:UIBarButtonItemStylePlain target:self action:@selector(dismissCountryPicker)];
         phoneNumberCountryPicker.navigationItem.leftBarButtonItem = leftBarButtonItem;
         
         [self.delegate authInputsView:self presentViewController:phoneNumberPickerNavigationController animated:YES];
@@ -1486,7 +1487,7 @@
         [self hideInputsContainer];
         
         self.messageLabel.hidden = NO;
-        self.messageLabel.text = NSLocalizedStringFromTable(@"auth_recaptcha_message", @"Vector", nil);
+        self.messageLabel.text = [VectorL10n authRecaptchaMessage];
         
         self.recaptchaContainer.hidden = NO;
         self.currentLastContainer = self.recaptchaContainer;
@@ -1590,7 +1591,7 @@
                     {
                         if ([self isSupportedFlowType:stage] == NO)
                         {
-                            NSLog(@"[AuthInputsView] %@: %@ stage is not supported.", (type == MXKAuthenticationTypeLogin ? @"login" : @"register"), stage);
+                            MXLogDebug(@"[AuthInputsView] %@: %@ stage is not supported.", (type == MXKAuthenticationTypeLogin ? @"login" : @"register"), stage);
                             isSupported = NO;
                             break;
                         }
@@ -1608,7 +1609,7 @@
             }
             else
             {
-                NSLog(@"[AuthInputsView] %@: %@ stage is not supported.", (type == MXKAuthenticationTypeLogin ? @"login" : @"register"), flow.type);
+                MXLogDebug(@"[AuthInputsView] %@: %@ stage is not supported.", (type == MXKAuthenticationTypeLogin ? @"login" : @"register"), flow.type);
             }
         }
         else
@@ -1621,7 +1622,7 @@
                 {
                     if ([self isSupportedFlowType:stage] == NO)
                     {
-                        NSLog(@"[AuthInputsView] %@: %@ stage is not supported.", (type == MXKAuthenticationTypeLogin ? @"login" : @"register"), stage);
+                        MXLogDebug(@"[AuthInputsView] %@: %@ stage is not supported.", (type == MXKAuthenticationTypeLogin ? @"login" : @"register"), stage);
                         isSupported = NO;
                         break;
                     }
@@ -1670,9 +1671,9 @@
         [inputsAlert dismissViewControllerAnimated:NO completion:nil];
     }
     
-    inputsAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"auth_msisdn_validation_title", @"Vector", nil) message:NSLocalizedStringFromTable(@"auth_msisdn_validation_message", @"Vector", nil) preferredStyle:UIAlertControllerStyleAlert];
+    inputsAlert = [UIAlertController alertControllerWithTitle:[VectorL10n authMsisdnValidationTitle] message:[VectorL10n authMsisdnValidationMessage] preferredStyle:UIAlertControllerStyleAlert];
     
-    [inputsAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+    [inputsAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
                                                     style:UIAlertActionStyleDefault
                                                   handler:^(UIAlertAction * action) {
                                                       
@@ -1697,14 +1698,14 @@
         
     }];
     
-    [inputsAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"submit"]
+    [inputsAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n submit]
                                                     style:UIAlertActionStyleDefault
                                                   handler:^(UIAlertAction * action) {
                                                       
                                                       if (weakSelf)
                                                       {
                                                           typeof(self) self = weakSelf;
-                                                          UITextField *textField = [inputsAlert textFields].firstObject;
+                                                          UITextField *textField = [self->inputsAlert textFields].firstObject;
                                                           NSString *smsCode = textField.text;
                                                           self->inputsAlert = nil;
                                                           
@@ -1744,12 +1745,12 @@
                                                                   }
                                                                   else
                                                                   {
-                                                                      NSLog(@"[AuthInputsView] Failed to retrieve identity server URL");
+                                                                      MXLogDebug(@"[AuthInputsView] Failed to retrieve identity server URL");
                                                                   }
                                                                   
                                                               } failure:^(NSError *error) {
                                                                   
-                                                                  NSLog(@"[AuthInputsView] Failed to submit the sms token");
+                                                                  MXLogDebug(@"[AuthInputsView] Failed to submit the sms token");
                                                                   
                                                                   // Ignore connection cancellation error
                                                                   if (([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled))
@@ -1769,15 +1770,15 @@
                                                                       }
                                                                       else
                                                                       {
-                                                                          title = [NSBundle mxk_localizedStringForKey:@"error"];
+                                                                          title = [MatrixKitL10n error];
                                                                       }
                                                                   }
                                                                   
                                                                   self->inputsAlert = [UIAlertController alertControllerWithTitle:title message:msg preferredStyle:UIAlertControllerStyleAlert];
                                                                   
-                                                                  [inputsAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
-                                                                                                                  style:UIAlertActionStyleDefault
-                                                                                                                handler:^(UIAlertAction * action) {
+                                                                  [self->inputsAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
+                                                                                                                        style:UIAlertActionStyleDefault
+                                                                                                                      handler:^(UIAlertAction * action) {
                                                                                                                     
                                                                                                                     if (weakSelf)
                                                                                                                     {
@@ -1820,7 +1821,7 @@
         [self hideInputsContainer];
 
         self.messageLabel.hidden = NO;
-        self.messageLabel.text = NSLocalizedStringFromTable(@"auth_accept_policies", @"Vector", nil);
+        self.messageLabel.text = [VectorL10n authAcceptPolicies];
 
         self.termsView.hidden = NO;
         self.currentLastContainer = self.termsView;
@@ -1877,7 +1878,7 @@
 {
     [mxRestClient supportedMatrixVersions:^(MXMatrixVersions *matrixVersions) {
 
-        NSLog(@"[AuthInputsView] checkIdentityServerRequirement: %@", matrixVersions.doesServerRequireIdentityServerParam ? @"YES": @"NO");
+        MXLogDebug(@"[AuthInputsView] checkIdentityServerRequirement: %@", matrixVersions.doesServerRequireIdentityServerParam ? @"YES": @"NO");
         success(matrixVersions.doesServerRequireIdentityServerParam);
 
     } failure:failure];

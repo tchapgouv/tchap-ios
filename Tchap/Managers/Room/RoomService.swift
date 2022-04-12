@@ -18,7 +18,7 @@ import UIKit
 import RxSwift
 
 // Internal structure used to store room creation parameters
-private struct RoomCreationParameters {
+struct RoomServiceCreationParameters {
     let visibility: MXRoomDirectoryVisibility
     let accessRule: RoomAccessRule
     let preset: MXRoomPreset
@@ -26,7 +26,6 @@ private struct RoomCreationParameters {
     let alias: String?
     let inviteUserIDs: [String]?
     let inviteThirdPartyIDs: [MXInvite3PID]?
-    let retentionPeriod: UInt64?
     let isFederated: Bool
     let historyVisibility: MXRoomHistoryVisibility?
     let powerLevelContentOverride: [String: Any]?
@@ -36,16 +35,6 @@ private struct RoomCreationParameters {
 enum RoomServiceError: Error {
     case invalidAvatarURL
     case directRoomCreationFailed
-}
-
-enum RetentionConstants {
-    static let undefinedRetentionValue = UInt64.max
-    static let undefinedRetentionValueInDays = uint.max
-    static let oneDay: uint = 1
-    static let oneWeek: uint = 7
-    static let oneMonth: uint = 30
-    static let sixMonths: uint = 180
-    static let oneYear: uint = 365
 }
 
 /// `RoomService` implementation of `RoomServiceType` is used to perform room operations.
@@ -59,17 +48,7 @@ final class RoomService: NSObject, RoomServiceType {
     
     @objc static let roomAccessRulesStateEventType = "im.vector.room.access_rules"
     @objc static let roomAccessRulesContentRuleKey = "rule"
-    
-    @objc static let roomRetentionContentMaxLifetimeKey = "max_lifetime"
-    @objc static let roomRetentionContentExpireOnClientsKey = "expire_on_clients"
-    
-    @objc static let undefinedRetentionValueInDays = RetentionConstants.undefinedRetentionValueInDays
-    @objc static let roomRetentionPeriodOneDay = RetentionConstants.oneDay
-    @objc static let roomRetentionPeriodOneWeek = RetentionConstants.oneWeek
-    @objc static let roomRetentionPeriodOneMonth = RetentionConstants.oneMonth
-    @objc static let roomRetentionPeriodSixMonths = RetentionConstants.sixMonths
-    @objc static let roomRetentionPeriodOneYear = RetentionConstants.oneYear
-    
+
     // MARK: - Properties
     
     private let session: MXSession
@@ -83,8 +62,8 @@ final class RoomService: NSObject, RoomServiceType {
     
     // MARK: - Public
     
-    func createRoom(visibility: MXRoomDirectoryVisibility, name: String, avatarURL: String?, inviteUserIds: [String], rententionPeriodInMs: UInt64?, isFederated: Bool, accessRule: RoomAccessRule) -> Single<String> {
-        return self.createRoom(visibility: visibility, name: name, inviteUserIds: inviteUserIds, retentionPeriod: rententionPeriodInMs, isFederated: isFederated, accessRule: accessRule)
+    func createRoom(visibility: MXRoomDirectoryVisibility, name: String, avatarURL: String?, inviteUserIds: [String], isFederated: Bool, accessRule: RoomAccessRule) -> Single<String> {
+        return self.createRoom(visibility: visibility, name: name, inviteUserIds: inviteUserIds, isFederated: isFederated, accessRule: accessRule)
         .flatMap { roomID in
             guard let avatarURL = avatarURL else {
                 return Single.just(roomID)
@@ -98,35 +77,33 @@ final class RoomService: NSObject, RoomServiceType {
     }
     
     func createDiscussionWithThirdPartyID(_ thirdPartyID: MXInvite3PID, completion: @escaping (MXResponse<String>) -> Void) -> MXHTTPOperation {
-        let roomCreationParameters = RoomCreationParameters(visibility: .private,
+        let roomServiceCreationParameters = RoomServiceCreationParameters(visibility: .private,
                                                             accessRule: .direct,
                                                             preset: .trustedPrivateChat,
                                                             name: nil,
                                                             alias: nil,
                                                             inviteUserIDs: nil,
                                                             inviteThirdPartyIDs: [thirdPartyID],
-                                                            retentionPeriod: nil,
                                                             isFederated: true,
                                                             historyVisibility: nil,
                                                             powerLevelContentOverride: nil,
                                                             isDirect: true)
-        return self.createRoom(with: roomCreationParameters, completion: completion)
+        return self.createRoom(with: roomServiceCreationParameters, completion: completion)
     }
     
     @objc func createDiscussion(with userID: String, success: @escaping ((String) -> Void), failure: @escaping ((Error) -> Void)) -> MXHTTPOperation {
-        let roomCreationParameters = RoomCreationParameters(visibility: .private,
+        let roomServiceCreationParameters = RoomServiceCreationParameters(visibility: .private,
                                                             accessRule: .direct,
                                                             preset: .trustedPrivateChat,
                                                             name: nil,
                                                             alias: nil,
                                                             inviteUserIDs: [userID],
                                                             inviteThirdPartyIDs: nil,
-                                                            retentionPeriod: nil,
                                                             isFederated: true,
                                                             historyVisibility: nil,
                                                             powerLevelContentOverride: nil,
                                                             isDirect: true)
-        return self.createRoom(with: roomCreationParameters, completion: { (response) in
+        return self.createRoom(with: roomServiceCreationParameters, completion: { (response) in
             switch response {
             case .success(let roomID):
                 success(roomID)
@@ -135,27 +112,7 @@ final class RoomService: NSObject, RoomServiceType {
             }
         })
     }
-    
-    @objc static func getDisplayLabel(forRetentionPeriodInDays periodInDays: uint) -> String {
-        let label: String
-        if periodInDays == RetentionConstants.undefinedRetentionValueInDays {
-            label = TchapL10n.roomSettingsRetentionPeriodInfinite
-        } else if periodInDays == RetentionConstants.oneYear {
-            label = TchapL10n.roomSettingsRetentionPeriodOneYear
-        } else if periodInDays == RetentionConstants.sixMonths {
-            label = TchapL10n.roomSettingsRetentionPeriodSixMonths
-        } else if periodInDays == RetentionConstants.oneMonth {
-            label = TchapL10n.roomSettingsRetentionPeriodOneMonth
-        } else if periodInDays == RetentionConstants.oneWeek {
-            label = TchapL10n.roomSettingsRetentionPeriodOneWeek
-        } else if periodInDays == RetentionConstants.oneDay {
-            label = TchapL10n.roomSettingsRetentionPeriodOneDay
-        } else {
-            label = TchapL10n.roomSettingsRetentionPeriodInDays(Int(periodInDays))
-        }
-        return label
-    }
-    
+        
     // MARK: - Private
     
     private func setAvatar(with url: String, for roomID: String) -> Single<Void> {
@@ -181,10 +138,10 @@ final class RoomService: NSObject, RoomServiceType {
         }
     }
     
-    private func createRoom(visibility: MXRoomDirectoryVisibility, name: String, inviteUserIds: [String], retentionPeriod: UInt64?, isFederated: Bool, accessRule: RoomAccessRule) -> Single<String> {
+    private func createRoom(visibility: MXRoomDirectoryVisibility, name: String, inviteUserIds: [String], isFederated: Bool, accessRule: RoomAccessRule) -> Single<String> {
         
         return Single.create { (single) -> Disposable in
-            let httpOperation = self.createRoom(visibility: visibility, name: name, inviteUserIds: inviteUserIds, retentionPeriod: retentionPeriod, isFederated: isFederated, accessRule: accessRule) { (response) in
+            let httpOperation = self.createRoom(visibility: visibility, name: name, inviteUserIds: inviteUserIds, isFederated: isFederated, accessRule: accessRule) { (response) in
                 switch response {
                 case .success(let roomID):
                     single(.success(roomID))
@@ -201,7 +158,7 @@ final class RoomService: NSObject, RoomServiceType {
         }
     }
     
-    private func createRoom(visibility: MXRoomDirectoryVisibility, name: String, inviteUserIds: [String], retentionPeriod: UInt64?, isFederated: Bool, accessRule: RoomAccessRule, completion: @escaping (MXResponse<String>) -> Void) -> MXHTTPOperation {
+    private func createRoom(visibility: MXRoomDirectoryVisibility, name: String, inviteUserIds: [String], isFederated: Bool, accessRule: RoomAccessRule, completion: @escaping (MXResponse<String>) -> Void) -> MXHTTPOperation {
         
         let preset: MXRoomPreset
         let historyVisibility: MXRoomHistoryVisibility?
@@ -219,80 +176,74 @@ final class RoomService: NSObject, RoomServiceType {
             alias = nil
         }
         
-        let roomCreationParameters = RoomCreationParameters(visibility: visibility,
+        let roomServiceCreationParameters = RoomServiceCreationParameters(visibility: visibility,
                                                             accessRule: accessRule,
                                                             preset: preset,
                                                             name: name,
                                                             alias: alias,
                                                             inviteUserIDs: inviteUserIds,
                                                             inviteThirdPartyIDs: nil,
-                                                            retentionPeriod: retentionPeriod,
                                                             isFederated: isFederated,
                                                             historyVisibility: historyVisibility,
                                                             powerLevelContentOverride: nil,
                                                             isDirect: false)
         
-        return self.createRoom(with: roomCreationParameters, completion: completion)
+        return self.createRoom(with: roomServiceCreationParameters, completion: completion)
     }
     
-    private func createRoom(with roomCreationParameters: RoomCreationParameters, completion: @escaping (MXResponse<String>) -> Void) -> MXHTTPOperation {
+    private func createRoom(with roomServiceCreationParameters: RoomServiceCreationParameters, completion: @escaping (MXResponse<String>) -> Void) -> MXHTTPOperation {
         
         var parameters: [String: Any] = [:]
         
-        if let name = roomCreationParameters.name {
+        if let name = roomServiceCreationParameters.name {
             parameters["name"] = name
         }
         
-        parameters["visibility"] = roomCreationParameters.visibility.identifier
+        parameters["visibility"] = roomServiceCreationParameters.visibility.identifier
         
-        if let alias = roomCreationParameters.alias {
+        if let alias = roomServiceCreationParameters.alias {
             parameters["room_alias_name"] = alias
         }
         
-        if let inviteUserIDs = roomCreationParameters.inviteUserIDs {
+        if let inviteUserIDs = roomServiceCreationParameters.inviteUserIDs {
             parameters["invite"] = inviteUserIDs
         }
-        if let inviteThirdPartyIDs = roomCreationParameters.inviteThirdPartyIDs?.compactMap({$0.dictionary}), inviteThirdPartyIDs.isEmpty == false {
+        if let inviteThirdPartyIDs = roomServiceCreationParameters.inviteThirdPartyIDs?.compactMap({$0.dictionary}), inviteThirdPartyIDs.isEmpty == false {
             parameters["invite_3pid"] = inviteThirdPartyIDs
         }
         
-        parameters["preset"] = roomCreationParameters.preset.identifier
+        parameters["preset"] = roomServiceCreationParameters.preset.identifier
         
-        if roomCreationParameters.isFederated == false {
+        if roomServiceCreationParameters.isFederated == false {
             parameters["creation_content"] = [ "m.federate": false ]
         }
         
         var initialStates: Array<[AnyHashable: Any]> = []
         
-        let roomAccessRulesStateEvent = self.roomAccessRulesStateEvent(with: roomCreationParameters.accessRule)
+        let roomAccessRulesStateEvent = self.roomAccessRulesStateEvent(with: roomServiceCreationParameters.accessRule)
         initialStates.append(roomAccessRulesStateEvent.jsonDictionary())
         
-        if let historyVisibility = roomCreationParameters.historyVisibility {
+        if let historyVisibility = roomServiceCreationParameters.historyVisibility {
             let historyVisibilityStateEvent = self.historyVisibilityStateEvent(with: historyVisibility)
             initialStates.append(historyVisibilityStateEvent.jsonDictionary())
         }
         
-        if let retentionPeriod = roomCreationParameters.retentionPeriod, retentionPeriod != RetentionConstants.undefinedRetentionValue {
-            let roomRetentionStateEvent = self.roomRetentionStateEvent(with: retentionPeriod)
-            initialStates.append(roomRetentionStateEvent.jsonDictionary())
-        }
-        
         parameters["initial_state"] = initialStates
         
-        if let powerLevelContentOverride = roomCreationParameters.powerLevelContentOverride {
+        if let powerLevelContentOverride = roomServiceCreationParameters.powerLevelContentOverride {
             parameters["power_level_content_override"] = powerLevelContentOverride
         }
         
-        if roomCreationParameters.isDirect {
+        if roomServiceCreationParameters.isDirect {
             parameters["is_direct"] = true
         }
         
         return self.session.createRoom(parameters: parameters, completion: { (response) in
             switch response {
             case .success(let room):
-                if roomCreationParameters.isDirect,
-                    roomCreationParameters.inviteUserIDs == nil,
-                    let address = roomCreationParameters.inviteThirdPartyIDs?.first?.address {
+                if roomServiceCreationParameters.isDirect,
+                    roomServiceCreationParameters.inviteUserIDs == nil,
+                    let address = roomServiceCreationParameters.inviteThirdPartyIDs?.first?.address {
                     // Force this room to be direct for the invited 3pid, the matrix-ios-sdk don't do that by default for the moment.
                     self.createdRoom = room
                     room.setIsDirect(true, withUserId: address, success: {
@@ -303,7 +254,7 @@ final class RoomService: NSObject, RoomServiceType {
                         }
                         self.createdRoom = nil
                     }, failure: { (error) in
-                        NSLog("[RoomService] setIsDirect failed")
+                        MXLog.debug("[RoomService] setIsDirect failed")
                         if let error = error {
                             completion(.failure(error))
                         } else {
@@ -337,33 +288,6 @@ final class RoomService: NSObject, RoomServiceType {
         return String((0..<length).map { _ in
             return letters.randomElement() ?? Character("A")
         })
-    }
-    
-    private func roomRetentionStateEvent(with retentionPeriod: UInt64) -> MXEvent {
-        let stateEventJSON: [AnyHashable: Any]
-        
-        if retentionPeriod != RetentionConstants.undefinedRetentionValue {
-            stateEventJSON = [
-                "state_key": "",
-                "type": MXEventType.roomRetention.identifier,
-                "content": [
-                    RoomService.roomRetentionContentMaxLifetimeKey: retentionPeriod,
-                    RoomService.roomRetentionContentExpireOnClientsKey: true
-                ]
-            ]
-        } else {
-            stateEventJSON = [
-                "state_key": "",
-                "type": MXEventType.roomRetention.identifier,
-                "content": [
-                ]
-            ]
-        }
-            
-        guard let stateEvent = MXEvent(fromJSON: stateEventJSON) else {
-            fatalError("[RoomService] retention event could not be created")
-        }
-        return stateEvent
     }
     
     private func historyVisibilityStateEvent(with historyVisibility: MXRoomHistoryVisibility) -> MXEvent {

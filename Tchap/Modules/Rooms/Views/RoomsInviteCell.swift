@@ -50,7 +50,7 @@ import UIKit
         if isDirectChat {
             self.avatarView.tc_makeCircle()
         } else {
-            self.avatarView.tc_makeHexagon(borderWidth: Constants.hexagonImageBorderWidth, borderColor: self.style.secondaryTextColor)
+            self.avatarView.tc_makeHexagon(borderWidth: Constants.hexagonImageBorderWidth, borderColor: ThemeService.shared().theme.textSecondaryColor)
         }
     }
     
@@ -74,24 +74,37 @@ import UIKit
         }
     }
     
-    override func update(style: Style) {
-        super.update(style: style)
-        self.domainLabel.textColor = style.primarySubTextColor
-        self.leftButton.backgroundColor = style.buttonBorderedBackgroundColor
-        self.leftButton.setTitleColor(style.buttonBorderedTitleColor, for: .normal)
-        self.rightButton.backgroundColor = style.buttonBorderedBackgroundColor
-        self.rightButton.setTitleColor(style.buttonBorderedTitleColor, for: .normal)
+    override func update(theme: Theme) {
+        super.update(theme: theme)
+        self.domainLabel.textColor = theme.textTertiaryColor
+        self.leftButton.backgroundColor = theme.tintColor
+        self.leftButton.setTitleColor(theme.tintContrastColor, for: .normal)
+        self.rightButton.backgroundColor = theme.tintColor
+        self.rightButton.setTitleColor(theme.tintContrastColor, for: .normal)
+    }
+    
+    override class func height(for cellData: MXKCellData!, withMaximumWidth maxWidth: CGFloat) -> CGFloat {
+        // The RoomsInviteCell instances support the self-sizing mode, return a default value
+        return 105.0
     }
     
     @IBAction private func onLeftPressed(_ sender: Any) {
-        if let delegate = self.delegate, let room = self.roomCellData?.roomSummary.room {
-            delegate.cell(self, didRecognizeAction: RoomsInviteCell.actionJoinInvite, userInfo: [RoomsInviteCell.keyRoom: room])
-        }
+        guard let roomId = self.roomCellData?.roomIdentifier,
+              let room = self.roomCellData?.mxSession.room(withRoomId: roomId) else {
+                  return
+              }
+        self.delegate?.cell(self,
+                            didRecognizeAction: RoomsInviteCell.actionJoinInvite,
+                            userInfo: [RoomsInviteCell.keyRoom: room])
     }
     
     @IBAction private func onRightPressed(_ sender: Any) {
-        if let delegate = self.delegate, let room = self.roomCellData?.roomSummary.room {
-            delegate.cell(self, didRecognizeAction: RoomsInviteCell.actionDeclineInvite, userInfo: [RoomsInviteCell.keyRoom: room])
-        }
+        guard let roomId = self.roomCellData?.roomIdentifier,
+              let room = self.roomCellData?.mxSession.room(withRoomId: roomId) else {
+                  return
+              }
+        self.delegate?.cell(self,
+                            didRecognizeAction: RoomsInviteCell.actionDeclineInvite,
+                            userInfo: [RoomsInviteCell.keyRoom: room])
     }
 }

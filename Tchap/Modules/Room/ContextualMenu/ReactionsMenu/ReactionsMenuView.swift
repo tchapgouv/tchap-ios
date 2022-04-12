@@ -59,7 +59,7 @@ final class ReactionsMenuView: UIView, Themable, NibLoadable {
         super.awakeFromNib()
         
         self.reactionsBackgroundView.layer.masksToBounds = true
-        self.moreReactionsButton.setImage(Asset.Images.moreReactions.image, for: .normal)
+        self.moreReactionsButton.setImage(Asset_tchap.Images.moreReactions.image, for: .normal)
         self.update(theme: ThemeService.shared().theme)
     }
     

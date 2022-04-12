@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-@import MatrixKit;
+#import "MatrixKit.h"
 
 @class ContactsDataSource;
 @protocol ContactsViewControllerDelegate, Style;
@@ -32,22 +32,20 @@
 /**
  Creates and returns a new `ContactsViewController` object.
   
- @param style Used to setup view style parameters.
  @return An initialized `ContactsViewController` object if successful, `nil` otherwise.
  */
-+ (nonnull instancetype)instantiateWithStyle:(nonnull id<Style>)style;
++ (nonnull instancetype)instantiate;
 
 /**
  Creates and returns a new `ContactsViewController` object.
  
  @discussion This is the designated initializer for programmatic instantiation.
 
- @param style Used to setup view style parameters.
  @param showSearchBar YES to indicate to show search bar.
  @param enableMultipleSelection True enable contact selection.
  @return An initialized `ContactsViewController` object if successful, `nil` otherwise.
  */
-+ (nonnull instancetype)instantiateWithStyle:(nonnull id<Style>)style showSearchBar:(BOOL)showSearchBar enableMultipleSelection:(BOOL)enableMultipleSelection;
++ (nonnull instancetype)instantiateWithShowSearchBar:(BOOL)showSearchBar enableMultipleSelection:(BOOL)enableMultipleSelection;
 
 /**
  Display the contacts described in the provided data source.

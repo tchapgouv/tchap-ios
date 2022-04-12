@@ -16,7 +16,7 @@
 
 import Foundation
 
-@objc protocol GDPRConsentViewControllerDelegate: class {
+@objc protocol GDPRConsentViewControllerDelegate: AnyObject {
     func gdprConsentViewControllerDidConsentToGDPRWithSuccess(_ gdprConsentViewController: GDPRConsentViewController)
 }
 
@@ -36,7 +36,7 @@ final public class GDPRConsentViewController: WebViewViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.title = NSLocalizedString("settings_term_conditions", tableName: "Vector", comment: "")
+        self.title = VectorL10n.settingsTermConditions
     }
     
     // MARK: - Superclass Overrides
@@ -46,7 +46,7 @@ final public class GDPRConsentViewController: WebViewViewController {
         
         // When navigation finish on path `consentSuccessURLPath` with no query, it means that user consent to GDPR
         if let url = webView.url, url.path == GDPRConsentViewController.consentSuccessURLPath, url.query == nil {
-            NSLog("[GDPRConsentViewController] User consent to GDPR")
+            MXLog.debug("[GDPRConsentViewController] User consent to GDPR")
             self.delegate?.gdprConsentViewControllerDidConsentToGDPRWithSuccess(self)
         }
     }

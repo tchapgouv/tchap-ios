@@ -16,7 +16,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import <MatrixKit/MatrixKit.h>
+#import "MatrixKit.h"
 
 @interface BugReportViewController : MXKViewController <UITextViewDelegate>
 
@@ -47,6 +47,8 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *cancelButton;
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
+
+@property (weak, nonatomic) IBOutlet UIButton *backgroundButton;
 
 + (instancetype)bugReportViewController;
 

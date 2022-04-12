@@ -16,8 +16,6 @@
 
 #import "LanguagePickerViewController.h"
 
-#import "RageShakeManager.h"
-#import "Analytics.h"
 #import "GeneratedInterface-Swift.h"
 
 @interface LanguagePickerViewController ()
@@ -108,14 +106,6 @@
         [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
         kThemeServiceDidChangeThemeNotificationObserver = nil;
     }
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-
-    // Screen tracking
-    [[Analytics sharedInstance] trackScreen:@"CountryPicker"];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;

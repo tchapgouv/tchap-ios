@@ -16,7 +16,6 @@
 
 #import "RoomKeyRequestViewController.h"
 
-#import "EncryptionInfoView.h"
 #import "GeneratedInterface-Swift.h"
 
 @interface RoomKeyRequestViewController () <KeyVerificationCoordinatorBridgePresenterDelegate>
@@ -50,15 +49,15 @@
     UIViewController *rootViewController = [AppDelegate theDelegate].window.rootViewController;
     if (rootViewController)
     {
-        NSString *title = NSLocalizedStringFromTable(@"e2e_room_key_request_title", @"Vector", nil);
+        NSString *title = [VectorL10n e2eRoomKeyRequestTitle];
         NSString *message;
         if (wasNewDevice)
         {
-            message = [NSString stringWithFormat:NSLocalizedStringFromTable(@"e2e_room_key_request_message_new_device", @"Vector", nil), _device.displayName];
+            message = [VectorL10n e2eRoomKeyRequestMessageNewDevice:_device.displayName];
         }
         else
         {
-            message = [NSString stringWithFormat:NSLocalizedStringFromTable(@"e2e_room_key_request_message", @"Vector", nil), _device.displayName];
+            message = [VectorL10n e2eRoomKeyRequestMessage:_device.displayName];
         }
 
         _alertController = [UIAlertController alertControllerWithTitle:title
@@ -67,7 +66,7 @@
 
         __weak typeof(self) weakSelf = self;
 
-        [_alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"e2e_room_key_request_start_verification", @"Vector", nil)
+        [_alertController addAction:[UIAlertAction actionWithTitle:[VectorL10n e2eRoomKeyRequestStartVerification]
                                                              style:UIAlertActionStyleDefault
                                                            handler:^(UIAlertAction * action) {
 
@@ -80,7 +79,7 @@
                                                                }
                                                            }]];
 // Tchap remove "share without verifying" option
-//        [_alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"e2e_room_key_request_share_without_verifying", @"Vector", nil)
+//        [_alertController addAction:[UIAlertAction actionWithTitle:[VectorL10n e2eRoomKeyRequestShareWithoutVerifying]
 //                                                             style:UIAlertActionStyleDefault
 //                                                           handler:^(UIAlertAction * action) {
 //
@@ -93,12 +92,12 @@
 //                                                                   // Accept the received requests from this device
 //                                                                   [self.mxSession.crypto acceptAllPendingKeyRequestsFromUser:self.device.userId andDevice:self.device.deviceId onComplete:^{
 //
-//                                                                       onComplete();
+//                                                                       self->onComplete();
 //                                                                   }];
 //                                                               }
 //                                                           }]];
 
-        [_alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"e2e_room_key_request_ignore_request", @"Vector", nil)
+        [_alertController addAction:[UIAlertAction actionWithTitle:[VectorL10n e2eRoomKeyRequestIgnoreRequest]
                                                              style:UIAlertActionStyleDefault
                                                            handler:^(UIAlertAction * action) {
 
@@ -111,7 +110,7 @@
                                                                    // Ignore all pending requests from this device
                                                                    [self.mxSession.crypto ignoreAllPendingKeyRequestsFromUser:self.device.userId andDevice:self.device.deviceId onComplete:^{
 
-                                                                       onComplete();
+                                                                       self->onComplete();
                                                                    }];
                                                                }
                                                            }]];
@@ -170,7 +169,7 @@
             // As the device is now verified, all other key requests will be automatically accepted.
             [self.mxSession.crypto acceptAllPendingKeyRequestsFromUser:self.device.userId andDevice:self.device.deviceId onComplete:^{
                 
-                onComplete();
+                self->onComplete();
             }];
         }
         else

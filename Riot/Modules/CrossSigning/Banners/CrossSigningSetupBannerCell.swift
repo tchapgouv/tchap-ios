@@ -16,7 +16,7 @@
 
 import UIKit
 
-@objc protocol CrossSigningSetupBannerCellDelegate: class {
+@objc protocol CrossSigningSetupBannerCellDelegate: AnyObject {
     func crossSigningSetupBannerCellDidTapCloseAction(_ cell: CrossSigningSetupBannerCell)
 }
 
@@ -62,7 +62,7 @@ final class CrossSigningSetupBannerCell: MXKTableViewCell, Themable {
         let shieldImage = Asset.Images.encryptionNormal.image.withRenderingMode(.alwaysTemplate)
         self.shieldImageView.image = shieldImage
         
-        let closeImage = Asset.Images.closeBanner.image.withRenderingMode(.alwaysTemplate)
+        let closeImage = Asset_tchap.Images.closeBanner.image.withRenderingMode(.alwaysTemplate)
         self.closeButton.setImage(closeImage, for: .normal)
         
         self.titleLabel.text = VectorL10n.crossSigningSetupBannerTitle

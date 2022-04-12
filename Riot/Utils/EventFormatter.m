@@ -22,17 +22,20 @@
 
 #import "WidgetManager.h"
 
-//#import "DecryptionFailureTracker.h"
-
-#import "GeneratedInterface-Swift.h"
+#import "MXDecryptionResult.h"
+#import "DecryptionFailureTracker.h"
 
 #import "EventFormatter+DTCoreTextFix.h"
+#import <MatrixSDK/MatrixSDK.h>
 
 #pragma mark - Constants definitions
 
 NSString *const EventFormatterOnReRequestKeysLinkAction = @"EventFormatterOnReRequestKeysLinkAction";
 NSString *const EventFormatterLinkActionSeparator = @"/";
 NSString *const EventFormatterEditedEventLinkAction = @"EventFormatterEditedEventLinkAction";
+
+NSString *const FunctionalMembersStateEventType = @"io.element.functional_members";
+NSString *const FunctionalMembersServiceMembersKey = @"service_members";
 
 static NSString *const kEventFormatterTimeFormat = @"HH:mm";
 
@@ -62,6 +65,38 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
 
 - (NSAttributedString *)attributedStringFromEvent:(MXEvent *)event withRoomState:(MXRoomState *)roomState error:(MXKEventFormatterError *)error
 {
+    if (event.isRedactedEvent)
+    {
+        // Check whether the event is a thread root or redacted information is required
+        if ((RiotSettings.shared.enableThreads && [mxSession.threadingService isEventThreadRoot:event])
+            || self.settings.showRedactionsInRoomHistory)
+        {
+            UIFont *font = self.defaultTextFont;
+            UIColor *color = ThemeService.shared.theme.colors.secondaryContent;
+            NSString *string = [NSString stringWithFormat:@" %@", VectorL10n.eventFormatterMessageDeleted];
+            NSAttributedString *attrString = [[NSAttributedString alloc] initWithString:string
+                                                                             attributes:@{
+                                                                                 NSFontAttributeName: font,
+                                                                                 NSForegroundColorAttributeName: color
+                                                                             }];
+            
+            CGSize imageSize = CGSizeMake(20, 20);
+            NSTextAttachment *attachment = [[NSTextAttachment alloc] init];
+            attachment.image = [[AssetImages.roomContextMenuDelete.image vc_resizedWith:imageSize] vc_tintedImageUsingColor:color];
+            attachment.bounds = CGRectMake(0, font.descender, imageSize.width, imageSize.height);
+            NSAttributedString *imageString = [NSAttributedString attributedStringWithAttachment:attachment];
+            
+            NSMutableAttributedString *result = [[NSMutableAttributedString alloc] initWithAttributedString:imageString];
+            [result appendAttributedString:attrString];
+            
+            if (error)
+            {
+                *error = MXKEventFormatterErrorNone;
+            }
+            
+            return result;
+        }
+    }
     BOOL isEventSenderMyUser = [event.sender isEqualToString:mxSession.myUserId];
     
     // Build strings for widget events
@@ -85,25 +120,22 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
                     // This is an alive jitsi widget
                     if (isEventSenderMyUser)
                     {
-                        displayText = NSLocalizedStringFromTable(@"event_formatter_jitsi_widget_added_by_you", @"Vector", nil);
+                        displayText = [VectorL10n eventFormatterJitsiWidgetAddedByYou];
                     }
                     else
                     {
-                        displayText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"event_formatter_jitsi_widget_added", @"Vector", nil), senderDisplayName];
+                        displayText = [VectorL10n eventFormatterJitsiWidgetAdded:senderDisplayName];
                     }
                 }
                 else
                 {
                     if (isEventSenderMyUser)
                     {
-                        displayText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"event_formatter_widget_added_by_you", @"Vector", nil),
-                        widget.name ? widget.name : widget.type];
+                        displayText = [VectorL10n eventFormatterWidgetAddedByYou:(widget.name ? widget.name : widget.type)];
                     }
                     else
                     {
-                        displayText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"event_formatter_widget_added", @"Vector", nil),
-                        widget.name ? widget.name : widget.type,
-                        senderDisplayName];
+                        displayText = [VectorL10n eventFormatterWidgetAdded:(widget.name ? widget.name : widget.type) :senderDisplayName];
                     }
                 }
             }
@@ -127,27 +159,17 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
                                 || [activeWidget.type isEqualToString:kWidgetTypeJitsiV2])
                             {
                                 // This was a jitsi widget
-                                if (isEventSenderMyUser)
-                                {
-                                    displayText = NSLocalizedStringFromTable(@"event_formatter_jitsi_widget_removed_by_you", @"Vector", nil);
-                                }
-                                else
-                                {
-                                    displayText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"event_formatter_jitsi_widget_removed", @"Vector", nil), senderDisplayName];
-                                }
+                                return nil;
                             }
                             else
                             {
                                 if (isEventSenderMyUser)
                                 {
-                                    displayText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"event_formatter_widget_removed_by_you", @"Vector", nil),
-                                                   activeWidget.name ? activeWidget.name : activeWidget.type];
+                                    displayText = [VectorL10n eventFormatterWidgetRemovedByYou:(activeWidget.name ? activeWidget.name : activeWidget.type)];
                                 }
                                 else
                                 {
-                                    displayText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"event_formatter_widget_removed", @"Vector", nil),
-                                                   activeWidget.name ? activeWidget.name : activeWidget.type,
-                                                   senderDisplayName];
+                                    displayText = [VectorL10n eventFormatterWidgetRemoved:(activeWidget.name ? activeWidget.name : activeWidget.type) :senderDisplayName];
                                 }
                             }
                             break;
@@ -190,77 +212,11 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
             }
         }
             break;
-        case MXEventTypeRoomRetention:
-        {
-            // Check whether a retention period is defined
-            uint periodInDays = RoomService.undefinedRetentionValueInDays;
-            if (event.content[RoomService.roomRetentionContentMaxLifetimeKey])
-            {
-                UInt64 maxLifetime = UINT64_MAX;
-                MXJSONModelSetUInt64(maxLifetime, event.content[RoomService.roomRetentionContentMaxLifetimeKey]);
-                periodInDays = [Tools numberOfDaysFromDurationInMs:maxLifetime];
-            }
-            
-            NSString *displayText = nil;
-            if ([event.sender isEqualToString:mxSession.myUserId])
-            {
-                if (periodInDays != RoomService.undefinedRetentionValueInDays)
-                {
-                    NSString *period = [RoomService getDisplayLabelForRetentionPeriodInDays:periodInDays];
-                    displayText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"notice_room_retention_changed_by_you", @"Tchap", nil), period];
-                }
-                else
-                {
-                    displayText = NSLocalizedStringFromTable(@"notice_room_retention_removed_by_you", @"Tchap", nil);
-                }
-            }
-            else
-            {
-                NSString *displayName = roomState ? [roomState.members memberName:event.sender] : [UserService displayNameFrom:event.sender];
-                if (periodInDays != RoomService.undefinedRetentionValueInDays)
-                {
-                    NSString *period = [RoomService getDisplayLabelForRetentionPeriodInDays:periodInDays];
-                    displayText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"notice_room_retention_changed", @"Tchap", nil), displayName, period];
-                }
-                else
-                {
-                    displayText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"notice_room_retention_removed", @"Tchap", nil), displayName];
-                }
-            }
-            
-            // Build the attributed string with the right font and color for the events
-            return [self renderString:displayText forEvent:event];
-        }
-            break;
-        case MXEventTypeRoomMember:
-        {
-            if (event.isUserProfileChange)
-            {
-                // Check whether the profile change must be hidden or not
-                if (!RiotSettings.shared.showProfileUpdateEvents)
-                {
-                    return nil;
-                }
-            }
-            else if (!RiotSettings.shared.showJoinLeaveEvents)
-            {
-                // Hide the join and leave events
-                NSString* membership;
-                MXJSONModelSetString(membership, event.content[@"membership"]);
-                if ([membership isEqualToString:kMXMembershipStringJoin] || [membership isEqualToString:kMXMembershipStringLeave])
-                {
-                    return nil;
-                }
-            }
-        }
-            break;
         case MXEventTypeCallCandidates:
-        case MXEventTypeCallAnswer:
-        //case MXEventTypeCallSelectAnswer:
-        case MXEventTypeCallHangup:
-        //case MXEventTypeCallNegotiate:
-        //case MXEventTypeCallReplaces:
-        //case MXEventTypeCallRejectReplacement:
+        case MXEventTypeCallSelectAnswer:
+        case MXEventTypeCallNegotiate:
+        case MXEventTypeCallReplaces:
+        case MXEventTypeCallRejectReplacement:
             //  Do not show call events except invite and reject in timeline
             return nil;
         case MXEventTypeCallInvite:
@@ -289,10 +245,10 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
     if (event.sentState == MXEventSentStateSent
         && [event.decryptionError.domain isEqualToString:MXDecryptingErrorDomain])
     {
-//        // Track e2e failures
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            [[DecryptionFailureTracker sharedInstance] reportUnableToDecryptErrorForEvent:event withRoomState:roomState myUser:mxSession.myUser.userId];
-//        });
+        // Track e2e failures
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[DecryptionFailureTracker sharedInstance] reportUnableToDecryptErrorForEvent:event withRoomState:roomState myUser:self->mxSession.myUser.userId];
+        });
 
         if (event.decryptionError.code == MXDecryptingErrorUnknownInboundSessionIdCode)
         {
@@ -304,18 +260,18 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
             NSString *linkActionString = [NSString stringWithFormat:@"%@%@%@", EventFormatterOnReRequestKeysLinkAction,
                                           EventFormatterLinkActionSeparator,
                                           event.eventId];
-            
+
             [attributedStringWithRerequestMessage appendAttributedString:
-             [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"event_formatter_rerequest_keys_part1", @"Vector", nil)
+             [[NSAttributedString alloc] initWithString:[VectorL10n eventFormatterRerequestKeysPart1Link]
                                              attributes:@{
+                                                          NSLinkAttributeName: linkActionString,
                                                           NSForegroundColorAttributeName: self.sendingTextColor,
                                                           NSFontAttributeName: self.encryptedMessagesTextFont
                                                           }]];
 
             [attributedStringWithRerequestMessage appendAttributedString:
-             [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"event_formatter_rerequest_keys_part2_link", @"Vector", nil)
+             [[NSAttributedString alloc] initWithString:[VectorL10n eventFormatterRerequestKeysPart2]
                                              attributes:@{
-                                                          NSLinkAttributeName: linkActionString,
                                                           NSForegroundColorAttributeName: self.sendingTextColor,
                                                           NSFontAttributeName: self.encryptedMessagesTextFont
                                                           }]];
@@ -332,7 +288,7 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
                                       event.eventId];
         
         [attributedStringWithEditMention appendAttributedString:
-         [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@" %@", NSLocalizedStringFromTable(@"event_formatter_message_edited_mention", @"Vector", nil)]
+         [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@" %@", [VectorL10n eventFormatterMessageEditedMention]]
                                          attributes:@{
                                                       NSLinkAttributeName: linkActionString,
                                                       // NOTE: Color is curretly overidden by UIText.tintColor as we use `NSLinkAttributeName`.
@@ -355,6 +311,8 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
     {
         MXEvent *roomCreateEvent = [events filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"type == %@", kMXEventTypeStringRoomCreate]].firstObject;
         
+        MXEvent *callInviteEvent = [events filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"type == %@", kMXEventTypeStringCallInvite]].firstObject;
+        
         if (roomCreateEvent)
         {
             MXKEventFormatterError tmpError;
@@ -370,18 +328,23 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
             //  add one-char space
             [result appendAttributedString:[[NSAttributedString alloc] initWithString:@" "]];
             //  add more link
-            NSAttributedString *linkMore = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"more", @"Vector", nil) attributes:@{
+            NSAttributedString *linkMore = [[NSAttributedString alloc] initWithString:[VectorL10n more] attributes:@{
                 NSFontAttributeName: [UIFont systemFontOfSize:13],
                 NSForegroundColorAttributeName: ThemeService.shared.theme.tintColor
             }];
             [result appendAttributedString:linkMore];
             return result;
         }
+        else if (callInviteEvent)
+        {
+            //  return a non-nil value
+            return [NSMutableAttributedString new];
+        }
         else if (events[0].eventType == MXEventTypeRoomMember)
         {
             // This is a series for cells tagged with RoomBubbleCellDataTagMembership
             // TODO: Build a complete summary like Riot-web
-            displayText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"event_formatter_member_updates", @"Vector", nil), events.count];
+            displayText = [VectorL10n eventFormatterMemberUpdates:events.count];
         }
     }
 
@@ -411,15 +374,18 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
                            white-space: pre; \
                            -coretext-fontname: Menlo-Regular; \
                            font-size: small; \
+                           } \
+                           h1,h2 { \
+                           font-size: 1.2em; \
                            }", (unsigned long)bgColor];
         
         self.defaultTextColor = ThemeService.shared.theme.textPrimaryColor;
         self.subTitleTextColor = ThemeService.shared.theme.textSecondaryColor;
         self.prefixTextColor = ThemeService.shared.theme.textSecondaryColor;
         self.bingTextColor = ThemeService.shared.theme.noticeColor;
-        self.encryptingTextColor = ThemeService.shared.theme.tintColor;
-        self.sendingTextColor = ThemeService.shared.theme.textSecondaryColor;
-        self.errorTextColor = ThemeService.shared.theme.warningColor;
+        self.encryptingTextColor = ThemeService.shared.theme.textPrimaryColor;
+        self.sendingTextColor = ThemeService.shared.theme.textPrimaryColor;
+        self.errorTextColor = ThemeService.shared.theme.textPrimaryColor;
         self.showEditionMention = YES;
         self.editionMentionTextColor = ThemeService.shared.theme.textSecondaryColor;
         
@@ -431,6 +397,11 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
         self.encryptedMessagesTextFont = [UIFont italicSystemFontOfSize:15];
         self.emojiOnlyTextFont = [UIFont systemFontOfSize:48];
         self.editionMentionTextFont = [UIFont systemFontOfSize:12];
+        
+        // Handle space room type, enables to show space in room list
+        defaultRoomSummaryUpdater.showRoomTypeStrings = @[
+            MXRoomTypeStringSpace
+        ];
     }
     return self;
 }
@@ -444,22 +415,6 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
 }
 
 #pragma mark event sender info
-
-- (NSString*)senderDisplayNameForEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState
-{
-    NSString *senderName = [super senderDisplayNameForEvent:event withRoomState:roomState];
-    
-    // Remove the domain from this display name.
-    // FIXME: We should use "DisplayNameComponents" struct here in Swift.
-    NSRange range = [senderName rangeOfString:@"["];
-    if (range.location != NSNotFound)
-    {
-        senderName = [senderName substringToIndex:range.location];
-        senderName = [senderName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    }
-    
-    return senderName;
-}
 
 - (NSString*)senderAvatarUrlForEvent:(MXEvent*)event withRoomState:(MXRoomState*)roomState
 {
@@ -483,6 +438,76 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
     }
     
     return senderAvatarUrl;
+}
+
+#pragma mark - MXRoomSummaryUpdating
+- (BOOL)session:(MXSession *)session updateRoomSummary:(MXRoomSummary *)summary withStateEvents:(NSArray<MXEvent *> *)stateEvents roomState:(MXRoomState *)roomState
+{
+    BOOL updated = [super session:session updateRoomSummary:summary withStateEvents:stateEvents roomState:roomState];
+    
+    // Store in the room summary some additional information
+    updated |= [summary tc_updateWithStateEvents:stateEvents];
+    
+    // Customisation for EMS Functional Members in direct rooms
+    if (BuildSettings.supportFunctionalMembers && summary.room.isDirect)
+    {
+        if ([self functionalMembersEventFromStateEvents:stateEvents])
+        {
+            MXLogDebug(@"[EventFormatter] The functional members event has been updated.")
+            
+            // The stateEvents parameter contains state events that may change the room summary. If service members are found,
+            // it's likely that something changed. As they aren't stored, the only reliable check would be to compute the
+            // room name which we'll do twice more in updateRoomSummary:withServerRoomSummary:roomState: anyway.
+            //
+            // So return YES and let that happen there.
+            return YES;
+        }
+    }
+    
+    return updated;
+}
+
+- (BOOL)session:(MXSession *)session updateRoomSummary:(MXRoomSummary *)summary withServerRoomSummary:(MXRoomSyncSummary *)serverRoomSummary roomState:(MXRoomState *)roomState
+{
+    BOOL updated = [super session:session updateRoomSummary:summary withServerRoomSummary:serverRoomSummary roomState:roomState];
+    
+    // Customisation for EMS Functional Members in direct rooms
+    if (BuildSettings.supportFunctionalMembers && summary.room.isDirect)
+    {
+        MXEvent *functionalMembersEvent = [self functionalMembersEventFromStateEvents:roomState.stateEvents];
+        
+        if (functionalMembersEvent)
+        {
+            MXLogDebug(@"[EventFormatter] Computing the room name and avatar excluding functional members.")
+            
+            NSArray<NSString*> *serviceMemberIDs = functionalMembersEvent.content[FunctionalMembersServiceMembersKey] ?: @[];
+            
+            updated |= [defaultRoomSummaryUpdater updateSummaryDisplayname:summary
+                                                                   session:session
+                                                     withServerRoomSummary:serverRoomSummary
+                                                                 roomState:roomState
+                                                          excludingUserIDs:serviceMemberIDs];
+            
+            updated |= [defaultRoomSummaryUpdater updateSummaryAvatar:summary
+                                                              session:session
+                                                withServerRoomSummary:serverRoomSummary
+                                                            roomState:roomState
+                                                     excludingUserIDs:serviceMemberIDs];
+        }
+    }
+
+    return updated;
+}
+
+/**
+ Gets the latest state event of type `io.element.functional_members` from the supplied array of state events.
+ Note: This function will be expensive on big rooms, recommended for use only on DMs.
+ @return An event of type `io.element.functional_members`, or nil if the event wasn't found.
+ */
+- (MXEvent *)functionalMembersEventFromStateEvents:(NSArray<MXEvent *> *)stateEvents
+{
+    NSPredicate *functionalMembersPredicate = [NSPredicate predicateWithFormat:@"type == %@", FunctionalMembersStateEventType];
+    return [stateEvents filteredArrayUsingPredicate:functionalMembersPredicate].lastObject;
 }
 
 #pragma mark - Timestamp formatting
@@ -532,9 +557,9 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
         if (time)
         {
             [dateFormatter setDateFormat:nil];
-            return [NSString stringWithFormat:@"%@ %@", NSLocalizedStringFromTable(@"yesterday", @"Vector", nil), [super dateStringFromDate:date withTime:YES]];
+            return [NSString stringWithFormat:@"%@ %@", [VectorL10n yesterday], [super dateStringFromDate:date withTime:YES]];
         }
-        return NSLocalizedStringFromTable(@"yesterday", @"Vector", nil);
+        return [VectorL10n yesterday];
     }
     else if (interval > - 60*60*24)
     {
@@ -543,7 +568,7 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
             [dateFormatter setDateFormat:nil];
             return [NSString stringWithFormat:@"%@", [super dateStringFromDate:date withTime:YES]];
         }
-        return NSLocalizedStringFromTable(@"today", @"Vector", nil);
+        return [VectorL10n today];
     }
     else
     {
@@ -568,10 +593,10 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
     
     NSMutableAttributedString *roomPredecessorAttributedString = [NSMutableAttributedString new];
     
-    NSString *roomPredecessorReasonString = [NSString stringWithFormat:@"%@\n", NSLocalizedStringFromTable(@"room_predecessor_information", @"Vector", nil)];
+    NSString *roomPredecessorReasonString = [NSString stringWithFormat:@"%@\n", [VectorL10n roomPredecessorInformation]];
     NSAttributedString *roomPredecessorReasonAttributedString = [[NSAttributedString alloc] initWithString:roomPredecessorReasonString attributes:roomPredecessorReasonAttributes];
     
-    NSString *predecessorRoomLinkString = NSLocalizedStringFromTable(@"room_predecessor_link", @"Vector", nil);
+    NSString *predecessorRoomLinkString = [VectorL10n roomPredecessorLink];
     NSAttributedString *predecessorRoomLinkAttributedString = [[NSAttributedString alloc] initWithString:predecessorRoomLinkString attributes:roomLinkAttributes];
     
     [roomPredecessorAttributedString appendAttributedString:roomPredecessorReasonAttributedString];
@@ -581,61 +606,6 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
     [roomPredecessorAttributedString addAttribute:NSForegroundColorAttributeName value:self.defaultTextColor range:wholeStringRange];
     
     return roomPredecessorAttributedString;
-}
-
-#pragma mark - MXRoomSummaryUpdating
-
-- (BOOL)session:(MXSession*)session updateRoomSummary:(MXRoomSummary*)summary withServerRoomSummary:(MXRoomSyncSummary*)serverRoomSummary roomState:(MXRoomState*)roomState
-{
-    BOOL updated = [super session:session updateRoomSummary:summary withServerRoomSummary:serverRoomSummary roomState:roomState];
-    
-    // Tchap:
-    // - Direct chat: the discussion must keep the display name and the avatar of the other member, even if this member has left.
-    // - Room: Do not use by default a member avatar for the room avatar.
-    // Note: The boolean `updated` is not modified below because it is already true when we need to apply our changes.
-    if (summary.room.isDirect)
-    {
-        NSArray<MXRoomMember *> *leftMembers = [roomState.members membersWithMembership:MXMembershipLeave];
-        if (leftMembers.count)
-        {
-            MXRoomMember *leftMember = leftMembers.firstObject;
-            // The left member display name is available in prevContent.
-            NSString *leftMemberDisplayname;
-            NSString *leftMemberAvatar;
-            MXJSONModelSetString(leftMemberDisplayname, leftMember.originalEvent.prevContent[@"displayname"]);
-            MXJSONModelSetString(leftMemberAvatar, leftMember.originalEvent.prevContent[@"avatar_url"]);
-            summary.displayname = leftMemberDisplayname;
-            summary.avatar = leftMemberAvatar;
-        }
-        
-        // When an invite by email to a direct has been accepted but not joined yet,
-        // the displayname of the room is a matrix id
-        // We change it here with a more friendly string
-        if ([MXTools isMatrixUserIdentifier:summary.displayname])
-        {
-            summary.displayname = [UserService displayNameFrom:summary.displayname];
-        }
-    }
-    else if (!summary.tc_isServerNotice)
-    {
-        // Remove the potential member avatar used as the room avatar
-        if (!roomState.avatar && summary.avatar)
-        {
-            summary.avatar = nil;
-        }
-    }
-    
-    return updated;
-}
-
-- (BOOL)session:(MXSession *)session updateRoomSummary:(MXRoomSummary *)summary withStateEvents:(NSArray<MXEvent *> *)stateEvents roomState:(MXRoomState *)roomState
-{
-    BOOL ret = [super session:session updateRoomSummary:summary withStateEvents:stateEvents roomState:roomState];
-    
-    // Store in the room summary some additional information
-    ret |= [summary tc_updateWithStateEvents:stateEvents];
-    
-    return ret;
 }
 
 @end

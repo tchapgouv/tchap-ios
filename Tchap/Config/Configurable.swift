@@ -16,8 +16,6 @@
 
 import Foundation
 
-import MatrixKit
-
 /// Configurable expose settings app and its entensions must use.
 @objc protocol Configurable {
     // MARK: - Global settings

@@ -16,8 +16,6 @@
 
 import Foundation
 
-import MatrixKit
-
 /// BuildSettings provides settings computed at build time.
 /// In future, it may be automatically generated from xcconfig files
 @objcMembers
@@ -50,6 +48,17 @@ final class BuildSettings: NSObject {
             fatalError("keychainAccessGroup should be defined")
         }
         return keychainAccessGroup
+    }
+    
+    static var applicationURLScheme: String? {
+        guard let urlTypes = Bundle.app.object(forInfoDictionaryKey: "CFBundleURLTypes") as? [AnyObject],
+              let urlTypeDictionary = urlTypes.first as? [String: AnyObject],
+              let urlSchemes = urlTypeDictionary["CFBundleURLSchemes"] as? [AnyObject],
+              let externalURLScheme = urlSchemes.first as? String else {
+            return nil
+        }
+        
+        return externalURLScheme
     }
     
     static var pushKitAppIdProd: String {
@@ -98,6 +107,7 @@ final class BuildSettings: NSObject {
     
     
     // MARK: - Server configuration
+    
     // TODO: replace m.org with https://sygnal.tchap.gouv.fr
     static let serverConfigSygnalAPIUrlString = "https://matrix.org/_matrix/push/v1/notify"
     
@@ -105,7 +115,8 @@ final class BuildSettings: NSObject {
     // MARK: - Legal URLs
     static let applicationTermsConditionsUrlString = "https://www.tchap.gouv.fr/tac.html"
     static let clientConfigURL = "https://www.tchap.gouv.fr/client/config/preprod/ios"
-    
+    static let applicationHelpUrlString = "https://tchap.beta.gouv.fr/faq"
+
     
     // MARk: - Matrix permalinks
     static let permalinkSupportedHosts: [String] = [
@@ -132,11 +143,14 @@ final class BuildSettings: NSObject {
         "i.tchap.gouv.fr"
     ]
     
+    // MARK: -  Rooms Screen
+    static let roomsAllowToJoinPublicRooms: Bool = true
     
     // MARK: - Analytics
-    static let analyticsServerUrl: String? = nil
+    static let analyticsServerUrl: URL? = URL(string: "")
     static let analyticsAppId: String? = nil
-    
+    static let analyticsHost: String? = nil
+    static let analyticsKey: String? = nil
     
     // MARK: - Bug report
     static let bugReportDefaultHost = "i.tchap.gouv.fr"
@@ -157,8 +171,8 @@ final class BuildSettings: NSObject {
         "https://scalar-staging.riot.im/scalar/api"
     ]
     // Jitsi server used outside integrations to create conference calls from the call button in the timeline
-    static let jitsiServerUrl = NSURL(string: "https://jitsi.riot.im")
-
+    static let jitsiServerUrl: URL = URL(string: "https://jitsi.riot.im")!
+    
     
     // MARK: - Features
     
@@ -174,6 +188,13 @@ final class BuildSettings: NSObject {
     static let allowSendingStickers: Bool = false
     
     static let allowLocalContactsAccess: Bool = true
+    
+    static let allowInviteExernalUsers: Bool = true
+    
+    static let enableSideMenu: Bool = true
+    
+    /// Whether to read the `io.element.functional_members` state event and exclude any service members when computing a room's name and avatar.
+    static let supportFunctionalMembers: Bool = true
     
     // MARK: - Feature Specifics
     
@@ -192,35 +213,95 @@ final class BuildSettings: NSObject {
     /// Indicates should the app log out the user when number of biometrics failures reaches `maxAllowedNumberOfBiometricsFailures`. Defaults to `false`
     static let logOutUserWhenBiometricsFailuresExceeded: Bool = false
     
+    static let showNotificationsV2: Bool = true
+    
+    // MARK: - Main Tabs
+    
+    static let homeScreenShowFavouritesTab: Bool = false
+    static let homeScreenShowPeopleTab: Bool = false
+    static let homeScreenShowRoomsTab: Bool = true
+    static let homeScreenShowCommunitiesTab: Bool = false
+
     // MARK: - General Settings Screen
     
-//    static let settingsScreenShowUserFirstName: Bool = false
-//    static let settingsScreenShowUserSurname: Bool = false
-//    static let settingsScreenAllowAddingEmailThreepids: Bool = true
-//    static let settingsScreenAllowAddingPhoneThreepids: Bool = true
-//    static let settingsScreenShowThreepidExplanatory: Bool = true
-//    static let settingsScreenShowDiscoverySettings: Bool = true
-//    static let settingsScreenAllowIdentityServerConfig: Bool = true
-//    static let settingsScreenShowAdvancedSettings: Bool = true
-//    static let settingsScreenShowLabSettings: Bool = true
-//    static let settingsScreenAllowChangingRageshakeSettings: Bool = true
-//    static let settingsScreenAllowChangingCrashUsageDataSettings: Bool = true
-//    static let settingsScreenAllowBugReportingManually: Bool = true
-//    static let settingsScreenAllowDeactivatingAccount: Bool = true
-    
+    static let settingsScreenShowUserFirstName: Bool = false
+    static let settingsScreenShowUserSurname: Bool = false
+    static let settingsScreenAllowAddingEmailThreepids: Bool = true
+    static let settingsScreenAllowAddingPhoneThreepids: Bool = true
+    static let settingsScreenShowThreepidExplanatory: Bool = true
+    static let settingsScreenShowDiscoverySettings: Bool = true
+    static let settingsScreenAllowIdentityServerConfig: Bool = true
+    static let settingsScreenShowAdvancedSettings: Bool = true
+    static let settingsScreenShowLabSettings: Bool = true
+    static let settingsScreenAllowChangingRageshakeSettings: Bool = true
+    static let settingsScreenAllowChangingCrashUsageDataSettings: Bool = true
+    static let settingsScreenAllowBugReportingManually: Bool = true
+    static let settingsScreenAllowDeactivatingAccount: Bool = true
+    static let settingsScreenShowChangePassword:Bool = true
+    static let settingsScreenShowInviteFriends:Bool = true
+    static let settingsScreenShowEnableStunServerFallback: Bool = true
+    static let settingsScreenShowNotificationDecodedContentOption: Bool = true
+    static let settingsScreenShowNsfwRoomsOption: Bool = true
+    static let settingsSecurityScreenShowSessions:Bool = true
+    static let settingsSecurityScreenShowSetupBackup:Bool = true
+    static let settingsSecurityScreenShowRestoreBackup:Bool = true
+    static let settingsSecurityScreenShowDeleteBackup:Bool = true
+    static let settingsSecurityScreenShowCryptographyInfo:Bool = true
+    static let settingsSecurityScreenShowCryptographyExport:Bool = true
+    static let settingsSecurityScreenShowAdvancedUnverifiedDevices:Bool = true
+
     // MARK: - Timeline settings
     static let roomInputToolbarCompressionMode = MXKRoomInputToolbarCompressionModePrompt
     
+    // MARK: - Room Creation Screen
+    
+    static let roomCreationScreenAllowEncryptionConfiguration: Bool = true
+    static let roomCreationScreenRoomIsEncrypted: Bool = true
+    static let roomCreationScreenAllowRoomTypeConfiguration: Bool = true
+    static let roomCreationScreenRoomIsPublic: Bool = false
+    
+    // MARK: - Room Screen
+    
+    static let roomScreenAllowVoIPForDirectRoom: Bool = true
+    static let roomScreenAllowVoIPForNonDirectRoom: Bool = true
+    static let roomScreenAllowCameraAction: Bool = true
+    static let roomScreenAllowMediaLibraryAction: Bool = true
+    static let roomScreenAllowStickerAction: Bool = false
+    static let roomScreenAllowFilesAction: Bool = true
+    
+    // Timeline style
+    static let roomScreenAllowTimelineStyleConfiguration: Bool = false
+    static let roomScreenTimelineDefaultStyleIdentifier: RoomTimelineStyleIdentifier = .plain
+    static var isRoomScreenEnableMessageBubblesByDefault: Bool {
+        return self.roomScreenTimelineDefaultStyleIdentifier == .bubble
+    }
+    
+    // MARK: - Room Contextual Menu
+
+    static let roomContextualMenuShowMoreOptionForMessages: Bool = true
+    static let roomContextualMenuShowMoreOptionForStates: Bool = true
+    static let roomContextualMenuShowReportContentOption: Bool = true
+
+    // MARK: - Room Info Screen
+    
+    static let roomInfoScreenShowIntegrations: Bool = true
+
     // MARK: - Room Settings Screen
     
-//    static let roomSettingsScreenShowLowPriorityOption: Bool = true
-//    static let roomSettingsScreenShowDirectChatOption: Bool = true
-//    static let roomSettingsScreenAllowChangingAccessSettings: Bool = true
-//    static let roomSettingsScreenAllowChangingHistorySettings: Bool = true
-//    static let roomSettingsScreenShowAddressSettings: Bool = true
-//    static let roomSettingsScreenShowFlairSettings: Bool = true
-//    static let roomSettingsScreenShowAdvancedSettings: Bool = true
+    static let roomSettingsScreenShowLowPriorityOption: Bool = true
+    static let roomSettingsScreenShowDirectChatOption: Bool = true
+    static let roomSettingsScreenAllowChangingAccessSettings: Bool = true
+    static let roomSettingsScreenAllowChangingHistorySettings: Bool = true
+    static let roomSettingsScreenShowAddressSettings: Bool = true
+    static let roomSettingsScreenShowFlairSettings: Bool = true
+    static let roomSettingsScreenShowAdvancedSettings: Bool = true
+    static let roomSettingsScreenAdvancedShowEncryptToVerifiedOption: Bool = true
+    static let roomSettingsScreenShowNotificationsV2: Bool = true
+
+    // MARK: - Room Member Screen
     
+    static let roomMemberScreenShowIgnore: Bool = true
+
     // MARK: - Message
     static let messageDetailsAllowShare: Bool = true
     static let messageDetailsAllowPermalink: Bool = true
@@ -229,6 +310,9 @@ final class BuildSettings: NSObject {
     static let messageDetailsAllowCopyMedia: Bool = true
     static let messageDetailsAllowPasteMedia: Bool = true
     
+    // MARK: - Notifications
+    static let decryptNotificationsByDefault: Bool = true
+    
     // MARK: - HTTP
     /// Additional HTTP headers will be sent by all requests. Not recommended to use request-specific headers, like `Authorization`.
     /// Empty dictionary by default.
@@ -236,8 +320,35 @@ final class BuildSettings: NSObject {
     
     
     // MARK: - Authentication Screen
-//    static let authScreenShowRegister = true
-//    static let authScreenShowPhoneNumber = true
-//    static let authScreenShowForgotPassword = true
-//    static let authScreenShowCustomServerOptions = true
+    static let authScreenShowRegister = true
+    static let authScreenShowPhoneNumber = true
+    static let authScreenShowForgotPassword = true
+    static let authScreenShowCustomServerOptions = true
+    
+    // MARK: - Unified Search
+    static let unifiedSearchScreenShowPublicDirectory = true
+    
+    // MARK: - Secrets Recovery
+    static let secretsRecoveryAllowReset = true
+    
+    // MARK: - Polls
+    static var pollsEnabled: Bool {
+        guard #available(iOS 14, *) else {
+            return false
+        }
+        
+        return false//true : Not available on Tchap
+    }
+    
+    // MARK: - Location Sharing
+    
+    static let tileServerMapStyleURL = URL(string: "")!
+    
+    static var locationSharingEnabled: Bool {
+        guard #available(iOS 14, *) else {
+            return false
+        }
+        
+        return false//true : Not available on Tchap
+    }
 }

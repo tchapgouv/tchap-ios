@@ -1,0 +1,75 @@
+name: RiotNSE
+
+schemes:
+  RiotNSE:
+    analyze:
+      config: Debug
+    archive:
+      config: Release
+    build:
+      targets:
+        RiotNSE:
+        - running
+        - testing
+        - profiling
+        - analyzing
+        - archiving
+    profile:
+      config: Release
+    run:
+      askForAppToLaunch: true
+      config: Debug
+      debugEnabled: false
+      disableMainThreadChecker: true
+      launchAutomaticallySubstyle: 2
+    test:
+      config: Debug
+      disableMainThreadChecker: true
+
+targets:
+  RiotNSE:
+    platform: iOS
+    type: app-extension
+
+    configFiles:
+      Debug: Debug.xcconfig
+      Release: Release.xcconfig
+
+    sources: 
+    - path: .
+    - path: ../Riot/Categories/Bundle.swift
+    - path: ../Riot/Categories/Character.swift
+    - path: ../Riot/Categories/String.swift
+    - path: ../Riot/Categories/UNUserNotificationCenter.swift
+    - path: ../Riot/Generated/InfoPlist.swift
+    - path: ../Riot/Generated/Vector_Strings.swift
+    - path: ../Riot/Managers/EncryptionKeyManager/EncryptionKeyManager.swift
+    - path: ../Riot/Managers/KeyValueStorage/Extensions/Keychain.swift
+    - path: ../Riot/Managers/KeyValueStorage/KeychainStore.swift
+    - path: ../Riot/Managers/KeyValueStorage/KeyValueStore.swift
+    - path: ../Riot/Managers/Locale/LocaleProvider.swift
+    - path: ../Riot/Managers/Locale/LocaleProviderType.swift
+    - path: ../Riot/Managers/PushNotification/PushNotificationStore.swift
+    - path: ../Riot/Modules/SetPinCode/SetupBiometrics/BiometricsAuthenticationPresenter.swift
+    - path: ../Riot/Managers/Settings/RiotSettings.swift
+    - path: ../Riot/Managers/Widgets/WidgetConstants.m
+    - path: ../Riot/PropertyWrappers/UserDefaultsBackedPropertyWrapper.swift
+    - path: ../Riot/Utils/Constants.swift
+    - path: ../Riot/Utils/DataProtectionHelper.swift
+    - path: ../Riot/Modules/MatrixKit
+      excludes:
+        - "**/*.md" # excludes all files with the .md extension
+    - path: ../Riot/Modules/Analytics
+    - path: ../Riot/Managers/UserSessions
+    - path: ../Riot/Managers/AppInfo/
+    - path: ../Riot/Generated/MatrixKitStrings.swift
+    - path: ../Riot/Modules/Room/TimelineCells/Styles/RoomTimelineStyleIdentifier.swift
+
+
+    # Tchap
+    - path: ../RiotNSE/BuildSettings.swift
+    - path: ../Tchap/Config/CommonConfiguration.swift
+    - path: ../Tchap/Config/Configurable.swift
+    - path: ../Tchap/Generated/Strings.swift
+    - path: ../Tchap/Generated/Images.swift
+    - path: ../Tchap/Generated/Images_Riot.swift

@@ -43,8 +43,7 @@ final class UserService: NSObject, UserServiceType {
     // MARK: - Setup
     
     init(session: MXSession) {
-        guard let homeServer = session.matrixRestClient.credentials.homeServer,
-            let accessToken = session.matrixRestClient.credentials.accessToken else {
+        guard let homeServer = session.matrixRestClient.credentials.homeServer else {
             fatalError("credentials should be defined")
         }
         self.session = session
@@ -53,9 +52,19 @@ final class UserService: NSObject, UserServiceType {
         self.thirdPartyIDPlatformInfoResolver = ThirdPartyIDPlatformInfoResolver(identityServerUrls: identityServerURLs, serverPrefixURL: serverUrlPrefix)
         
         /// The current HttpClient
-        self.httpClient = MXHTTPClient(baseURL: "\(homeServer)/\(kMXAPIPrefixPathUnstable)", accessToken: accessToken, andOnUnrecognizedCertificateBlock: nil)
+        self.httpClient = MXHTTPClient(baseURL: "\(homeServer)/\(kMXAPIPrefixPathUnstable)", authenticated: true, andOnUnrecognizedCertificateBlock: nil)
         
         super.init()
+        
+        self.httpClient.tokenProviderHandler = { [weak self] (error, success, failure) in
+            // swiftlint:disable force_unwrapping
+            guard let accessToken = self?.session.matrixRestClient.credentials.accessToken else {
+                failure!(error)
+                return
+            }
+            success!(accessToken)
+            // swiftlint:enable force_unwrapping
+        }
     }
     
     // MARK: - Public
@@ -88,7 +97,7 @@ final class UserService: NSObject, UserServiceType {
                         completion(nil)
                     }
                 case .failure(let error):
-                    print("Get profile failed for user id \(userId) with error: \(error)")
+                    MXLog.debug("Get profile failed for user id \(userId) with error: \(error)")
                     completion(nil)
                 }
             }
@@ -299,7 +308,7 @@ final class UserService: NSObject, UserServiceType {
                                   path: "users/info",
                                   parameters: ["user_ids": userIds],
                                   success: { (response: [AnyHashable: Any]?) in
-                                    NSLog("[UserService] users info resquest succeeded")
+                                    MXLog.debug("[UserService] users info resquest succeeded")
                                     guard let response = response as? [String: [String: Bool]] else {
                                         completion(.failure(UserServiceError.unknown))
                                         return
@@ -313,7 +322,7 @@ final class UserService: NSObject, UserServiceType {
                                     completion(.success(usersInfo))
         },
                                   failure: { (error: Error?) in
-                                    NSLog("[UserService] users info resquest failed")
+                                    MXLog.debug("[UserService] users info resquest failed")
                                     if let error = error {
                                         completion(.failure(error))
                                     } else {

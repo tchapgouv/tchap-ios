@@ -16,7 +16,7 @@
 
 import UIKit
 
-@objcMembers class RoomsCell: UITableViewCell, MXKCellRendering, Stylable {
+@objcMembers class RoomsCell: UITableViewCell, MXKCellRendering {
 
     @IBOutlet private weak var pinView: UIView!
     @IBOutlet private(set) weak var avatarView: MXKImageView!
@@ -30,8 +30,6 @@ import UIKit
     @IBOutlet private(set) weak var lastEventDescription: UILabel!
     @IBOutlet private(set) weak var lastEventDate: UILabel!
     
-    private(set) var style: Style!
-    
     /**
      The current cell data displayed by the table view cell
      */
@@ -43,7 +41,7 @@ import UIKit
         super.awakeFromNib()
         // Initialization code
         
-        self.update(style: Variant2Style.shared)
+        self.update(theme: ThemeService.shared().theme)
         
         self.avatarView.enableInMemoryCache = true
     }
@@ -96,12 +94,14 @@ import UIKit
         
         self.lastEventDate?.text = roomCellData.lastEventDate
         
+        self.update(theme: ThemeService.shared().theme)
+        
         // Notify unreads and bing
         if roomCellData.hasUnread {
             self.titleLabel.font = UIFont.systemFont(ofSize: 15, weight: .bold)
             if let lastEventDesc = self.lastEventDescription {
                 lastEventDesc.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-                lastEventDesc.textColor = style.primaryTextColor
+                lastEventDesc.textColor = ThemeService.shared().theme.textPrimaryColor
                 lastEventDesc.text = roomCellData.lastEventTextMessage
             }
             
@@ -116,12 +116,16 @@ import UIKit
             self.titleLabel.font = UIFont.systemFont(ofSize: 15, weight: .medium)
             if let lastEventDesc = self.lastEventDescription {
                 lastEventDesc.font = UIFont.systemFont(ofSize: 12, weight: .regular)
-                lastEventDesc.textColor = style.secondaryTextColor
+                lastEventDesc.textColor = ThemeService.shared().theme.textSecondaryColor
                 lastEventDesc.text = roomCellData.lastEventTextMessage
             }
         }
         
-        let category = roomCellData.roomSummary.tc_roomCategory()
+        guard let roomSummary = roomCellData.roomSummary as? MXRoomSummary else {
+            return
+        }
+        
+        let category = roomSummary.tc_roomCategory()
         switch category {
         case .directChat, .restrictedPrivateRoom, .unrestrictedPrivateRoom:
             self.encryptedIcon?.image = UIImage(named: "private_avatar_icon")
@@ -133,12 +137,12 @@ import UIKit
             self.encryptedIcon?.isHidden = true
         }
         
-        roomCellData.roomSummary?.setRoomAvatarImageIn(self.avatarView)
+        roomSummary.setRoomAvatarImageIn(self.avatarView)
         
         if let pinView = self.pinView {
             // Check whether the room is pinned
-            if roomCellData.roomSummary?.room?.accountData?.tags?[kMXRoomTagFavourite] != nil {
-                pinView.backgroundColor = self.style.buttonBorderedBackgroundColor
+            if roomSummary.room?.accountData?.tags?[kMXRoomTagFavourite] != nil {
+                pinView.backgroundColor = ThemeService.shared().theme.headerBackgroundColor
             } else {
                 pinView.backgroundColor = UIColor.clear
             }
@@ -150,14 +154,16 @@ import UIKit
         // The RoomsCell instances support the self-sizing mode, return a default value
         return 80
     }
-    
-    func update(style: Style) {
-        self.style = style
-        self.titleLabel.textColor = style.primaryTextColor
-        self.lastEventDescription?.textColor = style.secondaryTextColor
-        self.lastEventDate?.textColor = style.secondaryTextColor
-        self.missedNotifAndUnreadBadgeBgView?.backgroundColor = style.buttonBorderedBackgroundColor
-        self.missedNotifAndUnreadBadgeLabel?.textColor = style.buttonBorderedTitleColor
+}
+
+// MARK: - Theme
+extension RoomsCell: Themable {
+    func update(theme: Theme) {
+        self.titleLabel.textColor = theme.textPrimaryColor
+        self.lastEventDescription?.textColor = theme.textSecondaryColor
+        self.lastEventDate?.textColor = theme.textSecondaryColor
+        self.missedNotifAndUnreadBadgeBgView?.backgroundColor = theme.tintColor
+        self.missedNotifAndUnreadBadgeLabel?.textColor = theme.tintContrastColor
         
         self.avatarView?.defaultBackgroundColor = UIColor.clear
         

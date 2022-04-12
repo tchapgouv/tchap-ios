@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+#import "MatrixKit.h"
 
 #import "MediaAlbumContentViewController.h"
 
@@ -39,9 +39,9 @@
  Tells the delegate that the user select a video.
  
  @param mediaPickerController the `MediaPickerViewController` instance.
- @param videoURL the local url of the video to send.
+ @param videoAsset an `AVAsset` that represents the video to send.
  */
-- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectVideo:(NSURL*)videoURL;
+- (void)mediaPickerController:(MediaPickerViewController *)mediaPickerController didSelectVideo:(AVAsset*)videoAsset;
 
 /**
  Tells the delegate that the user wants to cancel media picking.

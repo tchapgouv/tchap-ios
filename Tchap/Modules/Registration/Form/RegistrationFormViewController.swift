@@ -16,7 +16,7 @@
 
 import Foundation
 
-protocol RegistrationFormViewControllerDelegate: class {
+protocol RegistrationFormViewControllerDelegate: AnyObject {
     func registrationFormViewController(_ registrationFormViewController: RegistrationFormViewController, didTapNextButtonWith mail: String, password: String)
     func registrationFormViewControllerShowTermsAndConditions(_ registrationFormViewController: RegistrationFormViewController)
 }
@@ -40,7 +40,6 @@ final class RegistrationFormViewController: UIViewController {
     private var viewModel: RegistrationFormViewModelType!
     private var errorPresenter: ErrorPresenter?
     private var keyboardAvoider: KeyboardAvoider?
-    private var currentStyle: Style!
     
     // MARK: Public
     
@@ -48,9 +47,8 @@ final class RegistrationFormViewController: UIViewController {
     
     // MARK: - Setup
     
-    class func instantiate(viewModel: RegistrationFormViewModelType, style: Style = Variant2Style.shared) -> RegistrationFormViewController {
+    class func instantiate(viewModel: RegistrationFormViewModelType) -> RegistrationFormViewController {
         let viewController = StoryboardScene.RegistrationFormViewController.initialScene.instantiate()
-        viewController.currentStyle = style
         viewController.viewModel = viewModel
         return viewController
     }
@@ -83,7 +81,7 @@ final class RegistrationFormViewController: UIViewController {
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.currentStyle.statusBarStyle
+        return ThemeService.shared().theme.statusBarStyle
     }
     
     // MARK: - Public
@@ -133,7 +131,7 @@ final class RegistrationFormViewController: UIViewController {
     }
     
     private func userThemeDidChange() {
-        self.update(style: self.currentStyle)
+        self.updateTheme()
     }
     
     private func hideConfirmPasswordTextField(_ hide: Bool) {
@@ -159,22 +157,20 @@ final class RegistrationFormViewController: UIViewController {
     }
 }
 
-// MARK: - Stylable
-extension RegistrationFormViewController: Stylable {
-    func update(style: Style) {
-        self.currentStyle = style
-        
-        self.view.backgroundColor = style.backgroundColor
+// MARK: - Theme
+private extension RegistrationFormViewController {
+    func updateTheme() {
+        self.view.backgroundColor = ThemeService.shared().theme.backgroundColor
         
         if let navigationBar = self.navigationController?.navigationBar {
-            style.applyStyle(onNavigationBar: navigationBar)
+            ThemeService.shared().theme.applyStyle(onNavigationBar: navigationBar)
         }
         
-        for formTextield in self.formTextFields {
-            formTextield.update(style: style)
+        for formTextField in self.formTextFields {
+            formTextField.update(theme: ThemeService.shared().theme)
         }
         
-        self.termsFormCheckBox.update(style: style)
+        self.termsFormCheckBox.update(theme: ThemeService.shared().theme)
     }
 }
 

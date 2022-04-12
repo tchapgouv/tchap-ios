@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-protocol WelcomeViewControllerDelegate: class {
+protocol WelcomeViewControllerDelegate: AnyObject {
     func welcomeViewControllerDidTapLoginButton(_ welcomeViewController: WelcomeViewController)
     func welcomeViewControllerDidTapRegisterButton(_ welcomeViewController: WelcomeViewController)
 }
@@ -32,17 +32,14 @@ final class WelcomeViewController: UIViewController {
     
     // MARK: Private
     
-    private var currentStyle: Style!
-    
     // MARK: Public
     
     weak var delegate: WelcomeViewControllerDelegate?
     
     // MARK: - Setup
     
-    class func instantiate(style: Style = Variant2Style.shared) -> WelcomeViewController {
+    class func instantiate() -> WelcomeViewController {
         let viewController = StoryboardScene.WelcomeViewController.initialScene.instantiate()
-        viewController.currentStyle = style
         return viewController
     }
     
@@ -71,7 +68,7 @@ final class WelcomeViewController: UIViewController {
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.currentStyle.statusBarStyle
+        return ThemeService.shared().theme.statusBarStyle
     }
     
     // MARK: - Private
@@ -87,7 +84,7 @@ final class WelcomeViewController: UIViewController {
     }
     
     private func userThemeDidChange() {
-        self.update(style: self.currentStyle)
+        self.updateTheme()
     }
     
     // MARK: - Actions
@@ -101,16 +98,14 @@ final class WelcomeViewController: UIViewController {
     }
 }
 
-// MARK: - Stylable
-extension WelcomeViewController: Stylable {
-    func update(style: Style) {
-        self.currentStyle = style
+// MARK: - Theme
+private extension WelcomeViewController {
+    func updateTheme() {
+        self.view.backgroundColor = ThemeService.shared().theme.backgroundColor
+        self.titleLabel.textColor = ThemeService.shared().theme.textTertiaryColor
+        self.buttonsSeparatorView.backgroundColor = ThemeService.shared().theme.selectedBackgroundColor
         
-        self.view.backgroundColor = style.backgroundColor
-        self.titleLabel.textColor = style.primarySubTextColor
-        self.buttonsSeparatorView.backgroundColor = style.separatorColor
-        
-        style.applyStyle(onButton: self.loginButton)
-        style.applyStyle(onButton: self.registerButton)
+        ThemeService.shared().theme.applyStyle(onButton: self.loginButton)
+        ThemeService.shared().theme.applyStyle(onButton: self.registerButton)
     }
 }

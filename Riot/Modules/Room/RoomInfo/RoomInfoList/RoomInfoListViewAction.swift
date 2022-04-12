@@ -18,10 +18,27 @@
 
 import Foundation
 
-enum RoomInfoListTarget: UInt {
-    case settings = 2
-    case members = 0
-    case uploads = 1
+enum RoomInfoListTarget: Equatable {
+    case settings(_ field: RoomSettingsViewControllerField = RoomSettingsViewControllerFieldNone)
+    case members
+    case uploads
+    case integrations
+    case search
+    case notifications
+    
+    var tabIndex: UInt? {
+        switch self {
+        case .members:
+            return 0
+        case .uploads:
+            return 1
+        case .settings:
+            return 2
+        default:
+            return nil
+        }
+    }
+    
 }
 
 /// RoomInfoListViewController view actions exposed to view model

@@ -2,7 +2,6 @@
 disabled_rules:
   - trailing_whitespace
   - todo
-  - conditional_binding_cascade
   - mark
   - vertical_whitespace
   - syntactic_sugar
@@ -12,7 +11,8 @@ disabled_rules:
   - large_tuple
   - shorthand_operator
   - vertical_parameter_alignment
-  - identifier_name  
+  - identifier_name
+  - comment_spacing
 
 # some rules are only opt-in
 opt_in_rules:  
@@ -36,7 +36,7 @@ line_length:
   error: 1000
 
 file_length:
-  warning: 700
+  warning: 800
   error: 1000
 
 type_body_length:
@@ -63,3 +63,31 @@ type_name:
   max_length: # warning and error
     warning: 150
     error: 1000
+
+custom_rules:
+  ns_log_deprecation:
+    regex: "\\b(NSLog)\\b"
+    match_kinds: identifier
+    message: "MXLog should be used instead of NSLog()"
+    severity: error
+
+  print_deprecation:
+    regex: "\\b(print)\\b"
+    match_kinds: identifier
+    message: "MXLog should be used instead of print()"
+    severity: error
+
+  print_ln_deprecation:
+    regex: "\\b(println)\\b"
+    match_kinds: identifier
+    message: "MXLog should be used instead of println()"
+    severity: error
+
+  os_log_deprecation:
+    regex: "\\b(os_log)\\b"
+    match_kinds: identifier
+    message: "MXLog should be used instead of os_log()"
+    severity: error
+
+
+

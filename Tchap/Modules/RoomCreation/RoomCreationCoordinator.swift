@@ -18,7 +18,7 @@ import UIKit
 import MobileCoreServices
 import RxSwift
 
-protocol RoomCreationCoordinatorDelegate: class {
+protocol RoomCreationCoordinatorDelegate: AnyObject {
     func roomCreationCoordinatorDidCancel(_ coordinator: RoomCreationCoordinatorType)
     func roomCreationCoordinator(_ coordinator: RoomCreationCoordinatorType, didCreateRoomWithID roomID: String)
 }
@@ -53,7 +53,7 @@ final class RoomCreationCoordinator: NSObject, RoomCreationCoordinatorType {
     // MARK: - Setup
     
     init(session: MXSession) {
-        self.router = NavigationRouter(navigationController: TCNavigationController())
+        self.router = NavigationRouter(navigationController: RiotNavigationController())
         self.session = session
         self.mediaService = MediaService(session: session)
         self.roomService = RoomService(session: session)
@@ -62,8 +62,8 @@ final class RoomCreationCoordinator: NSObject, RoomCreationCoordinatorType {
         let homeServerDomain = RoomCreationCoordinator.getHomeServerDomain(from: session)
         
         let roomCreationViewModel = RoomCreationViewModel(homeServerDomain: homeServerDomain)
-        let roomCreationViewController = RoomCreationViewController.instantiate(viewModel: roomCreationViewModel, style: Variant1Style.shared)
-        roomCreationViewController.tc_removeBackTitle()
+        let roomCreationViewController = RoomCreationViewController.instantiate(viewModel: roomCreationViewModel)
+        roomCreationViewController.vc_removeBackTitle()
         self.roomCreationViewController = roomCreationViewController
         
         super.init()
@@ -159,7 +159,7 @@ final class RoomCreationCoordinator: NSObject, RoomCreationCoordinatorType {
     
     private func createRoom(with userIDs: [String]) {
         guard let roomCreationFormResult = self.roomCreationFormResult, let contactsPickerCoordinator = self.contactsPickerCoordinator else {
-            print("[RoomCreationCoordinator] Fail to create room")
+            MXLog.debug("[RoomCreationCoordinator] Fail to create room")
             return
         }
 
@@ -245,7 +245,6 @@ final class RoomCreationCoordinator: NSObject, RoomCreationCoordinatorType {
                                            name: roomCreationFormResult.name,
                                            avatarURL: avatarUrl,
                                            inviteUserIds: userIDs,
-                                           rententionPeriodInMs: nil,
                                            isFederated: isFederated,
                                            accessRule: roomAccessRule)
     }

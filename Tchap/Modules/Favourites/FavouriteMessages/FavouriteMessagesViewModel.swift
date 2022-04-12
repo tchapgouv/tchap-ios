@@ -60,13 +60,12 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
         self.session = session
         self.formatter = formatter
         
-        let subtitle = NSAttributedString(string: TchapL10n.favouriteMessagesOneSubtitle(0), attributes: [.foregroundColor: kColorWarmGrey])
+        let subtitle = NSAttributedString(string: TchapL10n.favouriteMessagesOneSubtitle(0), attributes: [.foregroundColor: ThemeService.shared().theme.headerTextPrimaryColor])
         self.titleViewModel = RoomTitleViewModel(title: TchapL10n.favouriteMessagesTitle,
                                                  roomTypeImage: nil,
                                                  roomTypeImageTintColor: nil,
                                                  subtitle: subtitle,
                                                  roomMembersCount: nil,
-                                                 roomRetentionInfo: nil,
                                                  avatarImageViewModel: nil)
     }
     
@@ -117,7 +116,7 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
     
     private func loadData() {
         guard self.canLoadData() else {
-            print("[FavouriteMessagesViewModel] loadData: pending loading or all data loaded")
+            MXLog.debug("[FavouriteMessagesViewModel] loadData: pending loading or all data loaded")
             return
         }
 
@@ -128,10 +127,9 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
             var favouriteEvents: [FavouriteEvent] = []
             for room in self.session.rooms {
                 if let eventIds = room.accountData.getTaggedEventsIds(kMXTaggedEventFavourite) {
-                    let minMessageTs = room.summary.tc_mininumMessageTimestamp()
                     for eventId in eventIds {
                         if let eventInfo = room.accountData.getTaggedEventInfo(eventId, withTag: kMXTaggedEventFavourite),
-                           eventInfo.originServerTs == kMXUndefinedTimestamp || minMessageTs == kMXUndefinedTimestamp || eventInfo.originServerTs >= minMessageTs {
+                           eventInfo.originServerTs == kMXUndefinedTimestamp {
                             favouriteEvents.append(FavouriteEvent(roomId: room.roomId, eventId: eventId, eventInfo: eventInfo))
                         }
                     }
@@ -152,9 +150,8 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
         self.titleViewModel = RoomTitleViewModel(title: TchapL10n.favouriteMessagesTitle,
                                                  roomTypeImage: nil,
                                                  roomTypeImageTintColor: nil,
-                                                 subtitle: NSAttributedString(string: subtitle, attributes: [.foregroundColor: kColorWarmGrey]),
+                                                 subtitle: NSAttributedString(string: subtitle, attributes: [.foregroundColor: ThemeService.shared().theme.headerTextPrimaryColor]),
                                                  roomMembersCount: nil,
-                                                 roomRetentionInfo: nil,
                                                  avatarImageViewModel: nil)
         
         self.update(viewState: .sorted)
@@ -173,19 +170,19 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
                 //  attempt to fetch the event
                 self.session.event(withEventId: favouriteEvent.eventId, inRoom: favouriteEvent.roomId, success: { [weak self] (event) in
                     guard let self = self else {
-                        NSLog("[FavouriteMessagesViewModel] fetchEvent: MXSession.event method returned too late successfully.")
+                        MXLog.debug("[FavouriteMessagesViewModel] fetchEvent: MXSession.event method returned too late successfully.")
                         return
                     }
                     
                     guard let event = event else {
                         self.process(cellDatas: favouriteMessagesCache)
-                        NSLog("[FavouriteMessagesViewModel] fetchEvent: MXSession.event method returned successfully with no event.")
+                        MXLog.debug("[FavouriteMessagesViewModel] fetchEvent: MXSession.event method returned successfully with no event.")
                         return
                     }
                     
                     //  handle encryption for this event
                     if event.isEncrypted && event.clear == nil && self.session.decryptEvent(event, inTimeline: nil) == false {
-                        print("[FavouriteMessagesViewModel] processEditEvent: Fail to decrypt event: \(event.eventId ?? "")")
+                        MXLog.debug("[FavouriteMessagesViewModel] processEditEvent: Fail to decrypt event: \(event.eventId ?? "")")
                     }
                     
                     // Check whether the user knows this room to create the room data source if it doesn't exist.

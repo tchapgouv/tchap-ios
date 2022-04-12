@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-protocol ForgotPasswordFormViewControllerDelegate: class {
+protocol ForgotPasswordFormViewControllerDelegate: AnyObject {
     func forgotPasswordFormViewControllerDidTap(_ forgotPasswordFormViewController: ForgotPasswordFormViewController, didTapSendEmailButtonWith email: String, password: String)
 }
 
@@ -36,7 +36,6 @@ final class ForgotPasswordFormViewController: UIViewController {
     private var viewModel: ForgotPasswordFormViewModelType!
     private var errorPresenter: ErrorPresenter?
     private var keyboardAvoider: KeyboardAvoider?
-    private var currentStyle: Style!
     private var formTextFields: [FormTextField] = []
     
     // MARK: Public
@@ -45,10 +44,9 @@ final class ForgotPasswordFormViewController: UIViewController {
     
     // MARK: - Setup
     
-    class func instantiate(viewModel: ForgotPasswordFormViewModelType, style: Style = Variant2Style.shared) -> ForgotPasswordFormViewController {
+    class func instantiate(viewModel: ForgotPasswordFormViewModelType) -> ForgotPasswordFormViewController {
         let viewController = StoryboardScene.ForgotPasswordFormViewController.initialScene.instantiate()
         viewController.viewModel = viewModel
-        viewController.currentStyle = style
         return viewController
     }
     
@@ -80,7 +78,7 @@ final class ForgotPasswordFormViewController: UIViewController {
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.currentStyle.statusBarStyle
+        return ThemeService.shared().theme.statusBarStyle
     }
     
     // MARK: - Public
@@ -121,7 +119,7 @@ final class ForgotPasswordFormViewController: UIViewController {
     }
     
     private func userThemeDidChange() {
-        self.update(style: self.currentStyle)
+        self.updateTheme()
     }
     
     private func hideConfirmPasswordTextField(_ hide: Bool) {
@@ -151,23 +149,21 @@ final class ForgotPasswordFormViewController: UIViewController {
     }
 }
 
-// MARK: - Stylable
-extension ForgotPasswordFormViewController: Stylable {
-    func update(style: Style) {
-        self.currentStyle = style
-        
-        self.view.backgroundColor = style.backgroundColor
-        self.instructionsLabel.textColor = style.secondaryTextColor
+// MARK: - Theme
+private extension ForgotPasswordFormViewController {
+    func updateTheme() {
+        self.view.backgroundColor = ThemeService.shared().theme.backgroundColor
+        self.instructionsLabel.textColor = ThemeService.shared().theme.textSecondaryColor
         
         if let navigationBar = self.navigationController?.navigationBar {
-            style.applyStyle(onNavigationBar: navigationBar)
+            ThemeService.shared().theme.applyStyle(onNavigationBar: navigationBar)
         }
         
-        for formTextield in self.formTextFields {
-            formTextield.update(style: style)
+        for formTextField in self.formTextFields {
+            formTextField.update(theme: ThemeService.shared().theme)
         }
         
-        style.applyStyle(onButton: self.sendEmailButton)
+        ThemeService.shared().theme.applyStyle(onButton: self.sendEmailButton)
     }
 }
 

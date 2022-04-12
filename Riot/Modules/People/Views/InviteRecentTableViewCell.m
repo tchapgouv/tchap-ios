@@ -22,10 +22,11 @@
 #import "MXEvent.h"
 
 #import "ThemeService.h"
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 #pragma mark - Constant definitions
 
+NSString *const kInviteRecentTableViewCellAcceptButtonPressed = @"kInviteRecentTableViewCellAcceptButtonPressed";
 NSString *const kInviteRecentTableViewCellPreviewButtonPressed = @"kInviteRecentTableViewCellPreviewButtonPressed";
 NSString *const kInviteRecentTableViewCellDeclineButtonPressed = @"kInviteRecentTableViewCellDeclineButtonPressed";
 
@@ -41,15 +42,13 @@ NSString *const kInviteRecentTableViewCellRoomKey = @"kInviteRecentTableViewCell
     
     [self.leftButton.layer setCornerRadius:5];
     self.leftButton.clipsToBounds = YES;
-    [self.leftButton setTitle:NSLocalizedStringFromTable(@"decline", @"Vector", nil) forState:UIControlStateNormal];
-    [self.leftButton setTitle:NSLocalizedStringFromTable(@"decline", @"Vector", nil) forState:UIControlStateHighlighted];
+    [self.leftButton setTitle:[VectorL10n decline] forState:UIControlStateNormal];
     [self.leftButton addTarget:self action:@selector(onDeclinePressed:) forControlEvents:UIControlEventTouchUpInside];
     
     [self.rightButton.layer setCornerRadius:5];
     self.rightButton.clipsToBounds = YES;
-    [self.rightButton setTitle:NSLocalizedStringFromTable(@"preview", @"Vector", nil) forState:UIControlStateNormal];
-    [self.rightButton setTitle:NSLocalizedStringFromTable(@"preview", @"Vector", nil) forState:UIControlStateHighlighted];
-    [self.rightButton addTarget:self action:@selector(onPreviewPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [self.rightButton setTitle:[VectorL10n accept] forState:UIControlStateNormal];
+    [self.rightButton addTarget:self action:@selector(onRightButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     
     [self.noticeBadgeView.layer setCornerRadius:10];
     
@@ -66,28 +65,33 @@ NSString *const kInviteRecentTableViewCellRoomKey = @"kInviteRecentTableViewCell
     self.noticeBadgeView.backgroundColor = ThemeService.shared.theme.noticeColor;
 }
 
-- (void)onDeclinePressed:(id)sender
+- (void)prepareForReuse
 {
-    if (self.delegate)
-    {
-        MXRoom *room = roomCellData.roomSummary.room;
-        
-        if (room)
-        {
-            [self.delegate cell:self didRecognizeAction:kInviteRecentTableViewCellDeclineButtonPressed userInfo:@{kInviteRecentTableViewCellRoomKey:room}];
-        }
-    }
+    [super prepareForReuse];
+    
+    [self resetButtonViews];
+    self.accessoryView = nil;
 }
 
-- (void)onPreviewPressed:(id)sender
+- (void)onDeclinePressed:(id)sender
+{
+    [self notifyDelegateWithActionIdentifier:kInviteRecentTableViewCellDeclineButtonPressed];
+}
+
+- (void)onRightButtonPressed:(id)sender
+{
+    [self notifyDelegateWithActionIdentifier:kInviteRecentTableViewCellAcceptButtonPressed];
+}
+
+- (void)notifyDelegateWithActionIdentifier:(NSString*)actionIdentifier
 {
     if (self.delegate)
     {
-        MXRoom *room = roomCellData.roomSummary.room;
+        MXRoom *room = [roomCellData.mxSession roomWithRoomId:roomCellData.roomIdentifier];
         
         if (room)
         {
-            [self.delegate cell:self didRecognizeAction:kInviteRecentTableViewCellPreviewButtonPressed userInfo:@{kInviteRecentTableViewCellRoomKey:room}];
+            [self.delegate cell:self didRecognizeAction:actionIdentifier userInfo:@{kInviteRecentTableViewCellRoomKey:room}];
         }
     }
 }
@@ -95,6 +99,28 @@ NSString *const kInviteRecentTableViewCellRoomKey = @"kInviteRecentTableViewCell
 - (void)render:(MXKCellData *)cellData
 {
     [super render:cellData];
+    
+    [self updateViewsWithRoom:roomCellData.roomSummary showPreviewButton:NO];
+}
+
+- (void)updateViewsWithRoom:(id<MXRoomSummaryProtocol>)room showPreviewButton:(BOOL)showPreviewButton
+{
+    NSString *rightButtonTitle;
+    
+    if (!showPreviewButton)
+    {
+        rightButtonTitle = [VectorL10n accept];
+        [self vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
+    }
+    else
+    {
+        rightButtonTitle = [VectorL10n preview];
+        self.accessoryView = nil;
+    }
+    
+    [self.rightButton setTitle:rightButtonTitle forState:UIControlStateNormal];
+    
+    [self updateButtonViewsWith:room];
 }
 
 + (CGFloat)heightForCellData:(MXKCellData *)cellData withMaximumWidth:(CGFloat)maxWidth

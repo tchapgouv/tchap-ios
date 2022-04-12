@@ -17,12 +17,7 @@
 #import "DisabledRoomInputToolbarView.h"
 
 #import "ThemeService.h"
-
 #import "GeneratedInterface-Swift.h"
-
-@interface DisabledRoomInputToolbarView() <Stylable>
-@property (nonatomic, strong) id<Style> currentStyle;
-@end
 
 @implementation DisabledRoomInputToolbarView
 
@@ -34,20 +29,14 @@
 
 + (instancetype)roomInputToolbarView
 {
-    DisabledRoomInputToolbarView *inputToolbarView;
-    
     if ([[self class] nib])
     {
-        inputToolbarView = [[[self class] nib] instantiateWithOwner:nil options:nil].firstObject;
+        return [[[self class] nib] instantiateWithOwner:nil options:nil].firstObject;
     }
     else
     {
-        inputToolbarView = [[self alloc] init];
+        return [[self alloc] init];
     }
-    
-
-    [inputToolbarView updateWithStyle:Variant2Style.shared];
-    return inputToolbarView;
 }
 
 #pragma mark - Override MXKView
@@ -55,21 +44,15 @@
 -(void)customizeViewRendering
 {
     [super customizeViewRendering];
-    [self updateWithStyle:self.currentStyle];
-}
-
-- (void)updateWithStyle:(id<Style>)style
-{
-    self.currentStyle = style;
     
     // Remove default toolbar background color
     self.backgroundColor = [UIColor clearColor];
     
-    self.separatorView.backgroundColor = style.separatorColor;
-    
+    self.separatorView.backgroundColor = ThemeService.shared.theme.lineBreakColor;
+
     self.disabledReasonTextView.font = [UIFont systemFontOfSize:15];
-    self.disabledReasonTextView.textColor = style.primaryTextColor;
-    self.disabledReasonTextView.tintColor = style.secondaryTextColor;
+    self.disabledReasonTextView.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.disabledReasonTextView.tintColor = ThemeService.shared.theme.tintColor;
     self.disabledReasonTextView.editable = NO;
     self.disabledReasonTextView.scrollEnabled = NO;
 }

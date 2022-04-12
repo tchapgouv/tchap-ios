@@ -17,7 +17,7 @@
 import UIKit
 import Reusable
 
-@objc final class RoomAttachmentAntivirusScanStatusCellContentView: UIView, NibOwnerLoadable, Stylable {
+@objc final class RoomAttachmentAntivirusScanStatusCellContentView: UIView, NibOwnerLoadable {
     
     // MARK: - Properties
     
@@ -25,12 +25,10 @@ import Reusable
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var fileInfoLabel: UILabel!
     
-    private var style: Style!
-    
     // MARK: - Setup
     
     private func commonInit() {
-        self.update(style: Variant1Style.shared)
+        self.update(theme: ThemeService.shared().theme)
     }
     
     convenience init() {
@@ -56,13 +54,12 @@ import Reusable
         self.titleLabel.text = viewModel.title
         self.fileInfoLabel.text = viewModel.fileInfo
     }
-    
-    // MARK: - Stylable
-    
-    func update(style: Style) {
-        self.style = style
-        
-        self.titleLabel.textColor = self.style.primaryTextColor
-        self.fileInfoLabel.textColor = self.style.primaryTextColor
+}
+
+// MARK: - Theme
+extension RoomAttachmentAntivirusScanStatusCellContentView: Themable {
+    func update(theme: Theme) {
+        self.titleLabel.textColor = theme.textPrimaryColor
+        self.fileInfoLabel.textColor = theme.textPrimaryColor
     }
 }

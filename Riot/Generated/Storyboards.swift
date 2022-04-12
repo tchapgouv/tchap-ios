@@ -12,6 +12,16 @@ import UIKit
 
 // swiftlint:disable explicit_type_interface identifier_name line_length type_body_length type_name
 internal enum StoryboardScene {
+  internal enum CallTransferMainViewController: StoryboardType {
+    internal static let storyboardName = "CallTransferMainViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.CallTransferMainViewController>(storyboard: CallTransferMainViewController.self)
+  }
+  internal enum CallTransferSelectContactViewController: StoryboardType {
+    internal static let storyboardName = "CallTransferSelectContactViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.CallTransferSelectContactViewController>(storyboard: CallTransferSelectContactViewController.self)
+  }
   internal enum DeviceVerificationIncomingViewController: StoryboardType {
     internal static let storyboardName = "DeviceVerificationIncomingViewController"
 
@@ -21,6 +31,11 @@ internal enum StoryboardScene {
     internal static let storyboardName = "DeviceVerificationStartViewController"
 
     internal static let initialScene = InitialSceneType<Riot.DeviceVerificationStartViewController>(storyboard: DeviceVerificationStartViewController.self)
+  }
+  internal enum DialpadViewController: StoryboardType {
+    internal static let storyboardName = "DialpadViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.DialpadViewController>(storyboard: DialpadViewController.self)
   }
   internal enum EditHistoryViewController: StoryboardType {
     internal static let storyboardName = "EditHistoryViewController"
@@ -81,6 +96,11 @@ internal enum StoryboardScene {
     internal static let storyboardName = "KeyBackupSetupSuccessFromRecoveryKeyViewController"
 
     internal static let initialScene = InitialSceneType<Riot.KeyBackupSetupSuccessFromRecoveryKeyViewController>(storyboard: KeyBackupSetupSuccessFromRecoveryKeyViewController.self)
+  }
+  internal enum KeyBackupSetupSuccessFromSecureBackupViewController: StoryboardType {
+    internal static let storyboardName = "KeyBackupSetupSuccessFromSecureBackupViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.KeyBackupSetupSuccessFromSecureBackupViewController>(storyboard: KeyBackupSetupSuccessFromSecureBackupViewController.self)
   }
   internal enum KeyVerificationDataLoadingViewController: StoryboardType {
     internal static let storyboardName = "KeyVerificationDataLoadingViewController"
@@ -152,6 +172,11 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Riot.RoomInfoListViewController>(storyboard: RoomInfoListViewController.self)
   }
+  internal enum RoomNotificationSettingsViewController: StoryboardType {
+    internal static let storyboardName = "RoomNotificationSettingsViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.RoomNotificationSettingsViewController>(storyboard: RoomNotificationSettingsViewController.self)
+  }
   internal enum SecretsRecoveryWithKeyViewController: StoryboardType {
     internal static let storyboardName = "SecretsRecoveryWithKeyViewController"
 
@@ -209,15 +234,55 @@ internal enum StoryboardScene {
 
     internal static let searchableDirectoryViewController = SceneType<Riot.ShowDirectoryViewController>(storyboard: ShowDirectoryViewController.self, identifier: "SearchableDirectoryViewController")
   }
+  internal enum SideMenuViewController: StoryboardType {
+    internal static let storyboardName = "SideMenuViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.SideMenuViewController>(storyboard: SideMenuViewController.self)
+  }
   internal enum SimpleScreenTemplateViewController: StoryboardType {
     internal static let storyboardName = "SimpleScreenTemplateViewController"
 
     internal static let initialScene = InitialSceneType<Riot.SimpleScreenTemplateViewController>(storyboard: SimpleScreenTemplateViewController.self)
   }
+  internal enum SpaceChildRoomDetailViewController: StoryboardType {
+    internal static let storyboardName = "SpaceChildRoomDetailViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.SpaceChildRoomDetailViewController>(storyboard: SpaceChildRoomDetailViewController.self)
+  }
+  internal enum SpaceDetailViewController: StoryboardType {
+    internal static let storyboardName = "SpaceDetailViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.SpaceDetailViewController>(storyboard: SpaceDetailViewController.self)
+  }
+  internal enum SpaceExploreRoomViewController: StoryboardType {
+    internal static let storyboardName = "SpaceExploreRoomViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.SpaceExploreRoomViewController>(storyboard: SpaceExploreRoomViewController.self)
+  }
+  internal enum SpaceFeatureUnaivableViewController: StoryboardType {
+    internal static let storyboardName = "SpaceFeatureUnaivableViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.SpaceFeatureUnaivableViewController>(storyboard: SpaceFeatureUnaivableViewController.self)
+  }
+  internal enum SpaceListViewController: StoryboardType {
+    internal static let storyboardName = "SpaceListViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.SpaceListViewController>(storyboard: SpaceListViewController.self)
+  }
+  internal enum SpaceMenuViewController: StoryboardType {
+    internal static let storyboardName = "SpaceMenuViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.SpaceMenuViewController>(storyboard: SpaceMenuViewController.self)
+  }
   internal enum TemplateScreenViewController: StoryboardType {
     internal static let storyboardName = "TemplateScreenViewController"
 
     internal static let initialScene = InitialSceneType<Riot.TemplateScreenViewController>(storyboard: TemplateScreenViewController.self)
+  }
+  internal enum ThreadListViewController: StoryboardType {
+    internal static let storyboardName = "ThreadListViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.ThreadListViewController>(storyboard: ThreadListViewController.self)
   }
   internal enum UserVerificationSessionStatusViewController: StoryboardType {
     internal static let storyboardName = "UserVerificationSessionStatusViewController"

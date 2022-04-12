@@ -53,7 +53,6 @@ final class RoomTitleViewModelBuilder: NSObject {
         let roomTypeImageTintColor: UIColor?
         let subtitle: NSAttributedString?
         let roomMembersCount: String?
-        let roomRetentionInfo: String?
         let avatarImageShape: AvatarImageShape
         let avatarBorderColor: UIColor?
         let avatarBorderWidth: CGFloat?
@@ -74,18 +73,16 @@ final class RoomTitleViewModelBuilder: NSObject {
                 subtitle = nil
             }
             roomMembersCount = nil
-            roomRetentionInfo = nil
             avatarImageShape = .circle
             avatarBorderColor = nil
             avatarBorderWidth = nil
-            avatarMarker = Asset.SharedImages.privateAvatarIcon.image
+            avatarMarker = Asset_tchap.SharedImages.privateAvatarIcon.image
         } else if case .serverNotice = roomCategory {
             title = displayName
             subtitle = nil
             roomTypeImage = nil
             roomTypeImageTintColor = nil
             roomMembersCount = nil
-            roomRetentionInfo = nil
             avatarImageShape = .circle
             avatarBorderColor = nil
             avatarBorderWidth = nil
@@ -97,29 +94,29 @@ final class RoomTitleViewModelBuilder: NSObject {
             // Customize the avatar border and the room subtitle
             switch roomCategory {
             case .restrictedPrivateRoom:
-                roomTypeImage = Asset.Images.roomTypePrivate.image.withRenderingMode(.alwaysTemplate)
-                roomTypeImageTintColor = kColorCoral
-                avatarBorderColor = kColorDarkBlue
+                roomTypeImage = Asset_tchap.Images.roomTypePrivate.image.withRenderingMode(.alwaysTemplate)
+                roomTypeImageTintColor = ThemeService.shared().theme.roomTypeRestricted
+                avatarBorderColor = ThemeService.shared().theme.borderMain
                 avatarBorderWidth = Constants.hexagonImageBorderWidthDefault
-                avatarMarker = Asset.SharedImages.privateAvatarIcon.image
+                avatarMarker = Asset_tchap.SharedImages.privateAvatarIcon.image
                 subtitle = NSAttributedString(string: TchapL10n.roomTitlePrivateRoom,
-                                              attributes: [.foregroundColor: kColorCoral])
+                                              attributes: [.foregroundColor: ThemeService.shared().theme.roomTypeRestricted])
             case .unrestrictedPrivateRoom:
-                roomTypeImage = Asset.Images.roomTypePrivate.image.withRenderingMode(.alwaysTemplate)
-                roomTypeImageTintColor = kColorPumpkinOrange
-                avatarBorderColor = kColorDarkGrey
+                roomTypeImage = Asset_tchap.Images.roomTypePrivate.image.withRenderingMode(.alwaysTemplate)
+                roomTypeImageTintColor = ThemeService.shared().theme.roomTypeUnrestricted
+                avatarBorderColor = ThemeService.shared().theme.borderSecondary
                 avatarBorderWidth = Constants.hexagonImageBorderWidthUnrestricted
-                avatarMarker = Asset.SharedImages.privateAvatarIcon.image
+                avatarMarker = Asset_tchap.SharedImages.privateAvatarIcon.image
                 subtitle = NSAttributedString(string: TchapL10n.roomTitleExternRoom,
-                                              attributes: [.foregroundColor: kColorPumpkinOrange])
+                                              attributes: [.foregroundColor: ThemeService.shared().theme.roomTypeUnrestricted])
             case .forum:
-                roomTypeImage = Asset.Images.roomTypeForum.image.withRenderingMode(.alwaysTemplate)
-                roomTypeImageTintColor = kColorJadeGreen
-                avatarBorderColor = kColorDarkBlue
+                roomTypeImage = Asset_tchap.Images.roomTypeForum.image.withRenderingMode(.alwaysTemplate)
+                roomTypeImageTintColor = ThemeService.shared().theme.roomTypePublic
+                avatarBorderColor = ThemeService.shared().theme.borderMain
                 avatarBorderWidth = Constants.hexagonImageBorderWidthDefault
-                avatarMarker = Asset.SharedImages.forumAvatarIcon.image
+                avatarMarker = Asset_tchap.SharedImages.forumAvatarIcon.image
                 subtitle = NSAttributedString(string: TchapL10n.roomTitleForumRoom,
-                                              attributes: [.foregroundColor: kColorJadeGreen])
+                                              attributes: [.foregroundColor: ThemeService.shared().theme.roomTypePublic])
             default:
                 roomTypeImage = nil
                 roomTypeImageTintColor = nil
@@ -130,17 +127,6 @@ final class RoomTitleViewModelBuilder: NSObject {
             }
             
             roomMembersCount = TchapL10n.roomTitleRoomMembersCount(Int(roomSummary.membersCount.joined))
-            
-            #if ENABLE_ROOM_RETENTION
-            let retentionPeriod = roomSummary.tc_roomRetentionPeriodInDays()
-            if retentionPeriod != RetentionConstants.undefinedRetentionValueInDays {
-                roomRetentionInfo = TchapL10n.roomTitleRetentionInfoInDays(Int(retentionPeriod))
-            } else {
-                roomRetentionInfo = nil
-            }
-            #else
-            roomRetentionInfo = nil
-            #endif
         }
         
         let placeholderImage: UIImage = AvatarGenerator.generateAvatar(forText: displayName)
@@ -160,7 +146,6 @@ final class RoomTitleViewModelBuilder: NSObject {
                                   roomTypeImageTintColor: roomTypeImageTintColor,
                                   subtitle: subtitle,
                                   roomMembersCount: roomMembersCount,
-                                  roomRetentionInfo: roomRetentionInfo,
                                   avatarImageViewModel: avatarImageViewModel)
     }
     
@@ -182,8 +167,8 @@ final class RoomTitleViewModelBuilder: NSObject {
         let marker: UIImage?
         if roomPreviewData.wasInitializedWithPublicRoom {
             // The public rooms (forums) are restricted (external users can not join them)
-            avatarBorderColor = kColorDarkBlue
-            marker = Asset.SharedImages.forumAvatarIcon.image
+            avatarBorderColor = ThemeService.shared().theme.borderMain
+            marker = Asset_tchap.SharedImages.forumAvatarIcon.image
         } else {
             // We don't have information to customize the room avatar
             avatarBorderColor = UIColor.clear
@@ -205,7 +190,6 @@ final class RoomTitleViewModelBuilder: NSObject {
                                   roomTypeImageTintColor: nil,
                                   subtitle: subtitle,
                                   roomMembersCount: nil,
-                                  roomRetentionInfo: nil,
                                   avatarImageViewModel: avatarImageViewModel)
     }
     
@@ -234,14 +218,13 @@ final class RoomTitleViewModelBuilder: NSObject {
                                                         shape: avatarImageShape,
                                                         borderColor: nil,
                                                         borderWidth: nil,
-                                                        marker: Asset.SharedImages.privateAvatarIcon.image)
+                                                        marker: Asset_tchap.SharedImages.privateAvatarIcon.image)
         
         return RoomTitleViewModel(title: title,
                                   roomTypeImage: nil,
                                   roomTypeImageTintColor: nil,
                                   subtitle: subtitle,
                                   roomMembersCount: nil,
-                                  roomRetentionInfo: nil,
                                   avatarImageViewModel: avatarImageViewModel)
     }
     
@@ -262,7 +245,6 @@ final class RoomTitleViewModelBuilder: NSObject {
                                   roomTypeImageTintColor: nil,
                                   subtitle: subtitle,
                                   roomMembersCount: nil,
-                                  roomRetentionInfo: nil,
                                   avatarImageViewModel: nil)
     }
 }

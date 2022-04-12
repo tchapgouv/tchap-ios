@@ -67,7 +67,7 @@ final class ThirdPartyIDPlatformInfoResolver: ThirdPartyIDPlatformInfoResolverTy
                 return
             }
             
-            NSLog("[ThirdPartyIDPlatformInfoResolver] info resquest on \(identityServer) succeeded")
+            MXLog.debug("[ThirdPartyIDPlatformInfoResolver] info resquest on \(identityServer) succeeded")
             
             let isInvited = response["invited"] as? Bool ?? false
             
@@ -87,7 +87,7 @@ final class ThirdPartyIDPlatformInfoResolver: ThirdPartyIDPlatformInfoResolverTy
                 success?(.unauthorizedThirdPartyID)
             }
         }, failure: { (error: Error?) in
-            NSLog("[ThirdPartyIDPlatformInfoResolver] info resquest on \(identityServer) failed")
+            MXLog.debug("[ThirdPartyIDPlatformInfoResolver] info resquest on \(identityServer) failed")
             self.currentHttpClient = nil
             
             // Try another identity server if any

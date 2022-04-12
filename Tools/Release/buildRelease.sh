@@ -21,30 +21,44 @@ TAG=$1
 BUILD_DIR="build"/$TAG
 BUILD_NUMBER=$( date +%Y%m%d%H%M%S )
 
+# Enable this flag to build the ipa from the current local source code. Not git clone
+# LOCAL_SOURCE=true
 
 if [ -e $BUILD_DIR ]; then
     echo "Error: Folder ${BUILD_DIR} already exists"
     exit 1
-fi 
-
-
-# Fastlane update
-gem install bundler
-bundle install
-bundle update
-
+fi
 
 # Checkout the source to build
 mkdir -p $BUILD_DIR
 cd $BUILD_DIR
 REPO_URL=$(git ls-remote --get-url origin)
 REPO_NAME=$(basename -s .git $REPO_URL)
+
+if [ "$LOCAL_SOURCE" = true ]; then
+echo "Reuse source code of the local copy..." 
+rm -rf /tmp/$REPO_NAME
+cp -R ../../../.. /tmp/$REPO_NAME
+mv /tmp/$REPO_NAME .
+else
+echo "Git clone $REPO_URL with branch/tag $TAG..." 
 git clone $REPO_URL --depth=1 --branch $TAG
+fi
+
 cd $REPO_NAME
 
+# Fastlane update
+gem install bundler
+bundle install
+bundle update
+
+# Update fastlane plugins
+bundle exec fastlane update_plugins
 
 # Use appropriated dependencies according to the current branch
+if [ "$LOCAL_SOURCE" != true ]; then
 bundle exec fastlane point_dependencies_to_same_feature
+fi
 
 # Build
 bundle exec fastlane app_store build_number:$BUILD_NUMBER git_tag:$TAG

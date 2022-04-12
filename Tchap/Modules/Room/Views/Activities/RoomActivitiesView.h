@@ -15,7 +15,7 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+#import "MatrixKit.h"
 
 
 /**
@@ -29,6 +29,11 @@
 @property (weak, nonatomic) IBOutlet UITextView *messageTextView;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *mainHeightConstraint;
+
+@property (weak, nonatomic) IBOutlet UIView *unsentMessagesContentView;
+@property (weak, nonatomic) IBOutlet UIButton *resendButton;
+@property (weak, nonatomic) IBOutlet UIButton *deleteButton;
+@property (weak, nonatomic) IBOutlet UILabel *unsentMessageLabel;
 
 /**
  Notify that some messages are not sent.
@@ -67,16 +72,6 @@
                                           nil means do not display a close button.
  */
 - (void)displayOngoingConferenceCall:(void (^)(BOOL video))ongoingConferenceCallPressed onClosePressed:(void (^)(void))ongoingConferenceCallClosePressed;
-
-/**
- Display a "scroll to bottom" icon.
- Replace the current notification if any.
- 
- @param newMessagesCount the count of the unread messages.
- @param onIconTapGesture block called when user taps on notification icon.
- */
-- (void)displayScrollToBottomIcon:(NSUInteger)newMessagesCount onIconTapGesture:(void (^)(void))onIconTapGesture;
-
 
 /**
  Notify that the a room is obsolete and a replacement room is available.

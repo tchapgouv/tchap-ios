@@ -17,11 +17,11 @@
 import UIKit
 import Reusable
 
-protocol RoomCreationAvatarViewDelegate: class {
+protocol RoomCreationAvatarViewDelegate: AnyObject {
     func roomCreationAvatarViewDidTapAddPhotoButton(_ roomCreationAvatarView: RoomCreationAvatarView)
 }
 
-final class RoomCreationAvatarView: UIView, NibLoadable, Stylable {
+final class RoomCreationAvatarView: UIView, NibLoadable {
     
     // MARK: - Constants
     
@@ -35,7 +35,6 @@ final class RoomCreationAvatarView: UIView, NibLoadable, Stylable {
     @IBOutlet private weak var addButton: UIButton!
     @IBOutlet private weak var imageView: UIImageView!
     
-    private var style: Style!
     private var hexagonBorderColor: UIColor = UIColor.clear
     private var hexagonBorderWidth: CGFloat = Constants.hexagonBorderWidthDefault
     
@@ -53,7 +52,7 @@ final class RoomCreationAvatarView: UIView, NibLoadable, Stylable {
 
         self.updateAddButtonTextVisibility()
 
-        self.update(style: Variant1Style.shared)
+        self.update(theme: ThemeService.shared().theme)
     }
     
     override func layoutSubviews() {
@@ -73,6 +72,7 @@ final class RoomCreationAvatarView: UIView, NibLoadable, Stylable {
         self.hexagonBorderColor = color
         self.hexagonBorderWidth = width
         self.updateBackgroundView()
+        self.update(theme: ThemeService.shared().theme)
     }
     
     // MARK: - Private
@@ -99,13 +99,12 @@ final class RoomCreationAvatarView: UIView, NibLoadable, Stylable {
     @IBAction private func addButtonAction(_ sender: Any) {
         self.delegate?.roomCreationAvatarViewDidTapAddPhotoButton(self)
     }
-    
-    // MARK: - Stylable
-    
-    func update(style: Style) {
-        self.style = style
-        
-        self.backgroundView.backgroundColor = style.secondaryBackgroundColor
-        self.addButton.setTitleColor(style.primarySubTextColor, for: .normal)
+}
+
+// MARK: - Theme
+extension RoomCreationAvatarView: Themable {
+    func update(theme: Theme) {
+        self.backgroundView.backgroundColor = theme.selectedBackgroundColor
+        self.addButton.setTitleColor(theme.textTertiaryColor, for: .normal)
     }
 }

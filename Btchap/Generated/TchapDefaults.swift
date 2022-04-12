@@ -13,7 +13,6 @@ internal enum TchapDefaults {
   private static let _document = PlistDocument(path: "Btchap-Defaults.plist")
 
   internal static let appLanguage: String = _document["appLanguage"]
-  internal static let createConferenceCallsWithJitsi: Bool = _document["createConferenceCallsWithJitsi"]
   internal static let enableRageShake: Bool = _document["enableRageShake"]
   internal static let matrixApps: Bool = _document["matrixApps"]
   internal static let maxAllowedMediaCacheSize: Int = _document["maxAllowedMediaCacheSize"]

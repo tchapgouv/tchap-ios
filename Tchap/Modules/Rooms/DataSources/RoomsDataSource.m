@@ -18,8 +18,6 @@
 
 #import "RecentCellData.h"
 
-#import "DesignValues.h"
-
 #import "MXRoom+Riot.h"
 
 #import "GeneratedInterface-Swift.h"
@@ -133,7 +131,11 @@
 #ifdef SUPPORT_KEYS_BACKUP
     SecureBackupBannerPreferences *secureBackupBannersPreferences = SecureBackupBannerPreferences.shared;
     
-    if (!secureBackupBannersPreferences.hideSetupBanner && [self.mxSession vc_canSetupSecureBackup])
+    // Display the banner only if we can set up 4S, if there are messages keys to backup and key backup is disabled
+    if (!secureBackupBannersPreferences.hideSetupBanner
+        && [self.mxSession vc_canSetupSecureBackup]
+        && self.mxSession.crypto.backup.hasKeysToBackup
+        && self.mxSession.crypto.backup.state == MXKeyBackupStateDisabled)
     {
         secureBackupBanner = SecureBackupBannerDisplaySetup;
     }
@@ -178,7 +180,7 @@
             [self updateCrossSigningBannerDisplay:crossSigningBannerDisplay];
             
         } failure:^(NSError * _Nonnull error) {
-            NSLog(@"[RecentsDataSource] refreshCrossSigningBannerDisplay: Fail to verify if cross signing banner can be displayed");
+            MXLogDebug(@"[RecentsDataSource] refreshCrossSigningBannerDisplay: Fail to verify if cross signing banner can be displayed");
         }];
     }
     else
@@ -569,7 +571,8 @@
         {
             id<MXKRecentCellDataStoring> cellDataStoring = [cellDataArray objectAtIndex:index];
             
-            if ([roomId isEqualToString:cellDataStoring.roomSummary.roomId] && (matrixSession == cellDataStoring.roomSummary.room.mxSession))
+            if ([cellDataStoring.roomSummary isKindOfClass:[MXRoomSummary class]] &&
+                [roomId isEqualToString:cellDataStoring.roomSummary.roomId] && (matrixSession == ((MXRoomSummary *)cellDataStoring.roomSummary).room.mxSession))
             {
                 return index;
             }
@@ -641,7 +644,7 @@
         for (int index = 0; index < count; index++)
         {
             id<MXKRecentCellDataStoring> recentCellDataStoring = [recentsDataSource cellDataAtIndex:index];
-            MXRoom* room = recentCellDataStoring.roomSummary.room;
+            MXRoom* room = ((MXRoomSummary *)recentCellDataStoring.roomSummary).room;
             
             // Hide the rooms created to invite some non-tchap contact by email.
             if (room.isDirect && [MXTools isEmailAddress:room.directUserId])

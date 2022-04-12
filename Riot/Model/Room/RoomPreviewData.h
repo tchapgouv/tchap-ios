@@ -16,7 +16,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import <MatrixKit/MatrixKit.h>
+#import "MatrixKit.h"
 #import "RoomEmailInvitation.h"
 #import "RoomDataSource.h"
 
@@ -77,18 +77,26 @@
  Contructors.
  
  @param roomId the id of the room.
+ @param mxSession the session to open the room preview with.
+ */
+- (instancetype)initWithRoomId:(NSString*)roomId andSession:(MXSession*)mxSession;
+
+/**
+ Contructors.
+ 
+ @param roomId the id of the room.
  @param roomAlias the potential alias (we have keep it when it is available. It may be required to join federated room).
  @param mxSession the session to open the room preview with.
  */
 - (instancetype)initWithRoomId:(NSString*)roomId roomAlias:(NSString*)roomAlias andSession:(MXSession*)mxSession;
 
 /**
-Contructors.
-
-@param roomId the id of the room.
-@param emailInvitationParams, in case of an email invitation link, the query parameters extracted from the link.
-@param mxSession the session to open the room preview with.
-*/
+ Contructors.
+ 
+ @param roomId the id of the room.
+ @param emailInvitationParams in case of an email invitation link, the query parameters extracted from the link.
+ @param mxSession the session to open the room preview with.
+ */
 - (instancetype)initWithRoomId:(NSString*)roomId emailInvitationParams:(NSDictionary*)emailInvitationParams andSession:(MXSession*)mxSession;
 
 /**
@@ -98,6 +106,14 @@ Contructors.
  @param mxSession the session to open the room preview with.
  */
 - (instancetype)initWithPublicRoom:(MXPublicRoom*)publicRoom andSession:(MXSession*)mxSession;
+
+/**
+ Contructors.
+ 
+ @param childInfo MXSpaceChildInfo instance that describes the child.
+ @param mxSession the session to open the room preview with.
+ */
+- (instancetype)initWithSpaceChildInfo:(MXSpaceChildInfo*)childInfo andSession:(MXSession*)mxSession;
 
 /**
  Attempt to peek into the room to get room data (state, messages history, etc).

@@ -18,11 +18,7 @@
 
 #import "ThemeService.h"
 
-#ifdef IS_SHARE_EXTENSION
-#import "RiotShareExtension-Swift.h"
-#else
-#import "Riot-Swift.h"
-#endif
+#import "GeneratedInterface-Swift.h"
 
 NSString *const kThemeServiceDidChangeThemeNotification = @"kThemeServiceDidChangeThemeNotification";
 
@@ -56,7 +52,7 @@ NSString *const kThemeServiceDidChangeThemeNotification = @"kThemeServiceDidChan
         
         [self updateAppearance];
 
-        [[NSNotificationCenter defaultCenter] postNotificationName:kThemeServiceDidChangeThemeNotification object:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kThemeServiceDidChangeThemeNotification object:self];
     }
 }
 
@@ -93,6 +89,16 @@ NSString *const kThemeServiceDidChangeThemeNotification = @"kThemeServiceDidChan
     }
 
     return theme;
+}
+
+- (BOOL)isCurrentThemeDark
+{
+    if ([self.theme.identifier isEqualToString:@"dark"] || [self.theme.identifier isEqualToString:@"black"])
+    {
+        return YES;
+    }
+    
+    return NO;
 }
 
 #pragma mark - Private methods
@@ -140,11 +146,20 @@ NSString *const kThemeServiceDidChangeThemeNotification = @"kThemeServiceDidChan
 {
     [UIScrollView appearance].indicatorStyle = self.theme.scrollBarStyle;
     
+    // Remove the extra height added to section headers in iOS 15
+    if (@available(iOS 15.0, *))
+    {
+        UITableView.appearance.sectionHeaderTopPadding = 0;
+    }
+    
     // Define the navigation bar text color
     [[UINavigationBar appearance] setTintColor:self.theme.tintColor];
     
     // Define the UISearchBar cancel button color
     [[UIBarButtonItem appearanceWhenContainedInInstancesOfClasses:@[[UISearchBar class]]] setTitleTextAttributes:@{ NSForegroundColorAttributeName : self.theme.tintColor }                                                                                                        forState: UIControlStateNormal];
+    
+    [[UIStackView appearanceWhenContainedInInstancesOfClasses:@[[UINavigationBar class]]] setSpacing:-7];
+    [[UIStackView appearanceWhenContainedInInstancesOfClasses:@[[UINavigationBar class]]] setDistribution:UIStackViewDistributionEqualCentering];
 }
 
 @end

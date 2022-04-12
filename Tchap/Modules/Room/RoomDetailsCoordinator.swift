@@ -16,7 +16,7 @@
 
 import Foundation
 
-protocol RoomDetailsCoordinatorDelegate: class {
+protocol RoomDetailsCoordinatorDelegate: AnyObject {
     func roomDetailsCoordinator(_ coordinator: RoomDetailsCoordinatorType, mention member: MXRoomMember)
     func roomDetailsCoordinator(_ coordinator: RoomDetailsCoordinatorType, didSelectRoomID roomID: String)
     func roomDetailsCoordinator(_ coordinator: RoomDetailsCoordinatorType, didSelectUserID userID: String)
@@ -56,7 +56,7 @@ final class RoomDetailsCoordinator: NSObject, RoomDetailsCoordinatorType {
         self.session = session
         self.roomID = roomID
         
-        self.segmentedViewController = SegmentedViewController.instantiate()
+        self.segmentedViewController = SegmentedViewController()
         
         self.activityIndicatorPresenter = ActivityIndicatorPresenter()
         self.errorPresenter = AlertErrorPresenter(viewControllerPresenter: self.segmentedViewController)
@@ -86,11 +86,11 @@ final class RoomDetailsCoordinator: NSObject, RoomDetailsCoordinatorType {
             titles = [TchapL10n.roomFilesTabTitle]
         } else {
             // We add a tab for the participants list and another for the room settings
-            guard let participantsViewController = RoomParticipantsViewController.instantiate(),
-                let settingsViewController = RoomSettingsViewController.instantiate() else {
+            guard let participantsViewController = RoomParticipantsViewController.instantiate() else {
                     fatalError("[RoomDetailsCoordinator] Participants or Settings tab could not be loaded")
             }
             
+            let settingsViewController = RoomSettingsViewController()
             viewControllers = [participantsViewController, roomFilesViewController, settingsViewController]
             titles = [TchapL10n.roomMembersTabTitle, TchapL10n.roomFilesTabTitle, TchapL10n.roomSettingsTabTitle]
             
@@ -118,9 +118,9 @@ final class RoomDetailsCoordinator: NSObject, RoomDetailsCoordinatorType {
         
         self.segmentedViewController.initWithTitles(titles, viewControllers: viewControllers, defaultSelected: 0)
         self.segmentedViewController.addMatrixSession(self.session)
-        self.segmentedViewController.update(with: Variant2Style.shared)
+        self.segmentedViewController.updateTheme()
         
-        let titleView = RoomTitleView.instantiate()
+        let titleView = RoomTitleView()
         self.segmentedViewController.navigationItem.titleView = titleView
         self.roomDetailsTitleView = titleView
         
@@ -201,7 +201,7 @@ final class RoomDetailsCoordinator: NSObject, RoomDetailsCoordinatorType {
             return
         }
         let roomTitleViewModel = self.roomTitleViewModelBuilder.build(fromRoomSummary: roomSummary)
-        roomTitleView.fill(roomTitleViewModel: roomTitleViewModel)
+//        roomTitleView.fill(roomTitleViewModel: roomTitleViewModel)
     }
 }
 

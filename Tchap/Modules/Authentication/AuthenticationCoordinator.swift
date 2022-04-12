@@ -16,7 +16,7 @@
 
 import Foundation
 
-protocol AuthenticationCoordinatorDelegate: class {
+protocol AuthenticationCoordinatorDelegate: AnyObject {
     func authenticationCoordinator(coordinator: AuthenticationCoordinatorType, didAuthenticateWithUserId userId: String)
 }
 
@@ -45,7 +45,7 @@ final class AuthenticationCoordinator: AuthenticationCoordinatorType {
         self.authenticationService = AuthenticationService(accountManager: MXKAccountManager.shared())
         let authenticationViewModel = AuthenticationViewModel()
         let authenticationViewController = AuthenticationViewController.instantiate(viewModel: authenticationViewModel)
-        authenticationViewController.tc_removeBackTitle()
+        authenticationViewController.vc_removeBackTitle()
         self.authenticationViewController = authenticationViewController
         self.activityIndicatorPresenter = ActivityIndicatorPresenter()
         self.authenticationErrorPresenter = AlertErrorPresenter(viewControllerPresenter: authenticationViewController)
@@ -65,11 +65,11 @@ final class AuthenticationCoordinator: AuthenticationCoordinatorType {
     // MARK: - Private methods
     
     private func registerLoginNotification() {
-        NotificationCenter.default.addObserver(self, selector: #selector(userDidLogin), name: NSNotification.Name.legacyAppDelegateDidLogin, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(userDidLogin), name: UserSessionsService.didAddUserSession, object: nil)
     }
     
     private func unregisterLoginNotification() {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.legacyAppDelegateDidLogin, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UserSessionsService.didAddUserSession, object: nil)
     }
     
     @objc private func userDidLogin() {
@@ -96,7 +96,7 @@ final class AuthenticationCoordinator: AuthenticationCoordinatorType {
             switch response {
             case .success:
                 // NOTE: Do not call delegate directly for the moment, wait for NSNotification.Name.legacyAppDelegateDidLogin
-                print("[AuthenticationCoordinator] User did authenticate with success")
+                MXLog.debug("[AuthenticationCoordinator] User did authenticate with success")
             case .failure(let error):
                 // Display error on AuthenticationViewController
                 let authenticationErrorPresentableMaker = AuthenticationErrorPresentableMaker()

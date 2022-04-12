@@ -25,38 +25,16 @@ enum ThirdPartyIDResolveResult {
 /// Protocol describing a service used to discover Tchap users from third-party identifiers (for example: an email address).
 protocol ThirdPartyIDResolverType {
     
-    /// Retrieve a user matrix id from a 3rd party id.
-    ///
-    /// - Parameters:
-    /// - address the id of the user in the 3rd party system.
-    /// - medium the 3rd party system (ex: "email").
-    /// - identityServer: the url of the identity server to proxy the request to if the homeserver is allowed to do so
-    /// - completion: A block object called when the operation completes.
-    /// - response: Provides the Matrix user id (or `nil` if the user is not found) on success.
-    
-    /// returns: a `MXHTTPOperation` instance.
-    func lookup(address: String, medium: MX3PID.Medium, identityServer: String, completion: @escaping (MXResponse<ThirdPartyIDResolveResult>) -> Void) -> MXHTTPOperation?
-    
-    /// Retrieve user matrix ids from a list of 3rd party ids.
-    ///
-    /// - Parameters:
-    /// - threepids: the list of 3rd party ids
-    /// - identityServer: the url of the identity server to proxy the request to if the homeserver is allowed to do so
-    /// - completion: A block object called when the operation completes.
-    /// - response: Provides the user ID for each MX3PID submitted.
-    ///
-    /// - returns: a `MXHTTPOperation` instance.
-    func bulkLookup(threepids: [(MX3PID.Medium, String)], identityServer: String, completion: @escaping (MXResponse<[(MX3PID.Medium, String, String)]>) -> Void) -> MXHTTPOperation?
-    
     /// Retrieve user matrix ids from a list of 3rd party ids.
     /// This method has been added to interact with the existing Objective C source code.
     ///
     /// - Parameters:
     /// - threepids: the list of 3rd party ids
-    /// - identityServer: the url of the identity server to proxy the request to if the homeserver is allowed to do so
     /// - success: A block object called when the operation succeeded.
     /// - failure: A block object called when the operation failed.
     ///
     /// - returns: a `MXHTTPOperation` instance.
-    func bulkLookup(threepids: [[String]], identityServer: String, success: @escaping (([[String]]) -> Void), failure: @escaping ((Error) -> Void)) -> MXHTTPOperation?
+    func bulkLookup(threepids: [[String]],
+                    success: @escaping (([[String]]) -> Void),
+                    failure: @escaping ((Error) -> Void)) -> MXHTTPOperation?
 }

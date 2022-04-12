@@ -16,7 +16,7 @@
 
 import UIKit
 
-protocol AuthenticationViewControllerDelegate: class {
+protocol AuthenticationViewControllerDelegate: AnyObject {
     func authenticationViewController(_ authenticationViewController: AuthenticationViewController, didTapNextButtonWith mail: String, password: String)
     func authenticationViewControllerDidTapForgotPasswordButton(_ authenticationViewController: AuthenticationViewController)
 }
@@ -37,7 +37,6 @@ final class AuthenticationViewController: UIViewController {
     private var viewModel: AuthenticationViewModelType!
     private var errorPresenter: ErrorPresenter?
     private var keyboardAvoider: KeyboardAvoider?
-    private var currentStyle: Style!
     
     // MARK: Public
     
@@ -45,9 +44,8 @@ final class AuthenticationViewController: UIViewController {
     
     // MARK: - Setup
     
-    class func instantiate(viewModel: AuthenticationViewModelType, style: Style = Variant2Style.shared) -> AuthenticationViewController {
+    class func instantiate(viewModel: AuthenticationViewModelType) -> AuthenticationViewController {
         let viewController = StoryboardScene.AuthenticationViewController.initialScene.instantiate()
-        viewController.currentStyle = style
         viewController.viewModel = viewModel
         return viewController
     }
@@ -80,7 +78,7 @@ final class AuthenticationViewController: UIViewController {
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.currentStyle.statusBarStyle
+        return ThemeService.shared().theme.statusBarStyle
     }
     
     // MARK: - Public
@@ -113,7 +111,7 @@ final class AuthenticationViewController: UIViewController {
     }
     
     private func userThemeDidChange() {
-        self.update(style: self.currentStyle)
+        self.updateTheme()
     }
     
     // MARK: - Actions
@@ -136,21 +134,19 @@ final class AuthenticationViewController: UIViewController {
     }
 }
 
-// MARK: - Stylable
-extension AuthenticationViewController: Stylable {
-    func update(style: Style) {
-        self.currentStyle = style
+// MARK: - Theme
+private extension AuthenticationViewController {
+    func updateTheme() {
+        self.view.backgroundColor = ThemeService.shared().theme.backgroundColor
         
-        self.view.backgroundColor = style.backgroundColor
-        
-        style.applyStyle(onButton: self.forgotPasswordButton)
+        ThemeService.shared().theme.applyStyle(onButton: self.forgotPasswordButton)
         
         if let navigationBar = self.navigationController?.navigationBar {
-            style.applyStyle(onNavigationBar: navigationBar)
+            ThemeService.shared().theme.applyStyle(onNavigationBar: navigationBar)
         }
         
-        self.loginFormTextField.update(style: style)
-        self.passwordFormTextField.update(style: style)
+        self.loginFormTextField.update(theme: ThemeService.shared().theme)
+        self.passwordFormTextField.update(theme: ThemeService.shared().theme)
     }
 }
 

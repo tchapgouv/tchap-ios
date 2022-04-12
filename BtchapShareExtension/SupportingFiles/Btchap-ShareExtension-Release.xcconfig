@@ -19,3 +19,6 @@
 
 #include "Btchap-ShareExtension-Common.xcconfig"
 #include "Pods/Target Support Files/Pods-TchapPods-BtchapShareExtension/Pods-TchapPods-BtchapShareExtension.release.xcconfig"
+
+PROVISIONING_PROFILE = $(SHARE_EXTENSION_PROVISIONING_PROFILE)
+PROVISIONING_PROFILE_SPECIFIER = $(SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER)

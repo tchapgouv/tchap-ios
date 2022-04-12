@@ -15,7 +15,25 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+#import "MatrixKit.h"
+
+@class RootTabEmptyView;
+@class AnalyticsScreenTimer;
+@class AppActivityIndicatorPresenter;
+
+@protocol SearchBarVisibilityDelegate <NSObject>
+
+/**
+ Will be called when the user wants to show or hide the searchBar.
+ */
+- (void)toggleSearchBar;
+
+@end
+
+/**
+ Notification to be posted when recents data is ready. Notification object will be the RecentsViewController instance.
+ */
+FOUNDATION_EXPORT NSString *const RecentsViewControllerDataReadyNotification;
 
 @interface RecentsViewController : MXKRecentListViewController <MXKRecentListViewControllerDelegate>
 {
@@ -33,7 +51,7 @@
     /**
      Current alert (if any).
      */
-    UIAlertController *currentAlert;
+    __weak UIAlertController *currentAlert;
     
     /**
      The list of the section headers currently displayed in the recents table.
@@ -58,6 +76,11 @@
 @property (nonatomic) BOOL shouldScrollToTopOnRefresh;
 
 /**
+ Tell whether the search bar at the top of the recents table is enabled. YES by default.
+ */
+@property (nonatomic) BOOL enableSearchBar;
+
+/**
  Tell whether the drag and drop option are enabled. NO by default.
  This option is used to move a room from a section to another.
  */
@@ -74,9 +97,24 @@
 @property (nonatomic) CGFloat stickyHeaderHeight;
 
 /**
- The analytics instance screen name (Default is "RecentsScreen").
+ Empty view to display when there is no item to show on the screen.
  */
-@property (nonatomic) NSString *screenName;
+@property (nonatomic, weak) RootTabEmptyView *emptyView;
+
+/**
+ The screen timer used for analytics if they've been enabled. The default value is nil.
+ */
+@property (nonatomic) AnalyticsScreenTimer *screenTimer;
+
+/**
+ Presenter for displaying app-wide activity / loading indicators. If not set, the view controller will use legacy activity indicators
+ */
+@property (nonatomic, strong) AppActivityIndicatorPresenter *activityPresenter;
+
+/**
+ Protocol to show/hide search bar from an external component.
+ */
+@property (nonatomic) id<SearchBarVisibilityDelegate> searchBarVisibilityDelegate;
 
 /**
  Return the sticky header for the specified section of the table view
@@ -123,6 +161,22 @@
 #pragma mark - Room handling
 
 /**
+ Action triggered when the user taps on the (+) button.
+ Create an empty room by default.
+ */
+- (void)onPlusButtonPressed;
+
+/**
+ Open screen to create a new room.
+ */
+- (void)createNewRoom;
+
+/**
+ Join a room by alias or id.
+ */
+- (void)joinARoom;
+
+/**
  Leave the selected room.
  */
 - (void)leaveEditedRoom;
@@ -133,9 +187,29 @@
 - (void)updateEditedRoomTag:(NSString*)tag;
 
 /**
- Enable/disable the notifications for the selected room.
+ Enable/disable the direct flag of the selected room.
  */
+- (void)makeDirectEditedRoom:(BOOL)isDirect;
+
+/**
+Enable/disable the notifications for the selected room.
+*/
 - (void)muteEditedRoomNotifications:(BOOL)mute;
+
+/**
+ Edit notification settings for the selected room.
+ */
+- (void)changeEditedRoomNotificationSettings;
+
+/**
+ Show room directory.
+ */
+- (void)showRoomDirectory;
+
+/**
+ Show a public room.
+ */
+- (void)openPublicRoom:(MXPublicRoom *)publicRoom;
 
 #pragma mark - Scrolling
 
@@ -155,6 +229,18 @@
 
 - (void)didTapOnSectionHeader:(UIGestureRecognizer*)gestureRecognizer;
 - (void)didSwipeOnSectionHeader:(UISwipeGestureRecognizer*)gestureRecognizer;
+
+#pragma mark - Empty view
+
+/**
+ Overrides this method to fill the empty view with data.
+ */
+- (void)updateEmptyView;
+
+/**
+ Overrides this method to indicate if empty view should be shown. Returns NO by default.
+ */
+- (BOOL)shouldShowEmptyView;
 
 @end
 

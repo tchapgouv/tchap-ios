@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-protocol PublicRoomsViewControllerDelegate: class {
+protocol PublicRoomsViewControllerDelegate: AnyObject {
     func publicRoomsViewController(_ publicRoomsViewController: PublicRoomsViewController, didSelect publicRoom: MXPublicRoom)
 }
 
@@ -31,7 +31,6 @@ final class PublicRoomsViewController: UITableViewController {
     private var publicRoomsDataSource: PublicRoomsDataSource!
     
     private var searchController: UISearchController?
-    private var currentStyle: Style!
     
     // MARK: Public
     
@@ -39,9 +38,8 @@ final class PublicRoomsViewController: UITableViewController {
     
     // MARK: - Setup
     
-    class func instantiate(dataSource: PublicRoomsDataSource, style: Style = Variant1Style.shared) -> PublicRoomsViewController {
+    class func instantiate(dataSource: PublicRoomsDataSource) -> PublicRoomsViewController {
         let viewController = StoryboardScene.PublicRoomsViewController.initialScene.instantiate()
-        viewController.currentStyle = style
         viewController.publicRoomsDataSource = dataSource
         return viewController
     }
@@ -56,6 +54,7 @@ final class PublicRoomsViewController: UITableViewController {
         
         self.setupViews()
         self.setupDataSource()
+        self.setupNavigationBar()
         
         self.publicRoomsDataSource.search(with: "")
     }
@@ -86,7 +85,7 @@ final class PublicRoomsViewController: UITableViewController {
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.currentStyle.statusBarStyle
+        return ThemeService.shared().theme.statusBarStyle
     }
     
     // MARK: - Private
@@ -122,8 +121,20 @@ final class PublicRoomsViewController: UITableViewController {
         self.searchController = searchController
     }
     
+    private func setupNavigationBar() {
+        let cancelButton = UIBarButtonItem(title: TchapL10n.actionCancel,
+                                           style: .plain,
+                                           target: self,
+                                           action: #selector(didTapCancel))
+        self.navigationItem.leftBarButtonItem = cancelButton
+    }
+    
+    @objc private func didTapCancel() {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
     private func userThemeDidChange() {
-        self.update(style: self.currentStyle)
+        self.updateTheme()
     }
 }
 
@@ -138,19 +149,17 @@ extension PublicRoomsViewController {
     }
 }
 
-// MARK: - Stylable
-extension PublicRoomsViewController: Stylable {
-    func update(style: Style) {
-        self.currentStyle = style
-        
-        self.view.backgroundColor = style.backgroundColor
+// MARK: - Theme
+private extension PublicRoomsViewController {
+    func updateTheme() {
+        self.view.backgroundColor = ThemeService.shared().theme.backgroundColor
         
         if let navigationBar = self.navigationController?.navigationBar {
-            style.applyStyle(onNavigationBar: navigationBar)
+            ThemeService.shared().theme.applyStyle(onNavigationBar: navigationBar)
         }
         
         if let searchBar = self.searchController?.searchBar {
-            style.applyStyle(onSearchBar: searchBar)
+            ThemeService.shared().theme.applyStyle(onSearchBar: searchBar)
         }
     }
 }

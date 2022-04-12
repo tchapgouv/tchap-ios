@@ -22,7 +22,7 @@ struct RoomCreationFormResult {
     let roomType: RoomType
 }
 
-protocol RoomCreationViewControllerDelegate: class {
+protocol RoomCreationViewControllerDelegate: AnyObject {
     func roomCreationViewControllerDidTapAddAvatarButton(_ roomCreationViewController: RoomCreationViewController)
     func roomCreationViewController(_ roomCreationViewController: RoomCreationViewController, didTapNextButtonWith roomCreationFormResult: RoomCreationFormResult)
 }
@@ -76,7 +76,6 @@ final class RoomCreationViewController: UIViewController {
     
     private let agentServerDomain: String = "Agent"
     
-    private var currentStyle: Style!
     private var viewModel: RoomCreationViewModelType!
     private var keyboardAvoider: KeyboardAvoider?
     
@@ -89,9 +88,8 @@ final class RoomCreationViewController: UIViewController {
     
     // MARK: - Setup
     
-    class func instantiate(viewModel: RoomCreationViewModelType, style: Style = Variant1Style.shared) -> RoomCreationViewController {
+    class func instantiate(viewModel: RoomCreationViewModelType) -> RoomCreationViewController {
         let viewController = StoryboardScene.RoomCreationViewController.initialScene.instantiate()
-        viewController.currentStyle = style
         viewController.viewModel = viewModel
         return viewController
     }
@@ -111,12 +109,19 @@ final class RoomCreationViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.update(style: self.currentStyle)
+        self.updateTheme()
         self.keyboardAvoider?.startAvoiding()
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(updateTheme),
+                                               name: Notification.Name.themeServiceDidChangeTheme,
+                                               object: nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        NotificationCenter.default.removeObserver(self,
+                                                  name: Notification.Name.themeServiceDidChangeTheme,
+                                                  object: nil)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -127,7 +132,7 @@ final class RoomCreationViewController: UIViewController {
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.currentStyle.statusBarStyle
+        return ThemeService.shared().theme.statusBarStyle
     }
     
     // MARK: - Public
@@ -195,7 +200,7 @@ final class RoomCreationViewController: UIViewController {
     private func setupRoomAvatarCreationView() {
         let roomCreationAvatarView = RoomCreationAvatarView.loadFromNib()
         roomCreationAvatarView.delegate = self
-        self.avatarContentView.tc_addSubViewMatchingParent(roomCreationAvatarView)
+        self.avatarContentView.vc_addSubViewMatchingParent(roomCreationAvatarView)
         self.roomCreationAvatarView = roomCreationAvatarView
         refreshAvatarView()
     }
@@ -239,10 +244,10 @@ final class RoomCreationViewController: UIViewController {
         let borderColor: UIColor
         let borderWidth: CGFloat
         if case .privateUnrestricted = self.viewModel.selectedRoomType {
-            borderColor = kColorDarkGrey
+            borderColor = ThemeService.shared().theme.borderSecondary
             borderWidth = Constants.hexagonBorderWidthUnrestricted
         } else {
-            borderColor = kColorDarkBlue
+            borderColor = ThemeService.shared().theme.borderMain
             borderWidth = Constants.hexagonBorderWidthDefault
         }
         self.roomCreationAvatarView?.setAvatarBorder(color: borderColor, width: borderWidth)
@@ -262,8 +267,8 @@ final class RoomCreationViewController: UIViewController {
     
     private func enablePrivateRoom() {
         self.privateRoomView.layer.borderWidth = Constants.borderWidth
-        self.privateRoomView.layer.borderColor = kColorCoral.withAlphaComponent(Constants.borderColorAlpha).cgColor
-        self.roomTypeImage.image = Asset.Images.privateAvatarIconHr.image
+        self.privateRoomView.layer.borderColor = ThemeService.shared().theme.roomTypeRestricted.withAlphaComponent(Constants.borderColorAlpha).cgColor
+        self.roomTypeImage.image = Asset_tchap.Images.privateAvatarIconHr.image
     }
     
     private func disablePrivateRoom() {
@@ -272,8 +277,8 @@ final class RoomCreationViewController: UIViewController {
     
     private func enableExternRoom() {
         self.externRoomView.layer.borderWidth = Constants.borderWidth
-        self.externRoomView.layer.borderColor = kColorPumpkinOrange.withAlphaComponent(Constants.borderColorAlpha).cgColor
-        self.roomTypeImage.image = Asset.Images.privateAvatarIconHr.image
+        self.externRoomView.layer.borderColor = ThemeService.shared().theme.roomTypeUnrestricted.withAlphaComponent(Constants.borderColorAlpha).cgColor
+        self.roomTypeImage.image = Asset_tchap.Images.privateAvatarIconHr.image
     }
     
     private func disableExternRoom() {
@@ -282,8 +287,8 @@ final class RoomCreationViewController: UIViewController {
     
     private func enableForumRoom(_ isFederated: Bool) {
         self.forumRoomView.layer.borderWidth = Constants.borderWidth
-        self.forumRoomView.layer.borderColor = kColorJadeGreen.withAlphaComponent(Constants.borderColorAlpha).cgColor
-        self.roomTypeImage.image = Asset.Images.forumAvatarIconHr.image
+        self.forumRoomView.layer.borderColor = ThemeService.shared().theme.roomTypePublic.withAlphaComponent(Constants.borderColorAlpha).cgColor
+        self.roomTypeImage.image = Asset_tchap.Images.forumAvatarIconHr.image
         
         self.publicVisibilityInfoLabel.isHidden = false
         self.publicRoomFederationStackView.isHidden = self.viewModel.homeServerDomain == self.agentServerDomain
@@ -329,41 +334,41 @@ final class RoomCreationViewController: UIViewController {
 
 }
 
-// MARK: - Stylable
-extension RoomCreationViewController: Stylable {
-    func update(style: Style) {
-        self.currentStyle = style
-        
-        self.view.backgroundColor = style.backgroundColor
+// MARK: - Theme
+private extension RoomCreationViewController {
+    @objc func updateTheme() {
+        self.view.backgroundColor = ThemeService.shared().theme.backgroundColor
         
         if let navigationBar = self.navigationController?.navigationBar {
-            style.applyStyle(onNavigationBar: navigationBar)
+            ThemeService.shared().theme.applyStyle(onNavigationBar: navigationBar)
         }
         
-        self.roomNameFormTextField.update(style: style)
-        self.publicVisibilityInfoLabel.textColor = style.boxTextColor
-        self.publicRoomFederationTitleLabel.textColor = style.boxTextColor
+        self.roomNameFormTextField.update(theme: ThemeService.shared().theme)
+        self.publicVisibilityInfoLabel.textColor = ThemeService.shared().theme.headerTextPrimaryColor
+        self.publicRoomFederationTitleLabel.textColor = ThemeService.shared().theme.headerTextPrimaryColor
 
         let padLockimage = Asset.SharedImages.e2eVerified.image.withRenderingMode(.alwaysTemplate)
         
-        self.privateRoomView.backgroundColor = kColorPaleGrey
-        self.privateRoomTitleLabel.textColor = kColorCoral
+        self.privateRoomView.backgroundColor = ThemeService.shared().theme.backgroundSecondary
+        self.privateRoomTitleLabel.textColor = ThemeService.shared().theme.roomTypeRestricted
         self.privateRoomImage.image = padLockimage
-        self.privateRoomImage.tintColor = kColorCoral
-        self.privateRoomInfoLabel.textColor = style.boxTextColor
+        self.privateRoomImage.tintColor = ThemeService.shared().theme.roomTypeRestricted
+        self.privateRoomInfoLabel.textColor = ThemeService.shared().theme.headerTextPrimaryColor
         
-        self.externRoomView.backgroundColor = kColorPaleGrey
-        self.externRoomTitleLabel.textColor = kColorPumpkinOrange
+        self.externRoomView.backgroundColor = ThemeService.shared().theme.backgroundSecondary
+        self.externRoomTitleLabel.textColor = ThemeService.shared().theme.roomTypeUnrestricted
         self.externRoomImage.image = padLockimage
-        self.externRoomImage.tintColor = kColorPumpkinOrange
-        self.externRoomInfoLabel.textColor = style.boxTextColor
+        self.externRoomImage.tintColor = ThemeService.shared().theme.roomTypeUnrestricted
+        self.externRoomInfoLabel.textColor = ThemeService.shared().theme.headerTextPrimaryColor
         
-        self.forumRoomView.backgroundColor = kColorPaleGrey
-        self.forumRoomTitleLabel.textColor = kColorJadeGreen
-        self.forumRoomInfoLabel.textColor = style.boxTextColor
-        self.roomTypeTitleLabel.textColor = style.boxTextColor
+        self.forumRoomView.backgroundColor = ThemeService.shared().theme.backgroundSecondary
+        self.forumRoomTitleLabel.textColor = ThemeService.shared().theme.roomTypePublic
+        self.forumRoomInfoLabel.textColor = ThemeService.shared().theme.headerTextPrimaryColor
+        self.roomTypeTitleLabel.textColor = ThemeService.shared().theme.headerTextPrimaryColor
         
-        self.disablePublicRoomFederationSwitch.onTintColor = kColorJadeGreen
+        self.disablePublicRoomFederationSwitch.onTintColor = ThemeService.shared().theme.roomTypePublic
+        
+        refreshAvatarView()
     }
 }
 

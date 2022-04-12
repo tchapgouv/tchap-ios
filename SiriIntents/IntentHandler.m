@@ -16,9 +16,7 @@
 
 #import "IntentHandler.h"
 
-#import <MatrixKit/MatrixKit.h>
-
-#import "SiriIntents-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 #if __has_include(<MatrixSDK/MXJingleCallStack.h>)
 #define CALL_STACK_JINGLE
@@ -43,11 +41,23 @@
         [_configuration setupSettings];
 
         // NSLog -> console.log file when not debugging the app
-        if (!isatty(STDERR_FILENO))
-        {
-            [MXLogger setSubLogName:@"siri"];
-            [MXLogger redirectNSLogToFiles:YES];
+        MXLogConfiguration *configuration = [[MXLogConfiguration alloc] init];
+        configuration.logLevel = MXLogLevelVerbose;
+        configuration.logFilesSizeLimit = 0;
+        configuration.maxLogFilesCount = 10;
+        configuration.subLogName = @"siri";
+        
+        // Redirect NSLogs to files only if we are not debugging
+        if (!isatty(STDERR_FILENO)) {
+            configuration.redirectLogsToFiles = YES;
         }
+        
+        [MXLog configure:configuration];
+        
+        // Configure our analytics. It will start if the option is enabled
+        Analytics *analytics = Analytics.shared;
+        [MXSDKOptions sharedInstance].analyticsDelegate = analytics;
+        [analytics startIfEnabled];
     }
     return self;
 }
@@ -210,58 +220,59 @@
     {
         MXKAccount *account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
         MXFileStore *fileStore = [[MXFileStore alloc] initWithCredentials:account.mxCredentials];
-        [fileStore asyncRoomsSummaries:^(NSArray<MXRoomSummary *> * _Nonnull roomsSummaries) {
-                                    NSString *roomID = person.customIdentifier;
+        [fileStore.roomSummaryStore fetchAllSummaries:^(NSArray<id<MXRoomSummaryProtocol>> * _Nonnull summaries) {
+            NSString *roomID = person.customIdentifier;
             
-                                    BOOL isEncrypted = NO;
-                                    for (MXRoomSummary *roomSummary in roomsSummaries)
-                                    {
-                                        if ([roomSummary.roomId isEqualToString:roomID])
-                                        {
-                                            isEncrypted = roomSummary.isEncrypted;
-                                            break;
-                                        }
-                                    }
-            
-                                    if (isEncrypted)
-                                    {
-                                        [MXFileStore setPreloadOptions:0];
-                                                
-                                        MXSession *session = [[MXSession alloc] initWithMatrixRestClient:account.mxRestClient];
-                                        MXWeakify(session);
-                                        [session setStore:fileStore success:^{
-                                            MXStrongifyAndReturnIfNil(session);
-                                            
-                                            MXRoom *room = [MXRoom loadRoomFromStore:fileStore withRoomId:roomID matrixSession:session];
-                                            
-                                            // Do not warn for unknown devices. We have cross-signing now
-                                            session.crypto.warnOnUnknowDevices = NO;
+            BOOL isEncrypted = NO;
+            for (id<MXRoomSummaryProtocol> summary in summaries)
+            {
+                if ([summary.roomId isEqualToString:roomID])
+                {
+                    isEncrypted = summary.isEncrypted;
+                    break;
+                }
+            }
 
-                                            [room sendTextMessage:intent.content
-                                                          success:^(NSString *eventId) {
-                                                              completeWithCode(INSendMessageIntentResponseCodeSuccess);
-                                                          } failure:^(NSError *error) {
-                                                              completeWithCode(INSendMessageIntentResponseCodeFailure);
-                                                          }];
+            if (isEncrypted)
+            {
+                [MXFileStore setPreloadOptions:0];
 
-                                        } failure:^(NSError *error) {
-                                            completeWithCode(INSendMessageIntentResponseCodeFailure);
-                                        }];
+                MXSession *session = [[MXSession alloc] initWithMatrixRestClient:account.mxRestClient];
+                MXWeakify(session);
+                [session setStore:fileStore success:^{
+                    MXStrongifyAndReturnIfNil(session);
 
-                                        return;
-                                    }
+                    MXRoom *room = [MXRoom loadRoomFromStore:fileStore withRoomId:roomID matrixSession:session];
+
+                    // Do not warn for unknown devices. We have cross-signing now
+                    session.crypto.warnOnUnknowDevices = NO;
+
+                    [room sendTextMessage:intent.content
+                                 threadId:nil
+                                  success:^(NSString *eventId) {
+                        completeWithCode(INSendMessageIntentResponseCodeSuccess);
+                    } failure:^(NSError *error) {
+                        completeWithCode(INSendMessageIntentResponseCodeFailure);
+                    }];
+
+                } failure:^(NSError *error) {
+                    completeWithCode(INSendMessageIntentResponseCodeFailure);
+                }];
+
+                return;
+            }
             
-                                    [account.mxRestClient sendTextMessageToRoom:roomID
-                                                                           text:intent.content
-                                                                        success:^(NSString *eventId) {
-                                                                            completeWithCode(INSendMessageIntentResponseCodeSuccess);
-                                                                        }
-                                                                        failure:^(NSError *error) {
-                                                                            completeWithCode(INSendMessageIntentResponseCodeFailure);
-                                                                        }];
+            [account.mxRestClient sendTextMessageToRoom:roomID
+                                               threadId:nil
+                                                   text:intent.content
+                                                success:^(NSString *eventId) {
+                completeWithCode(INSendMessageIntentResponseCodeSuccess);
+            }
+                                                failure:^(NSError *error) {
+                completeWithCode(INSendMessageIntentResponseCodeFailure);
+            }];
             
-                               }
-                               failure:nil];
+        }];
     }
     else
     {
@@ -311,36 +322,36 @@
         if (account)
         {
             MXFileStore *fileStore = [[MXFileStore alloc] initWithCredentials:account.mxCredentials];
-            [fileStore asyncRoomsSummaries:^(NSArray<MXRoomSummary *> * _Nonnull roomsSummaries) {
+            [fileStore.roomSummaryStore fetchAllSummaries:^(NSArray<id<MXRoomSummaryProtocol>> * _Nonnull summaries) {
                 
                 // Contains userIds of all users with whom the current user has direct chats
                 // Use set to avoid duplicates
                 NSMutableSet<NSString *> *directUserIds = [NSMutableSet set];
                 
                 // Contains room summaries for all direct rooms connected with particular userId
-                NSMutableDictionary<NSString *, NSMutableArray<MXRoomSummary *> *> *roomSummaries = [NSMutableDictionary dictionary];
+                NSMutableDictionary<NSString *, NSMutableArray<id<MXRoomSummaryProtocol>> *> *roomSummaries = [NSMutableDictionary dictionary];
                 
-                for (MXRoomSummary *summary in roomsSummaries)
+                for (id<MXRoomSummaryProtocol> summary in summaries)
                 {
                     // TODO: We also need to check if joined room members count equals 2
                     // It is pointlessly to save rooms with 1 joined member or room with more than 2 joined members
                     if (summary.isDirect)
                     {
-                        NSString *diretUserId = summary.directUserId;
+                        NSString *directUserId = summary.directUserId;
                         
                         // Collect room summaries only for specified user
-                        if (selectedUserId && ![diretUserId isEqualToString:selectedUserId])
+                        if (selectedUserId && ![directUserId isEqualToString:selectedUserId])
                             continue;
                         
                         // Save userId
-                        [directUserIds addObject:diretUserId];
+                        [directUserIds addObject:directUserId];
                         
                         // Save associated with diretUserId room summary
-                        NSMutableArray<MXRoomSummary *> *userRoomSummaries = roomSummaries[diretUserId];
+                        NSMutableArray<id<MXRoomSummaryProtocol>> *userRoomSummaries = roomSummaries[directUserId];
                         if (userRoomSummaries)
                             [userRoomSummaries addObject:summary];
                         else
-                            roomSummaries[diretUserId] = [NSMutableArray arrayWithObject:summary];
+                            roomSummaries[directUserId] = [NSMutableArray arrayWithObject:summary];
                     }
                 }
                 
@@ -366,8 +377,8 @@
                         MXUser *user = matchingUsers.firstObject;
                         
                         // Provide to the user a list of direct rooms to choose from
-                        NSArray<MXRoomSummary *> *summaries = roomSummaries[user.userId];
-                        for (MXRoomSummary *summary in summaries)
+                        NSArray<id<MXRoomSummaryProtocol>> *summaries = roomSummaries[user.userId];
+                        for (id<MXRoomSummaryProtocol> summary in summaries)
                         {
                             INPersonHandle *personHandle = [[INPersonHandle alloc] initWithValue:user.userId type:INPersonHandleTypeUnknown];
                             
@@ -415,7 +426,7 @@
                         completion(@[[INPersonResolutionResult disambiguationWithPeopleToDisambiguate:persons]]);
                     }
                 } failure:nil];
-            } failure:nil];
+            }];
         }
         else
         {

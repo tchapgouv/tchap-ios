@@ -16,7 +16,7 @@
 
 import UIKit
 
-protocol AppVersionUpdateViewControllerDelegate: class {
+protocol AppVersionUpdateViewControllerDelegate: AnyObject {
     func appVersionUpdateViewControllerDidTapCancelAction(_ appVersionUpdateViewController: AppVersionUpdateViewController)
     func appVersionUpdateViewControllerDidTapOpenAppStoreAction(_ appVersionUpdateViewController: AppVersionUpdateViewController)
 }
@@ -34,7 +34,6 @@ final class AppVersionUpdateViewController: UIViewController {
     // MARK: Private
     
     private var viewModel: AppVersionUpdateViewModelType!
-    private var style: Style!
     
     // MARK: Public
     
@@ -42,10 +41,9 @@ final class AppVersionUpdateViewController: UIViewController {
     
     // MARK: - Setup
     
-    class func instantiate(with viewModel: AppVersionUpdateViewModelType, style: Style = Variant2Style.shared) -> AppVersionUpdateViewController {
+    class func instantiate(with viewModel: AppVersionUpdateViewModelType) -> AppVersionUpdateViewController {
         let viewController = StoryboardScene.AppVersionUpdateViewController.initialScene.instantiate()
         viewController.viewModel = viewModel
-        viewController.style = style
         return viewController
     }
     
@@ -67,18 +65,16 @@ final class AppVersionUpdateViewController: UIViewController {
     
     // MARK: - Private
     
-    private func update(style: Style) {
-        self.style = style
+    private func updateTheme() {
+        self.view.backgroundColor = ThemeService.shared().theme.backgroundColor
         
-        self.view.backgroundColor = style.backgroundColor
-        
-        self.messageLabel.textColor = self.style.primarySubTextColor
-        style.applyStyle(onButton: self.cancelButton)
-        style.applyStyle(onButton: self.appStoreButton)
+        self.messageLabel.textColor = ThemeService.shared().theme.textTertiaryColor
+        ThemeService.shared().theme.applyStyle(onButton: self.cancelButton)
+        ThemeService.shared().theme.applyStyle(onButton: self.appStoreButton)
     }
     
     private func themeDidChange() {
-        self.update(style: self.style)
+        self.updateTheme()
     }
     
     private func setupViews() {

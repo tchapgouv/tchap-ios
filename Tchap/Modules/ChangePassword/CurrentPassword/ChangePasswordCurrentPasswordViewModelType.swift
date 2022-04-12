@@ -16,11 +16,11 @@
 
 import Foundation
 
-protocol ChangePasswordCurrentPasswordViewModelViewDelegate: class {
+protocol ChangePasswordCurrentPasswordViewModelViewDelegate: AnyObject {
     func changePasswordCurrentPasswordViewModel(_ viewModel: ChangePasswordCurrentPasswordViewModelType, didUpdateViewState viewSate: ChangePasswordCurrentPasswordViewState)
 }
 
-protocol ChangePasswordCurrentPasswordViewModelCoordinatorDelegate: class {
+protocol ChangePasswordCurrentPasswordViewModelCoordinatorDelegate: AnyObject {
     func changePasswordCurrentPasswordViewModel(_ viewModel: ChangePasswordCurrentPasswordViewModelType, didCompleteWithCurrentPassword currentPassword: String)    
     func changePasswordCurrentPasswordViewModelDidCancel(_ viewModel: ChangePasswordCurrentPasswordViewModelType)
 }

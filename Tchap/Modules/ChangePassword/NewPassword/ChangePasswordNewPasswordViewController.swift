@@ -34,7 +34,6 @@ final class ChangePasswordNewPasswordViewController: UIViewController {
     // MARK: Private
 
     private var viewModel: ChangePasswordNewPasswordViewModelType!
-    private var style: Style!
     private var keyboardAvoider: KeyboardAvoider?
     private var errorPresenter: ErrorPresenter!
     private var activityPresenter: ActivityIndicatorPresenter!
@@ -42,10 +41,9 @@ final class ChangePasswordNewPasswordViewController: UIViewController {
 
     // MARK: - Setup
     
-    class func instantiate(with viewModel: ChangePasswordNewPasswordViewModelType, style: Style = Variant2Style.shared) -> ChangePasswordNewPasswordViewController {
+    class func instantiate(with viewModel: ChangePasswordNewPasswordViewModelType) -> ChangePasswordNewPasswordViewController {
         let viewController = StoryboardScene.ChangePasswordNewPasswordViewController.initialScene.instantiate()
         viewController.viewModel = viewModel
-        viewController.style = style
         return viewController
     }
     
@@ -81,33 +79,31 @@ final class ChangePasswordNewPasswordViewController: UIViewController {
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.style.statusBarStyle
+        return ThemeService.shared().theme.statusBarStyle
     }
     
     // MARK: - Private
     
-    private func update(style: Style) {
-        self.style = style
+    private func updateTheme() {
+        self.view.backgroundColor = ThemeService.shared().theme.backgroundColor
         
-        self.view.backgroundColor = style.backgroundColor
-        
-        self.usernameCoverageView.backgroundColor = style.backgroundColor
+        self.usernameCoverageView.backgroundColor = ThemeService.shared().theme.backgroundColor
         
         if let navigationBar = self.navigationController?.navigationBar {
-            style.applyStyle(onNavigationBar: navigationBar)
+            ThemeService.shared().theme.applyStyle(onNavigationBar: navigationBar)
         }
         
-        self.instructionsLabel.textColor = style.secondaryTextColor
-        for formTextield in self.formTextFields {
-            formTextield.update(style: style)
+        self.instructionsLabel.textColor = ThemeService.shared().theme.textSecondaryColor
+        for formTextField in self.formTextFields {
+            formTextField.update(theme: ThemeService.shared().theme)
         }
         
-        self.validateButton.backgroundColor = style.backgroundColor
-        style.applyStyle(onButton: self.validateButton)
+        self.validateButton.backgroundColor = ThemeService.shared().theme.backgroundColor
+        ThemeService.shared().theme.applyStyle(onButton: self.validateButton)
     }
     
     private func themeDidChange() {
-        self.update(style: self.style)
+        self.updateTheme()
     }
     
     private func setupViews() {

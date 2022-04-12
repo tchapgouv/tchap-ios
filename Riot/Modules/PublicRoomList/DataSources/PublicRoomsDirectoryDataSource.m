@@ -19,12 +19,14 @@
 
 #import "PublicRoomTableViewCell.h"
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 #pragma mark - Constants definitions
 
 // Time in seconds from which public rooms data is considered as obsolete
 double const kPublicRoomsDirectoryDataExpiration = 10;
+
+static NSString *const kNSFWKeyword = @"nsfw";
 
 #pragma mark - PublicRoomsDirectoryDataSource
 
@@ -81,7 +83,7 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
         else
         {
             // We display only Matrix rooms of the user's HS
-            directoryServerDisplayname = [NSBundle mxk_localizedStringForKey:@"matrix"];
+            directoryServerDisplayname = [MatrixKitL10n matrix];
         }
     }
 
@@ -153,6 +155,21 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
     }
 }
 
+- (void)setShowNSFWRooms:(BOOL)showNSFWRooms
+{
+    if (showNSFWRooms != _showNSFWRooms)
+    {
+        _showNSFWRooms = showNSFWRooms;
+        
+        [self resetPagination];
+    }
+}
+
+- (NSUInteger)roomsCount
+{
+    return rooms.count;
+}
+
 - (NSIndexPath*)cellIndexPathWithRoomId:(NSString*)roomId andMatrixSession:(MXSession*)matrixSession
 {
     NSIndexPath *indexPath = nil;
@@ -205,8 +222,8 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
     // Reset all pagination vars
     [rooms removeAllObjects];
     nextBatch = nil;
-    _roomsCount = 0;
-    _moreThanRoomsCount = NO;
+    _searchResultsCount = 0;
+    _searchResultsCountIsLimited = NO;
     _hasReachedPaginationEnd = NO;
 }
 
@@ -234,27 +251,38 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
             typeof(self) self = weakSelf;
 
             self->publicRoomsRequest = nil;
+            
+            NSArray<MXPublicRoom*> *publicRooms;
+            
+            if (self.showNSFWRooms)
+            {
+                publicRooms = publicRoomsResponse.chunk;
+            }
+            else
+            {
+                publicRooms = [self filterPublicRooms:publicRoomsResponse.chunk containingKeyword:kNSFWKeyword];
+            }
 
-            [self->rooms addObjectsFromArray:publicRoomsResponse.chunk];
+            [self->rooms addObjectsFromArray:publicRooms];
             self->nextBatch = publicRoomsResponse.nextBatch;
 
             if (!self->_searchPattern)
             {
                 // When there is no search, we can use totalRoomCountEstimate returned by the server
-                self->_roomsCount = publicRoomsResponse.totalRoomCountEstimate;
-                self->_moreThanRoomsCount = NO;
+                self->_searchResultsCount = publicRoomsResponse.totalRoomCountEstimate;
+                self->_searchResultsCountIsLimited = NO;
             }
             else
             {
                 // Else we can only display something like ">20 matching rooms"
-                self->_roomsCount = self->rooms.count;
-                self->_moreThanRoomsCount = publicRoomsResponse.nextBatch ? YES : NO;
+                self->_searchResultsCount = self->rooms.count;
+                self->_searchResultsCountIsLimited = publicRoomsResponse.nextBatch ? YES : NO;
             }
 
             // Detect pagination end
             if (!publicRoomsResponse.nextBatch)
             {
-                _hasReachedPaginationEnd = YES;
+                self->_hasReachedPaginationEnd = YES;
             }
 
             [self setState:MXKDataSourceStateReady];
@@ -279,7 +307,7 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
 
             self->publicRoomsRequest = nil;
 
-            NSLog(@"[PublicRoomsDirectoryDataSource] Failed to fecth public rooms.");
+            MXLogDebug(@"[PublicRoomsDirectoryDataSource] Failed to fecth public rooms.");
 
             [self setState:MXKDataSourceStateFailed];
 
@@ -308,6 +336,22 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
     {
         [self.delegate dataSource:self didStateChange:state];
     }
+}
+
+- (NSArray<MXPublicRoom*>*)filterPublicRooms:(NSArray<MXPublicRoom*>*)publicRooms containingKeyword:(NSString*)keyword
+{
+    NSMutableArray *filteredRooms = [NSMutableArray new];
+
+    for (MXPublicRoom *publicRoom in publicRooms)
+    {
+        if (NO == [[publicRoom.name lowercaseString] containsString:keyword]
+            && NO == [[publicRoom.topic lowercaseString] containsString:keyword])
+        {
+            [filteredRooms addObject:publicRoom];
+        }
+    }
+    
+    return filteredRooms;
 }
 
 #pragma mark - UITableViewDataSource
@@ -347,18 +391,18 @@ double const kPublicRoomsDirectoryDataExpiration = 10;
         {
             if (_searchPattern.length)
             {
-                tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"search_no_result", @"Vector", nil);
+                tableViewCell.textLabel.text = [VectorL10n searchNoResult];
             }
             else
             {
-                tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"room_directory_no_public_room", @"Vector", nil);
+                tableViewCell.textLabel.text = [VectorL10n roomDirectoryNoPublicRoom];
             }
         }
         else
         {
             if (_searchPattern.length)
             {
-                tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"search_in_progress", @"Vector", nil);
+                tableViewCell.textLabel.text = [VectorL10n searchInProgress];
             }
             else
             {

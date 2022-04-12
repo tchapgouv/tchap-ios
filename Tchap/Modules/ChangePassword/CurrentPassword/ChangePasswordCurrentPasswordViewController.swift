@@ -31,17 +31,15 @@ final class ChangePasswordCurrentPasswordViewController: UIViewController {
     // MARK: Private
 
     private var viewModel: ChangePasswordCurrentPasswordViewModelType!
-    private var style: Style!
     private var keyboardAvoider: KeyboardAvoider?
     private var errorPresenter: ErrorPresenter!
     private var activityPresenter: ActivityIndicatorPresenter!
 
     // MARK: - Setup
     
-    class func instantiate(with viewModel: ChangePasswordCurrentPasswordViewModelType, style: Style = Variant2Style.shared) -> ChangePasswordCurrentPasswordViewController {
+    class func instantiate(with viewModel: ChangePasswordCurrentPasswordViewModelType) -> ChangePasswordCurrentPasswordViewController {
         let viewController = StoryboardScene.ChangePasswordCurrentPasswordViewController.initialScene.instantiate()
         viewController.viewModel = viewModel
-        viewController.style = style
         return viewController
     }
     
@@ -54,7 +52,7 @@ final class ChangePasswordCurrentPasswordViewController: UIViewController {
         
         self.title = TchapL10n.changePasswordCurrentPasswordTitle
         
-        self.tc_removeBackTitle()
+        self.vc_removeBackTitle()
         
         self.setupViews()
         self.keyboardAvoider = KeyboardAvoider(scrollViewContainerView: self.view, scrollView: self.scrollView)
@@ -78,28 +76,26 @@ final class ChangePasswordCurrentPasswordViewController: UIViewController {
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.style.statusBarStyle
+        return ThemeService.shared().theme.statusBarStyle
     }
     
     // MARK: - Private
     
-    private func update(style: Style) {
-        self.style = style
-        
-        self.view.backgroundColor = style.backgroundColor
+    private func updateTheme() {
+        self.view.backgroundColor = ThemeService.shared().theme.backgroundColor
         
         if let navigationBar = self.navigationController?.navigationBar {
-            style.applyStyle(onNavigationBar: navigationBar)
+            ThemeService.shared().theme.applyStyle(onNavigationBar: navigationBar)
         }
                 
-        self.instructionsLabel.textColor = style.secondaryTextColor
-        self.passwordFormTextField.update(style: style)
+        self.instructionsLabel.textColor = ThemeService.shared().theme.textSecondaryColor
+        self.passwordFormTextField.update(theme: ThemeService.shared().theme)
         
-        style.applyStyle(onButton: self.validateButton)
+        ThemeService.shared().theme.applyStyle(onButton: self.validateButton)
     }
     
     private func themeDidChange() {
-        self.update(style: self.style)
+        self.updateTheme()
     }
     
     private func setupViews() {

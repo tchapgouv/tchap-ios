@@ -14,7 +14,9 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+#import "MatrixKit.h"
+
+@class CircleProgressView;
 
 /**
  Action identifier used when the user pressed edit button displayed in front of a selected event.
@@ -36,11 +38,6 @@ extern NSString *const kMXKRoomBubbleCellTapOnReceiptsContainer;
  The 'userInfo' dictionary contains a 'NSString' object under the 'kMXKRoomBubbleCellEventIdKey' key, representing the event id of the event associated with the reactions.
  */
 extern NSString *const kMXKRoomBubbleCellLongPressOnReactionView;
-
-/**
- 'userInfo' dictionary key 'kMXKRoomBubbleCellEventIdKey' is associated to a 'NSString' object representing an event id.
- */
-extern NSString *const kMXKRoomBubbleCellEventIdKey;
 
 /**
  Action identifier used when the user pressed accept button for an incoming key verification request.
@@ -69,6 +66,17 @@ extern NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePr
  @param componentIndex index of the component in bubble message data
  */
 - (void)addTimestampLabelForComponent:(NSUInteger)componentIndex;
+
+/**
+ Add timestamp label for a component in receiver.
+ 
+ Note: The label added here is automatically removed when [didEndDisplay] is called.
+ 
+ @param componentIndex index of the component in bubble message data
+ @param displayOnLeft Indicate true to display label on left and false to display on right
+ */
+- (void)addTimestampLabelForComponent:(NSUInteger)componentIndex
+                        displayOnLeft:(BOOL)displayOnLeft;
 
 /**
  Highlight a component in receiver.
@@ -141,6 +149,13 @@ extern NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePr
  */
 + (CGFloat)attachmentBubbleCellHeightForCellData:(MXKCellData *)cellData withMaximumWidth:(CGFloat)maxWidth;
 
+- (IBAction)onProgressLongPressGesture:(UILongPressGestureRecognizer*)recognizer;
+
+/**
+ update tick view(s) according to the current sent state.
+ */
+- (void)updateTickViewWithFailedEventIds:(NSSet *)failedEventIds;
+
 /**
  Blur the view by adding a transparent overlay. Default is NO.
  */
@@ -155,5 +170,10 @@ extern NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePr
  The marker view displayed in front of the marked component (if any).
  */
 @property (nonatomic) UIView *markerView;
+
+/**
+ Message tick views (sending, sent) displayed alongside the related component.
+ */
+@property (nonatomic) NSArray *messageStatusViews;
 
 @end

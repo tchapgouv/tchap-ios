@@ -16,7 +16,7 @@
 
 import Foundation
 
-protocol ForgotPasswordCoordinatorDelegate: class {
+protocol ForgotPasswordCoordinatorDelegate: AnyObject {
     func forgotPasswordCoordinatorDidComplete(_ forgotPasswordCoordinator: ForgotPasswordCoordinator)
 }
 
@@ -54,7 +54,7 @@ final class ForgotPasswordCoordinator: ForgotPasswordCoordinatorType {
         
         let forgotPasswordFormViewModel = ForgotPasswordFormViewModel()
         let forgotPasswordFormViewController = ForgotPasswordFormViewController.instantiate(viewModel: forgotPasswordFormViewModel)
-        forgotPasswordFormViewController.tc_removeBackTitle()
+        forgotPasswordFormViewController.vc_removeBackTitle()
         self.forgotPasswordFormViewController = forgotPasswordFormViewController
         
         self.forgotPasswordFormErrorPresenter = AlertErrorPresenter(viewControllerPresenter: forgotPasswordFormViewController)
@@ -74,7 +74,7 @@ final class ForgotPasswordCoordinator: ForgotPasswordCoordinatorType {
     
     private func showVerifyEmail(with email: String) {
         let forgotPasswordVerifyEmailViewController = ForgotPasswordVerifyEmailViewController.instantiate(userEmail: email)
-        forgotPasswordVerifyEmailViewController.tc_removeBackTitle()
+        forgotPasswordVerifyEmailViewController.vc_removeBackTitle()
         forgotPasswordVerifyEmailViewController.delegate = self
         self.navigationRouter.push(forgotPasswordVerifyEmailViewController, animated: true, popCompletion: { [weak self] in
             self?.resetPasswordOperation?.cancel()
@@ -84,7 +84,7 @@ final class ForgotPasswordCoordinator: ForgotPasswordCoordinatorType {
     
     private func showCheckedEmail() {
         let forgotPasswordCheckedEmailViewController = ForgotPasswordCheckedEmailViewController.instantiate()
-        forgotPasswordCheckedEmailViewController.tc_removeBackTitle()
+        forgotPasswordCheckedEmailViewController.vc_removeBackTitle()
         forgotPasswordCheckedEmailViewController.delegate = self
         self.navigationRouter.push(forgotPasswordCheckedEmailViewController, animated: true, popCompletion: nil)
     }

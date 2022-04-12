@@ -14,7 +14,6 @@
  limitations under the License.
  */
 
-#import <Contacts/Contacts.h>
 #import "PeopleViewController.h"
 
 #import "UIViewController+RiotSearch.h"
@@ -25,32 +24,36 @@
 #import "RecentTableViewCell.h"
 #import "InviteRecentTableViewCell.h"
 
-#import "ContactTableViewCell.h"
+#import "GeneratedInterface-Swift.h"
 
-#import "Riot-Swift.h"
-
-@interface PeopleViewController ()
+@interface PeopleViewController () <SpaceMembersCoordinatorBridgePresenterDelegate>
 {
     NSInteger          directRoomsSectionNumber;
-    
-    ContactsDataSource *contactsDataSource;
-    NSInteger          contactsSectionNumber;
-    
     RecentsDataSource *recentsDataSource;
 }
+
+@property(nonatomic) SpaceMembersCoordinatorBridgePresenter *spaceMembersCoordinatorBridgePresenter;
+@property (nonatomic, strong) MXThrottler *tableViewPaginationThrottler;
 
 @end
 
 @implementation PeopleViewController
+
++ (instancetype)instantiate
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+    PeopleViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"PeopleViewController"];
+    return viewController;
+}
 
 - (void)finalizeInit
 {
     [super finalizeInit];
     
     directRoomsSectionNumber = 0;
-    contactsSectionNumber = 0;
     
-    self.screenName = @"People";
+    self.screenTimer = [[AnalyticsScreenTimer alloc] initWithScreen:AnalyticsScreenPeople];
+    self.tableViewPaginationThrottler = [[MXThrottler alloc] initWithMinimumDelay:0.1];
 }
 
 - (void)viewDidLoad
@@ -66,17 +69,9 @@
     self.recentsTableView.tag = RecentsDataSourceModePeople;
     
     // Add the (+) button programmatically
-    plusButtonImageView = [self vc_addFABWithImage:[UIImage imageNamed:@"people_floating_action"]
+    plusButtonImageView = [self vc_addFABWithImage:AssetImages.peopleFloatingAction.image
                                             target:self
                                             action:@selector(onPlusButtonPressed)];
-    
-    // Register table view cell for contacts.
-    [self.recentsTableView registerClass:ContactTableViewCell.class forCellReuseIdentifier:ContactTableViewCell.defaultReuseIdentifier];
-    
-    // Change the table data source. It must be the people view controller itself.
-    self.recentsTableView.dataSource = self;
-    
-    self.enableStickyHeaders = YES;
 }
 
 - (void)didReceiveMemoryWarning
@@ -85,301 +80,53 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)destroy
-{
-    contactsDataSource.delegate = nil;
-    [contactsDataSource destroy];
-    contactsDataSource = nil;
-    
-    [super destroy];
-}
-
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    if (BuildSettings.allowLocalContactsAccess)
-    {
-        // Check whether the access to the local contacts has not been already asked
-        // and check that the user has decided to use or not to use an identity server
-        if ([CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts] == CNAuthorizationStatusNotDetermined
-            || !contactsDataSource.mxSession.hasAccountDataIdentityServerValue)
-        {
-            // Allow by default the local contacts sync in order to discover matrix users.
-            // This setting change will trigger the loading of the local contacts, which will automatically
-            // ask user permission to access their local contacts.
-            [MXKAppSettings standardAppSettings].syncLocalContacts = YES;
-        }
-        
-        // Refresh the local contacts list.
-        [[MXKContactManager sharedManager] refreshLocalContacts];
-    }
     
-    [AppDelegate theDelegate].masterTabBarController.navigationItem.title = NSLocalizedStringFromTable(@"title_people", @"Vector", nil);
+    [AppDelegate theDelegate].masterTabBarController.navigationItem.title = [VectorL10n titlePeople];
     [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = ThemeService.shared.theme.tintColor;
     
-    if (recentsDataSource)
+    if ([self.dataSource isKindOfClass:RecentsDataSource.class])
     {
         // Take the lead on the shared data source.
+        recentsDataSource = (RecentsDataSource*)self.dataSource;
         recentsDataSource.areSectionsShrinkable = NO;
         [recentsDataSource setDelegate:self andRecentsDataSourceMode:RecentsDataSourceModePeople];
     }
-}
-
-#pragma mark - 
-
-- (void)displayList:(MXKRecentsDataSource *)listDataSource
-{
-    [super displayList:listDataSource];
-    
-    // Change the table data source. It must be the people view controller itself.
-    self.recentsTableView.dataSource = self;
-    
-    // Keep a ref on the recents data source
-    if ([listDataSource isKindOfClass:RecentsDataSource.class])
-    {
-        recentsDataSource = (RecentsDataSource*)listDataSource;
-    }
-
-    if (BuildSettings.allowLocalContactsAccess)
-    {
-        if (!contactsDataSource)
-        {
-            // Prepare its contacts data source
-            contactsDataSource = [[ContactsDataSource alloc] initWithMatrixSession:listDataSource.mxSession];
-            contactsDataSource.contactCellAccessoryImage = [[UIImage imageNamed: @"disclosure_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.textSecondaryColor];
-            contactsDataSource.delegate = self;
-        }
-    }
-}
-
-#pragma mark - MXKDataSourceDelegate
-
-- (Class<MXKCellRendering>)cellViewClassForCellData:(MXKCellData*)cellData
-{
-    if ([cellData isKindOfClass:MXKContact.class])
-    {
-        return ContactTableViewCell.class;
-    }
-    
-    return [super cellViewClassForCellData:cellData];
-}
-
-#pragma mark - UITableView data source
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    // Retrieve the current number of sections related to the direct rooms.
-    // Sanity check: check whether the recents data source is correctly configured.
-    directRoomsSectionNumber = 0;
-    
-    if (recentsDataSource.recentsDataSourceMode == RecentsDataSourceModePeople)
-    {
-        directRoomsSectionNumber = [self.dataSource numberOfSectionsInTableView:self.recentsTableView];
-    }
-    
-    // Retrieve the current number of sections related to the contacts
-    contactsSectionNumber = [contactsDataSource numberOfSectionsInTableView:self.recentsTableView];
-    
-    return (directRoomsSectionNumber + contactsSectionNumber);
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    NSInteger count = 0;
-    
-    if (section < directRoomsSectionNumber)
-    {
-        count = [self.dataSource tableView:tableView numberOfRowsInSection:section];
-    }
-    else
-    {
-        section -= directRoomsSectionNumber;
-        if (section < contactsSectionNumber)
-        {
-            count = [contactsDataSource tableView:tableView numberOfRowsInSection:section];
-        }
-    }
-    
-    return count;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSInteger section = indexPath.section;
-    
-    if (section < directRoomsSectionNumber)
-    {
-        return [self.dataSource tableView:tableView cellForRowAtIndexPath:indexPath];
-    }
-    else
-    {
-        section -= directRoomsSectionNumber;
-        if (section < contactsSectionNumber)
-        {
-            return [contactsDataSource tableView:tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:section]];
-        }
-    }
-    
-    // Return a fake cell to prevent app from crashing.
-    return [[UITableViewCell alloc] init];
-}
-
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSInteger section = indexPath.section;
-    
-    if (section < directRoomsSectionNumber)
-    {
-        return [self.dataSource tableView:tableView canEditRowAtIndexPath:indexPath];
-    }
-    else
-    {
-        section -= directRoomsSectionNumber;
-        if (section < contactsSectionNumber)
-        {
-            return [contactsDataSource tableView:tableView canEditRowAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:section]];
-        }
-    }
-    
-    return NO;
 }
 
 #pragma mark - UITableView delegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (section >= directRoomsSectionNumber)
-    {
-        // Let the contact dataSource provide the height of the section header.
-        section -= directRoomsSectionNumber;
-        if (section < contactsSectionNumber)
-        {
-            return [contactsDataSource heightForHeaderInSection:section];
-        }
-        else
-        {
-            return 0.0;
-        }
-    }
-    
-    return [super tableView:tableView heightForHeaderInSection:section];
+    return 0.0;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    if (section >= directRoomsSectionNumber)
-    {
-        // Let the contact dataSource provide the section header.
-        CGRect frame = [tableView rectForHeaderInSection:section];
-        section -= directRoomsSectionNumber;
-        if (section < contactsSectionNumber)
-        {
-            UIView *sectionHeader = [contactsDataSource viewForHeaderInSection:section withFrame:frame];
-            sectionHeader.tag = section + directRoomsSectionNumber;
-            
-            if (self.enableStickyHeaders)
-            {
-                while (sectionHeader.gestureRecognizers.count)
-                {
-                    UIGestureRecognizer *gestureRecognizer = sectionHeader.gestureRecognizers.lastObject;
-                    [sectionHeader removeGestureRecognizer:gestureRecognizer];
-                }
-                
-                // Handle tap gesture
-                UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapOnSectionHeader:)];
-                [tap setNumberOfTouchesRequired:1];
-                [tap setNumberOfTapsRequired:1];
-                [sectionHeader addGestureRecognizer:tap];
-            }
-            
-            return sectionHeader;
-        }
-        else
-        {
-            return nil;
-        }
-    }
-    
-    return [super tableView:tableView viewForHeaderInSection:section];
+    return nil;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSInteger section = indexPath.section;
-    if (section >= directRoomsSectionNumber)
+    if ([super respondsToSelector:@selector(tableView:willDisplayCell:forRowAtIndexPath:)])
     {
-        section -= directRoomsSectionNumber;
-        if (section < contactsSectionNumber)
-        {
-            if ([contactsDataSource contactAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:section]])
-            {
-                // Return the default height of the contact cell
-                return 74.0;
-            }
-            
-            return 50;
-        }
-        else
-        {
-            return 0.0;
-        }
+        [super tableView:tableView willDisplayCell:cell forRowAtIndexPath:indexPath];
     }
     
-    return [super tableView:tableView heightForRowAtIndexPath:indexPath];
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSInteger section = indexPath.section;
-    if (section >= directRoomsSectionNumber)
-    {
-        section -= directRoomsSectionNumber;
-        if (section < contactsSectionNumber)
+    [self.tableViewPaginationThrottler throttle:^{
+        NSInteger section = indexPath.section;
+        NSInteger numberOfRowsInSection = [tableView numberOfRowsInSection:section];
+        if (tableView.numberOfSections > section
+            && indexPath.row == numberOfRowsInSection - 1)
         {
-            MXKContact *mxkContact = [contactsDataSource contactAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:section]];
-            
-            if (mxkContact)
-            {
-                [[AppDelegate theDelegate].masterTabBarController selectContact:mxkContact];
-                
-                // Keep selected the cell by default.
-                return;
-            }
+            [self->recentsDataSource paginateInSection:section];
         }
-        else
-        {
-            [tableView deselectRowAtIndexPath:indexPath animated:NO];
-            return;
-        }
-    }
-    
-    return [super tableView:tableView didSelectRowAtIndexPath:indexPath];
+    }];
 }
 
 #pragma mark - Override RecentsViewController
-
-- (UIView *)tableView:(UITableView *)tableView viewForStickyHeaderInSection:(NSInteger)section
-{
-    CGRect frame = [tableView rectForHeaderInSection:section];
-    frame.size.height = self.stickyHeaderHeight;
-    
-    if (section >= directRoomsSectionNumber)
-    {
-        // Let the contact dataSource provide this header.
-        section -= directRoomsSectionNumber;
-        if (section < contactsSectionNumber)
-        {
-            return [contactsDataSource viewForStickyHeaderInSection:section withFrame:frame];
-        }
-    }
-    else if (recentsDataSource)
-    {
-        return [recentsDataSource viewForStickyHeaderInSection:section withFrame:frame];
-    }
-    
-    return nil;
-}
 
 - (void)refreshCurrentSelectedCell:(BOOL)forceVisible
 {
@@ -389,47 +136,21 @@
         return;
     }
     
-    // Update here the index of the current selected cell (if any) - Useful in landscape mode with split view controller.
-    NSIndexPath *currentSelectedCellIndexPath = nil;
-    MasterTabBarController *masterTabBarController = [AppDelegate theDelegate].masterTabBarController;
-    if (masterTabBarController.currentContactDetailViewController)
-    {
-        // Look for the rank of this selected contact
-        currentSelectedCellIndexPath = [contactsDataSource cellIndexPathWithContact:masterTabBarController.selectedContact];
-        
-        if (currentSelectedCellIndexPath)
-        {
-            // Select the right row
-            currentSelectedCellIndexPath = [NSIndexPath indexPathForRow:currentSelectedCellIndexPath.row inSection:(directRoomsSectionNumber + currentSelectedCellIndexPath.section)];
-            [self.recentsTableView selectRowAtIndexPath:currentSelectedCellIndexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
-            
-            if (forceVisible)
-            {
-                // Scroll table view to make the selected row appear at second position
-                NSInteger topCellIndexPathRow = currentSelectedCellIndexPath.row ? currentSelectedCellIndexPath.row - 1: currentSelectedCellIndexPath.row;
-                NSIndexPath* indexPath = [NSIndexPath indexPathForRow:topCellIndexPathRow inSection:currentSelectedCellIndexPath.section];
-                [self.recentsTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
-            }
-        }
-        else
-        {
-            NSIndexPath *indexPath = [self.recentsTableView indexPathForSelectedRow];
-            if (indexPath)
-            {
-                [self.recentsTableView deselectRowAtIndexPath:indexPath animated:NO];
-            }
-        }
-    }
-    else
-    {
-        [super refreshCurrentSelectedCell:forceVisible];
-    }
+    [super refreshCurrentSelectedCell:forceVisible];
 }
 
 - (void)onPlusButtonPressed
 {
-    //  directly open the new chat screen
-    [self performSegueWithIdentifier:@"presentStartChat" sender:self];
+    if (self.dataSource.currentSpace != nil)
+    {
+        self.spaceMembersCoordinatorBridgePresenter = [[SpaceMembersCoordinatorBridgePresenter alloc] initWithUserSessionsService:[UserSessionsService shared] session:self.mainSession spaceId:self.dataSource.currentSpace.spaceId];
+        self.spaceMembersCoordinatorBridgePresenter.delegate = self;
+        [self.spaceMembersCoordinatorBridgePresenter presentFrom:self animated:YES];
+    }
+    else
+    {
+        [self performSegueWithIdentifier:@"presentStartChat" sender:self];
+    }
 }
 
 #pragma mark -
@@ -439,26 +160,38 @@
     // Check whether the recents data source is correctly configured.
     if (recentsDataSource.recentsDataSourceMode == RecentsDataSourceModePeople)
     {
-        [self scrollToTheTopTheNextRoomWithMissedNotificationsInSection:recentsDataSource.conversationSection];
+        [self scrollToTheTopTheNextRoomWithMissedNotificationsInSection:recentsDataSource.peopleSection];
     }
 }
 
-#pragma mark - UISearchBarDelegate
+#pragma mark - Empty view management
 
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+- (void)updateEmptyView
 {
-    // Apply filter on contact source
-    [contactsDataSource searchWithPattern:searchText forceReset:NO];
-    
-    [super searchBar:searchBar textDidChange:searchText];
+    [self.emptyView fillWith:[self emptyViewArtwork]
+                       title:[VectorL10n peopleEmptyViewTitle]
+             informationText:[VectorL10n peopleEmptyViewInformation]];
 }
 
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+- (UIImage*)emptyViewArtwork
 {
-    // Reset filtering
-    [contactsDataSource searchWithPattern:nil forceReset:NO];
-    
-    [super searchBarCancelButtonClicked:searchBar];
+    if (ThemeService.shared.isCurrentThemeDark)
+    {
+        return AssetImages.peopleEmptyScreenArtworkDark.image;
+    }
+    else
+    {
+        return AssetImages.peopleEmptyScreenArtwork.image;
+    }
+}
+
+#pragma mark - SpaceMembersCoordinatorBridgePresenterDelegate
+
+- (void)spaceMembersCoordinatorBridgePresenterDelegateDidComplete:(SpaceMembersCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+        self.spaceMembersCoordinatorBridgePresenter = nil;
+    }];
 }
 
 @end

@@ -16,7 +16,7 @@
 
 #import "GroupParticipantsViewController.h"
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 #import "Contact.h"
 #import "ContactTableViewCell.h"
@@ -93,6 +93,8 @@
     // Adjust Top and Bottom constraints to take into account potential navBar and tabBar.
     [NSLayoutConstraint deactivateConstraints:@[_searchBarTopConstraint, _tableViewBottomConstraint]];
     
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wdeprecated"
     _searchBarTopConstraint = [NSLayoutConstraint constraintWithItem:self.topLayoutGuide
                                                            attribute:NSLayoutAttributeBottom
                                                            relatedBy:NSLayoutRelationEqual
@@ -108,10 +110,11 @@
                                                               attribute:NSLayoutAttributeBottom
                                                              multiplier:1.0f
                                                                constant:0.0f];
+    #pragma clang diagnostic pop
     
     [NSLayoutConstraint activateConstraints:@[_searchBarTopConstraint, _tableViewBottomConstraint]];
     
-    _searchBarView.placeholder = NSLocalizedStringFromTable(@"group_participants_filter_members", @"Vector", nil);
+    _searchBarView.placeholder = [VectorL10n groupParticipantsFilterMembers];
     _searchBarView.returnKeyType = UIReturnKeyDone;
     _searchBarView.autocapitalizationType = UITextAutocapitalizationTypeNone;
     
@@ -219,9 +222,6 @@
 {
     [super viewWillAppear:animated];
     
-    // Screen tracking
-    [[Analytics sharedInstance] trackScreen:@"GroupDetailsPeople"];
-    
     // Release the potential pushed view controller
     [self releasePushedViewController];
     
@@ -242,18 +242,18 @@
         // Indeed the group update notifications are triggered by the matrix session only for the user's groups.
         void (^success)(void) = ^void(void)
         {
-            [self refreshDisplayWithGroup:_group];
+            [self refreshDisplayWithGroup:self->_group];
         };
         
         // Trigger a refresh on the group members and the invited users.
         [self.mxSession updateGroupUsers:_group success:(isPreview ? success : nil) failure:^(NSError *error) {
             
-            NSLog(@"[GroupParticipantsViewController] viewWillAppear: group members update failed %@", _group.groupId);
+            MXLogDebug(@"[GroupParticipantsViewController] viewWillAppear: group members update failed %@", self->_group.groupId);
             
         }];
         [self.mxSession updateGroupInvitedUsers:_group success:(isPreview ? success : nil) failure:^(NSError *error) {
             
-            NSLog(@"[GroupParticipantsViewController] viewWillAppear: invited users update failed %@", _group.groupId);
+            MXLogDebug(@"[GroupParticipantsViewController] viewWillAppear: invited users update failed %@", self->_group.groupId);
             
         }];
     }
@@ -308,7 +308,7 @@
             [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
                              animations:^{
                                  
-                                 tableViewMaskLayer.bounds = newBounds;
+                                 self->tableViewMaskLayer.bounds = newBounds;
                                  
                              }
                              completion:^(BOOL finished){
@@ -424,7 +424,7 @@
     [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
                      animations:^{
                          
-                         addParticipantButtonImageViewBottomConstraint.constant = keyboardHeight + 9;
+                         self->addParticipantButtonImageViewBottomConstraint.constant = keyboardHeight + 9;
                          
                          // Force to render the view
                          [self.view layoutIfNeeded];
@@ -475,7 +475,7 @@
     
     addParticipantButtonImageView.backgroundColor = [UIColor clearColor];
     addParticipantButtonImageView.contentMode = UIViewContentModeCenter;
-    addParticipantButtonImageView.image = [UIImage imageNamed:@"add_group_participant"];
+    addParticipantButtonImageView.image = AssetImages.addGroupParticipant.image;
     
     CGFloat side = 78.0f;
     NSLayoutConstraint* widthConstraint = [NSLayoutConstraint constraintWithItem:addParticipantButtonImageView
@@ -537,7 +537,7 @@
     contactsDataSource.displaySearchInputInContactsList = YES;
     contactsDataSource.forceMatrixIdInDisplayName = YES;
     // Add a plus icon to the contact cell in the contacts picker, in order to make it more understandable for the end user.
-    contactsDataSource.contactCellAccessoryImage = [[UIImage imageNamed:@"plus_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.textPrimaryColor];
+    contactsDataSource.contactCellAccessoryImage = [AssetImages.plusIcon.image vc_tintedImageUsingColor:ThemeService.shared.theme.textPrimaryColor];
     
     // List all the participants matrix user id to ignore them during the contacts search.
     for (Contact *contact in actualParticipants)
@@ -550,7 +550,7 @@
     }
     
     [contactsPickerViewController showSearch:YES];
-    contactsPickerViewController.searchBar.placeholder = NSLocalizedStringFromTable(@"group_participants_invite_another_user", @"Vector", nil);
+    contactsPickerViewController.searchBar.placeholder = [VectorL10n groupParticipantsInviteAnotherUser];
     
     // Apply the search pattern if any
     if (currentSearchText)
@@ -656,7 +656,7 @@
     pendingMaskSpinnerView.alpha = 0;
     [UIView animateWithDuration:0.3 delay:0.3 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
         
-        pendingMaskSpinnerView.alpha = 1;
+        self->pendingMaskSpinnerView.alpha = 1;
         
     } completion:^(BOOL finished) {
     }];
@@ -832,7 +832,7 @@
             // Update power level label
             if (contact.mxGroupUser.isPrivileged)
             {
-                powerLevelText = NSLocalizedStringFromTable(@"room_member_power_level_short_admin", @"Vector", nil);
+                powerLevelText = [VectorL10n roomMemberPowerLevelShortAdmin];
             }
             
             participantCell.powerLevelLabel.text = powerLevelText;
@@ -923,7 +923,7 @@
         sectionHeader.mxkLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
         sectionHeader.mxkLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
         
-        sectionHeader.mxkLabel.text = NSLocalizedStringFromTable(@"group_participants_invited_section", @"Vector", nil);
+        sectionHeader.mxkLabel.text = [VectorL10n groupParticipantsInvitedSection];
     }
     
     return sectionHeader;
@@ -964,7 +964,7 @@
     
     if (contact)
     {
-        ContactDetailsViewController *contactDetailsViewController = [ContactDetailsViewController contactDetailsViewController];
+        ContactDetailsViewController *contactDetailsViewController = [ContactDetailsViewController instantiate];
         contactDetailsViewController.enableVoipCall = NO;
         contactDetailsViewController.contact = contact;
         
@@ -1052,11 +1052,11 @@
         if (contact && [contact.mxGroupUser.userId isEqualToString:self.mxSession.myUser.userId])
         {
             // Leave this group?
-            currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"group_participants_leave_prompt_title", @"Vector", nil)
-                                                               message:NSLocalizedStringFromTable(@"group_participants_leave_prompt_msg", @"Vector", nil)
+            currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n groupParticipantsLeavePromptTitle]
+                                                               message:[VectorL10n groupParticipantsLeavePromptMsg]
                                                         preferredStyle:UIAlertControllerStyleAlert];
             
-            [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+            [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
                                                              style:UIAlertActionStyleDefault
                                                            handler:^(UIAlertAction * action) {
                                                                
@@ -1068,7 +1068,7 @@
                                                                
                                                            }]];
             
-            [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"leave", @"Vector", nil)
+            [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n leave]
                                                              style:UIAlertActionStyleDefault
                                                            handler:^(UIAlertAction * action) {
                                                                
@@ -1078,14 +1078,14 @@
                                                                    self->currentAlert = nil;
                                                                    
                                                                    [self addPendingActionMask];
-                                                                   [self.mxSession leaveGroup:_group.groupId success:^{
+                                                                   [self.mxSession leaveGroup:self->_group.groupId success:^{
                                                                        
                                                                        [self withdrawViewControllerAnimated:YES completion:nil];
                                                                        
                                                                    } failure:^(NSError *error) {
                                                                        
                                                                        [self removePendingActionMask];
-                                                                       NSLog(@"[GroupParticipantsVC] Leave group %@ failed", _group.groupId);
+                                                                       MXLogDebug(@"[GroupParticipantsVC] Leave group %@ failed", self->_group.groupId);
                                                                        // Alert user
                                                                        [[AppDelegate theDelegate] showErrorAsAlert:error];
                                                                        
@@ -1102,12 +1102,12 @@
             NSString *memberUserId = contact.mxGroupUser.userId;
             
             // Kick ?
-            NSString *promptMsg = [NSString stringWithFormat:NSLocalizedStringFromTable(@"group_participants_remove_prompt_msg", @"Vector", nil), (contact.mxGroupUser.displayname.length ? contact.mxGroupUser.displayname : memberUserId)];
-            currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"group_participants_remove_prompt_title", @"Vector", nil)
+            NSString *promptMsg = [VectorL10n groupParticipantsRemovePromptMsg:(contact.mxGroupUser.displayname.length ? contact.mxGroupUser.displayname : memberUserId)];
+            currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n groupParticipantsRemovePromptTitle]
                                                                message:promptMsg
                                                         preferredStyle:UIAlertControllerStyleAlert];
             
-            [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+            [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
                                                              style:UIAlertActionStyleDefault
                                                            handler:^(UIAlertAction * action) {
                                                                
@@ -1119,7 +1119,7 @@
                                                                
                                                            }]];
             
-            [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"remove", @"Vector", nil)
+            [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n remove]
                                                              style:UIAlertActionStyleDefault
                                                            handler:^(UIAlertAction * action) {
                                                                
@@ -1128,9 +1128,9 @@
                                                                    typeof(self) self = weakSelf;
                                                                    self->currentAlert = nil;
                                                                    
-                                                                   NSLog(@"[GroupParticipantsVC] Kick %@ failed", memberUserId);
+                                                                   MXLogDebug(@"[GroupParticipantsVC] Kick %@ failed", memberUserId);
                                                                    // Alert user
-                                                                   [[AppDelegate theDelegate] showErrorAsAlert:[NSError errorWithDomain:@"GroupDomain" code:0 userInfo:@{NSLocalizedDescriptionKey:[NSBundle mxk_localizedStringForKey:@"not_supported_yet"]}]];
+                                                                   [[AppDelegate theDelegate] showErrorAsAlert:[NSError errorWithDomain:@"GroupDomain" code:0 userInfo:@{NSLocalizedDescriptionKey:[MatrixKitL10n notSupportedYet]}]];
                                                                }
                                                                
                                                            }]];
@@ -1154,12 +1154,12 @@
     }
     
     // Invite ?
-    NSString *promptMsg = [NSString stringWithFormat:NSLocalizedStringFromTable(@"group_participants_invite_prompt_msg", @"Vector", nil), contact.displayName];
-    currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"group_participants_invite_prompt_title", @"Vector", nil)
+    NSString *promptMsg = [VectorL10n groupParticipantsInvitePromptMsg:contact.displayName];
+    currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n groupParticipantsInvitePromptTitle]
                                                        message:promptMsg
                                                 preferredStyle:UIAlertControllerStyleAlert];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
                                                        
@@ -1171,7 +1171,7 @@
                                                        
                                                    }]];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"invite", @"Vector", nil)
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n invite]
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
                                                        
@@ -1187,8 +1187,8 @@
                                                            {
                                                                participantId = identifiers.firstObject;
                                                                
-                                                               NSLog(@"[GroupParticipantsVC] Invite %@ failed", participantId);
-                                                               [[AppDelegate theDelegate] showErrorAsAlert:[NSError errorWithDomain:@"GroupDomain" code:0 userInfo:@{NSLocalizedDescriptionKey:[NSBundle mxk_localizedStringForKey:@"not_supported_yet"]}]];
+                                                               MXLogDebug(@"[GroupParticipantsVC] Invite %@ failed", participantId);
+                                                               [[AppDelegate theDelegate] showErrorAsAlert:[NSError errorWithDomain:@"GroupDomain" code:0 userInfo:@{NSLocalizedDescriptionKey:[MatrixKitL10n notSupportedYet]}]];
                                                            }
                                                        }
                                                        

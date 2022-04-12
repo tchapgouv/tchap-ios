@@ -15,6 +15,7 @@
  */
 
 import Foundation
+import MatrixSDK
 
 enum InviteServiceError: Error {
     case unknown
@@ -27,7 +28,6 @@ final class InviteService: InviteServiceType {
     private let session: MXSession
     
     private let discussionFinder: DiscussionFinderType
-    private let thirdPartyIDResolver: ThirdPartyIDResolverType
     private let userService: UserServiceType
     private let roomService: RoomServiceType
     
@@ -37,7 +37,6 @@ final class InviteService: InviteServiceType {
     init(session: MXSession) {
         self.session = session
         self.discussionFinder = DiscussionFinder(session: session)
-        self.thirdPartyIDResolver = ThirdPartyIDResolver(credentials: self.session.matrixRestClient.credentials)
         self.userService = UserService(session: session)
         self.roomService = RoomService(session: session)
     }
@@ -96,7 +95,7 @@ final class InviteService: InviteServiceType {
                                 break
                             }
                         case .failure(let error):
-                            NSLog("[InviteService] sendEmailInvite failed")
+                            MXLog.debug("[InviteService] sendEmailInvite failed")
                             completion(MXResponse.failure(error))
                         }
                     }
@@ -110,13 +109,19 @@ final class InviteService: InviteServiceType {
     // MARK: - Private
     
     // Check whether a Tchap account has been created for this email. The closure returns a nil identifier when no account exists.
-    private func discoverUser(with email: String, completion: @escaping (MXResponse<ThirdPartyIDResolveResult>) -> Void) {
-        if let identityServer = self.session.matrixRestClient.identityServer ?? self.session.matrixRestClient.homeserver,
-           let lookup3pidsOperation = self.thirdPartyIDResolver.lookup(address: email, medium: .email, identityServer: identityServer, completion: completion) {
-            lookup3pidsOperation.maxRetriesTime = 0
-        } else {
-            NSLog("[InviteService] discoverUser failed")
+    private func discoverUser(with email: String, completion: @escaping (MXResponse<InviteServiceDiscoverUserResult>) -> Void) {
+        guard let identityService = self.session.identityService else {
+            MXLog.debug("[InviteService] discoverUser failed")
             completion(MXResponse.failure(InviteServiceError.unknown))
+            return
+        }
+        let pid = MX3PID(medium: .email, address: email)
+        _ = identityService.lookup3PIDs([pid]) { response in
+            if let responseValue = response.value?[pid] {
+                completion(MXResponse.success(.bound(userID: responseValue)))
+            } else {
+                completion(MXResponse.success(.unbound))
+            }
         }
     }
     
@@ -141,7 +146,7 @@ final class InviteService: InviteServiceType {
                         case .success(let roomID):
                             completion(.success(.inviteHasBeenSent(roomID: roomID)))
                         case .failure(let error):
-                            NSLog("[InviteService] createDiscussion failed")
+                            MXLog.debug("[InviteService] createDiscussion failed")
                             completion(MXResponse.failure(error))
                         }
                     })
@@ -157,7 +162,7 @@ final class InviteService: InviteServiceType {
     
     private func revokePendingInviteAndLeave(_ roomID: String, completion: @escaping (MXResponse<Void>) -> Void) {
         guard let room = self.session.room(withRoomId: roomID) else {
-            NSLog("[InviteService] unable to revoke invite")
+            MXLog.debug("[InviteService] unable to revoke invite")
             completion(.failure(InviteServiceError.unknown))
             return
         }
@@ -179,14 +184,14 @@ final class InviteService: InviteServiceType {
                     case .success:
                         // Leave now the room
                         self.session.leaveRoom(roomID, completion: completion)
-                    case .failure (let error):
+                    case .failure(let error):
                         completion(.failure(error))
                     }
                     
                     self.roomInProcess = nil
                 }
             } else {
-                NSLog("[InviteService] unable to revoke invite (no pending invite)")
+                MXLog.debug("[InviteService] unable to revoke invite (no pending invite)")
                 self.session.leaveRoom(roomID, completion: completion)
                 self.roomInProcess = nil
             }

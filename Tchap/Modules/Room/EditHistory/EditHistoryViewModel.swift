@@ -23,7 +23,7 @@ final class EditHistoryViewModel: EditHistoryViewModelType {
     // MARK: - Constants
 
     private enum Pagination {
-        static let count: UInt = 30
+        static let count: Int = 30
     }
 
     // MARK: - Properties
@@ -94,18 +94,18 @@ final class EditHistoryViewModel: EditHistoryViewModelType {
     
     private func loadMoreHistory() {
         guard self.canLoadMoreHistory() else {
-            print("[EditHistoryViewModel] loadMoreHistory: pending loading or all data loaded")
+            MXLog.debug("[EditHistoryViewModel] loadMoreHistory: pending loading or all data loaded")
             return
         }
         
         guard self.operation == nil else {
-            print("[EditHistoryViewModel] loadMoreHistory: operation already pending")
+            MXLog.debug("[EditHistoryViewModel] loadMoreHistory: operation already pending")
             return
         }
         
         self.update(viewState: .loading)
         
-        self.operation = self.aggregations.replaceEvents(forEvent: self.event.eventId, isEncrypted: self.event.isEncrypted, inRoom: self.roomId, from: self.nextBatch, limit: Pagination.count, success: { [weak self] (response) in
+        self.operation = self.aggregations.replaceEvents(forEvent: self.event.eventId, isEncrypted: self.event.isEncrypted, inRoom: self.roomId, from: self.nextBatch, limit: Int(Pagination.count), success: { [weak self] (response) in
             guard let sself = self else {
                 return
             }
@@ -212,7 +212,7 @@ final class EditHistoryViewModel: EditHistoryViewModelType {
     private func process(editEvent: MXEvent) -> EditHistoryMessage? {
         // Create a temporary MXEvent that represents this edition
         guard let editedEvent = self.event.editedEvent(fromReplacementEvent: editEvent) else {
-            print("[EditHistoryViewModel] processEditEvent: Cannot build edited event: \(editEvent.eventId ?? "")")
+            MXLog.debug("[EditHistoryViewModel] processEditEvent: Cannot build edited event: \(editEvent.eventId ?? "")")
             return nil
         }
 
@@ -220,16 +220,10 @@ final class EditHistoryViewModel: EditHistoryViewModelType {
     }
 
     private func process(event: MXEvent, ts: UInt64) -> EditHistoryMessage? {
-        
-        if event.isEncrypted && event.clear == nil {
-            if self.session.decryptEvent(event, inTimeline: nil) == false {
-                print("[EditHistoryViewModel] processEditEvent: Fail to decrypt event: \(event.eventId ?? "")")
-            }
-        }
 
         let formatterError = UnsafeMutablePointer<MXKEventFormatterError>.allocate(capacity: 1)
         guard let message = self.formatter.attributedString(from: event, with: nil, error: formatterError) else {
-            print("[EditHistoryViewModel] processEditEvent: cannot format(error: \(formatterError)) event: \(event.eventId ?? "")")
+            MXLog.debug("[EditHistoryViewModel] processEditEvent: cannot format(error: \(formatterError)) event: \(event.eventId ?? "")")
             return nil
         }
 

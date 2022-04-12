@@ -16,13 +16,13 @@
 
 import Foundation
 
-protocol SettingsDiscoveryViewModelViewDelegate: class {
+protocol SettingsDiscoveryViewModelViewDelegate: AnyObject {
     func settingsDiscoveryViewModel(_ viewModel: SettingsDiscoveryViewModelType, didUpdateViewState viewState: SettingsDiscoveryViewState)
 }
 
-@objc protocol SettingsDiscoveryViewModelCoordinatorDelegate: class {
+@objc protocol SettingsDiscoveryViewModelCoordinatorDelegate: AnyObject {
     func settingsDiscoveryViewModel(_ viewModel: SettingsDiscoveryViewModel, didSelectThreePidWith medium: String, and address: String)
-    func settingsDiscoveryViewModelDidTapUserSettingsLink(_ viewModel: SettingsDiscoveryViewModel)
+    func settingsDiscoveryViewModelDidTapAcceptIdentityServerTerms(_ viewModel: SettingsDiscoveryViewModel)
 }
 
 protocol SettingsDiscoveryViewModelType {

@@ -15,10 +15,11 @@
  */
 
 import UIKit
+import DesignKit
 
 /// Provide color constant values defined by the designer
 /// https://app.zeplin.io/project/5c122fa790c5b4241ffa6be7/screen/5c619592daff2f1241d82e75
-@objc protocol Theme {
+@objc protocol Theme: ThemeV2 {
     
     var identifier: String { get }
 
@@ -31,6 +32,7 @@ import UIKit
 
     var searchBackgroundColor: UIColor { get }
     var searchPlaceholderColor: UIColor { get }
+    var searchResultHighlightColor: UIColor { get }
 
     var headerBackgroundColor: UIColor { get }
     var headerBorderColor: UIColor { get }
@@ -39,8 +41,11 @@ import UIKit
 
     var textPrimaryColor: UIColor { get }
     var textSecondaryColor: UIColor { get }
+    var textTertiaryColor: UIColor { get }
+    var textQuinaryColor: UIColor { get }
 
     var tintColor: UIColor { get }
+    var tintContrastColor: UIColor { get }
     var tintBackgroundColor: UIColor { get }
     
     var tabBarUnselectedItemTintColor: UIColor { get }
@@ -62,9 +67,14 @@ import UIKit
     var placeholderTextColor: UIColor { get }
 
     var selectedBackgroundColor: UIColor { get }
+    
+    // MARK: - Call Screen Specific Colors
+    
+    var callScreenButtonTintColor: UIColor { get }
 
     // MARK: - Appearance and style
 
+    var roomInputTextBorder: UIColor { get }
 
     /// Status bar style to use
     var statusBarStyle: UIStatusBarStyle { get }
@@ -73,31 +83,61 @@ import UIKit
 
     var keyboardAppearance: UIKeyboardAppearance { get }
     
-    @available(iOS 12.0, *)
     var userInterfaceStyle: UIUserInterfaceStyle { get }
 
 
     // MARK: - Colors not defined in the design palette
+    
+    var secondaryCircleButtonBackgroundColor: UIColor { get }
 
     /// fading behind dialog modals
     var overlayBackgroundColor: UIColor { get }
 
     /// Color to tint the search background image
     var matrixSearchBackgroundImageTintColor: UIColor { get }
+    
+    /// Color to use in shadows. Should be contrast to `backgroundColor`.
+    var shadowColor: UIColor { get }
+        
+    // Timeline cells
 
+    var roomCellIncomingBubbleBackgroundColor: UIColor { get }
+    
+    var roomCellOutgoingBubbleBackgroundColor: UIColor { get }
+    
+    // MARK: - Tchap colors
+    
+    var roomTypeRestricted: UIColor { get }
+    var roomTypeUnrestricted: UIColor { get }
+    var roomTypePublic: UIColor { get }
+    
+    var borderMain: UIColor { get }
+    var borderSecondary: UIColor { get }
+    var backgroundSecondary: UIColor { get }
+    
+    var domainLabel: UIColor { get }
+    var unreadBackground: UIColor { get }
+    
     // MARK: - Customisation methods
 
     
-    /// Apply the theme on a button.
+    /// Apply the theme on a tab bar.
     ///
-    /// - Parameter tabBar: The tabBar to customise.
+    /// - Parameter tabBar: The tab bar to customise.
     func applyStyle(onTabBar tabBar: UITabBar)
 
-    /// Apply the theme on a navigation bar
+    /// Apply the theme on a navigation bar, without enabling the iOS 15's scroll edges appearance.
     ///
     /// - Parameter navigationBar: the navigation bar to customise.
     func applyStyle(onNavigationBar navigationBar: UINavigationBar)
 
+    /// Apply the theme on a navigation bar.
+    ///
+    /// - Parameter navigationBar: the navigation bar to customise.
+    /// - Parameter modernScrollEdgesAppearance: whether or not to use the iOS 15 style scroll edges appearance
+    func applyStyle(onNavigationBar navigationBar: UINavigationBar,
+                    withModernScrollEdgesAppearance modernScrollEdgesAppearance: Bool)
+    
     ///  Apply the theme on a search bar.
     ///
     /// - Parameter searchBar: the search bar to customise.
@@ -112,4 +152,9 @@ import UIKit
     ///
     /// - Parameter button: The button to customise.
     func applyStyle(onButton button: UIButton)
+    
+    /// Apply the theme on a switch.
+    ///
+    /// - Parameter switch: The switch to customise.
+    func applyStyle(onSwitch uiSwitch: UISwitch)
 }

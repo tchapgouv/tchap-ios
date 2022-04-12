@@ -31,6 +31,8 @@ final class EnterNewRoomDetailsViewController: UIViewController {
         static let roomNameMaximumNumberOfChars = 50
         static let roomAddressMaximumNumberOfChars = 50
         static let roomTopicMaximumNumberOfChars = 250
+        static let chooseAvatarTableViewCellHeight: CGFloat = 140
+        static let textViewTableViewCellHeight: CGFloat = 150
     }
     
     // MARK: - Properties
@@ -53,6 +55,7 @@ final class EnterNewRoomDetailsViewController: UIViewController {
         item.isEnabled = false
         return item
     }()
+    private var screenTimer = AnalyticsScreenTimer(screen: .createRoom)
     
     private enum RowType {
         case `default`
@@ -80,17 +83,7 @@ final class EnterNewRoomDetailsViewController: UIViewController {
             mainTableView.reloadData()
         }
     }
-    
-    private func showActivityIndicator() {
-        if self.activityPresenter.isPresenting == false {
-            self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
-        }
-    }
-    
-    private func hideActivityIndicator() {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-    }
-    
+
     private func updateSections() {
         let row_0_0 = Row(type: .avatar(image: viewModel.roomCreationParameters.avatarImage), text: nil, accessoryType: .none) {
             // open image picker
@@ -113,42 +106,63 @@ final class EnterNewRoomDetailsViewController: UIViewController {
                                rows: [row_2_0],
                                footer: nil)
         
-        let row_3_0 = Row(type: .withSwitch(isOn: viewModel.roomCreationParameters.isEncrypted, onValueChanged: { (theSwitch) in
-            self.viewModel.roomCreationParameters.isEncrypted = theSwitch.isOn
-        }), text: VectorL10n.createRoomEnableEncryption, accessoryType: .none) {
-            // no-op
-        }
-        let section3 = Section(header: VectorL10n.createRoomSectionHeaderEncryption,
-                               rows: [row_3_0],
-                               footer: VectorL10n.createRoomSectionFooterEncryption)
-        
-        let row_4_0 = Row(type: .default, text: VectorL10n.createRoomTypePrivate, accessoryType: viewModel.roomCreationParameters.isPublic ? .none : .checkmark) {
-            self.viewModel.roomCreationParameters.isPublic = false
-            self.updateSections()
-        }
-        let row_4_1 = Row(type: .default, text: VectorL10n.createRoomTypePublic, accessoryType: viewModel.roomCreationParameters.isPublic ? .checkmark : .none) {
-            self.viewModel.roomCreationParameters.isPublic = true
-            self.updateSections()
-            //  scroll bottom to show user new fields
-            DispatchQueue.main.async {
-                self.mainTableView.scrollToRow(at: IndexPath(row: 0, section: 6), at: .bottom, animated: true)
+        var section3: Section?
+        if RiotSettings.shared.roomCreationScreenAllowEncryptionConfiguration {
+            let row_3_0 = Row(type: .withSwitch(isOn: viewModel.roomCreationParameters.isEncrypted, onValueChanged: { [weak self] (theSwitch) in
+                self?.viewModel.roomCreationParameters.isEncrypted = theSwitch.isOn
+            }), text: VectorL10n.createRoomEnableEncryption, accessoryType: .none) {
+                // no-op
             }
+            section3 = Section(header: VectorL10n.createRoomSectionHeaderEncryption,
+                                   rows: [row_3_0],
+                                   footer: VectorL10n.createRoomSectionFooterEncryption)
         }
-        let section4 = Section(header: VectorL10n.createRoomSectionHeaderType,
-                               rows: [row_4_0, row_4_1],
-                               footer: VectorL10n.createRoomSectionFooterType)
+        
+        var section4: Section?
+        if RiotSettings.shared.roomCreationScreenAllowRoomTypeConfiguration {
+            let row_4_0 = Row(type: .default, text: VectorL10n.createRoomTypePrivate, accessoryType: viewModel.roomCreationParameters.isPublic ? .none : .checkmark) { [weak self] in
+                guard let self = self else {
+                    return
+                }
+                
+                self.viewModel.roomCreationParameters.isPublic = false
+                self.updateSections()
+            }
+            let row_4_1 = Row(type: .default, text: VectorL10n.createRoomTypePublic, accessoryType: viewModel.roomCreationParameters.isPublic ? .checkmark : .none) { [weak self] in
+                
+                guard let self = self else {
+                    return
+                }
+                
+                self.viewModel.roomCreationParameters.isPublic = true
+                self.updateSections()
+                //  scroll bottom to show user new fields
+                DispatchQueue.main.async {
+                    self.mainTableView.scrollToRow(at: IndexPath(row: 0, section: 6), at: .bottom, animated: true)
+                }
+            }
+            section4 = Section(header: VectorL10n.createRoomSectionHeaderType,
+                                   rows: [row_4_0, row_4_1],
+                                   footer: VectorL10n.createRoomSectionFooterType)
+        }
         
         var tmpSections: [Section] = [
             section0,
             section1,
-            section2,
-            section3,
-            section4
+            section2
         ]
         
+        if let section3 = section3 {
+            tmpSections.append(section3)
+        }
+        
+        if let section4 = section4 {
+            tmpSections.append(section4)
+        }
+        
         if viewModel.roomCreationParameters.isPublic {
-            let row_5_0 = Row(type: .withSwitch(isOn: viewModel.roomCreationParameters.showInDirectory, onValueChanged: { (theSwitch) in
-                self.viewModel.roomCreationParameters.showInDirectory = theSwitch.isOn
+            let row_5_0 = Row(type: .withSwitch(isOn: viewModel.roomCreationParameters.showInDirectory, onValueChanged: { [weak self] (theSwitch) in
+                self?.viewModel.roomCreationParameters.showInDirectory = theSwitch.isOn
             }), text: VectorL10n.createRoomShowInDirectory, accessoryType: .none) {
                 // no-op
             }
@@ -204,10 +218,17 @@ final class EnterNewRoomDetailsViewController: UIViewController {
         self.keyboardAvoider?.startAvoiding()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        screenTimer.start()
+    }
+    
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
         self.keyboardAvoider?.stopAvoiding()
+        
+        screenTimer.stop()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -226,7 +247,7 @@ final class EnterNewRoomDetailsViewController: UIViewController {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
         
-        self.mainTableView.reloadData()
+        mainTableView.reloadData()
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -264,12 +285,14 @@ final class EnterNewRoomDetailsViewController: UIViewController {
     private func render(viewState: EnterNewRoomDetailsViewState) {
         switch viewState {
         case .loading:
-            self.renderLoading()
+            renderLoading()
         case .loaded:
             updateSections()
         case .error(let error):
-            self.render(error: error)
+            render(error: error)
         }
+        
+        updateCreateButtonState()
     }
     
     private func renderLoading() {
@@ -289,6 +312,15 @@ final class EnterNewRoomDetailsViewController: UIViewController {
     
     private func createButtonAction() {
         self.viewModel.process(viewAction: .create)
+    }
+    
+    private func updateCreateButtonState() {
+        switch viewModel.viewState {
+        case .loading:
+            createBarButtonItem.isEnabled = false
+        default:
+            createBarButtonItem.isEnabled = (viewModel.roomCreationParameters.name?.count ?? 0 > Constants.roomNameMinimumNumberOfChars)
+        }
     }
 }
 
@@ -376,7 +408,10 @@ extension EnterNewRoomDetailsViewController: UITableViewDataSource {
             cell.mxkLabel.text = row.text
             cell.mxkSwitch.isOn = isOn
             cell.mxkSwitch.removeTarget(nil, action: nil, for: .valueChanged)
-            cell.mxkSwitch.vc_addAction(for: .valueChanged) {
+            cell.mxkSwitch.vc_addAction(for: .valueChanged) { [weak cell] in
+                guard let cell = cell else {
+                    return
+                }
                 onValueChanged?(cell.mxkSwitch)
             }
             cell.mxkLabelLeadingConstraint.constant = cell.vc_separatorInset.left
@@ -448,9 +483,9 @@ extension EnterNewRoomDetailsViewController: UITableViewDelegate {
         
         switch row.type {
         case .avatar:
-            return 100
+            return Constants.chooseAvatarTableViewCellHeight
         case .textView:
-            return 150
+            return Constants.textViewTableViewCellHeight
         default:
             return UITableView.automaticDimension
         }
@@ -479,7 +514,11 @@ extension EnterNewRoomDetailsViewController: ChooseAvatarTableViewCellDelegate {
     func chooseAvatarTableViewCellDidTapChooseAvatar(_ cell: ChooseAvatarTableViewCell, sourceView: UIView) {
         viewModel.process(viewAction: .chooseAvatar(sourceView: sourceView))
     }
-    
+
+    func chooseAvatarTableViewCellDidTapRemoveAvatar(_ cell: ChooseAvatarTableViewCell) {
+        viewModel.process(viewAction: .removeAvatar)
+    }
+
 }
 
 // MARK: - EnterNewRoomDetailsViewModelViewDelegate
@@ -499,14 +538,6 @@ extension EnterNewRoomDetailsViewController: UITextFieldDelegate {
         switch textField.tag {
         case Constants.roomNameTextFieldTag:
             viewModel.roomCreationParameters.name = textField.text
-            if viewModel.roomCreationParameters.userSelectedAvatar == nil {
-                //  if no image selected by the user, set initials as image
-                let avatar = AvatarGenerator.generateAvatar(forMatrixItem: nil,
-                                                            withDisplayName: textField.text,
-                                                            size: 60,
-                                                            andFontSize: 30)
-                viewModel.roomCreationParameters.initialsAvatar = avatar
-            }
         case Constants.roomAddressTextFieldTag:
             viewModel.roomCreationParameters.address = textField.text
         default:
@@ -527,6 +558,7 @@ extension EnterNewRoomDetailsViewController: UITextFieldDelegate {
             let result = resultCount <= Constants.roomNameMaximumNumberOfChars
             if result {
                 viewModel.roomCreationParameters.name = resultString
+                updateCreateButtonState()
             }
             return result
         case Constants.roomAddressTextFieldTag:

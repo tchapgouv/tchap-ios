@@ -16,7 +16,7 @@
 
 import Foundation
 
-protocol ForgotPasswordCheckedEmailViewControllerDelegate: class {
+protocol ForgotPasswordCheckedEmailViewControllerDelegate: AnyObject {
     func forgotPasswordCheckedEmailViewControllerDidTapDoneButton(_ forgotPasswordCheckedEmailViewController: ForgotPasswordCheckedEmailViewController)
 }
 
@@ -31,18 +31,14 @@ final class ForgotPasswordCheckedEmailViewController: UIViewController {
     
     // MARK: Private
     
-    private var currentStyle: Style!
-    
     // MARK: Public
     
     weak var delegate: ForgotPasswordCheckedEmailViewControllerDelegate?
     
     // MARK: - Setup
     
-    class func instantiate(style: Style = Variant2Style.shared) -> ForgotPasswordCheckedEmailViewController {
-        let viewController = StoryboardScene.ForgotPasswordCheckedEmailViewController.initialScene.instantiate()
-        viewController.currentStyle = style
-        return viewController
+    class func instantiate() -> ForgotPasswordCheckedEmailViewController {
+        return StoryboardScene.ForgotPasswordCheckedEmailViewController.initialScene.instantiate()
     }
     
     // MARK: - Life cycle
@@ -65,7 +61,7 @@ final class ForgotPasswordCheckedEmailViewController: UIViewController {
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.currentStyle.statusBarStyle
+        return ThemeService.shared().theme.statusBarStyle
     }
     
     // MARK: - Private
@@ -76,7 +72,7 @@ final class ForgotPasswordCheckedEmailViewController: UIViewController {
     }
     
     private func userThemeDidChange() {
-        self.update(style: self.currentStyle)
+        self.updateTheme()
     }
     
     // MARK: - Actions
@@ -86,19 +82,17 @@ final class ForgotPasswordCheckedEmailViewController: UIViewController {
     }
 }
 
-// MARK: - Stylable
-extension ForgotPasswordCheckedEmailViewController: Stylable {
-    func update(style: Style) {
-        self.currentStyle = style
-        
-        self.view.backgroundColor = style.backgroundColor
+// MARK: - Theme
+private extension ForgotPasswordCheckedEmailViewController {
+    func updateTheme() {
+        self.view.backgroundColor = ThemeService.shared().theme.backgroundColor
         
         if let navigationBar = self.navigationController?.navigationBar {
-            style.applyStyle(onNavigationBar: navigationBar)
+            ThemeService.shared().theme.applyStyle(onNavigationBar: navigationBar)
         }
         
-        self.instructionsLabel.textColor = style.secondaryTextColor
+        self.instructionsLabel.textColor = ThemeService.shared().theme.textSecondaryColor
         
-        style.applyStyle(onButton: self.doneButton)
+        ThemeService.shared().theme.applyStyle(onButton: self.doneButton)
     }
 }

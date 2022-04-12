@@ -16,14 +16,9 @@
 
 #import "PreviewView.h"
 
-#import "DesignValues.h"
-
 #import "GeneratedInterface-Swift.h"
 
-@interface PreviewView() <Stylable>
-
-@property (nonatomic, strong) id<Style> currentStyle;
-
+@interface PreviewView() <Themable>
 @end
 
 @implementation PreviewView
@@ -37,7 +32,7 @@
 + (instancetype)instantiate
 {
     PreviewView *previewView = [[[self class] nib] instantiateWithOwner:nil options:nil].firstObject;
-    [previewView updateWithStyle:Variant2Style.shared];
+    [previewView updateWithTheme:ThemeService.shared.theme];
     return previewView;
 }
 
@@ -67,24 +62,7 @@
     [self.rightButton.layer setCornerRadius:5];
     self.rightButton.clipsToBounds = YES;
     
-    [self updateWithStyle:self.currentStyle];
-}
-
-- (void)updateWithStyle:(id<Style>)style
-{
-    self.currentStyle = style;
-    
-    self.backgroundColor = style.backgroundColor;
-    
-    self.previewLabel.textColor = style.primaryTextColor;
-    self.subNoticeLabel.textColor = style.secondaryTextColor;
-    self.bottomBorderView.backgroundColor = style.secondaryBackgroundColor;
-    
-    self.leftButton.backgroundColor = style.buttonBorderedBackgroundColor;
-    self.leftButton.titleLabel.textColor = style.buttonBorderedTitleColor;
-    
-    self.rightButton.backgroundColor = style.buttonBorderedBackgroundColor;
-    self.rightButton.titleLabel.textColor = style.buttonBorderedTitleColor;
+    [self updateWithTheme:ThemeService.shared.theme];
 }
 
 - (void)refreshDisplay
@@ -114,6 +92,23 @@
 {
     _roomName = roomName;
     [self refreshDisplay];
+}
+
+#pragma mark - Theme
+
+- (void)updateWithTheme:(id<Theme> _Nonnull)theme
+{
+    self.backgroundColor = theme.backgroundColor;
+    
+    self.previewLabel.textColor = theme.textPrimaryColor;
+    self.subNoticeLabel.textColor = theme.textSecondaryColor;
+    self.bottomBorderView.backgroundColor = theme.headerBorderColor;
+    
+    self.leftButton.backgroundColor = theme.headerBackgroundColor;
+    self.leftButton.titleLabel.textColor = theme.headerTextPrimaryColor;
+    
+    self.rightButton.backgroundColor = theme.headerBackgroundColor;
+    self.rightButton.titleLabel.textColor = theme.headerTextPrimaryColor;
 }
 
 @end

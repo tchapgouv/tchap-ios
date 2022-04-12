@@ -52,7 +52,7 @@ final class HomeEmptyView: UIView, NibLoadable {
     // MARK: - Public
     
     func fill(with displayName: String) {
-        self.titleLabel.text = VectorL10n.homeEmptyViewTitle(displayName)
+        self.titleLabel.text = VectorL10n.homeEmptyViewTitle(BuildSettings.bundleDisplayName, displayName)
     }
 }
 

@@ -16,7 +16,7 @@
 
 import Foundation
 
-protocol CreateNewDiscussionCoordinatorDelegate: class {
+protocol CreateNewDiscussionCoordinatorDelegate: AnyObject {
     func createNewDiscussionCoordinator(_ coordinator: CreateNewDiscussionCoordinatorType, didSelectUserID userID: String)
     func createNewDiscussionCoordinatorDidCancel(_ coordinator: CreateNewDiscussionCoordinatorType)
 }
@@ -41,10 +41,10 @@ final class CreateNewDiscussionCoordinator: NSObject, CreateNewDiscussionCoordin
     // MARK: - Setup
     
     init(session: MXSession) {
-        self.router = NavigationRouter(navigationController: TCNavigationController())
+        self.router = NavigationRouter(navigationController: RiotNavigationController())
         self.session = session
         
-        let contactsViewController = ContactsViewController.instantiate(with: Variant1Style.shared, showSearchBar: true, enableMultipleSelection: false)
+        let contactsViewController = ContactsViewController.instantiate(withShowSearchBar: true, enableMultipleSelection: false)
         contactsViewController.title = TchapL10n.createNewDiscussionTitle
         self.contactsViewController = contactsViewController
         
@@ -89,7 +89,7 @@ extension CreateNewDiscussionCoordinator: ContactsViewControllerDelegate {
     func contactsViewController(_ contactsViewController: ContactsViewController, didSelect contact: MXKContact) {
         // No more than one matrix identifer is expected by contact in Tchap.
         guard contact.matrixIdentifiers.count == 1, let userID = contact.matrixIdentifiers.first as? String else {
-            print("[CreateNewDiscussionCoordinator] Invalid selected contact: multiple matrix ids")
+            MXLog.debug("[CreateNewDiscussionCoordinator] Invalid selected contact: multiple matrix ids")
             return
         }
         

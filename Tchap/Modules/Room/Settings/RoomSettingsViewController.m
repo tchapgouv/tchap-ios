@@ -60,7 +60,7 @@ NSString *const kRoomSettingsTopicCellViewIdentifier = @"kRoomSettingsTopicCellV
 NSString *const kRoomSettingsBannedUserCellViewIdentifier = @"kRoomSettingsBannedUserCellViewIdentifier";
 NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetentionCellViewIdentifier";
 
-@interface RoomSettingsViewController () <Stylable, SingleImagePickerPresenterDelegate, RetentionPeriodPickerCellDelegate>
+@interface RoomSettingsViewController () <SingleImagePickerPresenterDelegate, RetentionPeriodPickerCellDelegate>
 {
     // The updated user data
     NSMutableDictionary<NSString*, id> *updatedItemsDict;
@@ -108,12 +108,10 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
     
     // A copy of the banned members
     NSArray<MXRoomMember*> *bannedMembers;
+    
+    // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
+    id kThemeServiceDidChangeThemeNotificationObserver;
 }
-
-// Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
-@property (nonatomic, weak) id kThemeServiceDidChangeThemeNotificationObserver;
-
-@property (nonatomic, strong) id<Style> currentStyle;
 
 @property (nonatomic, strong) SingleImagePickerPresenter *imagePickerPresenter;
 
@@ -124,7 +122,6 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
 + (instancetype)instantiate
 {
     RoomSettingsViewController *roomSettingsViewController = [RoomSettingsViewController roomSettingsViewController];
-    roomSettingsViewController.currentStyle = Variant2Style.shared;
     return roomSettingsViewController;
 }
 
@@ -205,7 +202,7 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
     
     // Observe user interface theme change.
     MXWeakify(self);
-    _kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         MXStrongifyAndReturnIfNil(self);
         [self userInterfaceThemeDidChange];
@@ -215,24 +212,22 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
 
 - (void)userInterfaceThemeDidChange
 {
-    [self updateWithStyle:self.currentStyle];
+    [self updateTheme];
 }
 
-- (void)updateWithStyle:(id<Style>)style
+- (void)updateTheme
 {
-    self.currentStyle = style;
-    
     UINavigationBar *navigationBar = self.navigationController.navigationBar;
     
     if (navigationBar)
     {
-        [style applyStyleOnNavigationBar:navigationBar];
+        [ThemeService.shared.theme applyStyleOnNavigationBar:navigationBar];
     }
     
-    //TODO Design the activvity indicator for Tchap
-    self.activityIndicator.backgroundColor = style.overlayBackgroundColor;
+    //TODO Design the activity indicator for Tchap
+    self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     
-    self.tableView.backgroundColor = style.secondaryBackgroundColor;
+    self.tableView.backgroundColor = ThemeService.shared.theme.selectedBackgroundColor;
     self.view.backgroundColor = self.tableView.backgroundColor;
     
     if (self.tableView.dataSource)
@@ -245,7 +240,7 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return self.currentStyle.statusBarStyle;
+    return ThemeService.shared.theme.statusBarStyle;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -334,9 +329,9 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
         actualDirectoryVisibilityRequest = nil;
     }
     
-    if (_kThemeServiceDidChangeThemeNotificationObserver)
+    if (kThemeServiceDidChangeThemeNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:_kThemeServiceDidChangeThemeNotificationObserver];
+        [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
     }
     
     updatedItemsDict = nil;
@@ -1101,7 +1096,7 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
     {
         // Customize label style
         UITableViewHeaderFooterView *tableViewHeaderFooterView = (UITableViewHeaderFooterView*)view;
-        tableViewHeaderFooterView.textLabel.textColor = self.currentStyle.primaryTextColor;
+        tableViewHeaderFooterView.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
         tableViewHeaderFooterView.textLabel.font = [UIFont systemFontOfSize:15];
     }
 }
@@ -1184,7 +1179,7 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kRoomSettingsRetentionCellViewIdentifier];
             }
             
-            cell.textLabel.textColor = self.currentStyle.primaryTextColor;
+            cell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
             cell.textLabel.text = NSLocalizedStringFromTable(@"room_settings_retention_title", @"Tchap", nil);
             
             uint displayedRetentionPeriod = [mxRoom.summary tc_roomRetentionPeriodInDays];
@@ -1195,7 +1190,7 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
             
             cell.detailTextLabel.text = [RoomService getDisplayLabelForRetentionPeriodInDays:displayedRetentionPeriod];
             
-            cell.detailTextLabel.textColor = isRetentionEdited ? self.currentStyle.warnTextColor : self.currentStyle.secondaryTextColor;
+            cell.detailTextLabel.textColor = isRetentionEdited ? ThemeService.shared.theme.warningColor : ThemeService.shared.theme.textSecondaryColor;
             
             cell.accessoryView = nil;
             cell.accessoryType = UITableViewCellAccessoryNone;
@@ -1236,7 +1231,7 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
             roomPhotoCell.mxkImageView.defaultBackgroundColor = [UIColor clearColor];
             
             roomPhotoCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_photo", @"Vector", nil);
-            roomPhotoCell.mxkLabel.textColor = self.currentStyle.primaryTextColor;
+            roomPhotoCell.mxkLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
             
             if ([updatedItemsDict objectForKey:kRoomSettingsAvatarKey])
             {
@@ -1271,16 +1266,16 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
                 topicTextView.text = mxRoomState.topic;
             }
             
-            topicTextView.tintColor = self.currentStyle.secondaryTextColor;
+            topicTextView.tintColor = ThemeService.shared.theme.textSecondaryColor;
             topicTextView.font = [UIFont systemFontOfSize:15];
             topicTextView.bounces = NO;
             topicTextView.delegate = self;
             
             // disable the edition if the user cannot update it
             topicTextView.editable = (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomTopic]);
-            topicTextView.textColor = self.currentStyle.secondaryTextColor;
+            topicTextView.textColor = ThemeService.shared.theme.textSecondaryColor;
             
-            topicTextView.keyboardAppearance = self.currentStyle.keyboardAppearance;
+            topicTextView.keyboardAppearance = ThemeService.shared.theme.keyboardAppearance;
             
             cell = roomTopicCell;
         }
@@ -1293,14 +1288,14 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
             roomNameCell.mxkTextFieldTrailingConstraint.constant = 15;
             
             roomNameCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_room_name", @"Vector", nil);
-            roomNameCell.mxkLabel.textColor = self.currentStyle.primaryTextColor;
+            roomNameCell.mxkLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
             
             roomNameCell.accessoryType = UITableViewCellAccessoryNone;
             roomNameCell.accessoryView = nil;
             
             nameTextField = roomNameCell.mxkTextField;
             
-            nameTextField.tintColor = self.currentStyle.secondaryTextColor;
+            nameTextField.tintColor = ThemeService.shared.theme.textSecondaryColor;
             nameTextField.font = [UIFont systemFontOfSize:17];
             nameTextField.borderStyle = UITextBorderStyleNone;
             nameTextField.textAlignment = NSTextAlignmentRight;
@@ -1317,7 +1312,7 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
             
             // disable the edition if the user cannot update it
             nameTextField.userInteractionEnabled = (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomName]);
-            nameTextField.textColor = self.currentStyle.secondaryTextColor;
+            nameTextField.textColor = ThemeService.shared.theme.textSecondaryColor;
             
             // Add a "textFieldDidChange" notification method to the text field control.
             [nameTextField addTarget:self action:@selector(onTextFieldUpdate:) forControlEvents:UIControlEventEditingChanged];
@@ -1332,7 +1327,7 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
             
             [leaveCell.mxkButton setTitle:title forState:UIControlStateNormal];
             [leaveCell.mxkButton setTitle:title forState:UIControlStateHighlighted];
-            [leaveCell.mxkButton setTintColor:self.currentStyle.buttonPlainTitleColor];
+            [leaveCell.mxkButton setTintColor:ThemeService.shared.theme.tintColor];
             leaveCell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
             
             [leaveCell.mxkButton  removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
@@ -1381,11 +1376,11 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
                     summary = NSLocalizedStringFromTable(@"room_settings_room_access_unrestricted", @"Tchap", nil);
                 }
                 NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString: title
-                                                                                                   attributes:@{NSForegroundColorAttributeName : self.currentStyle.primaryTextColor,
+                                                                                                   attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
                                                                                                                 NSFontAttributeName: [UIFont systemFontOfSize:17.0]}];
                 [attributedText appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n\n" attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:4]}]];
                 [attributedText appendAttributedString:[[NSMutableAttributedString alloc] initWithString: summary
-                                                                                              attributes:@{NSForegroundColorAttributeName : self.currentStyle.secondaryTextColor,
+                                                                                              attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textSecondaryColor,
                                                                                                            NSFontAttributeName: [UIFont systemFontOfSize:14.0]}]];
                 
                 roomAccessInfo.textLabel.numberOfLines = 0;
@@ -1405,11 +1400,11 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
             NSString *title = NSLocalizedStringFromTable(@"room_settings_room_access_by_link_title", @"Tchap", nil);
             NSString *summary = isRoomAccessByLinkEnabled ? NSLocalizedStringFromTable(@"room_settings_room_access_by_link_enabled", @"Tchap", nil) : NSLocalizedStringFromTable(@"room_settings_room_access_by_link_disabled", @"Tchap", nil);
             NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString: title
-                                                                                               attributes:@{NSForegroundColorAttributeName : self.currentStyle.primaryTextColor,
+                                                                                               attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
                                                                                                             NSFontAttributeName: [UIFont systemFontOfSize:17.0]}];
             [attributedText appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n\n" attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:4]}]];
             [attributedText appendAttributedString:[[NSMutableAttributedString alloc] initWithString: summary
-                                                                                          attributes:@{NSForegroundColorAttributeName : self.currentStyle.secondaryTextColor,
+                                                                                          attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textSecondaryColor,
                                                                                                        NSFontAttributeName: [UIFont systemFontOfSize:14.0]}]];
             
             roomAccessByLink.textLabel.numberOfLines = 0;
@@ -1437,7 +1432,7 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
         UITableViewCell *addressCell = [tableView dequeueReusableCellWithIdentifier:kRoomSettingsBannedUserCellViewIdentifier forIndexPath:indexPath];
         
         addressCell.textLabel.font = [UIFont systemFontOfSize:16];
-        addressCell.textLabel.textColor = self.currentStyle.primaryTextColor;
+        addressCell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
         addressCell.textLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
         addressCell.accessoryView = nil;
         addressCell.accessoryType = UITableViewCellAccessoryNone;
@@ -1471,7 +1466,7 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
         NSLog(@"[RoomSettingsViewController] cellForRowAtIndexPath: invalid indexPath");
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     }
-    cell.contentView.backgroundColor = self.currentStyle.backgroundColor;
+    cell.contentView.backgroundColor = ThemeService.shared.theme.backgroundColor;
     
     return cell;
 }
@@ -1493,9 +1488,9 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
     cell.mxkLabelLeadingConstraint.constant = cell.separatorInset.left;
     cell.mxkSwitchTrailingConstraint.constant = 15;
     
-    cell.mxkLabel.textColor = self.currentStyle.primaryTextColor;
+    cell.mxkLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
     
-    cell.mxkSwitch.onTintColor = self.currentStyle.buttonBorderedBackgroundColor;
+    cell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
     [cell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventValueChanged];
     
     // Force layout before reusing a cell (fix switch displayed outside the screen)
@@ -1917,5 +1912,3 @@ NSString *const kRoomSettingsRetentionCellViewIdentifier = @"kRoomSettingsRetent
 }
 
 @end
-
-

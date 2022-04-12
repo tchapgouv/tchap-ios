@@ -1,0 +1,62 @@
+name: SiriIntents
+
+schemes:
+  SiriIntents:
+    analyze:
+      config: Debug
+    archive:
+      config: Release
+    build:
+      targets:
+        SiriIntents:
+        - running
+        - testing
+        - profiling
+        - analyzing
+        - archiving
+    profile:
+      config: Release
+    run:
+      askForAppToLaunch: true
+      config: Debug
+      debugEnabled: false
+      disableMainThreadChecker: true
+      launchAutomaticallySubstyle: 2
+    test:
+      config: Debug
+      disableMainThreadChecker: true
+
+targets:
+  SiriIntents:
+    platform: iOS
+    type: app-extension
+
+    dependencies:
+    - sdk: Intents.framework
+
+    configFiles:
+      Debug: Debug.xcconfig
+      Release: Release.xcconfig
+
+    sources:
+    - path: .
+    - path: ../Riot/Categories/Bundle.swift
+    - path: ../Config/CommonConfiguration.swift
+    - path: ../Config/BuildSettings.swift
+    - path: ../Config/Configurable.swift
+    - path: ../Riot/Managers/Settings/RiotSettings.swift
+    - path: ../Riot/Managers/EncryptionKeyManager/EncryptionKeyManager.swift
+    - path: ../Riot/Managers/KeyValueStorage
+    - path: ../Riot/PropertyWrappers/UserDefaultsBackedPropertyWrapper.swift
+    - path: ../Riot/Managers/Locale/LocaleProviderType.swift
+    - path: ../Riot/Managers/Locale/LocaleProvider.swift
+    - path: ../Riot/Modules/MatrixKit
+    - path: ../Riot/Modules/Analytics
+    - path: ../Riot/Managers/UserSessions
+    - path: ../Riot/Managers/AppInfo/
+    - path: ../Riot/Managers/Locale/LocaleProviderType.swift
+    - path: ../Riot/Generated/Strings.swift
+      excludes:
+        - "**/*.md" # excludes all files with the .md extension
+    - path: ../Riot/Generated/MatrixKitStrings.swift
+    - path: ../Riot/Modules/Room/TimelineCells/Styles/RoomTimelineStyleIdentifier.swift

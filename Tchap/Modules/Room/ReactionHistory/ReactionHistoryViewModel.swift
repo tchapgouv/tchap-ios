@@ -23,7 +23,7 @@ final class ReactionHistoryViewModel: ReactionHistoryViewModelType {
     // MARK: - Constants
     
     private enum Pagination {
-        static let count: UInt = 30
+        static let count: Int = 30
     }
     
     // MARK: - Properties
@@ -97,18 +97,18 @@ final class ReactionHistoryViewModel: ReactionHistoryViewModelType {
     
     private func loadMoreHistory() {
         guard self.canLoadMoreHistory() else {
-            print("[ReactionHistoryViewModel] loadMoreHistory: pending loading or all data loaded")
+            MXLog.debug("[ReactionHistoryViewModel] loadMoreHistory: pending loading or all data loaded")
             return
         }
         
         guard self.operation == nil else {
-            print("[ReactionHistoryViewModel] loadMoreHistory: operation already pending")
+            MXLog.debug("[ReactionHistoryViewModel] loadMoreHistory: operation already pending")
             return
         }
         
         self.update(viewState: .loading)
         
-        self.operation = self.aggregations.reactionsEvents(forEvent: self.eventId, inRoom: self.roomId, from: self.nextBatch, limit: Pagination.count, success: { [weak self] (response) in
+        self.operation = self.aggregations.reactionsEvents(forEvent: self.eventId, inRoom: self.roomId, from: self.nextBatch, limit: Int(Pagination.count), success: { [weak self] (response) in
             guard let self = self else {
                 return
             }

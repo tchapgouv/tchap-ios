@@ -1,12 +1,29 @@
 input_dir: ../../
 output_dir: ../../
 ib:  
-  inputs: 
-    - Tchap/Modules/
-  filter: ^((?!DeactivateAccountViewController|ContactsViewController).)*\.(storyboard)
-  outputs:
-    - templateName: scenes-swift4
-      output: Tchap/Generated/Storyboards.swift
+  - inputs: 
+      - Tchap/Modules/
+    filter: ^((?!DeactivateAccountViewController|ContactsViewController).)*\.(storyboard)
+    outputs:
+      - templateName: scenes-swift4
+        output: Tchap/Generated/Storyboards.swift
+  - inputs: 
+      - Riot/Modules/CrossSigning
+      - Riot/Modules/Integrations
+      - Riot/Modules/KeyBackup
+      - Riot/Modules/KeyVerification
+      - Riot/Modules/QRCode
+      - Riot/Modules/Reauthentication
+      - Riot/Modules/Room
+      - Riot/Modules/Rooms
+      - Riot/Modules/Secrets
+      - Riot/Modules/SecureBackup
+      - Riot/Modules/ServiceTerms
+      - Riot/Modules/SideMenu
+      - Riot/Modules/SlidingModal
+    outputs:
+      - templatePath: Templates/IB/scenes-riot-swift4.stencil
+        output: Tchap/Generated/Storyboards_Riot.swift
 strings:
   inputs: Tchap/Assets/Localizations/fr.lproj/Tchap.strings
   outputs:
@@ -15,12 +32,18 @@ strings:
       params:
         enumName: TchapL10n
 xcassets:  
-  inputs:
-    - Tchap/Assets/Images.xcassets  
-    - Tchap/Assets/SharedImages.xcassets
-  outputs:  
-    - templateName: swift4
-      output: Tchap/Generated/Images.swift
+  - inputs:
+      - Tchap/Assets/Images.xcassets  
+      - Tchap/Assets/SharedImages.xcassets
+    outputs:
+      - templatePath: Templates/Assets/swift4-tchap.stencil
+        output: Tchap/Generated/Images.swift
+  - inputs:
+      - Riot/Assets/Images.xcassets  
+      - Riot/Assets/SharedImages.xcassets
+    outputs:
+      - templatePath: Templates/Assets/swift4-element.stencil
+        output: Tchap/Generated/Images_Riot.swift
 plist:
   - inputs: Tchap/Assets/Tchap-Defaults.plist
     outputs:

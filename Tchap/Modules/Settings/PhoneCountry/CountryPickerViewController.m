@@ -16,32 +16,28 @@
 
 #import "CountryPickerViewController.h"
 
-#import "RageShakeManager.h"
-#import "Analytics.h"
-#import "ThemeService.h"
 #import "GeneratedInterface-Swift.h"
 
-@interface CountryPickerViewController () <Stylable>
+@interface CountryPickerViewController ()
 {
+    /**
+     Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
+     */
+    id kThemeServiceDidChangeThemeNotificationObserver;
+    
     /**
      The fake top view displayed in case of vertical bounce.
      */
     UIView *topview;
 }
 
-// Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
-@property (nonatomic, weak) id kThemeServiceDidChangeThemeNotificationObserver;
-@property (strong, nonatomic) id<Style> currentStyle;
-
 @end
 
 @implementation CountryPickerViewController
 
-+ (instancetype)instantiateWithStyle:(id<Style>)style
++ (instancetype)instantiate
 {
-    CountryPickerViewController *countryPickerViewController = [CountryPickerViewController countryPickerViewController];
-    countryPickerViewController.currentStyle = style;
-    return countryPickerViewController;
+    return [CountryPickerViewController countryPickerViewController];
 }
 
 - (void)finalizeInit
@@ -67,89 +63,88 @@
     [self.tableView addSubview:topview];
 
     // Observe user interface theme change.
-    MXWeakify(self);
-    _kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
-        MXStrongifyAndReturnIfNil(self);
         [self userInterfaceThemeDidChange];
         
     }];
+    [self userInterfaceThemeDidChange];
 }
 
 - (void)userInterfaceThemeDidChange
 {
-    [self updateWithStyle:self.currentStyle];
+    [self updateTheme];
 }
 
-- (void)updateWithStyle:(id<Style>)style
+- (void)updateTheme
 {
-    self.currentStyle = style;
-    
     UINavigationBar *navigationBar = self.navigationController.navigationBar;
     if (navigationBar)
     {
-        [style applyStyleOnNavigationBar:navigationBar];
+        [ThemeService.shared.theme applyStyleOnNavigationBar:navigationBar];
     }
     
     if (self.searchController.searchBar)
     {
-        [style applyStyleOnSearchBar:self.searchController.searchBar];
+        [ThemeService.shared.theme applyStyleOnSearchBar:self.searchController.searchBar];
     }
     
-    //TODO Design the activvity indicator for Tchap
-    self.activityIndicator.backgroundColor = style.overlayBackgroundColor;
+    //TODO Design the activity indicator for Tchap
+    self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     
     // Use the primary bg color for the table view in plain style.
-    self.tableView.backgroundColor = style.backgroundColor;
-    topview.backgroundColor = style.backgroundColor;
+    self.tableView.backgroundColor = ThemeService.shared.theme.backgroundColor;
+    topview.backgroundColor = ThemeService.shared.theme.backgroundColor;
     
     if (self.tableView.dataSource)
     {
         [self.tableView reloadData];
     }
 
+    self.navigationController.navigationBar.translucent = true;
+    self.navigationController.navigationBar.backgroundColor = ThemeService.shared.theme.baseColor;
+
     [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return self.currentStyle.statusBarStyle;
+    return ThemeService.shared.theme.statusBarStyle;
 }
 
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    // Screen tracking
-    [[Analytics sharedInstance] trackScreen:@"CountryPicker"];
-    
     
     [self userInterfaceThemeDidChange];
 }
 
-- (void)dealloc
+- (void)destroy
 {
+    [super destroy];
+    
     [topview removeFromSuperview];
     topview = nil;
     
-    if (_kThemeServiceDidChangeThemeNotificationObserver)
+    if (kThemeServiceDidChangeThemeNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:_kThemeServiceDidChangeThemeNotificationObserver];
+        [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
+        kThemeServiceDidChangeThemeNotificationObserver = nil;
     }
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    cell.textLabel.textColor = self.currentStyle.primaryTextColor;
-    cell.detailTextLabel.textColor = self.currentStyle.secondaryTextColor;
-    cell.backgroundColor = self.currentStyle.backgroundColor;
+    cell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+    cell.detailTextLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
+    cell.backgroundColor = ThemeService.shared.theme.backgroundColor;
     
     // Update the selected background view
-    if (self.currentStyle.secondaryBackgroundColor)
+    if (ThemeService.shared.theme.selectedBackgroundColor)
     {
         cell.selectedBackgroundView = [[UIView alloc] init];
-        cell.selectedBackgroundView.backgroundColor = self.currentStyle.secondaryBackgroundColor;
+        cell.selectedBackgroundView.backgroundColor = ThemeService.shared.theme.selectedBackgroundColor;
     }
     else
     {

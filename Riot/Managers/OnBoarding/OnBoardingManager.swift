@@ -63,7 +63,7 @@ final public class OnBoardingManager: NSObject {
                     case .success:
                         success?()
                     case .failure(let error):
-                        NSLog("[OnBoardingManager] Create chat with riot-bot failed")
+                        MXLog.debug("[OnBoardingManager] Create chat with riot-bot failed")
                         failure?(error)
                     }
                 }
@@ -72,7 +72,7 @@ final public class OnBoardingManager: NSObject {
                 httpOperation.maxNumberOfTries = Constants.createRiotBotDMRequestMaxNumberOfTries
 
             case .failure(let error):
-                NSLog("[OnBoardingManager] riot-bot is unknown or the user hs is non federated. Do not try to create a room with riot-bot")
+                MXLog.debug("[OnBoardingManager] riot-bot is unknown or the user hs is non federated. Do not try to create a room with riot-bot")
                 failure?(error)
             }
         }
@@ -81,19 +81,18 @@ final public class OnBoardingManager: NSObject {
     // MARK: - Private
     
     private func isUserJoinedARoom() -> Bool {
-        guard let roomSummaries = self.session.roomsSummaries() else {
-            return false
-        }
+        var isUserJoinedARoom = false
         
-        var isUSerJoinedARoom = false
-        
-        for roomSummary in roomSummaries {
+        for room in session.rooms {
+            guard let roomSummary = room.summary else {
+                continue
+            }
             if case .join = roomSummary.membership {
-                isUSerJoinedARoom = true
+                isUserJoinedARoom = true
                 break
             }
         }
 
-        return isUSerJoinedARoom
+        return isUserJoinedARoom
     }
 }

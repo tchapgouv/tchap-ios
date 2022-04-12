@@ -16,7 +16,7 @@
 
 #import "GroupRoomsViewController.h"
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 #import "GroupRoomTableViewCell.h"
 
@@ -79,6 +79,8 @@
     // Adjust Top and Bottom constraints to take into account potential navBar and tabBar.
     [NSLayoutConstraint deactivateConstraints:@[_searchBarTopConstraint, _tableViewBottomConstraint]];
     
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wdeprecated"
     _searchBarTopConstraint = [NSLayoutConstraint constraintWithItem:self.topLayoutGuide
                                                            attribute:NSLayoutAttributeBottom
                                                            relatedBy:NSLayoutRelationEqual
@@ -94,10 +96,11 @@
                                                               attribute:NSLayoutAttributeBottom
                                                              multiplier:1.0f
                                                                constant:0.0f];
+    #pragma clang diagnostic pop
     
     [NSLayoutConstraint activateConstraints:@[_searchBarTopConstraint, _tableViewBottomConstraint]];
     
-    _searchBarView.placeholder = NSLocalizedStringFromTable(@"group_rooms_filter_rooms", @"Vector", nil);
+    _searchBarView.placeholder = [VectorL10n groupRoomsFilterRooms];
     _searchBarView.returnKeyType = UIReturnKeyDone;
     _searchBarView.autocapitalizationType = UITextAutocapitalizationTypeNone;
     
@@ -183,9 +186,6 @@
 {
     [super viewWillAppear:animated];
     
-    // Screen tracking
-    [[Analytics sharedInstance] trackScreen:@"GroupDetailsRooms"];
-    
     // Release the potential pushed view controller
     [self releasePushedViewController];
     
@@ -206,13 +206,13 @@
         // Indeed the group update notifications are triggered by the matrix session only for the user's groups.
         void (^success)(void) = ^void(void)
         {
-            [self refreshDisplayWithGroup:_group];
+            [self refreshDisplayWithGroup:self->_group];
         };
         
         // Trigger a refresh on the group rooms.
         [self.mxSession updateGroupRooms:_group success:(isPreview ? success : nil) failure:^(NSError *error) {
             
-            NSLog(@"[GroupRoomsViewController] viewWillAppear: group rooms update failed %@", _group.groupId);
+            MXLogDebug(@"[GroupRoomsViewController] viewWillAppear: group rooms update failed %@", self->_group.groupId);
             
         }];
     }

@@ -14,8 +14,6 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
-
 #import "SegmentedViewController.h"
 
 #import "ContactsTableViewController.h"
@@ -24,6 +22,8 @@
  The `UnifiedSearchViewController` screen is the global search screen.
  */
 @interface UnifiedSearchViewController : SegmentedViewController <UIGestureRecognizerDelegate, ContactsTableViewControllerDelegate>
+
++ (instancetype)instantiate;
 
 /**
  Open the public rooms directory page.

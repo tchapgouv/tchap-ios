@@ -16,7 +16,7 @@
 
 import Foundation
 
-protocol RoomAccessByLinkViewModelViewDelegate: class {
+protocol RoomAccessByLinkViewModelViewDelegate: AnyObject {
     func roomAccessByLinkViewModel(_ viewModel: RoomAccessByLinkViewModelType, didUpdateViewState viewSate: RoomAccessByLinkViewState)
 }
 

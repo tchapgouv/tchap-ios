@@ -17,7 +17,21 @@
 
 #import "RoomPreviewData.h"
 
+#import "GeneratedInterface-Swift.h"
+
 @implementation RoomPreviewData
+
+- (instancetype)initWithRoomId:(NSString *)roomId andSession:(MXSession *)mxSession
+{
+    self = [super init];
+    if (self)
+    {
+        _roomId = roomId;
+        _mxSession = mxSession;
+        _numJoinedMembers = -1;
+    }
+    return self;
+}
 
 - (instancetype)initWithRoomId:(NSString *)roomId roomAlias:(NSString*)roomAlias andSession:(MXSession *)mxSession
 {
@@ -76,6 +90,21 @@
             _roomName = _roomAliases.firstObject;
         }
         _wasInitializedWithPublicRoom = YES;
+    }
+    return self;
+}
+
+- (instancetype)initWithSpaceChildInfo:(MXSpaceChildInfo*)childInfo andSession:(MXSession*)mxSession
+{
+    self = [self init];
+    if (self)
+    {
+        _roomId = childInfo.childRoomId;
+        _roomName = childInfo.name;
+        _roomAvatarUrl = childInfo.avatarUrl;
+        _roomTopic = childInfo.topic;
+        _numJoinedMembers = childInfo.activeMemberCount;
+        _mxSession = mxSession;
     }
     return self;
 }

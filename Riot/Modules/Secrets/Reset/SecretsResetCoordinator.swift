@@ -56,10 +56,31 @@ final class SecretsResetCoordinator: SecretsResetCoordinatorType {
     func toPresentable() -> UIViewController {
         return self.secretsResetViewController
     }
+    
+    // MARK: - Private
+    // TODO: Tchap: Support Reauthentication (SecretsReset)
+//    private func showAuthentication(with request: AuthenticatedEndpointRequest) {
+//
+//        let reauthenticationCoordinatorParameters =  ReauthenticationCoordinatorParameters(session: self.session,
+//                                                                                           presenter: self.toPresentable(),
+//                                                                                           title: nil,
+//                                                                                           message: VectorL10n.secretsResetAuthenticationMessage,
+//                                                                                           authenticatedEndpointRequest: request)
+//
+//        let coordinator = ReauthenticationCoordinator(parameters: reauthenticationCoordinatorParameters)
+//        coordinator.delegate = self
+//        coordinator.start()
+//        self.add(childCoordinator: coordinator)
+//    }
 }
 
 // MARK: - SecretsResetViewModelCoordinatorDelegate
 extension SecretsResetCoordinator: SecretsResetViewModelCoordinatorDelegate {
+    
+    // TODO: Tchap: Support Reauthentication (SecretsReset)
+//    func secretsResetViewModel(_ viewModel: SecretsResetViewModelType, needsToAuthenticateWith request: AuthenticatedEndpointRequest) {
+//        self.showAuthentication(with: request)
+//    }
     
     func secretsResetViewModelDidResetSecrets(_ viewModel: SecretsResetViewModelType) {
         self.delegate?.secretsResetCoordinatorDidResetSecrets(self)
@@ -69,3 +90,22 @@ extension SecretsResetCoordinator: SecretsResetViewModelCoordinatorDelegate {
         self.delegate?.secretsResetCoordinatorDidCancel(self)
     }
 }
+
+// MARK: - ReauthenticationCoordinatorDelegate
+// TODO: Tchap: Support Reauthentication (SecretsReset)
+//extension SecretsResetCoordinator: ReauthenticationCoordinatorDelegate {
+//
+//    func reauthenticationCoordinatorDidComplete(_ coordinator: ReauthenticationCoordinatorType, withAuthenticationParameters authenticationParameters: [String: Any]?) {
+//
+//        self.secretsResetViewModel.process(viewAction: .authenticationInfoEntered(authenticationParameters ?? [:]))
+//    }
+//
+//    func reauthenticationCoordinatorDidCancel(_ coordinator: ReauthenticationCoordinatorType) {
+//        self.remove(childCoordinator: coordinator)
+//    }
+//
+//    func reauthenticationCoordinator(_ coordinator: ReauthenticationCoordinatorType, didFailWithError error: Error) {
+//        self.secretsResetViewModel.update(viewState: .error(error))
+//        self.remove(childCoordinator: coordinator)
+//    }
+//}

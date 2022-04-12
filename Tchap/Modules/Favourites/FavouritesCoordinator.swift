@@ -38,7 +38,7 @@ final class FavouritesCoordinator: FavouritesCoordinatorType {
     // MARK: - Setup
     
     init(session: MXSession) {
-        self.navigationRouter = NavigationRouter(navigationController: TCNavigationController())
+        self.navigationRouter = NavigationRouter(navigationController: RiotNavigationController())
         self.session = session
     }    
     

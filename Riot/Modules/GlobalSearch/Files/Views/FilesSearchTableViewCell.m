@@ -107,16 +107,19 @@
     switch (type)
     {
         case MXKAttachmentTypeImage:
-            image = [UIImage imageNamed:@"file_photo_icon"];
+            image = AssetImages_tchap.filePhotoIcon.image;
             break;
         case MXKAttachmentTypeAudio:
-            image = [UIImage imageNamed:@"file_music_icon"];
+            image = AssetImages_tchap.fileMusicIcon.image;
+            break;
+        case MXKAttachmentTypeVoiceMessage:
+            image = AssetImages_tchap.fileMusicIcon.image;
             break;
         case MXKAttachmentTypeVideo:
-            image = [UIImage imageNamed:@"file_video_icon"];
+            image = AssetImages_tchap.fileVideoIcon.image;
             break;
         case MXKAttachmentTypeFile:
-            image = [UIImage imageNamed:@"file_doc_icon"];
+            image = AssetImages_tchap.fileDocIcon.image;
             break;
         default:
             break;

@@ -16,19 +16,23 @@
  */
 
 #import <UIKit/UIKit.h>
-#import <MatrixKit/MatrixKit.h>
+#import "MatrixKit.h"
 
 #import "MasterTabBarController.h"
 #import "JitsiViewController.h"
 
 #import "RageShakeManager.h"
-#import "Analytics.h"
 
 #import "ThemeService.h"
 #import "UniversalLink.h"
 
 @protocol Configurable;
 @protocol LegacyAppDelegateDelegate;
+@class CallBar;
+@class CallPresenter;
+@class RoomNavigationParameters;
+@class RoomPreviewNavigationParameters;
+@class UniversalLinkParameters;
 
 #pragma mark - Notifications
 /**
@@ -50,7 +54,11 @@ extern NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey;
  */
 extern NSString *const AppDelegateUniversalLinkDidChangeNotification;
 
-@interface LegacyAppDelegate : UIResponder <UIApplicationDelegate, MXKCallViewControllerDelegate, UISplitViewControllerDelegate, UINavigationControllerDelegate, JitsiViewControllerDelegate>
+@interface LegacyAppDelegate : UIResponder <
+UIApplicationDelegate,
+UISplitViewControllerDelegate,
+UINavigationControllerDelegate
+>
 {
     // background sync management
     void (^_completionHandler)(UIBackgroundFetchResult);
@@ -112,6 +120,11 @@ extern NSString *const AppDelegateUniversalLinkDidChangeNotification;
 // Build Settings
 @property (nonatomic, readonly) id<Configurable> configuration;
 
+/**
+ Call presenter instance. May be nil unless at least one session initialized.
+ */
+@property (nonatomic, strong, readonly) CallPresenter *callPresenter;
+
 + (instancetype)theDelegate;
 
 #pragma mark - Push Notifications
@@ -162,7 +175,7 @@ extern NSString *const AppDelegateUniversalLinkDidChangeNotification;
  Log out all the accounts without confirmation.
  Show the authentication screen on successful logout.
 
- @param sendLogoutRequest Indicate whether send logout request to homeserver.
+ @param sendLogoutServerRequest Indicate whether send logout request to homeserver.
  @param completion the block to execute at the end of the operation.
  */
 - (void)logoutSendingRequestServer:(BOOL)sendLogoutServerRequest
@@ -172,7 +185,7 @@ extern NSString *const AppDelegateUniversalLinkDidChangeNotification;
  Present incoming key verification request to accept.
 
  @param incomingKeyVerificationRequest The incoming key verification request.
- @param The matrix session.
+ @param session The matrix session.
  @return Indicate NO if the key verification screen could not be presented.
  */
 - (BOOL)presentIncomingKeyVerificationRequest:(MXKeyVerificationRequest*)incomingKeyVerificationRequest
@@ -193,14 +206,23 @@ extern NSString *const AppDelegateUniversalLinkDidChangeNotification;
 #pragma mark - Matrix Room handling
 
 // Show a room and jump to the given event if event id is not nil otherwise go to last messages.
-- (void)showRoom:(NSString*)roomId andEventId:(NSString*)eventId withMatrixSession:(MXSession*)mxSession restoreInitialDisplay:(BOOL)restoreInitialDisplay completion:(void (^)(void))completion;
+- (void)showRoomWithParameters:(RoomNavigationParameters*)parameters completion:(void (^)(void))completion;
 
-- (void)showRoom:(NSString*)roomId andEventId:(NSString*)eventId withMatrixSession:(MXSession*)mxSession restoreInitialDisplay:(BOOL)restoreInitialDisplay;
+- (void)showRoomWithParameters:(RoomNavigationParameters*)parameters;
 
+// Restore display and show the room
 - (void)showRoom:(NSString*)roomId andEventId:(NSString*)eventId withMatrixSession:(MXSession*)mxSession;
 
 // Creates a new direct chat with the provided user id
 - (void)createDirectChatWithUserId:(NSString*)userId completion:(void (^)(void))completion;
+
+// Show room preview
+- (void)showRoomPreviewWithParameters:(RoomPreviewNavigationParameters*)parameters completion:(void (^)(void))completion;
+
+- (void)showRoomPreviewWithParameters:(RoomPreviewNavigationParameters*)parameters;
+
+// Restore display and show the room preview
+- (void)showRoomPreview:(RoomPreviewData*)roomPreviewData;
 
 // Reopen an existing direct room with this userId or creates a new one (if it doesn't exist)
 - (void)startDirectChatWithUserId:(NSString*)userId completion:(void (^)(void))completion;
@@ -213,28 +235,53 @@ extern NSString *const AppDelegateUniversalLinkDidChangeNotification;
  */
 - (BOOL)handleUniversalLinkFragment:(NSString*)fragment;
 
-#pragma mark - Jitsi call
+/**
+ Process the fragment part of a vector.im link.
+
+ @param fragment the fragment part of the universal link.
+ @param universalLinkURL the unprocessed the universal link URL (optional).
+ @return YES in case of processing success.
+ */
+- (BOOL)handleUniversalLinkFragment:(NSString*)fragment fromURL:(NSURL*)universalLinkURL;
 
 /**
- Open the Jitsi view controller from a widget.
+ Process the URL of a vector.im link.
 
- @param jitsiWidget the jitsi widget.
- @param video to indicate voice or video call.
+ @param universalLinkURL the universal link URL.
+ @return YES in case of processing success.
  */
-- (void)displayJitsiViewControllerWithWidget:(Widget*)jitsiWidget andVideo:(BOOL)video;
+- (BOOL)handleUniversalLinkURL:(NSURL*)universalLinkURL;
 
 /**
- The current Jitsi view controller being displayed.
+ Process universal link.
+ 
+ @param parameters the universal link parameters.
+ @return YES in case of processing success.
  */
-@property (nonatomic, readonly) JitsiViewController *jitsiViewController;
-
-#pragma mark - Call status handling
+- (BOOL)handleUniversalLinkWithParameters:(UniversalLinkParameters*)parameters;
 
 /**
- Call status window displayed when user goes back to app during a call.
+ Extract params from the URL fragment part (after '#') of a vector.im Universal link:
+ 
+ The fragment can contain a '?'. So there are two kinds of parameters: path params and query params.
+ It is in the form of /[pathParam1]/[pathParam2]?[queryParam1Key]=[queryParam1Value]&[queryParam2Key]=[queryParam2Value]
+ @note this method should be private but is used by RoomViewController. This should be moved to a univresal link parser class
+
+ @param fragment the fragment to parse.
+ @param outPathParams the decoded path params.
+ @param outQueryParams the decoded query params. If there is no query params, it will be nil.
  */
-@property (nonatomic, readonly) UIWindow* callStatusBarWindow;
-@property (nonatomic, readonly) UIButton* callStatusBarButton;
+- (void)parseUniversalLinkFragment:(NSString*)fragment outPathParams:(NSArray<NSString*> **)outPathParams outQueryParams:(NSMutableDictionary **)outQueryParams;
+
+/**
+ Open the dedicated space with the given ID.
+ 
+ This method will open only joined or invited spaces.
+ @note this method is temporary and should be moved to a dedicated coordinator
+ 
+ @param spaceId ID of the space.
+ */
+- (void)openSpaceWithId:(NSString*)spaceId;
 
 #pragma mark - App version management
 
@@ -243,11 +290,29 @@ extern NSString *const AppDelegateUniversalLinkDidChangeNotification;
 */
 - (void)checkAppVersion;
 
+#pragma mark - Authentication
+
+/// When SSO login succeeded, when SFSafariViewController is used, continue login with success parameters.
+/// @param loginToken The login token provided when SSO succeeded.
+/// @param txnId transaction id generated during SSO page presentation.
+/// returns YES if the SSO login can be continued.
+- (BOOL)continueSSOLoginWithToken:(NSString*)loginToken txnId:(NSString*)txnId;
+
 @end
 
 @protocol LegacyAppDelegateDelegate <NSObject>
 
 - (void)legacyAppDelegate:(LegacyAppDelegate*)legacyAppDelegate wantsToPopToHomeViewControllerAnimated:(BOOL)animated completion:(void (^)(void))completion;
 - (void)legacyAppDelegateRestoreEmptyDetailsViewController:(LegacyAppDelegate*)legacyAppDelegate;
+
+- (void)legacyAppDelegate:(LegacyAppDelegate*)legacyAppDelegate didAddMatrixSession:(MXSession*)session;
+
+- (void)legacyAppDelegate:(LegacyAppDelegate*)legacyAppDelegate didRemoveMatrixSession:(MXSession*)session;
+
+- (void)legacyAppDelegate:(LegacyAppDelegate*)legacyAppDelegate didAddAccount:(MXKAccount*)account;
+
+- (void)legacyAppDelegate:(LegacyAppDelegate*)legacyAppDelegate didRemoveAccount:(MXKAccount*)account;
+
+- (void)legacyAppDelegate:(LegacyAppDelegate*)legacyAppDelegate didNavigateToSpaceWithId:(NSString*)spaceId;
 
 @end

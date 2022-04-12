@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+#import "MatrixKit.h"
 
 @protocol Style;
 
@@ -23,9 +23,8 @@
 /**
  Creates and returns a new `CountryPickerViewController` object.
  
- @param style Used to setup view style parameters.
  @return An initialized `CountryPickerViewController` object if successful, `nil` otherwise.
  */
-+ (nonnull instancetype)instantiateWithStyle:(nonnull id<Style>)style;
++ (nonnull instancetype)instantiate;
 
 @end

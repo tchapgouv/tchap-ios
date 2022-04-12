@@ -123,7 +123,7 @@ final class RestClientBuilder {
                 certificateFingerprint = ""
             }
             
-            print("[RestClientBuilder] Unrecognize certificate for homeserver: \(homeServerURL.absoluteString)\nfingerprint: \(certificateFingerprint)")
+            MXLog.debug("[RestClientBuilder] Unrecognize certificate for homeserver: \(homeServerURL.absoluteString)\nfingerprint: \(certificateFingerprint)")
             
             return false
         }

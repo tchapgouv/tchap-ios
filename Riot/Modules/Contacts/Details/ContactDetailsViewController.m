@@ -18,7 +18,7 @@
 
 #import "ContactDetailsViewController.h"
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 #import "MXSession+Riot.h"
 
 #import "RoomMemberTitleView.h"
@@ -47,12 +47,12 @@
     /**
      Observe UIApplicationWillChangeStatusBarOrientationNotification to hide/show bubbles bg.
      */
-    id UIApplicationWillChangeStatusBarOrientationNotificationObserver;
+    __weak id UIApplicationWillChangeStatusBarOrientationNotificationObserver;
     
     /**
      The observer of the presence for matrix user.
      */
-    id mxPresenceObserver;
+    __weak id mxPresenceObserver;
     
     /**
      List of the basic actions on this contact.
@@ -79,7 +79,7 @@
     /**
      Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
      */
-    id kThemeServiceDidChangeThemeNotificationObserver;
+    __weak id kThemeServiceDidChangeThemeNotificationObserver;
     
     /**
      The current visibility of the status bar in this view controller.
@@ -98,7 +98,7 @@
                           bundle:[NSBundle bundleForClass:self.class]];
 }
 
-+ (instancetype)contactDetailsViewController
++ (instancetype)instantiate
 {
     return [[[self class] alloc] initWithNibName:NSStringFromClass(self.class)
                                           bundle:[NSBundle bundleForClass:self.class]];
@@ -142,6 +142,9 @@
     // Define directly the navigation titleView with the custom title view instance. Do not use anymore a container.
     self.navigationItem.titleView = contactTitleView;    
     
+    // Display leftBarButtonItems or leftBarButtonItem to the right of the Back button
+    self.navigationItem.leftItemsSupplementBackButton = YES;
+    
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
     [tap setNumberOfTouchesRequired:1];
     [tap setNumberOfTapsRequired:1];
@@ -179,8 +182,12 @@
         self.bottomImageView.hidden = (orientation.integerValue == UIInterfaceOrientationLandscapeLeft || orientation.integerValue == UIInterfaceOrientationLandscapeRight);
     }];
     
+    MXWeakify(self);
+    
     // Observe user interface theme change.
     kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        MXStrongifyAndReturnIfNil(self);
         
         [self userInterfaceThemeDidChange];
         
@@ -225,9 +232,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    // Screen tracking
-    [[Analytics sharedInstance] trackScreen:@"ContactDetails"];
     
     // Hide the bottom border of the navigation bar to display the expander header
     [self hideNavigationBarBorder:YES];
@@ -376,8 +380,12 @@
     // Be warned when the thumbnail is updated
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onThumbnailUpdate:) name:kMXKContactThumbnailUpdateNotification object:nil];
     
+    MXWeakify(self);
+    
     // Observe contact presence change
     mxPresenceObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKContactManagerMatrixUserPresenceChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        MXStrongifyAndReturnIfNil(self);
         
         NSString* matrixId = self.firstMatrixId;
         
@@ -650,7 +658,7 @@
 {
     if (section == directChatsIndex)
     {
-        return NSLocalizedStringFromTable(@"room_participants_action_section_direct_chats", @"Vector", nil);
+        return [VectorL10n roomParticipantsActionSectionDirectChats];
     }
     
     return nil;
@@ -663,19 +671,19 @@
     switch (action)
     {
         case ContactDetailsActionIgnore:
-            title = NSLocalizedStringFromTable(@"room_participants_action_ignore", @"Vector", nil);
+            title = [VectorL10n roomParticipantsActionIgnore];
             break;
         case ContactDetailsActionUnignore:
-            title = NSLocalizedStringFromTable(@"room_participants_action_unignore", @"Vector", nil);
+            title = [VectorL10n roomParticipantsActionUnignore];
             break;
         case ContactDetailsActionStartChat:
-            title = NSLocalizedStringFromTable(@"room_participants_action_start_chat", @"Vector", nil);
+            title = [VectorL10n roomParticipantsActionStartNewChat];
             break;
         case ContactDetailsActionStartVoiceCall:
-            title = NSLocalizedStringFromTable(@"room_participants_action_start_voice_call", @"Vector", nil);
+            title = [VectorL10n roomParticipantsActionStartVoiceCall];
             break;
         case ContactDetailsActionStartVideoCall:
-            title = NSLocalizedStringFromTable(@"room_participants_action_start_video_call", @"Vector", nil);
+            title = [VectorL10n roomParticipantsActionStartVideoCall];
             break;
         default:
             break;
@@ -725,9 +733,9 @@
         }
         else
         {
-            roomCell.avatarImageView.image = [UIImage imageNamed:@"start_chat"];
+            roomCell.avatarImageView.image = AssetImages.startChat.image;
             roomCell.avatarImageView.defaultBackgroundColor = [UIColor clearColor];
-            roomCell.titleLabel.text = NSLocalizedStringFromTable(@"room_participants_action_start_new_chat", @"Vector", nil);
+            roomCell.titleLabel.text = [VectorL10n roomParticipantsActionStartNewChat];
         }
         
         cell = roomCell;
@@ -869,9 +877,9 @@
                 // Prompt user to ignore content from this user
                 __weak __typeof(self) weakSelf = self;
                 [currentAlert dismissViewControllerAnimated:NO completion:nil];
-                currentAlert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"room_member_ignore_prompt"] message:nil preferredStyle:UIAlertControllerStyleAlert];
+                currentAlert = [UIAlertController alertControllerWithTitle:[MatrixKitL10n roomMemberIgnorePrompt] message:nil preferredStyle:UIAlertControllerStyleAlert];
                 
-                [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"yes"]
+                [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n yes]
                                                                  style:UIAlertActionStyleDefault
                                                                handler:^(UIAlertAction * action) {
                                                                    
@@ -890,7 +898,7 @@
                                                                                                    } failure:^(NSError *error) {
                                                                                                        
                                                                                                        [self removePendingActionMask];
-                                                                                                       NSLog(@"[ContactDetailsViewController] Ignore %@ failed", self.firstMatrixId);
+                                                                                                       MXLogDebug(@"[ContactDetailsViewController] Ignore %@ failed", self.firstMatrixId);
                                                                                                        
                                                                                                        // Notify MatrixKit user
                                                                                                        [[AppDelegate theDelegate] showErrorAsAlert:error];
@@ -900,7 +908,7 @@
                                                                    
                                                                }]];
                 
-                [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"no"]
+                [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n no]
                                                                  style:UIAlertActionStyleDefault
                                                                handler:^(UIAlertAction * action) {
                                                                    
@@ -931,7 +939,7 @@
                                             
                                             __strong __typeof(weakSelf)self = weakSelf;
                                             [self removePendingActionMask];
-                                            NSLog(@"[ContactDetailsViewController] Unignore %@ failed", self.firstMatrixId);
+                                            MXLogDebug(@"[ContactDetailsViewController] Unignore %@ failed", self.firstMatrixId);
                                             
                                             // Notify MatrixKit user
                                             [[AppDelegate theDelegate] showErrorAsAlert:error];
@@ -978,10 +986,10 @@
                         {
                             [self removePendingActionMask];
                             
-                            UIAlertController *alert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"error"]
-                                                                                           message:NSLocalizedStringFromTable(@"room_participants_start_new_chat_error_using_user_email_without_identity_server", @"Vector", nil)
+                            UIAlertController *alert = [UIAlertController alertControllerWithTitle:[MatrixKitL10n error]
+                                                                                           message:[VectorL10n roomParticipantsStartNewChatErrorUsingUserEmailWithoutIdentityServer]
                                                                                     preferredStyle:UIAlertControllerStyleAlert];
-                            [alert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:UIAlertActionStyleDefault handler:nil]];
+                            [alert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok] style:UIAlertActionStyleDefault handler:nil]];
                             [self presentViewController:alert animated:YES completion:nil];
                             
                             return;
@@ -1010,7 +1018,7 @@
                     void (^onFailure)(NSError *) = ^(NSError *error){
                         MXStrongifyAndReturnIfNil(self);
 
-                        NSLog(@"[ContactDetailsViewController] Create room failed");
+                        MXLogDebug(@"[ContactDetailsViewController] Create room failed");
 
                         self->roomCreationRequest = nil;
 
@@ -1076,7 +1084,7 @@
                     MXRoomCreationParameters *roomCreationParameters = [MXRoomCreationParameters parametersForDirectRoomWithUser:matrixId];
                     roomCreationRequest = [self.mainSession createRoomWithParameters:roomCreationParameters success:^(MXRoom *room) {
 
-                        roomCreationRequest = nil;
+                        self->roomCreationRequest = nil;
 
                         // Delay the call in order to be sure that the room is ready
                         dispatch_async(dispatch_get_main_queue(), ^{
@@ -1086,9 +1094,9 @@
 
                     } failure:^(NSError *error) {
 
-                        NSLog(@"[ContactDetailsViewController] Create room failed");
+                        MXLogDebug(@"[ContactDetailsViewController] Create room failed");
 
-                        roomCreationRequest = nil;
+                        self->roomCreationRequest = nil;
 
                         [self removePendingActionMask];
 
@@ -1132,7 +1140,7 @@
         avatarFullScreenView.stretchable = YES;
 
         MXWeakify(self);
-        [avatarFullScreenView setRightButtonTitle:[NSBundle mxk_localizedStringForKey:@"ok"] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
+        [avatarFullScreenView setRightButtonTitle:[MatrixKitL10n ok] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
             
             MXStrongifyAndReturnIfNil(self);
             [avatarFullScreenView dismissSelection];

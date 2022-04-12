@@ -30,7 +30,7 @@ final class PasswordPolicyService: PasswordPolicyServiceType {
     
     // MARK: - Public
     init(homeServer: String) {
-        self.httpClient = MXHTTPClient(baseURL: "\(homeServer)/\(kMXAPIPrefixPathUnstable)", accessToken: nil, andOnUnrecognizedCertificateBlock: nil)
+        self.httpClient = MXHTTPClient(baseURL: "\(homeServer)/\(kMXAPIPrefixPathUnstable)", andOnUnrecognizedCertificateBlock: nil)
     }
     
     func verifyPassword(_ passwword: String, completion: @escaping (MXResponse<PasswordPolicyVerificationResult>) -> Void) -> MXHTTPOperation? {
@@ -54,7 +54,7 @@ final class PasswordPolicyService: PasswordPolicyServiceType {
     
     private func getPasswordPolicy(completion: @escaping (MXResponse<PasswordPolicyType>) -> Void) -> MXHTTPOperation? {
         return httpClient.request(withMethod: "GET", path: "password_policy", parameters: nil, success: { (response: [AnyHashable: Any]?) in
-            NSLog("[PasswordPolicyService] password_policy resquest succeeded")
+            MXLog.debug("[PasswordPolicyService] password_policy resquest succeeded")
             guard let response = response else {
                 completion(.failure(PasswordPolicyServiceError.unknown))
                 return
@@ -70,7 +70,7 @@ final class PasswordPolicyService: PasswordPolicyServiceType {
             
             completion(.success(passwordPolicy))
         }, failure: { (error: Error?) in
-            NSLog("[PasswordPolicyService] password_policy resquest failed")
+            MXLog.debug("[PasswordPolicyService] password_policy resquest failed")
             if let error = error {
                 completion(.failure(error))
             } else {

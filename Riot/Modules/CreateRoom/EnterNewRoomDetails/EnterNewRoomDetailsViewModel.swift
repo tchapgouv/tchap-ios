@@ -35,11 +35,19 @@ final class EnterNewRoomDetailsViewModel: EnterNewRoomDetailsViewModelType {
     weak var coordinatorDelegate: EnterNewRoomDetailsViewModelCoordinatorDelegate?
     var roomCreationParameters: RoomCreationParameters = RoomCreationParameters()
     
+    private(set) var viewState: EnterNewRoomDetailsViewState {
+        didSet {
+            self.viewDelegate?.enterNewRoomDetailsViewModel(self, didUpdateViewState: viewState)
+        }
+    }
+    
     // MARK: - Setup
     
     init(session: MXSession) {
         self.session = session
-        roomCreationParameters.isEncrypted = session.vc_isE2EByDefaultEnabledByHSAdmin()
+        roomCreationParameters.isEncrypted = session.vc_homeserverConfiguration().isE2EEByDefaultEnabled &&  RiotSettings.shared.roomCreationScreenRoomIsEncrypted
+        roomCreationParameters.isPublic = RiotSettings.shared.roomCreationScreenRoomIsPublic
+        viewState = .loaded
     }
     
     deinit {
@@ -54,6 +62,8 @@ final class EnterNewRoomDetailsViewModel: EnterNewRoomDetailsViewModelType {
             self.loadData()
         case .chooseAvatar(let sourceView):
             self.chooseAvatar(sourceView: sourceView)
+        case .removeAvatar:
+            self.removeAvatar()
         case .cancel:
             self.cancelOperations()
             self.coordinatorDelegate?.enterNewRoomDetailsViewModelDidCancel(self)
@@ -65,11 +75,16 @@ final class EnterNewRoomDetailsViewModel: EnterNewRoomDetailsViewModelType {
     // MARK: - Private
     
     private func loadData() {
-        update(viewState: .loaded)
+        viewState = .loaded
     }
     
     private func chooseAvatar(sourceView: UIView) {
         self.coordinatorDelegate?.enterNewRoomDetailsViewModel(self, didTapChooseAvatar: sourceView)
+    }
+
+    private func removeAvatar() {
+        self.roomCreationParameters.userSelectedAvatar = nil
+        self.process(viewAction: .loadData)
     }
     
     private func fixRoomAlias(alias: String?) -> String? {
@@ -112,7 +127,7 @@ final class EnterNewRoomDetailsViewModel: EnterNewRoomDetailsViewModelType {
             parameters.initialStateEvents = [MXRoomCreationParameters.initialStateEventForEncryption(withAlgorithm: kMXCryptoMegolmAlgorithm)]
         }
         
-        update(viewState: .loading)
+        viewState = .loading
         
         currentOperation = session.createRoom(parameters: parameters) { (response) in
             switch response {
@@ -120,7 +135,7 @@ final class EnterNewRoomDetailsViewModel: EnterNewRoomDetailsViewModelType {
                 self.uploadAvatarIfRequired(ofRoom: room)
                 self.currentOperation = nil
             case .failure(let error):
-                self.update(viewState: .error(error))
+                self.viewState = .error(error)
                 self.currentOperation = nil
             }
         }
@@ -147,7 +162,7 @@ final class EnterNewRoomDetailsViewModel: EnterNewRoomDetailsViewModelType {
         }, failure: { [weak self] (error) in
             guard let self = self else { return }
             guard let error = error else { return }
-            self.update(viewState: .error(error))
+            self.viewState = .error(error)
         })
     }
     
@@ -158,16 +173,12 @@ final class EnterNewRoomDetailsViewModel: EnterNewRoomDetailsViewModelType {
                 self.coordinatorDelegate?.enterNewRoomDetailsViewModel(self, didCreateNewRoom: room)
                 self.currentOperation = nil
             case .failure(let error):
-                self.update(viewState: .error(error))
+                self.viewState = .error(error)
                 self.currentOperation = nil
             }
         }
     }
-    
-    private func update(viewState: EnterNewRoomDetailsViewState) {
-        self.viewDelegate?.enterNewRoomDetailsViewModel(self, didUpdateViewState: viewState)
-    }
-    
+        
     private func cancelOperations() {
         self.currentOperation?.cancel()
     }

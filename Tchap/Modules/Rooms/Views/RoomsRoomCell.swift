@@ -39,12 +39,12 @@ class RoomsRoomCell: RoomsCell {
         self.lastEventSenderName.text = nil
         self.roomCategory.isHidden = true
         
-        guard let session = self.roomCellData?.recentsDataSource?.mxSession, session.matrixRestClient != nil else {
+        guard let session = self.roomCellData?.mxSession, session.matrixRestClient != nil else {
             return
         }
         
         // Adjust last sender name
-        if let senderId = self.roomCellData?.lastEvent?.sender {
+        if let senderId = self.roomCellData?.roomSummary?.lastMessage?.sender {
             // Try to find user in local session
             let senderUser: User
             let userService = UserService(session: session)
@@ -58,19 +58,19 @@ class RoomsRoomCell: RoomsCell {
             self.lastEventSenderName.text = displayNameComponents.name
         }
         
-        if let category = self.roomCellData?.roomSummary.tc_roomCategory() {
-            switch category {
+        if let roomSummary = self.roomCellData?.roomSummary as? MXRoomSummary {
+            switch roomSummary.tc_roomCategory() {
             case .restrictedPrivateRoom:
                 self.roomCategory.text = TchapL10n.roomCategoryPrivateRoom
-                self.roomCategory.textColor = kColorCoral
+                self.roomCategory.textColor = ThemeService.shared().theme.roomTypeRestricted
                 self.roomCategory.isHidden = false
             case .unrestrictedPrivateRoom:
                 self.roomCategory.text = TchapL10n.roomCategoryExternRoom
-                self.roomCategory.textColor = kColorPumpkinOrange
+                self.roomCategory.textColor = ThemeService.shared().theme.roomTypeUnrestricted
                 self.roomCategory.isHidden = false
             case .forum:
                 self.roomCategory.text = TchapL10n.roomCategoryForumRoom
-                self.roomCategory.textColor = kColorJadeGreen
+                self.roomCategory.textColor = ThemeService.shared().theme.roomTypePublic
                 self.roomCategory.isHidden = false
             default:
                 break
@@ -81,9 +81,9 @@ class RoomsRoomCell: RoomsCell {
         self.updateAvatarView()
     }
     
-    override func update(style: Style) {
-        super.update(style: style)
-        self.lastEventSenderName.textColor = style.primaryTextColor
+    override func update(theme: Theme) {
+        super.update(theme: theme)
+        self.lastEventSenderName.textColor = theme.textPrimaryColor
     }
     
     private func updateAvatarView () {
@@ -91,13 +91,13 @@ class RoomsRoomCell: RoomsCell {
         let avatarBorderWidth: CGFloat
         
         // Set the right avatar border
-        if let accessRule = self.roomCellData?.roomSummary.tc_roomAccessRule() {
-            switch accessRule {
+        if let roomSummary = self.roomCellData?.roomSummary as? MXRoomSummary {
+            switch roomSummary.tc_roomAccessRule() {
             case .restricted:
-                avatarBorderColor = kColorDarkBlue
+                avatarBorderColor = ThemeService.shared().theme.borderMain
                 avatarBorderWidth = Constants.hexagonImageBorderWidthDefault
             case .unrestricted:
-                avatarBorderColor = kColorDarkGrey
+                avatarBorderColor = ThemeService.shared().theme.borderSecondary
                 avatarBorderWidth = Constants.hexagonImageBorderWidthUnrestricted
             default:
                 avatarBorderColor = UIColor.clear
@@ -110,4 +110,10 @@ class RoomsRoomCell: RoomsCell {
         
         self.avatarView.tc_makeHexagon(borderWidth: avatarBorderWidth, borderColor: avatarBorderColor)
     }
+    
+    // swiftlint:disable force_cast
+    func renderedCellData() -> MXKCellData! {
+        return (roomCellData as! MXKCellData)
+    }
+    // swiftlint:enable force_cast
 }

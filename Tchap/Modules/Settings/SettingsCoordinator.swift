@@ -16,7 +16,7 @@
 
 import Foundation
 
-protocol SettingsCoordinatorDelegate: class {
+protocol SettingsCoordinatorDelegate: AnyObject {
     func settingsCoordinator(_ coordinator: SettingsCoordinatorType, reloadMatrixSessionsByClearingCache clearCache: Bool)
 }
 

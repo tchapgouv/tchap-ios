@@ -16,8 +16,7 @@
  */
 
 #import <Foundation/Foundation.h>
-
-#import "MatrixKit/MatrixKit.h"
+#import <MatrixSDK/MatrixSDK.h>
 
 @interface Tools : NSObject
 
@@ -35,6 +34,13 @@
  @return YES if the URL is a Tchap permalink.
  */
 + (BOOL)isPermaLink:(NSURL*)url;
+
+/**
+ Detect if a URL is a universal link for the application.
+
+ @return YES if the URL can be handled by the app.
+ */
++ (BOOL)isUniversalLink:(NSURL*)url;
 
 /**
  Fix a http path url.

@@ -19,3 +19,7 @@
 
 #include "App-Common.xcconfig"
 #include "Pods/Target Support Files/Pods-TchapPods-Tchap/Pods-TchapPods-Tchap.release.xcconfig"
+
+PROVISIONING_PROFILE = $(TCHAP_PROVISIONING_PROFILE)
+PROVISIONING_PROFILE_SPECIFIER = $(TCHAP_PROVISIONING_PROFILE_SPECIFIER)
+

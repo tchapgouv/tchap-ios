@@ -16,7 +16,7 @@
 
 import UIKit
 
-protocol RoomsCoordinatorDelegate: class {
+protocol RoomsCoordinatorDelegate: AnyObject {
     func roomsCoordinator(_ coordinator: RoomsCoordinatorType, didSelectRoomID roomID: String)
 }
 
@@ -142,9 +142,9 @@ final class RoomsCoordinator: NSObject, RoomsCoordinatorType {
                             // Mark it as direct if this is not already done
                             if room.isDirect == false {
                                 self.session.setRoom(roomID, directWithUserId: thirdPartyInviteSenderID, success: {
-                                    NSLog("[RoomsCoordinator] joinRoomByHandlingThirdPartyInvite succeeded to mark direct this new joined room")
+                                    MXLog.debug("[RoomsCoordinator] joinRoomByHandlingThirdPartyInvite succeeded to mark direct this new joined room")
                                 }, failure: { _ in
-                                    NSLog("[RoomsCoordinator] joinRoomByHandlingThirdPartyInvite failed to mark direct this new joined room")
+                                    MXLog.debug("[RoomsCoordinator] joinRoomByHandlingThirdPartyInvite failed to mark direct this new joined room")
                                 })
                             }
                         }
@@ -165,10 +165,10 @@ final class RoomsCoordinator: NSObject, RoomsCoordinatorType {
             
             // Note: We don't use here `room.members` because of https://github.com/matrix-org/synapse/issues/4985
             room.liveTimeline { (eventTimeline) in
-                if let roomMembers = eventTimeline?.state.members,
+                if let roomMembers = eventTimeline?.state?.members,
                     let roomMember = roomMembers.member(withUserId: userID),
                     roomMember.thirdPartyInviteToken != nil {
-                    NSLog("[RoomsCoordinator] getPotentialThirdPartyInviteSenderID: The current user has accepted a third party invite for this room")
+                    MXLog.debug("[RoomsCoordinator] getPotentialThirdPartyInviteSenderID: The current user has accepted a third party invite for this room")
                     completion(.success(roomMember.originalEvent.sender))
                 } else {
                     completion(.success(nil))

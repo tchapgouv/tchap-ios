@@ -17,16 +17,17 @@
 
 #import "MediaAlbumContentViewController.h"
 
-#import "RageShakeManager.h"
-#import "ThemeService.h"
-#import "Analytics.h"
-
 #import <MobileCoreServices/MobileCoreServices.h>
 
 #import "GeneratedInterface-Swift.h"
 
 @interface MediaAlbumContentViewController ()
 {
+    /**
+     Observe UIApplicationWillEnterForegroundNotification to refresh bubbles when app leaves the background state.
+     */
+    id UIApplicationWillEnterForegroundNotificationObserver;
+    
     /**
      The current list of assets retrieved from collection.
      */
@@ -36,13 +37,12 @@
      The currently selected media. Nil when the multiselection is not active.
      */
     NSMutableArray <PHAsset*> *selectedAssets;
+    
+    /**
+     Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
+     */
+    id kThemeServiceDidChangeThemeNotificationObserver;
 }
-
-// Observe UIApplicationWillEnterForegroundNotification to refresh bubbles when app leaves the background state.
-@property (nonatomic, weak) id UIApplicationWillEnterForegroundNotificationObserver;
-
-// Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
-@property (nonatomic, weak) id kThemeServiceDidChangeThemeNotificationObserver;
 
 @end
 
@@ -87,15 +87,10 @@
         self.mediaTypes = @[(NSString *)kUTTypeImage];
     }
     
-    if (_allowsMultipleSelection)
-    {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"media_picker_select", @"Vector", nil) style:UIBarButtonItemStylePlain target:self action:@selector(onSelect:)];
-    }
-    
     MXWeakify(self);
-
+    
     // Observe UIApplicationWillEnterForegroundNotification to refresh captures collection when app leaves the background state.
-    _UIApplicationWillEnterForegroundNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillEnterForegroundNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    UIApplicationWillEnterForegroundNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillEnterForegroundNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         MXStrongifyAndReturnIfNil(self);
         
@@ -103,11 +98,17 @@
         self.assetsCollection = self->_assetsCollection;
         
     }];
+
+    if (_allowsMultipleSelection)
+    {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[VectorL10n mediaPickerSelect] style:UIBarButtonItemStylePlain target:self action:@selector(onSelect:)];
+    }
     
     // Observe user interface theme change.
-    _kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+    kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         MXStrongifyAndReturnIfNil(self);
+        
         [self userInterfaceThemeDidChange];
         
     }];
@@ -142,15 +143,14 @@
     return NO;
 }
 
-- (void)dealloc
+- (void)destroy
 {
-    if (_UIApplicationWillEnterForegroundNotificationObserver)
+    [super destroy];
+    
+    if (kThemeServiceDidChangeThemeNotificationObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:_UIApplicationWillEnterForegroundNotificationObserver];
-    }
-    if (_kThemeServiceDidChangeThemeNotificationObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:_kThemeServiceDidChangeThemeNotificationObserver];
+        [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
+        kThemeServiceDidChangeThemeNotificationObserver = nil;
     }
 }
 
@@ -163,9 +163,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    // Screen tracking
-    [[Analytics sharedInstance] trackScreen:@"MediaAlbumContent"];
     
     self.navigationItem.title = _assetsCollection.localizedTitle;
     
@@ -222,7 +219,7 @@
         
         assets = [PHAsset fetchAssetsInAssetCollection:assetsCollection options:options];
         
-        NSLog(@"[MediaAlbumVC] lists %tu assets", assets.count);
+        MXLogDebug(@"[MediaAlbumVC] lists %tu assets", assets.count);
     }
     else
     {
@@ -271,10 +268,10 @@
             
         }];
         
-        cell.bottomLeftIcon.image = [UIImage imageNamed:@"video_icon"];
+        cell.bottomLeftIcon.image = AssetImages.videoIcon.image;
         cell.bottomLeftIcon.hidden = (asset.mediaType == PHAssetMediaTypeImage);
 
-        cell.bottomRightIcon.image = [UIImage imageNamed:@"selection_tick"];
+        cell.bottomRightIcon.image = AssetImages.selectionTick.image;
         cell.bottomRightIcon.tintColor = ThemeService.shared.theme.tintColor;
         cell.bottomRightIcon.hidden = !selectedAssets || (NSNotFound == [selectedAssets indexOfObject:asset]);
 
@@ -351,7 +348,7 @@
     selectedAssets = [NSMutableArray array];
 
     // Update the nav buttons
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[NSBundle mxk_localizedStringForKey:@"send"] style:UIBarButtonItemStylePlain target:self action:@selector(onSelectionSend:)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[MatrixKitL10n send] style:UIBarButtonItemStylePlain target:self action:@selector(onSelectionSend:)];
     self.navigationItem.rightBarButtonItem.enabled = NO;
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onSelectionCancel:)];
 }
@@ -373,7 +370,7 @@
     selectedAssets = nil;
 
     // Update the nav buttons
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"media_picker_select", @"Vector", nil) style:UIBarButtonItemStylePlain target:self action:@selector(onSelect:)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[VectorL10n mediaPickerSelect] style:UIBarButtonItemStylePlain target:self action:@selector(onSelect:)];
     self.navigationItem.rightBarButtonItem.enabled = YES;
     self.navigationItem.leftBarButtonItem = nil;
 

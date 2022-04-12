@@ -16,7 +16,7 @@
 
 import Foundation
 
-protocol WelcomeCoordinatorDelegate: class {
+protocol WelcomeCoordinatorDelegate: AnyObject {
     func welcomeCoordinatorUserDidAuthenticate(_ coordinator: WelcomeCoordinatorType)
 }
 
@@ -26,7 +26,6 @@ final class WelcomeCoordinator: WelcomeCoordinatorType {
     
     // MARK: Private
     
-    private let rootRouter: RootRouterType
     private let navigationRouter: NavigationRouterType
     private let welcomeViewController: WelcomeViewController
     
@@ -38,19 +37,19 @@ final class WelcomeCoordinator: WelcomeCoordinatorType {
     
     // MARK: - Setup
     
-    init(router: RootRouterType) {
-        self.rootRouter = router
-        self.navigationRouter = NavigationRouter(navigationController: TCNavigationController())
+    init() {
+        let navController = RiotNavigationController()
+        navController.modalPresentationStyle = .fullScreen
+        self.navigationRouter = NavigationRouter(navigationController: navController)
         
         let welcomeViewController = WelcomeViewController.instantiate()
-        welcomeViewController.tc_removeBackTitle()
+        welcomeViewController.vc_removeBackTitle()
         self.welcomeViewController = welcomeViewController        
     }
     
     // MARK: - Public methods
     
     func start() {
-        self.rootRouter.setRootModule(self.navigationRouter)
         self.navigationRouter.setRootModule(self.welcomeViewController, hideNavigationBar: true, animated: false, popCompletion: nil)
         self.welcomeViewController.delegate = self
     }

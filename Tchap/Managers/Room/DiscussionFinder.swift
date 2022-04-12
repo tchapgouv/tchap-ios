@@ -22,15 +22,27 @@ enum DiscussionFinderError: Error {
 }
 
 /// `DiscussionFinder` is used to find the direct chat which is the most suitable discussion with a Tchap user.
-final class DiscussionFinder: DiscussionFinderType {
+@objc final class DiscussionFinder: NSObject, DiscussionFinderType {
     
     // MARK: Private
     private let session: MXSession
     
     // MARK: - Public
     
-    init(session: MXSession) {
+    @objc init(session: MXSession) {
         self.session = session
+    }
+    
+    @objc func hasDiscussion(for userID: String,
+                             completion: @escaping (Bool) -> Void) {
+        self.getDiscussionIdentifier(for: userID, includeInvite: true, autoJoin: true) { response in
+            switch response {
+            case .success(_):
+                completion(true)
+            case .failure(_):
+                completion(false)
+            }
+        }
     }
     
     func getDiscussionIdentifier(for userID: String, includeInvite: Bool = true, autoJoin: Bool = true, completion: @escaping (MXResponse<DiscussionFinderResult>) -> Void) {
@@ -67,8 +79,8 @@ final class DiscussionFinder: DiscussionFinderType {
                         switch response {
                         case .success(let roomMembers):
                             // Ignore room which are not 1:1
-                            if roomMembers?.members.count == 2, let member = roomMembers?.member(withUserId: userID) {
-                                switch member.membership {
+                            if roomMembers?.members.count == 2, let member: MXRoomMember = roomMembers?.member(withUserId: userID) {
+                                switch member.__membership {
                                 case .join:
                                     if !isPendingInvite {
                                         // the other user is present in this room (join-join)
@@ -120,30 +132,30 @@ final class DiscussionFinder: DiscussionFinderType {
             
             // Select the most suitable array
             if !joinedDiscussions.isEmpty {
-                print("[DiscussionFinder] user: \(userID) found a join-join discussion")
+                MXLog.debug("[DiscussionFinder] user: \(userID) found a join-join discussion")
                 self.getOldestRoomID(joinedDiscussions) { roomID in
                     completion(.success(.joinedDiscussion(roomID: roomID)))
                 }
             } else if !receivedInvites.isEmpty {
-                print("[DiscussionFinder] user: \(userID) found an invite-join discussion")
+                MXLog.debug("[DiscussionFinder] user: \(userID) found an invite-join discussion")
                 
                 if autoJoin {
                     self.joinPendingInvite(receivedInvites, completion: { (response) in
                         switch response {
-                        case .success (let roomID):
-                            print("[DiscussionFinder] user: \(userID) join a pending invite")
+                        case .success(let roomID):
+                            MXLog.debug("[DiscussionFinder] user: \(userID) join a pending invite")
                             completion(.success(.joinedDiscussion(roomID: roomID)))
                         case .failure(let error):
-                            print("[DiscussionFinder] user: \(userID) failed to join a pending invite")
+                            MXLog.debug("[DiscussionFinder] user: \(userID) failed to join a pending invite")
                             if case DiscussionFinderError.invalidReceivedInvite = error {
                                 // Fallback on other listed rooms, if any.
                                 if !sentInvites.isEmpty {
-                                    print("[DiscussionFinder] user: \(userID) found a join-invite discussion")
+                                    MXLog.debug("[DiscussionFinder] user: \(userID) found a join-invite discussion")
                                     self.getOldestRoomID(sentInvites) { roomID in
                                         completion(.success(.joinedDiscussion(roomID: roomID)))
                                     }
                                 } else if !leftDiscussions.isEmpty {
-                                    print("[DiscussionFinder] user: \(userID) found a join|invite-left discussion")
+                                    MXLog.debug("[DiscussionFinder] user: \(userID) found a join|invite-left discussion")
                                     self.getOldestRoomID(leftDiscussions) { roomID in
                                         completion(.success(.joinedDiscussion(roomID: roomID)))
                                     }
@@ -161,12 +173,12 @@ final class DiscussionFinder: DiscussionFinderType {
                     }
                 }
             } else if !sentInvites.isEmpty {
-                print("[DiscussionFinder] user: \(userID) found a join-invite discussion")
+                MXLog.debug("[DiscussionFinder] user: \(userID) found a join-invite discussion")
                 self.getOldestRoomID(sentInvites) { roomID in
                     completion(.success(.joinedDiscussion(roomID: roomID)))
                 }
             } else if !leftDiscussions.isEmpty {
-                print("[DiscussionFinder] user: \(userID) found a join|invite-left discussion")
+                MXLog.debug("[DiscussionFinder] user: \(userID) found a join|invite-left discussion")
                 self.getOldestRoomID(leftDiscussions) { roomID in
                     completion(.success(.joinedDiscussion(roomID: roomID)))
                 }
@@ -225,7 +237,7 @@ final class DiscussionFinder: DiscussionFinderType {
                     // Check whether we failed to join an empty room
                     let nsError = error as NSError
                     if let message = nsError.userInfo[NSLocalizedDescriptionKey] as? String, message == "No known servers" {
-                        print("[DiscussionFinder] Ignore a pending invite to an empty room")
+                        MXLog.debug("[DiscussionFinder] Ignore a pending invite to an empty room")
                         let updatedInvites = pendingInvites.filter { $0 != roomID }
                         if !updatedInvites.isEmpty {
                             // Loop to join another pending invite

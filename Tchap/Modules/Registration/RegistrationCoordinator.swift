@@ -16,7 +16,7 @@
 
 import Foundation
 
-protocol RegistrationCoordinatorDelegate: class {
+protocol RegistrationCoordinatorDelegate: AnyObject {
     func registrationCoordinatorDidRegisterUser(_ coordinator: RegistrationCoordinatorType)
     func registrationCoordinatorShowAuthentication(_ coordinator: RegistrationCoordinatorType)
 }
@@ -49,7 +49,7 @@ final class RegistrationCoordinator: RegistrationCoordinatorType {
         
         let registrationViewModel = RegistrationFormViewModel()
         let registrationFormViewController = RegistrationFormViewController.instantiate(viewModel: registrationViewModel)
-        registrationFormViewController.tc_removeBackTitle()
+        registrationFormViewController.vc_removeBackTitle()
         self.registrationFormViewController = registrationFormViewController
         
         self.activityIndicatorPresenter = ActivityIndicatorPresenter()
@@ -85,11 +85,11 @@ final class RegistrationCoordinator: RegistrationCoordinatorType {
             switch registrationResult {
             case .success:
                 // NOTE: Do not call delegate directly for the moment, wait for NSNotification.Name.legacyAppDelegateDidLogin
-                print("[RegistrationCoordinator] User did authenticate with success")
+                MXLog.debug("[RegistrationCoordinator] User did authenticate with success")
             case .failure(let error):
                 // Ignore unauthorized error
                 if let mxError = MXError(nsError: error), mxError.errcode == kMXErrCodeStringUnauthorized {
-                    print("[RegistrationCoordinator] The email validation is pending")
+                    MXLog.debug("[RegistrationCoordinator] The email validation is pending")
                     
                     let registrationEmailSentViewController = RegistrationEmailSentViewController.instantiate(userEmail: userEmail)
                     registrationEmailSentViewController.delegate = self
@@ -205,11 +205,11 @@ final class RegistrationCoordinator: RegistrationCoordinatorType {
     }
     
     private func registerLoginNotification() {
-        NotificationCenter.default.addObserver(self, selector: #selector(userDidLogin), name: NSNotification.Name.legacyAppDelegateDidLogin, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(userDidLogin), name: UserSessionsService.didAddUserSession, object: nil)
     }
     
     private func unregisterLoginNotification() {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.legacyAppDelegateDidLogin, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UserSessionsService.didAddUserSession, object: nil)
     }
     
     @objc private func userDidLogin() {
@@ -228,7 +228,7 @@ final class RegistrationCoordinator: RegistrationCoordinatorType {
         let tacURL = BuildSettings.applicationTermsConditionsUrlString
         if let tacViewController = WebViewViewController(url: tacURL) {
             tacViewController.applyVariant2Style()
-            tacViewController.tc_removeBackTitle()
+            tacViewController.vc_removeBackTitle()
             tacViewController.title = TchapL10n.registrationTermsAndConditionsTitle
             self.navigationRouter.push(tacViewController, animated: true, popCompletion: nil)
         }

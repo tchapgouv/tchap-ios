@@ -30,7 +30,7 @@ final class RoomBubbleCellLayout: NSObject {
     
     static let readReceiptsViewTopMargin: CGFloat = 5.0
     static let readReceiptsViewRightMargin: CGFloat = 6.0
-    static let readReceiptsViewHeight: CGFloat = 12.0
+    static let readReceiptsViewHeight: CGFloat = 16.0
     static let readReceiptsViewWidth: CGFloat = 150.0
     
     // Read marker
@@ -45,4 +45,5 @@ final class RoomBubbleCellLayout: NSObject {
     // Others
     
     static let encryptedContentLeftMargin: CGFloat = 15.0
+    static let urlPreviewViewTopMargin: CGFloat = 8.0
 }

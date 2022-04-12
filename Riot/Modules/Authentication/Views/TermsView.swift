@@ -19,8 +19,8 @@ import Reusable
 
 final class TermsView: UIView, NibOwnerLoadable, UITableViewDelegate, UITableViewDataSource {
 
-    @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var acceptButton: UIButton!
+    @IBOutlet private weak var tableView: UITableView!
+    @IBOutlet private weak var acceptButton: UIButton!
 
     @objc weak var delegate: MXKAuthInputsViewDelegate?
 
@@ -59,12 +59,6 @@ final class TermsView: UIView, NibOwnerLoadable, UITableViewDelegate, UITableVie
         commonInit()
     }
 
-    override func layoutSubviews() {
-        super.layoutSubviews()
-
-        acceptButton.layer.cornerRadius = 5
-    }
-
     private func commonInit() {
 
         tableView.delegate = self
@@ -73,8 +67,11 @@ final class TermsView: UIView, NibOwnerLoadable, UITableViewDelegate, UITableVie
         tableView.register(TableViewCellWithCheckBoxAndLabel.nib(), forCellReuseIdentifier: TableViewCellWithCheckBoxAndLabel.defaultReuseIdentifier())
 
         acceptButton.clipsToBounds = true
-        acceptButton.setTitle(NSLocalizedString("accept", tableName: "Vector", comment: ""), for: .normal)
-        acceptButton.setTitle(NSLocalizedString("accept", tableName: "Vector", comment: ""), for: .highlighted)
+        acceptButton.setTitle(VectorL10n.accept, for: .normal)
+        acceptButton.setTitle(VectorL10n.accept, for: .highlighted)
+        
+        acceptButton.layer.masksToBounds = true
+        acceptButton.layer.cornerRadius = 5
 
         customizeViewRendering()
     }

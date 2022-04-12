@@ -18,7 +18,7 @@
 
 import Foundation
 
-protocol FavouriteMessagesCoordinatorDelegate: class {
+protocol FavouriteMessagesCoordinatorDelegate: AnyObject {
     func favouriteMessagesCoordinatorDidCancel(_ coordinator: FavouriteMessagesCoordinatorType)
     func favouriteMessagesCoordinator(_ coordinator: FavouriteMessagesCoordinatorType, didShowRoomWithId roomId: String, onEventId eventId: String)
     func favouriteMessagesCoordinator(_ coordinator: FavouriteMessagesCoordinatorType, handlePermalinkFragment fragment: String) -> Bool

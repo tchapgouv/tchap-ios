@@ -19,41 +19,39 @@ import Foundation
 final class ForwardCoordinator: NSObject, ForwardCoordinatorType {
     
     private let router: NavigationRouterType
-    private let forwardViewController: ForwardViewController
     private let session: MXSession
-    private let content: [AnyHashable: Any]
+    private let shareItemProvider: SimpleShareItemProvider
+    private let shareItemSender: ShareItemSender
     private var errorPresenter: ErrorPresenter!
-    private var recentsViewController: ForwardRecentListViewController!
+    private var shareManager: ShareManager
 
     var childCoordinators: [Coordinator] = []
 
     // MARK: - Setup
     
-    init(session: MXSession, content: [AnyHashable: Any]) {
-        self.router = NavigationRouter(navigationController: TCNavigationController())
+    init(session: MXSession, shareItemProvider: SimpleShareItemProvider) {
+        let navController = RiotNavigationController()
+        navController.navigationBar.isHidden = true
+        self.router = NavigationRouter(navigationController: navController)
         self.session = session
-        self.content = content
-        let recentsViewController = ForwardRecentListViewController()
-        recentsViewController.displayList(ForwardDataSource(matrixSession: session))
-        self.recentsViewController = recentsViewController
-
-        let viewController = ForwardViewController.instantiate(with: Variant2Style.shared)
-        self.forwardViewController = viewController
+        self.shareItemProvider = shareItemProvider
+        self.shareItemSender = ShareItemSender(shareItemProvider: self.shareItemProvider)
         
-        self.errorPresenter = AlertErrorPresenter(viewControllerPresenter: viewController)
-
+        self.shareManager = ShareManager(shareItemSender: shareItemSender, type: .forward)
+        
+        self.errorPresenter = AlertErrorPresenter(viewControllerPresenter: shareManager.mainViewController())
+        
         super.init()
         
-        viewController.delegate = self
-        recentsViewController.delegate = self
+        self.shareManager.completionCallback = { result in
+            self.router.dismissModule(animated: true, completion: nil)
+        }
     }
     
     // MARK: - Public
     
     func start() {
-        self.forwardViewController.recentsViewController = self.recentsViewController
-        
-        self.router.setRootModule(forwardViewController)
+        self.router.setRootModule(shareManager.mainViewController())
     }
     
     func toPresentable() -> UIViewController {
@@ -75,54 +73,5 @@ final class ForwardCoordinator: NSObject, ForwardCoordinatorType {
         }
         
         return ErrorPresentableImpl(title: errorTitle, message: errorMessage)
-    }
-}
-
-// MARK: - ForwardViewControllerDelegate
-
-extension ForwardCoordinator: ForwardViewControllerDelegate {
-    func forwardControllerCancelButtonClicked(_ viewController: ForwardViewController) {
-        self.router.dismissModule(animated: true, completion: nil)
-    }
-    
-    func forwardController(_ viewController: ForwardViewController, searchBar: UISearchBar, textDidChange searchText: String) {
-        let patterns = searchText.isEmpty ? nil : [searchText]
-        self.recentsViewController.dataSource.search(withPatterns: patterns)
-    }
-    
-    func forwardController(_ viewController: ForwardViewController, searchBarCancelButtonClicked searchBar: UISearchBar) {
-        searchBar.text = ""
-        self.recentsViewController.dataSource.search(withPatterns: nil)
-        searchBar.resignFirstResponder()
-    }
-}
-
-// MARK: - MXKRecentListViewControllerDelegate
-
-extension ForwardCoordinator: MXKRecentListViewControllerDelegate {
-    func recentListViewController(_ recentListViewController: MXKRecentListViewController!, didSelectRoom roomId: String!, inMatrixSession mxSession: MXSession!) {
-        MXKRoomDataSourceManager.sharedManager(forMatrixSession: session)?.roomDataSource(forRoom: roomId, create: true, onComplete: { (dataSource) in
-            if let dataSource = dataSource {
-                self.forwardViewController.startActivityIndicator()
-                dataSource.sendMessage(withContent: self.content) { (response) in
-                        self.didForwardTo(roomId, response: response)
-                    } failure: { (error) in
-                        self.didForwardTo(roomId, error: error)
-                    }
-            } else {
-                let error = NSError(domain: "ForwardCoordinatorErrorDomain", code: 0)
-                self.didForwardTo(roomId, error: error)
-            }
-        })
-    }
-    
-    private func didForwardTo(_ roomId: String, response: String? = nil, error: Error? = nil) {
-        self.forwardViewController.stopActivityIndicator()
-
-        if let error = error {
-            self.errorPresenter.present(errorPresentable: errorPresentable(from: error), animated: true)
-        } else {
-            self.router.dismissModule(animated: true, completion: nil)
-        }
     }
 }

@@ -16,7 +16,7 @@
 
 import Foundation
 
-protocol RegistrationEmailSentViewControllerDelegate: class {
+protocol RegistrationEmailSentViewControllerDelegate: AnyObject {
     func registrationEmailSentViewControllerDidTapGoToLoginButton(_ registrationEmailSentViewController: RegistrationEmailSentViewController)
     func registrationEmailSentViewControllerDidTapEmailNotReceivedButton(_ registrationEmailSentViewController: RegistrationEmailSentViewController)
 }
@@ -36,7 +36,6 @@ final class RegistrationEmailSentViewController: UIViewController {
     // MARK: Private
     
     private var userEmail: String!
-    private var currentStyle: Style!
     
     // MARK: Public
     
@@ -44,9 +43,8 @@ final class RegistrationEmailSentViewController: UIViewController {
     
     // MARK: - Setup
     
-    class func instantiate(userEmail: String, style: Style = Variant2Style.shared) -> RegistrationEmailSentViewController {
+    class func instantiate(userEmail: String) -> RegistrationEmailSentViewController {
         let viewController = StoryboardScene.RegistrationEmailSentViewController.initialScene.instantiate()
-        viewController.currentStyle = style
         viewController.userEmail = userEmail
         return viewController
     }
@@ -73,7 +71,7 @@ final class RegistrationEmailSentViewController: UIViewController {
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.currentStyle.statusBarStyle
+        return ThemeService.shared().theme.statusBarStyle
     }
     
     // MARK: - Private
@@ -87,7 +85,7 @@ final class RegistrationEmailSentViewController: UIViewController {
     }
     
     private func userThemeDidChange() {
-        self.update(style: self.currentStyle)
+        self.updateTheme()
     }
     
     // MARK: - Actions
@@ -101,22 +99,20 @@ final class RegistrationEmailSentViewController: UIViewController {
     }
 }
 
-// MARK: - Stylable
-extension RegistrationEmailSentViewController: Stylable {
-    func update(style: Style) {
-        self.currentStyle = style
-        
-        self.view.backgroundColor = style.backgroundColor
+// MARK: - Theme
+private extension RegistrationEmailSentViewController {
+    func updateTheme() {
+        self.view.backgroundColor = ThemeService.shared().theme.backgroundColor
         
         if let navigationBar = self.navigationController?.navigationBar {
-            style.applyStyle(onNavigationBar: navigationBar)
+            ThemeService.shared().theme.applyStyle(onNavigationBar: navigationBar)
         }
         
-        self.emailSentInfoLabel.textColor = style.primarySubTextColor
-        self.userEmailLabel.textColor = style.secondaryTextColor
-        self.userInstructionsLabel.textColor = style.primarySubTextColor
+        self.emailSentInfoLabel.textColor = ThemeService.shared().theme.textTertiaryColor
+        self.userEmailLabel.textColor = ThemeService.shared().theme.textSecondaryColor
+        self.userInstructionsLabel.textColor = ThemeService.shared().theme.textTertiaryColor
         
-        style.applyStyle(onButton: self.goToLoginButton)
-        style.applyStyle(onButton: self.emailNotReceivedButton)
+        ThemeService.shared().theme.applyStyle(onButton: self.goToLoginButton)
+        ThemeService.shared().theme.applyStyle(onButton: self.emailNotReceivedButton)
     }
 }

@@ -95,7 +95,7 @@
         forceDirectContactsRefresh = YES;
         
         discoveredTchapContacts = [NSMutableDictionary dictionary];
-        thirdPartyIDResolver = [[ThirdPartyIDResolver alloc] initWithCredentials:mxSession.matrixRestClient.credentials];
+        thirdPartyIDResolver = [[ThirdPartyIDResolver alloc] initWithSession:mxSession];
         
         _userService = [[UserService alloc] initWithSession:self.mxSession];
         
@@ -690,10 +690,7 @@
                 }
             };
             
-            // Tchap: Consider the homeserver if the identity server is missing (this was the old behavior in Riot)
-            NSString *identityServer = self.mxSession.matrixRestClient.identityServer ? self.mxSession.matrixRestClient.identityServer : self.mxSession.matrixRestClient.homeserver;
             self->lookup3pidsOperation = [thirdPartyIDResolver bulkLookupWithThreepids:lookup3pidsArray
-                                                                        identityServer:identityServer
                                                                                success:success
                                                                                failure:^(NSError *error) {
                                                                                    NSLog(@"[ContactsDataSource] lookup3pids failed");

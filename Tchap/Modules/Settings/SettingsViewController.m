@@ -18,7 +18,7 @@
 
 #import "SettingsViewController.h"
 
-#import <MatrixKit/MatrixKit.h>
+#import "MatrixKit.h"
 
 #import <MediaPlayer/MediaPlayer.h>
 #import <MobileCoreServices/MobileCoreServices.h>
@@ -124,7 +124,6 @@ SingleImagePickerPresenterDelegate,
 MXKDeviceViewDelegate,
 UIDocumentInteractionControllerDelegate,
 MXKCountryPickerViewControllerDelegate,
-Stylable,
 ChangePasswordCoordinatorBridgePresenterDelegate,
 MXKDocumentPickerPresenterDelegate>
 {
@@ -187,7 +186,6 @@ MXKDocumentPickerPresenterDelegate>
 @property (nonatomic, strong) SingleImagePickerPresenter *imagePickerPresenter;
 
 @property (weak, nonatomic) DeactivateAccountViewController *deactivateAccountViewController;
-@property (strong, nonatomic) id<Style> currentStyle;
 
 #ifdef SUPPORT_KEYS_BACKUP
 @property (nonatomic, strong) ChangePasswordAlertPresenter *changePasswordAlertPresenter;
@@ -211,7 +209,6 @@ MXKDocumentPickerPresenterDelegate>
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
     SettingsViewController *settingsViewController = [storyboard instantiateViewControllerWithIdentifier:@"SettingsViewController"];
-    settingsViewController.currentStyle = Variant1Style.shared;
     return settingsViewController;
 }
 
@@ -322,36 +319,32 @@ MXKDocumentPickerPresenterDelegate>
 
 - (void)userInterfaceThemeDidChange
 {
-    [self updateWithStyle:self.currentStyle];
-    
+    [self updateTheme];
+        
     if (self.tableView.dataSource)
     {
         [self refreshSettings];
     }
 }
 
-- (void)updateWithStyle:(id<Style>)style
+- (void)updateTheme
 {
-    UINavigationBar *navigationBar = self.navigationController.navigationBar;
+    [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
     
-    if (navigationBar)
-    {
-        [style applyStyleOnNavigationBar:navigationBar];
-    }
-    
-    // @TODO Design the activvity indicator for Tchap
-    self.activityIndicator.backgroundColor = style.overlayBackgroundColor;
+    // @TODO Design the activity indicator for Tchap
+    self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     
     // Check the table view style to select its bg color.
-    self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? style.backgroundColor : style.secondaryBackgroundColor);
+    self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? ThemeService.shared.theme.backgroundColor : ThemeService.shared.theme.headerBackgroundColor);
     self.view.backgroundColor = self.tableView.backgroundColor;
+    self.tableView.separatorColor = ThemeService.shared.theme.lineBreakColor;
     
     [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return self.currentStyle.statusBarStyle;
+    return ThemeService.shared.theme.statusBarStyle;
 }
 
 - (void)didReceiveMemoryWarning
@@ -427,9 +420,6 @@ MXKDocumentPickerPresenterDelegate>
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    // Screen tracking
-    [[Analytics sharedInstance] trackScreen:@"Settings"];
     
     // Release the potential image picker presenter
     [self dismissImagePickerPresenter];
@@ -536,30 +526,30 @@ MXKDocumentPickerPresenterDelegate>
     // Crypto information
     NSMutableAttributedString *cryptoInformationString = [[NSMutableAttributedString alloc]
                                                           initWithString:NSLocalizedStringFromTable(@"settings_crypto_device_name", @"Vector", nil)
-                                                          attributes:@{NSForegroundColorAttributeName : self.currentStyle.primaryTextColor,
+                                                          attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
                                                                        NSFontAttributeName: [UIFont systemFontOfSize:17]}];
     [cryptoInformationString appendAttributedString:[[NSMutableAttributedString alloc]
                                                      initWithString:account.device.displayName ? account.device.displayName : @""
-                                                     attributes:@{NSForegroundColorAttributeName : self.currentStyle.primaryTextColor,
+                                                     attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
                                                                   NSFontAttributeName: [UIFont systemFontOfSize:17]}]];
     
     [cryptoInformationString appendAttributedString:[[NSMutableAttributedString alloc]
                                                      initWithString:NSLocalizedStringFromTable(@"settings_crypto_device_id", @"Vector", nil)
-                                                     attributes:@{NSForegroundColorAttributeName : self.currentStyle.primaryTextColor,
+                                                     attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
                                                                   NSFontAttributeName: [UIFont systemFontOfSize:17]}]];
     [cryptoInformationString appendAttributedString:[[NSMutableAttributedString alloc]
                                                      initWithString:account.device.deviceId ? account.device.deviceId : @""
-                                                     attributes:@{NSForegroundColorAttributeName : self.currentStyle.primaryTextColor,
+                                                     attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
                                                                   NSFontAttributeName: [UIFont systemFontOfSize:17]}]];
     
     [cryptoInformationString appendAttributedString:[[NSMutableAttributedString alloc]
                                                      initWithString:NSLocalizedStringFromTable(@"settings_crypto_device_key", @"Vector", nil)
-                                                     attributes:@{NSForegroundColorAttributeName : self.currentStyle.primaryTextColor,
+                                                     attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
                                                                   NSFontAttributeName: [UIFont systemFontOfSize:17]}]];
     NSString *fingerprint = account.mxSession.crypto.deviceEd25519Key;
     [cryptoInformationString appendAttributedString:[[NSMutableAttributedString alloc]
                                                      initWithString:fingerprint ? fingerprint : @""
-                                                     attributes:@{NSForegroundColorAttributeName : self.currentStyle.primaryTextColor,
+                                                     attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
                                                                   NSFontAttributeName: [UIFont boldSystemFontOfSize:17]}]];
     
     return cryptoInformationString;
@@ -813,12 +803,12 @@ MXKDocumentPickerPresenterDelegate>
     cell.mxkTextFieldLeadingConstraint.constant = 16;
     cell.mxkTextFieldTrailingConstraint.constant = 15;
     
-    cell.mxkLabel.textColor = self.currentStyle.primaryTextColor;
+    cell.mxkLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
     
     cell.mxkTextField.userInteractionEnabled = YES;
     cell.mxkTextField.borderStyle = UITextBorderStyleNone;
     cell.mxkTextField.textAlignment = NSTextAlignmentRight;
-    cell.mxkTextField.textColor = self.currentStyle.secondaryTextColor;
+    cell.mxkTextField.textColor = ThemeService.shared.theme.textSecondaryColor;
     cell.mxkTextField.font = [UIFont systemFontOfSize:16];
     cell.mxkTextField.placeholder = nil;
     
@@ -840,9 +830,9 @@ MXKDocumentPickerPresenterDelegate>
     cell.mxkLabelLeadingConstraint.constant = cell.separatorInset.left;
     cell.mxkSwitchTrailingConstraint.constant = 15;
     
-    cell.mxkLabel.textColor = self.currentStyle.primaryTextColor;
+    cell.mxkLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
     
-    cell.mxkSwitch.onTintColor = self.currentStyle.buttonBorderedBackgroundColor;
+    cell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
     [cell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
     
     // Force layout before reusing a cell (fix switch displayed outside the screen)
@@ -867,7 +857,7 @@ MXKDocumentPickerPresenterDelegate>
     }
     cell.textLabel.accessibilityIdentifier = nil;
     cell.textLabel.font = [UIFont systemFontOfSize:17];
-    cell.textLabel.textColor = self.currentStyle.primaryTextColor;
+    cell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
     
     return cell;
 }
@@ -876,7 +866,7 @@ MXKDocumentPickerPresenterDelegate>
 {
     MXKTableViewCellWithTextView *textViewCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithTextView defaultReuseIdentifier] forIndexPath:indexPath];
     
-    textViewCell.mxkTextView.textColor = self.currentStyle.primaryTextColor;
+    textViewCell.mxkTextView.textColor = ThemeService.shared.theme.textPrimaryColor;
     textViewCell.mxkTextView.font = [UIFont systemFontOfSize:17];
     textViewCell.mxkTextView.backgroundColor = [UIColor clearColor];
     textViewCell.mxkTextViewLeadingConstraint.constant = tableView.separatorInset.left;
@@ -893,7 +883,7 @@ MXKDocumentPickerPresenterDelegate>
 
     // set the cell to a default value to avoid application crashes
     UITableViewCell *cell = [[UITableViewCell alloc] init];
-    cell.backgroundColor = self.currentStyle.warnTextColor;
+    cell.backgroundColor = ThemeService.shared.theme.warningColor;
     
     // check if there is a valid session
     MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
@@ -921,7 +911,7 @@ MXKDocumentPickerPresenterDelegate>
         
         [signOutCell.mxkButton setTitle:title forState:UIControlStateNormal];
         [signOutCell.mxkButton setTitle:title forState:UIControlStateHighlighted];
-        [signOutCell.mxkButton setTintColor:self.currentStyle.buttonPlainTitleColor];
+        [signOutCell.mxkButton setTintColor:ThemeService.shared.theme.tintColor];
         signOutCell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
         
         [signOutCell.mxkButton  removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
@@ -953,7 +943,7 @@ MXKDocumentPickerPresenterDelegate>
             
             profileCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_profile_picture", @"Vector", nil);
             profileCell.accessibilityIdentifier=@"SettingsVCProfilPictureStaticText";
-            profileCell.mxkLabel.textColor = self.currentStyle.primaryTextColor;
+            profileCell.mxkLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
             
             // if the user defines a new avatar
             if (newAvatarImage)
@@ -1052,7 +1042,7 @@ MXKDocumentPickerPresenterDelegate>
         else if (row == userSettingsNightModeSepIndex)
         {
             UITableViewCell *sepCell = [[UITableViewCell alloc] init];
-            sepCell.backgroundColor = self.currentStyle.secondaryBackgroundColor;
+            sepCell.backgroundColor = ThemeService.shared.theme.selectedBackgroundColor;
             
             cell = sepCell;
         }
@@ -1073,11 +1063,11 @@ MXKDocumentPickerPresenterDelegate>
             NSString *title = NSLocalizedStringFromTable(@"settings_hide_from_users_directory_title", @"Tchap", nil);
             NSString *summary = NSLocalizedStringFromTable(@"settings_hide_from_users_directory_summary", @"Tchap", nil);
             NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString: title
-                                                                                               attributes:@{NSForegroundColorAttributeName : self.currentStyle.primaryTextColor,
+                                                                                               attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
                                                                                                             NSFontAttributeName: [UIFont systemFontOfSize:17.0]}];
             [attributedText appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n\n" attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:4]}]];
             [attributedText appendAttributedString:[[NSMutableAttributedString alloc] initWithString: summary
-                                                                                          attributes:@{NSForegroundColorAttributeName : self.currentStyle.secondaryTextColor,
+                                                                                          attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textSecondaryColor,
                                                                                                        NSFontAttributeName: [UIFont systemFontOfSize:14.0]}]];
             
             labelAndSwitchCell.mxkLabel.attributedText = attributedText;
@@ -1165,7 +1155,8 @@ MXKDocumentPickerPresenterDelegate>
             NSLocale *local = [[NSLocale alloc] initWithLocaleIdentifier:[[[NSBundle mainBundle] preferredLocalizations] objectAtIndex:0]];
             NSString *countryName = [local displayNameForKey:NSLocaleCountryCode value:countryCode];
             
-            cell.textLabel.textColor = self.currentStyle.primaryTextColor;
+            cell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+            cell.detailTextLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
             
             cell.textLabel.text = NSLocalizedStringFromTable(@"settings_contacts_phonebook_country", @"Vector", nil);
             cell.detailTextLabel.text = countryName;
@@ -1183,11 +1174,11 @@ MXKDocumentPickerPresenterDelegate>
             NSString *title = NSLocalizedStringFromTable(@"settings_show_join_leave_messages_title", @"Tchap", nil);
             NSString *summary = NSLocalizedStringFromTable(@"settings_show_join_leave_messages_summary", @"Tchap", nil);
             NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString: title
-                                                                                               attributes:@{NSForegroundColorAttributeName : self.currentStyle.primaryTextColor,
+                                                                                               attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
                                                                                                             NSFontAttributeName: [UIFont systemFontOfSize:17.0]}];
             [attributedText appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n\n" attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:4]}]];
             [attributedText appendAttributedString:[[NSMutableAttributedString alloc] initWithString: summary
-                                                                                          attributes:@{NSForegroundColorAttributeName : self.currentStyle.secondaryTextColor,
+                                                                                          attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textSecondaryColor,
                                                                                                        NSFontAttributeName: [UIFont systemFontOfSize:14.0]}]];
             
             labelAndSwitchCell.mxkLabel.attributedText = attributedText;
@@ -1282,7 +1273,7 @@ MXKDocumentPickerPresenterDelegate>
             NSString *btnTitle = NSLocalizedStringFromTable(@"settings_mark_all_as_read", @"Vector", nil);
             [markAllBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
             [markAllBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
-            [markAllBtnCell.mxkButton setTintColor:self.currentStyle.buttonPlainTitleColor];
+            [markAllBtnCell.mxkButton setTintColor:ThemeService.shared.theme.tintColor];
             markAllBtnCell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
             
             [markAllBtnCell.mxkButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
@@ -1307,7 +1298,7 @@ MXKDocumentPickerPresenterDelegate>
             NSString *btnTitle = NSLocalizedStringFromTable(@"settings_clear_cache", @"Vector", nil);
             [clearCacheBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
             [clearCacheBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
-            [clearCacheBtnCell.mxkButton setTintColor:self.currentStyle.buttonPlainTitleColor];
+            [clearCacheBtnCell.mxkButton setTintColor:ThemeService.shared.theme.tintColor];
             clearCacheBtnCell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
             
             [clearCacheBtnCell.mxkButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
@@ -1332,7 +1323,7 @@ MXKDocumentPickerPresenterDelegate>
             NSString *btnTitle = NSLocalizedStringFromTable(@"settings_report_bug", @"Vector", nil);
             [reportBugBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
             [reportBugBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
-            [reportBugBtnCell.mxkButton setTintColor:self.currentStyle.buttonPlainTitleColor];
+            [reportBugBtnCell.mxkButton setTintColor:ThemeService.shared.theme.tintColor];
             reportBugBtnCell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
 
             [reportBugBtnCell.mxkButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
@@ -1387,7 +1378,7 @@ MXKDocumentPickerPresenterDelegate>
             NSString *btnTitle = NSLocalizedStringFromTable(@"settings_crypto_export", @"Vector", nil);
             [exportKeysBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
             [exportKeysBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
-            [exportKeysBtnCell.mxkButton setTintColor:self.currentStyle.buttonPlainTitleColor];
+            [exportKeysBtnCell.mxkButton setTintColor:ThemeService.shared.theme.tintColor];
             exportKeysBtnCell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
 
             [exportKeysBtnCell.mxkButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
@@ -1412,7 +1403,7 @@ MXKDocumentPickerPresenterDelegate>
             NSString *btnTitle = NSLocalizedStringFromTable(@"settings_crypto_import", @"Tchap", nil);
             [importKeysBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
             [importKeysBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
-            [importKeysBtnCell.mxkButton setTintColor:self.currentStyle.buttonPlainTitleColor];
+            [importKeysBtnCell.mxkButton setTintColor:ThemeService.shared.theme.tintColor];
             importKeysBtnCell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
 
             [importKeysBtnCell.mxkButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
@@ -1445,7 +1436,7 @@ MXKDocumentPickerPresenterDelegate>
         NSString *btnTitle = NSLocalizedStringFromTable(@"settings_deactivate_my_account", @"Vector", nil);
         [deactivateAccountBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
         [deactivateAccountBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
-        [deactivateAccountBtnCell.mxkButton setTintColor:self.currentStyle.warnTextColor];
+        [deactivateAccountBtnCell.mxkButton setTintColor:ThemeService.shared.theme.warningColor];
         deactivateAccountBtnCell.mxkButton.titleLabel.font = [UIFont systemFontOfSize:17];
         
         [deactivateAccountBtnCell.mxkButton removeTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
@@ -1530,7 +1521,7 @@ MXKDocumentPickerPresenterDelegate>
     {
         // Customize label style
         UITableViewHeaderFooterView *tableViewHeaderFooterView = (UITableViewHeaderFooterView*)view;
-        tableViewHeaderFooterView.textLabel.textColor = self.currentStyle.primaryTextColor;
+        tableViewHeaderFooterView.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
         tableViewHeaderFooterView.textLabel.font = [UIFont systemFontOfSize:15];
     }
 }
@@ -1549,15 +1540,15 @@ MXKDocumentPickerPresenterDelegate>
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    cell.backgroundColor = self.currentStyle.backgroundColor;
+    cell.backgroundColor = ThemeService.shared.theme.backgroundColor;
     
     if (cell.selectionStyle != UITableViewCellSelectionStyleNone)
     {        
         // Update the selected background view
-        if (self.currentStyle.secondaryBackgroundColor)
+        if (ThemeService.shared.theme.selectedBackgroundColor)
         {
             cell.selectedBackgroundView = [[UIView alloc] init];
-            cell.selectedBackgroundView.backgroundColor = self.currentStyle.secondaryBackgroundColor;
+            cell.selectedBackgroundView.backgroundColor = ThemeService.shared.theme.selectedBackgroundColor;
         }
         else
         {
@@ -1720,7 +1711,7 @@ MXKDocumentPickerPresenterDelegate>
         {
             if (row == localContactsPhoneBookCountryIndex)
             {
-                CountryPickerViewController *countryPicker = [CountryPickerViewController instantiateWithStyle:self.currentStyle];
+                CountryPickerViewController *countryPicker = [CountryPickerViewController instantiate];
                 countryPicker.view.tag = SETTINGS_SECTION_CONTACTS_INDEX;
                 countryPicker.delegate = self;
                 countryPicker.showCountryCallingCode = YES;
@@ -1886,18 +1877,12 @@ MXKDocumentPickerPresenterDelegate>
 //
 //        RiotSettings.shared.enableCrashReport = NO;
 //
-//        [[Analytics sharedInstance] stop];
-//
 //        // Remove potential crash file.
 //        [MXLogger deleteCrashLog];
 //    }
 //    else
 //    {
 //        NSLog(@"[SettingsViewController] enable automatic crash report and analytics sending");
-//
-//        RiotSettings.shared.enableCrashReport = YES;
-//
-//        [[Analytics sharedInstance] start];
 //    }
 //}
 //

@@ -105,7 +105,7 @@ final class PublicRoomsDataSource: NSObject {
             self.updateRooms(publicRooms: publicRooms)
         }, onError: { [unowned self] error in
             // This could not happen for the moment as `getPublicRooms` catch errors and return an empty array
-            print("[PublicRoomsDataSource]: Fail to search public rooms")
+            MXLog.debug("[PublicRoomsDataSource]: Fail to search public rooms")
             self.state = MXKDataSourceStateFailed
             self.updateRooms(publicRooms: [])
         })

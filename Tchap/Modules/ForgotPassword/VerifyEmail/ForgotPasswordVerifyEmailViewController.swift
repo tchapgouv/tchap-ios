@@ -16,7 +16,7 @@
 
 import Foundation
 
-protocol ForgotPasswordVerifyEmailViewControllerDelegate: class {
+protocol ForgotPasswordVerifyEmailViewControllerDelegate: AnyObject {
     func forgotPasswordVerifyEmailViewControllerDidTapConfirmationButton(_ forgotPasswordVerifyEmailViewController: ForgotPasswordVerifyEmailViewController)
 }
 
@@ -32,7 +32,6 @@ final class ForgotPasswordVerifyEmailViewController: UIViewController {
     // MARK: Private
     
     private var userEmail: String!
-    private var currentStyle: Style!
     
     // MARK: Public
     
@@ -40,9 +39,8 @@ final class ForgotPasswordVerifyEmailViewController: UIViewController {
     
     // MARK: - Setup
     
-    class func instantiate(userEmail: String, style: Style = Variant2Style.shared) -> ForgotPasswordVerifyEmailViewController {
+    class func instantiate(userEmail: String) -> ForgotPasswordVerifyEmailViewController {
         let viewController = StoryboardScene.ForgotPasswordVerifyEmailViewController.initialScene.instantiate()
-        viewController.currentStyle = style
         viewController.userEmail = userEmail
         return viewController
     }
@@ -65,7 +63,7 @@ final class ForgotPasswordVerifyEmailViewController: UIViewController {
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.currentStyle.statusBarStyle
+        return ThemeService.shared().theme.statusBarStyle
     }
     
     // MARK: - Public
@@ -82,7 +80,7 @@ final class ForgotPasswordVerifyEmailViewController: UIViewController {
     }
     
     private func userThemeDidChange() {
-        self.update(style: self.currentStyle)
+        self.updateTheme()
     }
     
     // MARK: - Actions
@@ -92,19 +90,17 @@ final class ForgotPasswordVerifyEmailViewController: UIViewController {
     }
 }
 
-// MARK: - Stylable
-extension ForgotPasswordVerifyEmailViewController: Stylable {
-    func update(style: Style) {
-        self.currentStyle = style
-        
-        self.view.backgroundColor = style.backgroundColor
+// MARK: - Theme
+private extension ForgotPasswordVerifyEmailViewController {
+    func updateTheme() {
+        self.view.backgroundColor = ThemeService.shared().theme.backgroundColor
         
         if let navigationBar = self.navigationController?.navigationBar {
-            style.applyStyle(onNavigationBar: navigationBar)
+            ThemeService.shared().theme.applyStyle(onNavigationBar: navigationBar)
         }
         
-        self.instructionsLabel.textColor = style.secondaryTextColor
+        self.instructionsLabel.textColor = ThemeService.shared().theme.textSecondaryColor
         
-        style.applyStyle(onButton: self.confirmationButton)
+        ThemeService.shared().theme.applyStyle(onButton: self.confirmationButton)
     }
 }

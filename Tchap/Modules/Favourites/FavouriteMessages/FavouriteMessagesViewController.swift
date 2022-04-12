@@ -38,7 +38,6 @@ final class FavouriteMessagesViewController: UIViewController {
     // MARK: Private
 
     private var viewModel: FavouriteMessagesViewModelType!
-    private var currentStyle: Style!
     private var keyboardAvoider: KeyboardAvoider?
     private var errorPresenter: MXKErrorPresentation!
     private var activityPresenter: ActivityIndicatorPresenter!
@@ -57,10 +56,9 @@ final class FavouriteMessagesViewController: UIViewController {
 
     // MARK: - Setup
     
-    class func instantiate(with viewModel: FavouriteMessagesViewModelType, style: Style = Variant1Style.shared) -> FavouriteMessagesViewController {
+    class func instantiate(with viewModel: FavouriteMessagesViewModelType) -> FavouriteMessagesViewController {
         let viewController = StoryboardScene.FavouriteMessagesViewController.initialScene.instantiate()
         viewController.viewModel = viewModel
-        viewController.currentStyle = style
         return viewController
     }
     
@@ -109,24 +107,22 @@ final class FavouriteMessagesViewController: UIViewController {
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.currentStyle.statusBarStyle
+        return ThemeService.shared().theme.statusBarStyle
     }
     
     // MARK: - Private
     
-    private func update(style: Style) {
-        self.currentStyle = style
-        
-        self.tableView.backgroundColor = style.backgroundColor;
-        self.view.backgroundColor = style.backgroundColor
+    private func updateTheme() {
+        self.tableView.backgroundColor = ThemeService.shared().theme.backgroundColor
+        self.view.backgroundColor = ThemeService.shared().theme.backgroundColor
         
         if let navigationBar = self.navigationController?.navigationBar {
-            style.applyStyle(onNavigationBar: navigationBar)
+            ThemeService.shared().theme.applyStyle(onNavigationBar: navigationBar)
         }
     }
 
     private func userThemeDidChange() {
-        self.update(style: self.currentStyle)
+        self.updateTheme()
     }
     
     private func setupTableView() {
@@ -150,8 +146,6 @@ final class FavouriteMessagesViewController: UIViewController {
         switch viewState {
         case .loading:
             self.renderLoading()
-        case .sorted:
-            self.updateTitleInfo()
         case .loaded(roomBubbleCellDataList: let roomBubbleCellDataList):
             self.renderLoaded(roomBubbleCellDataList: roomBubbleCellDataList)
         case .updated:
@@ -162,6 +156,9 @@ final class FavouriteMessagesViewController: UIViewController {
             self.renderCancelledSelection()
         case .error(let error):
             self.render(error: error)
+        default:
+            break
+            // Do nothing
         }
     }
     
@@ -195,13 +192,8 @@ final class FavouriteMessagesViewController: UIViewController {
     
     private func setupTitleView() {
         // Build title view
-        self.titleView = RoomTitleView.instantiate(style: self.currentStyle)
-        self.updateTitleInfo()
+        self.titleView = RoomTitleView()
         self.navigationItem.titleView = titleView
-    }
-    
-    private func updateTitleInfo() {
-        self.titleView.fill(roomTitleViewModel: self.viewModel.titleViewModel)
     }
     
     private func scanBubbleDataIfNeeded(cellData: RoomBubbleCellData) {
@@ -222,7 +214,7 @@ final class FavouriteMessagesViewController: UIViewController {
     private func showExplanationAlert(event: MXEvent) {
         // Observe kMXEventDidDecryptNotification to remove automatically the dialog
         // if the user has shared the keys from another device
-        let alert = UIAlertController(title: VectorL10n.rerequestKeysAlertTitle, message: VectorL10n.rerequestKeysAlertMessage, preferredStyle: .alert)
+        let alert = UIAlertController(title: VectorL10n.rerequestKeysAlertTitle, message: VectorL10n.rerequestKeysAlertMessage(AppInfo.current.displayName), preferredStyle: .alert)
         
         self.mxEventDidDecryptNotificationObserver = NotificationCenter.default.addObserver(forName: NSNotification.Name.mxEventDidDecrypt, object: nil, queue: .main) { (notif) in
             if let decryptedEvent = notif.object as? MXEvent, decryptedEvent.eventId == event.eventId {
@@ -275,7 +267,7 @@ final class FavouriteMessagesViewController: UIViewController {
                     return
                 }
                 
-                NSLog("[FavouriteMessagesViewController] Tag event (%@) failed", event.eventId)
+                MXLog.debug("[FavouriteMessagesViewController] Tag event (%@) failed", event.eventId)
                 //Alert user
                 self.render(error: error)
             })
@@ -283,7 +275,7 @@ final class FavouriteMessagesViewController: UIViewController {
         
         // Copy action
         
-        var isCopyActionEnabled = attachment == nil || attachment?.type != MXKAttachmentTypeSticker
+        var isCopyActionEnabled = attachment == nil || attachment?.type != .sticker
         
         if attachment != nil && !BuildSettings.messageDetailsAllowCopyMedia {
             isCopyActionEnabled = false
@@ -310,12 +302,12 @@ final class FavouriteMessagesViewController: UIViewController {
                     if let textMessage = selectedComponent.textMessage {
                         MXKPasteboardManager.shared.pasteboard.string = textMessage
                     } else {
-                        NSLog("[RoomViewController] Contextual menu copy failed. Text is nil for room id/event id: %@/%@", selectedComponent.event.roomId, selectedComponent.event.eventId)
+                        MXLog.debug("[RoomViewController] Contextual menu copy failed. Text is nil for room id/event id: %@/%@", selectedComponent.event.roomId, selectedComponent.event.eventId)
                     }
                 }
                 
                 self.hideContextualMenu(animated: true)
-            } else if attachment?.type != MXKAttachmentTypeSticker {
+            } else if attachment?.type != .sticker {
                 self.hideContextualMenu(animated: true) {
                     self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
                     
@@ -353,12 +345,12 @@ final class FavouriteMessagesViewController: UIViewController {
                         self.present(activityViewController, animated: true, completion: nil)
                         
                     } else {
-                        NSLog("[RoomViewController] Contextual menu share failed. Text is nil for room id/event id: %@/%@", selectedComponent.event.roomId, selectedComponent.event.eventId)
+                        MXLog.debug("[RoomViewController] Contextual menu share failed. Text is nil for room id/event id: %@/%@", selectedComponent.event.roomId, selectedComponent.event.eventId)
                     }
                 }
                 
                 self.hideContextualMenu(animated: true)
-            } else if attachment?.type != MXKAttachmentTypeSticker {
+            } else if attachment?.type != .sticker {
                 
                 self.hideContextualMenu(animated: true)
                 
@@ -419,7 +411,7 @@ final class FavouriteMessagesViewController: UIViewController {
         
         // Add action for attachment
         if let attachment = inCell.bubbleData.attachment, BuildSettings.messageDetailsAllowSave {
-            if attachment.type == MXKAttachmentTypeImage || attachment.type == MXKAttachmentTypeVideo {
+            if attachment.type == .image || attachment.type == .video {
                 self.currentAlert.addAction(UIAlertAction(title: VectorL10n.roomEventActionSave, style: .default, handler: { [weak self] (action) in
                     guard let self = self else {
                         return
@@ -464,7 +456,7 @@ final class FavouriteMessagesViewController: UIViewController {
                 if let permalink = Tools.permalink(toEvent: selectedEvent.eventId, inRoom: selectedEvent.roomId) {
                     MXKPasteboardManager.shared.pasteboard.string = permalink
                 } else {
-                    NSLog("[FavouriteMessagesViewController] Contextual menu permalink action failed. Permalink is nil room id/event id: %@/%@", selectedEvent.roomId, selectedEvent.eventId)
+                    MXLog.debug("[FavouriteMessagesViewController] Contextual menu permalink action failed. Permalink is nil room id/event id: %@/%@", selectedEvent.roomId, selectedEvent.eventId)
                 }
             }))
         }
@@ -713,7 +705,7 @@ extension FavouriteMessagesViewController: MXKCellRenderingDelegate {
             
             // Click on a member. Do nothing in favourites case.
             } else if MXTools.isMatrixUserIdentifier(absoluteURLString) {
-                    print("[FavouriteMessagesViewController] showMemberDetails: Do nothing: \(absoluteURLString)")
+                MXLog.debug("[FavouriteMessagesViewController] showMemberDetails: Do nothing: \(absoluteURLString)")
                 
             // Open the clicked room
             } else if MXTools.isMatrixRoomIdentifier(absoluteURLString) || MXTools.isMatrixRoomAlias(absoluteURLString) {

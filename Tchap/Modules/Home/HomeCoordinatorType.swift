@@ -33,6 +33,13 @@ protocol HomeCoordinatorType: Coordinator, Presentable {
     ///   - roomName: The room name.
     ///   - enventID: An optional event id in this room on which the user wants to focus.
     func showRoomPreview(with roomIdOrAlias: String, roomName: String?, onEventID eventID: String?)
+
+    /// Open a specific room preview.
+    ///
+    /// - Parameters:
+    ///   - publicRoom: The public room object.
+    func showRoomPreview(with publicRoom: MXPublicRoom)
+
     
     /// Select the rooms tab and scroll to the corresponding room cell (if any).
     ///

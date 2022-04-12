@@ -1,0 +1,75 @@
+name: TchapTests
+
+schemes:
+  TchapTests:
+    analyze:
+      config: Debug
+    archive:
+      config: Release
+    build:
+      targets:
+        TchapTests:
+        - running
+        - testing
+        - profiling
+        - analyzing
+        - archiving
+    profile:
+      config: Release
+    run:
+      config: Debug
+      disableMainThreadChecker: true
+    test:
+      config: Debug
+      disableMainThreadChecker: true
+      targets:
+      - TchapTests
+
+targets:
+  TchapTests:
+    type: bundle.unit-test
+    platform: iOS
+
+    dependencies:
+    - target: Tchap
+
+    configFiles:
+      Debug: Debug.xcconfig
+      Release: Release.xcconfig
+
+    settings:
+      base:
+        BUNDLE_LOADER: $(TEST_HOST)
+        FRAMEWORK_SEARCH_PATHS: $(SDKROOT)/Developer/Library/Frameworks $(inherited)
+        INFOPLIST_FILE: TchapTests/SupportingFiles/Info.plist
+        LD_RUNPATH_SEARCH_PATHS: $(inherited) @executable_path/Frameworks @loader_path/Frameworks
+        PRODUCT_BUNDLE_IDENTIFIER: org.matrix.$(PRODUCT_NAME:rfc1034identifier)
+        PRODUCT_NAME: TchapTests
+        SWIFT_OBJC_BRIDGING_HEADER: TchapTests/SupportingFiles/TchapTests-Bridging-Header.h
+        TEST_HOST: $(BUILT_PRODUCTS_DIR)/Tchap.app/Tchap
+      configs:
+        Debug:
+        Release:
+          PROVISIONING_PROFILE: $(TCHAP_PROVISIONING_PROFILE)
+          PROVISIONING_PROFILE_SPECIFIER: $(TCHAP_PROVISIONING_PROFILE_SPECIFIER)
+
+    sources:
+    - path: .
+
+    # Tchap
+    - path: ../Tchap/Config/Configurable.swift
+    - path: ../Tchap/Config/BuildSettings.swift
+    - path: ../Tchap/Config/AppConfiguration.swift
+    - path: ../Tchap/Config/CommonConfiguration.swift
+
+    # Riot
+    - path: ../Riot/Categories/Bundle.swift
+    - path: ../Riot/Managers/Settings/RiotSettings.swift
+    - path: ../Riot/Managers/EncryptionKeyManager/EncryptionKeyManager.swift
+    - path: ../Riot/Managers/KeyValueStorage/
+    - path: ../Riot/Modules/Room/TimelineCells/Styles/RoomTimelineStyleIdentifier.swift
+    - path: ../Riot/PropertyWrappers
+
+    # Tests
+    - path: SupportingFiles/Info.plist
+      buildPhase: none

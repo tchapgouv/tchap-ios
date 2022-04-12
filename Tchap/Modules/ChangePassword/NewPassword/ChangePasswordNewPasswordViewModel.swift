@@ -124,7 +124,7 @@ final class ChangePasswordNewPasswordViewModel: ChangePasswordNewPasswordViewMod
     
     private func validate() {
         
-        print("Validate new password\npassword: \(String(describing: passwordFormTextViewModel.value))\nconfirm password: \(String(describing: confirmPasswordFormTextViewModel.value))")
+        MXLog.debug("Validate new password\npassword: \(String(describing: passwordFormTextViewModel.value))\nconfirm password: \(String(describing: confirmPasswordFormTextViewModel.value))")
         
         guard let newPassword = self.passwordFormTextViewModel.value else {
             self.update(viewState: .error(ChangePasswordNewPasswordViewModelError.missingPassword))
@@ -134,13 +134,13 @@ final class ChangePasswordNewPasswordViewModel: ChangePasswordNewPasswordViewMod
         let formError: Error?
         
         if newPassword.isEmpty {
-            print("[ChangePasswordNewPasswordViewModel] Missing Password")
+            MXLog.debug("[ChangePasswordNewPasswordViewModel] Missing Password")
             formError = ChangePasswordNewPasswordViewModelError.missingPassword
         } else if newPassword.count < FormRules.passwordMinLength {
-            print("[ChangePasswordNewPasswordViewModel] Invalid Password")
+            MXLog.debug("[ChangePasswordNewPasswordViewModel] Invalid Password")
             formError = ChangePasswordNewPasswordViewModelError.passwordTooShort
         } else if newPassword != self.confirmPasswordFormTextViewModel.value {
-            print("[ChangePasswordNewPasswordViewModel] Passwords don't match")
+            MXLog.debug("[ChangePasswordNewPasswordViewModel] Passwords don't match")
             formError = ChangePasswordNewPasswordViewModelError.passwordsDontMatch
         } else {
             formError = nil

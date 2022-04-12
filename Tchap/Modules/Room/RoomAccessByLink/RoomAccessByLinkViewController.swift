@@ -37,15 +37,13 @@ final class RoomAccessByLinkViewController: UIViewController {
     // MARK: Private
     
     private var viewModel: RoomAccessByLinkViewModelType!
-    private var currentStyle: Style!
     private var errorPresenter: MXKErrorPresentation!
     private var activityPresenter: ActivityIndicatorPresenter!
     
     // MARK: - Setup
     
-    class func instantiate(viewModel: RoomAccessByLinkViewModelType, style: Style = Variant2Style.shared) -> RoomAccessByLinkViewController {
+    class func instantiate(viewModel: RoomAccessByLinkViewModelType) -> RoomAccessByLinkViewController {
         let viewController = StoryboardScene.RoomAccessByLinkViewController.initialScene.instantiate()
-        viewController.currentStyle = style
         viewController.viewModel = viewModel
         return viewController
     }
@@ -69,8 +67,8 @@ final class RoomAccessByLinkViewController: UIViewController {
         self.viewModel.viewDelegate = self
         
         // Build title view
-        let titleView = RoomTitleView.instantiate(style: self.currentStyle)
-        titleView.fill(roomTitleViewModel: self.viewModel.titleViewModel)
+        let titleView = RoomTitleView()
+//        titleView.fill(roomTitleViewModel: self.viewModel.titleViewModel)
         self.navigationItem.titleView = titleView
         
         self.activityPresenter = ActivityIndicatorPresenter()
@@ -92,7 +90,7 @@ final class RoomAccessByLinkViewController: UIViewController {
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return self.currentStyle.statusBarStyle
+        return ThemeService.shared().theme.statusBarStyle
     }
     
     override func viewDidLayoutSubviews() {
@@ -104,7 +102,7 @@ final class RoomAccessByLinkViewController: UIViewController {
     // MARK: - Private
     
     private func userThemeDidChange() {
-        self.update(style: self.currentStyle)
+        self.updateTheme()
     }
     
     private func setupViews() {
@@ -193,7 +191,7 @@ final class RoomAccessByLinkViewController: UIViewController {
     
     @IBAction private func shareLinkButtonAction(_ sender: Any) {
         guard let link = self.roomLinkLabel.text, !link.isEmpty else {
-            print("[RoomAccessByLinkViewController] shareLinkButtonAction: no link to share")
+            MXLog.debug("[RoomAccessByLinkViewController] shareLinkButtonAction: no link to share")
             return
         }
         
@@ -227,24 +225,22 @@ final class RoomAccessByLinkViewController: UIViewController {
     }
 }
 
-// MARK: - Stylable
-extension RoomAccessByLinkViewController: Stylable {
-    func update(style: Style) {
-        self.currentStyle = style
-        
-        self.view.backgroundColor = style.backgroundColor
+// MARK: - Theme
+private extension RoomAccessByLinkViewController {
+    func updateTheme() {
+        self.view.backgroundColor = ThemeService.shared().theme.backgroundColor
         
         if let navigationBar = self.navigationController?.navigationBar {
-            style.applyStyle(onNavigationBar: navigationBar)
+            ThemeService.shared().theme.applyStyle(onNavigationBar: navigationBar)
         }
         
-        self.roomAccessByLinkStatusLabel.textColor = style.primarySubTextColor
-        self.roomLinkInfoLabel.textColor = style.secondaryTextColor
-        self.roomLinkLabel.textColor = style.boxTextColor
-        self.roomLinkBackgroundView.backgroundColor = style.boxBackgroundColor
+        self.roomAccessByLinkStatusLabel.textColor = ThemeService.shared().theme.textTertiaryColor
+        self.roomLinkInfoLabel.textColor = ThemeService.shared().theme.textSecondaryColor
+        self.roomLinkLabel.textColor = ThemeService.shared().theme.headerTextPrimaryColor
+        self.roomLinkBackgroundView.backgroundColor = ThemeService.shared().theme.headerBackgroundColor
         
-        style.applyStyle(onButton: self.shareLinkButton)
-        style.applyStyle(onSwitch: self.roomAccessByLinkSwitch)
+        ThemeService.shared().theme.applyStyle(onButton: self.shareLinkButton)
+        ThemeService.shared().theme.applyStyle(onSwitch: self.roomAccessByLinkSwitch)
     }
 }
 

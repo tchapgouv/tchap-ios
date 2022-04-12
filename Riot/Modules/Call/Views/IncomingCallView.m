@@ -17,7 +17,7 @@
 
 #import "IncomingCallView.h"
 
-#import <MatrixKit/MXKImageView.h>
+#import "MatrixKit.h"
 #import <MatrixSDK/MXMediaManager.h>
 
 #import "CircleButton.h"
@@ -89,7 +89,7 @@ static const CGFloat kButtonSize = 80.0;
         
         UIColor *answerButtonBorderColor = ThemeService.shared.theme.tintColor;
         
-        self.answerButton = [[CircleButton alloc] initWithImage:[UIImage imageNamed:@"voice_call_hangon_icon"]
+        self.answerButton = [[CircleButton alloc] initWithImage:AssetImages.voiceCallHangonIcon.image
                                                     borderColor:answerButtonBorderColor];
         self.answerButton.defaultBackgroundColor = ThemeService.shared.theme.backgroundColor;
         self.answerButton.tintColor = answerButtonBorderColor;
@@ -99,11 +99,11 @@ static const CGFloat kButtonSize = 80.0;
         self.answerTitleLabel.backgroundColor = ThemeService.shared.theme.backgroundColor;        
         self.answerTitleLabel.textColor = answerButtonBorderColor;
         self.answerTitleLabel.font = [UIFont systemFontOfSize:18.0 weight:UIFontWeightRegular];
-        self.answerTitleLabel.text = NSLocalizedStringFromTable(@"accept", @"Vector", nil);
+        self.answerTitleLabel.text = [VectorL10n accept];
         
         UIColor *rejectButtonBorderColor = ThemeService.shared.theme.warningColor;
         
-        self.rejectButton = [[CircleButton alloc] initWithImage:[UIImage imageNamed:@"voice_call_hangup_icon"]
+        self.rejectButton = [[CircleButton alloc] initWithImage:AssetImages.voiceCallHangupIcon.image
                                                     borderColor:rejectButtonBorderColor];
         self.rejectButton.defaultBackgroundColor = ThemeService.shared.theme.backgroundColor;
         self.rejectButton.tintColor = rejectButtonBorderColor;
@@ -113,7 +113,7 @@ static const CGFloat kButtonSize = 80.0;
         self.rejectTitleLabel.backgroundColor = ThemeService.shared.theme.backgroundColor;
         self.rejectTitleLabel.textColor = rejectButtonBorderColor;
         self.rejectTitleLabel.font = [UIFont systemFontOfSize:18.0 weight:UIFontWeightRegular];
-        self.rejectTitleLabel.text = NSLocalizedStringFromTable(@"decline", @"Vector", nil);
+        self.rejectTitleLabel.text = [VectorL10n decline];
 
         [self setupLayout];
     }

@@ -20,33 +20,52 @@
 
 #import "MXRoom+Riot.h"
 
-#import <MatrixKit/MatrixKit.h>
-
 #import "RoomViewController.h"
 
 #import "RageShakeManager.h"
-#import "DesignValues.h"
-#import "Analytics.h"
 
-#import "ThemeService.h"
+#import "TableViewCellWithCollectionView.h"
+#import "SectionHeaderView.h"
+
 #import "GeneratedInterface-Swift.h"
 
-@interface RecentsViewController ()
+NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewControllerDataReadyNotification";
+
+@interface RecentsViewController () </*CreateRoomCoordinatorBridgePresenterDelegate, RoomsDirectoryCoordinatorBridgePresenterDelegate,*/ RoomNotificationSettingsCoordinatorBridgePresenterDelegate/*, DialpadViewControllerDelegate, ExploreRoomCoordinatorBridgePresenterDelegate*/, SearchBarVisibilityDelegate>
 {
     // Tell whether a recents refresh is pending (suspended during editing mode).
     BOOL isRefreshPending;
     
     // Observe UIApplicationDidEnterBackgroundNotification to cancel editing mode when app leaves the foreground state.
-    id UIApplicationDidEnterBackgroundNotificationObserver;
+    __weak id UIApplicationDidEnterBackgroundNotificationObserver;
+    
+    // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
+    __weak id kAppDelegateDidTapStatusBarNotificationObserver;
     
     // Observe kMXNotificationCenterDidUpdateRules to update missed messages counts.
-    id kMXNotificationCenterDidUpdateRulesObserver;
+    __weak id kMXNotificationCenterDidUpdateRulesObserver;
     
     MXHTTPOperation *currentRequest;
     
+    // The fake search bar displayed at the top of the recents table. We switch on the actual search bar (self.recentsSearchBar)
+    // when the user selects it.
+    UISearchBar *tableSearchBar;
+    
     // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
-    id kThemeServiceDidChangeThemeNotificationObserver;
+    __weak id kThemeServiceDidChangeThemeNotificationObserver;
 }
+
+//@property (nonatomic, strong) CreateRoomCoordinatorBridgePresenter *createRoomCoordinatorBridgePresenter;
+//
+//@property (nonatomic, strong) RoomsDirectoryCoordinatorBridgePresenter *roomsDirectoryCoordinatorBridgePresenter;
+//
+//@property (nonatomic, strong) ExploreRoomCoordinatorBridgePresenter *exploreRoomsCoordinatorBridgePresenter;
+
+//@property (nonatomic, strong) SpaceFeatureUnavailablePresenter *spaceFeatureUnavailablePresenter;
+
+//@property (nonatomic, strong) CustomSizedPresentationController *customSizedPresentationController;
+
+@property (nonatomic, strong) RoomNotificationSettingsCoordinatorBridgePresenter *roomNotificationSettingsCoordinatorBridgePresenter;
 
 @end
 
@@ -76,16 +95,27 @@
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
     
-    // Set default screen name
-    _screenName = @"RecentsScreen";
-    
-    // Remove the search option from the navigation bar.
+    // Enable the search bar in the recents table, and remove the search option from the navigation bar.
+    _enableSearchBar = YES;
     self.enableBarButtonSearch = NO;
+    self.searchBarVisibilityDelegate = self;
     
     _enableDragging = NO;
     
     _enableStickyHeaders = NO;
-    _stickyHeaderHeight = 30.0;    
+    _stickyHeaderHeight = 30.0;
+    
+    // Tchap: Disable Fake SearchBar
+//    // Create the fake search bar
+//    tableSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 600, 44)];
+//    tableSearchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+//    tableSearchBar.showsCancelButton = NO;
+//    tableSearchBar.placeholder = [VectorL10n searchFilterPlaceholder];
+//    [tableSearchBar setImage:AssetImages.filterOff.image
+//            forSearchBarIcon:UISearchBarIconSearch
+//                       state:UIControlStateNormal];
+//
+//    tableSearchBar.delegate = self;
     
     displayedSectionHeaders = [NSMutableArray array];
     
@@ -111,6 +141,9 @@
 
     // Register key verification banner cells
     [self.recentsTableView registerNib:CrossSigningSetupBannerCell.nib forCellReuseIdentifier:CrossSigningSetupBannerCell.defaultReuseIdentifier];
+
+    [self.recentsTableView registerClass:SectionHeaderView.class
+      forHeaderFooterViewReuseIdentifier:SectionHeaderView.defaultReuseIdentifier];
     
     // Hide line separators of empty cells
     self.recentsTableView.tableFooterView = [[UIView alloc] init];
@@ -118,20 +151,30 @@
     // Apply dragging settings
     self.enableDragging = _enableDragging;
     
-    // Observe UIApplicationDidEnterBackgroundNotification to refresh bubbles when app leaves the foreground state.
     MXWeakify(self);
+    
+    // Observe UIApplicationDidEnterBackgroundNotification to refresh bubbles when app leaves the foreground state.
     UIApplicationDidEnterBackgroundNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidEnterBackgroundNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
-        // Leave potential editing mode
         MXStrongifyAndReturnIfNil(self);
+        
+        // Leave potential editing mode
         [self cancelEditionMode:self->isRefreshPending];
         
     }];
     
+    self.recentsSearchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    self.recentsSearchBar.placeholder = [VectorL10n searchFilterPlaceholder];
+    [self.recentsSearchBar setImage:AssetImages.filterOff.image
+                   forSearchBarIcon:UISearchBarIconSearch
+                              state:UIControlStateNormal];
+    [self.recentsSearchBar setShowsCancelButton:FALSE];
+
     // Observe user interface theme change.
     kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         MXStrongifyAndReturnIfNil(self);
+        
         [self userInterfaceThemeDidChange];
         
     }];
@@ -146,8 +189,15 @@
     
     // Use the primary bg color for the recents table view in plain style.
     self.recentsTableView.backgroundColor = ThemeService.shared.theme.backgroundColor;
+    self.recentsTableView.separatorColor = ThemeService.shared.theme.lineBreakColor;
     topview.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
     self.view.backgroundColor = ThemeService.shared.theme.backgroundColor;
+
+    [ThemeService.shared.theme applyStyleOnSearchBar:tableSearchBar];
+    [ThemeService.shared.theme applyStyleOnSearchBar:self.recentsSearchBar];
+
+    // Force table refresh
+    [self.recentsTableView reloadData];
     
     if (self.recentsSearchBar)
     {
@@ -159,6 +209,8 @@
         // Force table refresh
         [self cancelEditionMode:YES];
     }
+    
+//    [self.emptyView updateWithTheme:ThemeService.shared.theme];
 
     [self setNeedsStatusBarAppearanceUpdate];
 }
@@ -195,6 +247,7 @@
         [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
         kThemeServiceDidChangeThemeNotificationObserver = nil;
     }
+    self.searchBarVisibilityDelegate = nil;
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
@@ -214,9 +267,6 @@
 {
     [super viewWillAppear:animated];
 
-    // Screen tracking
-    [[Analytics sharedInstance] trackScreen:_screenName];
-
     // Reset back user interactions
     self.userInteractionEnabled = YES;
     
@@ -227,8 +277,21 @@
         [self.recentsTableView deselectRowAtIndexPath:indexPath animated:NO];
     }
     
+    MXWeakify(self);
+    
+    // Observe kAppDelegateDidTapStatusBarNotificationObserver.
+    kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        MXStrongifyAndReturnIfNil(self);
+        
+        [self scrollToTop:YES];
+        
+    }];
+    
     // Observe kMXNotificationCenterDidUpdateRules to refresh missed messages counts
     kMXNotificationCenterDidUpdateRulesObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXNotificationCenterDidUpdateRules object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+        
+        MXStrongifyAndReturnIfNil(self);
         
         [self refreshRecentsTable];
         
@@ -245,6 +308,12 @@
     // Leave potential editing mode
     [self cancelEditionMode:NO];
     
+    if (kAppDelegateDidTapStatusBarNotificationObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:kAppDelegateDidTapStatusBarNotificationObserver];
+        kAppDelegateDidTapStatusBarNotificationObserver = nil;
+    }
+    
     if (kMXNotificationCenterDidUpdateRulesObserver)
     {
         [[NSNotificationCenter defaultCenter] removeObserver:kMXNotificationCenterDidUpdateRulesObserver];
@@ -255,13 +324,27 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-
-    [self refreshCurrentSelectedCell:YES];
+    
+    // Release the current selected item (if any) except if the second view controller is still visible.
+//    if (self.splitViewController.isCollapsed)
+//    {
+//        // Release the current selected room (if any).
+//        [[AppDelegate theDelegate].masterTabBarController releaseSelectedItem];
+//    }
+//    else
+//    {
+        // In case of split view controller where the primary and secondary view controllers are displayed side-by-side onscreen,
+        // the selected room (if any) is highlighted.
+        [self refreshCurrentSelectedCell:YES];
+//    }
+    
+    [self.screenTimer start];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
+    [self.screenTimer stop];
 }
 
 - (void)viewDidLayoutSubviews
@@ -279,6 +362,15 @@
 
 - (void)refreshRecentsTable
 {
+    // Refresh the tabBar icon badges
+//    [[AppDelegate theDelegate].masterTabBarController refreshTabBarBadges];
+    
+    // do not refresh if there is a pending recent drag and drop
+//    if (movingCellPath)
+//    {
+//        return;
+//    }
+    
     isRefreshPending = NO;
     
     if (editedRoomId)
@@ -303,6 +395,15 @@
     
     [self.recentsTableView reloadData];
     
+    // Tchap: Disable fake search bar
+    // Check conditions to display the fake search bar into the table header
+//    if (_enableSearchBar && self.recentsSearchBar.isHidden && self.recentsTableView.tableHeaderView == nil)
+//    {
+//        // Add the search bar by hiding it by default.
+//        self.recentsTableView.tableHeaderView = tableSearchBar;
+//        self.recentsTableView.contentOffset = CGPointMake(0, self.recentsTableView.contentOffset.y + tableSearchBar.frame.size.height);
+//    }
+    
     if (_shouldScrollToTopOnRefresh)
     {
         [self scrollToTop:NO];
@@ -319,15 +420,58 @@
     }
 }
 
+- (void)hideSearchBar:(BOOL)hidden
+{
+    [super hideSearchBar:hidden];
+    
+    // Tchap: Disable fake search bar
+//    if (!hidden)
+//    {
+//        // Remove the fake table header view if any
+//        self.recentsTableView.tableHeaderView = nil;
+//        self.recentsTableView.contentInset = UIEdgeInsetsZero;
+//    }
+}
+
 #pragma mark -
 
 - (void)refreshCurrentSelectedCell:(BOOL)forceVisible
 {
-    NSIndexPath *indexPath = [self.recentsTableView indexPathForSelectedRow];
-    if (indexPath)
-    {
-        [self.recentsTableView deselectRowAtIndexPath:indexPath animated:NO];
-    }
+    // Update here the index of the current selected cell (if any) - Useful in landscape mode with split view controller.
+//    NSIndexPath *currentSelectedCellIndexPath = nil;
+//    MasterTabBarController *masterTabBarController = [AppDelegate theDelegate].masterTabBarController;
+//    if (masterTabBarController.selectedRoomId)
+//    {
+//        // Look for the rank of this selected room in displayed recents
+//        currentSelectedCellIndexPath = [self.dataSource cellIndexPathWithRoomId:masterTabBarController.selectedRoomId andMatrixSession:masterTabBarController.selectedRoomSession];
+//    }
+//
+//    if (currentSelectedCellIndexPath)
+//    {
+//        // Select the right row
+//        [self.recentsTableView selectRowAtIndexPath:currentSelectedCellIndexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+//
+//        if (forceVisible)
+//        {
+//            // Scroll table view to make the selected row appear at second position
+//            NSInteger topCellIndexPathRow = currentSelectedCellIndexPath.row ? currentSelectedCellIndexPath.row - 1: currentSelectedCellIndexPath.row;
+//            NSIndexPath* indexPath = [NSIndexPath indexPathForRow:topCellIndexPathRow inSection:currentSelectedCellIndexPath.section];
+//            if ([self.recentsTableView vc_hasIndexPath:indexPath])
+//            {
+//                [self.recentsTableView scrollToRowAtIndexPath:indexPath
+//                                             atScrollPosition:UITableViewScrollPositionTop
+//                                                     animated:NO];
+//            }
+//        }
+//    }
+//    else
+//    {
+        NSIndexPath *indexPath = [self.recentsTableView indexPathForSelectedRow];
+        if (indexPath)
+        {
+            [self.recentsTableView deselectRowAtIndexPath:indexPath animated:NO];
+        }
+//    }
 }
 
 - (void)cancelEditionMode:(BOOL)forceRefresh
@@ -353,6 +497,82 @@
 - (void)cancelEditionModeAndForceTableViewRefreshIfNeeded
 {
     [self cancelEditionMode:isRefreshPending];
+}
+
+- (void)joinRoom:(MXRoom*)room completion:(void(^)(BOOL succeed))completion
+{
+    [room join:^{
+        // `recentsTableView` will be reloaded `roomChangeMembershipStateDataSourceDidChangeRoomMembershipState` function
+        
+        if (completion)
+        {
+            completion(YES);
+        }
+        
+    } failure:^(NSError * _Nonnull error) {
+        MXLogDebug(@"[RecentsViewController] Failed to join an invited room (%@)", room.roomId);
+        [self presentRoomJoinFailedAlertForError:error completion:^{
+            if (completion)
+            {
+                completion(NO);
+            }
+        }];
+    }];
+}
+
+- (void)leaveRoom:(MXRoom*)room completion:(void(^)(BOOL succeed))completion
+{
+    // Decline the invitation
+    [room leave:^{
+        
+        // `recentsTableView` will be reloaded `roomChangeMembershipStateDataSourceDidChangeRoomMembershipState` function
+        
+        if (completion)
+        {
+            completion(YES);
+        }
+    } failure:^(NSError * _Nonnull error) {
+        MXLogDebug(@"[RecentsViewController] Failed to reject an invited room (%@)", room.roomId);
+        [[AppDelegate theDelegate] showErrorAsAlert:error];
+        
+        if (completion)
+        {
+            completion(NO);
+        }
+    }];
+}
+
+- (void)presentRoomJoinFailedAlertForError:(NSError*)error completion:(void(^)(void))completion
+{
+    MXWeakify(self);
+    NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
+    if ([msg isEqualToString:@"No known servers"])
+    {
+        // minging kludge until https://matrix.org/jira/browse/SYN-678 is fixed
+        // 'Error when trying to join an empty room should be more explicit'
+        msg = [MatrixKitL10n roomErrorJoinFailedEmptyRoom];
+    }
+    
+    [self->currentAlert dismissViewControllerAnimated:NO completion:nil];
+    
+    UIAlertController *errorAlert = [UIAlertController alertControllerWithTitle:[MatrixKitL10n roomErrorJoinFailedTitle]
+                                                                        message:msg
+                                                                 preferredStyle:UIAlertControllerStyleAlert];
+    
+    [errorAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
+                                                   style:UIAlertActionStyleDefault
+                                                 handler:^(UIAlertAction * action) {
+        MXStrongifyAndReturnIfNil(self);
+        self->currentAlert = nil;
+        
+        if (completion)
+        {
+            completion();
+        }
+    }]];
+    
+    [self presentViewController:errorAlert animated:YES completion:nil];
+    currentAlert = errorAlert;
 }
 
 #pragma mark - Sticky Headers
@@ -569,7 +789,7 @@
             }
             
             // Look for the lowest section index visible in the bottom sticky headers.
-            CGFloat maxVisiblePosY = self.recentsTableView.contentOffset.y + self.recentsTableView.frame.size.height - self.recentsTableView.mxk_adjustedContentInset.bottom;
+            CGFloat maxVisiblePosY = self.recentsTableView.contentOffset.y + self.recentsTableView.frame.size.height - self.recentsTableView.adjustedContentInset.bottom;
             UIView *lastDisplayedSectionHeader = displayedSectionHeaders.lastObject;
             
             for (UIView *header in _stickyHeadersBottomContainer.subviews)
@@ -656,11 +876,73 @@
 
 #pragma mark - Internal methods
 
+- (void)showPublicRoomsDirectory
+{
+    // Here the recents view controller is displayed inside a unified search view controller.
+    // Sanity check
+//    if (self.parentViewController && [self.parentViewController isKindOfClass:UnifiedSearchViewController.class])
+//    {
+//        // Show the directory screen
+//        [((UnifiedSearchViewController*)self.parentViewController) showPublicRoomsDirectory];
+//    }
+}
+
+- (void)showRoomWithRoomId:(NSString*)roomId inMatrixSession:(MXSession*)matrixSession
+{
+    // Avoid multiple openings of rooms
+    self.userInteractionEnabled = NO;
+
+    // Do not stack views when showing room
+    ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:NO stackAboveVisibleViews:NO];
+    
+    RoomNavigationParameters *parameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId
+                                                                                    eventId:nil
+                                                                                  mxSession:matrixSession
+                                                                           threadParameters:nil
+                                                                     presentationParameters:presentationParameters];
+    
+    [[AppDelegate theDelegate] showRoomWithParameters:parameters completion:^{
+        self.userInteractionEnabled = YES;
+    }];
+}
+
+- (void)showRoomPreviewWithData:(RoomPreviewData*)roomPreviewData
+{
+//    // Do not stack views when showing room
+//    ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:NO stackAboveVisibleViews:NO sender:nil sourceView:nil];
+//
+//    RoomPreviewNavigationParameters *parameters = [[RoomPreviewNavigationParameters alloc] initWithPreviewData:roomPreviewData presentationParameters:presentationParameters];
+//
+//    [[AppDelegate theDelegate] showRoomPreviewWithParameters:parameters];
+}
+
 // Disable UI interactions in this screen while we are going to open another screen.
 // Interactions on reset on viewWillAppear.
 - (void)setUserInteractionEnabled:(BOOL)userInteractionEnabled
 {
     self.view.userInteractionEnabled = userInteractionEnabled;
+}
+
+//- (RecentsDataSource*)recentsDataSource
+//{
+//    RecentsDataSource* recentsDataSource = nil;
+//
+//    if ([self.dataSource isKindOfClass:[RecentsDataSource class]])
+//    {
+//        recentsDataSource = (RecentsDataSource*)self.dataSource;
+//    }
+//
+//    return recentsDataSource;
+//}
+
+- (void)showSpaceInviteNotAvailable
+{
+//    if (!self.spaceFeatureUnavailablePresenter)
+//    {
+//        self.spaceFeatureUnavailablePresenter = [SpaceFeatureUnavailablePresenter new];
+//    }
+//    
+//    [self.spaceFeatureUnavailablePresenter presentUnavailableFeatureFrom:self animated:YES];
 }
 
 #pragma mark - MXKDataSourceDelegate
@@ -669,11 +951,12 @@
 {
     id<MXKRecentCellDataStoring> cellDataStoring = (id<MXKRecentCellDataStoring> )cellData;
     
-    if (cellDataStoring.roomSummary.room.summary.membership == MXMembershipInvite)
-    {
+    if ([cellDataStoring.roomSummary isKindOfClass:[MXRoomSummary class]] &&
+         ((MXRoomSummary *)cellDataStoring.roomSummary).membership == MXMembershipInvite)    {
         return RoomsInviteCell.class;
     }
-    else if (cellDataStoring.roomSummary.tc_isServerNotice)
+    else if ([cellDataStoring.roomSummary isKindOfClass:[MXRoomSummary class]] &&
+             ((MXRoomSummary *)cellDataStoring.roomSummary).tc_isServerNotice)
     {
         return RoomsTchapInfoCell.class;
     }
@@ -697,6 +980,115 @@
     }
     
     return nil;
+}
+
+- (void)dataSource:(MXKDataSource *)dataSource didRecognizeAction:(NSString *)actionIdentifier inCell:(id<MXKCellRendering>)cell userInfo:(NSDictionary *)userInfo
+{
+//    // Handle here user actions on recents for Riot app
+//    if ([actionIdentifier isEqualToString:kInviteRecentTableViewCellPreviewButtonPressed])
+//    {
+//        // Retrieve the invited room
+//        MXRoom *invitedRoom = userInfo[kInviteRecentTableViewCellRoomKey];
+//
+//        if (invitedRoom.summary.roomType == MXRoomTypeSpace)
+//        {
+//            // Indicates that spaces are not supported
+//            [self showSpaceInviteNotAvailable];
+//            return;
+//        }
+//
+//        // Display the room preview
+//        [self showRoomWithRoomId:invitedRoom.roomId inMatrixSession:invitedRoom.mxSession];
+//    }
+//    else
+    // Tchap: Use Tchap keys here.
+    if ([actionIdentifier isEqualToString:RoomsInviteCell.actionJoinInvite])
+    {
+        // Retrieve the invited room
+        MXRoom *invitedRoom = userInfo[RoomsInviteCell.keyRoom];
+
+        if (invitedRoom.summary.roomType == MXRoomTypeSpace)
+        {
+            // Indicates that spaces are not supported
+            [self showSpaceInviteNotAvailable];
+            return;
+        }
+
+        // Accept invitation
+        [self joinRoom:invitedRoom completion:nil];
+    }
+    else if ([actionIdentifier isEqualToString:RoomsInviteCell.actionDeclineInvite])
+    {
+        // Retrieve the invited room
+        MXRoom *invitedRoom = userInfo[RoomsInviteCell.keyRoom];
+
+        [self cancelEditionMode:isRefreshPending];
+
+        // Decline the invitation
+        [self leaveRoom:invitedRoom completion:nil];
+    }
+    else
+    {
+        // Keep default implementation for other actions if any
+        if ([super respondsToSelector:@selector(cell:didRecognizeAction:userInfo:)])
+        {
+            [super dataSource:dataSource didRecognizeAction:actionIdentifier inCell:cell userInfo:userInfo];
+        }
+    }
+}
+
+- (void)dataSource:(MXKDataSource *)dataSource didCellChange:(id)changes
+{
+    BOOL cellReloaded = NO;
+    if ([changes isKindOfClass:NSNumber.class])
+    {
+        NSInteger section = ((NSNumber *)changes).integerValue;
+        if (section >= 0)
+        {
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:section];
+            UITableViewCell *cell = [self.recentsTableView cellForRowAtIndexPath:indexPath];
+            if ([cell isKindOfClass:TableViewCellWithCollectionView.class])
+            {
+                TableViewCellWithCollectionView *collectionViewCell = (TableViewCellWithCollectionView *)cell;
+                [collectionViewCell.collectionView reloadData];
+                cellReloaded = YES;
+
+                CGRect headerFrame = [self.recentsTableView rectForHeaderInSection:section];
+                UIView *headerView = [self.recentsTableView headerViewForSection:section];
+                UIView *updatedHeaderView = [self.dataSource viewForHeaderInSection:section withFrame:headerFrame inTableView:self.recentsTableView];
+                if ([headerView isKindOfClass:SectionHeaderView.class]
+                    && [updatedHeaderView isKindOfClass:SectionHeaderView.class])
+                {
+                    SectionHeaderView *sectionHeaderView = (SectionHeaderView *)headerView;
+                    SectionHeaderView *updatedSectionHeaderView = (SectionHeaderView *)updatedHeaderView;
+                    sectionHeaderView.headerLabel = updatedSectionHeaderView.headerLabel;
+                    sectionHeaderView.accessoryView = updatedSectionHeaderView.accessoryView;
+                }
+            }
+        }
+    }
+    
+    if (!cellReloaded)
+    {
+        [super dataSource:dataSource didCellChange:changes];
+    }
+    else
+    {
+        // Since we've enabled room list pagination, `refreshRecentsTable` not called in this case.
+        // Refresh tab bar badges separately.
+//        [[AppDelegate theDelegate].masterTabBarController refreshTabBarBadges];
+    }
+    
+    if (changes == nil)
+    {
+        [self showEmptyViewIfNeeded];
+    }
+    
+    if (dataSource.state == MXKDataSourceStateReady)
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:RecentsViewControllerDataReadyNotification
+                                                            object:self];
+    }
 }
 
 #pragma mark - Swipe actions
@@ -729,23 +1121,35 @@
     // Store the identifier of the room related to the edited cell.
     editedRoomId = room.roomId;
     
+    UIColor *selectedColor = ThemeService.shared.theme.tintColor;
+    UIColor *unselectedColor = ThemeService.shared.theme.tabBarUnselectedItemTintColor;
     UIColor *actionBackgroundColor = ThemeService.shared.theme.baseColor;
     
     NSString* title = @"      ";
     
     // Notification toggle
-
+    
     BOOL isMuted = room.isMute || room.isMentionsOnly;
     
     UIContextualAction *muteAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleNormal
                                                                              title:title
                                                                            handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
-        [self muteEditedRoomNotifications:!isMuted];
+        
+        if ([BuildSettings showNotificationsV2])
+        {
+            [self changeEditedRoomNotificationSettings];
+        }
+        else
+        {
+            [self muteEditedRoomNotifications:!isMuted];
+        }
+        
+        
         completionHandler(YES);
     }];
     muteAction.backgroundColor = actionBackgroundColor;
     
-    UIImage *notificationImage = isMuted ? [UIImage imageNamed:@"notifications"] : [UIImage imageNamed:@"notificationsOff"];
+    UIImage *notificationImage = isMuted ? [UIImage imageNamed:@"notificationsOff"] : [UIImage imageNamed:@"notifications"];
     muteAction.image = [notificationImage vc_notRenderedImage];
     
     // Favorites management
@@ -773,7 +1177,7 @@
     }];
     favouriteAction.backgroundColor = actionBackgroundColor;
     
-    UIImage *favouriteImage = isFavourite ? [UIImage imageNamed:@"unpin"] : [UIImage imageNamed:@"pin"];
+    UIImage *favouriteImage = isFavourite ? [UIImage imageNamed:@"pin"] : [UIImage imageNamed:@"unpin"];
     favouriteAction.image = [favouriteImage vc_notRenderedImage];
     
     // Leave action
@@ -787,6 +1191,7 @@
     leaveAction.backgroundColor = actionBackgroundColor;
     
     UIImage *leaveImage = [UIImage imageNamed:@"leave"];
+    leaveImage = [leaveImage vc_tintedImageUsingColor:selectedColor];
     leaveAction.image = [leaveImage vc_notRenderedImage];
         
     // Create swipe action configuration
@@ -822,18 +1227,18 @@
             [self stopActivityIndicator];
             
             // confirm leave
-            NSString *promptMessage = NSLocalizedStringFromTable(@"room_participants_leave_prompt_msg", @"Vector", nil);
+            NSString *promptMessage = [VectorL10n roomParticipantsLeavePromptMsg];
             if (isLastAdmin)
             {
                 promptMessage = NSLocalizedStringFromTable(@"tchap_room_admin_leave_prompt_msg", @"Tchap", nil);
             }
             
             MXWeakify(self);
-            self->currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"room_participants_leave_prompt_title", @"Vector", nil)
+            self->currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n roomParticipantsLeavePromptTitle]
                                                                      message:promptMessage
                                                               preferredStyle:UIAlertControllerStyleAlert];
             
-            [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+            [self->currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
                                                                    style:UIAlertActionStyleCancel
                                                                  handler:^(UIAlertAction * action) {
                                                                      
@@ -842,7 +1247,7 @@
                                                                      
                                                                  }]];
             
-            [self->currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"leave", @"Vector", nil)
+            [self->currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n leave]
                                                                    style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
                                                                        
                                                                        MXStrongifyAndReturnIfNil(self);
@@ -929,6 +1334,23 @@
     }
 }
 
+- (void)changeEditedRoomNotificationSettings
+{
+    if (editedRoomId)
+    {
+        // Check whether the user didn't leave the room
+        MXRoom *room = [self.mainSession roomWithRoomId:editedRoomId];
+        if (room)
+        {
+           // navigate
+            self.roomNotificationSettingsCoordinatorBridgePresenter = [[RoomNotificationSettingsCoordinatorBridgePresenter alloc] initWithRoom:room];
+            self.roomNotificationSettingsCoordinatorBridgePresenter.delegate = self;
+            [self.roomNotificationSettingsCoordinatorBridgePresenter presentFrom:self animated:YES];
+        }
+        [self cancelEditionMode:isRefreshPending];
+    }
+}
+
 - (void)muteEditedRoomNotifications:(BOOL)mute
 {
     if (editedRoomId)
@@ -938,27 +1360,27 @@
         if (room)
         {
             [self startActivityIndicator];
-            
+
             if (mute)
             {
                 [room mentionsOnly:^{
-                    
+
                     [self stopActivityIndicator];
-                    
+
                     // Leave editing mode
-                    [self cancelEditionMode:isRefreshPending];
-                    
+                    [self cancelEditionMode:self->isRefreshPending];
+
                 }];
             }
             else
             {
                 [room allMessages:^{
-                    
+
                     [self stopActivityIndicator];
-                    
+
                     // Leave editing mode
-                    [self cancelEditionMode:isRefreshPending];
-                    
+                    [self cancelEditionMode:self->isRefreshPending];
+
                 }];
             }
         }
@@ -1081,17 +1503,38 @@
     });
     
     [super scrollViewDidScroll:scrollView];
+    
+    // Tchap: Disable fake search bar
+//    if (scrollView == self.recentsTableView)
+//    {
+//        if (!self.recentsSearchBar.isHidden)
+//        {
+//            if (!self.recentsSearchBar.text.length && (scrollView.contentOffset.y + scrollView.adjustedContentInset.top > self.recentsSearchBar.frame.size.height))
+//            {
+//                // Hide the search bar
+//                [self hideSearchBar:YES];
+//
+//                // Refresh display
+//                [self refreshRecentsTable];
+//            }
+//        }
+//    }
 }
 
 #pragma mark - Table view scrolling
 
 - (void)scrollToTop:(BOOL)animated
 {
-    [self.recentsTableView setContentOffset:CGPointMake(-self.recentsTableView.mxk_adjustedContentInset.left, -self.recentsTableView.mxk_adjustedContentInset.top) animated:animated];
+    [self.recentsTableView setContentOffset:CGPointMake(-self.recentsTableView.adjustedContentInset.left, -self.recentsTableView.adjustedContentInset.top) animated:animated];
 }
 
 - (void)scrollToTheTopTheNextRoomWithMissedNotificationsInSection:(NSInteger)section
 {
+    if (section < 0)
+    {
+        return;
+    }
+    
     UITableViewCell *firstVisibleCell;
     NSIndexPath *firstVisibleCellIndexPath;
     
@@ -1144,6 +1587,327 @@
 
 - (void)recentListViewController:(MXKRecentListViewController *)recentListViewController didSelectRoom:(NSString *)roomId inMatrixSession:(MXSession *)matrixSession
 {
+    [self showRoomWithRoomId:roomId inMatrixSession:matrixSession];
+}
+
+- (void)recentListViewController:(MXKRecentListViewController *)recentListViewController didSelectSuggestedRoom:(MXSpaceChildInfo *)childInfo
+{
+//    RoomPreviewData *previewData = [[RoomPreviewData alloc] initWithSpaceChildInfo:childInfo andSession:self.mainSession];
+//    [self startActivityIndicator];
+//    MXWeakify(self);
+//    [previewData peekInRoom:^(BOOL succeeded) {
+//        MXStrongifyAndReturnIfNil(self);
+//        [self stopActivityIndicator];
+//        [self showRoomPreviewWithData:previewData];
+//    }];
+}
+
+#pragma mark - UISearchBarDelegate
+
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
+{
+    [super scrollViewWillEndDragging:scrollView withVelocity:velocity targetContentOffset:targetContentOffset];
+}
+
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
+{
+    // Tchap: Disable fake search bar
+//    if (searchBar == tableSearchBar)
+//    {
+//        [self hideSearchBar:NO];
+//        [self.recentsSearchBar becomeFirstResponder];
+//        return NO;
+//    }
+    
+    return YES;
+    
+}
+
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        [self.recentsSearchBar setShowsCancelButton:YES animated:NO];
+        
+    });
+}
+
+- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
+{
+    [self.recentsSearchBar setShowsCancelButton:NO animated:NO];
+}
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    [super searchBar:searchBar textDidChange:searchText];
+    
+    UIImage *filterIcon = searchText.length > 0 ? [AssetImages.filterOn.image vc_tintedImageUsingColor: ThemeService.shared.theme.tintColor] : AssetImages.filterOff.image;
+    [self.recentsSearchBar setImage:filterIcon
+                   forSearchBarIcon:UISearchBarIconSearch
+                              state:UIControlStateNormal];
+}
+
+// Tchap: Restore default icon after cancel.
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+    [super searchBarCancelButtonClicked:searchBar];
+    
+    [self.recentsSearchBar setImage:AssetImages.filterOff.image
+                   forSearchBarIcon:UISearchBarIconSearch
+                              state:UIControlStateNormal];
+}
+
+#pragma mark - CreateRoomCoordinatorBridgePresenterDelegate
+
+//- (void)createRoomCoordinatorBridgePresenterDelegate:(CreateRoomCoordinatorBridgePresenter *)coordinatorBridgePresenter didCreateNewRoom:(MXRoom *)room
+//{
+//    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+//        [self showRoomWithRoomId:room.roomId inMatrixSession:self.mainSession];
+//    }];
+//    coordinatorBridgePresenter = nil;
+//}
+
+//- (void)createRoomCoordinatorBridgePresenterDelegateDidCancel:(CreateRoomCoordinatorBridgePresenter *)coordinatorBridgePresenter
+//{
+//    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+//    coordinatorBridgePresenter = nil;
+//}
+
+#pragma mark - Empty view management
+
+- (void)showEmptyViewIfNeeded
+{
+//    [self showEmptyView:[self shouldShowEmptyView]];
+}
+
+//- (void)showEmptyView:(BOOL)show
+//{
+//    if (!self.viewIfLoaded)
+//    {
+//        return;
+//    }
+//
+//    if (show && !self.emptyView)
+//    {
+//        RootTabEmptyView *emptyView = [RootTabEmptyView instantiate];
+//        [emptyView updateWithTheme:ThemeService.shared.theme];
+//        [self addEmptyView:emptyView];
+//
+//        self.emptyView = emptyView;
+//
+//        [self updateEmptyView];
+//    }
+//    else if (!show)
+//    {
+//        [self.emptyView removeFromSuperview];
+//    }
+//
+//    self.recentsTableView.hidden = show;
+//    self.stickyHeadersTopContainer.hidden = show;
+//    self.stickyHeadersBottomContainer.hidden = show;
+//}
+//
+//- (void)updateEmptyView
+//{
+//
+//}
+//
+//- (void)addEmptyView:(RootTabEmptyView*)emptyView
+//{
+//    if (!self.isViewLoaded)
+//    {
+//        return;
+//    }
+//
+//    NSLayoutConstraint *emptyViewBottomConstraint;
+//    NSLayoutConstraint *contentViewBottomConstraint;
+//
+//    if (plusButtonImageView && plusButtonImageView.isHidden == NO)
+//    {
+//        [self.view insertSubview:emptyView belowSubview:plusButtonImageView];
+//
+//        contentViewBottomConstraint = [NSLayoutConstraint constraintWithItem:emptyView.contentView
+//                                                                   attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationLessThanOrEqual toItem:plusButtonImageView
+//                                                                   attribute:NSLayoutAttributeTop
+//                                                                  multiplier:1.0
+//                                                                    constant:0];
+//    }
+//    else
+//    {
+//        [self.view addSubview:emptyView];
+//    }
+//
+//    emptyViewBottomConstraint = [emptyView.bottomAnchor constraintEqualToAnchor:emptyView.superview.bottomAnchor];
+//
+//    emptyView.translatesAutoresizingMaskIntoConstraints = NO;
+//
+//    [NSLayoutConstraint activateConstraints:@[
+//        [emptyView.topAnchor constraintEqualToAnchor:emptyView.superview.topAnchor],
+//        [emptyView.leftAnchor constraintEqualToAnchor:emptyView.superview.leftAnchor],
+//        [emptyView.rightAnchor constraintEqualToAnchor:emptyView.superview.rightAnchor],
+//        emptyViewBottomConstraint
+//    ]];
+//
+//    if (contentViewBottomConstraint)
+//    {
+//        contentViewBottomConstraint.active = YES;
+//    }
+//}
+
+- (BOOL)shouldShowEmptyView
+{
+    // Do not present empty screen while searching
+//    if (self.recentsDataSource.searchPatternsList.count)
+//    {
+//        return NO;
+//    }
+    
+    return NO;//self.recentsDataSource.totalVisibleItemCount == 0; Disabled in Tchap
+}
+
+#pragma mark - RoomsDirectoryCoordinatorBridgePresenterDelegate
+
+//- (void)roomsDirectoryCoordinatorBridgePresenterDelegateDidComplete:(RoomsDirectoryCoordinatorBridgePresenter *)coordinatorBridgePresenter
+//{
+//    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+//    self.roomsDirectoryCoordinatorBridgePresenter = nil;
+//}
+
+//- (void)roomsDirectoryCoordinatorBridgePresenterDelegate:(RoomsDirectoryCoordinatorBridgePresenter *)coordinatorBridgePresenter didSelectRoom:(MXPublicRoom *)room
+//{
+//    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+//        [self openPublicRoom:room];
+//    }];
+//    self.roomsDirectoryCoordinatorBridgePresenter = nil;
+//}
+
+//- (void)roomsDirectoryCoordinatorBridgePresenterDelegateDidTapCreateNewRoom:(RoomsDirectoryCoordinatorBridgePresenter *)coordinatorBridgePresenter
+//{
+//    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+//        [self createNewRoom];
+//    }];
+//    self.roomsDirectoryCoordinatorBridgePresenter = nil;
+//}
+
+//- (void)roomsDirectoryCoordinatorBridgePresenterDelegate:(RoomsDirectoryCoordinatorBridgePresenter *)coordinatorBridgePresenter didSelectRoomWithIdOrAlias:(NSString * _Nonnull)roomIdOrAlias
+//{
+//    MXRoom *room = [self.mainSession vc_roomWithIdOrAlias:roomIdOrAlias];
+//
+//    if (room)
+//    {
+//        // Room is known show it directly
+//        [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+//            [self showRoomWithRoomId:room.roomId
+//                     inMatrixSession:self.mainSession];
+//        }];
+//        coordinatorBridgePresenter = nil;
+//    }
+//    else if ([MXTools isMatrixRoomAlias:roomIdOrAlias])
+//    {
+//        // Room preview doesn't support room alias
+//        [[AppDelegate theDelegate] showAlertWithTitle:[MatrixKitL10n error] message:[VectorL10n roomRecentsUnknownRoomErrorMessage]];
+//    }
+//    else
+//    {
+//        // Try to preview the room from his id
+//        RoomPreviewData *roomPreviewData = [[RoomPreviewData alloc] initWithRoomId:roomIdOrAlias
+//                                                                        andSession:self.mainSession];
+//
+//        [self startActivityIndicator];
+//
+//        // Try to get more information about the room before opening its preview
+//        MXWeakify(self);
+//
+//        [roomPreviewData peekInRoom:^(BOOL succeeded) {
+//
+//            MXStrongifyAndReturnIfNil(self);
+//
+//            [self stopActivityIndicator];
+//
+//            if (succeeded) {
+//                [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+//                    [self showRoomPreviewWithData:roomPreviewData];
+//                }];
+//                self.roomsDirectoryCoordinatorBridgePresenter = nil;
+//            } else {
+//                [[AppDelegate theDelegate] showAlertWithTitle:[MatrixKitL10n error] message:[VectorL10n roomRecentsUnknownRoomErrorMessage]];
+//            }
+//        }];
+//    }
+//}
+
+#pragma mark - ExploreRoomCoordinatorBridgePresenterDelegate
+
+//- (void)exploreRoomCoordinatorBridgePresenterDelegateDidComplete:(ExploreRoomCoordinatorBridgePresenter *)coordinatorBridgePresenter {
+//    MXWeakify(self);
+//    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+//        MXStrongifyAndReturnIfNil(self);
+//        self.exploreRoomsCoordinatorBridgePresenter = nil;
+//    }];
+//}
+
+#pragma mark - RoomNotificationSettingsCoordinatorBridgePresenterDelegate
+-(void)roomNotificationSettingsCoordinatorBridgePresenterDelegateDidComplete:(RoomNotificationSettingsCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    self.roomNotificationSettingsCoordinatorBridgePresenter = nil;
+}
+
+#pragma mark - Activity Indicator
+
+- (BOOL)providesCustomActivityIndicator {
+    return NO;//self.activityPresenter != nil;
+}
+
+- (void)startActivityIndicator {
+//    if (self.activityPresenter) {
+//        [self.activityPresenter presentActivityIndicator];
+//    } else {
+        [super startActivityIndicator];
+//    }
+}
+
+- (void)stopActivityIndicator {
+//    if (self.activityPresenter) {
+//        [self.activityPresenter removeCurrentActivityIndicatorWithAnimated:YES completion:nil];
+//    } else {
+        [super stopActivityIndicator];
+//    }
+}
+
+#pragma mark - Search Bar
+
+- (void)toggleSearchBar {
+    if (self.recentsSearchBar.isFirstResponder) {
+        [self.recentsSearchBar resignFirstResponder];
+        [self cleanSearchAndHideSearchBar:FALSE];
+    } else {
+        BOOL willShowSearchBar = self.recentsSearchBar.hidden;
+        if (willShowSearchBar) {
+            [self hideSearchBar:FALSE];
+            [self.recentsSearchBar becomeFirstResponder];
+        } else {
+            [self cleanSearchAndHideSearchBar:TRUE];
+        }
+    }
+}
+
+- (void)cleanSearchAndHideSearchBar:(BOOL)hide {
+    // Clear SearchField content and refresh dataSource
+    self.recentsSearchBar.text = @"";
+    [self.dataSource searchWithPatterns:nil];
+    
+    // Refresh UI
+    [self refreshRecentsTable];
+    
+    // Reset icon
+    [self.recentsSearchBar setImage:AssetImages.filterOff.image
+                   forSearchBarIcon:UISearchBarIconSearch
+                              state:UIControlStateNormal];
+    
+    // Hide Search bar
+    if (hide) {
+        [self hideSearchBar:TRUE];
+    }
 }
 
 @end

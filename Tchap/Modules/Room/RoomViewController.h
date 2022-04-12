@@ -16,12 +16,57 @@
  limitations under the License.
  */
 
-@import MatrixKit;
+#import "MatrixKit.h"
 
+#import "RoomTitleView.h"
+
+#import "RoomPreviewData.h"
+
+#import "RoomParticipantsViewController.h"
+
+#import "ContactsViewController.h"
+
+#import "UIViewController+RiotSearch.h"
+
+@class BadgeLabel;
+@class UniversalLinkParameters;
 @protocol RoomViewControllerDelegate;
-@class RoomPreviewData, User;
+
+NS_ASSUME_NONNULL_BEGIN
+
+/**
+ Notification string used to indicate call tile tapped in a room. Notification object will be the `RoomBubbleCellData` object.
+ */
+extern NSNotificationName const RoomCallTileTappedNotification;
+
+/**
+ Notification string used to indicate group call tile tapped in a room. Notification object will be the `RoomBubbleCellData` object.
+ */
+extern NSNotificationName const RoomGroupCallTileTappedNotification;
 
 @interface RoomViewController : MXKRoomViewController
+
+
+// The delegate for the view controller.
+@property (weak, nonatomic, nullable) id<RoomViewControllerDelegate> delegate;
+
+// The preview header
+@property (weak, nonatomic, nullable) IBOutlet UIView *previewHeaderContainer;
+@property (weak, nonatomic, nullable) IBOutlet NSLayoutConstraint *previewHeaderContainerHeightConstraint;
+
+// The jump to last unread banner
+@property (weak, nonatomic, nullable) IBOutlet UIView *jumpToLastUnreadBannerContainer;
+@property (weak, nonatomic, nullable) IBOutlet UIView *jumpToLastUnreadBanner;
+@property (weak, nonatomic, nullable) IBOutlet UIImageView *jumpToLastUnreadImageView;
+@property (weak, nonatomic, nullable) IBOutlet UIButton *jumpToLastUnreadButton;
+@property (weak, nonatomic, nullable) IBOutlet UILabel *jumpToLastUnreadLabel;
+@property (weak, nonatomic, nullable) IBOutlet UIButton *resetReadMarkerButton;
+@property (weak, nonatomic, nullable) IBOutlet UIView *inputBackgroundView;
+@property (weak, nonatomic, nullable) IBOutlet UIButton *scrollToBottomButton;
+@property (weak, nonatomic, nullable) IBOutlet BadgeLabel *scrollToBottomBadgeLabel;
+
+// Remove Jitsi widget container
+@property (weak, nonatomic, nullable) IBOutlet UIView *removeJitsiWidgetContainer;
 
 /**
  Preview data for a room invitation received by email, or a link to a room.
@@ -30,7 +75,7 @@
 
 /**
  Tell whether a badge must be added next to the chevron (back button) showing number of unread rooms.
- NO by default.
+ YES by default.
  */
 @property (nonatomic) BOOL showMissedDiscussionsBadge;
 
@@ -41,46 +86,29 @@
 @property (nonatomic) BOOL forceHideInputToolBar;
 
 /**
- The delegate for the view controller.
- */
-@property (weak, nonatomic, nullable) id<RoomViewControllerDelegate> delegate;
-
-/**
  Display the preview of a room that is unknown for the user.
 
  This room can come from an email invitation link or a simple link to a room.
 
  @param roomPreviewData the data for the room preview.
  */
-- (void)displayRoomPreview:(nonnull RoomPreviewData*)roomPreviewData;
+- (void)displayRoomPreview:(RoomPreviewData*)roomPreviewData;
 
 /**
- Display a new discussion with a target user without associated room.
- 
- @param discussionTargetUser Direct chat target user.
- @param session The Matrix session.
+ Action used to handle some buttons.
  */
-- (void)displayNewDiscussionWithTargetUser:(nonnull User*)discussionTargetUser session:(nonnull MXSession*)session;
+- (IBAction)onButtonPressed:(id)sender;
+
+- (IBAction)scrollToBottomAction:(id)sender;
 
 /**
  Creates and returns a new `RoomViewController` object.
  
  @return An initialized `RoomViewController` object.
  */
-+ (nonnull instancetype)instantiate;
-
-/**
- Creates a new discussion with a target user without associated room and returns a new `RoomViewController` object.
-
- @param discussionTargetUser Direct chat target user.
- @param session The Matrix session.
-
- @return An initialized `RoomViewController` object.
- */
-+ (nonnull instancetype)instantiateWithDiscussionTargetUser:(nonnull User*)discussionTargetUser session:(nonnull MXSession*)session;
++ (instancetype)instantiate;
 
 @end
-
 
 /**
  `RoomViewController` delegate.
@@ -92,7 +120,7 @@
  
  @param roomViewController the `RoomViewController` instance.
  */
-- (void)roomViewControllerShowRoomDetails:(nonnull RoomViewController *)roomViewController;
+- (void)roomViewControllerShowRoomDetails:(RoomViewController *)roomViewController;
 
 /**
  Tells the delegate that the user wants to display the details of a room member.
@@ -100,7 +128,8 @@
  @param roomViewController the `RoomViewController` instance.
  @param roomMember the selected member
  */
-- (void)roomViewController:(nonnull RoomViewController *)roomViewController showMemberDetails:(nonnull MXRoomMember *)roomMember;
+- (void)roomViewController:(RoomViewController *)roomViewController
+         showMemberDetails:(MXRoomMember *)roomMember;
 
 /**
  Tells the delegate that the user wants to display another room.
@@ -108,31 +137,65 @@
  @param roomViewController the `RoomViewController` instance.
  @param roomID the selected roomId
  */
-- (void)roomViewController:(nonnull RoomViewController *)roomViewController showRoom:(nonnull NSString *)roomID;
+- (void)roomViewController:(RoomViewController *)roomViewController
+            showRoomWithId:(NSString *)roomID;
 
 /**
- Tells the delegate that the user wants to join room from room preview.
+ Tells the delegate that the user wants to start a direct chat with a user.
+ 
+ @param roomViewController the `RoomViewController` instance.
+ @param userId the selected user id
+ @param completion Blocks called when the chat is created.
+ */
+- (void)roomViewController:(RoomViewController *)roomViewController
+       startChatWithUserId:(NSString*)userId
+                completion:(void (^)(void))completion;
+
+/**
+ Tells the delegate that the user wants to show complete security screen.
+ 
+ @param roomViewController the `RoomViewController` instance.
+ @param session The selected Matrix session.
+ */
+- (void)roomViewController:(RoomViewController *)roomViewController showCompleteSecurityForSession:(MXSession*)session;
+
+/**
+ Tells the delegate that the user left the room.
  
  @param roomViewController the `RoomViewController` instance.
  */
-- (void)roomViewControllerPreviewDidTapJoin:(nonnull RoomViewController *)roomViewController;
+- (void)roomViewControllerDidLeaveRoom:(RoomViewController *)roomViewController;
 
 /**
  Tells the delegate that the user wants to cancel the room preview.
  
  @param roomViewController the `RoomViewController` instance.
  */
-- (void)roomViewControllerPreviewDidTapCancel:(nonnull RoomViewController *)roomViewController;
+- (void)roomViewControllerPreviewDidTapCancel:(RoomViewController *)roomViewController;
 
 /**
- Handle the fragment of a permalink.
+ Process universal link.
  
  @param roomViewController the `RoomViewController` instance.
- @param fragment the permalink fragment
- @return true to indicate that the fragment has been handled, or false when the fragment is not supported.
+ @param parameters the universal link parameters.
+ @return YES in case of processing success.
  */
-- (BOOL)roomViewController:(nonnull RoomViewController *)roomViewController handlePermalinkFragment:(nonnull NSString*)fragment;
+- (BOOL)roomViewController:(RoomViewController *)roomViewController
+handleUniversalLinkWithParameters:(UniversalLinkParameters*)parameters;
 
-- (void)roomViewController:(nonnull RoomViewController *)roomViewController forwardContent:(nonnull NSDictionary *)content;
+/**
+ Ask the coordinator to invoke the poll creation form coordinator.
+ 
+ @param roomViewController the `RoomViewController` instance.
+ */
+- (void)roomViewControllerDidRequestPollCreationFormPresentation:(RoomViewController *)roomViewController;
+
+- (BOOL)roomViewController:(RoomViewController *)roomViewController
+canEndPollWithEventIdentifier:(NSString *)eventIdentifier;
+
+- (void)roomViewController:(RoomViewController *)roomViewController
+endPollWithEventIdentifier:(NSString *)eventIdentifier;
 
 @end
+
+NS_ASSUME_NONNULL_END

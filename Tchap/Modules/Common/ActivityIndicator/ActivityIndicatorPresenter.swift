@@ -56,7 +56,7 @@ final class ActivityIndicatorPresenter: ActivityIndicatorPresenterType {
         backgroundOverlayView.alpha = 0
         backgroundOverlayView.isHidden = false
         
-        view.tc_addSubViewMatchingParent(backgroundOverlayView)
+        view.vc_addSubViewMatchingParent(backgroundOverlayView)
         
         self.backgroundOverlayView = backgroundOverlayView
         self.activityIndicatorView = activityIndicatorView

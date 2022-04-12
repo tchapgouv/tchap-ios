@@ -21,8 +21,6 @@
 
 #import "BugReportViewController.h"
 
-#import <MatrixKit/MatrixKit.h>
-
 #import "GeneratedInterface-Swift.h"
 
 static RageShakeManager* sharedInstance = nil;
@@ -67,10 +65,10 @@ static RageShakeManager* sharedInstance = nil;
 {
     if ([MXLogger crashLog])
     {
-        confirmationAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"bug_report_prompt", @"Vector", nil)  message:nil preferredStyle:UIAlertControllerStyleAlert];
+        confirmationAlert = [UIAlertController alertControllerWithTitle:[VectorL10n bugReportPrompt]  message:nil preferredStyle:UIAlertControllerStyleAlert];
         
         __weak typeof(self) weakSelf = self;
-        [confirmationAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+        [confirmationAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
                                                               style:UIAlertActionStyleDefault
                                                             handler:^(UIAlertAction * action) {
                                                                 
@@ -85,7 +83,7 @@ static RageShakeManager* sharedInstance = nil;
                                                                 
                                                             }]];
         
-        [confirmationAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+        [confirmationAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
                                                               style:UIAlertActionStyleDefault
                                                             handler:^(UIAlertAction * action) {
                                                                 
@@ -115,7 +113,7 @@ static RageShakeManager* sharedInstance = nil;
         && RiotSettings.shared.enableRageShake
         && !confirmationAlert)
     {
-        NSLog(@"[RageShakeManager] Start shaking with [%@]", [responder class]);
+        MXLogDebug(@"[RageShakeManager] Start shaking with [%@]", [responder class]);
         
         startShakingTimeStamp = [[NSDate date] timeIntervalSince1970];
         isShaking = YES;
@@ -124,17 +122,17 @@ static RageShakeManager* sharedInstance = nil;
 
 - (void)stopShaking:(UIResponder*)responder
 {
-    NSLog(@"[RageShakeManager] Stop shaking with [%@]", [responder class]);
+    MXLogDebug(@"[RageShakeManager] Stop shaking with [%@]", [responder class]);
     
     if (isShaking && [AppDelegate theDelegate].isAppForeground && !confirmationAlert
         && (([[NSDate date] timeIntervalSince1970] - startShakingTimeStamp) > RAGESHAKEMANAGER_MINIMUM_SHAKING_DURATION))
     {
         if ([responder isKindOfClass:[UIViewController class]])
         {
-            confirmationAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"rage_shake_prompt", @"Vector", nil)  message:nil preferredStyle:UIAlertControllerStyleAlert];
+            confirmationAlert = [UIAlertController alertControllerWithTitle:[VectorL10n rageShakePrompt] message:nil preferredStyle:UIAlertControllerStyleAlert];
             
             __weak typeof(self) weakSelf = self;
-            [confirmationAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+            [confirmationAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
                                                                   style:UIAlertActionStyleDefault
                                                                 handler:^(UIAlertAction * action) {
                                                                     
@@ -154,7 +152,7 @@ static RageShakeManager* sharedInstance = nil;
                                                                     
                                                                 }]];
 
-            [confirmationAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"do_not_ask_again"]
+            [confirmationAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n doNotAskAgain]
                                                                   style:UIAlertActionStyleDefault
                                                                 handler:^(UIAlertAction * action) {
 
@@ -169,7 +167,7 @@ static RageShakeManager* sharedInstance = nil;
 
                                                                 }]];
 
-            [confirmationAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+            [confirmationAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
                                                                   style:UIAlertActionStyleDefault
                                                                 handler:^(UIAlertAction * action) {
 
@@ -202,7 +200,7 @@ static RageShakeManager* sharedInstance = nil;
     
     UIImage *image;
     
-    AppDelegate* theDelegate = [AppDelegate theDelegate];
+    LegacyAppDelegate* theDelegate = [AppDelegate theDelegate];
     UIGraphicsBeginImageContextWithOptions(theDelegate.window.bounds.size, NO, [UIScreen mainScreen].scale);
     
     // Iterate over every window from back to front

@@ -17,7 +17,8 @@
 // Permissions usage explanations
 "NSCameraUsageDescription" = "This allows you to take pictures or videos with the camera and send them in your conversations. You can also use the camera to set your profile picture.";
 "NSPhotoLibraryUsageDescription" = "This allows you to select pictures or videos from the photo library, and send them in your conversations. You can also use one of these pictures to set your profile picture.";
-"NSMicrophoneUsageDescription" = "The microphone is used when you record videos with the camera.";
+"NSMicrophoneUsageDescription" = "Tchap needs to access your microphone to take videos, and record voice messages.";
 "NSContactsUsageDescription" = "In order to show who among your contacts already uses Tchap, we can exploit the e-mail addresses of your address book. These data will not be stored. For more information, please visit the privacy policy page in the app settings.";
 "NSCalendarsUsageDescription" = "See your scheduled meetings in the app.";
 "NSFaceIDUsageDescription" = "Face ID is used to access your app.";
+"NSLocationWhenInUseUsageDescription" = "When you share your location to people, Element needs access to show them a map.";

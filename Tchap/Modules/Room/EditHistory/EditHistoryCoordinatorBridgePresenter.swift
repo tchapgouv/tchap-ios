@@ -58,14 +58,13 @@ final class EditHistoryCoordinatorBridgePresenter: NSObject {
     func present(from viewController: UIViewController, animated: Bool) {
 
         guard let formatter = self.createEventFormatter(session: self.session) else {
-            //s das
             return
         }
 
         let editHistoryCoordinator = EditHistoryCoordinator(session: self.session, formatter: formatter, event: self.event)
         editHistoryCoordinator.delegate = self
 
-        let navigationController = TCNavigationController(rootViewController: editHistoryCoordinator.toPresentable())
+        let navigationController = RiotNavigationController(rootViewController: editHistoryCoordinator.toPresentable())
         navigationController.modalPresentationStyle = .formSheet
         viewController.present(navigationController, animated: animated, completion: nil)
         
@@ -91,7 +90,7 @@ final class EditHistoryCoordinatorBridgePresenter: NSObject {
 
     func createEventFormatter(session: MXSession) -> EventFormatter? {
         guard let formatter = EventFormatter(matrixSession: session) else {
-            print("[EditHistoryCoordinatorBridgePresenter] createEventFormatter: Cannot build formatter")
+            MXLog.debug("[EditHistoryCoordinatorBridgePresenter] createEventFormatter: Cannot build formatter")
             return nil
         }
 

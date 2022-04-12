@@ -21,4 +21,6 @@
  */
 @interface RoomAttachmentAntivirusScanStatusWithPaginationTitleBubbleCell : RoomIncomingAttachmentWithPaginationTitleBubbleCell
 
++ (instancetype)instantiate;
+
 @end

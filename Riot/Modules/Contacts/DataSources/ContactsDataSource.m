@@ -21,7 +21,7 @@
 #import "LocalContactsSectionHeaderContainerView.h"
 
 #import "ThemeService.h"
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 #define CONTACTSDATASOURCE_LOCALCONTACTS_BITWISE 0x01
 #define CONTACTSDATASOURCE_USERDIRECTORY_BITWISE 0x02
@@ -88,6 +88,16 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onContactManagerDidUpdate:) name:kMXKContactManagerDidUpdateMatrixContactsNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onContactManagerDidUpdate:) name:kMXKContactManagerDidUpdateLocalContactsNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onContactManagerDidUpdate:) name:kMXKContactManagerDidUpdateLocalContactMatrixIDsNotification object:nil];
+    }
+    return self;
+}
+
+- (instancetype)initWithMatrixSession:(MXSession *)mxSession
+{
+    self = [super initWithMatrixSession:mxSession];
+    if (self) {
+        // Only show local contacts when contact sync is enabled and the identity server terms of service have been accepted.
+        _showLocalContacts = MXKAppSettings.standardAppSettings.syncLocalContacts && self.mxSession.identityService.areAllTermsAgreed;
     }
     return self;
 }
@@ -196,21 +206,25 @@
                 [hsUserDirectoryOperation cancel];
                 hsUserDirectoryOperation = nil;
             }
+            
+            MXWeakify(self);
 
             hsUserDirectoryOperation = [self.mxSession.matrixRestClient searchUsers:searchText limit:50 success:^(MXUserSearchResponse *userSearchResponse) {
-
-                filteredMatrixContacts = [NSMutableArray arrayWithCapacity:userSearchResponse.results.count];
+                
+                MXStrongifyAndReturnIfNil(self);
+                
+                self->filteredMatrixContacts = [NSMutableArray arrayWithCapacity:userSearchResponse.results.count];
 
                 // Keep the response order as the hs ordered users by relevance
                 for (MXUser *mxUser in userSearchResponse.results)
                 {
                     MXKContact *contact = [[MXKContact alloc] initMatrixContactWithDisplayName:mxUser.displayname andMatrixID:mxUser.userId];
-                    [filteredMatrixContacts addObject:contact];
+                    [self->filteredMatrixContacts addObject:contact];
                 }
 
-                hsUserDirectoryOperation = nil;
+                self->hsUserDirectoryOperation = nil;
 
-                _userDirectoryState = userSearchResponse.limited ? ContactsDataSourceUserDirectoryStateLoadedButLimited : ContactsDataSourceUserDirectoryStateLoaded;
+                self->_userDirectoryState = userSearchResponse.limited ? ContactsDataSourceUserDirectoryStateLoadedButLimited : ContactsDataSourceUserDirectoryStateLoaded;
 
                 // And inform the delegate about the update
                 [self.delegate dataSource:self didCellChange:nil];
@@ -221,7 +235,7 @@
                 if ((![error.domain isEqualToString:NSURLErrorDomain] || error.code != NSURLErrorCancelled))
                 {
                     // But for other errors, launch a local search
-                    NSLog(@"[ContactsDataSource] [MXRestClient searchUsers] returns an error. Do a search on local known contacts");
+                    MXLogDebug(@"[ContactsDataSource] [MXRestClient searchUsers] returns an error. Do a search on local known contacts");
                     [self searchWithPattern:searchText forceReset:forceRefresh hsUserDirectory:NO];
                 }
             }];
@@ -230,28 +244,32 @@
         // Disclose the sections
         shrinkedSectionsBitMask = 0;
     }
+    
+    MXWeakify(self);
 
     dispatch_async(searchProcessingQueue, ^{
+        
+        MXStrongifyAndReturnIfNil(self);
         
         // Reset the current arrays if it is required
         if (!searchText.length)
         {
-            searchProcessingLocalContacts = nil;
-            searchProcessingMatrixContacts = nil;
+            self->searchProcessingLocalContacts = nil;
+            self->searchProcessingMatrixContacts = nil;
         }
         else if (unfilteredLocalContacts)
         {
-            searchProcessingLocalContacts = unfilteredLocalContacts;
-            searchProcessingMatrixContacts = unfilteredMatrixContacts;
+            self->searchProcessingLocalContacts = unfilteredLocalContacts;
+            self->searchProcessingMatrixContacts = unfilteredMatrixContacts;
         }
         
-        for (NSUInteger index = 0; index < searchProcessingLocalContacts.count;)
+        for (NSUInteger index = 0; index < self->searchProcessingLocalContacts.count;)
         {
-            MXKContact* contact = searchProcessingLocalContacts[index];
+            MXKContact* contact = self->searchProcessingLocalContacts[index];
             
             if (![contact hasPrefix:searchText])
             {
-                [searchProcessingLocalContacts removeObjectAtIndex:index];
+                [self->searchProcessingLocalContacts removeObjectAtIndex:index];
             }
             else
             {
@@ -260,13 +278,13 @@
             }
         }
         
-        for (NSUInteger index = 0; index < searchProcessingMatrixContacts.count;)
+        for (NSUInteger index = 0; index < self->searchProcessingMatrixContacts.count;)
         {
-            MXKContact* contact = searchProcessingMatrixContacts[index];
+            MXKContact* contact = self->searchProcessingMatrixContacts[index];
             
             if (![contact hasPrefix:searchText])
             {
-                [searchProcessingMatrixContacts removeObjectAtIndex:index];
+                [self->searchProcessingMatrixContacts removeObjectAtIndex:index];
             }
             else
             {
@@ -276,42 +294,41 @@
         }
         
         // Sort the refreshed list of the invitable contacts
-        [[MXKContactManager sharedManager] sortAlphabeticallyContacts:searchProcessingLocalContacts];
-        [[MXKContactManager sharedManager] sortContactsByLastActiveInformation:searchProcessingMatrixContacts];
+        [[MXKContactManager sharedManager] sortAlphabeticallyContacts:self->searchProcessingLocalContacts];
+        [[MXKContactManager sharedManager] sortContactsByLastActiveInformation:self->searchProcessingMatrixContacts];
         
-        searchProcessingText = searchText;
+        self->searchProcessingText = searchText;
+        
+        MXWeakify(self);
         
         dispatch_sync(dispatch_get_main_queue(), ^{
             
             // Sanity check: check whether self has been destroyed.
-            if (!searchProcessingQueue)
-            {
-                return;
-            }
+            MXStrongifyAndReturnIfNil(self);
             
             // Render the search result only if there is no other search in progress.
-            searchProcessingCount --;
+            self->searchProcessingCount --;
             
-            if (!searchProcessingCount)
+            if (!self->searchProcessingCount)
             {
-                if (!forceSearchResultRefresh)
+                if (!self->forceSearchResultRefresh)
                 {
                     // Update the filtered contacts.
-                    currentSearchText = searchProcessingText;
-                    filteredLocalContacts = searchProcessingLocalContacts;
+                    self->currentSearchText = self->searchProcessingText;
+                    self->filteredLocalContacts = self->searchProcessingLocalContacts;
 
                     if (!hsUserDirectory)
                     {
-                        filteredMatrixContacts = searchProcessingMatrixContacts;
-                        _userDirectoryState = ContactsDataSourceUserDirectoryStateOfflineLoaded;
+                        self->filteredMatrixContacts = self->searchProcessingMatrixContacts;
+                        self->_userDirectoryState = ContactsDataSourceUserDirectoryStateOfflineLoaded;
                     }
                     
                     if (!self.forceMatrixIdInDisplayName)
                     {
-                        [isMultiUseNameByDisplayName removeAllObjects];
-                        for (MXKContact* contact in filteredMatrixContacts)
+                        [self->isMultiUseNameByDisplayName removeAllObjects];
+                        for (MXKContact* contact in self->filteredMatrixContacts)
                         {
-                            isMultiUseNameByDisplayName[contact.displayName] = (isMultiUseNameByDisplayName[contact.displayName] ? @(YES) : @(NO));
+                            self->isMultiUseNameByDisplayName[contact.displayName] = (self->isMultiUseNameByDisplayName[contact.displayName] ? @(YES) : @(NO));
                         }
                     }
                     
@@ -321,8 +338,8 @@
                 else
                 {
                     // Launch a new search
-                    forceSearchResultRefresh = NO;
-                    [self searchWithPattern:searchProcessingText forceReset:YES];
+                    self->forceSearchResultRefresh = NO;
+                    [self searchWithPattern:self->searchProcessingText forceReset:YES];
                 }
             }
         });
@@ -466,8 +483,8 @@
             searchInputSection = count++;
         }
         
-        // Keep visible the header for the both contact sections, even if their are empty.
-        if (BuildSettings.allowLocalContactsAccess)
+        // Keep visible the header for the both contact sections, even if they're are empty.
+        if (BuildSettings.allowLocalContactsAccess && self.showLocalContacts && [CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts] == CNAuthorizationStatusAuthorized)
         {
             filteredLocalContactsSection = count++;
         }
@@ -482,7 +499,7 @@
         }
         
         // Keep visible the local contact header, even if the section is empty.
-        if (BuildSettings.allowLocalContactsAccess)
+        if (BuildSettings.allowLocalContactsAccess && self.showLocalContacts && [CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts] == CNAuthorizationStatusAuthorized)
         {
             filteredLocalContactsSection = count++;
         }
@@ -499,7 +516,7 @@
     
     if (section == searchInputSection)
     {
-        count = 1;
+        count = RiotSettings.shared.allowInviteExernalUsers ? 1 : 0;
     }
     else if (section == filteredLocalContactsSection && !(shrinkedSectionsBitMask & CONTACTSDATASOURCE_LOCALCONTACTS_BITWISE))
     {
@@ -608,11 +625,11 @@
             if (indexPath.section == filteredMatrixContactsSection &&
                 (_userDirectoryState == ContactsDataSourceUserDirectoryStateLoading || _userDirectoryState == ContactsDataSourceUserDirectoryStateOfflineLoading))
             {
-                tableViewCell.textLabel.text = [NSBundle mxk_localizedStringForKey:@"search_searching"];
+                tableViewCell.textLabel.text = [MatrixKitL10n searchSearching];
             }
             else
             {
-                tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"search_no_result", @"Vector", nil);
+                tableViewCell.textLabel.text = [VectorL10n searchNoResult];
             }
         }
         else if (indexPath.section == filteredLocalContactsSection)
@@ -626,25 +643,25 @@
                     if (hideNonMatrixEnabledContacts && !self.mxSession.identityService)
                     {
                         // Because we cannot make lookups with no IS
-                        tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"contacts_address_book_no_identity_server", @"Vector", nil);
+                        tableViewCell.textLabel.text = [VectorL10n contactsAddressBookNoIdentityServer];
                     }
                     else
                     {
                         // Because there is no contacts on the device
-                        tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"contacts_address_book_no_contact", @"Vector", nil);
+                        tableViewCell.textLabel.text = [VectorL10n contactsAddressBookNoContact];
                     }
                     break;
 
                 case CNAuthorizationStatusNotDetermined:
                     // Because the user have not granted the permission yet
                     // (The permission request popup is displayed at the same time)
-                    tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"contacts_address_book_permission_required", @"Vector", nil);
+                    tableViewCell.textLabel.text = [VectorL10n contactsAddressBookPermissionRequired];
                     break;
 
                 default:
                 {
                     // Because the user didn't allow the app to access local contacts
-                    tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"contacts_address_book_permission_denied", @"Vector", nil);
+                    tableViewCell.textLabel.text = [VectorL10n contactsAddressBookPermissionDenied:AppInfo.current.displayName];
                     break;
                 }
             }
@@ -688,12 +705,16 @@
     NSUInteger index = [filteredLocalContacts indexOfObject:contact];
     if (index != NSNotFound)
     {
-        indexPath = [NSIndexPath indexPathForRow:index inSection:filteredLocalContactsSection];
+        // if local section is collapsed there is no cell
+        if (!(shrinkedSectionsBitMask & CONTACTSDATASOURCE_LOCALCONTACTS_BITWISE)) {
+            indexPath = [NSIndexPath indexPathForRow:index inSection:filteredLocalContactsSection];
+        }
     }
     else
     {
         index = [filteredMatrixContacts indexOfObject:contact];
-        if (index != NSNotFound)
+        // if matrix section is collapsed or we are not showing the matrix section(as with empty query) there is no cell
+        if (index != NSNotFound && !(shrinkedSectionsBitMask & CONTACTSDATASOURCE_USERDIRECTORY_BITWISE) && filteredMatrixContactsSection != -1)
         {
             indexPath = [NSIndexPath indexPathForRow:index inSection:filteredMatrixContactsSection];
         }
@@ -724,7 +745,7 @@
     if (section == filteredLocalContactsSection)
     {
         count = filteredLocalContacts.count;
-        title = NSLocalizedStringFromTable(@"contacts_address_book_section", @"Vector", nil);
+        title = [VectorL10n contactsAddressBookSection];
     }
     else //if (section == filteredMatrixContactsSection)
     {
@@ -732,11 +753,11 @@
         {
             case ContactsDataSourceUserDirectoryStateOfflineLoading:
             case ContactsDataSourceUserDirectoryStateOfflineLoaded:
-                title = NSLocalizedStringFromTable(@"contacts_user_directory_offline_section", @"Vector", nil);
+                title = [VectorL10n contactsUserDirectoryOfflineSection];
                 break;
 
             default:
-                title = NSLocalizedStringFromTable(@"contacts_user_directory_section", @"Vector", nil);
+                title = [VectorL10n contactsUserDirectorySection];
                 break;
         }
         
@@ -770,19 +791,24 @@
     return sectionTitle;
 }
 
-- (UIView *)viewForHeaderInSection:(NSInteger)section withFrame:(CGRect)frame
+- (UIView *)viewForHeaderInSection:(NSInteger)section withFrame:(CGRect)frame inTableView:(UITableView *)tableView
 {
     NSInteger sectionBitwise = 0;
     
-    SectionHeaderView *sectionHeader = [[SectionHeaderView alloc] initWithFrame:frame];
-    sectionHeader.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
+    SectionHeaderView *sectionHeader = [tableView dequeueReusableHeaderFooterViewWithIdentifier:SectionHeaderView.defaultReuseIdentifier];
+    if (sectionHeader == nil)
+    {
+        sectionHeader = [[SectionHeaderView alloc] initWithReuseIdentifier:SectionHeaderView.defaultReuseIdentifier];
+    }
+    sectionHeader.frame = frame;
+    sectionHeader.backgroundView = [UIView new];
+    sectionHeader.backgroundView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
     sectionHeader.topViewHeight = CONTACTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT;
 
     frame.size.height = CONTACTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT - 10;
     UILabel *headerLabel = [[UILabel alloc] initWithFrame:frame];
     headerLabel.attributedText = [self attributedStringForHeaderTitleInSection:section];
     headerLabel.backgroundColor = [UIColor clearColor];
-    [sectionHeader addSubview:headerLabel];
     sectionHeader.headerLabel = headerLabel;
 
     if (_areSectionsShrinkable)
@@ -811,7 +837,6 @@
         shrinkButton.backgroundColor = [UIColor clearColor];
         [shrinkButton addTarget:self action:@selector(onButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
         shrinkButton.tag = sectionBitwise;
-        [sectionHeader addSubview:shrinkButton];
         sectionHeader.topSpanningView = shrinkButton;
         sectionHeader.userInteractionEnabled = YES;
         
@@ -819,16 +844,15 @@
         UIImage *chevron;
         if (shrinkedSectionsBitMask & sectionBitwise)
         {
-            chevron = [UIImage imageNamed:@"disclosure_icon"];
+            chevron = AssetImages.disclosureIcon.image;
         }
         else
         {
-            chevron = [UIImage imageNamed:@"shrink_icon"];
+            chevron = AssetImages.shrinkIcon.image;
         }
         UIImageView *chevronView = [[UIImageView alloc] initWithImage:chevron];
         chevronView.tintColor = ThemeService.shared.theme.textSecondaryColor;
         chevronView.contentMode = UIViewContentModeCenter;
-        [sectionHeader addSubview:chevronView];
         sectionHeader.accessoryView = chevronView;
     }
     
@@ -846,7 +870,7 @@
             
             checkboxLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 30)];
             checkboxLabel.font = [UIFont systemFontOfSize:16.0];
-            checkboxLabel.text = NSLocalizedStringFromTable(@"contacts_address_book_matrix_users_toggle", @"Vector", nil);
+            checkboxLabel.text = [VectorL10n contactsAddressBookMatrixUsersToggle];
             [localContactsCheckboxContainer addSubview:checkboxLabel];
             localContactsCheckboxContainer.checkboxLabel = checkboxLabel;
             
@@ -868,24 +892,23 @@
         checkboxLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
         
         // Set the right value of the tick box
-        localContactsCheckbox.image = hideNonMatrixEnabledContacts ? [UIImage imageNamed:@"selection_tick"] : [UIImage imageNamed:@"selection_untick"];
+        localContactsCheckbox.image = hideNonMatrixEnabledContacts ? AssetImages.selectionTick.image : AssetImages.selectionUntick.image;
         localContactsCheckbox.tintColor = ThemeService.shared.theme.tintColor;
         
         // Add the check box container
-        [sectionHeader addSubview:localContactsCheckboxContainer];
         sectionHeader.bottomView = localContactsCheckboxContainer;
     }
     
     return sectionHeader;
 }
 
-- (UIView *)viewForStickyHeaderInSection:(NSInteger)section withFrame:(CGRect)frame
+- (UIView *)viewForStickyHeaderInSection:(NSInteger)section withFrame:(CGRect)frame inTableView:(UITableView *)tableView
 {
     // Return the section header used when the section is shrinked
     NSInteger savedShrinkedSectionsBitMask = shrinkedSectionsBitMask;
     shrinkedSectionsBitMask = CONTACTSDATASOURCE_LOCALCONTACTS_BITWISE | CONTACTSDATASOURCE_USERDIRECTORY_BITWISE;
     
-    UIView *stickyHeader = [self viewForHeaderInSection:section withFrame:frame];
+    UIView *stickyHeader = [self viewForHeaderInSection:section withFrame:frame inTableView:tableView];
     
     shrinkedSectionsBitMask = savedShrinkedSectionsBitMask;
     

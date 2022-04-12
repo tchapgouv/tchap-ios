@@ -24,6 +24,8 @@
  */
 @interface RoomsViewController : RecentsViewController
 
++ (instancetype)instantiate;
+
 /**
  The delegate for the view controller.
  */
@@ -33,13 +35,6 @@
  Scroll the next room with missed notifications to the top.
  */
 - (void)scrollToNextRoomWithMissedNotifications;
-
-/**
- Creates and returns a new `RoomsViewController` object.
- 
- @return An initialized `RoomsViewController` object.
- */
-+ (instancetype)instantiate;
 
 @end
 

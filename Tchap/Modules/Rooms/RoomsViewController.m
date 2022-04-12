@@ -52,13 +52,6 @@
     return [storyboard instantiateViewControllerWithIdentifier:@"RoomsViewController"];
 }
 
-- (void)finalizeInit
-{
-    [super finalizeInit];
-    
-    self.screenName = @"Rooms";
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -182,7 +175,7 @@
             
         } failure:^(NSError *error) {
             
-            NSLog(@"[RoomsViewController] Failed to reject an invited room (%@)", invitedRoom.roomId);
+            MXLogDebug(@"[RoomsViewController] Failed to reject an invited room (%@)", invitedRoom.roomId);
             [[AppDelegate theDelegate] showErrorAsAlert:error];
             
         }];
@@ -242,7 +235,9 @@
         {
             RoomsCell* tableViewCell = (RoomsCell*)cell;
             
-            [self.roomsViewControllerDelegate roomsViewController:self didSelectRoomWithID:tableViewCell.roomCellData.roomSummary.roomId];
+            if (tableViewCell.roomCellData.roomSummary.roomId != nil) {
+                [self.roomsViewControllerDelegate roomsViewController:self didSelectRoomWithID:tableViewCell.roomCellData.roomSummary.roomId];
+            }
         }
     }
 }

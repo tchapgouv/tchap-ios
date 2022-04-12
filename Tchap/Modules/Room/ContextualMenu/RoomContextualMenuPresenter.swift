@@ -53,7 +53,7 @@ final class RoomContextualMenuPresenter: NSObject {
             return
         }
         
-        viewController.tc_addChildViewController(viewController: roomContextualMenuViewController, onView: view)
+        viewController.vc_addChildViewController(viewController: roomContextualMenuViewController, onView: view)
         
         self.roomContextualMenuViewController = roomContextualMenuViewController
         
@@ -98,7 +98,7 @@ final class RoomContextualMenuPresenter: NSObject {
         }
         
         let animationCompletionInstructions: (() -> Void) = {
-            roomContextualMenuViewController.tc_removeFromParent()
+            roomContextualMenuViewController.vc_removeFromParent()
             self.roomContextualMenuViewController = nil
             completion?()
         }

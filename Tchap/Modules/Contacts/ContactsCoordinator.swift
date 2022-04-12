@@ -16,7 +16,7 @@
 
 import Foundation
 
-protocol ContactsCoordinatorDelegate: class {
+protocol ContactsCoordinatorDelegate: AnyObject {
     func contactsCoordinator(_ coordinator: ContactsCoordinatorType, didSelectUserID userID: String)
     func contactsCoordinator(_ coordinator: ContactsCoordinatorType, sendEmailInviteTo email: String)
 }
@@ -44,7 +44,7 @@ final class ContactsCoordinator: NSObject, ContactsCoordinatorType {
         self.router = router
         self.session = session
         
-        self.contactsViewController = ContactsViewController.instantiate(with: Variant1Style.shared)
+        self.contactsViewController = ContactsViewController.instantiate()
         
         self.contactsDataSource = ContactsDataSource(matrixSession: self.session)
         self.contactsDataSource.finalizeInitialization()
@@ -105,7 +105,7 @@ extension ContactsCoordinator: ContactsViewControllerDelegate {
     func contactsViewController(_ contactsViewController: ContactsViewController, didSelect contact: MXKContact) {
         // No more than one matrix identifer is expected by contact in Tchap.
         guard contact.matrixIdentifiers.count == 1, let userID = contact.matrixIdentifiers.first as? String else {
-            print("[ContactsCoordinator] Invalid selected contact: multiple matrix ids")
+            MXLog.debug("[ContactsCoordinator] Invalid selected contact: multiple matrix ids")
             return
         }
 

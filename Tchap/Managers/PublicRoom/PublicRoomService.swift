@@ -49,9 +49,9 @@ final class PublicRoomService: PublicRoomServiceType {
             return self.getPublicRooms(from: homeServerStringURL, searchText: searchText)
                 .catchError({ (error) -> Observable<[MXPublicRoom]> in
                     if let homeServerStringURL = homeServerStringURL {
-                        print("[PublicRoomService]: Fail to retrieve public rooms for homeserver: \(homeServerStringURL)")
+                        MXLog.debug("[PublicRoomService]: Fail to retrieve public rooms for homeserver: \(homeServerStringURL)")
                     } else {
-                        print("[PublicRoomService]: Fail to retrieve public rooms for current homeserver")
+                        MXLog.debug("[PublicRoomService]: Fail to retrieve public rooms for current homeserver")
                     }
                     // Return an empty array when request fail
                     return Observable.just([])
@@ -87,7 +87,7 @@ final class PublicRoomService: PublicRoomServiceType {
                     observer.on(.next(publicRooms))
                     observer.on(.completed)
                 case .failure(let error):
-                    print("[PublicRoomService]: Fail to retrieve public rooms for homeserver: \(String(describing: homeServerStringURL))")
+                    MXLog.debug("[PublicRoomService]: Fail to retrieve public rooms for homeserver: \(String(describing: homeServerStringURL))")
                     observer.on(.error(error))
                 }
             }

@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+#import "MatrixKit.h"
 
 /**
  List the different secure backup banners that could be displayed.
@@ -88,6 +88,16 @@ extern NSString *const kRoomsDataSourceTapOnDirectoryServerChange;
  @return the header height.
  */
 - (CGFloat)heightForHeaderInSection:(NSInteger)section;
+
+/**
+ Get the view of the section header.
+ 
+ @param section the section index
+ @param frame the section frame
+ @return the header view.
+ */
+
+- (UIView *)viewForHeaderInSection:(NSInteger)section withFrame:(CGRect)frame;
 
 /**
  The current number of rooms with missed notifications, including the invites.

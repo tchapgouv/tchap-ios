@@ -51,7 +51,7 @@
  'RoomParticipantsViewController' instance is used to edit members of the room defined by the property 'mxRoom'.
  When this property is nil, the view controller is empty.
  */
-@interface RoomParticipantsViewController : MXKViewController <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UIGestureRecognizerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsViewControllerDelegate>
+@interface RoomParticipantsViewController : MXKViewController <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UIGestureRecognizerDelegate, MXKRoomMemberDetailsViewControllerDelegate>
 {
 @protected
     /**
@@ -69,6 +69,11 @@
      The current list of invited members.
      */
     NSMutableArray<Contact*> *invitedParticipants;
+    
+    /**
+     The contact used to describe the current user (nil if the user is not a participant of the room).
+     */
+    Contact *userParticipant;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -88,10 +93,13 @@
  */
 @property (nonatomic) BOOL enableMention;
 
+@property (nonatomic) BOOL showCancelBarButtonItem;
+@property (nonatomic) BOOL showParticipantCustomAccessoryView;
+
 /**
  The delegate for the view controller.
  */
-@property (nonatomic) id<RoomParticipantsViewControllerDelegate> delegate;
+@property (nonatomic, weak) id<RoomParticipantsViewControllerDelegate> delegate;
 
 /**
  Returns the `UINib` object initialized for a `RoomParticipantsViewController`.

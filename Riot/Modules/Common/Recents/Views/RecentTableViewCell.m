@@ -20,16 +20,12 @@
 #import "AvatarGenerator.h"
 
 #import "MXEvent.h"
+#import "MXRoom+Riot.h"
 
 #import "ThemeService.h"
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 #import "MXRoomSummary+Riot.h"
-
-#pragma mark - Defines & Constants
-
-static const CGFloat kDirectRoomBorderColorAlpha = 0.75;
-static const CGFloat kDirectRoomBorderWidth = 3.0;
 
 @implementation RecentTableViewCell
 
@@ -52,16 +48,6 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
     self.lastEventDescription.textColor = ThemeService.shared.theme.textSecondaryColor;
     self.lastEventDate.textColor = ThemeService.shared.theme.textSecondaryColor;
     self.missedNotifAndUnreadBadgeLabel.textColor = ThemeService.shared.theme.baseTextPrimaryColor;
-    
-    // Prepare direct room border
-    CGColorRef directRoomBorderColor = CGColorCreateCopyWithAlpha(ThemeService.shared.theme.tintColor.CGColor, kDirectRoomBorderColorAlpha);
-    
-    [self.directRoomBorderView.layer setCornerRadius:self.directRoomBorderView.frame.size.width / 2];
-    self.directRoomBorderView.clipsToBounds = YES;
-    self.directRoomBorderView.layer.borderColor = directRoomBorderColor;
-    self.directRoomBorderView.layer.borderWidth = kDirectRoomBorderWidth;
-    
-    CFRelease(directRoomBorderColor);
     
     self.roomAvatar.defaultBackgroundColor = [UIColor clearColor];
 }
@@ -90,7 +76,7 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
         self.lastEventDate.text = roomCellData.lastEventDate;
         
         // Manage lastEventAttributedTextMessage optional property
-        if ([roomCellData respondsToSelector:@selector(lastEventAttributedTextMessage)])
+        if (!roomCellData.roomSummary.spaceChildInfo && [roomCellData respondsToSelector:@selector(lastEventAttributedTextMessage)])
         {
             // Force the default text color for the last message (cancel highlighted message color)
             NSMutableAttributedString *lastEventDescription = [[NSMutableAttributedString alloc] initWithAttributedString:roomCellData.lastEventAttributedTextMessage];
@@ -102,6 +88,9 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
             self.lastEventDescription.text = roomCellData.lastEventTextMessage;
         }
         
+        self.unsentImageView.hidden = roomCellData.roomSummary.sentStatus == MXRoomSummarySentStatusOk;
+        self.lastEventDecriptionLabelTrailingConstraint.constant = self.unsentImageView.hidden ? 10 : 30;
+
         // Notify unreads and bing
         if (roomCellData.hasUnread)
         {
@@ -134,20 +123,11 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
             // The room title is not bold anymore            
             self.roomTitle.font = [UIFont systemFontOfSize:17 weight:UIFontWeightMedium];
         }
-        
-        self.directRoomBorderView.hidden = !roomCellData.roomSummary.room.isDirect;
 
-        if (roomCellData.roomSummary.isEncrypted)
-        {
-            self.encryptedRoomIcon.hidden = NO;
-            self.encryptedRoomIcon.image = [self shieldImageForTrustLevel:roomCellData.roomSummary.roomEncryptionTrustLevel];
-        }
-        else
-        {
-            self.encryptedRoomIcon.hidden = YES;
-        }
-
-        [roomCellData.roomSummary setRoomAvatarImageIn:self.roomAvatar];
+        [self.roomAvatar vc_setRoomAvatarImageWith:roomCellData.avatarUrl
+                                            roomId:roomCellData.roomIdentifier
+                                       displayName:roomCellData.roomDisplayname
+                                      mediaManager:roomCellData.mxSession.mediaManager];
     }
     else
     {
@@ -159,34 +139,6 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
 {
     // The height is fixed
     return 74;
-}
-
-- (UIImage*)shieldImageForTrustLevel:(RoomEncryptionTrustLevel)roomEncryptionTrustLevel
-{
-    UIImage *shieldImage;
-    
-    NSString *encryptionIconName;
-    switch (roomEncryptionTrustLevel)
-    {
-        case RoomEncryptionTrustLevelWarning:
-            encryptionIconName = @"encryption_warning";
-            break;
-        case RoomEncryptionTrustLevelNormal:
-            encryptionIconName = @"encryption_normal";
-            break;
-        case RoomEncryptionTrustLevelTrusted:
-            encryptionIconName = @"encryption_trusted";
-            break;
-        case RoomEncryptionTrustLevelUnknown:
-            encryptionIconName = @"encryption_normal";
-            break;
-    }
-    
-    if (encryptionIconName)
-    {
-        shieldImage = [UIImage imageNamed:encryptionIconName];
-    }
-    return shieldImage;
 }
 
 @end

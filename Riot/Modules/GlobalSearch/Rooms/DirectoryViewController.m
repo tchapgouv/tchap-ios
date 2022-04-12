@@ -19,7 +19,7 @@
 
 #import "PublicRoomsDirectoryDataSource.h"
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 @interface DirectoryViewController ()
 {
@@ -35,6 +35,8 @@
     id kThemeServiceDidChangeThemeNotificationObserver;
 }
 
+@property (nonatomic) AnalyticsScreenTimer *screenTimer;
+
 @end
 
 @implementation DirectoryViewController
@@ -46,13 +48,15 @@
     // Setup `MXKViewControllerHandling` properties
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
+    
+    self.screenTimer = [[AnalyticsScreenTimer alloc] initWithScreen:AnalyticsScreenRoomDirectory];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 
-    self.title = NSLocalizedStringFromTable(@"directory_title", @"Vector", nil);
+    self.title = [VectorL10n directoryTitle];
 
     self.tableView.delegate = self;
 
@@ -106,14 +110,11 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    // Screen tracking
-    [[Analytics sharedInstance] trackScreen:@"Directory"];
     
     // Observe kAppDelegateDidTapStatusBarNotificationObserver.
     kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
-        [self.tableView setContentOffset:CGPointMake(-self.tableView.mxk_adjustedContentInset.left, -self.tableView.mxk_adjustedContentInset.top) animated:YES];
+        [self.tableView setContentOffset:CGPointMake(-self.tableView.adjustedContentInset.left, -self.tableView.adjustedContentInset.top) animated:YES];
         
     }];
 
@@ -135,6 +136,8 @@
         // the selected room (if any) is highlighted.
         [self refreshCurrentSelectedCell:YES];
     }
+    
+    [self.screenTimer start];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -146,6 +149,12 @@
     }
     
     [super viewWillDisappear:animated];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    [self.screenTimer stop];
 }
 
 - (void)displayWitDataSource:(PublicRoomsDirectoryDataSource *)dataSource2
@@ -190,17 +199,17 @@
     MXPublicRoom *publicRoom = [dataSource roomAtIndexPath:indexPath];
 
     // Check whether the user has already joined the selected public room
-    if ([dataSource.mxSession roomWithRoomId:publicRoom.roomId])
+    if ([dataSource.mxSession isJoinedOnRoom:publicRoom.roomId])
     {
         // Open the public room.
-        [self openRoomWithId:publicRoom.roomId inMatrixSession:dataSource.mxSession];
+        [self showRoomWithId:publicRoom.roomId inMatrixSession:dataSource.mxSession];
     }
     else
     {
         // Preview the public room
         if (publicRoom.worldReadable)
         {
-            RoomPreviewData *roomPreviewData = [[RoomPreviewData alloc] initWithRoomId:publicRoom.roomId andSession:dataSource.mxSession];
+            RoomPreviewData *roomPreviewData = [[RoomPreviewData alloc] initWithPublicRoom:publicRoom andSession:dataSource.mxSession];
             
             [self startActivityIndicator];
             
@@ -209,13 +218,13 @@
                 
                 [self stopActivityIndicator];
                 
-                [[AppDelegate theDelegate].masterTabBarController showRoomPreview:roomPreviewData];
+                [self showRoomPreviewWithData:roomPreviewData];
             }];
         }
         else
         {
             RoomPreviewData *roomPreviewData = [[RoomPreviewData alloc] initWithPublicRoom:publicRoom andSession:dataSource.mxSession];
-            [[AppDelegate theDelegate].masterTabBarController showRoomPreview:roomPreviewData];
+            [self showRoomPreviewWithData:roomPreviewData];
         }
         
     }
@@ -232,9 +241,24 @@
 
 #pragma mark - Private methods
 
-- (void)openRoomWithId:(NSString*)roomId inMatrixSession:(MXSession*)mxSession
-{    
-    [[AppDelegate theDelegate] showRoom:roomId andEventId:nil withMatrixSession:mxSession restoreInitialDisplay:NO];
+- (void)showRoomWithId:(NSString*)roomId inMatrixSession:(MXSession*)mxSession
+{
+    ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:NO stackAboveVisibleViews:NO];
+    
+    RoomNavigationParameters *parameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId
+                                                                                    eventId:nil
+                                                                                  mxSession:mxSession
+                                                                           threadParameters:nil
+                                                                     presentationParameters:presentationParameters];
+    [[AppDelegate theDelegate] showRoomWithParameters:parameters];
+}
+
+- (void)showRoomPreviewWithData:(RoomPreviewData*)roomPreviewData
+{
+    ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:NO stackAboveVisibleViews:NO];
+    
+    RoomPreviewNavigationParameters *parameters = [[RoomPreviewNavigationParameters alloc] initWithPreviewData:roomPreviewData presentationParameters:presentationParameters];
+    [[AppDelegate theDelegate] showRoomPreviewWithParameters:parameters];
 }
 
 - (void)refreshCurrentSelectedCell:(BOOL)forceVisible
@@ -243,7 +267,7 @@
 
     // Update here the index of the current selected cell (if any) - Useful in landscape mode with split view controller.
     NSIndexPath *currentSelectedCellIndexPath = nil;
-    if (masterTabBarController.currentRoomViewController)
+    if (masterTabBarController.selectedRoomId)
     {
         // Look for the rank of this selected room in displayed recents
         currentSelectedCellIndexPath = [dataSource cellIndexPathWithRoomId:masterTabBarController.selectedRoomId andMatrixSession:masterTabBarController.selectedRoomSession];

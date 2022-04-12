@@ -18,7 +18,7 @@
 
 import Foundation
 
-protocol TabBarCoordinatorDelegate: class {
+protocol TabBarCoordinatorDelegate: AnyObject {
     // TODO: Remove this method, authentication should not be handled by TabBarCoordinator
     func tabBarCoordinatorDidCompleteAuthentication(_ coordinator: TabBarCoordinatorType)
 }
@@ -27,6 +27,10 @@ protocol TabBarCoordinatorDelegate: class {
 protocol TabBarCoordinatorType: Coordinator, SplitViewMasterPresentable {
     
     var delegate: TabBarCoordinatorDelegate? { get }
+        
+    /// Start coordinator by selecting a Space.
+    /// - Parameter spaceId: The id of the Space to use.
+    func start(with spaceId: String?)
     
     func popToHome(animated: Bool, completion: (() -> Void)?)
     

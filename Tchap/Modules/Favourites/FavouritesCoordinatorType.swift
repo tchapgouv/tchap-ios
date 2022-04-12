@@ -18,7 +18,7 @@
 
 import Foundation
 
-protocol FavouritesCoordinatorDelegate: class {
+protocol FavouritesCoordinatorDelegate: AnyObject {
     func favouritesCoordinatorDidComplete(_ coordinator: FavouritesCoordinatorType)
     func favouritesCoordinator(_ coordinator: FavouritesCoordinatorType, didShowRoomWithId roomId: String, onEventId eventId: String)
     func favouritesCoordinator(_ coordinator: FavouritesCoordinatorType, handlePermalinkFragment fragment: String) -> Bool

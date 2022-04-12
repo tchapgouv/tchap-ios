@@ -18,11 +18,11 @@
 
 #import "SegmentedViewController.h"
 
-#import "DesignValues.h"
+#import "ThemeService.h"
 
 #import "GeneratedInterface-Swift.h"
 
-@interface SegmentedViewController () <Stylable>
+@interface SegmentedViewController ()
 {
     // Tell whether the segmented view is appeared (see viewWillAppear/viewWillDisappear).
     BOOL isViewAppeared;
@@ -47,10 +47,8 @@
     NSLayoutConstraint *leftMarkerViewConstraint;
     
     // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
-    id kThemeServiceDidChangeThemeNotificationObserver;
+    __weak id kThemeServiceDidChangeThemeNotificationObserver;
 }
-
-@property (nonatomic, strong) id<Style> currentStyle;
 
 @end
 
@@ -68,7 +66,6 @@
 {
     SegmentedViewController *segmentedViewController = [[[self class] alloc] initWithNibName:NSStringFromClass([SegmentedViewController class])
                                           bundle:[NSBundle bundleForClass:[SegmentedViewController class]]];
-    segmentedViewController.currentStyle = Variant1Style.shared;
     return segmentedViewController;
 }
 
@@ -170,6 +167,8 @@
     // Adjust Top
     [NSLayoutConstraint deactivateConstraints:@[self.selectionContainerTopConstraint]];
     
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wdeprecated"
     // it is not possible to define a constraint to the topLayoutGuide in the xib editor
     // so do it in the code ..
     self.selectionContainerTopConstraint = [NSLayoutConstraint constraintWithItem:self.topLayoutGuide
@@ -179,51 +178,58 @@
                                                                   attribute:NSLayoutAttributeTop
                                                                  multiplier:1.0f
                                                                    constant:0.0f];
+    #pragma clang diagnostic pop
     
     [NSLayoutConstraint activateConstraints:@[self.selectionContainerTopConstraint]];
     
-    // Observe user interface theme change.
+    [self createSegmentedViews];
+    
     MXWeakify(self);
+    
+    // Observe user interface theme change.
     kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-
+        
         MXStrongifyAndReturnIfNil(self);
+        
         [self userInterfaceThemeDidChange];
-
+        
     }];
     [self userInterfaceThemeDidChange];
-    
-    [self createSegmentedViews];
 }
 
 - (void)userInterfaceThemeDidChange
 {
-    [self updateWithStyle:self.currentStyle];
+    [self updateTheme];
 }
 
-- (void)updateWithStyle:(id<Style>)style
+- (void)updateTheme
 {
-    self.currentStyle = style;
-    
-    self.sectionHeaderTintColor = style.barActionColor;
+    self.sectionHeaderTintColor = ThemeService.shared.theme.tintColor;
     
     UINavigationBar *navigationBar = self.navigationController.navigationBar;
     
     if (navigationBar)
     {
-        [style applyStyleOnNavigationBar:navigationBar];
+        [ThemeService.shared.theme applyStyleOnNavigationBar:navigationBar];
     }
     
-    self.view.backgroundColor = style.backgroundColor;
+    self.view.backgroundColor = ThemeService.shared.theme.backgroundColor;
     
     // @TODO Design the activvity indicator for Tchap
-    self.activityIndicator.backgroundColor = style.overlayBackgroundColor;
+    self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
+    
+    for (UIView* subview in self.selectionContainer.subviews) {
+        [subview removeFromSuperview];
+    }
+    
+    [self createSegmentedViews];
 
     [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return self.currentStyle.statusBarStyle;
+    return ThemeService.shared.theme.statusBarStyle;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -294,7 +300,7 @@
         label.font = [UIFont systemFontOfSize:17];
         label.textAlignment = NSTextAlignmentCenter;
         label.textColor = _sectionHeaderTintColor;
-        label.backgroundColor = self.currentStyle.barBackgroundColor;
+        label.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
         label.accessibilityIdentifier = [NSString stringWithFormat:@"SegmentedVCSectionLabel%tu", index];
         
         // the constraint defines the label frame

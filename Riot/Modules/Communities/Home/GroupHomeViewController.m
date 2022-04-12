@@ -17,7 +17,7 @@
 
 #import "GroupHomeViewController.h"
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 #import "ThemeService.h"
 #import "Tools.h"
@@ -40,11 +40,16 @@
     
     // The options used to load long description html content.
     NSDictionary *options;
-    NSString *sanitisedGroupLongDescription;
+    NSString *groupLongDescriptionString;
     
     // The current pushed view controller
     UIViewController *pushedViewController;
 }
+
+@property (nonatomic, readonly) DTHTMLAttributedStringBuilderWillFlushCallback longDescriptionSanitizationCallback;
+
+@property (nonatomic) AnalyticsScreenTimer *screenTimer;
+
 @end
 
 @implementation GroupHomeViewController
@@ -75,16 +80,35 @@
     
     // Keep visible the status bar by default.
     isStatusBarHidden = NO;
+    
+    // Set up sanitization for the long description
+    NSArray<NSString *> *allowedHTMLTags = @[
+        @"font", // custom to matrix for IRC-style font coloring
+        @"del", // for markdown
+        @"body", // added internally by DTCoreText
+        @"h1", @"h2", @"h3", @"h4", @"h5", @"h6", @"blockquote", @"p", @"a", @"ul", @"ol",
+        @"nl", @"li", @"b", @"i", @"u", @"strong", @"em", @"strike", @"code", @"hr", @"br", @"div",
+        @"table", @"thead", @"caption", @"tbody", @"tr", @"th", @"td", @"pre",
+        @"img"
+    ];
+    
+    MXWeakify(self);
+    _longDescriptionSanitizationCallback = ^(DTHTMLElement *element) {
+        MXStrongifyAndReturnIfNil(self);
+        [element sanitizeWith:allowedHTMLTags bodyFont:self->_groupLongDescription.font imageHandler:[self groupLongDescriptionImageHandler]];
+    };
+    
+    self.screenTimer = [[AnalyticsScreenTimer alloc] initWithScreen:AnalyticsScreenGroup];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    [self.leftButton setTitle:NSLocalizedStringFromTable(@"decline", @"Vector", nil) forState:UIControlStateNormal];
-    [self.leftButton setTitle:NSLocalizedStringFromTable(@"decline", @"Vector", nil) forState:UIControlStateHighlighted];
-    [self.rightButton setTitle:NSLocalizedStringFromTable(@"join", @"Vector", nil) forState:UIControlStateNormal];
-    [self.rightButton setTitle:NSLocalizedStringFromTable(@"join", @"Vector", nil) forState:UIControlStateHighlighted];
+    [self.leftButton setTitle:[VectorL10n decline] forState:UIControlStateNormal];
+    [self.leftButton setTitle:[VectorL10n decline] forState:UIControlStateHighlighted];
+    [self.rightButton setTitle:[VectorL10n join] forState:UIControlStateNormal];
+    [self.rightButton setTitle:[VectorL10n join] forState:UIControlStateHighlighted];
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
     [tap setNumberOfTouchesRequired:1];
@@ -154,7 +178,7 @@
                       font-size: small; \
                       }", (unsigned long)bgColor];
         
-        // Apply the css style
+        // Apply the css style with some sanitisation.
         options = @{
                     DTUseiOS6Attributes: @(YES),              // Enable it to be able to display the attributed string in a UITextView
                     DTDefaultFontFamily: _groupLongDescription.font.familyName,
@@ -162,7 +186,8 @@
                     DTDefaultFontSize: @(_groupLongDescription.font.pointSize),
                     DTDefaultTextColor: _groupLongDescription.textColor,
                     DTDefaultLinkDecoration: @(NO),
-                    DTDefaultStyleSheet: [[DTCSSStylesheet alloc] initWithStyleBlock:defaultCSS]
+                    DTDefaultStyleSheet: [[DTCSSStylesheet alloc] initWithStyleBlock:defaultCSS],
+                    DTWillFlushBlockCallBack: self.longDescriptionSanitizationCallback
                     };
     }
 
@@ -184,9 +209,6 @@
 {
     [super viewWillAppear:animated];
     
-    // Screen tracking
-    [[Analytics sharedInstance] trackScreen:@"GroupDetailsHome"];
-    
     // Release the potential pushed view controller
     [self releasePushedViewController];
     
@@ -207,25 +229,25 @@
         // Indeed the group update notifications are triggered by the matrix session only for the user's groups.
         void (^success)(void) = ^void(void)
         {
-            [self refreshDisplayWithGroup:_group];
+            [self refreshDisplayWithGroup:self->_group];
         };
         
         // Trigger a refresh on the group summary.
-        [self.mxSession updateGroupSummary:_group success:(isPreview ? success : nil) failure:^(NSError *error) {
+        [self.mxSession updateGroupSummary:self->_group success:(isPreview ? success : nil) failure:^(NSError *error) {
             
-            NSLog(@"[GroupHomeViewController] viewWillAppear: group summary update failed %@", _group.groupId);
+            MXLogDebug(@"[GroupHomeViewController] viewWillAppear: group summary update failed %@", self->_group.groupId);
             
         }];
         // Trigger a refresh on the group members (ignore here the invited users).
-        [self.mxSession updateGroupUsers:_group success:(isPreview ? success : nil) failure:^(NSError *error) {
+        [self.mxSession updateGroupUsers:self->_group success:(isPreview ? success : nil) failure:^(NSError *error) {
             
-            NSLog(@"[GroupHomeViewController] viewWillAppear: group members update failed %@", _group.groupId);
+            MXLogDebug(@"[GroupHomeViewController] viewWillAppear: group members update failed %@", self->_group.groupId);
             
         }];
         // Trigger a refresh on the group rooms.
-        [self.mxSession updateGroupRooms:_group success:(isPreview ? success : nil) failure:^(NSError *error) {
+        [self.mxSession updateGroupRooms:self->_group success:(isPreview ? success : nil) failure:^(NSError *error) {
             
-            NSLog(@"[GroupHomeViewController] viewWillAppear: group rooms update failed %@", _group.groupId);
+            MXLogDebug(@"[GroupHomeViewController] viewWillAppear: group rooms update failed %@", self->_group.groupId);
             
         }];
     }
@@ -236,6 +258,18 @@
     [super viewWillDisappear:animated];
     
     [self cancelRegistrationOnGroupChangeNotifications];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self.screenTimer start];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    [self.screenTimer stop];
 }
 
 - (void)viewDidLayoutSubviews
@@ -382,12 +416,12 @@
         
         if (_group.users.totalUserCountEstimate == 1)
         {
-            _membersCountLabel.text = NSLocalizedStringFromTable(@"group_home_one_member_format", @"Vector", nil);
+            _membersCountLabel.text = [VectorL10n groupHomeOneMemberFormat];
             _membersCountContainer.hidden = NO;
         }
         else if (_group.users.totalUserCountEstimate > 1)
         {
-            _membersCountLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"group_home_multi_members_format", @"Vector", nil), _group.users.totalUserCountEstimate];
+            _membersCountLabel.text = [VectorL10n groupHomeMultiMembersFormat:_group.users.totalUserCountEstimate];
             _membersCountContainer.hidden = NO;
         }
         else
@@ -398,12 +432,12 @@
         
         if (_group.rooms.totalRoomCountEstimate == 1)
         {
-            _roomsCountLabel.text = NSLocalizedStringFromTable(@"group_home_one_room_format", @"Vector", nil);
+            _roomsCountLabel.text = [VectorL10n groupHomeOneRoomFormat];
             _roomsCountContainer.hidden = NO;
         }
         else if (_group.rooms.totalRoomCountEstimate > 1)
         {
-            _roomsCountLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"group_home_multi_rooms_format", @"Vector", nil), _group.rooms.totalRoomCountEstimate];
+            _roomsCountLabel.text = [VectorL10n groupHomeMultiRoomsFormat:_group.rooms.totalRoomCountEstimate];
             _roomsCountContainer.hidden = NO;
         }
         else
@@ -432,7 +466,7 @@
                     }
                 }
                 
-                self.inviteLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"group_invitation_format", @"Vector", nil), inviter];
+                self.inviteLabel.text = [VectorL10n groupInvitationFormat:inviter];
             }
             else
             {
@@ -489,94 +523,11 @@
 {
     if (_group.summary.profile.longDescription.length)
     {
-        // Render this html content in a text view.
-        NSArray <NSString*>* allowedHTMLTags = @[
-                                                 @"font", // custom to matrix for IRC-style font coloring
-                                                 @"del", // for markdown
-                                                 @"h1", @"h2", @"h3", @"h4", @"h5", @"h6", @"blockquote", @"p", @"a", @"ul", @"ol",
-                                                 @"nl", @"li", @"b", @"i", @"u", @"strong", @"em", @"strike", @"code", @"hr", @"br", @"div",
-                                                 @"table", @"thead", @"caption", @"tbody", @"tr", @"th", @"td", @"pre",
-                                                 @"img"
-                                                 ];
-        
-        // Do some sanitisation by handling the potential image
-        MXWeakify(self);
-        sanitisedGroupLongDescription = [MXKTools sanitiseHTML:_group.summary.profile.longDescription withAllowedHTMLTags:allowedHTMLTags imageHandler:^NSString *(NSString *sourceURL, CGFloat width, CGFloat height) {
-            
-            MXStrongifyAndReturnValueIfNil(self, nil);
-            NSString *localSourcePath;
-            
-            if (width != -1 && height != -1)
-            {
-                CGSize size = CGSizeMake(width, height);
-                // Build the cache path for the a thumbnail of this image.
-                NSString *cacheFilePath = [MXMediaManager thumbnailCachePathForMatrixContentURI:sourceURL
-                                                                              andType:nil
-                                                                             inFolder:kMXMediaManagerDefaultCacheFolder
-                                                                        toFitViewSize:size
-                                                                           withMethod:MXThumbnailingMethodScale];
-                // Check whether the provided URL is a valid Matrix Content URI.
-                if (cacheFilePath)
-                {
-                    // Download the thumbnail if it is not already stored in the cache.
-                    if (![[NSFileManager defaultManager] fileExistsAtPath:cacheFilePath])
-                    {
-                        MXWeakify(self);
-                        [self.mxSession.mediaManager downloadThumbnailFromMatrixContentURI:sourceURL
-                                                                                  withType:nil
-                                                                                  inFolder:kMXMediaManagerDefaultCacheFolder
-                                                                             toFitViewSize:size
-                                                                                withMethod:MXThumbnailingMethodScale
-                                                                                   success:^(NSString *outputFilePath) {
-                                                                                       MXStrongifyAndReturnIfNil(self);
-                                                                                       [self refreshGroupLongDescription];
-                                                                                   }
-                                                                                   failure:nil];
-                    }
-                    else
-                    {
-                        // Update the local path
-                        localSourcePath = [NSString stringWithFormat:@"file://%@", cacheFilePath];
-                    }
-                }
-            }
-            else
-            {
-                // Build the cache path for this image.
-                NSString* cacheFilePath = [MXMediaManager cachePathForMatrixContentURI:sourceURL
-                                                                 andType:nil
-                                                                inFolder:kMXMediaManagerDefaultCacheFolder];
-                
-                // Check whether the provided URL is a valid Matrix Content URI.
-                if (cacheFilePath)
-                {
-                    // Download the image if it is not already stored in the cache.
-                    if (![[NSFileManager defaultManager] fileExistsAtPath:cacheFilePath])
-                    {
-                        MXWeakify(self);
-                        [self.mxSession.mediaManager downloadMediaFromMatrixContentURI:sourceURL
-                                                                              withType:nil
-                                                                              inFolder:kMXMediaManagerDefaultCacheFolder
-                                                                               success:^(NSString *outputFilePath) {
-                                                                                   MXStrongifyAndReturnIfNil(self);
-                                                                                   [self refreshGroupLongDescription];
-                                                                               }
-                                                                               failure:nil];
-                    }
-                    else
-                    {
-                        // Update the local path
-                        localSourcePath = [NSString stringWithFormat:@"file://%@", cacheFilePath];
-                    }
-                }
-            }
-            return localSourcePath;
-            
-        }];
+        groupLongDescriptionString = _group.summary.profile.longDescription;
     }
     else
     {
-        sanitisedGroupLongDescription = nil;
+        groupLongDescriptionString = nil;
     }
     
     [self renderGroupLongDescription];
@@ -584,12 +535,13 @@
 
 - (void)renderGroupLongDescription
 {
-    if (sanitisedGroupLongDescription)
+    if (groupLongDescriptionString)
     {
         // Using DTCoreText, which renders static string, helps to avoid code injection attacks
         // that could happen with the default HTML renderer of NSAttributedString which is a
         // webview.
-        NSAttributedString *attributedString = [[NSAttributedString alloc] initWithHTMLData:[sanitisedGroupLongDescription dataUsingEncoding:NSUTF8StringEncoding] options:options documentAttributes:NULL];
+        // The supplied options include a callback to sanitize html tags and load image data.
+        NSAttributedString *attributedString = [[NSAttributedString alloc] initWithHTMLData:[groupLongDescriptionString dataUsingEncoding:NSUTF8StringEncoding] options:options documentAttributes:NULL];
         
         // Apply additional treatments
         NSInteger mxIdsBitMask = (MXKTOOLS_USER_IDENTIFIER_BITWISE | MXKTOOLS_ROOM_IDENTIFIER_BITWISE | MXKTOOLS_ROOM_ALIAS_BITWISE | MXKTOOLS_EVENT_IDENTIFIER_BITWISE | MXKTOOLS_GROUP_IDENTIFIER_BITWISE);
@@ -603,6 +555,83 @@
     {
         _groupLongDescription.text = nil;
     }
+}
+
+- (NSURL *(^)(NSString *sourceURL, CGFloat width, CGFloat height))groupLongDescriptionImageHandler
+{
+    MXWeakify(self);
+    return ^NSURL *(NSString *sourceURL, CGFloat width, CGFloat height) {
+        
+        MXStrongifyAndReturnValueIfNil(self, nil);
+        NSURL *localSourceURL;
+        
+        if (width != -1 && height != -1)
+        {
+            CGSize size = CGSizeMake(width, height);
+            // Build the cache path for the a thumbnail of this image.
+            NSString *cacheFilePath = [MXMediaManager thumbnailCachePathForMatrixContentURI:sourceURL
+                                                                          andType:nil
+                                                                         inFolder:kMXMediaManagerDefaultCacheFolder
+                                                                    toFitViewSize:size
+                                                                       withMethod:MXThumbnailingMethodScale];
+            // Check whether the provided URL is a valid Matrix Content URI.
+            if (cacheFilePath)
+            {
+                // Download the thumbnail if it is not already stored in the cache.
+                if (![[NSFileManager defaultManager] fileExistsAtPath:cacheFilePath])
+                {
+                    MXWeakify(self);
+                    [self.mxSession.mediaManager downloadThumbnailFromMatrixContentURI:sourceURL
+                                                                              withType:nil
+                                                                              inFolder:kMXMediaManagerDefaultCacheFolder
+                                                                         toFitViewSize:size
+                                                                            withMethod:MXThumbnailingMethodScale
+                                                                               success:^(NSString *outputFilePath) {
+                                                                                   MXStrongifyAndReturnIfNil(self);
+                                                                                   [self refreshGroupLongDescription];
+                                                                               }
+                                                                               failure:nil];
+                }
+                else
+                {
+                    // Update the local url
+                    localSourceURL = [NSURL fileURLWithPath:cacheFilePath];
+                }
+            }
+        }
+        else
+        {
+            // Build the cache path for this image.
+            NSString* cacheFilePath = [MXMediaManager cachePathForMatrixContentURI:sourceURL
+                                                             andType:nil
+                                                            inFolder:kMXMediaManagerDefaultCacheFolder];
+            
+            // Check whether the provided URL is a valid Matrix Content URI.
+            if (cacheFilePath)
+            {
+                // Download the image if it is not already stored in the cache.
+                if (![[NSFileManager defaultManager] fileExistsAtPath:cacheFilePath])
+                {
+                    MXWeakify(self);
+                    [self.mxSession.mediaManager downloadMediaFromMatrixContentURI:sourceURL
+                                                                          withType:nil
+                                                                          inFolder:kMXMediaManagerDefaultCacheFolder
+                                                                           success:^(NSString *outputFilePath) {
+                                                                               MXStrongifyAndReturnIfNil(self);
+                                                                               [self refreshGroupLongDescription];
+                                                                           }
+                                                                           failure:nil];
+                }
+                else
+                {
+                    // Update the local path
+                    localSourceURL = [NSURL fileURLWithPath:cacheFilePath];
+                }
+            }
+        }
+        return localSourceURL;
+        
+    };
 }
 
 - (void)didSelectRoomId:(NSString*)roomId
@@ -665,12 +694,12 @@
                     self->currentRequest = nil;
                     [self stopActivityIndicator];
                     
-                    [self refreshDisplayWithGroup:[_mxSession groupWithGroupId:_group.groupId]];
+                    [self refreshDisplayWithGroup:[self->_mxSession groupWithGroupId:self->_group.groupId]];
                 }
                 
             } failure:^(NSError *error) {
                 
-                NSLog(@"[GroupDetailsViewController] join group (%@) failed", _group.groupId);
+                MXLogDebug(@"[GroupDetailsViewController] join group (%@) failed", self->_group.groupId);
                 
                 if (weakSelf)
                 {
@@ -703,7 +732,7 @@
                 
             } failure:^(NSError *error) {
                 
-                NSLog(@"[GroupDetailsViewController] leave group (%@) failed", _group.groupId);
+                MXLogDebug(@"[GroupDetailsViewController] leave group (%@) failed", self->_group.groupId);
                 
                 if (weakSelf)
                 {
@@ -744,7 +773,7 @@
         avatarFullScreenView.stretchable = YES;
         
         MXWeakify(self);
-        [avatarFullScreenView setRightButtonTitle:[NSBundle mxk_localizedStringForKey:@"ok"] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
+        [avatarFullScreenView setRightButtonTitle:[MatrixKitL10n ok] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
             
             MXStrongifyAndReturnIfNil(self);
             [avatarFullScreenView dismissSelection];
@@ -773,6 +802,8 @@
 
 #pragma mark - UITextView delegate
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-implementations"
 - (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange
 {
     BOOL shouldInteractWithURL = YES;
@@ -786,11 +817,8 @@
     if ([Tools isUniversalLink:URL])
     {
         shouldInteractWithURL = NO;
-        
-        // iOS Patch: fix vector.im urls before using it
-        NSURL *fixedURL = [Tools fixURLWithSeveralHashKeys:URL];
-        
-        [[AppDelegate theDelegate] handleUniversalLinkFragment:fixedURL.fragment];
+                        
+        [[AppDelegate theDelegate] handleUniversalLinkURL:URL];
     }
     // Open a detail screen about the clicked user
     else if ([MXTools isMatrixUserIdentifier:absoluteURLString])
@@ -810,7 +838,7 @@
             contact = [[MXKContact alloc] initMatrixContactWithDisplayName:userId andMatrixID:userId];
         }
         
-        ContactDetailsViewController *contactDetailsViewController = [ContactDetailsViewController contactDetailsViewController];
+        ContactDetailsViewController *contactDetailsViewController = [ContactDetailsViewController instantiate];
         contactDetailsViewController.enableVoipCall = NO;
         contactDetailsViewController.contact = contact;
         
@@ -860,7 +888,7 @@
                 }
                 
             } failure:^(NSError *error) {
-                NSLog(@"[GroupHomeViewController] Error: The homeserver failed to resolve the room alias (%@)", roomIdOrAlias);
+                MXLogDebug(@"[GroupHomeViewController] Error: The homeserver failed to resolve the room alias (%@)", roomIdOrAlias);
             }];
         }
     }
@@ -877,5 +905,6 @@
     
     return shouldInteractWithURL;
 }
+#pragma clang diagnostic pop
 
 @end

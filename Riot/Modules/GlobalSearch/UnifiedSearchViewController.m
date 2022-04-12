@@ -31,7 +31,7 @@
 #import "HomeFilesSearchViewController.h"
 #import "FilesSearchCellData.h"
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 #import "GBDeviceInfo_iOS.h"
 
@@ -57,6 +57,13 @@
 
 @implementation UnifiedSearchViewController
 
++ (instancetype)instantiate
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+    UnifiedSearchViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"UnifiedSearchViewController"];
+    return viewController;
+}
+
 - (void)finalizeInit
 {
     [super finalizeInit];
@@ -70,53 +77,42 @@
     NSMutableArray* viewControllers = [[NSMutableArray alloc] init];
     NSMutableArray* titles = [[NSMutableArray alloc] init];
 
-    [titles addObject: NSLocalizedStringFromTable(@"search_rooms", @"Vector", nil)];
+    [titles addObject:[VectorL10n searchRooms]];
     recentsViewController = [RecentsViewController recentListViewController];
+    recentsViewController.screenTimer = [[AnalyticsScreenTimer alloc] initWithScreen:AnalyticsScreenSearchRooms];
     recentsViewController.enableSearchBar = NO;
-    recentsViewController.screenName = @"UnifiedSearchRooms";
     [viewControllers addObject:recentsViewController];
 
-    [titles addObject: NSLocalizedStringFromTable(@"search_messages", @"Vector", nil)];
+    [titles addObject:[VectorL10n searchMessages]];
     messagesSearchViewController = [HomeMessagesSearchViewController searchViewController];
+    messagesSearchViewController.screenTimer = [[AnalyticsScreenTimer alloc] initWithScreen:AnalyticsScreenSearchMessages];
     [viewControllers addObject:messagesSearchViewController];
 
     // Add search People tab
-    [titles addObject: NSLocalizedStringFromTable(@"search_people", @"Vector", nil)];
-    peopleSearchViewController = [ContactsTableViewController instantiate];
+    [titles addObject:[VectorL10n searchPeople]];
+    peopleSearchViewController = [ContactsTableViewController contactsTableViewController];
     peopleSearchViewController.contactsTableViewControllerDelegate = self;
+    peopleSearchViewController.disableFindYourContactsFooter = YES;
+    peopleSearchViewController.screenTimer = [[AnalyticsScreenTimer alloc] initWithScreen:AnalyticsScreenSearchPeople];
     [viewControllers addObject:peopleSearchViewController];
     
     // add Files tab
-    [titles addObject: NSLocalizedStringFromTable(@"search_files", @"Vector", nil)];
+    [titles addObject:[VectorL10n searchFiles]];
     filesSearchViewController = [HomeFilesSearchViewController searchViewController];
+    filesSearchViewController.screenTimer = [[AnalyticsScreenTimer alloc] initWithScreen:AnalyticsScreenSearchFiles];
     [viewControllers addObject:filesSearchViewController];
 
     [self initWithTitles:titles viewControllers:viewControllers defaultSelected:0];
 
     [super viewDidLoad];
-
-    // Add the Riot background image when search bar is empty
-    [self addBackgroundImageViewToView:self.view];
     
     // Initialize here the data sources if a matrix session has been already set.
     [self initializeDataSources];
     
     self.searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    self.searchBar.placeholder = NSLocalizedStringFromTable(@"search_default_placeholder", @"Vector", nil);
+    self.searchBar.placeholder = [VectorL10n searchDefaultPlaceholder];
     
     [super showSearch:NO];
-}
-
-- (void)userInterfaceThemeDidChange
-{
-    [super userInterfaceThemeDidChange];
-    
-    UIImageView *backgroundImageView = self.backgroundImageView;
-    if (backgroundImageView)
-    {
-        UIImage *image = [MXKTools paintImage:backgroundImageView.image withColor:ThemeService.shared.theme.matrixSearchBackgroundImageTintColor];
-        backgroundImageView.image = image;
-    }
 }
 
 - (void)destroy
@@ -136,9 +132,6 @@
 {
     [super viewWillAppear:animated];
 
-    // Screen tracking
-    [[Analytics sharedInstance] trackScreen:@"UnifiedSearch"];
-
     // Let's child display the loading not the home view controller
     if (self.activityIndicator)
     {
@@ -148,6 +141,8 @@
     
     // Reset searches
     [recentsDataSource searchWithPatterns:nil];
+    // TODO: Notify RiotSettings.shared.showNSFWPublicRooms change for iPad as viewWillAppear may not be called
+    recentsDataSource.publicRoomsDirectoryDataSource.showNSFWRooms = RiotSettings.shared.showNSFWPublicRooms;
     
     [self updateSearch];
 }
@@ -168,22 +163,12 @@
 {
     [super viewDidAppear:animated];
     
-    // Here the actual view size is available, check the background image display if any
-    [self checkAndShowBackgroundImage];
-    
     if (self.splitViewController && !self.splitViewController.isCollapsed)
     {
         // In case of split view controller where the primary and secondary view controllers are displayed side-by-side onscreen,
         // the selected room (if any) is highlighted.
         [self refreshCurrentSelectedCellInChild:YES];
     }
-}
-
-- (void)viewDidLayoutSubviews
-{
-    [super viewDidLayoutSubviews];
-    
-    [self checkAndShowBackgroundImage];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -220,7 +205,9 @@
     if (mainSession)
     {
         // Init the recents data source
-        recentsDataSource = [[UnifiedSearchRecentsDataSource alloc] initWithMatrixSession:mainSession];
+        RecentsListService *recentsListService = [[RecentsListService alloc] initWithSession:mainSession];
+        recentsDataSource = [[UnifiedSearchRecentsDataSource alloc] initWithMatrixSession:mainSession
+                             recentsListService:recentsListService];
         [recentsViewController displayList:recentsDataSource];
         
         // Init the search for messages
@@ -236,9 +223,10 @@
         
         // Init the search for people
         peopleSearchDataSource = [[ContactsDataSource alloc] initWithMatrixSession:mainSession];
+        peopleSearchDataSource.showLocalContacts = NO;
         peopleSearchDataSource.areSectionsShrinkable = YES;
         peopleSearchDataSource.displaySearchInputInContactsList = YES;
-        peopleSearchDataSource.contactCellAccessoryImage = [[UIImage imageNamed: @"disclosure_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.textSecondaryColor];;
+        peopleSearchDataSource.contactCellAccessoryImage = [AssetImages.disclosureIcon.image vc_tintedImageUsingColor:ThemeService.shared.theme.textSecondaryColor];;
         [peopleSearchViewController displayList:peopleSearchDataSource];
         
         // Check whether there are others sessions
@@ -313,15 +301,6 @@
 
 #pragma mark - Override MXKViewController
 
-- (void)setKeyboardHeight:(CGFloat)keyboardHeight
-{
-    [self setKeyboardHeightForBackgroundImage:keyboardHeight];
-
-    [super setKeyboardHeight:keyboardHeight];
-    
-    [self checkAndShowBackgroundImage];
-}
-
 - (void)startActivityIndicator
 {
     // Redirect the operation to the currently displayed VC
@@ -339,58 +318,6 @@
     }
  }
 
-#pragma mark - Override UIViewController+VectorSearch
-
-- (void)setKeyboardHeightForBackgroundImage:(CGFloat)keyboardHeight
-{
-    [super setKeyboardHeightForBackgroundImage:keyboardHeight];
-
-    if (keyboardHeight > 0)
-    {
-        [self checkAndShowBackgroundImage];
-    }
-}
-
-// Check conditions before displaying the background
-- (void)checkAndShowBackgroundImage
-{
-    // Note: This background is hidden when keyboard is dismissed.
-    // The other conditions depend on the current selected view controller.
-    if (self.selectedViewController == recentsViewController)
-    {
-        self.backgroundImageView.hidden = YES;
-    }
-    else if (self.selectedViewController == messagesSearchViewController)
-    {
-        self.backgroundImageView.hidden = ((messagesSearchDataSource.serverCount != 0) || !messagesSearchViewController.noResultsLabel.isHidden || (self.keyboardHeight == 0));
-    }
-    else if (self.selectedViewController == peopleSearchViewController)
-    {
-        self.backgroundImageView.hidden = (([peopleSearchViewController.contactsTableView numberOfSections] != 0) || (self.keyboardHeight == 0));
-    }
-    else if (self.selectedViewController == filesSearchViewController)
-    {
-        self.backgroundImageView.hidden = ((filesSearchDataSource.serverCount != 0) || !filesSearchViewController.noResultsLabel.isHidden || (self.keyboardHeight == 0));
-    }
-    else
-    {
-        self.backgroundImageView.hidden = (self.keyboardHeight == 0);
-    }
-    
-    if (!self.backgroundImageView.hidden)
-    {
-        [self.backgroundImageView layoutIfNeeded];
-        [self.selectedViewController.view layoutIfNeeded];
-        
-        // Check whether there is enough space to display this background
-        // For example, in landscape with the iPhone 5 & 6 screen size, the backgroundImageView must be hidden.
-        if (self.backgroundImageView.frame.origin.y < 0 || (self.selectedViewController.view.frame.size.height - self.backgroundImageViewBottomConstraint.constant) < self.backgroundImageView.frame.size.height)
-        {
-            self.backgroundImageView.hidden = YES;
-        }
-    }
-}
-
 #pragma mark - Override SegmentedViewController
 
 - (void)setSelectedIndex:(NSUInteger)selectedIndex
@@ -399,11 +326,11 @@
 
     if (self.selectedViewController == peopleSearchViewController)
     {
-        self.searchBar.placeholder = NSLocalizedStringFromTable(@"search_people_placeholder", @"Vector", nil);
+        self.searchBar.placeholder = [VectorL10n searchPeoplePlaceholder];
     }
     else
     {
-        self.searchBar.placeholder = NSLocalizedStringFromTable(@"search_default_placeholder", @"Vector", nil);
+        self.searchBar.placeholder = [VectorL10n searchDefaultPlaceholder];
     }
     
     [self updateSearch];
@@ -450,7 +377,6 @@
     if (self.searchBar.text.length)
     {
         recentsDataSource.hideRecents = NO;
-        self.backgroundImageView.hidden = YES;
 
         // Forward the search request to the data source
         if (self.selectedViewController == recentsViewController)
@@ -469,8 +395,8 @@
                 // Do it asynchronously to give time to messagesSearchViewController to be set up
                 // so that it can display its loading wheel
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [messagesSearchDataSource searchMessages:self.searchBar.text force:NO];
-                    messagesSearchViewController.shouldScrollToBottomOnRefresh = YES;
+                    [self->messagesSearchDataSource searchMessages:self.searchBar.text force:NO];
+                    self->messagesSearchViewController.shouldScrollToBottomOnRefresh = YES;
                 });
             }
         }
@@ -486,8 +412,8 @@
                 // Do it asynchronously to give time to filesSearchViewController to be set up
                 // so that it can display its loading wheel
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [filesSearchDataSource searchMessages:self.searchBar.text force:NO];
-                    filesSearchViewController.shouldScrollToBottomOnRefresh = YES;
+                    [self->filesSearchDataSource searchMessages:self.searchBar.text force:NO];
+                    self->filesSearchViewController.shouldScrollToBottomOnRefresh = YES;
                 });
             }
         }
@@ -511,8 +437,6 @@
             [filesSearchDataSource searchMessages:nil force:NO];
         }
     }
-    
-    [self checkAndShowBackgroundImage];
 }
 
 #pragma mark - UISearchBarDelegate

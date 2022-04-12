@@ -17,12 +17,12 @@
 
 #import "MXKRoomBubbleTableViewCell+Riot.h"
 
-#import "RoomBubbleCellData.h"
-
-#import "ThemeService.h"
-#import "GeneratedInterface-Swift.h"
-
 #import <objc/runtime.h>
+
+#import "RoomBubbleCellData.h"
+#import "ThemeService.h"
+
+#import "GeneratedInterface-Swift.h"
 
 #define VECTOR_ROOMBUBBLETABLEVIEWCELL_MARK_X 48
 #define VECTOR_ROOMBUBBLETABLEVIEWCELL_MARK_WIDTH 4
@@ -30,13 +30,35 @@
 NSString *const kMXKRoomBubbleCellRiotEditButtonPressed = @"kMXKRoomBubbleCellRiotEditButtonPressed";
 NSString *const kMXKRoomBubbleCellTapOnReceiptsContainer = @"kMXKRoomBubbleCellTapOnReceiptsContainer";
 NSString *const kMXKRoomBubbleCellLongPressOnReactionView = @"kMXKRoomBubbleCellLongPressOnReactionView";
-NSString *const kMXKRoomBubbleCellEventIdKey = @"kMXKRoomBubbleCellEventIdKey";
 NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestAcceptPressed = @"kMXKRoomBubbleCellKeyVerificationAcceptPressed";
 NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed = @"kMXKRoomBubbleCellKeyVerificationDeclinePressed";
 
 @implementation MXKRoomBubbleTableViewCell (Riot)
 
 - (void)addTimestampLabelForComponent:(NSUInteger)componentIndex
+{
+    BOOL isFirstDisplayedComponent = (componentIndex == 0);
+    BOOL isLastMessageMostRecentComponent = NO;
+    
+    RoomBubbleCellData *roomBubbleCellData;
+    
+    if ([bubbleData isKindOfClass:RoomBubbleCellData.class])
+    {
+        roomBubbleCellData = (RoomBubbleCellData*)bubbleData;
+        isFirstDisplayedComponent = (componentIndex == roomBubbleCellData.oldestComponentIndex);
+        isLastMessageMostRecentComponent = roomBubbleCellData.containsLastMessage && (componentIndex == roomBubbleCellData.mostRecentComponentIndex);
+    }
+    
+    // Display timestamp on the left for selected component when it cannot overlap other UI elements like user's avatar
+    BOOL displayLabelOnLeft = roomBubbleCellData.displayTimestampForSelectedComponentOnLeftWhenPossible
+    && !isLastMessageMostRecentComponent
+    && (!isFirstDisplayedComponent || roomBubbleCellData.shouldHideSenderInformation);
+    
+    [self addTimestampLabelForComponent:componentIndex displayOnLeft:displayLabelOnLeft];
+}
+
+- (void)addTimestampLabelForComponent:(NSUInteger)componentIndex
+                        displayOnLeft:(BOOL)displayLabelOnLeft
 {
     MXKRoomBubbleComponent *component;
     
@@ -50,7 +72,6 @@ NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed =
     if (component && component.date)
     {
         BOOL isFirstDisplayedComponent = (componentIndex == 0);
-        BOOL isLastMessageMostRecentComponent = NO;
         
         RoomBubbleCellData *roomBubbleCellData;
         
@@ -58,13 +79,7 @@ NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed =
         {
             roomBubbleCellData = (RoomBubbleCellData*)bubbleData;
             isFirstDisplayedComponent = (componentIndex == roomBubbleCellData.oldestComponentIndex);
-            isLastMessageMostRecentComponent = roomBubbleCellData.containsLastMessage && (componentIndex == roomBubbleCellData.mostRecentComponentIndex);
         }
-        
-        // Display timestamp on the left for selected component when it cannot overlap other UI elements like user's avatar
-        BOOL displayLabelOnLeft = roomBubbleCellData.displayTimestampForSelectedComponentOnLeftWhenPossible
-        && !isLastMessageMostRecentComponent
-        && ( !isFirstDisplayedComponent || roomBubbleCellData.shouldHideSenderInformation);
         
         [self addTimestampLabelForComponentIndex:componentIndex
                        isFirstDisplayedComponent:isFirstDisplayedComponent
@@ -80,7 +95,7 @@ NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed =
 {
     if (!self.bubbleInfoContainer)
     {
-        NSLog(@"[MXKRoomBubbleTableViewCell+Riot] bubbleInfoContainer property is missing for cell class: %@", NSStringFromClass(self.class));
+        MXLogDebug(@"[MXKRoomBubbleTableViewCell+Riot] bubbleInfoContainer property is missing for cell class: %@", NSStringFromClass(self.class));
         return;
     }
     
@@ -91,7 +106,7 @@ NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed =
     
     CGFloat timeLabelPosX;
     CGFloat timeLabelPosY;
-    CGFloat timeLabelHeight = RoomBubbleCellLayout.timestampLabelHeight;
+    CGFloat timeLabelHeight = PlainRoomCellLayoutConstants.timestampLabelHeight;
     CGFloat timeLabelWidth;
     NSTextAlignment timeLabelTextAlignment;
     
@@ -118,7 +133,7 @@ NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed =
     }
     else
     {
-        timeLabelPosX = self.bubbleInfoContainer.frame.size.width - RoomBubbleCellLayout.timestampLabelWidth;
+        timeLabelPosX = self.bubbleInfoContainer.frame.size.width - PlainRoomCellLayoutConstants.timestampLabelWidth;
         
         if (isFirstDisplayedComponent)
         {
@@ -133,7 +148,7 @@ NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed =
             timeLabelPosY = component.position.y + self.msgTextViewTopConstraint.constant - timeLabelHeight - self.bubbleInfoContainerTopConstraint.constant;
         }
         
-        timeLabelWidth = RoomBubbleCellLayout.timestampLabelWidth;
+        timeLabelWidth = PlainRoomCellLayoutConstants.timestampLabelWidth;
         timeLabelTextAlignment = NSTextAlignmentRight;
     }
     
@@ -325,7 +340,7 @@ NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed =
     NSDate *date = bubbleData.date;
     if (date)
     {
-        UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.bubbleInfoContainer.frame.size.width, RoomBubbleCellLayout.timestampLabelHeight)];
+        UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.bubbleInfoContainer.frame.size.width, PlainRoomCellLayoutConstants.timestampLabelHeight)];
         
         timeLabel.text = [bubbleData.eventFormatter dateStringFromDate:date withTime:NO];
         timeLabel.textAlignment = NSTextAlignmentRight;
@@ -372,7 +387,7 @@ NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed =
                                                                                toItem:nil
                                                                             attribute:NSLayoutAttributeNotAnAttribute
                                                                            multiplier:1.0
-                                                                             constant:RoomBubbleCellLayout.timestampLabelHeight];
+                                                                             constant:PlainRoomCellLayoutConstants.timestampLabelHeight];
         
         // Available on iOS 8 and later
         [NSLayoutConstraint activateConstraints:@[rightConstraint, topConstraint, widthConstraint, heightConstraint]];
@@ -397,7 +412,7 @@ NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed =
         }
         
         // Move this view in front
-        [self.contentView bringSubviewToFront:self.bubbleOverlayContainer];
+        [self.bubbleOverlayContainer.superview bringSubviewToFront:self.bubbleOverlayContainer];
     }
     else
     {
@@ -449,6 +464,16 @@ NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed =
 -(UIView *)markerView
 {
     return objc_getAssociatedObject(self, @selector(markerView));
+}
+
+- (void)setMessageStatusViews:(NSArray *)arrayOfViews
+{
+    objc_setAssociatedObject(self, @selector(messageStatusViews), arrayOfViews, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+-(NSArray *)messageStatusViews
+{
+    return objc_getAssociatedObject(self, @selector(messageStatusViews));
 }
 
 - (void)updateUserNameColor
@@ -514,7 +539,7 @@ NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed =
         CGFloat componentBottomY = componentFrameInContentView.origin.y + componentFrameInContentView.size.height;
         
         CGFloat x = 0;
-        CGFloat y = componentFrameInContentView.origin.y - RoomBubbleCellLayout.timestampLabelHeight;
+        CGFloat y = componentFrameInContentView.origin.y - PlainRoomCellLayoutConstants.timestampLabelHeight;
         CGFloat width = roomBubbleTableViewCell.contentView.frame.size.width;
         CGFloat height = componentBottomY - y;
         
@@ -658,6 +683,82 @@ NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed =
     return rowHeight;
 }
 
+- (void)updateTickViewWithFailedEventIds:(NSSet *)failedEventIds
+{
+    for (UIView *tickView in self.messageStatusViews)
+    {
+        [tickView removeFromSuperview];
+    }
+    self.messageStatusViews = nil;
+    
+    NSMutableArray *statusViews = [NSMutableArray new];
+    UIView *tickView = nil;
+
+    if ([bubbleData isKindOfClass:RoomBubbleCellData.class]
+        && ((RoomBubbleCellData*)bubbleData).componentIndexOfSentMessageTick >= 0)
+    {
+        UIImage *image = AssetImages.sentMessageTick.image;
+        image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        tickView = [[UIImageView alloc] initWithImage:image];
+        tickView.tintColor = ThemeService.shared.theme.textTertiaryColor;
+        [statusViews addObject:tickView];
+        [self addTickView:tickView atIndex:((RoomBubbleCellData*)bubbleData).componentIndexOfSentMessageTick];
+    }
+    
+    NSInteger index = bubbleData.bubbleComponents.count;
+    while (index--)
+    {
+        MXKRoomBubbleComponent *component = bubbleData.bubbleComponents[index];
+        NSArray<MXReceiptData*> *receipts = bubbleData.readReceipts[component.event.eventId];
+        if (receipts.count == 0) {
+            if (component.event.sentState == MXEventSentStateUploading
+                || component.event.sentState == MXEventSentStateEncrypting
+                || component.event.sentState == MXEventSentStatePreparing
+                || component.event.sentState == MXEventSentStateSending)
+            {
+                if ([failedEventIds containsObject:component.event.eventId] || (bubbleData.attachment && component.event.sentState != MXEventSentStateSending))
+                {
+                    UIView *progressContentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
+                    CircleProgressView *progressView = [[CircleProgressView alloc] initWithFrame:CGRectMake(24, 24, 16, 16)];
+                    progressView.lineColor = ThemeService.shared.theme.textTertiaryColor;
+                    [progressContentView addSubview:progressView];
+                    self.progressChartView = progressView;
+
+                    tickView = progressContentView;
+
+                    [progressView startAnimating];
+                    
+                    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onProgressLongPressGesture:)];
+                    [tickView addGestureRecognizer:longPress];
+                }
+                else
+                {
+                    UIImage *image = AssetImages.sendingMessageTick.image;
+                    image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+                    tickView = [[UIImageView alloc] initWithImage:image];
+                    tickView.tintColor = ThemeService.shared.theme.textTertiaryColor;
+                }
+
+                [statusViews addObject:tickView];
+                [self addTickView:tickView atIndex:index];
+            }
+        }
+        
+        if (component.event.sentState == MXEventSentStateFailed)
+        {
+            tickView = [[UIImageView alloc] initWithImage:AssetImages.errorMessageTick.image];
+            [statusViews addObject:tickView];
+            [self addTickView:tickView atIndex:index];
+        }
+    }
+    
+    
+    if (statusViews.count)
+    {
+        self.messageStatusViews = statusViews;
+    }
+}
+
 #pragma mark - User actions
 
 - (IBAction)onEditButtonPressed:(id)sender
@@ -693,6 +794,15 @@ NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed =
 
 #pragma mark - Internals
 
+- (void)addTickView:(UIView *)tickView atIndex:(NSInteger)index
+{
+    CGRect componentFrame = [self componentFrameInContentViewForIndex: index];
+
+    tickView.frame = CGRectMake(self.contentView.bounds.size.width - tickView.frame.size.width - 2 * PlainRoomCellLayoutConstants.readReceiptsViewRightMargin, CGRectGetMaxY(componentFrame) - tickView.frame.size.height, tickView.frame.size.width, tickView.frame.size.height);
+
+    [self.contentView addSubview:tickView];
+}
+
 - (void)addEditButtonForComponent:(NSUInteger)componentIndex completion:(void (^ __nullable)(BOOL finished))completion
 {
     MXKRoomBubbleComponent *component  = bubbleData.bubbleComponents[componentIndex];
@@ -705,8 +815,8 @@ NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed =
     }
     
     // Define 'Edit' button frame
-    UIImage *editIcon = [UIImage imageNamed:@"edit_icon"];
-    CGFloat editBtnPosX = self.bubbleInfoContainer.frame.size.width - RoomBubbleCellLayout.timestampLabelWidth - 22 - editIcon.size.width / 2;
+    UIImage *editIcon = AssetImages.editIcon.image;
+    CGFloat editBtnPosX = self.bubbleInfoContainer.frame.size.width - PlainRoomCellLayoutConstants.timestampLabelWidth - 22 - editIcon.size.width / 2;
     CGFloat editBtnPosY = isFirstDisplayedComponent ? -13 : component.position.y + self.msgTextViewTopConstraint.constant - self.bubbleInfoContainerTopConstraint.constant - 13;
     UIButton *editButton = [[UIButton alloc] initWithFrame:CGRectMake(editBtnPosX, editBtnPosY, 44, 44)];
     
@@ -755,6 +865,14 @@ NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed =
     
     // Store the created button
     self.editButton = editButton;
+}
+
+- (IBAction)onProgressLongPressGesture:(UILongPressGestureRecognizer*)recognizer
+{
+    if (recognizer.state == UIGestureRecognizerStateBegan && self.delegate)
+    {
+        [self.delegate cell:self didRecognizeAction:kMXKRoomBubbleCellLongPressOnProgressView userInfo:nil];
+    }
 }
 
 @end

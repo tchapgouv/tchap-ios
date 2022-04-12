@@ -17,7 +17,7 @@
 import Foundation
 import Reusable
 
-protocol FormCheckBoxDelegate: class {
+protocol FormCheckBoxDelegate: AnyObject {
     func formCheckBoxDidSelectLabelLink(_ formCheckBox: FormCheckBox)
 }
 
@@ -46,6 +46,7 @@ final class FormCheckBox: UIView, NibOwnerLoadable {
         self.label.text = nil
         
         self.checkBoxButton.accessibilityLabel = TchapL10n.registrationTermsCheckboxAccessibility
+        self.checkBoxButton.tintColor = ThemeService.shared().theme.tintColor
         self.label.accessibilityLabel = TchapL10n.registrationTermsLabelAccessibility
         
         self.isUserInteractionEnabled = true
@@ -113,9 +114,9 @@ final class FormCheckBox: UIView, NibOwnerLoadable {
     }
 }
 
-// MARK: - Stylable
-extension FormCheckBox: Stylable {
-    func update(style: Style) {
-        self.label.textColor = style.buttonPlainTitleColor
+// MARK: - Theme
+extension FormCheckBox: Themable {
+    func update(theme: Theme) {
+        self.label.textColor = theme.textSecondaryColor
     }
 }

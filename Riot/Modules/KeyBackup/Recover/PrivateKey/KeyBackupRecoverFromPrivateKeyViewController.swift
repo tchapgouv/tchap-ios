@@ -96,7 +96,7 @@ final class KeyBackupRecoverFromPrivateKeyViewController: UIViewController {
         }
         self.navigationItem.rightBarButtonItem = cancelBarButtonItem
         
-        let shieldImage = Asset.Images.keyBackupLogo.image.withRenderingMode(.alwaysTemplate)
+        let shieldImage = Asset_tchap.Images.keyBackupLogo.image.withRenderingMode(.alwaysTemplate)
         self.shieldImageView.image = shieldImage
         
         self.informationLabel.text = VectorL10n.keyBackupRecoverFromPrivateKeyInfo

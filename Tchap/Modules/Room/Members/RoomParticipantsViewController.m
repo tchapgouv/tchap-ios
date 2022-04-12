@@ -24,9 +24,11 @@
 
 #import "Contact.h"
 
+#import "MXCallManager.h"
+
 #import "RageShakeManager.h"
 
-@interface RoomParticipantsViewController () <Stylable>
+@interface RoomParticipantsViewController () <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UIGestureRecognizerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsViewControllerDelegate>
 {
     // Search result
     NSString *currentSearchText;
@@ -46,8 +48,6 @@
     id roomDidFlushDataNotificationObserver;
     
     RoomMemberDetailsViewController *memberDetailsViewController;
-    
-    // Contacts picker and its resources
     ContactsViewController *contactsPickerViewController;
     ContactsDataSource *contactsDataSource;
     UIBarButtonItem *validateBarButtonItem;
@@ -70,7 +70,6 @@
     id kThemeServiceDidChangeThemeNotificationObserver;
 }
 
-@property (nonatomic, strong) id<Style> currentStyle;
 @property (nonatomic, nullable, strong) UserService *userService;
 
 @end
@@ -89,7 +88,6 @@
 {
     RoomParticipantsViewController *roomParticipantsViewController = [[[self class] alloc] initWithNibName:NSStringFromClass([RoomParticipantsViewController class])
                                           bundle:[NSBundle bundleForClass:[RoomParticipantsViewController class]]];
-    roomParticipantsViewController.currentStyle = Variant2Style.shared;
     return roomParticipantsViewController;
 }
 
@@ -102,6 +100,7 @@
     // Setup `MXKViewControllerHandling` properties
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
+    self.showParticipantCustomAccessoryView = YES;
 }
 
 - (void)viewDidLoad
@@ -119,6 +118,8 @@
     // Adjust Top and Bottom constraints to take into account potential navBar and tabBar.
     [NSLayoutConstraint deactivateConstraints:@[_searchBarTopConstraint]];
     
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wdeprecated"
     _searchBarTopConstraint = [NSLayoutConstraint constraintWithItem:self.topLayoutGuide
                                                            attribute:NSLayoutAttributeBottom
                                                            relatedBy:NSLayoutRelationEqual
@@ -126,12 +127,24 @@
                                                            attribute:NSLayoutAttributeTop
                                                           multiplier:1.0f
                                                             constant:0.0f];
+    #pragma clang diagnostic pop
     
     [NSLayoutConstraint activateConstraints:@[_searchBarTopConstraint]];
     
-    self.navigationItem.title = NSLocalizedStringFromTable(@"room_participants_title", @"Vector", nil);
+    self.navigationItem.title = [VectorL10n roomParticipantsTitle];
     
-    _searchBarView.placeholder = NSLocalizedStringFromTable(@"room_participants_filter_room_members", @"Vector", nil);
+    if (self.mxRoom.summary.roomType == MXRoomTypeSpace)
+    {
+        _searchBarView.placeholder = [VectorL10n searchDefaultPlaceholder];
+    }
+    else if (self.mxRoom.isDirect)
+    {
+        _searchBarView.placeholder = [VectorL10n roomParticipantsFilterRoomMembersForDm];
+    }
+    else
+    {
+        _searchBarView.placeholder = [VectorL10n roomParticipantsFilterRoomMembers];
+    }
     _searchBarView.returnKeyType = UIReturnKeyDone;
     _searchBarView.autocapitalizationType = UITextAutocapitalizationTypeNone;
     
@@ -149,48 +162,41 @@
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     self.tableView.estimatedRowHeight = 60;
     
-    // Add room creation button programmatically
-    [self addAddParticipantButton];
+    // Add invite members button programmatically
+    [self vc_addFABWithImage:AssetImages.addMemberFloatingAction.image
+                      target:self
+                      action:@selector(onAddParticipantButtonPressed)];
     
     // Observe user interface theme change.
-    MXWeakify(self);
     kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
-        MXStrongifyAndReturnIfNil(self);
         [self userInterfaceThemeDidChange];
         
     }];
+    [self userInterfaceThemeDidChange];
 }
 
 - (void)userInterfaceThemeDidChange
 {
-    [self updateWithStyle:self.currentStyle];
-}
+    [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
-- (void)updateWithStyle:(id<Style>)style
-{
-    self.currentStyle = style;
-    
-    UINavigationBar *navigationBar = self.navigationController.navigationBar;
-    if (navigationBar)
-    {
-        [style applyStyleOnNavigationBar:navigationBar];
-    }
+    self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     
     [self refreshSearchBarItemsColor:_searchBarView];
+    
     _searchBarHeaderBorder.backgroundColor = ThemeService.shared.theme.headerBorderColor;
     
-    //TODO Design the activvity indicator for Tchap
-    self.activityIndicator.backgroundColor = style.overlayBackgroundColor;
+    //TODO Design the activity indicator for Tchap
+    self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     
     // Update the gradient view above the screen
     CGFloat white = 1.0;
-    [style.backgroundColor getWhite:&white alpha:nil];
+    [ThemeService.shared.theme.backgroundColor getWhite:&white alpha:nil];
     CGColorRef opaqueWhiteColor = [UIColor colorWithWhite:white alpha:1.0].CGColor;
     CGColorRef transparentWhiteColor = [UIColor colorWithWhite:white alpha:0].CGColor;
     tableViewMaskLayer.colors = @[(__bridge id) transparentWhiteColor, (__bridge id) transparentWhiteColor, (__bridge id) opaqueWhiteColor];
     
-    self.tableView.backgroundColor = style.backgroundColor;
+    self.tableView.backgroundColor = ThemeService.shared.theme.backgroundColor;
     self.view.backgroundColor = self.tableView.backgroundColor;
     
     if (self.tableView.dataSource)
@@ -203,7 +209,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return self.currentStyle.statusBarStyle;
+    return ThemeService.shared.theme.statusBarStyle;
 }
 
 // This method is called when the viewcontroller is added or removed from a container view controller.
@@ -239,7 +245,7 @@
     if (membersListener)
     {
         MXWeakify(self);
-        [self.mxRoom liveTimeline:^(MXEventTimeline *liveTimeline) {
+        [self.mxRoom liveTimeline:^(id<MXEventTimeline> liveTimeline) {
             MXStrongifyAndReturnIfNil(self);
 
             [liveTimeline removeListener:self->membersListener];
@@ -269,10 +275,15 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    // Screen tracking
-    [[Analytics sharedInstance] trackScreen:@"RoomParticipants"];
     
+    // Refresh display
+    [self refreshTableView];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+
     if (memberDetailsViewController)
     {
         [memberDetailsViewController destroy];
@@ -290,11 +301,6 @@
     
     // Refresh display
     [self refreshTableView];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
     
     // For unknown reason, we have to force here the UISearchBar search text color again.
     // The value set by [updateWithStyle:] call is ignored.
@@ -393,7 +399,7 @@
             if (self->membersListener)
             {
                 MXWeakify(self);
-                [self.mxRoom liveTimeline:^(MXEventTimeline *liveTimeline) {
+                [self.mxRoom liveTimeline:^(id<MXEventTimeline> liveTimeline) {
                     MXStrongifyAndReturnIfNil(self);
 
                     [liveTimeline removeListener:self->membersListener];
@@ -409,6 +415,19 @@
         if (self.mxRoom)
         {
             self.searchBarHeader.hidden = NO;
+            
+            if (self.mxRoom.summary.roomType == MXRoomTypeSpace)
+            {
+                self.searchBarView.placeholder = [VectorL10n searchDefaultPlaceholder];
+            }
+            else if (self.mxRoom.isDirect)
+            {
+                self.searchBarView.placeholder = [VectorL10n roomParticipantsFilterRoomMembersForDm];
+            }
+            else
+            {
+                self.searchBarView.placeholder = [VectorL10n roomParticipantsFilterRoomMembers];
+            }
 
             // Update the current matrix session.
             [self addMatrixSession:self.mxRoom.mxSession];
@@ -435,7 +454,9 @@
                 if (self.mxRoom.mxSession == room.mxSession && [self.mxRoom.roomId isEqualToString:room.roomId])
                 {
                     // The existing room history has been flushed during server sync. Take into account the updated room members list.
-                    [self refreshParticipantsFromRoomMembers:nil];
+                    [self refreshParticipantsFromRoomMembers];
+
+                    [self refreshTableView];
                 }
 
             }];
@@ -444,7 +465,7 @@
             NSArray *mxMembersEvents = @[kMXEventTypeStringRoomMember, kMXEventTypeStringRoomThirdPartyInvite, kMXEventTypeStringRoomPowerLevels];
 
             MXWeakify(self);
-            [self.mxRoom liveTimeline:^(MXEventTimeline *liveTimeline) {
+            [self.mxRoom liveTimeline:^(id<MXEventTimeline> liveTimeline) {
                 MXStrongifyAndReturnIfNil(self);
 
                 self->membersListener = [liveTimeline listenToEventsOfTypes:mxMembersEvents onEvent:^(MXEvent *event, MXTimelineDirection direction, id customObject) {
@@ -474,7 +495,9 @@
 
                                         [self handleRoomMember:mxMember];
 
-                                        [self finalizeParticipantsList:liveTimeline.state completion:nil];
+                                        [self finalizeParticipantsList:liveTimeline.state];
+
+                                        [self refreshTableView];
                                     }
                                 }
 
@@ -490,13 +513,17 @@
                                     
                                     [self addRoomThirdPartyInviteToParticipants:thirdPartyInvite roomState:liveTimeline.state];
 
-                                    [self finalizeParticipantsList:liveTimeline.state completion:nil];
+                                    [self finalizeParticipantsList:liveTimeline.state];
+
+                                    [self refreshTableView];
                                 }
                                 break;
                             }
                             case MXEventTypeRoomPowerLevels:
                             {
-                                [self refreshParticipantsFromRoomMembers:nil];
+                                [self refreshParticipantsFromRoomMembers];
+
+                                [self refreshTableView];
                                 break;
                             }
                             default:
@@ -511,9 +538,11 @@
             // Search bar header is hidden when no room is provided
             self.searchBarHeader.hidden = YES;
         }
-                                 
+
         // Refresh the members list.
-        [self refreshParticipantsFromRoomMembers:nil];
+        [self refreshParticipantsFromRoomMembers];
+
+        [self refreshTableView];
     }];
 }
 
@@ -592,97 +621,21 @@
     // Check whether the view controller is currently displayed inside a segmented view controller or not.
     UIViewController* topViewController = ((self.parentViewController) ? self.parentViewController : self);
     topViewController.navigationItem.rightBarButtonItem = nil;
-    topViewController.navigationItem.leftBarButtonItem = nil;
-}
-
-- (void)addAddParticipantButton
-{
-    // Add blur mask programmatically
-    tableViewMaskLayer = [CAGradientLayer layer];
     
-    // Consider the grayscale components of the ThemeService.shared.theme.backgroundColor.
-    CGFloat white = 1.0;
-    [ThemeService.shared.theme.backgroundColor getWhite:&white alpha:nil];
-    
-    CGColorRef opaqueWhiteColor = [UIColor colorWithWhite:white alpha:1.0].CGColor;
-    CGColorRef transparentWhiteColor = [UIColor colorWithWhite:white alpha:0].CGColor;
-    
-    tableViewMaskLayer.colors = @[(__bridge id) transparentWhiteColor, (__bridge id) transparentWhiteColor, (__bridge id) opaqueWhiteColor];
-    
-    // display a gradient to the rencents bottom (20% of the bottom of the screen)
-    tableViewMaskLayer.locations = @[@0.0F,
-            @0.85F,
-            @1.0F];
-    
-    tableViewMaskLayer.bounds = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
-    tableViewMaskLayer.anchorPoint = CGPointZero;
-    
-    // CAConstraint is not supported on IOS.
-    // it seems only being supported on Mac OS.
-    // so viewDidLayoutSubviews will refresh the layout bounds.
-    [self.view.layer addSublayer:tableViewMaskLayer];
-    
-    // Add + button
-    addParticipantButtonImageView = [[UIImageView alloc] init];
-    [addParticipantButtonImageView setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [self.view addSubview:addParticipantButtonImageView];
-    
-    addParticipantButtonImageView.backgroundColor = [UIColor clearColor];
-    addParticipantButtonImageView.contentMode = UIViewContentModeCenter;
-    addParticipantButtonImageView.image = [UIImage imageNamed:@"add_participant"];
-    
-    CGFloat side = 78.0f;
-    NSLayoutConstraint* widthConstraint = [NSLayoutConstraint constraintWithItem:addParticipantButtonImageView
-                                                                       attribute:NSLayoutAttributeWidth
-                                                                       relatedBy:NSLayoutRelationEqual
-                                                                          toItem:nil
-                                                                       attribute:NSLayoutAttributeNotAnAttribute
-                                                                      multiplier:1
-                                                                        constant:side];
-    
-    NSLayoutConstraint* heightConstraint = [NSLayoutConstraint constraintWithItem:addParticipantButtonImageView
-                                                                        attribute:NSLayoutAttributeHeight
-                                                                        relatedBy:NSLayoutRelationEqual
-                                                                           toItem:nil
-                                                                        attribute:NSLayoutAttributeNotAnAttribute
-                                                                       multiplier:1
-                                                                         constant:side];
-    
-    NSLayoutConstraint* centerXConstraint = [NSLayoutConstraint constraintWithItem:addParticipantButtonImageView
-                                                                         attribute:NSLayoutAttributeCenterX
-                                                                         relatedBy:NSLayoutRelationEqual
-                                                                            toItem:self.view
-                                                                         attribute:NSLayoutAttributeCenterX
-                                                                        multiplier:1
-                                                                          constant:0];
-    
-    addParticipantButtonImageViewBottomConstraint = [NSLayoutConstraint constraintWithItem:self.view
-                                                                                 attribute:NSLayoutAttributeBottom
-                                                                                 relatedBy:NSLayoutRelationEqual
-                                                                                    toItem:addParticipantButtonImageView
-                                                                                 attribute:NSLayoutAttributeBottom
-                                                                                multiplier:1
-                                                                                  constant:self.keyboardHeight + 9];
-    
-    // Available on iOS 8 and later
-    [NSLayoutConstraint activateConstraints:@[widthConstraint, heightConstraint, centerXConstraint, addParticipantButtonImageViewBottomConstraint]];
-    
-    addParticipantButtonImageView.userInteractionEnabled = YES;
-    
-    // Handle tap gesture
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onAddParticipantButtonPressed)];
-    [tap setNumberOfTouchesRequired:1];
-    [tap setNumberOfTapsRequired:1];
-    [tap setDelegate:self];
-    [addParticipantButtonImageView addGestureRecognizer:tap];
-    
-    addParticipantButtonImageView.hidden = tableViewMaskLayer.hidden = !isUserAllowedToInvite;
+    if (self.showCancelBarButtonItem)
+    {
+        topViewController.navigationItem.leftBarButtonItem  = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onCancel:)];
+    }
+    else
+    {
+        topViewController.navigationItem.leftBarButtonItem = nil;
+    }
 }
 
 - (void)onAddParticipantButtonPressed
 {
     // Push the contacts picker.
-    contactsPickerViewController = [ContactsViewController instantiateWithStyle:Variant2Style.shared showSearchBar:YES enableMultipleSelection:YES];
+    contactsPickerViewController = [ContactsViewController instantiateWithShowSearchBar:YES enableMultipleSelection:YES];
     contactsPickerViewController.title = NSLocalizedStringFromTable(@"contacts_picker_title", @"Tchap", nil);
     
     // Set delegate to handle action on member (start chat, mention)
@@ -737,9 +690,13 @@
         }
     }
     
+//    [contactsPickerViewController showSearch:YES];
+//    contactsPickerViewController.searchBar.placeholder = [VectorL10n roomParticipantsInviteAnotherUser];
+    
     // Apply the search pattern if any
     if (currentSearchText)
     {
+//        contactsPickerViewController.searchBar.text = currentSearchText;
         [contactsDataSource searchWithPattern:currentSearchText forceReset:YES];
     }
     
@@ -748,7 +705,7 @@
     [self pushViewController:contactsPickerViewController];
 }
 
-- (void)refreshParticipantsFromRoomMembers:(void (^)(void))completion
+- (void)refreshParticipantsFromRoomMembers
 {
     actualParticipants = [NSMutableArray array];
     invitedParticipants = [NSMutableArray array];
@@ -785,12 +742,8 @@
 #endif
             self->addParticipantButtonImageView.hidden = self->tableViewMaskLayer.hidden = !self->isUserAllowedToInvite;
             
-            [self finalizeParticipantsList:roomState completion:completion];
+            [self finalizeParticipantsList:roomState];
         }];
-    }
-    else if (completion)
-    {
-        completion();
     }
 }
 
@@ -804,8 +757,19 @@
         NSString *displayName = mxMember.displayname;
         if (!displayName.length && mxMember.userId)
         {
-            displayName = [UserService displayNameFrom:mxMember.userId];
+            // Look for the corresponding MXUser in matrix session
+            MXUser *mxUser = [self.mxRoom.mxSession userWithUserId:mxMember.userId];
+            if (mxUser)
+            {
+                displayName = ((mxUser.displayname.length > 0) ? mxUser.displayname : mxMember.userId);
+            }
+            else
+            {
+                displayName = mxMember.userId;
+            }
         }
+        
+        // Create the contact related to this member
         Contact *contact = [[Contact alloc] initMatrixContactWithDisplayName:displayName andMatrixID:mxMember.userId];
         contact.mxMember = mxMember;
         
@@ -817,6 +781,17 @@
         {
             [actualParticipants addObject:contact];
         }
+    }
+}
+
+- (void)reloadSearchResult
+{
+    if (currentSearchText.length)
+    {
+        NSString *searchText = currentSearchText;
+        currentSearchText = nil;
+        
+        [self searchBar:_searchBarView textDidChange:searchText];
     }
 }
 
@@ -945,7 +920,7 @@
     }];
 }
 
-- (void)finalizeParticipantsList:(MXRoomState*)roomState completion:(void (^)(void))completion
+- (void)finalizeParticipantsList:(MXRoomState*)roomState
 {
     // Sort contacts by power
     // ...and then alphabetically.
@@ -1025,11 +1000,6 @@
         
         // Refresh the tableview by reloading the search result (if any)
         [self refreshTableViewByApplyingSearchIfAny];
-
-        if (completion)
-        {
-            completion();
-        }
     }];
 }
 
@@ -1143,6 +1113,19 @@
     }
 }
 
+- (void)showDetailFor:(MXRoomMember* _Nonnull)member from:(UIView* _Nullable)sourceView {
+    memberDetailsViewController = [RoomMemberDetailsViewController roomMemberDetailsViewController];
+    
+    // Set delegate to handle action on member (start chat, mention)
+    memberDetailsViewController.delegate = self;
+    memberDetailsViewController.enableMention = _enableMention;
+    memberDetailsViewController.enableVoipCall = NO;
+    
+    [memberDetailsViewController displayRoomMember:member withMatrixRoom:self.mxRoom];
+    
+    [self pushViewController:memberDetailsViewController];
+}
+
 #pragma mark - UITableView data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -1217,6 +1200,7 @@
     {
         ContactCell* participantCell = [tableView dequeueReusableCellWithIdentifier:ContactCell.defaultReuseIdentifier forIndexPath:indexPath];
         participantCell.selectionStyle = UITableViewCellSelectionStyleNone;
+//        participantCell.showCustomAccessoryView = self.showParticipantCustomAccessoryView;
         
         Contact *contact = [self getContactAtIndexPath:indexPath];
         if (contact)
@@ -1341,7 +1325,7 @@
         headerLabel.font = [UIFont boldSystemFontOfSize:15.0];
         headerLabel.backgroundColor = [UIColor clearColor];
         
-        headerLabel.text = NSLocalizedStringFromTable(@"room_participants_invited_section", @"Vector", nil);
+        headerLabel.text = [VectorL10n roomParticipantsInvitedSection];
         
         [sectionHeader addSubview:headerLabel];
     }
@@ -1360,7 +1344,7 @@
     Contact *contact = [self getContactAtIndexPath:indexPath];
     if (contact.mxMember)
     {
-        memberDetailsViewController = [RoomMemberDetailsViewController instantiate];
+        memberDetailsViewController = [RoomMemberDetailsViewController roomMemberDetailsViewController];
         
         // Set delegate to handle action on member (start chat, mention)
         memberDetailsViewController.delegate = self;
@@ -1375,27 +1359,30 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-- (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
+- (nullable UISwipeActionsConfiguration *)tableView:(UITableView *)tableView trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSMutableArray* actions;
+    NSMutableArray<UIContextualAction*> *actions = [[NSMutableArray alloc] init];
     
     // add the swipe to delete only on participants sections
     if (indexPath.section == participantsSection || indexPath.section == invitedSection)
     {
-        actions = [[NSMutableArray alloc] init];
-        
-        // Patch: Force the width of the button by adding whitespace characters into the title string.
-        UITableViewRowAction *leaveAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive title:@"        "  handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
-            
+        UIContextualAction *leaveAction =
+        [UIContextualAction contextualActionWithStyle:UIContextualActionStyleNormal
+                                                title:nil
+                                              handler:^(UIContextualAction * _Nonnull action,
+                                                        __kindof UIView * _Nonnull sourceView,
+                                                        void (^ _Nonnull completionHandler)(BOOL)) {
             [self onDeleteAt:indexPath];
-            
         }];
         
-        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon" backgroundColor:ThemeService.shared.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(24, 24)];
+        leaveAction.image = [[UIImage imageNamed:@"remove_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.tintColor];
+        
         [actions insertObject:leaveAction atIndex:0];
     }
     
-    return actions;
+    UISwipeActionsConfiguration *swipeActionConfiguration = [UISwipeActionsConfiguration configurationWithActions:actions];
+    swipeActionConfiguration.performsFirstActionWithFullSwipe = NO;
+    return swipeActionConfiguration;
 }
 
 #pragma mark - MXKRoomMemberDetailsViewControllerDelegate
@@ -1514,6 +1501,11 @@
     }
 }
 
+- (void)onCancel:(id)sender
+{
+    [self withdrawViewControllerAnimated:YES completion:nil];
+}
+
 #pragma mark -
 
 - (void)leaveRoom
@@ -1598,7 +1590,7 @@
                                                        message:promptMsg
                                                 preferredStyle:UIAlertControllerStyleAlert];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
                                                      style:UIAlertActionStyleCancel
                                                    handler:^(UIAlertAction * action) {
                                                        
@@ -1763,18 +1755,18 @@
 - (void)refreshSearchBarItemsColor:(UISearchBar *)searchBar
 {
     // bar tint color
-    searchBar.barTintColor = searchBar.tintColor = self.currentStyle.barSubTitleColor;
+    searchBar.barTintColor = searchBar.tintColor = ThemeService.shared.theme.headerTextSecondaryColor;
     
     // FIXME: this all seems incredibly fragile and tied to gutwrenching the current UISearchBar internals.
     
     // text color
     UITextField *searchBarTextField = searchBar.vc_searchTextField;
-    searchBarTextField.textColor = self.currentStyle.barSubTitleColor;
+    searchBarTextField.textColor = ThemeService.shared.theme.headerTextSecondaryColor;
     
     // Magnifying glass icon.
     UIImageView *leftImageView = (UIImageView *)searchBarTextField.leftView;
     leftImageView.image = [leftImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    leftImageView.tintColor = self.currentStyle.buttonBorderedBackgroundColor;
+    leftImageView.tintColor = ThemeService.shared.theme.tintColor;
     
     // remove the gray background color
     UIView *effectBackgroundTop =  [searchBarTextField valueForKey:@"_effectBackgroundTop"];
@@ -1785,8 +1777,8 @@
     // place holder
     searchBarTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:searchBarTextField.placeholder
                                                                                attributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle),
-                                                                                            NSUnderlineColorAttributeName: self.currentStyle.barSubTitleColor,
-                                                                                            NSForegroundColorAttributeName: self.currentStyle.barSubTitleColor}];
+                                                                                            NSUnderlineColorAttributeName: ThemeService.shared.theme.headerTextSecondaryColor,
+                                                                                            NSForegroundColorAttributeName: ThemeService.shared.theme.headerTextSecondaryColor}];
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText

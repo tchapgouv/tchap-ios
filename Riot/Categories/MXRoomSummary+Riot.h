@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+#import "MatrixKit.h"
 
 /**
  RoomEncryptionTrustLevel represents the trust level in an encrypted room.
@@ -31,6 +31,8 @@ typedef NS_ENUM(NSUInteger, RoomEncryptionTrustLevel) {
  Define a `MXRoomSummary` category at Riot level.
  */
 @interface MXRoomSummary (Riot)
+
+@property(nonatomic, readonly) BOOL isJoined;
 
 /**
  Set the room avatar in the dedicated MXKImageView.

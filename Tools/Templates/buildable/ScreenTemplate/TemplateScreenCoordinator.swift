@@ -1,5 +1,5 @@
 /*
- Copyright 2020 New Vector Ltd
+ Copyright 2021 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -17,14 +17,14 @@
 import Foundation
 import UIKit
 
-final class TemplateScreenCoordinator: TemplateScreenCoordinatorType {
+final class TemplateScreenCoordinator: TemplateScreenCoordinatorProtocol {
     
     // MARK: - Properties
     
     // MARK: Private
     
-    private let session: MXSession
-    private var templateScreenViewModel: TemplateScreenViewModelType
+    private let parameters: TemplateScreenCoordinatorParameters
+    private var templateScreenViewModel: TemplateScreenViewModelProtocol
     private let templateScreenViewController: TemplateScreenViewController
     
     // MARK: Public
@@ -36,16 +36,15 @@ final class TemplateScreenCoordinator: TemplateScreenCoordinatorType {
     
     // MARK: - Setup
     
-    init(session: MXSession) {
-        self.session = session
-        
-        let templateScreenViewModel = TemplateScreenViewModel(session: self.session)
+    init(parameters: TemplateScreenCoordinatorParameters) {
+        self.parameters = parameters
+        let templateScreenViewModel = TemplateScreenViewModel(session: self.parameters.session)
         let templateScreenViewController = TemplateScreenViewController.instantiate(with: templateScreenViewModel)
         self.templateScreenViewModel = templateScreenViewModel
         self.templateScreenViewController = templateScreenViewController
     }
     
-    // MARK: - Public methods
+    // MARK: - Public
     
     func start() {            
         self.templateScreenViewModel.coordinatorDelegate = self
@@ -59,11 +58,11 @@ final class TemplateScreenCoordinator: TemplateScreenCoordinatorType {
 // MARK: - TemplateScreenViewModelCoordinatorDelegate
 extension TemplateScreenCoordinator: TemplateScreenViewModelCoordinatorDelegate {
     
-    func templateScreenViewModel(_ viewModel: TemplateScreenViewModelType, didCompleteWithUserDisplayName userDisplayName: String?) {
+    func templateScreenViewModel(_ viewModel: TemplateScreenViewModelProtocol, didCompleteWithUserDisplayName userDisplayName: String?) {
         self.delegate?.templateScreenCoordinator(self, didCompleteWithUserDisplayName: userDisplayName)
     }
     
-    func templateScreenViewModelDidCancel(_ viewModel: TemplateScreenViewModelType) {
+    func templateScreenViewModelDidCancel(_ viewModel: TemplateScreenViewModelProtocol) {
         self.delegate?.templateScreenCoordinatorDidCancel(self)
     }
 }

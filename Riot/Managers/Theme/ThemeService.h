@@ -16,7 +16,7 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+#import <UIKit/UIKit.h>
 
 @protocol Theme;
 
@@ -58,6 +58,10 @@ extern NSString *const kThemeServiceDidChangeThemeNotification;
  @return the theme.
  */
 - (id<Theme>)themeWithThemeId:(NSString*)themeId;
+
+
+/// Retrun YES if the current is Dark or Black
+- (BOOL)isCurrentThemeDark;
 
 #pragma mark - Riot Colors not yet themeable
 

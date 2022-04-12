@@ -44,7 +44,7 @@ final class MediaPickerCoordinator: NSObject, MediaPickerCoordinatorType {
         self.mediaUTIs = mediaUTIs
         self.allowsMultipleSelection = allowsMultipleSelection
         
-        self.navigationRouter = NavigationRouter(navigationController: TCNavigationController())
+        self.navigationRouter = NavigationRouter(navigationController: RiotNavigationController())
         
         super.init()
     }
@@ -83,8 +83,8 @@ extension MediaPickerCoordinator: MediaPickerViewControllerDelegate {
         self.delegate?.mediaPickerCoordinator(self, didSelectImageData: imageData, withUTI: uti)
     }
     
-    func mediaPickerController(_ mediaPickerController: MediaPickerViewController!, didSelectVideo videoURL: URL!) {
-        self.delegate?.mediaPickerCoordinator(self, didSelectVideoAt: videoURL)
+    func mediaPickerController(_ mediaPickerController: MediaPickerViewController!, didSelectVideo videoAsset: AVAsset!) {
+        self.delegate?.mediaPickerCoordinator(self, didSelectVideo: videoAsset)
     }
     
     func mediaPickerController(_ mediaPickerController: MediaPickerViewController!, didSelect assets: [PHAsset]!) {
