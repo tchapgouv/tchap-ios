@@ -1,6 +1,6 @@
 [tool.towncrier]
 name = "Changes in"
-version = "1.3.3"
+version = "1.99.0"
 filename = "TCHAP_CHANGES.md"
 directory = "changelog.d"
 template = "changelog.d/_template.md.jinja"

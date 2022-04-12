@@ -1,8 +1,44 @@
-## Changes in Tchap 1.x.x (2021-xx-xx)
+## Changes in 1.99.0 (2022-04-12)
 
-Features/Improvements:
+🙌 Improvements
 
-    -   Update pinned certificates
+- Ré-alignement du système de thème avec Element ([#395](https://github.com/tchapgouv/tchap-ios/issues/395))
+- Suppression de TCNavigationController (remplacé par RiotNavigationController) ([#406](https://github.com/tchapgouv/tchap-ios/issues/406))
+- Nettoyage des fichiers de configuration du projet ([#410](https://github.com/tchapgouv/tchap-ios/issues/410))
+- Ré-alignement de la cible de notification avec Element ([#411](https://github.com/tchapgouv/tchap-ios/issues/411))
+- Ré-alignement de l’extension de partage avec Element ([#412](https://github.com/tchapgouv/tchap-ios/issues/412))
+- Nettoyage des assets (doublons et ré-alignement sur Element) ([#422](https://github.com/tchapgouv/tchap-ios/issues/422))
+- Support and test the new RoomNotificationSettings ([#429](https://github.com/tchapgouv/tchap-ios/issues/429))
+- Corrections sur l’intégration de l’extension de partage ([#432](https://github.com/tchapgouv/tchap-ios/issues/432))
+- Mise à jour du transfert de messages avec les évolutions d’Element ([#433](https://github.com/tchapgouv/tchap-ios/issues/433))
+- Refresh the RoomViewController with the Element one ([#440](https://github.com/tchapgouv/tchap-ios/issues/440))
+- Add the left panel in Tchap-iOS ([#441](https://github.com/tchapgouv/tchap-ios/issues/441))
+- Update the Tchap architecture with the Element one ([#448](https://github.com/tchapgouv/tchap-ios/issues/448))
+- Plug the rooms list to the new rooms fetchers ([#460](https://github.com/tchapgouv/tchap-ios/issues/460))
+- Enable dark mode ([#485](https://github.com/tchapgouv/tchap-ios/issues/485))
+- Update pinned certificates
+
+🐛 Bugfixes
+
+- Update the bg color of the invite buttons and missedNotif badge ([#425](https://github.com/tchapgouv/tchap-ios/issues/425))
+- Fix rooms statuses in Rooms list ([#445](https://github.com/tchapgouv/tchap-ios/issues/445))
+- Fix Invite by email a new user failed ([#479](https://github.com/tchapgouv/tchap-ios/issues/479))
+- Hide the session verification based on the secure storage ([#486](https://github.com/tchapgouv/tchap-ios/issues/486))
+- [Rooms list] Restore the room search ([#487](https://github.com/tchapgouv/tchap-ios/issues/487))
+- Infinite loading wheel on logout ([#489](https://github.com/tchapgouv/tchap-ios/issues/489))
+- List the direct rooms with the other rooms ([#490](https://github.com/tchapgouv/tchap-ios/issues/490))
+
+🧱 Build
+
+- Intégration d’Xcodegen dans le projet ([#391](https://github.com/tchapgouv/tchap-ios/issues/391))
+- Utilisation de Towncrier pour générer le changelog ([#428](https://github.com/tchapgouv/tchap-ios/issues/428))
+
+
+## Changes in Tchap 1.3.3 (2022-03-15) - Beta
+
+Bug Fix:
+
+    -   Files sent by Tchap Android 2 can't be read by Tchap iOS 1.2.2 #480
 
 ## Changes in Tchap 1.3.2 (2021-08-25)
 
@@ -24,6 +60,12 @@ Features/Improvements:
     -   Enable the room retention feature in Tchap (Prod)
     -   Apply the new design of the Room header PR #383
     -   Apply the design for the specific Tchap Info room #384
+
+## Changes in Tchap 1.2.3 (2022-03-14) - Prod
+
+Bug Fix:
+
+    -   Files sent by Tchap Android 2 can't be read by Tchap iOS 1.2.2 #480
 
 ## Changes in Tchap 1.2.2 (2021-08-25)
 
