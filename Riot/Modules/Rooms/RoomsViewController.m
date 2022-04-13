@@ -141,11 +141,13 @@
     
     [self.tableViewPaginationThrottler throttle:^{
         NSInteger section = indexPath.section;
-        NSInteger numberOfRowsInSection = [tableView numberOfRowsInSection:section];
-        if (tableView.numberOfSections > section
-            && indexPath.row == numberOfRowsInSection - 1)
-        {
-            [self->recentsDataSource paginateInSection:section];
+        // Tchap: Fix a crash when having less sections in the tableView than the initial value (eg: with an active Filter).
+        if (tableView.numberOfSections > section) {
+            NSInteger numberOfRowsInSection = [tableView numberOfRowsInSection:section];
+            if (indexPath.row == numberOfRowsInSection - 1)
+            {
+                [self->recentsDataSource paginateInSection:section];
+            }
         }
     }];
 }
