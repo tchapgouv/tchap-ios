@@ -280,7 +280,11 @@ extension SideMenuCoordinator: SideMenuViewModelCoordinatorDelegate {
         
         switch menuItem {
         case .inviteFriends:
-            self.showInviteFriends(from: sourceView)
+            // Tchap: Redirect to invite people
+            self.sideMenuNavigationViewController.dismiss(animated: true) {
+                self.delegate?.sideMenuCoordinator(self, didTapMenuItem: menuItem, fromSourceView: sourceView)
+            }
+            break
         case .settings:
             self.showSettings()
         case .help:

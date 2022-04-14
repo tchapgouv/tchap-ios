@@ -53,6 +53,11 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         return self.navigationRouter.modules.last is MasterTabBarController
     }
     
+    // Tchap: Add invite service for user invitation
+    private var inviteService: InviteServiceType?
+    private var errorPresenter: ErrorPresenter?
+    private weak var currentAlertController: UIAlertController?
+    
     // MARK: Public
 
     // Must be used only internally
@@ -110,6 +115,11 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         if MXKAccountManager.shared().accounts.isEmpty {
             self.showWelcome()
         }
+        
+        self.errorPresenter = AlertErrorPresenter(viewControllerPresenter: masterTabBarController)
+
+        guard let session = self.currentMatrixSession else { return }
+        self.inviteService = InviteService(session: session)
     }
     
     func toPresentable() -> UIViewController {
@@ -178,6 +188,12 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
             // Select the Home tab
             masterTabBarController.selectTab(at: .rooms)
             completion?()
+        }
+    }
+    
+    func presentInvitePeople() {
+        promptUserToFillAnEmailToInvite { [weak self] email in
+            self?.sendEmailInvite(to: email)
         }
     }
     
@@ -702,6 +718,128 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
 //        if self.currentMatrixSession?.groups().isEmpty ?? true {
 //            self.masterTabBarController.removeTab(at: .groups)
 //        }
+    }
+}
+
+// Tchap: Manage e-mail invitation
+extension TabBarCoordinator {
+    private func promptUserToFillAnEmailToInvite(completion: @escaping ((String) -> Void)) {
+        currentAlertController?.dismiss(animated: false)
+        
+        let alertController = UIAlertController(title: TchapL10n.contactsInviteByEmailTitle,
+                                                message: TchapL10n.contactsInviteByEmailMessage,
+                                                preferredStyle: .alert)
+        
+        // Add textField
+        alertController.addTextField(configurationHandler: { textField in
+            textField.isSecureTextEntry = false
+            textField.placeholder = nil
+            textField.keyboardType = .emailAddress
+        })
+        
+        // Cancel action
+        let cancelAction = UIAlertAction(title: TchapL10n.actionCancel,
+                                         style: .cancel) { [weak self] _ in
+            self?.currentAlertController = nil
+        }
+        alertController.addAction(cancelAction)
+        
+        // Invite action
+        let inviteAction = UIAlertAction(title: TchapL10n.actionInvite,
+                                         style: .default) { [weak self] _ in
+            guard let currentAlertController = self?.currentAlertController,
+                  let email = currentAlertController.textFields?.first?.text?.lowercased() else {
+                return // FIXME: Verify if dismiss should be needed in this case
+            }
+            
+            self?.currentAlertController = nil
+            
+            if MXTools.isEmailAddress(email) {
+                completion(email)
+            } else {
+                self?.currentAlertController?.dismiss(animated: false)
+                let errorAlertController = UIAlertController(title: TchapL10n.authenticationErrorInvalidEmail,
+                                                             message: nil,
+                                                             preferredStyle: .alert)
+                let okAction = UIAlertAction(title: VectorL10n.ok,
+                                             style: .default) { [weak self] _ in
+                    self?.currentAlertController = nil
+                }
+                errorAlertController.addAction(okAction)
+                errorAlertController.mxk_setAccessibilityIdentifier("ContactsVCInviteByEmailError")
+                self?.currentAlertController = errorAlertController
+                self?.masterTabBarController.present(errorAlertController, animated: true)
+            }
+        }
+        alertController.addAction(inviteAction)
+        alertController.mxk_setAccessibilityIdentifier("ContactsVCInviteByEmailDialog")
+
+        self.currentAlertController = alertController
+        
+        masterTabBarController.present(alertController, animated: true)
+    }
+    
+    private func sendEmailInvite(to email: String) {
+        guard let inviteService = self.inviteService else { return }
+        
+        self.activityIndicatorPresenter.presentActivityIndicator(on: masterTabBarController.view, animated: true)
+        inviteService.sendEmailInvite(to: email) { [weak self] (response) in
+            guard let sself = self else {
+                return
+            }
+            
+            sself.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
+            switch response {
+            case .success(let result):
+                var message: String
+                var discoveredUserID: String?
+                switch result {
+                case .inviteHasBeenSent(roomID: _):
+                    message = TchapL10n.inviteSendingSucceeded
+                case .inviteAlreadySent(roomID: _):
+                    message = TchapL10n.inviteAlreadySentByEmail(email)
+                case .inviteIgnoredForDiscoveredUser(userID: let userID):
+                    discoveredUserID = userID
+                    message = TchapL10n.inviteNotSentForDiscoveredUser
+                case .inviteIgnoredForUnauthorizedEmail:
+                    message = TchapL10n.inviteNotSentForUnauthorizedEmail(email)
+                }
+                
+                sself.currentAlertController?.dismiss(animated: false)
+                
+                let alert = UIAlertController(title: TchapL10n.inviteInformationTitle, message: message, preferredStyle: .alert)
+                
+                let okTitle = Bundle.mxk_localizedString(forKey: "ok")
+                let okAction = UIAlertAction(title: okTitle, style: .default, handler: { action in
+                    if let userID = discoveredUserID {
+                        // Open the discussion
+                        sself.startDiscussion(with: userID)
+                    }
+                })
+                alert.addAction(okAction)
+                sself.currentAlertController = alert
+                
+                sself.masterTabBarController.present(alert, animated: true, completion: nil)
+            case .failure(let error):
+                let errorPresentable = sself.inviteErrorPresentable(from: error)
+                sself.errorPresenter?.present(errorPresentable: errorPresentable, animated: true)
+            }
+        }
+    }
+    
+    private func inviteErrorPresentable(from error: Error) -> ErrorPresentable {
+        let errorTitle = TchapL10n.inviteSendingFailedTitle
+        let errorMessage: String
+        
+        let nsError = error as NSError
+        
+        if let message = nsError.userInfo[NSLocalizedDescriptionKey] as? String {
+            errorMessage = message
+        } else {
+            errorMessage = TchapL10n.errorMessageDefault
+        }
+        
+        return ErrorPresentableImpl(title: errorTitle, message: errorMessage)
     }
 }
 
