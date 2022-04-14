@@ -18,16 +18,15 @@
 //#import "AuthenticationViewController.h"
 
 #import "RoomPreviewData.h"
-//#import "HomeViewController.h"
-//#import "FavouritesViewController.h"
-//#import "PeopleViewController.h"
+#import "FavouritesViewController.h"
+#import "PeopleViewController.h"
 #import "RoomsViewController.h"
 //#import "GroupsViewController.h"
 
 #define TABBAR_HOME_INDEX         0
 #define TABBAR_FAVOURITES_INDEX   1
 #define TABBAR_PEOPLE_INDEX       2
-#define TABBAR_ROOMS_INDEX        0//3
+#define TABBAR_ROOMS_INDEX        3
 #define TABBAR_GROUPS_INDEX       4
 #define TABBAR_COUNT              5
 

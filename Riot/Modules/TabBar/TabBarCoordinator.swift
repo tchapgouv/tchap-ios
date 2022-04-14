@@ -239,19 +239,19 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
 //        return wrapperViewController
 //    }
     
-//    private func createFavouritesViewController() -> FavouritesViewController {
-//        let favouritesViewController: FavouritesViewController = FavouritesViewController.instantiate()
-//        favouritesViewController.tabBarItem.tag = Int(TABBAR_FAVOURITES_INDEX)
-//        favouritesViewController.accessibilityLabel = VectorL10n.titleFavourites
-//        return favouritesViewController
-//    }
+    private func createFavouritesViewController() -> FavouritesViewController {
+        let favouritesViewController: FavouritesViewController = FavouritesViewController.instantiate()
+        favouritesViewController.tabBarItem.tag = Int(TABBAR_FAVOURITES_INDEX)
+        favouritesViewController.accessibilityLabel = VectorL10n.titleFavourites
+        return favouritesViewController
+    }
 
-//    private func createPeopleViewController() -> PeopleViewController {
-//        let peopleViewController: PeopleViewController = PeopleViewController.instantiate()
-//        peopleViewController.tabBarItem.tag = Int(TABBAR_PEOPLE_INDEX)
-//        peopleViewController.accessibilityLabel = VectorL10n.titlePeople
-//        return peopleViewController
-//    }
+    private func createPeopleViewController() -> PeopleViewController {
+        let peopleViewController: PeopleViewController = PeopleViewController.instantiate()
+        peopleViewController.tabBarItem.tag = Int(TABBAR_PEOPLE_INDEX)
+        peopleViewController.accessibilityLabel = VectorL10n.titlePeople
+        return peopleViewController
+    }
     
     private func createRoomsViewController() -> RoomsViewController {
         let roomsViewController: RoomsViewController = RoomsViewController.instantiate()
@@ -322,13 +322,13 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
 //        }
         
         if RiotSettings.shared.homeScreenShowFavouritesTab {
-//            let favouritesViewController = self.createFavouritesViewController()
-//            viewControllers.append(favouritesViewController)
+            let favouritesViewController = self.createFavouritesViewController()
+            viewControllers.append(favouritesViewController)
         }
         
         if RiotSettings.shared.homeScreenShowPeopleTab {
-//            let peopleViewController = self.createPeopleViewController()
-//            viewControllers.append(peopleViewController)
+            let peopleViewController = self.createPeopleViewController()
+            viewControllers.append(peopleViewController)
         }
         
         if RiotSettings.shared.homeScreenShowRoomsTab {
