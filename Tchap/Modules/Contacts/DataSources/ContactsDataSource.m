@@ -1216,19 +1216,9 @@
 
 #pragma mark -
 
--(BOOL)isInviteButtonIndexPath:(NSIndexPath*)indexPath
-{
-    return (indexPath.section == inviteToTchapButtonSection);
-}
-
 -(BOOL)isInviteByLinkButtonIndexPath:(NSIndexPath*)indexPath
 {
     return (indexPath.section == inviteByLinkButtonSection);
-}
-
--(BOOL)isAddEmailButtonIndexPath:(NSIndexPath*)indexPath
-{
-    return (indexPath.section == addEmailButtonSection);
 }
 
 -(MXKContact *)contactAtIndexPath:(NSIndexPath*)indexPath
