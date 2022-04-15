@@ -31,7 +31,7 @@ extension SideMenuItem {
 
         switch self {
         case .inviteFriends:
-            title = VectorL10n.sideMenuActionInviteFriends
+            title = TchapL10n.sideMenuActionInviteFriends
         case .settings:
             title = VectorL10n.sideMenuActionSettings
         case .help:

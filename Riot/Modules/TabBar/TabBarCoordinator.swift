@@ -117,9 +117,6 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         }
         
         self.errorPresenter = AlertErrorPresenter(viewControllerPresenter: masterTabBarController)
-
-        guard let session = self.currentMatrixSession else { return }
-        self.inviteService = InviteService(session: session)
     }
     
     func toPresentable() -> UIViewController {
@@ -738,14 +735,14 @@ extension TabBarCoordinator {
         })
         
         // Cancel action
-        let cancelAction = UIAlertAction(title: TchapL10n.actionCancel,
+        let cancelAction = UIAlertAction(title: VectorL10n.cancel,
                                          style: .cancel) { [weak self] _ in
             self?.currentAlertController = nil
         }
         alertController.addAction(cancelAction)
         
         // Invite action
-        let inviteAction = UIAlertAction(title: TchapL10n.actionInvite,
+        let inviteAction = UIAlertAction(title: VectorL10n.invite,
                                          style: .default) { [weak self] _ in
             guard let currentAlertController = self?.currentAlertController,
                   let email = currentAlertController.textFields?.first?.text?.lowercased() else {
@@ -780,6 +777,10 @@ extension TabBarCoordinator {
     }
     
     private func sendEmailInvite(to email: String) {
+        guard let session = self.currentMatrixSession else { return }
+        if self.inviteService == nil {
+            self.inviteService = InviteService(session: session)
+        }
         guard let inviteService = self.inviteService else { return }
         
         self.activityIndicatorPresenter.presentActivityIndicator(on: masterTabBarController.view, animated: true)
