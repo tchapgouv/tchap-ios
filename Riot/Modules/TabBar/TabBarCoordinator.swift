@@ -248,6 +248,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
 
     private func createPeopleViewController() -> PeopleViewController {
         let peopleViewController: PeopleViewController = PeopleViewController.instantiate()
+        peopleViewController.peopleViewDelegate = self
         peopleViewController.tabBarItem.tag = Int(TABBAR_PEOPLE_INDEX)
         peopleViewController.accessibilityLabel = VectorL10n.titlePeople
         return peopleViewController
@@ -811,18 +812,6 @@ extension TabBarCoordinator: WelcomeCoordinatorDelegate {
 
 // MARK: - RoomsViewControllerDelegate
 extension TabBarCoordinator: RoomsViewControllerDelegate {
-    func roomsViewControllerDidTapStartChatButton(_ roomsViewController: RoomsViewController) {
-        guard let session = self.currentMatrixSession else { return }
-        
-        let createNewDiscussionCoordinator = CreateNewDiscussionCoordinator(session: session)
-        createNewDiscussionCoordinator.delegate = self
-        createNewDiscussionCoordinator.start()
-        
-        self.navigationRouter.present(createNewDiscussionCoordinator, animated: true)
-        
-        self.add(childCoordinator: createNewDiscussionCoordinator)
-    }
-    
     func roomsViewControllerDidTapCreateRoomButton(_ roomsViewController: RoomsViewController) {
         guard let session = self.currentMatrixSession else { return }
         
@@ -922,5 +911,20 @@ extension TabBarCoordinator: RoomPreviewCoordinatorDelegate {
                                 onEventId eventId: String?) {
         self.navigationRouter.popModule(animated: true)
         self.showRoom(withId: roomID, eventId: eventId)
+    }
+}
+
+// MARK: - PeopleViewControllerDelegate
+extension TabBarCoordinator: PeopleViewControllerDelegate {
+    func peopleViewControllerDidTapStartChatButton(_ peopleViewController: PeopleViewController) {
+        guard let session = self.currentMatrixSession else { return }
+
+        let createNewDiscussionCoordinator = CreateNewDiscussionCoordinator(session: session)
+        createNewDiscussionCoordinator.delegate = self
+        createNewDiscussionCoordinator.start()
+
+        self.navigationRouter.present(createNewDiscussionCoordinator, animated: true)
+
+        self.add(childCoordinator: createNewDiscussionCoordinator)
     }
 }

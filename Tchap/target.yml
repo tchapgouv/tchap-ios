@@ -266,13 +266,3 @@ targets:
       buildPhase: resources
     - path: ../Riot/Modules/UserDevices/Views/DeviceTableViewCell.xib
       buildPhase: resources
-
-    - path: ../Riot/Modules/Spaces/SpaceMembers
-#    - path: ../Riot/Modules/Spaces/SpaceMembers/SpaceMembersCoordinatorBridgePresenter.swift
-#    - path: ../Riot/Modules/Spaces/SpaceMembers/SpaceMembersCoordinator.swift
-#    - path: ../Riot/Modules/Spaces/SpaceMembers/SpaceMembersCoordinatorType.swift
-#    - path: ../Riot/Modules/Spaces/SpaceMembers/SpaceMembersCoordinator.swift
-#    - path: ../Riot/Modules/Spaces/SpaceMembers/MemberList/SpaceMemberListCoordinator.swift
-#    - path: ../Riot/Modules/Spaces/SpaceMembers/MemberList/SpaceMemberListCoordinatorType.swift
-#    - path: ../Riot/Modules/Spaces/SpaceMembers/MemberDetail/SpaceMemberDetailCoordinator.swift
-#    - path: ../Riot/Modules/Spaces/SpaceMembers/MemberDetail/SpaceMemberDetailCoordinatorType.swift
