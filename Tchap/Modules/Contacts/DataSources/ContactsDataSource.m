@@ -1221,6 +1221,11 @@
     return (indexPath.section == inviteByLinkButtonSection);
 }
 
+-(BOOL)isAddEmailButtonIndexPath:(NSIndexPath*)indexPath
+{
+    return (indexPath.section == addEmailButtonSection);
+}
+
 -(MXKContact *)contactAtIndexPath:(NSIndexPath*)indexPath
 {
     NSInteger row = indexPath.row;

@@ -284,7 +284,7 @@ extension SideMenuCoordinator: SideMenuViewModelCoordinatorDelegate {
             self.sideMenuNavigationViewController.dismiss(animated: true) {
                 self.delegate?.sideMenuCoordinator(self, didTapMenuItem: menuItem, fromSourceView: sourceView)
             }
-            break
+            return
         case .settings:
             self.showSettings()
         case .help:
