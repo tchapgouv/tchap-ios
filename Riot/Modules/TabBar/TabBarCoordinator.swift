@@ -139,7 +139,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
                 self.masterTabBarController.releaseSelectedItem()
                 
                 // Select home tab
-                self.masterTabBarController.selectTab(at: .rooms)
+                self.masterTabBarController.selectTab(at: .people)
                 
                 completion?()
             }
@@ -176,7 +176,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         } else {
             // Tab bar controller is already visible
             // Select the Home tab
-            masterTabBarController.selectTab(at: .rooms)
+            masterTabBarController.selectTab(at: .people)
             completion?()
         }
     }
@@ -924,7 +924,6 @@ extension TabBarCoordinator: PeopleViewControllerDelegate {
         createNewDiscussionCoordinator.start()
 
         self.navigationRouter.present(createNewDiscussionCoordinator, animated: true)
-
         self.add(childCoordinator: createNewDiscussionCoordinator)
     }
 }
