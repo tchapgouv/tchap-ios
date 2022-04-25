@@ -319,15 +319,15 @@ final class BuildSettings: NSObject {
 
     // MARK: - Room Settings Screen
     
-    static let roomSettingsScreenShowLowPriorityOption: Bool = true
-    static let roomSettingsScreenShowDirectChatOption: Bool = true
-    static let roomSettingsScreenAllowChangingAccessSettings: Bool = true
-    static let roomSettingsScreenAllowChangingHistorySettings: Bool = true
-    static let roomSettingsScreenShowAddressSettings: Bool = true
-    static let roomSettingsScreenShowFlairSettings: Bool = true
-    static let roomSettingsScreenShowAdvancedSettings: Bool = true
-    static let roomSettingsScreenAdvancedShowEncryptToVerifiedOption: Bool = true
-    static let roomSettingsScreenShowNotificationsV2: Bool = true
+    static let roomSettingsScreenShowLowPriorityOption: Bool = false
+    static let roomSettingsScreenShowDirectChatOption: Bool = false
+    static let roomSettingsScreenAllowChangingAccessSettings: Bool = false
+    static let roomSettingsScreenAllowChangingHistorySettings: Bool = false
+    static let roomSettingsScreenShowAddressSettings: Bool = false
+    static let roomSettingsScreenShowFlairSettings: Bool = false
+    static let roomSettingsScreenShowAdvancedSettings: Bool = false
+    static let roomSettingsScreenAdvancedShowEncryptToVerifiedOption: Bool = false
+    static let roomSettingsScreenShowNotificationsV2: Bool = false
 
     // MARK: - Room Member Screen
     
