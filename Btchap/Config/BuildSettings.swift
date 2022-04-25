@@ -107,9 +107,8 @@ final class BuildSettings: NSObject {
     
     
     // MARK: - Server configuration
-    
-    // TODO: replace m.org with https://sygnal.tchap.gouv.fr
-    static let serverConfigSygnalAPIUrlString = "https://matrix.org/_matrix/push/v1/notify"
+    // Tchap sygnal server url
+    static let serverConfigSygnalAPIUrlString = "https://sygnal.tchap.gouv.fr/_matrix/push/v1/notify"
     
     
     // MARK: - Legal URLs
