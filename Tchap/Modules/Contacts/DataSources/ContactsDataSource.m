@@ -1216,11 +1216,6 @@
 
 #pragma mark -
 
--(BOOL)isInviteButtonIndexPath:(NSIndexPath*)indexPath
-{
-    return (indexPath.section == inviteToTchapButtonSection);
-}
-
 -(BOOL)isInviteByLinkButtonIndexPath:(NSIndexPath*)indexPath
 {
     return (indexPath.section == inviteByLinkButtonSection);

@@ -144,6 +144,10 @@ final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
         self.tabBarCoordinator?.popToHome(animated: animated, completion: completion)
     }
     
+    func presentInvitePeople() {
+        self.tabBarCoordinator?.presentInvitePeople()
+    }
+    
     // MARK: - Private methods
     
     private func createPlaceholderDetailsViewController() -> UIViewController {

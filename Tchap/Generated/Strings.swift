@@ -424,6 +424,8 @@ internal enum TchapL10n {
   internal static let settingsShowProfileChangesMessagesTitle = TchapL10n.tr("Tchap", "settings_show_profile_changes_messages_title")
   /// Échec d'envoi. Veuillez renouveler cet envoi depuis l'application
   internal static let shareExtensionFailedToShareInEmptyDiscussion = TchapL10n.tr("Tchap", "share_extension_failed_to_share_in_empty_discussion")
+  /// Inviter à rejoindre Tchap
+  internal static let sideMenuActionInviteFriends = TchapL10n.tr("Tchap", "side_menu_action_invite_friends")
   /// Votre correspondant a quitté définitivement cette discussion.
   /// Vous devez en créer une nouvelle pour le recontacter, s'il est toujours joignable sur Tchap.
   internal static let tchapCannotInviteDeactivatedAccountUser = TchapL10n.tr("Tchap", "tchap_cannot_invite_deactivated_account_user")
