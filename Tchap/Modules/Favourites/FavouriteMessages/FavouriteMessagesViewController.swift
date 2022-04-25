@@ -208,7 +208,7 @@ final class FavouriteMessagesViewController: UIViewController {
     }
     
     private func showUnableToOpenLinkErrorAlert() {
-        AppDelegate.theDelegate().showAlert(withTitle: Bundle.mxk_localizedString(forKey: "error"), message: VectorL10n.roomMessageUnableOpenLinkErrorMessage)
+        AppDelegate.theDelegate().showAlert(withTitle: VectorL10n.error, message: VectorL10n.roomMessageUnableOpenLinkErrorMessage)
     }
     
     private func showExplanationAlert(event: MXEvent) {
@@ -229,7 +229,7 @@ final class FavouriteMessagesViewController: UIViewController {
         
         self.currentAlert = alert
         
-        alert.addAction(UIAlertAction(title: Bundle.mxk_localizedString(forKey: "ok"), style: .default, handler: { (action) in
+        alert.addAction(UIAlertAction(title: VectorL10n.ok, style: .default, handler: { (action) in
             self.unregisterEventDidDecryptNotification()
             self.currentAlert = nil
         }))

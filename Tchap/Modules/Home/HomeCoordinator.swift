@@ -335,7 +335,7 @@ final class HomeCoordinator: NSObject, HomeCoordinatorType {
                 
                 let alert = UIAlertController(title: TchapL10n.inviteInformationTitle, message: message, preferredStyle: .alert)
                 
-                let okTitle = Bundle.mxk_localizedString(forKey: "ok")
+                let okTitle = VectorL10n.ok
                 let okAction = UIAlertAction(title: okTitle, style: .default, handler: { action in
                     if let userID = discoveredUserID {
                         // Open the discussion
@@ -413,7 +413,7 @@ extension HomeCoordinator: RoomCoordinatorDelegate {
         //
     }
     
-    func roomCoordinator(_ coordinator: RoomCoordinatorProtocol, didSelectRoomWithId roomId: String) {
+    func roomCoordinator(_ coordinator: RoomCoordinatorProtocol, didReplaceRoomWithReplacementId roomId: String) {
         //
     }
     

@@ -18,7 +18,7 @@
 #import "RoomBubbleCellData.h"
 #import "MXKRoomBubbleTableViewCell+Riot.h"
 #import "UserEncryptionTrustLevel.h"
-#import "BubbleReactionsViewSizer.h"
+#import "RoomReactionsViewSizer.h"
 #import "RoomEncryptedDataBubbleCell.h"
 #import "LegacyAppDelegate.h"
 #import "DirectoryServerPickerViewController.h"
@@ -45,11 +45,13 @@
 #import "RoomInputToolbarView.h"
 #import "NSArray+Element.h"
 #import "ShareItemSender.h"
+#import "Contact.h"
 #import "HTMLFormatter.h"
 #import "RoomTimelineCellProvider.h"
 #import "PlainRoomTimelineCellProvider.h"
 #import "BubbleRoomTimelineCellProvider.h"
 #import "RoomSelectedStickerBubbleCell.h"
+#import "MXRoom+Riot.h"
 
 // MatrixKit common imports, shared with all targets
 #import "MatrixKit-Bridging-Header.h"

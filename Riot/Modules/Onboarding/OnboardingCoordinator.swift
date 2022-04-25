@@ -56,11 +56,22 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     }
     // Keep a strong ref as we need to init authVC early to preload its view
     private let authenticationCoordinator: AuthenticationCoordinatorProtocol
+    /// A boolean to prevent authentication being shown when already in progress.
     private var isShowingAuthentication = false
     
     // MARK: Screen results
     private var splashScreenResult: OnboardingSplashScreenViewModelResult?
     private var useCaseResult: OnboardingUseCaseViewModelResult?
+    private var authenticationType: MXKAuthenticationType?
+    private var session: MXSession?
+    
+    private var shouldShowDisplayNameScreen = false
+    private var shouldShowAvatarScreen = false
+    
+    /// Whether all of the onboarding steps have been completed or not. `false` if there are more screens to be shown.
+    private var onboardingFinished = false
+    /// Whether authentication is complete. `true` once authenticated, verified and the app is ready to be shown.
+    private var authenticationFinished = false
     
     // MARK: Public
 
@@ -74,7 +85,7 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         self.parameters = parameters
         
         // Preload the authVC (it is *really* slow to load in realtime)
-        let authenticationParameters = AuthenticationCoordinatorParameters(navigationRouter: parameters.router)
+        let authenticationParameters = AuthenticationCoordinatorParameters(navigationRouter: parameters.router, canPresentAdditionalScreens: false)
         authenticationCoordinator = AuthenticationCoordinator(parameters: authenticationParameters)
         
         super.init()
@@ -115,11 +126,13 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         return authenticationCoordinator.continueSSOLogin(withToken: loginToken, transactionID: transactionID)
     }
     
-    // MARK: - Private
+    // MARK: - Pre-Authentication
     
     @available(iOS 14.0, *)
     /// Show the onboarding splash screen as the root module in the flow.
     private func showSplashScreen() {
+        MXLog.debug("[OnboardingCoordinator] showSplashScreen")
+        
         let coordinator = OnboardingSplashScreenCoordinator()
         coordinator.completion = { [weak self, weak coordinator] result in
             guard let self = self, let coordinator = coordinator else { return }
@@ -129,7 +142,7 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         coordinator.start()
         add(childCoordinator: coordinator)
         
-        self.navigationRouter.setRootModule(coordinator, popCompletion: nil)
+        navigationRouter.setRootModule(coordinator, popCompletion: nil)
     }
     
     @available(iOS 14.0, *)
@@ -138,8 +151,7 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         splashScreenResult = result
         
         // Set the auth type early to allow network requests to finish during display of the use case screen.
-        let mxkAuthenticationType = splashScreenResult == .register ? MXKAuthenticationTypeRegister : MXKAuthenticationTypeLogin
-        authenticationCoordinator.update(authenticationType: mxkAuthenticationType)
+        authenticationCoordinator.update(authenticationType: result.mxkAuthenticationType)
         
         switch result {
         case .register:
@@ -152,6 +164,8 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
     @available(iOS 14.0, *)
     /// Show the use case screen for new users.
     private func showUseCaseSelectionScreen() {
+        MXLog.debug("[OnboardingCoordinator] showUseCaseSelectionScreen")
+        
         let coordinator = OnboardingUseCaseSelectionCoordinator()
         coordinator.completion = { [weak self, weak coordinator] result in
             guard let self = self, let coordinator = coordinator else { return }
@@ -161,20 +175,23 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         coordinator.start()
         add(childCoordinator: coordinator)
         
-        if self.navigationRouter.modules.isEmpty {
-            self.navigationRouter.setRootModule(coordinator, popCompletion: nil)
+        if navigationRouter.modules.isEmpty {
+            navigationRouter.setRootModule(coordinator, popCompletion: nil)
         } else {
-            self.navigationRouter.push(coordinator, animated: true) { [weak self] in
+            navigationRouter.push(coordinator, animated: true) { [weak self] in
                 self?.remove(childCoordinator: coordinator)
             }
         }
     }
     
     /// Displays the next view in the flow after the use case screen.
+    @available(iOS 14.0, *)
     private func useCaseSelectionCoordinator(_ coordinator: OnboardingUseCaseSelectionCoordinator, didCompleteWith result: OnboardingUseCaseViewModelResult) {
         useCaseResult = result
         showAuthenticationScreen()
     }
+    
+    // MARK: - Authentication
     
     /// Show the authentication screen. Any parameters that have been set in previous screens are be applied.
     private func showAuthenticationScreen() {
@@ -187,10 +204,10 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
             guard let self = self, let coordinator = coordinator else { return }
             
             switch result {
-            case .didLogin(let session):
-                self.authenticationCoordinator(coordinator, didLoginWith: session)
-            case .didComplete(let authenticationType):
-                self.authenticationCoordinator(coordinator, didCompleteWith: authenticationType)
+            case .didLogin(let session, let authenticationType):
+                self.authenticationCoordinator(coordinator, didLoginWith: session, and: authenticationType)
+            case .didComplete:
+                self.authenticationCoordinatorDidComplete(coordinator)
             }
             
         }
@@ -202,9 +219,7 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
             coordinator.update(externalRegistrationParameters: externalRegistrationParameters)
         }
         
-        if useCaseResult == .customServer {
-            coordinator.showCustomServer()
-        }
+        coordinator.customServerFieldsVisible = useCaseResult == .customServer
         
         if let softLogoutCredentials = parameters.softLogoutCredentials {
             coordinator.update(softLogoutCredentials: softLogoutCredentials)
@@ -217,10 +232,10 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
             coordinator.updateHomeserver(customHomeserver, andIdentityServer: customIdentityServer)
         }
         
-        if self.navigationRouter.modules.isEmpty {
-            self.navigationRouter.setRootModule(coordinator, popCompletion: nil)
+        if navigationRouter.modules.isEmpty {
+            navigationRouter.setRootModule(coordinator, popCompletion: nil)
         } else {
-            self.navigationRouter.push(coordinator, animated: true) { [weak self] in
+            navigationRouter.push(coordinator, animated: true) { [weak self] in
                 self?.remove(childCoordinator: coordinator)
                 self?.isShowingAuthentication = false
             }
@@ -228,18 +243,57 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         isShowingAuthentication = true
     }
     
-    private func authenticationCoordinator(_ coordinator: AuthenticationCoordinatorProtocol, didLoginWith session: MXSession) {
-        // TODO: Show next screens whilst waiting for the everything to load.
-        // May need to move the spinner and key verification up to here in order to coordinate properly.
+    /// Displays the next view in the flow after the authentication screen,
+    /// whilst crypto and the rest of the app is launching in the background.
+    private func authenticationCoordinator(_ coordinator: AuthenticationCoordinatorProtocol,
+                                           didLoginWith session: MXSession,
+                                           and authenticationType: MXKAuthenticationType) {
+        self.session = session
+        self.authenticationType = authenticationType
+        
+        // Check whether another screen should be shown.
+        if #available(iOS 14.0, *) {
+            if authenticationType == .register,
+               let userId = session.credentials.userId,
+               let userSession = UserSessionsService.shared.userSession(withUserId: userId),
+               BuildSettings.onboardingShowAccountPersonalization {
+                checkHomeserverCapabilities(for: userSession)
+                return
+            } else if Analytics.shared.shouldShowAnalyticsPrompt {
+                showAnalyticsPrompt(for: session)
+                return
+            }
+        }
+        
+        // Otherwise onboarding is finished.
+        onboardingFinished = true
+        completeIfReady()
+    }
+    
+    /// Checks the capabilities of the user's homeserver in order to determine
+    /// whether or not the display name and avatar can be updated.
+    ///
+    /// Once complete this method will start the post authentication flow automatically.
+    @available(iOS 14.0, *)
+    private func checkHomeserverCapabilities(for userSession: UserSession) {
+        userSession.matrixSession.matrixRestClient.capabilities { [weak self] capabilities in
+            guard let self = self else { return }
+            self.shouldShowDisplayNameScreen = capabilities?.setDisplayName?.isEnabled == true
+            self.shouldShowAvatarScreen = capabilities?.setAvatarUrl?.isEnabled == true
+            
+            self.beginPostAuthentication(for: userSession)
+        } failure: { [weak self] _ in
+            MXLog.warning("[OnboardingCoordinator] Homeserver capabilities not returned. Skipping personalisation")
+            self?.beginPostAuthentication(for: userSession)
+        }
     }
     
     /// Displays the next view in the flow after the authentication screen.
-    private func authenticationCoordinator(_ coordinator: AuthenticationCoordinatorProtocol, didCompleteWith authenticationType: MXKAuthenticationType) {
-        completion?()
+    private func authenticationCoordinatorDidComplete(_ coordinator: AuthenticationCoordinatorProtocol) {
         isShowingAuthentication = false
         
         // Handle the chosen use case where applicable
-        if authenticationType == MXKAuthenticationTypeRegister,
+        if authenticationType == .register,
            let useCase = useCaseResult?.userSessionPropertyValue,
            let userSession = UserSessionsService.shared.mainUserSession {
             // Store the value in the user's session
@@ -247,6 +301,225 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
             
             // Update the analytics user properties with the use case
             Analytics.shared.updateUserProperties(ftueUseCase: useCase)
+        }
+        
+        // This method is only called when the app is ready so we can complete if finished
+        authenticationFinished = true
+        completeIfReady()
+    }
+    
+    // MARK: - Post-Authentication
+    
+    /// Starts the part of the flow that comes after authentication for new users.
+    @available(iOS 14.0, *)
+    private func beginPostAuthentication(for userSession: UserSession) {
+        showCongratulationsScreen(for: userSession)
+    }
+    
+    /// Show the congratulations screen for new users. The screen will be configured based on the homeserver's capabilities.
+    @available(iOS 14.0, *)
+    private func showCongratulationsScreen(for userSession: UserSession) {
+        MXLog.debug("[OnboardingCoordinator] showCongratulationsScreen")
+        
+        let parameters = OnboardingCongratulationsCoordinatorParameters(userSession: userSession,
+                                                                        personalizationDisabled: !shouldShowDisplayNameScreen && !shouldShowAvatarScreen)
+        let coordinator = OnboardingCongratulationsCoordinator(parameters: parameters)
+        
+        coordinator.completion = { [weak self, weak coordinator] result in
+            guard let self = self, let coordinator = coordinator else { return }
+            self.congratulationsCoordinator(coordinator, didCompleteWith: result)
+        }
+        
+        add(childCoordinator: coordinator)
+        coordinator.start()
+        
+        // Navigating back doesn't make any sense now, so replace the whole stack.
+        navigationRouter.setRootModule(coordinator, hideNavigationBar: true, animated: true) { [weak self] in
+            self?.remove(childCoordinator: coordinator)
+        }
+    }
+    
+    /// Displays the next view in the flow after the congratulations screen.
+    @available(iOS 14.0, *)
+    private func congratulationsCoordinator(_ coordinator: OnboardingCongratulationsCoordinator, didCompleteWith result: OnboardingCongratulationsCoordinatorResult) {
+        switch result {
+        case .personalizeProfile(let userSession):
+            if shouldShowDisplayNameScreen {
+                showDisplayNameScreen(for: userSession)
+                return
+            } else if shouldShowAvatarScreen {
+                showAvatarScreen(for: userSession)
+                return
+            } else if Analytics.shared.shouldShowAnalyticsPrompt {
+                showAnalyticsPrompt(for: userSession.matrixSession)
+                return
+            }
+        case .takeMeHome(let userSession):
+            if Analytics.shared.shouldShowAnalyticsPrompt {
+                showAnalyticsPrompt(for: userSession.matrixSession)
+                return
+            }
+        }
+        
+        onboardingFinished = true
+        completeIfReady()
+    }
+    
+    /// Show the display name personalization screen for new users using the supplied user session.
+    @available(iOS 14.0, *)
+    private func showDisplayNameScreen(for userSession: UserSession) {
+        MXLog.debug("[OnboardingCoordinator]: showDisplayNameScreen")
+        
+        let parameters = OnboardingDisplayNameCoordinatorParameters(userSession: userSession)
+        let coordinator = OnboardingDisplayNameCoordinator(parameters: parameters)
+        
+        coordinator.completion = { [weak self, weak coordinator] session in
+            guard let self = self, let coordinator = coordinator else { return }
+            self.displayNameCoordinator(coordinator, didCompleteWith: session)
+        }
+        
+        add(childCoordinator: coordinator)
+        coordinator.start()
+        
+        navigationRouter.setRootModule(coordinator, hideNavigationBar: false, animated: true) { [weak self] in
+            self?.remove(childCoordinator: coordinator)
+        }
+    }
+    
+    /// Displays the next view in the flow after the display name screen.
+    @available(iOS 14.0, *)
+    private func displayNameCoordinator(_ coordinator: OnboardingDisplayNameCoordinator, didCompleteWith userSession: UserSession) {
+        if shouldShowAvatarScreen {
+            showAvatarScreen(for: userSession)
+        } else {
+            showCelebrationScreen(for: userSession)
+        }
+    }
+    
+    /// Show the avatar personalization screen for new users using the supplied user session.
+    @available(iOS 14.0, *)
+    private func showAvatarScreen(for userSession: UserSession) {
+        MXLog.debug("[OnboardingCoordinator]: showAvatarScreen")
+        
+        let parameters = OnboardingAvatarCoordinatorParameters(userSession: userSession)
+        let coordinator = OnboardingAvatarCoordinator(parameters: parameters)
+        
+        coordinator.completion = { [weak self, weak coordinator] session in
+            guard let self = self, let coordinator = coordinator else { return }
+            self.avatarCoordinator(coordinator, didCompleteWith: session)
+        }
+        
+        add(childCoordinator: coordinator)
+        coordinator.start()
+        
+        if navigationRouter.modules.isEmpty || !shouldShowDisplayNameScreen {
+            navigationRouter.setRootModule(coordinator, hideNavigationBar: false, animated: true) { [weak self] in
+                self?.remove(childCoordinator: coordinator)
+            }
+        } else {
+            navigationRouter.push(coordinator, animated: true) { [weak self] in
+                self?.remove(childCoordinator: coordinator)
+            }
+        }
+    }
+    
+    /// Displays the next view in the flow after the avatar screen.
+    @available(iOS 14.0, *)
+    private func avatarCoordinator(_ coordinator: OnboardingAvatarCoordinator, didCompleteWith userSession: UserSession) {
+        showCelebrationScreen(for: userSession)
+    }
+    
+    @available(iOS 14.0, *)
+    private func showCelebrationScreen(for userSession: UserSession) {
+        MXLog.debug("[OnboardingCoordinator] showCelebrationScreen")
+        
+        let parameters = OnboardingCelebrationCoordinatorParameters(userSession: userSession)
+        let coordinator = OnboardingCelebrationCoordinator(parameters: parameters)
+        
+        coordinator.completion = { [weak self, weak coordinator] userSession in
+            guard let self = self, let coordinator = coordinator else { return }
+            self.celebrationCoordinator(coordinator, didCompleteWith: userSession)
+        }
+        
+        add(childCoordinator: coordinator)
+        coordinator.start()
+        
+        navigationRouter.setRootModule(coordinator, hideNavigationBar: true, animated: true) { [weak self] in
+            self?.remove(childCoordinator: coordinator)
+        }
+    }
+    
+    @available(iOS 14.0, *)
+    private func celebrationCoordinator(_ coordinator: OnboardingCelebrationCoordinator, didCompleteWith userSession: UserSession) {
+        if Analytics.shared.shouldShowAnalyticsPrompt {
+            showAnalyticsPrompt(for: userSession.matrixSession)
+            return
+        }
+        
+        onboardingFinished = true
+        completeIfReady()
+    }
+    
+    /// Shows the analytics prompt for the supplied session.
+    ///
+    /// Check `Analytics.shared.shouldShowAnalyticsPrompt` before calling this method.
+    @available(iOS 14.0, *)
+    private func showAnalyticsPrompt(for session: MXSession) {
+        MXLog.debug("[OnboardingCoordinator]: Invite the user to send analytics")
+        
+        let parameters = AnalyticsPromptCoordinatorParameters(session: session)
+        let coordinator = AnalyticsPromptCoordinator(parameters: parameters)
+        
+        coordinator.completion = { [weak self, weak coordinator] in
+            guard let self = self, let coordinator = coordinator else { return }
+            self.analyticsPromptCoordinatorDidComplete(coordinator)
+        }
+        
+        add(childCoordinator: coordinator)
+        coordinator.start()
+        
+        // TODO: Re-asses replacing the stack based on the previous screen once the whole flow is implemented
+        navigationRouter.setRootModule(coordinator, hideNavigationBar: true, animated: true) { [weak self] in
+            self?.remove(childCoordinator: coordinator)
+        }
+    }
+    
+    /// Displays the next view in the flow after the analytics screen.
+    private func analyticsPromptCoordinatorDidComplete(_ coordinator: AnalyticsPromptCoordinator) {
+        onboardingFinished = true
+        completeIfReady()
+    }
+    
+    // MARK: - Finished
+    
+    /// Calls the coordinator's completion handler if both `onboardingFinished` and `authenticationFinished`
+    /// are true. Otherwise displays any pending screens and waits to be called again.
+    private func completeIfReady() {
+        guard onboardingFinished else {
+            MXLog.debug("[OnboardingCoordinator] Delaying onboarding completion until all screens have been shown.")
+            return
+        }
+        
+        guard authenticationFinished else {
+            MXLog.debug("[OnboardingCoordinator] Allowing AuthenticationCoordinator to display any remaining screens.")
+            authenticationCoordinator.presentPendingScreensIfNecessary()
+            return
+        }
+        
+        completion?()
+    }
+}
+
+// MARK: - Helpers
+
+extension OnboardingSplashScreenViewModelResult {
+    /// The result converted into the MatrixKit authentication type to use.
+    var mxkAuthenticationType: MXKAuthenticationType {
+        switch self {
+        case .login:
+            return .login
+        case .register:
+            return .register
         }
     }
 }
