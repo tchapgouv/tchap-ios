@@ -6266,7 +6266,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         return @[
             [self resendMenuItemWithEvent:event],
             [self deleteMenuItemWithEvent:event],
+#if ENABLE_EDITION
             [self editMenuItemWithEvent:event],
+#endif
             [self copyMenuItemWithEvent:event andCell:cell]
         ];
     }
@@ -6283,7 +6285,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         //  add "Thread" option only if not already in a thread
         [items addObject:[self replyInThreadMenuItemWithEvent:event]];
     }
+#if ENABLE_EDITION
     [items addObject:[self editMenuItemWithEvent:event]];
+#endif
     if (!showThreadOption)
     {
         [items addObject:[self copyMenuItemWithEvent:event andCell:cell]];
@@ -6448,6 +6452,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     return deleteMenuItem;
 }
 
+#if ENABLE_EDITION
 - (RoomContextualMenuItem *)editMenuItemWithEvent:(MXEvent*)event
 {
     MXWeakify(self);
@@ -6484,6 +6489,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     
     return editMenuItem;
 }
+#endif
 
 - (RoomContextualMenuItem *)copyMenuItemWithEvent:(MXEvent*)event andCell:(id<MXKCellRendering>)cell
 {
