@@ -90,15 +90,15 @@
 //    return [(HomeViewControllerWithBannerWrapperViewController *)wrapperVC homeViewController];
 //}
 //
-//- (FavouritesViewController *)favouritesViewController
-//{
-//    return (FavouritesViewController*)[self viewControllerForClass:FavouritesViewController.class];
-//}
-//
-//- (PeopleViewController *)peopleViewController
-//{
-//    return (PeopleViewController*)[self viewControllerForClass:PeopleViewController.class];
-//}
+- (FavouritesViewController *)favouritesViewController
+{
+    return (FavouritesViewController*)[self viewControllerForClass:FavouritesViewController.class];
+}
+
+- (PeopleViewController *)peopleViewController
+{
+    return (PeopleViewController*)[self viewControllerForClass:PeopleViewController.class];
+}
 
 - (RoomsViewController *)roomsViewController
 {
@@ -360,36 +360,36 @@
                                                           recentsListService:recentsListService];
         
 //        [self.homeViewController displayList:recentsDataSource];
-//        [self.favouritesViewController displayList:recentsDataSource];
-//        [self.peopleViewController displayList:recentsDataSource];
+        [self.favouritesViewController displayList:recentsDataSource];
+        [self.peopleViewController displayList:recentsDataSource];
         [self.roomsViewController displayList:recentsDataSource];
         
         // Restore the right delegate of the shared recent data source.
         id<MXKDataSourceDelegate> recentsDataSourceDelegate = self.roomsViewController;//self.homeViewController;
         RecentsDataSourceMode recentsDataSourceMode = RecentsDataSourceModeRooms;
-        
-//        NSInteger tabItemTag = self.tabBar.items[self.selectedIndex].tag;
-//
-//        switch (tabItemTag)
-//        {
+
+        NSInteger tabItemTag = self.tabBar.items[self.selectedIndex].tag;
+
+        switch (tabItemTag)
+        {
 //            case TABBAR_HOME_INDEX:
 //                break;
-//            case TABBAR_FAVOURITES_INDEX:
-//                recentsDataSourceDelegate = self.favouritesViewController;
-//                recentsDataSourceMode = RecentsDataSourceModeFavourites;
-//                break;
-//            case TABBAR_PEOPLE_INDEX:
-//                recentsDataSourceDelegate = self.peopleViewController;
-//                recentsDataSourceMode = RecentsDataSourceModePeople;
-//                break;
-//            case TABBAR_ROOMS_INDEX:
-//                recentsDataSourceDelegate = self.roomsViewController;
-//                recentsDataSourceMode = RecentsDataSourceModeRooms;
-//                break;
-//
-//            default:
-//                break;
-//        }
+            case TABBAR_FAVOURITES_INDEX:
+                recentsDataSourceDelegate = self.favouritesViewController;
+                recentsDataSourceMode = RecentsDataSourceModeFavourites;
+                break;
+            case TABBAR_PEOPLE_INDEX:
+                recentsDataSourceDelegate = self.peopleViewController;
+                recentsDataSourceMode = RecentsDataSourceModePeople;
+                break;
+            case TABBAR_ROOMS_INDEX:
+                recentsDataSourceDelegate = self.roomsViewController;
+                recentsDataSourceMode = RecentsDataSourceModeRooms;
+                break;
+
+            default:
+                break;
+        }
         [recentsDataSource setDelegate:recentsDataSourceDelegate andRecentsDataSourceMode:recentsDataSourceMode];
         
         // Init the recents data source
@@ -480,8 +480,8 @@
         [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXSessionStateDidChangeNotification object:nil];
         
 //        [self.homeViewController displayList:nil];
-//        [self.favouritesViewController displayList:nil];
-//        [self.peopleViewController displayList:nil];
+        [self.favouritesViewController displayList:nil];
+        [self.peopleViewController displayList:nil];
         [self.roomsViewController displayList:nil];
         
         [recentsDataSource destroy];
@@ -1108,14 +1108,14 @@
         if (item.tag == TABBAR_ROOMS_INDEX)
         {
             [self.roomsViewController scrollToNextRoomWithMissedNotifications];
-//        }
-//        else if (item.tag == TABBAR_PEOPLE_INDEX)
-//        {
-//            [self.peopleViewController scrollToNextRoomWithMissedNotifications];
-//        }
-//        else if (item.tag == TABBAR_FAVOURITES_INDEX)
-//        {
-//            [self.favouritesViewController scrollToNextRoomWithMissedNotifications];
+        }
+        else if (item.tag == TABBAR_PEOPLE_INDEX)
+        {
+            [self.peopleViewController scrollToNextRoomWithMissedNotifications];
+        }
+        else if (item.tag == TABBAR_FAVOURITES_INDEX)
+        {
+            [self.favouritesViewController scrollToNextRoomWithMissedNotifications];
         }
     }
 }

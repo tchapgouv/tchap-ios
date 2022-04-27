@@ -247,8 +247,8 @@ final class BuildSettings: NSObject {
     
     // MARK: - Main Tabs
     
-    static let homeScreenShowFavouritesTab: Bool = false
-    static let homeScreenShowPeopleTab: Bool = false
+    static let homeScreenShowFavouritesTab: Bool = true
+    static let homeScreenShowPeopleTab: Bool = true
     static let homeScreenShowRoomsTab: Bool = true
     static let homeScreenShowCommunitiesTab: Bool = false
 

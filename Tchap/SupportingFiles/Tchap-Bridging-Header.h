@@ -58,3 +58,5 @@
 #import "MXKRoomBubbleTableViewCell.h"
 #import "RecentsDataSource.h"
 #import "DirectoryServerPickerViewController.h"
+#import "InviteRecentTableViewCell.h"
+#import "PeopleViewController.h"

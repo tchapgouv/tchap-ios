@@ -146,7 +146,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
                 self.masterTabBarController.releaseSelectedItem()
                 
                 // Select home tab
-                self.masterTabBarController.selectTab(at: .rooms)
+                self.masterTabBarController.selectTab(at: .people)
                 
                 completion?()
             }
@@ -183,7 +183,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         } else {
             // Tab bar controller is already visible
             // Select the Home tab
-            masterTabBarController.selectTab(at: .rooms)
+            masterTabBarController.selectTab(at: .people)
             completion?()
         }
     }
@@ -252,19 +252,20 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
 //        return wrapperViewController
 //    }
     
-//    private func createFavouritesViewController() -> FavouritesViewController {
-//        let favouritesViewController: FavouritesViewController = FavouritesViewController.instantiate()
-//        favouritesViewController.tabBarItem.tag = Int(TABBAR_FAVOURITES_INDEX)
-//        favouritesViewController.accessibilityLabel = VectorL10n.titleFavourites
-//        return favouritesViewController
-//    }
+    private func createFavouritesViewController() -> FavouritesViewController {
+        let favouritesViewController: FavouritesViewController = FavouritesViewController.instantiate()
+        favouritesViewController.tabBarItem.tag = Int(TABBAR_FAVOURITES_INDEX)
+        favouritesViewController.accessibilityLabel = VectorL10n.titleFavourites
+        return favouritesViewController
+    }
 
-//    private func createPeopleViewController() -> PeopleViewController {
-//        let peopleViewController: PeopleViewController = PeopleViewController.instantiate()
-//        peopleViewController.tabBarItem.tag = Int(TABBAR_PEOPLE_INDEX)
-//        peopleViewController.accessibilityLabel = VectorL10n.titlePeople
-//        return peopleViewController
-//    }
+    private func createPeopleViewController() -> PeopleViewController {
+        let peopleViewController: PeopleViewController = PeopleViewController.instantiate()
+        peopleViewController.peopleViewDelegate = self
+        peopleViewController.tabBarItem.tag = Int(TABBAR_PEOPLE_INDEX)
+        peopleViewController.accessibilityLabel = VectorL10n.titlePeople
+        return peopleViewController
+    }
     
     private func createRoomsViewController() -> RoomsViewController {
         let roomsViewController: RoomsViewController = RoomsViewController.instantiate()
@@ -335,13 +336,13 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
 //        }
         
         if RiotSettings.shared.homeScreenShowFavouritesTab {
-//            let favouritesViewController = self.createFavouritesViewController()
-//            viewControllers.append(favouritesViewController)
+            let favouritesViewController = self.createFavouritesViewController()
+            viewControllers.append(favouritesViewController)
         }
         
         if RiotSettings.shared.homeScreenShowPeopleTab {
-//            let peopleViewController = self.createPeopleViewController()
-//            viewControllers.append(peopleViewController)
+            let peopleViewController = self.createPeopleViewController()
+            viewControllers.append(peopleViewController)
         }
         
         if RiotSettings.shared.homeScreenShowRoomsTab {
@@ -950,18 +951,6 @@ extension TabBarCoordinator: WelcomeCoordinatorDelegate {
 
 // MARK: - RoomsViewControllerDelegate
 extension TabBarCoordinator: RoomsViewControllerDelegate {
-    func roomsViewControllerDidTapStartChatButton(_ roomsViewController: RoomsViewController) {
-        guard let session = self.currentMatrixSession else { return }
-        
-        let createNewDiscussionCoordinator = CreateNewDiscussionCoordinator(session: session)
-        createNewDiscussionCoordinator.delegate = self
-        createNewDiscussionCoordinator.start()
-        
-        self.navigationRouter.present(createNewDiscussionCoordinator, animated: true)
-        
-        self.add(childCoordinator: createNewDiscussionCoordinator)
-    }
-    
     func roomsViewControllerDidTapCreateRoomButton(_ roomsViewController: RoomsViewController) {
         guard let session = self.currentMatrixSession else { return }
         
@@ -1061,5 +1050,19 @@ extension TabBarCoordinator: RoomPreviewCoordinatorDelegate {
                                 onEventId eventId: String?) {
         self.navigationRouter.popModule(animated: true)
         self.showRoom(withId: roomID, eventId: eventId)
+    }
+}
+
+// MARK: - PeopleViewControllerDelegate
+extension TabBarCoordinator: PeopleViewControllerDelegate {
+    func peopleViewControllerDidTapStartChatButton(_ peopleViewController: PeopleViewController) {
+        guard let session = self.currentMatrixSession else { return }
+
+        let createNewDiscussionCoordinator = CreateNewDiscussionCoordinator(session: session)
+        createNewDiscussionCoordinator.delegate = self
+        createNewDiscussionCoordinator.start()
+
+        self.navigationRouter.present(createNewDiscussionCoordinator, animated: true)
+        self.add(childCoordinator: createNewDiscussionCoordinator)
     }
 }
