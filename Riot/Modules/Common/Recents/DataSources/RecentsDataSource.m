@@ -78,7 +78,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         
         [self resetSectionIndexes];
         
-        _areSectionsShrinkable = NO;
+        _areSectionsShrinkable = YES;
         shrinkedSectionsBitMask = 0;
         
         roomTagsListenerByUserId = [[NSMutableDictionary alloc] init];
@@ -205,6 +205,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 
 - (void)setCurrentSpace:(MXSpace *)currentSpace
 {
+    super.currentSpace = currentSpace;
     [self.recentsListService updateSpace:currentSpace];
 }
 
@@ -671,7 +672,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         title = [VectorL10n roomRecentsSuggestedRoomsSection];
     }
     
-    if (count)
+    if (count && !(section == invitesSection))
     {
         NSString *roomCount = [NSString stringWithFormat:@"   %tu", count];
         
@@ -694,12 +695,16 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     return sectionTitle;
 }
 
-- (UIView *)badgeViewForHeaderTitleInHomeSection:(NSInteger)section
+- (UIView *)badgeViewForHeaderTitleInSection:(NSInteger)section
 {
     // Prepare a badge to display the total of missed notifications in this section.
     id<MXRoomListDataCounts> counts = nil;
     UIView *missedNotifAndUnreadBadgeBgView = nil;
-    
+
+    if (section == invitesSection)
+    {
+        counts = self.recentsListService.invitedRoomListData.counts;
+    }
     if (section == favoritesSection)
     {
         counts = self.recentsListService.favoritedRoomListData.counts;
@@ -725,13 +730,14 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         counts = self.recentsListService.suggestedRoomListData.counts;
     }
 
-    NSUInteger numberOfNotifications = counts.total.numberOfNotifications;
-    NSUInteger numberOfHighlights = counts.total.numberOfHighlights;
+    // Invites are counted as highlights for the badge view display.
+    NSUInteger numberOfNotifications = counts.total.numberOfNotifications + counts.total.numberOfInvitedRooms;
+    NSUInteger numberOfHighlights = counts.total.numberOfHighlights + counts.total.numberOfInvitedRooms;
     
     if (numberOfNotifications)
     {
         UILabel *missedNotifAndUnreadBadgeLabel = [[UILabel alloc] init];
-        missedNotifAndUnreadBadgeLabel.textColor = ThemeService.shared.theme.baseTextPrimaryColor;
+        missedNotifAndUnreadBadgeLabel.textColor = ThemeService.shared.theme.tintContrastColor;
         missedNotifAndUnreadBadgeLabel.font = [UIFont boldSystemFontOfSize:14];
         if (numberOfNotifications > 1000)
         {
@@ -843,14 +849,16 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         chevronView.contentMode = UIViewContentModeCenter;
         sectionHeader.accessoryView = chevronView;
     }
-    else if (_recentsDataSourceMode == RecentsDataSourceModeHome)
+    if (_recentsDataSourceMode == RecentsDataSourceModeHome
+        || _recentsDataSourceMode == RecentsDataSourceModePeople
+        || _recentsDataSourceMode == RecentsDataSourceModeRooms)
     {
         // Add a badge to display the total of missed notifications by section.
-        UIView *badgeView = [self badgeViewForHeaderTitleInHomeSection:section];
+        UIView *badgeView = [self badgeViewForHeaderTitleInSection:section];
         
         if (badgeView)
         {
-            sectionHeader.accessoryView = badgeView;
+            sectionHeader.rightAccessoryView = badgeView;
         }
     }
     
@@ -1518,6 +1526,57 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     RecentsSectionUpdate *update = [[RecentsSectionUpdate alloc] initWithSectionIndex:sectionIndex
                                                                    totalCountsChanged:totalCountsChanged];
     [self.delegate dataSource:self didCellChange:update];
+}
+
+#pragma mark - Shrinkable
+- (BOOL)isSectionShrinkedAt:(NSInteger)section
+{
+    if (_areSectionsShrinkable == NO)
+    {
+        return NO;
+    }
+
+    if (section == favoritesSection && (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_FAVORITES))
+    {
+        return YES;
+    }
+
+    if (section == peopleSection && (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_PEOPLE))
+    {
+        return YES;
+    }
+
+    if (section == conversationSection && (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_CONVERSATIONS))
+    {
+        return YES;
+    }
+
+    if (section == directorySection && (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_DIRECTORY))
+    {
+        return YES;
+    }
+
+    if (section == lowPrioritySection && (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_LOWPRIORITY))
+    {
+        return YES;
+    }
+
+    if (section == serverNoticeSection && (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_SERVERNOTICE))
+    {
+        return YES;
+    }
+
+    if (section == invitesSection && (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_INVITES))
+    {
+        return YES;
+    }
+
+    if (section == suggestedRoomsSection && (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_SUGGESTED))
+    {
+        return YES;
+    }
+
+    return NO;
 }
 
 @end

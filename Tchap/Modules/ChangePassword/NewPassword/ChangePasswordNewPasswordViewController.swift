@@ -206,7 +206,7 @@ final class ChangePasswordNewPasswordViewController: UIViewController {
                                                 message: TchapL10n.changePasswordNewPasswordInvalidOldPassword,
                                                 preferredStyle: .alert)
         
-        let okAction = UIAlertAction(title: Bundle.mxk_localizedString(forKey: "ok"), style: .default) { _ in
+        let okAction = UIAlertAction(title: VectorL10n.ok, style: .default) { _ in
             self.viewModel.process(viewAction: .modifyCurrentPassword)
         }
         
@@ -224,7 +224,7 @@ final class ChangePasswordNewPasswordViewController: UIViewController {
                                                 message: TchapL10n.changePasswordNewPasswordSuccessMessage,
                                                 preferredStyle: .alert)
         
-        let okAction = UIAlertAction(title: Bundle.mxk_localizedString(forKey: "ok"), style: .default) { _ in
+        let okAction = UIAlertAction(title: VectorL10n.ok, style: .default) { _ in
             self.viewModel.process(viewAction: .acknowledgeSuccess)
         }
         

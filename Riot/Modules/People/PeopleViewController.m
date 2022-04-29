@@ -52,7 +52,7 @@
     
     directRoomsSectionNumber = 0;
     
-    self.screenTimer = [[AnalyticsScreenTimer alloc] initWithScreen:AnalyticsScreenPeople];
+    self.screenTracker = [[AnalyticsScreenTracker alloc] initWithScreen:AnalyticsScreenPeople];
     self.tableViewPaginationThrottler = [[MXThrottler alloc] initWithMinimumDelay:0.1];
 }
 
@@ -68,8 +68,9 @@
     // This will be used by the shared RecentsDataSource instance for sanity checks (see UITableViewDataSource methods).
     self.recentsTableView.tag = RecentsDataSourceModePeople;
     
+    UIImage *fabImage = self.dataSource.currentSpace == nil ? AssetImages.peopleFloatingAction.image : AssetImages.addMemberFloatingAction.image;
     // Add the (+) button programmatically
-    plusButtonImageView = [self vc_addFABWithImage:AssetImages.peopleFloatingAction.image
+    plusButtonImageView = [self vc_addFABWithImage:fabImage
                                             target:self
                                             action:@selector(onPlusButtonPressed)];
 }
@@ -83,30 +84,17 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    [AppDelegate theDelegate].masterTabBarController.navigationItem.title = [VectorL10n titlePeople];
     [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = ThemeService.shared.theme.tintColor;
     
     if ([self.dataSource isKindOfClass:RecentsDataSource.class])
     {
         // Take the lead on the shared data source.
         recentsDataSource = (RecentsDataSource*)self.dataSource;
-        recentsDataSource.areSectionsShrinkable = NO;
         [recentsDataSource setDelegate:self andRecentsDataSourceMode:RecentsDataSourceModePeople];
     }
 }
 
 #pragma mark - UITableView delegate
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return 0.0;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    return nil;
-}
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -117,9 +105,13 @@
     
     [self.tableViewPaginationThrottler throttle:^{
         NSInteger section = indexPath.section;
+        if (tableView.numberOfSections <= section)
+        {
+            return;
+        }
+        
         NSInteger numberOfRowsInSection = [tableView numberOfRowsInSection:section];
-        if (tableView.numberOfSections > section
-            && indexPath.row == numberOfRowsInSection - 1)
+        if (indexPath.row == numberOfRowsInSection - 1)
         {
             [self->recentsDataSource paginateInSection:section];
         }
@@ -194,5 +186,12 @@
 //        self.spaceMembersCoordinatorBridgePresenter = nil;
 //    }];
 //}
+
+#pragma mark - MasterTabBarItemDisplayProtocol
+
+- (NSString *)masterTabBarItemTitle
+{
+    return [VectorL10n titlePeople];
+}
 
 @end

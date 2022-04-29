@@ -110,7 +110,7 @@ final class AuthenticationService: AuthenticationServiceType {
             case .success(let jsonResponse):
                 
                 guard let loginResponse = MXLoginResponse(fromJSON: jsonResponse), loginResponse.userId != nil, loginResponse.accessToken != nil else {
-                    let error = NSError(domain: MXKAuthErrorDomain, code: 0, userInfo: [NSLocalizedDescriptionKey: Bundle.mxk_localizedString(forKey: "not_supported_yet")])
+                    let error = NSError(domain: MXKAuthErrorDomain, code: 0, userInfo: [NSLocalizedDescriptionKey: VectorL10n.notSupportedYet])
                     completion(MXResponse.failure(error))
                     return
                 }

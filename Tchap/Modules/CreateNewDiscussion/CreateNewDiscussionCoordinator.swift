@@ -30,7 +30,7 @@ final class CreateNewDiscussionCoordinator: NSObject, CreateNewDiscussionCoordin
     private let router: NavigationRouterType
     private let contactsViewController: ContactsViewController
     private let session: MXSession
-    private let contactsDataSource: ContactsDataSource
+    private let contactsDataSource: ContactsDataSourceTchap
     
     // MARK: Public
     
@@ -48,7 +48,7 @@ final class CreateNewDiscussionCoordinator: NSObject, CreateNewDiscussionCoordin
         contactsViewController.title = TchapL10n.createNewDiscussionTitle
         self.contactsViewController = contactsViewController
         
-        let contactsDataSource: ContactsDataSource = ContactsDataSource(matrixSession: self.session)
+        let contactsDataSource: ContactsDataSourceTchap = ContactsDataSourceTchap(matrixSession: self.session)
         contactsDataSource.finalizeInitialization()
         contactsDataSource.contactsFilter = ContactsDataSourceTchapFilterTchapUsersOnly
         self.contactsDataSource = contactsDataSource

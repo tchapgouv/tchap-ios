@@ -147,6 +147,11 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Riot.MajorUpdateViewController>(storyboard: MajorUpdateViewController.self)
   }
+  internal enum OptionListViewController: StoryboardType {
+    internal static let storyboardName = "OptionListViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.OptionListViewController>(storyboard: OptionListViewController.self)
+  }
   internal enum QRCodeReaderViewController: StoryboardType {
     internal static let storyboardName = "QRCodeReaderViewController"
 
@@ -156,6 +161,11 @@ internal enum StoryboardScene {
     internal static let storyboardName = "ReactionHistoryViewController"
 
     internal static let initialScene = InitialSceneType<Riot.ReactionHistoryViewController>(storyboard: ReactionHistoryViewController.self)
+  }
+  internal enum RoomContextPreviewViewController: StoryboardType {
+    internal static let storyboardName = "RoomContextPreviewViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.RoomContextPreviewViewController>(storyboard: RoomContextPreviewViewController.self)
   }
   internal enum RoomContextualMenuViewController: StoryboardType {
     internal static let storyboardName = "RoomContextualMenuViewController"
@@ -283,6 +293,16 @@ internal enum StoryboardScene {
     internal static let storyboardName = "ThreadListViewController"
 
     internal static let initialScene = InitialSceneType<Riot.ThreadListViewController>(storyboard: ThreadListViewController.self)
+  }
+  internal enum ThreadsBetaViewController: StoryboardType {
+    internal static let storyboardName = "ThreadsBetaViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.ThreadsBetaViewController>(storyboard: ThreadsBetaViewController.self)
+  }
+  internal enum ThreadsNoticeViewController: StoryboardType {
+    internal static let storyboardName = "ThreadsNoticeViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.ThreadsNoticeViewController>(storyboard: ThreadsNoticeViewController.self)
   }
   internal enum UserVerificationSessionStatusViewController: StoryboardType {
     internal static let storyboardName = "UserVerificationSessionStatusViewController"

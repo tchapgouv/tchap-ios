@@ -17,7 +17,7 @@
 #import "ContactsViewController.h"
 
 #import "RageShakeManager.h"
-#import "ContactsDataSource.h"
+#import "ContactsDataSourceTchap.h"
 #import "Contact.h"
 
 #import "GeneratedInterface-Swift.h"
@@ -26,7 +26,7 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
 
 @interface ContactsViewController () <MXKDataSourceDelegate, UISearchResultsUpdating>
 
-@property (strong, nonatomic) ContactsDataSource *contactsDataSource;
+@property (strong, nonatomic) ContactsDataSourceTchap *contactsDataSource;
 
 @property (nonatomic) BOOL showSearchBar;
 @property (nonatomic, strong) UISearchController *searchController;
@@ -189,7 +189,7 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
 
 #pragma mark - Public
 
-- (void)displayList:(ContactsDataSource*)listDataSource
+- (void)displayList:(ContactsDataSourceTchap*)listDataSource
 {
     // Cancel registration on existing dataSource if any
     if (self.contactsDataSource)
@@ -243,7 +243,7 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
                                                             message:NSLocalizedStringFromTable(@"contacts_invite_by_email_message", @"Tchap", nil)
                                                      preferredStyle:UIAlertControllerStyleAlert];
     
-    [self.currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+    [self.currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                      style:UIAlertActionStyleCancel
                                                    handler:^(UIAlertAction * action) {
                                                        
@@ -279,7 +279,7 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
                                                            self.currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"authentication_error_invalid_email", @"Tchap", nil)
                                                                                                                    message:nil
                                                                                                             preferredStyle:UIAlertControllerStyleAlert];
-                                                           [self.currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                                                           [self.currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok]
                                                                                                                  style:UIAlertActionStyleDefault
                                                                                                                handler:^(UIAlertAction * action) {
                                                                                                                    
@@ -323,7 +323,7 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
                                            self.currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"contacts_picker_unauthorized_email_title", @"Tchap", nil)
                                                                                                    message:reason
                                                                                             preferredStyle:UIAlertControllerStyleAlert];
-                                           [self.currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                                           [self.currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok]
                                                                                                  style:UIAlertActionStyleDefault
                                                                                                handler:^(UIAlertAction * action) {
                                                                                                    
@@ -496,7 +496,7 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
                                                self.currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"contacts_picker_unauthorized_email_title", @"Tchap", nil)
                                                                                                        message:reason
                                                                                                 preferredStyle:UIAlertControllerStyleAlert];
-                                               [self.currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                                               [self.currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok]
                                                                                                      style:UIAlertActionStyleDefault
                                                                                                    handler:^(UIAlertAction * action) {
                                                                                                        

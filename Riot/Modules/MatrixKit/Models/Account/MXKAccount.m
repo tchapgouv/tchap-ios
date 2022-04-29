@@ -346,7 +346,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
                                                  code:0
                                              userInfo:@{
                                                         NSLocalizedDescriptionKey:
-                                                            [MatrixKitL10n accountErrorPushNotAllowed]
+                                                            [VectorL10n accountErrorPushNotAllowed]
                                                         }];
             if (failure)
             {
@@ -423,7 +423,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
                                                  code:0
                                              userInfo:@{
                                                         NSLocalizedDescriptionKey:
-                                                            [MatrixKitL10n accountErrorPushNotAllowed]
+                                                            [VectorL10n accountErrorPushNotAllowed]
                                                         }];
             failure (error);
         }
@@ -558,7 +558,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
     }
     else if (failure)
     {
-        failure ([NSError errorWithDomain:kMXKAccountErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey: [MatrixKitL10n accountErrorMatrixSessionIsNotOpened]}]);
+        failure ([NSError errorWithDomain:kMXKAccountErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey: [VectorL10n accountErrorMatrixSessionIsNotOpened]}]);
     }
 }
 
@@ -578,7 +578,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
     }
     else if (failure)
     {
-        failure ([NSError errorWithDomain:kMXKAccountErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey: [MatrixKitL10n accountErrorMatrixSessionIsNotOpened]}]);
+        failure ([NSError errorWithDomain:kMXKAccountErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey: [VectorL10n accountErrorMatrixSessionIsNotOpened]}]);
     }
 }
 
@@ -599,7 +599,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
     }
     else if (failure)
     {
-        failure ([NSError errorWithDomain:kMXKAccountErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey: [MatrixKitL10n accountErrorMatrixSessionIsNotOpened]}]);
+        failure ([NSError errorWithDomain:kMXKAccountErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey: [VectorL10n accountErrorMatrixSessionIsNotOpened]}]);
     }
 }
 
@@ -2072,6 +2072,11 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
         MXLogDebug(@"[MXKAccount] checkSyncFilterCompatibility: Incompatible filter. New or old is nil. mxSession.syncFilterId: %@ - syncFilter: %@",
               mxSession.syncFilterId, syncFilter.JSONDictionary);
         completion(NO);
+    }
+    else if (!mxSession.store.allFilterIds.count)
+    {
+        MXLogDebug(@"[MXKAccount] There are no filters stored in this session, proceed as if no /sync was done before");
+        completion(YES);
     }
     else
     {

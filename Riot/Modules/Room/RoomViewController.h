@@ -31,6 +31,8 @@
 @class UniversalLinkParameters;
 @protocol RoomViewControllerDelegate;
 @class RoomDisplayConfiguration;
+// Tchap: Disable Threads
+//@class ThreadsCoordinatorBridgePresenter;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -85,6 +87,13 @@ extern NSNotificationName const RoomGroupCallTileTappedNotification;
 @property (nonatomic) BOOL showMissedDiscussionsBadge;
 
 /**
+ ID of the parent space. `nil` for home space.
+ */
+@property (nonatomic, nullable) NSString *parentSpaceId;
+
+@property (nonatomic, getter=isContextPreview) BOOL contextPeview;
+
+/**
  Tell whether input tool bar should be hidden in every case.
  NO by default.
  */
@@ -98,6 +107,11 @@ extern NSNotificationName const RoomGroupCallTileTappedNotification;
  @param roomPreviewData the data for the room preview.
  */
 - (void)displayRoomPreview:(RoomPreviewData*)roomPreviewData;
+
+/**
+ If `YES`, the room settings screen will be initially displayed. Default `NO`
+ */
+@property (nonatomic) BOOL showSettingsInitially;
 
 /**
  Action used to handle some buttons.
@@ -156,6 +170,15 @@ extern NSNotificationName const RoomGroupCallTileTappedNotification;
 - (void)roomViewController:(RoomViewController *)roomViewController
             showRoomWithId:(NSString *)roomID
                    eventId:(nullable NSString *)eventID;
+
+/**
+ Tells the delegate that the room has replaced by a room with a specific replacement room ID.
+ 
+ @param roomViewController the `RoomViewController` instance.
+ @param roomID the replacement roomId
+ */
+- (void)roomViewController:(RoomViewController *)roomViewController
+didReplaceRoomWithReplacementId:(NSString *)roomID;
 
 /**
  Tells the delegate that the user wants to start a direct chat with a user.
@@ -239,6 +262,32 @@ canEditPollWithEventIdentifier:(NSString *)eventIdentifier;
 
 - (void)roomViewController:(RoomViewController *)roomViewController
 didRequestEditForPollWithStartEvent:(MXEvent *)startEvent;
+
+/**
+ Indicate to the delegate that loading should start
+ 
+ Note: Only called if the controller can delegate user indicators rather than managing
+ loading indicators internally
+ */
+- (void)roomViewControllerDidStartLoading:(RoomViewController *)roomViewController;
+
+/**
+ Indicate to the delegate that loading should stop
+ 
+ Note: Only called if the controller can delegate user indicators rather than managing
+ loading indicators internally
+ */
+- (void)roomViewControllerDidStopLoading:(RoomViewController *)roomViewController;
+
+/// User tap live location sharing stop action
+- (void)roomViewControllerDidStopLiveLocationSharing:(RoomViewController *)roomViewController;
+
+/// User tap live location sharing banner
+- (void)roomViewControllerDidTapLiveLocationSharingBanner:(RoomViewController *)roomViewController;
+
+/// Request a threads coordinator for a given threadId, used to open a thread from within a room.
+// Tchap: Disable Threads
+//- (nullable ThreadsCoordinatorBridgePresenter *)threadsCoordinatorForRoomViewController:(RoomViewController *)roomViewController threadId:(nullable NSString *)threadId;
 
 @end
 

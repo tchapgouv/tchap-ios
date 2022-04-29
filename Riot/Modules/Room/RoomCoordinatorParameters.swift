@@ -28,12 +28,18 @@ struct RoomCoordinatorParameters {
     /// `navigationRouter` property takes priority on `navigationRouterStore`
     let navigationRouterStore: NavigationRouterStoreProtocol?
     
+    /// Presenter for displaying loading indicators, success messages and other user indicators
+    let userIndicatorPresenter: UserIndicatorTypePresenterProtocol
+    
     /// The matrix session in which the room should be available.
     let session: MXSession
     
     /// The room identifier
     let roomId: String
     
+    /// The identifier of the parent space. `nil` for home space
+    let parentSpaceId: String?
+
     /// If not nil, the room will be opened on this event.
     let eventId: String?
     
@@ -46,57 +52,77 @@ struct RoomCoordinatorParameters {
     /// The data for the room preview.
     let previewData: RoomPreviewData?
     
+    /// If `true`, the room settings screen will be initially displayed. Default `false`
+    let showSettingsInitially: Bool
+    
     // MARK: - Setup
     
     private init(navigationRouter: NavigationRouterType?,
                  navigationRouterStore: NavigationRouterStoreProtocol?,
+                 userIndicatorPresenter: UserIndicatorTypePresenterProtocol,
                  session: MXSession,
                  roomId: String,
+                 parentSpaceId: String?,
                  eventId: String?,
                  threadId: String?,
                  displayConfiguration: RoomDisplayConfiguration,
-                 previewData: RoomPreviewData?) {
+                 previewData: RoomPreviewData?,
+                 showSettingsInitially: Bool) {
         self.navigationRouter = navigationRouter
         self.navigationRouterStore = navigationRouterStore
+        self.userIndicatorPresenter = userIndicatorPresenter
         self.session = session
         self.roomId = roomId
+        self.parentSpaceId = parentSpaceId
         self.eventId = eventId
         self.threadId = threadId
         self.displayConfiguration = displayConfiguration
         self.previewData = previewData
+        self.showSettingsInitially = showSettingsInitially
     }
     
     /// Init to present a joined room
     init(navigationRouter: NavigationRouterType? = nil,
          navigationRouterStore: NavigationRouterStoreProtocol? = nil,
+         userIndicatorPresenter: UserIndicatorTypePresenterProtocol,
          session: MXSession,
+         parentSpaceId: String?,
          roomId: String,
          eventId: String? = nil,
          threadId: String? = nil,
+         showSettingsInitially: Bool,
          displayConfiguration: RoomDisplayConfiguration = .default) {
         
         self.init(navigationRouter: navigationRouter,
                   navigationRouterStore: navigationRouterStore,
+                  userIndicatorPresenter: userIndicatorPresenter,
                   session: session,
                   roomId: roomId,
+                  parentSpaceId: parentSpaceId,
                   eventId: eventId,
                   threadId: threadId,
                   displayConfiguration: displayConfiguration,
-                  previewData: nil)
+                  previewData: nil,
+                  showSettingsInitially: showSettingsInitially)
     }
     
     /// Init to present a room preview
     init(navigationRouter: NavigationRouterType? = nil,
          navigationRouterStore: NavigationRouterStoreProtocol? = nil,
+         userIndicatorPresenter: UserIndicatorTypePresenterProtocol,
+         parentSpaceId: String?,
          previewData: RoomPreviewData) {
         
         self.init(navigationRouter: navigationRouter,
                   navigationRouterStore: navigationRouterStore,
+                  userIndicatorPresenter: userIndicatorPresenter,
                   session: previewData.mxSession,
                   roomId: previewData.roomId,
+                  parentSpaceId: parentSpaceId,
                   eventId: nil,
                   threadId: nil,
                   displayConfiguration: .default,
-                  previewData: previewData)
+                  previewData: previewData,
+                  showSettingsInitially: false)
     }
 }

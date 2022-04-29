@@ -60,7 +60,7 @@ final class AuthenticationErrorPresentableMaker {
         if let localizedFailureReason = nsError.localizedFailureReason {
             title = localizedFailureReason
         } else {
-            title = Bundle.mxk_localizedString(forKey: "login_error_title")
+            title = VectorL10n.loginErrorTitle
         }
         
         let dict = nsError.userInfo
@@ -70,19 +70,19 @@ final class AuthenticationErrorPresentableMaker {
             if let errCode = dict[kMXErrorCodeKey] as? String {
                 switch errCode {
                 case kMXErrCodeStringForbidden:
-                    message = Bundle.mxk_localizedString(forKey: "login_error_forbidden")
+                    message = VectorL10n.loginErrorForbidden
                 case kMXErrCodeStringUnknownToken:
-                    message = Bundle.mxk_localizedString(forKey: "login_error_unknown_token")
+                    message = VectorL10n.loginErrorUnknownToken
                 case kMXErrCodeStringBadJSON:
-                    message = Bundle.mxk_localizedString(forKey: "login_error_bad_json")
+                    message = VectorL10n.loginErrorBadJson
                 case kMXErrCodeStringNotJSON:
-                    message = Bundle.mxk_localizedString(forKey: "login_error_bad_json")
+                    message = VectorL10n.loginErrorBadJson
                 case kMXErrCodeStringLimitExceeded:
                     message = TchapL10n.authenticationErrorLimitExceeded
                 case kMXErrCodeStringUserInUse:
-                    message = Bundle.mxk_localizedString(forKey: "login_error_user_in_use")
+                    message = VectorL10n.loginErrorUserInUse
                 case kMXErrCodeStringLoginEmailURLNotYet:
-                    message = Bundle.mxk_localizedString(forKey: "login_error_login_email_not_yet")
+                    message = VectorL10n.loginErrorLoginEmailNotYet
                 case kMXErrCodeStringThreePIDInUse:
                     message = TchapL10n.authenticationErrorEmailInUse
                 case kMXErrCodeStringPasswordTooShort:
@@ -118,7 +118,7 @@ final class AuthenticationErrorPresentableMaker {
     
     private func restClientBuilderErrorPresentable(from restClientBuilderError: RestClientBuilderError) -> ErrorPresentable {
         
-        let title: String = Bundle.mxk_localizedString(forKey: "login_error_title")
+        let title: String = VectorL10n.loginErrorTitle
         let message: String
         
         switch restClientBuilderError {
@@ -133,12 +133,12 @@ final class AuthenticationErrorPresentableMaker {
     
     private func authenticationServiceErrorPresentable(from authenticationServiceError: AuthenticationServiceError) -> ErrorPresentable {
         
-        let title: String = Bundle.mxk_localizedString(forKey: "login_error_title")
+        let title: String = VectorL10n.loginErrorTitle
         let message: String
         
         switch authenticationServiceError {
         case .userAlreadyLoggedIn:
-            message = Bundle.mxk_localizedString(forKey: "login_error_already_logged_in")
+            message = VectorL10n.loginErrorAlreadyLoggedIn
         default:
             message = TchapL10n.errorMessageDefault
         }
@@ -148,12 +148,12 @@ final class AuthenticationErrorPresentableMaker {
     
     private func registrationServiceErrorPresentable(from authenticationServiceError: RegistrationServiceError) -> ErrorPresentable {
         
-        let title: String = Bundle.mxk_localizedString(forKey: "login_error_title")
+        let title: String = VectorL10n.loginErrorTitle
         let message: String
         
         switch authenticationServiceError {
         case .userAlreadyLoggedIn:
-            message = Bundle.mxk_localizedString(forKey: "login_error_already_logged_in")
+            message = VectorL10n.loginErrorAlreadyLoggedIn
         case .invalidPassword(let reason):
             switch reason {
             case .tooShort(let minLength):
@@ -186,7 +186,7 @@ final class AuthenticationErrorPresentableMaker {
     
     private func resourceLimitExceededErrorPresentable(from errorDict: [AnyHashable: Any]) -> ErrorPresentable {
         
-        let title: String = Bundle.mxk_localizedString(forKey: "login_error_resource_limit_exceeded_title")
+        let title: String = VectorL10n.loginErrorResourceLimitExceededTitle
         var message = ""
         
         // Parse error data
@@ -195,12 +195,12 @@ final class AuthenticationErrorPresentableMaker {
         // Build the message content
         
         if limitType == kMXErrorResourceLimitExceededLimitTypeMonthlyActiveUserValue {
-            message += Bundle.mxk_localizedString(forKey: "login_error_resource_limit_exceeded_message_monthly_active_user")
+            message += VectorL10n.loginErrorResourceLimitExceededMessageMonthlyActiveUser
         } else {
-            message += Bundle.mxk_localizedString(forKey: "login_error_resource_limit_exceeded_message_default")
+            message += VectorL10n.loginErrorResourceLimitExceededMessageDefault
         }
         
-        message += Bundle.mxk_localizedString(forKey: "login_error_resource_limit_exceeded_message_contact")
+        message += VectorL10n.loginErrorResourceLimitExceededMessageContact
         
         return ErrorPresentableImpl(title: title, message: message)
     }

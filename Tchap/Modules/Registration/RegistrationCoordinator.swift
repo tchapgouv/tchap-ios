@@ -137,7 +137,7 @@ final class RegistrationCoordinator: RegistrationCoordinatorType {
                     })
                     alert.addAction(okAction)
                     
-                    let cancelTitle = Bundle.mxk_localizedString(forKey: "cancel")
+                    let cancelTitle = VectorL10n.cancel
                     let cancelAction = UIAlertAction(title: cancelTitle, style: .cancel, handler: { action in
                         removeActivityIndicator()
                     })

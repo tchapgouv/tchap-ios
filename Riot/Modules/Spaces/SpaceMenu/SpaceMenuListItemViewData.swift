@@ -21,7 +21,11 @@ enum SpaceMenuListItemAction {
     case showAllRoomsInHomeSpace
     case exploreSpaceMembers
     case exploreSpaceRooms
+    case addRoom
+    case addSpace
+    case settings
     case leaveSpace
+    case invite
 }
 
 /// Style of the `SpaceMenuListViewCell`
@@ -42,6 +46,8 @@ class SpaceMenuListItemViewData {
     let style: SpaceMenuListItemStyle
     let title: String?
     let icon: UIImage?
+    let isBeta: Bool
+    
     /// Any value related to the type of data (e.g. `Bool` for `boolean` style, `nil` for `normal` and `destructive` style)
     var value: Any? {
         didSet {
@@ -50,11 +56,12 @@ class SpaceMenuListItemViewData {
     }
     weak var delegate: SpaceMenuListItemViewDataDelegate?
     
-    init(action: SpaceMenuListItemAction, style: SpaceMenuListItemStyle, title: String?, icon: UIImage?, value: Any?) {
+    init(action: SpaceMenuListItemAction, style: SpaceMenuListItemStyle, title: String?, icon: UIImage?, value: Any?, isBeta: Bool = false) {
         self.action = action
         self.style = style
         self.title = title
         self.icon = icon
         self.value = value
+        self.isBeta = isBeta
     }
 }

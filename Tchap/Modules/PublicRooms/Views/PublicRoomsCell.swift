@@ -75,9 +75,9 @@ import Reusable
         // Set member count
         let membersLabel: String!
         if publicRoom.numJoinedMembers > 1 {
-            membersLabel = String(format: Bundle.mxk_localizedString(forKey: "num_members_other"), String(publicRoom.numJoinedMembers))
+            membersLabel = VectorL10n.numMembersOther(String(publicRoom.numJoinedMembers))
         } else if publicRoom.numJoinedMembers == 1 {
-            membersLabel = String(format: Bundle.mxk_localizedString(forKey: "num_members_one"), "1")
+            membersLabel = VectorL10n.numMembersOne("1")
         } else {
             membersLabel = nil
         }
@@ -85,7 +85,7 @@ import Reusable
     }
     
     private static func homeServerDisplayName(from publicRoomId: String) -> String? {
-        guard let matrixIDComponents = RoomIDComponents(matrixID: publicRoomId) else {
+        guard let matrixIDComponents = RoomIdComponents(matrixID: publicRoomId) else {
             return nil
         }
         

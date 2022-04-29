@@ -16,10 +16,9 @@
 
 #import "SegmentedViewController.h"
 
-#import "ContactsViewController.h"
-
 @class Contact;
 @class RoomParticipantsViewController;
+@class AnalyticsScreenTracker;
 
 /**
  `RoomParticipantsViewController` delegate.
@@ -89,17 +88,28 @@
 @property (nonatomic) MXRoom *mxRoom;
 
 /**
+ The ID of the parent space. `nil` for home space
+ */
+@property (nonatomic) NSString *parentSpaceId;
+
+/**
  Enable mention option in member details view. NO by default
  */
 @property (nonatomic) BOOL enableMention;
 
 @property (nonatomic) BOOL showCancelBarButtonItem;
 @property (nonatomic) BOOL showParticipantCustomAccessoryView;
+@property (nonatomic) BOOL showInviteUserFab;
 
 /**
  The delegate for the view controller.
  */
 @property (nonatomic, weak) id<RoomParticipantsViewControllerDelegate> delegate;
+
+/**
+ The screen timer used for analytics if they've been enabled. The default value is nil.
+ */
+//@property (nonatomic) AnalyticsScreenTracker *screenTracker;
 
 /**
  Returns the `UINib` object initialized for a `RoomParticipantsViewController`.
@@ -115,7 +125,7 @@
  @discussion This is the designated initializer for programmatic instantiation.
  @return An initialized `RoomParticipantsViewController` object if successful, `nil` otherwise.
  */
-+ (instancetype)instantiate;
++ (instancetype)roomParticipantsViewController;
 
 @end
 

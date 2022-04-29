@@ -18,6 +18,8 @@
 
 import Foundation
 import UIKit
+import CommonKit
+import MatrixSDK
 
 final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
 
@@ -27,8 +29,9 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
 
     private let parameters: RoomCoordinatorParameters
     private let roomViewController: RoomViewController
-    private let activityIndicatorPresenter: ActivityIndicatorPresenterType
+    private let userIndicatorStore: UserIndicatorStore
     private var selectedEventId: String?
+    private var loadingCancel: UserIndicatorCancel?
     
     private var roomDataSourceManager: MXKRoomDataSourceManager {
         return MXKRoomDataSourceManager.sharedManager(forMatrixSession: self.parameters.session)
@@ -71,15 +74,19 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
     init(parameters: RoomCoordinatorParameters) {
         self.parameters = parameters
         self.selectedEventId = parameters.eventId
-
+        self.userIndicatorStore = UserIndicatorStore(presenter: parameters.userIndicatorPresenter)
+        
 //        if let threadId = parameters.threadId {
 //            self.roomViewController = ThreadViewController.instantiate(withThreadId: threadId,
 //                                                                       configuration: parameters.displayConfiguration)
 //        } else {
             self.roomViewController = RoomViewController.instantiate(with: parameters.displayConfiguration)
 //        }
-        self.activityIndicatorPresenter = ActivityIndicatorPresenter()
+        self.roomViewController.userIndicatorStore = userIndicatorStore
+        self.roomViewController.showSettingsInitially = parameters.showSettingsInitially
         
+        self.roomViewController.parentSpaceId = parameters.parentSpaceId
+
         if #available(iOS 14, *) {
 //            TimelinePollProvider.shared.session = parameters.session
         }
@@ -149,7 +156,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
     private func loadRoom(withId roomId: String, completion: (() -> Void)?) {
 
         // Present activity indicator when retrieving roomDataSource for given room ID
-        self.activityIndicatorPresenter.presentActivityIndicator(on: roomViewController.view, animated: false)
+        startLoading()
 
         let roomDataSourceManager: MXKRoomDataSourceManager = MXKRoomDataSourceManager.sharedManager(forMatrixSession: self.parameters.session)
 
@@ -160,7 +167,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
                 return
             }
 
-            self.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
+            self.stopLoading()
 
             if let roomDataSource = roomDataSource {
                 self.roomViewController.displayRoom(roomDataSource)
@@ -173,7 +180,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
     private func loadRoom(withId roomId: String, andEventId eventId: String, completion: (() -> Void)?) {
 
         // Present activity indicator when retrieving roomDataSource for given room ID
-        self.activityIndicatorPresenter.presentActivityIndicator(on: roomViewController.view, animated: false)
+        startLoading()
 
         // Open the room on the requested event
         RoomDataSource.load(withRoomId: roomId,
@@ -185,7 +192,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
                 return
             }
 
-            self.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
+            self.stopLoading()
 
             guard let roomDataSource = dataSource as? RoomDataSource else {
                 return
@@ -204,7 +211,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
     private func loadRoom(withId roomId: String, andThreadId threadId: String, eventId: String?, completion: (() -> Void)?) {
         
         // Present activity indicator when retrieving roomDataSource for given room ID
-//        self.activityIndicatorPresenter.presentActivityIndicator(on: roomViewController.view, animated: false)
+//        startLoading()
 //        
 //        // Open the thread on the requested event
 //        ThreadDataSource.load(withRoomId: roomId,
@@ -216,7 +223,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
 //                return
 //            }
 //            
-//            self.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
+//            self.stopLoading()
 //            
 //            guard let threadDataSource = dataSource as? ThreadDataSource else {
 //                return
@@ -241,7 +248,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
     }
 
     private func startLocationCoordinatorWithEvent(_ event: MXEvent? = nil, bubbleData: MXKRoomBubbleCellDataStoring? = nil) {
-        // TCHAP: Feature unavailable
+        // Tchap: Feature disabled
 //        guard #available(iOS 14.0, *) else {
             return
 //        }
@@ -265,14 +272,17 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
 //        }
 //
 //        var location: CLLocationCoordinate2D?
+//        var coordinateType: MXEventAssetType = .user
 //        if let locationContent = event?.location {
 //            location = CLLocationCoordinate2D(latitude: locationContent.latitude, longitude: locationContent.longitude)
+//            coordinateType = locationContent.assetType
 //        }
 //
 //        let parameters = LocationSharingCoordinatorParameters(roomDataSource: roomViewController.roomDataSource,
 //                                                              mediaManager: mediaManager,
 //                                                              avatarData: avatarData,
-//                                                              location: location)
+//                                                              location: location,
+//                                                              coordinateType: coordinateType)
 //
 //        let coordinator = LocationSharingCoordinator(parameters: parameters)
 //
@@ -292,7 +302,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
     }
     
     private func startEditPollCoordinator(startEvent: MXEvent? = nil) {
-        // TCHAP: Feature unavailable
+        // Tchap: Feature unavailable
 //        guard #available(iOS 14.0, *) else {
             return
 //        }
@@ -313,6 +323,24 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
 //
 //        navigationRouter?.present(coordinator, animated: true)
 //        coordinator.start()
+    }
+    
+    private func startLoading() {
+        // The `RoomViewController` does not currently ensure that `startLoading` is matched by corresponding `stopLoading` and may
+        // thus trigger start of loading multiple times. To solve for this we will hold onto the cancellation reference of the
+        // last loading request, and if one already exists, we will not present a new indicator.
+        guard loadingCancel == nil else {
+            return
+        }
+        
+        MXLog.debug("[RoomCoordinator] Present loading indicator in a room: \(roomId ?? "unknown")")
+        loadingCancel = userIndicatorStore.present(type: .loading(label: VectorL10n.homeSyncing, isInteractionBlocking: false))
+    }
+    
+    private func stopLoading() {
+        MXLog.debug("[RoomCoordinator] Dismiss loading indicator in a room: \(roomId ?? "unknown")")
+        loadingCancel?()
+        loadingCancel = nil
     }
 }
 
@@ -346,6 +374,10 @@ extension RoomCoordinator: RoomViewControllerDelegate {
         
     func roomViewController(_ roomViewController: RoomViewController, showRoomWithId roomID: String, eventId eventID: String?) {
         self.delegate?.roomCoordinator(self, didSelectRoomWithId: roomID, eventId: eventID)
+    }
+    
+    func roomViewController(_ roomViewController: RoomViewController, didReplaceRoomWithReplacementId roomID: String) {
+        self.delegate?.roomCoordinator(self, didReplaceRoomWithReplacementId: roomID)
     }
     
     func roomViewController(_ roomViewController: RoomViewController, showMemberDetails roomMember: MXRoomMember) {
@@ -394,7 +426,7 @@ extension RoomCoordinator: RoomViewControllerDelegate {
             return nil
         }
         
-        // Location Sharing is disabled in Tchap
+        // Tchap: Location Sharing is disabled in Tchap
         return nil// LocationSharingCoordinator.shareLocationActivityController(CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude))
     }
     
@@ -425,4 +457,35 @@ extension RoomCoordinator: RoomViewControllerDelegate {
     func roomViewController(_ roomViewController: RoomViewController, didRequestEditForPollWithStart startEvent: MXEvent) {
 //        startEditPollCoordinator(startEvent: startEvent)
     }
+    
+    func roomViewControllerDidStartLoading(_ roomViewController: RoomViewController) {
+        startLoading()
+    }
+    
+    func roomViewControllerDidStopLoading(_ roomViewController: RoomViewController) {
+        stopLoading()
+    }
+    
+    func roomViewControllerDidTapLiveLocationSharingBanner(_ roomViewController: RoomViewController) {
+        // TODO:
+    }
+    
+    func roomViewControllerDidStopLiveLocationSharing(_ roomViewController: RoomViewController) {
+        // TODO:
+    }
+    
+    // Tchap: Disable Threads
+//    func threadsCoordinator(for roomViewController: RoomViewController, threadId: String?) -> ThreadsCoordinatorBridgePresenter? {
+//        guard let session = mxSession, let roomId = roomId else {
+//            MXLog.error("[RoomCoordinator] Cannot create threads coordinator for room \(roomId ?? "")")
+//            return nil
+//        }
+//        
+//        return ThreadsCoordinatorBridgePresenter(
+//            session: session,
+//            roomId: roomId,
+//            threadId: threadId,
+//            userIndicatorPresenter: parameters.userIndicatorPresenter
+//        )
+//    }
 }

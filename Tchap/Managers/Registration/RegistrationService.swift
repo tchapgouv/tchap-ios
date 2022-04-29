@@ -53,7 +53,7 @@ final class RegistrationService: RegistrationServiceType {
                 if let sessionId = authenticationSession.session {
                     completion(MXResponse.success(sessionId))
                 } else {
-                    let error = NSError(domain: MXKAuthErrorDomain, code: 0, userInfo: [NSLocalizedDescriptionKey: Bundle.mxk_localizedString(forKey: "not_supported_yet")])
+                    let error = NSError(domain: MXKAuthErrorDomain, code: 0, userInfo: [NSLocalizedDescriptionKey: VectorL10n.notSupportedYet])
                     completion(MXResponse.failure(error))
                 }
                 
@@ -225,7 +225,7 @@ final class RegistrationService: RegistrationServiceType {
             case .success(let jsonResponse):
                 
                 guard let loginResponse = MXLoginResponse(fromJSON: jsonResponse), loginResponse.userId != nil, loginResponse.accessToken != nil else {
-                    let error = NSError(domain: MXKAuthErrorDomain, code: 0, userInfo: [NSLocalizedDescriptionKey: Bundle.mxk_localizedString(forKey: "not_supported_yet")])
+                    let error = NSError(domain: MXKAuthErrorDomain, code: 0, userInfo: [NSLocalizedDescriptionKey: VectorL10n.notSupportedYet])
                     completion(MXResponse.failure(error))
                     return
                 }

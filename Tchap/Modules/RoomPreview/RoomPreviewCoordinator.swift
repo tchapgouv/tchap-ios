@@ -164,7 +164,7 @@ final class RoomPreviewCoordinator: NSObject, RoomPreviewCoordinatorType {
     }
     
     private func joinRoomErrorPresentable(from error: Error) -> ErrorPresentable {
-        let errorTitle: String = Bundle.mxk_localizedString(forKey: "room_error_join_failed_title")
+        let errorTitle: String = VectorL10n.roomErrorJoinFailedTitle
         let errorMessage: String
         
         let nsError = error as NSError
@@ -177,7 +177,7 @@ final class RoomPreviewCoordinator: NSObject, RoomPreviewCoordinatorType {
                 if message == "No known servers" {
                     // minging kludge until https://matrix.org/jira/browse/SYN-678 is fixed
                     // 'Error when trying to join an empty room should be more explicit'
-                    errorMessage = Bundle.mxk_localizedString(forKey: "room_error_join_failed_empty_room")
+                    errorMessage = VectorL10n.roomErrorJoinFailedEmptyRoom
                 } else {
                     errorMessage = TchapL10n.tchapRoomAccessUnauthorized
                 }
@@ -221,6 +221,11 @@ final class RoomPreviewCoordinator: NSObject, RoomPreviewCoordinatorType {
 // MARK: - RoomViewControllerDelegate
 extension RoomPreviewCoordinator: RoomViewControllerDelegate {
     func roomViewController(_ roomViewController: RoomViewController, showRoomWithId roomID: String, eventId eventID: String?) {
+        //
+    }
+    
+    func roomViewController(_ roomViewController: RoomViewController,
+                            didReplaceRoomWithReplacementId roomID: String) {
         //
     }
     
@@ -283,4 +288,25 @@ extension RoomPreviewCoordinator: RoomViewControllerDelegate {
     func roomViewController(_ roomViewController: RoomViewController, locationShareActivityViewControllerFor event: MXEvent) -> UIActivityViewController? {
         return nil
     }
+    
+    func roomViewControllerDidStartLoading(_ roomViewController: RoomViewController) {
+        //
+    }
+
+    func roomViewControllerDidStopLoading(_ roomViewController: RoomViewController) {
+        //
+    }
+
+    func roomViewControllerDidStopLiveLocationSharing(_ roomViewController: RoomViewController) {
+        //
+    }
+
+    func roomViewControllerDidTapLiveLocationSharingBanner(_ roomViewController: RoomViewController) {
+        //
+    }
+
+    // Tchap: Disable Threads
+//    func threadsCoordinator(for roomViewController: RoomViewController, threadId: String?) -> ThreadsCoordinatorBridgePresenter? {
+//        return nil
+//    }
 }

@@ -30,7 +30,7 @@ final class ContactsCoordinator: NSObject, ContactsCoordinatorType {
     private let router: NavigationRouterType
     private let contactsViewController: ContactsViewController
     private let session: MXSession
-    private let contactsDataSource: ContactsDataSource
+    private let contactsDataSource: ContactsDataSourceTchap
     
     // MARK: Public
     
@@ -46,7 +46,7 @@ final class ContactsCoordinator: NSObject, ContactsCoordinatorType {
         
         self.contactsViewController = ContactsViewController.instantiate()
         
-        self.contactsDataSource = ContactsDataSource(matrixSession: self.session)
+        self.contactsDataSource = ContactsDataSourceTchap(matrixSession: self.session)
         self.contactsDataSource.finalizeInitialization()
         self.contactsDataSource.contactsFilter = ContactsDataSourceTchapFilterTchapUsersOnly
         

@@ -34,6 +34,8 @@
 #import "MXKSendReplyEventStringLocalizer.h"
 #import "MXKSlashCommands.h"
 
+#import "GeneratedInterface-Swift.h"
+
 const BOOL USE_THREAD_TIMELINE = YES;
 
 #pragma mark - Constant definitions
@@ -1009,6 +1011,11 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
         liveEventsListener = [_timeline listenToEventsOfTypes:liveEventTypesFilterForMessages onEvent:^(MXEvent *event, MXTimelineDirection direction, MXRoomState *roomState) {
             
             MXStrongifyAndReturnIfNil(self);
+
+            if (event.eventType == MXEventTypeRoomMember && event.isUserProfileChange)
+            {
+                [self refreshProfilesIfNeeded];
+            }
             
             if (MXTimelineDirectionForwards == direction)
             {
@@ -1068,7 +1075,10 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     }
 
     // Register a listener to handle redaction which can affect live and past timelines
+    MXWeakify(self);
     redactionListener = [_timeline listenToEventsOfTypes:@[kMXEventTypeStringRoomRedaction] onEvent:^(MXEvent *redactionEvent, MXTimelineDirection direction, MXRoomState *roomState) {
+
+        MXStrongifyAndReturnIfNil(self);
 
         // Consider only live redaction events
         if (direction == MXTimelineDirectionForwards)
@@ -1870,13 +1880,11 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     }
 }
 
-- (void)sendReplyToEventWithId:(NSString*)eventIdToReply
-               withTextMessage:(NSString *)text
-                       success:(void (^)(NSString *))success
-                       failure:(void (^)(NSError *))failure
+- (void)sendReplyToEvent:(MXEvent*)eventToReply
+         withTextMessage:(NSString *)text
+                 success:(void (^)(NSString *))success
+                 failure:(void (^)(NSError *))failure
 {
-    MXEvent *eventToReply = [self eventWithEventId:eventIdToReply];
-    
     __block MXEvent *localEchoEvent = nil;
     
     NSString *sanitizedText = [self sanitizedMessageText:text];
@@ -1884,7 +1892,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     
     id<MXSendReplyEventStringLocalizerProtocol> stringLocalizer = [MXKSendReplyEventStringLocalizer new];
     
-    [_room sendReplyToEvent:eventToReply withTextMessage:sanitizedText formattedTextMessage:html stringLocalizer:stringLocalizer localEcho:&localEchoEvent success:success failure:failure];
+    [_room sendReplyToEvent:eventToReply withTextMessage:sanitizedText formattedTextMessage:html stringLocalizer:stringLocalizer threadId:self.threadId localEcho:&localEchoEvent success:success failure:failure];
     
     if (localEchoEvent)
     {
@@ -2096,6 +2104,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 - (void)sendLocationWithLatitude:(double)latitude
                        longitude:(double)longitude
                      description:(NSString *)description
+                  coordinateType:(MXEventAssetType)coordinateType
                          success:(void (^)(NSString *))success
                          failure:(void (^)(NSError *))failure
 {
@@ -2107,6 +2116,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
                         description:description
                            threadId:self.threadId
                           localEcho:&localEchoEvent
+                          assetType:coordinateType
                             success:success failure:failure];
     
     if (localEchoEvent)
@@ -4284,13 +4294,11 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     return hasChanged;
 }
 
-- (void)replaceTextMessageForEventWithId:(NSString*)eventId
-                         withTextMessage:(NSString *)text                           
-                                 success:(void (^)(NSString *))success
-                                 failure:(void (^)(NSError *))failure
+- (void)replaceTextMessageForEvent:(MXEvent*)event
+                   withTextMessage:(NSString *)text
+                           success:(void (^)(NSString *))success
+                           failure:(void (^)(NSError *))failure
 {
-    MXEvent *event = [self eventWithEventId:eventId];
-    
     NSString *sanitizedText = [self sanitizedMessageText:text];
     NSString *formattedText = [self htmlMessageFromSanitizedText:sanitizedText];
     
@@ -4323,6 +4331,25 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 {
     //  update secondary room id
     self.secondaryRoomId = [self.mxSession virtualRoomOf:self.roomId];
+}
+
+#pragma mark - Use Only Latest Profiles
+
+/**
+ Refreshes the avatars and display names if needed. This has no effect
+ if `roomScreenUseOnlyLatestUserAvatarAndName` is disabled.
+ */
+- (void)refreshProfilesIfNeeded
+{
+    if (RiotSettings.shared.roomScreenUseOnlyLatestUserAvatarAndName)
+    {
+        @synchronized (bubbles) {
+            for (id<MXKRoomBubbleCellDataStoring> bubble in bubbles)
+            {
+                [bubble setRoomState:self.roomState];
+            }
+        }
+    }
 }
 
 @end

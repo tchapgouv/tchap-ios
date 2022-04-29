@@ -119,6 +119,8 @@ final class BuildSettings: NSObject {
     // Tchap-Web instance for the app
     static let applicationWebAppUrlString = "https://www.tchap.gouv.fr"
     
+    /// Whether to allow the app to use a right to left layout or force left to right for all languages
+    static let disableRightToLeftLayout = true
     
     // MARK: - Server configuration
     // Tchap sygnal server url
@@ -137,11 +139,12 @@ final class BuildSettings: NSObject {
         "www.tchap.gouv.fr"
     ]
     static let permalinkPrefix = "https://tchap.gouv.fr"
+    static let clientPermalinkBaseUrl: String? = nil
     
     
     // MARK: - VoIP
     static var allowVoIPUsage: Bool {
-        #if canImport(JitsiMeet)
+        #if canImport(JitsiMeetSDK)
         return true
         #else
         return false
@@ -175,12 +178,38 @@ final class BuildSettings: NSObject {
     static let roomsAllowToJoinPublicRooms: Bool = true
     
     // MARK: - Analytics
-    static let analyticsServerUrl: URL? = URL(string: "")
-    static let analyticsAppId: String? = nil
-    static let analyticsHost: String? = nil
-    static let analyticsKey: String? = nil
+        
+    /// A type that represents how to set up the analytics module in the app.
+    ///
+    /// **Note:** Analytics are disabled by default for forks.
+    /// If you are maintaining a fork, set custom configurations.
+    struct AnalyticsConfiguration {
+        /// Whether or not analytics should be enabled.
+        let isEnabled: Bool
+        /// The host to use for PostHog analytics.
+        let host: String
+        /// The public key for submitting analytics.
+        let apiKey: String
+        /// The URL to open with more information about analytics terms.
+        let termsURL: URL
+    }
+    
+    #if DEBUG
+    /// The configuration to use for analytics during development. Set `isEnabled` to false to disable analytics in debug builds.
+    static let analyticsConfiguration = AnalyticsConfiguration(isEnabled: false,
+                                                               host: "",
+                                                               apiKey: "",
+                                                               termsURL: URL(string: "")!)
+    #else
+    /// The configuration to use for analytics. Set `isEnabled` to false to disable analytics.
+    static let analyticsConfiguration = AnalyticsConfiguration(isEnabled: false,
+                                                               host: "",
+                                                               apiKey: "",
+                                                               termsURL: URL(string: "")!)
+    #endif
     
     // MARK: - Bug report
+    static let bugReportEndpointUrlString = ""
     static let bugReportDefaultHost = "agent.tchap.gouv.fr"
     static let bugReportEndpointUrlSuffix = "/bugreports"
     // Use the name allocated by the bug report server
@@ -198,8 +227,10 @@ final class BuildSettings: NSObject {
         "https://scalar-staging.vector.im/api",
         "https://scalar-staging.riot.im/scalar/api"
     ]
-    // Jitsi server used outside integrations to create conference calls from the call button in the timeline
-    static let jitsiServerUrl: URL = URL(string: "https://jitsi.riot.im")!
+    // Jitsi server used outside integrations to create conference calls from the call button in the timeline.
+    // Setting this to nil effectively disables Jitsi conference calls (given that there is no wellknown override).
+    // Note: this will not remove the conference call button, use roomScreenAllowVoIPForNonDirectRoom setting.
+    static let jitsiServerUrl: URL? = URL(string: "https://jitsi.riot.im")
 
     
     // MARK: - Features
@@ -261,6 +292,7 @@ final class BuildSettings: NSObject {
     static let settingsScreenShowThreepidExplanatory: Bool = true
     static let settingsScreenShowDiscoverySettings: Bool = true
     static let settingsScreenAllowIdentityServerConfig: Bool = true
+    static let settingsScreenShowConfirmMediaSize: Bool = true
     static let settingsScreenShowAdvancedSettings: Bool = true
     static let settingsScreenShowLabSettings: Bool = true
     static let settingsScreenAllowChangingRageshakeSettings: Bool = true
@@ -268,7 +300,6 @@ final class BuildSettings: NSObject {
     static let settingsScreenAllowBugReportingManually: Bool = true
     static let settingsScreenAllowDeactivatingAccount: Bool = true
     static let settingsScreenShowChangePassword: Bool = true
-    static let settingsScreenShowInviteFriends: Bool = true
     static let settingsScreenShowEnableStunServerFallback: Bool = true
     static let settingsScreenShowNotificationDecodedContentOption: Bool = true
     static let settingsScreenShowNsfwRoomsOption: Bool = true
@@ -279,9 +310,15 @@ final class BuildSettings: NSObject {
     static let settingsSecurityScreenShowCryptographyInfo: Bool = true
     static let settingsSecurityScreenShowCryptographyExport: Bool = true
     static let settingsSecurityScreenShowAdvancedUnverifiedDevices: Bool = true
+    /// A setting to enable the presence configuration settings section.
+    static let settingsScreenPresenceAllowConfiguration: Bool = false
 
     // MARK: - Timeline settings
-    static let roomInputToolbarCompressionMode = MXKRoomInputToolbarCompressionModePrompt
+    static let roomInputToolbarCompressionMode: MediaCompressionMode = .prompt
+    
+    enum MediaCompressionMode {
+        case prompt, small, medium, large, none
+    }
     
     // MARK: - Room Creation Screen
     
@@ -305,6 +342,10 @@ final class BuildSettings: NSObject {
     static var isRoomScreenEnableMessageBubblesByDefault: Bool {
         return self.roomScreenTimelineDefaultStyleIdentifier == .bubble
     }
+    static let roomScreenUseOnlyLatestUserAvatarAndName: Bool = false
+
+    /// Allow split view detail view stacking
+    static let allowSplitViewDetailsScreenStacking: Bool = true
     
     // MARK: - Room Contextual Menu
 
@@ -351,9 +392,16 @@ final class BuildSettings: NSObject {
     
     // MARK: - Authentication Screen
     static let authScreenShowRegister = true
-    static let authScreenShowPhoneNumber = true
+    static let authScreenShowPhoneNumber = false
     static let authScreenShowForgotPassword = true
-    static let authScreenShowCustomServerOptions = true
+    static let authScreenShowCustomServerOptions = false
+    static let authScreenShowSocialLoginSection = false
+        
+    // MARK: - Authentication Options
+    static let authEnableRefreshTokens = false
+    
+    // MARK: - Onboarding
+    static let onboardingShowAccountPersonalization = false
     
     // MARK: - Unified Search
     static let unifiedSearchScreenShowPublicDirectory = true
@@ -361,13 +409,17 @@ final class BuildSettings: NSObject {
     // MARK: - Secrets Recovery
     static let secretsRecoveryAllowReset = true
     
+    // MARK: - UISI Autoreporting
+    static let cryptoUISIAutoReportingEnabled = false
+    
     // MARK: - Polls
+    
     static var pollsEnabled: Bool {
         guard #available(iOS 14, *) else {
             return false
         }
         
-        return false//true : Not available on Tchap
+        return false//true : Currently disabled in Tchap.
     }
     
     // MARK: - Location Sharing
@@ -379,6 +431,19 @@ final class BuildSettings: NSObject {
             return false
         }
         
-        return false//true : Not available on Tchap
+        return false//true : Currently disabled in Tchap.
+    }
+    
+    static var liveLocationSharingEnabled: Bool {
+        guard #available(iOS 14, *) else {
+            return false
+        }
+        
+        guard self.locationSharingEnabled else {
+            return false
+        }
+        
+        // Do not enable live location sharing atm
+        return false
     }
 }

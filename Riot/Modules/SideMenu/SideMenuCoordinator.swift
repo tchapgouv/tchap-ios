@@ -64,6 +64,9 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
     
 //    private var exploreRoomCoordinator: ExploreRoomCoordinator?
 //    private var membersCoordinator: SpaceMembersCoordinator?
+//    private var createSpaceCoordinator: SpaceCreationCoordinator?
+//    private var createRoomCoordinator: CreateRoomCoordinator?
+//    private var spaceSettingsCoordinator: Coordinator?
 
     // MARK: Public
 
@@ -258,6 +261,106 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
 //        self.spaceDetailPresenter.present(forSpaceWithId: spaceId, from: self.sideMenuViewController, sourceView: sourceView, session: session, animated: true)
     }
     
+    @available(iOS 14.0, *)
+    private func showCreateSpace() {
+        // Tchap: Disable Spaces
+//        guard let session = self.parameters.userSessionsService.mainUserSession?.matrixSession else {
+//            return
+//        }
+//
+//        let coordinator = SpaceCreationCoordinator(parameters: SpaceCreationCoordinatorParameters(session: session))
+//        let presentable = coordinator.toPresentable()
+//        presentable.presentationController?.delegate = self
+//        self.sideMenuViewController.present(presentable, animated: true, completion: nil)
+//        coordinator.callback = { [weak self] result in
+//            guard let self = self else {
+//                return
+//            }
+//
+//            self.createSpaceCoordinator?.toPresentable().dismiss(animated: true) {
+//                self.createSpaceCoordinator = nil
+//                switch result {
+//                case .cancel:
+//                    break
+//                case .done(let spaceId):
+//                    self.select(spaceWithId: spaceId)
+//                }
+//            }
+//        }
+//        coordinator.start()
+//
+//        self.createSpaceCoordinator = coordinator
+    }
+    
+    private func showAddRoom(spaceId: String, session: MXSession) {
+        // Tchap: Disable Spaces
+//        let space = session.spaceService.getSpace(withId: spaceId)
+//        let createRoomCoordinator = CreateRoomCoordinator(parameters: CreateRoomCoordinatorParameter(session: session, parentSpace: space))
+//        createRoomCoordinator.delegate = self
+//        let presentable = createRoomCoordinator.toPresentable()
+//        presentable.presentationController?.delegate = self
+//        toPresentable().present(presentable, animated: true, completion: nil)
+//        createRoomCoordinator.start()
+//        self.createRoomCoordinator = createRoomCoordinator
+    }
+    
+    @available(iOS 14.0, *)
+    private func showSpaceSettings(spaceId: String, session: MXSession) {
+        // Tchap: Disable Spaces
+//        let coordinator = SpaceSettingsModalCoordinator(parameters: SpaceSettingsModalCoordinatorParameters(session: session, spaceId: spaceId))
+//        coordinator.callback = { [weak self] result in
+//            guard let self = self else { return }
+//
+//            coordinator.toPresentable().dismiss(animated: true) {
+//                self.spaceSettingsCoordinator = nil
+//                self.resetExploringSpaceIfNeeded()
+//            }
+//        }
+//
+//        let presentable = coordinator.toPresentable()
+//        presentable.presentationController?.delegate = self
+//        toPresentable().present(presentable, animated: true, completion: nil)
+//        coordinator.start()
+//        self.spaceSettingsCoordinator = coordinator
+    }
+    
+    func showSpaceInvite(spaceId: String, session: MXSession) {
+        // Tchap: Disable Spaces
+//        guard let space = session.spaceService.getSpace(withId: spaceId), let spaceRoom = space.room else {
+//            MXLog.error("[SideMenuCoordinator] showSpaceInvite: failed to find space with id \(spaceId)")
+//            return
+//        }
+//
+//        spaceRoom.state { [weak self] roomState in
+//            guard let self = self else { return }
+//
+//            guard let powerLevels = roomState?.powerLevels, let userId = session.myUserId else {
+//                MXLog.error("[SpaceMembersCoordinator] spaceMemberListCoordinatorShowInvite: failed to find powerLevels for room")
+//                return
+//            }
+//            let userPowerLevel = powerLevels.powerLevelOfUser(withUserID: userId)
+//
+//            guard userPowerLevel >= powerLevels.invite else {
+//                let alert = UIAlertController(title: VectorL10n.spacesInvitePeople, message: VectorL10n.spaceInviteNotEnoughPermission, preferredStyle: .alert)
+//                alert.addAction(UIAlertAction(title: VectorL10n.ok, style: .default, handler: nil))
+//                self.sideMenuViewController.present(alert, animated: true)
+//                return
+//            }
+//
+//            let coordinator = ContactsPickerCoordinator(session: session, room: spaceRoom, initialSearchText: nil, actualParticipants: nil, invitedParticipants: nil, userParticipant: nil)
+//            coordinator.delegate = self
+//            coordinator.start()
+//            self.add(childCoordinator: coordinator)
+//            self.sideMenuViewController.present(coordinator.toPresentable(), animated: true)
+//        }
+    }
+
+    private func resetExploringSpaceIfNeeded() {
+        if sideMenuNavigationViewController.presentedViewController == nil {
+            Analytics.shared.exploringSpace = nil
+        }
+    }
+
     // MARK: UserSessions management
     
     private func registerUserSessionsServiceNotifications() {
@@ -336,6 +439,12 @@ extension SideMenuCoordinator: SideMenuNavigationControllerDelegate {
 //    func spaceListCoordinator(_ coordinator: SpaceListCoordinatorType, didPressMoreForSpaceWithId spaceId: String, from sourceView: UIView) {
 //        self.showMenu(forSpaceWithId: spaceId, from: sourceView)
 //    }
+//
+//    func spaceListCoordinatorDidSelectCreateSpace(_ coordinator: SpaceListCoordinatorType) {
+//        if #available(iOS 14.0, *) {
+//            self.showCreateSpace()
+//        }
+//    }
 //}
 
 // MARK: - SpaceMenuPresenterDelegate
@@ -344,9 +453,31 @@ extension SideMenuCoordinator: SideMenuNavigationControllerDelegate {
 //        presenter.dismiss(animated: false) {
 //            switch action {
 //            case .exploreRooms:
+//                Analytics.shared.viewRoomTrigger = .spaceMenu
 //                self.showExploreRooms(spaceId: spaceId, session: session)
 //            case .exploreMembers:
+//                Analytics.shared.viewRoomTrigger = .spaceMenu
 //                self.showMembers(spaceId: spaceId, session: session)
+//            case .addRoom:
+//                session.spaceService.getSpace(withId: spaceId)?.canAddRoom { canAddRoom in
+//                    if canAddRoom {
+//                        self.showAddRoom(spaceId: spaceId, session: session)
+//                    } else {
+//                        let alert = UIAlertController(title: VectorL10n.spacesAddRoom, message: VectorL10n.spacesAddRoomMissingPermissionMessage, preferredStyle: .alert)
+//                        alert.addAction(UIAlertAction(title: VectorL10n.ok, style: .default, handler: nil))
+//                        self.toPresentable().present(alert, animated: true, completion: nil)
+//                    }
+//                }
+//            case .addSpace:
+//                AppDelegate.theDelegate().showAlert(withTitle: VectorL10n.spacesAddSpace, message: VectorL10n.spacesFeatureNotAvailable(AppInfo.current.displayName))
+//            case .settings:
+//                if #available(iOS 14.0, *) {
+//                    self.showSpaceSettings(spaceId: spaceId, session: session)
+//                } else {
+//                    AppDelegate.theDelegate().showAlert(withTitle: VectorL10n.settingsTitle, message: VectorL10n.spacesFeatureNotAvailable(AppInfo.current.displayName))
+//                }
+//            case .invite:
+//                self.showSpaceInvite(spaceId: spaceId, session: session)
 //            }
 //        }
 //    }
@@ -372,6 +503,7 @@ extension SideMenuCoordinator: SideMenuNavigationControllerDelegate {
 //    func exploreRoomCoordinatorDidComplete(_ coordinator: ExploreRoomCoordinatorType) {
 //        self.exploreRoomCoordinator?.toPresentable().dismiss(animated: true) {
 //            self.exploreRoomCoordinator = nil
+//            self.resetExploringSpaceIfNeeded()
 //        }
 //    }
 //}
@@ -381,9 +513,57 @@ extension SideMenuCoordinator: SideMenuNavigationControllerDelegate {
 //    func spaceMembersCoordinatorDidCancel(_ coordinator: SpaceMembersCoordinatorType) {
 //        self.membersCoordinator?.toPresentable().dismiss(animated: true) {
 //            self.membersCoordinator = nil
+//            self.resetExploringSpaceIfNeeded()
 //        }
 //    }
 //}
+
+// MARK: - CreateRoomCoordinatorDelegate
+//extension SideMenuCoordinator: CreateRoomCoordinatorDelegate {
+//    func createRoomCoordinator(_ coordinator: CreateRoomCoordinatorType, didCreateNewRoom room: MXRoom) {
+//        coordinator.toPresentable().dismiss(animated: true) {
+//            self.createRoomCoordinator = nil
+//            self.parameters.appNavigator.sideMenu.dismiss(animated: true) {
+//                self.resetExploringSpaceIfNeeded()
+//            }
+//            if let spaceId = coordinator.parentSpace?.spaceId {
+//                self.parameters.appNavigator.navigate(to: .space(spaceId))
+//            }
+//        }
+//    }
+//
+//    func createRoomCoordinator(_ coordinator: CreateRoomCoordinatorType, didAddRoomsWithIds roomIds: [String]) {
+//        coordinator.toPresentable().dismiss(animated: true) {
+//            self.createRoomCoordinator = nil
+//            self.parameters.appNavigator.sideMenu.dismiss(animated: true) {
+//                self.resetExploringSpaceIfNeeded()
+//            }
+//            if let spaceId = coordinator.parentSpace?.spaceId {
+//                self.parameters.appNavigator.navigate(to: .space(spaceId))
+//            }
+//        }
+//    }
+//
+//    func createRoomCoordinatorDidCancel(_ coordinator: CreateRoomCoordinatorType) {
+//        coordinator.toPresentable().dismiss(animated: true) {
+//            self.createRoomCoordinator = nil
+//            self.resetExploringSpaceIfNeeded()
+//        }
+//    }
+//}
+
+// MARK: - ContactsPickerCoordinatorDelegate
+extension SideMenuCoordinator: ContactsPickerCoordinatorDelegate {
+    func contactsPickerCoordinatorDidStartLoading(_ coordinator: ContactsPickerCoordinatorProtocol) {
+    }
+    
+    func contactsPickerCoordinatorDidEndLoading(_ coordinator: ContactsPickerCoordinatorProtocol) {
+    }
+    
+    func contactsPickerCoordinatorDidClose(_ coordinator: ContactsPickerCoordinatorProtocol) {
+        remove(childCoordinator: coordinator)
+    }
+}
 
 // MARK: - UIAdaptivePresentationControllerDelegate
 extension SideMenuCoordinator: UIAdaptivePresentationControllerDelegate {
@@ -391,6 +571,10 @@ extension SideMenuCoordinator: UIAdaptivePresentationControllerDelegate {
     func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
 //        self.exploreRoomCoordinator = nil
 //        self.membersCoordinator = nil
+//        self.createSpaceCoordinator = nil
+//        self.createRoomCoordinator = nil
+//        self.spaceSettingsCoordinator = nil
+        self.resetExploringSpaceIfNeeded()
     }
 }
 
