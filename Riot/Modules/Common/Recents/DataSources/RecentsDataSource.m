@@ -126,7 +126,17 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 }
 - (NSArray<id<MXRoomSummaryProtocol>> *)peopleCellDataArray
 {
-    return self.recentsListService.peopleRoomListData.rooms;
+    // Tchap: Hide the rooms created to invite some non-tchap contact by email.
+    NSMutableArray<id<MXRoomSummaryProtocol>> *rooms = [NSMutableArray new];
+    for (MXRoom *room in self.recentsListService.peopleRoomListData.rooms)
+    {
+        if (room.isDirect && [MXTools isEmailAddress:room.directUserId])
+        {
+            continue;
+        }
+        [rooms addObject:room];
+    }
+    return rooms;
 }
 - (NSArray<id<MXRoomSummaryProtocol>> *)conversationCellDataArray
 {

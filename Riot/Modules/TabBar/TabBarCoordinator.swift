@@ -64,6 +64,10 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     }
     
     private var indicators = [UserIndicator]()
+    // Tchap: Add invite service for user invitation
+    private var inviteService: InviteServiceType?
+    private var errorPresenter: ErrorPresenter?
+    private weak var currentAlertController: UIAlertController?
     
     // MARK: Public
 
@@ -123,6 +127,8 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         if MXKAccountManager.shared().accounts.isEmpty {
             self.showWelcome()
         }
+        
+        self.errorPresenter = AlertErrorPresenter(viewControllerPresenter: masterTabBarController)
     }
     
     func toPresentable() -> UIViewController {
@@ -152,7 +158,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
                 self.masterTabBarController.releaseSelectedItem()
                 
                 // Select home tab
-                self.masterTabBarController.selectTab(at: .rooms)
+                self.masterTabBarController.selectTab(at: .people)
                 
                 completion?()
             }
@@ -189,8 +195,14 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         } else {
             // Tab bar controller is already visible
             // Select the Home tab
-            masterTabBarController.selectTab(at: .rooms)
+            masterTabBarController.selectTab(at: .people)
             completion?()
+        }
+    }
+    
+    func presentInvitePeople() {
+        promptUserToFillAnEmailToInvite { [weak self] email in
+            self?.sendEmailInvite(to: email)
         }
     }
     
@@ -249,21 +261,20 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
 //        return wrapperViewController
 //    }
     
-//    private func createFavouritesViewController() -> FavouritesViewController {
-//        let favouritesViewController: FavouritesViewController = FavouritesViewController.instantiate()
-//        favouritesViewController.tabBarItem.tag = Int(TABBAR_FAVOURITES_INDEX)
-//        favouritesViewController.accessibilityLabel = VectorL10n.titleFavourites
-//        favouritesViewController.userIndicatorStore = UserIndicatorStore(presenter: indicatorPresenter)
-//        return favouritesViewController
-//    }
-    
-//    private func createPeopleViewController() -> PeopleViewController {
-//        let peopleViewController: PeopleViewController = PeopleViewController.instantiate()
-//        peopleViewController.tabBarItem.tag = Int(TABBAR_PEOPLE_INDEX)
-//        peopleViewController.accessibilityLabel = VectorL10n.titlePeople
-//        peopleViewController.userIndicatorStore = UserIndicatorStore(presenter: indicatorPresenter)
-//        return peopleViewController
-//    }
+    private func createFavouritesViewController() -> FavouritesViewController {
+        let favouritesViewController: FavouritesViewController = FavouritesViewController.instantiate()
+        favouritesViewController.tabBarItem.tag = Int(TABBAR_FAVOURITES_INDEX)
+        favouritesViewController.accessibilityLabel = VectorL10n.titleFavourites
+        return favouritesViewController
+    }
+
+    private func createPeopleViewController() -> PeopleViewController {
+        let peopleViewController: PeopleViewController = PeopleViewController.instantiate()
+        peopleViewController.peopleViewDelegate = self
+        peopleViewController.tabBarItem.tag = Int(TABBAR_PEOPLE_INDEX)
+        peopleViewController.accessibilityLabel = VectorL10n.titlePeople
+        return peopleViewController
+    }
     
     private func createRoomsViewController() -> RoomsViewController {
         let roomsViewController: RoomsViewController = RoomsViewController.instantiate()
@@ -335,13 +346,13 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
 //        }
         
         if RiotSettings.shared.homeScreenShowFavouritesTab {
-//            let favouritesViewController = self.createFavouritesViewController()
-//            viewControllers.append(favouritesViewController)
+            let favouritesViewController = self.createFavouritesViewController()
+            viewControllers.append(favouritesViewController)
         }
         
         if RiotSettings.shared.homeScreenShowPeopleTab {
-//            let peopleViewController = self.createPeopleViewController()
-//            viewControllers.append(peopleViewController)
+            let peopleViewController = self.createPeopleViewController()
+            viewControllers.append(peopleViewController)
         }
         
         if RiotSettings.shared.homeScreenShowRoomsTab {
@@ -745,6 +756,132 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
 //    }
 }
 
+// Tchap: Manage e-mail invitation
+extension TabBarCoordinator {
+    private func promptUserToFillAnEmailToInvite(completion: @escaping ((String) -> Void)) {
+        currentAlertController?.dismiss(animated: false)
+        
+        let alertController = UIAlertController(title: TchapL10n.contactsInviteByEmailTitle,
+                                                message: TchapL10n.contactsInviteByEmailMessage,
+                                                preferredStyle: .alert)
+        
+        // Add textField
+        alertController.addTextField(configurationHandler: { textField in
+            textField.isSecureTextEntry = false
+            textField.placeholder = nil
+            textField.keyboardType = .emailAddress
+        })
+        
+        // Cancel action
+        let cancelAction = UIAlertAction(title: VectorL10n.cancel,
+                                         style: .cancel) { [weak self] _ in
+            self?.currentAlertController = nil
+        }
+        alertController.addAction(cancelAction)
+        
+        // Invite action
+        let inviteAction = UIAlertAction(title: VectorL10n.invite,
+                                         style: .default) { [weak self] _ in
+            guard let currentAlertController = self?.currentAlertController,
+                  let email = currentAlertController.textFields?.first?.text?.lowercased() else {
+                return // FIXME: Verify if dismiss should be needed in this case
+            }
+            
+            self?.currentAlertController = nil
+            
+            if MXTools.isEmailAddress(email) {
+                completion(email)
+            } else {
+                self?.currentAlertController?.dismiss(animated: false)
+                let errorAlertController = UIAlertController(title: TchapL10n.authenticationErrorInvalidEmail,
+                                                             message: nil,
+                                                             preferredStyle: .alert)
+                let okAction = UIAlertAction(title: VectorL10n.ok,
+                                             style: .default) { [weak self] _ in
+                    self?.currentAlertController = nil
+                }
+                errorAlertController.addAction(okAction)
+                errorAlertController.mxk_setAccessibilityIdentifier("ContactsVCInviteByEmailError")
+                self?.currentAlertController = errorAlertController
+                self?.masterTabBarController.present(errorAlertController, animated: true)
+            }
+        }
+        alertController.addAction(inviteAction)
+        alertController.mxk_setAccessibilityIdentifier("ContactsVCInviteByEmailDialog")
+
+        self.currentAlertController = alertController
+        
+        masterTabBarController.present(alertController, animated: true)
+    }
+    
+    private func sendEmailInvite(to email: String) {
+        guard let session = self.currentMatrixSession else { return }
+        if self.inviteService == nil {
+            self.inviteService = InviteService(session: session)
+        }
+        guard let inviteService = self.inviteService else { return }
+        
+        self.activityIndicatorPresenter.presentActivityIndicator(on: masterTabBarController.view, animated: true)
+        inviteService.sendEmailInvite(to: email) { [weak self] (response) in
+            guard let sself = self else {
+                return
+            }
+            
+            sself.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
+            switch response {
+            case .success(let result):
+                var message: String
+                var discoveredUserID: String?
+                switch result {
+                case .inviteHasBeenSent(roomID: _):
+                    message = TchapL10n.inviteSendingSucceeded
+                case .inviteAlreadySent(roomID: _):
+                    message = TchapL10n.inviteAlreadySentByEmail(email)
+                case .inviteIgnoredForDiscoveredUser(userID: let userID):
+                    discoveredUserID = userID
+                    message = TchapL10n.inviteNotSentForDiscoveredUser
+                case .inviteIgnoredForUnauthorizedEmail:
+                    message = TchapL10n.inviteNotSentForUnauthorizedEmail(email)
+                }
+                
+                sself.currentAlertController?.dismiss(animated: false)
+                
+                let alert = UIAlertController(title: TchapL10n.inviteInformationTitle, message: message, preferredStyle: .alert)
+                
+                let okTitle = VectorL10n.ok
+                let okAction = UIAlertAction(title: okTitle, style: .default, handler: { action in
+                    if let userID = discoveredUserID {
+                        // Open the discussion
+                        sself.startDiscussion(with: userID)
+                    }
+                })
+                alert.addAction(okAction)
+                sself.currentAlertController = alert
+                
+                sself.masterTabBarController.present(alert, animated: true, completion: nil)
+            case .failure(let error):
+                let errorPresentable = sself.inviteErrorPresentable(from: error)
+                sself.errorPresenter?.present(errorPresentable: errorPresentable, animated: true)
+            }
+        }
+    }
+    
+    private func inviteErrorPresentable(from error: Error) -> ErrorPresentable {
+        let errorTitle = TchapL10n.inviteSendingFailedTitle
+        let errorMessage: String
+        
+        let nsError = error as NSError
+        
+        if let message = nsError.userInfo[NSLocalizedDescriptionKey] as? String {
+            errorMessage = message
+        } else {
+            errorMessage = TchapL10n.errorMessageDefault
+        }
+        
+        return ErrorPresentableImpl(title: errorTitle, message: errorMessage)
+    }
+}
+
 // MARK: - MasterTabBarControllerDelegate
 extension TabBarCoordinator: MasterTabBarControllerDelegate {
        
@@ -864,18 +1001,6 @@ extension TabBarCoordinator: WelcomeCoordinatorDelegate {
 
 // MARK: - RoomsViewControllerDelegate
 extension TabBarCoordinator: RoomsViewControllerDelegate {
-    func roomsViewControllerDidTapStartChatButton(_ roomsViewController: RoomsViewController) {
-        guard let session = self.currentMatrixSession else { return }
-        
-        let createNewDiscussionCoordinator = CreateNewDiscussionCoordinator(session: session)
-        createNewDiscussionCoordinator.delegate = self
-        createNewDiscussionCoordinator.start()
-        
-        self.navigationRouter.present(createNewDiscussionCoordinator, animated: true)
-        
-        self.add(childCoordinator: createNewDiscussionCoordinator)
-    }
-    
     func roomsViewControllerDidTapCreateRoomButton(_ roomsViewController: RoomsViewController) {
         guard let session = self.currentMatrixSession else { return }
         
@@ -975,5 +1100,19 @@ extension TabBarCoordinator: RoomPreviewCoordinatorDelegate {
                                 onEventId eventId: String?) {
         self.navigationRouter.popModule(animated: true)
         self.showRoom(withId: roomID, eventId: eventId)
+    }
+}
+
+// MARK: - PeopleViewControllerDelegate
+extension TabBarCoordinator: PeopleViewControllerDelegate {
+    func peopleViewControllerDidTapStartChatButton(_ peopleViewController: PeopleViewController) {
+        guard let session = self.currentMatrixSession else { return }
+
+        let createNewDiscussionCoordinator = CreateNewDiscussionCoordinator(session: session)
+        createNewDiscussionCoordinator.delegate = self
+        createNewDiscussionCoordinator.start()
+
+        self.navigationRouter.present(createNewDiscussionCoordinator, animated: true)
+        self.add(childCoordinator: createNewDiscussionCoordinator)
     }
 }

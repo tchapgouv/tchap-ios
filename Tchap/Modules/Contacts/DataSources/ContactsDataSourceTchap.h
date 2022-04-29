@@ -95,14 +95,6 @@ typedef enum : NSUInteger
 }
 
 /**
- Check whether the invite button is located to the given index path.
- 
- @param indexPath the index of the cell
- @return YES if the indexPath is the invite button one
- */
--(BOOL)isInviteButtonIndexPath:(NSIndexPath*)indexPath;
-
-/**
 Check whether the invite by link button is located to the given index path.
 
 @param indexPath the index of the cell

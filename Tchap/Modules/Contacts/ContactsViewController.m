@@ -296,15 +296,6 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
     [self presentViewController:self.currentAlert animated:YES completion:nil];
 }
 
-- (void)sendInviteToTchapByEmail:(NSString *)email
-{
-    // Sanity check
-    if ([self.delegate respondsToSelector:@selector(contactsViewController:sendInviteToTchapByEmail:)])
-    {
-        [self.delegate contactsViewController:self sendInviteToTchapByEmail:email];
-    }
-}
-
 - (void)selectEmail:(NSString *)email
 {
     // Check whether the delegate allows this email to be invited
@@ -459,16 +450,6 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Check first the potential invite button
-    if ([self.contactsDataSource isInviteButtonIndexPath:indexPath])
-    {
-        [tableView deselectRowAtIndexPath:indexPath animated:YES];
-        [self promptUserToFillAnEmailToInvite:^(NSString *email) {
-            [self sendInviteToTchapByEmail:email];
-        }];
-        return;
-    }
-    
     // Check whether the user wants to invite people by sharing a link to the room
     if ([self.contactsDataSource isInviteByLinkButtonIndexPath:indexPath])
     {

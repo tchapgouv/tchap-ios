@@ -109,9 +109,8 @@ final class BuildSettings: NSObject {
     static let disableRightToLeftLayout = true
     
     // MARK: - Server configuration
-    
-    // TODO: replace m.org with https://sygnal.tchap.gouv.fr
-    static let serverConfigSygnalAPIUrlString = "https://matrix.org/_matrix/push/v1/notify"
+    // Tchap sygnal server url
+    static let serverConfigSygnalAPIUrlString = "https://sygnal.tchap.gouv.fr/_matrix/push/v1/notify"
     
     
     // MARK: - Legal URLs
@@ -327,18 +326,19 @@ final class BuildSettings: NSObject {
 
     // MARK: - Room Info Screen
     
-    static let roomInfoScreenShowIntegrations: Bool = true
+    static let roomInfoScreenShowIntegrations: Bool = false
 
     // MARK: - Room Settings Screen
     
-    static let roomSettingsScreenShowLowPriorityOption: Bool = true
-    static let roomSettingsScreenShowDirectChatOption: Bool = true
-    static let roomSettingsScreenAllowChangingAccessSettings: Bool = true
-    static let roomSettingsScreenAllowChangingHistorySettings: Bool = true
-    static let roomSettingsScreenShowAddressSettings: Bool = true
-    static let roomSettingsScreenShowFlairSettings: Bool = true
-    static let roomSettingsScreenShowAdvancedSettings: Bool = true
-    static let roomSettingsScreenAdvancedShowEncryptToVerifiedOption: Bool = true
+    static let roomSettingsScreenShowLowPriorityOption: Bool = false
+    static let roomSettingsScreenShowDirectChatOption: Bool = false
+    static let roomSettingsScreenAllowChangingAccessSettings: Bool = false
+    static let roomSettingsScreenAllowChangingHistorySettings: Bool = false
+    static let roomSettingsScreenShowAddressSettings: Bool = false
+    static let roomSettingsScreenShowFlairSettings: Bool = false
+    static let roomSettingsScreenShowAdvancedSettings: Bool = false
+    static let roomSettingsScreenAdvancedShowEncryptToVerifiedOption: Bool = false
+    static let roomSettingsScreenShowNotificationsV2: Bool = false
 
     // MARK: - Room Member Screen
     

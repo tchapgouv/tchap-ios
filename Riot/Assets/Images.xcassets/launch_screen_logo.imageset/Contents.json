@@ -1,16 +1,31 @@
 {
   "images" : [
     {
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x"
+    },
+    {
+      "unassigned" : true,
       "filename" : "launch_screen_logo.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "unassigned" : true,
       "filename" : "launch_screen_logo@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "unassigned" : true,
       "filename" : "launch_screen_logo@3x.png",
       "idiom" : "universal",
       "scale" : "3x"

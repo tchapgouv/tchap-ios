@@ -36,4 +36,8 @@ protocol SplitViewCoordinatorType: Coordinator, Presentable {
     // TODO: Do not expose publicly this method
     /// Remove detail screens and display placeholder if needed 
     func resetDetails(animated: Bool)
+    
+    // Tchap: redirect to invite people alert
+    /// Present invite people alert (with textField)
+    func presentInvitePeople()
 }

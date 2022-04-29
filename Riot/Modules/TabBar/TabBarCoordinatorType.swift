@@ -37,4 +37,8 @@ protocol TabBarCoordinatorType: Coordinator, SplitViewMasterPresentable {
     // TODO: Remove this method, this implementation detail should not be exposed
     // Release the current selected item (room/contact/group...).
     func releaseSelectedItems()
+    
+    // Tchap: redirect to invite people alert
+    /// Present invite people alert (with textField)
+    func presentInvitePeople()
 }

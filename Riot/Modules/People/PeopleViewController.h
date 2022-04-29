@@ -16,11 +16,14 @@
 
 #import "RecentsViewController.h"
 #import "ContactsDataSource.h"
+@protocol PeopleViewControllerDelegate;
 
 /**
  'PeopleViewController' instance is used to display/filter the direct rooms and a list of contacts.
  */
 @interface PeopleViewController : RecentsViewController
+
+@property (nonatomic, weak) id<PeopleViewControllerDelegate> peopleViewDelegate;
 
 + (instancetype)instantiate;
 

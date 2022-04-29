@@ -26,13 +26,13 @@
 
 #import "GeneratedInterface-Swift.h"
 
-@interface PeopleViewController () <SpaceMembersCoordinatorBridgePresenterDelegate, MasterTabBarItemDisplayProtocol>
+@interface PeopleViewController () //<SpaceMembersCoordinatorBridgePresenterDelegate>
 {
     NSInteger          directRoomsSectionNumber;
     RecentsDataSource *recentsDataSource;
 }
 
-@property(nonatomic) SpaceMembersCoordinatorBridgePresenter *spaceMembersCoordinatorBridgePresenter;
+//@property(nonatomic) SpaceMembersCoordinatorBridgePresenter *spaceMembersCoordinatorBridgePresenter;
 @property (nonatomic, strong) MXThrottler *tableViewPaginationThrottler;
 
 @end
@@ -133,16 +133,17 @@
 
 - (void)onPlusButtonPressed
 {
-    if (self.dataSource.currentSpace != nil)
-    {
-        self.spaceMembersCoordinatorBridgePresenter = [[SpaceMembersCoordinatorBridgePresenter alloc] initWithUserSessionsService:[UserSessionsService shared] session:self.mainSession spaceId:self.dataSource.currentSpace.spaceId];
-        self.spaceMembersCoordinatorBridgePresenter.delegate = self;
-        [self.spaceMembersCoordinatorBridgePresenter presentFrom:self animated:YES];
-    }
-    else
-    {
-        [self performSegueWithIdentifier:@"presentStartChat" sender:self];
-    }
+//    if (self.dataSource.currentSpace != nil)
+//    {
+//        self.spaceMembersCoordinatorBridgePresenter = [[SpaceMembersCoordinatorBridgePresenter alloc] initWithUserSessionsService:[UserSessionsService shared] session:self.mainSession spaceId:self.dataSource.currentSpace.spaceId];
+//        self.spaceMembersCoordinatorBridgePresenter.delegate = self;
+//        [self.spaceMembersCoordinatorBridgePresenter presentFrom:self animated:YES];
+//    }
+//    else
+//    {
+//        [self performSegueWithIdentifier:@"presentStartChat" sender:self];
+        [self createNewDiscussion];
+//    }
 }
 
 #pragma mark -
@@ -177,14 +178,14 @@
     }
 }
 
-#pragma mark - SpaceMembersCoordinatorBridgePresenterDelegate
-
-- (void)spaceMembersCoordinatorBridgePresenterDelegateDidComplete:(SpaceMembersCoordinatorBridgePresenter *)coordinatorBridgePresenter
-{
-    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
-        self.spaceMembersCoordinatorBridgePresenter = nil;
-    }];
-}
+//#pragma mark - SpaceMembersCoordinatorBridgePresenterDelegate
+//
+//- (void)spaceMembersCoordinatorBridgePresenterDelegateDidComplete:(SpaceMembersCoordinatorBridgePresenter *)coordinatorBridgePresenter
+//{
+//    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+//        self.spaceMembersCoordinatorBridgePresenter = nil;
+//    }];
+//}
 
 #pragma mark - MasterTabBarItemDisplayProtocol
 

@@ -56,8 +56,7 @@ targets:
 
     settings:
       base:
-        GCC_PREPROCESSOR_DEFINITIONS: $(inherited) ENABLE_JOIN_BY_LINK=1 ENABLE_REACTIONS=1 ENABLE_EDITION=1
-        OTHER_SWIFT_FLAGS: $(inherited) -D ENABLE_REACTIONS -D ENABLE_EDITION
+        GCC_PREPROCESSOR_DEFINITIONS: $(inherited) ENABLE_JOIN_BY_LINK=1
 
     sources:
     - path: ../Tchap/Config
@@ -183,6 +182,7 @@ targets:
     - path: ../Riot/Modules/DotsView
     - path: ../Riot/Modules/EncryptionInfo/EncryptionInfoView.h
     - path: ../Riot/Modules/EncryptionInfo/EncryptionInfoView.m
+    - path: ../Riot/Modules/Favorites
     - path: ../Riot/Modules/Home/Fallback
     - path: ../Riot/Modules/Home/Views
     - path: ../Riot/Modules/GDPR
@@ -198,7 +198,7 @@ targets:
     - path: ../Riot/Modules/MatrixKit
     - path: ../Riot/Modules/MediaPicker
     - path: ../Riot/Modules/MediaPickerV2
-    - path: ../Riot/Modules/People/Views
+    - path: ../Riot/Modules/People
     - path: ../Riot/Modules/PublicRoomList
     - path: ../Riot/Modules/QRCode
     - path: ../Riot/Modules/Reauthentication

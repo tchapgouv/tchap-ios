@@ -338,6 +338,9 @@ extension AppCoordinator: SplitViewCoordinatorDelegate {
 // MARK: - SideMenuCoordinatorDelegate
 extension AppCoordinator: SideMenuCoordinatorDelegate {
     func sideMenuCoordinator(_ coordinator: SideMenuCoordinatorType, didTapMenuItem menuItem: SideMenuItem, fromSourceView sourceView: UIView) {
+        if menuItem == .inviteFriends {
+            self.splitViewCoordinator?.presentInvitePeople()
+        }
     }
 }
 
