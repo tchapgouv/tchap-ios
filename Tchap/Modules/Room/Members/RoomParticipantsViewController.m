@@ -28,7 +28,7 @@
 
 #import "RageShakeManager.h"
 
-@interface RoomParticipantsViewController () <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UIGestureRecognizerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsViewControllerDelegate>
+@interface RoomParticipantsViewController () <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UIGestureRecognizerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsViewControllerDelegate, RoomParticipantsInviteCoordinatorBridgePresenterDelegate>
 {
     // Search result
     NSString *currentSearchText;
@@ -49,7 +49,7 @@
     
     RoomMemberDetailsViewController *memberDetailsViewController;
     ContactsViewController *contactsPickerViewController;
-    ContactsDataSource *contactsDataSource;
+    ContactsDataSourceTchap *contactsDataSource;
     UIBarButtonItem *validateBarButtonItem;
     
     // Tell whether the user is allowed to invite other users
@@ -68,6 +68,8 @@
     
     // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
     id kThemeServiceDidChangeThemeNotificationObserver;
+    
+    RoomParticipantsInviteCoordinatorBridgePresenter *invitePresenter;
 }
 
 @property (nonatomic, nullable, strong) UserService *userService;
@@ -84,11 +86,10 @@
                           bundle:[NSBundle bundleForClass:[RoomParticipantsViewController class]]];
 }
 
-+ (instancetype)instantiate
++ (instancetype)roomParticipantsViewController
 {
-    RoomParticipantsViewController *roomParticipantsViewController = [[[self class] alloc] initWithNibName:NSStringFromClass([RoomParticipantsViewController class])
+    return [[[self class] alloc] initWithNibName:NSStringFromClass([RoomParticipantsViewController class])
                                           bundle:[NSBundle bundleForClass:[RoomParticipantsViewController class]]];
-    return roomParticipantsViewController;
 }
 
 #pragma mark -
@@ -101,6 +102,7 @@
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
     self.showParticipantCustomAccessoryView = YES;
+    self.showInviteUserFab = YES;
 }
 
 - (void)viewDidLoad
@@ -156,16 +158,20 @@
     // Hide line separators of empty cells
     self.tableView.tableFooterView = [[UIView alloc] init];
     
+    [self.tableView registerClass:ContactTableViewCell.class forCellReuseIdentifier:@"ParticipantTableViewCellId"];
     [self.tableView registerNib:ContactCell.nib forCellReuseIdentifier:ContactCell.defaultReuseIdentifier];
     
     // Enable self-sizing cells.
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     self.tableView.estimatedRowHeight = 60;
     
-    // Add invite members button programmatically
-    [self vc_addFABWithImage:AssetImages.addMemberFloatingAction.image
-                      target:self
-                      action:@selector(onAddParticipantButtonPressed)];
+    if (_showInviteUserFab)
+    {
+        // Add invite members button programmatically
+        [self vc_addFABWithImage:AssetImages.addMemberFloatingAction.image
+                          target:self
+                          action:@selector(onAddParticipantButtonPressed)];
+    }
     
     // Observe user interface theme change.
     kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
@@ -198,6 +204,7 @@
     
     self.tableView.backgroundColor = ThemeService.shared.theme.backgroundColor;
     self.view.backgroundColor = self.tableView.backgroundColor;
+    self.tableView.separatorColor = ThemeService.shared.theme.lineBreakColor;
     
     if (self.tableView.dataSource)
     {
@@ -266,6 +273,7 @@
     
     actualParticipants = nil;
     invitedParticipants = nil;
+    userParticipant = nil;
     
     [self removePendingActionMask];
     
@@ -278,6 +286,8 @@
     
     // Refresh display
     [self refreshTableView];
+    
+    //[self.screenTracker trackScreen];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -634,81 +644,16 @@
 
 - (void)onAddParticipantButtonPressed
 {
-    // Push the contacts picker.
-    contactsPickerViewController = [ContactsViewController instantiateWithShowSearchBar:YES enableMultipleSelection:YES];
-    contactsPickerViewController.title = NSLocalizedStringFromTable(@"contacts_picker_title", @"Tchap", nil);
-    
-    // Set delegate to handle action on member (start chat, mention)
-    contactsPickerViewController.delegate = self;
-    
-    validateBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"action_validate", @"Tchap", nil) style:UIBarButtonItemStylePlain target:self action:@selector(inviteSelectedContacts)];
-    validateBarButtonItem.enabled = NO;
-    contactsPickerViewController.navigationItem.rightBarButtonItem = validateBarButtonItem;
-    
-    NSString *roomAccessRule = [self.mxRoom.summary tc_roomAccessRuleIdentifier];
-    BOOL isFederated = [self.mxRoom.summary tc_isFederated];
-    
-    // Prepare its data source
-    contactsDataSource = [[ContactsDataSource alloc] initWithMatrixSession:self.mxRoom.mxSession];
-    [contactsDataSource finalizeInitialization];
-    contactsDataSource.areSectionsShrinkable = YES;
-    contactsDataSource.showAddEmailButton = YES;
-    if (isUserAllowedToInviteByLink)
-    {
-        [contactsDataSource showInviteByLinkButtonForRoomId:self.mxRoom.roomId];
-    }
-    else
-    {
-        [contactsDataSource hideInviteByLinkButton];
-    }
-    if (isFederated)
-    {
-        if ([roomAccessRule isEqualToString:RoomService.roomAccessRuleRestricted])
-        {
-            contactsDataSource.contactsFilter = ContactsDataSourceTchapFilterAllWithoutExternals;
-        }
-        else
-        {
-            contactsDataSource.contactsFilter = ContactsDataSourceTchapFilterAll;
-        }
-    }
-    else
-    {
-        contactsDataSource.contactsFilter = ContactsDataSourceTchapFilterAllWithoutFederation;
-    }
-    
-    // List all the participants matrix user id to ignore them during the contacts search.
-    for (Contact *contact in actualParticipants)
-    {
-        contactsDataSource.ignoredContactsByMatrixId[contact.mxMember.userId] = contact;
-    }
-    for (Contact *contact in invitedParticipants)
-    {
-        if (contact.mxMember)
-        {
-            contactsDataSource.ignoredContactsByMatrixId[contact.mxMember.userId] = contact;
-        }
-    }
-    
-//    [contactsPickerViewController showSearch:YES];
-//    contactsPickerViewController.searchBar.placeholder = [VectorL10n roomParticipantsInviteAnotherUser];
-    
-    // Apply the search pattern if any
-    if (currentSearchText)
-    {
-//        contactsPickerViewController.searchBar.text = currentSearchText;
-        [contactsDataSource searchWithPattern:currentSearchText forceReset:YES];
-    }
-    
-    [contactsPickerViewController displayList:contactsDataSource];
-    
-    [self pushViewController:contactsPickerViewController];
+    self->invitePresenter = [[RoomParticipantsInviteCoordinatorBridgePresenter alloc] initWithSession:self.mxRoom.mxSession room:self.mxRoom parentSpaceId:self.parentSpaceId currentSearchText:currentSearchText actualParticipants:actualParticipants invitedParticipants:invitedParticipants userParticipant:userParticipant];
+    self->invitePresenter.delegate = self;
+    [self->invitePresenter presentFrom:self animated:true];
 }
 
 - (void)refreshParticipantsFromRoomMembers
 {
     actualParticipants = [NSMutableArray array];
     invitedParticipants = [NSMutableArray array];
+    userParticipant = nil;
     
     if (self.mxRoom)
     {
@@ -1373,6 +1318,7 @@
                                                         __kindof UIView * _Nonnull sourceView,
                                                         void (^ _Nonnull completionHandler)(BOOL)) {
             [self onDeleteAt:indexPath];
+            
         }];
         
         leaveAction.image = [[UIImage imageNamed:@"remove_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.tintColor];
@@ -1483,16 +1429,218 @@
 
 - (void)onDeleteAt:(NSIndexPath*)path
 {
+    NSUInteger section = path.section;
+    NSUInteger row = path.row;
+    
     Contact *contact = [self getContactAtIndexPath:path];
     if (contact.mxMember)
     {
-        if ([contact.mxMember.userId isEqualToString:self.mxRoom.mxSession.myUser.userId])
+        if (currentAlert)
         {
-            [self leaveRoom];
+            [currentAlert dismissViewControllerAnimated:NO completion:nil];
+            currentAlert = nil;
+        }
+        
+        if (section == participantsSection && userParticipant && (0 == row) && !currentSearchText.length)
+        {
+            // Leave ?
+            MXWeakify(self);
+            
+            NSString *title, *message;
+            if (self.mxRoom.isDirect)
+            {
+                title = [VectorL10n roomParticipantsLeavePromptTitleForDm];
+                message = [VectorL10n roomParticipantsLeavePromptMsgForDm];
+            }
+            else
+            {
+                title = [VectorL10n roomParticipantsLeavePromptTitle];
+                message = [VectorL10n roomParticipantsLeavePromptMsg];
+            }
+            
+            currentAlert = [UIAlertController alertControllerWithTitle:title
+                                                               message:message
+                                                        preferredStyle:UIAlertControllerStyleAlert];
+            
+            [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
+                                                             style:UIAlertActionStyleCancel
+                                                           handler:^(UIAlertAction * action) {
+                                                               
+                                                               MXStrongifyAndReturnIfNil(self);
+                                                               self->currentAlert = nil;
+                                                               
+                                                           }]];
+            
+            [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n leave]
+                                                             style:UIAlertActionStyleDefault
+                                                           handler:^(UIAlertAction * action) {
+                                                               
+                                                               MXStrongifyAndReturnIfNil(self);
+                                                               self->currentAlert = nil;
+                                                               
+                                                               [self addPendingActionMask];
+                                                               MXWeakify(self);
+                                                               [self.mxRoom leave:^{
+                                                                   
+                                                                   MXStrongifyAndReturnIfNil(self);
+                                                                   [self withdrawViewControllerAnimated:YES completion:nil];
+                                                                   
+                                                               } failure:^(NSError *error) {
+                                                                   
+                                                                   MXStrongifyAndReturnIfNil(self);
+                                                                   [self removePendingActionMask];
+                                                                   MXLogDebug(@"[RoomParticipantsVC] Leave room %@ failed", self.mxRoom.roomId);
+                                                                   // Alert user
+                                                                   [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                                   
+                                                               }];
+                                                               
+                                                           }]];
+            
+            [currentAlert mxk_setAccessibilityIdentifier:@"RoomParticipantsVCLeaveAlert"];
+            [self presentViewController:currentAlert animated:YES completion:nil];
         }
         else
         {
-            [self kickRoomMember:contact.mxMember withDisplayName:contact.displayName];
+            NSMutableArray *participants;
+            
+            if (section == participantsSection)
+            {
+                if (currentSearchText.length)
+                {
+                    participants = filteredActualParticipants;
+                }
+                else
+                {
+                    participants = actualParticipants;
+                    
+                    if (userParticipant)
+                    {
+                        row --;
+                    }
+                }
+            }
+            else
+            {
+                if (currentSearchText.length)
+                {
+                    participants = filteredInvitedParticipants;
+                }
+                else
+                {
+                    participants = invitedParticipants;
+                }
+            }
+            
+            if (row < participants.count)
+            {
+                Contact *contact = participants[row];
+                MXWeakify(self);
+                
+                if (contact.mxMember)
+                {
+                    NSString *memberUserId = contact.mxMember.userId;
+                    
+                    // Kick ?
+                    NSString *promptMsg = [VectorL10n roomParticipantsRemovePromptMsg:(contact ? contact.displayName : memberUserId)];
+                    currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n roomParticipantsRemovePromptTitle]
+                                                                       message:promptMsg
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+                    
+                    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
+                                                                     style:UIAlertActionStyleCancel
+                                                                   handler:^(UIAlertAction * action) {
+                                                                       
+                                                                       MXStrongifyAndReturnIfNil(self);
+                                                                       self->currentAlert = nil;
+                                                                       
+                                                                   }]];
+                    
+                    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n remove]
+                                                                     style:UIAlertActionStyleDefault
+                                                                   handler:^(UIAlertAction * action) {
+                                                                       
+                                                                       MXStrongifyAndReturnIfNil(self);
+                                                                       self->currentAlert = nil;
+                                                                       
+                                                                       [self addPendingActionMask];
+                                                                       MXWeakify(self);
+                                                                       [self.mxRoom kickUser:memberUserId
+                                                                                      reason:nil
+                                                                                     success:^{
+                                                                                         
+                                                                                         MXStrongifyAndReturnIfNil(self);
+                                                                                         [self removePendingActionMask];
+                                                                                         
+                                                                                         [participants removeObjectAtIndex:row];
+                                                                                         
+                                                                                         // Refresh display
+                                                                                         [self.tableView reloadData];
+                                                                                         
+                                                                                     } failure:^(NSError *error) {
+                                                                                         
+                                                                                         MXStrongifyAndReturnIfNil(self);
+                                                                                         [self removePendingActionMask];
+                                                                                         MXLogDebug(@"[RoomParticipantsVC] Kick %@ failed", memberUserId);
+                                                                                         // Alert user
+                                                                                         [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                                                         
+                                                                                     }];
+                                                                       
+                                                                   }]];
+                }
+                else if (contact.mxThirdPartyInvite)
+                {
+                    // This is a third-party invite
+                    currentAlert = [UIAlertController alertControllerWithTitle:nil
+                                                                       message:[VectorL10n roomParticipantsRemoveThirdPartyInvitePromptMsg]
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+                    
+                    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
+                                                                     style:UIAlertActionStyleCancel
+                                                                   handler:^(UIAlertAction * action) {
+                                                                       
+                                                                       MXStrongifyAndReturnIfNil(self);
+                                                                       self->currentAlert = nil;
+                                                                       
+                                                                   }]];
+                    
+                    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n remove]
+                                                                     style:UIAlertActionStyleDefault
+                                                                   handler:^(UIAlertAction * action) {
+                                                                       
+                                                                       MXStrongifyAndReturnIfNil(self);
+                                                                       self->currentAlert = nil;
+                                                                       
+                                                                       [self addPendingActionMask];
+                                                                       MXWeakify(self);
+                                                                       [self.mxRoom sendStateEventOfType:kMXEventTypeStringRoomThirdPartyInvite
+                                                                                                 content:@{} stateKey:contact.mxThirdPartyInvite.token success:^(NSString *eventId) {
+                                                                                                     
+                                                                                                     MXStrongifyAndReturnIfNil(self);
+                                                                                                     [self removePendingActionMask];
+                                                                                                     
+                                                                                                     [participants removeObjectAtIndex:row];
+                                                                                                     
+                                                                                                     // Refresh display
+                                                                                                     [self.tableView reloadData];
+                                                                                                     
+                                                                                                 } failure:^(NSError *error) {
+                                                                                                     
+                                                                                                     MXStrongifyAndReturnIfNil(self);
+                                                                                                     [self removePendingActionMask];
+                                                                                                     MXLogDebug(@"[RoomParticipantsVC] Revoke 3pid invite failed");
+                                                                                                     // Alert user
+                                                                                                     [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                                                                     
+                                                                                                 }];
+                                                                       
+                                                                   }]];
+                }
+                
+                [currentAlert mxk_setAccessibilityIdentifier:@"RoomParticipantsVCKickAlert"];
+                [self presentViewController:currentAlert animated:YES completion:nil];
+            }
         }
     }
     else if (contact.mxThirdPartyInvite)
@@ -1535,7 +1683,7 @@
                                                                  message:promptMessage
                                                           preferredStyle:UIAlertControllerStyleAlert];
         
-        [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+        [self->currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                                style:UIAlertActionStyleCancel
                                                              handler:^(UIAlertAction * action) {
                                                                  
@@ -1590,7 +1738,7 @@
                                                        message:promptMsg
                                                 preferredStyle:UIAlertControllerStyleAlert];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                      style:UIAlertActionStyleCancel
                                                    handler:^(UIAlertAction * action) {
                                                        
@@ -1647,7 +1795,7 @@
                                                        message:NSLocalizedStringFromTable(@"room_participants_remove_third_party_invite_prompt_msg", @"Vector", nil)
                                                 preferredStyle:UIAlertControllerStyleAlert];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                      style:UIAlertActionStyleCancel
                                                    handler:^(UIAlertAction * action) {
                                                        
@@ -1873,6 +2021,23 @@
     searchBar.text = nil;
     // Leave search
     [searchBar resignFirstResponder];
+}
+
+#pragma mark - RoomParticipantsInviteCoordinatorBridgePresenterDelegate
+
+- (void)roomParticipantsInviteCoordinatorBridgePresenterDidComplete:(RoomParticipantsInviteCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    self->invitePresenter = nil;
+}
+
+- (void)roomParticipantsInviteCoordinatorBridgePresenterDidStartLoading:(RoomParticipantsInviteCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [self addPendingActionMask];
+}
+
+- (void)roomParticipantsInviteCoordinatorBridgePresenterDidEndLoading:(RoomParticipantsInviteCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [self removePendingActionMask];
 }
 
 @end

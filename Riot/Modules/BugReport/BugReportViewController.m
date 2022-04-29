@@ -95,8 +95,8 @@
         _descriptionLabel.text = [VectorL10n bugReportDescription];
     }
     
-    [_cancelButton setTitle:[MatrixKitL10n cancel] forState:UIControlStateNormal];
-    [_cancelButton setTitle:[MatrixKitL10n cancel] forState:UIControlStateHighlighted];
+    [_cancelButton setTitle:[VectorL10n cancel] forState:UIControlStateNormal];
+    [_cancelButton setTitle:[VectorL10n cancel] forState:UIControlStateHighlighted];
     [_sendButton setTitle:[VectorL10n bugReportSend] forState:UIControlStateNormal];
     [_sendButton setTitle:[VectorL10n bugReportSend] forState:UIControlStateHighlighted];
     [_backgroundButton setTitle:[VectorL10n bugReportBackgroundMode] forState:UIControlStateNormal];
@@ -321,44 +321,7 @@
     NSString *url = [NSString stringWithFormat:@"%@%@", bugReportEndpoint, urlSuffix];
     
     bugReportRestClient = [[MXBugReportRestClient alloc] initWithBugReportEndpoint:url];
-
-    // App info
-    bugReportRestClient.appName = BuildSettings.bugReportApplicationId;
-    bugReportRestClient.version = [AppDelegate theDelegate].appVersion;
-    bugReportRestClient.build = [AppDelegate theDelegate].build;
-
-    // Device info
-    bugReportRestClient.deviceModel = [GBDeviceInfo deviceInfo].modelString;
-    bugReportRestClient.deviceOS = [NSString stringWithFormat:@"%@ %@", [[UIDevice currentDevice] systemName], [[UIDevice currentDevice] systemVersion]];
-
-    // User info
-    NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
-    if (mainAccount.mxSession.myUser.userId)
-    {
-        userInfo[@"user_id"] = mainAccount.mxSession.myUser.userId;
-    }
-    if (mainAccount.mxSession.matrixRestClient.credentials.deviceId)
-    {
-        userInfo[@"device_id"] = mainAccount.mxSession.matrixRestClient.credentials.deviceId;
-    }
-
-    userInfo[@"locale"] = [NSLocale preferredLanguages][0];
-    userInfo[@"default_app_language"] = [[NSBundle mainBundle] preferredLocalizations][0]; // The language chosen by the OS
-    userInfo[@"app_language"] = [NSBundle mxk_language] ? [NSBundle mxk_language] : userInfo[@"default_app_language"]; // The language chosen by the user
-
-    // Application settings
-    userInfo[@"lazy_loading"] = [MXKAppSettings standardAppSettings].syncWithLazyLoadOfRoomMembers ? @"ON" : @"OFF";
-
-    NSDate *currentDate = [NSDate date];
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-    userInfo[@"local_time"] = [dateFormatter stringFromDate:currentDate];
-
-    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
-    userInfo[@"utc_time"] = [dateFormatter stringFromDate:currentDate];
-
-    bugReportRestClient.others = userInfo;
-
+    
     // Screenshot
     NSArray<NSURL*> *files;
     if (_screenshot && _sendScreenshot)
@@ -370,56 +333,23 @@
 
         files = @[screenShotFile];
     }
-
-    // Prepare labels to attach to the GitHub issue
-    NSMutableArray<NSString*> *gitHubLabels = [NSMutableArray array];
-    if (_reportCrash)
-    {
-        // Label the GH issue as "crash"
-        [gitHubLabels addObject:@"crash"];
-    }
-
-    // Add a Github label giving information about the version
-    if (bugReportRestClient.version && bugReportRestClient.build)
-    {
-        NSString *build = bugReportRestClient.build;
-        NSString *versionLabel = bugReportRestClient.version;
-
-        // If this is not the app store version, be more accurate on the build origin
-        if ([build isEqualToString:[VectorL10n settingsConfigNoBuildInfo]])
-        {
-            // This is a debug session from Xcode
-            versionLabel = [versionLabel stringByAppendingString:@"-debug"];
-        }
-        else if (build && ![build containsString:@"master"])
-        {
-            // This is a Jenkins build. Add the branch and the build number
-            NSString *buildString = [build stringByReplacingOccurrencesOfString:@" " withString:@"-"];
-            versionLabel = [[versionLabel stringByAppendingString:@"-"] stringByAppendingString:buildString];
-        }
-
-        [gitHubLabels addObject:versionLabel];
-    }
-
+    
     NSMutableString *bugReportDescription = [NSMutableString stringWithString:_bugReportDescriptionTextView.text];
-
-    if (_reportCrash)
-    {
-        // Append the crash dump to the user description in order to ease triaging of GH issues
-        NSString *crashLogFile = [MXLogger crashLog];
-        NSString *crashLog =  [NSString stringWithContentsOfFile:crashLogFile encoding:NSUTF8StringEncoding error:nil];
-        [bugReportDescription appendFormat:@"\n\n\n--------------------------------------------------------------------------------\n\n%@", crashLog];
-    }
-
+    
     // starting a background task to have a bit of extra time in case of user forgets about the report and sends the app to background
     __block UIBackgroundTaskIdentifier operationBackgroundId = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
             [[UIApplication sharedApplication] endBackgroundTask:operationBackgroundId];
             operationBackgroundId = UIBackgroundTaskInvalid;
         }];
     
-    // Submit
-    [bugReportRestClient sendBugReport:bugReportDescription sendLogs:_sendLogs sendCrashLog:_reportCrash sendFiles:files attachGitHubLabels:gitHubLabels progress:^(MXBugReportState state, NSProgress *progress) {
-
+    [bugReportRestClient vc_sendBugReportWithDescription:bugReportDescription
+                                                sendLogs:_sendLogs
+                                            sendCrashLog:_reportCrash
+                                               sendFiles:files
+                                        additionalLabels:nil
+                                            customFields:nil
+                                                progress:^(MXBugReportState state, NSProgress *progress) {
+        
         switch (state)
         {
             case MXBugReportStateProgressZipping:
@@ -436,7 +366,7 @@
 
         self.sendingProgress.progress = progress.fractionCompleted;
 
-    } success:^{
+    } success:^(NSString *reportUrl){
 
         self->bugReportRestClient = nil;
 

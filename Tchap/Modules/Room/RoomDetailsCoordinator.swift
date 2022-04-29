@@ -86,9 +86,7 @@ final class RoomDetailsCoordinator: NSObject, RoomDetailsCoordinatorType {
             titles = [TchapL10n.roomFilesTabTitle]
         } else {
             // We add a tab for the participants list and another for the room settings
-            guard let participantsViewController = RoomParticipantsViewController.instantiate() else {
-                    fatalError("[RoomDetailsCoordinator] Participants or Settings tab could not be loaded")
-            }
+            let participantsViewController = RoomParticipantsViewController()
             
             let settingsViewController = RoomSettingsViewController()
             viewControllers = [participantsViewController, roomFilesViewController, settingsViewController]

@@ -16,7 +16,7 @@
 
 #import "MatrixKit.h"
 
-@class ContactsDataSource;
+@class ContactsDataSourceTchap;
 @protocol ContactsViewControllerDelegate, Style;
 
 /**
@@ -55,7 +55,7 @@
  
  @param listDataSource the data source providing the contacts list.
  */
-- (void)displayList:(nonnull ContactsDataSource*)listDataSource;
+- (void)displayList:(nonnull ContactsDataSourceTchap*)listDataSource;
 
 @end
 

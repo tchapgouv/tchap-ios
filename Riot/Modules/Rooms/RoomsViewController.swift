@@ -39,7 +39,7 @@ extension RoomsViewController {
             self.roomsViewDelegate?.roomsViewControllerDidTapPublicRoomsAccessButton(self)
         }))
         
-        currentAlert.addAction(UIAlertAction(title: Bundle.mxk_localizedString(forKey: "cancel"), style: .cancel, handler: nil))
+        currentAlert.addAction(UIAlertAction(title: VectorL10n.cancel, style: .cancel, handler: nil))
         
         currentAlert.popoverPresentationController?.sourceView = button
         currentAlert.popoverPresentationController?.sourceRect = button.bounds

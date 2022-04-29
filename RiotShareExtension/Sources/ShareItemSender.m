@@ -328,13 +328,13 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         return nil;
     }
     
-    UIAlertController *compressionPrompt = [UIAlertController alertControllerWithTitle:[MatrixKitL10n attachmentSizePromptTitle]
-                                                                               message:[MatrixKitL10n attachmentSizePromptMessage]
+    UIAlertController *compressionPrompt = [UIAlertController alertControllerWithTitle:[VectorL10n attachmentSizePromptTitle]
+                                                                               message:[VectorL10n attachmentSizePromptMessage]
                                                                         preferredStyle:UIAlertControllerStyleActionSheet];
     
     if (compressionSizes.small.fileSize)
     {
-        NSString *title = [MatrixKitL10n attachmentSmall:[MXTools fileSizeToString:compressionSizes.small.fileSize]];
+        NSString *title = [VectorL10n attachmentSmall:[MXTools fileSizeToString:compressionSizes.small.fileSize]];
         
         MXWeakify(self);
         [compressionPrompt addAction:[UIAlertAction actionWithTitle:title style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
@@ -349,7 +349,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     
     if (compressionSizes.medium.fileSize)
     {
-        NSString *title = [MatrixKitL10n attachmentMedium:[MXTools fileSizeToString:compressionSizes.medium.fileSize]];
+        NSString *title = [VectorL10n attachmentMedium:[MXTools fileSizeToString:compressionSizes.medium.fileSize]];
         
         MXWeakify(self);
         [compressionPrompt addAction:[UIAlertAction actionWithTitle:title style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
@@ -366,7 +366,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     // TODO: Remove this condition when issue https://github.com/vector-im/riot-ios/issues/2341 will be fixed.
     if (compressionSizes.large.fileSize && (MAX(compressionSizes.large.imageSize.width, compressionSizes.large.imageSize.height) <= kLargeImageSizeMaxDimension))
     {
-        NSString *title = [MatrixKitL10n attachmentLarge:[MXTools fileSizeToString:compressionSizes.large.fileSize]];
+        NSString *title = [VectorL10n attachmentLarge:[MXTools fileSizeToString:compressionSizes.large.fileSize]];
         
         MXWeakify(self);
         [compressionPrompt addAction:[UIAlertAction actionWithTitle:title style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
@@ -386,7 +386,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     {
         NSString *fileSizeString = [MXTools fileSizeToString:compressionSizes.original.fileSize];
         
-        NSString *title = [MatrixKitL10n attachmentOriginal:fileSizeString];
+        NSString *title = [VectorL10n attachmentOriginal:fileSizeString];
         
         MXWeakify(self);
         [compressionPrompt addAction:[UIAlertAction actionWithTitle:title style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
@@ -399,7 +399,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         }]];
     }
     
-    [compressionPrompt addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+    [compressionPrompt addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                           style:UIAlertActionStyleCancel
                                                         handler:nil]];
     
@@ -654,7 +654,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     {
         if (!RiotSettings.shared.showMediaCompressionPrompt)
         {
-            [MXSDKOptions sharedInstance].videoConversionPresetName = AVCaptureSessionPreset1920x1080;
+            [MXSDKOptions sharedInstance].videoConversionPresetName = AVAssetExportPreset1920x1080;
             sendVideo();
         }
         else
@@ -682,7 +682,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                                                                                   message:[VectorL10n shareExtensionLowQualityVideoMessage:AppInfo.current.displayName]
                                                                            preferredStyle:UIAlertControllerStyleAlert];
         
-        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:MatrixKitL10n.cancel style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:VectorL10n.cancel style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
             // Do nothing
         }];
         UIAlertAction *sendAction = [UIAlertAction actionWithTitle:VectorL10n.shareExtensionSendNow style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {

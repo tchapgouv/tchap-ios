@@ -21,7 +21,7 @@
 
 #import "GeneratedInterface-Swift.h"
 
-@interface DirectoryViewController ()
+@interface DirectoryViewController () <RoomNotificationSettingsCoordinatorBridgePresenterDelegate, RoomContextActionServiceDelegate>
 {
     PublicRoomsDirectoryDataSource *dataSource;
     
@@ -35,7 +35,11 @@
     id kThemeServiceDidChangeThemeNotificationObserver;
 }
 
-@property (nonatomic) AnalyticsScreenTimer *screenTimer;
+@property (nonatomic) AnalyticsScreenTracker *screenTracker;
+
+@property (nonatomic, strong) RoomNotificationSettingsCoordinatorBridgePresenter *roomNotificationSettingsCoordinatorBridgePresenter;
+
+@property (nonatomic, strong) PublicRoomContextMenuProvider *contextMenuProvider;
 
 @end
 
@@ -45,11 +49,14 @@
 {
     [super finalizeInit];
     
+    self.contextMenuProvider = [PublicRoomContextMenuProvider new];
+    self.contextMenuProvider.serviceDelegate = self;
+
     // Setup `MXKViewControllerHandling` properties
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
     
-    self.screenTimer = [[AnalyticsScreenTimer alloc] initWithScreen:AnalyticsScreenRoomDirectory];
+    self.screenTracker = [[AnalyticsScreenTracker alloc] initWithScreen:AnalyticsScreenRoomDirectory];
 }
 
 - (void)viewDidLoad
@@ -119,6 +126,7 @@
     }];
 
     [self.tableView reloadData];
+    [self.screenTracker trackScreen];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -136,8 +144,6 @@
         // the selected room (if any) is highlighted.
         [self refreshCurrentSelectedCell:YES];
     }
-    
-    [self.screenTimer start];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -149,12 +155,6 @@
     }
     
     [super viewWillDisappear:animated];
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    [self.screenTimer stop];
 }
 
 - (void)displayWitDataSource:(PublicRoomsDirectoryDataSource *)dataSource2
@@ -198,36 +198,7 @@
 {
     MXPublicRoom *publicRoom = [dataSource roomAtIndexPath:indexPath];
 
-    // Check whether the user has already joined the selected public room
-    if ([dataSource.mxSession isJoinedOnRoom:publicRoom.roomId])
-    {
-        // Open the public room.
-        [self showRoomWithId:publicRoom.roomId inMatrixSession:dataSource.mxSession];
-    }
-    else
-    {
-        // Preview the public room
-        if (publicRoom.worldReadable)
-        {
-            RoomPreviewData *roomPreviewData = [[RoomPreviewData alloc] initWithPublicRoom:publicRoom andSession:dataSource.mxSession];
-            
-            [self startActivityIndicator];
-            
-            // Try to get more information about the room before opening its preview
-            [roomPreviewData peekInRoom:^(BOOL succeeded) {
-                
-                [self stopActivityIndicator];
-                
-                [self showRoomPreviewWithData:roomPreviewData];
-            }];
-        }
-        else
-        {
-            RoomPreviewData *roomPreviewData = [[RoomPreviewData alloc] initWithPublicRoom:publicRoom andSession:dataSource.mxSession];
-            [self showRoomPreviewWithData:roomPreviewData];
-        }
-        
-    }
+    [self showRoomWithPublicRoom:publicRoom];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -250,11 +221,13 @@
                                                                                   mxSession:mxSession
                                                                            threadParameters:nil
                                                                      presentationParameters:presentationParameters];
+    Analytics.shared.viewRoomTrigger = AnalyticsViewRoomTriggerRoomDirectory;
     [[AppDelegate theDelegate] showRoomWithParameters:parameters];
 }
 
 - (void)showRoomPreviewWithData:(RoomPreviewData*)roomPreviewData
 {
+    Analytics.shared.joinedRoomTrigger = AnalyticsJoinedRoomTriggerRoomDirectory;
     ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:NO stackAboveVisibleViews:NO];
     
     RoomPreviewNavigationParameters *parameters = [[RoomPreviewNavigationParameters alloc] initWithPreviewData:roomPreviewData presentationParameters:presentationParameters];
@@ -363,6 +336,122 @@
         // Hide line separators of empty cells
         self.tableView.tableFooterView = [[UIView alloc] init];;
     }
+}
+
+- (void)showRoomWithPublicRoom:(MXPublicRoom*)publicRoom
+{
+    // Check whether the user has already joined the selected public room
+    if ([dataSource.mxSession isJoinedOnRoom:publicRoom.roomId])
+    {
+        // Open the public room.
+        [self showRoomWithId:publicRoom.roomId inMatrixSession:dataSource.mxSession];
+    }
+    else
+    {
+        // Preview the public room
+        if (publicRoom.worldReadable)
+        {
+            RoomPreviewData *roomPreviewData = [[RoomPreviewData alloc] initWithPublicRoom:publicRoom andSession:dataSource.mxSession];
+            
+            [self startActivityIndicator];
+            
+            // Try to get more information about the room before opening its preview
+            [roomPreviewData peekInRoom:^(BOOL succeeded) {
+                
+                [self stopActivityIndicator];
+                
+                [self showRoomPreviewWithData:roomPreviewData];
+            }];
+        }
+        else
+        {
+            RoomPreviewData *roomPreviewData = [[RoomPreviewData alloc] initWithPublicRoom:publicRoom andSession:dataSource.mxSession];
+            [self showRoomPreviewWithData:roomPreviewData];
+        }
+        
+    }
+}
+
+- (void)changeRoomNotificationSettingsForRoomWithId:(NSString*)roomId
+{
+    MXRoom *room = [dataSource.mxSession roomWithRoomId:roomId];
+    if (room)
+    {
+       // navigate
+        self.roomNotificationSettingsCoordinatorBridgePresenter = [[RoomNotificationSettingsCoordinatorBridgePresenter alloc] initWithRoom:room];
+        self.roomNotificationSettingsCoordinatorBridgePresenter.delegate = self;
+        [self.roomNotificationSettingsCoordinatorBridgePresenter presentFrom:self animated:YES];
+    }
+}
+
+#pragma mark - Context Menu
+
+- (UIContextMenuConfiguration *)tableView:(UITableView *)tableView contextMenuConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath point:(CGPoint)point API_AVAILABLE(ios(13.0))
+{
+    MXPublicRoom *publicRoom = [dataSource roomAtIndexPath:indexPath];
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    
+    if (!publicRoom || !cell)
+    {
+        return nil;
+    }
+    
+    return [self.contextMenuProvider contextMenuConfigurationWith:publicRoom from:cell session:dataSource.mxSession];
+}
+
+- (void)tableView:(UITableView *)tableView willPerformPreviewActionForMenuWithConfiguration:(UIContextMenuConfiguration *)configuration animator:(id<UIContextMenuInteractionCommitAnimating>)animator API_AVAILABLE(ios(13.0))
+{
+    MXPublicRoom *publicRoom = [self.contextMenuProvider publicRoomFrom:configuration.identifier];
+    if (!publicRoom)
+    {
+        return;
+    }
+    
+    [animator addCompletion:^{
+        [self showRoomWithPublicRoom:publicRoom];
+    }];
+}
+
+#pragma mark - RoomContextActionServiceDelegate
+
+- (void)roomContextActionServiceDidJoinRoom:(id<RoomContextActionServiceProtocol>)service
+{
+    // Nothing to do here
+}
+
+- (void)roomContextActionServiceDidLeaveRoom:(id<RoomContextActionServiceProtocol>)service
+{
+    // Nothing to do here
+}
+
+- (void)roomContextActionService:(id<RoomContextActionServiceProtocol>)service presentAlert:(UIAlertController *)alertController
+{
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
+- (void)roomContextActionService:(id<RoomContextActionServiceProtocol>)service updateActivityIndicator:(BOOL)isActive
+{
+    if (isActive)
+    {
+        [self startActivityIndicator];
+    }
+    else
+    {
+        [self stopActivityIndicator];
+    }
+}
+
+- (void)roomContextActionService:(id<RoomContextActionServiceProtocol>)service showRoomNotificationSettingsForRoomWithId:(NSString *)roomId
+{
+    [self changeRoomNotificationSettingsForRoomWithId:roomId];
+}
+
+#pragma mark - RoomNotificationSettingsCoordinatorBridgePresenterDelegate
+
+-(void)roomNotificationSettingsCoordinatorBridgePresenterDelegateDidComplete:(RoomNotificationSettingsCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    self.roomNotificationSettingsCoordinatorBridgePresenter = nil;
 }
 
 @end

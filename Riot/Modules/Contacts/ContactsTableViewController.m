@@ -179,12 +179,7 @@
     
     // Show the contacts access footer if necessary.
     [self updateFooterViewVisibility];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    [self.screenTimer start];
+    [self.screenTracker trackScreen];
 }
 
 - (void)viewDidLayoutSubviews
@@ -209,12 +204,6 @@
         [self.navigationController.view setNeedsLayout]; // force update layout
         [self.navigationController.view layoutIfNeeded]; // to fix height of the navigation bar
     }
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    [self.screenTimer stop];
 }
 
 #pragma mark -
@@ -547,39 +536,39 @@
     }
     else
     {
-        MXWeakify(self);
+//        MXWeakify(self);
         
         // The preparation can take some time so indicate this to the user
         [self startActivityIndicator];
         footerView.isActionEnabled = NO;
         
-        [self->contactsDataSource.mxSession prepareIdentityServiceForTermsWithDefault:RiotSettings.shared.identityServerUrlString
-                                                                              success:^(MXSession *session, NSString *baseURL, NSString *accessToken) {
-            MXStrongifyAndReturnIfNil(self);
-            
-            [self stopActivityIndicator];
-            footerView.isActionEnabled = YES;
-            
-            // Present the terms of the identity server.
-            [self presentIdentityServerTermsWithSession:session baseURL:baseURL andAccessToken:accessToken];
-        } failure:^(NSError *error) {
-            // The error was already logged before the block is called
-            MXStrongifyAndReturnIfNil(self);
-            
-            [self stopActivityIndicator];
-            footerView.isActionEnabled = YES;
-            
-            // Alert the user that something went wrong.
-            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:VectorL10n.findYourContactsIdentityServiceError
-                                                                                     message:nil
-                                                                              preferredStyle:UIAlertControllerStyleAlert];
-            
-            [alertController addAction:[UIAlertAction actionWithTitle:MatrixKitL10n.ok
-                                                                style:UIAlertActionStyleDefault
-                                                              handler:nil]];
-            
-            [self presentViewController:alertController animated:YES completion:nil];
-        }];
+//        [self->contactsDataSource.mxSession prepareIdentityServiceForTermsWithDefault:RiotSettings.shared.identityServerUrlString
+//                                                                              success:^(MXSession *session, NSString *baseURL, NSString *accessToken) {
+//            MXStrongifyAndReturnIfNil(self);
+//            
+//            [self stopActivityIndicator];
+//            footerView.isActionEnabled = YES;
+//            
+//            // Present the terms of the identity server.
+//            [self presentIdentityServerTermsWithSession:session baseURL:baseURL andAccessToken:accessToken];
+//        } failure:^(NSError *error) {
+//            // The error was already logged before the block is called
+//            MXStrongifyAndReturnIfNil(self);
+//            
+//            [self stopActivityIndicator];
+//            footerView.isActionEnabled = YES;
+//            
+//            // Alert the user that something went wrong.
+//            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:VectorL10n.findYourContactsIdentityServiceError
+//                                                                                     message:nil
+//                                                                              preferredStyle:UIAlertControllerStyleAlert];
+//            
+//            [alertController addAction:[UIAlertAction actionWithTitle:VectorL10n.ok
+//                                                                style:UIAlertActionStyleDefault
+//                                                              handler:nil]];
+//            
+//            [self presentViewController:alertController animated:YES completion:nil];
+//        }];
     }
 }
     

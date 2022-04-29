@@ -116,21 +116,20 @@ class DarkTheme: NSObject, Theme {
     
     // Protocols don't support default parameter values and a protocol extension won't work for @objc
     func applyStyle(onNavigationBar navigationBar: UINavigationBar) {
-        applyStyle(onNavigationBar: navigationBar, withModernScrollEdgesAppearance: false)
+        applyStyle(onNavigationBar: navigationBar, withModernScrollEdgeAppearance: false)
     }
     
-    // Note: We are not using UINavigationBarAppearance on iOS 13/14 because of UINavigationBar directly including UISearchBar on their titleView that cause crop issues with UINavigationController pop.
     func applyStyle(onNavigationBar navigationBar: UINavigationBar,
-                    withModernScrollEdgesAppearance modernScrollEdgesAppearance: Bool) {
+                    withModernScrollEdgeAppearance modernScrollEdgeAppearance: Bool) {
         navigationBar.tintColor = tintColor
         
         // On iOS 15 use UINavigationBarAppearance to fix visual issues with the scrollEdgeAppearance style.
-        if #available(iOS 15.0, *) {
+        if #available(iOS 13.0, *) {
             let appearance = UINavigationBarAppearance()
             
             appearance.configureWithOpaqueBackground()
             appearance.backgroundColor = baseColor
-            if !modernScrollEdgesAppearance {
+            if !modernScrollEdgeAppearance {
                 appearance.shadowColor = nil
             }
             appearance.titleTextAttributes = [
@@ -138,7 +137,7 @@ class DarkTheme: NSObject, Theme {
             ]
             
             navigationBar.standardAppearance = appearance
-            navigationBar.scrollEdgeAppearance = modernScrollEdgesAppearance ? nil : appearance
+            navigationBar.scrollEdgeAppearance = modernScrollEdgeAppearance ? nil : appearance
         } else {
             navigationBar.titleTextAttributes = [
                 NSAttributedString.Key.foregroundColor: textPrimaryColor

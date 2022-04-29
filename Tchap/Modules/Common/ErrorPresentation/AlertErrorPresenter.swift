@@ -51,7 +51,7 @@ final class AlertErrorPresenter: ErrorPresenter {
         
         let alert = UIAlertController(title: errorPresentable.title, message: errorPresentable.message, preferredStyle: .alert)
         
-        let okTitle = Bundle.mxk_localizedString(forKey: "ok")
+        let okTitle = VectorL10n.ok
         let okAction = UIAlertAction(title: okTitle, style: .default, handler: nil)
         alert.addAction(okAction)
         

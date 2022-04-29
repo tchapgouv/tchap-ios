@@ -18,8 +18,9 @@
 #import "MatrixKit.h"
 
 @class RootTabEmptyView;
-@class AnalyticsScreenTimer;
-@class AppActivityIndicatorPresenter;
+@class AnalyticsScreenTracker;
+@class UserIndicatorStore;
+@class RecentCellContextMenuProvider;
 
 @protocol SearchBarVisibilityDelegate <NSObject>
 
@@ -104,12 +105,15 @@ FOUNDATION_EXPORT NSString *const RecentsViewControllerDataReadyNotification;
 /**
  The screen timer used for analytics if they've been enabled. The default value is nil.
  */
-@property (nonatomic) AnalyticsScreenTimer *screenTimer;
+@property (nonatomic) AnalyticsScreenTracker *screenTracker;
 
 /**
- Presenter for displaying app-wide activity / loading indicators. If not set, the view controller will use legacy activity indicators
+ A store of user indicators that lets the room present and dismiss indicators without
+ worrying about the presentation context or memory management.
  */
-@property (nonatomic, strong) AppActivityIndicatorPresenter *activityPresenter;
+@property (nonatomic, strong) UserIndicatorStore *userIndicatorStore;
+
+@property (nonatomic, readonly) RecentCellContextMenuProvider *contextMenuProvider;
 
 /**
  Protocol to show/hide search bar from an external component.
@@ -167,6 +171,11 @@ FOUNDATION_EXPORT NSString *const RecentsViewControllerDataReadyNotification;
 - (void)onPlusButtonPressed;
 
 /**
+ Open screen to create a new chat room.
+ */
+- (void)startChat;
+
+/**
  Open screen to create a new room.
  */
 - (void)createNewRoom;
@@ -210,6 +219,11 @@ Enable/disable the notifications for the selected room.
  Show a public room.
  */
 - (void)openPublicRoom:(MXPublicRoom *)publicRoom;
+
+/**
+ Show a room using its roomID
+ */
+- (void)showRoomWithRoomId:(NSString*)roomId inMatrixSession:(MXSession*)matrixSession;
 
 #pragma mark - Scrolling
 

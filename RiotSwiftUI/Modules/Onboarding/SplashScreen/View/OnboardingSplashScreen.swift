@@ -70,7 +70,7 @@ struct OnboardingSplashScreen: View {
                 
                 buttons
                     .padding(.horizontal, 16)
-                    .frame(maxWidth: OnboardingConstants.maxContentWidth)
+                    .frame(maxWidth: OnboardingMetrics.maxContentWidth)
                 Spacer()
             }
             .background(ViewFrameReader(frame: $overlayFrame))
@@ -112,8 +112,11 @@ struct OnboardingSplashScreen: View {
         .background(theme.colors.background.ignoresSafeArea())
         .accentColor(theme.colors.accent)
         .navigationBarHidden(true)
-        .onAppear { startTimer() }
+        .onAppear {
+            startTimer()
+        }
         .onDisappear { stopTimer() }
+        .track(screen: .welcome)
     }
     
     // MARK: - Animation

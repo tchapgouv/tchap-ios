@@ -29,9 +29,12 @@
 
 #import "GeneratedInterface-Swift.h"
 
+#import "DirectoryRecentTableViewCell.h"
+#import "RoomIdOrAliasTableViewCell.h"
+
 NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewControllerDataReadyNotification";
 
-@interface RecentsViewController () </*CreateRoomCoordinatorBridgePresenterDelegate, RoomsDirectoryCoordinatorBridgePresenterDelegate,*/ RoomNotificationSettingsCoordinatorBridgePresenterDelegate/*, DialpadViewControllerDelegate, ExploreRoomCoordinatorBridgePresenterDelegate*/, SearchBarVisibilityDelegate>
+@interface RecentsViewController () </*CreateRoomCoordinatorBridgePresenterDelegate, RoomsDirectoryCoordinatorBridgePresenterDelegate,*/ RoomNotificationSettingsCoordinatorBridgePresenterDelegate/*, DialpadViewControllerDelegate, ExploreRoomCoordinatorBridgePresenterDelegate, SpaceChildRoomDetailBridgePresenterDelegate, RoomContextActionServiceDelegate*/, SearchBarVisibilityDelegate>
 {
     // Tell whether a recents refresh is pending (suspended during editing mode).
     BOOL isRefreshPending;
@@ -51,14 +54,20 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     // when the user selects it.
     UISearchBar *tableSearchBar;
     
+    // Flag indicating whether the view controller is (at least partially) visible and not dissapearing
+    BOOL isViewVisible;
+    
     // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
     __weak id kThemeServiceDidChangeThemeNotificationObserver;
+    
+    // Cancel handler of any ongoing loading indicator
+    UserIndicatorCancel loadingIndicatorCancel;
 }
 
-//@property (nonatomic, strong) CreateRoomCoordinatorBridgePresenter *createRoomCoordinatorBridgePresenter;
-//
-//@property (nonatomic, strong) RoomsDirectoryCoordinatorBridgePresenter *roomsDirectoryCoordinatorBridgePresenter;
-//
+@property (nonatomic, strong) CreateRoomCoordinatorBridgePresenter *createRoomCoordinatorBridgePresenter;
+
+@property (nonatomic, strong) RoomsDirectoryCoordinatorBridgePresenter *roomsDirectoryCoordinatorBridgePresenter;
+
 //@property (nonatomic, strong) ExploreRoomCoordinatorBridgePresenter *exploreRoomsCoordinatorBridgePresenter;
 
 //@property (nonatomic, strong) SpaceFeatureUnavailablePresenter *spaceFeatureUnavailablePresenter;
@@ -66,6 +75,8 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 //@property (nonatomic, strong) CustomSizedPresentationController *customSizedPresentationController;
 
 @property (nonatomic, strong) RoomNotificationSettingsCoordinatorBridgePresenter *roomNotificationSettingsCoordinatorBridgePresenter;
+
+//@property (nonatomic, strong) SpaceChildRoomDetailBridgePresenter *spaceChildPresenter;
 
 @end
 
@@ -119,6 +130,9 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     
     displayedSectionHeaders = [NSMutableArray array];
     
+//    _contextMenuProvider = [RecentCellContextMenuProvider new];
+//    self.contextMenuProvider.serviceDelegate = self;
+
     // Set itself as delegate by default.
     self.delegate = self;
 }
@@ -224,6 +238,8 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 {
     [super destroy];
     
+    //longPressGestureRecognizer = nil;
+    
     if (currentRequest)
     {
         [currentRequest cancel];
@@ -266,6 +282,9 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    isViewVisible = YES;
+    
+    [self.screenTracker trackScreen];
 
     // Reset back user interactions
     self.userInteractionEnabled = YES;
@@ -304,6 +323,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    isViewVisible = NO;
     
     // Leave potential editing mode
     [self cancelEditionMode:NO];
@@ -319,6 +339,8 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         [[NSNotificationCenter defaultCenter] removeObserver:kMXNotificationCenterDidUpdateRulesObserver];
         kMXNotificationCenterDidUpdateRulesObserver = nil;
     }
+    
+    [self stopActivityIndicator];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -337,14 +359,6 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         // the selected room (if any) is highlighted.
         [self refreshCurrentSelectedCell:YES];
 //    }
-    
-    [self.screenTimer start];
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    [self.screenTimer stop];
 }
 
 - (void)viewDidLayoutSubviews
@@ -362,6 +376,14 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 
 - (void)refreshRecentsTable
 {
+    if (!self.recentsUpdateEnabled)
+    {
+        isRefreshNeeded = NO;
+        return;
+    }
+    
+    isRefreshNeeded = NO;
+    
     // Refresh the tabBar icon badges
 //    [[AppDelegate theDelegate].masterTabBarController refreshTabBarBadges];
     
@@ -550,16 +572,16 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     {
         // minging kludge until https://matrix.org/jira/browse/SYN-678 is fixed
         // 'Error when trying to join an empty room should be more explicit'
-        msg = [MatrixKitL10n roomErrorJoinFailedEmptyRoom];
+        msg = [VectorL10n roomErrorJoinFailedEmptyRoom];
     }
     
     [self->currentAlert dismissViewControllerAnimated:NO completion:nil];
     
-    UIAlertController *errorAlert = [UIAlertController alertControllerWithTitle:[MatrixKitL10n roomErrorJoinFailedTitle]
+    UIAlertController *errorAlert = [UIAlertController alertControllerWithTitle:[VectorL10n roomErrorJoinFailedTitle]
                                                                         message:msg
                                                                  preferredStyle:UIAlertControllerStyleAlert];
     
-    [errorAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
+    [errorAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok]
                                                    style:UIAlertActionStyleDefault
                                                  handler:^(UIAlertAction * action) {
         MXStrongifyAndReturnIfNil(self);
@@ -889,6 +911,12 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 
 - (void)showRoomWithRoomId:(NSString*)roomId inMatrixSession:(MXSession*)matrixSession
 {
+    MXRoom *room = [matrixSession roomWithRoomId:roomId];
+    if (room.summary.membership == MXMembershipInvite)
+    {
+        Analytics.shared.joinedRoomTrigger = AnalyticsJoinedRoomTriggerInvite;
+    }
+
     // Avoid multiple openings of rooms
     self.userInteractionEnabled = NO;
 
@@ -908,6 +936,8 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 
 - (void)showRoomPreviewWithData:(RoomPreviewData*)roomPreviewData
 {
+//    Analytics.shared.joinedRoomTrigger = AnalyticsJoinedRoomTriggerRoomDirectory;
+//
 //    // Do not stack views when showing room
 //    ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:NO stackAboveVisibleViews:NO sender:nil sourceView:nil];
 //
@@ -923,17 +953,17 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     self.view.userInteractionEnabled = userInteractionEnabled;
 }
 
-//- (RecentsDataSource*)recentsDataSource
-//{
-//    RecentsDataSource* recentsDataSource = nil;
-//
-//    if ([self.dataSource isKindOfClass:[RecentsDataSource class]])
-//    {
-//        recentsDataSource = (RecentsDataSource*)self.dataSource;
-//    }
-//
-//    return recentsDataSource;
-//}
+- (RecentsDataSource*)recentsDataSource
+{
+    RecentsDataSource* recentsDataSource = nil;
+
+    if ([self.dataSource isKindOfClass:[RecentsDataSource class]])
+    {
+        recentsDataSource = (RecentsDataSource*)self.dataSource;
+    }
+
+    return recentsDataSource;
+}
 
 - (void)showSpaceInviteNotAvailable
 {
@@ -1015,6 +1045,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         }
 
         // Accept invitation
+        Analytics.shared.joinedRoomTrigger = AnalyticsJoinedRoomTriggerInvite;
         [self joinRoom:invitedRoom completion:nil];
     }
     else if ([actionIdentifier isEqualToString:RoomsInviteCell.actionDeclineInvite])
@@ -1039,6 +1070,12 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 
 - (void)dataSource:(MXKDataSource *)dataSource didCellChange:(id)changes
 {
+    if (!self.recentsUpdateEnabled)
+    {
+        [super dataSource:dataSource didCellChange:changes];
+        return;
+    }
+    
     BOOL cellReloaded = NO;
     if ([changes isKindOfClass:NSNumber.class])
     {
@@ -1063,6 +1100,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                     SectionHeaderView *updatedSectionHeaderView = (SectionHeaderView *)updatedHeaderView;
                     sectionHeaderView.headerLabel = updatedSectionHeaderView.headerLabel;
                     sectionHeaderView.accessoryView = updatedSectionHeaderView.accessoryView;
+                    sectionHeaderView.rightAccessoryView = updatedSectionHeaderView.rightAccessoryView;
                 }
             }
         }
@@ -1079,10 +1117,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 //        [[AppDelegate theDelegate].masterTabBarController refreshTabBarBadges];
     }
     
-    if (changes == nil)
-    {
-        [self showEmptyViewIfNeeded];
-    }
+    [self showEmptyViewIfNeeded];
     
     if (dataSource.state == MXKDataSourceStateReady)
     {
@@ -1219,11 +1254,100 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         
         NSString *currentRoomId = editedRoomId;
         
-        [self startActivityIndicator];
-        MXWeakify(self);
+        __weak typeof(self) weakSelf = self;
+        
+        NSString *title, *message;
+        if ([self.mainSession roomWithRoomId:currentRoomId].isDirect)
+        {
+            title = [VectorL10n roomParticipantsLeavePromptTitleForDm];
+            message = [VectorL10n roomParticipantsLeavePromptMsgForDm];
+        }
+        else
+        {
+            title = [VectorL10n roomParticipantsLeavePromptTitle];
+            message = [VectorL10n roomParticipantsLeavePromptMsg];
+        }
+        
+        // confirm leave
+        UIAlertController *leavePrompt = [UIAlertController alertControllerWithTitle:title
+                                                                             message:message
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+        
+        [leavePrompt addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
+                                                        style:UIAlertActionStyleCancel
+                                                      handler:^(UIAlertAction * action) {
+                                                           
+                                                           if (weakSelf)
+                                                           {
+                                                               typeof(self) self = weakSelf;
+                                                               self->currentAlert = nil;
+                                                           }
+                                                           
+                                                       }]];
+        
+        [leavePrompt addAction:[UIAlertAction actionWithTitle:[VectorL10n leave]
+                                                        style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                                             
+                                                             if (weakSelf)
+                                                             {
+                                                                 typeof(self) self = weakSelf;
+                                                                 self->currentAlert = nil;
+                                                                 
+                                                                 // Check whether the user didn't leave the room yet
+                                                                 // TODO: Handle multi-account
+                                                                 MXRoom *room = [self.mainSession roomWithRoomId:currentRoomId];
+                                                                 if (room)
+                                                                 {
+                                                                     [self startActivityIndicatorWithLabel:[VectorL10n roomParticipantsLeaveProcessing]];
+                                                                     // cancel pending uploads/downloads
+                                                                     // they are useless by now
+                                                                     [MXMediaManager cancelDownloadsInCacheFolder:room.roomId];
+                                                                     
+                                                                     // TODO GFO cancel pending uploads related to this room
+                                                                     
+                                                                     MXLogDebug(@"[RecentsViewController] Leave room (%@)", room.roomId);
+                                                                     
+                                                                     [room leave:^{
+                                                                         
+                                                                         if (weakSelf)
+                                                                         {
+                                                                             typeof(self) self = weakSelf;
+                                                                             [self stopActivityIndicator];
+                                                                             [self.userIndicatorStore presentSuccessWithLabel:[VectorL10n roomParticipantsLeaveSuccess]];
+                                                                             // Force table refresh
+                                                                             [self cancelEditionMode:YES];
+                                                                         }
+                                                                         
+                                                                     } failure:^(NSError *error) {
+                                                                         
+                                                                         MXLogDebug(@"[RecentsViewController] Failed to leave room");
+                                                                         if (weakSelf)
+                                                                         {
+                                                                             typeof(self) self = weakSelf;
+                                                                             // Notify the end user
+                                                                             NSString *userId = room.mxSession.myUser.userId;
+                                                                             [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification
+                                                                                                                                 object:error
+                                                                                                                               userInfo:userId ? @{kMXKErrorUserIdKey: userId} : nil];
+                                                                             
+                                                                             [self stopActivityIndicator];
+                                                                             
+                                                                             // Leave editing mode
+                                                                             [self cancelEditionMode:self->isRefreshPending];
+                                                                         }
+                                                                         
+                                                                     }];
+                                                                 }
+                                                                 else
+                                                                 {
+                                                                     // Leave editing mode
+                                                                     [self cancelEditionMode:self->isRefreshPending];
+                                                                 }
+                                                             }
+                                                             
+                                                         }]];
         
         [room tc_isCurrentUserLastAdministrator:^(BOOL isLastAdmin) {
-            MXStrongifyAndReturnIfNil(self);
             [self stopActivityIndicator];
             
             // confirm leave
@@ -1238,7 +1362,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                                                                      message:promptMessage
                                                               preferredStyle:UIAlertControllerStyleAlert];
             
-            [self->currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+            [self->currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                                    style:UIAlertActionStyleCancel
                                                                  handler:^(UIAlertAction * action) {
                                                                      
@@ -1442,6 +1566,55 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     return sectionHeader;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell* cell = [self.recentsTableView cellForRowAtIndexPath:indexPath];
+    
+    if ([cell isKindOfClass:[InviteRecentTableViewCell class]])
+    {
+        id<MXKRecentCellDataStoring> cellData = [self.dataSource cellDataAtIndexPath:indexPath];
+
+        // Retrieve the invited room
+        
+        if (cellData.roomSummary.roomType == MXRoomTypeSpace)
+        {
+            // Indicates that spaces are not supported
+            [self showSpaceInviteNotAvailable];
+        }
+        // Check if can show preview for the invited room 
+        else if ([self canShowRoomPreviewFor:cellData.roomSummary])
+        {
+            // Display the room preview
+            [self showRoomWithRoomId:cellData.roomIdentifier inMatrixSession:cellData.mxSession];
+        }
+        else
+        {
+            [tableView deselectRowAtIndexPath:indexPath animated:NO];
+        }
+    }
+    else if ([cell isKindOfClass:[DirectoryRecentTableViewCell class]])
+    {
+        [self showPublicRoomsDirectory];
+    }
+    else if ([cell isKindOfClass:[RoomIdOrAliasTableViewCell class]])
+    {
+        NSString *roomIdOrAlias = ((RoomIdOrAliasTableViewCell*)cell).titleLabel.text;
+        
+        if (roomIdOrAlias.length)
+        {
+            // Open the room or preview it
+            NSString *fragment = [NSString stringWithFormat:@"/room/%@", [MXTools encodeURIComponent:roomIdOrAlias]];
+            NSURL *url = [NSURL URLWithString:[MXTools permalinkToRoom:fragment]];
+            [[AppDelegate theDelegate] handleUniversalLinkFragment:fragment fromURL:url];
+        }
+        [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    }
+    else
+    {
+        [super tableView:tableView didSelectRowAtIndexPath:indexPath];
+    }
+}
+
 - (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
 {
     if (_enableStickyHeaders)
@@ -1521,6 +1694,454 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 //    }
 }
 
+#pragma mark - Recents drag & drop management
+
+//- (void)setEnableDragging:(BOOL)enableDragging
+//{
+//    _enableDragging = enableDragging;
+//
+//    if (_enableDragging && !longPressGestureRecognizer && self.recentsTableView)
+//    {
+//        longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onRecentsLongPress:)];
+//        [self.recentsTableView addGestureRecognizer:longPressGestureRecognizer];
+//    }
+//    else if (longPressGestureRecognizer)
+//    {
+//        [self.recentsTableView removeGestureRecognizer:longPressGestureRecognizer];
+//        longPressGestureRecognizer = nil;
+//    }
+//}
+//
+//- (void)onRecentsDragEnd
+//{
+//    [cellSnapshot removeFromSuperview];
+//    cellSnapshot = nil;
+//    movingCellPath = nil;
+//    movingRoom = nil;
+//
+//    lastPotentialCellPath = nil;
+//    ((RecentsDataSource*)self.dataSource).droppingCellIndexPath = nil;
+//    ((RecentsDataSource*)self.dataSource).hiddenCellIndexPath = nil;
+//
+//    [self.activityIndicator stopAnimating];
+//}
+
+//- (IBAction)onRecentsLongPress:(id)sender
+//{
+//    if (sender != longPressGestureRecognizer)
+//    {
+//        return;
+//    }
+//    
+//    RecentsDataSource* recentsDataSource = nil;
+//    
+//    if ([self.dataSource isKindOfClass:[RecentsDataSource class]])
+//    {
+//        recentsDataSource = (RecentsDataSource*)self.dataSource;
+//    }
+//    
+//    // only support RecentsDataSource
+//    if (!recentsDataSource)
+//    {
+//        return;
+//    }
+//    
+//    UIGestureRecognizerState state = longPressGestureRecognizer.state;
+//    
+//    // check if there is a moving cell during the long press managemnt
+//    if ((state != UIGestureRecognizerStateBegan) && !movingCellPath)
+//    {
+//        return;
+//    }
+//    
+//    CGPoint location = [longPressGestureRecognizer locationInView:self.recentsTableView];
+//    
+//    switch (state)
+//    {
+//            // step 1 : display the selected cell
+//        case UIGestureRecognizerStateBegan:
+//        {
+//            NSIndexPath *indexPath = [self.recentsTableView indexPathForRowAtPoint:location];
+//            
+//            // check if the cell can be moved
+//            if (indexPath && [recentsDataSource isDraggableCellAt:indexPath])
+//            {
+//                UITableViewCell *cell = [self.recentsTableView cellForRowAtIndexPath:indexPath];
+//                cell.backgroundColor = ThemeService.shared.theme.backgroundColor;
+//                
+//                // snapshot the cell
+//                UIGraphicsBeginImageContextWithOptions(cell.bounds.size, NO, 0);
+//                [cell.layer renderInContext:UIGraphicsGetCurrentContext()];
+//                UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+//                UIGraphicsEndImageContext();
+//                
+//                cellSnapshot = [[UIImageView alloc] initWithImage:image];
+//                recentsDataSource.droppingCellBackGroundView = [[UIImageView alloc] initWithImage:image];
+//                
+//                // display the selected cell over the tableview
+//                CGPoint center = cell.center;
+//                center.y = location.y;
+//                cellSnapshot.center = center;
+//                cellSnapshot.alpha = 0.5f;
+//                [self.recentsTableView addSubview:cellSnapshot];
+//                
+//                // Store the selected room and the original index path of its cell.
+//                movingCellPath = indexPath;
+//                movingRoom = [recentsDataSource getRoomAtIndexPath:movingCellPath];
+//                
+//                lastPotentialCellPath = indexPath;
+//                recentsDataSource.droppingCellIndexPath = indexPath;
+//                recentsDataSource.hiddenCellIndexPath = indexPath;
+//            }
+//            break;
+//        }
+//            
+//            // step 2 : the cell must follow the finger
+//        case UIGestureRecognizerStateChanged:
+//        {
+//            CGPoint center = cellSnapshot.center;
+//            CGFloat halfHeight = cellSnapshot.frame.size.height / 2.0f;
+//            CGFloat cellTop = location.y - halfHeight;
+//            CGFloat cellBottom = location.y + halfHeight;
+//            
+//            CGPoint contentOffset =  self.recentsTableView.contentOffset;
+//            CGFloat height = MIN(self.recentsTableView.frame.size.height, self.recentsTableView.contentSize.height);
+//            CGFloat bottomOffset = contentOffset.y + height;
+//            
+//            // check if the moving cell is trying to move under the tableview
+//            if (cellBottom > self.recentsTableView.contentSize.height)
+//            {
+//                // force the cell to stay at the tableview bottom
+//                location.y = self.recentsTableView.contentSize.height - halfHeight;
+//            }
+//            // check if the cell is moving over the displayed tableview bottom
+//            else if (cellBottom > bottomOffset)
+//            {
+//                CGFloat diff = cellBottom - bottomOffset;
+//                
+//                // moving down the cell
+//                location.y -= diff;
+//                // scroll up the tableview
+//                contentOffset.y += diff;
+//            }
+//            // the moving is tryin to move over the tableview topmost
+//            else if (cellTop < 0)
+//            {
+//                // force to stay in the topmost
+//                contentOffset.y  = 0;
+//                location.y = contentOffset.y + halfHeight;
+//            }
+//            // the moving cell is displayed over the current scroll top
+//            else if (cellTop < contentOffset.y)
+//            {
+//                CGFloat diff = contentOffset.y - cellTop;
+//                
+//                // move up the cell and the table up
+//                location.y -= diff;
+//                contentOffset.y -= diff;
+//            }
+//            
+//            // move the cell to follow the user finger
+//            center.y = location.y;
+//            cellSnapshot.center = center;
+//            
+//            // scroll the tableview if it is required
+//            if (contentOffset.y != self.recentsTableView.contentOffset.y)
+//            {
+//                [self.recentsTableView setContentOffset:contentOffset animated:NO];
+//            }
+//            
+//            NSIndexPath *indexPath = [self.recentsTableView indexPathForRowAtPoint:location];
+//            
+//            if (![indexPath isEqual:lastPotentialCellPath])
+//            {
+//                if ([recentsDataSource canCellMoveFrom:movingCellPath to:indexPath])
+//                {
+//                    [self.recentsTableView beginUpdates];
+//                    if (recentsDataSource.droppingCellIndexPath && recentsDataSource.hiddenCellIndexPath)
+//                    {
+//                        [self.recentsTableView moveRowAtIndexPath:lastPotentialCellPath toIndexPath:indexPath];
+//                    }
+//                    else if (indexPath)
+//                    {
+//                        [self.recentsTableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+//                        [self.recentsTableView deleteRowsAtIndexPaths:@[movingCellPath] withRowAnimation:UITableViewRowAnimationNone];
+//                    }
+//                    recentsDataSource.hiddenCellIndexPath = movingCellPath;
+//                    recentsDataSource.droppingCellIndexPath = indexPath;
+//                    [self.recentsTableView endUpdates];
+//                }
+//                // the cell cannot be moved
+//                else if (recentsDataSource.droppingCellIndexPath)
+//                {
+//                    NSIndexPath* pathToDelete = recentsDataSource.droppingCellIndexPath;
+//                    NSIndexPath* pathToAdd = recentsDataSource.hiddenCellIndexPath;
+//                    
+//                    // remove it
+//                    [self.recentsTableView beginUpdates];
+//                    [self.recentsTableView deleteRowsAtIndexPaths:@[pathToDelete] withRowAnimation:UITableViewRowAnimationNone];
+//                    [self.recentsTableView insertRowsAtIndexPaths:@[pathToAdd] withRowAnimation:UITableViewRowAnimationNone];
+//                    recentsDataSource.droppingCellIndexPath = nil;
+//                    recentsDataSource.hiddenCellIndexPath = nil;
+//                    [self.recentsTableView endUpdates];
+//                }
+//                
+//                lastPotentialCellPath = indexPath;
+//            }
+//            
+//            break;
+//        }
+//            
+//            // step 3 : remove the view
+//            // and insert when it is possible.
+//        case UIGestureRecognizerStateEnded:
+//        {
+//            [cellSnapshot removeFromSuperview];
+//            cellSnapshot = nil;
+//            
+//            [self.activityIndicator startAnimating];
+//            
+//            [recentsDataSource moveRoomCell:movingRoom from:movingCellPath to:lastPotentialCellPath success:^{
+//                
+//                [self onRecentsDragEnd];
+//                
+//            } failure:^(NSError *error) {
+//                
+//                [self onRecentsDragEnd];
+//                
+//            }];
+//            
+//            break;
+//        }
+//            
+//            // default behaviour
+//            // remove the cell and cancel the insertion
+//        default:
+//        {
+//            [self onRecentsDragEnd];
+//            break;
+//        }
+//    }
+//}
+
+#pragma mark - Room handling
+
+- (void)onPlusButtonPressed
+{
+    __weak typeof(self) weakSelf = self;
+    
+    [currentAlert dismissViewControllerAnimated:NO completion:nil];
+    
+    UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    [actionSheet addAction:[UIAlertAction actionWithTitle:[VectorL10n roomRecentsStartChatWith]
+                                                    style:UIAlertActionStyleDefault
+                                                  handler:^(UIAlertAction * action) {
+                                                       
+                                                       if (weakSelf)
+                                                       {
+                                                           typeof(self) self = weakSelf;
+                                                           self->currentAlert = nil;
+                                                           
+                                                           [self startChat];
+                                                       }
+                                                       
+                                                   }]];
+    
+    [actionSheet addAction:[UIAlertAction actionWithTitle:[VectorL10n roomRecentsCreateEmptyRoom]
+                                                    style:UIAlertActionStyleDefault
+                                                  handler:^(UIAlertAction * action) {
+                                                       
+                                                       if (weakSelf)
+                                                       {
+                                                           typeof(self) self = weakSelf;
+                                                           self->currentAlert = nil;
+                                                           
+                                                           [self createNewRoom];
+                                                       }
+                                                       
+                                                   }]];
+    
+    [actionSheet addAction:[UIAlertAction actionWithTitle:[VectorL10n roomRecentsJoinRoom]
+                                                    style:UIAlertActionStyleDefault
+                                                  handler:^(UIAlertAction * action) {
+                                                       
+                                                       if (weakSelf)
+                                                       {
+                                                           typeof(self) self = weakSelf;
+                                                           self->currentAlert = nil;
+                                                           
+                                                           [self joinARoom];
+                                                       }
+                                                       
+                                                   }]];
+    
+    if (self.mainSession.callManager.supportsPSTN)
+    {
+        [actionSheet addAction:[UIAlertAction actionWithTitle:[VectorL10n roomOpenDialpad]
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:^(UIAlertAction * action) {
+        
+                                                       if (weakSelf)
+                                                       {
+                                                           typeof(self) self = weakSelf;
+                                                           self->currentAlert = nil;
+            
+//                                                           [self openDialpad];
+                                                       }
+        
+                                                   }]];
+    }
+
+    [actionSheet addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
+                                                    style:UIAlertActionStyleCancel
+                                                  handler:^(UIAlertAction * action) {
+                                                       
+                                                       if (weakSelf)
+                                                       {
+                                                           typeof(self) self = weakSelf;
+                                                           self->currentAlert = nil;
+                                                       }
+                                                       
+                                                   }]];
+    
+    [actionSheet popoverPresentationController].sourceView = plusButtonImageView;
+    [actionSheet popoverPresentationController].sourceRect = plusButtonImageView.bounds;
+    
+    [actionSheet mxk_setAccessibilityIdentifier:@"RecentsVCCreateRoomAlert"];
+    [self presentViewController:actionSheet animated:YES completion:nil];
+    currentAlert = actionSheet;
+}
+
+//- (void)openDialpad
+//{
+//    DialpadViewController *controller = [DialpadViewController instantiateWithConfiguration:[DialpadConfiguration default]];
+//    controller.delegate = self;
+//    self.customSizedPresentationController = [[CustomSizedPresentationController alloc] initWithPresentedViewController:controller presentingViewController:self];
+//    self.customSizedPresentationController.dismissOnBackgroundTap = NO;
+//    self.customSizedPresentationController.cornerRadius = 16;
+//
+//    controller.transitioningDelegate = self.customSizedPresentationController;
+//    [self presentViewController:controller animated:YES completion:nil];
+//}
+//
+//- (void)dialpadViewControllerDidTapCall:(DialpadViewController *)viewController withPhoneNumber:(NSString *)phoneNumber
+//{
+//    if (self.mainSession.callManager && phoneNumber.length > 0)
+//    {
+//        [self startActivityIndicator];
+//
+//        [viewController dismissViewControllerAnimated:YES completion:^{
+//            MXWeakify(self);
+//            [self.mainSession.callManager placeCallAgainst:phoneNumber withVideo:NO success:^(MXCall * _Nonnull call) {
+//                MXStrongifyAndReturnIfNil(self);
+//                [self stopActivityIndicator];
+//                self.customSizedPresentationController = nil;
+//
+//                //  do nothing extra here. UI will be handled automatically by the CallService.
+//            } failure:^(NSError * _Nullable error) {
+//                MXStrongifyAndReturnIfNil(self);
+//                [self stopActivityIndicator];
+//            }];
+//        }];
+//    }
+//}
+//
+//- (void)dialpadViewControllerDidTapClose:(DialpadViewController *)viewController
+//{
+//    [viewController dismissViewControllerAnimated:YES completion:nil];
+//    self.customSizedPresentationController = nil;
+//}
+
+- (void)startChat {
+    [self performSegueWithIdentifier:@"presentStartChat" sender:self];
+}
+
+- (void)createNewRoom
+{
+    // Sanity check
+    if (self.mainSession)
+    {
+        CreateRoomCoordinatorParameter *parameters = [[CreateRoomCoordinatorParameter alloc] initWithSession:self.mainSession parentSpace: self.dataSource.currentSpace];
+        self.createRoomCoordinatorBridgePresenter = [[CreateRoomCoordinatorBridgePresenter alloc] initWithParameters:parameters];
+        self.createRoomCoordinatorBridgePresenter.delegate = self;
+        [self.createRoomCoordinatorBridgePresenter presentFrom:self animated:YES];
+    }
+}
+
+- (void)joinARoom
+{
+    [self showRoomDirectory];
+}
+
+- (void)showRoomDirectory
+{
+    if (!self.self.mainSession)
+    {
+        MXLogDebug(@"[RecentsViewController] Fail to show room directory, session is nil");
+        return;
+    }
+    // Tchap: Disable Spaces
+/*    if (self.dataSource.currentSpace)
+    {
+        self.exploreRoomsCoordinatorBridgePresenter = [[ExploreRoomCoordinatorBridgePresenter alloc] initWithSession:self.mainSession spaceId:self.dataSource.currentSpace.spaceId];
+        self.exploreRoomsCoordinatorBridgePresenter.delegate = self;
+        [self.exploreRoomsCoordinatorBridgePresenter presentFrom:self animated:YES];
+    }
+    else */if (RiotSettings.shared.roomsAllowToJoinPublicRooms)
+    {
+        self.roomsDirectoryCoordinatorBridgePresenter = [[RoomsDirectoryCoordinatorBridgePresenter alloc] initWithSession:self.mainSession dataSource:[self.recentsDataSource.publicRoomsDirectoryDataSource copy]];
+        self.roomsDirectoryCoordinatorBridgePresenter.delegate = self;
+        [self.roomsDirectoryCoordinatorBridgePresenter presentFrom:self animated:YES];
+    }
+    else
+    {
+        [self createNewRoom];
+    }
+}
+
+- (void)openPublicRoom:(MXPublicRoom *)publicRoom
+{
+    if (!self.recentsDataSource)
+    {
+        MXLogDebug(@"[RecentsViewController] Fail to open public room, dataSource is not kind of class MXKRecentsDataSource");
+        return;
+    }
+    
+    // Check whether the user has already joined the selected public room
+    if ([self.recentsDataSource.publicRoomsDirectoryDataSource.mxSession isJoinedOnRoom:publicRoom.roomId])
+    {
+        Analytics.shared.viewRoomTrigger = AnalyticsViewRoomTriggerRoomDirectory;
+        
+        // Open the public room
+        [self showRoomWithRoomId:publicRoom.roomId
+                 inMatrixSession:self.recentsDataSource.publicRoomsDirectoryDataSource.mxSession];
+    }
+    else
+    {
+        // Preview the public room
+        if (publicRoom.worldReadable)
+        {
+            RoomPreviewData *roomPreviewData = [[RoomPreviewData alloc] initWithPublicRoom:publicRoom andSession:self.recentsDataSource.publicRoomsDirectoryDataSource.mxSession];
+            
+            [self startActivityIndicator];
+
+            // Try to get more information about the room before opening its preview
+            [roomPreviewData peekInRoom:^(BOOL succeeded) {
+                [self stopActivityIndicator];
+                
+                [self showRoomPreviewWithData:roomPreviewData];
+            }];
+        }
+        else
+        {
+            RoomPreviewData *roomPreviewData = [[RoomPreviewData alloc] initWithPublicRoom:publicRoom andSession:self.recentsDataSource.publicRoomsDirectoryDataSource.mxSession];
+            
+            [self showRoomPreviewWithData:roomPreviewData];
+        }
+    }
+}
+
 #pragma mark - Table view scrolling
 
 - (void)scrollToTop:(BOOL)animated
@@ -1587,19 +2208,17 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 
 - (void)recentListViewController:(MXKRecentListViewController *)recentListViewController didSelectRoom:(NSString *)roomId inMatrixSession:(MXSession *)matrixSession
 {
+    Analytics.shared.viewRoomTrigger = AnalyticsViewRoomTriggerRoomList;
     [self showRoomWithRoomId:roomId inMatrixSession:matrixSession];
 }
 
-- (void)recentListViewController:(MXKRecentListViewController *)recentListViewController didSelectSuggestedRoom:(MXSpaceChildInfo *)childInfo
+- (void)recentListViewController:(MXKRecentListViewController *)recentListViewController didSelectSuggestedRoom:(MXSpaceChildInfo *)childInfo from:(UIView* _Nullable)sourceView
 {
-//    RoomPreviewData *previewData = [[RoomPreviewData alloc] initWithSpaceChildInfo:childInfo andSession:self.mainSession];
-//    [self startActivityIndicator];
-//    MXWeakify(self);
-//    [previewData peekInRoom:^(BOOL succeeded) {
-//        MXStrongifyAndReturnIfNil(self);
-//        [self stopActivityIndicator];
-//        [self showRoomPreviewWithData:previewData];
-//    }];
+//    Analytics.shared.joinedRoomTrigger = AnalyticsJoinedRoomTriggerSpaceHierarchy;
+//
+//    self.spaceChildPresenter = [[SpaceChildRoomDetailBridgePresenter alloc] initWithSession:self.mainSession childInfo:childInfo];
+//    self.spaceChildPresenter.delegate = self;
+//    [self.spaceChildPresenter presentFrom:self sourceView:sourceView animated:YES];
 }
 
 #pragma mark - UISearchBarDelegate
@@ -1661,6 +2280,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 //- (void)createRoomCoordinatorBridgePresenterDelegate:(CreateRoomCoordinatorBridgePresenter *)coordinatorBridgePresenter didCreateNewRoom:(MXRoom *)room
 //{
 //    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+//        Analytics.shared.viewRoomTrigger = AnalyticsViewRoomTriggerCreated;
 //        [self showRoomWithRoomId:room.roomId inMatrixSession:self.mainSession];
 //    }];
 //    coordinatorBridgePresenter = nil;
@@ -1804,7 +2424,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 //    else if ([MXTools isMatrixRoomAlias:roomIdOrAlias])
 //    {
 //        // Room preview doesn't support room alias
-//        [[AppDelegate theDelegate] showAlertWithTitle:[MatrixKitL10n error] message:[VectorL10n roomRecentsUnknownRoomErrorMessage]];
+//        [[AppDelegate theDelegate] showAlertWithTitle:[VectorL10n error] message:[VectorL10n roomRecentsUnknownRoomErrorMessage]];
 //    }
 //    else
 //    {
@@ -1829,7 +2449,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 //                }];
 //                self.roomsDirectoryCoordinatorBridgePresenter = nil;
 //            } else {
-//                [[AppDelegate theDelegate] showAlertWithTitle:[MatrixKitL10n error] message:[VectorL10n roomRecentsUnknownRoomErrorMessage]];
+//                [[AppDelegate theDelegate] showAlertWithTitle:[VectorL10n error] message:[VectorL10n roomRecentsUnknownRoomErrorMessage]];
 //            }
 //        }];
 //    }
@@ -1852,26 +2472,59 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     self.roomNotificationSettingsCoordinatorBridgePresenter = nil;
 }
 
+// Tchap: Disable Spaces
+#pragma mark - SpaceChildRoomDetailBridgePresenterDelegate
+//- (void)spaceChildRoomDetailBridgePresenterDidCancel:(SpaceChildRoomDetailBridgePresenter *)coordinator
+//{
+//    [self.spaceChildPresenter dismissWithAnimated:YES completion:^{
+//        self.spaceChildPresenter = nil;
+//    }];
+//}
+//
+//- (void)spaceChildRoomDetailBridgePresenter:(SpaceChildRoomDetailBridgePresenter *)coordinator didOpenRoomWith:(NSString *)roomId
+//{
+//    [self showRoomWithRoomId:roomId inMatrixSession:self.mainSession];
+//
+//    [self.spaceChildPresenter dismissWithAnimated:YES completion:^{
+//        self.spaceChildPresenter = nil;
+//    }];
+//}
+
 #pragma mark - Activity Indicator
 
 - (BOOL)providesCustomActivityIndicator {
-    return NO;//self.activityPresenter != nil;
+    return self.userIndicatorStore != nil;
+}
+
+- (void)startActivityIndicatorWithLabel:(NSString *)label {
+    if (self.userIndicatorStore && isViewVisible) {
+        // The app is very liberal with calling `startActivityIndicator` (often not matched by corresponding `stopActivityIndicator`),
+        // so there is no reason to keep adding new indicators if there is one already showing.
+        if (loadingIndicatorCancel) {
+            return;
+        }
+        
+        MXLogDebug(@"[RecentsViewController] Present loading indicator")
+        loadingIndicatorCancel = [self.userIndicatorStore presentLoadingWithLabel:label isInteractionBlocking:NO];
+    } else {
+        [super startActivityIndicator];
+    }
 }
 
 - (void)startActivityIndicator {
-//    if (self.activityPresenter) {
-//        [self.activityPresenter presentActivityIndicator];
-//    } else {
-        [super startActivityIndicator];
-//    }
+    [self startActivityIndicatorWithLabel:[VectorL10n homeSyncing]];
 }
 
 - (void)stopActivityIndicator {
-//    if (self.activityPresenter) {
-//        [self.activityPresenter removeCurrentActivityIndicatorWithAnimated:YES completion:nil];
-//    } else {
+    if (self.userIndicatorStore) {
+        if (loadingIndicatorCancel) {
+            MXLogDebug(@"[RecentsViewController] Present loading indicator")
+            loadingIndicatorCancel();
+            loadingIndicatorCancel = nil;
+        }
+    } else {
         [super stopActivityIndicator];
-//    }
+    }
 }
 
 #pragma mark - Search Bar
@@ -1909,5 +2562,81 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         [self hideSearchBar:TRUE];
     }
 }
+
+#pragma mark - Context Menu
+
+// Tchap: ContextMenu disabled
+//- (UIContextMenuConfiguration *)tableView:(UITableView *)tableView contextMenuConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath point:(CGPoint)point API_AVAILABLE(ios(13.0))
+//{
+//    id<MXKRecentCellDataStoring> cellData = [self.dataSource cellDataAtIndexPath:indexPath];
+//    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+//
+//    if (!cellData || !cell)
+//    {
+//        return nil;
+//    }
+//
+//    self.recentsUpdateEnabled = NO;
+//    return [self.contextMenuProvider contextMenuConfigurationWith:cellData from:cell session:self.dataSource.mxSession];
+//}
+//
+//- (void)tableView:(UITableView *)tableView willPerformPreviewActionForMenuWithConfiguration:(UIContextMenuConfiguration *)configuration animator:(id<UIContextMenuInteractionCommitAnimating>)animator API_AVAILABLE(ios(13.0))
+//{
+//    NSString *roomId = [self.contextMenuProvider roomIdFrom:configuration.identifier];
+//
+//    if (!roomId)
+//    {
+//        self.recentsUpdateEnabled = YES;
+//        return;
+//    }
+//
+//    [animator addCompletion:^{
+//        self.recentsUpdateEnabled = YES;
+//        [self showRoomWithRoomId:roomId inMatrixSession:self.mainSession];
+//    }];
+//}
+//
+//- (UITargetedPreview *)tableView:(UITableView *)tableView previewForDismissingContextMenuWithConfiguration:(UIContextMenuConfiguration *)configuration API_AVAILABLE(ios(13.0))
+//{
+//    self.recentsUpdateEnabled = YES;
+//    return nil;
+//}
+
+#pragma mark - RoomContextActionServiceDelegate
+
+// Tchap: ContextMenu disabled
+//- (void)roomContextActionServiceDidJoinRoom:(id<RoomContextActionServiceProtocol>)service
+//{
+//    [self showRoomWithRoomId:service.roomId inMatrixSession:service.session];
+//}
+//
+//- (void)roomContextActionServiceDidLeaveRoom:(id<RoomContextActionServiceProtocol>)service
+//{
+//    [self.userIndicatorStore presentSuccessWithLabel:VectorL10n.roomParticipantsLeaveSuccess];
+//}
+//
+//- (void)roomContextActionService:(id<RoomContextActionServiceProtocol>)service presentAlert:(UIAlertController *)alertController
+//{
+//    [self presentViewController:alertController animated:YES completion:nil];
+//}
+//
+//- (void)roomContextActionService:(id<RoomContextActionServiceProtocol>)service updateActivityIndicator:(BOOL)isActive
+//{
+//    if (isActive)
+//    {
+//        [self startActivityIndicator];
+//    }
+//    else if ([self canStopActivityIndicator])
+//    {
+//        [self stopActivityIndicator];
+//    }
+//}
+//
+//- (void)roomContextActionService:(id<RoomContextActionServiceProtocol>)service showRoomNotificationSettingsForRoomWithId:(NSString *)roomId
+//{
+//    editedRoomId = roomId;
+//    [self changeEditedRoomNotificationSettings];
+//    editedRoomId = nil;
+//}
 
 @end

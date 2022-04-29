@@ -243,7 +243,7 @@
 - (void)showFailureAlert:(NSString *)title
 {
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title.length ? title : [VectorL10n roomEventFailedToSend] message:nil preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:[MatrixKitL10n ok] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:[VectorL10n ok] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         if (self.failureBlock)
         {
             self.failureBlock();

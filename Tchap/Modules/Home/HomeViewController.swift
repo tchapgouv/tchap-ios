@@ -133,7 +133,7 @@ final class HomeViewController: UIViewController {
             self.delegate?.homeViewControllerDidTapPublicRoomsAccessButton(self)
         }))
         
-        currentAlert.addAction(UIAlertAction(title: Bundle.mxk_localizedString(forKey: "cancel"), style: .cancel, handler: { action in
+        currentAlert.addAction(UIAlertAction(title: VectorL10n.cancel, style: .cancel, handler: { action in
             
         }))
         

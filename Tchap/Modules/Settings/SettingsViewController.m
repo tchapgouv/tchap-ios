@@ -1622,7 +1622,7 @@ MXKDocumentPickerPresenterDelegate>
                 
                 currentAlert = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_unignore_user", @"Vector", nil), ignoredUserId] message:nil preferredStyle:UIAlertControllerStyleAlert];
 
-                [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"yes"]
+                [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n yes]
                                                                  style:UIAlertActionStyleDefault
                                                                handler:^(UIAlertAction * action) {
                                                                    
@@ -1651,7 +1651,7 @@ MXKDocumentPickerPresenterDelegate>
                                                                    
                                                                }]];
                 
-                [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"no"]
+                [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n no]
                                                                  style:UIAlertActionStyleDefault
                                                                handler:^(UIAlertAction * action) {
                                                                    
@@ -1774,7 +1774,7 @@ MXKDocumentPickerPresenterDelegate>
         
         currentAlert = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_on_denied_notification", @"Vector", nil), appDisplayName] message:nil preferredStyle:UIAlertControllerStyleAlert];
         
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+        [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok]
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * action) {
                                                            
@@ -2072,7 +2072,7 @@ MXKDocumentPickerPresenterDelegate>
         NSString *title = [error.userInfo valueForKey:NSLocalizedFailureReasonErrorKey];
         if (!title)
         {
-            title = [NSBundle mxk_localizedStringForKey:@"settings_fail_to_update_profile"];
+            title = [VectorL10n settingsFailToUpdateProfile];
         }
         NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
         
@@ -2080,7 +2080,7 @@ MXKDocumentPickerPresenterDelegate>
         
         currentAlert = [UIAlertController alertControllerWithTitle:title message:msg preferredStyle:UIAlertControllerStyleAlert];
         
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"abort"]
+        [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n abort]
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * action) {
                                                            
@@ -2100,7 +2100,7 @@ MXKDocumentPickerPresenterDelegate>
                                                            
                                                        }]];
         
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"retry"]
+        [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n retry]
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * action) {
                                                            
@@ -2321,7 +2321,7 @@ MXKDocumentPickerPresenterDelegate>
         
     }];
     
-    UIAlertAction* cancel = [UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
+    UIAlertAction* cancel = [UIAlertAction actionWithTitle:[VectorL10n cancel] style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
         
         MXStrongifyAndReturnIfNil(self);
         self->resetPwdAlertController = nil;
@@ -2459,7 +2459,7 @@ MXKDocumentPickerPresenterDelegate>
                                                                  }]];
             
             
-            [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+            [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                              style:UIAlertActionStyleCancel
                                                            handler:^(UIAlertAction * action) {
                                                                
@@ -2568,7 +2568,7 @@ MXKDocumentPickerPresenterDelegate>
                                         message:NSLocalizedStringFromTable(@"settings_key_backup_delete_confirmation_prompt_msg", @"Vector", nil)
                                  preferredStyle:UIAlertControllerStyleAlert];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                      style:UIAlertActionStyleCancel
                                                    handler:^(UIAlertAction * action) {
                                                        MXStrongifyAndReturnIfNil(self);
