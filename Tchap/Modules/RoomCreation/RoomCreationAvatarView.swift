@@ -22,21 +22,12 @@ protocol RoomCreationAvatarViewDelegate: AnyObject {
 }
 
 final class RoomCreationAvatarView: UIView, NibLoadable {
-    
-    // MARK: - Constants
-    
-    private enum Constants {
-        static let hexagonBorderWidthDefault: CGFloat = 1.0
-    }
-    
+
     // MARK: - Properties
     
     @IBOutlet private weak var backgroundView: UIView!
     @IBOutlet private weak var addButton: UIButton!
     @IBOutlet private weak var imageView: UIImageView!
-    
-    private var hexagonBorderColor: UIColor = UIColor.clear
-    private var hexagonBorderWidth: CGFloat = Constants.hexagonBorderWidthDefault
     
     weak var delegate: RoomCreationAvatarViewDelegate?
     
@@ -69,8 +60,6 @@ final class RoomCreationAvatarView: UIView, NibLoadable {
     }
     
     func setAvatarBorder(color: UIColor, width: CGFloat) {
-        self.hexagonBorderColor = color
-        self.hexagonBorderWidth = width
         self.updateBackgroundView()
         self.update(theme: ThemeService.shared().theme)
     }
@@ -91,7 +80,7 @@ final class RoomCreationAvatarView: UIView, NibLoadable {
     }
     
     private func updateBackgroundView () {
-        self.backgroundView.tc_makeHexagon(borderWidth: self.hexagonBorderWidth, borderColor: self.hexagonBorderColor)
+        self.backgroundView.tc_makeCircle()
     }
     
     // MARK: - Actions

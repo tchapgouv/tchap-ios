@@ -17,13 +17,6 @@
 import UIKit
 
 class RoomsRoomCell: RoomsCell {
-    // MARK: - Constants
-    
-    private enum Constants {
-        static let hexagonImageBorderWidthDefault: CGFloat = 1.0
-        static let hexagonImageBorderWidthUnrestricted: CGFloat = 5.0
-    }
-    
     @IBOutlet private weak var roomCategory: UILabel!
     @IBOutlet private weak var lastEventSenderName: UILabel!
     
@@ -87,28 +80,7 @@ class RoomsRoomCell: RoomsCell {
     }
     
     private func updateAvatarView () {
-        let avatarBorderColor: UIColor
-        let avatarBorderWidth: CGFloat
-        
-        // Set the right avatar border
-        if let roomSummary = self.roomCellData?.roomSummary as? MXRoomSummary {
-            switch roomSummary.tc_roomAccessRule() {
-            case .restricted:
-                avatarBorderColor = ThemeService.shared().theme.borderMain
-                avatarBorderWidth = Constants.hexagonImageBorderWidthDefault
-            case .unrestricted:
-                avatarBorderColor = ThemeService.shared().theme.borderSecondary
-                avatarBorderWidth = Constants.hexagonImageBorderWidthUnrestricted
-            default:
-                avatarBorderColor = UIColor.clear
-                avatarBorderWidth = Constants.hexagonImageBorderWidthDefault
-            }
-        } else {
-            avatarBorderColor = UIColor.clear
-            avatarBorderWidth = Constants.hexagonImageBorderWidthDefault
-        }
-        
-        self.avatarView.tc_makeHexagon(borderWidth: avatarBorderWidth, borderColor: avatarBorderColor)
+        self.avatarView.tc_makeCircle()
     }
     
     // swiftlint:disable force_cast

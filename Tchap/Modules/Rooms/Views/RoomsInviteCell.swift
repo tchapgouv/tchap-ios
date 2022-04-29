@@ -21,10 +21,6 @@ import UIKit
     static let actionJoinInvite = "actionJoinInvite"
     static let actionDeclineInvite = "actionDeclineInvite"
     static let keyRoom = "keyRoom"
-    
-    private enum Constants {
-        static let hexagonImageBorderWidth: CGFloat = 1.0
-    }
 
     @IBOutlet private weak var domainLabel: UILabel!
     @IBOutlet private weak var leftButton: UIButton!
@@ -46,12 +42,8 @@ import UIKit
         
         self.leftButton.layer.cornerRadius = 5
         self.rightButton.layer.cornerRadius = 5
-        
-        if isDirectChat {
-            self.avatarView.tc_makeCircle()
-        } else {
-            self.avatarView.tc_makeHexagon(borderWidth: Constants.hexagonImageBorderWidth, borderColor: ThemeService.shared().theme.textSecondaryColor)
-        }
+
+        self.avatarView.tc_makeCircle()
     }
     
     override func render(_ cellData: MXKCellData!) {

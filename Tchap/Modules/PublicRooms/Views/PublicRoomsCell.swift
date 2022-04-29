@@ -18,11 +18,6 @@ import UIKit
 import Reusable
 
 @objcMembers class PublicRoomsCell: UITableViewCell, NibReusable {
-    
-    private enum Constants {
-        static let hexagonImageBorderWidth: CGFloat = 1.0
-    }
-    
     @IBOutlet private(set) weak var avatarView: MXKImageView!
     @IBOutlet private(set) weak var roomDisplayName: UILabel!
     @IBOutlet private(set) weak var roomTopic: UILabel!
@@ -42,8 +37,7 @@ import Reusable
         super.layoutSubviews()
         
         // All the public rooms are restricted
-        self.avatarView.tc_makeHexagon(borderWidth: Constants.hexagonImageBorderWidth,
-                                       borderColor: ThemeService.shared().theme.borderMain)
+        self.avatarView.tc_makeCircle()
     }
     
     func render(publicRoom: MXPublicRoom, using mediaManager: MXMediaManager) {
