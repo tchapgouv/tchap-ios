@@ -65,7 +65,7 @@ final class EnterNewRoomDetailsViewController: UIViewController {
         item.isEnabled = false
         return item
     }()
-    private var screenTracker = AnalyticsScreenTracker(screen: .createRoom)
+//    private var screenTracker = AnalyticsScreenTracker(screen: .createRoom)
     
     private enum RowType {
         case `default`
@@ -280,7 +280,7 @@ final class EnterNewRoomDetailsViewController: UIViewController {
         super.viewWillAppear(animated)
         
         self.keyboardAvoider?.startAvoiding()
-        screenTracker.trackScreen()
+//        screenTracker.trackScreen()
     }
     
     override func viewDidDisappear(_ animated: Bool) {

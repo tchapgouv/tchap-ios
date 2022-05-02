@@ -43,7 +43,7 @@ final class RoomInfoListViewController: UIViewController {
     private var indicatorPresenter: UserIndicatorTypePresenterProtocol!
     private var loadingIndicator: UserIndicator?
     private var isRoomDirect: Bool = false
-    private var screenTracker = AnalyticsScreenTracker(screen: .roomDetails)
+//    private var screenTracker = AnalyticsScreenTracker(screen: .roomDetails)
     
     private lazy var closeButton: CloseButton = {
         let button = CloseButton()
@@ -136,7 +136,7 @@ final class RoomInfoListViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        screenTracker.trackScreen()
+//        screenTracker.trackScreen()
     }
     
     override func viewDidLayoutSubviews() {
@@ -159,6 +159,7 @@ final class RoomInfoListViewController: UIViewController {
     // MARK: - Private
     
     private func updateSections(with viewData: RoomInfoListViewData) {
+        isRoomDirect = viewData.isDirect
         basicInfoView.configure(withViewData: viewData.basicInfoViewData)
         
         var tmpSections: [Section] = []
@@ -183,15 +184,20 @@ final class RoomInfoListViewController: UIViewController {
             self.viewModel.process(viewAction: .navigate(target: .integrations))
         }
         
-        var rows = [rowSettings]
+        var rows: [Row] = []
         
+        if !isRoomDirect {
+            rows.append(rowSettings)
+        }
         if BuildSettings.showNotificationsV2 {
             rows.append(roomNotifications)
         }
         if RiotSettings.shared.roomInfoScreenShowIntegrations {
             rows.append(rowIntegrations)
         }
-        rows.append(rowMembers)
+        if !isRoomDirect {
+            rows.append(rowMembers)
+        }
         rows.append(rowUploads)
         rows.append(rowSearch)
 
