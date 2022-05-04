@@ -55,8 +55,9 @@ enum
     ROOM_SETTINGS_MAIN_SECTION_ROW_DIRECT_CHAT,
     ROOM_SETTINGS_MAIN_SECTION_ROW_MUTE_NOTIFICATIONS,
     ROOM_SETTINGS_MAIN_SECTION_ROW_LEAVE,
-    //Tchap: Specific row in room settings
-    ROOM_SETTINGS_MAIN_SECTION_ROW_ACCESS_BY_LINK
+    //Tchap: Specific rows in room settings
+    ROOM_SETTINGS_MAIN_SECTION_ROW_ACCESS_BY_LINK,
+    ROOM_SETTINGS_MAIN_SECTION_ROW_ACCESS_RULE
 };
 
 enum
@@ -152,7 +153,6 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     TableViewCellWithCheckBoxAndLabel *accessInvitedOnlyTickCell;
     TableViewCellWithCheckBoxAndLabel *accessAnyoneApartGuestTickCell;
     TableViewCellWithCheckBoxAndLabel *accessAnyoneTickCell;
-    UISwitch *directoryVisibilitySwitch;
     MXRoomDirectoryVisibility actualDirectoryVisibility;
     MXHTTPOperation* actualDirectoryVisibilityRequest;
     
@@ -543,6 +543,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         [sectionMain addRowWithTag:ROOM_SETTINGS_MAIN_SECTION_ROW_MUTE_NOTIFICATIONS];
     }
     [sectionMain addRowWithTag:ROOM_SETTINGS_MAIN_SECTION_ROW_ACCESS_BY_LINK];
+    [sectionMain addRowWithTag:ROOM_SETTINGS_MAIN_SECTION_ROW_ACCESS_RULE];
     [sectionMain addRowWithTag:ROOM_SETTINGS_MAIN_SECTION_ROW_LEAVE];
     [tmpSections addObject:sectionMain];
     
@@ -1148,46 +1149,42 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     }
     
     // Trigger a new request to check the actual directory visibility
-    __weak typeof(self) weakSelf = self;
-    
+    MXWeakify(self);
     actualDirectoryVisibilityRequest = [mxRoom directoryVisibility:^(MXRoomDirectoryVisibility directoryVisibility) {
         
-        if (weakSelf)
-        {
-            typeof(self) self = weakSelf;
+        MXStrongifyAndReturnIfNil(self);
+        
+        // Return when the visibility is already known
+        if ([self->actualDirectoryVisibility isEqualToString:directoryVisibility]) {
             self->actualDirectoryVisibilityRequest = nil;
-            
-            self->actualDirectoryVisibility = directoryVisibility;
-            
-            // Update the value of the displayed toggle button (if any)
-            if (self->directoryVisibilitySwitch)
+            return;
+        }
+        
+        self->actualDirectoryVisibility = directoryVisibility;
+        
+        // Check a potential user's change before the end of the request
+        MXRoomDirectoryVisibility modifiedDirectoryVisibility = [self->updatedItemsDict objectForKey:kRoomSettingsDirectoryKey];
+        if (modifiedDirectoryVisibility)
+        {
+            if ([modifiedDirectoryVisibility isEqualToString:directoryVisibility])
             {
-                // Check a potential user's change before the end of the request
-                MXRoomDirectoryVisibility modifiedDirectoryVisibility = self->updatedItemsDict[kRoomSettingsDirectoryKey];
-                if (modifiedDirectoryVisibility)
-                {
-                    if ([modifiedDirectoryVisibility isEqualToString:directoryVisibility])
-                    {
-                        // The requested change corresponds to the actual settings
-                        [self->updatedItemsDict removeObjectForKey:kRoomSettingsDirectoryKey];
-                        
-                        [self getNavigationItem].rightBarButtonItem.enabled = (self->updatedItemsDict.count != 0);
-                    }
-                }
-                
-                self->directoryVisibilitySwitch.on = ([directoryVisibility isEqualToString:kMXRoomDirectoryVisibilityPublic]);
+                // The requested change corresponds to the actual settings
+                [self->updatedItemsDict removeObjectForKey:kRoomSettingsDirectoryKey];
+
+                [self getNavigationItem].rightBarButtonItem.enabled = (self->updatedItemsDict.count != 0);
             }
         }
+        
+        // Force a refresh
+        [self refreshRoomSettings];
+        self->actualDirectoryVisibilityRequest = nil;
         
     } failure:^(NSError *error) {
         
         MXLogDebug(@"[RoomSettingsViewController] request to get directory visibility failed");
+        MXStrongifyAndReturnIfNil(self);
+        self->actualDirectoryVisibilityRequest = nil;
         
-        if (weakSelf)
-        {
-            typeof(self) self = weakSelf;
-            self->actualDirectoryVisibilityRequest = nil;
-        }
     }];
 }
 
@@ -2531,6 +2528,51 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
 
             cell = roomAccessByLink;
         }
+        else if (row == ROOM_SETTINGS_MAIN_SECTION_ROW_ACCESS_RULE)
+        {
+            // Retrieve the current room access rule
+            NSString *roomAccessRule = [mxRoom.summary tc_roomAccessRuleIdentifier];
+
+            // Check whether the current user is room admin
+            BOOL isAdmin = (oneSelfPowerLevel >= RoomPowerLevelAdmin);
+
+            // The room admin is allowed to open a room to the external users, except if the room is published to the rooms directory.
+            if ([roomAccessRule isEqualToString:RoomService.roomAccessRuleRestricted]
+                    && isAdmin
+                    && actualDirectoryVisibility && ![actualDirectoryVisibility isEqualToString:kMXRoomDirectoryVisibilityPublic]) {
+                MXKTableViewCellWithLabelAndSwitch *allowExternalMembersCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+
+                allowExternalMembersCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_settings_allow_external_users_to_join", @"Tchap", nil);
+                allowExternalMembersCell.mxkSwitch.on = NO;
+                [allowExternalMembersCell.mxkSwitch addTarget:self action:@selector(toggleRoomAccessRule:) forControlEvents:UIControlEventValueChanged];
+
+                cell = allowExternalMembersCell;
+            }
+            else
+            {
+                MXKTableViewCell *roomAccessInfo = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier] forIndexPath:indexPath];
+
+                NSString *title = NSLocalizedStringFromTable(@"room_settings_room_access_title", @"Tchap", nil);
+                // Display a summary according to the room access rule value
+                NSString *summary = roomAccessRule ? NSLocalizedStringFromTable(@"room_settings_room_access_restricted", @"Tchap", nil) : @"";
+                if ([roomAccessRule isEqualToString:RoomService.roomAccessRuleUnrestricted]) {
+                    summary = NSLocalizedStringFromTable(@"room_settings_room_access_unrestricted", @"Tchap", nil);
+                }
+                NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString: title
+                                                                                                   attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
+                                                                                                           NSFontAttributeName: [UIFont systemFontOfSize:17.0]}];
+                [attributedText appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n\n" attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:4]}]];
+                [attributedText appendAttributedString:[[NSMutableAttributedString alloc] initWithString: summary
+                                                                                              attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textSecondaryColor,
+                                                                                                      NSFontAttributeName: [UIFont systemFontOfSize:14.0]}]];
+
+                roomAccessInfo.textLabel.numberOfLines = 0;
+                roomAccessInfo.textLabel.attributedText = attributedText;
+                roomAccessInfo.selectionStyle = UITableViewCellSelectionStyleNone;
+
+                cell = roomAccessInfo;
+            }
+        }
         else if (row == ROOM_SETTINGS_MAIN_SECTION_ROW_LEAVE)
         {
             MXKTableViewCellWithButton *leaveCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier] forIndexPath:indexPath];
@@ -2577,9 +2619,6 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             // Check whether the user can change this option
             directoryToggleCell.mxkSwitch.enabled = (oneSelfPowerLevel >= powerLevels.stateDefault);
-            
-            // Store the switch to be able to update it
-            directoryVisibilitySwitch = directoryToggleCell.mxkSwitch;
             
             cell = directoryToggleCell;
         }
@@ -2725,9 +2764,6 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             // Check whether the user can change this option
             directoryToggleCell.mxkSwitch.enabled = (oneSelfPowerLevel >= powerLevels.stateDefault);
-            
-            // Store the switch to be able to update it
-            directoryVisibilitySwitch = directoryToggleCell.mxkSwitch;
             
             cell = directoryToggleCell;
         }
@@ -3124,12 +3160,6 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     
     cell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
     [cell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventValueChanged];
-    
-    // Reset the stored `directoryVisibilitySwitch` if the corresponding cell is reused.
-    if (cell.mxkSwitch == directoryVisibilitySwitch)
-    {
-        directoryVisibilitySwitch = nil;
-    }
     
     // Force layout before reusing a cell (fix switch displayed outside the screen)
     [cell layoutIfNeeded];
@@ -3872,6 +3902,90 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     }
     
     [self getNavigationItem].rightBarButtonItem.enabled = (updatedItemsDict.count != 0);
+}
+
+- (void)toggleRoomAccessRule:(UISwitch*)theSwitch
+{
+    // Prompt the user before opening the room to the external users
+    MXWeakify(self);
+    [currentAlert dismissViewControllerAnimated:NO completion:nil];
+
+    currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"warning", @"Vector", nil)
+                                                       message:NSLocalizedStringFromTable(@"room_settings_allow_external_users_to_join_prompt_msg", @"Tchap", nil)
+                                                preferredStyle:UIAlertControllerStyleAlert];
+
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n yes]
+                                                     style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction * action) {
+
+                                                       MXStrongifyAndReturnIfNil(self);
+                                                       self->currentAlert = nil;
+                                                       [self allowExternalsToJoin];
+
+                                                   }]];
+
+
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
+                                                     style:UIAlertActionStyleCancel
+                                                   handler:^(UIAlertAction * action) {
+
+                                                       MXStrongifyAndReturnIfNil(self);
+                                                       self->currentAlert = nil;
+                                                       // Reset the switch change
+                                                       theSwitch.on = NO;
+
+                                                   }]];
+
+    [currentAlert mxk_setAccessibilityIdentifier:@"RoomSettingsVCRoomAccessAlert"];
+    [self presentViewController:currentAlert animated:YES completion:nil];
+}
+
+- (void)allowExternalsToJoin
+{
+    [self startActivityIndicator];
+    MXWeakify(self);
+
+    pendingOperation = [self->mxRoom sendStateEventOfType:RoomService.roomAccessRulesStateEventType
+                                                  content:@{
+                                                          RoomService.roomAccessRulesContentRuleKey:
+                                                          RoomService.roomAccessRuleUnrestricted
+                                                  }
+                                                 stateKey:@""
+                                                  success:^(NSString *eventId) {
+
+                                                      MXStrongifyAndReturnIfNil(self);
+                                                      self->pendingOperation = nil;
+                                                      [self stopActivityIndicator];
+                                                      [self refreshRoomSettings];
+
+                                                  }
+                                                  failure:^(NSError *error){
+
+                                                      NSLog(@"[RoomSettingsViewController] Update room access rule failed");
+                                                      MXStrongifyAndReturnIfNil(self);
+                                                      self->pendingOperation = nil;
+                                                      [self stopActivityIndicator];
+                                                      // Alert user
+                                                      NSDictionary *dict = error.userInfo;
+                                                      if (dict)
+                                                      {
+                                                          NSString* errCode = [dict valueForKey:@"errcode"];
+                                                          if (errCode)
+                                                          {
+                                                              if ([errCode isEqualToString:kMXErrCodeStringForbidden] && ![self->mxRoomState.joinRule isEqualToString:kMXRoomJoinRuleInvite])
+                                                              {
+                                                                  NSMutableDictionary *customInfo = [NSMutableDictionary dictionaryWithDictionary:dict];
+                                                                  customInfo[NSLocalizedFailureReasonErrorKey] = NSLocalizedStringFromTable(@"error_title_default", @"Tchap", nil);
+                                                                  customInfo[NSLocalizedDescriptionKey] = NSLocalizedStringFromTable(@"room_settings_allow_external_users_forbidden", @"Tchap", nil);
+                                                                  NSError *customError = [NSError errorWithDomain:error.domain code:error.code userInfo:customInfo];
+                                                                  error = customError;
+                                                              }
+                                                          }
+                                                      }
+                                                      [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                                      [self refreshRoomSettings];
+
+                                                  }];
 }
 
 - (void)showRoomAccessFlow
