@@ -48,7 +48,7 @@ final class SideMenuViewController: UIViewController {
     private var keyboardAvoider: KeyboardAvoider?
     private var errorPresenter: MXKErrorPresentation!
     private var activityPresenter: ActivityIndicatorPresenter!
-//    private var screenTracker = AnalyticsScreenTracker(screen: .sidebar)
+    private var screenTracker = AnalyticsScreenTracker(screen: .sidebar)
     
     private var sideMenuActionViews: [SideMenuActionView] = []
     private weak var sideMenuVersionView: SideMenuVersionView?
@@ -86,7 +86,7 @@ final class SideMenuViewController: UIViewController {
         super.viewWillAppear(animated)
         
         navigationController?.setNavigationBarHidden(true, animated: animated)
-//        screenTracker.trackScreen()
+        screenTracker.trackScreen()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {

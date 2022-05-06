@@ -43,7 +43,7 @@ final class RoomInfoListViewController: UIViewController {
     private var indicatorPresenter: UserIndicatorTypePresenterProtocol!
     private var loadingIndicator: UserIndicator?
     private var isRoomDirect: Bool = false
-//    private var screenTracker = AnalyticsScreenTracker(screen: .roomDetails)
+    private var screenTracker = AnalyticsScreenTracker(screen: .roomDetails)
     
     private lazy var closeButton: CloseButton = {
         let button = CloseButton()
@@ -136,7 +136,7 @@ final class RoomInfoListViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-//        screenTracker.trackScreen()
+        screenTracker.trackScreen()
     }
     
     override func viewDidLayoutSubviews() {

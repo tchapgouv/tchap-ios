@@ -42,11 +42,11 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
         participants.mxRoom = self.room
         participants.parentSpaceId = self.parentSpaceId
         participants.delegate = self
-//        participants.screenTracker = AnalyticsScreenTracker(screen: .roomMembers)
+        participants.screenTracker = AnalyticsScreenTracker(screen: .roomMembers)
         
         let files = RoomFilesViewController()
         files.finalizeInit()
-//        files.screenTracker = AnalyticsScreenTracker(screen: .roomUploads)
+        files.screenTracker = AnalyticsScreenTracker(screen: .roomUploads)
         MXKRoomDataSource.load(withRoomId: self.room.roomId, andMatrixSession: self.session) { (dataSource) in
             guard let dataSource = dataSource as? MXKRoomDataSource else { return }
             dataSource.filterMessagesWithURL = true
@@ -58,7 +58,7 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
         let settings = RoomSettingsViewController()
         settings.delegate = self
         settings.finalizeInit()
-//        settings.screenTracker = AnalyticsScreenTracker(screen: .roomSettings)
+        settings.screenTracker = AnalyticsScreenTracker(screen: .roomSettings)
         settings.initWith(self.session, andRoomId: self.room.roomId)
         
         if self.room.isDirect {
@@ -187,7 +187,7 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
             if case .uploads = target, room.isDirect {
                 let files = RoomFilesViewController()
                 files.finalizeInit()
-//                files.screenTracker = AnalyticsScreenTracker(screen: .roomUploads)
+                files.screenTracker = AnalyticsScreenTracker(screen: .roomUploads)
                 MXKRoomDataSource.load(withRoomId: self.room.roomId, andMatrixSession: self.session) { (dataSource) in
                     guard let dataSource = dataSource as? MXKRoomDataSource else { return }
                     dataSource.filterMessagesWithURL = true

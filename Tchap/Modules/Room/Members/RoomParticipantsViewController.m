@@ -287,7 +287,7 @@
     // Refresh display
     [self refreshTableView];
     
-    //[self.screenTracker trackScreen];
+    [self.screenTracker trackScreen];
 }
 
 - (void)viewDidAppear:(BOOL)animated

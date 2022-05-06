@@ -603,15 +603,15 @@ static CGSize kThreadListBarButtonItemImageSize;
     [super viewDidAppear:animated];
     
     // Screen tracking
-//    MXRoomSummary *summary = [self.mainSession roomWithRoomId:self.roomDataSource.roomId].summary;
-//    if (!summary || !summary.isJoined)
-//    {
-//        [AnalyticsScreenTracker trackScreen: AnalyticsScreenRoomPreview];
-//    }
-//    else
-//    {
-//        [AnalyticsScreenTracker trackScreen: AnalyticsScreenRoom];
-//    }
+    MXRoomSummary *summary = [self.mainSession roomWithRoomId:self.roomDataSource.roomId].summary;
+    if (!summary || !summary.isJoined)
+    {
+        [AnalyticsScreenTracker trackScreen: AnalyticsScreenRoomPreview];
+    }
+    else
+    {
+        [AnalyticsScreenTracker trackScreen: AnalyticsScreenRoom];
+    }
 
     isAppeared = YES;
     [self checkReadMarkerVisibility];
