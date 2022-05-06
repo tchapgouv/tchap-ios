@@ -234,13 +234,13 @@ private extension RoomAccessByLinkViewController {
             ThemeService.shared().theme.applyStyle(onNavigationBar: navigationBar)
         }
         
-        self.roomAccessByLinkStatusLabel.textColor = ThemeService.shared().theme.textTertiaryColor
+        self.roomAccessByLinkStatusLabel.textColor = ThemeService.shared().theme.tintColor
         self.roomLinkInfoLabel.textColor = ThemeService.shared().theme.textSecondaryColor
         self.roomLinkLabel.textColor = ThemeService.shared().theme.headerTextPrimaryColor
         self.roomLinkBackgroundView.backgroundColor = ThemeService.shared().theme.headerBackgroundColor
+        self.roomAccessByLinkSwitch.onTintColor = ThemeService.shared().theme.tintColor
         
         ThemeService.shared().theme.applyStyle(onButton: self.shareLinkButton)
-        ThemeService.shared().theme.applyStyle(onSwitch: self.roomAccessByLinkSwitch)
     }
 }
 
