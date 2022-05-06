@@ -217,7 +217,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     [super initWithSession:session andRoomId:roomId];
     
     // Add an additional listener to update banned users
-    self->extraEventsListener = [mxRoom listenToEventsOfTypes:@[kMXEventTypeStringRoomMember] onEvent:^(MXEvent *event, MXTimelineDirection direction, MXRoomState *roomState) {
+    self->extraEventsListener = [mxRoom listenToEventsOfTypes:@[kMXEventTypeStringRoomMember, RoomService.roomAccessRulesStateEventType] onEvent:^(MXEvent *event, MXTimelineDirection direction, MXRoomState *roomState) {
 
         if (direction == MXTimelineDirectionForwards)
         {
