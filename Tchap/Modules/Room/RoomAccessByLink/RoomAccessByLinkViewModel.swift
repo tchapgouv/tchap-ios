@@ -296,14 +296,13 @@ final class RoomAccessByLinkViewModel: RoomAccessByLinkViewModelType {
     }
     
     private func addRoomStateListener() {
-        guard let timeline = self.liveTimeline,
-              let state = timeline.state else {
-                  MXLog.debug("[RoomAccessByLinkViewModel] addRoomStateListener: no timeline")
-                  return
-              }
+        guard let timeline = self.liveTimeline else {
+            MXLog.debug("[RoomAccessByLinkViewModel] addRoomStateListener: no timeline")
+            return
+        }
         self.roomStateListener = timeline.listenToEvents([.roomCanonicalAlias, .roomJoinRules], { (event, direction, roomState) in
             // Consider only live events
-            if direction == .forwards {
+            if direction == .forwards, let state = timeline.state {
                 self.updateRoomState(state)
             }
         })

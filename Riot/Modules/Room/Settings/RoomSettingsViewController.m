@@ -54,7 +54,9 @@ enum
     ROOM_SETTINGS_MAIN_SECTION_ROW_TAG,
     ROOM_SETTINGS_MAIN_SECTION_ROW_DIRECT_CHAT,
     ROOM_SETTINGS_MAIN_SECTION_ROW_MUTE_NOTIFICATIONS,
-    ROOM_SETTINGS_MAIN_SECTION_ROW_LEAVE
+    ROOM_SETTINGS_MAIN_SECTION_ROW_LEAVE,
+    //Tchap: Specific row in room settings
+    ROOM_SETTINGS_MAIN_SECTION_ROW_ACCESS_BY_LINK
 };
 
 enum
@@ -540,6 +542,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     {
         [sectionMain addRowWithTag:ROOM_SETTINGS_MAIN_SECTION_ROW_MUTE_NOTIFICATIONS];
     }
+    [sectionMain addRowWithTag:ROOM_SETTINGS_MAIN_SECTION_ROW_ACCESS_BY_LINK];
     [sectionMain addRowWithTag:ROOM_SETTINGS_MAIN_SECTION_ROW_LEAVE];
     [tmpSections addObject:sectionMain];
     
@@ -2492,6 +2495,42 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                 cell = favoriteCell;
             }
         }
+        else if (row == ROOM_SETTINGS_MAIN_SECTION_ROW_ACCESS_BY_LINK)
+        {
+            // Check whether the current user is room admin
+            BOOL isAdmin = (oneSelfPowerLevel >= RoomPowerLevelAdmin);
+            BOOL isRoomAccessByLinkEnabled = [mxRoomState.joinRule isEqualToString:kMXRoomJoinRulePublic];
+
+            MXKTableViewCell *roomAccessByLink = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier] forIndexPath:indexPath];
+            NSString *title = NSLocalizedStringFromTable(@"room_settings_room_access_by_link_title", @"Tchap", nil);
+            NSString *summary = isRoomAccessByLinkEnabled ? NSLocalizedStringFromTable(@"room_settings_room_access_by_link_enabled", @"Tchap", nil) : NSLocalizedStringFromTable(@"room_settings_room_access_by_link_disabled", @"Tchap", nil);
+            NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString: title
+                                                                                               attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
+                                                                                                       NSFontAttributeName: [UIFont systemFontOfSize:17.0]}];
+            [attributedText appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n\n" attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:4]}]];
+            [attributedText appendAttributedString:[[NSMutableAttributedString alloc] initWithString: summary
+                                                                                          attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textSecondaryColor,
+                                                                                                  NSFontAttributeName: [UIFont systemFontOfSize:14.0]}]];
+
+            roomAccessByLink.textLabel.numberOfLines = 0;
+            roomAccessByLink.textLabel.attributedText = attributedText;
+
+            // The room admin is allowed to enable/disable the room access by link
+            // The other members are allowed to forward/share the link when the access by link is enabled
+            if (isAdmin || isRoomAccessByLinkEnabled) {
+                roomAccessByLink.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                roomAccessByLink.selectionStyle = UITableViewCellSelectionStyleDefault;
+                roomAccessByLink.userInteractionEnabled = YES;
+            }
+            else
+            {
+                roomAccessByLink.accessoryType = UITableViewCellAccessoryNone;
+                roomAccessByLink.selectionStyle = UITableViewCellSelectionStyleNone;
+                roomAccessByLink.userInteractionEnabled = NO;
+            }
+
+            cell = roomAccessByLink;
+        }
         else if (row == ROOM_SETTINGS_MAIN_SECTION_ROW_LEAVE)
         {
             MXKTableViewCellWithButton *leaveCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier] forIndexPath:indexPath];
@@ -3145,6 +3184,11 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                 {
                     [self editRoomTopic];
                 }
+            }
+            else if (row == ROOM_SETTINGS_MAIN_SECTION_ROW_ACCESS_BY_LINK)
+            {
+                RoomAccessByLinkViewController *roomAccessByLinkViewController = [RoomAccessByLinkViewController instantiateWithSession:self.mainSession roomId:self.roomId];
+                [self.parentViewController.navigationController pushViewController:roomAccessByLinkViewController animated:YES];
             }
         }
         else if (section == SECTION_TAG_ACCESS)
