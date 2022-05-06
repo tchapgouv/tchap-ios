@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
-    <device id="retina5_5" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+    <device id="retina5_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -21,25 +19,48 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreen" translatesAutoresizingMaskIntoConstraints="NO" id="7gG-Yr-mqW">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Background" translatesAutoresizingMaskIntoConstraints="NO" id="7gG-Yr-mqW">
+                                <rect key="frame" x="0.0" y="-20" width="414" height="756"/>
                             </imageView>
                             <imageView clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="TchapLogo" translatesAutoresizingMaskIntoConstraints="NO" id="IcW-17-3Qq">
-                                <rect key="frame" x="128" y="289" width="158" height="158"/>
+                                <rect key="frame" x="145.33333333333334" y="206.99999999999997" width="123.33333333333334" height="123.66666666666666"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="IcW-17-3Qq" secondAttribute="height" multiplier="1:1" id="kaT-CS-VzP"/>
                                 </constraints>
                             </imageView>
+                            <imageView clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="RF-logo" translatesAutoresizingMaskIntoConstraints="NO" id="YrI-JF-aaM">
+                                <rect key="frame" x="147" y="571.66666666666663" width="120" height="110.33333333333337"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tchap" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ohU-Mb-ben">
+                                <rect key="frame" x="175.66666666666666" y="354.66666666666669" width="63" height="27"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I8X-VR-1Rt">
+                                <rect key="frame" x="124.33333333333333" y="405.66666666666669" width="165.33333333333337" height="31.333333333333314"/>
+                                <string key="text">La messagerie instantanée 
+de confiance de l'État</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="I8X-VR-1Rt" firstAttribute="top" secondItem="ohU-Mb-ben" secondAttribute="bottom" constant="24" id="25E-HT-fbL"/>
                             <constraint firstItem="7gG-Yr-mqW" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="59E-px-SCX"/>
                             <constraint firstItem="7gG-Yr-mqW" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="-20" id="6Lf-wr-jA6"/>
                             <constraint firstItem="IcW-17-3Qq" firstAttribute="centerX" secondItem="7gG-Yr-mqW" secondAttribute="centerX" id="843-f0-IiF"/>
                             <constraint firstAttribute="trailing" secondItem="7gG-Yr-mqW" secondAttribute="trailing" id="Bmy-1r-IIj"/>
-                            <constraint firstItem="IcW-17-3Qq" firstAttribute="width" secondItem="7gG-Yr-mqW" secondAttribute="width" multiplier="1/3" constant="20" id="Fn2-EI-loJ"/>
+                            <constraint firstItem="IcW-17-3Qq" firstAttribute="width" secondItem="7gG-Yr-mqW" secondAttribute="width" multiplier="1/4" constant="20" id="Fn2-EI-loJ"/>
+                            <constraint firstItem="I8X-VR-1Rt" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="K3k-VR-XaC"/>
                             <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="7gG-Yr-mqW" secondAttribute="bottom" id="bD8-dB-3hM"/>
-                            <constraint firstItem="IcW-17-3Qq" firstAttribute="centerY" secondItem="7gG-Yr-mqW" secondAttribute="centerY" id="w3P-uQ-MAd"/>
+                            <constraint firstItem="ohU-Mb-ben" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="h52-9a-eAJ"/>
+                            <constraint firstItem="YrI-JF-aaM" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="npf-Hd-bYu"/>
+                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="YrI-JF-aaM" secondAttribute="bottom" constant="54" id="npv-Gg-OyC"/>
+                            <constraint firstItem="ohU-Mb-ben" firstAttribute="top" secondItem="IcW-17-3Qq" secondAttribute="bottom" constant="24" id="oLU-xp-IXC"/>
+                            <constraint firstItem="ohU-Mb-ben" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="q8G-yS-3Ka"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -49,7 +70,8 @@
         </scene>
     </scenes>
     <resources>
-        <image name="LaunchScreen" width="414" height="736"/>
+        <image name="Background" width="414" height="736"/>
+        <image name="RF-logo" width="119.66666412353516" height="110.66666412353516"/>
         <image name="TchapLogo" width="160" height="160"/>
     </resources>
 </document>
