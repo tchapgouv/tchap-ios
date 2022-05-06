@@ -42,7 +42,7 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
         participants.mxRoom = self.room
         participants.parentSpaceId = self.parentSpaceId
         participants.delegate = self
-//        participants.screenTracker = AnalyticsScreenTracker(screen: .roomMembers)
+        participants.screenTracker = AnalyticsScreenTracker(screen: .roomMembers)
         
         let files = RoomFilesViewController()
         files.finalizeInit()
@@ -184,8 +184,21 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
             if case .settings(let roomSettingsField) = target {
                 roomSettingsViewController?.selectedRoomSettingsField = roomSettingsField
             }
-            
-            navigationRouter.push(segmentedViewController, animated: animated, popCompletion: nil)
+            if case .uploads = target, room.isDirect {
+                let files = RoomFilesViewController()
+                files.finalizeInit()
+                files.screenTracker = AnalyticsScreenTracker(screen: .roomUploads)
+                MXKRoomDataSource.load(withRoomId: self.room.roomId, andMatrixSession: self.session) { (dataSource) in
+                    guard let dataSource = dataSource as? MXKRoomDataSource else { return }
+                    dataSource.filterMessagesWithURL = true
+                    dataSource.finalizeInitialization()
+                    files.hasRoomDataSourceOwnership = true
+                    files.displayRoom(dataSource)
+                }
+                navigationRouter.push(files, animated: animated, popCompletion: nil)
+            } else {
+                navigationRouter.push(segmentedViewController, animated: animated, popCompletion: nil)
+            }
         }
     }
 }

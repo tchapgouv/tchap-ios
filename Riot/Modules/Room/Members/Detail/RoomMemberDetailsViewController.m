@@ -104,7 +104,7 @@
 
 @property(nonatomic, strong) UserVerificationCoordinatorBridgePresenter *userVerificationCoordinatorBridgePresenter;
 
-//@property(nonatomic) AnalyticsScreenTracker *screenTracker;
+@property(nonatomic) AnalyticsScreenTracker *screenTracker;
 
 @end
 
@@ -142,7 +142,7 @@
     // Keep visible the status bar by default.
     isStatusBarHidden = NO;
     
-//    self.screenTracker = [[AnalyticsScreenTracker alloc] initWithScreen:AnalyticsScreenUser];
+    self.screenTracker = [[AnalyticsScreenTracker alloc] initWithScreen:AnalyticsScreenUser];
 }
 
 - (void)viewDidLoad
@@ -243,7 +243,7 @@
 {
     [super viewWillAppear:animated];
     
-//    [self.screenTracker trackScreen];
+    [self.screenTracker trackScreen];
 
     [self userInterfaceThemeDidChange];
 

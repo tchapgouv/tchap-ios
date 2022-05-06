@@ -159,6 +159,7 @@ final class RoomInfoListViewController: UIViewController {
     // MARK: - Private
     
     private func updateSections(with viewData: RoomInfoListViewData) {
+        isRoomDirect = viewData.isDirect
         basicInfoView.configure(withViewData: viewData.basicInfoViewData)
         
         var tmpSections: [Section] = []
@@ -183,15 +184,20 @@ final class RoomInfoListViewController: UIViewController {
             self.viewModel.process(viewAction: .navigate(target: .integrations))
         }
         
-        var rows = [rowSettings]
+        var rows: [Row] = []
         
+        if !isRoomDirect {
+            rows.append(rowSettings)
+        }
         if BuildSettings.showNotificationsV2 {
             rows.append(roomNotifications)
         }
         if RiotSettings.shared.roomInfoScreenShowIntegrations {
             rows.append(rowIntegrations)
         }
-        rows.append(rowMembers)
+        if !isRoomDirect {
+            rows.append(rowMembers)
+        }
         rows.append(rowUploads)
         rows.append(rowSearch)
 
