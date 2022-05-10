@@ -18,7 +18,6 @@ import Foundation
 import UIKit
 
 @objc protocol RoomsViewControllerDelegate: NSObjectProtocol {
-    func roomsViewControllerDidTapStartChatButton(_ roomsViewController: RoomsViewController)
     func roomsViewControllerDidTapCreateRoomButton(_ roomsViewController: RoomsViewController)
     func roomsViewControllerDidTapPublicRoomsAccessButton(_ roomsViewController: RoomsViewController)
 }
@@ -26,10 +25,6 @@ import UIKit
 extension RoomsViewController {
     @objc func showPlusMenu(from button: UIView) -> UIAlertController {
         let currentAlert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        
-        currentAlert.addAction(UIAlertAction(title: TchapL10n.conversationsStartChatAction, style: .default, handler: { _ in
-            self.roomsViewDelegate?.roomsViewControllerDidTapStartChatButton(self)
-        }))
         
         currentAlert.addAction(UIAlertAction(title: TchapL10n.conversationsCreateRoomAction, style: .default, handler: { _ in
             self.roomsViewDelegate?.roomsViewControllerDidTapCreateRoomButton(self)
@@ -39,7 +34,7 @@ extension RoomsViewController {
             self.roomsViewDelegate?.roomsViewControllerDidTapPublicRoomsAccessButton(self)
         }))
         
-        currentAlert.addAction(UIAlertAction(title: Bundle.mxk_localizedString(forKey: "cancel"), style: .cancel, handler: nil))
+        currentAlert.addAction(UIAlertAction(title: VectorL10n.cancel, style: .cancel, handler: nil))
         
         currentAlert.popoverPresentationController?.sourceView = button
         currentAlert.popoverPresentationController?.sourceRect = button.bounds

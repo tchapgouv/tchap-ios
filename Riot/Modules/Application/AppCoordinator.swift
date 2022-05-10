@@ -240,9 +240,11 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
         case .homeSpace:
             MXLog.verbose("Switch to home space")
             self.navigateToSpace(with: nil)
+            Analytics.shared.activeSpace = nil
         case .space(let spaceId):
             MXLog.verbose("Switch to space with id: \(spaceId)")
             self.navigateToSpace(with: spaceId)
+            Analytics.shared.activeSpace = userSessionsService.mainUserSession?.matrixSession.spaceService.getSpace(withId: spaceId)
         }
     }
     
@@ -307,7 +309,8 @@ extension AppCoordinator: LegacyAppDelegateDelegate {
     func legacyAppDelegate(_ legacyAppDelegate: LegacyAppDelegate!, didAddMatrixSession session: MXSession!) {
     }
     
-    func legacyAppDelegate(_ legacyAppDelegate: LegacyAppDelegate!, didRemoveMatrixSession session: MXSession!) {
+    func legacyAppDelegate(_ legacyAppDelegate: LegacyAppDelegate!, didRemoveMatrixSession session: MXSession?) {
+        guard let session = session else { return }
         // Handle user session removal on clear cache. On clear cache the account has his session closed but the account is not removed.
         self.userSessionsService.removeUserSession(relatedToMatrixSession: session)
     }
@@ -335,6 +338,9 @@ extension AppCoordinator: SplitViewCoordinatorDelegate {
 // MARK: - SideMenuCoordinatorDelegate
 extension AppCoordinator: SideMenuCoordinatorDelegate {
     func sideMenuCoordinator(_ coordinator: SideMenuCoordinatorType, didTapMenuItem menuItem: SideMenuItem, fromSourceView sourceView: UIView) {
+        if menuItem == .inviteFriends {
+            self.splitViewCoordinator?.presentInvitePeople()
+        }
     }
 }
 
@@ -355,19 +361,7 @@ fileprivate class AppNavigator: AppNavigatorProtocol {
         
         return SideMenuPresenter(sideMenuCoordinator: sideMenuCoordinator)
     }()
-    
-    private var appNavigationVC: UINavigationController {
-        guard
-            let splitVC = appCoordinator.splitViewCoordinator?.toPresentable() as? UISplitViewController,
-            // Picking out the first view controller currently works only on iPhones, not iPads
-            let navigationVC = splitVC.viewControllers.first as? UINavigationController
-        else {
-            MXLog.error("[AppNavigator] Missing root split view controller")
-            return UINavigationController()
-        }
-        return navigationVC
-    }
-    
+
     // MARK: - Setup
     
     init(appCoordinator: AppCoordinator) {
@@ -378,17 +372,5 @@ fileprivate class AppNavigator: AppNavigatorProtocol {
     
     func navigate(to destination: AppNavigatorDestination) {
         self.appCoordinator.navigate(to: destination)
-    }
-    
-    func addLoadingActivity() -> Activity {
-        let presenter = ActivityIndicatorToastPresenter(
-            text: VectorL10n.roomParticipantsSecurityLoading,
-            navigationController: appNavigationVC
-        )
-        let request = ActivityRequest(
-            presenter: presenter,
-            dismissal: .manual
-        )
-        return ActivityCenter.shared.add(request)
     }
 }

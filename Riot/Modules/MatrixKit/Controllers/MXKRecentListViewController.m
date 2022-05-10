@@ -83,6 +83,7 @@
 {
     [super finalizeInit];
     
+    _recentsUpdateEnabled = YES;
     _enableBarButtonSearch = YES;
 }
 
@@ -170,8 +171,7 @@
     // Observe the server sync
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onSyncNotification) name:kMXSessionDidSyncNotification object:nil];
     
-    // Do a full reload
-    [self refreshRecentsTable];
+    self.recentsUpdateEnabled = YES;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -180,12 +180,6 @@
 
     // The user may still press search button whereas the view disappears
     ignoreSearchRequest = YES;
-
-    // Leave potential search session
-    if (!self.recentsSearchBar.isHidden)
-    {
-        [self searchBarCancelButtonClicked:self.recentsSearchBar];
-    }
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXKRoomDataSourceSyncStatusChanged object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXSessionDidSyncNotification object:nil];
@@ -328,6 +322,10 @@
 
 - (void)refreshRecentsTable
 {
+    if (!self.recentsUpdateEnabled) return;
+    
+    isRefreshNeeded = NO;
+    
     // For now, do a simple full reload
     [self.recentsTableView reloadData];
 }
@@ -337,6 +335,16 @@
     self.recentsSearchBar.hidden = hidden;
     self.recentsSearchBarHeightConstraint.constant = hidden ? 0 : 44;
     [self.view setNeedsUpdateConstraints];
+}
+
+- (void)setRecentsUpdateEnabled:(BOOL)activeUpdate
+{
+    _recentsUpdateEnabled = activeUpdate;
+    
+    if (_recentsUpdateEnabled && isRefreshNeeded)
+    {
+        [self refreshRecentsTable];
+    }
 }
 
 #pragma mark - Action
@@ -394,6 +402,12 @@
 
 - (void)dataSource:(MXKDataSource *)dataSource didCellChange:(id)changes
 {
+    if (!_recentsUpdateEnabled)
+    {
+        isRefreshNeeded = YES;
+        return;
+    }
+    
     // For now, do a simple full reload
     [self refreshRecentsTable];
 }
@@ -451,7 +465,8 @@
                     if (recentCellData.isSuggestedRoom)
                     {
                         [_delegate recentListViewController:self
-                                     didSelectSuggestedRoom:recentCellData.roomSummary.spaceChildInfo];
+                                     didSelectSuggestedRoom:recentCellData.roomSummary.spaceChildInfo
+                                                       from:selectedCell];
                     }
                     else
                     {

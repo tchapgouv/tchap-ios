@@ -73,11 +73,6 @@
 
 @property (nonatomic) BOOL reviewSessionAlertHasBeenDisplayed;
 
-/**
- A flag to indicate that the analytics prompt should be shown during `-addMatrixSession:`.
- */
-@property(nonatomic) BOOL presentAnalyticsPromptOnAddSession;
-
 @end
 
 @implementation MasterTabBarController
@@ -90,15 +85,15 @@
 //    return [(HomeViewControllerWithBannerWrapperViewController *)wrapperVC homeViewController];
 //}
 //
-//- (FavouritesViewController *)favouritesViewController
-//{
-//    return (FavouritesViewController*)[self viewControllerForClass:FavouritesViewController.class];
-//}
-//
-//- (PeopleViewController *)peopleViewController
-//{
-//    return (PeopleViewController*)[self viewControllerForClass:PeopleViewController.class];
-//}
+- (FavouritesViewController *)favouritesViewController
+{
+    return (FavouritesViewController*)[self viewControllerForClass:FavouritesViewController.class];
+}
+
+- (PeopleViewController *)peopleViewController
+{
+    return (PeopleViewController*)[self viewControllerForClass:PeopleViewController.class];
+}
 
 - (RoomsViewController *)roomsViewController
 {
@@ -204,20 +199,6 @@
 
     if (!authIsShown)
     {
-        // Check whether the user should be prompted to send analytics.
-        if (Analytics.shared.shouldShowAnalyticsPrompt)
-        {
-            MXSession *mxSession = self.mxSessions.firstObject;
-            if (mxSession)
-            {
-                [self promptUserBeforeUsingAnalyticsForSession:mxSession];
-            }
-            else
-            {
-                self.presentAnalyticsPromptOnAddSession = YES;
-            }
-        }
-        
         [self refreshTabBarBadges];
         
         // Release properly pushed and/or presented view controller
@@ -317,7 +298,7 @@
         }
     }
     
-    titleView.titleLabel.text = self.selectedViewController.accessibilityLabel;
+    titleView.titleLabel.text = [self getTitleForItemViewController:self.selectedViewController];
     
     // Need to be called in case of the controllers have been replaced
     [self.selectedViewController viewDidAppear:NO];
@@ -337,6 +318,8 @@
 {
     NSInteger index = [self indexOfTabItemWithTag:tabBarIndex];
     self.selectedIndex = index;
+    
+    titleView.titleLabel.text = [self getTitleForItemViewController:self.selectedViewController];
 }
 
 #pragma mark -
@@ -360,36 +343,36 @@
                                                           recentsListService:recentsListService];
         
 //        [self.homeViewController displayList:recentsDataSource];
-//        [self.favouritesViewController displayList:recentsDataSource];
-//        [self.peopleViewController displayList:recentsDataSource];
+        [self.favouritesViewController displayList:recentsDataSource];
+        [self.peopleViewController displayList:recentsDataSource];
         [self.roomsViewController displayList:recentsDataSource];
         
         // Restore the right delegate of the shared recent data source.
         id<MXKDataSourceDelegate> recentsDataSourceDelegate = self.roomsViewController;//self.homeViewController;
         RecentsDataSourceMode recentsDataSourceMode = RecentsDataSourceModeRooms;
-        
-//        NSInteger tabItemTag = self.tabBar.items[self.selectedIndex].tag;
-//
-//        switch (tabItemTag)
-//        {
+
+        NSInteger tabItemTag = self.tabBar.items[self.selectedIndex].tag;
+
+        switch (tabItemTag)
+        {
 //            case TABBAR_HOME_INDEX:
 //                break;
-//            case TABBAR_FAVOURITES_INDEX:
-//                recentsDataSourceDelegate = self.favouritesViewController;
-//                recentsDataSourceMode = RecentsDataSourceModeFavourites;
-//                break;
-//            case TABBAR_PEOPLE_INDEX:
-//                recentsDataSourceDelegate = self.peopleViewController;
-//                recentsDataSourceMode = RecentsDataSourceModePeople;
-//                break;
-//            case TABBAR_ROOMS_INDEX:
-//                recentsDataSourceDelegate = self.roomsViewController;
-//                recentsDataSourceMode = RecentsDataSourceModeRooms;
-//                break;
-//
-//            default:
-//                break;
-//        }
+            case TABBAR_FAVOURITES_INDEX:
+                recentsDataSourceDelegate = self.favouritesViewController;
+                recentsDataSourceMode = RecentsDataSourceModeFavourites;
+                break;
+            case TABBAR_PEOPLE_INDEX:
+                recentsDataSourceDelegate = self.peopleViewController;
+                recentsDataSourceMode = RecentsDataSourceModePeople;
+                break;
+            case TABBAR_ROOMS_INDEX:
+                recentsDataSourceDelegate = self.roomsViewController;
+                recentsDataSourceMode = RecentsDataSourceModeRooms;
+                break;
+
+            default:
+                break;
+        }
         [recentsDataSource setDelegate:recentsDataSourceDelegate andRecentsDataSourceMode:recentsDataSourceMode];
         
         // Init the recents data source
@@ -419,12 +402,6 @@
     {
         MXLogDebug(@"MasterTabBarController already has %@ in mxSessionArray", mxSession)
         return;
-    }
-    
-    if (self.presentAnalyticsPromptOnAddSession)
-    {
-        self.presentAnalyticsPromptOnAddSession = NO;
-        [self promptUserBeforeUsingAnalyticsForSession:mxSession];
     }
     
     // Check whether the controller's view is loaded into memory.
@@ -480,8 +457,8 @@
         [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXSessionStateDidChangeNotification object:nil];
         
 //        [self.homeViewController displayList:nil];
-//        [self.favouritesViewController displayList:nil];
-//        [self.peopleViewController displayList:nil];
+        [self.favouritesViewController displayList:nil];
+        [self.peopleViewController displayList:nil];
         [self.roomsViewController displayList:nil];
         
         [recentsDataSource destroy];
@@ -828,6 +805,17 @@
     self.navigationController.navigationBar.hidden = hidden;
 }
 
+- (NSString*)getTitleForItemViewController:(UIViewController*)itemViewController
+{
+    if ([itemViewController conformsToProtocol:@protocol(MasterTabBarItemDisplayProtocol)])
+    {
+        UIViewController<MasterTabBarItemDisplayProtocol> *masterTabBarItem = (UIViewController<MasterTabBarItemDisplayProtocol>*)itemViewController;
+        return masterTabBarItem.masterTabBarItemTitle;
+    }
+        
+    return nil;
+}
+
 #pragma mark -
 
 - (void)refreshTabBarBadges
@@ -955,18 +943,6 @@
     return NSNotFound;
 }
 
-#pragma mark -
-
-- (void)promptUserBeforeUsingAnalyticsForSession:(MXSession *)mxSession
-{
-    // Analytics aren't collected on iOS 12 & 13.
-    if (@available(iOS 14.0, *))
-    {
-        MXLogDebug(@"[MasterTabBarController]: Invite the user to send analytics");
-        [self.masterTabBarDelegate masterTabBarController:self shouldPresentAnalyticsPromptForMatrixSession:mxSession];
-    }
-}
-
 #pragma mark - Review session
 
 - (void)presentVerifyCurrentSessionAlertIfNeededWithSession:(MXSession*)session
@@ -981,6 +957,15 @@
     }
     
     self.reviewSessionAlertHasBeenDisplayed = YES;
+
+    // Force verification if required by the HS configuration
+    if (session.vc_homeserverConfiguration.encryption.isSecureBackupRequired)
+    {
+        NSLog(@"[MasterTabBarController] presentVerifyCurrentSessionAlertIfNeededWithSession: Force verification of the device");
+        [[AppDelegate theDelegate] presentCompleteSecurityForSession:session];
+        return;
+    }
+
     [self presentVerifyCurrentSessionAlertWithSession:session];
 #endif
 }
@@ -1108,14 +1093,14 @@
         if (item.tag == TABBAR_ROOMS_INDEX)
         {
             [self.roomsViewController scrollToNextRoomWithMissedNotifications];
-//        }
-//        else if (item.tag == TABBAR_PEOPLE_INDEX)
-//        {
-//            [self.peopleViewController scrollToNextRoomWithMissedNotifications];
-//        }
-//        else if (item.tag == TABBAR_FAVOURITES_INDEX)
-//        {
-//            [self.favouritesViewController scrollToNextRoomWithMissedNotifications];
+        }
+        else if (item.tag == TABBAR_PEOPLE_INDEX)
+        {
+            [self.peopleViewController scrollToNextRoomWithMissedNotifications];
+        }
+        else if (item.tag == TABBAR_FAVOURITES_INDEX)
+        {
+            [self.favouritesViewController scrollToNextRoomWithMissedNotifications];
         }
     }
 }
@@ -1124,7 +1109,7 @@
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
 {
-    titleView.titleLabel.text = viewController.accessibilityLabel;
+    titleView.titleLabel.text = [self getTitleForItemViewController:viewController];
 }
 
 @end

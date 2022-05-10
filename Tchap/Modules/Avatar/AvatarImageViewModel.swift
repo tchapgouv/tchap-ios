@@ -24,33 +24,24 @@ final class AvatarImageViewModel: NSObject {
     let thumbnailSize: CGSize?
     let thumbnailingMethod: MXThumbnailingMethod?
     let placeholderImage: UIImage
-    let shape: AvatarImageShape
-    let borderColor: UIColor?
-    let borderWidth: CGFloat?
     let marker: UIImage?
     
     
-    init(avatarContentURI: String?, mediaManager: MXMediaManager?, placeholderImage: UIImage, shape: AvatarImageShape, borderColor: UIColor?, borderWidth: CGFloat?, marker: UIImage?) {
+    init(avatarContentURI: String?, mediaManager: MXMediaManager?, placeholderImage: UIImage, marker: UIImage?) {
         self.avatarContentURI = avatarContentURI
         self.mediaManager = mediaManager
         self.thumbnailSize = nil
         self.thumbnailingMethod = nil
         self.placeholderImage = placeholderImage
-        self.shape = shape
-        self.borderColor = borderColor
-        self.borderWidth = borderWidth
         self.marker = marker
     }
     
-    init(avatarContentURI: String?, mediaManager: MXMediaManager?, thumbnailSize: CGSize, thumbnailingMethod: MXThumbnailingMethod, placeholderImage: UIImage, shape: AvatarImageShape, borderColor: UIColor?, borderWidth: CGFloat?, marker: UIImage?) {
+    init(avatarContentURI: String?, mediaManager: MXMediaManager?, thumbnailSize: CGSize, thumbnailingMethod: MXThumbnailingMethod, placeholderImage: UIImage, marker: UIImage?) {
         self.avatarContentURI = avatarContentURI
         self.mediaManager = mediaManager
         self.thumbnailSize = thumbnailSize
         self.thumbnailingMethod = thumbnailingMethod
         self.placeholderImage = placeholderImage
-        self.shape = shape
-        self.borderColor = borderColor
-        self.borderWidth = borderWidth
         self.marker = marker
     }
 }

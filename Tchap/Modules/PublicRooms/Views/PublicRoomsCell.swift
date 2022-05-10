@@ -18,11 +18,6 @@ import UIKit
 import Reusable
 
 @objcMembers class PublicRoomsCell: UITableViewCell, NibReusable {
-    
-    private enum Constants {
-        static let hexagonImageBorderWidth: CGFloat = 1.0
-    }
-    
     @IBOutlet private(set) weak var avatarView: MXKImageView!
     @IBOutlet private(set) weak var roomDisplayName: UILabel!
     @IBOutlet private(set) weak var roomTopic: UILabel!
@@ -42,8 +37,7 @@ import Reusable
         super.layoutSubviews()
         
         // All the public rooms are restricted
-        self.avatarView.tc_makeHexagon(borderWidth: Constants.hexagonImageBorderWidth,
-                                       borderColor: ThemeService.shared().theme.borderMain)
+        self.avatarView.tc_makeCircle()
     }
     
     func render(publicRoom: MXPublicRoom, using mediaManager: MXMediaManager) {
@@ -81,9 +75,9 @@ import Reusable
         // Set member count
         let membersLabel: String!
         if publicRoom.numJoinedMembers > 1 {
-            membersLabel = String(format: Bundle.mxk_localizedString(forKey: "num_members_other"), String(publicRoom.numJoinedMembers))
+            membersLabel = VectorL10n.numMembersOther(String(publicRoom.numJoinedMembers))
         } else if publicRoom.numJoinedMembers == 1 {
-            membersLabel = String(format: Bundle.mxk_localizedString(forKey: "num_members_one"), "1")
+            membersLabel = VectorL10n.numMembersOne("1")
         } else {
             membersLabel = nil
         }
@@ -91,7 +85,7 @@ import Reusable
     }
     
     private static func homeServerDisplayName(from publicRoomId: String) -> String? {
-        guard let matrixIDComponents = RoomIDComponents(matrixID: publicRoomId) else {
+        guard let matrixIDComponents = RoomIdComponents(matrixID: publicRoomId) else {
             return nil
         }
         

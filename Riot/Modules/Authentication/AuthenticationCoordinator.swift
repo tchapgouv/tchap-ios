@@ -28,6 +28,8 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     private let navigationRouter: NavigationRouterType
     
     private let authenticationViewController: AuthenticationViewController
+    private var canPresentAdditionalScreens: Bool
+    private var isWaitingToPresentCompleteSecurity = false
     private let crossSigningService = CrossSigningService()
     
     /// The password entered, for use when setting up cross-signing.
@@ -41,10 +43,18 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     var childCoordinators: [Coordinator] = []
     var completion: ((AuthenticationCoordinatorResult) -> Void)?
     
+    var customServerFieldsVisible = false {
+        didSet {
+            guard customServerFieldsVisible != oldValue else { return }
+            authenticationViewController.setCustomServerFieldsVisible(customServerFieldsVisible)
+        }
+    }
+    
     // MARK: - Setup
     
     init(parameters: AuthenticationCoordinatorParameters) {
         self.navigationRouter = parameters.navigationRouter
+        self.canPresentAdditionalScreens = parameters.canPresentAdditionalScreens
         
         let authenticationViewController = AuthenticationViewController()
         self.authenticationViewController = authenticationViewController
@@ -71,10 +81,6 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
         authenticationViewController.authType = authenticationType
     }
     
-    func showCustomServer() {
-        authenticationViewController.setCustomServerFieldsVisible(true)
-    }
-    
     func update(externalRegistrationParameters: [AnyHashable: Any]) {
         authenticationViewController.externalRegistrationParameters = externalRegistrationParameters
     }
@@ -91,6 +97,17 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
         authenticationViewController.continueSSOLogin(withToken: loginToken, txnId: transactionID)
     }
     
+    func presentPendingScreensIfNecessary() {
+        canPresentAdditionalScreens = true
+        
+        showLoadingAnimation()
+        
+        if isWaitingToPresentCompleteSecurity {
+            isWaitingToPresentCompleteSecurity = false
+            presentCompleteSecurity()
+        }
+    }
+    
     // MARK: - Private
     
     private func showLoadingAnimation() {
@@ -102,9 +119,16 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
         navigationRouter.setRootModule(loadingViewController)
     }
     
-    private func presentCompleteSecurity(with session: MXSession) {
+    private func presentCompleteSecurity() {
+        guard let session = session else {
+            MXLog.error("[AuthenticationCoordinator] presentCompleteSecurity: Unable to present security due to missing session.")
+            authenticationDidComplete()
+            return
+        }
+        
         let isNewSignIn = true
-        let keyVerificationCoordinator = KeyVerificationCoordinator(session: session, flow: .completeSecurity(isNewSignIn))
+        let cancellable = !session.vc_homeserverConfiguration().encryption.isSecureBackupRequired
+        let keyVerificationCoordinator = KeyVerificationCoordinator(session: session, flow: .completeSecurity(isNewSignIn), cancellable: cancellable)
         
         keyVerificationCoordinator.delegate = self
         let presentable = keyVerificationCoordinator.toPresentable()
@@ -115,7 +139,7 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     }
     
     private func authenticationDidComplete() {
-        completion?(.didComplete(authenticationViewController.authType))
+        completion?(.didComplete)
     }
     
     private func registerSessionStateChangeNotification(for session: MXSession) {
@@ -153,7 +177,7 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
                         // TODO: This is still not sure we want to disable the automatic cross-signing bootstrap
                         // if the admin disabled e2e by default.
                         // Do like riot-web for the moment
-                        if session.vc_homeserverConfiguration().isE2EEByDefaultEnabled {
+                        if session.vc_homeserverConfiguration().encryption.isE2EEByDefaultEnabled {
                             // Bootstrap cross-signing on user's account
                             // We do it for both registration and new login as long as cross-signing does not exist yet
                             if let password = self.password, !password.isEmpty {
@@ -183,8 +207,14 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
                             self.authenticationDidComplete()
                         }
                     case .crossSigningExists:
+                        guard self.canPresentAdditionalScreens else {
+                            MXLog.debug("[AuthenticationCoordinator] sessionStateDidChange: Delaying presentCompleteSecurity during onboarding.")
+                            self.isWaitingToPresentCompleteSecurity = true
+                            return
+                        }
+                        
                         MXLog.debug("[AuthenticationCoordinator] sessionStateDidChange: Complete security")
-                        self.presentCompleteSecurity(with: session)
+                        self.presentCompleteSecurity()
                     default:
                         MXLog.debug("[AuthenticationCoordinator] sessionStateDidChange: Nothing to do")
                         
@@ -211,8 +241,10 @@ extension AuthenticationCoordinator: AuthenticationViewControllerDelegate {
         self.session = session
         self.password = password
         
-        self.showLoadingAnimation()
-        completion?(.didLogin(session))
+        if canPresentAdditionalScreens {
+            showLoadingAnimation()
+        }
+        completion?(.didLogin(session: session, authenticationType: authenticationViewController.authType))
     }
 }
 

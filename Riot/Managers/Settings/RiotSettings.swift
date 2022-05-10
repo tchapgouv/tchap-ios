@@ -30,6 +30,7 @@ final class RiotSettings: NSObject {
         static let pinRoomsWithMissedNotificationsOnHome = "pinRoomsWithMissedNotif"
         static let pinRoomsWithUnreadMessagesOnHome = "pinRoomsWithUnread"
         static let showAllRoomsInHomeSpace = "showAllRoomsInHomeSpace"
+        static let enableUISIAutoReporting = "enableUISIAutoReporting"
     }
     
     static let shared = RiotSettings()
@@ -163,6 +164,10 @@ final class RiotSettings: NSObject {
     @UserDefault(key: "enableThreads", defaultValue: false, storage: defaults)
     var enableThreads
     
+    /// Indicates if auto reporting of decryption errors is enabled
+    @UserDefault(key: UserDefaultsKeys.enableUISIAutoReporting, defaultValue: BuildSettings.cryptoUISIAutoReportingEnabled, storage: defaults)
+    var enableUISIAutoReporting
+    
     // MARK: Calls
     
     /// Indicate if `allowStunServerFallback` settings has been set once.
@@ -217,10 +222,18 @@ final class RiotSettings: NSObject {
     
     @UserDefault(key: "roomScreenEnableMessageBubbles", defaultValue: BuildSettings.isRoomScreenEnableMessageBubblesByDefault, storage: defaults)
     var roomScreenEnableMessageBubbles
-    
+
     var roomTimelineStyleIdentifier: RoomTimelineStyleIdentifier {
         return self.roomScreenEnableMessageBubbles ? .bubble : .plain
     }
+
+    /// A setting used to display the latest known display name and avatar in the timeline
+    /// for both the sender and target, rather than the profile at the time of the event.
+    ///
+    /// Note: this is set up from Room perspective, which means that if a user updates their profile after
+    /// leaving a Room, it will show up the latest profile used in the Room rather than the latest overall.
+    @UserDefault(key: "roomScreenUseOnlyLatestUserAvatarAndName", defaultValue: BuildSettings.roomScreenUseOnlyLatestUserAvatarAndName, storage: defaults)
+    var roomScreenUseOnlyLatestUserAvatarAndName
     
     // MARK: - Room Contextual Menu
     
@@ -356,9 +369,21 @@ final class RiotSettings: NSObject {
     
     @UserDefault(key: "hideSpaceBetaAnnounce", defaultValue: false, storage: defaults)
     var hideSpaceBetaAnnounce
-    
+
+    @UserDefault(key: "threadsNoticeDisplayed", defaultValue: false, storage: defaults)
+    var threadsNoticeDisplayed
+
     // MARK: - Version check
     
     @UserDefault(key: "versionCheckNextDisplayDateTimeInterval", defaultValue: 0.0, storage: defaults)
     var versionCheckNextDisplayDateTimeInterval
+    
+    @UserDefault(key: "slideMenuRoomsCoachMessageHasBeenDisplayed", defaultValue: false, storage: defaults)
+    var slideMenuRoomsCoachMessageHasBeenDisplayed
+    
+    // MARK: - Metrics
+    
+    /// Number of spaces previously tracked by the `AnalyticsSpaceTracker` instance.
+    @UserDefault(key: "lastNumberOfTrackedSpaces", defaultValue: nil, storage: defaults)
+    var lastNumberOfTrackedSpaces: Int?
 }

@@ -168,42 +168,35 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
                 self.favouriteEventIndex += 1
                 
                 //  attempt to fetch the event
-                self.session.event(withEventId: favouriteEvent.eventId, inRoom: favouriteEvent.roomId, success: { [weak self] (event) in
+                self.session.event(withEventId: favouriteEvent.eventId,
+                                   inRoom: favouriteEvent.roomId) { [weak self] response in
                     guard let self = self else {
-                        MXLog.debug("[FavouriteMessagesViewModel] fetchEvent: MXSession.event method returned too late successfully.")
                         return
                     }
                     
-                    guard let event = event else {
-                        self.process(cellDatas: favouriteMessagesCache)
-                        MXLog.debug("[FavouriteMessagesViewModel] fetchEvent: MXSession.event method returned successfully with no event.")
-                        return
-                    }
-                    
-                    //  handle encryption for this event
-                    if event.isEncrypted && event.clear == nil && self.session.decryptEvent(event, inTimeline: nil) == false {
-                        MXLog.debug("[FavouriteMessagesViewModel] processEditEvent: Fail to decrypt event: \(event.eventId ?? "")")
-                    }
-                    
-                    // Check whether the user knows this room to create the room data source if it doesn't exist.
-                    roomDataSourceManager?.roomDataSource(forRoom: favouriteEvent.roomId, create: (self.session.room(withRoomId: favouriteEvent.roomId) != nil), onComplete: { roomDataSource in
-                        
-                        if let roomDataSource = roomDataSource {
-                            roomDataSource.eventFormatter = self.formatter
-                            if let cellData = FavouriteMessagesBubbleCellData(event: event, andRoomState: roomDataSource.roomState, andRoomDataSource: roomDataSource) {
-                                favouriteMessagesCache.append(cellData)
-                            }
+                    switch response {
+                    case .success(let event):
+                        //  handle encryption for this event
+                        if event.isEncrypted && event.clear == nil && self.session.decryptEvent(event, inTimeline: nil) == false {
+                            MXLog.debug("[FavouriteMessagesViewModel] processEditEvent: Fail to decrypt event: \(event.eventId ?? "")")
                         }
                         
+                        // Check whether the user knows this room to create the room data source if it doesn't exist.
+                        roomDataSourceManager?.roomDataSource(forRoom: favouriteEvent.roomId, create: (self.session.room(withRoomId: favouriteEvent.roomId) != nil), onComplete: { roomDataSource in
+                            
+                            if let roomDataSource = roomDataSource {
+                                roomDataSource.eventFormatter = self.formatter
+                                if let cellData = FavouriteMessagesBubbleCellData(event: event, andRoomState: roomDataSource.roomState, andRoomDataSource: roomDataSource) {
+                                    favouriteMessagesCache.append(cellData)
+                                }
+                            }
+                            
+                            self.process(cellDatas: favouriteMessagesCache)
+                        })
+                    case .failure:
                         self.process(cellDatas: favouriteMessagesCache)
-                    })
-                }, failure: { [weak self] error in
-                    guard let self = self else {
-                        return
                     }
-                    
-                    self.process(cellDatas: favouriteMessagesCache)
-                })
+                }
             }
         }
     }

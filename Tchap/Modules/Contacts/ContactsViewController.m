@@ -17,7 +17,7 @@
 #import "ContactsViewController.h"
 
 #import "RageShakeManager.h"
-#import "ContactsDataSource.h"
+#import "ContactsDataSourceTchap.h"
 #import "Contact.h"
 
 #import "GeneratedInterface-Swift.h"
@@ -26,7 +26,7 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
 
 @interface ContactsViewController () <MXKDataSourceDelegate, UISearchResultsUpdating>
 
-@property (strong, nonatomic) ContactsDataSource *contactsDataSource;
+@property (strong, nonatomic) ContactsDataSourceTchap *contactsDataSource;
 
 @property (nonatomic) BOOL showSearchBar;
 @property (nonatomic, strong) UISearchController *searchController;
@@ -35,8 +35,6 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
 @property (weak, nonatomic) UIAlertController *currentAlert;
 
 @property (nonatomic) UIActivityIndicatorView *activityIndicator;
-
-@property (nonatomic, strong) DiscussionFinder* discussionFinder;
 
 /**
  The analytics instance screen name (Default is "ContactsTable").
@@ -107,8 +105,6 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
     {
         [self setupSearchController];
     }
-    
-    self.discussionFinder = [[DiscussionFinder alloc] initWithSession:self.contactsDataSource.mxSession];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -193,7 +189,7 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
 
 #pragma mark - Public
 
-- (void)displayList:(ContactsDataSource*)listDataSource
+- (void)displayList:(ContactsDataSourceTchap*)listDataSource
 {
     // Cancel registration on existing dataSource if any
     if (self.contactsDataSource)
@@ -247,7 +243,7 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
                                                             message:NSLocalizedStringFromTable(@"contacts_invite_by_email_message", @"Tchap", nil)
                                                      preferredStyle:UIAlertControllerStyleAlert];
     
-    [self.currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+    [self.currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                      style:UIAlertActionStyleCancel
                                                    handler:^(UIAlertAction * action) {
                                                        
@@ -283,7 +279,7 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
                                                            self.currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"authentication_error_invalid_email", @"Tchap", nil)
                                                                                                                    message:nil
                                                                                                             preferredStyle:UIAlertControllerStyleAlert];
-                                                           [self.currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                                                           [self.currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok]
                                                                                                                  style:UIAlertActionStyleDefault
                                                                                                                handler:^(UIAlertAction * action) {
                                                                                                                    
@@ -298,15 +294,6 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
     
     [self.currentAlert mxk_setAccessibilityIdentifier: @"ContactsVCInviteByEmailDialog"];
     [self presentViewController:self.currentAlert animated:YES completion:nil];
-}
-
-- (void)sendInviteToTchapByEmail:(NSString *)email
-{
-    // Sanity check
-    if ([self.delegate respondsToSelector:@selector(contactsViewController:sendInviteToTchapByEmail:)])
-    {
-        [self.delegate contactsViewController:self sendInviteToTchapByEmail:email];
-    }
 }
 
 - (void)selectEmail:(NSString *)email
@@ -336,7 +323,7 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
                                            self.currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"contacts_picker_unauthorized_email_title", @"Tchap", nil)
                                                                                                    message:reason
                                                                                             preferredStyle:UIAlertControllerStyleAlert];
-                                           [self.currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                                           [self.currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok]
                                                                                                  style:UIAlertActionStyleDefault
                                                                                                handler:^(UIAlertAction * action) {
                                                                                                    
@@ -463,16 +450,6 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Check first the potential invite button
-    if ([self.contactsDataSource isInviteButtonIndexPath:indexPath])
-    {
-        [tableView deselectRowAtIndexPath:indexPath animated:YES];
-        [self promptUserToFillAnEmailToInvite:^(NSString *email) {
-            [self sendInviteToTchapByEmail:email];
-        }];
-        return;
-    }
-    
     // Check whether the user wants to invite people by sharing a link to the room
     if ([self.contactsDataSource isInviteByLinkButtonIndexPath:indexPath])
     {
@@ -519,7 +496,7 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
                                                self.currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"contacts_picker_unauthorized_email_title", @"Tchap", nil)
                                                                                                        message:reason
                                                                                                 preferredStyle:UIAlertControllerStyleAlert];
-                                               [self.currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                                               [self.currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n ok]
                                                                                                      style:UIAlertActionStyleDefault
                                                                                                    handler:^(UIAlertAction * action) {
                                                                                                        
@@ -562,31 +539,7 @@ NSString *const ContactErrorDomain = @"ContactErrorDomain";
     
     if (self.delegate)
     {
-        // Tchap: Check if there is already a discussion with the contact or not.
-        [self.discussionFinder hasDiscussionFor:contact.contactID completion:^(BOOL hasDiscussion) {
-            if (hasDiscussion) {
-                [self.delegate contactsViewController:self didSelectContact:contact];
-            } else {
-                // Show alert to prevent unwanted discussion creation.
-                UIAlertController* alert = [UIAlertController alertControllerWithTitle: nil
-                                                                               message: [NSString stringWithFormat:NSLocalizedStringFromTable(@"tchap_dialog_prompt_new_direct_chat", @"Tchap", nil), contact.displayName]
-                                               preferredStyle:UIAlertControllerStyleAlert];
-                
-                MXWeakify(self);
-                UIAlertAction* defaultAction = [UIAlertAction actionWithTitle: NSLocalizedStringFromTable(@"action_proceed", @"Tchap", nil) style:UIAlertActionStyleDefault
-                   handler:^(UIAlertAction * action) {
-                    MXStrongifyAndReturnIfNil(self);
-                    [self.delegate contactsViewController:self didSelectContact:contact];
-                }];
-                
-                UIAlertAction* cancelAction = [UIAlertAction actionWithTitle: NSLocalizedStringFromTable(@"action_cancel", @"Tchap", nil) style:UIAlertActionStyleDefault
-                   handler:nil];
-                
-                [alert addAction:cancelAction];
-                [alert addAction:defaultAction];
-                [self presentViewController:alert animated:YES completion:nil];
-            }
-        }];
+        [self.delegate contactsViewController:self didSelectContact:contact];
     }
     
     if (self.enableMultipleSelection)

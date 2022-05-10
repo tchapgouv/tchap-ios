@@ -41,8 +41,9 @@ limitations under the License.
 
  @param recentListViewController the `MXKRecentListViewController` instance.
  @param childInfo the `MXSpaceChildInfo` instance that describes the selected room.
+ @param sourceView the view the modal has to be presented from.
  */
--(void)recentListViewController:(MXKRecentListViewController *)recentListViewController didSelectSuggestedRoom:(MXSpaceChildInfo *)childInfo;
+-(void)recentListViewController:(MXKRecentListViewController *)recentListViewController didSelectSuggestedRoom:(MXSpaceChildInfo *)childInfo from:(UIView* _Nullable)sourceView;
 
 @end
 
@@ -58,6 +59,12 @@ limitations under the License.
      The fake top view displayed in case of vertical bounce.
      */
     __weak UIView *topview;
+    
+    /**
+     `isRefreshNeeded` is set to `YES` if an update of the datasource has been triggered but the UI has not been updated.
+     It's set to `NO` after a refresh of the UI.
+     */
+    BOOL isRefreshNeeded;
 }
 
 @property (weak, nonatomic) IBOutlet UISearchBar *recentsSearchBar;
@@ -81,6 +88,11 @@ limitations under the License.
  Set NO this property to disable this option and hide the related bar button.
  */
 @property (nonatomic) BOOL enableBarButtonSearch;
+
+/**
+ Enabled or disabled the UI update after recents syncs. Default YES.
+ */
+@property (nonatomic, getter=isRecentsUpdateEnabled) BOOL recentsUpdateEnabled;
 
 #pragma mark - Class methods
 

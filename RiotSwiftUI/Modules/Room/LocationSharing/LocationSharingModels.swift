@@ -19,14 +19,22 @@ import SwiftUI
 import Combine
 import CoreLocation
 
+// This is the equivalent of MXEventAssetType in the MatrixSDK
+enum LocationSharingCoordinateType {
+    case user
+    case pin
+}
+
 enum LocationSharingViewAction {
     case cancel
     case share
+    case sharePinLocation
+    case goToUserLocation
 }
 
 enum LocationSharingViewModelResult {
     case cancel
-    case share(latitude: Double, longitude: Double)
+    case share(latitude: Double, longitude: Double, coordinateType: LocationSharingCoordinateType)
 }
 
 enum LocationSharingViewError {
@@ -38,14 +46,41 @@ enum LocationSharingViewError {
 
 @available(iOS 14, *)
 struct LocationSharingViewState: BindableState {
+    
+    /// Map style URL
     let mapStyleURL: URL
-    let avatarData: AvatarInputProtocol
-    let location: CLLocationCoordinate2D?
+    
+    /// Current user avatarData
+    let userAvatarData: AvatarInputProtocol
+    
+    /// Shared annotation to display existing location
+    let sharedAnnotation: LocationAnnotation?
+    
+    /// Map annotations to display on map
+    var annotations: [LocationAnnotation]
+
+    /// Map annotation to focus on
+    var highlightedAnnotation: LocationAnnotation?
+
+    /// Indicates whether the user has moved around the map to drop a pin somewhere other than their current location
+    var isPinDropSharing: Bool {
+        return bindings.pinLocation != nil
+    }
     
     var showLoadingIndicator: Bool = false
     
+    /// True to indicate to show and follow current user location
+    var showsUserLocation: Bool = false
+    
+    /// Used to hide live location sharing features until is finished
+    var isLiveLocationSharingEnabled: Bool = false
+    
     var shareButtonVisible: Bool {
-        return location == nil
+        return self.displayExistingLocation == false
+    }
+    
+    var displayExistingLocation: Bool {
+        return sharedAnnotation != nil
     }
     
     var shareButtonEnabled: Bool {
@@ -58,21 +93,14 @@ struct LocationSharingViewState: BindableState {
 }
 
 struct LocationSharingViewStateBindings {
-    var alertInfo: LocationSharingErrorAlertInfo?
+    var alertInfo: AlertInfo<LocationSharingAlertType>?
     var userLocation: CLLocationCoordinate2D?
+    var pinLocation: CLLocationCoordinate2D?
 }
 
-struct LocationSharingErrorAlertInfo: Identifiable {
-    enum AlertType {
-        case mapLoadingError
-        case userLocatingError
-        case authorizationError
-        case locationSharingError
-    }
-    
-    let id: AlertType
-    let title: String
-    var subtitle: String? = nil
-    let primaryButton: (title: String, action: (() -> Void)?)
-    var secondaryButton: (title: String, action: (() -> Void)?)? = nil
+enum LocationSharingAlertType {
+    case mapLoadingError
+    case userLocatingError
+    case authorizationError
+    case locationSharingError
 }

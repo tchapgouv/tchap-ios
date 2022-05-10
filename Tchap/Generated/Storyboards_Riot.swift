@@ -22,6 +22,11 @@ internal extension StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Tchap.DeviceVerificationStartViewController>(storyboard: DeviceVerificationStartViewController.self)
   }
+  enum EnterNewRoomDetailsViewController: StoryboardType {
+    internal static let storyboardName = "EnterNewRoomDetailsViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.EnterNewRoomDetailsViewController>(storyboard: EnterNewRoomDetailsViewController.self)
+  }
   enum KeyBackupRecoverFromPassphraseViewController: StoryboardType {
     internal static let storyboardName = "KeyBackupRecoverFromPassphraseViewController"
 
@@ -106,6 +111,11 @@ internal extension StoryboardScene {
     internal static let storyboardName = "KeyVerificationVerifyByScanningViewController"
 
     internal static let initialScene = InitialSceneType<Tchap.KeyVerificationVerifyByScanningViewController>(storyboard: KeyVerificationVerifyByScanningViewController.self)
+  }
+  enum OptionListViewController: StoryboardType {
+    internal static let storyboardName = "OptionListViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.OptionListViewController>(storyboard: OptionListViewController.self)
   }
   enum QRCodeReaderViewController: StoryboardType {
     internal static let storyboardName = "QRCodeReaderViewController"

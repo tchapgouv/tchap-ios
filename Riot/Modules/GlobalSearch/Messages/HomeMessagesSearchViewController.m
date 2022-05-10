@@ -118,6 +118,8 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshSearchResult:) name:kMXSessionDidLeaveRoomNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshSearchResult:) name:kMXSessionNewRoomNotification object:nil];
+    
+    [self.screenTracker trackScreen];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -126,18 +128,6 @@
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXSessionDidLeaveRoomNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXSessionNewRoomNotification object:nil];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    [self.screenTimer start];
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    [self.screenTimer stop];
 }
 
 #pragma mark -
@@ -167,11 +157,6 @@
             threadParameters = [[ThreadParameters alloc] initWithThreadId:event.threadId
                                                           stackRoomScreen:NO];
         }
-        else if (event.unsignedData.relations.thread || [self.mainSession.threadingService isEventThreadRoot:event])
-        {
-            threadParameters = [[ThreadParameters alloc] initWithThreadId:event.eventId
-                                                          stackRoomScreen:NO];
-        }
     }
 
     ScreenPresentationParameters *screenParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:NO stackAboveVisibleViews:NO];
@@ -181,6 +166,7 @@
                                                                                   mxSession:self.mainSession
                                                                            threadParameters:threadParameters
                                                                      presentationParameters:screenParameters];
+    Analytics.shared.viewRoomTrigger = AnalyticsViewRoomTriggerMessageSearch;
     [[LegacyAppDelegate theDelegate] showRoomWithParameters:parameters];
 }
 

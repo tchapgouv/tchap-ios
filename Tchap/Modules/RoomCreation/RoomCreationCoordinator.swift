@@ -40,7 +40,7 @@ final class RoomCreationCoordinator: NSObject, RoomCreationCoordinatorType {
     private var roomCreationFormResult: RoomCreationFormResult?
     
     private var imagePickerPresenter: SingleImagePickerPresenter?
-    private weak var contactsPickerCoordinator: ContactsPickerCoordinatorType?
+    private weak var contactsPickerCoordinator: RoomCreationContactsPickerCoordinatorType?
     
     private var disposeBag: DisposeBag = DisposeBag()
     
@@ -144,7 +144,7 @@ final class RoomCreationCoordinator: NSObject, RoomCreationCoordinatorType {
         } else {
             filter = ContactsDataSourceTchapFilterTchapUsersOnlyWithoutFederation
         }
-        let contactsPickerCoordinator = ContactsPickerCoordinator(session: self.session, contactsFilter: filter)
+        let contactsPickerCoordinator = RoomCreationContactsPickerCoordinator(session: self.session, contactsFilter: filter)
         contactsPickerCoordinator.start()
         contactsPickerCoordinator.delegate = self
         
@@ -282,10 +282,10 @@ extension RoomCreationCoordinator: SingleImagePickerPresenterDelegate {
     }
 }
 
-// MARK: - ContactsPickerCoordinatorDelegate
-extension RoomCreationCoordinator: ContactsPickerCoordinatorDelegate {
+// MARK: - RoomCreationContactsPickerCoordinatorDelegate
+extension RoomCreationCoordinator: RoomCreationContactsPickerCoordinatorDelegate {
     
-    func contactsPickerCoordinator(_ coordinator: ContactsPickerCoordinatorType, didSelectContactIdentifiers identifiers: [String]) {
+    func contactsPickerCoordinator(_ coordinator: RoomCreationContactsPickerCoordinatorType, didSelectContactIdentifiers identifiers: [String]) {
         // Presently only Matrix ids are expected in this identifiers list (the picker is configured to display only Tchap users).
         self.createRoom(with: identifiers)
     }

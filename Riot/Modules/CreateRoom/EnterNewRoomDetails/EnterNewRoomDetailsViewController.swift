@@ -17,6 +17,7 @@
  */
 
 import UIKit
+import CommonKit
 
 final class EnterNewRoomDetailsViewController: UIViewController {
     
@@ -47,15 +48,24 @@ final class EnterNewRoomDetailsViewController: UIViewController {
     private var theme: Theme!
     private var keyboardAvoider: KeyboardAvoider?
     private var errorPresenter: MXKErrorPresentation!
-    private var activityPresenter: ActivityIndicatorPresenter!
+    private var userIndicatorPresenter: UserIndicatorTypePresenterProtocol!
+    private var loadingIndicator: UserIndicator?
+    
     private lazy var createBarButtonItem: MXKBarButtonItem = {
-        let item = MXKBarButtonItem(title: VectorL10n.create, style: .plain) { [weak self] in
+        let title: String
+        switch viewModel.actionType {
+        case .createAndAddToSpace:
+            title = VectorL10n.add
+        case .createOnly:
+            title = VectorL10n.create
+        }
+        let item = MXKBarButtonItem(title: title, style: .plain) { [weak self] in
             self?.createButtonAction()
         }!
         item.isEnabled = false
         return item
     }()
-    private var screenTimer = AnalyticsScreenTimer(screen: .createRoom)
+    private var screenTracker = AnalyticsScreenTracker(screen: .createRoom)
     
     private enum RowType {
         case `default`
@@ -120,30 +130,59 @@ final class EnterNewRoomDetailsViewController: UIViewController {
         
         var section4: Section?
         if RiotSettings.shared.roomCreationScreenAllowRoomTypeConfiguration {
-            let row_4_0 = Row(type: .default, text: VectorL10n.createRoomTypePrivate, accessoryType: viewModel.roomCreationParameters.isPublic ? .none : .checkmark) { [weak self] in
+            let row_4_0 = Row(type: .default, text: VectorL10n.createRoomTypePrivate, accessoryType: viewModel.roomCreationParameters.joinRule == .private ? .checkmark : .none) { [weak self] in
                 guard let self = self else {
                     return
                 }
                 
-                self.viewModel.roomCreationParameters.isPublic = false
+                self.viewModel.roomCreationParameters.joinRule = .private
                 self.updateSections()
             }
-            let row_4_1 = Row(type: .default, text: VectorL10n.createRoomTypePublic, accessoryType: viewModel.roomCreationParameters.isPublic ? .checkmark : .none) { [weak self] in
+            let row_4_1 = Row(type: .default, text: VectorL10n.createRoomTypeRestricted, accessoryType: viewModel.roomCreationParameters.joinRule == .restricted ? .checkmark : .none) { [weak self] in
                 
                 guard let self = self else {
                     return
                 }
                 
-                self.viewModel.roomCreationParameters.isPublic = true
+                self.viewModel.roomCreationParameters.joinRule = .restricted
+                self.updateSections()
+                //  scroll bottom to show user new fields
+                DispatchQueue.main.async {
+                    self.mainTableView.scrollToRow(at: IndexPath(row: 0, section: 5), at: .bottom, animated: true)
+                }
+            }
+            let row_4_2 = Row(type: .default, text: VectorL10n.createRoomTypePublic, accessoryType: viewModel.roomCreationParameters.joinRule == .public ? .checkmark : .none) { [weak self] in
+                
+                guard let self = self else {
+                    return
+                }
+                
+                self.viewModel.roomCreationParameters.joinRule = .public
                 self.updateSections()
                 //  scroll bottom to show user new fields
                 DispatchQueue.main.async {
                     self.mainTableView.scrollToRow(at: IndexPath(row: 0, section: 6), at: .bottom, animated: true)
                 }
             }
+            let rows: [Row]
+            switch viewModel.actionType {
+            case .createAndAddToSpace:
+                rows = [row_4_0, row_4_1, row_4_2]
+            case .createOnly:
+                rows = [row_4_0, row_4_2]
+            }
+            let footer: String
+            switch viewModel.roomCreationParameters.joinRule {
+            case .private:
+                footer = VectorL10n.createRoomSectionFooterTypePrivate
+            case .restricted:
+                footer = VectorL10n.createRoomSectionFooterTypeRestricted
+            default:
+                footer = VectorL10n.createRoomSectionFooterTypePublic
+            }
             section4 = Section(header: VectorL10n.createRoomSectionHeaderType,
-                                   rows: [row_4_0, row_4_1],
-                                   footer: VectorL10n.createRoomSectionFooterType)
+                                   rows: rows,
+                                   footer: footer)
         }
         
         var tmpSections: [Section] = [
@@ -160,15 +199,28 @@ final class EnterNewRoomDetailsViewController: UIViewController {
             tmpSections.append(section4)
         }
         
-        if viewModel.roomCreationParameters.isPublic {
+        if viewModel.roomCreationParameters.joinRule == .public {
             let row_5_0 = Row(type: .withSwitch(isOn: viewModel.roomCreationParameters.showInDirectory, onValueChanged: { [weak self] (theSwitch) in
                 self?.viewModel.roomCreationParameters.showInDirectory = theSwitch.isOn
             }), text: VectorL10n.createRoomShowInDirectory, accessoryType: .none) {
                 // no-op
             }
-            let section5 = Section(header: nil,
-                                   rows: [row_5_0],
-                                   footer: nil)
+
+            let rows: [Row]
+            if viewModel.actionType == .createAndAddToSpace {
+                let row_5_1 = Row(type: .withSwitch(isOn: viewModel.roomCreationParameters.isRoomSuggested, onValueChanged: { [weak self] (theSwitch) in
+                    self?.viewModel.roomCreationParameters.isRoomSuggested = theSwitch.isOn
+                }), text: VectorL10n.createRoomSuggestRoom, accessoryType: .none) {
+                    // no-op
+                }
+                rows = [row_5_0, row_5_1]
+            } else {
+                rows = [row_5_0]
+            }
+            
+            let section5 = Section(header: VectorL10n.createRoomPromotionHeader,
+                                   rows: rows,
+                                   footer: VectorL10n.createRoomShowInDirectoryFooter)
             
             let row_6_0 = Row(type: .textField(tag: Constants.roomAddressTextFieldTag, placeholder: VectorL10n.createRoomPlaceholderAddress, delegate: self), text: viewModel.roomCreationParameters.address, accessoryType: .none) {
                 
@@ -178,6 +230,18 @@ final class EnterNewRoomDetailsViewController: UIViewController {
                                    footer: nil)
             
             tmpSections.append(contentsOf: [section5, section6])
+        }
+        
+        if viewModel.roomCreationParameters.joinRule == .restricted {
+            let row_5_0 = Row(type: .withSwitch(isOn: viewModel.roomCreationParameters.isRoomSuggested, onValueChanged: { [weak self] (theSwitch) in
+                self?.viewModel.roomCreationParameters.isRoomSuggested = theSwitch.isOn
+            }), text: VectorL10n.createRoomSuggestRoom, accessoryType: .none) {
+                // no-op
+            }
+            let section5 = Section(header: VectorL10n.createRoomPromotionHeader,
+                                   rows: [row_5_0],
+                                   footer: VectorL10n.createRoomSuggestRoomFooter)
+            tmpSections.append(section5)
         }
         
         sections = tmpSections
@@ -201,7 +265,7 @@ final class EnterNewRoomDetailsViewController: UIViewController {
         
         self.setupViews()
         self.keyboardAvoider = KeyboardAvoider(scrollViewContainerView: self.view, scrollView: self.mainTableView)
-        self.activityPresenter = ActivityIndicatorPresenter()
+        self.userIndicatorPresenter = UserIndicatorTypePresenter(presentingViewController: self)
         self.errorPresenter = MXKErrorAlertPresentation()
         
         self.registerThemeServiceDidChangeThemeNotification()
@@ -216,11 +280,7 @@ final class EnterNewRoomDetailsViewController: UIViewController {
         super.viewWillAppear(animated)
         
         self.keyboardAvoider?.startAvoiding()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        screenTimer.start()
+        screenTracker.trackScreen()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -228,7 +288,6 @@ final class EnterNewRoomDetailsViewController: UIViewController {
         
         self.keyboardAvoider?.stopAvoiding()
         
-        screenTimer.stop()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -296,11 +355,11 @@ final class EnterNewRoomDetailsViewController: UIViewController {
     }
     
     private func renderLoading() {
-        self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
+        loadingIndicator = userIndicatorPresenter.present(.loading(label: VectorL10n.createRoomProcessing, isInteractionBlocking: true))
     }
     
     private func render(error: Error) {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        loadingIndicator = nil
         self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
     }
     

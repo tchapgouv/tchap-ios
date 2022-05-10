@@ -56,8 +56,7 @@ targets:
 
     settings:
       base:
-        GCC_PREPROCESSOR_DEFINITIONS: $(inherited) ENABLE_REACTIONS=1 ENABLE_EDITION=1 ENABLE_JOIN_BY_LINK=1
-        OTHER_SWIFT_FLAGS: $(inherited) -D ENABLE_REACTIONS -D ENABLE_EDITION
+        GCC_PREPROCESSOR_DEFINITIONS: $(inherited) ENABLE_JOIN_BY_LINK=1
 
     sources:
     - path: ../Btchap/Config
@@ -96,6 +95,11 @@ targets:
         - "Managers/UniversalLink"
         - "**/*.strings" # Exclude all strings files
         - "**/*.cer"
+        - "Modules/Home/HomeCoordinator.swift"
+        - "Modules/Home/HomeCoordinatorType.swift"
+        - "Modules/Room/RoomDetailsCoordinator.swift"
+        - "Modules/Room/RoomDetailsCoordinatorType.swift"
+        - "Modules/Room/DiscussionDetailsCoordinator.swift"
     - path: ../Tchap/Modules/Application/VersionUpdate
     - path: ../Tchap/Generated/Images_Riot.swift
     - path: ../Tchap/Modules/Room/Views/BubbleCells/Antivirus
@@ -115,7 +119,6 @@ targets:
     - path: ../Riot/Assets/Sounds
     - path: ../Riot/Assets/third_party_licenses.html
     - path: ../Riot/Categories
-    - path: ../Riot/Generated/MatrixKitStrings.swift
     - path: ../Riot/Generated/Vector_Strings.swift
     - path: ../Riot/Managers/AppInfo
     - path: ../Riot/Managers/BugReport
@@ -160,6 +163,7 @@ targets:
     - path: ../Riot/Modules/Common/Avatar
     - path: ../Riot/Modules/Common/Buttons
     - path: ../Riot/Modules/Common/Cells
+    - path: ../Riot/Modules/Common/CoachMessages
     - path: ../Riot/Modules/Common/CollectionView
     - path: ../Riot/Modules/Common/Models
     - path: ../Riot/Modules/Common/NavigationController/RiotNavigationController.h
@@ -172,13 +176,17 @@ targets:
     - path: ../Riot/Modules/Common/Recents/Model
     - path: ../Riot/Modules/Common/Recents/Service
     - path: ../Riot/Modules/Common/Recents/Views
+    - path: ../Riot/Modules/Common/Recents/RecentsViewController+RoomInvite.swift
     - path: ../Riot/Modules/Common/SectionHeaders
     - path: ../Riot/Modules/Common/SegmentedViewController/SegmentedViewController.h
     - path: ../Riot/Modules/Common/SegmentedViewController/SegmentedViewController.m
+    - path: ../Riot/Modules/Common/SwiftUI
     - path: ../Riot/Modules/Common/Toasts
+    - path: ../Riot/Modules/Common/UserIndicators
     - path: ../Riot/Modules/Common/Views
     - path: ../Riot/Modules/Common/WebViewController
-    - path: ../Riot/Modules/Contacts/Details/Views
+    - path: ../Riot/Modules/Contacts
+    - path: ../Riot/Modules/CreateRoom
     - path: ../Riot/Modules/CrossSigning
     - path: ../Riot/Modules/DeepLink
     - path: ../Riot/Modules/DotsView
@@ -191,12 +199,15 @@ targets:
     - path: ../Riot/Modules/GlobalSearch/Files/CellData/FilesSearchCellData.m
     - path: ../Riot/Modules/GlobalSearch/Files/Views/FilesSearchTableViewCell.h
     - path: ../Riot/Modules/GlobalSearch/Files/Views/FilesSearchTableViewCell.m
+    - path: ../Riot/Modules/GlobalSearch/Views
     - path: ../Riot/Modules/Integrations
     - path: ../Riot/Modules/KeyBackup
     - path: ../Riot/Modules/KeyVerification
     - path: ../Riot/Modules/LaunchLoading
     - path: ../Riot/Modules/MatrixKit
     - path: ../Riot/Modules/MediaPicker
+    - path: ../Riot/Modules/MediaPickerV2
+    - path: ../Riot/Modules/People
     - path: ../Riot/Modules/PublicRoomList
     - path: ../Riot/Modules/QRCode
     - path: ../Riot/Modules/Reauthentication
@@ -234,10 +245,12 @@ targets:
     - path: ../Riot/Utils
 
     # Riot SwiftUI
-    - path: ../RiotSwiftUI/Modules/Common/Avatar/Model/AvatarProtocol.swift
-    - path: ../RiotSwiftUI/Modules/Common/Logging
-    - path: ../RiotSwiftUI/Modules/Common/Theme
-    - path: ../RiotSwiftUI/Modules/Room/NotificationSettings/Model
+    - path: ../RiotSwiftUI/Modules
+      # Riot will provide it's own LocaleProviderType so exclude.
+      excludes:
+      - "Common/Locale/LocaleProvider.swift"
+      - "**/Test/**"
+      - "Room/LocationSharing"
 
     # Share extension
     - path: ../RiotShareExtension/Shared

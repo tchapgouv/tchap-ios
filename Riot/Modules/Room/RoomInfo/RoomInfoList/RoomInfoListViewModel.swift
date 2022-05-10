@@ -46,6 +46,7 @@ final class RoomInfoListViewModel: NSObject, RoomInfoListViewModelType {
                                                       isDirect: room.isDirect)
         
         return RoomInfoListViewData(numberOfMembers: Int(room.summary.membersCount.joined),
+                                    isDirect: room.isDirect,
                                     basicInfoViewData: basicInfoViewData)
     }
     

@@ -48,7 +48,7 @@
 
 @property (nonatomic, readonly) DTHTMLAttributedStringBuilderWillFlushCallback longDescriptionSanitizationCallback;
 
-@property (nonatomic) AnalyticsScreenTimer *screenTimer;
+@property (nonatomic) AnalyticsScreenTracker *screenTracker;
 
 @end
 
@@ -98,7 +98,7 @@
         [element sanitizeWith:allowedHTMLTags bodyFont:self->_groupLongDescription.font imageHandler:[self groupLongDescriptionImageHandler]];
     };
     
-    self.screenTimer = [[AnalyticsScreenTimer alloc] initWithScreen:AnalyticsScreenGroup];
+    self.screenTracker = [[AnalyticsScreenTracker alloc] initWithScreen:AnalyticsScreenGroup];
 }
 
 - (void)viewDidLoad
@@ -209,6 +209,8 @@
 {
     [super viewWillAppear:animated];
     
+    [self.screenTracker trackScreen];
+
     // Release the potential pushed view controller
     [self releasePushedViewController];
     
@@ -258,18 +260,6 @@
     [super viewWillDisappear:animated];
     
     [self cancelRegistrationOnGroupChangeNotifications];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    [self.screenTimer start];
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    [self.screenTimer stop];
 }
 
 - (void)viewDidLayoutSubviews
@@ -773,7 +763,7 @@
         avatarFullScreenView.stretchable = YES;
         
         MXWeakify(self);
-        [avatarFullScreenView setRightButtonTitle:[MatrixKitL10n ok] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
+        [avatarFullScreenView setRightButtonTitle:[VectorL10n ok] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
             
             MXStrongifyAndReturnIfNil(self);
             [avatarFullScreenView dismissSelection];
@@ -877,14 +867,13 @@
             __weak typeof(self) weakSelf = self;
             [self startActivityIndicator];
             
-            [self.mxSession.matrixRestClient roomIDForRoomAlias:roomIdOrAlias success:^(NSString *roomId) {
-                
+            [self.mxSession.matrixRestClient resolveRoomAlias:roomIdOrAlias success:^(MXRoomAliasResolution *resolution) {
                 if (roomId && weakSelf)
                 {
                     typeof(self) self = weakSelf;
                     
                     [self stopActivityIndicator];
-                    [self didSelectRoomId:roomId];
+                    [self didSelectRoomId:resolution.roomId];
                 }
                 
             } failure:^(NSError *error) {
@@ -900,7 +889,7 @@
         // Open the group or preview it
         NSString *fragment = [NSString stringWithFormat:@"/group/%@",
                         [MXTools encodeURIComponent:absoluteURLString]];
-        [[AppDelegate theDelegate] handleUniversalLinkFragment:fragment];
+        [[AppDelegate theDelegate] handleUniversalLinkFragment:fragment fromURL:URL];
     }
     
     return shouldInteractWithURL;

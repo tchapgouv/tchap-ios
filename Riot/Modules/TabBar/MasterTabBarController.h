@@ -18,23 +18,22 @@
 //#import "AuthenticationViewController.h"
 
 #import "RoomPreviewData.h"
-//#import "HomeViewController.h"
-//#import "FavouritesViewController.h"
-//#import "PeopleViewController.h"
+#import "FavouritesViewController.h"
+#import "PeopleViewController.h"
 #import "RoomsViewController.h"
 //#import "GroupsViewController.h"
 
 #define TABBAR_HOME_INDEX         0
 #define TABBAR_FAVOURITES_INDEX   1
 #define TABBAR_PEOPLE_INDEX       2
-#define TABBAR_ROOMS_INDEX        0//3
+#define TABBAR_ROOMS_INDEX        3
 #define TABBAR_GROUPS_INDEX       4
 #define TABBAR_COUNT              5
 
 typedef NS_ENUM(NSUInteger, MasterTabBarIndex) {
 //    MasterTabBarIndexHome = TABBAR_HOME_INDEX,
-//    MasterTabBarIndexFavourites = TABBAR_FAVOURITES_INDEX,
-//    MasterTabBarIndexPeople = TABBAR_PEOPLE_INDEX,
+    MasterTabBarIndexFavourites = TABBAR_FAVOURITES_INDEX,
+    MasterTabBarIndexPeople = TABBAR_PEOPLE_INDEX,
     MasterTabBarIndexRooms = TABBAR_ROOMS_INDEX,
 //    MasterTabBarIndexGroups = TABBAR_GROUPS_INDEX
 };
@@ -154,8 +153,8 @@ typedef NS_ENUM(NSUInteger, MasterTabBarIndex) {
 @property (nonatomic, readonly) OnboardingCoordinatorBridgePresenter *onboardingCoordinatorBridgePresenter;
 
 //@property (nonatomic, readonly) HomeViewController *homeViewController;
-//@property (nonatomic, readonly) FavouritesViewController *favouritesViewController;
-//@property (nonatomic, readonly) PeopleViewController *peopleViewController;
+@property (nonatomic, readonly) FavouritesViewController *favouritesViewController;
+@property (nonatomic, readonly) PeopleViewController *peopleViewController;
 @property (nonatomic, readonly) RoomsViewController *roomsViewController;
 //@property (nonatomic, readonly) GroupsViewController *groupsViewController;
 
@@ -194,7 +193,6 @@ typedef NS_ENUM(NSUInteger, MasterTabBarIndex) {
 - (void)masterTabBarController:(MasterTabBarController *)masterTabBarController didSelectRoomPreviewWithParameters:(RoomPreviewNavigationParameters*)roomPreviewNavigationParameters completion:(void (^)(void))completion;
 - (void)masterTabBarController:(MasterTabBarController *)masterTabBarController didSelectContact:(MXKContact*)contact withPresentationParameters:(ScreenPresentationParameters*)presentationParameters;
 - (void)masterTabBarController:(MasterTabBarController *)masterTabBarController didSelectGroup:(MXGroup*)group inMatrixSession:(MXSession*)matrixSession presentationParameters:(ScreenPresentationParameters*)presentationParameters;
-- (void)masterTabBarController:(MasterTabBarController *)masterTabBarController shouldPresentAnalyticsPromptForMatrixSession:(MXSession*)matrixSession;
 - (void)masterTabBarControllerShouldShowAuthenticationFlow:(MasterTabBarController *)masterTabBarController;
 
 @end
