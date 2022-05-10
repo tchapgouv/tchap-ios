@@ -1,3 +1,20 @@
+## Changes in v1.99.1 (2022-05-10)
+
+🙌 Improvements
+
+- Remove the potential confirmation popup before starting a new discussion ([#447](https://github.com/tchapgouv/tchap-ios/issues/447))
+- [Left panel] add an option "Inviter à rejoindre Tchap" ([#449](https://github.com/tchapgouv/tchap-ios/issues/449))
+- Change sygnal server url ([#454](https://github.com/tchapgouv/tchap-ios/issues/454))
+- [Room Settings] Move back to the Element screen ([#456](https://github.com/tchapgouv/tchap-ios/issues/456))
+- Adjust the room settings in case of a DM ([#462](https://github.com/tchapgouv/tchap-ios/issues/462))
+- Hide Integration option from the global room settings ([#463](https://github.com/tchapgouv/tchap-ios/issues/463))
+- [Room Settings] Restore the room access by link ([#464](https://github.com/tchapgouv/tchap-ios/issues/464))
+- [Room Settings] Restore the potential room access by the external accounts ([#465](https://github.com/tchapgouv/tchap-ios/issues/465))
+- Make optional the edition and the reaction on message ([#470](https://github.com/tchapgouv/tchap-ios/issues/470))
+- [Rooms list] restore the Element tabs : Fav/Direct/Rooms ([#500](https://github.com/tchapgouv/tchap-ios/issues/500))
+- Remove the hexagonal shape on Room avatar ([#513](https://github.com/tchapgouv/tchap-ios/issues/513))
+
+
 ## Changes in 1.99.0 (2022-04-12)
 
 🙌 Improvements
