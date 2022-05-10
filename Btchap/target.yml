@@ -192,6 +192,7 @@ targets:
     - path: ../Riot/Modules/DotsView
     - path: ../Riot/Modules/EncryptionInfo/EncryptionInfoView.h
     - path: ../Riot/Modules/EncryptionInfo/EncryptionInfoView.m
+    - path: ../Riot/Modules/Favorites
     - path: ../Riot/Modules/Home/Fallback
     - path: ../Riot/Modules/Home/Views
     - path: ../Riot/Modules/GDPR
