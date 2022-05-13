@@ -677,7 +677,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 //    {
 //        [self.setPinCoordinatorBridgePresenter dismiss];
 //        self.setPinCoordinatorBridgePresenter = nil;
-//        [self afterAppUnlockedByPin:application];
+        [self afterAppUnlockedByPin:application];
 //    }
 }
 
