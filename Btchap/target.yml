@@ -63,6 +63,7 @@ targets:
     - path: ../Config/Project.xcconfig
     - path: ../Config/Project-Warnings.xcconfig
     - path: ../Config/AppIdentifiers.xcconfig
+    - path: ../Config/CommonConfiguration.swift
     - path: .
       excludes:
         - "**/*.strings" # Exclude all strings files
@@ -261,7 +262,6 @@ targets:
 
     # Tchap
     - path: ../Tchap/Config/AppConfiguration.swift
-    - path: ../Tchap/Config/CommonConfiguration.swift
     - path: ../Tchap/Config/Configurable.swift
     
     # Resources

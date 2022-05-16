@@ -63,6 +63,7 @@ targets:
     - path: ../Config/Project.xcconfig
     - path: ../Config/Project-Warnings.xcconfig
     - path: ../Config/AppIdentifiers.xcconfig
+    - path: ../Config/CommonConfiguration.swift
     - path: .
       excludes:
         - "Tools"
