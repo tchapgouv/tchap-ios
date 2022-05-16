@@ -56,9 +56,9 @@ targets:
     sources:
     - path: .
     - path: ../Config/CommonConfiguration.swift
+    - path: ../Config/Configurable.swift
 
     # Tchap
-    - path: ../Tchap/Config/Configurable.swift
     - path: ../Tchap/Config/BuildSettings.swift
     - path: ../Tchap/Config/AppConfiguration.swift
 

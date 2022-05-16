@@ -64,6 +64,7 @@ targets:
     - path: ../Config/Project-Warnings.xcconfig
     - path: ../Config/AppIdentifiers.xcconfig
     - path: ../Config/CommonConfiguration.swift
+    - path: ../Config/Configurable.swift
     - path: .
       excludes:
         - "**/*.strings" # Exclude all strings files
@@ -262,7 +263,6 @@ targets:
 
     # Tchap
     - path: ../Tchap/Config/AppConfiguration.swift
-    - path: ../Tchap/Config/Configurable.swift
     
     # Resources
     - path: ../Riot/Assets/en.lproj/InfoPlist.strings
