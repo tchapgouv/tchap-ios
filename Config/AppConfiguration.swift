@@ -27,7 +27,7 @@ class AppConfiguration: CommonConfiguration {
     }
     
     private func setupAppSettings() {
-        // Enable CallKit for app
+        // Tchap: Disable CallKit.
         MXKAppSettings.standard()?.isCallKitEnabled = false
         
         // Get modular widget events in rooms histories
