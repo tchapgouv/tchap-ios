@@ -27,12 +27,19 @@ class AppConfiguration: CommonConfiguration {
     }
     
     private func setupAppSettings() {
-        // Enable CallKit for app
-        MXKAppSettings.standard()?.isCallKitEnabled = true
+        // Tchap: Disable CallKit.
+        MXKAppSettings.standard()?.isCallKitEnabled = false
         
         // Get modular widget events in rooms histories
         MXKAppSettings.standard()?.addSupportedEventTypes([kWidgetMatrixEventTypeString,
                                                            kWidgetModularEventTypeString])
+        
+        // Tchap: remove some state events from the rooms histories: creation, the history access, encryption, join rules
+        MXKAppSettings.standard()?.removeSupportedEventTypes([kMXEventTypeStringRoomCreate,
+                                                              kMXEventTypeStringRoomHistoryVisibility,
+                                                              kMXEventTypeStringRoomEncryption,
+                                                              kMXEventTypeStringRoomGuestAccess,
+                                                              kMXEventTypeStringRoomJoinRules])
         
         // Hide undecryptable messages that were sent while the user was not in the room
         MXKAppSettings.standard()?.hidePreJoinedUndecryptableEvents = true
@@ -46,8 +53,10 @@ class AppConfiguration: CommonConfiguration {
         // Use UIKit BackgroundTask for handling background tasks in the SDK
         MXSDKOptions.sharedInstance().backgroundModeHandler = MXUIKitBackgroundModeHandler()
         
+        #if SUPPORT_KEYS_BACKUP
         // Enable key backup on app
         MXSDKOptions.sharedInstance().enableKeyBackupWhenStartingMXCrypto = true
+        #endif
     }
     
     
