@@ -60,6 +60,7 @@ targets:
 
     sources:
     - path: ../Tchap/Config
+    - path: ../Config/AppConfiguration.swift
     - path: ../Config/Project.xcconfig
     - path: ../Config/Project-Warnings.xcconfig
     - path: ../Config/AppIdentifiers.xcconfig

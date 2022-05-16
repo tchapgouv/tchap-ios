@@ -55,12 +55,12 @@ targets:
 
     sources:
     - path: .
+    - path: ../Config/AppConfiguration.swift
     - path: ../Config/CommonConfiguration.swift
     - path: ../Config/Configurable.swift
 
     # Tchap
     - path: ../Tchap/Config/BuildSettings.swift
-    - path: ../Tchap/Config/AppConfiguration.swift
 
     # Riot
     - path: ../Riot/Categories/Bundle.swift

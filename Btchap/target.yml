@@ -60,6 +60,7 @@ targets:
 
     sources:
     - path: ../Btchap/Config
+    - path: ../Config/AppConfiguration.swift
     - path: ../Config/Project.xcconfig
     - path: ../Config/Project-Warnings.xcconfig
     - path: ../Config/AppIdentifiers.xcconfig
@@ -260,9 +261,6 @@ targets:
     - path: ../RiotShareExtension/Sources/ShareItemProtocol.swift
     - path: ../RiotShareExtension/Sources/ShareItemSender.h
     - path: ../RiotShareExtension/Sources/ShareItemSender.m
-
-    # Tchap
-    - path: ../Tchap/Config/AppConfiguration.swift
     
     # Resources
     - path: ../Riot/Assets/en.lproj/InfoPlist.strings
