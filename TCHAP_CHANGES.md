@@ -1,3 +1,11 @@
+## Changes in 1.99.2 (2022-05-17)
+
+🐛 Bugfixes
+
+- Messages are missing in the room timelines ([#527](https://github.com/tchapgouv/tchap-ios/issues/527))
+- Unexpected logout ([#528](https://github.com/tchapgouv/tchap-ios/issues/528))
+
+
 ## Changes in v1.99.1 (2022-05-10)
 
 🙌 Improvements
