@@ -40,6 +40,8 @@ targets:
       excludes:
       - "Shared/View/ShareRoomsRoomCell.*"
       - "Shared/View/ShareRoomsDiscussionCell.*"
+    - path: ../Config/CommonConfiguration.swift
+    - path: ../Config/Configurable.swift
     - path: ../Riot/Categories/Bundle.swift
     - path: ../Riot/Categories/Character.swift
     - path: ../Riot/Categories/MXKImageView.swift
@@ -86,8 +88,6 @@ targets:
 
     # Tchap
     - path: ../RiotShareExtension/BuildSettings.swift
-    - path: ../Tchap/Config/CommonConfiguration.swift
-    - path: ../Tchap/Config/Configurable.swift
     - path: ../Tchap/Extensions
     - path: ../Tchap/Generated/Images_Riot.swift
     - path: ../Tchap/Generated/InfoPlist.swift

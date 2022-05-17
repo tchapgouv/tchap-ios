@@ -60,9 +60,12 @@ targets:
 
     sources:
     - path: ../Btchap/Config
+    - path: ../Config/AppConfiguration.swift
     - path: ../Config/Project.xcconfig
     - path: ../Config/Project-Warnings.xcconfig
     - path: ../Config/AppIdentifiers.xcconfig
+    - path: ../Config/CommonConfiguration.swift
+    - path: ../Config/Configurable.swift
     - path: .
       excludes:
         - "**/*.strings" # Exclude all strings files
@@ -192,6 +195,7 @@ targets:
     - path: ../Riot/Modules/DotsView
     - path: ../Riot/Modules/EncryptionInfo/EncryptionInfoView.h
     - path: ../Riot/Modules/EncryptionInfo/EncryptionInfoView.m
+    - path: ../Riot/Modules/Favorites
     - path: ../Riot/Modules/Home/Fallback
     - path: ../Riot/Modules/Home/Views
     - path: ../Riot/Modules/GDPR
@@ -257,11 +261,6 @@ targets:
     - path: ../RiotShareExtension/Sources/ShareItemProtocol.swift
     - path: ../RiotShareExtension/Sources/ShareItemSender.h
     - path: ../RiotShareExtension/Sources/ShareItemSender.m
-
-    # Tchap
-    - path: ../Tchap/Config/AppConfiguration.swift
-    - path: ../Tchap/Config/CommonConfiguration.swift
-    - path: ../Tchap/Config/Configurable.swift
     
     # Resources
     - path: ../Riot/Assets/en.lproj/InfoPlist.strings
