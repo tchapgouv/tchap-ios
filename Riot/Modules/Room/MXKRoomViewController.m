@@ -863,7 +863,9 @@
     joinRoomRequest = [roomDataSource.room join:^{
         
         self->joinRoomRequest = nil;
-        cancelIndicator;
+        if (cancelIndicator) {
+            cancelIndicator();
+        }
         
         [self triggerInitialBackPagination];
         
@@ -873,7 +875,9 @@
         }
         
     } failure:^(NSError *error) {
-        cancelIndicator;
+        if (cancelIndicator) {
+            cancelIndicator();
+        }
         MXLogDebug(@"[MXKRoomVC] Failed to join room (%@)", self->roomDataSource.room.summary.displayname);
         [self processRoomJoinFailureWithError:error completion:completion];
     }];
@@ -898,7 +902,9 @@
     void (^success)(MXRoom *room) = ^(MXRoom *room) {
         
         self->joinRoomRequest = nil;
-        cancelIndicator;
+        if (cancelIndicator) {
+            cancelIndicator();
+        }
         
         MXWeakify(self);
         
@@ -920,7 +926,9 @@
     };
     
     void (^failure)(NSError *error) = ^(NSError *error) {
-        cancelIndicator;
+        if (cancelIndicator) {
+            cancelIndicator();
+        }
         MXLogDebug(@"[MXKRoomVC] Failed to join room (%@)", roomIdOrAlias);
         [self processRoomJoinFailureWithError:error completion:completion];
     };
