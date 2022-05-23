@@ -137,7 +137,10 @@ import UIKit
             self.encryptedIcon?.isHidden = true
         }
         
-        roomSummary.setRoomAvatarImageIn(self.avatarView)
+        self.avatarView.vc_setRoomAvatarImage(with: roomCellData.avatarUrl,
+                                              roomId: roomCellData.roomIdentifier,
+                                              displayName: roomCellData.roomDisplayname,
+                                              mediaManager: roomCellData.mxSession.mediaManager)
         
         if let pinView = self.pinView {
             // Check whether the room is pinned

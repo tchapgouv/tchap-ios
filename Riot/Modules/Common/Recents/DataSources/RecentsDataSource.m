@@ -1027,8 +1027,6 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     
     if (summary)
     {
-        // Tchap: Workaround to fix missing Matrix Session in some RoomSummaries.
-        [summary setMatrixSession: self.mxSession];
         return [[MXKRecentCellData alloc] initWithRoomSummary:summary dataSource:self];
     }
     return nil;
