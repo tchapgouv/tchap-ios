@@ -3315,16 +3315,12 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         
         if (mxSession)
         {
-            MXRoom *directRoom = [mxSession directJoinedRoomWithUserId:userId];
-
-            // if the room exists and the user has not left it.
-            [self checkDirectRoomValidity:directRoom
-                                forUserID:userId
-                               completion:^(BOOL hasValidDirectRoom) {
-                if (hasValidDirectRoom) {
+            [mxSession validRoomDirectDiscussionFor:userId
+                                         completion:^(MXRoom * _Nullable room) {
+                if (room) {
                     // open it
                     Analytics.shared.viewRoomTrigger = AnalyticsViewRoomTriggerCreated;
-                    [self showRoom:directRoom.roomId andEventId:nil withMatrixSession:mxSession];
+                    [self showRoom:room.roomId andEventId:nil withMatrixSession:mxSession];
 
                     if (completion)
                     {
@@ -3340,41 +3336,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             completion();
         }
         
-    }];
-}
-
-- (void)checkDirectRoomValidity:(MXRoom *)room
-                      forUserID:(NSString *)userID
-                     completion:(void (^)(BOOL hasValidDirectRoom))completion {
-    // Check if there is a room in parameters.
-    if (room == nil) {
-        MXLogDebug(@"[MXKRoomDataSource] checkDirectRoomLeft: No room in parameter");
-        completion(FALSE);
-    }
-    
-    [room members:^(MXRoomMembers *roomMembers) {
-        MXLogDebug(@"[MXKRoomDataSource] checkDirectRoomLeft: All room members have been retrieved");
-        BOOL hasValidDirectRoom = FALSE;
-        
-        // If room members are not 2, direct room is not valid.
-        if (roomMembers.members.count != 2) {
-            MXLogDebug(@"[MXKRoomDataSource] checkDirectRoomLeft: roomMembers.members.count != 2");
-            completion(FALSE);
-            return;
-        }
-        
-        // Check if the requested member's membership is Invite or Join.
-        for (MXRoomMember *member in roomMembers.members) {
-            if ([member.userId isEqualToString:userID] &&
-                (member.membership == MXMembershipInvite ||
-                 member.membership == MXMembershipJoin)) {
-                hasValidDirectRoom = TRUE;
-            }
-        }
-        completion(hasValidDirectRoom);
-    } failure:^(NSError *error) {
-        MXLogDebug(@"[AppDelegate] checkDirectRoomLeft: error: %@", error);
-        completion(FALSE);
     }];
 }
 
