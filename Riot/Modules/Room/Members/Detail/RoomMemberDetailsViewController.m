@@ -461,7 +461,7 @@
 - (void)showRoomWithId:(NSString*)roomId
 {
 //    Analytics.shared.viewRoomTrigger = AnalyticsViewRoomTriggerRoomMemberDetail;
-//    [[AppDelegate theDelegate] showRoom:roomId andEventId:nil withMatrixSession:self.mainSession];
+    [[AppDelegate theDelegate] showRoom:roomId andEventId:nil withMatrixSession:self.mainSession];
 }
 
 #pragma mark - Hide/Show navigation bar border
@@ -707,7 +707,9 @@
     }
     else if (section == directChatsIndex)
     {
-        return (directChatsArray.count + 1);
+        // Tchap: Show only 1 value in direct chats (the direct chat or the add cell).
+        return 1;
+//        return (directChatsArray.count + 1);
     }
     else if (section == devicesIndex)
     {
@@ -861,7 +863,8 @@
             securityStatusCell.backgroundColor = ThemeService.shared.theme.backgroundColor;
             securityStatusCell.contentView.backgroundColor = [UIColor clearColor];
             securityStatusCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            [securityStatusCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
+            // Tchap: Hide accessory indicator
+//            [securityStatusCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
             
             cell = securityStatusCell;
         }
