@@ -33,7 +33,11 @@ final class DiscussionFinder: NSObject, DiscussionFinderType {
         self.session = session
     }
     
-    func getDiscussionIdentifier(for userID: String, includeInvite: Bool = true, autoJoin: Bool = true, completion: @escaping (MXResponse<DiscussionFinderResult>) -> Void) {
+    func getDiscussionIdentifier(for userID: String,
+                                 includeInvite: Bool = true,
+                                 autoJoin: Bool = true,
+                                 includeLeft: Bool = true,
+                                 completion: @escaping (MXResponse<DiscussionFinderResult>) -> Void) {
         guard let roomIDsList = self.session.directRooms?[userID] else {
             // There is no discussion for the moment with this user
             completion(.success(.noDiscussion))
@@ -83,7 +87,9 @@ final class DiscussionFinder: NSObject, DiscussionFinderType {
                                 case .leave:
                                     // the other member has left this room
                                     // and I can be invite or join
-                                    leftDiscussions.append(roomID)
+                                    if includeLeft {
+                                        leftDiscussions.append(roomID)
+                                    }
                                 default: break
                                 }
                             }

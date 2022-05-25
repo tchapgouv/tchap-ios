@@ -3315,24 +3315,21 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         
         if (mxSession)
         {
-            MXRoom *directRoom = [mxSession directJoinedRoomWithUserId:userId];
-            
-            // if the room exists
-            if (directRoom)
-            {
-                // open it
-                Analytics.shared.viewRoomTrigger = AnalyticsViewRoomTriggerCreated;
-                [self showRoom:directRoom.roomId andEventId:nil withMatrixSession:mxSession];
-                
-                if (completion)
-                {
-                    completion();
+            [mxSession validRoomDirectDiscussionFor:userId
+                                         completion:^(MXRoom * _Nullable room) {
+                if (room) {
+                    // open it
+                    Analytics.shared.viewRoomTrigger = AnalyticsViewRoomTriggerCreated;
+                    [self showRoom:room.roomId andEventId:nil withMatrixSession:mxSession];
+
+                    if (completion)
+                    {
+                        completion();
+                    }
+                } else {
+                    [self createDirectChatWithUserId:userId completion:completion];
                 }
-            }
-            else
-            {
-                [self createDirectChatWithUserId:userId completion:completion];
-            }
+            }];
         }
         else if (completion)
         {
