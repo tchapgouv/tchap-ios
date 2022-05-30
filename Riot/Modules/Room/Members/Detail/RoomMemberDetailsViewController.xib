@@ -80,7 +80,7 @@
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QHN-zr-wtC">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Display name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i1p-3D-PhB" userLabel="Display name" customClass="CopyableLabel" customModule="Btchap" customModuleProvider="target">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Display name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i1p-3D-PhB" userLabel="Display name" customClass="CopyableLabel" customModule="Riot" customModuleProvider="target">
                                             <rect key="frame" x="20" y="0.0" width="335" height="50"/>
                                             <accessibility key="accessibilityConfiguration" identifier="RoomMemberDetailsVCStatusLabel"/>
                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
