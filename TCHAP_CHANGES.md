@@ -1,3 +1,18 @@
+## Changes in 1.99.3 (2022-05-30)
+
+🙌 Improvements
+
+- Enable message edition and reaction by default in Tchap ([#532](https://github.com/tchapgouv/tchap-ios/issues/532))
+- [DM] Unable to start a new DM with a contact who left the previous DM ([#535](https://github.com/tchapgouv/tchap-ios/issues/535))
+- Improve the room member details ([#543](https://github.com/tchapgouv/tchap-ios/issues/543))
+
+🐛 Bugfixes
+
+- Room avatars are missing ([#526](https://github.com/tchapgouv/tchap-ios/issues/526))
+- Crash when the user joins a forum ([#531](https://github.com/tchapgouv/tchap-ios/issues/531))
+- Hide the Thread option in the selected message options ([#540](https://github.com/tchapgouv/tchap-ios/issues/540))
+
+
 ## Changes in 1.99.2 (2022-05-17)
 
 🐛 Bugfixes
