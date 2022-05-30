@@ -228,7 +228,7 @@ extension RoomInfoCoordinator: RoomParticipantsViewControllerDelegate {
     }
 
     func roomParticipantsViewController(_ roomParticipantsViewController: RoomParticipantsViewController!, startChatWithMemberId matrixId: String, completion: (() -> Void)?) {
-        
+        AppDelegate.theDelegate().createDirectChat(withUserId: matrixId, completion: completion)
     }
     
 }
