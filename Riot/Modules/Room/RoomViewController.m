@@ -6456,8 +6456,9 @@ static CGSize kThreadListBarButtonItemImageSize;
     [items addObject:[self replyMenuItemWithEvent:event]];
     if (showThreadOption)
     {
+        // Tchap: Disable Threads
         //  add "Thread" option only if not already in a thread
-        [items addObject:[self replyInThreadMenuItemWithEvent:event]];
+//        [items addObject:[self replyInThreadMenuItemWithEvent:event]];
     }
 #if ENABLE_EDITION
     [items addObject:[self editMenuItemWithEvent:event]];

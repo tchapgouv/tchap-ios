@@ -460,8 +460,8 @@
 
 - (void)showRoomWithId:(NSString*)roomId
 {
-//    Analytics.shared.viewRoomTrigger = AnalyticsViewRoomTriggerRoomMemberDetail;
-//    [[AppDelegate theDelegate] showRoom:roomId andEventId:nil withMatrixSession:self.mainSession];
+    Analytics.shared.viewRoomTrigger = AnalyticsViewRoomTriggerRoomMemberDetail;
+    [[AppDelegate theDelegate] showRoom:roomId andEventId:nil withMatrixSession:self.mainSession];
 }
 
 #pragma mark - Hide/Show navigation bar border
@@ -652,13 +652,16 @@
     
     if (self.mxRoom.summary.isEncrypted)
     {
-        securityActionsArray = @[@(MXKRoomMemberDetailsActionSecurity),
+        // Tchap: Hide security content cells.
+        securityActionsArray = @[/*@(MXKRoomMemberDetailsActionSecurity),*/
                                  @(MXKRoomMemberDetailsActionSecurityInformation)];
         
     }
     else
     {
-        securityActionsArray = @[@(MXKRoomMemberDetailsActionSecurity)];
+        // Tchap: Hide security content cells.
+        securityActionsArray = @[];
+//        securityActionsArray = @[@(MXKRoomMemberDetailsActionSecurity)];
     }
     
     securityIndex = adminToolsIndex = otherActionsIndex = directChatsIndex = devicesIndex = -1;
@@ -707,7 +710,9 @@
     }
     else if (section == directChatsIndex)
     {
-        return (directChatsArray.count + 1);
+        // Tchap: Show only 1 value in direct chats (the direct chat or the add cell).
+        return 1;
+//        return (directChatsArray.count + 1);
     }
     else if (section == devicesIndex)
     {
@@ -820,7 +825,8 @@
     {
         NSNumber *actionNumber = securityActionsArray[indexPath.row];
         
-        if (actionNumber.unsignedIntegerValue == MXKRoomMemberDetailsActionSecurity)
+        // Tchap: Hide security content cells.
+/*        if (actionNumber.unsignedIntegerValue == MXKRoomMemberDetailsActionSecurity)
         {
             MXKTableViewCell *securityStatusCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier] forIndexPath:indexPath];
             
@@ -865,7 +871,7 @@
             
             cell = securityStatusCell;
         }
-        else if (actionNumber.unsignedIntegerValue == MXKRoomMemberDetailsActionSecurityInformation)
+        else */if (actionNumber.unsignedIntegerValue == MXKRoomMemberDetailsActionSecurityInformation)
         {
             MXKTableViewCell *encryptionInfoCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCell defaultReuseIdentifier] forIndexPath:indexPath];
             
@@ -1040,7 +1046,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath
 {
-    if (indexPath.section == securityIndex)
+    // Tchap: Disable security cells interactions.
+/*    if (indexPath.section == securityIndex)
     {
         if (self.encryptionTrustLevel == UserEncryptionTrustLevelNotVerified)
         {
@@ -1058,7 +1065,7 @@
             [self presentUserVerification];
         }
     }
-    else if (indexPath.section == directChatsIndex)
+    else */if (indexPath.section == directChatsIndex)
     {
         if (indexPath.row < directChatsArray.count)
         {

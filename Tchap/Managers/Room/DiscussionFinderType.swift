@@ -34,13 +34,19 @@ protocol DiscussionFinderType {
     ///   - userID: The user identifier to search for. This identifier is a matrix id or an email address.
     ///   - includeInvite: Tell whether the pending invitations have to be considered or not.
     ///   - autoJoin: When the current discussion is a pending invite, this boolean tells whether we must join it automatically before returning.
+    ///   - includeLeft: Tell whether the left invitations have to be considered or not.
     ///   - completion: A closure called when the operation complete. Provide the discussion id (if any) when succeed.
-    func getDiscussionIdentifier(for userID: String, includeInvite: Bool, autoJoin: Bool, completion: @escaping (MXResponse<DiscussionFinderResult>) -> Void)
+    func getDiscussionIdentifier(for userID: String,
+                                 includeInvite: Bool,
+                                 autoJoin: Bool,
+                                 includeLeft: Bool,
+                                 completion: @escaping (MXResponse<DiscussionFinderResult>) -> Void)
+
 }
 
 // DiscussionFinderType default implementation
 extension DiscussionFinderType {
     func getDiscussionIdentifier(for userID: String, completion: @escaping (MXResponse<DiscussionFinderResult>) -> Void) {
-        return self.getDiscussionIdentifier(for: userID, includeInvite: true, autoJoin: true, completion: completion)
+        return self.getDiscussionIdentifier(for: userID, includeInvite: true, autoJoin: true, includeLeft: true, completion: completion)
     }
 }

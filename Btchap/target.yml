@@ -56,7 +56,8 @@ targets:
 
     settings:
       base:
-        GCC_PREPROCESSOR_DEFINITIONS: $(inherited) ENABLE_JOIN_BY_LINK=1
+        GCC_PREPROCESSOR_DEFINITIONS: $(inherited) ENABLE_REACTIONS=1 ENABLE_EDITION=1 ENABLE_JOIN_BY_LINK=1
+        OTHER_SWIFT_FLAGS: $(inherited) -D ENABLE_REACTIONS -D ENABLE_EDITION
 
     sources:
     - path: ../Btchap/Config
