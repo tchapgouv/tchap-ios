@@ -405,8 +405,7 @@ extension RoomCoordinator: RoomViewControllerDelegate {
     }
     
     func roomViewController(_ roomViewController: RoomViewController, handleUniversalLinkWith parameters: UniversalLinkParameters) -> Bool {
-//        return AppDelegate.theDelegate().handleUniversalLink(with: parameters)
-        return false
+        return AppDelegate.theDelegate().handleUniversalLink(with: parameters)
     }
     
     func roomViewControllerDidRequestPollCreationFormPresentation(_ roomViewController: RoomViewController) {

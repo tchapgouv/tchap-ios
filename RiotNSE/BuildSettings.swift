@@ -133,13 +133,13 @@ final class BuildSettings: NSObject {
     static let applicationHelpUrlString = "https://tchap.beta.gouv.fr/faq"
     
     
-    // MARk: - Matrix permalinks
-    static let permalinkSupportedHosts: [String] = [
-        "tchap.gouv.fr",
-        "www.tchap.gouv.fr"
+    // MARK: - Matrix permalinks
+    // Hosts/Paths for URLs that will considered as valid permalinks. Those permalinks are opened within the app.
+    static let permalinkSupportedHosts: [String: [String]] = [
+        "tchap.gouv.fr": ["/"],
+        "www.tchap.gouv.fr": ["/"]
     ]
-    static let permalinkPrefix = "https://tchap.gouv.fr"
-    static let clientPermalinkBaseUrl: String? = nil
+    static let clientPermalinkBaseUrl: String? = "https://tchap.gouv.fr"
     
     
     // MARK: - VoIP
