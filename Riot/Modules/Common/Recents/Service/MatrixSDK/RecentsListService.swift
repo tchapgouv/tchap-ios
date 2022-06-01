@@ -224,16 +224,18 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
     }
     
     public var peopleMissedDiscussionsCount: DiscussionsCount {
-        let invitesCount = invitedRoomListDataFetcherForPeople?.data?.counts.total
+        // Tchap: Remove invites
+//        let invitesCount = invitedRoomListDataFetcherForPeople?.data?.counts.total
         let directCount = directRoomListDataFetcherForPeople?.data?.counts.total
-        let totalCounts = [invitesCount, directCount].compactMap { $0 }
+        let totalCounts = [/*invitesCount, */directCount].compactMap { $0 }
         return DiscussionsCount(withRoomListDataCounts: totalCounts)
     }
     
     public var conversationMissedDiscussionsCount: DiscussionsCount {
-        let invitesCount = invitedRoomListDataFetcherForRooms?.data?.counts.total
+        // Tchap: Remove invites
+//        let invitesCount = invitedRoomListDataFetcherForRooms?.data?.counts.total
         let conversationCount = conversationRoomListDataFetcherForRooms?.data?.counts.total
-        let totalCounts = [invitesCount, conversationCount].compactMap { $0 }
+        let totalCounts = [/*invitesCount, */conversationCount].compactMap { $0 }
         return DiscussionsCount(withRoomListDataCounts: totalCounts)
     }
     
