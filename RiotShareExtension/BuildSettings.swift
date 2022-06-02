@@ -136,6 +136,7 @@ final class BuildSettings: NSObject {
     // MARK: - Matrix permalinks
     // Hosts/Paths for URLs that will considered as valid permalinks. Those permalinks are opened within the app.
     static let permalinkSupportedHosts: [String: [String]] = [
+        "matrix.to": ["/"],
         "tchap.gouv.fr": ["/"],
         "www.tchap.gouv.fr": ["/"]
     ]
