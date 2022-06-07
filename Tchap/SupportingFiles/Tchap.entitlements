@@ -6,26 +6,9 @@
 	<string>development</string>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
-		<string>applinks:matrix.agent.agriculture.tchap.gouv.fr</string>
-		<string>applinks:matrix.agent.culture.tchap.gouv.fr</string>
-		<string>applinks:matrix.agent.dev-durable.tchap.gouv.fr</string>
-		<string>applinks:matrix.agent.dinum.tchap.gouv.fr</string>
-		<string>applinks:matrix.agent.diplomatie.tchap.gouv.fr</string>
-		<string>applinks:matrix.agent.education.tchap.gouv.fr</string>
-		<string>applinks:matrix.agent.elysee.tchap.gouv.fr</string>
-		<string>applinks:matrix.agent.finances.tchap.gouv.fr</string>
-		<string>applinks:matrix.agent.interieur.tchap.gouv.fr</string>
-		<string>applinks:matrix.agent.intradef.tchap.gouv.fr</string>
-		<string>applinks:matrix.agent.justice.tchap.gouv.fr</string>
-		<string>applinks:matrix.agent.pm.tchap.gouv.fr</string>
-		<string>applinks:matrix.agent.social.tchap.gouv.fr</string>
-		<string>applinks:matrix.agent.ssi.tchap.gouv.fr</string>
-		<string>applinks:matrix.agent.tchap.gouv.fr</string>
 		<string>applinks:www.tchap.gouv.fr</string>
 		<string>applinks:tchap.gouv.fr</string>
 		<string>webcredentials:www.tchap.gouv.fr</string>
-		<string>applinks:matrix.agent.collectivites.tchap.gouv.fr</string>
-		<string>applinks:matrix.agent.externe.tchap.gouv.fr</string>
 	</array>
 	<key>com.apple.developer.icloud-container-identifiers</key>
 	<array>
