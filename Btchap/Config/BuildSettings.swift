@@ -126,7 +126,7 @@ final class BuildSettings: NSObject {
         "beta.tchap.gouv.fr": ["/"],
         "www.beta.tchap.gouv.fr": ["/"],
     ]
-    static let clientPermalinkBaseUrl: String? = "https://www.beta.tchap.gouv.fr"
+    static let clientPermalinkBaseUrl: String? = "https://beta.tchap.gouv.fr"
     
     
     // MARK: - VoIP
