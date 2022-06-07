@@ -91,29 +91,29 @@
 {
     BOOL isUniversalLink = NO;
     
-//    for (NSString *matrixPermalinkHost in BuildSettings.permalinkSupportedHosts)
-//    {
-//        if ([url.host isEqualToString:matrixPermalinkHost])
-//        {
-//            NSArray<NSString*> *hostPaths = BuildSettings.permalinkSupportedHosts[matrixPermalinkHost];
-//            if (hostPaths.count)
-//            {
-//                // iOS Patch: fix urls before using it
-//                NSURL *fixedURL = [Tools fixURLWithSeveralHashKeys:url];
-//                
-//                if (NSNotFound != [hostPaths indexOfObject:fixedURL.path])
-//                {
-//                    isUniversalLink = YES;
-//                    break;
-//                }
-//            }
-//            else
-//            {
-//                isUniversalLink = YES;
-//                break;
-//            }
-//        }
-//    }
+    for (NSString *matrixPermalinkHost in BuildSettings.permalinkSupportedHosts)
+    {
+        if ([url.host isEqualToString:matrixPermalinkHost])
+        {
+            NSArray<NSString*> *hostPaths = BuildSettings.permalinkSupportedHosts[matrixPermalinkHost];
+            if (hostPaths.count)
+            {
+                // iOS Patch: fix urls before using it
+                NSURL *fixedURL = [Tools fixURLWithSeveralHashKeys:url];
+                
+                if (NSNotFound != [hostPaths indexOfObject:fixedURL.path])
+                {
+                    isUniversalLink = YES;
+                    break;
+                }
+            }
+            else
+            {
+                isUniversalLink = YES;
+                break;
+            }
+        }
+    }
 
     return isUniversalLink;
 }
@@ -179,13 +179,13 @@
 
 + (NSString *)permalinkToRoom:(NSString *)roomIdOrAlias
 {
-    NSString *urlPrefix = BuildSettings.permalinkPrefix;
+    NSString *urlPrefix = BuildSettings.clientPermalinkBaseUrl;
     return [NSString stringWithFormat:@"%@/#/room/%@", urlPrefix, roomIdOrAlias];
 }
 
 + (NSString *)permalinkToEvent:(NSString *)eventId inRoom:(NSString *)roomIdOrAlias
 {
-    NSString *urlPrefix = BuildSettings.permalinkPrefix;
+    NSString *urlPrefix = BuildSettings.clientPermalinkBaseUrl;
     return [NSString stringWithFormat:@"%@/#/room/%@/%@", urlPrefix, roomIdOrAlias, eventId];
 }
 

@@ -82,8 +82,8 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
     private var fetcherTypesForMode: [RecentsDataSourceMode: FetcherTypes] = [
         .home: [.invited, .favorited, .directHome, .conversationHome, .lowPriority, .serverNotice, .suggested],
         .favourites: [.favorited],
-        .people: [.directPeople],
-        .rooms: [.conversationRooms, .suggested, .serverNotice]
+        .people: [.invited, .directPeople],
+        .rooms: [.invited, .conversationRooms, .suggested, .serverNotice]
     ]
     
     private var allFetchers: [MXRoomListDataFetcher] {
@@ -560,7 +560,7 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
 //                notDataTypes.insert([.invited, .favorited, .lowPriority])
 //                fetcher.fetchOptions.filterOptions.notDataTypes = notDataTypes
             case .people:
-                fetcher.fetchOptions.filterOptions.notDataTypes = [.lowPriority]
+                fetcher.fetchOptions.filterOptions.notDataTypes = [.invited, .lowPriority]
             default:
                 break
             }
@@ -593,7 +593,7 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
     }
 
     private func updateConversationFetcher(_ fetcher: MXRoomListDataFetcher, for mode: RecentsDataSourceMode) {
-        var notDataTypes: MXRoomSummaryDataTypes = [.hidden, .conferenceUser, .direct, .lowPriority, .serverNotice, .space]
+        var notDataTypes: MXRoomSummaryDataTypes = [.hidden, .conferenceUser, .direct, .invited, .lowPriority, .serverNotice, .space]
         switch mode {
         case .home:
             notDataTypes.insert(.favorited)

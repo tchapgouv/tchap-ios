@@ -1,3 +1,13 @@
+## Changes in 2.0.0 (2022-06-07)
+
+🐛 Bugfixes
+
+- Some icons have the wrong tint color ([#481](https://github.com/tchapgouv/tchap-ios/issues/481))
+- Button icon show one notification ([#552](https://github.com/tchapgouv/tchap-ios/issues/552))
+- [Account creation] Redirection to Tchap/Btchap failed ([#553](https://github.com/tchapgouv/tchap-ios/issues/553))
+- Tchap is not opened on permalink ([#557](https://github.com/tchapgouv/tchap-ios/issues/557))
+
+
 ## Changes in 1.99.3 (2022-05-30)
 
 🙌 Improvements
