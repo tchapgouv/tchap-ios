@@ -2386,35 +2386,35 @@ static CGSize kThreadListBarButtonItemImageSize;
     return [[AppDelegate theDelegate] showAlertWithTitle:title message:message];
 }
 
-//- (ScreenPresentationParameters*)buildUniversalLinkPresentationParameters
-//{
-//    return [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:NO stackAboveVisibleViews:BuildSettings.allowSplitViewDetailsScreenStacking sender:self sourceView:nil];
-//}
+- (ScreenPresentationParameters*)buildUniversalLinkPresentationParameters
+{
+    return [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:NO stackAboveVisibleViews:BuildSettings.allowSplitViewDetailsScreenStacking sender:self sourceView:nil];
+}
 
-//- (BOOL)handleUniversalLinkURL:(NSURL*)universalLinkURL
-//{
-//    UniversalLinkParameters *parameters = [[UniversalLinkParameters alloc] initWithUniversalLinkURL:universalLinkURL presentationParameters:[self buildUniversalLinkPresentationParameters]];
-//    return [self handleUniversalLinkWithParameters:parameters];
-//}
+- (BOOL)handleUniversalLinkURL:(NSURL*)universalLinkURL
+{
+    UniversalLinkParameters *parameters = [[UniversalLinkParameters alloc] initWithUniversalLinkURL:universalLinkURL presentationParameters:[self buildUniversalLinkPresentationParameters]];
+    return [self handleUniversalLinkWithParameters:parameters];
+}
 
-//- (BOOL)handleUniversalLinkFragment:(NSString*)fragment fromURL:(NSURL*)universalLinkURL
-//{
-//    UniversalLinkParameters *parameters = [[UniversalLinkParameters alloc] initWithFragment:fragment
-//                                                                           universalLinkURL:universalLinkURL presentationParameters:[self buildUniversalLinkPresentationParameters]];
-//    return [self handleUniversalLinkWithParameters:parameters];
-//}
+- (BOOL)handleUniversalLinkFragment:(NSString*)fragment fromURL:(NSURL*)universalLinkURL
+{
+    UniversalLinkParameters *parameters = [[UniversalLinkParameters alloc] initWithFragment:fragment
+                                                                           universalLinkURL:universalLinkURL presentationParameters:[self buildUniversalLinkPresentationParameters]];
+    return [self handleUniversalLinkWithParameters:parameters];
+}
 
-//- (BOOL)handleUniversalLinkWithParameters:(UniversalLinkParameters*)parameters
-//{
-//    if (self.delegate)
-//    {
-//        return [self.delegate roomViewController:self handleUniversalLinkWithParameters:parameters];
-//    }
-//    else
-//    {
-//        return [[AppDelegate theDelegate] handleUniversalLinkWithParameters:parameters];
-//    }
-//}
+- (BOOL)handleUniversalLinkWithParameters:(UniversalLinkParameters*)parameters
+{
+    if (self.delegate)
+    {
+        return [self.delegate roomViewController:self handleUniversalLinkWithParameters:parameters];
+    }
+    else
+    {
+        return [[AppDelegate theDelegate] handleUniversalLinkWithParameters:parameters];
+    }
+}
 
 - (void)setupUserSuggestionViewIfNeeded
 {
@@ -4193,7 +4193,7 @@ static CGSize kThreadListBarButtonItemImageSize;
         {
             shouldDoAction = NO;
             
-//            [self handleUniversalLinkURL:url];
+            [self handleUniversalLinkURL:url];
         }
         // Open a detail screen about the clicked user
         else if ([MXTools isMatrixUserIdentifier:absoluteURLString])
