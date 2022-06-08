@@ -38,8 +38,8 @@ targets:
     sources:
     - path: .
       excludes:
-      - "Shared/View/ShareRoomsRoomCell.*"
-      - "Shared/View/ShareRoomsDiscussionCell.*"
+      - "**/ShareRoomsRoomCell.*"
+      - "**/ShareRoomsDiscussionCell.*"
     - path: ../Config/CommonConfiguration.swift
     - path: ../Config/Configurable.swift
     - path: ../Riot/Categories/Bundle.swift
@@ -97,8 +97,5 @@ targets:
     - path: ../Tchap/Managers/ThirdPartyIDPlatformInfoResolver
     - path: ../Tchap/Managers/User
     - path: ../Tchap/Managers/DisplayName
-    - path: ../Tchap/Modules/Rooms/Views
-      excludes:
-      - "RoomsRoomCell.*"
     - path: ../Tchap/Model
     - path: ../Tchap/Utils

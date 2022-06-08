@@ -47,7 +47,7 @@
     self.roomTitle.textColor = ThemeService.shared.theme.textPrimaryColor;
     self.lastEventDescription.textColor = ThemeService.shared.theme.textSecondaryColor;
     self.lastEventDate.textColor = ThemeService.shared.theme.textSecondaryColor;
-    self.missedNotifAndUnreadBadgeLabel.textColor = ThemeService.shared.theme.baseTextPrimaryColor;
+    self.missedNotifAndUnreadBadgeLabel.textColor = ThemeService.shared.theme.tintContrastColor;
     
     self.roomAvatar.defaultBackgroundColor = [UIColor clearColor];
 }
@@ -123,6 +123,9 @@
             // The room title is not bold anymore            
             self.roomTitle.font = [UIFont systemFontOfSize:17 weight:UIFontWeightMedium];
         }
+        
+        // Tchap: Show encryptedIcon when needed (in case of a forum)
+        self.encryptedRoomIcon.hidden = !((MXRoomSummary *)roomCellData.roomSummary).tc_isForum;
 
         [self.roomAvatar vc_setRoomAvatarImageWith:roomCellData.avatarUrl
                                             roomId:roomCellData.roomIdentifier

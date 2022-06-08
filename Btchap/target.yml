@@ -107,7 +107,7 @@ targets:
     - path: ../Tchap/Modules/Application/VersionUpdate
     - path: ../Tchap/Generated/Images_Riot.swift
     - path: ../Tchap/Modules/Room/Views/BubbleCells/Antivirus
-    - path: ../Tchap/Modules/Rooms/Views
+
 
     # Add separately localizable files
     - path: ../Tchap/Assets/Localizations/fr.lproj/Tchap.strings
@@ -259,6 +259,9 @@ targets:
 
     # Share extension
     - path: ../RiotShareExtension/Shared
+      excludes:
+      - "**/ShareRoomsRoomCell.*"
+      - "**/ShareRoomsDiscussionCell.*"
     - path: ../RiotShareExtension/Sources/ShareItemProtocol.swift
     - path: ../RiotShareExtension/Sources/ShareItemSender.h
     - path: ../RiotShareExtension/Sources/ShareItemSender.m
