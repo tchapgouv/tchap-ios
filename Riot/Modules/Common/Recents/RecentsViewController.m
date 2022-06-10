@@ -1300,9 +1300,9 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     NSArray<UIContextualAction*> *actions = @[
         leaveAction,
         //priorityAction,
-        favouriteAction/*,
+        favouriteAction,
         muteAction,
-        directChatAction*/
+        //directChatAction
     ];
     
     UISwipeActionsConfiguration *swipeActionConfiguration = [UISwipeActionsConfiguration configurationWithActions:actions];
