@@ -655,16 +655,10 @@ static CGSize kThreadListBarButtonItemImageSize;
     
     self.showSettingsInitially = NO;
 
-<<<<<<< HEAD
 //    if (!RiotSettings.shared.threadsNoticeDisplayed && RiotSettings.shared.enableThreads)
 //    {
 //        [self showThreadsNotice];
 //    }
-=======
-    if (!RiotSettings.shared.threadsNoticeDisplayed && RiotSettings.shared.enableThreads)
-    {
-        [self showThreadsNotice];
-    }
 
     if (self.saveProgressTextInput && self.roomDataSource)
     {
@@ -674,7 +668,6 @@ static CGSize kThreadListBarButtonItemImageSize;
 
         inputToolbar.attributedTextMessage = self.roomDataSource.partialAttributedTextMessage;
     }
->>>>>>> v1.8.16
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -1535,17 +1528,17 @@ static CGSize kThreadListBarButtonItemImageSize;
     missedDiscussionsDotView.hidden = missedDiscussionsBadgeHidden;
 }
 
-<<<<<<< HEAD
+// Tchap: Disable Live location sharing
+//- (BOOL)shouldShowLiveLocationSharingBannerView
+//{
+//    return self.customizedRoomDataSource.isCurrentUserSharingActiveLocation;
+//}
+
 - (void)setForceHideInputToolBar:(BOOL)forceHideInputToolBar
 {
     _forceHideInputToolBar = forceHideInputToolBar;
     
     [self refreshRoomInputToolbar];
-=======
-- (BOOL)shouldShowLiveLocationSharingBannerView
-{
-    return self.customizedRoomDataSource.isCurrentUserSharingActiveLocation;
->>>>>>> v1.8.16
 }
 
 #pragma mark - Internals
@@ -2463,7 +2456,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 {
     [self.view bringSubviewToFront:self.topBannersStackView];
     
-    [self updateLiveLocationBannerViewVisibility];
+//    [self updateLiveLocationBannerViewVisibility];
 }
 
 #pragma mark - Jitsi
@@ -2880,7 +2873,6 @@ static CGSize kThreadListBarButtonItemImageSize;
             cellIdentifier = bubbleData.isPaginationFirstBubble ? RoomTimelineCellIdentifierMembershipWithPaginationTitle : RoomTimelineCellIdentifierMembership;
         }
     }
-<<<<<<< HEAD
 //    else if (bubbleData.tag == RoomBubbleCellDataTagRoomCreateConfiguration)
 //    {
 //        cellIdentifier = bubbleData.isPaginationFirstBubble ? RoomTimelineCellIdentifierRoomCreationCollapsedWithPaginationTitle : RoomTimelineCellIdentifierRoomCreationCollapsed;
@@ -2959,7 +2951,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 //            }
 //        }
 //    }
-//    else if (bubbleData.tag == RoomBubbleCellDataTagLocation)
+//    else if (bubbleData.tag == RoomBubbleCellDataTagLocation || bubbleData.tag == RoomBubbleCellDataTagLiveLocation)
 //    {
 //        if (bubbleData.isIncoming)
 //        {
@@ -3047,174 +3039,6 @@ static CGSize kThreadListBarButtonItemImageSize;
 //            }
 //        }
 //    }
-=======
-    else if (bubbleData.tag == RoomBubbleCellDataTagRoomCreateConfiguration)
-    {
-        cellIdentifier = bubbleData.isPaginationFirstBubble ? RoomTimelineCellIdentifierRoomCreationCollapsedWithPaginationTitle : RoomTimelineCellIdentifierRoomCreationCollapsed;
-    }
-    else if (bubbleData.tag == RoomBubbleCellDataTagCall)
-    {
-        cellIdentifier = RoomTimelineCellIdentifierDirectCallStatus;
-    }
-    else if (bubbleData.tag == RoomBubbleCellDataTagGroupCall)
-    {
-        cellIdentifier = RoomTimelineCellIdentifierGroupCallStatus;
-    }
-    else if (bubbleData.attachment.type == MXKAttachmentTypeVoiceMessage || bubbleData.attachment.type == MXKAttachmentTypeAudio)
-    {
-        if (bubbleData.isIncoming)
-        {
-            if (bubbleData.isPaginationFirstBubble)
-            {
-                cellIdentifier = RoomTimelineCellIdentifierIncomingVoiceMessageWithPaginationTitle;
-            }
-            else if (bubbleData.shouldHideSenderInformation)
-            {
-                cellIdentifier = RoomTimelineCellIdentifierIncomingVoiceMessageWithoutSenderInfo;
-            }
-            else
-            {
-                cellIdentifier = RoomTimelineCellIdentifierIncomingVoiceMessage;
-            }
-        }
-        else
-        {
-            if (bubbleData.isPaginationFirstBubble)
-            {
-                cellIdentifier = RoomTimelineCellIdentifierOutgoingVoiceMessageWithPaginationTitle;
-            }
-            else if (bubbleData.shouldHideSenderInformation)
-            {
-                cellIdentifier = RoomTimelineCellIdentifierOutgoingVoiceMessageWithoutSenderInfo;
-            }
-            else
-            {
-                cellIdentifier = RoomTimelineCellIdentifierOutgoingVoiceMessage;
-            }
-        }
-    }
-    else if (bubbleData.tag == RoomBubbleCellDataTagPoll)
-    {
-        if (bubbleData.isIncoming)
-        {
-            if (bubbleData.isPaginationFirstBubble)
-            {
-                cellIdentifier = RoomTimelineCellIdentifierIncomingPollWithPaginationTitle;
-            }
-            else if (bubbleData.shouldHideSenderInformation)
-            {
-                cellIdentifier = RoomTimelineCellIdentifierIncomingPollWithoutSenderInfo;
-            }
-            else
-            {
-                cellIdentifier = RoomTimelineCellIdentifierIncomingPoll;
-            }
-        }
-        else
-        {
-            if (bubbleData.isPaginationFirstBubble)
-            {
-                cellIdentifier = RoomTimelineCellIdentifierOutgoingPollWithPaginationTitle;
-            }
-            else if (bubbleData.shouldHideSenderInformation)
-            {
-                cellIdentifier = RoomTimelineCellIdentifierOutgoingPollWithoutSenderInfo;
-            }
-            else
-            {
-                cellIdentifier = RoomTimelineCellIdentifierOutgoingPoll;
-            }
-        }
-    }
-    else if (bubbleData.tag == RoomBubbleCellDataTagLocation || bubbleData.tag == RoomBubbleCellDataTagLiveLocation)
-    {
-        if (bubbleData.isIncoming)
-        {
-            if (bubbleData.isPaginationFirstBubble)
-            {
-                cellIdentifier = RoomTimelineCellIdentifierIncomingLocationWithPaginationTitle;
-            }
-            else if (bubbleData.shouldHideSenderInformation)
-            {
-                cellIdentifier = RoomTimelineCellIdentifierIncomingLocationWithoutSenderInfo;
-            }
-            else
-            {
-                cellIdentifier = RoomTimelineCellIdentifierIncomingLocation;
-            }
-        }
-        else
-        {
-            if (bubbleData.isPaginationFirstBubble)
-            {
-                cellIdentifier = RoomTimelineCellIdentifierOutgoingLocationWithPaginationTitle;
-            }
-            else if (bubbleData.shouldHideSenderInformation)
-            {
-                cellIdentifier = RoomTimelineCellIdentifierOutgoingLocationWithoutSenderInfo;
-            }
-            else
-            {
-                cellIdentifier = RoomTimelineCellIdentifierOutgoingLocation;
-            }
-        }
-    }
-    else if (roomBubbleCellData.getFirstBubbleComponentWithDisplay.event.isEmote)
-    {
-        if (bubbleData.isIncoming)
-        {
-            if (bubbleData.isPaginationFirstBubble)
-            {
-                if (bubbleData.shouldHideSenderName)
-                {
-                    cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierIncomingEmoteEncryptedWithPaginationTitleWithoutSenderName : RoomTimelineCellIdentifierIncomingEmoteWithPaginationTitleWithoutSenderName;
-                }
-                else
-                {
-                    cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierIncomingEmoteEncryptedWithPaginationTitle : RoomTimelineCellIdentifierIncomingEmoteWithPaginationTitle;
-                }
-            }
-            else if (bubbleData.shouldHideSenderInformation)
-            {
-                cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierIncomingEmoteEncryptedWithoutSenderInfo : RoomTimelineCellIdentifierIncomingEmoteWithoutSenderInfo;
-            }
-            else if (bubbleData.shouldHideSenderName)
-            {
-                cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierIncomingEmoteEncryptedWithoutSenderName : RoomTimelineCellIdentifierIncomingEmoteWithoutSenderName;
-            }
-            else
-            {
-                cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierIncomingEmoteEncrypted : RoomTimelineCellIdentifierIncomingEmote;
-            }
-        }
-        else
-        {
-            if (bubbleData.isPaginationFirstBubble)
-            {
-                if (bubbleData.shouldHideSenderName)
-                {
-                    cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierOutgoingEmoteEncryptedWithPaginationTitleWithoutSenderName : RoomTimelineCellIdentifierOutgoingEmoteWithPaginationTitleWithoutSenderName;
-                }
-                else
-                {
-                    cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierOutgoingEmoteEncryptedWithPaginationTitle : RoomTimelineCellIdentifierOutgoingEmoteWithPaginationTitle;
-                }
-            }
-            else if (bubbleData.shouldHideSenderInformation)
-            {
-                cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierOutgoingEmoteEncryptedWithoutSenderInfo : RoomTimelineCellIdentifierOutgoingEmoteWithoutSenderInfo;
-            }
-            else if (bubbleData.shouldHideSenderName)
-            {
-                cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierOutgoingEmoteEncryptedWithoutSenderName : RoomTimelineCellIdentifierOutgoingEmoteWithoutSenderName;
-            }
-            else
-            {
-                cellIdentifier = showEncryptionBadge ? RoomTimelineCellIdentifierOutgoingEmoteEncrypted : RoomTimelineCellIdentifierOutgoingEmote;
-            }
-        }
-    }
->>>>>>> v1.8.16
     else if (bubbleData.isIncoming)
     {
         if (bubbleData.isAttachmentWithThumbnail)
@@ -3378,26 +3202,26 @@ static CGSize kThreadListBarButtonItemImageSize;
                 [self mention:roomMember];
             }
         }
-        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellStopShareButtonPressed])
-        {
-            NSString *beaconInfoEventId;
-            
-            if ([bubbleData isKindOfClass:[RoomBubbleCellData class]])
-            {
-                RoomBubbleCellData *roomBubbleCellData = (RoomBubbleCellData*)bubbleData;
-                beaconInfoEventId = roomBubbleCellData.beaconInfoSummary.id;
-            }
-            
-            [self.delegate roomViewControllerDidStopLiveLocationSharing:self beaconInfoEventId:beaconInfoEventId];
-        }
-        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellRetryShareButtonPressed])
-        {
-            MXEvent *selectedEvent = userInfo[kMXKRoomBubbleCellEventKey];
-            if (selectedEvent)
-            {
-                // TODO: - Implement retry live location action
-            }
-        }
+//        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellStopShareButtonPressed])
+//        {
+//            NSString *beaconInfoEventId;
+//            
+//            if ([bubbleData isKindOfClass:[RoomBubbleCellData class]])
+//            {
+//                RoomBubbleCellData *roomBubbleCellData = (RoomBubbleCellData*)bubbleData;
+//                beaconInfoEventId = roomBubbleCellData.beaconInfoSummary.id;
+//            }
+//            
+//            [self.delegate roomViewControllerDidStopLiveLocationSharing:self beaconInfoEventId:beaconInfoEventId];
+//        }
+//        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellRetryShareButtonPressed])
+//        {
+//            MXEvent *selectedEvent = userInfo[kMXKRoomBubbleCellEventKey];
+//            if (selectedEvent)
+//            {
+//                // TODO: - Implement retry live location action
+//            }
+//        }
         else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnMessageTextView] || [actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnContentView])
         {
             // Retrieve the tapped event
@@ -3408,10 +3232,10 @@ static CGSize kThreadListBarButtonItemImageSize;
             {
                 [self cancelEventSelection];
             }
-            else if (bubbleData.tag == RoomBubbleCellDataTagLiveLocation)
-            {
-                [self.delegate roomViewController:self didRequestLiveLocationPresentationForBubbleData:bubbleData];
-            }
+//            else if (bubbleData.tag == RoomBubbleCellDataTagLiveLocation)
+//            {
+//                [self.delegate roomViewController:self didRequestLiveLocationPresentationForBubbleData:bubbleData];
+//            }
             else if (tappedEvent)
             {
                 if (tappedEvent.eventType == MXEventTypeRoomCreate)
@@ -3597,7 +3421,6 @@ static CGSize kThreadListBarButtonItemImageSize;
                 [self showReactionHistoryForEventId:tappedEventId animated:YES];
             }
         }
-<<<<<<< HEAD
 //        else if ([actionIdentifier isEqualToString:RoomDirectCallStatusCell.callBackAction])
 //        {
 //            MXEvent *callInviteEvent = userInfo[kMXKRoomBubbleCellEventKey];
@@ -3644,7 +3467,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 //                if (granted)
 //                {
 //                    // Present the Jitsi view controller
-//                    Widget *jitsiWidget = [self->customizedRoomDataSource jitsiWidget];
+//                    Widget *jitsiWidget = [self.customizedRoomDataSource jitsiWidget];
 //                    if (jitsiWidget)
 //                    {
 //                        [self showJitsiCallWithWidget:jitsiWidget];
@@ -3658,7 +3481,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 //
 //            MXEvent *widgetEvent = userInfo[kMXKRoomBubbleCellEventKey];
 //            Widget *widget = [[Widget alloc] initWithWidgetEvent:widgetEvent
-//                                                 inMatrixSession:customizedRoomDataSource.mxSession];
+//                                                 inMatrixSession:self.customizedRoomDataSource.mxSession];
 //            [[JitsiService shared] resetDeclineForWidgetWithId:widget.widgetId];
 //        }
 //        else if ([actionIdentifier isEqualToString:RoomGroupCallStatusCell.leaveAction])
@@ -3670,88 +3493,10 @@ static CGSize kThreadListBarButtonItemImageSize;
 //        {
 //            MXEvent *widgetEvent = userInfo[kMXKRoomBubbleCellEventKey];
 //            Widget *widget = [[Widget alloc] initWithWidgetEvent:widgetEvent
-//                                                 inMatrixSession:customizedRoomDataSource.mxSession];
+//                                                 inMatrixSession:self.customizedRoomDataSource.mxSession];
 //            [[JitsiService shared] declineWidgetWithId:widget.widgetId];
 //            [self reloadBubblesTable:YES];
 //        }
-=======
-        else if ([actionIdentifier isEqualToString:RoomDirectCallStatusCell.callBackAction])
-        {
-            MXEvent *callInviteEvent = userInfo[kMXKRoomBubbleCellEventKey];
-            MXCallInviteEventContent *eventContent = [MXCallInviteEventContent modelFromJSON:callInviteEvent.content];
-            
-            [self placeCallWithVideo2:eventContent.isVideoCall];
-        }
-        else if ([actionIdentifier isEqualToString:RoomDirectCallStatusCell.declineAction])
-        {
-            MXEvent *callInviteEvent = userInfo[kMXKRoomBubbleCellEventKey];
-            MXCallInviteEventContent *eventContent = [MXCallInviteEventContent modelFromJSON:callInviteEvent.content];
-            
-            MXCall *call = [self.mainSession.callManager callWithCallId:eventContent.callId];
-            [call hangup];
-        }
-        else if ([actionIdentifier isEqualToString:RoomDirectCallStatusCell.answerAction])
-        {
-            MXEvent *callInviteEvent = userInfo[kMXKRoomBubbleCellEventKey];
-            MXCallInviteEventContent *eventContent = [MXCallInviteEventContent modelFromJSON:callInviteEvent.content];
-            
-            MXCall *call = [self.mainSession.callManager callWithCallId:eventContent.callId];
-            [call answer];
-        }
-        else if ([actionIdentifier isEqualToString:RoomDirectCallStatusCell.endCallAction])
-        {
-            MXEvent *callInviteEvent = userInfo[kMXKRoomBubbleCellEventKey];
-            MXCallInviteEventContent *eventContent = [MXCallInviteEventContent modelFromJSON:callInviteEvent.content];
-            
-            MXCall *call = [self.mainSession.callManager callWithCallId:eventContent.callId];
-            [call hangup];
-        }
-        else if ([actionIdentifier isEqualToString:RoomGroupCallStatusCell.joinAction] ||
-                 [actionIdentifier isEqualToString:RoomGroupCallStatusCell.answerAction])
-        {
-            MXWeakify(self);
-
-            // Check app permissions first
-            [MXKTools checkAccessForCall:YES
-             manualChangeMessageForAudio:[VectorL10n microphoneAccessNotGrantedForCall:AppInfo.current.displayName]
-             manualChangeMessageForVideo:[VectorL10n cameraAccessNotGrantedForCall:AppInfo.current.displayName]
-               showPopUpInViewController:self completionHandler:^(BOOL granted) {
-                
-                MXStrongifyAndReturnIfNil(self);
-                if (granted)
-                {
-                    // Present the Jitsi view controller
-                    Widget *jitsiWidget = [self.customizedRoomDataSource jitsiWidget];
-                    if (jitsiWidget)
-                    {
-                        [self showJitsiCallWithWidget:jitsiWidget];
-                    }
-                }
-                else
-                {
-                    MXLogDebug(@"[RoomVC] didRecognizeAction:inCell:userInfo Warning: The application does not have the permission to join/answer the group call");
-                }
-            }];
-            
-            MXEvent *widgetEvent = userInfo[kMXKRoomBubbleCellEventKey];
-            Widget *widget = [[Widget alloc] initWithWidgetEvent:widgetEvent
-                                                 inMatrixSession:self.customizedRoomDataSource.mxSession];
-            [[JitsiService shared] resetDeclineForWidgetWithId:widget.widgetId];
-        }
-        else if ([actionIdentifier isEqualToString:RoomGroupCallStatusCell.leaveAction])
-        {
-            [self endActiveJitsiCall];
-            [self reloadBubblesTable:YES];
-        }
-        else if ([actionIdentifier isEqualToString:RoomGroupCallStatusCell.declineAction])
-        {
-            MXEvent *widgetEvent = userInfo[kMXKRoomBubbleCellEventKey];
-            Widget *widget = [[Widget alloc] initWithWidgetEvent:widgetEvent
-                                                 inMatrixSession:self.customizedRoomDataSource.mxSession];
-            [[JitsiService shared] declineWidgetWithId:widget.widgetId];
-            [self reloadBubblesTable:YES];
-        }
->>>>>>> v1.8.16
         else if ([actionIdentifier isEqualToString:RoomCreationIntroCell.tapOnAvatarView])
         {
             [self showRoomAvatarChange];
@@ -4741,7 +4486,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 - (void)roomDataSourceDidUpdateCurrentUserSharingLocationStatus:(RoomDataSource *)roomDataSource
 {
-    [self updateLiveLocationBannerViewVisibility];
+//    [self updateLiveLocationBannerViewVisibility];
 }
 
 #pragma mark - Segues
@@ -5892,8 +5637,7 @@ static CGSize kThreadListBarButtonItemImageSize;
                 self.inputToolbarView.textMessage = roomDataSource.partialTextMessage;
             }
         };
-
-<<<<<<< HEAD
+        // Tchap: Disable Threads
 //        if (self.roomDataSource.threadId)
 //        {
 //            [ThreadDataSource loadRoomDataSourceWithRoomId:self.roomDataSource.roomId
@@ -5906,20 +5650,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 //            }];
 //        }
 //        else
-//        {
-=======
-        if (self.roomDataSource.threadId)
-        {
-            [ThreadDataSource loadRoomDataSourceWithRoomId:self.roomDataSource.roomId
-                                            initialEventId:nil
-                                                  threadId:self.roomDataSource.threadId
-                                          andMatrixSession:self.mainSession
-                                                onComplete:^(ThreadDataSource *threadDataSource)
-             {
-                continueBlock(threadDataSource, YES);
-            }];
-        }
-        else if (self.isContextPreview)
+        if (self.isContextPreview)
         {
             [RoomPreviewDataSource loadRoomDataSourceWithRoomId:self.roomDataSource.roomId
                                                andMatrixSession:self.mainSession
@@ -5930,7 +5661,6 @@ static CGSize kThreadListBarButtonItemImageSize;
         }
         else
         {
->>>>>>> v1.8.16
             // Switch back to the room live timeline managed by MXKRoomDataSourceManager
             MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:self.mainSession];
 
@@ -5939,7 +5669,7 @@ static CGSize kThreadListBarButtonItemImageSize;
                                               onComplete:^(MXKRoomDataSource *roomDataSource) {
                 continueBlock(roomDataSource, NO);
             }];
-//        }
+        }
     }
 }
 
@@ -7218,7 +6948,6 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 - (void)showThreadsBetaForEvent:(MXEvent *)event
 {
-<<<<<<< HEAD
     // Tchap: Disable Threads
 //    if (self.threadsBetaBridgePresenter)
 //    {
@@ -7226,24 +6955,12 @@ static CGSize kThreadListBarButtonItemImageSize;
 //        self.threadsBetaBridgePresenter = nil;
 //    }
 //
-//    self.threadsBetaBridgePresenter = [[ThreadsBetaCoordinatorBridgePresenter alloc] initWithThreadId:event.eventId];
+//    self.threadsBetaBridgePresenter = [[ThreadsBetaCoordinatorBridgePresenter alloc] initWithThreadId:event.eventId
+//                                                                                             infoText:VectorL10n.threadsBetaInformation
+//                                                                                       additionalText:nil];
 //    self.threadsBetaBridgePresenter.delegate = self;
 //
 //    [self.threadsBetaBridgePresenter presentFrom:self.presentedViewController?:self animated:YES];
-=======
-    if (self.threadsBetaBridgePresenter)
-    {
-        [self.threadsBetaBridgePresenter dismissWithAnimated:YES completion:nil];
-        self.threadsBetaBridgePresenter = nil;
-    }
-
-    self.threadsBetaBridgePresenter = [[ThreadsBetaCoordinatorBridgePresenter alloc] initWithThreadId:event.eventId
-                                                                                             infoText:VectorL10n.threadsBetaInformation
-                                                                                       additionalText:nil];
-    self.threadsBetaBridgePresenter.delegate = self;
-
-    [self.threadsBetaBridgePresenter presentFrom:self.presentedViewController?:self animated:YES];
->>>>>>> v1.8.16
 }
 
 - (void)openThreadWithId:(NSString *)threadId
@@ -7725,11 +7442,10 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 #pragma mark - RemoveJitsiWidgetViewDelegate
 
-<<<<<<< HEAD
 //- (void)removeJitsiWidgetViewDidCompleteSliding:(RemoveJitsiWidgetView *)view
 //{
 //    view.delegate = nil;
-//    Widget *jitsiWidget = [customizedRoomDataSource jitsiWidget];
+//    Widget *jitsiWidget = [self.customizedRoomDataSource jitsiWidget];
 //
 //    [self startActivityIndicator];
 //
@@ -7756,38 +7472,6 @@ static CGSize kThreadListBarButtonItemImageSize;
 //        [self stopActivityIndicator];
 //    }];
 //}
-=======
-- (void)removeJitsiWidgetViewDidCompleteSliding:(RemoveJitsiWidgetView *)view
-{
-    view.delegate = nil;
-    Widget *jitsiWidget = [self.customizedRoomDataSource jitsiWidget];
-    
-    [self startActivityIndicator];
-    
-    //  close the widget
-    MXWeakify(self);
-    
-    [[WidgetManager sharedManager] closeWidget:jitsiWidget.widgetId
-                                        inRoom:self.roomDataSource.room
-                                       success:^{
-        MXStrongifyAndReturnIfNil(self);
-        [self stopActivityIndicator];
-        //  we can wait for kWidgetManagerDidUpdateWidgetNotification, but we want to be faster
-        self.removeJitsiWidgetContainer.hidden = YES;
-        self.removeJitsiWidgetView.delegate = nil;
-        
-        //  end active call if exists
-        if ([self isRoomHavingAJitsiCallForWidgetId:jitsiWidget.widgetId])
-        {
-            [self endActiveJitsiCall];
-        }
-    } failure:^(NSError *error) {
-        MXStrongifyAndReturnIfNil(self);
-        [self showJitsiErrorAsAlert:error];
-        [self stopActivityIndicator];
-    }];
-}
->>>>>>> v1.8.16
 
 #pragma mark - VoiceMessageControllerDelegate
 
@@ -7819,7 +7503,6 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 #pragma mark - SpaceDetailPresenterDelegate
 
-<<<<<<< HEAD
 //- (void)spaceDetailPresenterDidComplete:(SpaceDetailPresenter *)presenter
 //{
 //    self.spaceDetailPresenter = nil;
@@ -7843,54 +7526,18 @@ static CGSize kThreadListBarButtonItemImageSize;
 //             didRequestMentionForMember:(MXRoomMember *)member
 //                            textTrigger:(NSString *)textTrigger
 //{
-//    if (textTrigger.length) {
-//        NSString *textMessage = [self.inputToolbarView textMessage];
-//        textMessage = [textMessage stringByReplacingOccurrencesOfString:textTrigger
-//                                                             withString:@""
-//                                                                options:NSBackwardsSearch | NSAnchoredSearch
-//                                                                  range:NSMakeRange(0, textMessage.length)];
-//        [self.inputToolbarView setTextMessage:textMessage];
+//    RoomInputToolbarView *toolbar = (RoomInputToolbarView *)self.inputToolbarView;
+//    if (toolbar && textTrigger.length) {
+//        NSMutableAttributedString *attributedTextMessage = [[NSMutableAttributedString alloc] initWithAttributedString:toolbar.attributedTextMessage];
+//        [[attributedTextMessage mutableString] replaceOccurrencesOfString:textTrigger
+//                                                               withString:@""
+//                                                                  options:NSBackwardsSearch | NSAnchoredSearch
+//                                                                    range:NSMakeRange(0, attributedTextMessage.length)];
+//    [toolbar setAttributedTextMessage:attributedTextMessage];
 //    }
 //
 //    [self mention:member];
 //}
-=======
-- (void)spaceDetailPresenterDidComplete:(SpaceDetailPresenter *)presenter
-{
-    self.spaceDetailPresenter = nil;
-}
-
-- (void)spaceDetailPresenter:(SpaceDetailPresenter *)presenter didOpenSpaceWithId:(NSString *)spaceId
-{
-    self.spaceDetailPresenter = nil;
-    [[LegacyAppDelegate theDelegate] openSpaceWithId:spaceId];
-}
-
-- (void)spaceDetailPresenter:(SpaceDetailPresenter *)presenter didJoinSpaceWithId:(NSString *)spaceId
-{
-    self.spaceDetailPresenter = nil;
-    [[LegacyAppDelegate theDelegate] openSpaceWithId:spaceId];
-}
-
-#pragma mark - UserSuggestionCoordinatorBridgeDelegate
-
-- (void)userSuggestionCoordinatorBridge:(UserSuggestionCoordinatorBridge *)coordinator
-             didRequestMentionForMember:(MXRoomMember *)member
-                            textTrigger:(NSString *)textTrigger
-{
-    RoomInputToolbarView *toolbar = (RoomInputToolbarView *)self.inputToolbarView;
-    if (toolbar && textTrigger.length) {
-        NSMutableAttributedString *attributedTextMessage = [[NSMutableAttributedString alloc] initWithAttributedString:toolbar.attributedTextMessage];
-        [[attributedTextMessage mutableString] replaceOccurrencesOfString:textTrigger
-                                                               withString:@""
-                                                                  options:NSBackwardsSearch | NSAnchoredSearch
-                                                                    range:NSMakeRange(0, attributedTextMessage.length)];
-        [toolbar setAttributedTextMessage:attributedTextMessage];
-    }
-    
-    [self mention:member];
-}
->>>>>>> v1.8.16
 
 #pragma mark - ThreadsCoordinatorBridgePresenterDelegate
 

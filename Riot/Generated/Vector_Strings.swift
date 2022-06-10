@@ -2751,6 +2751,22 @@ public class VectorL10n: NSObject {
   public static func localContactsAccessNotGranted(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "local_contacts_access_not_granted", p1)
   }
+  /// Not now
+  public static var locationSharingAllowBackgroundLocationCancelAction: String { 
+    return VectorL10n.tr("Vector", "location_sharing_allow_background_location_cancel_action") 
+  }
+  /// If you’d like to share your Live location, Element needs location access when the app is in the background.\nTo enable access, tap Settings> Location and select Always
+  public static var locationSharingAllowBackgroundLocationMessage: String { 
+    return VectorL10n.tr("Vector", "location_sharing_allow_background_location_message") 
+  }
+  /// Allow access
+  public static var locationSharingAllowBackgroundLocationTitle: String { 
+    return VectorL10n.tr("Vector", "location_sharing_allow_background_location_title") 
+  }
+  /// Settings
+  public static var locationSharingAllowBackgroundLocationValidateAction: String { 
+    return VectorL10n.tr("Vector", "location_sharing_allow_background_location_validate_action") 
+  }
   /// Close
   public static var locationSharingCloseAction: String { 
     return VectorL10n.tr("Vector", "location_sharing_close_action") 
@@ -3856,34 +3872,6 @@ public class VectorL10n: NSObject {
     return VectorL10n.tr("Vector", "on") 
   }
   /// Profile picture
-<<<<<<< HEAD:Riot/Generated/Vector_Strings.swift
-  public static var onboardingAvatarAccessibilityLabel: String {
-    return VectorL10n.tr("Vector", "onboarding_avatar_accessibility_label")
-  }
-  /// You can change this anytime.
-  public static var onboardingAvatarMessage: String {
-    return VectorL10n.tr("Vector", "onboarding_avatar_message")
-  }
-  /// Add a profile picture
-  public static var onboardingAvatarTitle: String {
-    return VectorL10n.tr("Vector", "onboarding_avatar_title")
-  }
-  /// Let's go
-  public static var onboardingCelebrationButton: String {
-    return VectorL10n.tr("Vector", "onboarding_celebration_button")
-  }
-  /// Your preferences have been saved.
-  public static var onboardingCelebrationMessage: String {
-    return VectorL10n.tr("Vector", "onboarding_celebration_message")
-  }
-  /// You’re all set!
-  public static var onboardingCelebrationTitle: String {
-    return VectorL10n.tr("Vector", "onboarding_celebration_title")
-  }
-  /// Take me home
-  public static var onboardingCongratulationsHomeButton: String {
-    return VectorL10n.tr("Vector", "onboarding_congratulations_home_button")
-=======
   public static var onboardingAvatarAccessibilityLabel: String { 
     return VectorL10n.tr("Vector", "onboarding_avatar_accessibility_label") 
   }
@@ -3910,49 +3898,12 @@ public class VectorL10n: NSObject {
   /// Take me home
   public static var onboardingCongratulationsHomeButton: String { 
     return VectorL10n.tr("Vector", "onboarding_congratulations_home_button") 
->>>>>>> v1.8.16:Riot/Generated/Strings.swift
   }
   /// Your account %@ has been created.
   public static func onboardingCongratulationsMessage(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "onboarding_congratulations_message", p1)
   }
   /// Personalise profile
-<<<<<<< HEAD:Riot/Generated/Vector_Strings.swift
-  public static var onboardingCongratulationsPersonalizeButton: String {
-    return VectorL10n.tr("Vector", "onboarding_congratulations_personalize_button")
-  }
-  /// Congratulations!
-  public static var onboardingCongratulationsTitle: String {
-    return VectorL10n.tr("Vector", "onboarding_congratulations_title")
-  }
-  /// You can change this later
-  public static var onboardingDisplayNameHint: String {
-    return VectorL10n.tr("Vector", "onboarding_display_name_hint")
-  }
-  /// Your display name must be less than 256 characters
-  public static var onboardingDisplayNameMaxLength: String {
-    return VectorL10n.tr("Vector", "onboarding_display_name_max_length")
-  }
-  /// This will be shown when you send messages.
-  public static var onboardingDisplayNameMessage: String {
-    return VectorL10n.tr("Vector", "onboarding_display_name_message")
-  }
-  /// Display Name
-  public static var onboardingDisplayNamePlaceholder: String {
-    return VectorL10n.tr("Vector", "onboarding_display_name_placeholder")
-  }
-  /// Choose a display name
-  public static var onboardingDisplayNameTitle: String {
-    return VectorL10n.tr("Vector", "onboarding_display_name_title")
-  }
-  /// Save and continue
-  public static var onboardingPersonalizationSave: String {
-    return VectorL10n.tr("Vector", "onboarding_personalization_save")
-  }
-  /// Skip this step
-  public static var onboardingPersonalizationSkip: String {
-    return VectorL10n.tr("Vector", "onboarding_personalization_skip")
-=======
   public static var onboardingCongratulationsPersonalizeButton: String { 
     return VectorL10n.tr("Vector", "onboarding_congratulations_personalize_button") 
   }
@@ -3987,7 +3938,6 @@ public class VectorL10n: NSObject {
   /// Skip this step
   public static var onboardingPersonalizationSkip: String { 
     return VectorL10n.tr("Vector", "onboarding_personalization_skip") 
->>>>>>> v1.8.16:Riot/Generated/Strings.swift
   }
   /// I already have an account
   public static var onboardingSplashLoginButtonTitle: String { 
@@ -4070,8 +4020,8 @@ public class VectorL10n: NSObject {
     return VectorL10n.tr("Vector", "open") 
   }
   /// or
-  public static var or: String {
-    return VectorL10n.tr("Vector", "or")
+  public static var or: String { 
+    return VectorL10n.tr("Vector", "or") 
   }
   /// CONVERSATIONS
   public static var peopleConversationSection: String { 
@@ -6932,6 +6882,10 @@ public class VectorL10n: NSObject {
   /// Auto Report Decryption Errors
   public static var settingsLabsEnableAutoReportDecryptionErrors: String { 
     return VectorL10n.tr("Vector", "settings_labs_enable_auto_report_decryption_errors") 
+  }
+  /// Live location sharing - share current location (active development, and temporarily, locations persist in room history)
+  public static var settingsLabsEnableLiveLocationSharing: String { 
+    return VectorL10n.tr("Vector", "settings_labs_enable_live_location_sharing") 
   }
   /// Ring for group calls
   public static var settingsLabsEnableRingingForGroupCalls: String { 

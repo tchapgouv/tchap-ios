@@ -358,17 +358,13 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         // In case of split view controller where the primary and secondary view controllers are displayed side-by-side onscreen,
         // the selected room (if any) is highlighted.
         [self refreshCurrentSelectedCell:YES];
-<<<<<<< HEAD
 //    }
-=======
-    }
 
     if (self.recentsDataSource)
     {
         [self refreshRecentsTable];
         [self showEmptyViewIfNeeded];
     }
->>>>>>> v1.8.16
 }
 
 - (void)viewDidLayoutSubviews
@@ -1061,13 +1057,8 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
             [self showSpaceInviteNotAvailable];
             return;
         }
-<<<<<<< HEAD
-
-        // Accept invitation
-=======
         
-        // Accept invitation and display the room
->>>>>>> v1.8.16
+        // Accept invitation
         Analytics.shared.joinedRoomTrigger = AnalyticsJoinedRoomTriggerInvite;
         [self showRoomWithRoomId:invitedRoom.roomId andAutoJoinInvitedRoom:true inMatrixSession:invitedRoom.mxSession];
     }
@@ -1075,9 +1066,9 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     {
         // Retrieve the invited room
         MXRoom *invitedRoom = userInfo[RoomsInviteCell.keyRoom];
-
+        
         [self cancelEditionMode:isRefreshPending];
-
+        
         // Decline the invitation
         [self leaveRoom:invitedRoom completion:nil];
     }
@@ -1098,35 +1089,6 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         [super dataSource:dataSource didCellChange:changes];
         return;
     }
-<<<<<<< HEAD
-    
-    BOOL cellReloaded = NO;
-    if ([changes isKindOfClass:NSNumber.class])
-    {
-        NSInteger section = ((NSNumber *)changes).integerValue;
-        if (section >= 0)
-        {
-            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:section];
-            UITableViewCell *cell = [self.recentsTableView cellForRowAtIndexPath:indexPath];
-            if ([cell isKindOfClass:TableViewCellWithCollectionView.class])
-            {
-                TableViewCellWithCollectionView *collectionViewCell = (TableViewCellWithCollectionView *)cell;
-                [collectionViewCell.collectionView reloadData];
-                cellReloaded = YES;
-
-                CGRect headerFrame = [self.recentsTableView rectForHeaderInSection:section];
-                UIView *headerView = [self.recentsTableView headerViewForSection:section];
-                UIView *updatedHeaderView = [self.dataSource viewForHeaderInSection:section withFrame:headerFrame inTableView:self.recentsTableView];
-                if ([headerView isKindOfClass:SectionHeaderView.class]
-                    && [updatedHeaderView isKindOfClass:SectionHeaderView.class])
-                {
-                    SectionHeaderView *sectionHeaderView = (SectionHeaderView *)headerView;
-                    SectionHeaderView *updatedSectionHeaderView = (SectionHeaderView *)updatedHeaderView;
-                    sectionHeaderView.headerLabel = updatedSectionHeaderView.headerLabel;
-                    sectionHeaderView.accessoryView = updatedSectionHeaderView.accessoryView;
-                    sectionHeaderView.rightAccessoryView = updatedSectionHeaderView.rightAccessoryView;
-                }
-=======
 
     if ([changes isKindOfClass:NSIndexPath.class])
     {
@@ -1150,7 +1112,6 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                 sectionHeaderView.headerLabel = updatedSectionHeaderView.headerLabel;
                 sectionHeaderView.accessoryView = updatedSectionHeaderView.accessoryView;
                 sectionHeaderView.rightAccessoryView = updatedSectionHeaderView.rightAccessoryView;
->>>>>>> v1.8.16
             }
         }
         else
@@ -1165,14 +1126,8 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     }
     else if (!changes)
     {
-<<<<<<< HEAD
-        // Since we've enabled room list pagination, `refreshRecentsTable` not called in this case.
-        // Refresh tab bar badges separately.
-//        [[AppDelegate theDelegate].masterTabBarController refreshTabBarBadges];
-=======
         MXLogDebug(@"[RecentsViewController]: Reloading the entire table view");
         [self refreshRecentsTable];
->>>>>>> v1.8.16
     }
     
     // Since we've enabled room list pagination, `refreshRecentsTable` not called in this case.
@@ -2332,7 +2287,6 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                               state:UIControlStateNormal];
 }
 
-<<<<<<< HEAD
 // Tchap: Restore default icon after cancel.
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
     [super searchBarCancelButtonClicked:searchBar];
@@ -2340,29 +2294,6 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     [self.recentsSearchBar setImage:AssetImages.filterOff.image
                    forSearchBarIcon:UISearchBarIconSearch
                               state:UIControlStateNormal];
-=======
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
-{
-    [self.recentsSearchBar resignFirstResponder];
-    [self hideSearchBar:YES];
-    self.recentsTableView.contentOffset = CGPointMake(0, self.recentsSearchBar.frame.size.height);
-    self.recentsTableView.tableHeaderView = nil;
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self.recentsDataSource searchWithPatterns:nil];
-        [self.recentsSearchBar setText:nil];
-    });
-}
-
-#pragma mark - CreateRoomCoordinatorBridgePresenterDelegate
-
-- (void)createRoomCoordinatorBridgePresenterDelegate:(CreateRoomCoordinatorBridgePresenter *)coordinatorBridgePresenter didCreateNewRoom:(MXRoom *)room
-{
-    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
-        Analytics.shared.viewRoomTrigger = AnalyticsViewRoomTriggerCreated;
-        [self showRoomWithRoomId:room.roomId inMatrixSession:self.mainSession];
-    }];
-    coordinatorBridgePresenter = nil;
->>>>>>> v1.8.16
 }
 
 #pragma mark - CreateRoomCoordinatorBridgePresenterDelegate
@@ -2377,6 +2308,12 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 //}
 
 //- (void)createRoomCoordinatorBridgePresenterDelegateDidCancel:(CreateRoomCoordinatorBridgePresenter *)coordinatorBridgePresenter
+//{
+//    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+//    coordinatorBridgePresenter = nil;
+//}
+
+//- (void)createRoomCoordinatorBridgePresenterDelegate:(CreateRoomCoordinatorBridgePresenter *)coordinatorBridgePresenter didAddRoomsWithIds:(NSArray<NSString *> *)roomIds
 //{
 //    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
 //    coordinatorBridgePresenter = nil;

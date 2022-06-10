@@ -48,10 +48,10 @@
 "auth_phone_placeholder" = "Numéro de téléphone";
 "auth_repeat_password_placeholder" = "Répéter le mot de passe";
 "auth_repeat_new_password_placeholder" = "Confirmer le nouveau mot de passe";
-"auth_invalid_login_param" = "Nom d'utilisateur et/ou mot de passe incorrect";
-"auth_invalid_user_name" = "Les noms d'utilisateur ne peuvent contenir que des lettres, des chiffres, des points, des traits d'union ou des tirets bas";
-"auth_invalid_password" = "Mot de passe trop court (min 8)";
-"auth_invalid_email" = "L'adresse e-mail ne semble pas valide";
+"auth_invalid_login_param" = "Nom d’utilisateur et/ou mot de passe incorrect";
+"auth_invalid_user_name" = "Les noms d’utilisateur ne peuvent contenir que des lettres, des chiffres, des points, des traits d’union ou des tirets bas";
+"auth_invalid_password" = "Mot de passe trop court (min 6)";
+"auth_invalid_email" = "L’adresse e-mail ne semble pas valide";
 "auth_invalid_phone" = "Le numéro de téléphone ne semble pas valide";
 "auth_missing_password" = "Mot de passe manquant";
 "auth_add_email_message" = "Ajouter une adresse e-mail au compte pour que les utilisateurs puissent vous retrouver et pour réinitialiser votre mot de passe.";
@@ -568,16 +568,9 @@
 "settings_key_backup_info_not_valid" = "Cet appareil ne sauvegarde pas vos clés, mais vous avez une sauvegarde existante que vous pouvez restaurer et joindre.";
 "settings_key_backup_info_progress" = "Sauvegarde de %@ clés…";
 "settings_key_backup_info_progress_done" = "Toutes les clés ont été sauvegardées";
-<<<<<<< HEAD
-"settings_key_backup_info_not_trusted_from_verifiable_device_fix_action" = "Pour utiliser la récupération de messages sécurisée sur cet appareil, vérifiez %@ maintenant.";
 "settings_key_backup_info_not_trusted_fix_action" = "Pour utiliser la récupération de messages sécurisée sur cet appareil, saisissez votre phrase secrète ou votre clé de récupération maintenant.";
 "settings_key_backup_info_trust_signature_unknown" = "La sauvegarde a une signature de l'appareil ayant pour identifiant : %@";
 "settings_key_backup_info_trust_signature_valid" = "La sauvegarde a une signature valide depuis cet appareil";
-=======
-"settings_key_backup_info_not_trusted_fix_action" = "Pour utiliser la récupération de messages sécurisée sur cet appareil, fournissez votre phrase de passe ou votre clé de récupération maintenant.";
-"settings_key_backup_info_trust_signature_unknown" = "La sauvegarde a une signature de la session ayant pour identifiant : %@";
-"settings_key_backup_info_trust_signature_valid" = "La sauvegarde a une signature valide depuis cette session";
->>>>>>> v1.8.16
 "settings_key_backup_info_trust_signature_valid_device_verified" = "La sauvegarde a une signature valide depuis %@";
 "settings_key_backup_info_trust_signature_valid_device_unverified" = "La sauvegarde a une signature depuis %@";
 "settings_key_backup_info_trust_signature_invalid_device_verified" = "La sauvegarde a une signature non valide depuis %@";
@@ -825,11 +818,7 @@
 "room_participants_start_new_chat_error_using_user_email_without_identity_server" = "Aucun serveur d’identité n’est configuré donc vous ne pouvez pas commencer de discussion avec un contact en utilisant un e-mail.";
 // Service terms
 "service_terms_modal_title" = "Conditions de service";
-<<<<<<< HEAD
-"service_terms_modal_message" = "Pour continuer vous devez accepter les conditions de ce service (%@).";
 "service_terms_modal_title_message" = "To continue, accept the below terms and conditions";
-=======
->>>>>>> v1.8.16
 "service_terms_modal_accept_button" = "Accepter";
 "service_terms_modal_footer" = "This can be disabled anytime in settings.";
 "service_terms_modal_description_for_identity_server" = "Se rendre découvrable pour les autres";

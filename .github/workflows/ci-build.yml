@@ -49,15 +49,10 @@ jobs:
         run: |
           bundle config path vendor/bundle
           bundle install --jobs 4 --retry 3
-<<<<<<< HEAD
 
       # Disabled for Tchap to avoid MatrixSDK version reset on the main branch (develop), instead of using the DINUM specific one.
       # - name: Use right MatrixSDK versions
       #   run: bundle exec fastlane point_dependencies_to_related_branches
-=======
-      - name: Use right MatrixSDK versions
-        run: bundle exec fastlane point_dependencies_to_related_branches
->>>>>>> v1.8.16
 
       # Main step
       - name: Build iOS simulator

@@ -123,6 +123,10 @@ targets:
     - path: ../Riot/Assets/Sounds
     - path: ../Riot/Assets/third_party_licenses.html
     - path: ../Riot/Categories
+      excludes:
+        - "MXHTTPClient+Async.swift"
+        - "MXRestClient+Async.swift"
+    - path: ../Riot/Generated/UntranslatedStrings.swift
     - path: ../Riot/Generated/Vector_Strings.swift
     - path: ../Riot/Managers/AppInfo
     - path: ../Riot/Managers/BugReport
@@ -172,6 +176,7 @@ targets:
     - path: ../Riot/Modules/Common/Models
     - path: ../Riot/Modules/Common/NavigationController/RiotNavigationController.h
     - path: ../Riot/Modules/Common/NavigationController/RiotNavigationController.m
+    - path: ../Riot/Modules/Common/PresenceIndicator
     - path: ../Riot/Modules/Common/Recents/DataSources
     - path: ../Riot/Modules/Common/Recents/Model/RecentCellData.h
     - path: ../Riot/Modules/Common/Recents/Model/RecentCellData.m
@@ -213,6 +218,7 @@ targets:
     - path: ../Riot/Modules/MediaPicker
     - path: ../Riot/Modules/MediaPickerV2
     - path: ../Riot/Modules/People
+    - path: ../Riot/Modules/Pills
     - path: ../Riot/Modules/PublicRoomList
     - path: ../Riot/Modules/QRCode
     - path: ../Riot/Modules/Reauthentication
@@ -220,6 +226,7 @@ targets:
       excludes:
         - "DataSources/ThreadDataSource.swift"
         - "Location"
+        - "RoomViewController+LocationSharing.swift"
         - "TimelineCells/Styles/Plain/Cells/Location"
         - "TimelineCells/Styles/Plain/Cells/Poll"
         - "TimelineCells/Styles/Bubble/Cells/Location"
@@ -253,9 +260,20 @@ targets:
     - path: ../RiotSwiftUI/Modules
       # Riot will provide it's own LocaleProviderType so exclude.
       excludes:
-      - "Common/Locale/LocaleProvider.swift"
       - "**/Test/**"
+      - "Authentication/**/Coordinator/**"
+      - "Authentication/Common/Service/MatrixSDK/AuthenticationPendingData.swift"
+      - "Authentication/Common/Service/MatrixSDK/AuthenticationService.swift"
+      - "Authentication/Common/Service/MatrixSDK/AuthenticationState.swift"
+      - "Authentication/Common/Service/MatrixSDK/RegistrationModels.swift"
+      - "Authentication/Common/Service/MatrixSDK/RegistrationWizard.swift"
+      - "Authentication/Common/Service/MatrixSDK/ThreePIDModels.swift"
+      - "Authentication/Registration"
+      - "Authentication/ServerSelection"
+      - "Common/Locale/LocaleProvider.swift"
+      - "Room/LiveLocationSharingViewer"
       - "Room/LocationSharing"
+      - "Room/StaticLocationSharingViewer"
 
     # Share extension
     - path: ../RiotShareExtension/Shared

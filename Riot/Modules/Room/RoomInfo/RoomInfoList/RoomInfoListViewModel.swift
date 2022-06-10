@@ -49,10 +49,7 @@ final class RoomInfoListViewModel: NSObject, RoomInfoListViewModelType {
                                                       directUserPresence: directUserPresence)
         
         return RoomInfoListViewData(numberOfMembers: Int(room.summary.membersCount.joined),
-<<<<<<< HEAD
-=======
                                     isEncrypted: room.summary.isEncrypted,
->>>>>>> v1.8.16
                                     isDirect: room.isDirect,
                                     basicInfoViewData: basicInfoViewData)
     }

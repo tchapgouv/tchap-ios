@@ -105,7 +105,12 @@ import DesignKit
     
     var roomCellOutgoingBubbleBackgroundColor: UIColor { get }
     
-<<<<<<< HEAD
+    // Localisation Cells
+    
+    var roomCellLocalisationIconStartedColor: UIColor { get }
+    
+    var roomCellLocalisationErrorColor: UIColor { get }
+    
     // MARK: - Tchap colors
     
     var roomTypeRestricted: UIColor { get }
@@ -118,13 +123,6 @@ import DesignKit
     
     var domainLabel: UIColor { get }
     var unreadBackground: UIColor { get }
-=======
-    // Localisation Cells
-    
-    var roomCellLocalisationIconStartedColor: UIColor { get }
-    
-    var roomCellLocalisationErrorColor: UIColor { get }
->>>>>>> v1.8.16
     
     // MARK: - Customisation methods
 

@@ -135,10 +135,7 @@ final class AuthenticationService: AuthenticationServiceType {
         }
         
         // Report the new account in account manager
-        guard let account = MXKAccount(credentials: credentials) else {
-            throw AuthenticationServiceError.failToCreateAccount
-        }
-        
+        let account = MXKAccount(credentials: credentials)
         account.identityServerURL = identityServerURL
         account.antivirusServerURL = credentials.homeServer
         self.accountManager.addAccount(account, andOpenSession: true)

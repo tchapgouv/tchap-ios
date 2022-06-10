@@ -120,10 +120,7 @@
 "onboarding_use_case_existing_server_button" = "Connect to server";
 
 "onboarding_congratulations_title" = "Congratulations!";
-<<<<<<< HEAD
-=======
 /* The placeholder string contains the user's matrix ID */
->>>>>>> v1.8.16
 "onboarding_congratulations_message" = "Your account %@ has been created.";
 "onboarding_congratulations_personalize_button" = "Personalise profile";
 "onboarding_congratulations_home_button" = "Take me home";
