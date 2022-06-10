@@ -92,6 +92,7 @@ class DarkTheme: NSObject, Theme {
     
     var roomCellOutgoingBubbleBackgroundColor: UIColor = UIColor(rgb: 0x133A34)
     
+<<<<<<< HEAD
     var roomTypeRestricted: UIColor = UIColor(rgb:0xEB5757)
     var roomTypeUnrestricted: UIColor = UIColor(rgb:0xF07A12)
     var roomTypePublic: UIColor = UIColor(rgb:0x27AE60)
@@ -100,6 +101,11 @@ class DarkTheme: NSObject, Theme {
     var backgroundSecondary: UIColor = UIColor(rgb:0x040506)
     var domainLabel: UIColor = UIColor(rgb:0x498FCF)
     var unreadBackground: UIColor = UIColor(rgb:0xE8EDF2)
+=======
+    var roomCellLocalisationIconStartedColor: UIColor = UIColor(rgb: 0x5C56F5)
+    
+    var roomCellLocalisationErrorColor: UIColor = UIColor(rgb: 0xFF5B55)
+>>>>>>> v1.8.16
 
     func applyStyle(onTabBar tabBar: UITabBar) {
         tabBar.unselectedItemTintColor = self.tabBarUnselectedItemTintColor

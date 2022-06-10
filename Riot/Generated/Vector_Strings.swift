@@ -847,6 +847,10 @@ public class VectorL10n: NSObject {
   public static var collapse: String { 
     return VectorL10n.tr("Vector", "collapse") 
   }
+  /// Confirm
+  public static var confirm: String { 
+    return VectorL10n.tr("Vector", "confirm") 
+  }
   /// Local Contacts
   public static var contactLocalContacts: String { 
     return VectorL10n.tr("Vector", "contact_local_contacts") 
@@ -1507,11 +1511,11 @@ public class VectorL10n: NSObject {
   public static var directorySearchFail: String { 
     return VectorL10n.tr("Vector", "directory_search_fail") 
   }
-  /// %tu results found for %@
+  /// %1$tu results found for %2$@
   public static func directorySearchResults(_ p1: Int, _ p2: String) -> String {
     return VectorL10n.tr("Vector", "directory_search_results", p1, p2)
   }
-  /// >%tu results found for %@
+  /// >%1$tu results found for %2$@
   public static func directorySearchResultsMoreThan(_ p1: Int, _ p2: String) -> String {
     return VectorL10n.tr("Vector", "directory_search_results_more_than", p1, p2)
   }
@@ -2727,6 +2731,10 @@ public class VectorL10n: NSObject {
   public static var liveLocationSharingBannerTitle: String { 
     return VectorL10n.tr("Vector", "live_location_sharing_banner_title") 
   }
+  /// Live location ended
+  public static var liveLocationSharingEnded: String { 
+    return VectorL10n.tr("Vector", "live_location_sharing_ended") 
+  }
   /// Loading
   public static var loading: String { 
     return VectorL10n.tr("Vector", "loading") 
@@ -2759,9 +2767,81 @@ public class VectorL10n: NSObject {
   public static var locationSharingInvalidAuthorizationSettings: String { 
     return VectorL10n.tr("Vector", "location_sharing_invalid_authorization_settings") 
   }
+  /// Live location error
+  public static var locationSharingLiveError: String { 
+    return VectorL10n.tr("Vector", "location_sharing_live_error") 
+  }
+  /// You
+  public static var locationSharingLiveListItemCurrentUserDisplayName: String { 
+    return VectorL10n.tr("Vector", "location_sharing_live_list_item_current_user_display_name") 
+  }
+  /// Updated %@ ago
+  public static func locationSharingLiveListItemLastUpdate(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "location_sharing_live_list_item_last_update", p1)
+  }
+  /// Unknown last update
+  public static var locationSharingLiveListItemLastUpdateInvalid: String { 
+    return VectorL10n.tr("Vector", "location_sharing_live_list_item_last_update_invalid") 
+  }
+  /// Sharing expired
+  public static var locationSharingLiveListItemSharingExpired: String { 
+    return VectorL10n.tr("Vector", "location_sharing_live_list_item_sharing_expired") 
+  }
+  /// Stop sharing
+  public static var locationSharingLiveListItemStopSharingAction: String { 
+    return VectorL10n.tr("Vector", "location_sharing_live_list_item_stop_sharing_action") 
+  }
+  /// %@ left
+  public static func locationSharingLiveListItemTimeLeft(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "location_sharing_live_list_item_time_left", p1)
+  }
+  /// Loading Live location...
+  public static var locationSharingLiveLoading: String { 
+    return VectorL10n.tr("Vector", "location_sharing_live_loading") 
+  }
+  /// Share location
+  public static var locationSharingLiveMapCalloutTitle: String { 
+    return VectorL10n.tr("Vector", "location_sharing_live_map_callout_title") 
+  }
+  /// No user locations available
+  public static var locationSharingLiveNoUserLocationsErrorTitle: String { 
+    return VectorL10n.tr("Vector", "location_sharing_live_no_user_locations_error_title") 
+  }
   /// Share live location
   public static var locationSharingLiveShareTitle: String { 
     return VectorL10n.tr("Vector", "location_sharing_live_share_title") 
+  }
+  /// Fail to stop sharing location
+  public static var locationSharingLiveStopSharingError: String { 
+    return VectorL10n.tr("Vector", "location_sharing_live_stop_sharing_error") 
+  }
+  /// Stop location sharing
+  public static var locationSharingLiveStopSharingProgress: String { 
+    return VectorL10n.tr("Vector", "location_sharing_live_stop_sharing_progress") 
+  }
+  /// Live until %@
+  public static func locationSharingLiveTimerIncoming(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "location_sharing_live_timer_incoming", p1)
+  }
+  /// for 8 hours
+  public static var locationSharingLiveTimerSelectorLong: String { 
+    return VectorL10n.tr("Vector", "location_sharing_live_timer_selector_long") 
+  }
+  /// for 1 hour
+  public static var locationSharingLiveTimerSelectorMedium: String { 
+    return VectorL10n.tr("Vector", "location_sharing_live_timer_selector_medium") 
+  }
+  /// for 15 minutes
+  public static var locationSharingLiveTimerSelectorShort: String { 
+    return VectorL10n.tr("Vector", "location_sharing_live_timer_selector_short") 
+  }
+  /// Choose for how long others will see your accurate location.
+  public static var locationSharingLiveTimerSelectorTitle: String { 
+    return VectorL10n.tr("Vector", "location_sharing_live_timer_selector_title") 
+  }
+  /// Location
+  public static var locationSharingLiveViewerTitle: String { 
+    return VectorL10n.tr("Vector", "location_sharing_live_viewer_title") 
   }
   /// %@ could not load the map. Please try again later.
   public static func locationSharingLoadingMapErrorTitle(_ p1: String) -> String {
@@ -3776,6 +3856,7 @@ public class VectorL10n: NSObject {
     return VectorL10n.tr("Vector", "on") 
   }
   /// Profile picture
+<<<<<<< HEAD:Riot/Generated/Vector_Strings.swift
   public static var onboardingAvatarAccessibilityLabel: String {
     return VectorL10n.tr("Vector", "onboarding_avatar_accessibility_label")
   }
@@ -3802,12 +3883,41 @@ public class VectorL10n: NSObject {
   /// Take me home
   public static var onboardingCongratulationsHomeButton: String {
     return VectorL10n.tr("Vector", "onboarding_congratulations_home_button")
+=======
+  public static var onboardingAvatarAccessibilityLabel: String { 
+    return VectorL10n.tr("Vector", "onboarding_avatar_accessibility_label") 
+  }
+  /// You can change this anytime.
+  public static var onboardingAvatarMessage: String { 
+    return VectorL10n.tr("Vector", "onboarding_avatar_message") 
+  }
+  /// Add a profile picture
+  public static var onboardingAvatarTitle: String { 
+    return VectorL10n.tr("Vector", "onboarding_avatar_title") 
+  }
+  /// Let's go
+  public static var onboardingCelebrationButton: String { 
+    return VectorL10n.tr("Vector", "onboarding_celebration_button") 
+  }
+  /// Your preferences have been saved.
+  public static var onboardingCelebrationMessage: String { 
+    return VectorL10n.tr("Vector", "onboarding_celebration_message") 
+  }
+  /// You’re all set!
+  public static var onboardingCelebrationTitle: String { 
+    return VectorL10n.tr("Vector", "onboarding_celebration_title") 
+  }
+  /// Take me home
+  public static var onboardingCongratulationsHomeButton: String { 
+    return VectorL10n.tr("Vector", "onboarding_congratulations_home_button") 
+>>>>>>> v1.8.16:Riot/Generated/Strings.swift
   }
   /// Your account %@ has been created.
   public static func onboardingCongratulationsMessage(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "onboarding_congratulations_message", p1)
   }
   /// Personalise profile
+<<<<<<< HEAD:Riot/Generated/Vector_Strings.swift
   public static var onboardingCongratulationsPersonalizeButton: String {
     return VectorL10n.tr("Vector", "onboarding_congratulations_personalize_button")
   }
@@ -3842,6 +3952,42 @@ public class VectorL10n: NSObject {
   /// Skip this step
   public static var onboardingPersonalizationSkip: String {
     return VectorL10n.tr("Vector", "onboarding_personalization_skip")
+=======
+  public static var onboardingCongratulationsPersonalizeButton: String { 
+    return VectorL10n.tr("Vector", "onboarding_congratulations_personalize_button") 
+  }
+  /// Congratulations!
+  public static var onboardingCongratulationsTitle: String { 
+    return VectorL10n.tr("Vector", "onboarding_congratulations_title") 
+  }
+  /// You can change this later
+  public static var onboardingDisplayNameHint: String { 
+    return VectorL10n.tr("Vector", "onboarding_display_name_hint") 
+  }
+  /// Your display name must be less than 256 characters
+  public static var onboardingDisplayNameMaxLength: String { 
+    return VectorL10n.tr("Vector", "onboarding_display_name_max_length") 
+  }
+  /// This will be shown when you send messages.
+  public static var onboardingDisplayNameMessage: String { 
+    return VectorL10n.tr("Vector", "onboarding_display_name_message") 
+  }
+  /// Display Name
+  public static var onboardingDisplayNamePlaceholder: String { 
+    return VectorL10n.tr("Vector", "onboarding_display_name_placeholder") 
+  }
+  /// Choose a display name
+  public static var onboardingDisplayNameTitle: String { 
+    return VectorL10n.tr("Vector", "onboarding_display_name_title") 
+  }
+  /// Save and continue
+  public static var onboardingPersonalizationSave: String { 
+    return VectorL10n.tr("Vector", "onboarding_personalization_save") 
+  }
+  /// Skip this step
+  public static var onboardingPersonalizationSkip: String { 
+    return VectorL10n.tr("Vector", "onboarding_personalization_skip") 
+>>>>>>> v1.8.16:Riot/Generated/Strings.swift
   }
   /// I already have an account
   public static var onboardingSplashLoginButtonTitle: String { 
@@ -4279,9 +4425,17 @@ public class VectorL10n: NSObject {
   public static var roomAccessSettingsScreenUpgradeAlertAutoInviteSwitch: String { 
     return VectorL10n.tr("Vector", "room_access_settings_screen_upgrade_alert_auto_invite_switch") 
   }
-  /// Anyone in Space name will be able to find and join this room - no need to manually invite everyone. You’ll be able to change this in room settings anytime.\n\nPlease note upgrading will make a new version of the room.  All current messages will stay in this archived room.
-  public static var roomAccessSettingsScreenUpgradeAlertMessage: String { 
-    return VectorL10n.tr("Vector", "room_access_settings_screen_upgrade_alert_message") 
+  /// Anyone in %@ will be able to find and join this room - no need to manually invite everyone. You’ll be able to change this in room settings anytime.
+  public static func roomAccessSettingsScreenUpgradeAlertMessage(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "room_access_settings_screen_upgrade_alert_message", p1)
+  }
+  /// Anyone in a parent space will be able to find and join this room - no need to manually invite everyone. You’ll be able to change this in room settings anytime.
+  public static var roomAccessSettingsScreenUpgradeAlertMessageNoParam: String { 
+    return VectorL10n.tr("Vector", "room_access_settings_screen_upgrade_alert_message_no_param") 
+  }
+  /// Please note upgrading will make a new version of the room. All current messages will stay in this archived room.
+  public static var roomAccessSettingsScreenUpgradeAlertNote: String { 
+    return VectorL10n.tr("Vector", "room_access_settings_screen_upgrade_alert_note") 
   }
   /// Upgrade room
   public static var roomAccessSettingsScreenUpgradeAlertTitle: String { 
@@ -6895,6 +7049,18 @@ public class VectorL10n: NSObject {
   public static var settingsPinRoomsWithUnread: String { 
     return VectorL10n.tr("Vector", "settings_pin_rooms_with_unread") 
   }
+  /// Presence
+  public static var settingsPresence: String { 
+    return VectorL10n.tr("Vector", "settings_presence") 
+  }
+  /// Offline Mode
+  public static var settingsPresenceOfflineMode: String { 
+    return VectorL10n.tr("Vector", "settings_presence_offline_mode") 
+  }
+  /// If enabled, you will always appear offline to other users, even when using the application.
+  public static var settingsPresenceOfflineModeDescription: String { 
+    return VectorL10n.tr("Vector", "settings_presence_offline_mode_description") 
+  }
   /// Privacy Policy
   public static var settingsPrivacyPolicy: String { 
     return VectorL10n.tr("Vector", "settings_privacy_policy") 
@@ -7679,6 +7845,14 @@ public class VectorL10n: NSObject {
   public static var threadsBetaTitle: String { 
     return VectorL10n.tr("Vector", "threads_beta_title") 
   }
+  /// Your homeserver does not currently support threads, so this feature may be unreliable. Some threaded messages may not be reliably available. 
+  public static var threadsDiscourageInformation1: String { 
+    return VectorL10n.tr("Vector", "threads_discourage_information_1") 
+  }
+  /// \n\nDo you want to enable threads anyway?
+  public static var threadsDiscourageInformation2: String { 
+    return VectorL10n.tr("Vector", "threads_discourage_information_2") 
+  }
   /// Threads help keep your conversations on-topic and easy to track.
   public static var threadsEmptyInfoAll: String { 
     return VectorL10n.tr("Vector", "threads_empty_info_all") 
@@ -8074,15 +8248,18 @@ public class VectorL10n: NSObject {
 
 extension VectorL10n {
   static func tr(_ table: String, _ key: String, _ args: CVarArg...) -> String {
-    let format = NSLocalizedString(key, tableName: table, bundle: Bundle.app, comment: "")
-    let locale: Locale
-    if let providedLocale = LocaleProvider.locale {
-      locale = providedLocale
-    } else {
-      locale = Locale.current
-    }        
-
-      return String(format: format, locale: locale, arguments: args)
+    let format = NSLocalizedString(key, tableName: table, bundle: bundle, comment: "")
+    let locale = LocaleProvider.locale ?? Locale.current    
+    return String(format: format, locale: locale, arguments: args)
+  }
+  /// The bundle to load strings from. This will be the app's bundle unless running
+  /// the UI tests target, in which case the strings are contained in the tests bundle.
+  static let bundle: Bundle = {
+    if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil {
+      // The tests bundle is embedded inside a runner. Find the bundle for VectorL10n.
+      return Bundle(for: VectorL10n.self)
     }
+    return Bundle.app
+  }()
 }
 

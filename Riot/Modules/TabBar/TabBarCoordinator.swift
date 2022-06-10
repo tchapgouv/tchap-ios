@@ -332,6 +332,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         
 //        viewControllers.append(homeViewController)
         
+<<<<<<< HEAD
 //        if let existingVersionCheckCoordinator = self.versionCheckCoordinator {
 //            self.remove(childCoordinator: existingVersionCheckCoordinator)
 //        }
@@ -345,6 +346,8 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
 //            self.versionCheckCoordinator = versionCheckCoordinator
 //        }
         
+=======
+>>>>>>> v1.8.16
         if RiotSettings.shared.homeScreenShowFavouritesTab {
             let favouritesViewController = self.createFavouritesViewController()
             viewControllers.append(favouritesViewController)
@@ -366,6 +369,16 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         }
         
         tabBarController.updateViewControllers(viewControllers)
+        
+        if let existingVersionCheckCoordinator = self.versionCheckCoordinator {
+            self.remove(childCoordinator: existingVersionCheckCoordinator)
+        }
+        
+        let versionCheckCoordinator = self.createVersionCheckCoordinator(withRootViewController: tabBarController, bannerPresentrer: homeViewController)
+        versionCheckCoordinator.start()
+        self.add(childCoordinator: versionCheckCoordinator)
+        
+        self.versionCheckCoordinator = versionCheckCoordinator
     }
     
     // MARK: Navigation
@@ -450,8 +463,15 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
                                                                       parentSpaceId: self.currentSpaceId,
                                                                       roomId: roomNavigationParameters.roomId,
                                                                       eventId: roomNavigationParameters.eventId,
+<<<<<<< HEAD
                                                                       threadId: nil, //threadId,
                                                                       showSettingsInitially: roomNavigationParameters.showSettingsInitially, displayConfiguration: displayConfig)
+=======
+                                                                      threadId: threadId,
+                                                                      showSettingsInitially: roomNavigationParameters.showSettingsInitially,
+                                                                      displayConfiguration: displayConfig,
+                                                                      autoJoinInvitedRoom: roomNavigationParameters.autoJoinInvitedRoom)
+>>>>>>> v1.8.16
             
             self.showRoom(with: roomCoordinatorParameters,
                           stackOnSplitViewDetail: roomNavigationParameters.presentationParameters.stackAboveVisibleViews,

@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct OnboardingDisplayNameScreen: View {
 
     // MARK: - Properties
@@ -49,14 +48,14 @@ struct OnboardingDisplayNameScreen: View {
                 
                 buttons
             }
+            .readableFrame()
             .padding(.horizontal)
-            .padding(.top, 8)
-            .frame(maxWidth: OnboardingMetrics.maxContentWidth)
+            .padding(.top, OnboardingMetrics.topPaddingToNavigationBar)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .accentColor(theme.colors.accent)
+        .frame(maxHeight: .infinity)
         .background(theme.colors.background.ignoresSafeArea())
         .alert(item: $viewModel.alertInfo) { $0.alert }
+        .accentColor(theme.colors.accent)
         .onChange(of: viewModel.displayName) { _ in
             viewModel.send(viewAction: .validateDisplayName)
         }
@@ -65,14 +64,9 @@ struct OnboardingDisplayNameScreen: View {
     /// The icon, title and message views.
     var header: some View {
         VStack(spacing: 8) {
-            Image(Asset.Images.onboardingCongratulationsIcon.name)
-                .resizable()
-                .renderingMode(.template)
-                .foregroundColor(theme.colors.accent)
-                .frame(width: 90, height: 90)
-                .background(Circle().foregroundColor(.white).padding(2))
+            
+            OnboardingIconImage(image: Asset.Images.onboardingCongratulationsIcon)
                 .padding(.bottom, 8)
-                .accessibilityHidden(true)
             
             Text(VectorL10n.onboardingDisplayNameTitle)
                 .font(theme.fonts.title2B)
@@ -80,7 +74,7 @@ struct OnboardingDisplayNameScreen: View {
                 .foregroundColor(theme.colors.primaryContent)
             
             Text(VectorL10n.onboardingDisplayNameMessage)
-                .font(theme.fonts.subheadline)
+                .font(theme.fonts.body)
                 .multilineTextAlignment(.center)
                 .foregroundColor(theme.colors.secondaryContent)
         }
@@ -92,6 +86,7 @@ struct OnboardingDisplayNameScreen: View {
             TextField(VectorL10n.onboardingDisplayNamePlaceholder, text: $viewModel.displayName) {
                 isEditingTextField = $0
             }
+            .autocapitalization(.words)
             .textFieldStyle(BorderedInputFieldStyle(theme: _theme,
                                                     isEditing: isEditingTextField,
                                                     isError: viewModel.viewState.validationErrorMessage != nil))

@@ -25,16 +25,26 @@ enum LocationSharingCoordinateType {
     case pin
 }
 
+enum LiveLocationSharingTimeout: TimeInterval {
+    // Timer are in milliseconde because timestamp are in millisecond in Matrix SDK
+    case short = 900000 // 15 minutes
+    case medium = 3600000 // 1 hour
+    case long = 28800000 // 8 hours
+}
+
 enum LocationSharingViewAction {
     case cancel
     case share
     case sharePinLocation
     case goToUserLocation
+    case startLiveSharing
+    case shareLiveLocation(timeout: LiveLocationSharingTimeout)
 }
 
 enum LocationSharingViewModelResult {
     case cancel
     case share(latitude: Double, longitude: Double, coordinateType: LocationSharingCoordinateType)
+    case shareLiveLocation(timeout: TimeInterval)
 }
 
 enum LocationSharingViewError {
@@ -52,9 +62,6 @@ struct LocationSharingViewState: BindableState {
     
     /// Current user avatarData
     let userAvatarData: AvatarInputProtocol
-    
-    /// Shared annotation to display existing location
-    let sharedAnnotation: LocationAnnotation?
     
     /// Map annotations to display on map
     var annotations: [LocationAnnotation]
@@ -75,14 +82,6 @@ struct LocationSharingViewState: BindableState {
     /// Used to hide live location sharing features until is finished
     var isLiveLocationSharingEnabled: Bool = false
     
-    var shareButtonVisible: Bool {
-        return self.displayExistingLocation == false
-    }
-    
-    var displayExistingLocation: Bool {
-        return sharedAnnotation != nil
-    }
-    
     var shareButtonEnabled: Bool {
         !showLoadingIndicator
     }
@@ -96,6 +95,7 @@ struct LocationSharingViewStateBindings {
     var alertInfo: AlertInfo<LocationSharingAlertType>?
     var userLocation: CLLocationCoordinate2D?
     var pinLocation: CLLocationCoordinate2D?
+    var showingTimerSelector = false
 }
 
 enum LocationSharingAlertType {
@@ -103,4 +103,5 @@ enum LocationSharingAlertType {
     case userLocatingError
     case authorizationError
     case locationSharingError
+    case stopLocationSharingError
 }

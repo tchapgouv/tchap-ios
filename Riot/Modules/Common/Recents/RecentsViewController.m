@@ -358,7 +358,17 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         // In case of split view controller where the primary and secondary view controllers are displayed side-by-side onscreen,
         // the selected room (if any) is highlighted.
         [self refreshCurrentSelectedCell:YES];
+<<<<<<< HEAD
 //    }
+=======
+    }
+
+    if (self.recentsDataSource)
+    {
+        [self refreshRecentsTable];
+        [self showEmptyViewIfNeeded];
+    }
+>>>>>>> v1.8.16
 }
 
 - (void)viewDidLayoutSubviews
@@ -376,9 +386,11 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 
 - (void)refreshRecentsTable
 {
+    MXLogDebug(@"[RecentsViewController]: Refreshing recents table view")
+
     if (!self.recentsUpdateEnabled)
     {
-        isRefreshNeeded = NO;
+        isRefreshNeeded = YES;
         return;
     }
     
@@ -911,6 +923,11 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 
 - (void)showRoomWithRoomId:(NSString*)roomId inMatrixSession:(MXSession*)matrixSession
 {
+    [self showRoomWithRoomId:roomId andAutoJoinInvitedRoom:false inMatrixSession:matrixSession];
+}
+
+- (void)showRoomWithRoomId:(NSString*)roomId andAutoJoinInvitedRoom:(BOOL)autoJoinInvitedRoom inMatrixSession:(MXSession*)matrixSession
+{
     MXRoom *room = [matrixSession roomWithRoomId:roomId];
     if (room.summary.membership == MXMembershipInvite)
     {
@@ -927,7 +944,8 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                                                                                     eventId:nil
                                                                                   mxSession:matrixSession
                                                                            threadParameters:nil
-                                                                     presentationParameters:presentationParameters];
+                                                                     presentationParameters:presentationParameters
+                                                                        autoJoinInvitedRoom:autoJoinInvitedRoom];
     
     [[AppDelegate theDelegate] showRoomWithParameters:parameters completion:^{
         self.userInteractionEnabled = YES;
@@ -1043,10 +1061,15 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
             [self showSpaceInviteNotAvailable];
             return;
         }
+<<<<<<< HEAD
 
         // Accept invitation
+=======
+        
+        // Accept invitation and display the room
+>>>>>>> v1.8.16
         Analytics.shared.joinedRoomTrigger = AnalyticsJoinedRoomTriggerInvite;
-        [self joinRoom:invitedRoom completion:nil];
+        [self showRoomWithRoomId:invitedRoom.roomId andAutoJoinInvitedRoom:true inMatrixSession:invitedRoom.mxSession];
     }
     else if ([actionIdentifier isEqualToString:RoomsInviteCell.actionDeclineInvite])
     {
@@ -1075,6 +1098,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         [super dataSource:dataSource didCellChange:changes];
         return;
     }
+<<<<<<< HEAD
     
     BOOL cellReloaded = NO;
     if ([changes isKindOfClass:NSNumber.class])
@@ -1102,23 +1126,61 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                     sectionHeaderView.accessoryView = updatedSectionHeaderView.accessoryView;
                     sectionHeaderView.rightAccessoryView = updatedSectionHeaderView.rightAccessoryView;
                 }
+=======
+
+    if ([changes isKindOfClass:NSIndexPath.class])
+    {
+        NSIndexPath *indexPath = (NSIndexPath *)changes;
+        UITableViewCell *cell = [self.recentsTableView cellForRowAtIndexPath:indexPath];
+        if ([cell isKindOfClass:TableViewCellWithCollectionView.class])
+        {
+            MXLogDebug(@"[RecentsViewController]: Reloading nested collection view cell in section %ld", indexPath.section);
+            
+            TableViewCellWithCollectionView *collectionViewCell = (TableViewCellWithCollectionView *)cell;
+            [collectionViewCell.collectionView reloadData];
+
+            CGRect headerFrame = [self.recentsTableView rectForHeaderInSection:indexPath.section];
+            UIView *headerView = [self.recentsTableView headerViewForSection:indexPath.section];
+            UIView *updatedHeaderView = [self.dataSource viewForHeaderInSection:indexPath.section withFrame:headerFrame inTableView:self.recentsTableView];
+            if ([headerView isKindOfClass:SectionHeaderView.class]
+                && [updatedHeaderView isKindOfClass:SectionHeaderView.class])
+            {
+                SectionHeaderView *sectionHeaderView = (SectionHeaderView *)headerView;
+                SectionHeaderView *updatedSectionHeaderView = (SectionHeaderView *)updatedHeaderView;
+                sectionHeaderView.headerLabel = updatedSectionHeaderView.headerLabel;
+                sectionHeaderView.accessoryView = updatedSectionHeaderView.accessoryView;
+                sectionHeaderView.rightAccessoryView = updatedSectionHeaderView.rightAccessoryView;
+>>>>>>> v1.8.16
             }
         }
+        else
+        {
+            // Ideally we would call tableView.reloadSections, but this can lead to crashes if multiple sections need such an update and they
+            // vertically depend on each other. It is unclear whether this is due to further issues in the data model (e.g. data race)
+            // or some undocumented table view behavior. To avoid this we reload the entire table view, even if this means reloading
+            // multiple times for several section updates.
+            MXLogDebug(@"[RecentsViewController]: Reloading the entire table view due to updates in section %ld", indexPath.section);
+            [self refreshRecentsTable];
+        }
     }
-    
-    if (!cellReloaded)
+    else if (!changes)
     {
-        [super dataSource:dataSource didCellChange:changes];
-    }
-    else
-    {
+<<<<<<< HEAD
         // Since we've enabled room list pagination, `refreshRecentsTable` not called in this case.
         // Refresh tab bar badges separately.
 //        [[AppDelegate theDelegate].masterTabBarController refreshTabBarBadges];
+=======
+        MXLogDebug(@"[RecentsViewController]: Reloading the entire table view");
+        [self refreshRecentsTable];
+>>>>>>> v1.8.16
     }
     
-    [self showEmptyViewIfNeeded];
+    // Since we've enabled room list pagination, `refreshRecentsTable` not called in this case.
+    // Refresh tab bar badges separately.
+    [[AppDelegate theDelegate].masterTabBarController refreshTabBarBadges];
     
+    [self showEmptyViewIfNeeded];
+
     if (dataSource.state == MXKDataSourceStateReady)
     {
         [[NSNotificationCenter defaultCenter] postNotificationName:RecentsViewControllerDataReadyNotification
@@ -2196,10 +2258,14 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
             cellData = [self.dataSource cellDataAtIndexPath:nextIndexPath];
         }
         
-        if (!cellData && [self.recentsTableView numberOfRowsInSection:section] > 0)
+        if (!cellData && section < self.recentsTableView.numberOfSections && [self.recentsTableView numberOfRowsInSection:section] > 0)
         {
             // Scroll back to the top.
             [self.recentsTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:section] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        }
+        else if (section >= self.recentsTableView.numberOfSections)
+        {
+            MXLogFailure(@"[RecentsViewController] Section %ld is invalid in a table view with only %ld sections", section, self.recentsTableView.numberOfSections);
         }
     }
 }
@@ -2266,6 +2332,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                               state:UIControlStateNormal];
 }
 
+<<<<<<< HEAD
 // Tchap: Restore default icon after cancel.
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
     [super searchBarCancelButtonClicked:searchBar];
@@ -2273,6 +2340,29 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     [self.recentsSearchBar setImage:AssetImages.filterOff.image
                    forSearchBarIcon:UISearchBarIconSearch
                               state:UIControlStateNormal];
+=======
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+{
+    [self.recentsSearchBar resignFirstResponder];
+    [self hideSearchBar:YES];
+    self.recentsTableView.contentOffset = CGPointMake(0, self.recentsSearchBar.frame.size.height);
+    self.recentsTableView.tableHeaderView = nil;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.recentsDataSource searchWithPatterns:nil];
+        [self.recentsSearchBar setText:nil];
+    });
+}
+
+#pragma mark - CreateRoomCoordinatorBridgePresenterDelegate
+
+- (void)createRoomCoordinatorBridgePresenterDelegate:(CreateRoomCoordinatorBridgePresenter *)coordinatorBridgePresenter didCreateNewRoom:(MXRoom *)room
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+        Analytics.shared.viewRoomTrigger = AnalyticsViewRoomTriggerCreated;
+        [self showRoomWithRoomId:room.roomId inMatrixSession:self.mainSession];
+    }];
+    coordinatorBridgePresenter = nil;
+>>>>>>> v1.8.16
 }
 
 #pragma mark - CreateRoomCoordinatorBridgePresenterDelegate

@@ -140,6 +140,7 @@ final class SpaceSettingsModalCoordinator: Coordinator {
     }
     
     private func showAccess(ofSpaceWithId spaceId: String) {
+<<<<<<< HEAD
         // Tchap: Disable Spaces
 //        guard let room = parameters.session.room(withRoomId: spaceId) else {
 //            return
@@ -164,6 +165,31 @@ final class SpaceSettingsModalCoordinator: Coordinator {
 //        add(childCoordinator: coordinator)
 //        coordinator.start()
 //        self.navigationRouter.present(coordinator.toPresentable(), animated: true)
+=======
+        guard let room = parameters.session.room(withRoomId: spaceId) else {
+            return
+        }
+        // Needed more tests on synaose side before starting space upgrade implementation
+        let coordinator = RoomAccessCoordinator(parameters: RoomAccessCoordinatorParameters(room: room, parentSpaceId: parameters.parentSpaceId, allowsRoomUpgrade: false))
+        coordinator.callback = { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .cancel(let roomId), .done(let roomId):
+                if roomId != spaceId {
+                    // TODO: room has been upgraded
+                    self.upgradedRoomId = roomId
+                }
+                
+                self.navigationRouter.dismissModule(animated: true, completion: {
+                    self.remove(childCoordinator: coordinator)
+                })
+            }
+        }
+        add(childCoordinator: coordinator)
+        coordinator.start()
+        self.navigationRouter.present(coordinator.toPresentable(), animated: true)
+>>>>>>> v1.8.16
     }
 }
 

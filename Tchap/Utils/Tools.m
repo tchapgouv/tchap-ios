@@ -138,6 +138,7 @@
     return fixedURL;
 }
 
+<<<<<<< HEAD:Tchap/Utils/Tools.m
 #pragma mark - String utilities
 
 + (NSAttributedString *)setTextColorAlpha:(CGFloat)alpha inAttributedString:(NSAttributedString*)attributedString
@@ -189,4 +190,6 @@
     return [NSString stringWithFormat:@"%@/#/room/%@/%@", urlPrefix, roomIdOrAlias, eventId];
 }
 
+=======
+>>>>>>> v1.8.16:Riot/Utils/Tools.m
 @end

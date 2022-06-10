@@ -306,6 +306,7 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
     
     @available(iOS 14.0, *)
     private func showSpaceSettings(spaceId: String, session: MXSession) {
+<<<<<<< HEAD
         // Tchap: Disable Spaces
 //        let coordinator = SpaceSettingsModalCoordinator(parameters: SpaceSettingsModalCoordinatorParameters(session: session, spaceId: spaceId))
 //        coordinator.callback = { [weak self] result in
@@ -322,6 +323,23 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
 //        toPresentable().present(presentable, animated: true, completion: nil)
 //        coordinator.start()
 //        self.spaceSettingsCoordinator = coordinator
+=======
+        let coordinator = SpaceSettingsModalCoordinator(parameters: SpaceSettingsModalCoordinatorParameters(session: session, spaceId: spaceId, parentSpaceId: nil))
+        coordinator.callback = { [weak self] result in
+            guard let self = self else { return }
+            
+            coordinator.toPresentable().dismiss(animated: true) {
+                self.spaceSettingsCoordinator = nil
+                self.resetExploringSpaceIfNeeded()
+            }
+        }
+        
+        let presentable = coordinator.toPresentable()
+        presentable.presentationController?.delegate = self
+        toPresentable().present(presentable, animated: true, completion: nil)
+        coordinator.start()
+        self.spaceSettingsCoordinator = coordinator
+>>>>>>> v1.8.16
     }
     
     func showSpaceInvite(spaceId: String, session: MXSession) {

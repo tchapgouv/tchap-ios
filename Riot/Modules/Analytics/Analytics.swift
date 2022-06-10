@@ -226,6 +226,13 @@ extension Analytics {
         client.updateUserProperties(userProperties)
     }
     
+    /// Track the registration of a new user.
+    /// - Parameter authenticationType: The type of authentication that was used.
+    func trackSignup(authenticationType: AnalyticsEvent.Signup.AuthenticationType) {
+        let event = AnalyticsEvent.Signup(authenticationType: authenticationType)
+        capture(event: event)
+    }
+    
     /// Track the presentation of a screen
     /// - Parameters:
     ///   - screen: The screen that was shown.
@@ -261,12 +268,10 @@ extension Analytics {
     /// Track an E2EE error that occurred
     /// - Parameters:
     ///   - reason: The error that occurred.
-    ///   - count: The number of times that error occurred.
-    func trackE2EEError(_ reason: DecryptionFailureReason, count: Int) {
-        for _ in 0..<count {
-            let event = AnalyticsEvent.Error(context: nil, domain: .E2EE, name: reason.errorName)
-            capture(event: event)
-        }
+    ///   - context: Additional context of the error that occured
+    func trackE2EEError(_ reason: DecryptionFailureReason, context: String) {
+        let event = AnalyticsEvent.Error(context: context, domain: .E2EE, name: reason.errorName)
+        capture(event: event)
     }
     
     /// Track when a user becomes unauthenticated without pressing the `sign out` button.

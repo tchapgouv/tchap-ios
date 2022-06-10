@@ -1,0 +1,8 @@
+// Permissions usage explanations
+"NSCameraUsageDescription" = "La càmera s'utilitza per fer fotos i vídeos, fer vídeo conferència.";
+"NSPhotoLibraryUsageDescription" = "La fototeca s'utilitza per enviar fotos i vídeos.";
+"NSMicrophoneUsageDescription" = "Element necessita accedir al vostre micròfon per a fer i rebre trucades, vídeos i gravar missatges de veu.";
+"NSContactsUsageDescription" = "Element us mostrarà els vostres contactes per si els voleu convidar a xatejar.";
+"NSLocationWhenInUseUsageDescription" = "Quan compartiu la vostra localització amb altres, Element en necessita accés per mostrar-lis un mapa.";
+"NSFaceIDUsageDescription" = "Face ID es fa servir per accedir a la vostra app.";
+"NSCalendarsUsageDescription" = "Consulteu la vostra agenda de reunions a l'app.";

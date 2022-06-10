@@ -159,6 +159,15 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
                 
                 break;
             }
+            case MXEventTypeBeaconInfo:
+            {
+                self.tag = RoomBubbleCellDataTagLiveLocation;
+                self.collapsable = NO;
+                self.collapsed = NO;
+                
+                [self updateBeaconInfoSummaryWithEventId:event.eventId];
+                break;
+            }
             case MXEventTypeCustom:
             {
                 if ([event.type isEqualToString:kWidgetMatrixEventTypeString]
@@ -184,6 +193,8 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
                     self.collapsable = NO;
                     self.collapsed = NO;
                 }
+                
+                break;
             }
             default:
                 break;
@@ -210,6 +221,11 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
 
     // Update any URL preview data as necessary.
     [self refreshURLPreviewForEventId:event.eventId];
+    
+    if (self.tag == RoomBubbleCellDataTagLiveLocation)
+    {
+        [self updateBeaconInfoSummaryWithEventId:eventId];
+    }
 
     return retVal;
 }
@@ -276,6 +292,17 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
     
     if (self.tag == RoomBubbleCellDataTagLocation)
     {
+        return NO;
+    }
+    
+    if (self.tag == RoomBubbleCellDataTagLiveLocation)
+    {
+        // If the summary does not exist don't show the cell
+        if (!self.beaconInfoSummary)
+        {
+            return YES;
+        }
+        
         return NO;
     }
     
@@ -403,7 +430,15 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
             if (selectedComponentIndex != NSNotFound && selectedComponentIndex != index && componentString.length)
             {
                 // Apply alpha to blur this component
-                componentString = [Tools setTextColorAlpha:.2 inAttributedString:componentString];
+                componentString = [componentString withTextColorAlpha:.2];
+                if (@available(iOS 15.0, *)) {
+                    [PillsFormatter setPillAlpha:.2 inAttributedString:componentString];
+                }
+            }
+            else if (@available(iOS 15.0, *))
+            {
+                // PillTextAttachment are not created again every time, we have to set alpha back to standard if needed.
+                [PillsFormatter setPillAlpha:1.f inAttributedString:componentString];
             }
             
             // Check whether the timestamp is displayed for this component, and check whether a vertical whitespace is required
@@ -442,7 +477,15 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
             if (selectedComponentIndex != NSNotFound && selectedComponentIndex != index && componentString.length)
             {
                 // Apply alpha to blur this component
-                componentString = [Tools setTextColorAlpha:.2 inAttributedString:componentString];
+                componentString = [componentString withTextColorAlpha:.2];
+                if (@available(iOS 15.0, *)) {
+                    [PillsFormatter setPillAlpha:.2 inAttributedString:componentString];
+                }
+            }
+            else if (@available(iOS 15.0, *))
+            {
+                // PillTextAttachment are not created again every time, we have to set alpha back to standard if needed.
+                [PillsFormatter setPillAlpha:1.f inAttributedString:componentString];
             }
             
             // Check whether the timestamp is displayed
@@ -985,6 +1028,9 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
         case RoomBubbleCellDataTagLocation:
             shouldAddEvent = NO;
             break;
+        case RoomBubbleCellDataTagLiveLocation:
+            shouldAddEvent = NO;
+            break;
         default:
             break;
     }
@@ -1296,5 +1342,11 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
     }];
 }
 
+- (void)updateBeaconInfoSummaryWithEventId:(NSString *)eventId
+{
+    id<MXBeaconInfoSummaryProtocol> beaconInfoSummary = [self.mxSession.aggregations.beaconAggregations beaconInfoSummaryFor:eventId inRoomWithId:self.roomId];
+    
+    self.beaconInfoSummary = beaconInfoSummary;
+}
 
 @end

@@ -54,6 +54,7 @@
  */
 + (NSURL*)fixURLWithSeveralHashKeys:(NSURL*)url;
 
+<<<<<<< HEAD:Tchap/Utils/Tools.h
 #pragma mark - String utilities
 
 /**
@@ -96,4 +97,6 @@
  */
 + (NSString*)permalinkToEvent:(NSString*)eventId inRoom:(NSString*)roomIdOrAlias;
 
+=======
+>>>>>>> v1.8.16:Riot/Utils/Tools.h
 @end

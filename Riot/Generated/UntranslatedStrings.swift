@@ -10,77 +10,141 @@ import Foundation
 
 // swiftlint:disable function_parameter_count identifier_name line_length type_body_length
 public extension VectorL10n {
+  /// This server would like to make sure you are not a robot
+  static var authenticationRecaptchaMessage: String { 
+    return VectorL10n.tr("Untranslated", "authentication_recaptcha_message") 
+  }
+  /// Join millions for free on the largest public server
+  static var authenticationRegistrationMatrixDescription: String { 
+    return VectorL10n.tr("Untranslated", "authentication_registration_matrix_description") 
+  }
+  /// We’ll need some info to get you set up.
+  static var authenticationRegistrationMessage: String { 
+    return VectorL10n.tr("Untranslated", "authentication_registration_message") 
+  }
+  /// Password
+  static var authenticationRegistrationPassword: String { 
+    return VectorL10n.tr("Untranslated", "authentication_registration_password") 
+  }
+  /// Must be 8 characters or more
+  static var authenticationRegistrationPasswordFooter: String { 
+    return VectorL10n.tr("Untranslated", "authentication_registration_password_footer") 
+  }
+  /// Choose your server to store your data
+  static var authenticationRegistrationServerTitle: String { 
+    return VectorL10n.tr("Untranslated", "authentication_registration_server_title") 
+  }
+  /// Create your account
+  static var authenticationRegistrationTitle: String { 
+    return VectorL10n.tr("Untranslated", "authentication_registration_title") 
+  }
+  /// Username
+  static var authenticationRegistrationUsername: String { 
+    return VectorL10n.tr("Untranslated", "authentication_registration_username") 
+  }
+  /// You can’t change this later
+  static var authenticationRegistrationUsernameFooter: String { 
+    return VectorL10n.tr("Untranslated", "authentication_registration_username_footer") 
+  }
+  /// Get in touch
+  static var authenticationServerSelectionEmsButton: String { 
+    return VectorL10n.tr("Untranslated", "authentication_server_selection_ems_button") 
+  }
+  /// element.io/ems
+  static var authenticationServerSelectionEmsLink: String { 
+    return VectorL10n.tr("Untranslated", "authentication_server_selection_ems_link") 
+  }
+  /// Element Matrix Services (EMS) is a robust and reliable hosting service for fast, secure real time communication. Find out how on
+  static var authenticationServerSelectionEmsMessage: String { 
+    return VectorL10n.tr("Untranslated", "authentication_server_selection_ems_message") 
+  }
+  /// Want to host your own server?
+  static var authenticationServerSelectionEmsTitle: String { 
+    return VectorL10n.tr("Untranslated", "authentication_server_selection_ems_title") 
+  }
+  /// Cannot find a server at this URL, please check it is correct.
+  static var authenticationServerSelectionGenericError: String { 
+    return VectorL10n.tr("Untranslated", "authentication_server_selection_generic_error") 
+  }
+  /// What is the address of your server? A server is like a home for all your data.
+  static var authenticationServerSelectionMessage: String { 
+    return VectorL10n.tr("Untranslated", "authentication_server_selection_message") 
+  }
+  /// You can only connect to a server that has already been set up
+  static var authenticationServerSelectionServerFooter: String { 
+    return VectorL10n.tr("Untranslated", "authentication_server_selection_server_footer") 
+  }
+  /// Server URL
+  static var authenticationServerSelectionServerUrl: String { 
+    return VectorL10n.tr("Untranslated", "authentication_server_selection_server_url") 
+  }
+  /// Choose your server
+  static var authenticationServerSelectionTitle: String { 
+    return VectorL10n.tr("Untranslated", "authentication_server_selection_title") 
+  }
+  /// Please read through T&C. You must accept in order to continue.
+  static var authenticationTermsMessage: String { 
+    return VectorL10n.tr("Untranslated", "authentication_terms_message") 
+  }
+  /// Privacy policy
+  static var authenticationTermsTitle: String { 
+    return VectorL10n.tr("Untranslated", "authentication_terms_title") 
+  }
+  /// This will help verify your account and enables password recovery.
+  static var authenticationVerifyEmailInputMessage: String { 
+    return VectorL10n.tr("Untranslated", "authentication_verify_email_input_message") 
+  }
+  /// Enter your email address
+  static var authenticationVerifyEmailInputTitle: String { 
+    return VectorL10n.tr("Untranslated", "authentication_verify_email_input_title") 
+  }
+  /// Email Address
+  static var authenticationVerifyEmailTextFieldPlaceholder: String { 
+    return VectorL10n.tr("Untranslated", "authentication_verify_email_text_field_placeholder") 
+  }
+  /// Resend email
+  static var authenticationVerifyEmailWaitingButton: String { 
+    return VectorL10n.tr("Untranslated", "authentication_verify_email_waiting_button") 
+  }
+  /// Did not receive an email?
+  static var authenticationVerifyEmailWaitingHint: String { 
+    return VectorL10n.tr("Untranslated", "authentication_verify_email_waiting_hint") 
+  }
+  /// To confirm your email address, tap the button in the email we just sent to %@
+  static func authenticationVerifyEmailWaitingMessage(_ p1: String) -> String {
+    return VectorL10n.tr("Untranslated", "authentication_verify_email_waiting_message", p1)
+  }
+  /// Check your email to verify.
+  static var authenticationVerifyEmailWaitingTitle: String { 
+    return VectorL10n.tr("Untranslated", "authentication_verify_email_waiting_title") 
+  }
   /// Choose from files
   static var imagePickerActionFiles: String { 
     return VectorL10n.tr("Untranslated", "image_picker_action_files") 
   }
-  /// Profile picture
-  static var onboardingAvatarAccessibilityLabel: String { 
-    return VectorL10n.tr("Untranslated", "onboarding_avatar_accessibility_label") 
+  /// Leave space
+  static var leaveSpaceAction: String { 
+    return VectorL10n.tr("Untranslated", "leave_space_action") 
   }
-  /// You can change this anytime.
-  static var onboardingAvatarMessage: String { 
-    return VectorL10n.tr("Untranslated", "onboarding_avatar_message") 
+  /// Leave space and %@ rooms
+  static func leaveSpaceAndMoreRooms(_ p1: String) -> String {
+    return VectorL10n.tr("Untranslated", "leave_space_and_more_rooms", p1)
   }
-  /// Add a profile picture
-  static var onboardingAvatarTitle: String { 
-    return VectorL10n.tr("Untranslated", "onboarding_avatar_title") 
+  /// Leave space and 1 room
+  static var leaveSpaceAndOneRoom: String { 
+    return VectorL10n.tr("Untranslated", "leave_space_and_one_room") 
   }
-  /// Let's go
-  static var onboardingCelebrationButton: String { 
-    return VectorL10n.tr("Untranslated", "onboarding_celebration_button") 
+  /// Select all rooms
+  static var leaveSpaceSelectionAllRooms: String { 
+    return VectorL10n.tr("Untranslated", "leave_space_selection_all_rooms") 
   }
-  /// Your preferences have been saved.
-  static var onboardingCelebrationMessage: String { 
-    return VectorL10n.tr("Untranslated", "onboarding_celebration_message") 
+  /// Select no rooms
+  static var leaveSpaceSelectionNoRooms: String { 
+    return VectorL10n.tr("Untranslated", "leave_space_selection_no_rooms") 
   }
-  /// You’re all set!
-  static var onboardingCelebrationTitle: String { 
-    return VectorL10n.tr("Untranslated", "onboarding_celebration_title") 
-  }
-  /// Take me home
-  static var onboardingCongratulationsHomeButton: String { 
-    return VectorL10n.tr("Untranslated", "onboarding_congratulations_home_button") 
-  }
-  /// Your account %@ has been created.
-  static func onboardingCongratulationsMessage(_ p1: String) -> String {
-    return VectorL10n.tr("Untranslated", "onboarding_congratulations_message", p1)
-  }
-  /// Personalise profile
-  static var onboardingCongratulationsPersonalizeButton: String { 
-    return VectorL10n.tr("Untranslated", "onboarding_congratulations_personalize_button") 
-  }
-  /// Congratulations!
-  static var onboardingCongratulationsTitle: String { 
-    return VectorL10n.tr("Untranslated", "onboarding_congratulations_title") 
-  }
-  /// You can change this later
-  static var onboardingDisplayNameHint: String { 
-    return VectorL10n.tr("Untranslated", "onboarding_display_name_hint") 
-  }
-  /// Your display name must be less than 256 characters
-  static var onboardingDisplayNameMaxLength: String { 
-    return VectorL10n.tr("Untranslated", "onboarding_display_name_max_length") 
-  }
-  /// This will be shown when you send messages.
-  static var onboardingDisplayNameMessage: String { 
-    return VectorL10n.tr("Untranslated", "onboarding_display_name_message") 
-  }
-  /// Display Name
-  static var onboardingDisplayNamePlaceholder: String { 
-    return VectorL10n.tr("Untranslated", "onboarding_display_name_placeholder") 
-  }
-  /// Choose a display name
-  static var onboardingDisplayNameTitle: String { 
-    return VectorL10n.tr("Untranslated", "onboarding_display_name_title") 
-  }
-  /// Save and continue
-  static var onboardingPersonalizationSave: String { 
-    return VectorL10n.tr("Untranslated", "onboarding_personalization_save") 
-  }
-  /// Skip this step
-  static var onboardingPersonalizationSkip: String { 
-    return VectorL10n.tr("Untranslated", "onboarding_personalization_skip") 
+  /// SELECT ROOMS
+  static var leaveSpaceSelectionTitle: String { 
+    return VectorL10n.tr("Untranslated", "leave_space_selection_title") 
   }
   /// This feature isn't available here. For now, you can do this with %@ on your computer.
   static func spacesFeatureNotAvailable(_ p1: String) -> String {

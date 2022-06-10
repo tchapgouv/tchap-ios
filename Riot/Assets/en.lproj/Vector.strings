@@ -76,6 +76,7 @@
 "error" = "Error";
 "suggest" = "Suggest";
 "edit" = "Edit";
+"confirm" = "Confirm";
 
 // Activities
 "loading" = "Loading";
@@ -119,6 +120,10 @@
 "onboarding_use_case_existing_server_button" = "Connect to server";
 
 "onboarding_congratulations_title" = "Congratulations!";
+<<<<<<< HEAD
+=======
+/* The placeholder string contains the user's matrix ID */
+>>>>>>> v1.8.16
 "onboarding_congratulations_message" = "Your account %@ has been created.";
 "onboarding_congratulations_personalize_button" = "Personalise profile";
 "onboarding_congratulations_home_button" = "Take me home";
@@ -295,8 +300,10 @@ Tap the + to start adding people.";
 "directory_cell_title" = "Browse directory";
 "directory_cell_description" = "%tu rooms";
 "directory_search_results_title" = "Browse directory results";
-"directory_search_results" = "%tu results found for %@";
-"directory_search_results_more_than" = ">%tu results found for %@";
+/* The placeholder %1$tu will be replaced with a number and %2$@ with the user's search terms. */
+"directory_search_results" = "%1$tu results found for %2$@";
+/* The placeholder %1$tu will be replaced with a number and %2$@ with the user's search terms. Note the > at the start indicates "more than 20 results". */
+"directory_search_results_more_than" = ">%1$tu results found for %2$@";
 "directory_searching_title" = "Searching directory…";
 "directory_search_fail" = "Failed to fetch data";
 
@@ -506,6 +513,8 @@ Tap the + to start adding people.";
 "threads_beta_information_link" = "Learn more";
 "threads_beta_enable" = "Try it out";
 "threads_beta_cancel" = "Not now";
+"threads_discourage_information_1" = "Your homeserver does not currently support threads, so this feature may be unreliable. Some threaded messages may not be reliably available. ";
+"threads_discourage_information_2" = "\n\nDo you want to enable threads anyway?";
 
 "media_type_accessibility_image" = "Image";
 "media_type_accessibility_audio" = "Audio";
@@ -749,6 +758,10 @@ Tap the + to start adding people.";
 
 "settings_enable_room_message_bubbles" = "Message bubbles";
 
+"settings_presence" = "Presence";
+"settings_presence_offline_mode" = "Offline Mode";
+"settings_presence_offline_mode_description" = "If enabled, you will always appear offline to other users, even when using the application.";
+
 // Security settings
 "security_settings_title" = "Security";
 "security_settings_crypto_sessions" = "MY SESSIONS";
@@ -921,7 +934,9 @@ Tap the + to start adding people.";
 "room_access_settings_screen_public_message" = "Anyone can find and join.";
 
 "room_access_settings_screen_upgrade_alert_title" = "Upgrade room";
-"room_access_settings_screen_upgrade_alert_message" = "Anyone in Space name will be able to find and join this room - no need to manually invite everyone. You’ll be able to change this in room settings anytime.\n\nPlease note upgrading will make a new version of the room.  All current messages will stay in this archived room.";
+"room_access_settings_screen_upgrade_alert_message" = "Anyone in %@ will be able to find and join this room - no need to manually invite everyone. You’ll be able to change this in room settings anytime.";
+"room_access_settings_screen_upgrade_alert_message_no_param" = "Anyone in a parent space will be able to find and join this room - no need to manually invite everyone. You’ll be able to change this in room settings anytime.";
+"room_access_settings_screen_upgrade_alert_note" = "Please note upgrading will make a new version of the room. All current messages will stay in this archived room.";
 "room_access_settings_screen_upgrade_alert_auto_invite_switch" = "Automatically invite members to new room";
 "room_access_settings_screen_upgrade_alert_upgrade_button" = "Upgrade";
 "room_access_settings_screen_upgrade_alert_upgrading" = "Upgrading room";
@@ -2129,9 +2144,28 @@ Tap the + to start adding people.";
 
 "location_sharing_live_share_title" = "Share live location";
 "live_location_sharing_banner_title" = "Live location enabled";
+"live_location_sharing_ended" = "Live location ended";
 "live_location_sharing_banner_stop" = "Stop";
 "location_sharing_static_share_title" = "Send my current location";
 "location_sharing_pin_drop_share_title" = "Send this location";
+"location_sharing_live_map_callout_title" = "Share location";
+"location_sharing_live_viewer_title" = "Location";
+"location_sharing_live_list_item_time_left" = "%@ left";
+"location_sharing_live_list_item_sharing_expired" = "Sharing expired";
+"location_sharing_live_list_item_last_update" = "Updated %@ ago";
+"location_sharing_live_list_item_last_update_invalid" = "Unknown last update";
+"location_sharing_live_list_item_current_user_display_name" = "You";
+"location_sharing_live_list_item_stop_sharing_action" = "Stop sharing";
+"location_sharing_live_timer_incoming" = "Live until %@";
+"location_sharing_live_loading" = "Loading Live location...";
+"location_sharing_live_error" = "Live location error";
+"location_sharing_live_timer_selector_title" = "Choose for how long others will see your accurate location.";
+"location_sharing_live_timer_selector_short" = "for 15 minutes";
+"location_sharing_live_timer_selector_medium" = "for 1 hour";
+"location_sharing_live_timer_selector_long" = "for 8 hours";
+"location_sharing_live_no_user_locations_error_title" = "No user locations available";
+"location_sharing_live_stop_sharing_error" = "Fail to stop sharing location";
+"location_sharing_live_stop_sharing_progress" = "Stop location sharing";
 
 // MARK: - MatrixKit
 
