@@ -1256,10 +1256,8 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     }];
     favouriteAction.backgroundColor = actionBackgroundColor;
     
-    // Tchap: Different managment in Tchap
-//    UIImage *favouriteImage = AssetImages.roomActionFavourite.image;
-//    favouriteImage = [favouriteImage vc_tintedImageUsingColor:isFavourite ? selectedColor : unselectedColor];
-    UIImage *favouriteImage = isFavourite ? [UIImage imageNamed:@"pin"] : [UIImage imageNamed:@"unpin"];
+    UIImage *favouriteImage = AssetImages.roomActionFavourite.image;
+    favouriteImage = [favouriteImage vc_tintedImageUsingColor:isFavourite ? selectedColor : unselectedColor];
     favouriteAction.image = [favouriteImage vc_notRenderedImage];
     
     // Priority toggle
