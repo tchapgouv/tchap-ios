@@ -1571,65 +1571,63 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 //    }
 //}
 
-// Tchap: Not available in Tchap
-//- (void)changeEditedRoomNotificationSettings
-//{
-//    if (editedRoomId)
-//    {
-//        // Check whether the user didn't leave the room
-//        MXRoom *room = [self.mainSession roomWithRoomId:editedRoomId];
-//        if (room)
-//        {
-//           // navigate
-//            self.roomNotificationSettingsCoordinatorBridgePresenter = [[RoomNotificationSettingsCoordinatorBridgePresenter alloc] initWithRoom:room];
-//            self.roomNotificationSettingsCoordinatorBridgePresenter.delegate = self;
-//            [self.roomNotificationSettingsCoordinatorBridgePresenter presentFrom:self animated:YES];
-//        }
-//        [self cancelEditionMode:isRefreshPending];
-//    }
-//}
+- (void)changeEditedRoomNotificationSettings
+{
+    if (editedRoomId)
+    {
+        // Check whether the user didn't leave the room
+        MXRoom *room = [self.mainSession roomWithRoomId:editedRoomId];
+        if (room)
+        {
+           // navigate
+            self.roomNotificationSettingsCoordinatorBridgePresenter = [[RoomNotificationSettingsCoordinatorBridgePresenter alloc] initWithRoom:room];
+            self.roomNotificationSettingsCoordinatorBridgePresenter.delegate = self;
+            [self.roomNotificationSettingsCoordinatorBridgePresenter presentFrom:self animated:YES];
+        }
+        [self cancelEditionMode:isRefreshPending];
+    }
+}
 
-// Tchap: Not available in Tchap
-//- (void)muteEditedRoomNotifications:(BOOL)mute
-//{
-//    if (editedRoomId)
-//    {
-//        // Check whether the user didn't leave the room
-//        MXRoom *room = [self.mainSession roomWithRoomId:editedRoomId];
-//        if (room)
-//        {
-//            [self startActivityIndicator];
-//
-//            if (mute)
-//            {
-//                [room mentionsOnly:^{
-//
-//                    [self stopActivityIndicator];
-//
-//                    // Leave editing mode
-//                    [self cancelEditionMode:self->isRefreshPending];
-//
-//                }];
-//            }
-//            else
-//            {
-//                [room allMessages:^{
-//
-//                    [self stopActivityIndicator];
-//
-//                    // Leave editing mode
-//                    [self cancelEditionMode:self->isRefreshPending];
-//
-//                }];
-//            }
-//        }
-//        else
-//        {
-//            // Leave editing mode
-//            [self cancelEditionMode:isRefreshPending];
-//        }
-//    }
-//}
+- (void)muteEditedRoomNotifications:(BOOL)mute
+{
+    if (editedRoomId)
+    {
+        // Check whether the user didn't leave the room
+        MXRoom *room = [self.mainSession roomWithRoomId:editedRoomId];
+        if (room)
+        {
+            [self startActivityIndicator];
+
+            if (mute)
+            {
+                [room mentionsOnly:^{
+
+                    [self stopActivityIndicator];
+
+                    // Leave editing mode
+                    [self cancelEditionMode:self->isRefreshPending];
+
+                }];
+            }
+            else
+            {
+                [room allMessages:^{
+
+                    [self stopActivityIndicator];
+
+                    // Leave editing mode
+                    [self cancelEditionMode:self->isRefreshPending];
+
+                }];
+            }
+        }
+        else
+        {
+            // Leave editing mode
+            [self cancelEditionMode:isRefreshPending];
+        }
+    }
+}
 
 #pragma mark - UITableView delegate
 
