@@ -259,9 +259,6 @@ targets:
 
     # Share extension
     - path: ../RiotShareExtension/Shared
-      excludes:
-      - "**/ShareRoomsRoomCell.*"
-      - "**/ShareRoomsDiscussionCell.*"
     - path: ../RiotShareExtension/Sources/ShareItemProtocol.swift
     - path: ../RiotShareExtension/Sources/ShareItemSender.h
     - path: ../RiotShareExtension/Sources/ShareItemSender.m
