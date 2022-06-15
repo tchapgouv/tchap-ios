@@ -85,6 +85,9 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 
 NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUniversalLinkDidChangeNotification";
 
+NSString *const kLegacyAppDelegateDidLogoutNotification = @"kLegacyAppDelegateDidLogoutNotification";
+NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDidLoginNotification";
+
 @interface LegacyAppDelegate () <GDPRConsentViewControllerDelegate, KeyVerificationCoordinatorBridgePresenterDelegate, PushNotificationServiceDelegate/*, SetPinCoordinatorBridgePresenterDelegate, CallPresenterDelegate, SpaceDetailPresenterDelegate, SecureBackupSetupCoordinatorBridgePresenterDelegate*/>
 {
     /**
@@ -2039,6 +2042,12 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             [account addObserver:self forKeyPath:@"enableInAppNotifications" options:0 context:nil];
         }
         
+        // Load the local contacts on first account creation.
+        if ([MXKAccountManager sharedManager].accounts.count == 1)
+        {
+            [[NSNotificationCenter defaultCenter] postNotificationName:kLegacyAppDelegateDidLoginNotification object:nil];
+        }
+        
         [self.delegate legacyAppDelegate:self didAddAccount:account];
     }];
     
@@ -2347,6 +2356,11 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         if (completion)
         {
             completion (YES);
+        }
+        
+        if (isLoggedOut)
+        {
+            [[NSNotificationCenter defaultCenter] postNotificationName:kLegacyAppDelegateDidLogoutNotification object:nil];
         }
     }];
 }
