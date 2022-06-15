@@ -110,8 +110,8 @@
 "room_recents_join_room_prompt" = "Saisir un identifiant ou un alias de salon";
 // People tab
 "people_invites_section" = "INVITATIONS";
-"people_conversation_section" = "DISCUSSIONS";
-"people_no_conversation" = "Aucune discussion";
+"people_conversation_section" = "SALONS";
+"people_no_conversation" = "Aucun salon";
 // Rooms tab
 "room_directory_no_public_room" = "Aucun forum disponible";
 // Groups tab
