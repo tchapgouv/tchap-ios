@@ -635,8 +635,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         }
         else
         {
-            // Tchap: Update section name to `Conversations`
-            title = NSLocalizedStringFromTable(@"conversations_main_section", @"Tchap", @"").uppercaseString;
+            title = [VectorL10n roomRecentsConversationsSection];
         }
     }
     else if (section == directorySection)

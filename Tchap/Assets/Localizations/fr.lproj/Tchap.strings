@@ -88,11 +88,8 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 // MARK: Conversations
-"conversations_tab_title" = "Conversations";
 "conversations_invites_section" = "Invitations";
-"conversations_main_section" = "Conversations";
 "conversations_directory_section" = "Salons forums";
-"conversations_no_conversation" = "Aucune conversation";
 "conversations_start_chat_action" = "Nouvelle discussion";
 "conversations_create_room_action" = "Nouveau salon";
 "conversations_access_to_public_rooms_action" = "Accéder à un salon forum";
