@@ -92,6 +92,10 @@ class DarkTheme: NSObject, Theme {
     
     var roomCellOutgoingBubbleBackgroundColor: UIColor = UIColor(rgb: 0x133A34)
     
+    var roomCellLocalisationIconStartedColor: UIColor = UIColor(rgb: 0x5C56F5)
+    
+    var roomCellLocalisationErrorColor: UIColor = UIColor(rgb: 0xFF5B55)
+    
     var roomTypeRestricted: UIColor = UIColor(rgb:0xEB5757)
     var roomTypeUnrestricted: UIColor = UIColor(rgb:0xF07A12)
     var roomTypePublic: UIColor = UIColor(rgb:0x27AE60)

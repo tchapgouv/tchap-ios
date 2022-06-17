@@ -41,16 +41,19 @@ class HomeViewControllerWithBannerWrapperViewController: UIViewController, MXKVi
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        homeViewController.willMove(toParent: self)
-        
         view.backgroundColor = .clear
         
         stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
         stackView.distribution = .fill
         stackView.alignment = .fill
         
-        view.vc_addSubViewMatchingParent(stackView)
+        view.addSubview(stackView)
+        NSLayoutConstraint.activate([stackView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+                                     stackView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+                                     stackView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
+                                     stackView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)])
 
         addChild(homeViewController)
         stackView.addArrangedSubview(homeViewController.view)

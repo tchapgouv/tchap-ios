@@ -14,6 +14,7 @@ internal enum InfoPlist {
 
   internal static let cfBundleDevelopmentRegion: String = _document["CFBundleDevelopmentRegion"]
   internal static let cfBundleDisplayName: String = _document["CFBundleDisplayName"]
+  internal static let cfBundleDocumentTypes: [[String: Any]] = _document["CFBundleDocumentTypes"]
   internal static let cfBundleExecutable: String = _document["CFBundleExecutable"]
   internal static let cfBundleIdentifier: String = _document["CFBundleIdentifier"]
   internal static let cfBundleInfoDictionaryVersion: String = _document["CFBundleInfoDictionaryVersion"]
@@ -39,6 +40,7 @@ internal enum InfoPlist {
   internal static let uiSupportedInterfaceOrientations: [String] = _document["UISupportedInterfaceOrientations"]
   internal static let uiSupportedInterfaceOrientationsIpad: [String] = _document["UISupportedInterfaceOrientations~ipad"]
   internal static let uiViewControllerBasedStatusBarAppearance: Bool = _document["UIViewControllerBasedStatusBarAppearance"]
+  internal static let utExportedTypeDeclarations: [[String: Any]] = _document["UTExportedTypeDeclarations"]
   internal static let userDefaults: String = _document["UserDefaults"]
   internal static let applicationGroupIdentifier: String = _document["applicationGroupIdentifier"]
   internal static let baseBundleIdentifier: String = _document["baseBundleIdentifier"]

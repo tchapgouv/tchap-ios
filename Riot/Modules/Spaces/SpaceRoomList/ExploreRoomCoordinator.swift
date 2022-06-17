@@ -206,7 +206,7 @@ final class ExploreRoomCoordinator: NSObject, ExploreRoomCoordinatorType {
     
     @available(iOS 14.0, *)
     private func showSpaceSettings(of childInfo: MXSpaceChildInfo) {
-        let coordinator = SpaceSettingsModalCoordinator(parameters: SpaceSettingsModalCoordinatorParameters(session: session, spaceId: childInfo.childRoomId))
+        let coordinator = SpaceSettingsModalCoordinator(parameters: SpaceSettingsModalCoordinatorParameters(session: session, spaceId: childInfo.childRoomId, parentSpaceId: spaceIdStack.last))
         coordinator.callback = { [weak self] result in
             guard let self = self else { return }
             
@@ -422,6 +422,10 @@ extension ExploreRoomCoordinator: RoomViewControllerDelegate {
         // TODO:
     }
     
+    func roomViewController(_ roomViewController: RoomViewController, didRequestLiveLocationPresentationForBubbleData bubbleData: MXKRoomBubbleCellDataStoring) {
+        // TODO:
+    }
+    
     func roomViewController(_ roomViewController: RoomViewController, didRequestLocationPresentationFor event: MXEvent, bubbleData: MXKRoomBubbleCellDataStoring) {
         // TODO:
     }
@@ -474,7 +478,7 @@ extension ExploreRoomCoordinator: RoomViewControllerDelegate {
         // TODO:
     }
     
-    func roomViewControllerDidStopLiveLocationSharing(_ roomViewController: RoomViewController) {
+    func roomViewControllerDidStopLiveLocationSharing(_ roomViewController: RoomViewController, beaconInfoEventId: String?) {
         // TODO:
     }
     

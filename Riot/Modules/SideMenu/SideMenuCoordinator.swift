@@ -307,7 +307,7 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
     @available(iOS 14.0, *)
     private func showSpaceSettings(spaceId: String, session: MXSession) {
         // Tchap: Disable Spaces
-//        let coordinator = SpaceSettingsModalCoordinator(parameters: SpaceSettingsModalCoordinatorParameters(session: session, spaceId: spaceId))
+//        let coordinator = SpaceSettingsModalCoordinator(parameters: SpaceSettingsModalCoordinatorParameters(session: session, spaceId: spaceId, parentSpaceId: nil))
 //        coordinator.callback = { [weak self] result in
 //            guard let self = self else { return }
 //

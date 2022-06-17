@@ -54,29 +54,6 @@
  */
 + (NSURL*)fixURLWithSeveralHashKeys:(NSURL*)url;
 
-#pragma mark - String utilities
-
-/**
- Change the alpha value of all text colors of an attibuted string.
-
- @param alpha the alpha value to apply.
- @param attributedString the attributed string to update.
- @return a new attributed string.
- */
-+ (NSAttributedString *)setTextColorAlpha:(CGFloat)alpha inAttributedString:(NSAttributedString*)attributedString;
-
-#pragma mark - Time utilities
-
-/**
- * Convert a number of days to a duration in ms.
- */
-+ (uint64_t)durationInMsFromDays:(uint)days;
-
-/**
- * Convert a duration in ms to a number of days.
- */
-+ (uint)numberOfDaysFromDurationInMs:(uint64_t)duration;
-
 #pragma mark - Tchap permalink
 
 /*

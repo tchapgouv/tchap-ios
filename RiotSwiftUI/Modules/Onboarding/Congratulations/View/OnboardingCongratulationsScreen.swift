@@ -16,7 +16,6 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
 struct OnboardingCongratulationsScreen: View {
 
     // MARK: - Properties
@@ -44,16 +43,15 @@ struct OnboardingCongratulationsScreen: View {
                         .frame(height: OnboardingMetrics.spacerHeight(in: geometry))
                     
                     mainContent
-                        .frame(maxWidth: OnboardingMetrics.maxContentWidth)
-                        .padding(.top, 60)
+                        .readableFrame()
+                        .padding(.top, OnboardingMetrics.breakerScreenTopPadding)
                         .padding(.horizontal, horizontalPadding)
                 }
-                .frame(maxWidth: .infinity)
                 
                 footer
-                    .frame(maxWidth: OnboardingMetrics.maxContentWidth)
+                    .readableFrame()
                     .padding(.horizontal, horizontalPadding)
-                    .padding(.bottom, 24)
+                    .padding(.bottom, OnboardingMetrics.actionButtonBottomPadding)
                     .padding(.bottom, geometry.safeAreaInsets.bottom > 0 ? 0 : 16)
                 
                 Spacer()
@@ -63,17 +61,18 @@ struct OnboardingCongratulationsScreen: View {
         }
         .overlay(effects.ignoresSafeArea())
         .background(theme.colors.accent.ignoresSafeArea())
-        .accentColor(.white)
         .navigationBarHidden(true)
         .preferredColorScheme(.dark)    // make the status bar white
+        .accentColor(.white)
     }
     
     /// The main content of the view to be shown in a scroll view.
     var mainContent: some View {
-        VStack(spacing: 42) {
+        VStack(spacing: OnboardingMetrics.breakerScreenIconBottomPadding) {
             Image(Asset.Images.onboardingCongratulationsIcon.name)
                 .resizable()
-                .frame(width: 90, height: 90)
+                .scaledToFit()
+                .frame(width: OnboardingMetrics.iconSize, height: OnboardingMetrics.iconSize)
                 .accessibilityHidden(true)
             
             VStack(spacing: 8) {
@@ -132,7 +131,7 @@ struct OnboardingCongratulationsScreen: View {
     @ViewBuilder
     var effects: some View {
         if viewModel.viewState.personalizationDisabled {
-            EffectsView(effectsType: .confetti)
+            EffectsView(effect: .confetti)
                 .allowsHitTesting(false)
                 .accessibilityIdentifier("confetti")
         }
@@ -141,7 +140,6 @@ struct OnboardingCongratulationsScreen: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct OnboardingCongratulationsScreen_Previews: PreviewProvider {
     static let stateRenderer = MockOnboardingCongratulationsScreenState.stateRenderer
     static var previews: some View {

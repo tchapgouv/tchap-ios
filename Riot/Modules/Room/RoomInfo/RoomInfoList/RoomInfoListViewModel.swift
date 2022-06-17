@@ -34,6 +34,7 @@ final class RoomInfoListViewModel: NSObject, RoomInfoListViewModelType {
     
     private var viewData: RoomInfoListViewData {
         let encryptionImage = EncryptionTrustLevelBadgeImageHelper.roomBadgeImage(for: room.summary.roomEncryptionTrustLevel())
+        let directUserPresence = session.user(withUserId: room.directUserId)?.presence ?? .unknown
         
         let basicInfoViewData = RoomInfoBasicViewData(avatarUrl: room.summary.avatar,
                                                       mediaManager: session.mediaManager,
@@ -43,9 +44,12 @@ final class RoomInfoListViewModel: NSObject, RoomInfoListViewModelType {
                                                       roomTopic: room.summary.topic,
                                                       encryptionImage: encryptionImage,
                                                       isEncrypted: room.summary.isEncrypted,
-                                                      isDirect: room.isDirect)
+                                                      isDirect: room.isDirect,
+                                                      directUserId: room.directUserId,
+                                                      directUserPresence: directUserPresence)
         
         return RoomInfoListViewData(numberOfMembers: Int(room.summary.membersCount.joined),
+                                    isEncrypted: room.summary.isEncrypted,
                                     isDirect: room.isDirect,
                                     basicInfoViewData: basicInfoViewData)
     }
