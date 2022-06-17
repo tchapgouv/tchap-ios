@@ -41,7 +41,8 @@
 {
     [super finalizeInit];
     
-    self.enableDragging = YES;
+    // Tchap: Disable Drag and drop
+    self.enableDragging = NO;
     
     self.screenTracker = [[AnalyticsScreenTracker alloc] initWithScreen:AnalyticsScreenFavourites];
     self.tableViewPaginationThrottler = [[MXThrottler alloc] initWithMinimumDelay:0.1];

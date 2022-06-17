@@ -26,7 +26,7 @@
 
 #import "GeneratedInterface-Swift.h"
 
-@interface PeopleViewController () //<SpaceMembersCoordinatorBridgePresenterDelegate>
+@interface PeopleViewController () <MasterTabBarItemDisplayProtocol>//<SpaceMembersCoordinatorBridgePresenterDelegate>
 {
     NSInteger          directRoomsSectionNumber;
     RecentsDataSource *recentsDataSource;

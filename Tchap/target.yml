@@ -97,7 +97,7 @@ targets:
     - path: ../Tchap/Modules/Application/VersionUpdate
     - path: ../Tchap/Generated/Images_Riot.swift
     - path: ../Tchap/Modules/Room/Views/BubbleCells/Antivirus
-    - path: ../Tchap/Modules/Rooms/Views
+
 
     # Add separately localizable files
     - path: Assets/Localizations/fr.lproj/Tchap.strings

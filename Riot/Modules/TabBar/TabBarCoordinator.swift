@@ -282,8 +282,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         let roomsViewController: RoomsViewController = RoomsViewController.instantiate()
         roomsViewController.roomsViewDelegate = self
         roomsViewController.tabBarItem.tag = Int(TABBAR_ROOMS_INDEX)
-        // Tchap: Update accessibility label name to `Conversations`
-        roomsViewController.accessibilityLabel = TchapL10n.conversationsTabTitle
+        roomsViewController.accessibilityLabel = VectorL10n.titleRooms
         roomsViewController.userIndicatorStore = UserIndicatorStore(presenter: indicatorPresenter)
         return roomsViewController
     }

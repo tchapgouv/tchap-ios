@@ -55,6 +55,7 @@ internal class Asset_tchap: NSObject {
     internal static let appsIcon = ImageAsset(name: "apps-icon")
     internal static let jumpToUnread = ImageAsset(name: "jump_to_unread")
     internal static let moreReactions = ImageAsset(name: "more_reactions")
+    internal static let forumNoEncryption = ImageAsset(name: "forum_no_encryption")
     internal static let fileDocIcon = ImageAsset(name: "file_doc_icon")
     internal static let fileMusicIcon = ImageAsset(name: "file_music_icon")
     internal static let filePhotoIcon = ImageAsset(name: "file_photo_icon")
