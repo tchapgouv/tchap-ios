@@ -101,7 +101,10 @@ final class SideMenuViewModel: SideMenuViewModelType {
         
         var sideMenuItems: [SideMenuItem] = []
         
-        if BuildSettings.sideMenuShowInviteFriends {
+        // Tchap: Hide invite friends item if needed (is external user).
+        if BuildSettings.sideMenuShowInviteFriends,
+           let mainUserSession = self.userSessionsService.mainUserSession,
+           UserService.isExternalUser(for: mainUserSession.userId) == false {
             sideMenuItems += [.inviteFriends]
         }
         
