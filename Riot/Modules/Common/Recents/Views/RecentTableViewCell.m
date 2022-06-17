@@ -47,12 +47,8 @@
     self.roomTitle.textColor = ThemeService.shared.theme.textPrimaryColor;
     self.lastEventDescription.textColor = ThemeService.shared.theme.textSecondaryColor;
     self.lastEventDate.textColor = ThemeService.shared.theme.textSecondaryColor;
-<<<<<<< HEAD
-    self.missedNotifAndUnreadBadgeLabel.textColor = ThemeService.shared.theme.baseTextPrimaryColor;
-    self.presenceIndicatorView.borderColor = ThemeService.shared.theme.backgroundColor;
-=======
     self.missedNotifAndUnreadBadgeLabel.textColor = ThemeService.shared.theme.tintContrastColor;
->>>>>>> develop
+    self.presenceIndicatorView.borderColor = ThemeService.shared.theme.backgroundColor;
     
     self.roomAvatar.defaultBackgroundColor = [UIColor clearColor];
 }
