@@ -441,6 +441,18 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     MXLogDebug(@"------------------------------\n");
     
     [self setupUserDefaults];
+    
+    // Clear cache if user requested it in Settings app
+    BOOL shouldClearCache = NO;
+    NSString *clearCacheKey = @"forceClearCacheOnStartup";
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:clearCacheKey]) {
+        shouldClearCache = YES;
+    }
+    MXLogDebug(@"Clear cache requested : %@", shouldClearCache ? @"YES" : @"NO");
+    if (shouldClearCache) {
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:clearCacheKey];
+        [self reloadMatrixSessions:true];
+    }
 
     // Set up theme
     ThemeService.shared.themeId = RiotSettings.shared.userInterfaceTheme;
