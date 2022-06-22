@@ -83,6 +83,8 @@
 	<string>$(BASE_BUNDLE_IDENTIFIER)</string>
 	<key>keychainAccessGroup</key>
 	<string>$(KEYCHAIN_ACCESS_GROUP)</string>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<false/>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
