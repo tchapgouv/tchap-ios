@@ -372,15 +372,7 @@
     }
     
     NSMutableString *bugReportDescription = [NSMutableString stringWithString:_bugReportDescriptionTextView.text];
-
-    if (_reportCrash)
-    {
-        // Append the crash dump to the user description in order to ease triaging of GH issues
-        NSString *crashLogFile = [MXLogger crashLog];
-        NSString *crashLog =  [NSString stringWithContentsOfFile:crashLogFile encoding:NSUTF8StringEncoding error:nil];
-        [bugReportDescription appendFormat:@"\n\n\n--------------------------------------------------------------------------------\n\n%@", crashLog];
-    }
-
+    
     // starting a background task to have a bit of extra time in case of user forgets about the report and sends the app to background
     __block UIBackgroundTaskIdentifier operationBackgroundId = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
             [[UIApplication sharedApplication] endBackgroundTask:operationBackgroundId];
