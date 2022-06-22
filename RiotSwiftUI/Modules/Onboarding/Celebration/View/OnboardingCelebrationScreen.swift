@@ -17,7 +17,6 @@
 import SwiftUI
 import SceneKit
 
-@available(iOS 14.0, *)
 struct OnboardingCelebrationScreen: View {
 
     // MARK: - Properties
@@ -40,27 +39,26 @@ struct OnboardingCelebrationScreen: View {
     var body: some View {
         GeometryReader { geometry in
             VStack {
-                ScrollView(showsIndicators: false) {
+                ScrollView {
                     Spacer()
                         .frame(height: OnboardingMetrics.spacerHeight(in: geometry))
                     
                     mainContent
-                        .padding(.top, 106)
+                        .readableFrame()
+                        .padding(.top, OnboardingMetrics.breakerScreenTopPadding)
                         .padding(.horizontal, horizontalPadding)
-                        .frame(maxWidth: OnboardingMetrics.maxContentWidth)
                 }
-                .frame(maxWidth: .infinity)
                 
                 buttons
-                    .frame(maxWidth: OnboardingMetrics.maxContentWidth)
+                    .readableFrame()
                     .padding(.horizontal, horizontalPadding)
-                    .padding(.bottom, 24)
+                    .padding(.bottom, OnboardingMetrics.actionButtonBottomPadding)
                     .padding(.bottom, geometry.safeAreaInsets.bottom > 0 ? 0 : 16)
                 
                 Spacer()
                     .frame(height: OnboardingMetrics.spacerHeight(in: geometry))
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .frame(maxHeight: .infinity)
         }
         .overlay(effects.ignoresSafeArea())
         .background(theme.colors.background.ignoresSafeArea())
@@ -71,14 +69,8 @@ struct OnboardingCelebrationScreen: View {
     /// The main content of the view to be shown in a scroll view.
     var mainContent: some View {
         VStack(spacing: 8) {
-            Image(Asset.Images.onboardingCelebrationIcon.name)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 90)
-                .foregroundColor(theme.colors.accent)
-                .background(Circle().foregroundColor(.white).padding(2))
-                .padding(.bottom, 42)
-                .accessibilityHidden(true)
+            OnboardingIconImage(image: Asset.Images.onboardingCelebrationIcon)
+                .padding(.bottom, OnboardingMetrics.breakerScreenIconBottomPadding)
             
             Text(VectorL10n.onboardingCelebrationTitle)
                 .font(theme.fonts.title2B)
@@ -86,7 +78,7 @@ struct OnboardingCelebrationScreen: View {
                 .foregroundColor(theme.colors.primaryContent)
             
             Text(VectorL10n.onboardingCelebrationMessage)
-                .font(theme.fonts.subheadline)
+                .font(theme.fonts.body)
                 .multilineTextAlignment(.center)
                 .foregroundColor(theme.colors.secondaryContent)
         }
@@ -104,7 +96,7 @@ struct OnboardingCelebrationScreen: View {
     }
     
     var effects: some View {
-        EffectsView(effectsType: .confetti)
+        EffectsView(effect: .confetti)
             .allowsHitTesting(false)
     }
 }

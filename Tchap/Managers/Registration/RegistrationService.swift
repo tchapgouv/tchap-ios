@@ -249,10 +249,7 @@ final class RegistrationService: RegistrationServiceType {
         }
         
         // Report the new account in account manager
-        guard let account = MXKAccount(credentials: credentials) else {
-            throw RegistrationServiceError.failToCreateAccount
-        }
-        
+        let account = MXKAccount(credentials: credentials)
         account.identityServerURL = identityServerURL
         account.antivirusServerURL = credentials.homeServer
         self.accountManager.addAccount(account, andOpenSession: true)

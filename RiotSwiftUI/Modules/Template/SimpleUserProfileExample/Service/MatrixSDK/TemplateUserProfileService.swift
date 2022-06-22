@@ -17,7 +17,6 @@
 import Foundation
 import Combine
 
-@available(iOS 14.0, *)
 class TemplateUserProfileService: TemplateUserProfileServiceProtocol {
     
     // MARK: - Properties
@@ -75,11 +74,11 @@ fileprivate extension TemplateUserProfilePresence {
     
     init(mxPresence: MXPresence) {
         switch mxPresence {
-        case MXPresenceOnline:
+        case .online:
             self = .online
-        case MXPresenceUnavailable:
+        case .unavailable:
             self = .idle
-        case MXPresenceOffline, MXPresenceUnknown:
+        case .offline, .unknown:
             self = .offline
         default:
             self = .offline

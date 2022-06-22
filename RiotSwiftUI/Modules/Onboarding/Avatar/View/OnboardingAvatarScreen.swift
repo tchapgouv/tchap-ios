@@ -17,7 +17,6 @@
 import SwiftUI
 import DesignKit
 
-@available(iOS 14.0, *)
 struct OnboardingAvatarScreen: View {
 
     // MARK: - Properties
@@ -44,14 +43,14 @@ struct OnboardingAvatarScreen: View {
                 
                 buttons
             }
+            .readableFrame()
             .padding(.horizontal)
-            .padding(.top, 8)
-            .frame(maxWidth: OnboardingMetrics.maxContentWidth)
+            .padding(.top, OnboardingMetrics.topPaddingToNavigationBar)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .accentColor(theme.colors.accent)
+        .frame(maxHeight: .infinity)
         .background(theme.colors.background.ignoresSafeArea())
         .alert(item: $viewModel.alertInfo) { $0.alert }
+        .accentColor(theme.colors.accent)
     }
     
     
@@ -116,7 +115,7 @@ struct OnboardingAvatarScreen: View {
                 .foregroundColor(theme.colors.primaryContent)
             
             Text(VectorL10n.onboardingAvatarMessage)
-                .font(theme.fonts.subheadline)
+                .font(theme.fonts.body)
                 .multilineTextAlignment(.center)
                 .foregroundColor(theme.colors.secondaryContent)
         }

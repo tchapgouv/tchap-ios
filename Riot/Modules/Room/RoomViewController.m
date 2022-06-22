@@ -102,9 +102,6 @@ static CGSize kThreadListBarButtonItemImageSize;
     // The preview header
     __weak PreviewRoomTitleView *previewHeader;
     
-    // The customized room data source for Vector
-    RoomDataSource *customizedRoomDataSource;
-    
     // The user taps on a user id contained in a message
     MXKContact *selectedContact;
     
@@ -196,7 +193,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 @property (nonatomic, strong) RoomContextualMenuViewController *roomContextualMenuViewController;
 @property (nonatomic, strong) RoomContextualMenuPresenter *roomContextualMenuPresenter;
 @property (nonatomic, strong) MXKErrorAlertPresentation *errorPresenter;
-@property (nonatomic, strong) NSString *textMessageBeforeEditing;
+@property (nonatomic, strong) NSAttributedString *textMessageBeforeEditing;
 @property (nonatomic, strong) EditHistoryCoordinatorBridgePresenter *editHistoryPresenter;
 @property (nonatomic, strong) MXKDocumentPickerPresenter *documentPickerPresenter;
 @property (nonatomic, strong) EmojiPickerCoordinatorBridgePresenter *emojiPickerCoordinatorBridgePresenter;
@@ -230,13 +227,6 @@ static CGSize kThreadListBarButtonItemImageSize;
 // to autoscroll to the bottom again or not. Instead we need to capture the
 // scroll state just before the layout change, and restore it after the layout.
 @property (nonatomic) BOOL wasScrollAtBottomBeforeLayout;
-
-/// Handles all banners that should be displayed at the top of the timeline but that should not scroll with the timeline
-@property (weak, nonatomic, nullable) IBOutlet UIStackView *topBannersStackView;
-
-@property (nonatomic) BOOL shouldShowLiveLocationSharingBannerView;
-
-@property (nonatomic, weak) LiveLocationSharingBannerView *liveLocationSharingBannerView;
 
 @end
 
@@ -322,7 +312,8 @@ static CGSize kThreadListBarButtonItemImageSize;
 - (void)finalizeInit
 {
     [super finalizeInit];
-    
+
+    [self registerPillAttachmentViewProviderIfNeeded];
     self.resizeComposerAnimationDuration = kResizeComposerAnimationDuration;
     
     // Setup `MXKViewControllerHandling` properties
@@ -409,6 +400,8 @@ static CGSize kThreadListBarButtonItemImageSize;
     [self setupActions];
     
     [self setupUserSuggestionViewIfNeeded];
+    
+    [self.topBannersStackView vc_removeAllSubviews];
 }
 
 - (void)userInterfaceThemeDidChange
@@ -548,6 +541,8 @@ static CGSize kThreadListBarButtonItemImageSize;
         
         notificationTaskProfile = [MXSDKOptions.sharedInstance.profiler startMeasuringTaskWithName:MXTaskProfileNameNotificationsOpenEvent];
     }
+    
+    [self updateTopBanners];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -563,10 +558,10 @@ static CGSize kThreadListBarButtonItemImageSize;
     
     [self removeTypingNotificationsListener];
     
-    if (customizedRoomDataSource)
+    if (self.customizedRoomDataSource)
     {
         // Cancel potential selected event (to leave edition mode)
-        if (customizedRoomDataSource.selectedEventId)
+        if (self.customizedRoomDataSource.selectedEventId)
         {
             [self cancelEventSelection];
         }
@@ -664,6 +659,15 @@ static CGSize kThreadListBarButtonItemImageSize;
 //    {
 //        [self showThreadsNotice];
 //    }
+
+    if (self.saveProgressTextInput && self.roomDataSource)
+    {
+        // Retrieve the potential message partially typed during last room display.
+        // Note: We have to wait for viewDidAppear before updating growingTextView (viewWillAppear is too early)
+        RoomInputToolbarView *inputToolbar = (RoomInputToolbarView *)self.inputToolbarView;
+
+        inputToolbar.attributedTextMessage = self.roomDataSource.partialAttributedTextMessage;
+    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -1022,7 +1026,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     
     [super displayRoom:dataSource];
     
-    customizedRoomDataSource = nil;
+    self.customizedRoomDataSource = nil;
     
     if (self.roomDataSource)
     {
@@ -1033,7 +1037,7 @@ static CGSize kThreadListBarButtonItemImageSize;
         // Store ref on customized room data source
         if ([dataSource isKindOfClass:RoomDataSource.class])
         {
-            customizedRoomDataSource = (RoomDataSource*)dataSource;
+            self.customizedRoomDataSource = (RoomDataSource*)dataSource;
         }
         
         // Set room title view
@@ -1054,6 +1058,8 @@ static CGSize kThreadListBarButtonItemImageSize;
 //    _userSuggestionCoordinator.delegate = self;
     
     [self setupUserSuggestionViewIfNeeded];
+    
+    [self updateTopBanners];
 }
 
 - (void)onRoomDataSourceReady
@@ -1066,10 +1072,8 @@ static CGSize kThreadListBarButtonItemImageSize;
         // Show preview header
         [self showPreviewHeader:YES];
     }
-    else
-    {
-        [super onRoomDataSourceReady];
-    }
+    
+    [super onRoomDataSourceReady];
 }
 
 - (void)updateViewControllerAppearanceOnRoomDataSourceState
@@ -1314,7 +1318,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 - (void)sendTextMessage:(NSString*)msgTxt
 {
     // The event modified is always fetch from the actual data source
-    MXEvent *eventModified = [self.roomDataSource eventWithEventId:customizedRoomDataSource.selectedEventId];
+    MXEvent *eventModified = [self.roomDataSource eventWithEventId:self.customizedRoomDataSource.selectedEventId];
     
     // In the case the event is a reply or and edit, and it's done on a non-live timeline
     // we have to fetch live timeline in order to display the event properly
@@ -1343,7 +1347,7 @@ static CGSize kThreadListBarButtonItemImageSize;
             }];
         }
         
-        if (self->customizedRoomDataSource.selectedEventId)
+        if (self.customizedRoomDataSource.selectedEventId)
         {
             [self cancelEventSelection];
         }
@@ -1415,10 +1419,10 @@ static CGSize kThreadListBarButtonItemImageSize;
         currentAlert = nil;
     }
     
-    if (customizedRoomDataSource)
+    if (self.customizedRoomDataSource)
     {
-        customizedRoomDataSource.selectedEventId = nil;
-        customizedRoomDataSource = nil;
+        self.customizedRoomDataSource.selectedEventId = nil;
+        self.customizedRoomDataSource = nil;
     }
     
     [self removeTypingNotificationsListener];
@@ -1523,6 +1527,12 @@ static CGSize kThreadListBarButtonItemImageSize;
     missedDiscussionsBadgeLabel.hidden = missedDiscussionsBadgeHidden;
     missedDiscussionsDotView.hidden = missedDiscussionsBadgeHidden;
 }
+
+// Tchap: Disable Live location sharing
+//- (BOOL)shouldShowLiveLocationSharingBannerView
+//{
+//    return self.customizedRoomDataSource.isCurrentUserSharingActiveLocation;
+//}
 
 - (void)setForceHideInputToolBar:(BOOL)forceHideInputToolBar
 {
@@ -1639,7 +1649,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     MXCall *callInRoom = [self.roomDataSource.mxSession.callManager callInRoom:self.roomDataSource.roomId];
     
     return (callInRoom && callInRoom.state != MXCallStateEnded)
-    || customizedRoomDataSource.jitsiWidget;
+    || self.customizedRoomDataSource.jitsiWidget;
 }
 
 /**
@@ -1996,7 +2006,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 - (void)handleLongPressFromCell:(id<MXKCellRendering>)cell withTappedEvent:(MXEvent*)event
 {
-    if (event && !customizedRoomDataSource.selectedEventId)
+    if (event && !self.customizedRoomDataSource.selectedEventId)
     {
         [self showContextualMenuForEvent:event fromSingleTapGesture:NO cell:cell animated:YES];
     }
@@ -2446,12 +2456,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 {
     [self.view bringSubviewToFront:self.topBannersStackView];
     
-    [self.topBannersStackView vc_removeAllSubviews];
-    
-    if (self.shouldShowLiveLocationSharingBannerView)
-    {
-        [self showLiveLocationBannerView];
-    }
+//    [self updateLiveLocationBannerViewVisibility];
 }
 
 #pragma mark - Jitsi
@@ -2775,7 +2780,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 - (Class<MXKCellRendering>)cellViewClassForCellData:(MXKCellData*)cellData
 {
-    RoomTimelineCellIdentifier cellIdentifier = [self cellIdentifierForCellData:cellData andRoomDataSource:customizedRoomDataSource];
+    RoomTimelineCellIdentifier cellIdentifier = [self cellIdentifierForCellData:cellData andRoomDataSource:self.customizedRoomDataSource];
     
     RoomTimelineConfiguration *timelineConfiguration = [RoomTimelineConfiguration shared];
             
@@ -2946,7 +2951,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 //            }
 //        }
 //    }
-//    else if (bubbleData.tag == RoomBubbleCellDataTagLocation)
+//    else if (bubbleData.tag == RoomBubbleCellDataTagLocation || bubbleData.tag == RoomBubbleCellDataTagLiveLocation)
 //    {
 //        if (bubbleData.isIncoming)
 //        {
@@ -3172,7 +3177,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 - (void)dataSource:(MXKDataSource *)dataSource didRecognizeAction:(NSString *)actionIdentifier inCell:(id<MXKCellRendering>)cell userInfo:(NSDictionary *)userInfo
 {
     // Handle here user actions on bubbles for Vector app
-    if (customizedRoomDataSource)
+    if (self.customizedRoomDataSource)
     {
         id<MXKRoomBubbleCellDataStoring> bubbleData;
         
@@ -3197,16 +3202,40 @@ static CGSize kThreadListBarButtonItemImageSize;
                 [self mention:roomMember];
             }
         }
+//        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellStopShareButtonPressed])
+//        {
+//            NSString *beaconInfoEventId;
+//            
+//            if ([bubbleData isKindOfClass:[RoomBubbleCellData class]])
+//            {
+//                RoomBubbleCellData *roomBubbleCellData = (RoomBubbleCellData*)bubbleData;
+//                beaconInfoEventId = roomBubbleCellData.beaconInfoSummary.id;
+//            }
+//            
+//            [self.delegate roomViewControllerDidStopLiveLocationSharing:self beaconInfoEventId:beaconInfoEventId];
+//        }
+//        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellRetryShareButtonPressed])
+//        {
+//            MXEvent *selectedEvent = userInfo[kMXKRoomBubbleCellEventKey];
+//            if (selectedEvent)
+//            {
+//                // TODO: - Implement retry live location action
+//            }
+//        }
         else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnMessageTextView] || [actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnContentView])
         {
             // Retrieve the tapped event
             MXEvent *tappedEvent = userInfo[kMXKRoomBubbleCellEventKey];
             
             // Check whether a selection already exist or not
-            if (customizedRoomDataSource.selectedEventId)
+            if (self.customizedRoomDataSource.selectedEventId)
             {
                 [self cancelEventSelection];
             }
+//            else if (bubbleData.tag == RoomBubbleCellDataTagLiveLocation)
+//            {
+//                [self.delegate roomViewController:self didRequestLiveLocationPresentationForBubbleData:bubbleData];
+//            }
             else if (tappedEvent)
             {
                 if (tappedEvent.eventType == MXEventTypeRoomCreate)
@@ -3337,7 +3366,7 @@ static CGSize kThreadListBarButtonItemImageSize;
                 // We consider this tap like a selection.
                 
                 // Check whether a selection already exist or not
-                if (customizedRoomDataSource.selectedEventId)
+                if (self.customizedRoomDataSource.selectedEventId)
                 {
                     [self cancelEventSelection];
                 }
@@ -3371,7 +3400,7 @@ static CGSize kThreadListBarButtonItemImageSize;
         else if ([actionIdentifier isEqualToString:kRoomMembershipExpandedBubbleCellTapOnCollapseButton])
         {
             // Reset the selection before collapsing
-            customizedRoomDataSource.selectedEventId = nil;
+            self.customizedRoomDataSource.selectedEventId = nil;
             
             [self.roomDataSource collapseRoomBubble:((MXKRoomBubbleTableViewCell*)cell).bubbleData collapsed:YES];
         }
@@ -3438,7 +3467,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 //                if (granted)
 //                {
 //                    // Present the Jitsi view controller
-//                    Widget *jitsiWidget = [self->customizedRoomDataSource jitsiWidget];
+//                    Widget *jitsiWidget = [self.customizedRoomDataSource jitsiWidget];
 //                    if (jitsiWidget)
 //                    {
 //                        [self showJitsiCallWithWidget:jitsiWidget];
@@ -3452,7 +3481,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 //
 //            MXEvent *widgetEvent = userInfo[kMXKRoomBubbleCellEventKey];
 //            Widget *widget = [[Widget alloc] initWithWidgetEvent:widgetEvent
-//                                                 inMatrixSession:customizedRoomDataSource.mxSession];
+//                                                 inMatrixSession:self.customizedRoomDataSource.mxSession];
 //            [[JitsiService shared] resetDeclineForWidgetWithId:widget.widgetId];
 //        }
 //        else if ([actionIdentifier isEqualToString:RoomGroupCallStatusCell.leaveAction])
@@ -3464,7 +3493,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 //        {
 //            MXEvent *widgetEvent = userInfo[kMXKRoomBubbleCellEventKey];
 //            Widget *widget = [[Widget alloc] initWithWidgetEvent:widgetEvent
-//                                                 inMatrixSession:customizedRoomDataSource.mxSession];
+//                                                 inMatrixSession:self.customizedRoomDataSource.mxSession];
 //            [[JitsiService shared] declineWidgetWithId:widget.widgetId];
 //            [self reloadBubblesTable:YES];
 //        }
@@ -3526,9 +3555,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     
     MXWeakify(self);
     
-    BOOL showThreadOption = RiotSettings.shared.enableThreads
-    && !self.roomDataSource.threadId
-    && !selectedEvent.threadId;
+    BOOL showThreadOption = [self showThreadOptionForEvent:selectedEvent];
     if (showThreadOption && [self canCopyEvent:selectedEvent andCell:cell])
     {
         [self.eventMenuBuilder addItemWithType:EventMenuItemTypeCopy
@@ -3686,7 +3713,7 @@ static CGSize kThreadListBarButtonItemImageSize;
                     activityViewController = [self.delegate roomViewController:self locationShareActivityViewControllerForEvent:selectedEvent];
                 }
                 
-                if (activityViewController == nil) {
+                if (activityViewController == nil && selectedComponent.textMessage) {
                     NSArray *activityItems = @[selectedComponent.textMessage];
                     activityViewController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
                 }
@@ -4370,8 +4397,8 @@ static CGSize kThreadListBarButtonItemImageSize;
 {
     [self setInputToolBarSendMode:inputToolBarSendMode forEventWithId:eventId];
     
-    customizedRoomDataSource.showBubbleDateTimeOnSelection = showTimestamp;
-    customizedRoomDataSource.selectedEventId = eventId;
+    self.customizedRoomDataSource.showBubbleDateTimeOnSelection = showTimestamp;
+    self.customizedRoomDataSource.selectedEventId = eventId;
     
     // Force table refresh
     [self dataSource:self.roomDataSource didCellChange:nil];
@@ -4387,9 +4414,9 @@ static CGSize kThreadListBarButtonItemImageSize;
         currentAlert = nil;
     }
     
-    customizedRoomDataSource.showBubbleDateTimeOnSelection = YES;
-    customizedRoomDataSource.selectedEventId = nil;
-    customizedRoomDataSource.highlightedEventId = nil;
+    self.customizedRoomDataSource.showBubbleDateTimeOnSelection = YES;
+    self.customizedRoomDataSource.selectedEventId = nil;
+    self.customizedRoomDataSource.highlightedEventId = nil;
     
     [self restoreTextMessageBeforeEditing];
     
@@ -4411,8 +4438,8 @@ static CGSize kThreadListBarButtonItemImageSize;
     
     if (roomInputToolbarView)
     {
-        self.textMessageBeforeEditing = roomInputToolbarView.textMessage;
-        roomInputToolbarView.textMessage = [self.roomDataSource editableTextMessageForEvent:event];
+        self.textMessageBeforeEditing = roomInputToolbarView.attributedTextMessage;
+        roomInputToolbarView.attributedTextMessage = [self.customizedRoomDataSource editableAttributedTextMessageFor:event];
     }
     
     [self selectEventWithId:eventId inputToolBarSendMode:RoomInputToolbarViewSendModeEdit showTimestamp:YES];
@@ -4424,7 +4451,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     
     if (self.textMessageBeforeEditing)
     {
-        roomInputToolbarView.textMessage = self.textMessageBeforeEditing;
+        roomInputToolbarView.attributedTextMessage = self.textMessageBeforeEditing;
     }
     
     self.textMessageBeforeEditing = nil;
@@ -4455,6 +4482,11 @@ static CGSize kThreadListBarButtonItemImageSize;
     [self openThreadWithId:thread.id];
 
     [Analytics.shared trackInteraction:AnalyticsUIElementRoomThreadSummaryItem];
+}
+
+- (void)roomDataSourceDidUpdateCurrentUserSharingLocationStatus:(RoomDataSource *)roomDataSource
+{
+//    [self updateLiveLocationBannerViewVisibility];
 }
 
 #pragma mark - Segues
@@ -4596,7 +4628,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 - (void)placeCallWithVideo2:(BOOL)video
 {
-    Widget *jitsiWidget = [customizedRoomDataSource jitsiWidget];
+    Widget *jitsiWidget = [self.customizedRoomDataSource jitsiWidget];
     if (jitsiWidget)
     {
         //  If there is already a Jitsi call, join it
@@ -4685,9 +4717,18 @@ static CGSize kThreadListBarButtonItemImageSize;
 - (void)roomInputToolbarView:(MXKRoomInputToolbarView*)toolbarView isTyping:(BOOL)typing
 {
     [super roomInputToolbarView:toolbarView isTyping:typing];
-    
+
+    // TODO: Improve so we don't save partial message twice.
+    RoomInputToolbarView *inputToolbar = (RoomInputToolbarView *)toolbarView;
+
+    if (self.saveProgressTextInput && self.roomDataSource && inputToolbar)
+    {
+        // Store the potential message partially typed in text input
+        self.roomDataSource.partialAttributedTextMessage = inputToolbar.attributedTextMessage;
+    }
+
     // Cancel potential selected event (to leave edition mode)
-    NSString *selectedEventId = customizedRoomDataSource.selectedEventId;
+    NSString *selectedEventId = self.customizedRoomDataSource.selectedEventId;
     if (typing && selectedEventId && ![self.roomDataSource canReplyToEventWithId:selectedEventId])
     {
         [self cancelEventSelection];
@@ -4723,23 +4764,28 @@ static CGSize kThreadListBarButtonItemImageSize;
     }
 }
 
-- (void)roomInputToolbarViewDidTapCancel:(MXKRoomInputToolbarView*)toolbarView
+- (void)roomInputToolbarViewDidTapCancel:(RoomInputToolbarView*)toolbarView
 {
     [self cancelEventSelection];
 }
  
-- (void)roomInputToolbarViewDidChangeTextMessage:(MXKRoomInputToolbarView *)toolbarView
+- (void)roomInputToolbarViewDidChangeTextMessage:(RoomInputToolbarView *)toolbarView
 {
 //    [self.userSuggestionCoordinator processTextMessage:toolbarView.textMessage];
 }
 
-- (void)roomInputToolbarViewDidOpenActionMenu:(MXKRoomInputToolbarView*)toolbarView
+- (void)roomInputToolbarViewDidOpenActionMenu:(RoomInputToolbarView*)toolbarView
 {
     // Consider opening the action menu as beginning to type and share encryption keys if requested.
     if ([MXKAppSettings standardAppSettings].outboundGroupSessionKeyPreSharingStrategy == MXKKeyPreSharingWhenTyping)
     {
         [self shareEncryptionKeys];
     }
+}
+
+- (void)roomInputToolbarView:(RoomInputToolbarView *)toolbarView sendAttributedTextMessage:(NSAttributedString *)attributedTextMessage
+{
+    [self sendAttributedTextMessage:attributedTextMessage];
 }
 
 #pragma mark - MXKRoomMemberDetailsViewControllerDelegate
@@ -5297,7 +5343,7 @@ static CGSize kThreadListBarButtonItemImageSize;
         MXStrongifyAndReturnIfNil(self);
         
         MXCall *call = notif.object;
-        if ([call.room.roomId isEqualToString:self->customizedRoomDataSource.roomId])
+        if ([call.room.roomId isEqualToString:self.customizedRoomDataSource.roomId])
         {
             [self refreshActivitiesViewDisplay];
             [self refreshRoomInputToolbar];
@@ -5308,7 +5354,7 @@ static CGSize kThreadListBarButtonItemImageSize;
         MXStrongifyAndReturnIfNil(self);
         
         NSString *roomId = notif.object;
-        if ([roomId isEqualToString:self->customizedRoomDataSource.roomId])
+        if ([roomId isEqualToString:self.customizedRoomDataSource.roomId])
         {
             [self refreshActivitiesViewDisplay];
         }
@@ -5318,7 +5364,7 @@ static CGSize kThreadListBarButtonItemImageSize;
         MXStrongifyAndReturnIfNil(self);
         
         NSString *roomId = notif.object;
-        if ([roomId isEqualToString:self->customizedRoomDataSource.roomId])
+        if ([roomId isEqualToString:self.customizedRoomDataSource.roomId])
         {
             [self refreshActivitiesViewDisplay];
             [self refreshRoomInputToolbar];
@@ -5378,7 +5424,7 @@ static CGSize kThreadListBarButtonItemImageSize;
         
         Widget *widget = notif.object;
         if (widget.mxSession == self.roomDataSource.mxSession
-            && [widget.roomId isEqualToString:self->customizedRoomDataSource.roomId])
+            && [widget.roomId isEqualToString:self.customizedRoomDataSource.roomId])
         {
             //  Call button update
             [self refreshRoomTitle];
@@ -5453,16 +5499,16 @@ static CGSize kThreadListBarButtonItemImageSize;
             self.activitiesViewExpanded = YES;
             [roomActivitiesView displayNetworkErrorNotification:[VectorL10n roomOfflineNotification]];
         }
-        else if (customizedRoomDataSource.roomState.isObsolete)
+        else if (self.customizedRoomDataSource.roomState.isObsolete)
         {
             self.activitiesViewExpanded = YES;
             MXWeakify(self);
             [roomActivitiesView displayRoomReplacementWithRoomLinkTappedHandler:^{
                 MXStrongifyAndReturnIfNil(self);
                 
-                MXEvent *stoneTombEvent = [self->customizedRoomDataSource.roomState stateEventsWithType:kMXEventTypeStringRoomTombStone].lastObject;
+                MXEvent *stoneTombEvent = [self.customizedRoomDataSource.roomState stateEventsWithType:kMXEventTypeStringRoomTombStone].lastObject;
                 
-                NSString *replacementRoomId = self->customizedRoomDataSource.roomState.tombStoneContent.replacementRoomId;
+                NSString *replacementRoomId = self.customizedRoomDataSource.roomState.tombStoneContent.replacementRoomId;
                 if ([self.roomDataSource.mxSession roomWithRoomId:replacementRoomId])
                 {
                     // Open the room if it is already joined
@@ -5471,7 +5517,7 @@ static CGSize kThreadListBarButtonItemImageSize;
                 else
                 {
                     // Else auto join it via the server that sent the event
-                    MXLogDebug(@"[RoomVC] Auto join an upgraded room: %@ -> %@. Sender: %@",                              self->customizedRoomDataSource.roomState.roomId,
+                    MXLogDebug(@"[RoomVC] Auto join an upgraded room: %@ -> %@. Sender: %@",                              self.customizedRoomDataSource.roomState.roomId,
                           replacementRoomId, stoneTombEvent.sender);
                     
                     NSString *viaSenderServer = [MXTools serverNameInMatrixIdentifier:stoneTombEvent.sender];
@@ -5591,7 +5637,7 @@ static CGSize kThreadListBarButtonItemImageSize;
                 self.inputToolbarView.textMessage = roomDataSource.partialTextMessage;
             }
         };
-
+        // Tchap: Disable Threads
 //        if (self.roomDataSource.threadId)
 //        {
 //            [ThreadDataSource loadRoomDataSourceWithRoomId:self.roomDataSource.roomId
@@ -5604,7 +5650,17 @@ static CGSize kThreadListBarButtonItemImageSize;
 //            }];
 //        }
 //        else
-//        {
+        if (self.isContextPreview)
+        {
+            [RoomPreviewDataSource loadRoomDataSourceWithRoomId:self.roomDataSource.roomId
+                                               andMatrixSession:self.mainSession
+                                                     onComplete:^(RoomPreviewDataSource *roomDataSource)
+             {
+                continueBlock(roomDataSource, YES);
+            }];
+        }
+        else
+        {
             // Switch back to the room live timeline managed by MXKRoomDataSourceManager
             MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:self.mainSession];
 
@@ -5613,7 +5669,7 @@ static CGSize kThreadListBarButtonItemImageSize;
                                               onComplete:^(MXKRoomDataSource *roomDataSource) {
                 continueBlock(roomDataSource, NO);
             }];
-//        }
+        }
     }
 }
 
@@ -5851,10 +5907,10 @@ static CGSize kThreadListBarButtonItemImageSize;
     MXEvent *event = notif.object;
     NSString *previousId = notif.userInfo[kMXEventIdentifierKey];
     
-    if ([customizedRoomDataSource.selectedEventId isEqualToString:previousId])
+    if ([self.customizedRoomDataSource.selectedEventId isEqualToString:previousId])
     {
         MXLogDebug(@"[RoomVC] eventDidChangeIdentifier: Update selectedEventId");
-        customizedRoomDataSource.selectedEventId = event.eventId;
+        self.customizedRoomDataSource.selectedEventId = event.eventId;
     }
 }
 
@@ -6064,7 +6120,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     
     if (self.roomDataSource.isLive && !self.roomDataSource.isPeeking)
     {
-        Widget *jitsiWidget = [customizedRoomDataSource jitsiWidget];
+        Widget *jitsiWidget = [self.customizedRoomDataSource jitsiWidget];
         
         if (jitsiWidget && self.canEditJitsiWidget)
         {
@@ -6449,7 +6505,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     
     BOOL showMoreOption = (event.isState && RiotSettings.shared.roomContextualMenuShowMoreOptionForStates)
         || (!event.isState && RiotSettings.shared.roomContextualMenuShowMoreOptionForMessages);
-    BOOL showThreadOption = !self.roomDataSource.threadId && !event.threadId;
+    BOOL showThreadOption = [self showThreadOptionForEvent:event];
     
     NSMutableArray<RoomContextualMenuItem*> *items = [NSMutableArray arrayWithCapacity:5];
     
@@ -6750,11 +6806,19 @@ static CGSize kThreadListBarButtonItemImageSize;
             }
             selectedComponent = nil;
         }
-        NSString *textMessage = selectedComponent.textMessage;
+
+        NSAttributedString *attributedTextMessage = selectedComponent.attributedTextMessage;
         
-        if (textMessage)
+        if (attributedTextMessage)
         {
-            MXKPasteboardManager.shared.pasteboard.string = textMessage;
+            if (@available(iOS 15.0, *))
+            {
+                MXKPasteboardManager.shared.pasteboard.string = [PillsFormatter stringByReplacingPillsIn:attributedTextMessage asMarkdown:YES];
+            }
+            else
+            {
+                MXKPasteboardManager.shared.pasteboard.string = attributedTextMessage.string;
+            }
         }
         else
         {
@@ -6845,6 +6909,13 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 #pragma mark - Threads
 
+- (BOOL)showThreadOptionForEvent:(MXEvent*)event
+{
+    return !self.roomDataSource.threadId
+        && !event.threadId
+        && (RiotSettings.shared.enableThreads || self.mainSession.store.supportedMatrixVersions.supportsThreads);
+}
+
 - (void)showThreadsNotice
 {
     // Tchap: Disable Threads
@@ -6884,7 +6955,9 @@ static CGSize kThreadListBarButtonItemImageSize;
 //        self.threadsBetaBridgePresenter = nil;
 //    }
 //
-//    self.threadsBetaBridgePresenter = [[ThreadsBetaCoordinatorBridgePresenter alloc] initWithThreadId:event.eventId];
+//    self.threadsBetaBridgePresenter = [[ThreadsBetaCoordinatorBridgePresenter alloc] initWithThreadId:event.eventId
+//                                                                                             infoText:VectorL10n.threadsBetaInformation
+//                                                                                       additionalText:nil];
 //    self.threadsBetaBridgePresenter.delegate = self;
 //
 //    [self.threadsBetaBridgePresenter presentFrom:self.presentedViewController?:self animated:YES];
@@ -6932,7 +7005,7 @@ static CGSize kThreadListBarButtonItemImageSize;
         return;
     }
     
-    self->customizedRoomDataSource.highlightedEventId = eventId;
+    self.customizedRoomDataSource.highlightedEventId = eventId;
     
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
     if ([[self.bubblesTableView indexPathsForVisibleRows] containsObject:indexPath])
@@ -6958,19 +7031,19 @@ static CGSize kThreadListBarButtonItemImageSize;
 - (void)cancelEventHighlight
 {
     //  if data source is highlighting an event, dismiss the highlight when user dragges the table view
-    if (customizedRoomDataSource.highlightedEventId)
+    if (self.customizedRoomDataSource.highlightedEventId)
     {
-        NSInteger row = [self.roomDataSource indexOfCellDataWithEventId:customizedRoomDataSource.highlightedEventId];
+        NSInteger row = [self.roomDataSource indexOfCellDataWithEventId:self.customizedRoomDataSource.highlightedEventId];
         if (row == NSNotFound)
         {
-            customizedRoomDataSource.highlightedEventId = nil;
+            self.customizedRoomDataSource.highlightedEventId = nil;
             return;
         }
         
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
         if ([[self.bubblesTableView indexPathsForVisibleRows] containsObject:indexPath])
         {
-            customizedRoomDataSource.highlightedEventId = nil;
+            self.customizedRoomDataSource.highlightedEventId = nil;
             [self.bubblesTableView reloadRowsAtIndexPaths:@[indexPath]
                                          withRowAnimation:UITableViewRowAnimationAutomatic];
         }
@@ -7372,7 +7445,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 //- (void)removeJitsiWidgetViewDidCompleteSliding:(RemoveJitsiWidgetView *)view
 //{
 //    view.delegate = nil;
-//    Widget *jitsiWidget = [customizedRoomDataSource jitsiWidget];
+//    Widget *jitsiWidget = [self.customizedRoomDataSource jitsiWidget];
 //
 //    [self startActivityIndicator];
 //
@@ -7453,13 +7526,14 @@ static CGSize kThreadListBarButtonItemImageSize;
 //             didRequestMentionForMember:(MXRoomMember *)member
 //                            textTrigger:(NSString *)textTrigger
 //{
-//    if (textTrigger.length) {
-//        NSString *textMessage = [self.inputToolbarView textMessage];
-//        textMessage = [textMessage stringByReplacingOccurrencesOfString:textTrigger
-//                                                             withString:@""
-//                                                                options:NSBackwardsSearch | NSAnchoredSearch
-//                                                                  range:NSMakeRange(0, textMessage.length)];
-//        [self.inputToolbarView setTextMessage:textMessage];
+//    RoomInputToolbarView *toolbar = (RoomInputToolbarView *)self.inputToolbarView;
+//    if (toolbar && textTrigger.length) {
+//        NSMutableAttributedString *attributedTextMessage = [[NSMutableAttributedString alloc] initWithAttributedString:toolbar.attributedTextMessage];
+//        [[attributedTextMessage mutableString] replaceOccurrencesOfString:textTrigger
+//                                                               withString:@""
+//                                                                  options:NSBackwardsSearch | NSAnchoredSearch
+//                                                                    range:NSMakeRange(0, attributedTextMessage.length)];
+//    [toolbar setAttributedTextMessage:attributedTextMessage];
 //    }
 //
 //    [self mention:member];
@@ -7536,34 +7610,17 @@ static CGSize kThreadListBarButtonItemImageSize;
     [self stopActivityIndicator];
 }
 
-#pragma mark - Live location sharing
-
-- (void)showLiveLocationBannerView
+#pragma mark - Pills
+/// Register provider for Pills.
+- (void)registerPillAttachmentViewProviderIfNeeded
 {
-    if (self.liveLocationSharingBannerView)
+    if (@available(iOS 15.0, *))
     {
-        return;
+        if (![NSTextAttachment textAttachmentViewProviderClassForFileType:PillsFormatter.pillUTType])
+        {
+            [NSTextAttachment registerTextAttachmentViewProviderClass:PillAttachmentViewProvider.class forFileType:PillsFormatter.pillUTType];
+        }
     }
-    
-    LiveLocationSharingBannerView *bannerView = [LiveLocationSharingBannerView instantiate];
-    
-    [bannerView updateWithTheme:ThemeService.shared.theme];
-    
-    MXWeakify(self);
-    
-    bannerView.didTapBackground = ^{
-        MXStrongifyAndReturnIfNil(self);
-        [self.delegate roomViewControllerDidTapLiveLocationSharingBanner:self];
-    };
-    
-    bannerView.didTapStopButton = ^{
-        MXStrongifyAndReturnIfNil(self);
-        [self.delegate roomViewControllerDidStopLiveLocationSharing:self];
-    };
-    
-    [self.topBannersStackView addArrangedSubview:bannerView];
-    
-    self.liveLocationSharingBannerView = bannerView;
 }
 
 @end

@@ -138,43 +138,6 @@
     return fixedURL;
 }
 
-#pragma mark - String utilities
-
-+ (NSAttributedString *)setTextColorAlpha:(CGFloat)alpha inAttributedString:(NSAttributedString*)attributedString
-{
-    NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithAttributedString:attributedString];
-
-    // Check all attributes one by one
-    [string enumerateAttributesInRange:NSMakeRange(0, attributedString.length) options:0 usingBlock:^(NSDictionary *attrs, NSRange range, BOOL *stop)
-     {
-         // Replace only colored texts
-         if (attrs[NSForegroundColorAttributeName])
-         {
-             UIColor *color = attrs[NSForegroundColorAttributeName];
-             color = [color colorWithAlphaComponent:alpha];
-
-             NSMutableDictionary *newAttrs = [NSMutableDictionary dictionaryWithDictionary:attrs];
-             newAttrs[NSForegroundColorAttributeName] = color;
-
-             [string setAttributes:newAttrs range:range];
-         }
-     }];
-
-    return string;
-}
-
-#pragma mark - Time utilities
-
-+ (uint64_t)durationInMsFromDays:(uint)days
-{
-    return days * (uint64_t)(86400000);
-}
-
-+ (uint)numberOfDaysFromDurationInMs:(uint64_t)duration
-{
-    return (uint)(duration / 86400000);
-}
-
 #pragma mark - Tchap permalink
 
 + (NSString *)permalinkToRoom:(NSString *)roomIdOrAlias

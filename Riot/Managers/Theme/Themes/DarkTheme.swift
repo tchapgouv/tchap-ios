@@ -86,11 +86,16 @@ class DarkTheme: NSObject, Theme {
     
     var messageTickColor: UIColor = .white
     
+    // Tchap: Customize Bubble colors
     var roomCellIncomingBubbleBackgroundColor: UIColor {
-        return self.colors.system
+        return UIColor(rgb: 0x20272B)//self.colors.system
     }
     
-    var roomCellOutgoingBubbleBackgroundColor: UIColor = UIColor(rgb: 0x133A34)
+    var roomCellOutgoingBubbleBackgroundColor: UIColor = UIColor(rgb: 0x000091)//133A34)
+    
+    var roomCellLocalisationIconStartedColor: UIColor = UIColor(rgb: 0x5C56F5)
+    
+    var roomCellLocalisationErrorColor: UIColor = UIColor(rgb: 0xFF5B55)
     
     var roomTypeRestricted: UIColor = UIColor(rgb:0xEB5757)
     var roomTypeUnrestricted: UIColor = UIColor(rgb:0xF07A12)

@@ -109,6 +109,18 @@
     }
     else if (self.mxRoom)
     {
+        if (self.mxRoom.directUserId)
+        {
+            MXUser *contact = [self.mxRoom.mxSession userWithUserId:self.mxRoom.directUserId];
+            self.presenceIndicatorView.borderColor = ThemeService.shared.theme.headerBackgroundColor;
+            self.presenceIndicatorView.delegate = self;
+            [self.presenceIndicatorView configureWithUserId:self.mxRoom.directUserId presence:contact.presence];
+        }
+        else
+        {
+            [self.presenceIndicatorView stopListeningPresenceUpdates];
+        }
+        
         self.displayNameTextField.text = self.mxRoom.summary.displayname;
         if (!self.displayNameTextField.text.length)
         {
@@ -189,6 +201,26 @@
 - (NSString *)typingNotificationString
 {
     return self.typingLabel.text;
+}
+
+#pragma mark - PresenceIndicatorViewDelegate
+
+- (void)presenceIndicatorViewDidUpdateVisibility:(PresenceIndicatorView *)presenceIndicatorView isHidden:(BOOL)isHidden
+{
+    if (isHidden)
+    {
+        [self.badgeImageViewLeadingToPictureViewConstraint setPriority:UILayoutPriorityDefaultLow];
+        [self.badgeImageViewCenterYToDisplayNameConstraint setPriority:UILayoutPriorityDefaultLow];
+        [self.badgeImageViewToPictureViewBottomConstraint setPriority:UILayoutPriorityRequired];
+        [self.badgeImageViewToPictureViewTrailingConstraint setPriority:UILayoutPriorityRequired];
+    }
+    else
+    {
+        [self.badgeImageViewToPictureViewBottomConstraint setPriority:UILayoutPriorityDefaultLow];
+        [self.badgeImageViewToPictureViewTrailingConstraint setPriority:UILayoutPriorityDefaultLow];
+        [self.badgeImageViewLeadingToPictureViewConstraint setPriority:UILayoutPriorityRequired];
+        [self.badgeImageViewCenterYToDisplayNameConstraint setPriority:UILayoutPriorityRequired];
+    }
 }
 
 @end

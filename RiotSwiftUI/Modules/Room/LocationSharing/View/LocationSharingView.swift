@@ -36,11 +36,9 @@ struct LocationSharingView: View {
                 mapView
                 VStack(spacing: 0) {
                     MapCreditsView()
-                    if context.viewState.shareButtonVisible {
-                        buttonsView
-                            .background(theme.colors.background)
-                            .clipShape(RoundedCornerShape(radius: 8, corners: [.topLeft, .topRight]))
-                    }
+                    buttonsView
+                        .background(theme.colors.background)
+                        .clipShape(RoundedCornerShape(radius: 8, corners: [.topLeft, .topRight]))
                 }
             }
             .toolbar {
@@ -53,17 +51,6 @@ struct LocationSharingView: View {
                     Text(VectorL10n.locationSharingTitle)
                         .font(.headline)
                         .foregroundColor(theme.colors.primaryContent)
-                }
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    if context.viewState.displayExistingLocation {
-                        Button {
-                            context.send(viewAction: .share)
-                        } label: {
-                            Image(uiImage: Asset.Images.locationShareIcon.image)
-                                .accessibilityIdentifier("LocationSharingView.shareButton")
-                        }
-                        .disabled(!context.viewState.shareButtonEnabled)
-                    }
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
@@ -125,7 +112,7 @@ struct LocationSharingView: View {
                 // Hide for now until live location sharing is finished
                 if context.viewState.isLiveLocationSharingEnabled {
                     LocationSharingOptionButton(text: VectorL10n.locationSharingLiveShareTitle) {
-                        // TODO: - Start live location sharing
+                        context.send(viewAction: .startLiveSharing)
                     } buttonIcon: {
                         Image(uiImage: Asset.Images.locationLiveIcon.image)
                             .resizable()
@@ -141,6 +128,24 @@ struct LocationSharingView: View {
                 }
                 .disabled(!context.viewState.shareButtonEnabled)
             }
+        }
+        .actionSheet(isPresented: $context.showingTimerSelector) {
+            ActionSheet(title: Text(VectorL10n.locationSharingLiveTimerSelectorTitle),
+                        buttons: [
+                            .default(Text(VectorL10n.locationSharingLiveTimerSelectorShort)) {
+                                context.send(viewAction: .shareLiveLocation(timeout: .short))
+                                
+                            },
+                            .default(Text(VectorL10n.locationSharingLiveTimerSelectorMedium)) {
+                                context.send(viewAction: .shareLiveLocation(timeout: .medium))
+                                
+                            },
+                            .default(Text(VectorL10n.locationSharingLiveTimerSelectorLong)) {
+                                context.send(viewAction: .shareLiveLocation(timeout: .long))
+                                
+                            },
+                            .cancel()
+                        ])
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding()

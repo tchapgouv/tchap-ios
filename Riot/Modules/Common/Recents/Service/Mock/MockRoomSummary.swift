@@ -36,6 +36,8 @@ public class MockRoomSummary: NSObject, MXRoomSummaryProtocol {
     
     public var joinRule: String? = kMXRoomJoinRuleInvite
     
+    public var historyVisibility: String?
+    
     public var membership: MXMembership = .join
     
     public var membershipTransitionState: MXMembershipTransitionState = .joined
@@ -93,6 +95,10 @@ public class MockRoomSummary: NSObject, MXRoomSummaryProtocol {
     public var spaceChildInfo: MXSpaceChildInfo?
     
     public var parentSpaceIds: Set<String> = []
+    
+    public var beaconInfoEvents: [MXBeaconInfo] = []
+    
+    public var userIdsSharingLiveBeacon: Set<String> = []
     
     public init(withRoomId roomId: String) {
         self.roomId = roomId

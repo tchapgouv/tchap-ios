@@ -64,3 +64,4 @@
 #import "ContactsDataSourceTchap.h"
 #import "InviteRecentTableViewCell.h"
 #import "PeopleViewController.h"
+#import "MXKMessageTextView.h"

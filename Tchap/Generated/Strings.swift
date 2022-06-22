@@ -126,14 +126,8 @@ internal enum TchapL10n {
   internal static let conversationsInviteJoin = TchapL10n.tr("Tchap", "conversations_invite_join")
   /// Invitations
   internal static let conversationsInvitesSection = TchapL10n.tr("Tchap", "conversations_invites_section")
-  /// Conversations
-  internal static let conversationsMainSection = TchapL10n.tr("Tchap", "conversations_main_section")
-  /// Aucune conversation
-  internal static let conversationsNoConversation = TchapL10n.tr("Tchap", "conversations_no_conversation")
   /// Nouvelle discussion
   internal static let conversationsStartChatAction = TchapL10n.tr("Tchap", "conversations_start_chat_action")
-  /// Conversations
-  internal static let conversationsTabTitle = TchapL10n.tr("Tchap", "conversations_tab_title")
   /// Nouvelle discussion
   internal static let createNewDiscussionTitle = TchapL10n.tr("Tchap", "create_new_discussion_title")
   /// Vérifier l’appareil

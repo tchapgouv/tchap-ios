@@ -41,6 +41,16 @@
 extern NSString *const kAppDelegateDidTapStatusBarNotification;
 
 /**
+ Posted when user logout request complete with success.
+ */
+extern NSString *const kLegacyAppDelegateDidLogoutNotification;
+
+/**
+ Posted when user login request complete with success.
+ */
+extern NSString *const kLegacyAppDelegateDidLoginNotification;
+
+/**
  Posted when the property 'isOffline' has changed. This property is related to the network reachability status.
  */
 extern NSString *const kAppDelegateNetworkStatusDidChangeNotification;

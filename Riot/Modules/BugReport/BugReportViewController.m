@@ -321,7 +321,44 @@
     NSString *url = [NSString stringWithFormat:@"%@%@", bugReportEndpoint, urlSuffix];
     
     bugReportRestClient = [[MXBugReportRestClient alloc] initWithBugReportEndpoint:url];
-    
+
+    // App info
+    bugReportRestClient.appName = BuildSettings.bugReportApplicationId;
+    bugReportRestClient.version = [AppDelegate theDelegate].appVersion;
+    bugReportRestClient.build = [AppDelegate theDelegate].build;
+
+    // Device info
+    bugReportRestClient.deviceModel = [GBDeviceInfo deviceInfo].modelString;
+    bugReportRestClient.deviceOS = [NSString stringWithFormat:@"%@ %@", [[UIDevice currentDevice] systemName], [[UIDevice currentDevice] systemVersion]];
+
+    // User info
+    NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+    if (mainAccount.mxSession.myUser.userId)
+    {
+        userInfo[@"user_id"] = mainAccount.mxSession.myUser.userId;
+    }
+    if (mainAccount.mxSession.matrixRestClient.credentials.deviceId)
+    {
+        userInfo[@"device_id"] = mainAccount.mxSession.matrixRestClient.credentials.deviceId;
+    }
+
+    userInfo[@"locale"] = [NSLocale preferredLanguages][0];
+    userInfo[@"default_app_language"] = [[NSBundle mainBundle] preferredLocalizations][0]; // The language chosen by the OS
+    userInfo[@"app_language"] = [NSBundle mxk_language] ? [NSBundle mxk_language] : userInfo[@"default_app_language"]; // The language chosen by the user
+
+    // Application settings
+    userInfo[@"lazy_loading"] = [MXKAppSettings standardAppSettings].syncWithLazyLoadOfRoomMembers ? @"ON" : @"OFF";
+
+    NSDate *currentDate = [NSDate date];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    userInfo[@"local_time"] = [dateFormatter stringFromDate:currentDate];
+
+    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
+    userInfo[@"utc_time"] = [dateFormatter stringFromDate:currentDate];
+
+    bugReportRestClient.others = userInfo;
+
     // Screenshot
     NSArray<NSURL*> *files;
     if (_screenshot && _sendScreenshot)

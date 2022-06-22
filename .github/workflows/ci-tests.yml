@@ -48,6 +48,8 @@ jobs:
 
       # Common setup
       # Note: GH actions do not support yaml anchor yet. We need to duplicate this for every job
+      - name: Brew bundle
+        run: brew bundle
       - name: Bundle install
         run: |
           bundle config path vendor/bundle

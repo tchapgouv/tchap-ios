@@ -26,7 +26,7 @@
 
 #import "GeneratedInterface-Swift.h"
 
-@interface PeopleViewController () //<SpaceMembersCoordinatorBridgePresenterDelegate>
+@interface PeopleViewController () <MasterTabBarItemDisplayProtocol>//<SpaceMembersCoordinatorBridgePresenterDelegate>
 {
     NSInteger          directRoomsSectionNumber;
     RecentsDataSource *recentsDataSource;
@@ -73,6 +73,10 @@
     plusButtonImageView = [self vc_addFABWithImage:fabImage
                                             target:self
                                             action:@selector(onPlusButtonPressed)];
+    
+    // Tchap: Hide plus button if needed (is external user)
+    NSString *userID = [UserSessionsService shared].mainUserSession.userId;
+    [plusButtonImageView setHidden:[UserService isExternalUserFor:userID]];
 }
 
 - (void)didReceiveMemoryWarning
@@ -90,7 +94,16 @@
     {
         // Take the lead on the shared data source.
         recentsDataSource = (RecentsDataSource*)self.dataSource;
-        [recentsDataSource setDelegate:self andRecentsDataSourceMode:RecentsDataSourceModePeople];
+        
+        if (recentsDataSource.recentsDataSourceMode != RecentsDataSourceModePeople)
+        {
+            // Take the lead on the shared data source.
+            [recentsDataSource setDelegate:self andRecentsDataSourceMode:RecentsDataSourceModePeople];
+            
+            // Reset filtering on the shared data source when switching tabs
+            [recentsDataSource searchWithPatterns:nil];
+            [self.recentsSearchBar setText:nil];
+        }
     }
 }
 
@@ -153,7 +166,7 @@
     // Check whether the recents data source is correctly configured.
     if (recentsDataSource.recentsDataSourceMode == RecentsDataSourceModePeople)
     {
-        [self scrollToTheTopTheNextRoomWithMissedNotificationsInSection:recentsDataSource.peopleSection];
+        [self scrollToTheTopTheNextRoomWithMissedNotificationsInSection:[recentsDataSource.sections sectionIndexForSectionType:RecentsDataSourceSectionTypePeople]];
     }
 }
 

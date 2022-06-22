@@ -134,4 +134,8 @@ enum RoomCategory {
     func tc_roomAccessRuleIdentifier() -> String {
         return tc_roomAccessRule().identifier
     }
+    
+    @objc func tc_isForum() -> Bool {
+        return tc_roomCategory() == .forum
+    }
 }
