@@ -96,9 +96,10 @@ class DefaultTheme: NSObject, Theme {
     var domainLabel: UIColor = UIColor(rgb:0x498FCF)
     var unreadBackground: UIColor = UIColor(rgb:0xE8EDF2)
     
-    var roomCellIncomingBubbleBackgroundColor: UIColor = UIColor(rgb: 0xE8EDF4)
+    // Tchap: Customize Bubble colors
+    var roomCellIncomingBubbleBackgroundColor: UIColor = UIColor(rgb: 0xF4F4F4)//E8EDF4)
     
-    var roomCellOutgoingBubbleBackgroundColor: UIColor = UIColor(rgb: 0xE7F8F3)
+    var roomCellOutgoingBubbleBackgroundColor: UIColor = UIColor(rgb: 0xE4E4F3)//E7F8F3)
     
     var roomCellLocalisationIconStartedColor: UIColor = UIColor(rgb: 0x5C56F5)
     
