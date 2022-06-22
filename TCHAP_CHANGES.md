@@ -1,3 +1,24 @@
+## Changes in 2.0.1 (2022-06-22)
+
+✨ Features
+
+- Add clear cache option from the Apple settings ([#579](https://github.com/tchapgouv/tchap-ios/issues/579))
+
+🙌 Improvements
+
+- [Rooms list] Switch back to the Element room cell views ([#468](https://github.com/tchapgouv/tchap-ios/issues/468))
+- [Salons] Replace tab icon ([#562](https://github.com/tchapgouv/tchap-ios/issues/562))
+- [Salons] Replace section name "Conversations" with "Salons" ([#563](https://github.com/tchapgouv/tchap-ios/issues/563))
+- Turn on by default the message bubbles ([#575](https://github.com/tchapgouv/tchap-ios/issues/575))
+
+🐛 Bugfixes
+
+- Crash on new login with an expired account ([#477](https://github.com/tchapgouv/tchap-ios/issues/477))
+- [External Users] Hide the unauthorized actions ([#564](https://github.com/tchapgouv/tchap-ios/issues/564))
+- UI issue with mention Pills on iOS 15 ([#582](https://github.com/tchapgouv/tchap-ios/issues/582))
+- Crash when sending a Rageshake ([#586](https://github.com/tchapgouv/tchap-ios/issues/586))
+
+
 ## Changes in 2.0.0 (2022-06-07)
 
 🐛 Bugfixes
