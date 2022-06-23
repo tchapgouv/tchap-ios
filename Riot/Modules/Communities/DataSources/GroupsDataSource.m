@@ -17,7 +17,7 @@
 #import "GroupsDataSource.h"
 #import "GeneratedInterface-Swift.h"
 
-@interface GroupsDataSource() <BetaAnnounceCellDelegate>
+@interface GroupsDataSource() //<BetaAnnounceCellDelegate>
 
 @property (nonatomic) NSInteger betaAnnounceSection;
 @property (nonatomic) BOOL showBetaAnnounce;
@@ -65,15 +65,16 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == self.betaAnnounceSection)
-    {
-        BetaAnnounceCell *cell = [tableView dequeueReusableCellWithIdentifier:BetaAnnounceCell.reuseIdentifier forIndexPath:indexPath];
-        [cell vc_hideSeparator];
-        [cell updateWithTheme:ThemeService.shared.theme];
-        cell.delegate = self;
-        return cell;
-        
-    }
+    // Tchap: Disable Spaces
+//    if (indexPath.section == self.betaAnnounceSection)
+//    {
+//        BetaAnnounceCell *cell = [tableView dequeueReusableCellWithIdentifier:BetaAnnounceCell.reuseIdentifier forIndexPath:indexPath];
+//        [cell vc_hideSeparator];
+//        [cell updateWithTheme:ThemeService.shared.theme];
+//        cell.delegate = self;
+//        return cell;
+//
+//    }
     
     return [super tableView:tableView cellForRowAtIndexPath:indexPath];
 }
@@ -116,11 +117,12 @@
 
 #pragma mark - BetaAnnounceCellDelegate
 
-- (void)betaAnnounceCellDidTapCloseButton:(BetaAnnounceCell *)cell
-{
-    self.showBetaAnnounce = NO;
-    RiotSettings.shared.hideSpaceBetaAnnounce = YES;
-    [self.delegate dataSource:self didCellChange:nil];
-}
+// Tchap: Disable Spaces
+//- (void)betaAnnounceCellDidTapCloseButton:(BetaAnnounceCell *)cell
+//{
+//    self.showBetaAnnounce = NO;
+//    RiotSettings.shared.hideSpaceBetaAnnounce = YES;
+//    [self.delegate dataSource:self didCellChange:nil];
+//}
 
 @end

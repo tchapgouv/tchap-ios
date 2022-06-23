@@ -187,8 +187,8 @@ SingleImagePickerPresenterDelegate,
 SettingsDiscoveryTableViewSectionDelegate, SettingsDiscoveryViewModelCoordinatorDelegate,
 SettingsIdentityServerCoordinatorBridgePresenterDelegate,
 ServiceTermsModalCoordinatorBridgePresenterDelegate,
-TableViewSectionsDelegate,
-ThreadsBetaCoordinatorBridgePresenterDelegate>
+TableViewSectionsDelegate/*,
+ThreadsBetaCoordinatorBridgePresenterDelegate*/>
 {
     // Current alert (if any).
     __weak UIAlertController *currentAlert;
@@ -289,7 +289,7 @@ ThreadsBetaCoordinatorBridgePresenterDelegate>
 
 @property (nonatomic, strong) UserInteractiveAuthenticationService *userInteractiveAuthenticationService;
 
-@property (nonatomic, strong) ThreadsBetaCoordinatorBridgePresenter *threadsBetaBridgePresenter;
+//@property (nonatomic, strong) ThreadsBetaCoordinatorBridgePresenter *threadsBetaBridgePresenter;
 
 /**
  Whether or not to check for contacts access after the user accepts the service terms. The value of this property is
@@ -565,18 +565,20 @@ ThreadsBetaCoordinatorBridgePresenterDelegate>
     [tmpSections addObject:sectionAdvanced];
     
     Section *sectionAbout = [Section sectionWithTag:SECTION_TAG_ABOUT];
-    if (BuildSettings.applicationCopyrightUrlString.length)
-    {
-        [sectionAbout addRowWithTag:ABOUT_COPYRIGHT_INDEX];
-    }
+    // Tchap: Hide Copyright
+//    if (BuildSettings.applicationCopyrightUrlString.length)
+//    {
+//        [sectionAbout addRowWithTag:ABOUT_COPYRIGHT_INDEX];
+//    }
     if (BuildSettings.applicationTermsConditionsUrlString.length)
     {
         [sectionAbout addRowWithTag:ABOUT_TERM_CONDITIONS_INDEX];
     }
-    if (BuildSettings.applicationPrivacyPolicyUrlString.length)
-    {
-        [sectionAbout addRowWithTag:ABOUT_PRIVACY_INDEX];
-    }
+    // Tchap: Hide Privacy Policy
+//    if (BuildSettings.applicationPrivacyPolicyUrlString.length)
+//    {
+//        [sectionAbout addRowWithTag:ABOUT_PRIVACY_INDEX];
+//    }
     [sectionAbout addRowWithTag:ABOUT_THIRD_PARTY_INDEX];
     sectionAbout.headerTitle = VectorL10n.settingsAbout;
 
@@ -2824,15 +2826,17 @@ ThreadsBetaCoordinatorBridgePresenterDelegate>
         }
         else if (section == SECTION_TAG_ABOUT)
         {
-            if (row == ABOUT_COPYRIGHT_INDEX)
-            {
-                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:BuildSettings.applicationCopyrightUrlString];
-                
-                webViewViewController.title = [VectorL10n settingsCopyright];
-                
-                [self pushViewController:webViewViewController];
-            }
-            else if (row == ABOUT_TERM_CONDITIONS_INDEX)
+            // Tchap: Hide Copyright
+//            if (row == ABOUT_COPYRIGHT_INDEX)
+//            {
+//                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:BuildSettings.applicationCopyrightUrlString];
+//
+//                webViewViewController.title = [VectorL10n settingsCopyright];
+//
+//                [self pushViewController:webViewViewController];
+//            }
+//            else
+            if (row == ABOUT_TERM_CONDITIONS_INDEX)
             {
                 WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:BuildSettings.applicationTermsConditionsUrlString];
                 
@@ -2840,14 +2844,15 @@ ThreadsBetaCoordinatorBridgePresenterDelegate>
                 
                 [self pushViewController:webViewViewController];
             }
-            else if (row == ABOUT_PRIVACY_INDEX)
-            {
-                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:BuildSettings.applicationPrivacyPolicyUrlString];
-                
-                webViewViewController.title = [VectorL10n settingsPrivacyPolicy];
-                
-                [self pushViewController:webViewViewController];
-            }
+            // Tchap: Hide Privacy Policy
+//            else if (row == ABOUT_PRIVACY_INDEX)
+//            {
+//                WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:BuildSettings.applicationPrivacyPolicyUrlString];
+//
+//                webViewViewController.title = [VectorL10n settingsPrivacyPolicy];
+//
+//                [self pushViewController:webViewViewController];
+//            }
             else if (row == ABOUT_THIRD_PARTY_INDEX)
             {
                 NSString *htmlFile = [[NSBundle mainBundle] pathForResource:@"third_party_licenses" ofType:@"html" inDirectory:nil];
@@ -3257,25 +3262,26 @@ ThreadsBetaCoordinatorBridgePresenterDelegate>
 
 - (void)toggleEnableThreads:(UISwitch *)sender
 {
-    if (sender.isOn && !self.mainSession.store.supportedMatrixVersions.supportsThreads)
-    {
-        //  user wants to turn on the threads setting but the server does not support it
-        if (self.threadsBetaBridgePresenter)
-        {
-            [self.threadsBetaBridgePresenter dismissWithAnimated:YES completion:nil];
-            self.threadsBetaBridgePresenter = nil;
-        }
-
-        self.threadsBetaBridgePresenter = [[ThreadsBetaCoordinatorBridgePresenter alloc] initWithThreadId:@""
-                                                                                                 infoText:VectorL10n.threadsDiscourageInformation1
-                                                                                           additionalText:VectorL10n.threadsDiscourageInformation2];
-        self.threadsBetaBridgePresenter.delegate = self;
-
-        [self.threadsBetaBridgePresenter presentFrom:self.presentedViewController?:self animated:YES];
-        return;
-    }
-
-    [self enableThreads:sender.isOn];
+    // Tchap: Disable Threads
+//    if (sender.isOn && !self.mainSession.store.supportedMatrixVersions.supportsThreads)
+//    {
+//        //  user wants to turn on the threads setting but the server does not support it
+//        if (self.threadsBetaBridgePresenter)
+//        {
+//            [self.threadsBetaBridgePresenter dismissWithAnimated:YES completion:nil];
+//            self.threadsBetaBridgePresenter = nil;
+//        }
+//
+//        self.threadsBetaBridgePresenter = [[ThreadsBetaCoordinatorBridgePresenter alloc] initWithThreadId:@""
+//                                                                                                 infoText:VectorL10n.threadsDiscourageInformation1
+//                                                                                           additionalText:VectorL10n.threadsDiscourageInformation2];
+//        self.threadsBetaBridgePresenter.delegate = self;
+//
+//        [self.threadsBetaBridgePresenter presentFrom:self.presentedViewController?:self animated:YES];
+//        return;
+//    }
+//
+//    [self enableThreads:sender.isOn];
 }
 
 - (void)enableThreads:(BOOL)enable
@@ -4656,34 +4662,34 @@ ThreadsBetaCoordinatorBridgePresenterDelegate>
     // The preparation can take some time so indicate this to the user
     [self startActivityIndicator];
     
-    [session prepareIdentityServiceForTermsWithDefault:RiotSettings.shared.identityServerUrlString
-                                               success:^(MXSession *session, NSString *baseURL, NSString *accessToken) {
-        MXStrongifyAndReturnIfNil(self);
-        
-        [self stopActivityIndicator];
-        self.isPreparingIdentityService = NO;
-        
-        // Present the terms of the identity server.
-        [self presentIdentityServerTermsWithSession:session baseURL:baseURL andAccessToken:accessToken];
-    } failure:^(NSError *error) {
-        MXStrongifyAndReturnIfNil(self);
-        
-        [self stopActivityIndicator];
-        self.isPreparingIdentityService = NO;
-        
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:VectorL10n.findYourContactsIdentityServiceError
-                                                                                 message:nil
-                                                                          preferredStyle:UIAlertControllerStyleAlert];
-        
-        [alertController addAction:[UIAlertAction actionWithTitle:VectorL10n.ok
-                                                            style:UIAlertActionStyleDefault
-                                                          handler:nil]];
-        
-        [self presentViewController:alertController animated:YES completion:nil];
-        
-        [MXKAppSettings standardAppSettings].syncLocalContacts = NO;
-        [self updateSections];
-    }];
+//    [session prepareIdentityServiceForTermsWithDefault:RiotSettings.shared.identityServerUrlString
+//                                               success:^(MXSession *session, NSString *baseURL, NSString *accessToken) {
+//        MXStrongifyAndReturnIfNil(self);
+//
+//        [self stopActivityIndicator];
+//        self.isPreparingIdentityService = NO;
+//
+//        // Present the terms of the identity server.
+//        [self presentIdentityServerTermsWithSession:session baseURL:baseURL andAccessToken:accessToken];
+//    } failure:^(NSError *error) {
+//        MXStrongifyAndReturnIfNil(self);
+//
+//        [self stopActivityIndicator];
+//        self.isPreparingIdentityService = NO;
+//
+//        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:VectorL10n.findYourContactsIdentityServiceError
+//                                                                                 message:nil
+//                                                                          preferredStyle:UIAlertControllerStyleAlert];
+//
+//        [alertController addAction:[UIAlertAction actionWithTitle:VectorL10n.ok
+//                                                            style:UIAlertActionStyleDefault
+//                                                          handler:nil]];
+//
+//        [self presentViewController:alertController animated:YES completion:nil];
+//
+//        [MXKAppSettings standardAppSettings].syncLocalContacts = NO;
+//        [self updateSections];
+//    }];
 }
 
 - (void)presentIdentityServerTermsWithSession:(MXSession*)mxSession baseURL:(NSString*)baseURL andAccessToken:(NSString*)accessToken
@@ -4751,23 +4757,23 @@ ThreadsBetaCoordinatorBridgePresenterDelegate>
 }
 
 #pragma mark - ThreadsBetaCoordinatorBridgePresenterDelegate
-
-- (void)threadsBetaCoordinatorBridgePresenterDelegateDidTapEnable:(ThreadsBetaCoordinatorBridgePresenter *)coordinatorBridgePresenter
-{
-    MXWeakify(self);
-    [self.threadsBetaBridgePresenter dismissWithAnimated:YES completion:^{
-        MXStrongifyAndReturnIfNil(self);
-        [self enableThreads:YES];
-    }];
-}
-
-- (void)threadsBetaCoordinatorBridgePresenterDelegateDidTapCancel:(ThreadsBetaCoordinatorBridgePresenter *)coordinatorBridgePresenter
-{
-    MXWeakify(self);
-    [self.threadsBetaBridgePresenter dismissWithAnimated:YES completion:^{
-        MXStrongifyAndReturnIfNil(self);
-        [self updateSections];
-    }];
-}
+// Tchap: Disable Threads
+//- (void)threadsBetaCoordinatorBridgePresenterDelegateDidTapEnable:(ThreadsBetaCoordinatorBridgePresenter *)coordinatorBridgePresenter
+//{
+//    MXWeakify(self);
+//    [self.threadsBetaBridgePresenter dismissWithAnimated:YES completion:^{
+//        MXStrongifyAndReturnIfNil(self);
+//        [self enableThreads:YES];
+//    }];
+//}
+//
+//- (void)threadsBetaCoordinatorBridgePresenterDelegateDidTapCancel:(ThreadsBetaCoordinatorBridgePresenter *)coordinatorBridgePresenter
+//{
+//    MXWeakify(self);
+//    [self.threadsBetaBridgePresenter dismissWithAnimated:YES completion:^{
+//        MXStrongifyAndReturnIfNil(self);
+//        [self updateSections];
+//    }];
+//}
 
 @end

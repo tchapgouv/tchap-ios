@@ -65,3 +65,5 @@
 #import "InviteRecentTableViewCell.h"
 #import "PeopleViewController.h"
 #import "MXKMessageTextView.h"
+#import "ManageSessionViewController.h"
+#import "SecurityViewController.h"
