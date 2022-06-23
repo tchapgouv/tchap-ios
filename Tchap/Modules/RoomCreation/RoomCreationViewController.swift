@@ -66,6 +66,7 @@ final class RoomCreationViewController: UIViewController {
     @IBOutlet private weak var externRoomInfoLabel: UILabel!
     
     @IBOutlet private weak var forumRoomView: UIView!
+    @IBOutlet private weak var forumRoomImage: UIImageView!
     @IBOutlet private weak var forumRoomTitleLabel: UILabel!
     @IBOutlet private weak var forumRoomInfoLabel: UILabel!
     
@@ -268,7 +269,7 @@ final class RoomCreationViewController: UIViewController {
     private func enablePrivateRoom() {
         self.privateRoomView.layer.borderWidth = Constants.borderWidth
         self.privateRoomView.layer.borderColor = ThemeService.shared().theme.roomTypeRestricted.withAlphaComponent(Constants.borderColorAlpha).cgColor
-        self.roomTypeImage.image = Asset_tchap.Images.privateAvatarIconHr.image
+        self.roomTypeImage.image = nil
     }
     
     private func disablePrivateRoom() {
@@ -278,7 +279,7 @@ final class RoomCreationViewController: UIViewController {
     private func enableExternRoom() {
         self.externRoomView.layer.borderWidth = Constants.borderWidth
         self.externRoomView.layer.borderColor = ThemeService.shared().theme.roomTypeUnrestricted.withAlphaComponent(Constants.borderColorAlpha).cgColor
-        self.roomTypeImage.image = Asset_tchap.Images.privateAvatarIconHr.image
+        self.roomTypeImage.image = nil
     }
     
     private func disableExternRoom() {
@@ -288,7 +289,7 @@ final class RoomCreationViewController: UIViewController {
     private func enableForumRoom(_ isFederated: Bool) {
         self.forumRoomView.layer.borderWidth = Constants.borderWidth
         self.forumRoomView.layer.borderColor = ThemeService.shared().theme.roomTypePublic.withAlphaComponent(Constants.borderColorAlpha).cgColor
-        self.roomTypeImage.image = Asset_tchap.Images.forumAvatarIconHr.image
+        self.roomTypeImage.image = Asset_tchap.Images.forum.image.vc_tintedImage(usingColor: ThemeService.shared().theme.roomTypePublic)
         
         self.publicVisibilityInfoLabel.isHidden = false
         self.publicRoomFederationStackView.isHidden = self.viewModel.homeServerDomain == self.agentServerDomain
@@ -362,6 +363,7 @@ private extension RoomCreationViewController {
         self.externRoomInfoLabel.textColor = ThemeService.shared().theme.headerTextPrimaryColor
         
         self.forumRoomView.backgroundColor = ThemeService.shared().theme.backgroundSecondary
+        self.forumRoomImage.tintColor = ThemeService.shared().theme.roomTypePublic
         self.forumRoomTitleLabel.textColor = ThemeService.shared().theme.roomTypePublic
         self.forumRoomInfoLabel.textColor = ThemeService.shared().theme.headerTextPrimaryColor
         self.roomTypeTitleLabel.textColor = ThemeService.shared().theme.headerTextPrimaryColor

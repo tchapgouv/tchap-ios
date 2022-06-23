@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="55i-A4-2Rr">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="55i-A4-2Rr">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -30,7 +30,7 @@
                                                     <constraint firstAttribute="width" constant="100" id="FRc-wg-CD7"/>
                                                 </constraints>
                                             </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2AX-mv-koP" customClass="FormTextField" customModule="Tchap" customModuleProvider="target">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2AX-mv-koP" customClass="FormTextField" customModule="Btchap" customModuleProvider="target">
                                                 <rect key="frame" x="140" y="65" width="215" height="30"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
@@ -57,14 +57,14 @@
                                                                         <rect key="frame" x="0.0" y="0.0" width="295" height="57"/>
                                                                         <subviews>
                                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="private_room" translatesAutoresizingMaskIntoConstraints="NO" id="BiS-0m-BKx">
-                                                                                <rect key="frame" x="0.0" y="20" width="12" height="17"/>
+                                                                                <rect key="frame" x="0.0" y="21" width="15" height="15"/>
                                                                                 <constraints>
-                                                                                    <constraint firstAttribute="height" constant="17" id="ARL-Pr-Hf1"/>
-                                                                                    <constraint firstAttribute="width" constant="12" id="vYU-6E-iMe"/>
+                                                                                    <constraint firstAttribute="height" constant="15" id="ARL-Pr-Hf1"/>
+                                                                                    <constraint firstAttribute="width" constant="15" id="vYU-6E-iMe"/>
                                                                                 </constraints>
                                                                             </imageView>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8rL-tQ-qPw" userLabel="Private Room Title Label">
-                                                                                <rect key="frame" x="22" y="19" width="273" height="19.5"/>
+                                                                                <rect key="frame" x="25" y="19" width="270" height="19.5"/>
                                                                                 <string key="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce pharetra leo ipsum, vitae sagittis nulla gravida eu. Morbi at est lacinia risus interdum facilisis commodo ut libero.</string>
                                                                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                                                                                 <nil key="textColor"/>
@@ -109,14 +109,14 @@
                                                                         <rect key="frame" x="0.0" y="0.0" width="295" height="57"/>
                                                                         <subviews>
                                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="private_room" translatesAutoresizingMaskIntoConstraints="NO" id="ZfR-6F-3NZ">
-                                                                                <rect key="frame" x="0.0" y="20" width="12" height="17"/>
+                                                                                <rect key="frame" x="0.0" y="21" width="15" height="15"/>
                                                                                 <constraints>
-                                                                                    <constraint firstAttribute="height" constant="17" id="2ME-fT-irK"/>
-                                                                                    <constraint firstAttribute="width" constant="12" id="JSY-j6-074"/>
+                                                                                    <constraint firstAttribute="height" constant="15" id="2ME-fT-irK"/>
+                                                                                    <constraint firstAttribute="width" constant="15" id="JSY-j6-074"/>
                                                                                 </constraints>
                                                                             </imageView>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5AY-hy-Lro" userLabel="Private Room Title Label">
-                                                                                <rect key="frame" x="22" y="19" width="273" height="19.5"/>
+                                                                                <rect key="frame" x="25" y="19" width="270" height="19.5"/>
                                                                                 <string key="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce pharetra leo ipsum, vitae sagittis nulla gravida eu. Morbi at est lacinia risus interdum facilisis commodo ut libero.</string>
                                                                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                                                                                 <nil key="textColor"/>
@@ -160,15 +160,15 @@
                                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="H7Q-Kl-NqC">
                                                                         <rect key="frame" x="0.0" y="0.0" width="295" height="253.5"/>
                                                                         <subviews>
-                                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="forum_room" translatesAutoresizingMaskIntoConstraints="NO" id="fSH-Pc-GpS">
-                                                                                <rect key="frame" x="0.0" y="118.5" width="12" height="17"/>
+                                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="forum" translatesAutoresizingMaskIntoConstraints="NO" id="fSH-Pc-GpS">
+                                                                                <rect key="frame" x="0.0" y="117.5" width="18" height="19"/>
                                                                                 <constraints>
-                                                                                    <constraint firstAttribute="height" constant="17" id="bHC-Zu-GD1"/>
-                                                                                    <constraint firstAttribute="width" constant="12" id="zRu-NP-VgD"/>
+                                                                                    <constraint firstAttribute="height" constant="19" id="bHC-Zu-GD1"/>
+                                                                                    <constraint firstAttribute="width" constant="18" id="zRu-NP-VgD"/>
                                                                                 </constraints>
                                                                             </imageView>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pBt-bd-ew9" userLabel="Private Room Title Label">
-                                                                                <rect key="frame" x="22" y="117" width="273" height="19.5"/>
+                                                                                <rect key="frame" x="28" y="117" width="267" height="19.5"/>
                                                                                 <string key="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce pharetra leo ipsum, vitae sagittis nulla gravida eu. Morbi at est lacinia risus interdum facilisis commodo ut libero.</string>
                                                                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                                                                                 <nil key="textColor"/>
@@ -230,8 +230,12 @@
                                                     </view>
                                                 </subviews>
                                             </stackView>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="private_avatar_icon_hr" translatesAutoresizingMaskIntoConstraints="NO" id="Cqe-MQ-M9u">
-                                                <rect key="frame" x="105" y="35" width="20" height="23.5"/>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="forum" translatesAutoresizingMaskIntoConstraints="NO" id="Cqe-MQ-M9u">
+                                                <rect key="frame" x="105" y="35" width="18" height="19"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="18" id="CQA-34-JhC"/>
+                                                    <constraint firstAttribute="height" constant="19" id="PYU-ca-qqn"/>
+                                                </constraints>
                                             </imageView>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -275,6 +279,7 @@
                         <outlet property="externRoomInfoLabel" destination="0N4-3y-tLP" id="kNy-VX-Tyy"/>
                         <outlet property="externRoomTitleLabel" destination="5AY-hy-Lro" id="jqO-jL-61s"/>
                         <outlet property="externRoomView" destination="qiU-3a-NRz" id="xQ4-gU-Qac"/>
+                        <outlet property="forumRoomImage" destination="fSH-Pc-GpS" id="mSK-GW-b2v"/>
                         <outlet property="forumRoomInfoLabel" destination="GRh-AX-jVf" id="9gU-YB-dyK"/>
                         <outlet property="forumRoomTitleLabel" destination="pBt-bd-ew9" id="nfY-ye-rQN"/>
                         <outlet property="forumRoomView" destination="Y1X-Wx-xN6" id="2ri-kS-E20"/>
@@ -297,8 +302,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="forum_room" width="16.5" height="17"/>
-        <image name="private_avatar_icon_hr" width="20" height="23.5"/>
-        <image name="private_room" width="14.5" height="17"/>
+        <image name="forum" width="15" height="16"/>
+        <image name="private_room" width="15" height="15"/>
     </resources>
 </document>
