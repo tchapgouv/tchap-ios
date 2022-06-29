@@ -92,6 +92,7 @@ targets:
         - "Modules/Room/Views/Preview"
         - "Modules/Room/Views/Title/RoomTitleView.*"
         - "Modules/Rooms"
+        - "Modules/Settings/SettingsViewController.*"
         - "SupportingFiles/Info.plist"
         - "TchapTools"
         - "Routers"
