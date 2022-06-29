@@ -278,29 +278,29 @@ final class BuildSettings: NSObject {
     
     static let settingsScreenShowUserFirstName: Bool = false
     static let settingsScreenShowUserSurname: Bool = false
-    static let settingsScreenAllowAddingEmailThreepids: Bool = true
-    static let settingsScreenAllowAddingPhoneThreepids: Bool = true
-    static let settingsScreenShowThreepidExplanatory: Bool = true
-    static let settingsScreenShowDiscoverySettings: Bool = true
-    static let settingsScreenAllowIdentityServerConfig: Bool = true
+    static let settingsScreenAllowAddingEmailThreepids: Bool = false
+    static let settingsScreenAllowAddingPhoneThreepids: Bool = false
+    static let settingsScreenShowThreepidExplanatory: Bool = false
+    static let settingsScreenShowDiscoverySettings: Bool = false
+    static let settingsScreenAllowIdentityServerConfig: Bool = false
     static let settingsScreenShowConfirmMediaSize: Bool = true
     static let settingsScreenShowAdvancedSettings: Bool = true
-    static let settingsScreenShowLabSettings: Bool = true
+    static let settingsScreenShowLabSettings: Bool = false
     static let settingsScreenAllowChangingRageshakeSettings: Bool = true
     static let settingsScreenAllowChangingCrashUsageDataSettings: Bool = true
     static let settingsScreenAllowBugReportingManually: Bool = true
     static let settingsScreenAllowDeactivatingAccount: Bool = true
-    static let settingsScreenShowChangePassword:Bool = true
+    static let settingsScreenShowChangePassword: Bool = true
     static let settingsScreenShowEnableStunServerFallback: Bool = true
     static let settingsScreenShowNotificationDecodedContentOption: Bool = true
-    static let settingsScreenShowNsfwRoomsOption: Bool = true
-    static let settingsSecurityScreenShowSessions:Bool = true
-    static let settingsSecurityScreenShowSetupBackup:Bool = true
-    static let settingsSecurityScreenShowRestoreBackup:Bool = true
-    static let settingsSecurityScreenShowDeleteBackup:Bool = true
-    static let settingsSecurityScreenShowCryptographyInfo:Bool = true
-    static let settingsSecurityScreenShowCryptographyExport:Bool = true
-    static let settingsSecurityScreenShowAdvancedUnverifiedDevices:Bool = true
+    static let settingsScreenShowNsfwRoomsOption: Bool = false
+    static let settingsSecurityScreenShowSessions: Bool = true
+    static let settingsSecurityScreenShowSetupBackup: Bool = true
+    static let settingsSecurityScreenShowRestoreBackup: Bool = true
+    static let settingsSecurityScreenShowDeleteBackup: Bool = true
+    static let settingsSecurityScreenShowCryptographyInfo: Bool = true
+    static let settingsSecurityScreenShowCryptographyExport: Bool = true
+    static let settingsSecurityScreenShowAdvancedUnverifiedDevices: Bool = true
     /// A setting to enable the presence configuration settings section.
     static let settingsScreenPresenceAllowConfiguration: Bool = false
 

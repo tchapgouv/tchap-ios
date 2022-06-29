@@ -63,6 +63,8 @@ typedef NS_ENUM(NSUInteger, SECTION_TAG)
     SECTION_TAG_INTEGRATIONS,
     SECTION_TAG_USER_INTERFACE,
     SECTION_TAG_PRESENCE,
+    // Tchap: Add Preferences section
+    SECTION_TAG_PREFERENCES,
     SECTION_TAG_ADVANCED,
     SECTION_TAG_ABOUT,
     SECTION_TAG_LABS,
@@ -75,6 +77,8 @@ typedef NS_ENUM(NSUInteger, USER_SETTINGS_INDEX)
     USER_SETTINGS_PROFILE_PICTURE_INDEX = 0,
     USER_SETTINGS_DISPLAYNAME_INDEX,
     USER_SETTINGS_CHANGE_PASSWORD_INDEX,
+    // Tchap: Add Hide User from directory
+    USER_SETTINGS_HIDE_FROM_USER_DIR_INDEX,
     USER_SETTINGS_FIRST_NAME_INDEX,
     USER_SETTINGS_SURNAME_INDEX,
     USER_SETTINGS_ADD_EMAIL_INDEX,
@@ -141,6 +145,12 @@ typedef NS_ENUM(NSUInteger, IDENTITY_SERVER)
 typedef NS_ENUM(NSUInteger, PRESENCE)
 {
     PRESENCE_OFFLINE_MODE = 0,
+};
+
+typedef NS_ENUM(NSUInteger, PREFERENCES)
+{
+    PREFERENCES_SHOW_JOIN_LEAVE_EVENTS_INDEX = 0,
+    PREFERENCES_SHOW_PROFILE_UPDATE_EVENTS_INDEX
 };
 
 typedef NS_ENUM(NSUInteger, ADVANCED)
@@ -250,6 +260,20 @@ ThreadsBetaCoordinatorBridgePresenterDelegate*/>
     UIViewController *pushedViewController;
 
     SettingsIdentityServerCoordinatorBridgePresenter *identityServerSettingsCoordinatorBridgePresenter;
+    
+    // Tchap: Customize Password change
+    // The view used to export e2e keys
+    MXKEncryptionKeysExportView *exportView;
+
+    // The document interaction Controller used to export e2e keys
+    UIDocumentInteractionController *documentInteractionController;
+    NSURL *keyExportsFile;
+    NSTimer *keyExportsFileDeletionTimer;
+    
+    /**
+     The view to import e2e keys.
+     */
+    MXKEncryptionKeysImportView *importView;
 }
 
 /**
@@ -300,6 +324,14 @@ ThreadsBetaCoordinatorBridgePresenterDelegate*/>
 @property (nonatomic, strong) ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter;
 
 @property (nonatomic) AnalyticsScreenTracker *screenTracker;
+
+// Tchap: Customize Password change
+#ifdef SUPPORT_KEYS_BACKUP
+@property (nonatomic, strong) ChangePasswordAlertPresenter *changePasswordAlertPresenter;
+#endif
+@property (strong, nonatomic) ChangePasswordCoordinatorBridgePresenter *changePasswordPresenter;
+
+@property (nonatomic, strong) MXKDocumentPickerPresenter *documentPickerPresenter;
 
 @end
 
@@ -352,6 +384,8 @@ ThreadsBetaCoordinatorBridgePresenterDelegate*/>
     {
         [sectionUserSettings addRowWithTag:USER_SETTINGS_CHANGE_PASSWORD_INDEX];
     }
+    // Tchap: Add Hide User from directory
+    [sectionUserSettings addRowWithTag:USER_SETTINGS_HIDE_FROM_USER_DIR_INDEX];
     if (BuildSettings.settingsScreenShowUserFirstName)
     {
         [sectionUserSettings addRowWithTag:USER_SETTINGS_FIRST_NAME_INDEX];
@@ -399,11 +433,12 @@ ThreadsBetaCoordinatorBridgePresenterDelegate*/>
         [tmpSections addObject:sectionMedia];
     }
     
-    Section *sectionLinks = [Section sectionWithTag:SECTION_TAG_LINKS];
-    [sectionLinks addRowWithTag:LINKS_SHOW_URL_PREVIEWS_INDEX];
-    sectionLinks.headerTitle = [VectorL10n settingsLinks];
-    sectionLinks.footerTitle = VectorL10n.settingsShowUrlPreviewsDescription;
-    [tmpSections addObject:sectionLinks];
+    // Tchap: Hide links
+//    Section *sectionLinks = [Section sectionWithTag:SECTION_TAG_LINKS];
+//    [sectionLinks addRowWithTag:LINKS_SHOW_URL_PREVIEWS_INDEX];
+//    sectionLinks.headerTitle = [VectorL10n settingsLinks];
+//    sectionLinks.footerTitle = VectorL10n.settingsShowUrlPreviewsDescription;
+//    [tmpSections addObject:sectionLinks];
     
     Section *sectionSecurity = [Section sectionWithTag:SECTION_TAG_SECURITY];
     [sectionSecurity addRowWithTag:SECURITY_BUTTON_INDEX];
@@ -485,7 +520,8 @@ ThreadsBetaCoordinatorBridgePresenterDelegate*/>
         
         NSString *headerTitle = UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPhone ? VectorL10n.settingsPhoneContacts : VectorL10n.settingsContacts;
         sectionLocalContacts.headerTitle = headerTitle;
-        sectionLocalContacts.footerTitle = VectorL10n.settingsContactsEnableSyncDescription;
+        // Tchap: Hide footer for contacts
+//        sectionLocalContacts.footerTitle = VectorL10n.settingsContactsEnableSyncDescription;
         [tmpSections addObject:sectionLocalContacts];
     }
     
@@ -517,7 +553,8 @@ ThreadsBetaCoordinatorBridgePresenterDelegate*/>
     Section *sectionUserInterface = [Section sectionWithTag:SECTION_TAG_USER_INTERFACE];
     sectionUserInterface.headerTitle = [VectorL10n settingsUserInterface];
     
-    [sectionUserInterface addRowWithTag:USER_INTERFACE_LANGUAGE_INDEX];
+    // Tchap: Hide language
+//    [sectionUserInterface addRowWithTag:USER_INTERFACE_LANGUAGE_INDEX];
     [sectionUserInterface addRowWithTag:USER_INTERFACE_THEME_INDEX];
     
     if (BuildSettings.roomScreenAllowTimelineStyleConfiguration)
@@ -538,6 +575,13 @@ ThreadsBetaCoordinatorBridgePresenterDelegate*/>
 
         [tmpSections addObject:sectionPresence];
     }
+    
+    // Tchap: Add Preferences section
+    Section *sectionPreferences = [Section sectionWithTag:SECTION_TAG_PREFERENCES];
+    sectionPreferences.headerTitle = NSLocalizedStringFromTable(@"settings_preferences", @"Tchap", nil);
+    [sectionPreferences addRowWithTag:PREFERENCES_SHOW_JOIN_LEAVE_EVENTS_INDEX];
+    [sectionPreferences addRowWithTag:PREFERENCES_SHOW_PROFILE_UPDATE_EVENTS_INDEX];
+    [tmpSections addObject: sectionPreferences];
     
     Section *sectionAdvanced = [Section sectionWithTag:SECTION_TAG_ADVANCED];
     sectionAdvanced.headerTitle = [VectorL10n settingsAdvanced];
@@ -1485,8 +1529,9 @@ ThreadsBetaCoordinatorBridgePresenterDelegate*/>
     
     NSString *olmVersionInfo = [NSString stringWithFormat:@"OLM %@", [OLMKit versionString]];    
     
-    [footerText appendFormat:@"%@\n", loggedUserInfo];
-    [footerText appendFormat:@"%@\n", homeserverInfo];
+    // Tchap: Hide user and homeserver infos
+//    [footerText appendFormat:@"%@\n", loggedUserInfo];
+//    [footerText appendFormat:@"%@\n", homeserverInfo];
     [footerText appendFormat:@"%@\n", appVersionInfo];
     [footerText appendFormat:@"%@\n", sdkVersionInfo];
     [footerText appendFormat:@"%@", olmVersionInfo];
@@ -1995,14 +2040,40 @@ ThreadsBetaCoordinatorBridgePresenterDelegate*/>
         }
         else if (row == USER_SETTINGS_CHANGE_PASSWORD_INDEX)
         {
-            MXKTableViewCellWithLabelAndTextField *passwordCell = [self getLabelAndTextFieldCell:tableView forIndexPath:indexPath];
+            // Tchap: Customize Password change
+//            MXKTableViewCellWithLabelAndTextField *passwordCell = [self getLabelAndTextFieldCell:tableView forIndexPath:indexPath];
+//
+//            passwordCell.mxkLabel.text = [VectorL10n settingsChangePassword];
+//            passwordCell.mxkTextField.text = @"*********";
+//            passwordCell.mxkTextField.userInteractionEnabled = NO;
+//            passwordCell.mxkLabel.accessibilityIdentifier=@"SettingsVCChangePwdStaticText";
+            MXKTableViewCell *passwordCell = [self getDefaultTableViewCell:tableView];
             
-            passwordCell.mxkLabel.text = [VectorL10n settingsChangePassword];
-            passwordCell.mxkTextField.text = @"*********";
-            passwordCell.mxkTextField.userInteractionEnabled = NO;
-            passwordCell.mxkLabel.accessibilityIdentifier=@"SettingsVCChangePwdStaticText";
+            passwordCell.textLabel.text = NSLocalizedStringFromTable(@"settings_change_password", @"Vector", nil);
+            passwordCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            passwordCell.accessibilityIdentifier = @"SettingsVCChangePwdStaticText";
             
             cell = passwordCell;
+        } else if (row == USER_SETTINGS_HIDE_FROM_USER_DIR_INDEX) {
+            // Tchap: Add Hide User from directory
+            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+            
+            NSString *title = NSLocalizedStringFromTable(@"settings_hide_from_users_directory_title", @"Tchap", nil);
+            NSString *summary = NSLocalizedStringFromTable(@"settings_hide_from_users_directory_summary", @"Tchap", nil);
+            NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString: title
+                                                                                               attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
+                                                                                                            NSFontAttributeName: [UIFont systemFontOfSize:17.0]}];
+            [attributedText appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n\n" attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:4]}]];
+            [attributedText appendAttributedString:[[NSMutableAttributedString alloc] initWithString: summary
+                                                                                          attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textSecondaryColor,
+                                                                                                       NSFontAttributeName: [UIFont systemFontOfSize:14.0]}]];
+            
+            labelAndSwitchCell.mxkLabel.attributedText = attributedText;
+            labelAndSwitchCell.mxkSwitch.on = [self isHiddenFromUsersDirectory:session];
+            labelAndSwitchCell.mxkSwitch.enabled = YES;
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleHideFromUsersDirectory:) forControlEvents:UIControlEventTouchUpInside];
+            
+            cell = labelAndSwitchCell;
         }
     }
     else if (section == SECTION_TAG_SENDING_MEDIA)
@@ -2594,6 +2665,45 @@ ThreadsBetaCoordinatorBridgePresenterDelegate*/>
         
         cell = deactivateAccountBtnCell;
     }
+    else if (section == SECTION_TAG_PREFERENCES)
+    {
+        // Tchap: Add Preferences section
+        if (row == PREFERENCES_SHOW_JOIN_LEAVE_EVENTS_INDEX)
+        {
+            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+            
+            NSString *title = NSLocalizedStringFromTable(@"settings_show_join_leave_messages_title", @"Tchap", nil);
+            NSString *summary = NSLocalizedStringFromTable(@"settings_show_join_leave_messages_summary", @"Tchap", nil);
+            NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString: title
+                                                                                               attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
+                                                                                                            NSFontAttributeName: [UIFont systemFontOfSize:17.0]}];
+            [attributedText appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n\n" attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:4]}]];
+            [attributedText appendAttributedString:[[NSMutableAttributedString alloc] initWithString: summary
+                                                                                          attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textSecondaryColor,
+                                                                                                       NSFontAttributeName: [UIFont systemFontOfSize:14.0]}]];
+            
+            labelAndSwitchCell.mxkLabel.attributedText = attributedText;
+            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.showJoinLeaveEvents;
+            labelAndSwitchCell.mxkSwitch.enabled = YES;
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleShowJoinLeaveEvents:) forControlEvents:UIControlEventTouchUpInside];
+            
+            // Workaround to fix tint color issue on Switch, only on this cell.
+            [labelAndSwitchCell updateWithTheme:ThemeService.shared.theme];
+            
+            cell = labelAndSwitchCell;
+        }
+        else if (row == PREFERENCES_SHOW_PROFILE_UPDATE_EVENTS_INDEX)
+        {
+            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+            
+            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_show_profile_changes_messages_title", @"Tchap", nil);
+            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.showProfileUpdateEvents;
+            labelAndSwitchCell.mxkSwitch.enabled = YES;
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleShowProfileUpdateEvents:) forControlEvents:UIControlEventTouchUpInside];
+            
+            cell = labelAndSwitchCell;
+        }
+    }
 
     return cell;
 }
@@ -2872,7 +2982,9 @@ ThreadsBetaCoordinatorBridgePresenterDelegate*/>
             }
             else if (row == USER_SETTINGS_CHANGE_PASSWORD_INDEX)
             {
-                [self displayPasswordAlert];
+//                [self displayPasswordAlert];
+                // Tchap: Change password managment
+                [self promptUserBeforePasswordChange];
             }
             else if (row == USER_SETTINGS_ADD_EMAIL_INDEX)
             {
@@ -3342,6 +3454,19 @@ ThreadsBetaCoordinatorBridgePresenterDelegate*/>
 - (void)toggleUseOnlyLatestUserAvatarAndName:(UISwitch *)sender
 {
     RiotSettings.shared.roomScreenUseOnlyLatestUserAvatarAndName = sender.isOn;
+}
+
+// Tchap: Add Preferences section
+- (void)toggleShowJoinLeaveEvents:(id)sender
+{
+    UISwitch *switchButton = (UISwitch*)sender;
+    RiotSettings.shared.showJoinLeaveEvents = switchButton.isOn;
+}
+
+- (void)toggleShowProfileUpdateEvents:(id)sender
+{
+    UISwitch *switchButton = (UISwitch*)sender;
+    RiotSettings.shared.showProfileUpdateEvents = switchButton.isOn;
 }
 
 - (void)markAllAsRead:(id)sender
@@ -3856,6 +3981,83 @@ ThreadsBetaCoordinatorBridgePresenterDelegate*/>
     }
 }
 
+// Tchap: Add import keys feature
+- (void)importEncryptionKeys:(UITapGestureRecognizer *)recognizer
+{
+    self->currentAlert = nil;
+    
+    MXKDocumentPickerPresenter *documentPickerPresenter = [MXKDocumentPickerPresenter new];
+    documentPickerPresenter.delegate = self;
+                                      
+    NSArray<MXKUTI*> *allowedUTIs = @[MXKUTI.data];
+    [documentPickerPresenter presentDocumentPickerWith:allowedUTIs from:self animated:YES completion:nil];
+    
+    self.documentPickerPresenter = documentPickerPresenter;
+}
+
+- (void)exportEncryptionKeys:(UITapGestureRecognizer *)recognizer
+{
+    [currentAlert dismissViewControllerAnimated:NO completion:nil];
+
+    exportView = [[MXKEncryptionKeysExportView alloc] initWithMatrixSession:self.mainSession];
+    currentAlert = exportView.alertController;
+
+    // Use a temporary file for the export
+    keyExportsFile = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:@"tchap-keys.txt"]];
+
+    // Make sure the file is empty
+    [self deleteKeyExportFile];
+
+    // Show the export dialog
+    __weak typeof(self) weakSelf = self;
+    [exportView showInViewController:self toExportKeysToFile:keyExportsFile onComplete:^(BOOL success) {
+
+        if (weakSelf)
+        {
+             typeof(self) self = weakSelf;
+            self->currentAlert = nil;
+            self->exportView = nil;
+
+            if (success)
+            {
+                // Let another app handling this file
+                self->documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:keyExportsFile];
+                [self->documentInteractionController setDelegate:self];
+
+                if ([self->documentInteractionController presentOptionsMenuFromRect:self.view.bounds inView:self.view animated:YES])
+                {
+                    // We want to delete the temp keys file after it has been processed by the other app.
+                    // We use [UIDocumentInteractionControllerDelegate didEndSendingToApplication] for that
+                    // but it is not reliable for all cases (see http://stackoverflow.com/a/21867096).
+                    // So, arm a timer to auto delete the file after 10mins.
+                    keyExportsFileDeletionTimer = [NSTimer scheduledTimerWithTimeInterval:600 target:self selector:@selector(deleteKeyExportFile) userInfo:self repeats:NO];
+                }
+                else
+                {
+                    self->documentInteractionController = nil;
+                    [self deleteKeyExportFile];
+                }
+            }
+        }
+    }];
+}
+
+- (void)deleteKeyExportFile
+{
+    // Cancel the deletion timer if it is still here
+    if (keyExportsFileDeletionTimer)
+    {
+        [keyExportsFileDeletionTimer invalidate];
+        keyExportsFileDeletionTimer = nil;
+    }
+
+    // And delete the file
+    if (keyExportsFile && [[NSFileManager defaultManager] fileExistsAtPath:keyExportsFile.path])
+    {
+        [[NSFileManager defaultManager] removeItemAtPath:keyExportsFile.path error:nil];
+    }
+}
+
 - (void)showThemePicker
 {
     __weak typeof(self) weakSelf = self;
@@ -4266,6 +4468,92 @@ ThreadsBetaCoordinatorBridgePresenterDelegate*/>
     [self presentViewController:resetPwdAlertController animated:YES completion:nil];
 }
 
+- (void)promptUserBeforePasswordChange
+{
+#ifdef SUPPORT_KEYS_BACKUP
+    MXKeyBackup *keyBackup = self.mainSession.crypto.backup;
+    
+    [self.changePasswordAlertPresenter presentFor:keyBackup.state
+                      areThereKeysToBackup:keyBackup.hasKeysToBackup
+                                      from:self
+                                sourceView:self.tableView
+                                  animated:YES];
+#else
+    MXWeakify(self);
+    [resetPwdAlertController dismissViewControllerAnimated:NO completion:nil];
+    
+    resetPwdAlertController = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"warning", @"Vector", nil) message:NSLocalizedStringFromTable(@"settings_change_pwd_caution", @"Tchap", nil) preferredStyle:UIAlertControllerStyleAlert];
+    resetPwdAlertController.accessibilityLabel=@"promptUserBeforePasswordChange";
+    UIAlertAction  *continueAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"continue", @"Vector", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+        
+        MXStrongifyAndReturnIfNil(self);
+        self->resetPwdAlertController = nil;
+        [self presentChangePassword];
+    }];
+    
+    UIAlertAction  *exportAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"settings_crypto_export", @"Vector", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+        
+        MXStrongifyAndReturnIfNil(self);
+        self->resetPwdAlertController = nil;
+        [self exportEncryptionKeys:nil];
+        
+    }];
+    
+    UIAlertAction* cancel = [UIAlertAction actionWithTitle:[VectorL10n cancel] style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
+        
+        MXStrongifyAndReturnIfNil(self);
+        self->resetPwdAlertController = nil;
+        
+    }];
+    
+    [resetPwdAlertController addAction:continueAction];
+    [resetPwdAlertController addAction:exportAction];
+    [resetPwdAlertController addAction:cancel];
+    [self presentViewController:resetPwdAlertController animated:YES completion:nil];
+#endif
+}
+
+- (void)presentChangePassword
+{
+    ChangePasswordCoordinatorBridgePresenter *changePasswordPresenter = [[ChangePasswordCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
+    changePasswordPresenter.delegate = self;
+    
+    [changePasswordPresenter presentFrom:self animated:YES];
+    
+    self.changePasswordPresenter = changePasswordPresenter;
+}
+
+- (nullable NSString *)detailedMessageOnPasswordUpdateFailure:(NSError *)error
+{
+    // Check for specific password policy error
+    NSDictionary* dict = error.userInfo;
+    NSString *message = nil;
+    if (dict)
+    {
+        NSString* errCode = [dict valueForKey:@"errcode"];
+        if (errCode)
+        {
+            if ([errCode isEqualToString:kMXErrCodeStringPasswordTooShort])
+            {
+                message = NSLocalizedStringFromTable(@"password_policy_too_short_pwd_error", @"Tchap", nil);;
+            }
+            else if ([errCode isEqualToString:kMXErrCodeStringPasswordNoDigit]
+                     || [errCode isEqualToString:kMXErrCodeStringPasswordNoSymbol]
+                     || [errCode isEqualToString:kMXErrCodeStringPasswordNoUppercase]
+                     || [errCode isEqualToString:kMXErrCodeStringPasswordNoLowercase]
+                     || [errCode isEqualToString:kMXErrCodeStringWeakPassword])
+            {
+                message = NSLocalizedStringFromTable(@"password_policy_weak_pwd_error", @"Tchap", nil);;
+            }
+            else if ([errCode isEqualToString:kMXErrCodeStringPasswordInDictionary])
+            {
+                message = NSLocalizedStringFromTable(@"password_policy_pwd_in_dict_error", @"Tchap", nil);;
+            }
+        }
+    }
+    return message;
+}
+
 
 #pragma mark - MXKCountryPickerViewControllerDelegate
 
@@ -4345,6 +4633,104 @@ ThreadsBetaCoordinatorBridgePresenterDelegate*/>
 - (void)deactivateAccountViewControllerDidCancel:(DeactivateAccountViewController *)deactivateAccountViewController
 {
     [deactivateAccountViewController dismissViewControllerAnimated:YES completion:nil];
+}
+
+// Tchap: Add Hide User from directory
+#pragma mark - Hide from users directory
+
+- (BOOL)isHiddenFromUsersDirectory:(MXSession *)session
+{
+    BOOL isHidden = NO;
+    NSDictionary *content = [session.accountData accountDataForEventType:@"im.vector.hide_profile"];
+    if (content && content[@"hide_profile"])
+    {
+        MXJSONModelSetBoolean(isHidden, content[@"hide_profile"]);
+    }
+    return isHidden;
+}
+
+- (void)toggleHideFromUsersDirectory:(id)sender
+{
+    UISwitch *switchButton = (UISwitch*)sender;
+    MXKAccount *account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+    MXSession *session = [account mxSession];
+    if (session)
+    {
+        // The external users must be prompted before showing them to the users directory
+        BOOL isHidden = switchButton.on;
+        if (!isHidden && [UserService isExternalUserFor:session.myUser.userId])
+        {
+            MXWeakify(self);
+            [currentAlert dismissViewControllerAnimated:NO completion:nil];
+            currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"warning_title", @"Tchap", nil)
+                                                               message:NSLocalizedStringFromTable(@"settings_show_external_user_in_users_directory_prompt", @"Tchap", nil)
+                                                        preferredStyle:UIAlertControllerStyleAlert];
+            currentAlert.accessibilityLabel=@"promptUserBeforeShowingThemInUsersDirectory";
+            [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"accept", @"Vector", nil)
+                                                                   style:UIAlertActionStyleDefault
+                                                                 handler:^(UIAlertAction * action) {
+                                                                     
+                                                                     MXStrongifyAndReturnIfNil(self);
+                                                                     self->currentAlert = nil;
+                                                                     [self hideUserFromUsersDirectory:isHidden withSession:session];
+                                                                     
+                                                                 }]];
+            
+            
+            [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
+                                                             style:UIAlertActionStyleCancel
+                                                           handler:^(UIAlertAction * action) {
+                                                               
+                                                               MXStrongifyAndReturnIfNil(self);
+                                                               self->currentAlert = nil;
+                                                               switchButton.on = YES;
+                                                               
+                                                           }]];
+            
+            [self presentViewController:currentAlert animated:YES completion:nil];
+        }
+        else
+        {
+            [self hideUserFromUsersDirectory:isHidden withSession:session];
+        }
+    }
+}
+
+- (void)hideUserFromUsersDirectory:(BOOL)isHidden withSession:(MXSession*)session
+{
+    NSDictionary *dict = @{@"hide_profile": [NSNumber numberWithBool:isHidden]};
+    NSString *myUserId = session.myUser.userId;
+    
+    MXWeakify(self);
+    [self startActivityIndicator];
+    [session setAccountData:dict forType:@"im.vector.hide_profile" success:^{
+        MXStrongifyAndReturnIfNil(self);
+        [self stopActivityIndicator];
+    } failure:^(NSError *error) {
+        MXStrongifyAndReturnIfNil(self);
+        [self stopActivityIndicator];
+        NSLog(@"[SettingsViewController] hideUserFromUsersDirectory failed");
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error userInfo:myUserId ? @{kMXKErrorUserIdKey: myUserId} : nil];
+        [self refreshSettings];
+    }];
+}
+
+// Tchap: Customize Password change
+#pragma mark - ChangePasswordCoordinatorBridgePresenterDelegate
+
+- (void)changePasswordCoordinatorBridgePresenterDelegateDidComplete:(ChangePasswordCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+        self.changePasswordPresenter = nil;
+    }];
+}
+
+- (void)changePasswordCoordinatorBridgePresenterDelegateDidCancel:(ChangePasswordCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+        self.changePasswordPresenter = nil;
+    }];
 }
 
 #pragma mark - NotificationSettingsCoordinatorBridgePresenter

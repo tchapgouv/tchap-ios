@@ -256,7 +256,7 @@
 "settings_ignored_users" = "UTILISATEURS IGNORÉS";
 "settings_contacts" = "CONTACTS LOCAUX";
 "settings_advanced" = "AVANCÉ";
-"settings_other" = "AUTRES";
+"settings_other" = "Autres";
 "settings_labs" = "EXPÉRIMENTAL";
 "settings_devices" = "APPAREILS";
 "settings_cryptography" = "CHIFFREMENT";
