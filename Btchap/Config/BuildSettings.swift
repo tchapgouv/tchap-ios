@@ -171,13 +171,13 @@ final class BuildSettings: NSObject {
     static let analyticsConfiguration = AnalyticsConfiguration(isEnabled: false,
                                                                host: "",
                                                                apiKey: "",
-                                                               termsURL: URL(string: "")!)
+                                                               termsURL: URL(string: "https://")!)
     #else
     /// The configuration to use for analytics. Set `isEnabled` to false to disable analytics.
     static let analyticsConfiguration = AnalyticsConfiguration(isEnabled: false,
                                                                host: "",
                                                                apiKey: "",
-                                                               termsURL: URL(string: "")!)
+                                                               termsURL: URL(string: "https://")!)
     #endif
     
     // MARK: - Bug report
