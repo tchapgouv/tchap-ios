@@ -28,6 +28,8 @@
 
 // Dev flag to have more options
 //#define CROSS_SIGNING_AND_BACKUP_DEV
+//#define SECURE_BACKUP
+//#define CROSS_SIGNING
 
 enum
 {
@@ -59,6 +61,7 @@ enum {
 enum {
     CRYPTOGRAPHY_INFO,
     CRYPTOGRAPHY_EXPORT,    // TODO: To move to SECTION_KEYBACKUP
+    CRYPTOGRAPHY_IMPORT,
     CRYPTOGRAPHY_COUNT
 };
 
@@ -79,7 +82,8 @@ UIDocumentInteractionControllerDelegate,
 SecretsRecoveryCoordinatorBridgePresenterDelegate,
 SecureBackupSetupCoordinatorBridgePresenterDelegate,
 SetPinCoordinatorBridgePresenterDelegate,
-TableViewSectionsDelegate>
+TableViewSectionsDelegate,
+MXKDocumentPickerPresenterDelegate>
 {
     // Current alert (if any).
     UIAlertController *currentAlert;
@@ -110,6 +114,12 @@ TableViewSectionsDelegate>
     KeyBackupSetupCoordinatorBridgePresenter *keyBackupSetupCoordinatorBridgePresenter;
     KeyBackupRecoverCoordinatorBridgePresenter *keyBackupRecoverCoordinatorBridgePresenter;
     SecretsRecoveryCoordinatorBridgePresenter *secretsRecoveryCoordinatorBridgePresenter;
+    
+    // Tchap: Import keys view
+    /**
+     The view to import e2e keys.
+     */
+    MXKEncryptionKeysImportView *importView;
 }
 
 @property (nonatomic, strong) TableViewSections *tableViewSections;
@@ -120,6 +130,8 @@ TableViewSectionsDelegate>
 @property (nonatomic, strong) CrossSigningSetupCoordinatorBridgePresenter *crossSigningSetupCoordinatorBridgePresenter;
 
 @property (nonatomic) AnalyticsScreenTracker *screenTracker;
+
+@property (nonatomic, strong) MXKDocumentPickerPresenter *documentPickerPresenter;
 
 @end
 
@@ -343,7 +355,7 @@ TableViewSectionsDelegate>
     }
     
     // Secure backup
-
+#ifdef SECURE_BACKUP
     if (!isSecureBackupRequired)
     {
         Section *secureBackupSection = [Section sectionWithTag:SECTION_SECURE_BACKUP];
@@ -354,15 +366,17 @@ TableViewSectionsDelegate>
 
         [sections addObject:secureBackupSection];
     }
+#endif
     
     // Cross-Signing
-    
+#ifdef CROSS_SIGNING
     Section *crossSigningSection = [Section sectionWithTag:SECTION_CROSSSIGNING];
     crossSigningSection.headerTitle = [VectorL10n securitySettingsCrosssigning];
     
     [crossSigningSection addRowsWithCount:[self numberOfRowsInCrossSigningSection]];
     
     [sections addObject:crossSigningSection];
+#endif
     
     // Cryptography
     
@@ -377,6 +391,7 @@ TableViewSectionsDelegate>
     if (RiotSettings.shared.settingsSecurityScreenShowCryptographyExport && !isSecureBackupRequired)
     {
         [cryptographySection addRowWithTag:CRYPTOGRAPHY_EXPORT];
+        [cryptographySection addRowWithTag:CRYPTOGRAPHY_IMPORT];
     }
 
     if (cryptographySection.rows.count)
@@ -1265,6 +1280,15 @@ TableViewSectionsDelegate>
                 cell = exportKeysBtnCell;
                 break;
             }
+            case CRYPTOGRAPHY_IMPORT:
+            {
+                MXKTableViewCellWithButton *importKeysBtnCell = [self buttonCellWithTitle:NSLocalizedStringFromTable(@"settings_crypto_import", @"Tchap", nil)
+                                                                                   action:@selector(importEncryptionKeys:)
+                                                                             forTableView:tableView
+                                                                              atIndexPath:indexPath];
+                cell = importKeysBtnCell;
+                break;
+            }
         }
     }
     else if (sectionTag == SECTION_ADVANCED)
@@ -1440,6 +1464,19 @@ TableViewSectionsDelegate>
 }
 
 #pragma mark - actions
+
+- (void)importEncryptionKeys:(UITapGestureRecognizer *)recognizer
+{
+    self->currentAlert = nil;
+    
+    MXKDocumentPickerPresenter *documentPickerPresenter = [MXKDocumentPickerPresenter new];
+    documentPickerPresenter.delegate = self;
+                                      
+    NSArray<MXKUTI*> *allowedUTIs = @[MXKUTI.data];
+    [documentPickerPresenter presentDocumentPickerWith:allowedUTIs from:self animated:YES completion:nil];
+    
+    self.documentPickerPresenter = documentPickerPresenter;
+}
 
 - (void)exportEncryptionKeys:(UITapGestureRecognizer *)recognizer
 {
@@ -1878,6 +1915,35 @@ TableViewSectionsDelegate>
 - (void)tableViewSectionsDidUpdateSections:(TableViewSections *)sections
 {
     [self.tableView reloadData];
+}
+
+#pragma mark - MXKDocumentPickerPresenterDelegate
+
+- (void)documentPickerPresenterWasCancelled:(MXKDocumentPickerPresenter *)presenter
+{
+    self.documentPickerPresenter = nil;
+}
+
+- (void)documentPickerPresenter:(MXKDocumentPickerPresenter *)presenter didPickDocumentsAt:(NSURL *)url
+{
+    self.documentPickerPresenter = nil;
+    
+    if ([MXMegolmExportEncryption isMegolmKeyFile:url])
+    {
+        // Show the keys import dialog
+        self->importView = [[MXKEncryptionKeysImportView alloc] initWithMatrixSession:self.mainSession];
+        self->currentAlert = self->importView.alertController;
+        // We have to change the signature of MXKEncryptionKeysImportView:showInViewController:toImportKeys:onComplete in the Kit,
+        // - The first param must be UIViewController <MXKViewControllerHandling> instead of MXKViewController
+        // - The onComplete block should return the error (nullable) to let the application handle it
+        [self->importView showInViewController:self toImportKeys:url onComplete:^{
+            self->currentAlert = nil;
+        }];
+    }
+    else
+    {
+        [[AppDelegate theDelegate] showAlertWithTitle: NSLocalizedStringFromTable(@"settings_crypto_import", @"Tchap", nil) message: NSLocalizedStringFromTable(@"settings_crypto_import_invalid_file", @"Tchap", nil)];
+    }
 }
 
 @end
