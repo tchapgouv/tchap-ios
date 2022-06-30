@@ -1,3 +1,19 @@
+## Changes in 2.0.2 (2022-06-30)
+
+✨ Features
+
+- Rooms in spaces aren't visible ([#549](https://github.com/tchapgouv/tchap-ios/issues/549))
+
+🙌 Improvements
+
+- [Rooms list] Make shrinkable the sections ([#495](https://github.com/tchapgouv/tchap-ios/issues/495))
+- [Nouveau salon] Fix icons for salon type ([#565](https://github.com/tchapgouv/tchap-ios/issues/565))
+
+🧱 Build
+
+- Add missing LSSupportsOpeningDocumentsInPlace key to info plist ([#590](https://github.com/tchapgouv/tchap-ios/issues/590))
+
+
 ## Changes in 2.0.1 (2022-06-22)
 
 ✨ Features
