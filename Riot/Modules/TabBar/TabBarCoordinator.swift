@@ -397,15 +397,15 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     
     // FIXME: Should be displayed from a tab.
     private func showContactDetails(with contact: MXKContact, presentationParameters: ScreenPresentationParameters) {
-//
-//        let coordinatorParameters = ContactDetailsCoordinatorParameters(contact: contact)
-//        let coordinator = ContactDetailsCoordinator(parameters: coordinatorParameters)
-//        coordinator.start()
-//        self.add(childCoordinator: coordinator)
-//
-//        self.showSplitViewDetails(with: coordinator, stackedOnSplitViewDetail: presentationParameters.stackAboveVisibleViews) { [weak self] in
-//            self?.remove(childCoordinator: coordinator)
-//        }
+
+        let coordinatorParameters = ContactDetailsCoordinatorParameters(contact: contact)
+        let coordinator = ContactDetailsCoordinator(parameters: coordinatorParameters)
+        coordinator.start()
+        self.add(childCoordinator: coordinator)
+
+        self.showSplitViewDetails(with: coordinator, stackedOnSplitViewDetail: presentationParameters.stackAboveVisibleViews) { [weak self] in
+            self?.remove(childCoordinator: coordinator)
+        }
     }
     
     // FIXME: Should be displayed from a tab.
