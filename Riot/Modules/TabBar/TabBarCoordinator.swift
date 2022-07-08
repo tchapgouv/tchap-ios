@@ -516,7 +516,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         
         self.add(childCoordinator: roomPreviewCoordinator)
         
-        self.navigationRouter.push(roomPreviewCoordinator, animated: true) { [weak self] in
+        self.showSplitViewDetails(with: roomPreviewCoordinator, stackedOnSplitViewDetail: false) { [weak self] in
             self?.remove(childCoordinator: roomPreviewCoordinator)
         }
     }
