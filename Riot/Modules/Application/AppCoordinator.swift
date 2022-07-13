@@ -201,7 +201,15 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
         self.splitViewCoordinator = splitViewCoordinator
         
         // Tchap: Add expired account management
+        self.registerAllNotifications()
+    }
+    
+    // Tchap: Add expired account management
+    private func registerAllNotifications() {
         self.registerTrackedServerErrorNotification()
+        self.registerLogoutNotification()
+        self.registerDidCorruptDataNotification()
+        self.registerIgnoredUsersDidChangeNotification()
     }
     
     private func addSideMenu() {
@@ -313,6 +321,22 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.legacyAppDelegateDidLogout, object: nil)
     }
     
+    private func registerIgnoredUsersDidChangeNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadSessionAndClearCache), name: NSNotification.Name.mxSessionIgnoredUsersDidChange, object: nil)
+    }
+    
+    private func unregisterIgnoredUsersDidChangeNotification() {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.mxSessionIgnoredUsersDidChange, object: nil)
+    }
+    
+    private func registerDidCorruptDataNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadSessionAndClearCache), name: NSNotification.Name.mxSessionDidCorruptData, object: nil)
+    }
+    
+    private func unregisterDidCorruptDataNotification() {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.mxSessionDidCorruptData, object: nil)
+    }
+    
     @objc private func handleTrackedServerError(notification: Notification) {
         guard let error = notification.userInfo?[kMXHTTPClientMatrixErrorNotificationErrorKey] as? MXError else {
             return
@@ -403,6 +427,8 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
     
     private func reloadSession(clearCache: Bool) {
         self.unregisterLogoutNotification()
+        self.unregisterIgnoredUsersDidChangeNotification()
+        self.unregisterDidCorruptDataNotification()
         self.unregisterTrackedServerErrorNotification()
         
         if let accounts = MXKAccountManager.shared().activeAccounts, !accounts.isEmpty {
@@ -422,12 +448,20 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
             }
         }
         
-        self.showSplitView()
+        self.navigate(to: .homeSpace)
+        self.registerAllNotifications()
     }
     
     @objc private func userDidLogout() {
         self.unregisterLogoutNotification()
+        self.unregisterIgnoredUsersDidChangeNotification()
+        self.unregisterDidCorruptDataNotification()
         self.unregisterTrackedServerErrorNotification()
+    }
+    
+    @objc private func reloadSessionAndClearCache() {
+        // Reload entirely the app
+        self.reloadSession(clearCache: true)
     }
     
     private func showError(_ error: Error) {

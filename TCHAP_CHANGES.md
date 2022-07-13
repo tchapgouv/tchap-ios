@@ -1,3 +1,12 @@
+## Changes in 2.0.3 (2022-07-13)
+
+🐛 Bugfixes
+
+- On reply messages, redirection to user card doesn't work when tapping on user's name ([#596](https://github.com/tchapgouv/tchap-ios/issues/596))
+- Fix SplitView issue when joining a forum on iPad ([#598](https://github.com/tchapgouv/tchap-ios/issues/598))
+- Application is frozen after renewing the account ([#615](https://github.com/tchapgouv/tchap-ios/issues/615))
+
+
 ## Changes in 2.0.2 (2022-06-30)
 
 ✨ Features
