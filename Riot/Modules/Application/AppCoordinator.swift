@@ -201,6 +201,11 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
         self.splitViewCoordinator = splitViewCoordinator
         
         // Tchap: Add expired account management
+        self.registerAllNotifications()
+    }
+    
+    // Tchap: Add expired account management
+    private func registerAllNotifications() {
         self.registerTrackedServerErrorNotification()
         self.registerLogoutNotification()
         self.registerDidCorruptDataNotification()
@@ -443,7 +448,8 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
             }
         }
         
-        self.showSplitView()
+        self.navigate(to: .homeSpace)
+        self.registerAllNotifications()
     }
     
     @objc private func userDidLogout() {
