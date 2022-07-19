@@ -519,7 +519,7 @@
 "room_action_send_sticker" = "Envoyer un autocollant";
 "room_action_send_file" = "Envoyer un fichier";
 "settings_deactivate_account" = "DÉSACTIVER LE COMPTE";
-"settings_deactivate_my_account" = "Désactiver mon compte";
+"settings_deactivate_my_account" = "Désactiver définitivement mon compte";
 "widget_sticker_picker_no_stickerpacks_alert" = "Vous n’avez aucun jeu d’autocollants activé.";
 "widget_sticker_picker_no_stickerpacks_alert_add_now" = "En ajouter maintenant ?";
 "deactivate_account_title" = "Désactiver le compte";
