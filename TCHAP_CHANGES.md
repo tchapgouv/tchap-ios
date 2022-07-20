@@ -1,3 +1,16 @@
+## Changes in 2.0.4 (2022-07-20)
+
+🙌 Improvements
+
+- Replace faq URL ([#617](https://github.com/tchapgouv/tchap-ios/issues/617))
+- Reword account deactivation button on the Settings screen. ([#624](https://github.com/tchapgouv/tchap-ios/issues/624))
+
+🐛 Bugfixes
+
+- [Room settings] Notification page still has green UI elements ([#601](https://github.com/tchapgouv/tchap-ios/issues/601))
+- Activate access by link on private room is temporary null ([#602](https://github.com/tchapgouv/tchap-ios/issues/602))
+
+
 ## Changes in 2.0.3 (2022-07-13)
 
 🐛 Bugfixes
