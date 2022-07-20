@@ -266,7 +266,11 @@ final class RoomAccessByLinkViewModel: RoomAccessByLinkViewModelType {
             let rule = room.summary.tc_roomAccessRule()
             switch response {
             case .success:
-                let link: String = Tools.permalink(toRoom: roomState.canonicalAlias)
+                guard let alias = roomState.canonicalAlias else {
+                    MXLog.debug("[RoomAccessByLinkViewModel] enableAccessByLink: roomState.canonicalAlias == nil")
+                    break
+                }
+                let link: String = Tools.permalink(toRoom: alias)
                 let isUnrestrictedRoom: Bool
                 if case .unrestricted = rule {
                     isUnrestrictedRoom = true
