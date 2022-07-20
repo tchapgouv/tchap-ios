@@ -9,6 +9,7 @@
 
 - [Room settings] Notification page still has green UI elements ([#601](https://github.com/tchapgouv/tchap-ios/issues/601))
 - Activate access by link on private room is temporary null ([#602](https://github.com/tchapgouv/tchap-ios/issues/602))
+- [Rooms List] Wrong tint color for Notification icons ([#618](https://github.com/tchapgouv/tchap-ios/issues/618))
 
 
 ## Changes in 2.0.3 (2022-07-13)
