@@ -1227,8 +1227,8 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         notificationImage = [UIImage imageNamed:@"notifications"];
     }
     
-    // Tchap: No tint needed in Tchap
-    //notificationImage = [notificationImage vc_tintedImageUsingColor:isMuted ? unselectedColor : selectedColor];
+    // Tchap: No tint needed in Tchap based on muted status
+    notificationImage = [notificationImage vc_tintedImageUsingColor:/*isMuted ? unselectedColor : */selectedColor];
     muteAction.image = [notificationImage vc_notRenderedImage];
     
     // Favorites management

@@ -130,7 +130,7 @@ final class BuildSettings: NSObject {
     // MARK: - Legal URLs
     static let applicationTermsConditionsUrlString = "https://www.tchap.gouv.fr/tac.html"
     static let clientConfigURL = "https://www.tchap.gouv.fr/client/config/agent/ios"
-    static let applicationHelpUrlString = "https://tchap.beta.gouv.fr/faq"
+    static let applicationHelpUrlString = "https://www.tchap.gouv.fr/faq"
     
     
     // MARK: - Matrix permalinks
