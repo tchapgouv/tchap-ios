@@ -60,6 +60,22 @@ def import_SwiftUI_pods
     pod 'DSBottomSheet', '~> 0.3'
 end
 
+def import_Common_pods
+    pod 'DGCollectionViewLeftAlignFlowLayout', '~> 1.0.4'
+    pod 'UICollectionViewRightAlignedLayout', '~> 0.0.3'
+    pod 'KTCenterFlowLayout', '~> 1.3.1'
+    pod 'ZXingObjC', '~> 3.6.5'
+    pod 'FlowCommoniOS', '~> 1.12.0'
+    pod 'ReadMoreTextView', '~> 3.0.1'
+    pod 'SwiftBase32', '~> 0.9.0'
+    pod 'SwiftJWT', '~> 3.6.200'
+    pod 'SideMenu', '~> 6.5'
+    pod 'DSWaveformImage', '~> 6.1.1'
+    pod 'ffmpeg-kit-ios-audio', '4.5.1'
+
+    pod 'FLEX', '~> 4.5.0', :configurations => ['Debug'], :inhibit_warnings => true
+end
+
 abstract_target 'TchapPods' do
 
   pod 'GBDeviceInfo', '~> 6.6.0'
@@ -88,19 +104,7 @@ abstract_target 'TchapPods' do
 
     import_SwiftUI_pods
 
-    pod 'DGCollectionViewLeftAlignFlowLayout', '~> 1.0.4'
-    pod 'UICollectionViewRightAlignedLayout', '~> 0.0.3'
-    pod 'KTCenterFlowLayout', '~> 1.3.1'
-    pod 'ZXingObjC', '~> 3.6.5'
-    pod 'FlowCommoniOS', '~> 1.12.0'
-    pod 'ReadMoreTextView', '~> 3.0.1'
-    pod 'SwiftBase32', '~> 0.9.0'
-    pod 'SwiftJWT', '~> 3.6.200'
-    pod 'SideMenu', '~> 6.5'
-    pod 'DSWaveformImage', '~> 6.1.1'
-    pod 'ffmpeg-kit-ios-audio', '4.5.1'
-    
-    pod 'FLEX', '~> 4.5.0', :configurations => ['Debug'], :inhibit_warnings => true
+    import_Common_pods
 
     target 'TchapTests' do
       inherit! :search_paths
@@ -112,19 +116,15 @@ abstract_target 'TchapPods' do
 
     import_SwiftUI_pods
 
-    pod 'DGCollectionViewLeftAlignFlowLayout', '~> 1.0.4'
-    pod 'UICollectionViewRightAlignedLayout', '~> 0.0.3'
-    pod 'KTCenterFlowLayout', '~> 1.3.1'
-    pod 'ZXingObjC', '~> 3.6.5'
-    pod 'FlowCommoniOS', '~> 1.12.0'
-    pod 'ReadMoreTextView', '~> 3.0.1'
-    pod 'SwiftBase32', '~> 0.9.0'
-    pod 'SwiftJWT', '~> 3.6.200'
-    pod 'SideMenu', '~> 6.5'
-    pod 'DSWaveformImage', '~> 6.1.1'
-    pod 'ffmpeg-kit-ios-audio', '4.5.1'
+    import_Common_pods
+  end
+  
+  target "DevTchap" do
+    import_MatrixSDK
 
-    pod 'FLEX', '~> 4.5.0', :configurations => ['Debug'], :inhibit_warnings => true
+    import_SwiftUI_pods
+
+    import_Common_pods
   end
     
   target "RiotShareExtension" do
