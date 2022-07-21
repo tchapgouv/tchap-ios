@@ -1,0 +1,311 @@
+name: DevTchap
+
+schemes:
+  DevTchap:
+    analyze:
+      config: Debug
+    archive:
+      config: Release
+    build:
+      targets:
+        DevTchap:
+        - running
+        - testing
+        - profiling
+        - analyzing
+        - archiving
+    profile:
+      config: Release
+    run:
+      config: Debug
+      disableMainThreadChecker: true
+    test:
+      config: Debug
+      disableMainThreadChecker: true
+      targets:
+      - TchapTests
+
+targets:
+  DevTchap:
+    type: application
+    platform: iOS
+
+    dependencies:
+    - target: RiotShareExtension
+    - target: RiotNSE
+    - target: DesignKit
+    - target: CommonKit
+
+    configFiles:
+      Debug: SupportingFiles/DevTchap-App-Debug.xcconfig
+      Release: SupportingFiles/DevTchap-App-Release.xcconfig
+
+    preBuildScripts:
+    - name: 🛠 Environment
+      runOnlyWhenInstalling: false
+      shell: /bin/sh
+      script: "\"Tools/installfiles.sh\"\n"
+    - name: ⚠️ SwiftLint
+      runOnlyWhenInstalling: false
+      shell: /bin/sh
+      script: "\"${PODS_ROOT}/SwiftLint/swiftlint\"\n"
+    - name: 🛠 SwiftGen
+      runOnlyWhenInstalling: false
+      shell: /bin/sh
+      script: "\"${PODS_ROOT}/SwiftGen/bin/swiftgen\" config run --config \"Tools/SwiftGen/swiftgen-config.yml\"\n"
+
+    settings:
+      base:
+        GCC_PREPROCESSOR_DEFINITIONS: $(inherited) ENABLE_JOIN_BY_LINK=1 ENABLE_REACTIONS=1 ENABLE_EDITION=1
+        OTHER_SWIFT_FLAGS: $(inherited) -D ENABLE_REACTIONS -D ENABLE_EDITION
+
+    sources:
+    - path: ../DevTchap/Config
+    - path: ../Config/AppConfiguration.swift
+    - path: ../Config/Project.xcconfig
+    - path: ../Config/Project-Warnings.xcconfig
+    - path: ../Config/AppIdentifiers.xcconfig
+    - path: ../Config/CommonConfiguration.swift
+    - path: ../Config/Configurable.swift
+    - path: .
+      excludes:
+        - "**/*.strings" # Exclude all strings files
+    - path: ../Tchap
+      excludes:
+        - "target.yml"
+        - "Assets/TchapSharedImages.xcassets"
+        - "Config/BuildSettings.swift"
+        - "Generated/InfoPlist.swift"
+        - "Generated/TchapDefaults.swift"
+        - "Managers/AppVersion/AppVersion.swift"
+        - "Managers/UniversalLink"
+        - "Modules/Application"
+        - "Modules/Common/ActivityIndicator"
+        - "Modules/Home/HomeCoordinator.swift"
+        - "Modules/Home/HomeCoordinatorType.swift"
+        - "Modules/Room/DiscussionDetailsCoordinator.swift"
+        - "Modules/Room/RoomCoordinator.swift"
+        - "Modules/Room/RoomDetailsCoordinator.swift"
+        - "Modules/Room/RoomDetailsCoordinatorType.swift"
+        - "Modules/Room/RoomViewController.*"
+        - "Modules/Room/EmojiPicker/Data/EmojiMart/EmojiJSONStore.swift"
+        - "Modules/Room/Members/Detail/RoomMemberDetailsViewController.xib"
+        - "Modules/Room/Members/Detail/Views/RoomMemberTitleView.*"
+        - "Modules/Room/Settings/RoomSettingsViewController.*"
+        - "Modules/Room/Views/BubbleCells"
+        # - "Modules/Room/Views/BubbleCells/KeyVerification"
+        - "Modules/Room/Views/InputToolbar/RoomInputToolbarView.*"
+        - "Modules/Room/Views/Preview"
+        - "Modules/Room/Views/Title/RoomTitleView.*"
+        - "Modules/Rooms"
+        - "Routers"
+        - "SupportingFiles/Info.plist"
+        # - "TchapTools"
+        - "**/*.strings" # Exclude all strings files
+        - "**/*.cer"
+    - path: ../Tchap/Generated/Images_Riot.swift
+    - path: ../Tchap/Modules/Application/VersionUpdate
+    - path: ../Tchap/Modules/Room/Views/BubbleCells/Antivirus
+
+
+    # Add separately localizable files
+    - path: ../Tchap/Assets/Localizations/fr.lproj/Tchap.strings
+    - path: ../Tchap/Assets/Localizations/fr.lproj/Tchap.stringsdict
+    
+    # Riot
+    - path: ../Riot/Assets/apple_emojis_data.json
+    - path: ../Riot/Assets/Base.lproj/LaunchScreen.storyboard
+    - path: ../Riot/Assets/Base.lproj/Main.storyboard
+    - path: ../Riot/Assets/Images.xcassets
+    - path: ../Riot/Assets/SharedImages.xcassets
+    - path: ../Riot/Assets/js
+    - path: ../Riot/Assets/Sounds
+    - path: ../Riot/Assets/third_party_licenses.html
+    - path: ../Riot/Categories
+      excludes:
+        - "MXHTTPClient+Async.swift"
+        - "MXRestClient+Async.swift"
+    - path: ../Riot/Generated/UntranslatedStrings.swift
+    - path: ../Riot/Generated/Vector_Strings.swift
+    - path: ../Riot/Managers/AppInfo
+    - path: ../Riot/Managers/BugReport
+    - path: ../Riot/Managers/Call/AsyncOperation.swift
+    - path: ../Riot/Managers/EncryptionKeyManager/EncryptionKeyManager.swift
+    - path: ../Riot/Managers/KeyValueStorage
+    - path: ../Riot/Managers/Locale
+    - path: ../Riot/Managers/Logging
+    - path: ../Riot/Managers/Room/RoomIdComponents.swift
+    - path: ../Riot/Managers/RoomMessageLinkParser/RoomMessageURLParser.swift
+    - path: ../Riot/Managers/PasswordStrength
+    - path: ../Riot/Managers/PushNotification
+    - path: ../Riot/Managers/Settings/RiotSettings.swift
+    - path: ../Riot/Managers/Settings/Shared
+    - path: ../Riot/Managers/Theme
+    - path: ../Riot/Managers/URLPreviews
+    - path: ../Riot/Managers/UserSessions
+    - path: ../Riot/Managers/Widgets
+    - path: ../Riot/Model/Contact
+    - path: ../Riot/Model/HomeserverConfiguration
+    - path: ../Riot/Model/Room/RoomEmailInvitation.h
+    - path: ../Riot/Model/Room/RoomEmailInvitation.m
+    - path: ../Riot/Model/Room/RoomPowerLevel.swift
+    - path: ../Riot/Model/Room/RoomPreviewData.h
+    - path: ../Riot/Model/Room/RoomPreviewData.m
+    - path: ../Riot/Model/WellKnown
+    - path: ../Riot/Modules/Analytics
+    - path: ../Riot/Modules/Application
+    - path: ../Riot/Modules/Authentication/SSO
+    - path: ../Riot/Modules/Authentication/Views
+    - path: ../Riot/Modules/BadgeLabel
+    - path: ../Riot/Modules/BugReport/BugReportViewController.h
+    - path: ../Riot/Modules/BugReport/BugReportViewController.m
+    - path: ../Riot/Modules/Call/CallViewController.h
+    - path: ../Riot/Modules/Call/CallViewController.m
+    - path: ../Riot/Modules/Call/Views/CircleButton.h
+    - path: ../Riot/Modules/Call/Views/CircleButton.m
+    - path: ../Riot/Modules/Call/Views/IncomingCallView.h
+    - path: ../Riot/Modules/Call/Views/IncomingCallView.m
+    - path: ../Riot/Modules/Camera
+    - path: ../Riot/Modules/Common/ActivityIndicator
+    - path: ../Riot/Modules/Common/Avatar
+    - path: ../Riot/Modules/Common/Buttons
+    - path: ../Riot/Modules/Common/Cells
+    - path: ../Riot/Modules/Common/CoachMessages
+    - path: ../Riot/Modules/Common/CollectionView
+    - path: ../Riot/Modules/Common/Models
+    - path: ../Riot/Modules/Common/NavigationController/RiotNavigationController.h
+    - path: ../Riot/Modules/Common/NavigationController/RiotNavigationController.m
+    - path: ../Riot/Modules/Common/PresenceIndicator
+    - path: ../Riot/Modules/Common/Recents/DataSources
+    - path: ../Riot/Modules/Common/Recents/Model/RecentCellData.h
+    - path: ../Riot/Modules/Common/Recents/Model/RecentCellData.m
+    - path: ../Riot/Modules/Common/Recents/RecentsViewController.h
+    - path: ../Riot/Modules/Common/Recents/RecentsViewController.m
+    - path: ../Riot/Modules/Common/Recents/Model
+    - path: ../Riot/Modules/Common/Recents/Service
+    - path: ../Riot/Modules/Common/Recents/Views
+    - path: ../Riot/Modules/Common/Recents/RecentsViewController+RoomInvite.swift
+    - path: ../Riot/Modules/Common/SectionHeaders
+    - path: ../Riot/Modules/Common/SegmentedViewController/SegmentedViewController.h
+    - path: ../Riot/Modules/Common/SegmentedViewController/SegmentedViewController.m
+    - path: ../Riot/Modules/Common/SwiftUI
+    - path: ../Riot/Modules/Common/Toasts
+    - path: ../Riot/Modules/Common/UserIndicators
+    - path: ../Riot/Modules/Common/Views
+    - path: ../Riot/Modules/Common/WebViewController
+    - path: ../Riot/Modules/Contacts
+    - path: ../Riot/Modules/CreateRoom
+    - path: ../Riot/Modules/CrossSigning
+    - path: ../Riot/Modules/DeepLink
+    - path: ../Riot/Modules/DotsView
+    - path: ../Riot/Modules/EncryptionInfo/EncryptionInfoView.h
+    - path: ../Riot/Modules/EncryptionInfo/EncryptionInfoView.m
+    - path: ../Riot/Modules/Favorites
+    - path: ../Riot/Modules/Home/Fallback
+    - path: ../Riot/Modules/Home/Views
+    - path: ../Riot/Modules/GDPR
+    - path: ../Riot/Modules/GlobalSearch/Files/CellData/FilesSearchCellData.h
+    - path: ../Riot/Modules/GlobalSearch/Files/CellData/FilesSearchCellData.m
+    - path: ../Riot/Modules/GlobalSearch/Files/Views/FilesSearchTableViewCell.h
+    - path: ../Riot/Modules/GlobalSearch/Files/Views/FilesSearchTableViewCell.m
+    - path: ../Riot/Modules/GlobalSearch/Views
+    - path: ../Riot/Modules/Integrations
+    - path: ../Riot/Modules/KeyBackup
+    - path: ../Riot/Modules/KeyVerification
+    - path: ../Riot/Modules/LaunchLoading
+    - path: ../Riot/Modules/MatrixKit
+    - path: ../Riot/Modules/MediaPicker
+    - path: ../Riot/Modules/MediaPickerV2
+    - path: ../Riot/Modules/People
+    - path: ../Riot/Modules/Pills
+    - path: ../Riot/Modules/PublicRoomList
+    - path: ../Riot/Modules/QRCode
+    - path: ../Riot/Modules/Reauthentication
+    - path: ../Riot/Modules/Room
+      excludes:
+        - "DataSources/ThreadDataSource.swift"
+        - "Location"
+        - "RoomViewController+LocationSharing.swift"
+        - "TimelineCells/Styles/Plain/Cells/Location"
+        - "TimelineCells/Styles/Plain/Cells/Poll"
+        - "TimelineCells/Styles/Bubble/Cells/Location"
+        - "TimelineCells/Styles/Bubble/Cells/Poll"
+        - "TimelineDecorations/Threads"
+        - "Views/BubbleCells/KeyVerification/SizingViewHeight.swift"
+        - "Views/BubbleCells/Location"
+        - "Views/BubbleCells/Poll"
+        - "Views/Title/Thread"
+    - path: ../Riot/Modules/RoomKeyRequest/RoomKeyRequestViewController.h
+    - path: ../Riot/Modules/RoomKeyRequest/RoomKeyRequestViewController.m
+    - path: ../Riot/Modules/Rooms
+    - path: ../Riot/Modules/Secrets
+    - path: ../Riot/Modules/SecureBackup
+    - path: ../Riot/Modules/ServiceTerms
+    - path: ../Riot/Modules/SideMenu
+    - path: ../Riot/Modules/SlidingModal
+    - path: ../Riot/Modules/SplitView
+    - path: ../Riot/Modules/TabBar
+    - path: ../Riot/Modules/User/Avatar
+    - path: ../Riot/Modules/UserDevices/UsersDevicesViewController.h
+    - path: ../Riot/Modules/UserDevices/UsersDevicesViewController.m
+    - path: ../Riot/Modules/UserDevices/Views/DeviceTableViewCell.h
+    - path: ../Riot/Modules/UserDevices/Views/DeviceTableViewCell.m
+    - path: ../Riot/Modules/UserInteractiveAuthentication
+    - path: ../Riot/PropertyWrappers
+    - path: ../Riot/Routers
+    - path: ../Riot/Utils
+
+    # Riot SwiftUI
+    - path: ../RiotSwiftUI/Modules
+      # Riot will provide it's own LocaleProviderType so exclude.
+      excludes:
+      - "**/Test/**"
+      - "Authentication/**/Coordinator/**"
+      - "Authentication/Common/Service/MatrixSDK/AuthenticationPendingData.swift"
+      - "Authentication/Common/Service/MatrixSDK/AuthenticationService.swift"
+      - "Authentication/Common/Service/MatrixSDK/AuthenticationState.swift"
+      - "Authentication/Common/Service/MatrixSDK/RegistrationModels.swift"
+      - "Authentication/Common/Service/MatrixSDK/RegistrationWizard.swift"
+      - "Authentication/Common/Service/MatrixSDK/ThreePIDModels.swift"
+      - "Authentication/Registration"
+      - "Authentication/ServerSelection"
+      - "Common/Locale/LocaleProvider.swift"
+      - "Room/LiveLocationSharingViewer"
+      - "Room/LocationSharing"
+      - "Room/StaticLocationSharingViewer"
+
+    # Share extension
+    - path: ../RiotShareExtension/Shared
+    - path: ../RiotShareExtension/Sources/ShareItemProtocol.swift
+    - path: ../RiotShareExtension/Sources/ShareItemSender.h
+    - path: ../RiotShareExtension/Sources/ShareItemSender.m
+    
+    # Resources
+    - path: ../Riot/Assets/en.lproj/InfoPlist.strings
+      buildPhase: resources
+    - path: ../Riot/Assets/en.lproj/Localizable.strings
+      buildPhase: resources
+    - path: ../Riot/Assets/en.lproj/Vector.strings
+      buildPhase: resources
+    - path: ../Riot/Assets/fr.lproj/InfoPlist.strings
+      buildPhase: resources
+    - path: ../Riot/Assets/fr.lproj/Localizable.strings
+      buildPhase: resources
+    - path: ../Riot/Assets/fr.lproj/Vector.strings
+      buildPhase: resources
+    - path: ../Riot/Modules/BugReport/BugReportViewController.xib
+      buildPhase: resources
+    - path: ../Riot/Modules/Call/CallViewController.xib
+      buildPhase: resources
+    - path: ../Riot/Modules/Common/Cells/TableViewCellWithButton.xib
+      buildPhase: resources
+    - path: ../Riot/Modules/Common/Recents/RecentsViewController.xib
+      buildPhase: resources
+    - path: ../Riot/Modules/Common/SegmentedViewController/SegmentedViewController.xib
+      buildPhase: resources
+    - path: ../Riot/Modules/EncryptionInfo/EncryptionInfoView.xib
+      buildPhase: resources
+    - path: ../Riot/Modules/GlobalSearch/Files/Views/FilesSearchTableViewCell.xib
+      buildPhase: resources
+    - path: ../Riot/Modules/UserDevices/Views/DeviceTableViewCell.xib
+      buildPhase: resources

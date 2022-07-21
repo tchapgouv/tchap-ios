@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>appLanguage</key>
+	<string>fr</string>
+	<key>matrixApps</key>
+	<false/>
+	<key>showAllEventsInRoomHistory</key>
+	<false/>
+	<key>showRedactionsInRoomHistory</key>
+	<false/>
+	<key>showUnsupportedEventsInRoomHistory</key>
+	<false/>
+	<key>sortRoomMembersUsingLastSeenTime</key>
+	<false/>
+	<key>showLeftMembersInRoomMemberList</key>
+	<false/>
+	<key>syncLocalContacts</key>
+	<false/>
+	<key>enableRageShake</key>
+	<false/>
+	<key>maxAllowedMediaCacheSize</key>
+	<integer>1073741824</integer>
+</dict>
+</plist>
