@@ -102,5 +102,6 @@ extension PublicRoomsCell: Themable {
         self.domainLabel.textColor = theme.textTertiaryColor
         
         self.avatarView?.defaultBackgroundColor = UIColor.clear
+        self.backgroundColor = theme.backgroundColor
     }
 }
