@@ -94,10 +94,11 @@ NSString *const kThemeServiceDidChangeThemeNotification = @"kThemeServiceDidChan
 
 - (BOOL)isCurrentThemeDark
 {
-    if ([self.theme.identifier isEqualToString:@"dark"] || [self.theme.identifier isEqualToString:@"black"])
-    {
-        return YES;
-    }
+    // Tchap: Temporary disable other themes
+//    if ([self.theme.identifier isEqualToString:@"dark"] || [self.theme.identifier isEqualToString:@"black"])
+//    {
+//        return YES;
+//    }
     
     return NO;
 }
