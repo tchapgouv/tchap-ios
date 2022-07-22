@@ -36,6 +36,7 @@ final class RegistrationEmailSentViewController: UIViewController {
     // MARK: Private
     
     private var userEmail: String!
+    private var theme: Theme!
     
     // MARK: Public
     
@@ -58,12 +59,10 @@ final class RegistrationEmailSentViewController: UIViewController {
         self.title = TchapL10n.registrationTitle
         
         self.setupViews()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         
-        self.userThemeDidChange()
+        self.registerThemeServiceDidChangeThemeNotification()
+        self.theme = ThemeService.shared().theme
+        self.update(theme: self.theme)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -84,8 +83,12 @@ final class RegistrationEmailSentViewController: UIViewController {
         self.emailNotReceivedButton.setTitle(TchapL10n.registrationEmailNotReceivedAction, for: .normal)
     }
     
-    private func userThemeDidChange() {
-        self.updateTheme()
+    private func registerThemeServiceDidChangeThemeNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(themeDidChange), name: .themeServiceDidChangeTheme, object: nil)
+    }
+    
+    @objc private func themeDidChange() {
+        self.update(theme: ThemeService.shared().theme)
     }
     
     // MARK: - Actions
@@ -101,18 +104,20 @@ final class RegistrationEmailSentViewController: UIViewController {
 
 // MARK: - Theme
 private extension RegistrationEmailSentViewController {
-    func updateTheme() {
-        self.view.backgroundColor = ThemeService.shared().theme.backgroundColor
+    private func update(theme: Theme) {
+        self.theme = theme
+        
+        self.view.backgroundColor = theme.backgroundColor
         
         if let navigationBar = self.navigationController?.navigationBar {
-            ThemeService.shared().theme.applyStyle(onNavigationBar: navigationBar)
+            theme.applyStyle(onNavigationBar: navigationBar)
         }
         
-        self.emailSentInfoLabel.textColor = ThemeService.shared().theme.textTertiaryColor
-        self.userEmailLabel.textColor = ThemeService.shared().theme.textSecondaryColor
-        self.userInstructionsLabel.textColor = ThemeService.shared().theme.textTertiaryColor
+        self.emailSentInfoLabel.textColor = theme.textTertiaryColor
+        self.userEmailLabel.textColor = theme.textSecondaryColor
+        self.userInstructionsLabel.textColor = theme.textTertiaryColor
         
-        ThemeService.shared().theme.applyStyle(onButton: self.goToLoginButton)
-        ThemeService.shared().theme.applyStyle(onButton: self.emailNotReceivedButton)
+        theme.applyStyle(onButton: self.goToLoginButton)
+        theme.applyStyle(onButton: self.emailNotReceivedButton)
     }
 }

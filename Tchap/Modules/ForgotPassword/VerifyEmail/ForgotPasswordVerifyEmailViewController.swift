@@ -32,6 +32,7 @@ final class ForgotPasswordVerifyEmailViewController: UIViewController {
     // MARK: Private
     
     private var userEmail: String!
+    private var theme: Theme!
     
     // MARK: Public
     
@@ -54,12 +55,10 @@ final class ForgotPasswordVerifyEmailViewController: UIViewController {
         self.title = TchapL10n.forgotPasswordTitle
         
         self.setupViews()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         
-        self.userThemeDidChange()
+        self.registerThemeServiceDidChangeThemeNotification()
+        self.theme = ThemeService.shared().theme
+        self.update(theme: self.theme)
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -75,12 +74,20 @@ final class ForgotPasswordVerifyEmailViewController: UIViewController {
     // MARK: - Private
     
     private func setupViews() {
-        self.instructionsLabel.text = TchapL10n.forgotPasswordVerifyEmailInstructions(self.userEmail)
         self.confirmationButton.setTitle(TchapL10n.forgotPasswordVerifyEmailConfirmationAction, for: .normal)
+
+        guard let userEmail = self.userEmail else {
+            return
+        }
+        self.instructionsLabel.text = TchapL10n.forgotPasswordVerifyEmailInstructions(userEmail)
     }
     
-    private func userThemeDidChange() {
-        self.updateTheme()
+    private func registerThemeServiceDidChangeThemeNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(themeDidChange), name: .themeServiceDidChangeTheme, object: nil)
+    }
+    
+    @objc private func themeDidChange() {
+        self.update(theme: ThemeService.shared().theme)
     }
     
     // MARK: - Actions
@@ -92,15 +99,17 @@ final class ForgotPasswordVerifyEmailViewController: UIViewController {
 
 // MARK: - Theme
 private extension ForgotPasswordVerifyEmailViewController {
-    func updateTheme() {
-        self.view.backgroundColor = ThemeService.shared().theme.backgroundColor
+    private func update(theme: Theme) {
+        self.theme = theme
+        
+        self.view.backgroundColor = theme.backgroundColor
         
         if let navigationBar = self.navigationController?.navigationBar {
-            ThemeService.shared().theme.applyStyle(onNavigationBar: navigationBar)
+            theme.applyStyle(onNavigationBar: navigationBar)
         }
         
-        self.instructionsLabel.textColor = ThemeService.shared().theme.textSecondaryColor
+        self.instructionsLabel.textColor = theme.textSecondaryColor
         
-        ThemeService.shared().theme.applyStyle(onButton: self.confirmationButton)
+        theme.applyStyle(onButton: self.confirmationButton)
     }
 }

@@ -40,6 +40,7 @@ final class RegistrationFormViewController: UIViewController {
     private var viewModel: RegistrationFormViewModelType!
     private var errorPresenter: ErrorPresenter?
     private var keyboardAvoider: KeyboardAvoider?
+    private var theme: Theme!
     
     // MARK: Public
     
@@ -64,12 +65,15 @@ final class RegistrationFormViewController: UIViewController {
         self.setupViews()
         self.errorPresenter = AlertErrorPresenter(viewControllerPresenter: self)
         self.keyboardAvoider = KeyboardAvoider(scrollViewContainerView: self.view, scrollView: self.scrollView)
+        
+        self.registerThemeServiceDidChangeThemeNotification()
+        self.theme = ThemeService.shared().theme
+        self.update(theme: self.theme)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.userThemeDidChange()
         self.keyboardAvoider?.startAvoiding()
     }
     
@@ -130,8 +134,12 @@ final class RegistrationFormViewController: UIViewController {
         self.termsFormCheckBox.delegate = self
     }
     
-    private func userThemeDidChange() {
-        self.updateTheme()
+    private func registerThemeServiceDidChangeThemeNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(themeDidChange), name: .themeServiceDidChangeTheme, object: nil)
+    }
+    
+    @objc private func themeDidChange() {
+        self.update(theme: ThemeService.shared().theme)
     }
     
     private func hideConfirmPasswordTextField(_ hide: Bool) {
@@ -159,18 +167,20 @@ final class RegistrationFormViewController: UIViewController {
 
 // MARK: - Theme
 private extension RegistrationFormViewController {
-    func updateTheme() {
-        self.view.backgroundColor = ThemeService.shared().theme.backgroundColor
+    private func update(theme: Theme) {
+        self.theme = theme
+        
+        self.view.backgroundColor = theme.backgroundColor
         
         if let navigationBar = self.navigationController?.navigationBar {
-            ThemeService.shared().theme.applyStyle(onNavigationBar: navigationBar)
+            theme.applyStyle(onNavigationBar: navigationBar)
         }
         
         for formTextField in self.formTextFields {
-            formTextField.update(theme: ThemeService.shared().theme)
+            formTextField.update(theme: theme)
         }
         
-        self.termsFormCheckBox.update(theme: ThemeService.shared().theme)
+        self.termsFormCheckBox.update(theme: theme)
     }
 }
 

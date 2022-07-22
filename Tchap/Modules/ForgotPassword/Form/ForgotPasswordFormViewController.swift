@@ -37,6 +37,7 @@ final class ForgotPasswordFormViewController: UIViewController {
     private var errorPresenter: ErrorPresenter?
     private var keyboardAvoider: KeyboardAvoider?
     private var formTextFields: [FormTextField] = []
+    private var theme: Theme!
     
     // MARK: Public
     
@@ -61,12 +62,15 @@ final class ForgotPasswordFormViewController: UIViewController {
         self.setupViews()
         self.errorPresenter = AlertErrorPresenter(viewControllerPresenter: self)
         self.keyboardAvoider = KeyboardAvoider(scrollViewContainerView: self.view, scrollView: self.scrollView)
+        
+        self.registerThemeServiceDidChangeThemeNotification()
+        self.theme = ThemeService.shared().theme
+        self.update(theme: self.theme)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.userThemeDidChange()
         self.keyboardAvoider?.startAvoiding()
     }
     
@@ -118,8 +122,12 @@ final class ForgotPasswordFormViewController: UIViewController {
         self.formTextFields = formTextFields
     }
     
-    private func userThemeDidChange() {
-        self.updateTheme()
+    private func registerThemeServiceDidChangeThemeNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(themeDidChange), name: .themeServiceDidChangeTheme, object: nil)
+    }
+    
+    @objc private func themeDidChange() {
+        self.update(theme: ThemeService.shared().theme)
     }
     
     private func hideConfirmPasswordTextField(_ hide: Bool) {
@@ -151,19 +159,21 @@ final class ForgotPasswordFormViewController: UIViewController {
 
 // MARK: - Theme
 private extension ForgotPasswordFormViewController {
-    func updateTheme() {
-        self.view.backgroundColor = ThemeService.shared().theme.backgroundColor
-        self.instructionsLabel.textColor = ThemeService.shared().theme.textSecondaryColor
+    private func update(theme: Theme) {
+        self.theme = theme
+        
+        self.view.backgroundColor = theme.backgroundColor
+        self.instructionsLabel.textColor = theme.textSecondaryColor
         
         if let navigationBar = self.navigationController?.navigationBar {
-            ThemeService.shared().theme.applyStyle(onNavigationBar: navigationBar)
+            theme.applyStyle(onNavigationBar: navigationBar)
         }
         
         for formTextField in self.formTextFields {
-            formTextField.update(theme: ThemeService.shared().theme)
+            formTextField.update(theme: theme)
         }
         
-        ThemeService.shared().theme.applyStyle(onButton: self.sendEmailButton)
+        theme.applyStyle(onButton: self.sendEmailButton)
     }
 }
 
