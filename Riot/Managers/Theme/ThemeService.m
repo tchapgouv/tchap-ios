@@ -60,33 +60,34 @@ NSString *const kThemeServiceDidChangeThemeNotification = @"kThemeServiceDidChan
 {
     id<Theme> theme;
     
-    if (themeId == nil || [themeId isEqualToString:@"auto"])
-    {
-        if (@available(iOS 13, *))
-        {
-            // Translate "auto" into a theme with UITraitCollection
-            themeId = ([UITraitCollection currentTraitCollection].userInterfaceStyle == UIUserInterfaceStyleDark) ? @"dark" : @"light";
-        }
-        else
-        {
-            // Translate "auto" into a theme
-            themeId = UIAccessibilityIsInvertColorsEnabled() ? @"dark" : @"light";
-        }
-    }
-
-    if ([themeId isEqualToString:@"dark"])
-    {
-        theme = [DarkTheme new];
-    }
-    else if ([themeId isEqualToString:@"black"])
-    {
-        theme = [BlackTheme new];
-    }
-    else
-    {
+    // Tchap: Temporary disable other themes
+//    if (themeId == nil || [themeId isEqualToString:@"auto"])
+//    {
+//        if (@available(iOS 13, *))
+//        {
+//            // Translate "auto" into a theme with UITraitCollection
+//            themeId = ([UITraitCollection currentTraitCollection].userInterfaceStyle == UIUserInterfaceStyleDark) ? @"dark" : @"light";
+//        }
+//        else
+//        {
+//            // Translate "auto" into a theme
+//            themeId = UIAccessibilityIsInvertColorsEnabled() ? @"dark" : @"light";
+//        }
+//    }
+//
+//    if ([themeId isEqualToString:@"dark"])
+//    {
+//        theme = [DarkTheme new];
+//    }
+//    else if ([themeId isEqualToString:@"black"])
+//    {
+//        theme = [BlackTheme new];
+//    }
+//    else
+//    {
         // Use light theme by default
         theme = [DefaultTheme new];
-    }
+//    }
 
     return theme;
 }
