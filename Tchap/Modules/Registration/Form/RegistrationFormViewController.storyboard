@@ -11,7 +11,7 @@
         <!--Registration Form View Controller-->
         <scene sceneID="uJZ-Xy-B4t">
             <objects>
-                <viewController id="bef-oF-ghx" customClass="RegistrationFormViewController" customModule="Btchap" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="bef-oF-ghx" customClass="RegistrationFormViewController" customModule="Tchap" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="kgP-bv-9J2">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -25,28 +25,28 @@
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="40" translatesAutoresizingMaskIntoConstraints="NO" id="bLi-EL-oeu">
                                                 <rect key="frame" x="20" y="50" width="335" height="320"/>
                                                 <subviews>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5So-lp-yD1" customClass="FormTextField" customModule="Btchap" customModuleProvider="target">
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5So-lp-yD1" customClass="FormTextField" customModule="Tchap" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="0.0" width="335" height="50"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" priority="250" constant="50" placeholder="YES" id="zrG-6L-fdw"/>
                                                         </constraints>
                                                     </view>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jlf-ul-nfL" customClass="FormTextField" customModule="Btchap" customModuleProvider="target">
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jlf-ul-nfL" customClass="FormTextField" customModule="Tchap" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="90" width="335" height="50"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" priority="250" constant="50" placeholder="YES" id="moC-TZ-FMA"/>
                                                         </constraints>
                                                     </view>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uiG-Fk-Yga" customClass="FormTextField" customModule="Btchap" customModuleProvider="target">
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uiG-Fk-Yga" customClass="FormTextField" customModule="Tchap" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="180" width="335" height="50"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" priority="250" constant="50" placeholder="YES" id="tXM-MA-Of1"/>
                                                         </constraints>
                                                     </view>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="moE-h5-F3n" customClass="FormCheckBox" customModule="Btchap" customModuleProvider="target">
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="moE-h5-F3n" customClass="FormCheckBox" customModule="Tchap" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="270" width="335" height="50"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <constraints>
