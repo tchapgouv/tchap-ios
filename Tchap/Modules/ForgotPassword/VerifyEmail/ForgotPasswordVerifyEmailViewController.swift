@@ -74,8 +74,12 @@ final class ForgotPasswordVerifyEmailViewController: UIViewController {
     // MARK: - Private
     
     private func setupViews() {
-        self.instructionsLabel.text = TchapL10n.forgotPasswordVerifyEmailInstructions(self.userEmail)
         self.confirmationButton.setTitle(TchapL10n.forgotPasswordVerifyEmailConfirmationAction, for: .normal)
+        
+        guard let email = self.userEmail else {
+            return
+        }
+        self.instructionsLabel.text = TchapL10n.forgotPasswordVerifyEmailInstructions(email)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
