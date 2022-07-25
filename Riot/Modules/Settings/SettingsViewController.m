@@ -313,6 +313,7 @@ ThreadsBetaCoordinatorBridgePresenterDelegate*/>
 
 @property (nonatomic, strong) UserInteractiveAuthenticationService *userInteractiveAuthenticationService;
 
+// Tchap: Threads are disabled
 //@property (nonatomic, strong) ThreadsBetaCoordinatorBridgePresenter *threadsBetaBridgePresenter;
 
 /**
