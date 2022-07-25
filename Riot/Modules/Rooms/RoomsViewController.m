@@ -62,10 +62,6 @@
     plusButtonImageView = [self vc_addFABWithImage:AssetImages.roomsFloatingAction.image
                                             target:self
                                             action:@selector(onPlusButtonPressed)];
-    
-    // Tchap: Hide plus button if needed (is external user)
-    NSString *userID = [UserSessionsService shared].mainUserSession.userId;
-    [plusButtonImageView setHidden:[UserService isExternalUserFor:userID]];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -88,6 +84,10 @@
             [self.recentsSearchBar setText:nil];
         }
     }
+
+    // Tchap: Hide plus button if needed (is external user)
+    NSString *userID = [UserSessionsService shared].mainUserSession.userId;
+    [plusButtonImageView setHidden:[UserService isExternalUserFor:userID]];
 }
 
 - (void)destroy

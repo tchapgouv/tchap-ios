@@ -1,3 +1,12 @@
+## Changes in 2.0.5 (2022-07-25)
+
+🐛 Bugfixes
+
+- [Room List] Create discussion button is missing in the people tab ([#607](https://github.com/tchapgouv/tchap-ios/issues/607))
+- [Reset pwd] unexpected "Optional" word in the message displayed ([#609](https://github.com/tchapgouv/tchap-ios/issues/609))
+- Fix dark mode for welcome, login, registration and forgot password screens ([#628](https://github.com/tchapgouv/tchap-ios/issues/628))
+
+
 ## Changes in 2.0.4 (2022-07-20)
 
 🙌 Improvements
@@ -9,6 +18,7 @@
 
 - [Room settings] Notification page still has green UI elements ([#601](https://github.com/tchapgouv/tchap-ios/issues/601))
 - Activate access by link on private room is temporary null ([#602](https://github.com/tchapgouv/tchap-ios/issues/602))
+- [Rooms List] Wrong tint color for Notification icons ([#618](https://github.com/tchapgouv/tchap-ios/issues/618))
 
 
 ## Changes in 2.0.3 (2022-07-13)

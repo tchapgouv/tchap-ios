@@ -31,6 +31,8 @@ final class ForgotPasswordCheckedEmailViewController: UIViewController {
     
     // MARK: Private
     
+    private var theme: Theme!
+    
     // MARK: Public
     
     weak var delegate: ForgotPasswordCheckedEmailViewControllerDelegate?
@@ -50,14 +52,16 @@ final class ForgotPasswordCheckedEmailViewController: UIViewController {
         self.title = TchapL10n.forgotPasswordTitle
         
         self.setupViews()
+        
+        self.registerThemeServiceDidChangeThemeNotification()
+        self.theme = ThemeService.shared().theme
+        self.update(theme: self.theme)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         self.navigationItem.setHidesBackButton(true, animated: animated)
-        
-        self.userThemeDidChange()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -71,8 +75,12 @@ final class ForgotPasswordCheckedEmailViewController: UIViewController {
         self.doneButton.setTitle(TchapL10n.forgotPasswordCheckedEmailDoneAction, for: .normal)
     }
     
-    private func userThemeDidChange() {
-        self.updateTheme()
+    private func registerThemeServiceDidChangeThemeNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(themeDidChange), name: .themeServiceDidChangeTheme, object: nil)
+    }
+    
+    @objc private func themeDidChange() {
+        self.update(theme: ThemeService.shared().theme)
     }
     
     // MARK: - Actions
@@ -84,15 +92,17 @@ final class ForgotPasswordCheckedEmailViewController: UIViewController {
 
 // MARK: - Theme
 private extension ForgotPasswordCheckedEmailViewController {
-    func updateTheme() {
-        self.view.backgroundColor = ThemeService.shared().theme.backgroundColor
+    private func update(theme: Theme) {
+        self.theme = theme
+        
+        self.view.backgroundColor = theme.backgroundColor
         
         if let navigationBar = self.navigationController?.navigationBar {
-            ThemeService.shared().theme.applyStyle(onNavigationBar: navigationBar)
+            theme.applyStyle(onNavigationBar: navigationBar)
         }
         
-        self.instructionsLabel.textColor = ThemeService.shared().theme.textSecondaryColor
+        self.instructionsLabel.textColor = theme.textSecondaryColor
         
-        ThemeService.shared().theme.applyStyle(onButton: self.doneButton)
+        theme.applyStyle(onButton: self.doneButton)
     }
 }

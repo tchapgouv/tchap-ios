@@ -73,10 +73,6 @@
     plusButtonImageView = [self vc_addFABWithImage:fabImage
                                             target:self
                                             action:@selector(onPlusButtonPressed)];
-    
-    // Tchap: Hide plus button if needed (is external user)
-    NSString *userID = [UserSessionsService shared].mainUserSession.userId;
-    [plusButtonImageView setHidden:[UserService isExternalUserFor:userID]];
 }
 
 - (void)didReceiveMemoryWarning
@@ -105,6 +101,10 @@
             [self.recentsSearchBar setText:nil];
         }
     }
+    
+    // Tchap: Hide plus button if needed (is external user)
+    NSString *userID = [UserSessionsService shared].mainUserSession.userId;
+    [plusButtonImageView setHidden:[UserService isExternalUserFor:userID]];
 }
 
 #pragma mark - UITableView delegate

@@ -37,6 +37,7 @@ final class AuthenticationViewController: UIViewController {
     private var viewModel: AuthenticationViewModelType!
     private var errorPresenter: ErrorPresenter?
     private var keyboardAvoider: KeyboardAvoider?
+    private var theme: Theme!
     
     // MARK: Public
     
@@ -61,12 +62,15 @@ final class AuthenticationViewController: UIViewController {
         self.setupViews()
         self.errorPresenter = AlertErrorPresenter(viewControllerPresenter: self)
         self.keyboardAvoider = KeyboardAvoider(scrollViewContainerView: self.view, scrollView: self.scrollView)
+        
+        self.registerThemeServiceDidChangeThemeNotification()
+        self.theme = ThemeService.shared().theme
+        self.update(theme: self.theme)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.userThemeDidChange()
         self.keyboardAvoider?.startAvoiding()
     }
     
@@ -110,8 +114,12 @@ final class AuthenticationViewController: UIViewController {
         self.passwordFormTextField.delegate = self
     }
     
-    private func userThemeDidChange() {
-        self.updateTheme()
+    private func registerThemeServiceDidChangeThemeNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(themeDidChange), name: .themeServiceDidChangeTheme, object: nil)
+    }
+    
+    @objc private func themeDidChange() {
+        self.update(theme: ThemeService.shared().theme)
     }
     
     // MARK: - Actions
@@ -136,17 +144,19 @@ final class AuthenticationViewController: UIViewController {
 
 // MARK: - Theme
 private extension AuthenticationViewController {
-    func updateTheme() {
-        self.view.backgroundColor = ThemeService.shared().theme.backgroundColor
+    private func update(theme: Theme) {
+        self.theme = theme
         
-        ThemeService.shared().theme.applyStyle(onButton: self.forgotPasswordButton)
+        self.view.backgroundColor = theme.backgroundColor
+        
+        theme.applyStyle(onButton: self.forgotPasswordButton)
         
         if let navigationBar = self.navigationController?.navigationBar {
-            ThemeService.shared().theme.applyStyle(onNavigationBar: navigationBar)
+            theme.applyStyle(onNavigationBar: navigationBar)
         }
         
-        self.loginFormTextField.update(theme: ThemeService.shared().theme)
-        self.passwordFormTextField.update(theme: ThemeService.shared().theme)
+        self.loginFormTextField.update(theme: theme)
+        self.passwordFormTextField.update(theme: theme)
     }
 }
 

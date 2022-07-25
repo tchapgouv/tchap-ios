@@ -118,5 +118,6 @@ final class FormCheckBox: UIView, NibOwnerLoadable {
 extension FormCheckBox: Themable {
     func update(theme: Theme) {
         self.label.textColor = theme.textSecondaryColor
+        self.checkBoxButton.tintColor = theme.tintColor
     }
 }

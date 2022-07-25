@@ -32,6 +32,8 @@ final class WelcomeViewController: UIViewController {
     
     // MARK: Private
     
+    private var theme: Theme!
+    
     // MARK: Public
     
     weak var delegate: WelcomeViewControllerDelegate?
@@ -52,13 +54,16 @@ final class WelcomeViewController: UIViewController {
         self.title = TchapL10n.authenticationTitle
         
         self.setupViews()
+
+        self.registerThemeServiceDidChangeThemeNotification()
+        self.theme = ThemeService.shared().theme
+        self.update(theme: self.theme)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         self.navigationController?.setNavigationBarHidden(true, animated: animated)
-        self.userThemeDidChange()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -83,8 +88,12 @@ final class WelcomeViewController: UIViewController {
         self.loginButton.titleLabel?.numberOfLines = 0
     }
     
-    private func userThemeDidChange() {
-        self.updateTheme()
+    private func registerThemeServiceDidChangeThemeNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(themeDidChange), name: .themeServiceDidChangeTheme, object: nil)
+    }
+    
+    @objc private func themeDidChange() {
+        self.update(theme: ThemeService.shared().theme)
     }
     
     // MARK: - Actions
@@ -100,12 +109,14 @@ final class WelcomeViewController: UIViewController {
 
 // MARK: - Theme
 private extension WelcomeViewController {
-    func updateTheme() {
-        self.view.backgroundColor = ThemeService.shared().theme.backgroundColor
-        self.titleLabel.textColor = ThemeService.shared().theme.textTertiaryColor
-        self.buttonsSeparatorView.backgroundColor = ThemeService.shared().theme.selectedBackgroundColor
+    private func update(theme: Theme) {
+        self.theme = theme
         
-        ThemeService.shared().theme.applyStyle(onButton: self.loginButton)
-        ThemeService.shared().theme.applyStyle(onButton: self.registerButton)
+        self.view.backgroundColor = theme.backgroundColor
+        self.titleLabel.textColor = theme.textTertiaryColor
+        self.buttonsSeparatorView.backgroundColor = theme.selectedBackgroundColor
+        
+        theme.applyStyle(onButton: self.loginButton)
+        theme.applyStyle(onButton: self.registerButton)
     }
 }
