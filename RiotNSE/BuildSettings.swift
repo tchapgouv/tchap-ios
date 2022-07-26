@@ -310,7 +310,7 @@ final class BuildSettings: NSObject {
     static let settingsSecurityScreenShowDeleteBackup: Bool = true
     static let settingsSecurityScreenShowCryptographyInfo: Bool = true
     static let settingsSecurityScreenShowCryptographyExport: Bool = true
-    static let settingsSecurityScreenShowAdvancedUnverifiedDevices: Bool = true
+    static let settingsSecurityScreenShowAdvancedUnverifiedDevices: Bool = false
     /// A setting to enable the presence configuration settings section.
     static let settingsScreenPresenceAllowConfiguration: Bool = false
 

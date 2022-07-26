@@ -180,6 +180,10 @@ final class EnterPinCodeViewController: UIViewController {
             imageView.tag = i
             placeholderStackView.addArrangedSubview(imageView)
         }
+        
+        // Tchap: Configure logos
+        inactiveLogoImageView.image = Asset.SharedImages.tchapLogo.image
+        logoImageView.image = Asset.SharedImages.tchapLogo.image
     }
     
     private func showCancelButton() {
@@ -356,7 +360,7 @@ final class EnterPinCodeViewController: UIViewController {
                     if error {
                         imageView.image = Asset.Images.placeholder.image.vc_tintedImage(usingColor: self.theme.noticeColor)
                     } else {
-                        imageView.image = Asset.Images.placeholder.image
+                        imageView.image = Asset.Images.placeholder.image.vc_tintedImage(usingColor: self.theme.tintColor)
                     }
                 } else {
                     imageView.image = Asset.Images.selectionUntick.image
