@@ -85,6 +85,7 @@ targets:
         - "Modules/Room/Views/Preview"
         - "Modules/Room/Views/Title/RoomTitleView.*"
         - "Modules/Rooms"
+        - "Modules/Settings/SettingsViewController.*"
         - "Managers/AppVersion/AppVersion.swift"
         - "Managers/UniversalLink"
         - "Routers"
@@ -123,6 +124,7 @@ targets:
     - path: ../Riot/Managers/Call/AsyncOperation.swift
     - path: ../Riot/Managers/EncryptionKeyManager/EncryptionKeyManager.swift
     - path: ../Riot/Managers/KeyValueStorage
+    - path: ../Riot/Managers/LocalAuthentication
     - path: ../Riot/Managers/Locale
     - path: ../Riot/Managers/Logging
     - path: ../Riot/Managers/Room/RoomIdComponents.swift
@@ -176,6 +178,7 @@ targets:
     - path: ../Riot/Modules/Common/Recents/Service
     - path: ../Riot/Modules/Common/Recents/Views
     - path: ../Riot/Modules/Common/Recents/RecentsViewController+RoomInvite.swift
+    - path: ../Riot/Modules/Common/SectionFooters
     - path: ../Riot/Modules/Common/SectionHeaders
     - path: ../Riot/Modules/Common/SegmentedViewController/SegmentedViewController.h
     - path: ../Riot/Modules/Common/SegmentedViewController/SegmentedViewController.m
@@ -184,6 +187,8 @@ targets:
     - path: ../Riot/Modules/Common/UserIndicators
     - path: ../Riot/Modules/Common/Views
     - path: ../Riot/Modules/Common/WebViewController
+    - path: ../Riot/Modules/Communities/DataSources
+    - path: ../Riot/Modules/Communities/Views
     - path: ../Riot/Modules/Contacts
     - path: ../Riot/Modules/CreateRoom
     - path: ../Riot/Modules/CrossSigning
@@ -232,6 +237,8 @@ targets:
     - path: ../Riot/Modules/Secrets
     - path: ../Riot/Modules/SecureBackup
     - path: ../Riot/Modules/ServiceTerms
+    - path: ../Riot/Modules/SetPinCode
+    - path: ../Riot/Modules/Settings
     - path: ../Riot/Modules/SideMenu
     - path: ../Riot/Modules/SlidingModal
     - path: ../Riot/Modules/SplitView

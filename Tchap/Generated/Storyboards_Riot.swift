@@ -27,6 +27,11 @@ internal extension StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Tchap.EnterNewRoomDetailsViewController>(storyboard: EnterNewRoomDetailsViewController.self)
   }
+  enum EnterPinCodeViewController: StoryboardType {
+    internal static let storyboardName = "EnterPinCodeViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.EnterPinCodeViewController>(storyboard: EnterPinCodeViewController.self)
+  }
   enum KeyBackupRecoverFromPassphraseViewController: StoryboardType {
     internal static let storyboardName = "KeyBackupRecoverFromPassphraseViewController"
 
@@ -112,6 +117,11 @@ internal extension StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Tchap.KeyVerificationVerifyByScanningViewController>(storyboard: KeyVerificationVerifyByScanningViewController.self)
   }
+  enum ManageSession: StoryboardType {
+    internal static let storyboardName = "ManageSession"
+
+    internal static let initialScene = InitialSceneType<ManageSessionViewController>(storyboard: ManageSession.self)
+  }
   enum OptionListViewController: StoryboardType {
     internal static let storyboardName = "OptionListViewController"
 
@@ -167,10 +177,30 @@ internal extension StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Tchap.SecureBackupSetupIntroViewController>(storyboard: SecureBackupSetupIntroViewController.self)
   }
+  enum Security: StoryboardType {
+    internal static let storyboardName = "Security"
+
+    internal static let initialScene = InitialSceneType<SecurityViewController>(storyboard: Security.self)
+  }
   enum ServiceTermsModalScreenViewController: StoryboardType {
     internal static let storyboardName = "ServiceTermsModalScreenViewController"
 
     internal static let initialScene = InitialSceneType<Tchap.ServiceTermsModalScreenViewController>(storyboard: ServiceTermsModalScreenViewController.self)
+  }
+  enum SettingsDiscoveryThreePidDetailsViewController: StoryboardType {
+    internal static let storyboardName = "SettingsDiscoveryThreePidDetailsViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.SettingsDiscoveryThreePidDetailsViewController>(storyboard: SettingsDiscoveryThreePidDetailsViewController.self)
+  }
+  enum SettingsIdentityServerViewController: StoryboardType {
+    internal static let storyboardName = "SettingsIdentityServerViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.SettingsIdentityServerViewController>(storyboard: SettingsIdentityServerViewController.self)
+  }
+  enum SetupBiometricsViewController: StoryboardType {
+    internal static let storyboardName = "SetupBiometricsViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.SetupBiometricsViewController>(storyboard: SetupBiometricsViewController.self)
   }
   enum ShowDirectoryViewController: StoryboardType {
     internal static let storyboardName = "ShowDirectoryViewController"

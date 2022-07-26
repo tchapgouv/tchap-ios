@@ -20,6 +20,8 @@ ib:
       - Riot/Modules/Secrets
       - Riot/Modules/SecureBackup
       - Riot/Modules/ServiceTerms
+      - Riot/Modules/SetPinCode
+      - Riot/Modules/Settings
       - Riot/Modules/SideMenu
       - Riot/Modules/SlidingModal
     outputs:
