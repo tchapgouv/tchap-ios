@@ -34,6 +34,8 @@ final class RoomCreationViewModel: RoomCreationViewModelType {
         
         var roomNameTextInputProperties = TextInputProperties()
         roomNameTextInputProperties.returnKeyType = .done
+        roomNameTextInputProperties.keyboardType = .default
+        roomNameTextInputProperties.autocapitalization = .sentences
         
         roomNameFormTextViewModel.textInputProperties = roomNameTextInputProperties
         
