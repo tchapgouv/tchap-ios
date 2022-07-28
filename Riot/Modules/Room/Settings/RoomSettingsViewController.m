@@ -63,6 +63,9 @@ enum
 enum
 {
     ROOM_SETTINGS_ROOM_ACCESS_SECTION_ROW_ACCESS,
+    ROOM_SETTINGS_ROOM_ACCESS_SECTION_ROW_INVITED_ONLY,
+    ROOM_SETTINGS_ROOM_ACCESS_SECTION_ROW_ANYONE_APART_FROM_GUEST,
+    ROOM_SETTINGS_ROOM_ACCESS_SECTION_ROW_ANYONE,
     ROOM_SETTINGS_ROOM_ACCESS_DIRECTORY_VISIBILITY,
     ROOM_SETTINGS_ROOM_ACCESS_MISSING_ADDRESS_WARNING
 };
@@ -147,13 +150,10 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     
     // Room Access items
     
-<<<<<<< HEAD
     TableViewCellWithCheckBoxAndLabel *accessInvitedOnlyTickCell;
     TableViewCellWithCheckBoxAndLabel *accessAnyoneApartGuestTickCell;
     TableViewCellWithCheckBoxAndLabel *accessAnyoneTickCell;
-=======
     UISwitch *directoryVisibilitySwitch;
->>>>>>> v1.8.20
     MXRoomDirectoryVisibility actualDirectoryVisibility;
     MXHTTPOperation* actualDirectoryVisibilityRequest;
     
@@ -2595,6 +2595,9 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             // Check whether the user can change this option
             directoryToggleCell.mxkSwitch.enabled = (oneSelfPowerLevel >= powerLevels.stateDefault);
             
+            // Store the switch to be able to update it
+            directoryVisibilitySwitch = directoryToggleCell.mxkSwitch;
+            
             cell = directoryToggleCell;
         }
         else if (row == ROOM_SETTINGS_ROOM_ACCESS_MISSING_ADDRESS_WARNING)
@@ -2663,7 +2666,46 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             {
                 guestAccess = mxRoomState.guestAccess;
             }
-
+            
+            if (row == ROOM_SETTINGS_ROOM_ACCESS_SECTION_ROW_INVITED_ONLY)
+            {
+                roomAccessCell.label.text = [VectorL10n roomDetailsAccessSectionInvitedOnly];
+                
+                roomAccessCell.enabled = ([joinRule isEqualToString:kMXRoomJoinRuleInvite]);
+                
+                accessInvitedOnlyTickCell = roomAccessCell;
+            }
+            else if (row == ROOM_SETTINGS_ROOM_ACCESS_SECTION_ROW_ANYONE_APART_FROM_GUEST)
+            {
+                if (mxRoom.isDirect)
+                {
+                    roomAccessCell.label.text = [VectorL10n roomDetailsAccessSectionAnyoneApartFromGuestForDm];
+                }
+                else
+                {
+                    roomAccessCell.label.text = [VectorL10n roomDetailsAccessSectionAnyoneApartFromGuest];
+                }
+                
+                roomAccessCell.enabled = ([joinRule isEqualToString:kMXRoomJoinRulePublic] && [guestAccess isEqualToString:kMXRoomGuestAccessForbidden]);
+                
+                accessAnyoneApartGuestTickCell = roomAccessCell;
+            }
+            else if (row == ROOM_SETTINGS_ROOM_ACCESS_SECTION_ROW_ANYONE)
+            {
+                if (mxRoom.isDirect)
+                {
+                    roomAccessCell.label.text = [VectorL10n roomDetailsAccessSectionAnyoneForDm];
+                }
+                else
+                {
+                    roomAccessCell.label.text = [VectorL10n roomDetailsAccessSectionAnyone];
+                }
+                
+                roomAccessCell.enabled = ([joinRule isEqualToString:kMXRoomJoinRulePublic] && [guestAccess isEqualToString:kMXRoomGuestAccessCanJoin]);
+                
+                accessAnyoneTickCell = roomAccessCell;
+            }
+            
             // Check whether the user can change this option
             roomAccessCell.userInteractionEnabled = (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomJoinRules]);
             roomAccessCell.checkBox.alpha = roomAccessCell.userInteractionEnabled ? 1.0f : 0.5f;
@@ -2700,6 +2742,9 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             // Check whether the user can change this option
             directoryToggleCell.mxkSwitch.enabled = (oneSelfPowerLevel >= powerLevels.stateDefault);
+            
+            // Store the switch to be able to update it
+            directoryVisibilitySwitch = directoryToggleCell.mxkSwitch;
             
             cell = directoryToggleCell;
         }
@@ -3097,6 +3142,12 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     cell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
     [cell.mxkSwitch removeTarget:self action:nil forControlEvents:UIControlEventValueChanged];
     
+    // Reset the stored `directoryVisibilitySwitch` if the corresponding cell is reused.
+    if (cell.mxkSwitch == directoryVisibilitySwitch)
+    {
+        directoryVisibilitySwitch = nil;
+    }
+    
     // Force layout before reusing a cell (fix switch displayed outside the screen)
     [cell layoutIfNeeded];
     
@@ -3160,8 +3211,129 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         else if (section == SECTION_TAG_ACCESS)
         {
             BOOL isUpdated = NO;
-
-            if (row == ROOM_SETTINGS_ROOM_ACCESS_MISSING_ADDRESS_WARNING)
+            
+            if (row == ROOM_SETTINGS_ROOM_ACCESS_SECTION_ROW_INVITED_ONLY)
+            {
+                // Ignore the selection if the option is already enabled
+                if (! accessInvitedOnlyTickCell.isEnabled)
+                {
+                    // Enable this option
+                    accessInvitedOnlyTickCell.enabled = YES;
+                    // Disable other options
+                    accessAnyoneApartGuestTickCell.enabled = NO;
+                    accessAnyoneTickCell.enabled = NO;
+                    
+                    // Check the actual option
+                    if ([mxRoomState.joinRule isEqualToString:kMXRoomJoinRuleInvite])
+                    {
+                        // No change on room access
+                        [updatedItemsDict removeObjectForKey:kRoomSettingsJoinRuleKey];
+                        [updatedItemsDict removeObjectForKey:kRoomSettingsGuestAccessKey];
+                    }
+                    else
+                    {
+                        updatedItemsDict[kRoomSettingsJoinRuleKey] = kMXRoomJoinRuleInvite;
+                        
+                        // Update guest access to allow guest on invitation.
+                        // Note: if guest_access is "forbidden" here, guests cannot join this room even if explicitly invited.
+                        if ([mxRoomState.guestAccess isEqualToString:kMXRoomGuestAccessCanJoin])
+                        {
+                            [updatedItemsDict removeObjectForKey:kRoomSettingsGuestAccessKey];
+                        }
+                        else
+                        {
+                            updatedItemsDict[kRoomSettingsGuestAccessKey] = kMXRoomGuestAccessCanJoin;
+                        }
+                    }
+                    
+                    isUpdated = YES;
+                }
+            }
+            else if (row == ROOM_SETTINGS_ROOM_ACCESS_SECTION_ROW_ANYONE_APART_FROM_GUEST)
+            {
+                // Ignore the selection if the option is already enabled
+                if (! accessAnyoneApartGuestTickCell.isEnabled)
+                {
+                    // Enable this option
+                    accessAnyoneApartGuestTickCell.enabled = YES;
+                    // Disable other options
+                    accessInvitedOnlyTickCell.enabled = NO;
+                    accessAnyoneTickCell.enabled = NO;
+                    
+                    // Check the actual option
+                    if ([mxRoomState.joinRule isEqualToString:kMXRoomJoinRulePublic] && [mxRoomState.guestAccess isEqualToString:kMXRoomGuestAccessForbidden])
+                    {
+                        // No change on room access
+                        [updatedItemsDict removeObjectForKey:kRoomSettingsJoinRuleKey];
+                        [updatedItemsDict removeObjectForKey:kRoomSettingsGuestAccessKey];
+                    }
+                    else
+                    {
+                        if ([mxRoomState.joinRule isEqualToString:kMXRoomJoinRulePublic])
+                        {
+                            [updatedItemsDict removeObjectForKey:kRoomSettingsJoinRuleKey];
+                        }
+                        else
+                        {
+                            updatedItemsDict[kRoomSettingsJoinRuleKey] = kMXRoomJoinRulePublic;
+                        }
+                        
+                        if ([mxRoomState.guestAccess isEqualToString:kMXRoomGuestAccessForbidden])
+                        {
+                            [updatedItemsDict removeObjectForKey:kRoomSettingsGuestAccessKey];
+                        }
+                        else
+                        {
+                            updatedItemsDict[kRoomSettingsGuestAccessKey] = kMXRoomGuestAccessForbidden;
+                        }
+                    }
+                    
+                    isUpdated = YES;
+                }
+            }
+            else if (row == ROOM_SETTINGS_ROOM_ACCESS_SECTION_ROW_ANYONE)
+            {
+                // Ignore the selection if the option is already enabled
+                if (! accessAnyoneTickCell.isEnabled)
+                {
+                    // Enable this option
+                    accessAnyoneTickCell.enabled = YES;
+                    // Disable other options
+                    accessInvitedOnlyTickCell.enabled = NO;
+                    accessAnyoneApartGuestTickCell.enabled = NO;
+                    
+                    // Check the actual option
+                    if ([mxRoomState.joinRule isEqualToString:kMXRoomJoinRulePublic] && [mxRoomState.guestAccess isEqualToString:kMXRoomGuestAccessCanJoin])
+                    {
+                        // No change on room access
+                        [updatedItemsDict removeObjectForKey:kRoomSettingsJoinRuleKey];
+                        [updatedItemsDict removeObjectForKey:kRoomSettingsGuestAccessKey];
+                    }
+                    else
+                    {
+                        if ([mxRoomState.joinRule isEqualToString:kMXRoomJoinRulePublic])
+                        {
+                            [updatedItemsDict removeObjectForKey:kRoomSettingsJoinRuleKey];
+                        }
+                        else
+                        {
+                            updatedItemsDict[kRoomSettingsJoinRuleKey] = kMXRoomJoinRulePublic;
+                        }
+                        
+                        if ([mxRoomState.guestAccess isEqualToString:kMXRoomGuestAccessCanJoin])
+                        {
+                            [updatedItemsDict removeObjectForKey:kRoomSettingsGuestAccessKey];
+                        }
+                        else
+                        {
+                            updatedItemsDict[kRoomSettingsGuestAccessKey] = kMXRoomGuestAccessCanJoin;
+                        }
+                    }
+                    
+                    isUpdated = YES;
+                }
+            }
+            else if (row == ROOM_SETTINGS_ROOM_ACCESS_MISSING_ADDRESS_WARNING)
             {
                 // Scroll to room addresses section
                 NSIndexPath *addressIndexPath = [_tableViewSections exactIndexPathForRowTag:0 sectionTag:SECTION_TAG_ADDRESSES];

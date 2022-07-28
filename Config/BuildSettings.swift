@@ -406,44 +406,11 @@ final class BuildSettings: NSObject {
     
     // MARK: - Polls
     
-<<<<<<< HEAD
-    static var pollsEnabled: Bool {
-        guard #available(iOS 14, *) else {
-            return false
-        }
-        
-        return false// true : Currently disabled in Tchap.
-    }
-=======
-    static let pollsEnabled = true
->>>>>>> v1.8.20
+    static let pollsEnabled = false // Currently disabled in Tchap.
     
     // MARK: - Location Sharing
     
     static let tileServerMapStyleURL = URL(string: "https://api.maptiler.com/maps/streets/style.json?key=fU3vlMsMn4Jb6dnEIFsx")!
     
-<<<<<<< HEAD
-    static var locationSharingEnabled: Bool {
-        guard #available(iOS 14, *) else {
-            return false
-        }
-        
-        return false// true : Currently disabled in Tchap.
-    }
-    
-    static var liveLocationSharingEnabled: Bool {
-        guard #available(iOS 14, *) else {
-            return false
-        }
-        
-        guard self.locationSharingEnabled else {
-            return false
-        }
-        
-        // Do not enable live location sharing atm
-        return false
-    }
-=======
-    static let locationSharingEnabled = true
->>>>>>> v1.8.20
+    static let locationSharingEnabled = false // Currently disabled in Tchap.
 }

@@ -1554,7 +1554,39 @@ static CGSize kThreadListBarButtonItemImageSize;
     return item;
 }
 
-<<<<<<< HEAD
+// Tchap: Jisti is disabled in Tchap
+//- (UIBarButtonItem *)joinJitsiBarButtonItem
+//{
+//    CallTileActionButton *button = [CallTileActionButton new];
+//    [button setImage:AssetImages.callVideoIcon.image
+//            forState:UIControlStateNormal];
+//    [button setTitle:[VectorL10n roomJoinGroupCall]
+//            forState:UIControlStateNormal];
+//    [button addTarget:self
+//               action:@selector(onVideoCallPressed:)
+//     forControlEvents:UIControlEventTouchUpInside];
+//    button.contentEdgeInsets = UIEdgeInsetsMake(4, 12, 4, 12);
+//
+//    UIBarButtonItem *item;
+//
+//    if (RiotSettings.shared.enableThreads)
+//    {
+//        // Add some spacing when there is a threads button
+//        UIView *buttonContainer = [[UIView alloc] initWithFrame:CGRectZero];
+//        [buttonContainer vc_addSubViewMatchingParent:button withInsets:UIEdgeInsetsMake(0, 0, 0, -12)];
+//
+//        item = [[UIBarButtonItem alloc] initWithCustomView:buttonContainer];
+//    }
+//    else
+//    {
+//        item = [[UIBarButtonItem alloc] initWithCustomView:button];
+//    }
+//
+//    item.accessibilityLabel = [VectorL10n roomAccessibilityVideoCall];
+//
+//    return item;
+//}
+//
 //- (UIBarButtonItem *)threadMoreBarButtonItem
 //{
 //    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithImage:AssetImages.roomContextMenuMore.image
@@ -1565,7 +1597,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 //
 //    return item;
 //}
-
+//
 //- (UIBarButtonItem *)threadListBarButtonItem
 //{
 //    UIButton *button = [UIButton new];
@@ -1582,67 +1614,6 @@ static CGSize kThreadListBarButtonItemImageSize;
 //    result.tag = kThreadListBarButtonItemTag;
 //    return result;
 //}
-=======
-- (UIBarButtonItem *)joinJitsiBarButtonItem
-{
-    CallTileActionButton *button = [CallTileActionButton new];
-    [button setImage:AssetImages.callVideoIcon.image
-            forState:UIControlStateNormal];
-    [button setTitle:[VectorL10n roomJoinGroupCall]
-            forState:UIControlStateNormal];
-    [button addTarget:self
-               action:@selector(onVideoCallPressed:)
-     forControlEvents:UIControlEventTouchUpInside];
-    button.contentEdgeInsets = UIEdgeInsetsMake(4, 12, 4, 12);
-    
-    UIBarButtonItem *item;
-    
-    if (RiotSettings.shared.enableThreads)
-    {
-        // Add some spacing when there is a threads button
-        UIView *buttonContainer = [[UIView alloc] initWithFrame:CGRectZero];
-        [buttonContainer vc_addSubViewMatchingParent:button withInsets:UIEdgeInsetsMake(0, 0, 0, -12)];
-        
-        item = [[UIBarButtonItem alloc] initWithCustomView:buttonContainer];
-    }
-    else
-    {
-        item = [[UIBarButtonItem alloc] initWithCustomView:button];
-    }
-    
-    item.accessibilityLabel = [VectorL10n roomAccessibilityVideoCall];
-    
-    return item;
-}
-
-- (UIBarButtonItem *)threadMoreBarButtonItem
-{
-    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithImage:AssetImages.roomContextMenuMore.image
-                                                             style:UIBarButtonItemStylePlain
-                                                            target:self
-                                                            action:@selector(onButtonPressed:)];
-    item.accessibilityLabel = [VectorL10n roomAccessibilityThreadMore];
-    
-    return item;
-}
-
-- (UIBarButtonItem *)threadListBarButtonItem
-{
-    UIButton *button = [UIButton new];
-    button.contentEdgeInsets = kThreadListBarButtonItemContentInsetsNoDot;
-    button.imageView.contentMode = UIViewContentModeScaleAspectFit;
-    [button setImage:[AssetImages.threadsIcon.image vc_resizedWith:kThreadListBarButtonItemImageSize]
-            forState:UIControlStateNormal];
-    [button addTarget:self
-               action:@selector(onThreadListTapped:)
-     forControlEvents:UIControlEventTouchUpInside];
-    button.accessibilityLabel = [VectorL10n roomAccessibilityThreads];
-
-    UIBarButtonItem *result = [[UIBarButtonItem alloc] initWithCustomView:button];
-    result.tag = kThreadListBarButtonItemTag;
-    return result;
-}
->>>>>>> v1.8.20
 
 - (void)setupRemoveJitsiWidgetRemoveView
 {
@@ -1811,7 +1782,6 @@ static CGSize kThreadListBarButtonItemImageSize;
                     //  video call button for Jitsi call
                     if (self.isCallActive)
                     {
-<<<<<<< HEAD
 //                        if (self.isRoomHavingAJitsiCall)
 //                        {
 //                            //  show a disabled call button
@@ -1821,38 +1791,11 @@ static CGSize kThreadListBarButtonItemImageSize;
 //                        }
 //                        else
 //                        {
-                            //  show Join button
-//                            CallTileActionButton *button = [CallTileActionButton new];
-//                            [button setImage:AssetImages.callVideoIcon.image
-//                                    forState:UIControlStateNormal];
-//                            [button setTitle:[VectorL10n roomJoinGroupCall]
-//                                    forState:UIControlStateNormal];
-//                            [button addTarget:self
-//                                       action:@selector(onVideoCallPressed:)
-//                             forControlEvents:UIControlEventTouchUpInside];
-//                            button.contentEdgeInsets = UIEdgeInsetsMake(4, 12, 4, 12);
-//                            UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:button];
-//                            item.accessibilityLabel = [VectorL10n roomAccessibilityVideoCall];
+//                            UIBarButtonItem *item = [self joinJitsiBarButtonItem];
 //                            [rightBarButtonItems addObject:item];
 //
 //                            hasCustomJoinButton = YES;
 //                        }
-=======
-                        if (self.isRoomHavingAJitsiCall)
-                        {
-                            //  show a disabled call button
-                            UIBarButtonItem *item = [self videoCallBarButtonItem];
-                            item.enabled = NO;
-                            [rightBarButtonItems addObject:item];
-                        }
-                        else
-                        {
-                            UIBarButtonItem *item = [self joinJitsiBarButtonItem];
-                            [rightBarButtonItems addObject:item];
-                            
-                            hasCustomJoinButton = YES;
-                        }
->>>>>>> v1.8.20
                     }
                     else
                     {
@@ -2144,19 +2087,11 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 - (void)showRoomCreationModal
 {
-<<<<<<< HEAD
 //    [self.roomCreationModalCoordinatorBridgePresenter dismissWithAnimated:NO completion:nil];
 //
-//    self.roomCreationModalCoordinatorBridgePresenter = [[RoomCreationModalCoordinatorBridgePresenter alloc] initWithSession:self.mainSession bubbleData:bubbleData roomState:self.roomDataSource.roomState];
+//    self.roomCreationModalCoordinatorBridgePresenter = [[RoomCreationModalCoordinatorBridgePresenter alloc] initWithSession:self.mainSession roomState:self.roomDataSource.roomState];
 //    self.roomCreationModalCoordinatorBridgePresenter.delegate = self;
 //    [self.roomCreationModalCoordinatorBridgePresenter presentFrom:self animated:YES];
-=======
-    [self.roomCreationModalCoordinatorBridgePresenter dismissWithAnimated:NO completion:nil];
-    
-    self.roomCreationModalCoordinatorBridgePresenter = [[RoomCreationModalCoordinatorBridgePresenter alloc] initWithSession:self.mainSession roomState:self.roomDataSource.roomState];
-    self.roomCreationModalCoordinatorBridgePresenter.delegate = self;
-    [self.roomCreationModalCoordinatorBridgePresenter presentFrom:self animated:YES];
->>>>>>> v1.8.20
 }
 
 - (void)showMemberDetails:(MXRoomMember *)member
@@ -3329,13 +3264,13 @@ static CGSize kThreadListBarButtonItemImageSize;
 //        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellStopShareButtonPressed])
 //        {
 //            NSString *beaconInfoEventId;
-//            
+//
 //            if ([bubbleData isKindOfClass:[RoomBubbleCellData class]])
 //            {
 //                RoomBubbleCellData *roomBubbleCellData = (RoomBubbleCellData*)bubbleData;
 //                beaconInfoEventId = roomBubbleCellData.beaconInfoSummary.id;
 //            }
-//            
+//
 //            [self.delegate roomViewControllerDidStopLiveLocationSharing:self beaconInfoEventId:beaconInfoEventId];
 //        }
 //        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellRetryShareButtonPressed])
@@ -3545,7 +3480,14 @@ static CGSize kThreadListBarButtonItemImageSize;
                 [self showReactionHistoryForEventId:tappedEventId animated:YES];
             }
         }
-<<<<<<< HEAD
+        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnAddReaction])
+        {
+            NSString *tappedEventId = userInfo[kMXKRoomBubbleCellEventIdKey];
+            if (tappedEventId)
+            {
+                [self showEmojiPickerForEventId:tappedEventId];
+            }
+        }
 //        else if ([actionIdentifier isEqualToString:RoomDirectCallStatusCell.callBackAction])
 //        {
 //            MXEvent *callInviteEvent = userInfo[kMXKRoomBubbleCellEventKey];
@@ -3622,92 +3564,6 @@ static CGSize kThreadListBarButtonItemImageSize;
 //            [[JitsiService shared] declineWidgetWithId:widget.widgetId];
 //            [self reloadBubblesTable:YES];
 //        }
-=======
-        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnAddReaction])
-        {
-            NSString *tappedEventId = userInfo[kMXKRoomBubbleCellEventIdKey];
-            if (tappedEventId)
-            {
-                [self showEmojiPickerForEventId:tappedEventId];
-            }
-        }
-        else if ([actionIdentifier isEqualToString:RoomDirectCallStatusCell.callBackAction])
-        {
-            MXEvent *callInviteEvent = userInfo[kMXKRoomBubbleCellEventKey];
-            MXCallInviteEventContent *eventContent = [MXCallInviteEventContent modelFromJSON:callInviteEvent.content];
-            
-            [self placeCallWithVideo2:eventContent.isVideoCall];
-        }
-        else if ([actionIdentifier isEqualToString:RoomDirectCallStatusCell.declineAction])
-        {
-            MXEvent *callInviteEvent = userInfo[kMXKRoomBubbleCellEventKey];
-            MXCallInviteEventContent *eventContent = [MXCallInviteEventContent modelFromJSON:callInviteEvent.content];
-            
-            MXCall *call = [self.mainSession.callManager callWithCallId:eventContent.callId];
-            [call hangup];
-        }
-        else if ([actionIdentifier isEqualToString:RoomDirectCallStatusCell.answerAction])
-        {
-            MXEvent *callInviteEvent = userInfo[kMXKRoomBubbleCellEventKey];
-            MXCallInviteEventContent *eventContent = [MXCallInviteEventContent modelFromJSON:callInviteEvent.content];
-            
-            MXCall *call = [self.mainSession.callManager callWithCallId:eventContent.callId];
-            [call answer];
-        }
-        else if ([actionIdentifier isEqualToString:RoomDirectCallStatusCell.endCallAction])
-        {
-            MXEvent *callInviteEvent = userInfo[kMXKRoomBubbleCellEventKey];
-            MXCallInviteEventContent *eventContent = [MXCallInviteEventContent modelFromJSON:callInviteEvent.content];
-            
-            MXCall *call = [self.mainSession.callManager callWithCallId:eventContent.callId];
-            [call hangup];
-        }
-        else if ([actionIdentifier isEqualToString:RoomGroupCallStatusCell.joinAction] ||
-                 [actionIdentifier isEqualToString:RoomGroupCallStatusCell.answerAction])
-        {
-            MXWeakify(self);
-
-            // Check app permissions first
-            [MXKTools checkAccessForCall:YES
-             manualChangeMessageForAudio:[VectorL10n microphoneAccessNotGrantedForCall:AppInfo.current.displayName]
-             manualChangeMessageForVideo:[VectorL10n cameraAccessNotGrantedForCall:AppInfo.current.displayName]
-               showPopUpInViewController:self completionHandler:^(BOOL granted) {
-                
-                MXStrongifyAndReturnIfNil(self);
-                if (granted)
-                {
-                    // Present the Jitsi view controller
-                    Widget *jitsiWidget = [self.customizedRoomDataSource jitsiWidget];
-                    if (jitsiWidget)
-                    {
-                        [self showJitsiCallWithWidget:jitsiWidget];
-                    }
-                }
-                else
-                {
-                    MXLogDebug(@"[RoomVC] didRecognizeAction:inCell:userInfo Warning: The application does not have the permission to join/answer the group call");
-                }
-            }];
-            
-            MXEvent *widgetEvent = userInfo[kMXKRoomBubbleCellEventKey];
-            Widget *widget = [[Widget alloc] initWithWidgetEvent:widgetEvent
-                                                 inMatrixSession:self.customizedRoomDataSource.mxSession];
-            [[JitsiService shared] resetDeclineForWidgetWithId:widget.widgetId];
-        }
-        else if ([actionIdentifier isEqualToString:RoomGroupCallStatusCell.leaveAction])
-        {
-            [self endActiveJitsiCall];
-            [self reloadBubblesTable:YES];
-        }
-        else if ([actionIdentifier isEqualToString:RoomGroupCallStatusCell.declineAction])
-        {
-            MXEvent *widgetEvent = userInfo[kMXKRoomBubbleCellEventKey];
-            Widget *widget = [[Widget alloc] initWithWidgetEvent:widgetEvent
-                                                 inMatrixSession:self.customizedRoomDataSource.mxSession];
-            [[JitsiService shared] declineWidgetWithId:widget.widgetId];
-            [self reloadBubblesTable:YES];
-        }
->>>>>>> v1.8.20
         else if ([actionIdentifier isEqualToString:RoomCreationIntroCell.tapOnAvatarView])
         {
             [self showRoomAvatarChange];
@@ -7260,6 +7116,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 - (void)updateThreadListBarButtonItem:(UIBarButtonItem *)barButtonItem with:(MXThreadingService *)service
 {
     // Tchap: Threads are disabled in Tchap
+//    if (!service)
     if (true)
     {
         return;
@@ -7284,9 +7141,9 @@ static CGSize kThreadListBarButtonItemImageSize;
 //
 //    UIBarButtonItem *threadListBarButtonItem = barButtonItem ?: [self threadListBarButtonItem];
 //    UIButton *button = (UIButton *)threadListBarButtonItem.customView;
-//    
+//
 //    MXThreadNotificationsCount *notificationsCount = [service notificationsCountForRoom:self.roomDataSource.roomId];
-//    
+//
 //    if (notificationsCount.numberOfHighlightedThreads > 0)
 //    {
 //        [button setImage:AssetImages.threadsIconRedDot.image

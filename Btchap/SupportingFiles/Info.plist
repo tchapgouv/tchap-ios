@@ -6,21 +6,6 @@
 	<string>fr</string>
 	<key>CFBundleDisplayName</key>
 	<string>$(BUNDLE_DISPLAY_NAME)</string>
-	<key>CFBundleDocumentTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleTypeName</key>
-			<string>Mention Pills</string>
-			<key>CFBundleTypeRole</key>
-			<string>Viewer</string>
-			<key>LSHandlerRank</key>
-			<string>Owner</string>
-			<key>LSItemContentTypes</key>
-			<array>
-				<string>im.vector.app.pills</string>
-			</array>
-		</dict>
-	</array>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -43,16 +28,6 @@
 	<string>5e095efd-c456-4a30-913b-04aef5564344</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-<<<<<<< HEAD:Btchap/SupportingFiles/Info.plist
-=======
-	<key>LSSupportsOpeningDocumentsInPlace</key>
-	<false/>
-	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSAllowsArbitraryLoads</key>
-		<true/>
-	</dict>
->>>>>>> v1.8.20:Riot/SupportingFiles/Info.plist
 	<key>NSCalendarsUsageDescription</key>
 	<string>See your scheduled meetings in the app.</string>
 	<key>NSCameraUsageDescription</key>
@@ -61,26 +36,12 @@
 	<string>In order to show who among your contacts already uses Tchap, we can exploit the e-mail addresses of your address book. These data will not be stored. For more information, please visit the privacy policy page in the app settings</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Face ID is used to access your app.</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>When you share your location to people, Element needs access to show them a map.</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>When you share your location to people, Element needs access to show them a map.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Tchap needs to access your microphone to take videos, and record voice messages.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-<<<<<<< HEAD:Btchap/SupportingFiles/Info.plist
 	<string>This allows you to select pictures or videos from the photo library, and send them in your conversations. You can also use one of these pictures to set your profile picture.</string>
 	<key>UIBackgroundModes</key>
 	<array>
-=======
-	<string>The photo library is used to send photos and videos.</string>
-	<key>NSSiriUsageDescription</key>
-	<string>Siri is used to perform calls even from the lock screen.</string>
-	<key>UIBackgroundModes</key>
-	<array>
-		<string>audio</string>
-		<string>location</string>
->>>>>>> v1.8.20:Riot/SupportingFiles/Info.plist
 		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
@@ -114,6 +75,29 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+	<key>UserDefaults</key>
+	<string>${PRODUCT_NAME}-Defaults</string>
+	<key>applicationGroupIdentifier</key>
+	<string>$(APPLICATION_GROUP_IDENTIFIER)</string>
+	<key>baseBundleIdentifier</key>
+	<string>$(BASE_BUNDLE_IDENTIFIER)</string>
+	<key>keychainAccessGroup</key>
+	<string>$(KEYCHAIN_ACCESS_GROUP)</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>Mention Pills</string>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>im.vector.app.pills</string>
+			</array>
+		</dict>
+	</array>
 	<key>UTExportedTypeDeclarations</key>
 	<array>
 		<dict>
@@ -127,18 +111,7 @@
 			<string>im.vector.app.pills</string>
 		</dict>
 	</array>
-<<<<<<< HEAD:Btchap/SupportingFiles/Info.plist
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<false/>
-=======
-	<key>UserDefaults</key>
-	<string>${PRODUCT_NAME}-Defaults</string>
-	<key>applicationGroupIdentifier</key>
-	<string>$(APPLICATION_GROUP_IDENTIFIER)</string>
-	<key>baseBundleIdentifier</key>
-	<string>$(BASE_BUNDLE_IDENTIFIER)</string>
-	<key>keychainAccessGroup</key>
-	<string>$(KEYCHAIN_ACCESS_GROUP)</string>
->>>>>>> v1.8.20:Riot/SupportingFiles/Info.plist
 </dict>
 </plist>

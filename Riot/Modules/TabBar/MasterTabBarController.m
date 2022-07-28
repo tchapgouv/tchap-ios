@@ -459,164 +459,52 @@
 // TODO: Manage the onboarding coordinator at the AppCoordinator level
 - (void)presentOnboardingFlow
 {
-<<<<<<< HEAD
-//    OnboardingCoordinatorBridgePresenterParameters *parameters = [[OnboardingCoordinatorBridgePresenterParameters alloc] init];
-//    // Forward parameters if any
-//    if (self.authViewControllerRegistrationParameters)
-//    {
-//        parameters.externalRegistrationParameters = self.authViewControllerRegistrationParameters;
-//        self.authViewControllerRegistrationParameters = nil;
-//    }
-//    if (self.softLogoutCredentials)
-//    {
-//        parameters.softLogoutCredentials = self.softLogoutCredentials;
-//        self.softLogoutCredentials = nil;
-//    }
-//    
+    // Tchap: Not the same onboarding flow
+//    MXLogDebug(@"[MasterTabBarController] presentOnboardingFlow");
+//
 //    MXWeakify(self);
-//    OnboardingCoordinatorBridgePresenter *onboardingCoordinatorBridgePresenter = [[OnboardingCoordinatorBridgePresenter alloc] initWith:parameters];
+//    OnboardingCoordinatorBridgePresenter *onboardingCoordinatorBridgePresenter = [[OnboardingCoordinatorBridgePresenter alloc] init];
 //    onboardingCoordinatorBridgePresenter.completion = ^{
 //        MXStrongifyAndReturnIfNil(self);
 //        [self.onboardingCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
 //        self.onboardingCoordinatorBridgePresenter = nil;
-//        
+//
 //        self.isOnboardingInProgress = NO;   // Must be set before calling didCompleteAuthentication
 //        [self.masterTabBarDelegate masterTabBarControllerDidCompleteAuthentication:self];
 //    };
-//    
+//
 //    [onboardingCoordinatorBridgePresenter presentFrom:self animated:NO];
-//    
+//
 //    self.onboardingCoordinatorBridgePresenter = onboardingCoordinatorBridgePresenter;
 //    self.isOnboardingCoordinatorPreparing = NO;
-//    
-//    self.addAccountObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidAddAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-//        MXStrongifyAndReturnIfNil(self);
-//
-//        // What was this doing? This should probably happen elsewhere
-//        // self.onboardingCoordinatorBridgePresenter = nil;
-//        
-//        [[NSNotificationCenter defaultCenter] removeObserver:self.addAccountObserver];
-//        self.addAccountObserver = nil;
-//    }];
-//    
-//    self.removeAccountObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidRemoveAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-//        MXStrongifyAndReturnIfNil(self);
-//        // The user has cleared data for their soft logged out account
-//
-//        // What was this doing? This should probably happen elsewhere
-//        // self.onboardingCoordinatorBridgePresenter = nil;
-//        
-//        [[NSNotificationCenter defaultCenter] removeObserver:self.removeAccountObserver];
-//        self.removeAccountObserver = nil;
-//    }];
-=======
-    MXLogDebug(@"[MasterTabBarController] presentOnboardingFlow");
-    
-    MXWeakify(self);
-    OnboardingCoordinatorBridgePresenter *onboardingCoordinatorBridgePresenter = [[OnboardingCoordinatorBridgePresenter alloc] init];
-    onboardingCoordinatorBridgePresenter.completion = ^{
-        MXStrongifyAndReturnIfNil(self);
-        [self.onboardingCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
-        self.onboardingCoordinatorBridgePresenter = nil;
-        
-        self.isOnboardingInProgress = NO;   // Must be set before calling didCompleteAuthentication
-        [self.masterTabBarDelegate masterTabBarControllerDidCompleteAuthentication:self];
-    };
-    
-    [onboardingCoordinatorBridgePresenter presentFrom:self animated:NO];
-    
-    self.onboardingCoordinatorBridgePresenter = onboardingCoordinatorBridgePresenter;
-    self.isOnboardingCoordinatorPreparing = NO;
->>>>>>> v1.8.20
 }
 
 - (void)showOnboardingFlow
 {
-<<<<<<< HEAD
-    MXLogDebug(@"[MasterTabBarController] showAuthenticationScreen");
-    
-    // Check whether an authentication screen is not already shown or preparing
-    // Tchap: Disable Onboarding.
-//    if (!self.onboardingCoordinatorBridgePresenter && !self.isOnboardingCoordinatorPreparing)
-//    {
-//        self.isOnboardingCoordinatorPreparing = YES;
-//        self.isOnboardingInProgress = YES;
-        
-        [self resetReviewSessionsFlags];
-        
-        [[AppDelegate theDelegate] restoreInitialDisplay:^{
-                        
-//            [self presentOnboardingFlow];
-            [self.masterTabBarDelegate masterTabBarControllerShouldShowAuthenticationFlow:self];
-        }];
-//    }
-=======
     MXLogDebug(@"[MasterTabBarController] showOnboardingFlow");
     [self showOnboardingFlowAndResetSessionFlags:YES];
->>>>>>> v1.8.20
 }
 
 - (void)showSoftLogoutOnboardingFlowWithCredentials:(MXCredentials*)credentials;
 {
-<<<<<<< HEAD
-//    if (self.onboardingCoordinatorBridgePresenter)
-//    {
-//        MXLogDebug(@"[MasterTabBarController] Universal link: Forward registration parameter to the existing AuthViewController");
-//        [self.onboardingCoordinatorBridgePresenter updateWithExternalRegistrationParameters:parameters];
-//    }
-//    else
-//    {
-//        MXLogDebug(@"[MasterTabBarController] Universal link: Prompt to logout current sessions and open AuthViewController to complete the registration");
-//        
-//        // Keep a ref on the params
-//        self.authViewControllerRegistrationParameters = parameters;
-//        
-//        // Prompt to logout. It will then display AuthViewController if the user is logged out.
-//        [[AppDelegate theDelegate] logoutWithConfirmation:YES completion:^(BOOL isLoggedOut) {
-//            if (!isLoggedOut)
-//            {
-//                // Reset temporary params
-//                self.authViewControllerRegistrationParameters = nil;
-//            }
-//        }];
-//    }
-=======
     MXLogDebug(@"[MasterTabBarController] showAuthenticationScreenAfterSoftLogout");
-    
+    // Tchap: Not the same onboarding flow
     // This method can be called after the user chooses to clear their data as the MXSession
     // is opened to call logout from. So we only set the credentials when authentication isn't
     // in progress to prevent a second soft logout screen being shown.
-    if (!self.onboardingCoordinatorBridgePresenter && !self.isOnboardingCoordinatorPreparing)
-    {
-        AuthenticationService.shared.softLogoutCredentials = credentials;
-        
-        [self showOnboardingFlowAndResetSessionFlags:NO];
-    }
->>>>>>> v1.8.20
+//    if (!self.onboardingCoordinatorBridgePresenter && !self.isOnboardingCoordinatorPreparing)
+//    {
+//        AuthenticationService.shared.softLogoutCredentials = credentials;
+//
+//        [self showOnboardingFlowAndResetSessionFlags:NO];
+//    }
 }
 
 - (void)showOnboardingFlowAndResetSessionFlags:(BOOL)resetSessionFlags
 {
-<<<<<<< HEAD
-    MXLogDebug(@"[MasterTabBarController] showAuthenticationScreenAfterSoftLogout");
-
-//    self.softLogoutCredentials = credentials;
-//
-//    // Check whether an authentication screen is not already shown or preparing
+    // Check whether an authentication screen is not already shown or preparing
 //    if (!self.onboardingCoordinatorBridgePresenter && !self.isOnboardingCoordinatorPreparing)
 //    {
-//        self.isOnboardingCoordinatorPreparing = YES;
-//        self.isOnboardingInProgress = YES;
-//
-//        [[AppDelegate theDelegate] restoreInitialDisplay:^{
-//
-//            [self presentOnboardingFlow];
-//        }];
-//    }
-=======
-    // Check whether an authentication screen is not already shown or preparing
-    if (!self.onboardingCoordinatorBridgePresenter && !self.isOnboardingCoordinatorPreparing)
-    {
         self.isOnboardingCoordinatorPreparing = YES;
         self.isOnboardingInProgress = YES;
         
@@ -629,8 +517,7 @@
             
             [self presentOnboardingFlow];
         }];
-    }
->>>>>>> v1.8.20
+//    }
 }
 
 - (void)selectRoomWithParameters:(RoomNavigationParameters*)paramaters completion:(void (^)(void))completion

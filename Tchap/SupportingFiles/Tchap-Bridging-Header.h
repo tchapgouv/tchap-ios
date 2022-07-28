@@ -47,7 +47,6 @@
 #import "RoomTimelineCellProvider.h"
 #import "PlainRoomTimelineCellProvider.h"
 #import "BubbleRoomTimelineCellProvider.h"
-#import "HTMLFormatter.h"
 #import "RoomSelectedStickerBubbleCell.h"
 #import "BuildInfo.h"
 #import "MasterTabBarController.h"

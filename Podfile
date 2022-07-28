@@ -18,7 +18,7 @@ use_frameworks!
 # Warning: our internal tooling depends on the name of this variable name, so be sure not to change it
 $matrixSDKVersion = '= 0.23.10'
 # $matrixSDKVersion = :local
-# $matrixSDKVersion = { :branch => 'dinum_v0.20.15'}
+# $matrixSDKVersion = { :branch => 'develop'}
 # $matrixSDKVersion = { :specHash => { git: 'https://git.io/fork123', branch: 'fix' } }
 
 ########################################
@@ -75,16 +75,10 @@ abstract_target 'TchapPods' do
   pod 'AnalyticsEvents', :git => 'https://github.com/matrix-org/matrix-analytics-events.git', :branch => 'release/swift', :inhibit_warnings => false
   # pod 'AnalyticsEvents', :path => '../matrix-analytics-events/AnalyticsEvents.podspec'
 
-<<<<<<< HEAD
   pod 'RxSwift', '~> 5.1.1'
 
-  # Remove warnings from "bad" pods
-  pod 'OLMKit', :inhibit_warnings => true
-  pod 'zxcvbn-ios', :inhibit_warnings => true
-=======
   pod 'OLMKit'
   pod 'zxcvbn-ios'
->>>>>>> v1.8.20
 
   # Tools
   pod 'SwiftGen', '~> 6.3'
@@ -120,8 +114,8 @@ abstract_target 'TchapPods' do
 
     import_SwiftUI_pods
 
-    pod 'DGCollectionViewLeftAlignFlowLayout', '~> 1.0.4'
     pod 'UICollectionViewRightAlignedLayout', '~> 0.0.3'
+    pod 'UICollectionViewLeftAlignedLayout', '~> 1.0.2'
     pod 'KTCenterFlowLayout', '~> 1.3.1'
     pod 'ZXingObjC', '~> 3.6.5'
     pod 'FlowCommoniOS', '~> 1.12.0'

@@ -20,9 +20,6 @@
 
 "image_picker_action_files" = "Choose from files";
 
-<<<<<<< HEAD
-"spaces_feature_not_available" = "This feature isn't available here. For now, you can do this with %@ on your computer.";
-=======
 // MARK: Onboarding Authentication WIP
 "authentication_registration_title" = "Create your account";
 "authentication_registration_message" = "We’ll need some info to get you set up.";
@@ -94,4 +91,3 @@
 
 // MARK: Room Info
 "room_info_back_button_title" = "Room Info";
->>>>>>> v1.8.20

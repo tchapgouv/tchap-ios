@@ -38,16 +38,11 @@ protocol RoomTimelineStyle: Themable {
     // MARK: - Methods
     
     /// Indicate to merge or not event in timeline
-<<<<<<< HEAD
-    func canAddEvent(_ event: MXEvent, andRoomState roomState: MXRoomState, to cellData: MXKRoomBubbleCellData) -> Bool
-    
-=======
     func canAddEvent(_ event: MXEvent, and roomState: MXRoomState, to cellData: MXKRoomBubbleCellData) -> Bool
 
     /// Indicate to merge or not the `cellData` into `receiverCellData`
     func canMerge(cellData: MXKRoomBubbleCellDataStoring, into receiverCellData: MXKRoomBubbleCellDataStoring) -> Bool
 
->>>>>>> v1.8.20
     /// Apply selected or blurred style on cell
     func applySelectedStyleIfNeeded(toCell cell: MXKRoomBubbleTableViewCell, cellData: RoomBubbleCellData)
 }

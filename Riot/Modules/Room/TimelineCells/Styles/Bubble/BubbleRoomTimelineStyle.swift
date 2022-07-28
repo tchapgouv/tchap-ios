@@ -46,7 +46,7 @@ class BubbleRoomTimelineStyle: RoomTimelineStyle {
     
     // MARK: - Public
     
-    func canAddEvent(_ event: MXEvent, andRoomState roomState: MXRoomState, to cellData: MXKRoomBubbleCellData) -> Bool {
+    func canAddEvent(_ event: MXEvent, and roomState: MXRoomState, to cellData: MXKRoomBubbleCellData) -> Bool {
         return false
     }
 

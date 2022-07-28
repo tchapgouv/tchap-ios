@@ -492,22 +492,13 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     self.pushNotificationStore = [PushNotificationStore new];
     self.pushNotificationService = [[PushNotificationService alloc] initWithPushNotificationStore:self.pushNotificationStore];
     self.pushNotificationService.delegate = self;
-        
-<<<<<<< HEAD
+    
     // Tchap: Disable Spaces
 //    self.spaceFeatureUnavailablePresenter = [SpaceFeatureUnavailablePresenter new];
-    
+
     // Tchap: Disable UISI
-//    if (@available(iOS 14.0, *)) {
-//        self.uisiAutoReporter = [[UISIAutoReporter alloc] init];
-//    }
-    
-=======
-    self.spaceFeatureUnavailablePresenter = [SpaceFeatureUnavailablePresenter new];
+//    self.uisiAutoReporter = [[UISIAutoReporter alloc] init];
 
-    self.uisiAutoReporter = [[UISIAutoReporter alloc] init];
-
->>>>>>> v1.8.20
     // Add matrix observers, and initialize matrix sessions if the app is not launched in background.
     [self initMatrixSessions];
     
@@ -1207,7 +1198,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         [[NSNotificationCenter defaultCenter] postNotificationName:AppDelegateUniversalLinkDidChangeNotification object:nil];
     }
 
-    if ([AuthenticationService.shared handleServerProvisioningLink:newLink])
+    if ([self handleServerProvisioningLink:webURL])
     {
         return YES;
     }
@@ -1307,6 +1298,11 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     }
     
     return [self handleUniversalLinkFragment:webURL.fragment fromLink:newLink];
+}
+
+- (BOOL)handleUniversalLinkFragment:(NSString*)fragment fromURL:(NSURL*)universalLinkURL
+{
+    return [self handleUniversalLinkFragment:fragment fromLink:[[UniversalLink alloc] initWithUrl:universalLinkURL]];
 }
 
 - (BOOL)handleUniversalLinkFragment:(NSString*)fragment fromLink:(UniversalLink*)universalLink
@@ -1426,6 +1422,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
                 {
                     room = [account.mxSession roomWithRoomId:roomId];
                 }
+                
                 // Tchap: Disable Spaces
 //                if (room.summary.roomType == MXRoomTypeSpace)
 //                {
@@ -1780,7 +1777,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     }];
 }
 
-<<<<<<< HEAD
 /**
  Extract params from the URL fragment part (after '#') of a vector.im Universal link:
  
@@ -1870,7 +1866,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     {
         if ([MXKAccountManager sharedManager].activeAccounts.count)
         {
-            [self displayServerProvisioningLinkBuyAlreadyLoggedInAlertWithCompletion:^(BOOL logout) {
+            [self displayLogoutConfirmationForLink:link completion:^(BOOL logout) {
 
                 MXLogDebug(@"[AppDelegate] handleServerProvisioningLink: logoutWithConfirmation: logout: %@", @(logout));
                 if (logout)
@@ -1920,11 +1916,8 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     MXLogDebug(@"[AppDelegate] parseServerProvisioningLink: homeserver: %@ - identityServer: %@", *homeserver, *identityServer);
 }
 
-- (void)displayServerProvisioningLinkBuyAlreadyLoggedInAlertWithCompletion:(void (^)(BOOL logout))completion
-=======
-- (void)displayLogoutConfirmationForLink:(UniversalLink *)link
+- (void)displayLogoutConfirmationForLink:(NSURL *)link
                               completion:(void (^)(BOOL loggedOut))completion
->>>>>>> v1.8.20
 {
     // Ask confirmation
     self.logoutConfirmation = [UIAlertController alertControllerWithTitle:[VectorL10n errorUserAlreadyLoggedIn]
@@ -1940,7 +1933,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
             if (isLoggedOut)
             {
                 //  process the link again after logging out
-                [AuthenticationService.shared handleServerProvisioningLink:link];
+                [self handleServerProvisioningLink:link];
             }
             if (completion)
             {
@@ -2200,22 +2193,11 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         
         // Tchap: Disable UISI
         // register the session to the uisi auto-reporter
-<<<<<<< HEAD
 //        if (_uisiAutoReporter != nil)
 //        {
-//            if (@available(iOS 14.0, *))
-//            {
-//                UISIAutoReporter* uisiAutoReporter = (UISIAutoReporter*)_uisiAutoReporter;
-//                [uisiAutoReporter add:mxSession];
-//            }
+//            UISIAutoReporter* uisiAutoReporter = (UISIAutoReporter*)_uisiAutoReporter;
+//            [uisiAutoReporter add:mxSession];
 //        }
-=======
-        if (_uisiAutoReporter != nil)
-        {
-            UISIAutoReporter* uisiAutoReporter = (UISIAutoReporter*)_uisiAutoReporter;
-            [uisiAutoReporter add:mxSession];
-        }
->>>>>>> v1.8.20
         
         [mxSessionArray addObject:mxSession];
         
@@ -2235,23 +2217,12 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     //    [_callPresenter removeMatrixSession:mxSession];
     
     // register the session to the uisi auto-reporter
-<<<<<<< HEAD
     // Tchap: Disable UISI
 //    if (_uisiAutoReporter != nil)
 //    {
-//        if (@available(iOS 14.0, *))
-//        {
-//            UISIAutoReporter* uisiAutoReporter = (UISIAutoReporter*)_uisiAutoReporter;
-//            [uisiAutoReporter remove:mxSession];
-//        }
+//        UISIAutoReporter* uisiAutoReporter = (UISIAutoReporter*)_uisiAutoReporter;
+//        [uisiAutoReporter remove:mxSession];
 //    }
-=======
-    if (_uisiAutoReporter != nil)
-    {
-        UISIAutoReporter* uisiAutoReporter = (UISIAutoReporter*)_uisiAutoReporter;
-        [uisiAutoReporter remove:mxSession];
-    }
->>>>>>> v1.8.20
 
     // Update the widgets manager
     [[WidgetManager sharedManager] removeMatrixSession:mxSession]; 
@@ -4782,7 +4753,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     [self presentViewController:viewController animated:YES completion:completion];
 }
 
-<<<<<<< HEAD
 #pragma mark - Authentication
 
 - (BOOL)continueSSOLoginWithToken:(NSString*)loginToken txnId:(NSString*)txnId
@@ -4799,8 +4769,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     return NO;//[bridgePresenter continueSSOLoginWithToken:loginToken transactionID:txnId];
 }
 
-=======
->>>>>>> v1.8.20
 #pragma mark - Private
 
 - (void)clearCache

@@ -415,7 +415,6 @@ extension SideMenuCoordinator: SideMenuNavigationControllerDelegate {
 }
 
 // MARK: - SideMenuNavigationControllerDelegate
-<<<<<<< HEAD
 //extension SideMenuCoordinator: SpaceListCoordinatorDelegate {
 //    func spaceListCoordinatorDidSelectHomeSpace(_ coordinator: SpaceListCoordinatorType) {
 //        self.parameters.appNavigator.sideMenu.dismiss(animated: true) {
@@ -440,9 +439,7 @@ extension SideMenuCoordinator: SideMenuNavigationControllerDelegate {
 //    }
 //
 //    func spaceListCoordinatorDidSelectCreateSpace(_ coordinator: SpaceListCoordinatorType) {
-//        if #available(iOS 14.0, *) {
-//            self.showCreateSpace()
-//        }
+//        self.showCreateSpace()
 //    }
 //}
 
@@ -470,78 +467,13 @@ extension SideMenuCoordinator: SideMenuNavigationControllerDelegate {
 //            case .addSpace:
 //                AppDelegate.theDelegate().showAlert(withTitle: VectorL10n.spacesAddSpace, message: VectorL10n.spacesFeatureNotAvailable(AppInfo.current.displayName))
 //            case .settings:
-//                if #available(iOS 14.0, *) {
-//                    self.showSpaceSettings(spaceId: spaceId, session: session)
-//                } else {
-//                    AppDelegate.theDelegate().showAlert(withTitle: VectorL10n.settingsTitle, message: VectorL10n.spacesFeatureNotAvailable(AppInfo.current.displayName))
-//                }
+//                self.showSpaceSettings(spaceId: spaceId, session: session)
 //            case .invite:
 //                self.showSpaceInvite(spaceId: spaceId, session: session)
 //            }
 //        }
 //    }
 //}
-=======
-extension SideMenuCoordinator: SpaceListCoordinatorDelegate {
-    func spaceListCoordinatorDidSelectHomeSpace(_ coordinator: SpaceListCoordinatorType) {
-        self.parameters.appNavigator.sideMenu.dismiss(animated: true) {
-            
-        }
-        self.parameters.appNavigator.navigate(to: .homeSpace)
-    }
-    
-    func spaceListCoordinator(_ coordinator: SpaceListCoordinatorType, didSelectSpaceWithId spaceId: String) {
-        self.parameters.appNavigator.sideMenu.dismiss(animated: true) {
-            
-        }
-        self.parameters.appNavigator.navigate(to: .space(spaceId))
-    }
-    
-    func spaceListCoordinator(_ coordinator: SpaceListCoordinatorType, didSelectInviteWithId spaceId: String, from sourceView: UIView?) {
-        self.showSpaceDetail(forSpaceWithId: spaceId, from: sourceView)
-    }
-    
-    func spaceListCoordinator(_ coordinator: SpaceListCoordinatorType, didPressMoreForSpaceWithId spaceId: String, from sourceView: UIView) {
-        self.showMenu(forSpaceWithId: spaceId, from: sourceView)
-    }
-    
-    func spaceListCoordinatorDidSelectCreateSpace(_ coordinator: SpaceListCoordinatorType) {
-        self.showCreateSpace()
-    }
-}
-
-// MARK: - SpaceMenuPresenterDelegate
-extension SideMenuCoordinator: SpaceMenuPresenterDelegate {
-    func spaceMenuPresenter(_ presenter: SpaceMenuPresenter, didCompleteWith action: SpaceMenuPresenter.Actions, forSpaceWithId spaceId: String, with session: MXSession) {
-        presenter.dismiss(animated: false) {
-            switch action {
-            case .exploreRooms:
-                Analytics.shared.viewRoomTrigger = .spaceMenu
-                self.showExploreRooms(spaceId: spaceId, session: session)
-            case .exploreMembers:
-                Analytics.shared.viewRoomTrigger = .spaceMenu
-                self.showMembers(spaceId: spaceId, session: session)
-            case .addRoom:
-                session.spaceService.getSpace(withId: spaceId)?.canAddRoom { canAddRoom in
-                    if canAddRoom {
-                        self.showAddRoom(spaceId: spaceId, session: session)
-                    } else {
-                        let alert = UIAlertController(title: VectorL10n.spacesAddRoom, message: VectorL10n.spacesAddRoomMissingPermissionMessage, preferredStyle: .alert)
-                        alert.addAction(UIAlertAction(title: VectorL10n.ok, style: .default, handler: nil))
-                        self.toPresentable().present(alert, animated: true, completion: nil)
-                    }
-                }
-            case .addSpace:
-                AppDelegate.theDelegate().showAlert(withTitle: VectorL10n.spacesAddSpace, message: VectorL10n.spacesFeatureNotAvailable(AppInfo.current.displayName))
-            case .settings:
-                self.showSpaceSettings(spaceId: spaceId, session: session)
-            case .invite:
-                self.showSpaceInvite(spaceId: spaceId, session: session)
-            }
-        }
-    }
-}
->>>>>>> v1.8.20
 
 //extension SideMenuCoordinator: SpaceDetailPresenterDelegate {
 //    func spaceDetailPresenter(_ presenter: SpaceDetailPresenter, didJoinSpaceWithId spaceId: String) {

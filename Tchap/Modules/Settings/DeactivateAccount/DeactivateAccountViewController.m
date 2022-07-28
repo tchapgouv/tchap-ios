@@ -16,11 +16,7 @@
 
 #import "DeactivateAccountViewController.h"
 
-<<<<<<< HEAD:Tchap/Modules/Settings/DeactivateAccount/DeactivateAccountViewController.m
-
-=======
 #import <SafariServices/SafariServices.h>
->>>>>>> v1.8.20:Riot/Modules/Settings/DeactivateAccount/DeactivateAccountViewController.m
 #import "ThemeService.h"
 #import "GeneratedInterface-Swift.h"
 

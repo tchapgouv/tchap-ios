@@ -105,8 +105,9 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
         // Setup navigation router store
         _ = NavigationRouterStore.shared
         
+        // Tchap: Disable user location in Tchap
         // Setup user location services
-        _ = UserLocationServiceProvider.shared
+//        _ = UserLocationServiceProvider.shared
         
         if BuildSettings.enableSideMenu {
             self.addSideMenu()
@@ -235,7 +236,7 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
         
         switch deepLinkOption {
         case .connect(let loginToken, let transactionID):
-            canOpenLink = AuthenticationService.shared.continueSSOLogin(with: loginToken, and: transactionID)
+            canOpenLink = self.legacyAppDelegate.continueSSOLogin(withToken: loginToken, txnId: transactionID)
         }
         
         return canOpenLink

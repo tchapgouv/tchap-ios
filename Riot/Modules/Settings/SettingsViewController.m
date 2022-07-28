@@ -182,8 +182,9 @@ typedef NS_ENUM(NSUInteger, LABS_ENABLE)
 {
     LABS_ENABLE_RINGING_FOR_GROUP_CALLS_INDEX = 0,
     LABS_ENABLE_THREADS_INDEX,
-    LABS_ENABLE_AUTO_REPORT_DECRYPTION_ERRORS,
-    LABS_ENABLE_LIVE_LOCATION_SHARING
+    LABS_ENABLE_AUTO_REPORT_DECRYPTION_ERRORS//,
+    // Tchap: Location sharing is disabled in Tchap
+//    LABS_ENABLE_LIVE_LOCATION_SHARING
 };
 
 typedef NS_ENUM(NSUInteger, SECURITY)
@@ -203,14 +204,9 @@ SingleImagePickerPresenterDelegate,
 SettingsDiscoveryTableViewSectionDelegate, SettingsDiscoveryViewModelCoordinatorDelegate,
 SettingsIdentityServerCoordinatorBridgePresenterDelegate,
 ServiceTermsModalCoordinatorBridgePresenterDelegate,
-<<<<<<< HEAD
 TableViewSectionsDelegate/*,
-ThreadsBetaCoordinatorBridgePresenterDelegate*/>
-=======
-TableViewSectionsDelegate,
 ThreadsBetaCoordinatorBridgePresenterDelegate,
-ChangePasswordCoordinatorBridgePresenterDelegate>
->>>>>>> v1.8.20
+ChangePasswordCoordinatorBridgePresenterDelegate*/>
 {
     // Current alert (if any).
     __weak UIAlertController *currentAlert;
@@ -254,6 +250,9 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     BOOL isSavingInProgress;
     BOOL is3PIDBindingInProgress;
     blockSettingsViewController_onReadyToDestroy onReadyToDestroyHandler;
+    
+    //
+    UIAlertController *resetPwdAlertController;
     
     BOOL keepNewEmailEditing;
     BOOL keepNewPhoneNumberEditing;
@@ -315,13 +314,9 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 
 @property (nonatomic, strong) UserInteractiveAuthenticationService *userInteractiveAuthenticationService;
 
-<<<<<<< HEAD
 // Tchap: Threads are disabled
 //@property (nonatomic, strong) ThreadsBetaCoordinatorBridgePresenter *threadsBetaBridgePresenter;
-=======
-@property (nonatomic, strong) ThreadsBetaCoordinatorBridgePresenter *threadsBetaBridgePresenter;
 @property (nonatomic, strong) ChangePasswordCoordinatorBridgePresenter *changePasswordBridgePresenter;
->>>>>>> v1.8.20
 
 /**
  Whether or not to check for contacts access after the user accepts the service terms. The value of this property is
@@ -643,7 +638,8 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         [sectionLabs addRowWithTag:LABS_ENABLE_AUTO_REPORT_DECRYPTION_ERRORS];
         if (BuildSettings.locationSharingEnabled)
         {
-            [sectionLabs addRowWithTag:LABS_ENABLE_LIVE_LOCATION_SHARING];
+            // Tchap: Location sharing is disabled in Tchap
+//            [sectionLabs addRowWithTag:LABS_ENABLE_LIVE_LOCATION_SHARING];
         }
         sectionLabs.headerTitle = [VectorL10n settingsLabs];
         if (sectionLabs.hasAnyRows)
@@ -2618,10 +2614,11 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         {
             cell = [self buildAutoReportDecryptionErrorsCellForTableView:tableView atIndexPath:indexPath];
         }
-        else if (row == LABS_ENABLE_LIVE_LOCATION_SHARING)
-        {
-            cell = [self buildLiveLocationSharingCellForTableView:tableView atIndexPath:indexPath];
-        }
+        // Tchap: Location sharing is disabled in Tchap
+//        else if (row == LABS_ENABLE_LIVE_LOCATION_SHARING)
+//        {
+//            cell = [self buildLiveLocationSharingCellForTableView:tableView atIndexPath:indexPath];
+//        }
     }
     else if (section == SECTION_TAG_FLAIR)
     {
@@ -4310,15 +4307,6 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 
 #pragma password update management
 
-- (void)displayPasswordAlert
-{
-    self.changePasswordBridgePresenter = [[ChangePasswordCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
-    self.changePasswordBridgePresenter.delegate = self;
-
-    [self.changePasswordBridgePresenter presentFrom:self animated:YES];
-}
-
-<<<<<<< HEAD
 - (void)promptUserBeforePasswordChange
 {
 #ifdef SUPPORT_KEYS_BACKUP
@@ -4406,8 +4394,6 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 }
 
 
-=======
->>>>>>> v1.8.20
 #pragma mark - MXKCountryPickerViewControllerDelegate
 
 - (void)countryPickerViewController:(MXKCountryPickerViewController *)countryPickerViewController didSelectCountry:(NSString *)isoCountryCode
