@@ -39,6 +39,7 @@ enum LocationSharingViewAction {
     case goToUserLocation
     case startLiveSharing
     case shareLiveLocation(timeout: LiveLocationSharingTimeout)
+    case userDidPan
 }
 
 enum LocationSharingViewModelResult {
@@ -54,7 +55,6 @@ enum LocationSharingViewError {
     case failedSharingLocation
 }
 
-@available(iOS 14, *)
 struct LocationSharingViewState: BindableState {
     
     /// Map style URL
@@ -70,16 +70,14 @@ struct LocationSharingViewState: BindableState {
     var highlightedAnnotation: LocationAnnotation?
 
     /// Indicates whether the user has moved around the map to drop a pin somewhere other than their current location
-    var isPinDropSharing: Bool {
-        return bindings.pinLocation != nil
-    }
+    var isPinDropSharing: Bool = false
     
     var showLoadingIndicator: Bool = false
     
     /// True to indicate to show and follow current user location
     var showsUserLocation: Bool = false
     
-    /// Used to hide live location sharing features until is finished
+    /// Used to hide live location sharing features
     var isLiveLocationSharingEnabled: Bool = false
     
     var shareButtonEnabled: Bool {

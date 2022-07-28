@@ -3,7 +3,19 @@
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/dinsic-pim/tchap-ios)
 ![badge-languages](https://img.shields.io/badge/languages-Swift%20%7C%20ObjC-orange.svg)
 [![Swift 5.x](https://img.shields.io/badge/Swift-5.x-orange)](https://developer.apple.com/swift)
+<<<<<<< HEAD
 ![GitHub](https://img.shields.io/github/license/dinsic-pim/tchap-ios)
+=======
+[![Build status](https://badge.buildkite.com/cc8f93e32da93fa7c1172398bd8af66254490567c7195a5f3f.svg?branch=develop)](https://buildkite.com/matrix-dot-org/element-ios/builds?branch=develop)
+[![Weblate](https://translate.riot.im/widgets/riot-ios/-/svg-badge.svg)](https://translate.riot.im/engage/riot-ios/?utm_source=widget)
+[![codecov](https://codecov.io/gh/vector-im/element-ios/branch/develop/graph/badge.svg?token=INNm5o6XWg)](https://codecov.io/gh/vector-im/element-ios)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=vector-im_element-ios&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=vector-im_element-ios)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=vector-im_element-ios&metric=bugs)](https://sonarcloud.io/summary/new_code?id=vector-im_element-ios)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=vector-im_element-ios&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=vector-im_element-ios)
+[![Element iOS Matrix room #element-ios:matrix.org](https://img.shields.io/matrix/element-ios:matrix.org.svg?label=%23element-ios:matrix.org&logo=matrix&server_fqdn=matrix.org)](https://matrix.to/#/#element-ios:matrix.org)
+![GitHub](https://img.shields.io/github/license/vector-im/element-ios)
+[![Twitter URL](https://img.shields.io/twitter/url?label=Element&url=https%3A%2F%2Ftwitter.com%2Felement_hq)](https://twitter.com/element_hq)
+>>>>>>> v1.8.20
 
 Tchap iOS is an iOS [Matrix](https://matrix.org/) client. It is based on [MatrixSDK](https://github.com/matrix-org/matrix-ios-sdk).
 

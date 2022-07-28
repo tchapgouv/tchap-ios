@@ -63,14 +63,6 @@
 @property (nonatomic, readwrite) BOOL isOnboardingCoordinatorPreparing;
 @property (nonatomic, readwrite) BOOL isOnboardingInProgress;
 
-// Observer that checks when the Authentication view controller has gone.
-@property (nonatomic, readwrite) id addAccountObserver;
-@property (nonatomic, readwrite) id removeAccountObserver;
-
-// The parameters to pass to the Authentication view controller.
-@property (nonatomic, readwrite) NSDictionary *authViewControllerRegistrationParameters;
-@property (nonatomic, readwrite) MXCredentials *softLogoutCredentials;
-
 @property (nonatomic) BOOL reviewSessionAlertHasBeenDisplayed;
 
 @end
@@ -120,7 +112,7 @@
     [self vc_removeBackTitle];
     
     [self setupTitleView];
-    titleView.titleLabel.text = [VectorL10n titleHome];
+    self.titleLabelText = [VectorL10n titleHome];
     
     childViewControllers = [NSMutableArray array];
     
@@ -246,17 +238,6 @@
         currentAlert = nil;
     }
     
-    if (self.addAccountObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:self.addAccountObserver];
-        self.addAccountObserver = nil;
-    }
-    if (self.removeAccountObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:self.removeAccountObserver];
-        self.removeAccountObserver = nil;
-    }
-    
     if (kThemeServiceDidChangeThemeNotificationObserver)
     {
         [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
@@ -298,8 +279,8 @@
         }
     }
     
-    titleView.titleLabel.text = [self getTitleForItemViewController:self.selectedViewController];
-    
+    self.titleLabelText = [self getTitleForItemViewController:self.selectedViewController];
+
     // Need to be called in case of the controllers have been replaced
     [self.selectedViewController viewDidAppear:NO];
 }
@@ -319,7 +300,7 @@
     NSInteger index = [self indexOfTabItemWithTag:tabBarIndex];
     self.selectedIndex = index;
     
-    titleView.titleLabel.text = [self getTitleForItemViewController:self.selectedViewController];
+    self.titleLabelText = [self getTitleForItemViewController:self.selectedViewController];
 }
 
 #pragma mark -
@@ -478,6 +459,7 @@
 // TODO: Manage the onboarding coordinator at the AppCoordinator level
 - (void)presentOnboardingFlow
 {
+<<<<<<< HEAD
 //    OnboardingCoordinatorBridgePresenterParameters *parameters = [[OnboardingCoordinatorBridgePresenterParameters alloc] init];
 //    // Forward parameters if any
 //    if (self.authViewControllerRegistrationParameters)
@@ -527,10 +509,30 @@
 //        [[NSNotificationCenter defaultCenter] removeObserver:self.removeAccountObserver];
 //        self.removeAccountObserver = nil;
 //    }];
+=======
+    MXLogDebug(@"[MasterTabBarController] presentOnboardingFlow");
+    
+    MXWeakify(self);
+    OnboardingCoordinatorBridgePresenter *onboardingCoordinatorBridgePresenter = [[OnboardingCoordinatorBridgePresenter alloc] init];
+    onboardingCoordinatorBridgePresenter.completion = ^{
+        MXStrongifyAndReturnIfNil(self);
+        [self.onboardingCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+        self.onboardingCoordinatorBridgePresenter = nil;
+        
+        self.isOnboardingInProgress = NO;   // Must be set before calling didCompleteAuthentication
+        [self.masterTabBarDelegate masterTabBarControllerDidCompleteAuthentication:self];
+    };
+    
+    [onboardingCoordinatorBridgePresenter presentFrom:self animated:NO];
+    
+    self.onboardingCoordinatorBridgePresenter = onboardingCoordinatorBridgePresenter;
+    self.isOnboardingCoordinatorPreparing = NO;
+>>>>>>> v1.8.20
 }
 
 - (void)showOnboardingFlow
 {
+<<<<<<< HEAD
     MXLogDebug(@"[MasterTabBarController] showAuthenticationScreen");
     
     // Check whether an authentication screen is not already shown or preparing
@@ -548,15 +550,15 @@
             [self.masterTabBarDelegate masterTabBarControllerShouldShowAuthenticationFlow:self];
         }];
 //    }
+=======
+    MXLogDebug(@"[MasterTabBarController] showOnboardingFlow");
+    [self showOnboardingFlowAndResetSessionFlags:YES];
+>>>>>>> v1.8.20
 }
 
-/**
- Sets up authentication with parameters detected in a universal link. For example
- https://app.element.io/#/register/?hs_url=matrix.example.com&is_url=identity.example.com
- */
-
-- (void)showOnboardingFlowWithRegistrationParameters:(NSDictionary *)parameters
+- (void)showSoftLogoutOnboardingFlowWithCredentials:(MXCredentials*)credentials;
 {
+<<<<<<< HEAD
 //    if (self.onboardingCoordinatorBridgePresenter)
 //    {
 //        MXLogDebug(@"[MasterTabBarController] Universal link: Forward registration parameter to the existing AuthViewController");
@@ -578,10 +580,24 @@
 //            }
 //        }];
 //    }
+=======
+    MXLogDebug(@"[MasterTabBarController] showAuthenticationScreenAfterSoftLogout");
+    
+    // This method can be called after the user chooses to clear their data as the MXSession
+    // is opened to call logout from. So we only set the credentials when authentication isn't
+    // in progress to prevent a second soft logout screen being shown.
+    if (!self.onboardingCoordinatorBridgePresenter && !self.isOnboardingCoordinatorPreparing)
+    {
+        AuthenticationService.shared.softLogoutCredentials = credentials;
+        
+        [self showOnboardingFlowAndResetSessionFlags:NO];
+    }
+>>>>>>> v1.8.20
 }
 
-- (void)showSoftLogoutOnboardingFlowWithCredentials:(MXCredentials*)credentials;
+- (void)showOnboardingFlowAndResetSessionFlags:(BOOL)resetSessionFlags
 {
+<<<<<<< HEAD
     MXLogDebug(@"[MasterTabBarController] showAuthenticationScreenAfterSoftLogout");
 
 //    self.softLogoutCredentials = credentials;
@@ -597,6 +613,24 @@
 //            [self presentOnboardingFlow];
 //        }];
 //    }
+=======
+    // Check whether an authentication screen is not already shown or preparing
+    if (!self.onboardingCoordinatorBridgePresenter && !self.isOnboardingCoordinatorPreparing)
+    {
+        self.isOnboardingCoordinatorPreparing = YES;
+        self.isOnboardingInProgress = YES;
+        
+        if (resetSessionFlags)
+        {
+            [self resetReviewSessionsFlags];
+        }
+        
+        [[AppDelegate theDelegate] restoreInitialDisplay:^{
+            
+            [self presentOnboardingFlow];
+        }];
+    }
+>>>>>>> v1.8.20
 }
 
 - (void)selectRoomWithParameters:(RoomNavigationParameters*)paramaters completion:(void (^)(void))completion
@@ -782,6 +816,12 @@
 {
     titleView = [MainTitleView new];
     self.navigationItem.titleView = titleView;
+}
+
+-(void)setTitleLabelText:(NSString *)text
+{
+    titleView.titleLabel.text = text;
+    self.navigationItem.backButtonTitle = text;
 }
 
 - (void)presentViewController:(UIViewController *)viewControllerToPresent animated:(BOOL)flag completion:(void (^)(void))completion
@@ -1125,7 +1165,7 @@
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
 {
-    titleView.titleLabel.text = [self getTitleForItemViewController:viewController];
+    self.titleLabelText = [self getTitleForItemViewController:viewController];
 }
 
 @end

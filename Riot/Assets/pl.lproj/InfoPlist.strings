@@ -1,0 +1,8 @@
+// Permissions usage explanations
+"NSCameraUsageDescription" = "Kamera wykorzystywana jest do robienia zdjęć, nagrywania filmów i prowadzenia rozmów wideo.";
+"NSPhotoLibraryUsageDescription" = "Biblioteka zdjęć wykorzystywana jest do wysyłania zdjęć i filmów.";
+"NSMicrophoneUsageDescription" = "Element musi mieć dostęp do mikrofonu, aby wykonywać i odbierać połączenia, nagrywać filmy i nagrywać wiadomości głosowe.";
+"NSContactsUsageDescription" = "Element pokaże Twoje kontakty, dzięki czemu możesz je zaprosić do czatu.";
+"NSCalendarsUsageDescription" = "Zobacz swoje zaplanowane spotkania w aplikacji.";
+"NSFaceIDUsageDescription" = "Face ID wykorzystywane jest do odblokowywania aplikacji.";
+"NSLocationWhenInUseUsageDescription" = "Gdy udostępniasz innym swoją lokalizację, Element potrzebuje dostępu, aby pokazać im mapę.";

@@ -46,8 +46,20 @@ include:
   - path: CommonKit/target.yml
   - path: CommonKit/targetUnitTests.yml
 
+<<<<<<< HEAD
 #packages:
 #  Mapbox:
 #    url: https://github.com/maplibre/maplibre-gl-native-distribution
 #    minVersion: 5.12.2
 #    maxVersion: 5.13.0
+=======
+packages:
+  Mapbox:
+    url: https://github.com/maplibre/maplibre-gl-native-distribution
+    minVersion: 5.12.2
+    maxVersion: 5.13.0
+  OrderedCollections:
+    url: https://github.com/apple/swift-collections
+    minVersion: 1.0.2
+    maxVersion: 2.0.0
+>>>>>>> v1.8.20
