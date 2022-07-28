@@ -128,9 +128,9 @@ platform :ios do
     slather(
       cobertura_xml: true,
       output_directory: "./build/test",
-      workspace: "Riot.xcworkspace",
-      proj: "Riot.xcodeproj",
-      scheme: "Riot",
+      workspace: "Tchap.xcworkspace",
+      proj: "Tchap.xcodeproj",
+      scheme: "Tchap",
     )
   end
   
@@ -140,8 +140,8 @@ platform :ios do
     cocoapods
     
     run_tests(
-      workspace: "Riot.xcworkspace",
-      scheme: "RiotSwiftUITests",
+      workspace: "Tchap.xcworkspace",
+      scheme: "TchapSwiftUITests",
       device: "iPhone 13",
       code_coverage: true,
       # Test result configuration
