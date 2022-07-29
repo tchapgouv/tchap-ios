@@ -505,8 +505,8 @@
     // Check whether an authentication screen is not already shown or preparing
 //    if (!self.onboardingCoordinatorBridgePresenter && !self.isOnboardingCoordinatorPreparing)
 //    {
-        self.isOnboardingCoordinatorPreparing = YES;
-        self.isOnboardingInProgress = YES;
+//        self.isOnboardingCoordinatorPreparing = YES;
+//        self.isOnboardingInProgress = YES;
         
         if (resetSessionFlags)
         {
@@ -515,7 +515,8 @@
         
         [[AppDelegate theDelegate] restoreInitialDisplay:^{
             
-            [self presentOnboardingFlow];
+//            [self presentOnboardingFlow];
+            [self.masterTabBarDelegate masterTabBarControllerShouldShowAuthenticationFlow:self];
         }];
 //    }
 }
