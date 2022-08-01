@@ -1,14 +1,14 @@
-name: Btchap
+name: DevTchap
 
 schemes:
-  Btchap:
+  DevTchap:
     analyze:
       config: Debug
     archive:
       config: Release
     build:
       targets:
-        Btchap:
+        DevTchap:
         - running
         - testing
         - profiling
@@ -26,7 +26,7 @@ schemes:
       - TchapTests
 
 targets:
-  Btchap:
+  DevTchap:
     type: application
     platform: iOS
 
@@ -37,8 +37,8 @@ targets:
     - target: CommonKit
 
     configFiles:
-      Debug: SupportingFiles/Btchap-App-Debug.xcconfig
-      Release: SupportingFiles/Btchap-App-Release.xcconfig
+      Debug: SupportingFiles/DevTchap-App-Debug.xcconfig
+      Release: SupportingFiles/DevTchap-App-Release.xcconfig
 
     preBuildScripts:
     - name: 🛠 Environment
@@ -60,7 +60,7 @@ targets:
         OTHER_SWIFT_FLAGS: $(inherited) -D ENABLE_REACTIONS -D ENABLE_EDITION
 
     sources:
-    - path: ../Btchap/Config
+    - path: ../DevTchap/Config
     - path: ../Config/AppConfiguration.swift
     - path: ../Config/Project.xcconfig
     - path: ../Config/Project-Warnings.xcconfig
