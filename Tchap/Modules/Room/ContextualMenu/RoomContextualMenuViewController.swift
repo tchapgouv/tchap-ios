@@ -160,11 +160,7 @@ final class RoomContextualMenuViewController: UIViewController, Themable {
         self.reactionsMenuViewBottomStartConstraintConstant = reactionsMenuViewBottomStartConstraintConstant
         self.reactionsMenuViewBottomEndConstraintConstant = reactionsMenuViewBottomEndConstraintConstant
         
-#if ENABLE_REACTIONS
         self.reactionsMenuContainerView.isHidden = false
-#else
-        self.reactionsMenuContainerView.isHidden = true
-#endif
     }
     
     func showReactionsMenu() {
@@ -215,16 +211,12 @@ final class RoomContextualMenuViewController: UIViewController, Themable {
         
         let hideReactionMenu: Bool
         
-#if ENABLE_REACTIONS
         if let reactionsMenuViewModel = self.reactionsMenuViewModel {
             hideReactionMenu = false
             self.updateReactionsMenu(with: reactionsMenuViewModel)
         } else {
             hideReactionMenu = true
         }
-#else
-        hideReactionMenu = true
-#endif
         
         self.reactionsMenuContainerView.isHidden = hideReactionMenu
     }

@@ -54,11 +54,6 @@ targets:
       shell: /bin/sh
       script: "\"${PODS_ROOT}/SwiftGen/bin/swiftgen\" config run --config \"Tools/SwiftGen/swiftgen-config.yml\"\n"
 
-    settings:
-      base:
-        GCC_PREPROCESSOR_DEFINITIONS: $(inherited) ENABLE_JOIN_BY_LINK=1 ENABLE_REACTIONS=1 ENABLE_EDITION=1
-        OTHER_SWIFT_FLAGS: $(inherited) -D ENABLE_REACTIONS -D ENABLE_EDITION
-
     sources:
     - path: ../DevTchap/Config
     - path: ../Config/AppConfiguration.swift
