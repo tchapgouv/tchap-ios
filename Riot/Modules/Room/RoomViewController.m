@@ -7117,11 +7117,10 @@ static CGSize kThreadListBarButtonItemImageSize;
 {
     // Tchap: Threads are disabled in Tchap
 //    if (!service)
-    if (true)
-    {
-        return;
-    }
-
+//    {
+//        return;
+//    }
+//
 //    __block NSInteger replaceIndex = NSNotFound;
 //    [self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem * _Nonnull item, NSUInteger index, BOOL * _Nonnull stop)
 //     {

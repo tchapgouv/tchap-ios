@@ -204,9 +204,9 @@ SingleImagePickerPresenterDelegate,
 SettingsDiscoveryTableViewSectionDelegate, SettingsDiscoveryViewModelCoordinatorDelegate,
 SettingsIdentityServerCoordinatorBridgePresenterDelegate,
 ServiceTermsModalCoordinatorBridgePresenterDelegate,
-TableViewSectionsDelegate/*,
-ThreadsBetaCoordinatorBridgePresenterDelegate,
-ChangePasswordCoordinatorBridgePresenterDelegate*/>
+TableViewSectionsDelegate,
+/*ThreadsBetaCoordinatorBridgePresenterDelegate,*/
+ChangePasswordCoordinatorBridgePresenterDelegate>
 {
     // Current alert (if any).
     __weak UIAlertController *currentAlert;
