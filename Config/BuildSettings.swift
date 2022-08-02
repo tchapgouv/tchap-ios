@@ -394,7 +394,6 @@ final class BuildSettings: NSObject {
     // MARK: - Onboarding
     static let onboardingShowAccountPersonalization = false
     static let onboardingEnableNewAuthenticationFlow = false
-    static let onboardingHostYourOwnServerLink = URL(string: "https://element.io/contact-sales")!
     
     // MARK: - Unified Search
     static let unifiedSearchScreenShowPublicDirectory = true
@@ -407,36 +406,11 @@ final class BuildSettings: NSObject {
     
     // MARK: - Polls
     
-    static var pollsEnabled: Bool {
-        guard #available(iOS 14, *) else {
-            return false
-        }
-        
-        return false// true : Currently disabled in Tchap.
-    }
+    static let pollsEnabled = false // Currently disabled in Tchap.
     
     // MARK: - Location Sharing
     
     static let tileServerMapStyleURL = URL(string: "https://api.maptiler.com/maps/streets/style.json?key=fU3vlMsMn4Jb6dnEIFsx")!
     
-    static var locationSharingEnabled: Bool {
-        guard #available(iOS 14, *) else {
-            return false
-        }
-        
-        return false// true : Currently disabled in Tchap.
-    }
-    
-    static var liveLocationSharingEnabled: Bool {
-        guard #available(iOS 14, *) else {
-            return false
-        }
-        
-        guard self.locationSharingEnabled else {
-            return false
-        }
-        
-        // Do not enable live location sharing atm
-        return false
-    }
+    static let locationSharingEnabled = false // Currently disabled in Tchap.
 }

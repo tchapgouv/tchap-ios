@@ -105,6 +105,10 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
         // Setup navigation router store
         _ = NavigationRouterStore.shared
         
+        // Tchap: Disable user location in Tchap
+        // Setup user location services
+//        _ = UserLocationServiceProvider.shared
+        
         if BuildSettings.enableSideMenu {
             self.addSideMenu()
         }
@@ -151,21 +155,20 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
     
     private func setupTheme() {
         ThemeService.shared().themeId = RiotSettings.shared.userInterfaceTheme
-        if #available(iOS 14.0, *) {
-            // Set theme id from current theme.identifier, themeId can be nil.
-            if let themeId = ThemeIdentifier(rawValue: ThemeService.shared().theme.identifier) {
-                ThemePublisher.configure(themeId: themeId)
-            } else {
-                MXLog.error("[AppCoordinator] No theme id found to update ThemePublisher")
-            }
-            
-            // Always republish theme change events, and again always getting the identifier from the theme.
-            let themeIdPublisher = NotificationCenter.default.publisher(for: Notification.Name.themeServiceDidChangeTheme)
-                .compactMap({ _ in ThemeIdentifier(rawValue: ThemeService.shared().theme.identifier) })
-                .eraseToAnyPublisher()
 
-            ThemePublisher.shared.republish(themeIdPublisher: themeIdPublisher)
+        // Set theme id from current theme.identifier, themeId can be nil.
+        if let themeId = ThemeIdentifier(rawValue: ThemeService.shared().theme.identifier) {
+            ThemePublisher.configure(themeId: themeId)
+        } else {
+            MXLog.error("[AppCoordinator] No theme id found to update ThemePublisher")
         }
+        
+        // Always republish theme change events, and again always getting the identifier from the theme.
+        let themeIdPublisher = NotificationCenter.default.publisher(for: Notification.Name.themeServiceDidChangeTheme)
+            .compactMap({ _ in ThemeIdentifier(rawValue: ThemeService.shared().theme.identifier) })
+            .eraseToAnyPublisher()
+
+        ThemePublisher.shared.republish(themeIdPublisher: themeIdPublisher)
     }
     
     private func excludeAllItemsFromBackup() {
@@ -230,8 +233,8 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
         let canOpenLink: Bool
         
         switch deepLinkOption {
-        case .connect(let loginToken, let transactionId):
-            canOpenLink = self.legacyAppDelegate.continueSSOLogin(withToken: loginToken, txnId: transactionId)
+        case .connect(let loginToken, let transactionID):
+            canOpenLink = self.legacyAppDelegate.continueSSOLogin(withToken: loginToken, txnId: transactionID)
         }
         
         return canOpenLink

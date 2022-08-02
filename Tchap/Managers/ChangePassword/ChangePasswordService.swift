@@ -38,7 +38,7 @@ final class ChangePasswordService: ChangePasswordServiceType {
     
     func changePassword(from oldPassword: String, to newPassword: String, completion: @escaping (MXResponse<Void>) -> Void) -> MXHTTPOperation {
         self.cancelPendingChangePassword()
-        return self.session.matrixRestClient.changePassword(from: oldPassword, to: newPassword, completion: completion)
+        return self.session.matrixRestClient.changePassword(from: oldPassword, to: newPassword, logoutDevices: false, completion: completion)
     }
     
     // MARK: - Private

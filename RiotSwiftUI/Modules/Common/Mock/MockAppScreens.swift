@@ -17,15 +17,19 @@
 import Foundation
 
 /// The static list of mocked screens in RiotSwiftUI
-@available(iOS 14.0, *)
 enum MockAppScreens {
     static let appScreens: [MockScreenState.Type] = [
 //        MockLiveLocationSharingViewerScreenState.self,
+        MockAuthenticationLoginScreenState.self,
         MockAuthenticationReCaptchaScreenState.self,
         MockAuthenticationTermsScreenState.self,
         MockAuthenticationVerifyEmailScreenState.self,
+        MockAuthenticationVerifyMsisdnScreenState.self,
 //        MockAuthenticationRegistrationScreenState.self,
 //        MockAuthenticationServerSelectionScreenState.self,
+        MockAuthenticationForgotPasswordScreenState.self,
+        MockAuthenticationChoosePasswordScreenState.self,
+        MockAuthenticationSoftLogoutScreenState.self,
         MockOnboardingCelebrationScreenState.self,
         MockOnboardingAvatarScreenState.self,
         MockOnboardingDisplayNameScreenState.self,
@@ -47,6 +51,7 @@ enum MockAppScreens {
         MockSpaceCreationSettingsScreenState.self,
         MockSpaceCreationPostProcessScreenState.self,
         MockTimelinePollScreenState.self,
+//        MockChangePasswordScreenState.self,
         MockTemplateSimpleScreenScreenState.self,
         MockTemplateUserProfileScreenState.self,
         MockTemplateRoomListScreenState.self,

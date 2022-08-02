@@ -202,33 +202,41 @@ public extension VectorL10n {
   static var imagePickerActionFiles: String { 
     return VectorL10n.tr("Untranslated", "image_picker_action_files") 
   }
-  /// Leave space
-  static var leaveSpaceAction: String { 
-    return VectorL10n.tr("Untranslated", "leave_space_action") 
+  /// Contain a lower-case letter.
+  static var passwordValidationErrorContainLowercaseLetter: String { 
+    return VectorL10n.tr("Untranslated", "password_validation_error_contain_lowercase_letter") 
   }
-  /// Leave space and %@ rooms
-  static func leaveSpaceAndMoreRooms(_ p1: String) -> String {
-    return VectorL10n.tr("Untranslated", "leave_space_and_more_rooms", p1)
+  /// Contain a number.
+  static var passwordValidationErrorContainNumber: String { 
+    return VectorL10n.tr("Untranslated", "password_validation_error_contain_number") 
   }
-  /// Leave space and 1 room
-  static var leaveSpaceAndOneRoom: String { 
-    return VectorL10n.tr("Untranslated", "leave_space_and_one_room") 
+  /// Contain a symbol.
+  static var passwordValidationErrorContainSymbol: String { 
+    return VectorL10n.tr("Untranslated", "password_validation_error_contain_symbol") 
   }
-  /// Select all rooms
-  static var leaveSpaceSelectionAllRooms: String { 
-    return VectorL10n.tr("Untranslated", "leave_space_selection_all_rooms") 
+  /// Contain an upper-case letter.
+  static var passwordValidationErrorContainUppercaseLetter: String { 
+    return VectorL10n.tr("Untranslated", "password_validation_error_contain_uppercase_letter") 
   }
-  /// Select no rooms
-  static var leaveSpaceSelectionNoRooms: String { 
-    return VectorL10n.tr("Untranslated", "leave_space_selection_no_rooms") 
+  /// Given password does not meet the criteria below:
+  static var passwordValidationErrorHeader: String { 
+    return VectorL10n.tr("Untranslated", "password_validation_error_header") 
   }
-  /// SELECT ROOMS
-  static var leaveSpaceSelectionTitle: String { 
-    return VectorL10n.tr("Untranslated", "leave_space_selection_title") 
+  /// Not exceed %d characters.
+  static func passwordValidationErrorMaxLength(_ p1: Int) -> String {
+    return VectorL10n.tr("Untranslated", "password_validation_error_max_length", p1)
   }
-  /// This feature isn't available here. For now, you can do this with %@ on your computer.
-  static func spacesFeatureNotAvailable(_ p1: String) -> String {
-    return VectorL10n.tr("Untranslated", "spaces_feature_not_available", p1)
+  /// At least %d characters.
+  static func passwordValidationErrorMinLength(_ p1: Int) -> String {
+    return VectorL10n.tr("Untranslated", "password_validation_error_min_length", p1)
+  }
+  /// Your password should meet the criteria below:
+  static var passwordValidationInfoHeader: String { 
+    return VectorL10n.tr("Untranslated", "password_validation_info_header") 
+  }
+  /// Room Info
+  static var roomInfoBackButtonTitle: String { 
+    return VectorL10n.tr("Untranslated", "room_info_back_button_title") 
   }
 }
 // swiftlint:enable function_parameter_count identifier_name line_length type_body_length

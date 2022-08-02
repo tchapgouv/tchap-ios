@@ -232,6 +232,8 @@ targets:
     - path: ../Riot/Modules/ServiceTerms
     - path: ../Riot/Modules/SetPinCode
     - path: ../Riot/Modules/Settings
+      excludes:
+      - "DeactivateAccount"
     - path: ../Riot/Modules/SideMenu
     - path: ../Riot/Modules/SlidingModal
     - path: ../Riot/Modules/SplitView
@@ -252,18 +254,14 @@ targets:
       excludes:
       - "**/Test/**"
       - "Authentication/**/Coordinator/**"
-      - "Authentication/Common/Service/MatrixSDK/AuthenticationPendingData.swift"
-      - "Authentication/Common/Service/MatrixSDK/AuthenticationService.swift"
-      - "Authentication/Common/Service/MatrixSDK/AuthenticationState.swift"
-      - "Authentication/Common/Service/MatrixSDK/RegistrationModels.swift"
-      - "Authentication/Common/Service/MatrixSDK/RegistrationWizard.swift"
-      - "Authentication/Common/Service/MatrixSDK/ThreePIDModels.swift"
+      - "Authentication/Common/Service/MatrixSDK"
       - "Authentication/Registration"
       - "Authentication/ServerSelection"
       - "Common/Locale/LocaleProvider.swift"
       - "Room/LiveLocationSharingViewer"
       - "Room/LocationSharing"
       - "Room/StaticLocationSharingViewer"
+      - "Settings/ChangePassword"
 
     # Share extension
     - path: ../RiotShareExtension/Shared

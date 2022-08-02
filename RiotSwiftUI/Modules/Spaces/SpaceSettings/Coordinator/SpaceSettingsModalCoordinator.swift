@@ -23,7 +23,6 @@ enum SpaceSettingsModalCoordinatorAction {
 }
 
 @objcMembers
-@available(iOS 14.0, *)
 final class SpaceSettingsModalCoordinator: Coordinator {
     
     // MARK: - Properties
@@ -80,7 +79,6 @@ final class SpaceSettingsModalCoordinator: Coordinator {
     
     // MARK: - Private
     
-    @available(iOS 14.0, *)
     func pushScreen(with coordinator: Coordinator & Presentable) {
         add(childCoordinator: coordinator)
         
@@ -169,7 +167,6 @@ final class SpaceSettingsModalCoordinator: Coordinator {
 
 // MARK: - ExploreRoomCoordinatorDelegate
 // Tchap: Disable Spaces
-//@available(iOS 14.0, *)
 //extension SpaceSettingsModalCoordinator: ExploreRoomCoordinatorDelegate {
 //    func exploreRoomCoordinatorDidComplete(_ coordinator: ExploreRoomCoordinatorType) {
 //        self.navigationRouter.dismissModule(animated: true, completion: {
@@ -180,7 +177,6 @@ final class SpaceSettingsModalCoordinator: Coordinator {
 
 // MARK: - SpaceMembersCoordinatorDelegate
 // Tchap: Disable Spaces
-//@available(iOS 14.0, *)
 //extension SpaceSettingsModalCoordinator: SpaceMembersCoordinatorDelegate {
 //    func spaceMembersCoordinatorDidCancel(_ coordinator: SpaceMembersCoordinatorType) {
 //        self.navigationRouter.dismissModule(animated: true, completion: {
