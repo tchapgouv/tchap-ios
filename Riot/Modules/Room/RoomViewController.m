@@ -6552,9 +6552,7 @@ static CGSize kThreadListBarButtonItemImageSize;
         return @[
             [self resendMenuItemWithEvent:event],
             [self deleteMenuItemWithEvent:event],
-#if ENABLE_EDITION
             [self editMenuItemWithEvent:event],
-#endif
             [self copyMenuItemWithEvent:event andCell:cell]
         ];
     }
@@ -6572,9 +6570,7 @@ static CGSize kThreadListBarButtonItemImageSize;
         //  add "Thread" option only if not already in a thread
 //        [items addObject:[self replyInThreadMenuItemWithEvent:event]];
     }
-#if ENABLE_EDITION
     [items addObject:[self editMenuItemWithEvent:event]];
-#endif
     if (!showThreadOption)
     {
         [items addObject:[self copyMenuItemWithEvent:event andCell:cell]];
@@ -6739,7 +6735,6 @@ static CGSize kThreadListBarButtonItemImageSize;
     return deleteMenuItem;
 }
 
-#if ENABLE_EDITION
 - (RoomContextualMenuItem *)editMenuItemWithEvent:(MXEvent*)event
 {
     MXWeakify(self);
@@ -6776,7 +6771,6 @@ static CGSize kThreadListBarButtonItemImageSize;
     
     return editMenuItem;
 }
-#endif
 
 - (RoomContextualMenuItem *)copyMenuItemWithEvent:(MXEvent*)event andCell:(id<MXKCellRendering>)cell
 {

@@ -54,11 +54,6 @@ targets:
       shell: /bin/sh
       script: "\"${PODS_ROOT}/SwiftGen/bin/swiftgen\" config run --config \"Tools/SwiftGen/swiftgen-config.yml\"\n"
 
-    settings:
-      base:
-        GCC_PREPROCESSOR_DEFINITIONS: $(inherited) ENABLE_JOIN_BY_LINK=1 ENABLE_REACTIONS=1 ENABLE_EDITION=1
-        OTHER_SWIFT_FLAGS: $(inherited) -D ENABLE_REACTIONS -D ENABLE_EDITION
-
     sources:
     - path: ../Tchap/Config
     - path: ../Config/AppConfiguration.swift
@@ -69,34 +64,32 @@ targets:
     - path: ../Config/Configurable.swift
     - path: .
       excludes:
-        - "Tools"
+        - "Managers/AppVersion/AppVersion.swift"
+        - "Managers/UniversalLink"
         - "Modules/Application"
         - "Modules/Common/ActivityIndicator"
-        - "Modules/Room/EmojiPicker/Data/EmojiMart/EmojiJSONStore.swift"
-        - "Modules/Room/Views/Title/RoomTitleView.*"
+        - "Modules/Home/HomeCoordinator.swift"
+        - "Modules/Home/HomeCoordinatorType.swift"
+        - "Modules/Room/DiscussionDetailsCoordinator.swift"
         - "Modules/Room/RoomCoordinator.swift"
-        - "Modules/Room/Views/BubbleCells/KeyVerification"
-        - "Modules/Room/Members/Detail/Views/RoomMemberTitleView.*"
-        - "Modules/Room/Members/Detail/RoomMemberDetailsViewController.xib"
-        - "Modules/Room/Settings/RoomSettingsViewController.*"
+        - "Modules/Room/RoomDetailsCoordinator.swift"
+        - "Modules/Room/RoomDetailsCoordinatorType.swift"
         - "Modules/Room/RoomViewController.*"
+        - "Modules/Room/EmojiPicker/Data/EmojiMart/EmojiJSONStore.swift"
+        - "Modules/Room/Members/Detail/RoomMemberDetailsViewController.xib"
+        - "Modules/Room/Members/Detail/Views/RoomMemberTitleView.*"
+        - "Modules/Room/Settings/RoomSettingsViewController.*"
         - "Modules/Room/Views/BubbleCells"
         - "Modules/Room/Views/InputToolbar/RoomInputToolbarView.*"
         - "Modules/Room/Views/Preview"
         - "Modules/Room/Views/Title/RoomTitleView.*"
         - "Modules/Rooms"
         - "Modules/Settings/SettingsViewController.*"
-        - "Managers/AppVersion/AppVersion.swift"
-        - "Managers/UniversalLink"
         - "Routers"
+        - "Tools"
         - "**/*.strings" # Exclude all strings files
-        - "Modules/Home/HomeCoordinator.swift"
-        - "Modules/Home/HomeCoordinatorType.swift"
-        - "Modules/Room/RoomDetailsCoordinator.swift"
-        - "Modules/Room/RoomDetailsCoordinatorType.swift"
-        - "Modules/Room/DiscussionDetailsCoordinator.swift"
-    - path: ../Tchap/Modules/Application/VersionUpdate
     - path: ../Tchap/Generated/Images_Riot.swift
+    - path: ../Tchap/Modules/Application/VersionUpdate
     - path: ../Tchap/Modules/Room/Views/BubbleCells/Antivirus
 
 

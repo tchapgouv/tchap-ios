@@ -1097,6 +1097,7 @@ MXKDocumentPickerPresenterDelegate>
 
 - (UIImage*)shieldImageForDevice:(NSString*)deviceId
 {
+#ifdef CROSS_SIGNING
     if (!self.mainSession.crypto.crossSigning.canCrossSign)
     {
         if ([deviceId isEqualToString:self.mainSession.myDeviceId])
@@ -1108,6 +1109,7 @@ MXKDocumentPickerPresenterDelegate>
             return AssetImages.encryptionNormal.image;
         }
     }
+#endif
     
     UIImage* shieldImageForDevice = AssetImages.encryptionWarning.image;
     MXDeviceInfo *device = [self.mainSession.crypto deviceWithDeviceId:deviceId ofUser:self.mainSession.myUser.userId];

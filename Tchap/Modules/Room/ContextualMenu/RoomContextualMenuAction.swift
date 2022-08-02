@@ -20,11 +20,7 @@ import Foundation
     case copy
     case reply
     case replyInThread
-#if ENABLE_EDITION
     case edit
-#else
-    case redact
-#endif
     case favourite
     case share
     case more
@@ -43,13 +39,8 @@ import Foundation
             title = VectorL10n.roomEventActionReply
         case .replyInThread:
             title = VectorL10n.roomEventActionReplyInThread
-#if ENABLE_EDITION
         case .edit:
             title = VectorL10n.roomEventActionEdit
-#else
-        case .redact:
-            title = VectorL10n.roomEventActionRedact
-#endif
         case .favourite:
             title = TchapL10n.roomEventActionFavourite
         case .share:
@@ -75,13 +66,8 @@ import Foundation
             image = Asset.Images.roomContextMenuReply.image
         case .replyInThread:
             image = Asset.Images.roomContextMenuThread.image
-#if ENABLE_EDITION
         case .edit:
             image = Asset.Images.roomContextMenuEdit.image
-#else
-        case .redact:
-            image = Asset.Images.roomContextMenuRedact.image
-#endif
         case .favourite:
             image = Asset_tchap.Images.roomContextMenuFav.image
         case .share:
