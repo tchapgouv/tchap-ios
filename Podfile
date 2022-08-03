@@ -115,6 +115,7 @@ abstract_target 'TchapPods' do
 
   target "Btchap" do
     import_MatrixSDK
+    import_MatrixKit_pods
 
     import_SwiftUI_pods
 
@@ -123,6 +124,7 @@ abstract_target 'TchapPods' do
   
   target "DevTchap" do
     import_MatrixSDK
+    import_MatrixKit_pods
 
     import_SwiftUI_pods
 
