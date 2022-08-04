@@ -40,7 +40,6 @@ final class RoomCreationCoordinator: NSObject, RoomCreationCoordinatorType {
     private var roomCreationFormResult: RoomCreationFormResult?
     
     private var imagePickerPresenter: SingleImagePickerPresenter?
-    private weak var contactsPickerCoordinator: RoomCreationContactsPickerCoordinatorType?
     
     private var disposeBag: DisposeBag = DisposeBag()
     
@@ -117,58 +116,23 @@ final class RoomCreationCoordinator: NSObject, RoomCreationCoordinatorType {
     }
     
     private func showContactsPicker() {
-        // Check whether the federation has been disabled to limit the invitation to the non federated users
-        let showFederatedUsers: Bool
-        let isRestricted: Bool
+        let startChatViewController = StartChatViewController()
         
-        switch self.roomCreationFormResult?.roomType {
-        case .privateRestricted, .none:
-            isRestricted = true
-            showFederatedUsers = true
-        case .privateUnrestricted:
-            isRestricted = false
-            showFederatedUsers = true
-        case .forum(let isFederated):
-            isRestricted = true
-            showFederatedUsers = isFederated
-        }
-
-        let filter: ContactsDataSourceTchapFilter
-        if showFederatedUsers {
-            // Check the room access rule
-            if isRestricted {
-                filter = ContactsDataSourceTchapFilterTchapUsersOnlyWithoutExternals
-            } else {
-                filter = ContactsDataSourceTchapFilterTchapUsersOnly
-            }
-        } else {
-            filter = ContactsDataSourceTchapFilterTchapUsersOnlyWithoutFederation
-        }
-        let contactsPickerCoordinator = RoomCreationContactsPickerCoordinator(session: self.session, contactsFilter: filter)
-        contactsPickerCoordinator.start()
-        contactsPickerCoordinator.delegate = self
-        
-        self.router.push(contactsPickerCoordinator, animated: true) { [weak self] in
-            self?.remove(childCoordinator: contactsPickerCoordinator)
+        self.router.push(startChatViewController, animated: true) { [weak self] in
             self?.cancelPendingRoomCreation()
         }
-        
-        self.add(childCoordinator: contactsPickerCoordinator)
-        self.contactsPickerCoordinator = contactsPickerCoordinator
     }
     
     private func createRoom(with userIDs: [String]) {
-        guard let roomCreationFormResult = self.roomCreationFormResult, let contactsPickerCoordinator = self.contactsPickerCoordinator else {
+        guard let roomCreationFormResult = self.roomCreationFormResult else {
             MXLog.debug("[RoomCreationCoordinator] Fail to create room")
             return
         }
 
         let removeActivityIndicator: (() -> Void) = {
             self.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
-            contactsPickerCoordinator.setPickerUserInteraction(enabled: true)
         }
 
-        contactsPickerCoordinator.setPickerUserInteraction(enabled: false)
         let navigationController = self.router.toPresentable()
 
         self.activityIndicatorPresenter.presentActivityIndicator(on: navigationController.view, animated: true)
@@ -279,14 +243,5 @@ extension RoomCreationCoordinator: SingleImagePickerPresenterDelegate {
         }
         
         self.imageData = imageData
-    }
-}
-
-// MARK: - RoomCreationContactsPickerCoordinatorDelegate
-extension RoomCreationCoordinator: RoomCreationContactsPickerCoordinatorDelegate {
-    
-    func contactsPickerCoordinator(_ coordinator: RoomCreationContactsPickerCoordinatorType, didSelectContactIdentifiers identifiers: [String]) {
-        // Presently only Matrix ids are expected in this identifiers list (the picker is configured to display only Tchap users).
-        self.createRoom(with: identifiers)
     }
 }

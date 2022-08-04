@@ -145,6 +145,8 @@
 
 - (void)showInviteFriendsHeaderView:(BOOL)show
 {
+    // Tchap: Always hide always the Friends header view on start DM.
+    show = NO;
     if (show)
     {
         if (!self.inviteFriendsHeaderView)

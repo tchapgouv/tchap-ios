@@ -26,9 +26,11 @@
 
 #import "MXCallManager.h"
 
+#import "ContactTableViewCell.h"
+
 #import "RageShakeManager.h"
 
-@interface RoomParticipantsViewController () <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UIGestureRecognizerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsViewControllerDelegate, RoomParticipantsInviteCoordinatorBridgePresenterDelegate>
+@interface RoomParticipantsViewController () <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UIGestureRecognizerDelegate, MXKRoomMemberDetailsViewControllerDelegate, RoomParticipantsInviteCoordinatorBridgePresenterDelegate>
 {
     // Search result
     NSString *currentSearchText;
@@ -48,8 +50,7 @@
     id roomDidFlushDataNotificationObserver;
     
     RoomMemberDetailsViewController *memberDetailsViewController;
-    ContactsViewController *contactsPickerViewController;
-    ContactsDataSourceTchap *contactsDataSource;
+    
     UIBarButtonItem *validateBarButtonItem;
     
     // Tell whether the user is allowed to invite other users
@@ -159,11 +160,7 @@
     self.tableView.tableFooterView = [[UIView alloc] init];
     
     [self.tableView registerClass:ContactTableViewCell.class forCellReuseIdentifier:@"ParticipantTableViewCellId"];
-    [self.tableView registerNib:ContactCell.nib forCellReuseIdentifier:ContactCell.defaultReuseIdentifier];
     
-    // Enable self-sizing cells.
-    self.tableView.rowHeight = UITableViewAutomaticDimension;
-    self.tableView.estimatedRowHeight = 60;
     
     if (_showInviteUserFab)
     {
@@ -298,13 +295,6 @@
     {
         [memberDetailsViewController destroy];
         memberDetailsViewController = nil;
-    }
-    
-    if (contactsPickerViewController)
-    {
-        [contactsDataSource destroy];
-        contactsDataSource = nil;
-        contactsPickerViewController = nil;
     }
     
     [self userInterfaceThemeDidChange];
@@ -1139,32 +1129,92 @@
     
     if (indexPath.section == participantsSection || indexPath.section == invitedSection)
     {
-        ContactCell* participantCell = [tableView dequeueReusableCellWithIdentifier:ContactCell.defaultReuseIdentifier forIndexPath:indexPath];
+        ContactTableViewCell* participantCell = [tableView dequeueReusableCellWithIdentifier:@"ParticipantTableViewCellId" forIndexPath:indexPath];
         participantCell.selectionStyle = UITableViewCellSelectionStyleNone;
-//        participantCell.showCustomAccessoryView = self.showParticipantCustomAccessoryView;
+        participantCell.showCustomAccessoryView = self.showParticipantCustomAccessoryView;
         
-        Contact *contact = [self getContactAtIndexPath:indexPath];
+        participantCell.mxRoom = self.mxRoom;
+        
+        Contact *contact;
+        
+        if ((indexPath.section == participantsSection && userParticipant && indexPath.row == 0) && !currentSearchText.length)
+        {
+            // oneself dedicated cell
+            contact = userParticipant;
+        }
+        else
+        {
+            NSInteger index = indexPath.row;
+            NSArray *participants;
+            
+            if (indexPath.section == participantsSection)
+            {
+                if (currentSearchText.length)
+                {
+                    participants = filteredActualParticipants;
+                }
+                else
+                {
+                    participants = actualParticipants;
+                    
+                    if (userParticipant)
+                    {
+                        index --;
+                    }
+                }
+            }
+            else
+            {
+                if (currentSearchText.length)
+                {
+                    participants = filteredInvitedParticipants;
+                }
+                else
+                {
+                    participants = invitedParticipants;
+                }
+            }
+            
+            if (index < participants.count)
+            {
+                contact = participants[index];
+            }
+        }
+        
         if (contact)
         {
             [participantCell render:contact];
             
-            participantCell.thumbnailBadgeView.hidden = YES;
             if (contact.mxMember)
             {
                 MXRoomState *roomState = self.mxRoom.dangerousSyncState;
                 
-                // Update member badge
+                // Update member power level
                 MXRoomPowerLevels *powerLevels = [roomState powerLevels];
                 NSInteger powerLevel = [powerLevels powerLevelOfUserWithUserID:contact.mxMember.userId];
-                if (powerLevel >= RoomPowerLevelAdmin)
-                {
-                    participantCell.thumbnailBadgeView.image = [UIImage imageNamed:@"admin_icon"];
-                    participantCell.thumbnailBadgeView.hidden = NO;
+                
+                RoomPowerLevel roomPowerLevel = [RoomPowerLevelHelper roomPowerLevelFrom:powerLevel];
+                
+                NSString *powerLevelText;
+                
+                switch (roomPowerLevel) {
+                    case RoomPowerLevelAdmin:
+                        powerLevelText = [VectorL10n roomMemberPowerLevelShortAdmin];
+                        break;
+                    case RoomPowerLevelModerator:
+                        powerLevelText = [VectorL10n roomMemberPowerLevelShortModerator];
+                        break;
+                    default:
+                        powerLevelText = nil;
+                        break;
                 }
-                else if (powerLevel >= RoomPowerLevelModerator)
+                
+                participantCell.powerLevelLabel.text = powerLevelText;
+                
+                // Update the contact display name by considering the current room state.
+                if (contact.mxMember.userId)
                 {
-                    participantCell.thumbnailBadgeView.image = [UIImage imageNamed:@"mod_icon"];
-                    participantCell.thumbnailBadgeView.hidden = NO;
+                    participantCell.contactDisplayNameLabel.text = [roomState.members memberName:contact.mxMember.userId];
                 }
             }
         }
@@ -1274,6 +1324,11 @@
     return sectionHeader;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 74.0;
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Sanity check
@@ -1346,78 +1401,6 @@
             [delegate roomParticipantsViewController:self mention:member];
             
         }];
-    }
-}
-
-#pragma mark - ContactsViewControllerDelegate
-
-- (void)contactsViewController:(ContactsViewController *)contactsViewController didSelectContact:(MXKContact*)contact
-{
-    validateBarButtonItem.enabled = contactsDataSource.selectedContactByIdentifier.count;
-}
-
-- (void)contactsViewController:(nonnull ContactsViewController *)contactsViewController askPermissionToSelect:(nonnull NSString*)email completion:(void (^_Nonnull)(BOOL granted, NSString * _Nullable reason))completion
-{
-    // Use the value of the filter defined at the data source level
-    self.userService = [[UserService alloc] initWithSession:self.mxRoom.mxSession];
-    
-    switch (contactsDataSource.contactsFilter) {
-        case ContactsDataSourceTchapFilterAll:
-        case ContactsDataSourceTchapFilterAllWithoutTchapUsers:
-        {
-            // Check whether the registration is allowed for this email.
-            [self.userService isEmailAuthorized:email success:^(BOOL isAuthorized) {
-                self.userService = nil;
-                NSString *reason = isAuthorized ? nil : [NSString stringWithFormat:NSLocalizedStringFromTable(@"invite_not_sent_for_unauthorized_email", @"Tchap", nil), email];
-                completion(isAuthorized, reason);
-            } failure:^(NSError * _Nonnull error) {
-                self.userService = nil;
-                // We allow the selection when we failed to get the informmation (We let the server reject the invite or not).
-                completion(true, nil);
-            }];
-            break;
-        }
-        case ContactsDataSourceTchapFilterAllWithoutExternals:
-        {
-            // Check whether this email is bound to the external instance.
-            [self.userService isEmailBoundToTheExternalHost:email success:^(BOOL isExternal) {
-                self.userService = nil;
-                NSString *reason = isExternal ? NSLocalizedStringFromTable(@"contacts_picker_unauthorized_email_message_restricted_room", @"Tchap", nil) : nil;
-                completion(!isExternal, reason);
-            } failure:^(NSError * _Nonnull error) {
-                self.userService = nil;
-                // We allow the selection when we failed to get the informmation (We let the server reject the invite or not).
-                completion(true, nil);
-            }];
-            break;
-        }
-        case ContactsDataSourceTchapFilterAllWithoutFederation:
-        {
-            // Check whether this email belongs to the same host as the current user.
-            NSString *myUserId = self.mxRoom.mxSession.myUser.userId;
-            if (myUserId)
-            {
-                NSString *hostName = [self.userService hostNameFor:myUserId];
-                [self.userService isEmailBound:email to:hostName success:^(BOOL isBoundToTheSameHost) {
-                    NSString *reason = isBoundToTheSameHost ? nil : [NSString stringWithFormat:NSLocalizedStringFromTable(@"contacts_picker_unauthorized_email_message_unfederated_room", @"Tchap", nil), [self.userService hostDisplayNameFor:myUserId]];
-                    self.userService = nil;
-                    completion(isBoundToTheSameHost, reason);
-                } failure:^(NSError * _Nonnull error) {
-                    self.userService = nil;
-                    // We allow the selection when we failed to get the informmation (We let the server reject the invite or not).
-                    completion(true, nil);
-                }];
-            }
-            else
-            {
-                // We allow the selection when we failed to get the informmation (We let the server reject the invite or not).
-                completion(true, nil);
-            }
-            break;
-        }
-        default:
-            completion(false, nil);
-            break;
     }
 }
 
@@ -1831,67 +1814,6 @@
     
     [currentAlert mxk_setAccessibilityIdentifier:@"RoomParticipantsVCRevokeAlert"];
     [self presentViewController:currentAlert animated:YES completion:nil];
-}
-
-- (void)inviteSelectedContacts
-{
-    // Retrieve the selected identifiers (2 types of ids are supported: Matrix ids and email addresses)
-    NSMutableArray *selectedIdentifiers = [NSMutableArray arrayWithArray:contactsDataSource.selectedContactByIdentifier.allKeys];
-    
-    // Remove contacts picker
-    [self popViewControllerAnimated:YES];
-    [contactsDataSource destroy];
-    contactsDataSource = nil;
-    contactsPickerViewController = nil;
-    
-    // Invite one by one selected userIds
-    [self addPendingActionMask];
-    [self inviteOneByOneSelectedIdentifiers:selectedIdentifiers];
-}
-
-- (void)inviteOneByOneSelectedIdentifiers:(NSMutableArray*)selectedIdentifiers
-{
-    NSString *identifier = selectedIdentifiers.lastObject;
-    if (identifier)
-    {
-        [selectedIdentifiers removeLastObject];
-        
-        MXWeakify(self);
-        void (^success)(void)= ^{
-            
-            MXStrongifyAndReturnIfNil(self);
-            [self inviteOneByOneSelectedIdentifiers:selectedIdentifiers];
-            
-        };
-        void (^failure)(NSError *error) = ^(NSError *error) {
-            
-            MXStrongifyAndReturnIfNil(self);
-            
-            // Stop invite process
-            [self removePendingActionMask];
-            NSLog(@"[RoomParticipantsVC] Invite failed (%tu)", selectedIdentifiers.count);
-            
-            // Alert user
-            [[AppDelegate theDelegate] showErrorAsAlert:error];
-        };
-        
-        // Check whether this is a Matrix id or an email address
-        if ([MXTools isMatrixUserIdentifier:identifier])
-        {
-            [self.mxRoom inviteUser:identifier success:success failure:failure];
-        }
-        else if ([MXTools isEmailAddress:identifier])
-        {
-            [self.mxRoom inviteUserByEmail:identifier success:success failure:failure];
-        }
-    }
-    else
-    {
-        // All invites have been sent
-        [self removePendingActionMask];
-        // Refresh display
-        [self.tableView reloadData];
-    }
 }
 
 #pragma mark - UISearchBar delegate

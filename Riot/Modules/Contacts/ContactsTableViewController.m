@@ -229,6 +229,11 @@
  */
 - (void)updateFooterViewVisibility
 {
+#ifndef SHOW_CONTACTBOOK
+    self.contactsTableView.tableFooterView = [[UIView alloc] init];
+    return;
+#endif
+    
     if (!BuildSettings.allowLocalContactsAccess || self.disableFindYourContactsFooter)
     {
         self.contactsTableView.tableFooterView = [[UIView alloc] init];

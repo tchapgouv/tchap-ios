@@ -93,7 +93,7 @@ static UIEdgeInsets kThreadListBarButtonItemContentInsetsNoDot;
 static UIEdgeInsets kThreadListBarButtonItemContentInsetsDot;
 static CGSize kThreadListBarButtonItemImageSize;
 
-@interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
+@interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
     ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate,
     ReactionHistoryCoordinatorBridgePresenterDelegate, CameraPresenterDelegate, MediaPickerCoordinatorBridgePresenterDelegate,
     RoomDataSourceDelegate/*, RoomCreationModalCoordinatorBridgePresenterDelegate*/, RoomInfoCoordinatorBridgePresenterDelegate/*, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate, VoiceMessageControllerDelegate, SpaceDetailPresenterDelegate, UserSuggestionCoordinatorBridgeDelegate, ThreadsCoordinatorBridgePresenterDelegate, MXThreadingServiceDelegate, RoomParticipantsInviteCoordinatorBridgePresenterDelegate*/>
@@ -6249,9 +6249,9 @@ static CGSize kThreadListBarButtonItemImageSize;
     }
 }
 
-#pragma mark - ContactsViewControllerDelegate
+#pragma mark - ContactsTableViewControllerDelegate
 
-- (void)ContactsViewController:(ContactsViewController *)ContactsViewController didSelectContact:(MXKContact*)contact
+- (void)contactsTableViewController:(ContactsTableViewController *)contactsTableViewController didSelectContact:(MXKContact*)contact
 {
     __weak typeof(self) weakSelf = self;
     
@@ -6307,7 +6307,7 @@ static CGSize kThreadListBarButtonItemImageSize;
             [room inviteUser:participantId success:^{
                 
                 // Refresh display by removing the contacts picker
-//                [ContactsViewController withdrawViewControllerAnimated:YES completion:nil];
+                [contactsTableViewController withdrawViewControllerAnimated:YES completion:nil];
                 
             } failure:^(NSError *error) {
                 
@@ -6338,7 +6338,7 @@ static CGSize kThreadListBarButtonItemImageSize;
                 [room inviteUserByEmail:participantId success:^{
                     
                     // Refresh display by removing the contacts picker
-//                    [ContactsViewController withdrawViewControllerAnimated:YES completion:nil];
+                    [contactsTableViewController withdrawViewControllerAnimated:YES completion:nil];
                     
                 } failure:^(NSError *error) {
                     
@@ -6360,7 +6360,7 @@ static CGSize kThreadListBarButtonItemImageSize;
                 [room inviteUser:participantId success:^{
                     
                     // Refresh display by removing the contacts picker
-//                    [contactsViewController withdrawViewControllerAnimated:YES completion:nil];
+                    [contactsTableViewController withdrawViewControllerAnimated:YES completion:nil];
                     
                 } failure:^(NSError *error) {
                     

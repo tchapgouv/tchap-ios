@@ -23,7 +23,7 @@
 
 #import "RoomParticipantsViewController.h"
 
-#import "ContactsViewController.h"
+#import "ContactsTableViewController.h"
 
 #import "UIViewController+RiotSearch.h"
 
