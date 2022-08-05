@@ -64,34 +64,8 @@ targets:
     - path: ../Config/Configurable.swift
     - path: .
       excludes:
-        - "Managers/AppVersion/AppVersion.swift"
-        - "Managers/UniversalLink"
-        - "Modules/Application"
-        - "Modules/Common/ActivityIndicator"
-        - "Modules/Home/HomeCoordinator.swift"
-        - "Modules/Home/HomeCoordinatorType.swift"
-        - "Modules/Room/DiscussionDetailsCoordinator.swift"
-        - "Modules/Room/RoomCoordinator.swift"
-        - "Modules/Room/RoomDetailsCoordinator.swift"
-        - "Modules/Room/RoomDetailsCoordinatorType.swift"
-        - "Modules/Room/RoomViewController.*"
-        - "Modules/Room/EmojiPicker/Data/EmojiMart/EmojiJSONStore.swift"
-        - "Modules/Room/Members/Detail/RoomMemberDetailsViewController.xib"
-        - "Modules/Room/Members/Detail/Views/RoomMemberTitleView.*"
-        - "Modules/Room/Settings/RoomSettingsViewController.*"
-        - "Modules/Room/Views/BubbleCells"
-        - "Modules/Room/Views/InputToolbar/RoomInputToolbarView.*"
-        - "Modules/Room/Views/Preview"
-        - "Modules/Room/Views/Title/RoomTitleView.*"
-        - "Modules/Rooms"
-        - "Modules/Settings/SettingsViewController.*"
-        - "Routers"
         - "Tools"
         - "**/*.strings" # Exclude all strings files
-    - path: ../Tchap/Generated/Images_Riot.swift
-    - path: ../Tchap/Modules/Application/VersionUpdate
-    - path: ../Tchap/Modules/Room/Views/BubbleCells/Antivirus
-
 
     # Add separately localizable files
     - path: Assets/Localizations/fr.lproj/Tchap.strings
