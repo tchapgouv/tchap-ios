@@ -22,6 +22,16 @@ internal extension StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Tchap.DeviceVerificationStartViewController>(storyboard: DeviceVerificationStartViewController.self)
   }
+  enum EditHistoryViewController: StoryboardType {
+    internal static let storyboardName = "EditHistoryViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.EditHistoryViewController>(storyboard: EditHistoryViewController.self)
+  }
+  enum EmojiPickerViewController: StoryboardType {
+    internal static let storyboardName = "EmojiPickerViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.EmojiPickerViewController>(storyboard: EmojiPickerViewController.self)
+  }
   enum EnterNewRoomDetailsViewController: StoryboardType {
     internal static let storyboardName = "EnterNewRoomDetailsViewController"
 
@@ -131,6 +141,16 @@ internal extension StoryboardScene {
     internal static let storyboardName = "QRCodeReaderViewController"
 
     internal static let initialScene = InitialSceneType<Tchap.QRCodeReaderViewController>(storyboard: QRCodeReaderViewController.self)
+  }
+  enum ReactionHistoryViewController: StoryboardType {
+    internal static let storyboardName = "ReactionHistoryViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.ReactionHistoryViewController>(storyboard: ReactionHistoryViewController.self)
+  }
+  enum RoomContextualMenuViewController: StoryboardType {
+    internal static let storyboardName = "RoomContextualMenuViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.RoomContextualMenuViewController>(storyboard: RoomContextualMenuViewController.self)
   }
   enum RoomCreationEventsModalViewController: StoryboardType {
     internal static let storyboardName = "RoomCreationEventsModalViewController"

@@ -84,6 +84,7 @@ targets:
       excludes:
         - "MXHTTPClient+Async.swift"
         - "MXRestClient+Async.swift"
+    - path: ../Riot/Coordinators
     - path: ../Riot/Generated/UntranslatedStrings.swift
     - path: ../Riot/Generated/Vector_Strings.swift
     - path: ../Riot/Managers/AppInfo
@@ -98,6 +99,7 @@ targets:
     - path: ../Riot/Managers/RoomMessageLinkParser/RoomMessageURLParser.swift
     - path: ../Riot/Managers/PasswordStrength
     - path: ../Riot/Managers/PushNotification
+    - path: ../Riot/Managers/Serialization
     - path: ../Riot/Managers/Settings/RiotSettings.swift
     - path: ../Riot/Managers/Settings/Shared
     - path: ../Riot/Managers/Theme
@@ -132,6 +134,7 @@ targets:
     - path: ../Riot/Modules/Common/Cells
     - path: ../Riot/Modules/Common/CoachMessages
     - path: ../Riot/Modules/Common/CollectionView
+    - path: ../Riot/Modules/Common/KeyboardAvoiding
     - path: ../Riot/Modules/Common/Models
     - path: ../Riot/Modules/Common/NavigationController/RiotNavigationController.h
     - path: ../Riot/Modules/Common/NavigationController/RiotNavigationController.m
@@ -206,8 +209,6 @@ targets:
     - path: ../Riot/Modules/ServiceTerms
     - path: ../Riot/Modules/SetPinCode
     - path: ../Riot/Modules/Settings
-      excludes:
-      - "DeactivateAccount"
     - path: ../Riot/Modules/SideMenu
     - path: ../Riot/Modules/SlidingModal
     - path: ../Riot/Modules/SplitView

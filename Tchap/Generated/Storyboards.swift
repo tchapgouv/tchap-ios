@@ -32,16 +32,6 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Tchap.ChangePasswordNewPasswordViewController>(storyboard: ChangePasswordNewPasswordViewController.self)
   }
-  internal enum EditHistoryViewController: StoryboardType {
-    internal static let storyboardName = "EditHistoryViewController"
-
-    internal static let initialScene = InitialSceneType<Tchap.EditHistoryViewController>(storyboard: EditHistoryViewController.self)
-  }
-  internal enum EmojiPickerViewController: StoryboardType {
-    internal static let storyboardName = "EmojiPickerViewController"
-
-    internal static let initialScene = InitialSceneType<Tchap.EmojiPickerViewController>(storyboard: EmojiPickerViewController.self)
-  }
   internal enum FavouriteMessagesViewController: StoryboardType {
     internal static let storyboardName = "FavouriteMessagesViewController"
 
@@ -72,11 +62,6 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Tchap.PublicRoomsViewController>(storyboard: PublicRoomsViewController.self)
   }
-  internal enum ReactionHistoryViewController: StoryboardType {
-    internal static let storyboardName = "ReactionHistoryViewController"
-
-    internal static let initialScene = InitialSceneType<Tchap.ReactionHistoryViewController>(storyboard: ReactionHistoryViewController.self)
-  }
   internal enum RegistrationEmailSentViewController: StoryboardType {
     internal static let storyboardName = "RegistrationEmailSentViewController"
 
@@ -91,11 +76,6 @@ internal enum StoryboardScene {
     internal static let storyboardName = "RoomAccessByLinkViewController"
 
     internal static let initialScene = InitialSceneType<Tchap.RoomAccessByLinkViewController>(storyboard: RoomAccessByLinkViewController.self)
-  }
-  internal enum RoomContextualMenuViewController: StoryboardType {
-    internal static let storyboardName = "RoomContextualMenuViewController"
-
-    internal static let initialScene = InitialSceneType<Tchap.RoomContextualMenuViewController>(storyboard: RoomContextualMenuViewController.self)
   }
   internal enum RoomCreationViewController: StoryboardType {
     internal static let storyboardName = "RoomCreationViewController"
