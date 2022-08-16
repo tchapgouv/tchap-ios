@@ -115,15 +115,7 @@ final class RoomCreationCoordinator: NSObject, RoomCreationCoordinatorType {
         self.imagePickerPresenter = singleImagePickerPresenter
     }
     
-    private func showContactsPicker() {
-        let startChatViewController = StartChatViewController()
-        
-        self.router.push(startChatViewController, animated: true) { [weak self] in
-            self?.cancelPendingRoomCreation()
-        }
-    }
-    
-    private func createRoom(with userIDs: [String]) {
+    private func createRoom() {
         guard let roomCreationFormResult = self.roomCreationFormResult else {
             MXLog.debug("[RoomCreationCoordinator] Fail to create room")
             return
@@ -139,13 +131,15 @@ final class RoomCreationCoordinator: NSObject, RoomCreationCoordinatorType {
 
         self.uploadRoomAvatarIfNeeded()
         .flatMap { [unowned self] (avatarUrl) -> Single<String> in
-            return self.createRoom(roomCreationFormResult: roomCreationFormResult, avatarUrl: avatarUrl, userIDs: userIDs)
+            return self.createRoom(roomCreationFormResult: roomCreationFormResult,
+                                   avatarUrl: avatarUrl)
         }
         .subscribeOn(MainScheduler.instance)
         .subscribe(onSuccess: { [weak self] (roomID) in
             removeActivityIndicator()
             if let strongSelf = self {
-                strongSelf.delegate?.roomCreationCoordinator(strongSelf, didCreateRoomWithID: roomID)
+                strongSelf.delegate?.roomCreationCoordinator(strongSelf,
+                                                             didCreateRoomWithID: roomID)
             }
         }, onError: { [weak self] error in
             removeActivityIndicator()
@@ -158,7 +152,7 @@ final class RoomCreationCoordinator: NSObject, RoomCreationCoordinatorType {
                 if let matrixErrorCode = nsError.userInfo[kMXErrorCodeKey] as? String, matrixErrorCode == kMXErrCodeStringRoomInUse,
                     let matrixMessageError = nsError.userInfo[kMXErrorMessageKey] as? String, matrixMessageError == "Room alias already taken" {
                     // Try again
-                    strongSelf.createRoom(with: userIDs)
+                    strongSelf.createRoom()
                 } else {
                     let errorPresentable = strongSelf.formErrorPresentable(from: error)
                     let formErrorPresenter = AlertErrorPresenter(viewControllerPresenter: navigationController)
@@ -185,7 +179,8 @@ final class RoomCreationCoordinator: NSObject, RoomCreationCoordinatorType {
         return self.mediaService.upload(image: image).map({ $0 })
     }
     
-    private func createRoom(roomCreationFormResult: RoomCreationFormResult, avatarUrl: String?, userIDs: [String]) -> Single<String> {
+    private func createRoom(roomCreationFormResult: RoomCreationFormResult,
+                            avatarUrl: String?) -> Single<String> {
         let roomVisibility: MXRoomDirectoryVisibility
         let roomAccessRule: RoomAccessRule
         let isFederated: Bool
@@ -208,7 +203,7 @@ final class RoomCreationCoordinator: NSObject, RoomCreationCoordinatorType {
         return self.roomService.createRoom(visibility: roomVisibility,
                                            name: roomCreationFormResult.name,
                                            avatarURL: avatarUrl,
-                                           inviteUserIds: userIDs,
+                                           inviteUserIds: nil,
                                            isFederated: isFederated,
                                            accessRule: roomAccessRule)
     }
@@ -223,7 +218,7 @@ extension RoomCreationCoordinator: RoomCreationViewControllerDelegate {
     
     func roomCreationViewController(_ roomCreationViewController: RoomCreationViewController, didTapNextButtonWith roomCreationFormResult: RoomCreationFormResult) {
         self.roomCreationFormResult = roomCreationFormResult
-        self.showContactsPicker()
+        self.createRoom()
     }
 }
 
@@ -234,7 +229,9 @@ extension RoomCreationCoordinator: SingleImagePickerPresenterDelegate {
         self.imagePickerPresenter = nil
     }
     
-    func singleImagePickerPresenter(_ presenter: SingleImagePickerPresenter, didSelectImageData imageData: Data, withUTI uti: MXKUTI?) {
+    func singleImagePickerPresenter(_ presenter: SingleImagePickerPresenter,
+                                    didSelectImageData imageData: Data,
+                                    withUTI uti: MXKUTI?) {
         presenter.dismiss(animated: true, completion: nil)
         self.imagePickerPresenter = nil
         

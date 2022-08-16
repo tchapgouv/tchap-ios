@@ -31,7 +31,12 @@ protocol RoomServiceType {
     ///   - roomAccessRule: Tell whether the external users are allowed to join this room or not.
     ///   - completion: A closure called when the operation completes. Provide the room id when succeed.
     /// - Returns: A Single of MXCreateRoomResponse.
-    func createRoom(visibility: MXRoomDirectoryVisibility, name: String, avatarURL: String?, inviteUserIds: [String], isFederated: Bool, accessRule: RoomAccessRule) -> Single<String>
+    func createRoom(visibility: MXRoomDirectoryVisibility,
+                    name: String,
+                    avatarURL: String?,
+                    inviteUserIds: [String]?,
+                    isFederated: Bool,
+                    accessRule: RoomAccessRule) -> Single<String>
     
     /// Create a direct chat by inviting a third party identifier.
     ///
