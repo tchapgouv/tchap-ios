@@ -20,6 +20,9 @@
 #import "GeneratedInterface-Swift.h"
 #import "MXSession+Riot.h"
 
+// Tchap: Hide Matrix ID values
+#define HIDE_MATRIX_ID
+
 @interface StartChatViewController () <UITableViewDataSource, UISearchBarDelegate, ContactsTableViewControllerDelegate, InviteFriendsHeaderViewDelegate>
 {
     // The contact used to describe the current user.
@@ -114,8 +117,11 @@
     
     createBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[VectorL10n start] style:UIBarButtonItemStylePlain target:self action:@selector(onButtonPressed:)];
     self.navigationItem.rightBarButtonItem = createBarButtonItem;
-    
+#ifdef HIDE_MATRIX_ID
+    _searchBarView.placeholder = [VectorL10n roomCreationInviteAnotherUserWithoutId];
+#else
     _searchBarView.placeholder = [VectorL10n roomCreationInviteAnotherUser];
+#endif
     _searchBarView.returnKeyType = UIReturnKeyDone;
     _searchBarView.autocapitalizationType = UITextAutocapitalizationTypeNone;    
     [self refreshSearchBarItemsColor:_searchBarView];

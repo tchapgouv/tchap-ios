@@ -4559,6 +4559,10 @@ public class VectorL10n: NSObject {
   public static var roomCreationInviteAnotherUser: String { 
     return VectorL10n.tr("Vector", "room_creation_invite_another_user") 
   }
+  /// Name or email
+  public static var roomCreationInviteAnotherUserWithoutId: String {
+    return VectorL10n.tr("Vector", "room_creation_invite_another_user_without_id")
+  }
   /// Keep private
   public static var roomCreationKeepPrivate: String { 
     return VectorL10n.tr("Vector", "room_creation_keep_private") 

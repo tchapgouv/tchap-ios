@@ -125,7 +125,11 @@ class ContactsPickerViewModel: NSObject, ContactsPickerViewModelProtocol {
         }
         
         contactsViewController.showSearch(true)
+#if HIDE_MATRIX_ID
+        contactsViewController.searchBar.placeholder = VectorL10n.roomParticipantsInviteAnotherUserWithoutId
+#else
         contactsViewController.searchBar.placeholder = VectorL10n.roomParticipantsInviteAnotherUser
+#endif
         
         // Apply the search pattern if any
         if currentSearchText != nil {
