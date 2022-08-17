@@ -5595,6 +5595,10 @@ public class VectorL10n: NSObject {
   public static var roomParticipantsInviteAnotherUser: String { 
     return VectorL10n.tr("Vector", "room_participants_invite_another_user") 
   }
+  /// Search / invite by Name or email
+  public static var roomParticipantsInviteAnotherUserWithoutId: String { 
+    return VectorL10n.tr("Vector", "room_participants_invite_another_user_without_id") 
+  }
   /// Malformed ID. Should be an email address or a Matrix ID like '@localpart:domain'
   public static var roomParticipantsInviteMalformedId: String { 
     return VectorL10n.tr("Vector", "room_participants_invite_malformed_id") 

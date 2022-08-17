@@ -190,7 +190,7 @@ final class RoomCreationViewController: UIViewController {
     }
     
     private func setupNavigationBar() {
-        let nextBarButtonItem = MXKBarButtonItem(title: TchapL10n.actionNext, style: .plain, action: {
+        let nextBarButtonItem = MXKBarButtonItem(title: VectorL10n.create, style: .plain, action: {
             self.nextButtonAction()
         })
         

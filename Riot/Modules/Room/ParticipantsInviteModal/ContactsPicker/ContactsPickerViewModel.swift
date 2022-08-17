@@ -102,7 +102,8 @@ class ContactsPickerViewModel: NSObject, ContactsPickerViewModelProtocol {
         }
         contactsDataSource.areSectionsShrinkable = true
         contactsDataSource.displaySearchInputInContactsList = true
-        contactsDataSource.forceMatrixIdInDisplayName = true
+        // Tchap: Force to hide Matrix ID in display name
+        contactsDataSource.forceMatrixIdInDisplayName = false
         
         // Add a plus icon to the contact cell in the contacts picker, in order to make it more understandable for the end user.
         contactsDataSource.contactCellAccessoryImage = Asset.Images.plusIcon.image.vc_tintedImage(usingColor: ThemeService.shared().theme.textPrimaryColor)
@@ -125,11 +126,8 @@ class ContactsPickerViewModel: NSObject, ContactsPickerViewModelProtocol {
         }
         
         contactsViewController.showSearch(true)
-#if HIDE_MATRIX_ID
+        // Tchap: Replace string by removing user ID
         contactsViewController.searchBar.placeholder = VectorL10n.roomParticipantsInviteAnotherUserWithoutId
-#else
-        contactsViewController.searchBar.placeholder = VectorL10n.roomParticipantsInviteAnotherUser
-#endif
         
         // Apply the search pattern if any
         if currentSearchText != nil {

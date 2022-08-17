@@ -548,8 +548,8 @@
         if (indexPath.row < filteredLocalContacts.count)
         {
             contact = filteredLocalContacts[indexPath.row];
-            // Tchap: Force to hide MatrixID in DisplayName
-//            showMatrixIdInDisplayName = YES;
+            // Tchap: Use forceMatrixIdInDisplayName value
+            showMatrixIdInDisplayName = self.forceMatrixIdInDisplayName;
         }
     }
     else if (indexPath.section == filteredMatrixContactsSection)
@@ -558,8 +558,7 @@
         {
             contact = filteredMatrixContacts[indexPath.row];
             
-            // Tchap: Force to hide MatrixID in DisplayName
-//            showMatrixIdInDisplayName = self.forceMatrixIdInDisplayName ? YES : [isMultiUseNameByDisplayName[contact.displayName] isEqualToNumber:@(YES)];
+            showMatrixIdInDisplayName = self.forceMatrixIdInDisplayName ? YES : [isMultiUseNameByDisplayName[contact.displayName] isEqualToNumber:@(YES)];
         }
     }
     
