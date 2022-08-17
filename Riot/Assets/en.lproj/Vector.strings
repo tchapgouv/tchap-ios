@@ -243,6 +243,7 @@
 "room_creation_make_private" = "Make private";
 "room_creation_wait_for_creation" = "A room is already being created. Please wait.";
 "room_creation_invite_another_user" = "User ID, name or email";
+"room_creation_invite_another_user_without_id" = "Name or email";
 "room_creation_error_invite_user_by_email_without_identity_server" = "No identity server is configured so you cannot add a participant with an email.";
 "room_creation_dm_error" = "We couldn't create your DM. Please check the users you want to invite and try again.";
 
@@ -341,6 +342,7 @@ Tap the + to start adding people.";
 "room_participants_filter_room_members" = "Filter room members";
 "room_participants_filter_room_members_for_dm" = "Filter members";
 "room_participants_invite_another_user" = "Search / invite by User ID, Name or email";
+"room_participants_invite_another_user_without_id" = "Search / invite by Name or email";
 "room_participants_invite_malformed_id_title" = "Invite Error";
 "room_participants_invite_malformed_id" = "Malformed ID. Should be an email address or a Matrix ID like '@localpart:domain'";
 "room_participants_invited_section" = "INVITED";

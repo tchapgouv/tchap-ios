@@ -154,8 +154,7 @@
 //    }
 //    else
 //    {
-//        [self performSegueWithIdentifier:@"presentStartChat" sender:self];
-        [self createNewDiscussion];
+        [self performSegueWithIdentifier:@"presentStartChat" sender:self];
 //    }
 }
 

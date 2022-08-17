@@ -237,6 +237,7 @@ targets:
     - path: ../Riot/Modules/SideMenu
     - path: ../Riot/Modules/SlidingModal
     - path: ../Riot/Modules/SplitView
+    - path: ../Riot/Modules/StartChat
     - path: ../Riot/Modules/TabBar
     - path: ../Riot/Modules/User/Avatar
     - path: ../Riot/Modules/UserDevices/UsersDevicesViewController.h

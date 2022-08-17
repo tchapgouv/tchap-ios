@@ -58,7 +58,9 @@ typedef NS_ENUM(NSUInteger, SECTION_TAG)
     SECTION_TAG_CALLS,
     SECTION_TAG_DISCOVERY,
     SECTION_TAG_IDENTITY_SERVER,
+#ifdef SHOW_CONTACTBOOK
     SECTION_TAG_LOCAL_CONTACTS,
+#endif
     SECTION_TAG_IGNORED_USERS,
     SECTION_TAG_INTEGRATIONS,
     SECTION_TAG_USER_INTERFACE,
@@ -501,6 +503,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
         [tmpSections addObject:sectionIdentityServer];
     }
     
+#ifdef SHOW_CONTACTBOOK
     if (BuildSettings.allowLocalContactsAccess)
     {
         Section *sectionLocalContacts = [Section sectionWithTag:SECTION_TAG_LOCAL_CONTACTS];
@@ -516,6 +519,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 //        sectionLocalContacts.footerTitle = VectorL10n.settingsContactsEnableSyncDescription;
         [tmpSections addObject:sectionLocalContacts];
     }
+#endif
     
     MXSession *session = [AppDelegate theDelegate].mxSessions.firstObject;
     if (session.ignoredUsers.count)
@@ -2372,6 +2376,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 
         cell = ignoredUserCell;
     }
+#ifdef SHOW_CONTACTBOOK
     else if (section == SECTION_TAG_LOCAL_CONTACTS)
     {
         if (row == LOCAL_CONTACTS_SYNC_INDEX)
@@ -2408,6 +2413,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
         }
     }
+#endif
     else if (section == SECTION_TAG_PRESENCE)
     {
         if (row == PRESENCE_OFFLINE_MODE)
@@ -3029,6 +3035,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
                 }
             }
         }
+#ifdef SHOW_CONTACTBOOK
         else if (section == SECTION_TAG_LOCAL_CONTACTS)
         {
             if (row == LOCAL_CONTACTS_PHONEBOOK_COUNTRY_INDEX)
@@ -3040,6 +3047,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
                 [self pushViewController:countryPicker];
             }
         }
+#endif
         else if (section == SECTION_TAG_SECURITY)
         {
             switch (row)
@@ -4398,11 +4406,14 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
 
 - (void)countryPickerViewController:(MXKCountryPickerViewController *)countryPickerViewController didSelectCountry:(NSString *)isoCountryCode
 {
+#ifdef SHOW_CONTACTBOOK
     if (countryPickerViewController.view.tag == SECTION_TAG_LOCAL_CONTACTS)
     {
         [MXKAppSettings standardAppSettings].phonebookCountryCode = isoCountryCode;
     }
-    else if (countryPickerViewController.view.tag == SECTION_TAG_USER_SETTINGS)
+    else
+#endif
+        if (countryPickerViewController.view.tag == SECTION_TAG_USER_SETTINGS)
     {
         if (newPhoneNumberCell)
         {
@@ -4842,6 +4853,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     
  - (void)checkAccessForContacts
 {
+#ifdef SHOW_CONTACTBOOK
     MXWeakify(self);
     
     // Check for contacts access, showing a pop-up if necessary.
@@ -4859,6 +4871,7 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
             [self updateSections];
         }
     }];
+#endif
 }
 
 #pragma mark - Identity server
