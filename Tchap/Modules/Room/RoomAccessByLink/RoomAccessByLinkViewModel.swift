@@ -50,20 +50,11 @@ final class RoomAccessByLinkViewModel: RoomAccessByLinkViewModelType {
         self.roomId = roomId
         self.isForum = isForum
         
-        let avatarImageViewModel: AvatarImageViewModel?
-        let roomTitleViewModelBuilder = RoomTitleViewModelBuilder(session: session)
-        if let room = self.session.room(withRoomId: roomId), let summary = room.summary {
-            let roomTitleViewModel = roomTitleViewModelBuilder.build(fromRoomSummary: summary)
-            avatarImageViewModel = roomTitleViewModel.avatarImageViewModel
-        } else {
-            avatarImageViewModel = nil
-        }
         self.titleViewModel = RoomTitleViewModel(title: TchapL10n.roomSettingsRoomAccessByLinkTitle,
                                                  roomTypeImage: nil,
                                                  roomTypeImageTintColor: nil,
                                                  subtitle: nil,
-                                                 roomMembersCount: nil,
-                                                 avatarImageViewModel: avatarImageViewModel)
+                                                 roomMembersCount: nil)
     }
     
     // MARK: - Public
