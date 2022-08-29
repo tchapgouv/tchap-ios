@@ -73,13 +73,15 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
     
     // MARK: - Setup
     
-    @available(iOS 14.0, *)
     init(parameters: LocationSharingCoordinatorParameters) {
         self.parameters = parameters
         
+        
+        let locationSharingService = LocationSharingService(userLocationService: parameters.roomDataSource.mxSession.userLocationService)
+        
         let viewModel = LocationSharingViewModel(mapStyleURL: BuildSettings.tileServerMapStyleURL,
                                                  avatarData: parameters.avatarData,
-                                                 isLiveLocationSharingEnabled: BuildSettings.liveLocationSharingEnabled)
+                                                 isLiveLocationSharingEnabled: RiotSettings.shared.enableLiveLocationSharing, service: locationSharingService)
         let view = LocationSharingView(context: viewModel.context)
             .addDependency(AvatarService.instantiate(mediaManager: parameters.mediaManager))
         
@@ -89,11 +91,6 @@ final class LocationSharingCoordinator: Coordinator, Presentable {
     
     // MARK: - Public
     func start() {
-        guard #available(iOS 14.0, *) else {
-            MXLog.error("[LocationSharingCoordinator] start: Invalid iOS version, returning.")
-            return
-        }
-        
         locationSharingViewModel.completion = { [weak self] result in
             guard let self = self else { return }
             

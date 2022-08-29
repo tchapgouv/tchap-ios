@@ -102,7 +102,8 @@
     ContactsDataSource *dataSource = [[ContactsDataSource alloc] initWithMatrixSession:self.mainSession]; // TO TEST
     dataSource.areSectionsShrinkable = YES;
     dataSource.displaySearchInputInContactsList = YES;
-    dataSource.forceMatrixIdInDisplayName = YES;
+    // Tchap: Force to hide Matrix ID in display name
+    dataSource.forceMatrixIdInDisplayName = NO;
     // Add a plus icon to the contact cell when a search session is in progress,
     // in order to make it more understandable for the end user.
     dataSource.contactCellAccessoryImage = [AssetImages.plusIcon.image vc_tintedImageUsingColor:ThemeService.shared.theme.textPrimaryColor];
@@ -114,8 +115,8 @@
     
     createBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[VectorL10n start] style:UIBarButtonItemStylePlain target:self action:@selector(onButtonPressed:)];
     self.navigationItem.rightBarButtonItem = createBarButtonItem;
-    
-    _searchBarView.placeholder = [VectorL10n roomCreationInviteAnotherUser];
+    // Tchap: Replace string by removing user ID
+    _searchBarView.placeholder = [VectorL10n roomCreationInviteAnotherUserWithoutId];
     _searchBarView.returnKeyType = UIReturnKeyDone;
     _searchBarView.autocapitalizationType = UITextAutocapitalizationTypeNone;    
     [self refreshSearchBarItemsColor:_searchBarView];
@@ -145,6 +146,8 @@
 
 - (void)showInviteFriendsHeaderView:(BOOL)show
 {
+    // Tchap: Always hide always the Friends header view on start DM.
+    show = NO;
     if (show)
     {
         if (!self.inviteFriendsHeaderView)

@@ -88,7 +88,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 NSString *const kLegacyAppDelegateDidLogoutNotification = @"kLegacyAppDelegateDidLogoutNotification";
 NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDidLoginNotification";
 
-@interface LegacyAppDelegate () <GDPRConsentViewControllerDelegate, KeyVerificationCoordinatorBridgePresenterDelegate, PushNotificationServiceDelegate/*, SetPinCoordinatorBridgePresenterDelegate, CallPresenterDelegate, SpaceDetailPresenterDelegate, SecureBackupSetupCoordinatorBridgePresenterDelegate*/>
+@interface LegacyAppDelegate () <GDPRConsentViewControllerDelegate, KeyVerificationCoordinatorBridgePresenterDelegate, PushNotificationServiceDelegate, SetPinCoordinatorBridgePresenterDelegate/*, CallPresenterDelegate, SpaceDetailPresenterDelegate, SecureBackupSetupCoordinatorBridgePresenterDelegate*/>
 {
     /**
      Reachability observer
@@ -208,7 +208,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 @property (weak, nonatomic) UIAlertController *incomingKeyVerificationRequestAlertController;
 
 @property (nonatomic, strong) SlidingModalPresenter *slidingModalPresenter;
-//@property (nonatomic, strong) SetPinCoordinatorBridgePresenter *setPinCoordinatorBridgePresenter;
+@property (nonatomic, strong) SetPinCoordinatorBridgePresenter *setPinCoordinatorBridgePresenter;
 // Tchap: Disable Spaces
 //@property (nonatomic, strong) SpaceDetailPresenter *spaceDetailPresenter;
 
@@ -227,7 +227,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
  */
 @property (nonatomic, strong) PushNotificationService *pushNotificationService;
 @property (nonatomic, strong) PushNotificationStore *pushNotificationStore;
-//@property (nonatomic, strong) LocalAuthenticationService *localAuthenticationService;
+@property (nonatomic, strong) LocalAuthenticationService *localAuthenticationService;
 @property (nonatomic, strong, readwrite) CallPresenter *callPresenter;
 @property (nonatomic, strong, readwrite) id uisiAutoReporter;
 
@@ -483,7 +483,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     
     [analytics startIfEnabled];
 
-//    self.localAuthenticationService = [[LocalAuthenticationService alloc] initWithPinCodePreferences:[PinCodePreferences shared]];
+    self.localAuthenticationService = [[LocalAuthenticationService alloc] initWithPinCodePreferences:[PinCodePreferences shared]];
     
     // Tchap: Disable Calls
 //    self.callPresenter = [[CallPresenter alloc] init];
@@ -492,15 +492,13 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     self.pushNotificationStore = [PushNotificationStore new];
     self.pushNotificationService = [[PushNotificationService alloc] initWithPushNotificationStore:self.pushNotificationStore];
     self.pushNotificationService.delegate = self;
-        
+    
     // Tchap: Disable Spaces
 //    self.spaceFeatureUnavailablePresenter = [SpaceFeatureUnavailablePresenter new];
-    
+
     // Tchap: Disable UISI
-//    if (@available(iOS 14.0, *)) {
-//        self.uisiAutoReporter = [[UISIAutoReporter alloc] init];
-//    }
-    
+//    self.uisiAutoReporter = [[UISIAutoReporter alloc] init];
+
     // Add matrix observers, and initialize matrix sessions if the app is not launched in background.
     [self initMatrixSessions];
     
@@ -573,19 +571,18 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         wrongBackupVersionAlert = nil;
     }
     
-    // Tchap: Disable Biometrics & Pin Code
-//    if ([self.localAuthenticationService isProtectionSet] && ![BiometricsAuthenticationPresenter isPresenting])
-//    {
-//        if (self.setPinCoordinatorBridgePresenter)
-//        {
-//            //  it's already on screen, convert the viewMode
-//            self.setPinCoordinatorBridgePresenter.viewMode = SetPinCoordinatorViewModeInactive;
-//            return;
-//        }
-//        self.setPinCoordinatorBridgePresenter = [[SetPinCoordinatorBridgePresenter alloc] initWithSession:mxSessionArray.firstObject viewMode:SetPinCoordinatorViewModeInactive];
-//        self.setPinCoordinatorBridgePresenter.delegate = self;
-//        [self.setPinCoordinatorBridgePresenter presentIn:self.window];
-//    }
+    if ([self.localAuthenticationService isProtectionSet] && ![BiometricsAuthenticationPresenter isPresenting])
+    {
+        if (self.setPinCoordinatorBridgePresenter)
+        {
+            //  it's already on screen, convert the viewMode
+            self.setPinCoordinatorBridgePresenter.viewMode = SetPinCoordinatorViewModeInactive;
+            return;
+        }
+        self.setPinCoordinatorBridgePresenter = [[SetPinCoordinatorBridgePresenter alloc] initWithSession:mxSessionArray.firstObject viewMode:SetPinCoordinatorViewModeInactive];
+        self.setPinCoordinatorBridgePresenter.delegate = self;
+        [self.setPinCoordinatorBridgePresenter presentWithMainAppWindow:self.window];
+    }
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
@@ -672,28 +669,27 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 - (void)configurePinCodeScreenFor:(UIApplication *)application
                  createIfRequired:(BOOL)createIfRequired
 {
-    // Tchap: Disable Biometrics & Pin Code
-//    if ([self.localAuthenticationService shouldShowPinCode])
-//    {
-//        if (self.setPinCoordinatorBridgePresenter)
-//        {
-//            //  it's already on screen, convert the viewMode
-//            self.setPinCoordinatorBridgePresenter.viewMode = SetPinCoordinatorViewModeUnlock;
-//            return;
-//        }
-//        if (createIfRequired)
-//        {
-//            self.setPinCoordinatorBridgePresenter = [[SetPinCoordinatorBridgePresenter alloc] initWithSession:mxSessionArray.firstObject viewMode:SetPinCoordinatorViewModeUnlock];
-//            self.setPinCoordinatorBridgePresenter.delegate = self;
-//            [self.setPinCoordinatorBridgePresenter presentIn:self.window];
-//        }
-//    }
-//    else
-//    {
-//        [self.setPinCoordinatorBridgePresenter dismiss];
-//        self.setPinCoordinatorBridgePresenter = nil;
+    if ([self.localAuthenticationService shouldShowPinCode])
+    {
+        if (self.setPinCoordinatorBridgePresenter)
+        {
+            //  it's already on screen, convert the viewMode
+            self.setPinCoordinatorBridgePresenter.viewMode = SetPinCoordinatorViewModeUnlock;
+            return;
+        }
+        if (createIfRequired)
+        {
+            self.setPinCoordinatorBridgePresenter = [[SetPinCoordinatorBridgePresenter alloc] initWithSession:mxSessionArray.firstObject viewMode:SetPinCoordinatorViewModeUnlock];
+            self.setPinCoordinatorBridgePresenter.delegate = self;
+            [self.setPinCoordinatorBridgePresenter presentWithMainAppWindow:self.window];
+        }
+    }
+    else
+    {
+        [self.setPinCoordinatorBridgePresenter dismissWithMainAppWindow:self.window];
+        self.setPinCoordinatorBridgePresenter = nil;
         [self afterAppUnlockedByPin:application];
-//    }
+    }
 }
 
 - (void)afterAppUnlockedByPin:(UIApplication *)application
@@ -1192,14 +1188,12 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     webURL = [Tools fixURLWithSeveralHashKeys:webURL];
 
     // Extract required parameters from the link
-    NSArray<NSString*> *pathParams;
-    NSMutableDictionary *queryParams;
-    [self parseUniversalLinkFragment:webURL.absoluteString outPathParams:&pathParams outQueryParams:&queryParams];
+    UniversalLink *newLink = [[UniversalLink alloc] initWithUrl:webURL];
+    NSDictionary<NSString*, NSString*> *queryParams = newLink.queryParams;
 
-    UniversalLink *newLink = [[UniversalLink alloc] initWithUrl:webURL pathParams:pathParams queryParams:queryParams];
     if (![_lastHandledUniversalLink isEqual:newLink])
     {
-        _lastHandledUniversalLink = [[UniversalLink alloc] initWithUrl:webURL pathParams:pathParams queryParams:queryParams];
+        _lastHandledUniversalLink = newLink;
         //  notify this change
         [[NSNotificationCenter defaultCenter] postNotificationName:AppDelegateUniversalLinkDidChangeNotification object:nil];
     }
@@ -1303,20 +1297,24 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         return YES;
     }
     
-    return [self handleUniversalLinkFragment:webURL.fragment fromURL:webURL];
+    return [self handleUniversalLinkFragment:webURL.fragment fromLink:newLink];
 }
 
 - (BOOL)handleUniversalLinkFragment:(NSString*)fragment fromURL:(NSURL*)universalLinkURL
-
 {
-    if (!fragment || !universalLinkURL)
+    return [self handleUniversalLinkFragment:fragment fromLink:[[UniversalLink alloc] initWithUrl:universalLinkURL]];
+}
+
+- (BOOL)handleUniversalLinkFragment:(NSString*)fragment fromLink:(UniversalLink*)universalLink
+{
+    if (!fragment || !universalLink)
     {
-        MXLogDebug(@"[AppDelegate] Cannot handle universal link with missing data: %@ %@", fragment, universalLinkURL);
+        MXLogDebug(@"[AppDelegate] Cannot handle universal link with missing data: %@ %@", fragment, universalLink.url);
         return NO;
     }
     ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:YES stackAboveVisibleViews:NO];
     
-    UniversalLinkParameters *parameters = [[UniversalLinkParameters alloc] initWithFragment:fragment universalLinkURL:universalLinkURL presentationParameters:presentationParameters];
+    UniversalLinkParameters *parameters = [[UniversalLinkParameters alloc] initWithFragment:fragment universalLink:universalLink presentationParameters:presentationParameters];
     
     return [self handleUniversalLinkWithParameters:parameters];
 }
@@ -1324,7 +1322,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 - (BOOL)handleUniversalLinkWithParameters:(UniversalLinkParameters*)universalLinkParameters
 {
     NSString *fragment = universalLinkParameters.fragment;
-    NSURL *universalLinkURL = universalLinkParameters.universalLinkURL;
+    UniversalLink *universalLink = universalLinkParameters.universalLink;
     ScreenPresentationParameters *presentationParameters = universalLinkParameters.presentationParameters;
     BOOL restoreInitialDisplay = presentationParameters.restoreInitialDisplay;
     
@@ -1342,9 +1340,8 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     [self resetPendingUniversalLink];
     
     // Extract params
-    NSArray<NSString*> *pathParams;
-    NSMutableDictionary *queryParams;
-    [self parseUniversalLinkFragment:fragment outPathParams:&pathParams outQueryParams:&queryParams];
+    NSArray<NSString*> *pathParams = universalLink.pathParams;
+    NSDictionary<NSString*, NSString*> *queryParams = universalLink.queryParams;
     
     // Sanity check
     if (!pathParams.count)
@@ -1425,6 +1422,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
                 {
                     room = [account.mxSession roomWithRoomId:roomId];
                 }
+                
                 // Tchap: Disable Spaces
 //                if (room.summary.roomType == MXRoomTypeSpace)
 //                {
@@ -1528,7 +1526,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
                                         self->universalLinkFragmentPendingRoomAlias = @{resolution.roomId: roomIdOrAlias};
 
                                         UniversalLinkParameters *newParameters = [[UniversalLinkParameters alloc] initWithFragment:newFragment
-                                                                                                                  universalLinkURL:universalLinkURL
+                                                                                                                     universalLink:universalLink
                                                                                                             presentationParameters:presentationParameters];
                                         [self handleUniversalLinkWithParameters:newParameters];
                                     }
@@ -1715,14 +1713,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
             }];
         }
     }
-    // Check whether this is a registration links.
-    else if ([pathParams[0] isEqualToString:@"register"])
-    {
-        MXLogDebug(@"[AppDelegate] Universal link with registration parameters");
-        continueUserActivity = YES;
-        
-        [_masterTabBarController showOnboardingFlowWithRegistrationParameters:queryParams];
-    }
     else
     {
         // Unknown command: Do nothing except coming back to the main screen
@@ -1876,7 +1866,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     {
         if ([MXKAccountManager sharedManager].activeAccounts.count)
         {
-            [self displayServerProvisioningLinkBuyAlreadyLoggedInAlertWithCompletion:^(BOOL logout) {
+            [self displayLogoutConfirmationForLink:link completion:^(BOOL logout) {
 
                 MXLogDebug(@"[AppDelegate] handleServerProvisioningLink: logoutWithConfirmation: logout: %@", @(logout));
                 if (logout)
@@ -1926,28 +1916,44 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     MXLogDebug(@"[AppDelegate] parseServerProvisioningLink: homeserver: %@ - identityServer: %@", *homeserver, *identityServer);
 }
 
-- (void)displayServerProvisioningLinkBuyAlreadyLoggedInAlertWithCompletion:(void (^)(BOOL logout))completion
+- (void)displayLogoutConfirmationForLink:(NSURL *)link
+                              completion:(void (^)(BOOL loggedOut))completion
 {
     // Ask confirmation
-    self.logoutConfirmation = [UIAlertController alertControllerWithTitle:[VectorL10n errorUserAlreadyLoggedIn] message:nil preferredStyle:UIAlertControllerStyleAlert];
+    self.logoutConfirmation = [UIAlertController alertControllerWithTitle:[VectorL10n errorUserAlreadyLoggedIn]
+                                                                  message:nil
+                                                           preferredStyle:UIAlertControllerStyleAlert];
 
     [self.logoutConfirmation addAction:[UIAlertAction actionWithTitle:[VectorL10n settingsSignOut]
                                                                 style:UIAlertActionStyleDefault
                                                               handler:^(UIAlertAction * action)
                                         {
-                                            self.logoutConfirmation = nil;
-                                            completion(YES);
-                                        }]];
+        self.logoutConfirmation = nil;
+        [self logoutWithConfirmation:NO completion:^(BOOL isLoggedOut) {
+            if (isLoggedOut)
+            {
+                //  process the link again after logging out
+                [self handleServerProvisioningLink:link];
+            }
+            if (completion)
+            {
+                completion(YES);
+            }
+        }];
+    }]];
 
     [self.logoutConfirmation addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                                 style:UIAlertActionStyleCancel
                                                               handler:^(UIAlertAction * action)
                                         {
-                                            self.logoutConfirmation = nil;
-                                            completion(NO);
-                                        }]];
+        self.logoutConfirmation = nil;
+        if (completion)
+        {
+            completion(NO);
+        }
+    }]];
 
-    [self.logoutConfirmation mxk_setAccessibilityIdentifier: @"AppDelegateLogoutConfirmationAlert"];
+    [self.logoutConfirmation mxk_setAccessibilityIdentifier:@"AppDelegateLogoutConfirmationAlert"];
     [self showNotificationAlert:self.logoutConfirmation];
 }
 
@@ -2189,11 +2195,8 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         // register the session to the uisi auto-reporter
 //        if (_uisiAutoReporter != nil)
 //        {
-//            if (@available(iOS 14.0, *))
-//            {
-//                UISIAutoReporter* uisiAutoReporter = (UISIAutoReporter*)_uisiAutoReporter;
-//                [uisiAutoReporter add:mxSession];
-//            }
+//            UISIAutoReporter* uisiAutoReporter = (UISIAutoReporter*)_uisiAutoReporter;
+//            [uisiAutoReporter add:mxSession];
 //        }
         
         [mxSessionArray addObject:mxSession];
@@ -2217,11 +2220,8 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     // Tchap: Disable UISI
 //    if (_uisiAutoReporter != nil)
 //    {
-//        if (@available(iOS 14.0, *))
-//        {
-//            UISIAutoReporter* uisiAutoReporter = (UISIAutoReporter*)_uisiAutoReporter;
-//            [uisiAutoReporter remove:mxSession];
-//        }
+//        UISIAutoReporter* uisiAutoReporter = (UISIAutoReporter*)_uisiAutoReporter;
+//        [uisiAutoReporter remove:mxSession];
 //    }
 
     // Update the widgets manager
@@ -2392,8 +2392,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     [CrossSigningBannerPreferences.shared reset];
     
     // Reset user pin code
-    // Tchap: Disable Biometrics & Pin Code
-//    [PinCodePreferences.shared reset];
+    [PinCodePreferences.shared reset];
     
     //  Reset push notification store
     [self.pushNotificationStore reset];
@@ -2458,12 +2457,10 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
     
     if (mainSession)
     {
-        
         switch (mainSession.state)
         {
             case MXSessionStateClosed:
             case MXSessionStateInitialised:
-            case MXSessionStateBackgroundSyncInProgress:
                 self.roomListDataReady = NO;
                 [self listenForRoomListDataReady];
             default:
@@ -2471,6 +2468,11 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         }
         
         BOOL isLaunching = NO;
+
+        if (mainSession.vc_homeserverConfiguration)
+        {
+            [MXKAppSettings standardAppSettings].outboundGroupSessionKeyPreSharingStrategy = mainSession.vc_homeserverConfiguration.encryption.outboundKeysPreSharingMode;
+        }
         
         if (_masterTabBarController.isOnboardingInProgress)
         {
@@ -2486,7 +2488,6 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
             {
                 case MXSessionStateClosed:
                 case MXSessionStateInitialised:
-                case MXSessionStateBackgroundSyncInProgress:
                     isLaunching = YES;
                     break;
                 case MXSessionStateStoreDataReady:
@@ -2534,6 +2535,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         }
 
         if (mainSession.vc_homeserverConfiguration.encryption.isSecureBackupRequired
+            && mainSession.state == MXSessionStateRunning
             && mainSession.vc_canSetupSecureBackup)
         {
             // This only happens at the first login
@@ -2545,12 +2547,11 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         void (^finishAppLaunch)(void) = ^{
             [self hideLaunchAnimation];
             
-            // Tchap: Disable Biometrics & Pin Code
-//            if (self.setPinCoordinatorBridgePresenter)
-//            {
-//                MXLogDebug(@"[AppDelegate] handleAppState: PIN code is presented. Do not go further");
-//                return;
-//            }
+            if (self.setPinCoordinatorBridgePresenter)
+            {
+                MXLogDebug(@"[AppDelegate] handleAppState: PIN code is presented. Do not go further");
+                return;
+            }
             
             MXLogDebug(@"[AppDelegate] handleAppState: Check cross-signing");
             [self checkCrossSigningForSession:mainSession];
@@ -2859,7 +2860,10 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
                     && !self.window.rootViewController.presentedViewController)
                 {
                     MXKEventFormatterError error;
-                    NSString* messageText = [eventFormatter stringFromEvent:event withRoomState:roomState error:&error];
+                    NSString* messageText = [eventFormatter stringFromEvent:event
+                                                              withRoomState:roomState
+                                                         andLatestRoomState:nil
+                                                                      error:&error];
                     if (messageText.length && (error == MXKEventFormatterErrorNone))
                     {
                         // Removing existing notification (if any)
@@ -4657,28 +4661,27 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 
 #pragma mark - SetPinCoordinatorBridgePresenterDelegate
 
-// Tchap: Disable Biometrics & Pin Code
-//- (void)setPinCoordinatorBridgePresenterDelegateDidComplete:(SetPinCoordinatorBridgePresenter *)coordinatorBridgePresenter
-//{
-//    [coordinatorBridgePresenter dismiss];
-//    self.setPinCoordinatorBridgePresenter = nil;
-//    [self afterAppUnlockedByPin:[UIApplication sharedApplication]];
-//}
-//
-//- (void)setPinCoordinatorBridgePresenterDelegateDidCompleteWithReset:(SetPinCoordinatorBridgePresenter *)coordinatorBridgePresenter dueToTooManyErrors:(BOOL)dueToTooManyErrors
-//{
-//    if (dueToTooManyErrors)
-//    {
-//        [self showAlertWithTitle:nil message:[VectorL10n pinProtectionKickUserAlertMessage]];
-//        [self logoutWithConfirmation:NO completion:nil];
-//    }
-//    else
-//    {
-//        [coordinatorBridgePresenter dismiss];
-//        self.setPinCoordinatorBridgePresenter = nil;
-//        [self logoutWithConfirmation:NO completion:nil];
-//    }
-//}
+- (void)setPinCoordinatorBridgePresenterDelegateDidComplete:(SetPinCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [coordinatorBridgePresenter dismissWithMainAppWindow:self.window];
+    self.setPinCoordinatorBridgePresenter = nil;
+    [self afterAppUnlockedByPin:[UIApplication sharedApplication]];
+}
+
+- (void)setPinCoordinatorBridgePresenterDelegateDidCompleteWithReset:(SetPinCoordinatorBridgePresenter *)coordinatorBridgePresenter dueToTooManyErrors:(BOOL)dueToTooManyErrors
+{
+    if (dueToTooManyErrors)
+    {
+        [self showAlertWithTitle:nil message:[VectorL10n pinProtectionKickUserAlertMessage]];
+        [self logoutWithConfirmation:NO completion:nil];
+    }
+    else
+    {
+        [coordinatorBridgePresenter dismissWithMainAppWindow:self.window];
+        self.setPinCoordinatorBridgePresenter = nil;
+        [self logoutWithConfirmation:NO completion:nil];
+    }
+}
 
 #pragma mark - CallPresenterDelegate
 

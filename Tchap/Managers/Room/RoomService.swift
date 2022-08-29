@@ -62,8 +62,17 @@ final class RoomService: NSObject, RoomServiceType {
     
     // MARK: - Public
     
-    func createRoom(visibility: MXRoomDirectoryVisibility, name: String, avatarURL: String?, inviteUserIds: [String], isFederated: Bool, accessRule: RoomAccessRule) -> Single<String> {
-        return self.createRoom(visibility: visibility, name: name, inviteUserIds: inviteUserIds, isFederated: isFederated, accessRule: accessRule)
+    func createRoom(visibility: MXRoomDirectoryVisibility,
+                    name: String,
+                    avatarURL: String?,
+                    inviteUserIds: [String]?,
+                    isFederated: Bool,
+                    accessRule: RoomAccessRule) -> Single<String> {
+        return self.createRoom(visibility: visibility,
+                               name: name,
+                               inviteUserIds: inviteUserIds,
+                               isFederated: isFederated,
+                               accessRule: accessRule)
         .flatMap { roomID in
             guard let avatarURL = avatarURL else {
                 return Single.just(roomID)
@@ -76,7 +85,8 @@ final class RoomService: NSObject, RoomServiceType {
         }
     }
     
-    func createDiscussionWithThirdPartyID(_ thirdPartyID: MXInvite3PID, completion: @escaping (MXResponse<String>) -> Void) -> MXHTTPOperation {
+    func createDiscussionWithThirdPartyID(_ thirdPartyID: MXInvite3PID,
+                                          completion: @escaping (MXResponse<String>) -> Void) -> MXHTTPOperation {
         let roomServiceCreationParameters = RoomServiceCreationParameters(visibility: .private,
                                                             accessRule: .direct,
                                                             preset: .trustedPrivateChat,
@@ -91,7 +101,9 @@ final class RoomService: NSObject, RoomServiceType {
         return self.createRoom(with: roomServiceCreationParameters, completion: completion)
     }
     
-    @objc func createDiscussion(with userID: String, success: @escaping ((String) -> Void), failure: @escaping ((Error) -> Void)) -> MXHTTPOperation {
+    @objc func createDiscussion(with userID: String,
+                                success: @escaping ((String) -> Void),
+                                failure: @escaping ((Error) -> Void)) -> MXHTTPOperation {
         let roomServiceCreationParameters = RoomServiceCreationParameters(visibility: .private,
                                                             accessRule: .direct,
                                                             preset: .trustedPrivateChat,
@@ -138,7 +150,11 @@ final class RoomService: NSObject, RoomServiceType {
         }
     }
     
-    private func createRoom(visibility: MXRoomDirectoryVisibility, name: String, inviteUserIds: [String], isFederated: Bool, accessRule: RoomAccessRule) -> Single<String> {
+    private func createRoom(visibility: MXRoomDirectoryVisibility,
+                            name: String,
+                            inviteUserIds: [String]?,
+                            isFederated: Bool,
+                            accessRule: RoomAccessRule) -> Single<String> {
         
         return Single.create { (single) -> Disposable in
             let httpOperation = self.createRoom(visibility: visibility, name: name, inviteUserIds: inviteUserIds, isFederated: isFederated, accessRule: accessRule) { (response) in
@@ -158,7 +174,12 @@ final class RoomService: NSObject, RoomServiceType {
         }
     }
     
-    private func createRoom(visibility: MXRoomDirectoryVisibility, name: String, inviteUserIds: [String], isFederated: Bool, accessRule: RoomAccessRule, completion: @escaping (MXResponse<String>) -> Void) -> MXHTTPOperation {
+    private func createRoom(visibility: MXRoomDirectoryVisibility,
+                            name: String,
+                            inviteUserIds: [String]?,
+                            isFederated: Bool,
+                            accessRule: RoomAccessRule,
+                            completion: @escaping (MXResponse<String>) -> Void) -> MXHTTPOperation {
         
         let preset: MXRoomPreset
         let historyVisibility: MXRoomHistoryVisibility?
@@ -191,7 +212,8 @@ final class RoomService: NSObject, RoomServiceType {
         return self.createRoom(with: roomServiceCreationParameters, completion: completion)
     }
     
-    private func createRoom(with roomServiceCreationParameters: RoomServiceCreationParameters, completion: @escaping (MXResponse<String>) -> Void) -> MXHTTPOperation {
+    private func createRoom(with roomServiceCreationParameters: RoomServiceCreationParameters,
+                            completion: @escaping (MXResponse<String>) -> Void) -> MXHTTPOperation {
         
         var parameters: [String: Any] = [:]
         

@@ -1,3 +1,31 @@
+## Changes in 2.1.0 (2022-08-29)
+
+🙌 Improvements
+
+- [Settings] Move back to Element settings screen ([#576](https://github.com/tchapgouv/tchap-ios/issues/576))
+- [Settings] Adjust Security section ([#577](https://github.com/tchapgouv/tchap-ios/issues/577))
+- [Cross signing] Disable the cross-signing logic until we are ready to support it ([#605](https://github.com/tchapgouv/tchap-ios/issues/605))
+- Replace Contacts picker by the Element iOS one ([#638](https://github.com/tchapgouv/tchap-ios/issues/638))
+
+🐛 Bugfixes
+
+- Fix Auto-capitalization and Keyboard type for Room creation Title Field ([#621](https://github.com/tchapgouv/tchap-ios/issues/621))
+- Rename exported keys file to tchap-keys ([#647](https://github.com/tchapgouv/tchap-ios/issues/647))
+- [Room timeline] Add the room settings shortcuts in the room timeline ([#658](https://github.com/tchapgouv/tchap-ios/issues/658))
+
+🧱 Build
+
+- [Project Cleaning] Remove the compilation flags for the enabled features ([#643](https://github.com/tchapgouv/tchap-ios/issues/643))
+- Renew Tchap/Btchap/TchapDev provisioning profiles ([#644](https://github.com/tchapgouv/tchap-ios/issues/644))
+- Fix build for Btchap/DevTchap targets after rebase ([#650](https://github.com/tchapgouv/tchap-ios/issues/650))
+- Disable currently unwanted Fastlane task for Codecov ([#654](https://github.com/tchapgouv/tchap-ios/issues/654))
+
+Others
+
+- [Project cleaning] Remove unused Tchap source files ([#636](https://github.com/tchapgouv/tchap-ios/issues/636))
+- Remove CorruptData and IgnoredUsers observers from AppCoordinator #641 ([#641](https://github.com/tchapgouv/tchap-ios/issues/641))
+
+
 ## Changes in 2.0.5 (2022-07-25)
 
 🐛 Bugfixes

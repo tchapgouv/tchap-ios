@@ -18,28 +18,25 @@ import Foundation
 import SwiftUI
 import Introspect
 
-@available(iOS 14.0, *)
 /// A bordered style of text input
 ///
 /// As defined in:
 /// https://www.figma.com/file/X4XTH9iS2KGJ2wFKDqkyed/Compound?node-id=2039%3A26415
 struct BorderedInputFieldStyle: TextFieldStyle {
     
-    @Environment(\.theme) var theme: ThemeSwiftUI
-    @Environment(\.isEnabled) var isEnabled: Bool
+    @Environment(\.theme) private var theme: ThemeSwiftUI
+    @Environment(\.isEnabled) private var isEnabled: Bool
     
     var isEditing: Bool = false
     var isError: Bool = false
     
     private var borderColor: Color {
-        if !isEnabled {
-            return theme.colors.quinaryContent
-        } else if isError {
+        if isError {
             return theme.colors.alert
         } else if isEditing {
             return theme.colors.accent
         }
-        return theme.colors.quarterlyContent
+        return theme.colors.quinaryContent
     }
     
     private var accentColor: Color {
@@ -92,7 +89,6 @@ struct BorderedInputFieldStyle: TextFieldStyle {
     }
 }
 
-@available(iOS 14.0, *)
 struct BorderedInputFieldStyle_Previews: PreviewProvider {
     static var previews: some View {
         Group {

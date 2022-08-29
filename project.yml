@@ -32,13 +32,14 @@ options:
   createIntermediateGroups: true
   useBaseInternationalization: true
   postGenCommand: sh Tools/XcodeGen/postGenCommand.sh
-
+    
 include:
   - path: Tchap/target.yml
   - path: RiotShareExtension/target.yml
   - path: RiotNSE/target.yml
   - path: TchapTests/target.yml
   - path: Btchap/target.yml
+  - path: DevTchap/target.yml
   - path: DesignKit/target.yml
   - path: RiotSwiftUI/target.yml
   - path: RiotSwiftUI/targetUnitTests.yml
@@ -46,8 +47,12 @@ include:
   - path: CommonKit/target.yml
   - path: CommonKit/targetUnitTests.yml
 
-#packages:
+packages:
 #  Mapbox:
 #    url: https://github.com/maplibre/maplibre-gl-native-distribution
 #    minVersion: 5.12.2
 #    maxVersion: 5.13.0
+  OrderedCollections:
+    url: https://github.com/apple/swift-collections
+    minVersion: 1.0.2
+    maxVersion: 2.0.0

@@ -65,8 +65,7 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
                                                  roomTypeImage: nil,
                                                  roomTypeImageTintColor: nil,
                                                  subtitle: subtitle,
-                                                 roomMembersCount: nil,
-                                                 avatarImageViewModel: nil)
+                                                 roomMembersCount: nil)
     }
     
     deinit {
@@ -151,8 +150,7 @@ final class FavouriteMessagesViewModel: NSObject, FavouriteMessagesViewModelType
                                                  roomTypeImage: nil,
                                                  roomTypeImageTintColor: nil,
                                                  subtitle: NSAttributedString(string: subtitle, attributes: [.foregroundColor: ThemeService.shared().theme.headerTextPrimaryColor]),
-                                                 roomMembersCount: nil,
-                                                 avatarImageViewModel: nil)
+                                                 roomMembersCount: nil)
         
         self.update(viewState: .sorted)
         

@@ -3,7 +3,6 @@ output_dir: ../../
 ib:  
   - inputs: 
       - Tchap/Modules/
-    filter: ^((?!DeactivateAccountViewController|ContactsViewController).)*\.(storyboard)
     outputs:
       - templateName: scenes-swift4
         output: Tchap/Generated/Storyboards.swift
@@ -20,8 +19,11 @@ ib:
       - Riot/Modules/Secrets
       - Riot/Modules/SecureBackup
       - Riot/Modules/ServiceTerms
+      - Riot/Modules/SetPinCode
+      - Riot/Modules/Settings
       - Riot/Modules/SideMenu
       - Riot/Modules/SlidingModal
+    filter: ^((?!DeactivateAccountViewController).)*\.(storyboard)
     outputs:
       - templatePath: Templates/IB/scenes-riot-swift4.stencil
         output: Tchap/Generated/Storyboards_Riot.swift

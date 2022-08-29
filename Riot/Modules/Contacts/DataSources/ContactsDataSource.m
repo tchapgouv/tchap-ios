@@ -548,7 +548,8 @@
         if (indexPath.row < filteredLocalContacts.count)
         {
             contact = filteredLocalContacts[indexPath.row];
-            showMatrixIdInDisplayName = YES;
+            // Tchap: Use forceMatrixIdInDisplayName value
+            showMatrixIdInDisplayName = self.forceMatrixIdInDisplayName;
         }
     }
     else if (indexPath.section == filteredMatrixContactsSection)

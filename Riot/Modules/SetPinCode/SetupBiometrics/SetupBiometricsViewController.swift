@@ -75,6 +75,9 @@ final class SetupBiometricsViewController: UIViewController {
         }
 
         self.viewModel.process(viewAction: .loadData)
+        
+        // Tchap: Configure logo
+        self.logoImageView.image = Asset.SharedImages.tchapLogo.image
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -97,7 +100,7 @@ final class SetupBiometricsViewController: UIViewController {
 
         self.enableButton.backgroundColor = theme.tintColor
         self.enableButton.tintColor = theme.baseTextPrimaryColor
-        self.enableButton.setTitleColor(theme.baseTextPrimaryColor, for: .normal)
+        self.enableButton.setTitleColor(theme.tintContrastColor, for: .normal)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {

@@ -3,6 +3,9 @@ source 'https://cdn.cocoapods.org/'
 # Uncomment this line to define a global platform for your project
 platform :ios, '14.0'
 
+# By default, ignore all warnings from any pod
+inhibit_all_warnings!
+
 # Use frameworks to allow usage of pods written in Swift
 use_frameworks!
 
@@ -13,9 +16,9 @@ use_frameworks!
 # - `{ :specHash => {sdk spec hash}` to depend on specific pod options (:git => …, :podspec => …) for MatrixSDK repo. Used by Fastfile during CI
 #
 # Warning: our internal tooling depends on the name of this variable name, so be sure not to change it
-$matrixSDKVersion = '= 0.23.6'
+$matrixSDKVersion = '= 0.23.10'
 # $matrixSDKVersion = :local
-# $matrixSDKVersion = { :branch => 'dinum_v0.20.15'}
+# $matrixSDKVersion = { :branch => 'develop'}
 # $matrixSDKVersion = { :specHash => { git: 'https://git.io/fork123', branch: 'fix' } }
 
 ########################################
@@ -42,8 +45,8 @@ end
 
 # Method to import the MatrixSDK
 def import_MatrixSDK
-  pod 'MatrixSDK', $matrixSDKVersionSpec
-  pod 'MatrixSDK/JingleCallStack', $matrixSDKVersionSpec
+  pod 'MatrixSDK', $matrixSDKVersionSpec, :inhibit_warnings => false
+  pod 'MatrixSDK/JingleCallStack', $matrixSDKVersionSpec, :inhibit_warnings => false
 end
 
 ########################################
@@ -60,36 +63,9 @@ def import_SwiftUI_pods
     pod 'DSBottomSheet', '~> 0.3'
 end
 
-abstract_target 'TchapPods' do
-
-  pod 'GBDeviceInfo', '~> 6.6.0'
-  pod 'Reusable', '~> 4.1'
-  pod 'KeychainAccess', '~> 4.2.2'
-  pod 'WeakDictionary', '~> 2.0'
-
-  # PostHog for analytics
-  pod 'PostHog', '~> 1.4.4'
-  pod 'AnalyticsEvents', :git => 'https://github.com/matrix-org/matrix-analytics-events.git', :branch => 'release/swift'
-  # pod 'AnalyticsEvents', :path => '../matrix-analytics-events/AnalyticsEvents.podspec'
-
-  pod 'RxSwift', '~> 5.1.1'
-
-  # Remove warnings from "bad" pods
-  pod 'OLMKit', :inhibit_warnings => true
-  pod 'zxcvbn-ios', :inhibit_warnings => true
-
-  # Tools
-  pod 'SwiftGen', '~> 6.3'
-  pod 'SwiftLint', '~> 0.44.0'
-
-  target "Tchap" do
-    import_MatrixSDK
-    import_MatrixKit_pods
-
-    import_SwiftUI_pods
-
-    pod 'DGCollectionViewLeftAlignFlowLayout', '~> 1.0.4'
+def import_Common_pods
     pod 'UICollectionViewRightAlignedLayout', '~> 0.0.3'
+    pod 'UICollectionViewLeftAlignedLayout', '~> 1.0.2'
     pod 'KTCenterFlowLayout', '~> 1.3.1'
     pod 'ZXingObjC', '~> 3.6.5'
     pod 'FlowCommoniOS', '~> 1.12.0'
@@ -101,6 +77,36 @@ abstract_target 'TchapPods' do
     pod 'ffmpeg-kit-ios-audio', '4.5.1'
     
     pod 'FLEX', '~> 4.5.0', :configurations => ['Debug'], :inhibit_warnings => true
+end
+
+abstract_target 'TchapPods' do
+
+  pod 'GBDeviceInfo', '~> 6.6.0'
+  pod 'Reusable', '~> 4.1'
+  pod 'KeychainAccess', '~> 4.2.2'
+  pod 'WeakDictionary', '~> 2.0'
+
+  # PostHog for analytics
+  pod 'PostHog', '~> 1.4.4'
+  pod 'AnalyticsEvents', :git => 'https://github.com/matrix-org/matrix-analytics-events.git', :branch => 'release/swift', :inhibit_warnings => false
+  # pod 'AnalyticsEvents', :path => '../matrix-analytics-events/AnalyticsEvents.podspec'
+
+  pod 'RxSwift', '~> 5.1.1'
+
+  pod 'OLMKit'
+  pod 'zxcvbn-ios'
+
+  # Tools
+  pod 'SwiftGen', '~> 6.3'
+  pod 'SwiftLint', '~> 0.44.0'
+
+  target "Tchap" do
+    import_MatrixSDK
+    import_MatrixKit_pods
+
+    import_SwiftUI_pods
+
+    import_Common_pods
 
     target 'TchapTests' do
       inherit! :search_paths
@@ -109,22 +115,20 @@ abstract_target 'TchapPods' do
 
   target "Btchap" do
     import_MatrixSDK
+    import_MatrixKit_pods
 
     import_SwiftUI_pods
 
-    pod 'DGCollectionViewLeftAlignFlowLayout', '~> 1.0.4'
-    pod 'UICollectionViewRightAlignedLayout', '~> 0.0.3'
-    pod 'KTCenterFlowLayout', '~> 1.3.1'
-    pod 'ZXingObjC', '~> 3.6.5'
-    pod 'FlowCommoniOS', '~> 1.12.0'
-    pod 'ReadMoreTextView', '~> 3.0.1'
-    pod 'SwiftBase32', '~> 0.9.0'
-    pod 'SwiftJWT', '~> 3.6.200'
-    pod 'SideMenu', '~> 6.5'
-    pod 'DSWaveformImage', '~> 6.1.1'
-    pod 'ffmpeg-kit-ios-audio', '4.5.1'
+    import_Common_pods
+  end
+  
+  target "DevTchap" do
+    import_MatrixSDK
+    import_MatrixKit_pods
 
-    pod 'FLEX', '~> 4.5.0', :configurations => ['Debug'], :inhibit_warnings => true
+    import_SwiftUI_pods
+
+    import_Common_pods
   end
     
   target "RiotShareExtension" do

@@ -24,7 +24,7 @@ schemes:
       disableMainThreadChecker: true
       targets:
       - TchapTests
-      
+
 targets:
   Btchap:
     type: application
@@ -54,11 +54,6 @@ targets:
       shell: /bin/sh
       script: "\"${PODS_ROOT}/SwiftGen/bin/swiftgen\" config run --config \"Tools/SwiftGen/swiftgen-config.yml\"\n"
 
-    settings:
-      base:
-        GCC_PREPROCESSOR_DEFINITIONS: $(inherited) ENABLE_REACTIONS=1 ENABLE_EDITION=1 ENABLE_JOIN_BY_LINK=1
-        OTHER_SWIFT_FLAGS: $(inherited) -D ENABLE_REACTIONS -D ENABLE_EDITION
-
     sources:
     - path: ../Btchap/Config
     - path: ../Config/AppConfiguration.swift
@@ -77,37 +72,9 @@ targets:
         - "Config/BuildSettings.swift"
         - "Generated/InfoPlist.swift"
         - "Generated/TchapDefaults.swift"
-        - "Modules/Application"
-        - "Modules/Common/ActivityIndicator"
-        - "Modules/Room/EmojiPicker/Data/EmojiMart/EmojiJSONStore.swift"
-        - "Modules/Room/Views/Title/RoomTitleView.*"
-        - "Modules/Room/RoomCoordinator.swift"
-        - "Modules/Room/Views/BubbleCells/KeyVerification"
-        - "Modules/Room/Members/Detail/Views/RoomMemberTitleView.*"
-        - "Modules/Room/Members/Detail/RoomMemberDetailsViewController.xib"
-        - "Modules/Room/Settings/RoomSettingsViewController.*"
-        - "Modules/Room/RoomViewController.*"
-        - "Modules/Room/Views/BubbleCells"
-        - "Modules/Room/Views/InputToolbar/RoomInputToolbarView.*"
-        - "Modules/Room/Views/Preview"
-        - "Modules/Room/Views/Title/RoomTitleView.*"
-        - "Modules/Rooms"
         - "SupportingFiles/Info.plist"
-        - "TchapTools"
-        - "Routers"
-        - "Managers/AppVersion/AppVersion.swift"
-        - "Managers/UniversalLink"
         - "**/*.strings" # Exclude all strings files
         - "**/*.cer"
-        - "Modules/Home/HomeCoordinator.swift"
-        - "Modules/Home/HomeCoordinatorType.swift"
-        - "Modules/Room/RoomDetailsCoordinator.swift"
-        - "Modules/Room/RoomDetailsCoordinatorType.swift"
-        - "Modules/Room/DiscussionDetailsCoordinator.swift"
-    - path: ../Tchap/Modules/Application/VersionUpdate
-    - path: ../Tchap/Generated/Images_Riot.swift
-    - path: ../Tchap/Modules/Room/Views/BubbleCells/Antivirus
-
 
     # Add separately localizable files
     - path: ../Tchap/Assets/Localizations/fr.lproj/Tchap.strings
@@ -126,6 +93,7 @@ targets:
       excludes:
         - "MXHTTPClient+Async.swift"
         - "MXRestClient+Async.swift"
+    - path: ../Riot/Coordinators
     - path: ../Riot/Generated/UntranslatedStrings.swift
     - path: ../Riot/Generated/Vector_Strings.swift
     - path: ../Riot/Managers/AppInfo
@@ -133,12 +101,14 @@ targets:
     - path: ../Riot/Managers/Call/AsyncOperation.swift
     - path: ../Riot/Managers/EncryptionKeyManager/EncryptionKeyManager.swift
     - path: ../Riot/Managers/KeyValueStorage
+    - path: ../Riot/Managers/LocalAuthentication
     - path: ../Riot/Managers/Locale
     - path: ../Riot/Managers/Logging
     - path: ../Riot/Managers/Room/RoomIdComponents.swift
     - path: ../Riot/Managers/RoomMessageLinkParser/RoomMessageURLParser.swift
     - path: ../Riot/Managers/PasswordStrength
     - path: ../Riot/Managers/PushNotification
+    - path: ../Riot/Managers/Serialization
     - path: ../Riot/Managers/Settings/RiotSettings.swift
     - path: ../Riot/Managers/Settings/Shared
     - path: ../Riot/Managers/Theme
@@ -173,6 +143,7 @@ targets:
     - path: ../Riot/Modules/Common/Cells
     - path: ../Riot/Modules/Common/CoachMessages
     - path: ../Riot/Modules/Common/CollectionView
+    - path: ../Riot/Modules/Common/KeyboardAvoiding
     - path: ../Riot/Modules/Common/Models
     - path: ../Riot/Modules/Common/NavigationController/RiotNavigationController.h
     - path: ../Riot/Modules/Common/NavigationController/RiotNavigationController.m
@@ -186,6 +157,7 @@ targets:
     - path: ../Riot/Modules/Common/Recents/Service
     - path: ../Riot/Modules/Common/Recents/Views
     - path: ../Riot/Modules/Common/Recents/RecentsViewController+RoomInvite.swift
+    - path: ../Riot/Modules/Common/SectionFooters
     - path: ../Riot/Modules/Common/SectionHeaders
     - path: ../Riot/Modules/Common/SegmentedViewController/SegmentedViewController.h
     - path: ../Riot/Modules/Common/SegmentedViewController/SegmentedViewController.m
@@ -194,6 +166,8 @@ targets:
     - path: ../Riot/Modules/Common/UserIndicators
     - path: ../Riot/Modules/Common/Views
     - path: ../Riot/Modules/Common/WebViewController
+    - path: ../Riot/Modules/Communities/DataSources
+    - path: ../Riot/Modules/Communities/Views
     - path: ../Riot/Modules/Contacts
     - path: ../Riot/Modules/CreateRoom
     - path: ../Riot/Modules/CrossSigning
@@ -242,9 +216,12 @@ targets:
     - path: ../Riot/Modules/Secrets
     - path: ../Riot/Modules/SecureBackup
     - path: ../Riot/Modules/ServiceTerms
+    - path: ../Riot/Modules/SetPinCode
+    - path: ../Riot/Modules/Settings
     - path: ../Riot/Modules/SideMenu
     - path: ../Riot/Modules/SlidingModal
     - path: ../Riot/Modules/SplitView
+    - path: ../Riot/Modules/StartChat
     - path: ../Riot/Modules/TabBar
     - path: ../Riot/Modules/User/Avatar
     - path: ../Riot/Modules/UserDevices/UsersDevicesViewController.h
@@ -262,18 +239,14 @@ targets:
       excludes:
       - "**/Test/**"
       - "Authentication/**/Coordinator/**"
-      - "Authentication/Common/Service/MatrixSDK/AuthenticationPendingData.swift"
-      - "Authentication/Common/Service/MatrixSDK/AuthenticationService.swift"
-      - "Authentication/Common/Service/MatrixSDK/AuthenticationState.swift"
-      - "Authentication/Common/Service/MatrixSDK/RegistrationModels.swift"
-      - "Authentication/Common/Service/MatrixSDK/RegistrationWizard.swift"
-      - "Authentication/Common/Service/MatrixSDK/ThreePIDModels.swift"
+      - "Authentication/Common/Service/MatrixSDK"
       - "Authentication/Registration"
       - "Authentication/ServerSelection"
       - "Common/Locale/LocaleProvider.swift"
       - "Room/LiveLocationSharingViewer"
       - "Room/LocationSharing"
       - "Room/StaticLocationSharingViewer"
+      - "Settings/ChangePassword"
 
     # Share extension
     - path: ../RiotShareExtension/Shared
@@ -310,4 +283,3 @@ targets:
       buildPhase: resources
     - path: ../Riot/Modules/UserDevices/Views/DeviceTableViewCell.xib
       buildPhase: resources
-

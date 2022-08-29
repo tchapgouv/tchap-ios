@@ -271,7 +271,6 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     
     private func createPeopleViewController() -> PeopleViewController {
         let peopleViewController: PeopleViewController = PeopleViewController.instantiate()
-        peopleViewController.peopleViewDelegate = self
         peopleViewController.tabBarItem.tag = Int(TABBAR_PEOPLE_INDEX)
         peopleViewController.accessibilityLabel = VectorL10n.titlePeople
         peopleViewController.userIndicatorStore = UserIndicatorStore(presenter: indicatorPresenter)
@@ -854,7 +853,7 @@ extension TabBarCoordinator {
                 let okAction = UIAlertAction(title: okTitle, style: .default, handler: { action in
                     if let userID = discoveredUserID {
                         // Open the discussion
-                        sself.startDiscussion(with: userID)
+                        AppDelegate.theDelegate().startDirectChat(withUserId: userID, completion: nil)
                     }
                 })
                 alert.addAction(okAction)
@@ -1031,28 +1030,6 @@ extension TabBarCoordinator: RoomsViewControllerDelegate {
     }
 }
 
-// MARK: - CreateNewDiscussionCoordinatorDelegate
-extension TabBarCoordinator: CreateNewDiscussionCoordinatorDelegate {
-    func createNewDiscussionCoordinator(_ coordinator: CreateNewDiscussionCoordinatorType,
-                                        didSelectUserID userID: String) {
-        self.navigationRouter.dismissModule(animated: true) { [weak self] in
-            self?.startDiscussion(with: userID)
-            self?.remove(childCoordinator: coordinator)
-        }
-    }
-    
-    func createNewDiscussionCoordinatorDidCancel(_ coordinator: CreateNewDiscussionCoordinatorType) {
-        self.navigationRouter.dismissModule(animated: true) { [weak self] in
-            self?.remove(childCoordinator: coordinator)
-        }
-    }
-    
-    // Prepare a new discussion with a user without associated room
-    private func startDiscussion(with userID: String) {
-        AppDelegate.theDelegate().startDirectChat(withUserId: userID, completion: nil)
-    }
-}
-
 // MARK: - PublicRoomsViewControllerDelegate
 extension TabBarCoordinator: PublicRoomsViewControllerDelegate {
     func publicRoomsViewController(_ publicRoomsViewController: PublicRoomsViewController,
@@ -1102,19 +1079,5 @@ extension TabBarCoordinator: RoomPreviewCoordinatorDelegate {
                                 onEventId eventId: String?) {
         self.navigationRouter.popModule(animated: true)
         self.showRoom(withId: roomID, eventId: eventId)
-    }
-}
-
-// MARK: - PeopleViewControllerDelegate
-extension TabBarCoordinator: PeopleViewControllerDelegate {
-    func peopleViewControllerDidTapStartChatButton(_ peopleViewController: PeopleViewController) {
-        guard let session = self.currentMatrixSession else { return }
-
-        let createNewDiscussionCoordinator = CreateNewDiscussionCoordinator(session: session)
-        createNewDiscussionCoordinator.delegate = self
-        createNewDiscussionCoordinator.start()
-
-        self.navigationRouter.present(createNewDiscussionCoordinator, animated: true)
-        self.add(childCoordinator: createNewDiscussionCoordinator)
     }
 }

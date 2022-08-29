@@ -35,8 +35,7 @@ class AppConfiguration: CommonConfiguration {
                                                            kWidgetModularEventTypeString])
         
         // Tchap: remove some state events from the rooms histories: creation, the history access, encryption, join rules
-        MXKAppSettings.standard()?.removeSupportedEventTypes([kMXEventTypeStringRoomCreate,
-                                                              kMXEventTypeStringRoomHistoryVisibility,
+        MXKAppSettings.standard()?.removeSupportedEventTypes([kMXEventTypeStringRoomHistoryVisibility,
                                                               kMXEventTypeStringRoomEncryption,
                                                               kMXEventTypeStringRoomGuestAccess,
                                                               kMXEventTypeStringRoomJoinRules])

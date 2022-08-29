@@ -17,7 +17,6 @@
 import SwiftUI
 import CoreLocation
 
-@available(iOS 14.0, *)
 struct LocationSharingView: View {
     
     // MARK: - Properties
@@ -76,7 +75,10 @@ struct LocationSharingView: View {
                                        showsUserLocation: context.viewState.showsUserLocation,
                                        userLocation: $context.userLocation,
                                        mapCenterCoordinate: $context.pinLocation,
-                                       errorSubject: context.viewState.errorSubject)
+                                       errorSubject: context.viewState.errorSubject,
+                                       userDidPan: {
+                    context.send(viewAction: .userDidPan)
+                })
                 if context.viewState.isPinDropSharing {
                     LocationSharingMarkerView(backgroundColor: theme.colors.accent) {
                         Image(uiImage: Asset.Images.locationPinIcon.image)
@@ -161,7 +163,6 @@ struct LocationSharingView: View {
 
 // MARK: - Previews
 
-@available(iOS 14.0, *)
 struct LocationSharingView_Previews: PreviewProvider {
     static let stateRenderer = MockLocationSharingScreenState.stateRenderer
     static var previews: some View {

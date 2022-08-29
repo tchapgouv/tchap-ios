@@ -20,7 +20,6 @@ import CoreLocation
 
 @testable import RiotSwiftUI
 
-@available(iOS 14.0, *)
 class LocationSharingViewModelTests: XCTestCase {
     
     var cancellables = Set<AnyCancellable>()
@@ -49,7 +48,7 @@ class LocationSharingViewModelTests: XCTestCase {
                 XCTFail()
             case .cancel:
                 expectation.fulfill()
-            case .shareLiveLocation(timeout: let timeout):
+            case .shareLiveLocation:
                 XCTFail()
             }
         }
@@ -94,7 +93,10 @@ class LocationSharingViewModelTests: XCTestCase {
     }
     
     private func buildViewModel() -> LocationSharingViewModel {
-        LocationSharingViewModel(mapStyleURL: URL(string: "http://empty.com")!,
-                                 avatarData: AvatarInput(mxContentUri: "", matrixItemId: "", displayName: ""))
+        
+        let service = MockLocationSharingService()
+        
+        return LocationSharingViewModel(mapStyleURL: URL(string: "http://empty.com")!,
+                                 avatarData: AvatarInput(mxContentUri: "", matrixItemId: "", displayName: ""), service: service)
     }
 }
