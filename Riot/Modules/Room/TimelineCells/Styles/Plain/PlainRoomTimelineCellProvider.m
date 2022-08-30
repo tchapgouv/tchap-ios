@@ -115,13 +115,10 @@
     
     [self registerLocationCellsForTableView:tableView];
     
-<<<<<<< HEAD
-    [self registerAntivirusCellsForTableView:tableView];
-        
-=======
     [self registerFileWithoutThumbnailCellsForTableView:tableView];
-
->>>>>>> v1.9.0
+    
+    [self registerAntivirusCellsForTableView:tableView];
+    
     [tableView registerClass:RoomEmptyBubbleCell.class forCellReuseIdentifier:RoomEmptyBubbleCell.defaultReuseIdentifier];
     
     [tableView registerClass:RoomSelectedStickerBubbleCell.class forCellReuseIdentifier:RoomSelectedStickerBubbleCell.defaultReuseIdentifier];

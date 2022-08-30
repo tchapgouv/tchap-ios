@@ -4321,28 +4321,11 @@ static CGSize kThreadListBarButtonItemImageSize;
             
             NSString *roomIdOrAlias = absoluteURLString;
             
-<<<<<<< HEAD
-            // Open the room or preview it
-            NSString *fragment = [NSString stringWithFormat:@"/room/%@", [MXTools encodeURIComponent:roomIdOrAlias]];
-            
-//            [self handleUniversalLinkFragment:fragment fromURL:url];
-        }
-        // Preview the clicked group
-        else if ([MXTools isMatrixGroupIdentifier:absoluteURLString])
-        {
-            shouldDoAction = NO;
-            
-            // Open the group or preview it
-            NSString *fragment = [NSString stringWithFormat:@"/group/%@", [MXTools encodeURIComponent:absoluteURLString]];
-            
-//            [self handleUniversalLinkFragment:fragment fromURL:url];
-=======
             // Create a permalink to open or preview the room.
             NSString *permalink = [MXTools permalinkToRoom:roomIdOrAlias];
             NSURL *permalinkURL = [NSURL URLWithString:permalink];
             
             [self handleUniversalLinkURL:permalinkURL];
->>>>>>> v1.9.0
         }
         else if ([absoluteURLString hasPrefix:EventFormatterOnReRequestKeysLinkAction])
         {
@@ -5727,7 +5710,7 @@ static CGSize kThreadListBarButtonItemImageSize;
                 self.inputToolbarView.textMessage = roomDataSource.partialTextMessage;
             }
         };
-<<<<<<< HEAD
+
         // Tchap: Disable Threads
 //        if (self.roomDataSource.threadId)
 //        {
@@ -5741,31 +5724,7 @@ static CGSize kThreadListBarButtonItemImageSize;
 //            }];
 //        }
 //        else
-        if (self.isContextPreview)
-        {
-            [RoomPreviewDataSource loadRoomDataSourceWithRoomId:self.roomDataSource.roomId
-                                               andMatrixSession:self.mainSession
-                                                     onComplete:^(RoomPreviewDataSource *roomDataSource)
-             {
-                continueBlock(roomDataSource, YES);
-            }];
-        }
-        else
-=======
-
-        if (self.roomDataSource.threadId)
-        {
-            [ThreadDataSource loadRoomDataSourceWithRoomId:self.roomDataSource.roomId
-                                            initialEventId:nil
-                                                  threadId:self.roomDataSource.threadId
-                                          andMatrixSession:self.mainSession
-                                                onComplete:^(ThreadDataSource *threadDataSource)
-             {
-                continueBlock(threadDataSource, YES);
-            }];
-        }
-        else if (self.roomDataSource.roomId)
->>>>>>> v1.9.0
+        if (self.roomDataSource.roomId)
         {
             if (self.isContextPreview)
             {

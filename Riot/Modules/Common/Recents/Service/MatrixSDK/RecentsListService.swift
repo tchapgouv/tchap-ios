@@ -48,13 +48,8 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
     private var favoritedRoomListDataFetcher: MXRoomListDataFetcher?
     private var directRoomListDataFetcher: MXRoomListDataFetcher? {
         switch mode {
-<<<<<<< HEAD
-//        case .home:
+//        case .home, .allChats:
 //            return directRoomListDataFetcherForHome
-=======
-        case .home, .allChats:
-            return directRoomListDataFetcherForHome
->>>>>>> v1.9.0
         case .people:
             return directRoomListDataFetcherForPeople
         default:
@@ -91,13 +86,9 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
         .home: [.invited, .favorited, .directHome, .conversationHome, .lowPriority, .serverNotice, .suggested],
         .favourites: [.favorited],
         .people: [.invited, .directPeople],
-<<<<<<< HEAD
-        .rooms: [.invited, .conversationRooms, .suggested, .serverNotice]
-=======
-        .rooms: [.invited, .conversationRooms, .suggested],
+        .rooms: [.invited, .conversationRooms, .suggested, .serverNotice],
         .roomInvites: [.invited],
         .allChats: [.breadcrumbs, .favorited, .directHome, .invited, .allChats, .lowPriority, .serverNotice, .suggested]
->>>>>>> v1.9.0
     ]
     
     private var allFetchers: [MXRoomListDataFetcher] {
@@ -185,23 +176,23 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
         case .allChats:
             let pinMissed = RiotSettings.shared.pinRoomsWithMissedNotificationsOnHome
             let pinUnread = RiotSettings.shared.pinRoomsWithUnreadMessagesOnHome
-            switch AllChatsLayoutSettingsManager.shared.allChatLayoutSettings.sorting {
-            case .alphabetical:
-                return MXRoomListDataSortOptions(invitesFirst: false,
-                                                 sentStatus: false,
-                                                 lastEventDate: false,
-                                                 favoriteTag: false,
-                                                 suggested: false,
-                                                 alphabetical: true,
-                                                 missedNotificationsFirst: false,
-                                                 unreadMessagesFirst: false)
-            case .activity:
+//            switch AllChatsLayoutSettingsManager.shared.allChatLayoutSettings.sorting {
+//            case .alphabetical:
+//                return MXRoomListDataSortOptions(invitesFirst: false,
+//                                                 sentStatus: false,
+//                                                 lastEventDate: false,
+//                                                 favoriteTag: false,
+//                                                 suggested: false,
+//                                                 alphabetical: true,
+//                                                 missedNotificationsFirst: false,
+//                                                 unreadMessagesFirst: false)
+//            case .activity:
+//                return MXRoomListDataSortOptions(missedNotificationsFirst: pinMissed,
+//                                                 unreadMessagesFirst: pinUnread)
+//            @unknown default:
                 return MXRoomListDataSortOptions(missedNotificationsFirst: pinMissed,
                                                  unreadMessagesFirst: pinUnread)
-            @unknown default:
-                return MXRoomListDataSortOptions(missedNotificationsFirst: pinMissed,
-                                                 unreadMessagesFirst: pinUnread)
-            }
+//            }
         default:
             return MXRoomListDataSortOptions(missedNotificationsFirst: false,
                                              unreadMessagesFirst: false)
@@ -467,16 +458,11 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
     private var shouldShowFavorited: Bool {
         return fetcherTypesForMode[mode]?.contains(.favorited) ?? false
     }
-
+    
     private var shouldShowDirect: Bool {
         switch mode {
-<<<<<<< HEAD
-//        case .home:
+//        case .home, .allChats:
 //            return fetcherTypesForMode[mode]?.contains(.directHome) ?? false
-=======
-        case .home, .allChats:
-            return fetcherTypesForMode[mode]?.contains(.directHome) ?? false
->>>>>>> v1.9.0
         case .people:
             return fetcherTypesForMode[mode]?.contains(.directPeople) ?? false
         default:
@@ -679,7 +665,7 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
         var notDataTypes: MXRoomSummaryDataTypes = [.hidden, .conferenceUser, .space, .invited, .lowPriority]
             switch mode {
 //            case .home:
-//                notDataTypes.insert([.invited, .favorited, .lowPriority])
+//                notDataTypes.insert(.favorited)
 //                fetcher.fetchOptions.filterOptions.notDataTypes = notDataTypes
             case .people:
                 fetcher.fetchOptions.filterOptions.notDataTypes = [.invited, .lowPriority]
@@ -717,7 +703,7 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
             break
         }
     }
-
+    
     private func updateConversationFetcher(_ fetcher: MXRoomListDataFetcher, for mode: RecentsDataSourceMode) {
         var notDataTypes: MXRoomSummaryDataTypes = mode == .allChats ? [.hidden, .conferenceUser, .invited, .lowPriority, .serverNotice, .space] : [.hidden, .conferenceUser, .direct, .invited, .lowPriority, .serverNotice, .space]
 

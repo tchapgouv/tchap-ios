@@ -15,7 +15,7 @@
 //
 
 import Foundation
-import SwiftOGG
+//import SwiftOGG
 
 enum VoiceMessageAudioConverterError: Error {
     case conversionFailed(Error?)
@@ -26,31 +26,31 @@ enum VoiceMessageAudioConverterError: Error {
 struct VoiceMessageAudioConverter {
     static func convertToOpusOgg(sourceURL: URL, destinationURL: URL, completion: @escaping (Result<Void, VoiceMessageAudioConverterError>) -> Void) {
         DispatchQueue.global(qos: .userInitiated).async {
-            do {
-                try OGGConverter.convertM4aFileToOpusOGG(src: sourceURL, dest: destinationURL)
-                DispatchQueue.main.async {
-                    completion(.success(()))
-                }
-            } catch {
-                DispatchQueue.main.async {
-                    completion(.failure(.conversionFailed(error)))
-                }
-            }
+//            do {
+//                try OGGConverter.convertM4aFileToOpusOGG(src: sourceURL, dest: destinationURL)
+//                DispatchQueue.main.async {
+//                    completion(.success(()))
+//                }
+//            } catch {
+//                DispatchQueue.main.async {
+//                    completion(.failure(.conversionFailed(error)))
+//                }
+//            }
         }
     }
     
     static func convertToMPEG4AAC(sourceURL: URL, destinationURL: URL, completion: @escaping (Result<Void, VoiceMessageAudioConverterError>) -> Void) {
         DispatchQueue.global(qos: .userInitiated).async {
-            do {
-                try OGGConverter.convertOpusOGGToM4aFile(src: sourceURL, dest: destinationURL)
-                DispatchQueue.main.async {
-                    completion(.success(()))
-                }
-            } catch {
-                DispatchQueue.main.async {
-                    completion(.failure(.conversionFailed(error)))
-                }
-            }
+//            do {
+//                try OGGConverter.convertOpusOGGToM4aFile(src: sourceURL, dest: destinationURL)
+//                DispatchQueue.main.async {
+//                    completion(.success(()))
+//                }
+//            } catch {
+//                DispatchQueue.main.async {
+//                    completion(.failure(.conversionFailed(error)))
+//                }
+//            }
         }
     }
     

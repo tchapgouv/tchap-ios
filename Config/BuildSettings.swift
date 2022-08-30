@@ -390,8 +390,8 @@ final class BuildSettings: NSObject {
     static let authEnableRefreshTokens = false
     
     // MARK: - Onboarding
-    static let onboardingShowAccountPersonalization = true
-    static let onboardingEnableNewAuthenticationFlow = true
+    static let onboardingShowAccountPersonalization = false
+    static let onboardingEnableNewAuthenticationFlow = false
     
     // MARK: - Unified Search
     static let unifiedSearchScreenShowPublicDirectory = true
@@ -409,12 +409,9 @@ final class BuildSettings: NSObject {
     // MARK: - Location Sharing
     
     /// Overwritten by the home server's .well-known configuration (if any exists)
-    static let defaultTileServerMapStyleURL = URL(string: "https://api.maptiler.com/maps/streets/style.json?key=fU3vlMsMn4Jb6dnEIFsx")!
+    static let defaultTileServerMapStyleURL = URL(string: "https://api.maptiler.com/maps/streets/style.json?key=")!
     
-<<<<<<< HEAD
     static let locationSharingEnabled = false // Currently disabled in Tchap.
-=======
-    static let locationSharingEnabled = true
 
     // MARK: - MXKAppSettings
     static let enableBotCreation: Bool = false
@@ -430,10 +427,9 @@ final class BuildSettings: NSObject {
     static let syncLocalContacts: Bool = false
     
     // MARK: - New App Layout
-    static let newAppLayoutEnabled = true
+    static let newAppLayoutEnabled = false
     
     // MARK: - Device manager
     
     static let deviceManagerEnabled = false
->>>>>>> v1.9.0
 }

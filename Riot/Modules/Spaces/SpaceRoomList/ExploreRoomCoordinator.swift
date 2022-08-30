@@ -427,8 +427,8 @@ extension ExploreRoomCoordinator: RoomViewControllerDelegate {
         guard let location = event.location else {
             return nil
         }
-        
-        return LocationSharingCoordinator.shareLocationActivityController(CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude))
+        // Tchap: No location sharing available in Tchap
+        return nil// LocationSharingCoordinator.shareLocationActivityController(CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude))
     }
 
     func roomViewController(_ roomViewController: RoomViewController, canEditPollWithEventIdentifier eventIdentifier: String) -> Bool {

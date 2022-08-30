@@ -7,6 +7,7 @@ ib:
       - templateName: scenes-swift4
         output: Tchap/Generated/Storyboards.swift
   - inputs: 
+      - Riot/Modules/ContextMenu
       - Riot/Modules/CreateRoom
       - Riot/Modules/CrossSigning
       - Riot/Modules/Integrations
@@ -23,6 +24,8 @@ ib:
       - Riot/Modules/Settings
       - Riot/Modules/SideMenu
       - Riot/Modules/SlidingModal
+      - Riot/Modules/Spaces
+      - Riot/Modules/Threads
     filter: ^((?!DeactivateAccountViewController).)*\.(storyboard)
     outputs:
       - templatePath: Templates/IB/scenes-riot-swift4.stencil
@@ -35,7 +38,6 @@ strings:
       params:
         enumName: TchapL10n
 xcassets:  
-<<<<<<< HEAD
   - inputs:
       - Tchap/Assets/Images.xcassets  
       - Tchap/Assets/SharedImages.xcassets
@@ -49,18 +51,6 @@ xcassets:
       - templatePath: Templates/Assets/swift4-element.stencil
         output: Tchap/Generated/Images_Riot.swift
 plist:
-  - inputs: Tchap/Assets/Tchap-Defaults.plist
-    outputs:
-      templateName: runtime-swift4
-      output: Tchap/Generated/TchapDefaults.swift
-      params:
-        enumName: TchapDefaults
-  - inputs: Btchap/Assets/Btchap-Defaults.plist
-    outputs:
-      templateName: runtime-swift4
-      output: Btchap/Generated/TchapDefaults.swift
-      params:
-        enumName: TchapDefaults
   - inputs: Tchap/SupportingFiles/Info.plist
     outputs:
       templateName: runtime-swift4
@@ -73,11 +63,3 @@ plist:
       output: Btchap/Generated/InfoPlist.swift
       params:
         enumName: InfoPlist
-=======
-  inputs:
-    - Assets/Images.xcassets
-    - Assets/SharedImages.xcassets
-  outputs:
-    templatePath: Templates/Assets/swift4-element.stencil
-    output: Images.swift
->>>>>>> v1.9.0

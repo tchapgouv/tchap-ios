@@ -1,5 +1,6 @@
 /*
  Copyright 2015 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -14,13 +15,16 @@
  limitations under the License.
  */
 
-#import "RoomIncomingAttachmentBubbleCell.h"
+#import "RecentsViewController.h"
+#import "RecentsDataSource.h"
 
 /**
- `RoomAttachmentAntivirusScanStatusBubbleCell` displays room attachment antivirus scan status with sender's information.
+ The `HomeViewController` screen is the main app screen.
  */
-@interface RoomAttachmentAntivirusScanStatusBubbleCell : RoomIncomingAttachmentBubbleCell
+@interface HomeViewController : RecentsViewController <UITableViewDataSource, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 
 + (instancetype)instantiate;
+
+@property (nonatomic, readonly) RecentsDataSourceMode recentsDataSourceMode;
 
 @end

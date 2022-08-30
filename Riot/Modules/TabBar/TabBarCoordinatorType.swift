@@ -38,11 +38,6 @@ protocol TabBarCoordinatorType: Coordinator, SplitViewMasterPresentable {
     // Release the current selected item (room/contact/group...).
     func releaseSelectedItems()
     
-<<<<<<< HEAD
-    // Tchap: redirect to invite people alert
-    /// Present invite people alert (with textField)
-    func presentInvitePeople()
-=======
     /// Displays an error using a `UserIndicator`. The messages is dimissed automatically.
     func showErroIndicator(with error: Error)
     
@@ -51,5 +46,8 @@ protocol TabBarCoordinatorType: Coordinator, SplitViewMasterPresentable {
     
     /// Hide the message related to the application state currently displayed.
     func hideAppStateIndicator()
->>>>>>> v1.9.0
+    
+    // Tchap: redirect to invite people alert
+    /// Present invite people alert (with textField)
+    func presentInvitePeople()
 }

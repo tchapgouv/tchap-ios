@@ -69,8 +69,4 @@
 #import "MXRoom+Sync.h"
 #import "UIAlertController+MatrixKit.h"
 #import "MXKMessageTextView.h"
-<<<<<<< HEAD
-#import "MXKAnalyticsConstants.h"
-=======
 #import "AllChatsLayoutModels.h"
->>>>>>> v1.9.0

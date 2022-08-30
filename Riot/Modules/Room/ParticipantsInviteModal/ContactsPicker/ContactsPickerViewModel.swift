@@ -126,13 +126,9 @@ class ContactsPickerViewModel: NSObject, ContactsPickerViewModelProtocol {
         }
         
         contactsViewController.showSearch(true)
-<<<<<<< HEAD
         // Tchap: Replace string by removing user ID
         contactsViewController.searchBar.placeholder = VectorL10n.roomParticipantsInviteAnotherUserWithoutId
-=======
-        contactsViewController.searchBar.placeholder = VectorL10n.roomParticipantsInviteAnotherUser
         contactsViewController.searchBar.resignFirstResponder()
->>>>>>> v1.9.0
         
         // Apply the search pattern if any
         if currentSearchText != nil {

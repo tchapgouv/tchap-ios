@@ -18,10 +18,6 @@
 #import "MasterTabBarController.h"
 
 #import "RecentsDataSource.h"
-<<<<<<< HEAD
-//#import "GroupsDataSource.h"
-=======
->>>>>>> v1.9.0
 
 
 #import "MXRoom+Riot.h"
@@ -49,12 +45,6 @@
     // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
     id kThemeServiceDidChangeThemeNotificationObserver;
     
-<<<<<<< HEAD
-    // The groups data source
-//    GroupsDataSource *groupsDataSource;
-    
-=======
->>>>>>> v1.9.0
     // Custom title view of the navigation bar
     MainTitleView *titleView;
     
@@ -99,14 +89,6 @@
     return (RoomsViewController*)[self viewControllerForClass:RoomsViewController.class];
 }
 
-<<<<<<< HEAD
-//- (GroupsViewController *)groupsViewController
-//{
-//    return (GroupsViewController*)[self viewControllerForClass:GroupsViewController.class];
-//}
-
-=======
->>>>>>> v1.9.0
 #pragma mark - Life cycle
 
 - (void)viewDidLoad
@@ -230,17 +212,13 @@
             [childViewControllers removeAllObjects];
         }
         
-<<<<<<< HEAD
         // Tchap: Not the same mecanism
 //        [[AppDelegate theDelegate] checkAppVersion];
-=======
-        [[AppDelegate theDelegate] checkAppVersion];
         
         if (BuildSettings.newAppLayoutEnabled && !RiotSettings.shared.allChatsOnboardingHasBeenDisplayed)
         {
             [self showAllChatsOnboardingScreen];
         }
->>>>>>> v1.9.0
     }
 }
 
@@ -350,15 +328,9 @@
         [self.roomsViewController displayList:recentsDataSource];
         
         // Restore the right delegate of the shared recent data source.
-<<<<<<< HEAD
         id<MXKDataSourceDelegate> recentsDataSourceDelegate = self.roomsViewController;//self.homeViewController;
-        RecentsDataSourceMode recentsDataSourceMode = RecentsDataSourceModeRooms;
+        RecentsDataSourceMode recentsDataSourceMode = RecentsDataSourceModeRooms;//self.homeViewController.recentsDataSourceMode
 
-=======
-        id<MXKDataSourceDelegate> recentsDataSourceDelegate = self.homeViewController;
-        RecentsDataSourceMode recentsDataSourceMode = self.homeViewController.recentsDataSourceMode;
-        
->>>>>>> v1.9.0
         NSInteger tabItemTag = self.tabBar.items[self.selectedIndex].tag;
 
         switch (tabItemTag)
@@ -383,14 +355,6 @@
         }
         [recentsDataSource setDelegate:recentsDataSourceDelegate andRecentsDataSourceMode:recentsDataSourceMode];
         
-<<<<<<< HEAD
-        // Init the recents data source
-//        groupsDataSource = [[GroupsDataSource alloc] initWithMatrixSession:mainSession];
-//        [groupsDataSource finalizeInitialization];
-//        [self.groupsViewController displayList:groupsDataSource];
-        
-=======
->>>>>>> v1.9.0
         // Check whether there are others sessions
         NSArray<MXSession*>* mxSessions = self.mxSessions;
         if (mxSessions.count > 1)

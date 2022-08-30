@@ -198,7 +198,7 @@ FOUNDATION_EXPORT NSString *const RecentsViewControllerDataReadyNotification;
 /**
  Enable/disable the direct flag of the selected room.
  */
-//- (void)makeDirectEditedRoom:(BOOL)isDirect;
+- (void)makeDirectEditedRoom:(BOOL)isDirect;
 
 /**
 Enable/disable the notifications for the selected room.

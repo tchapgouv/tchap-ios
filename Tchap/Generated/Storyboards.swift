@@ -10,7 +10,8 @@ import UIKit
 
 // MARK: - Storyboard Scenes
 
-// swiftlint:disable explicit_type_interface identifier_name line_length type_body_length type_name
+// swiftlint:disable explicit_type_interface identifier_name line_length prefer_self_in_static_references
+// swiftlint:disable type_body_length type_name
 internal enum StoryboardScene {
   internal enum AppVersionUpdateViewController: StoryboardType {
     internal static let storyboardName = "AppVersionUpdateViewController"
@@ -83,7 +84,8 @@ internal enum StoryboardScene {
     internal static let initialScene = InitialSceneType<Tchap.WelcomeViewController>(storyboard: WelcomeViewController.self)
   }
 }
-// swiftlint:enable explicit_type_interface identifier_name line_length type_body_length type_name
+// swiftlint:enable explicit_type_interface identifier_name line_length prefer_self_in_static_references
+// swiftlint:enable type_body_length type_name
 
 // MARK: - Implementation Details
 

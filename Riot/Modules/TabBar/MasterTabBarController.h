@@ -21,10 +21,6 @@
 #import "FavouritesViewController.h"
 #import "PeopleViewController.h"
 #import "RoomsViewController.h"
-<<<<<<< HEAD
-//#import "GroupsViewController.h"
-=======
->>>>>>> v1.9.0
 
 #define TABBAR_HOME_INDEX         0
 #define TABBAR_FAVOURITES_INDEX   1
@@ -36,12 +32,7 @@ typedef NS_ENUM(NSUInteger, MasterTabBarIndex) {
 //    MasterTabBarIndexHome = TABBAR_HOME_INDEX,
     MasterTabBarIndexFavourites = TABBAR_FAVOURITES_INDEX,
     MasterTabBarIndexPeople = TABBAR_PEOPLE_INDEX,
-<<<<<<< HEAD
-    MasterTabBarIndexRooms = TABBAR_ROOMS_INDEX,
-//    MasterTabBarIndexGroups = TABBAR_GROUPS_INDEX
-=======
     MasterTabBarIndexRooms = TABBAR_ROOMS_INDEX
->>>>>>> v1.9.0
 };
 
 @protocol MasterTabBarControllerDelegate;
@@ -142,10 +133,6 @@ typedef NS_ENUM(NSUInteger, MasterTabBarIndex) {
 @property (nonatomic, readonly) FavouritesViewController *favouritesViewController;
 @property (nonatomic, readonly) PeopleViewController *peopleViewController;
 @property (nonatomic, readonly) RoomsViewController *roomsViewController;
-<<<<<<< HEAD
-//@property (nonatomic, readonly) GroupsViewController *groupsViewController;
-=======
->>>>>>> v1.9.0
 
 
 // References on the currently selected room
@@ -177,10 +164,6 @@ typedef NS_ENUM(NSUInteger, MasterTabBarIndex) {
 - (void)masterTabBarController:(MasterTabBarController *)masterTabBarController didSelectRoomWithParameters:(RoomNavigationParameters*)roomNavigationParameters completion:(void (^)(void))completion;
 - (void)masterTabBarController:(MasterTabBarController *)masterTabBarController didSelectRoomPreviewWithParameters:(RoomPreviewNavigationParameters*)roomPreviewNavigationParameters completion:(void (^)(void))completion;
 - (void)masterTabBarController:(MasterTabBarController *)masterTabBarController didSelectContact:(MXKContact*)contact withPresentationParameters:(ScreenPresentationParameters*)presentationParameters;
-<<<<<<< HEAD
-- (void)masterTabBarController:(MasterTabBarController *)masterTabBarController didSelectGroup:(MXGroup*)group inMatrixSession:(MXSession*)matrixSession presentationParameters:(ScreenPresentationParameters*)presentationParameters;
 - (void)masterTabBarControllerShouldShowAuthenticationFlow:(MasterTabBarController *)masterTabBarController;
-=======
->>>>>>> v1.9.0
 
 @end

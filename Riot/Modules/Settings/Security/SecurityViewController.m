@@ -1484,11 +1484,7 @@ MXKDocumentPickerPresenterDelegate>
     currentAlert = exportView.alertController;
 
     // Use a temporary file for the export
-<<<<<<< HEAD
     keyExportsFile = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:@"tchap-keys.txt"]];
-=======
-    keyExportsFile = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:@"element-keys.txt"]];
->>>>>>> v1.9.0
 
     // Make sure the file is empty
     [self deleteKeyExportFile];

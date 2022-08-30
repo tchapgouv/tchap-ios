@@ -370,11 +370,7 @@
         <!--Placeholder Detail View Controller-->
         <scene sceneID="2wP-Cu-Wca">
             <objects>
-<<<<<<< HEAD
-                <viewController storyboardIdentifier="EmptyDetailsViewControllerStoryboardId" id="Cpr-Tz-Az0" customClass="PlaceholderDetailViewController" customModule="Btchap" customModuleProvider="target" sceneMemberID="viewController">
-=======
-                <viewController storyboardIdentifier="EmptyDetailsViewControllerStoryboardId" id="Cpr-Tz-Az0" customClass="PlaceholderDetailViewController" customModule="Element" customModuleProvider="target" sceneMemberID="viewController">
->>>>>>> v1.9.0
+                <viewController storyboardIdentifier="EmptyDetailsViewControllerStoryboardId" id="Cpr-Tz-Az0" customClass="PlaceholderDetailViewController" customModule="Tchap" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="yS4-RU-AsN"/>
                         <viewControllerLayoutGuide type="bottom" id="VKG-pW-vMU"/>
@@ -490,11 +486,7 @@
         <!--Thread-->
         <scene sceneID="Opl-gU-pwm">
             <objects>
-<<<<<<< HEAD
-                <viewController storyboardIdentifier="ThreadViewControllerStoryboardId" title="Room" hidesBottomBarWhenPushed="YES" id="R2h-H9-hdJ" userLabel="Thread" customClass="ThreadViewController" customModule="Btchap" customModuleProvider="target" sceneMemberID="viewController">
-=======
-                <viewController storyboardIdentifier="ThreadViewControllerStoryboardId" title="Room" hidesBottomBarWhenPushed="YES" id="R2h-H9-hdJ" userLabel="Thread" customClass="ThreadViewController" customModule="Element" customModuleProvider="target" sceneMemberID="viewController">
->>>>>>> v1.9.0
+                <viewController storyboardIdentifier="ThreadViewControllerStoryboardId" title="Room" hidesBottomBarWhenPushed="YES" id="R2h-H9-hdJ" userLabel="Thread" customClass="ThreadViewController" customModule="Tchap" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="TFF-nx-BSb">
                         <nil key="title"/>
                         <view key="titleView" contentMode="scaleToFill" id="e4J-vI-jzo" userLabel="Room title view container">
