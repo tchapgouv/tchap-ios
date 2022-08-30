@@ -113,7 +113,7 @@
             {
                 self.missedNotifAndUnreadIndicator.backgroundColor = ThemeService.shared.theme.unreadRoomIndentColor;
             }
-            
+
             // Use bold font for the room title
             self.roomTitle.font = [UIFont systemFontOfSize:17 weight:UIFontWeightBold];
         }

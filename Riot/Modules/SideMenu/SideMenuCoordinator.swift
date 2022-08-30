@@ -262,6 +262,7 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
     }
     
     private func showCreateSpace() {
+<<<<<<< HEAD
         // Tchap: Disable Spaces
 //        guard let session = self.parameters.userSessionsService.mainUserSession?.matrixSession else {
 //            return
@@ -289,6 +290,34 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
 //        coordinator.start()
 //
 //        self.createSpaceCoordinator = coordinator
+=======
+        guard let session = self.parameters.userSessionsService.mainUserSession?.matrixSession else {
+            return
+        }
+        
+        let coordinator = SpaceCreationCoordinator(parameters: SpaceCreationCoordinatorParameters(session: session, parentSpaceId: nil))
+        let presentable = coordinator.toPresentable()
+        presentable.presentationController?.delegate = self
+        self.sideMenuViewController.present(presentable, animated: true, completion: nil)
+        coordinator.callback = { [weak self] result in
+            guard let self = self else {
+                return
+            }
+            
+            self.createSpaceCoordinator?.toPresentable().dismiss(animated: true) {
+                self.createSpaceCoordinator = nil
+                switch result {
+                case .cancel:
+                    break
+                case .done(let spaceId):
+                    self.select(spaceWithId: spaceId)
+                }
+            }
+        }
+        coordinator.start()
+        
+        self.createSpaceCoordinator = coordinator
+>>>>>>> v1.9.0
     }
     
     private func showAddRoom(spaceId: String, session: MXSession) {
@@ -323,6 +352,7 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
     }
     
     func showSpaceInvite(spaceId: String, session: MXSession) {
+<<<<<<< HEAD
         // Tchap: Disable Spaces
 //        guard let space = session.spaceService.getSpace(withId: spaceId), let spaceRoom = space.room else {
 //            MXLog.error("[SideMenuCoordinator] showSpaceInvite: failed to find space with id \(spaceId)")
@@ -351,6 +381,37 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
 //            self.add(childCoordinator: coordinator)
 //            self.sideMenuViewController.present(coordinator.toPresentable(), animated: true)
 //        }
+=======
+        guard let space = session.spaceService.getSpace(withId: spaceId), let spaceRoom = space.room else {
+            MXLog.error("[SideMenuCoordinator] showSpaceInvite: failed to find space", context: [
+                "space_id": spaceId
+            ])
+            return
+        }
+        
+        spaceRoom.state { [weak self] roomState in
+            guard let self = self else { return }
+            
+            guard let powerLevels = roomState?.powerLevels, let userId = session.myUserId else {
+                MXLog.error("[SpaceMembersCoordinator] spaceMemberListCoordinatorShowInvite: failed to find powerLevels for room")
+                return
+            }
+            let userPowerLevel = powerLevels.powerLevelOfUser(withUserID: userId)
+            
+            guard userPowerLevel >= powerLevels.invite else {
+                let alert = UIAlertController(title: VectorL10n.spacesInvitePeople, message: VectorL10n.spaceInviteNotEnoughPermission, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: VectorL10n.ok, style: .default, handler: nil))
+                self.sideMenuViewController.present(alert, animated: true)
+                return
+            }
+            
+            let coordinator = ContactsPickerCoordinator(session: session, room: spaceRoom, initialSearchText: nil, actualParticipants: nil, invitedParticipants: nil, userParticipant: nil)
+            coordinator.delegate = self
+            coordinator.start()
+            self.add(childCoordinator: coordinator)
+            self.sideMenuViewController.present(coordinator.toPresentable(), animated: true)
+        }
+>>>>>>> v1.9.0
     }
 
     private func resetExploringSpaceIfNeeded() {

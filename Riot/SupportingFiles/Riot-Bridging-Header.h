@@ -41,7 +41,6 @@
 #import "Tools.h"
 #import "RoomViewController.h"
 #import "ContactDetailsViewController.h"
-#import "GroupDetailsViewController.h"
 #import "RoomInputToolbarView.h"
 #import "NSArray+Element.h"
 #import "ShareItemSender.h"
@@ -70,4 +69,8 @@
 #import "MXRoom+Sync.h"
 #import "UIAlertController+MatrixKit.h"
 #import "MXKMessageTextView.h"
+<<<<<<< HEAD
 #import "MXKAnalyticsConstants.h"
+=======
+#import "AllChatsLayoutModels.h"
+>>>>>>> v1.9.0

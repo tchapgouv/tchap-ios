@@ -205,11 +205,7 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
             return
         }
         
-        if result == .customServer {
-            beginAuthentication(with: .selectServerForRegistration, onStart: coordinator.stop)
-        } else {
-            beginAuthentication(with: .registration, onStart: coordinator.stop)
-        }
+        beginAuthentication(with: .registration, onStart: coordinator.stop)
     }
     
     // MARK: - Authentication
@@ -266,8 +262,6 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
             }
         }
 
-        coordinator.customServerFieldsVisible = useCaseResult == .customServer
-
         authenticationCoordinator = coordinator
         
         coordinator.start()
@@ -312,8 +306,11 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         if authenticationFlow == .register,
            let userId = session.credentials.userId,
            let userSession = UserSessionsService.shared.userSession(withUserId: userId) {
+            // Skip personalisation when a generic SSO provider was used in case it already included the same steps.
+            let shouldShowPersonalization = BuildSettings.onboardingShowAccountPersonalization && authenticationType.analyticsType != .SSO
+            
             // If personalisation is to be shown, check that the homeserver supports it otherwise show the congratulations screen
-            if BuildSettings.onboardingShowAccountPersonalization {
+            if shouldShowPersonalization {
                 checkHomeserverCapabilities(for: userSession)
                 return
             } else {
@@ -572,6 +569,9 @@ final class OnboardingCoordinator: NSObject, OnboardingCoordinatorProtocol {
         trackSignup()
         
         completion?()
+        
+        // Reset the authentication service back to using matrix.org
+        authenticationService.reset(useDefaultServer: true)
     }
     
     /// Sends a signup event to the Analytics class if onboarding has completed via the register flow.
@@ -630,7 +630,7 @@ extension OnboardingSplashScreenViewModelResult {
 
 extension OnboardingUseCaseViewModelResult {
     /// The result converted into the type stored in the user session.
-    var userSessionPropertyValue: UserSessionProperties.UseCase? {
+    var userSessionPropertyValue: UserSessionProperties.UseCase {
         switch self {
         case .personalMessaging:
             return .personalMessaging
@@ -640,8 +640,6 @@ extension OnboardingUseCaseViewModelResult {
             return .communityMessaging
         case .skipped:
             return .skipped
-        case .customServer:
-            return nil
         }
     }
 }

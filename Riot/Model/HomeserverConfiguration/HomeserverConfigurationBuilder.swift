@@ -71,6 +71,7 @@ final class HomeserverConfigurationBuilder: NSObject {
         
         // Tile server configuration
         
+<<<<<<< HEAD
 //        let tileServerMapStyleURL: URL
 //        if let mapStyleURLString = wellKnown?.tileServer?.mapStyleURLString,
 //           let mapStyleURL = URL(string: mapStyleURLString) {
@@ -80,6 +81,17 @@ final class HomeserverConfigurationBuilder: NSObject {
 //        }
 //        
 //        let tileServerConfiguration = HomeserverTileServerConfiguration(mapStyleURL: tileServerMapStyleURL)
+=======
+        let tileServerMapStyleURL: URL
+        if let mapStyleURLString = wellKnown?.tileServer?.mapStyleURLString,
+           let mapStyleURL = URL(string: mapStyleURLString) {
+            tileServerMapStyleURL = mapStyleURL
+        } else {
+            tileServerMapStyleURL = BuildSettings.defaultTileServerMapStyleURL
+        }
+        
+        let tileServerConfiguration = HomeserverTileServerConfiguration(mapStyleURL: tileServerMapStyleURL)
+>>>>>>> v1.9.0
         
         // Create HomeserverConfiguration
         

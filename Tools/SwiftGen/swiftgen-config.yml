@@ -35,6 +35,7 @@ strings:
       params:
         enumName: TchapL10n
 xcassets:  
+<<<<<<< HEAD
   - inputs:
       - Tchap/Assets/Images.xcassets  
       - Tchap/Assets/SharedImages.xcassets
@@ -72,3 +73,11 @@ plist:
       output: Btchap/Generated/InfoPlist.swift
       params:
         enumName: InfoPlist
+=======
+  inputs:
+    - Assets/Images.xcassets
+    - Assets/SharedImages.xcassets
+  outputs:
+    templatePath: Templates/Assets/swift4-element.stencil
+    output: Images.swift
+>>>>>>> v1.9.0

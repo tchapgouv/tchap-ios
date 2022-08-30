@@ -156,10 +156,25 @@ final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
         self.tabBarCoordinator?.popToHome(animated: animated, completion: completion)
     }
     
+<<<<<<< HEAD
     func presentInvitePeople() {
         self.tabBarCoordinator?.presentInvitePeople()
     }
     
+=======
+    func showErroIndicator(with error: Error) {
+        tabBarCoordinator?.showErroIndicator(with: error)
+    }
+    
+    func hideAppStateIndicator() {
+        tabBarCoordinator?.hideAppStateIndicator()
+    }
+    
+    func showAppStateIndicator(with text: String, icon: UIImage?) {
+        tabBarCoordinator?.showAppStateIndicator(with: text, icon: icon)
+    }
+
+>>>>>>> v1.9.0
     // MARK: - Private methods
     
     private func createPlaceholderDetailsViewController() -> UIViewController {

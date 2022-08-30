@@ -31,15 +31,27 @@
 	<key>NSCalendarsUsageDescription</key>
 	<string>See your scheduled meetings in the app.</string>
 	<key>NSCameraUsageDescription</key>
+<<<<<<< HEAD:Btchap/SupportingFiles/Info.plist
 	<string>This allows you to take pictures or videos with the camera and send them in your conversations. You can also use the camera to set your profile picture.</string>
 	<key>NSContactsUsageDescription</key>
 	<string>In order to show who among your contacts already uses Tchap, we can exploit the e-mail addresses of your address book. These data will not be stored. For more information, please visit the privacy policy page in the app settings</string>
+=======
+	<string>The camera is used to make video calls, or take and upload photos and videos.</string>
+	<key>NSContactsUsageDescription</key>
+	<string>They will be shared with your identity server to help find your contacts on Matrix.</string>
+>>>>>>> v1.9.0:Riot/SupportingFiles/Info.plist
 	<key>NSFaceIDUsageDescription</key>
 	<string>Face ID is used to access your app.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Tchap needs to access your microphone to take videos, and record voice messages.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
+<<<<<<< HEAD:Btchap/SupportingFiles/Info.plist
 	<string>This allows you to select pictures or videos from the photo library, and send them in your conversations. You can also use one of these pictures to set your profile picture.</string>
+=======
+	<string>Allow access to photos to upload photos and videos from your library.</string>
+	<key>NSSiriUsageDescription</key>
+	<string>Siri is used to perform calls even from the lock screen.</string>
+>>>>>>> v1.9.0:Riot/SupportingFiles/Info.plist
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>
@@ -111,7 +123,16 @@
 			<string>im.vector.app.pills</string>
 		</dict>
 	</array>
+<<<<<<< HEAD:Btchap/SupportingFiles/Info.plist
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<false/>
+=======
+	<key>applicationGroupIdentifier</key>
+	<string>$(APPLICATION_GROUP_IDENTIFIER)</string>
+	<key>baseBundleIdentifier</key>
+	<string>$(BASE_BUNDLE_IDENTIFIER)</string>
+	<key>keychainAccessGroup</key>
+	<string>$(KEYCHAIN_ACCESS_GROUP)</string>
+>>>>>>> v1.9.0:Riot/SupportingFiles/Info.plist
 </dict>
 </plist>

@@ -112,7 +112,7 @@ class LocationManager: NSObject {
         
         switch accuracy {
         case .full:
-            self.locationManager.startUpdatingLocation()
+            self.locationManager.stopUpdatingLocation()
         case .reduced:
             self.locationManager.stopMonitoringSignificantLocationChanges()
         }
@@ -214,6 +214,6 @@ extension LocationManager: CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        MXLog.error("[LocationManager] Did failed with error :\(error)")
+        MXLog.error("[LocationManager] Did failed", context: error)
     }
 }

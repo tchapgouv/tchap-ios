@@ -242,7 +242,7 @@ final class BuildSettings: NSObject {
     static let allowInviteExernalUsers: Bool = true
     
     // MARK: - Side Menu
-    static let enableSideMenu: Bool = true
+    static let enableSideMenu: Bool = true && !newAppLayoutEnabled
     static let sideMenuShowInviteFriends: Bool = true
 
     /// Whether to read the `io.element.functional_members` state event and exclude any service members when computing a room's name and avatar.
@@ -272,7 +272,6 @@ final class BuildSettings: NSObject {
     static let homeScreenShowFavouritesTab: Bool = true
     static let homeScreenShowPeopleTab: Bool = true
     static let homeScreenShowRoomsTab: Bool = true
-    static let homeScreenShowCommunitiesTab: Bool = true
 
     // MARK: - General Settings Screen
     
@@ -356,7 +355,6 @@ final class BuildSettings: NSObject {
     static let roomSettingsScreenAllowChangingAccessSettings: Bool = true
     static let roomSettingsScreenAllowChangingHistorySettings: Bool = true
     static let roomSettingsScreenShowAddressSettings: Bool = true
-    static let roomSettingsScreenShowFlairSettings: Bool = true
     static let roomSettingsScreenShowAdvancedSettings: Bool = true
     static let roomSettingsScreenAdvancedShowEncryptToVerifiedOption: Bool = true
 
@@ -392,8 +390,8 @@ final class BuildSettings: NSObject {
     static let authEnableRefreshTokens = false
     
     // MARK: - Onboarding
-    static let onboardingShowAccountPersonalization = false
-    static let onboardingEnableNewAuthenticationFlow = false
+    static let onboardingShowAccountPersonalization = true
+    static let onboardingEnableNewAuthenticationFlow = true
     
     // MARK: - Unified Search
     static let unifiedSearchScreenShowPublicDirectory = true
@@ -410,7 +408,32 @@ final class BuildSettings: NSObject {
     
     // MARK: - Location Sharing
     
-    static let tileServerMapStyleURL = URL(string: "https://api.maptiler.com/maps/streets/style.json?key=fU3vlMsMn4Jb6dnEIFsx")!
+    /// Overwritten by the home server's .well-known configuration (if any exists)
+    static let defaultTileServerMapStyleURL = URL(string: "https://api.maptiler.com/maps/streets/style.json?key=fU3vlMsMn4Jb6dnEIFsx")!
     
+<<<<<<< HEAD
     static let locationSharingEnabled = false // Currently disabled in Tchap.
+=======
+    static let locationSharingEnabled = true
+
+    // MARK: - MXKAppSettings
+    static let enableBotCreation: Bool = false
+    static let maxAllowedMediaCacheSize: Int = 1073741824
+    static let presenceColorForOfflineUser: Int = 15020851
+    static let presenceColorForOnlineUser: Int = 3401011
+    static let presenceColorForUnavailableUser: Int = 15066368
+    static let showAllEventsInRoomHistory: Bool = false
+    static let showLeftMembersInRoomMemberList: Bool = false
+    static let showRedactionsInRoomHistory: Bool = true
+    static let showUnsupportedEventsInRoomHistory: Bool = false
+    static let sortRoomMembersUsingLastSeenTime: Bool = true
+    static let syncLocalContacts: Bool = false
+    
+    // MARK: - New App Layout
+    static let newAppLayoutEnabled = true
+    
+    // MARK: - Device manager
+    
+    static let deviceManagerEnabled = false
+>>>>>>> v1.9.0
 }

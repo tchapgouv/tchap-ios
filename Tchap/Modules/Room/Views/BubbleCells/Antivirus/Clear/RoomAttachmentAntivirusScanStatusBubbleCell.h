@@ -14,7 +14,12 @@
  limitations under the License.
  */
 
+<<<<<<< HEAD:Tchap/Modules/Room/Views/BubbleCells/Antivirus/Clear/RoomAttachmentAntivirusScanStatusBubbleCell.h
 #import "RoomIncomingAttachmentBubbleCell.h"
+=======
+#import "RecentsViewController.h"
+#import "RecentsDataSource.h"
+>>>>>>> v1.9.0:Riot/Modules/Home/HomeViewController.h
 
 /**
  `RoomAttachmentAntivirusScanStatusBubbleCell` displays room attachment antivirus scan status with sender's information.
@@ -22,5 +27,7 @@
 @interface RoomAttachmentAntivirusScanStatusBubbleCell : RoomIncomingAttachmentBubbleCell
 
 + (instancetype)instantiate;
+
+@property (nonatomic, readonly) RecentsDataSourceMode recentsDataSourceMode;
 
 @end

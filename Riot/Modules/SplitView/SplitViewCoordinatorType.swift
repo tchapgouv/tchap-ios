@@ -37,7 +37,18 @@ protocol SplitViewCoordinatorType: Coordinator, Presentable {
     /// Remove detail screens and display placeholder if needed 
     func resetDetails(animated: Bool)
     
+<<<<<<< HEAD
     // Tchap: redirect to invite people alert
     /// Present invite people alert (with textField)
     func presentInvitePeople()
+=======
+    /// Displays an error using a `UserIndicator`. The messages is dimissed automatically.
+    func showErroIndicator(with error: Error)
+    
+    /// Displays an message related to the application state using a `UserIndicator`. The message must be dimissed by calling the method `hideAppStateIndicator()`
+    func showAppStateIndicator(with text: String, icon: UIImage?)
+    
+    /// Hide the message related to the application state currently displayed.
+    func hideAppStateIndicator()
+>>>>>>> v1.9.0
 }

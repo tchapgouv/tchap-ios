@@ -21,7 +21,11 @@ final class EncryptionKeysExportPresenter: NSObject {
     // MARK: - Constants
     
     private enum Constants {
+<<<<<<< HEAD
         static let keyExportFileName = "tchap-keys.txt"
+=======
+        static let keyExportFileName = "element-keys.txt"
+>>>>>>> v1.9.0
     }
     
     // MARK: - Properties

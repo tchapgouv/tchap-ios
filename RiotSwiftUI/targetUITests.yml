@@ -65,6 +65,7 @@ targets:
     - path: ../Riot/Categories/UIApplication.swift
     - path: ../Riot/Assets/en.lproj/Vector.strings
     - path: ../Riot/Modules/Analytics/AnalyticsScreen.swift
+    - path: ../Riot/Modules/LocationSharing/LocationAuthorizationStatus.swift
     - path: ../Riot/Assets/en.lproj/Untranslated.strings
     - path: ../Tchap/Generated/Images.swift
       buildPhase: resources

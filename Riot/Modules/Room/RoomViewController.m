@@ -352,7 +352,9 @@ static CGSize kThreadListBarButtonItemImageSize;
     
     // Replace the default input toolbar view.
     // Note: this operation will force the layout of subviews. That is why cell view classes must be registered before.
-    [self updateRoomInputToolbarViewClassIfNeeded];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self updateRoomInputToolbarViewClassIfNeeded];
+    });
     
     // set extra area
     [self setRoomActivitiesViewClass:RoomActivitiesView.class];
@@ -1227,7 +1229,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     }
 }
 
-- (BOOL)isIRCStyleCommand:(NSString*)string
+- (BOOL)sendAsIRCStyleCommandIfPossible:(NSString*)string
 {
     // Override the default behavior for `/join` command in order to open automatically the joined room
     
@@ -1270,7 +1272,7 @@ static CGSize kThreadListBarButtonItemImageSize;
         }
         return YES;
     }
-    return [super isIRCStyleCommand:string];
+    return [super sendAsIRCStyleCommandIfPossible:string];
 }
 
 - (void)setKeyboardHeight:(CGFloat)keyboardHeight
@@ -3723,7 +3725,8 @@ static CGSize kThreadListBarButtonItemImageSize;
             }]];
         }
 
-        if (!isJitsiCallEvent && selectedEvent.eventType != MXEventTypePollStart)
+        if (!isJitsiCallEvent && selectedEvent.eventType != MXEventTypePollStart &&
+            selectedEvent.eventType != MXEventTypeBeaconInfo)
         {
             [self.eventMenuBuilder addItemWithType:EventMenuItemTypeQuote
                                             action:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionQuote]
@@ -3759,7 +3762,8 @@ static CGSize kThreadListBarButtonItemImageSize;
             }]];
         }
         
-        if (!isJitsiCallEvent && BuildSettings.messageDetailsAllowShare && selectedEvent.eventType != MXEventTypePollStart)
+        if (!isJitsiCallEvent && BuildSettings.messageDetailsAllowShare && selectedEvent.eventType != MXEventTypePollStart &&
+            selectedEvent.eventType != MXEventTypeBeaconInfo)
         {
             [self.eventMenuBuilder addItemWithType:EventMenuItemTypeShare
                                             action:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionShare]
@@ -4317,6 +4321,7 @@ static CGSize kThreadListBarButtonItemImageSize;
             
             NSString *roomIdOrAlias = absoluteURLString;
             
+<<<<<<< HEAD
             // Open the room or preview it
             NSString *fragment = [NSString stringWithFormat:@"/room/%@", [MXTools encodeURIComponent:roomIdOrAlias]];
             
@@ -4331,6 +4336,13 @@ static CGSize kThreadListBarButtonItemImageSize;
             NSString *fragment = [NSString stringWithFormat:@"/group/%@", [MXTools encodeURIComponent:absoluteURLString]];
             
 //            [self handleUniversalLinkFragment:fragment fromURL:url];
+=======
+            // Create a permalink to open or preview the room.
+            NSString *permalink = [MXTools permalinkToRoom:roomIdOrAlias];
+            NSURL *permalinkURL = [NSURL URLWithString:permalink];
+            
+            [self handleUniversalLinkURL:permalinkURL];
+>>>>>>> v1.9.0
         }
         else if ([absoluteURLString hasPrefix:EventFormatterOnReRequestKeysLinkAction])
         {
@@ -4841,7 +4853,28 @@ static CGSize kThreadListBarButtonItemImageSize;
 
 - (void)roomInputToolbarView:(RoomInputToolbarView *)toolbarView sendAttributedTextMessage:(NSAttributedString *)attributedTextMessage
 {
-    [self sendAttributedTextMessage:attributedTextMessage];
+    BOOL isMessageAHandledCommand = NO;
+    // "/me" command is supported with Pills in RoomDataSource.
+    if (![attributedTextMessage.string hasPrefix:kMXKSlashCmdEmote])
+    {
+        // Other commands currently work with identifiers (e.g. ban, invite, op, etc).
+        NSString *message;
+        if (@available(iOS 15.0, *))
+        {
+            message = [PillsFormatter stringByReplacingPillsIn:attributedTextMessage mode:PillsReplacementTextModeIdentifier];
+        }
+        else
+        {
+            message = attributedTextMessage.string;
+        }
+        // Try to send the slash command
+        isMessageAHandledCommand = [self sendAsIRCStyleCommandIfPossible:message];
+    }
+
+    if (!isMessageAHandledCommand)
+    {
+        [self sendAttributedTextMessage:attributedTextMessage];
+    }
 }
 
 #pragma mark - MXKRoomMemberDetailsViewControllerDelegate
@@ -4964,7 +4997,9 @@ static CGSize kThreadListBarButtonItemImageSize;
         {
             readMarkerTableViewCell = roomBubbleTableViewCell;
             
-            [self checkReadMarkerVisibility];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self checkReadMarkerVisibility];
+            });
         }
     }
 }
@@ -5552,8 +5587,7 @@ static CGSize kThreadListBarButtonItemImageSize;
         }
         else if ([AppDelegate theDelegate].isOffline)
         {
-            self.activitiesViewExpanded = YES;
-            [roomActivitiesView displayNetworkErrorNotification:[VectorL10n roomOfflineNotification]];
+            // Doing nothing here as the offline notification is now handled by the AppCoordinator
         }
         else if (self.customizedRoomDataSource.roomState.isObsolete)
         {
@@ -5693,6 +5727,7 @@ static CGSize kThreadListBarButtonItemImageSize;
                 self.inputToolbarView.textMessage = roomDataSource.partialTextMessage;
             }
         };
+<<<<<<< HEAD
         // Tchap: Disable Threads
 //        if (self.roomDataSource.threadId)
 //        {
@@ -5716,15 +5751,42 @@ static CGSize kThreadListBarButtonItemImageSize;
             }];
         }
         else
-        {
-            // Switch back to the room live timeline managed by MXKRoomDataSourceManager
-            MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:self.mainSession];
+=======
 
-            [roomDataSourceManager roomDataSourceForRoom:self.roomDataSource.roomId
-                                                  create:YES
-                                              onComplete:^(MXKRoomDataSource *roomDataSource) {
-                continueBlock(roomDataSource, NO);
+        if (self.roomDataSource.threadId)
+        {
+            [ThreadDataSource loadRoomDataSourceWithRoomId:self.roomDataSource.roomId
+                                            initialEventId:nil
+                                                  threadId:self.roomDataSource.threadId
+                                          andMatrixSession:self.mainSession
+                                                onComplete:^(ThreadDataSource *threadDataSource)
+             {
+                continueBlock(threadDataSource, YES);
             }];
+        }
+        else if (self.roomDataSource.roomId)
+>>>>>>> v1.9.0
+        {
+            if (self.isContextPreview)
+            {
+                [RoomPreviewDataSource loadRoomDataSourceWithRoomId:self.roomDataSource.roomId
+                                                   andMatrixSession:self.mainSession
+                                                         onComplete:^(RoomPreviewDataSource *roomDataSource)
+                 {
+                    continueBlock(roomDataSource, YES);
+                }];
+            }
+            else
+            {
+                // Switch back to the room live timeline managed by MXKRoomDataSourceManager
+                MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:self.mainSession];
+
+                [roomDataSourceManager roomDataSourceForRoom:self.roomDataSource.roomId
+                                                      create:YES
+                                                  onComplete:^(MXKRoomDataSource *roomDataSource) {
+                    continueBlock(roomDataSource, NO);
+                }];
+            }
         }
     }
 }
@@ -6794,7 +6856,7 @@ static CGSize kThreadListBarButtonItemImageSize;
     MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell *)cell;
     MXKAttachment *attachment = roomBubbleTableViewCell.bubbleData.attachment;
     
-    BOOL result = (event.eventType != MXEventTypePollStart && (!attachment || attachment.type != MXKAttachmentTypeSticker));
+    BOOL result = !attachment || attachment.type != MXKAttachmentTypeSticker;
     
     if (attachment && !BuildSettings.messageDetailsAllowCopyMedia)
     {
@@ -6820,6 +6882,8 @@ static CGSize kThreadListBarButtonItemImageSize;
             case MXEventTypeKeyVerificationMac:
             case MXEventTypeKeyVerificationDone:
             case MXEventTypeKeyVerificationCancel:
+            case MXEventTypePollStart:
+            case MXEventTypeBeaconInfo:
                 result = NO;
                 break;
             case MXEventTypeCustom:
@@ -6865,7 +6929,8 @@ static CGSize kThreadListBarButtonItemImageSize;
         {
             if (@available(iOS 15.0, *))
             {
-                MXKPasteboardManager.shared.pasteboard.string = [PillsFormatter stringByReplacingPillsIn:attributedTextMessage asMarkdown:YES];
+                MXKPasteboardManager.shared.pasteboard.string = [PillsFormatter stringByReplacingPillsIn:attributedTextMessage
+                                                                                                    mode:PillsReplacementTextModeMarkdown];
             }
             else
             {

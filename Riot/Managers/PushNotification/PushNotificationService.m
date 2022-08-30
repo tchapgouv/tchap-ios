@@ -336,7 +336,7 @@ Matrix session observer used to detect new opened sessions.
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler
 {
     NSDictionary *userInfo = notification.request.content.userInfo;
-    if (userInfo[Constants.userInfoKeyPresentNotificationOnForeground])
+    if (RiotSettings.shared.showInAppNotifications || userInfo[Constants.userInfoKeyPresentNotificationOnForeground])
     {
         if (!userInfo[Constants.userInfoKeyPresentNotificationInRoom]
             && [[AppDelegate theDelegate].visibleRoomId isEqualToString:userInfo[@"room_id"]])
@@ -348,7 +348,8 @@ Matrix session observer used to detect new opened sessions.
         {
             completionHandler(UNNotificationPresentationOptionBadge
                               | UNNotificationPresentationOptionSound
-                              | UNNotificationPresentationOptionAlert);
+                              | UNNotificationPresentationOptionBanner
+                              | UNNotificationPresentationOptionList);
         }
     }
     else

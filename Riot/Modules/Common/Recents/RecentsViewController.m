@@ -36,7 +36,11 @@
 
 NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewControllerDataReadyNotification";
 
+<<<<<<< HEAD
 @interface RecentsViewController () </*CreateRoomCoordinatorBridgePresenterDelegate, RoomsDirectoryCoordinatorBridgePresenterDelegate,*/ RoomNotificationSettingsCoordinatorBridgePresenterDelegate/*, DialpadViewControllerDelegate, ExploreRoomCoordinatorBridgePresenterDelegate, SpaceChildRoomDetailBridgePresenterDelegate, RoomContextActionServiceDelegate*/, SearchBarVisibilityDelegate>
+=======
+@interface RecentsViewController () <CreateRoomCoordinatorBridgePresenterDelegate, RoomsDirectoryCoordinatorBridgePresenterDelegate, RoomNotificationSettingsCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, ExploreRoomCoordinatorBridgePresenterDelegate, SpaceChildRoomDetailBridgePresenterDelegate, RoomContextActionServiceDelegate, RecentCellContextMenuProviderDelegate>
+>>>>>>> v1.9.0
 {
     // Tell whether a recents refresh is pending (suspended during editing mode).
     BOOL isRefreshPending;
@@ -140,9 +144,15 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     
     displayedSectionHeaders = [NSMutableArray array];
     
+<<<<<<< HEAD
     // Tchap: Disable Contextual Menu
 //    _contextMenuProvider = [RecentCellContextMenuProvider new];
 //    self.contextMenuProvider.serviceDelegate = self;
+=======
+    _contextMenuProvider = [RecentCellContextMenuProvider new];
+    self.contextMenuProvider.serviceDelegate = self;
+    self.contextMenuProvider.menuProviderDelegate = self;
+>>>>>>> v1.9.0
 
     // Set itself as delegate by default.
     self.delegate = self;
@@ -1145,6 +1155,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 
 #pragma mark - Swipe actions
 
+<<<<<<< HEAD
 - (void)tableView:(UITableView*)tableView didEndEditingRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [self cancelEditionMode:isRefreshPending];
@@ -1306,6 +1317,8 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     return swipeActionConfiguration;
 }
 
+=======
+>>>>>>> v1.9.0
 - (void)leaveEditedRoom
 {
     if (editedRoomId)
@@ -1715,10 +1728,10 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         
         if (roomIdOrAlias.length)
         {
-            // Open the room or preview it
-            NSString *fragment = [NSString stringWithFormat:@"/room/%@", [MXTools encodeURIComponent:roomIdOrAlias]];
-            NSURL *url = [NSURL URLWithString:[MXTools permalinkToRoom:fragment]];
-            [[AppDelegate theDelegate] handleUniversalLinkFragment:fragment fromURL:url];
+            // Create a permalink to open or preview the room.
+            NSString *permalink = [MXTools permalinkToRoom:roomIdOrAlias];
+            NSURL *permalinkURL = [NSURL URLWithString:permalink];
+            [[AppDelegate theDelegate] handleUniversalLinkURL:permalinkURL];
         }
         [tableView deselectRowAtIndexPath:indexPath animated:NO];
     }
@@ -1776,6 +1789,10 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
             }
         }
     }
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return [VectorL10n leave];
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -2316,7 +2333,11 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         }
         else if (section >= self.recentsTableView.numberOfSections)
         {
-            MXLogFailure(@"[RecentsViewController] Section %ld is invalid in a table view with only %ld sections", section, self.recentsTableView.numberOfSections);
+            NSDictionary *details = @{
+                @"section": @(section),
+                @"number_of_sections": @(self.recentsTableView.numberOfSections)
+            };
+            MXLogFailureDetails(@"[RecentsViewController] Section in a table view is invalid", details);
         }
     }
 }
@@ -2674,6 +2695,11 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
             [self cleanSearchAndHideSearchBar:TRUE];
         }
     }
+<<<<<<< HEAD
+=======
+    
+    return [self.contextMenuProvider contextMenuConfigurationWith:cellData from:cell session:self.dataSource.mxSession];
+>>>>>>> v1.9.0
 }
 
 - (void)cleanSearchAndHideSearchBar:(BOOL)hide {
@@ -2770,5 +2796,12 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 //    [self changeEditedRoomNotificationSettings];
 //    editedRoomId = nil;
 //}
+
+#pragma mark - RecentCellContextMenuProviderDelegate
+
+- (void)recentCellContextMenuProviderDidStartShowingPreview:(RecentCellContextMenuProvider *)menuProvider
+{
+    self.recentsUpdateEnabled = NO;
+}
 
 @end

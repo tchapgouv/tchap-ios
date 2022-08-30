@@ -26,6 +26,8 @@
 
 #import "GeneratedInterface-Swift.h"
 
+@import DesignKit;
+
 // Dev flag to have more options
 //#define CROSS_SIGNING_AND_BACKUP_DEV
 //#define SECURE_BACKUP
@@ -1482,7 +1484,11 @@ MXKDocumentPickerPresenterDelegate>
     currentAlert = exportView.alertController;
 
     // Use a temporary file for the export
+<<<<<<< HEAD
     keyExportsFile = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:@"tchap-keys.txt"]];
+=======
+    keyExportsFile = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:@"element-keys.txt"]];
+>>>>>>> v1.9.0
 
     // Make sure the file is empty
     [self deleteKeyExportFile];

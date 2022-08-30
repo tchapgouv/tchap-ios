@@ -72,7 +72,7 @@ final class TimelinePollCoordinator: Coordinator, Presentable, PollAggregatorDel
                                                       localEcho: nil, success: nil) { [weak self] error in
                     guard let self = self else { return }
                     
-                    MXLog.error("[TimelinePollCoordinator]] Failed submitting response with error \(String(describing: error))")
+                    MXLog.error("[TimelinePollCoordinator]] Failed submitting response", context: error)
                     
                     self.viewModel.showAnsweringFailure()
                 }
@@ -86,7 +86,8 @@ final class TimelinePollCoordinator: Coordinator, Presentable, PollAggregatorDel
     }
     
     func toPresentable() -> UIViewController {
-        return VectorHostingController(rootView: TimelinePollView(viewModel: viewModel.context))
+        return VectorHostingController(rootView: TimelinePollView(viewModel: viewModel.context),
+                                       forceZeroSafeAreaInsets: true)
     }
     
     func canEndPoll() -> Bool {
