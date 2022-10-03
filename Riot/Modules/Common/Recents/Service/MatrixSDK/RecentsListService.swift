@@ -35,7 +35,8 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
     
     private var invitedRoomListDataFetcher: MXRoomListDataFetcher? {
         switch mode {
-        case .home, .allChats, .roomInvites:
+        // Tchap: Disable Home
+        case /*.home, */.allChats, .roomInvites:
             return invitedRoomListDataFetcherForHome
         case .people:
             return invitedRoomListDataFetcherForPeople
@@ -48,8 +49,9 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
     private var favoritedRoomListDataFetcher: MXRoomListDataFetcher?
     private var directRoomListDataFetcher: MXRoomListDataFetcher? {
         switch mode {
-//        case .home, .allChats:
-//            return directRoomListDataFetcherForHome
+        // Tchap: Disable Home
+        case /*.home, */.allChats:
+            return directRoomListDataFetcherForHome
         case .people:
             return directRoomListDataFetcherForPeople
         default:
@@ -176,6 +178,7 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
         case .allChats:
             let pinMissed = RiotSettings.shared.pinRoomsWithMissedNotificationsOnHome
             let pinUnread = RiotSettings.shared.pinRoomsWithUnreadMessagesOnHome
+            // Tchap: New layout currently disabled in Tchap
 //            switch AllChatsLayoutSettingsManager.shared.allChatLayoutSettings.sorting {
 //            case .alphabetical:
 //                return MXRoomListDataSortOptions(invitesFirst: false,
@@ -461,8 +464,9 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
     
     private var shouldShowDirect: Bool {
         switch mode {
-//        case .home, .allChats:
-//            return fetcherTypesForMode[mode]?.contains(.directHome) ?? false
+        // Tchap: Disable Home
+        case /*.home, */.allChats:
+            return fetcherTypesForMode[mode]?.contains(.directHome) ?? false
         case .people:
             return fetcherTypesForMode[mode]?.contains(.directPeople) ?? false
         default:

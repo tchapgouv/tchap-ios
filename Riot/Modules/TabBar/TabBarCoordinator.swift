@@ -313,6 +313,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
 //        return wrapperViewController
 //    }
     
+    // Tchap: Disable Home
 //    private func createHomeViewController() -> HomeViewControllerWithBannerWrapperViewController {
 //        let homeViewController: HomeViewController = HomeViewController.instantiate()
 //        homeViewController.tabBarItem.tag = Int(TABBAR_HOME_INDEX)
@@ -384,6 +385,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     private func updateTabControllers(for tabBarController: MasterTabBarController, showCommunities: Bool) {
         var viewControllers: [UIViewController] = []
 
+        // Tchap: Disable Home
 //        let homeViewController = BuildSettings.newAppLayoutEnabled ? self.createAllChatsViewController() : self.createHomeViewController()
 //        viewControllers.append(homeViewController)
         
@@ -399,8 +401,8 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
             }
             
             if RiotSettings.shared.homeScreenShowRoomsTab {
-//                let roomsViewController = self.createRoomsViewController()
-//                viewControllers.append(roomsViewController)
+                let roomsViewController = self.createRoomsViewController()
+                viewControllers.append(roomsViewController)
             }
         }
         
@@ -925,12 +927,14 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
             return
         }
 
+        // Tchap: No homeViewController instanciated in Tchap
 //        masterTabBarController.homeViewController.startActivityIndicator()
         masterTabBarController.view.isUserInteractionEnabled = false
         
         let dismissAnimation = { [weak self] in
             guard let self = self else { return }
             
+            // Tchap: No homeViewController instanciated in Tchap
 //            self.masterTabBarController.homeViewController.stopActivityIndicator()
             self.masterTabBarController.view.isUserInteractionEnabled = true
             self.crossSigningSetupCoordinatorBridgePresenter?.dismiss(animated: true, completion: {
@@ -1220,9 +1224,11 @@ extension TabBarCoordinator: SignOutAlertPresenterDelegate {
         // Prevent user to perform user interaction in settings when sign out
         // TODO: Prevent user interaction in all application (navigation controller and split view controller included)
         masterNavigationController.view.isUserInteractionEnabled = false
+        // Tchap: No homeViewController instanciated in Tchap
 //        masterTabBarController.homeViewController.startActivityIndicator()
         
         AppDelegate.theDelegate().logout(withConfirmation: false) { [weak self] isLoggedOut in
+            // Tchap: No homeViewController instanciated in Tchap
 //            self?.masterTabBarController.homeViewController.stopActivityIndicator()
             self?.masterNavigationController.view.isUserInteractionEnabled = true
         }

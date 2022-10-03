@@ -15,6 +15,7 @@
 //
 
 import Foundation
+// Tchap: Voice message not available in Tchap.
 //import SwiftOGG
 
 enum VoiceMessageAudioConverterError: Error {
