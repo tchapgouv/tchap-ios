@@ -267,7 +267,7 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
 //            return
 //        }
 //
-//        let coordinator = SpaceCreationCoordinator(parameters: SpaceCreationCoordinatorParameters(session: session))
+//        let coordinator = SpaceCreationCoordinator(parameters: SpaceCreationCoordinatorParameters(session: session, parentSpaceId: nil))
 //        let presentable = coordinator.toPresentable()
 //        presentable.presentationController?.delegate = self
 //        self.sideMenuViewController.present(presentable, animated: true, completion: nil)
@@ -325,26 +325,28 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
     func showSpaceInvite(spaceId: String, session: MXSession) {
         // Tchap: Disable Spaces
 //        guard let space = session.spaceService.getSpace(withId: spaceId), let spaceRoom = space.room else {
-//            MXLog.error("[SideMenuCoordinator] showSpaceInvite: failed to find space with id \(spaceId)")
+//            MXLog.error("[SideMenuCoordinator] showSpaceInvite: failed to find space", context: [
+//                "space_id": spaceId
+//            ])
 //            return
 //        }
-//
+//        
 //        spaceRoom.state { [weak self] roomState in
 //            guard let self = self else { return }
-//
+//            
 //            guard let powerLevels = roomState?.powerLevels, let userId = session.myUserId else {
 //                MXLog.error("[SpaceMembersCoordinator] spaceMemberListCoordinatorShowInvite: failed to find powerLevels for room")
 //                return
 //            }
 //            let userPowerLevel = powerLevels.powerLevelOfUser(withUserID: userId)
-//
+//            
 //            guard userPowerLevel >= powerLevels.invite else {
 //                let alert = UIAlertController(title: VectorL10n.spacesInvitePeople, message: VectorL10n.spaceInviteNotEnoughPermission, preferredStyle: .alert)
 //                alert.addAction(UIAlertAction(title: VectorL10n.ok, style: .default, handler: nil))
 //                self.sideMenuViewController.present(alert, animated: true)
 //                return
 //            }
-//
+//            
 //            let coordinator = ContactsPickerCoordinator(session: session, room: spaceRoom, initialSearchText: nil, actualParticipants: nil, invitedParticipants: nil, userParticipant: nil)
 //            coordinator.delegate = self
 //            coordinator.start()

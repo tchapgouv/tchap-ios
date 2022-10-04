@@ -147,6 +147,11 @@ internal extension StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Tchap.ReactionHistoryViewController>(storyboard: ReactionHistoryViewController.self)
   }
+  enum RoomContextPreviewViewController: StoryboardType {
+    internal static let storyboardName = "RoomContextPreviewViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.RoomContextPreviewViewController>(storyboard: RoomContextPreviewViewController.self)
+  }
   enum RoomContextualMenuViewController: StoryboardType {
     internal static let storyboardName = "RoomContextualMenuViewController"
 
@@ -233,6 +238,51 @@ internal extension StoryboardScene {
     internal static let storyboardName = "SideMenuViewController"
 
     internal static let initialScene = InitialSceneType<Tchap.SideMenuViewController>(storyboard: SideMenuViewController.self)
+  }
+  enum SpaceChildRoomDetailViewController: StoryboardType {
+    internal static let storyboardName = "SpaceChildRoomDetailViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.SpaceChildRoomDetailViewController>(storyboard: SpaceChildRoomDetailViewController.self)
+  }
+  enum SpaceDetailViewController: StoryboardType {
+    internal static let storyboardName = "SpaceDetailViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.SpaceDetailViewController>(storyboard: SpaceDetailViewController.self)
+  }
+  enum SpaceExploreRoomViewController: StoryboardType {
+    internal static let storyboardName = "SpaceExploreRoomViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.SpaceExploreRoomViewController>(storyboard: SpaceExploreRoomViewController.self)
+  }
+  enum SpaceFeatureUnaivableViewController: StoryboardType {
+    internal static let storyboardName = "SpaceFeatureUnaivableViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.SpaceFeatureUnaivableViewController>(storyboard: SpaceFeatureUnaivableViewController.self)
+  }
+  enum SpaceListViewController: StoryboardType {
+    internal static let storyboardName = "SpaceListViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.SpaceListViewController>(storyboard: SpaceListViewController.self)
+  }
+  enum SpaceMenuViewController: StoryboardType {
+    internal static let storyboardName = "SpaceMenuViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.SpaceMenuViewController>(storyboard: SpaceMenuViewController.self)
+  }
+  enum ThreadListViewController: StoryboardType {
+    internal static let storyboardName = "ThreadListViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.ThreadListViewController>(storyboard: ThreadListViewController.self)
+  }
+  enum ThreadsBetaViewController: StoryboardType {
+    internal static let storyboardName = "ThreadsBetaViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.ThreadsBetaViewController>(storyboard: ThreadsBetaViewController.self)
+  }
+  enum ThreadsNoticeViewController: StoryboardType {
+    internal static let storyboardName = "ThreadsNoticeViewController"
+
+    internal static let initialScene = InitialSceneType<Tchap.ThreadsNoticeViewController>(storyboard: ThreadsNoticeViewController.self)
   }
   enum UserVerificationSessionStatusViewController: StoryboardType {
     internal static let storyboardName = "UserVerificationSessionStatusViewController"

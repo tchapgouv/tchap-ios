@@ -11,7 +11,6 @@ import Foundation
 // swiftlint:disable identifier_name line_length type_body_length
 internal enum InfoPlist {
   private static let _document = PlistDocument(path: "Info.plist")
-
   internal static let cfBundleDevelopmentRegion: String = _document["CFBundleDevelopmentRegion"]
   internal static let cfBundleDisplayName: String = _document["CFBundleDisplayName"]
   internal static let cfBundleDocumentTypes: [[String: Any]] = _document["CFBundleDocumentTypes"]

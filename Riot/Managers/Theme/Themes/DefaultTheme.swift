@@ -26,7 +26,7 @@ class DefaultTheme: NSObject, Theme {
     
     var backgroundColor: UIColor = UIColor(rgb: 0xFFFFFF)   //
 
-    var baseColor: UIColor = UIColor(rgb: 0xF2F2F2)   //
+    var baseColor: UIColor = BuildSettings.newAppLayoutEnabled ? UIColor(rgb: 0xFFFFFF) : UIColor(rgb: 0xF2F2F2)   //
     var baseIconPrimaryColor: UIColor = UIColor(rgb: 0xFFFFFF)
     var baseTextPrimaryColor: UIColor = UIColor(rgb: 0x000000)   //
     var baseTextSecondaryColor: UIColor = UIColor(rgb: 0x4A4A4A)   //
@@ -35,7 +35,7 @@ class DefaultTheme: NSObject, Theme {
     var searchPlaceholderColor: UIColor = UIColor(rgb: 0x8F97A3)
     var searchResultHighlightColor: UIColor = UIColor(rgb: 0xFCC639).withAlphaComponent(0.2)
 
-    var headerBackgroundColor: UIColor = UIColor(rgb: 0xF2F2F2)   //
+    var headerBackgroundColor: UIColor = BuildSettings.newAppLayoutEnabled ? UIColor(rgb: 0xFFFFFF) : UIColor(rgb: 0xF2F2F2)   //
     var headerBorderColor: UIColor  = UIColor(rgb: 0xC7C7CC) //
     var headerTextPrimaryColor: UIColor = UIColor(rgb: 0x858585) //
     var headerTextSecondaryColor: UIColor = UIColor(rgb: 0x737D8C) // 0xC8C8CD
@@ -133,13 +133,17 @@ class DefaultTheme: NSObject, Theme {
             
             appearance.configureWithOpaqueBackground()
             appearance.backgroundColor = baseColor
+
             if !modernScrollEdgeAppearance {
                 appearance.shadowColor = nil
             }
             appearance.titleTextAttributes = [
-                NSAttributedString.Key.foregroundColor: textPrimaryColor
+                .foregroundColor: textPrimaryColor
             ]
-            
+            appearance.largeTitleTextAttributes = [
+                .foregroundColor: textPrimaryColor
+            ]
+
             navigationBar.standardAppearance = appearance
             navigationBar.scrollEdgeAppearance = modernScrollEdgeAppearance ? nil : appearance
         } else {
@@ -163,6 +167,10 @@ class DefaultTheme: NSObject, Theme {
         searchBar.isTranslucent = false
         searchBar.backgroundImage = UIImage() // Remove top and bottom shadow
         searchBar.tintColor = self.tintColor
+        
+        guard !BuildSettings.newAppLayoutEnabled else {
+            return
+        }
         
         if #available(iOS 13.0, *) {
             searchBar.searchTextField.backgroundColor = self.searchBackgroundColor

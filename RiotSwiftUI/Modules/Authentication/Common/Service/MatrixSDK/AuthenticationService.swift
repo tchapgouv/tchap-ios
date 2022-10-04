@@ -60,6 +60,8 @@ class AuthenticationService: NSObject {
     private(set) var loginWizard: LoginWizard?
     /// The current registration wizard or `nil` if `startFlow` hasn't been called for `.registration`.
     private(set) var registrationWizard: RegistrationWizard?
+    /// The provisioning link the service is currently configured with.
+    private(set) var provisioningLink: UniversalLink?
     
     /// The authentication service's delegate.
     weak var delegate: AuthenticationServiceDelegate?
@@ -110,6 +112,9 @@ class AuthenticationService: NSObject {
             state = AuthenticationState(flow: flow,
                                         homeserverAddress: hsUrl ?? BuildSettings.serverConfigDefaultHomeserverUrlString,
                                         identityServer: isUrl ?? BuildSettings.serverConfigDefaultIdentityServerUrlString)
+            
+            // store the link to override the default homeserver address.
+            provisioningLink = universalLink
             delegate?.authenticationService(self, didUpdateStateWithLink: universalLink)
         } else {
             //  logged in
@@ -133,8 +138,15 @@ class AuthenticationService: NSObject {
         MXKAccountManager.shared().activeAccounts?.first?.mxSession
     }
     
-    func startFlow(_ flow: AuthenticationFlow, for homeserverAddress: String) async throws {
-        var (client, homeserver) = try await loginFlow(for: homeserverAddress)
+    /// Set up the service to start a new authentication flow.
+    /// - Parameters:
+    ///   - flow: The flow to be started (login or register).
+    ///   - homeserverAddress: The homeserver to start the flow for, or `nil` to use the default.
+    ///   If a provisioning link has been set, it will override the default homeserver when passing `nil`.
+    func startFlow(_ flow: AuthenticationFlow, for homeserverAddress: String? = nil) async throws {
+        let address = homeserverAddress ?? provisioningLink?.homeserverUrl ?? BuildSettings.serverConfigDefaultHomeserverUrlString
+        
+        var (client, homeserver) = try await loginFlow(for: address)
         
         let loginWizard = LoginWizard(client: client, sessionCreator: sessionCreator)
         self.loginWizard = loginWizard
@@ -174,13 +186,19 @@ class AuthenticationService: NSObject {
     }
     
     /// Reset the service to a fresh state.
-    func reset() {
+    /// - Parameter useDefaultServer: Pass `true` to revert back to the one in `BuildSettings`, otherwise the current homeserver will be kept.
+    func reset(useDefaultServer: Bool = false) {
         loginWizard = nil
         registrationWizard = nil
         softLogoutCredentials = nil
+        
+        if useDefaultServer {
+            provisioningLink = nil
+        }
 
-        // The previously used homeserver is re-used as `startFlow` will be called again a replace it anyway.
-        let address = state.homeserver.addressFromUser ?? state.homeserver.address
+        // This address will be replaced when `startFlow` is called, but for
+        // completeness revert to the default homeserver if requested anyway.
+        let address = useDefaultServer ? BuildSettings.serverConfigDefaultHomeserverUrlString : state.homeserver.addressFromUser ?? state.homeserver.address
         let identityServer = state.identityServer
         self.state = AuthenticationState(flow: .login,
                                          homeserverAddress: address,
@@ -195,27 +213,6 @@ class AuthenticationService: NSObject {
     func continueSSOLogin(with token: String, and transactionID: String) -> Bool {
         delegate?.authenticationService(self, didReceive: token, with: transactionID) ?? false
     }
-    
-//    /// Perform a well-known request, using the domain from the matrixId
-//    func getWellKnownData(matrixId: String,
-//                          homeServerConnectionConfig: HomeServerConnectionConfig?) async -> WellknownResult {
-//
-//    }
-//
-//    /// Authenticate with a matrixId and a password
-//    /// Usually call this after a successful call to getWellKnownData()
-//    /// - Parameter homeServerConnectionConfig the information about the homeserver and other configuration
-//    /// - Parameter matrixId the matrixId of the user
-//    /// - Parameter password the password of the account
-//    /// - Parameter initialDeviceName the initial device name
-//    /// - Parameter deviceId the device id, optional. If not provided or null, the server will generate one.
-//    func directAuthentication(homeServerConnectionConfig: HomeServerConnectionConfig,
-//                              matrixId: String,
-//                              password: String,
-//                              initialDeviceName: String,
-//                              deviceId: String? = nil) async -> MXSession {
-//        
-//    }
     
     // MARK: - Private
     

@@ -36,7 +36,7 @@
 
 NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewControllerDataReadyNotification";
 
-@interface RecentsViewController () </*CreateRoomCoordinatorBridgePresenterDelegate, RoomsDirectoryCoordinatorBridgePresenterDelegate,*/ RoomNotificationSettingsCoordinatorBridgePresenterDelegate/*, DialpadViewControllerDelegate, ExploreRoomCoordinatorBridgePresenterDelegate, SpaceChildRoomDetailBridgePresenterDelegate, RoomContextActionServiceDelegate*/, SearchBarVisibilityDelegate>
+@interface RecentsViewController () </*CreateRoomCoordinatorBridgePresenterDelegate, RoomsDirectoryCoordinatorBridgePresenterDelegate,*/ RoomNotificationSettingsCoordinatorBridgePresenterDelegate/*, DialpadViewControllerDelegate, ExploreRoomCoordinatorBridgePresenterDelegate, SpaceChildRoomDetailBridgePresenterDelegate, RoomContextActionServiceDelegate*/, SearchBarVisibilityDelegate, RecentCellContextMenuProviderDelegate>
 {
     // Tell whether a recents refresh is pending (suspended during editing mode).
     BOOL isRefreshPending;
@@ -143,6 +143,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     // Tchap: Disable Contextual Menu
 //    _contextMenuProvider = [RecentCellContextMenuProvider new];
 //    self.contextMenuProvider.serviceDelegate = self;
+//    self.contextMenuProvider.menuProviderDelegate = self;
 
     // Set itself as delegate by default.
     self.delegate = self;
@@ -1523,8 +1524,8 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 }
 
 // Tchap: Not available in Tchap
-//- (void)makeDirectEditedRoom:(BOOL)isDirect
-//{
+- (void)makeDirectEditedRoom:(BOOL)isDirect
+{
 //    if (editedRoomId)
 //    {
 //        // Check whether the user didn't leave the room
@@ -1569,7 +1570,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 //            [self cancelEditionMode:isRefreshPending];
 //        }
 //    }
-//}
+}
 
 - (void)changeEditedRoomNotificationSettings
 {
@@ -1715,10 +1716,10 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         
         if (roomIdOrAlias.length)
         {
-            // Open the room or preview it
-            NSString *fragment = [NSString stringWithFormat:@"/room/%@", [MXTools encodeURIComponent:roomIdOrAlias]];
-            NSURL *url = [NSURL URLWithString:[MXTools permalinkToRoom:fragment]];
-            [[AppDelegate theDelegate] handleUniversalLinkFragment:fragment fromURL:url];
+            // Create a permalink to open or preview the room.
+            NSString *permalink = [MXTools permalinkToRoom:roomIdOrAlias];
+            NSURL *permalinkURL = [NSURL URLWithString:permalink];
+            [[AppDelegate theDelegate] handleUniversalLinkURL:permalinkURL];
         }
         [tableView deselectRowAtIndexPath:indexPath animated:NO];
     }
@@ -1778,6 +1779,10 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     }
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return [VectorL10n leave];
+}
+
 #pragma mark - UIScrollViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -1808,10 +1813,11 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 }
 
 #pragma mark - Recents drag & drop management
+
 - (void)setEnableDragging:(BOOL)enableDragging
 {
     _enableDragging = enableDragging;
-
+    
     if (_enableDragging && !longPressGestureRecognizer && self.recentsTableView)
     {
         longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onRecentsLongPress:)];
@@ -1830,11 +1836,11 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     cellSnapshot = nil;
     movingCellPath = nil;
     movingRoom = nil;
-
+    
     lastPotentialCellPath = nil;
     ((RecentsDataSource*)self.dataSource).droppingCellIndexPath = nil;
     ((RecentsDataSource*)self.dataSource).hiddenCellIndexPath = nil;
-
+    
     [self.activityIndicator stopAnimating];
 }
 
@@ -2316,7 +2322,11 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         }
         else if (section >= self.recentsTableView.numberOfSections)
         {
-            MXLogFailure(@"[RecentsViewController] Section %ld is invalid in a table view with only %ld sections", section, self.recentsTableView.numberOfSections);
+            NSDictionary *details = @{
+                @"section": @(section),
+                @"number_of_sections": @(self.recentsTableView.numberOfSections)
+            };
+            MXLogFailureDetails(@"[RecentsViewController] Section in a table view is invalid", details);
         }
     }
 }
@@ -2697,42 +2707,40 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 
 #pragma mark - Context Menu
 
-// Tchap: ContextMenu disabled
-//- (UIContextMenuConfiguration *)tableView:(UITableView *)tableView contextMenuConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath point:(CGPoint)point API_AVAILABLE(ios(13.0))
-//{
-//    id<MXKRecentCellDataStoring> cellData = [self.dataSource cellDataAtIndexPath:indexPath];
-//    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-//
-//    if (!cellData || !cell)
-//    {
-//        return nil;
-//    }
-//
-//    self.recentsUpdateEnabled = NO;
-//    return [self.contextMenuProvider contextMenuConfigurationWith:cellData from:cell session:self.dataSource.mxSession];
-//}
-//
-//- (void)tableView:(UITableView *)tableView willPerformPreviewActionForMenuWithConfiguration:(UIContextMenuConfiguration *)configuration animator:(id<UIContextMenuInteractionCommitAnimating>)animator API_AVAILABLE(ios(13.0))
-//{
-//    NSString *roomId = [self.contextMenuProvider roomIdFrom:configuration.identifier];
-//
-//    if (!roomId)
-//    {
-//        self.recentsUpdateEnabled = YES;
-//        return;
-//    }
-//
-//    [animator addCompletion:^{
-//        self.recentsUpdateEnabled = YES;
-//        [self showRoomWithRoomId:roomId inMatrixSession:self.mainSession];
-//    }];
-//}
-//
-//- (UITargetedPreview *)tableView:(UITableView *)tableView previewForDismissingContextMenuWithConfiguration:(UIContextMenuConfiguration *)configuration API_AVAILABLE(ios(13.0))
-//{
-//    self.recentsUpdateEnabled = YES;
-//    return nil;
-//}
+- (UIContextMenuConfiguration *)tableView:(UITableView *)tableView contextMenuConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath point:(CGPoint)point API_AVAILABLE(ios(13.0))
+{
+    id<MXKRecentCellDataStoring> cellData = [self.dataSource cellDataAtIndexPath:indexPath];
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    
+    if (!cellData || !cell)
+    {
+        return nil;
+    }
+    
+    return [self.contextMenuProvider contextMenuConfigurationWith:cellData from:cell session:self.dataSource.mxSession];
+}
+
+- (void)tableView:(UITableView *)tableView willPerformPreviewActionForMenuWithConfiguration:(UIContextMenuConfiguration *)configuration animator:(id<UIContextMenuInteractionCommitAnimating>)animator API_AVAILABLE(ios(13.0))
+{
+    NSString *roomId = [self.contextMenuProvider roomIdFrom:configuration.identifier];
+    
+    if (!roomId)
+    {
+        self.recentsUpdateEnabled = YES;
+        return;
+    }
+    
+    [animator addCompletion:^{
+        self.recentsUpdateEnabled = YES;
+        [self showRoomWithRoomId:roomId inMatrixSession:self.mainSession];
+    }];
+}
+
+- (UITargetedPreview *)tableView:(UITableView *)tableView previewForDismissingContextMenuWithConfiguration:(UIContextMenuConfiguration *)configuration API_AVAILABLE(ios(13.0))
+{
+    self.recentsUpdateEnabled = YES;
+    return nil;
+}
 
 #pragma mark - RoomContextActionServiceDelegate
 
@@ -2770,5 +2778,12 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 //    [self changeEditedRoomNotificationSettings];
 //    editedRoomId = nil;
 //}
+
+#pragma mark - RecentCellContextMenuProviderDelegate
+
+- (void)recentCellContextMenuProviderDidStartShowingPreview:(RecentCellContextMenuProvider *)menuProvider
+{
+    self.recentsUpdateEnabled = NO;
+}
 
 @end

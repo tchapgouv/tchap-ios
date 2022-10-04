@@ -76,9 +76,9 @@ final class HomeserverConfigurationBuilder: NSObject {
 //           let mapStyleURL = URL(string: mapStyleURLString) {
 //            tileServerMapStyleURL = mapStyleURL
 //        } else {
-//            tileServerMapStyleURL = BuildSettings.tileServerMapStyleURL
+//            tileServerMapStyleURL = BuildSettings.defaultTileServerMapStyleURL
 //        }
-//        
+//
 //        let tileServerConfiguration = HomeserverTileServerConfiguration(mapStyleURL: tileServerMapStyleURL)
         
         // Create HomeserverConfiguration

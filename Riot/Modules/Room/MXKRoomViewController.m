@@ -308,7 +308,9 @@
     }
     
     // Finalize view controller appearance
-    [self updateViewControllerAppearanceOnRoomDataSourceState];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self updateViewControllerAppearanceOnRoomDataSourceState];
+    });
     
     // no need to reload the tableview at this stage
     // IOS is going to load it after calling this method
@@ -335,6 +337,11 @@
     else
     {
         _bubblesTableView.hidden = NO;
+    }
+
+    if (BuildSettings.newAppLayoutEnabled)
+    {
+        [self vc_setLargeTitleDisplayMode: UINavigationItemLargeTitleDisplayModeNever];
     }
 }
 
@@ -488,7 +495,7 @@
     if (!keyboardView)
     {
         // Check whether the first responder is the input tool bar text composer
-        keyboardView = inputToolbarView.inputAccessoryView.superview;
+        keyboardView = inputToolbarView.inputAccessoryViewForKeyboard.superview;
     }
     
     // Report the keyboard view in order to track keyboard frame changes
@@ -1258,7 +1265,7 @@
     customEventDetailsViewClass = eventDetailsViewClass;
 }
 
-- (BOOL)isIRCStyleCommand:(NSString*)string
+- (BOOL)sendAsIRCStyleCommandIfPossible:(NSString*)string
 {
     // Check whether the provided text may be an IRC-style command
     if ([string hasPrefix:@"/"] == NO || [string hasPrefix:@"//"] == YES)
@@ -3383,7 +3390,7 @@
 - (void)roomInputToolbarView:(MXKRoomInputToolbarView*)toolbarView sendTextMessage:(NSString*)textMessage
 {
     // Handle potential IRC commands in typed string
-    if ([self isIRCStyleCommand:textMessage] == NO)
+    if ([self sendAsIRCStyleCommandIfPossible:textMessage] == NO)
     {
         // Send text message in the current room
         [self sendTextMessage:textMessage];

@@ -16,8 +16,11 @@
  limitations under the License.
  */
 
+// swiftlint:disable file_length
+
 import UIKit
 import CommonKit
+import MatrixSDK
 
 @objcMembers
 final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
@@ -29,7 +32,10 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     private let parameters: TabBarCoordinatorParameters
     private let activityIndicatorPresenter: ActivityIndicatorPresenterType
     private let indicatorPresenter: UserIndicatorTypePresenterProtocol
-    
+    private let userIndicatorStore: UserIndicatorStore
+    private var appStateIndicatorCancel: UserIndicatorCancel?
+    private var appSateIndicator: UserIndicator?
+
     // Indicate if the Coordinator has started once
     private var hasStartedOnce: Bool {
         return self.masterTabBarController != nil
@@ -64,6 +70,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     }
     
     private var indicators = [UserIndicator]()
+    private var signOutAlertPresenter = SignOutAlertPresenter()
     // Tchap: Add invite service for user invitation
     private var inviteService: InviteServiceType?
     private var errorPresenter: ErrorPresenter?
@@ -88,6 +95,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         self.masterNavigationController = masterNavigationController
         self.activityIndicatorPresenter = ActivityIndicatorPresenter()
         self.indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: masterNavigationController)
+        self.userIndicatorStore = UserIndicatorStore(presenter: indicatorPresenter)
     }
     
     // MARK: - Public methods
@@ -100,6 +108,8 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
                 
         // If start has been done once do not setup view controllers again
         if self.hasStartedOnce == false {
+            signOutAlertPresenter.delegate = self
+
             let masterTabBarController = self.createMasterTabBarController()
             masterTabBarController.masterTabBarDelegate = self
             self.masterTabBarController = masterTabBarController
@@ -118,7 +128,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
             self.registerSessionChange()
             
             self.updateMasterTabBarController(with: spaceId, forceReload: true)
-        } else {            
+        } else {
             self.updateMasterTabBarController(with: spaceId)
         }
         
@@ -200,6 +210,37 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         }
     }
     
+    func showErroIndicator(with error: Error) {
+        let error = error as NSError
+        
+        // Ignore fake error, or connection cancellation error
+        guard error.domain != NSURLErrorDomain || error.code != NSURLErrorCancelled else {
+            return
+        }
+        
+        // Ignore GDPR Consent not given error. Already caught by kMXHTTPClientUserConsentNotGivenErrorNotification observation
+        let mxError = MXError.isMXError(error) ? MXError(nsError: error) : nil
+        guard mxError?.errcode != kMXErrCodeStringConsentNotGiven else {
+            return
+        }
+        
+        let msg = error.userInfo[NSLocalizedFailureReasonErrorKey] as? String
+        let localizedDescription = error.userInfo[NSLocalizedDescriptionKey] as? String
+        let title = (error.userInfo[NSLocalizedFailureReasonErrorKey] as? String) ?? (msg ?? (localizedDescription ?? VectorL10n.error))
+        
+        indicators.append(self.indicatorPresenter.present(.failure(label: title)))
+    }
+    
+    func showAppStateIndicator(with text: String, icon: UIImage?) {
+        hideAppStateIndicator()
+        appSateIndicator = self.indicatorPresenter.present(.custom(label: text, icon: icon))
+    }
+    
+    func hideAppStateIndicator() {
+        appSateIndicator?.cancel()
+        appSateIndicator = nil
+    }
+    
     func presentInvitePeople() {
         promptUserToFillAnEmailToInvite { [weak self] email in
             self?.sendEmailInvite(to: email)
@@ -217,32 +258,43 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     private func createMasterTabBarController() -> MasterTabBarController {
         let tabBarController = MasterTabBarController()
         
-        if BuildSettings.enableSideMenu {
-            let sideMenuBarButtonItem: MXKBarButtonItem = MXKBarButtonItem(image: Asset.Images.sideMenuIcon.image, style: .plain) { [weak self] in
-                self?.showSideMenu()
-            }
-            sideMenuBarButtonItem.accessibilityLabel = VectorL10n.sideMenuRevealActionAccessibilityLabel
-            
-            tabBarController.navigationItem.leftBarButtonItem = sideMenuBarButtonItem
-        } else {
-            let settingsBarButtonItem: MXKBarButtonItem = MXKBarButtonItem(image: Asset.Images.settingsIcon.image, style: .plain) { [weak self] in
-                self?.showSettings()
-            }
-            settingsBarButtonItem.accessibilityLabel = VectorL10n.settingsTitle
-            
-            tabBarController.navigationItem.leftBarButtonItem = settingsBarButtonItem
-        }
-        
-        let searchBarButtonItem: MXKBarButtonItem = MXKBarButtonItem(image: Asset.Images.filterOff.image, style: .plain) { [weak self] in
-            self?.showUnifiedSearch()
-        }
-        searchBarButtonItem.accessibilityLabel = VectorL10n.searchDefaultPlaceholder
-        
-        tabBarController.navigationItem.rightBarButtonItem = searchBarButtonItem    
-        
+        createLeftButtonItem(for: tabBarController)
+        createRightButtonItem(for: tabBarController)
+
         return tabBarController
     }
     
+    private func showInviteFriends(from sourceView: UIView?) {
+        let myUserId = self.parameters.userSessionsService.mainUserSession?.userId ?? ""
+        
+        let inviteFriendsPresenter = InviteFriendsPresenter()
+        inviteFriendsPresenter.present(for: myUserId, from: self.navigationRouter.toPresentable(), sourceView: sourceView, animated: true)
+    }
+    
+    private func showBugReport() {
+        let bugReportViewController = BugReportViewController()
+        
+        // Show in fullscreen to animate presentation along side menu dismiss
+        bugReportViewController.modalPresentationStyle = .fullScreen
+        bugReportViewController.modalTransitionStyle = .crossDissolve
+        
+        self.navigationRouter.present(bugReportViewController, animated: true)
+    }
+
+    private func userAvatarViewData(from mxSession: MXSession?) -> UserAvatarViewData? {
+        guard let mxSession = mxSession, let userId = mxSession.myUserId, let mediaManager = mxSession.mediaManager, let myUser = mxSession.myUser else {
+            return nil
+        }
+        
+        let userDisplayName = myUser.displayname
+        let avatarUrl = myUser.avatarUrl
+        
+        return UserAvatarViewData(userId: userId,
+                                  displayName: userDisplayName,
+                                  avatarUrl: avatarUrl,
+                                  mediaManager: mediaManager)
+    }
+
 //    private func createVersionCheckCoordinator(withRootViewController rootViewController: UIViewController, bannerPresentrer: BannerPresentationProtocol) -> VersionCheckCoordinator {
 //        let versionCheckCoordinator = VersionCheckCoordinator(rootViewController: rootViewController,
 //                                                              bannerPresenter: bannerPresentrer,
@@ -250,6 +302,18 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
 //        return versionCheckCoordinator
 //    }
     
+//    private func createAllChatsViewController() -> AllChatsViewControllerWithBannerWrapperViewController {
+//        let allChatsViewController = AllChatsViewController.instantiate()
+//        allChatsViewController.tabBarItem.tag = Int(TABBAR_HOME_INDEX)
+//        allChatsViewController.tabBarItem.image = allChatsViewController.tabBarItem.image
+//        allChatsViewController.accessibilityLabel = VectorL10n.allChatsTitle
+//        allChatsViewController.userIndicatorStore = UserIndicatorStore(presenter: indicatorPresenter)
+//
+//        let wrapperViewController = AllChatsViewControllerWithBannerWrapperViewController(viewController: allChatsViewController)
+//        return wrapperViewController
+//    }
+    
+    // Tchap: Disable Home
 //    private func createHomeViewController() -> HomeViewControllerWithBannerWrapperViewController {
 //        let homeViewController: HomeViewController = HomeViewController.instantiate()
 //        homeViewController.tabBarItem.tag = Int(TABBAR_HOME_INDEX)
@@ -286,13 +350,6 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         return roomsViewController
     }
     
-//    private func createGroupsViewController() -> GroupsViewController {
-//        let groupsViewController: GroupsViewController = GroupsViewController.instantiate()
-//        groupsViewController.tabBarItem.tag = Int(TABBAR_GROUPS_INDEX)
-//        groupsViewController.accessibilityLabel = VectorL10n.titleGroups
-//        return groupsViewController
-//    }
-//
 //    private func createUnifiedSearchController() -> UnifiedSearchViewController {
 //
 //        let viewController: UnifiedSearchViewController = UnifiedSearchViewController.instantiate()
@@ -327,29 +384,26 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     // TODO: Avoid to reinstantiate controllers everytime
     private func updateTabControllers(for tabBarController: MasterTabBarController, showCommunities: Bool) {
         var viewControllers: [UIViewController] = []
-          
-//        let homeViewController = self.createHomeViewController()
-        
+
+        // Tchap: Disable Home
+//        let homeViewController = BuildSettings.newAppLayoutEnabled ? self.createAllChatsViewController() : self.createHomeViewController()
 //        viewControllers.append(homeViewController)
         
-        if RiotSettings.shared.homeScreenShowFavouritesTab {
-            let favouritesViewController = self.createFavouritesViewController()
-            viewControllers.append(favouritesViewController)
-        }
-        
-        if RiotSettings.shared.homeScreenShowPeopleTab {
-            let peopleViewController = self.createPeopleViewController()
-            viewControllers.append(peopleViewController)
-        }
-        
-        if RiotSettings.shared.homeScreenShowRoomsTab {
-            let roomsViewController = self.createRoomsViewController()
-            viewControllers.append(roomsViewController)
-        }
-        
-        if RiotSettings.shared.homeScreenShowCommunitiesTab && !(self.currentMatrixSession?.groups().isEmpty ?? false) && showCommunities {
-//            let groupsViewController = self.createGroupsViewController()
-//            viewControllers.append(groupsViewController)
+        if !BuildSettings.newAppLayoutEnabled {
+            if RiotSettings.shared.homeScreenShowFavouritesTab {
+                let favouritesViewController = self.createFavouritesViewController()
+                viewControllers.append(favouritesViewController)
+            }
+            
+            if RiotSettings.shared.homeScreenShowPeopleTab {
+                let peopleViewController = self.createPeopleViewController()
+                viewControllers.append(peopleViewController)
+            }
+            
+            if RiotSettings.shared.homeScreenShowRoomsTab {
+                let roomsViewController = self.createRoomsViewController()
+                viewControllers.append(roomsViewController)
+            }
         }
         
         tabBarController.updateViewControllers(viewControllers)
@@ -396,27 +450,15 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     
     // FIXME: Should be displayed from a tab.
     private func showContactDetails(with contact: MXKContact, presentationParameters: ScreenPresentationParameters) {
-
+        
         let coordinatorParameters = ContactDetailsCoordinatorParameters(contact: contact)
         let coordinator = ContactDetailsCoordinator(parameters: coordinatorParameters)
         coordinator.start()
         self.add(childCoordinator: coordinator)
-
+        
         self.showSplitViewDetails(with: coordinator, stackedOnSplitViewDetail: presentationParameters.stackAboveVisibleViews) { [weak self] in
             self?.remove(childCoordinator: coordinator)
         }
-    }
-    
-    // FIXME: Should be displayed from a tab.
-    private func showGroupDetails(with group: MXGroup, for matrixSession: MXSession, presentationParameters: ScreenPresentationParameters) {
-//        let coordinatorParameters = GroupDetailsCoordinatorParameters(session: matrixSession, group: group)
-//        let coordinator = GroupDetailsCoordinator(parameters: coordinatorParameters)
-//        coordinator.start()
-//        self.add(childCoordinator: coordinator)
-//
-//        self.showSplitViewDetails(with: coordinator, stackedOnSplitViewDetail: presentationParameters.stackAboveVisibleViews) { [weak self] in
-//            self?.remove(childCoordinator: coordinator)
-//        }
     }
     
     private func showRoom(withId roomId: String, eventId: String? = nil) {
@@ -434,14 +476,14 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
             showRoomAndThread(with: roomNavigationParameters,
                               completion: completion)
         } else {
-//            let threadId = roomNavigationParameters.threadParameters?.threadId
+            let threadId: String? = nil;// roomNavigationParameters.threadParameters?.threadId
             let displayConfig: RoomDisplayConfiguration
-//            if threadId != nil {
-//                displayConfig = .forThreads
-//            } else {
+            if threadId != nil {
+                displayConfig = .forThreads
+            } else {
                 displayConfig = .default
-//            }
-            
+            }
+
             
             let roomCoordinatorParameters = RoomCoordinatorParameters(navigationRouterStore: NavigationRouterStore.shared,
                                                                       userIndicatorPresenter: detailUserIndicatorPresenter,
@@ -449,7 +491,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
                                                                       parentSpaceId: self.currentSpaceId,
                                                                       roomId: roomNavigationParameters.roomId,
                                                                       eventId: roomNavigationParameters.eventId,
-                                                                      threadId: nil, //threadId,
+                                                                      threadId: threadId,
                                                                       showSettingsInitially: roomNavigationParameters.showSettingsInitially,
                                                                       displayConfiguration: displayConfig,
                                                                       autoJoinInvitedRoom: roomNavigationParameters.autoJoinInvitedRoom)
@@ -694,10 +736,6 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         }
         
         self.addMatrixSessionToMasterTabBarController(userSession.matrixSession)
-        
-//        if let matrixSession = self.currentMatrixSession, matrixSession.groups().isEmpty {
-//            self.masterTabBarController.removeTab(at: .groups)
-//        }
     }
     
     @objc private func userSessionsServiceWillRemoveUserSession(_ notification: Notification) {
@@ -725,20 +763,210 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     }
     
     @objc private func sessionDidSync(_ notification: Notification) {
-//        if self.currentMatrixSession?.groups().isEmpty ?? true {
-//            self.masterTabBarController.removeTab(at: .groups)
-//        }
-        
 //        if let session = notification.object as? MXSession {
 //            showCoachMessageIfNeeded(with: session)
 //        }
+        
+        updateAvatarButtonItem()
     }
     
+    // MARK: Navigation bar items management
+    
+    private weak var rightMenuAvatarView: AvatarView?
+    
+    private func createLeftButtonItem(for viewController: UIViewController) {
+        guard !BuildSettings.newAppLayoutEnabled else {
+            createAvatarButtonItem(for: viewController)
+            return
+        }
+        
+        guard BuildSettings.enableSideMenu else {
+            let settingsBarButtonItem: MXKBarButtonItem = MXKBarButtonItem(image: Asset.Images.settingsIcon.image, style: .plain) { [weak self] in
+                self?.showSettings()
+            }
+            settingsBarButtonItem.accessibilityLabel = VectorL10n.settingsTitle
+            
+            viewController.navigationItem.leftBarButtonItem = settingsBarButtonItem
+            return
+        }
+        
+        let sideMenuBarButtonItem: MXKBarButtonItem = MXKBarButtonItem(image: Asset.Images.sideMenuIcon.image, style: .plain) { [weak self] in
+            self?.showSideMenu()
+        }
+        sideMenuBarButtonItem.accessibilityLabel = VectorL10n.sideMenuRevealActionAccessibilityLabel
+        
+        viewController.navigationItem.leftBarButtonItem = sideMenuBarButtonItem
+    }
+
+    private func createRightButtonItem(for viewController: UIViewController) {
+        guard !BuildSettings.newAppLayoutEnabled else {
+            return
+        }
+        
+        let searchBarButtonItem: MXKBarButtonItem = MXKBarButtonItem(image: Asset.Images.searchIcon.image, style: .plain) { [weak self] in
+            self?.showUnifiedSearch()
+        }
+        searchBarButtonItem.accessibilityLabel = VectorL10n.searchDefaultPlaceholder
+        viewController.navigationItem.rightBarButtonItem = searchBarButtonItem
+    }
+    
+    private func createAvatarButtonItem(for viewController: UIViewController) {
+        var actions: [UIMenuElement] = []
+        
+        actions.append(UIAction(title: VectorL10n.settings, image: UIImage(systemName: "gearshape")) { [weak self] action in
+            self?.showSettings()
+        })
+        
+        var subMenuActions: [UIAction] = []
+        if BuildSettings.sideMenuShowInviteFriends {
+            subMenuActions.append(UIAction(title: VectorL10n.inviteTo(AppInfo.current.displayName), image: UIImage(systemName: "envelope")) { [weak self] action in
+                        self?.showInviteFriends(from: nil)
+            })
+        }
+
+        subMenuActions.append(UIAction(title: VectorL10n.sideMenuActionFeedback, image: UIImage(systemName: "questionmark.circle")) { [weak self] action in
+            self?.showBugReport()
+        })
+        
+        actions.append(UIMenu(title: "", options: .displayInline, children: subMenuActions))
+        actions.append(UIMenu(title: "", options: .displayInline, children: [
+            UIAction(title: VectorL10n.settingsSignOut, image: UIImage(systemName: "rectangle.portrait.and.arrow.right.fill"), attributes: .destructive) { [weak self] action in
+                self?.signOut()
+            }
+        ]))
+
+        let menu = UIMenu(options: .displayInline, children: actions)
+        
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: 36, height: 36))
+        view.backgroundColor = .clear
+        
+        let button: UIButton = UIButton(frame: view.bounds.inset(by: UIEdgeInsets(top: 7, left: 7, bottom: 7, right: 7)))
+        button.setImage(Asset.Images.tabPeople.image, for: .normal)
+        button.menu = menu
+        button.showsMenuAsPrimaryAction = true
+        button.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+        view.addSubview(button)
+        
+        let avatarView = UserAvatarView(frame: view.bounds.inset(by: UIEdgeInsets(top: 7, left: 7, bottom: 7, right: 7)))
+        avatarView.isUserInteractionEnabled = false
+        avatarView.update(theme: ThemeService.shared().theme)
+        avatarView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+        view.addSubview(avatarView)
+        self.rightMenuAvatarView = avatarView
+
+        if let avatar = userAvatarViewData(from: currentMatrixSession) {
+            avatarView.fill(with: avatar)
+        }
+        
+        viewController.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: view)
+    }
+    
+    private func updateAvatarButtonItem() {
+        guard let avatarView = rightMenuAvatarView, let avatar = userAvatarViewData(from: currentMatrixSession) else {
+            return
+        }
+        
+        avatarView.fill(with: avatar)
+    }
+    
+    // MARK: Sign out process
+    
+    private func signOut() {
+        guard let keyBackup = currentMatrixSession?.crypto.backup else {
+            return
+        }
+        
+        signOutAlertPresenter.present(for: keyBackup.state,
+                                      areThereKeysToBackup: keyBackup.hasKeysToBackup,
+                                      from: self.masterTabBarController,
+                                      sourceView: nil,
+                                      animated: true)
+    }
+    
+    // MARK: - SecureBackupSetupCoordinatorBridgePresenter
+    
+    private var secureBackupSetupCoordinatorBridgePresenter: SecureBackupSetupCoordinatorBridgePresenter?
+    private var crossSigningSetupCoordinatorBridgePresenter: CrossSigningSetupCoordinatorBridgePresenter?
+
+    private func showSecureBackupSetupFromSignOutFlow() {
+        if canSetupSecureBackup {
+            setupSecureBackup2()
+        } else {
+            // Set up cross-signing first
+            setupCrossSigning(title: VectorL10n.secureKeyBackupSetupIntroTitle,
+                              message: VectorL10n.securitySettingsUserPasswordDescription) { [weak self] result in
+                switch result {
+                case .success(let isCompleted):
+                    if isCompleted {
+                        self?.setupSecureBackup2()
+                    }
+                case .failure:
+                    break
+                }
+            }
+        }
+    }
+    
+    private var canSetupSecureBackup: Bool {
+        return currentMatrixSession?.vc_canSetupSecureBackup() ?? false
+    }
+    
+    private func setupSecureBackup2() {
+        guard let session = currentMatrixSession else {
+            return
+        }
+        
+        let secureBackupSetupCoordinatorBridgePresenter = SecureBackupSetupCoordinatorBridgePresenter(session: session, allowOverwrite: true)
+        secureBackupSetupCoordinatorBridgePresenter.delegate = self
+        secureBackupSetupCoordinatorBridgePresenter.present(from: masterTabBarController, animated: true)
+        self.secureBackupSetupCoordinatorBridgePresenter = secureBackupSetupCoordinatorBridgePresenter
+    }
+    
+    private func setupCrossSigning(title: String, message: String, completion: @escaping (Result<Bool, Error>) -> Void) {
+        guard let session = currentMatrixSession else {
+            return
+        }
+
+        // Tchap: No homeViewController instanciated in Tchap
+//        masterTabBarController.homeViewController.startActivityIndicator()
+        masterTabBarController.view.isUserInteractionEnabled = false
+        
+        let dismissAnimation = { [weak self] in
+            guard let self = self else { return }
+            
+            // Tchap: No homeViewController instanciated in Tchap
+//            self.masterTabBarController.homeViewController.stopActivityIndicator()
+            self.masterTabBarController.view.isUserInteractionEnabled = true
+            self.crossSigningSetupCoordinatorBridgePresenter?.dismiss(animated: true, completion: {
+                self.crossSigningSetupCoordinatorBridgePresenter = nil
+            })
+        }
+        
+        let crossSigningSetupCoordinatorBridgePresenter = CrossSigningSetupCoordinatorBridgePresenter(session: session)
+        crossSigningSetupCoordinatorBridgePresenter.present(with: title, message: message, from: masterTabBarController, animated: true) {
+            dismissAnimation()
+            completion(.success(true))
+        } cancel: {
+            dismissAnimation()
+            completion(.success(false))
+        } failure: { error in
+            dismissAnimation()
+            completion(.failure(error))
+        }
+
+        self.crossSigningSetupCoordinatorBridgePresenter = crossSigningSetupCoordinatorBridgePresenter
+    }
+
     // MARK: Coach Message
     
 //    private var windowOverlay: WindowOverlayPresenter?
 
 //    func showCoachMessageIfNeeded(with session: MXSession) {
+//        guard !BuildSettings.newAppLayoutEnabled else {
+//            // Showing coach message makes no sense with the new App Layout
+//            return
+//        }
+//
 //        if !RiotSettings.shared.slideMenuRoomsCoachMessageHasBeenDisplayed {
 //            let isAuthenticated = MXKAccountManager.shared().activeAccounts.first != nil || MXKAccountManager.shared().accounts.first?.isSoftLogout == false
 //
@@ -906,11 +1134,11 @@ extension TabBarCoordinator: MasterTabBarControllerDelegate {
         self.showRoom(with: roomId, eventId: eventId, matrixSession: matrixSession, completion: completion)
     }
     
-    func masterTabBarController(_ masterTabBarController: MasterTabBarController!, didSelect group: MXGroup!, inMatrixSession matrixSession: MXSession!, presentationParameters: ScreenPresentationParameters!) {
-        self.showGroupDetails(with: group, for: matrixSession, presentationParameters: presentationParameters)
-    }
-    
     func masterTabBarController(_ masterTabBarController: MasterTabBarController!, needsSideMenuIconWithNotification displayNotification: Bool) {
+        guard BuildSettings.enableSideMenu else {
+            return
+        }
+        
         let image = displayNotification ? Asset.Images.sideMenuNotifIcon.image : Asset.Images.sideMenuIcon.image
         let sideMenuBarButtonItem: MXKBarButtonItem = MXKBarButtonItem(image: image, style: .plain) { [weak self] in
             self?.showSideMenu()
@@ -986,6 +1214,42 @@ extension TabBarCoordinator: UIGestureRecognizerDelegate {
             return false
         } else {
             return true
+        }
+    }
+}
+
+extension TabBarCoordinator: SignOutAlertPresenterDelegate {
+    
+    func signOutAlertPresenterDidTapSignOutAction(_ presenter: SignOutAlertPresenter) {
+        // Prevent user to perform user interaction in settings when sign out
+        // TODO: Prevent user interaction in all application (navigation controller and split view controller included)
+        masterNavigationController.view.isUserInteractionEnabled = false
+        // Tchap: No homeViewController instanciated in Tchap
+//        masterTabBarController.homeViewController.startActivityIndicator()
+        
+        AppDelegate.theDelegate().logout(withConfirmation: false) { [weak self] isLoggedOut in
+            // Tchap: No homeViewController instanciated in Tchap
+//            self?.masterTabBarController.homeViewController.stopActivityIndicator()
+            self?.masterNavigationController.view.isUserInteractionEnabled = true
+        }
+    }
+    
+    func signOutAlertPresenterDidTapBackupAction(_ presenter: SignOutAlertPresenter) {
+        showSecureBackupSetupFromSignOutFlow()
+    }
+    
+}
+
+extension TabBarCoordinator: SecureBackupSetupCoordinatorBridgePresenterDelegate {
+    func secureBackupSetupCoordinatorBridgePresenterDelegateDidCancel(_ coordinatorBridgePresenter: SecureBackupSetupCoordinatorBridgePresenter) {
+        coordinatorBridgePresenter.dismiss(animated: true) {
+            self.secureBackupSetupCoordinatorBridgePresenter = nil
+        }
+    }
+    
+    func secureBackupSetupCoordinatorBridgePresenterDelegateDidComplete(_ coordinatorBridgePresenter: SecureBackupSetupCoordinatorBridgePresenter) {
+        coordinatorBridgePresenter.dismiss(animated: true) {
+            self.secureBackupSetupCoordinatorBridgePresenter = nil
         }
     }
 }

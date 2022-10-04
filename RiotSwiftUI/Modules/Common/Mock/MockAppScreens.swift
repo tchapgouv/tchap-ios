@@ -19,6 +19,7 @@ import Foundation
 /// The static list of mocked screens in RiotSwiftUI
 enum MockAppScreens {
     static let appScreens: [MockScreenState.Type] = [
+//        MockLiveLocationLabPromotionScreenState.self,
 //        MockLiveLocationSharingViewerScreenState.self,
         MockAuthenticationLoginScreenState.self,
         MockAuthenticationReCaptchaScreenState.self,
@@ -41,21 +42,22 @@ enum MockAppScreens {
         MockAnalyticsPromptScreenState.self,
         MockUserSuggestionScreenState.self,
         MockPollEditFormScreenState.self,
-        MockSpaceCreationEmailInvitesScreenState.self,
-        MockSpaceSettingsScreenState.self,
+//        MockSpaceCreationEmailInvitesScreenState.self,
+//        MockSpaceSettingsScreenState.self,
         MockRoomAccessTypeChooserScreenState.self,
         MockRoomUpgradeScreenState.self,
-        MockMatrixItemChooserScreenState.self,
-        MockSpaceCreationMenuScreenState.self,
-        MockSpaceCreationRoomsScreenState.self,
-        MockSpaceCreationSettingsScreenState.self,
-        MockSpaceCreationPostProcessScreenState.self,
+//        MockMatrixItemChooserScreenState.self,
+//        MockSpaceCreationMenuScreenState.self,
+//        MockSpaceCreationRoomsScreenState.self,
+//        MockSpaceCreationSettingsScreenState.self,
+//        MockSpaceCreationPostProcessScreenState.self,
         MockTimelinePollScreenState.self,
 //        MockChangePasswordScreenState.self,
         MockTemplateSimpleScreenScreenState.self,
         MockTemplateUserProfileScreenState.self,
         MockTemplateRoomListScreenState.self,
-        MockTemplateRoomChatScreenState.self
+        MockTemplateRoomChatScreenState.self,
+//        MockSpaceSelectorScreenState.self
     ]
 }
 

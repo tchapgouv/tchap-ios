@@ -64,8 +64,34 @@ targets:
     - path: ../Config/Configurable.swift
     - path: .
       excludes:
+        - "Managers/AppVersion/AppVersion.swift"
+        - "Managers/UniversalLink"
+        - "Modules/Application"
+        - "Modules/Common/ActivityIndicator"
+        - "Modules/Home/HomeCoordinator.swift"
+        - "Modules/Home/HomeCoordinatorType.swift"
+        - "Modules/Room/DiscussionDetailsCoordinator.swift"
+        - "Modules/Room/RoomCoordinator.swift"
+        - "Modules/Room/RoomDetailsCoordinator.swift"
+        - "Modules/Room/RoomDetailsCoordinatorType.swift"
+        - "Modules/Room/RoomViewController.*"
+        - "Modules/Room/EmojiPicker/Data/EmojiMart/EmojiJSONStore.swift"
+        - "Modules/Room/Members/Detail/RoomMemberDetailsViewController.xib"
+        - "Modules/Room/Members/Detail/Views/RoomMemberTitleView.*"
+        - "Modules/Room/Settings/RoomSettingsViewController.*"
+        - "Modules/Room/Views/BubbleCells"
+        - "Modules/Room/Views/InputToolbar/RoomInputToolbarView.*"
+        - "Modules/Room/Views/Preview"
+        - "Modules/Room/Views/Title/RoomTitleView.*"
+        - "Modules/Rooms"
+        - "Modules/Settings/SettingsViewController.*"
+        - "Routers"
         - "Tools"
         - "**/*.strings" # Exclude all strings files
+    - path: ../Tchap/Generated/Images_Riot.swift
+    - path: ../Tchap/Modules/Application/VersionUpdate
+    - path: ../Tchap/Modules/Room/Views/BubbleCells/Antivirus
+
 
     # Add separately localizable files
     - path: Assets/Localizations/fr.lproj/Tchap.strings
@@ -117,7 +143,6 @@ targets:
     - path: ../Riot/Modules/Analytics
     - path: ../Riot/Modules/Application
     - path: ../Riot/Modules/Authentication/SSO
-    - path: ../Riot/Modules/Authentication/Views
     - path: ../Riot/Modules/BadgeLabel
     - path: ../Riot/Modules/BugReport/BugReportViewController.h
     - path: ../Riot/Modules/BugReport/BugReportViewController.m
@@ -157,9 +182,8 @@ targets:
     - path: ../Riot/Modules/Common/UserIndicators
     - path: ../Riot/Modules/Common/Views
     - path: ../Riot/Modules/Common/WebViewController
-    - path: ../Riot/Modules/Communities/DataSources
-    - path: ../Riot/Modules/Communities/Views
     - path: ../Riot/Modules/Contacts
+    - path: ../Riot/Modules/ContextMenu
     - path: ../Riot/Modules/CreateRoom
     - path: ../Riot/Modules/CrossSigning
     - path: ../Riot/Modules/DeepLink
@@ -167,7 +191,10 @@ targets:
     - path: ../Riot/Modules/EncryptionInfo/EncryptionInfoView.h
     - path: ../Riot/Modules/EncryptionInfo/EncryptionInfoView.m
     - path: ../Riot/Modules/Favorites
+    - path: ../Riot/Modules/Home/AllChats
     - path: ../Riot/Modules/Home/Fallback
+    - path: ../Riot/Modules/Home/HomeViewController.h
+    - path: ../Riot/Modules/Home/HomeViewController.m
     - path: ../Riot/Modules/Home/Views
     - path: ../Riot/Modules/GDPR
     - path: ../Riot/Modules/GlobalSearch/Files/CellData/FilesSearchCellData.h
@@ -192,15 +219,14 @@ targets:
         - "DataSources/ThreadDataSource.swift"
         - "Location"
         - "RoomViewController+LocationSharing.swift"
+        - "TimelineCells/LocationView"
         - "TimelineCells/Styles/Plain/Cells/Location"
         - "TimelineCells/Styles/Plain/Cells/Poll"
         - "TimelineCells/Styles/Bubble/Cells/Location"
         - "TimelineCells/Styles/Bubble/Cells/Poll"
-        - "TimelineDecorations/Threads"
         - "Views/BubbleCells/KeyVerification/SizingViewHeight.swift"
         - "Views/BubbleCells/Location"
         - "Views/BubbleCells/Poll"
-        - "Views/Title/Thread"
     - path: ../Riot/Modules/RoomKeyRequest/RoomKeyRequestViewController.h
     - path: ../Riot/Modules/RoomKeyRequest/RoomKeyRequestViewController.m
     - path: ../Riot/Modules/Rooms
@@ -211,9 +237,11 @@ targets:
     - path: ../Riot/Modules/Settings
     - path: ../Riot/Modules/SideMenu
     - path: ../Riot/Modules/SlidingModal
+    - path: ../Riot/Modules/Spaces
     - path: ../Riot/Modules/SplitView
     - path: ../Riot/Modules/StartChat
     - path: ../Riot/Modules/TabBar
+    - path: ../Riot/Modules/Threads
     - path: ../Riot/Modules/User/Avatar
     - path: ../Riot/Modules/UserDevices/UsersDevicesViewController.h
     - path: ../Riot/Modules/UserDevices/UsersDevicesViewController.m
@@ -234,6 +262,7 @@ targets:
       - "Authentication/Registration"
       - "Authentication/ServerSelection"
       - "Common/Locale/LocaleProvider.swift"
+      - "LocationSharing"
       - "Room/LiveLocationSharingViewer"
       - "Room/LocationSharing"
       - "Room/StaticLocationSharingViewer"

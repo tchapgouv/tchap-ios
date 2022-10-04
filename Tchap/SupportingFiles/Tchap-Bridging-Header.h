@@ -64,3 +64,7 @@
 #import "ManageSessionViewController.h"
 #import "SecurityViewController.h"
 #import "StartChatViewController.h"
+#import "AllChatsLayoutModels.h"
+#import "MXRoom+Riot.h"
+#import "HomeViewController.h"
+#import "MXKAppSettings.h"

@@ -175,6 +175,8 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
                 self.roomViewController.displayRoom(roomDataSource)
             }
             
+            self.mxSession?.updateBreadcrumbsWithRoom(withId: roomId, success: nil, failure: nil)
+
             completion?()
         })
     }
@@ -206,6 +208,8 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
             // Give the data source ownership to the room view controller.
             self.roomViewController.hasRoomDataSourceOwnership = true
             
+            self.mxSession?.updateBreadcrumbsWithRoom(withId: roomId, success: nil, failure: nil)
+
             completion?()
         }
     }
@@ -214,30 +218,32 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
         
         // Present activity indicator when retrieving roomDataSource for given room ID
 //        startLoading()
-//        
+//
 //        // Open the thread on the requested event
 //        ThreadDataSource.load(withRoomId: roomId,
 //                              initialEventId: eventId,
 //                              threadId: threadId,
 //                              andMatrixSession: self.parameters.session) { [weak self] (dataSource) in
-//            
+//
 //            guard let self = self else {
 //                return
 //            }
-//            
+//
 //            self.stopLoading()
-//            
+//
 //            guard let threadDataSource = dataSource as? ThreadDataSource else {
 //                return
 //            }
-//            
+//
 //            threadDataSource.markTimelineInitialEvent = false
 //            threadDataSource.highlightedEventId = eventId
 //            self.roomViewController.displayRoom(threadDataSource)
-//            
+//
 //            // Give the data source ownership to the room view controller.
 //            self.roomViewController.hasRoomDataSourceOwnership = true
-//            
+//
+//            self.mxSession?.updateBreadcrumbsWithRoom(withId: roomId, success: nil, failure: nil)
+//
 //            completion?()
 //        }
     }
@@ -332,8 +338,9 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
 //    }
 //
 //    private func showLocationCoordinatorWithEvent(_ event: MXEvent, bubbleData: MXKRoomBubbleCellDataStoring) {
-//        guard let navigationRouter = self.navigationRouter,
-//              let mediaManager = mxSession?.mediaManager,
+//        guard let mxSession = self.mxSession,
+//              let navigationRouter = self.navigationRouter,
+//              let mediaManager = mxSession.mediaManager,
 //              let locationContent = event.location else {
 //                  MXLog.error("[RoomCoordinator] Invalid location showing coordinator parameters. Returning.")
 //                  return
@@ -351,10 +358,12 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
 //            fatalError("[LocationSharingCoordinator] event asset type is not supported: \(coordinateType)")
 //        }
 //
-//        let parameters = StaticLocationViewingCoordinatorParameters(mediaManager: mediaManager,
-//                                                                    avatarData: avatarData,
-//                                                                    location: location,
-//                                                                    coordinateType: locationSharingCoordinatetype)
+//        let parameters = StaticLocationViewingCoordinatorParameters(
+//            session: mxSession,
+//            mediaManager: mediaManager,
+//            avatarData: avatarData,
+//            location: location,
+//            coordinateType: locationSharingCoordinatetype)
 //
 //        let coordinator = StaticLocationViewingCoordinator(parameters: parameters)
 //
@@ -374,9 +383,10 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
 //    }
 //
 //    private func startLocationCoordinator() {
-//        guard let navigationRouter = self.navigationRouter,
-//              let mediaManager = mxSession?.mediaManager,
-//              let user = mxSession?.myUser else {
+//        guard let mxSession = mxSession,
+//              let navigationRouter = self.navigationRouter,
+//              let mediaManager = mxSession.mediaManager,
+//              let user = mxSession.myUser else {
 //            MXLog.error("[RoomCoordinator] Invalid location sharing coordinator parameters. Returning.")
 //            return
 //        }
@@ -385,7 +395,8 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
 //                                     matrixItemId: user.userId,
 //                                     displayName: user.displayname)
 //
-//        let parameters = LocationSharingCoordinatorParameters(roomDataSource: roomViewController.roomDataSource,
+//        let parameters = LocationSharingCoordinatorParameters(session: mxSession,
+//                                                              roomDataSource: roomViewController.roomDataSource,
 //                                                              mediaManager: mediaManager,
 //                                                              avatarData: avatarData)
 //
@@ -584,26 +595,27 @@ extension RoomCoordinator: RoomViewControllerDelegate {
     }
     
     func roomViewControllerDidStopLiveLocationSharing(_ roomViewController: RoomViewController, beaconInfoEventId: String?) {
-        
+        // Tchap: Disable Live location sharing
         guard let roomId = self.roomId else {
             return
         }
-        // Tchap: Disable Live location sharing
+        
 //        self.stopLiveLocationSharing(forBeaconInfoEventId: beaconInfoEventId, inRoomWithId: roomId)
     }
     
-    // Tchap: Disable Threads
-//    func threadsCoordinator(for roomViewController: RoomViewController, threadId: String?) -> ThreadsCoordinatorBridgePresenter? {
-//        guard let session = mxSession, let roomId = roomId else {
-//            MXLog.error("[RoomCoordinator] Cannot create threads coordinator for room \(roomId ?? "")")
-//            return nil
-//        }
-//        
-//        return ThreadsCoordinatorBridgePresenter(
-//            session: session,
-//            roomId: roomId,
-//            threadId: threadId,
-//            userIndicatorPresenter: parameters.userIndicatorPresenter
-//        )
-//    }
+    func threadsCoordinator(for roomViewController: RoomViewController, threadId: String?) -> ThreadsCoordinatorBridgePresenter? {
+        guard let session = mxSession, let roomId = roomId else {
+            MXLog.error("[RoomCoordinator] Cannot create threads coordinator for room", context: [
+                "room_id": roomId
+            ])
+            return nil
+        }
+        
+        return ThreadsCoordinatorBridgePresenter(
+            session: session,
+            roomId: roomId,
+            threadId: threadId,
+            userIndicatorPresenter: parameters.userIndicatorPresenter
+        )
+    }
 }

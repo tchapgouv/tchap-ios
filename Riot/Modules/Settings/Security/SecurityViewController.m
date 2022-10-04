@@ -26,6 +26,8 @@
 
 #import "GeneratedInterface-Swift.h"
 
+@import DesignKit;
+
 // Dev flag to have more options
 //#define CROSS_SIGNING_AND_BACKUP_DEV
 //#define SECURE_BACKUP

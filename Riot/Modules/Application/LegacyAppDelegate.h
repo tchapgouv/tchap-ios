@@ -201,7 +201,7 @@ UINavigationControllerDelegate
  @param session The matrix session.
  @return Indicate NO if the key verification screen could not be presented.
  */
-- (BOOL)presentIncomingKeyVerificationRequest:(MXKeyVerificationRequest*)incomingKeyVerificationRequest
+- (BOOL)presentIncomingKeyVerificationRequest:(id<MXKeyVerificationRequest>)incomingKeyVerificationRequest
                                     inSession:(MXSession*)session;
 
 - (BOOL)presentUserVerificationForRoomMember:(MXRoomMember*)roomMember session:(MXSession*)mxSession;
@@ -244,10 +244,10 @@ UINavigationControllerDelegate
  Process the fragment part of a vector.im link.
 
  @param fragment the fragment part of the universal link.
- @param universalLinkURL the unprocessed the universal link URL (optional).
+ @param universalLink the original universal link.
  @return YES in case of processing success.
  */
-- (BOOL)handleUniversalLinkFragment:(NSString*)fragment fromURL:(NSURL*)universalLinkURL;
+- (BOOL)handleUniversalLinkFragment:(NSString*)fragment fromLink:(UniversalLink*)universalLink;
 
 /**
  Process the URL of a vector.im link.

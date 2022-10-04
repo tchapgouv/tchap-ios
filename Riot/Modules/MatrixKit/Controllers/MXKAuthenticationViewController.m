@@ -899,18 +899,21 @@
     // This is required before updating view's textfields (homeserver url...)
     [self loadViewIfNeeded];
 
-    // Force register mode
-    self.authType = MXKAuthenticationTypeLogin;
+    if (softLogoutCredentials)
+    {
+        // Force register mode
+        self.authType = MXKAuthenticationTypeLogin;
 
-    [self setHomeServerTextFieldText:softLogoutCredentials.homeServer];
-    [self setIdentityServerTextFieldText:softLogoutCredentials.identityServer];
+        [self setHomeServerTextFieldText:softLogoutCredentials.homeServer];
+        [self setIdentityServerTextFieldText:softLogoutCredentials.identityServer];
 
-    // Cancel potential request in progress
-    [mxCurrentOperation cancel];
-    mxCurrentOperation = nil;
+        // Cancel potential request in progress
+        [mxCurrentOperation cancel];
+        mxCurrentOperation = nil;
 
-    // Remove the current auth inputs view
-    self.authInputsView = nil;
+        // Remove the current auth inputs view
+        self.authInputsView = nil;
+    }
 
     // Set parameters and trigger a refresh (the parameters will be taken into account during [handleAuthenticationSession:])
     _softLogoutCredentials = softLogoutCredentials;
@@ -1539,12 +1542,16 @@
         
         if (retry)
         {
-            MXLogError(@"[MXKAuthenticationViewController] attemptDeviceRehydration: device rehydration failed due to error: %@. Retrying", error);
+            MXLogErrorDetails(@"[MXKAuthenticationViewController] attemptDeviceRehydration: device rehydration failed due to error: Retrying", @{
+                @"error": error ?: @"unknown"
+            });
             [self attemptDeviceRehydrationWithKeyData:keyData credentials:credentials retry:NO];
             return;
         }
         
-        MXLogError(@"[MXKAuthenticationViewController] attemptDeviceRehydration: device rehydration failed due to error: %@", error);
+        MXLogErrorDetails(@"[MXKAuthenticationViewController] attemptDeviceRehydration: device rehydration failed due to error", @{
+            @"error": error ?: @"unknown"
+        });
         
         [self _createAccountWithCredentials:credentials];
     }];

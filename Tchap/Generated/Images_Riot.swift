@@ -22,6 +22,9 @@ internal typealias AssetImageTypeAlias = ImageAsset.Image
 internal class Asset: NSObject {
   @objcMembers
   @objc(AssetImages) internal class Images: NSObject {
+    internal static let allChatsOnboarding1 = ImageAsset(name: "all_chats_onboarding1")
+    internal static let allChatsOnboarding2 = ImageAsset(name: "all_chats_onboarding2")
+    internal static let allChatsOnboarding3 = ImageAsset(name: "all_chats_onboarding3")
     internal static let analyticsCheckmark = ImageAsset(name: "AnalyticsCheckmark")
     internal static let analyticsLogo = ImageAsset(name: "AnalyticsLogo")
     internal static let socialLoginButtonApple = ImageAsset(name: "social_login_button_apple")
@@ -33,6 +36,7 @@ internal class Asset: NSObject {
     internal static let authenticationEmailIcon = ImageAsset(name: "authentication_email_icon")
     internal static let authenticationMsisdnIcon = ImageAsset(name: "authentication_msisdn_icon")
     internal static let authenticationPasswordIcon = ImageAsset(name: "authentication_password_icon")
+    internal static let authenticationRecaptchaIcon = ImageAsset(name: "authentication_recaptcha_icon")
     internal static let authenticationRevealPassword = ImageAsset(name: "authentication_reveal_password")
     internal static let authenticationServerSelectionIcon = ImageAsset(name: "authentication_server_selection_icon")
     internal static let authenticationSsoIconApple = ImageAsset(name: "authentication_sso_icon_apple")
@@ -111,6 +115,9 @@ internal class Asset: NSObject {
     internal static let roomActionNotificationMuted = ImageAsset(name: "room_action_notification_muted")
     internal static let roomActionPriorityHigh = ImageAsset(name: "room_action_priority_high")
     internal static let roomActionPriorityLow = ImageAsset(name: "room_action_priority_low")
+    internal static let allChatsEditIcon = ImageAsset(name: "all_chats_edit_icon")
+    internal static let allChatsEmptyListPlaceholderIcon = ImageAsset(name: "all_chats_empty_list_placeholder_icon")
+    internal static let allChatsSpacesIcon = ImageAsset(name: "all_chats_spaces_icon")
     internal static let homeEmptyScreenArtwork = ImageAsset(name: "home_empty_screen_artwork")
     internal static let homeEmptyScreenArtworkDark = ImageAsset(name: "home_empty_screen_artwork_dark")
     internal static let homePlaceholderArtwork = ImageAsset(name: "home_placeholder_artwork")
@@ -187,6 +194,7 @@ internal class Asset: NSObject {
     internal static let locationLiveCellIcon = ImageAsset(name: "location_live_cell_icon")
     internal static let locationLiveCellLoadingIcon = ImageAsset(name: "location_live_cell_loading_icon")
     internal static let locationLiveIcon = ImageAsset(name: "location_live_icon")
+    internal static let locationMapError = ImageAsset(name: "location_map_error")
     internal static let locationMarkerIcon = ImageAsset(name: "location_marker_icon")
     internal static let locationPinIcon = ImageAsset(name: "location_pin_icon")
     internal static let locationShareIcon = ImageAsset(name: "location_share_icon")
