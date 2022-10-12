@@ -4350,6 +4350,15 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     return message;
 }
 
+#pragma password update management
+
+- (void)displayPasswordAlert
+{
+    self.changePasswordBridgePresenter = [[ChangePasswordCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
+    self.changePasswordBridgePresenter.delegate = self;
+
+    [self.changePasswordBridgePresenter presentFrom:self animated:YES];
+}
 
 #pragma mark - MXKCountryPickerViewControllerDelegate
 

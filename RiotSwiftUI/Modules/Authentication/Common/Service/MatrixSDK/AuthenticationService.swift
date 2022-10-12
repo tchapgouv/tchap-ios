@@ -69,15 +69,29 @@ class AuthenticationService: NSObject {
     /// The type of client to use during the flow.
     var clientType: AuthenticationRestClient.Type = MXRestClient.self
     
+    // Tchap: Check for a default home server.
+    var defaultHomeServer: String {
+        let homeServerPrefixURL = BuildSettings.serverUrlPrefix
+        let preferredKnownHosts = BuildSettings.preferredIdentityServerNames
+        let index = Int(arc4random_uniform(UInt32(preferredKnownHosts.count)))
+        return "\(homeServerPrefixURL)\(preferredKnownHosts[index])"
+    }
+    
     // MARK: - Setup
     
     init(sessionCreator: SessionCreatorProtocol = SessionCreator()) {
-        guard let homeserverURL = URL(string: BuildSettings.serverConfigDefaultHomeserverUrlString) else {
+        // Tchap: Customize default home server.
+        let homeServerPrefixURL = BuildSettings.serverUrlPrefix
+        let preferredKnownHosts = BuildSettings.preferredIdentityServerNames
+        let index = Int(arc4random_uniform(UInt32(preferredKnownHosts.count)))
+        let defaultServer = "\(homeServerPrefixURL)\(preferredKnownHosts[index])"
+        guard let homeserverURL = URL(string: defaultServer /*BuildSettings.serverConfigDefaultHomeserverUrlString*/) else {
             MXLog.failure("[AuthenticationService]: Failed to create URL from default homeserver URL string.")
             fatalError("Invalid default homeserver URL string.")
         }
         
-        state = AuthenticationState(flow: .login, homeserverAddress: BuildSettings.serverConfigDefaultHomeserverUrlString)
+        // Tchap: Customize default home server.
+        state = AuthenticationState(flow: .login, homeserverAddress: defaultServer /*BuildSettings.serverConfigDefaultHomeserverUrlString*/)
         client = clientType.init(homeServer: homeserverURL, unrecognizedCertificateHandler: nil)
         
         self.sessionCreator = sessionCreator
@@ -109,9 +123,16 @@ class AuthenticationService: NSObject {
             reset()
             //  not logged in
             //  update the state with given HS and IS addresses
+            // Tchap: Get a random default IS from the IS list instead of only one
+            let identityServerPrefixURL = BuildSettings.serverUrlPrefix
+            let preferredKnownHosts = BuildSettings.preferredIdentityServerNames
+            let index = Int(arc4random_uniform(UInt32(preferredKnownHosts.count)))
+            let defaultIdentityServerUrlString = "\(identityServerPrefixURL)\(preferredKnownHosts[index])"
+
+            // Tchap: Customize default home server.
             state = AuthenticationState(flow: flow,
-                                        homeserverAddress: hsUrl ?? BuildSettings.serverConfigDefaultHomeserverUrlString,
-                                        identityServer: isUrl ?? BuildSettings.serverConfigDefaultIdentityServerUrlString)
+                                        homeserverAddress: hsUrl ?? defaultHomeServer /*BuildSettings.serverConfigDefaultHomeserverUrlString*/,
+                                        identityServer: isUrl ?? defaultIdentityServerUrlString/*BuildSettings.serverConfigDefaultIdentityServerUrlString*/)
             
             // store the link to override the default homeserver address.
             provisioningLink = universalLink
@@ -144,7 +165,8 @@ class AuthenticationService: NSObject {
     ///   - homeserverAddress: The homeserver to start the flow for, or `nil` to use the default.
     ///   If a provisioning link has been set, it will override the default homeserver when passing `nil`.
     func startFlow(_ flow: AuthenticationFlow, for homeserverAddress: String? = nil) async throws {
-        let address = homeserverAddress ?? provisioningLink?.homeserverUrl ?? BuildSettings.serverConfigDefaultHomeserverUrlString
+        // Tchap: Customize default home server.
+        let address = homeserverAddress ?? provisioningLink?.homeserverUrl ?? defaultHomeServer /*BuildSettings.serverConfigDefaultHomeserverUrlString*/
         
         var (client, homeserver) = try await loginFlow(for: address)
         
@@ -198,7 +220,8 @@ class AuthenticationService: NSObject {
 
         // This address will be replaced when `startFlow` is called, but for
         // completeness revert to the default homeserver if requested anyway.
-        let address = useDefaultServer ? BuildSettings.serverConfigDefaultHomeserverUrlString : state.homeserver.addressFromUser ?? state.homeserver.address
+        // Tchap: Customize default home server.
+        let address = useDefaultServer ? defaultHomeServer/*BuildSettings.serverConfigDefaultHomeserverUrlString*/ : state.homeserver.addressFromUser ?? state.homeserver.address
         let identityServer = state.identityServer
         self.state = AuthenticationState(flow: .login,
                                          homeserverAddress: address,

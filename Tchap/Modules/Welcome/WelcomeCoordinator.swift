@@ -60,35 +60,59 @@ final class WelcomeCoordinator: WelcomeCoordinatorType {
     
     // MARK: - Private methods
     
-    private func showAuthentication() {
-        let authenticationCoordinator = AuthenticationCoordinator(router: self.navigationRouter)
-        authenticationCoordinator.delegate = self
-        authenticationCoordinator.start()
-        
-        self.navigationRouter.push(authenticationCoordinator, animated: true) {
-            self.remove(childCoordinator: authenticationCoordinator)
+    @MainActor private func showAuthentication() async {
+        let authService = AuthenticationService.shared
+        await updateAuthServiceForDirectAuthentication()
+        let parameters = AuthenticationLoginCoordinatorParameters(navigationRouter: self.navigationRouter,
+                                                                  authenticationService: authService,
+                                                                  loginMode: .password)
+        let authenticationLoginCoordinator = AuthenticationLoginCoordinator(parameters: parameters)
+        authenticationLoginCoordinator.callback = { [weak self] result in
+            guard let self = self else { return }
+            self.delegate?.welcomeCoordinatorUserDidAuthenticate(self)
         }
+        authenticationLoginCoordinator.start()
+        self.add(childCoordinator: authenticationLoginCoordinator)
         
-        self.add(childCoordinator: authenticationCoordinator)
+        if navigationRouter.modules.isEmpty {
+            navigationRouter.setRootModule(authenticationLoginCoordinator, popCompletion: nil)
+        } else {
+            navigationRouter.push(authenticationLoginCoordinator, animated: true) { [weak self] in
+                self?.remove(childCoordinator: authenticationLoginCoordinator)
+            }
+        }
+    }
+    
+    // Start login flow by updating AuthenticationService
+    func updateAuthServiceForDirectAuthentication() async {
+        let authService = AuthenticationService.shared
+        authService.reset()
+        do {
+            try await authService.startFlow(.login)
+        } catch {
+            MXLog.error("[WelcomeCoordinator] Unable to start flow for login.")
+        }
     }
     
     private func showRegistration() {
-        let registrationCoordinator = RegistrationCoordinator(router: self.navigationRouter)
-        registrationCoordinator.delegate = self
-        registrationCoordinator.start()
-        
-        self.navigationRouter.push(registrationCoordinator, animated: true) {
-            self.remove(childCoordinator: registrationCoordinator)
-        }
-        
-        self.add(childCoordinator: registrationCoordinator)
+//        let registrationCoordinator = RegistrationCoordinator(router: self.navigationRouter)
+//        registrationCoordinator.delegate = self
+//        registrationCoordinator.start()
+//
+//        self.navigationRouter.push(registrationCoordinator, animated: true) {
+//            self.remove(childCoordinator: registrationCoordinator)
+//        }
+//
+//        self.add(childCoordinator: registrationCoordinator)
     }
 }
 
 // MARK: - WelcomeViewControllerDelegate
 extension WelcomeCoordinator: WelcomeViewControllerDelegate {
-    func welcomeViewControllerDidTapLoginButton(_ welcomeViewController: WelcomeViewController) {
-        self.showAuthentication()
+    @MainActor func welcomeViewControllerDidTapLoginButton(_ welcomeViewController: WelcomeViewController) {
+        Task {
+            await self.showAuthentication()
+        }
     }
     
     func welcomeViewControllerDidTapRegisterButton(_ welcomeViewController: WelcomeViewController) {
@@ -97,22 +121,14 @@ extension WelcomeCoordinator: WelcomeViewControllerDelegate {
 }
 
 // MARK: - AuthenticationCoordinatorDelegate
-extension WelcomeCoordinator: AuthenticationCoordinatorDelegate {
-
-    func authenticationCoordinator(coordinator: AuthenticationCoordinatorType, didAuthenticateWithUserId userId: String) {
-        self.delegate?.welcomeCoordinatorUserDidAuthenticate(self)
-    }
-}
-
-// MARK: - AuthenticationCoordinatorDelegate
-extension WelcomeCoordinator: RegistrationCoordinatorDelegate {
-    
-    func registrationCoordinatorDidRegisterUser(_ coordinator: RegistrationCoordinatorType) {
-        self.delegate?.welcomeCoordinatorUserDidAuthenticate(self)
-    }
-    
-    func registrationCoordinatorShowAuthentication(_ coordinator: RegistrationCoordinatorType) {
-        self.navigationRouter.popToRootModule(animated: false)
-        self.showAuthentication()
-    }
-}
+//extension WelcomeCoordinator: RegistrationCoordinatorDelegate {
+//    
+//    func registrationCoordinatorDidRegisterUser(_ coordinator: RegistrationCoordinatorType) {
+//        self.delegate?.welcomeCoordinatorUserDidAuthenticate(self)
+//    }
+//    
+//    func registrationCoordinatorShowAuthentication(_ coordinator: RegistrationCoordinatorType) {
+//        self.navigationRouter.popToRootModule(animated: false)
+//        self.showAuthentication()
+//    }
+//}

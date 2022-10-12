@@ -17,7 +17,7 @@
 import Foundation
 
 /// Represent the user three PID credentials defined during the verification of an email or a phone number.
-struct ThreePIDCredentials {
+struct ThreePIDCredentialsTchap {
     let clientSecret: String
     let sid: String
     let identityServerHost: String

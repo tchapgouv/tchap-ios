@@ -33,7 +33,7 @@ protocol RegistrationServiceType {
     ///   - email: The user email.
     ///   - sessionId: The registration session identifier
     ///   - completion: A closure called when the operation succeeds. Provide the three PID credentials.
-    func validateRegistrationParametersAndRequestEmailVerification(password: String?, email: String, sessionId: String, completion: @escaping (MXResponse<ThreePIDCredentials>) -> Void)
+    func validateRegistrationParametersAndRequestEmailVerification(password: String?, email: String, sessionId: String, completion: @escaping (MXResponse<ThreePIDCredentialsTchap>) -> Void)
         
     /// Register user on homeserver.
     ///
@@ -43,7 +43,7 @@ protocol RegistrationServiceType {
     ///   - password: The user password (may be null if a password has been already associated to the session).
     ///   - deviceDisplayName: The current device display name.
     ///   - completion: A closure called when the operation complete. Provide the authenticated user id when succeed.    
-    func register(withEmailCredentials threePIDCredentials: ThreePIDCredentials, sessionId: String?, password: String?, deviceDisplayName: String, completion: @escaping (MXResponse<String>) -> Void)
+    func register(withEmailCredentials threePIDCredentials: ThreePIDCredentialsTchap, sessionId: String?, password: String?, deviceDisplayName: String, completion: @escaping (MXResponse<String>) -> Void)
     
     /// Cancel pending registration request.
     func cancelPendingRegistration()

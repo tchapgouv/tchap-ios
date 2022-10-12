@@ -63,7 +63,7 @@ final class RegistrationService: RegistrationServiceType {
         })
     }
     
-    func validateRegistrationParametersAndRequestEmailVerification(password: String?, email: String, sessionId: String, completion: @escaping (MXResponse<ThreePIDCredentials>) -> Void) {
+    func validateRegistrationParametersAndRequestEmailVerification(password: String?, email: String, sessionId: String, completion: @escaping (MXResponse<ThreePIDCredentialsTchap>) -> Void) {
         // Validate first the password (if any)
         if let password = password {
             _ = self.passwordPolicyService.verifyPassword(password) { (response) in
@@ -85,7 +85,7 @@ final class RegistrationService: RegistrationServiceType {
         }
     }
     
-    func register(withEmailCredentials threePIDCredentials: ThreePIDCredentials, sessionId: String?, password: String?, deviceDisplayName: String, completion: @escaping (MXResponse<String>) -> Void) {
+    func register(withEmailCredentials threePIDCredentials: ThreePIDCredentialsTchap, sessionId: String?, password: String?, deviceDisplayName: String, completion: @escaping (MXResponse<String>) -> Void) {
         
         guard let identityServer = self.restClient.identityServer else {
             completion(MXResponse.failure(RegistrationServiceError.identityServerURLBuildFailed))
@@ -169,7 +169,7 @@ final class RegistrationService: RegistrationServiceType {
         return "\(webAppBaseStringURLEncoded)/#/register?client_secret=\(clientSecretURLEncoded)&hs_url=\(homeServerStringURLEncoded)&is_url=\(identityServerStringURLEncoded)&session_id=\(sessionIdURLEncoded)"
     }
     
-    private func requestEmailVerification(to email: String, sessionId: String, using restClient: MXRestClient, completion: @escaping (MXResponse<ThreePIDCredentials>) -> Void) {
+    private func requestEmailVerification(to email: String, sessionId: String, using restClient: MXRestClient, completion: @escaping (MXResponse<ThreePIDCredentialsTchap>) -> Void) {
         
         guard let homeServer = restClient.homeserver, let homeServerURL = URL(string: homeServer) else {
             completion(MXResponse.failure(RegistrationServiceError.homeServerURLBuildFailed))
@@ -199,7 +199,7 @@ final class RegistrationService: RegistrationServiceType {
                 return
             }
             
-            let threePIDCredentials = ThreePIDCredentials(clientSecret: clientSecret,
+            let threePIDCredentials = ThreePIDCredentialsTchap(clientSecret: clientSecret,
                                                           sid: sid,
                                                           identityServerHost: identityServerHost)
             

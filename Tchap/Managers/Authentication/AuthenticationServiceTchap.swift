@@ -17,7 +17,7 @@
 import Foundation
 
 /// `AuthenticationService` implementation of `AuthenticationServiceType` is used to authenticate a user on Tchap platforms.
-final class AuthenticationService: AuthenticationServiceType {
+final class AuthenticationServiceTchap: AuthenticationServiceType {
     
     // MARK: - Properties
     

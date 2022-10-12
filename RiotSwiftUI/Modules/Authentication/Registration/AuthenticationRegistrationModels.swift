@@ -81,7 +81,8 @@ struct AuthenticationRegistrationViewState: BindableState {
     var usernameFooterMessage: String {
         switch usernameAvailability {
         case .unknown:
-            return VectorL10n.authenticationRegistrationUsernameFooter
+            // Tchap: Remove message from authentication e-mail
+            return ""//VectorL10n.authenticationRegistrationUsernameFooter
         case .invalid(let errorMessage):
             return errorMessage
         case .available:

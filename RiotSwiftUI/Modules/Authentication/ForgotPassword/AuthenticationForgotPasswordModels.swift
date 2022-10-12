@@ -41,7 +41,8 @@ struct AuthenticationForgotPasswordViewState: BindableState {
     
     /// The message shown in the header while asking for an email address to be entered.
     var formHeaderMessage: String {
-        VectorL10n.authenticationForgotPasswordInputMessage(homeserver.address)
+        // Tchap: Replace URL by app name.
+        VectorL10n.authenticationForgotPasswordInputMessage(BuildSettings.bundleDisplayName/*homeserver.address*/)
     }
     
     /// Whether the email address is valid and the user can continue.

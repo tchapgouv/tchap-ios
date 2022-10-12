@@ -40,7 +40,7 @@ final class ForgotPasswordService: ForgotPasswordServiceType {
     
     // MARK: - Public
     
-    func validateParametersAndRequestForgotPasswordEmail(password: String?, email: String, completion: @escaping (MXResponse<ThreePIDCredentials>) -> Void) -> MXHTTPOperation {
+    func validateParametersAndRequestForgotPasswordEmail(password: String?, email: String, completion: @escaping (MXResponse<ThreePIDCredentialsTchap>) -> Void) -> MXHTTPOperation {
         // Create an empty operation that will be mutated later
         let operation = MXHTTPOperation()
         
@@ -69,7 +69,7 @@ final class ForgotPasswordService: ForgotPasswordServiceType {
         return operation
     }
     
-    func resetPassword(withEmailCredentials threePIDCredentials: ThreePIDCredentials, newPassword: String, completion: @escaping (MXResponse<Void>) -> Void) -> MXHTTPOperation {
+    func resetPassword(withEmailCredentials threePIDCredentials: ThreePIDCredentialsTchap, newPassword: String, completion: @escaping (MXResponse<Void>) -> Void) -> MXHTTPOperation {
         
         let resetPasswordParameters: [String: Any] = [
             "auth":
@@ -89,7 +89,7 @@ final class ForgotPasswordService: ForgotPasswordServiceType {
     
     // MARK: - Private
     
-    private func requestForgotPasswordEmail(to email: String, using restClient: MXRestClient, completion: @escaping (MXResponse<ThreePIDCredentials>) -> Void) -> MXHTTPOperation? {
+    private func requestForgotPasswordEmail(to email: String, using restClient: MXRestClient, completion: @escaping (MXResponse<ThreePIDCredentialsTchap>) -> Void) -> MXHTTPOperation? {
         guard let identityServer = restClient.identityServer,
             let identityServerURL = URL(string: identityServer),
             let identityServerHost = identityServerURL.host else {
@@ -108,7 +108,7 @@ final class ForgotPasswordService: ForgotPasswordServiceType {
                 return
             }
             
-            let threePIDCredentials = ThreePIDCredentials(clientSecret: clientSecret, sid: sid, identityServerHost: identityServerHost)
+            let threePIDCredentials = ThreePIDCredentialsTchap(clientSecret: clientSecret, sid: sid, identityServerHost: identityServerHost)
             completion(MXResponse.success(threePIDCredentials))
         }, failure: { error in
             if let error = error {

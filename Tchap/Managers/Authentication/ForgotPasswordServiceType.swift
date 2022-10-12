@@ -27,7 +27,7 @@ protocol ForgotPasswordServiceType {
     ///   - password: (optional) The password to check against the policy.
     ///   - email: The user email.
     ///   - completion: A closure called when the operation succeeds. Provide the three PID credentials.
-    func validateParametersAndRequestForgotPasswordEmail(password: String?, email: String, completion: @escaping (MXResponse<ThreePIDCredentials>) -> Void) -> MXHTTPOperation
+    func validateParametersAndRequestForgotPasswordEmail(password: String?, email: String, completion: @escaping (MXResponse<ThreePIDCredentialsTchap>) -> Void) -> MXHTTPOperation
     
     /// Reset user password.
     ///
@@ -35,5 +35,5 @@ protocol ForgotPasswordServiceType {
     ///   - threePIDCredentials: The user three PID credentials given by forgot password email.
     ///   - newPassword: The new user password.
     ///   - completion: A closure called when the operation complete.
-    func resetPassword(withEmailCredentials threePIDCredentials: ThreePIDCredentials, newPassword: String, completion: @escaping (MXResponse<Void>) -> Void) -> MXHTTPOperation
+    func resetPassword(withEmailCredentials threePIDCredentials: ThreePIDCredentialsTchap, newPassword: String, completion: @escaping (MXResponse<Void>) -> Void) -> MXHTTPOperation
 }

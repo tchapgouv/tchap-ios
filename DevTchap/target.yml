@@ -35,6 +35,7 @@ targets:
     - target: RiotNSE
     - target: DesignKit
     - target: CommonKit
+    - package: OrderedCollections
 
     configFiles:
       Debug: SupportingFiles/DevTchap-App-Debug.xcconfig
@@ -97,6 +98,10 @@ targets:
         - "SupportingFiles/Info.plist"
         - "**/*.strings" # Exclude all strings files
         - "**/*.cer"
+        - "Managers/Authentication"
+        - "Managers/Registration"
+        - "Modules/Authentication"
+        - "Modules/Registration"
     - path: ../Tchap/Generated/Images_Riot.swift
     - path: ../Tchap/Modules/Application/VersionUpdate
     - path: ../Tchap/Modules/Room/Views/BubbleCells/Antivirus
@@ -116,9 +121,6 @@ targets:
     - path: ../Riot/Assets/Sounds
     - path: ../Riot/Assets/third_party_licenses.html
     - path: ../Riot/Categories
-      excludes:
-        - "MXHTTPClient+Async.swift"
-        - "MXRestClient+Async.swift"
     - path: ../Riot/Coordinators
     - path: ../Riot/Generated/UntranslatedStrings.swift
     - path: ../Riot/Generated/Vector_Strings.swift
@@ -151,7 +153,9 @@ targets:
     - path: ../Riot/Model/WellKnown
     - path: ../Riot/Modules/Analytics
     - path: ../Riot/Modules/Application
-    - path: ../Riot/Modules/Authentication/SSO
+    - path: ../Riot/Modules/Authentication
+      excludes:
+        - "Legacy"
     - path: ../Riot/Modules/BadgeLabel
     - path: ../Riot/Modules/BugReport/BugReportViewController.h
     - path: ../Riot/Modules/BugReport/BugReportViewController.m
@@ -266,20 +270,12 @@ targets:
       # Riot will provide it's own LocaleProviderType so exclude.
       excludes:
       - "**/Test/**"
-      - "Authentication/**/Coordinator/**"
-      - "Authentication/Common/Service/MatrixSDK/AuthenticationPendingData.swift"
-      - "Authentication/Common/Service/MatrixSDK/AuthenticationService.swift"
-      - "Authentication/Common/Service/MatrixSDK/AuthenticationState.swift"
-      - "Authentication/Common/Service/MatrixSDK/RegistrationModels.swift"
-      - "Authentication/Common/Service/MatrixSDK/RegistrationWizard.swift"
-      - "Authentication/Common/Service/MatrixSDK/ThreePIDModels.swift"
-      - "Authentication/Registration"
-      - "Authentication/ServerSelection"
       - "Common/Locale/LocaleProvider.swift"
       - "LocationSharing"
       - "Room/LiveLocationSharingViewer"
       - "Room/LocationSharing"
       - "Room/StaticLocationSharingViewer"
+      - "Settings/ChangePassword"
 
     # Share extension
     - path: ../RiotShareExtension/Shared
