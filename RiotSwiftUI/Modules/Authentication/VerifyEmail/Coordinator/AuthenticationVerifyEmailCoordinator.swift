@@ -56,7 +56,7 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
     @MainActor init(parameters: AuthenticationVerifyEmailCoordinatorParameters) {
         self.parameters = parameters
         
-        let viewModel = AuthenticationVerifyEmailViewModel(homeserver: parameters.homeserver.viewData)
+        let viewModel = AuthenticationVerifyEmailViewModel(/*homeserver: parameters.homeserver.viewData*/)
         let view = AuthenticationVerifyEmailScreen(viewModel: viewModel.context)
         authenticationVerifyEmailViewModel = viewModel
         authenticationVerifyEmailHostingController = VectorHostingController(rootView: view)
@@ -94,6 +94,8 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
                 self.callback?(.cancel)
             case .goBack:
                 self.authenticationVerifyEmailViewModel.goBackToEnterEmailForm()
+            case .sendPassword(let password):
+                self.createAccount(password: password)
             }
         }
     }
@@ -196,6 +198,68 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
         }
         
         // TODO: Handle another other error types as needed.
+        
+        authenticationVerifyEmailViewModel.displayError(.unknown)
+    }
+    
+    // Tchap: Add account creation part in this class
+    /// Creates an account on the homeserver with the supplied password.
+    @MainActor private func createAccount(password: String) {
+        let authService = AuthenticationService.shared
+        let registrationWizard = authService.registrationWizard
+        guard let registrationWizard = registrationWizard else {
+            MXLog.failure("[AuthenticationRegistrationCoordinator] createAccount: The registration wizard is nil.")
+            return
+        }
+        
+        startLoading()
+        
+        currentTask = Task { [weak self] in
+            do {
+                let result = try await registrationWizard.createAccount(username: nil,
+                                                                        password: password,
+                                                                        initialDeviceDisplayName: UIDevice.current.initialDisplayName)
+                
+                guard !Task.isCancelled else { return }
+                authenticationVerifyEmailViewModel.context.send(viewAction: .send)
+                
+                self?.stopLoading()
+            } catch {
+                self?.stopLoading()
+                self?.handleRegistrationError(error)
+            }
+        }
+    }
+    
+    /// Processes an error to either update the flow or display it to the user.
+    @MainActor private func handleRegistrationError(_ error: Error) {
+        if let mxError = MXError(nsError: error as NSError) {
+            authenticationVerifyEmailViewModel.displayError(.mxError(mxError.error))
+            return
+        }
+        
+        if let authenticationError = error as? AuthenticationError {
+            switch authenticationError {
+            case .invalidHomeserver:
+                authenticationVerifyEmailViewModel.displayError(.unknown/*.invalidHomeserver*/)
+            case .loginFlowNotCalled:
+                #warning("Reset the flow")
+            case .missingMXRestClient:
+                #warning("Forget the soft logout session")
+            }
+            return
+        }
+        
+        if let registrationError = error as? RegistrationError {
+            switch registrationError {
+            case .registrationDisabled:
+                authenticationVerifyEmailViewModel.displayError(.unknown/*.registrationDisabled*/)
+            case .createAccountNotCalled, .missingThreePIDData, .missingThreePIDURL, .threePIDClientFailure, .threePIDValidationFailure, .waitingForThreePIDValidation, .invalidPhoneNumber:
+                // Shouldn't happen at this stage
+                authenticationVerifyEmailViewModel.displayError(.unknown)
+            }
+            return
+        }
         
         authenticationVerifyEmailViewModel.displayError(.unknown)
     }

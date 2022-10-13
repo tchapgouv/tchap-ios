@@ -194,7 +194,8 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
     }
     
     @MainActor private func parseUsername(_ username: String) {
-        guard MXTools.isMatrixUserIdentifier(username) else { return }
+        // Tchap: Use e-mail address instead of a Matrix username.
+        guard MXTools.isEmailAddress(username) else { return }
         let domain = username.components(separatedBy: ":")[1]
         let homeserverAddress = HomeserverAddress.sanitized(domain)
         

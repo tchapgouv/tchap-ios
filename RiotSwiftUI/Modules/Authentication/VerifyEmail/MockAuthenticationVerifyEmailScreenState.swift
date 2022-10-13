@@ -35,16 +35,17 @@ enum MockAuthenticationVerifyEmailScreenState: MockScreenState, CaseIterable {
     /// Generate the view struct for the screen state.
     var screenView: ([Any], AnyView)  {
         let viewModel: AuthenticationVerifyEmailViewModel
+        // Tchap: No homeserver
         switch self {
         case .emptyAddress:
-            viewModel = AuthenticationVerifyEmailViewModel(homeserver: .mockMatrixDotOrg,
-                                                           emailAddress: "")
+            viewModel = AuthenticationVerifyEmailViewModel(/*homeserver: .mockMatrixDotOrg,
+                                                           */emailAddress: "", password: "")
         case .enteredAddress:
-            viewModel = AuthenticationVerifyEmailViewModel(homeserver: .mockMatrixDotOrg,
-                                                           emailAddress: "test@example.com")
+            viewModel = AuthenticationVerifyEmailViewModel(/*homeserver: .mockMatrixDotOrg,
+                                                           */emailAddress: "test@example.com")
         case .hasSentEmail:
-            viewModel = AuthenticationVerifyEmailViewModel(homeserver: .mockMatrixDotOrg,
-                                                           emailAddress: "test@example.com")
+            viewModel = AuthenticationVerifyEmailViewModel(/*homeserver: .mockMatrixDotOrg,
+                                                           */emailAddress: "test@example.com")
             Task { await viewModel.updateForSentEmail() }
         }
         

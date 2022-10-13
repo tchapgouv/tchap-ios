@@ -31,9 +31,12 @@ class AuthenticationVerifyEmailViewModel: AuthenticationVerifyEmailViewModelType
 
     // MARK: - Setup
 
-    init(homeserver: AuthenticationHomeserverViewData, emailAddress: String = "") {
-        let viewState = AuthenticationVerifyEmailViewState(homeserver: homeserver,
-                                                           bindings: AuthenticationVerifyEmailBindings(emailAddress: emailAddress))
+    // Tchap: Remove homeserver from parameters list
+    init(/*homeserver: AuthenticationHomeserverViewData,*/
+         emailAddress: String = "",
+         password: String = "") {
+        let viewState = AuthenticationVerifyEmailViewState(/*homeserver: homeserver,
+                                                           */bindings: AuthenticationVerifyEmailBindings(emailAddress: emailAddress, password: password))
         super.init(initialViewState: viewState)
     }
 
@@ -49,6 +52,8 @@ class AuthenticationVerifyEmailViewModel: AuthenticationVerifyEmailViewModelType
             Task { await callback?(.cancel) }
         case .goBack:
             Task { await callback?(.goBack) }
+        case .sendPassword: // Tchap: Add sendPassword specific case
+            Task { await callback?(.sendPassword(state.bindings.password)) }
         }
     }
     

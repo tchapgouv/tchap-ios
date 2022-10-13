@@ -26,6 +26,7 @@ struct AuthenticationVerifyEmailForm: View {
     @Environment(\.theme) private var theme
     
     @State private var isEditingTextField = false
+    @State private var isPasswordFocused = false
     
     // MARK: Public
     
@@ -46,38 +47,62 @@ struct AuthenticationVerifyEmailForm: View {
     /// The title, message and icon at the top of the screen.
     var header: some View {
         VStack(spacing: 8) {
-            OnboardingIconImage(image: Asset.Images.authenticationEmailIcon)
+            // Tchap: Replace onboarding icon
+            OnboardingIconImage(image: Asset.Images.onboardingCongratulationsIcon)
                 .padding(.bottom, 8)
             
-            Text(VectorL10n.authenticationVerifyEmailInputTitle)
+            // Tchap: Add registration title
+            Text(VectorL10n.authenticationRegistrationTitle)
                 .font(theme.fonts.title2B)
                 .multilineTextAlignment(.center)
                 .foregroundColor(theme.colors.primaryContent)
-                .accessibilityIdentifier("titleLabel")
-            
-            Text(viewModel.viewState.formHeaderMessage)
-                .font(theme.fonts.body)
-                .multilineTextAlignment(.center)
-                .foregroundColor(theme.colors.secondaryContent)
-                .accessibilityIdentifier("messageLabel")
+
+            // Tchap: Hide other header fields
+//            Text(VectorL10n.authenticationVerifyEmailInputTitle)
+//                .font(theme.fonts.title2B)
+//                .multilineTextAlignment(.center)
+//                .foregroundColor(theme.colors.primaryContent)
+//                .accessibilityIdentifier("titleLabel")
+//
+//            Text(viewModel.viewState.formHeaderMessage)
+//                .font(theme.fonts.body)
+//                .multilineTextAlignment(.center)
+//                .foregroundColor(theme.colors.secondaryContent)
+//                .accessibilityIdentifier("messageLabel")
         }
     }
     
     /// The text field and submit button where the user enters an email address.
     var mainContent: some View {
         VStack(alignment: .leading, spacing: 12) {
-            if #available(iOS 15.0, *) {
+            // Tchap: Remove the ability to submit just with the e-mail field content
+//            if #available(iOS 15.0, *) {
+//                textField
+//                    .onSubmit(submit)
+//            } else {
                 textField
-                    .onSubmit(submit)
-            } else {
-                textField
-            }
+//            }
             
+            // Tchap: Add password management
+            RoundedBorderTextField(title: nil,
+                                   placeHolder: VectorL10n.authPasswordPlaceholder,
+                                   text: $viewModel.password,
+                                           footerText: VectorL10n.authenticationRegistrationPasswordFooter,
+                                   isError: viewModel.viewState.hasEditedPassword && viewModel.viewState.isPasswordInvalid,
+                                   isFirstResponder: isEditingTextField,//isPasswordFocused,
+                                   configuration: UIKitTextInputConfiguration(returnKeyType: .done,
+                                                                              isSecureTextEntry: true),
+                                   onEditingChanged: nil,//passwordEditingChanged,
+                                   onCommit: submit)
+            .accessibilityIdentifier("passwordTextField")
+            
+            // Tchap: Update condition for activation
             Button(action: submit) {
                 Text(VectorL10n.next)
             }
             .buttonStyle(PrimaryActionButtonStyle())
-            .disabled(viewModel.viewState.hasInvalidAddress)
+            .disabled(!viewModel.viewState.canSubmit)
+//            .disabled(viewModel.viewState.hasInvalidAddress)
             .accessibilityIdentifier("nextButton")
         }
     }
@@ -94,9 +119,20 @@ struct AuthenticationVerifyEmailForm: View {
         .accessibilityIdentifier("addressTextField")
     }
     
+    // Tchap: Add password management
+    /// Enables password validation the first time the user finishes editing.
+    /// Additionally resets the password field focus.
+    func passwordEditingChanged(isEditing: Bool) {
+        guard !isEditing else { return }
+        isPasswordFocused = false
+        
+        guard !viewModel.viewState.hasEditedPassword else { return }
+        viewModel.send(viewAction: .sendPassword)
+    }
+    
     /// Sends the `send` view action so long as a valid email address has been input.
     func submit() {
         guard !viewModel.viewState.hasInvalidAddress else { return }
-        viewModel.send(viewAction: .send)
+        viewModel.send(viewAction: .sendPassword)
     }
 }

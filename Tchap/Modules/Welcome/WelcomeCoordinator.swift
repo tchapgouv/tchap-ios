@@ -84,7 +84,7 @@ final class WelcomeCoordinator: WelcomeCoordinatorType {
     }
     
     // Start login flow by updating AuthenticationService
-    func updateAuthServiceForDirectAuthentication() async {
+    private func updateAuthServiceForDirectAuthentication() async {
         let authService = AuthenticationService.shared
         authService.reset()
         do {
@@ -94,16 +94,50 @@ final class WelcomeCoordinator: WelcomeCoordinatorType {
         }
     }
     
-    private func showRegistration() {
-//        let registrationCoordinator = RegistrationCoordinator(router: self.navigationRouter)
-//        registrationCoordinator.delegate = self
-//        registrationCoordinator.start()
-//
-//        self.navigationRouter.push(registrationCoordinator, animated: true) {
-//            self.remove(childCoordinator: registrationCoordinator)
-//        }
-//
-//        self.add(childCoordinator: registrationCoordinator)
+    @MainActor private func showRegistration() async {
+        let authenticationService = AuthenticationService.shared
+        do {
+            try await authenticationService.startFlow(.register)
+        } catch {
+            MXLog.error("[WelcomeCoordinator] showRegistration error")
+        }
+        guard let registrationWizard = authenticationService.registrationWizard else {
+            return
+        }
+        let parameters = AuthenticationVerifyEmailCoordinatorParameters(registrationWizard: registrationWizard,
+                                                                        homeserver: authenticationService.state.homeserver)
+        let coordinator = AuthenticationVerifyEmailCoordinator(parameters: parameters)
+        coordinator.callback = { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .cancel:
+                MXLog.warning("[WelcomeCoordinator] Registration cancelled")
+                self.cancelRegisterFlow()
+            case .completed(let registrationResult):
+                switch registrationResult {
+                case .success:
+                    self.delegate?.welcomeCoordinatorUserDidAuthenticate(self)
+                case .flowResponse:
+                    MXLog.warning("[WelcomeCoordinator] flowResponse")
+                }
+            }
+        }
+        
+        coordinator.start()
+        add(childCoordinator: coordinator)
+        
+        if navigationRouter.modules.isEmpty {
+            navigationRouter.setRootModule(coordinator, popCompletion: nil)
+        } else {
+            navigationRouter.push(coordinator, animated: true) { [weak self] in
+                self?.remove(childCoordinator: coordinator)
+            }
+        }
+    }
+    
+    /// Cancels the registration flow, returning to the Welcome screen.
+    private func cancelRegisterFlow() {
+        navigationRouter.popAllModules(animated: false)
     }
 }
 
@@ -115,20 +149,9 @@ extension WelcomeCoordinator: WelcomeViewControllerDelegate {
         }
     }
     
-    func welcomeViewControllerDidTapRegisterButton(_ welcomeViewController: WelcomeViewController) {
-        self.showRegistration()
+    @MainActor func welcomeViewControllerDidTapRegisterButton(_ welcomeViewController: WelcomeViewController) {
+        Task {
+            await self.showRegistration()
+        }
     }
 }
-
-// MARK: - AuthenticationCoordinatorDelegate
-//extension WelcomeCoordinator: RegistrationCoordinatorDelegate {
-//    
-//    func registrationCoordinatorDidRegisterUser(_ coordinator: RegistrationCoordinatorType) {
-//        self.delegate?.welcomeCoordinatorUserDidAuthenticate(self)
-//    }
-//    
-//    func registrationCoordinatorShowAuthentication(_ coordinator: RegistrationCoordinatorType) {
-//        self.navigationRouter.popToRootModule(animated: false)
-//        self.showAuthentication()
-//    }
-//}
