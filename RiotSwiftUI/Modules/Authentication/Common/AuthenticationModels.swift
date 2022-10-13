@@ -96,6 +96,24 @@ class HomeserverAddress: NSObject {
         
         return address
     }
+    
+    // Tchap: Add function to find the right IS from the e-mail address (if available).
+    /// Returns the IS corresponding to the domain in parameters, if available.
+    /// Else, find a random server in the IS list.
+    static func homeServerAddress(from domain: String) -> String {
+        let homeServerPrefixURL = BuildSettings.serverUrlPrefix
+        let preferredKnownHosts = BuildSettings.preferredIdentityServerNames
+        
+        let identityServer = preferredKnownHosts.first(where: { $0.contains(domain) })
+        
+        guard let identityServer = identityServer else {
+            MXLog.warning("[HomeserverAddress] homeServerAddress : Domain did not match with IS list.")
+            let randomIndex = Int(arc4random_uniform(UInt32(preferredKnownHosts.count)))
+            return "\(homeServerPrefixURL)\(preferredKnownHosts[randomIndex])"
+        }
+        
+        return "\(homeServerPrefixURL)\(identityServer)"
+    }
 }
 
 /// Represents an SSO Identity Provider as provided in a login flow.

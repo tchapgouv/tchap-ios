@@ -27,6 +27,7 @@ enum AuthenticationVerifyEmailViewModelResult {
     case cancel
     /// Go back to the email form
     case goBack
+    // Tchap: Add sendPassword case
     /// Send the password.
     case sendPassword(String)
 }

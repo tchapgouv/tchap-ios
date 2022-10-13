@@ -112,6 +112,9 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
     
     /// Sends a validation email to the supplied address and then begins polling the server.
     @MainActor private func sendEmail(_ address: String) {
+        // Tchap: Validate e-mail address to update (if needed) the IS
+        validateEmailAddress(address)
+
         let threePID = RegisterThreePID.email(address.trimmingCharacters(in: .whitespaces))
         
         startLoading()
@@ -208,7 +211,7 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
         let authService = AuthenticationService.shared
         let registrationWizard = authService.registrationWizard
         guard let registrationWizard = registrationWizard else {
-            MXLog.failure("[AuthenticationRegistrationCoordinator] createAccount: The registration wizard is nil.")
+            MXLog.failure("[AuthenticationVerifyEmailCoordinator] createAccount: The registration wizard is nil.")
             return
         }
         
@@ -221,7 +224,19 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
                                                                         initialDeviceDisplayName: UIDevice.current.initialDisplayName)
                 
                 guard !Task.isCancelled else { return }
-                authenticationVerifyEmailViewModel.context.send(viewAction: .send)
+                
+                switch result {
+                case .flowResponse(let flowResult):
+                    if flowResult.missingStages.contains(.email(isMandatory: true)) {
+                        authenticationVerifyEmailViewModel.context.send(viewAction: .send)
+                    } else {
+                        // Should not happen.
+                        MXLog.error("[AuthenticationVerifyEmailCoordinator] createAccount flowResponse with no e-mail missing !")
+                    }
+                case .success:
+                    MXLog.debug("[AuthenticationVerifyEmailCoordinator] createAccount success")
+                    // How to manage this ? Dismiss STG or redirect to another step ?
+                }
                 
                 self?.stopLoading()
             } catch {
@@ -262,5 +277,23 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
         }
         
         authenticationVerifyEmailViewModel.displayError(.unknown)
+    }
+    
+    /// Validate e-mail address and update flow with new domain.
+    @MainActor private func validateEmailAddress(_ address: String) {
+        guard MXTools.isEmailAddress(address) else { return }
+        let domain = address.components(separatedBy: "@")[1]
+        let homeserverAddress = HomeserverAddress.homeServerAddress(from: domain)
+        
+        // Update HS only if different from the current one.
+        if AuthenticationService.shared.client.homeserver != homeserverAddress {
+            currentTask = Task { [weak self] in
+                do {
+                    try await AuthenticationService.shared.startFlow(.register, for: homeserverAddress)
+                } catch {
+                    self?.handleError(error)
+                }
+            }
+        }
     }
 }
