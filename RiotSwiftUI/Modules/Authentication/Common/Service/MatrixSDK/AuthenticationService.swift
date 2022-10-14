@@ -71,20 +71,14 @@ class AuthenticationService: NSObject {
     
     // Tchap: Check for a default home server.
     var defaultHomeServer: String {
-        let homeServerPrefixURL = BuildSettings.serverUrlPrefix
-        let preferredKnownHosts = BuildSettings.preferredIdentityServerNames
-        let index = Int(arc4random_uniform(UInt32(preferredKnownHosts.count)))
-        return "\(homeServerPrefixURL)\(preferredKnownHosts[index])"
+        return HomeserverAddress.homeServerAddress()
     }
     
     // MARK: - Setup
     
     init(sessionCreator: SessionCreatorProtocol = SessionCreator()) {
         // Tchap: Customize default home server.
-        let homeServerPrefixURL = BuildSettings.serverUrlPrefix
-        let preferredKnownHosts = BuildSettings.preferredIdentityServerNames
-        let index = Int(arc4random_uniform(UInt32(preferredKnownHosts.count)))
-        let defaultServer = "\(homeServerPrefixURL)\(preferredKnownHosts[index])"
+        let defaultServer = HomeserverAddress.homeServerAddress()
         guard let homeserverURL = URL(string: defaultServer /*BuildSettings.serverConfigDefaultHomeserverUrlString*/) else {
             MXLog.failure("[AuthenticationService]: Failed to create URL from default homeserver URL string.")
             fatalError("Invalid default homeserver URL string.")

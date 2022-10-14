@@ -105,4 +105,9 @@ enum AuthenticationVerifyEmailErrorType: Hashable {
     case mxError(String)
     /// An unknown error occurred.
     case unknown
+    // Tchap: Add Tchap cases
+    /// The current homeserver address isn't valid.
+    case invalidHomeserver
+    /// The homeserver doesn't support registration.
+    case registrationDisabled
 }

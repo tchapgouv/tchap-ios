@@ -231,11 +231,11 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
                         authenticationVerifyEmailViewModel.context.send(viewAction: .send)
                     } else {
                         // Should not happen.
-                        MXLog.error("[AuthenticationVerifyEmailCoordinator] createAccount flowResponse with no e-mail missing !")
+                        MXLog.error("[AuthenticationVerifyEmailCoordinator] createAccount flowResponse with no e-mail missing stage !")
                     }
                 case .success:
                     MXLog.debug("[AuthenticationVerifyEmailCoordinator] createAccount success")
-                    // How to manage this ? Dismiss STG or redirect to another step ?
+                    self?.callback?(.completed(result))
                 }
                 
                 self?.stopLoading()
@@ -256,7 +256,7 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
         if let authenticationError = error as? AuthenticationError {
             switch authenticationError {
             case .invalidHomeserver:
-                authenticationVerifyEmailViewModel.displayError(.unknown/*.invalidHomeserver*/)
+                authenticationVerifyEmailViewModel.displayError(.invalidHomeserver)
             case .loginFlowNotCalled:
                 #warning("Reset the flow")
             case .missingMXRestClient:
@@ -268,7 +268,7 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
         if let registrationError = error as? RegistrationError {
             switch registrationError {
             case .registrationDisabled:
-                authenticationVerifyEmailViewModel.displayError(.unknown/*.registrationDisabled*/)
+                authenticationVerifyEmailViewModel.displayError(.registrationDisabled)
             case .createAccountNotCalled, .missingThreePIDData, .missingThreePIDURL, .threePIDClientFailure, .threePIDValidationFailure, .waitingForThreePIDValidation, .invalidPhoneNumber:
                 // Shouldn't happen at this stage
                 authenticationVerifyEmailViewModel.displayError(.unknown)

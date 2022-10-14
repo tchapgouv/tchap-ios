@@ -73,6 +73,14 @@ class AuthenticationVerifyEmailViewModel: AuthenticationVerifyEmailViewModelType
                                                  message: message)
         case .unknown:
             state.bindings.alertInfo = AlertInfo(id: type)
+        case .invalidHomeserver:
+            state.bindings.alertInfo = AlertInfo(id: type,
+                                                 title: VectorL10n.error,
+                                                 message: VectorL10n.authenticationServerSelectionGenericError)
+        case .registrationDisabled:
+            state.bindings.alertInfo = AlertInfo(id: type,
+                                                 title: VectorL10n.error,
+                                                 message: VectorL10n.loginErrorRegistrationIsNotSupported)
         }
     }
 }
