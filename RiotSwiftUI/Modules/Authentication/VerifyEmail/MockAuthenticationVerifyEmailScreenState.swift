@@ -39,7 +39,7 @@ enum MockAuthenticationVerifyEmailScreenState: MockScreenState, CaseIterable {
         switch self {
         case .emptyAddress:
             viewModel = AuthenticationVerifyEmailViewModel(/*homeserver: .mockMatrixDotOrg,
-                                                           */emailAddress: "", password: "")
+                                                           */emailAddress: "")
         case .enteredAddress:
             viewModel = AuthenticationVerifyEmailViewModel(/*homeserver: .mockMatrixDotOrg,
                                                            */emailAddress: "test@example.com")

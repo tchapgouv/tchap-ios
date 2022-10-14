@@ -132,9 +132,9 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
                                                                              target:self
                                                                              action:@selector(onButtonPressed:)];
     
-//    self.defaultHomeServerUrl = RiotSettings.shared.homeserverUrlString;
+    self.defaultHomeServerUrl = RiotSettings.shared.homeserverUrlString;
     
-//    self.defaultIdentityServerUrl = RiotSettings.shared.identityServerUrlString;
+    self.defaultIdentityServerUrl = RiotSettings.shared.identityServerUrlString;
     
     self.welcomeImageView.image = AssetSharedImages.horizontalLogo.image;
     

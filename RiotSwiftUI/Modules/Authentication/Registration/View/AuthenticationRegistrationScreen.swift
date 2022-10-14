@@ -118,7 +118,7 @@ struct AuthenticationRegistrationScreen: View {
             RoundedBorderTextField(title: nil,
                                    placeHolder: VectorL10n.authPasswordPlaceholder,
                                    text: $viewModel.password,
-                                           footerText: VectorL10n.authenticationRegistrationPasswordFooter,
+                                   footerText: VectorL10n.authenticationRegistrationPasswordFooter,
                                    isError: viewModel.viewState.hasEditedPassword && viewModel.viewState.isPasswordInvalid,
                                    isFirstResponder: isPasswordFocused,
                                    configuration: UIKitTextInputConfiguration(returnKeyType: .done,
