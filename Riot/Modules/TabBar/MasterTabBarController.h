@@ -62,14 +62,7 @@ typedef NS_ENUM(NSUInteger, MasterTabBarIndex) {
 - (void)filterRoomsWithParentId:(NSString*)roomParentId
                 inMatrixSession:(MXSession*)mxSession;
 
-<<<<<<< HEAD
-// Reference to the current onboarding flow. It is always nil unless the flow is being presented.
-@property (nonatomic, readonly) OnboardingCoordinatorBridgePresenter *onboardingCoordinatorBridgePresenter;
-
 //@property (nonatomic, readonly) HomeViewController *homeViewController;
-=======
-@property (nonatomic, readonly) HomeViewController *homeViewController;
->>>>>>> v1.9.8-hotfix
 @property (nonatomic, readonly) FavouritesViewController *favouritesViewController;
 @property (nonatomic, readonly) PeopleViewController *peopleViewController;
 @property (nonatomic, readonly) RoomsViewController *roomsViewController;

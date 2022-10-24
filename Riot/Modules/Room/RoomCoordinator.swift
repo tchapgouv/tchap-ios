@@ -225,37 +225,6 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
     private func loadRoom(withId roomId: String, andThreadId threadId: String, eventId: String?, completion: (() -> Void)?) {
         
         // Present activity indicator when retrieving roomDataSource for given room ID
-<<<<<<< HEAD
-//        startLoading()
-//
-//        // Open the thread on the requested event
-//        ThreadDataSource.load(withRoomId: roomId,
-//                              initialEventId: eventId,
-//                              threadId: threadId,
-//                              andMatrixSession: self.parameters.session) { [weak self] (dataSource) in
-//
-//            guard let self = self else {
-//                return
-//            }
-//
-//            self.stopLoading()
-//
-//            guard let threadDataSource = dataSource as? ThreadDataSource else {
-//                return
-//            }
-//
-//            threadDataSource.markTimelineInitialEvent = false
-//            threadDataSource.highlightedEventId = eventId
-//            self.roomViewController.displayRoom(threadDataSource)
-//
-//            // Give the data source ownership to the room view controller.
-//            self.roomViewController.hasRoomDataSourceOwnership = true
-//
-//            self.mxSession?.updateBreadcrumbsWithRoom(withId: roomId, success: nil, failure: nil)
-//
-//            completion?()
-//        }
-=======
         startLoading()
         
         // Open the thread on the requested event
@@ -285,7 +254,6 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
 
             completion?()
         }
->>>>>>> v1.9.8-hotfix
     }
     
     private func loadRoom(withUserId userId: String) {
@@ -509,7 +477,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
 //            guard let self = self, let coordinator = coordinator else {
 //                return
 //            }
-//
+//            
 //            self.navigationRouter?.dismissModule(animated: true, completion: nil)
 //            self.remove(childCoordinator: coordinator)
 //        }
@@ -614,11 +582,7 @@ extension RoomCoordinator: RoomViewControllerDelegate {
     }
     
     func roomViewController(_ roomViewController: RoomViewController, startChatWithUserId userId: String, completion: @escaping () -> Void) {
-<<<<<<< HEAD
-//        AppDelegate.theDelegate().createDirectChat(withUserId: userId, completion: completion)
-=======
         AppDelegate.theDelegate().showNewDirectChat(userId, withMatrixSession: self.mxSession, completion: completion)
->>>>>>> v1.9.8-hotfix
     }
     
     func roomViewController(_ roomViewController: RoomViewController, showCompleteSecurityFor session: MXSession) {

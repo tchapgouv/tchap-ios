@@ -30,6 +30,10 @@ class AllChatsCoordinatorParameters {
 }
 
 class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
+    func presentInvitePeople() {
+        //
+    }
+    
     
     // MARK: Properties
     
@@ -55,7 +59,8 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
     
     private var currentSpaceId: String?
     
-    private weak var versionCheckCoordinator: VersionCheckCoordinator?
+    // Tchap: Tchap has not the same version check mecanism.
+//    private weak var versionCheckCoordinator: VersionCheckCoordinator?
     
     private var currentMatrixSession: MXSession? {
         return parameters.userSessionsService.mainUserSession?.matrixSession
@@ -124,9 +129,10 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
             self.registerUserSessionsServiceNotifications()
             self.registerSessionChange()
             
-            let versionCheckCoordinator = createVersionCheckCoordinator(withRootViewController: allChatsViewController, bannerPresentrer: allChatsViewController)
-            versionCheckCoordinator.start()
-            self.add(childCoordinator: versionCheckCoordinator)
+            // Tchap: Tchap has not the same version check mecanism.
+//            let versionCheckCoordinator = createVersionCheckCoordinator(withRootViewController: allChatsViewController, bannerPresentrer: allChatsViewController)
+//            versionCheckCoordinator.start()
+//            self.add(childCoordinator: versionCheckCoordinator)
         }
         
         self.allChatsViewController?.switchSpace(withId: spaceId)
@@ -139,7 +145,8 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
     }
     
     func releaseSelectedItems() {
-        self.allChatsViewController.releaseSelectedItem()
+        // Tchap: All chats view controller is part of the new app layout (not used in Tchap for the moment).
+//        self.allChatsViewController.releaseSelectedItem()
     }
     
     func popToHome(animated: Bool, completion: (() -> Void)?) {
@@ -664,13 +671,13 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
     }
     
     // MARK: - Private methods
-    
-    private func createVersionCheckCoordinator(withRootViewController rootViewController: UIViewController, bannerPresentrer: BannerPresentationProtocol) -> VersionCheckCoordinator {
-        let versionCheckCoordinator = VersionCheckCoordinator(rootViewController: rootViewController,
-                                                              bannerPresenter: bannerPresentrer,
-                                                              themeService: ThemeService.shared())
-        return versionCheckCoordinator
-    }
+    // Tchap: Tchap has not the same version check mecanism.
+//    private func createVersionCheckCoordinator(withRootViewController rootViewController: UIViewController, bannerPresentrer: BannerPresentationProtocol) -> VersionCheckCoordinator {
+//        let versionCheckCoordinator = VersionCheckCoordinator(rootViewController: rootViewController,
+//                                                              bannerPresenter: bannerPresentrer,
+//                                                              themeService: ThemeService.shared())
+//        return versionCheckCoordinator
+//    }
     
     private func showInviteFriends(from sourceView: UIView?) {
         let myUserId = self.parameters.userSessionsService.mainUserSession?.userId ?? ""
@@ -703,17 +710,18 @@ class AllChatsCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
                                   mediaManager: mediaManager)
     }
 
-    private func createUnifiedSearchController() -> UnifiedSearchViewController {
-        
-        let viewController: UnifiedSearchViewController = UnifiedSearchViewController.instantiate()
-        viewController.loadViewIfNeeded()
-        
-        for userSession in self.parameters.userSessionsService.userSessions {
-            viewController.addMatrixSession(userSession.matrixSession)
-        }
-        
-        return viewController
-    }
+    // Tchap: No unified search in Tchap.
+//    private func createUnifiedSearchController() -> UnifiedSearchViewController {
+//
+//        let viewController: UnifiedSearchViewController = UnifiedSearchViewController.instantiate()
+//        viewController.loadViewIfNeeded()
+//
+//        for userSession in self.parameters.userSessionsService.userSessions {
+//            viewController.addMatrixSession(userSession.matrixSession)
+//        }
+//
+//        return viewController
+//    }
     
     private func createSettingsViewController() -> SettingsViewController {
         let viewController: SettingsViewController = SettingsViewController.instantiate()

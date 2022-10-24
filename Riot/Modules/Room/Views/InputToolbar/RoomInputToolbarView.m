@@ -30,7 +30,7 @@ static const NSTimeInterval kActionMenuAttachButtonAnimationDuration = .4;
 static const NSTimeInterval kActionMenuContentAlphaAnimationDuration = .2;
 static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
 
-@interface RoomInputToolbarView() <UITextViewDelegate, RoomInputToolbarTextViewDelegate>
+@interface RoomInputToolbarView() <UITextViewDelegate, RoomInputToolbarTextViewDelegate, RoomInputToolbarViewProtocol>
 
 @property (nonatomic, weak) IBOutlet UIView *mainToolbarView;
 
@@ -257,7 +257,7 @@ static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
             self.textView.maxHeight -= kContextBarHeight;
             break;
         case RoomInputToolbarViewSendModeCreateDM:
-            buttonImage = AssetImages.sendIcon.image;
+            buttonImage = AssetImages_tchap.sendIcon.image;
             self.inputContextViewHeightConstraint.constant = 0;
             break;
         default:
@@ -541,6 +541,12 @@ static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
         
         self.voiceMessageToolbarView.alpha = attributedTextMessage.length ? 0.0f : 1.0;
     }];
+}
+
+#pragma mark - RoomInputToolbarViewProtocol
+
+- (CGFloat)toolbarHeight {
+    return self.mainToolbarHeightConstraint.constant;
 }
 
 @end

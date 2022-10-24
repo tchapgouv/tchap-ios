@@ -93,7 +93,8 @@ final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
             self.splitViewController.delegate = self
             
             // Create primary controller
-            let masterCoordinator: SplitViewMasterCoordinatorProtocol = BuildSettings.newAppLayoutEnabled ? self.createAllChatsCoordinator() : self.createTabBarCoordinator()
+            // Tchap: New Layout is disabled in Tchap.
+            let masterCoordinator: SplitViewMasterCoordinatorProtocol = /*BuildSettings.newAppLayoutEnabled ? self.createAllChatsCoordinator() :*/ self.createTabBarCoordinator()
             masterCoordinator.splitViewMasterPresentableDelegate = self
             masterCoordinator.start(with: spaceId)
             
@@ -168,7 +169,7 @@ final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
     }
 
     func presentInvitePeople() {
-        self.tabBarCoordinator?.presentInvitePeople()
+        masterCoordinator?.presentInvitePeople()
     }
     
     // MARK: - Private methods
@@ -177,13 +178,14 @@ final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
         return PlaceholderDetailViewController.instantiate()
     }
     
-    private func createAllChatsCoordinator() -> AllChatsCoordinator {
-        let coordinatorParameters = AllChatsCoordinatorParameters(userSessionsService: self.parameters.userSessionsService, appNavigator: self.parameters.appNavigator)
-        
-        let coordinator = AllChatsCoordinator(parameters: coordinatorParameters)
-        coordinator.delegate = self
-        return coordinator
-    }
+    // Tchap: New Layout is disabled in Tchap.
+//    private func createAllChatsCoordinator() -> AllChatsCoordinator {
+//        let coordinatorParameters = AllChatsCoordinatorParameters(userSessionsService: self.parameters.userSessionsService, appNavigator: self.parameters.appNavigator)
+//
+//        let coordinator = AllChatsCoordinator(parameters: coordinatorParameters)
+//        coordinator.delegate = self
+//        return coordinator
+//    }
     
     private func createTabBarCoordinator() -> TabBarCoordinator {
         

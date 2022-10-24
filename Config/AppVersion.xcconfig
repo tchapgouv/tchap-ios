@@ -15,10 +15,5 @@
 //
 
 // Version
-<<<<<<< HEAD
 MARKETING_VERSION = 2.1.0
 CURRENT_PROJECT_VERSION = 1
-=======
-MARKETING_VERSION = 1.9.8
-CURRENT_PROJECT_VERSION = 1.9.8
->>>>>>> v1.9.8-hotfix

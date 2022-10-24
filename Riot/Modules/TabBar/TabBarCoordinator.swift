@@ -313,19 +313,6 @@ final class TabBarCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
 //        return versionCheckCoordinator
 //    }
     
-<<<<<<< HEAD
-//    private func createAllChatsViewController() -> AllChatsViewControllerWithBannerWrapperViewController {
-//        let allChatsViewController = AllChatsViewController.instantiate()
-//        allChatsViewController.tabBarItem.tag = Int(TABBAR_HOME_INDEX)
-//        allChatsViewController.tabBarItem.image = allChatsViewController.tabBarItem.image
-//        allChatsViewController.accessibilityLabel = VectorL10n.allChatsTitle
-//        allChatsViewController.userIndicatorStore = UserIndicatorStore(presenter: indicatorPresenter)
-//
-//        let wrapperViewController = AllChatsViewControllerWithBannerWrapperViewController(viewController: allChatsViewController)
-//        return wrapperViewController
-//    }
-    
-    // Tchap: Disable Home
 //    private func createHomeViewController() -> HomeViewControllerWithBannerWrapperViewController {
 //        let homeViewController: HomeViewController = HomeViewController.instantiate()
 //        homeViewController.tabBarItem.tag = Int(TABBAR_HOME_INDEX)
@@ -336,18 +323,6 @@ final class TabBarCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
 //        let wrapperViewController = HomeViewControllerWithBannerWrapperViewController(viewController: homeViewController)
 //        return wrapperViewController
 //    }
-=======
-    private func createHomeViewController() -> HomeViewControllerWithBannerWrapperViewController {
-        let homeViewController: HomeViewController = HomeViewController.instantiate()
-        homeViewController.tabBarItem.tag = Int(TABBAR_HOME_INDEX)
-        homeViewController.tabBarItem.image = homeViewController.tabBarItem.image
-        homeViewController.accessibilityLabel = VectorL10n.titleHome
-        homeViewController.userIndicatorStore = UserIndicatorStore(presenter: indicatorPresenter)
-        
-        let wrapperViewController = HomeViewControllerWithBannerWrapperViewController(viewController: homeViewController)
-        return wrapperViewController
-    }
->>>>>>> v1.9.8-hotfix
     
     private func createFavouritesViewController() -> FavouritesViewController {
         let favouritesViewController: FavouritesViewController = FavouritesViewController.instantiate()
@@ -409,14 +384,9 @@ final class TabBarCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
     private func updateTabControllers(for tabBarController: MasterTabBarController, showCommunities: Bool) {
         var viewControllers: [UIViewController] = []
 
-<<<<<<< HEAD
         // Tchap: Disable Home
-//        let homeViewController = BuildSettings.newAppLayoutEnabled ? self.createAllChatsViewController() : self.createHomeViewController()
+//        let homeViewController = self.createHomeViewController()
 //        viewControllers.append(homeViewController)
-=======
-        let homeViewController = self.createHomeViewController()
-        viewControllers.append(homeViewController)
->>>>>>> v1.9.8-hotfix
         
         if !BuildSettings.newAppLayoutEnabled {
             if RiotSettings.shared.homeScreenShowFavouritesTab {
@@ -512,7 +482,7 @@ final class TabBarCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
             } else {
                 displayConfig = .default
             }
-
+            
             
             let roomCoordinatorParameters = RoomCoordinatorParameters(navigationRouterStore: NavigationRouterStore.shared,
                                                                       userIndicatorPresenter: detailUserIndicatorPresenter,
@@ -1000,7 +970,7 @@ final class TabBarCoordinator: NSObject, SplitViewMasterCoordinatorProtocol {
 //            // Showing coach message makes no sense with the new App Layout
 //            return
 //        }
-//
+//        
 //        if !RiotSettings.shared.slideMenuRoomsCoachMessageHasBeenDisplayed {
 //            let isAuthenticated = MXKAccountManager.shared().activeAccounts.first != nil || MXKAccountManager.shared().accounts.first?.isSoftLogout == false
 //

@@ -118,13 +118,12 @@ final class SpaceSettingsModalCoordinator: Coordinator {
     }
     
     private func exploreRooms(ofSpaceWithId spaceId: String) {
-<<<<<<< HEAD
         // Tchap: Disable Spaces
 //        let coordinator = ExploreRoomCoordinator(session: parameters.session, spaceId: spaceId)
 //        coordinator.delegate = self
 //        add(childCoordinator: coordinator)
 //        coordinator.start()
-//        self.navigationRouter.present(coordinator.toPresentable(), animated: true)
+//        navigationRouter.present(coordinator.toPresentable(), animated: true)
     }
     
     private func showMembers(ofSpaceWithId spaceId: String) {
@@ -133,7 +132,7 @@ final class SpaceSettingsModalCoordinator: Coordinator {
 //        coordinator.delegate = self
 //        add(childCoordinator: coordinator)
 //        coordinator.start()
-//        self.navigationRouter.present(coordinator.toPresentable(), animated: true)
+//        navigationRouter.present(coordinator.toPresentable(), animated: true)
     }
     
     private func showAccess(ofSpaceWithId spaceId: String) {
@@ -160,57 +159,15 @@ final class SpaceSettingsModalCoordinator: Coordinator {
 //        }
 //        add(childCoordinator: coordinator)
 //        coordinator.start()
-//        self.navigationRouter.present(coordinator.toPresentable(), animated: true)
-=======
-        let coordinator = ExploreRoomCoordinator(session: parameters.session, spaceId: spaceId)
-        coordinator.delegate = self
-        add(childCoordinator: coordinator)
-        coordinator.start()
-        navigationRouter.present(coordinator.toPresentable(), animated: true)
-    }
-    
-    private func showMembers(ofSpaceWithId spaceId: String) {
-        let coordinator = SpaceMembersCoordinator(parameters: SpaceMembersCoordinatorParameters(userSessionsService: UserSessionsService.shared, session: parameters.session, spaceId: spaceId))
-        coordinator.delegate = self
-        add(childCoordinator: coordinator)
-        coordinator.start()
-        navigationRouter.present(coordinator.toPresentable(), animated: true)
-    }
-    
-    private func showAccess(ofSpaceWithId spaceId: String) {
-        guard let room = parameters.session.room(withRoomId: spaceId) else {
-            return
-        }
-        // Needed more tests on synaose side before starting space upgrade implementation
-        let coordinator = RoomAccessCoordinator(parameters: RoomAccessCoordinatorParameters(room: room, parentSpaceId: parameters.parentSpaceId, allowsRoomUpgrade: false))
-        coordinator.callback = { [weak self] result in
-            guard let self = self else { return }
-            
-            switch result {
-            case .cancel(let roomId), .done(let roomId):
-                if roomId != spaceId {
-                    // TODO: room has been upgraded
-                    self.upgradedRoomId = roomId
-                }
-                
-                self.navigationRouter.dismissModule(animated: true, completion: {
-                    self.remove(childCoordinator: coordinator)
-                })
-            }
-        }
-        add(childCoordinator: coordinator)
-        coordinator.start()
-        navigationRouter.present(coordinator.toPresentable(), animated: true)
->>>>>>> v1.9.8-hotfix
+//        navigationRouter.present(coordinator.toPresentable(), animated: true)
     }
 }
 
 // MARK: - ExploreRoomCoordinatorDelegate
-<<<<<<< HEAD
 // Tchap: Disable Spaces
 //extension SpaceSettingsModalCoordinator: ExploreRoomCoordinatorDelegate {
 //    func exploreRoomCoordinatorDidComplete(_ coordinator: ExploreRoomCoordinatorType) {
-//        self.navigationRouter.dismissModule(animated: true, completion: {
+//        navigationRouter.dismissModule(animated: true, completion: {
 //            self.remove(childCoordinator: coordinator)
 //        })
 //    }
@@ -220,28 +177,8 @@ final class SpaceSettingsModalCoordinator: Coordinator {
 // Tchap: Disable Spaces
 //extension SpaceSettingsModalCoordinator: SpaceMembersCoordinatorDelegate {
 //    func spaceMembersCoordinatorDidCancel(_ coordinator: SpaceMembersCoordinatorType) {
-//        self.navigationRouter.dismissModule(animated: true, completion: {
+//        navigationRouter.dismissModule(animated: true, completion: {
 //            self.remove(childCoordinator: coordinator)
 //        })
 //    }
 //}
-=======
-
-extension SpaceSettingsModalCoordinator: ExploreRoomCoordinatorDelegate {
-    func exploreRoomCoordinatorDidComplete(_ coordinator: ExploreRoomCoordinatorType) {
-        navigationRouter.dismissModule(animated: true, completion: {
-            self.remove(childCoordinator: coordinator)
-        })
-    }
-}
-
-// MARK: - SpaceMembersCoordinatorDelegate
-
-extension SpaceSettingsModalCoordinator: SpaceMembersCoordinatorDelegate {
-    func spaceMembersCoordinatorDidCancel(_ coordinator: SpaceMembersCoordinatorType) {
-        navigationRouter.dismissModule(animated: true, completion: {
-            self.remove(childCoordinator: coordinator)
-        })
-    }
-}
->>>>>>> v1.9.8-hotfix

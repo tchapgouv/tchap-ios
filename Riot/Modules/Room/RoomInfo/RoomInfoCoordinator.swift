@@ -189,7 +189,7 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
                 let files = RoomFilesViewController()
                 files.finalizeInit()
                 files.screenTracker = AnalyticsScreenTracker(screen: .roomUploads)
-                MXKRoomDataSource.load(withRoomId: self.room.roomId, andMatrixSession: self.session) { (dataSource) in
+                MXKRoomDataSource.load(withRoomId: self.room.roomId, threadId: nil, andMatrixSession: self.session) { (dataSource) in
                     guard let dataSource = dataSource as? MXKRoomDataSource else { return }
                     dataSource.filterMessagesWithURL = true
                     dataSource.finalizeInitialization()
@@ -229,7 +229,9 @@ extension RoomInfoCoordinator: RoomParticipantsViewControllerDelegate {
     }
 
     func roomParticipantsViewController(_ roomParticipantsViewController: RoomParticipantsViewController!, startChatWithMemberId matrixId: String, completion: (() -> Void)?) {
-        AppDelegate.theDelegate().createDirectChat(withUserId: matrixId, completion: completion)
+        AppDelegate.theDelegate().createDirectChat(withUserId: matrixId) { _ in
+            completion?()
+        }
     }
     
 }

@@ -40,14 +40,9 @@ protocol AuthenticationRestClient: AnyObject {
     func getRegisterSession() async throws -> MXAuthenticationSession
     func isUsernameAvailable(_ username: String) async throws -> Bool
     func register(parameters: RegistrationParameters) async throws -> MXLoginResponse
-<<<<<<< HEAD
-    func register(parameters: [String : Any]) async throws -> MXLoginResponse
+    func register(parameters: [String: Any]) async throws -> MXLoginResponse
     // Tchap: Add nextLink optional parameter.
     func requestTokenDuringRegistration(for threePID: RegisterThreePID, clientSecret: String, sendAttempt: UInt, nextLink: String?) async throws -> RegistrationThreePIDTokenResponse
-=======
-    func register(parameters: [String: Any]) async throws -> MXLoginResponse
-    func requestTokenDuringRegistration(for threePID: RegisterThreePID, clientSecret: String, sendAttempt: UInt) async throws -> RegistrationThreePIDTokenResponse
->>>>>>> v1.9.8-hotfix
     
     // MARK: Forgot Password
 

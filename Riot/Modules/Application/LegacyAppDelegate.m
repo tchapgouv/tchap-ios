@@ -3132,7 +3132,7 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
 //                                                 session:parameters.mxSession
 //                                                animated:YES];
 //    };
-//
+//    
 //    if (parameters.presentationParameters.restoreInitialDisplay)
 //    {
 //        [self restoreInitialDisplay:^{
@@ -3229,29 +3229,24 @@ NSString *const kLegacyAppDelegateDidLoginNotification = @"kLegacyAppDelegateDid
         
         if (mxSession)
         {
-            [mxSession validRoomDirectDiscussionFor:userId
-                                         completion:^(MXRoom * _Nullable room) {
-                if (room) {
-                    // open it
-                    Analytics.shared.viewRoomTrigger = AnalyticsViewRoomTriggerCreated;
-                    [self showRoom:room.roomId andEventId:nil withMatrixSession:mxSession];
-
-                    if (completion)
-                    {
-                        completion();
-                    }
-                } else {
-                    [self createDirectChatWithUserId:userId completion:completion];
+            MXRoom *directRoom = [mxSession directJoinedRoomWithUserId:userId];
+            
+            // if the room exists
+            if (directRoom)
+            {
+                // open it
+                Analytics.shared.viewRoomTrigger = AnalyticsViewRoomTriggerCreated;
+                [self showRoom:directRoom.roomId andEventId:nil withMatrixSession:mxSession];
+                
+                if (completion)
+                {
+                    completion();
                 }
-<<<<<<< HEAD
-            }];
-=======
             }
             else
             {
                 [self showNewDirectChat:userId withMatrixSession:mxSession completion:completion];
             }
->>>>>>> v1.9.8-hotfix
         }
         else if (completion)
         {

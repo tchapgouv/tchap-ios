@@ -71,17 +71,11 @@ class CommonConfiguration: NSObject, Configurable {
         // Disable identicon use
         sdkOptions.disableIdenticonUseForUserAvatar = true
         
-<<<<<<< HEAD
-        // Use UIKit BackgroundTask for handling background tasks in the SDK
-        sdkOptions.backgroundModeHandler = MXUIKitBackgroundModeHandler()
-        
-=======
         // Set up user agent
         if let userAgent = makeASCIIUserAgent() {
             sdkOptions.httpAdditionalHeaders = ["User-Agent": userAgent]
         }
 
->>>>>>> v1.9.8-hotfix
         // Pass httpAdditionalHeaders to the SDK
         sdkOptions.httpAdditionalHeaders = (sdkOptions.httpAdditionalHeaders ?? [:]).merging(BuildSettings.httpAdditionalHeaders, uniquingKeysWith: { _, value in value })
         

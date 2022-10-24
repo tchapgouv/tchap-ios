@@ -104,7 +104,7 @@ class AllChatsViewController: HomeViewController {
     private(set) var selectedContact: MXKContact?
     
     // Reference to the current onboarding flow. It is always nil unless the flow is being presented.
-    private(set) var onboardingCoordinatorBridgePresenter: OnboardingCoordinatorBridgePresenter?
+//    private(set) var onboardingCoordinatorBridgePresenter: OnboardingCoordinatorBridgePresenter?
     
     // Tell whether the onboarding screen is preparing.
     private(set) var isOnboardingInProgress: Bool = false
@@ -161,13 +161,13 @@ class AllChatsViewController: HomeViewController {
         // Check whether we're not logged in
         let authIsShown: Bool
         if MXKAccountManager.shared().accounts.isEmpty {
-            showOnboardingFlow()
+//            showOnboardingFlow()
             authIsShown = true
         } else {
             // Display a login screen if the account is soft logout
             // Note: We support only one account
             if let account = MXKAccountManager.shared().accounts.first, account.isSoftLogout {
-                showSoftLogoutOnboardingFlow(with: account.mxCredentials)
+//                showSoftLogoutOnboardingFlow(with: account.mxCredentials)
                 authIsShown = true
             } else {
                 authIsShown = false
@@ -800,290 +800,290 @@ extension AllChatsViewController: BannerPresentationProtocol {
 
 // TODO: The `MasterTabBarViewController` is called from the entire app through the `LegacyAppDelegate`. this part of the code should be moved into `AppCoordinator`
 // MARK: - SplitViewMasterViewControllerProtocol
-extension AllChatsViewController: SplitViewMasterViewControllerProtocol {
-
-    /// Release the current selected item (if any).
-    func releaseSelectedItem() {
-        selectedRoomId = nil
-        selectedEventId = nil
-        selectedRoomSession = nil
-        selectedRoomPreviewData = nil
-        selectedContact = nil
-    }
-    
-    /// Refresh the missed conversations badges on tab bar icon
-    func refreshTabBarBadges() {
-        // Nothing to do here as we don't have tab bar
-    }
-    
-    /// Verify the current device if needed.
-    ///
-    /// - Parameters:
-    ///   - session: the matrix session.
-    func presentVerifyCurrentSessionAlertIfNeeded(with session: MXSession) {
-        guard !RiotSettings.shared.hideVerifyThisSessionAlert, !reviewSessionAlertHasBeenDisplayed, !isOnboardingInProgress else {
-            return
-        }
-        
-        reviewSessionAlertHasBeenDisplayed = true
-
-        // Force verification if required by the HS configuration
-        guard !session.vc_homeserverConfiguration().encryption.isSecureBackupRequired else {
-            MXLog.debug("[AllChatsViewController] presentVerifyCurrentSessionAlertIfNeededWithSession: Force verification of the device")
-            AppDelegate.theDelegate().presentCompleteSecurity(for: session)
-            return
-        }
-
-        presentVerifyCurrentSessionAlert(with: session)
-    }
-
-    /// Verify others device if needed.
-    ///
-    /// - Parameters:
-    ///   - session: the matrix session.
-    func presentReviewUnverifiedSessionsAlertIfNeeded(with session: MXSession) {
-        guard !RiotSettings.shared.hideReviewSessionsAlert, !reviewSessionAlertHasBeenDisplayed else {
-            return
-        }
-        
-        let devices = mainSession.crypto.devices(forUser: mainSession.myUserId).values
-        var userHasOneUnverifiedDevice = false
-        for device in devices {
-            if !device.trustLevel.isCrossSigningVerified {
-                userHasOneUnverifiedDevice = true
-                break
-            }
-        }
-        
-        if userHasOneUnverifiedDevice {
-            reviewSessionAlertHasBeenDisplayed = true
-            presentReviewUnverifiedSessionsAlert(with: session)
-        }
-    }
-    
-    func showOnboardingFlow() {
-        MXLog.debug("[AllChatsViewController] showOnboardingFlow")
-        self.showOnboardingFlowAndResetSessionFlags(true)
-    }
-
-    /// Display the onboarding flow configured to log back into a soft logout session.
-    ///
-    /// - Parameters:
-    ///   - credentials: the credentials of the soft logout session.
-    func showSoftLogoutOnboardingFlow(with credentials: MXCredentials?) {
-        // This method can be called after the user chooses to clear their data as the MXSession
-        // is opened to call logout from. So we only set the credentials when authentication isn't
-        // in progress to prevent a second soft logout screen being shown.
-        guard self.onboardingCoordinatorBridgePresenter == nil && !self.isOnboardingCoordinatorPreparing else {
-            return
-        }
-
-        MXLog.debug("[AllChatsViewController] showAuthenticationScreenAfterSoftLogout")
-        AuthenticationService.shared.softLogoutCredentials = credentials
-        self.showOnboardingFlowAndResetSessionFlags(false)
-    }
-
-    /// Open the room with the provided identifier in a specific matrix session.
-    ///
-    /// - Parameters:
-    ///   - parameters: the presentation parameters that contains room information plus display information.
-    ///   - completion: the block to execute at the end of the operation.
-    func selectRoom(with parameters: RoomNavigationParameters, completion: @escaping () -> Void) {
-        releaseSelectedItem()
-        
-        selectedRoomId = parameters.roomId
-        selectedEventId = parameters.eventId
-        selectedRoomSession = parameters.mxSession
-
-        allChatsDelegate?.allChatsViewController(self, didSelectRoomWithParameters: parameters, completion: completion)
-
-        refreshSelectedControllerSelectedCellIfNeeded()
-    }
-    
-    /// Open the RoomViewController to display the preview of a room that is unknown for the user.
-    /// This room can come from an email invitation link or a simple link to a room.
-    /// - Parameters:
-    ///   - parameters: the presentation parameters that contains room preview information plus display information.
-    ///   - completion: the block to execute at the end of the operation.
-    func selectRoomPreview(with parameters: RoomPreviewNavigationParameters, completion: (() -> Void)?) {
-        releaseSelectedItem()
-        
-        let roomPreviewData = parameters.previewData
-        
-        selectedRoomPreviewData = roomPreviewData
-        selectedRoomId = roomPreviewData.roomId
-        selectedRoomSession = roomPreviewData.mxSession
-
-        allChatsDelegate?.allChatsViewController(self, didSelectRoomPreviewWithParameters: parameters, completion: completion)
-
-        refreshSelectedControllerSelectedCellIfNeeded()
-    }
-
-    /// Open a ContactDetailsViewController to display the information of the provided contact.
-    func select(_ contact: MXKContact) {
-        let presentationParameters = ScreenPresentationParameters(restoreInitialDisplay: true, stackAboveVisibleViews: false)
-        select(contact, with: presentationParameters)
-    }
-    
-    /// Open a ContactDetailsViewController to display the information of the provided contact.
-    func select(_ contact: MXKContact, with presentationParameters: ScreenPresentationParameters) {
-        releaseSelectedItem()
-        
-        selectedContact = contact
-        
-        allChatsDelegate?.allChatsViewController(self, didSelectContact: contact, with: presentationParameters)
-
-        refreshSelectedControllerSelectedCellIfNeeded()
-    }
-
-    /// The current number of rooms with missed notifications, including the invites.
-    func missedDiscussionsCount() -> UInt {
-        guard let session = mxSessions as? [MXSession] else {
-            return 0
-        }
-        
-        return session.reduce(0) { $0 + $1.vc_missedDiscussionsCount() }
-    }
-
-    /// The current number of rooms with unread highlighted messages.
-    func missedHighlightDiscussionsCount() -> UInt {
-        guard let session = mxSessions as? [MXSession] else {
-            return 0
-        }
-        
-        return session.reduce(0) { $0 + $1.missedHighlightDiscussionsCount() }
-    }
-    
-    /// Emulated `UItabBarViewController.selectedViewController` member
-    var selectedViewController: UIViewController? {
-        return self
-    }
-    
-    var tabBar: UITabBar? {
-        return nil
-    }
-    
-    // MARK: - Private
-    
-    private func presentVerifyCurrentSessionAlert(with session: MXSession) {
-        MXLog.debug("[AllChatsViewController] presentVerifyCurrentSessionAlertWithSession")
-        
-        currentAlert?.dismiss(animated: true, completion: nil)
-        
-        let alert = UIAlertController(title: VectorL10n.keyVerificationSelfVerifyCurrentSessionAlertTitle,
-                                      message: VectorL10n.keyVerificationSelfVerifyCurrentSessionAlertMessage,
-                                      preferredStyle: .alert)
-        
-        alert.addAction(UIAlertAction(title: VectorL10n.keyVerificationSelfVerifyCurrentSessionAlertValidateAction,
-                                      style: .default,
-                                      handler: { action in
-            AppDelegate.theDelegate().presentCompleteSecurity(for: session)
-        }))
-        
-        alert.addAction(UIAlertAction(title: VectorL10n.later, style: .cancel))
-        
-        alert.addAction(UIAlertAction(title: VectorL10n.doNotAskAgain,
-                                      style: .destructive,
-                                      handler: { action in
-            RiotSettings.shared.hideVerifyThisSessionAlert = true
-        }))
-        
-        self.present(alert, animated: true)
-        currentAlert = alert
-    }
-
-    private func presentReviewUnverifiedSessionsAlert(with session: MXSession) {
-        MXLog.debug("[AllChatsViewController] presentReviewUnverifiedSessionsAlert")
-        
-        currentAlert?.dismiss(animated: true, completion: nil)
-        
-        let alert = UIAlertController(title: VectorL10n.keyVerificationSelfVerifyUnverifiedSessionsAlertTitle,
-                                      message: VectorL10n.keyVerificationSelfVerifyUnverifiedSessionsAlertMessage,
-                                      preferredStyle: .alert)
-        
-        alert.addAction(UIAlertAction(title: VectorL10n.keyVerificationSelfVerifyUnverifiedSessionsAlertValidateAction,
-                                      style: .default,
-                                      handler: { action in
-            self.showSettingsSecurityScreen(with: session)
-        }))
-        
-        alert.addAction(UIAlertAction(title: VectorL10n.later, style: .cancel))
-        
-        alert.addAction(UIAlertAction(title: VectorL10n.doNotAskAgain, style: .destructive, handler: { action in
-            RiotSettings.shared.hideReviewSessionsAlert = true
-        }))
-        
-        present(alert, animated: true)
-        currentAlert = alert
-    }
-
-    private func showSettingsSecurityScreen(with session: MXSession) {
-        guard let settingsViewController = SettingsViewController.instantiate() else {
-            MXLog.warning("[AllChatsViewController] showSettingsSecurityScreen: cannot instantiate SettingsViewController")
-            return
-        }
-        
-        guard let securityViewController = SecurityViewController.instantiate(withMatrixSession: session) else {
-            MXLog.warning("[AllChatsViewController] showSettingsSecurityScreen: cannot instantiate SecurityViewController")
-            return
-        }
-        
-        settingsViewController.loadViewIfNeeded()
-        AppDelegate.theDelegate().restoreInitialDisplay {
-            self.navigationController?.viewControllers = [self, settingsViewController, securityViewController]
-        }
-    }
-    
-    private func showOnboardingFlowAndResetSessionFlags(_ resetSessionFlags: Bool) {
-        // Check whether an authentication screen is not already shown or preparing
-        guard self.onboardingCoordinatorBridgePresenter == nil && !self.isOnboardingCoordinatorPreparing else {
-            return
-        }
-        
-        self.isOnboardingCoordinatorPreparing = true
-        self.isOnboardingInProgress = true
-        
-        if resetSessionFlags {
-            resetReviewSessionsFlags()
-        }
-        
-        AppDelegate.theDelegate().restoreInitialDisplay {
-            self.presentOnboardingFlow()
-        }
-    }
-
-    private func resetReviewSessionsFlags() {
-        reviewSessionAlertHasBeenDisplayed = false
-        RiotSettings.shared.hideVerifyThisSessionAlert = false
-        RiotSettings.shared.hideReviewSessionsAlert = false
-    }
-    
-    private func presentOnboardingFlow() {
-        MXLog.debug("[AllChatsViewController] presentOnboardingFlow")
-        
-        let onboardingCoordinatorBridgePresenter = OnboardingCoordinatorBridgePresenter()
-        onboardingCoordinatorBridgePresenter.completion = { [weak self] in
-            guard let self = self else { return }
-            
-            self.onboardingCoordinatorBridgePresenter?.dismiss(animated: true, completion: {
-                self.onboardingCoordinatorBridgePresenter = nil
-            })
-            
-            self.isOnboardingInProgress = false   // Must be set before calling didCompleteAuthentication
-            self.allChatsDelegate?.allChatsViewControllerDidCompleteAuthentication(self)
-        }
-        
-        onboardingCoordinatorBridgePresenter.present(from: self, animated: true)
-        self.onboardingCoordinatorBridgePresenter = onboardingCoordinatorBridgePresenter
-        self.isOnboardingCoordinatorPreparing = false
-    }
-    
-    private func refreshSelectedControllerSelectedCellIfNeeded() {
-        guard splitViewController != nil else {
-            return
-        }
-        
-        // Refresh selected cell without scrolling the selected cell (We suppose it's visible here)
-        self.refreshCurrentSelectedCell(false)
-    }
-}
+//extension AllChatsViewController: SplitViewMasterViewControllerProtocol {
+//
+//    /// Release the current selected item (if any).
+//    func releaseSelectedItem() {
+//        selectedRoomId = nil
+//        selectedEventId = nil
+//        selectedRoomSession = nil
+//        selectedRoomPreviewData = nil
+//        selectedContact = nil
+//    }
+//
+//    /// Refresh the missed conversations badges on tab bar icon
+//    func refreshTabBarBadges() {
+//        // Nothing to do here as we don't have tab bar
+//    }
+//
+//    /// Verify the current device if needed.
+//    ///
+//    /// - Parameters:
+//    ///   - session: the matrix session.
+//    func presentVerifyCurrentSessionAlertIfNeeded(with session: MXSession) {
+//        guard !RiotSettings.shared.hideVerifyThisSessionAlert, !reviewSessionAlertHasBeenDisplayed, !isOnboardingInProgress else {
+//            return
+//        }
+//
+//        reviewSessionAlertHasBeenDisplayed = true
+//
+//        // Force verification if required by the HS configuration
+//        guard !session.vc_homeserverConfiguration().encryption.isSecureBackupRequired else {
+//            MXLog.debug("[AllChatsViewController] presentVerifyCurrentSessionAlertIfNeededWithSession: Force verification of the device")
+//            AppDelegate.theDelegate().presentCompleteSecurity(for: session)
+//            return
+//        }
+//
+//        presentVerifyCurrentSessionAlert(with: session)
+//    }
+//
+//    /// Verify others device if needed.
+//    ///
+//    /// - Parameters:
+//    ///   - session: the matrix session.
+//    func presentReviewUnverifiedSessionsAlertIfNeeded(with session: MXSession) {
+//        guard !RiotSettings.shared.hideReviewSessionsAlert, !reviewSessionAlertHasBeenDisplayed else {
+//            return
+//        }
+//
+//        let devices = mainSession.crypto.devices(forUser: mainSession.myUserId).values
+//        var userHasOneUnverifiedDevice = false
+//        for device in devices {
+//            if !device.trustLevel.isCrossSigningVerified {
+//                userHasOneUnverifiedDevice = true
+//                break
+//            }
+//        }
+//
+//        if userHasOneUnverifiedDevice {
+//            reviewSessionAlertHasBeenDisplayed = true
+//            presentReviewUnverifiedSessionsAlert(with: session)
+//        }
+//    }
+//
+//    func showOnboardingFlow() {
+//        MXLog.debug("[AllChatsViewController] showOnboardingFlow")
+//        self.showOnboardingFlowAndResetSessionFlags(true)
+//    }
+//
+//    /// Display the onboarding flow configured to log back into a soft logout session.
+//    ///
+//    /// - Parameters:
+//    ///   - credentials: the credentials of the soft logout session.
+//    func showSoftLogoutOnboardingFlow(with credentials: MXCredentials?) {
+//        // This method can be called after the user chooses to clear their data as the MXSession
+//        // is opened to call logout from. So we only set the credentials when authentication isn't
+//        // in progress to prevent a second soft logout screen being shown.
+//        guard self.onboardingCoordinatorBridgePresenter == nil && !self.isOnboardingCoordinatorPreparing else {
+//            return
+//        }
+//
+//        MXLog.debug("[AllChatsViewController] showAuthenticationScreenAfterSoftLogout")
+//        AuthenticationService.shared.softLogoutCredentials = credentials
+//        self.showOnboardingFlowAndResetSessionFlags(false)
+//    }
+//
+//    /// Open the room with the provided identifier in a specific matrix session.
+//    ///
+//    /// - Parameters:
+//    ///   - parameters: the presentation parameters that contains room information plus display information.
+//    ///   - completion: the block to execute at the end of the operation.
+//    func selectRoom(with parameters: RoomNavigationParameters, completion: @escaping () -> Void) {
+//        releaseSelectedItem()
+//
+//        selectedRoomId = parameters.roomId
+//        selectedEventId = parameters.eventId
+//        selectedRoomSession = parameters.mxSession
+//
+//        allChatsDelegate?.allChatsViewController(self, didSelectRoomWithParameters: parameters, completion: completion)
+//
+//        refreshSelectedControllerSelectedCellIfNeeded()
+//    }
+//
+//    /// Open the RoomViewController to display the preview of a room that is unknown for the user.
+//    /// This room can come from an email invitation link or a simple link to a room.
+//    /// - Parameters:
+//    ///   - parameters: the presentation parameters that contains room preview information plus display information.
+//    ///   - completion: the block to execute at the end of the operation.
+//    func selectRoomPreview(with parameters: RoomPreviewNavigationParameters, completion: (() -> Void)?) {
+//        releaseSelectedItem()
+//
+//        let roomPreviewData = parameters.previewData
+//
+//        selectedRoomPreviewData = roomPreviewData
+//        selectedRoomId = roomPreviewData.roomId
+//        selectedRoomSession = roomPreviewData.mxSession
+//
+//        allChatsDelegate?.allChatsViewController(self, didSelectRoomPreviewWithParameters: parameters, completion: completion)
+//
+//        refreshSelectedControllerSelectedCellIfNeeded()
+//    }
+//
+//    /// Open a ContactDetailsViewController to display the information of the provided contact.
+//    func select(_ contact: MXKContact) {
+//        let presentationParameters = ScreenPresentationParameters(restoreInitialDisplay: true, stackAboveVisibleViews: false)
+//        select(contact, with: presentationParameters)
+//    }
+//
+//    /// Open a ContactDetailsViewController to display the information of the provided contact.
+//    func select(_ contact: MXKContact, with presentationParameters: ScreenPresentationParameters) {
+//        releaseSelectedItem()
+//
+//        selectedContact = contact
+//
+//        allChatsDelegate?.allChatsViewController(self, didSelectContact: contact, with: presentationParameters)
+//
+//        refreshSelectedControllerSelectedCellIfNeeded()
+//    }
+//
+//    /// The current number of rooms with missed notifications, including the invites.
+//    func missedDiscussionsCount() -> UInt {
+//        guard let session = mxSessions as? [MXSession] else {
+//            return 0
+//        }
+//
+//        return session.reduce(0) { $0 + $1.vc_missedDiscussionsCount() }
+//    }
+//
+//    /// The current number of rooms with unread highlighted messages.
+//    func missedHighlightDiscussionsCount() -> UInt {
+//        guard let session = mxSessions as? [MXSession] else {
+//            return 0
+//        }
+//
+//        return session.reduce(0) { $0 + $1.missedHighlightDiscussionsCount() }
+//    }
+//
+//    /// Emulated `UItabBarViewController.selectedViewController` member
+//    var selectedViewController: UIViewController? {
+//        return self
+//    }
+//
+//    var tabBar: UITabBar? {
+//        return nil
+//    }
+//
+//    // MARK: - Private
+//
+//    private func presentVerifyCurrentSessionAlert(with session: MXSession) {
+//        MXLog.debug("[AllChatsViewController] presentVerifyCurrentSessionAlertWithSession")
+//
+//        currentAlert?.dismiss(animated: true, completion: nil)
+//
+//        let alert = UIAlertController(title: VectorL10n.keyVerificationSelfVerifyCurrentSessionAlertTitle,
+//                                      message: VectorL10n.keyVerificationSelfVerifyCurrentSessionAlertMessage,
+//                                      preferredStyle: .alert)
+//
+//        alert.addAction(UIAlertAction(title: VectorL10n.keyVerificationSelfVerifyCurrentSessionAlertValidateAction,
+//                                      style: .default,
+//                                      handler: { action in
+//            AppDelegate.theDelegate().presentCompleteSecurity(for: session)
+//        }))
+//
+//        alert.addAction(UIAlertAction(title: VectorL10n.later, style: .cancel))
+//
+//        alert.addAction(UIAlertAction(title: VectorL10n.doNotAskAgain,
+//                                      style: .destructive,
+//                                      handler: { action in
+//            RiotSettings.shared.hideVerifyThisSessionAlert = true
+//        }))
+//
+//        self.present(alert, animated: true)
+//        currentAlert = alert
+//    }
+//
+//    private func presentReviewUnverifiedSessionsAlert(with session: MXSession) {
+//        MXLog.debug("[AllChatsViewController] presentReviewUnverifiedSessionsAlert")
+//
+//        currentAlert?.dismiss(animated: true, completion: nil)
+//
+//        let alert = UIAlertController(title: VectorL10n.keyVerificationSelfVerifyUnverifiedSessionsAlertTitle,
+//                                      message: VectorL10n.keyVerificationSelfVerifyUnverifiedSessionsAlertMessage,
+//                                      preferredStyle: .alert)
+//
+//        alert.addAction(UIAlertAction(title: VectorL10n.keyVerificationSelfVerifyUnverifiedSessionsAlertValidateAction,
+//                                      style: .default,
+//                                      handler: { action in
+//            self.showSettingsSecurityScreen(with: session)
+//        }))
+//
+//        alert.addAction(UIAlertAction(title: VectorL10n.later, style: .cancel))
+//
+//        alert.addAction(UIAlertAction(title: VectorL10n.doNotAskAgain, style: .destructive, handler: { action in
+//            RiotSettings.shared.hideReviewSessionsAlert = true
+//        }))
+//
+//        present(alert, animated: true)
+//        currentAlert = alert
+//    }
+//
+//    private func showSettingsSecurityScreen(with session: MXSession) {
+//        guard let settingsViewController = SettingsViewController.instantiate() else {
+//            MXLog.warning("[AllChatsViewController] showSettingsSecurityScreen: cannot instantiate SettingsViewController")
+//            return
+//        }
+//
+//        guard let securityViewController = SecurityViewController.instantiate(withMatrixSession: session) else {
+//            MXLog.warning("[AllChatsViewController] showSettingsSecurityScreen: cannot instantiate SecurityViewController")
+//            return
+//        }
+//
+//        settingsViewController.loadViewIfNeeded()
+//        AppDelegate.theDelegate().restoreInitialDisplay {
+//            self.navigationController?.viewControllers = [self, settingsViewController, securityViewController]
+//        }
+//    }
+//
+//    private func showOnboardingFlowAndResetSessionFlags(_ resetSessionFlags: Bool) {
+//        // Check whether an authentication screen is not already shown or preparing
+//        guard self.onboardingCoordinatorBridgePresenter == nil && !self.isOnboardingCoordinatorPreparing else {
+//            return
+//        }
+//
+//        self.isOnboardingCoordinatorPreparing = true
+//        self.isOnboardingInProgress = true
+//
+//        if resetSessionFlags {
+//            resetReviewSessionsFlags()
+//        }
+//
+//        AppDelegate.theDelegate().restoreInitialDisplay {
+//            self.presentOnboardingFlow()
+//        }
+//    }
+//
+//    private func resetReviewSessionsFlags() {
+//        reviewSessionAlertHasBeenDisplayed = false
+//        RiotSettings.shared.hideVerifyThisSessionAlert = false
+//        RiotSettings.shared.hideReviewSessionsAlert = false
+//    }
+//
+//    private func presentOnboardingFlow() {
+//        MXLog.debug("[AllChatsViewController] presentOnboardingFlow")
+//
+//        let onboardingCoordinatorBridgePresenter = OnboardingCoordinatorBridgePresenter()
+//        onboardingCoordinatorBridgePresenter.completion = { [weak self] in
+//            guard let self = self else { return }
+//
+//            self.onboardingCoordinatorBridgePresenter?.dismiss(animated: true, completion: {
+//                self.onboardingCoordinatorBridgePresenter = nil
+//            })
+//
+//            self.isOnboardingInProgress = false   // Must be set before calling didCompleteAuthentication
+//            self.allChatsDelegate?.allChatsViewControllerDidCompleteAuthentication(self)
+//        }
+//
+//        onboardingCoordinatorBridgePresenter.present(from: self, animated: true)
+//        self.onboardingCoordinatorBridgePresenter = onboardingCoordinatorBridgePresenter
+//        self.isOnboardingCoordinatorPreparing = false
+//    }
+//
+//    private func refreshSelectedControllerSelectedCellIfNeeded() {
+//        guard splitViewController != nil else {
+//            return
+//        }
+//
+//        // Refresh selected cell without scrolling the selected cell (We suppose it's visible here)
+//        self.refreshCurrentSelectedCell(false)
+//    }
+//}

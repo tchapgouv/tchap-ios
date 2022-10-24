@@ -40,25 +40,14 @@ class SpaceCreationEmailInvitesService: SpaceCreationEmailInvitesServiceProtocol
     }
 
     func prepareIdentityService(prepared: ((String?, String?) -> Void)?, failure: ((Error?) -> Void)?) {
-<<<<<<< HEAD
         // Tchap: Disable Spaces
 //        isLoadingSubject.send(true)
-//        session.prepareIdentityServiceForTerms(withDefault: RiotSettings.shared.identityServerUrlString) { [weak self] session, baseURL, accessToken in
+//        session.prepareIdentityServiceForTerms(withDefault: RiotSettings.shared.identityServerUrlString) { [weak self] _, baseURL, accessToken in
 //            self?.isLoadingSubject.send(false)
 //            prepared?(baseURL, accessToken)
 //        } failure: { [weak self] error in
 //            self?.isLoadingSubject.send(false)
 //            failure?(error)
 //        }
-=======
-        isLoadingSubject.send(true)
-        session.prepareIdentityServiceForTerms(withDefault: RiotSettings.shared.identityServerUrlString) { [weak self] _, baseURL, accessToken in
-            self?.isLoadingSubject.send(false)
-            prepared?(baseURL, accessToken)
-        } failure: { [weak self] error in
-            self?.isLoadingSubject.send(false)
-            failure?(error)
-        }
->>>>>>> v1.9.8-hotfix
     }
 }

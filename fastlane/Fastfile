@@ -28,59 +28,13 @@ platform :ios do
 
   desc "Builds an ipa for the App Store"
   lane :app_store do |options|
-    UI.user_error!("'SENTRY_AUTH_TOKEN' environment variable should be set to use this lane, see Passbolt") unless !ENV["SENTRY_AUTH_TOKEN"].to_s.empty?
-    sentry_check_cli_installed
-
     if !options.has_key?(:build_number)
       build_number = generate_build_number()
       options = { build_number: build_number }.merge(options)
     end
     build_release(options)
-    upload_dsyms_to_sentry
   end
 
-<<<<<<< HEAD
-=======
-  desc "Builds an Alpha ipa for pull request branches"
-  lane :alpha do
-    # Check we have all the tokens and tools necessary
-    UI.user_error!("'DIAWI_API_TOKEN' environment variable should be set to use this lane") unless !ENV["DIAWI_API_TOKEN"].to_s.empty?
-            
-    # Generate the "Alpha" app variant    
-    setup_app_variant(name: "Alpha")    
-    # Builds an Ad Hoc IPA
-    adhoc
-    # Upload to Diawi
-    upload_to_diawi
-  end
-
-  desc "Upload IPA to Diawi"
-  lane :upload_to_diawi do
-    UI.user_error!("'DIAWI_API_TOKEN' environment variable should be set to use this lane") unless !ENV["DIAWI_API_TOKEN"].to_s.empty?
-
-    # Upload to Diawi
-    diawi(
-      token: ENV["DIAWI_API_TOKEN"],
-      wall_of_apps: false
-    )
-
-    # Get the Diawi link from Diawi action shared value
-    diawi_link = lane_context[SharedValues::UPLOADED_FILE_LINK_TO_DIAWI]
-    UI.command_output("Diawi link: " + diawi_link.to_s)
-
-    # Generate the Diawi QR code file link
-    diawi_app_id = URI(diawi_link).path.split('/').last
-    diawi_qr_code_link = "https://www.diawi.com/qrcode/link/#{diawi_app_id}"
-    UI.command_output("Diawi QR code link: " + diawi_qr_code_link.to_s)
-
-    # Set "DIAWI_FILE_LINK" to GitHub environment variables for Github actions
-    if is_ci 
-      sh("echo DIAWI_FILE_LINK=#{diawi_link} >> $GITHUB_ENV")
-      sh("echo DIAWI_QR_CODE_LINK=#{diawi_qr_code_link} >> $GITHUB_ENV")
-    end
-  end
-
->>>>>>> v1.9.8-hotfix
   desc "Builds the ipa for the AppStore, then uploads it"
   lane :deploy_release do |options|
     # build the IPA
@@ -149,16 +103,16 @@ platform :ios do
     xcodegen(spec: "project.yml")
     cocoapods
 
-    # run_tests(
-    #   workspace: "Tchap.xcworkspace",
-    #   scheme: "RiotSwiftUI",
-    #   code_coverage: true,
-    #   # Test result configuration
-    #   result_bundle: true,
-    #   output_directory: "./build/test",
-    #   output_files: "riot.swiftui.unit.test.html,riot.swiftui.unit.test.report.junit.xml",
-    #   open_report: !is_ci?
-    # )
+#    run_tests(
+#      workspace: "Riot.xcworkspace",
+#      scheme: "RiotSwiftUI",
+#      code_coverage: true,
+#      # Test result configuration
+#      result_bundle: true,
+#      output_directory: "./build/test",
+#      output_files: "riot.swiftui.unit.test.html,riot.swiftui.unit.test.report.junit.xml",
+#      open_report: !is_ci?
+#    )
 
     run_tests(
       workspace: "Tchap.xcworkspace",

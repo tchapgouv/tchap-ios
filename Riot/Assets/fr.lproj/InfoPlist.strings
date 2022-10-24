@@ -1,14 +1,6 @@
 // Permissions usage explanations
-<<<<<<< HEAD
 "NSCameraUsageDescription" = "Cela vous permet de prendre des photos ou des vidéos avec l'appareil photo et de les envoyer dans vos conversations. Vous pouvez également utiliser l'appareil photo pour définir la photo de votre profil.";
 "NSPhotoLibraryUsageDescription" = "Cela vous permet de sélectionner des photos ou des vidéos depuis votre photothèque, et de les envoyer dans vos conversations. Vous pouvez également utiliser l'une de ces photos pour définir la photo de votre profil.";
 "NSMicrophoneUsageDescription" = "Tchap nécessite l'accès au microphone pour réaliser des vidéos avec la caméra, ou pour enregistrer des messages vocaux.";
 "NSContactsUsageDescription" = "Afin d’afficher qui parmi vos contacts utilise déjà Tchap, nous pouvons exploiter les adresses e-mails de votre carnet d'adresse. Ces données ne seront pas mémorisées. Pour plus d'informations, veuillez consulter les Termes et Conditions disponibles dans les paramètres de l'application.";
-=======
-"NSCameraUsageDescription" = "L’appareil photo est utilisé les appels vidéo ainsi que prendre et envoyer des photos et vidéos.";
-"NSPhotoLibraryUsageDescription" = "Autorisez l’accès à la photothèque pour envoyer des photos et des vidéos.";
-"NSMicrophoneUsageDescription" = "Element doit avoir accès au microphone pour passer des appels, capturer des vidéos et enregistrer des messages vocaux.";
-"NSContactsUsageDescription" = "Ils seront partagés avec votre serveur d’identité pour que vous puissiez inviter vos contacts à utiliser Matrix.";
-"NSCalendarsUsageDescription" = "Voir vos rendez-vous dans l’application.";
->>>>>>> v1.9.8-hotfix
 "NSFaceIDUsageDescription" = "Face ID est utilisé pour accéder à votre application.";

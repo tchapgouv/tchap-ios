@@ -32,6 +32,15 @@ typedef NS_ENUM(NSUInteger, RoomInputToolbarViewSendMode)
     RoomInputToolbarViewSendModeCreateDM
 };
 
+@protocol RoomInputToolbarViewProtocol
+
+@property (nonatomic, strong) NSString *eventSenderDisplayName;
+@property (nonatomic, assign) RoomInputToolbarViewSendMode sendMode;
+- (void)setVoiceMessageToolbarView:(UIView *)voiceMessageToolbarView;
+- (CGFloat)toolbarHeight;
+
+
+@end
 
 @protocol RoomInputToolbarViewDelegate <MXKRoomInputToolbarViewDelegate>
 
