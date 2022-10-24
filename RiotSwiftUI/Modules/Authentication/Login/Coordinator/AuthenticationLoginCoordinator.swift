@@ -72,6 +72,9 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
     /// The wizard used to handle the login flow. Will only be `nil` if there is a misconfiguration.
     private var loginWizard: LoginWizard? { parameters.authenticationService.loginWizard }
     
+    // Tchap: Add thirdPartyIDPlatformInfoResolver
+    private let thirdPartyIDPlatformInfoResolver: ThirdPartyIDPlatformInfoResolverType
+    
     // MARK: Public
 
     // Must be used only internally
@@ -93,6 +96,11 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
         authenticationLoginHostingController.enableNavigationBarScrollEdgeAppearance = true
         
         indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: authenticationLoginHostingController)
+        
+        // Tchap: Configure thirdPartyIDPlatformInfoResolver
+        let identityServerURLs = IdentityServersURLGetter(currentIdentityServerURL: nil).identityServerUrls
+        self.thirdPartyIDPlatformInfoResolver = ThirdPartyIDPlatformInfoResolver(identityServerUrls: identityServerURLs,
+                                                                                 serverPrefixURL: BuildSettings.serverUrlPrefix)
     }
     
     // MARK: - Public
@@ -196,23 +204,38 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
     @MainActor private func parseUsername(_ username: String) {
         // Tchap: Use e-mail address instead of a Matrix username.
         guard MXTools.isEmailAddress(username) else { return }
-        let domain = username.components(separatedBy: "@")[1]
-        let homeserverAddress = HomeserverAddress.homeServerAddress(from: domain)
         
         startLoading(isInteractionBlocking: false)
         
-        currentTask = Task { [weak self] in
-            do {
-                try await authenticationService.startFlow(.login, for: homeserverAddress)
-                
-                guard !Task.isCancelled else { return }
-                
-                updateViewModel()
-                self?.stopLoading()
-            } catch {
-                self?.stopLoading()
-                self?.handleError(error)
+        // Tchap: Update the flow to get the right HS
+        thirdPartyIDPlatformInfoResolver.resolvePlatformInformation(address: username, medium: kMX3PIDMediumEmail) { [weak self] result in
+            guard let self = self else { return }
+
+            switch result {
+            case .authorizedThirdPartyID(info: let thirdPartyIDPlatformInfo):
+                self.currentTask = Task { [weak self] in
+                    guard let self = self else { return }
+                    
+                    do {
+                        try await self.authenticationService.startFlow(.login, for: thirdPartyIDPlatformInfo.homeServer)
+                        
+                        guard !Task.isCancelled else { return }
+                        
+                        self.updateViewModel()
+                        self.stopLoading()
+                    } catch {
+                        self.stopLoading()
+                        self.handleError(error)
+                    }
+                }
+            case .unauthorizedThirdPartyID:
+                MXLog.error("[AuthenticationLoginCoordinator] ParseUsername unauthorized error.")
+                self.handleError(RestClientBuilderError.unauthorizedThirdPartyID)
             }
+        } failure: { error in
+            guard let error = error else { return }
+            MXLog.error("[AuthenticationLoginCoordinator] ParseUsername error", context: error)
+            self.handleError(error)
         }
     }
     

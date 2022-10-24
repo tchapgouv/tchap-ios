@@ -45,6 +45,9 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
         }
     }
     
+    // Tchap: Add thirdPartyIDPlatformInfoResolver
+    private let thirdPartyIDPlatformInfoResolver: ThirdPartyIDPlatformInfoResolverType
+    
     // MARK: Public
 
     // Must be used only internally
@@ -64,6 +67,11 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
         authenticationVerifyEmailHostingController.enableNavigationBarScrollEdgeAppearance = true
         
         indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: authenticationVerifyEmailHostingController)
+        
+        // Tchap: Configure thirdPartyIDPlatformInfoResolver
+        let identityServerURLs = IdentityServersURLGetter(currentIdentityServerURL: nil).identityServerUrls
+        self.thirdPartyIDPlatformInfoResolver = ThirdPartyIDPlatformInfoResolver(identityServerUrls: identityServerURLs,
+                                                                                 serverPrefixURL: BuildSettings.serverUrlPrefix)
     }
     
     // MARK: - Public
@@ -282,18 +290,31 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
     /// Validate e-mail address and update flow with new domain.
     @MainActor private func validateEmailAddress(_ address: String) {
         guard MXTools.isEmailAddress(address) else { return }
-        let domain = address.components(separatedBy: "@")[1]
-        let homeserverAddress = HomeserverAddress.homeServerAddress(from: domain)
-        
-        // Update HS only if different from the current one.
-        if AuthenticationService.shared.client.homeserver != homeserverAddress {
-            currentTask = Task { [weak self] in
-                do {
-                    try await AuthenticationService.shared.startFlow(.register, for: homeserverAddress)
-                } catch {
-                    self?.handleError(error)
+
+        // Tchap: Update the flow to get the right HS
+        thirdPartyIDPlatformInfoResolver.resolvePlatformInformation(address: address, medium: kMX3PIDMediumEmail) { [weak self] result in
+            guard let self = self else { return }
+
+            switch result {
+            case .authorizedThirdPartyID(info: let thirdPartyIDPlatformInfo):
+                // Update HS only if different from the current one.
+                if AuthenticationService.shared.client.homeserver != thirdPartyIDPlatformInfo.homeServer {
+                    self.currentTask = Task { [weak self] in
+                        do {
+                            try await AuthenticationService.shared.startFlow(.register, for: thirdPartyIDPlatformInfo.homeServer)
+                        } catch {
+                            self?.handleError(error)
+                        }
+                    }
                 }
+            case .unauthorizedThirdPartyID:
+                MXLog.error("[AuthenticationVerifyEmailCoordinator] ValidateEmailAddress unauthorized error.")
+                self.handleError(RestClientBuilderError.unauthorizedThirdPartyID)
             }
+        } failure: { error in
+            guard let error = error else { return }
+            MXLog.error("[AuthenticationVerifyEmailCoordinator] ValidateEmailAddress error", context: error)
+            self.handleError(error)
         }
     }
 }

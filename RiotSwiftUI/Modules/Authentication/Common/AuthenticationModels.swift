@@ -97,26 +97,12 @@ class HomeserverAddress: NSObject {
         return address
     }
     
-    // Tchap: Add function to find the right IS from the e-mail address (if available).
-    /// Returns the IS corresponding to the domain in parameters, if available.
-    /// Else, find a random server in the IS list.
-    static func homeServerAddress(from domain: String? = nil) -> String {
+    // Tchap: Add function to find a random home server for Authentication process instanciation.
+    /// Returns a random HS from the HS list.
+    static func homeServerAddress() -> String {
         let homeServerPrefixURL = BuildSettings.serverUrlPrefix
         let preferredKnownHosts = BuildSettings.preferredIdentityServerNames
-        
-        guard let domain = domain else {
-            MXLog.warning("[HomeserverAddress] homeServerAddress : Domain parameter is missing.")
-            return randomServerFromList(preferredKnownHosts)
-        }
-        
-        let identityServer = preferredKnownHosts.first(where: { $0.contains(domain) })
-
-        guard let identityServer = identityServer else {
-            MXLog.warning("[HomeserverAddress] homeServerAddress : Domain did not match with IS list.")
-            return randomServerFromList(preferredKnownHosts)
-        }
-        
-        return "\(homeServerPrefixURL)\(identityServer)"
+        return randomServerFromList(preferredKnownHosts)
     }
     
     static func randomServerFromList(_ list: [String]) -> String {
