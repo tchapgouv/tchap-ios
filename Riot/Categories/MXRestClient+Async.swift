@@ -87,10 +87,14 @@ extension MXRestClient {
         return loginResponse
     }
     
+    // Tchap: Add nextLink optional parameter.
     /// An async version of both `requestToken(forEmail:isDuringRegistration:clientSecret:sendAttempt:nextLink:success:failure:)` and
     /// `requestToken(forPhoneNumber:isDuringRegistration:countryCode:clientSecret:sendAttempt:nextLink:success:failure:)` depending
     /// on the kind of third party ID is supplied to the `threePID` parameter.
-    func requestTokenDuringRegistration(for threePID: RegisterThreePID, clientSecret: String, sendAttempt: UInt) async throws -> RegistrationThreePIDTokenResponse {
+    func requestTokenDuringRegistration(for threePID: RegisterThreePID,
+                                        clientSecret: String,
+                                        sendAttempt: UInt,
+                                        nextLink: String? = nil) async throws -> RegistrationThreePIDTokenResponse {
         switch threePID {
         case .email(let email):
             let sessionID: String = try await getResponse { success, failure in
@@ -98,7 +102,7 @@ extension MXRestClient {
                              isDuringRegistration: true,
                              clientSecret: clientSecret,
                              sendAttempt: sendAttempt,
-                             nextLink: nil,
+                             nextLink: nextLink,
                              success: success,
                              failure: failure)
             }
@@ -111,7 +115,7 @@ extension MXRestClient {
                              countryCode: countryCode,
                              clientSecret: clientSecret,
                              sendAttempt: sendAttempt,
-                             nextLink: nil,
+                             nextLink: nextLink,
                              success: success,
                              failure: failure)
             }

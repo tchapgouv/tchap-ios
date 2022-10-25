@@ -38,7 +38,8 @@ protocol AuthenticationRestClient: AnyObject {
     func isUsernameAvailable(_ username: String) async throws -> Bool
     func register(parameters: RegistrationParameters) async throws -> MXLoginResponse
     func register(parameters: [String : Any]) async throws -> MXLoginResponse
-    func requestTokenDuringRegistration(for threePID: RegisterThreePID, clientSecret: String, sendAttempt: UInt) async throws -> RegistrationThreePIDTokenResponse
+    // Tchap: Add nextLink optional parameter.
+    func requestTokenDuringRegistration(for threePID: RegisterThreePID, clientSecret: String, sendAttempt: UInt, nextLink: String?) async throws -> RegistrationThreePIDTokenResponse
     
     // MARK: Forgot Password
     func forgetPassword(for email: String, clientSecret: String, sendAttempt: UInt) async throws -> String
