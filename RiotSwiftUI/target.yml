@@ -39,6 +39,7 @@ targets:
       - "**/MatrixSDK/**"
       - "**/Coordinator/**"
       - "**/Test/**"
+      - "Extensions"
       - "Modules/Room/LocationSharing"
 
     - path: ../Riot/Managers/AppInfo/

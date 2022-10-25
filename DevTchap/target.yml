@@ -262,6 +262,7 @@ targets:
     - path: ../Riot/Utils
 
     # Riot SwiftUI
+    - path: ../RiotSwiftUI/Extensions
     - path: ../RiotSwiftUI/Modules
       # Riot will provide it's own LocaleProviderType so exclude.
       excludes:

@@ -204,7 +204,8 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
     /// Processes an error to either update the flow or display it to the user.
     @MainActor private func handleError(_ error: Error) {
         if let mxError = MXError(nsError: error as NSError) {
-            authenticationVerifyEmailViewModel.displayError(.mxError(mxError.error))
+            let message = mxError.authenticationErrorMessage()
+            authenticationVerifyEmailViewModel.displayError(.mxError(message))
             return
         }
         
@@ -257,7 +258,8 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
     /// Processes an error to either update the flow or display it to the user.
     @MainActor private func handleRegistrationError(_ error: Error) {
         if let mxError = MXError(nsError: error as NSError) {
-            authenticationVerifyEmailViewModel.displayError(.mxError(mxError.error))
+            let message = mxError.authenticationErrorMessage()
+            authenticationVerifyEmailViewModel.displayError(.mxError(message))
             return
         }
         
