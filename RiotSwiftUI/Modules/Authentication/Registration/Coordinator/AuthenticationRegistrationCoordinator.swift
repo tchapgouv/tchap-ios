@@ -242,6 +242,8 @@ final class AuthenticationRegistrationCoordinator: Coordinator, Presentable {
                 #warning("Reset the flow")
             case .missingMXRestClient:
                 #warning("Forget the soft logout session")
+            case .unauthorizedThirdPartyID:
+                authenticationRegistrationViewModel.displayError(.unauthorizedThirdPartyID)
             }
             return
         }

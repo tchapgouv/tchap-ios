@@ -110,4 +110,7 @@ enum AuthenticationVerifyEmailErrorType: Hashable {
     case invalidHomeserver
     /// The homeserver doesn't support registration.
     case registrationDisabled
+    // Tchap: Add unauthorizedThirdPartyID
+    /// Unauthorized third party ID.
+    case unauthorizedThirdPartyID
 }

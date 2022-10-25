@@ -37,11 +37,14 @@ enum AuthenticationError: String, LocalizedError {
     case invalidHomeserver
     case loginFlowNotCalled
     case missingMXRestClient
+    case unauthorizedThirdPartyID // Tchap: Add unauthorizedThirdPartyID
     
     var errorDescription: String? {
         switch self {
         case .invalidHomeserver:
             return VectorL10n.authenticationServerSelectionGenericError
+        case .unauthorizedThirdPartyID: // Tchap: Add unauthorizedThirdPartyID
+            return TchapL10n.authenticationErrorUnauthorized
         default:
             return VectorL10n.errorCommonMessage
         }

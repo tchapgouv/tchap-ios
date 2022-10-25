@@ -269,6 +269,8 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
                 #warning("Reset the flow")
             case .missingMXRestClient:
                 #warning("Forget the soft logout session")
+            case .unauthorizedThirdPartyID: // Tchap: Add unauthorizedThirdPartyID
+                authenticationVerifyEmailViewModel.displayError(.unauthorizedThirdPartyID)
             }
             return
         }
@@ -309,7 +311,7 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
                 }
             case .unauthorizedThirdPartyID:
                 MXLog.error("[AuthenticationVerifyEmailCoordinator] ValidateEmailAddress unauthorized error.")
-                self.handleError(RestClientBuilderError.unauthorizedThirdPartyID)
+                self.handleError(AuthenticationError.unauthorizedThirdPartyID)
             }
         } failure: { error in
             guard let error = error else { return }

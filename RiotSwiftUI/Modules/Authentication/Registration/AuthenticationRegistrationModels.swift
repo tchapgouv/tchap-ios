@@ -163,4 +163,7 @@ enum AuthenticationRegistrationErrorType: Hashable {
     case registrationDisabled
     /// An unknown error occurred.
     case unknown
+    // Tchap: Add unauthorizedThirdPartyID
+    /// Unauthorized third party ID.
+    case unauthorizedThirdPartyID
 }

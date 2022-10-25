@@ -81,6 +81,10 @@ class AuthenticationVerifyEmailViewModel: AuthenticationVerifyEmailViewModelType
             state.bindings.alertInfo = AlertInfo(id: type,
                                                  title: VectorL10n.error,
                                                  message: VectorL10n.loginErrorRegistrationIsNotSupported)
+        case .unauthorizedThirdPartyID:
+            state.bindings.alertInfo = AlertInfo(id: type,
+                                                 title: VectorL10n.error,
+                                                 message: TchapL10n.authenticationErrorUnauthorized)
         }
     }
 }

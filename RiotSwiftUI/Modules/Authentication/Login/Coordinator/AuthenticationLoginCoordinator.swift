@@ -194,6 +194,8 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
                 #warning("Reset the flow")
             case .missingMXRestClient:
                 #warning("Forget the soft logout session")
+            case .unauthorizedThirdPartyID: // Tchap: Add unauthorizedThirdPartyID
+                authenticationLoginViewModel.displayError(.unauthorizedThirdPartyID)
             }
             return
         }
@@ -230,7 +232,7 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
                 }
             case .unauthorizedThirdPartyID:
                 MXLog.error("[AuthenticationLoginCoordinator] ParseUsername unauthorized error.")
-                self.handleError(RestClientBuilderError.unauthorizedThirdPartyID)
+                self.handleError(AuthenticationError.unauthorizedThirdPartyID)
             }
         } failure: { error in
             guard let error = error else { return }
