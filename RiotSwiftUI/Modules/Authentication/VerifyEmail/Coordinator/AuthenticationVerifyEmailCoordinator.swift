@@ -102,8 +102,8 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
                 self.callback?(.cancel)
             case .goBack:
                 self.authenticationVerifyEmailViewModel.goBackToEnterEmailForm()
-            case .sendPassword(let password):
-                self.createAccount(password: password)
+            case .sendPassword(let password): // Tchap: Add sendPassword case
+                self.prepareAccountCreation(password: password)
             }
         }
     }
@@ -209,14 +209,37 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
             return
         }
         
-        // TODO: Handle another other error types as needed.
+        if let authenticationError = error as? AuthenticationError {
+            switch authenticationError {
+            case .invalidHomeserver:
+                authenticationVerifyEmailViewModel.displayError(.invalidHomeserver)
+            case .loginFlowNotCalled:
+                #warning("Reset the flow")
+            case .missingMXRestClient:
+                #warning("Forget the soft logout session")
+            case .unauthorizedThirdPartyID: // Tchap: Add unauthorizedThirdPartyID
+                authenticationVerifyEmailViewModel.displayError(.unauthorizedThirdPartyID)
+            }
+            return
+        }
+        
+        if let registrationError = error as? RegistrationError {
+            switch registrationError {
+            case .registrationDisabled:
+                authenticationVerifyEmailViewModel.displayError(.registrationDisabled)
+            case .createAccountNotCalled, .missingThreePIDData, .missingThreePIDURL, .threePIDClientFailure, .threePIDValidationFailure, .waitingForThreePIDValidation, .invalidPhoneNumber:
+                // Shouldn't happen at this stage
+                authenticationVerifyEmailViewModel.displayError(.unknown)
+            }
+            return
+        }
         
         authenticationVerifyEmailViewModel.displayError(.unknown)
     }
     
     // Tchap: Add account creation part in this class
     /// Creates an account on the homeserver with the supplied password.
-    @MainActor private func createAccount(password: String) {
+    @MainActor private func prepareAccountCreation(password: String) {
         let authService = AuthenticationService.shared
         let registrationWizard = authService.registrationWizard
         guard let registrationWizard = registrationWizard else {
@@ -250,45 +273,9 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
                 self?.stopLoading()
             } catch {
                 self?.stopLoading()
-                self?.handleRegistrationError(error)
+                self?.handleError(error)
             }
         }
-    }
-    
-    /// Processes an error to either update the flow or display it to the user.
-    @MainActor private func handleRegistrationError(_ error: Error) {
-        if let mxError = MXError(nsError: error as NSError) {
-            let message = mxError.authenticationErrorMessage()
-            authenticationVerifyEmailViewModel.displayError(.mxError(message))
-            return
-        }
-        
-        if let authenticationError = error as? AuthenticationError {
-            switch authenticationError {
-            case .invalidHomeserver:
-                authenticationVerifyEmailViewModel.displayError(.invalidHomeserver)
-            case .loginFlowNotCalled:
-                #warning("Reset the flow")
-            case .missingMXRestClient:
-                #warning("Forget the soft logout session")
-            case .unauthorizedThirdPartyID: // Tchap: Add unauthorizedThirdPartyID
-                authenticationVerifyEmailViewModel.displayError(.unauthorizedThirdPartyID)
-            }
-            return
-        }
-        
-        if let registrationError = error as? RegistrationError {
-            switch registrationError {
-            case .registrationDisabled:
-                authenticationVerifyEmailViewModel.displayError(.registrationDisabled)
-            case .createAccountNotCalled, .missingThreePIDData, .missingThreePIDURL, .threePIDClientFailure, .threePIDValidationFailure, .waitingForThreePIDValidation, .invalidPhoneNumber:
-                // Shouldn't happen at this stage
-                authenticationVerifyEmailViewModel.displayError(.unknown)
-            }
-            return
-        }
-        
-        authenticationVerifyEmailViewModel.displayError(.unknown)
     }
     
     /// Validate e-mail address and update flow with new domain.

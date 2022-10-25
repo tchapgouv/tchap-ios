@@ -103,7 +103,6 @@ class HomeserverAddress: NSObject {
     // Tchap: Add function to find a random home server for Authentication process instanciation.
     /// Returns a random HS from the HS list.
     static func homeServerAddress() -> String {
-        let homeServerPrefixURL = BuildSettings.serverUrlPrefix
         let preferredKnownHosts = BuildSettings.preferredIdentityServerNames
         return randomServerFromList(preferredKnownHosts)
     }
