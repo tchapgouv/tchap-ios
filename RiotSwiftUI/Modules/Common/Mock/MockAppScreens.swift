@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,8 +19,16 @@ import Foundation
 /// The static list of mocked screens in RiotSwiftUI
 enum MockAppScreens {
     static let appScreens: [MockScreenState.Type] = [
+<<<<<<< HEAD
 //        MockLiveLocationLabPromotionScreenState.self,
 //        MockLiveLocationSharingViewerScreenState.self,
+=======
+        MockUserSessionsOverviewScreenState.self,
+        MockUserSessionDetailsScreenState.self,
+        MockUserSessionOverviewScreenState.self,
+        MockLiveLocationLabPromotionScreenState.self,
+        MockLiveLocationSharingViewerScreenState.self,
+>>>>>>> v1.9.8-hotfix
         MockAuthenticationLoginScreenState.self,
         MockAuthenticationReCaptchaScreenState.self,
         MockAuthenticationTermsScreenState.self,
@@ -60,4 +68,3 @@ enum MockAppScreens {
 //        MockSpaceSelectorScreenState.self
     ]
 }
-

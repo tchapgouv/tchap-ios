@@ -17,7 +17,6 @@
 import SwiftUI
 
 struct AuthenticationLoginScreen: View {
-
     // MARK: - Properties
     
     // MARK: Private
@@ -53,7 +52,7 @@ struct AuthenticationLoginScreen: View {
                     loginForm
                 }
                 
-                if viewModel.viewState.homeserver.showLoginForm && viewModel.viewState.showSSOButtons {
+                if viewModel.viewState.homeserver.showLoginForm, viewModel.viewState.showSSOButtons {
                     Text(VectorL10n.or)
                         .foregroundColor(theme.colors.secondaryContent)
                         .padding(.top, 16)
@@ -64,10 +63,9 @@ struct AuthenticationLoginScreen: View {
                         .padding(.top, 16)
                 }
 
-                if !viewModel.viewState.homeserver.showLoginForm && !viewModel.viewState.showSSOButtons {
+                if !viewModel.viewState.homeserver.showLoginForm, !viewModel.viewState.showSSOButtons {
                     fallbackButton
                 }
-                
             }
             .readableFrame()
             .padding(.horizontal, 16)
@@ -106,8 +104,8 @@ struct AuthenticationLoginScreen: View {
                                                                               autocorrectionType: .no),
                                    onEditingChanged: usernameEditingChanged,
                                    onCommit: { isPasswordFocused = true })
-            .accessibilityIdentifier("usernameTextField")
-            .padding(.bottom, 7)
+                .accessibilityIdentifier("usernameTextField")
+                .padding(.bottom, 7)
             
             RoundedBorderTextField(placeHolder: VectorL10n.authPasswordPlaceholder,
                                    text: $viewModel.password,
@@ -116,7 +114,7 @@ struct AuthenticationLoginScreen: View {
                                                                               isSecureTextEntry: true),
                                    onEditingChanged: passwordEditingChanged,
                                    onCommit: submit)
-            .accessibilityIdentifier("passwordTextField")
+                .accessibilityIdentifier("passwordTextField")
             
             Button { viewModel.send(viewAction: .forgotPassword) } label: {
                 Text(VectorL10n.authenticationLoginForgotPassword)

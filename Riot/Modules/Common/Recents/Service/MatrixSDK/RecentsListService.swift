@@ -134,7 +134,7 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
         if let fetcher = conversationRoomListDataFetcherForRooms, fetcherTypes.contains(.conversationRooms) {
             result.append(fetcher)
         }
-        if let fetcher = lowPriorityRoomListDataFetcher, fetcherTypes.contains(.lowPriority) {
+        if let fetcher = lowPriorityRoomListDataFetcher, fetcherTypes.contains(.lowPriority), shouldShowLowPriority {
             result.append(fetcher)
         }
         if let fetcher = serverNoticeRoomListDataFetcher, fetcherTypes.contains(.serverNotice) {
@@ -486,7 +486,7 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
     }
     
     private var shouldShowLowPriority: Bool {
-        return fetcherTypesForMode[mode]?.contains(.lowPriority) ?? false
+        return ((mode != .allChats) || !AllChatsLayoutSettingsManager.shared.hasAnActiveFilter) && fetcherTypesForMode[mode]?.contains(.lowPriority) ?? false
     }
     
     private var shouldShowServerNotice: Bool {
@@ -640,6 +640,14 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
             return
         }
         guard let session = session else {
+            return
+        }
+        guard session.state != .closed else {
+            MXLog.debug("[RecentsListService] createFetchers cancelled on closed session")
+            return
+        }
+        guard session.roomListDataManager != nil else {
+            MXLog.debug("[RecentsListService] createFetchers cancelled on race condition (session closing in progress)")
             return
         }
         guard session.isEventStreamInitialised else {

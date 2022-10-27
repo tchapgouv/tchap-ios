@@ -57,6 +57,7 @@ extern NSNotificationName const RoomGroupCallTileTappedNotification;
 // The preview header
 @property (weak, nonatomic, nullable) IBOutlet UIView *previewHeaderContainer;
 @property (weak, nonatomic, nullable) IBOutlet NSLayoutConstraint *previewHeaderContainerHeightConstraint;
+@property (weak, nonatomic, nullable) IBOutlet NSLayoutConstraint *userSuggestionContainerHeightConstraint;
 
 // The jump to last unread banner
 @property (weak, nonatomic, nullable) IBOutlet UIView *jumpToLastUnreadBannerContainer;
@@ -135,6 +136,19 @@ extern NSNotificationName const RoomGroupCallTileTappedNotification;
  @param roomPreviewData the data for the room preview.
  */
 - (void)displayRoomPreview:(RoomPreviewData*)roomPreviewData;
+
+/**
+ Display a new discussion with a target user without associated room.
+ 
+ @param directChatTargetUser Direct chat target user.
+ @param session The Matrix session.
+ */
+- (void)displayNewDirectChatWithTargetUser:(nonnull MXUser*)directChatTargetUser session:(nonnull MXSession*)session;
+
+/**
+ Pop to home view controller
+ */
+- (void)popToHomeViewController;
 
 /**
  If `YES`, the room settings screen will be initially displayed. Default `NO`

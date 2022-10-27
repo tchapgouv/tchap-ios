@@ -496,6 +496,7 @@ Tap the + to start adding people.";
 "encrypted_room_message_placeholder" = "Send an encrypted message…";
 "encrypted_room_message_reply_to_placeholder" = "Send an encrypted reply…";
 "room_message_short_placeholder" = "Send a message…";
+"room_first_message_placeholder" = "Send your first message…";
 "room_message_reply_to_short_placeholder" = "Send a reply…";
 "room_offline_notification" = "Connectivity to the server has been lost.";
 "room_unsent_messages_notification" = "Messages failed to send.";
@@ -763,6 +764,9 @@ Tap the + to start adding people.";
 "settings_labs_enable_auto_report_decryption_errors" = "Auto Report Decryption Errors";
 "settings_labs_use_only_latest_user_avatar_and_name" = "Show latest avatar and name for users in message history";
 "settings_labs_enable_live_location_sharing" = "Live location sharing - share current location (active development, and temporarily, locations persist in room history)";
+"settings_labs_enable_new_session_manager" = "New session manager";
+"settings_labs_enable_new_client_info_feature" = "Record the client name, version, and url to recognise sessions more easily in session manager";
+"settings_labs_enable_new_app_layout" = "New Application Layout";
 
 "settings_version" = "Version %@";
 "settings_olm_version" = "Olm Version %@";
@@ -2103,10 +2107,7 @@ Tap the + to start adding people.";
 "spaces_creation_in_many_spaces" = "in %@ spaces";
 "spaces_creation_in_one_space" = "in 1 space";
 
-"spaces_invite_people" = "Invite people";
-"spaces_add_room" = "Add room";
 "spaces_add_room_missing_permission_message" = "You do not have permissions to add rooms to this space.";
-"spaces_add_space" = "Add space";
 
 // Mark: Leave space
 
@@ -2187,12 +2188,13 @@ Tap the + to start adding people.";
 "all_chats_empty_space_information" = "Spaces are a new way to group rooms and people. Add an existing room, or create a new one, using the bottom-right button.";
 "all_chats_empty_view_information" = "The all-in-one secure chat app for teams, friends and organisations. Create a chat, or join an existing room, to get started.";
 "all_chats_empty_list_placeholder_title" = "You’re all caught up.";
-"all_chats_empty_unreads_placeholder_message" = "This is where you're unread messages will show up, when you have some.";
+"all_chats_empty_unreads_placeholder_message" = "This is where your unread messages will show up, when you have some.";
 "all_chats_nothing_found_placeholder_title" = "Nothing found.";
 "all_chats_nothing_found_placeholder_message" = "Try adjusting your search.";
 
 "room_recents_recently_viewed_section" = "Recently viewed";
 
+"all_chats_user_menu_accessibility_label" = "User menu";
 "all_chats_user_menu_settings" = "User settings";
 
 "all_chats_edit_menu_leave_space" = "Leave %@";
@@ -2358,6 +2360,64 @@ To enable access, tap Settings> Location and select Always";
 
 "user_sessions_overview_title" = "Sessions";
 
+"user_sessions_overview_security_recommendations_section_title" = "Security recommendations";
+"user_sessions_overview_security_recommendations_section_info" = "Improve your account security by following these recommendations.";
+
+"user_sessions_overview_security_recommendations_unverified_title" = "Unverified sessions";
+"user_sessions_overview_security_recommendations_unverified_info" = "Verify or sign out from unverified sessions.";
+
+"user_sessions_overview_security_recommendations_inactive_title" = "Inactive sessions";
+"user_sessions_overview_security_recommendations_inactive_info" = "Consider signing out from old sessions (90 days or older) you don’t use anymore.";
+
+"user_sessions_overview_other_sessions_section_title" = "Other sessions";
+"user_sessions_overview_other_sessions_section_info" = "For best security, verify your sessions and sign out from any session that you don’t recognize or use anymore.";
+
+"user_sessions_overview_current_session_section_title" = "Current session";
+
+"user_sessions_view_all_action" = "View all (%d)";
+
+"user_session_verified" = "Verified session";
+"user_session_unverified" = "Unverified session";
+"user_session_verified_short" = "Verified";
+"user_session_unverified_short" = "Unverified";
+
+"user_session_verify_action" = "Verify session";
+"user_session_view_details" = "View details";
+"user_session_learn_more" = "Learn more";
+"user_session_verified_additional_info" = "Your current session is ready for secure messaging.";
+"user_session_unverified_additional_info" = "Verify your current session for enhanced secure messaging.";
+
+"user_session_push_notifications" = "Push notifications";
+"user_session_push_notifications_message" = "When turned on, this session will receive push notifications.";
+
+// First item is client name and second item is session display name
+"user_session_name" = "%@: %@";
+
+"user_session_item_details" = "%@ · Last activity %@";
+
+"device_name_desktop" = "%@ Desktop";
+"device_name_web" = "%@ Web";
+"device_name_mobile" = "%@ Mobile";
+"device_name_unknown" = "Unknown client";
+
+"user_session_details_title" = "Session details";
+"user_session_details_session_section_header" = "Session";
+"user_session_details_application_section_header" = "Application";
+"user_session_details_device_section_header" = "Device";
+"user_session_details_session_name" = "Session name";
+"user_session_details_session_id" = "Session ID";
+"user_session_details_session_section_footer" = "Copy any data by tapping on it and holding it down.";
+"user_session_details_device_ip_address" = "IP address";
+"user_session_details_device_ip_location" = "IP location";
+"user_session_details_device_model" = "Model";
+"user_session_details_device_browser" = "Browser";
+"user_session_details_device_os" = "Operating System";
+"user_session_details_application_name" = "Name";
+"user_session_details_application_version" = "Version";
+"user_session_details_application_url" = "URL";
+"user_session_overview_current_session_title" = "Current session";
+"user_session_overview_session_title" = "Session";
+"user_session_overview_session_details_button_title" = "Session details";
 // MARK: - MatrixKit
 
 
@@ -2547,6 +2607,7 @@ To enable access, tap Settings> Location and select Always";
 "room_event_encryption_info_unverify" = "Unverify";
 "room_event_encryption_info_block" = "Blacklist";
 "room_event_encryption_info_unblock" = "Unblacklist";
+"room_event_encryption_info_key_authenticity_not_guaranteed" = "The authenticity of this encrypted message can't be guaranteed on this device.";
 "room_event_encryption_verify_title" = "Verify session\n\n";
 "room_event_encryption_verify_message" = "To verify that this session can be trusted, please contact its owner using some other means (e.g. in person or a phone call) and ask them whether the key they see in their User Settings for this session matches the key below:\n\n\tSession name: %@\n\tSession ID: %@\n\tSession key: %@\n\nIf it matches, press the verify button below. If it doesnt, then someone else is intercepting this session and you probably want to press the blacklist button instead.\n\nIn future this verification process will be more sophisticated.";
 "room_event_encryption_verify_ok" = "Verify";
@@ -2666,12 +2727,9 @@ To enable access, tap Settings> Location and select Always";
 "user_id_title" = "User ID:";
 "offline" = "offline";
 "unsent" = "Unsent";
-"error" = "Error";
 "error_common_message" = "An error occured. Please try again later.";
 "not_supported_yet" = "Not supported yet";
 "default" = "default";
-"private" = "Private";
-"public" = "Public";
 "power_level" = "Power Level";
 "network_error_not_reachable" = "Please check your network connectivity";
 "user_id_placeholder" = "ex: @bob:homeserver";

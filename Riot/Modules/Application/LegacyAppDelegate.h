@@ -28,6 +28,7 @@
 
 @protocol Configurable;
 @protocol LegacyAppDelegateDelegate;
+@protocol SplitViewMasterViewControllerProtocol;
 @class CallBar;
 @class CallPresenter;
 @class RoomNavigationParameters;
@@ -79,7 +80,7 @@ UINavigationControllerDelegate
 /**
  Application main view controller
  */
-@property (nonatomic, readonly) MasterTabBarController *masterTabBarController;
+@property (nonatomic, readonly) UIViewController<SplitViewMasterViewControllerProtocol>* masterTabBarController;
 
 @property (strong, nonatomic) UIWindow *window;
 
@@ -226,9 +227,6 @@ UINavigationControllerDelegate
 // Restore display and show the room
 - (void)showRoom:(NSString*)roomId andEventId:(NSString*)eventId withMatrixSession:(MXSession*)mxSession;
 
-// Creates a new direct chat with the provided user id
-- (void)createDirectChatWithUserId:(NSString*)userId completion:(void (^)(void))completion;
-
 // Show room preview
 - (void)showRoomPreviewWithParameters:(RoomPreviewNavigationParameters*)parameters completion:(void (^)(void))completion;
 
@@ -236,6 +234,12 @@ UINavigationControllerDelegate
 
 // Restore display and show the room preview
 - (void)showRoomPreview:(RoomPreviewData*)roomPreviewData;
+
+// Display a new direct room with a target user without associated room.
+- (void)showNewDirectChat:(NSString*)userId withMatrixSession:(MXSession*)mxSession completion:(void (^)(void))completion;
+
+// Creates a new direct room with the provided user id
+- (void)createDirectChatWithUserId:(NSString*)userId completion:(void (^)(NSString *roomId))completion;
 
 // Reopen an existing direct room with this userId or creates a new one (if it doesn't exist)
 - (void)startDirectChatWithUserId:(NSString*)userId completion:(void (^)(void))completion;

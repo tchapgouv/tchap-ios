@@ -187,7 +187,7 @@ public class VectorL10n: NSObject {
   public static var allChatsEmptySpaceInformation: String { 
     return VectorL10n.tr("Vector", "all_chats_empty_space_information") 
   }
-  /// This is where you're unread messages will show up, when you have some.
+  /// This is where your unread messages will show up, when you have some.
   public static var allChatsEmptyUnreadsPlaceholderMessage: String { 
     return VectorL10n.tr("Vector", "all_chats_empty_unreads_placeholder_message") 
   }
@@ -246,6 +246,10 @@ public class VectorL10n: NSObject {
   /// All chats
   public static var allChatsTitle: String { 
     return VectorL10n.tr("Vector", "all_chats_title") 
+  }
+  /// User menu
+  public static var allChatsUserMenuAccessibilityLabel: String { 
+    return VectorL10n.tr("Vector", "all_chats_user_menu_accessibility_label") 
   }
   /// User settings
   public static var allChatsUserMenuSettings: String { 
@@ -1450,6 +1454,22 @@ public class VectorL10n: NSObject {
   /// Session information\n
   public static var deviceDetailsTitle: String { 
     return VectorL10n.tr("Vector", "device_details_title") 
+  }
+  /// %@ Desktop
+  public static func deviceNameDesktop(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "device_name_desktop", p1)
+  }
+  /// %@ Mobile
+  public static func deviceNameMobile(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "device_name_mobile", p1)
+  }
+  /// Unknown client
+  public static var deviceNameUnknown: String { 
+    return VectorL10n.tr("Vector", "device_name_unknown") 
+  }
+  /// %@ Web
+  public static func deviceNameWeb(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "device_name_web", p1)
   }
   /// The other party cancelled the verification.
   public static var deviceVerificationCancelled: String { 
@@ -5611,6 +5631,10 @@ public class VectorL10n: NSObject {
   public static var roomEventEncryptionInfoEventUserId: String { 
     return VectorL10n.tr("Vector", "room_event_encryption_info_event_user_id") 
   }
+  /// The authenticity of this encrypted message can't be guaranteed on this device.
+  public static var roomEventEncryptionInfoKeyAuthenticityNotGuaranteed: String { 
+    return VectorL10n.tr("Vector", "room_event_encryption_info_key_authenticity_not_guaranteed") 
+  }
   /// End-to-end encryption information\n\n
   public static var roomEventEncryptionInfoTitle: String { 
     return VectorL10n.tr("Vector", "room_event_encryption_info_title") 
@@ -5642,6 +5666,10 @@ public class VectorL10n: NSObject {
   /// Failed to send
   public static var roomEventFailedToSend: String { 
     return VectorL10n.tr("Vector", "room_event_failed_to_send") 
+  }
+  /// Send your first message…
+  public static var roomFirstMessagePlaceholder: String { 
+    return VectorL10n.tr("Vector", "room_first_message_placeholder") 
   }
   /// Room Info
   public static var roomInfoBackButtonTitle: String { 
@@ -7359,6 +7387,18 @@ public class VectorL10n: NSObject {
   public static var settingsLabsEnableLiveLocationSharing: String { 
     return VectorL10n.tr("Vector", "settings_labs_enable_live_location_sharing") 
   }
+  /// New Application Layout
+  public static var settingsLabsEnableNewAppLayout: String { 
+    return VectorL10n.tr("Vector", "settings_labs_enable_new_app_layout") 
+  }
+  /// Record the client name, version, and url to recognise sessions more easily in session manager
+  public static var settingsLabsEnableNewClientInfoFeature: String { 
+    return VectorL10n.tr("Vector", "settings_labs_enable_new_client_info_feature") 
+  }
+  /// New session manager
+  public static var settingsLabsEnableNewSessionManager: String { 
+    return VectorL10n.tr("Vector", "settings_labs_enable_new_session_manager") 
+  }
   /// Ring for group calls
   public static var settingsLabsEnableRingingForGroupCalls: String { 
     return VectorL10n.tr("Vector", "settings_labs_enable_ringing_for_group_calls") 
@@ -8451,6 +8491,166 @@ public class VectorL10n: NSObject {
   public static var userIdTitle: String { 
     return VectorL10n.tr("Vector", "user_id_title") 
   }
+  /// Name
+  public static var userSessionDetailsApplicationName: String { 
+    return VectorL10n.tr("Vector", "user_session_details_application_name") 
+  }
+  /// Application
+  public static var userSessionDetailsApplicationSectionHeader: String { 
+    return VectorL10n.tr("Vector", "user_session_details_application_section_header") 
+  }
+  /// URL
+  public static var userSessionDetailsApplicationUrl: String { 
+    return VectorL10n.tr("Vector", "user_session_details_application_url") 
+  }
+  /// Version
+  public static var userSessionDetailsApplicationVersion: String { 
+    return VectorL10n.tr("Vector", "user_session_details_application_version") 
+  }
+  /// Browser
+  public static var userSessionDetailsDeviceBrowser: String { 
+    return VectorL10n.tr("Vector", "user_session_details_device_browser") 
+  }
+  /// IP address
+  public static var userSessionDetailsDeviceIpAddress: String { 
+    return VectorL10n.tr("Vector", "user_session_details_device_ip_address") 
+  }
+  /// IP location
+  public static var userSessionDetailsDeviceIpLocation: String { 
+    return VectorL10n.tr("Vector", "user_session_details_device_ip_location") 
+  }
+  /// Model
+  public static var userSessionDetailsDeviceModel: String { 
+    return VectorL10n.tr("Vector", "user_session_details_device_model") 
+  }
+  /// Operating System
+  public static var userSessionDetailsDeviceOs: String { 
+    return VectorL10n.tr("Vector", "user_session_details_device_os") 
+  }
+  /// Device
+  public static var userSessionDetailsDeviceSectionHeader: String { 
+    return VectorL10n.tr("Vector", "user_session_details_device_section_header") 
+  }
+  /// Session ID
+  public static var userSessionDetailsSessionId: String { 
+    return VectorL10n.tr("Vector", "user_session_details_session_id") 
+  }
+  /// Session name
+  public static var userSessionDetailsSessionName: String { 
+    return VectorL10n.tr("Vector", "user_session_details_session_name") 
+  }
+  /// Copy any data by tapping on it and holding it down.
+  public static var userSessionDetailsSessionSectionFooter: String { 
+    return VectorL10n.tr("Vector", "user_session_details_session_section_footer") 
+  }
+  /// Session
+  public static var userSessionDetailsSessionSectionHeader: String { 
+    return VectorL10n.tr("Vector", "user_session_details_session_section_header") 
+  }
+  /// Session details
+  public static var userSessionDetailsTitle: String { 
+    return VectorL10n.tr("Vector", "user_session_details_title") 
+  }
+  /// %@ · Last activity %@
+  public static func userSessionItemDetails(_ p1: String, _ p2: String) -> String {
+    return VectorL10n.tr("Vector", "user_session_item_details", p1, p2)
+  }
+  /// Learn more
+  public static var userSessionLearnMore: String { 
+    return VectorL10n.tr("Vector", "user_session_learn_more") 
+  }
+  /// %@: %@
+  public static func userSessionName(_ p1: String, _ p2: String) -> String {
+    return VectorL10n.tr("Vector", "user_session_name", p1, p2)
+  }
+  /// Current session
+  public static var userSessionOverviewCurrentSessionTitle: String { 
+    return VectorL10n.tr("Vector", "user_session_overview_current_session_title") 
+  }
+  /// Session details
+  public static var userSessionOverviewSessionDetailsButtonTitle: String { 
+    return VectorL10n.tr("Vector", "user_session_overview_session_details_button_title") 
+  }
+  /// Session
+  public static var userSessionOverviewSessionTitle: String { 
+    return VectorL10n.tr("Vector", "user_session_overview_session_title") 
+  }
+  /// Push notifications
+  public static var userSessionPushNotifications: String { 
+    return VectorL10n.tr("Vector", "user_session_push_notifications") 
+  }
+  /// When turned on, this session will receive push notifications.
+  public static var userSessionPushNotificationsMessage: String { 
+    return VectorL10n.tr("Vector", "user_session_push_notifications_message") 
+  }
+  /// Unverified session
+  public static var userSessionUnverified: String { 
+    return VectorL10n.tr("Vector", "user_session_unverified") 
+  }
+  /// Verify your current session for enhanced secure messaging.
+  public static var userSessionUnverifiedAdditionalInfo: String { 
+    return VectorL10n.tr("Vector", "user_session_unverified_additional_info") 
+  }
+  /// Unverified
+  public static var userSessionUnverifiedShort: String { 
+    return VectorL10n.tr("Vector", "user_session_unverified_short") 
+  }
+  /// Verified session
+  public static var userSessionVerified: String { 
+    return VectorL10n.tr("Vector", "user_session_verified") 
+  }
+  /// Your current session is ready for secure messaging.
+  public static var userSessionVerifiedAdditionalInfo: String { 
+    return VectorL10n.tr("Vector", "user_session_verified_additional_info") 
+  }
+  /// Verified
+  public static var userSessionVerifiedShort: String { 
+    return VectorL10n.tr("Vector", "user_session_verified_short") 
+  }
+  /// Verify session
+  public static var userSessionVerifyAction: String { 
+    return VectorL10n.tr("Vector", "user_session_verify_action") 
+  }
+  /// View details
+  public static var userSessionViewDetails: String { 
+    return VectorL10n.tr("Vector", "user_session_view_details") 
+  }
+  /// Current session
+  public static var userSessionsOverviewCurrentSessionSectionTitle: String { 
+    return VectorL10n.tr("Vector", "user_sessions_overview_current_session_section_title") 
+  }
+  /// For best security, verify your sessions and sign out from any session that you don’t recognize or use anymore.
+  public static var userSessionsOverviewOtherSessionsSectionInfo: String { 
+    return VectorL10n.tr("Vector", "user_sessions_overview_other_sessions_section_info") 
+  }
+  /// Other sessions
+  public static var userSessionsOverviewOtherSessionsSectionTitle: String { 
+    return VectorL10n.tr("Vector", "user_sessions_overview_other_sessions_section_title") 
+  }
+  /// Consider signing out from old sessions (90 days or older) you don’t use anymore.
+  public static var userSessionsOverviewSecurityRecommendationsInactiveInfo: String { 
+    return VectorL10n.tr("Vector", "user_sessions_overview_security_recommendations_inactive_info") 
+  }
+  /// Inactive sessions
+  public static var userSessionsOverviewSecurityRecommendationsInactiveTitle: String { 
+    return VectorL10n.tr("Vector", "user_sessions_overview_security_recommendations_inactive_title") 
+  }
+  /// Improve your account security by following these recommendations.
+  public static var userSessionsOverviewSecurityRecommendationsSectionInfo: String { 
+    return VectorL10n.tr("Vector", "user_sessions_overview_security_recommendations_section_info") 
+  }
+  /// Security recommendations
+  public static var userSessionsOverviewSecurityRecommendationsSectionTitle: String { 
+    return VectorL10n.tr("Vector", "user_sessions_overview_security_recommendations_section_title") 
+  }
+  /// Verify or sign out from unverified sessions.
+  public static var userSessionsOverviewSecurityRecommendationsUnverifiedInfo: String { 
+    return VectorL10n.tr("Vector", "user_sessions_overview_security_recommendations_unverified_info") 
+  }
+  /// Unverified sessions
+  public static var userSessionsOverviewSecurityRecommendationsUnverifiedTitle: String { 
+    return VectorL10n.tr("Vector", "user_sessions_overview_security_recommendations_unverified_title") 
+  }
   /// Sessions
   public static var userSessionsOverviewTitle: String { 
     return VectorL10n.tr("Vector", "user_sessions_overview_title") 
@@ -8458,6 +8658,10 @@ public class VectorL10n: NSObject {
   /// Manage sessions
   public static var userSessionsSettings: String { 
     return VectorL10n.tr("Vector", "user_sessions_settings") 
+  }
+  /// View all (%d)
+  public static func userSessionsViewAllAction(_ p1: Int) -> String {
+    return VectorL10n.tr("Vector", "user_sessions_view_all_action", p1)
   }
   /// If you didn’t sign in to this session, your account may be compromised.
   public static var userVerificationSessionDetailsAdditionalInformationUntrustedCurrentUser: String { 

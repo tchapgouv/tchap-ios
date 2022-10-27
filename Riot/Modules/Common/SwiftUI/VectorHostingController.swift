@@ -73,14 +73,6 @@ class VectorHostingController: UIHostingController<AnyView> {
         bottomSheetPreferences?.setup(viewController: self)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        if isNavigationBarHidden {
-            self.navigationController?.isNavigationBarHidden = true
-        }
-    }
-    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -91,6 +83,18 @@ class VectorHostingController: UIHostingController<AnyView> {
         if navigationController?.isNavigationBarHidden ?? false {
             navigationController?.interactivePopGestureRecognizer?.delegate = nil
         }
+    }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        
+        guard
+            let navigationController = navigationController,
+            navigationController.topViewController == self,
+            navigationController.isNavigationBarHidden != isNavigationBarHidden
+        else { return }
+        
+        navigationController.isNavigationBarHidden = isNavigationBarHidden
     }
     
     override func viewDidLayoutSubviews() {

@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import CommonKit
+import SwiftUI
 
 struct AuthenticationVerifyEmailCoordinatorParameters {
     let registrationWizard: RegistrationWizard
@@ -24,7 +24,6 @@ struct AuthenticationVerifyEmailCoordinatorParameters {
 }
 
 final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
-    
     // MARK: - Properties
     
     // MARK: Private
@@ -82,7 +81,7 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
     }
     
     func toPresentable() -> UIViewController {
-        return self.authenticationVerifyEmailHostingController
+        authenticationVerifyEmailHostingController
     }
     
     // MARK: - Private
