@@ -44,7 +44,7 @@ enum AuthenticationError: String, LocalizedError {
         case .invalidHomeserver:
             return VectorL10n.authenticationServerSelectionGenericError
         case .unauthorizedThirdPartyID: // Tchap: Add unauthorizedThirdPartyID
-            return TchapL10n.authenticationErrorUnauthorized
+            return TchapL10n.authenticationErrorUnauthorizedEmail
         default:
             return VectorL10n.errorCommonMessage
         }

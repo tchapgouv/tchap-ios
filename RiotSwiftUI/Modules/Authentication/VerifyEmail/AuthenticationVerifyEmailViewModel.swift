@@ -52,8 +52,8 @@ class AuthenticationVerifyEmailViewModel: AuthenticationVerifyEmailViewModelType
             Task { await callback?(.cancel) }
         case .goBack:
             Task { await callback?(.goBack) }
-        case .sendPassword: // Tchap: Add sendPassword specific case
-            Task { await callback?(.sendPassword(state.bindings.password)) }
+        case .prepareAccountCreation: // Tchap: Add prepareAccountCreation specific case
+            Task { await callback?(.prepareAccountCreation(state.bindings.emailAddress, state.bindings.password)) }
         }
     }
     
@@ -84,7 +84,7 @@ class AuthenticationVerifyEmailViewModel: AuthenticationVerifyEmailViewModelType
         case .unauthorizedThirdPartyID:
             state.bindings.alertInfo = AlertInfo(id: type,
                                                  title: VectorL10n.error,
-                                                 message: TchapL10n.authenticationErrorUnauthorized)
+                                                 message: TchapL10n.authenticationErrorUnauthorizedEmail)
         }
     }
 }

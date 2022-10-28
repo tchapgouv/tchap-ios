@@ -99,7 +99,7 @@ class AuthenticationRegistrationViewModel: AuthenticationRegistrationViewModelTy
         case .unauthorizedThirdPartyID:
             state.bindings.alertInfo = AlertInfo(id: type,
                                                  title: VectorL10n.error,
-                                                 message: TchapL10n.authenticationErrorUnauthorized)
+                                                 message: TchapL10n.authenticationErrorUnauthorizedEmail)
         }
     }
     

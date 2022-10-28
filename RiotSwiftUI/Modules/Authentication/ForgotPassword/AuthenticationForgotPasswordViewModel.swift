@@ -70,6 +70,10 @@ class AuthenticationForgotPasswordViewModel: AuthenticationForgotPasswordViewMod
                                                  message: message)
         case .unknown:
             state.bindings.alertInfo = AlertInfo(id: type)
+        case .unauthorizedThirdPartyID:
+            state.bindings.alertInfo = AlertInfo(id: type,
+                                                 title: VectorL10n.error,
+                                                 message: TchapL10n.authenticationErrorUnauthorizedEmail)
         }
     }
 }

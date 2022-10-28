@@ -76,4 +76,7 @@ enum AuthenticationForgotPasswordErrorType: Hashable {
     case mxError(String)
     /// An unknown error occurred.
     case unknown
+    // Tchap: Add unauthorizedThirdPartyID
+    /// Unauthorized third party ID.
+    case unauthorizedThirdPartyID
 }

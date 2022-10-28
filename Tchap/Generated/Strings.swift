@@ -43,8 +43,6 @@ internal enum TchapL10n {
   internal static let authenticationErrorLimitExceeded = TchapL10n.tr("Tchap", "authentication_error_limit_exceeded", fallback: "Vos trois dernières tentatives de connexion ont échoué. Veuillez réessayer dans 30 minutes")
   /// Mot de passe manquant
   internal static let authenticationErrorMissingPassword = TchapL10n.tr("Tchap", "authentication_error_missing_password", fallback: "Mot de passe manquant")
-  /// Non autorisé
-  internal static let authenticationErrorUnauthorized = TchapL10n.tr("Tchap", "authentication_error_unauthorized", fallback: "Non autorisé")
   /// Cette adresse email n'est pas autorisée
   internal static let authenticationErrorUnauthorizedEmail = TchapL10n.tr("Tchap", "authentication_error_unauthorized_email", fallback: "Cette adresse email n'est pas autorisée")
   /// Mot de passe oublié ?
