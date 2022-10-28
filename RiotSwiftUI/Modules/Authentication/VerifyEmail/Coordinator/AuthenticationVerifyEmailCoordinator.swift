@@ -37,7 +37,8 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
     private var loadingIndicator: UserIndicator?
     
     /// The wizard used to handle the registration flow.
-    private var registrationWizard: RegistrationWizard { parameters.registrationWizard }
+    // Tchap: registrationWizard should be updated according to the selected email
+    private var registrationWizard: RegistrationWizard //{ parameters.registrationWizard }
     
     private var currentTask: Task<Void, Error>? {
         willSet {
@@ -67,6 +68,9 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
         authenticationVerifyEmailHostingController.enableNavigationBarScrollEdgeAppearance = true
         
         indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: authenticationVerifyEmailHostingController)
+        
+        // Tchap: use by default the registrationWizard of the parameters
+        registrationWizard = parameters.registrationWizard
         
         // Tchap: Configure thirdPartyIDPlatformInfoResolver
         let identityServerURLs = IdentityServersURLGetter(currentIdentityServerURL: nil).identityServerUrls
@@ -102,8 +106,8 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
                 self.callback?(.cancel)
             case .goBack:
                 self.authenticationVerifyEmailViewModel.goBackToEnterEmailForm()
-            case .sendPassword(let password): // Tchap: Add sendPassword case
-                self.prepareAccountCreation(password: password)
+            case .prepareAccountCreation(let emailAddress, let password): // Tchap: Add prepareAccountCreation case
+                self.prepareAccountCreation(email: emailAddress, password: password)
             }
         }
     }
@@ -120,9 +124,6 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
     
     /// Sends a validation email to the supplied address and then begins polling the server.
     @MainActor private func sendEmail(_ address: String) {
-        // Tchap: Validate e-mail address to update (if needed) the IS
-        validateEmailAddress(address)
-
         let threePID = RegisterThreePID.email(address.trimmingCharacters(in: .whitespaces))
         
         startLoading()
@@ -239,48 +240,55 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
     
     // Tchap: Add account creation part in this class
     /// Creates an account on the homeserver with the supplied password.
-    @MainActor private func prepareAccountCreation(password: String) {
-        let authService = AuthenticationService.shared
-        let registrationWizard = authService.registrationWizard
-        guard let registrationWizard = registrationWizard else {
-            MXLog.failure("[AuthenticationVerifyEmailCoordinator] createAccount: The registration wizard is nil.")
-            return
-        }
-        
+    @MainActor private func prepareAccountCreation(email: String, password: String) {
         startLoading()
         
-        currentTask = Task { [weak self] in
-            do {
-                let result = try await registrationWizard.createAccount(username: nil,
-                                                                        password: password,
-                                                                        initialDeviceDisplayName: UIDevice.current.initialDisplayName)
-                
-                guard !Task.isCancelled else { return }
-                
-                switch result {
-                case .flowResponse(let flowResult):
-                    if flowResult.missingStages.contains(.email(isMandatory: true)) {
-                        authenticationVerifyEmailViewModel.context.send(viewAction: .send)
-                    } else {
-                        // Should not happen.
-                        MXLog.error("[AuthenticationVerifyEmailCoordinator] createAccount flowResponse with no e-mail missing stage !")
-                    }
-                case .success:
-                    MXLog.debug("[AuthenticationVerifyEmailCoordinator] createAccount success")
-                    self?.callback?(.completed(result))
-                }
-                
-                self?.stopLoading()
-            } catch {
-                self?.stopLoading()
-                self?.handleError(error)
+        // Tchap: Validate e-mail address to update (if needed) the HS
+        validateEmailAddress(email) { isValid in
+            guard isValid else {
+                self.stopLoading()
+                return
             }
+            
+            self.currentTask = Task { [weak self] in
+                guard let self = self else { return }
+                do {
+                    let result = try await self.registrationWizard.createAccount(username: nil,
+                                                                            password: password,
+                                                                            initialDeviceDisplayName: UIDevice.current.initialDisplayName)
+                    
+                    guard !Task.isCancelled else { return }
+                    
+                    switch result {
+                    case .flowResponse(let flowResult):
+                        if flowResult.missingStages.contains(.email(isMandatory: true)) {
+                            self.authenticationVerifyEmailViewModel.context.send(viewAction: .send)
+                        } else {
+                            // Should not happen.
+                            MXLog.error("[AuthenticationVerifyEmailCoordinator] createAccount flowResponse with no e-mail missing stage !")
+                        }
+                    case .success:
+                        MXLog.debug("[AuthenticationVerifyEmailCoordinator] createAccount success")
+                        self.callback?(.completed(result))
+                    }
+                    
+                    self.stopLoading()
+                } catch {
+                    self.stopLoading()
+                    self.handleError(error)
+                }
+            }
+            
         }
     }
     
     /// Validate e-mail address and update flow with new domain.
-    @MainActor private func validateEmailAddress(_ address: String) {
-        guard MXTools.isEmailAddress(address) else { return }
+    @MainActor private func validateEmailAddress(_ address: String, completion: @escaping (Bool) -> Void) {
+        guard MXTools.isEmailAddress(address) else {
+            self.handleError(AuthenticationError.unauthorizedThirdPartyID)
+            completion(false)
+            return
+        }
 
         // Tchap: Update the flow to get the right HS
         thirdPartyIDPlatformInfoResolver.resolvePlatformInformation(address: address, medium: kMX3PIDMediumEmail) { [weak self] result in
@@ -289,23 +297,33 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
             switch result {
             case .authorizedThirdPartyID(info: let thirdPartyIDPlatformInfo):
                 // Update HS only if different from the current one.
-                if AuthenticationService.shared.client.homeserver != thirdPartyIDPlatformInfo.homeServer {
+                if self.registrationWizard.client.homeserver != thirdPartyIDPlatformInfo.homeServer {
                     self.currentTask = Task { [weak self] in
+                        guard let self = self else { return }
                         do {
                             try await AuthenticationService.shared.startFlow(.register, for: thirdPartyIDPlatformInfo.homeServer)
+                            if let updatedRegistrationWizard = AuthenticationService.shared.registrationWizard {
+                                self.registrationWizard = updatedRegistrationWizard
+                            }
+                            completion(true)
                         } catch {
-                            self?.handleError(error)
+                            self.handleError(error)
+                            completion(false)
                         }
                     }
+                } else {
+                    completion(true)
                 }
             case .unauthorizedThirdPartyID:
                 MXLog.error("[AuthenticationVerifyEmailCoordinator] ValidateEmailAddress unauthorized error.")
                 self.handleError(AuthenticationError.unauthorizedThirdPartyID)
+                completion(false)
             }
         } failure: { error in
             guard let error = error else { return }
             MXLog.error("[AuthenticationVerifyEmailCoordinator] ValidateEmailAddress error", context: error)
             self.handleError(error)
+            completion(false)
         }
     }
 }

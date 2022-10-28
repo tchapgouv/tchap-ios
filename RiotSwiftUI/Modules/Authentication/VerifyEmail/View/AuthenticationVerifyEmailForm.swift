@@ -119,20 +119,9 @@ struct AuthenticationVerifyEmailForm: View {
         .accessibilityIdentifier("addressTextField")
     }
     
-    // Tchap: Add password management
-    /// Enables password validation the first time the user finishes editing.
-    /// Additionally resets the password field focus.
-    func passwordEditingChanged(isEditing: Bool) {
-        guard !isEditing else { return }
-        isPasswordFocused = false
-        
-        guard !viewModel.viewState.hasEditedPassword else { return }
-        viewModel.send(viewAction: .sendPassword)
-    }
-    
-    /// Sends the `send` view action so long as a valid email address has been input.
+    // Tchap: Prepare the account creation when email and pwd are ready
     func submit() {
         guard !viewModel.viewState.hasInvalidAddress else { return }
-        viewModel.send(viewAction: .sendPassword)
+        viewModel.send(viewAction: .prepareAccountCreation)
     }
 }

@@ -27,9 +27,8 @@ enum AuthenticationVerifyEmailViewModelResult {
     case cancel
     /// Go back to the email form
     case goBack
-    // Tchap: Add sendPassword case
-    /// Send the password.
-    case sendPassword(String)
+    // Tchap: Add prepareAccountCreation case
+    case prepareAccountCreation(String, String)
 }
 
 // MARK: View
@@ -95,9 +94,8 @@ enum AuthenticationVerifyEmailViewAction {
     case cancel
     /// Go back to enter email adress screen
     case goBack
-    // Tchap: Add sendPassword case
-    /// Send the password.
-    case sendPassword
+    // Tchap: Prepare the account creation.
+    case prepareAccountCreation
 }
 
 enum AuthenticationVerifyEmailErrorType: Hashable {
