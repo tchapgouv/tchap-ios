@@ -317,6 +317,7 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
         }
     }
     
+    // Tchap: Add email validation to retrieve the right HS
     /// Validate e-mail address and update flow with new domain.
     @MainActor private func validateEmailAddress(_ address: String, completion: @escaping (Bool) -> Void) {
         guard MXTools.isEmailAddress(address) else {

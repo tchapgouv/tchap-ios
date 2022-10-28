@@ -233,11 +233,13 @@ final class AuthenticationLoginCoordinator: Coordinator, Presentable {
                 }
             case .unauthorizedThirdPartyID:
                 MXLog.error("[AuthenticationLoginCoordinator] ParseUsername unauthorized error.")
+                self.stopLoading()
                 self.handleError(AuthenticationError.unauthorizedThirdPartyID)
             }
         } failure: { error in
             guard let error = error else { return }
             MXLog.error("[AuthenticationLoginCoordinator] ParseUsername error", context: error)
+            self.stopLoading()
             self.handleError(error)
         }
     }
