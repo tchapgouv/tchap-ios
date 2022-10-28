@@ -40,6 +40,10 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
     // Tchap: registrationWizard should be updated according to the selected email
     private var registrationWizard: RegistrationWizard //{ parameters.registrationWizard }
     
+    // Tchap save the email/password
+    private var email: String?
+    private var password: String?
+    
     private var currentTask: Task<Void, Error>? {
         willSet {
             currentTask?.cancel()
@@ -197,9 +201,37 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
             } catch is CancellationError {
                 return
             } catch {
-                self?.handleError(error)
+                // Tchap: Contrary to Element, we attempt to create the account when the user clicks on the email link (see nextLink).
+                // That is why the error M_THREEPID_IN_USE may be observed during the polling. We force here a login with the known credentials
+                if isEmailInUse(error) {
+                    MXLog.debug("[AuthenticationVerifyEmailCoordinator] checkForEmailValidation: Trigger an automatic login.")
+                    guard let self = self else { return }
+                    do {
+                        try await AuthenticationService.shared.startFlow(.login, for: registrationWizard.client.homeserver)
+                        if let loginWizard = AuthenticationService.shared.loginWizard, let email = email, let password = password {
+                            let session = try await loginWizard.login(login: email,
+                                                                      password: password,
+                                                                      initialDeviceName: UIDevice.current.initialDisplayName)
+                            
+                            guard !Task.isCancelled else { return }
+                            self.callback?(.completed(RegistrationResult.success(session)))
+                        } else {
+                            self.handleError(error)
+                        }
+                    } catch {
+                        self.handleError(error)
+                    }
+                } else {
+                    self?.handleError(error)
+                }
             }
         }
+    }
+    
+    /// Checks whether an error is an `M_THREEPID_IN_USE` for forcing a login
+    private func isEmailInUse(_ error: Error) -> Bool {
+        guard let mxError = MXError(nsError: error) else { return false }
+        return mxError.errcode == kMXErrCodeStringThreePIDInUse
     }
     
     /// Processes an error to either update the flow or display it to the user.
@@ -250,12 +282,15 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
                 return
             }
             
+            self.email = email
+            self.password = password
+            
             self.currentTask = Task { [weak self] in
                 guard let self = self else { return }
                 do {
                     let result = try await self.registrationWizard.createAccount(username: nil,
-                                                                            password: password,
-                                                                            initialDeviceDisplayName: UIDevice.current.initialDisplayName)
+                                                                                 password: password,
+                                                                                 initialDeviceDisplayName: UIDevice.current.initialDisplayName)
                     
                     guard !Task.isCancelled else { return }
                     
