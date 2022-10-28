@@ -31,9 +31,12 @@ class AuthenticationVerifyEmailViewModel: AuthenticationVerifyEmailViewModelType
 
     // MARK: - Setup
 
-    init(homeserver: AuthenticationHomeserverViewData, emailAddress: String = "") {
-        let viewState = AuthenticationVerifyEmailViewState(homeserver: homeserver,
-                                                           bindings: AuthenticationVerifyEmailBindings(emailAddress: emailAddress))
+    // Tchap: Remove homeserver from parameters list
+    init(/*homeserver: AuthenticationHomeserverViewData,*/
+         emailAddress: String = "",
+         password: String = "") {
+        let viewState = AuthenticationVerifyEmailViewState(/*homeserver: homeserver,
+                                                           */bindings: AuthenticationVerifyEmailBindings(emailAddress: emailAddress, password: password))
         super.init(initialViewState: viewState)
     }
 
@@ -49,6 +52,8 @@ class AuthenticationVerifyEmailViewModel: AuthenticationVerifyEmailViewModelType
             Task { await callback?(.cancel) }
         case .goBack:
             Task { await callback?(.goBack) }
+        case .prepareAccountCreation: // Tchap: Add prepareAccountCreation specific case
+            Task { await callback?(.prepareAccountCreation(state.bindings.emailAddress, state.bindings.password)) }
         }
     }
     
@@ -68,6 +73,18 @@ class AuthenticationVerifyEmailViewModel: AuthenticationVerifyEmailViewModelType
                                                  message: message)
         case .unknown:
             state.bindings.alertInfo = AlertInfo(id: type)
+        case .invalidHomeserver:
+            state.bindings.alertInfo = AlertInfo(id: type,
+                                                 title: VectorL10n.error,
+                                                 message: VectorL10n.authenticationServerSelectionGenericError)
+        case .registrationDisabled:
+            state.bindings.alertInfo = AlertInfo(id: type,
+                                                 title: VectorL10n.error,
+                                                 message: VectorL10n.loginErrorRegistrationIsNotSupported)
+        case .unauthorizedThirdPartyID:
+            state.bindings.alertInfo = AlertInfo(id: type,
+                                                 title: VectorL10n.error,
+                                                 message: TchapL10n.authenticationErrorUnauthorizedEmail)
         }
     }
 }

@@ -31,6 +31,7 @@ struct AuthenticationVerifyEmailScreen: View {
     // MARK: Views
     
     var body: some View {
+        // Tchap: Remove cancel button
         GeometryReader { geometry in
             VStack {
                 ScrollView {
@@ -46,7 +47,7 @@ struct AuthenticationVerifyEmailScreen: View {
             }
         }
         .background(background.ignoresSafeArea())
-        .toolbar { toolbar }
+//        .toolbar { toolbar }
         .alert(item: $viewModel.alertInfo) { $0.alert }
         .accentColor(theme.colors.accent)
     }

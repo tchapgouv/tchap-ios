@@ -68,3 +68,4 @@
 #import "MXRoom+Riot.h"
 #import "HomeViewController.h"
 #import "MXKAppSettings.h"
+#import "UniversalLink.h"

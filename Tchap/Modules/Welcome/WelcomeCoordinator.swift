@@ -60,59 +60,98 @@ final class WelcomeCoordinator: WelcomeCoordinatorType {
     
     // MARK: - Private methods
     
-    private func showAuthentication() {
-        let authenticationCoordinator = AuthenticationCoordinator(router: self.navigationRouter)
-        authenticationCoordinator.delegate = self
-        authenticationCoordinator.start()
-        
-        self.navigationRouter.push(authenticationCoordinator, animated: true) {
-            self.remove(childCoordinator: authenticationCoordinator)
+    @MainActor private func showAuthentication() async {
+        let authService = AuthenticationService.shared
+        await updateAuthServiceForDirectAuthentication()
+        let parameters = AuthenticationLoginCoordinatorParameters(navigationRouter: self.navigationRouter,
+                                                                  authenticationService: authService,
+                                                                  loginMode: .password)
+        let authenticationLoginCoordinator = AuthenticationLoginCoordinator(parameters: parameters)
+        authenticationLoginCoordinator.callback = { [weak self] result in
+            guard let self = self else { return }
+            self.delegate?.welcomeCoordinatorUserDidAuthenticate(self)
         }
+        authenticationLoginCoordinator.start()
+        self.add(childCoordinator: authenticationLoginCoordinator)
         
-        self.add(childCoordinator: authenticationCoordinator)
+        if navigationRouter.modules.isEmpty {
+            navigationRouter.setRootModule(authenticationLoginCoordinator, popCompletion: nil)
+        } else {
+            navigationRouter.push(authenticationLoginCoordinator, animated: true) { [weak self] in
+                self?.remove(childCoordinator: authenticationLoginCoordinator)
+            }
+        }
     }
     
-    private func showRegistration() {
-        let registrationCoordinator = RegistrationCoordinator(router: self.navigationRouter)
-        registrationCoordinator.delegate = self
-        registrationCoordinator.start()
-        
-        self.navigationRouter.push(registrationCoordinator, animated: true) {
-            self.remove(childCoordinator: registrationCoordinator)
+    // Start login flow by updating AuthenticationService
+    private func updateAuthServiceForDirectAuthentication() async {
+        let authService = AuthenticationService.shared
+        authService.reset()
+        do {
+            try await authService.startFlow(.login)
+        } catch {
+            MXLog.error("[WelcomeCoordinator] Unable to start flow for login.")
+        }
+    }
+    
+    @MainActor private func showRegistration() async {
+        let authenticationService = AuthenticationService.shared
+        do {
+            try await authenticationService.startFlow(.register)
+        } catch {
+            MXLog.error("[WelcomeCoordinator] showRegistration error")
+        }
+        guard let registrationWizard = authenticationService.registrationWizard else {
+            return
+        }
+        let parameters = AuthenticationVerifyEmailCoordinatorParameters(registrationWizard: registrationWizard,
+                                                                        homeserver: authenticationService.state.homeserver)
+        let coordinator = AuthenticationVerifyEmailCoordinator(parameters: parameters)
+        coordinator.callback = { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .cancel:
+                MXLog.warning("[WelcomeCoordinator] Registration cancelled")
+                self.cancelRegisterFlow()
+            case .completed(let registrationResult):
+                switch registrationResult {
+                case .success:
+                    self.delegate?.welcomeCoordinatorUserDidAuthenticate(self)
+                case .flowResponse:
+                    MXLog.warning("[WelcomeCoordinator] flowResponse")
+                }
+            }
         }
         
-        self.add(childCoordinator: registrationCoordinator)
+        coordinator.start()
+        add(childCoordinator: coordinator)
+        
+        if navigationRouter.modules.isEmpty {
+            navigationRouter.setRootModule(coordinator, popCompletion: nil)
+        } else {
+            navigationRouter.push(coordinator, animated: true) { [weak self] in
+                self?.remove(childCoordinator: coordinator)
+            }
+        }
+    }
+    
+    /// Cancels the registration flow, returning to the Welcome screen.
+    private func cancelRegisterFlow() {
+        navigationRouter.popAllModules(animated: false)
     }
 }
 
 // MARK: - WelcomeViewControllerDelegate
 extension WelcomeCoordinator: WelcomeViewControllerDelegate {
-    func welcomeViewControllerDidTapLoginButton(_ welcomeViewController: WelcomeViewController) {
-        self.showAuthentication()
+    @MainActor func welcomeViewControllerDidTapLoginButton(_ welcomeViewController: WelcomeViewController) {
+        Task {
+            await self.showAuthentication()
+        }
     }
     
-    func welcomeViewControllerDidTapRegisterButton(_ welcomeViewController: WelcomeViewController) {
-        self.showRegistration()
-    }
-}
-
-// MARK: - AuthenticationCoordinatorDelegate
-extension WelcomeCoordinator: AuthenticationCoordinatorDelegate {
-
-    func authenticationCoordinator(coordinator: AuthenticationCoordinatorType, didAuthenticateWithUserId userId: String) {
-        self.delegate?.welcomeCoordinatorUserDidAuthenticate(self)
-    }
-}
-
-// MARK: - AuthenticationCoordinatorDelegate
-extension WelcomeCoordinator: RegistrationCoordinatorDelegate {
-    
-    func registrationCoordinatorDidRegisterUser(_ coordinator: RegistrationCoordinatorType) {
-        self.delegate?.welcomeCoordinatorUserDidAuthenticate(self)
-    }
-    
-    func registrationCoordinatorShowAuthentication(_ coordinator: RegistrationCoordinatorType) {
-        self.navigationRouter.popToRootModule(animated: false)
-        self.showAuthentication()
+    @MainActor func welcomeViewControllerDidTapRegisterButton(_ welcomeViewController: WelcomeViewController) {
+        Task {
+            await self.showRegistration()
+        }
     }
 }

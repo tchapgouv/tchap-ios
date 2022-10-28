@@ -4350,7 +4350,6 @@ ChangePasswordCoordinatorBridgePresenterDelegate>
     return message;
 }
 
-
 #pragma mark - MXKCountryPickerViewControllerDelegate
 
 - (void)countryPickerViewController:(MXKCountryPickerViewController *)countryPickerViewController didSelectCountry:(NSString *)isoCountryCode

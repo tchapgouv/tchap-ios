@@ -77,6 +77,10 @@ class AuthenticationLoginViewModel: AuthenticationLoginViewModelType, Authentica
                                                  message: VectorL10n.authenticationServerSelectionGenericError)
         case .unknown:
             state.bindings.alertInfo = AlertInfo(id: type)
+        case .unauthorizedThirdPartyID:
+            state.bindings.alertInfo = AlertInfo(id: type,
+                                                 title: VectorL10n.error,
+                                                 message: TchapL10n.authenticationErrorUnauthorizedEmail)
         }
     }
 }

@@ -222,9 +222,14 @@ class RegistrationWizard {
             throw RegistrationError.createAccountNotCalled
         }
         
+        let nextLink = buildNextLink(webAppBaseStringURL: client.homeserver,
+                                     clientSecret: state.clientSecret,
+                                     sessionId: session)
+        
         let response = try await client.requestTokenDuringRegistration(for: threePID,
                                                                        clientSecret: state.clientSecret,
-                                                                       sendAttempt: state.sendAttempt)
+                                                                       sendAttempt: state.sendAttempt,
+                                                                       nextLink: nextLink)
         
         state.sendAttempt += 1
         
@@ -249,6 +254,24 @@ class RegistrationWizard {
             guard isUnauthorized(error) else { throw error }
             throw RegistrationError.waitingForThreePIDValidation
         }
+    }
+    
+    // Tchap: Add build next link for users whom killed the app before clicking to the e-mail link.
+    private func buildNextLink(webAppBaseStringURL: String,
+                               clientSecret: String,
+                               sessionId: String) -> String? {
+        
+        let percentEncode: ((String) -> String?) = { stringToEncode in
+            stringToEncode.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        }
+        
+        guard let webAppBaseStringURLEncoded = percentEncode(webAppBaseStringURL),
+            let clientSecretURLEncoded = percentEncode(clientSecret),
+            let sessionIdURLEncoded = percentEncode(sessionId) else {
+                return nil
+        }
+        
+        return "\(webAppBaseStringURLEncoded)/#/register?client_secret=\(clientSecretURLEncoded)&session_id=\(sessionIdURLEncoded)"
     }
     
     private func performRegistrationRequest(parameters: RegistrationParameters, isCreatingAccount: Bool = false) async throws -> RegistrationResult {

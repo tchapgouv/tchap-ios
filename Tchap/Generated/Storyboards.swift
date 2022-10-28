@@ -18,11 +18,6 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Tchap.AppVersionUpdateViewController>(storyboard: AppVersionUpdateViewController.self)
   }
-  internal enum AuthenticationViewController: StoryboardType {
-    internal static let storyboardName = "AuthenticationViewController"
-
-    internal static let initialScene = InitialSceneType<Tchap.AuthenticationViewController>(storyboard: AuthenticationViewController.self)
-  }
   internal enum ChangePasswordCurrentPasswordViewController: StoryboardType {
     internal static let storyboardName = "ChangePasswordCurrentPasswordViewController"
 
@@ -38,35 +33,10 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Tchap.FavouriteMessagesViewController>(storyboard: FavouriteMessagesViewController.self)
   }
-  internal enum ForgotPasswordCheckedEmailViewController: StoryboardType {
-    internal static let storyboardName = "ForgotPasswordCheckedEmailViewController"
-
-    internal static let initialScene = InitialSceneType<Tchap.ForgotPasswordCheckedEmailViewController>(storyboard: ForgotPasswordCheckedEmailViewController.self)
-  }
-  internal enum ForgotPasswordFormViewController: StoryboardType {
-    internal static let storyboardName = "ForgotPasswordFormViewController"
-
-    internal static let initialScene = InitialSceneType<Tchap.ForgotPasswordFormViewController>(storyboard: ForgotPasswordFormViewController.self)
-  }
-  internal enum ForgotPasswordVerifyEmailViewController: StoryboardType {
-    internal static let storyboardName = "ForgotPasswordVerifyEmailViewController"
-
-    internal static let initialScene = InitialSceneType<Tchap.ForgotPasswordVerifyEmailViewController>(storyboard: ForgotPasswordVerifyEmailViewController.self)
-  }
   internal enum PublicRoomsViewController: StoryboardType {
     internal static let storyboardName = "PublicRoomsViewController"
 
     internal static let initialScene = InitialSceneType<Tchap.PublicRoomsViewController>(storyboard: PublicRoomsViewController.self)
-  }
-  internal enum RegistrationEmailSentViewController: StoryboardType {
-    internal static let storyboardName = "RegistrationEmailSentViewController"
-
-    internal static let initialScene = InitialSceneType<Tchap.RegistrationEmailSentViewController>(storyboard: RegistrationEmailSentViewController.self)
-  }
-  internal enum RegistrationFormViewController: StoryboardType {
-    internal static let storyboardName = "RegistrationFormViewController"
-
-    internal static let initialScene = InitialSceneType<Tchap.RegistrationFormViewController>(storyboard: RegistrationFormViewController.self)
   }
   internal enum RoomAccessByLinkViewController: StoryboardType {
     internal static let storyboardName = "RoomAccessByLinkViewController"

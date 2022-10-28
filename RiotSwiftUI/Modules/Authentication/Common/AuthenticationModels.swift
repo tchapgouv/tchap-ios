@@ -37,11 +37,14 @@ enum AuthenticationError: String, LocalizedError {
     case invalidHomeserver
     case loginFlowNotCalled
     case missingMXRestClient
+    case unauthorizedThirdPartyID // Tchap: Add unauthorizedThirdPartyID
     
     var errorDescription: String? {
         switch self {
         case .invalidHomeserver:
             return VectorL10n.authenticationServerSelectionGenericError
+        case .unauthorizedThirdPartyID: // Tchap: Add unauthorizedThirdPartyID
+            return TchapL10n.authenticationErrorUnauthorizedEmail
         default:
             return VectorL10n.errorCommonMessage
         }
@@ -95,6 +98,19 @@ class HomeserverAddress: NSObject {
         address = address.trimmingCharacters(in: CharacterSet(charactersIn: "/"))
         
         return address
+    }
+    
+    // Tchap: Add function to find a random home server for Authentication process instanciation.
+    /// Returns a random HS from the HS list.
+    static func homeServerAddress() -> String {
+        let preferredKnownHosts = BuildSettings.preferredIdentityServerNames
+        return randomServerFromList(preferredKnownHosts)
+    }
+    
+    static func randomServerFromList(_ list: [String]) -> String {
+        let homeServerPrefixURL = BuildSettings.serverUrlPrefix
+        let randomIndex = Int(arc4random_uniform(UInt32(list.count)))
+        return "\(homeServerPrefixURL)\(list[randomIndex])"
     }
 }
 

@@ -108,4 +108,7 @@ enum AuthenticationLoginErrorType: Hashable {
     case invalidHomeserver
     /// The response from the homeserver was unexpected.
     case unknown
+    // Tchap: Add unauthorizedThirdPartyID
+    /// Unauthorized third party ID.
+    case unauthorizedThirdPartyID
 }

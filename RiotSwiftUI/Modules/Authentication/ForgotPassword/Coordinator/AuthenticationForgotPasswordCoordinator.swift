@@ -46,7 +46,11 @@ final class AuthenticationForgotPasswordCoordinator: Coordinator, Presentable {
 
     private var navigationRouter: NavigationRouterType { parameters.navigationRouter }
     /// The wizard used to handle the registration flow.
-    private var loginWizard: LoginWizard { parameters.loginWizard }
+    // Tchap: loginWizard should be updated according to the selected email
+    private var loginWizard: LoginWizard //{ parameters.loginWizard }
+    
+    // Tchap: Add thirdPartyIDPlatformInfoResolver
+    private let thirdPartyIDPlatformInfoResolver: ThirdPartyIDPlatformInfoResolverType
     
     private var currentTask: Task<Void, Error>? {
         willSet {
@@ -73,6 +77,14 @@ final class AuthenticationForgotPasswordCoordinator: Coordinator, Presentable {
         authenticationForgotPasswordHostingController.enableNavigationBarScrollEdgeAppearance = true
         
         indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: authenticationForgotPasswordHostingController)
+        
+        // Tchap: use by default the registrationWizard of the parameters
+        loginWizard = parameters.loginWizard
+        
+        // Tchap: Configure thirdPartyIDPlatformInfoResolver
+        let identityServerURLs = IdentityServersURLGetter(currentIdentityServerURL: nil).identityServerUrls
+        self.thirdPartyIDPlatformInfoResolver = ThirdPartyIDPlatformInfoResolver(identityServerUrls: identityServerURLs,
+                                                                                 serverPrefixURL: BuildSettings.serverUrlPrefix)
     }
     
     // MARK: - Public
@@ -120,23 +132,47 @@ final class AuthenticationForgotPasswordCoordinator: Coordinator, Presentable {
     /// Sends a validation email to the supplied address and then begins polling the server.
     @MainActor private func sendEmail(_ address: String) {
         startLoading()
+        
+        // Tchap: Update the flow to get the right HS
+        thirdPartyIDPlatformInfoResolver.resolvePlatformInformation(address: address, medium: kMX3PIDMediumEmail) { [weak self] result in
+            guard let self = self else { return }
 
-        currentTask = Task { [weak self] in
-            do {
-                try await loginWizard.resetPassword(email: address)
+            switch result {
+            case .authorizedThirdPartyID(info: let thirdPartyIDPlatformInfo):
+                self.currentTask = Task { [weak self] in
+                    guard let self = self else { return }
+                    do {
+                        try await AuthenticationService.shared.startFlow(.login, for: thirdPartyIDPlatformInfo.homeServer)
+                        
+                        if let updatedLoginWizard = AuthenticationService.shared.loginWizard {
+                            self.loginWizard = updatedLoginWizard
+                        }
+                            
+                        try await self.loginWizard.resetPassword(email: address)
+                        
+                        // Shouldn't be reachable but just in case, continue the flow.
 
-                // Shouldn't be reachable but just in case, continue the flow.
-
-                guard !Task.isCancelled else { return }
-                authenticationForgotPasswordViewModel.updateForSentEmail()
-
-                self?.stopLoading()
-            } catch is CancellationError {
-                return
-            } catch {
-                self?.stopLoading()
-                self?.handleError(error)
+                        guard !Task.isCancelled else { return }
+                        
+                        self.authenticationForgotPasswordViewModel.updateForSentEmail()
+                        self.stopLoading()
+                    } catch is CancellationError {
+                        return
+                    } catch {
+                        self.stopLoading()
+                        self.handleError(error)
+                    }
+                }
+            case .unauthorizedThirdPartyID:
+                MXLog.error("[AuthenticationForgotPasswordCoordinator] sendEmail unauthorized error.")
+                self.stopLoading()
+                self.handleError(AuthenticationError.unauthorizedThirdPartyID)
             }
+        } failure: { error in
+            guard let error = error else { return }
+            MXLog.error("[AuthenticationForgotPasswordCoordinator] sendEmail error", context: error)
+            self.stopLoading()
+            self.handleError(error)
         }
     }
 
@@ -165,11 +201,20 @@ final class AuthenticationForgotPasswordCoordinator: Coordinator, Presentable {
     /// Processes an error to either update the flow or display it to the user.
     @MainActor private func handleError(_ error: Error) {
         if let mxError = MXError(nsError: error as NSError) {
-            authenticationForgotPasswordViewModel.displayError(.mxError(mxError.error))
+            let message = mxError.authenticationErrorMessage()
+            authenticationForgotPasswordViewModel.displayError(.mxError(message))
             return
         }
         
-        // TODO: Handle another other error types as needed.
+        if let authenticationError = error as? AuthenticationError {
+            switch authenticationError {
+            case .unauthorizedThirdPartyID: // Tchap: Add unauthorizedThirdPartyID
+                authenticationForgotPasswordViewModel.displayError(.unauthorizedThirdPartyID)
+            default:
+                authenticationForgotPasswordViewModel.displayError(.unknown)
+            }
+            return
+        }
         
         authenticationForgotPasswordViewModel.displayError(.unknown)
     }

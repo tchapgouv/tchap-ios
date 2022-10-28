@@ -37,14 +37,15 @@ struct AuthenticationRegistrationScreen: View {
                     .padding(.top, OnboardingMetrics.topPaddingToNavigationBar)
                     .padding(.bottom, 28)
                 
-                serverInfo
-                    .padding(.leading, 12)
-                    .padding(.bottom, 16)
-                
-                Rectangle()
-                    .fill(theme.colors.quinaryContent)
-                    .frame(height: 1)
-                    .padding(.bottom, 22)
+                // Tchap: Hide server selection
+//                serverInfo
+//                    .padding(.leading, 12)
+//                    .padding(.bottom, 16)
+//                
+//                Rectangle()
+//                    .fill(theme.colors.quinaryContent)
+//                    .frame(height: 1)
+//                    .padding(.bottom, 22)
                 
                 if viewModel.viewState.homeserver.showRegistrationForm {
                     registrationForm
@@ -99,8 +100,9 @@ struct AuthenticationRegistrationScreen: View {
     /// The form with text fields for username and password, along with a submit button.
     var registrationForm: some View {
         VStack(spacing: 21) {
+            // Tchap: Update placeholder
             RoundedBorderTextField(title: nil,
-                                   placeHolder: VectorL10n.authenticationRegistrationUsername,
+                                   placeHolder: VectorL10n.authenticationVerifyEmailTextFieldPlaceholder,
                                    text: $viewModel.username,
                                    footerText: viewModel.viewState.usernameFooterMessage,
                                    isError: viewModel.viewState.hasEditedUsername && viewModel.viewState.isUsernameInvalid,
