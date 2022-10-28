@@ -21,13 +21,13 @@ PODS:
   - Down (0.11.0)
   - DSBottomSheet (0.3.0)
   - DSWaveformImage (6.1.1)
-  - DTCoreText (1.6.27):
-    - DTCoreText/Core (= 1.6.27)
+  - DTCoreText (1.6.26):
+    - DTCoreText/Core (= 1.6.26)
     - DTFoundation/Core (~> 1.7.5)
     - DTFoundation/DTAnimatedGIF (~> 1.7.5)
     - DTFoundation/DTHTMLParser (~> 1.7.5)
     - DTFoundation/UIKit (~> 1.7.5)
-  - DTCoreText/Core (1.6.27):
+  - DTCoreText/Core (1.6.26):
     - DTFoundation/Core (~> 1.7.5)
     - DTFoundation/DTAnimatedGIF (~> 1.7.5)
     - DTFoundation/DTHTMLParser (~> 1.7.5)
@@ -115,7 +115,7 @@ DEPENDENCIES:
   - Down (~> 0.11.0)
   - DSBottomSheet (~> 0.3)
   - DSWaveformImage (~> 6.1.1)
-  - DTCoreText (~> 1.6.25)
+  - DTCoreText (= 1.6.26)
   - ffmpeg-kit-ios-audio (= 4.5.1)
   - FLEX (~> 4.5.0)
   - FlowCommoniOS (~> 1.12.0)
@@ -208,7 +208,7 @@ SPEC CHECKSUMS:
   Down: b6ba1bc985c9d2f4e15e3b293d2207766fa12612
   DSBottomSheet: ca0ac37eb5af2dd54663f86b84382ed90a59be2a
   DSWaveformImage: 3c718a0cf99291887ee70d1d0c18d80101d3d9ce
-  DTCoreText: ac297b565abd3b12390d33cd6e076d875f0c0a5e
+  DTCoreText: ec749e013f2e1f76de5e7c7634642e600a7467ce
   DTFoundation: a53f8cda2489208cbc71c648be177f902ee17536
   ffmpeg-kit-ios-audio: 662ce2064e56733ca7d8216705efbc38d9e1c3fe
   FLEX: e51461dd6f0bfb00643c262acdfea5d5d12c596b
@@ -245,6 +245,6 @@ SPEC CHECKSUMS:
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: 413d0ac5539dee1a1d993ba550fcd72df505ecba
+PODFILE CHECKSUM: 156a1ece72e8bea4f6e634a80c4e1a6dbed5d874
 
 COCOAPODS: 1.11.3

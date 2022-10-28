@@ -53,7 +53,7 @@ end
 
 def import_MatrixKit_pods
   pod 'libPhoneNumber-iOS', '~> 0.9.13'  
-  pod 'DTCoreText', '~> 1.6.25'
+  pod 'DTCoreText', '1.6.26'
   #pod 'DTCoreText/Extension', '~> 1.6.25'
   pod 'Down', '~> 0.11.0'
 end
