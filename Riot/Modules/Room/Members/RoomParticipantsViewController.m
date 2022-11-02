@@ -1,7 +1,6 @@
 /*
  Copyright 2015 OpenMarket Ltd
  Copyright 2017 Vector Creations Ltd
- Copyright 2018-2020 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -51,20 +50,6 @@
     
     RoomMemberDetailsViewController *memberDetailsViewController;
     
-    UIBarButtonItem *validateBarButtonItem;
-    
-    // Tell whether the user is allowed to invite other users
-    BOOL isUserAllowedToInvite;
-    BOOL isUserAllowedToKick;
-    BOOL isUserAllowedToInviteByLink;
-    
-    // Display a gradient view above the screen.
-    CAGradientLayer* tableViewMaskLayer;
-    
-    // Display a button to invite new member.
-    UIImageView* addParticipantButtonImageView;
-    NSLayoutConstraint *addParticipantButtonImageViewBottomConstraint;
-    
     UIAlertController *currentAlert;
     
     // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
@@ -72,8 +57,6 @@
     
     RoomParticipantsInviteCoordinatorBridgePresenter *invitePresenter;
 }
-
-@property (nonatomic, nullable, strong) UserService *userService;
 
 @end
 
@@ -189,17 +172,8 @@
     
     _searchBarHeaderBorder.backgroundColor = ThemeService.shared.theme.headerBorderColor;
     
-    //TODO Design the activity indicator for Tchap
-    self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
-    
-    // Update the gradient view above the screen
-    CGFloat white = 1.0;
-    [ThemeService.shared.theme.backgroundColor getWhite:&white alpha:nil];
-    CGColorRef opaqueWhiteColor = [UIColor colorWithWhite:white alpha:1.0].CGColor;
-    CGColorRef transparentWhiteColor = [UIColor colorWithWhite:white alpha:0].CGColor;
-    tableViewMaskLayer.colors = @[(__bridge id) transparentWhiteColor, (__bridge id) transparentWhiteColor, (__bridge id) opaqueWhiteColor];
-    
-    self.tableView.backgroundColor = ThemeService.shared.theme.backgroundColor;
+    // Check the table view style to select its bg color.
+    self.tableView.backgroundColor = ((self.tableView.style == UITableViewStylePlain) ? ThemeService.shared.theme.backgroundColor : ThemeService.shared.theme.headerBackgroundColor);
     self.view.backgroundColor = self.tableView.backgroundColor;
     self.tableView.separatorColor = ThemeService.shared.theme.lineBreakColor;
     
@@ -226,8 +200,6 @@
 
 - (void)destroy
 {
-    self.userService = nil;
-    
     if (kThemeServiceDidChangeThemeNotificationObserver)
     {
         [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
@@ -296,15 +268,6 @@
         [memberDetailsViewController destroy];
         memberDetailsViewController = nil;
     }
-    
-    [self userInterfaceThemeDidChange];
-    
-    // Refresh display
-    [self refreshTableView];
-    
-    // For unknown reason, we have to force here the UISearchBar search text color again.
-    // The value set by [updateWithStyle:] call is ignored.
-    [self refreshSearchBarItemsColor:_searchBarView];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -331,40 +294,6 @@
     else
     {
         [super withdrawViewControllerAnimated:animated completion:completion];
-    }
-}
-
-- (void)viewDidLayoutSubviews
-{
-    [super viewDidLayoutSubviews];
-    
-    // Sanity check
-    if (tableViewMaskLayer)
-    {
-        CGRect currentBounds = tableViewMaskLayer.bounds;
-        CGRect newBounds = CGRectIntegral(self.view.frame);
-        
-        newBounds.size.height -= self.keyboardHeight;
-        
-        // Check if there is an update
-        if (!CGSizeEqualToSize(currentBounds.size, newBounds.size))
-        {
-            newBounds.origin = CGPointZero;
-            
-            [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
-                             animations:^{
-                                 
-                                 self->tableViewMaskLayer.bounds = newBounds;
-                                 
-                             }
-                             completion:^(BOOL finished){
-                             }];
-            
-        }
-        
-        // Hide the addParticipants button on landscape when keyboard is visible
-        BOOL isLandscapeOriented = UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation);
-        addParticipantButtonImageView.hidden = tableViewMaskLayer.hidden = (!isUserAllowedToInvite || (isLandscapeOriented && self.keyboardHeight));
     }
 }
 
@@ -508,9 +437,6 @@
                                 MXRoomThirdPartyInvite *thirdPartyInvite = [liveTimeline.state thirdPartyInviteWithToken:event.stateKey];
                                 if (thirdPartyInvite)
                                 {
-                                    // Remove previous occurrence of this 3pid invite (if any)
-                                    [self removeParticipantByKey:thirdPartyInvite.token];
-                                    
                                     [self addRoomThirdPartyInviteToParticipants:thirdPartyInvite roomState:liveTimeline.state];
 
                                     [self finalizeParticipantsList:liveTimeline.state];
@@ -591,24 +517,6 @@
     }
 }
 
-- (void)setKeyboardHeight:(CGFloat)keyboardHeight
-{
-    super.keyboardHeight = keyboardHeight;
-    
-    // Update addParticipants button position with animation
-    [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
-                     animations:^{
-                         
-                         self->addParticipantButtonImageViewBottomConstraint.constant = keyboardHeight + 9;
-                         
-                         // Force to render the view
-                         [self.view layoutIfNeeded];
-                         
-                     }
-                     completion:^(BOOL finished){
-                     }];
-}
-
 #pragma mark - Internals
 
 - (void)refreshTableView
@@ -658,21 +566,29 @@
 
             for (MXRoomMember *mxMember in members)
             {
-                [self handleRoomMember:mxMember];
+                // Update the current participants list
+                if ([mxMember.userId isEqualToString:userId])
+                {
+                    if (mxMember.membership == MXMembershipJoin || mxMember.membership == MXMembershipInvite)
+                    {
+                        // The user is in this room
+                        NSString *displayName = [VectorL10n you];
+
+                        self->userParticipant = [[Contact alloc] initMatrixContactWithDisplayName:displayName andMatrixID:userId];
+                        self->userParticipant.mxMember = [roomState.members memberWithUserId:userId];
+                    }
+                }
+                else
+                {
+                    [self handleRoomMember:mxMember];
+                }
             }
 
             for (MXRoomThirdPartyInvite *roomThirdPartyInvite in roomThirdPartyInvites)
             {
                 [self addRoomThirdPartyInviteToParticipants:roomThirdPartyInvite roomState:roomState];
             }
-            
-            // Check whether the current user is allowed to invite
-            MXRoomPowerLevels *powerLevels = [roomState powerLevels];
-            self->isUserAllowedToInvite = ([powerLevels powerLevelOfUserWithUserID:userId] >= powerLevels.invite);
-            self->isUserAllowedToKick = ([powerLevels powerLevelOfUserWithUserID:userId] >= powerLevels.kick);
-            self->isUserAllowedToInviteByLink = ([powerLevels powerLevelOfUserWithUserID:userId] >= RoomPowerLevelAdmin || roomState.isJoinRulePublic);
-            self->addParticipantButtonImageView.hidden = self->tableViewMaskLayer.hidden = !self->isUserAllowedToInvite;
-            
+
             [self finalizeParticipantsList:roomState];
         }];
     }
@@ -683,10 +599,9 @@
     // Add this member after checking his status
     if (mxMember.membership == MXMembershipJoin || mxMember.membership == MXMembershipInvite)
     {
-        // Create the contact related to this member.
-        // If the display name is unknown, build a temporary name from the user id.
+        // Prepare the display name of this member
         NSString *displayName = mxMember.displayname;
-        if (!displayName.length && mxMember.userId)
+        if (displayName.length == 0)
         {
             // Look for the corresponding MXUser in matrix session
             MXUser *mxUser = [self.mxRoom.mxSession userWithUserId:mxMember.userId];
@@ -726,24 +641,9 @@
     }
 }
 
-- (void)refreshTableViewByApplyingSearchIfAny
-{
-    if (currentSearchText.length)
-    {
-        NSString *searchText = currentSearchText;
-        currentSearchText = nil;
-        
-        [self searchBar:_searchBarView textDidChange:searchText];
-    }
-    else
-    {
-        [self refreshTableView];
-    }
-}
-
 - (void)addRoomThirdPartyInviteToParticipants:(MXRoomThirdPartyInvite*)roomThirdPartyInvite roomState:(MXRoomState*)roomState
 {
-    // If the homeserver has converted the 3pid invite into a room member, do no show it.
+    // If the homeserver has converted the 3pid invite into a room member, do no show it
     // If the invite has been revoked (null display name), do not show it too.
     if (![roomState memberWithThirdPartyInviteToken:roomThirdPartyInvite.token]
         && roomThirdPartyInvite.displayname)
@@ -796,183 +696,90 @@
     }
 }
 
-- (void)checkExpiredAccounts:(void (^)(void))completion
-{
-    self.userService = [[UserService alloc] initWithSession:self.mxRoom.mxSession];
-    MXHTTPOperation *op;
-    
-    NSArray<Contact*> *participants = [actualParticipants arrayByAddingObjectsFromArray:invitedParticipants];
-    NSMutableArray *contactIds = [NSMutableArray new];
-    for (Contact *contact in participants)
-    {
-        if (contact.mxMember.userId)
-        {
-            [contactIds addObject:contact.mxMember.userId];
-        }
-    }
-    
-    op = [self.userService getUsersInfoFor:contactIds success:^(NSDictionary<NSString *,id> * _Nonnull usersInfo) {
-        for (Contact *contact in participants)
-        {
-            if (contact.mxMember.userId)
-            {
-                UserStatusInfo *userInfo = [usersInfo objectForKey:contact.mxMember.userId];
-                if (userInfo)
-                {
-                    contact.isExpired = userInfo.expired;
-                }
-                else
-                {
-                    contact.isExpired = false;
-                }
-            }
-            else
-            {
-                contact.isExpired = false;
-            }
-        }
-        
-        self.userService = nil;
-        if (completion)
-        {
-            completion();
-        }
-    } failure:^(NSError * _Nonnull error) {
-        for (Contact *contact in participants)
-        {
-            contact.isExpired = false;
-        }
-        
-        self.userService = nil;
-        if (completion)
-        {
-            completion();
-        }
-    }];
-}
-
 - (void)finalizeParticipantsList:(MXRoomState*)roomState
 {
-    // Sort contacts by power
+    // Sort contacts by last active, with "active now" first.
+    // ...and then by power
     // ...and then alphabetically.
-    // Move at the end expired accounts...
     // We could tiebreak instead by "last recently spoken in this room" if we wanted to.
     NSComparator comparator = ^NSComparisonResult(Contact *contactA, Contact *contactB) {
         
-        NSString *userIdA = contactA.mxMember.userId;
-        NSString *userIdB = contactB.mxMember.userId;
+        MXUser *userA = [self.mxRoom.mxSession userWithUserId:contactA.mxMember.userId];
+        MXUser *userB = [self.mxRoom.mxSession userWithUserId:contactB.mxMember.userId];
         
-        if (!userIdA && !userIdB)
+        if (!userA && !userB)
         {
             return [contactA.sortingDisplayName compare:contactB.sortingDisplayName options:NSCaseInsensitiveSearch];
         }
-        if (userIdA && !userIdB)
-        {
-            return contactA.isExpired ? NSOrderedDescending : NSOrderedAscending;
-        }
-        if (!userIdA && userIdB)
-        {
-            return contactB.isExpired ? NSOrderedAscending : NSOrderedDescending;
-        }
-        if (contactA.isExpired)
-        {
-            if (!contactB.isExpired)
-            {
-                return NSOrderedDescending;
-            }
-        }
-        else if (contactB.isExpired)
+        if (userA && !userB)
         {
             return NSOrderedAscending;
         }
-        
-        // Order first by power levels (admins then moderators then others)
-        MXRoomPowerLevels *powerLevels = [roomState powerLevels];
-        NSInteger powerLevelA = [powerLevels powerLevelOfUserWithUserID:userIdA];
-        NSInteger powerLevelB = [powerLevels powerLevelOfUserWithUserID:userIdB];
-        
-        if (powerLevelA == powerLevelB)
+        if (!userA && userB)
         {
-            // Then order by name
-            if (contactA.sortingDisplayName.length && contactB.sortingDisplayName.length)
+            return NSOrderedDescending;
+        }
+        
+        if (userA.currentlyActive && userB.currentlyActive)
+        {
+            // Order first by power levels (admins then moderators then others)
+            MXRoomPowerLevels *powerLevels = [roomState powerLevels];
+            NSInteger powerLevelA = [powerLevels powerLevelOfUserWithUserID:contactA.mxMember.userId];
+            NSInteger powerLevelB = [powerLevels powerLevelOfUserWithUserID:contactB.mxMember.userId];
+            
+            if (powerLevelA == powerLevelB)
             {
-                return [contactA.sortingDisplayName compare:contactB.sortingDisplayName options:NSCaseInsensitiveSearch];
+                // Then order by name
+                if (contactA.sortingDisplayName.length && contactB.sortingDisplayName.length)
+                {
+                    return [contactA.sortingDisplayName compare:contactB.sortingDisplayName options:NSCaseInsensitiveSearch];
+                }
+                else if (contactA.sortingDisplayName.length)
+                {
+                    return NSOrderedAscending;
+                }
+                else if (contactB.sortingDisplayName.length)
+                {
+                    return NSOrderedDescending;
+                }
+                return [contactA.displayName compare:contactB.displayName options:NSCaseInsensitiveSearch];
             }
-            else if (contactA.sortingDisplayName.length)
+            else
             {
-                return NSOrderedAscending;
+                return powerLevelB - powerLevelA;
             }
-            else if (contactB.sortingDisplayName.length)
-            {
-                return NSOrderedDescending;
-            }
-            return [contactA.displayName compare:contactB.displayName options:NSCaseInsensitiveSearch];
+            
+        }
+        
+        if (userA.currentlyActive && !userB.currentlyActive)
+        {
+            return NSOrderedAscending;
+        }
+        if (!userA.currentlyActive && userB.currentlyActive)
+        {
+            return NSOrderedDescending;
+        }
+        
+        // Finally, compare the lastActiveAgo
+        NSUInteger lastActiveAgoA = userA.lastActiveAgo;
+        NSUInteger lastActiveAgoB = userB.lastActiveAgo;
+        
+        if (lastActiveAgoA == lastActiveAgoB)
+        {
+            return NSOrderedSame;
         }
         else
         {
-            return powerLevelB - powerLevelA;
+            return ((lastActiveAgoA > lastActiveAgoB) ? NSOrderedDescending : NSOrderedAscending);
         }
     };
     
     // Sort each participants list in alphabetical order
     [actualParticipants sortUsingComparator:comparator];
     [invitedParticipants sortUsingComparator:comparator];
-
-    // Refresh the tableview by reloading the search result (if any)
-    [self refreshTableViewByApplyingSearchIfAny];
     
-    // Check whether some accounts have expired
-    MXWeakify(self);
-    [self checkExpiredAccounts:^{
-        MXStrongifyAndReturnIfNil(self);
-        // Sort each participants list in alphabetical order by moving at the bottom the expired accounts
-        [self->actualParticipants sortUsingComparator:comparator];
-        [self->invitedParticipants sortUsingComparator:comparator];
-        
-        // Refresh the tableview by reloading the search result (if any)
-        [self refreshTableViewByApplyingSearchIfAny];
-    }];
-}
-
-- (Contact*)getContactAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSUInteger section = indexPath.section;
-    NSUInteger row = indexPath.row;
-    
-    if (section == participantsSection || section == invitedSection)
-    {
-        NSMutableArray *participants;
-        
-        if (section == participantsSection)
-        {
-            if (currentSearchText.length)
-            {
-                participants = filteredActualParticipants;
-            }
-            else
-            {
-                participants = actualParticipants;
-            }
-        }
-        else
-        {
-            if (currentSearchText.length)
-            {
-                participants = filteredInvitedParticipants;
-            }
-            else
-            {
-                participants = invitedParticipants;
-            }
-        }
-        
-        if (row < participants.count)
-        {
-            return participants[row];
-        }
-    }
-    
-    return nil;
+    // Reload search result if any
+    [self reloadSearchResult];
 }
 
 - (void)addPendingActionMask
@@ -1031,19 +838,6 @@
     }
 }
 
-- (void)popViewControllerAnimated:(BOOL)animated
-{
-    // Check whether the view controller is displayed inside a segmented one.
-    if (self.parentViewController.navigationController)
-    {
-        [self.parentViewController.navigationController popViewControllerAnimated:animated];
-    }
-    else
-    {
-        [self.navigationController popViewControllerAnimated:animated];
-    }
-}
-
 - (void)showDetailFor:(MXRoomMember* _Nonnull)member from:(UIView* _Nullable)sourceView {
     memberDetailsViewController = [RoomMemberDetailsViewController roomMemberDetailsViewController];
     
@@ -1079,7 +873,7 @@
     }
     else
     {
-        if (actualParticipants.count)
+        if (userParticipant || actualParticipants.count)
         {
             participantsSection = count++;
         }
@@ -1106,6 +900,10 @@
         else
         {
             count = actualParticipants.count;
+            if (userParticipant)
+            {
+                count++;
+            }
         }
     }
     else if (section == invitedSection)
@@ -1232,27 +1030,11 @@
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    BOOL canEdit = isUserAllowedToKick;
-    
-    // Check whether the selected row corresponds to an actual member
-    Contact *contact = [self getContactAtIndexPath:indexPath];
-    if (contact.mxMember)
+    if (indexPath.section == participantsSection || indexPath.section == invitedSection)
     {
-        // Check whether the selected row corresponds to the current user.
-        NSString *userId = self.mxRoom.mxSession.myUser.userId;
-        if ([userId isEqualToString:contact.mxMember.userId])
-        {
-            canEdit = YES;
-        }
-        else if (canEdit)
-        {
-            // Compare the power level between the selected member and the current user.
-            MXRoomState *roomState = self.mxRoom.dangerousSyncState;
-            MXRoomPowerLevels *powerLevels = [roomState powerLevels];
-            canEdit = ([powerLevels powerLevelOfUserWithUserID:userId] > [powerLevels powerLevelOfUserWithUserID:contact.mxMember.userId]);
-        }
+        return YES;
     }
-    return canEdit;
+    return NO;
 }
 
 - (void)tableView:(UITableView*)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath*)indexPath
@@ -1337,56 +1119,89 @@
         return;
     }
     
-    Contact *contact = [self getContactAtIndexPath:indexPath];
+    Contact *contact;
+    
+    // oneself dedicated cell
+    if ((indexPath.section == participantsSection && userParticipant && indexPath.row == 0) && !currentSearchText.length)
+    {
+        contact = userParticipant;
+    }
+    else
+    {
+        NSInteger index = indexPath.row;
+        NSArray *participants;
+        
+        if (indexPath.section == participantsSection)
+        {
+            if (currentSearchText.length)
+            {
+                participants = filteredActualParticipants;
+            }
+            else
+            {
+                participants = actualParticipants;
+                
+                if (userParticipant)
+                {
+                    index --;
+                }
+            }
+        }
+        else
+        {
+            if (currentSearchText.length)
+            {
+                participants = filteredInvitedParticipants;
+            }
+            else
+            {
+                participants = invitedParticipants;
+            }
+        }
+        
+        if (index < participants.count)
+        {
+            contact = participants[index];
+        }
+    }
+    
     if (contact.mxMember)
     {
-        memberDetailsViewController = [RoomMemberDetailsViewController roomMemberDetailsViewController];
-        
-        // Set delegate to handle action on member (start chat, mention)
-        memberDetailsViewController.delegate = self;
-        memberDetailsViewController.enableMention = _enableMention;
-        memberDetailsViewController.enableVoipCall = NO;
-        
-        [memberDetailsViewController displayRoomMember:contact.mxMember withMatrixRoom:self.mxRoom];
-        
-        [self pushViewController:memberDetailsViewController];
+        UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
+        [self showDetailFor:contact.mxMember from:selectedCell];
     }
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-- (nullable UISwipeActionsConfiguration *)tableView:(UITableView *)tableView trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath
+- (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSMutableArray<UIContextualAction*> *actions = [[NSMutableArray alloc] init];
+    NSMutableArray* actions;
     
     // add the swipe to delete only on participants sections
     if (indexPath.section == participantsSection || indexPath.section == invitedSection)
     {
-        UIContextualAction *leaveAction =
-        [UIContextualAction contextualActionWithStyle:UIContextualActionStyleNormal
-                                                title:nil
-                                              handler:^(UIContextualAction * _Nonnull action,
-                                                        __kindof UIView * _Nonnull sourceView,
-                                                        void (^ _Nonnull completionHandler)(BOOL)) {
+        actions = [[NSMutableArray alloc] init];
+        
+        // Patch: Force the width of the button by adding whitespace characters into the title string.
+        UITableViewRowAction *leaveAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive title:@"        "  handler:^(UITableViewRowAction *action, NSIndexPath *indexPath){
+            
             [self onDeleteAt:indexPath];
             
         }];
         
-        leaveAction.image = [[UIImage imageNamed:@"remove_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.tintColor];
-        
+        leaveAction.backgroundColor = [MXKTools convertImageToPatternColor:@"remove_icon" backgroundColor:ThemeService.shared.theme.headerBackgroundColor patternSize:CGSizeMake(74, 74) resourceSize:CGSizeMake(24, 24)];
         [actions insertObject:leaveAction atIndex:0];
     }
     
-    UISwipeActionsConfiguration *swipeActionConfiguration = [UISwipeActionsConfiguration configurationWithActions:actions];
-    swipeActionConfiguration.performsFirstActionWithFullSwipe = NO;
-    return swipeActionConfiguration;
+    return actions;
 }
 
 #pragma mark - MXKRoomMemberDetailsViewControllerDelegate
 
 - (void)roomMemberDetailsViewController:(MXKRoomMemberDetailsViewController *)roomMemberDetailsViewController startChatWithMemberId:(NSString *)matrixId completion:(void (^)(void))completion
 {
-    [self.delegate roomParticipantsViewController:self startChatWithMemberId:matrixId completion:completion];
+    [[AppDelegate theDelegate] showNewDirectChat:matrixId withMatrixSession:self.mxRoom.mxSession completion:completion];
 }
 
 - (void)roomMemberDetailsViewController:(MXKRoomMemberDetailsViewController *)roomMemberDetailsViewController mention:(MXRoomMember*)member
@@ -1411,8 +1226,7 @@
     NSUInteger section = path.section;
     NSUInteger row = path.row;
     
-    Contact *contact = [self getContactAtIndexPath:path];
-    if (contact.mxMember)
+    if (section == participantsSection || section == invitedSection)
     {
         if (currentAlert)
         {
@@ -1622,10 +1436,6 @@
             }
         }
     }
-    else if (contact.mxThirdPartyInvite)
-    {
-        [self revokeThirdPartyInvite:contact.mxThirdPartyInvite];
-    }
 }
 
 - (void)onCancel:(id)sender
@@ -1633,201 +1443,19 @@
     [self withdrawViewControllerAnimated:YES completion:nil];
 }
 
-#pragma mark -
-
-- (void)leaveRoom
-{
-    if (currentAlert)
-    {
-        [currentAlert dismissViewControllerAnimated:NO completion:nil];
-        currentAlert = nil;
-    }
-    
-    // Leave ?
-    [self startActivityIndicator];
-    MXWeakify(self);
-    [self.mxRoom tc_isCurrentUserLastAdministrator:^(BOOL isLastAdmin) {
-        MXStrongifyAndReturnIfNil(self);
-        [self stopActivityIndicator];
-        
-        // confirm leave
-        NSString *promptMessage = NSLocalizedStringFromTable(@"room_participants_leave_prompt_msg", @"Vector", nil);
-        if (isLastAdmin)
-        {
-            promptMessage = NSLocalizedStringFromTable(@"tchap_room_admin_leave_prompt_msg", @"Tchap", nil);
-        }
-        
-        MXWeakify(self);
-        self->currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"room_participants_leave_prompt_title", @"Vector", nil)
-                                                                 message:promptMessage
-                                                          preferredStyle:UIAlertControllerStyleAlert];
-        
-        [self->currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
-                                                               style:UIAlertActionStyleCancel
-                                                             handler:^(UIAlertAction * action) {
-                                                                 
-                                                                 MXStrongifyAndReturnIfNil(self);
-                                                                 self->currentAlert = nil;
-                                                                 
-                                                             }]];
-        
-        [self->currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"leave", @"Vector", nil)
-                                                               style:UIAlertActionStyleDefault
-                                                             handler:^(UIAlertAction * action) {
-                                                                 
-                                                                 MXStrongifyAndReturnIfNil(self);
-                                                                 self->currentAlert = nil;
-                                                                 
-                                                                 [self addPendingActionMask];
-                                                                 MXWeakify(self);
-                                                                 [self.mxRoom leave:^{
-                                                                     
-                                                                     MXStrongifyAndReturnIfNil(self);
-                                                                     [self withdrawViewControllerAnimated:YES completion:nil];
-                                                                     
-                                                                 } failure:^(NSError *error) {
-                                                                     
-                                                                     MXStrongifyAndReturnIfNil(self);
-                                                                     [self removePendingActionMask];
-                                                                     NSLog(@"[RoomParticipantsVC] Leave room %@ failed", self.mxRoom.roomId);
-                                                                     // Alert user
-                                                                     [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                                     
-                                                                 }];
-                                                                 
-                                                             }]];
-        
-        [self->currentAlert mxk_setAccessibilityIdentifier:@"RoomParticipantsVCLeaveAlert"];
-        [self presentViewController:self->currentAlert animated:YES completion:nil];
-    }];
-}
-
-- (void)kickRoomMember:(MXRoomMember*)member withDisplayName:(NSString*)displayName
-{
-    if (currentAlert)
-    {
-        [currentAlert dismissViewControllerAnimated:NO completion:nil];
-        currentAlert = nil;
-    }
-    
-    // Kick?
-    MXWeakify(self);
-    NSString *promptMsg = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_members_remove_prompt_msg", @"Tchap", nil), displayName];
-    currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"room_participants_remove_prompt_title", @"Vector", nil)
-                                                       message:promptMsg
-                                                preferredStyle:UIAlertControllerStyleAlert];
-    
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
-                                                     style:UIAlertActionStyleCancel
-                                                   handler:^(UIAlertAction * action) {
-                                                       
-                                                       MXStrongifyAndReturnIfNil(self);
-                                                       self->currentAlert = nil;
-                                                       
-                                                   }]];
-    
-    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"action_remove", @"Tchap", nil)
-                                                     style:UIAlertActionStyleDefault
-                                                   handler:^(UIAlertAction * action) {
-                                                       
-                                                       MXStrongifyAndReturnIfNil(self);
-                                                       self->currentAlert = nil;
-                                                       
-                                                       [self addPendingActionMask];
-                                                       MXWeakify(self);
-                                                       [self.mxRoom kickUser:member.userId
-                                                                      reason:nil
-                                                                     success:^{
-                                                                         
-                                                                         MXStrongifyAndReturnIfNil(self);
-                                                                         [self removePendingActionMask];
-                                                                         
-                                                                         // Let the room member events listener remove this member
-                                                                         
-                                                                     } failure:^(NSError *error) {
-                                                                         
-                                                                         MXStrongifyAndReturnIfNil(self);
-                                                                         [self removePendingActionMask];
-                                                                         NSLog(@"[RoomParticipantsVC] Kick %@ failed", member.userId);
-                                                                         // Alert user
-                                                                         [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                                         
-                                                                     }];
-                                                       
-                                                   }]];
-    
-    [currentAlert mxk_setAccessibilityIdentifier:@"RoomParticipantsVCKickAlert"];
-    [self presentViewController:currentAlert animated:YES completion:nil];
-}
-
-- (void)revokeThirdPartyInvite:(MXRoomThirdPartyInvite*)thirdPartyInvite
-{
-    if (currentAlert)
-    {
-        [currentAlert dismissViewControllerAnimated:NO completion:nil];
-        currentAlert = nil;
-    }
-    
-    // This is a third-party invite
-    MXWeakify(self);
-    currentAlert = [UIAlertController alertControllerWithTitle:nil
-                                                       message:NSLocalizedStringFromTable(@"room_participants_remove_third_party_invite_prompt_msg", @"Vector", nil)
-                                                preferredStyle:UIAlertControllerStyleAlert];
-    
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
-                                                     style:UIAlertActionStyleCancel
-                                                   handler:^(UIAlertAction * action) {
-                                                       
-                                                       MXStrongifyAndReturnIfNil(self);
-                                                       self->currentAlert = nil;
-                                                       
-                                                   }]];
-    
-    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"action_remove", @"Tchap", nil)
-                                                     style:UIAlertActionStyleDefault
-                                                   handler:^(UIAlertAction * action) {
-                                                       
-                                                       MXStrongifyAndReturnIfNil(self);
-                                                       self->currentAlert = nil;
-                                                       
-                                                       [self addPendingActionMask];
-                                                       MXWeakify(self);
-                                                       [self.mxRoom sendStateEventOfType:kMXEventTypeStringRoomThirdPartyInvite
-                                                                                 content:@{} stateKey:thirdPartyInvite.token success:^(NSString *eventId) {
-                                                                                     
-                                                                                     MXStrongifyAndReturnIfNil(self);
-                                                                                     [self removePendingActionMask];
-                                                                                     
-                                                                                     // Let the room member events listener remove this invite
-                                                                                     
-                                                                                 } failure:^(NSError *error) {
-                                                                                     
-                                                                                     MXStrongifyAndReturnIfNil(self);
-                                                                                     [self removePendingActionMask];
-                                                                                     NSLog(@"[RoomParticipantsVC] Revoke 3pid invite failed");
-                                                                                     // Alert user
-                                                                                     [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                                                     
-                                                                                 }];
-                                                       
-                                                   }]];
-    
-    [currentAlert mxk_setAccessibilityIdentifier:@"RoomParticipantsVCRevokeAlert"];
-    [self presentViewController:currentAlert animated:YES completion:nil];
-}
-
 #pragma mark - UISearchBar delegate
 
 - (void)refreshSearchBarItemsColor:(UISearchBar *)searchBar
 {
     // bar tint color
-    searchBar.barTintColor = searchBar.tintColor = ThemeService.shared.theme.headerTextSecondaryColor;
+    searchBar.barTintColor = searchBar.tintColor = ThemeService.shared.theme.tintColor;
+    searchBar.tintColor = ThemeService.shared.theme.tintColor;
     
     // FIXME: this all seems incredibly fragile and tied to gutwrenching the current UISearchBar internals.
     
     // text color
     UITextField *searchBarTextField = searchBar.vc_searchTextField;
-    searchBarTextField.textColor = ThemeService.shared.theme.headerTextSecondaryColor;
+    searchBarTextField.textColor = ThemeService.shared.theme.textSecondaryColor;
     
     // Magnifying glass icon.
     UIImageView *leftImageView = (UIImageView *)searchBarTextField.leftView;
@@ -1840,10 +1468,7 @@
     effectBackgroundBottom.hidden = YES;
     
     // place holder
-    searchBarTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:searchBarTextField.placeholder
-                                                                               attributes:@{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle),
-                                                                                            NSUnderlineColorAttributeName: ThemeService.shared.theme.headerTextSecondaryColor,
-                                                                                            NSForegroundColorAttributeName: ThemeService.shared.theme.headerTextSecondaryColor}];
+    searchBarTextField.textColor = ThemeService.shared.theme.searchPlaceholderColor;
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
@@ -1859,6 +1484,12 @@
         // Copy participants and invited participants
         filteredActualParticipants = [NSMutableArray arrayWithArray:actualParticipants];
         filteredInvitedParticipants = [NSMutableArray arrayWithArray:invitedParticipants];
+        
+        // Add the current user if he belongs to the room members.
+        if (userParticipant)
+        {
+            [filteredActualParticipants addObject:userParticipant];
+        }
     }
     
     currentSearchText = searchText;

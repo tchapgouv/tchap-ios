@@ -1,3 +1,148 @@
+## Changes in 1.9.8 (2022-10-04)
+
+🙌 Improvements
+
+- UserSessions: Extended device information (PSG-772). ([#6766](https://github.com/vector-im/element-ios/pull/6766))
+- Settings: Add labs flags for new session manager (PSG-792, PSG-799). ([#6780](https://github.com/vector-im/element-ios/pull/6780))
+- User session details: Include browser version for web sessions (PSG-761). ([#6788](https://github.com/vector-im/element-ios/pull/6788))
+- Upgrade MatrixSDK version ([v0.24.0](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.24.0)).
+- Include concrete device model in user agent (PSG-754) ([#6742](https://github.com/vector-im/element-ios/issues/6742))
+- CryptoV2: Manual device verification ([#6781](https://github.com/vector-im/element-ios/issues/6781))
+- User sessions: Add support for MSC3881 ([#6787](https://github.com/vector-im/element-ios/issues/6787))
+
+🐛 Bugfixes
+
+- Voiceover: Add labels to User Menu and My Spaces buttons on the All Chats view. ([#6580](https://github.com/vector-im/element-ios/issues/6580))
+- Media: Avoid redundant reloads on media viewer. ([#6717](https://github.com/vector-im/element-ios/issues/6717))
+- Pass country code into MSISDN requests ([#6723](https://github.com/vector-im/element-ios/issues/6723))
+- Fix render of links with both characters requiring percent encoding and markdown-like syntax ([#6748](https://github.com/vector-im/element-ios/issues/6748))
+- Fix crash when scrolling chat list ([#6749](https://github.com/vector-im/element-ios/issues/6749))
+- App Layout: Unable to send message after filtering for room ([#6755](https://github.com/vector-im/element-ios/issues/6755))
+- App Layout: Fix missing toolbar for users with no rooms. ([#6796](https://github.com/vector-im/element-ios/pull/6796))
+- Fix code block background colour ([#6778](https://github.com/vector-im/element-ios/issues/6778))
+- Fix navigation bars visibility on iOS 16. ([#6799](https://github.com/vector-im/element-ios/pull/6799))
+
+🧱 Build
+
+- Fix crash when scrolling chat list ([#6757](https://github.com/vector-im/element-ios/pull/6757))
+
+🚧 In development 🚧
+
+- Device manager: User session details screen. ([#6693](https://github.com/vector-im/element-ios/issues/6693))
+- Device manager: Session overview screen. ([#6753](https://github.com/vector-im/element-ios/issues/6753))
+- Device Manager: Link current session to session overview. ([#6770](https://github.com/vector-im/element-ios/issues/6770))
+
+
+## Changes in 1.9.7 (2022-09-28)
+
+🙌 Improvements
+
+- Upgrade MatrixSDK version ([v0.23.19](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.23.19)).
+
+🐛 Bugfixes
+
+- Missing decoration for events decrypted with untrusted Megolm sessions ([Security advisory](https://github.com/vector-im/element-ios/security/advisories/GHSA-fm8m-99j7-323g))
+- Fix crash when scrolling chat list ([#6749](https://github.com/vector-im/element-ios/issues/6749))
+
+
+## Changes in 1.9.6 (2022-09-20)
+
+🙌 Improvements
+
+- Sentry: Disable unnecessary network breadcrumbs ([#6726](https://github.com/vector-im/element-ios/pull/6726))
+
+🐛 Bugfixes
+
+- Fix crash when some opus audio files are added to a room. ([#6584](https://github.com/vector-im/element-ios/issues/6584))
+- Fixed failed to join room (was not legal room) ([#6653](https://github.com/vector-im/element-ios/issues/6653))
+- Fix crash presenting Sign Out or Invite to Element menu items on iPad. ([#6654](https://github.com/vector-im/element-ios/issues/6654))
+- Fix crash on logout when syncing is currently in progress ([#6705](https://github.com/vector-im/element-ios/issues/6705))
+- New layout: Fixed Low priority rooms titles obscured by bottom bar when side scrolling ([#6707](https://github.com/vector-im/element-ios/issues/6707))
+- Message Composer: Stop the keyboard jumping after sending a message on certain devices. ([#6708](https://github.com/vector-im/element-ios/issues/6708))
+- New App Layout: Make sure the green loading spinner is dismissed after clearing the cache. ([#6709](https://github.com/vector-im/element-ios/issues/6709))
+- Fix a crash when previewing a room. ([#6712](https://github.com/vector-im/element-ios/issues/6712))
+- Fix login crash on Xcode 14 builds ([#6722](https://github.com/vector-im/element-ios/issues/6722))
+- Fix replied event content parsing for nested replies ([#6729](https://github.com/vector-im/element-ios/issues/6729))
+- Room: Fix a composer crash after long unsent messages. ([#6734](https://github.com/vector-im/element-ios/issues/6734))
+- New App Layout: fixed rooms list doesn't update after log out and log into another account ([#6739](https://github.com/vector-im/element-ios/issues/6739))
+
+
+## Changes in 1.9.5 (2022-09-12)
+
+🐛 Bugfixes
+
+- Fix timeline items text height calculation ([#6702](https://github.com/vector-im/element-ios/pull/6702))
+
+🚧 In development 🚧
+
+- Device manager: Add other sessions section read only in user sessions overview screen. ([#6672](https://github.com/vector-im/element-ios/issues/6672))
+
+
+## Changes in 1.9.4 (2022-09-09)
+
+✨ Features
+
+- Create DM room only on first message - Create the DM and navigate to the new room after sending an event ([#5864](https://github.com/vector-im/element-ios/issues/5864))
+
+🐛 Bugfixes
+
+- Fix composer expansion on Start DM as you enter the message in deferred mode. ([#6689](https://github.com/vector-im/element-ios/issues/6689))
+- [Group DM] send a new message in an existing DM invite again one of left member. ([#6691](https://github.com/vector-im/element-ios/issues/6691))
+
+
+## Changes in 1.9.3 (2022-09-07)
+
+✨ Features
+
+- CryptoV2: Self-verification flow ([#6589](https://github.com/vector-im/element-ios/issues/6589))
+
+🙌 Improvements
+
+- Analytics: Measure performance in Sentry ([#6647](https://github.com/vector-im/element-ios/pull/6647))
+- Crypto: Slash command to discard outbound session ([#6668](https://github.com/vector-im/element-ios/pull/6668))
+- Upgrade MatrixSDK version ([v0.23.18](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.23.18)).
+- Removed labs flag and enabled New App Layout ([#6673](https://github.com/vector-im/element-ios/issues/6673))
+- Update empty states as per latest design update ([#6674](https://github.com/vector-im/element-ios/issues/6674))
+- Reset allChatsOnboardingHasBeenDisplayed on logout ([#6676](https://github.com/vector-im/element-ios/issues/6676))
+
+🐛 Bugfixes
+
+- Fixed incorrect iOS 16 timeline item text height calculations leading to empty gaps. ([#6441](https://github.com/vector-im/element-ios/issues/6441))
+- Fix mention pills display on iOS 16 ([#6442](https://github.com/vector-im/element-ios/issues/6442))
+- Fixed last message time ellipsis ([#6512](https://github.com/vector-im/element-ios/issues/6512))
+- Glitchy room list header when scrolling ([#6513](https://github.com/vector-im/element-ios/issues/6513))
+- Performance issues with new App Layout ([#6537](https://github.com/vector-im/element-ios/issues/6537))
+- Fixed UI glitches in dark mode ([#6645](https://github.com/vector-im/element-ios/issues/6645))
+- Fix mention pills display when coming back to a room with an unsent message ([#6670](https://github.com/vector-im/element-ios/issues/6670))
+- Fixed last scrolling glitches in All Chats screen ([#6680](https://github.com/vector-im/element-ios/issues/6680))
+
+
+## Changes in 1.9.2 (2022-08-31)
+
+🙌 Improvements
+
+- Upgrade MatrixSDK version ([v0.23.17](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.23.17)).
+
+
+## Changes in 1.9.1 (2022-08-29)
+
+🙌 Improvements
+
+- Added Labs flag for the new App Layout. ([#6649](https://github.com/vector-im/element-ios/issues/6649))
+
+🐛 Bugfixes
+
+- Render the PIN entry screen correctly on landscape ([#6629](https://github.com/vector-im/element-ios/pull/6629))
+- Ensure rest client async responses are processed on the main queue ([#6642](https://github.com/vector-im/element-ios/pull/6642))
+- Stop waiting for biometric unlock if disabled system wide ([#5279](https://github.com/vector-im/element-ios/issues/5279))
+- App Layout: added support for transparent avatar icons in the all chats screen ([#6556](https://github.com/vector-im/element-ios/issues/6556))
+- App Layout: fixed reactions background in timeline ([#6557](https://github.com/vector-im/element-ios/issues/6557))
+- App Layout: Removed Low Priority Rooms from Filters ([#6577](https://github.com/vector-im/element-ios/issues/6577))
+- App Layout: Updated missing image for Onboarding screen page 2 ([#6624](https://github.com/vector-im/element-ios/issues/6624))
+- App Layout: fixed limited number of invites in the All Chats screen ([#6625](https://github.com/vector-im/element-ios/issues/6625))
+- Fix notification issues for threads. ([#6628](https://github.com/vector-im/element-ios/issues/6628))
+
+
 ## Changes in 1.9.0 (2022-08-24)
 
 🙌 Improvements

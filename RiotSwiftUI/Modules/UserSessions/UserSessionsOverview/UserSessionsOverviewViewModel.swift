@@ -16,46 +16,85 @@
 
 import SwiftUI
 
-typealias UserSessionsOverviewViewModelType = StateStoreViewModel<UserSessionsOverviewViewState,
-                                                                 Never,
-                                                                 UserSessionsOverviewViewAction>
+typealias UserSessionsOverviewViewModelType = StateStoreViewModel<UserSessionsOverviewViewState, UserSessionsOverviewViewAction>
 
 class UserSessionsOverviewViewModel: UserSessionsOverviewViewModelType, UserSessionsOverviewViewModelProtocol {
-
-    // MARK: - Properties
-
-    // MARK: Private
-
     private let userSessionsOverviewService: UserSessionsOverviewServiceProtocol
 
-    // MARK: Public
-
     var completion: ((UserSessionsOverviewViewModelResult) -> Void)?
-
-    // MARK: - Setup
 
     init(userSessionsOverviewService: UserSessionsOverviewServiceProtocol) {
         self.userSessionsOverviewService = userSessionsOverviewService
         
-        let viewState = UserSessionsOverviewViewState()
+        super.init(initialViewState: .init())
         
-        super.init(initialViewState: viewState)
+        updateViewState(with: userSessionsOverviewService.overviewData)
     }
     
     // MARK: - Public
-
+    
     override func process(viewAction: UserSessionsOverviewViewAction) {
         switch viewAction {
+        case .viewAppeared:
+            loadData()
         case .verifyCurrentSession:
-            break
+            completion?(.verifyCurrentSession)
         case .viewCurrentSessionDetails:
-            break
+            guard let currentSessionInfo = userSessionsOverviewService.overviewData.currentSession else {
+                assertionFailure("Missing current session")
+                return
+            }
+            completion?(.showCurrentSessionOverview(session: currentSessionInfo))
         case .viewAllUnverifiedSessions:
-            break
+            completion?(.showAllUnverifiedSessions)
         case .viewAllInactiveSessions:
-            break
+            completion?(.showAllInactiveSessions)
         case .viewAllOtherSessions:
-            break
+            completion?(.showAllOtherSessions)
+        case .tapUserSession(let sessionId):
+            guard let session = userSessionsOverviewService.sessionForIdentifier(sessionId) else {
+                assertionFailure("Missing session info")
+                return
+            }
+            completion?(.showUserSessionOverview(session: session))
         }
+    }
+    
+    // MARK: - Private
+    
+    private func updateViewState(with userSessionsViewData: UserSessionsOverviewData) {
+        state.unverifiedSessionsViewData = userSessionsViewData.unverifiedSessions.asViewData()
+        state.inactiveSessionsViewData = userSessionsViewData.inactiveSessions.asViewData()
+        state.otherSessionsViewData = userSessionsViewData.otherSessions.asViewData()
+        
+        if let currentSessionInfo = userSessionsViewData.currentSession {
+            state.currentSessionViewData = UserSessionCardViewData(sessionInfo: currentSessionInfo)
+        }
+    }
+    
+    private func loadData() {
+        state.showLoadingIndicator = true
+        
+        userSessionsOverviewService.updateOverviewData { [weak self] result in
+            guard let self = self else {
+                return
+            }
+            
+            self.state.showLoadingIndicator = false
+            
+            switch result {
+            case .success(let overViewData):
+                self.updateViewState(with: overViewData)
+            case .failure(let error):
+                // TODO:
+                break
+            }
+        }
+    }
+}
+
+private extension Collection where Element == UserSessionInfo {
+    func asViewData() -> [UserSessionListItemViewData] {
+        map { UserSessionListItemViewData(session: $0) }
     }
 }

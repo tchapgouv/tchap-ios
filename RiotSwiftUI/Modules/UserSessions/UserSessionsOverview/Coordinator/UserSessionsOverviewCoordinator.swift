@@ -14,54 +14,101 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import CommonKit
+import SwiftUI
 
 struct UserSessionsOverviewCoordinatorParameters {
     let session: MXSession
 }
 
 final class UserSessionsOverviewCoordinator: Coordinator, Presentable {
-    
-    // MARK: - Properties
-    
-    // MARK: Private
-    
     private let parameters: UserSessionsOverviewCoordinatorParameters
-    private let userSessionsOverviewHostingController: UIViewController
-    private var userSessionsOverviewViewModel: UserSessionsOverviewViewModelProtocol
-    
-    // MARK: Public
+    private let hostingViewController: UIViewController
+    private var viewModel: UserSessionsOverviewViewModelProtocol
+    private let service: UserSessionsOverviewService
 
+    private var indicatorPresenter: UserIndicatorTypePresenterProtocol
+    private var loadingIndicator: UserIndicator?
+    
     // Must be used only internally
     var childCoordinators: [Coordinator] = []
-    var completion: (() -> Void)?
-    
-    // MARK: - Setup
-    
+    var completion: ((UserSessionsOverviewCoordinatorResult) -> Void)?
+
     init(parameters: UserSessionsOverviewCoordinatorParameters) {
         self.parameters = parameters
-        let viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: UserSessionsOverviewService())
-        let view = UserSessionsOverview(viewModel: viewModel.context)
-        userSessionsOverviewViewModel = viewModel
-        userSessionsOverviewHostingController = VectorHostingController(rootView: view)
+        
+        let dataProvider = UserSessionsDataProvider(session: parameters.session)
+        service = UserSessionsOverviewService(dataProvider: dataProvider)
+        viewModel = UserSessionsOverviewViewModel(userSessionsOverviewService: service)
+        hostingViewController = VectorHostingController(rootView: UserSessionsOverview(viewModel: viewModel.context))
+        indicatorPresenter = UserIndicatorTypePresenter(presentingViewController: hostingViewController)
     }
     
     // MARK: - Public
     
     func start() {
         MXLog.debug("[UserSessionsOverviewCoordinator] did start.")
-        userSessionsOverviewViewModel.completion = { [weak self] result in
+        viewModel.completion = { [weak self] result in
             guard let self = self else { return }
             MXLog.debug("[UserSessionsOverviewCoordinator] UserSessionsOverviewViewModel did complete with result: \(result).")
+            
             switch result {
-            case .done:
-                self.completion?()
+            case .showAllUnverifiedSessions:
+                self.showAllUnverifiedSessions()
+            case .showAllInactiveSessions:
+                self.showAllInactiveSessions()
+            case .verifyCurrentSession:
+                self.startVerifyCurrentSession()
+            case let .showCurrentSessionOverview(sessionInfo):
+                self.showCurrentSessionOverview(sessionInfo: sessionInfo)
+            case .showAllOtherSessions:
+                self.showAllOtherSessions()
+            case let .showUserSessionOverview(sessionInfo):
+                self.showUserSessionOverview(sessionInfo: sessionInfo)
             }
         }
     }
     
     func toPresentable() -> UIViewController {
-        return self.userSessionsOverviewHostingController
+        hostingViewController
+    }
+    
+    // MARK: - Private
+    
+    /// Show an activity indicator whilst loading.
+    /// - Parameters:
+    ///   - label: The label to show on the indicator.
+    ///   - isInteractionBlocking: Whether the indicator should block any user interaction.
+    private func startLoading(label: String = VectorL10n.loading, isInteractionBlocking: Bool = true) {
+        loadingIndicator = indicatorPresenter.present(.loading(label: label, isInteractionBlocking: isInteractionBlocking))
+    }
+    
+    /// Hide the currently displayed activity indicator.
+    private func stopLoading() {
+        loadingIndicator = nil
+    }
+    
+    private func showAllUnverifiedSessions() {
+        // TODO:
+    }
+    
+    private func showAllInactiveSessions() {
+        // TODO:
+    }
+    
+    private func startVerifyCurrentSession() {
+        // TODO:
+    }
+    
+    private func showCurrentSessionOverview(sessionInfo: UserSessionInfo) {
+        completion?(.openSessionOverview(sessionInfo: sessionInfo))
+    }
+
+    private func showUserSessionOverview(sessionInfo: UserSessionInfo) {
+        completion?(.openSessionOverview(sessionInfo: sessionInfo))
+    }
+    
+    private func showAllOtherSessions() {
+        // TODO:
     }
 }

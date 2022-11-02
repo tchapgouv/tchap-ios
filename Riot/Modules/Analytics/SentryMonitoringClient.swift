@@ -34,7 +34,12 @@ struct SentryMonitoringClient {
             options.dsn = Self.sentryDSN
             
             // Collecting only 10% of all events
+            options.sampleRate = 0.1
             options.tracesSampleRate = 0.1
+            
+            // Disable unnecessary network tracking
+            options.enableNetworkBreadcrumbs = false
+            options.enableNetworkTracking = false
             
             options.beforeSend = { event in
                 MXLog.debug("[SentryMonitoringClient] Issue detected: \(event)")
@@ -65,5 +70,12 @@ struct SentryMonitoringClient {
         event.message = .init(formatted: issue)
         event.extra = details
         SentrySDK.capture(event: event)
+    }
+    
+    func startPerformanceTracking(name: String, operation: String) -> StopDurationTracking {
+        let transaction = SentrySDK.startTransaction(name: name, operation: operation)
+        return {
+            transaction.finish()
+        }
     }
 }

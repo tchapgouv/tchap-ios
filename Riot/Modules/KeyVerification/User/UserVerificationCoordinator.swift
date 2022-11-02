@@ -211,6 +211,7 @@ extension UserVerificationCoordinator: KeyVerificationManuallyVerifyCoordinatorD
         self.presenter.toPresentable().dismiss(animated: true) {
             self.remove(childCoordinator: coordinator)
         }
+        delegate?.userVerificationCoordinatorDidComplete(self)
     }
     
     func keyVerificationManuallyVerifyCoordinatorDidCancel(_ coordinator: KeyVerificationManuallyVerifyCoordinatorType) {

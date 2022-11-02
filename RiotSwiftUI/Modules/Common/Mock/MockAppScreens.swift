@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,6 +19,9 @@ import Foundation
 /// The static list of mocked screens in RiotSwiftUI
 enum MockAppScreens {
     static let appScreens: [MockScreenState.Type] = [
+        MockUserSessionsOverviewScreenState.self,
+        MockUserSessionDetailsScreenState.self,
+        MockUserSessionOverviewScreenState.self,
 //        MockLiveLocationLabPromotionScreenState.self,
 //        MockLiveLocationSharingViewerScreenState.self,
         MockAuthenticationLoginScreenState.self,
@@ -26,8 +29,8 @@ enum MockAppScreens {
         MockAuthenticationTermsScreenState.self,
         MockAuthenticationVerifyEmailScreenState.self,
         MockAuthenticationVerifyMsisdnScreenState.self,
-//        MockAuthenticationRegistrationScreenState.self,
-//        MockAuthenticationServerSelectionScreenState.self,
+        MockAuthenticationRegistrationScreenState.self,
+        MockAuthenticationServerSelectionScreenState.self,
         MockAuthenticationForgotPasswordScreenState.self,
         MockAuthenticationChoosePasswordScreenState.self,
         MockAuthenticationSoftLogoutScreenState.self,
@@ -42,22 +45,21 @@ enum MockAppScreens {
         MockAnalyticsPromptScreenState.self,
         MockUserSuggestionScreenState.self,
         MockPollEditFormScreenState.self,
-//        MockSpaceCreationEmailInvitesScreenState.self,
-//        MockSpaceSettingsScreenState.self,
+        MockSpaceCreationEmailInvitesScreenState.self,
+        MockSpaceSettingsScreenState.self,
         MockRoomAccessTypeChooserScreenState.self,
         MockRoomUpgradeScreenState.self,
-//        MockMatrixItemChooserScreenState.self,
-//        MockSpaceCreationMenuScreenState.self,
-//        MockSpaceCreationRoomsScreenState.self,
-//        MockSpaceCreationSettingsScreenState.self,
-//        MockSpaceCreationPostProcessScreenState.self,
+        MockMatrixItemChooserScreenState.self,
+        MockSpaceCreationMenuScreenState.self,
+        MockSpaceCreationRoomsScreenState.self,
+        MockSpaceCreationSettingsScreenState.self,
+        MockSpaceCreationPostProcessScreenState.self,
         MockTimelinePollScreenState.self,
 //        MockChangePasswordScreenState.self,
         MockTemplateSimpleScreenScreenState.self,
         MockTemplateUserProfileScreenState.self,
         MockTemplateRoomListScreenState.self,
         MockTemplateRoomChatScreenState.self,
-//        MockSpaceSelectorScreenState.self
+        MockSpaceSelectorScreenState.self
     ]
 }
-

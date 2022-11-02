@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,7 +39,6 @@ protocol AuthenticationServiceDelegate: AnyObject {
 
 @objcMembers
 class AuthenticationService: NSObject {
-    
     /// The shared service object.
     static let shared = AuthenticationService()
     
@@ -105,7 +104,7 @@ class AuthenticationService: NSObject {
         let hsUrl = universalLink.homeserverUrl
         let isUrl = universalLink.identityServerUrl
 
-        if hsUrl == nil && isUrl == nil {
+        if hsUrl == nil, isUrl == nil {
             MXLog.debug("[AuthenticationService] handleServerProvisioningLink: no hsUrl or isUrl")
             return false
         }
@@ -182,7 +181,7 @@ class AuthenticationService: NSObject {
         
         // The state and client are set after trying the registration flow to
         // ensure the existing state isn't wiped out when an error occurs.
-        self.state = AuthenticationState(flow: flow, homeserver: homeserver)
+        state = AuthenticationState(flow: flow, homeserver: homeserver)
         self.client = client
     }
     
@@ -217,9 +216,9 @@ class AuthenticationService: NSObject {
         // Tchap: Customize default home server.
         let address = useDefaultServer ? defaultHomeServer/*BuildSettings.serverConfigDefaultHomeserverUrlString*/ : state.homeserver.addressFromUser ?? state.homeserver.address
         let identityServer = state.identityServer
-        self.state = AuthenticationState(flow: .login,
-                                         homeserverAddress: address,
-                                         identityServer: identityServer)
+        state = AuthenticationState(flow: .login,
+                                    homeserverAddress: address,
+                                    identityServer: identityServer)
     }
     
     /// Continues an SSO flow when completion comes via a deep link.
@@ -306,7 +305,7 @@ class AuthenticationService: NSObject {
         
         let identityProviders = loginFlowResponse.flows?.compactMap { $0 as? MXLoginSSOFlow }.first?.identityProviders ?? []
         return LoginFlowResult(supportedLoginTypes: loginFlowResponse.flows?.compactMap { $0 } ?? [],
-                               ssoIdentityProviders: identityProviders.sorted { $0.name < $1.name }.map { $0.ssoIdentityProvider },
+                               ssoIdentityProviders: identityProviders.sorted { $0.name < $1.name }.map(\.ssoIdentityProvider),
                                homeserverAddress: client.homeserver)
     }
     

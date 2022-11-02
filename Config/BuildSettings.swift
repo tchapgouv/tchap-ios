@@ -428,8 +428,4 @@ final class BuildSettings: NSObject {
     
     // MARK: - New App Layout
     static let newAppLayoutEnabled = false
-    
-    // MARK: - Device manager
-    
-    static let deviceManagerEnabled = false
 }

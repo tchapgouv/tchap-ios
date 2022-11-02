@@ -56,9 +56,9 @@ PODS:
   - LoggerAPI (1.9.200):
     - Logging (~> 1.1)
   - Logging (1.4.0)
-  - MatrixSDK (0.23.16):
-    - MatrixSDK/Core (= 0.23.16)
-  - MatrixSDK/Core (0.23.16):
+  - MatrixSDK (0.24.0):
+    - MatrixSDK/Core (= 0.24.0)
+  - MatrixSDK/Core (0.24.0):
     - AFNetworking (~> 4.0.0)
     - GZIP (~> 1.3.0)
     - libbase58 (~> 0.1.4)
@@ -66,9 +66,9 @@ PODS:
     - OLMKit (~> 3.2.5)
     - Realm (= 10.27.0)
     - SwiftyBeaver (= 1.9.5)
-  - MatrixSDK/CryptoSDK (0.23.16):
+  - MatrixSDK/CryptoSDK (0.24.0):
     - MatrixSDKCrypto (= 0.1.0)
-  - MatrixSDK/JingleCallStack (0.23.16):
+  - MatrixSDK/JingleCallStack (0.24.0):
     - JitsiMeetSDK (= 5.0.2)
     - MatrixSDK/Core
   - MatrixSDKCrypto (0.1.0)
@@ -115,7 +115,7 @@ DEPENDENCIES:
   - Down (~> 0.11.0)
   - DSBottomSheet (~> 0.3)
   - DSWaveformImage (~> 6.1.1)
-  - DTCoreText (~> 1.6.25)
+  - DTCoreText (= 1.6.26)
   - ffmpeg-kit-ios-audio (= 4.5.1)
   - FLEX (~> 4.5.0)
   - FlowCommoniOS (~> 1.12.0)
@@ -124,8 +124,8 @@ DEPENDENCIES:
   - KeychainAccess (~> 4.2.2)
   - KTCenterFlowLayout (~> 1.3.1)
   - libPhoneNumber-iOS (~> 0.9.13)
-  - MatrixSDK (= 0.23.16)
-  - MatrixSDK/JingleCallStack (= 0.23.16)
+  - MatrixSDK (= 0.24.0)
+  - MatrixSDK/JingleCallStack (= 0.24.0)
   - OLMKit
   - PostHog (~> 1.4.4)
   - ReadMoreTextView (~> 3.0.1)
@@ -224,7 +224,7 @@ SPEC CHECKSUMS:
   libPhoneNumber-iOS: 0a32a9525cf8744fe02c5206eb30d571e38f7d75
   LoggerAPI: ad9c4a6f1e32f518fdb43a1347ac14d765ab5e3d
   Logging: beeb016c9c80cf77042d62e83495816847ef108b
-  MatrixSDK: 522910756169e688afc6ebd12aa549c16bc759dd
+  MatrixSDK: 196ae670143c5169ca9d02ff4d4a87f1e4dd8f08
   MatrixSDKCrypto: 4b9146d5ef484550341be056a164c6930038028e
   OLMKit: da115f16582e47626616874e20f7bb92222c7a51
   PostHog: 4b6321b521569092d4ef3a02238d9435dbaeb99f
@@ -245,6 +245,6 @@ SPEC CHECKSUMS:
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: 6b866408561b757482fff0150dc58d8fee373eb7
+PODFILE CHECKSUM: 156a1ece72e8bea4f6e634a80c4e1a6dbed5d874
 
 COCOAPODS: 1.11.3

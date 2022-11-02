@@ -64,9 +64,12 @@ targets:
 
     # Riot
     - path: ../Riot/Categories/Bundle.swift
-    - path: ../Riot/Managers/Settings/RiotSettings.swift
+    - path: ../Riot/Generated/Vector_Strings.swift
+    - path: ../Riot/Managers/AppInfo
+    - path: ../Riot/Managers/Locale
     - path: ../Riot/Managers/EncryptionKeyManager/EncryptionKeyManager.swift
     - path: ../Riot/Managers/KeyValueStorage/
+    - path: ../Riot/Managers/Settings/RiotSettings.swift
     - path: ../Riot/Modules/Room/TimelineCells/Styles/RoomTimelineStyleIdentifier.swift
     - path: ../Riot/PropertyWrappers
 

@@ -36,6 +36,7 @@ targets:
     - target: DesignKit
     - target: CommonKit
     - package: OrderedCollections
+    - package: DeviceKit
 
     configFiles:
       Debug: SupportingFiles/DevTchap-App-Debug.xcconfig
@@ -204,6 +205,7 @@ targets:
     - path: ../Riot/Modules/Home/Fallback
     - path: ../Riot/Modules/Home/HomeViewController.h
     - path: ../Riot/Modules/Home/HomeViewController.m
+    - path: ../Riot/Modules/Home/VersionCheck
     - path: ../Riot/Modules/Home/Views
     - path: ../Riot/Modules/GDPR
     - path: ../Riot/Modules/GlobalSearch/Files/CellData/FilesSearchCellData.h
@@ -225,7 +227,6 @@ targets:
     - path: ../Riot/Modules/Reauthentication
     - path: ../Riot/Modules/Room
       excludes:
-        - "DataSources/ThreadDataSource.swift"
         - "Location"
         - "RoomViewController+LocationSharing.swift"
         - "TimelineCells/LocationView"

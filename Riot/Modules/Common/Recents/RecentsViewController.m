@@ -392,8 +392,6 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 
 - (void)refreshRecentsTable
 {
-    MXLogDebug(@"[RecentsViewController]: Refreshing recents table view")
-
     if (!self.recentsUpdateEnabled)
     {
         isRefreshNeeded = YES;
@@ -403,7 +401,11 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     isRefreshNeeded = NO;
     
     // Refresh the tabBar icon badges
-    [[AppDelegate theDelegate].masterTabBarController refreshTabBarBadges];
+    if (!BuildSettings.newAppLayoutEnabled)
+    {
+        // Refresh the tabBar icon badges
+        [[AppDelegate theDelegate].masterTabBarController refreshTabBarBadges];
+    }
     
     // do not refresh if there is a pending recent drag and drop
     if (movingCellPath)
@@ -1131,9 +1133,12 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         [self refreshRecentsTable];
     }
     
-    // Since we've enabled room list pagination, `refreshRecentsTable` not called in this case.
-    // Refresh tab bar badges separately.
-    [[AppDelegate theDelegate].masterTabBarController refreshTabBarBadges];
+    if (!BuildSettings.newAppLayoutEnabled)
+    {
+        // Since we've enabled room list pagination, `refreshRecentsTable` not called in this case.
+        // Refresh tab bar badges separately.
+        [[AppDelegate theDelegate].masterTabBarController refreshTabBarBadges];
+    }
     
     [self showEmptyViewIfNeeded];
 
@@ -1787,6 +1792,12 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+    if (!self.recentsSearchBar)
+    {
+        [super scrollViewDidScroll:scrollView];
+        return;
+    }
+    
     dispatch_async(dispatch_get_main_queue(), ^{
         
         [self refreshStickyHeadersContainersHeight];
@@ -2156,7 +2167,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 //                MXStrongifyAndReturnIfNil(self);
 //                [self stopActivityIndicator];
 //                self.customSizedPresentationController = nil;
-//
+//                
 //                //  do nothing extra here. UI will be handled automatically by the CallService.
 //            } failure:^(NSError * _Nullable error) {
 //                MXStrongifyAndReturnIfNil(self);
@@ -2426,12 +2437,6 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 //    coordinatorBridgePresenter = nil;
 //}
 
-//- (void)createRoomCoordinatorBridgePresenterDelegate:(CreateRoomCoordinatorBridgePresenter *)coordinatorBridgePresenter didAddRoomsWithIds:(NSArray<NSString *> *)roomIds
-//{
-//    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
-//    coordinatorBridgePresenter = nil;
-//}
-
 #pragma mark - Empty view management
 
 - (void)showEmptyViewIfNeeded
@@ -2441,79 +2446,79 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 }
 
 // Tchap: Not available in Tchap
-//- (void)showEmptyView:(BOOL)show
-//{
-//    if (!self.viewIfLoaded)
-//    {
-//        return;
-//    }
-//
-//    if (show && !self.emptyView)
-//    {
-//        RootTabEmptyView *emptyView = [RootTabEmptyView instantiate];
-//        [emptyView updateWithTheme:ThemeService.shared.theme];
-//        [self addEmptyView:emptyView];
-//
-//        self.emptyView = emptyView;
-//
-//        [self updateEmptyView];
-//    }
-//    else if (!show)
-//    {
-//        [self.emptyView removeFromSuperview];
-//    }
-//
-//    self.recentsTableView.hidden = show;
-//    self.stickyHeadersTopContainer.hidden = show;
-//    self.stickyHeadersBottomContainer.hidden = show;
-//}
-//
-//- (void)updateEmptyView
-//{
-//
-//}
-//
-//- (void)addEmptyView:(RootTabEmptyView*)emptyView
-//{
-//    if (!self.isViewLoaded)
-//    {
-//        return;
-//    }
-//
-//    NSLayoutConstraint *emptyViewBottomConstraint;
-//    NSLayoutConstraint *contentViewBottomConstraint;
-//
-//    if (plusButtonImageView && plusButtonImageView.isHidden == NO)
-//    {
-//        [self.view insertSubview:emptyView belowSubview:plusButtonImageView];
-//
-//        contentViewBottomConstraint = [NSLayoutConstraint constraintWithItem:emptyView.contentView
-//                                                                   attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationLessThanOrEqual toItem:plusButtonImageView
-//                                                                   attribute:NSLayoutAttributeTop
-//                                                                  multiplier:1.0
-//                                                                    constant:0];
-//    }
-//    else
-//    {
-//        [self.view addSubview:emptyView];
-//    }
-//
-//    emptyViewBottomConstraint = [emptyView.bottomAnchor constraintEqualToAnchor:emptyView.superview.bottomAnchor];
-//
-//    emptyView.translatesAutoresizingMaskIntoConstraints = NO;
-//
-//    [NSLayoutConstraint activateConstraints:@[
-//        [emptyView.topAnchor constraintEqualToAnchor:emptyView.superview.topAnchor],
-//        [emptyView.leftAnchor constraintEqualToAnchor:emptyView.superview.leftAnchor],
-//        [emptyView.rightAnchor constraintEqualToAnchor:emptyView.superview.rightAnchor],
-//        emptyViewBottomConstraint
-//    ]];
-//
-//    if (contentViewBottomConstraint)
-//    {
-//        contentViewBottomConstraint.active = YES;
-//    }
-//}
+- (void)showEmptyView:(BOOL)show
+{
+    if (!self.viewIfLoaded)
+    {
+        return;
+    }
+
+    if (show && !self.emptyView)
+    {
+        RootTabEmptyView *emptyView = [RootTabEmptyView instantiate];
+        [emptyView updateWithTheme:ThemeService.shared.theme];
+        [self addEmptyView:emptyView];
+
+        self.emptyView = emptyView;
+
+        [self updateEmptyView];
+    }
+    else if (!show)
+    {
+        [self.emptyView removeFromSuperview];
+    }
+
+    self.recentsTableView.hidden = show;
+    self.stickyHeadersTopContainer.hidden = show;
+    self.stickyHeadersBottomContainer.hidden = show;
+}
+
+- (void)updateEmptyView
+{
+
+}
+
+- (void)addEmptyView:(RootTabEmptyView*)emptyView
+{
+    if (!self.isViewLoaded)
+    {
+        return;
+    }
+
+    NSLayoutConstraint *emptyViewBottomConstraint;
+    NSLayoutConstraint *contentViewBottomConstraint;
+
+    if (plusButtonImageView && plusButtonImageView.isHidden == NO)
+    {
+        [self.view insertSubview:emptyView belowSubview:plusButtonImageView];
+
+        contentViewBottomConstraint = [NSLayoutConstraint constraintWithItem:emptyView.contentView
+                                                                   attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationLessThanOrEqual toItem:plusButtonImageView
+                                                                   attribute:NSLayoutAttributeTop
+                                                                  multiplier:1.0
+                                                                    constant:0];
+    }
+    else
+    {
+        [self.view addSubview:emptyView];
+    }
+    NSLayoutYAxisAnchor *bottomAnchor = self.emptyViewBottomAnchor ?: emptyView.superview.bottomAnchor;
+    emptyViewBottomConstraint = [emptyView.bottomAnchor constraintEqualToAnchor:emptyView.superview.bottomAnchor];
+
+    emptyView.translatesAutoresizingMaskIntoConstraints = NO;
+
+    [NSLayoutConstraint activateConstraints:@[
+        [emptyView.topAnchor constraintEqualToAnchor:emptyView.superview.topAnchor],
+        [emptyView.leftAnchor constraintEqualToAnchor:emptyView.superview.leftAnchor],
+        [emptyView.rightAnchor constraintEqualToAnchor:emptyView.superview.rightAnchor],
+        emptyViewBottomConstraint
+    ]];
+
+    if (contentViewBottomConstraint)
+    {
+        contentViewBottomConstraint.active = YES;
+    }
+}
 
 - (BOOL)shouldShowEmptyView
 {
