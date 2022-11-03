@@ -475,6 +475,8 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
             handleRegistrationResult(result)
         case .cancel:
             displayCancelConfirmation()
+        case .showTermsAndConditions:
+            MXLog.failure("[AuthenticationCoordinator] registrationStageDidComplete with case showTermsAndConditions.")
         }
     }
     

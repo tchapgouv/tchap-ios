@@ -111,6 +111,8 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
                 self.authenticationVerifyEmailViewModel.goBackToEnterEmailForm()
             case .prepareAccountCreation(let emailAddress, let password): // Tchap: Add prepareAccountCreation case
                 self.prepareAccountCreation(email: emailAddress, password: password)
+            case .showTermsAndConditions: // Tchap: Show Terms and Conditions.
+                self.callback?(.showTermsAndConditions)
             }
         }
     }

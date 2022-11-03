@@ -23,6 +23,8 @@ enum AuthenticationRegistrationStageResult {
     case completed(RegistrationResult)
     /// The user would like to cancel the registration.
     case cancel
+    // Tchap: Add Terms and Conditions.
+    case showTermsAndConditions
 }
 
 /// The result from a response of a registration flow step.

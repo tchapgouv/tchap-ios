@@ -52,6 +52,10 @@ class AuthenticationVerifyEmailViewModel: AuthenticationVerifyEmailViewModelType
             Task { await callback?(.goBack) }
         case .prepareAccountCreation: // Tchap: Add prepareAccountCreation specific case
             Task { await callback?(.prepareAccountCreation(state.bindings.emailAddress, state.bindings.password)) }
+        case .toggleTermsAndConditions: // Tchap: Add Terms and Conditions.
+            Task { await toggleTermsAndConditions() }
+        case .showTermsAndConditions: // Tchap: Add Terms and Conditions.
+            Task { await callback?(.showTermsAndConditions) }
         }
     }
     
@@ -84,5 +88,11 @@ class AuthenticationVerifyEmailViewModel: AuthenticationVerifyEmailViewModelType
                                                  title: VectorL10n.error,
                                                  message: TchapL10n.authenticationErrorUnauthorizedEmail)
         }
+    }
+    
+    // Tchap: Add Terms and Conditions.
+    /// Toggle the value for Terms and Conditions agreement.
+    @MainActor private func toggleTermsAndConditions() {
+        state.bindings.userAgreeWithTermsAndConditions = !state.bindings.userAgreeWithTermsAndConditions
     }
 }

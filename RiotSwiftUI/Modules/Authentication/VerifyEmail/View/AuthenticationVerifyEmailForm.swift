@@ -95,6 +95,21 @@ struct AuthenticationVerifyEmailForm: View {
                                    onCommit: submit)
             .accessibilityIdentifier("passwordTextField")
             
+            // Tchap: Add Terms and Conditions buttons
+            HStack(alignment: .center, spacing: 8) {
+                Toggle(TchapL10n.registrationTermsLabelFormat(TchapL10n.registrationTermsLabelLink), isOn: $viewModel.userAgreeWithTermsAndConditions)
+                    .toggleStyle(AuthenticationTermsToggleStyle())
+                    .accessibilityIdentifier("termsAndConditionsToggle")
+                
+                TACText
+                    .foregroundColor(theme.colors.secondaryContent)
+                    .onTapGesture {
+                        viewModel.send(viewAction: .showTermsAndConditions)
+                    }
+            }
+            .padding(.bottom, 16)
+            .onTapGesture(perform: toggleTermsAndConditions)
+            
             // Tchap: Update condition for activation
             Button(action: submit) {
                 Text(VectorL10n.next)
@@ -122,5 +137,31 @@ struct AuthenticationVerifyEmailForm: View {
     func submit() {
         guard !viewModel.viewState.hasInvalidAddress else { return }
         viewModel.send(viewAction: .prepareAccountCreation)
+    }
+    
+    // Tchap: Add the Terms and Conditions button.
+    /// Sends the `toggleTermsAndConditions` view action.
+    func toggleTermsAndConditions() {
+        viewModel.send(viewAction: .toggleTermsAndConditions)
+    }
+    
+    // Tchap: Build Terms and Conditions text.
+    var TACText: some View {
+        if #available(iOS 15.0, *) {
+            let originalText = TchapL10n.registrationTermsLabelFormat(TchapL10n.registrationTermsLabelLink)
+            var attributedText = AttributedString(originalText)
+            guard let range = attributedText.range(of: TchapL10n.registrationTermsLabelLink) else {
+                return defaultTacText
+            }
+            attributedText[range].underlineStyle = .single
+            return Text(attributedText)
+        } else {
+            return defaultTacText
+        }
+    }
+    
+    // Tchap: Build default Terms and Conditions text.
+    var defaultTacText: some View {
+        return Text(TchapL10n.registrationTermsLabelFormat("")) + Text(TchapL10n.registrationTermsLabelLink).underline(true)
     }
 }

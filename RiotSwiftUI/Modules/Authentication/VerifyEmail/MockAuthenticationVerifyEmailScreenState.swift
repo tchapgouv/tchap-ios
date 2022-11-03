@@ -26,6 +26,7 @@ enum MockAuthenticationVerifyEmailScreenState: MockScreenState, CaseIterable {
     case emptyAddress
     case enteredAddress
     case hasSentEmail
+    case toggleTermsAndConditions // Tchap: Add Terms and Conditions.
     
     /// The associated screen
     var screenType: Any.Type {
@@ -47,6 +48,8 @@ enum MockAuthenticationVerifyEmailScreenState: MockScreenState, CaseIterable {
             viewModel = AuthenticationVerifyEmailViewModel(/*homeserver: .mockMatrixDotOrg,
                                                            */emailAddress: "test@example.com")
             Task { await viewModel.updateForSentEmail() }
+        case .toggleTermsAndConditions: // Tchap: Add Terms and Conditions.
+            viewModel = AuthenticationVerifyEmailViewModel(emailAddress: "test@example.com")
         }
         
         // can simulate service and viewModel actions here if needs be.
