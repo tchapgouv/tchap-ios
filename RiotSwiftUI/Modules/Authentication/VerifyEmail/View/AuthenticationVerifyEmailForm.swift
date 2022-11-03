@@ -147,21 +147,6 @@ struct AuthenticationVerifyEmailForm: View {
     
     // Tchap: Build Terms and Conditions text.
     var TACText: some View {
-        if #available(iOS 15.0, *) {
-            let originalText = TchapL10n.registrationTermsLabelFormat(TchapL10n.registrationTermsLabelLink)
-            var attributedText = AttributedString(originalText)
-            guard let range = attributedText.range(of: TchapL10n.registrationTermsLabelLink) else {
-                return defaultTacText
-            }
-            attributedText[range].underlineStyle = .single
-            return Text(attributedText)
-        } else {
-            return defaultTacText
-        }
-    }
-    
-    // Tchap: Build default Terms and Conditions text.
-    var defaultTacText: some View {
         return Text(TchapL10n.registrationTermsLabelFormat("")) + Text(TchapL10n.registrationTermsLabelLink).underline(true)
     }
 }
