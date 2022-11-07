@@ -29,6 +29,8 @@ enum AuthenticationVerifyEmailViewModelResult {
     case goBack
     // Tchap: Add prepareAccountCreation case
     case prepareAccountCreation(String, String)
+    // Tchap: Show Terms and Conditions.
+    case showTermsAndConditions
 }
 
 // MARK: View
@@ -71,7 +73,13 @@ struct AuthenticationVerifyEmailViewState: BindableState {
     
     /// `true` if valid credentials have been entered and the homeserver is loaded.
     var canSubmit: Bool {
-        hasValidCredentials
+        hasValidCredentials && userAgreeWithTermsAndConditions // Tchap: Add Terms and Conditions.
+    }
+    
+    // Tchap: Add Terms and Conditions.
+    /// `true` if user validate the Terms and Conditions.
+    var userAgreeWithTermsAndConditions: Bool {
+        return bindings.userAgreeWithTermsAndConditions
     }
 }
 
@@ -83,6 +91,9 @@ struct AuthenticationVerifyEmailBindings {
     var password: String
     /// Information describing the currently displayed alert.
     var alertInfo: AlertInfo<AuthenticationVerifyEmailErrorType>?
+    // Tchap: Add Terms and Conditions.
+    /// Terms and conditions validation status.
+    var userAgreeWithTermsAndConditions = false
 }
 
 enum AuthenticationVerifyEmailViewAction {
@@ -96,6 +107,12 @@ enum AuthenticationVerifyEmailViewAction {
     case goBack
     // Tchap: Prepare the account creation.
     case prepareAccountCreation
+    // Tchap: Add Terms and Conditions.
+    /// Change the Terms and Conditions status.
+    case toggleTermsAndConditions
+    // Tchap: Add Terms and Conditions.
+    /// Show Terms and Conditions view.
+    case showTermsAndConditions
 }
 
 enum AuthenticationVerifyEmailErrorType: Hashable {

@@ -111,6 +111,8 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
                 self.authenticationVerifyEmailViewModel.goBackToEnterEmailForm()
             case .prepareAccountCreation(let emailAddress, let password): // Tchap: Add prepareAccountCreation case
                 self.prepareAccountCreation(email: emailAddress, password: password)
+            case .showTermsAndConditions: // Tchap: Show Terms and Conditions.
+                self.showTermsAndConditions()
             }
         }
     }
@@ -360,5 +362,17 @@ final class AuthenticationVerifyEmailCoordinator: Coordinator, Presentable {
             self.handleError(error)
             completion(false)
         }
+    }
+    
+    // Tchap: Add Terms and Conditions.
+    /// Show Terms and Conditions view.
+    private func showTermsAndConditions() {
+        guard let webViewController = WebViewViewController(url: BuildSettings.applicationTermsConditionsUrlString) else {
+            MXLog.error("[AuthenticationVerifyEmailCoordinator] Terms and Conditions could not be presented.")
+            return
+        }
+        webViewController.title = VectorL10n.settingsTermConditions
+        webViewController.vc_setLargeTitleDisplayMode(.never)
+        authenticationVerifyEmailHostingController.navigationController?.pushViewController(webViewController, animated: true)
     }
 }
