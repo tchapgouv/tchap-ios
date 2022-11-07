@@ -29,7 +29,8 @@ class AuthenticationChoosePasswordViewModel: AuthenticationChoosePasswordViewMod
 
     // MARK: - Setup
 
-    init(password: String = "", signoutAllDevices: Bool = false) {
+    // Tchap: Update default signoutAllDevices value
+    init(password: String = "", signoutAllDevices: Bool = true) {
         let viewState = AuthenticationChoosePasswordViewState(bindings: AuthenticationChoosePasswordBindings(password: password, signoutAllDevices: signoutAllDevices))
         super.init(initialViewState: viewState)
     }
