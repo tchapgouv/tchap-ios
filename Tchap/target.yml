@@ -1,14 +1,14 @@
 name: Tchap
 
-schemes:
-  Tchap:
+schemeTemplates:
+  BaseScheme:
     analyze:
       config: Debug
     archive:
       config: Release
     build:
       targets:
-        Tchap:
+        ${scheme_name}:
         - running
         - testing
         - profiling
@@ -25,8 +25,21 @@ schemes:
       targets:
       - TchapTests
 
-targets:
+schemes:
   Tchap:
+    templates:
+      - BaseScheme
+
+  Btchap:
+    templates:
+      - BaseScheme
+
+  DevTchap:
+    templates:
+      - BaseScheme
+
+targetTemplates:
+  BaseTarget:
     type: application
     platform: iOS
 
@@ -37,10 +50,6 @@ targets:
     - target: CommonKit
     - package: OrderedCollections
     - package: DeviceKit
-
-    configFiles:
-      Debug: SupportingFiles/App-Debug.xcconfig
-      Release: SupportingFiles/App-Release.xcconfig
 
     preBuildScripts:
     - name: 🛠 Environment
@@ -57,15 +66,19 @@ targets:
       script: "\"${PODS_ROOT}/SwiftGen/bin/swiftgen\" config run --config \"Tools/SwiftGen/swiftgen-config.yml\"\n"
 
     sources:
-    - path: ../Tchap/Config
     - path: ../Config/AppConfiguration.swift
     - path: ../Config/Project.xcconfig
     - path: ../Config/Project-Warnings.xcconfig
     - path: ../Config/AppIdentifiers.xcconfig
     - path: ../Config/CommonConfiguration.swift
     - path: ../Config/Configurable.swift
-    - path: .
+    - path: ../Tchap
       excludes:
+        - "target.yml"
+        - "Assets/TchapSharedImages.xcassets"
+        - "Config/BuildSettings.swift"
+        - "Generated/InfoPlist.swift"
+        - "Generated/TchapDefaults.swift"
         - "Managers/AppVersion/AppVersion.swift"
         - "Managers/UniversalLink"
         - "Modules/Application"
@@ -88,16 +101,18 @@ targets:
         - "Modules/Rooms"
         - "Modules/Settings/SettingsViewController.*"
         - "Routers"
+        - "SupportingFiles/Info.plist"
         - "Tools"
         - "**/*.strings" # Exclude all strings files
+        - "**/*.cer"
     - path: ../Tchap/Generated/Images_Riot.swift
     - path: ../Tchap/Modules/Application/VersionUpdate
     - path: ../Tchap/Modules/Room/Views/BubbleCells/Antivirus
 
 
     # Add separately localizable files
-    - path: Assets/Localizations/fr.lproj/Tchap.strings
-    - path: Assets/Localizations/fr.lproj/Tchap.stringsdict
+    - path: ../Tchap/Assets/Localizations/fr.lproj/Tchap.strings
+    - path: ../Tchap/Assets/Localizations/fr.lproj/Tchap.stringsdict
     
     # Riot
     - path: ../Riot/Assets/apple_emojis_data.json
@@ -301,3 +316,47 @@ targets:
       buildPhase: resources
     - path: ../Riot/Modules/UserDevices/Views/DeviceTableViewCell.xib
       buildPhase: resources
+
+targets:
+  Tchap:
+    templates: 
+      - BaseTarget
+
+    configFiles:
+      Debug: ../Tchap/SupportingFiles/App-Debug.xcconfig
+      Release: ../Tchap/SupportingFiles/App-Release.xcconfig
+
+    sources:
+    - path: ../Tchap/Assets
+      excludes:
+        - "**/*.strings" # Exclude all strings files
+    - path: ../Tchap/Config
+    - path: ../Tchap/Generated
+
+  Btchap:
+    templates: 
+      - BaseTarget
+
+    configFiles:
+      Debug: ../Btchap/SupportingFiles/Btchap-App-Debug.xcconfig
+      Release: ../Btchap/SupportingFiles/Btchap-App-Release.xcconfig
+
+    sources:
+    - path: ../Btchap
+      excludes:
+        - "**/*.strings" # Exclude all strings files
+        - "SupportingFiles/Info.plist"
+
+  DevTchap:
+    templates: 
+      - BaseTarget
+
+    configFiles:
+      Debug: ../DevTchap/SupportingFiles/DevTchap-App-Debug.xcconfig
+      Release: ../DevTchap/SupportingFiles/DevTchap-App-Release.xcconfig
+
+    sources:
+    - path: ../DevTchap
+      excludes:
+        - "**/*.strings" # Exclude all strings files
+        - "SupportingFiles/Info.plist"
