@@ -120,8 +120,6 @@ final class WelcomeCoordinator: WelcomeCoordinatorType {
                 case .flowResponse:
                     MXLog.warning("[WelcomeCoordinator] flowResponse")
                 }
-            case .showTermsAndConditions: // Tchap: Add Terms and Conditions
-                self.showTermsAndConditions()
             }
         }
         
@@ -140,18 +138,6 @@ final class WelcomeCoordinator: WelcomeCoordinatorType {
     /// Cancels the registration flow, returning to the Welcome screen.
     private func cancelRegisterFlow() {
         navigationRouter.popAllModules(animated: false)
-    }
-    
-    // Tchap: Add Terms and Conditions.
-    /// Show Terms and Conditions view.
-    private func showTermsAndConditions() {
-        guard let webViewController = WebViewViewController(url: BuildSettings.applicationTermsConditionsUrlString) else {
-            MXLog.error("[AuthenticationVerifyEmailCoordinator] Terms and Conditions could not be presented.")
-            return
-        }
-        webViewController.title = VectorL10n.settingsTermConditions
-        webViewController.vc_setLargeTitleDisplayMode(.never)
-        welcomeViewController.navigationController?.pushViewController(webViewController, animated: true)
     }
 }
 
