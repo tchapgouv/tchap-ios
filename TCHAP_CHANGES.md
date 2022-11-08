@@ -1,3 +1,20 @@
+## Changes in 2.2.0 (2022-11-08)
+
+🙌 Improvements
+
+- Replace the Authentication and Registration modules by the Element ones ([#657](https://github.com/tchapgouv/tchap-ios/issues/657))
+- [Account creation] Add Terms & conditions to the workflow ([#675](https://github.com/tchapgouv/tchap-ios/issues/675))
+- [Forgot password] Configure default value for devices disconnection ([#676](https://github.com/tchapgouv/tchap-ios/issues/676))
+
+🐛 Bugfixes
+
+- [Access to a forum] Update forum icon in forums directory ([#668](https://github.com/tchapgouv/tchap-ios/issues/668))
+
+🧱 Build
+
+- Remove target.yml files from each target and merge them ([#656](https://github.com/tchapgouv/tchap-ios/issues/656))
+
+
 ## Changes in 2.1.0 (2022-08-29)
 
 🙌 Improvements
