@@ -65,6 +65,9 @@ targetTemplates:
       shell: /bin/sh
       script: "\"${PODS_ROOT}/SwiftGen/bin/swiftgen\" config run --config \"Tools/SwiftGen/swiftgen-config.yml\"\n"
 
+    settings:
+      INFOPLIST_FILE: "${target_name}/SupportingFiles/Info.plist"
+
     sources:
     - path: ../Config/AppConfiguration.swift
     - path: ../Config/Project.xcconfig
